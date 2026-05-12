@@ -1,0 +1,1 @@
+export { SearchNotificationSection } from "./SearchNotificationSection";

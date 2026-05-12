@@ -1,0 +1,17 @@
+FROM node:20-slim
+
+WORKDIR /app
+
+COPY shared/ ./shared/
+RUN cd shared && npm install --production
+
+COPY services/chatbot/package.json ./services/chatbot/
+RUN cd services/chatbot && npm install --production
+
+COPY services/chatbot/src/ ./services/chatbot/src/
+
+EXPOSE 3008
+
+WORKDIR /app/services/chatbot
+
+CMD ["node", "--max-old-space-size=1536", "src/index.js"]

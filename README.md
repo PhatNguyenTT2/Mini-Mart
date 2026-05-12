@@ -1,0 +1,1 @@
+npx @vudovn/ag-kit init
