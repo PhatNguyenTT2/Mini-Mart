@@ -54,6 +54,7 @@ services:
       - RABBITMQ_URL=${RABBITMQ_URL}
       - JWT_SECRET=${JWT_SECRET}
       - JWT_EXPIRES_IN=${JWT_EXPIRES_IN:-7d}
+      - CORS_ORIGINS=http://localhost:5173,http://localhost:5174
       - NODE_ENV=${NODE_ENV:-production}
     ports:
       - "3001:3001"
@@ -73,6 +74,7 @@ services:
       - DB_SSL=${DB_SSL:-true}
       - RABBITMQ_URL=${RABBITMQ_URL}
       - JWT_SECRET=${JWT_SECRET}
+      - CORS_ORIGINS=http://localhost:5173,http://localhost:5174
       - NODE_ENV=${NODE_ENV:-production}
     ports:
       - "3002:3002"
@@ -93,6 +95,7 @@ services:
       - RABBITMQ_URL=${RABBITMQ_URL}
       - JWT_SECRET=${JWT_SECRET}
       - INVENTORY_SERVICE_URL=http://inventory:3006
+      - CORS_ORIGINS=http://localhost:5173,http://localhost:5174
       - NODE_ENV=${NODE_ENV:-production}
     ports:
       - "3003:3003"
@@ -112,6 +115,7 @@ services:
       - DB_SSL=${DB_SSL:-true}
       - RABBITMQ_URL=${RABBITMQ_URL}
       - JWT_SECRET=${JWT_SECRET}
+      - CORS_ORIGINS=http://localhost:5173,http://localhost:5174
       - NODE_ENV=${NODE_ENV:-production}
     ports:
       - "3004:3004"
@@ -131,6 +135,7 @@ services:
       - DB_SSL=${DB_SSL:-true}
       - RABBITMQ_URL=${RABBITMQ_URL}
       - JWT_SECRET=${JWT_SECRET}
+      - CORS_ORIGINS=http://localhost:5173,http://localhost:5174
       - NODE_ENV=${NODE_ENV:-production}
     ports:
       - "3005:3005"
@@ -151,6 +156,7 @@ services:
       - RABBITMQ_URL=${RABBITMQ_URL}
       - JWT_SECRET=${JWT_SECRET}
       - CATALOG_SERVICE_URL=http://catalog:3002
+      - CORS_ORIGINS=http://localhost:5173,http://localhost:5174
       - NODE_ENV=${NODE_ENV:-production}
     ports:
       - "3006:3006"
@@ -177,6 +183,7 @@ services:
       - APP_URL=${APP_URL:-http://localhost:8080}
       - FRONTEND_URL=${FRONTEND_URL:-http://localhost:5173}
       - CUSTOMER_URL=${CUSTOMER_URL:-http://localhost:5174}
+      - CORS_ORIGINS=http://localhost:5173,http://localhost:5174
       - NODE_ENV=${NODE_ENV:-production}
     ports:
       - "3007:3007"
@@ -209,6 +216,7 @@ services:
       - INVENTORY_SERVICE_URL=http://inventory:3006
       - ORDER_SERVICE_URL=http://order:3003
       - AUTH_SERVICE_URL=http://auth:3001
+      - CORS_ORIGINS=http://localhost:5173,http://localhost:5174
       - NODE_ENV=${NODE_ENV:-production}
     ports:
       - "3008:3008"
@@ -232,6 +240,7 @@ services:
       - SUPPLIER_URL=http://supplier:3005
       - INVENTORY_URL=http://inventory:3006
       - AUTH_URL=http://auth:3001
+      - CORS_ORIGINS=http://localhost:5173,http://localhost:5174
       - NODE_ENV=${NODE_ENV:-production}
     ports:
       - "3009:3009"

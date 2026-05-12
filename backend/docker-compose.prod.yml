@@ -1,0 +1,78 @@
+version: '3.8'
+
+x-common-config: &common-config
+  restart: always
+  networks:
+    - minimart-net
+  env_file:
+    - .env
+
+services:
+  gateway:
+    <<: *common-config
+    image: ghcr.io/phatnguyentt2/mini-mart/gateway:latest
+    container_name: minimart-gateway
+    ports:
+      - "8080:80"
+    mem_limit: 150m
+    depends_on:
+      - auth
+      - catalog
+
+  auth:
+    <<: *common-config
+    image: ghcr.io/phatnguyentt2/mini-mart/auth:latest
+    container_name: minimart-auth
+    mem_limit: 250m
+
+  catalog:
+    <<: *common-config
+    image: ghcr.io/phatnguyentt2/mini-mart/catalog:latest
+    container_name: minimart-catalog
+    mem_limit: 250m
+
+  order:
+    <<: *common-config
+    image: ghcr.io/phatnguyentt2/mini-mart/order:latest
+    container_name: minimart-order
+    mem_limit: 250m
+
+  settings:
+    <<: *common-config
+    image: ghcr.io/phatnguyentt2/mini-mart/settings:latest
+    container_name: minimart-settings
+    mem_limit: 200m
+
+  supplier:
+    <<: *common-config
+    image: ghcr.io/phatnguyentt2/mini-mart/supplier:latest
+    container_name: minimart-supplier
+    mem_limit: 200m
+
+  inventory:
+    <<: *common-config
+    image: ghcr.io/phatnguyentt2/mini-mart/inventory:latest
+    container_name: minimart-inventory
+    mem_limit: 250m
+
+  payment:
+    <<: *common-config
+    image: ghcr.io/phatnguyentt2/mini-mart/payment:latest
+    container_name: minimart-payment
+    mem_limit: 250m
+
+  statistics:
+    <<: *common-config
+    image: ghcr.io/phatnguyentt2/mini-mart/statistics:latest
+    container_name: minimart-statistics
+    mem_limit: 200m
+
+  chatbot:
+    <<: *common-config
+    image: ghcr.io/phatnguyentt2/mini-mart/chatbot:latest
+    container_name: minimart-chatbot
+    mem_limit: 1.2g
+
+networks:
+  minimart-net:
+    driver: bridge

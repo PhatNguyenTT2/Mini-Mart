@@ -8,7 +8,8 @@ const SERVICES = [
   'supplier',
   'inventory',
   'payment',
-  'chatbot'
+  'chatbot',
+  'statistics'
 ];
 
 const checkService = (name) => {
@@ -70,6 +71,13 @@ async function run() {
   results.forEach(r => {
     console.log(`${r.Service.padEnd(10)} | HTTP: ${r.Status.padEnd(8)} | DB: ${r.Database.padEnd(8)} | MQ: ${r.RabbitMQ.padEnd(4)} | Time: ${r.Time_ms}ms`);
   });
+
+  const hasFailure = results.some(r => r.Status !== 'UP');
+  if (hasFailure) {
+    console.log('\n❌ Một số service không hoạt động!');
+    process.exit(1);
+  }
+  console.log('\n✅ Tất cả services hoạt động bình thường.');
 }
 
 run();

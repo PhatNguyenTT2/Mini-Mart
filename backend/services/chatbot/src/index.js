@@ -144,10 +144,12 @@ async function start() {
 
     // 9. Create HTTP server + Socket.IO
     const server = http.createServer(app);
+    const allowedOrigins = (process.env.CORS_ORIGINS || 'http://localhost:5174,http://localhost:5173').split(',').map(o => o.trim());
     const io = new SocketIO(server, {
       cors: {
-        origin: process.env.CORS_ORIGIN || '*',
-        methods: ['GET', 'POST']
+        origin: allowedOrigins,
+        methods: ['GET', 'POST'],
+        credentials: true
       },
       path: '/ws/chat',
       pingTimeout: 60000,

@@ -1,0 +1,38 @@
+name: CI Checks
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies (Admin)
+        working-directory: ./frontend
+        run: npm ci
+
+      - name: Lint Admin
+        working-directory: ./frontend
+        run: npm run lint
+
+      - name: Install dependencies (Customer)
+        working-directory: ./customer
+        run: npm ci
+
+      - name: Lint Customer
+        working-directory: ./customer
+        run: npm run lint
+
+      # (Optional) Add backend tests here when ready
+      # - name: Test Backend
+      #   working-directory: ./backend
+      #   run: npm run test

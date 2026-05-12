@@ -7,7 +7,8 @@ const createHealthRouter = require('./routes/health.routes');
 function createApp({ statisticsService }) {
   const app = express();
 
-  app.use(cors());
+  const allowedOrigins = (process.env.CORS_ORIGINS || 'http://localhost:5173').split(',').map(o => o.trim());
+  app.use(cors({ origin: allowedOrigins, credentials: true }));
   app.use(helmet());
   app.use(express.json());
 
