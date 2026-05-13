@@ -1,218 +1,280 @@
-# POSMART Microservices
+# POSMART Backend — Microservices
 
-> Hệ thống quản lý cửa hàng tiện lợi (POS) — Kiến trúc Microservices
+> **API**: [api.mini-mart.dev](https://api.mini-mart.dev/health) · 9 services · Event-driven architecture · Saga pattern
 
-## Tổng Quan Hệ Thống
+Backend for the POSMART mini-mart management system. Built as a microservices architecture with an Nginx API Gateway, RabbitMQ event bus, and PostgreSQL per-service databases hosted on Supabase.
 
+---
+
+## Architecture
+
+```mermaid
+flowchart TD
+    subgraph GW["API Gateway (Nginx :8080)"]
+        NGINX["Rate Limiting · CORS · GZIP\nSSL Termination · X-Request-ID"]
+    end
+
+    subgraph Core["Core Services"]
+        AUTH["Auth :3001\nJWT · RBAC · Multi-tenant"]
+        CATALOG["Catalog :3002\nProducts · Categories · Price History"]
+        ORDER["Order :3003\nSale Orders · Status Lifecycle"]
+    end
+
+    subgraph Operations["Operations Services"]
+        SETTINGS["Settings :3004\nConfig · Promotions · Discounts"]
+        SUPPLIER["Supplier :3005\nPurchase Orders · Debt Tracking"]
+        INVENTORY["Inventory :3006\nStock · Batches · Warehouses"]
+    end
+
+    subgraph Payments["Payment & Analytics"]
+        PAYMENT["Payment :3007\nVNPay · Cash/Card · Saga Orchestrator"]
+        STATS["Statistics :3009\nDashboard · Reports · Redis Cache"]
+    end
+
+    subgraph AI["AI Service"]
+        CHATBOT["Chatbot :3008\nRAG Pipeline · Hybrid Ensemble\nSocket.IO · Action Assistant"]
+    end
+
+    GW --> Core & Operations & Payments & AI
+    CHATBOT -.->|"S2S HTTP"| CATALOG & INVENTORY & ORDER & AUTH
+
+    subgraph MQ["RabbitMQ (CloudAMQP)"]
+        EVENTS["Topic Exchange: posmart.events"]
+    end
+
+    PAYMENT & ORDER & CATALOG & INVENTORY -->|Publish| EVENTS
+    EVENTS -->|Subscribe| ORDER & INVENTORY & SUPPLIER & CHATBOT & STATS
+
+    style CHATBOT fill:#8b5cf6,color:#fff
+    style PAYMENT fill:#f59e0b,color:#000
+    style NGINX fill:#10b981,color:#fff
+    style EVENTS fill:#ef4444,color:#fff
 ```
-                    ┌──────────────────┐
-                    │   Frontend (SPA) │  Vite + React
-                    │    :5173 (dev)   │
-                    └────────┬─────────┘
-                             │ /api/*
-                    ┌────────▼─────────┐
-                    │  API Gateway     │  Nginx (Rate Limiting)
-                    │    :8080         │
-                    └────────┬─────────┘
-            ┌────────────────┼────────────────┐
-            │                │                │
-    ┌───────▼──────┐ ┌──────▼───────┐ ┌──────▼───────┐
-    │  Auth :3001  │ │ Catalog:3002 │ │ Order :3003  │
-    │  Identity    │ │ Products     │ │ Sale Orders  │
-    │  RBAC        │ │ Categories   │ │ Saga ⚡      │
-    └──────────────┘ └──────────────┘ └──────────────┘
-    ┌──────────────┐ ┌──────────────┐ ┌──────────────┐
-    │Settings:3004 │ │Supplier:3005 │ │Inventory:3006│
-    │ Config       │ │ PO / NCC     │ │ Stock/Batch  │
-    │ Singleton    │ │ Saga ⚡      │ │ Saga ⚡      │
-    └──────────────┘ └──────────────┘ └──────────────┘
-    ┌──────────────┐ ┌──────────────┐ ┌──────────────┐
-    │Payment :3007 │ │Chatbot :3008 │ │Stats   :3009 │
-    │ Cash/VNPay   │ │ AI (HF)      │ │ Dashboard    │
-    │ Orchestrator⚡│ │ Intent-based │ │ Redis Cache  │
-    └──────────────┘ └──────────────┘ └──────────────┘
-```
 
-## Infrastructure (Cloud-managed)
-
-| Component | Provider | Mô tả |
-|-----------|----------|-------|
-| **PostgreSQL** | Supabase | Database cho tất cả services (shared instance, isolated schemas) |
-| **RabbitMQ** | CloudAMQP | Message broker cho event-driven Saga |
-| **Redis** | Redis Cloud | Cache cho Statistics service |
-| **API Gateway** | Nginx (containerized) | Rate limiting + reverse proxy |
+---
 
 ## Service Registry
 
-| # | Service | Port | DB | Events | Mô tả |
-|---|---------|------|:---:|:---:|-------|
-| 1 | [Auth](services/auth/README.md) | 3001 | ✅ | — | Xác thực, RBAC, Store/Employee/Customer |
-| 2 | [Catalog](services/catalog/README.md) | 3002 | ✅ | — | Sản phẩm, Danh mục, Lịch sử giá |
-| 3 | [Order](services/order/README.md) | 3003 | ✅ | ⚡ Sub | Đơn hàng bán (Saga participant) |
-| 4 | [Settings](services/settings/README.md) | 3004 | ✅ | — | Cấu hình bảo mật + chính sách bán hàng |
-| 5 | [Supplier](services/supplier/README.md) | 3005 | ✅ | ⚡ Sub | Nhà cung cấp + Đơn nhập hàng (Saga participant) |
-| 6 | [Inventory](services/inventory/README.md) | 3006 | ✅ | ⚡ Pub+Sub | Tồn kho, Kho bãi, Xuất kho (Saga core) |
-| 7 | [Payment](services/payment/README.md) | 3007 | ✅ | ⚡ Pub | Thanh toán Cash/VNPay (**Saga Orchestrator**) |
-| 8 | [Chatbot](services/chatbot/README.md) | 3008 | ✅ | ⚡ Sub | AI Chatbot RAG (Hybrid Search + RRF) |
-| 9 | [Statistics](services/statistics/README.md) | 3009 | ❌ | ⚡ Sub | Thống kê + Dashboard (Redis cache) |
+| # | Service | Port | Database | Events | Responsibility |
+|---|---------|------|:--------:|:------:|---------------|
+| 1 | **Auth** | 3001 | ✅ Dedicated | Pub | Authentication, JWT, RBAC, employee & customer management |
+| 2 | **Catalog** | 3002 | ✅ Dedicated | Pub | Products, categories, price history, QR codes |
+| 3 | **Order** | 3003 | ✅ Dedicated | Pub+Sub | Sale orders, status lifecycle (Saga participant) |
+| 4 | **Settings** | 3004 | ✅ Dedicated | Pub | System config, promotions, discount policies |
+| 5 | **Supplier** | 3005 | ✅ Dedicated | Pub+Sub | Suppliers, purchase orders, debt tracking |
+| 6 | **Inventory** | 3006 | ✅ Dedicated | Pub+Sub | Stock, batches, warehouses, stock-in/out (Saga core) |
+| 7 | **Payment** | 3007 | ✅ Dedicated | Pub | VNPay + cash/card payments (**Saga Orchestrator**) |
+| 8 | **Chatbot** | 3008 | ✅ Dedicated | Sub | AI chatbot, RAG, hybrid recommendations, Socket.IO |
+| 9 | **Statistics** | 3009 | ❌ (Redis) | Sub | Analytics dashboard, revenue reports, Redis cache |
+
+---
 
 ## Saga Pattern (Event-Driven)
 
-### Core Flow: Sale Order
-```
-                        ┌─────────────────────────────────┐
-                        │        Payment Service          │
-                        │        (Orchestrator)           │
-                        └──────────┬──────────────────────┘
-                                   │ payment.completed
-                    ┌──────────────┼──────────────────────┐
-                    ▼              ▼                      ▼
-            ┌──────────┐   ┌────────────┐         ┌────────────┐
-            │  Order   │   │ Inventory  │         │ Supplier   │
-            │ Service  │   │  Service   │         │  Service   │
-            ├──────────┤   ├────────────┤         ├────────────┤
-            │ status → │   │ Pickup:    │         │ PO only:   │
-            │ delivered│   │  deduct    │         │ payment_   │
-            │ (pickup) │   │ Delivery:  │         │ status →   │
-            │ shipping │   │  reserve   │         │ paid       │
-            │ (deliv.) │   │            │         │            │
-            └──────────┘   └─────┬──────┘         └────────────┘
-                                 │
-                    stock.reserved / deduct_failed
-                                 │
-                         ┌───────▼───────┐
-                         │ Order Service │
-                         │ status →      │
-                         │ reserved /    │
-                         │ cancelled     │
-                         └───────────────┘
+The payment-order-inventory flow uses a **Saga Choreography** pattern via RabbitMQ:
+
+```mermaid
+sequenceDiagram
+    participant FE as Frontend
+    participant PAY as Payment :3007
+    participant MQ as RabbitMQ
+    participant ORD as Order :3003
+    participant INV as Inventory :3006
+    participant SUP as Supplier :3005
+
+    FE->>PAY: POST /api/payments/direct
+    PAY->>PAY: Process payment
+    PAY->>MQ: payment.completed
+
+    par Parallel Subscribers
+        MQ->>ORD: Update order status
+        MQ->>INV: Deduct stock / Reserve
+        MQ->>SUP: Update PO payment status
+    end
+
+    alt Stock deduction OK
+        INV->>MQ: stock.reserved
+        MQ->>ORD: status → reserved
+    else Stock insufficient
+        INV->>MQ: inventory.deduct_failed
+        MQ->>ORD: status → cancelled (compensation)
+    end
 ```
 
 ### Event Catalog
+
 | Event | Publisher | Subscribers |
-|-------|-----------|-------------|
+|-------|-----------|------------|
 | `payment.completed` | Payment | Order, Inventory, Supplier, Statistics |
 | `payment.failed` | Payment | Order |
 | `payment.refunded` | Payment | Order, Inventory, Supplier |
-| `payment.timeout` | Payment | Order |
-| `stock.reserved` | Inventory | Order |
-| `stock.reservation_failed` | Inventory | Order |
-| `inventory.deduct_failed` | Inventory | Order |
-| `inventory.updated` | Inventory | Statistics, Chatbot (planned) |
-| `inventory.low_stock` | Inventory | (planned) |
-| `order.shipping` | Order | (internal state) |
+| `order.completed` | Order | Chatbot (co-purchase stats) |
+| `order.shipping` | Order | Chatbot (purchase attribution) |
 | `order.delivered` | Order | Inventory |
 | `order.cancelled` | Order | Inventory |
-| `order.refunded` | Order | (internal state) |
-| `product.created` | Catalog | Chatbot RAG |
-| `product.updated` | Catalog | Chatbot RAG |
-| `product.deleted` | Catalog | Chatbot RAG |
-| `product.price_changed` | Catalog | Chatbot RAG |
-| `customer.created` | Auth | (planned for data replication) |
-| `customer.updated` | Auth | (planned for data replication) |
+| `product.created` | Catalog | Chatbot (RAG index) |
+| `product.updated` | Catalog | Chatbot (RAG index) |
+| `product.deleted` | Catalog | Chatbot (RAG index) |
+| `product.price_changed` | Catalog | Chatbot (RAG index) |
+| `inventory.updated` | Inventory | Statistics, Chatbot |
+| `inventory.deduct_failed` | Inventory | Order (compensation) |
+| `settings.promotion_updated` | Settings | Inventory |
+| `purchaseorder.received` | Supplier | Inventory |
 
-### Patterns Used
-- **Transactional Outbox** -- Event is written to DB in the same transaction, poller publishes via RabbitMQ
-- **Saga Idempotency** -- `processed_events` table prevents duplicate processing
-- **Compensation** -- `inventory.deduct_failed` -> Order reverts to `cancelled`
+### Saga Patterns
 
-## Known Patterns
+| Pattern | Description |
+|---------|------------|
+| **Transactional Outbox** | Event written to DB in same transaction, poller publishes to RabbitMQ |
+| **Idempotency Guard** | `processed_events` table prevents duplicate event processing |
+| **Compensation** | `inventory.deduct_failed` → Order reverts to `cancelled` |
 
-| Pattern | Where Used | Description |
-|---------|-----------|-------------|
-| Client-Side Join | Frontend (Orders, StockOuts) | Backend returns raw IDs; frontend batch-resolves names via API calls |
-| Transactional Outbox | Payment, Order, Inventory | Event atomically written with DB update; poller publishes to RabbitMQ |
-| Saga Idempotency | All event subscribers | `processed_events` table prevents reprocessing duplicate events |
-| Singleton Config | Settings Service | Each config type has exactly 1 record (id=1) |
-| Event Payload Contract | Payment -> Inventory | `items[]` MUST have data; if empty, Inventory skips deduction silently |
-| Type Coercion | Frontend -> API | PostgreSQL returns numeric IDs as strings; frontend must `parseInt()` |
-| RAG Pipeline | Chatbot Service | Hybrid Search (pgvector + tsvector) + RRF Fusion + LLM generation |
+---
 
-## Multi-Tenancy
+## Gateway (Nginx)
 
-| Level | Services |
-|-------|----------|
-| **Tenant-scoped** (store_id filter) | Order, Inventory, Payment, Supplier (PO), Chatbot (knowledge base) |
-| **Chain-wide** (centralized) | Auth, Catalog, Settings |
-| **No DB** | Statistics (API aggregation + Redis cache) |
+The API Gateway handles cross-cutting concerns:
 
-JWT contains `storeId` -> middleware injects into request -> services filter data by store.
+```mermaid
+flowchart LR
+    subgraph Gateway["Nginx Gateway :8080"]
+        RL["Rate Limiting"]
+        CORS["CORS Whitelist\n(proxy_hide_header)"]
+        GZIP["GZIP Compression"]
+        TRACE["X-Request-ID\nTracing"]
+        WS["WebSocket\nUpgrade"]
+    end
 
-## Shared Infrastructure
-
+    CLIENT["Client"] --> RL --> CORS --> GZIP --> TRACE --> WS --> SERVICE["Services :300x"]
 ```
-shared/
-├── auth-middleware/       # JWT verification middleware
-├── common/
-│   ├── logger.js         # Pino logger
-│   └── errors.js         # Custom error classes (AppError, ValidationError, NotFoundError)
-├── db/                   # PostgreSQL pool management (Supabase SSL support)
-├── event-bus/            # RabbitMQ publisher/subscriber (topic exchange: posmart.events)
-│   └── eventTypes.js     # ~30 event constants (prevents typos)
-└── outbox/               # Transactional Outbox poller (1000ms interval)
-```
-
-## Rate Limiting (Gateway)
 
 | Zone | Rate | Applied To |
 |------|------|-----------|
 | `strict` | 10 req/min | Auth, Chat, Online Orders |
-| `standard` | 60 req/min | All CRUD endpoints |
-| `ws_conn` | Connection limit | WebSocket |
+| `standard` | 60 req/min | CRUD endpoints |
+| `ws_conn` | Connection limit | WebSocket (Chatbot) |
 
-## Documentation
+CORS strategy: Gateway strips upstream CORS headers (`proxy_hide_header`) and applies its own whitelist to prevent header duplication.
 
-| Document | Path | Description |
-|----------|------|-------------|
-| System Design Diagrams | `docs/system-design-diagrams.md` | Full architecture diagrams |
-| Database Schema (SQL) | `docs/supabase_init_all.sql` | Combined schema for all services |
-| Chatbot RAG Report | `docs/chatbot/bao-cao-chatbot-rag.md` | RAG architecture technical report |
-| Chatbot Implementation Plan | `docs/chatbot/chatbot-rag-implementation-plan.md` | Detailed RAG implementation plan |
-| Data Replication Plan | `docs/improve/data-replication-customer.md` | Future customer cache strategy |
+---
+
+## Multi-Tenancy
+
+| Scope | Services | Description |
+|-------|----------|------------|
+| **Store-scoped** (`store_id`) | Order, Inventory, Payment, Supplier, Chatbot | JWT contains `storeId` → middleware injects into queries |
+| **Chain-wide** | Auth, Catalog, Settings | Centralized data shared across all stores |
+| **Stateless** | Statistics | API aggregation + Redis cache, no own database |
+
+---
+
+## Shared Modules
+
+```
+shared/
+├── auth-middleware/       # JWT verification + role/permission extraction
+├── common/
+│   ├── logger.js          # Pino structured logging
+│   └── errors.js          # AppError, ValidationError, NotFoundError
+├── db/                    # PostgreSQL pool (Supabase SSL, connection pooling)
+├── event-bus/             # RabbitMQ pub/sub (topic exchange: posmart.events)
+│   └── eventTypes.js      # ~30 typed event constants
+└── outbox/                # Transactional Outbox poller (1s interval)
+```
+
+---
+
+## Project Structure
+
+```
+backend/
+├── gateway/
+│   ├── nginx.conf              # Routing, CORS, rate limiting, GZIP
+│   └── Dockerfile
+├── services/
+│   ├── auth/
+│   │   ├── src/
+│   │   │   ├── app.js          # Express app setup
+│   │   │   ├── index.js        # Service bootstrap
+│   │   │   ├── db/init.sql     # Schema initialization
+│   │   │   ├── repositories/   # Data access layer
+│   │   │   ├── services/       # Business logic
+│   │   │   └── routes/         # HTTP endpoints
+│   │   └── Dockerfile
+│   ├── catalog/                # Same structure
+│   ├── order/
+│   ├── settings/
+│   ├── supplier/
+│   ├── inventory/
+│   ├── payment/
+│   ├── chatbot/
+│   │   └── src/
+│   │       ├── services/       # RAG, HF Client, Embedding, CF, Hybrid
+│   │       ├── ws/             # Socket.IO handlers
+│   │       └── jobs/           # Nightly batch pipeline
+│   └── statistics/
+├── shared/                     # Common modules (see above)
+├── scripts/
+│   └── healthcheck.js          # 9-service health verification
+├── docker-compose.yml          # Development (with volume mounts)
+├── docker-compose.prod.yml     # Production (GHCR images, mem_limit)
+├── .env.prod.example           # Environment template
+└── docs/                       # Technical documentation
+```
+
+---
+
+## Infrastructure
+
+| Component | Provider | Purpose |
+|-----------|----------|---------|
+| **PostgreSQL** | Supabase | Per-service databases (2 projects) |
+| **RabbitMQ** | CloudAMQP | Event bus for Saga choreography |
+| **Redis** | Redis Cloud | Statistics service cache |
+| **Nginx** | Containerized | API Gateway + reverse proxy |
+| **Docker** | DigitalOcean | Container orchestration (production) |
+| **CI/CD** | GitHub Actions → GHCR | Automated build + deploy pipeline |
+
+---
 
 ## Quick Start
 
 ```bash
-# 1. Copy environment variables
-cp .env.example .env
+# 1. Set up environment
+cp .env.prod.example .env   # Fill in credentials
 
-# 2. Start all services
+# 2. Start all services (development)
 docker compose up --build
 
-# 3. Frontend (separate terminal)
-cd frontend && npm run dev
+# 3. Verify
+node scripts/healthcheck.js
 
-# Services available at:
-# Frontend:  http://localhost:5173
-# Gateway:   http://localhost:8080
-# Auth:      http://localhost:3001
-# ...
+# Services:
+#   Gateway    → http://localhost:8080
+#   Auth       → http://localhost:3001
+#   Catalog    → http://localhost:3002
+#   ...
 ```
 
 ## Environment Variables
 
-```env
-# Database
-DATABASE_URL=postgresql://user:pass@host:5432/db
-DB_SSL=true
+| Variable | Service | Description |
+|----------|---------|-------------|
+| `DATABASE_URL` | All (except Stats) | PostgreSQL connection string |
+| `CATALOG_DATABASE_URL` | Catalog | Dedicated catalog database |
+| `RABBITMQ_URL` | All | CloudAMQP connection |
+| `REDIS_URL` | Statistics | Redis Cloud connection |
+| `JWT_SECRET` | All | JWT signing secret |
+| `CORS_ORIGINS` | All | Comma-separated allowed origins |
+| `VNP_TMNCODE` | Payment | VNPay merchant code |
+| `VNP_HASHSECRET` | Payment | VNPay hash secret |
+| `HF_ACCESS_TOKEN` | Chatbot | HuggingFace API token |
+| `HF_MODEL` | Chatbot | LLM model (default: `Qwen/Qwen2.5-7B-Instruct`) |
 
-# Messaging
-RABBITMQ_URL=amqps://user:pass@host/vhost
+## Documentation
 
-# Cache (Statistics only)
-REDIS_URL=redis://user:pass@host:port
-
-# Auth
-JWT_SECRET=your-jwt-secret
-JWT_EXPIRES_IN=7d
-
-# VNPay (Payment only)
-VNP_TMNCODE=your-merchant-code
-VNP_HASHSECRET=your-hash-secret
-VNP_URL=https://sandbox.vnpayment.vn
-VNP_TEST_MODE=true
-
-# AI Chatbot
-HF_ACCESS_TOKEN=hf_xxxxxxxxxxxxx
-HF_MODEL=microsoft/Phi-3-mini-4k-instruct
-```
+| Document | Path |
+|----------|------|
+| Chatbot RAG Report | [`docs/chatbot/report/`](docs/chatbot/report/) |
+| Chatbot Assistant Design | [`docs/chatbot/assistant/`](docs/chatbot/assistant/) |
+| Deployment Guide | [`../docs/deploy/`](../docs/deploy/) |
