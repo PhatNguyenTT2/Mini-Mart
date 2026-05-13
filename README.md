@@ -12,6 +12,12 @@
   <img src="https://img.shields.io/badge/deploy-DigitalOcean%20%2B%20Vercel-informational" alt="Deploy" />
 </p>
 
+<p align="center">
+  <a href="https://admin.mini-mart.dev"><strong>🖥️ Admin / POS Dashboard</strong></a> &nbsp;·&nbsp;
+  <a href="https://shop.mini-mart.dev"><strong>🛒 Customer Shop</strong></a> &nbsp;·&nbsp;
+  <a href="https://api.mini-mart.dev/health"><strong>⚡ API Health</strong></a>
+</p>
+
 ---
 
 ## Overview
