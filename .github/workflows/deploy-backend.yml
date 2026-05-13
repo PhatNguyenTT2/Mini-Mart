@@ -16,7 +16,7 @@ jobs:
 
     strategy:
       matrix:
-        service: [gateway, auth, catalog, order, settings, supplier, inventory, payment, statistics, chatbot]
+        service: [gateway, auth, catalog, order, settings, supplier, inventory, payment, chatbot]
 
     steps:
       - name: Checkout repository
