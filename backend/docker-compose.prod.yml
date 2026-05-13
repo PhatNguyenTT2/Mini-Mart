@@ -16,10 +16,10 @@ services:
       - "8080:80"
     mem_limit: 150m
     healthcheck:
-      test: ["CMD", "wget", "-qO-", "http://localhost/health"]
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1/health || exit 1"]
       interval: 30s
       timeout: 5s
-      start-period: 10s
+      start_period: 10s
       retries: 3
     depends_on:
       - auth
