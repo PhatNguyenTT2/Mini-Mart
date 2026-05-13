@@ -1,7 +1,3 @@
-<p align="center">
-  <img src="docs/design/logo.png" alt="POSMART Logo" width="120" />
-</p>
-
 <h1 align="center">POSMART — Mini-Mart Management System</h1>
 
 <p align="center">
