@@ -30,6 +30,8 @@ services:
     image: ghcr.io/phatnguyentt2/mini-mart/catalog:latest
     container_name: minimart-catalog
     mem_limit: 250m
+    environment:
+      - DATABASE_URL=${CATALOG_DATABASE_URL}
 
   order:
     <<: *common-config
