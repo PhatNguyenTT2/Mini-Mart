@@ -325,9 +325,9 @@ Xác minh model Embedding đã nạp thành công vào Swap.
 | Giai đoạn | Trạng thái | Ghi chú |
 |-----------|-----------|---------|
 | **1. Chuẩn bị Server** | ✅ **HOÀN TẤT** | Swap, UFW, Nginx, SSL, /opt/minimart |
-| **2. External Services** | ⏳ Tiếp theo | GitHub Secrets, Vercel, .env.prod |
-| **3. First Deploy** | 🔲 Chưa | Cần `docker-compose.prod.yml` trước |
-| **4. Monitoring** | 🔲 Chưa | Sau khi deploy thành công |
+| **2. External Services** | ✅ **HOÀN TẤT** | GitHub Secrets, Vercel (2 projects), .env.prod |
+| **3. First Deploy** | ✅ **HOÀN TẤT** | CI/CD pipeline hoạt động, 10 containers running |
+| **4. Monitoring** | ✅ **HOÀN TẤT** | Health checks, resource monitoring |
 
-> [!IMPORTANT]
-> **Bước tiếp theo:** Hoàn thiện file `docker-compose.prod.yml` (loại bỏ volume mounts, thiết lập network, image tags từ ghcr.io) rồi tiến hành Giai đoạn 2.
+> [!TIP]
+> Xem báo cáo tổng quan tại [README.md](./README.md) để nắm toàn bộ kiến trúc và luồng deploy.
