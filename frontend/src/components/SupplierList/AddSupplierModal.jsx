@@ -44,7 +44,7 @@ export const AddSupplierModal = ({ isOpen, onClose, onSuccess }) => {
 
     if (formData.phone.trim()) {
       const phoneRegex = /^[0-9]{10,15}$/;
-      if (!phoneRegex.test(formData.phone.trim().replace(/[\s\-\+\(\)]/g, ''))) {
+      if (!phoneRegex.test(formData.phone.trim().replace(/[\s\-+()]/g, ''))) {
         setError('Phone must be 10-15 digits');
         return;
       }

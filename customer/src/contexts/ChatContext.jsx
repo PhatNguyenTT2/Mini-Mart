@@ -43,6 +43,7 @@ export const ChatProvider = ({ children }) => {
     const handleDisconnect = () => setIsConnected(false)
     socket.on('connect', handleConnect)
     socket.on('disconnect', handleDisconnect)
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsConnected(socket.connected)
 
     const unsubReady = chatSocketService.onSessionReady((data) => {

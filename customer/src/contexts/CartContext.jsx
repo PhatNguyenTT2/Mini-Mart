@@ -61,21 +61,17 @@ export function CartProvider({ children }) {
   // When store changes, load its cart
   useEffect(() => {
     if (!selectedStore?.id) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       setCartItems([]);
       return;
     }
     try {
       const saved = localStorage.getItem(`cart_${selectedStore.id}`);
       if (saved) {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
         setCartItems(JSON.parse(saved));
       } else {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
         setCartItems([]);
       }
     } catch {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       setCartItems([]);
     }
   }, [selectedStore?.id]);

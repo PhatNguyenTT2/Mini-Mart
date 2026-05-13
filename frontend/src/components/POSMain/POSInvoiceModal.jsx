@@ -78,7 +78,9 @@ export const POSInvoiceModal = ({ isOpen, order: initialOrder, onClose, onComple
           const custRes = await posDataService.getCustomerById(custId);
           const c = custRes.data?.customer || custRes.data;
           if (c) setCustomerInfo(c);
-        } catch (_) {}
+        } catch (_) {
+          // ignore error for optional customer info
+        }
       }
 
       // Enrich employee
@@ -125,7 +127,9 @@ export const POSInvoiceModal = ({ isOpen, order: initialOrder, onClose, onComple
         }));
 
         if (newFinal) clearInterval(pollRef.current);
-      } catch (_) {}
+      } catch (_) {
+        // ignore polling errors
+      }
     }, 3000);
 
     return () => { if (pollRef.current) clearInterval(pollRef.current); };
