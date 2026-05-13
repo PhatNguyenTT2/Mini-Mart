@@ -53,7 +53,14 @@ flowchart TD
     end
 
     subgraph Infra["Cloud Infrastructure"]
-        PG[("PostgreSQL\n(Supabase)")]
+        DB_AUTH[("Auth DB")]
+        DB_CATALOG[("Catalog DB")]
+        DB_ORDER[("Order DB")]
+        DB_SETTINGS[("Settings DB")]
+        DB_SUPPLIER[("Supplier DB")]
+        DB_INVENTORY[("Inventory DB")]
+        DB_PAYMENT[("Payment DB")]
+        DB_CHATBOT[("Chatbot DB")]
         REDIS[("Redis Cloud")]
         MQ["RabbitMQ\n(CloudAMQP)"]
     end
@@ -61,15 +68,31 @@ flowchart TD
     ADMIN & CUSTOMER & CHATWIDGET -->|HTTPS| GATEWAY
     GATEWAY --> AUTH & CATALOG & ORDER & SETTINGS & SUPPLIER & INVENTORY & PAYMENT & STATS & CHATBOT
     CHATBOT -.->|"S2S HTTP"| CATALOG & INVENTORY & ORDER & AUTH
-    AUTH & CATALOG & ORDER & SETTINGS & SUPPLIER & INVENTORY & PAYMENT & CHATBOT --> PG
+
+    AUTH --> DB_AUTH
+    CATALOG --> DB_CATALOG
+    ORDER --> DB_ORDER
+    SETTINGS --> DB_SETTINGS
+    SUPPLIER --> DB_SUPPLIER
+    INVENTORY --> DB_INVENTORY
+    PAYMENT --> DB_PAYMENT
+    CHATBOT --> DB_CHATBOT
     STATS --> REDIS
+
     AUTH & CATALOG & ORDER & INVENTORY & PAYMENT & CHATBOT & STATS <-->|Events| MQ
 
     style CHATBOT fill:#8b5cf6,color:#fff,stroke:#7c3aed
     style GATEWAY fill:#f59e0b,color:#000,stroke:#d97706
-    style PG fill:#3b82f6,color:#fff
     style REDIS fill:#ef4444,color:#fff
     style MQ fill:#10b981,color:#fff
+    style DB_AUTH fill:#3b82f6,color:#fff
+    style DB_CATALOG fill:#3b82f6,color:#fff
+    style DB_ORDER fill:#3b82f6,color:#fff
+    style DB_SETTINGS fill:#3b82f6,color:#fff
+    style DB_SUPPLIER fill:#3b82f6,color:#fff
+    style DB_INVENTORY fill:#3b82f6,color:#fff
+    style DB_PAYMENT fill:#3b82f6,color:#fff
+    style DB_CHATBOT fill:#3b82f6,color:#fff
 ```
 
 ---
@@ -267,8 +290,8 @@ The system uses a fully automated CI/CD pipeline:
 
 **Domains**:
 - `api.mini-mart.dev` — Backend API (SSL via Let's Encrypt)
-- `admin.mini-mart.dev` — Admin/POS Dashboard
-- `shop.mini-mart.dev` — Customer Web
+- [`admin.mini-mart.dev`](https://admin.mini-mart.dev) — Admin/POS Dashboard
+- [`shop.mini-mart.dev`](https://shop.mini-mart.dev) — Customer Web
 
 See [`docs/deploy/`](docs/deploy/) for detailed deployment documentation.
 
