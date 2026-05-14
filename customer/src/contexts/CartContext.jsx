@@ -61,6 +61,7 @@ export function CartProvider({ children }) {
   // When store changes, load its cart
   useEffect(() => {
     if (!selectedStore?.id) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setCartItems([]);
       return;
     }
