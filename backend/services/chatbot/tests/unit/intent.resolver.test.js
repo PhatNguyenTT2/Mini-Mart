@@ -20,8 +20,13 @@ describe('Intent Resolver', () => {
         });
 
         it('should detect ORDER_STATUS intent', () => {
-            const result = resolveIntent('Đơn hàng #123 đang ở đâu rồi?');
+            const result = resolveIntent('Kiểm tra trạng thái đơn hàng #123');
             expect(result.intent).toBe('ORDER_STATUS');
+        });
+
+        it('should detect TRACK_ORDER intent', () => {
+            const result = resolveIntent('Đơn hàng #123 đang ở đâu rồi?');
+            expect(result.intent).toBe('TRACK_ORDER');
         });
 
         it('should detect SEARCH_PRODUCT intent', () => {

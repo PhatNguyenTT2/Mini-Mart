@@ -96,7 +96,7 @@ describe('CoPurchaseRepository', () => {
 
             expect(results).toHaveLength(2);
             const query = mockPool.query.mock.calls[0][0];
-            expect(query).toContain('ORDER BY co_purchase_count DESC');
+            expect(query).toContain('ORDER BY lift DESC, co_purchase_count DESC');
         });
     });
 });

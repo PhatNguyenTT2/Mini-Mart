@@ -68,9 +68,12 @@ describe('ApiClient Unit Tests', () => {
 
             expect(result.success).toBe(true);
             expect(global.fetch).toHaveBeenCalledWith(
-                expect.stringContaining('/api/inventory/summary?productId=5'),
+                expect.stringContaining('/api/inventory/summary'),
                 expect.any(Object)
             );
+            const callUrl = global.fetch.mock.calls[0][0];
+            expect(callUrl).toContain('productId=5');
+            expect(callUrl).toContain('storeId=1');
         });
     });
 

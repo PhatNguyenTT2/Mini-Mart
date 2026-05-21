@@ -20,10 +20,16 @@ describe('WebSocket Chat Handler', () => {
     beforeEach(() => {
         mockChatService = {
             startSession: jest.fn().mockResolvedValue({ id: 1, user_id: 10, is_active: true }),
-            sendMessage: jest.fn().mockResolvedValue({
-                intent: 'FREE_CHAT',
-                reply: 'Hello there!',
-                metadata: { model: 'test', latencyMs: 100 }
+            sendMessageStream: jest.fn().mockImplementation(async function* (sessionId, message) {
+                yield { type: 'chunk', text: 'Hello' };
+                yield {
+                    type: 'complete',
+                    intent: 'FREE_CHAT',
+                    fullText: 'Hello there!',
+                    metadata: { model: 'test', latencyMs: 100 },
+                    products: null,
+                    suggestedPrompts: null
+                };
             }),
             endSession: jest.fn().mockResolvedValue({ id: 1, is_active: false }),
             getSession: jest.fn().mockResolvedValue({ id: 1, is_active: true }),
@@ -99,15 +105,15 @@ describe('WebSocket Chat Handler', () => {
         });
     });
 
-    describe('chat:start_session', () => {
+    describe('chat:join_session', () => {
         it('should create session and join room', async () => {
             const callback = jest.fn();
-            await mockSocket._handlers['chat:start_session']({}, callback);
+            await mockSocket._handlers['chat:join_session']({}, callback);
 
             expect(mockChatService.startSession).toHaveBeenCalledWith(10, 'employee', 1);
             expect(mockSocket.join).toHaveBeenCalledWith('session:1');
             expect(callback).toHaveBeenCalledWith(expect.objectContaining({ success: true }));
-            expect(mockSocket.emit).toHaveBeenCalledWith('chat:session_started', expect.any(Object));
+            expect(mockSocket.emit).toHaveBeenCalledWith('chat:session_ready', expect.any(Object));
         });
     });
 
@@ -119,12 +125,12 @@ describe('WebSocket Chat Handler', () => {
                 callback
             );
 
-            expect(mockChatService.sendMessage).toHaveBeenCalledWith(1, 'Hello!');
+            expect(mockChatService.sendMessageStream).toHaveBeenCalledWith(1, 'Hello!');
             expect(callback).toHaveBeenCalledWith(expect.objectContaining({
                 success: true,
-                data: expect.objectContaining({ intent: 'FREE_CHAT', reply: 'Hello there!' })
+                data: expect.objectContaining({ intent: 'FREE_CHAT', fullText: 'Hello there!' })
             }));
-            expect(mockSocket.emit).toHaveBeenCalledWith('chat:message_received', expect.any(Object));
+            expect(mockSocket.emit).toHaveBeenCalledWith('chat:stream_complete', expect.any(Object));
         });
 
         it('should emit typing indicator before processing', async () => {
@@ -133,12 +139,56 @@ describe('WebSocket Chat Handler', () => {
                 jest.fn()
             );
 
-            expect(mockSocket.to).toHaveBeenCalledWith('session:1');
+            expect(mockSocket.emit).toHaveBeenCalledWith('chat:typing', { session_id: 1, is_typing: true });
         });
 
         it('should handle error for missing data', async () => {
             const callback = jest.fn();
             await mockSocket._handlers['chat:send_message']({}, callback);
+
+            expect(callback).toHaveBeenCalledWith(expect.objectContaining({ success: false }));
+        });
+    });
+
+    describe('chat:confirm_action', () => {
+        it('should handle confirm: true by sending "Đồng ý"', async () => {
+            const callback = jest.fn();
+            await mockSocket._handlers['chat:confirm_action'](
+                { session_id: 1, confirm: true },
+                callback
+            );
+
+            expect(mockChatService.sendMessageStream).toHaveBeenCalledWith(1, 'Đồng ý');
+            expect(callback).toHaveBeenCalledWith(expect.objectContaining({
+                success: true,
+                data: expect.objectContaining({ intent: 'FREE_CHAT', fullText: 'Hello there!' })
+            }));
+            expect(mockSocket.emit).toHaveBeenCalledWith('chat:stream_complete', expect.any(Object));
+        });
+
+        it('should handle confirm: false by sending "Không"', async () => {
+            const callback = jest.fn();
+            await mockSocket._handlers['chat:confirm_action'](
+                { session_id: 1, confirm: false },
+                callback
+            );
+
+            expect(mockChatService.sendMessageStream).toHaveBeenCalledWith(1, 'Không');
+            expect(callback).toHaveBeenCalledWith(expect.objectContaining({ success: true }));
+        });
+
+        it('should emit typing indicator before processing confirmation', async () => {
+            await mockSocket._handlers['chat:confirm_action'](
+                { session_id: 1, confirm: true },
+                jest.fn()
+            );
+
+            expect(mockSocket.emit).toHaveBeenCalledWith('chat:typing', { session_id: 1, is_typing: true });
+        });
+
+        it('should handle error for missing session_id or confirm', async () => {
+            const callback = jest.fn();
+            await mockSocket._handlers['chat:confirm_action']({ session_id: 1 }, callback);
 
             expect(callback).toHaveBeenCalledWith(expect.objectContaining({ success: false }));
         });

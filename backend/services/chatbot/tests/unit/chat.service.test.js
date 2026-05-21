@@ -15,7 +15,8 @@ describe('ChatService Unit Tests', () => {
             endSession: jest.fn(),
             addMessage: jest.fn().mockResolvedValue({ id: 1 }),
             getMessagesBySession: jest.fn(),
-            getRecentContext: jest.fn().mockResolvedValue([])
+            getRecentContext: jest.fn().mockResolvedValue([]),
+            updateSessionMetadata: jest.fn().mockResolvedValue(true)
         };
 
         mockHFClient = {
@@ -31,7 +32,9 @@ describe('ChatService Unit Tests', () => {
             getProductById: jest.fn(),
             getInventorySummary: jest.fn(),
             getOrderById: jest.fn(),
-            getOrders: jest.fn()
+            getOrders: jest.fn(),
+            cancelOrder: jest.fn(),
+            createOrder: jest.fn()
         };
 
         chatService = new ChatService(mockChatRepo, mockHFClient, mockApiClient);
@@ -72,7 +75,7 @@ describe('ChatService Unit Tests', () => {
         it('should return HELP without calling HF', async () => {
             const result = await chatService.sendMessage(1, 'Giúp tôi');
             expect(result.intent).toBe('HELP');
-            expect(result.reply).toContain('POSMART Assistant');
+            expect(result.reply).toContain('tồn kho');
             expect(mockHFClient.chatCompletion).not.toHaveBeenCalled();
         });
 
@@ -145,10 +148,12 @@ describe('ChatService Unit Tests', () => {
         it('should return price list from Catalog', async () => {
             mockApiClient.searchProducts.mockResolvedValue({
                 success: true,
-                data: { products: [
-                    { name: 'Pepsi 330ml', selling_price: 12000 },
-                    { name: 'Pepsi 500ml', selling_price: 15000 }
-                ]}
+                data: {
+                    products: [
+                        { name: 'Pepsi 330ml', selling_price: 12000 },
+                        { name: 'Pepsi 500ml', selling_price: 15000 }
+                    ]
+                }
             });
 
             const result = await chatService.sendMessage(1, 'Pepsi giá bao nhiêu?');
@@ -181,9 +186,11 @@ describe('ChatService Unit Tests', () => {
         it('should list recent orders when no ID', async () => {
             mockApiClient.getOrders.mockResolvedValue({
                 success: true,
-                data: { orders: [
-                    { id: 1, status: 'draft', payment_status: 'pending', total_amount: 100000 }
-                ]}
+                data: {
+                    orders: [
+                        { id: 1, status: 'draft', payment_status: 'pending', total_amount: 100000 }
+                    ]
+                }
             });
 
             const result = await chatService.sendMessage(1, 'Kiểm tra đơn hàng');
@@ -214,10 +221,12 @@ describe('ChatService Unit Tests', () => {
         it('should search and return product list', async () => {
             mockApiClient.searchProducts.mockResolvedValue({
                 success: true,
-                data: { products: [
-                    { name: 'Nước rửa tay Lifebuoy', selling_price: 35000, is_active: true },
-                    { name: 'Nước rửa tay Dettol', selling_price: 42000, is_active: true }
-                ]}
+                data: {
+                    products: [
+                        { name: 'Nước rửa tay Lifebuoy', selling_price: 35000, is_active: true },
+                        { name: 'Nước rửa tay Dettol', selling_price: 42000, is_active: true }
+                    ]
+                }
             });
 
             const result = await chatService.sendMessage(1, 'Tìm nước rửa tay');
@@ -351,6 +360,245 @@ describe('ChatService Unit Tests', () => {
             mockChatRepo.findSessionById.mockResolvedValue({ id: 1, is_active: true });
             mockChatRepo.endSession.mockResolvedValue({ id: 1, is_active: false });
             expect((await chatService.endSession(1)).is_active).toBe(false);
+        });
+    });
+
+    describe('sendMessage — Phase 2 customer actions', () => {
+        beforeEach(() => {
+            mockChatRepo.findSessionById.mockResolvedValue({
+                id: 1,
+                is_active: true,
+                store_id: 1,
+                user_id: 10,
+                user_type: 'customer',
+                metadata: {}
+            });
+            chatService.ragService = {
+                embeddingClient: {
+                    isReady: true,
+                    embed: jest.fn().mockResolvedValue(new Array(768).fill(0.1))
+                },
+                knowledgeRepo: { searchSemantic: jest.fn() }
+            };
+            chatService.utils.ragService = chatService.ragService;
+            chatService.readHandler.ragService = chatService.ragService;
+        });
+
+        it('should handle ADD_TO_CART with single RAG match', async () => {
+            chatService.ragService.knowledgeRepo.searchSemantic.mockResolvedValue([
+                { product_id: 4, content: 'Tên: "Sting dâu"', score: 0.92, unit_price: 10000 }
+            ]);
+            mockApiClient.getInventorySummary.mockResolvedValue({
+                success: true, data: [{ productId: 4, quantityOnShelf: 15 }]
+            });
+
+            const result = await chatService.sendMessage(1, 'Thêm 3 chai sting dâu vào giỏ hàng');
+            expect(result.intent).toBe('ADD_TO_CART');
+            expect(result.reply).toContain('Đã thêm 3 "Sting dâu" vào giỏ hàng thành công.');
+            expect(result.action).toEqual({
+                type: 'ADD_TO_CART',
+                payload: { productId: 4, quantity: 3, name: 'Sting dâu', price: 10000 }
+            });
+        });
+
+        it('should trigger CLARIFYING state for ambiguous matches', async () => {
+            chatService.ragService.knowledgeRepo.searchSemantic.mockResolvedValue([
+                { product_id: 4, content: 'Tên: "Sting dâu"', score: 0.88, unit_price: 10000 },
+                { product_id: 5, content: 'Tên: "Sting vàng"', score: 0.85, unit_price: 10000 }
+            ]);
+
+            const result = await chatService.sendMessage(1, 'Thêm sting vào giỏ');
+            expect(result.intent).toBe('ADD_TO_CART');
+            expect(result.reply).toContain('Tôi tìm thấy một vài sản phẩm phù hợp');
+            expect(mockChatRepo.updateSessionMetadata).toHaveBeenCalled();
+        });
+
+        it('should resolve clarification state on selecting matching index', async () => {
+            mockChatRepo.findSessionById.mockResolvedValue({
+                id: 1,
+                is_active: true,
+                store_id: 1,
+                user_id: 10,
+                user_type: 'customer',
+                metadata: {
+                    pendingAction: {
+                        type: 'ADD_TO_CART',
+                        state: 'CLARIFYING',
+                        data: {
+                            quantity: 2,
+                            candidates: [
+                                { id: 4, name: 'Sting dâu', unitPrice: 10000 },
+                                { id: 5, name: 'Sting vàng', unitPrice: 10000 }
+                            ]
+                        }
+                    }
+                }
+            });
+
+            mockApiClient.getInventorySummary.mockResolvedValue({
+                success: true, data: [{ productId: 4, quantityOnShelf: 10 }]
+            });
+
+            const result = await chatService.sendMessage(1, '1');
+            expect(result.intent).toBe('ADD_TO_CART');
+            expect(result.reply).toContain('Đã thêm 2 "Sting dâu"');
+        });
+
+        it('should guide to checkout', async () => {
+            const result = await chatService.sendMessage(1, 'Thanh toán giỏ hàng');
+            expect(result.intent).toBe('CHECKOUT_GUIDE');
+            expect(result.action).toEqual({
+                type: 'NAVIGATE',
+                payload: { path: '/checkout' }
+            });
+        });
+
+        it('should trigger confirmation gate for CANCEL_ORDER', async () => {
+            mockApiClient.getOrderById.mockResolvedValue({
+                success: true, data: { id: 123, customerId: 10, status: 'draft' }
+            });
+
+            const result = await chatService.sendMessage(1, 'Hủy đơn hàng 123');
+            expect(result.intent).toBe('CANCEL_ORDER');
+            expect(result.reply).toContain('Bạn có chắc chắn muốn hủy đơn hàng #123 không?');
+        });
+
+        it('should execute order cancellation after user confirmation', async () => {
+            mockChatRepo.findSessionById.mockResolvedValue({
+                id: 1,
+                is_active: true,
+                user_id: 10,
+                user_type: 'customer',
+                metadata: {
+                    pendingAction: {
+                        type: 'CANCEL_ORDER',
+                        state: 'CONFIRMING',
+                        data: { orderId: 123 }
+                    }
+                }
+            });
+
+            mockApiClient.getOrderById.mockResolvedValue({
+                success: true, data: { id: 123, customerId: 10, status: 'draft' }
+            });
+            mockApiClient.cancelOrder.mockResolvedValue({ success: true });
+
+            const result = await chatService.sendMessage(1, 'Đồng ý');
+            expect(result.reply).toContain('Đã hủy đơn hàng #123 thành công.');
+            expect(mockApiClient.cancelOrder).toHaveBeenCalledWith(123);
+        });
+
+        it('should enforce employee role for POS_ADD_ITEM and CREATE_ORDER', async () => {
+            chatService.ragService.knowledgeRepo.searchSemantic.mockResolvedValue([
+                { product_id: 4, content: 'Tên: "Sting dâu"', score: 0.92, unit_price: 10000 }
+            ]);
+
+            const result = await chatService._handlePosAddItem({
+                id: 1,
+                user_id: 10,
+                user_type: 'customer',
+                metadata: {}
+            }, 'Thêm Sting vào POS');
+            expect(result.reply).toContain('Access denied');
+        });
+
+        it('should handle POS_ADD_ITEM for employee', async () => {
+            mockChatRepo.findSessionById.mockResolvedValue({
+                id: 1,
+                is_active: true,
+                user_type: 'employee',
+                metadata: {}
+            });
+            chatService.ragService.knowledgeRepo.searchSemantic.mockResolvedValue([
+                { product_id: 4, content: 'Tên: "Sting dâu"', score: 0.92, unit_price: 10000 }
+            ]);
+
+            const result = await chatService.sendMessage(1, 'Thêm 2 Sting vào POS');
+            expect(result.intent).toBe('POS_ADD_ITEM');
+            expect(result.reply).toContain('Đã thêm 2 "Sting dâu" vào POS thành công.');
+        });
+
+        it('should run multi-turn CREATE_ORDER flow', async () => {
+            // 1. Initial trigger with "tạo đơn" -> COLLECTIONS state
+            mockChatRepo.findSessionById.mockResolvedValue({
+                id: 1,
+                is_active: true,
+                user_type: 'employee',
+                user_id: 10,
+                store_id: 1,
+                metadata: {}
+            });
+
+            let result = await chatService.sendMessage(1, 'Tạo đơn');
+            expect(result.intent).toBe('CREATE_ORDER');
+            expect(result.reply).toContain('Vui lòng cung cấp danh sách sản phẩm');
+
+            // 2. Feed items -> CONFIRMATION State
+            mockChatRepo.findSessionById.mockResolvedValue({
+                id: 1,
+                is_active: true,
+                user_type: 'employee',
+                user_id: 10,
+                store_id: 1,
+                metadata: {
+                    pendingAction: {
+                        type: 'CREATE_ORDER',
+                        state: 'COLLECTING',
+                        data: { items: [] }
+                    }
+                }
+            });
+            chatService.ragService.knowledgeRepo.searchSemantic.mockResolvedValue([
+                { product_id: 4, content: 'Tên: "Sting dâu"', score: 0.92, unit_price: 10000 }
+            ]);
+
+            result = await chatService.sendMessage(1, '2 Sting dâu');
+            expect(result.intent).toBe('CREATE_ORDER');
+            expect(result.reply).toContain('Bạn có chắc muốn tạo đơn hàng mới');
+
+            // 3. Confirm target execution
+            mockChatRepo.findSessionById.mockResolvedValue({
+                id: 1,
+                is_active: true,
+                user_type: 'employee',
+                user_id: 10,
+                store_id: 1,
+                metadata: {
+                    pendingAction: {
+                        type: 'CREATE_ORDER',
+                        state: 'CONFIRMING',
+                        data: {
+                            orderData: {
+                                customerId: 10,
+                                storeId: 1,
+                                items: [{ productId: 4, quantity: 2, price: 10000 }]
+                            },
+                            items: [{ productId: 4, name: 'Sting dâu', quantity: 2, price: 10000 }]
+                        }
+                    }
+                }
+            });
+            mockApiClient.createOrder.mockResolvedValue({ success: true, id: 999 });
+
+            result = await chatService.sendMessage(1, 'Đồng ý');
+            expect(result.reply).toContain('Đã tạo đơn hàng mới thành công. ID đơn hàng: #999');
+        });
+
+        it('should perform PAYMENT_CHECK', async () => {
+            mockChatRepo.findSessionById.mockResolvedValue({
+                id: 1,
+                is_active: true,
+                user_type: 'employee',
+                metadata: {}
+            });
+            mockApiClient.getOrderById.mockResolvedValue({
+                success: true,
+                data: { id: 123, paymentStatus: 'paid' }
+            });
+
+            const result = await chatService.sendMessage(1, 'Kiểm tra thanh toán đơn #123');
+            expect(result.intent).toBe('PAYMENT_CHECK');
+            expect(result.reply).toContain('Trạng thái thanh toán của đơn hàng #123 hiện tại là: **Đã thanh toán**.');
         });
     });
 });

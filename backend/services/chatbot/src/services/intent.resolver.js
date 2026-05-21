@@ -4,6 +4,69 @@
  */
 
 const INTENT_PATTERNS = {
+    // ── WRITE/ACTION INTENTS (High priority to avoid general text matching) ──
+    CANCEL_ORDER: {
+        keywords: ['hủy đơn', 'cancel', 'bỏ đơn'],
+        writeAction: true,
+        description: 'Hủy đơn hàng'
+    },
+    TRACK_ORDER: {
+        keywords: ['/đơn.*ở đâu/', 'theo dõi đơn', 'lịch trình đơn'],
+        writeAction: true,
+        description: 'Theo dõi chi tiết quá trình vận chuyển đơn hàng'
+    },
+    PAYMENT_CHECK: {
+        keywords: ['kiểm tra thanh toán', 'kiểm tra hoá đơn', 'check bill'],
+        writeAction: false,
+        employeeOnly: true,
+        description: 'Kiểm tra thanh toán đơn hàng (Nhân viên)'
+    },
+    CHECKOUT_GUIDE: {
+        keywords: ['thanh toán', 'checkout', 'hướng dẫn thanh toán', 'mua hàng'],
+        writeAction: true,
+        description: 'Hướng dẫn thanh toán giỏ hàng'
+    },
+    VIEW_CART: {
+        keywords: ['xem giỏ hàng', 'giỏ hàng của tôi', 'trong giỏ có gì'],
+        writeAction: true,
+        description: 'Hiển thị giỏ hàng hiện tại'
+    },
+    REMOVE_FROM_CART: {
+        keywords: ['/bỏ.*ra/', '/xóa.*giỏ/', '/bỏ.*khỏi.*giỏ/'],
+        writeAction: true,
+        description: 'Xóa sản phẩm khỏi giỏ hàng'
+    },
+    UPDATE_CART_ITEM: {
+        keywords: ['/tăng.*(lên|thành)/', '/giảm.*(xuống|thành)/', '/đổi.*số lượng/', 'cập nhật số lượng', 'sửa số lượng'],
+        writeAction: true,
+        description: 'Cập nhật số lượng sản phẩm trong giỏ hàng'
+    },
+    ADD_TO_CART: {
+        keywords: ['/thêm.*(vào)?.*giỏ/', '/bỏ.*(vào)?.*giỏ/', '/^mua\b/', '/^lấy\b/', '/\bmua\s+\d+/', '/\blấy\s+\d+/'],
+        writeAction: true,
+        description: 'Thêm sản phẩm vào giỏ hàng khách hàng'
+    },
+    CREATE_ORDER: {
+        keywords: ['tạo đơn', 'lập hóa đơn', 'đặt hàng'],
+        writeAction: true,
+        employeeOnly: true,
+        description: 'Tạo đơn hàng mới (Nhân viên)'
+    },
+    UPDATE_ORDER: {
+        keywords: ['sửa đơn', 'thêm sp vào đơn', 'cập nhật đơn'],
+        writeAction: true,
+        employeeOnly: true,
+        description: 'Cập nhật chi tiết đơn hàng (Nhân viên)'
+    },
+    POS_ADD_ITEM: {
+        keywords: ['thêm', 'bán', 'tính tiền'],
+        writeAction: true,
+        employeeOnly: true,
+        description: 'Thêm sản phẩm vào giỏ hàng POS (Nhân viên)'
+    },
+
+
+    // ── READ INTENTS (Lower priority) ───────────
     CHECK_STOCK: {
         keywords: ['tồn kho', 'còn hàng', 'còn không', 'hết hàng', 'có còn', 'stock', 'inventory', 'số lượng còn'],
         description: 'Kiểm tra tồn kho sản phẩm'
@@ -18,7 +81,7 @@ const INTENT_PATTERNS = {
     },
     RECOMMENDATION: {
         keywords: ['gợi ý', 'recommend', 'đề xuất', 'tư vấn', 'nên mua', 'mua gì',
-                   'có gì ngon', 'giới thiệu', 'best seller', 'bán chạy', 'phổ biến'],
+            'có gì ngon', 'giới thiệu', 'best seller', 'bán chạy', 'phổ biến'],
         description: 'Gợi ý sản phẩm (RAG Pipeline)'
     },
     SEARCH_PRODUCT: {
@@ -31,17 +94,40 @@ const INTENT_PATTERNS = {
     }
 };
 
-function resolveIntent(message) {
+/**
+ * Resolves intent of a user message.
+ * Specific pattern order ensures longer/more specific phrases match before shorter keywords.
+ * @param {string} message 
+ * @param {string} userType - 'customer' or 'employee'
+ */
+function resolveIntent(message, userType = 'customer') {
     const normalizedMsg = message.toLowerCase().trim();
 
     for (const [intent, config] of Object.entries(INTENT_PATTERNS)) {
+        // Enforce employee-only action validation at intent resolution stage
+        if (config.employeeOnly && userType !== 'employee') {
+            continue;
+        }
+
         for (const keyword of config.keywords) {
-            if (normalizedMsg.includes(keyword)) {
+            if (keyword.startsWith('/') && keyword.endsWith('/')) {
+                const regex = new RegExp(keyword.slice(1, -1), 'i');
+                if (regex.test(normalizedMsg)) {
+                    return {
+                        intent,
+                        confidence: 'regex_match',
+                        matchedKeyword: keyword,
+                        description: config.description,
+                        writeAction: config.writeAction || false
+                    };
+                }
+            } else if (normalizedMsg.includes(keyword)) {
                 return {
                     intent,
                     confidence: 'keyword_match',
                     matchedKeyword: keyword,
-                    description: config.description
+                    description: config.description,
+                    writeAction: config.writeAction || false
                 };
             }
         }
@@ -51,7 +137,8 @@ function resolveIntent(message) {
         intent: 'FREE_CHAT',
         confidence: 'default',
         matchedKeyword: null,
-        description: 'Trò chuyện tự do với AI'
+        description: 'Trò chuyện tự do với AI',
+        writeAction: false
     };
 }
 
@@ -59,7 +146,9 @@ function getAllIntents() {
     return Object.entries(INTENT_PATTERNS).map(([key, val]) => ({
         intent: key,
         keywords: val.keywords,
-        description: val.description
+        description: val.description,
+        writeAction: val.writeAction || false,
+        employeeOnly: val.employeeOnly || false
     }));
 }
 

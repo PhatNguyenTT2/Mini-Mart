@@ -76,6 +76,39 @@ class ChatRepository {
         );
         return result.rows.reverse();
     }
+
+    async updateSessionMetadata(sessionId, metadata) {
+        const result = await this.pool.query(
+            `UPDATE chat_session
+             SET metadata = $2
+             WHERE id = $1
+             RETURNING *`,
+            [sessionId, metadata ? JSON.stringify(metadata) : '{}']
+        );
+        return result.rows[0];
+    }
+
+    async getSessionMetadata(sessionId) {
+        const session = await this.findSessionById(sessionId);
+        return session ? session.metadata : {};
+    }
+
+    async createAuditLog(userId, sessionId, actionType, payload, result) {
+        const query = `
+            INSERT INTO chatbot_audit_log (user_id, session_id, action_type, payload, result)
+            VALUES ($1, $2, $3, $4, $5)
+            RETURNING *
+        `;
+        const values = [
+            userId || null,
+            sessionId,
+            actionType,
+            payload ? JSON.stringify(payload) : null,
+            result ? JSON.stringify(result) : null
+        ];
+        const res = await this.pool.query(query, values);
+        return res.rows[0];
+    }
 }
 
 module.exports = ChatRepository;

@@ -245,3 +245,28 @@ CREATE TABLE IF NOT EXISTS ensemble_weights_history (
 
 CREATE INDEX IF NOT EXISTS idx_weight_history_store_date
     ON ensemble_weights_history(store_id, created_at DESC);
+
+-- ============================================================
+-- Phase 6: Chatbot Action Assistant
+-- ============================================================
+
+-- Add metadata column to chat_session for multi-turn state and pronoun/action storage
+DO $$ BEGIN
+    ALTER TABLE chat_session ADD COLUMN metadata JSONB DEFAULT '{}';
+EXCEPTION WHEN duplicate_column THEN NULL;
+END $$;
+
+-- Create audit log table to track write operations by the assistant
+CREATE TABLE IF NOT EXISTS chatbot_audit_log (
+    id BIGSERIAL PRIMARY KEY,
+    user_id BIGINT,
+    session_id BIGINT REFERENCES chat_session(id),
+    action_type TEXT NOT NULL,
+    payload JSONB,
+    result JSONB,
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS idx_chatbot_audit_session ON chatbot_audit_log(session_id);
+CREATE INDEX IF NOT EXISTS idx_chatbot_audit_user ON chatbot_audit_log(user_id);
+

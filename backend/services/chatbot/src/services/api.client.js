@@ -21,7 +21,10 @@ class ApiClient {
             username: 'chatbot-service',
             role: 'Admin',
             storeId: 1,
-            permissions: ['products.read', 'inventory.read', 'orders.read', 'customers.read']
+            permissions: [
+                'products.read', 'inventory.read', 'orders.read', 'customers.read',
+                'orders.write', 'payments.write'
+            ]
         }, '24h');
     }
 
@@ -123,6 +126,47 @@ class ApiClient {
     async getStores() {
         const url = `${SERVICE_URLS.auth}/api/stores`;
         return this._fetch(url);
+    }
+
+    // ── Write API Methods (New Action Assistant) ──
+    async createOrder(orderData) {
+        const url = `${SERVICE_URLS.order}/api/orders`;
+        return this._fetch(url, {
+            method: 'POST',
+            body: JSON.stringify(orderData)
+        });
+    }
+
+    async cancelOrder(orderId) {
+        const url = `${SERVICE_URLS.order}/api/orders/${orderId}/status`;
+        return this._fetch(url, {
+            method: 'PATCH',
+            body: JSON.stringify({ status: 'cancelled' })
+        });
+    }
+
+    async updateOrderItems(orderId, items) {
+        const url = `${SERVICE_URLS.order}/api/orders/${orderId}/items`;
+        return this._fetch(url, {
+            method: 'PUT',
+            body: JSON.stringify({ items })
+        });
+    }
+
+    async createDirectPayment(data) {
+        const url = `${SERVICE_URLS.order}/api/payments/direct`; // Route goes through gateway / service
+        return this._fetch(url, {
+            method: 'POST',
+            body: JSON.stringify(data)
+        });
+    }
+
+    async createVNPayUrl(data) {
+        const url = `${SERVICE_URLS.order}/api/payments/vnpay/create-url`;
+        return this._fetch(url, {
+            method: 'POST',
+            body: JSON.stringify(data)
+        });
     }
 }
 

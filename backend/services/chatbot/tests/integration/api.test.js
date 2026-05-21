@@ -105,7 +105,7 @@ describe('Chat API Integration Tests', () => {
 
             expect(res.status).toBe(200);
             expect(res.body.data.intent).toBe('HELP');
-            expect(res.body.data.reply).toContain('POSMART Assistant');
+            expect(res.body.data.reply).toContain('tồn kho');
         });
     });
 

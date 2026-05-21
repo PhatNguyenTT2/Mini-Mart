@@ -148,6 +148,53 @@ function initChatSocket(io, chatService) {
             }
         });
 
+        // ── Event: Confirm action (Yes/No response trigger) ──
+        socket.on('chat:confirm_action', async (data, callback) => {
+            try {
+                const { session_id, confirm } = data || {};
+                if (!session_id || confirm === undefined) {
+                    throw new Error('session_id and confirm are required');
+                }
+
+                const confirmMessage = confirm ? 'Đồng ý' : 'Không';
+
+                // Join session room if not already
+                socket.join(`session:${session_id}`);
+
+                // Emit typing indicator
+                socket.emit('chat:typing', { session_id, is_typing: true });
+
+                // Stream response chunks using the derived confirmation message
+                for await (const chunk of chatService.sendMessageStream(session_id, confirmMessage)) {
+                    if (chunk.type === 'chunk') {
+                        socket.emit('chat:stream_chunk', { text: chunk.text });
+                    } else if (chunk.type === 'complete') {
+                        socket.emit('chat:typing', { session_id, is_typing: false });
+
+                        const completeData = {
+                            session_id,
+                            intent: chunk.intent,
+                            fullText: chunk.fullText,
+                            products: chunk.products || null,
+                            suggestedPrompts: chunk.suggestedPrompts || null,
+                            metadata: chunk.metadata,
+                            timestamp: new Date().toISOString()
+                        };
+
+                        if (typeof callback === 'function') callback({ success: true, data: completeData });
+                        socket.emit('chat:stream_complete', completeData);
+
+                        logger.info({ userId, sessionId: session_id, intent: chunk.intent }, 'WS confirmation complete');
+                    }
+                }
+            } catch (err) {
+                if (data?.session_id) {
+                    socket.emit('chat:typing', { session_id: data.session_id, is_typing: false });
+                }
+                _emitError(socket, callback, 'chat:error', err);
+            }
+        });
+
         // ── Event: End session ──
         socket.on('chat:end_session', async (data, callback) => {
             try {

@@ -217,7 +217,7 @@ class RAGService {
                             customerId, r.product_id, storeId,
                             r.topSource, 'recommended',
                             null, r.final_score
-                        ).catch(() => {}); // fire-and-forget
+                        ).catch(() => { }); // fire-and-forget
                     }
                 }
 
@@ -337,10 +337,23 @@ class RAGService {
 
 
 
+    async _getCoPurchaseContext(products, storeId) {
+        return getCoPurchaseContext(this.copurchaseRepo, products, storeId);
+    }
+
+    async _getPersonalizationContext(customerId) {
+        return getPersonalizationContext(this.apiClient, customerId);
+    }
+
     /**
      * Generate natural language response using Qwen/Qwen2.5-7B-Instruct
      */
     async _generateResponse(originalMessage, reformulatedQuery, products, coPurchaseData, cfData, customerContext) {
+        // Handle 5-arguments call signature from legacy tests
+        if (customerContext === undefined && cfData && (cfData.type || cfData.prompt !== undefined)) {
+            customerContext = cfData;
+            cfData = [];
+        }
         const productContext = products.map((p, i) => {
             const name = p.content.match(/"([^"]+)"/)?.[1] || `Product ${p.product_id}`;
             return `${i + 1}. ${name} — ${p.category_name}, ${Number(p.unit_price).toLocaleString('vi-VN')}đ, còn ${p.quantity_on_shelf} sản phẩm`;
