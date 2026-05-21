@@ -9,10 +9,10 @@
 
 ### 1.1 Dọn dẹp dữ liệu + Kiểm tra sẵn sàng
 
-Mở terminal tại `microservices/` và chạy cleanup script:
+Mở terminal tại `backend/` và chạy cleanup script:
 
 ```bash
-cd microservices && node docs/script/pre-demo-cleanup.js
+cd backend; node docs/script/pre-demo-cleanup.js
 ```
 
 **Script sẽ tự động:**
