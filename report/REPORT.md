@@ -248,9 +248,16 @@ Chỉ xét items $j$ mà user $u$ đã mua, và $\text{sim}(i,j) \geq 0.1$.
 
 | Tiêu chí | Plain Cosine | Adjusted Cosine |
 |---|---|---|
-| **Công thức** | $\frac{\sum R_{u,i} R_{u,j}}{\Vert i \Vert \cdot \Vert j \Vert}$ | $\frac{\sum (R_{u,i}-\bar{R}_u)(R_{u,j}-\bar{R}_u)}{\Vert \vec{R}_{\cdot,i} - \vec{\bar{R}}_u \Vert \cdot \Vert \vec{R}_{\cdot,j} - \vec{\bar{R}}_u \Vert}$ |
 | **Phù hợp với** | **Implicit Feedback** (số lần mua) | Explicit Feedback (rating 1-5 sao) |
 | **Vấn đề với data siêu thị** | Không có | Trừ mean → triệt tiêu magnitude → $\text{sim} \approx 0$ |
+
+**Công thức Plain Cosine:**
+
+$$\text{sim}_{\text{Plain}}(i,j) = \frac{\sum_u R_{u,i} \cdot R_{u,j}}{\Vert \vec{R}_{\cdot,i} \Vert \cdot \Vert \vec{R}_{\cdot,j} \Vert}$$
+
+**Công thức Adjusted Cosine:**
+
+$$\text{sim}_{\text{Adjusted}}(i,j) = \frac{\sum_u (R_{u,i} - \bar{R}_u)(R_{u,j} - \bar{R}_u)}{\sqrt{\sum_u (R_{u,i} - \bar{R}_u)^2} \cdot \sqrt{\sum_u (R_{u,j} - \bar{R}_u)^2}}$$
 
 **Giải thích:** Dữ liệu siêu thị là **Implicit Feedback** — hệ thống đo lường qua hành vi mua (bao nhiêu lần, bao nhiêu sản phẩm) chứ không có đánh giá sao. Adjusted Cosine trừ đi giá trị trung bình $\bar{R}_u$, nhưng khi khách hàng cùng cluster mua đều đều các sản phẩm thiết yếu → $R_{u,i} - \bar{R}_u \approx 0$ → similarity bằng 0 (sai).
 
@@ -309,32 +316,54 @@ $$\text{sim}(i, j) = \frac{\vec{R}_{\cdot,i} \cdot \vec{R}_{\cdot,j}}{\Vert\vec{
 
 ### 5.1 Công thức
 
-$$\text{Score}_{\text{Ensemble}}(p) = \alpha \cdot \hat{s}_{\text{Content}}(p) + \beta \cdot \hat{s}_{\text{CF}}(p) + \gamma \cdot \text{Confidence}(A \Rightarrow p) + \delta \cdot \text{Persona}(u)$$
+Điểm tổng hợp của mỗi sản phẩm được tính bằng tổng có trọng số của 4 thành phần:
+
+$$\text{Score}(p) = \alpha \cdot S_{\text{Content}}(p) + \beta \cdot S_{\text{CF}}(p) + \gamma \cdot S_{\text{Apriori}}(p) + \delta \cdot S_{\text{Persona}}(u)$$
 
 Trong đó:
-- $\hat{s}_{\text{Content}}(p) = \frac{\text{Score}_{\text{RRF}}(p)}{\max_{p'} \text{Score}_{\text{RRF}}(p')}$ — Local Max normalization cho Content
-- $\hat{s}_{\text{CF}}(p) = \frac{\text{Score}_{\text{CF}}(p)}{\max_{p'} \text{Score}_{\text{CF}}(p')}$ — Local Max normalization cho CF
-- $\text{Confidence}(A \Rightarrow p)$ — Confidence từ Apriori, đã trong khoảng $[0,1]$
-- $\text{Persona}(u) = \{VIP: 1.0,\ Wholesale: 0.8,\ Retail: 0.3\}$
 
-**Default weights:** $\alpha=0.40$, $\beta=0.25$, $\gamma=0.25$, $\delta=0.10$
+| Ký hiệu | Thành phần | Công thức chuẩn hóa | Giải thích |
+|---|---|---|---|
+| $\alpha$ | **Content-Based** (RAG + RRF) | $S_{\text{Content}}(p) = \frac{\text{RRF}(p)}{\max \text{RRF}}$ | Chuẩn hóa Local Max về $[0,1]$ |
+| $\beta$ | **Collaborative Filtering** | $S_{\text{CF}}(p) = \frac{\hat{r}(p)}{\max \hat{r}}$ | Chuẩn hóa Local Max về $[0,1]$ |
+| $\gamma$ | **Apriori** (Association Rules) | $S_{\text{Apriori}}(p) = \text{Confidence}(A \Rightarrow p)$ | Đã trong $[0,1]$, không cần chuẩn hóa |
+| $\delta$ | **Session Personalization** | $S_{\text{Persona}}(u)$ = hệ số loại khách hàng | Xem bảng phân loại bên dưới |
 
-### 5.2 Sơ đồ Ensemble Scoring
+### 5.2 Default Weights — Tại sao chọn $\alpha=0.40$, $\beta=0.25$, $\gamma=0.25$, $\delta=0.10$?
+
+| Trọng số | Giá trị | Lý do |
+|---|---|---|
+| $\alpha = 0.40$ | Content-Based chiếm tỷ trọng lớn nhất | RAG + RRF hoạt động ngay từ ngày đầu không cần lịch sử mua, là nguồn gợi ý chính khi hệ thống còn ít dữ liệu |
+| $\beta = 0.25$ | CF chiếm tỷ trọng vừa phải | CF cần lịch sử mua để tính similarity, giai đoạn đầu chưa có nhiều dữ liệu |
+| $\gamma = 0.25$ | Apriori ngang bằng CF | Luật kết hợp bổ sung mạnh cho cross-selling, nhưng cũng cần đủ lượng đơn hàng (≥ 50 đơn) |
+| $\delta = 0.10$ | Personalization chiếm tỷ trọng nhỏ nhất | Chỉ là hệ số boost theo loại khách hàng, không phải tín hiệu gợi ý chính |
+
+**Nguyên tắc:** $\alpha + \beta + \gamma + \delta = 1.0$. Content-Based (α) chiếm ưu thế vì hoạt động độc lập không cần dữ liệu tương tác, trong khi CF (β) và Apriori (γ) có hiệu quả tăng dần theo thời gian sử dụng. Trọng số sẽ được tự động điều chỉnh qua **Weight Learning** (Mục 6) dựa trên phản hồi thực tế.
+
+### 5.3 Persona Weights — Phân loại hệ số khách hàng
+
+| Loại khách hàng | Hệ số Persona | Lý do |
+|---|---|---|
+| **VIP** | 1.0 | Khách hàng trung thành, tần suất mua cao → gợi ý cá nhân hóa có giá trị cao nhất |
+| **Wholesale** (Sỉ) | 0.8 | Mua số lượng lớn nhưng thường cố định danh mục → gợi ý hữu ích nhưng không bằng VIP |
+| **Retail** (Đại lý) | 0.3 | Khách vãng lai hoặc mua lẻ → chưa có đủ hành vi để cá nhân hóa, boost thấp để không làm nhiễu kết quả |
+
+### 5.4 Sơ đồ Ensemble Scoring
 
 ```mermaid
 flowchart LR
-    S1["RAG (α)\nrrf_score"] --> N["Normalize\n(Local Max)"]
-    S2["CF (β)\nprediction_score"] --> N
-    S3["Apriori (γ)\nconfidence"] --> N
-    S4["Session (δ)\npersona_type"] --> N
-    N --> W["Weighted Sum\nα×c + β×f + γ×a + δ×p"]
+    S1["Content-Based (α)\nRRF Score"] --> N["Normalize\n(Local Max)"]
+    S2["CF (β)\nPrediction Score"] --> N
+    S3["Apriori (γ)\nConfidence"] --> N
+    S4["Persona (δ)\nCustomer Type"] --> N
+    N --> W["Weighted Sum\nαS + βS + γS + δS"]
     W --> R["Re-rank\n→ Top Products"]
 
     style W fill:#10b981,color:#fff
     style R fill:#f59e0b,color:#000
 ```
 
-### 5.3 Cold-start Redistribution
+### 5.5 Cold-start Redistribution
 
 Khi CF không có dữ liệu (user mới chưa có lịch sử mua):
 
@@ -342,7 +371,7 @@ $$\alpha' = \alpha + \beta, \quad \beta' = 0$$
 
 Content-Based (RAG) nhận toàn bộ trọng số của CF, đảm bảo hệ thống vẫn gợi ý chính xác cho user mới.
 
-### 5.4 Testcase
+### 5.6 Testcase
 
 User VIP hỏi "có thịt bò không?", weights: $\alpha=0.40$, $\beta=0.25$, $\gamma=0.25$, $\delta=0.10$
 
