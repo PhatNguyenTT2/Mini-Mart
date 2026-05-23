@@ -19,17 +19,29 @@ class ChatSocketService {
   connect(token) {
     if (this.socket?.connected) return this.socket
 
-    // Socket.IO path = '/ws/chat' (matches server config)
-    // Vite proxy: /ws/chat → localhost:8080 → nginx → chatbot:3008  
-    // Client sends handshake to GET /ws/chat/?EIO=4&transport=polling
-    this.socket = io({
+    const apiUrl = import.meta.env.VITE_API_URL
+    let wsUrl = undefined
+    if (apiUrl) {
+      try {
+        const parsedUrl = new URL(apiUrl)
+        // Auto-upgrade to https if page is HTTPS
+        if (window.location.protocol === 'https:' && parsedUrl.protocol === 'http:') {
+          parsedUrl.protocol = 'https:'
+        }
+        wsUrl = parsedUrl.origin
+      } catch (error) {
+        console.warn('[ChatSocket] Invalid VITE_API_URL, falling back to origin.', error)
+      }
+    }
+
+    this.socket = io(wsUrl, {
       path: '/ws/chat',
       auth: { token },
       transports: ['websocket', 'polling'],
       reconnection: true,
       reconnectionDelay: 1000,
       reconnectionDelayMax: 5000,
-      reconnectionAttempts: Infinity
+      reconnectionAttempts: 10
     })
 
     this.socket.on('connect', () => {

@@ -41,8 +41,12 @@ export const ChatProvider = ({ children }) => {
 
     const handleConnect = () => setIsConnected(true)
     const handleDisconnect = () => setIsConnected(false)
+    const handleReconnectFailed = () => {
+      setError('Chat server connection failed. Please reload the page.')
+    }
     socket.on('connect', handleConnect)
     socket.on('disconnect', handleDisconnect)
+    socket.on('reconnect_failed', handleReconnectFailed)
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsConnected(socket.connected)
 
@@ -105,6 +109,7 @@ export const ChatProvider = ({ children }) => {
     return () => {
       socket.off('connect', handleConnect)
       socket.off('disconnect', handleDisconnect)
+      socket.off('reconnect_failed', handleReconnectFailed)
       socket.off('connect', handleFirstConnect)
       unsubReady()
       unsubChunk()
