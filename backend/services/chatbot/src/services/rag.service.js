@@ -13,6 +13,47 @@
 const logger = require('../../../../shared/common/logger');
 const { getPersonalizationContext, getCoPurchaseContext, getCFHint } = require('./context.helper');
 
+// Helper: bỏ dấu tiếng Việt bằng Unicode NFD decomposition
+const removeAccents = (str) => {
+    if (!str) return '';
+    return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+};
+
+// Helper: lọc sản phẩm dựa trên text phản hồi của LLM
+const syncProductsWithResponse = (products, reply) => {
+    if (!reply) return products.slice(0, 3);
+
+    const normalizedContent = removeAccents(reply.toLowerCase());
+
+    const mentionedProducts = products.filter(p => {
+        const name = p.content?.match(/"([^"]+)"/)?.[1] || p.name || '';
+        if (!name) return false;
+
+        const normalizedName = removeAccents(name.toLowerCase());
+
+        // Match 1: Full name
+        if (normalizedContent.includes(normalizedName)) return true;
+
+        // Match 2: Partial — ≥3 từ đầu (LLM hay viết tắt tên SP)
+        const words = normalizedName.split(/\s+/);
+        if (words.length >= 3) {
+            const partial = words.slice(0, 3).join(' ');
+            if (normalizedContent.includes(partial)) return true;
+        }
+
+        // Match 3: Bigram minimum (≥2 từ) — KHÔNG dùng single-word
+        // để tránh trúng các danh từ chung phổ biến: "Nước", "Bánh", "Kẹo", "Thịt"
+        if (words.length >= 2) {
+            const bigram = words.slice(0, 2).join(' ');
+            if (normalizedContent.includes(bigram)) return true;
+        }
+
+        return false;
+    });
+
+    return mentionedProducts.length > 0 ? mentionedProducts : products.slice(0, 3);
+};
+
 class RAGService {
     constructor({ knowledgeRepo, copurchaseRepo, cfService, hybridService, sessionContextService, embeddingClient, hfClient, apiClient, reformulator }) {
         this.knowledgeRepo = knowledgeRepo;
@@ -68,6 +109,31 @@ class RAGService {
 
             // Step 4: RRF Fusion
             const fused = this._reciprocalRankFusion(semanticResults, keywordResults);
+
+            // Step 4.5: Anchor Category Re-ranking
+            // Use Top 1 RRF result's category as "anchor" — boost same-category, penalize others
+            if (fused.length > 1 && fused[0].category_name) {
+                const anchorCategory = fused[0].category_name;
+                const BOOST = 0.05;
+                const PENALTY = 0.03;
+
+                for (const item of fused) {
+                    if (item.category_name === anchorCategory) {
+                        item.rrf_score += BOOST;
+                    } else {
+                        item.rrf_score -= PENALTY;
+                    }
+                }
+                // Re-sort by adjusted score
+                fused.sort((a, b) => b.rrf_score - a.rrf_score);
+
+                metadata.steps.anchorRerank = {
+                    anchorCategory,
+                    boost: BOOST,
+                    penalty: PENALTY
+                };
+            }
+
             const top5 = fused.slice(0, 5);
 
             metadata.steps.fusion = {
@@ -221,22 +287,15 @@ class RAGService {
                     }
                 }
 
+                const syncedProducts = syncProductsWithResponse(finalProducts, response.content);
+                logger.info({ before: finalProducts.length, after: syncedProducts.length, responseSnippet: response.content?.substring(0, 100) }, '[DEBUG] Sync filter Phase 3');
+                const hydratedProducts = await this._hydrateProductsWithCatalog(syncedProducts);
+                logger.info({ hydratedCount: hydratedProducts.length, hasImages: hydratedProducts.filter(p => p.image).length }, '[DEBUG] Catalog hydration Phase 3');
+
                 return {
                     content: response.content,
-                    productIds: finalProducts.map(r => r.product_id),
-                    products: finalProducts.map(r => ({
-                        id: r.product_id,
-                        name: r.content?.match(/"([^"]+)"/)?.[1] || `Product ${r.product_id}`,
-                        categoryName: r.category_name,
-                        unitPrice: Number(r.unit_price),
-                        quantityOnShelf: r.quantity_on_shelf,
-                        isInStock: r.is_in_stock ?? (r.quantity_on_shelf > 0),
-                        image: r.image || r.image_url || null,
-                        rrfScore: r.rrf_score,
-                        ensembleScore: r.ensemble_score,
-                        ensembleSources: r.ensemble_sources,
-                        topSource: r.top_source
-                    })),
+                    productIds: hydratedProducts.map(r => r.id),
+                    products: hydratedProducts,
                     metadata
                 };
             }
@@ -283,17 +342,15 @@ class RAGService {
 
             logger.info({ storeId, customerId, totalMs, productCount: top5.length, engine: 'phase2-fallback' }, 'RAG pipeline completed');
 
+            const syncedProducts = syncProductsWithResponse(top5, response.content);
+            logger.info({ before: top5.length, after: syncedProducts.length, responseSnippet: response.content?.substring(0, 100) }, '[DEBUG] Sync filter Phase 2');
+            const hydratedProducts = await this._hydrateProductsWithCatalog(syncedProducts);
+            logger.info({ hydratedCount: hydratedProducts.length, hasImages: hydratedProducts.filter(p => p.image).length }, '[DEBUG] Catalog hydration Phase 2');
+
             return {
                 content: response.content,
-                productIds: top5.map(r => r.product_id),
-                products: top5.map(r => ({
-                    id: r.product_id,
-                    name: r.content.match(/"([^"]+)"/)?.[1] || `Product ${r.product_id}`,
-                    categoryName: r.category_name,
-                    unitPrice: Number(r.unit_price),
-                    quantityOnShelf: r.quantity_on_shelf,
-                    rrfScore: r.rrf_score
-                })),
+                productIds: hydratedProducts.map(r => r.id),
+                products: hydratedProducts,
                 metadata
             };
         } catch (err) {
@@ -424,6 +481,42 @@ ${productContext}${coPurchaseContext}${cfContext}`;
         }).join('\n');
 
         return `${greeting}\n${items}\n\nCác sản phẩm trên đều đang có sẵn tại chi nhánh của bạn!`;
+    }
+
+    async _hydrateProductsWithCatalog(syncedProducts) {
+        const ids = syncedProducts.map(r => Number(r.product_id || r.id));
+        const catalogMap = new Map();
+
+        if (this.apiClient && ids.length > 0) {
+            try {
+                // Fetch in batch: single API request to avoid N+1 query pattern
+                const catalogResult = await this.apiClient.getProductsByIds(ids);
+                if (catalogResult.success && catalogResult.data?.products) {
+                    catalogResult.data.products.forEach(p => {
+                        catalogMap.set(Number(p.id), p);
+                    });
+                }
+            } catch (err) {
+                logger.warn({ err, ids }, 'Failed to fetch catalog product details for image hydration');
+            }
+        }
+
+        return syncedProducts.map(r => {
+            const cp = catalogMap.get(Number(r.product_id || r.id));
+            return {
+                id: Number(r.product_id || r.id),
+                name: cp?.name || r.content?.match(/"([^"]+)"/)?.[1] || r.name || `Product ${r.product_id || r.id}`,
+                categoryName: cp?.categoryName || cp?.category_name || r.category_name || '',
+                unitPrice: cp ? Number(cp.unitPrice || cp.price || 0) : Number(r.unit_price || r.unitPrice || r.price || 0),
+                quantityOnShelf: cp?.quantityOnShelf ?? cp?.quantity_on_shelf ?? r.quantity_on_shelf ?? 0,
+                isInStock: cp?.isInStock ?? cp?.is_in_stock ?? r.is_in_stock ?? ((cp?.quantityOnShelf ?? r.quantity_on_shelf ?? 0) > 0),
+                image: cp?.image || cp?.image_url || r.image || r.image_url || null,
+                rrfScore: r.rrf_score || null,
+                ensembleScore: r.ensemble_score || null,
+                ensembleSources: r.ensemble_sources || null,
+                topSource: r.top_source || null
+            };
+        });
     }
 
     /**

@@ -153,6 +153,9 @@ class DataIngestionService {
 
             const products = productsResult.data.products;
 
+            // Build categoryId → rootCategoryName map for embedding enrichment
+            const rootCatMap = await this._buildRootCategoryMap();
+
             let synced = 0;
             let skipped = 0;
 
@@ -167,11 +170,13 @@ class DataIngestionService {
                             continue;
                         }
                         const inventory = inventoryMap.get(String(product.id)) || null;
+                        const rootCategoryName = rootCatMap.get(Number(product.categoryId)) || null;
                         await this._upsertKnowledge({
                             productId: product.id,
                             storeId,
                             name: product.name,
                             categoryName: product.categoryName || 'Chưa phân loại',
+                            rootCategoryName,
                             unitPrice: product.unitPrice || 0,
                             vendor: product.vendor || null,
                             isInStock: inventory ? inventory.isInStock : false,
@@ -197,8 +202,8 @@ class DataIngestionService {
 
     // ── Helpers ──────────────────────────────────────────────
 
-    async _upsertKnowledge({ productId, storeId, name, categoryName, unitPrice, vendor, isInStock, qtyOnShelf }) {
-        const content = this._buildContentText(name, categoryName, unitPrice, vendor, isInStock, qtyOnShelf);
+    async _upsertKnowledge({ productId, storeId, name, categoryName, rootCategoryName, unitPrice, vendor, isInStock, qtyOnShelf }) {
+        const content = this._buildContentText(name, categoryName, rootCategoryName, unitPrice, vendor, isInStock, qtyOnShelf);
         const embedding = await this.embeddingClient.embed(content);
         const vectorStr = `[${embedding.join(',')}]`;
 
@@ -219,12 +224,16 @@ class DataIngestionService {
         `, [productId, storeId, content, vectorStr, categoryName, unitPrice, isInStock, qtyOnShelf]);
     }
 
-    _buildContentText(name, categoryName, price, vendor, isInStock, qtyOnShelf) {
+    _buildContentText(name, categoryName, rootCategoryName, price, vendor, isInStock, qtyOnShelf) {
         const parts = [
-            `Sản phẩm "${name}"`,
-            `danh mục "${categoryName}"`,
-            `giá ${Number(price).toLocaleString('vi-VN')} VND`
+            `Sản phẩm "${name}"`
         ];
+        // Root category first for stronger semantic signal
+        if (rootCategoryName && rootCategoryName !== categoryName) {
+            parts.push(`thuộc nhóm "${rootCategoryName}"`);
+        }
+        parts.push(`danh mục "${categoryName}"`);
+        parts.push(`giá ${Number(price).toLocaleString('vi-VN')} VND`);
         if (vendor) parts.push(`nhà cung cấp "${vendor}"`);
         if (isInStock) {
             parts.push(`hiện còn ${qtyOnShelf} sản phẩm trên kệ`);
@@ -247,6 +256,44 @@ class DataIngestionService {
             vendor.toLowerCase().split(/\s+/).forEach(w => keywords.add(w));
         }
         return [...keywords].join(', ');
+    }
+
+    /**
+     * Build categoryId → rootCategoryName map from Catalog API.
+     * Traverses the category tree: each subcategory maps to its root parent's name.
+     * Root categories (parent_id = null) map to themselves.
+     */
+    async _buildRootCategoryMap() {
+        const map = new Map();
+        try {
+            const result = await this.apiClient.getCategories();
+            if (!result.success || !result.data?.categories?.length) {
+                logger.warn('Failed to fetch categories — rootCategoryName will be null');
+                return map;
+            }
+
+            const categories = result.data.categories;
+            const idToName = new Map(categories.map(c => [c.id, c.name]));
+            const idToParent = new Map(categories.map(c => [c.id, c.parentId || c.parent_id || null]));
+
+            for (const cat of categories) {
+                let rootId = cat.id;
+                let parentId = idToParent.get(rootId);
+                // Traverse up to root (max 5 levels to prevent infinite loops)
+                let depth = 0;
+                while (parentId && depth < 5) {
+                    rootId = parentId;
+                    parentId = idToParent.get(rootId);
+                    depth++;
+                }
+                map.set(cat.id, idToName.get(rootId) || cat.name);
+            }
+
+            logger.info({ categoryCount: categories.length, mapSize: map.size }, 'Root category map built');
+        } catch (err) {
+            logger.warn({ err }, 'buildRootCategoryMap failed — embedding without root category');
+        }
+        return map;
     }
 
     async _getStoreIds() {

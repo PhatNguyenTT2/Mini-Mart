@@ -19,6 +19,13 @@ class ReadHandler {
 
   async handleRecommendation(session, userMessage) {
     if (!this.ragService) {
+      // T2: Retry — RAG might still be initializing
+      if (this.utils?.ragService?.embeddingClient?.isReady) {
+        await new Promise(r => setTimeout(r, 2000));
+        if (this.ragService) {
+          return this.handleRecommendation(session, userMessage);
+        }
+      }
       return this.handleSearchProductFallback(session.id, userMessage);
     }
 
@@ -270,7 +277,8 @@ class ReadHandler {
   }
 
   async handleSearchProductFallback(sessionId, userMessage) {
-    const keyword = this.utils.extractKeyword(userMessage, ['tìm', 'search', 'có gì', 'sản phẩm nào']);
+    const keyword = this.utils.extractKeyword(userMessage,
+      ['tìm', 'search', 'có gì', 'sản phẩm nào', 'gợi ý', 'muốn mua', 'cần mua', 'mua đồ', 'đề xuất', 'mua cho']);
 
     if (!this.apiClient) return this.utils.fallbackNoApi('SEARCH_PRODUCT', keyword);
 

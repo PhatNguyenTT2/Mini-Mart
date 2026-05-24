@@ -128,6 +128,11 @@ class ApiClient {
         return this._fetch(url);
     }
 
+    async getCategories() {
+        const url = `${SERVICE_URLS.catalog}/api/categories`;
+        return this._fetch(url);
+    }
+
     // ── Write API Methods (New Action Assistant) ──
     async createOrder(orderData) {
         const url = `${SERVICE_URLS.order}/api/orders`;

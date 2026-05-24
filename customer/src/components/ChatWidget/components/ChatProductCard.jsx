@@ -34,7 +34,7 @@ export const ChatProductCard = ({ product }) => {
   const inStock = product.isInStock ?? product.is_in_stock ?? (qty > 0)
   const category = product.categoryName || product.category_name || ''
   const imageUrl = product.image || product.image_url || null
-  
+
   // Extract dominant source for tracking
   const getDominantSource = () => {
     if (typeof product.topSource === 'string' && product.topSource) return product.topSource;
@@ -98,18 +98,15 @@ export const ChatProductCard = ({ product }) => {
       onMouseLeave={handleMouseLeave}
       className="flex items-center gap-3 p-2.5 bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md hover:border-emerald-300 transition-all cursor-pointer ml-9 group relative overflow-hidden"
     >
-      {/* Source Badge (Demo mode) */}
-      <div className={`absolute top-0 right-0 rounded-bl-lg border-b border-l px-1.5 py-0.5 text-[8px] font-bold uppercase tracking-wider ${SOURCE_COLORS[source] || 'bg-gray-100 text-gray-500'}`}>
-        {source}
-      </div>
+
 
       {/* Product Image */}
       <div className="flex-shrink-0 w-14 h-14 rounded-lg bg-gray-50 border border-gray-100 flex items-center justify-center overflow-hidden">
         {imageUrl ? (
-          <img 
-            src={imageUrl} 
-            alt={name} 
-            loading="lazy" 
+          <img
+            src={imageUrl}
+            alt={name}
+            loading="lazy"
             className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-300"
             onError={(e) => {
               e.target.style.display = 'none';
@@ -117,9 +114,9 @@ export const ChatProductCard = ({ product }) => {
             }}
           />
         ) : null}
-        
+
         {/* Placeholder if no image */}
-        <div 
+        <div
           className="w-full h-full flex flex-col items-center justify-center text-gray-300"
           style={{ display: imageUrl ? 'none' : 'flex' }}
         >

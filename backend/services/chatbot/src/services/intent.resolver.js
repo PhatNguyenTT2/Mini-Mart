@@ -81,7 +81,8 @@ const INTENT_PATTERNS = {
     },
     RECOMMENDATION: {
         keywords: ['gợi ý', 'recommend', 'đề xuất', 'tư vấn', 'nên mua', 'mua gì',
-            'có gì ngon', 'giới thiệu', 'best seller', 'bán chạy', 'phổ biến'],
+            'có gì ngon', 'giới thiệu', 'best seller', 'bán chạy', 'phổ biến',
+            'muốn mua', 'cần mua', 'mua cho', 'mua sắm', 'mua gì đó', 'mua đồ'],
         description: 'Gợi ý sản phẩm (RAG Pipeline)'
     },
     SEARCH_PRODUCT: {

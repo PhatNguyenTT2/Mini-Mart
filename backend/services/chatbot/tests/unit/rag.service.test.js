@@ -55,6 +55,10 @@ describe('RAGService', () => {
             getCustomerProfile: jest.fn().mockResolvedValue({
                 success: true,
                 data: { customerType: 'vip', totalSpent: 6000000 }
+            }),
+            getProductsByIds: jest.fn().mockResolvedValue({
+                success: true,
+                data: { products: [] }
             })
         };
 
@@ -267,6 +271,103 @@ describe('RAGService', () => {
         it('should use VIP greeting in fallback for VIP customers', () => {
             const response = ragService._buildFallbackResponse(MOCK_SEMANTIC_RESULTS, { type: 'vip' });
             expect(response).toContain('VIP');
+        });
+    });
+
+    describe('Product-Response Sync Filter (Option A)', () => {
+        let testProducts;
+
+        beforeEach(() => {
+            testProducts = [
+                { product_id: 1, store_id: 1, content: 'Sản phẩm "Gia vị nêm sẵn lẩu Thái Barona 80g"', category_name: 'Gia vị', unit_price: 16000, is_in_stock: true, quantity_on_shelf: 299 },
+                { product_id: 2, store_id: 1, content: 'Sản phẩm "Chả lụa heo G Kitchen đòn 500g"', category_name: 'Thực phẩm', unit_price: 95000, is_in_stock: true, quantity_on_shelf: 300 },
+                { product_id: 3, store_id: 1, content: 'Sản phẩm "Gạo thơm Lài Miên túi 5kg"', category_name: 'Gạo', unit_price: 110000, is_in_stock: true, quantity_on_shelf: 300 },
+                { product_id: 4, store_id: 1, content: 'Sản phẩm "Snack khoai tây Lay\'s vị Tự nhiên"', category_name: 'Snack', unit_price: 12000, is_in_stock: true, quantity_on_shelf: 300 },
+                { product_id: 5, store_id: 1, content: 'Sản phẩm "Nước tương Chinsu tỏi ớt 250ml"', category_name: 'Nước chấm', unit_price: 15000, is_in_stock: true, quantity_on_shelf: 300 }
+            ];
+            mockKnowledgeRepo.searchSemantic.mockResolvedValue(testProducts);
+            mockKnowledgeRepo.searchKeyword.mockResolvedValue([]);
+        });
+
+        it('should sync and only return products mentioned in LLM text (full match)', async () => {
+            mockHfClient.client.chatCompletion.mockResolvedValue({
+                choices: [{ message: { content: 'Chào bạn! Mình gợi ý bạn dùng Gia vị nêm sẵn lẩu Thái Barona 80g và Chả lụa heo G Kitchen đòn 500g.' } }]
+            });
+
+            const result = await ragService.recommend('gợi ý đồ nấu lẩu', 1, null, []);
+            expect(result.productIds).toEqual([1, 2]);
+            expect(result.products.map(p => p.id)).toEqual([1, 2]);
+        });
+
+        it('should handle Vietnamese accent normalization properly', async () => {
+            // content has "lẩu thái" and "chả lụa heo" without accents or different accent style
+            // LLM answer writes: "gia vi nem san lau thai barona 80g và cha lua heo g kitchen" (no accents / typed with Telex differences)
+            mockHfClient.client.chatCompletion.mockResolvedValue({
+                choices: [{ message: { content: 'Chào bạn! gợi ý gia vi nem san lau thai barona 80g và cha lua heo g kitchen.' } }]
+            });
+
+            const result = await ragService.recommend('gợi ý đồ nấu lẩu', 1, null, []);
+            expect(result.productIds).toEqual([1, 2]);
+        });
+
+        it('should handle partial match (>=3 words)', async () => {
+            // LLM writes short name "Gia vị nêm sẵn lẩu" or "Chả lụa heo" instead of full catalog name
+            mockHfClient.client.chatCompletion.mockResolvedValue({
+                choices: [{ message: { content: 'Gợi ý Gia vị nêm sẵn lẩu và Chả lụa heo.' } }]
+            });
+
+            const result = await ragService.recommend('gợi ý', 1, null, []);
+            expect(result.productIds).toEqual([1, 2]);
+        });
+
+        it('should support bigram match (>=2 words)', async () => {
+            // "Gạo thơm" matches "Gạo thơm Lài Miên túi 5kg"
+            mockHfClient.client.chatCompletion.mockResolvedValue({
+                choices: [{ message: { content: 'Tôi đề xuất bạn mua Gạo thơm.' } }]
+            });
+
+            const result = await ragService.recommend('gợi ý gạo', 1, null, []);
+            expect(result.productIds).toEqual([3]);
+        });
+
+        it('should skip risky single-word match to avoid false positive (bigram minimum)', async () => {
+            // Text mentions "Nước suối" which has "Nước" but should NOT match "Nước tương Chinsu tỏi ớt"
+            // The word "Nước" is single-word. With single-word skipped, it will not match product 5 and fallback to top 3 instead.
+            mockHfClient.client.chatCompletion.mockResolvedValue({
+                choices: [{ message: { content: 'Uống nước suối cho mát.' } }]
+            });
+
+            const result = await ragService.recommend('nước tương', 1, null, []);
+            // Since no products matched, should fallback to top 3 products
+            expect(result.productIds).toEqual([1, 2, 3]);
+        });
+
+        it('should fallback to top 3 products if 0 matches found', async () => {
+            mockHfClient.client.chatCompletion.mockResolvedValue({
+                choices: [{ message: { content: 'Xin lỗi, không có gợi ý nào liên quan.' } }]
+            });
+
+            const result = await ragService.recommend('gợi ý', 1, null, []);
+            expect(result.productIds.length).toBe(3);
+            expect(result.productIds).toEqual([1, 2, 3]);
+        });
+
+        it('should enrich products with images from Catalog API if available', async () => {
+            mockHfClient.client.chatCompletion.mockResolvedValue({
+                choices: [{ message: { content: 'Chào bạn! Gia vị nêm sẵn lẩu Thái Barona 80g ngon.' } }]
+            });
+            mockApiClient.getProductsByIds.mockResolvedValue({
+                success: true,
+                data: {
+                    products: [
+                        { id: 1, name: 'Gia vị nêm sẵn lẩu Thái Barona 80g', image: 'https://images.com/barona.jpg' }
+                    ]
+                }
+            });
+
+            const result = await ragService.recommend('lẩu thái', 1, null, []);
+            expect(result.productIds).toEqual([1]);
+            expect(result.products[0].image).toBe('https://images.com/barona.jpg');
         });
     });
 });

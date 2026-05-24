@@ -32,6 +32,15 @@ describe('DataIngestionService', () => {
                 success: true,
                 data: { stores: [{ id: 1 }, { id: 2 }] }
             }),
+            getCategories: jest.fn().mockResolvedValue({
+                success: true,
+                data: {
+                    categories: [
+                        { id: 6, name: 'Thức uống', parentId: null },
+                        { id: 113, name: 'Nước ngọt có ga', parentId: 6 }
+                    ]
+                }
+            }),
             getCustomerProfile: jest.fn()
         };
 
@@ -267,7 +276,7 @@ describe('DataIngestionService', () => {
 
     describe('_buildContentText', () => {
         it('should format Vietnamese text with keywords', () => {
-            const text = service._buildContentText('Coca Cola', 'Nước giải khát', 12000, 'CocaCola VN', true, 48);
+            const text = service._buildContentText('Coca Cola', 'Nước giải khát', 'Thức uống', 12000, 'CocaCola VN', true, 48);
 
             expect(text).toContain('Sản phẩm "Coca Cola"');
             expect(text).toContain('danh mục "Nước giải khát"');
@@ -279,7 +288,7 @@ describe('DataIngestionService', () => {
         });
 
         it('should show "hết hàng" when not in stock', () => {
-            const text = service._buildContentText('Test', 'Cat', 1000, null, false, 0);
+            const text = service._buildContentText('Test', 'Cat', null, 1000, null, false, 0);
             expect(text).toContain('hết hàng');
             expect(text).not.toContain('nhà cung cấp');
         });
@@ -316,10 +325,12 @@ describe('DataIngestionService', () => {
 
     describe('_buildInventoryMap', () => {
         it('should build Map from array response', () => {
-            const result = { success: true, data: [
-                { productId: 1, quantityOnShelf: 10, quantityOnHand: 15 },
-                { productId: 2, quantityOnShelf: 0, quantityOnHand: 0 }
-            ]};
+            const result = {
+                success: true, data: [
+                    { productId: 1, quantityOnShelf: 10, quantityOnHand: 15 },
+                    { productId: 2, quantityOnShelf: 0, quantityOnHand: 0 }
+                ]
+            };
 
             const map = service._buildInventoryMap(result);
 
