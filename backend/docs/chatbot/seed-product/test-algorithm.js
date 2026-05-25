@@ -449,11 +449,11 @@ async function runCFVerify(tc, results) {
     console.log(`\n   ✅ PASS — ${tc.id}`);
     results.pass++;
   } else if (clusterRate >= 0.2) {
-    console.log(`\n   ⚠️  PARTIAL — ${tc.id} (cluster match ${(clusterRate*100).toFixed(0)}%)`);
+    console.log(`\n   ⚠️  PARTIAL — ${tc.id} (cluster match ${(clusterRate * 100).toFixed(0)}%)`);
     results.warn++;
     results.pass++;
   } else {
-    console.log(`\n   ❌ FAIL — ${tc.id} (cluster match too low: ${(clusterRate*100).toFixed(0)}%)`);
+    console.log(`\n   ❌ FAIL — ${tc.id} (cluster match too low: ${(clusterRate * 100).toFixed(0)}%)`);
     results.fail++;
   }
 }
@@ -567,6 +567,7 @@ async function runHybridColdStart(tc, results) {
 async function runSessionVerify(tc, results) {
   const SessionContextService = require('../../../services/chatbot/src/services/session-context.service');
   const sessionService = new SessionContextService();
+  await sessionService.warmUp(pool, 1);
 
   const intent = sessionService.inferSessionIntent(tc.productSequence, tc.lastMessage);
 

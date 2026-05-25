@@ -19,8 +19,7 @@ const CustomTooltip = ({ active, payload, label }) => {
   return (
     <div className="bg-white shadow-lg rounded-lg border border-gray-200 p-3 text-xs">
       <p className="font-medium text-gray-700 mb-1.5">
-        {new Date(point.date).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
-      </p>
+        {new Date(point.date).toLocaleDateString('vi-VN', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}      </p>
       {payload.map(p => (
         <div key={p.dataKey} className="flex items-center gap-2 py-0.5">
           <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: p.color }} />
@@ -30,7 +29,7 @@ const CustomTooltip = ({ active, payload, label }) => {
       ))}
       {point.triggerType && (
         <div className="mt-1.5 pt-1.5 border-t border-gray-100 text-gray-500">
-          Trigger: {point.triggerType === 'manual' ? '⚡ Manual' : point.triggerType === 'nightly' ? '🌙 Nightly' : `📌 ${point.triggerType}`}
+          Trigger: {point.triggerType === 'manual' ? 'Manual' : point.triggerType === 'nightly' ? 'Nightly' : point.triggerType}
         </div>
       )}
     </div>
@@ -68,10 +67,17 @@ export const WeightEvolutionChart = ({ data, currentWeights, loading }) => {
           No weight history available
         </div>
       ) : (
-        <ResponsiveContainer width="100%" height={220}>
-          <LineChart data={chartData} margin={{ top: 5, right: 10, left: -15, bottom: 5 }}>
+        <ResponsiveContainer width="100%" height={250}>
+          <LineChart data={chartData} margin={{ top: 5, right: 10, left: -15, bottom: 20 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
-            <XAxis dataKey="dateLabel" tick={{ fontSize: 10, fill: '#9ca3af' }} />
+            <XAxis
+              dataKey="dateLabel"
+              tick={{ fontSize: 10, fill: '#9ca3af' }}
+              interval="preserveStartEnd"
+              angle={-30}
+              textAnchor="end"
+              height={50}
+            />
             <YAxis domain={[0, 0.65]} tick={{ fontSize: 10, fill: '#9ca3af' }} tickFormatter={v => `${(v * 100).toFixed(0)}%`} />
             <Tooltip content={<CustomTooltip />} />
             <Legend iconType="circle" wrapperStyle={{ fontSize: '11px' }} />

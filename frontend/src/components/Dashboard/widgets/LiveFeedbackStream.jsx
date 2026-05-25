@@ -29,7 +29,7 @@ const formatTimeAgo = (dateStr) => {
   return `${days}d ago`;
 };
 
-export const LiveFeedbackStream = ({ data, loading }) => {
+export const LiveFeedbackStream = ({ data, loading, selectedSource, setSelectedSource, selectedRecency, setSelectedRecency }) => {
   const feedbacks = data?.feedbacks || [];
   const prevIdsRef = useRef(new Set());
   const [newIds, setNewIds] = useState(new Set());
@@ -65,18 +65,48 @@ export const LiveFeedbackStream = ({ data, loading }) => {
 
   return (
     <div className="bg-white rounded-xl shadow-sm p-6 flex flex-col h-[calc(100vh-120px)] min-h-[600px] max-h-[850px] overflow-hidden">
-      <div className="flex items-center justify-between mb-4 flex-shrink-0">
-        <h3 className="text-sm font-semibold text-gray-800 flex items-center gap-2">
-          <List size={14} className="text-gray-500" />
-          Live Feedback Stream
-          {newIds.size > 0 && (
-            <span className="flex h-2 w-2 relative">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-            </span>
-          )}
-        </h3>
-        <span className="text-[10px] text-gray-400">{feedbacks.length} recent interactions</span>
+      <div className="flex flex-col gap-2.5 mb-4 flex-shrink-0">
+        <div className="flex items-center justify-between">
+          <h3 className="text-sm font-semibold text-gray-800 flex items-center gap-2">
+            <List size={14} className="text-gray-500" />
+            Live Feedback Stream
+            {newIds.size > 0 && (
+              <span className="flex h-2 w-2 relative">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+              </span>
+            )}
+          </h3>
+          <span className="text-[10px] text-gray-400">{feedbacks.length} recent interactions</span>
+        </div>
+
+        {/* Controls: Source filter + Recency filter */}
+        <div className="flex items-center gap-2">
+          <select
+            value={selectedSource || 'all'}
+            onChange={(e) => setSelectedSource(e.target.value)}
+            className="flex-1 text-xs bg-gray-50 border border-gray-200 outline-none rounded-lg px-2.5 py-1.5 text-gray-600 focus:border-indigo-300 transition-colors"
+          >
+            <option value="all">All algorithms</option>
+            <option value="content">Content-Based (alpha)</option>
+            <option value="cf">Collaborative Filtering (beta)</option>
+            <option value="apriori">Apriori Rules (gamma)</option>
+            <option value="session">Session Boost (delta)</option>
+            <option value="organic">Organic (Non-AI)</option>
+          </select>
+
+          <select
+            value={selectedRecency || 'all'}
+            onChange={(e) => setSelectedRecency(e.target.value)}
+            className="text-xs bg-gray-50 border border-gray-200 outline-none rounded-lg px-2.5 py-1.5 text-gray-600 focus:border-indigo-300 transition-colors"
+          >
+            <option value="all">All time</option>
+            <option value="30m">Last 30 min</option>
+            <option value="1h">Last 1 hour</option>
+            <option value="6h">Last 6 hours</option>
+            <option value="24h">Last 24 hours</option>
+          </select>
+        </div>
       </div>
 
       {loading ? (
@@ -97,11 +127,10 @@ export const LiveFeedbackStream = ({ data, loading }) => {
             return (
               <div
                 key={fb.id}
-                className={`p-3 border rounded-lg transition-all duration-500 ${
-                  isNew
-                    ? 'bg-emerald-50 border-emerald-200 shadow-md animate-pulse ring-1 ring-emerald-300'
-                    : 'bg-gray-50 border-gray-100 hover:bg-gray-100'
-                }`}
+                className={`p-3 border rounded-lg transition-all duration-500 ${isNew
+                  ? 'bg-emerald-50 border-emerald-200 shadow-md animate-pulse ring-1 ring-emerald-300'
+                  : 'bg-gray-50 border-gray-100 hover:bg-gray-100'
+                  }`}
               >
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center gap-2">
@@ -121,7 +150,7 @@ export const LiveFeedbackStream = ({ data, loading }) => {
                     {fb.source}
                   </span>
                 </div>
-                
+
                 <div className="flex items-start gap-2">
                   <div className={`p-1.5 rounded-md mt-0.5 ${actionCfg.bg} ${actionCfg.text}`}>
                     {actionCfg.icon}

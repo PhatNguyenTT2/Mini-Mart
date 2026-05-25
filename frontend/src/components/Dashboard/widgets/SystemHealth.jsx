@@ -111,8 +111,11 @@ export const SystemHealth = ({ latency, batch, loading, onRunBatch }) => {
               ))}
             </div>
           ) : (
-            <div className="text-center py-4 text-gray-400 text-xs">
-              No latency data available
+            <div className="text-center py-6 px-4 bg-gray-50 rounded-xl border border-dashed border-gray-200">
+              <p className="text-xs font-semibold text-gray-700 mb-1">No latency data in the last 24h</p>
+              <p className="text-[10px] text-gray-400 leading-normal max-w-[220px] mx-auto">
+                RAG system requires active chat messages to compute performance stats. Type a recommendation request in the chatbot to populate latency data.
+              </p>
             </div>
           )}
 
@@ -144,13 +147,12 @@ export const SystemHealth = ({ latency, batch, loading, onRunBatch }) => {
               )}
             </div>
 
-            <div className={`rounded-lg border p-3 ${
-              batchRunning ? 'border-indigo-200 bg-indigo-50' :
+            <div className={`rounded-lg border p-3 ${batchRunning ? 'border-indigo-200 bg-indigo-50' :
               !lastRunAt ? 'border-gray-200 bg-gray-50' :
-              failCount === 0 ? 'border-emerald-200 bg-emerald-50' :
-              failCount === -1 ? 'border-red-200 bg-red-50' :
-              'border-amber-200 bg-amber-50'
-            }`}>
+                failCount === 0 ? 'border-emerald-200 bg-emerald-50' :
+                  failCount === -1 ? 'border-red-200 bg-red-50' :
+                    'border-amber-200 bg-amber-50'
+              }`}>
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
                   {batchRunning ? (
@@ -166,10 +168,10 @@ export const SystemHealth = ({ latency, batch, loading, onRunBatch }) => {
                   )}
                   <span className="text-xs font-medium text-gray-700">
                     {batchRunning ? 'Running pipeline...' :
-                     !lastRunAt ? 'Never run' :
-                     failCount === 0 ? 'All steps OK' :
-                     failCount === -1 ? 'Pipeline error' :
-                     `${failCount} step(s) failed`}
+                      !lastRunAt ? 'Never run' :
+                        failCount === 0 ? 'All steps OK' :
+                          failCount === -1 ? 'Pipeline error' :
+                            `${failCount} step(s) failed`}
                   </span>
                 </div>
                 <div className="flex items-center gap-1.5 text-xs text-gray-500">
@@ -197,12 +199,11 @@ export const SystemHealth = ({ latency, batch, loading, onRunBatch }) => {
                     return (
                       <span
                         key={step}
-                        className={`inline-flex items-center gap-1 text-[9px] px-1.5 py-0.5 rounded-md ${
-                          status === 'success' ? 'bg-emerald-100 text-emerald-700' :
+                        className={`inline-flex items-center gap-1 text-[9px] px-1.5 py-0.5 rounded-md ${status === 'success' ? 'bg-emerald-100 text-emerald-700' :
                           status === 'failed' ? 'bg-red-100 text-red-700' :
-                          status === 'skipped' ? 'bg-gray-100 text-gray-500' :
-                          'bg-gray-100 text-gray-500'
-                        }`}
+                            status === 'skipped' ? 'bg-gray-100 text-gray-500' :
+                              'bg-gray-100 text-gray-500'
+                          }`}
                       >
                         {STEP_LABELS[step]}
                         {status === 'success' && <Check size={10} />}

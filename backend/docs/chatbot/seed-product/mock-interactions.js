@@ -12,6 +12,7 @@
  * 
  * Chạy: cd microservices && node docs/chatbot/seed-product/mock-interactions.js
  */
+require('dotenv').config();
 const { Pool } = require('pg');
 
 // ── DB Connection (all tables in shared Supabase) ──
@@ -43,9 +44,9 @@ const PRODUCTS = {
 // USER PERSONA CLUSTERS
 // ============================================================
 const CLUSTERS = {
-  // Nhóm 1: Nội trợ Nấu lẩu (150 users)
+  // Nhóm 1: Nội trợ Nấu lẩu (25 users)
   NOI_TRO: {
-    userRange: [1, 150],
+    userRange: [1, 25],
     primary: [1, 2, 3, 4, 5, 24, 25, 26, 27, 28],     // Bò, Nấm, Rau, Gia vị lẩu, Bún, Cà chua, Hành, Tỏi, Ớt, Chanh
     secondary: [6, 13, 49, 52, 53, 23, 16],              // Cá viên, Dầu ăn, Nước mắm, Hạt nêm, Bột ngọt, Nước tương, Muối
     avoid: [17, 18, 12, 19, 20, 21],                      // Bia, Mì gói, Coca, Snack, Khô gà
@@ -53,9 +54,9 @@ const CLUSTERS = {
     secondaryFreq: [1, 3],  // 1-3 lần/tháng
   },
 
-  // Nhóm 2: Sinh viên Ăn vặt & Thức khuya (150 users)
+  // Nhóm 2: Sinh viên Ăn vặt & Thức khuya (20 users)
   SINH_VIEN: {
-    userRange: [151, 300],
+    userRange: [26, 45],
     primary: [12, 11, 19, 20, 7, 8],                     // Mì Hảo Hảo, Xúc xích, Coca, Snack, Bánh mì, Sữa
     secondary: [10, 15, 9, 22],                            // Trứng, Đường, Thùng sữa, Đậu phộng
     avoid: [1, 2, 3, 4, 24, 25, 26, 49, 52, 53],          // Bò Mỹ, Nấm, Rau, Gia vị, Cà chua, Hành, Tỏi, Nước mắm
@@ -63,24 +64,14 @@ const CLUSTERS = {
     secondaryFreq: [2, 5],
   },
 
-  // Nhóm 3: Dân nhậu Cuối tuần (150 users)
+  // Nhóm 3: Dân nhậu Cuối tuần (14 users)
   DAN_NHAU: {
-    userRange: [301, 450],
+    userRange: [46, 54],
     primary: [17, 18, 21, 22, 6],                          // Bia Heineken, Tiger, Khô gà, Đậu phộng, Cá viên
     secondary: [20, 19, 28, 27],                            // Snack, Coca, Chanh, Ớt
     avoid: [1, 2, 3, 14, 15, 52, 53],                      // Bò, Nấm, Rau, Gạo, Đường, Hạt nêm
     primaryFreq: [2, 4],    // 2-4 lần/tháng
     secondaryFreq: [1, 2],
-  },
-
-  // Nhóm 4: Random / Khách vãng lai (50 users)
-  RANDOM: {
-    userRange: [451, 500],
-    primary: null,  // Random products
-    secondary: null,
-    avoid: [],
-    primaryFreq: [1, 3],
-    secondaryFreq: [1, 1],
   }
 };
 
@@ -153,10 +144,10 @@ async function generateMockInteractions() {
           }
         } else {
           // Primary products (high frequency)
-          const primaryPicks = randSubset(cluster.primary, 
-            Math.ceil(cluster.primary.length * 0.6), 
+          const primaryPicks = randSubset(cluster.primary,
+            Math.ceil(cluster.primary.length * 0.6),
             cluster.primary.length);
-          
+
           for (const pid of primaryPicks) {
             const count = randInt(cluster.primaryFreq[0], cluster.primaryFreq[1]);
             userInteractions.set(pid, {
@@ -168,7 +159,7 @@ async function generateMockInteractions() {
 
           // Secondary products (low frequency)
           if (cluster.secondary) {
-            const secondaryPicks = randSubset(cluster.secondary, 1, 
+            const secondaryPicks = randSubset(cluster.secondary, 1,
               Math.ceil(cluster.secondary.length * 0.5));
             for (const pid of secondaryPicks) {
               const count = randInt(cluster.secondaryFreq[0], cluster.secondaryFreq[1]);
@@ -202,9 +193,9 @@ async function generateMockInteractions() {
         clusterRows += userInteractions.size;
       }
 
-      stats[clusterName === 'NOI_TRO' ? 'noiTro' : 
-            clusterName === 'SINH_VIEN' ? 'sinhVien' :
-            clusterName === 'DAN_NHAU' ? 'danNhau' : 'random'] = clusterRows;
+      stats[clusterName === 'NOI_TRO' ? 'noiTro' :
+        clusterName === 'SINH_VIEN' ? 'sinhVien' :
+          clusterName === 'DAN_NHAU' ? 'danNhau' : 'random'] = clusterRows;
       stats.totalRows += clusterRows;
       console.log(`   → ${clusterRows} interaction rows generated.`);
     }
@@ -219,7 +210,7 @@ async function generateMockInteractions() {
       let pi = 1;
 
       for (const row of chunk) {
-        values.push(`($${pi}, $${pi+1}, $${pi+2}, $${pi+3}, $${pi+4}, NOW(), $${pi+5})`);
+        values.push(`($${pi}, $${pi + 1}, $${pi + 2}, $${pi + 3}, $${pi + 4}, NOW(), $${pi + 5})`);
         params.push(...row);
         pi += 6;
       }
@@ -278,7 +269,7 @@ async function generateMockInteractions() {
 
     // ── Verify cluster separation ──
     console.log(`\n🔍 Cluster Separation Verification:`);
-    
+
     // Lẩu cluster items should have high similarity
     const lauSim = await pool.query(`
       SELECT ROUND(similarity::numeric, 4) AS sim

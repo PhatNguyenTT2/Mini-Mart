@@ -32,6 +32,25 @@ async function cleanup() {
     );
     console.log(`   ✓ Deleted ${feedbackCleared} feedback rows`);
 
+    // Step 1.2: Reset weights of store_id = 1 to default values
+    console.log('\n📋 Step 1.2: Resetting ensemble_weights to baseline (α=0.40, β=0.25, γ=0.25, δ=0.10)...');
+    await pool.query(`
+      INSERT INTO ensemble_weights (store_id, alpha, beta, gamma, delta, updated_at)
+      VALUES (1, 0.400, 0.250, 0.250, 0.100, NOW())
+      ON CONFLICT (store_id) 
+      DO UPDATE SET alpha = 0.400, beta = 0.250, gamma = 0.250, delta = 0.100, updated_at = NOW()
+    `);
+    console.log('   ✓ Stored baseline weights successfully');
+
+    // Step 1.3: Reset weight history to baseline record only
+    console.log('\n📋 Step 1.3: Resetting ensemble_weights_history to a single baseline row...');
+    await pool.query('DELETE FROM ensemble_weights_history WHERE store_id = 1');
+    await pool.query(`
+      INSERT INTO ensemble_weights_history (store_id, alpha, beta, gamma, delta, feedback_count, trigger_type, created_at)
+      VALUES (1, 0.400, 0.250, 0.250, 0.100, 0, 'baseline', NOW())
+    `);
+    console.log('   ✓ Seeded fresh baseline weight history snapshot');
+
     // Step 2: Verify seed data integrity
     console.log('\n📋 Step 2: Verifying seed data integrity...\n');
 

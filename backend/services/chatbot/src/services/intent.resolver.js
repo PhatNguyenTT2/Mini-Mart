@@ -82,7 +82,10 @@ const INTENT_PATTERNS = {
     RECOMMENDATION: {
         keywords: ['gợi ý', 'recommend', 'đề xuất', 'tư vấn', 'nên mua', 'mua gì',
             'có gì ngon', 'giới thiệu', 'best seller', 'bán chạy', 'phổ biến',
-            'muốn mua', 'cần mua', 'mua cho', 'mua sắm', 'mua gì đó', 'mua đồ'],
+            'muốn mua', 'cần mua', 'mua cho', 'mua sắm', 'mua gì đó', 'mua đồ',
+            'cho tôi', 'cho xem', 'cho mình',
+            'ăn kèm', 'kèm theo', 'đi kèm',
+            'muốn nấu', 'nấu gì', 'làm món', 'nấu ăn', 'nấu lẩu'],
         description: 'Gợi ý sản phẩm (RAG Pipeline)'
     },
     SEARCH_PRODUCT: {
@@ -103,6 +106,24 @@ const INTENT_PATTERNS = {
  */
 function resolveIntent(message, userType = 'customer') {
     const normalizedMsg = message.toLowerCase().trim();
+
+    // 1. Priority pre-check for RECOMMENDATION to prevent false matches with ADD_TO_CART regexes or SEARCH_PRODUCT.
+    // If it's a structural cart write action (contains 'giỏ', 'xóa', 'đơn'), do not intercept.
+    const isCartOrOrderWrite = normalizedMsg.includes('giỏ') || normalizedMsg.includes('xóa') || normalizedMsg.includes('hủy') || normalizedMsg.includes('tạo đơn');
+    if (!isCartOrOrderWrite) {
+        const recConfig = INTENT_PATTERNS.RECOMMENDATION;
+        for (const keyword of recConfig.keywords) {
+            if (normalizedMsg.includes(keyword)) {
+                return {
+                    intent: 'RECOMMENDATION',
+                    confidence: 'priority_keyword_match',
+                    matchedKeyword: keyword,
+                    description: recConfig.description,
+                    writeAction: false
+                };
+            }
+        }
+    }
 
     for (const [intent, config] of Object.entries(INTENT_PATTERNS)) {
         // Enforce employee-only action validation at intent resolution stage

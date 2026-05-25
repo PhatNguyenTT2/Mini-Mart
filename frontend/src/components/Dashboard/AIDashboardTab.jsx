@@ -19,6 +19,8 @@ export const AIDashboardTab = () => {
   const [forceResult, setForceResult] = useState(null);
   const [autoRefresh, setAutoRefresh] = useState(false);
   const [countdown, setCountdown] = useState(0);
+  const [selectedSource, setSelectedSource] = useState('all');
+  const [selectedRecency, setSelectedRecency] = useState('all');
 
   const [recData, setRecData] = useState(null);
   const [latencyData, setLatencyData] = useState(null);
@@ -36,7 +38,7 @@ export const AIDashboardTab = () => {
       const [recRes, latRes, fbRes, whRes, cfmRes] = await Promise.all([
         api.get('/chatbot/stats/recommendations', { params: { storeId: STORE_ID, days } }),
         api.get('/chatbot/stats/latency', { params: { storeId: STORE_ID } }),
-        api.get('/chatbot/stats/feedback-stream', { params: { storeId: STORE_ID, limit: 50 } }),
+        api.get('/chatbot/stats/feedback-stream', { params: { storeId: STORE_ID, limit: 50, source: selectedSource, recency: selectedRecency } }),
         api.get('/chatbot/stats/weight-history', { params: { storeId: STORE_ID, limit: 30 } }),
         api.get('/chatbot/stats/cf-matrix', { params: { storeId: STORE_ID } })
       ]);
@@ -51,7 +53,7 @@ export const AIDashboardTab = () => {
     } finally {
       setLoading(false);
     }
-  }, [days]);
+  }, [days, selectedSource, selectedRecency]);
 
   useEffect(() => {
     fetchAll();
@@ -93,6 +95,7 @@ export const AIDashboardTab = () => {
       setForceLoading(false);
     }
   };
+
 
   const handleRunBatch = async () => {
     const res = await api.post('/chatbot/admin/run-batch', { storeId: STORE_ID });
@@ -137,11 +140,10 @@ export const AIDashboardTab = () => {
                 <button
                   key={opt.value}
                   onClick={() => setDays(opt.value)}
-                  className={`px-3 py-1.5 text-xs font-medium rounded-md transition-all ${
-                    days === opt.value
-                      ? 'bg-white text-emerald-700 shadow-sm'
-                      : 'text-gray-500 hover:text-gray-700'
-                  }`}
+                  className={`px-3 py-1.5 text-xs font-medium rounded-md transition-all ${days === opt.value
+                    ? 'bg-white text-emerald-700 shadow-sm'
+                    : 'text-gray-500 hover:text-gray-700'
+                    }`}
                 >
                   {opt.label}
                 </button>
@@ -154,11 +156,10 @@ export const AIDashboardTab = () => {
             {/* Auto-refresh toggle */}
             <button
               onClick={() => setAutoRefresh(!autoRefresh)}
-              className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg transition-colors border ${
-                autoRefresh
-                  ? 'bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100'
-                  : 'text-gray-500 border-gray-300 hover:bg-gray-50'
-              }`}
+              className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg transition-colors border ${autoRefresh
+                ? 'bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100'
+                : 'text-gray-500 border-gray-300 hover:bg-gray-50'
+                }`}
             >
               {autoRefresh ? (
                 <>
@@ -194,13 +195,12 @@ export const AIDashboardTab = () => {
 
         {/* Force Learn Result */}
         {forceResult && (
-          <div className={`mt-3 px-3 py-2 rounded-lg text-xs ${
-            forceResult.error
-              ? 'bg-red-50 text-red-700 border border-red-200'
-              : forceResult.skipped
-                ? 'bg-amber-50 text-amber-700 border border-amber-200'
-                : 'bg-emerald-50 text-emerald-700 border border-emerald-200'
-          }`}>
+          <div className={`mt-3 px-3 py-2 rounded-lg text-xs ${forceResult.error
+            ? 'bg-red-50 text-red-700 border border-red-200'
+            : forceResult.skipped
+              ? 'bg-amber-50 text-amber-700 border border-amber-200'
+              : 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+            }`}>
             {forceResult.error
               ? `❌ Error: ${forceResult.error}`
               : forceResult.message
@@ -239,7 +239,14 @@ export const AIDashboardTab = () => {
 
           {/* Right Column: Live Stream (33% Sticky) */}
           <div className="w-full lg:w-1/3 lg:sticky lg:top-6">
-            <LiveFeedbackStream data={feedbackData} loading={loading} />
+            <LiveFeedbackStream
+              data={feedbackData}
+              loading={loading}
+              selectedSource={selectedSource}
+              setSelectedSource={setSelectedSource}
+              selectedRecency={selectedRecency}
+              setSelectedRecency={setSelectedRecency}
+            />
           </div>
         </div>
       </div>

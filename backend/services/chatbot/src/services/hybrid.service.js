@@ -123,7 +123,9 @@ class HybridRecommendationService {
 
         for (const r of contentResults) {
             const pid = Number(r.product_id);
-            const normalizedContent = maxRRF > 0 ? (r.rrf_score || 0) / maxRRF : 0;
+            // Clamp to [0, 1] — negative rrf_scores (from anchor penalty) must not
+            // produce negative content scores, which would break _getTopSource attribution
+            const normalizedContent = maxRRF > 0 ? Math.max(0, (r.rrf_score || 0) / maxRRF) : 0;
 
             scoreMap.set(pid, {
                 content: normalizedContent,
@@ -213,7 +215,7 @@ class HybridRecommendationService {
         // ── Step 4: Personalization bonus ──
         const personalBonus = customerType === 'vip' ? 1.0
             : customerType === 'wholesale' ? 0.8
-            : 0.3;
+                : 0.3;
 
         for (const entry of scoreMap.values()) {
             entry.personal = personalBonus;
@@ -230,15 +232,23 @@ class HybridRecommendationService {
                 w.beta = 0;
             }
 
-            const finalScore = 
+            const finalScore =
                 w.alpha * entry.content +
                 w.beta * entry.cf +
                 w.gamma * entry.apriori +
                 w.delta * entry.personal;
 
+            // Content-relevance gate: Products with zero content score
+            // (CF-only / Apriori-only injections) don't match user's query.
+            // Penalize them to ensure content-matched products rank higher.
+            const CONTENT_RELEVANCE_PENALTY = 0.5;
+            const adjustedScore = entry.content > 0
+                ? finalScore
+                : finalScore * CONTENT_RELEVANCE_PENALTY;
+
             results.push({
                 product_id: pid,
-                final_score: Math.round(finalScore * 10000) / 10000,
+                final_score: Math.round(adjustedScore * 10000) / 10000,
                 scores: {
                     content: Math.round(entry.content * 10000) / 10000,
                     cf: Math.round(entry.cf * 10000) / 10000,

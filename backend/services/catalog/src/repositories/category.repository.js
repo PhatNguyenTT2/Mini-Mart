@@ -95,20 +95,20 @@ class CategoryRepository {
     }
 
     async create(data) {
-        const { parent_id, name, image_url, description, sort_order, is_perishable } = data;
+        const { parent_id, name, image_url, description, sort_order, is_perishable, search_synonyms } = data;
         const query = `
-            INSERT INTO category (parent_id, name, image_url, description, sort_order, is_perishable)
-            VALUES ($1, $2, $3, $4, $5, $6)
+            INSERT INTO category (parent_id, name, image_url, description, sort_order, is_perishable, search_synonyms)
+            VALUES ($1, $2, $3, $4, $5, $6, $7)
             RETURNING *
         `;
         const { rows } = await this.pool.query(query, [
-            parent_id || null, name, image_url || null, description || null, sort_order || 0, is_perishable || false
+            parent_id || null, name, image_url || null, description || null, sort_order || 0, is_perishable || false, search_synonyms || null
         ]);
         return rows[0];
     }
 
     async update(id, data) {
-        const { parent_id, name, image_url, description, sort_order, is_perishable } = data;
+        const { parent_id, name, image_url, description, sort_order, is_perishable, search_synonyms } = data;
         const query = `
             UPDATE category 
             SET parent_id = COALESCE($1, parent_id),
@@ -116,12 +116,13 @@ class CategoryRepository {
                 image_url = COALESCE($3, image_url),
                 description = COALESCE($4, description),
                 sort_order = COALESCE($5, sort_order),
-                is_perishable = COALESCE($6, is_perishable)
-            WHERE id = $7
+                is_perishable = COALESCE($6, is_perishable),
+                search_synonyms = COALESCE($7, search_synonyms)
+            WHERE id = $8
             RETURNING *
         `;
         const { rows } = await this.pool.query(query, [
-            parent_id, name, image_url, description, sort_order, is_perishable, id
+            parent_id, name, image_url, description, sort_order, is_perishable, search_synonyms, id
         ]);
         return rows[0] || null;
     }

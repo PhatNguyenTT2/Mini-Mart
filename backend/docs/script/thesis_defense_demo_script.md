@@ -64,7 +64,7 @@ cd backend; node docs/script/pre-demo-cleanup.js
 | Bước | Hành động | Trên màn hình |
 |:---:|----------|---------------|
 | 1 | Gõ vào chatbot: **"Tôi muốn mua đồ ăn vặt"** | Chatbot (trái) |
-| 2 | Đợi 2-3 giây, chatbot trả kết quả | Xuất hiện product cards: Snack Lays, Mì gói, Coca-Cola... |
+| 2 | Đợi 2-3 giây, chatbot trả contekết quả | Xuất hiện product cards: Snack Lays, Mì gói, Coca-Cola... |
 | 3 | **Click** vào thẻ sản phẩm **Snack Lays** | Card highlight + feedback gửi đi |
 | 4 | Nhìn sang Dashboard (phải) | Badge `[content]` nhảy lên Live Feed |
 
@@ -88,7 +88,7 @@ cd backend; node docs/script/pre-demo-cleanup.js
 
 | Bước | Hành động | Trên màn hình |
 |:---:|----------|---------------|
-| 1 | Gõ tiếp (cùng session): **"Cho tôi 1 thùng bia Heineken"** | Chatbot (trái) |
+| 1 | Gõ tiếp (cùng session): **"Tôi muốn mua bia Heineken"** | Chatbot (trái) |
 | 2 | Đợi kết quả | Bia Heineken(17) + **Khô gà lá chanh(21)** hoặc **Snack Lays(20)** |
 | 3 | Chỉ tay vào sản phẩm Khô gà/Snack | "Sản phẩm này không phải do tìm kiếm" |
 | 4 | **Click** vào **Khô gà lá chanh** | Feedback gửi đi |
@@ -151,29 +151,29 @@ cd backend; node docs/script/pre-demo-cleanup.js
 
 | Bước | Hành động | Trên màn hình |
 |:---:|----------|---------------|
-| 4 | Gõ tiếp (cùng session): **"Có rau gì ăn kèm không?"** | Chatbot (trái) |
+| 4 | Gõ tiếp (cùng session): **"Gợi ý rau ăn kèm lẩu đi"** | Chatbot (trái) |
 | 5 | Đợi kết quả | Rau muống(3), Cải thìa(22)... |
 
-> *Nói ngắn gọn: "Em tiếp tục hỏi về rau ăn kèm. Lúc này Session Engine đã ngầm nhận diện cluster 'Nấu lẩu'."*
+> *Nói ngắn gọn: "Em tiếp tục hỏi về rau ăn kèm. Lúc này Session Engine đã ngầm nhận diện ý định nấu lẩu."*
 
 #### Lượt 3 — Cú chốt (không dùng từ khóa)
 
 | Bước | Hành động | Trên màn hình |
 |:---:|----------|---------------|
-| 6 | Gõ: **"Gợi ý thêm đồ nấu ăn nữa đi"** | Chatbot (trái) |
+| 6 | Gõ: **"Gợi ý thêm đi"** | Chatbot (trái) |
 | 7 | Đợi kết quả | **Bún tươi(5)**, **Hành tây(25)**, **Chanh(28)**... |
 | 8 | **Click** vào **Bún tươi** | Feedback gửi đi |
 | 9 | Nhìn sang Dashboard (phải) | Badge **`[session]`** nhảy lên 🎉 |
 
 **🎤 Thuyết minh (nói sau bước 7, khi kết quả hiện ra):**
 
-> *"Thưa thầy cô, ở câu cuối cùng, em hoàn toàn KHÔNG dùng bất kỳ từ khóa nào liên quan đến lẩu — không có 'bò', 'nấm', hay 'gia vị'. Câu hỏi chỉ là 'Gợi ý thêm đồ nấu ăn nữa đi'.*
+> *"Thưa thầy cô, ở câu cuối cùng, em hoàn toàn KHÔNG dùng bất kỳ từ khóa nào liên quan đến lẩu — không có 'bò', 'nấm', hay 'gia vị'. Câu hỏi cực ngắn chỉ là 'Gợi ý thêm đi'.*
 >
 > *Nhưng AI vẫn trả về Bún tươi, Hành tây, Chanh — toàn bộ đều là nguyên liệu ăn kèm lẩu. Đó là nhờ thuật toán Session Context Detection:*
-> 1. *Hệ thống trích xuất chuỗi sản phẩm đã gợi ý ở 2 câu trước (Gia vị lẩu, Bò, Nấm, Rau)*
-> 2. *Phát hiện 4/10 sản phẩm thuộc cluster 'Lẩu Bò', confidence > 0.4 → Lock cluster*
-> 3. *Áp dụng Session Boost +0.15 cho tất cả sản phẩm cùng danh mục (Category-Driven)*
-> 4. *Kết quả: Bún tươi được đẩy lên Top dù Content score có thể thấp"*
+> 1. *Hệ thống trích xuất chuỗi sản phẩm đã gợi ý ở các câu trước.*
+> 2. *Deterministic Reformulator phát hiện câu continuation 'Gợi ý thêm đi', tự động tái sử dụng chủ đề chính là 'nấu lẩu' từ lịch sử để thực hiện Keyword Search ổn định.*
+> 3. *Áp dụng Session Boost +0.15 cho các sản phẩm trong Cluster Lẩu Bò.*
+> 4. *Kết quả: Bún tươi được đẩy lên Top phục vụ hoàn hảo chủ đề bữa ăn.*
 
 **🎤 Bảo vệ thiết kế (nói sau khi Dashboard hiện badge `[session]`):**
 

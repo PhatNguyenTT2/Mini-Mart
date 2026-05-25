@@ -8,6 +8,7 @@
  * 
  * Chạy: cd microservices && node docs/chatbot/seed-product/mock-orders.js
  */
+require('dotenv').config();
 const { Pool } = require('pg');
 
 // ============================================================

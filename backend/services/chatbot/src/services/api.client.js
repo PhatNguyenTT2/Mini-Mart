@@ -62,7 +62,7 @@ class ApiClient {
         return this._fetch(url);
     }
 
-    async getProductsByIds(productIds, timeoutMs = 500) {
+    async getProductsByIds(productIds, timeoutMs = 3000) {
         const url = `${SERVICE_URLS.catalog}/api/products/batch`;
         const controller = new AbortController();
         const timer = setTimeout(() => controller.abort(), timeoutMs);

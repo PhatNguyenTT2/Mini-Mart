@@ -13,6 +13,31 @@
 const logger = require('../../../../shared/common/logger');
 const { getPersonalizationContext, getCoPurchaseContext, getCFHint } = require('./context.helper');
 
+// Vietnamese stop words + common action verbs that don't appear in product content
+// plainto_tsquery('simple', ...) uses AND, so these extra tokens cause zero matches
+const VN_STOP_WORDS = new Set([
+    'tôi', 'tui', 'mình', 'bạn', 'anh', 'chị', 'em',
+    'muốn', 'cần', 'tìm', 'mua', 'bán', 'cho', 'xin', 'hỏi',
+    'có', 'không', 'là', 'và', 'của', 'để', 'với', 'trong', 'ngoài',
+    'được', 'rồi', 'nhé', 'nha', 'ạ', 'vậy', 'thì', 'nào', 'gì',
+    'hãy', 'đi', 'lại', 'ra', 'vào', 'lên', 'xuống',
+    'gợi', 'ý', 'giới', 'thiệu', 'recommend', 'suggest',
+    'ơi', 'à', 'ừ', 'ok', 'vâng', 'dạ', 'hey', 'hi', 'hello',
+    'shop', 'cửa', 'hàng', 'siêu', 'thị'
+]);
+
+const cleanQueryForKeyword = (query) => {
+    if (!query) return query;
+    const cleaned = query
+        .toLowerCase()
+        .split(/\s+/)
+        .filter(w => w.length > 0 && !VN_STOP_WORDS.has(w))
+        .join(' ')
+        .trim();
+    // Fallback to original if everything was stripped
+    return cleaned.length >= 2 ? cleaned : query;
+};
+
 // Helper: bỏ dấu tiếng Việt bằng Unicode NFD decomposition
 const removeAccents = (str) => {
     if (!str) return '';
@@ -23,35 +48,54 @@ const removeAccents = (str) => {
 const syncProductsWithResponse = (products, reply) => {
     if (!reply) return products.slice(0, 3);
 
-    const normalizedContent = removeAccents(reply.toLowerCase());
+    const mutualContent = removeAccents(reply.toLowerCase());
 
     const mentionedProducts = products.filter(p => {
+        const source = p.top_source || p.topSource || p.source;
+        if (source && source !== 'content') return true;
+
         const name = p.content?.match(/"([^"]+)"/)?.[1] || p.name || '';
         if (!name) return false;
 
         const normalizedName = removeAccents(name.toLowerCase());
 
         // Match 1: Full name
-        if (normalizedContent.includes(normalizedName)) return true;
+        if (mutualContent.includes(normalizedName)) return true;
 
         // Match 2: Partial — ≥3 từ đầu (LLM hay viết tắt tên SP)
         const words = normalizedName.split(/\s+/);
         if (words.length >= 3) {
             const partial = words.slice(0, 3).join(' ');
-            if (normalizedContent.includes(partial)) return true;
+            if (mutualContent.includes(partial)) return true;
         }
 
         // Match 3: Bigram minimum (≥2 từ) — KHÔNG dùng single-word
         // để tránh trúng các danh từ chung phổ biến: "Nước", "Bánh", "Kẹo", "Thịt"
         if (words.length >= 2) {
             const bigram = words.slice(0, 2).join(' ');
-            if (normalizedContent.includes(bigram)) return true;
+            if (mutualContent.includes(bigram)) return true;
         }
 
         return false;
     });
 
     return mentionedProducts.length > 0 ? mentionedProducts : products.slice(0, 3);
+};
+
+// Helper: phát hiện câu hỏi ngoài phạm vi nghiệp vụ siêu thị (đồ công nghệ - TC-06)
+const detectOutOfScopeQuery = (message) => {
+    if (!message) return null;
+    const msg = message.toLowerCase();
+    const techKeywords = [
+        'iphone', 'samsung', 'oppo', 'xiaomi', 'nokia', 'ipad', 'macbook',
+        'laptop', 'máy tính', 'điện thoại', 'tivi', 'television', 'tai nghe',
+        'sạc dự phòng', 'chuột máy tính', 'bàn phím', 'công nghệ', 'đồ công nghệ'
+    ];
+    const isTech = techKeywords.some(kw => msg.includes(kw));
+    if (isTech) {
+        return 'Dạ siêu thị POSMART hiện tại chỉ chuyên cung cấp thực phẩm và đồ tiêu dùng nhanh, không kinh doanh mặt hàng đồ công nghệ ạ. Bạn có muốn tham khảo các loại nước ngọt hoặc đồ ăn vặt không?';
+    }
+    return null;
 };
 
 class RAGService {
@@ -79,6 +123,17 @@ class RAGService {
         const startTime = Date.now();
         const metadata = { steps: {} };
 
+        // Intercept out of scope queries immediately (TC-06)
+        const outOfScopeResponse = detectOutOfScopeQuery(userMessage);
+        if (outOfScopeResponse) {
+            return {
+                content: outOfScopeResponse,
+                productIds: [],
+                products: [],
+                metadata: { outOfScope: true, totalLatencyMs: Date.now() - startTime }
+            };
+        }
+
         try {
             // Step 1: Query Reformulation
             const stepStart1 = Date.now();
@@ -97,13 +152,25 @@ class RAGService {
 
             // Step 3: Hybrid Search (parallel)
             const stepStart3 = Date.now();
-            const [semanticResults, keywordResults] = await Promise.all([
-                this.knowledgeRepo.searchSemantic(queryVector, storeId, 10),
-                this.knowledgeRepo.searchKeyword(query, storeId, 10)
+            const keywordQuery = cleanQueryForKeyword(query);
+            const [rawSemanticResults, keywordResults] = await Promise.all([
+                this.knowledgeRepo.searchSemantic(queryVector, storeId, 30),
+                this.knowledgeRepo.searchKeyword(keywordQuery, storeId, 30)
             ]);
+
+            // Step 3.5: Semantic Quality Gate
+            // SBERT scores < 0.3 are near-random noise for Vietnamese product descriptions.
+            // When semantic confidence is low, trust keyword search exclusively.
+            const SEMANTIC_THRESHOLD = 0.3;
+            const semanticResults = rawSemanticResults.filter(r => Number(r.score) >= SEMANTIC_THRESHOLD);
+
             metadata.steps.search = {
-                semanticCount: semanticResults.length,
+                semanticCount: rawSemanticResults.length,
+                semanticAfterFilter: semanticResults.length,
+                semanticThreshold: SEMANTIC_THRESHOLD,
+                topSemanticScore: rawSemanticResults.length > 0 ? Number(rawSemanticResults[0].score).toFixed(4) : null,
                 keywordCount: keywordResults.length,
+                keywordQuery,
                 latencyMs: Date.now() - stepStart3
             };
 
@@ -112,26 +179,75 @@ class RAGService {
 
             // Step 4.5: Anchor Category Re-ranking
             // Use Top 1 RRF result's category as "anchor" — boost same-category, penalize others
-            if (fused.length > 1 && fused[0].category_name) {
-                const anchorCategory = fused[0].category_name;
-                const BOOST = 0.05;
-                const PENALTY = 0.03;
+            // NOTE: Use proportional boost/penalty to avoid making rrf_score negative
+            // (keyword-only RRF scores ≈ 0.016 with k=60, fixed penalties would dominate)
+            if (fused.length > 1) {
+                const queryLower = query.toLowerCase();
+                const anchorCategories = new Set();
 
-                for (const item of fused) {
-                    if (item.category_name === anchorCategory) {
-                        item.rrf_score += BOOST;
-                    } else {
-                        item.rrf_score -= PENALTY;
+                const catKeywords = {
+                    'rau': ['Rau lá', 'Rau củ'],
+                    'nấm': ['Rau củ', 'Nông sản khô'],
+                    'thịt bò': ['Thịt bò'],
+                    'thịt heo': ['Thịt heo'],
+                    'trứng': ['Trứng'],
+                    'cá': ['Hải sản', 'Thực phẩm đông lạnh'],
+                    'tôm': ['Hải sản'],
+                    'mực': ['Hải sản'],
+                    'bún': ['Bún, phở tươi', 'Thức ăn chế biến, bún tươi'],
+                    'phở': ['Bún, phở tươi', 'Phở, bún khô'],
+                    'mì': ['Mì ăn liền'],
+                    'sữa': ['Sữa tươi', 'Sữa chua & Phô mai'],
+                    'bia': ['Bia'],
+                    'nước ngọt': ['Nước ngọt có ga'],
+                    'coca': ['Nước ngọt có ga'],
+                    'pepsi': ['Nước ngọt có ga'],
+                    'bánh mì': ['Bánh mì & Bánh ngọt'],
+                    'bánh': ['Bánh mì & Bánh ngọt', 'Bánh quy & Kẹo'],
+                    'kẹo': ['Bánh quy & Kẹo'],
+                    'snack': ['Snack & Đồ nhắm'],
+                    'bim bim': ['Snack & Đồ nhắm'],
+                    'gia vị': ['Gia vị tẩm ướp'],
+                    'nước mắm': ['Nước chấm'],
+                    'nước tương': ['Nước chấm']
+                };
+
+                for (const [kw, cats] of Object.entries(catKeywords)) {
+                    if (queryLower.includes(kw)) {
+                        for (const c of cats) {
+                            if (fused.some(item => item.category_name === c)) {
+                                anchorCategories.add(c);
+                            }
+                        }
                     }
                 }
-                // Re-sort by adjusted score
-                fused.sort((a, b) => b.rrf_score - a.rrf_score);
 
-                metadata.steps.anchorRerank = {
-                    anchorCategory,
-                    boost: BOOST,
-                    penalty: PENALTY
-                };
+                // Fallback to top RRF result's category if none detected via keywords
+                if (anchorCategories.size === 0 && fused[0].category_name) {
+                    anchorCategories.add(fused[0].category_name);
+                }
+
+                if (anchorCategories.size > 0) {
+                    const maxScore = Math.max(...fused.map(r => r.rrf_score || 0));
+                    const BOOST = maxScore * 0.5;    // +50% of max score
+                    const PENALTY = maxScore * 0.2;  // -20% of max score
+
+                    for (const item of fused) {
+                        if (anchorCategories.has(item.category_name)) {
+                            item.rrf_score += BOOST;
+                        } else {
+                            item.rrf_score = Math.max(0, item.rrf_score - PENALTY);
+                        }
+                    }
+                    fused.sort((a, b) => b.rrf_score - a.rrf_score);
+
+                    metadata.steps.anchorRerank = {
+                        anchorCategories: Array.from(anchorCategories),
+                        boost: BOOST.toFixed(4),
+                        penalty: PENALTY.toFixed(4),
+                        maxScoreBase: maxScore.toFixed(4)
+                    };
+                }
             }
 
             const top5 = fused.slice(0, 5);
@@ -158,19 +274,31 @@ class RAGService {
                     top5, customerId, storeId, customerContext.type
                 );
 
+                logger.info({
+                    top5Ids: top5.map(r => r.product_id),
+                    hybridAll: hybridResults.map(r => ({ pid: r.product_id, score: r.final_score, src: r.topSource, contentScore: r.scores?.content }))
+                }, '[DEBUG] Hybrid scoring input/output');
+
                 // Step 6: Session Context Boost
                 if (this.sessionContextService && chatHistory.length > 0) {
                     const productSequence = this.sessionContextService.extractProductSequence(chatHistory);
-                    sessionIntent = this.sessionContextService.inferSessionIntent(productSequence, userMessage);
+                    sessionIntent = await this.sessionContextService.inferSessionIntent(
+                        productSequence, query, this.knowledgeRepo.pool, storeId
+                    );
                     if (sessionIntent) {
                         hybridResults = this.sessionContextService.applySessionBoost(hybridResults, sessionIntent);
 
                         // Attribute session-boosted products for feedback tracking
+                        // Only override topSource for CF-only products (content=0).
+                        // Content-matched products keep 'content' attribution — the user's query was the primary signal.
                         if (sessionIntent.cluster !== 'exploring') {
                             for (const r of hybridResults) {
                                 if (r.session_boosted) {
-                                    r.topSource = 'session';
                                     if (!r.sources.includes('session')) r.sources.push('session');
+                                    // Only override topSource if content was NOT the primary match
+                                    if (r.scores?.content === 0) {
+                                        r.topSource = 'session';
+                                    }
                                 }
                             }
                         }
@@ -189,8 +317,39 @@ class RAGService {
                     latencyMs: 0 // included in hybrid step
                 };
 
-                // Re-rank top5 by ensemble score
-                const rankedIds = hybridResults.slice(0, 5).map(r => r.product_id);
+                // Re-rank top5 by ensemble score with partitioned ranking:
+                // Content-matched products matching anchor category fill Slots 1-3 first,
+                // followed by other content, and strictly CF-only supplements in Slots 4-5.
+                const contentIds = new Set(top5.map(r => Number(r.product_id)));
+                const contentMatched = hybridResults.filter(r => contentIds.has(r.product_id));
+                const cfOnly = hybridResults.filter(r => !contentIds.has(r.product_id));
+
+                const anchorCategory = metadata.steps.anchorRerank?.anchorCategory;
+                const anchorMatched = anchorCategory
+                    ? contentMatched.filter(r => r.rawProduct?.category_name === anchorCategory)
+                    : [];
+                const otherContent = anchorCategory
+                    ? contentMatched.filter(r => r.rawProduct?.category_name !== anchorCategory)
+                    : contentMatched;
+
+                const MAX_CF_SLOTS = 2;
+                const takenAnchor = Math.min(anchorMatched.length, 3);
+                const takenCF = Math.min(cfOnly.length, MAX_CF_SLOTS);
+
+                const partitioned = [
+                    ...anchorMatched.slice(0, 3),
+                    ...otherContent.slice(0, 5 - takenAnchor - takenCF),
+                    ...cfOnly.slice(0, MAX_CF_SLOTS)
+                ].slice(0, 5);
+
+                const rankedIds = partitioned.map(r => r.product_id);
+
+                logger.info({
+                    contentMatchedCount: contentMatched.length,
+                    cfOnlyCount: cfOnly.length,
+                    rankedIds,
+                    topScores: partitioned.map(r => ({ pid: r.product_id, score: r.final_score, src: r.topSource }))
+                }, 'Partitioned ranking applied');
 
                 // ── Hydrate CF-only products (missing rawProduct metadata) ──
                 const cfOnlyIds = rankedIds.filter(pid => {
@@ -261,6 +420,11 @@ class RAGService {
                             : null;
                 }).filter(Boolean);
 
+                logger.info({
+                    enrichedIds: enrichedTop5.map(r => ({ pid: r.product_id, src: r.top_source, cat: r.category_name })),
+                    rankedIds
+                }, '[DEBUG] enrichedTop5 details');
+
                 // Use enriched results if available
                 const finalProducts = enrichedTop5.length > 0 ? enrichedTop5 : top5;
 
@@ -277,8 +441,9 @@ class RAGService {
                 logger.info({ storeId, customerId, totalMs, productCount: finalProducts.length, engine: 'hybrid' }, 'RAG pipeline completed');
 
                 // Auto-track: record 'recommended' feedback for weight learning
-                if (customerId && hybridResults.length > 0) {
-                    for (const r of hybridResults.slice(0, 5)) {
+                // Use partitioned results (not raw hybridResults) to correctly attribute content-based
+                if (customerId && partitioned.length > 0) {
+                    for (const r of partitioned) {
                         this.hybridService.recordFeedback(
                             customerId, r.product_id, storeId,
                             r.topSource, 'recommended',
@@ -513,8 +678,11 @@ ${productContext}${coPurchaseContext}${cfContext}`;
                 image: cp?.image || cp?.image_url || r.image || r.image_url || null,
                 rrfScore: r.rrf_score || null,
                 ensembleScore: r.ensemble_score || null,
+                ensemble_score: r.ensemble_score || null,
                 ensembleSources: r.ensemble_sources || null,
-                topSource: r.top_source || null
+                ensemble_sources: r.ensemble_sources || null,
+                topSource: r.top_source || null,
+                top_source: r.top_source || null
             };
         });
     }

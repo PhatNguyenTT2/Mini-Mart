@@ -15,6 +15,7 @@
  * Chạy SAU mock-orders.js:
  *   cd microservices && node docs/chatbot/seed-product/populate-copurchase.js
  */
+require('dotenv').config();
 const { Pool } = require('pg');
 
 const pool = new Pool({

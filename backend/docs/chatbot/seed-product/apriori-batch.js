@@ -15,6 +15,7 @@
  * 
  * Chạy: cd microservices && node docs/chatbot/seed-product/apriori-batch.js
  */
+require('dotenv').config();
 const { Pool } = require('pg');
 
 const pool = new Pool({
@@ -151,7 +152,7 @@ async function computeAprioriMetrics() {
       const params = [];
       let pi = 1;
       for (const u of chunk) {
-        valueRows.push(`($${pi}::bigint, $${pi+1}::numeric, $${pi+2}::numeric, $${pi+3}::numeric, $${pi+4}::numeric, $${pi+5}::int)`);
+        valueRows.push(`($${pi}::bigint, $${pi + 1}::numeric, $${pi + 2}::numeric, $${pi + 3}::numeric, $${pi + 4}::numeric, $${pi + 5}::int)`);
         params.push(u.id, u.support, u.confidenceAB, u.confidenceBA, u.lift, u.totalOrders);
         pi += 6;
       }

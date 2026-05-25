@@ -126,27 +126,51 @@ class SessionContextService {
      * Infer session intent from product sequence + message text
      * @param {number[]} productSequence - ordered product IDs
      * @param {string} lastMessage - latest user message
-     * @returns {{ cluster: string, name: string, confidence: number, boost: number } | null}
+     * @param {object} pool - PG database pool for dynamic category resolution
+     * @param {number} storeId
+     * @returns {Promise<{ cluster: string, name: string, confidence: number, boost: number } | null>}
      */
-    inferSessionIntent(productSequence, lastMessage = '') {
+    async inferSessionIntent(productSequence, lastMessage = '', pool = null, storeId = 1) {
         const scores = {};
+        const activeClusters = CLUSTER_DEFINITIONS;
 
-        const activeClusters = this._clusters || CLUSTER_DEFINITIONS;
+        // Resolve product categories from DB if productSequence has items and pool is provided
+        const productCategories = new Map(); // pid -> categoryName
+        if (productSequence && productSequence.length > 0 && pool) {
+            try {
+                const pids = productSequence.map(id => Number(id));
+                const { rows } = await pool.query(`
+                    SELECT product_id, category_name
+                    FROM product_knowledge_base
+                    WHERE product_id = ANY($1::bigint[]) AND store_id = $2
+                `, [pids, storeId]);
+                rows.forEach(r => {
+                    productCategories.set(Number(r.product_id), r.category_name);
+                });
+            } catch (err) {
+                logger.warn({ err }, 'Session Context: Failed to resolve product categories for sequence');
+            }
+        }
 
         // Score by product matches
         for (const [clusterKey, cluster] of Object.entries(activeClusters)) {
             let productHits = 0;
-            const clusterProductIds = cluster.productIds || [];
             for (const pid of productSequence) {
-                if (clusterProductIds.includes(pid)) productHits++;
+                const cat = productCategories.get(pid);
+                if (cat && cluster.categoryNames.includes(cat)) {
+                    productHits++;
+                }
             }
 
-            // Score by keyword matches in message
+            // Score by keyword matches in message (boundary-safe for Vietnamese)
             let keywordHits = 0;
             if (lastMessage) {
                 const msgLower = lastMessage.toLowerCase();
                 for (const kw of cluster.keywords) {
-                    if (msgLower.includes(kw)) keywordHits++;
+                    const regex = new RegExp(`(^|[^a-z0-9àáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ])${kw}([^a-z0-9àáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]|$)`, 'i');
+                    if (regex.test(msgLower)) {
+                        keywordHits++;
+                    }
                 }
             }
 
@@ -183,8 +207,7 @@ class SessionContextService {
             cluster: topKey,
             name: cluster.name,
             confidence: Math.round(confidence * 100) / 100,
-            boost: cluster.boost,
-            productIds: cluster.productIds || []
+            boost: cluster.boost
         };
     }
 
@@ -195,12 +218,18 @@ class SessionContextService {
      * @returns {object[]} re-sorted results with session boost applied
      */
     applySessionBoost(ensembleResults, sessionIntent) {
-        if (!sessionIntent || sessionIntent.cluster === 'exploring' || !sessionIntent.productIds) {
+        if (!sessionIntent || sessionIntent.cluster === 'exploring') {
             return ensembleResults;
         }
 
+        const clusterDef = CLUSTER_DEFINITIONS[sessionIntent.cluster];
+        if (!clusterDef) return ensembleResults;
+
+        const categoryNames = clusterDef.categoryNames || [];
+
         const boostedResults = ensembleResults.map(r => {
-            const inCluster = sessionIntent.productIds.includes(r.product_id);
+            const category = r.rawProduct?.category_name || r.category_name || r.categoryName || '';
+            const inCluster = categoryNames.includes(category);
             const boostedScore = inCluster
                 ? r.final_score + sessionIntent.boost
                 : r.final_score;

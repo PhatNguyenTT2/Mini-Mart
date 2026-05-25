@@ -153,8 +153,8 @@ class DataIngestionService {
 
             const products = productsResult.data.products;
 
-            // Build categoryId → rootCategoryName map for embedding enrichment
-            const rootCatMap = await this._buildRootCategoryMap();
+            // Build maps for embedding enrichment
+            const { nameMap: rootCatMap, synonymMap: catSynonymMap } = await this._buildRootCategoryMap();
 
             let synced = 0;
             let skipped = 0;
@@ -177,6 +177,7 @@ class DataIngestionService {
                             name: product.name,
                             categoryName: product.categoryName || 'Chưa phân loại',
                             rootCategoryName,
+                            categorySynonyms: catSynonymMap.get(Number(product.categoryId)) || null,
                             unitPrice: product.unitPrice || 0,
                             vendor: product.vendor || null,
                             isInStock: inventory ? inventory.isInStock : false,
@@ -202,8 +203,8 @@ class DataIngestionService {
 
     // ── Helpers ──────────────────────────────────────────────
 
-    async _upsertKnowledge({ productId, storeId, name, categoryName, rootCategoryName, unitPrice, vendor, isInStock, qtyOnShelf }) {
-        const content = this._buildContentText(name, categoryName, rootCategoryName, unitPrice, vendor, isInStock, qtyOnShelf);
+    async _upsertKnowledge({ productId, storeId, name, categoryName, rootCategoryName, categorySynonyms, unitPrice, vendor, isInStock, qtyOnShelf }) {
+        const content = this._buildContentText(name, categoryName, rootCategoryName, unitPrice, vendor, isInStock, qtyOnShelf, categorySynonyms);
         const embedding = await this.embeddingClient.embed(content);
         const vectorStr = `[${embedding.join(',')}]`;
 
@@ -224,7 +225,7 @@ class DataIngestionService {
         `, [productId, storeId, content, vectorStr, categoryName, unitPrice, isInStock, qtyOnShelf]);
     }
 
-    _buildContentText(name, categoryName, rootCategoryName, price, vendor, isInStock, qtyOnShelf) {
+    _buildContentText(name, categoryName, rootCategoryName, price, vendor, isInStock, qtyOnShelf, categorySynonyms) {
         const parts = [
             `Sản phẩm "${name}"`
         ];
@@ -233,6 +234,9 @@ class DataIngestionService {
             parts.push(`thuộc nhóm "${rootCategoryName}"`);
         }
         parts.push(`danh mục "${categoryName}"`);
+        if (categorySynonyms) {
+            parts.push(`phù hợp khi tìm: ${categorySynonyms}`);
+        }
         parts.push(`giá ${Number(price).toLocaleString('vi-VN')} VND`);
         if (vendor) parts.push(`nhà cung cấp "${vendor}"`);
         if (isInStock) {
@@ -264,20 +268,23 @@ class DataIngestionService {
      * Root categories (parent_id = null) map to themselves.
      */
     async _buildRootCategoryMap() {
-        const map = new Map();
+        const nameMap = new Map();
+        const synonymMap = new Map();
         try {
             const result = await this.apiClient.getCategories();
             if (!result.success || !result.data?.categories?.length) {
-                logger.warn('Failed to fetch categories — rootCategoryName will be null');
-                return map;
+                logger.warn('Failed to fetch categories — rootCategoryName & synonyms will be null');
+                return { nameMap, synonymMap };
             }
 
             const categories = result.data.categories;
-            const idToName = new Map(categories.map(c => [c.id, c.name]));
-            const idToParent = new Map(categories.map(c => [c.id, c.parentId || c.parent_id || null]));
+            const idToName = new Map(categories.map(c => [Number(c.id), c.name]));
+            const idToParent = new Map(categories.map(c => [Number(c.id), c.parentId != null ? Number(c.parentId) : (c.parent_id != null ? Number(c.parent_id) : null)]));
+            const idToSynonyms = new Map(categories.map(c => [Number(c.id), c.description || '']));
 
             for (const cat of categories) {
-                let rootId = cat.id;
+                const catId = Number(cat.id);
+                let rootId = catId;
                 let parentId = idToParent.get(rootId);
                 // Traverse up to root (max 5 levels to prevent infinite loops)
                 let depth = 0;
@@ -286,14 +293,23 @@ class DataIngestionService {
                     parentId = idToParent.get(rootId);
                     depth++;
                 }
-                map.set(cat.id, idToName.get(rootId) || cat.name);
+                nameMap.set(catId, idToName.get(rootId) || cat.name);
+
+                // Merge and deduplicate synonyms using a Set
+                const ownSyn = idToSynonyms.get(catId) || '';
+                const rootSyn = idToSynonyms.get(rootId) || '';
+                const mergedArray = [...rootSyn.split(','), ...ownSyn.split(',')]
+                    .map(s => s.trim())
+                    .filter(Boolean);
+                const merged = Array.from(new Set(mergedArray)).join(', ');
+                if (merged) synonymMap.set(catId, merged);
             }
 
-            logger.info({ categoryCount: categories.length, mapSize: map.size }, 'Root category map built');
+            logger.info({ categoryCount: categories.length, nameMapSize: nameMap.size, synonymMapSize: synonymMap.size }, 'Root category & synonym maps built');
         } catch (err) {
-            logger.warn({ err }, 'buildRootCategoryMap failed — embedding without root category');
+            logger.warn({ err }, 'buildRootCategoryMap failed — embedding without root category/synonyms');
         }
-        return map;
+        return { nameMap, synonymMap };
     }
 
     async _getStoreIds() {

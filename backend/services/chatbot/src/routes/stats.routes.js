@@ -176,15 +176,24 @@ module.exports = function statsRoutes({ pool, hybridService, nightlyBatch, weigh
     // ── Phase 5: Feedback Stream ──
 
     /**
-     * GET /api/chatbot/stats/feedback-stream?storeId=1&limit=50
-     * Recent recommendation interactions for live dashboard
+     * GET /api/chatbot/stats/feedback-stream?storeId=1&limit=50&source=content&recency=1h
+     * Recent recommendation interactions for live dashboard (filtered by source and recency)
      */
     router.get('/stats/feedback-stream', async (req, res, next) => {
         try {
             const storeId = parseInt(req.query.storeId) || 1;
             const limit = Math.min(parseInt(req.query.limit) || 50, 100);
+            const source = req.query.source;
+            const recency = req.query.recency;
 
-            const { rows } = await pool.query(`
+            const RECENCY_MAP = {
+                '30m': '30 minutes',
+                '1h': '1 hour',
+                '6h': '6 hours',
+                '24h': '24 hours'
+            };
+
+            let query = `
                 SELECT rf.id, rf.user_id, rf.product_id, rf.source, rf.action,
                        rf.recommendation_score, rf.created_at,
                        pkb.content AS product_info
@@ -192,9 +201,25 @@ module.exports = function statsRoutes({ pool, hybridService, nightlyBatch, weigh
                 LEFT JOIN product_knowledge_base pkb
                     ON pkb.product_id = rf.product_id AND pkb.store_id = rf.store_id
                 WHERE rf.store_id = $1
+            `;
+            const params = [storeId];
+
+            if (source && source !== 'all' && ['content', 'cf', 'apriori', 'session', 'organic'].includes(source)) {
+                params.push(source);
+                query += ` AND rf.source = $${params.length}`;
+            }
+
+            if (recency && recency !== 'all' && RECENCY_MAP[recency]) {
+                query += ` AND rf.created_at > NOW() - INTERVAL '${RECENCY_MAP[recency]}'`;
+            }
+
+            params.push(limit);
+            query += `
                 ORDER BY rf.created_at DESC
-                LIMIT $2
-            `, [storeId, limit]);
+                LIMIT $${params.length}
+            `;
+
+            const { rows } = await pool.query(query, params);
 
             // Extract product name from content field
             const feedbacks = rows.map(r => {
