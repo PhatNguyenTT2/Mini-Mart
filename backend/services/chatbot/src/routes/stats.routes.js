@@ -176,6 +176,64 @@ module.exports = function statsRoutes({ pool, hybridService, nightlyBatch, weigh
     // ── Phase 5: Feedback Stream ──
 
     /**
+     * GET /api/chatbot/stats/feedback-stream/live
+     * SSE endpoint that pushes new feedback events in real-time
+     */
+    router.get('/stats/feedback-stream/live', (req, res) => {
+        res.writeHead(200, {
+            'Content-Type': 'text/event-stream',
+            'Cache-Control': 'no-cache',
+            'Connection': 'keep-alive'
+        });
+
+        // Heartbeat connection established
+        res.write(':\n\n');
+
+        const onFeedback = async (data) => {
+            try {
+                // Fetch product name from knowledge base using pool
+                const { rows } = await pool.query(
+                    'SELECT content FROM product_knowledge_base WHERE product_id = $1 AND store_id = $2 LIMIT 1',
+                    [data.productId, data.storeId]
+                );
+                let productName = `Product #${data.productId}`;
+                if (rows.length > 0 && rows[0].content) {
+                    const match = rows[0].content.match(/Sản phẩm "([^"]+)"/);
+                    if (match) productName = match[1];
+                }
+
+                const enrichedData = {
+                    id: data.id,
+                    userId: data.userId ? parseInt(data.userId) : null,
+                    productId: parseInt(data.productId),
+                    storeId: parseInt(data.storeId),
+                    source: data.source,
+                    action: data.action,
+                    sessionId: data.sessionId,
+                    score: data.score != null ? parseFloat(data.score) : null,
+                    createdAt: data.createdAt,
+                    productName
+                };
+
+                res.write(`data: ${JSON.stringify(enrichedData)}\n\n`);
+            } catch (err) {
+                logger.warn({ err }, 'SSE: Failed to format or send feedback event');
+            }
+        };
+
+        hybridService.on('feedback', onFeedback);
+
+        const heartbeat = setInterval(() => {
+            res.write(':\n\n');
+        }, 15000);
+
+        req.on('close', () => {
+            hybridService.off('feedback', onFeedback);
+            clearInterval(heartbeat);
+        });
+    });
+
+    /**
      * GET /api/chatbot/stats/feedback-stream?storeId=1&limit=50&source=content&recency=1h
      * Recent recommendation interactions for live dashboard (filtered by source and recency)
      */

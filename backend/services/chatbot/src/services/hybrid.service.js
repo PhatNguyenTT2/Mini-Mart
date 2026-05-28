@@ -11,10 +11,13 @@
  */
 const logger = require('../../../../shared/common/logger');
 
+const EventEmitter = require('events');
+
 const DEFAULT_WEIGHTS = { alpha: 0.40, beta: 0.25, gamma: 0.25, delta: 0.10 };
 
-class HybridRecommendationService {
+class HybridRecommendationService extends EventEmitter {
     constructor({ copurchaseRepo, cfService, pool }) {
+        super();
         this.copurchaseRepo = copurchaseRepo;
         this.cfService = cfService;
         this.pool = pool;
@@ -51,8 +54,8 @@ class HybridRecommendationService {
                 SELECT product_id_a, product_id_b, co_purchase_count,
                        confidence_ab, confidence_ba, lift
                 FROM co_purchase_stats
-                WHERE store_id = $1 AND lift > 1
-                ORDER BY lift DESC
+                WHERE store_id = $1::bigint AND lift::numeric >= 0.5
+                ORDER BY lift::numeric DESC
             `, [storeId]);
 
             this._aprioriCache.clear();
@@ -150,7 +153,7 @@ class HybridRecommendationService {
         if (cfResults.length > 0) {
             const maxCF = Math.max(...cfResults.map(r => r.prediction_score));
             for (const r of cfResults) {
-                const pid = r.product_id;
+                const pid = Number(r.product_id);
                 const normalizedCF = maxCF > 0 ? r.prediction_score / maxCF : 0;
 
                 if (scoreMap.has(pid)) {
@@ -167,16 +170,19 @@ class HybridRecommendationService {
         }
 
         // ── Step 3: Apriori scores (from cache or DB) ──
+        // Weight confidence by source product's content relevance:
+        // Anchor product (top content score) → its Apriori pairs rank highest.
+        // Secondary content products (lower score) → their pairs are deprioritized.
         if (gamma > 0) {
-            const contentProductIds = contentResults.map(r => Number(r.product_id));
-            const aprioriCandidates = new Map(); // productId → maxConfidence
+            const aprioriCandidates = new Map(); // productId → { confidence, effectiveScore }
 
-            for (const pid of contentProductIds) {
+            for (const r of contentResults) {
+                const pid = Number(r.product_id);
+                const contentWeight = maxRRF > 0 ? Math.max(0, (r.rrf_score || 0) / maxRRF) : 0;
                 const cacheKey = `${pid}_${storeId}`;
                 let related = this._aprioriCache.get(cacheKey);
 
                 if (!related && !this._cacheReady) {
-                    // Fallback to DB
                     try {
                         related = await this.copurchaseRepo.getRelatedProducts(pid, storeId, 5);
                         related = related.map(r => ({
@@ -191,21 +197,28 @@ class HybridRecommendationService {
 
                 if (related) {
                     for (const rel of related) {
-                        const existingConf = aprioriCandidates.get(rel.product_id) || 0;
-                        if (rel.confidence > existingConf) {
-                            aprioriCandidates.set(rel.product_id, rel.confidence);
+                        // Effective score = confidence × source content relevance
+                        // Heineken(content=1.0) → Coca(conf=0.80) → effective=0.80
+                        // Tiger(content=0.65) → Nấm(conf=0.88) → effective=0.57
+                        const effectiveScore = rel.confidence * contentWeight;
+                        const existing = aprioriCandidates.get(rel.product_id);
+                        if (!existing || effectiveScore > existing.effectiveScore) {
+                            aprioriCandidates.set(rel.product_id, {
+                                confidence: rel.confidence,
+                                effectiveScore
+                            });
                         }
                     }
                 }
             }
 
-            for (const [pid, confidence] of aprioriCandidates) {
+            for (const [pid, { effectiveScore }] of aprioriCandidates) {
                 if (scoreMap.has(pid)) {
-                    scoreMap.get(pid).apriori = confidence; // Already [0,1]
+                    scoreMap.get(pid).apriori = effectiveScore; // Weighted by source content relevance
                     scoreMap.get(pid).sources.push('apriori');
                 } else {
                     scoreMap.set(pid, {
-                        content: 0, cf: 0, apriori: confidence, personal: 0,
+                        content: 0, cf: 0, apriori: effectiveScore, personal: 0,
                         sources: ['apriori'], rawProduct: null
                     });
                 }
@@ -241,10 +254,11 @@ class HybridRecommendationService {
             // Content-relevance gate: Products with zero content score
             // (CF-only / Apriori-only injections) don't match user's query.
             // Penalize them to ensure content-matched products rank higher.
-            const CONTENT_RELEVANCE_PENALTY = 0.5;
+            // Milder penalty (0.75) for statistically backed Apriori candidates to protect high-lift associates.
+            const penalty = entry.apriori > 0 ? 0.75 : 0.5;
             const adjustedScore = entry.content > 0
                 ? finalScore
-                : finalScore * CONTENT_RELEVANCE_PENALTY;
+                : finalScore * penalty;
 
             results.push({
                 product_id: pid,
@@ -266,17 +280,30 @@ class HybridRecommendationService {
     }
 
     /**
-     * Determine which source contributed most to this product's score
+     * Determine which source contributed most to this product's score.
+     * CF attribution boost: when CF signal is present and non-trivial,
+     * prefer CF label since it represents true personalization —
+     * otherwise α(0.40) always dominates β(0.25) making CF badges impossible.
      */
     _getTopSource(entry, weights) {
         const contributions = {
             content: weights.alpha * entry.content,
             cf: weights.beta * entry.cf,
             apriori: weights.gamma * entry.apriori,
-            personal: weights.delta * entry.personal
         };
-        return Object.entries(contributions)
-            .sort((a, b) => b[1] - a[1])[0][0];
+
+        const sorted = Object.entries(contributions)
+            .sort((a, b) => b[1] - a[1]);
+        const [topKey, topVal] = sorted[0];
+
+        // If CF contributed and is within 60% of top contributor, prefer CF
+        // because CF is the only user-specific signal (content/apriori are universal)
+        if (topKey !== 'cf' && contributions.cf > 0 && topVal > 0) {
+            const cfRatio = contributions.cf / topVal;
+            if (cfRatio >= 0.40) return 'cf';
+        }
+
+        return topKey;
     }
 
     /**
@@ -284,14 +311,14 @@ class HybridRecommendationService {
      */
     async recordFeedback(userId, productId, storeId, source, action, sessionId = null, score = null, metadata = null) {
         try {
-            // Time-window deduplication: skip if same interaction exists within 30 minutes
-            // Note: Potential race condition under extreme load, but mitigated by Layer 4 CF Hardening
+            // Time-window deduplication: 5 minutes for recommended, 30 minutes for user interaction actions
+            const intervalVal = action === 'recommended' ? '5 minutes' : '30 minutes';
             if (userId && action !== 'purchased') {
                 const { rows } = await this.pool.query(`
                     SELECT 1 FROM recommendation_feedback
                     WHERE user_id = $1 AND product_id = $2 AND store_id = $3
                       AND action = $4 AND source = $5
-                      AND created_at > NOW() - INTERVAL '30 minutes'
+                      AND created_at > NOW() - INTERVAL '${intervalVal}'
                     LIMIT 1
                 `, [userId, productId, storeId, action, source]);
 
@@ -301,12 +328,27 @@ class HybridRecommendationService {
                 }
             }
 
-            await this.pool.query(`
+            const { rows: [inserted] } = await this.pool.query(`
                 INSERT INTO recommendation_feedback 
                     (user_id, product_id, store_id, source, action, session_id, recommendation_score, metadata)
                 VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+                RETURNING id, created_at
             `, [userId, productId, storeId, source, action, sessionId, score,
                 metadata ? JSON.stringify(metadata) : null]);
+
+            if (inserted) {
+                this.emit('feedback', {
+                    id: inserted.id,
+                    userId,
+                    productId,
+                    storeId,
+                    source,
+                    action,
+                    sessionId,
+                    score,
+                    createdAt: inserted.created_at
+                });
+            }
         } catch (err) {
             logger.warn({ err }, 'Hybrid: Failed to record feedback');
         }

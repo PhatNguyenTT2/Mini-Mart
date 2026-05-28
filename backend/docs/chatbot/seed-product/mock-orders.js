@@ -135,21 +135,32 @@ async function generateMockOrders(totalOrders = 500) {
   try {
     await client.query('BEGIN');
 
+    // Cleanup: Delete old mock orders (same store/employee) to prevent accumulation
+    const { rowCount: deletedDetails } = await client.query(
+      `DELETE FROM sale_order_detail WHERE order_id IN (
+        SELECT id FROM sale_order WHERE store_id = $1 AND created_by = $2
+      )`, [STORE_ID, EMPLOYEE_ID]
+    );
+    const { rowCount: deletedOrders } = await client.query(
+      `DELETE FROM sale_order WHERE store_id = $1 AND created_by = $2`,
+      [STORE_ID, EMPLOYEE_ID]
+    );
+    console.log(`🧹 Cleaned up ${deletedOrders} old orders (${deletedDetails} detail rows).\n`);
     for (let i = 0; i < totalOrders; i++) {
       // 1. Chọn cluster dựa trên xác suất
       const rand = Math.random();
       let cartProductIds = [];
 
-      if (rand < 0.35) {
+      if (rand < 0.25) {
         cartProductIds = getRandomSubset(CLUSTERS.LAU_BO, 3);
         if (Math.random() > 0.5) {
           cartProductIds.push(...getRandomSubset(CLUSTERS.RANDOM_NOISE, 1));
         }
         stats.lauBo++;
-      } else if (rand < 0.70) {
+      } else if (rand < 0.50) {
         cartProductIds = getRandomSubset(CLUSTERS.BUA_SANG, 2);
         stats.buaSang++;
-      } else if (rand < 0.85) {
+      } else if (rand < 0.80) {
         cartProductIds = getRandomSubset(CLUSTERS.GIAI_KHAT, 2);
         stats.giaiKhat++;
       } else {

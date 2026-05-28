@@ -66,6 +66,9 @@ async function computeAprioriMetrics() {
     }
 
     // ── Step 3: Upsert product_order_frequency (batch) ──
+    console.log('🧹 Truncating stale product_order_frequency...');
+    await pool.query('TRUNCATE TABLE product_order_frequency;');
+
     console.log('💾 Upsert product_order_frequency...');
     const freqValues = [];
     const freqParams = [];
@@ -196,8 +199,11 @@ async function computeAprioriMetrics() {
       LIMIT 10
     `);
 
+    const maxCount = Math.max(...freqRows.map(r => r.order_count), 0);
     const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
     console.log(`\n✅ HOÀN THÀNH trong ${elapsed}s!`);
+    console.log(`📊 Verification: Max order_count is ${maxCount}, Total delivered orders is ${total}`);
+    console.log(`🔥 Active Apriori pairs loaded into cache (lift > 1): ${stats.positive_lift}`);
     console.log(`   📊 Total pairs: ${stats.total_pairs}`);
     console.log(`   📈 Lift > 1 (positive): ${stats.positive_lift}`);
     console.log(`   🔥 Lift > 2 (strong): ${stats.strong_lift}`);

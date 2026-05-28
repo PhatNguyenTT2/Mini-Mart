@@ -225,12 +225,14 @@ services:
       - AUTH_SERVICE_URL=http://auth:3001
       - CORS_ORIGINS=http://localhost:5173,http://localhost:5174
       - NODE_ENV=${NODE_ENV:-production}
+      - TRANSFORMERS_CACHE=/app/.cache/transformers
     ports:
       - "3008:3008"
     volumes:
       - ./services/chatbot/src:/app/services/chatbot/src
       - ./shared:/app/shared
       - /app/shared/node_modules
+      - chatbot_model_cache:/app/.cache/transformers
 
   # Service 9: Statistics & Analytics (:3009)
   statistics:
@@ -256,3 +258,7 @@ services:
       - ./services/statistics/src:/app/services/statistics/src
       - ./shared:/app/shared
       - /app/shared/node_modules
+
+volumes:
+  chatbot_model_cache:
+    driver: local

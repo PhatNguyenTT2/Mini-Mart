@@ -2,9 +2,18 @@
  * EmbeddingClient — Local Vietnamese SBERT via @xenova/transformers
  * Model: keepitreal/vietnamese-sbert (768 dimensions)
  * Runs on CPU (ONNX Runtime) — no GPU required
+ *
+ * Cache: Set TRANSFORMERS_CACHE env var to persist models across container restarts.
+ * Without cache, the ~400MB ONNX model is re-downloaded from HuggingFace CDN every restart.
  */
-const { pipeline } = require('@xenova/transformers');
+const { pipeline, env } = require('@xenova/transformers');
 const logger = require('../../../../shared/common/logger');
+
+// Configure model cache directory (persisted via Docker named volume)
+if (process.env.TRANSFORMERS_CACHE) {
+    env.cacheDir = process.env.TRANSFORMERS_CACHE;
+    logger.info({ cacheDir: env.cacheDir }, 'Transformers cache directory configured');
+}
 
 class EmbeddingClient {
     constructor(modelName = 'Xenova/multilingual-e5-base') {
@@ -15,20 +24,41 @@ class EmbeddingClient {
 
     /**
      * Load model on startup (cached after first download)
+     * Retries up to MAX_RETRIES times with exponential backoff on network errors
      */
-    async initialize() {
+    async initialize(maxRetries = 3) {
         const startTime = Date.now();
         logger.info({ model: this.modelName }, 'Loading embedding model...');
 
-        this.extractor = await pipeline(
-            'feature-extraction',
-            this.modelName,
-            { quantized: true }
-        );
+        for (let attempt = 1; attempt <= maxRetries; attempt++) {
+            try {
+                this.extractor = await pipeline(
+                    'feature-extraction',
+                    this.modelName,
+                    { quantized: true }
+                );
 
-        this.isReady = true;
-        const loadMs = Date.now() - startTime;
-        logger.info({ model: this.modelName, loadMs }, 'Embedding model loaded');
+                this.isReady = true;
+                const loadMs = Date.now() - startTime;
+                logger.info({ model: this.modelName, loadMs, attempt }, 'Embedding model loaded');
+                return;
+            } catch (err) {
+                const isRetryable = err.message?.includes('fetch failed') ||
+                    err.message?.includes('Timeout') ||
+                    err.code === 'UND_ERR_CONNECT_TIMEOUT' ||
+                    err.code === 'ECONNREFUSED' ||
+                    err.code === 'ENOTFOUND';
+
+                if (!isRetryable || attempt === maxRetries) {
+                    logger.error({ err, attempt, maxRetries }, 'Embedding model load failed — no more retries');
+                    throw err;
+                }
+
+                const backoffMs = 5000 * Math.pow(2, attempt - 1); // 5s, 10s, 20s
+                logger.warn({ err: err.message, attempt, maxRetries, backoffMs }, `Embedding model load failed — retrying in ${backoffMs / 1000}s`);
+                await new Promise(r => setTimeout(r, backoffMs));
+            }
+        }
     }
 
     /**

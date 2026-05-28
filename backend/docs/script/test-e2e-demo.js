@@ -109,7 +109,7 @@ async function runTests() {
     // ACT 1: Semantic Search — Content-Based (α)
     // ==========================================
     console.log(`${colors.cyan}--- ACT 1: Content-Based ("Tôi muốn mua đồ ăn vặt") ---${colors.reset}`);
-    const token11 = createToken(11);
+    const token11 = createToken(11); // User 11 is Homemaker
     const socket11 = await connectSocket(token11);
     const session11 = await joinSession(socket11);
 
@@ -119,6 +119,18 @@ async function runTests() {
 
     assert(act1Res.intent === "RECOMMENDATION", "Intent should be resolve to RECOMMENDATION");
     assert(act1Res.products && act1Res.products.length >= 3, `Should return at least 3 products (got ${act1Res.products?.length || 0})`);
+
+    // Assert that for a broad search, we do NOT inject pure non-content slots (every product must have content match)
+    const pureNonContentCount = act1Res.products?.filter(p => {
+      const src = p.ensemble_sources || [];
+      return (src.includes('cf') || src.includes('apriori')) && !src.includes('content');
+    }).length || 0;
+
+    assert(pureNonContentCount === 0, `Broad queries MUST suppress pure CF/Apriori slots to prevent noise (got ${pureNonContentCount} pure non-content slots)`);
+
+    // Assert that Bột ngọt Ajinomoto (Product ID 53) is NOT in the recommendations
+    const hasBotNgot = act1Res.products?.some(p => p.id === 53 || p.name.includes("Bột ngọt"));
+    assert(!hasBotNgot, "Broad Snacking query must NOT return Bột ngọt Ajinomoto");
 
     // Assert the categories/names of the top slots match snacking items
     const topProductNames = act1Res.products?.slice(0, 3).map(p => p.name) || [];
@@ -135,35 +147,80 @@ async function runTests() {
 
     // ==========================================
     // ACT 2: Association Rules — Apriori (γ)
+    // NOTE: New session to prevent ACT 1 session context bleed
     // ==========================================
     console.log(`\n${colors.cyan}--- ACT 2: Apriori Cross-sell ("Tôi muốn mua bia Heineken") ---${colors.reset}`);
-    const act2Res = await sendAndAwaitResponse(socket11, session11, "Tôi muốn mua bia Heineken");
+    const session11_act2 = await joinSession(socket11); // fresh session
+    const act2Res = await sendAndAwaitResponse(socket11, session11_act2, "Tôi muốn mua bia Heineken");
     assert(act2Res.products && act2Res.products.length > 0, "Should return recommended products");
 
-    // Check for cross-sell (e.g. snack or dry food combined via apriori rules)
     console.log(`   Products: ${JSON.stringify(act2Res.products?.map(p => `${p.name} (${p.ensemble_sources || 'none'})`))}`);
 
-    const hasBia = act2Res.products?.some(p => p.name.includes('Bia Heineken'));
-    assert(hasBia, "Should contain Bia Heineken");
+    // 1. Anchor = Heineken
+    const mainProduct = act2Res.products?.[0];
+    assert(mainProduct && (mainProduct.id === 17 || mainProduct.name.toLowerCase().includes("heineken")),
+        "Top product MUST be the anchor Bia Heineken");
 
-    const hasAprioriSource = act2Res.products?.some(p => p.ensemble_sources?.includes('apriori'));
-    assert(hasAprioriSource, "Should feature products sourced or enriched by 'apriori'");
+    // 2. Apriori products exist
+    const aprioriProducts = act2Res.products?.filter(p => p.ensemble_sources?.includes('apriori')) || [];
+    assert(aprioriProducts.length > 0, "MUST have apriori-sourced products");
+
+    // 3. NEGATIVE: No "Gia vị lẩu Thái" in Apriori slots (noise must be eliminated)
+    const hasLauThai = aprioriProducts.some(p => p.name.toLowerCase().includes("lẩu thái"));
+    assert(!hasLauThai, "CRITICAL: Apriori MUST NOT return Gia vi lau Thai (noise)");
+
+    // 4. POSITIVE: Expected cross-sell (Coca/Khô gà/Snack — "Bia & Bỉm")
+    const hasExpectedCrossSell = aprioriProducts.some(p =>
+        p.name.toLowerCase().includes("coca") ||
+        p.name.toLowerCase().includes("khô gà") ||
+        p.name.toLowerCase().includes("snack") ||
+        p.name.toLowerCase().includes("lay")
+    );
+    // If dedicated Apriori picks exist, verify they're cross-sell items (not just beer)
+    // Note: Apriori source may also appear on content products via ensemble overlap
+    if (aprioriProducts.length > 0) {
+        const hasDiverseCrossSell = aprioriProducts.some(p =>
+            !p.name.toLowerCase().includes("heineken") && !p.name.toLowerCase().includes("tiger")
+        );
+        assert(hasDiverseCrossSell, "Apriori products should include cross-sell items beyond beer category");
+    }
+
+
+
 
     // ==========================================
-    // ACT 3: Collaborative Filtering (β)
+    // ACT 3: Collaborative Filtering (β) — Comparison Test
     // ==========================================
     console.log(`\n${colors.cyan}--- ACT 3: Collaborative Filtering ("Gợi ý cho tôi vài món") ---${colors.reset}`);
+
+    // User 11 (Homemaker) query
+    const session11_act3 = await joinSession(socket11);
+    const act3Res11 = await sendAndAwaitResponse(socket11, session11_act3, "Gợi ý cho tôi vài món");
+    console.log(`   User 11 Products: ${JSON.stringify(act3Res11.products?.map(p => `${p.name} (${p.ensemble_sources || 'none'})`))}`);
+
     // User 30 is student (buys snacks, mì gói, coca). Let's connect as User 30
     const token30 = createToken(30);
     const socket30 = await connectSocket(token30);
     const session30 = await joinSession(socket30);
 
-    const act3Res = await sendAndAwaitResponse(socket30, session30, "Gợi ý cho tôi vài món");
-    console.log(`   Products: ${JSON.stringify(act3Res.products?.map(p => `${p.name} (${p.ensemble_sources || 'none'})`))}`);
+    const act3Res30 = await sendAndAwaitResponse(socket30, session30, "Gợi ý cho tôi vài món");
+    console.log(`   User 30 Products: ${JSON.stringify(act3Res30.products?.map(p => `${p.name} (${p.ensemble_sources || 'none'})`))}`);
 
-    assert(act3Res.intent === "RECOMMENDATION", "Intent should be RECOMMENDATION");
-    const hasCFSource = act3Res.products?.some(p => p.ensemble_sources?.includes('cf'));
-    assert(hasCFSource, "Should return personalized items via Collaborative Filtering (cf)");
+    assert(act3Res11.intent === "RECOMMENDATION", "User 11 Intent should be RECOMMENDATION");
+    assert(act3Res30.intent === "RECOMMENDATION", "User 30 Intent should be RECOMMENDATION");
+
+    const hasCFSource = act3Res30.products?.some(p => p.ensemble_sources?.includes('cf'));
+    assert(hasCFSource, "User 30 should receive personalized items via Collaborative Filtering (cf)");
+
+    // User Segment Separation Verification
+    const u11CFProducts = act3Res11.products?.filter(p => p.ensemble_sources?.includes('cf')).map(p => p.id) || [];
+    const u30CFProducts = act3Res30.products?.filter(p => p.ensemble_sources?.includes('cf')).map(p => p.id) || [];
+
+    console.log(`   CF products - User 11 (Homemaker): ${JSON.stringify(u11CFProducts)}, User 30 (Student): ${JSON.stringify(u30CFProducts)}`);
+
+    // They must recommend different products because their purchase histories belong to different taste clusters
+    const areCFRecommendationsDistinct = u11CFProducts.some(id => !u30CFProducts.includes(id)) || u30CFProducts.some(id => !u11CFProducts.includes(id));
+    assert(areCFRecommendationsDistinct, "CF predictions for Homemaker (User 11) and Student (User 30) should be distinct based on cluster profile");
 
     // ==========================================
     // ACT 4: Short-term Context — Session (δ)

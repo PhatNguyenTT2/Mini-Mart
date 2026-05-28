@@ -19,14 +19,19 @@ class ReadHandler {
 
   async handleRecommendation(session, userMessage) {
     if (!this.ragService) {
-      // T2: Retry — RAG might still be initializing
-      if (this.utils?.ragService?.embeddingClient?.isReady) {
-        await new Promise(r => setTimeout(r, 2000));
-        if (this.ragService) {
-          return this.handleRecommendation(session, userMessage);
-        }
+      // RAG model is loading (~87s on cold start). Wait with polling instead of fallback.
+      const maxWaitMs = 90_000;
+      const pollMs = 3_000;
+      const start = Date.now();
+      logger.info({ sessionId: session.id }, 'RAG not ready yet, waiting for hot-swap...');
+      while (Date.now() - start < maxWaitMs) {
+        await new Promise(r => setTimeout(r, pollMs));
+        if (this.ragService) break;
       }
-      return this.handleSearchProductFallback(session.id, userMessage);
+      if (!this.ragService) {
+        logger.warn({ sessionId: session.id }, 'RAG still not ready after timeout, using fallback');
+        return this.handleSearchProductFallback(session.id, userMessage);
+      }
     }
 
     const storeId = session.store_id || 1;
@@ -256,6 +261,17 @@ class ReadHandler {
   }
 
   async handleSearchProduct(session, userMessage) {
+    if (!this.ragService) {
+      // Wait for RAG hot-swap (same as handleRecommendation)
+      const maxWaitMs = 90_000;
+      const pollMs = 3_000;
+      const start = Date.now();
+      while (Date.now() - start < maxWaitMs) {
+        await new Promise(r => setTimeout(r, pollMs));
+        if (this.ragService) break;
+      }
+    }
+
     if (this.ragService) {
       const storeId = (typeof session === 'object') ? (session.store_id || 1) : 1;
       const customerId = (typeof session === 'object' && session.user_type === 'customer') ? session.user_id : null;

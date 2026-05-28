@@ -1,211 +1,223 @@
-# 🎓 Kịch Bản Bảo Vệ Đồ Án: Hybrid RAG Recommendation
+# Kịch Bản Demo Bảo Vệ Đồ Án — Hybrid RAG Recommendation
 
-> **Thời lượng demo:** ~8-10 phút
-> **Cấu trúc:** Setup → 4 ACTs → Kết luận Weight Learning
+> **Thời lượng:** 8–10 phút · **Cấu trúc:** Chuẩn bị → 4 ACTs → Kết luận
 
 ---
 
-## ⚙️ BƯỚC 1: CHUẨN BỊ (5 PHÚT TRƯỚC KHI LÊN BỤC)
+## Chuẩn Bị (5 phút trước demo)
 
-### 1.1 Dọn dẹp dữ liệu + Kiểm tra sẵn sàng
-
-Mở terminal tại `backend/` và chạy cleanup script:
+### Bước 1 — Khởi tạo dữ liệu
 
 ```bash
-cd backend; node docs/script/pre-demo-cleanup.js
+cd backend && node docs/script/pre-demo-cleanup.js
 ```
 
-**Script sẽ tự động:**
-- Xóa toàn bộ `recommendation_feedback` → Dashboard trống sạch
-- Kiểm tra `co_purchase_stats` (Apriori) → phải có pairs
-- Kiểm tra `item_similarity` (CF) → phải có similarities
-- Kiểm tra `product_knowledge_base` (RAG) → phải có products
-- In ra top 5 Apriori pairs và CF similarities để bạn biết trước kết quả
+Script tự động: xóa bảng `recommendation_feedback`, kiểm tra dữ liệu Apriori/CF/RAG, in top pairs để nắm trước kết quả. Kết quả mong đợi: `ALL SYSTEMS GO`.
 
-**Kết quả mong đợi:**
-```
-🎯 READINESS CHECKLIST
-   ✅ Apriori data ready
-   ✅ CF similarities ready
-   ✅ User interactions seeded
-   ✅ Knowledge base populated
-   ✅ Feedback table cleared
+### Bước 2 — Đăng nhập & Bố trí
 
-   🎉 ALL SYSTEMS GO!
-```
-
-> Nếu có mục ❌, chạy seed scripts theo hướng dẫn trên terminal trước khi demo.
-
-### 1.2 Đăng nhập tài khoản Demo
-
-Đăng nhập Customer UI bằng tài khoản có **Customer ID 1–150**.
-
-> Đây là nhóm "Nội trợ Nấu lẩu" — có lịch sử tương tác mạnh với Bò, Nấm, Rau, Gia vị từ `mock-interactions.js`. CF engine sẽ gợi ý sản phẩm liên quan đến nấu ăn cho nhóm này.
-
-### 1.3 Bố trí màn hình
-
-| Vị trí | Nội dung | Ghi chú |
-|--------|----------|---------|
-| **Trái** | Customer Chatbot UI | Cửa sổ chính demo |
-| **Phải** | Admin Dashboard → AI Insights | Hiện Live Feedback Stream |
-
-Đảm bảo Dashboard đang mở trang **AI Insights** hoặc tab có hiển thị **Live Feedback Stream** real-time.
+- Đăng nhập Customer UI bằng tài khoản **Customer ID 1–150** (nhóm "Nội trợ", có lịch sử tương tác nấu ăn).
+- **Màn hình trái:** Customer Chatbot UI.
+- **Màn hình phải:** Admin Dashboard → AI Insights (Live Feedback Stream).
 
 ---
 
-## 🎬 BƯỚC 2: TRÌNH DIỄN 4 THUẬT TOÁN
+## Trình Diễn 4 Thuật Toán
 
-### ACT 1: Semantic Search — Content-Based (α)
+> **Nguyên lý điều hướng (Contextual Router):** Hệ thống không chạy cào bằng, mà tự động kích hoạt thuật toán tối ưu dựa trên ý định người dùng và điểm chạm hiển thị:
 
-> **Mục đích:** Chứng minh RAG hiểu ngữ nghĩa, không chỉ khớp từ khóa.
-
-**📝 Kịch bản:**
-
-| Bước | Hành động | Trên màn hình |
-|:---:|----------|---------------|
-| 1 | Gõ vào chatbot: **"Tôi muốn mua đồ ăn vặt"** | Chatbot (trái) |
-| 2 | Đợi 2-3 giây, chatbot trả contekết quả | Xuất hiện product cards: Snack Lays, Mì gói, Coca-Cola... |
-| 3 | **Click** vào thẻ sản phẩm **Snack Lays** | Card highlight + feedback gửi đi |
-| 4 | Nhìn sang Dashboard (phải) | Badge `[content]` nhảy lên Live Feed |
-
-**🎤 Thuyết minh (nói khi đang thao tác bước 2-3):**
-
-> *"Thưa hội đồng, khi người dùng nhập 'đồ ăn vặt', hệ thống thực hiện 2 luồng tìm kiếm song song:*
-> - *Semantic Search: Mã hóa câu hỏi thành Vector Embedding 768 chiều bằng HuggingFace, sau đó tính Cosine Similarity với toàn bộ Knowledge Base trên pgvector.*
-> - *Keyword Search: Full-text search bằng PostgreSQL tsvector để bắt chính xác từ khóa.*
-> 
-> *Hai kết quả được hợp nhất bằng thuật toán Reciprocal Rank Fusion (RRF), đảm bảo kết quả vừa đúng ngữ nghĩa vừa chính xác về từ khóa."*
-
-**✅ Checkpoint:** Dashboard hiện badge màu xanh dương `[content]` → Thuật toán 1/4 đã chứng minh.
+| Thuật toán | Khi nào kích hoạt | Điểm chạm lý tưởng |
+|---|---|---|
+| **Content-Based RAG (α)** | Khách tìm kiếm chủ động, hỏi rộng | Tìm kiếm, Chat tư vấn khởi đầu |
+| **Apriori (γ)** | Đã xác định sản phẩm mỏ neo cụ thể | PDP, Giỏ hàng, Checkout |
+| **Collaborative Filtering (β)** | Khách lướt xem chung, không đích danh | Trang chủ "Dành cho bạn", Chat welcome |
+| **Session Context (δ)** | Chat nhiều lượt, ý định biến đổi liên tục | Chat trực tuyến, "Vừa xem" |
 
 ---
 
-### ACT 2: Association Rules — Apriori Cross-sell (γ)
+### ACT 1 · Content-Based RAG (α) & Intent Gating
+
+> **Mục đích:** Chứng minh RAG hiểu ngữ nghĩa (không chỉ khớp từ khóa). Truy vấn rộng "đồ ăn vặt" trả về đúng sản phẩm thuộc danh mục snack/hạt mà không cần gõ tên cụ thể.
+>
+> **Điểm mạnh:** Giải quyết vấn đề của Keyword Search truyền thống (từ đồng nghĩa, từ lóng). Pipeline song song Semantic + Keyword, hợp nhất bằng RRF, kết hợp tín hiệu Apriori cross-sell tự nhiên.
+
+**Thao tác:**
+
+| # | Hành động | Màn hình |
+|:-:|---|---|
+| 1 | Gõ: **"Tôi muốn mua đồ ăn vặt"** | Chatbot |
+| 2 | Đợi 2–3s → xuất hiện 5 product cards | Chatbot |
+| 3 | Click vào **Khô gà lá chanh** hoặc **Snack Lay's** | Card highlight, feedback gửi đi |
+| 4 | Nhìn sang Dashboard | Badge `[content]` nhảy lên Live Feed |
+
+**Kết quả thực tế (đã kiểm chứng):**
+
+| # | Sản phẩm | Giá | Source |
+|:-:|---|:-:|:-:|
+| 1 | Khô gà lá chanh G kitchen hũ 200g | 85.000đ | `content` |
+| 2 | Snack khoai tây Lay's vị Tự nhiên 52g | 12.000đ | `content` |
+| 3 | Đậu phộng da cá Tân Tân hũ 275g | 42.000đ | `content` |
+| 4 | Hạt điều rang muối Bình Phước hũ 250g | 95.000đ | `content` |
+| 5 | Bánh mì hoa cúc Harrys Brioche Tressée 500g | 145.000đ | `apriori` |
+
+**Chatbot Reply (mẫu):**
+
+> *"Đây là một số lựa chọn đồ ăn vặt ngon và phổ biến:*
+> - *Khô gà lá chanh G kitchen hũ 200g — 85.000đ*
+> - *Snack khoai tây Lay's vị Tự nhiên 52g — 12.000đ*
+> - *Đậu phộng da cá Tân Tân hũ 275g — 42.000đ*
+> - *Hạt điều rang muối Bình Phước hũ 250g — 95.000đ*
+>
+> *Nhiều khách hàng mua khô gà lá chanh cũng thường mua kèm snack khoai tây Lay's.*
+>
+> *Bạn có muốn thử các loại hạt rang muối hay bánh mì hoa cúc Harrys không?"*
+
+**Live Feedback (Dashboard):**
+
+| Badge | Sản phẩm | AI Score |
+|:-:|---|:-:|
+| `content` | Snack khoai tây Lay's vị Tự nhiên 52g | 0.6853 |
+| `content` | Khô gà lá chanh G kitchen hũ 200g | 0.7204 |
+| `content` | Đậu phộng da cá Tân Tân hũ 275g | 0.5959 |
+| `content` | Hạt điều rang muối Bình Phước hũ 250g | 0.5798 |
+| `apriori` | Bánh mì hoa cúc Harrys Brioche Tressée 500g | 0.3994 |
+
+**Thuyết minh:**
+
+> *"Khi người dùng nhập 'đồ ăn vặt', hệ thống chạy song song 2 luồng: (1) Semantic Search — mã hóa câu hỏi thành Vector 768 chiều bằng mô hình multilingual-e5-base, tính Cosine Similarity trên pgvector; (2) Keyword Search — full-text search bằng PostgreSQL tsvector tiếng Việt. Hai kết quả được hợp nhất bằng Reciprocal Rank Fusion (RRF), đảm bảo vừa đúng ngữ nghĩa vừa chính xác từ khóa.*
+>
+> *4 sản phẩm đầu tiên là kết quả thuần Content-Based — 'khô gà', 'snack', 'đậu phộng', 'hạt điều' đều thuộc danh mục đồ ăn vặt dù người dùng không gõ tên cụ thể. Sản phẩm thứ 5 — Bánh mì hoa cúc — có badge `apriori`, nghĩa là hệ thống phát hiện khách hàng mua khô gà thường mua kèm bánh mì hoa cúc. Đây là tín hiệu cross-sell tự nhiên, xuất hiện ngay cả ở truy vấn rộng."*
+
+**✅ Checkpoint:** 4 badge `[content]` + 1 badge `[apriori]` → Thuật toán 1/4.
+
+---
+
+### ACT 2 · Apriori Cross-sell (γ)
 
 > **Mục đích:** Chứng minh hệ thống phát hiện quy luật "mua kèm" từ 500 đơn hàng lịch sử.
-
-**📝 Kịch bản:**
-
-| Bước | Hành động | Trên màn hình |
-|:---:|----------|---------------|
-| 1 | Gõ tiếp (cùng session): **"Tôi muốn mua bia Heineken"** | Chatbot (trái) |
-| 2 | Đợi kết quả | Bia Heineken(17) + **Khô gà lá chanh(21)** hoặc **Snack Lays(20)** |
-| 3 | Chỉ tay vào sản phẩm Khô gà/Snack | "Sản phẩm này không phải do tìm kiếm" |
-| 4 | **Click** vào **Khô gà lá chanh** | Feedback gửi đi |
-| 5 | Nhìn sang Dashboard (phải) | Badge `[apriori]` nhảy lên |
-
-**🎤 Thuyết minh (nói khi chỉ vào Khô gà, bước 3):**
-
-> *"Điểm đặc biệt ở đây: Khô gà lá chanh xuất hiện trong kết quả dù người dùng KHÔNG hỏi về đồ nhắm. Đây là thuật toán Apriori — khai phá luật kết hợp (Association Rules) từ 500 đơn hàng lịch sử.*
 >
-> *Hệ thống đã phát hiện: những khách hàng mua Bia Heineken có xu hướng mua kèm Khô gà và Snack với chỉ số Lift > 1. Đây chính là hiện tượng 'Bia và Bỉm' (Diapers and Beer) kinh điển trong Data Mining, được áp dụng thực tế vào hệ thống gợi ý."*
+> **Điểm mạnh:** Khai phá luật kết hợp xuyên danh mục (Cross-Category Discovery) — phát hiện mối quan hệ ẩn giữa các mặt hàng dường như không liên quan (Bia → Khô gà, Coca). Hiện tượng "Bia và Bỉm" kinh điển, tối ưu AOV (Average Order Value).
 
-**✅ Checkpoint:** Dashboard hiện badge `[apriori]` → Thuật toán 2/4 đã chứng minh.
+⚠️ **Bấm "Phiên chat mới" (🔄) trước khi bắt đầu.**
+
+**Thao tác:**
+
+| # | Hành động | Màn hình |
+|:-:|---|---|
+| 0 | Bấm 🔄 Phiên chat mới | Session reset |
+| 1 | Gõ: **"Tôi muốn mua bia Heineken"** | Chatbot |
+| 2 | Đợi kết quả → Bia Heineken + sản phẩm có badge `[apriori]` | Chatbot |
+| 3 | Chỉ vào sản phẩm Apriori (Coca-Cola, Khô gà): *"Sản phẩm này không phải do tìm kiếm"* | — |
+| 4 | Click sản phẩm Apriori → nhìn Dashboard | Badge `[apriori]` nhảy lên |
+
+**Dữ liệu Apriori thực tế (Heineken):**
+
+| Sản phẩm | Co-purchase | Confidence | Lift |
+|---|:-:|:-:|:-:|
+| Nước ngọt Coca-Cola chai 390ml (#19) | 165 | 0.801 | 1.90 |
+| Khô gà lá chanh G kitchen hũ 200g (#21) | 146 | 0.709 | 1.74 |
+| Snack khoai tây Lay's vị Tự nhiên 52g (#20) | 140 | 0.680 | 1.66 |
+
+**Kết quả thực tế (đã kiểm chứng):**
+
+| # | Sản phẩm | Giá | Source | AI Score |
+|:-:|---|:-:|:-:|:-:|
+| 1 | Bia Heineken Silver lon 330ml | 19.500đ | `content` | 0.7426 |
+| 2 | Nước ngọt Coca-Cola vị nguyên bản chai 390ml | 9.000đ | `apriori` | 0.1727 |
+| 3 | Khô gà lá chanh G kitchen hũ 200g | 85.000đ | `apriori` | 0.1554 |
+| 4 | Thùng 24 lon bia Tiger Bạc (Tiger Crystal) 330ml | 395.000đ | `content` | 0.5502 |
+| 5 | Miến dong Phú Hương sườn heo | 9.500đ | `cf` | 0.4540 |
+
+**Chatbot Reply (mẫu):**
+
+> *"Bia Heineken Silver lon 330ml đang có giá 19.500đ, còn 300 sản phẩm. Nhiều khách hàng mua bia Heineken Silver lon 330ml cũng thường mua kèm nước ngọt Coca-Cola vị nguyên bản chai 390ml. Bạn có muốn thêm vào giỏ hàng không?"*
+
+> **Lưu ý:** LLM chỉ nhắc đến 2-3 sản phẩm trong văn bản (Heineken + Coca + Tiger), trong khi hiển thị đầy đủ 5 product cards. Đây là **thiết kế có chủ đích**: LLM prompt nhận `productContext` từ top content results, trong khi Product Cards hiển thị toàn bộ Ensemble results (content + apriori + cf). Điều này giúp văn bản trả lời tự nhiên, không liệt kê dài dòng.
+
+**Thuyết minh:**
+
+> *"Sản phẩm Coca-Cola và Khô gà xuất hiện dù người dùng KHÔNG hỏi về chúng. Đây là thuật toán Apriori — khai phá luật kết hợp từ 500 đơn hàng. Hệ thống phát hiện khách mua Bia Heineken thường mua kèm Coca-Cola (Lift=1.90, 165 đơn mua kèm) và Khô gà (Lift=1.74, 146 đơn mua kèm). Đây chính là hiện tượng 'Bia và Bỉm' kinh điển trong Data Mining."*
+>
+> *"Đặc biệt, hệ thống ưu tiên sản phẩm bán chéo từ sản phẩm 'mỏ neo' (Heineken) thay vì từ sản phẩm phụ (Tiger). Tín hiệu Apriori được nhân với độ liên quan nội dung (Content Relevance Weight), đảm bảo sản phẩm cross-sell đúng mục tiêu."*
+
+**✅ Checkpoint:** Badge `[apriori]` + Coca-Cola/Khô gà → Thuật toán 2/4.
 
 ---
 
-### ACT 3: Cá nhân hóa — Collaborative Filtering (β)
+### ACT 3 · Collaborative Filtering (β)
 
-> **Mục đích:** Chứng minh AI nhận diện thói quen riêng của từng người dùng.
-
-**📝 Kịch bản:**
-
-| Bước | Hành động | Trên màn hình |
-|:---:|----------|---------------|
-| 1 | **Clear chat** (xóa tin nhắn cũ, bắt đầu hội thoại mới) | Chatbot trống |
-| 2 | Gõ: **"Gợi ý cho tôi vài món"** | Chatbot (trái) |
-| 3 | Đợi kết quả | Ngoài Content, sẽ có **Hành tây(25)** hoặc **Cà chua(24)** lọt top |
-| 4 | Chỉ tay vào sản phẩm Hành tây/Cà chua | "Sản phẩm này được cá nhân hóa" |
-| 5 | **Click** vào **Hành tây** | Feedback gửi đi |
-| 6 | Nhìn sang Dashboard (phải) | Badge `[cf]` nhảy lên |
-
-**🎤 Thuyết minh (nói khi chỉ vào Hành tây, bước 4):**
-
-> *"Câu hỏi 'Gợi ý cho tôi vài món' hoàn toàn không chứa từ khóa cụ thể. Vậy tại sao Hành tây lại xuất hiện trên Top?*
+> **Mục đích:** Chứng minh cá nhân hóa mù (Blind Personalization) — AI nhận diện thói quen riêng khi người dùng hỏi chung chung, không có từ khóa mỏ neo.
 >
-> *Đó là nhờ thuật toán Collaborative Filtering — Item-Item. Hệ thống phân tích dữ liệu tương tác của 500 người dùng, phát hiện 150 user thuộc nhóm 'Nội trợ' thường mua kèm Bò, Nấm, Rau. Tài khoản demo của em cũng thuộc nhóm này, nên CF engine tính toán Adjusted Cosine Similarity và dự đoán em sẽ thích Hành tây — một sản phẩm mà nhiều user tương tự đã mua.*
->
-> *Lưu ý: Sản phẩm Hành tây ban đầu chỉ tồn tại trong kết quả CF, không có metadata hiển thị. Hệ thống giải quyết vấn đề này bằng Two-Tier Hydration — tra cứu Local Knowledge Base trước, nếu thiếu thì gọi Catalog API với timeout 500ms để bảo vệ domino."*
+> **Điểm mạnh:** Ma trận tương đồng Item-Item phân loại user theo hành vi cộng đồng. Cùng một câu hỏi, nhưng kết quả khác nhau hoàn toàn giữa các nhóm người dùng (Nội trợ → Ba chỉ bò, Hành tây; Sinh viên → Mì tôm, Phở bò).
 
-**✅ Checkpoint:** Dashboard hiện badge `[cf]` → Thuật toán 3/4 đã chứng minh.
+**Thao tác:**
+
+| # | Hành động | Màn hình |
+|:-:|---|---|
+| 1 | Bấm 🔄 Phiên chat mới | Chat trống |
+| 2 | Gõ: **"Gợi ý cho tôi vài món"** | Chatbot |
+| 3 | Đợi kết quả → ngoài Content, xuất hiện sản phẩm có badge `[cf]` | Chatbot |
+| 4 | Chỉ vào sản phẩm CF: *"Sản phẩm này được cá nhân hóa"* | — |
+| 5 | Click sản phẩm CF → nhìn Dashboard | Badge `[cf]` nhảy lên |
+
+**Thuyết minh:**
+
+> *"Câu hỏi 'Gợi ý cho tôi vài món' hoàn toàn không chứa từ khóa cụ thể. Vậy tại sao sản phẩm này xuất hiện? Đó là nhờ Collaborative Filtering — hệ thống phân tích dữ liệu tương tác của 500 người dùng, phát hiện tài khoản demo thuộc nhóm 'Nội trợ', nên gợi ý sản phẩm mà những user tương tự đã mua. Sản phẩm CF ban đầu không có metadata hiển thị — hệ thống giải quyết bằng Two-Tier Hydration: tra cứu Local KB trước, fallback Catalog API với timeout 500ms."*
+
+**✅ Checkpoint:** Badge `[cf]` → Thuật toán 3/4.
 
 ---
 
-### ACT 4: Trí nhớ ngắn hạn — Session Context (δ) — CÚ CHỐT 🎯
+### ACT 4 · Session Context (δ) — Cú Chốt 🎯
 
-> **Mục đích:** Chứng minh AI duy trì ngữ cảnh xuyên suốt phiên chat (Multi-turn Context).
-
-**📝 Kịch bản 3 lượt:**
-
-#### Lượt 1 — Thiết lập ngữ cảnh
-
-| Bước | Hành động | Trên màn hình |
-|:---:|----------|---------------|
-| 1 | **Clear chat** | Chatbot trống |
-| 2 | Gõ: **"Tôi muốn nấu lẩu Thái cuối tuần"** | Chatbot (trái) |
-| 3 | Đợi kết quả | Gia vị lẩu Thái(4), Ba chỉ bò(1), Nấm kim châm(2)... |
-
-> *Không click, không giải thích — chỉ nói: "Em bắt đầu bằng một câu hỏi về nấu lẩu."*
-
-#### Lượt 2 — Xây dựng context
-
-| Bước | Hành động | Trên màn hình |
-|:---:|----------|---------------|
-| 4 | Gõ tiếp (cùng session): **"Gợi ý rau ăn kèm lẩu đi"** | Chatbot (trái) |
-| 5 | Đợi kết quả | Rau muống(3), Cải thìa(22)... |
-
-> *Nói ngắn gọn: "Em tiếp tục hỏi về rau ăn kèm. Lúc này Session Engine đã ngầm nhận diện ý định nấu lẩu."*
-
-#### Lượt 3 — Cú chốt (không dùng từ khóa)
-
-| Bước | Hành động | Trên màn hình |
-|:---:|----------|---------------|
-| 6 | Gõ: **"Gợi ý thêm đi"** | Chatbot (trái) |
-| 7 | Đợi kết quả | **Bún tươi(5)**, **Hành tây(25)**, **Chanh(28)**... |
-| 8 | **Click** vào **Bún tươi** | Feedback gửi đi |
-| 9 | Nhìn sang Dashboard (phải) | Badge **`[session]`** nhảy lên 🎉 |
-
-**🎤 Thuyết minh (nói sau bước 7, khi kết quả hiện ra):**
-
-> *"Thưa thầy cô, ở câu cuối cùng, em hoàn toàn KHÔNG dùng bất kỳ từ khóa nào liên quan đến lẩu — không có 'bò', 'nấm', hay 'gia vị'. Câu hỏi cực ngắn chỉ là 'Gợi ý thêm đi'.*
+> **Mục đích:** Chứng minh AI duy trì ngữ cảnh xuyên suốt phiên chat (Multi-turn Context) — giải bài toán Đại từ thế vị.
 >
-> *Nhưng AI vẫn trả về Bún tươi, Hành tây, Chanh — toàn bộ đều là nguyên liệu ăn kèm lẩu. Đó là nhờ thuật toán Session Context Detection:*
-> 1. *Hệ thống trích xuất chuỗi sản phẩm đã gợi ý ở các câu trước.*
-> 2. *Deterministic Reformulator phát hiện câu continuation 'Gợi ý thêm đi', tự động tái sử dụng chủ đề chính là 'nấu lẩu' từ lịch sử để thực hiện Keyword Search ổn định.*
-> 3. *Áp dụng Session Boost +0.15 cho các sản phẩm trong Cluster Lẩu Bò.*
-> 4. *Kết quả: Bún tươi được đẩy lên Top phục vụ hoàn hảo chủ đề bữa ăn.*
+> **Điểm mạnh:** Khi khách hỏi "Gợi ý thêm đi" (không chứa bất kỳ từ khóa chính nào), kiến trúc Category-Driven Session mapping (warmUp in-memory O(1)) tự động nhận diện chủ đề từ lịch sử, khóa chặt danh mục liên đới mà không cần truy xuất lại DB.
 
-**🎤 Bảo vệ thiết kế (nói sau khi Dashboard hiện badge `[session]`):**
+**Thao tác (3 lượt cùng session):**
 
-> *"Một điểm đặc biệt em muốn chia sẻ: ban đầu Session Context sử dụng hardcode Product IDs, gắn chết vào dữ liệu mẫu. Em đã refactor sang kiến trúc Category-Driven — map cluster theo danh mục sản phẩm thay vì ID cứng. Nhờ đó, khi admin thêm sản phẩm mới vào bất kỳ danh mục nào, hệ thống tự động nhận diện mà không cần sửa code.*
+| # | Hành động | Màn hình |
+|:-:|---|---|
+| 1 | Bấm 🔄 Phiên chat mới | Chat trống |
+| 2 | **Lượt 1:** Gõ: **"Tôi muốn nấu lẩu Thái cuối tuần"** | Gia vị lẩu, Ba chỉ bò, Nấm... |
+| 3 | **Lượt 2:** Gõ: **"Gợi ý rau ăn kèm lẩu đi"** | Rau muống, Cải thìa... |
+| 4 | **Lượt 3:** Gõ: **"Gợi ý thêm đi"** | Hành tây, Bún tươi... có badge `[session]` |
+| 5 | Click **Bún tươi** → nhìn Dashboard | Badge `[session]` nhảy lên 🎉 |
+
+**Thuyết minh (sau khi kết quả Lượt 3 hiện ra):**
+
+> *"Ở câu cuối cùng, em hoàn toàn KHÔNG dùng từ khóa liên quan đến lẩu — chỉ gõ 'Gợi ý thêm đi'. Nhưng AI vẫn trả về Bún tươi, Hành tây — toàn bộ đều là nguyên liệu lẩu.*
 >
-> *Về hiệu năng: quá trình map Category chỉ chạy 1 lần lúc khởi động server (warmUp), toàn bộ dữ liệu lưu In-memory, nên thời gian xử lý runtime là O(1) — hoàn toàn không ảnh hưởng trải nghiệm người dùng."*
+> *Đó là nhờ Session Context Detection:*
+> 1. *Trích xuất chuỗi sản phẩm đã gợi ý ở các câu trước.*
+> 2. *Deterministic Reformulator phát hiện câu continuation, tái sử dụng chủ đề 'nấu lẩu' từ lịch sử.*
+> 3. *Áp dụng Session Boost +0.15 cho sản phẩm trong Cluster Lẩu Bò.*
+>
+> *Điểm thiết kế quan trọng: Session Context sử dụng Category-Driven mapping thay vì hardcode Product ID — khi admin thêm sản phẩm mới, hệ thống tự động nhận diện mà không cần sửa code. Toàn bộ dữ liệu warmUp in-memory, runtime O(1)."*
 
-**✅ Checkpoint:** Dashboard hiện badge `[session]` → Thuật toán 4/4 đã chứng minh hoàn tất.
+**✅ Checkpoint:** Badge `[session]` → Thuật toán 4/4 hoàn tất.
 
 ---
 
-## 📊 BƯỚC 3: KẾT LUẬN — VÒNG LẶP HỌC HỎI TỰ ĐỘNG
+## Kết Luận — Vòng Lặp Học Hỏi Tự Động (30 giây)
 
-**🎤 Thuyết minh tổng kết (30 giây):**
-
-> *"Tất cả 4 tương tác vừa rồi — click Snack, Khô gà, Hành tây và Bún tươi — đều đã được ghi nhận vào bảng `recommendation_feedback` với nguồn gốc thuật toán rõ ràng: `content`, `apriori`, `cf`, `session`.*
+> *"Tất cả 4 tương tác vừa rồi đều được ghi nhận vào bảng `recommendation_feedback` với nguồn gốc thuật toán rõ ràng: `content`, `apriori`, `cf`, `session`.*
 >
-> *Hàng đêm, một Batch Job tên Weight Learner sẽ tự động chạy:*
-> - *Tính Conversion Rate (tỉ lệ click → mua) của từng thuật toán*
-> - *Sử dụng EWMA (Exponential Weighted Moving Average) để điều chỉnh trọng số α, β, γ, δ*
-> - *Lưu lịch sử vào `ensemble_weights_history` để theo dõi xu hướng theo thời gian*
+> *Hàng đêm, Weight Learner tự động:*
+> - *Tính Conversion Rate (click → mua) của từng thuật toán*
+> - *Điều chỉnh trọng số α, β, γ, δ bằng EWMA (Exponential Weighted Moving Average)*
+> - *Lưu lịch sử vào `ensemble_weights_history`*
 >
-> *Đây là một vòng lặp khép kín: Thu thập dữ liệu → Gợi ý → Tương tác → Tự học → Gợi ý tốt hơn. Hệ thống hoàn toàn có khả năng tự hoàn thiện mà không cần con người can thiệp."*
+> *Đây là vòng lặp khép kín: Gợi ý → Tương tác → Tự học → Gợi ý tốt hơn. Hệ thống hoàn toàn tự hoàn thiện mà không cần con người can thiệp."*
 
 ---
 
-## 📋 PHỤ LỤC: CÂU HỎI GVHD CÓ THỂ HỎI
+## Phụ Lục — Câu Hỏi Phản Biện
 
-| Câu hỏi | Gợi ý trả lời |
-|---------|---------------|
-| "Nếu user mới, chưa có lịch sử?" | CF trả về rỗng, hệ thống fallback sang Content + Apriori (cold-start graceful degradation) |
-| "Session Context có nhớ qua phiên khác không?" | Không — đây là Short-term Memory trong cùng 1 phiên chat. Long-term memory do CF đảm nhận qua bảng `user_product_interaction` |
-| "Sao Apriori không gợi ý sai danh mục?" | Chỉ gợi ý khi Lift > 1 (tần suất mua kèm cao hơn ngẫu nhiên) và sản phẩm phải còn hàng (`is_in_stock = true`) |
-| "Latency có tăng khi thêm nhiều thuật toán?" | Tổng pipeline ~200-400ms. Hydration local KB ~1ms, Catalog API fallback timeout 500ms. WarmUp in-memory nên runtime O(1) |
-| "Category-Driven có hạn chế gì?" | Category names phải khớp chính xác với data-ingestion sync. Nếu đổi tên category ở Catalog, cần restart chatbot để warmUp lại |
+| Câu hỏi | Trả lời |
+|---|---|
+| User mới, chưa có lịch sử? | CF trả về rỗng → fallback Content + Apriori (cold-start graceful degradation) |
+| Session Context nhớ qua phiên khác? | Không — Short-term Memory trong cùng 1 phiên. Long-term do CF qua `user_product_interaction` |
+| Apriori có gợi ý sai danh mục? | Chỉ gợi ý khi Lift > 1 (mua kèm cao hơn ngẫu nhiên) và sản phẩm còn hàng |
+| Latency có tăng khi thêm thuật toán? | Pipeline ~200–400ms. Local KB ~1ms, Catalog fallback timeout 500ms. WarmUp in-memory, O(1) |
+| Category-Driven có hạn chế? | Category names phải khớp với data-ingestion. Đổi tên category → cần restart chatbot để warmUp |

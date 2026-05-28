@@ -29,7 +29,7 @@ const formatTimeAgo = (dateStr) => {
   return `${days}d ago`;
 };
 
-export const LiveFeedbackStream = ({ data, loading, selectedSource, setSelectedSource, selectedRecency, setSelectedRecency }) => {
+export const LiveFeedbackStream = ({ data, loading, selectedSource, setSelectedSource, selectedRecency, setSelectedRecency, sseConnected }) => {
   const feedbacks = data?.feedbacks || [];
   const prevIdsRef = useRef(new Set());
   const [newIds, setNewIds] = useState(new Set());
@@ -40,9 +40,11 @@ export const LiveFeedbackStream = ({ data, loading, selectedSource, setSelectedS
     const currentIds = new Set(feedbacks.map(fb => fb.id));
     const fresh = new Set();
 
-    for (const id of currentIds) {
-      if (!prevIdsRef.current.has(id) && prevIdsRef.current.size > 0) {
-        fresh.add(id);
+    if (prevIdsRef.current.size > 0) {
+      for (const id of currentIds) {
+        if (!prevIdsRef.current.has(id)) {
+          fresh.add(id);
+        }
       }
     }
 
@@ -50,17 +52,11 @@ export const LiveFeedbackStream = ({ data, loading, selectedSource, setSelectedS
       setNewIds(fresh);
       // Clear animation after 2 seconds
       const timer = setTimeout(() => setNewIds(new Set()), 2000);
+      prevIdsRef.current = currentIds;
       return () => clearTimeout(timer);
     }
 
     prevIdsRef.current = currentIds;
-  }, [feedbacks]);
-
-  // Update prevIds AFTER animation detection
-  useEffect(() => {
-    if (feedbacks.length > 0) {
-      prevIdsRef.current = new Set(feedbacks.map(fb => fb.id));
-    }
   }, [feedbacks]);
 
   return (
@@ -70,6 +66,17 @@ export const LiveFeedbackStream = ({ data, loading, selectedSource, setSelectedS
           <h3 className="text-sm font-semibold text-gray-800 flex items-center gap-2">
             <List size={14} className="text-gray-500" />
             Live Feedback Stream
+            {sseConnected ? (
+              <span className="flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[9px] font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                Live
+              </span>
+            ) : (
+              <span className="flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[9px] font-semibold bg-gray-50 text-gray-500 border border-gray-200">
+                <span className="h-1.5 w-1.5 rounded-full bg-gray-400"></span>
+                Offline
+              </span>
+            )}
             {newIds.size > 0 && (
               <span className="flex h-2 w-2 relative">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>

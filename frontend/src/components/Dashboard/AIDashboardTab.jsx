@@ -13,7 +13,9 @@ const AUTO_REFRESH_INTERVAL = 10000; // 10 seconds
 
 export const AIDashboardTab = () => {
   const [days, setDays] = useState(30);
-  const [loading, setLoading] = useState(true);
+  const [widgetsLoading, setWidgetsLoading] = useState(true);
+  const [feedbackLoading, setFeedbackLoading] = useState(true);
+  const [sseConnected, setSseConnected] = useState(false);
   const [error, setError] = useState(null);
   const [forceLoading, setForceLoading] = useState(false);
   const [forceResult, setForceResult] = useState(null);
@@ -31,33 +33,103 @@ export const AIDashboardTab = () => {
   const intervalRef = useRef(null);
   const countdownRef = useRef(null);
 
-  const fetchAll = useCallback(async () => {
-    setLoading(true);
+  // Ref to hold current filter values to guard against stale closure in SSE handler
+  const filterRef = useRef({ selectedSource, selectedRecency });
+
+  useEffect(() => {
+    filterRef.current = { selectedSource, selectedRecency };
+  }, [selectedSource, selectedRecency]);
+
+  const fetchWidgets = useCallback(async () => {
+    setWidgetsLoading(true);
     setError(null);
     try {
-      const [recRes, latRes, fbRes, whRes, cfmRes] = await Promise.all([
+      const [recRes, latRes, whRes, cfmRes] = await Promise.all([
         api.get('/chatbot/stats/recommendations', { params: { storeId: STORE_ID, days } }),
         api.get('/chatbot/stats/latency', { params: { storeId: STORE_ID } }),
-        api.get('/chatbot/stats/feedback-stream', { params: { storeId: STORE_ID, limit: 50, source: selectedSource, recency: selectedRecency } }),
         api.get('/chatbot/stats/weight-history', { params: { storeId: STORE_ID, limit: 30 } }),
         api.get('/chatbot/stats/cf-matrix', { params: { storeId: STORE_ID } })
       ]);
       setRecData(recRes.data?.data || null);
       setLatencyData(latRes.data?.data || null);
-      setFeedbackData(fbRes.data?.data || null);
       setWeightHistory(whRes.data?.data || null);
       setCfMatrixData(cfmRes.data?.data || null);
     } catch (err) {
-      console.error('AI Dashboard fetch error:', err);
+      console.error('AI Dashboard fetch widgets error:', err);
       setError(err.response?.data?.error?.message || err.message || 'Failed to load AI metrics');
     } finally {
-      setLoading(false);
+      setWidgetsLoading(false);
     }
-  }, [days, selectedSource, selectedRecency]);
+  }, [days]);
+
+  const fetchFeedback = useCallback(async () => {
+    setFeedbackLoading(true);
+    try {
+      const fbRes = await api.get('/chatbot/stats/feedback-stream', {
+        params: { storeId: STORE_ID, limit: 50, source: selectedSource, recency: selectedRecency }
+      });
+      setFeedbackData(fbRes.data?.data || null);
+    } catch (err) {
+      console.error('AI Dashboard fetch feedback error:', err);
+    } finally {
+      setFeedbackLoading(false);
+    }
+  }, [selectedSource, selectedRecency]);
+
+  const fetchAll = useCallback(async () => {
+    await Promise.all([fetchWidgets(), fetchFeedback()]);
+  }, [fetchWidgets, fetchFeedback]);
 
   useEffect(() => {
-    fetchAll();
-  }, [fetchAll]);
+    fetchWidgets();
+  }, [fetchWidgets]);
+
+  useEffect(() => {
+    fetchFeedback();
+  }, [fetchFeedback]);
+
+  // Connect to SSE for real-time live events without polling
+  useEffect(() => {
+    const sseUrl = `${import.meta.env.VITE_API_URL || '/api'}/chatbot/stats/feedback-stream/live`;
+    const eventSource = new EventSource(sseUrl);
+
+    eventSource.onopen = () => {
+      setSseConnected(true);
+    };
+
+    eventSource.onerror = () => {
+      setSseConnected(false);
+    };
+
+    eventSource.onmessage = (event) => {
+      try {
+        const fb = JSON.parse(event.data);
+        const { selectedSource: currentSource } = filterRef.current;
+
+        // Client-side filtering check
+        if (currentSource !== 'all' && fb.source !== currentSource) return;
+
+        setFeedbackData(prev => {
+          const currentFeedbacks = prev?.feedbacks || [];
+          if (currentFeedbacks.some(f => f.id === fb.id)) return prev;
+
+          return {
+            ...prev,
+            feedbacks: [fb, ...currentFeedbacks].slice(0, 50)
+          };
+        });
+      } catch (err) {
+        console.error('Failed to parse SSE live message:', err);
+      }
+    };
+
+    return () => {
+      eventSource.close();
+      setSseConnected(false);
+    };
+  }, []);
+
+  const loading = widgetsLoading || feedbackLoading;
 
   // Auto-refresh logic
   useEffect(() => {
@@ -215,23 +287,23 @@ export const AIDashboardTab = () => {
       </div>
 
       {/* Widgets Layout: Asymmetric Tension (66/33) */}
-      <div className={`transition-opacity duration-300 ${loading ? 'opacity-60' : 'opacity-100'}`}>
+      <div>
         <div className="flex flex-col lg:flex-row items-start gap-6">
           {/* Left Column: Analytics (66%) */}
-          <div className="w-full lg:w-2/3 flex flex-col gap-6">
+          <div className={`w-full lg:w-2/3 flex flex-col gap-6 transition-opacity duration-300 ${widgetsLoading ? 'opacity-60' : 'opacity-100'}`}>
             <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-              <ConversionFunnel data={recData} loading={loading} />
-              <WeightEvolutionChart data={weightHistory} currentWeights={recData?.currentWeights} loading={loading} />
+              <ConversionFunnel data={recData} loading={widgetsLoading} />
+              <WeightEvolutionChart data={weightHistory} currentWeights={recData?.currentWeights} loading={widgetsLoading} />
             </div>
             <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
-              <SourcePerformance data={recData?.sourceBreakdown} loading={loading} />
-              <CFMatrixHealth data={cfMatrixData} loading={loading} />
+              <SourcePerformance data={recData?.sourceBreakdown} loading={widgetsLoading} />
+              <CFMatrixHealth data={cfMatrixData} loading={widgetsLoading} />
             </div>
             <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
               <SystemHealth
                 latency={latencyData}
                 batch={recData}
-                loading={loading}
+                loading={widgetsLoading}
                 onRunBatch={handleRunBatch}
               />
             </div>
@@ -241,11 +313,12 @@ export const AIDashboardTab = () => {
           <div className="w-full lg:w-1/3 lg:sticky lg:top-6">
             <LiveFeedbackStream
               data={feedbackData}
-              loading={loading}
+              loading={feedbackLoading}
               selectedSource={selectedSource}
               setSelectedSource={setSelectedSource}
               selectedRecency={selectedRecency}
               setSelectedRecency={setSelectedRecency}
+              sseConnected={sseConnected}
             />
           </div>
         </div>

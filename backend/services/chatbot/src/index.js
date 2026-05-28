@@ -214,13 +214,8 @@ async function start() {
             logger.warn({ err }, 'Hybrid cache warmup failed — will use DB fallback');
           });
 
-          // Session cluster warmup
-          logger.info('Background: Warming up session clusters...');
-          await sessionContextService.warmUp(pool, 1).catch(err => {
-            logger.warn({ err }, 'Session cluster warmup failed — will use keyword-only fallback');
-          });
-
-          // Initial sync (staggered after warmup)
+          // Initial sync — MUST run BEFORE session cluster warmup
+          // because clusters depend on product_knowledge_base (populated by syncAll)
           logger.info('Background: Running initial data sync...');
           try {
             const result = await dataIngestionService.syncAll();
@@ -228,6 +223,12 @@ async function start() {
           } catch (err) {
             logger.error({ err }, 'Background: Initial sync failed (will retry at next cron)');
           }
+
+          // Session cluster warmup — runs AFTER syncAll so product_knowledge_base is populated
+          logger.info('Background: Warming up session clusters...');
+          await sessionContextService.warmUp(pool, 1).catch(err => {
+            logger.warn({ err }, 'Session cluster warmup failed — will use keyword-only fallback');
+          });
 
           logger.info('Background init completed successfully');
         }
@@ -240,8 +241,8 @@ async function start() {
     cron.schedule('*/30 * * * *', async () => {
       logger.info('Cron: Starting scheduled full sync...');
       if (!embeddingClient.isReady) {
-          logger.warn('Cron: Skipping sync because embedding client is not ready');
-          return;
+        logger.warn('Cron: Skipping sync because embedding client is not ready');
+        return;
       }
       try {
         const result = await dataIngestionService.syncAll();

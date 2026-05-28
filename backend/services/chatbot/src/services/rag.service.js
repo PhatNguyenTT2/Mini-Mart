@@ -318,35 +318,134 @@ class RAGService {
                 };
 
                 // Re-rank top5 by ensemble score with partitioned ranking:
-                // Content-matched products matching anchor category fill Slots 1-3 first,
-                // followed by other content, and strictly CF-only supplements in Slots 4-5.
+                // Content-matched → Slots 1-3, then dedicated Apriori + CF slots.
                 const contentIds = new Set(top5.map(r => Number(r.product_id)));
                 const contentMatched = hybridResults.filter(r => contentIds.has(r.product_id));
-                const cfOnly = hybridResults.filter(r => !contentIds.has(r.product_id));
 
-                const anchorCategory = metadata.steps.anchorRerank?.anchorCategory;
+                // Detect broad category queries — disable cross-sell injection to eliminate noise.
+                const contentCategories = new Set(
+                    contentMatched.map(r => r.rawProduct?.category_name).filter(Boolean)
+                );
+                const isGeneralRecQuery = /gợi ý vài món|đề xuất vài món|gợi ý cho tôi|gợi ý các món|gợi ý sản phẩm/i.test(query.toLowerCase()) ||
+                    (query.toLowerCase().includes('gợi ý') && query.toLowerCase().includes('món')) ||
+                    (query.toLowerCase().includes('đề xuất') && query.toLowerCase().includes('món')) ||
+                    (query.toLowerCase().trim() === 'gợi ý cho tôi vài món' || query.toLowerCase().includes('vài món'));
+                const hasStrongAnchor = top5.length > 0 && top5[0].score >= 0.83;
+                const isBroadQuery = !isGeneralRecQuery && !hasStrongAnchor && (contentCategories.size >= 3 || /đồ ăn vặt|ăn vặt|bánh kẹo/i.test(query.toLowerCase()));
+
+                // Pick best Apriori candidates from non-content pool.
+                const MIN_NON_CONTENT_SCORE = 0.12;
+                const MIN_APRIORI_SCORE = 0.04;
+                const nonContent = hybridResults.filter(r => !contentIds.has(r.product_id));
+                const withApriori = nonContent
+                    .filter(r => r.scores?.apriori > 0 && r.final_score >= MIN_APRIORI_SCORE)
+                    .sort((a, b) => b.scores.apriori - a.scores.apriori);
+
+                // Use anchor category from the rerank step (key is anchorCategories, plural)
+                // Fallback to direct category_name on top5[0] (from pgvector search results)
+                const anchorCategorySet = new Set(
+                    metadata.steps.anchorRerank?.anchorCategories || []
+                );
+                if (anchorCategorySet.size === 0 && top5[0]?.category_name) {
+                    anchorCategorySet.add(top5[0].category_name);
+                }
+                const anchorCategory = anchorCategorySet.size > 0 ? [...anchorCategorySet][0] : null;
                 const anchorMatched = anchorCategory
-                    ? contentMatched.filter(r => r.rawProduct?.category_name === anchorCategory)
+                    ? contentMatched.filter(r => anchorCategorySet.has(r.rawProduct?.category_name))
                     : [];
                 const otherContent = anchorCategory
-                    ? contentMatched.filter(r => r.rawProduct?.category_name !== anchorCategory)
+                    ? contentMatched.filter(r => !anchorCategorySet.has(r.rawProduct?.category_name))
                     : contentMatched;
 
-                const MAX_CF_SLOTS = 2;
-                const takenAnchor = Math.min(anchorMatched.length, 3);
-                const takenCF = Math.min(cfOnly.length, MAX_CF_SLOTS);
+                // Detect transactional query: uses lower threshold (0.78) than hasStrongAnchor (0.83)
+                // to catch queries like "mua bia Heineken" (score ~0.80) that are clearly transactional
+                const hasAnchorIntent = top5.length > 0 && top5[0].score >= 0.78;
+                const isTransactionalQuery = hasAnchorIntent && anchorMatched.length > 0;
 
-                const partitioned = [
-                    ...anchorMatched.slice(0, 3),
-                    ...otherContent.slice(0, 5 - takenAnchor - takenCF),
-                    ...cfOnly.slice(0, MAX_CF_SLOTS)
-                ].slice(0, 5);
+                // Gating: Expand Apriori slots for transactional, suppress CF
+                const aprioriPick = isBroadQuery ? [] : withApriori.slice(0, isTransactionalQuery ? 2 : 1);
+                const aprioriPickIds = new Set(aprioriPick.map(r => r.product_id));
+                const cfOnlyProducts = nonContent
+                    .filter(r => !aprioriPickIds.has(r.product_id) && r.final_score >= MIN_NON_CONTENT_SCORE)
+                    .sort((a, b) => b.final_score - a.final_score);
+
+                const MAX_APRIORI_SLOTS = aprioriPick.length;
+                const MAX_CF_SLOTS = (isBroadQuery || isTransactionalQuery || cfOnlyProducts.length === 0) ? 0 : 1;
+
+                logger.info({
+                    query,
+                    isGeneralRecQuery,
+                    isBroadQuery,
+                    isTransactionalQuery,
+                    hasAnchorIntent,
+                    anchorCategory,
+                    anchorCategoryArr: [...anchorCategorySet],
+                    anchorMatchedCount: anchorMatched.length,
+                    contentCategoriesSize: contentCategories.size,
+                    contentMatchedCount: contentMatched.length,
+                    nonContentCount: nonContent.length,
+                    withAprioriCount: withApriori.length,
+                    withAprioriTop3: withApriori.slice(0, 3).map(r => ({
+                        id: r.product_id,
+                        name: r.rawProduct?.product_name || r.product_name,
+                        aprioriScore: r.scores?.apriori,
+                        finalScore: r.final_score
+                    })),
+                    aprioriPickCount: aprioriPick.length,
+                    cfOnlyProductsCount: cfOnlyProducts.length,
+                    MIN_NON_CONTENT_SCORE,
+                    top5Score: top5[0]?.score
+                }, '[DIAGNOSTIC] Conditional gating heuristics');
+
+                // Override topSource for dedicated apriori slot — but preserve CF attribution
+                // when CF also contributed (CF is user-specific, more informative than apriori)
+                for (const pick of aprioriPick) {
+                    if (!pick.sources.includes('cf') || pick.scores?.cf === 0) {
+                        pick.topSource = 'apriori';
+                    }
+                    if (!pick.sources.includes('apriori')) pick.sources.push('apriori');
+                }
+
+                // Masterful Slot Partitioning Layout:
+                // Slot 1: Content
+                // Slot 2: CF Personalized recommendation
+                // Slot 3: Apriori Cross-sell recommendation
+                // Slot 4 & 5: Next best content matches
+                // Crucially preserves the 3-content minimum while raising CF/Apriori visibility.
+                const activeContent = [
+                    ...anchorMatched,
+                    ...otherContent
+                ];
+
+                const partitioned = [];
+                // Slot 1
+                if (activeContent.length > 0) {
+                    partitioned.push(activeContent[0]);
+                }
+                // Slot 2
+                if (MAX_CF_SLOTS > 0 && cfOnlyProducts.length > 0) {
+                    partitioned.push(cfOnlyProducts[0]);
+                }
+                // Slot 3 (& 4 for transactional): Apriori Cross-sell
+                for (const pick of aprioriPick.slice(0, MAX_APRIORI_SLOTS)) {
+                    partitioned.push(pick);
+                }
+                // Fill remaining slots with Content
+                let contentIdx = 1;
+                while (partitioned.length < 5 && contentIdx < activeContent.length) {
+                    if (!partitioned.find(p => p.product_id === activeContent[contentIdx].product_id)) {
+                        partitioned.push(activeContent[contentIdx]);
+                    }
+                    contentIdx++;
+                }
 
                 const rankedIds = partitioned.map(r => r.product_id);
 
                 logger.info({
                     contentMatchedCount: contentMatched.length,
-                    cfOnlyCount: cfOnly.length,
+                    aprioriPickCount: aprioriPick.length,
+                    aprioriPickDetail: aprioriPick.map(r => ({ pid: r.product_id, aprioriScore: r.scores?.apriori, cfScore: r.scores?.cf })),
+                    cfOnlyCount: cfOnlyProducts.length,
                     rankedIds,
                     topScores: partitioned.map(r => ({ pid: r.product_id, score: r.final_score, src: r.topSource }))
                 }, 'Partitioned ranking applied');
@@ -354,7 +453,7 @@ class RAGService {
                 // ── Hydrate CF-only products (missing rawProduct metadata) ──
                 const cfOnlyIds = rankedIds.filter(pid => {
                     const inContent = top5.some(r => Number(r.product_id) === pid);
-                    const hasRaw = hybridResults.find(r => r.product_id === pid)?.rawProduct;
+                    const hasRaw = hybridResults.find(r => Number(r.product_id) === pid)?.rawProduct;
                     return !inContent && !hasRaw;
                 });
 
@@ -398,7 +497,7 @@ class RAGService {
                     for (const pid of cfOnlyIds) {
                         const meta = localMap.get(pid);
                         if (meta) {
-                            const hybrid = hybridResults.find(r => r.product_id === pid);
+                            const hybrid = hybridResults.find(r => Number(r.product_id) === pid);
                             if (hybrid) hybrid.rawProduct = meta;
                         }
                     }
@@ -412,7 +511,7 @@ class RAGService {
                 }
                 const enrichedTop5 = rankedIds.map(pid => {
                     const original = top5.find(r => Number(r.product_id) === pid);
-                    const hybrid = hybridResults.find(r => r.product_id === pid);
+                    const hybrid = hybridResults.find(r => Number(r.product_id) === pid);
                     return original
                         ? { ...original, ensemble_score: hybrid?.final_score, ensemble_sources: hybrid?.sources, top_source: hybrid?.topSource }
                         : hybrid?.rawProduct
@@ -430,7 +529,9 @@ class RAGService {
 
                 // Step 7: Augmented Generation
                 const stepStart7 = Date.now();
-                const coPurchaseData = await getCoPurchaseContext(this.copurchaseRepo, finalProducts, storeId);
+                const coPurchaseData = isBroadQuery
+                    ? []
+                    : await getCoPurchaseContext(this.copurchaseRepo, finalProducts, storeId);
                 const response = await this._generateResponse(
                     userMessage, query, finalProducts, coPurchaseData, [], customerContext
                 );
@@ -583,29 +684,38 @@ class RAGService {
 
         let coPurchaseContext = '';
         if (coPurchaseData.length > 0) {
-            coPurchaseContext = '\n\nSản phẩm thường mua kèm (Apriori):\n' +
+            coPurchaseContext = '\n\n[DỮ LIỆU MUA KÈM]:\n' +
                 coPurchaseData.map(cp => {
-                    const items = cp.relatedProducts.map(r => {
-                        const conf = Number(r.confidence) > 0
-                            ? ` (${Math.round(r.confidence * 100)}% mua kèm)`
-                            : '';
-                        return `Product #${r.product_id_b}${conf}`;
-                    });
-                    return `- Khách mua "${cp.productName}" thường mua kèm: ${items.join(', ')}`;
-                }).join('\n');
+                    const relatedNames = cp.relatedProducts.map(r => {
+                        const found = products.find(p => Number(p.product_id) === Number(r.product_id_b));
+                        if (found) return found.content.match(/"([^"]+)"/)?.[1] || `Product ${r.product_id_b}`;
+                        return null;
+                    }).filter(Boolean);
+                    if (relatedNames.length === 0) return '';
+                    return `- Khách mua "${cp.productName}" thường mua kèm: ${relatedNames.join(', ')}`;
+                }).filter(Boolean).join('\n');
         }
 
         let cfContext = '';
         if (cfData.length > 0) {
-            cfContext = '\n\nGợi ý cá nhân hóa (dựa trên lịch sử mua):\n' +
-                cfData.map(r => `- Product #${r.product_id} (điểm phù hợp: ${r.prediction_score})`).join('\n');
+            cfContext = '\n\nGợi ý phù hợp nhất với bạn (dựa trên hành vi cá nhân):\n' +
+                cfData.map(r => `- Product #${r.product_id} (điểm gợi ý: ${r.prediction_score})`).join('\n');
         }
 
-        const systemPrompt = `Bạn là nhân viên tư vấn siêu thị POSMART. Trả lời bằng tiếng Việt, thân thiện, ngắn gọn.
-CHỈ sử dụng dữ liệu sản phẩm được cung cấp bên dưới. KHÔNG bịa thêm sản phẩm hay giá.
+        const productCount = products.length;
+        const systemPrompt = `Bạn là tư vấn viên siêu thị POSMART. Trả lời tiếng Việt, thân thiện.
+CHỈ dùng dữ liệu bên dưới. KHÔNG bịa sản phẩm/giá.
+
+QUY TẮC NGHIÊM NGẶT:
+1. Mở đầu ngắn gọn (1 câu).
+2. Liệt kê ĐÚNG ${productCount} sản phẩm: tên + giá. KHÔNG mô tả chi tiết.
+3. Nếu có [DỮ LIỆU MUA KÈM], viết 1 câu: "Nhiều khách hàng mua [Sản phẩm A] cũng thường mua kèm [B, C]".
+   CHỈ nêu sản phẩm có trong [DỮ LIỆU MUA KÈM]. TUYỆT ĐỐI KHÔNG gom các sản phẩm khác vào câu mua kèm.
+4. KHÔNG dùng từ "Apriori", "cá nhân hóa", "sự tương đồng" hay bất kì thuật ngữ kỹ thuật nào.
+5. Kết thúc bằng 1 câu mời gọi.
 ${customerContext.prompt}
 
-Dữ liệu sản phẩm phù hợp:
+Sản phẩm (${productCount} sản phẩm):
 ${productContext}${coPurchaseContext}${cfContext}`;
 
         try {
@@ -616,8 +726,8 @@ ${productContext}${coPurchaseContext}${cfContext}`;
                     { role: 'system', content: systemPrompt },
                     { role: 'user', content: originalMessage }
                 ],
-                max_tokens: 400,
-                temperature: 0.6
+                max_tokens: 500,
+                temperature: 0.4
             });
 
             const reply = response.choices?.[0]?.message?.content;
