@@ -9,7 +9,7 @@ class AuthClient {
   constructor(baseURL) {
     this.api = axios.create({
       baseURL,
-      timeout: 10000,
+      timeout: 8000,
       headers: { 'Content-Type': 'application/json' }
     });
   }

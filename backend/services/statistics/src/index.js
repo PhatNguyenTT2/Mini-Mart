@@ -7,6 +7,8 @@ const cache = require('./cache/redis');
 const OrderClient = require('./clients/order.client');
 const CatalogClient = require('./clients/catalog.client');
 const AuthClient = require('./clients/auth.client');
+const SupplierClient = require('./clients/supplier.client');
+const InventoryClient = require('./clients/inventory.client');
 
 // Services
 const StatisticsService = require('./services/statistics.service');
@@ -27,9 +29,11 @@ async function start() {
     const orderClient = new OrderClient(process.env.ORDER_SERVICE_URL || 'http://order:3003');
     const catalogClient = new CatalogClient(process.env.CATALOG_SERVICE_URL || 'http://catalog:3002');
     const authClient = new AuthClient(process.env.AUTH_SERVICE_URL || 'http://auth:3001');
+    const supplierClient = new SupplierClient(process.env.SUPPLIER_SERVICE_URL || 'http://supplier:3005');
+    const inventoryClient = new InventoryClient(process.env.INVENTORY_SERVICE_URL || 'http://inventory:3006');
 
     // 4. Build service
-    const statisticsService = new StatisticsService({ orderClient, catalogClient, authClient });
+    const statisticsService = new StatisticsService({ orderClient, catalogClient, authClient, supplierClient, inventoryClient });
 
     // 5. Subscribe to cache invalidation events
     await eventBus.subscribe(SERVICE_NAME, EVENT.ORDER_SHIPPING, async () => {
@@ -47,6 +51,13 @@ async function start() {
     await eventBus.subscribe(SERVICE_NAME, EVENT.INVENTORY_UPDATED, async () => {
       logger.info('inventory.updated → invalidating inventory cache');
       await cache.invalidate('stats:inventory:*');
+    });
+
+    await eventBus.subscribe(SERVICE_NAME, EVENT.PO_RECEIVED, async () => {
+      logger.info('purchaseorder.received → invalidating purchase, profit, and dashboard cache');
+      await cache.invalidate('stats:purchases:*');
+      await cache.invalidate('stats:profit:*');
+      await cache.invalidate('stats:dashboard:*');
     });
 
     // 6. Create Express app

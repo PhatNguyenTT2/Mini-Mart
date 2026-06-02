@@ -24,6 +24,32 @@ class StockOutRepository {
         return rows;
     }
 
+    async findProductAggregates(storeId, filters = {}) {
+        let query = `
+            SELECT 
+                sod.product_id,
+                soo.reason,
+                SUM(sod.quantity)::int as total_quantity,
+                SUM(sod.total_price)::numeric as total_price,
+                COUNT(DISTINCT soo.id)::int as order_count
+            FROM stock_out_detail sod
+            JOIN stock_out_order soo ON sod.so_id = soo.id
+            WHERE soo.store_id = $1 AND soo.status = 'completed'
+        `;
+        const params = [storeId];
+        if (filters.startDate) {
+            params.push(filters.startDate);
+            query += ` AND soo.order_date >= $${params.length}`;
+        }
+        if (filters.endDate) {
+            params.push(filters.endDate);
+            query += ` AND soo.order_date <= $${params.length}`;
+        }
+        query += ` GROUP BY sod.product_id, soo.reason`;
+        const { rows } = await this.pool.query(query, params);
+        return rows;
+    }
+
     async findById(storeId, id) {
         const query = 'SELECT * FROM stock_out_order WHERE id = $1 AND store_id = $2';
         const { rows } = await this.pool.query(query, [id, storeId]);

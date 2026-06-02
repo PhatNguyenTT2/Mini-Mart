@@ -30,9 +30,38 @@ class PurchaseOrderRepository {
       params.push(filters.paymentStatus);
       query += ` AND po.payment_status = $${params.length}`;
     }
+    if (filters.startDate) {
+      params.push(filters.startDate);
+      query += ` AND po.order_date >= $${params.length}`;
+    }
+    if (filters.endDate) {
+      params.push(filters.endDate);
+      query += ` AND po.order_date <= $${params.length}`;
+    }
 
     query += ' ORDER BY po.order_date DESC';
     const { rows } = await this.pool.query(query, params);
+    return rows;
+  }
+
+  async aggregateProductCosts(storeId, { startDate, endDate }) {
+    const query = `
+      SELECT 
+        d.product_id,
+        d.product_name,
+        SUM(d.quantity) AS total_quantity,
+        SUM(d.total_price) AS total_cost,
+        COUNT(DISTINCT d.po_id) AS po_count
+      FROM purchase_order_detail d
+      INNER JOIN purchase_order po ON d.po_id = po.id
+      WHERE po.store_id = $1
+        AND po.status = 'received'
+        AND po.order_date >= $2
+        AND po.order_date <= $3
+      GROUP BY d.product_id, d.product_name
+      ORDER BY total_cost DESC
+    `;
+    const { rows } = await this.pool.query(query, [storeId, startDate, endDate]);
     return rows;
   }
 

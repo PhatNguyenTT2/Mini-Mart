@@ -8,7 +8,7 @@ export const SalesChart = ({ salesData }) => {
     const categoryMap = new Map();
 
     salesData.forEach(product => {
-      const category = product.categoryName || 'Uncategorized';
+      const category = product.parentCategoryName || product.categoryName || 'Uncategorized';
       const revenue = product.totalRevenue || 0;
 
       if (categoryMap.has(category)) {

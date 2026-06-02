@@ -46,6 +46,21 @@ function createStockOutRouter(stockOutService) {
         }
     });
 
+    // GET /stats/product-aggregates — Aggregated product stock outs (for statistics-service)
+    router.get('/stats/product-aggregates', verifyToken, async (req, res, next) => {
+        try {
+            const storeId = req.user ? req.user.storeId : 1;
+            const { startDate, endDate } = req.query;
+            const data = await stockOutService.getProductAggregates(storeId, { startDate, endDate });
+            res.json({
+                success: true,
+                data: { productAggregates: data }
+            });
+        } catch (error) {
+            next(error);
+        }
+    });
+
     // GET /:id — Get order with details
     router.get('/:id', verifyToken, async (req, res, next) => {
         try {

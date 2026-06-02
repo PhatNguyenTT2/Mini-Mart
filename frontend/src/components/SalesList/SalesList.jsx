@@ -1,12 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Eye, TrendingUp } from 'lucide-react';
 import { ViewSalesDetailsModal } from './ViewSalesDetailsModal';
+import { formatProductCode } from '../../utils/formatters';
 
 export const SalesList = ({ salesData = [], summary = null, loading = false }) => {
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [viewDetailsModal, setViewDetailsModal] = useState(false);
   const [sortBy, setSortBy] = useState('rank');
   const [sortOrder, setSortOrder] = useState('asc');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
+  // Reset page to 1 on sort change or data change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [sortBy, sortOrder, salesData.length]);
 
   const handleViewDetails = (product) => {
     setSelectedProduct(product);
@@ -119,6 +127,11 @@ export const SalesList = ({ salesData = [], summary = null, loading = false }) =
     );
   }
 
+  const totalItems = sortedProducts.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const paginatedProducts = sortedProducts.slice(startIndex, startIndex + itemsPerPage);
+
   return (
     <div className="bg-white rounded-lg shadow-sm overflow-hidden">
       {/* Table Container */}
@@ -168,7 +181,7 @@ export const SalesList = ({ salesData = [], summary = null, loading = false }) =
 
           {/* Table Body */}
           <tbody className="divide-y divide-gray-100">
-            {sortedProducts.map((product) => (
+            {paginatedProducts.map((product) => (
               <tr
                 key={product.productId || product.rank}
                 className="hover:bg-gray-50 transition-colors"
@@ -188,7 +201,7 @@ export const SalesList = ({ salesData = [], summary = null, loading = false }) =
                       {product.productName}
                     </p>
                     <p className="text-[11px] text-gray-500">
-                      {product.productCode}
+                      {formatProductCode(product)}
                     </p>
                   </div>
                 </td>
@@ -210,7 +223,7 @@ export const SalesList = ({ salesData = [], summary = null, loading = false }) =
                 {/* Average Price */}
                 <td className="px-6 py-4 text-right">
                   <p className="text-[13px] text-gray-700">
-                    {formatCurrency(product.averagePrice)}
+                    {formatCurrency(product.averagePrice || product.averageSellingPrice)}
                   </p>
                 </td>
 
@@ -224,7 +237,7 @@ export const SalesList = ({ salesData = [], summary = null, loading = false }) =
                 {/* Total Orders */}
                 <td className="px-6 py-4 text-center">
                   <span className="inline-flex items-center justify-center w-8 h-8 rounded-full bg-gray-100 text-[12px] font-semibold text-gray-700">
-                    {product.totalOrders}
+                    {product.totalOrders || product.orderCount}
                   </span>
                 </td>
 
@@ -280,6 +293,120 @@ export const SalesList = ({ salesData = [], summary = null, loading = false }) =
           )}
         </table>
       </div>
+
+      {/* Pagination Controls */}
+      {totalPages > 1 && (
+        <div className="flex items-center justify-center mt-6">
+          <div className="flex items-center gap-2">
+            {/* Previous button */}
+            <button
+              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+              className={`px-3 py-2 rounded transition-colors text-[12px] font-['Poppins',sans-serif] ${currentPage === 1
+                ? 'text-gray-400 cursor-not-allowed'
+                : 'text-[#3bb77e] hover:bg-[#def9ec]'
+                }`}
+            >
+              ‹ Previous
+            </button>
+
+            {/* Page numbers */}
+            {(() => {
+              const maxPagesToShow = 5;
+
+              // Calculate start and end page numbers to display
+              let startPage = Math.max(1, currentPage - Math.floor(maxPagesToShow / 2));
+              let endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
+
+              // Adjust start if we're near the end
+              if (endPage - startPage < maxPagesToShow - 1) {
+                startPage = Math.max(1, endPage - maxPagesToShow + 1);
+              }
+
+              const pages = [];
+
+              // First page + ellipsis
+              if (startPage > 1) {
+                pages.push(
+                  <button
+                    key={1}
+                    onClick={() => setCurrentPage(1)}
+                    className="px-3 py-2 rounded text-[#3bb77e] hover:bg-[#def9ec] transition-colors text-[12px] font-['Poppins',sans-serif]"
+                  >
+                    1
+                  </button>
+                );
+                if (startPage > 2) {
+                  pages.push(
+                    <span key="ellipsis-start" className="px-2 text-gray-400">
+                      ...
+                    </span>
+                  );
+                }
+              }
+
+              // Page numbers
+              for (let page = startPage; page <= endPage; page++) {
+                pages.push(
+                  <button
+                    key={page}
+                    onClick={() => setCurrentPage(page)}
+                    className={`px-3 py-2 rounded transition-colors text-[12px] font-['Poppins',sans-serif] ${currentPage === page
+                      ? 'bg-[#3bb77e] text-white'
+                      : 'text-[#3bb77e] hover:bg-[#def9ec]'
+                      }`}
+                  >
+                    {page}
+                  </button>
+                );
+              }
+
+              // Ellipsis + last page
+              if (endPage < totalPages) {
+                if (endPage < totalPages - 1) {
+                  pages.push(
+                    <span key="ellipsis-end" className="px-2 text-gray-400">
+                      ...
+                    </span>
+                  );
+                }
+                pages.push(
+                  <button
+                    key={totalPages}
+                    onClick={() => setCurrentPage(totalPages)}
+                    className="px-3 py-2 rounded text-[#3bb77e] hover:bg-[#def9ec] transition-colors text-[12px] font-['Poppins',sans-serif]"
+                  >
+                    {totalPages}
+                  </button>
+                );
+              }
+
+              return pages;
+            })()}
+
+            {/* Next button */}
+            <button
+              onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+              disabled={currentPage === totalPages}
+              className={`px-3 py-2 rounded transition-colors text-[12px] font-['Poppins',sans-serif] ${currentPage === totalPages
+                ? 'text-gray-400 cursor-not-allowed'
+                : 'text-[#3bb77e] hover:bg-[#def9ec]'
+                }`}
+            >
+              Next ›
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Results Summary */}
+      {totalItems > 0 && (
+        <div className="text-center text-sm text-gray-600 font-['Poppins',sans-serif] mt-4">
+          Showing {startIndex + 1} to{' '}
+          {Math.min(startIndex + itemsPerPage, totalItems)} of{' '}
+          {totalItems} products
+        </div>
+      )}
 
       {/* View Sales Details Modal */}
       {viewDetailsModal && (

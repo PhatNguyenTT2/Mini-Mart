@@ -87,6 +87,10 @@ class PurchaseOrderService {
     });
   }
 
+  async getProductCosts(storeId, filters) {
+    return this.poRepo.aggregateProductCosts(storeId, filters);
+  }
+
   async getPurchaseOrderById(storeId, poId) {
     const po = await this.poRepo.findById(storeId, poId);
     if (!po) throw new NotFoundError('Purchase Order not found');

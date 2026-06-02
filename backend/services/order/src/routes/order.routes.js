@@ -9,7 +9,7 @@ function createOrderRouter(orderService) {
     try {
       let storeId = req.user?.storeId;
       if (!storeId && req.headers['x-store-id']) {
-          storeId = parseInt(req.headers['x-store-id'], 10);
+        storeId = parseInt(req.headers['x-store-id'], 10);
       }
       storeId = storeId || 1;
 
@@ -28,7 +28,7 @@ function createOrderRouter(orderService) {
         filters.customerId = req.user.customerId || req.user.id;
       }
       const orders = await orderService.getStoreOrders(storeId, filters);
-      
+
       res.json({
         status: 'success',
         data: { orders }
@@ -54,16 +54,42 @@ function createOrderRouter(orderService) {
     }
   });
 
+  // GET /api/orders/stats/product-sales — Aggregated product sales (for statistics-service)
+  router.get('/stats/product-sales', verifyToken, async (req, res, next) => {
+    try {
+      const storeId = req.user?.storeId || 1;
+      const { startDate, endDate } = req.query;
+      if (!startDate || !endDate) {
+        return res.status(400).json({ status: 'error', message: 'startDate and endDate required' });
+      }
+      const data = await orderService.getProductSales(storeId, { startDate, endDate });
+      res.json({
+        status: 'success',
+        data: {
+          productSales: data.map(r => ({
+            productId: r.product_id,
+            productName: r.product_name,
+            totalQuantity: parseInt(r.total_quantity) || 0,
+            totalRevenue: parseFloat(r.total_revenue) || 0,
+            orderCount: parseInt(r.order_count) || 0
+          }))
+        }
+      });
+    } catch (err) {
+      next(err);
+    }
+  });
+
   // Get order detail
   router.get('/:id', verifyToken, async (req, res, next) => {
     try {
       let storeId = req.user?.storeId;
       if (!storeId && req.headers['x-store-id']) {
-          storeId = parseInt(req.headers['x-store-id'], 10);
+        storeId = parseInt(req.headers['x-store-id'], 10);
       }
       storeId = storeId || 1;
       const order = await orderService.getOrderById(storeId, req.params.id);
-      
+
       // Security: Enforce customer isolation (customerId = customer table PK from JWT)
       const customerPk = req.user?.customerId || req.user?.id;
       if (req.user?.roleName === 'Customer' && String(order.customerId) !== String(customerPk)) {
@@ -72,7 +98,7 @@ function createOrderRouter(orderService) {
           message: 'You do not have permission to view this order'
         });
       }
-      
+
       res.json({
         status: 'success',
         data: { order }
@@ -87,18 +113,18 @@ function createOrderRouter(orderService) {
     try {
       let storeId = req.user?.storeId;
       if (!storeId && req.headers['x-store-id']) {
-          storeId = parseInt(req.headers['x-store-id'], 10);
+        storeId = parseInt(req.headers['x-store-id'], 10);
       }
       storeId = storeId || 1;
-      
+
       // Fix: If the request is from a Customer, created_by should be -1 (since no employee created it)
       // We use -1 to avoid NOT NULL constraint errors in the database schema.
       const userId = req.user?.roleName === 'Customer' ? -1 : (req.user?.id || 1);
-      
+
       const jwtToken = req.headers.authorization?.replace('Bearer ', '');
-      
+
       const order = await orderService.createDraftOrder(storeId, req.body, userId, jwtToken);
-      
+
       res.status(201).json({
         status: 'success',
         message: 'Draft order created',
@@ -145,21 +171,21 @@ function createOrderRouter(orderService) {
       next(error);
     }
   });
-  
+
   // Status-only update (internal/webhook)
   router.patch('/:id/status', verifyToken, async (req, res, next) => {
-      try {
-          const storeId = req.user?.storeId || 1;
-          const { status, payment_status } = req.body;
-          
-          const updated = await orderService.updateOrderStatus(storeId, req.params.id, status, payment_status);
-          res.json({
-              status: 'success',
-              data: { order: updated }
-          });
-      } catch (error) {
-           next(error);
-      }
+    try {
+      const storeId = req.user?.storeId || 1;
+      const { status, payment_status } = req.body;
+
+      const updated = await orderService.updateOrderStatus(storeId, req.params.id, status, payment_status);
+      res.json({
+        status: 'success',
+        data: { order: updated }
+      });
+    } catch (error) {
+      next(error);
+    }
   });
 
   // Delete order

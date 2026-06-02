@@ -12,6 +12,10 @@ class StockOutService {
         return await this.stockOutRepo.findAll(storeId, filters);
     }
 
+    async getProductAggregates(storeId, filters) {
+        return await this.stockOutRepo.findProductAggregates(storeId, filters);
+    }
+
     async getOrderById(storeId, soId) {
         const order = await this.stockOutRepo.findById(storeId, soId);
         if (!order) throw new NotFoundError('Stock Out Order not found');

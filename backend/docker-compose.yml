@@ -245,11 +245,11 @@ services:
       - REDIS_URL=${REDIS_URL}
       - RABBITMQ_URL=${RABBITMQ_URL}
       - JWT_SECRET=${JWT_SECRET}
-      - ORDER_URL=http://order:3003
-      - CATALOG_URL=http://catalog:3002
-      - SUPPLIER_URL=http://supplier:3005
-      - INVENTORY_URL=http://inventory:3006
-      - AUTH_URL=http://auth:3001
+      - ORDER_SERVICE_URL=http://order:3003
+      - CATALOG_SERVICE_URL=http://catalog:3002
+      - SUPPLIER_SERVICE_URL=http://supplier:3005
+      - INVENTORY_SERVICE_URL=http://inventory:3006
+      - AUTH_SERVICE_URL=http://auth:3001
       - CORS_ORIGINS=http://localhost:5173,http://localhost:5174
       - NODE_ENV=${NODE_ENV:-production}
     ports:

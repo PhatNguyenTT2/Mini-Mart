@@ -11,7 +11,9 @@ function createPurchaseOrderRouter(poService) {
       const filters = {
         supplierId: req.query.supplierId,
         status: req.query.status,
-        paymentStatus: req.query.paymentStatus
+        paymentStatus: req.query.paymentStatus,
+        startDate: req.query.startDate,
+        endDate: req.query.endDate
       };
 
       const purchaseOrders = await poService.getStorePurchaseOrders(storeId, filters);
@@ -22,6 +24,32 @@ function createPurchaseOrderRouter(poService) {
       });
     } catch (error) {
       next(error);
+    }
+  });
+
+  // GET /api/purchase-orders/stats/product-costs — Aggregated product costs (for statistics-service)
+  router.get('/stats/product-costs', verifyToken, async (req, res, next) => {
+    try {
+      const storeId = req.user ? req.user.storeId : 1;
+      const { startDate, endDate } = req.query;
+      if (!startDate || !endDate) {
+        return res.status(400).json({ status: 'error', message: 'startDate and endDate required' });
+      }
+      const data = await poService.getProductCosts(storeId, { startDate, endDate });
+      res.json({
+        success: true,
+        data: {
+          productCosts: data.map(r => ({
+            productId: r.product_id,
+            productName: r.product_name,
+            totalQuantity: parseInt(r.total_quantity) || 0,
+            totalCost: parseFloat(r.total_cost) || 0,
+            poCount: parseInt(r.po_count) || 0
+          }))
+        }
+      });
+    } catch (err) {
+      next(err);
     }
   });
 

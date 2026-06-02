@@ -1,9 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { PackageOpen } from 'lucide-react';
+import { formatProductCode } from '../../utils/formatters';
 
 export const ProfitProductList = ({ products = [], loading = false }) => {
   const [sortBy, setSortBy] = useState('profit'); // profit, revenue, cost, margin
   const [sortOrder, setSortOrder] = useState('desc');
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10;
+
+  // Reset page to 1 on sort change or data change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [sortBy, sortOrder, products.length]);
 
   const formatCurrency = (amount) => {
     if (!amount && amount !== 0) return '₫0';
@@ -81,6 +89,11 @@ export const ProfitProductList = ({ products = [], loading = false }) => {
     );
   };
 
+  const totalItems = sortedProducts.length;
+  const totalPages = Math.ceil(totalItems / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const paginatedProducts = sortedProducts.slice(startIndex, startIndex + itemsPerPage);
+
   return (
     <div className="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow">
       <div className="overflow-x-auto">
@@ -123,7 +136,7 @@ export const ProfitProductList = ({ products = [], loading = false }) => {
 
           {/* Table Body */}
           <tbody className="divide-y divide-gray-100">
-            {sortedProducts.map((product, index) => {
+            {paginatedProducts.map((product, index) => {
               const isProfitable = product.profit >= 0;
               const profitColor = isProfitable ? 'text-green-600' : 'text-red-600';
               const profitBgColor = isProfitable ? 'bg-green-50' : 'bg-red-50';
@@ -148,7 +161,7 @@ export const ProfitProductList = ({ products = [], loading = false }) => {
                           {product.productName}
                         </p>
                         <p className="text-[11px] text-gray-500">
-                          {product.productCode} • {product.categoryName}
+                          {formatProductCode(product)} • {product.categoryName}
                         </p>
                       </div>
                     </div>
@@ -249,11 +262,125 @@ export const ProfitProductList = ({ products = [], loading = false }) => {
         </table>
       </div>
 
+      {/* Pagination Controls */}
+      {totalPages > 1 && (
+        <div className="flex items-center justify-center mt-6">
+          <div className="flex items-center gap-2">
+            {/* Previous button */}
+            <button
+              onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+              className={`px-3 py-2 rounded transition-colors text-[12px] font-['Poppins',sans-serif] ${currentPage === 1
+                ? 'text-gray-400 cursor-not-allowed'
+                : 'text-[#3bb77e] hover:bg-[#def9ec]'
+                }`}
+            >
+              ‹ Previous
+            </button>
+
+            {/* Page numbers */}
+            {(() => {
+              const maxPagesToShow = 5;
+
+              // Calculate start and end page numbers to display
+              let startPage = Math.max(1, currentPage - Math.floor(maxPagesToShow / 2));
+              let endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
+
+              // Adjust start if we're near the end
+              if (endPage - startPage < maxPagesToShow - 1) {
+                startPage = Math.max(1, endPage - maxPagesToShow + 1);
+              }
+
+              const pages = [];
+
+              // First page + ellipsis
+              if (startPage > 1) {
+                pages.push(
+                  <button
+                    key={1}
+                    onClick={() => setCurrentPage(1)}
+                    className="px-3 py-2 rounded text-[#3bb77e] hover:bg-[#def9ec] transition-colors text-[12px] font-['Poppins',sans-serif]"
+                  >
+                    1
+                  </button>
+                );
+                if (startPage > 2) {
+                  pages.push(
+                    <span key="ellipsis-start" className="px-2 text-gray-400">
+                      ...
+                    </span>
+                  );
+                }
+              }
+
+              // Page numbers
+              for (let page = startPage; page <= endPage; page++) {
+                pages.push(
+                  <button
+                    key={page}
+                    onClick={() => setCurrentPage(page)}
+                    className={`px-3 py-2 rounded transition-colors text-[12px] font-['Poppins',sans-serif] ${currentPage === page
+                      ? 'bg-[#3bb77e] text-white'
+                      : 'text-[#3bb77e] hover:bg-[#def9ec]'
+                      }`}
+                  >
+                    {page}
+                  </button>
+                );
+              }
+
+              // Ellipsis + last page
+              if (endPage < totalPages) {
+                if (endPage < totalPages - 1) {
+                  pages.push(
+                    <span key="ellipsis-end" className="px-2 text-gray-400">
+                      ...
+                    </span>
+                  );
+                }
+                pages.push(
+                  <button
+                    key={totalPages}
+                    onClick={() => setCurrentPage(totalPages)}
+                    className="px-3 py-2 rounded text-[#3bb77e] hover:bg-[#def9ec] transition-colors text-[12px] font-['Poppins',sans-serif]"
+                  >
+                    {totalPages}
+                  </button>
+                );
+              }
+
+              return pages;
+            })()}
+
+            {/* Next button */}
+            <button
+              onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+              disabled={currentPage === totalPages}
+              className={`px-3 py-2 rounded transition-colors text-[12px] font-['Poppins',sans-serif] ${currentPage === totalPages
+                ? 'text-gray-400 cursor-not-allowed'
+                : 'text-[#3bb77e] hover:bg-[#def9ec]'
+                }`}
+            >
+              Next ›
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Results Summary */}
+      {totalItems > 0 && (
+        <div className="text-center text-sm text-gray-600 font-['Poppins',sans-serif] mt-4">
+          Showing {startIndex + 1} to{' '}
+          {Math.min(startIndex + itemsPerPage, totalItems)} of{' '}
+          {totalItems} products
+        </div>
+      )}
+
       {/* Footer Summary */}
       <div className="bg-gray-50 border-t border-gray-200 px-6 py-4">
         <div className="flex items-center justify-between text-[12px]">
           <span className="text-gray-600">
-            Showing {sortedProducts.length} product{sortedProducts.length !== 1 ? 's' : ''}
+            Total of {products.length} product{products.length !== 1 ? 's' : ''}
           </span>
           <span className="text-gray-500">
             Click column headers to sort

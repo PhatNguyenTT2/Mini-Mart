@@ -14,4 +14,4 @@ EXPOSE 3009
 
 WORKDIR /app/services/statistics
 
-CMD ["node", "src/index.js"]
+CMD ["node", "--max-old-space-size=1024", "src/index.js"]

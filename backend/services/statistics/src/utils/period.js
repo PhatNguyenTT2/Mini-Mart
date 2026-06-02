@@ -46,7 +46,19 @@ function calculateChange(current, previous) {
 }
 
 function formatDateKey(date) {
-  return date.toISOString().split('T')[0];
+  try {
+    if (!date) return '1970-01-01';
+    let d = date;
+    if (!(d instanceof Date)) {
+      d = new Date(d);
+    }
+    if (isNaN(d.getTime())) {
+      return '1970-01-01';
+    }
+    return d.toISOString().split('T')[0];
+  } catch (err) {
+    return '1970-01-01';
+  }
 }
 
 module.exports = { getPeriodDates, calculateChange, formatDateKey };

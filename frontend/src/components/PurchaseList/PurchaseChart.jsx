@@ -8,7 +8,7 @@ export const PurchaseChart = ({ purchaseData }) => {
     const categoryMap = new Map();
 
     purchaseData.forEach(product => {
-      const category = product.categoryName || 'Uncategorized';
+      const category = product.parentCategoryName || product.categoryName || 'Uncategorized';
       const cost = product.totalCost || 0;
 
       if (categoryMap.has(category)) {

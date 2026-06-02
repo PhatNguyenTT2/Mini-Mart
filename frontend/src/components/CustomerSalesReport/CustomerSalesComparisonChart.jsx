@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { TrendingUp } from 'lucide-react';
 import { Chart, registerables } from 'chart.js';
+import { formatCustomerCode } from '../../utils/formatters';
 
 Chart.register(...registerables);
 
@@ -22,7 +23,7 @@ export const CustomerSalesComparisonChart = ({ customers = [] }) => {
     chartRef.current = new Chart(ctx, {
       type: 'bar',
       data: {
-        labels: topCustomers.map(c => c.customerCode),
+        labels: topCustomers.map(c => formatCustomerCode(c)),
         datasets: [
           {
             label: 'Revenue',
@@ -49,7 +50,7 @@ export const CustomerSalesComparisonChart = ({ customers = [] }) => {
               title: function (context) {
                 const index = context[0].dataIndex;
                 const customer = topCustomers[index];
-                return customer.customerName + ' (' + customer.customerCode + ')';
+                return customer.customerName + ' (' + formatCustomerCode(customer) + ')';
               },
               label: function (context) {
                 const value = context.parsed.y;
