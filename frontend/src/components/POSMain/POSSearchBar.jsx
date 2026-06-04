@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { QrCode, Map, StopCircle } from 'lucide-react';
+import { QrCode, Map, StopCircle, History } from 'lucide-react';
 
-export const POSSearchBar = ({ onProductScanned, onSearchChange, searchTerm, scanning, onOpenQRScanner, onMapClick, scannerActive }) => {
+export const POSSearchBar = ({ onProductScanned, onSearchChange, searchTerm, scanning, onOpenQRScanner, onMapClick, onHistoryClick, onHelpClick, scannerActive }) => {
   const [scanStatus, setScanStatus] = useState(null); // 'success' | 'error' | null
   const [isBuffering, setIsBuffering] = useState(false);
 
@@ -144,11 +144,10 @@ export const POSSearchBar = ({ onProductScanned, onSearchChange, searchTerm, sca
         {/* QR Scanner Toggle Button */}
         <button
           onClick={onOpenQRScanner}
-          className={`px-4 py-3 text-white rounded-lg transition-all flex items-center gap-2 font-medium shadow-sm ${
-            scannerActive
-              ? 'bg-red-500 hover:bg-red-600 ring-2 ring-red-300'
-              : 'bg-emerald-600 hover:bg-emerald-700'
-          }`}
+          className={`px-4 py-3 text-white rounded-lg transition-all flex items-center gap-2 font-medium shadow-sm ${scannerActive
+            ? 'bg-red-500 hover:bg-red-600 ring-2 ring-red-300'
+            : 'bg-emerald-600 hover:bg-emerald-700'
+            }`}
           title={scannerActive ? 'Stop Scanning (F2)' : 'Scan QR Code (F2)'}
         >
           {scannerActive ? (
@@ -175,7 +174,32 @@ export const POSSearchBar = ({ onProductScanned, onSearchChange, searchTerm, sca
             <span className="hidden sm:inline">Map</span>
           </button>
         )}
+
+        {/* Order History Button */}
+        {onHistoryClick && (
+          <button
+            onClick={onHistoryClick}
+            className="px-4 py-3 bg-violet-600 hover:bg-violet-700 text-white rounded-lg transition-colors flex items-center gap-2 font-medium shadow-sm"
+            title="My Order History (F5)"
+          >
+            <History size={20} />
+            <span className="hidden sm:inline">History</span>
+          </button>
+        )}
+
+        {/* Keyboard Shortcuts Help Button */}
+        {onHelpClick && (
+          <button
+            onClick={onHelpClick}
+            className="px-4 py-3 bg-gray-250 bg-gray-200 text-gray-700 rounded-lg transition-colors flex items-center justify-center font-bold shadow-sm"
+            title="Keyboard Shortcuts Guide"
+          >
+            <span className="text-lg leading-none font-semibold">?</span>
+          </button>
+        )}
       </div>
     </div>
   );
 };
+
+

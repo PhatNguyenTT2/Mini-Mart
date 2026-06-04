@@ -67,7 +67,7 @@ class ChatService {
         return await this.chatRepo.endSession(sessionId);
     }
 
-    async sendMessage(sessionId, userMessage) {
+    async sendMessage(sessionId, userMessage, context = {}) {
         if (!userMessage || userMessage.trim().length === 0) {
             throw new ValidationError('Message cannot be empty');
         }
@@ -92,7 +92,7 @@ class ChatService {
 
         // Check for pending action (Clarification/Confirmation)
         if (session.metadata && session.metadata.pendingAction) {
-            const resolvedAction = await this.utils.handleClarification(session, userMessage, this._getClarificationHandlers());
+            const resolvedAction = await this.utils.handleClarification(session, userMessage, this._getClarificationHandlers(context));
             if (resolvedAction) {
                 // Save user message first since clarification flow intercepts before normal resolveIntent
                 await this.chatRepo.addMessage(sessionId, 'user', userMessage, resolvedAction.intent);
@@ -180,8 +180,14 @@ class ChatService {
             case 'POS_ADD_ITEM':
                 response = await this.posHandler.handlePosAddItem(session, userMessage);
                 break;
+            case 'POS_HOLD_ORDER':
+                response = await this.posHandler.handlePosHoldOrder(session, userMessage);
+                break;
+            case 'POS_CHECKOUT':
+                response = await this.posHandler.handlePosCheckout(session, userMessage);
+                break;
             case 'CREATE_ORDER':
-                response = await this.posHandler.processOrderCollection(session, userMessage);
+                response = await this.posHandler.processOrderCollection(session, userMessage, context);
                 break;
             case 'PAYMENT_CHECK':
                 response = await this.posHandler.handlePaymentCheck(session, userMessage);
@@ -273,11 +279,11 @@ class ChatService {
     async _processOrderCollection(s, m) { return this.posHandler.processOrderCollection(s, m); }
     async _handlePaymentCheck(s, m) { return this.posHandler.handlePaymentCheck(s, m); }
 
-    _getClarificationHandlers() {
+    _getClarificationHandlers(context = {}) {
         return {
             executeAddToCart: (s, p, q) => this.cartHandler.executeAddToCart(s, p, q),
             executePosAddItem: (s, p, q) => this.posHandler.executePosAddItem(s, p, q),
-            processOrderCollection: (s, m) => this.posHandler.processOrderCollection(s, m)
+            processOrderCollection: (s, m) => this.posHandler.processOrderCollection(s, m, context)
         };
     }
 
@@ -320,7 +326,7 @@ class ChatService {
      * @param {string} userMessage
      * @yields {{ type: 'chunk', text: string } | { type: 'complete', intent: string, products: array, fullText: string }}
      */
-    async * sendMessageStream(sessionId, userMessage) {
+    async * sendMessageStream(sessionId, userMessage, context = {}) {
         if (!userMessage || userMessage.trim().length === 0) {
             throw new ValidationError('Message cannot be empty');
         }
@@ -331,7 +337,7 @@ class ChatService {
 
         // Check for pending action (Clarification/Confirmation)
         if (session.metadata && session.metadata.pendingAction) {
-            const resolvedAction = await this.utils.handleClarification(session, userMessage, this._getClarificationHandlers());
+            const resolvedAction = await this.utils.handleClarification(session, userMessage, this._getClarificationHandlers(context));
             if (resolvedAction) {
                 // Save user message first since clarification flow intercepts before normal resolveIntent
                 await this.chatRepo.addMessage(sessionId, 'user', userMessage, resolvedAction.intent);
@@ -459,8 +465,14 @@ class ChatService {
                 case 'POS_ADD_ITEM':
                     response = await this.posHandler.handlePosAddItem(session, userMessage);
                     break;
+                case 'POS_HOLD_ORDER':
+                    response = await this.posHandler.handlePosHoldOrder(session, userMessage);
+                    break;
+                case 'POS_CHECKOUT':
+                    response = await this.posHandler.handlePosCheckout(session, userMessage);
+                    break;
                 case 'CREATE_ORDER':
-                    response = await this.posHandler.processOrderCollection(session, userMessage);
+                    response = await this.posHandler.processOrderCollection(session, userMessage, context);
                     break;
                 case 'PAYMENT_CHECK':
                     response = await this.posHandler.handlePaymentCheck(session, userMessage);

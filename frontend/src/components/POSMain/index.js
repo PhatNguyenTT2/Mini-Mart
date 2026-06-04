@@ -10,3 +10,4 @@ export { POSAddCustomerModal } from './POSAddCustomerModal';
 export { POSInvoiceModal } from './POSInvoiceModal';
 export { POSStoreMapModal } from './POSStoreMapModal';
 export { POSInlineScanner } from './POSInlineScanner';
+export { POSEmployeeOrdersModal } from './POSEmployeeOrdersModal';

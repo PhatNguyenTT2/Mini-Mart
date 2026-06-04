@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { POSCustomerSelector } from './POSCustomerSelector';
 
 export const POSCart = ({
+  holdLoading,
   cart,
   onUpdateQuantity,
   onRemoveItem,
@@ -113,11 +114,10 @@ export const POSCart = ({
               <div
                 key={item.id}
                 id={`cart-item-${item.id}`}
-                className={`rounded-lg p-3 transition-all duration-300 ${
-                  highlightedId === item.id
+                className={`rounded-lg p-3 transition-all duration-300 ${highlightedId === item.id
                     ? 'bg-emerald-100 ring-2 ring-emerald-400 scale-[1.02]'
                     : 'bg-gray-50'
-                }`}
+                  }`}
               >
                 <div className="flex items-start justify-between mb-2">
                   <div className="flex-1 pr-2">
@@ -264,15 +264,24 @@ export const POSCart = ({
             <button
               id="pos-hold-order-btn"
               onClick={onHoldOrder}
-              className="flex-1 py-4 bg-amber-500 hover:bg-amber-600 text-white rounded-lg text-[16px] font-bold font-['Poppins',sans-serif] transition-colors flex items-center justify-center gap-2"
+              disabled={holdLoading}
+              className={`flex-1 py-4 text-white rounded-lg text-[16px] font-bold font-['Poppins',sans-serif] transition-colors flex items-center justify-center gap-2 ${holdLoading ? 'bg-amber-400 cursor-not-allowed' : 'bg-amber-500 hover:bg-amber-600'
+                }`}
               title="Save order as draft to process later"
             >
-              <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01" />
-              </svg>
-              <span>Hold</span>
-              <span className="text-[12px] font-normal opacity-75">(F8)</span>
+              {holdLoading ? (
+                <svg className="animate-spin h-5 w-5 text-white" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                </svg>
+              ) : (
+                <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01" />
+                </svg>
+              )}
+              <span>{holdLoading ? 'Saving...' : 'Hold'}</span>
+              {!holdLoading && <span className="text-[12px] font-normal opacity-75">(F8)</span>}
             </button>
             <button
               id="pos-checkout-btn"

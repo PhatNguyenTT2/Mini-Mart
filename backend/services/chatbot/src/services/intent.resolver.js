@@ -24,6 +24,7 @@ const INTENT_PATTERNS = {
     CHECKOUT_GUIDE: {
         keywords: ['thanh toán', 'checkout', 'hướng dẫn thanh toán', 'mua hàng'],
         writeAction: true,
+        customerOnly: true,
         description: 'Hướng dẫn thanh toán giỏ hàng'
     },
     VIEW_CART: {
@@ -59,10 +60,22 @@ const INTENT_PATTERNS = {
         description: 'Cập nhật chi tiết đơn hàng (Nhân viên)'
     },
     POS_ADD_ITEM: {
-        keywords: ['thêm', 'bán', 'tính tiền'],
+        keywords: ['thêm', 'bán'],
         writeAction: true,
         employeeOnly: true,
         description: 'Thêm sản phẩm vào giỏ hàng POS (Nhân viên)'
+    },
+    POS_HOLD_ORDER: {
+        keywords: ['lưu hóa đơn', 'hold', 'giữ đơn', 'lưu đơn', 'tạm lưu'],
+        writeAction: true,
+        employeeOnly: true,
+        description: 'Lưu giỏ hàng POS thành hóa đơn tạm (Hold Order)'
+    },
+    POS_CHECKOUT: {
+        keywords: ['thanh toán', 'payment', 'xuất hóa đơn', 'checkout', 'tính tiền'],
+        writeAction: true,
+        employeeOnly: true,
+        description: 'Mở giao diện thanh toán POS'
     },
 
 
@@ -128,6 +141,10 @@ function resolveIntent(message, userType = 'customer') {
     for (const [intent, config] of Object.entries(INTENT_PATTERNS)) {
         // Enforce employee-only action validation at intent resolution stage
         if (config.employeeOnly && userType !== 'employee') {
+            continue;
+        }
+        // Skip customer-only intents for employees (e.g. CHECKOUT_GUIDE → POS_CHECKOUT)
+        if (config.customerOnly && userType === 'employee') {
             continue;
         }
 

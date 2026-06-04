@@ -15,28 +15,28 @@ describe('EmployeeService', () => {
     employeeRepo.createProfile = jest.fn();
     employeeRepo.updateProfile = jest.fn();
     employeeRepo.findById = jest.fn();
-    
+
     userRepo = mockUserRepo();
     userRepo.updateRoleWithClient = jest.fn();
     userRepo.setActiveWithClient = jest.fn();
-    
+
     authRepo = mockAuthRepo();
     authRepo.upsertPosAuthWithClient = jest.fn();
-    
+
     storeRepo = {
       findById: jest.fn()
     };
-    
+
     pool = createMockPool();
     // Need to reset pool mock query mapping
     pool._client.query = jest.fn();
-    
+
     service = new EmployeeService(employeeRepo, userRepo, authRepo, storeRepo, pool);
   });
 
   describe('create()', () => {
     const validData = {
-        full_name: 'New Emp', email: 'e@t.com', password: 'pass123', role_id: 1, store_id: 10
+      full_name: 'New Emp', email: 'e@t.com', password: 'pass123', role_id: 1, store_id: 10
     };
 
     it('should create employee with user_account in transaction', async () => {
@@ -54,10 +54,10 @@ describe('EmployeeService', () => {
 
     it('should throw ValidationError if store does not exist', async () => {
       storeRepo.findById.mockResolvedValue(null); // store 10 not found
-      
+
       await expect(service.create(null, validData))
         .rejects.toThrow('Store ID 10 does not exist');
-      
+
       expect(pool.connect).not.toHaveBeenCalled();
     });
 
@@ -87,7 +87,7 @@ describe('EmployeeService', () => {
       employeeRepo.updateProfile.mockResolvedValue({ ...FIXTURES.employee, full_name: 'Updated' });
 
       const result = await service.update(1, { full_name: 'Updated', store_id: 20 });
-      
+
       expect(storeRepo.findById).toHaveBeenCalledWith(20);
       expect(employeeRepo.updateProfile).toHaveBeenCalled();
       expect(result.full_name).toBe('Updated');

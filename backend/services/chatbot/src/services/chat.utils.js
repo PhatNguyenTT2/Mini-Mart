@@ -307,6 +307,24 @@ class ChatUtils {
 
     if (pending.state === 'COLLECTING') {
       if (pending.type === 'CREATE_ORDER' && handlers.processOrderCollection) {
+        // ── Escape hatch: If user message matches a known POS action intent,
+        // clear the pending CREATE_ORDER and let normal intent routing handle it.
+        const lowerMsg = userMessage.toLowerCase().trim();
+        const escapeIntents = [
+          { keywords: ['thanh toán', 'payment', 'tính tiền', 'xuất hóa đơn', 'checkout'], intent: 'POS_CHECKOUT' },
+          { keywords: ['lưu hóa đơn', 'hold', 'giữ đơn', 'lưu đơn', 'tạm lưu'], intent: 'POS_HOLD_ORDER' },
+          { keywords: ['hủy', 'cancel', 'thôi', 'bỏ qua'], intent: '__CANCEL__' }
+        ];
+        for (const { keywords, intent } of escapeIntents) {
+          if (keywords.some(kw => lowerMsg.includes(kw))) {
+            delete metadata.pendingAction;
+            await this.chatRepo.updateSessionMetadata(session.id, metadata);
+            if (intent === '__CANCEL__') {
+              return { intent: 'CREATE_ORDER', reply: 'Đã hủy bỏ yêu cầu tạo đơn hàng.', products: null };
+            }
+            return null; // Let normal intent routing handle POS_CHECKOUT / POS_HOLD_ORDER
+          }
+        }
         return handlers.processOrderCollection(session, userMessage);
       }
     }
@@ -365,9 +383,10 @@ class ChatUtils {
         const result = await this.actionExecutor.execute(session, pending.type, actionPayload);
 
         if (!result.success) {
+          const errMsg = typeof result.error === 'object' ? (result.error.message || JSON.stringify(result.error)) : result.error;
           return {
             intent: pending.type,
-            reply: `Thực hiện thất bại: ${result.error}`,
+            reply: `Thực hiện thất bại: ${errMsg}`,
             products: null
           };
         }
@@ -376,7 +395,9 @@ class ChatUtils {
         if (pending.type === 'CANCEL_ORDER') {
           replyMsg = `Đã hủy đơn hàng #${pending.data.orderId} thành công.`;
         } else if (pending.type === 'CREATE_ORDER') {
-          replyMsg = `Đã tạo đơn hàng mới thành công. ID đơn hàng: #${result.id || result.orderId || 'N/A'}`;
+          const order = result.data?.order || result.data || {};
+          const orderId = order.id || order.orderNumber || result.id || result.orderId || 'N/A';
+          replyMsg = `Đã tạo đơn hàng mới thành công. ID đơn hàng: #${orderId}`;
         }
 
         return {

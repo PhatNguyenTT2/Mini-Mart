@@ -13,9 +13,23 @@ export const POSLogin = () => {
 
   // Check if already logged in
   useEffect(() => {
-    if (posLoginService.isLoggedIn()) {
-      navigate('/pos');
-    }
+    const checkSessionOnMount = async () => {
+      if (posLoginService.isLoggedIn()) {
+        const result = await posLoginService.verifySession();
+        if (result.success) {
+          navigate('/pos');
+        } else {
+          // Token is dead/revoked or failed to verify -> clear it to prevent loop
+          // But only clear if it's actually an invalid token (401/403/NO_SESSION)
+          const code = result.error?.code;
+          const isAuthError = code === 'NO_SESSION' || result.httpStatus === 401 || result.httpStatus === 403;
+          if (isAuthError) {
+            posLoginService.clearSession();
+          }
+        }
+      }
+    };
+    checkSessionOnMount();
   }, [navigate]);
 
   // Clear error when employeeId changes
@@ -250,8 +264,8 @@ export const POSLogin = () => {
             <div className="relative">
               <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className="text-gray-400">
-                  <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  <circle cx="12" cy="7" r="4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                  <circle cx="12" cy="7" r="4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </div>
               <input

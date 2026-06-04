@@ -110,7 +110,7 @@ function initChatSocket(io, chatService) {
         // ── Event: Send message (streaming response) ──
         socket.on('chat:send_message', async (data, callback) => {
             try {
-                const { session_id, message } = data || {};
+                const { session_id, message, context } = data || {};
                 if (!session_id || !message) {
                     throw new Error('session_id and message are required');
                 }
@@ -122,7 +122,7 @@ function initChatSocket(io, chatService) {
                 socket.emit('chat:typing', { session_id, is_typing: true });
 
                 // Stream response chunks
-                for await (const chunk of chatService.sendMessageStream(session_id, message)) {
+                for await (const chunk of chatService.sendMessageStream(session_id, message, context)) {
                     if (chunk.type === 'chunk') {
                         socket.emit('chat:stream_chunk', { text: chunk.text });
                     } else if (chunk.type === 'complete') {
@@ -158,7 +158,7 @@ function initChatSocket(io, chatService) {
         // ── Event: Confirm action (Yes/No response trigger) ──
         socket.on('chat:confirm_action', async (data, callback) => {
             try {
-                const { session_id, confirm } = data || {};
+                const { session_id, confirm, context } = data || {};
                 if (!session_id || confirm === undefined) {
                     throw new Error('session_id and confirm are required');
                 }
@@ -172,7 +172,7 @@ function initChatSocket(io, chatService) {
                 socket.emit('chat:typing', { session_id, is_typing: true });
 
                 // Stream response chunks using the derived confirmation message
-                for await (const chunk of chatService.sendMessageStream(session_id, confirmMessage)) {
+                for await (const chunk of chatService.sendMessageStream(session_id, confirmMessage, context)) {
                     if (chunk.type === 'chunk') {
                         socket.emit('chat:stream_chunk', { text: chunk.text });
                     } else if (chunk.type === 'complete') {

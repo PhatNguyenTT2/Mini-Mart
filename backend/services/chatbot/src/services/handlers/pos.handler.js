@@ -119,7 +119,7 @@ class PosHandler {
     };
   }
 
-  async processOrderCollection(session, userMessage) {
+  async processOrderCollection(session, userMessage, context = {}) {
     const sessionId = session.id;
     const storeId = session.store_id || 1;
     const metadata = session.metadata || {};
@@ -186,14 +186,22 @@ class PosHandler {
       };
     }
 
+    const isCustomer = session.userType === 'customer' || session.user_type === 'customer';
+    const customerId = isCustomer
+      ? session.user_id
+      : ((context && context.selectedCustomer && context.selectedCustomer.id !== 'virtual-guest')
+        ? context.selectedCustomer.id
+        : null);
+
     const actionPayload = {
       orderData: {
-        customerId: session.user_id,
-        storeId,
+        customer_id: customerId,
+        delivery_type: 'pickup',
         items: items.map(it => ({
-          productId: it.productId,
+          product_id: it.productId,
+          product_name: it.name,
           quantity: it.quantity,
-          price: it.price
+          unit_price: it.price
         }))
       },
       items
@@ -221,6 +229,24 @@ class PosHandler {
       intent: 'CREATE_ORDER',
       reply: `Đơn hàng mới đã được tạo thành công: ID #${result.id || result.orderId}`,
       action: { type: 'CREATE_ORDER', payload: actionPayload }
+    };
+  }
+
+  async handlePosHoldOrder(session, userMessage) {
+    return {
+      intent: 'POS_HOLD_ORDER',
+      reply: 'Đang gửi yêu cầu lưu hóa đơn tạm (Hold Order) lên POS...',
+      action: { type: 'POS_HOLD_ORDER' },
+      products: null
+    };
+  }
+
+  async handlePosCheckout(session, userMessage) {
+    return {
+      intent: 'POS_CHECKOUT',
+      reply: 'Đang xử lý kích hoạt giao diện thanh toán (Payment) trên POS...',
+      action: { type: 'POS_CHECKOUT' },
+      products: null
     };
   }
 

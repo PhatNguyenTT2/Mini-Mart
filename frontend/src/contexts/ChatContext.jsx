@@ -15,6 +15,7 @@ export const ChatProvider = ({ children }) => {
   const [products, setProducts] = useState(null)
   const [suggestedPrompts, setSuggestedPrompts] = useState(null)
   const [error, setError] = useState(null)
+  const [posContext, setPosContext] = useState({})
   const initializedRef = useRef(false)
 
   // Derived user-scoped storage key helper
@@ -157,7 +158,7 @@ export const ChatProvider = ({ children }) => {
     setSuggestedPrompts(null)
     setError(null)
 
-    chatSocketService.sendMessage(sessionId, text.trim())
+    chatSocketService.sendMessage(sessionId, text.trim(), posContext)
   }, [canSend, sessionId])
 
   const endSession = useCallback(() => {
@@ -189,6 +190,8 @@ export const ChatProvider = ({ children }) => {
     products,
     suggestedPrompts,
     error,
+    posContext,
+    setPosContext,
     toggleChat,
     sendMessage,
     endSession,

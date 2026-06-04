@@ -82,8 +82,8 @@ class ChatSocketService {
     this.socket?.emit('chat:join_session', { sessionId })
   }
 
-  sendMessage(sessionId, message) {
-    this.socket?.emit('chat:send_message', { session_id: sessionId, message })
+  sendMessage(sessionId, message, context = {}) {
+    this.socket?.emit('chat:send_message', { session_id: sessionId, message, context })
   }
 
   endSession(sessionId) {

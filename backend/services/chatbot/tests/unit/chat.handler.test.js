@@ -125,7 +125,7 @@ describe('WebSocket Chat Handler', () => {
                 callback
             );
 
-            expect(mockChatService.sendMessageStream).toHaveBeenCalledWith(1, 'Hello!');
+            expect(mockChatService.sendMessageStream).toHaveBeenCalledWith(1, 'Hello!', undefined);
             expect(callback).toHaveBeenCalledWith(expect.objectContaining({
                 success: true,
                 data: expect.objectContaining({ intent: 'FREE_CHAT', fullText: 'Hello there!' })
@@ -158,7 +158,7 @@ describe('WebSocket Chat Handler', () => {
                 callback
             );
 
-            expect(mockChatService.sendMessageStream).toHaveBeenCalledWith(1, 'Đồng ý');
+            expect(mockChatService.sendMessageStream).toHaveBeenCalledWith(1, 'Đồng ý', undefined);
             expect(callback).toHaveBeenCalledWith(expect.objectContaining({
                 success: true,
                 data: expect.objectContaining({ intent: 'FREE_CHAT', fullText: 'Hello there!' })
@@ -173,7 +173,7 @@ describe('WebSocket Chat Handler', () => {
                 callback
             );
 
-            expect(mockChatService.sendMessageStream).toHaveBeenCalledWith(1, 'Không');
+            expect(mockChatService.sendMessageStream).toHaveBeenCalledWith(1, 'Không', undefined);
             expect(callback).toHaveBeenCalledWith(expect.objectContaining({ success: true }));
         });
 

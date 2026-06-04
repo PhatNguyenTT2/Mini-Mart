@@ -112,20 +112,23 @@ const posLoginService = {
       };
     } catch (error) {
       console.error('POS Verify error:', error);
+      const httpStatus = error.response?.status;
 
-      if (error.response?.status === 401 || error.response?.status === 403) {
+      if (httpStatus === 401 || httpStatus === 403) {
         this.clearSession();
       }
 
       if (error.response?.data?.error) {
         return {
           success: false,
+          httpStatus,
           error: error.response.data.error
         };
       }
 
       return {
         success: false,
+        httpStatus,
         error: { message: 'Failed to verify session', code: 'VERIFICATION_ERROR' }
       };
     }

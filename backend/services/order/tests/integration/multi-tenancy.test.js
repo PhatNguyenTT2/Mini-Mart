@@ -15,7 +15,7 @@ describe('Order Multi-Tenancy Isolation', () => {
             findByOrderId: jest.fn().mockResolvedValue([])
         };
         mockPool = {};
-        
+
         orderService = new OrderService(mockOrderRepo, mockDetailRepo, mockPool);
     });
 
@@ -23,7 +23,7 @@ describe('Order Multi-Tenancy Isolation', () => {
         // Assume Order 100 belongs to Store A (store_id = 1)
         const attackerStoreId = 2; // Store B
         const targetOrderId = 100; // Store A's order
-        
+
         // Mock repository behavior matching our SQL Row-Level isolation: 
         // `SELECT * FROM Orders WHERE id = $1 AND store_id = $2`
         // If the storeId does not match the actual order's storeId, it returns null
@@ -37,7 +37,7 @@ describe('Order Multi-Tenancy Isolation', () => {
         // The Service must throw NotFoundError when repo returns null
         await expect(orderService.getOrderById(attackerStoreId, targetOrderId))
             .rejects.toThrow(NotFoundError);
-            
+
         // Verify the repository was explicitly queried with the attacker's storeId
         expect(mockOrderRepo.findById).toHaveBeenCalledWith(attackerStoreId, targetOrderId);
     });
@@ -45,7 +45,7 @@ describe('Order Multi-Tenancy Isolation', () => {
     it('should allow access when the correct Store queries its own order', async () => {
         const ownerStoreId = 1;
         const targetOrderId = 100;
-        
+
         mockOrderRepo.findById.mockImplementation((storeId, id) => {
             if (storeId === 1 && id === targetOrderId) {
                 return Promise.resolve({ id: targetOrderId, store_id: 1 });

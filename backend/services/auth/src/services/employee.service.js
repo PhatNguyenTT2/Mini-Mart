@@ -73,7 +73,7 @@ class EmployeeService {
       // Flat format
       ({ full_name, email, password, address, phone, gender, dob, role_id, pos_pin, store_id } = data);
     }
-    
+
     if (!full_name || !email || !password || !role_id) {
       throw new ValidationError('full_name, email, password, and role_id are required');
     }
@@ -107,7 +107,7 @@ class EmployeeService {
       });
 
       await this.employeeRepo.createProfile(client, newUser.id, store_id || null, {
-         full_name, address, phone, gender, dob
+        full_name, address, phone, gender, dob
       });
 
       if (pos_pin) {
@@ -149,42 +149,42 @@ class EmployeeService {
 
     const client = await this.pool.connect();
     try {
-         await client.query('BEGIN');
-         
-         if (mappedData.store_id) {
-              const storeExists = await this.storeRepo.findById(mappedData.store_id);
-              if (!storeExists) throw new ValidationError(`Store ID ${mappedData.store_id} does not exist`);
-         }
+      await client.query('BEGIN');
 
-         if (mappedData.pos_pin) {
-            const pinHash = await bcrypt.hash(mappedData.pos_pin, 10);
-            await this.authRepo.upsertPosAuthWithClient(client, { userId, pinHash });
-         }
+      if (mappedData.store_id) {
+        const storeExists = await this.storeRepo.findById(mappedData.store_id);
+        if (!storeExists) throw new ValidationError(`Store ID ${mappedData.store_id} does not exist`);
+      }
 
-         if (mappedData.role_id) {
-            await this.userRepo.updateRoleWithClient(client, userId, mappedData.role_id);
-         }
+      if (mappedData.pos_pin) {
+        const pinHash = await bcrypt.hash(mappedData.pos_pin, 10);
+        await this.authRepo.upsertPosAuthWithClient(client, { userId, pinHash });
+      }
 
-         if (mappedData.is_active !== undefined) {
-             await this.userRepo.setActiveWithClient(client, userId, mappedData.is_active);
-         }
+      if (mappedData.role_id) {
+        await this.userRepo.updateRoleWithClient(client, userId, mappedData.role_id);
+      }
 
-         await this.employeeRepo.updateProfile(
-           client, userId,
-           mappedData.store_id || existing.store_id,
-           mappedData
-         );
-         
-         await client.query('COMMIT');
+      if (mappedData.is_active !== undefined) {
+        await this.userRepo.setActiveWithClient(client, userId, mappedData.is_active);
+      }
 
-         // Return full refreshed employee
-         const updated = await this.employeeRepo.findById(userId);
-         return { employee: transformEmployee(updated) };
-    } catch(err) {
-         await client.query('ROLLBACK');
-         throw err;
+      await this.employeeRepo.updateProfile(
+        client, userId,
+        mappedData.store_id || existing.store_id,
+        mappedData
+      );
+
+      await client.query('COMMIT');
+
+      // Return full refreshed employee
+      const updated = await this.employeeRepo.findById(userId);
+      return { employee: transformEmployee(updated) };
+    } catch (err) {
+      await client.query('ROLLBACK');
+      throw err;
     } finally {
-         client.release();
+      client.release();
     }
   }
 

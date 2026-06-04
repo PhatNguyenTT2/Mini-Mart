@@ -5,9 +5,12 @@ import posDataService from '../services/posDataService';
  * POS Order Management Hook.
  * Handles checkout (draft creation), hold order, load held orders.
  */
-export function usePOSOrder({ cart, setCart, selectedCustomer, setSelectedCustomer, showToast, setLoading, parsePrice }) {
+export function usePOSOrder({ cart, setCart, selectedCustomer, setSelectedCustomer, showToast, parsePrice }) {
   const [existingOrder, setExistingOrder] = useState(null);
   const [showHeldOrdersModal, setShowHeldOrdersModal] = useState(false);
+  const [holdLoading, setHoldLoading] = useState(false);
+  const [checkoutLoading, setCheckoutLoading] = useState(false);
+  const [loadingHeldOrder, setLoadingHeldOrder] = useState(false);
 
   // ========== CHANGE DETECTION ==========
 
@@ -60,7 +63,7 @@ export function usePOSOrder({ cart, setCart, selectedCustomer, setSelectedCustom
     }
 
     try {
-      setLoading(true);
+      setHoldLoading(true);
 
       const orderItems = cart.map(item => ({
         productId: item.productId || item.id,
@@ -95,9 +98,9 @@ export function usePOSOrder({ cart, setCart, selectedCustomer, setSelectedCustom
       console.error('Error holding order:', error);
       showToast('error', error.message || 'Failed to hold order');
     } finally {
-      setLoading(false);
+      setHoldLoading(false);
     }
-  }, [cart, selectedCustomer, setCart, setSelectedCustomer, showToast, setLoading]);
+  }, [cart, selectedCustomer, setCart, setSelectedCustomer, showToast]);
 
   // ========== CHECKOUT ==========
 
@@ -121,7 +124,7 @@ export function usePOSOrder({ cart, setCart, selectedCustomer, setSelectedCustom
         console.log(`Order changed (Cart: ${cartChanged}, Customer: ${customerChanged}) - updating...`);
 
         try {
-          setLoading(true);
+          setCheckoutLoading(true);
 
           const orderId = existingOrder.id;
 
@@ -162,7 +165,7 @@ export function usePOSOrder({ cart, setCart, selectedCustomer, setSelectedCustom
           showToast('error', error.message || 'Failed to update order');
           return false;
         } finally {
-          setLoading(false);
+          setCheckoutLoading(false);
         }
       }
 
@@ -173,7 +176,7 @@ export function usePOSOrder({ cart, setCart, selectedCustomer, setSelectedCustom
     console.log('Creating draft order before payment...');
 
     try {
-      setLoading(true);
+      setCheckoutLoading(true);
 
       const items = cart.map(item => ({
         productId: item.productId || item.id,
@@ -207,9 +210,9 @@ export function usePOSOrder({ cart, setCart, selectedCustomer, setSelectedCustom
       showToast('error', error.message);
       return false;
     } finally {
-      setLoading(false);
+      setCheckoutLoading(false);
     }
-  }, [cart, selectedCustomer, existingOrder, hasCartChanged, hasCustomerChanged, setLoading, showToast]);
+  }, [cart, selectedCustomer, existingOrder, hasCartChanged, hasCustomerChanged, showToast]);
 
   // ========== LOAD HELD ORDER ==========
 
@@ -221,7 +224,7 @@ export function usePOSOrder({ cart, setCart, selectedCustomer, setSelectedCustom
       }
 
       setCart([]);
-      setLoading(true);
+      setLoadingHeldOrder(true);
 
       // Fetch customer data from Auth API (microservice returns flat customerId)
       if (order.customerId && order.customerId !== 'virtual-guest') {
@@ -356,11 +359,14 @@ export function usePOSOrder({ cart, setCart, selectedCustomer, setSelectedCustom
       console.error('Error loading held order:', error);
       showToast('error', 'Failed to load order');
     } finally {
-      setLoading(false);
+      setLoadingHeldOrder(false);
     }
-  }, [cart, setCart, setSelectedCustomer, showToast, parsePrice, setLoading]);
+  }, [cart, setCart, setSelectedCustomer, showToast, parsePrice]);
 
   return {
+    holdLoading,
+    checkoutLoading,
+    loadingHeldOrder,
     existingOrder,
     setExistingOrder,
     showHeldOrdersModal,

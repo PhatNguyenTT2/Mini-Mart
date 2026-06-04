@@ -21,10 +21,10 @@ class EmployeeRepository {
             WHERE 1=1
         `;
         const params = [];
-        
+
         if (filters.storeId) {
-             params.push(filters.storeId);
-             query += ` AND e.store_id = $${params.length}`;
+            params.push(filters.storeId);
+            query += ` AND e.store_id = $${params.length}`;
         }
 
         if (filters.search) {
@@ -73,10 +73,10 @@ class EmployeeRepository {
         ]);
         return rows[0];
     }
-    
+
     async updateProfile(client, userId, storeId, employeeData) {
-         const { full_name, address, phone, gender, dob } = employeeData;
-         const query = `
+        const { full_name, address, phone, gender, dob } = employeeData;
+        const query = `
              UPDATE employee 
              SET store_id = COALESCE($1, store_id),
                  full_name = COALESCE($2, full_name),
@@ -87,10 +87,10 @@ class EmployeeRepository {
              WHERE user_id = $7
              RETURNING *
          `;
-         const { rows } = await client.query(query, [
-             storeId, full_name, address, phone, gender, dob, userId
-         ]);
-         return rows[0];
+        const { rows } = await client.query(query, [
+            storeId, full_name, address, phone, gender, dob, userId
+        ]);
+        return rows[0];
     }
 }
 

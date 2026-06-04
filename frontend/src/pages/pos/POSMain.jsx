@@ -14,6 +14,7 @@ import {
 } from '../../components/POSMain';
 import { POSBatchSelectModal } from '../../components/POSMain/POSBatchSelectModal';
 import { POSHeldOrdersModal } from '../../components/POSMain/POSHeldOrdersModal';
+import { POSEmployeeOrdersModal } from '../../components/POSMain/POSEmployeeOrdersModal';
 import { POSInlineScanner } from '../../components/POSMain/POSInlineScanner';
 import { VNPayReturnHandler } from '../../components/VNPayReturnHandler';
 
@@ -47,10 +48,21 @@ export const POSMain = () => {
 
   // ========== HOOKS ==========
   const {
-    currentEmployee, currentTime, loading, setLoading, handleLogout
+    currentEmployee, currentTime, loading, setLoading, networkError, retryAuth, handleLogout
   } = usePOSAuth();
 
-  const { toggleChat } = useChat();
+  const { toggleChat, setPosContext } = useChat();
+
+  const [showEmployeeOrdersModal, setShowEmployeeOrdersModal] = useState(false);
+  const [showHelpModal, setShowHelpModal] = useState(false);
+
+  // Sync selected customer to chat context
+  useEffect(() => {
+    setPosContext(prev => ({
+      ...prev,
+      selectedCustomer: selectedCustomer
+    }));
+  }, [selectedCustomer, setPosContext]);
 
   const {
     cart, setCart, lastAddedId, addToCart, addProductWithBatch,
@@ -68,12 +80,13 @@ export const POSMain = () => {
   } = usePOSScanner({ addToCart, addProductWithBatch, showToast });
 
   const {
+    holdLoading,
     existingOrder, setExistingOrder,
     showHeldOrdersModal, setShowHeldOrdersModal,
     handleHoldOrder, handleCheckout, handleLoadHeldOrder
   } = usePOSOrder({
     cart, setCart, selectedCustomer, setSelectedCustomer,
-    showToast, setLoading, parsePrice
+    showToast, parsePrice
   });
 
   const {
@@ -92,6 +105,8 @@ export const POSMain = () => {
   // ========== DATA LOADING ==========
 
   useEffect(() => {
+    if (loading || !currentEmployee) return;
+
     const fetchCategories = async () => {
       try {
         const response = await posDataService.getCategoryTree();
@@ -136,7 +151,7 @@ export const POSMain = () => {
 
     fetchCategories();
     fetchDiscountConfig();
-  }, []);
+  }, [loading, currentEmployee]);
 
   // Debounce search input (350ms)
   useEffect(() => {
@@ -145,6 +160,8 @@ export const POSMain = () => {
   }, [searchTerm]);
 
   useEffect(() => {
+    if (loading || !currentEmployee) return;
+
     const fetchProducts = async () => {
       setLoadingProducts(true);
       try {
@@ -205,7 +222,7 @@ export const POSMain = () => {
     };
 
     fetchProducts();
-  }, [selectedCategory, debouncedSearch, categories]);
+  }, [selectedCategory, debouncedSearch, categories, loading, currentEmployee]);
 
   // ========== KEYBOARD SHORTCUTS ==========
 
@@ -226,6 +243,7 @@ export const POSMain = () => {
       if (e.key === 'F2') { e.preventDefault(); setShowQRScanner(prev => !prev); }
       if (e.key === 'F3') { e.preventDefault(); toggleChat(); }
       if (e.key === 'F4') { e.preventDefault(); setShowHeldOrdersModal(true); }
+      if (e.key === 'F5') { e.preventDefault(); setShowEmployeeOrdersModal(true); }
       if (e.key === 'F8') { e.preventDefault(); document.getElementById('pos-hold-order-btn')?.click(); }
       if (e.key === 'F9') { e.preventDefault(); document.getElementById('pos-checkout-btn')?.click(); }
       if (e.key === 'Escape') {
@@ -233,6 +251,8 @@ export const POSMain = () => {
         if (showPaymentModal) setShowPaymentModal(false);
         if (showQRScanner) setShowQRScanner(false);
         if (showHeldOrdersModal) setShowHeldOrdersModal(false);
+        if (showEmployeeOrdersModal) setShowEmployeeOrdersModal(false);
+        if (showHelpModal) setShowHelpModal(false);
         if (showBatchModal) setShowBatchModal(false);
         if (showInvoiceModal) setShowInvoiceModal(false);
       }
@@ -240,14 +260,29 @@ export const POSMain = () => {
 
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [cart.length, handleLogout, showPaymentModal, showQRScanner, showHeldOrdersModal, showBatchModal, showInvoiceModal, setShowQRScanner, setShowHeldOrdersModal, setShowPaymentModal, setShowBatchModal, setShowInvoiceModal, toggleChat]);
+  }, [cart.length, handleLogout, showPaymentModal, showQRScanner, showHeldOrdersModal, showEmployeeOrdersModal, showHelpModal, showBatchModal, showInvoiceModal, setShowQRScanner, setShowHeldOrdersModal, setShowEmployeeOrdersModal, setShowHelpModal, setShowPaymentModal, setShowBatchModal, setShowInvoiceModal, toggleChat]);
 
   // ========== CHATBOT ACTION DISPATCHER ==========
 
   useEffect(() => {
     const handleChatAction = async (e) => {
       const action = e.detail;
-      if (!action || action.type !== 'POS_ADD_ITEM') return;
+      if (!action) return;
+
+      if (action.type === 'POS_HOLD_ORDER') {
+        showToast('info', 'Đang lưu hóa đơn tạm...');
+        await handleHoldOrder();
+        return;
+      }
+
+      if (action.type === 'POS_CHECKOUT') {
+        showToast('info', 'Đang mở giao diện thanh toán...');
+        const success = await handleCheckout();
+        if (success) setShowPaymentModal(true);
+        return;
+      }
+
+      if (action.type !== 'POS_ADD_ITEM') return;
 
       const { productId, quantity, name, isPerishable } = action.payload;
 
@@ -354,7 +389,7 @@ export const POSMain = () => {
 
     window.addEventListener('posmart:chat_action', handleChatAction);
     return () => window.removeEventListener('posmart:chat_action', handleChatAction);
-  }, [addToCart, showToast, setSelectedProductData, setShowBatchModal]);
+  }, [addToCart, showToast, setSelectedProductData, setShowBatchModal, handleHoldOrder, handleCheckout, setShowPaymentModal]);
 
   // ========== CHECKOUT WRAPPER ==========
 
@@ -371,6 +406,41 @@ export const POSMain = () => {
   // ========== RENDER ==========
 
   const totals = calculateTotals();
+
+  if (networkError) {
+    return (
+      <div className="min-h-screen bg-emerald-950 flex flex-col items-center justify-center font-['Poppins',sans-serif] p-4 text-center">
+        <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20 max-w-md w-full shadow-2xl animate-fade-in-smooth">
+          <div className="text-emerald-400 text-6xl mb-4 flex justify-center">
+            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 9v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </div>
+          <h2 className="text-white text-2xl font-bold mb-2 font-['Poppins',sans-serif]">Connection Failed</h2>
+          <p className="text-emerald-100/75 mb-6 text-[14px]">
+            The server is offline or your network is disconnected. Please check your connection and try again.
+          </p>
+          <div className="flex flex-col gap-3">
+            <button
+              onClick={retryAuth}
+              className="py-3 px-6 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg text-[15px] font-semibold transition-all hover:scale-[1.02] shadow-lg flex items-center justify-center gap-2"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 8H17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+              Retry Connection
+            </button>
+            <button
+              onClick={() => handleLogout(0)}
+              className="py-3 px-6 bg-white/10 hover:bg-white/20 text-emerald-200 border border-emerald-500/30 rounded-lg text-[15px] font-semibold transition-all"
+            >
+              Logout
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (loading) {
     return <POSLoadingScreen />;
@@ -394,6 +464,8 @@ export const POSMain = () => {
               onProductScanned={handleProductScanned}
               onOpenQRScanner={() => setShowQRScanner(!showQRScanner)}
               onMapClick={() => setShowStoreMap(true)}
+              onHistoryClick={() => setShowEmployeeOrdersModal(true)}
+              onHelpClick={() => setShowHelpModal(true)}
               scanning={scanning}
               scannerActive={showQRScanner}
             />
@@ -427,6 +499,7 @@ export const POSMain = () => {
         </div>
 
         <POSCart
+          holdLoading={holdLoading}
           cart={cart}
           onUpdateQuantity={updateQuantity}
           onRemoveItem={removeFromCart}
@@ -464,6 +537,19 @@ export const POSMain = () => {
         isOpen={showHeldOrdersModal}
         onClose={() => setShowHeldOrdersModal(false)}
         onLoadOrder={handleLoadHeldOrder}
+        currentEmployee={currentEmployee}
+      />
+
+      <POSEmployeeOrdersModal
+        isOpen={showEmployeeOrdersModal}
+        onClose={() => setShowEmployeeOrdersModal(false)}
+        currentEmployee={currentEmployee}
+        onLoadDraftOrder={handleLoadHeldOrder}
+      />
+
+      <POSHelpModal
+        isOpen={showHelpModal}
+        onClose={() => setShowHelpModal(false)}
       />
 
 
@@ -521,6 +607,106 @@ export const POSMain = () => {
           <span className="font-semibold text-[14px]">{toast.message}</span>
         </div>
       )}
+    </div>
+  );
+};
+
+const POSHelpModal = ({ isOpen, onClose }) => {
+  if (!isOpen) return null;
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[9999]">
+      <div className="bg-white rounded-xl shadow-2xl max-w-md w-full mx-4 overflow-hidden flex flex-col border border-gray-100 animate-fade-in">
+        {/* Header */}
+        <div className="px-6 py-4 border-b border-gray-200 bg-emerald-50 flex justify-between items-center font-['Poppins',sans-serif]">
+          <h3 className="text-[17px] font-bold text-gray-950 flex items-center gap-2">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-emerald-600">
+              <circle cx="12" cy="12" r="10" />
+              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+              <line x1="12" y1="17" x2="12.01" y2="17" />
+            </svg>
+            <span>Keyboard Shortcuts Guide</span>
+          </h3>
+          <button onClick={onClose} className="p-1 hover:bg-gray-200 rounded-full transition-colors text-gray-500 font-bold">&times;</button>
+        </div>
+
+        {/* Body */}
+        <div className="p-6 font-['Poppins',sans-serif] space-y-4 max-h-[70vh] overflow-y-auto">
+          {/* Global Section */}
+          <div>
+            <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Global System Keys</h4>
+            <div className="space-y-2">
+              <div className="flex justify-between items-center text-xs">
+                <span className="text-gray-600 font-medium">Focus product search input</span>
+                <span className="px-2 py-1 bg-gray-100 border border-gray-300 rounded font-semibold text-gray-800 shadow-sm">Ctrl + K / Ctrl + M</span>
+              </div>
+              <div className="flex justify-between items-center text-xs">
+                <span className="text-gray-600 font-medium">Log out securely</span>
+                <span className="px-2 py-1 bg-gray-100 border border-gray-300 rounded font-semibold text-gray-800 shadow-sm">Ctrl + L</span>
+              </div>
+              <div className="flex justify-between items-center text-xs">
+                <span className="text-gray-600 font-medium">Clear items in cart</span>
+                <span className="px-2 py-1 bg-gray-100 border border-gray-300 rounded font-semibold text-gray-800 shadow-sm">Ctrl + Delete</span>
+              </div>
+              <div className="flex justify-between items-center text-xs">
+                <span className="text-gray-600 font-medium">Close any active modal dialog</span>
+                <span className="px-2 py-1 bg-gray-100 border border-gray-300 rounded font-semibold text-gray-800 shadow-sm">Esc</span>
+              </div>
+            </div>
+          </div>
+
+          <hr className="border-gray-150" />
+
+          {/* Menu Controls */}
+          <div>
+            <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Interface Controls</h4>
+            <div className="space-y-2">
+              <div className="flex justify-between items-center text-xs">
+                <span className="text-gray-600 font-medium">Toggle barcode/QR scanner view</span>
+                <span className="px-2 py-1 bg-gray-100 border border-gray-300 rounded font-semibold text-gray-800 shadow-sm">F2</span>
+              </div>
+              <div className="flex justify-between items-center text-xs">
+                <span className="text-gray-600 font-medium">Open POSMART AI Chatbot panel</span>
+                <span className="px-2 py-1 bg-gray-100 border border-gray-300 rounded font-semibold text-gray-800 shadow-sm">F3</span>
+              </div>
+              <div className="flex justify-between items-center text-xs">
+                <span className="text-gray-600 font-medium">Open Held Orders (Draft List)</span>
+                <span className="px-2 py-1 bg-gray-100 border border-gray-300 rounded font-semibold text-gray-800 shadow-sm">F4</span>
+              </div>
+              <div className="flex justify-between items-center text-xs">
+                <span className="text-gray-600 font-medium">Open employee logs order history</span>
+                <span className="px-2 py-1 bg-gray-100 border border-gray-300 rounded font-semibold text-gray-800 shadow-sm">F5</span>
+              </div>
+            </div>
+          </div>
+
+          <hr className="border-gray-150" />
+
+          {/* In-Cart Operations */}
+          <div>
+            <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Order Cart Actions</h4>
+            <div className="space-y-2">
+              <div className="flex justify-between items-center text-xs">
+                <span className="text-gray-600 font-medium">Temporarily save/hold current order</span>
+                <span className="px-2 py-1 bg-gray-100 border border-gray-300 rounded font-semibold text-gray-800 shadow-sm">F8</span>
+              </div>
+              <div className="flex justify-between items-center text-xs">
+                <span className="text-gray-600 font-medium">Trigger checkout / direct payment modal</span>
+                <span className="px-2 py-1 bg-gray-100 border border-gray-300 rounded font-semibold text-gray-800 shadow-sm">F9</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div className="px-6 py-4 border-t border-gray-200 bg-gray-50 flex justify-end">
+          <button
+            onClick={onClose}
+            className="px-5 py-1.5 bg-emerald-600 text-white rounded-lg font-semibold hover:bg-emerald-700 text-xs transition-colors"
+          >
+            Got It
+          </button>
+        </div>
+      </div>
     </div>
   );
 };

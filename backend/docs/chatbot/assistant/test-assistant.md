@@ -81,14 +81,14 @@ curl http://localhost:3008/health
 | Bước | Gõ vào chatbot | Intent | Kết quả mong đợi |
 |:---:|----------------|--------|-------------------|
 | 1 | **"Giá nabati bao nhiêu?"** | `CHECK_PRICE` | Product card: Bánh xốp phô mai Nabati hộp 150g — 28,000đ |
-| 2 | **"Còn bao nhiêu trên kệ?"** | `CHECK_STOCK` | Pronoun resolve "nabati" từ bước 1 → Trả về chi tiết: `On-hand: 300, On-shelf: 298, ... 📍 Vị trí trên kệ: Kệ Bánh Kẹo → BK-03` |
+| 2 | **" ?"** | `CHECK_STOCK` | Pronoun resolve "nabati" từ bước 1 → Trả về chi tiết: `On-hand: 300, On-shelf: 298, ... 📍 Vị trí trên kệ: Kệ Bánh Kẹo → BK-03` |
 | 3 | **"Thêm 3 cái đó vào giỏ"** | `POS_ADD_ITEM` | Pronoun resolve "nabati" → Thêm trực tiếp 3 Nabati vào giỏ hàng POS |
 | 4 | **"Giá red bull và coca"** | `CHECK_PRICE` | 2 product cards: Red Bull lon 250ml — 12,000đ + Coca-Cola chai 390ml — 9,000đ |
 | 5 | **"Thêm cái đó vào giỏ"** | `POS_ADD_ITEM` | ⚠️ Chatbot HỎI LẠI: "Bạn muốn thêm SP nào? [1] Red Bull [2] Coca-Cola" |
 | 6 | **"1"** | (CLARIFYING) | Chọn Red Bull → "Đã thêm Red Bull vào POS" |
 | 7 | **"Thêm 2 coca"** | `POS_ADD_ITEM` | FTS exact match → Auto-add Coca x2 vào giỏ POS |
-| 8 | **"Tạo đơn"** | `CREATE_ORDER` | Recap: "Bạn có chắc chắn muốn lập hóa đơn cho các sản phẩm: [Nabati x3, Red Bull x1, Coca x2]?" |
-| 9 | **"Đồng ý"** | (CONFIRMING) | Đơn hàng tạo thành công → trả về ID hóa đơn mới |
+| 8 | **"Thanh toán"** | `POS_CHECKOUT` | Kích hoạt sự kiện mở `POSPaymentModal` trên màn hình POS |
+| 8-alt|**"Lưu hóa đơn"** | `POS_HOLD_ORDER` | Kích hoạt sự kiện lưu hóa đơn tạm, giỏ hàng được dọn sạch và toast lưu thành công sẽ hiển thị |
 
 **🎤 Thuyết minh (nói ở bước 2):**
 
@@ -138,7 +138,7 @@ curl http://localhost:3008/health
 | Bước | Gõ vào chatbot | Kết quả mong đợi |
 |:---:|----------------|-------------------|
 | 1 | **"Thêm 3 coca vào POS"** | Intent: `POS_ADD_ITEM` → "Đã thêm 3 Coca vào POS thành công" |
-| 2 | **"Tạo đơn 2 Coca, 1 Sting"** | Intent: `CREATE_ORDER` → Recap: "Bạn có chắc? [Coca x2, Sting x1]" |
+| 2 | **"Tạo đơn 2 Coca, 1 Chupachup"** | Intent: `CREATE_ORDER` → Recap: "Bạn có chắc? [Coca x2, Chupachup x1]" |
 | 3 | **"Giá pepsi bao nhiêu?"** | 💡 READ INTENT xen ngang → trả giá Pepsi, NHƯNG `pendingAction` vẫn được bảo lưu |
 | 4 | **"Đồng ý"** | Quay lại confirm → Đơn hàng tạo thành công, ID trả về |
 | 5 | **"Kiểm tra thanh toán đơn #1"** | Intent: `PAYMENT_CHECK` → "Đã thanh toán" / "Chưa thanh toán" |

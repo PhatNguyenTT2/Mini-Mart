@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import posDataService from '../../services/posDataService';
 
-export const POSHeldOrdersModal = ({ isOpen, onClose, onLoadOrder }) => {
+export const POSHeldOrdersModal = ({ isOpen, onClose, onLoadOrder, currentEmployee }) => {
   const [heldOrders, setHeldOrders] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState({});
   const [error, setError] = useState(null);
   const [customerNames, setCustomerNames] = useState({});
   const [employeeNames, setEmployeeNames] = useState({});
@@ -19,7 +20,7 @@ export const POSHeldOrdersModal = ({ isOpen, onClose, onLoadOrder }) => {
     setError(null);
 
     try {
-      const result = await posDataService.getOrdersByStatus('draft');
+      const result = await posDataService.getOrdersByStatus('draft', currentEmployee?.id);
 
       if (result.status === 'success' || result.success) {
         const orders = result.data?.orders || result.data || [];
@@ -264,11 +265,35 @@ export const POSHeldOrdersModal = ({ isOpen, onClose, onLoadOrder }) => {
                     </div>
                   )}
 
-                  {/* Click indicator */}
-                  <div className="mt-3 pt-3 border-t border-gray-200 flex items-center justify-center">
-                    <span className="text-xs text-gray-500 font-['Poppins',sans-serif] group-hover:text-amber-600 transition-colors">
+                  {/* Click indicator & Actions */}
+                  <div className="mt-3 pt-3 border-t border-gray-200 flex items-center justify-between">
+                    <span className="text-xs text-gray-400 font-['Poppins',sans-serif] group-hover:text-amber-600 transition-colors">
                       Click to load this order
                     </span>
+                    <button
+                      onClick={async (e) => {
+                        e.stopPropagation();
+                        if (window.confirm(`Are you sure you want to delete draft order ${order.orderNumber}?`)) {
+                          try {
+                            setDeleteLoading(prev => ({ ...prev, [order.id]: true }));
+                            await posDataService.deleteOrder(order.id);
+                            setHeldOrders(prev => prev.filter(o => o.id !== order.id));
+                          } catch (err) {
+                            alert(err.message || 'Failed to delete draft order');
+                          } finally {
+                            setDeleteLoading(prev => ({ ...prev, [order.id]: false }));
+                          }
+                        }
+                      }}
+                      disabled={deleteLoading[order.id]}
+                      className="p-1 px-2 bg-red-50 text-red-650 text-red-600 border border-red-200 rounded text-xs hover:bg-red-100 disabled:opacity-50 transition-colors flex items-center gap-1 font-['Poppins',sans-serif]"
+                      title="Delete Draft"
+                    >
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2M10 11v6M14 11v6" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                      <span>{deleteLoading[order.id] ? 'Deleting...' : 'Delete'}</span>
+                    </button>
                   </div>
                 </div>
               ))}

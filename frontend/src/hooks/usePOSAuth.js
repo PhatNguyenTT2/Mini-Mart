@@ -11,37 +11,50 @@ export function usePOSAuth() {
   const [currentEmployee, setCurrentEmployee] = useState(null);
   const [currentTime, setCurrentTime] = useState(new Date());
   const [loading, setLoading] = useState(true);
+  const [networkError, setNetworkError] = useState(false);
 
-  // Check auth on mount
-  useEffect(() => {
-    const checkAuth = async () => {
-      setLoading(true);
+  const checkAuth = async () => {
+    setLoading(true);
+    setNetworkError(false);
 
-      if (!posLoginService.isLoggedIn()) {
-        navigate('/pos-login');
+    if (!posLoginService.isLoggedIn()) {
+      navigate('/pos-login');
+      return;
+    }
+
+    try {
+      const result = await posLoginService.verifySession();
+
+      if (!result.success) {
+        console.error('Session verification failed:', result.error);
+        const code = result.error?.code;
+        const isAuthError = code === 'NO_SESSION' || result.httpStatus === 401 || result.httpStatus === 403;
+
+        if (isAuthError) {
+          posLoginService.clearSession();
+          navigate('/pos-login');
+        } else {
+          // Infrastructure/network error (502, 429, etc) -> show error UI, don't clear token
+          setNetworkError(true);
+        }
         return;
       }
 
-      try {
-        const result = await posLoginService.verifySession();
+      const employee = posLoginService.getCurrentEmployee();
+      setCurrentEmployee(employee);
+      setNetworkError(false);
+    } catch (error) {
+      console.error('Session verification error:', error);
+      setNetworkError(true);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-        if (!result.success) {
-          console.error('Session verification failed:', result.error);
-          navigate('/pos-login');
-          return;
-        }
-
-        const employee = posLoginService.getCurrentEmployee();
-        setCurrentEmployee(employee);
-      } catch (error) {
-        console.error('Session verification error:', error);
-        navigate('/pos-login');
-      } finally {
-        setLoading(false);
-      }
-    };
-
+  // Check auth on mount
+  useEffect(() => {
     checkAuth();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigate]);
 
   // Clock tick
@@ -58,9 +71,17 @@ export function usePOSAuth() {
       if (posLoginService.isLoggedIn()) {
         const result = await posLoginService.verifySession();
         if (!result.success) {
-          console.error('Session expired or revoked');
-          alert('Your session has expired. Please login again.');
-          navigate('/pos-login');
+          const code = result.error?.code;
+          const isAuthError = code === 'NO_SESSION' || result.httpStatus === 401 || result.httpStatus === 403;
+
+          if (isAuthError) {
+            console.error('Session expired or revoked');
+            alert('Your session has expired. Please login again.');
+            posLoginService.clearSession();
+            navigate('/pos-login');
+          } else {
+            console.warn('Periodic session verification failed due to network/server issue. Keeping session active.');
+          }
         }
       }
     }, 5 * 60 * 1000);
@@ -83,11 +104,17 @@ export function usePOSAuth() {
     }
   };
 
+  const retryAuth = async () => {
+    await checkAuth();
+  };
+
   return {
     currentEmployee,
     currentTime,
     loading,
     setLoading,
+    networkError,
+    retryAuth,
     handleLogout
   };
 }
