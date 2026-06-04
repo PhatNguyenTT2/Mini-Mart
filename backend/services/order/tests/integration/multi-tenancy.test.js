@@ -55,7 +55,7 @@ describe('Order Multi-Tenancy Isolation', () => {
 
         const order = await orderService.getOrderById(ownerStoreId, targetOrderId);
         expect(order).toBeDefined();
-        expect(order.store_id).toBe(ownerStoreId);
+        expect(order.storeId).toBe(ownerStoreId);
         expect(mockOrderRepo.findById).toHaveBeenCalledWith(ownerStoreId, targetOrderId);
     });
 });

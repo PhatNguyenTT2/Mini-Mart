@@ -14,6 +14,15 @@ module.exports = function employeeRoutes(employeeService) {
     } catch (err) { next(err); }
   });
 
+  // POST /api/employees/bulk
+  router.post('/bulk', verifyToken, async (req, res, next) => {
+    try {
+      const { ids } = req.body;
+      const employees = await employeeService.getByIds(ids || []);
+      success(res, { employees });
+    } catch (err) { next(err); }
+  });
+
   // GET /api/employees/:id
   router.get('/:id', verifyToken, async (req, res, next) => {
     try {

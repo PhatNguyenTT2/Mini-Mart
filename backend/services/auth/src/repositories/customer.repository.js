@@ -78,6 +78,15 @@ class CustomerRepository {
     return rows[0] || null;
   }
 
+  async findByIds(ids) {
+    if (!ids || ids.length === 0) return [];
+    const { rows } = await this.pool.query(
+      `SELECT id, full_name, customer_type FROM customer WHERE id = ANY($1)`,
+      [ids]
+    );
+    return rows;
+  }
+
   async findByUserId(userId) {
     const { rows } = await this.pool.query(
       `SELECT c.*, u.username, u.email, u.is_active as user_is_active

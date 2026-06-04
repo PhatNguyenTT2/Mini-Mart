@@ -21,6 +21,15 @@ module.exports = function customerRoutes(customerService) {
     } catch (err) { next(err); }
   });
 
+  // POST /api/customers/bulk
+  router.post('/bulk', verifyToken, async (req, res, next) => {
+    try {
+      const { ids } = req.body;
+      const customers = await customerService.getByIds(ids || []);
+      res.json({ success: true, data: { customers } });
+    } catch (err) { next(err); }
+  });
+
   // GET /api/customers/:id
   router.get('/:id', verifyToken, async (req, res, next) => {
     try {

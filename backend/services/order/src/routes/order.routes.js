@@ -20,7 +20,9 @@ function createOrderRouter(orderService) {
         customerId: req.query.customer,
         createdBy: req.query.createdBy,
         startDate: req.query.startDate,
-        endDate: req.query.endDate
+        endDate: req.query.endDate,
+        include: req.query.include,
+        jwtToken: req.headers.authorization?.replace('Bearer ', '')
       };
 
       // Security: Enforce customer isolation (customerId = customer table PK from JWT)
@@ -88,7 +90,8 @@ function createOrderRouter(orderService) {
         storeId = parseInt(req.headers['x-store-id'], 10);
       }
       storeId = storeId || 1;
-      const order = await orderService.getOrderById(storeId, req.params.id);
+      const jwtToken = req.headers.authorization?.replace('Bearer ', '');
+      const order = await orderService.getOrderById(storeId, req.params.id, jwtToken);
 
       // Security: Enforce customer isolation (customerId = customer table PK from JWT)
       const customerPk = req.user?.customerId || req.user?.id;

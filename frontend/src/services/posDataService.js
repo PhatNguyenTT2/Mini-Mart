@@ -124,8 +124,8 @@ const posDataService = {
     return response.data
   },
 
-  getEmployeeOrders: async (employeeId) => {
-    const response = await posApi.get('/orders', { params: { createdBy: employeeId } })
+  getEmployeeOrders: async (employeeId, params = {}) => {
+    const response = await posApi.get('/orders', { params: { createdBy: employeeId, ...params } })
     return response.data
   },
 

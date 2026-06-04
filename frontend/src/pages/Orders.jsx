@@ -167,62 +167,14 @@ export const Orders = () => {
         id: order._id || order.id
       }));
 
-      // Batch-resolve customer names (Client-Side Join pattern)
-      const uniqueCustomerIds = [...new Set(
-        ordersData
-          .map(o => parseInt(o.customerId || o.customer_id))
-          .filter(id => !isNaN(id) && id > 0)
-      )];
-
-      const uniqueEmployeeIds = [...new Set(
-        ordersData
-          .map(o => parseInt(o.createdBy))
-          .filter(id => !isNaN(id) && id > 0)
-      )];
-
-      // Resolve customers in parallel
-      const customerMap = {};
-      if (uniqueCustomerIds.length > 0) {
-        const results = await Promise.allSettled(
-          uniqueCustomerIds.map(id => customerService.getCustomerById(id))
-        );
-        results.forEach((result, i) => {
-          if (result.status === 'fulfilled') {
-            const cust = result.value?.data?.customer || result.value?.data || result.value;
-            customerMap[uniqueCustomerIds[i]] = {
-              fullName: cust.full_name || cust.fullName || `Customer #${uniqueCustomerIds[i]}`,
-              phone: cust.phone || '',
-              customerType: cust.customer_type || cust.customerType || 'guest'
-            };
-          }
-        });
-      }
-
-      // Resolve employees in parallel
-      const employeeMap = {};
-      if (uniqueEmployeeIds.length > 0) {
-        const results = await Promise.allSettled(
-          uniqueEmployeeIds.map(id => employeeService.getEmployeeById(id))
-        );
-        results.forEach((result, i) => {
-          if (result.status === 'fulfilled') {
-            const emp = result.value?.data?.employee || result.value?.data || result.value;
-            employeeMap[uniqueEmployeeIds[i]] = emp.full_name || emp.fullName || emp.username || `User #${uniqueEmployeeIds[i]}`;
-          }
-        });
-      }
-
-      // Enrich orders with resolved names
+      // Enrich orders with pre-resolved names from Backend (API Composition)
       const enrichedOrders = ordersData.map(order => {
-        const custId = parseInt(order.customerId || order.customer_id);
-        const empId = parseInt(order.createdBy);
         return {
           ...order,
-          // Enriched customer info for display (Client-Side Join pattern)
-          _customerName: customerMap[custId]?.fullName || `Customer #${custId || 'N/A'}`,
-          _customerPhone: customerMap[custId]?.phone || '',
-          _customerType: customerMap[custId]?.customerType || 'guest',
-          _createdByName: employeeMap[empId] || `User #${empId || 'N/A'}`
+          _customerName: order.customerName || (!order.customerId ? 'Guest Customer' : `Customer #${order.customerId}`),
+          _customerPhone: '',
+          _customerType: order.customerType || 'retail',
+          _createdByName: order.createdByName || `User #${order.createdBy || 'N/A'}`
         };
       });
 

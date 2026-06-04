@@ -59,6 +59,17 @@ class EmployeeRepository {
         return rows[0] || null;
     }
 
+    async findByUserIds(userIds) {
+        if (!userIds || userIds.length === 0) return [];
+        const query = `
+            SELECT e.user_id, e.full_name 
+            FROM employee e 
+            WHERE e.user_id = ANY($1)
+        `;
+        const { rows } = await this.pool.query(query, [userIds]);
+        return rows;
+    }
+
     // Dùng chung transaction từ Service
     async createProfile(client, userId, storeId, employeeData) {
         const { full_name, address, phone, gender, dob } = employeeData;

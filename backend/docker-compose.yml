@@ -96,6 +96,7 @@ services:
       - DB_SSL=${DB_SSL:-true}
       - RABBITMQ_URL=${RABBITMQ_URL}
       - JWT_SECRET=${JWT_SECRET}
+      - AUTH_SERVICE_URL=http://auth:3001
       - INVENTORY_SERVICE_URL=http://inventory:3006
       - CORS_ORIGINS=http://localhost:5173,http://localhost:5174
       - NODE_ENV=${NODE_ENV:-production}

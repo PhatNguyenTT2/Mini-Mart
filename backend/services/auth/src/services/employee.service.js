@@ -54,6 +54,18 @@ class EmployeeService {
     return { employee: transformEmployee(row) };
   }
 
+  async getByIds(userIds) {
+    if (!userIds || userIds.length === 0) return {};
+    const rows = await this.employeeRepo.findByUserIds(userIds);
+    const result = {};
+    rows.forEach(row => {
+      result[row.user_id] = {
+        fullName: row.full_name
+      };
+    });
+    return result;
+  }
+
   async create(callerStoreId, data) {
     // Support monolithic format: { userData, employeeData }
     let full_name, email, password, address, phone, gender, dob, role_id, pos_pin, store_id;

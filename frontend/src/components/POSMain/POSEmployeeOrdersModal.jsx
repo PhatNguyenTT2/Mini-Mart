@@ -13,9 +13,6 @@ export const POSEmployeeOrdersModal = ({ isOpen, onClose, currentEmployee, onLoa
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
 
-  // Cached names
-  const [customerNames, setCustomerNames] = useState({});
-
   useEffect(() => {
     if (isOpen && currentEmployee?.id) {
       fetchEmployeeOrders();
@@ -26,50 +23,11 @@ export const POSEmployeeOrdersModal = ({ isOpen, onClose, currentEmployee, onLoa
     setLoading(true);
     setError(null);
     try {
-      const result = await posDataService.getEmployeeOrders(currentEmployee.id);
+      const result = await posDataService.getEmployeeOrders(currentEmployee.id, { include: 'details' });
 
       if (result.status === 'success' || result.success) {
         const orderList = result.data?.orders || result.data || [];
-
-        // Enrich details for each order to get item names
-        const enrichedOrders = await Promise.all(
-          orderList.map(async (order) => {
-            try {
-              const detailRes = await posDataService.getOrderById(order.id);
-              const fullOrder = detailRes.data?.order || detailRes.data;
-              return fullOrder || order;
-            } catch {
-              return order;
-            }
-          })
-        );
-
-        setOrders(enrichedOrders);
-
-        // Fetch customer names in parallel
-        const uniqueCustomerIds = [...new Set(
-          enrichedOrders.map(o => o.customerId || o.customer_id).filter(id => id && id !== 'virtual-guest')
-        )];
-
-        if (uniqueCustomerIds.length > 0) {
-          const customerResults = await Promise.allSettled(
-            uniqueCustomerIds.map(cid =>
-              posDataService.getCustomerById(cid)
-                .then(res => {
-                  const c = res.data?.customer || res.data;
-                  return c ? { id: cid, name: c.fullName, type: c.customerType } : null;
-                })
-            )
-          );
-
-          const names = {};
-          customerResults.forEach((res, i) => {
-            if (res.status === 'fulfilled' && res.value) {
-              names[uniqueCustomerIds[i]] = res.value;
-            }
-          });
-          setCustomerNames(prev => ({ ...prev, ...names }));
-        }
+        setOrders(orderList);
       } else {
         throw new Error(result.error?.message || 'Failed to fetch items');
       }
@@ -114,15 +72,14 @@ export const POSEmployeeOrdersModal = ({ isOpen, onClose, currentEmployee, onLoa
       // 2. Search Query Filter
       if (searchQuery.trim()) {
         const query = searchQuery.toLowerCase().trim();
-        const customerInfo = customerNames[order.customerId || order.customer_id];
         const matchNumber = (order.orderNumber || '').toLowerCase().includes(query);
-        const matchCustomer = customerInfo && (customerInfo.name || '').toLowerCase().includes(query);
+        const matchCustomer = order.customerName && (order.customerName).toLowerCase().includes(query);
         return matchNumber || matchCustomer;
       }
 
       return true;
     });
-  }, [orders, activeTab, searchQuery, customerNames]);
+  }, [orders, activeTab, searchQuery]);
 
   // Reset to page 1 when criteria changes
   useEffect(() => {
@@ -277,7 +234,6 @@ export const POSEmployeeOrdersModal = ({ isOpen, onClose, currentEmployee, onLoa
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {paginatedOrders.map((order) => {
-                const customer = customerNames[order.customerId || order.customer_id];
                 const isDraft = (order.status || '').toLowerCase() === 'draft';
                 return (
                   <div
@@ -302,7 +258,11 @@ export const POSEmployeeOrdersModal = ({ isOpen, onClose, currentEmployee, onLoa
                         <div className="flex items-center gap-1.5">
                           <span className="text-gray-400 w-16">Customer:</span>
                           <span className="font-semibold text-gray-800">
-                            {customer ? `${customer.name} (${customer.type})` : !order.customerId ? 'Guest Customer' : `Customer #${order.customerId}`}
+                            {order.customerName
+                              ? `${order.customerName} (${order.customerType || 'retail'})`
+                              : !order.customerId
+                                ? 'Guest Customer'
+                                : `Customer #${order.customerId}`}
                           </span>
                         </div>
                         <div className="flex items-center gap-1.5">

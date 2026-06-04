@@ -12,6 +12,13 @@ class OrderDetailRepository {
     return rows;
   }
 
+  async findByOrderIds(orderIds) {
+    if (!orderIds || orderIds.length === 0) return [];
+    const query = 'SELECT * FROM sale_order_detail WHERE order_id = ANY($1) ORDER BY order_id, id';
+    const { rows } = await this.pool.query(query, [orderIds]);
+    return rows;
+  }
+
   async addDetailWithClient(client, orderId, data) {
     const { product_id, product_name, batch_id, quantity, unit_price, total_price } = data;
     const query = `

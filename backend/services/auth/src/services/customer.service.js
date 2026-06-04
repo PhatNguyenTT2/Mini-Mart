@@ -68,6 +68,20 @@ class CustomerService {
     return this.formatCustomer(customer);
   }
 
+  async getByIds(ids) {
+    if (!ids || ids.length === 0) return {};
+    const rows = await this.customerRepo.findByIds(ids);
+    const result = {};
+    rows.forEach(row => {
+      const formatted = this.formatCustomer(row);
+      result[formatted.id] = {
+        fullName: formatted.fullName,
+        customerType: formatted.customerType
+      };
+    });
+    return result;
+  }
+
   /**
    * Create customer
    * - With email + password: creates user_account + customer (linked)

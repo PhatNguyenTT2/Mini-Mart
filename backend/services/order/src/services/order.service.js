@@ -133,7 +133,10 @@ class OrderService {
       total: parseFloat(row.total_amount || 0),
       paymentStatus: row.payment_status,
       status: row.status,
-      itemCount: parseInt(row.item_count || 0, 10)
+      itemCount: parseInt(row.item_count || 0, 10),
+      customerName: row.customerName || null,
+      customerType: row.customerType || null,
+      createdByName: row.createdByName || null
     };
   }
 
@@ -151,23 +154,127 @@ class OrderService {
     };
   }
 
+  async enrichOrdersWithProfiles(orders, jwtToken) {
+    if (!orders || orders.length === 0) return orders;
+
+    // Extract unique customer and employee user accounts
+    const uniqueCustomerIds = [...new Set(
+      orders
+        .map(o => parseInt(o.customerId))
+        .filter(id => !isNaN(id) && id > 0)
+    )];
+
+    const uniqueEmployeeIds = [...new Set(
+      orders
+        .map(o => parseInt(o.createdBy))
+        .filter(id => !isNaN(id) && id > 0)
+    )];
+
+    const authServiceUrl = process.env.AUTH_SERVICE_URL || 'http://auth:3001';
+    let customerMap = {};
+    let employeeMap = {};
+
+    // Internal HTTP calls with try-catch for Graceful Degradation
+    if (uniqueCustomerIds.length > 0) {
+      try {
+        const response = await fetch(`${authServiceUrl}/api/customers/bulk`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': jwtToken ? (jwtToken.startsWith('Bearer ') ? jwtToken : `Bearer ${jwtToken}`) : ''
+          },
+          body: JSON.stringify({ ids: uniqueCustomerIds })
+        });
+        if (response.ok) {
+          const body = await response.json();
+          customerMap = body.data?.customers || {};
+        } else {
+          console.error(`Auth Service customer bulk returned status: ${response.status}`);
+        }
+      } catch (err) {
+        console.error('Failed to resolve customer names from Auth Service:', err.message);
+      }
+    }
+
+    if (uniqueEmployeeIds.length > 0) {
+      try {
+        const response = await fetch(`${authServiceUrl}/api/employees/bulk`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': jwtToken ? (jwtToken.startsWith('Bearer ') ? jwtToken : `Bearer ${jwtToken}`) : ''
+          },
+          body: JSON.stringify({ ids: uniqueEmployeeIds })
+        });
+        if (response.ok) {
+          const body = await response.json();
+          employeeMap = body.data?.employees || {};
+        } else {
+          console.error(`Auth Service employee bulk returned status: ${response.status}`);
+        }
+      } catch (err) {
+        console.error('Failed to resolve employee names from Auth Service:', err.message);
+      }
+    }
+
+    // Enrich orders in-place
+    orders.forEach(o => {
+      if (customerMap[o.customerId]) {
+        o.customerName = customerMap[o.customerId].fullName || null;
+        o.customerType = customerMap[o.customerId].customerType || null;
+      }
+      if (employeeMap[o.createdBy]) {
+        o.createdByName = employeeMap[o.createdBy].fullName || null;
+      }
+    });
+
+    return orders;
+  }
+
   async getStoreOrders(storeId, filters) {
     const rows = await this.orderRepo.findAll(storeId, filters);
-    return rows.map(row => this.formatOrder(row));
+    const orders = rows.map(row => this.formatOrder(row));
+
+    // Batch details loading if requested
+    if (filters.include === 'details' && orders.length > 0) {
+      const orderIds = orders.map(o => o.id);
+      const details = await this.detailRepo.findByOrderIds(orderIds);
+      const detailsMap = {};
+      details.forEach(d => {
+        const formatted = this.formatOrderDetail(d);
+        if (!detailsMap[formatted.orderId]) {
+          detailsMap[formatted.orderId] = [];
+        }
+        detailsMap[formatted.orderId].push(formatted);
+      });
+      orders.forEach(o => {
+        o.details = detailsMap[o.id] || [];
+      });
+    }
+
+    // Call internal Auth Service to enrich names
+    await this.enrichOrdersWithProfiles(orders, filters.jwtToken);
+
+    return orders;
   }
 
   async getProductSales(storeId, filters) {
     return this.detailRepo.aggregateProductSales(storeId, filters);
   }
 
-  async getOrderById(storeId, id) {
+  async getOrderById(storeId, id, jwtToken) {
     const order = await this.orderRepo.findById(storeId, id);
     if (!order) throw new NotFoundError('Order not found');
     const details = await this.detailRepo.findByOrderId(order.id);
-    return {
-      ...this.formatOrder(order),
-      details: details.map(d => this.formatOrderDetail(d))
-    };
+    const formatted = this.formatOrder(order);
+    formatted.details = details.map(d => this.formatOrderDetail(d));
+
+    // Enrich single order names if token is available
+    if (jwtToken) {
+      await this.enrichOrdersWithProfiles([formatted], jwtToken);
+    }
+
+    return formatted;
   }
 
   async createDraftOrder(storeId, data, userId, jwtToken) {
