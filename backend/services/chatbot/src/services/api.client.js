@@ -97,6 +97,11 @@ class ApiClient {
         return this._fetch(url);
     }
 
+    async getStoreMapData(storeId) {
+        const url = `${SERVICE_URLS.inventory}/api/warehouse/store-map-data`;
+        return this._fetch(url);
+    }
+
     // ── Order Service ─────────────────────────────
     async getOrderById(orderId) {
         const url = `${SERVICE_URLS.order}/api/orders/${orderId}`;

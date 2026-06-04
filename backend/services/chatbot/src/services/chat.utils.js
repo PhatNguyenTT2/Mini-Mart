@@ -34,13 +34,39 @@ class ChatUtils {
     if (this.ragService?.embeddingClient?.isReady) {
       try {
         const queryVector = await this.ragService.embeddingClient.embed(keyword);
-        const ragResults = await this.ragService.knowledgeRepo.searchSemantic(
-          queryVector, storeId, limit
-        );
+        const [ragResults, ftsResults] = await Promise.all([
+          this.ragService.knowledgeRepo.searchSemantic(queryVector, storeId, limit),
+          this.ragService.knowledgeRepo.searchKeyword(keyword, storeId, limit)
+        ]);
 
-        const relevant = ragResults.filter(r => r.score >= 0.7);
+        // ── FTS-Boosted Ranking ──
+        // Products matching keyword FTS get a score bonus to rise above semantic noise
+        const FTS_BOOST = 0.15;
+        const ftsIds = new Set(ftsResults.map(r => r.product_id));
+        const ftsCategory = ftsResults[0]?.category_name || null;
+
+        const boosted = ragResults.map(r => ({
+          ...r,
+          score: ftsIds.has(r.product_id) ? r.score + FTS_BOOST : r.score,
+          _ftsMatch: ftsIds.has(r.product_id)
+        }));
+
+        // ── Category Denoising ──
+        // If FTS identified a primary category, filter out semantic noise from unrelated categories
+        let denoised = boosted;
+        if (ftsCategory && ftsResults.length > 0) {
+          const ftsMatched = boosted.filter(r => r._ftsMatch);
+          const sameCat = boosted.filter(r => !r._ftsMatch && r.category_name === ftsCategory && r.score >= 0.7);
+          denoised = [...ftsMatched, ...sameCat];
+          if (denoised.length === 0) denoised = boosted; // fallback if filter too aggressive
+        }
+
+        // Sort by boosted score descending, apply minimum threshold
+        denoised.sort((a, b) => b.score - a.score);
+        const relevant = denoised.filter(r => r.score >= 0.65);
+
         if (relevant.length > 0) {
-          logger.info({ keyword, source: 'rag', count: relevant.length, topScore: relevant[0].score }, 'RAG entity resolution hit');
+          logger.info({ keyword, source: 'rag', count: relevant.length, topScore: relevant[0].score, ftsBoost: ftsIds.size > 0 }, 'RAG entity resolution hit');
           return {
             source: 'rag',
             products: relevant.map(r => ({
@@ -50,11 +76,12 @@ class ChatUtils {
               categoryName: r.category_name,
               quantityOnShelf: r.quantity_on_shelf,
               image: null,
-              _ragScore: r.score
+              _ragScore: r.score,
+              _ftsMatch: !!r._ftsMatch
             }))
           };
         }
-        logger.debug({ keyword, topScore: ragResults[0]?.score || 0 }, 'RAG entity resolution miss — below threshold');
+        logger.debug({ keyword, topScore: ragResults[0]?.score || 0, ftsCount: ftsResults.length }, 'RAG entity resolution hybrid check fail');
       } catch (err) {
         logger.warn({ err, keyword }, 'RAG entity resolution failed — falling back to catalog');
       }
@@ -78,25 +105,63 @@ class ChatUtils {
   // ── Text Extraction ───────────────────────────
 
   extractQuantityAndProduct(message) {
-    const triggerWords = ['thêm vào giỏ hàng', 'thêm vào giỏ', 'bỏ vào giỏ', 'cho vào giỏ', 'giỏ hàng', 'mua', 'lấy', 'thêm', 'xóa khỏi giỏ hàng', 'xóa khỏi giỏ', 'bỏ khỏi giỏ', 'loại bỏ khỏi giỏ', 'xóa', 'bỏ', 'tăng số lượng', 'giảm số lượng', 'thay đổi số lượng', 'cập nhật', 'sửa'];
-    const stopWords = ['vào', 'cho', 'khỏi', 'ra', 'xuống', 'lên', 'thành', 'số lượng', 'của', 'tôi', 'hộ', 'giúp', 'cái', 'chai', 'lon', 'hộp', 'gói', 'bịch', 'tuýp', 'chiếc', 'bao', 'kg', 'g'];
-
     let cleaned = message.toLowerCase();
-    for (const word of triggerWords) {
-      cleaned = cleaned.replace(word, '');
+
+    // ── Step 1: Strip trigger-verb phrases (longest match first) ──
+    const triggerPhrases = [
+      /(?:thêm|bỏ|cho|đưa|để)\s+(?:vào\s+)?(?:giỏ\s*(?:hàng)?|đơn\s*(?:hàng)?)/gi,
+      /(?:xóa|loại\s*bỏ|bỏ)\s+(?:ra\s+)?(?:khỏi\s+)?(?:giỏ\s*(?:hàng)?)/gi,
+      /(?:tăng|giảm|thay\s*đổi|cập\s*nhật|sửa)\s+(?:số\s*lượng)?/gi,
+    ];
+    for (const re of triggerPhrases) {
+      cleaned = cleaned.replace(re, ' ');
     }
 
-    const qtyMatch = cleaned.match(/\b(\d+)\b/);
+    // ── Step 1.5: Strip standalone destination phrases ──
+    // Handles "thêm 3 nabati VÀO GIỎ" where product words separate verb from destination
+    // NOTE: Use (?:\s|$) instead of \b because JS \b doesn't work with Vietnamese Unicode chars
+    const destinationPhrases = [
+      /(?:vào|ra\s+khỏi|khỏi)\s+(?:giỏ\s*(?:hàng)?|đơn\s*(?:hàng)?|pos)(?:\s|$)/gi,
+      /(?:giỏ\s*hàng|đơn\s*hàng)(?:\s|$)/gi,  // standalone "giỏ hàng" / "đơn hàng"
+      /(?:\s)giỏ(?:\s|$)/gi,                    // isolated "giỏ" (= cart, not product)
+    ];
+    for (const re of destinationPhrases) {
+      cleaned = cleaned.replace(re, ' ');
+    }
+
+    // ── Step 2: Strip remaining isolated trigger verbs ──
+    const triggerVerbs = ['mua', 'lấy', 'thêm', 'bán', 'xóa', 'bỏ'];
+    for (const verb of triggerVerbs) {
+      cleaned = cleaned.replace(new RegExp(`^${verb}\\b|\\b${verb}$`, 'g'), ' ');
+    }
+
+    // ── Step 3: Extract quantity with packaging units if adjacent ──
+    const UNIT_WORDS = 'cái|chiếc|chai|lon|hộp|gói|bịch|tuýp|bao|kg|g|thùng|lốc|khay|túi|kiện';
+    const qtyUnitRe = new RegExp(`\\b(\\d+)\\s*(?:${UNIT_WORDS})\\b`, 'gi');
+    const qtyUnitMatch = cleaned.match(qtyUnitRe);
+
     let quantity = 1;
-    if (qtyMatch) {
-      quantity = parseInt(qtyMatch[1], 10);
-      cleaned = cleaned.replace(qtyMatch[0], '');
+    if (qtyUnitMatch) {
+      const numMatch = qtyUnitMatch[0].match(/\d+/);
+      quantity = parseInt(numMatch[0], 10);
+      cleaned = cleaned.replace(qtyUnitRe, ' ');
+    } else {
+      const bareQty = cleaned.match(/\b(\d+)\b/);
+      if (bareQty) {
+        quantity = parseInt(bareQty[1], 10);
+        cleaned = cleaned.replace(bareQty[0], ' ');
+      }
     }
 
-    for (const stop of stopWords) {
-      cleaned = cleaned.replace(new RegExp(`\\b${stop}\\b`, 'g'), '');
+    // ── Step 4: Strip safe stopwords ──
+    const safeStops = ['vào', 'cho', 'khỏi', 'ra', 'xuống', 'lên', 'thành',
+      'số lượng', 'của', 'tôi', 'hộ', 'giúp', 'với', 'ơi', 'nhé', 'nha', 'ạ',
+      'dùm', 'giùm', 'đi', 'đây', 'kia'];
+    for (const stop of safeStops) {
+      cleaned = cleaned.replace(new RegExp(`\\b${stop}\\b`, 'g'), ' ');
     }
 
+    // ── Step 5: Clean up ──
     const productKeyword = cleaned.replace(/[?.!,]/g, '').replace(/\s+/g, ' ').trim();
     return { quantity, productKeyword };
   }

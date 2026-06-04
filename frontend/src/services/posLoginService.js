@@ -1,4 +1,5 @@
 import posApi from './posApi';
+import chatSocketService from './chatSocketService';
 
 const POS_TOKEN_KEY = 'posToken';
 const POS_EMPLOYEE_KEY = 'posEmployee';
@@ -150,6 +151,26 @@ const posLoginService = {
   },
 
   clearSession() {
+    try {
+      chatSocketService.disconnect();
+
+      const token = localStorage.getItem(POS_TOKEN_KEY);
+      if (token) {
+        try {
+          const payload = JSON.parse(atob(token.split('.')[1]));
+          const uid = payload.id || payload.userId;
+          if (uid) {
+            localStorage.removeItem(`posmart_chat_session_${uid}`);
+          }
+        } catch (e) {
+          console.warn('Failed to parse POS token on logout cleanup', e);
+        }
+      }
+      localStorage.removeItem('posmart_chat_session');
+    } catch (err) {
+      console.error('POS Chat connection cleanup error:', err);
+    }
+
     localStorage.removeItem(POS_TOKEN_KEY);
     localStorage.removeItem(POS_EMPLOYEE_KEY);
   },

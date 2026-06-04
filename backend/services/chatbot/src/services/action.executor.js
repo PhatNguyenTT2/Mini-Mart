@@ -177,6 +177,18 @@ class ActionExecutor {
       }
 
       switch (actionType) {
+        case ACTION_TYPES.POS_ADD_ITEM: {
+          const storeId = session.storeId || session.store_id || 1;
+          const stockRes = await withTimeout(this.apiClient.getInventorySummary(storeId, payload.productId));
+          const summary = stockRes?.success && stockRes?.data?.[0];
+          const onShelf = summary ? (summary.quantityOnShelf || summary.quantity_on_shelf || 0) : 0;
+          if (onShelf < payload.quantity) {
+            apiResult = { success: false, error: `Sản phẩm "${payload.name}" chỉ còn ${onShelf} trên kệ (yêu cầu ${payload.quantity}).` };
+          } else {
+            apiResult = { success: true, data: { actionExecuted: 'client_delegated', quantityOnShelf: onShelf } };
+          }
+          break;
+        }
         case ACTION_TYPES.CANCEL_ORDER:
           apiResult = await withTimeout(this.apiClient.cancelOrder(payload.orderId));
           break;

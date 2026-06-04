@@ -13,6 +13,8 @@ const { verifyToken } = require('../../../shared/auth-middleware');
 function createApp({ authService, customerService, employeeService, rbacService, storeService, posAuthService }) {
   const app = express();
 
+  app.set('trust proxy', 1);
+
   app.use(helmet());
   const allowedOrigins = (process.env.CORS_ORIGINS || 'http://localhost:5173').split(',').map(o => o.trim());
   app.use(cors({ origin: allowedOrigins, credentials: true }));

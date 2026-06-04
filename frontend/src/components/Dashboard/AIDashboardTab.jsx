@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { RefreshCw, Zap, AlertCircle, Timer, TimerOff } from 'lucide-react';
+import { RefreshCw, Zap, AlertCircle, Timer, TimerOff, RotateCcw } from 'lucide-react';
 import api from '../../services/api';
 import { ConversionFunnel } from './widgets/ConversionFunnel';
 import { WeightEvolutionChart } from './widgets/WeightEvolutionChart';
@@ -19,6 +19,9 @@ export const AIDashboardTab = () => {
   const [error, setError] = useState(null);
   const [forceLoading, setForceLoading] = useState(false);
   const [forceResult, setForceResult] = useState(null);
+  const [resetLoading, setResetLoading] = useState(false);
+  const [showResetConfirm, setShowResetConfirm] = useState(false);
+  const [resetResult, setResetResult] = useState(null);
   const [autoRefresh, setAutoRefresh] = useState(false);
   const [countdown, setCountdown] = useState(0);
   const [selectedSource, setSelectedSource] = useState('all');
@@ -168,6 +171,23 @@ export const AIDashboardTab = () => {
     }
   };
 
+  const handleResetDemo = async () => {
+    setResetLoading(true);
+    setResetResult(null);
+    try {
+      const res = await api.post('/chatbot/admin/reset-demo', { storeId: STORE_ID });
+      setResetResult(res.data?.data || null);
+      setForceResult(null); // Clear force learn result to avoid visual clutter
+      setError(null);       // Clear global tab error
+      setShowResetConfirm(false);
+      await fetchAll();
+    } catch (err) {
+      setResetResult({ error: err.response?.data?.error?.message || err.message });
+    } finally {
+      setResetLoading(false);
+    }
+  };
+
 
   const handleRunBatch = async () => {
     const res = await api.post('/chatbot/admin/run-batch', { storeId: STORE_ID });
@@ -262,6 +282,14 @@ export const AIDashboardTab = () => {
               <Zap size={14} className={forceLoading ? 'animate-pulse' : ''} />
               {forceLoading ? 'Learning...' : 'Force AI Learn'}
             </button>
+            <button
+              onClick={() => setShowResetConfirm(true)}
+              disabled={resetLoading}
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-white bg-red-600 hover:bg-red-700 rounded-lg transition-colors disabled:opacity-50 shadow-sm"
+            >
+              <RotateCcw size={14} className={resetLoading ? 'animate-spin' : ''} />
+              {resetLoading ? 'Resetting...' : 'Reset Demo'}
+            </button>
           </div>
         </div>
 
@@ -282,6 +310,19 @@ export const AIDashboardTab = () => {
                 → α={forceResult.newWeights.alpha} β={forceResult.newWeights.beta} γ={forceResult.newWeights.gamma}
               </span>
             )}
+          </div>
+        )}
+
+        {/* Reset Demo Result */}
+        {resetResult && (
+          <div className={`mt-3 px-3 py-2 rounded-lg text-xs ${resetResult.error
+            ? 'bg-red-50 text-red-700 border border-red-200'
+            : 'bg-emerald-50 text-emerald-700 border border-emerald-200'
+            }`}>
+            {resetResult.error
+              ? `❌ Error resetting: ${resetResult.error}`
+              : resetResult.message
+            }
           </div>
         )}
       </div>
@@ -323,6 +364,52 @@ export const AIDashboardTab = () => {
           </div>
         </div>
       </div>
+
+      {/* Premium Confirmation Modal overlay for reset */}
+      {showResetConfirm && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/60 backdrop-blur-sm transition-all duration-300">
+          <div className="bg-white rounded-xl shadow-xl border border-gray-100 max-w-md w-full mx-4 p-6 transform transition-all scale-100 animate-in fade-in zoom-in-95 duration-200">
+            <div className="flex items-start gap-3">
+              <div className="p-2 bg-red-50 text-red-600 rounded-lg shrink-0">
+                <RotateCcw size={24} className="animate-pulse" />
+              </div>
+              <div>
+                <h3 className="text-base font-semibold text-gray-900">Reset Demo Environment?</h3>
+                <p className="text-xs text-gray-500 mt-2 leading-relaxed">
+                  This action is **destructive**. It will delete all accumulated recommendation feedback interactions, reset AI weights to default parameters (α=0.40, β=0.25, γ=0.25, δ=0.10) and wipe out the weight training history log.
+                </p>
+                <div className="p-3 bg-gray-50 rounded-lg mt-3 text-[11px] text-gray-600 border border-gray-100">
+                  <div className="flex justify-between font-mono">
+                    <span>Feedback:</span> <span className="font-bold text-red-600">DELETE ALL</span>
+                  </div>
+                  <div className="flex justify-between font-mono mt-1">
+                    <span>Weights:</span> <span className="font-bold">α=0.40 β=0.25 γ=0.25 δ=0.10</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div className="flex items-center justify-end gap-3 mt-6">
+              <button
+                type="button"
+                onClick={() => setShowResetConfirm(false)}
+                disabled={resetLoading}
+                className="px-4 py-2 border border-gray-300 rounded-lg text-xs font-semibold text-gray-700 hover:bg-gray-50 transition-colors disabled:opacity-50"
+              >
+                Cancel
+              </button>
+              <button
+                type="button"
+                onClick={handleResetDemo}
+                disabled={resetLoading}
+                className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg text-xs font-semibold shadow-sm transition-all hover:shadow disabled:opacity-50 flex items-center gap-1.5"
+              >
+                {resetLoading ? 'Resetting...' : 'Confirm Reset'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

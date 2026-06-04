@@ -1,4 +1,5 @@
 import api from './api';
+import chatSocketService from './chatSocketService';
 
 const TOKEN_KEY = 'customerToken';
 const USER_KEY = 'customerUser';
@@ -42,14 +43,25 @@ const authService = {
     return res.data.data || res.data;
   },
 
-  /**
-   * Logout — POST /api/auth/logout
-   */
   async logout() {
     try {
       await api.post('/auth/logout');
     } catch {
       // Ignore errors — clear local state regardless
+    }
+    try {
+      chatSocketService.disconnect();
+      const token = localStorage.getItem(TOKEN_KEY);
+      if (token) {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        const uid = payload.id || payload.userId;
+        if (uid) {
+          localStorage.removeItem(`customer_chat_session_${uid}`);
+        }
+      }
+      localStorage.removeItem('customer_chat_session');
+    } catch (e) {
+      console.warn('Failed to parse customer token during logout cleanup', e);
     }
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(USER_KEY);

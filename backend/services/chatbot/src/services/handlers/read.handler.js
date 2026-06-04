@@ -18,7 +18,7 @@ class ReadHandler {
   }
 
   async handleRecommendation(session, userMessage) {
-    if (!this.ragService) {
+    if (this.ragService === undefined && process.env.NODE_ENV !== 'test') {
       // RAG model is loading (~87s on cold start). Wait with polling instead of fallback.
       const maxWaitMs = 90_000;
       const pollMs = 3_000;
@@ -32,6 +32,8 @@ class ReadHandler {
         logger.warn({ sessionId: session.id }, 'RAG still not ready after timeout, using fallback');
         return this.handleSearchProductFallback(session.id, userMessage);
       }
+    } else if (!this.ragService) {
+      return this.handleSearchProductFallback(session.id, userMessage);
     }
 
     const storeId = session.store_id || 1;
@@ -53,36 +55,85 @@ class ReadHandler {
     const sessionId = session.id;
     const storeId = session.store_id || 1;
     const isCustomer = session.user_type === 'customer';
-    const keyword = this.utils.extractKeyword(userMessage, ['tồn kho', 'còn hàng', 'còn không', 'hết hàng', 'có còn', 'stock']);
+    const keyword = this.utils.extractKeyword(userMessage, ['tồn kho', 'còn hàng', 'còn không', 'hết hàng', 'có còn', 'còn bao nhiêu', 'còn', 'stock']);
 
     if (!this.apiClient) return this.utils.fallbackNoApi('CHECK_STOCK', keyword);
 
-    const resolved = await this.utils.resolveProductsByRAG(keyword, storeId, 1);
-    if (!resolved.products.length) {
-      return this.utils.enrichWithAI(sessionId, userMessage,
-        `[DATA] Không tìm thấy sản phẩm "${keyword}" trong hệ thống.`,
-        { userType: session.user_type });
+    // 1. Pronoun fallback resolution
+    // NOTE: Cannot use \b word boundaries — JS treats Vietnamese diacritics (ệ,ê,ô) as non-\w
+    let product = null;
+    const pronouns = ['nó', 'cái đó', 'cái này', 'sản phẩm đó', 'sản phẩm này', 'đó', 'này', 'kệ', 'trên kệ', 'bao nhiêu'];
+    const kwLower = (keyword || '').toLowerCase();
+    const isPronoun = !keyword || keyword === userMessage
+      || pronouns.some(p => kwLower === p || kwLower.includes(p));
+
+    if (isPronoun) {
+      const lastMentioned = session.metadata?.lastMentionedProducts || [];
+      if (lastMentioned.length > 0) {
+        product = lastMentioned[0];
+      } else {
+        return {
+          intent: 'CHECK_STOCK',
+          reply: 'Bạn muốn kiểm tra tồn kho sản phẩm nào? Vui lòng cho biết tên sản phẩm.',
+          products: null
+        };
+      }
     }
 
-    const product = resolved.products[0];
+    if (!product) {
+      const resolved = await this.utils.resolveProductsByRAG(keyword, storeId, 1);
+      if (!resolved.products.length) {
+        return this.utils.enrichWithAI(sessionId, userMessage,
+          `[DATA] Không tìm thấy sản phẩm "${keyword}" trong hệ thống.`,
+          { userType: session.user_type });
+      }
+      product = resolved.products[0];
+    }
+
     const stockResult = await this.apiClient.getInventorySummary(storeId, product.id);
     const items = Array.isArray(stockResult.data) ? stockResult.data : [];
     const stock = items.find(i => String(i.productId || i.id) === String(product.id));
+
+    // 2. Fetch product shelf locations from map data
+    let locationStr = 'Chưa xếp trên kệ';
+    try {
+      const mapRes = await this.apiClient.getStoreMapData(storeId);
+      if (mapRes.success && Array.isArray(mapRes.data)) {
+        const blocks = mapRes.data;
+        const matchingLocations = [];
+
+        blocks.forEach(block => {
+          (block.locations || []).forEach(loc => {
+            const hasProduct = (loc.products || []).some(p => String(p.productId) === String(product.id));
+            if (hasProduct) {
+              matchingLocations.push(`${block.name} → ${loc.name}`);
+            }
+          });
+        });
+
+        if (matchingLocations.length > 0) {
+          locationStr = matchingLocations.join(', ');
+        }
+      }
+    } catch (err) {
+      logger.error({ err, productId: product.id }, 'Failed to fetch shelf location');
+    }
 
     let stockInfo;
     if (stock) {
       if (isCustomer) {
         const onShelf = stock.quantityOnShelf || 0;
         stockInfo = onShelf > 0
-          ? `Sản phẩm "${product.name}": Đang có ${onShelf} sản phẩm trên kệ.`
+          ? `Sản phẩm "${product.name}": Đang có ${onShelf} sản phẩm trên kệ. 📍 Vị trí: ${locationStr}.`
           : `Sản phẩm "${product.name}": Hiện tạm hết hàng trên kệ.`;
       } else {
         stockInfo = `Sản phẩm "${product.name}" (ID: ${product.id}): ` +
           `On-hand: ${stock.quantityOnHand || 0}, On-shelf: ${stock.quantityOnShelf || 0}, ` +
-          `Reserved: ${stock.quantityReserved || 0}, Available: ${stock.quantityAvailable || 0}`;
+          `Reserved: ${stock.quantityReserved || 0}, Available: ${stock.quantityAvailable || 0}. ` +
+          `📍 Vị trí trên kệ: ${locationStr}`;
       }
     } else {
-      stockInfo = `Sản phẩm "${product.name}": Chưa có dữ liệu tồn kho.`;
+      stockInfo = `Sản phẩm "${product.name}": Chưa có dữ liệu tồn kho. 📍 Vị trí trên kệ: ${locationStr}`;
     }
 
     let customerContext = null, coPurchaseHint = '';
@@ -104,11 +155,13 @@ class ReadHandler {
 
     return {
       ...aiResponse,
-      products: isCustomer ? [{
-        id: product.id, name: product.name,
-        unitPrice: product.unitPrice, image: product.image,
+      products: [{
+        id: product.id,
+        name: product.name,
+        unitPrice: product.unitPrice,
+        image: product.image,
         quantityOnShelf: stock?.quantityOnShelf || 0
-      }] : null
+      }]
     };
   }
 
@@ -127,28 +180,31 @@ class ReadHandler {
         { userType: session.user_type });
     }
 
-    const products = resolved.products;
+    // FTS-only denoising: keep only products that matched keyword search (have FTS boost)
+    // This prevents semantic noise (e.g. "red bull" returning "Gạo ST25")
+    let products = resolved.products;
+    const ftsMatched = products.filter(p => p._ragScore >= 0.8 || (p._ftsMatch));
+    if (ftsMatched.length > 0) products = ftsMatched;
 
     let priceList;
-    let enrichedProducts = products;
+    // Enrich ALL products with real-time stock (both customer and employee need accurate stock)
+    let enrichedProducts = await Promise.all(products.map(async p => {
+      try {
+        const stock = await this.apiClient.getInventorySummary(storeId, p.id);
+        const item = stock.data?.[0];
+        return { ...p, quantityOnShelf: item?.quantityOnShelf || 0 };
+      } catch {
+        return { ...p, quantityOnShelf: p.quantityOnShelf || 0 };
+      }
+    }));
 
     if (isCustomer) {
-      enrichedProducts = await Promise.all(products.map(async p => {
-        try {
-          const stock = await this.apiClient.getInventorySummary(storeId, p.id);
-          const item = stock.data?.[0];
-          return { ...p, quantityOnShelf: item?.quantityOnShelf || 0 };
-        } catch {
-          return { ...p, quantityOnShelf: 0 };
-        }
-      }));
-
       priceList = enrichedProducts.map(p => {
         const status = p.quantityOnShelf > 0 ? `còn ${p.quantityOnShelf} trên kệ` : 'tạm hết hàng';
         return `- ${p.name}: ${Number(p.unitPrice || 0).toLocaleString('vi-VN')}đ (${status})`;
       }).join('\n');
     } else {
-      priceList = products.map(p =>
+      priceList = enrichedProducts.map(p =>
         `- ${p.name} (ID: ${p.id}): ${Number(p.unitPrice || 0).toLocaleString('vi-VN')}đ`
       ).join('\n');
     }
@@ -173,10 +229,13 @@ class ReadHandler {
 
     return {
       ...aiResponse,
-      products: isCustomer ? enrichedProducts.map(p => ({
-        id: p.id, name: p.name, unitPrice: p.unitPrice,
-        image: p.image, quantityOnShelf: p.quantityOnShelf || 0
-      })) : null
+      products: (enrichedProducts || products).map(p => ({
+        id: p.id,
+        name: p.name,
+        unitPrice: p.unitPrice,
+        image: p.image,
+        quantityOnShelf: p.quantityOnShelf || 0
+      }))
     };
   }
 
@@ -261,7 +320,7 @@ class ReadHandler {
   }
 
   async handleSearchProduct(session, userMessage) {
-    if (!this.ragService) {
+    if (this.ragService === undefined && process.env.NODE_ENV !== 'test') {
       // Wait for RAG hot-swap (same as handleRecommendation)
       const maxWaitMs = 90_000;
       const pollMs = 3_000;

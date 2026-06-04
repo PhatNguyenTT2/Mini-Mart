@@ -25,7 +25,7 @@ class CartHandler {
     let productCandidates = [];
     let isAmbiguous = false;
 
-    const isPronoun = !productKeyword || /\b(nó|cái đó|cái này|sản phẩm đó|sản phẩm này|đó|này)\b/.test(productKeyword);
+    const isPronoun = !productKeyword || ['nó', 'cái đó', 'cái này', 'sản phẩm đó', 'sản phẩm này', 'đó', 'này'].some(p => (productKeyword || '').toLowerCase().includes(p));
 
     if (isPronoun) {
       const lastMentioned = metadata.lastMentionedProducts || [];
@@ -147,7 +147,7 @@ class CartHandler {
     const { productKeyword } = this.utils.extractQuantityAndProduct(userMessage);
 
     let productCandidates = [];
-    const isPronoun = !productKeyword || /\b(nó|cái đó|cái này|sản phẩm đó|sản phẩm này|đó|này)\b/.test(productKeyword);
+    const isPronoun = !productKeyword || ['nó', 'cái đó', 'cái này', 'sản phẩm đó', 'sản phẩm này', 'đó', 'này'].some(p => (productKeyword || '').toLowerCase().includes(p));
     const metadata = session.metadata || {};
 
     if (isPronoun) {
@@ -206,7 +206,7 @@ class CartHandler {
     const { quantity, productKeyword } = this.utils.extractQuantityAndProduct(userMessage);
 
     let productCandidates = [];
-    const isPronoun = !productKeyword || /\b(nó|cái đó|cái này|sản phẩm đó|sản phẩm này|đó|này)\b/.test(productKeyword);
+    const isPronoun = !productKeyword || ['nó', 'cái đó', 'cái này', 'sản phẩm đó', 'sản phẩm này', 'đó', 'này'].some(p => (productKeyword || '').toLowerCase().includes(p));
     const metadata = session.metadata || {};
 
     if (isPronoun) {

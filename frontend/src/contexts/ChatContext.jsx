@@ -3,7 +3,7 @@ import chatSocketService from '../services/chatSocketService'
 
 const ChatContext = createContext(null)
 
-const STORAGE_KEY = 'posmart_chat_session'
+const STORAGE_KEY_PREFIX = 'posmart_chat_session'
 
 export const ChatProvider = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false)
@@ -17,12 +17,29 @@ export const ChatProvider = ({ children }) => {
   const [error, setError] = useState(null)
   const initializedRef = useRef(false)
 
+  // Derived user-scoped storage key helper
+  const getUserId = useCallback(() => {
+    try {
+      const token = localStorage.getItem('adminToken') || localStorage.getItem('posToken')
+      if (!token) return null
+      const payload = JSON.parse(atob(token.split('.')[1]))
+      return payload.id || payload.userId || null
+    } catch {
+      return null
+    }
+  }, [])
+
+  const getStorageKey = useCallback(() => {
+    const uid = getUserId()
+    return uid ? `${STORAGE_KEY_PREFIX}_${uid}` : STORAGE_KEY_PREFIX
+  }, [getUserId])
+
   // Computed: can user send a message?
   const canSend = !isTyping && !streamingText && isConnected
 
   // ── Socket connection + event listeners ──
   useEffect(() => {
-    const token = localStorage.getItem('adminToken')
+    const token = localStorage.getItem('adminToken') || localStorage.getItem('posToken')
     if (!token) return
 
     const socket = chatSocketService.connect(token)
@@ -51,7 +68,7 @@ export const ChatProvider = ({ children }) => {
 
       // Edge Case A: write new sessionId if not restored
       if (!data.restored) {
-        localStorage.setItem(STORAGE_KEY, String(data.sessionId))
+        localStorage.setItem(getStorageKey(), String(data.sessionId))
       }
     })
 
@@ -72,6 +89,11 @@ export const ChatProvider = ({ children }) => {
       setIsTyping(false)
       setProducts(data.products || null)
       setSuggestedPrompts(data.suggestedPrompts || null)
+
+      // Dispatch chat action to global listeners (e.g. POS page)
+      if (data.action) {
+        window.dispatchEvent(new CustomEvent('posmart:chat_action', { detail: data.action }));
+      }
     })
 
     // Typing indicator
@@ -90,7 +112,7 @@ export const ChatProvider = ({ children }) => {
     const handleFirstConnect = () => {
       if (!initializedRef.current) {
         initializedRef.current = true
-        const savedSessionId = localStorage.getItem(STORAGE_KEY)
+        const savedSessionId = localStorage.getItem(getStorageKey())
         chatSocketService.joinSession(savedSessionId ? parseInt(savedSessionId) : null)
       }
     }
@@ -112,7 +134,7 @@ export const ChatProvider = ({ children }) => {
       unsubTyping()
       unsubError()
     }
-  }, [])
+  }, [getStorageKey])
 
   // ── Actions ──
   const toggleChat = useCallback(() => {
@@ -144,9 +166,9 @@ export const ChatProvider = ({ children }) => {
       setSessionId(null)
       setMessages([])
       setProducts(null)
-      localStorage.removeItem(STORAGE_KEY)
+      localStorage.removeItem(getStorageKey())
     }
-  }, [sessionId])
+  }, [sessionId, getStorageKey])
 
   const startNewSession = useCallback(() => {
     setMessages([])

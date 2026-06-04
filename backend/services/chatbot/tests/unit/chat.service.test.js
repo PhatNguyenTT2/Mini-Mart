@@ -378,7 +378,10 @@ describe('ChatService Unit Tests', () => {
                     isReady: true,
                     embed: jest.fn().mockResolvedValue(new Array(768).fill(0.1))
                 },
-                knowledgeRepo: { searchSemantic: jest.fn() }
+                knowledgeRepo: {
+                    searchSemantic: jest.fn(),
+                    searchKeyword: jest.fn().mockResolvedValue([])
+                }
             };
             chatService.utils.ragService = chatService.ragService;
             chatService.readHandler.ragService = chatService.ragService;
@@ -512,6 +515,10 @@ describe('ChatService Unit Tests', () => {
             chatService.ragService.knowledgeRepo.searchSemantic.mockResolvedValue([
                 { product_id: 4, content: 'Tên: "Sting dâu"', score: 0.92, unit_price: 10000 }
             ]);
+            mockApiClient.getInventorySummary.mockResolvedValue({
+                success: true,
+                data: [{ quantityOnShelf: 10 }]
+            });
 
             const result = await chatService.sendMessage(1, 'Thêm 2 Sting vào POS');
             expect(result.intent).toBe('POS_ADD_ITEM');

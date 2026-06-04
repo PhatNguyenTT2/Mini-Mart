@@ -68,7 +68,9 @@ function initChatSocket(io, chatService) {
                     // Try to restore existing session
                     const session = await chatService.getSession(sessionId).catch(() => null);
 
-                    if (session && session.is_active) {
+                    const isOwner = session && String(session.user_id) === String(userId);
+
+                    if (session && session.is_active && isOwner) {
                         const messages = await chatService.getSessionMessages(sessionId);
                         socket.join(`session:${sessionId}`);
                         logger.info({ userId, sessionId }, 'WS session restored');
@@ -79,8 +81,12 @@ function initChatSocket(io, chatService) {
                         return;
                     }
 
-                    // Session expired or purged — fallback to new
-                    logger.warn({ userId, sessionId }, 'Session expired or not found, creating new');
+                    if (session && !isOwner) {
+                        logger.warn({ userId, sessionId, sessionOwner: session.user_id }, 'Session owner mismatch - refusing restore');
+                    } else {
+                        // Session expired or purged — fallback to new
+                        logger.warn({ userId, sessionId }, 'Session expired or not found, creating new');
+                    }
                 }
 
                 // Create new session
@@ -130,6 +136,7 @@ function initChatSocket(io, chatService) {
                             products: chunk.products || null,
                             suggestedPrompts: chunk.suggestedPrompts || null,
                             metadata: chunk.metadata,
+                            action: chunk.action || null,
                             timestamp: new Date().toISOString()
                         };
 

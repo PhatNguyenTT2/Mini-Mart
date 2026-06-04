@@ -11,14 +11,14 @@ class ChatSocketService {
     this.connected = false
   }
 
-  /**
-   * Connect to chat WebSocket
-   * @param {string|null} token - JWT auth token (logged-in customer)
-   * @param {string|null} guestId - UUID for guest users
-   * @returns {import('socket.io-client').Socket}
-   */
   connect(token, guestId) {
-    if (this.socket?.connected) return this.socket
+    const authKey = token || guestId;
+    if (this.socket?.connected) {
+      if (this._lastAuthKey === authKey) return this.socket;
+      console.log('[CustomerChat] Identity changed, forcing reconnection');
+      this.disconnect();
+    }
+    this._lastAuthKey = authKey;
 
     const apiUrl = import.meta.env.VITE_API_URL
     let wsUrl = undefined

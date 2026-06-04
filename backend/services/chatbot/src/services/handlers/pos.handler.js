@@ -24,7 +24,7 @@ class PosHandler {
     let productCandidates = [];
     let isAmbiguous = false;
 
-    const isPronoun = !productKeyword || /\b(nó|cái đó|cái này|sản phẩm đó|sản phẩm này|đó|này)\b/.test(productKeyword);
+    const isPronoun = !productKeyword || ['nó', 'cái đó', 'cái này', 'sản phẩm đó', 'sản phẩm này', 'đó', 'này'].some(p => (productKeyword || '').toLowerCase().includes(p));
 
     if (isPronoun) {
       const lastMentioned = metadata.lastMentionedProducts || [];
@@ -51,7 +51,13 @@ class PosHandler {
           products: null
         };
       } else if (productCandidates.length > 1) {
-        isAmbiguous = true;
+        const topScore = productCandidates[0]._ragScore || 0;
+        const secondScore = productCandidates[1]._ragScore || 0;
+        if (topScore >= 0.75 && (topScore - secondScore) >= 0.1) {
+          isAmbiguous = false;
+        } else {
+          isAmbiguous = true;
+        }
       }
     }
 
@@ -86,7 +92,8 @@ class PosHandler {
       productId: product.id,
       quantity,
       name: product.name,
-      price: product.unitPrice || product.price || product.unit_price
+      price: product.unitPrice || product.price || product.unit_price,
+      isPerishable: product.isPerishable || product.is_perishable || false
     };
 
     const result = await this.actionExecutor.execute(session, 'POS_ADD_ITEM', actionPayload);
@@ -101,7 +108,10 @@ class PosHandler {
     return {
       intent: 'POS_ADD_ITEM',
       reply: `Đã thêm ${quantity} "${product.name}" vào POS thành công.`,
-      products: [product],
+      products: [{
+        ...product,
+        quantityOnShelf: result.data?.quantityOnShelf ?? product.quantityOnShelf
+      }],
       action: {
         type: 'POS_ADD_ITEM',
         payload: actionPayload

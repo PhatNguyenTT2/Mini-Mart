@@ -11,13 +11,13 @@ class ChatSocketService {
     this.connected = false
   }
 
-  /**
-   * Connect to chat WebSocket
-   * @param {string} token - JWT auth token
-   * @returns {import('socket.io-client').Socket}
-   */
   connect(token) {
-    if (this.socket?.connected) return this.socket
+    if (this.socket?.connected) {
+      if (this._lastToken === token) return this.socket
+      console.log('[ChatSocket] Token changed, forcing reconnection')
+      this.disconnect()
+    }
+    this._lastToken = token
 
     const apiUrl = import.meta.env.VITE_API_URL
     let wsUrl = undefined

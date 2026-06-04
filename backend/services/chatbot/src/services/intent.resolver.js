@@ -68,7 +68,7 @@ const INTENT_PATTERNS = {
 
     // ── READ INTENTS (Lower priority) ───────────
     CHECK_STOCK: {
-        keywords: ['tồn kho', 'còn hàng', 'còn không', 'hết hàng', 'có còn', 'stock', 'inventory', 'số lượng còn'],
+        keywords: ['tồn kho', 'còn hàng', 'còn không', 'hết hàng', 'có còn', 'còn bao nhiêu', 'trên kệ', '/còn.*kệ/', 'stock', 'inventory', 'số lượng còn'],
         description: 'Kiểm tra tồn kho sản phẩm'
     },
     CHECK_PRICE: {
@@ -135,20 +135,22 @@ function resolveIntent(message, userType = 'customer') {
             if (keyword.startsWith('/') && keyword.endsWith('/')) {
                 const regex = new RegExp(keyword.slice(1, -1), 'i');
                 if (regex.test(normalizedMsg)) {
+                    const finalIntent = (userType === 'employee' && intent === 'ADD_TO_CART') ? 'POS_ADD_ITEM' : intent;
                     return {
-                        intent,
+                        intent: finalIntent,
                         confidence: 'regex_match',
                         matchedKeyword: keyword,
-                        description: config.description,
+                        description: finalIntent === 'POS_ADD_ITEM' ? INTENT_PATTERNS.POS_ADD_ITEM.description : config.description,
                         writeAction: config.writeAction || false
                     };
                 }
             } else if (normalizedMsg.includes(keyword)) {
+                const finalIntent = (userType === 'employee' && intent === 'ADD_TO_CART') ? 'POS_ADD_ITEM' : intent;
                 return {
-                    intent,
+                    intent: finalIntent,
                     confidence: 'keyword_match',
                     matchedKeyword: keyword,
-                    description: config.description,
+                    description: finalIntent === 'POS_ADD_ITEM' ? INTENT_PATTERNS.POS_ADD_ITEM.description : config.description,
                     writeAction: config.writeAction || false
                 };
             }

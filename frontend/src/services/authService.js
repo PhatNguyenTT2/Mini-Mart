@@ -1,4 +1,5 @@
 import api from './api'
+import chatSocketService from './chatSocketService'
 
 const authService = {
   // Login
@@ -50,6 +51,23 @@ const authService = {
     } catch (error) {
       console.error('Logout error:', error)
     } finally {
+      // Disconnect socket and clean up chat session from localStorage
+      chatSocketService.disconnect()
+
+      const token = localStorage.getItem('adminToken')
+      if (token) {
+        try {
+          const payload = JSON.parse(atob(token.split('.')[1]))
+          const uid = payload.id || payload.userId
+          if (uid) {
+            localStorage.removeItem(`posmart_chat_session_${uid}`)
+          }
+        } catch (e) {
+          console.warn('Failed to parse token on logout cleanup', e)
+        }
+      }
+      localStorage.removeItem('posmart_chat_session')
+
       localStorage.removeItem('adminToken')
       localStorage.removeItem('adminUser')
     }

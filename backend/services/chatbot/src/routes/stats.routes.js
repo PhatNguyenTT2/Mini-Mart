@@ -489,5 +489,67 @@ module.exports = function statsRoutes({ pool, hybridService, nightlyBatch, weigh
         }
     });
 
+    /**
+     * POST /api/chatbot/admin/reset-demo
+     * Reset recommendation feedback and weights to baseline (Admin only)
+     */
+    router.post('/admin/reset-demo', async (req, res, next) => {
+        let client;
+        try {
+            const storeId = parseInt(req.body.storeId) || 1;
+            client = await pool.connect();
+            
+            await client.query('BEGIN');
+            
+            // 1. Clear recommendation feedback
+            const { rowCount: feedbackCleared } = await client.query(
+                'DELETE FROM recommendation_feedback WHERE store_id = $1',
+                [storeId]
+            );
+            
+            // 2. Reset weights of store_id to default values
+            await client.query(`
+                INSERT INTO ensemble_weights (store_id, alpha, beta, gamma, delta, updated_at)
+                VALUES ($1, 0.400, 0.250, 0.250, 0.100, NOW())
+                ON CONFLICT (store_id) 
+                DO UPDATE SET alpha = 0.400, beta = 0.250, gamma = 0.250, delta = 0.100, updated_at = NOW()
+            `, [storeId]);
+            
+            // 3. Reset weight history to baseline record only
+            await client.query('DELETE FROM ensemble_weights_history WHERE store_id = $1', [storeId]);
+            await client.query(`
+                INSERT INTO ensemble_weights_history (store_id, alpha, beta, gamma, delta, feedback_count, trigger_type, created_at)
+                VALUES ($1, 0.400, 0.250, 0.250, 0.100, 0, 'baseline', NOW())
+            `, [storeId]);
+            
+            await client.query('COMMIT');
+            
+            // 4. Refresh in-memory cache and weights directly
+            if (hybridService) {
+                await hybridService.warmUp(storeId);
+            }
+            
+            logger.info({ storeId, feedbackCleared }, 'Admin: Reset recommendation demo completed successfully');
+            
+            res.json({
+                success: true,
+                data: {
+                    feedbackCleared,
+                    weights: { alpha: 0.40, beta: 0.25, gamma: 0.25, delta: 0.10 },
+                    message: `Baseline reset completed successfully. Cleared ${feedbackCleared} feedback rows.`
+                }
+            });
+        } catch (err) {
+            if (client) {
+                await client.query('ROLLBACK');
+            }
+            next(err);
+        } finally {
+            if (client) {
+                client.release();
+            }
+        }
+    });
+
     return router;
 };

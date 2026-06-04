@@ -49,7 +49,7 @@ export function usePOSCart({ customerDiscounts, selectedCustomer, showToast }) {
 
   // ========== ADD TO CART (regular product) ==========
 
-  const addToCart = useCallback(async (product) => {
+  const addToCart = useCallback(async (product, initialQuantity = 1) => {
     const isFresh = product.isPerishable || product.category?.isPerishable || product.category?.is_perishable || false;
 
     if (isFresh) {
@@ -72,30 +72,34 @@ export function usePOSCart({ customerDiscounts, selectedCustomer, showToast }) {
       ? basePrice * (1 - discountPercentage / 100)
       : basePrice;
 
+    let success = true;
+
     setCart(prevCart => {
       const normalizedId = product._id || product.id;
       const existingItem = prevCart.find(item => item.id === normalizedId);
       const currentQuantityInCart = existingItem ? existingItem.quantity : 0;
+      const targetQuantity = currentQuantityInCart + initialQuantity;
 
-      if (currentQuantityInCart >= availableStock) {
+      if (targetQuantity > availableStock) {
         showToast('error', `Not enough stock. Available: ${availableStock}`);
+        success = false;
         return prevCart;
       }
 
       if (existingItem) {
-        showToast('success', `Updated ${product.name} quantity`);
+        showToast('success', `Updated ${product.name} quantity to ${targetQuantity}`);
         return prevCart.map(item =>
           item.id === normalizedId
-            ? { ...item, quantity: item.quantity + 1 }
+            ? { ...item, quantity: targetQuantity }
             : item
         );
       } else {
-        showToast('success', `Added ${product.name} to cart`);
+        showToast('success', `Added ${initialQuantity}x ${product.name} to cart`);
         return [...prevCart, {
           ...product,
           id: normalizedId,
           productId: normalizedId,
-          quantity: 1,
+          quantity: initialQuantity,
           basePrice,
           discountPercentage,
           price: finalPrice
@@ -103,13 +107,17 @@ export function usePOSCart({ customerDiscounts, selectedCustomer, showToast }) {
       }
     });
 
+    if (!success) {
+      return { needsBatchSelection: false, success: false };
+    }
+
     // Trigger highlight on the cart item
     const itemId = product._id || product.id;
     setLastAddedId(`${itemId}-${Date.now()}`);
     // Use a stable id for the DOM lookup
     setTimeout(() => setLastAddedId(itemId), 10);
 
-    return { needsBatchSelection: false };
+    return { needsBatchSelection: false, success: true };
   }, [showToast]);
 
   // ========== ADD WITH BATCH (fresh product) ==========

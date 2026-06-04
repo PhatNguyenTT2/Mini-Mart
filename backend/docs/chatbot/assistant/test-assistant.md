@@ -27,8 +27,8 @@ curl http://localhost:3008/health
 
 | Tài khoản | userType | Mục đích | Dùng cho ACT |
 |-----------|----------|----------|--------------|
-| Customer (userId=1) | `customer` | Mua sắm, giỏ hàng, theo dõi đơn | ACT 1, 2, 3 |
-| Employee (userId=100) | `employee` | POS, tạo đơn, kiểm tra thanh toán | ACT 4 |
+| Customer (web store login) | `customer` | Mua sắm, giỏ hàng, theo dõi đơn | ACT 1, 3 |
+| Employee POS (ID: 5, PIN: 123456) | `employee` | POS, tạo đơn, kiểm tra thanh toán | ACT 2, 4 |
 
 ### 1.3 Bố trí màn hình
 
@@ -41,46 +41,68 @@ curl http://localhost:3008/health
 
 ## 🎬 BƯỚC 2: TRÌNH DIỄN 5 LUỒNG CHÍNH
 
-### ACT 1: Tìm kiếm & Giỏ hàng — Customer Full Flow
+### ACT 1: Tìm kiếm & Giỏ hàng — Customer Nabati Flow
 
-> **Mục đích:** Chứng minh luồng hoàn chỉnh từ tìm kiếm → thêm giỏ → cập nhật → thanh toán.
+> **Mục đích:** Chứng minh luồng Customer hoàn chỉnh từ tìm kiếm → thêm giỏ → cập nhật → thanh toán.
+> **Context:** Đăng nhập Customer (web store), mở chatbot widget.
+> **Intent routing:** `userType = 'customer'` → `ADD_TO_CART` → `cart.handler.js`
 
 **📝 Kịch bản:**
 
-| Bước | Gõ vào chatbot | Kết quả mong đợi |
-|:---:|----------------|-------------------|
-| 1 | **"Giá coca bao nhiêu?"** | Intent: `CHECK_PRICE` → Hiện giá + product cards |
-| 2 | **"Còn bao nhiêu trên kệ?"** | Intent: `CHECK_STOCK` → Số lượng tồn kho |
-| 3 | **"Thêm 2 cái đó vào giỏ"** | Intent: `ADD_TO_CART` → Pronoun resolution → "Đã thêm 2 Coca vào giỏ hàng" |
-| 4 | **"Đổi số lượng thành 5"** | Intent: `UPDATE_CART_ITEM` → "Đã cập nhật số lượng thành 5" |
-| 5 | **"Xem giỏ hàng"** | Intent: `VIEW_CART` → Action `VIEW_CART` trả về FE |
-| 6 | **"Thanh toán"** | Intent: `CHECKOUT_GUIDE` → Action `NAVIGATE → /checkout` |
+| Bước | Gõ vào chatbot | Intent | Kết quả mong đợi |
+|:---:|----------------|--------|-------------------|
+| 1 | **"Giá nabati bao nhiêu?"** | `CHECK_PRICE` | Product card: Bánh xốp phô mai Nabati hộp 150g — 28,000đ |
+| 2 | **"Còn bao nhiêu trên kệ?"** | `CHECK_STOCK` | Pronoun resolve "nabati" → "Còn 298 trên kệ" |
+| 3 | **"Thêm 3 cái đó vào giỏ"** | `ADD_TO_CART` | Pronoun resolve → "Đã thêm 3 Nabati vào giỏ hàng" |
+| 4 | **"Đổi số lượng thành 5"** | `UPDATE_CART_ITEM` | "Đã cập nhật số lượng thành 5" |
+| 5 | **"Xem giỏ hàng"** | `VIEW_CART` | Action `VIEW_CART` → FE mở giỏ hàng |
+| 6 | **"Thanh toán"** | `CHECKOUT_GUIDE` | Action `NAVIGATE → /checkout` |
 
 **🎤 Thuyết minh (nói ở bước 3):**
 
-> *"Ở bước 3, người dùng nói 'cái đó' — hệ thống không biết 'cái đó' là gì. Nhưng nhờ Pronoun Resolution, chatbot nhớ sản phẩm vừa hỏi ở bước 1-2 (Coca) thông qua `lastMentionedProducts` lưu trong session metadata, tự động resolve 'cái đó' = Coca mà không cần hỏi lại."*
+> *"Ở bước 3, người dùng nói 'cái đó' — hệ thống không biết 'cái đó' là gì. Nhưng nhờ Pronoun Resolution, chatbot nhớ sản phẩm vừa hỏi ở bước 1-2 (Nabati) thông qua `lastMentionedProducts` lưu trong session metadata, tự động resolve 'cái đó' = Nabati mà không cần hỏi lại."*
 
-**✅ Checkpoint:** 6 bước xuyên suốt không lỗi, Pronoun Resolution hoạt động → Full cart flow chứng minh.
+**✅ Checkpoint:** 6 bước xuyên suốt không lỗi, Pronoun Resolution hoạt động → Customer full cart flow chứng minh.
 
 ---
 
-### ACT 2: Pronoun Ambiguity — Clarification State Machine
+### ACT 2: POS Employee — Check Price, Stock Shelf Location & Clarified Add to Cart
 
-> **Mục đích:** Chứng minh hệ thống xử lý mơ hồ khi có nhiều sản phẩm.
+> **Mục đích:** Chứng minh luồng POS Employee với:
+> - Pronoun Resolution trong việc kiểm tra giá và tồn kho kèm **📍 Vị trí trên kệ hàng (Store Shelf Map)**.
+> - Clarification State Machine khi gặp nhập nhằng nhiều sản phẩm.
+> - FTS-Boosted Auto-Add khi khớp chính xác.
+> - Tạo đơn hàng (CREATE_ORDER) kèm Confirmation Gate.
+> **Context:** Đăng nhập POS Terminal (Employee ID: 5, PIN: 123456), mở chatbot bằng F3.
+> **Intent routing:** `userType = 'employee'` → Rẽ nhánh các intent tương ứng.
 
 **📝 Kịch bản:**
 
-| Bước | Gõ vào chatbot | Kết quả mong đợi |
-|:---:|----------------|-------------------|
-| 1 | **"Giá pepsi và coca"** | Trả về 2+ product cards |
-| 2 | **"Thêm cái đó vào giỏ"** | ⚠️ Chatbot HỎI LẠI: "Bạn muốn thêm sản phẩm nào? [1] Coca, [2] Pepsi" |
-| 3 | **"1"** | Chatbot chọn Coca → "Đã thêm Coca vào giỏ hàng thành công" |
+| Bước | Gõ vào chatbot | Intent | Kết quả mong đợi |
+|:---:|----------------|--------|-------------------|
+| 1 | **"Giá nabati bao nhiêu?"** | `CHECK_PRICE` | Product card: Bánh xốp phô mai Nabati hộp 150g — 28,000đ |
+| 2 | **"Còn bao nhiêu trên kệ?"** | `CHECK_STOCK` | Pronoun resolve "nabati" từ bước 1 → Trả về chi tiết: `On-hand: 300, On-shelf: 298, ... 📍 Vị trí trên kệ: Kệ Bánh Kẹo → BK-03` |
+| 3 | **"Thêm 3 cái đó vào giỏ"** | `POS_ADD_ITEM` | Pronoun resolve "nabati" → Thêm trực tiếp 3 Nabati vào giỏ hàng POS |
+| 4 | **"Giá red bull và coca"** | `CHECK_PRICE` | 2 product cards: Red Bull lon 250ml — 12,000đ + Coca-Cola chai 390ml — 9,000đ |
+| 5 | **"Thêm cái đó vào giỏ"** | `POS_ADD_ITEM` | ⚠️ Chatbot HỎI LẠI: "Bạn muốn thêm SP nào? [1] Red Bull [2] Coca-Cola" |
+| 6 | **"1"** | (CLARIFYING) | Chọn Red Bull → "Đã thêm Red Bull vào POS" |
+| 7 | **"Thêm 2 coca"** | `POS_ADD_ITEM` | FTS exact match → Auto-add Coca x2 vào giỏ POS |
+| 8 | **"Tạo đơn"** | `CREATE_ORDER` | Recap: "Bạn có chắc chắn muốn lập hóa đơn cho các sản phẩm: [Nabati x3, Red Bull x1, Coca x2]?" |
+| 9 | **"Đồng ý"** | (CONFIRMING) | Đơn hàng tạo thành công → trả về ID hóa đơn mới |
 
 **🎤 Thuyết minh (nói ở bước 2):**
 
-> *"Khi có 2 sản phẩm trong `lastMentionedProducts`, hệ thống KHÔNG tự ý chọn sản phẩm đầu tiên. Thay vào đó, kích hoạt Clarification State Machine — lưu trạng thái CLARIFYING vào session metadata, hiển thị danh sách cho user chọn. Đây là giải pháp cho Gotcha B trong thiết kế."*
+> *"Ở bước 2, khi nhân viên hỏi 'Còn bao nhiêu trên kệ?', chatbot sử dụng Pronoun Resolution để nhận diện sản phẩm Nabati vừa hỏi ở bước 1. Đồng thời, hệ thống truy vấn dữ liệu từ Location Store Shelf Map của microservice Inventory để phản hồi chính xác tọa độ vị trí: `Kệ Bánh Kẹo → BK-03`."*
 
-**✅ Checkpoint:** Chatbot hỏi lại thay vì đoán → Clarification hoạt động.
+**🎤 Thuyết minh (nói ở bước 5-6):**
+
+> *"Khi có từ 2 sản phẩm trở lên được nhắc đến ở bước 4, câu lệnh mơ hồ 'Thêm cái đó vào giỏ' ở bước 5 kích hoạt Clarification State Machine. Trạng thái CLARIFYING được set để khóa luồng và bắt buộc nhân viên phải chọn 1 hoặc 2."*
+
+**🎤 Thuyết minh (nói ở bước 7):**
+
+> *"Nhưng ở bước 7, câu lệnh 'Thêm 2 coca' lại khớp chính xác từ khóa qua Full-Text Search. Điểm số tìm kiếm được cộng thêm 0.15 boost, vượt ngưỡng auto-add trực tiếp mà không cần hỏi lại."*
+
+**✅ Checkpoint:** Location Shelf Mapping + Pronoun Stock Check + Clarification Machine + CREATE_ORDER hoạt động → POS Employee full flow chứng minh.
 
 ---
 

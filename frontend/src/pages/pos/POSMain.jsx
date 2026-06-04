@@ -22,6 +22,8 @@ import { usePOSCart } from '../../hooks/usePOSCart';
 import { usePOSScanner } from '../../hooks/usePOSScanner';
 import { usePOSOrder } from '../../hooks/usePOSOrder';
 import { usePOSPayment } from '../../hooks/usePOSPayment';
+import { ChatWidget } from '../../components/ChatWidget/ChatWidget';
+import { useChat } from '../../contexts/ChatContext';
 
 export const POSMain = () => {
   // ========== SHARED STATE ==========
@@ -47,6 +49,8 @@ export const POSMain = () => {
   const {
     currentEmployee, currentTime, loading, setLoading, handleLogout
   } = usePOSAuth();
+
+  const { toggleChat } = useChat();
 
   const {
     cart, setCart, lastAddedId, addToCart, addProductWithBatch,
@@ -220,6 +224,7 @@ export const POSMain = () => {
         document.getElementById('pos-clear-cart-btn')?.click();
       }
       if (e.key === 'F2') { e.preventDefault(); setShowQRScanner(prev => !prev); }
+      if (e.key === 'F3') { e.preventDefault(); toggleChat(); }
       if (e.key === 'F4') { e.preventDefault(); setShowHeldOrdersModal(true); }
       if (e.key === 'F8') { e.preventDefault(); document.getElementById('pos-hold-order-btn')?.click(); }
       if (e.key === 'F9') { e.preventDefault(); document.getElementById('pos-checkout-btn')?.click(); }
@@ -235,7 +240,121 @@ export const POSMain = () => {
 
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [cart.length, handleLogout, showPaymentModal, showQRScanner, showHeldOrdersModal, showBatchModal, showInvoiceModal, setShowQRScanner, setShowHeldOrdersModal, setShowPaymentModal, setShowBatchModal, setShowInvoiceModal]);
+  }, [cart.length, handleLogout, showPaymentModal, showQRScanner, showHeldOrdersModal, showBatchModal, showInvoiceModal, setShowQRScanner, setShowHeldOrdersModal, setShowPaymentModal, setShowBatchModal, setShowInvoiceModal, toggleChat]);
+
+  // ========== CHATBOT ACTION DISPATCHER ==========
+
+  useEffect(() => {
+    const handleChatAction = async (e) => {
+      const action = e.detail;
+      if (!action || action.type !== 'POS_ADD_ITEM') return;
+
+      const { productId, quantity, name, isPerishable } = action.payload;
+
+      if (isPerishable) {
+        // 🧊 FRESH PRODUCT: Match scanner behavior and open POSBatchSelectModal
+        showToast('success', `${name} là hàng tươi — Mở danh sách lô hàng...`);
+
+        try {
+          const [productResponse, batchResponse] = await Promise.all([
+            posDataService.getProductById(productId),
+            posDataService.getProductBatches(productId)
+          ]);
+
+          if (!productResponse.success) {
+            showToast('error', `Không thể tải chi tiết sản phẩm ${name}`);
+            return;
+          }
+
+          const product = productResponse.data?.product;
+          const batches = batchResponse.data?.batches || batchResponse.data || [];
+
+          // Only batches available on shelf (qty > 0)
+          const availableBatches = batches.filter(batch => {
+            const qty = batch.totalOnShelf || batch.detailInventory?.quantityOnShelf || batch.quantityOnShelf || batch.quantity || 0;
+            return qty > 0;
+          });
+
+          if (availableBatches.length === 0) {
+            showToast('error', `${name} không có lô hàng nào khả dụng trên kệ!`);
+            return;
+          }
+
+          setSelectedProductData({ product, inventory: null, batches: availableBatches });
+          setShowBatchModal(true);
+        } catch (err) {
+          console.error('Error fetching fresh product batches:', err);
+          showToast('error', `Lỗi tải lô hàng: ${err.message}`);
+        }
+      } else {
+        // ✅ REGULAR PRODUCT: Add directly (Implicit FEFO)
+        showToast('success', `Đang thêm ${quantity}x ${name} vào giỏ...`);
+
+        try {
+          const [productResponse, batchResponse] = await Promise.all([
+            posDataService.getProductById(productId),
+            posDataService.getProductBatches(productId)
+          ]);
+
+          if (!productResponse.success) {
+            showToast('error', `Không thể tải chi tiết sản phẩm ${name}`);
+            return;
+          }
+
+          const product = productResponse.data?.product;
+          const batches = batchResponse.data?.batches || batchResponse.data || [];
+
+          // Aggregate total quantities across shelf
+          const inventory = batches.reduce((acc, b) => {
+            acc.quantityOnShelf += b.totalOnShelf || b.detailInventory?.quantityOnShelf || b.quantityOnShelf || 0;
+            acc.quantityAvailable += b.quantity || b.totalOnHand || 0;
+            return acc;
+          }, { quantityOnShelf: 0, quantityAvailable: 0 });
+
+          if (inventory.quantityOnShelf <= 0) {
+            showToast('error', `${name} hiện không còn hàng trên kệ!`);
+            return;
+          }
+
+          // CRITICAL: Override catalog product's isPerishable with chatbot payload value
+          // The chatbot already determined perishability; catalog category flag
+          // can falsely trigger batch selection modal for non-perishable products
+          const cartProduct = {
+            ...product,
+            id: productId,
+            price: product.unitPrice || 0,
+            stock: inventory.quantityAvailable,
+            inventory,
+            isPerishable: false // Non-perishable path — force direct add
+          };
+          // Also neutralize category perishable flags to prevent addToCart bail-out
+          if (cartProduct.category) {
+            cartProduct.category = { ...cartProduct.category, isPerishable: false, is_perishable: false };
+          }
+
+          // Add to cart directly, passing quantity directly to avoid React state batching race conditions
+          const result = await addToCart(cartProduct, quantity);
+
+          if (result && result.success === false) {
+            // Toast error already shown inside usePOSCart
+            return;
+          }
+
+          if (result && result.needsBatchSelection) {
+            // Should not happen since we forced isPerishable=false
+            console.warn('[POS Chatbot] Unexpected needsBatchSelection for non-perishable product:', name);
+            showToast('error', `Sản phẩm ${name} yêu cầu chọn lô hàng. Vui lòng thêm từ giao diện sản phẩm.`);
+          }
+        } catch (err) {
+          console.error('Error adding regular product via chatbot:', err);
+          showToast('error', `Lỗi thêm sản phẩm: ${err.message}`);
+        }
+      }
+    };
+
+    window.addEventListener('posmart:chat_action', handleChatAction);
+    return () => window.removeEventListener('posmart:chat_action', handleChatAction);
+  }, [addToCart, showToast, setSelectedProductData, setShowBatchModal]);
 
   // ========== CHECKOUT WRAPPER ==========
 
@@ -379,6 +498,9 @@ export const POSMain = () => {
         onPaymentComplete={handleVNPayComplete}
         onPaymentFailed={handleVNPayFailed}
       />
+
+      {/* Action-based Chatbot Assistant */}
+      <ChatWidget />
 
       {/* Toast Notification */}
       {toast && (

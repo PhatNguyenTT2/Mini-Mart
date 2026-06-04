@@ -3,7 +3,7 @@ import chatSocketService from '../services/chatSocketService'
 
 const ChatContext = createContext(null)
 
-const SESSION_KEY = 'customer_chat_session'
+const SESSION_KEY_PREFIX = 'customer_chat_session'
 const GUEST_ID_KEY = 'customer_guest_id'
 
 export const ChatProvider = ({ children }) => {
@@ -17,6 +17,23 @@ export const ChatProvider = ({ children }) => {
   const [suggestedPrompts, setSuggestedPrompts] = useState(null)
   const [error, setError] = useState(null)
   const initializedRef = useRef(false)
+
+  // Derived user-scoped storage key helper
+  const getUserId = useCallback(() => {
+    try {
+      const token = localStorage.getItem('customerToken')
+      if (!token) return null
+      const payload = JSON.parse(atob(token.split('.')[1]))
+      return payload.id || payload.userId || null
+    } catch {
+      return null
+    }
+  }, [])
+
+  const getSessionKey = useCallback(() => {
+    const uid = getUserId()
+    return uid ? `${SESSION_KEY_PREFIX}_${uid}` : SESSION_KEY_PREFIX
+  }, [getUserId])
 
   const canSend = !isTyping && !streamingText && isConnected
 
@@ -60,7 +77,7 @@ export const ChatProvider = ({ children }) => {
       setError(null)
 
       if (!data.restored) {
-        localStorage.setItem(SESSION_KEY, String(data.sessionId))
+        localStorage.setItem(getSessionKey(), String(data.sessionId))
       }
     })
 
@@ -95,7 +112,7 @@ export const ChatProvider = ({ children }) => {
     const handleFirstConnect = () => {
       if (!initializedRef.current) {
         initializedRef.current = true
-        const savedSessionId = localStorage.getItem(SESSION_KEY)
+        const savedSessionId = localStorage.getItem(getSessionKey())
         chatSocketService.joinSession(savedSessionId ? parseInt(savedSessionId) : null)
       }
     }
@@ -117,7 +134,7 @@ export const ChatProvider = ({ children }) => {
       unsubTyping()
       unsubError()
     }
-  }, [isOpen])
+  }, [isOpen, getSessionKey])
 
   // ── Actions ──
   const toggleChat = useCallback(() => {
@@ -148,9 +165,9 @@ export const ChatProvider = ({ children }) => {
       setSessionId(null)
       setMessages([])
       setProducts(null)
-      localStorage.removeItem(SESSION_KEY)
+      localStorage.removeItem(getSessionKey())
     }
-  }, [sessionId])
+  }, [sessionId, getSessionKey])
 
   const startNewSession = useCallback(() => {
     setMessages([])

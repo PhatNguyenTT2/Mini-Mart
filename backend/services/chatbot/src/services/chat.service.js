@@ -110,7 +110,9 @@ class ChatService {
                     metadata.lastMentionedProducts = resolvedAction.products.map(p => ({
                         id: p.id,
                         name: p.name,
-                        unitPrice: p.unitPrice || p.price || p.unit_price
+                        unitPrice: p.unitPrice || p.price || p.unit_price,
+                        quantityOnShelf: p.quantityOnShelf || 0,
+                        image: p.image || null
                     }));
                     await this.chatRepo.updateSessionMetadata(sessionId, metadata);
                 }
@@ -206,7 +208,9 @@ class ChatService {
             metadata.lastMentionedProducts = response.products.map(p => ({
                 id: p.id,
                 name: p.name,
-                unitPrice: p.unitPrice || p.price || p.unit_price
+                unitPrice: p.unitPrice || p.price || p.unit_price,
+                quantityOnShelf: p.quantityOnShelf || 0,
+                image: p.image || null
             }));
             await this.chatRepo.updateSessionMetadata(sessionId, metadata);
         }
@@ -362,7 +366,9 @@ class ChatService {
                     metadata.lastMentionedProducts = products.map(p => ({
                         id: p.id,
                         name: p.name,
-                        unitPrice: p.unitPrice || p.price || p.unit_price
+                        unitPrice: p.unitPrice || p.price || p.unit_price,
+                        quantityOnShelf: p.quantityOnShelf || 0,
+                        image: p.image || null
                     }));
                     await this.chatRepo.updateSessionMetadata(sessionId, metadata);
                 }
@@ -380,7 +386,8 @@ class ChatService {
             }
         }
 
-        const intentResult = resolveIntent(userMessage);
+        const userType = session.userType || session.user_type || 'customer';
+        const intentResult = resolveIntent(userMessage, userType);
         logger.info({ sessionId, intent: intentResult.intent }, 'Stream: Intent resolved');
 
         await this.chatRepo.addMessage(sessionId, 'user', userMessage, intentResult.intent);
@@ -449,6 +456,15 @@ class ChatService {
                 case 'CHECKOUT_GUIDE':
                     response = this._handleCheckoutGuide(session);
                     break;
+                case 'POS_ADD_ITEM':
+                    response = await this.posHandler.handlePosAddItem(session, userMessage);
+                    break;
+                case 'CREATE_ORDER':
+                    response = await this.posHandler.processOrderCollection(session, userMessage);
+                    break;
+                case 'PAYMENT_CHECK':
+                    response = await this.posHandler.handlePaymentCheck(session, userMessage);
+                    break;
                 default:
                     response = await this.utils.handleFreeChat(sessionId, userMessage);
                     break;
@@ -491,7 +507,9 @@ class ChatService {
             metadata.lastMentionedProducts = products.map(p => ({
                 id: p.id,
                 name: p.name,
-                unitPrice: p.unitPrice || p.price || p.unit_price
+                unitPrice: p.unitPrice || p.price || p.unit_price,
+                quantityOnShelf: p.quantityOnShelf || 0,
+                image: p.image || null
             }));
             await this.chatRepo.updateSessionMetadata(sessionId, metadata);
         }

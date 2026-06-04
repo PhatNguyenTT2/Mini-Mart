@@ -12,6 +12,7 @@ import Payments from "./pages/Payments";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { ProtectedLayout } from "./components/ProtectedLayout";
 import { PERMISSIONS } from "./utils/permissions";
+import { ChatProvider } from "./contexts/ChatContext";
 import "./App.css";
 
 function App() {
@@ -25,7 +26,14 @@ function App() {
 
         {/* POS Routes - Separate authentication flow */}
         <Route path="/pos-login" element={<POSLogin />} />
-        <Route path="/pos" element={<POSMain />} />
+        <Route
+          path="/pos"
+          element={
+            <ChatProvider>
+              <POSMain />
+            </ChatProvider>
+          }
+        />
 
         {/* Protected Routes - All wrapped in shared ProtectedLayout */}
         <Route element={<ProtectedLayout />}>

@@ -125,8 +125,8 @@ describe('RAGService', () => {
             expect(mockEmbeddingClient.embed).toHaveBeenCalled();
 
             // Step 3: both searches called in parallel
-            expect(mockKnowledgeRepo.searchSemantic).toHaveBeenCalledWith(MOCK_VECTOR, 1, 10);
-            expect(mockKnowledgeRepo.searchKeyword).toHaveBeenCalledWith('Gợi ý bia ngon', 1, 10);
+            expect(mockKnowledgeRepo.searchSemantic).toHaveBeenCalledWith(MOCK_VECTOR, 1, 30);
+            expect(mockKnowledgeRepo.searchKeyword).toHaveBeenCalledWith('bia ngon', 1, 30);
 
             // Step 5: co-purchase called
             expect(mockCopurchaseRepo.getRelatedProducts).toHaveBeenCalled();
@@ -279,11 +279,11 @@ describe('RAGService', () => {
 
         beforeEach(() => {
             testProducts = [
-                { product_id: 1, store_id: 1, content: 'Sản phẩm "Gia vị nêm sẵn lẩu Thái Barona 80g"', category_name: 'Gia vị', unit_price: 16000, is_in_stock: true, quantity_on_shelf: 299 },
-                { product_id: 2, store_id: 1, content: 'Sản phẩm "Chả lụa heo G Kitchen đòn 500g"', category_name: 'Thực phẩm', unit_price: 95000, is_in_stock: true, quantity_on_shelf: 300 },
-                { product_id: 3, store_id: 1, content: 'Sản phẩm "Gạo thơm Lài Miên túi 5kg"', category_name: 'Gạo', unit_price: 110000, is_in_stock: true, quantity_on_shelf: 300 },
-                { product_id: 4, store_id: 1, content: 'Sản phẩm "Snack khoai tây Lay\'s vị Tự nhiên"', category_name: 'Snack', unit_price: 12000, is_in_stock: true, quantity_on_shelf: 300 },
-                { product_id: 5, store_id: 1, content: 'Sản phẩm "Nước tương Chinsu tỏi ớt 250ml"', category_name: 'Nước chấm', unit_price: 15000, is_in_stock: true, quantity_on_shelf: 300 }
+                { product_id: 1, store_id: 1, content: 'Sản phẩm "Gia vị nêm sẵn lẩu Thái Barona 80g"', category_name: 'Gia vị', unit_price: 16000, is_in_stock: true, quantity_on_shelf: 299, score: 0.9 },
+                { product_id: 2, store_id: 1, content: 'Sản phẩm "Chả lụa heo G Kitchen đòn 500g"', category_name: 'Thực phẩm', unit_price: 95000, is_in_stock: true, quantity_on_shelf: 300, score: 0.9 },
+                { product_id: 3, store_id: 1, content: 'Sản phẩm "Gạo thơm Lài Miên túi 5kg"', category_name: 'Gạo', unit_price: 110000, is_in_stock: true, quantity_on_shelf: 300, score: 0.9 },
+                { product_id: 4, store_id: 1, content: 'Sản phẩm "Snack khoai tây Lay\'s vị Tự nhiên"', category_name: 'Snack', unit_price: 12000, is_in_stock: true, quantity_on_shelf: 300, score: 0.9 },
+                { product_id: 5, store_id: 1, content: 'Sản phẩm "Nước tương Chinsu tỏi ớt 250ml"', category_name: 'Nước chấm', unit_price: 15000, is_in_stock: true, quantity_on_shelf: 300, score: 0.9 }
             ];
             mockKnowledgeRepo.searchSemantic.mockResolvedValue(testProducts);
             mockKnowledgeRepo.searchKeyword.mockResolvedValue([]);
@@ -337,7 +337,7 @@ describe('RAGService', () => {
                 choices: [{ message: { content: 'Uống nước suối cho mát.' } }]
             });
 
-            const result = await ragService.recommend('nước tương', 1, null, []);
+            const result = await ragService.recommend('nước', 1, null, []);
             // Since no products matched, should fallback to top 3 products
             expect(result.productIds).toEqual([1, 2, 3]);
         });
