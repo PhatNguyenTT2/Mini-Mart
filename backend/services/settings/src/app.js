@@ -17,7 +17,7 @@ function createApp({ settingsService }) {
   app.use('/api/settings', require('./routes/settings.routes')(settingsService));
 
   // Customer discount settings — standalone route for frontend compatibility
-  app.get('/api/customer-discount-settings', verifyToken, async (req, res, next) => {
+  app.get(['/api/customer-discount-settings', '/api/customer-discount-settings/active'], verifyToken, async (req, res, next) => {
     try {
       const data = await settingsService.getCustomerDiscounts();
       res.json({ success: true, data });

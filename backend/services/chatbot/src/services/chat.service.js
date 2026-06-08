@@ -6,6 +6,8 @@ const ReadHandler = require('./handlers/read.handler');
 const CartHandler = require('./handlers/cart.handler');
 const OrderHandler = require('./handlers/order.handler');
 const PosHandler = require('./handlers/pos.handler');
+const ReportHandler = require('./handlers/report.handler');
+const EntityHandler = require('./handlers/entity.handler');
 const logger = require('../../../../shared/common/logger');
 
 class ChatService {
@@ -26,6 +28,8 @@ class ChatService {
         this.cartHandler = new CartHandler(handlerCtx);
         this.orderHandler = new OrderHandler(handlerCtx);
         this.posHandler = new PosHandler(handlerCtx);
+        this.reportHandler = new ReportHandler(handlerCtx);
+        this.entityHandler = new EntityHandler(handlerCtx);
     }
 
     /** Hot-swap RAG service after background model loading */
@@ -34,15 +38,22 @@ class ChatService {
         this.utils.ragService = ragService;
         this.readHandler.ragService = ragService;
         this.posHandler.ragService = ragService;
+        if (this.entityHandler) this.entityHandler.ragService = ragService;
         logger.info('RAG Service hot-swapped into ChatService');
     }
 
-    async startSession(userId, userType, storeId = null) {
+    async startSession(userId, userType, storeId = null, customerId = null) {
         if (!userId) throw new ValidationError('user_id is required');
-        if (!['customer', 'employee'].includes(userType)) {
-            throw new ValidationError('user_type must be customer or employee');
+        if (!['customer', 'employee', 'manager'].includes(userType)) {
+            throw new ValidationError('user_type must be customer, employee, or manager');
         }
-        return await this.chatRepo.createSession(userId, userType, storeId);
+        const session = await this.chatRepo.createSession(userId, userType, storeId);
+        if (customerId) {
+            const meta = session.metadata || {};
+            meta.customerId = customerId;
+            await this.chatRepo.updateSessionMetadata(session.id, meta);
+        }
+        return session;
     }
 
     async getSession(sessionId) {
@@ -186,11 +197,50 @@ class ChatService {
             case 'POS_CHECKOUT':
                 response = await this.posHandler.handlePosCheckout(session, userMessage);
                 break;
+            case 'VIEW_ORDER_HISTORY':
+                response = this.orderHandler.handleViewOrderHistory(session);
+                break;
             case 'CREATE_ORDER':
                 response = await this.posHandler.processOrderCollection(session, userMessage, context);
                 break;
             case 'PAYMENT_CHECK':
                 response = await this.posHandler.handlePaymentCheck(session, userMessage);
+                break;
+            case 'REPORT_SALES':
+                response = await this.reportHandler.handleSalesReport(session, userMessage);
+                break;
+            case 'REPORT_TOP_PRODUCTS':
+                response = await this.reportHandler.handleTopProducts(session, userMessage);
+                break;
+            case 'REPORT_LOW_STOCK':
+                response = await this.reportHandler.handleLowStock(session, userMessage);
+                break;
+            case 'REPORT_PROFIT':
+                response = await this.reportHandler.handleProfitReport(session, userMessage);
+                break;
+            case 'MANAGE_CUSTOMER_SEARCH':
+                response = await this.entityHandler.handleCustomerSearch(session, userMessage);
+                break;
+            case 'MANAGE_CUSTOMER_UPDATE':
+                response = await this.entityHandler.handleCustomerUpdate(session, userMessage);
+                break;
+            case 'MANAGE_CUSTOMER_LIST':
+                response = this.entityHandler.handleCustomerList(session, userMessage);
+                break;
+            case 'MANAGE_SUPPLIER_LIST':
+                response = this.entityHandler.handleSupplierList(session);
+                break;
+            case 'MANAGE_SUPPLIER_SEARCH':
+                response = await this.entityHandler.handleSupplierSearch(session, userMessage);
+                break;
+            case 'MANAGE_INVENTORY_CHECK':
+                response = await this.entityHandler.handleInventoryCheck(session);
+                break;
+            case 'MANAGE_INVENTORY_STOCKOUT':
+                response = await this.entityHandler.handleInventoryStockout(session, userMessage);
+                break;
+            case 'MANAGE_INVENTORY_VIEW':
+                response = this.entityHandler.handleInventoryView(session);
                 break;
             case 'FREE_CHAT':
             default:
@@ -471,11 +521,50 @@ class ChatService {
                 case 'POS_CHECKOUT':
                     response = await this.posHandler.handlePosCheckout(session, userMessage);
                     break;
+                case 'VIEW_ORDER_HISTORY':
+                    response = this.orderHandler.handleViewOrderHistory(session);
+                    break;
                 case 'CREATE_ORDER':
                     response = await this.posHandler.processOrderCollection(session, userMessage, context);
                     break;
                 case 'PAYMENT_CHECK':
                     response = await this.posHandler.handlePaymentCheck(session, userMessage);
+                    break;
+                case 'REPORT_SALES':
+                    response = await this.reportHandler.handleSalesReport(session, userMessage);
+                    break;
+                case 'REPORT_TOP_PRODUCTS':
+                    response = await this.reportHandler.handleTopProducts(session, userMessage);
+                    break;
+                case 'REPORT_LOW_STOCK':
+                    response = await this.reportHandler.handleLowStock(session, userMessage);
+                    break;
+                case 'REPORT_PROFIT':
+                    response = await this.reportHandler.handleProfitReport(session, userMessage);
+                    break;
+                case 'MANAGE_CUSTOMER_SEARCH':
+                    response = await this.entityHandler.handleCustomerSearch(session, userMessage);
+                    break;
+                case 'MANAGE_CUSTOMER_UPDATE':
+                    response = await this.entityHandler.handleCustomerUpdate(session, userMessage);
+                    break;
+                case 'MANAGE_CUSTOMER_LIST':
+                    response = this.entityHandler.handleCustomerList(session, userMessage);
+                    break;
+                case 'MANAGE_SUPPLIER_LIST':
+                    response = this.entityHandler.handleSupplierList(session);
+                    break;
+                case 'MANAGE_SUPPLIER_SEARCH':
+                    response = await this.entityHandler.handleSupplierSearch(session, userMessage);
+                    break;
+                case 'MANAGE_INVENTORY_CHECK':
+                    response = await this.entityHandler.handleInventoryCheck(session);
+                    break;
+                case 'MANAGE_INVENTORY_STOCKOUT':
+                    response = await this.entityHandler.handleInventoryStockout(session, userMessage);
+                    break;
+                case 'MANAGE_INVENTORY_VIEW':
+                    response = this.entityHandler.handleInventoryView(session);
                     break;
                 default:
                     response = await this.utils.handleFreeChat(sessionId, userMessage);

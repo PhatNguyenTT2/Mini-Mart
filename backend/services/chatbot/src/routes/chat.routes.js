@@ -12,10 +12,17 @@ function createChatRouter(chatService) {
     router.post('/sessions', async (req, res, next) => {
         try {
             const userId = req.user.id;
-            const userType = req.user.role === 'Customer' ? 'customer' : 'employee';
+            const MANAGER_ROLES = ['Store Manager', 'Super Admin'];
+            const roleName = req.user.roleName || '';
+            const userType = roleName === 'Customer' ? 'customer'
+                : MANAGER_ROLES.includes(roleName) ? 'manager'
+                    : 'employee';
             const storeId = req.user.storeId || null;
+            const customerId = req.user.customerId || null;
 
-            const session = await chatService.startSession(userId, userType, storeId);
+            const session = customerId
+                ? await chatService.startSession(userId, userType, storeId, customerId)
+                : await chatService.startSession(userId, userType, storeId);
             return created(res, session);
         } catch (err) {
             next(err);

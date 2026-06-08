@@ -30,11 +30,6 @@ export const POSCustomerSelector = ({ selectedCustomer, onCustomerChange, custom
         const response = await posDataService.getDefaultGuest();
         const guest = response.data.customer;
         setGuestCustomer(guest);
-
-        // Auto-select guest if no customer selected
-        if (!selectedCustomer) {
-          onCustomerChange(guest);
-        }
       } catch (error) {
         console.error('Error loading guest customer:', error);
       }
@@ -42,6 +37,13 @@ export const POSCustomerSelector = ({ selectedCustomer, onCustomerChange, custom
 
     loadGuestCustomer();
   }, []);
+
+  // Reactively auto-select guest when selectedCustomer is null/cleared
+  useEffect(() => {
+    if (!selectedCustomer && guestCustomer) {
+      onCustomerChange(guestCustomer);
+    }
+  }, [selectedCustomer, guestCustomer, onCustomerChange]);
 
   // Search customers with debounce
   useEffect(() => {

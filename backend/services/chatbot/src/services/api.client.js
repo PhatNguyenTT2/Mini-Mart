@@ -10,7 +10,9 @@ const SERVICE_URLS = {
     catalog: process.env.CATALOG_SERVICE_URL || 'http://catalog:3002',
     inventory: process.env.INVENTORY_SERVICE_URL || 'http://inventory:3006',
     order: process.env.ORDER_SERVICE_URL || 'http://order:3003',
-    auth: process.env.AUTH_SERVICE_URL || 'http://auth:3001'
+    auth: process.env.AUTH_SERVICE_URL || 'http://auth:3001',
+    statistics: process.env.STATISTICS_SERVICE_URL || 'http://statistics:3009',
+    supplier: process.env.SUPPLIER_SERVICE_URL || 'http://supplier:3005'
 };
 
 class ApiClient {
@@ -177,6 +179,48 @@ class ApiClient {
             method: 'POST',
             body: JSON.stringify(data)
         });
+    }
+
+    // ── Statistics Service Methods (Manager BI Reports) ──
+    async getDashboardStats(period = 'month') {
+        const url = `${SERVICE_URLS.statistics}/api/statistics/dashboard?period=${period}`;
+        return this._fetch(url);
+    }
+
+    async getSalesReport(params = {}) {
+        const query = new URLSearchParams(params).toString();
+        const url = `${SERVICE_URLS.statistics}/api/statistics/sales?${query}`;
+        return this._fetch(url);
+    }
+
+    async getInventoryReport(params = {}) {
+        const query = new URLSearchParams(params).toString();
+        const url = `${SERVICE_URLS.statistics}/api/statistics/inventory?${query}`;
+        return this._fetch(url);
+    }
+
+    async getProfitReport(params = {}) {
+        const query = new URLSearchParams(params).toString();
+        const url = `${SERVICE_URLS.statistics}/api/statistics/profit?${query}`;
+        return this._fetch(url);
+    }
+
+    // ── Supplier Service & Customer Search ──
+    async getSuppliers(query = {}) {
+        const params = new URLSearchParams(query).toString();
+        const url = `${SERVICE_URLS.supplier}/api/suppliers?${params}`;
+        return this._fetch(url);
+    }
+
+    async getSupplierById(supplierId) {
+        const url = `${SERVICE_URLS.supplier}/api/suppliers/${supplierId}`;
+        return this._fetch(url);
+    }
+
+    async searchCustomers(query = {}) {
+        const params = new URLSearchParams(query).toString();
+        const url = `${SERVICE_URLS.auth}/api/customers?${params}`;
+        return this._fetch(url);
     }
 }
 

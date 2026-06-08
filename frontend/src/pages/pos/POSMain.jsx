@@ -40,6 +40,7 @@ export const POSMain = () => {
   const [toast, setToast] = useState(null);
   const [showStoreMap, setShowStoreMap] = useState(false);
   const [debouncedSearch, setDebouncedSearch] = useState('');
+  const [orderModalKey, setOrderModalKey] = useState(0);
 
   const showToast = useCallback((type, message) => {
     setToast({ type, message });
@@ -54,6 +55,7 @@ export const POSMain = () => {
   const { toggleChat, setPosContext } = useChat();
 
   const [showEmployeeOrdersModal, setShowEmployeeOrdersModal] = useState(false);
+  const [orderHistorySearch, setOrderHistorySearch] = useState('');
   const [showHelpModal, setShowHelpModal] = useState(false);
 
   // Sync selected customer to chat context
@@ -269,6 +271,16 @@ export const POSMain = () => {
       const action = e.detail;
       if (!action) return;
 
+      if (action.type === 'OPEN_MODAL') {
+        const { modal, searchQuery } = action.payload || {};
+        if (modal === 'POSEmployeeOrdersModal') {
+          setOrderHistorySearch(searchQuery || '');
+          setShowEmployeeOrdersModal(true);
+          showToast('info', searchQuery ? `Đang mở lịch sử đơn hàng: ${searchQuery}...` : 'Đang mở lịch sử đơn hàng...');
+        }
+        return;
+      }
+
       if (action.type === 'POS_HOLD_ORDER') {
         showToast('info', 'Đang lưu hóa đơn tạm...');
         await handleHoldOrder();
@@ -279,6 +291,21 @@ export const POSMain = () => {
         showToast('info', 'Đang mở giao diện thanh toán...');
         const success = await handleCheckout();
         if (success) setShowPaymentModal(true);
+        return;
+      }
+
+      if (action.type === 'UPDATE_CART_ITEM') {
+        const { productId, quantity, name } = action.payload || {};
+        if (productId && quantity != null) {
+          updateQuantity(productId, quantity);
+          showToast('success', `Đã cập nhật ${name || 'sản phẩm'} → số lượng: ${quantity}`);
+        }
+        return;
+      }
+
+      if (action.type === 'CANCEL_ORDER') {
+        showToast('info', action.payload?.message || 'Đơn hàng đã được hủy thành công');
+        setOrderModalKey(prev => prev + 1);
         return;
       }
 
@@ -541,10 +568,15 @@ export const POSMain = () => {
       />
 
       <POSEmployeeOrdersModal
+        key={orderModalKey}
         isOpen={showEmployeeOrdersModal}
-        onClose={() => setShowEmployeeOrdersModal(false)}
+        onClose={() => {
+          setShowEmployeeOrdersModal(false);
+          setOrderHistorySearch('');
+        }}
         currentEmployee={currentEmployee}
         onLoadDraftOrder={handleLoadHeldOrder}
+        initialSearch={orderHistorySearch}
       />
 
       <POSHelpModal

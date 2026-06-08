@@ -197,6 +197,7 @@ class PosHandler {
       orderData: {
         customer_id: customerId,
         delivery_type: 'pickup',
+        created_by: isCustomer ? null : (session.user_id || null),
         items: items.map(it => ({
           product_id: it.productId,
           product_name: it.name,

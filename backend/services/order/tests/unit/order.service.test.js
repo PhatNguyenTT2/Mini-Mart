@@ -48,6 +48,10 @@ describe('OrderService Unit Tests', () => {
       ]
     };
 
+    beforeEach(() => {
+      jest.spyOn(orderService, 'resolveCustomerDiscount').mockResolvedValue(10);
+    });
+
     it('should create an order with details successfully', async () => {
       mockOrderRepo.createOrderWithClient.mockResolvedValue({ id: 50, store_id: 10, total_amount: 180 });
       mockDetailRepo.findByOrderId.mockResolvedValue([{ id: 1, order_id: 50 }]); // final fetch
@@ -56,25 +60,25 @@ describe('OrderService Unit Tests', () => {
 
       expect(mockPool.connect).toHaveBeenCalled();
       expect(mockClient.query).toHaveBeenCalledWith('BEGIN');
-      
+
       // Check total calculation (2 * 100) * 0.9 = 180 
       expect(mockOrderRepo.createOrderWithClient).toHaveBeenCalledWith(
-          mockClient, storeId, expect.objectContaining({
-              total_amount: 180
-          })
+        mockClient, storeId, expect.objectContaining({
+          total_amount: 180
+        })
       );
 
       // Check detail insertion
       expect(mockDetailRepo.addDetailWithClient).toHaveBeenCalledWith(
-          mockClient, 50, expect.objectContaining({
-              product_name: 'P1',
-              total_price: 200 // 2 * 100
-          })
+        mockClient, 50, expect.objectContaining({
+          product_name: 'P1',
+          total_price: 200 // 2 * 100
+        })
       );
 
       expect(mockClient.query).toHaveBeenCalledWith('COMMIT');
       expect(mockClient.release).toHaveBeenCalled();
-      
+
       expect(result.id).toBe(50);
       expect(result.details).toHaveLength(1);
     });
@@ -82,30 +86,30 @@ describe('OrderService Unit Tests', () => {
     it('should throw ValidationError if items is empty', async () => {
       await expect(orderService.createDraftOrder(storeId, { items: [] }, userId))
         .rejects.toThrow(ValidationError);
-      
+
       expect(mockPool.connect).not.toHaveBeenCalled();
     });
 
     it('should rollback transaction on error', async () => {
-       mockOrderRepo.createOrderWithClient.mockRejectedValue(new Error('DB Failed'));
+      mockOrderRepo.createOrderWithClient.mockRejectedValue(new Error('DB Failed'));
 
-       await expect(orderService.createDraftOrder(storeId, validData, userId))
-         .rejects.toThrow(AppError);
+      await expect(orderService.createDraftOrder(storeId, validData, userId))
+        .rejects.toThrow(AppError);
 
-       expect(mockClient.query).toHaveBeenCalledWith('ROLLBACK');
-       expect(mockClient.release).toHaveBeenCalled();
+      expect(mockClient.query).toHaveBeenCalledWith('ROLLBACK');
+      expect(mockClient.release).toHaveBeenCalled();
     });
   });
 
   describe('updateOrderStatus', () => {
-      it('should properly update statuses', async () => {
-           mockOrderRepo.findById.mockResolvedValue({ id: 50 });
-           mockOrderRepo.updateStatusWithClient.mockResolvedValue({ id: 50, status: 'shipped', payment_status: 'paid' });
+    it('should properly update statuses', async () => {
+      mockOrderRepo.findById.mockResolvedValue({ id: 50 });
+      mockOrderRepo.updateStatusWithClient.mockResolvedValue({ id: 50, status: 'shipped', payment_status: 'paid' });
 
-           const res = await orderService.updateOrderStatus(storeId, 50, 'shipped', 'paid');
-           
-           expect(mockOrderRepo.updateStatusWithClient).toHaveBeenCalledWith(mockClient, storeId, 50, 'shipped', 'paid');
-           expect(res.status).toBe('shipped');
-      });
+      const res = await orderService.updateOrderStatus(storeId, 50, 'shipped', 'paid');
+
+      expect(mockOrderRepo.updateStatusWithClient).toHaveBeenCalledWith(mockClient, storeId, 50, 'shipped', 'paid');
+      expect(res.status).toBe('shipped');
+    });
   });
 });

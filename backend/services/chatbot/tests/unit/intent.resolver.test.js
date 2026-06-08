@@ -61,6 +61,31 @@ describe('Intent Resolver', () => {
             const result = resolveIntent('giá sản phẩm này');
             expect(result.intent).toBe('CHECK_PRICE');
         });
+
+        it('should allow managerOnly intents for manager', () => {
+            const result = resolveIntent('doanh thu hôm nay', 'manager');
+            expect(result.intent).toBe('REPORT_SALES');
+        });
+
+        it('should block managerOnly intents for customer', () => {
+            const result = resolveIntent('doanh thu hôm nay', 'customer');
+            expect(result.intent).toBe('FREE_CHAT'); // falls back to FREE_CHAT
+        });
+
+        it('should block managerOnly intents for employee', () => {
+            const result = resolveIntent('doanh thu hôm nay', 'employee');
+            expect(result.intent).toBe('FREE_CHAT');
+        });
+
+        it('should allow employeeOnly intents for employee', () => {
+            const result = resolveIntent('lịch sử đơn hàng', 'employee');
+            expect(result.intent).toBe('VIEW_ORDER_HISTORY');
+        });
+
+        it('should block employeeOnly intents for customer', () => {
+            const result = resolveIntent('lịch sử đơn hàng', 'customer');
+            expect(result.intent).toBe('ORDER_STATUS');
+        });
     });
 
     describe('getAllIntents', () => {

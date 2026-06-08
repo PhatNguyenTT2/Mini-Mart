@@ -1,6 +1,7 @@
 import { useCart } from '../../contexts/CartContext';
+import { useAuth } from '../../contexts/AuthContext';
 import { useState } from 'react';
-import { X } from 'lucide-react';
+import { X, Award } from 'lucide-react';
 
 const formatVND = (amount) => {
   return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'VND' }).format(amount);
@@ -8,6 +9,7 @@ const formatVND = (amount) => {
 
 export function OrderSummary() {
   const { cartItems, getCartTotal, appliedCoupon, applyCoupon, removeCoupon, getCartDiscount } = useCart();
+  const { user } = useAuth();
   const [couponInput, setCouponInput] = useState('');
 
   const handleApplyCoupon = (e) => {
@@ -16,11 +18,21 @@ export function OrderSummary() {
     const success = applyCoupon(couponInput);
     if (success) setCouponInput('');
   };
-  
+
   return (
     <div className="bg-white border border-gray-200 rounded-xl p-6 mb-6">
       <h2 className="font-bold text-gray-800 text-xl mb-4">Order Summary</h2>
-      
+
+      {/* Membership discount info banner */}
+      {user?.customerType && user.customerType !== 'retail' && (
+        <div className="mb-4 p-3 bg-blue-50 border border-blue-100 rounded-lg flex items-start gap-2.5 text-xs text-blue-700 font-medium">
+          <Award className="w-4 h-4 shrink-0 text-blue-600 mt-0.5" />
+          <div>
+            Your <span className="uppercase font-bold">{user.customerType}</span> membership discount will be applied automatically at checkout.
+          </div>
+        </div>
+      )}
+
       {/* Items List */}
       <div className="space-y-4 mb-6">
         {cartItems.map((item) => (

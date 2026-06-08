@@ -97,6 +97,7 @@ services:
       - RABBITMQ_URL=${RABBITMQ_URL}
       - JWT_SECRET=${JWT_SECRET}
       - AUTH_SERVICE_URL=http://auth:3001
+      - SETTINGS_SERVICE_URL=http://settings:3004
       - INVENTORY_SERVICE_URL=http://inventory:3006
       - CORS_ORIGINS=http://localhost:5173,http://localhost:5174
       - NODE_ENV=${NODE_ENV:-production}
@@ -212,6 +213,8 @@ services:
       - inventory
       - order
       - auth
+      - supplier
+      - statistics
     environment:
       - PORT=3008
       - DATABASE_URL=${DATABASE_URL}
@@ -224,6 +227,8 @@ services:
       - INVENTORY_SERVICE_URL=http://inventory:3006
       - ORDER_SERVICE_URL=http://order:3003
       - AUTH_SERVICE_URL=http://auth:3001
+      - STATISTICS_SERVICE_URL=http://statistics:3009
+      - SUPPLIER_SERVICE_URL=http://supplier:3005
       - CORS_ORIGINS=http://localhost:5173,http://localhost:5174
       - NODE_ENV=${NODE_ENV:-production}
       - TRANSFORMERS_CACHE=/app/.cache/transformers

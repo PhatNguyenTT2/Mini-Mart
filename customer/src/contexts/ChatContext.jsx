@@ -96,6 +96,13 @@ export const ChatProvider = ({ children }) => {
       setIsTyping(false)
       setProducts(data.products || null)
       setSuggestedPrompts(data.suggestedPrompts || null)
+
+      // Dispatch action to Customer UI (cart, navigation, etc.)
+      if (data.action) {
+        window.dispatchEvent(
+          new CustomEvent('posmart:customer_chat_action', { detail: data.action })
+        );
+      }
     })
 
     const unsubTyping = chatSocketService.onTyping((data) => {

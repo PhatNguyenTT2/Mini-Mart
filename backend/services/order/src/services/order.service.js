@@ -10,6 +10,8 @@ class OrderService {
     this.orderRepo = orderRepo;
     this.detailRepo = orderDetailRepo;
     this.pool = pool;
+    this.salesConfigCache = null;
+    this.salesConfigCacheTime = 0;
   }
 
   // ============================================================
@@ -277,6 +279,83 @@ class OrderService {
     return formatted;
   }
 
+  async resolveCustomerDiscount(customerId, jwtToken) {
+    if (!customerId) return 0;
+    const authServiceUrl = process.env.AUTH_SERVICE_URL || 'http://auth:3001';
+    const settingsServiceUrl = process.env.SETTINGS_SERVICE_URL || 'http://settings:3004';
+
+    try {
+      // 1. Fetch customer profile to get customerType
+      let customerType = 'retail';
+      const cleanJwt = jwtToken ? (jwtToken.startsWith('Bearer ') ? jwtToken : `Bearer ${jwtToken}`) : '';
+
+      const customerRes = await fetch(`${authServiceUrl}/api/customers/${customerId}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': cleanJwt
+        }
+      });
+
+      if (customerRes.ok) {
+        const body = await customerRes.json();
+        customerType = body.data?.customerType || body.data?.customer_type || 'retail';
+      } else {
+        console.error(`resolveCustomerDiscount: Auth service returned status ${customerRes.status}`);
+      }
+
+      // 2. Fetch sales settings config (use short-lived in-memory cache)
+      const now = Date.now();
+      let salesConfig = this.salesConfigCache;
+      if (!salesConfig || now - this.salesConfigCacheTime > 60000) {
+        try {
+          const settingsRes = await fetch(`${settingsServiceUrl}/api/internal/sales-config`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          });
+          if (settingsRes.ok) {
+            const body = await settingsRes.json();
+            salesConfig = body.data;
+            this.salesConfigCache = salesConfig;
+            this.salesConfigCacheTime = now;
+          } else {
+            console.error(`resolveCustomerDiscount: Settings service returned status ${settingsRes.status}`);
+          }
+        } catch (settingsErr) {
+          console.error('resolveCustomerDiscount: Failed to fetch settings config, using cache/defaults:', settingsErr.message);
+        }
+      }
+
+      if (!salesConfig) {
+        salesConfig = {
+          discount_retail: 0,
+          discount_wholesale: 5,
+          discount_vip: 10
+        };
+      }
+
+      let discountRate = 0;
+      switch (customerType.toLowerCase()) {
+        case 'vip':
+          discountRate = parseFloat(salesConfig.discount_vip ?? 10);
+          break;
+        case 'wholesale':
+          discountRate = parseFloat(salesConfig.discount_wholesale ?? 5);
+          break;
+        case 'retail':
+        default:
+          discountRate = parseFloat(salesConfig.discount_retail ?? 0);
+          break;
+      }
+      return discountRate;
+    } catch (err) {
+      console.error('resolveCustomerDiscount failed, defaulting to 0:', err.message);
+      return 0;
+    }
+  }
+
   async createDraftOrder(storeId, data, userId, jwtToken) {
     const { customer_id, delivery_type, address, items: rawItems } = data;
 
@@ -295,7 +374,11 @@ class OrderService {
         return item;
       });
 
-      const discount_percentage = data.discount_percentage || 0;
+      // Server-side discount resolution (Zero-Trust architecture)
+      let discount_percentage = 0;
+      if (customer_id) {
+        discount_percentage = await this.resolveCustomerDiscount(customer_id, jwtToken);
+      }
       const shipping_fee = Number(data.shipping_fee || 0);
       const total_amount = subtotal * (1 - discount_percentage / 100) + shipping_fee;
 

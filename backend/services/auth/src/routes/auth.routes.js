@@ -11,7 +11,7 @@ function createLimiter(options) {
 
 const loginLimiter = createLimiter({
   windowMs: 15 * 60 * 1000,
-  max: 10,
+  max: 100, // Increased from 10 to 100 to prevent lockout in dev/test environment
   standardHeaders: true,
   legacyHeaders: false,
   message: { success: false, error: { message: 'Too many login attempts. Try again in 15 minutes.', code: 'RATE_LIMITED' } }

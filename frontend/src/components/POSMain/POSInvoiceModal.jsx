@@ -215,11 +215,10 @@ export const POSInvoiceModal = ({ isOpen, order: initialOrder, onClose, onComple
               const status = getStepStatus(i, order);
               return (
                 <div key={step.key} className="flex flex-col items-center flex-1">
-                  <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-500 ${
-                    status === 'done' ? 'bg-emerald-500 text-white' :
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold transition-all duration-500 ${status === 'done' ? 'bg-emerald-500 text-white' :
                     status === 'active' ? 'bg-amber-400 text-white animate-pulse' :
-                    'bg-gray-200 text-gray-500'
-                  }`}>
+                      'bg-gray-200 text-gray-500'
+                    }`}>
                     {status === 'done' ? (
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
                     ) : i + 1}
@@ -237,7 +236,7 @@ export const POSInvoiceModal = ({ isOpen, order: initialOrder, onClose, onComple
           </div>
           {!isFinalStatus && (
             <p className="text-[11px] font-['Poppins',sans-serif] text-amber-600 mt-1.5 text-center animate-pulse">
-              ⏳ Processing asynchronously... Status will update automatically
+              Processing asynchronously... Status will update automatically
             </p>
           )}
         </div>
@@ -261,10 +260,9 @@ export const POSInvoiceModal = ({ isOpen, order: initialOrder, onClose, onComple
               <p className="font-['Poppins',sans-serif]"><span className="font-semibold text-gray-700">Name:</span> <span className="ml-1">{customerInfo?.fullName || customerInfo?.full_name || 'Walk-in Customer'}</span></p>
               {customerInfo?.phone && <p className="font-['Poppins',sans-serif]"><span className="font-semibold text-gray-700">Phone:</span> <span className="ml-1">{customerInfo.phone}</span></p>}
               {(customerInfo?.customerType || customerInfo?.customer_type) && (
-                <p className="font-['Poppins',sans-serif]"><span className="font-semibold text-gray-700">Type:</span> <span className={`ml-1 capitalize font-medium ${
-                  (customerInfo.customerType || customerInfo.customer_type) === 'vip' ? 'text-amber-600' :
+                <p className="font-['Poppins',sans-serif]"><span className="font-semibold text-gray-700">Type:</span> <span className={`ml-1 capitalize font-medium ${(customerInfo.customerType || customerInfo.customer_type) === 'vip' ? 'text-amber-600' :
                   (customerInfo.customerType || customerInfo.customer_type) === 'wholesale' ? 'text-emerald-600' : 'text-blue-600'
-                }`}>{customerInfo.customerType || customerInfo.customer_type}</span></p>
+                  }`}>{customerInfo.customerType || customerInfo.customer_type}</span></p>
               )}
               <p className="font-['Poppins',sans-serif]"><span className="font-semibold text-gray-700">Delivery:</span> <span className="ml-1 capitalize">{order.deliveryType === 'delivery' ? 'Home Delivery' : 'Pickup'}</span></p>
             </div>
@@ -332,33 +330,30 @@ export const POSInvoiceModal = ({ isOpen, order: initialOrder, onClose, onComple
               <p className="text-[12px] font-semibold font-['Poppins',sans-serif] text-emerald-800 mb-1">Payment Method</p>
               <p className="text-[14px] font-bold font-['Poppins',sans-serif] text-emerald-600 uppercase">{paymentMethodLabel[order.paymentMethod] || order.paymentMethod || 'N/A'}</p>
             </div>
-            <div className={`border rounded-lg p-3 ${
-              order.paymentStatus === 'paid' ? 'bg-green-50 border-green-200' :
+            <div className={`border rounded-lg p-3 ${order.paymentStatus === 'paid' ? 'bg-green-50 border-green-200' :
               order.paymentStatus === 'pending' ? 'bg-amber-50 border-amber-200' : 'bg-gray-50 border-gray-200'
-            }`}>
-              <p className="text-[12px] font-semibold font-['Poppins',sans-serif] text-gray-700 mb-1">Payment Status</p>
-              <p className={`text-[14px] font-bold font-['Poppins',sans-serif] uppercase ${
-                order.paymentStatus === 'paid' ? 'text-green-600' :
-                order.paymentStatus === 'pending' ? 'text-amber-600' : 'text-gray-600'
               }`}>
-                {order.paymentStatus === 'paid' ? '✓ PAID' : order.paymentStatus === 'pending' ? '⏳ PENDING' : (order.paymentStatus || 'N/A').toUpperCase()}
+              <p className="text-[12px] font-semibold font-['Poppins',sans-serif] text-gray-700 mb-1">Payment Status</p>
+              <p className={`text-[14px] font-bold font-['Poppins',sans-serif] uppercase ${order.paymentStatus === 'paid' ? 'text-green-600' :
+                order.paymentStatus === 'pending' ? 'text-amber-600' : 'text-gray-600'
+                }`}>
+                {order.paymentStatus === 'paid' ? 'PAID' : order.paymentStatus === 'pending' ? '⏳ PENDING' : (order.paymentStatus || 'N/A').toUpperCase()}
               </p>
             </div>
           </div>
 
           {/* Order Status Badge */}
           <div className="text-center mb-4">
-            <span className={`inline-block px-6 py-2 rounded-full text-[14px] font-bold font-['Poppins',sans-serif] ${
-              order.status === 'delivered' || order.status === 'completed' ? 'bg-green-100 text-green-800' :
+            <span className={`inline-block px-6 py-2 rounded-full text-[14px] font-bold font-['Poppins',sans-serif] ${order.status === 'delivered' || order.status === 'completed' ? 'bg-green-100 text-green-800' :
               order.status === 'shipping' ? 'bg-blue-100 text-blue-800' :
-              order.status === 'draft' ? 'bg-gray-100 text-gray-600' :
-              'bg-amber-100 text-amber-800'
-            }`}>
+                order.status === 'draft' ? 'bg-gray-100 text-gray-600' :
+                  'bg-amber-100 text-amber-800'
+              }`}>
               Status: {order.status === 'delivered' ? 'DELIVERED' :
-               order.status === 'completed' ? 'COMPLETED' :
-               order.status === 'shipping' ? 'SHIPPING' :
-               order.status === 'draft' ? 'DRAFT' :
-               (order.status || 'N/A').toUpperCase()}
+                order.status === 'completed' ? 'COMPLETED' :
+                  order.status === 'shipping' ? 'SHIPPING' :
+                    order.status === 'draft' ? 'DRAFT' :
+                      (order.status || 'N/A').toUpperCase()}
             </span>
           </div>
 

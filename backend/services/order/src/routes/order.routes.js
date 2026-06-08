@@ -120,9 +120,18 @@ function createOrderRouter(orderService) {
       }
       storeId = storeId || 1;
 
-      // Fix: If the request is from a Customer, created_by should be -1 (since no employee created it)
-      // We use -1 to avoid NOT NULL constraint errors in the database schema.
-      const userId = req.user?.roleName === 'Customer' ? -1 : (req.user?.id || 1);
+      // Determine created_by:
+      // 1. Customer self-order → null (no employee)
+      // 2. Explicit created_by in body (from chatbot S2S) → use it
+      // 3. Default → req.user.id (POS employee)
+      let userId;
+      if (req.user?.roleName === 'Customer') {
+        userId = null;
+      } else if (req.body.created_by !== undefined && req.body.created_by !== null) {
+        userId = req.body.created_by;
+      } else {
+        userId = req.user?.id || 1;
+      }
 
       const jwtToken = req.headers.authorization?.replace('Bearer ', '');
 

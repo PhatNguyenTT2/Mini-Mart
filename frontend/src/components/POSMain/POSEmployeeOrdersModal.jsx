@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import posDataService from '../../services/posDataService';
 
-export const POSEmployeeOrdersModal = ({ isOpen, onClose, currentEmployee, onLoadDraftOrder }) => {
+export const POSEmployeeOrdersModal = ({ isOpen, onClose, currentEmployee, onLoadDraftOrder, initialSearch = '' }) => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(false);
   const [deleteLoading, setDeleteLoading] = useState({});
@@ -16,8 +16,14 @@ export const POSEmployeeOrdersModal = ({ isOpen, onClose, currentEmployee, onLoa
   useEffect(() => {
     if (isOpen && currentEmployee?.id) {
       fetchEmployeeOrders();
+      if (initialSearch) {
+        setSearchQuery(initialSearch);
+      }
     }
-  }, [isOpen, currentEmployee?.id]);
+    if (!isOpen) {
+      setSearchQuery('');
+    }
+  }, [isOpen, currentEmployee?.id, initialSearch]);
 
   const fetchEmployeeOrders = async () => {
     setLoading(true);

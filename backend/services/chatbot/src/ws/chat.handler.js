@@ -51,8 +51,14 @@ function initChatSocket(io, chatService) {
     });
 
     io.on('connection', (socket) => {
-        const { id: userId, role, roleName, storeId } = socket.user;
-        const userType = (roleName === 'Customer' || role === 'Customer') ? 'customer' : 'employee';
+        const { id: userId, role, roleName, storeId, customerId } = socket.user;
+
+        // Three-tier role mapping: customer → manager → employee (default)
+        const MANAGER_ROLES = ['Store Manager', 'Super Admin'];
+        const isCustomer = roleName === 'Customer' || role === 'Customer';
+        const isGuest = roleName === 'Guest';
+        const isManager = !isCustomer && !isGuest && MANAGER_ROLES.includes(roleName);
+        const userType = isCustomer || isGuest ? 'customer' : isManager ? 'manager' : 'employee';
 
         logger.info({ userId, socketId: socket.id }, 'WS client connected');
 
@@ -90,7 +96,9 @@ function initChatSocket(io, chatService) {
                 }
 
                 // Create new session
-                const newSession = await chatService.startSession(userId, userType, storeId || null);
+                const newSession = customerId
+                    ? await chatService.startSession(userId, userType, storeId || null, customerId)
+                    : await chatService.startSession(userId, userType, storeId || null);
                 socket.join(`session:${newSession.id}`);
                 logger.info({ userId, sessionId: newSession.id }, 'WS new session created');
 

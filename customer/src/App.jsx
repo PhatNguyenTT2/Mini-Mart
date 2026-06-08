@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import { CartProvider } from './contexts/CartContext';
 import { StoreProvider, useStore } from './contexts/StoreContext';
@@ -38,6 +38,64 @@ const StoreGuard = ({ children }) => {
   return children;
 };
 
+import { useEffect } from 'react';
+import { useCart } from './contexts/CartContext';
+import toast from 'react-hot-toast';
+
+function CustomerChatActionHandler() {
+  const { addToCart, updateQuantity, setIsCartOpen } = useCart();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const handleAction = (e) => {
+      const action = e.detail;
+      if (!action) return;
+
+      switch (action.type) {
+        case 'ADD_TO_CART': {
+          const { productId, name, price, unitPrice, image } = action.payload || {};
+          const productPrice = price || unitPrice || 0;
+          if (productId) {
+            addToCart({
+              id: productId,
+              name: name || 'Sản phẩm',
+              price: productPrice,
+              image: image || ''
+            });
+          }
+          break;
+        }
+        case 'UPDATE_CART_ITEM': {
+          const { productId, quantity } = action.payload || {};
+          if (productId && quantity != null) {
+            updateQuantity(productId, quantity);
+            toast.success('Đã cập nhật số lượng trong giỏ hàng');
+          }
+          break;
+        }
+        case 'VIEW_CART':
+          setIsCartOpen(true);
+          break;
+        case 'NAVIGATE': {
+          const path = action.payload?.path || action.payload;
+          if (path) navigate(path);
+          break;
+        }
+        case 'CANCEL_ORDER':
+          toast.success(action.payload?.message || 'Đơn hàng đã được hủy thành công');
+          break;
+        default:
+          break;
+      }
+    };
+
+    window.addEventListener('posmart:customer_chat_action', handleAction);
+    return () => window.removeEventListener('posmart:customer_chat_action', handleAction);
+  }, [addToCart, updateQuantity, setIsCartOpen, navigate]);
+
+  return null;
+}
+
 function App() {
   return (
     <StoreProvider>
@@ -45,7 +103,7 @@ function App() {
         <CartProvider>
           <ChatProvider>
             <Router>
-              <Toaster 
+              <Toaster
                 position="top-right"
                 toastOptions={{
                   duration: 3000,
@@ -70,6 +128,7 @@ function App() {
                   },
                 }}
               />
+              <CustomerChatActionHandler />
               <ErrorBoundary>
                 <Routes>
                   {/* Store Selection — no guard */}
@@ -87,10 +146,10 @@ function App() {
 
                   {/* Cart — no guard */}
                   <Route path="/cart" element={<CartPage />} />
-                  
+
                   {/* Checkout — requires store selection */}
                   <Route path="/checkout" element={<StoreGuard><CheckoutPage /></StoreGuard>} />
-                  
+
                   {/* Order Status — requires store selection */}
                   <Route path="/order-status/:orderId" element={<StoreGuard><OrderStatusPage /></StoreGuard>} />
 
@@ -101,7 +160,7 @@ function App() {
 
               {/* Global Chat Widget — floating FAB */}
               <ChatWidget />
-              
+
               {/* Global Cart Drawer */}
               <CartDrawer />
             </Router>

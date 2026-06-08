@@ -37,7 +37,9 @@ class ReadHandler {
     }
 
     const storeId = session.store_id || 1;
-    const customerId = session.user_type === 'customer' ? session.user_id : null;
+    const customerId = session.user_type === 'customer'
+      ? (session.metadata?.customerId || session.user_id)
+      : null;
     const chatHistory = await this.utils.getRecentHistory(session.id);
 
     const result = await this.ragService.recommend(
@@ -138,7 +140,7 @@ class ReadHandler {
 
     let customerContext = null, coPurchaseHint = '';
     if (isCustomer) {
-      const customerId = session.user_id;
+      const customerId = session.metadata?.customerId || session.user_id;
       [customerContext, coPurchaseHint] = await Promise.all([
         getPersonalizationContext(this.apiClient, customerId),
         getCoPurchaseHint(this.copurchaseRepo, [product.id], storeId)
@@ -211,7 +213,7 @@ class ReadHandler {
 
     let customerContext = null, coPurchaseHint = '';
     if (isCustomer) {
-      const customerId = session.user_id;
+      const customerId = session.metadata?.customerId || session.user_id;
       const productIds = products.map(p => p.id);
       [customerContext, coPurchaseHint] = await Promise.all([
         getPersonalizationContext(this.apiClient, customerId),
@@ -333,7 +335,9 @@ class ReadHandler {
 
     if (this.ragService) {
       const storeId = (typeof session === 'object') ? (session.store_id || 1) : 1;
-      const customerId = (typeof session === 'object' && session.user_type === 'customer') ? session.user_id : null;
+      const customerId = (typeof session === 'object' && session.user_type === 'customer')
+        ? (session.metadata?.customerId || session.user_id)
+        : null;
       const sessionId = (typeof session === 'object') ? session.id : session;
       const chatHistory = await this.utils.getRecentHistory(sessionId);
 

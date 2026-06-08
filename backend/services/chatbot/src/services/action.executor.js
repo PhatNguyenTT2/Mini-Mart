@@ -60,9 +60,9 @@ class ActionExecutor {
    * @returns {Promise<boolean>}
    */
   async checkOwnership(session, actionType, payload) {
-    // Employees bypass ownership validation
+    // Employees and Managers bypass ownership validation
     const userType = session.userType || session.user_type || 'customer';
-    if (userType === 'employee') return true;
+    if (userType === 'employee' || userType === 'manager') return true;
 
     if (actionType === ACTION_TYPES.CANCEL_ORDER || actionType === ACTION_TYPES.TRACK_ORDER) {
       const orderId = payload.orderId;
@@ -198,6 +198,14 @@ class ActionExecutor {
         case ACTION_TYPES.UPDATE_ORDER:
           apiResult = await withTimeout(this.apiClient.updateOrderItems(payload.orderId, payload.items));
           break;
+        case ACTION_TYPES.MANAGE_CUSTOMER_UPDATE: {
+          const authUrl = process.env.AUTH_SERVICE_URL || 'http://auth:3001';
+          apiResult = await withTimeout(this.apiClient._fetch(`${authUrl}/api/customers/${payload.customerId}`, {
+            method: 'PUT',
+            body: JSON.stringify({ customerType: payload.newTier })
+          }));
+          break;
+        }
         default:
           // Client-side actions do not hit API downstream immediately.
           // Return success with action instruction for frontend dispatch.

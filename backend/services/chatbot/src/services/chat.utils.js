@@ -398,6 +398,8 @@ class ChatUtils {
           const order = result.data?.order || result.data || {};
           const orderId = order.id || order.orderNumber || result.id || result.orderId || 'N/A';
           replyMsg = `Đã tạo đơn hàng mới thành công. ID đơn hàng: #${orderId}`;
+        } else if (pending.type === 'MANAGE_CUSTOMER_UPDATE') {
+          replyMsg = `Đã cập nhật hạng ${pending.data.newTier} thành công.`;
         }
 
         return {

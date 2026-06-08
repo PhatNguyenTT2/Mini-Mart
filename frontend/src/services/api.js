@@ -34,8 +34,9 @@ api.interceptors.response.use(
   async (error) => {
     const config = error.config
 
-    // Auto-retry on 429 Too Many Requests (rate limit)
-    if (error.response?.status === 429) {
+    // Auto-retry on 429 Too Many Requests (rate limit) - except for login/auth endpoints
+    const isLoginReq = config?.url?.includes('/login') || config?.url?.includes('/auth/login')
+    if (error.response?.status === 429 && !isLoginReq) {
       config.__retryCount = config.__retryCount || 0
       if (config.__retryCount < 3) {
         config.__retryCount += 1

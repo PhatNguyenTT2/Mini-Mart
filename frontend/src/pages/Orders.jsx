@@ -169,12 +169,19 @@ export const Orders = () => {
 
       // Enrich orders with pre-resolved names from Backend (API Composition)
       const enrichedOrders = ordersData.map(order => {
+        const createdBy = parseInt(order.createdBy);
+        const isEmployeeOrder = !isNaN(createdBy) && createdBy > 0;
+
         return {
           ...order,
           _customerName: order.customerName || (!order.customerId ? 'Guest Customer' : `Customer #${order.customerId}`),
           _customerPhone: '',
           _customerType: order.customerType || 'retail',
-          _createdByName: order.createdByName || `User #${order.createdBy || 'N/A'}`
+          _createdByName: order.createdByName
+            ? order.createdByName
+            : isEmployeeOrder
+              ? `Employee #${createdBy}`
+              : 'Self-Order'
         };
       });
 

@@ -54,8 +54,8 @@ class HybridRecommendationService extends EventEmitter {
                 SELECT product_id_a, product_id_b, co_purchase_count,
                        confidence_ab, confidence_ba, lift
                 FROM co_purchase_stats
-                WHERE store_id = $1::bigint AND lift::numeric >= 0.5
-                ORDER BY lift::numeric DESC
+                WHERE store_id = $1::bigint AND co_purchase_count > 0
+                ORDER BY confidence_ab DESC
             `, [storeId]);
 
             this._aprioriCache.clear();

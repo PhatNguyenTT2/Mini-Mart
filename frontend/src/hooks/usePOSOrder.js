@@ -44,10 +44,10 @@ export function usePOSOrder({ cart, setCart, selectedCustomer, setSelectedCustom
     const selectedCustomerId = selectedCustomer?.id;
 
     // Both are guest → no change
-    if ((!selectedCustomerId || selectedCustomerId === 'virtual-guest') && !orderCustomerId) return false;
+    if ((!selectedCustomerId || selectedCustomerId === 'virtual-guest' || selectedCustomer?.customerType === 'guest') && !orderCustomerId) return false;
 
     // One is guest, other isn't → changed
-    if (!selectedCustomerId || selectedCustomerId === 'virtual-guest') {
+    if (!selectedCustomerId || selectedCustomerId === 'virtual-guest' || selectedCustomer?.customerType === 'guest') {
       return !!orderCustomerId;
     }
 
@@ -247,7 +247,15 @@ export function usePOSOrder({ cart, setCart, selectedCustomer, setSelectedCustom
           setSelectedCustomer(null);
         }
       } else {
-        setSelectedCustomer(null);
+        // Fetch default guest customer!
+        try {
+          const guestRes = await posDataService.getDefaultGuest();
+          const guest = guestRes.data?.customer || guestRes.data;
+          setSelectedCustomer(guest);
+        } catch (err) {
+          console.warn('Failed to fetch default guest customer:', err.message);
+          setSelectedCustomer(null);
+        }
       }
 
       order.wasHeldOrder = true;

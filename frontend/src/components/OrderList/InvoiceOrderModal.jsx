@@ -51,29 +51,41 @@ export const InvoiceOrderModal = ({ order, onClose, onViewItems }) => {
 
         // Customer enrichment
         const custId = orderData?.customerId || orderData?.customer_id;
-        if (custId && typeof custId === 'number') {
+        const custIdNum = custId ? parseInt(custId, 10) : null;
+        if (orderData?.customerName) {
+          setCustomerInfo({
+            fullName: orderData.customerName,
+            phone: orderData.customerPhone || '',
+            email: '',
+            customerType: orderData.customerType || 'retail'
+          });
+        } else if (custIdNum && !isNaN(custIdNum)) {
           try {
-            const custRes = await customerService.getCustomerById(custId);
+            const custRes = await customerService.getCustomerById(custIdNum);
             const cust = custRes.data?.customer || custRes.data || custRes;
             setCustomerInfo({
-              fullName: cust.full_name || cust.fullName || `Customer #${custId}`,
+              fullName: cust.full_name || cust.fullName || `Customer #${custIdNum}`,
               phone: cust.phone || '',
               email: cust.email || '',
               customerType: cust.customer_type || cust.customerType || 'guest'
             });
-          } catch { setCustomerInfo({ fullName: `Customer #${custId}`, phone: '', email: '', customerType: 'guest' }); }
+          } catch { setCustomerInfo({ fullName: `Customer #${custIdNum}`, phone: '', email: '', customerType: 'guest' }); }
         }
 
         // Employee enrichment for createdBy
-        const empId = orderData?.createdBy;
-        if (empId === -1) {
-          setCreatedByName('Customer (Online)');
-        } else if (empId && typeof empId === 'number') {
+        const empId = orderData?.createdBy !== undefined && orderData?.createdBy !== null ? parseInt(orderData.createdBy, 10) : null;
+        if (orderData?.createdByName) {
+          setCreatedByName(orderData.createdByName);
+        } else if (empId === -1 || empId === 0) {
+          setCreatedByName('Self-Order');
+        } else if (empId && !isNaN(empId)) {
           try {
             const empRes = await employeeService.getEmployeeById(empId);
             const emp = empRes.data?.employee || empRes.data || empRes;
             setCreatedByName(emp.full_name || emp.fullName || emp.username || `User #${empId}`);
           } catch { setCreatedByName(`User #${empId}`); }
+        } else {
+          setCreatedByName('Self-Order');
         }
 
         // Fetch order details
@@ -241,12 +253,11 @@ export const InvoiceOrderModal = ({ order, onClose, onViewItems }) => {
             {(customerInfo?.customerType || ord.customer?.customerType) && (
               <p className="text-[13px] font-['Poppins',sans-serif]">
                 <span className="font-semibold text-blue-600">Customer Type:</span>
-                <span className={`ml-2 capitalize font-medium ${
-                  (customerInfo?.customerType || ord.customer?.customerType) === 'vip' ? 'text-amber-600' :
+                <span className={`ml-2 capitalize font-medium ${(customerInfo?.customerType || ord.customer?.customerType) === 'vip' ? 'text-amber-600' :
                   (customerInfo?.customerType || ord.customer?.customerType) === 'wholesale' ? 'text-emerald-600' :
-                  (customerInfo?.customerType || ord.customer?.customerType) === 'retail' ? 'text-blue-600' :
-                    'text-gray-600'
-                }`}>
+                    (customerInfo?.customerType || ord.customer?.customerType) === 'retail' ? 'text-blue-600' :
+                      'text-gray-600'
+                  }`}>
                   {customerInfo?.customerType || ord.customer?.customerType}
                 </span>
               </p>
@@ -423,14 +434,13 @@ export const InvoiceOrderModal = ({ order, onClose, onViewItems }) => {
             </p>
             <p className="text-[14px] font-semibold font-['Poppins',sans-serif] text-blue-600">
               {(() => {
-                if (!ord.createdBy) return 'N/A';
-                // Microservice: createdBy is a BIGINT (number)
-                if (typeof ord.createdBy === 'number') return createdByName || `User #${ord.createdBy}`;
-                // Monolith: createdBy is a populated object
-                if (typeof ord.createdBy === 'object') {
-                  return ord.createdBy.fullName || ord.createdBy.employeeCode || 'N/A';
-                }
-                return String(ord.createdBy);
+                if (createdByName) return createdByName;
+                if (ord.createdByName) return ord.createdByName;
+                if (!ord.createdBy) return 'Self-Order';
+                const empId = parseInt(ord.createdBy, 10);
+                if (isNaN(empId)) return String(ord.createdBy);
+                if (empId === -1 || empId === 0) return 'Self-Order';
+                return `User #${empId}`;
               })()}
             </p>
           </div>

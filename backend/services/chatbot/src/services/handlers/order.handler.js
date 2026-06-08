@@ -31,6 +31,19 @@ class OrderHandler {
       };
     }
 
+    const userType = session.userType || session.user_type || 'customer';
+    if (userType === 'employee') {
+      return {
+        intent: 'TRACK_ORDER',
+        reply: `Đang mở lịch sử đơn hàng và lọc đến đơn #${orderId}.`,
+        products: null,
+        action: {
+          type: 'OPEN_MODAL',
+          payload: { modal: 'POSEmployeeOrdersModal', searchQuery: `ORD-${orderId}` }
+        }
+      };
+    }
+
     return {
       intent: 'TRACK_ORDER',
       reply: `Đang chuyển hướng bạn đến giao diện chi tiết đơn hàng #${orderId}.`,
@@ -86,6 +99,17 @@ class OrderHandler {
       action: {
         type: 'CANCEL_ORDER',
         payload: actionPayload
+      }
+    };
+  }
+  handleViewOrderHistory(session) {
+    return {
+      intent: 'VIEW_ORDER_HISTORY',
+      reply: 'Đang mở lịch sử đơn hàng của bạn...',
+      products: null,
+      action: {
+        type: 'OPEN_MODAL',
+        payload: { modal: 'POSEmployeeOrdersModal' }
       }
     };
   }

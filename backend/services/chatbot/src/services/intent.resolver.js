@@ -50,7 +50,6 @@ const INTENT_PATTERNS = {
     CREATE_ORDER: {
         keywords: ['tạo đơn', 'lập hóa đơn', 'đặt hàng'],
         writeAction: true,
-        employeeOnly: true,
         description: 'Tạo đơn hàng mới (Nhân viên)'
     },
     UPDATE_ORDER: {
@@ -76,6 +75,84 @@ const INTENT_PATTERNS = {
         writeAction: true,
         employeeOnly: true,
         description: 'Mở giao diện thanh toán POS'
+    },
+    VIEW_ORDER_HISTORY: {
+        keywords: ['lịch sử đơn', 'history', 'đơn đã tạo', 'lịch sử đơn hàng'],
+        writeAction: false,
+        employeeOnly: true,
+        description: 'Mở lịch sử đơn hàng POS (Nhân viên)'
+    },
+    REPORT_SALES: {
+        keywords: ['doanh thu', 'revenue', 'doanh số'],
+        writeAction: false,
+        managerOnly: true,
+        description: 'Báo cáo doanh thu (Manager)'
+    },
+    REPORT_TOP_PRODUCTS: {
+        keywords: ['bán chạy nhất', 'top sản phẩm', 'bán chạy', 'sp chạy'],
+        writeAction: false,
+        managerOnly: true,
+        description: 'Báo cáo top bán chạy (Manager)'
+    },
+    REPORT_LOW_STOCK: {
+        keywords: ['hàng sắp hết', 'low stock', 'sắp hết hàng', 'cực tiểu'],
+        writeAction: false,
+        managerOnly: true,
+        description: 'Báo cáo hàng tồn kho sắp hết (Manager)'
+    },
+    REPORT_PROFIT: {
+        keywords: ['lợi nhuận', 'profit', 'lãi ròng'],
+        writeAction: false,
+        managerOnly: true,
+        description: 'Báo cáo lợi nhuận (Manager)'
+    },
+    MANAGE_CUSTOMER_SEARCH: {
+        keywords: ['tìm khách hàng', 'tìm khách', 'search khách'],
+        writeAction: false,
+        managerOnly: true,
+        description: 'Tìm kiếm hồ sơ khách hàng (Manager)'
+    },
+    MANAGE_CUSTOMER_UPDATE: {
+        keywords: ['nâng hạng', 'cập nhật hạng', 'đổi hạng'],
+        writeAction: true,
+        managerOnly: true,
+        description: 'Cập nhật phân loại khách hàng (Manager)'
+    },
+    MANAGE_CUSTOMER_LIST: {
+        keywords: ['danh sách khách', 'ds khách VIP', 'ds khách hàng'],
+        writeAction: false,
+        managerOnly: true,
+        description: 'Danh sách khách hàng (Manager)'
+    },
+    MANAGE_SUPPLIER_LIST: {
+        keywords: ['danh sách nhà cung cấp', 'ds ncc', 'danh sách ncc'],
+        writeAction: false,
+        managerOnly: true,
+        description: 'Danh sách nhà cung cấp (Manager)'
+    },
+    MANAGE_SUPPLIER_SEARCH: {
+        keywords: ['thông tin ncc', 'tìm ncc', 'ncc vinamilk'],
+        writeAction: false,
+        managerOnly: true,
+        description: 'Thông tin nhà cung cấp (Manager)'
+    },
+    MANAGE_INVENTORY_CHECK: {
+        keywords: ['kiểm tra tồn kho kho chính', 'kiểm kho', 'tổng tồn'],
+        writeAction: false,
+        managerOnly: true,
+        description: 'Kiểm tra tồn kho tổng quát (Manager)'
+    },
+    MANAGE_INVENTORY_STOCKOUT: {
+        keywords: ['hết hàng', 'cháy hàng', 'sản phẩm nào hết'],
+        writeAction: false,
+        managerOnly: true,
+        description: 'Danh sách sản phẩm hết hàng (Manager)'
+    },
+    MANAGE_INVENTORY_VIEW: {
+        keywords: ['mở quản lý kho', 'quản lý kho'],
+        writeAction: false,
+        managerOnly: true,
+        description: 'Mở trang quản lý kho (Manager)'
     },
 
 
@@ -139,12 +216,16 @@ function resolveIntent(message, userType = 'customer') {
     }
 
     for (const [intent, config] of Object.entries(INTENT_PATTERNS)) {
+        // Enforce manager-only validation at intent resolution stage
+        if (config.managerOnly && userType !== 'manager') {
+            continue;
+        }
         // Enforce employee-only action validation at intent resolution stage
         if (config.employeeOnly && userType !== 'employee') {
             continue;
         }
-        // Skip customer-only intents for employees (e.g. CHECKOUT_GUIDE → POS_CHECKOUT)
-        if (config.customerOnly && userType === 'employee') {
+        // Skip customer-only intents for employees/managers (e.g. CHECKOUT_GUIDE → POS_CHECKOUT)
+        if (config.customerOnly && (userType === 'employee' || userType === 'manager')) {
             continue;
         }
 

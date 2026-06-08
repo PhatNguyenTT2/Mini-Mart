@@ -270,3 +270,13 @@ CREATE TABLE IF NOT EXISTS chatbot_audit_log (
 CREATE INDEX IF NOT EXISTS idx_chatbot_audit_session ON chatbot_audit_log(session_id);
 CREATE INDEX IF NOT EXISTS idx_chatbot_audit_user ON chatbot_audit_log(user_id);
 
+-- ============================================================
+-- MIGRATION: Support 'manager' user_type (RBAC Phase)
+-- ============================================================
+DO $$ BEGIN
+    ALTER TABLE chat_session DROP CONSTRAINT IF EXISTS chat_session_user_type_check;
+    ALTER TABLE chat_session ADD CONSTRAINT chat_session_user_type_check
+        CHECK (user_type IN ('customer', 'employee', 'manager'));
+END $$;
+
+
