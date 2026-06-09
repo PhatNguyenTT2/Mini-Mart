@@ -103,7 +103,8 @@ class CartHandler {
       productId: product.id,
       quantity,
       name: product.name,
-      price: product.unitPrice || product.price || product.unit_price
+      price: product.unitPrice || product.price || product.unit_price,
+      image: product.image || product.image_url || null
     };
 
     const result = await this.actionExecutor.execute(session, 'ADD_TO_CART', actionPayload);

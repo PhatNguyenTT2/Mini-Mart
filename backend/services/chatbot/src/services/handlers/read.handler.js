@@ -126,7 +126,7 @@ class ReadHandler {
       if (isCustomer) {
         const onShelf = stock.quantityOnShelf || 0;
         stockInfo = onShelf > 0
-          ? `Sản phẩm "${product.name}": Đang có ${onShelf} sản phẩm trên kệ. 📍 Vị trí: ${locationStr}.`
+          ? `Sản phẩm "${product.name}": Đang có ${onShelf} sản phẩm trên kệ.`
           : `Sản phẩm "${product.name}": Hiện tạm hết hàng trên kệ.`;
       } else {
         stockInfo = `Sản phẩm "${product.name}" (ID: ${product.id}): ` +
@@ -135,7 +135,9 @@ class ReadHandler {
           `📍 Vị trí trên kệ: ${locationStr}`;
       }
     } else {
-      stockInfo = `Sản phẩm "${product.name}": Chưa có dữ liệu tồn kho. 📍 Vị trí trên kệ: ${locationStr}`;
+      stockInfo = isCustomer
+        ? `Sản phẩm "${product.name}": Chưa có dữ liệu tồn kho.`
+        : `Sản phẩm "${product.name}": Chưa có dữ liệu tồn kho. 📍 Vị trí trên kệ: ${locationStr}`;
     }
 
     let customerContext = null, coPurchaseHint = '';

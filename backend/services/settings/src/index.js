@@ -8,6 +8,7 @@ const eventBus = require('../../../shared/event-bus');
 const SecuritySettingsRepository = require('./repositories/security-settings.repository');
 const SalesSettingsRepository = require('./repositories/sales-settings.repository');
 const SettingsHistoryRepository = require('./repositories/settings-history.repository');
+const CouponRepository = require('./repositories/coupon.repository');
 
 // Services
 const SettingsService = require('./services/settings.service');
@@ -33,12 +34,14 @@ async function start() {
     const securityRepo = new SecuritySettingsRepository(pool);
     const salesRepo = new SalesSettingsRepository(pool);
     const historyRepo = new SettingsHistoryRepository(pool);
+    const couponRepo = new CouponRepository(pool);
 
-    const settingsService = new SettingsService({ 
-      securitySettingsRepo: securityRepo, 
-      salesSettingsRepo: salesRepo, 
-      historyRepo, 
-      pool 
+    const settingsService = new SettingsService({
+      securitySettingsRepo: securityRepo,
+      salesSettingsRepo: salesRepo,
+      historyRepo,
+      couponRepo,
+      pool
     });
 
     const createApp = require('./app');

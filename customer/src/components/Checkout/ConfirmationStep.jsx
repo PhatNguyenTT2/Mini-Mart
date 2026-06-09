@@ -41,7 +41,7 @@ export const ConfirmationStep = ({ formData, paymentMethod, onEdit }) => {
           <div className="space-y-2 text-sm text-gray-700">
             <p><span className="font-medium text-gray-500 w-24 inline-block">Store:</span> {selectedStore?.name || 'Not selected'}</p>
             <p>
-              <span className="font-medium text-gray-500 w-24 inline-block">Payment:</span> 
+              <span className="font-medium text-gray-500 w-24 inline-block">Payment:</span>
               <span className="font-semibold text-emerald-600">
                 {paymentMethod === 'vnpay' ? 'Pay via VNPay' : 'Cash on Delivery (COD)'}
               </span>
@@ -52,7 +52,7 @@ export const ConfirmationStep = ({ formData, paymentMethod, onEdit }) => {
 
       {/* Cart Summary (mini) */}
       <div className="mt-8 pt-6 border-t border-gray-100">
-        <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4">Products ({cartItems.length})</h3>
+        <h3 className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-4">Products ({cartItems.reduce((sum, i) => sum + i.quantity, 0)})</h3>
         <ul className="space-y-3">
           {cartItems.map((item) => (
             <li key={item.id} className="flex justify-between items-center text-sm">

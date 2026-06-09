@@ -61,3 +61,36 @@ DO $$ BEGIN
     ALTER TABLE sales_settings ADD COLUMN apply_to_expiring_tomorrow BOOLEAN NOT NULL DEFAULT FALSE;
 EXCEPTION WHEN duplicate_column THEN NULL;
 END $$;
+
+-- 4. OMNICHANNEL COUPONS AND USAGES
+CREATE TABLE IF NOT EXISTS coupons (
+    id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    code TEXT NOT NULL UNIQUE,
+    description TEXT,
+    discount_type TEXT NOT NULL DEFAULT 'percent'
+        CHECK (discount_type IN ('percent', 'fixed', 'freeship')),
+    discount_value NUMERIC NOT NULL DEFAULT 0,
+    min_order_amount NUMERIC NOT NULL DEFAULT 0,
+    max_uses INT,
+    used_count INT NOT NULL DEFAULT 0,
+    is_active BOOLEAN NOT NULL DEFAULT TRUE,
+    is_public BOOLEAN NOT NULL DEFAULT TRUE,
+    starts_at TIMESTAMPTZ,
+    expires_at TIMESTAMPTZ,
+    created_by BIGINT,
+    created_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS coupon_usages (
+    id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    coupon_id BIGINT NOT NULL REFERENCES coupons(id),
+    customer_id BIGINT NOT NULL,
+    order_id BIGINT,
+    used_at TIMESTAMPTZ DEFAULT NOW()
+);
+
+-- Seed WELCOME100 freeship coupon
+INSERT INTO coupons (code, description, discount_type, discount_value, is_public)
+VALUES ('WELCOME100', 'Free shipping for new customers', 'freeship', 30000, true)
+ON CONFLICT (code) DO NOTHING;
+

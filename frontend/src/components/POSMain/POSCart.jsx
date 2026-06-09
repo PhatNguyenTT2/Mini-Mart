@@ -68,7 +68,7 @@ export const POSCart = ({
           </div>
         </div>
         <p className="text-[13px] font-['Poppins',sans-serif] text-gray-500">
-          {cart.length} item{cart.length !== 1 ? 's' : ''}
+          {cart.reduce((sum, item) => sum + item.quantity, 0)} item{cart.reduce((sum, item) => sum + item.quantity, 0) !== 1 ? 's' : ''}
         </p>
       </div>
 
@@ -115,8 +115,8 @@ export const POSCart = ({
                 key={item.id}
                 id={`cart-item-${item.id}`}
                 className={`rounded-lg p-3 transition-all duration-300 ${highlightedId === item.id
-                    ? 'bg-emerald-100 ring-2 ring-emerald-400 scale-[1.02]'
-                    : 'bg-gray-50'
+                  ? 'bg-emerald-100 ring-2 ring-emerald-400 scale-[1.02]'
+                  : 'bg-gray-50'
                   }`}
               >
                 <div className="flex items-start justify-between mb-2">

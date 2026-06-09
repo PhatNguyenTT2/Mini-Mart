@@ -65,7 +65,7 @@ module.exports = function settingsRoutes(settingsService) {
       // Auto-cleanup after 10 minutes
       setTimeout(() => promotionRequests.delete(requestId), 10 * 60 * 1000);
     }
-  }).catch(() => {});  // Non-blocking — subscription happens async
+  }).catch(() => { });  // Non-blocking — subscription happens async
 
   // POST /fresh-promotion/run — trigger promotion via event
   router.post('/fresh-promotion/run', verifyToken, requirePermission('manage_settings'), async (req, res, next) => {
@@ -101,6 +101,42 @@ module.exports = function settingsRoutes(settingsService) {
       }
 
       success(res, { requestId, ...entry });
+    } catch (err) { next(err); }
+  });
+
+  // --- Admin Coupon CRUD routes ---
+  router.get('/coupons', verifyToken, requirePermission('manage_settings'), async (req, res, next) => {
+    try {
+      const result = await settingsService.getCoupons(req.query);
+      paginated(res, { ...result, page: req.query.page || 1, limit: req.query.limit || 20 });
+    } catch (err) { next(err); }
+  });
+
+  router.post('/coupons', verifyToken, requirePermission('manage_settings'), async (req, res, next) => {
+    try {
+      const result = await settingsService.createCoupon(req.body);
+      success(res, result);
+    } catch (err) { next(err); }
+  });
+
+  router.put('/coupons/:id', verifyToken, requirePermission('manage_settings'), async (req, res, next) => {
+    try {
+      const result = await settingsService.updateCoupon(req.params.id, req.body);
+      success(res, result);
+    } catch (err) { next(err); }
+  });
+
+  router.delete('/coupons/:id', verifyToken, requirePermission('manage_settings'), async (req, res, next) => {
+    try {
+      const result = await settingsService.deleteCoupon(req.params.id);
+      success(res, result);
+    } catch (err) { next(err); }
+  });
+
+  router.get('/coupons/:id/usages', verifyToken, requirePermission('manage_settings'), async (req, res, next) => {
+    try {
+      const result = await settingsService.getCouponUsages(req.params.id, req.query);
+      paginated(res, { ...result, page: req.query.page || 1, limit: req.query.limit || 20 });
     } catch (err) { next(err); }
   });
 

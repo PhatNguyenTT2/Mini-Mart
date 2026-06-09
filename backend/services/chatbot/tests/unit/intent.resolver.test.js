@@ -86,6 +86,16 @@ describe('Intent Resolver', () => {
             const result = resolveIntent('lịch sử đơn hàng', 'customer');
             expect(result.intent).toBe('ORDER_STATUS');
         });
+
+        it('should resolve direct "thêm" patterns to ADD_TO_CART for customer', () => {
+            const result = resolveIntent('thêm 2 coca', 'customer');
+            expect(result.intent).toBe('ADD_TO_CART');
+        });
+
+        it('should resolve direct "thêm" patterns to POS_ADD_ITEM for employee', () => {
+            const result = resolveIntent('thêm 2 coca', 'employee');
+            expect(result.intent).toBe('POS_ADD_ITEM');
+        });
     });
 
     describe('getAllIntents', () => {

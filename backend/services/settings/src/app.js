@@ -61,6 +61,42 @@ function createApp({ settingsService }) {
     } catch (err) { next(err); }
   });
 
+  // Public coupon routes for customer checkout
+  app.get('/api/coupons/available', verifyToken, async (req, res, next) => {
+    try {
+      const data = await settingsService.getAvailableCoupons();
+      res.json({ success: true, data });
+    } catch (err) { next(err); }
+  });
+
+  app.post('/api/coupons/validate', verifyToken, async (req, res, next) => {
+    try {
+      const { code, subtotal } = req.body;
+      // customerId might be in req.user.customerId or req.user.id
+      const customerId = req.user.customerId || req.user.id;
+      const data = await settingsService.validateCoupon(code, { customerId, subtotal });
+      res.json({ success: true, data });
+    } catch (err) { next(err); }
+  });
+
+  // Internal service-to-service: Redeem coupon code on order completion
+  app.post('/api/internal/coupons/redeem', async (req, res, next) => {
+    try {
+      const { code, customerId, orderId } = req.body;
+      const data = await settingsService.redeemCoupon(code, customerId, orderId);
+      res.json({ success: true, data });
+    } catch (err) { next(err); }
+  });
+
+  // Internal service-to-service: Validate coupon code for Order Service validation
+  app.post('/api/internal/coupons/validate', async (req, res, next) => {
+    try {
+      const { code, customerId, subtotal } = req.body;
+      const data = await settingsService.validateCoupon(code, { customerId, subtotal });
+      res.json({ success: true, data });
+    } catch (err) { next(err); }
+  });
+
   app.use(errorHandler);
 
   return app;

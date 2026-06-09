@@ -8,14 +8,29 @@ const formatVND = (amount) => {
 };
 
 export function OrderSummary() {
-  const { cartItems, getCartTotal, appliedCoupon, applyCoupon, removeCoupon, getCartDiscount } = useCart();
+  const {
+    cartItems,
+    getCartTotal,
+    appliedCoupon,
+    applyCoupon,
+    removeCoupon,
+    getCartDiscount,
+    // Omnichannel sequential discount details
+    discountPercentage,
+    getMembershipDiscount,
+    getSubtotalAfterMember,
+    deliveryType,
+    getShippingFee,
+    getShippingDiscount,
+    getTotalAmount
+  } = useCart();
   const { user } = useAuth();
   const [couponInput, setCouponInput] = useState('');
 
-  const handleApplyCoupon = (e) => {
+  const handleApplyCoupon = async (e) => {
     e.preventDefault();
     if (!couponInput.trim()) return;
-    const success = applyCoupon(couponInput);
+    const success = await applyCoupon(couponInput);
     if (success) setCouponInput('');
   };
 
@@ -52,9 +67,9 @@ export function OrderSummary() {
         <h3 className="font-bold text-gray-800 text-sm mb-3">Discount Coupon</h3>
         {appliedCoupon ? (
           <div className="flex items-center justify-between bg-emerald-50 border border-emerald-200 rounded-lg p-3">
-            <div className="flex flex-col">
+            <div className="flex flex-col min-w-0 pr-2">
               <span className="font-bold text-emerald-700 text-sm">{appliedCoupon.code}</span>
-              <span className="text-emerald-600 text-xs">{appliedCoupon.description}</span>
+              <span className="text-emerald-600 text-xs truncate">{appliedCoupon.description}</span>
             </div>
             <button
               type="button"
@@ -92,19 +107,48 @@ export function OrderSummary() {
           <span>Subtotal</span>
           <span className="font-semibold text-gray-800">{formatVND(getCartTotal())}</span>
         </div>
-        <div className="flex justify-between text-sm text-gray-600">
-          <span>Shipping Fee</span>
-          <span className="font-semibold text-emerald-600">Free</span>
-        </div>
-        {appliedCoupon && (
+
+        {/* Membership Discount */}
+        {discountPercentage > 0 && (
+          <>
+            <div className="flex justify-between text-sm text-emerald-600">
+              <span>Membership Discount ({discountPercentage}%)</span>
+              <span className="font-semibold">-{formatVND(getMembershipDiscount())}</span>
+            </div>
+            <div className="flex justify-between text-xs text-gray-400">
+              <span>Subtotal after Member Discount</span>
+              <span>{formatVND(getSubtotalAfterMember())}</span>
+            </div>
+          </>
+        )}
+
+        {/* Coupon Discount */}
+        {appliedCoupon && getCartDiscount() > 0 && (
           <div className="flex justify-between text-sm text-emerald-600">
-            <span>Discount ({appliedCoupon.code})</span>
+            <span>Coupon Discount ({appliedCoupon.code})</span>
             <span className="font-semibold">-{formatVND(getCartDiscount())}</span>
           </div>
         )}
+
+        {/* Shipping Fee */}
+        <div className="flex justify-between text-sm text-gray-600">
+          <span>Shipping Fee</span>
+          <span className="font-semibold text-gray-800">
+            {getShippingFee() > 0 ? formatVND(getShippingFee()) : 'Free'}
+          </span>
+        </div>
+
+        {/* Shipping discount */}
+        {appliedCoupon && getShippingDiscount() > 0 && (
+          <div className="flex justify-between text-sm text-emerald-600">
+            <span>Shipping Discount</span>
+            <span className="font-semibold">-{formatVND(getShippingDiscount())}</span>
+          </div>
+        )}
+
         <div className="flex justify-between pt-2 border-t border-gray-100 mt-2">
           <span className="font-bold text-lg text-gray-800">Total</span>
-          <span className="font-bold text-xl text-emerald-600">{formatVND(Math.max(0, getCartTotal() - getCartDiscount()))}</span>
+          <span className="font-bold text-xl text-emerald-600">{formatVND(Math.max(0, getTotalAmount()))}</span>
         </div>
       </div>
     </div>

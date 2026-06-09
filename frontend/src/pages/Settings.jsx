@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { Breadcrumb } from '../components/Breadcrumb';
-import { Settings as SettingsIcon, Percent, Shield, Leaf, DollarSign } from 'lucide-react';
+import { Settings as SettingsIcon, Percent, Shield, Leaf, DollarSign, Ticket } from 'lucide-react';
 import {
   CustomerDiscountSettings,
   POSSecuritySettings,
   FreshProductPromotionSettings,
-  ProductPriceSettings
+  ProductPriceSettings,
+  CouponSettings
 } from '../components/Settings';
 
 export const Settings = () => {
@@ -23,6 +24,13 @@ export const Settings = () => {
       icon: Percent,
       description: 'Configure default discount rates for customer types',
       component: CustomerDiscountSettings
+    },
+    {
+      id: 'coupons',
+      label: 'Coupons Manager',
+      icon: Ticket,
+      description: 'Manage omnichannel promo codes & shipping discounts',
+      component: CouponSettings
     },
     {
       id: 'security',

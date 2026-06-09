@@ -53,15 +53,15 @@ function CustomerChatActionHandler() {
 
       switch (action.type) {
         case 'ADD_TO_CART': {
-          const { productId, name, price, unitPrice, image } = action.payload || {};
+          const { productId, name, price, unitPrice, image, quantity } = action.payload || {};
           const productPrice = price || unitPrice || 0;
           if (productId) {
             addToCart({
               id: productId,
               name: name || 'Sản phẩm',
               price: productPrice,
-              image: image || ''
-            });
+              image: image || null
+            }, quantity || 1);
           }
           break;
         }

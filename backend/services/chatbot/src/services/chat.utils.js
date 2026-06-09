@@ -67,18 +67,35 @@ class ChatUtils {
 
         if (relevant.length > 0) {
           logger.info({ keyword, source: 'rag', count: relevant.length, topScore: relevant[0].score, ftsBoost: ftsIds.size > 0 }, 'RAG entity resolution hit');
+
+          const rawProducts = relevant.map(r => ({
+            id: r.product_id,
+            product_id: r.product_id,
+            name: r.content.match(/"([^"]+)"/)?.[1] || `Product ${r.product_id}`,
+            unitPrice: Number(r.unit_price),
+            categoryName: r.category_name,
+            quantityOnShelf: r.quantity_on_shelf,
+            _ragScore: r.score,
+            _ftsMatch: !!r._ftsMatch
+          }));
+
+          let finalProducts = rawProducts;
+          if (this.ragService && typeof this.ragService._hydrateProductsWithCatalog === 'function') {
+            try {
+              finalProducts = await this.ragService._hydrateProductsWithCatalog(rawProducts);
+              finalProducts = finalProducts.map((p, idx) => ({
+                ...p,
+                _ragScore: rawProducts[idx]._ragScore,
+                _ftsMatch: rawProducts[idx]._ftsMatch
+              }));
+            } catch (err) {
+              logger.warn({ err }, 'Failed to hydrate products in resolveProductsByRAG');
+            }
+          }
+
           return {
             source: 'rag',
-            products: relevant.map(r => ({
-              id: r.product_id,
-              name: r.content.match(/"([^"]+)"/)?.[1] || `Product ${r.product_id}`,
-              unitPrice: Number(r.unit_price),
-              categoryName: r.category_name,
-              quantityOnShelf: r.quantity_on_shelf,
-              image: null,
-              _ragScore: r.score,
-              _ftsMatch: !!r._ftsMatch
-            }))
+            products: finalProducts
           };
         }
         logger.debug({ keyword, topScore: ragResults[0]?.score || 0, ftsCount: ftsResults.length }, 'RAG entity resolution hybrid check fail');

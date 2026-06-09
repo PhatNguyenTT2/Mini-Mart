@@ -400,7 +400,7 @@ describe('ChatService Unit Tests', () => {
             expect(result.reply).toContain('Đã thêm 3 "Sting dâu" vào giỏ hàng thành công.');
             expect(result.action).toEqual({
                 type: 'ADD_TO_CART',
-                payload: { productId: 4, quantity: 3, name: 'Sting dâu', price: 10000 }
+                payload: { productId: 4, quantity: 3, name: 'Sting dâu', price: 10000, image: null }
             });
         });
 

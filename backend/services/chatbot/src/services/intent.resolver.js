@@ -43,7 +43,7 @@ const INTENT_PATTERNS = {
         description: 'Cập nhật số lượng sản phẩm trong giỏ hàng'
     },
     ADD_TO_CART: {
-        keywords: ['/thêm.*(vào)?.*giỏ/', '/bỏ.*(vào)?.*giỏ/', '/^mua\b/', '/^lấy\b/', '/\bmua\s+\d+/', '/\blấy\s+\d+/'],
+        keywords: ['/thêm.*(vào)?.*giỏ/', '/bỏ.*(vào)?.*giỏ/', '/^thêm\\b/', '/\\bthêm\\s+\\d+/', '/^mua\\b/', '/^lấy\\b/', '/\\bmua\\s+\\d+/', '/\\blấy\\s+\\d+/'],
         writeAction: true,
         description: 'Thêm sản phẩm vào giỏ hàng khách hàng'
     },

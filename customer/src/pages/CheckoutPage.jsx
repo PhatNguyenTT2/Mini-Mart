@@ -18,7 +18,7 @@ import { Loader2, MapPin, CreditCard, CheckCircle2 } from 'lucide-react';
 export default function CheckoutPage() {
   const [step, setStep] = useState('shipping'); // 'shipping' | 'confirm'
   const { user } = useAuth();
-  const { cartItems, getCartTotal } = useCart();
+  const { cartItems, getCartTotal, appliedCoupon, deliveryType, getTotalAmount } = useCart();
   const { selectedStore } = useStore();
   const navigate = useNavigate();
 
@@ -113,11 +113,12 @@ export default function CheckoutPage() {
       const orderRes = await orderService.createOrder({
         items: cartItems,
         customerId: user.customerId || user.id,
-        deliveryType: 'delivery',
+        deliveryType: deliveryType || 'delivery',
         shippingAddress: `${formData.address} - Phone: ${formData.phone} - Name: ${formData.fullName}`,
-        shippingFee: 0,
+        shippingFee: deliveryType === 'delivery' ? 30000 : 0,
         notes: formData.notes,
-        storeId: selectedStore.id
+        storeId: selectedStore.id,
+        couponCode: appliedCoupon?.code || null
       });
 
       const order = orderRes.data?.order || orderRes.order || orderRes;
@@ -146,12 +147,14 @@ export default function CheckoutPage() {
         console.error('Failed to save address', e);
       }
 
+      const orderTotal = order.total !== undefined ? order.total : getTotalAmount();
+
       if (paymentMethod === 'cod') {
         // COD: Create payment record to trigger Saga
         try {
           await paymentService.createDirectPayment({
             orderId,
-            amount: order.total || getCartTotal(),
+            amount: orderTotal,
             items: order.details || cartItems.map(item => ({
               batchId: null,
               quantity: item.quantity
@@ -170,7 +173,7 @@ export default function CheckoutPage() {
       // 2. Create VNPay URL
       const paymentRes = await paymentService.createVNPayUrl({
         orderId: orderId,
-        amount: order.total || getCartTotal(),
+        amount: orderTotal,
         orderInfo: `Payment for order ${orderId} POSMART`,
         storeId: selectedStore.id
       });
@@ -209,8 +212,8 @@ export default function CheckoutPage() {
             {/* Step 1: Shipping */}
             <div className="relative z-10 flex flex-col items-center">
               <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-colors duration-300 border-2 ${step === 'shipping'
-                  ? 'bg-emerald-500 text-white border-emerald-500 ring-4 ring-emerald-50'
-                  : 'bg-emerald-500 text-white border-emerald-500'
+                ? 'bg-emerald-500 text-white border-emerald-500 ring-4 ring-emerald-50'
+                : 'bg-emerald-500 text-white border-emerald-500'
                 }`}>
                 {step === 'confirm' ? <CheckCircle2 className="w-5 h-5" /> : 1}
               </div>
@@ -222,8 +225,8 @@ export default function CheckoutPage() {
             {/* Step 2: Payment/Confirm */}
             <div className="relative z-10 flex flex-col items-center">
               <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-colors duration-300 border-2 ${step === 'confirm'
-                  ? 'bg-emerald-500 text-white border-emerald-500 ring-4 ring-emerald-50'
-                  : 'bg-white text-gray-400 border-gray-300'
+                ? 'bg-emerald-500 text-white border-emerald-500 ring-4 ring-emerald-50'
+                : 'bg-white text-gray-400 border-gray-300'
                 }`}>
                 2
               </div>

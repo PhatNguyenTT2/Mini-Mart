@@ -147,3 +147,17 @@ DO $$ BEGIN
     ALTER TABLE sale_order ALTER COLUMN customer_id DROP NOT NULL;
 EXCEPTION WHEN OTHERS THEN NULL;
 END $$;
+
+-- ==========================================
+-- MIGRATION: Add coupon_code and coupon_discount to sale_order
+-- ==========================================
+DO $$ BEGIN
+    ALTER TABLE sale_order ADD COLUMN coupon_code TEXT;
+EXCEPTION WHEN duplicate_column THEN NULL;
+END $$;
+
+DO $$ BEGIN
+    ALTER TABLE sale_order ADD COLUMN coupon_discount NUMERIC NOT NULL DEFAULT 0;
+EXCEPTION WHEN duplicate_column THEN NULL;
+END $$;
+

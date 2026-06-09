@@ -28,7 +28,7 @@ class AuthService {
     if (!valid) throw new UnauthorizedError('Invalid username or password');
 
     const permissions = await this.userRepo.getPermissions(user.id);
-    
+
     const isCustomer = user.role_name === 'Customer';
     let profile = null;
     let tokenPayload = {
@@ -199,6 +199,7 @@ class AuthService {
         user: {
           id: newUser.id,
           customerId: customerProfile.id,
+          customerType: customerProfile.customer_type || customerProfile.customerType || 'retail',
           username: finalUsername,
           email,
           fullName,
@@ -337,6 +338,7 @@ class AuthService {
     // For Customer users, include customer table PK (different from user_account.id)
     if (isCustomer && profile) {
       response.customerId = profile.id;
+      response.customerType = profile.customer_type || profile.customerType || 'retail';
     }
     return response;
   }

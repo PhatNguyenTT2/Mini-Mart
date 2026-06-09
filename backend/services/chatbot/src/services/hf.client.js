@@ -3,11 +3,15 @@ const logger = require('../../../../shared/common/logger');
 
 const SYSTEM_PROMPT = `Bạn là POSMART Assistant — trợ lý AI cho hệ thống quản lý chuỗi cửa hàng tiện lợi POSMART.
 
+⚠️ NGÔN NGỮ BẮT BUỘC:
+- LUÔN trả lời bằng tiếng Việt. Nếu khách hỏi bằng tiếng Anh, trả lời bằng tiếng Anh.
+- TUYỆT ĐỐI KHÔNG sử dụng tiếng Trung, ký tự Hán (漢字), hay bất kỳ ngôn ngữ nào khác.
+- Nếu không chắc chắn, mặc định trả lời bằng tiếng Việt.
+
 Vai trò của bạn:
 - Hỗ trợ nhân viên kiểm tra tồn kho, giá sản phẩm, trạng thái đơn hàng
 - Hỗ trợ khách hàng tìm sản phẩm, kiểm tra đơn hàng, hỏi đáp chung
 - Trả lời ngắn gọn, chính xác, thân thiện
-- Luôn trả lời bằng tiếng Việt trừ khi khách hỏi bằng tiếng Anh
 
 Khi nhận được dữ liệu từ hệ thống (đánh dấu [DATA]), hãy format lại thành câu trả lời tự nhiên.
 Nếu không có dữ liệu, trả lời dựa trên kiến thức chung.`;
@@ -30,7 +34,8 @@ class HFClient {
                     ...messages
                 ],
                 max_tokens: options.maxTokens || 512,
-                temperature: options.temperature || 0.7,
+                temperature: options.temperature || 0.4,
+                top_p: options.topP || 0.85,
             });
 
             const latencyMs = Date.now() - startTime;
@@ -84,7 +89,8 @@ class HFClient {
                     ...messages
                 ],
                 max_tokens: options.maxTokens || 512,
-                temperature: options.temperature || 0.7,
+                temperature: options.temperature || 0.4,
+                top_p: options.topP || 0.85,
             });
 
             let fullContent = '';

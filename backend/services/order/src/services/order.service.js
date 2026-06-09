@@ -133,6 +133,8 @@ class OrderService {
       shippingFee: parseFloat(row.shipping_fee || 0),
       discountPercentage: parseFloat(row.discount_percentage || 0),
       total: parseFloat(row.total_amount || 0),
+      couponCode: row.coupon_code || null,
+      couponDiscount: parseFloat(row.coupon_discount || 0),
       paymentStatus: row.payment_status,
       status: row.status,
       itemCount: parseInt(row.item_count || 0, 10),
@@ -356,8 +358,80 @@ class OrderService {
     }
   }
 
+  async validateCouponInternal(code, customerId, subtotal) {
+    const settingsServiceUrl = process.env.SETTINGS_SERVICE_URL || 'http://settings:3004';
+    try {
+      const res = await fetch(`${settingsServiceUrl}/api/internal/coupons/validate`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code, customerId, subtotal })
+      });
+      if (res.ok) {
+        const body = await res.json();
+        return body.data; // { valid: true/false, coupon: ..., error: ... }
+      }
+      console.error(`validateCouponInternal: Settings returned status ${res.status}`);
+      return { valid: false, error: 'Could not contact settings service for coupon validation' };
+    } catch (err) {
+      console.error('validateCouponInternal failed:', err.message);
+      return { valid: false, error: 'Settings service unreachable' };
+    }
+  }
+
+  async calculateOrderAmounts(storeId, data, subtotal, jwtToken) {
+    const customer_id = data.customer_id || data.customerId;
+    const delivery_type = data.delivery_type || data.deliveryType;
+    const coupon_code = data.coupon_code || data.couponCode;
+
+    // 1. Membership Discount
+    let discount_percentage = 0;
+    if (customer_id) {
+      discount_percentage = await this.resolveCustomerDiscount(customer_id, jwtToken);
+    }
+    const membership_discount = subtotal * (discount_percentage / 100);
+    const subtotal_after_membership = subtotal - membership_discount;
+
+    // 2. Shipping Fee (Default 30000 VND if delivery_type === 'delivery')
+    const shipping_fee = delivery_type === 'delivery' ? 30000 : 0;
+
+    // 3. Coupon Discount & Shipping Discount
+    let coupon_discount = 0;
+    let shipping_discount = 0;
+    let appliedCouponCode = null;
+
+    if (coupon_code) {
+      const valResult = await this.validateCouponInternal(coupon_code, customer_id, subtotal_after_membership);
+      if (!valResult.valid) {
+        throw new ValidationError(valResult.error || 'Invalid coupon code');
+      }
+      const coupon = valResult.coupon;
+      appliedCouponCode = coupon.code;
+      if (coupon.discount_type === 'percent') {
+        coupon_discount = subtotal_after_membership * (coupon.discount_value / 100);
+      } else if (coupon.discount_type === 'fixed') {
+        coupon_discount = coupon.discount_value;
+      } else if (coupon.discount_type === 'freeship') {
+        shipping_discount = Math.min(shipping_fee, coupon.discount_value);
+        coupon_discount = 0;
+      }
+      // Cap coupon discount to subtotal after membership
+      coupon_discount = Math.min(coupon_discount, subtotal_after_membership);
+    }
+
+    const total_amount = subtotal_after_membership - coupon_discount + (shipping_fee - shipping_discount);
+
+    return {
+      subtotal,
+      discount_percentage,
+      shipping_fee,
+      coupon_code: appliedCouponCode,
+      coupon_discount,
+      total_amount
+    };
+  }
+
   async createDraftOrder(storeId, data, userId, jwtToken) {
-    const { customer_id, delivery_type, address, items: rawItems } = data;
+    const { customer_id, delivery_type, address, items: rawItems, coupon_code } = data;
 
     if (!rawItems || rawItems.length === 0) throw new ValidationError('Order must contain items');
 
@@ -374,22 +448,19 @@ class OrderService {
         return item;
       });
 
-      // Server-side discount resolution (Zero-Trust architecture)
-      let discount_percentage = 0;
-      if (customer_id) {
-        discount_percentage = await this.resolveCustomerDiscount(customer_id, jwtToken);
-      }
-      const shipping_fee = Number(data.shipping_fee || 0);
-      const total_amount = subtotal * (1 - discount_percentage / 100) + shipping_fee;
+      // Calculate order rates server-side (Zero-Trust architecture)
+      const amounts = await this.calculateOrderAmounts(storeId, data, subtotal, jwtToken);
 
       const orderData = {
         customer_id: customer_id,
         created_by: userId,
         delivery_type,
         address,
-        shipping_fee,
-        discount_percentage,
-        total_amount
+        shipping_fee: amounts.shipping_fee,
+        discount_percentage: amounts.discount_percentage,
+        coupon_code: amounts.coupon_code,
+        coupon_discount: amounts.coupon_discount,
+        total_amount: amounts.total_amount
       };
 
       const header = await this.orderRepo.createOrderWithClient(client, storeId, orderData);
@@ -399,6 +470,24 @@ class OrderService {
       }
 
       await client.query('COMMIT');
+
+      // Zero-Trust: If coupon was applied, redeem/commit coupon usage inside setting service on order success
+      if (amounts.coupon_code) {
+        try {
+          const settingsServiceUrl = process.env.SETTINGS_SERVICE_URL || 'http://settings:3004';
+          await fetch(`${settingsServiceUrl}/api/internal/coupons/redeem`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              code: amounts.coupon_code,
+              customerId: customer_id,
+              orderId: header.id
+            })
+          });
+        } catch (redeemErr) {
+          console.error(`Redeem coupon failed for order ${header.id}:`, redeemErr.message);
+        }
+      }
 
       const details = await this.detailRepo.findByOrderId(header.id);
       return {
@@ -694,13 +783,21 @@ class OrderService {
         await this.detailRepo.addDetailWithClient(client, orderId, item);
       }
 
-      // Recalculate total
-      const discount = parseFloat(order.discount_percentage || 0);
-      const shipping = parseFloat(order.shipping_fee || 0);
-      const total_amount = subtotal * (1 - discount / 100) + shipping;
+      // Recalculate total using calculateOrderAmounts helper
+      const amounts = await this.calculateOrderAmounts(storeId, {
+        customer_id: order.customer_id,
+        delivery_type: order.delivery_type,
+        coupon_code: order.coupon_code
+      }, subtotal, jwtToken);
 
       const updated = await this.orderRepo.updateWithClient(
-        client, storeId, orderId, { total_amount }
+        client, storeId, orderId, {
+        shipping_fee: amounts.shipping_fee,
+        discount_percentage: amounts.discount_percentage,
+        coupon_code: amounts.coupon_code,
+        coupon_discount: amounts.coupon_discount,
+        total_amount: amounts.total_amount
+      }
       );
 
       await client.query('COMMIT');

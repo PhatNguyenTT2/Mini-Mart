@@ -320,6 +320,98 @@ const settingsService = {
 
   restartPromotionScheduler: async () => {
     return { success: true, message: 'Scheduler auto-restarts on settings change' }
+  },
+  // ========== OMNICHANNEL COUPONS AND USAGES ==========
+
+  /**
+   * Get available public coupons for customer checkout drawer
+   */
+  getAvailableCoupons: async () => {
+    try {
+      const response = await api.get('/coupons/available')
+      return response.data
+    } catch (error) {
+      console.error('Error fetching available coupons:', error)
+      throw error
+    }
+  },
+
+  /**
+   * Validate coupon before applying it at checkout
+   */
+  validateCoupon: async (code, subtotal) => {
+    try {
+      const response = await api.post('/coupons/validate', { code, subtotal })
+      return response.data
+    } catch (error) {
+      console.error('Error validating coupon:', error)
+      throw error
+    }
+  },
+
+  /**
+   * Admin: List coupons with pagination and filter
+   */
+  getCoupons: async (params = {}) => {
+    try {
+      const response = await api.get('/settings/coupons', { params })
+      return response.data
+    } catch (error) {
+      console.error('Error fetching coupons:', error)
+      throw error
+    }
+  },
+
+  /**
+   * Admin: Create a new omnichannel coupon
+   */
+  createCoupon: async (data) => {
+    try {
+      const response = await api.post('/settings/coupons', data)
+      return response.data
+    } catch (error) {
+      console.error('Error creating coupon:', error)
+      throw error
+    }
+  },
+
+  /**
+   * Admin: Update coupon details
+   */
+  updateCoupon: async (id, data) => {
+    try {
+      const response = await api.put(`/settings/coupons/${id}`, data)
+      return response.data
+    } catch (error) {
+      console.error('Error updating coupon:', error)
+      throw error
+    }
+  },
+
+  /**
+   * Admin: Soft-delete/deactivate coupon
+   */
+  deleteCoupon: async (id) => {
+    try {
+      const response = await api.delete(`/settings/coupons/${id}`)
+      return response.data
+    } catch (error) {
+      console.error('Error deleting coupon:', error)
+      throw error
+    }
+  },
+
+  /**
+   * Admin: Get usage logs of a specific coupon
+   */
+  getCouponUsages: async (id, params = {}) => {
+    try {
+      const response = await api.get(`/settings/coupons/${id}/usages`, { params })
+      return response.data
+    } catch (error) {
+      console.error('Error fetching coupon usages:', error)
+      throw error
+    }
   }
 }
 
