@@ -155,8 +155,16 @@ class SettingsService {
     if (existing) throw new ValidationError('Coupon code already exists');
 
     return this.couponRepo.create({
-      ...data,
-      code
+      code,
+      description: data.description,
+      discountType: data.discount_type !== undefined ? data.discount_type : data.discountType,
+      discountValue: data.discount_value !== undefined ? parseFloat(data.discount_value) : data.discountValue,
+      minOrderAmount: data.min_order_amount !== undefined ? parseFloat(data.min_order_amount) : data.minOrderAmount,
+      maxUses: data.usage_limit !== undefined ? (data.usage_limit ? parseInt(data.usage_limit) : null) : (data.max_uses !== undefined ? data.max_uses : data.maxUses),
+      isPublic: data.is_public !== undefined ? data.is_public : (data.isPublic !== undefined ? data.isPublic : true),
+      startsAt: data.start_date !== undefined ? data.start_date : (data.starts_at !== undefined ? data.starts_at : data.startsAt),
+      expiresAt: data.end_date !== undefined ? data.end_date : (data.expires_at !== undefined ? data.expires_at : data.expiresAt),
+      createdBy: data.created_by !== undefined ? data.created_by : data.createdBy
     });
   }
 
@@ -164,11 +172,51 @@ class SettingsService {
     if (data.code) {
       data.code = data.code.trim().toUpperCase();
       const existing = await this.couponRepo.findByCode(data.code);
-      if (existing && existing.id !== parseInt(id)) {
+      if (existing && String(existing.id) !== String(id)) {
         throw new ValidationError('Coupon code already exists');
       }
     }
-    const updated = await this.couponRepo.update(id, data);
+
+    const updatePayload = {};
+    if (data.code !== undefined) updatePayload.code = data.code;
+    if (data.description !== undefined) updatePayload.description = data.description;
+
+    // discount_type / discountType
+    if (data.discount_type !== undefined) updatePayload.discountType = data.discount_type;
+    else if (data.discountType !== undefined) updatePayload.discountType = data.discountType;
+
+    // discount_value / discountValue
+    if (data.discount_value !== undefined) updatePayload.discountValue = parseFloat(data.discount_value);
+    else if (data.discountValue !== undefined) updatePayload.discountValue = parseFloat(data.discountValue);
+
+    // min_order_amount / minOrderAmount
+    if (data.min_order_amount !== undefined) updatePayload.minOrderAmount = parseFloat(data.min_order_amount);
+    else if (data.minOrderAmount !== undefined) updatePayload.minOrderAmount = parseFloat(data.minOrderAmount);
+
+    // usage_limit / max_uses / maxUses
+    if (data.usage_limit !== undefined) updatePayload.maxUses = data.usage_limit ? parseInt(data.usage_limit) : null;
+    else if (data.max_uses !== undefined) updatePayload.maxUses = data.max_uses;
+    else if (data.maxUses !== undefined) updatePayload.maxUses = data.maxUses;
+
+    // is_public / isPublic
+    if (data.is_public !== undefined) updatePayload.isPublic = data.is_public;
+    else if (data.isPublic !== undefined) updatePayload.isPublic = data.isPublic;
+
+    // is_active / isActive
+    if (data.is_active !== undefined) updatePayload.isActive = data.is_active;
+    else if (data.isActive !== undefined) updatePayload.isActive = data.isActive;
+
+    // start_date / starts_at / startsAt
+    if (data.start_date !== undefined) updatePayload.startsAt = data.start_date;
+    else if (data.starts_at !== undefined) updatePayload.startsAt = data.starts_at;
+    else if (data.startsAt !== undefined) updatePayload.startsAt = data.startsAt;
+
+    // end_date / expires_at / expiresAt
+    if (data.end_date !== undefined) updatePayload.expiresAt = data.end_date;
+    else if (data.expires_at !== undefined) updatePayload.expiresAt = data.expires_at;
+    else if (data.expiresAt !== undefined) updatePayload.expiresAt = data.expiresAt;
+
+    const updated = await this.couponRepo.update(id, updatePayload);
     if (!updated) throw new ValidationError('Coupon not found');
     return updated;
   }

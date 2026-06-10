@@ -159,4 +159,51 @@ describe('SettingsService - Coupons & Validation', () => {
       expect(pool._client.query).toHaveBeenCalledWith('ROLLBACK');
     });
   });
+
+  describe('createCoupon() & updateCoupon() snake_case mapping', () => {
+    it('should correctly map snake_case attributes in createCoupon', async () => {
+      couponRepo.findByCode.mockResolvedValue(null);
+      couponRepo.create.mockResolvedValue({ id: 10, code: 'NEW50' });
+
+      await service.createCoupon({
+        code: 'new50',
+        discount_type: 'fixed',
+        discount_value: '50000',
+        min_order_amount: '100000',
+        usage_limit: '5',
+        start_date: '2026-06-01T00:00:00Z',
+        end_date: '2026-06-30T00:00:00Z'
+      });
+
+      expect(couponRepo.create).toHaveBeenCalledWith({
+        code: 'NEW50',
+        description: undefined,
+        discountType: 'fixed',
+        discountValue: 50000,
+        minOrderAmount: 100000,
+        maxUses: 5,
+        isPublic: true,
+        startsAt: '2026-06-01T00:00:00Z',
+        expiresAt: '2026-06-30T00:00:00Z',
+        createdBy: undefined
+      });
+    });
+
+    it('should safely update a coupon using safe string ID comparisons', async () => {
+      // existing coupon has BIGINT id = '10' (string representation from pg)
+      couponRepo.findByCode.mockResolvedValue({ id: '10', code: 'NEW50' });
+      couponRepo.update.mockResolvedValue({ id: '10', code: 'NEW50', description: 'Updated' });
+
+      const result = await service.updateCoupon(10, {
+        code: 'NEW50',
+        description: 'Updated'
+      });
+
+      expect(result.description).toBe('Updated');
+      expect(couponRepo.update).toHaveBeenCalledWith(10, expect.objectContaining({
+        code: 'NEW50',
+        description: 'Updated'
+      }));
+    });
+  });
 });

@@ -1,10 +1,27 @@
-/**
- * Unit Tests: AuthService
- * Tests business logic with mocked repositories.
- */
-
 const AuthService = require('../../src/services/auth.service');
 const { mockUserRepo, mockAuthRepo, mockEmployeeRepo, mockCustomerRepo, mockRoleRepo, mockStoreRepo, createMockPool, FIXTURES } = require('../helpers');
+
+const http = require('http');
+jest.mock('http', () => ({
+  get: jest.fn((url, cb) => {
+    const res = {
+      on: jest.fn((event, handler) => {
+        if (event === 'data') {
+          handler(JSON.stringify({ data: { max_failed_attempts: 5, lock_duration_minutes: 30 } }));
+        }
+        if (event === 'end') {
+          handler();
+        }
+      })
+    };
+    if (cb) cb(res);
+    return {
+      on: jest.fn(),
+      setTimeout: jest.fn(),
+      destroy: jest.fn()
+    };
+  })
+}));
 
 describe('AuthService', () => {
   let authService, userRepo, authRepo, employeeRepo, customerRepo, roleRepo, storeRepo, pool;
@@ -25,7 +42,7 @@ describe('AuthService', () => {
     it('should return token and user data with storeId on valid credentials', async () => {
       userRepo.findByUsernameOrEmail.mockResolvedValue(FIXTURES.user);
       userRepo.getPermissions.mockResolvedValue(FIXTURES.permissions);
-      employeeRepo.findByUserId.mockResolvedValue(FIXTURES.employee);
+      employeeRepo.findById.mockResolvedValue(FIXTURES.employee);
 
       const result = await authService.login({ username: 'admin', password: 'password123' });
 
@@ -208,7 +225,7 @@ describe('AuthService', () => {
     it('should return user profile with storeId', async () => {
       userRepo.findById.mockResolvedValue(FIXTURES.user);
       userRepo.getPermissions.mockResolvedValue(FIXTURES.permissions);
-      employeeRepo.findByUserId.mockResolvedValue(FIXTURES.employee);
+      employeeRepo.findById.mockResolvedValue(FIXTURES.employee);
 
       const result = await authService.getMe(1);
 
@@ -229,44 +246,44 @@ describe('AuthService', () => {
   // === posLogin ===
   describe('posLogin()', () => {
     it('should return token on valid PIN', async () => {
-      userRepo.findByUsername.mockResolvedValue(FIXTURES.user);
+      userRepo.findById.mockResolvedValue(FIXTURES.user);
       authRepo.findPosAuth.mockResolvedValue(FIXTURES.posAuth);
       userRepo.getPermissions.mockResolvedValue(FIXTURES.permissions);
-      employeeRepo.findByUserId.mockResolvedValue(FIXTURES.employee);
+      employeeRepo.findById.mockResolvedValue(FIXTURES.employee);
 
-      const result = await authService.posLogin({ employeeCode: 'admin', pin: '1234' });
+      const result = await authService.posLogin({ employeeId: '1', pin: '1234' });
 
       expect(result.token).toBe('mock-jwt-token');
       expect(authRepo.resetPosFailedAttempts).toHaveBeenCalledWith(1);
     });
 
     it('should throw when POS not enabled', async () => {
-      userRepo.findByUsername.mockResolvedValue(FIXTURES.user);
+      userRepo.findById.mockResolvedValue(FIXTURES.user);
       authRepo.findPosAuth.mockResolvedValue({ ...FIXTURES.posAuth, is_enabled: false });
 
-      await expect(authService.posLogin({ employeeCode: 'admin', pin: '1234' }))
+      await expect(authService.posLogin({ employeeId: '1', pin: '1234' }))
         .rejects.toThrow('POS access not enabled');
     });
 
     it('should throw when account locked', async () => {
-      userRepo.findByUsername.mockResolvedValue(FIXTURES.user);
+      userRepo.findById.mockResolvedValue(FIXTURES.user);
       authRepo.findPosAuth.mockResolvedValue({
         ...FIXTURES.posAuth,
         locked_until: new Date(Date.now() + 900000)
       });
 
-      await expect(authService.posLogin({ employeeCode: 'admin', pin: '1234' }))
+      await expect(authService.posLogin({ employeeId: '1', pin: '1234' }))
         .rejects.toThrow('Account locked');
     });
 
     it('should increment failed attempts on wrong PIN', async () => {
-      userRepo.findByUsername.mockResolvedValue(FIXTURES.user);
+      userRepo.findById.mockResolvedValue(FIXTURES.user);
       authRepo.findPosAuth.mockResolvedValue(FIXTURES.posAuth);
 
-      await expect(authService.posLogin({ employeeCode: 'admin', pin: '9999' }))
-        .rejects.toThrow('Invalid employee code or PIN');
+      await expect(authService.posLogin({ employeeId: '1', pin: '9999' }))
+        .rejects.toThrow('Invalid employee ID or PIN');
 
-      expect(authRepo.incrementPosFailedAttempts).toHaveBeenCalledWith(1);
+      expect(authRepo.incrementPosFailedAttempts).toHaveBeenCalledWith(1, 5, 30);
     });
   });
 });

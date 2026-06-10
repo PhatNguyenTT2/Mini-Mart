@@ -9,8 +9,8 @@ Dua tren [review.md](file:///e:/UIT/cv/backend/review.md) va [discount_scan_repo
 | Component | Membership Discount | Coupon System | Shipping Fee |
 |---|---|---|---|
 | **Auth Service** | Missing `customerType` | N/A | N/A |
-| **Settings Service** | Done [getCustomerDiscounts()](file:///e:/UIT/cv/backend/backend/services/settings/src/services/settings.service.js#19-31) | No tables/API | N/A |
-| **Order Service** | Done [resolveCustomerDiscount()](file:///e:/UIT/cv/backend/backend/services/order/src/services/order.service.js#282-358) | No server-side validation | Trusts client value |
+| **Settings Service** | Done [getCustomerDiscounts()](file:///e:/UIT/cv/backend/backend/services/settings/src/services/settings.service.js#20-32) | No tables/API | N/A |
+| **Order Service** | Done `resolveCustomerDiscount()` | No server-side validation | Trusts client value |
 | **Customer Frontend** | No settingsService | Mock hardcoded in CartContext | Hardcoded "Free" |
 | **Admin Frontend** | N/A | No management UI | N/A |
 | **Nginx Gateway** | Done | No `/api/coupons` route | N/A |
@@ -37,7 +37,7 @@ Dua tren [review.md](file:///e:/UIT/cv/backend/review.md) va [discount_scan_repo
 
 ### [MODIFY] [auth.service.js](file:///e:/UIT/cv/backend/backend/services/auth/src/services/auth.service.js)
 
-Bo sung `customerType` vao [_formatUserResponse](file:///e:/UIT/cv/backend/backend/services/auth/src/services/auth.service.js#323-343) (dong 338-340):
+Bo sung `customerType` vao `_formatUserResponse` (dong 338-340):
 
 ```diff
      if (isCustomer && profile) {
@@ -93,16 +93,16 @@ ON CONFLICT (code) DO NOTHING;
 
 | Method | Mo ta |
 |---|---|
-| `findByCode(code)` | Tim coupon theo ma |
-| [findAll(filters)](file:///e:/UIT/cv/backend/backend/services/catalog/src/repositories/product.repository.js#10-50) | Paginated list (search, active filter) cho Admin |
-| `findAvailable()` | `is_active = true AND is_public = true AND (expires_at IS NULL OR expires_at > NOW())` cho Customer |
-| [create(data)](file:///e:/UIT/cv/backend/backend/services/catalog/src/repositories/product.repository.js#143-155) | Insert coupon moi |
-| [update(id, data)](file:///e:/UIT/cv/backend/backend/services/catalog/src/repositories/product.repository.js#156-175) | Update coupon fields |
-| `softDelete(id)` | Set `is_active = false` |
-| `incrementUsedCount(client, id)` | Atomic `+1` used_count |
-| `logUsage(client, {couponId, customerId, orderId})` | Insert vao coupon_usages |
-| `getCustomerUsageCount(couponId, customerId)` | Dem so lan customer da dung ma |
-| `getUsageHistory(couponId, filters)` | Paginated usage log cho Admin |
+| [findByCode(code)](file:///e:/UIT/cv/backend/backend/services/settings/src/repositories/coupon.repository.js#6-13) | Tim coupon theo ma |
+| [findAll(filters)](file:///e:/UIT/cv/backend/backend/services/settings/src/repositories/coupon.repository.js#26-59) | Paginated list (search, active filter) cho Admin |
+| [findAvailable()](file:///e:/UIT/cv/backend/backend/services/settings/src/repositories/coupon.repository.js#14-25) | `is_active = true AND is_public = true AND (expires_at IS NULL OR expires_at > NOW())` cho Customer |
+| [create(data)](file:///e:/UIT/cv/backend/backend/services/settings/src/repositories/coupon.repository.js#60-74) | Insert coupon moi |
+| [update(id, data)](file:///e:/UIT/cv/backend/backend/services/settings/src/repositories/coupon.repository.js#75-113) | Update coupon fields |
+| [softDelete(id)](file:///e:/UIT/cv/backend/backend/services/settings/src/repositories/coupon.repository.js#114-121) | Set `is_active = false` |
+| [incrementUsedCount(client, id)](file:///e:/UIT/cv/backend/backend/services/settings/src/repositories/coupon.repository.js#122-130) | Atomic `+1` used_count |
+| [logUsage(client, {couponId, customerId, orderId})](file:///e:/UIT/cv/backend/backend/services/settings/src/repositories/coupon.repository.js#131-141) | Insert vao coupon_usages |
+| [getCustomerUsageCount(couponId, customerId)](file:///e:/UIT/cv/backend/backend/services/settings/src/repositories/coupon.repository.js#142-149) | Dem so lan customer da dung ma |
+| [getUsageHistory(couponId, filters)](file:///e:/UIT/cv/backend/backend/services/settings/src/repositories/coupon.repository.js#150-174) | Paginated usage log cho Admin |
 
 ---
 
@@ -153,7 +153,7 @@ GET    /api/settings/coupons/:id/usages   -> getCouponUsages
 
 ### [MODIFY] [app.js](file:///e:/UIT/cv/backend/backend/services/settings/src/app.js)
 
-Public endpoints (customer-facing, require `verifyToken` only):
+Public endpoints (customer-facing, require [verifyToken](file:///e:/UIT/cv/backend/backend/services/settings/tests/__mocks__/auth-middleware.js#2-10) only):
 
 ```javascript
 // List available coupons for customer Drawer UI
@@ -173,7 +173,7 @@ app.post('/api/coupons/validate', verifyToken, async (req, res, next) => {
 
 ### [MODIFY] [index.js](file:///e:/UIT/cv/backend/backend/services/settings/src/index.js)
 
-Inject `CouponRepository` vao DI.
+Inject [CouponRepository](file:///e:/UIT/cv/backend/backend/services/settings/src/repositories/coupon.repository.js#1-175) vao DI.
 
 ### [MODIFY] [nginx.conf](file:///e:/UIT/cv/backend/backend/gateway/nginx.conf)
 
@@ -192,7 +192,7 @@ Inject `CouponRepository` vao DI.
 
 ### [MODIFY] [order.service.js](file:///e:/UIT/cv/backend/backend/services/order/src/services/order.service.js)
 
-Cap nhat [createDraftOrder](file:///e:/UIT/cv/backend/backend/services/order/src/services/order.service.js#359-416):
+Cap nhat `createDraftOrder`:
 
 ```javascript
 async createDraftOrder(storeId, data, userId, jwtToken) {
@@ -271,9 +271,9 @@ export default settingsService;
 
 Key changes:
 
-1. Import [useAuth](file:///e:/UIT/cv/backend/customer/src/contexts/AuthContext.jsx#62-70) + `settingsService`
+1. Import `useAuth` + `settingsService`
 2. State: `discountRates`, `availableCoupons`
-3. Fetch on mount: [getActiveDiscounts()](file:///e:/UIT/cv/backend/frontend/src/services/customerDiscountSettingsService.js#9-22) + `getAvailableCoupons()`
+3. Fetch on mount: `getActiveDiscounts()` + [getAvailableCoupons()](file:///e:/UIT/cv/backend/backend/services/settings/src/services/settings.service.js#237-240)
 4. `getShippingFee()` -> returns `30000` for delivery
 5. `getMembershipDiscount()` -> `getCartTotal() * (rate / 100)` (Membership truoc)
 6. `applyCoupon(code)` -> async, goi `settingsService.validateCoupon()`
@@ -300,7 +300,7 @@ Thay the text input bang **Coupon Drawer/Modal** (Pick-and-Apply):
 1. Nut kich hoat: "Chon ma giam gia" button
 2. Click -> Drawer/Modal truot len hien thi danh sach `availableCoupons` tu CartContext
 3. Moi coupon card hien thi: code, description, discount_type badge, min_order_amount
-4. Nut "Ap dung" tren moi card -> goi `validateCoupon(code, subtotal)` ngam -> cap nhat `appliedCoupon`
+4. Nut "Ap dung" tren moi card -> goi [validateCoupon(code, subtotal)](file:///e:/UIT/cv/backend/frontend/src/services/settingsService.js#339-351) ngam -> cap nhat `appliedCoupon`
 5. Coupon da chon hien thi nho gon voi nut "Xoa"
 6. Them dong Member Discount (sau Subtotal)
 7. Shipping Fee: freeship -> line-through 30.000d + "0d"
@@ -357,21 +357,108 @@ getCouponUsages: async (id, params) => { /* GET /settings/coupons/:id/usages */ 
 
 ---
 
+## Phase 6: Sync UI Style Pattern & Fix Seed Permissions Override
+
+### 6.1 UI Style Sync
+Modify [CouponSettings.jsx](file:///e:/UIT/cv/backend/frontend/src/components/Settings/CouponSettings.jsx):
+- Adjust main wrapper to use `max-w-6xl mx-auto space-y-8`.
+- Build a dual-column layout for Admin settings pages.
+- Standardize on `font-['Poppins',sans-serif]` for text and labels.
+- Standardize on table styling with uppercase tracking-wider headers and smooth row hover transitions (`hover:bg-emerald-50/50`).
+- Implement consistent clean borders.
+
+### 6.2 SQL Seed Safeness
+Modify [seed.sql](file:///e:/UIT/cv/backend/backend/services/auth/src/db/seed.sql):
+- Prevent overwriting custom permissions of standard roles during service reboot.
+- Add `AND NOT EXISTS (SELECT 1 FROM role_permission rp WHERE rp.role_id = r.id)` logic for Super Admin, Store Manager, Cashier, Store Admin, and Customer roles.
+
+---
+
+## Phase 7: Bugfix for Coupon Creation (type fallback) & Edit Validation
+
+### [MODIFY] [settings.service.js](file:///e:/UIT/cv/backend/backend/services/settings/src/services/settings.service.js)
+
+Normalize coupon properties inside [createCoupon](file:///e:/UIT/cv/backend/frontend/src/services/settingsService.js#365-377) and [updateCoupon](file:///e:/UIT/cv/backend/frontend/src/services/settingsService.js#378-390) to support mapping both camelCase/snake_case frontend forms:
+- `discountType`: from `discount_type` / `discountType`
+- `discountValue`: from `discount_value` / `discountValue`
+- `minOrderAmount`: from `min_order_amount` / `minOrderAmount`
+- `maxUses`: from `usage_limit` / `max_uses` / `maxUses`
+- `isActive`: from `is_active` / `isActive`
+- `startsAt`: from `start_date` / `starts_at` / `startsAt`
+- `expiresAt`: from `end_date` / `expires_at` / `expiresAt`
+
+Change comparison logic in [updateCoupon](file:///e:/UIT/cv/backend/frontend/src/services/settingsService.js#378-390) duplicate code check to use string comparison:
+```javascript
+if (existing && String(existing.id) !== String(id)) {
+  throw new ValidationError('Coupon code already exists');
+}
+```
+
+### [MODIFY] [CouponSettings.jsx](file:///e:/UIT/cv/backend/frontend/src/components/Settings/CouponSettings.jsx)
+
+- In [handleOpenEdit](file:///e:/UIT/cv/backend/frontend/src/components/Settings/CouponSettings.jsx#91-111), retrieve starts_at, expires_at, and max_uses from the PG returned properties:
+  - `startDate`: `coupon.starts_at || coupon.start_date`
+  - `endDate`: `coupon.expires_at || coupon.end_date`
+  - `usageLimit`: `coupon.max_uses !== undefined ? coupon.max_uses : coupon.usage_limit`
+- Implement a helper [formatDateTimeLocal(dateString)](file:///e:/UIT/cv/backend/frontend/src/components/Settings/CouponSettings.jsx#60-73) to correctly shift standard UTC TIMESTAMPTZ formatting for `datetime-local` elements in the active browser timezone.
+- In the coupons table render row, map `used_count` / `max_uses` to display properly instead of returning blank due to property checking mismatches.
+  - `usageLimit`: `coupon.max_uses !== undefined && coupon.max_uses !== null ? coupon.max_uses : coupon.usage_limit`
+  - `usageCount`: `coupon.used_count !== undefined && coupon.used_count !== null ? coupon.used_count : (coupon.usage_count ?? 0)`
+
+---
+
+## Phase 8: Settings Service Permission & UI Refactor
+
+### 8.1 Database Seeds and Routings
+
+#### [MODIFY] [seed.sql](file:///e:/UIT/cv/backend/backend/services/auth/src/db/seed.sql)
+- Remove `manage_settings` permission.
+- Insert `manager_setting` and `admin_setting` permissions.
+- In Role-Permission mappings:
+  - Assign `manager_setting` to `Store Manager`.
+  - Assign `manager_setting` and `admin_setting` to `Store Admin`.
+  - Clean up any legacy assignments.
+
+#### [MODIFY] [settings.routes.js](file:///e:/UIT/cv/backend/backend/services/settings/src/routes/settings.routes.js)
+- Update routes for `/security`, `/sales`, `/history`, and `/fresh-promotion/...` to require `admin_setting`.
+- Update routes for `/coupons/...` to require `manager_setting`.
+
+### 8.2 Frontend RBAC Integration
+
+#### [MODIFY] [permissions.js](file:///e:/UIT/cv/backend/frontend/src/utils/permissions.js)
+- Replace `MANAGE_SETTINGS: 'manage_settings'` with `MANAGER_SETTING: 'manager_setting'` and `ADMIN_SETTING: 'admin_setting'`.
+
+#### [MODIFY] [ProtectedRoute.jsx](file:///e:/UIT/cv/backend/frontend/src/components/ProtectedRoute.jsx)
+- Update `requiredPermission` checker to support checking arrays of allowable permissions (i.e. check if the user has at least one of the permissions).
+
+#### [MODIFY] [NavigationMenuSection.jsx](file:///e:/UIT/cv/backend/frontend/src/components/Sidebar/sections/NavigationMenuSection/NavigationMenuSection.jsx)
+- Enforce settings menu to allow array `permission: [PERMISSIONS.MANAGER_SETTING, PERMISSIONS.ADMIN_SETTING]`.
+- Update standard permission loops to support array items via [hasAnyPermission](file:///e:/UIT/cv/backend/frontend/src/utils/permissions.js#54-66).
+
+#### [MODIFY] [Settings.jsx](file:///e:/UIT/cv/backend/frontend/src/pages/Settings.jsx)
+- Assign `permission` property to each settings tab:
+  - Coupons and Product Price -> `manager_setting`.
+  - Customer Discount, POS Security, and Fresh Product Promotion -> `admin_setting`.
+- Rename Fresh Product Promotion tab ID to `perishable`, label to `Perishable Promotion`, and description to indicate perishable products.
+- Dynamically filter settings tabs depending on permissions, and set fallback tab to the first allowed tab.
+
+### 8.3 Product Price Settings UI Refactor
+
+#### [MODIFY] [ProductPriceSettings.jsx](file:///e:/UIT/cv/backend/frontend/src/components/Settings/ProductPriceSettings.jsx)
+- Implement frontend pagination table header & footer footer (Items per page selection, previous page, page number buttons, next page) matching [CustomerList](file:///e:/UIT/cv/backend/frontend/src/components/CustomerList/CustomerList.jsx#6-447).
+- Integrate API page limits and page offsets, querying `productService.getAllProducts(params)` dynamically on state updates.
+- Support live search text filtering from table header triggering API requests.
+- Optimize rendering variables (proper keys, formatted IDs).
+
+---
+
 ## Verification Plan
 
 ### Automated Tests
-- `cd backend/services/auth && npm run test:unit` -- customerType in response
-- `cd backend/services/settings && npm run test:unit` -- coupon CRUD + validation + freeship
-- `cd backend/services/order && npm run test:unit` -- coupon + shipping in createDraftOrder
+- Run settings service integration tests: `cd backend/services/settings && npm run test`
+- Run auth service tests: `cd backend/services/auth && npm run test`
 
 ### Manual Verification
-1. **Phase 1**: Login Customer -> localStorage chua `customerType`
-2. **Phase 2**: Admin -> Settings -> Coupons tab -> tao `SUMMER20` (percent, 20%, min 100k) + verify WELCOME100 seed
-3. **Phase 3**: Customer VIP -> cart 500k -> checkout:
-   - Subtotal: 500.000
-   - Member VIP (-10%): -50.000
-   - Coupon SUMMER20 (20% of 450k): -90.000
-   - Shipping: 30.000
-   - **Total: 390.000**
-4. **Freeship**: Chon WELCOME100 tu Drawer -> Shipping hien thi ~~30.000~~ **0** -> Total: 450.000
-5. **Usage**: Admin -> Coupons -> WELCOME100 -> usage history hien thi customer + order ID
+1. **Admin / Manager Page Filtering**: Login as `Store Manager`, navigate to Settings, verify only `Coupons Manager` and `Product Price` tabs are accessible.
+2. **Tab Access Redirect**: Verify that the first selected tab defaults to `Coupons Manager` when logged in as Store Manager, rather than failing on `Customer Discounts`.
+3. **Product Price settings pagination & filter**: Search a product, change pages, verify that query param [search](file:///e:/UIT/cv/backend/frontend/src/components/Settings/ProductPriceSettings.jsx#41-58), `page`, and `limit` are passed to Catalog API correctly.

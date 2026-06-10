@@ -18,7 +18,7 @@ describe('RbacService', () => {
     it('should return all roles', async () => {
       roleRepo.findAll.mockResolvedValue([FIXTURES.role]);
       const result = await service.listRoles();
-      expect(result).toHaveLength(1);
+      expect(result.roles).toHaveLength(1);
     });
   });
 
@@ -26,14 +26,15 @@ describe('RbacService', () => {
     it('should create role with permissions', async () => {
       roleRepo.findByName.mockResolvedValue(null);
       roleRepo.create.mockResolvedValue({ id: 5, name: 'Cashier' });
+      roleRepo.findPermissionIdsByCodes.mockResolvedValue([1]);
       roleRepo.findById.mockResolvedValue({ id: 5, name: 'Cashier', permissions: [] });
 
       const result = await service.createRole({
-        name: 'Cashier', description: 'POS operator', permissionIds: [1, 2]
+        roleName: 'Cashier', description: 'POS operator', permissions: ['dashboard.view']
       });
 
-      expect(result.name).toBe('Cashier');
-      expect(roleRepo.setPermissions).toHaveBeenCalledWith(5, [1, 2]);
+      expect(result.role.roleName).toBe('Cashier');
+      expect(roleRepo.findPermissionIdsByCodes).toHaveBeenCalledWith(['dashboard.view']);
     });
 
     it('should throw ValidationError when name missing', async () => {
@@ -44,7 +45,7 @@ describe('RbacService', () => {
     it('should throw ConflictError when name exists', async () => {
       roleRepo.findByName.mockResolvedValue(FIXTURES.role);
 
-      await expect(service.createRole({ name: 'Super Admin' }))
+      await expect(service.createRole({ roleName: 'Super Admin' }))
         .rejects.toThrow('Role name already exists');
     });
   });
@@ -54,28 +55,29 @@ describe('RbacService', () => {
       roleRepo.findById.mockResolvedValue(FIXTURES.role);
       roleRepo.findByName.mockResolvedValue(null);
       roleRepo.update.mockResolvedValue({ id: 1, name: 'Admin' });
+      roleRepo.findPermissionIdsByCodes.mockResolvedValue([1]);
 
-      await service.updateRole(1, { name: 'Admin', permissionIds: [1, 3] });
+      await service.updateRole(1, { roleName: 'Admin', permissions: ['dashboard.view'] });
 
       expect(roleRepo.update).toHaveBeenCalledWith(1, { name: 'Admin', description: undefined });
-      expect(roleRepo.setPermissions).toHaveBeenCalledWith(1, [1, 3]);
+      expect(roleRepo.findPermissionIdsByCodes).toHaveBeenCalledWith(['dashboard.view']);
     });
 
     it('should throw NotFoundError when role not found', async () => {
       roleRepo.findById.mockResolvedValue(null);
 
-      await expect(service.updateRole(999, { name: 'X' }))
+      await expect(service.updateRole(999, { roleName: 'X' }))
         .rejects.toThrow('Role not found');
     });
   });
 
   describe('deleteRole()', () => {
     it('should delete role', async () => {
-      roleRepo.findById.mockResolvedValue({ ...FIXTURES.role, name: 'Cashier' });
+      roleRepo.findById.mockResolvedValue({ ...FIXTURES.role, name: 'Cashier', employee_count: 0 });
       roleRepo.delete.mockResolvedValue(true);
 
       const result = await service.deleteRole(2);
-      expect(result).toBe(true);
+      expect(result.message).toBe('Role deleted successfully');
     });
 
     it('should block deleting Super Admin', async () => {
@@ -93,7 +95,7 @@ describe('RbacService', () => {
       ]);
 
       const result = await service.listPermissions();
-      expect(result).toHaveLength(1);
+      expect(result.permissions).toHaveLength(1);
     });
   });
 });

@@ -20,12 +20,13 @@ describe('CustomerService', () => {
   // === list ===
   describe('list()', () => {
     it('should delegate to repository', async () => {
-      const expected = { items: [FIXTURES.customer], total: 1 };
-      customerRepo.findAll.mockResolvedValue(expected);
+      const repoResult = { items: [FIXTURES.customer], total: 1 };
+      customerRepo.findAll.mockResolvedValue(repoResult);
 
       const result = await service.list({ page: 1, limit: 10 });
 
-      expect(result).toEqual(expected);
+      expect(result.customers).toHaveLength(1);
+      expect(result.customers[0].fullName).toBe('Customer Name');
       expect(customerRepo.findAll).toHaveBeenCalledWith({ page: 1, limit: 10 });
     });
   });
@@ -33,14 +34,14 @@ describe('CustomerService', () => {
   // === getById ===
   describe('getById()', () => {
     it('should return customer when found', async () => {
-      customerRepo.findByUserId.mockResolvedValue(FIXTURES.customer);
+      customerRepo.findById.mockResolvedValue(FIXTURES.customer);
 
       const result = await service.getById(3);
-      expect(result.full_name).toBe('Customer Name');
+      expect(result.fullName).toBe('Customer Name');
     });
 
     it('should throw NotFoundError when not found', async () => {
-      customerRepo.findByUserId.mockResolvedValue(null);
+      customerRepo.findById.mockResolvedValue(null);
 
       await expect(service.getById(999)).rejects.toThrow('Customer not found');
     });
@@ -58,14 +59,14 @@ describe('CustomerService', () => {
         fullName: 'New Customer', email: 'cust@test.com', password: 'pass123'
       });
 
-      expect(result.full_name).toBe('New Customer');
+      expect(result.fullName).toBe('New Customer');
       expect(pool._client.query).toHaveBeenCalledWith('BEGIN');
       expect(pool._client.query).toHaveBeenCalledWith('COMMIT');
     });
 
     it('should throw ValidationError when required fields missing', async () => {
-      await expect(service.create({ fullName: 'Test' }))
-        .rejects.toThrow('fullName, email, and password are required');
+      await expect(service.create({}))
+        .rejects.toThrow('fullName is required');
     });
 
     it('should throw ConflictError when email exists', async () => {
@@ -106,7 +107,7 @@ describe('CustomerService', () => {
   // === update ===
   describe('update()', () => {
     it('should update existing customer', async () => {
-      customerRepo.findByUserId.mockResolvedValue(FIXTURES.customer);
+      customerRepo.findById.mockResolvedValue(FIXTURES.customer);
       customerRepo.update.mockResolvedValue({ ...FIXTURES.customer, phone: '111111' });
 
       const result = await service.update(3, { phone: '111111' });
@@ -114,7 +115,7 @@ describe('CustomerService', () => {
     });
 
     it('should throw NotFoundError when customer not found', async () => {
-      customerRepo.findByUserId.mockResolvedValue(null);
+      customerRepo.findById.mockResolvedValue(null);
 
       await expect(service.update(999, { phone: '111' }))
         .rejects.toThrow('Customer not found');
@@ -124,15 +125,15 @@ describe('CustomerService', () => {
   // === delete ===
   describe('delete()', () => {
     it('should delete existing customer', async () => {
-      customerRepo.findByUserId.mockResolvedValue(FIXTURES.customer);
-      customerRepo.delete.mockResolvedValue(true);
+      customerRepo.findById.mockResolvedValue(FIXTURES.customer);
+      customerRepo.softDelete.mockResolvedValue({ ...FIXTURES.customer, is_active: false });
 
       const result = await service.delete(3);
-      expect(result).toBe(true);
+      expect(result.isActive).toBe(false);
     });
 
     it('should throw NotFoundError when customer not found', async () => {
-      customerRepo.findByUserId.mockResolvedValue(null);
+      customerRepo.findById.mockResolvedValue(null);
 
       await expect(service.delete(999)).rejects.toThrow('Customer not found');
     });

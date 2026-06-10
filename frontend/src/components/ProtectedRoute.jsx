@@ -72,7 +72,10 @@ export default function ProtectedRoute({ children, requiredPermission }) {
       }
 
       // Check if user has the required permission (or has 'all' permission)
-      const hasPermission = user.permissions.includes('all') || user.permissions.includes(requiredPermission)
+      const hasPermission = user.permissions.includes('all') ||
+        (Array.isArray(requiredPermission)
+          ? requiredPermission.some(p => user.permissions.includes(p))
+          : user.permissions.includes(requiredPermission))
 
       if (!hasPermission) {
         // Find first accessible route for this user

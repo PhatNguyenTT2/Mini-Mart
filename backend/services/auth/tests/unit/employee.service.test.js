@@ -45,10 +45,11 @@ describe('EmployeeService', () => {
       userRepo.findByUsername.mockResolvedValue(null);
       userRepo.createWithClient.mockResolvedValue({ id: 5, username: 'emp1', email: 'e@t.com', is_active: true });
       employeeRepo.createProfile.mockResolvedValue({ user_id: 5, full_name: 'New Emp' });
+      employeeRepo.findById.mockResolvedValue({ id: 5, full_name: 'New Emp', email: 'e@t.com', is_active: true, store_id: 10 });
 
       const result = await service.create(null, validData);
 
-      expect(result.full_name).toBe('New Emp');
+      expect(result.employee.fullName).toBe('New Emp');
       expect(pool._client.query).toHaveBeenCalledWith('COMMIT');
     });
 
@@ -72,6 +73,7 @@ describe('EmployeeService', () => {
       userRepo.findByUsername.mockResolvedValue(null);
       userRepo.createWithClient.mockResolvedValue({ id: 5, username: 'emp1', email: 'e@t.com', is_active: true });
       employeeRepo.createProfile.mockResolvedValue({ user_id: 5, full_name: 'Emp' });
+      employeeRepo.findById.mockResolvedValue({ id: 5, full_name: 'Emp', email: 'e@t.com', is_active: true, store_id: 10 });
       authRepo.createPosAuthWithClient.mockResolvedValue({});
 
       await service.create(null, { ...validData, pos_pin: '1234' });
@@ -82,7 +84,9 @@ describe('EmployeeService', () => {
 
   describe('update()', () => {
     it('should update employee profile', async () => {
-      employeeRepo.findById.mockResolvedValue({ ...FIXTURES.employee, store_id: 10 });
+      employeeRepo.findById
+        .mockResolvedValueOnce({ ...FIXTURES.employee, store_id: 10 })
+        .mockResolvedValueOnce({ ...FIXTURES.employee, full_name: 'Updated', store_id: 20 });
       storeRepo.findById.mockResolvedValue({ id: 20 }); // newly changing to store 20 
       employeeRepo.updateProfile.mockResolvedValue({ ...FIXTURES.employee, full_name: 'Updated' });
 
@@ -90,7 +94,7 @@ describe('EmployeeService', () => {
 
       expect(storeRepo.findById).toHaveBeenCalledWith(20);
       expect(employeeRepo.updateProfile).toHaveBeenCalled();
-      expect(result.full_name).toBe('Updated');
+      expect(result.employee.fullName).toBe('Updated');
     });
 
     it('should update POS PIN in transaction if provided', async () => {

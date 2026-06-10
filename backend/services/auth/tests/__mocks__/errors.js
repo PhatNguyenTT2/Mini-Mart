@@ -34,6 +34,20 @@ class ConflictError extends AppError {
   constructor(message = 'Conflict') { super(message, 409, 'CONFLICT'); }
 }
 
+class PinInvalidError extends AppError {
+  constructor(attemptsRemaining) {
+    super('Invalid employee ID or PIN', 401, 'INVALID_PIN');
+    this.attemptsRemaining = attemptsRemaining;
+  }
+}
+
+class PinLockedError extends AppError {
+  constructor(minutesLeft) {
+    super(`Account locked for ${minutesLeft} minutes`, 423, 'PIN_LOCKED');
+    this.minutesLeft = minutesLeft;
+  }
+}
+
 function errorHandler(err, req, res, _next) {
   if (err.isOperational) {
     return res.status(err.statusCode).json({
@@ -47,4 +61,4 @@ function errorHandler(err, req, res, _next) {
   });
 }
 
-module.exports = { AppError, NotFoundError, ValidationError, UnauthorizedError, ForbiddenError, ConflictError, errorHandler };
+module.exports = { AppError, NotFoundError, ValidationError, UnauthorizedError, ForbiddenError, ConflictError, PinInvalidError, PinLockedError, errorHandler };

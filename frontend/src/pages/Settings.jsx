@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Breadcrumb } from '../components/Breadcrumb';
 import { Settings as SettingsIcon, Percent, Shield, Leaf, DollarSign, Ticket } from 'lucide-react';
 import {
@@ -8,14 +8,11 @@ import {
   ProductPriceSettings,
   CouponSettings
 } from '../components/Settings';
+import { hasPermission, PERMISSIONS } from '../utils/permissions';
+import authService from '../services/authService';
 
 export const Settings = () => {
-  const [activeTab, setActiveTab] = useState('discounts');
-
-  const breadcrumbItems = [
-    { label: 'Dashboard', link: '/dashboard' },
-    { label: 'System Settings' }
-  ];
+  const currentUser = authService.getUser();
 
   const tabs = [
     {
@@ -23,39 +20,58 @@ export const Settings = () => {
       label: 'Customer Discounts',
       icon: Percent,
       description: 'Configure default discount rates for customer types',
-      component: CustomerDiscountSettings
+      component: CustomerDiscountSettings,
+      permission: PERMISSIONS.ADMIN_SETTING
     },
     {
       id: 'coupons',
       label: 'Coupons Manager',
       icon: Ticket,
       description: 'Manage omnichannel promo codes & shipping discounts',
-      component: CouponSettings
+      component: CouponSettings,
+      permission: PERMISSIONS.MANAGER_SETTING
     },
     {
       id: 'security',
       label: 'POS Security',
       icon: Shield,
       description: 'Configure POS PIN authentication settings',
-      component: POSSecuritySettings
+      component: POSSecuritySettings,
+      permission: PERMISSIONS.ADMIN_SETTING
     },
     {
-      id: 'fresh-promotion',
-      label: 'Fresh Product Promotion',
+      id: 'perishable',
+      label: 'Perishable Promotion',
       icon: Leaf,
-      description: 'Auto-promotion for expiring fresh products',
-      component: FreshProductPromotionSettings
+      description: 'Auto-promotion for expiring perishable products',
+      component: FreshProductPromotionSettings,
+      permission: PERMISSIONS.ADMIN_SETTING
     },
     {
       id: 'product-price',
       label: 'Product Price',
       icon: DollarSign,
       description: 'Manage product prices and view price history',
-      component: ProductPriceSettings
+      component: ProductPriceSettings,
+      permission: PERMISSIONS.MANAGER_SETTING
     }
   ];
 
-  const ActiveComponent = tabs.find(tab => tab.id === activeTab)?.component;
+  const availableTabs = tabs.filter(tab => !tab.permission || hasPermission(currentUser, tab.permission));
+  const [activeTab, setActiveTab] = useState(() => availableTabs[0]?.id || 'discounts');
+
+  useEffect(() => {
+    if (availableTabs.length > 0 && !availableTabs.some(t => t.id === activeTab)) {
+      setActiveTab(availableTabs[0].id);
+    }
+  }, [availableTabs, activeTab]);
+
+  const breadcrumbItems = [
+    { label: 'Dashboard', link: '/dashboard' },
+    { label: 'System Settings' }
+  ];
+
+  const ActiveComponent = availableTabs.find(tab => tab.id === activeTab)?.component;
 
   return (
     <div className="space-y-6">
@@ -82,7 +98,7 @@ export const Settings = () => {
         {/* Tab Headers */}
         <div className="border-b border-gray-200">
           <nav className="flex -mb-px" aria-label="Tabs">
-            {tabs.map((tab) => {
+            {availableTabs.map((tab) => {
               const Icon = tab.icon;
               const isActive = activeTab === tab.id;
               return (

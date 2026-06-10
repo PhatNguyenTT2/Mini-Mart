@@ -149,7 +149,10 @@ describe('Auth API Integration', () => {
   // === Customer CRUD ===
   describe('GET /api/customers', () => {
     it('should return paginated customers', async () => {
-      customerService.list.mockResolvedValue({ items: [{ id: 1 }], total: 1 });
+      customerService.list.mockResolvedValue({
+        customers: [{ id: 1 }],
+        pagination: { total: 1, page: 1, limit: 10, totalPages: 1 }
+      });
 
       const res = await request(app)
         .get('/api/customers')
@@ -157,7 +160,7 @@ describe('Auth API Integration', () => {
 
       expect(res.status).toBe(200);
       expect(res.body.success).toBe(true);
-      expect(res.body.pagination).toBeDefined();
+      expect(res.body.data.pagination).toBeDefined();
     });
   });
 
@@ -177,18 +180,21 @@ describe('Auth API Integration', () => {
   // === Employee ===
   describe('GET /api/employees', () => {
     it('should return paginated employees', async () => {
-      employeeService.list.mockResolvedValue({ items: [{ user_id: 1 }], total: 1 });
+      employeeService.list.mockResolvedValue({
+        employees: [{ user_id: 1 }],
+        pagination: { total: 1, page: 1, limit: 10, totalPages: 1 }
+      });
 
       const res = await request(app)
         .get('/api/employees')
         .set('Authorization', 'Bearer valid-token');
 
       expect(res.status).toBe(200);
-      expect(res.body.pagination).toBeDefined();
+      expect(res.body.data.pagination).toBeDefined();
     });
   });
 
-  // === Store (requires auth) ===
+  // === Store ===
   describe('GET /api/stores', () => {
     it('should return stores with valid token', async () => {
       storeService.getStores.mockResolvedValue([{ id: 1, name: 'Store 1' }]);
@@ -201,9 +207,10 @@ describe('Auth API Integration', () => {
       expect(res.body.data.stores).toHaveLength(1);
     });
 
-    it('should return 401 without token', async () => {
+    it('should return 200 without token (public API)', async () => {
+      storeService.getStores.mockResolvedValue([{ id: 1, name: 'Store 1' }]);
       const res = await request(app).get('/api/stores');
-      expect(res.status).toBe(401);
+      expect(res.status).toBe(200);
     });
   });
 

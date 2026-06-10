@@ -265,7 +265,7 @@ function App() {
           <Route
             path="/settings"
             element={
-              <ProtectedRoute requiredPermission={PERMISSIONS.MANAGE_SETTINGS}>
+              <ProtectedRoute requiredPermission={[PERMISSIONS.MANAGER_SETTING, PERMISSIONS.ADMIN_SETTING]}>
                 <Settings />
               </ProtectedRoute>
             }

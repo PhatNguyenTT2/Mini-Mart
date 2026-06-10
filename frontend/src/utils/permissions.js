@@ -16,7 +16,8 @@ export const PERMISSIONS = {
   MANAGE_INVENTORY: 'manage_inventory',
   VIEW_REPORTS: 'view_reports',
   MANAGE_PAYMENTS: 'manage_payments',
-  MANAGE_SETTINGS: 'manage_settings',
+  MANAGER_SETTING: 'manager_setting',
+  ADMIN_SETTING: 'admin_setting',
   VIEW_NOTIFICATIONS: 'view_notifications'
 }
 
@@ -34,7 +35,8 @@ export const PERMISSION_LABELS = {
   [PERMISSIONS.MANAGE_INVENTORY]: 'Manage Inventory',
   [PERMISSIONS.VIEW_REPORTS]: 'View Reports',
   [PERMISSIONS.MANAGE_PAYMENTS]: 'Manage Payments',
-  [PERMISSIONS.MANAGE_SETTINGS]: 'Manage Settings',
+  [PERMISSIONS.MANAGER_SETTING]: 'Manage Setting',
+  [PERMISSIONS.ADMIN_SETTING]: 'Admin Setting',
   [PERMISSIONS.VIEW_NOTIFICATIONS]: 'View Notifications'
 }
 

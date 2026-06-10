@@ -5,14 +5,14 @@ module.exports = function settingsRoutes(settingsService) {
   const router = require('express').Router();
 
   // --- Security Settings ---
-  router.get('/security', verifyToken, requirePermission('manage_settings'), async (req, res, next) => {
+  router.get('/security', verifyToken, requirePermission('admin_setting'), async (req, res, next) => {
     try {
       const result = await settingsService.getSecuritySettings();
       success(res, result);
     } catch (err) { next(err); }
   });
 
-  router.put('/security', verifyToken, requirePermission('manage_settings'), async (req, res, next) => {
+  router.put('/security', verifyToken, requirePermission('admin_setting'), async (req, res, next) => {
     try {
       // Expect change_reason in body
       const { change_reason, ...data } = req.body;
@@ -22,14 +22,14 @@ module.exports = function settingsRoutes(settingsService) {
   });
 
   // --- Sales Settings ---
-  router.get('/sales', verifyToken, requirePermission('manage_settings'), async (req, res, next) => {
+  router.get('/sales', verifyToken, requirePermission('admin_setting'), async (req, res, next) => {
     try {
       const result = await settingsService.getSalesSettings();
       success(res, result);
     } catch (err) { next(err); }
   });
 
-  router.put('/sales', verifyToken, requirePermission('manage_settings'), async (req, res, next) => {
+  router.put('/sales', verifyToken, requirePermission('admin_setting'), async (req, res, next) => {
     try {
       const { change_reason, ...data } = req.body;
       const result = await settingsService.updateSalesSettings(data, req.user.id, change_reason);
@@ -38,7 +38,7 @@ module.exports = function settingsRoutes(settingsService) {
   });
 
   // --- Settings History ---
-  router.get('/history', verifyToken, requirePermission('manage_settings'), async (req, res, next) => {
+  router.get('/history', verifyToken, requirePermission('admin_setting'), async (req, res, next) => {
     try {
       const result = await settingsService.getHistory(req.query);
       paginated(res, { ...result, page: req.query.page || 1, limit: req.query.limit || 20 });
@@ -68,7 +68,7 @@ module.exports = function settingsRoutes(settingsService) {
   }).catch(() => { });  // Non-blocking — subscription happens async
 
   // POST /fresh-promotion/run — trigger promotion via event
-  router.post('/fresh-promotion/run', verifyToken, requirePermission('manage_settings'), async (req, res, next) => {
+  router.post('/fresh-promotion/run', verifyToken, requirePermission('admin_setting'), async (req, res, next) => {
     try {
       const requestId = crypto.randomUUID();
       const salesSettings = await settingsService.getSalesSettings();
@@ -91,7 +91,7 @@ module.exports = function settingsRoutes(settingsService) {
   });
 
   // GET /fresh-promotion/status/:requestId — poll for result
-  router.get('/fresh-promotion/status/:requestId', verifyToken, requirePermission('manage_settings'), async (req, res, next) => {
+  router.get('/fresh-promotion/status/:requestId', verifyToken, requirePermission('admin_setting'), async (req, res, next) => {
     try {
       const { requestId } = req.params;
       const entry = promotionRequests.get(requestId);
@@ -105,35 +105,35 @@ module.exports = function settingsRoutes(settingsService) {
   });
 
   // --- Admin Coupon CRUD routes ---
-  router.get('/coupons', verifyToken, requirePermission('manage_settings'), async (req, res, next) => {
+  router.get('/coupons', verifyToken, requirePermission('manager_setting'), async (req, res, next) => {
     try {
       const result = await settingsService.getCoupons(req.query);
       paginated(res, { ...result, page: req.query.page || 1, limit: req.query.limit || 20 });
     } catch (err) { next(err); }
   });
 
-  router.post('/coupons', verifyToken, requirePermission('manage_settings'), async (req, res, next) => {
+  router.post('/coupons', verifyToken, requirePermission('manager_setting'), async (req, res, next) => {
     try {
       const result = await settingsService.createCoupon(req.body);
       success(res, result);
     } catch (err) { next(err); }
   });
 
-  router.put('/coupons/:id', verifyToken, requirePermission('manage_settings'), async (req, res, next) => {
+  router.put('/coupons/:id', verifyToken, requirePermission('manager_setting'), async (req, res, next) => {
     try {
       const result = await settingsService.updateCoupon(req.params.id, req.body);
       success(res, result);
     } catch (err) { next(err); }
   });
 
-  router.delete('/coupons/:id', verifyToken, requirePermission('manage_settings'), async (req, res, next) => {
+  router.delete('/coupons/:id', verifyToken, requirePermission('manager_setting'), async (req, res, next) => {
     try {
       const result = await settingsService.deleteCoupon(req.params.id);
       success(res, result);
     } catch (err) { next(err); }
   });
 
-  router.get('/coupons/:id/usages', verifyToken, requirePermission('manage_settings'), async (req, res, next) => {
+  router.get('/coupons/:id/usages', verifyToken, requirePermission('manager_setting'), async (req, res, next) => {
     try {
       const result = await settingsService.getCouponUsages(req.params.id, req.query);
       paginated(res, { ...result, page: req.query.page || 1, limit: req.query.limit || 20 });

@@ -29,7 +29,7 @@ import {
   ReceiptEuro
 } from 'lucide-react';
 import authService from '../../../../services/authService';
-import { hasPermission, PERMISSIONS } from '../../../../utils/permissions';
+import { hasPermission, hasAnyPermission, PERMISSIONS } from '../../../../utils/permissions';
 
 export const NavigationMenuSection = ({ isCollapsed, toggleCollapse }) => {
   // Lấy trạng thái từ localStorage khi component mount
@@ -173,7 +173,7 @@ export const NavigationMenuSection = ({ isCollapsed, toggleCollapse }) => {
           name: 'Settings',
           icon: Settings,
           href: '/settings',
-          permission: PERMISSIONS.MANAGE_SETTINGS
+          permission: [PERMISSIONS.MANAGER_SETTING, PERMISSIONS.ADMIN_SETTING]
         }
       ],
     },
@@ -190,6 +190,9 @@ export const NavigationMenuSection = ({ isCollapsed, toggleCollapse }) => {
 
           // If item has permission requirement, check it
           if (item.permission) {
+            if (Array.isArray(item.permission)) {
+              return hasAnyPermission(currentUser, item.permission);
+            }
             return hasPermission(currentUser, item.permission);
           }
 
@@ -197,6 +200,9 @@ export const NavigationMenuSection = ({ isCollapsed, toggleCollapse }) => {
           if (item.submenu) {
             const filteredSubmenu = item.submenu.filter(subitem => {
               if (!subitem.permission) return true;
+              if (Array.isArray(subitem.permission)) {
+                return hasAnyPermission(currentUser, subitem.permission);
+              }
               return hasPermission(currentUser, subitem.permission);
             });
 

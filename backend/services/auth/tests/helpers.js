@@ -56,14 +56,14 @@ function mockStoreRepo() {
 
 function mockCustomerRepo() {
   return createMockRepo([
-    'findAll', 'findByUserId', 'create', 'update', 'delete'
+    'findAll', 'findById', 'findByIds', 'create', 'update', 'toggleActive', 'softDelete'
   ]);
 }
 
 function mockRoleRepo() {
   return createMockRepo([
     'findAll', 'findById', 'findByName', 'create', 'update',
-    'delete', 'setPermissions', 'getAllPermissions'
+    'delete', 'setPermissions', 'getAllPermissions', 'findPermissionIdsByCodes'
   ]);
 }
 

@@ -10,6 +10,12 @@ export const ProductPriceSettings = () => {
   const [priceHistory, setPriceHistory] = useState([]);
   const [historyLoading, setHistoryLoading] = useState(false);
 
+  // Pagination state
+  const [currentPage, setCurrentPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+  const [totalProducts, setTotalProducts] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
+
   // Form state
   const [newPrice, setNewPrice] = useState('');
   const [reason, setReason] = useState('');
@@ -17,15 +23,14 @@ export const ProductPriceSettings = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
-  // Debounced search
+  // Fetch products when searchQuery, page, or limit changes
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
-      // Always load initial products if no search query, or search if there is one
       searchProducts();
-    }, 500);
+    }, 300);
 
     return () => clearTimeout(delayDebounceFn);
-  }, [searchQuery]);
+  }, [searchQuery, currentPage, limit]);
 
   // Fetch history when product selected
   useEffect(() => {
@@ -41,13 +46,30 @@ export const ProductPriceSettings = () => {
   const searchProducts = async () => {
     setLoading(true);
     try {
-      const params = { limit: 10 };
-      if (searchQuery) {
-        params.search = searchQuery;
+      const params = {
+        page: currentPage,
+        per_page: limit
+      };
+      if (searchQuery.trim()) {
+        params.search = searchQuery.trim();
       }
       const response = await productService.getAllProducts(params);
-      if (response.success && response.data) {
-        setProducts(response.data.products);
+      if (response && response.success && response.data) {
+        const data = response.data;
+        if (data.products) {
+          setProducts(data.products);
+          if (data.pagination) {
+            setTotalProducts(data.pagination.total || 0);
+            setTotalPages(data.pagination.pages || 1);
+          } else {
+            setTotalProducts(data.products.length);
+            setTotalPages(1);
+          }
+        } else if (Array.isArray(data)) {
+          setProducts(data);
+          setTotalProducts(data.length);
+          setTotalPages(1);
+        }
       }
     } catch (err) {
       console.error('Failed to search products', err);
@@ -136,15 +158,42 @@ export const ProductPriceSettings = () => {
             <Search className="w-5 h-5 text-emerald-600" />
             Select Product
           </h3>
-          <div className="relative w-full sm:w-72">
-            <input
-              type="text"
-              className="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 transition-all font-['Poppins',sans-serif]"
-              placeholder="Search by name or code..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            <Search className="absolute left-3 top-2.5 w-4 h-4 text-gray-400" />
+          <div className="flex items-center gap-2 w-full sm:w-auto">
+            {/* Items Per Page Dropdown */}
+            <div className="relative w-[80px]">
+              <select
+                value={limit}
+                onChange={(e) => {
+                  setLimit(parseInt(e.target.value));
+                  setCurrentPage(1);
+                }}
+                className="w-full h-[36px] bg-white border border-[#ced4da] rounded-lg px-3 py-2 text-[12px] font-['Poppins',sans-serif] text-[#212529] appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500"
+              >
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+              </select>
+              <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+                <svg width="10" height="10" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M3 4.5L6 7.5L9 4.5" stroke="#212529" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+              </div>
+            </div>
+            {/* Search Input */}
+            <div className="relative flex-1 sm:w-72">
+              <input
+                type="text"
+                className="w-full pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-emerald-500 transition-all font-['Poppins',sans-serif]"
+                placeholder="Search by name or barcode..."
+                value={searchQuery}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value);
+                  setCurrentPage(1);
+                }}
+              />
+              <Search className="absolute left-3 top-2.5 w-4 h-4 text-gray-400" />
+            </div>
           </div>
         </div>
 
@@ -153,7 +202,7 @@ export const ProductPriceSettings = () => {
           <table className="w-full">
             <thead>
               <tr className="bg-gray-50 border-b border-gray-200 h-[34px]">
-                <th className="w-[140px] px-4 text-left text-[11px] font-medium font-['Poppins',sans-serif] text-[#212529] uppercase tracking-[0.5px]">ID</th>
+                <th className="w-[100px] px-4 text-left text-[11px] font-medium font-['Poppins',sans-serif] text-[#212529] uppercase tracking-[0.5px]">ID</th>
                 <th className="w-[80px] px-4 text-left text-[11px] font-medium font-['Poppins',sans-serif] text-[#212529] uppercase tracking-[0.5px]">Image</th>
                 <th className="px-4 text-left text-[11px] font-medium font-['Poppins',sans-serif] text-[#212529] uppercase tracking-[0.5px]">Name</th>
                 <th className="w-[160px] px-4 text-left text-[11px] font-medium font-['Poppins',sans-serif] text-[#212529] uppercase tracking-[0.5px]">Category</th>
@@ -183,7 +232,7 @@ export const ProductPriceSettings = () => {
                     className={`hover:bg-emerald-50/50 transition-colors cursor-pointer ${selectedProduct?.id === product.id ? 'bg-emerald-50' : ''}`}
                     onClick={() => handleSelectProduct(product)}
                   >
-                    <td className="px-4 py-3 text-[12px] font-medium text-gray-600 font-['Poppins',sans-serif]">{product.productCode || '-'}</td>
+                    <td className="px-4 py-3 text-[12px] font-medium text-gray-600 font-['Poppins',sans-serif]">#{product.id}</td>
                     <td className="px-4 py-3">
                       {product.image ? (
                         <img
@@ -211,8 +260,8 @@ export const ProductPriceSettings = () => {
                     <td className="px-4 py-3 text-center">
                       <button
                         className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${selectedProduct?.id === product.id
-                            ? 'bg-emerald-600 text-white'
-                            : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50'
+                          ? 'bg-emerald-600 text-white'
+                          : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50'
                           }`}
                       >
                         {selectedProduct?.id === product.id ? 'Selected' : 'Select'}
@@ -224,6 +273,117 @@ export const ProductPriceSettings = () => {
             </tbody>
           </table>
         </div>
+
+        {/* Pagination Controls */}
+        {!loading && totalPages > 1 && (
+          <div className="flex items-center justify-center mt-6">
+            <div className="flex items-center gap-2">
+              {/* Previous button */}
+              <button
+                onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                disabled={currentPage === 1}
+                className={`px-3 py-2 rounded transition-colors text-[12px] font-['Poppins',sans-serif] ${currentPage === 1
+                  ? 'text-gray-400 cursor-not-allowed'
+                  : 'text-[#3bb77e] hover:bg-[#def9ec]'
+                  }`}
+              >
+                ‹ Previous
+              </button>
+
+              {/* Page numbers */}
+              {(() => {
+                const maxPagesToShow = 5;
+                let startPage = Math.max(1, currentPage - Math.floor(maxPagesToShow / 2));
+                let endPage = Math.min(totalPages, startPage + maxPagesToShow - 1);
+
+                if (endPage - startPage < maxPagesToShow - 1) {
+                  startPage = Math.max(1, endPage - maxPagesToShow + 1);
+                }
+
+                const pages = [];
+
+                // First page + ellipsis
+                if (startPage > 1) {
+                  pages.push(
+                    <button
+                      key={1}
+                      onClick={() => setCurrentPage(1)}
+                      className="px-3 py-2 rounded text-[#3bb77e] hover:bg-[#def9ec] transition-colors text-[12px] font-['Poppins',sans-serif]"
+                    >
+                      1
+                    </button>
+                  );
+                  if (startPage > 2) {
+                    pages.push(
+                      <span key="ellipsis-start" className="px-2 text-gray-400">
+                        ...
+                      </span>
+                    );
+                  }
+                }
+
+                // Page numbers
+                for (let page = startPage; page <= endPage; page++) {
+                  pages.push(
+                    <button
+                      key={page}
+                      onClick={() => setCurrentPage(page)}
+                      className={`px-3 py-2 rounded transition-colors text-[12px] font-['Poppins',sans-serif] ${currentPage === page
+                        ? 'bg-[#3bb77e] text-white'
+                        : 'text-[#3bb77e] hover:bg-[#def9ec]'
+                        }`}
+                    >
+                      {page}
+                    </button>
+                  );
+                }
+
+                // Ellipsis + last page
+                if (endPage < totalPages) {
+                  if (endPage < totalPages - 1) {
+                    pages.push(
+                      <span key="ellipsis-end" className="px-2 text-gray-400">
+                        ...
+                      </span>
+                    );
+                  }
+                  pages.push(
+                    <button
+                      key={totalPages}
+                      onClick={() => setCurrentPage(totalPages)}
+                      className="px-3 py-2 rounded text-[#3bb77e] hover:bg-[#def9ec] transition-colors text-[12px] font-['Poppins',sans-serif]"
+                    >
+                      {totalPages}
+                    </button>
+                  );
+                }
+
+                return pages;
+              })()}
+
+              {/* Next button */}
+              <button
+                onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                disabled={currentPage === totalPages}
+                className={`px-3 py-2 rounded transition-colors text-[12px] font-['Poppins',sans-serif] ${currentPage === totalPages
+                  ? 'text-gray-400 cursor-not-allowed'
+                  : 'text-[#3bb77e] hover:bg-[#def9ec]'
+                  }`}
+              >
+                Next ›
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Results Summary */}
+        {!loading && products.length > 0 && (
+          <div className="text-center text-sm text-gray-600 font-['Poppins',sans-serif] mt-4">
+            Showing {((currentPage - 1) * limit) + 1} to{' '}
+            {Math.min(currentPage * limit, totalProducts)} of{' '}
+            {totalProducts} products
+          </div>
+        )}
       </div>
 
       {/* Details & History Section (Visible when product selected) */}
@@ -253,7 +413,7 @@ export const ProductPriceSettings = () => {
                   )}
                   <div className="flex-1 min-w-0">
                     <h4 className="font-medium text-gray-900 truncate" title={selectedProduct.name}>{selectedProduct.name}</h4>
-                    <p className="text-xs text-gray-500">{selectedProduct.productCode}</p>
+                    <p className="text-xs text-gray-500">ID: #{selectedProduct.id} {selectedProduct.barcode ? `| Barcode: ${selectedProduct.barcode}` : ''}</p>
                   </div>
                 </div>
 
@@ -371,8 +531,8 @@ export const ProductPriceSettings = () => {
 
                           // changed_by is just an integer ID from DB
                           const changedById = log.changed_by || log.createdBy?.id;
-                          const changedByName = log.createdBy?.employee?.fullName 
-                            || log.createdBy?.username 
+                          const changedByName = log.createdBy?.employee?.fullName
+                            || log.createdBy?.username
                             || (changedById ? `Employee #${changedById}` : 'System');
                           const changedByInitials = changedByName === 'System' ? '?' : changedByName.charAt(0).toUpperCase();
 
