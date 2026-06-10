@@ -306,7 +306,7 @@ export function CartProvider({ children }) {
   }, []);
 
   const getCartCount = useCallback(() => {
-    return cartItems.reduce((count, item) => count + item.quantity, 0);
+    return cartItems.length;
   }, [cartItems]);
 
   const value = {

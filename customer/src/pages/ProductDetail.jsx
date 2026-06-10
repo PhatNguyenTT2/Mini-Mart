@@ -44,7 +44,7 @@ export default function ProductDetail() {
   const [error, setError] = useState(null);
   const [addedToCart, setAddedToCart] = useState(false);
   const [descExpanded, setDescExpanded] = useState(false);
-  
+
   const [relatedProducts, setRelatedProducts] = useState([]);
 
   useEffect(() => {
@@ -64,7 +64,7 @@ export default function ProductDetail() {
         setProduct(fetchedProduct);
         setBatches(batchRes?.data?.batches || []);
         setTotalOnShelf(batchRes?.data?.totalOnShelf || 0);
-        
+
         if (fetchedProduct?.category?.id || fetchedProduct?.categoryId) {
           const catId = fetchedProduct?.category?.id || fetchedProduct?.categoryId;
           try {
@@ -114,10 +114,10 @@ export default function ProductDetail() {
       try {
         const saved = localStorage.getItem('recently_viewed');
         let viewed = saved ? JSON.parse(saved) : [];
-        
+
         // Remove if already exists
         viewed = viewed.filter(p => p.id !== product.id);
-        
+
         // Add to front
         viewed.unshift({
           id: product.id,
@@ -126,14 +126,15 @@ export default function ProductDetail() {
           unitPrice: priceInfo.basePrice,
           discountPercentage: priceInfo.discountPct,
           category: product.category,
-          vendor: product.vendor
+          vendor: product.vendor,
+          isActive: product.isActive
         });
-        
+
         // Keep only max 10
         if (viewed.length > 10) {
           viewed = viewed.slice(0, 10);
         }
-        
+
         localStorage.setItem('recently_viewed', JSON.stringify(viewed));
       } catch (err) {
         console.error('Failed to save recently viewed', err);
@@ -230,8 +231,8 @@ export default function ProductDetail() {
       <main className="max-w-[1440px] mx-auto px-4 lg:px-8 py-8">
         {/* Breadcrumb Navigation */}
         <nav className="flex items-center gap-2 text-sm text-gray-500 mb-6">
-          <button 
-            onClick={() => navigate('/')} 
+          <button
+            onClick={() => navigate('/')}
             className="hover:text-emerald-600 transition-colors"
           >
             Home
@@ -366,13 +367,12 @@ export default function ProductDetail() {
                 id="pdp-add-to-cart"
                 onClick={handleAddToCart}
                 disabled={isOutOfStock}
-                className={`flex-1 flex items-center justify-center gap-2 py-3 px-6 rounded-xl font-bold text-sm transition-all duration-200 ${
-                  addedToCart
+                className={`flex-1 flex items-center justify-center gap-2 py-3 px-6 rounded-xl font-bold text-sm transition-all duration-200 ${addedToCart
                     ? 'bg-emerald-100 text-emerald-700 border-2 border-emerald-300'
                     : isOutOfStock
                       ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
                       : 'bg-emerald-600 text-white hover:bg-emerald-700 shadow-lg hover:shadow-xl active:scale-[0.98]'
-                }`}
+                  }`}
               >
                 <ShoppingCart className="w-5 h-5" />
                 {addedToCart
@@ -407,7 +407,7 @@ export default function ProductDetail() {
             </div>
           </div>
         </div>
-        
+
         {/* Related Products Section */}
         {relatedProducts.length > 0 && (
           <section className="mt-16 pt-10 border-t border-gray-100">
@@ -421,9 +421,9 @@ export default function ProductDetail() {
             }>
               <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
                 {relatedProducts.map(relProduct => (
-                  <ProductCard 
-                    key={relProduct.id} 
-                    product={relProduct} 
+                  <ProductCard
+                    key={relProduct.id}
+                    product={relProduct}
                     onAddToCart={(p) => {
                       addToCart({
                         id: p.id,
@@ -435,7 +435,7 @@ export default function ProductDetail() {
                         originalPrice: p.unitPrice,
                         category: p.category?.name || 'Uncategorized',
                       });
-                    }} 
+                    }}
                   />
                 ))}
               </div>

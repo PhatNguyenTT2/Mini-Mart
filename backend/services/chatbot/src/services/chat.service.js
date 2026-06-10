@@ -242,6 +242,9 @@ class ChatService {
             case 'MANAGE_INVENTORY_VIEW':
                 response = this.entityHandler.handleInventoryView(session);
                 break;
+            case 'MANAGE_BATCH_DISCOUNT':
+                response = await this.entityHandler.handleBatchDiscount(session, userMessage);
+                break;
             case 'FREE_CHAT':
             default:
                 response = await this.utils.handleFreeChat(sessionId, userMessage);
@@ -333,7 +336,8 @@ class ChatService {
         return {
             executeAddToCart: (s, p, q) => this.cartHandler.executeAddToCart(s, p, q),
             executePosAddItem: (s, p, q) => this.posHandler.executePosAddItem(s, p, q),
-            processOrderCollection: (s, m) => this.posHandler.processOrderCollection(s, m, context)
+            processOrderCollection: (s, m) => this.posHandler.processOrderCollection(s, m, context),
+            executeBatchDiscountFlow: (s, p, d) => this.entityHandler.executeBatchDiscountFlow(s, p, d)
         };
     }
 
@@ -565,6 +569,9 @@ class ChatService {
                     break;
                 case 'MANAGE_INVENTORY_VIEW':
                     response = this.entityHandler.handleInventoryView(session);
+                    break;
+                case 'MANAGE_BATCH_DISCOUNT':
+                    response = await this.entityHandler.handleBatchDiscount(session, userMessage);
                     break;
                 default:
                     response = await this.utils.handleFreeChat(sessionId, userMessage);

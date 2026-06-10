@@ -1,4 +1,4 @@
-const { createPool } = require('../../../shared/db');
+const { createPool } = require('../../../../shared/db');
 const pool = createPool();
 
 const STORE_ID = 1;
@@ -167,7 +167,7 @@ async function generateMockInteractions() {
     console.log(`   ✓ ${allInteractions.length} rows inserted.`);
 
     console.log('\n🧮 Computing Adjusted Cosine Similarities...');
-    const CollaborativeFilteringService = require('./services/cf.service');
+    const CollaborativeFilteringService = require('../services/cf.service');
     const cfService = new CollaborativeFilteringService(pool);
     const result = await cfService.computeItemSimilarities(STORE_ID, 2);
 

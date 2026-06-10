@@ -44,20 +44,20 @@ class BatchRepository {
         ]);
         return rows[0];
     }
-    
+
     // Tạo qua transaction context
     async createWithClient(client, storeId, data) {
-         const { product_id, cost_price, unit_price, quantity, mfg_date, expiry_date, notes } = data;
-         const query = `
+        const { product_id, cost_price, unit_price, quantity, mfg_date, expiry_date, notes } = data;
+        const query = `
              INSERT INTO product_batch 
              (store_id, product_id, cost_price, unit_price, quantity, mfg_date, expiry_date, notes)
              VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
              RETURNING *
          `;
-         const { rows } = await client.query(query, [
-             storeId, product_id, cost_price, unit_price, quantity, mfg_date, expiry_date, notes
-         ]);
-         return rows[0];
+        const { rows } = await client.query(query, [
+            storeId, product_id, cost_price, unit_price, quantity, mfg_date, expiry_date, notes
+        ]);
+        return rows[0];
     }
 
     async updateStatusWithClient(client, storeId, batchId, status) {
@@ -76,6 +76,55 @@ class BatchRepository {
         const query = 'DELETE FROM product_batch WHERE id = $1 AND store_id = $2 RETURNING *';
         const { rows } = await this.pool.query(query, [batchId, storeId]);
         return rows[0] || null;
+    }
+
+    async update(storeId, batchId, data) {
+        const allowedFields = [
+            'cost_price', 'unit_price', 'quantity', 'mfg_date', 'expiry_date',
+            'status', 'notes', 'discount_percentage', 'promotion_applied'
+        ];
+        const sets = [];
+        const params = [storeId, batchId];
+
+        for (const field of allowedFields) {
+            let dbField = field;
+            let val = data[field];
+
+            // support camelCase mappings
+            if (field === 'cost_price' && data.costPrice !== undefined) val = data.costPrice;
+            if (field === 'unit_price' && data.unitPrice !== undefined) val = data.unitPrice;
+            if (field === 'mfg_date' && data.mfgDate !== undefined) val = data.mfgDate;
+            if (field === 'expiry_date' && data.expiryDate !== undefined) val = data.expiryDate;
+            if (field === 'discount_percentage' && data.discountPercentage !== undefined) val = data.discountPercentage;
+            if (field === 'promotion_applied' && data.promotionApplied !== undefined) val = data.promotionApplied;
+
+            if (val !== undefined) {
+                params.push(val);
+                sets.push(`${dbField} = $${params.length}`);
+            }
+        }
+        if (sets.length === 0) return this.findById(storeId, batchId);
+
+        const query = `UPDATE product_batch SET ${sets.join(', ')}, updated_at = NOW()
+                       WHERE id = $2 AND store_id = $1 RETURNING *`;
+        const { rows } = await this.pool.query(query, params);
+        return rows[0] || null;
+    }
+
+    async bulkUpdateByProduct(storeId, productId, data) {
+        let discount = data.discount_percentage;
+        if (discount === undefined) discount = data.discountPercentage;
+        let promotion = data.promotion_applied;
+        if (promotion === undefined) promotion = data.promotionApplied;
+
+        const query = `UPDATE product_batch
+                       SET discount_percentage = $3, promotion_applied = $4, updated_at = NOW()
+                       WHERE store_id = $1 AND product_id = $2 AND status = 'active'
+                       RETURNING *`;
+        const { rows } = await this.pool.query(query, [
+            storeId, productId, discount, promotion || 'manual'
+        ]);
+        return { updatedCount: rows.length, batches: rows };
     }
 }
 

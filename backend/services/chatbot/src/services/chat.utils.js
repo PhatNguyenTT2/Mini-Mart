@@ -386,6 +386,43 @@ class ChatUtils {
       };
     }
 
+    if (pending.state === 'CLARIFYING_DISCOUNT') {
+      const match = userMessage.match(/\[?(\d+)\]?/);
+      let selectedProduct = null;
+
+      if (match) {
+        const index = parseInt(match[1], 10) - 1;
+        if (index >= 0 && index < candidates.length) {
+          selectedProduct = candidates[index];
+        }
+      }
+
+      if (!selectedProduct) {
+        const lowerMsg = userMessage.toLowerCase().trim();
+        selectedProduct = candidates.find(c =>
+          c.name.toLowerCase().includes(lowerMsg) ||
+          lowerMsg.includes(c.name.toLowerCase())
+        );
+      }
+
+      if (selectedProduct) {
+        delete metadata.pendingAction;
+        session.metadata = metadata;
+        await this.chatRepo.updateSessionMetadata(session.id, metadata);
+
+        if (handlers.executeBatchDiscountFlow) {
+          return handlers.executeBatchDiscountFlow(session, selectedProduct, pending.data.discountPercentage);
+        }
+      }
+
+      const list = candidates.map((p, i) => `[${i + 1}] ${p.name}`).join('\n');
+      return {
+        intent: pending.type,
+        reply: `Vui lòng chọn chính xác số thứ tự sản phẩm bên dưới bằng cách nhập số (ví dụ: 1 hoặc 2):\n${list}`,
+        products: candidates
+      };
+    }
+
     if (pending.state === 'CONFIRMING') {
       const lowerMsg = userMessage.toLowerCase().trim();
       const isConfirmed = /(?:^|\s)(đồng ý|xác nhận|có|yes|ok|đúng thế|chắc chắn)(?:\s|$)/i.test(lowerMsg);
@@ -417,6 +454,8 @@ class ChatUtils {
           replyMsg = `Đã tạo đơn hàng mới thành công. ID đơn hàng: #${orderId}`;
         } else if (pending.type === 'MANAGE_CUSTOMER_UPDATE') {
           replyMsg = `Đã cập nhật hạng ${pending.data.newTier} thành công.`;
+        } else if (pending.type === 'MANAGE_BATCH_DISCOUNT') {
+          replyMsg = `Đã áp dụng giảm giá ${pending.data.discountPercentage}% cho các lô hàng của sản phẩm "${pending.data.productName}" thành công.`;
         }
 
         return {

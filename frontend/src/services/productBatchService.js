@@ -22,7 +22,7 @@ const productBatchService = {
    */
   getAllBatches: async (params = {}) => {
     try {
-      const response = await api.get('/product-batches', { params })
+      const response = await api.get('/batches', { params })
       return response.data
     } catch (error) {
       console.error('Error fetching product batches:', error)
@@ -37,7 +37,7 @@ const productBatchService = {
    */
   getBatchById: async (batchId) => {
     try {
-      const response = await api.get(`/product-batches/${batchId}`)
+      const response = await api.get(`/batches/${batchId}`)
       return response.data
     } catch (error) {
       console.error('Error fetching product batch:', error)
@@ -62,7 +62,7 @@ const productBatchService = {
    */
   createBatch: async (batchData) => {
     try {
-      const response = await api.post('/product-batches', batchData)
+      const response = await api.post('/batches', batchData)
       return response.data
     } catch (error) {
       console.error('Error creating product batch:', error)
@@ -87,7 +87,7 @@ const productBatchService = {
    */
   updateBatch: async (batchId, batchData) => {
     try {
-      const response = await api.put(`/product-batches/${batchId}`, batchData)
+      const response = await api.put(`/batches/${batchId}`, batchData)
       return response.data
     } catch (error) {
       console.error('Error updating product batch:', error)
@@ -103,7 +103,7 @@ const productBatchService = {
    */
   deleteBatch: async (batchId) => {
     try {
-      const response = await api.delete(`/product-batches/${batchId}`)
+      const response = await api.delete(`/batches/${batchId}`)
       return response.data
     } catch (error) {
       console.error('Error deleting product batch:', error)
@@ -122,7 +122,7 @@ const productBatchService = {
    */
   getBatchesByProduct: async (productId, options = {}) => {
     try {
-      const response = await api.get('/product-batches', {
+      const response = await api.get('/batches', {
         params: { product: productId, ...options }
       })
       return response.data
@@ -139,7 +139,7 @@ const productBatchService = {
    */
   getExpiredBatches: async (params = {}) => {
     try {
-      const response = await api.get('/product-batches', {
+      const response = await api.get('/batches', {
         params: { expired: true, ...params }
       })
       return response.data
@@ -156,7 +156,7 @@ const productBatchService = {
    */
   getNearExpiryBatches: async (params = {}) => {
     try {
-      const response = await api.get('/product-batches', {
+      const response = await api.get('/batches', {
         params: { nearExpiry: true, ...params }
       })
       return response.data
@@ -173,7 +173,7 @@ const productBatchService = {
    */
   getActiveBatches: async (params = {}) => {
     try {
-      const response = await api.get('/product-batches', {
+      const response = await api.get('/batches', {
         params: { status: 'active', ...params }
       })
       return response.data
@@ -191,7 +191,7 @@ const productBatchService = {
    */
   getBatchesWithPromotion: async (promotionType, params = {}) => {
     try {
-      const response = await api.get('/product-batches', {
+      const response = await api.get('/batches', {
         params: { promotionApplied: promotionType, ...params }
       })
       return response.data
@@ -209,7 +209,7 @@ const productBatchService = {
    */
   searchBatches: async (searchTerm, limit = 20) => {
     try {
-      const response = await api.get('/product-batches', {
+      const response = await api.get('/batches', {
         params: { search: searchTerm, limit }
       })
       return response.data
@@ -227,7 +227,7 @@ const productBatchService = {
    */
   updateBatchQuantity: async (batchId, quantity) => {
     try {
-      const response = await api.put(`/product-batches/${batchId}`, { quantity })
+      const response = await api.put(`/batches/${batchId}`, { quantity })
       return response.data
     } catch (error) {
       console.error('Error updating batch quantity:', error)
@@ -243,7 +243,7 @@ const productBatchService = {
    */
   updateBatchStatus: async (batchId, status) => {
     try {
-      const response = await api.put(`/product-batches/${batchId}`, { status })
+      const response = await api.put(`/batches/${batchId}`, { status })
       return response.data
     } catch (error) {
       console.error('Error updating batch status:', error)
@@ -261,7 +261,7 @@ const productBatchService = {
    */
   updateBatchPrices: async (batchId, priceData) => {
     try {
-      const response = await api.put(`/product-batches/${batchId}`, priceData)
+      const response = await api.put(`/batches/${batchId}`, priceData)
       return response.data
     } catch (error) {
       console.error('Error updating batch prices:', error)
@@ -278,7 +278,7 @@ const productBatchService = {
    */
   applyPromotion: async (batchId, promotionType, discountPercentage = 0) => {
     try {
-      const response = await api.put(`/product-batches/${batchId}`, {
+      const response = await api.put(`/batches/${batchId}`, {
         promotionApplied: promotionType,
         discountPercentage: discountPercentage
       })
@@ -296,7 +296,7 @@ const productBatchService = {
    */
   removePromotion: async (batchId) => {
     try {
-      const response = await api.put(`/product-batches/${batchId}`, {
+      const response = await api.put(`/batches/${batchId}`, {
         promotionApplied: 'none',
         discountPercentage: 0
       })
@@ -315,7 +315,7 @@ const productBatchService = {
    */
   getLowQuantityBatches: async (threshold = 10, params = {}) => {
     try {
-      const response = await api.get('/product-batches', {
+      const response = await api.get('/batches', {
         params: { maxQuantity: threshold, status: 'active', ...params }
       })
       return response.data

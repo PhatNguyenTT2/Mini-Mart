@@ -48,6 +48,16 @@ class ActionExecutor {
       return false;
     }
 
+    const managerOnlyActions = [
+      ACTION_TYPES.MANAGE_CUSTOMER_UPDATE,
+      ACTION_TYPES.MANAGE_BATCH_DISCOUNT
+    ];
+
+    if (managerOnlyActions.includes(actionType) && userType !== 'manager') {
+      logger.warn({ actionType, userType, sessionId: session.id }, 'Permission check failed: Manager-only action attempted by non-manager');
+      return false;
+    }
+
     return true;
   }
 
@@ -203,6 +213,14 @@ class ActionExecutor {
           apiResult = await withTimeout(this.apiClient._fetch(`${authUrl}/api/customers/${payload.customerId}`, {
             method: 'PUT',
             body: JSON.stringify({ customerType: payload.newTier })
+          }));
+          break;
+        }
+        case ACTION_TYPES.MANAGE_BATCH_DISCOUNT: {
+          const { productId, discountPercentage } = payload;
+          apiResult = await withTimeout(this.apiClient.bulkUpdateBatches(productId, {
+            discount_percentage: discountPercentage,
+            promotion_applied: 'manual'
           }));
           break;
         }

@@ -40,8 +40,9 @@ function createBatchRouter(batchRepo) {
   router.get('/', verifyToken, async (req, res, next) => {
     try {
       const storeId = req.user ? req.user.storeId : 1;
+      const productId = req.query.productId || req.query.product;
       const filters = {
-        productId: req.query.productId,
+        productId: productId ? parseInt(productId) : undefined,
         status: req.query.status
       };
 
@@ -50,6 +51,39 @@ function createBatchRouter(batchRepo) {
         success: true,
         data: batches
       });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  // Bulk update all batches of a product
+  router.put('/bulk-update', verifyToken, async (req, res, next) => {
+    try {
+      const storeId = req.user ? req.user.storeId : 1;
+      const { productId, discount_percentage, promotion_applied } = req.body;
+      if (!productId) {
+        return res.status(400).json({ success: false, error: 'productId is required' });
+      }
+      const result = await batchRepo.bulkUpdateByProduct(storeId, productId, {
+        discount_percentage,
+        promotion_applied
+      });
+      res.json({ success: true, data: result });
+    } catch (error) {
+      next(error);
+    }
+  });
+
+  // Update a product batch
+  router.put('/:id', verifyToken, async (req, res, next) => {
+    try {
+      const storeId = req.user ? req.user.storeId : 1;
+      const batchId = parseInt(req.params.id);
+      const updated = await batchRepo.update(storeId, batchId, req.body);
+      if (!updated) {
+        return res.status(404).json({ success: false, error: 'Batch not found' });
+      }
+      res.json({ success: true, data: updated });
     } catch (error) {
       next(error);
     }

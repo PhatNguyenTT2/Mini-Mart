@@ -1,7 +1,7 @@
 const request = require('supertest');
 const createApp = require('../../src/app');
 
-jest.mock('../../../../shared/auth-middleware', () => require('../__mocks__/auth-middleware'));
+jest.mock('../../../../shared/auth-middleware', () => jest.requireActual('../__mocks__/auth-middleware'));
 
 describe('Inventory API Integration', () => {
     let app, mockInventoryService, mockStockOutService;
@@ -17,12 +17,12 @@ describe('Inventory API Integration', () => {
             getOrders: jest.fn(),
             getOrderById: jest.fn(),
             createOrder: jest.fn(),
-            completeOrder: jest.fn()
+            updateStatus: jest.fn()
         };
 
-        app = createApp({ 
-            inventoryService: mockInventoryService, 
-            stockOutService: mockStockOutService 
+        app = createApp({
+            inventoryService: mockInventoryService,
+            stockOutService: mockStockOutService
         });
     });
 
@@ -32,7 +32,7 @@ describe('Inventory API Integration', () => {
             mockInventoryService.getInventorySummary.mockResolvedValue([{ product_id: 1, quantity: 10 }]);
             const res = await request(app).get('/api/inventory/summary').set('Authorization', 'Bearer token');
             expect(res.status).toBe(200);
-            expect(res.body.data.summary).toHaveLength(1);
+            expect(res.body.data).toHaveLength(1);
         });
     });
 
@@ -61,7 +61,7 @@ describe('Inventory API Integration', () => {
     // === Stock Out ===
     describe('GET /api/stock-out', () => {
         it('should return paginated stock-out orders', async () => {
-            mockStockOutService.getOrders.mockResolvedValue({ items: [{ id: 1 }], total: 1 });
+            mockStockOutService.getOrders.mockResolvedValue([{ id: 1 }]);
             const res = await request(app).get('/api/stock-out').set('Authorization', 'Bearer token');
             expect(res.status).toBe(200);
         });
@@ -86,13 +86,14 @@ describe('Inventory API Integration', () => {
         });
     });
 
-    describe('POST /api/stock-out/:id/complete', () => {
+    describe('PUT /api/stock-out/:id/status', () => {
         it('should complete stock out order', async () => {
-            mockStockOutService.completeOrder.mockResolvedValue({ message: 'Stock Out Order completed successfully' });
-            const res = await request(app).post('/api/stock-out/1/complete')
-                .set('Authorization', 'Bearer token');
+            mockStockOutService.updateStatus.mockResolvedValue({ message: 'Stock Out Order completed successfully' });
+            const res = await request(app).put('/api/stock-out/1/status')
+                .set('Authorization', 'Bearer token')
+                .send({ status: 'completed' });
             expect(res.status).toBe(200);
-            expect(res.body.message).toBe('Stock Out Order completed successfully');
+            expect(res.body.data.message).toBe('Stock Out Order completed successfully');
         });
     });
 });

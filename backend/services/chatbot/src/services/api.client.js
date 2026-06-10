@@ -104,6 +104,19 @@ class ApiClient {
         return this._fetch(url);
     }
 
+    async getProductBatches(productId) {
+        const url = `${SERVICE_URLS.inventory}/api/batches?productId=${productId}`;
+        return this._fetch(url);
+    }
+
+    async bulkUpdateBatches(productId, data) {
+        const url = `${SERVICE_URLS.inventory}/api/batches/bulk-update`;
+        return this._fetch(url, {
+            method: 'PUT',
+            body: JSON.stringify({ productId, ...data })
+        });
+    }
+
     // ── Order Service ─────────────────────────────
     async getOrderById(orderId) {
         const url = `${SERVICE_URLS.order}/api/orders/${orderId}`;

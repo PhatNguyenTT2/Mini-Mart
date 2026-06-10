@@ -177,6 +177,24 @@ curl http://localhost:3008/health
 
 ---
 
+### ACT 8: Manager — Batch Discount & Conflict Resolution
+
+> **Mục đích:** Hướng dẫn Manager thiết lập giảm giá hàng loạt lô hàng sản phẩm, giải quyết xung đột giảm giá hoặc phân luồng tự động cho mặt hàng perishable.
+> **Context:** Đăng nhập Manager, mở Chatbot Admin Dashboard.
+
+**📝 Kịch bản:**
+
+| Bước | Gõ vào chatbot | Intent | Kết quả mong đợi |
+|:---:|----------------|--------|-------------------|
+| 1 | **"giảm giá 15% bánh nabati"** | `MANAGE_BATCH_DISCOUNT` | Recap & Xác nhận: "Xác nhận thiết lập giảm giá 15% cho tất cả lô hàng của sản phẩm \"Nabati Phô Mai\"? (Đồng ý/Hủy bỏ)" |
+| 2 | **"Đồng ý"** | (CONFIRMING) | "Đã áp dụng giảm giá 15% cho các lô hàng của sản phẩm \"Nabati Phô Mai\" thành công." |
+| 3 | **"giảm 20% mì hảo hảo"** | `MANAGE_BATCH_DISCOUNT` | Phát hiện xung đột -> "⚠️ Sản phẩm \"Mì Hảo Hảo\" hiện đang có lô hàng giảm giá 10%. Bạn có muốn ghi đè thành 20% cho tất cả lô hàng không? (Đồng ý/Hủy bỏ)" |
+| 4 | **"Đồng ý"** | (CONFIRMING) | "Đã áp dụng giảm giá 20% cho các lô hàng của sản phẩm \"Mì Hảo Hảo\" thành công." |
+| 5 | **"giảm giá 30% sữa vinamilk"** | `MANAGE_BATCH_DISCOUNT` | Phân luồng perishable -> "Sản phẩm \"Sữa Vinamilk\" thuộc nhóm hàng tươi sống/perishable. Yêu cầu chuyển đến màn hình Cấu hình Khuyến mãi để tránh sai lệch định giá tự động." + Action NAVIGATE tới `/inventory/batches?productId=...` |
+
+---
+
 ## 📊 BƯỚC 3: TỔNG KẾT
 
 Chatbot Action Assistant hỗ trợ kiểm soát chặt chẽ thông qua kiến trúc phân quyền và bảo vệ 4 lớp (Rate Limiting, Role Checking, Ownership Checking, và Confirmation Gates). Mọi hành động tác động ghi đều được ghi chép lịch sử chi tiết phục vụ giám sát vận hành.
+

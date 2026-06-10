@@ -94,9 +94,8 @@ export const ProductCard = ({ product, onAddToCart, trackingSource = 'organic' }
             src={imageUrl}
             alt={product.name}
             loading="lazy"
-            className={`max-w-full max-h-full object-contain transition-transform duration-300 ${
-              isOutOfStock ? 'grayscale opacity-50' : 'group-hover:scale-110'
-            }`}
+            className={`max-w-full max-h-full object-contain transition-transform duration-300 ${isOutOfStock ? 'grayscale opacity-50' : 'group-hover:scale-110'
+              }`}
             onError={(e) => {
               e.target.style.display = 'none';
               e.target.nextElementSibling.style.display = 'flex';
@@ -132,7 +131,7 @@ export const ProductCard = ({ product, onAddToCart, trackingSource = 'organic' }
         )}
 
         {/* Inactive Badge */}
-        {!product.isActive && (
+        {product.isActive === false && (
           <div className="absolute top-2.5 left-2.5 bg-gray-500 text-white text-xs font-semibold px-2 py-1 rounded-lg">
             Inactive
           </div>
@@ -188,17 +187,15 @@ export const ProductCard = ({ product, onAddToCart, trackingSource = 'organic' }
           ) : (
             <button
               onClick={handleAddToCart}
-              className={`flex items-center gap-1.5 transition-all duration-200 rounded-xl font-semibold ${
-                isHovered
+              className={`flex items-center gap-1.5 transition-all duration-200 rounded-xl font-semibold ${isHovered
                   ? 'bg-emerald-600 text-white shadow-md px-3.5 py-2'
                   : 'bg-emerald-100 text-emerald-600 px-2.5 py-2'
-              }`}
+                }`}
               title="Add to cart"
             >
               <ShoppingCart className="w-4 h-4" />
-              <span className={`text-xs whitespace-nowrap transition-all duration-200 overflow-hidden ${
-                isHovered ? 'max-w-[80px] opacity-100' : 'max-w-0 opacity-0'
-              }`}>
+              <span className={`text-xs whitespace-nowrap transition-all duration-200 overflow-hidden ${isHovered ? 'max-w-[80px] opacity-100' : 'max-w-0 opacity-0'
+                }`}>
                 Add
               </span>
             </button>

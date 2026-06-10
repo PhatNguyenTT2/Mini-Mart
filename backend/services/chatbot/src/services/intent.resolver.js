@@ -82,6 +82,12 @@ const INTENT_PATTERNS = {
         employeeOnly: true,
         description: 'Mở lịch sử đơn hàng POS (Nhân viên)'
     },
+    MANAGE_BATCH_DISCOUNT: {
+        keywords: ['giảm giá', 'chiết khấu', 'sale', 'hạ giá', 'set giảm giá', 'discount', 'áp dụng giảm giá'],
+        writeAction: true,
+        managerOnly: true,
+        description: 'Cấu hình giảm giá lô hàng sản phẩm (Manager)'
+    },
     REPORT_SALES: {
         keywords: ['doanh thu', 'revenue', 'doanh số'],
         writeAction: false,
