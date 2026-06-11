@@ -8,7 +8,7 @@ const axios = require('axios');
  * Data flow:
  *   1. Fetch perishable product_ids from Catalog (HTTP)
  *   2. Query product_batch WHERE product_id IN (...) AND expiry filtering
- *   3. UPDATE discount_percentage + promotion_applied = 'auto_fresh'
+ *   3. UPDATE discount_percentage + promotion_applied = 'perishable'
  *   4. Cleanup: expired batches → promotion_applied = 'none', status = 'expired'
  */
 class PromotionService {
@@ -106,13 +106,13 @@ class PromotionService {
             const result = await this.pool.query(`
                 UPDATE product_batch
                 SET discount_percentage = $1,
-                    promotion_applied = 'auto_fresh'
+                    promotion_applied = 'perishable'
                 WHERE product_id = ANY($2)
                   AND status = 'active'
                   AND quantity > 0
                   AND expiry_date >= $3
                   AND expiry_date <= $4
-                  AND (promotion_applied = 'none' OR (promotion_applied = 'auto_fresh' AND discount_percentage < $1))
+                  AND (promotion_applied = 'none' OR (promotion_applied = 'perishable' AND discount_percentage < $1))
                 RETURNING id, product_id, discount_percentage, expiry_date
             `, [discountPct, productIds, range.start, range.end]);
 
@@ -128,7 +128,7 @@ class PromotionService {
             logger.info({ range: range.label, applied: result.rowCount }, 'Promotion applied for range');
         }
 
-        // 4. Cleanup: remove auto_fresh promotions from expired batches
+        // 4. Cleanup: remove perishable promotions from expired batches
         const cleanupResult = await this.pool.query(`
             UPDATE product_batch
             SET promotion_applied = 'none',
@@ -136,7 +136,7 @@ class PromotionService {
                 status = 'expired'
             WHERE product_id = ANY($1)
               AND expiry_date < NOW()
-              AND promotion_applied = 'auto_fresh'
+              AND promotion_applied = 'perishable'
             RETURNING id, product_id
         `, [productIds]);
 

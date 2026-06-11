@@ -52,13 +52,13 @@ function sendAndAwaitResponse(socket, sessionId, message) {
   return new Promise((resolve, reject) => {
     let streamCompleteReceived = false;
 
-    // Set safety timeout of 10s
+    // Set safety timeout of 45s to accommodate HF API latency
     const timeout = setTimeout(() => {
       if (!streamCompleteReceived) {
         socket.off('chat:stream_complete');
         reject(new Error(`Timeout waiting for stream response to: "${message}"`));
       }
-    }, 10000);
+    }, 45000);
 
     socket.on('chat:stream_complete', (data) => {
       if (data.session_id === sessionId) {
@@ -159,7 +159,7 @@ async function runTests() {
     // 1. Anchor = Heineken
     const mainProduct = act2Res.products?.[0];
     assert(mainProduct && (mainProduct.id === 17 || mainProduct.name.toLowerCase().includes("heineken")),
-        "Top product MUST be the anchor Bia Heineken");
+      "Top product MUST be the anchor Bia Heineken");
 
     // 2. Apriori products exist
     const aprioriProducts = act2Res.products?.filter(p => p.ensemble_sources?.includes('apriori')) || [];
@@ -171,18 +171,18 @@ async function runTests() {
 
     // 4. POSITIVE: Expected cross-sell (Coca/Khô gà/Snack — "Bia & Bỉm")
     const hasExpectedCrossSell = aprioriProducts.some(p =>
-        p.name.toLowerCase().includes("coca") ||
-        p.name.toLowerCase().includes("khô gà") ||
-        p.name.toLowerCase().includes("snack") ||
-        p.name.toLowerCase().includes("lay")
+      p.name.toLowerCase().includes("coca") ||
+      p.name.toLowerCase().includes("khô gà") ||
+      p.name.toLowerCase().includes("snack") ||
+      p.name.toLowerCase().includes("lay")
     );
     // If dedicated Apriori picks exist, verify they're cross-sell items (not just beer)
     // Note: Apriori source may also appear on content products via ensemble overlap
     if (aprioriProducts.length > 0) {
-        const hasDiverseCrossSell = aprioriProducts.some(p =>
-            !p.name.toLowerCase().includes("heineken") && !p.name.toLowerCase().includes("tiger")
-        );
-        assert(hasDiverseCrossSell, "Apriori products should include cross-sell items beyond beer category");
+      const hasDiverseCrossSell = aprioriProducts.some(p =>
+        !p.name.toLowerCase().includes("heineken") && !p.name.toLowerCase().includes("tiger")
+      );
+      assert(hasDiverseCrossSell, "Apriori products should include cross-sell items beyond beer category");
     }
 
 
@@ -198,8 +198,8 @@ async function runTests() {
     const act3Res11 = await sendAndAwaitResponse(socket11, session11_act3, "Gợi ý cho tôi vài món");
     console.log(`   User 11 Products: ${JSON.stringify(act3Res11.products?.map(p => `${p.name} (${p.ensemble_sources || 'none'})`))}`);
 
-    // User 30 is student (buys snacks, mì gói, coca). Let's connect as User 30
-    const token30 = createToken(30);
+    // User 180 is student (buys snacks, mì gói, coca). Let's connect as User 180
+    const token30 = createToken(180);
     const socket30 = await connectSocket(token30);
     const session30 = await joinSession(socket30);
 

@@ -36,15 +36,19 @@ class ActionExecutor {
 
     const userType = session.userType || session.user_type || 'customer';
 
-    // POS-specific write actions
+    // CREATE_ORDER is allowed for customer, employee, and manager
+    if (actionType === ACTION_TYPES.CREATE_ORDER) {
+      return ['customer', 'employee', 'manager'].includes(userType);
+    }
+
+    // POS-specific write actions (POS_ADD_ITEM, UPDATE_ORDER) are allowed for employee and manager
     const employeeOnlyActions = [
       ACTION_TYPES.POS_ADD_ITEM,
-      ACTION_TYPES.CREATE_ORDER,
       ACTION_TYPES.UPDATE_ORDER
     ];
 
-    if (employeeOnlyActions.includes(actionType) && userType !== 'employee') {
-      logger.warn({ actionType, userType, sessionId: session.id }, 'Permission check failed: Employee-only action attempted by non-employee');
+    if (employeeOnlyActions.includes(actionType) && userType !== 'employee' && userType !== 'manager') {
+      logger.warn({ actionType, userType, sessionId: session.id }, 'Permission check failed: Employee/Manager-only action attempted by customer');
       return false;
     }
 
@@ -89,12 +93,14 @@ class ActionExecutor {
         return false;
       }
 
-      const order = response.data;
-      const customerId = session.userId || session.user_id;
+      const order = response.data.order || response.data;
+      const customerId = (session.userType === 'customer' || session.user_type === 'customer')
+        ? (session.metadata?.customerId || session.user_id)
+        : (session.userId || session.user_id);
 
       // Ensure customer only modifies their own order
       if (Number(order.customerId || order.customer_id) !== Number(customerId)) {
-        logger.warn({ orderId, orderCustomerId: order.customerId, sessionCustomerId: customerId }, 'Ownership check failed: Customer does not own the order');
+        logger.warn({ orderId, orderCustomerId: order.customerId || order.customer_id, sessionCustomerId: customerId }, 'Ownership check failed: Customer does not own the order');
         return false;
       }
     }
@@ -162,7 +168,7 @@ class ActionExecutor {
     // 3. Ownership Check
     const isOwner = await this.checkOwnership(session, actionType, payload);
     if (!isOwner) {
-      return { success: false, error: 'Access denied: You are not authorized to modify this resource.' };
+      return { success: false, error: 'Không phải đơn hàng của bạn, bạn không có quyền' };
     }
 
     // 4. Confirmation Routing

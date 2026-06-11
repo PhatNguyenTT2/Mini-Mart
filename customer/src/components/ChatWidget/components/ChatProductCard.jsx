@@ -29,7 +29,9 @@ export const ChatProductCard = ({ product }) => {
   const DWELL_THRESHOLD_MS = 1500
 
   const name = product.name || product.productName || 'Product'
-  const price = product.unitPrice || product.unit_price || 0
+  const originalPrice = product.unitPrice || product.unit_price || 0
+  const discountPercentage = product.discountPercentage || product.discount_percentage || 0
+  const finalPrice = product.finalPrice || product.final_price || originalPrice
   const qty = product.quantityOnShelf || product.quantity_on_shelf || 0
   const inStock = product.isInStock ?? product.is_in_stock ?? (qty > 0)
   const category = product.categoryName || product.category_name || ''
@@ -83,8 +85,8 @@ export const ChatProductCard = ({ product }) => {
       id: product.id,
       name,
       image: imageUrl,
-      price,
-      originalPrice: price,
+      price: finalPrice,
+      originalPrice: originalPrice,
       category,
     })
 
@@ -131,11 +133,21 @@ export const ChatProductCard = ({ product }) => {
         <p className="text-sm font-medium text-gray-800 truncate group-hover:text-emerald-700 transition-colors pr-10">{name}</p>
         <div className="flex items-center justify-between mt-1">
           <div className="flex flex-col">
-            <span className="text-xs font-bold text-emerald-600">{formatPrice(price)}đ</span>
-            {inStock ? (
-              <span className="text-[10px] text-gray-400">In stock: {qty}</span>
+            {discountPercentage > 0 ? (
+              <>
+                <span className="text-xs font-bold text-red-650 text-red-650 font-bold">{formatPrice(finalPrice)}đ</span>
+                <div className="flex items-center gap-1.5 mt-0.5">
+                  <span className="text-[10px] font-medium text-gray-400 line-through">{formatPrice(originalPrice)}đ</span>
+                  <span className="text-[9px] font-bold text-white bg-red-500 px-1 rounded-sm">-{discountPercentage}%</span>
+                </div>
+              </>
             ) : (
-              <span className="text-[10px] text-red-500 font-medium">Out of stock</span>
+              <span className="text-xs font-bold text-emerald-600">{formatPrice(originalPrice)}đ</span>
+            )}
+            {inStock ? (
+              <span className="text-[10px] text-gray-400 mt-0.5">In stock: {qty}</span>
+            ) : (
+              <span className="text-[10px] text-red-500 font-medium mt-0.5">Out of stock</span>
             )}
           </div>
 

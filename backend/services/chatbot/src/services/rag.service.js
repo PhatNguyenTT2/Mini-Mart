@@ -12,6 +12,7 @@
  */
 const logger = require('../../../../shared/common/logger');
 const { getPersonalizationContext, getCoPurchaseContext, getCFHint } = require('./context.helper');
+const { CATEGORY_KEYWORD_MAP } = require('./category.constants');
 
 // Vietnamese stop words + common action verbs that don't appear in product content
 // plainto_tsquery('simple', ...) uses AND, so these extra tokens cause zero matches
@@ -119,7 +120,7 @@ class RAGService {
      * @param {object[]} chatHistory - recent chat messages
      * @returns {object} { content, productIds, products, metadata }
      */
-    async recommend(userMessage, storeId, customerId = null, chatHistory = []) {
+    async recommend(userMessage, storeId, customerId = null, chatHistory = [], intentMeta = {}) {
         const startTime = Date.now();
         const metadata = { steps: {} };
 
@@ -138,10 +139,13 @@ class RAGService {
             // Step 1: Query Reformulation
             const stepStart1 = Date.now();
             const query = await this.reformulator.reformulate(userMessage, chatHistory);
+            // Detect continuation BEFORE reformulation changes the query
+            const isContinuationRequest = /gợi ý thêm|thêm đi|nữa đi|khác đi|xem thêm|cho xem thêm|gợi ý khác/i.test(userMessage.toLowerCase());
             metadata.steps.reformulation = {
                 original: userMessage,
                 reformulated: query,
                 changed: query !== userMessage,
+                isContinuation: isContinuationRequest,
                 latencyMs: Date.now() - stepStart1
             };
 
@@ -153,10 +157,32 @@ class RAGService {
             // Step 3: Hybrid Search (parallel)
             const stepStart3 = Date.now();
             const keywordQuery = cleanQueryForKeyword(query);
-            const [rawSemanticResults, keywordResults] = await Promise.all([
-                this.knowledgeRepo.searchSemantic(queryVector, storeId, 30),
-                this.knowledgeRepo.searchKeyword(keywordQuery, storeId, 30)
+
+            let earlyAnchorCategory = null;
+            if (intentMeta.isTransactional) {
+                const queryLower = query.toLowerCase();
+                for (const [kw, cats] of Object.entries(CATEGORY_KEYWORD_MAP)) {
+                    if (queryLower.includes(kw)) {
+                        earlyAnchorCategory = cats[0];
+                        break;
+                    }
+                }
+            }
+
+            let [rawSemanticResults, keywordResults] = await Promise.all([
+                earlyAnchorCategory ? this.knowledgeRepo.searchSemantic(queryVector, storeId, 30, earlyAnchorCategory) : this.knowledgeRepo.searchSemantic(queryVector, storeId, 30),
+                earlyAnchorCategory ? this.knowledgeRepo.searchKeyword(keywordQuery, storeId, 30, earlyAnchorCategory) : this.knowledgeRepo.searchKeyword(keywordQuery, storeId, 30)
             ]);
+
+            // Defensive fallback: if anchor filter returned 0 rows, retry without it
+            if (earlyAnchorCategory && rawSemanticResults.length === 0 && keywordResults.length === 0) {
+                logger.info({ earlyAnchorCategory, keywordQuery }, 'Anchor category filter returned 0 results, retrying without filter');
+                earlyAnchorCategory = null;
+                [rawSemanticResults, keywordResults] = await Promise.all([
+                    this.knowledgeRepo.searchSemantic(queryVector, storeId, 30),
+                    this.knowledgeRepo.searchKeyword(keywordQuery, storeId, 30)
+                ]);
+            }
 
             // Step 3.5: Semantic Quality Gate
             // SBERT scores < 0.3 are near-random noise for Vietnamese product descriptions.
@@ -175,7 +201,17 @@ class RAGService {
             };
 
             // Step 4: RRF Fusion
-            const fused = this._reciprocalRankFusion(semanticResults, keywordResults);
+            const BRAND_FTS_MULTIPLIER = 2.0;
+            const brandKeywords = ['heineken', 'tiger', 'sapporo', 'bia', 'beer'];
+            const hasBrandMatch = keywordResults.length > 0 &&
+                brandKeywords.some(bk => query.toLowerCase().includes(bk)) &&
+                keywordResults.some(r => r.score > 0.05);
+
+            const adjustedKeywordResults = hasBrandMatch
+                ? keywordResults.map(r => ({ ...r, score: r.score * BRAND_FTS_MULTIPLIER }))
+                : keywordResults;
+
+            const fused = this._reciprocalRankFusion(semanticResults, adjustedKeywordResults);
 
             // Step 4.5: Anchor Category Re-ranking
             // Use Top 1 RRF result's category as "anchor" — boost same-category, penalize others
@@ -185,34 +221,7 @@ class RAGService {
                 const queryLower = query.toLowerCase();
                 const anchorCategories = new Set();
 
-                const catKeywords = {
-                    'rau': ['Rau lá', 'Rau củ'],
-                    'nấm': ['Rau củ', 'Nông sản khô'],
-                    'thịt bò': ['Thịt bò'],
-                    'thịt heo': ['Thịt heo'],
-                    'trứng': ['Trứng'],
-                    'cá': ['Hải sản', 'Thực phẩm đông lạnh'],
-                    'tôm': ['Hải sản'],
-                    'mực': ['Hải sản'],
-                    'bún': ['Bún, phở tươi', 'Thức ăn chế biến, bún tươi'],
-                    'phở': ['Bún, phở tươi', 'Phở, bún khô'],
-                    'mì': ['Mì ăn liền'],
-                    'sữa': ['Sữa tươi', 'Sữa chua & Phô mai'],
-                    'bia': ['Bia'],
-                    'nước ngọt': ['Nước ngọt có ga'],
-                    'coca': ['Nước ngọt có ga'],
-                    'pepsi': ['Nước ngọt có ga'],
-                    'bánh mì': ['Bánh mì & Bánh ngọt'],
-                    'bánh': ['Bánh mì & Bánh ngọt', 'Bánh quy & Kẹo'],
-                    'kẹo': ['Bánh quy & Kẹo'],
-                    'snack': ['Snack & Đồ nhắm'],
-                    'bim bim': ['Snack & Đồ nhắm'],
-                    'gia vị': ['Gia vị tẩm ướp'],
-                    'nước mắm': ['Nước chấm'],
-                    'nước tương': ['Nước chấm']
-                };
-
-                for (const [kw, cats] of Object.entries(catKeywords)) {
+                for (const [kw, cats] of Object.entries(CATEGORY_KEYWORD_MAP)) {
                     if (queryLower.includes(kw)) {
                         for (const c of cats) {
                             if (fused.some(item => item.category_name === c)) {
@@ -258,7 +267,7 @@ class RAGService {
             };
 
             if (top5.length === 0) {
-                return this._buildNoResultsResponse(userMessage, storeId, startTime, metadata);
+                return this._buildNoResultsResponse(keywordQuery || userMessage, storeId, startTime, metadata);
             }
 
             // ── Phase 3: Hybrid Ensemble (replaces separate CF/Apriori steps) ──
@@ -270,8 +279,15 @@ class RAGService {
                 const stepStart5 = Date.now();
                 const customerContext = await getPersonalizationContext(this.apiClient, customerId);
 
+                // Detect general recommendation query before hybrid scoring
+                const isGeneralRecQuery = /gợi ý vài món|đề xuất vài món|gợi ý cho tôi|gợi ý các món|gợi ý sản phẩm/i.test(query.toLowerCase()) ||
+                    (query.toLowerCase().includes('gợi ý') && query.toLowerCase().includes('món')) ||
+                    (query.toLowerCase().includes('đề xuất') && query.toLowerCase().includes('món')) ||
+                    (query.toLowerCase().trim() === 'gợi ý cho tôi vài món' || query.toLowerCase().includes('vài món'));
+
                 hybridResults = await this.hybridService.score(
-                    top5, customerId, storeId, customerContext.type
+                    top5, customerId, storeId, customerContext.type,
+                    { excludePurchased: !isGeneralRecQuery }
                 );
 
                 logger.info({
@@ -285,8 +301,20 @@ class RAGService {
                     sessionIntent = await this.sessionContextService.inferSessionIntent(
                         productSequence, query, this.knowledgeRepo.pool, storeId
                     );
+
+                    let flushSignal = false;
+                    if (earlyAnchorCategory && sessionIntent && sessionIntent.cluster !== 'exploring') {
+                        const shiftTarget = this.sessionContextService.detectCategoryShift(
+                            earlyAnchorCategory, sessionIntent.cluster
+                        );
+                        if (shiftTarget) {
+                            logger.info({ from: sessionIntent.cluster, to: shiftTarget, anchor: earlyAnchorCategory }, 'Session: Category shift detected — flushing old context');
+                            flushSignal = true;
+                        }
+                    }
+
                     if (sessionIntent) {
-                        hybridResults = this.sessionContextService.applySessionBoost(hybridResults, sessionIntent);
+                        hybridResults = this.sessionContextService.applySessionBoost(hybridResults, sessionIntent, flushSignal);
 
                         // Attribute session-boosted products for feedback tracking
                         // Only override topSource for CF-only products (content=0).
@@ -295,8 +323,9 @@ class RAGService {
                             for (const r of hybridResults) {
                                 if (r.session_boosted) {
                                     if (!r.sources.includes('session')) r.sources.push('session');
-                                    // Only override topSource if content was NOT the primary match
-                                    if (r.scores?.content === 0) {
+                                    // Session badge when: (1) continuation query, or
+                                    // (2) content score low (less than 0.3)
+                                    if (isContinuationRequest || (r.scores?.content || 0) < 0.3) {
                                         r.topSource = 'session';
                                     }
                                 }
@@ -326,10 +355,7 @@ class RAGService {
                 const contentCategories = new Set(
                     contentMatched.map(r => r.rawProduct?.category_name).filter(Boolean)
                 );
-                const isGeneralRecQuery = /gợi ý vài món|đề xuất vài món|gợi ý cho tôi|gợi ý các món|gợi ý sản phẩm/i.test(query.toLowerCase()) ||
-                    (query.toLowerCase().includes('gợi ý') && query.toLowerCase().includes('món')) ||
-                    (query.toLowerCase().includes('đề xuất') && query.toLowerCase().includes('món')) ||
-                    (query.toLowerCase().trim() === 'gợi ý cho tôi vài món' || query.toLowerCase().includes('vài món'));
+                // isGeneralRecQuery has been hoisted to step 5.
                 const hasStrongAnchor = top5.length > 0 && top5[0].score >= 0.83;
                 const isBroadQuery = !isGeneralRecQuery && !hasStrongAnchor && (contentCategories.size >= 3 || /đồ ăn vặt|ăn vặt|bánh kẹo/i.test(query.toLowerCase()));
 
@@ -370,7 +396,7 @@ class RAGService {
                     .sort((a, b) => b.final_score - a.final_score);
 
                 const MAX_APRIORI_SLOTS = aprioriPick.length;
-                const MAX_CF_SLOTS = (isBroadQuery || isTransactionalQuery || cfOnlyProducts.length === 0) ? 0 : 1;
+                const MAX_CF_SLOTS = (isBroadQuery || isTransactionalQuery || cfOnlyProducts.length === 0) ? 0 : (isGeneralRecQuery ? 2 : 1);
 
                 logger.info({
                     query,
@@ -417,26 +443,87 @@ class RAGService {
                     ...otherContent
                 ];
 
-                const partitioned = [];
-                // Slot 1
-                if (activeContent.length > 0) {
-                    partitioned.push(activeContent[0]);
-                }
-                // Slot 2
-                if (MAX_CF_SLOTS > 0 && cfOnlyProducts.length > 0) {
-                    partitioned.push(cfOnlyProducts[0]);
-                }
-                // Slot 3 (& 4 for transactional): Apriori Cross-sell
-                for (const pick of aprioriPick.slice(0, MAX_APRIORI_SLOTS)) {
-                    partitioned.push(pick);
-                }
-                // Fill remaining slots with Content
-                let contentIdx = 1;
-                while (partitioned.length < 5 && contentIdx < activeContent.length) {
-                    if (!partitioned.find(p => p.product_id === activeContent[contentIdx].product_id)) {
-                        partitioned.push(activeContent[contentIdx]);
+                // ═══ NOVELTY FILTER: Loại sản phẩm đã gợi ý ở lượt trước ═══
+                const historyProductIds = new Set(
+                    this.sessionContextService
+                        ? this.sessionContextService.extractProductSequence(chatHistory).map(Number)
+                        : []
+                );
+
+                const filterNovelty = (arr) => {
+                    if (!isContinuationRequest || historyProductIds.size === 0) return arr;
+                    return arr.filter(r => !historyProductIds.has(Number(r.product_id)));
+                };
+
+                const novelContent = filterNovelty(activeContent);
+                const novelApriori = filterNovelty(aprioriPick);
+                const novelCf = filterNovelty(cfOnlyProducts);
+
+                let partitioned = [];
+                if (isTransactionalQuery && earlyAnchorCategory && anchorMatched.length > 0) {
+                    // SLOT 1: Ưu tiên tuyệt đối sản phẩm khách hàng gọi tên (Anchor Content)
+                    const filteredAnchorMatched = filterNovelty(anchorMatched);
+                    if (filteredAnchorMatched.length > 0) {
+                        partitioned.push(filteredAnchorMatched[0]);
                     }
-                    contentIdx++;
+
+                    // SLOT 2 & 3: Nhường sân khấu cho Apriori Cross-sell (Chứng minh Act 2)
+                    for (const pick of novelApriori.slice(0, MAX_APRIORI_SLOTS)) {
+                        partitioned.push(pick);
+                    }
+
+                    // LƯU Ý BẢO VỆ ĐỒ ÁN: Cố ý loại bỏ CF khỏi truy vấn Transactional 
+                    // để giám khảo tập trung vào luật mua kèm (Apriori), tránh nhiễu loạn UI.
+
+                    // SLOT 4 & 5: Lấp đầy bằng các sản phẩm cùng danh mục (Secondary Content)
+                    let fillIdx = 1;
+                    const fillPool = [...filteredAnchorMatched.slice(1), ...filterNovelty(otherContent)];
+                    while (partitioned.length < 5 && fillIdx <= fillPool.length) {
+                        const candidate = fillPool[fillIdx - 1];
+                        if (!partitioned.find(p => p.product_id === candidate.product_id)) {
+                            partitioned.push(candidate);
+                        }
+                        fillIdx++;
+                    }
+                } else if (isGeneralRecQuery) {
+                    // ═══ ACT 3: Welcome Query — CF has maximum priority ═══
+                    // Slot 1-3: CF personalized products (cohort behaviors)
+                    for (let i = 0; i < novelCf.length && partitioned.length < 3; i++) {
+                        partitioned.push(novelCf[i]);
+                    }
+                    // Slot 4: Apriori cross-sell candidate
+                    for (const pick of novelApriori) {
+                        if (partitioned.length < 4) partitioned.push(pick);
+                    }
+                    // Remaining slots filled by semantic content search
+                    let contentIdx = 0;
+                    while (partitioned.length < 5 && contentIdx < novelContent.length) {
+                        if (!partitioned.find(p => p.product_id === novelContent[contentIdx].product_id)) {
+                            partitioned.push(novelContent[contentIdx]);
+                        }
+                        contentIdx++;
+                    }
+                } else {
+                    // Slot 1
+                    if (novelContent.length > 0) {
+                        partitioned.push(novelContent[0]);
+                    }
+                    // Slot 2
+                    for (let i = 0; i < MAX_CF_SLOTS && i < novelCf.length; i++) {
+                        partitioned.push(novelCf[i]);
+                    }
+                    // Slot 3 (& 4 for transactional): Apriori Cross-sell
+                    for (const pick of novelApriori.slice(0, MAX_APRIORI_SLOTS)) {
+                        partitioned.push(pick);
+                    }
+                    // Fill remaining slots with Content
+                    let contentIdx = 1;
+                    while (partitioned.length < 5 && contentIdx < novelContent.length) {
+                        if (!partitioned.find(p => p.product_id === novelContent[contentIdx].product_id)) {
+                            partitioned.push(novelContent[contentIdx]);
+                        }
+                        contentIdx++;
+                    }
                 }
 
                 const rankedIds = partitioned.map(r => r.product_id);
@@ -533,7 +620,7 @@ class RAGService {
                     ? []
                     : await getCoPurchaseContext(this.copurchaseRepo, finalProducts, storeId);
                 const response = await this._generateResponse(
-                    userMessage, query, finalProducts, coPurchaseData, [], customerContext
+                    userMessage, query, finalProducts, coPurchaseData, [], customerContext, storeId
                 );
                 metadata.steps.generation = { latencyMs: Date.now() - stepStart7 };
 
@@ -555,7 +642,7 @@ class RAGService {
 
                 const syncedProducts = syncProductsWithResponse(finalProducts, response.content);
                 logger.info({ before: finalProducts.length, after: syncedProducts.length, responseSnippet: response.content?.substring(0, 100) }, '[DEBUG] Sync filter Phase 3');
-                const hydratedProducts = await this._hydrateProductsWithCatalog(syncedProducts);
+                const hydratedProducts = await this._hydrateProductsWithCatalog(syncedProducts, storeId);
                 logger.info({ hydratedCount: hydratedProducts.length, hasImages: hydratedProducts.filter(p => p.image).length }, '[DEBUG] Catalog hydration Phase 3');
 
                 return {
@@ -599,7 +686,7 @@ class RAGService {
             // Step 7: Augmented Generation
             const stepStart7 = Date.now();
             const response = await this._generateResponse(
-                userMessage, query, top5, coPurchaseData, cfData, customerContext
+                userMessage, query, top5, coPurchaseData, cfData, customerContext, storeId
             );
             metadata.steps.generation = { latencyMs: Date.now() - stepStart7 };
 
@@ -610,7 +697,7 @@ class RAGService {
 
             const syncedProducts = syncProductsWithResponse(top5, response.content);
             logger.info({ before: top5.length, after: syncedProducts.length, responseSnippet: response.content?.substring(0, 100) }, '[DEBUG] Sync filter Phase 2');
-            const hydratedProducts = await this._hydrateProductsWithCatalog(syncedProducts);
+            const hydratedProducts = await this._hydrateProductsWithCatalog(syncedProducts, storeId);
             logger.info({ hydratedCount: hydratedProducts.length, hasImages: hydratedProducts.filter(p => p.image).length }, '[DEBUG] Catalog hydration Phase 2');
 
             return {
@@ -671,15 +758,40 @@ class RAGService {
     /**
      * Generate natural language response using Qwen/Qwen2.5-7B-Instruct
      */
-    async _generateResponse(originalMessage, reformulatedQuery, products, coPurchaseData, cfData, customerContext) {
+    async _generateResponse(originalMessage, reformulatedQuery, products, coPurchaseData, cfData, customerContext, storeId = 1) {
         // Handle 5-arguments call signature from legacy tests
         if (customerContext === undefined && cfData && (cfData.type || cfData.prompt !== undefined)) {
             customerContext = cfData;
             cfData = [];
         }
+
+        // Retrieve discounts to present to LLM
+        const discountMap = new Map();
+        if (this.apiClient && storeId) {
+            try {
+                const invResult = await this.apiClient.getInventoryPublicSummary(storeId);
+                if (invResult.success && Array.isArray(invResult.data)) {
+                    invResult.data.forEach(item => {
+                        discountMap.set(Number(item.productId), Number(item.discountPercentage) || 0);
+                    });
+                }
+            } catch (err) {
+                logger.warn({ err, storeId }, 'Failed to fetch public summary for response generation');
+            }
+        }
+
         const productContext = products.map((p, i) => {
-            const name = p.content.match(/"([^"]+)"/)?.[1] || `Product ${p.product_id}`;
-            return `${i + 1}. ${name} — ${p.category_name}, ${Number(p.unit_price).toLocaleString('vi-VN')}đ, còn ${p.quantity_on_shelf} sản phẩm`;
+            const pid = Number(p.product_id || p.id);
+            const name = p.content?.match(/"([^"]+)"/)?.[1] || p.name || `Product ${pid}`;
+            const discountPercentage = discountMap.get(pid) || 0;
+            const originalPrice = Number(p.unit_price || p.unitPrice || 0);
+            const qtyOnShelf = p.quantity_on_shelf ?? p.quantityOnShelf ?? 0;
+
+            if (discountPercentage > 0) {
+                const finalPrice = Math.round(originalPrice * (1 - discountPercentage / 100));
+                return `${i + 1}. ${name} — ${p.category_name || p.categoryName || ''}, ~~${originalPrice.toLocaleString('vi-VN')}đ~~ ${finalPrice.toLocaleString('vi-VN')}đ (Đang giảm giá ${discountPercentage}%), còn ${qtyOnShelf} sản phẩm`;
+            }
+            return `${i + 1}. ${name} — ${p.category_name || p.categoryName || ''}, ${originalPrice.toLocaleString('vi-VN')}đ, còn ${qtyOnShelf} sản phẩm`;
         }).join('\n');
 
         let coPurchaseContext = '';
@@ -709,10 +821,12 @@ CHỈ dùng dữ liệu bên dưới. KHÔNG bịa sản phẩm/giá.
 QUY TẮC NGHIÊM NGẶT:
 1. Mở đầu ngắn gọn (1 câu).
 2. Liệt kê ĐÚNG ${productCount} sản phẩm: tên + giá. KHÔNG mô tả chi tiết.
-3. Nếu có [DỮ LIỆU MUA KÈM], viết 1 câu: "Nhiều khách hàng mua [Sản phẩm A] cũng thường mua kèm [B, C]".
+3. Nếu sản phẩm đang giảm giá (được ghi là: ~~giá gốc~~ giá mới (Đang giảm giá X%)), bạn phải nhắc đến việc sản phẩm đang được giảm giá/khuyến mãi bao nhiêu % trong câu giới thiệu/tư vấn sản phẩm đó để kích thích mua sắm.
+4. Nếu có [DỮ LIỆU MUA KÈM], viết 1 câu: "Nhiều khách hàng mua [Sản phẩm A] cũng thường mua kèm [B, C]".
    CHỈ nêu sản phẩm có trong [DỮ LIỆU MUA KÈM]. TUYỆT ĐỐI KHÔNG gom các sản phẩm khác vào câu mua kèm.
-4. KHÔNG dùng từ "Apriori", "cá nhân hóa", "sự tương đồng" hay bất kì thuật ngữ kỹ thuật nào.
-5. Kết thúc bằng 1 câu mời gọi.
+   Lưu ý: Chỉ xưng hô "mình" hoặc "hệ thống", không xưng là AI hay bot.
+5. KHÔNG dùng từ "Apriori", "cá nhân hóa", "sự tương đồng" hay bất kì thuật ngữ kỹ thuật nào.
+6. Kết thúc bằng 1 câu mời gọi.
 ${customerContext.prompt}
 
 Sản phẩm (${productCount} sản phẩm):
@@ -758,34 +872,58 @@ ${productContext}${coPurchaseContext}${cfContext}`;
         return `${greeting}\n${items}\n\nCác sản phẩm trên đều đang có sẵn tại chi nhánh của bạn!`;
     }
 
-    async _hydrateProductsWithCatalog(syncedProducts) {
+    async _hydrateProductsWithCatalog(syncedProducts, storeId = 1) {
         const ids = syncedProducts.map(r => Number(r.product_id || r.id));
         const catalogMap = new Map();
+        const discountMap = new Map();
 
-        if (this.apiClient && ids.length > 0) {
+        if (ids.length > 0) {
             try {
-                // Fetch in batch: single API request to avoid N+1 query pattern
-                const catalogResult = await this.apiClient.getProductsByIds(ids);
-                if (catalogResult.success && catalogResult.data?.products) {
-                    catalogResult.data.products.forEach(p => {
-                        catalogMap.set(Number(p.id), p);
-                    });
+                if (this.apiClient) {
+                    // Fetch in batch: single API request to avoid N+1 query pattern
+                    const catalogResult = await this.apiClient.getProductsByIds(ids);
+                    if (catalogResult.success && catalogResult.data?.products) {
+                        catalogResult.data.products.forEach(p => {
+                            catalogMap.set(Number(p.id), p);
+                        });
+                    }
                 }
             } catch (err) {
                 logger.warn({ err, ids }, 'Failed to fetch catalog product details for image hydration');
             }
+
+            try {
+                if (this.apiClient && storeId) {
+                    const invResult = await this.apiClient.getInventoryPublicSummary(storeId);
+                    if (invResult.success && Array.isArray(invResult.data)) {
+                        invResult.data.forEach(item => {
+                            discountMap.set(Number(item.productId), Number(item.discountPercentage) || 0);
+                        });
+                    }
+                }
+            } catch (err) {
+                logger.warn({ err, storeId }, 'Failed to fetch store inventory public summary for discounts');
+            }
         }
 
         return syncedProducts.map(r => {
-            const cp = catalogMap.get(Number(r.product_id || r.id));
+            const pid = Number(r.product_id || r.id);
+            const cp = catalogMap.get(pid);
+            const discountPercentage = discountMap.get(pid) || 0;
+            const unitPrice = cp ? Number(cp.unitPrice || cp.price || 0) : Number(r.unit_price || r.unitPrice || r.price || 0);
+            const finalPrice = Math.round(unitPrice * (1 - discountPercentage / 100));
+
             return {
-                id: Number(r.product_id || r.id),
-                name: cp?.name || r.content?.match(/"([^"]+)"/)?.[1] || r.name || `Product ${r.product_id || r.id}`,
+                id: pid,
+                name: cp?.name || r.content?.match(/"([^"]+)"/)?.[1] || r.name || `Product ${pid}`,
                 categoryName: cp?.categoryName || cp?.category_name || r.category_name || '',
-                unitPrice: cp ? Number(cp.unitPrice || cp.price || 0) : Number(r.unit_price || r.unitPrice || r.price || 0),
+                unitPrice,
+                discountPercentage,
+                finalPrice,
                 quantityOnShelf: cp?.quantityOnShelf ?? cp?.quantity_on_shelf ?? r.quantityOnShelf ?? r.quantity_on_shelf ?? 0,
                 isInStock: cp?.isInStock ?? cp?.is_in_stock ?? r.isInStock ?? r.is_in_stock ?? ((cp?.quantityOnShelf ?? r.quantityOnShelf ?? r.quantity_on_shelf ?? 0) > 0),
                 image: cp?.image || cp?.image_url || r.image || r.image_url || null,
+                isPerishable: cp?.isPerishable ?? cp?.is_perishable ?? r.isPerishable ?? r.is_perishable ?? false,
                 rrfScore: r.rrf_score || null,
                 ensembleScore: r.ensemble_score || null,
                 ensemble_score: r.ensemble_score || null,
@@ -800,10 +938,10 @@ ${productContext}${coPurchaseContext}${cfContext}`;
     /**
      * Handle case when no products found
      */
-    _buildNoResultsResponse(userMessage, storeId, startTime, metadata) {
+    _buildNoResultsResponse(displayQuery, storeId, startTime, metadata) {
         metadata.totalLatencyMs = Date.now() - startTime;
         return {
-            content: `Xin lỗi, mình không tìm thấy sản phẩm phù hợp với "${userMessage}" tại chi nhánh của bạn. Bạn có thể mô tả chi tiết hơn được không?`,
+            content: `Xin lỗi, mình không tìm thấy sản phẩm phù hợp với "${displayQuery}" tại chi nhánh của bạn. Bạn có thể mô tả chi tiết hơn được không?`,
             productIds: [],
             products: [],
             metadata

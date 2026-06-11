@@ -143,7 +143,7 @@ class CollaborativeFilteringService {
             let pi = 1;
 
             for (const s of chunk) {
-                values.push(`($${pi}, $${pi+1}, $${pi+2}, $${pi+3}, $${pi+4}, NOW())`);
+                values.push(`($${pi}, $${pi + 1}, $${pi + 2}, $${pi + 3}, $${pi + 4}, NOW())`);
                 params.push(s.itemA, s.itemB, storeId, s.similarity, s.commonUsers);
                 pi += 5;
             }
@@ -181,7 +181,7 @@ class CollaborativeFilteringService {
      * @param {number} limit
      * @returns {object[]} recommended products sorted by prediction score
      */
-    async getRecommendations(userId, storeId, limit = 5) {
+    async getRecommendations(userId, storeId, limit = 5, excludePurchased = true) {
         // Step 1: Items user already purchased
         const { rows: purchased } = await this.pool.query(`
             SELECT product_id, interaction_score
@@ -214,7 +214,7 @@ class CollaborativeFilteringService {
 
         for (const row of candidates) {
             const cid = Number(row.candidate_id);
-            if (purchasedIds.has(cid)) continue; // Already purchased
+            if (excludePurchased && purchasedIds.has(cid)) continue; // Already purchased
 
             const sim = Number(row.similarity);
             const sourceScore = purchasedScores.get(Number(row.source_id)) || 0;

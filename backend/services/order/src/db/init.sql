@@ -161,3 +161,11 @@ DO $$ BEGIN
 EXCEPTION WHEN duplicate_column THEN NULL;
 END $$;
 
+
+-- ==========================================
+-- MIGRATION: Allow NULL created_by for customer online orders
+-- ==========================================
+DO $$ BEGIN
+    ALTER TABLE sale_order ALTER COLUMN created_by DROP NOT NULL;
+EXCEPTION WHEN OTHERS THEN NULL;
+END $$;

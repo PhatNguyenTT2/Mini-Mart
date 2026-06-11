@@ -161,11 +161,11 @@ export default function CheckoutPage() {
             })),
             storeId: selectedStore.id
           });
-          navigate(`/order-status/${orderId}?payment=cod`, { replace: true });
+          navigate(`/orders/${orderId}?payment=cod`, { replace: true });
         } catch (paymentErr) {
           console.error('COD payment creation failed:', paymentErr);
           // Graceful degradation: order exists, navigate with error flag
-          navigate(`/order-status/${orderId}?payment=pending`, { replace: true });
+          navigate(`/orders/${orderId}?payment=pending`, { replace: true });
         }
         return;
       }

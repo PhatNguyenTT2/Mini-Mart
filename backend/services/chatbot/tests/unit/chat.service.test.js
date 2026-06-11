@@ -491,18 +491,47 @@ describe('ChatService Unit Tests', () => {
             expect(mockApiClient.cancelOrder).toHaveBeenCalledWith(123);
         });
 
-        it('should enforce employee role for POS_ADD_ITEM and CREATE_ORDER', async () => {
+        it('should enforce employee/manager role for POS_ADD_ITEM but allow customer for CREATE_ORDER', async () => {
             chatService.ragService.knowledgeRepo.searchSemantic.mockResolvedValue([
                 { product_id: 4, content: 'Tên: "Sting dâu"', score: 0.92, unit_price: 10000 }
             ]);
 
-            const result = await chatService._handlePosAddItem({
+            // 1. Customer should be blocked from POS_ADD_ITEM
+            const resultAddItemCustomer = await chatService._handlePosAddItem({
                 id: 1,
                 user_id: 10,
                 user_type: 'customer',
                 metadata: {}
             }, 'Thêm Sting vào POS');
-            expect(result.reply).toContain('Access denied');
+            expect(resultAddItemCustomer.reply).toContain('Access denied');
+
+            // 2. Manager should be allowed to execute POS_ADD_ITEM
+            mockChatRepo.findSessionById.mockResolvedValue({
+                id: 2,
+                is_active: true,
+                user_type: 'manager',
+                metadata: {}
+            });
+            mockApiClient.getInventorySummary.mockResolvedValue({
+                success: true,
+                data: [{ quantityOnShelf: 10 }]
+            });
+            const resultAddItemManager = await chatService.sendMessage(2, 'Thêm 2 Sting vào POS');
+            expect(resultAddItemManager.intent).toBe('POS_ADD_ITEM');
+            expect(resultAddItemManager.reply).toContain('Đã thêm 2 "Sting dâu" vào POS thành công.');
+
+            // 3. Customer should be allowed to start CREATE_ORDER
+            mockChatRepo.findSessionById.mockResolvedValue({
+                id: 3,
+                is_active: true,
+                user_type: 'customer',
+                user_id: 10,
+                store_id: 1,
+                metadata: {}
+            });
+            const resultCreateOrderCustomer = await chatService.sendMessage(3, 'Tạo đơn 2 Sting dâu');
+            expect(resultCreateOrderCustomer.intent).toBe('CREATE_ORDER');
+            expect(resultCreateOrderCustomer.reply).toContain('Bạn có chắc muốn tạo đơn hàng mới');
         });
 
         it('should handle POS_ADD_ITEM for employee', async () => {

@@ -44,15 +44,15 @@ export const BulkDiscountModal = ({ isOpen, onClose, onSuccess, productId, produ
       // Get all batches for this product
       const response = await productBatchService.getBatchesByProduct(productId, { limit: 1000 });
 
-      if (!response.success || !response.data.batches) {
-        throw new Error('Failed to fetch product batches');
-      }
+      // Handle both array and object response structures
+      const batches = Array.isArray(response.data)
+        ? response.data
+        : (response.data?.batches || []);
 
-      const batches = response.data.batches;
       const updatePromises = batches.map(batch =>
         productBatchService.updateBatch(batch.id, {
-          promotionApplied: formData.promotionApplied,
-          discountPercentage: formData.promotionApplied === 'discount' ? formData.discountPercentage : 0
+          promotion_applied: formData.promotionApplied === 'discount' ? 'manual' : 'none',
+          discount_percentage: formData.promotionApplied === 'discount' ? formData.discountPercentage : 0
         })
       );
 

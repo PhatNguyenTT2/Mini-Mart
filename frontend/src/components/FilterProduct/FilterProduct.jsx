@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Filter, X } from 'lucide-react';
 import categoryService from '../../services/categoryService';
+import { useTranslation } from 'react-i18next';
 
 export const FilterProduct = ({ onFilterChange, currentFilters = {} }) => {
+  const { t } = useTranslation();
   // Helper function to format VND currency
   const formatVND = (amount) => {
     return new Intl.NumberFormat('vi-VN', {
@@ -19,6 +21,7 @@ export const FilterProduct = ({ onFilterChange, currentFilters = {} }) => {
     currentFilters.minPrice || 0,
     currentFilters.maxPrice || 1000000
   ]);
+  const [onlyDiscounted, setOnlyDiscounted] = useState(currentFilters.onlyDiscounted || false);
   const [isDragging, setIsDragging] = useState(null); // null | 'min' | 'max'
 
   // Fetch category tree from API
@@ -85,30 +88,25 @@ export const FilterProduct = ({ onFilterChange, currentFilters = {} }) => {
     return flat;
   }, [categoryTree]);
 
-  // Auto-apply filters whenever selectedCategories or priceRange changes
+  // Auto-apply filters whenever selectedCategories, priceRange, or onlyDiscounted changes
   useEffect(() => {
     if (onFilterChange) {
-      const filterParams = {};
-
-      if (selectedCategories.length > 0) {
-        filterParams.categories = selectedCategories;
-      }
-
-      if (priceRange[0] !== 0) {
-        filterParams.minPrice = priceRange[0];
-      }
-      if (priceRange[1] !== 1000000) {
-        filterParams.maxPrice = priceRange[1];
-      }
+      const filterParams = {
+        categories: selectedCategories,
+        minPrice: priceRange[0] !== 0 ? priceRange[0] : null,
+        maxPrice: priceRange[1] !== 1000000 ? priceRange[1] : null,
+        onlyDiscounted: onlyDiscounted
+      };
 
       onFilterChange(filterParams);
     }
-  }, [selectedCategories, priceRange]);
+  }, [selectedCategories, priceRange, onlyDiscounted]);
 
   // Clear all filters
   const handleClearFilters = () => {
     setSelectedCategories([]);
     setPriceRange([0, 1000000]);
+    setOnlyDiscounted(false);
   };
 
   const handleMouseDown = (type) => {
@@ -159,10 +157,28 @@ export const FilterProduct = ({ onFilterChange, currentFilters = {} }) => {
   // Check if any filters are active
   const hasActiveFilters = selectedCategories.length > 0 ||
     priceRange[0] !== 0 ||
-    priceRange[1] !== 1000000;
+    priceRange[1] !== 1000000 ||
+    onlyDiscounted;
 
   return (
     <div className="w-72 space-y-4 overflow-y-auto h-full">
+      {/* Promotion Filter Toggle Section */}
+      <div className="bg-white border border-gray-200 rounded-xl p-4">
+        <div className="flex items-center justify-between">
+          <span className="text-sm font-semibold text-gray-800">{t('products.only_promoted', 'Only Promoted Items')}</span>
+          <button
+            type="button"
+            onClick={() => setOnlyDiscounted(!onlyDiscounted)}
+            className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${onlyDiscounted ? 'bg-emerald-500' : 'bg-gray-200'
+              }`}
+          >
+            <span
+              className={`pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out ${onlyDiscounted ? 'translate-x-5' : 'translate-x-0'
+                }`}
+            />
+          </button>
+        </div>
+      </div>
       {/* Filter Header with Clear Button */}
       {hasActiveFilters && (
         <div className="bg-white border border-gray-200 rounded-xl p-3">
@@ -171,7 +187,7 @@ export const FilterProduct = ({ onFilterChange, currentFilters = {} }) => {
             className="w-full flex items-center justify-center gap-2 text-red-600 hover:text-red-700 transition-colors"
           >
             <X className="w-4 h-4" />
-            <span className="text-sm font-semibold">Clear All Filters</span>
+            <span className="text-sm font-semibold">{t('products.clear_all_filters', 'Clear All Filters')}</span>
           </button>
         </div>
       )}
@@ -180,7 +196,7 @@ export const FilterProduct = ({ onFilterChange, currentFilters = {} }) => {
       <div className="bg-white border border-gray-200 rounded-xl p-4">
         {/* Header */}
         <div className="border-b border-gray-200 pb-2 mb-4">
-          <h3 className="text-lg font-bold text-gray-800">Category</h3>
+          <h3 className="text-lg font-bold text-gray-800">{t('products.category', 'Category')}</h3>
           <div className="w-16 h-0.5 bg-emerald-400 mt-1.5"></div>
         </div>
 
@@ -188,7 +204,7 @@ export const FilterProduct = ({ onFilterChange, currentFilters = {} }) => {
         {loadingCategories ? (
           <div className="text-center py-4">
             <div className="inline-block animate-spin rounded-full h-6 w-6 border-b-2 border-emerald-500"></div>
-            <p className="text-xs text-gray-500 mt-2">Loading categories...</p>
+            <p className="text-xs text-gray-500 mt-2">{t('products.loading_categories', 'Loading categories...')}</p>
           </div>
         ) : (
           <>
@@ -204,7 +220,7 @@ export const FilterProduct = ({ onFilterChange, currentFilters = {} }) => {
                 <div className="w-8 h-8 flex items-center justify-center bg-emerald-100 rounded">
                   <Filter className="w-4 h-4 text-emerald-600" />
                 </div>
-                <span className="text-xs text-gray-800 font-semibold">All Products</span>
+                <span className="text-xs text-gray-800 font-semibold">{t('products.all_products', 'All Products')}</span>
               </div>
             </button>
 
@@ -302,7 +318,7 @@ export const FilterProduct = ({ onFilterChange, currentFilters = {} }) => {
 
         {/* Header */}
         <div className="border-b border-gray-200 pb-2 mb-4 relative z-10">
-          <h3 className="text-lg font-bold text-gray-800">Filter by Price</h3>
+          <h3 className="text-lg font-bold text-gray-800">{t('products.filter_by_price', 'Filter by Price')}</h3>
           <div className="w-16 h-0.5 bg-emerald-400 mt-1.5"></div>
         </div>
 
@@ -310,10 +326,10 @@ export const FilterProduct = ({ onFilterChange, currentFilters = {} }) => {
         <div className="mb-4 relative z-10">
           <div className="flex justify-between mb-3 text-xs">
             <span className="text-gray-500">
-              Từ: <span className="text-emerald-600 font-semibold">{formatVND(priceRange[0])}</span>
+              {t('products.price_from', 'Từ')}: <span className="text-emerald-600 font-semibold">{formatVND(priceRange[0])}</span>
             </span>
             <span className="text-gray-500">
-              Đến: <span className="text-emerald-600 font-semibold">{formatVND(priceRange[1])}</span>
+              {t('products.price_to', 'Đến')}: <span className="text-emerald-600 font-semibold">{formatVND(priceRange[1])}</span>
             </span>
           </div>
 
@@ -379,7 +395,7 @@ export const FilterProduct = ({ onFilterChange, currentFilters = {} }) => {
               className="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded-lg flex items-center justify-center gap-2 transition-colors"
             >
               <X className="w-4 h-4" />
-              <span className="text-xs tracking-wider">CLEAR FILTERS</span>
+              <span className="text-xs tracking-wider">{t('products.clear_filters_btn', 'CLEAR FILTERS')}</span>
             </button>
           </div>
         )}
@@ -388,7 +404,7 @@ export const FilterProduct = ({ onFilterChange, currentFilters = {} }) => {
       {/* Active Filters Display */}
       {hasActiveFilters && (
         <div className="bg-white border border-gray-200 rounded-xl p-4">
-          <h4 className="text-sm font-bold text-gray-800 mb-3">Active Filters ({selectedCategories.length + (priceRange[0] !== 0 || priceRange[1] !== 1000000 ? 1 : 0)})</h4>
+          <h4 className="text-sm font-bold text-gray-800 mb-3">{t('products.active_filters', 'Active Filters')} ({selectedCategories.length + (priceRange[0] !== 0 || priceRange[1] !== 1000000 ? 1 : 0)})</h4>
           <div className="space-y-2">
             {selectedCategories.map(catId => {
               const cat = allCategories.find(c => c.id === catId);
@@ -413,6 +429,19 @@ export const FilterProduct = ({ onFilterChange, currentFilters = {} }) => {
                 </span>
                 <button
                   onClick={() => setPriceRange([0, 1000000])}
+                  className="text-emerald-700 hover:text-emerald-900"
+                >
+                  <X className="w-3 h-3" />
+                </button>
+              </div>
+            )}
+            {onlyDiscounted && (
+              <div className="flex items-center justify-between bg-emerald-50 px-3 py-1.5 rounded">
+                <span className="text-xs text-emerald-700">
+                  {t('products.only_promoted_label', 'Only Promoted')}
+                </span>
+                <button
+                  onClick={() => setOnlyDiscounted(false)}
                   className="text-emerald-700 hover:text-emerald-900"
                 >
                   <X className="w-3 h-3" />

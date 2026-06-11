@@ -24,6 +24,13 @@ class OrderHandler {
     const actionPayload = { orderId };
     const result = await this.actionExecutor.execute(session, 'TRACK_ORDER', actionPayload);
     if (!result.success) {
+      if (result.error === 'Không phải đơn hàng của bạn, bạn không có quyền') {
+        return {
+          intent: 'TRACK_ORDER',
+          reply: result.error,
+          products: null
+        };
+      }
       return {
         intent: 'TRACK_ORDER',
         reply: `Không thể theo dõi đơn hàng: ${result.error}`,
@@ -85,6 +92,13 @@ class OrderHandler {
     }
 
     if (!confirmResult.success) {
+      if (confirmResult.error === 'Không phải đơn hàng của bạn, bạn không có quyền') {
+        return {
+          intent: 'CANCEL_ORDER',
+          reply: confirmResult.error,
+          products: null
+        };
+      }
       return {
         intent: 'CANCEL_ORDER',
         reply: `Không thể hủy đơn hàng #${orderId}: ${confirmResult.error}`,

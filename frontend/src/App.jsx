@@ -65,7 +65,7 @@ function App() {
             }
           />
           <Route
-            path="/products/:productId/batches"
+            path="/inventory/batches"
             element={
               <ProtectedRoute requiredPermission={PERMISSIONS.MANAGE_PRODUCTS}>
                 <ProductBatches />

@@ -59,6 +59,10 @@ describe('RAGService', () => {
             getProductsByIds: jest.fn().mockResolvedValue({
                 success: true,
                 data: { products: [] }
+            }),
+            getInventoryPublicSummary: jest.fn().mockResolvedValue({
+                success: true,
+                data: []
             })
         };
 
@@ -368,6 +372,49 @@ describe('RAGService', () => {
             const result = await ragService.recommend('lẩu thái', 1, null, []);
             expect(result.productIds).toEqual([1]);
             expect(result.products[0].image).toBe('https://images.com/barona.jpg');
+        });
+
+        it('should enrich products with isPerishable attribute from Catalog API if available', async () => {
+            mockHfClient.client.chatCompletion.mockResolvedValue({
+                choices: [{ message: { content: 'Chào bạn! Gia vị nêm sẵn lẩu Thái Barona 80g ngon.' } }]
+            });
+            mockApiClient.getProductsByIds.mockResolvedValue({
+                success: true,
+                data: {
+                    products: [
+                        { id: 1, name: 'Gia vị nêm sẵn lẩu Thái Barona 80g', isPerishable: true }
+                    ]
+                }
+            });
+
+            const result = await ragService.recommend('lẩu thái', 1, null, []);
+            expect(result.productIds).toEqual([1]);
+            expect(result.products[0].isPerishable).toBe(true);
+        });
+
+        it('should enrich products with discountPercentage and calculate finalPrice from Inventory API public summary', async () => {
+            mockHfClient.client.chatCompletion.mockResolvedValue({
+                choices: [{ message: { content: 'Chào bạn! Gia vị nêm sẵn lẩu Thái Barona 80g chỉ 12.800đ (nhờ giảm giá 20% từ giá gốc 16.000đ).' } }]
+            });
+            mockApiClient.getProductsByIds.mockResolvedValue({
+                success: true,
+                data: {
+                    products: [
+                        { id: 1, name: 'Gia vị nêm sẵn lẩu Thái Barona 80g', unitPrice: 16000 }
+                    ]
+                }
+            });
+            mockApiClient.getInventoryPublicSummary.mockResolvedValue({
+                success: true,
+                data: [
+                    { productId: 1, discountPercentage: 20, quantityOnShelf: 299 }
+                ]
+            });
+
+            const result = await ragService.recommend('lẩu thái', 1, null, []);
+            expect(result.productIds).toEqual([1]);
+            expect(result.products[0].discountPercentage).toBe(20);
+            expect(result.products[0].finalPrice).toBe(12800);
         });
     });
 });

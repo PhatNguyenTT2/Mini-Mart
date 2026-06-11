@@ -93,20 +93,20 @@ export const AddProductBatchModal = ({ isOpen, onClose, onSuccess, productId }) 
 
     try {
       const batchData = {
-        product: productId,
-        costPrice: parseFloat(formData.costPrice),
-        unitPrice: parseFloat(formData.unitPrice),
+        product_id: parseInt(productId),
+        cost_price: parseFloat(formData.costPrice),
+        unit_price: parseFloat(formData.unitPrice),
         quantity: parseInt(formData.quantity),
-        promotionApplied: formData.promotionApplied,
-        discountPercentage: parseFloat(formData.discountPercentage),
+        promotion_applied: formData.promotionApplied === 'discount' ? 'manual' : 'none',
+        discount_percentage: parseFloat(formData.discountPercentage),
         status: formData.status
       };
 
       if (formData.mfgDate) {
-        batchData.mfgDate = formData.mfgDate;
+        batchData.mfg_date = formData.mfgDate;
       }
       if (formData.expiryDate) {
-        batchData.expiryDate = formData.expiryDate;
+        batchData.expiry_date = formData.expiryDate;
       }
       if (formData.notes.trim()) {
         batchData.notes = formData.notes.trim();
@@ -237,7 +237,6 @@ export const AddProductBatchModal = ({ isOpen, onClose, onSuccess, productId }) 
               >
                 <option value="none">None</option>
                 <option value="discount">Discount</option>
-                <option value="buy1get1">Buy 1 Get 1</option>
               </select>
             </div>
 

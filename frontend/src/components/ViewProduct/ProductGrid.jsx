@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ProductCard } from './ProductCard';
 import productService from '../../services/productService';
 import inventoryService from '../../services/inventoryService';
+import { useTranslation } from 'react-i18next';
 
 /**
  * ProductGrid Component
@@ -12,6 +13,7 @@ import inventoryService from '../../services/inventoryService';
  * - onProductClick: Optional handler for product card clicks (for batch modal)
  */
 export const ProductGrid = ({ filters = {}, sortBy = 'newest', onPaginationChange, onProductClick }) => {
+  const { t } = useTranslation();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -41,20 +43,25 @@ export const ProductGrid = ({ filters = {}, sortBy = 'newest', onPaginationChang
     }
 
     try {
+      const isClientSidePagination = !!filters.onlyDiscounted;
+
       // Build query parameters
       const params = {
-        page: pagination.currentPage,
-        per_page: pagination.perPage,
         ...filters
       };
+
+      if (!isClientSidePagination) {
+        params.page = pagination.currentPage;
+        params.per_page = pagination.perPage;
+      }
 
       // Handle categories array → send as categoryId param for backend
       if (params.categories && Array.isArray(params.categories) && params.categories.length > 0) {
         params.categoryId = params.categories.join(',');
-        delete params.categories;
       }
+      delete params.categories;
 
-      // Add sort parameter
+      // Add sort parameter (backend will use this if server-side paginating)
       if (sortBy === 'price-low') {
         params.sort = 'unitPrice';
         params.order = 'asc';
@@ -76,7 +83,7 @@ export const ProductGrid = ({ filters = {}, sortBy = 'newest', onPaginationChang
         inventoryService.getInventorySummary()
       ]);
 
-      if (response.success) {
+      if (response.success && response.data?.products) {
         // Build inventory map: productId → inventory data
         const inventoryMap = {};
         const invData = invResponse?.data || [];
@@ -85,36 +92,93 @@ export const ProductGrid = ({ filters = {}, sortBy = 'newest', onPaginationChang
             quantityOnHand: item.quantityOnHand || 0,
             quantityOnShelf: item.quantityOnShelf || 0,
             quantityReserved: item.quantityReserved || 0,
-            quantityAvailable: item.quantityAvailable || 0
+            quantityAvailable: item.quantityAvailable || 0,
+            discountPercentage: item.discountPercentage || 0
           };
         });
 
         // Merge inventory into products
-        const productsWithInventory = (response.data.products || []).map(product => {
+        let productsWithInventory = (response.data.products || []).map(product => {
           const inv = inventoryMap[product.id] || {
-            quantityOnHand: 0, quantityOnShelf: 0, quantityReserved: 0, quantityAvailable: 0
+            quantityOnHand: 0, quantityOnShelf: 0, quantityReserved: 0, quantityAvailable: 0, discountPercentage: 0
           };
-          return { ...product, inventory: inv };
+          return {
+            ...product,
+            inventory: inv,
+            discountPercentage: inv.discountPercentage || 0
+          };
         });
 
-        setProducts(productsWithInventory);
+        // Support onlyDiscounted filter on client-side
+        if (filters.onlyDiscounted) {
+          productsWithInventory = productsWithInventory.filter(p => (p.discountPercentage || 0) > 0);
+        }
 
-        // Update pagination info if available
-        if (response.data.pagination) {
+        // Apply sorting on client-side (critical if client-side paginated or default newest sort)
+        if (isClientSidePagination || sortBy === 'newest' || !sortBy) {
+          productsWithInventory.sort((a, b) => {
+            if (sortBy === 'price-low') {
+              return (a.unitPrice || 0) - (b.unitPrice || 0);
+            } else if (sortBy === 'price-high') {
+              return (b.unitPrice || 0) - (a.unitPrice || 0);
+            } else if (sortBy === 'name') {
+              return (a.name || '').localeCompare(b.name || '');
+            } else {
+              // newest: prioritize discount first, then newest id
+              const hasDiscountA = (a.discountPercentage || 0) > 0 ? 1 : 0;
+              const hasDiscountB = (b.discountPercentage || 0) > 0 ? 1 : 0;
+              if (hasDiscountA !== hasDiscountB) {
+                return hasDiscountB - hasDiscountA;
+              }
+              return (b.id || 0) - (a.id || 0);
+            }
+          });
+        }
+
+        if (isClientSidePagination) {
+          const totalItems = productsWithInventory.length;
+          const totalPages = Math.ceil(totalItems / pagination.perPage) || 1;
+          const startIndex = (pagination.currentPage - 1) * pagination.perPage;
+          const paginatedProducts = productsWithInventory.slice(startIndex, startIndex + pagination.perPage);
+
+          setProducts(paginatedProducts);
+
           const newPagination = {
             ...pagination,
-            totalPages: response.data.pagination.pages || 1,
-            totalItems: response.data.pagination.total || 0
+            totalPages,
+            totalItems
           };
           setPagination(newPagination);
 
           // Notify parent component about pagination changes
           if (onPaginationChange) {
             onPaginationChange({
-              totalItems: newPagination.totalItems,
-              currentCount: productsWithInventory.length,
+              totalItems,
+              currentCount: paginatedProducts.length,
               isLoading: false
             });
+          }
+        } else {
+          // Server-side pagination
+          setProducts(productsWithInventory);
+
+          // Update pagination info if available
+          if (response.data.pagination) {
+            const newPagination = {
+              ...pagination,
+              totalPages: response.data.pagination.pages || 1,
+              totalItems: response.data.pagination.total || 0
+            };
+            setPagination(newPagination);
+
+            // Notify parent component about pagination changes
+            if (onPaginationChange) {
+              onPaginationChange({
+                totalItems: newPagination.totalItems,
+                currentCount: productsWithInventory.length,
+                isLoading: false
+              });
+            }
           }
         }
       } else {
@@ -161,13 +225,13 @@ export const ProductGrid = ({ filters = {}, sortBy = 'newest', onPaginationChang
         <svg className="w-16 h-16 text-red-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
-        <h3 className="text-lg font-semibold text-gray-800 mb-2">Error Loading Products</h3>
+        <h3 className="text-lg font-semibold text-gray-800 mb-2">{t('products.error_loading', 'Error Loading Products')}</h3>
         <p className="text-gray-600 mb-4">{error}</p>
         <button
           onClick={fetchProducts}
           className="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700 transition-colors"
         >
-          Try Again
+          {t('products.try_again', 'Try Again')}
         </button>
       </div>
     );
@@ -180,8 +244,8 @@ export const ProductGrid = ({ filters = {}, sortBy = 'newest', onPaginationChang
         <svg className="w-16 h-16 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
         </svg>
-        <h3 className="text-lg font-semibold text-gray-800 mb-2">No Products Found</h3>
-        <p className="text-gray-600">Try adjusting your filters or search criteria</p>
+        <h3 className="text-lg font-semibold text-gray-800 mb-2">{t('products.no_products_found', 'No Products Found')}</h3>
+        <p className="text-gray-600">{t('products.adjust_filters', 'Try adjusting your filters or search criteria')}</p>
       </div>
     );
   }
@@ -210,7 +274,7 @@ export const ProductGrid = ({ filters = {}, sortBy = 'newest', onPaginationChang
               disabled={pagination.currentPage === 1}
               className="px-3 py-2 rounded-lg text-sm text-emerald-600 hover:bg-emerald-50 disabled:text-gray-400 disabled:hover:bg-transparent transition-colors"
             >
-              ‹ Previous
+              ‹ {t('products.prev', 'Previous')}
             </button>
 
             {/* Page numbers */}
@@ -233,13 +297,17 @@ export const ProductGrid = ({ filters = {}, sortBy = 'newest', onPaginationChang
               disabled={pagination.currentPage === pagination.totalPages}
               className="px-3 py-2 rounded-lg text-sm text-emerald-600 hover:bg-emerald-50 disabled:text-gray-400 disabled:hover:bg-transparent transition-colors"
             >
-              Next ›
+              {t('products.next', 'Next')} ›
             </button>
           </div>
 
           {/* Showing info */}
           <div className="text-sm text-gray-500">
-            Showing {((pagination.currentPage - 1) * pagination.perPage) + 1} to {Math.min(pagination.currentPage * pagination.perPage, pagination.totalItems)} of {pagination.totalItems} products
+            {t('products.showing_stats_detailed', 'Showing {{start}} to {{end}} of {{total}} products', {
+              start: ((pagination.currentPage - 1) * pagination.perPage) + 1,
+              end: Math.min(pagination.currentPage * pagination.perPage, pagination.totalItems),
+              total: pagination.totalItems
+            })}
           </div>
         </div>
       )}

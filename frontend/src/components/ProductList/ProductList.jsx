@@ -359,7 +359,7 @@ export const ProductList = ({ products = [], onSort, sortField, sortOrder, onEdi
             >
               <button
                 onClick={() => {
-                  navigate(`/products/${product.id}/batches`);
+                  navigate(`/inventory/batches?productId=${product.id}`);
                   setActiveDropdown(null);
                 }}
                 className="w-full px-4 py-2 text-left text-[12px] font-['Poppins',sans-serif] text-gray-700 hover:bg-emerald-50 hover:text-emerald-600 transition-colors flex items-center gap-2"

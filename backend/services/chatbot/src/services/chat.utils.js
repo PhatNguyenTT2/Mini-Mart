@@ -75,6 +75,7 @@ class ChatUtils {
             unitPrice: Number(r.unit_price),
             categoryName: r.category_name,
             quantityOnShelf: r.quantity_on_shelf,
+            isPerishable: r.is_perishable || r.isPerishable || false,
             _ragScore: r.score,
             _ftsMatch: !!r._ftsMatch
           }));
@@ -438,6 +439,13 @@ class ChatUtils {
 
         if (!result.success) {
           const errMsg = typeof result.error === 'object' ? (result.error.message || JSON.stringify(result.error)) : result.error;
+          if (errMsg === 'Không phải đơn hàng của bạn, bạn không có quyền') {
+            return {
+              intent: pending.type,
+              reply: errMsg,
+              products: null
+            };
+          }
           return {
             intent: pending.type,
             reply: `Thực hiện thất bại: ${errMsg}`,

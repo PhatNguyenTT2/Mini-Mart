@@ -65,10 +65,11 @@ function createInventoryRouter(inventoryService, inventoryRepo, { catalogService
             }
 
             const summary = await inventoryService.getInventorySummary(storeId, {});
-            
+
             const publicSummary = summary.map(row => ({
                 productId: row.product_id,
-                quantityOnShelf: parseInt(row.total_on_shelf) || 0
+                quantityOnShelf: parseInt(row.total_on_shelf) || 0,
+                discountPercentage: parseFloat(row.discount_percentage) || 0
             }));
 
             res.json({
@@ -88,7 +89,7 @@ function createInventoryRouter(inventoryService, inventoryRepo, { catalogService
         try {
             const storeId = req.user ? req.user.storeId : 1;
             const filters = { productId: req.query.productId };
-            
+
             // 1. Get inventory summary from DB view
             const summary = await inventoryService.getInventorySummary(storeId, filters);
 
@@ -132,7 +133,8 @@ function createInventoryRouter(inventoryService, inventoryRepo, { catalogService
                     quantityOnShelf: parseInt(row.total_on_shelf) || 0,
                     quantityReserved: parseInt(row.total_reserved) || 0,
                     quantityAvailable: parseInt(row.total_available) || 0,
-                    reorderPoint: parseInt(row.reorder_point) || 10
+                    reorderPoint: parseInt(row.reorder_point) || 10,
+                    discountPercentage: parseFloat(row.discount_percentage) || 0
                 };
             });
 
@@ -152,9 +154,9 @@ function createInventoryRouter(inventoryService, inventoryRepo, { catalogService
         try {
             const storeId = req.user ? req.user.storeId : 1;
             const userId = req.user ? req.user.id : 1;
-            
+
             const { batchId, locationId, quantity, reason } = req.body;
-            
+
             await inventoryService.receiveStock(storeId, batchId, locationId, quantity, userId, reason);
             res.status(200).json({
                 success: true,
@@ -164,7 +166,7 @@ function createInventoryRouter(inventoryService, inventoryRepo, { catalogService
             next(error);
         }
     });
-    
+
     /**
      * POST /move-to-shelf — Transfer from On-Hand to On-Shelf
      */
@@ -172,9 +174,9 @@ function createInventoryRouter(inventoryService, inventoryRepo, { catalogService
         try {
             const storeId = req.user ? req.user.storeId : 1;
             const userId = req.user ? req.user.id : 1;
-            
+
             const { batchId, locationId, moveQty } = req.body;
-            
+
             await inventoryService.moveStockToShelf(storeId, batchId, locationId, moveQty, userId);
             res.status(200).json({
                 success: true,
@@ -269,19 +271,19 @@ function createInventoryRouter(inventoryService, inventoryRepo, { catalogService
                     return new Date(a.expiry_date) - new Date(b.expiry_date);
                 })
                 .map(b => ({
-                id: b.id,
-                productId: b.product_id,
-                costPrice: parseFloat(b.cost_price) || 0,
-                unitPrice: parseFloat(b.unit_price) || 0,
-                discountPercentage: parseFloat(b.discount_percentage) || 0,
-                quantity: b.quantity,
-                mfgDate: b.mfg_date,
-                expiryDate: b.expiry_date,
-                status: b.status,
-                notes: b.notes,
-                totalOnHand: parseInt(b.total_on_hand) || 0,
-                totalOnShelf: parseInt(b.total_on_shelf) || 0
-            }));
+                    id: b.id,
+                    productId: b.product_id,
+                    costPrice: parseFloat(b.cost_price) || 0,
+                    unitPrice: parseFloat(b.unit_price) || 0,
+                    discountPercentage: parseFloat(b.discount_percentage) || 0,
+                    quantity: b.quantity,
+                    mfgDate: b.mfg_date,
+                    expiryDate: b.expiry_date,
+                    status: b.status,
+                    notes: b.notes,
+                    totalOnHand: parseInt(b.total_on_hand) || 0,
+                    totalOnShelf: parseInt(b.total_on_shelf) || 0
+                }));
 
             res.json({
                 success: true,

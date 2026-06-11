@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { Navigate, Link } from 'react-router-dom';
+import { useEffect, useState, Fragment } from 'react';
+import { Navigate, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { useStore } from '../contexts/StoreContext';
 import { useCart } from '../contexts/CartContext';
@@ -8,13 +8,17 @@ import productService from '../services/productService';
 import couponService from '../services/couponService';
 import { Header } from '../components/Header';
 import Footer from '../components/Footer/Footer';
-import { ShoppingBag, ChevronRight, PackageX, RefreshCw, Ticket, Check } from 'lucide-react';
+import { ShoppingBag, ChevronRight, PackageX, RefreshCw, Ticket, Check, AlertTriangle } from 'lucide-react';
+import { Dialog, Transition } from '@headlessui/react';
 import toast from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
 
 export default function OrderHistoryPage() {
+  const { t } = useTranslation();
   const { user } = useAuth();
   const { selectedStore } = useStore();
-  const { addMultipleToCart } = useCart();
+  const { cartItems, clearCart, addMultipleToCart } = useCart();
+  const navigate = useNavigate();
 
   const [activeTab, setActiveTab] = useState('orders'); // 'orders' | 'coupons'
   const [orders, setOrders] = useState([]);
@@ -24,12 +28,29 @@ export default function OrderHistoryPage() {
   const [error, setError] = useState('');
   const [reorderingId, setReorderingId] = useState(null);
 
+  // Cart override modal states
+  const [overrideConfirmModalOpen, setOverrideConfirmModalOpen] = useState(false);
+  const [pendingReorderOrderId, setPendingReorderOrderId] = useState(null);
+
+  // Filter states
+  const [statusFilter, setStatusFilter] = useState(''); // '' | 'draft' | 'shipping' | 'delivered' | 'cancelled'
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
+
   useEffect(() => {
     if (!user) return;
 
     const fetchOrders = async () => {
+      setLoading(true);
       try {
-        const res = await orderService.getMyOrders({ customer: user.customerId || user.id }, selectedStore?.id);
+        const params = {
+          customer: user.customerId || user.id,
+          status: statusFilter || undefined,
+          startDate: startDate || undefined,
+          endDate: endDate || undefined,
+        };
+        const res = await orderService.getMyOrders(params, selectedStore?.id);
         const fetchedOrders = res.data?.orders || res.orders || [];
         // Sort by created_at desc
         fetchedOrders.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
@@ -43,7 +64,18 @@ export default function OrderHistoryPage() {
     };
 
     fetchOrders();
-  }, [user, selectedStore?.id]);
+  }, [user, selectedStore?.id, statusFilter, startDate, endDate, refreshTrigger]);
+
+  useEffect(() => {
+    const handleChatAction = (e) => {
+      const action = e.detail;
+      if (action && action.type === 'CANCEL_ORDER') {
+        setRefreshTrigger(prev => prev + 1);
+      }
+    };
+    window.addEventListener('posmart:customer_chat_action', handleChatAction);
+    return () => window.removeEventListener('posmart:customer_chat_action', handleChatAction);
+  }, []);
 
   useEffect(() => {
     if (activeTab === 'coupons') {
@@ -85,10 +117,7 @@ export default function OrderHistoryPage() {
     return <span className="px-3 py-1 bg-gray-100 text-gray-700 rounded-full text-xs font-semibold">{status}</span>;
   };
 
-  const handleReorder = async (e, orderId) => {
-    e.preventDefault();
-    e.stopPropagation();
-
+  const executeReorder = async (orderId) => {
     if (reorderingId) return;
     setReorderingId(orderId);
 
@@ -98,7 +127,7 @@ export default function OrderHistoryPage() {
       const items = detailsRes.data?.items || detailsRes.items || [];
 
       if (items.length === 0) {
-        toast.error('Order has no items to re-order');
+        toast.error(t('order.no_items', 'Đơn hàng không có sản phẩm nào để đặt lại'));
         setReorderingId(null);
         return;
       }
@@ -112,22 +141,40 @@ export default function OrderHistoryPage() {
       });
 
       // 3. Map order items to cart format
-      const cartItems = items.map(item => ({
-        id: item.product_id,
-        name: item.product_name,
-        price: item.unit_price,
+      const formattedItems = items.map(item => ({
+        id: item.product_id || item.productId || item.product_productId,
+        name: item.product_name || item.productName || item.product_productName,
+        price: item.unit_price || item.unitPrice,
         quantity: item.quantity,
         image: item.image || 'https://via.placeholder.com/150',
       }));
 
-      // 4. Add to cart
-      await addMultipleToCart(cartItems, inventoryMap);
+      // 4. Override: Clear current cart
+      clearCart();
+
+      // 5. Add to cart
+      await addMultipleToCart(formattedItems, inventoryMap);
+
+      toast.success(t('order.reorder_success', 'Đã nạp sản phẩm vào giỏ hàng thành công!'));
+      navigate('/cart');
 
     } catch (err) {
       console.error('Re-order failed:', err);
-      toast.error('Failed to re-order. Please try again.');
+      toast.error(t('order.reorder_failed', 'Không thể đặt lại đơn hàng. Vui lòng thử lại.'));
     } finally {
       setReorderingId(null);
+    }
+  };
+
+  const handleReorder = async (e, orderId) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (cartItems.length > 0) {
+      setPendingReorderOrderId(orderId);
+      setOverrideConfirmModalOpen(true);
+    } else {
+      await executeReorder(orderId);
     }
   };
 
@@ -149,7 +196,7 @@ export default function OrderHistoryPage() {
               }`}
           >
             <ShoppingBag className="w-5 h-5" />
-            My Orders
+            {t('order.my_orders', 'My Orders')}
           </button>
           <button
             onClick={() => setActiveTab('coupons')}
@@ -159,13 +206,72 @@ export default function OrderHistoryPage() {
               }`}
           >
             <Ticket className="w-5 h-5" />
-            My Coupons
+            {t('order.my_coupons', 'My Coupons')}
           </button>
         </div>
 
         {error && (
           <div className="bg-red-50 text-red-650 p-4 rounded-lg border border-red-200 mb-6">
             {error}
+          </div>
+        )}
+
+        {activeTab === 'orders' && (
+          <div className="bg-white border border-gray-200 rounded-xl p-4 mb-6 flex flex-col md:flex-row gap-4 items-end justify-between shadow-sm">
+            <div className="flex flex-col md:flex-row gap-4 items-center w-full">
+              {/* Status Filter */}
+              <div className="flex flex-col w-full md:w-48">
+                <label className="text-xs font-bold text-gray-500 mb-1.5 uppercase tracking-wider">{t('order.status', 'Trạng thái')}</label>
+                <select
+                  value={statusFilter}
+                  onChange={(e) => setStatusFilter(e.target.value)}
+                  className="border border-gray-250 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white"
+                >
+                  <option value="">{t('order.status_all', 'Tất cả')}</option>
+                  <option value="draft">{t('order.status_draft_label', 'Chờ thanh toán (Draft)')}</option>
+                  <option value="shipping">{t('order.status_shipping_label', 'Đang giao hàng')}</option>
+                  <option value="delivered">{t('order.status_delivered_label', 'Đã giao hàng')}</option>
+                  <option value="cancelled">{t('order.status_cancelled_label', 'Đã hủy')}</option>
+                </select>
+              </div>
+
+              {/* Start Date */}
+              <div className="flex flex-col w-full md:w-auto">
+                <label className="text-xs font-bold text-gray-500 mb-1.5 uppercase tracking-wider">{t('order.start_date', 'Từ ngày')}</label>
+                <input
+                  type="date"
+                  value={startDate}
+                  onChange={(e) => setStartDate(e.target.value)}
+                  className="border border-gray-250 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white animate-fade-in"
+                />
+              </div>
+
+              {/* End Date */}
+              <div className="flex flex-col w-full md:w-auto">
+                <label className="text-xs font-bold text-gray-500 mb-1.5 uppercase tracking-wider">{t('order.end_date', 'Đến ngày')}</label>
+                <input
+                  type="date"
+                  value={endDate}
+                  onChange={(e) => setEndDate(e.target.value)}
+                  className="border border-gray-250 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 bg-white animate-fade-in"
+                />
+              </div>
+            </div>
+
+            {/* Clear Filter Button */}
+            {(statusFilter || startDate || endDate) && (
+              <button
+                type="button"
+                onClick={() => {
+                  setStatusFilter('');
+                  setStartDate('');
+                  setEndDate('');
+                }}
+                className="w-full md:w-auto px-4 py-2 border border-emerald-500 text-emerald-600 font-semibold rounded-lg hover:bg-emerald-50 text-sm transition-colors whitespace-nowrap"
+              >
+                {t('order.clear_filters', 'Xóa bộ lọc')}
+              </button>
+            )}
           </div>
         )}
 
@@ -191,7 +297,7 @@ export default function OrderHistoryPage() {
               {orders.map(order => (
                 <Link
                   key={order.id}
-                  to={`/order-status/${order.id}`}
+                  to={`/orders/${order.id}`}
                   className="block bg-white border border-gray-200 rounded-xl p-6 hover:shadow-md transition-shadow group no-underline"
                 >
                   <div className="flex flex-col md:flex-row justify-between md:items-center gap-4">
@@ -289,6 +395,77 @@ export default function OrderHistoryPage() {
           )
         )}
       </main>
+
+      {/* Re-order Override Confirmation Modal */}
+      <Transition appear show={overrideConfirmModalOpen} as={Fragment}>
+        <Dialog as="div" className="relative z-50" onClose={() => setOverrideConfirmModalOpen(false)}>
+          <Transition.Child
+            as={Fragment}
+            enter="ease-out duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <div className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm" />
+          </Transition.Child>
+
+          <div className="fixed inset-0 overflow-y-auto">
+            <div className="flex min-h-full items-center justify-center p-4 text-center">
+              <Transition.Child
+                as={Fragment}
+                enter="ease-out duration-300"
+                enterFrom="opacity-0 scale-95"
+                enterTo="opacity-100 scale-100"
+                leave="ease-in duration-200"
+                leaveFrom="opacity-100 scale-100"
+                leaveTo="opacity-0 scale-95"
+              >
+                <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all border border-gray-100">
+                  <Dialog.Title as="h3" className="text-lg font-bold leading-6 text-gray-900 flex items-center gap-2">
+                    <AlertTriangle className="w-5 h-5 text-amber-500" />
+                    {t('order.replace_cart_title', 'Thay thế giỏ hàng hiện tại?')}
+                  </Dialog.Title>
+                  <div className="mt-4">
+                    <p className="text-sm text-gray-500">
+                      {t('order.replace_cart_desc', 'Giỏ hàng của bạn đang có sản phẩm. Việc đặt lại (Re-order) đơn hàng này sẽ thay thế hoàn toàn các sản phẩm hiện có trong giỏ hàng. Bạn có muốn tiếp tục?')}
+                    </p>
+                  </div>
+
+                  <div className="mt-8 flex justify-end gap-3">
+                    <button
+                      type="button"
+                      className="inline-flex justify-center rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                      onClick={() => {
+                        setOverrideConfirmModalOpen(false);
+                        setPendingReorderOrderId(null);
+                      }}
+                    >
+                      {t('common.cancel', 'Hủy bỏ')}
+                    </button>
+                    <button
+                      type="button"
+                      className="inline-flex justify-center rounded-lg border border-transparent bg-emerald-500 px-4 py-2 text-sm font-medium text-white hover:bg-emerald-600 transition-colors"
+                      onClick={async () => {
+                        setOverrideConfirmModalOpen(false);
+                        const orderId = pendingReorderOrderId;
+                        setPendingReorderOrderId(null);
+                        if (orderId) {
+                          await executeReorder(orderId);
+                        }
+                      }}
+                    >
+                      Xác nhận
+                    </button>
+                  </div>
+                </Dialog.Panel>
+              </Transition.Child>
+            </div>
+          </div>
+        </Dialog>
+      </Transition>
+
       <Footer />
     </div>
   );

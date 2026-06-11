@@ -134,12 +134,14 @@ SELECT
     COALESCE(SUM(ii.quantity_on_shelf), 0) AS total_on_shelf,
     COALESCE(SUM(ii.quantity_reserved), 0) AS total_reserved,
     COALESCE(SUM(ii.quantity_on_hand + ii.quantity_on_shelf - ii.quantity_reserved), 0) AS total_available,
-    COALESCE(MIN(ii.reorder_point), 10) AS reorder_point
+    COALESCE(MIN(ii.reorder_point), 10) AS reorder_point,
+    COALESCE(MAX(CASE WHEN pb.status = 'active' AND ii.quantity_on_shelf > 0 THEN pb.discount_percentage ELSE 0 END), 0) AS discount_percentage
 FROM
     product_batch pb
     LEFT JOIN inventory_item ii ON pb.id = ii.product_batch_id
 GROUP BY
     pb.store_id, pb.product_id;
+
 
 -- ==========================================
 -- 6. SAGA: IDEMPOTENCY TABLE
@@ -210,12 +212,31 @@ END $$;
 
 -- ==========================================
 -- MIGRATION: Add promotion_applied to product_batch
--- Tracks source of discount: auto_fresh (scheduler), manual (employee), none
+-- Tracks source of discount: perishable (scheduler), manual (employee), none
 -- ==========================================
 DO $$ BEGIN
     ALTER TABLE product_batch ADD COLUMN promotion_applied TEXT NOT NULL DEFAULT 'none';
+EXCEPTION WHEN duplicate_column THEN NULL;
+END $$;
+
+DO $$ BEGIN
+    ALTER TABLE product_batch DROP CONSTRAINT IF EXISTS chk_promotion_applied;
     ALTER TABLE product_batch ADD CONSTRAINT chk_promotion_applied
-        CHECK (promotion_applied IN ('none', 'auto_fresh', 'manual'));
+        CHECK (promotion_applied IN ('none', 'perishable', 'manual'));
+EXCEPTION WHEN OTHERS THEN NULL;
+END $$;
+
+-- Migrate existing auto_fresh values to perishable
+DO $$ BEGIN
+    UPDATE product_batch SET promotion_applied = 'perishable' WHERE promotion_applied = 'auto_fresh';
+EXCEPTION WHEN OTHERS THEN NULL;
+END $$;
+
+-- ==========================================
+-- MIGRATION: Add updated_at to product_batch
+-- ==========================================
+DO $$ BEGIN
+    ALTER TABLE product_batch ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW();
 EXCEPTION WHEN duplicate_column THEN NULL;
 END $$;
 

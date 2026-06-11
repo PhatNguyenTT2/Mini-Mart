@@ -131,14 +131,14 @@ export const ProductBatchList = ({
           <div className="min-w-[900px]">
             {/* Table Header */}
             <div className="flex items-center h-[34px] bg-gray-50 border-b border-gray-200">
-              {/* Batch Code Column - Sortable */}
+              {/* Batch ID Column - Sortable */}
               <div
                 className="w-[180px] px-3 flex items-center flex-shrink-0 cursor-pointer hover:bg-gray-100 transition-colors"
-                onClick={() => handleSortClick('batchCode')}
+                onClick={() => handleSortClick('id')}
               >
                 <p className="text-[11px] font-medium font-['Poppins',sans-serif] text-[#212529] uppercase tracking-[0.5px] leading-[18px] flex items-center gap-1">
-                  Batch Code
-                  {getSortIcon('batchCode')}
+                  Batch ID
+                  {getSortIcon('id')}
                 </p>
               </div>
 
@@ -205,103 +205,110 @@ export const ProductBatchList = ({
 
             {/* Table Body */}
             <div className="flex flex-col">
-              {batches.map((batch, index) => (
-                <div
-                  key={batch.id}
-                  className={`flex items-center h-[60px] hover:bg-gray-50 transition-colors ${index !== batches.length - 1 ? 'border-b border-gray-100' : ''
-                    }`}
-                >
-                  {/* Batch Code */}
-                  <div className="w-[180px] px-3 flex items-center flex-shrink-0">
-                    <p className="text-[12px] font-medium font-['Poppins',sans-serif] text-gray-600 leading-[20px] truncate">
-                      {batch.batchCode || '-'}
-                    </p>
-                  </div>
+              {batches.map((batch, index) => {
+                const isExpired = batch.expiry_date ? new Date(batch.expiry_date) < new Date() : false;
+                const isNearExpiry = batch.expiry_date && !isExpired && (new Date(batch.expiry_date) - new Date()) / (1000 * 60 * 60 * 24) <= 30;
 
-                  {/* Cost Price */}
-                  <div className="w-[120px] px-3 flex items-center flex-shrink-0">
-                    <p className="text-[13px] font-normal font-['Poppins',sans-serif] text-[#212529] leading-[20px]">
-                      {formatVND(batch.costPrice || 0)}
-                    </p>
-                  </div>
+                return (
+                  <div
+                    key={batch.id}
+                    className={`flex items-center h-[60px] hover:bg-gray-50 transition-colors ${index !== batches.length - 1 ? 'border-b border-gray-100' : ''
+                      }`}
+                  >
+                    {/* Batch Code */}
+                    <div className="w-[180px] px-3 flex items-center flex-shrink-0">
+                      <p className="text-[12px] font-medium font-['mono',sans-serif] text-gray-700 leading-[20px] truncate">
+                        #{batch.id}
+                      </p>
+                    </div>
 
-                  {/* Unit Price */}
-                  <div className="w-[120px] px-3 flex items-center flex-shrink-0">
-                    <p className="text-[13px] font-semibold font-['Poppins',sans-serif] text-emerald-600 leading-[20px]">
-                      {formatVND(batch.unitPrice || 0)}
-                    </p>
-                  </div>
+                    {/* Cost Price */}
+                    <div className="w-[120px] px-3 flex items-center flex-shrink-0">
+                      <p className="text-[13px] font-normal font-['Poppins',sans-serif] text-[#212529] leading-[20px]">
+                        {formatVND(batch.cost_price || 0)}
+                      </p>
+                    </div>
 
-                  {/* Quantity */}
-                  <div className="w-[100px] px-3 flex items-center justify-center flex-shrink-0">
-                    <p className={`text-[13px] font-medium font-['Poppins',sans-serif] leading-[20px] ${(batch.quantity || 0) > 10 ? 'text-emerald-600' : 'text-red-600'
-                      }`}>
-                      {batch.quantity || 0}
-                    </p>
-                  </div>
+                    {/* Unit Price */}
+                    <div className="w-[120px] px-3 flex items-center flex-shrink-0">
+                      <p className="text-[13px] font-semibold font-['Poppins',sans-serif] text-emerald-600 leading-[20px]">
+                        {formatVND(batch.unit_price || 0)}
+                      </p>
+                    </div>
 
-                  {/* MFG Date */}
-                  <div className="w-[120px] px-3 flex items-center flex-shrink-0">
-                    <p className="text-[13px] font-normal font-['Poppins',sans-serif] text-[#212529] leading-[20px]">
-                      {formatDate(batch.mfgDate)}
-                    </p>
-                  </div>
+                    {/* Quantity */}
+                    <div className="w-[100px] px-3 flex items-center justify-center flex-shrink-0">
+                      <p className={`text-[13px] font-medium font-['Poppins',sans-serif] leading-[20px] ${(batch.quantity || 0) > 10 ? 'text-emerald-600' : 'text-red-600'
+                        }`}>
+                        {batch.quantity || 0}
+                      </p>
+                    </div>
 
-                  {/* Expiry Date */}
-                  <div className="w-[120px] px-3 flex items-center flex-shrink-0">
-                    <p className={`text-[13px] font-normal font-['Poppins',sans-serif] leading-[20px] ${batch.isNearExpiry ? 'text-orange-600 font-medium' :
-                      batch.isExpired ? 'text-red-600 font-medium' : 'text-[#212529]'
-                      }`}>
-                      {formatDate(batch.expiryDate)}
-                      {batch.isNearExpiry && (
-                        <span className="ml-1 text-[10px]">!</span>
-                      )}
-                    </p>
-                  </div>
+                    {/* MFG Date */}
+                    <div className="w-[120px] px-3 flex items-center flex-shrink-0">
+                      <p className="text-[13px] font-normal font-['Poppins',sans-serif] text-[#212529] leading-[20px]">
+                        {formatDate(batch.mfg_date)}
+                      </p>
+                    </div>
 
-                  {/* Promotion */}
-                  <div className="flex-1 min-w-[140px] px-3 flex items-center justify-center">
-                    <span className={`text-[11px] font-medium font-['Poppins',sans-serif] leading-[18px] px-2 py-0.5 rounded ${batch.promotionApplied === 'none' || !batch.promotionApplied
-                      ? 'text-gray-400'
-                      : 'bg-orange-100 text-orange-700'
-                      }`}>
-                      {batch.promotionApplied === 'none' || !batch.promotionApplied ? '-' :
-                        batch.promotionApplied === 'discount' ? `${batch.discountPercentage}%` :
-                          batch.promotionApplied}
-                    </span>
-                  </div>
+                    {/* Expiry Date */}
+                    <div className="w-[120px] px-3 flex items-center flex-shrink-0">
+                      <p className={`text-[13px] font-normal font-['Poppins',sans-serif] leading-[20px] ${isNearExpiry ? 'text-orange-600 font-medium' :
+                        isExpired ? 'text-red-600 font-medium' : 'text-[#212529]'
+                        }`}>
+                        {formatDate(batch.expiry_date)}
+                        {isNearExpiry && (
+                          <span className="ml-1 text-[10px]">!</span>
+                        )}
+                      </p>
+                    </div>
 
-                  {/* Status - Dropdown */}
-                  <div className="w-[100px] px-3 flex items-center justify-center flex-shrink-0">
-                    <button
-                      onClick={(e) => toggleDropdown(batch.id, 'status', e)}
-                      className={`${getStatusColor(batch.status)} px-2 py-1 rounded inline-flex items-center gap-1 cursor-pointer hover:opacity-90 transition-opacity`}
-                    >
-                      <span className="text-[9px] font-bold font-['Poppins',sans-serif] text-white leading-[10px] uppercase">
-                        {batch.status}
+                    {/* Promotion */}
+                    <div className="flex-1 min-w-[140px] px-3 flex items-center justify-center">
+                      <span className={`text-[11px] font-medium font-['Poppins',sans-serif] leading-[18px] px-2 py-0.5 rounded ${batch.promotion_applied === 'none' || !batch.promotion_applied
+                          ? 'text-gray-400'
+                          : batch.promotion_applied === 'perishable'
+                            ? 'bg-blue-100 text-blue-700'
+                            : 'bg-emerald-100 text-emerald-700'
+                        }`}>
+                        {batch.promotion_applied === 'none' || !batch.promotion_applied ? '-' :
+                          batch.promotion_applied === 'perishable' ? `Auto ${batch.discount_percentage}%` :
+                            `${batch.discount_percentage}%`}
                       </span>
-                      <svg width="8" height="5" viewBox="0 0 8 5" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M1 1L4 4L7 1" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                    </button>
-                  </div>
+                    </div>
 
-                  {/* Actions */}
-                  <div className="w-[100px] px-3 flex items-center justify-center flex-shrink-0">
-                    <button
-                      onClick={(e) => toggleDropdown(batch.id, 'action', e)}
-                      className="p-2 hover:bg-gray-200 rounded-full transition-colors"
-                      title="Actions"
-                    >
-                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="3" cy="8" r="1.5" fill="#6B7280" />
-                        <circle cx="8" cy="8" r="1.5" fill="#6B7280" />
-                        <circle cx="13" cy="8" r="1.5" fill="#6B7280" />
-                      </svg>
-                    </button>
+                    {/* Status - Dropdown */}
+                    <div className="w-[100px] px-3 flex items-center justify-center flex-shrink-0">
+                      <button
+                        onClick={(e) => toggleDropdown(batch.id, 'status', e)}
+                        className={`${getStatusColor(batch.status)} px-2 py-1 rounded inline-flex items-center gap-1 cursor-pointer hover:opacity-90 transition-opacity`}
+                      >
+                        <span className="text-[9px] font-bold font-['Poppins',sans-serif] text-white leading-[10px] uppercase">
+                          {batch.status}
+                        </span>
+                        <svg width="8" height="5" viewBox="0 0 8 5" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M1 1L4 4L7 1" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                      </button>
+                    </div>
+
+                    {/* Actions */}
+                    <div className="w-[100px] px-3 flex items-center justify-center flex-shrink-0">
+                      <button
+                        onClick={(e) => toggleDropdown(batch.id, 'action', e)}
+                        className="p-2 hover:bg-gray-200 rounded-full transition-colors"
+                        title="Actions"
+                      >
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <circle cx="3" cy="8" r="1.5" fill="#6B7280" />
+                          <circle cx="8" cy="8" r="1.5" fill="#6B7280" />
+                          <circle cx="13" cy="8" r="1.5" fill="#6B7280" />
+                        </svg>
+                      </button>
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
 
             {/* Empty State */}

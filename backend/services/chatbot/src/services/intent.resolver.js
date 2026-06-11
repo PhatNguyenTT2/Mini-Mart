@@ -204,18 +204,21 @@ function resolveIntent(message, userType = 'customer') {
     const normalizedMsg = message.toLowerCase().trim();
 
     // 1. Priority pre-check for RECOMMENDATION to prevent false matches with ADD_TO_CART regexes or SEARCH_PRODUCT.
-    // If it's a structural cart write action (contains 'giỏ', 'xóa', 'đơn'), do not intercept.
+    // If it's a structural cart write action (contains 'giỏ', 'xóa', 'hủy', 'tạo đơn'), do not intercept.
     const isCartOrOrderWrite = normalizedMsg.includes('giỏ') || normalizedMsg.includes('xóa') || normalizedMsg.includes('hủy') || normalizedMsg.includes('tạo đơn');
     if (!isCartOrOrderWrite) {
         const recConfig = INTENT_PATTERNS.RECOMMENDATION;
         for (const keyword of recConfig.keywords) {
             if (normalizedMsg.includes(keyword)) {
+                const TRANSACTIONAL_VERBS = ['muốn mua', 'cần mua', 'mua cho', 'đặt', 'lấy', 'cần', 'mua'];
+                const isTransactional = TRANSACTIONAL_VERBS.some(v => normalizedMsg.includes(v));
                 return {
                     intent: 'RECOMMENDATION',
                     confidence: 'priority_keyword_match',
                     matchedKeyword: keyword,
                     description: recConfig.description,
-                    writeAction: false
+                    writeAction: false,
+                    isTransactional
                 };
             }
         }
@@ -226,8 +229,8 @@ function resolveIntent(message, userType = 'customer') {
         if (config.managerOnly && userType !== 'manager') {
             continue;
         }
-        // Enforce employee-only action validation at intent resolution stage
-        if (config.employeeOnly && userType !== 'employee') {
+        // Enforce employee-only action validation at intent resolution stage (Managers also have access)
+        if (config.employeeOnly && userType !== 'employee' && userType !== 'manager') {
             continue;
         }
         // Skip customer-only intents for employees/managers (e.g. CHECKOUT_GUIDE → POS_CHECKOUT)
@@ -239,7 +242,7 @@ function resolveIntent(message, userType = 'customer') {
             if (keyword.startsWith('/') && keyword.endsWith('/')) {
                 const regex = new RegExp(keyword.slice(1, -1), 'i');
                 if (regex.test(normalizedMsg)) {
-                    const finalIntent = (userType === 'employee' && intent === 'ADD_TO_CART') ? 'POS_ADD_ITEM' : intent;
+                    const finalIntent = ((userType === 'employee' || userType === 'manager') && intent === 'ADD_TO_CART') ? 'POS_ADD_ITEM' : intent;
                     return {
                         intent: finalIntent,
                         confidence: 'regex_match',
@@ -249,7 +252,7 @@ function resolveIntent(message, userType = 'customer') {
                     };
                 }
             } else if (normalizedMsg.includes(keyword)) {
-                const finalIntent = (userType === 'employee' && intent === 'ADD_TO_CART') ? 'POS_ADD_ITEM' : intent;
+                const finalIntent = ((userType === 'employee' || userType === 'manager') && intent === 'ADD_TO_CART') ? 'POS_ADD_ITEM' : intent;
                 return {
                     intent: finalIntent,
                     confidence: 'keyword_match',

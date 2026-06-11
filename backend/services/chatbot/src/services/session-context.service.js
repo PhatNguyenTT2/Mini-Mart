@@ -212,12 +212,33 @@ class SessionContextService {
     }
 
     /**
+     * Detect if user shifted to a completely new category cluster.
+     * If so, return the new cluster key; otherwise null.
+     */
+    detectCategoryShift(currentAnchorCategory, previousCluster) {
+        if (!currentAnchorCategory || !previousCluster) return null;
+        const prevDef = CLUSTER_DEFINITIONS[previousCluster];
+        if (!prevDef) return null;
+        if (!prevDef.categoryNames.includes(currentAnchorCategory)) {
+            for (const [key, def] of Object.entries(CLUSTER_DEFINITIONS)) {
+                if (def.categoryNames.includes(currentAnchorCategory)) return key;
+            }
+        }
+        return null;
+    }
+
+    /**
      * Apply session context boost to ensemble results
      * @param {object[]} ensembleResults - from hybrid.service score()
      * @param {object|null} sessionIntent - from inferSessionIntent()
+     * @param {boolean} flushSignal
      * @returns {object[]} re-sorted results with session boost applied
      */
-    applySessionBoost(ensembleResults, sessionIntent) {
+    applySessionBoost(ensembleResults, sessionIntent, flushSignal = false) {
+        if (flushSignal) {
+            logger.info('Session: Category shift detected — flushing boost');
+            return ensembleResults;
+        }
         if (!sessionIntent || sessionIntent.cluster === 'exploring') {
             return ensembleResults;
         }

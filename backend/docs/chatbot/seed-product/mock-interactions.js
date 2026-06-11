@@ -44,19 +44,19 @@ const PRODUCTS = {
 // USER PERSONA CLUSTERS
 // ============================================================
 const CLUSTERS = {
-  // Nhóm 1: Nội trợ Nấu lẩu (25 users)
+  // Nhóm 1: Nội trợ Nấu lẩu (150 users)
   NOI_TRO: {
-    userRange: [1, 25],
-    primary: [1, 2, 3, 4, 5, 24, 25, 26, 27, 28],     // Bò, Nấm, Rau, Gia vị lẩu, Bún, Cà chua, Hành, Tỏi, Ớt, Chanh
-    secondary: [6, 13, 49, 52, 53, 23, 16],              // Cá viên, Dầu ăn, Nước mắm, Hạt nêm, Bột ngọt, Nước tương, Muối
+    userRange: [1, 150],
+    primary: [1, 2, 3, 5],                             // Chỉ có món chính: Ba chỉ bò Mỹ, Nấm kim châm, Rau muống VietGAP, Bún tươi
+    secondary: [4, 6, 13, 24, 25, 26, 27, 28, 49, 52, 53, 23, 16], // Toàn bộ gia vị + phụ liệu lẩu
     avoid: [17, 18, 12, 19, 20, 21],                      // Bia, Mì gói, Coca, Snack, Khô gà
-    primaryFreq: [5, 10],   // 5-10 lần/tháng
-    secondaryFreq: [1, 3],  // 1-3 lần/tháng
+    primaryFreq: [8, 15],   // 8-15 lần/tháng
+    secondaryFreq: [1, 4],  // 1-4 lần/tháng
   },
 
-  // Nhóm 2: Sinh viên Ăn vặt & Thức khuya (20 users)
+  // Nhóm 2: Sinh viên Ăn vặt & Thức khuya (150 users)
   SINH_VIEN: {
-    userRange: [26, 45],
+    userRange: [151, 300],
     primary: [12, 11, 19, 20, 7, 8],                     // Mì Hảo Hảo, Xúc xích, Coca, Snack, Bánh mì, Sữa
     secondary: [10, 15, 9, 22],                            // Trứng, Đường, Thùng sữa, Đậu phộng
     avoid: [1, 2, 3, 4, 24, 25, 26, 49, 52, 53],          // Bò Mỹ, Nấm, Rau, Gia vị, Cà chua, Hành, Tỏi, Nước mắm
@@ -64,13 +64,13 @@ const CLUSTERS = {
     secondaryFreq: [2, 5],
   },
 
-  // Nhóm 3: Dân nhậu Cuối tuần (14 users)
+  // Nhóm 3: Dân nhậu Cuối tuần (150 users)
   DAN_NHAU: {
-    userRange: [46, 54],
+    userRange: [301, 450],
     primary: [17, 18, 21, 22, 6],                          // Bia Heineken, Tiger, Khô gà, Đậu phộng, Cá viên
-    secondary: [20, 19, 28, 27],                            // Snack, Coca, Chanh, Ớt
+    secondary: [20, 19],                                    // Chỉ giữ Snack, Coca. Gỡ Chanh(28), Ớt(27) để tránh overlap với lẩu
     avoid: [1, 2, 3, 14, 15, 52, 53],                      // Bò, Nấm, Rau, Gạo, Đường, Hạt nêm
-    primaryFreq: [2, 4],    // 2-4 lần/tháng
+    primaryFreq: [4, 8],    // Nâng lên 4-8 lần/tháng để củng cố luật Bia <-> Khô gà
     secondaryFreq: [1, 2],
   }
 };

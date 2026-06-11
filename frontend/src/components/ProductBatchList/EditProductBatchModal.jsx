@@ -21,14 +21,15 @@ export const EditProductBatchModal = ({ isOpen, onClose, onSuccess, batch }) => 
   // Load batch data when modal opens
   useEffect(() => {
     if (isOpen && batch) {
+      const dbPromo = batch.promotion_applied || batch.promotionApplied || 'none';
       setFormData({
-        costPrice: batch.costPrice?.toString() || '',
-        unitPrice: batch.unitPrice?.toString() || '',
+        costPrice: (batch.cost_price ?? batch.costPrice)?.toString() || '',
+        unitPrice: (batch.unit_price ?? batch.unitPrice)?.toString() || '',
         quantity: batch.quantity?.toString() || '',
-        promotionApplied: batch.promotionApplied || 'none',
-        discountPercentage: batch.discountPercentage?.toString() || '0',
-        mfgDate: batch.mfgDate ? new Date(batch.mfgDate).toISOString().split('T')[0] : '',
-        expiryDate: batch.expiryDate ? new Date(batch.expiryDate).toISOString().split('T')[0] : '',
+        promotionApplied: (dbPromo === 'manual' || dbPromo === 'perishable') ? 'discount' : 'none',
+        discountPercentage: (batch.discount_percentage ?? batch.discountPercentage)?.toString() || '0',
+        mfgDate: (batch.mfg_date || batch.mfgDate) ? new Date(batch.mfg_date || batch.mfgDate).toISOString().split('T')[0] : '',
+        expiryDate: (batch.expiry_date || batch.expiryDate) ? new Date(batch.expiry_date || batch.expiryDate).toISOString().split('T')[0] : '',
         status: batch.status || 'active',
         notes: batch.notes || ''
       });
@@ -93,19 +94,19 @@ export const EditProductBatchModal = ({ isOpen, onClose, onSuccess, batch }) => 
 
     try {
       const batchData = {
-        costPrice: parseFloat(formData.costPrice),
-        unitPrice: parseFloat(formData.unitPrice),
+        cost_price: parseFloat(formData.costPrice),
+        unit_price: parseFloat(formData.unitPrice),
         quantity: parseInt(formData.quantity),
-        promotionApplied: formData.promotionApplied,
-        discountPercentage: parseFloat(formData.discountPercentage),
+        promotion_applied: formData.promotionApplied === 'discount' ? 'manual' : 'none',
+        discount_percentage: parseFloat(formData.discountPercentage),
         status: formData.status
       };
 
       if (formData.mfgDate) {
-        batchData.mfgDate = formData.mfgDate;
+        batchData.mfg_date = formData.mfgDate;
       }
       if (formData.expiryDate) {
-        batchData.expiryDate = formData.expiryDate;
+        batchData.expiry_date = formData.expiryDate;
       }
       if (formData.notes.trim()) {
         batchData.notes = formData.notes.trim();
@@ -137,8 +138,8 @@ export const EditProductBatchModal = ({ isOpen, onClose, onSuccess, batch }) => 
             <h2 className="text-[20px] font-semibold font-['Poppins',sans-serif] text-[#212529]">
               Edit Batch
             </h2>
-            <p className="text-[13px] text-gray-600 font-['Poppins',sans-serif] mt-1">
-              {batch.batchCode}
+            <p className="text-[13px] text-gray-600 font-mono mt-1">
+              Batch ID: #{batch.id}
             </p>
           </div>
           <button
@@ -241,7 +242,6 @@ export const EditProductBatchModal = ({ isOpen, onClose, onSuccess, batch }) => 
               >
                 <option value="none">None</option>
                 <option value="discount">Discount</option>
-                <option value="buy1get1">Buy 1 Get 1</option>
               </select>
             </div>
 

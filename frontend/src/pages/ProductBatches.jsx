@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 import { Breadcrumb } from '../components/Breadcrumb';
 import { ProductBatchListHeader, ProductBatchList } from '../components/ProductBatchList';
 import { BulkDiscountModal } from '../components/ProductBatchList/BulkDiscountModal';
@@ -7,7 +7,8 @@ import productBatchService from '../services/productBatchService';
 import productService from '../services/productService';
 
 const ProductBatches = () => {
-  const { productId } = useParams();
+  const [searchParams] = useSearchParams();
+  const productId = searchParams.get('productId');
   const navigate = useNavigate();
 
   // State management
@@ -45,7 +46,7 @@ const ProductBatches = () => {
   // Breadcrumb items
   const breadcrumbItems = [
     { label: 'Dashboard', href: '/dashboard' },
-    { label: 'Products', href: '/products' },
+    { label: 'Inventories', href: '/inventory/management' },
     { label: product?.name || 'Product Batches', href: null },
   ];
 
@@ -90,26 +91,32 @@ const ProductBatches = () => {
       const response = await productBatchService.getAllBatches(params);
 
       if (response.success) {
+        // Handle both object and array response structure API formats
+        const batchesList = Array.isArray(response.data)
+          ? response.data
+          : (response.data?.batches || []);
+
         // Debug: Check batch data structure with discount fields
-        console.log('Fetched batches:', response.data.batches.map(b => ({
-          batchCode: b.batchCode,
-          costPrice: b.costPrice,
-          unitPrice: b.unitPrice,
+        console.log('Fetched batches:', batchesList.map(b => ({
+          batchCode: b.batchCode || b.batch_code,
+          costPrice: b.costPrice || b.cost_price,
+          unitPrice: b.unitPrice || b.unit_price,
           quantity: b.quantity,
           status: b.status,
-          promotionApplied: b.promotionApplied,
-          discountPercentage: b.discountPercentage,
-          expiryDate: b.expiryDate
+          promotionApplied: b.promotionApplied || b.promotion_applied,
+          discountPercentage: b.discountPercentage || b.discount_percentage,
+          expiryDate: b.expiryDate || b.expiry_date
         })));
 
-        setBatches(response.data.batches || []);
+        setBatches(batchesList);
         // Map API response pagination (page, pages) to component state (currentPage, totalPages)
-        const apiPagination = response.data.pagination || {};
+        const apiPagination = (!Array.isArray(response.data) && response.data?.pagination) || {};
+        const total = batchesList.length;
         setPagination({
           currentPage: apiPagination.page || apiPagination.currentPage || 1,
-          limit: apiPagination.limit || 20,
-          total: apiPagination.total || 0,
-          totalPages: apiPagination.pages || apiPagination.totalPages || 0
+          limit: apiPagination.limit || filters.limit || 20,
+          total: apiPagination.total || total,
+          totalPages: apiPagination.pages || apiPagination.totalPages || Math.ceil(total / (filters.limit || 20))
         });
       }
     } catch (err) {
@@ -149,7 +156,7 @@ const ProductBatches = () => {
       let aVal = a[field];
       let bVal = b[field];
 
-      if (field === 'batchCode' || field === 'status') {
+      if (field === 'id' || field === 'status') {
         aVal = aVal?.toString().toLowerCase() || '';
         bVal = bVal?.toString().toLowerCase() || '';
       }
@@ -188,7 +195,7 @@ const ProductBatches = () => {
   // Handle delete batch
   const handleDeleteBatch = async (batch) => {
     const confirmed = window.confirm(
-      `Are you sure you want to delete batch ${batch.batchCode}?\n\nThis action cannot be undone.`
+      `Are you sure you want to delete batch #${batch.id}?\n\nThis action cannot be undone.`
     );
 
     if (!confirmed) return;
@@ -247,17 +254,17 @@ const ProductBatches = () => {
                 {product.name}
               </h1>
               <p className="text-[13px] text-gray-600 font-['Poppins',sans-serif]">
-                Product Code: {product.productCode}
+                Product ID: #{product.id}
               </p>
             </div>
             <button
-              onClick={() => navigate('/products')}
+              onClick={() => navigate('/inventory/management')}
               className="ml-auto px-4 py-2 text-[13px] font-['Poppins',sans-serif] text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50"
             >
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" className="inline mr-1 align-text-bottom">
                 <path d="M10 12L6 8L10 4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
-              Back to Products
+              Back to Inventories
             </button>
           </div>
         </div>

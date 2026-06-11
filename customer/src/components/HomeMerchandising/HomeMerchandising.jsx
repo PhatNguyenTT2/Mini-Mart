@@ -46,20 +46,27 @@ export default function HomeMerchandising() {
           productService.getActiveProducts(),
           selectedStore?.id ? productService.getStoreInventorySummary(selectedStore.id).catch(() => ({ data: [] })) : Promise.resolve({ data: [] })
         ]);
-        
+
         setCategoryTree(catResult?.data?.categories || []);
-        
+
         const inventoryMap = {};
         if (invResult?.data) {
           invResult.data.forEach(inv => {
-            inventoryMap[inv.productId] = inv.quantityOnShelf;
+            inventoryMap[inv.productId] = {
+              quantityOnShelf: inv.quantityOnShelf || 0,
+              discountPercentage: inv.discountPercentage || 0
+            };
           });
         }
 
-        const mergedProducts = (prodResult?.data?.products || []).map(p => ({
-          ...p,
-          quantityOnShelf: inventoryMap[p.id] || 0
-        }));
+        const mergedProducts = (prodResult?.data?.products || []).map(p => {
+          const inv = inventoryMap[p.id] || { quantityOnShelf: 0, discountPercentage: 0 };
+          return {
+            ...p,
+            quantityOnShelf: inv.quantityOnShelf,
+            discountPercentage: inv.discountPercentage || p.discountPercentage || 0
+          };
+        });
 
         setProducts(mergedProducts);
       } catch (err) {
@@ -121,7 +128,15 @@ export default function HomeMerchandising() {
     if (sortBy === 'name_asc') {
       return [...result].sort((a, b) => a.name.localeCompare(b.name));
     }
-    return result;
+    // Default sort: prioritize discount first
+    return [...result].sort((a, b) => {
+      const hasDiscountA = (a.discountPercentage || 0) > 0 ? 1 : 0;
+      const hasDiscountB = (b.discountPercentage || 0) > 0 ? 1 : 0;
+      if (hasDiscountA !== hasDiscountB) {
+        return hasDiscountB - hasDiscountA;
+      }
+      return 0;
+    });
   }, [products, activeCategoryIds, sortBy]);
 
   const displayedProducts = filteredProducts.slice(0, displayCount);
@@ -180,10 +195,10 @@ export default function HomeMerchandising() {
   return (
     <div className="space-y-10">
       {/* ── Hero Banner Carousel ── */}
-      <section id="promotions" className="relative rounded-2xl overflow-hidden bg-gray-50">
+      <section id="hero-banner" className="relative rounded-2xl overflow-hidden bg-gray-50">
         <div className="overflow-hidden" ref={emblaRef}>
           <div className="flex">
-            
+
             {/* Slide 1 */}
             <div className="flex-[0_0_100%] min-w-0 relative bg-gradient-to-r from-emerald-600 via-emerald-500 to-teal-400 p-8 md:p-12 lg:p-16">
               <div className="relative z-10 max-w-lg">
@@ -286,7 +301,8 @@ export default function HomeMerchandising() {
               ))}
             </Suspense>
           </div>
-          <style dangerouslySetInnerHTML={{__html: `
+          <style dangerouslySetInnerHTML={{
+            __html: `
             .hide-scrollbar::-webkit-scrollbar { display: none; }
             .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
           `}} />
@@ -294,7 +310,7 @@ export default function HomeMerchandising() {
       )}
 
       {/* ── Top Categories ── */}
-      <section id="new-arrivals">
+      <section id="categories-section">
         <div className="flex items-center justify-between mb-5">
           <h2 className="text-xl font-bold text-gray-800">Browse by Category</h2>
           {selectedRootId && (
@@ -327,36 +343,31 @@ export default function HomeMerchandising() {
                   <button
                     key={cat.id}
                     onClick={() => handleRootClick(cat.id)}
-                    className={`flex flex-col items-center gap-1.5 p-3 rounded-2xl transition-all duration-200 group ${
-                      isActive
-                        ? 'bg-emerald-50 border-2 border-emerald-500 shadow-sm'
-                        : 'bg-white border-2 border-gray-100 hover:border-emerald-300 hover:shadow-sm'
-                    }`}
+                    className={`flex flex-col items-center gap-1.5 p-3 rounded-2xl transition-all duration-200 group ${isActive
+                      ? 'bg-emerald-50 border-2 border-emerald-500 shadow-sm'
+                      : 'bg-white border-2 border-gray-100 hover:border-emerald-300 hover:shadow-sm'
+                      }`}
                   >
-                    <div className={`w-14 h-14 rounded-xl flex items-center justify-center overflow-hidden transition-all ${
-                      isActive ? 'bg-emerald-100 scale-110' : 'bg-gray-50 group-hover:bg-emerald-50 group-hover:scale-105'
-                    }`}>
+                    <div className={`w-14 h-14 rounded-xl flex items-center justify-center overflow-hidden transition-all ${isActive ? 'bg-emerald-100 scale-110' : 'bg-gray-50 group-hover:bg-emerald-50 group-hover:scale-105'
+                      }`}>
                       {cat.image ? (
                         <img src={cat.image} alt={cat.name} className="w-10 h-10 object-cover rounded-lg" onError={(e) => { e.target.style.display = 'none'; }} />
                       ) : (
                         <Tag className="w-6 h-6 text-emerald-500" />
                       )}
                     </div>
-                    <span className={`text-[11px] font-semibold text-center line-clamp-2 leading-tight ${
-                      isActive ? 'text-emerald-700' : 'text-gray-600'
-                    }`}>
+                    <span className={`text-[11px] font-semibold text-center line-clamp-2 leading-tight ${isActive ? 'text-emerald-700' : 'text-gray-600'
+                      }`}>
                       {cat.name}
                     </span>
                     <div className="flex items-center gap-1">
-                      <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded-full ${
-                        isActive ? 'bg-emerald-200 text-emerald-800' : 'bg-gray-100 text-gray-500'
-                      }`}>
+                      <span className={`text-[10px] font-medium px-1.5 py-0.5 rounded-full ${isActive ? 'bg-emerald-200 text-emerald-800' : 'bg-gray-100 text-gray-500'
+                        }`}>
                         {cat.productCount || 0}
                       </span>
                       {hasChildren && (
-                        <ChevronDown className={`w-3 h-3 transition-transform ${
-                          isActive ? 'text-emerald-600 rotate-180' : 'text-gray-400'
-                        }`} />
+                        <ChevronDown className={`w-3 h-3 transition-transform ${isActive ? 'text-emerald-600 rotate-180' : 'text-gray-400'
+                          }`} />
                       )}
                     </div>
                   </button>
@@ -374,16 +385,14 @@ export default function HomeMerchandising() {
                     <button
                       key={sub.id}
                       onClick={() => handleSubClick(sub.id)}
-                      className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all ${
-                        isSubActive
-                          ? 'bg-emerald-500 text-white shadow-sm'
-                          : 'bg-gray-100 text-gray-600 hover:bg-emerald-50 hover:text-emerald-700'
-                      }`}
+                      className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium transition-all ${isSubActive
+                        ? 'bg-emerald-500 text-white shadow-sm'
+                        : 'bg-gray-100 text-gray-600 hover:bg-emerald-50 hover:text-emerald-700'
+                        }`}
                     >
                       {sub.name}
-                      <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${
-                        isSubActive ? 'bg-emerald-400 text-white' : 'bg-white text-gray-500'
-                      }`}>
+                      <span className={`text-[10px] px-1.5 py-0.5 rounded-full ${isSubActive ? 'bg-emerald-400 text-white' : 'bg-white text-gray-500'
+                        }`}>
                         {sub.productCount || 0}
                       </span>
                     </button>
@@ -392,6 +401,54 @@ export default function HomeMerchandising() {
               </div>
             )}
           </>
+        )}
+      </section>
+
+      {/* ── Promotion Products Section ── */}
+      <section id="promotions" className="mb-10">
+        <div className="flex items-center justify-between mb-5">
+          <div>
+            <h2 className="text-xl font-bold text-red-650 flex items-center gap-2 font-['Poppins',sans-serif]">
+              <span className="inline-block bg-red-100 p-1.5 rounded-lg text-red-600">
+                <Tag className="w-4 h-4" />
+              </span>
+              Hot Promotions
+            </h2>
+            <p className="text-sm text-gray-400 mt-1">Super savings on your favorite products</p>
+          </div>
+        </div>
+
+        {loading ? (
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <div key={i} className="h-64 bg-gray-100 rounded-xl animate-pulse" />
+            ))}
+          </div>
+        ) : products.filter(p => (p.discountPercentage || 0) > 0).length === 0 ? (
+          <div className="bg-orange-50 border border-orange-200 rounded-2xl p-6 text-center text-orange-800">
+            Currently there are no dynamic promotions available. Check back later!
+          </div>
+        ) : (
+          <Suspense fallback={
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <div key={i} className="h-64 bg-gray-100 rounded-xl animate-pulse" />
+              ))}
+            </div>
+          }>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+              {products
+                .filter(p => (p.discountPercentage || 0) > 0)
+                .slice(0, 10)
+                .map((product) => (
+                  <ProductCard
+                    key={product.id}
+                    product={product}
+                    onAddToCart={handleAddToCart}
+                  />
+                ))}
+            </div>
+          </Suspense>
         )}
       </section>
 

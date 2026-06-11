@@ -115,7 +115,7 @@ class HybridRecommendationService extends EventEmitter {
      * @param {string} customerType - 'vip'|'wholesale'|'retail'
      * @returns {object[]} products sorted by final_score
      */
-    async score(contentResults, userId, storeId, customerType = 'retail') {
+    async score(contentResults, userId, storeId, customerType = 'retail', options = {}) {
         const { alpha, beta, gamma, delta } = this._weights;
         const scoreMap = new Map(); // productId → { content, cf, apriori, personal, sources }
 
@@ -144,7 +144,9 @@ class HybridRecommendationService extends EventEmitter {
         let cfResults = [];
         if (userId && beta > 0) {
             try {
-                cfResults = await this.cfService.getRecommendations(userId, storeId, 10);
+                cfResults = await this.cfService.getRecommendations(
+                    userId, storeId, 10, options.excludePurchased !== false
+                );
             } catch (err) {
                 logger.warn({ err }, 'Hybrid: CF engine failed');
             }

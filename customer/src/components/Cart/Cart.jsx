@@ -1,9 +1,14 @@
 import { ShoppingCart, Plus, Minus, X, Trash2 } from 'lucide-react';
 import { useCart } from '../../contexts/CartContext';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState, Fragment, useEffect } from 'react';
 import { Dialog, Transition } from '@headlessui/react';
 import couponService from '../../services/couponService';
+import orderService from '../../services/orderService';
+import { useAuth } from '../../contexts/AuthContext';
+import { useStore } from '../../contexts/StoreContext';
+import toast from 'react-hot-toast';
+import { useTranslation } from 'react-i18next';
 
 const formatVND = (amount) => {
   return new Intl.NumberFormat('vi-VN', {
@@ -34,10 +39,53 @@ export default function Cart() {
     getTotalAmount
   } = useCart();
 
+  const { t } = useTranslation();
+  const { user } = useAuth();
+  const { selectedStore } = useStore();
+  const navigate = useNavigate();
+
+  const [savingDraft, setSavingDraft] = useState(false);
   const [couponInput, setCouponInput] = useState('');
   const [isClearModalOpen, setIsClearModalOpen] = useState(false);
   const [availableCoupons, setAvailableCoupons] = useState([]);
   const [loadingCoupons, setLoadingCoupons] = useState(false);
+
+  const handleSaveDraft = async () => {
+    if (!user) {
+      toast.error(t('cart.login_required', 'Vui lòng đăng nhập để lưu đơn hàng nháp.'));
+      navigate(`/login?redirect=${encodeURIComponent(window.location.pathname + window.location.search)}`);
+      return;
+    }
+
+    if (cartItems.length === 0) {
+      toast.error(t('cart.empty_cart_error', 'Giỏ hàng trống'));
+      return;
+    }
+
+    setSavingDraft(true);
+    try {
+      const res = await orderService.createOrder({
+        items: cartItems,
+        customerId: user.customerId || user.id,
+        deliveryType,
+        storeId: selectedStore?.id,
+        shippingFee: getShippingFee(),
+      });
+
+      if (res && res.success) {
+        clearCart();
+        toast.success(t('cart.save_draft_success', 'Đã lưu đơn nháp thành công!'));
+        navigate('/orders');
+      } else {
+        toast.error(res?.message || t('cart.save_draft_failed', 'Không thể lưu đơn hàng nháp'));
+      }
+    } catch (err) {
+      console.error('Lỗi khi lưu đơn nháp:', err);
+      toast.error(err.response?.data?.message || t('cart.save_draft_failed_generic', 'Có lỗi xảy ra khi lưu đơn nháp'));
+    } finally {
+      setSavingDraft(false);
+    }
+  };
 
   useEffect(() => {
     let active = true;
@@ -167,8 +215,8 @@ export default function Cart() {
                   type="button"
                   onClick={() => setDeliveryType('delivery')}
                   className={`py-2.5 px-4 rounded-lg font-semibold border text-sm transition-colors ${deliveryType === 'delivery'
-                      ? 'border-emerald-500 bg-emerald-50 text-emerald-700'
-                      : 'border-gray-200 text-gray-650 hover:bg-gray-50'
+                    ? 'border-emerald-500 bg-emerald-50 text-emerald-700'
+                    : 'border-gray-200 text-gray-650 hover:bg-gray-50'
                     }`}
                 >
                   Delivery
@@ -177,8 +225,8 @@ export default function Cart() {
                   type="button"
                   onClick={() => setDeliveryType('pickup')}
                   className={`py-2.5 px-4 rounded-lg font-semibold border text-sm transition-colors ${deliveryType === 'pickup'
-                      ? 'border-emerald-500 bg-emerald-50 text-emerald-700'
-                      : 'border-gray-200 text-gray-650 hover:bg-gray-50'
+                    ? 'border-emerald-500 bg-emerald-50 text-emerald-700'
+                    : 'border-gray-200 text-gray-650 hover:bg-gray-50'
                     }`}
                 >
                   Store Pickup
@@ -236,8 +284,8 @@ export default function Cart() {
                         onClick={() => applyCoupon(coupon.code)}
                         disabled={appliedCoupon?.code === coupon.code}
                         className={`text-left p-2.5 border rounded-lg transition-colors flex justify-between items-center ${appliedCoupon?.code === coupon.code
-                            ? 'border-emerald-200 bg-emerald-50/50 opacity-75 cursor-default'
-                            : 'border-gray-200 hover:border-emerald-350 hover:bg-emerald-50/10'
+                          ? 'border-emerald-200 bg-emerald-50/50 opacity-75 cursor-default'
+                          : 'border-gray-200 hover:border-emerald-350 hover:bg-emerald-50/10'
                           }`}
                       >
                         <div className="min-w-0 pr-2">
@@ -314,6 +362,15 @@ export default function Cart() {
               >
                 Checkout
               </Link>
+
+              <button
+                type="button"
+                onClick={handleSaveDraft}
+                disabled={savingDraft || cartItems.length === 0}
+                className="w-full flex items-center justify-center h-12 bg-white border border-emerald-500 text-emerald-600 font-bold rounded-lg hover:bg-emerald-50 transition-colors mt-3 disabled:opacity-50"
+              >
+                {savingDraft ? t('cart.saving_draft', 'Saving Draft...') : t('cart.save_draft', 'Lưu Đơn Nháp')}
+              </button>
             </div>
           </div>
         </div>

@@ -81,6 +81,16 @@ function CustomerChatActionHandler() {
           if (path) navigate(path);
           break;
         }
+        case 'CREATE_ORDER': {
+          toast.success('Đơn hàng của bạn đã được tạo thành công qua trợ lý ảo!');
+          const orderId = action.payload?.orderId || action.payload?.id;
+          if (orderId) {
+            navigate(`/orders/${orderId}`);
+          } else {
+            navigate('/orders');
+          }
+          break;
+        }
         case 'CANCEL_ORDER':
           toast.success(action.payload?.message || 'Đơn hàng đã được hủy thành công');
           break;
@@ -150,8 +160,8 @@ function App() {
                   {/* Checkout — requires store selection */}
                   <Route path="/checkout" element={<StoreGuard><CheckoutPage /></StoreGuard>} />
 
-                  {/* Order Status — requires store selection */}
-                  <Route path="/order-status/:orderId" element={<StoreGuard><OrderStatusPage /></StoreGuard>} />
+                  {/* Order Details/Status — requires store selection */}
+                  <Route path="/orders/:orderId" element={<StoreGuard><OrderStatusPage /></StoreGuard>} />
 
                   {/* Order History — requires store selection */}
                   <Route path="/orders" element={<StoreGuard><OrderHistoryPage /></StoreGuard>} />

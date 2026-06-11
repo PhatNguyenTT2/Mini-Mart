@@ -99,6 +99,11 @@ class ApiClient {
         return this._fetch(url);
     }
 
+    async getInventoryPublicSummary(storeId) {
+        const url = `${SERVICE_URLS.inventory}/api/inventory/public/summary/${storeId}`;
+        return this._fetch(url);
+    }
+
     async getStoreMapData(storeId) {
         const url = `${SERVICE_URLS.inventory}/api/warehouse/store-map-data`;
         return this._fetch(url);

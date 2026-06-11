@@ -31,6 +31,7 @@ export const POSMain = () => {
   const [categories, setCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
+  const [showPromotionsOnly, setShowPromotionsOnly] = useState(false);
   const [products, setProducts] = useState([]);
   const [loadingProducts, setLoadingProducts] = useState(false);
   const [selectedCustomer, setSelectedCustomer] = useState(null);
@@ -188,7 +189,7 @@ export const POSMain = () => {
 
         const productsData = productResponse.data?.products || [];
 
-        // Build inventory map: productId → { quantityOnShelf, quantityOnHand, quantityAvailable }
+        // Build inventory map: productId → { quantityOnShelf, quantityOnHand, quantityAvailable, discountPercentage }
         const inventoryMap = {};
         const inventoryData = inventoryResponse.data || [];
         (Array.isArray(inventoryData) ? inventoryData : []).forEach(item => {
@@ -196,15 +197,16 @@ export const POSMain = () => {
             quantityOnHand: item.quantityOnHand || 0,
             quantityOnShelf: item.quantityOnShelf || 0,
             quantityReserved: item.quantityReserved || 0,
-            quantityAvailable: item.quantityAvailable || 0
+            quantityAvailable: item.quantityAvailable || 0,
+            discountPercentage: item.discountPercentage || 0
           };
         });
 
         // Merge product + inventory data
-        setProducts(productsData.map(product => {
+        const merged = productsData.map(product => {
           const productId = product._id || product.id;
           const inv = inventoryMap[productId] || {
-            quantityOnHand: 0, quantityOnShelf: 0, quantityReserved: 0, quantityAvailable: 0
+            quantityOnHand: 0, quantityOnShelf: 0, quantityReserved: 0, quantityAvailable: 0, discountPercentage: 0
           };
           return {
             ...product,
@@ -212,9 +214,22 @@ export const POSMain = () => {
             price: product.unitPrice || 0,
             stock: inv.quantityAvailable,
             categoryName: product.category?.name || 'Uncategorized',
-            inventory: inv
+            inventory: inv,
+            discountPercentage: inv.discountPercentage || 0
           };
-        }));
+        });
+
+        // Default sort: prioritize discount first, then by id descending
+        merged.sort((a, b) => {
+          const hasDiscountA = (a.discountPercentage || 0) > 0 ? 1 : 0;
+          const hasDiscountB = (b.discountPercentage || 0) > 0 ? 1 : 0;
+          if (hasDiscountA !== hasDiscountB) {
+            return hasDiscountB - hasDiscountA;
+          }
+          return (b.id || 0) - (a.id || 0);
+        });
+
+        setProducts(merged);
       } catch (error) {
         console.error('Error fetching products:', error);
         setProducts([]);
@@ -498,11 +513,27 @@ export const POSMain = () => {
             />
 
             {!showQRScanner && (
-              <POSCategoryFilter
-                categories={categories}
-                selectedCategory={selectedCategory}
-                onCategoryChange={setSelectedCategory}
-              />
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mt-2 overflow-hidden bg-gray-50 p-2 rounded-lg">
+                <div className="flex-1 min-w-0">
+                  <POSCategoryFilter
+                    categories={categories}
+                    selectedCategory={selectedCategory}
+                    onCategoryChange={setSelectedCategory}
+                  />
+                </div>
+                <button
+                  onClick={() => setShowPromotionsOnly(!showPromotionsOnly)}
+                  className={`flex items-center gap-2 px-4 py-2.5 rounded-lg font-['Poppins',sans-serif] text-[13px] font-semibold transition-all ${showPromotionsOnly
+                    ? 'bg-red-600 text-white shadow-md'
+                    : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'
+                    }`}
+                >
+                  <svg className="w-4 h-4 cursor-pointer" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5a2 2 0 10-2 2h2zm0 0H4m8 0h8" />
+                  </svg>
+                  Sale/Promotions
+                </button>
+              </div>
             )}
           </div>
 
@@ -516,7 +547,7 @@ export const POSMain = () => {
               />
             ) : (
               <POSProductGrid
-                products={products}
+                products={showPromotionsOnly ? products.filter(p => (p.discountPercentage || 0) > 0) : products}
                 loading={loadingProducts}
                 searchTerm={searchTerm}
                 onProductClick={handleProductClick}

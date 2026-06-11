@@ -16,9 +16,13 @@ class KnowledgeRepository {
      * @param {number} limit
      * @returns {object[]} rows with cosine similarity score
      */
-    async searchSemantic(queryVector, storeId, limit = 10) {
+    async searchSemantic(queryVector, storeId, limit = 10, anchorCategory = null) {
         const vectorStr = `[${queryVector.join(',')}]`;
         const startTime = Date.now();
+        const categoryFilter = anchorCategory ? ' AND category_name = $4' : '';
+        const params = anchorCategory
+            ? [vectorStr, storeId, limit, anchorCategory]
+            : [vectorStr, storeId, limit];
 
         const { rows } = await this.pool.query(`
             SELECT
@@ -26,10 +30,10 @@ class KnowledgeRepository {
                 unit_price, is_in_stock, quantity_on_shelf,
                 1 - (embedding <=> $1::vector) AS score
             FROM product_knowledge_base
-            WHERE store_id = $2 AND is_in_stock = TRUE
+            WHERE store_id = $2 AND is_in_stock = TRUE${categoryFilter}
             ORDER BY embedding <=> $1::vector ASC
             LIMIT $3
-        `, [vectorStr, storeId, limit]);
+        `, params);
 
         logger.debug({ storeId, resultCount: rows.length, latencyMs: Date.now() - startTime }, 'Semantic search completed');
         return rows;
@@ -43,8 +47,12 @@ class KnowledgeRepository {
      * @param {number} limit
      * @returns {object[]} rows with ts_rank score
      */
-    async searchKeyword(query, storeId, limit = 10) {
+    async searchKeyword(query, storeId, limit = 10, anchorCategory = null) {
         const startTime = Date.now();
+        const categoryFilter = anchorCategory ? ' AND category_name = $4' : '';
+        const params = anchorCategory
+            ? [query, storeId, limit, anchorCategory]
+            : [query, storeId, limit];
 
         const { rows } = await this.pool.query(`
             SELECT
@@ -54,10 +62,11 @@ class KnowledgeRepository {
             FROM product_knowledge_base
             WHERE store_id = $2
               AND is_in_stock = TRUE
+              ${categoryFilter}
               AND fts_content @@ plainto_tsquery('simple', $1)
             ORDER BY score DESC
             LIMIT $3
-        `, [query, storeId, limit]);
+        `, params);
 
         logger.debug({ storeId, query, resultCount: rows.length, latencyMs: Date.now() - startTime }, 'Keyword search completed');
         return rows;

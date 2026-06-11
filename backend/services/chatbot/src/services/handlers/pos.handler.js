@@ -188,7 +188,7 @@ class PosHandler {
 
     const isCustomer = session.userType === 'customer' || session.user_type === 'customer';
     const customerId = isCustomer
-      ? session.user_id
+      ? (session.metadata?.customerId || session.user_id)
       : ((context && context.selectedCustomer && context.selectedCustomer.id !== 'virtual-guest')
         ? context.selectedCustomer.id
         : null);

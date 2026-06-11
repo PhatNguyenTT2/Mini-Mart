@@ -122,12 +122,12 @@ function createOrderRouter(orderService) {
 
       // Determine created_by:
       // 1. Customer self-order → null (no employee)
-      // 2. Explicit created_by in body (from chatbot S2S) → use it
+      // 2. Explicit created_by in body (from chatbot S2S) → use it (allows null)
       // 3. Default → req.user.id (POS employee)
       let userId;
       if (req.user?.roleName === 'Customer') {
         userId = null;
-      } else if (req.body.created_by !== undefined && req.body.created_by !== null) {
+      } else if (req.body.created_by !== undefined) {
         userId = req.body.created_by;
       } else {
         userId = req.user?.id || 1;

@@ -159,7 +159,7 @@ class ChatService {
                 response = await this.readHandler.handleOrderStatus(session, userMessage);
                 break;
             case 'RECOMMENDATION':
-                response = await this.readHandler.handleRecommendation(session, userMessage);
+                response = await this.readHandler.handleRecommendation(session, userMessage, intentResult);
                 break;
             case 'SEARCH_PRODUCT':
                 response = await this.readHandler.handleSearchProduct(session, userMessage);
@@ -487,7 +487,7 @@ class ChatService {
                     response = await this.readHandler.handleOrderStatus(session, userMessage);
                     break;
                 case 'RECOMMENDATION':
-                    response = await this.readHandler.handleRecommendation(session, userMessage);
+                    response = await this.readHandler.handleRecommendation(session, userMessage, intentResult);
                     break;
                 case 'SEARCH_PRODUCT':
                     response = await this.readHandler.handleSearchProduct(session, userMessage);

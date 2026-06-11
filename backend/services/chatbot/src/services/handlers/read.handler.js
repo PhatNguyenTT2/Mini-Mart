@@ -17,7 +17,7 @@ class ReadHandler {
     this.utils = ctx.utils;
   }
 
-  async handleRecommendation(session, userMessage) {
+  async handleRecommendation(session, userMessage, intentMeta = {}) {
     if (this.ragService === undefined && process.env.NODE_ENV !== 'test') {
       // RAG model is loading (~87s on cold start). Wait with polling instead of fallback.
       const maxWaitMs = 90_000;
@@ -42,9 +42,9 @@ class ReadHandler {
       : null;
     const chatHistory = await this.utils.getRecentHistory(session.id);
 
-    const result = await this.ragService.recommend(
-      userMessage, storeId, customerId, chatHistory
-    );
+    const result = (intentMeta && intentMeta.isTransactional)
+      ? await this.ragService.recommend(userMessage, storeId, customerId, chatHistory, intentMeta)
+      : await this.ragService.recommend(userMessage, storeId, customerId, chatHistory);
 
     return {
       content: result.content,
@@ -304,7 +304,7 @@ class ReadHandler {
         { userType: session.user_type });
     }
 
-    const filters = isCustomer ? { customerId: session.user_id } : {};
+    const filters = isCustomer ? { customerId: (session.metadata?.customerId || session.user_id) } : {};
     const result = await this.apiClient.getOrders(filters);
     if (result.success && result.data?.orders?.length) {
       const recent = result.data.orders.slice(0, 5);

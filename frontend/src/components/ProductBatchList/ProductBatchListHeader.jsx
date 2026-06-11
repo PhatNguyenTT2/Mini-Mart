@@ -143,7 +143,7 @@ export const ProductBatchListHeader = ({
             <div className="flex h-[36px] gap-1">
               <input
                 type="text"
-                placeholder="Search by Batch Code..."
+                placeholder="Search by Batch ID..."
                 value={searchQuery}
                 onChange={(e) => onSearchChange && onSearchChange(e.target.value)}
                 onKeyPress={(e) => {
