@@ -75,6 +75,9 @@ services:
     image: ghcr.io/phatnguyentt2/mini-mart/payment:latest
     container_name: minimart-payment
     mem_limit: 250m
+    environment:
+      - VNP_TMNCODE=${VNP_TMN_CODE}
+      - VNP_HASHSECRET=${VNP_HASH_SECRET}
 
   statistics:
     <<: *common-config

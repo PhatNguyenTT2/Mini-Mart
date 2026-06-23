@@ -16,6 +16,7 @@ const SMOOTHING_FACTOR = 0.2;  // 20% new, 80% old
 const MIN_WEIGHT = 0.05;
 const MAX_WEIGHT = 0.60;
 const MIN_FEEDBACK_COUNT = 20; // Don't adjust if < 20 feedbacks
+const MIN_CONVERSED_SCORE = 1.0; // Min weighted conversion score (e.g. 1 purchase or 10 hovers)
 
 class WeightLearner {
     constructor(pool) {
@@ -72,6 +73,22 @@ class WeightLearner {
             return { oldWeights: current, newWeights: current, feedbackCount: totalFeedback, skipped: true };
         }
 
+        // Staleness check: Skip if no new interactions in last 24h
+        const { rows: [{ fresh_count }] } = await this.pool.query(`
+            SELECT COUNT(*)::int AS fresh_count
+            FROM recommendation_feedback
+            WHERE store_id = $1
+              AND created_at > NOW() - INTERVAL '24 hours'
+              AND source IN ('content', 'cf', 'apriori')
+              AND action != 'recommended'
+        `, [storeId]);
+
+        if (fresh_count === 0) {
+            logger.info({ storeId, totalFeedback },
+                'WeightLearner: No fresh feedback in last 24h — keeping current weights');
+            return { oldWeights: current, newWeights: current, feedbackCount: totalFeedback, skipped: true };
+        }
+
         // Step 3: Compute conversion rates
         const sourceMap = { content: 'alpha', cf: 'beta', apriori: 'gamma' };
         const conversionRates = {};
@@ -91,6 +108,23 @@ class WeightLearner {
             const rate = recommended > 0 ? weightedConversions / recommended : 0;
             conversionRates[weightKey] = rate;
             totalRate += rate;
+        }
+
+        // Guard rail: Require minimum conversion energy across ALL sources
+        const totalWeightedConversions = feedbackStats.reduce(
+            (sum, r) => {
+                const purchased = Number(r.purchased || 0);
+                const addedToCart = Number(r.added_to_cart || 0);
+                const clicked = Number(r.clicked || 0);
+                const hovered = Number(r.hovered || 0);
+                return sum + (purchased * 1.0 + addedToCart * 0.5 + clicked * 0.2 + hovered * 0.1);
+            }, 0
+        );
+
+        if (totalWeightedConversions < MIN_CONVERSED_SCORE) {
+            logger.info({ storeId, totalWeightedConversions, minRequired: MIN_CONVERSED_SCORE },
+                'WeightLearner: Insufficient conversion signals — keeping current weights');
+            return { oldWeights: current, newWeights: current, feedbackCount: totalFeedback, skipped: true };
         }
 
         if (totalRate === 0) {
