@@ -1,38 +1,5 @@
 # 🤖 Kịch Bản Demo: Chatbot Action Assistant (Restructured 8 Acts)
 
-> **Thời lượng demo:** ~12-15 phút
-> **Cấu trúc:** Setup → 8 ACTs → Kết luận
-> **Yêu cầu:** Chatbot service running, Catalog + Inventory + Order services online
-
----
-
-## ⚙️ BƯỚC 1: CHUẨN BỊ
-
-### 1.1 Khởi động hệ thống
-
-```bash
-# Terminal 1: Chatbot service
-cd backend/services/chatbot && npm start    # Port 3008
-
-# Verify health
-curl http://localhost:3008/health
-```
-
-**Kết quả mong đợi:**
-```json
-{ "status": "ok", "service": "chatbot-service" }
-```
-
-### 1.2 Chuẩn bị tài khoản demo
-
-| Tài khoản | userType | Mục đích | Dùng cho ACT |
-|-----------|----------|----------|--------------|
-| Customer (web store login) | `customer` | Mua sắm, giỏ hàng, theo dõi đơn | ACT 1, 2 |
-| Employee POS (ID: 5, PIN: 123456) | `employee` | POS, tạo đơn, xem lịch sử đơn | ACT 3, 4, 5 |
-| Manager (admin store login) | `manager` | Xem báo cáo, thống kê, CRUD thực thể | ACT 6, 7 |
-
----
-
 ## 🎬 BƯỚC 2: TRÌNH DIỄN KỊCH BẢN (8 ACTS)
 
 ### ACT 1: Customer/POS Employee — Search, Cart & Smart Add
