@@ -1,19 +1,23 @@
 # 🎤 KỊCH BẢN THUYẾT MINH CHO NGƯỜI TRÌNH BÀY
-## Demo Hybrid RAG Recommendation — Bảo Vệ Đồ Án
 
-> **Mục đích tài liệu:** Script nói cho người đứng trước Hội đồng. Mỗi ACT gồm: (1) hành động thao tác trên máy, (2) lời thuyết minh đọc/nói tương ứng.
+## Trình Diễn 4 Thuật Toán
 
----
+> **Nguyên lý điều hướng (Contextual Router):** Hệ thống tự động kích hoạt thuật toán tối ưu dựa trên ý định người dùng:
 
-## Chuẩn Bị Trước Khi Lên Bục
-
-- Mở sẵn **2 cửa sổ song song**: Customer App (Chatbot) + Admin Dashboard (Tab Live Feedback).
-- Đăng nhập tài khoản **Customer ID #51** (Nhóm Nội trợ).
-- Reset bảng dữ liệu feedback nếu cần.
+| Thuật toán | Khi nào kích hoạt | Ví dụ thực tế |
+|---|---|---|
+| **Content-Based RAG (α)** | Khách tìm kiếm chủ động, hỏi rộng | *"Tôi muốn mua đồ ăn vặt"* -> Gợi ý hạt điều, snack, khô gà |
+| **Apriori (γ)** | Đã xác định sản phẩm mỏ neo cụ thể | *"Tôi muốn mua bia Heineken"* -> Gợi ý thêm đồ ăn kèm (Khô gà, Coca) |
+| **Collaborative Filtering (β)** | Khách lướt xem chung, không đích danh | *"Gợi ý cho tôi vài món"* -> Gợi ý Nước mắm, Rau muống (nếu là Nội trợ) |
+| **Session Context (δ)** | Chat nhiều lượt, ý định biến đổi liên tục | Lượt 1: *Lẩu Thái* -> Lượt 2: *Rau ăn kèm* -> Lượt 3: *"Gợi ý thêm đi"* -> Bún, Bò Mỹ |
 
 ---
 
 ## 🎭 ACT 1 · Sức Mạnh Ngữ Nghĩa (Content-Based RAG)
+
+> **Mục đích:** Chứng minh RAG hiểu ngữ nghĩa (không chỉ khớp từ khóa). Truy vấn rộng "đồ ăn vặt" hoặc "bánh kẹo" trả về đúng sản phẩm thuộc danh mục bánh kẹo mà không cần gõ tên cụ thể.
+>
+> **Điểm mạnh:** Giải quyết vấn đề của Keyword Search truyền thống (từ đồng nghĩa, từ lóng). Pipeline song song Semantic + Keyword, hợp nhất bằng RRF.
 
 ### Thao tác
 1. Gõ vào Chatbot: **"Tôi muốn mua đồ ăn vặt"**
@@ -23,10 +27,10 @@
 
 ### Lời thuyết minh
 
-> *"Dạ thưa Hội đồng, đầu tiên em xin demo khả năng tìm kiếm ngữ nghĩa — Semantic Search. Thay vì gõ đúng tên sản phẩm, em chỉ nhập ý định chung là 'đồ ăn vặt'.*
+> *"Dạ thưa cô, đầu tiên em xin demo khả năng tìm kiếm ngữ nghĩa — Semantic Search. Thay vì gõ đúng tên sản phẩm, em chỉ nhập ý định chung là 'đồ ăn vặt'.*
 >
 > *Lập tức, hệ thống trả về Bánh xốp, Bánh quy và Kẹo mút. Cơ chế đằng sau là sự kết hợp song song giữa:*
-> - *(1) Semantic Search — mã hóa câu hỏi thành Vector 768 chiều bằng mô hình multilingual-e5-base, tính Cosine Similarity trên pgvector;*
+> - *(1) Semantic Search — mã hóa câu hỏi thành Vector đa chiều bằng, tính Cosine Similarity trên pgvector;*
 > - *(2) Keyword Search — full-text search bằng PostgreSQL tsvector tiếng Việt.*
 >
 > *Hai kết quả được hợp nhất bằng Reciprocal Rank Fusion (RRF), đảm bảo vừa đúng ngữ nghĩa vừa chính xác từ khóa.*
@@ -36,6 +40,11 @@
 ---
 
 ## 🎭 ACT 2 · Khai Phá Quy Luật (Apriori Cross-sell)
+
+> **Mục đích:** Chứng minh hệ thống phát hiện quy luật "mua kèm" từ các đơn hàng lịch sử.
+>
+> **Điểm mạnh:** Khai phá luật kết hợp xuyên danh mục (Cross-Category Discovery) — phát hiện mối quan hệ ẩn giữa các mặt hàng dường như không liên quan (Bia → Khô gà, Coca). Hiện tượng "Bia và Bỉm" kinh điển, tối ưu AOV (Average Order Value).
+
 
 ### Thao tác
 1. **Bấm 🔄 Phiên chat mới**
@@ -48,13 +57,20 @@
 
 > *"Kế tiếp là thuật toán Apriori khai phá luật kết hợp. Khi em hỏi mua Bia Heineken, hệ thống không chỉ trả về Bia, mà còn tự động chèn thêm Coca-Cola và Khô gà.*
 >
-> *(Chỉ tay lên màn hình)* *Thưa Thầy Cô, sản phẩm Coca-Cola và Khô gà xuất hiện dù người dùng KHÔNG hỏi về chúng. Đây là thuật toán Apriori — khai phá luật kết hợp từ 500 đơn hàng. Hệ thống phát hiện khách mua Bia Heineken thường mua kèm Coca-Cola (Lift=1.90, 165 đơn mua kèm) và Khô gà (Lift=1.74, 146 đơn mua kèm).*
+> *(Chỉ tay lên màn hình)* *Thưa Thầy Cô, sản phẩm Coca-Cola và Khô gà xuất hiện dù người dùng KHÔNG hỏi về chúng. Đây là thuật toán Apriori — khai phá luật kết hợp từ các đơn hàng. Hệ thống phát hiện khách mua Bia Heineken thường mua kèm Coca-Cola (Lift=1.90, 165 đơn mua kèm) và Khô gà (Lift=1.74, 146 đơn mua kèm).*
 >
 > *Đây chính là hiện tượng 'Bia và Bỉm' kinh điển trong Data Mining. Nhãn* ***[apriori]*** *trên Dashboard xác nhận thuật toán bán chéo Cross-sell đang hoạt động chính xác."*
 
 ---
 
 ## 🎭 ACT 3 · Cá Nhân Hóa Ẩn Danh (Collaborative Filtering)
+
+> **Mục đích:** Chứng minh cá nhân hóa mù (Blind Personalization) — AI nhận diện thói quen riêng khi người dùng hỏi chung chung, không có từ khóa mỏ neo.
+>
+> **Điểm mạnh:** Ma trận tương đồng Item-Item phân loại user theo hành vi cộng đồng. Cùng một câu hỏi, nhưng kết quả khác nhau hoàn toàn giữa các nhóm người dùng (Nội trợ → Nước mắm, Rau muống, Gia vị lẩu; Sinh viên → Mì tôm, Xúc xích, Coca).
+>
+> **Tài khoản demo:** User #51 thuộc nhóm **Nội trợ Nấu lẩu** (ID 1–150). CF phân tích user interactions, phát hiện User #51 có hành vi tương đồng với nhóm mua bò, nấm, rau, gia vị → gợi ý sản phẩm từ cùng cluster.
+
 
 ### Thao tác
 1. **Bấm 🔄 Phiên chat mới**
@@ -65,17 +81,21 @@
 
 ### Lời thuyết minh
 
-> *"Đỉnh cao của hệ thống nằm ở ACT 3: Cá nhân hóa bằng Collaborative Filtering. Em cố tình dùng một câu hỏi hoàn toàn không chứa từ khóa cụ thể: 'Gợi ý cho tôi vài món'. Vậy tại sao Nước mắm Nam Ngư, Gia vị lẩu Thái, Cá viên chiên xuất hiện?*
+> *"Hệ thống thực hiện cá nhân hóa bằng Collaborative Filtering. Em cố tình dùng một câu hỏi hoàn toàn không chứa từ khóa cụ thể: 'Gợi ý cho tôi vài món'. Vậy tại sao Nước mắm Nam Ngư, Gia vị lẩu Thái, Cá viên chiên xuất hiện?*
 >
-> *Đó là nhờ Collaborative Filtering — hệ thống phân tích dữ liệu tương tác của 500 người dùng, phát hiện tài khoản #51 thuộc nhóm 'Nội trợ Nấu lẩu' (User 1–150), nên gợi ý sản phẩm mà 150 user tương tự thường xuyên mua.*
+> *Đó là nhờ Collaborative Filtering — hệ thống phân tích dữ liệu tương tác của các người dùng trong nhóm trước đó, phát hiện tài khoản #51 thuộc nhóm 'Nội trợ Nấu lẩu' (User 1–150), nên gợi ý sản phẩm mà 150 user tương tự thường xuyên mua.*
 >
 > *Nếu em đổi sang tài khoản sinh viên (User 151–300), kết quả sẽ hoàn toàn khác — Mì Hảo Hảo, Xúc xích, Coca-Cola.*
 >
-> *Slot Partitioning ưu tiên CF chiếm 3–4 slot đầu cho welcome query, đảm bảo cá nhân hóa nổi bật. Sản phẩm CF ban đầu không có metadata hiển thị — hệ thống giải quyết bằng Two-Tier Hydration: tra cứu Local KB trước, fallback Catalog API với timeout 500ms."*
 
 ---
 
 ## 🎭 ACT 4 · Ngữ Cảnh Xuyên Phiên (Session Context) — Cú Chốt
+
+> **Mục đích:** Chứng minh AI duy trì ngữ cảnh xuyên suốt phiên chat (Multi-turn Context) — giải bài toán Đại từ thế vị.
+>
+> **Điểm mạnh:** Khi khách hỏi "Gợi ý thêm đi" (không chứa bất kỳ từ khóa chính nào), Toàn bộ dữ liệu warmUp in-memory, runtime cực nhanh với O(1). Tự động nhận diện chủ đề từ lịch sử, khóa chặt danh mục mà không cần truy xuất lại DB.
+
 
 ### Thao tác (3 lượt liên tiếp)
 1. **Bấm 🔄 Phiên chat mới**
@@ -105,7 +125,7 @@
 
 *(Nói chậm lại, chỉ tay vào toàn bộ bảng Live Feedback)*
 
-> *"Thưa Hội đồng, những thao tác Click vừa rồi không chỉ để xem. Toàn bộ chúng đang được lưu xuống Database với nguồn gốc rõ ràng là content, cf, hay apriori.*
+> *"Thưa cô, những thao tác Click vừa rồi không chỉ để xem. Toàn bộ chúng đang được lưu xuống Database với nguồn gốc rõ ràng là content, cf, hay apriori.*
 >
 > *Tất cả 4 tương tác vừa rồi đều được ghi nhận vào bảng `recommendation_feedback` với nguồn gốc thuật toán rõ ràng.*
 >
