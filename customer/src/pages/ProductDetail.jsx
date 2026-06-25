@@ -156,8 +156,7 @@ export default function ProductDetail() {
       price: priceInfo.finalPrice,
       originalPrice: priceInfo.basePrice,
       category: product.categoryName || 'Uncategorized',
-      quantity
-    });
+    }, quantity);
 
     const validStoreId = selectedStore?.id || 1;
     const trackingSource = chatRef === 'chat' ? chatSource : 'organic';
@@ -368,10 +367,10 @@ export default function ProductDetail() {
                 onClick={handleAddToCart}
                 disabled={isOutOfStock}
                 className={`flex-1 flex items-center justify-center gap-2 py-3 px-6 rounded-xl font-bold text-sm transition-all duration-200 ${addedToCart
-                    ? 'bg-emerald-100 text-emerald-700 border-2 border-emerald-300'
-                    : isOutOfStock
-                      ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                      : 'bg-emerald-600 text-white hover:bg-emerald-700 shadow-lg hover:shadow-xl active:scale-[0.98]'
+                  ? 'bg-emerald-100 text-emerald-700 border-2 border-emerald-300'
+                  : isOutOfStock
+                    ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                    : 'bg-emerald-600 text-white hover:bg-emerald-700 shadow-lg hover:shadow-xl active:scale-[0.98]'
                   }`}
               >
                 <ShoppingCart className="w-5 h-5" />

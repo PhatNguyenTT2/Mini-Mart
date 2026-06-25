@@ -38,7 +38,7 @@ export const EditOrderModal = ({ isOpen, onClose, onSuccess, order }) => {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
   const [fullOrder, setFullOrder] = useState(null);
-  
+
   // Enrichment maps (resolve IDs → names)
   const [customerInfo, setCustomerInfo] = useState(null);
   const [createdByName, setCreatedByName] = useState('');
@@ -89,7 +89,7 @@ export const EditOrderModal = ({ isOpen, onClose, onSuccess, order }) => {
       const response = await orderService.getOrderById(orderId);
       const orderData = response.data?.order || response.order || null;
       setFullOrder(orderData);
-      
+
       // Customer enrichment
       if (orderData?.customerId) {
         resolveCustomer(orderData.customerId);
@@ -649,6 +649,8 @@ export const EditOrderModal = ({ isOpen, onClose, onSuccess, order }) => {
                 <option value="pending">Pending</option>
                 <option value="paid">Paid</option>
                 <option value="failed">Failed</option>
+                <option value="cancelled">Cancelled</option>
+                <option value="partial_refund">Partial Refund</option>
                 <option value="refunded">Refunded</option>
               </select>
             </div>

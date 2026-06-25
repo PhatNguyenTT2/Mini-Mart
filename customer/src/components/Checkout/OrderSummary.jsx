@@ -1,7 +1,8 @@
 import { useCart } from '../../contexts/CartContext';
 import { useAuth } from '../../contexts/AuthContext';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { X, Award } from 'lucide-react';
+import couponService from '../../services/couponService';
 
 const formatVND = (amount) => {
   return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'VND' }).format(amount);
@@ -26,6 +27,29 @@ export function OrderSummary() {
   } = useCart();
   const { user } = useAuth();
   const [couponInput, setCouponInput] = useState('');
+  const [availableCoupons, setAvailableCoupons] = useState([]);
+  const [loadingCoupons, setLoadingCoupons] = useState(false);
+
+  useEffect(() => {
+    let active = true;
+    const fetchCoupons = async () => {
+      setLoadingCoupons(true);
+      try {
+        const res = await couponService.getAvailableCoupons();
+        if (active) {
+          setAvailableCoupons(res.data || res || []);
+        }
+      } catch (err) {
+        console.error('Error fetching available coupons on checkout:', err);
+      } finally {
+        if (active) {
+          setLoadingCoupons(false);
+        }
+      }
+    };
+    fetchCoupons();
+    return () => { active = false; };
+  }, []);
 
   const handleApplyCoupon = async (e) => {
     e.preventDefault();
@@ -80,24 +104,56 @@ export function OrderSummary() {
             </button>
           </div>
         ) : (
-          <div className="flex gap-2">
-            <input
-              type="text"
-              placeholder="Enter code..."
-              value={couponInput}
-              onChange={(e) => setCouponInput(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && handleApplyCoupon(e)}
-              className="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 uppercase"
-            />
-            <button
-              type="button"
-              onClick={handleApplyCoupon}
-              disabled={!couponInput.trim()}
-              className="bg-gray-800 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-gray-700 transition-colors disabled:opacity-50"
-            >
-              Apply
-            </button>
-          </div>
+          <>
+            <div className="flex gap-2">
+              <input
+                type="text"
+                placeholder="Enter code..."
+                value={couponInput}
+                onChange={(e) => setCouponInput(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && handleApplyCoupon(e)}
+                className="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 uppercase"
+              />
+              <button
+                type="button"
+                onClick={handleApplyCoupon}
+                disabled={!couponInput.trim()}
+                className="bg-gray-800 text-white px-4 py-2 rounded-lg text-sm font-semibold hover:bg-gray-700 transition-colors disabled:opacity-50"
+              >
+                Apply
+              </button>
+            </div>
+
+            {/* Suggested Available Vouchers */}
+            {availableCoupons.length > 0 && (
+              <div className="mt-4 pt-4 border-t border-gray-100/50">
+                <span className="block text-[11px] font-bold text-gray-400 uppercase tracking-wider mb-2">Available Coupons</span>
+                <div className="space-y-2 max-h-[160px] overflow-y-auto pr-1 custom-scrollbar">
+                  {availableCoupons.map((coupon) => (
+                    <button
+                      key={coupon.id}
+                      type="button"
+                      onClick={() => applyCoupon(coupon.code)}
+                      className="w-full text-left p-2.5 border border-dashed border-gray-200 hover:border-emerald-500 rounded-xl hover:bg-emerald-50/30 transition-all flex justify-between items-center group bg-gray-50/50"
+                    >
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-center gap-1.5 mb-0.5">
+                          <span className="font-bold text-[13px] text-gray-800 uppercase tracking-wide group-hover:text-emerald-700">{coupon.code}</span>
+                          <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-emerald-50 text-emerald-800 font-bold shrink-0">
+                            {coupon.discount_type === 'percent' ? `-${coupon.discount_value}%` : coupon.discount_type === 'freeship' ? 'Free Ship' : `-${formatVND(coupon.discount_value)}`}
+                          </span>
+                        </div>
+                        <p className="text-[11px] text-gray-500 line-clamp-1">{coupon.description}</p>
+                      </div>
+                      <span className="text-[11px] font-bold text-emerald-600 border border-emerald-200 px-2.5 py-1 rounded-lg bg-white group-hover:bg-emerald-500 group-hover:text-white group-hover:border-emerald-500 transition-all ml-2 whitespace-nowrap">
+                        Select
+                      </span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </>
         )}
       </div>
 

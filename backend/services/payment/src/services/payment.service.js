@@ -152,7 +152,10 @@ class PaymentService {
             const expireTime = new Date(now.getTime() + 15 * 60 * 1000);
             const expireDate = getVNPayDate(expireTime);
 
-            const vnpUrl = (process.env.VNP_URL || 'https://sandbox.vnpayment.vn') + '/paymentv2/vpcpay.html';
+            let vnpUrl = process.env.VNP_URL || 'https://sandbox.vnpayment.vn/paymentv2/vpcpay.html';
+            if (!vnpUrl.includes('/vpcpay.html')) {
+                vnpUrl = vnpUrl.replace(/\/$/, '') + '/paymentv2/vpcpay.html';
+            }
             const appUrl = (process.env.APP_URL || (process.env.NODE_ENV === 'production' ? 'https://api.mini-mart.dev' : 'http://localhost:8080')).replace(/\/$/, '');
             const returnUrl = `${appUrl}/api/payments/vnpay/return`;
 

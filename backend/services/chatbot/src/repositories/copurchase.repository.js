@@ -49,16 +49,20 @@ class CoPurchaseRepository {
         const { rows } = await this.pool.query(`
             SELECT product_id_b, co_purchase_count,
                    COALESCE(confidence_ab, 0) AS confidence,
-                   COALESCE(lift, 0) AS lift
+                   COALESCE(lift, 0) AS lift,
+                   COALESCE(substring(pb.content from 'Sản phẩm "([^"]+)"'), 'Product ' || product_id_b) AS product_name_b
             FROM co_purchase_stats
+            LEFT JOIN product_knowledge_base pb ON pb.product_id = co_purchase_stats.product_id_b AND pb.store_id = co_purchase_stats.store_id
             WHERE product_id_a = $1 AND store_id = $2
               AND co_purchase_count >= $3
               AND (lift > 1 OR lift = 0)
             UNION ALL
             SELECT product_id_a, co_purchase_count,
                    COALESCE(confidence_ba, 0) AS confidence,
-                   COALESCE(lift, 0) AS lift
+                   COALESCE(lift, 0) AS lift,
+                   COALESCE(substring(pa.content from 'Sản phẩm "([^"]+)"'), 'Product ' || product_id_a) AS product_name_b
             FROM co_purchase_stats
+            LEFT JOIN product_knowledge_base pa ON pa.product_id = co_purchase_stats.product_id_a AND pa.store_id = co_purchase_stats.store_id
             WHERE product_id_b = $1 AND store_id = $2
               AND co_purchase_count >= $3
               AND (lift > 1 OR lift = 0)

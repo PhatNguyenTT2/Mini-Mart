@@ -417,4 +417,22 @@ describe('RAGService', () => {
             expect(result.products[0].finalPrice).toBe(12800);
         });
     });
+
+    // ── Keyword Matching & General Query Gating ──────────
+
+    describe('Keyword Matching & Intent Gating', () => {
+        it('should NOT trigger early anchor for partial word matches (e.g. "các" matching "cá")', async () => {
+            const result = await ragService.recommend('Gợi ý cho tôi các loại đồ ăn', 1, null, [], { isTransactional: true });
+
+            // "các" contains "cá" but should NOT trigger "cá" category (Hải sản / Thực phẩm đông lạnh)
+            expect(mockKnowledgeRepo.searchSemantic).toHaveBeenCalledWith(expect.any(Array), 1, 30);
+        });
+
+        it('should trigger early anchor for exact word matches (e.g. "cá")', async () => {
+            const result = await ragService.recommend('Tôi muốn mua cá', 1, null, [], { isTransactional: true });
+
+            // "cá" exactly maps to "Hải sản" category (cats[0])
+            expect(mockKnowledgeRepo.searchSemantic).toHaveBeenCalledWith(expect.any(Array), 1, 30, 'Hải sản');
+        });
+    });
 });

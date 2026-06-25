@@ -53,9 +53,18 @@ function CustomerChatActionHandler() {
 
       switch (action.type) {
         case 'ADD_TO_CART': {
-          const { productId, name, price, unitPrice, image, quantity } = action.payload || {};
-          const productPrice = price || unitPrice || 0;
-          if (productId) {
+          const { productId, name, price, unitPrice, image, quantity, items } = action.payload || {};
+          if (items && Array.isArray(items)) {
+            items.forEach(item => {
+              addToCart({
+                id: item.productId,
+                name: item.name || 'Sản phẩm',
+                price: item.price || item.unitPrice || 0,
+                image: item.image || null
+              }, item.quantity || 1);
+            });
+          } else if (productId) {
+            const productPrice = price || unitPrice || 0;
             addToCart({
               id: productId,
               name: name || 'Sản phẩm',

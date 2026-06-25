@@ -136,6 +136,7 @@ class OrderService {
       couponCode: row.coupon_code || null,
       couponDiscount: parseFloat(row.coupon_discount || 0),
       paymentStatus: row.payment_status,
+      paymentMethod: row.payment_method || null,
       status: row.status,
       itemCount: parseInt(row.item_count || 0, 10),
       customerName: row.customerName || null,
@@ -526,6 +527,14 @@ class OrderService {
     if (data.shippingFee !== undefined) dbData.shipping_fee = data.shippingFee;
     if (data.discountPercentage !== undefined) dbData.discount_percentage = data.discountPercentage;
 
+    // Smart cancellation logic based on payment method for general updates
+    if (dbData.status === 'cancelled' && order.payment_status === 'paid' &&
+      (dbData.payment_status === undefined || dbData.payment_status === 'paid')) {
+      if (order.payment_method === 'cash' || !order.payment_method) {
+        dbData.payment_status = 'cancelled';
+      }
+    }
+
     const client = await this.pool.connect();
     try {
       await client.query('BEGIN');
@@ -581,8 +590,8 @@ class OrderService {
     }
   }
 
-  async updateOrderStatus(storeId, id, status, paymentStatus) {
-    if (!status && !paymentStatus) throw new ValidationError('No status to update');
+  async updateOrderStatus(storeId, id, status, paymentStatus, paymentMethod) {
+    if (!status && !paymentStatus && !paymentMethod) throw new ValidationError('No fields to update');
 
     const client = await this.pool.connect();
     try {
@@ -590,7 +599,21 @@ class OrderService {
       const order = await this.orderRepo.findById(storeId, id);
       if (!order) throw new NotFoundError('Order not found');
 
-      const updated = await this.orderRepo.updateStatusWithClient(client, storeId, id, status, paymentStatus);
+      // Determine current payment method
+      const currentMethod = paymentMethod || order.payment_method;
+      let targetPaymentStatus = paymentStatus;
+
+      // Smart cancellation logic based on payment method
+      if (status === 'cancelled' && order.payment_status === 'paid') {
+        if (currentMethod === 'cash' || !currentMethod) {
+          targetPaymentStatus = 'cancelled'; // COD: cancellation cancels payment
+        }
+        // VNPay: keep as 'paid', separate Refund flow handles it
+      }
+
+      const updated = await this.orderRepo.updateStatusWithClient(
+        client, storeId, id, status, targetPaymentStatus, paymentMethod
+      );
 
       // Publish inventory events on status transitions (delivery orders)
       if (status && order.delivery_type === 'delivery') {

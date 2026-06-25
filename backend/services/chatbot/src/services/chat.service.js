@@ -38,6 +38,7 @@ class ChatService {
         this.utils.ragService = ragService;
         this.readHandler.ragService = ragService;
         this.posHandler.ragService = ragService;
+        if (this.cartHandler) this.cartHandler.ragService = ragService;
         if (this.entityHandler) this.entityHandler.ragService = ragService;
         logger.info('RAG Service hot-swapped into ChatService');
     }
@@ -123,7 +124,8 @@ class ChatService {
                         name: p.name,
                         unitPrice: p.unitPrice || p.price || p.unit_price,
                         quantityOnShelf: p.quantityOnShelf || 0,
-                        image: p.image || null
+                        image: p.image || null,
+                        topSource: p.topSource || p.source || 'content'
                     }));
                     await this.chatRepo.updateSessionMetadata(sessionId, metadata);
                 }
@@ -269,7 +271,8 @@ class ChatService {
                 name: p.name,
                 unitPrice: p.unitPrice || p.price || p.unit_price,
                 quantityOnShelf: p.quantityOnShelf || 0,
-                image: p.image || null
+                image: p.image || null,
+                topSource: p.topSource || p.source || 'content'
             }));
             await this.chatRepo.updateSessionMetadata(sessionId, metadata);
         }
@@ -428,7 +431,8 @@ class ChatService {
                         name: p.name,
                         unitPrice: p.unitPrice || p.price || p.unit_price,
                         quantityOnShelf: p.quantityOnShelf || 0,
-                        image: p.image || null
+                        image: p.image || null,
+                        topSource: p.topSource || p.source || 'content'
                     }));
                     await this.chatRepo.updateSessionMetadata(sessionId, metadata);
                 }
@@ -617,7 +621,8 @@ class ChatService {
                 name: p.name,
                 unitPrice: p.unitPrice || p.price || p.unit_price,
                 quantityOnShelf: p.quantityOnShelf || 0,
-                image: p.image || null
+                image: p.image || null,
+                topSource: p.topSource || p.source || 'content'
             }));
             await this.chatRepo.updateSessionMetadata(sessionId, metadata);
         }

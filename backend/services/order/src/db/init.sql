@@ -169,3 +169,47 @@ DO $$ BEGIN
     ALTER TABLE sale_order ALTER COLUMN created_by DROP NOT NULL;
 EXCEPTION WHEN OTHERS THEN NULL;
 END $$;
+
+-- ==========================================
+-- MIGRATION: Add payment_method to sale_order
+-- ==========================================
+DO $$ BEGIN
+    ALTER TABLE sale_order ADD COLUMN payment_method TEXT;
+EXCEPTION WHEN duplicate_column THEN NULL;
+END $$;
+
+-- ==========================================
+-- MIGRATION: Add 'cancelled' to payment_status constraint
+-- ==========================================
+DO $$ BEGIN
+    ALTER TABLE sale_order DROP CONSTRAINT IF EXISTS sale_order_payment_status_check;
+    ALTER TABLE sale_order ADD CONSTRAINT sale_order_payment_status_check
+        CHECK (payment_status IN ('pending', 'partial', 'paid', 'failed', 'cancelled', 'partial_refund', 'refunded'));
+EXCEPTION WHEN OTHERS THEN NULL;
+END $$;
+
+-- ==========================================
+-- MIGRATION: Backfill payment_method & fix cancelled COD orders
+-- ==========================================
+DO $$ BEGIN
+    -- 1. Backfill payment_method from payment table
+    UPDATE sale_order so
+    SET payment_method = p.method
+    FROM payment p
+    WHERE so.id = p.reference_id 
+      AND p.reference_type = 'SaleOrder'
+      AND so.payment_method IS NULL;
+
+    -- 2. Fix payment_status for COD orders that are already cancelled but stuck as paid
+    UPDATE sale_order so
+    SET payment_status = 'cancelled'
+    FROM payment p
+    WHERE so.id = p.reference_id 
+      AND p.reference_type = 'SaleOrder'
+      AND so.status = 'cancelled'
+      AND so.payment_status = 'paid'
+      AND p.method = 'cash';
+EXCEPTION WHEN OTHERS THEN NULL;
+END $$;
+
+

@@ -124,7 +124,7 @@ export const OrderList = ({ orders = [], onSort, sortField, sortOrder, onView, o
     <div className="bg-white rounded-lg shadow-sm">
       {/* Scrollable Container */}
       <div className="overflow-x-auto rounded-lg">
-        <div className="min-w-[1000px]">
+        <div className="min-w-[1100px]">
           {/* Table Header */}
           <div className="flex items-center h-[34px] bg-gray-50 border-b border-gray-200">
             {/* Order Number Column - Sortable */}
@@ -186,6 +186,13 @@ export const OrderList = ({ orders = [], onSort, sortField, sortOrder, onView, o
               <p className="text-[11px] font-medium font-['Poppins',sans-serif] text-[#212529] uppercase tracking-[0.5px] leading-[18px] flex items-center gap-1">
                 Payment
                 {getSortIcon('paymentStatus')}
+              </p>
+            </div>
+
+            {/* Payment Method Column */}
+            <div className="w-[100px] px-3 flex items-center flex-shrink-0">
+              <p className="text-[11px] font-medium font-['Poppins',sans-serif] text-[#212529] uppercase tracking-[0.5px] leading-[18px]">
+                Method
               </p>
             </div>
 
@@ -277,6 +284,18 @@ export const OrderList = ({ orders = [], onSort, sortField, sortOrder, onView, o
                     <span className="text-[9px] font-bold font-['Poppins',sans-serif] leading-[10px] uppercase truncate">
                       {order.paymentStatus || 'pending'}
                     </span>
+                  </span>
+                </div>
+
+                {/* Payment Method */}
+                <div className="w-[100px] px-3 flex items-center flex-shrink-0">
+                  <span className={`text-[9px] font-bold font-['Poppins',sans-serif] px-2 py-1 rounded inline-flex items-center gap-1 border uppercase ${order.paymentMethod === 'vnpay'
+                    ? 'bg-blue-100 text-blue-800 border-blue-200'
+                    : order.paymentMethod === 'cash'
+                      ? 'bg-emerald-100 text-emerald-800 border-emerald-200'
+                      : 'bg-gray-100 text-gray-800 border-gray-200'
+                    }`}>
+                    {order.paymentMethod || 'cash'}
                   </span>
                 </div>
 

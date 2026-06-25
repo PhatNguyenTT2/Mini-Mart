@@ -45,7 +45,7 @@ async function start() {
     // Online(delivery): draft → shipping, paid
     // =============================================
     await eventBus.subscribe(SERVICE_NAME, EVENT.PAYMENT_COMPLETED, async (message) => {
-      const { orderId, storeId, deliveryType, referenceType } = message.data;
+      const { orderId, storeId, deliveryType, referenceType, method } = message.data;
       const eventId = message.id;
 
       // Only handle SaleOrder references (skip PurchaseOrder)
@@ -78,9 +78,9 @@ async function start() {
 
       try {
         const targetStatus = deliveryType === 'delivery' ? 'shipping' : 'delivered';
-        logger.info({ orderId: safeOrderId, storeId: safeStoreId, targetStatus, paymentStatus: 'paid' }, 'About to call updateOrderStatus');
+        logger.info({ orderId: safeOrderId, storeId: safeStoreId, targetStatus, paymentStatus: 'paid', method }, 'About to call updateOrderStatus');
 
-        await orderService.updateOrderStatus(safeStoreId, safeOrderId, targetStatus, 'paid');
+        await orderService.updateOrderStatus(safeStoreId, safeOrderId, targetStatus, 'paid', method);
         logger.info({ orderId: safeOrderId, targetStatus }, 'Order status updated successfully');
       } catch (err) {
         logger.error({ err: err.message, stack: err.stack, orderId: safeOrderId, storeId: safeStoreId }, 'CRITICAL: Failed to update order status on payment.completed');

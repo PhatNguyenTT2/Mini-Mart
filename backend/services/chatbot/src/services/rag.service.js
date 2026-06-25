@@ -45,6 +45,13 @@ const removeAccents = (str) => {
     return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 };
 
+// Helper: Khớp từ khóa chính xác, bỏ qua chuỗi con (ví dụ: 'cá' trong 'các')
+const hasKeywordExact = (queryText, keyword) => {
+    // \p{L} là chữ cái bất kỳ, \d là số. Tránh khớp từ nằm liền kề chữ hoặc số
+    const regex = new RegExp(`(?<![\\p{L}\\d])${keyword}(?![\\p{L}\\d])`, 'ui');
+    return regex.test(queryText);
+};
+
 // Helper: lọc sản phẩm dựa trên text phản hồi của LLM
 const syncProductsWithResponse = (products, reply) => {
     if (!reply) return products.slice(0, 3);
@@ -52,9 +59,6 @@ const syncProductsWithResponse = (products, reply) => {
     const mutualContent = removeAccents(reply.toLowerCase());
 
     const mentionedProducts = products.filter(p => {
-        const source = p.top_source || p.topSource || p.source;
-        if (source && source !== 'content') return true;
-
         const name = p.content?.match(/"([^"]+)"/)?.[1] || p.name || '';
         if (!name) return false;
 
@@ -80,7 +84,22 @@ const syncProductsWithResponse = (products, reply) => {
         return false;
     });
 
-    return mentionedProducts.length > 0 ? mentionedProducts : products.slice(0, 3);
+    if (mentionedProducts.length === 0) return products.slice(0, 3);
+
+    // Safety net: Always include apriori/cf products even if LLM forgot to mention them
+    const protectedProducts = products.filter(p => {
+        const src = p.top_source || p.topSource || p.source;
+        return src === 'apriori' || src === 'cf';
+    });
+
+    const finalList = [...mentionedProducts];
+    for (const p of protectedProducts) {
+        if (!finalList.find(m => String(m.product_id || m.id) === String(p.product_id || p.id))) {
+            finalList.push(p);
+        }
+    }
+
+    return finalList;
 };
 
 // Helper: phát hiện câu hỏi ngoài phạm vi nghiệp vụ siêu thị (đồ công nghệ - TC-06)
@@ -162,7 +181,7 @@ class RAGService {
             if (intentMeta.isTransactional) {
                 const queryLower = query.toLowerCase();
                 for (const [kw, cats] of Object.entries(CATEGORY_KEYWORD_MAP)) {
-                    if (queryLower.includes(kw)) {
+                    if (hasKeywordExact(queryLower, kw)) {
                         earlyAnchorCategory = cats[0];
                         break;
                     }
@@ -222,7 +241,7 @@ class RAGService {
                 const anchorCategories = new Set();
 
                 for (const [kw, cats] of Object.entries(CATEGORY_KEYWORD_MAP)) {
-                    if (queryLower.includes(kw)) {
+                    if (hasKeywordExact(queryLower, kw)) {
                         for (const c of cats) {
                             if (fused.some(item => item.category_name === c)) {
                                 anchorCategories.add(c);
@@ -280,10 +299,20 @@ class RAGService {
                 const customerContext = await getPersonalizationContext(this.apiClient, customerId);
 
                 // Detect general recommendation query before hybrid scoring
-                const isGeneralRecQuery = /gợi ý vài món|đề xuất vài món|gợi ý cho tôi|gợi ý các món|gợi ý sản phẩm/i.test(query.toLowerCase()) ||
+                const generalRegex = /gợi ý vài món|đề xuất vài món|gợi ý cho tôi|gợi ý các món|gợi ý sản phẩm/i;
+                const isMatchedGeneral = generalRegex.test(query.toLowerCase()) ||
                     (query.toLowerCase().includes('gợi ý') && query.toLowerCase().includes('món')) ||
                     (query.toLowerCase().includes('đề xuất') && query.toLowerCase().includes('món')) ||
                     (query.toLowerCase().trim() === 'gợi ý cho tôi vài món' || query.toLowerCase().includes('vài món'));
+
+                let containsCategoryKeyword = false;
+                for (const kw of Object.keys(CATEGORY_KEYWORD_MAP)) {
+                    if (hasKeywordExact(query.toLowerCase(), kw)) {
+                        containsCategoryKeyword = true;
+                        break;
+                    }
+                }
+                const isGeneralRecQuery = isMatchedGeneral && !containsCategoryKeyword;
 
                 hybridResults = await this.hybridService.score(
                     top5, customerId, storeId, customerContext.type,
@@ -800,8 +829,8 @@ class RAGService {
                 coPurchaseData.map(cp => {
                     const relatedNames = cp.relatedProducts.map(r => {
                         const found = products.find(p => Number(p.product_id) === Number(r.product_id_b));
-                        if (found) return found.content.match(/"([^"]+)"/)?.[1] || `Product ${r.product_id_b}`;
-                        return null;
+                        if (found) return found.content.match(/"([^"]+)"/)?.[1] || found.name || `Product ${r.product_id_b}`;
+                        return r.product_name_b || null;
                     }).filter(Boolean);
                     if (relatedNames.length === 0) return '';
                     return `- Khách mua "${cp.productName}" thường mua kèm: ${relatedNames.join(', ')}`;
@@ -822,7 +851,9 @@ QUY TẮC NGHIÊM NGẶT:
 1. Mở đầu ngắn gọn (1 câu).
 2. Liệt kê ĐÚNG ${productCount} sản phẩm: tên + giá. KHÔNG mô tả chi tiết.
 3. Nếu sản phẩm đang giảm giá (được ghi là: ~~giá gốc~~ giá mới (Đang giảm giá X%)), bạn phải nhắc đến việc sản phẩm đang được giảm giá/khuyến mãi bao nhiêu % trong câu giới thiệu/tư vấn sản phẩm đó để kích thích mua sắm.
-4. Nếu có [DỮ LIỆU MUA KÈM], viết 1 câu: "Nhiều khách hàng mua [Sản phẩm A] cũng thường mua kèm [B, C]".
+4. Nếu có [DỮ LIỆU MUA KÈM], viết 1 câu gợi ý mua kèm TẤT CẢ sản phẩm được liệt kê:
+   "Nhiều khách hàng mua [Sản phẩm A] cũng thường mua kèm [B, C, ...]"
+   PHẢI nhắc đến TẤT CẢ sản phẩm có trong danh sách mua kèm, tuyệt đối không bỏ sót.
    CHỈ nêu sản phẩm có trong [DỮ LIỆU MUA KÈM]. TUYỆT ĐỐI KHÔNG gom các sản phẩm khác vào câu mua kèm.
    Lưu ý: Chỉ xưng hô "mình" hoặc "hệ thống", không xưng là AI hay bot.
 5. KHÔNG dùng từ "Apriori", "cá nhân hóa", "sự tương đồng" hay bất kì thuật ngữ kỹ thuật nào.

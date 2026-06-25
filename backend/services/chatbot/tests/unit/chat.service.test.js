@@ -381,10 +381,14 @@ describe('ChatService Unit Tests', () => {
                 knowledgeRepo: {
                     searchSemantic: jest.fn(),
                     searchKeyword: jest.fn().mockResolvedValue([])
+                },
+                hybridService: {
+                    recordFeedback: jest.fn().mockResolvedValue({ success: true })
                 }
             };
             chatService.utils.ragService = chatService.ragService;
             chatService.readHandler.ragService = chatService.ragService;
+            chatService.cartHandler.ragService = chatService.ragService;
         });
 
         it('should handle ADD_TO_CART with single RAG match', async () => {
@@ -635,6 +639,112 @@ describe('ChatService Unit Tests', () => {
             const result = await chatService.sendMessage(1, 'Kiểm tra thanh toán đơn #123');
             expect(result.intent).toBe('PAYMENT_CHECK');
             expect(result.reply).toContain('Trạng thái thanh toán của đơn hàng #123 hiện tại là: **Đã thanh toán**.');
+        });
+
+        it('should handle ADD_TO_CART via multi-index resolution and log correct feedback', async () => {
+            mockChatRepo.findSessionById.mockResolvedValue({
+                id: 1,
+                is_active: true,
+                store_id: 1,
+                user_id: 10,
+                user_type: 'customer',
+                metadata: {
+                    lastMentionedProducts: [
+                        { id: 101, name: 'Sting dâu', unitPrice: 10000, topSource: 'cf' },
+                        { id: 102, name: 'Coca Cola 330ml', unitPrice: 12000, topSource: 'apriori' },
+                        { id: 103, name: 'Pepsi 330ml', unitPrice: 12000, topSource: 'content' }
+                    ]
+                }
+            });
+
+            mockApiClient.getInventorySummary.mockResolvedValue({
+                success: true, data: [
+                    { productId: 101, quantityOnShelf: 15 },
+                    { productId: 103, quantityOnShelf: 8 }
+                ]
+            });
+
+            const result = await chatService.sendMessage(1, 'Thêm món 1 và 3 vào giỏ hàng');
+            expect(result.intent).toBe('ADD_TO_CART');
+            expect(result.reply).toContain('Đã thêm 2 sản phẩm vào giỏ hàng: "Sting dâu", "Pepsi 330ml"');
+            expect(result.action).toEqual({
+                type: 'ADD_TO_CART',
+                payload: {
+                    items: [
+                        { productId: 101, name: 'Sting dâu', price: 10000, image: null, quantity: 1 },
+                        { productId: 103, name: 'Pepsi 330ml', price: 12000, image: null, quantity: 1 }
+                    ]
+                }
+            });
+
+            expect(result.products).toEqual([
+                { id: 101, name: 'Sting dâu', unitPrice: 10000, topSource: 'cf' },
+                { id: 103, name: 'Pepsi 330ml', unitPrice: 12000, topSource: 'content' }
+            ]);
+
+            expect(chatService.ragService.hybridService.recordFeedback).toHaveBeenCalledTimes(2);
+            expect(chatService.ragService.hybridService.recordFeedback).toHaveBeenNthCalledWith(
+                1, 10, 101, 1, 'cf', 'added_to_cart', '1'
+            );
+            expect(chatService.ragService.hybridService.recordFeedback).toHaveBeenNthCalledWith(
+                2, 10, 103, 1, 'content', 'added_to_cart', '1'
+            );
+        });
+
+        it('should handle ADD_TO_CART via single-index resolution and log correct feedback', async () => {
+            mockChatRepo.findSessionById.mockResolvedValue({
+                id: 1,
+                is_active: true,
+                store_id: 1,
+                user_id: 10,
+                user_type: 'customer',
+                metadata: {
+                    lastMentionedProducts: [
+                        { id: 101, name: 'Sting dâu', unitPrice: 10000, topSource: 'cf' },
+                        { id: 102, name: 'Coca Cola 330ml', unitPrice: 12000, topSource: 'apriori' }
+                    ]
+                }
+            });
+
+            mockApiClient.getInventorySummary.mockResolvedValue({
+                success: true, data: [{ productId: 102, quantityOnShelf: 20 }]
+            });
+
+            const result = await chatService.sendMessage(1, 'Thêm 2 vào giỏ');
+            expect(result.intent).toBe('ADD_TO_CART');
+            expect(result.reply).toContain('Đã thêm 1 sản phẩm vào giỏ hàng: "Coca Cola 330ml".');
+            expect(chatService.ragService.hybridService.recordFeedback).toHaveBeenCalledTimes(1);
+            expect(chatService.ragService.hybridService.recordFeedback).toHaveBeenCalledWith(
+                10, 102, 1, 'apriori', 'added_to_cart', '1'
+            );
+        });
+
+        it('should fallback to RAG search if index resolution is out-of-bounds', async () => {
+            mockChatRepo.findSessionById.mockResolvedValue({
+                id: 1,
+                is_active: true,
+                store_id: 1,
+                user_id: 10,
+                user_type: 'customer',
+                metadata: {
+                    lastMentionedProducts: [
+                        { id: 101, name: 'Sting dâu', unitPrice: 10000, topSource: 'cf' }
+                    ]
+                }
+            });
+
+            chatService.ragService.knowledgeRepo.searchSemantic.mockResolvedValue([
+                { product_id: 200, content: 'Tên: "Sản phẩm 99"', score: 0.9, unit_price: 15000 }
+            ]);
+
+            mockApiClient.getInventorySummary.mockResolvedValue({
+                success: true, data: [{ productId: 200, quantityOnShelf: 5 }]
+            });
+
+            const result = await chatService.sendMessage(1, 'Thêm 1 cái Sản phẩm 99 vào giỏ');
+            expect(result.intent).toBe('ADD_TO_CART');
+            expect(result.reply).toContain('Đã thêm 1 "Sản phẩm 99" vào giỏ hàng');
+            expect(chatService.ragService.knowledgeRepo.searchSemantic).toHaveBeenCalled();
         });
     });
 });

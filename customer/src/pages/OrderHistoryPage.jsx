@@ -38,6 +38,14 @@ export default function OrderHistoryPage() {
   const [endDate, setEndDate] = useState('');
   const [refreshTrigger, setRefreshTrigger] = useState(0);
 
+  // Pagination states
+  const [currentPage, setCurrentPage] = useState(1);
+  const ORDERS_PER_PAGE = 5;
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [statusFilter, startDate, endDate]);
+
   useEffect(() => {
     if (!user) return;
 
@@ -293,54 +301,100 @@ export default function OrderHistoryPage() {
               </Link>
             </div>
           ) : (
-            <div className="space-y-4">
-              {orders.map(order => (
-                <Link
-                  key={order.id}
-                  to={`/orders/${order.id}`}
-                  className="block bg-white border border-gray-200 rounded-xl p-6 hover:shadow-md transition-shadow group no-underline"
-                >
-                  <div className="flex flex-col md:flex-row justify-between md:items-center gap-4">
-                    <div>
-                      <div className="flex items-center gap-3 mb-2">
-                        <span className="font-bold text-lg text-gray-850">Order #{order.id}</span>
-                        {getStatusBadge(order.status, order.paymentStatus)}
-                      </div>
-                      <p className="text-sm text-gray-500 mb-1">
-                        Order Date: {new Date(order.orderDate || new Date()).toLocaleString('en-US')}
-                      </p>
-                      <p className="text-sm text-gray-500">
-                        Items: {order.itemCount || 0} items
-                      </p>
-                    </div>
+            (() => {
+              const totalPages = Math.ceil(orders.length / ORDERS_PER_PAGE);
+              const paginatedOrders = orders.slice((currentPage - 1) * ORDERS_PER_PAGE, currentPage * ORDERS_PER_PAGE);
+              return (
+                <>
+                  <div className="space-y-4">
+                    {paginatedOrders.map(order => (
+                      <Link
+                        key={order.id}
+                        to={`/orders/${order.id}`}
+                        className="block bg-white border border-gray-200 rounded-xl p-6 hover:shadow-md transition-shadow group no-underline"
+                      >
+                        <div className="flex flex-col md:flex-row justify-between md:items-center gap-4">
+                          <div>
+                            <div className="flex items-center gap-3 mb-2">
+                              <span className="font-bold text-lg text-gray-850">Order #{order.id}</span>
+                              {getStatusBadge(order.status, order.paymentStatus)}
+                            </div>
+                            <p className="text-sm text-gray-500 mb-1">
+                              Order Date: {new Date(order.orderDate || new Date()).toLocaleString('en-US')}
+                            </p>
+                            <p className="text-sm text-gray-500">
+                              Items: {order.itemCount || 0} items
+                            </p>
+                          </div>
 
-                    <div className="flex flex-col md:flex-row items-start md:items-center justify-between md:justify-end gap-4 border-t md:border-t-0 pt-4 md:pt-0 border-gray-100 w-full md:w-auto mt-4 md:mt-0">
-                      <div className="text-left md:text-right flex-1">
-                        <span className="text-sm text-gray-500 block">Total</span>
-                        <span className="font-bold text-emerald-600 text-xl">
-                          {formatVND(order.total || 0)}
-                        </span>
-                      </div>
+                          <div className="flex flex-col md:flex-row items-start md:items-center justify-between md:justify-end gap-4 border-t md:border-t-0 pt-4 md:pt-0 border-gray-100 w-full md:w-auto mt-4 md:mt-0">
+                            <div className="text-left md:text-right flex-1">
+                              <span className="text-sm text-gray-500 block">Total</span>
+                              <span className="font-bold text-emerald-600 text-xl">
+                                {formatVND(order.total || 0)}
+                              </span>
+                            </div>
 
-                      <div className="flex items-center gap-3 w-full md:w-auto">
-                        <button
-                          type="button"
-                          onClick={(e) => handleReorder(e, order.id)}
-                          disabled={reorderingId === order.id}
-                          className="flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-2 bg-white border border-emerald-500 text-emerald-600 font-semibold rounded-lg hover:bg-emerald-50 transition-colors disabled:opacity-50"
-                        >
-                          <RefreshCw className={`w-4 h-4 ${reorderingId === order.id ? 'animate-spin' : ''}`} />
-                          <span className="whitespace-nowrap">{reorderingId === order.id ? 'Loading...' : 'Re-order'}</span>
-                        </button>
-                        <div className="w-10 h-10 shrink-0 rounded-full bg-emerald-50 text-emerald-500 flex items-center justify-center group-hover:bg-emerald-500 group-hover:text-white transition-colors">
-                          <ChevronRight className="w-5 h-5" />
+                            <div className="flex items-center gap-3 w-full md:w-auto">
+                              <button
+                                type="button"
+                                onClick={(e) => handleReorder(e, order.id)}
+                                disabled={reorderingId === order.id}
+                                className="flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-2 bg-white border border-emerald-500 text-emerald-600 font-semibold rounded-lg hover:bg-emerald-50 transition-colors disabled:opacity-50"
+                              >
+                                <RefreshCw className={`w-4 h-4 ${reorderingId === order.id ? 'animate-spin' : ''}`} />
+                                <span className="whitespace-nowrap">{reorderingId === order.id ? 'Loading...' : 'Re-order'}</span>
+                              </button>
+                              <div className="w-10 h-10 shrink-0 rounded-full bg-emerald-50 text-emerald-500 flex items-center justify-center group-hover:bg-emerald-500 group-hover:text-white transition-colors">
+                                <ChevronRight className="w-5 h-5" />
+                              </div>
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                    </div>
+                      </Link>
+                    ))}
                   </div>
-                </Link>
-              ))}
-            </div>
+
+                  {/* Pagination Controls */}
+                  {totalPages > 1 && (
+                    <div className="flex justify-center items-center gap-1 mt-8">
+                      <button
+                        type="button"
+                        disabled={currentPage === 1}
+                        onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                        className="px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:bg-emerald-50 hover:text-emerald-600 hover:border-emerald-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        {t('common.previous', 'Previous')}
+                      </button>
+                      {Array.from({ length: totalPages }).map((_, idx) => {
+                        const pageNum = idx + 1;
+                        return (
+                          <button
+                            key={pageNum}
+                            type="button"
+                            onClick={() => setCurrentPage(pageNum)}
+                            className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors border ${currentPage === pageNum
+                                ? 'bg-emerald-500 border-emerald-500 text-white font-semibold'
+                                : 'bg-white border-gray-200 text-gray-700 hover:bg-emerald-50 hover:text-emerald-600 hover:border-emerald-300'
+                              }`}
+                          >
+                            {pageNum}
+                          </button>
+                        );
+                      })}
+                      <button
+                        type="button"
+                        disabled={currentPage === totalPages}
+                        onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                        className="px-3 py-1.5 bg-white border border-gray-250 rounded-lg text-sm font-medium text-gray-700 hover:bg-emerald-50 hover:text-emerald-600 hover:border-emerald-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        {t('common.next', 'Next')}
+                      </button>
+                    </div>
+                  )}
+                </>
+              );
+            })()
           )
         ) : (
           /* Coupons Tab Content */

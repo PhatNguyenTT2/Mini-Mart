@@ -108,8 +108,123 @@ describe('OrderService Unit Tests', () => {
 
       const res = await orderService.updateOrderStatus(storeId, 50, 'shipped', 'paid');
 
-      expect(mockOrderRepo.updateStatusWithClient).toHaveBeenCalledWith(mockClient, storeId, 50, 'shipped', 'paid');
+      expect(mockOrderRepo.updateStatusWithClient).toHaveBeenCalledWith(mockClient, storeId, 50, 'shipped', 'paid', undefined);
       expect(res.status).toBe('shipped');
+    });
+
+    it('should cancel payment status for COD orders when order is cancelled', async () => {
+      mockOrderRepo.findById.mockResolvedValue({ id: 50, payment_status: 'paid', payment_method: 'cash' });
+      mockOrderRepo.updateStatusWithClient.mockResolvedValue({ id: 50, status: 'cancelled', payment_status: 'cancelled', payment_method: 'cash' });
+
+      const res = await orderService.updateOrderStatus(storeId, 50, 'cancelled', undefined);
+
+      expect(mockOrderRepo.updateStatusWithClient).toHaveBeenCalledWith(mockClient, storeId, 50, 'cancelled', 'cancelled', undefined);
+      expect(res.paymentStatus).toBe('cancelled');
+    });
+
+    it('should keep payment status paid for VNPay orders when order is cancelled', async () => {
+      mockOrderRepo.findById.mockResolvedValue({ id: 51, payment_status: 'paid', payment_method: 'vnpay' });
+      mockOrderRepo.updateStatusWithClient.mockResolvedValue({ id: 51, status: 'cancelled', payment_status: 'paid', payment_method: 'vnpay' });
+
+      const res = await orderService.updateOrderStatus(storeId, 51, 'cancelled', undefined);
+
+      expect(mockOrderRepo.updateStatusWithClient).toHaveBeenCalledWith(mockClient, storeId, 51, 'cancelled', undefined, undefined);
+      expect(res.paymentStatus).toBe('paid');
+    });
+
+    it('should cancel payment status for orders with NULL payment method when order is cancelled (smart cancelled)', async () => {
+      mockOrderRepo.findById.mockResolvedValue({ id: 54, payment_status: 'paid', payment_method: null });
+      mockOrderRepo.updateStatusWithClient.mockResolvedValue({ id: 54, status: 'cancelled', payment_status: 'cancelled', payment_method: null });
+
+      const res = await orderService.updateOrderStatus(storeId, 54, 'cancelled', undefined);
+
+      expect(mockOrderRepo.updateStatusWithClient).toHaveBeenCalledWith(mockClient, storeId, 54, 'cancelled', 'cancelled', undefined);
+      expect(res.paymentStatus).toBe('cancelled');
+    });
+  });
+
+  describe('updateOrder', () => {
+    beforeEach(() => {
+      mockOrderRepo.updateWithClient = jest.fn();
+    });
+
+    it('should cancel payment status for COD orders when cancelled via updateOrder', async () => {
+      mockOrderRepo.findById.mockResolvedValue({ id: 50, status: 'shipping', payment_status: 'paid', payment_method: 'cash' });
+      mockOrderRepo.updateWithClient.mockResolvedValue({ id: 50, status: 'cancelled', payment_status: 'cancelled', payment_method: 'cash' });
+
+      const res = await orderService.updateOrder(storeId, 50, { status: 'cancelled' });
+
+      expect(mockOrderRepo.updateWithClient).toHaveBeenCalledWith(
+        mockClient, storeId, 50, expect.objectContaining({
+          status: 'cancelled',
+          payment_status: 'cancelled'
+        })
+      );
+      expect(res.paymentStatus).toBe('cancelled');
+    });
+
+    it('should keep payment status paid for VNPay orders when cancelled via updateOrder', async () => {
+      mockOrderRepo.findById.mockResolvedValue({ id: 51, status: 'shipping', payment_status: 'paid', payment_method: 'vnpay' });
+      mockOrderRepo.updateWithClient.mockResolvedValue({ id: 51, status: 'cancelled', payment_status: 'paid', payment_method: 'vnpay' });
+
+      const res = await orderService.updateOrder(storeId, 51, { status: 'cancelled' });
+
+      expect(mockOrderRepo.updateWithClient).toHaveBeenCalledWith(
+        mockClient, storeId, 51, expect.objectContaining({
+          status: 'cancelled'
+        })
+      );
+      expect(mockOrderRepo.updateWithClient).not.toHaveBeenCalledWith(
+        mockClient, storeId, 51, expect.objectContaining({
+          payment_status: 'cancelled'
+        })
+      );
+      expect(res.paymentStatus).toBe('paid');
+    });
+
+    it('should cancel payment status for COD orders when cancelled via updateOrder sending redundant paymentStatus: paid (frontend style)', async () => {
+      mockOrderRepo.findById.mockResolvedValue({ id: 52, status: 'shipping', payment_status: 'paid', payment_method: 'cash' });
+      mockOrderRepo.updateWithClient.mockResolvedValue({ id: 52, status: 'cancelled', payment_status: 'cancelled', payment_method: 'cash' });
+
+      const res = await orderService.updateOrder(storeId, 52, { status: 'cancelled', paymentStatus: 'paid' });
+
+      expect(mockOrderRepo.updateWithClient).toHaveBeenCalledWith(
+        mockClient, storeId, 52, expect.objectContaining({
+          status: 'cancelled',
+          payment_status: 'cancelled'
+        })
+      );
+      expect(res.paymentStatus).toBe('cancelled');
+    });
+
+    it('should keep payment status paid for VNPay orders when cancelled via updateOrder sending redundant paymentStatus: paid (frontend style)', async () => {
+      mockOrderRepo.findById.mockResolvedValue({ id: 53, status: 'shipping', payment_status: 'paid', payment_method: 'vnpay' });
+      mockOrderRepo.updateWithClient.mockResolvedValue({ id: 53, status: 'cancelled', payment_status: 'paid', payment_method: 'vnpay' });
+
+      const res = await orderService.updateOrder(storeId, 53, { status: 'cancelled', paymentStatus: 'paid' });
+
+      expect(mockOrderRepo.updateWithClient).toHaveBeenCalledWith(
+        mockClient, storeId, 53, expect.objectContaining({
+          status: 'cancelled',
+          payment_status: 'paid'
+        })
+      );
+      expect(res.paymentStatus).toBe('paid');
+    });
+
+    it('should cancel payment status for orders with NULL payment method when cancelled via updateOrder', async () => {
+      mockOrderRepo.findById.mockResolvedValue({ id: 55, status: 'shipping', payment_status: 'paid', payment_method: null });
+      mockOrderRepo.updateWithClient.mockResolvedValue({ id: 55, status: 'cancelled', payment_status: 'cancelled', payment_method: null });
+
+      const res = await orderService.updateOrder(storeId, 55, { status: 'cancelled', paymentStatus: 'paid' });
+
+      expect(mockOrderRepo.updateWithClient).toHaveBeenCalledWith(
+        mockClient, storeId, 55, expect.objectContaining({
+          status: 'cancelled',
+          payment_status: 'cancelled'
+        })
+      );
+      expect(res.paymentStatus).toBe('cancelled');
     });
   });
 });

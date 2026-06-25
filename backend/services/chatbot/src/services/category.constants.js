@@ -23,6 +23,8 @@ const CATEGORY_KEYWORD_MAP = {
   'kẹo': ['Bánh quy & Kẹo'],
   'snack': ['Snack & Đồ nhắm'],
   'bim bim': ['Snack & Đồ nhắm'],
+  'đồ ăn vặt': ['Bánh quy & Kẹo', 'Snack & Đồ nhắm'],
+  'ăn vặt': ['Bánh quy & Kẹo', 'Snack & Đồ nhắm'],
   'gia vị': ['Gia vị tẩm ướp'],
   'nước mắm': ['Nước chấm'],
   'nước tương': ['Nước chấm']

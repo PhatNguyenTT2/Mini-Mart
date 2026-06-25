@@ -37,7 +37,8 @@ class CollaborativeFilteringService {
                 SELECT user_id, product_id, store_id,
                     COUNT(DISTINCT DATE_TRUNC('hour', created_at)) FILTER (WHERE action = 'clicked') AS clicks,
                     COUNT(DISTINCT DATE_TRUNC('hour', created_at)) FILTER (WHERE action = 'added_to_cart') AS carts,
-                    COUNT(DISTINCT DATE_TRUNC('hour', created_at)) FILTER (WHERE action = 'hovered') AS hovers
+                    COUNT(DISTINCT DATE_TRUNC('hour', created_at)) FILTER (WHERE action = 'hovered') AS hovers,
+                    COUNT(DISTINCT DATE_TRUNC('hour', created_at)) FILTER (WHERE action = 'purchased') AS purchases
                 FROM recommendation_feedback
                 WHERE user_id IS NOT NULL AND store_id = $1
                   AND created_at > NOW() - INTERVAL '90 days'
@@ -45,7 +46,7 @@ class CollaborativeFilteringService {
             )
             INSERT INTO user_product_interaction (user_id, product_id, store_id, interaction_score)
             SELECT user_id, product_id, store_id,
-                (clicks * 0.2) + (carts * 0.5) + (hovers * 0.05)
+                (purchases * 1.0) + (carts * 0.5) + (clicks * 0.2) + (hovers * 0.05)
             FROM implicit
             ON CONFLICT (user_id, product_id, store_id)
             DO UPDATE SET interaction_score = user_product_interaction.interaction_score

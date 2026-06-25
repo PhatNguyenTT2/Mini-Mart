@@ -63,6 +63,27 @@ class WeightLearner {
             GROUP BY source
         `, [storeId]);
 
+        // Organic ratio monitoring (non-blocking warning if organic feedback dominates >80%)
+        try {
+            const { rows: [{ organic_count }] } = await this.pool.query(`
+                SELECT COUNT(*)::int AS organic_count
+                FROM recommendation_feedback
+                WHERE store_id = $1 AND created_at > NOW() - INTERVAL '30 days'
+                  AND source = 'organic'
+            `, [storeId]);
+            const totalChatbot = feedbackStats.reduce(
+                (sum, r) => sum + Number(r.recommended || 0), 0
+            );
+            const totalInteraction = totalChatbot + organic_count;
+            const organicRatio = totalInteraction > 0 ? (organic_count / totalInteraction) : 0;
+            if (organicRatio > 0.80) {
+                logger.warn({ storeId, organicRatio: Math.round(organicRatio * 100) + '%', organic_count, chatbotFeedback: totalChatbot },
+                    'WeightLearner: Organic feedback dominates (>80%). Consider increasing Chatbot engagement.');
+            }
+        } catch (e) {
+            logger.warn({ err: e }, 'WeightLearner: Organic feedback ratio calculation failed (non-critical)');
+        }
+
         const totalFeedback = feedbackStats.reduce(
             (sum, r) => sum + Number(r.recommended || 0), 0
         );

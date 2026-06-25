@@ -203,10 +203,10 @@ export default function CheckoutPage() {
         <div className="mb-10 max-w-3xl mx-auto">
           <div className="relative flex items-center justify-between">
             {/* Connecting Line */}
-            <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-1 bg-gray-200 rounded-full z-0"></div>
+            <div className="absolute left-5 right-5 top-5 -translate-y-1/2 h-1 bg-gray-200 rounded-full z-0"></div>
             <div
-              className="absolute left-0 top-1/2 -translate-y-1/2 h-1 bg-emerald-500 rounded-full z-0 transition-all duration-300"
-              style={{ width: step === 'confirm' ? '100%' : '50%' }}
+              className="absolute left-5 top-5 -translate-y-1/2 h-1 bg-emerald-500 rounded-full z-0 transition-all duration-300"
+              style={{ width: step === 'confirm' ? 'calc(100% - 40px)' : '0%' }}
             ></div>
 
             {/* Step 1: Shipping */}

@@ -22,6 +22,29 @@ class CartHandler {
 
     let { quantity, productKeyword } = this.utils.extractQuantityAndProduct(userMessage);
 
+    // ── Index-based multi-add: "thêm 1, 3 vào giỏ" ──
+    const lastMentioned = metadata.lastMentionedProducts || [];
+    if (lastMentioned.length > 0) {
+      const cleaned = userMessage.toLowerCase()
+        .replace(/(?:thêm|bỏ|cho|đưa|để|lấy|mua)\s*/gi, '')
+        .replace(/(?:vào\s*)?(?:giỏ\s*(?:hàng)?|đơn\s*(?:hàng)?)/gi, '')
+        .replace(/(?:món|cái|sản phẩm|số|thứ tự)/gi, '')
+        .replace(/(?:và|với)/g, ',')
+        .trim();
+
+      if (/^[0-9,\s]+$/.test(cleaned)) {
+        const indices = cleaned.split(/[\s,]+/)
+          .map(t => parseInt(t, 10))
+          .filter(n => !isNaN(n));
+
+        const allInBounds = indices.length > 0 && indices.every(n => n >= 1 && n <= lastMentioned.length);
+
+        if (allInBounds) {
+          return this._executeMultiAdd(session, lastMentioned, indices, quantity);
+        }
+      }
+    }
+
     let productCandidates = [];
     let isAmbiguous = false;
 
@@ -115,6 +138,9 @@ class CartHandler {
         products: [product]
       };
     }
+
+    // Attributed feedback for single-item add
+    this._recordAttributedFeedback(session, product, storeId);
 
     // Stock re-check after execute (race condition guard)
     let stockWarning = '';
@@ -302,6 +328,86 @@ class CartHandler {
         payload: { path: '/checkout' }
       }
     };
+  }
+
+  async _executeMultiAdd(session, lastMentioned, indices, quantity) {
+    const storeId = session.store_id || 1;
+    const items = [];
+    const failedItems = [];
+    const addedProducts = [];
+
+    for (const idx of indices) {
+      const product = lastMentioned[idx - 1];
+      const result = await this.actionExecutor.execute(session, 'ADD_TO_CART', {
+        productId: product.id,
+        quantity,
+        name: product.name,
+        price: product.unitPrice || product.price || product.unit_price,
+        image: product.image || null
+      });
+
+      if (result.success) {
+        items.push({
+          productId: product.id,
+          name: product.name,
+          price: product.unitPrice || product.price || product.unit_price,
+          image: product.image || null,
+          quantity
+        });
+        addedProducts.push(product);
+
+        // Attributed feedback
+        this._recordAttributedFeedback(session, product, storeId);
+      } else {
+        failedItems.push(product.name);
+      }
+    }
+
+    if (items.length === 0) {
+      return {
+        intent: 'ADD_TO_CART',
+        reply: `Không thể thêm sản phẩm vào giỏ hàng: ${failedItems.join(', ')}.`,
+        products: null
+      };
+    }
+
+    const names = items.map(i => `"${i.name}"`).join(', ');
+    let reply = `Đã thêm ${items.length} sản phẩm vào giỏ hàng: ${names}.`;
+    if (failedItems.length > 0) {
+      reply += ` ⚠️ Không thể thêm: ${failedItems.join(', ')}.`;
+    }
+
+    return {
+      intent: 'ADD_TO_CART',
+      reply,
+      products: addedProducts,
+      action: {
+        type: 'ADD_TO_CART',
+        payload: { items }
+      }
+    };
+  }
+
+  _recordAttributedFeedback(session, product, storeId) {
+    try {
+      const hybridService = this.ragService?.hybridService;
+      if (!hybridService) return;
+
+      const customerId = session.metadata?.customerId || session.user_id;
+      const parsedId = (customerId && !String(customerId).startsWith('guest_'))
+        ? Number(customerId) : null;
+
+      hybridService.recordFeedback(
+        parsedId,
+        product.id,
+        storeId,
+        product.topSource || 'content',
+        'added_to_cart',
+        String(session.id)
+      ).catch(err => logger.warn({ err }, 'Feedback recording failed (non-critical)'));
+    } catch (err) {
+      logger.warn({ err }, 'Feedback attribution error (non-critical)');
+    }
   }
 }
 

@@ -289,7 +289,7 @@ export default function HomeMerchandising() {
           <div className="flex items-center justify-between mb-5">
             <h2 className="text-xl font-bold text-gray-800">Recently Viewed</h2>
           </div>
-          <div className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory hide-scrollbar">
+          <div className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory custom-scrollbar">
             <Suspense fallback={<div className="h-44 w-44 bg-gray-100 rounded-xl animate-pulse flex-shrink-0" />}>
               {recentlyViewed.map((product) => (
                 <div key={product.id} className="min-w-[160px] sm:min-w-[200px] md:min-w-[220px] snap-start flex-shrink-0">
@@ -303,8 +303,20 @@ export default function HomeMerchandising() {
           </div>
           <style dangerouslySetInnerHTML={{
             __html: `
-            .hide-scrollbar::-webkit-scrollbar { display: none; }
-            .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+            .custom-scrollbar::-webkit-scrollbar {
+              height: 6px;
+            }
+            .custom-scrollbar::-webkit-scrollbar-track {
+              background: #f1f1f1;
+              border-radius: 3px;
+            }
+            .custom-scrollbar::-webkit-scrollbar-thumb {
+              background: rgba(16, 185, 129, 0.3);
+              border-radius: 3px;
+            }
+            .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+              background: rgba(16, 185, 129, 0.6);
+            }
           `}} />
         </section>
       )}

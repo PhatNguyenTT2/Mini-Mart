@@ -101,7 +101,7 @@ class OrderRepository {
     return rows[0];
   }
 
-  async updateStatusWithClient(client, storeId, id, status, paymentStatus) {
+  async updateStatusWithClient(client, storeId, id, status, paymentStatus, paymentMethod) {
     const setClauses = [];
     const params = [id, storeId]; // $1, $2
 
@@ -112,6 +112,10 @@ class OrderRepository {
     if (paymentStatus) {
       params.push(paymentStatus);
       setClauses.push(`payment_status = $${params.length}`);
+    }
+    if (paymentMethod) {
+      params.push(paymentMethod);
+      setClauses.push(`payment_method = $${params.length}`);
     }
 
     if (setClauses.length === 0) return null;
