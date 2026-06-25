@@ -219,11 +219,11 @@ class EntityManagerHandler {
 
     return {
       intent: 'MANAGE_SUPPLIER_SEARCH',
-      reply: `Tìm thấy nhà cung cấp: **${supplier.name}**\n* Địa chỉ: ${supplier.address || 'N/A'}\n* Số điện thoại: ${contact}\n* Email: ${email}`,
+      reply: `Tìm thấy nhà cung cấp: **${supplier.companyName || supplier.name || 'N/A'}**\n* Địa chỉ: ${supplier.address || 'N/A'}\n* Số điện thoại: ${contact}\n* Email: ${email}`,
       products: null,
       action: {
         type: 'NAVIGATE',
-        payload: { path: `/suppliers?search=${encodeURIComponent(supplier.name)}` }
+        payload: { path: `/suppliers?search=${encodeURIComponent(supplier.companyName || supplier.name || '')}` }
       }
     };
   }
