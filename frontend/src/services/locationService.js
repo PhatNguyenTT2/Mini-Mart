@@ -179,6 +179,21 @@ const locationService = {
       console.error('Error fetching unassigned items:', error);
       throw error;
     }
+  },
+
+  /**
+   * Get blocks with product details inside their locations
+   */
+  getStoreMapData: async (filters = {}) => {
+    try {
+      const params = {};
+      if (filters.type) params.type = filters.type;
+      const response = await api.get('/warehouse/store-map-data', { params });
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching store map data:', error);
+      throw error;
+    }
   }
 };
 

@@ -1,10 +1,8 @@
 # Kịch Bản Demo Bảo Vệ Đồ Án — Hybrid RAG Recommendation
 
-> **Thời lượng:** 8–10 phút · **Cấu trúc:** Chuẩn bị → 4 ACTs → Kết luận
-
 ## Trình Diễn 4 Thuật Toán
 
-> **Nguyên lý điều hướng (Contextual Router):** Hệ thống không chạy cào bằng, mà tự động kích hoạt thuật toán tối ưu dựa trên ý định người dùng và điểm chạm hiển thị:
+> **Nguyên lý điều hướng (Contextual Router):** Hệ thống tự động kích hoạt thuật toán tối ưu dựa trên ý định người dùng:
 
 | Thuật toán | Khi nào kích hoạt | Ví dụ thực tế |
 |---|---|---|

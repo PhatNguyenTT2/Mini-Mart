@@ -244,6 +244,9 @@ class ChatService {
             case 'MANAGE_INVENTORY_VIEW':
                 response = this.entityHandler.handleInventoryView(session);
                 break;
+            case 'LOCATE_PRODUCT':
+                response = await this.entityHandler.handleLocateProduct(session, userMessage);
+                break;
             case 'MANAGE_BATCH_DISCOUNT':
                 response = await this.entityHandler.handleBatchDiscount(session, userMessage);
                 break;
@@ -576,6 +579,9 @@ class ChatService {
                     break;
                 case 'MANAGE_BATCH_DISCOUNT':
                     response = await this.entityHandler.handleBatchDiscount(session, userMessage);
+                    break;
+                case 'LOCATE_PRODUCT':
+                    response = await this.entityHandler.handleLocateProduct(session, userMessage);
                     break;
                 default:
                     response = await this.utils.handleFreeChat(sessionId, userMessage);

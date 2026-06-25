@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Breadcrumb } from '../components/Breadcrumb';
 import { CustomerListHeader, CustomerList } from '../components/CustomerList';
 import customerService from '../services/customerService';
@@ -29,11 +30,22 @@ const Customers = () => {
 
   // Search state
   const [searchQuery, setSearchQuery] = useState('');
+  const [searchParams] = useSearchParams();
 
   // Additional Filters
   const [genderFilter, setGenderFilter] = useState('');
   const [typeFilter, setTypeFilter] = useState('');
   const [activeFilter, setActiveFilter] = useState('true'); // Default: show only active
+
+  const fetchCounterRef = useRef(0);
+
+  // Sync search query from URL parameters
+  useEffect(() => {
+    const searchVal = searchParams.get('search') || '';
+    setSearchQuery(searchVal);
+    const typeVal = searchParams.get('type') || '';
+    setTypeFilter(typeVal);
+  }, [searchParams]);
 
   // Sort state
   const [sortField, setSortField] = useState('id');
@@ -47,6 +59,7 @@ const Customers = () => {
 
   // Fetch customers from API
   const fetchCustomers = async () => {
+    const requestId = ++fetchCounterRef.current;
     try {
       setLoading(true);
       setError(null);
@@ -77,6 +90,11 @@ const Customers = () => {
 
       const response = await customerService.getAllCustomers(params);
 
+      // Avoid race conditions: ignore response if a newer fetch was started
+      if (requestId !== fetchCounterRef.current) {
+        return;
+      }
+
       if (response.success) {
         // Map API response to display format
         const formattedCustomers = (response.data.customers || []).map(customer => ({
@@ -103,10 +121,13 @@ const Customers = () => {
         });
       }
     } catch (err) {
+      if (requestId !== fetchCounterRef.current) return;
       console.error('Error fetching customers:', err);
       setError(err.response?.data?.error || err.message || 'Failed to fetch customers');
     } finally {
-      setLoading(false);
+      if (requestId === fetchCounterRef.current) {
+        setLoading(false);
+      }
     }
   };
 

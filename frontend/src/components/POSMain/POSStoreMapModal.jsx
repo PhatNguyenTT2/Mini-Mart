@@ -12,7 +12,7 @@ const CACHE_TTL = 60_000; // 60 seconds
  * Shows store_shelf blocks with locations and products.
  * Uses single optimized API endpoint + in-memory caching.
  */
-export const POSStoreMapModal = ({ isOpen, onClose, onLocationSelect }) => {
+export const POSStoreMapModal = ({ isOpen, onClose, onLocationSelect, initialSearchTerm = '' }) => {
   const [blocks, setBlocks] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -23,12 +23,12 @@ export const POSStoreMapModal = ({ isOpen, onClose, onLocationSelect }) => {
   useEffect(() => {
     if (isOpen) {
       fetchMapData();
-      setSearchTerm('');
+      setSearchTerm(initialSearchTerm || '');
       setSelectedLocation(null);
       // Focus search after opening
       setTimeout(() => searchRef.current?.focus(), 200);
     }
-  }, [isOpen]);
+  }, [isOpen, initialSearchTerm]);
 
   const fetchMapData = async (forceRefresh = false) => {
     // Use cache if still fresh
@@ -263,12 +263,12 @@ export const POSStoreMapModal = ({ isOpen, onClose, onLocationSelect }) => {
                                           selectedLocation?.id === location.id ? null : location
                                         )}
                                         className={`relative rounded border-2 transition-all w-[48px] group ${isSelected
-                                            ? 'bg-blue-500 border-blue-600 ring-2 ring-blue-300 cursor-pointer'
-                                            : isSearchMatch
-                                              ? 'bg-amber-400 border-amber-500 ring-2 ring-amber-300 hover:bg-amber-500 cursor-pointer animate-pulse'
-                                              : hasProducts
-                                                ? 'bg-emerald-500 border-emerald-600 hover:bg-emerald-600 cursor-pointer'
-                                                : 'bg-white border-gray-300 cursor-default'
+                                          ? 'bg-blue-500 border-blue-600 ring-2 ring-blue-300 cursor-pointer'
+                                          : isSearchMatch
+                                            ? 'bg-amber-400 border-amber-500 ring-2 ring-amber-300 hover:bg-amber-500 cursor-pointer animate-pulse'
+                                            : hasProducts
+                                              ? 'bg-emerald-500 border-emerald-600 hover:bg-emerald-600 cursor-pointer'
+                                              : 'bg-white border-gray-300 cursor-default'
                                           }`}
                                       >
                                         <div className="absolute inset-0 flex items-center justify-center">

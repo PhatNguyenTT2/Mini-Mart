@@ -96,6 +96,11 @@ describe('Intent Resolver', () => {
             const result = resolveIntent('thêm 2 coca', 'employee');
             expect(result.intent).toBe('POS_ADD_ITEM');
         });
+
+        it('should not resolve "bán chạy" reporting queries to POS_ADD_ITEM for manager', () => {
+            const result = resolveIntent('Sản phẩm nào bán chạy nhất tháng này?', 'manager');
+            expect(result.intent).toBe('REPORT_TOP_PRODUCTS');
+        });
     });
 
     describe('getAllIntents', () => {

@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Breadcrumb } from '../components/Breadcrumb';
 import { SupplierListHeader, SupplierList } from '../components/SupplierList';
 import supplierService from '../services/supplierService';
@@ -30,8 +31,17 @@ const Suppliers = () => {
   const [termFilter, setTermFilter] = useState('');
   const [activeFilter, setActiveFilter] = useState('active'); // Default: show only active
 
+  const fetchCounterRef = useRef(0);
+
   // Search state
   const [searchQuery, setSearchQuery] = useState('');
+  const [searchParams] = useSearchParams();
+
+  // Sync search query from URL parameters
+  useEffect(() => {
+    const searchVal = searchParams.get('search') || '';
+    setSearchQuery(searchVal);
+  }, [searchParams]);
 
   // Sort state
   const [sortField, setSortField] = useState('id');
@@ -46,6 +56,7 @@ const Suppliers = () => {
 
   // Fetch suppliers from API
   const fetchSuppliers = async () => {
+    const requestId = ++fetchCounterRef.current;
     try {
       setLoading(true);
       setError(null);
@@ -67,13 +78,16 @@ const Suppliers = () => {
         params.paymentTerms = termFilter;
       }
       if (activeFilter) {
-        // Convert to boolean or generic filter if backend supports it
-        // Assuming backend takes boolean string or we handle it here
         if (activeFilter === 'active') params.isActive = true;
         if (activeFilter === 'inactive') params.isActive = false;
       }
 
       const response = await supplierService.getAllSuppliers(params);
+
+      // Avoid race conditions: ignore response if a newer fetch was started
+      if (requestId !== fetchCounterRef.current) {
+        return;
+      }
 
       // API returns { success, data: [...suppliers], pagination: {...} }
       if (response.success) {
@@ -90,10 +104,13 @@ const Suppliers = () => {
         }
       }
     } catch (err) {
+      if (requestId !== fetchCounterRef.current) return;
       console.error('Error fetching suppliers:', err);
       setError(err.response?.data?.error || err.message || 'Failed to fetch suppliers. Please try again.');
     } finally {
-      setLoading(false);
+      if (requestId === fetchCounterRef.current) {
+        setLoading(false);
+      }
     }
   };
 

@@ -55,8 +55,7 @@ curl http://localhost:3008/health
 | 8 | **"Đổi số lượng nabati thành 5"** | `UPDATE_CART_ITEM` | "Đã cập nhật số lượng thành 5" |
 | 9 | **"Xem giỏ hàng"** | `VIEW_CART` | Action `VIEW_CART` → Frontend tự động mở Drawer Giỏ hàng |(Chỉ áp dụng cho Customer)
 | 10 | **"Thanh toán"** | `CHECKOUT_GUIDE` | Action `NAVIGATE → /checkout` |
-| 11 | **"Lưu hóa đơn"** | (Chỉ áp dụng cho POS Employee)->Cần cập nhật cho Customer
-
+| 11 | **"Lưu hóa đơn"** |
 **✅ Checkpoint:** Khách hàng thêm giỏ hàng thành công, chatbot nhận diện đại từ chính xác và tự động resolve các tương tác nhập nhằng.
 
 ---
@@ -123,22 +122,22 @@ curl http://localhost:3008/health
 
 | Bước | Gõ vào chatbot | Intent | Kết quả mong đợi |
 |:---:|----------------|--------|-------------------|
-| 1 | **"Doanh thu hôm nay bao nhiêu?"** | `REPORT_SALES` | Lấy dữ liệu bán hàng real-time từ Order Service → Thông báo tổng doanh thu hôm nay |
-| 2 | **"Sản phẩm nào bán chạy nhất tuần này?"** | `REPORT_TOP_PRODUCTS` | Danh sách top 5 mặt hàng bán chạy và số lượng đã xuất kho |
+| 1 | **"Doanh thu tháng này bao nhiêu?"** | `REPORT_SALES` | Lấy dữ liệu bán hàng real-time từ Order Service → Thông báo tổng doanh thu hôm nay |
+| 2 | **"Sản phẩm nào bán chạy nhất tháng này?"** | `REPORT_TOP_PRODUCTS` | Action `NAVIGATE → /reports/sales?period=month` (Tự động mở bộ lọc doanh số theo tháng) |
 | 3 | **"Kiểm tra hàng sắp hết"** | `REPORT_LOW_STOCK` | Cảnh báo các mặt hàng đang dưới định mức tồn kho tối thiểu |
-| 4 | **"Xem báo cáo lợi nhuận tháng này"** | `REPORT_PROFIT` | Action `NAVIGATE → /statistics/profit` để dẫn Manager thẳng tới biểu đồ phân tích lợi nhuận |
+| 4 | **"Xem báo cáo lợi nhuận năm nay"** | `REPORT_PROFIT` | Action `NAVIGATE → /statistics/profit` để dẫn Manager thẳng tới biểu đồ phân tích lợi nhuận |
 
 ---
 
-### ACT 6: Manager — Entity Management (Kịch bản sơ bộ)
+### ACT 6: Manager — Entity Management & Location Search
 
-> **Mục đích:** CRUD nhanh các thực thể hệ thống phục vụ back-office qua Chatbot.
+> **Mục đích:** CRM/Supplier search trực tiếp và định vị trực quan sản phẩm trên sơ đồ kho bãi qua Chatbot.
 
 **📝 Kịch bản Minh Họa:**
 
 *   **Quản lý Khách hàng (Customer):**
     *   *Manager*: "Tìm khách hàng Ngo Xuan Phuc"
-    *   *Chatbot*: (Intent: `MANAGE_CUSTOMER_SEARCH`) → "Tìm thấy: Khách hàng Ngo Xuan Phuc, số ĐT: 090xxxx999, Hạng: Retail. Đơn hàng gần nhất: ORD-1002."
+    *   *Chatbot*: (Intent: `MANAGE_CUSTOMER_SEARCH`) → "Tìm thấy khách hàng Ngo Xuan Phuc. Tôi đang chuyển hướng bạn tới trang danh sách khách hàng và tự động áp dụng bộ lọc tìm kiếm." → Action `NAVIGATE → /customers?search=Ngo%20Xuan%20Phuc`
     *   *Manager*: "Nâng hạng khách này lên VIP"
     *   *Chatbot*: (Intent: `MANAGE_CUSTOMER_UPDATE`) → "Xác nhận nâng hạng Khách hàng Ngo Xuan Phuc lên VIP?" → "Đồng ý" → "Đã cập nhật hạng VIP thành công."
     *   *Manager*: "Danh sách khách hàng VIP"
@@ -150,11 +149,13 @@ curl http://localhost:3008/health
     *   *Manager*: "Thông tin nhà cung cấp Vinamilk"
     *   *Chatbot*: (Intent: `MANAGE_SUPPLIER_SEARCH`) → "NCC: Công ty Cổ phần Sữa Việt Nam. Địa chỉ: Q7 TPHCM. Liên hệ: vinamilk@posmart.vn. Danh mục cung cấp: Sữa & chế phẩm sữa."
 
-*   **Quản lý Tồn Kho (Inventory):**
+*   **Định vị Sản phẩm & Tồn Kho (Inventory & Location Lookup):**
     *   *Manager*: "Kiểm tra tồn kho kho chính"
     *   *Chatbot*: (Intent: `MANAGE_INVENTORY_CHECK`) → "Tổng tồn kho chính: 12,050 sản phẩm. Giá trị ước tính: 450,000,000 VND. Có 3 sản phẩm đã hết hàng."
     *   *Manager*: "Sản phẩm nào hết hàng trong kho/trên kệ?"
     *   *Chatbot*: (Intent: `MANAGE_INVENTORY_STOCKOUT`) → "Hiện có: Bánh Custas hộp 6, Sữa chua TH ít đường đang hết hàng (stock = 0)."
+    *   *Manager*: "Vị trí của Bia Heineken Silver ở đâu?"
+    *   *Chatbot*: (Intent: `LOCATE_PRODUCT`) → "Tìm thấy vị trí cho sản phẩm **Bia Heineken Silver lon 330ml** tại:\n- **Cell A-3** (Block *Khu A* - Kệ bán hàng), Số lượng: **48**.\n\nTôi đang hiển thị sơ đồ kho/kệ và làm nổi bật (highlight pulsing) vị trí này của sản phẩm." → Action `NAVIGATE → /inventory/locations?highlight=3` (Với Product ID = 3)
 
 ---
 

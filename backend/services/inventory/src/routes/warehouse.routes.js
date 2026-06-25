@@ -17,8 +17,15 @@ function createWarehouseRouter(warehouseService) {
         try {
             const storeId = req.user?.storeId ?? 1;
 
-            // 1. Fetch store_shelf blocks with locations
-            const blocks = await warehouseService.getBlocks(storeId, { type: 'store_shelf' });
+            // 1. Fetch blocks with locations (optional type filter, default: store_shelf for POS)
+            const typeFilter = req.query.type;
+            const dbFilters = {};
+            if (typeFilter && typeFilter !== 'all') {
+                dbFilters.type = typeFilter;
+            } else if (!typeFilter) {
+                dbFilters.type = 'store_shelf';
+            }
+            const blocks = await warehouseService.getBlocks(storeId, dbFilters);
 
             // 2. Collect all location IDs that have inventory
             const allLocationIds = [];
@@ -34,13 +41,19 @@ function createWarehouseRouter(warehouseService) {
                 const query = `
                     SELECT ii.location_id,
                            pb.product_id,
-                           SUM(ii.quantity_on_shelf) as total_on_shelf,
+                           SUM(CASE WHEN wb.type = 'store_shelf' THEN ii.quantity_on_shelf ELSE ii.quantity_on_hand END) as total_on_shelf,
                            MIN(pb.unit_price) as unit_price,
                            MIN(pb.expiry_date) as earliest_expiry
                     FROM inventory_item ii
                     JOIN product_batch pb ON ii.product_batch_id = pb.id
+                    JOIN location l ON ii.location_id = l.id
+                    JOIN warehouse_block wb ON l.block_id = wb.id
                     WHERE ii.location_id = ANY($1)
-                      AND ii.quantity_on_shelf > 0
+                      AND (
+                        (wb.type = 'store_shelf' AND ii.quantity_on_shelf > 0)
+                        OR
+                        (wb.type = 'warehouse' AND ii.quantity_on_hand > 0)
+                      )
                       AND pb.store_id = $2
                     GROUP BY ii.location_id, pb.product_id
                     ORDER BY ii.location_id, MIN(pb.expiry_date) ASC
@@ -76,7 +89,12 @@ function createWarehouseRouter(warehouseService) {
                         params: { isActive: true }
                     });
                     const products = catalogRes.data?.data?.products || [];
-                    products.forEach(p => { productNameMap[p.id] = p.name; });
+                    products.forEach(p => {
+                        productNameMap[p.id] = {
+                            name: p.name,
+                            categoryId: p.categoryId || p.category_id
+                        };
+                    });
                 } catch (e) {
                     console.error('Store map: failed to fetch product names:', e.message);
                 }
@@ -91,10 +109,14 @@ function createWarehouseRouter(warehouseService) {
                 cols: b.cols,
                 columnGaps: b.column_gaps || [],
                 locations: (b.locations || []).map(l => {
-                    const locProducts = (locationProductMap[l.id] || []).map(p => ({
-                        ...p,
-                        productName: productNameMap[p.productId] || `Product #${p.productId}`
-                    }));
+                    const locProducts = (locationProductMap[l.id] || []).map(p => {
+                        const prodData = productNameMap[p.productId];
+                        return {
+                            ...p,
+                            productName: prodData ? prodData.name : `Product #${p.productId}`,
+                            categoryId: prodData ? prodData.categoryId : null
+                        };
+                    });
                     return {
                         id: l.id,
                         blockId: l.block_id,

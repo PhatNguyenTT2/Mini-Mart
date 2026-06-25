@@ -337,7 +337,7 @@ export const POSInvoiceModal = ({ isOpen, order: initialOrder, onClose, onComple
               <p className={`text-[14px] font-bold font-['Poppins',sans-serif] uppercase ${order.paymentStatus === 'paid' ? 'text-green-600' :
                 order.paymentStatus === 'pending' ? 'text-amber-600' : 'text-gray-600'
                 }`}>
-                {order.paymentStatus === 'paid' ? 'PAID' : order.paymentStatus === 'pending' ? '⏳ PENDING' : (order.paymentStatus || 'N/A').toUpperCase()}
+                {order.paymentStatus === 'paid' ? 'PAID' : order.paymentStatus === 'pending' ? 'PENDING' : (order.paymentStatus || 'N/A').toUpperCase()}
               </p>
             </div>
           </div>

@@ -19,38 +19,46 @@ class ReportHandler {
     const msg = message.toLowerCase();
     let startDate = new Date();
     let endDate = new Date();
+    let period = 'month';
 
     if (msg.includes('hôm nay')) {
       startDate.setHours(0, 0, 0, 0);
       endDate.setHours(23, 59, 59, 999);
+      period = 'today';
     } else if (msg.includes('hôm qua')) {
       startDate.setDate(now.getDate() - 1);
       startDate.setHours(0, 0, 0, 0);
       endDate.setDate(now.getDate() - 1);
       endDate.setHours(23, 59, 59, 999);
+      period = 'custom';
     } else if (msg.includes('này') && (msg.includes('tuần') || msg.includes('tuần này'))) {
       const day = now.getDay() || 7;
       startDate.setDate(now.getDate() - day + 1);
       startDate.setHours(0, 0, 0, 0);
       endDate.setHours(23, 59, 59, 999);
-    } else if (msg.includes('tháng này')) {
+      period = 'week';
+    } else if (msg.includes('tháng này') || msg.includes('tháng')) {
       startDate.setDate(1);
       startDate.setHours(0, 0, 0, 0);
       endDate.setHours(23, 59, 59, 999);
+      period = 'month';
     } else if (msg.includes('năm nay')) {
       startDate.setMonth(0, 1);
       startDate.setHours(0, 0, 0, 0);
       endDate.setHours(23, 59, 59, 999);
+      period = 'year';
     } else {
       // Default: Last 30 days
       startDate.setDate(now.getDate() - 30);
       startDate.setHours(0, 0, 0, 0);
       endDate.setHours(23, 59, 59, 999);
+      period = 'month';
     }
 
     return {
       startDate: startDate.toISOString(),
-      endDate: endDate.toISOString()
+      endDate: endDate.toISOString(),
+      period
     };
   }
 
@@ -64,7 +72,7 @@ class ReportHandler {
       };
     }
 
-    const { startDate, endDate } = this.parseDates(userMessage);
+    const { startDate, endDate, period } = this.parseDates(userMessage);
     const result = await this.apiClient.getSalesReport({ startDate, endDate });
 
     if (!result.success) {
@@ -102,7 +110,7 @@ Tôi đã chuẩn bị sẵn màn hình phân tích trực quan cho bạn dướ
       products: null,
       action: {
         type: 'NAVIGATE',
-        payload: { path: '/reports/sales' }
+        payload: { path: `/reports/sales?period=${period}` }
       }
     };
   }
@@ -117,7 +125,7 @@ Tôi đã chuẩn bị sẵn màn hình phân tích trực quan cho bạn dướ
       };
     }
 
-    const { startDate, endDate } = this.parseDates(userMessage);
+    const { startDate, endDate, period } = this.parseDates(userMessage);
     const result = await this.apiClient.getSalesReport({ startDate, endDate });
 
     if (!result.success) {
@@ -149,7 +157,7 @@ Bạn có thể tham khảo biểu đồ cơ cấu ngành hàng tại trang Phâ
       products: null,
       action: {
         type: 'NAVIGATE',
-        payload: { path: '/reports/sales' }
+        payload: { path: `/reports/sales?period=${period}` }
       }
     };
   }

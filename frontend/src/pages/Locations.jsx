@@ -1,7 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Breadcrumb } from '../components/Breadcrumb';
 import { WarehouseMapBuilder, EditWarehouseMapModal, WarehouseMapView } from '../components/Location';
 import locationService from '../services/locationService';
+import productService from '../services/productService';
+import api from '../services/api';
 
 export const Locations = () => {
   const [blocks, setBlocks] = useState([]);
@@ -10,6 +13,14 @@ export const Locations = () => {
 
   // Filter by type
   const [activeTab, setActiveTab] = useState('all'); // 'all' | 'warehouse' | 'store_shelf'
+  const [searchParams] = useSearchParams();
+
+  // Search & Filter State
+  const [searchQuery, setSearchQuery] = useState('');
+  const [categoryFilter, setCategoryFilter] = useState('');
+  const [categories, setCategories] = useState([]);
+  const [highlightProductId, setHighlightProductId] = useState(null);
+  const [highlightProductName, setHighlightProductName] = useState('');
 
   // Modals
   const [mapBuilderModal, setMapBuilderModal] = useState(false);
@@ -25,13 +36,51 @@ export const Locations = () => {
 
   useEffect(() => {
     fetchBlocks();
+    fetchCategories();
   }, []);
+
+  useEffect(() => {
+    const highlight = searchParams.get('highlight');
+    if (highlight) {
+      setHighlightProductId(highlight);
+    }
+    const searchVal = searchParams.get('search') || '';
+    setSearchQuery(searchVal);
+  }, [searchParams]);
+
+  // Fetch highlighted product details (name) to show in alerts if not found
+  useEffect(() => {
+    if (highlightProductId) {
+      productService.getProductById(highlightProductId)
+        .then(res => {
+          if (res.success && res.data) {
+            setHighlightProductName(res.data.name);
+          }
+        })
+        .catch(err => {
+          console.error('Error fetching product name for highlight:', err);
+        });
+    } else {
+      setHighlightProductName('');
+    }
+  }, [highlightProductId]);
+
+  const fetchCategories = async () => {
+    try {
+      const res = await api.get('/categories');
+      if (res.data && res.data.success && res.data.data) {
+        setCategories(res.data.data.categories || []);
+      }
+    } catch (err) {
+      console.error('Error loading categories:', err);
+    }
+  };
 
   const fetchBlocks = async () => {
     try {
       setIsLoading(true);
       setError(null);
-      const res = await locationService.getAllBlocks();
+      const res = await locationService.getStoreMapData({ type: 'all' });
       const data = res.success ? res.data : (Array.isArray(res) ? res : []);
       setBlocks(data);
     } catch (err) {
@@ -47,6 +96,39 @@ export const Locations = () => {
   const filteredBlocks = activeTab === 'all'
     ? blocks
     : blocks.filter(b => b.type === activeTab);
+
+  // Check if highlighted product exists in any block locations in the database map structure
+  const isProductInMap = useMemo(() => {
+    if (!highlightProductId || blocks.length === 0) return true;
+    return blocks.some(b =>
+      (b.locations || []).some(l =>
+        (l.products || []).some(p => String(p.productId) === String(highlightProductId))
+      )
+    );
+  }, [blocks, highlightProductId]);
+
+  // Dynamically filter blocks to only output blocks containing matching query/category or highlighted product
+  const displayedBlocks = useMemo(() => {
+    if (!searchQuery && !categoryFilter && !highlightProductId) {
+      return filteredBlocks;
+    }
+    return filteredBlocks.filter(block => {
+      return (block.locations || []).some(loc => {
+        const matchesSearch = searchQuery
+          ? (loc.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            (loc.products || []).some(p => p.productName.toLowerCase().includes(searchQuery.toLowerCase())))
+          : true;
+        const matchesCategory = categoryFilter
+          ? (loc.products || []).some(p => String(p.categoryId) === String(categoryFilter))
+          : true;
+        const hasHighlightedProduct = highlightProductId
+          ? (loc.products || []).some(p => String(p.productId) === String(highlightProductId))
+          : false;
+
+        return (matchesSearch && matchesCategory) || hasHighlightedProduct;
+      });
+    });
+  }, [filteredBlocks, searchQuery, categoryFilter, highlightProductId]);
 
   const warehouseCount = blocks.filter(b => b.type === 'warehouse').length;
   const storeShelfCount = blocks.filter(b => b.type === 'store_shelf').length;
@@ -88,38 +170,88 @@ export const Locations = () => {
         </div>
       </div>
 
-      {/* Type Tabs */}
-      <div className="flex items-center gap-1 bg-gray-100 rounded-lg p-1 w-fit">
-        <button
-          onClick={() => setActiveTab('all')}
-          className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
-            activeTab === 'all'
+      {/* Warning alert if highlight product has no configured location */}
+      {highlightProductId && !isProductInMap && (
+        <div className="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-md shadow-sm">
+          <div className="flex">
+            <div className="flex-shrink-0">
+              <span className="text-yellow-600 text-base">⚠️</span>
+            </div>
+            <div className="ml-3">
+              <h3 className="text-sm font-bold text-amber-800">Sản phẩm chưa được sắp xếp</h3>
+              <div className="text-xs text-amber-700 mt-1">
+                Sản phẩm <strong>{highlightProductName || `ID #${highlightProductId}`}</strong> hiện chưa được sắp xếp vào bất kỳ vị trí kệ hàng hoặc ô kho nào.
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Type Tabs, Search & Filter Input row */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-white p-4 rounded-lg shadow-sm border border-gray-200">
+        <div className="flex items-center gap-1 bg-gray-100 rounded-lg p-1 w-fit">
+          <button
+            onClick={() => setActiveTab('all')}
+            className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${activeTab === 'all'
               ? 'bg-white text-gray-900 shadow-sm'
               : 'text-gray-600 hover:text-gray-900'
-          }`}
-        >
-          All ({blocks.length})
-        </button>
-        <button
-          onClick={() => setActiveTab('warehouse')}
-          className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
-            activeTab === 'warehouse'
+              }`}
+          >
+            All ({blocks.length})
+          </button>
+          <button
+            onClick={() => setActiveTab('warehouse')}
+            className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${activeTab === 'warehouse'
               ? 'bg-white text-gray-900 shadow-sm'
               : 'text-gray-600 hover:text-gray-900'
-          }`}
-        >
-          Warehouse ({warehouseCount})
-        </button>
-        <button
-          onClick={() => setActiveTab('store_shelf')}
-          className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${
-            activeTab === 'store_shelf'
+              }`}
+          >
+            Warehouse ({warehouseCount})
+          </button>
+          <button
+            onClick={() => setActiveTab('store_shelf')}
+            className={`px-4 py-2 text-sm font-medium rounded-md transition-colors ${activeTab === 'store_shelf'
               ? 'bg-white text-gray-900 shadow-sm'
               : 'text-gray-600 hover:text-gray-900'
-          }`}
-        >
-          Store Shelf ({storeShelfCount})
-        </button>
+              }`}
+          >
+            Store Shelf ({storeShelfCount})
+          </button>
+        </div>
+
+        <div className="flex flex-1 max-w-lg items-center gap-2">
+          <input
+            type="text"
+            placeholder="Search products in locations..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="flex-1 min-w-[200px] px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm"
+          />
+          <select
+            value={categoryFilter}
+            onChange={(e) => setCategoryFilter(e.target.value)}
+            className="px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 text-sm bg-white"
+          >
+            <option value="">All Categories</option>
+            {categories.map((cat) => (
+              <option key={cat.id} value={cat.id}>
+                {cat.name}
+              </option>
+            ))}
+          </select>
+          {(searchQuery || categoryFilter || highlightProductId) && (
+            <button
+              onClick={() => {
+                setSearchQuery('');
+                setCategoryFilter('');
+                setHighlightProductId(null);
+              }}
+              className="text-sm text-red-600 hover:text-red-800 font-medium px-2 py-1"
+            >
+              Clear
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Error State */}
@@ -144,8 +276,11 @@ export const Locations = () => {
         </div>
       ) : (
         <WarehouseMapView
-          blocks={filteredBlocks}
+          blocks={displayedBlocks}
           onRefresh={fetchBlocks}
+          highlightProductId={highlightProductId}
+          searchQuery={searchQuery}
+          categoryFilter={categoryFilter}
         />
       )}
 

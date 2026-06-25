@@ -59,7 +59,7 @@ const INTENT_PATTERNS = {
         description: 'Cập nhật chi tiết đơn hàng (Nhân viên)'
     },
     POS_ADD_ITEM: {
-        keywords: ['thêm', 'bán'],
+        keywords: ['/^thêm\\s+\\d+/', '/^thêm\\s+(?!giảm\\s|chiết\\s)/', '/^bán\\s+\\d+/', '/^bán\\s+(?!chạy)/', '/\\bthêm\\s+\\d+/', '/\\bbán\\s+\\d+/'],
         writeAction: true,
         employeeOnly: true,
         description: 'Thêm sản phẩm vào giỏ hàng POS (Nhân viên)'
@@ -113,7 +113,7 @@ const INTENT_PATTERNS = {
         description: 'Báo cáo lợi nhuận (Manager)'
     },
     MANAGE_CUSTOMER_SEARCH: {
-        keywords: ['tìm khách hàng', 'tìm khách', 'search khách'],
+        keywords: ['tìm khách hàng', 'tìm khách', 'search khách', 'thông tin khách hàng', 'tra cứu khách hàng'],
         writeAction: false,
         managerOnly: true,
         description: 'Tìm kiếm hồ sơ khách hàng (Manager)'
@@ -137,7 +137,7 @@ const INTENT_PATTERNS = {
         description: 'Danh sách nhà cung cấp (Manager)'
     },
     MANAGE_SUPPLIER_SEARCH: {
-        keywords: ['thông tin ncc', 'tìm ncc', 'ncc vinamilk'],
+        keywords: ['thông tin ncc', 'tìm ncc', 'ncc vinamilk', 'thông tin nhà cung cấp'],
         writeAction: false,
         managerOnly: true,
         description: 'Thông tin nhà cung cấp (Manager)'
@@ -159,6 +159,12 @@ const INTENT_PATTERNS = {
         writeAction: false,
         managerOnly: true,
         description: 'Mở trang quản lý kho (Manager)'
+    },
+    LOCATE_PRODUCT: {
+        keywords: ['vị trí', 'ở đâu', 'nằm ở', 'chỗ nào', 'location', 'kệ nào', 'kho nào'],
+        writeAction: false,
+        employeeOnly: true,
+        description: 'Tra cứu vị trí sản phẩm trên kệ/kho (Nhân viên/Manager)'
     },
 
 
@@ -204,9 +210,9 @@ function resolveIntent(message, userType = 'customer') {
     const normalizedMsg = message.toLowerCase().trim();
 
     // 1. Priority pre-check for RECOMMENDATION to prevent false matches with ADD_TO_CART regexes or SEARCH_PRODUCT.
-    // If it's a structural cart write action (contains 'giỏ', 'xóa', 'hủy', 'tạo đơn'), do not intercept.
+    // If it's a structural cart write action or if the user is a manager (skip priority RECOMMENDATION for reports/lookups), do not intercept.
     const isCartOrOrderWrite = normalizedMsg.includes('giỏ') || normalizedMsg.includes('xóa') || normalizedMsg.includes('hủy') || normalizedMsg.includes('tạo đơn');
-    if (!isCartOrOrderWrite) {
+    if (!isCartOrOrderWrite && userType !== 'manager') {
         const recConfig = INTENT_PATTERNS.RECOMMENDATION;
         for (const keyword of recConfig.keywords) {
             if (normalizedMsg.includes(keyword)) {

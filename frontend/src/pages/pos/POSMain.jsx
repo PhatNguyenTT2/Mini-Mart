@@ -40,6 +40,7 @@ export const POSMain = () => {
   });
   const [toast, setToast] = useState(null);
   const [showStoreMap, setShowStoreMap] = useState(false);
+  const [mapInitialSearch, setMapInitialSearch] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
   const [orderModalKey, setOrderModalKey] = useState(0);
 
@@ -316,6 +317,27 @@ export const POSMain = () => {
           showToast('success', `Đã cập nhật ${name || 'sản phẩm'} → số lượng: ${quantity}`);
         }
         return;
+      }
+
+      if (action.type === 'NAVIGATE') {
+        const { path, productName } = action.payload || {};
+        if (path && path.includes('/inventory/locations')) {
+          const urlParams = new URLSearchParams(path.split('?')[1] || '');
+          const highlightId = urlParams.get('highlight');
+
+          let searchQuery = productName || '';
+          if (!searchQuery && highlightId) {
+            const prod = products.find(p => String(p.id) === String(highlightId));
+            if (prod) searchQuery = prod.name;
+          }
+
+          if (searchQuery) {
+            setMapInitialSearch(searchQuery);
+            setShowStoreMap(true);
+            showToast('info', `Đang tìm vị trí của ${searchQuery}...`);
+            return;
+          }
+        }
       }
 
       if (action.type === 'CANCEL_ORDER') {
@@ -618,8 +640,12 @@ export const POSMain = () => {
 
       <POSStoreMapModal
         isOpen={showStoreMap}
-        onClose={() => setShowStoreMap(false)}
+        onClose={() => {
+          setShowStoreMap(false);
+          setMapInitialSearch('');
+        }}
         onLocationSelect={handleMapBatchSelect}
+        initialSearchTerm={mapInitialSearch}
       />
 
       <POSInvoiceModal

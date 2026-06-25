@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 import { Breadcrumb } from '../../components/Breadcrumb';
 import { SalesList, SalesChart } from '../../components/SalesList';
@@ -23,11 +24,17 @@ const SalesReports = () => {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [summary, setSummary] = useState(null);
+  const [searchParams] = useSearchParams();
 
-  // Initialize dates based on period type
+  // Initialize dates based on period type or URL param
   useEffect(() => {
-    handlePeriodTypeChange(periodType);
-  }, []);
+    const periodFromUrl = searchParams.get('period');
+    if (periodFromUrl) {
+      handlePeriodTypeChange(periodFromUrl);
+    } else {
+      handlePeriodTypeChange(periodType);
+    }
+  }, [searchParams]);
 
   const handlePeriodTypeChange = (type) => {
     const now = new Date();

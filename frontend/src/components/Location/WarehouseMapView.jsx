@@ -10,7 +10,13 @@ import locationService from '../../services/locationService';
  * - blocks: array of block objects from API (each with locations sub-array)
  * - onRefresh: callback to refresh data from parent
  */
-export const WarehouseMapView = ({ blocks = [], onRefresh }) => {
+export const WarehouseMapView = ({
+  blocks = [],
+  onRefresh,
+  highlightProductId = null,
+  searchQuery = '',
+  categoryFilter = ''
+}) => {
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [deletingBlockId, setDeletingBlockId] = useState(null);
 
@@ -95,11 +101,10 @@ export const WarehouseMapView = ({ blocks = [], onRefresh }) => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <h3 className="text-xl font-bold text-gray-900">Block {block.name}</h3>
-              <span className={`px-2 py-0.5 text-[10px] font-medium rounded-full ${
-                block.type === 'store_shelf' 
-                  ? 'bg-blue-100 text-blue-700' 
-                  : 'bg-gray-100 text-gray-700'
-              }`}>
+              <span className={`px-2 py-0.5 text-[10px] font-medium rounded-full ${block.type === 'store_shelf'
+                ? 'bg-blue-100 text-blue-700'
+                : 'bg-emerald-100 text-emerald-700'
+                }`}>
                 {block.type === 'store_shelf' ? 'Store Shelf' : 'Warehouse'}
               </span>
             </div>
@@ -170,11 +175,37 @@ export const WarehouseMapView = ({ blocks = [], onRefresh }) => {
                           textColor = 'text-white';
                         }
 
+                        // Filtering & Highlighting
+                        const hasHighlightedProduct = highlightProductId
+                          ? (location.products || []).some(p => String(p.productId) === String(highlightProductId))
+                          : false;
+
+                        const isSearchActive = !!searchQuery || !!categoryFilter;
+
+                        const matchesSearch = searchQuery
+                          ? (location.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                            (location.products || []).some(p => p.productName.toLowerCase().includes(searchQuery.toLowerCase())))
+                          : true;
+
+                        const matchesCategory = categoryFilter
+                          ? (location.products || []).some(p => String(p.categoryId) === String(categoryFilter))
+                          : true;
+
+                        const isMatched = matchesSearch && matchesCategory;
+
+                        const opacityClass = isSearchActive && !isMatched && !hasHighlightedProduct
+                          ? 'opacity-20 scale-95 border-dashed border-gray-400'
+                          : '';
+
+                        const highlightClass = hasHighlightedProduct
+                          ? 'ring-4 ring-amber-400 animate-pulse relative z-10 scale-105 border-amber-500 border-opacity-100 shadow-xl'
+                          : '';
+
                         return (
                           <div
                             key={location.id}
                             onClick={() => setSelectedLocation(location)}
-                            className={`relative rounded border-2 transition-all cursor-pointer group w-[50px] ${bgColor} hover:shadow-lg`}
+                            className={`relative rounded border-2 transition-all cursor-pointer group w-[50px] ${bgColor} ${opacityClass} ${highlightClass} hover:shadow-lg`}
                           >
                             <div className="absolute inset-0 flex flex-col items-center justify-center p-1">
                               <span className={`text-[10px] font-bold ${textColor}`}>
@@ -190,16 +221,19 @@ export const WarehouseMapView = ({ blocks = [], onRefresh }) => {
 
                             {/* Hover Tooltip */}
                             <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block z-[9999] pointer-events-none">
-                              <div className="bg-gray-900 text-white text-xs rounded-lg px-3 py-2 whitespace-nowrap shadow-xl">
+                              <div className="bg-gray-900 text-white text-xs rounded-lg px-3 py-2 whitespace-nowrap shadow-xl min-w-[150px]">
                                 <div className="font-bold">{location.name}</div>
                                 <div className="text-[10px] text-gray-400 mt-1">
                                   Capacity: {occupiedCapacity} / {maxCapacity} ({capacityPercent.toFixed(1)}%)
                                 </div>
-                                {location.inventoryItemCount > 0 && (
-                                  <div className="mt-1 pt-1 border-t border-gray-700">
-                                    <div className="text-emerald-300 font-medium">
-                                      {location.inventoryItemCount} item{location.inventoryItemCount > 1 ? 's' : ''}
-                                    </div>
+                                {location.products && location.products.length > 0 && (
+                                  <div className="mt-1 pt-1 border-t border-gray-700 max-h-32 overflow-y-auto">
+                                    <div className="text-[9px] uppercase font-bold text-gray-400 mb-1">Products inside:</div>
+                                    {location.products.map((p, pIdx) => (
+                                      <div key={pIdx} className="text-[10px] text-emerald-300 truncate">
+                                        • {p.productName} ({p.totalOnShelf})
+                                      </div>
+                                    ))}
                                   </div>
                                 )}
                               </div>
@@ -221,11 +255,18 @@ export const WarehouseMapView = ({ blocks = [], onRefresh }) => {
   };
 
   if (blocks.length === 0) {
+    const isFiltered = !!searchQuery || !!categoryFilter || !!highlightProductId;
     return (
       <div className="bg-white rounded-lg shadow-sm p-12 text-center">
         <MapPin className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-        <h3 className="text-lg font-medium text-gray-900 mb-2">No warehouse map</h3>
-        <p className="text-sm text-gray-500">Create locations using the Map Builder to see the layout</p>
+        <h3 className="text-lg font-medium text-gray-900 mb-2">
+          {isFiltered ? 'Không tìm thấy vị trí khớp' : 'No warehouse map'}
+        </h3>
+        <p className="text-sm text-gray-500">
+          {isFiltered
+            ? 'Không tìm thấy kệ hàng hoặc ô kho nào chứa sản phẩm khớp với bộ lọc.'
+            : 'Create locations using the Map Builder to see the layout'}
+        </p>
       </div>
     );
   }
