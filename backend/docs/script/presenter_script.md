@@ -121,17 +121,28 @@
 
 ---
 
-## 🎓 KẾT LUẬN (Vòng Lặp EWMA — 30 giây)
+## 🎓 KẾT LUẬN — Vòng Lặp Học Hỏi Tự Động (30 giây)
 
-*(Nói chậm lại, chỉ tay vào toàn bộ bảng Live Feedback)*
+*(Nói chậm lại, chỉ tay vào toàn bộ bảng Live Feedback và biểu đồ Weight Evolution)*
 
-> *"Thưa cô, những thao tác Click vừa rồi không chỉ để xem. Toàn bộ chúng đang được lưu xuống Database với nguồn gốc rõ ràng là content, cf, hay apriori.*
+> *"Thưa cô, những thao tác Click vừa rồi không chỉ để xem. Toàn bộ chúng đang được lưu xuống Database với nguồn gốc rõ ràng.*
 >
-> *Tất cả 4 tương tác vừa rồi đều được ghi nhận vào bảng `recommendation_feedback` với nguồn gốc thuật toán rõ ràng.*
+> *Cụ thể, mỗi hành động của khách hàng đều được chấm điểm theo mức độ cam kết:*
+> - *Rê chuột qua (hover) tính 0.1 điểm*
+> - *Click vào sản phẩm tính 0.2 điểm*
+> - *Thêm vào giỏ hàng tính 0.5 điểm*
+> - *Mua hàng thành công tính trọn 1.0 điểm*
 >
-> *Hàng đêm, thuật toán Weight Learner sẽ tự động:*
-> - *Tính Conversion Rate (click → mua) của từng thuật toán*
-> - *Điều chỉnh trọng số α, β, γ, δ bằng EWMA (Exponential Weighted Moving Average)*
-> - *Lưu lịch sử điều chỉnh vào bảng `ensemble_weights_history`*
+> *Ví dụ thực tế: Khi em vừa click Bánh xốp Nabati ở ACT 1, hệ thống ghi nhận nguồn là `content` với 0.2 điểm. Click Khô gà ở ACT 2 ghi nhận nguồn `apriori` với 0.2 điểm. Như vậy, mỗi ACT đều đóng góp tín hiệu cho riêng thuật toán của nó.*
+>
+> *(Chỉ vào biểu đồ Weight Evolution)* *Hàng đêm, thuật toán Weight Learner tự động:*
+> 1. *Tính Weighted Conversion Rate cho từng thuật toán — tức là tỷ lệ khách hàng tương tác trên tổng số sản phẩm được gợi ý*
+> 2. *Chuẩn hóa các tỷ lệ đó thành trọng số mới*
+> 3. *Làm mượt bằng EWMA — công thức 80% giá trị cũ cộng 20% giá trị mới — để tránh dao động đột ngột*
+> 4. *Giới hạn mỗi trọng số trong khoảng an toàn 5% đến 60%, đảm bảo không thuật toán nào bị triệt tiêu hoàn toàn*
+>
+> *Hệ thống còn có guardrail an toàn: nếu tổng feedback dưới 20 mẫu hoặc không có tương tác mới trong 24 giờ, Weight Learner sẽ TỪ CHỐI điều chỉnh và giữ nguyên trọng số. Riêng trọng số δ của Session Context được cố định, không tham gia vào vòng lặp tự học, để tránh overfitting trên dữ liệu phiên ngắn hạn.*
+>
+> *Kết quả được lưu vào bảng `ensemble_weights_history` — chính là dữ liệu nguồn cho biểu đồ Weight Evolution mà Thầy Cô đang thấy trên Dashboard.*
 >
 > *Đây là vòng lặp khép kín: Gợi ý → Tương tác → Tự học → Gợi ý tốt hơn. Hệ thống hoàn toàn tự hoàn thiện mà không cần con người can thiệp. Em xin kết thúc phần Demo Hệ thống Khuyến nghị."*

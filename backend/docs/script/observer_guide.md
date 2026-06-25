@@ -176,14 +176,55 @@ General query không chứa từ khóa neo → RAG content = 0. Hệ số phạt
 
 ---
 
-## Kết Luận — Vòng Lặp Học Tự Động
+## Kết Luận — Vòng Lặp Học Hỏi Tự Động (Weight Learner)
 
-| Quan sát trên Dashboard | Ý nghĩa |
+### Luồng dữ liệu Feedback
+
+Mỗi thao tác của khách hàng trong demo đều được ghi nhận vào bảng `recommendation_feedback` kèm **nhãn nguồn gốc thuật toán** (`content`, `apriori`, `cf`, `session`):
+
+| Thao tác trong demo | Action ghi nhận | Trọng số Weighted Conversion |
+|---|---|:-:|
+| Chatbot trả kết quả | `recommended` | — (mẫu số) |
+| Rê chuột qua sản phẩm (hover) | `hovered` | ×0.1 |
+| Click vào product card | `clicked` | ×0.2 |
+| Bấm "Thêm vào giỏ" | `added_to_cart` | ×0.5 |
+| Thanh toán thành công | `purchased` | ×1.0 |
+
+> **Ví dụ thực tế từ demo:** Khi click vào Bánh xốp Nabati (ACT 1), hệ thống ghi nhận 1 record `action='clicked'`, `source='content'` → Đóng góp **0.2 điểm** vào Weighted Conversion của thuật toán Content-Based.
+
+### Thuật toán Weight Learner (Nightly Batch)
+
+| Bước | Mô tả | Công thức / Chi tiết |
+|:-:|---|---|
+| 1 | **Lấy trọng số hiện tại** | Query bảng `ensemble_weights` (mặc định: α=0.40, β=0.25, γ=0.25, δ=0.10) |
+| 2 | **Tính Weighted Conversion Rate** | $\text{Rate}(s) = \frac{\text{purchased} \times 1.0 + \text{cart} \times 0.5 + \text{click} \times 0.2 + \text{hover} \times 0.1}{\text{recommended}}$ cho mỗi source `s ∈ {content, cf, apriori}` |
+| 3 | **Chuẩn hóa** | $\text{raw\_weight}(s) = \frac{\text{Rate}(s)}{\sum \text{Rate}} \times (1 - \delta)$ |
+| 4 | **Smoothing (EWMA)** | $w_{\text{new}} = 0.80 \times w_{\text{old}} + 0.20 \times w_{\text{raw}}$ |
+| 5 | **Clamp** | Giới hạn mỗi trọng số trong khoảng `[0.05, 0.60]` |
+| 6 | **Lưu kết quả** | Cập nhật `ensemble_weights` + ghi lịch sử vào `ensemble_weights_history` |
+
+### Guardrails (An toàn)
+
+| Điều kiện | Hành vi |
 |---|---|
-| Toàn bộ click đều có badge nguồn gốc (`content`, `apriori`, `cf`, `session`) | Feedback được ghi nhận chính xác thuật toán gốc |
-| Bảng `recommendation_feedback` ghi dữ liệu liên tục | Weight Learner hàng đêm tự động điều chỉnh trọng số α,β,γ,δ |
+| Tổng feedback < 20 mẫu | **Bỏ qua** — giữ nguyên trọng số |
+| Không có interaction mới trong 24h | **Bỏ qua** — tránh học lại dữ liệu cũ |
+| Weighted Conversion tổng < 1.0 | **Bỏ qua** — chưa đủ tín hiệu chuyển đổi |
+| Organic feedback > 80% | **Cảnh báo** (không chặn) — cần tăng engagement chatbot |
+| δ (Session/Personal) | **Cố định** — không tham gia vào vòng lặp tự học |
 
-> **✅ Final:** 4/4 thuật toán đã kiểm chứng trực tiếp trên hệ thống.
+### Ánh xạ Demo → Trọng số
+
+| ACT | Click sản phẩm | Source ghi nhận | Ảnh hưởng trọng số |
+|:-:|---|:-:|---|
+| 1 | Bánh xốp Nabati | `content` | ↑ **α** (Content-Based) |
+| 2 | Khô gà lá chanh | `apriori` | ↑ **γ** (Apriori) |
+| 3 | Nước mắm Nam Ngư | `cf` | ↑ **β** (Collaborative Filtering) |
+| 4 | Hành tây vàng | `session` | Ghi nhận nhưng **δ cố định** |
+
+> 💡 **Weight Evolution Chart** trên Dashboard hiển thị lịch sử trọng số α,β,γ,δ theo thời gian — cho phép giảng viên quan sát xu hướng thích ứng của hệ thống.
+
+> **✅ Final:** Vòng lặp khép kín: **Gợi ý → Tương tác → Tự học → Gợi ý tốt hơn**. 4/4 thuật toán đã kiểm chứng.
 
 ---
 
@@ -196,3 +237,5 @@ General query không chứa từ khóa neo → RAG content = 0. Hệ số phạt
 | Apriori có gợi ý sai danh mục? | Chỉ gợi ý khi Lift > 1 (mua kèm cao hơn ngẫu nhiên) và sản phẩm còn hàng |
 | Latency có tăng khi thêm thuật toán? | Pipeline ~200–400ms. Local KB ~1ms, Catalog fallback timeout 500ms. WarmUp in-memory, O(1) |
 | Category-Driven có hạn chế? | Category names phải khớp với data-ingestion. Đổi tên category → cần restart chatbot để warmUp |
+| Tại sao δ không tự học? | Personalization weight giữ cố định để tránh overfitting trên dữ liệu session ngắn hạn |
+| Smoothing 80/20 nghĩa là gì? | Trọng số mới = 80% giá trị cũ + 20% giá trị học được → tránh dao động mạnh, ổn định hội tụ |
