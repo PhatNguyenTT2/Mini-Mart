@@ -41,7 +41,7 @@ Không có thông tin CF/Personal → điểm CF/Personal bằng 0. Trọng số
 
 ## ACT 2 · Apriori Cross-sell (γ) — Khai Phá Quy Luật
 
-> **Mục đích:** Chứng minh hệ thống phát hiện quy luật "mua kèm" từ 500 đơn hàng lịch sử. Hiện tượng "Bia và Bỉm" kinh điển.
+> **Mục đích:** Chứng minh hệ thống phát hiện quy luật "mua kèm" từ các đơn hàng lịch sử. Hiện tượng "Bia và Bỉm" kinh điển.
 
 | Bước | Hành động trên màn hình | Kỳ vọng quan sát |
 |:-:|---|---|
