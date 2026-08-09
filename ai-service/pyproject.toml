@@ -1,0 +1,56 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ai-service"
+version = "2.0.0"
+description = "Hybrid Cascade Ranking Recommender System Microservice (Wide Apriori MLP + Deep Two-Tower Vietnamese SBERT)"
+authors = [{ name = "AI Team" }]
+requires-python = ">=3.11"
+dependencies = [
+    "torch>=2.0.0",
+    "sentence-transformers>=2.2.2",
+    "onnxruntime>=1.15.0",
+    "fastapi>=0.100.0",
+    "uvicorn>=0.22.0",
+    "pydantic-settings>=2.0.0",
+    "prometheus-client>=0.17.0",
+    "psycopg2-binary>=2.9.6",
+    "asyncpg>=0.28.0",
+    "pyarrow>=12.0.0",
+    "pandas>=2.0.0",
+    "numpy>=1.24.0",
+    "scikit-learn>=1.2.0"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.3.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-cov>=4.1.0",
+    "ruff>=0.0.270",
+    "mypy>=1.3.0"
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+markers = [
+    "integration: integration tests requiring DB or GPU",
+    "gpu: tests requiring CUDA device",
+    "benchmark: performance and latency benchmark tests"
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.mypy]
+python_version = "3.11"
+ignore_missing_imports = true
+warn_return_any = true
+warn_unused_configs = true
