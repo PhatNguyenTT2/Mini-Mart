@@ -34,6 +34,13 @@ CREATE INDEX IF NOT EXISTS idx_sale_order_customer ON sale_order(customer_id);
 CREATE INDEX IF NOT EXISTS idx_sale_order_status ON sale_order(status);
 CREATE INDEX IF NOT EXISTS idx_sale_order_date ON sale_order(order_date);
 
+-- Immutable ML benchmark lineage. Business orders keep NULL; benchmark seed
+-- rows always carry a published run ID and can be replaced store-safely.
+ALTER TABLE sale_order ADD COLUMN IF NOT EXISTS benchmark_run_id TEXT;
+CREATE INDEX IF NOT EXISTS idx_sale_order_benchmark_run
+    ON sale_order(store_id, benchmark_run_id, order_date)
+    WHERE benchmark_run_id IS NOT NULL;
+
 CREATE TABLE IF NOT EXISTS sale_order_detail (
     id BIGINT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     order_id BIGINT NOT NULL REFERENCES sale_order(id) ON DELETE CASCADE,
@@ -211,5 +218,4 @@ DO $$ BEGIN
       AND p.method = 'cash';
 EXCEPTION WHEN OTHERS THEN NULL;
 END $$;
-
 

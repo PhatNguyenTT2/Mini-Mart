@@ -37,7 +37,7 @@ async function initDatabase(pool) {
 async function start() {
   try {
     // 1. Database
-    const pool = createPool();
+    const pool = createPool('chatbot_db', process.env.CHATBOT_DATABASE_URL || process.env.DATABASE_URL);
     await initDatabase(pool);
     logger.info('PostgreSQL connected');
 
@@ -72,12 +72,15 @@ async function start() {
     const CollaborativeFilteringService = require('./services/cf.service');
     const cfService = new CollaborativeFilteringService(pool);
 
-    // Phase 3: Hybrid Ensemble + Session Context + Weight Learning
+    // Phase 3: AI Neural Inference + Hybrid Ensemble + Session Context + Weight Learning
+    const AIClient = require('./services/ai.client');
+    const aiClient = new AIClient(process.env.AI_SERVICE_URL || 'http://localhost:8000');
+
     const HybridRecommendationService = require('./services/hybrid.service');
     const SessionContextService = require('./services/session-context.service');
     const WeightLearner = require('./services/weight-learner');
 
-    const hybridService = new HybridRecommendationService({ copurchaseRepo, cfService, pool });
+    const hybridService = new HybridRecommendationService({ copurchaseRepo, cfService, pool, aiClient });
     const sessionContextService = new SessionContextService();
     const weightLearner = new WeightLearner(pool);
 

@@ -374,6 +374,7 @@ function createInventoryRouter(inventoryService, inventoryRepo, { catalogService
                 id: row.id,
                 batchId: {
                     id: row.product_batch_id,
+                    batchCode: `#${row.product_batch_id}`,
                     productId: row.product_id,
                     costPrice: parseFloat(row.cost_price) || 0,
                     unitPrice: parseFloat(row.unit_price) || 0,

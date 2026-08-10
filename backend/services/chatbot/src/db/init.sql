@@ -199,6 +199,7 @@ CREATE TABLE IF NOT EXISTS recommendation_feedback (
     source TEXT NOT NULL,
     action TEXT NOT NULL,
     session_id TEXT,
+    sequence_order INT DEFAULT 1,
     recommendation_score NUMERIC,
     metadata JSONB,
     created_at TIMESTAMPTZ DEFAULT NOW()
@@ -210,8 +211,17 @@ DO $$ BEGIN
 EXCEPTION WHEN duplicate_column THEN NULL;
 END $$;
 
+-- Migration: Add sequence_order column if table already exists (Phase 5 Sequential RecSys)
+DO $$ BEGIN
+    ALTER TABLE recommendation_feedback ADD COLUMN sequence_order INT DEFAULT 1;
+EXCEPTION WHEN duplicate_column THEN NULL;
+END $$;
+
 CREATE INDEX IF NOT EXISTS idx_feedback_user
     ON recommendation_feedback(user_id, store_id, created_at DESC);
+
+CREATE INDEX IF NOT EXISTS idx_feedback_session_seq
+    ON recommendation_feedback(session_id, sequence_order ASC);
 
 CREATE INDEX IF NOT EXISTS idx_feedback_source_action
     ON recommendation_feedback(source, action, store_id);
@@ -279,4 +289,92 @@ DO $$ BEGIN
         CHECK (user_type IN ('customer', 'employee', 'manager'));
 END $$;
 
+-- ============================================================
+-- AI Service: Scaled ML Interaction Event Table (v1)
+-- ============================================================
 
+CREATE TABLE IF NOT EXISTS ml_interaction_event_v1 (
+    event_id TEXT PRIMARY KEY,
+    store_id BIGINT NOT NULL,
+    user_id BIGINT NOT NULL,
+    product_id BIGINT NOT NULL,
+    persona_cluster SMALLINT NOT NULL CHECK (persona_cluster BETWEEN 0 AND 7),
+    event_type TEXT NOT NULL,
+    event_ts TIMESTAMPTZ NOT NULL,
+    interaction_weight REAL NOT NULL CHECK (interaction_weight > 0),
+    session_id TEXT NOT NULL,
+    event_origin TEXT NOT NULL CHECK (event_origin IN ('organic', 'semantic_trap', 'cold_start')),
+    cohort_id TEXT,
+    benchmark_run_id TEXT
+);
+
+ALTER TABLE ml_interaction_event_v1
+    ADD COLUMN IF NOT EXISTS benchmark_run_id TEXT;
+ALTER TABLE ml_interaction_event_v1
+    ADD COLUMN IF NOT EXISTS session_id TEXT;
+ALTER TABLE ml_interaction_event_v1
+    ADD COLUMN IF NOT EXISTS event_origin TEXT;
+ALTER TABLE ml_interaction_event_v1
+    ADD COLUMN IF NOT EXISTS cohort_id TEXT;
+
+DO $$ BEGIN
+    ALTER TABLE ml_interaction_event_v1
+        ADD CONSTRAINT ml_interaction_event_type_v1_check
+        CHECK (event_type IN ('view', 'purchase')) NOT VALID;
+EXCEPTION WHEN duplicate_object THEN NULL;
+END $$;
+
+DO $$ BEGIN
+    ALTER TABLE ml_interaction_event_v1
+        ADD CONSTRAINT ml_interaction_event_origin_v1_check
+        CHECK (event_origin IN ('organic', 'semantic_trap', 'cold_start')) NOT VALID;
+EXCEPTION WHEN duplicate_object THEN NULL;
+END $$;
+
+CREATE TABLE IF NOT EXISTS ml_benchmark_run_v1 (
+    benchmark_run_id TEXT PRIMARY KEY,
+    store_id BIGINT NOT NULL,
+    seed INTEGER NOT NULL,
+    status TEXT NOT NULL CHECK (status IN ('staging', 'ready', 'failed')),
+    catalog_sha256 TEXT NOT NULL CHECK (catalog_sha256 ~ '^[0-9a-f]{64}$'),
+    benchmark_spec_sha256 TEXT NOT NULL CHECK (benchmark_spec_sha256 ~ '^[0-9a-f]{64}$'),
+    expected_event_count INTEGER NOT NULL CHECK (expected_event_count > 0),
+    split_boundaries JSONB NOT NULL,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    published_at TIMESTAMPTZ
+);
+
+CREATE TABLE IF NOT EXISTS ml_benchmark_item_partition_v1 (
+    benchmark_run_id TEXT NOT NULL REFERENCES ml_benchmark_run_v1(benchmark_run_id) ON DELETE CASCADE,
+    store_id BIGINT NOT NULL,
+    product_id BIGINT NOT NULL,
+    partition TEXT NOT NULL CHECK (partition IN ('warm', 'cold')),
+    seed INTEGER NOT NULL,
+    catalog_sha256 TEXT NOT NULL CHECK (catalog_sha256 ~ '^[0-9a-f]{64}$'),
+    benchmark_spec_sha256 TEXT NOT NULL CHECK (benchmark_spec_sha256 ~ '^[0-9a-f]{64}$'),
+    PRIMARY KEY (benchmark_run_id, store_id, product_id)
+);
+
+ALTER TABLE ml_benchmark_run_v1
+    ADD COLUMN IF NOT EXISTS benchmark_spec_sha256 TEXT;
+ALTER TABLE ml_benchmark_item_partition_v1
+    ADD COLUMN IF NOT EXISTS benchmark_spec_sha256 TEXT;
+
+DO $$ BEGIN
+    ALTER TABLE ml_benchmark_run_v1
+        ADD CONSTRAINT ml_benchmark_run_spec_sha256_check
+        CHECK (benchmark_spec_sha256 ~ '^[0-9a-f]{64}$') NOT VALID;
+EXCEPTION WHEN duplicate_object THEN NULL;
+END $$;
+
+DO $$ BEGIN
+    ALTER TABLE ml_benchmark_item_partition_v1
+        ADD CONSTRAINT ml_benchmark_partition_spec_sha256_check
+        CHECK (benchmark_spec_sha256 ~ '^[0-9a-f]{64}$') NOT VALID;
+EXCEPTION WHEN duplicate_object THEN NULL;
+END $$;
+
+CREATE INDEX IF NOT EXISTS idx_ml_event_run_ts
+  ON ml_interaction_event_v1(benchmark_run_id, store_id, event_ts, event_id);
+CREATE INDEX IF NOT EXISTS idx_ml_partition_lookup
+    ON ml_benchmark_item_partition_v1(benchmark_run_id, store_id, partition, product_id);

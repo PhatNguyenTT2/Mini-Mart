@@ -63,7 +63,7 @@ async function cleanup() {
     const aprioriOk = aprioriStats.pair_count > 0;
     console.log(`   ${aprioriOk ? '✅' : '❌'} Apriori (co_purchase_stats): ${aprioriStats.pair_count} pairs, max freq = ${aprioriStats.max_freq}`);
     if (!aprioriOk) {
-      console.log('      ⚠ Run: node docs/chatbot/seed-product/mock-orders.js && node docs/chatbot/seed-product/populate-copurchase.js');
+      console.log('      ⚠ Run: node docs/chatbot/seed-product/seed-ml-benchmark.js --confirm-rebuild');
     }
 
     // Check item_similarity (CF)
@@ -75,7 +75,7 @@ async function cleanup() {
     const cfOk = cfStats.pair_count > 0;
     console.log(`   ${cfOk ? '✅' : '❌'} CF (item_similarity): ${cfStats.pair_count} pairs, max sim = ${cfStats.max_sim}`);
     if (!cfOk) {
-      console.log('      ⚠ Run: node docs/chatbot/seed-product/mock-interactions.js');
+      console.log('      ⚠ Run: node docs/chatbot/seed-product/seed-ml-benchmark.js --confirm-rebuild');
     }
 
     // Check user_product_interaction (CF user data)

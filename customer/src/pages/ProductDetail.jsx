@@ -34,7 +34,7 @@ export default function ProductDetail() {
   const { selectedStore } = useStore();
 
   const chatRef = searchParams.get('ref');
-  const chatSource = searchParams.get('src') || 'content';
+  const chatSource = searchParams.get('src') || searchParams.get('source');
 
   const [product, setProduct] = useState(null);
   const [batches, setBatches] = useState([]);
@@ -159,10 +159,10 @@ export default function ProductDetail() {
     }, quantity);
 
     const validStoreId = selectedStore?.id || 1;
-    const trackingSource = chatRef === 'chat' ? chatSource : 'organic';
+    const trackingSource = chatSource || (chatRef === 'chat' ? 'content' : 'organic');
     chatFeedbackService.trackAddToCart(Number(productId), validStoreId, trackingSource);
 
-    if (chatRef === 'chat') {
+    if (chatRef === 'chat' || chatSource) {
       // Clean up tracking parameters from URL to avoid duplicate tracking on page refresh
       window.history.replaceState(null, '', window.location.pathname);
     }

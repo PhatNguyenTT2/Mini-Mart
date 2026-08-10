@@ -65,11 +65,12 @@ export const DetailInventories = () => {
     // Apply search filter
     if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase().trim();
-      result = result.filter(item =>
-        item.batchId?.batchCode?.toLowerCase().includes(query) ||
-        item.batchId?.notes?.toLowerCase().includes(query) ||
-        item.location?.toLowerCase().includes(query)
-      );
+      result = result.filter(item => {
+        const batchCodeStr = (item.batchId?.batchCode || (item.batchId?.id ? `#${item.batchId.id}` : (item.batchId ? `#${item.batchId}` : ''))).toLowerCase();
+        const notesStr = (item.batchId?.notes || '').toLowerCase();
+        const locStr = (item.location?.name || item.location || '').toLowerCase();
+        return batchCodeStr.includes(query) || notesStr.includes(query) || locStr.includes(query);
+      });
     }
 
     // Apply view filter
@@ -102,8 +103,8 @@ export const DetailInventories = () => {
 
       // Handle nested fields
       if (sortField === 'batchCode') {
-        aVal = a.batchId?.batchCode || '';
-        bVal = b.batchId?.batchCode || '';
+        aVal = a.batchId?.batchCode || (a.batchId?.id ? `#${a.batchId.id}` : (a.batchId ? `#${a.batchId}` : ''));
+        bVal = b.batchId?.batchCode || (b.batchId?.id ? `#${b.batchId.id}` : (b.batchId ? `#${b.batchId}` : ''));
       } else if (sortField === 'expiryDate') {
         aVal = a.batchId?.expiryDate ? new Date(a.batchId.expiryDate).getTime() : 0;
         bVal = b.batchId?.expiryDate ? new Date(b.batchId.expiryDate).getTime() : 0;

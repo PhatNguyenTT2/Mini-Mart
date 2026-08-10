@@ -24,14 +24,16 @@ export const ProductGrid = ({ filters = {}, sortBy = 'newest', onPaginationChang
     perPage: 20
   });
 
+  const filtersKey = JSON.stringify(filters);
+
   useEffect(() => {
     fetchProducts();
-  }, [filters, sortBy, pagination.currentPage]);
+  }, [filtersKey, sortBy, pagination.currentPage]);
 
   // Reset to page 1 when filters or sort change
   useEffect(() => {
-    setPagination(prev => ({ ...prev, currentPage: 1 }));
-  }, [filters, sortBy]);
+    setPagination(prev => (prev.currentPage === 1 ? prev : { ...prev, currentPage: 1 }));
+  }, [filtersKey, sortBy]);
 
   const fetchProducts = async () => {
     setLoading(true);
@@ -277,19 +279,75 @@ export const ProductGrid = ({ filters = {}, sortBy = 'newest', onPaginationChang
               ‹ {t('products.prev', 'Previous')}
             </button>
 
-            {/* Page numbers */}
-            {Array.from({ length: pagination.totalPages }, (_, i) => i + 1).map(pageNum => (
-              <button
-                key={pageNum}
-                onClick={() => handlePageChange(pageNum)}
-                className={`w-9 h-9 rounded-lg text-sm font-medium transition-colors ${pagination.currentPage === pageNum
-                  ? 'bg-emerald-500 text-white shadow-sm'
-                  : 'text-gray-600 hover:bg-gray-100'
-                  }`}
-              >
-                {pageNum}
-              </button>
-            ))}
+            {/* Page numbers with smart ellipsis */}
+            {(() => {
+              const pages = [];
+              const maxVisible = 5;
+              let startPage = Math.max(1, pagination.currentPage - 2);
+              let endPage = Math.min(pagination.totalPages, startPage + maxVisible - 1);
+
+              if (endPage - startPage + 1 < maxVisible) {
+                startPage = Math.max(1, endPage - maxVisible + 1);
+              }
+
+              // First page + ellipsis
+              if (startPage > 1) {
+                pages.push(
+                  <button
+                    key={1}
+                    onClick={() => handlePageChange(1)}
+                    className="w-9 h-9 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 transition-colors"
+                  >
+                    1
+                  </button>
+                );
+                if (startPage > 2) {
+                  pages.push(
+                    <span key="ellipsis-start" className="px-2 text-gray-400 text-sm select-none">
+                      ...
+                    </span>
+                  );
+                }
+              }
+
+              // Visible pages
+              for (let page = startPage; page <= endPage; page++) {
+                pages.push(
+                  <button
+                    key={page}
+                    onClick={() => handlePageChange(page)}
+                    className={`w-9 h-9 rounded-lg text-sm font-medium transition-colors ${pagination.currentPage === page
+                      ? 'bg-emerald-500 text-white shadow-sm'
+                      : 'text-gray-600 hover:bg-gray-100'
+                      }`}
+                  >
+                    {page}
+                  </button>
+                );
+              }
+
+              // Ellipsis + last page
+              if (endPage < pagination.totalPages) {
+                if (endPage < pagination.totalPages - 1) {
+                  pages.push(
+                    <span key="ellipsis-end" className="px-2 text-gray-400 text-sm select-none">
+                      ...
+                    </span>
+                  );
+                }
+                pages.push(
+                  <button
+                    key={pagination.totalPages}
+                    onClick={() => handlePageChange(pagination.totalPages)}
+                    className="w-9 h-9 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-100 transition-colors"
+                  >
+                    {pagination.totalPages}
+                  </button>
+                );
+              }
+
+              return pages;
+            })()}
 
             {/* Next button */}
             <button

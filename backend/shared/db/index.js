@@ -9,8 +9,8 @@ let _pool = null;
  *   1. DATABASE_URL (cloud: Supabase, Neon, etc.)
  *   2. POSTGRES_HOST/PORT/USER/PASSWORD (local Docker)
  */
-function createPool(dbName) {
-  const databaseUrl = process.env.DATABASE_URL;
+function createPool(dbName, customConnectionUrl) {
+  const databaseUrl = customConnectionUrl || process.env.DATABASE_URL;
 
   let poolConfig;
 

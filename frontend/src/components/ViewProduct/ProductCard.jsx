@@ -68,6 +68,7 @@ export const ProductCard = ({ product, onAddToCart, onClick }) => {
           <img
             src={imageUrl}
             alt={product.name}
+            referrerPolicy="no-referrer"
             className="max-w-full max-h-full object-contain transition-transform duration-200 hover:scale-105"
             onError={(e) => {
               // Fallback to placeholder on image error

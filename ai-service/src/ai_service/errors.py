@@ -1,36 +1,49 @@
-"""Custom exception hierarchy for ai_service module."""
+"""Typed failures exposed by the ai_service module interfaces."""
 
 
-class AIServiceError(Exception):
-    """Base exception for all ai_service errors."""
-    pass
+class AIServiceError(RuntimeError):
+    """Base error for failures callers may handle."""
 
 
 class ConfigurationError(AIServiceError):
-    """Raised when configuration parameters or environment variables are invalid."""
-    pass
+    """Configuration is absent, invalid, or unsafe for the current environment."""
 
 
 class SourceReadError(AIServiceError):
-    """Raised when reading from PostgreSQL or synthetic data source fails."""
-    pass
+    """A configured source cannot produce the required immutable input."""
 
 
 class DataIntegrityError(AIServiceError):
-    """Raised when temporal invariants or cold-start isolation constraints are violated."""
-    pass
+    """Input data violates temporal, catalog, or cold-partition invariants."""
+
+
+class ArtifactIntegrityError(AIServiceError):
+    """An artifact is missing, corrupt, or belongs to another lineage."""
+
+
+class NegativeSamplingError(AIServiceError):
+    """A valid negative candidate set cannot be sampled."""
 
 
 class ModelTrainingError(AIServiceError):
-    """Raised when model training, validation evaluation, or optimization fails."""
-    pass
+    """Training cannot safely continue."""
 
 
-class ExportError(AIServiceError):
-    """Raised when ONNX export or model bundle packaging fails."""
-    pass
+class CatastrophicTrainingError(ModelTrainingError):
+    """Training encountered non-finite logits/loss or GAUC collapsed below random."""
 
 
-class InferenceError(AIServiceError):
-    """Raised when ONNX runtime prediction fails during serving."""
-    pass
+class TrainingGateError(AIServiceError):
+    """A validation or checkpoint gate failed."""
+
+
+class VictoryGateError(AIServiceError):
+    """Evaluation failed to satisfy the required victory matrix criteria."""
+
+
+class ExportValidationError(AIServiceError):
+    """ONNX export, parity, or latency verification failed."""
+
+
+class ServingUnavailableError(AIServiceError):
+    """The immutable serving bundle is not ready."""

@@ -41,17 +41,28 @@ module.exports = function statsRoutes({ pool, hybridService, nightlyBatch, weigh
             const totalAddedToCart = actionMap.added_to_cart || 0;
             const totalPurchased = actionMap.purchased || 0;
 
-            // Source breakdown
-            const { rows: sourceStats } = await pool.query(`
+            // Source breakdown (with optional sourceFilter)
+            const sourceFilter = req.query.sourceFilter; // 'all', 'ai', or specific source
+            let sourceQuery = `
                 SELECT source,
                     COUNT(*) FILTER (WHERE action = 'recommended')::int AS recommended,
                     COUNT(*) FILTER (WHERE action = 'hovered')::int AS hovered,
                     COUNT(*) FILTER (WHERE action = 'clicked')::int AS clicked,
+                    COUNT(*) FILTER (WHERE action = 'added_to_cart')::int AS added_to_cart,
                     COUNT(*) FILTER (WHERE action = 'purchased')::int AS purchased
                 FROM recommendation_feedback
                 WHERE store_id = $1 AND created_at > NOW() - INTERVAL '1 day' * $2
-                GROUP BY source
-            `, [storeId, days]);
+            `;
+            const sourceParams = [storeId, days];
+            if (sourceFilter === 'ai') {
+                sourceQuery += ` AND source != 'organic'`;
+            } else if (sourceFilter && sourceFilter !== 'all') {
+                sourceParams.push(sourceFilter);
+                sourceQuery += ` AND source = $3`;
+            }
+            sourceQuery += ` GROUP BY source`;
+
+            const { rows: sourceStats } = await pool.query(sourceQuery, sourceParams);
 
             const sourceBreakdown = {};
             for (const r of sourceStats) {
@@ -59,9 +70,11 @@ module.exports = function statsRoutes({ pool, hybridService, nightlyBatch, weigh
                     recommended: r.recommended,
                     hovered: r.hovered,
                     clicked: r.clicked,
+                    added_to_cart: r.added_to_cart,
                     purchased: r.purchased,
                     hoverRate: r.recommended > 0 ? Math.round((r.hovered / r.recommended) * 10000) / 10000 : 0,
                     ctr: r.recommended > 0 ? Math.round((r.clicked / r.recommended) * 10000) / 10000 : 0,
+                    addToCartRate: r.recommended > 0 ? Math.round((r.added_to_cart / r.recommended) * 10000) / 10000 : 0,
                     cvr: r.recommended > 0 ? Math.round((r.purchased / r.recommended) * 10000) / 10000 : 0
                 };
             }
@@ -425,6 +438,74 @@ module.exports = function statsRoutes({ pool, hybridService, nightlyBatch, weigh
     });
 
     /**
+     * GET /api/chatbot/admin/ai-status
+     * Fetch current AI service status and manual toggle state
+     */
+    router.get('/admin/ai-status', async (req, res, next) => {
+        try {
+            const aiClient = hybridService?.aiClient;
+            if (!aiClient) {
+                return res.json({
+                    success: true,
+                    data: { enabled: false, healthy: false, mode: 'fallback_only' }
+                });
+            }
+
+            const healthy = await aiClient.isHealthy();
+            const disabled = aiClient.isDisabled();
+            res.json({
+                success: true,
+                data: {
+                    enabled: !disabled,
+                    healthy,
+                    mode: disabled ? 'fallback_manual' : (healthy ? 'fast_path' : 'fallback_circuit'),
+                    circuitState: aiClient.getState()
+                }
+            });
+        } catch (err) {
+            next(err);
+        }
+    });
+
+    /**
+     * POST /api/chatbot/admin/ai-toggle
+     * Enable/Disable AI Fast Path manually (Admin toggle for Fallback demo)
+     */
+    router.post('/admin/ai-toggle', async (req, res, next) => {
+        try {
+            const aiClient = hybridService?.aiClient;
+            if (!aiClient) {
+                return res.status(503).json({
+                    success: false,
+                    error: { message: 'AI Client not available' }
+                });
+            }
+
+            const { enabled } = req.body;
+            if (enabled === false) {
+                aiClient.disable();
+            } else {
+                aiClient.enable();
+            }
+
+            const healthy = await aiClient.isHealthy();
+            const disabled = aiClient.isDisabled();
+
+            res.json({
+                success: true,
+                data: {
+                    enabled: !disabled,
+                    healthy,
+                    mode: disabled ? 'fallback_manual' : (healthy ? 'fast_path' : 'fallback_circuit'),
+                    message: disabled ? 'AI Fast Path disabled (Fallback active)' : 'AI Fast Path enabled'
+                }
+            });
+        } catch (err) {
+            next(err);
+        }
+    });
+
+    /**
      * POST /api/chatbot/admin/force-learn
      * Trigger weight learning immediately (Admin only)
      */
@@ -498,15 +579,15 @@ module.exports = function statsRoutes({ pool, hybridService, nightlyBatch, weigh
         try {
             const storeId = parseInt(req.body.storeId) || 1;
             client = await pool.connect();
-            
+
             await client.query('BEGIN');
-            
+
             // 1. Clear recommendation feedback
             const { rowCount: feedbackCleared } = await client.query(
                 'DELETE FROM recommendation_feedback WHERE store_id = $1',
                 [storeId]
             );
-            
+
             // 2. Reset weights of store_id to default values
             await client.query(`
                 INSERT INTO ensemble_weights (store_id, alpha, beta, gamma, delta, updated_at)
@@ -514,23 +595,23 @@ module.exports = function statsRoutes({ pool, hybridService, nightlyBatch, weigh
                 ON CONFLICT (store_id) 
                 DO UPDATE SET alpha = 0.400, beta = 0.250, gamma = 0.250, delta = 0.100, updated_at = NOW()
             `, [storeId]);
-            
+
             // 3. Reset weight history to baseline record only
             await client.query('DELETE FROM ensemble_weights_history WHERE store_id = $1', [storeId]);
             await client.query(`
                 INSERT INTO ensemble_weights_history (store_id, alpha, beta, gamma, delta, feedback_count, trigger_type, created_at)
                 VALUES ($1, 0.400, 0.250, 0.250, 0.100, 0, 'baseline', NOW())
             `, [storeId]);
-            
+
             await client.query('COMMIT');
-            
+
             // 4. Refresh in-memory cache and weights directly
             if (hybridService) {
                 await hybridService.warmUp(storeId);
             }
-            
+
             logger.info({ storeId, feedbackCleared }, 'Admin: Reset recommendation demo completed successfully');
-            
+
             res.json({
                 success: true,
                 data: {

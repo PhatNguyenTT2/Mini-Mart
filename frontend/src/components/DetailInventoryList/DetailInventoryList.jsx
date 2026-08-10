@@ -254,8 +254,8 @@ export const DetailInventoryList = ({
                 >
                   {/* Batch Code */}
                   <div className="w-[140px] px-3 flex items-center flex-shrink-0">
-                    <p className="text-[13px] font-normal font-['Poppins',sans-serif] text-emerald-600 leading-[20px]">
-                      {item.batchId?.batchCode || 'N/A'}
+                    <p className="text-[13px] font-medium font-['Poppins',sans-serif] text-emerald-600 leading-[20px]">
+                      {item.batchId?.batchCode || (item.batchId?.id ? `#${item.batchId.id}` : (item.batchId ? `#${item.batchId}` : 'N/A'))}
                     </p>
                   </div>
 

@@ -1,130 +1,290 @@
-"""Apriori Association Rule Mining and CSR Sparse Store."""
+"""Train-only Apriori mining and sparse CSR rule access."""
 
-from collections import Counter
+from __future__ import annotations
+
 import hashlib
+import json
+from collections import Counter
+from collections.abc import Sequence
+from dataclasses import dataclass
 from itertools import combinations
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple, Set
+
 import numpy as np
-import pandas as pd
+import torch
 
 from ai_service.config import Settings
-from ai_service.contracts import RuleManifestV2
+from ai_service.contracts import RuleManifest
 from ai_service.data.snapshot import Snapshot
+from ai_service.errors import ArtifactIntegrityError, DataIntegrityError
 
 
 class RuleStore:
-    """Fast CSR sparse matrix lookup for Apriori lift scores."""
+    """Directed association-rule features backed by one sparse CSR index."""
 
     def __init__(
         self,
         num_items: int,
-        rule_pairs: List[Tuple[int, int, float]],
+        rule_pairs: Sequence[tuple[int, int, float] | tuple[int, int, float, float, float, int]],
+        *,
         min_lift: float = 1.0,
-    ):
+        q99_log_lift: float | None = None,
+    ) -> None:
+        records: list[tuple[int, int, float, float, float, int]] = []
+        for rule in rule_pairs:
+            if len(rule) == 3:
+                row, column, lift = rule
+                support, confidence, count = 0.0, 0.0, 1
+            else:
+                row, column, lift, support, confidence, count = rule
+            record = (
+                int(row),
+                int(column),
+                float(lift),
+                float(support),
+                float(confidence),
+                int(count),
+            )
+            if record[2] >= min_lift:
+                records.append(record)
+        filtered = sorted(records)
+        if any(
+            row < 0 or column < 0 or row >= num_items or column >= num_items
+            for row, column, *_ in filtered
+        ):
+            raise DataIntegrityError("rule index is outside catalog bounds")
+        if any(
+            not np.isfinite([lift, support, confidence]).all()
+            or lift < 0
+            or not 0 <= support <= 1
+            or not 0 <= confidence <= 1
+            or count < 1
+            for _, _, lift, support, confidence, count in filtered
+        ):
+            raise DataIntegrityError("rule statistics are outside valid bounds")
+        coordinates = [(row, column) for row, column, *_ in filtered]
+        if len(coordinates) != len(set(coordinates)):
+            raise DataIntegrityError("rule coordinates must be unique")
+        log_values = np.log1p([lift for _, _, lift, *_ in filtered]).astype(np.float32)
+        scale = float(q99_log_lift or (np.quantile(log_values, 0.99) if log_values.size else 1.0))
+        if not np.isfinite(scale) or scale <= 0:
+            scale = 1.0
+        normalized = np.clip(log_values / scale, 0.0, 1.0).astype(np.float32)
+        counts = np.zeros(num_items, dtype=np.int64)
+        for row, *_ in filtered:
+            counts[row] += 1
+        crow = np.concatenate(([0], np.cumsum(counts))).astype(np.int64)
         self.num_items = num_items
-        self.min_lift = min_lift
-
-        # Build dict for O(1) pairwise lookup
-        self.lift_dict: Dict[Tuple[int, int], float] = {}
-        for item_a, item_b, lift in rule_pairs:
-            if lift >= min_lift:
-                self.lift_dict[(int(item_a), int(item_b))] = float(lift)
+        self.q99_log_lift = scale
+        self.crow_indices = torch.from_numpy(crow).contiguous()
+        # ``torch.from_numpy(np.asarray([]))`` has stride ``(0,)``.  PyTorch
+        # 2.11 rejects that representation for an otherwise valid empty CSR
+        # matrix, so construct the two variable-length arrays directly.
+        self.col_indices = torch.tensor([column for _, column, *_ in filtered], dtype=torch.int64)
+        self.values = torch.tensor(normalized.tolist(), dtype=torch.float32)
+        self.features = torch.tensor(
+            [
+                [np.log1p(lift), confidence, np.log1p(count)]
+                for _, _, lift, _, confidence, count in filtered
+            ],
+            dtype=torch.float32,
+        ).reshape(-1, 3)
+        self.raw_lifts = torch.tensor([lift for _, _, lift, *_ in filtered], dtype=torch.float32)
+        self.supports = torch.tensor(
+            [support for _, _, _, support, _, _ in filtered], dtype=torch.float32
+        )
+        self.confidences = torch.tensor(
+            [confidence for _, _, _, _, confidence, _ in filtered], dtype=torch.float32
+        )
+        self.counts = torch.tensor([count for _, _, _, _, _, count in filtered], dtype=torch.int64)
+        with torch.sparse.check_sparse_tensor_invariants():  # type: ignore[no-untyped-call]
+            self.csr = torch.sparse_csr_tensor(
+                self.crow_indices,
+                self.col_indices,
+                self.values,
+                size=(num_items, num_items),
+                dtype=torch.float32,
+            )
 
     def lookup(self, context_item_idx: int, candidate_item_idx: int) -> float:
-        """Lookup log1p(lift) value for context vs candidate item pair."""
         if context_item_idx < 0:
             return 0.0
-        lift = self.lift_dict.get((context_item_idx, candidate_item_idx), 0.0)
-        if lift <= 1.0:
+        start = int(self.crow_indices[context_item_idx])
+        end = int(self.crow_indices[context_item_idx + 1])
+        columns = self.col_indices[start:end].numpy()
+        position = int(np.searchsorted(columns, candidate_item_idx))
+        if position >= len(columns) or int(columns[position]) != candidate_item_idx:
             return 0.0
-        return float(np.log1p(lift))
+        return float(self.values[start + position])
 
-    def batch_lookup(self, context_indices: np.ndarray, candidate_indices: np.ndarray) -> np.ndarray:
-        """Batch lookup log1p(lift) for candidate groups [B, C]."""
-        batch_size, num_cands = candidate_indices.shape
-        log_lifts = np.zeros((batch_size, num_cands, 1), dtype=np.float32)
+    def batch_lookup(
+        self, context_indices: np.ndarray, candidate_indices: np.ndarray
+    ) -> tuple[np.ndarray, np.ndarray]:
+        if candidate_indices.ndim != 2 or len(context_indices) != len(candidate_indices):
+            raise DataIntegrityError("rule lookup shapes must be [B] and [B,C]")
+        output = np.zeros((*candidate_indices.shape, 3), dtype=np.float32)
+        present = np.zeros(candidate_indices.shape, dtype=np.bool_)
+        for batch_index, context in enumerate(context_indices.astype(np.int64)):
+            if context < 0:
+                continue
+            start = int(self.crow_indices[context])
+            end = int(self.crow_indices[context + 1])
+            row_columns = self.col_indices[start:end].numpy()
+            row_values = self.features[start:end].numpy()
+            positions = np.searchsorted(row_columns, candidate_indices[batch_index])
+            valid = positions < len(row_columns)
+            matched = np.zeros_like(valid)
+            matched[valid] = row_columns[positions[valid]] == candidate_indices[batch_index, valid]
+            present[batch_index] = matched
+            output[batch_index, matched] = row_values[positions[matched]]
+        return output, present
 
-        for b in range(batch_size):
-            ctx_idx = int(context_indices[b])
-            if ctx_idx >= 0:
-                for c in range(num_cands):
-                    cand_idx = int(candidate_indices[b, c])
-                    log_lifts[b, c, 0] = self.lookup(ctx_idx, cand_idx)
-        return log_lifts
+    def batch_raw_lift(
+        self, context_indices: np.ndarray, candidate_indices: np.ndarray
+    ) -> tuple[np.ndarray, np.ndarray]:
+        if candidate_indices.ndim != 2 or len(context_indices) != len(candidate_indices):
+            raise DataIntegrityError("rule lookup shapes must be [B] and [B,C]")
+        lifts = np.zeros(candidate_indices.shape, dtype=np.float32)
+        present = np.zeros(candidate_indices.shape, dtype=np.bool_)
+        for batch_index, context in enumerate(context_indices.astype(np.int64)):
+            if context < 0:
+                continue
+            start = int(self.crow_indices[context])
+            end = int(self.crow_indices[context + 1])
+            columns = self.col_indices[start:end].numpy()
+            positions = np.searchsorted(columns, candidate_indices[batch_index])
+            valid = positions < len(columns)
+            matched = np.zeros_like(valid)
+            matched[valid] = columns[positions[valid]] == candidate_indices[batch_index, valid]
+            present[batch_index] = matched
+            matched_positions = positions[matched]
+            lifts[batch_index, matched] = self.raw_lifts[start:end].numpy()[matched_positions]
+        return lifts, present
+
+
+@dataclass(frozen=True)
+class RuleArtifact:
+    store: RuleStore
+    manifest: RuleManifest
+    artifact_dir: Path
 
 
 class AprioriRuleMiner:
-    """Mines Apriori co-purchase association rules from train-period order baskets."""
+    def __init__(self, settings: Settings):
+        self.settings = settings
 
-    def __init__(self, min_support_count: int = 3, min_lift: float = 1.0):
-        self.min_support_count = min_support_count
-        self.min_lift = min_lift
-
-    def mine(self, snapshot: Snapshot) -> RuleStore:
-        orders_df = snapshot.order_baskets_df.copy()
-        cold_set = set(snapshot.cold_item_ids)
-
-        # Filter out cold items
-        warm_orders = orders_df[~orders_df["internal_product_id"].isin(cold_set)]
-
-        # Group by order_id to form baskets
-        baskets = warm_orders.groupby("order_id")["internal_product_id"].apply(set)
-
-        item_counts: Counter = Counter()
-        pair_counts: Counter = Counter()
-        total_baskets = len(baskets)
-
+    def mine(self, snapshot: Snapshot, artifact_id: str | None = None) -> RuleArtifact:
+        orders = snapshot.order_baskets_df
+        cold = set(snapshot.cold_item_ids)
+        if cold & set(orders.internal_product_id.astype(int)):
+            raise DataIntegrityError("cold item exists in train rule universe")
+        baskets = orders.groupby("order_id").internal_product_id.apply(
+            lambda values: tuple(sorted(set(int(value) for value in values)))
+        )
+        item_counts: Counter[int] = Counter()
+        pair_counts: Counter[tuple[int, int]] = Counter()
         for basket in baskets:
-            sorted_items = sorted(basket)
-            for item in sorted_items:
-                item_counts[item] += 1
-            for a, b in combinations(sorted_items, 2):
-                pair_counts[(a, b)] += 1
-                pair_counts[(b, a)] += 1
-
-        rule_pairs: List[Tuple[int, int, float]] = []
-
-        for (a, b), count in pair_counts.items():
-            if count >= self.min_support_count:
-                support_a = item_counts[a] / total_baskets
-                support_b = item_counts[b] / total_baskets
-                support_ab = count / total_baskets
-                lift = support_ab / (support_a * support_b)
-
-                if lift >= self.min_lift:
-                    rule_pairs.append((int(a), int(b), float(lift)))
-
-        # Save to snapshot artifacts
-        out_dir = snapshot.snapshot_dir
-        rule_data = np.array(rule_pairs, dtype=np.float32) if len(rule_pairs) > 0 else np.zeros((0, 3), dtype=np.float32)
-        np.savez_compressed(out_dir / "apriori_rules.npz", rules=rule_data)
-
-        checksum = hashlib.sha256(rule_data.tobytes()).hexdigest()[:16]
-        manifest = RuleManifestV2(
-            num_rules=len(rule_pairs),
-            min_support=float(self.min_support_count / max(total_baskets, 1)),
-            min_confidence=0.0,
-            min_lift=self.min_lift,
-            train_basket_count=total_baskets,
-            checksum=checksum,
+            item_counts.update(basket)
+            for left, right in combinations(basket, 2):
+                pair_counts[(left, right)] += 1
+                pair_counts[(right, left)] += 1
+        basket_count = len(baskets)
+        rules: list[tuple[int, int, float, float, float, int]] = []
+        for (left, right), count in pair_counts.items():
+            if count < self.settings.data.min_rule_count:
+                continue
+            lift = count * basket_count / (item_counts[left] * item_counts[right])
+            if lift >= self.settings.data.min_rule_lift:
+                rules.append(
+                    (
+                        left,
+                        right,
+                        float(lift),
+                        count / basket_count,
+                        count / item_counts[left],
+                        count,
+                    )
+                )
+        store = RuleStore(
+            snapshot.manifest.num_items,
+            rules,
+            min_lift=self.settings.data.min_rule_lift,
         )
-        (out_dir / "apriori_manifest.json").write_text(manifest.model_dump_json(indent=2), encoding="utf-8")
-
-        return RuleStore(
-            num_items=snapshot.manifest.num_items,
-            rule_pairs=rule_pairs,
-            min_lift=self.min_lift,
+        payload = b"".join(
+            (
+                store.crow_indices.numpy().tobytes(),
+                store.col_indices.numpy().tobytes(),
+                store.values.numpy().tobytes(),
+                store.features.numpy().tobytes(),
+                store.raw_lifts.numpy().tobytes(),
+                store.supports.numpy().tobytes(),
+                store.confidences.numpy().tobytes(),
+                store.counts.numpy().tobytes(),
+            )
         )
+        checksum = hashlib.sha256(payload).hexdigest()
+        artifact_id = artifact_id or f"{snapshot.manifest.artifact_id}-rules-{checksum[:12]}"
+        manifest = RuleManifest(
+            artifact_id=artifact_id,
+            content_sha256=checksum,
+            parent_sha256={"snapshot": snapshot.manifest.content_sha256},
+            snapshot_sha256=snapshot.manifest.content_sha256,
+            num_directed_rules=int(store.values.numel()),
+            train_basket_count=basket_count,
+            min_count=self.settings.data.min_rule_count,
+            min_lift=self.settings.data.min_rule_lift,
+            q99_log_lift=store.q99_log_lift,
+        )
+        destination = self.settings.data.artifact_root.resolve() / "rules" / artifact_id
+        if destination.exists():
+            raise ArtifactIntegrityError(f"immutable rule artifact exists: {destination}")
+        destination.mkdir(parents=True)
+        np.savez_compressed(
+            destination / "rules.npz",
+            crow_indices=store.crow_indices.numpy(),
+            col_indices=store.col_indices.numpy(),
+            values=store.values.numpy(),
+            features=store.features.numpy(),
+            raw_lifts=store.raw_lifts.numpy(),
+            supports=store.supports.numpy(),
+            confidences=store.confidences.numpy(),
+            counts=store.counts.numpy(),
+        )
+        (destination / "manifest.json").write_text(
+            json.dumps(manifest.model_dump(mode="json"), indent=2), encoding="utf-8"
+        )
+        return RuleArtifact(store=store, manifest=manifest, artifact_dir=destination)
 
 
-def load_rule_store(snapshot_dir: Path, min_lift: float = 1.0) -> RuleStore:
-    """Load pre-mined Apriori rules from snapshot directory."""
-    rule_file = snapshot_dir / "apriori_rules.npz"
-    if not rule_file.exists():
-        return RuleStore(num_items=5200, rule_pairs=[], min_lift=min_lift)
-
-    data = np.load(rule_file)
-    rules_arr = data["rules"]
-    rule_pairs = [(int(r[0]), int(r[1]), float(r[2])) for r in rules_arr]
-    return RuleStore(num_items=5200, rule_pairs=rule_pairs, min_lift=min_lift)
+def load_rule_artifact(path: Path, num_items: int) -> RuleArtifact:
+    manifest = RuleManifest.model_validate_json(
+        (path / "manifest.json").read_text(encoding="utf-8")
+    )
+    arrays = np.load(path / "rules.npz")
+    statistic_names = ("features", "raw_lifts", "supports", "confidences", "counts")
+    names = ("crow_indices", "col_indices", "values") + (
+        statistic_names if all(name in arrays for name in statistic_names) else ()
+    )
+    payload = b"".join(arrays[name].tobytes() for name in names)
+    if hashlib.sha256(payload).hexdigest() != manifest.content_sha256:
+        raise ArtifactIntegrityError("rule artifact checksum mismatch")
+    rows = np.repeat(np.arange(num_items), np.diff(arrays["crow_indices"]))
+    lifts = np.expm1(arrays["values"] * manifest.q99_log_lift)
+    if "features" in arrays:
+        pairs = list(
+            zip(
+                rows.tolist(),
+                arrays["col_indices"].tolist(),
+                arrays["raw_lifts"].tolist(),
+                arrays["supports"].tolist(),
+                arrays["confidences"].tolist(),
+                arrays["counts"].tolist(),
+                strict=True,
+            )
+        )
+    else:
+        pairs = list(
+            zip(rows.tolist(), arrays["col_indices"].tolist(), lifts.tolist(), strict=True)
+        )
+    store = RuleStore(num_items, pairs, q99_log_lift=manifest.q99_log_lift)
+    return RuleArtifact(store=store, manifest=manifest, artifact_dir=path)

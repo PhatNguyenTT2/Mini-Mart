@@ -20,14 +20,15 @@ import torch
 from pydantic import ValidationError
 
 from ai_service.config import Settings
-from ai_service.contracts import EmbeddingSource, SplitName
+from ai_service.contracts import DataSourceKind, EmbeddingSource, SplitName
+from ai_service.data import features
 from ai_service.data.dataset import HybridImplicitDataset
 from ai_service.data.rules import RuleStore
 from ai_service.data.snapshot import Snapshot, SnapshotBuilder
 from ai_service.data.sources import RawDataset
 from ai_service.errors import DataIntegrityError, ModelTrainingError
 from ai_service.evaluation.baselines import run_seven_way_baselines
-from ai_service.evaluation.full_catalog import EvaluationReport, FullCatalogEvaluator
+from ai_service.evaluation.full_catalog import FullCatalogEvaluator
 from ai_service.models.two_tower_wide_deep import HybridTwoTowerModel
 from ai_service.serving.schemas import RecommendRequest
 from ai_service.training.trainer import Trainer
@@ -52,20 +53,18 @@ def test_api_request_requires_store_id() -> None:
 def test_real_embedding_failure_does_not_fallback_to_mock(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ) -> None:
-    from ai_service.data import features
-
     class BrokenProvider:
-        def __init__(self) -> None:
+        def __init__(self, *_args: object) -> None:
             raise OSError("model unavailable")
 
-    monkeypatch.setattr(features, "SentenceTransformerProvider", BrokenProvider)
-    catalog = pd.DataFrame({"internal_product_id": [0], "name": ["coffee"]})
+    monkeypatch.setattr(features, "RealSBERTEncoder", BrokenProvider)
+    settings = _small_settings(num_items=8, num_cold_items=1)
+    settings.data.artifact_root = tmp_path
 
     with pytest.raises(OSError, match="model unavailable"):
-        features.precompute_embeddings(
-            catalog,
-            tmp_path,
-            provider=None,
+        features.SBERTArtifactBuilder(settings).build(
+            _minimal_snapshot(tmp_path, _training_frame()),
+            encoder=None,
             source_kind=EmbeddingSource.REAL,
         )
 
@@ -75,7 +74,13 @@ def test_trainer_rejects_missing_validation_evaluator(tmp_path: Path) -> None:
     trainer = Trainer(HybridTwoTowerModel(settings), settings=settings, run_dir=tmp_path)
 
     with pytest.raises(ModelTrainingError, match="validation evaluator"):
-        trainer.fit([], snapshot=None, val_evaluator=None)  # type: ignore[arg-type]
+        trainer.fit(
+            [],  # type: ignore[arg-type]
+            snapshot=None,  # type: ignore[arg-type]
+            embeddings=None,  # type: ignore[arg-type]
+            val_evaluator=None,
+            lineage={},
+        )
 
 
 def test_negative_ratio_is_a_runtime_dataset_contract() -> None:
@@ -93,17 +98,14 @@ def test_context_is_latest_strictly_earlier_purchase(tmp_path: Path) -> None:
         ],
         utc=True,
     )
-    train_df = pd.DataFrame(
-        {
-            "internal_user_id": [1, 1, 1, 1],
-            "internal_product_id": [0, 1, 2, 3],
-            "event_type": ["order", "view", "order", "order"],
-            "event_ts": timestamps,
-            "interaction_weight": [1.0, 0.5, 1.0, 1.0],
-        }
-    )
+    train_df = _training_frame(timestamps)
     snapshot = _minimal_snapshot(tmp_path, train_df)
-    dataset = HybridImplicitDataset(snapshot, RuleStore(8, []), split="train")
+    dataset = HybridImplicitDataset(
+        snapshot,
+        RuleStore(8, []),
+        split=SplitName.TRAIN,
+        negative_ratio=3,
+    )
 
     actual = [(ref.item_idx, ref.present) for ref in dataset.context_refs]
     assert actual == [(-1, False), (0, True), (0, True), (2, True)]
@@ -112,40 +114,39 @@ def test_context_is_latest_strictly_earlier_purchase(tmp_path: Path) -> None:
 def test_snapshot_rejects_incomplete_cold_purchase_ground_truth(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ) -> None:
-    from ai_service.data import snapshot as snapshot_module
-
-    monkeypatch.setattr(snapshot_module, "DATA_ARTIFACTS_DIR", tmp_path)
     settings = _small_settings(num_items=10, num_cold_items=2)
+    settings.data.artifact_root = tmp_path
+    settings.data.expected_event_count = 20
     raw = _raw_dataset(
         num_items=10,
         timestamps=pd.date_range("2026-01-01", periods=20, freq="h", tz="UTC"),
-        final_product_ids=[9, 1],
+        cold_product_ids=[9, 10],
+        final_product_ids=[9, 10],
         final_event_types=["view", "order"],
     )
 
-    with pytest.raises(DataIntegrityError, match="cold.*purchase|ground truth"):
+    with pytest.raises(DataIntegrityError, match=r"cold.*purchase|ground truth"):
         SnapshotBuilder(settings).build(raw, snapshot_id="incomplete-cold")
 
 
-def test_temporal_split_keeps_equal_timestamp_group_together(
+def test_temporal_split_rejects_timestamp_group_crossing_frozen_boundary(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ) -> None:
-    from ai_service.data import snapshot as snapshot_module
-
-    monkeypatch.setattr(snapshot_module, "DATA_ARTIFACTS_DIR", tmp_path)
     settings = _small_settings(num_items=10, num_cold_items=1)
+    settings.data.artifact_root = tmp_path
+    settings.data.expected_event_count = 20
     timestamps = list(pd.date_range("2026-01-01", periods=20, freq="h", tz="UTC"))
     timestamps[16] = timestamps[15]
     raw = _raw_dataset(
         num_items=10,
         timestamps=pd.DatetimeIndex(timestamps),
+        cold_product_ids=[10],
         final_product_ids=[1, 10],
-        final_event_types=["order", "order"],
+        final_event_types=["purchase", "purchase"],
     )
 
-    snapshot = SnapshotBuilder(settings).build(raw, snapshot_id="timestamp-groups")
-    assert snapshot.train_df["event_ts"].max() < snapshot.val_df["event_ts"].min()
-    assert snapshot.val_df["event_ts"].max() < snapshot.test_df["event_ts"].min()
+    with pytest.raises(DataIntegrityError, match="timestamp group crosses"):
+        SnapshotBuilder(settings).build(raw, snapshot_id="timestamp-groups")
 
 
 def test_rule_store_uses_sparse_csr_tensor() -> None:
@@ -168,22 +169,14 @@ def test_seven_way_baseline_harness_has_all_required_methods(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     settings = _small_settings()
-    report = EvaluationReport(
-        split="test",
-        num_eval_users=1,
-        num_catalog_items=settings.data.num_items,
-        hr10=0.0,
-        ndcg10=0.0,
-        gauc=0.5,
-        avg_latency_ms=0.0,
-        total_eval_time_sec=0.0,
-    )
-    monkeypatch.setattr(FullCatalogEvaluator, "evaluate", lambda *args, **kwargs: report)
-
     result = run_seven_way_baselines(
         HybridTwoTowerModel(settings),
-        snapshot=SimpleNamespace(),  # type: ignore[arg-type]
+        snapshot=_minimal_snapshot(Path.cwd(), _training_frame()),
+        embeddings=np.eye(8, dtype=np.float32),
+        rule_store=RuleStore(8, []),
+        split=SplitName.TEST,
         settings=settings,
+        device="cpu",
     )
 
     assert len(result.baselines) == 7
@@ -205,7 +198,13 @@ def _small_settings(num_items: int = 8, num_cold_items: int = 1) -> Settings:
     settings.data.num_cold_items = num_cold_items
     settings.data.num_leaf_categories = 4
     settings.data.num_price_buckets = 2
+    settings.data.expected_event_count = 20
+    settings.data.expected_train_count = 16
+    settings.data.expected_val_count = 2
+    settings.data.expected_test_count = 2
     settings.model.sbert_dim = 8
+    settings.eval.k = 2
+    settings.eval.random_seeds = 2
     settings.train.max_epochs = 1
     settings.train.batch_size = 2
     return settings
@@ -220,14 +219,29 @@ def _minimal_snapshot(tmp_path: Path, train_df: pd.DataFrame) -> Snapshot:
             "price_bucket_id": np.ones(8, dtype=np.int64),
         }
     )
-    manifest = SimpleNamespace(num_items=8)
+    test_df = pd.DataFrame(
+        {
+            "event_id": ["test-cold"],
+            "internal_user_id": [1],
+            "internal_product_id": [7],
+            "event_type": ["purchase"],
+            "event_ts": [pd.Timestamp("2026-02-01", tz="UTC")],
+            "interaction_weight": [1.0],
+        }
+    )
+    manifest = SimpleNamespace(
+        num_items=8,
+        num_users=1,
+        artifact_id="fixture",
+        content_sha256="a" * 64,
+    )
     return Snapshot(
         manifest=manifest,  # type: ignore[arg-type]
         snapshot_dir=tmp_path,
         catalog_df=catalog_df,
         train_df=train_df,
         val_df=train_df.iloc[0:0].copy(),
-        test_df=train_df.iloc[0:0].copy(),
+        test_df=test_df,
         order_baskets_df=pd.DataFrame(),
         product_map={idx + 1: idx for idx in range(8)},
         raw_product_map={idx: idx + 1 for idx in range(8)},
@@ -242,6 +256,7 @@ def _minimal_snapshot(tmp_path: Path, train_df: pd.DataFrame) -> Snapshot:
 def _raw_dataset(
     num_items: int,
     timestamps: pd.DatetimeIndex,
+    cold_product_ids: list[int],
     final_product_ids: list[int],
     final_event_types: list[str],
 ) -> RawDataset:
@@ -256,7 +271,9 @@ def _raw_dataset(
     event_count = len(timestamps)
     product_ids = [1 + (idx % max(num_items - 2, 1)) for idx in range(event_count - 2)]
     product_ids.extend(final_product_ids)
-    event_types = ["order"] * (event_count - 2) + final_event_types
+    event_types = ["purchase"] * (event_count - 2) + [
+        "purchase" if value == "order" else value for value in final_event_types
+    ]
     events = pd.DataFrame(
         {
             "event_id": [f"event-{idx:03d}" for idx in range(event_count)],
@@ -266,7 +283,11 @@ def _raw_dataset(
             "persona_cluster": [idx % 4 for idx in range(event_count)],
             "event_type": event_types,
             "event_ts": timestamps,
-            "interaction_weight": [1.0] * event_count,
+            "interaction_weight": [1.0 if value == "purchase" else 0.5 for value in event_types],
+            "session_id": [f"session-{idx:03d}" for idx in range(event_count)],
+            "event_origin": ["organic"] * (event_count - 1) + ["cold_start"],
+            "cohort_id": [None] * (event_count - 1) + ["cold-final"],
+            "benchmark_run_id": ["run-test"] * event_count,
         }
     )
     orders = pd.DataFrame(
@@ -275,7 +296,41 @@ def _raw_dataset(
             "user_id": [1],
             "product_id": [1],
             "quantity": [1],
-            "created_at": [timestamps[0]],
+            "order_ts": [timestamps[0]],
         }
     )
-    return RawDataset(events, products, orders, source_kind="synthetic")
+    return RawDataset(
+        events_df=events,
+        products_df=products,
+        orders_df=orders,
+        cold_product_ids=tuple(cold_product_ids),
+        source_kind=DataSourceKind.SYNTHETIC,
+        benchmark_run_id="run-test",
+        store_id=1,
+    )
+
+
+def _training_frame(timestamps: pd.DatetimeIndex | None = None) -> pd.DataFrame:
+    timestamps = (
+        timestamps
+        if timestamps is not None
+        else pd.to_datetime(
+            [
+                "2026-01-01T00:00:00Z",
+                "2026-01-01T01:00:00Z",
+                "2026-01-01T01:00:00Z",
+                "2026-01-01T02:00:00Z",
+            ],
+            utc=True,
+        )
+    )
+    return pd.DataFrame(
+        {
+            "event_id": ["a", "b", "c", "d"],
+            "internal_user_id": [1, 1, 1, 1],
+            "internal_product_id": [0, 1, 2, 3],
+            "event_type": ["purchase", "view", "purchase", "purchase"],
+            "event_ts": timestamps,
+            "interaction_weight": [1.0, 0.5, 1.0, 1.0],
+        }
+    )

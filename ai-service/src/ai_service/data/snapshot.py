@@ -1,244 +1,376 @@
-"""Snapshot Builder and Artifact Manager with Temporal & Cold-Start Validation."""
+"""Immutable snapshot construction with strict temporal and cold-start isolation."""
 
-from dataclasses import dataclass
+from __future__ import annotations
+
 import hashlib
+import json
+import os
+import shutil
+import tempfile
+from dataclasses import dataclass
 from pathlib import Path
-from typing import Dict, List, Tuple, Any, Optional
+from typing import cast
+
 import numpy as np
 import pandas as pd
 
-from ai_service.config import Settings, DATA_ARTIFACTS_DIR
-from ai_service.contracts import SnapshotManifestV2
-from ai_service.errors import DataIntegrityError
-from ai_service.data.sources import RawDataset, DatasetSource, PostgresDatasetSource, SyntheticDatasetSource
+from ai_service.config import Settings
+from ai_service.contracts import SnapshotManifest, SplitName
+from ai_service.data.sources import RawDataset
+from ai_service.errors import ArtifactIntegrityError, DataIntegrityError
 
 
-def fit_price_boundaries(unit_prices: np.ndarray, num_buckets: int = 8) -> np.ndarray:
-    """Fit quantile price boundaries on warm product catalog."""
-    quantiles = np.linspace(0, 100, num_buckets + 1)[1:-1]
-    boundaries = np.percentile(unit_prices, quantiles)
-    return np.unique(boundaries)
-
-
-def map_price_bucket(unit_price: float, boundaries: np.ndarray) -> int:
-    """Map unit price to 1-based bucket ID (1..8)."""
-    return int(np.digitize(unit_price, boundaries) + 1)
-
-
-@dataclass
+@dataclass(frozen=True)
 class Snapshot:
-    """Container for loaded dataset snapshot DataFrames and mappings."""
-
-    manifest: SnapshotManifestV2
+    manifest: SnapshotManifest
     snapshot_dir: Path
     catalog_df: pd.DataFrame
     train_df: pd.DataFrame
     val_df: pd.DataFrame
     test_df: pd.DataFrame
     order_baskets_df: pd.DataFrame
-    product_map: Dict[int, int]         # raw product_id -> internal_product_id (0..5199)
-    raw_product_map: Dict[int, int]     # internal_product_id -> raw product_id
-    user_map: Dict[int, int]            # raw user_id -> internal_user_id (1..5000)
-    raw_user_map: Dict[int, int]        # internal_user_id -> raw user_id
-    persona_map: Dict[int, int]         # raw user_id -> persona_cluster (0..7)
-    cold_item_ids: List[int]            # internal cold item IDs (0..5199)
+    product_map: dict[int, int]
+    raw_product_map: dict[int, int]
+    user_map: dict[int, int]
+    raw_user_map: dict[int, int]
+    persona_map: dict[int, int]
+    cold_item_ids: tuple[int, ...]
     price_boundaries: np.ndarray
 
 
-class SnapshotBuilder:
-    """Builds and validates versioned dataset snapshot artifacts."""
+def fit_price_boundaries(unit_prices: np.ndarray, num_buckets: int) -> np.ndarray:
+    if unit_prices.size == 0:
+        raise DataIntegrityError("warm catalog is empty")
+    quantiles = np.linspace(0, 1, num_buckets + 1)[1:-1]
+    return np.unique(np.quantile(unit_prices.astype(np.float64), quantiles))
 
+
+def map_price_bucket(unit_price: float, boundaries: np.ndarray) -> int:
+    return int(np.digitize(unit_price, boundaries) + 1)
+
+
+def _frame_hash(frame: pd.DataFrame) -> bytes:
+    normalized = frame.sort_index(axis=1).reset_index(drop=True)
+    values = pd.util.hash_pandas_object(normalized, index=False).to_numpy(np.uint64)
+    return bytes(values.tobytes())
+
+
+def _content_hash(frames: tuple[pd.DataFrame, ...], cold_ids: tuple[int, ...]) -> str:
+    digest = hashlib.sha256()
+    for frame in frames:
+        digest.update(_frame_hash(frame))
+    digest.update(np.asarray(cold_ids, dtype=np.int64).tobytes())
+    return digest.hexdigest()
+
+
+def _split_timestamp_groups(
+    events: pd.DataFrame,
+    *,
+    train_count: int,
+    val_count: int,
+) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+    ordered = events.sort_values(["event_ts", "event_id"], kind="stable").reset_index(drop=True)
+    group_sizes = ordered.groupby("event_ts", sort=True).size()
+    if len(group_sizes) < 3:
+        raise DataIntegrityError("at least three distinct timestamps are required")
+    cumulative = group_sizes.cumsum().to_numpy()
+    expected_boundaries = (train_count, train_count + val_count)
+    if any(boundary not in cumulative for boundary in expected_boundaries):
+        raise DataIntegrityError("a timestamp group crosses a frozen split boundary")
+    train_group = int(np.searchsorted(cumulative, expected_boundaries[0], side="left"))
+    val_group = int(np.searchsorted(cumulative, expected_boundaries[1], side="left"))
+    timestamps = group_sizes.index
+    train_end = timestamps[train_group]
+    val_end = timestamps[val_group]
+    train = ordered[ordered.event_ts <= train_end].copy().reset_index(drop=True)
+    val = (
+        ordered[(ordered.event_ts > train_end) & (ordered.event_ts <= val_end)]
+        .copy()
+        .reset_index(drop=True)
+    )
+    test = ordered[ordered.event_ts > val_end].copy().reset_index(drop=True)
+    if train.empty or val.empty or test.empty:
+        raise DataIntegrityError("temporal split produced an empty partition")
+    return train, val, test
+
+
+class SnapshotBuilder:
     def __init__(self, settings: Settings):
         self.settings = settings
 
-    def build(self, raw: RawDataset, snapshot_id: Optional[str] = None) -> Snapshot:
-        if snapshot_id is None:
-            snapshot_id = self.settings.data.snapshot_id
+    def build(self, raw: RawDataset, snapshot_id: str | None = None) -> Snapshot:
+        data = self.settings.data
+        snapshot_id = snapshot_id or data.snapshot_id
+        products = raw.products_df.copy()
+        events = raw.events_df.copy()
+        orders = raw.orders_df.copy()
 
-        out_dir = DATA_ARTIFACTS_DIR / snapshot_id
-        out_dir.mkdir(parents=True, exist_ok=True)
+        required_event_columns = {
+            "event_id",
+            "store_id",
+            "user_id",
+            "product_id",
+            "persona_cluster",
+            "event_type",
+            "event_ts",
+            "interaction_weight",
+            "session_id",
+            "event_origin",
+            "cohort_id",
+            "benchmark_run_id",
+        }
+        if missing := required_event_columns - set(events.columns):
+            raise DataIntegrityError(f"missing event columns: {sorted(missing)}")
+        if len(products) != data.num_items:
+            raise DataIntegrityError(f"catalog count {len(products)} != {data.num_items}")
+        if products.product_id.duplicated().any():
+            raise DataIntegrityError("catalog product_id must be unique")
+        if len(events) != data.expected_event_count:
+            raise DataIntegrityError(
+                f"event count {len(events)} != expected {data.expected_event_count}"
+            )
+        if events.event_id.duplicated().any():
+            raise DataIntegrityError("event_id must be unique")
+        if set(events.event_type.unique()) - {"view", "purchase"}:
+            raise DataIntegrityError("event_type must be view or purchase")
+        if events.session_id.isna().any() or (events.session_id.astype(str).str.len() == 0).any():
+            raise DataIntegrityError("session_id must be non-empty")
+        if set(events.event_origin.astype(str).unique()) - {
+            "organic",
+            "semantic_trap",
+            "cold_start",
+        }:
+            raise DataIntegrityError("event_origin is outside the benchmark contract")
+        expected_weights = events.event_type.map({"view": 0.5, "purchase": 1.0}).to_numpy(
+            np.float32
+        )
+        actual_weights = events.interaction_weight.to_numpy(np.float32)
+        if not np.isfinite(actual_weights).all() or not np.array_equal(
+            actual_weights, expected_weights
+        ):
+            raise DataIntegrityError("interaction weights must be view=0.5 and purchase=1.0")
+        if set(events.store_id.astype(int)) != {raw.store_id}:
+            raise DataIntegrityError("event store does not match raw dataset store")
+        if set(events.benchmark_run_id.astype(str)) != {raw.benchmark_run_id}:
+            raise DataIntegrityError("events contain another benchmark lineage")
 
-        events_df = raw.events_df.copy()
-        products_df = raw.products_df.copy()
-        orders_df = raw.orders_df.copy()
+        product_ids = tuple(sorted(int(value) for value in products.product_id.unique()))
+        cold_raw_ids = tuple(sorted(int(value) for value in raw.cold_product_ids))
+        if (
+            len(cold_raw_ids) != data.num_cold_items
+            or len(set(cold_raw_ids)) != len(cold_raw_ids)
+            or not set(cold_raw_ids) <= set(product_ids)
+        ):
+            raise DataIntegrityError("cold partition does not contain the expected catalog items")
+        product_map = {raw_id: idx for idx, raw_id in enumerate(product_ids)}
+        raw_product_map = {idx: raw_id for raw_id, idx in product_map.items()}
 
-        # 1. Product Mappings
-        sorted_raw_products = sorted(products_df["product_id"].unique())
-        product_map = {int(pid): int(idx) for idx, pid in enumerate(sorted_raw_products)}
-        raw_product_map = {int(idx): int(pid) for idx, pid in enumerate(sorted_raw_products)}
+        user_ids = tuple(sorted(int(value) for value in events.user_id.unique()))
+        if len(user_ids) != data.num_users:
+            raise DataIntegrityError(f"user count {len(user_ids)} != {data.num_users}")
+        user_map = {raw_id: idx + 1 for idx, raw_id in enumerate(user_ids)}
+        raw_user_map = {idx: raw_id for raw_id, idx in user_map.items()}
+        persona_counts = events.groupby("user_id").persona_cluster.nunique()
+        if (persona_counts != 1).any():
+            raise DataIntegrityError("each user must have exactly one persona")
+        if not set(events.persona_cluster.astype(int)) <= set(range(data.num_personas)):
+            raise DataIntegrityError("persona_cluster is outside the configured range")
+        persona_map = {
+            cast(int, user_id): int(persona)
+            for user_id, persona in events.groupby("user_id").persona_cluster.first().items()
+        }
 
-        # 2. User Mappings
-        sorted_raw_users = sorted(events_df["user_id"].unique())
-        user_map = {int(uid): int(idx + 1) for idx, uid in enumerate(sorted_raw_users)}
-        raw_user_map = {int(idx + 1): int(uid) for idx, uid in enumerate(sorted_raw_users)}
+        categories = tuple(sorted(int(value) for value in products.leaf_category_id.unique()))
+        category_map = {raw_id: idx + 1 for idx, raw_id in enumerate(categories)}
+        products["internal_product_id"] = products.product_id.map(product_map).astype(np.int64)
+        products["internal_leaf_category_id"] = products.leaf_category_id.map(category_map).astype(
+            np.int64
+        )
+        cold_internal = tuple(product_map[value] for value in cold_raw_ids)
+        warm_products = products[~products.internal_product_id.isin(cold_internal)]
+        boundaries = fit_price_boundaries(
+            warm_products.unit_price.to_numpy(), data.num_price_buckets
+        )
+        products["price_bucket_id"] = products.unit_price.map(
+            lambda value: map_price_bucket(float(value), boundaries)
+        ).astype(np.int64)
+        products = products.sort_values("internal_product_id", kind="stable").reset_index(drop=True)
 
-        # 3. Category & Persona Mappings
-        sorted_leaf_cats = sorted(products_df["leaf_category_id"].unique())
-        leaf_category_map = {int(cid): int(idx + 1) for idx, cid in enumerate(sorted_leaf_cats)}
-        
-        user_persona_df = events_df[["user_id", "persona_cluster"]].drop_duplicates()
-        persona_map = dict(zip(user_persona_df["user_id"].values, user_persona_df["persona_cluster"].values))
+        events["event_ts"] = pd.to_datetime(events.event_ts, utc=True)
+        if events.event_ts.isna().any():
+            raise DataIntegrityError("event_ts contains an invalid timestamp")
+        events["internal_user_id"] = events.user_id.map(user_map).astype(np.int64)
+        events["internal_product_id"] = events.product_id.map(product_map)
+        if events.internal_product_id.isna().any():
+            raise DataIntegrityError("events reference products outside the catalog")
+        events["internal_product_id"] = events.internal_product_id.astype(np.int64)
+        train, val, test = _split_timestamp_groups(
+            events,
+            train_count=data.expected_train_count,
+            val_count=data.expected_val_count,
+        )
+        actual_split_counts = (len(train), len(val), len(test))
+        expected_split_counts = (
+            data.expected_train_count,
+            data.expected_val_count,
+            data.expected_test_count,
+        )
+        if actual_split_counts != expected_split_counts:
+            raise DataIntegrityError(
+                f"split counts {actual_split_counts} != expected {expected_split_counts}"
+            )
+        split_sessions = [set(frame.session_id.astype(str)) for frame in (train, val, test)]
+        if any(
+            split_sessions[left] & split_sessions[right] for left, right in ((0, 1), (0, 2), (1, 2))
+        ):
+            raise DataIntegrityError("session_id must not cross a temporal split boundary")
 
-        # 4. Identify 250 highest-ID products as Cold items
-        cold_count = self.settings.data.num_cold_items
-        cold_raw_ids = sorted_raw_products[-cold_count:]
-        cold_internal_ids = [product_map[pid] for pid in cold_raw_ids]
-        cold_set = set(cold_internal_ids)
+        cold_set = set(cold_internal)
+        if cold_set & set(train.internal_product_id) or cold_set & set(val.internal_product_id):
+            raise DataIntegrityError("cold items leaked into train or validation")
+        warm_set = set(range(len(product_ids))) - cold_set
+        if set(train.internal_product_id.astype(int)) != warm_set:
+            raise DataIntegrityError("train split does not cover every warm catalog item")
+        cold_test_purchases = set(
+            test.loc[test.event_type == "purchase", "internal_product_id"].astype(int)
+        )
+        if missing_cold := cold_set - cold_test_purchases:
+            raise DataIntegrityError(
+                f"cold purchase ground truth missing for {len(missing_cold)} items"
+            )
+        if not (cold_test_purchases - cold_set):
+            raise DataIntegrityError("test split has no warm purchase ground truth")
+        if not (
+            train.event_ts.max() < val.event_ts.min() and val.event_ts.max() < test.event_ts.min()
+        ):
+            raise DataIntegrityError("strict temporal boundaries are not satisfied")
 
-        # 5. Add mapped columns
-        products_df["internal_product_id"] = products_df["product_id"].map(product_map)
-        products_df["internal_leaf_category_id"] = products_df["leaf_category_id"].map(leaf_category_map)
+        orders["order_ts"] = pd.to_datetime(orders.order_ts, utc=True)
+        orders = orders[orders.order_ts <= train.event_ts.max()].copy()
+        orders["internal_user_id"] = orders.user_id.map(user_map)
+        orders["internal_product_id"] = orders.product_id.map(product_map)
+        if orders.internal_product_id.isna().any():
+            raise DataIntegrityError("orders reference products outside the catalog")
+        if orders.internal_user_id.isna().any():
+            raise DataIntegrityError("orders reference users outside the benchmark")
+        orders["internal_product_id"] = orders.internal_product_id.astype(np.int64)
+        if cold_set & set(orders.internal_product_id):
+            raise DataIntegrityError("cold items leaked into train-period orders")
+        if int(orders.order_id.nunique()) != data.expected_order_count:
+            raise DataIntegrityError(
+                f"train order count {orders.order_id.nunique()} != {data.expected_order_count}"
+            )
+        orders = orders.sort_values(["order_ts", "order_id", "internal_product_id"], kind="stable")
 
-        # Fit price boundaries on warm catalog only
-        warm_catalog = products_df[~products_df["internal_product_id"].isin(cold_set)]
-        price_boundaries = fit_price_boundaries(warm_catalog["unit_price"].values, self.settings.data.num_price_buckets)
-
-        products_df["price_bucket_id"] = products_df["unit_price"].apply(lambda p: map_price_bucket(p, price_boundaries))
-
-        events_df["internal_user_id"] = events_df["user_id"].map(user_map)
-        events_df["internal_product_id"] = events_df["product_id"].map(product_map)
-        events_df["event_ts"] = pd.to_datetime(events_df["event_ts"], utc=True)
-
-        orders_df["internal_user_id"] = orders_df["user_id"].map(user_map)
-        orders_df["internal_product_id"] = orders_df["product_id"].map(product_map)
-        if "created_at" in orders_df.columns:
-            orders_df["order_ts"] = pd.to_datetime(orders_df["created_at"], utc=True)
-
-        # 6. Perform Temporal 80/10/10 Split on Events
-        events_df = events_df.sort_values(by=["event_ts", "event_id"]).reset_index(drop=True)
-        total_events = len(events_df)
-        train_end = int(0.80 * total_events)
-        val_end = int(0.90 * total_events)
-
-        train_df = events_df.iloc[:train_end].copy().reset_index(drop=True)
-        val_df = events_df.iloc[train_end:val_end].copy().reset_index(drop=True)
-        test_df = events_df.iloc[val_end:].copy().reset_index(drop=True)
-
-        # 7. Validate Temporal Boundaries Invariant
-        train_max_ts = train_df["event_ts"].max()
-        val_min_ts = val_df["event_ts"].min()
-        val_max_ts = val_df["event_ts"].max()
-        test_min_ts = test_df["event_ts"].min()
-
-        if train_max_ts >= val_min_ts:
-            raise DataIntegrityError(f"Temporal Leakage Violation: train_max_ts ({train_max_ts}) >= val_min_ts ({val_min_ts})")
-        if val_max_ts >= test_min_ts:
-            raise DataIntegrityError(f"Temporal Leakage Violation: val_max_ts ({val_max_ts}) >= test_min_ts ({test_min_ts})")
-
-        # 8. Validate Cold Item Isolation Invariant (C ^ Train = C ^ Val = Empty)
-        train_items = set(train_df["internal_product_id"].unique())
-        val_items = set(val_df["internal_product_id"].unique())
-        
-        train_cold_leak = cold_set.intersection(train_items)
-        val_cold_leak = cold_set.intersection(val_items)
-
-        if len(train_cold_leak) > 0:
-            raise DataIntegrityError(f"Cold-Start Leakage Violation: {len(train_cold_leak)} cold items present in Train split!")
-        if len(val_cold_leak) > 0:
-            raise DataIntegrityError(f"Cold-Start Leakage Violation: {len(val_cold_leak)} cold items present in Val split!")
-
-        # 9. Compute Checksum
-        data_bytes = f"{len(train_df)}-{len(val_df)}-{len(test_df)}-{raw.source_kind}".encode("utf-8")
-        checksum = hashlib.sha256(data_bytes).hexdigest()[:16]
-
-        manifest = SnapshotManifestV2(
-            store_id=self.settings.data.store_id,
+        content_sha = _content_hash((products, train, val, test, orders), cold_internal)
+        cold_sha = hashlib.sha256(np.asarray(cold_raw_ids, dtype=np.int64).tobytes()).hexdigest()
+        manifest = SnapshotManifest(
+            artifact_id=snapshot_id,
+            content_sha256=content_sha,
+            parent_sha256={"cold_partition": cold_sha},
+            benchmark_run_id=raw.benchmark_run_id,
+            store_id=raw.store_id,
             source_kind=raw.source_kind,
-            num_events=total_events,
-            num_users=len(sorted_raw_users),
-            num_items=len(sorted_raw_products),
-            num_cold_items=cold_count,
-            train_count=len(train_df),
-            val_count=len(val_df),
-            test_count=len(test_df),
-            train_max_ts=str(train_max_ts),
-            val_min_ts=str(val_min_ts),
-            val_max_ts=str(val_max_ts),
-            test_min_ts=str(test_min_ts),
-            checksum=checksum,
+            num_events=len(events),
+            num_users=len(user_ids),
+            num_items=len(product_ids),
+            num_cold_items=len(cold_internal),
+            split_counts={
+                SplitName.TRAIN: len(train),
+                SplitName.VAL: len(val),
+                SplitName.TEST: len(test),
+            },
+            split_boundaries={
+                "train_max": train.event_ts.max().to_pydatetime(),
+                "val_min": val.event_ts.min().to_pydatetime(),
+                "val_max": val.event_ts.max().to_pydatetime(),
+                "test_min": test.event_ts.min().to_pydatetime(),
+            },
         )
 
-        # Save Parquet artifacts
-        products_df.to_parquet(out_dir / "catalog.parquet", index=False)
-        train_df.to_parquet(out_dir / "train_events.parquet", index=False)
-        val_df.to_parquet(out_dir / "val_events.parquet", index=False)
-        test_df.to_parquet(out_dir / "test_events.parquet", index=False)
-        orders_df.to_parquet(out_dir / "order_baskets.parquet", index=False)
-
-        manifest_json = manifest.model_dump_json(indent=2)
-        (out_dir / "manifest.json").write_text(manifest_json, encoding="utf-8")
+        snapshots_root = data.artifact_root.resolve() / "snapshots"
+        snapshots_root.mkdir(parents=True, exist_ok=True)
+        destination = snapshots_root / snapshot_id
+        if destination.exists():
+            raise ArtifactIntegrityError(f"immutable snapshot already exists: {destination}")
+        temporary = Path(tempfile.mkdtemp(prefix=f".{snapshot_id}-", dir=snapshots_root))
+        try:
+            products.to_parquet(temporary / "catalog.parquet", index=False)
+            train.to_parquet(temporary / "train.parquet", index=False)
+            val.to_parquet(temporary / "val.parquet", index=False)
+            test.to_parquet(temporary / "test.parquet", index=False)
+            orders.to_parquet(temporary / "train_orders.parquet", index=False)
+            (temporary / "mappings.json").write_text(
+                json.dumps(
+                    {
+                        "product_map": product_map,
+                        "user_map": user_map,
+                        "persona_map": persona_map,
+                        "cold_raw_product_ids": cold_raw_ids,
+                    },
+                    sort_keys=True,
+                ),
+                encoding="utf-8",
+            )
+            np.save(temporary / "price_boundaries.npy", boundaries)
+            (temporary / "manifest.json").write_text(
+                manifest.model_dump_json(indent=2), encoding="utf-8"
+            )
+            os.replace(temporary, destination)
+        except Exception:
+            shutil.rmtree(temporary, ignore_errors=True)
+            raise
 
         return Snapshot(
             manifest=manifest,
-            snapshot_dir=out_dir,
-            catalog_df=products_df,
-            train_df=train_df,
-            val_df=val_df,
-            test_df=test_df,
-            order_baskets_df=orders_df,
+            snapshot_dir=destination,
+            catalog_df=products,
+            train_df=train,
+            val_df=val,
+            test_df=test,
+            order_baskets_df=orders,
             product_map=product_map,
             raw_product_map=raw_product_map,
             user_map=user_map,
             raw_user_map=raw_user_map,
             persona_map=persona_map,
-            cold_item_ids=cold_internal_ids,
-            price_boundaries=price_boundaries,
+            cold_item_ids=cold_internal,
+            price_boundaries=boundaries,
         )
 
 
-def load_snapshot(snapshot_id: str = "scaled-v1", settings: Optional[Settings] = None) -> Snapshot:
-    """Load pre-built snapshot artifacts from disk."""
-    if settings is None:
-        settings = Settings()
-
-    snap_dir = DATA_ARTIFACTS_DIR / snapshot_id
-    if not (snap_dir / "manifest.json").exists():
-        # Fallback to building synthetic snapshot for standalone tests/CLI
-        source = SyntheticDatasetSource(settings)
-        raw = source.load(settings.data.store_id)
-        builder = SnapshotBuilder(settings)
-        return builder.build(raw, snapshot_id)
-
-    manifest_data = (snap_dir / "manifest.json").read_text(encoding="utf-8")
-    manifest = SnapshotManifestV2.model_validate_json(manifest_data)
-
-    catalog_df = pd.read_parquet(snap_dir / "catalog.parquet")
-    train_df = pd.read_parquet(snap_dir / "train_events.parquet")
-    val_df = pd.read_parquet(snap_dir / "val_events.parquet")
-    test_df = pd.read_parquet(snap_dir / "test_events.parquet")
-    order_baskets_df = pd.read_parquet(snap_dir / "order_baskets.parquet")
-
-    sorted_raw_products = sorted(catalog_df["product_id"].unique())
-    product_map = {int(pid): int(idx) for idx, pid in enumerate(sorted_raw_products)}
-    raw_product_map = {int(idx): int(pid) for idx, pid in enumerate(sorted_raw_products)}
-
-    sorted_raw_users = sorted(train_df["user_id"].unique())
-    user_map = {int(uid): int(idx + 1) for idx, uid in enumerate(sorted_raw_users)}
-    raw_user_map = {int(idx + 1): int(uid) for idx, uid in enumerate(sorted_raw_users)}
-
-    user_persona_df = train_df[["user_id", "persona_cluster"]].drop_duplicates()
-    persona_map = dict(zip(user_persona_df["user_id"].values, user_persona_df["persona_cluster"].values))
-
-    cold_count = settings.data.num_cold_items
-    cold_raw_ids = sorted_raw_products[-cold_count:]
-    cold_internal_ids = [product_map[pid] for pid in cold_raw_ids]
-
-    warm_catalog = catalog_df[~catalog_df["internal_product_id"].isin(cold_internal_ids)]
-    price_boundaries = fit_price_boundaries(warm_catalog["unit_price"].values, settings.data.num_price_buckets)
-
+def load_snapshot(snapshot_id: str, settings: Settings) -> Snapshot:
+    path = settings.data.artifact_root.resolve() / "snapshots" / snapshot_id
+    manifest_path = path / "manifest.json"
+    if not manifest_path.exists():
+        raise ArtifactIntegrityError(f"snapshot does not exist: {path}")
+    manifest = SnapshotManifest.model_validate_json(manifest_path.read_text(encoding="utf-8"))
+    products = pd.read_parquet(path / "catalog.parquet")
+    train = pd.read_parquet(path / "train.parquet")
+    val = pd.read_parquet(path / "val.parquet")
+    test = pd.read_parquet(path / "test.parquet")
+    orders = pd.read_parquet(path / "train_orders.parquet")
+    mappings = json.loads((path / "mappings.json").read_text(encoding="utf-8"))
+    product_map = {int(key): int(value) for key, value in mappings["product_map"].items()}
+    user_map = {int(key): int(value) for key, value in mappings["user_map"].items()}
+    persona_map = {int(key): int(value) for key, value in mappings["persona_map"].items()}
+    cold_internal = tuple(product_map[int(value)] for value in mappings["cold_raw_product_ids"])
+    actual_sha = _content_hash((products, train, val, test, orders), cold_internal)
+    if actual_sha != manifest.content_sha256:
+        raise ArtifactIntegrityError("snapshot content checksum mismatch")
     return Snapshot(
         manifest=manifest,
-        snapshot_dir=snap_dir,
-        catalog_df=catalog_df,
-        train_df=train_df,
-        val_df=val_df,
-        test_df=test_df,
-        order_baskets_df=order_baskets_df,
+        snapshot_dir=path,
+        catalog_df=products,
+        train_df=train,
+        val_df=val,
+        test_df=test,
+        order_baskets_df=orders,
         product_map=product_map,
-        raw_product_map=raw_product_map,
+        raw_product_map={value: key for key, value in product_map.items()},
         user_map=user_map,
-        raw_user_map=raw_user_map,
+        raw_user_map={value: key for key, value in user_map.items()},
         persona_map=persona_map,
-        cold_item_ids=cold_internal_ids,
-        price_boundaries=price_boundaries,
+        cold_item_ids=cold_internal,
+        price_boundaries=np.load(path / "price_boundaries.npy"),
     )

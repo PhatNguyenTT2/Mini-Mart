@@ -25,7 +25,7 @@ async function initDatabase(pool) {
 async function start() {
   try {
     // 1. Database
-    const pool = createPool();
+    const pool = createPool('supplier_db', process.env.SUPPLIER_DATABASE_URL || process.env.DATABASE_URL);
     await initDatabase(pool);
     logger.info('PostgreSQL connected');
 
@@ -39,7 +39,7 @@ async function start() {
     const poDetailRepo = new PoDetailRepository(pool);
 
     const supplierService = new SupplierService({ supplierRepo });
-    const poService = new PurchaseOrderService( 
+    const poService = new PurchaseOrderService(
       purchaseOrderRepo, poDetailRepo, supplierRepo, pool,
       { inventoryServiceUrl: process.env.INVENTORY_SERVICE_URL || 'http://inventory:3006' }
     );

@@ -2,7 +2,7 @@ const { ValidationError, NotFoundError, AppError } = require('../../../../shared
 const axios = require('axios');
 
 class PurchaseOrderService {
-  constructor(poRepo, poDetailRepo, supplierRepo, pool, { inventoryServiceUrl }) {
+  constructor(poRepo, poDetailRepo, supplierRepo, pool, { inventoryServiceUrl } = {}) {
     this.poRepo = poRepo;
     this.poDetailRepo = poDetailRepo;
     this.supplierRepo = supplierRepo;
@@ -314,7 +314,7 @@ class PurchaseOrderService {
       // Return formatted
       await this.populateSupplier(updated);
       const details = await this.poDetailRepo.findByPoId(updated.id);
-      updated._details = details.map(d => this.formatPODetail(d));
+      updated._details = (details || []).map(d => this.formatPODetail(d));
 
       return this.formatPO(updated);
     } catch (error) {

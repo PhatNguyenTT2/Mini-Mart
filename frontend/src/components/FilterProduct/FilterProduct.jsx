@@ -88,8 +88,14 @@ export const FilterProduct = ({ onFilterChange, currentFilters = {} }) => {
     return flat;
   }, [categoryTree]);
 
+  const isInitialRender = React.useRef(true);
+
   // Auto-apply filters whenever selectedCategories, priceRange, or onlyDiscounted changes
   useEffect(() => {
+    if (isInitialRender.current) {
+      isInitialRender.current = false;
+      return;
+    }
     if (onFilterChange) {
       const filterParams = {
         categories: selectedCategories,
@@ -100,7 +106,7 @@ export const FilterProduct = ({ onFilterChange, currentFilters = {} }) => {
 
       onFilterChange(filterParams);
     }
-  }, [selectedCategories, priceRange, onlyDiscounted]);
+  }, [selectedCategories, priceRange, onlyDiscounted, onFilterChange]);
 
   // Clear all filters
   const handleClearFilters = () => {

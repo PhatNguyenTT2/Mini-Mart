@@ -1,0 +1,14 @@
+[
+  {
+    "name": "architecture_overview.pdf",
+    "caption": "Overall architecture of the Proposed Hybrid Cascade Ranking System. The left branch illustrates the Wide component utilizing Apriori co-purchase rules with log1p transformation and Wide MLP, while the right branch details the Deep Two-Tower network incorporating frozen SBERT embeddings for generalized semantic matching."
+  },
+  {
+    "name": "latency_comparison.pdf",
+    "caption": "Inference latency comparison between the PyTorch native implementation (~12.5 ms) and the optimized ONNX Runtime engine (~0.85 ms). Evaluation was performed by scoring a batch of 100 candidate items, demonstrating a 14.7x speedup."
+  },
+  {
+    "name": "performance_ablation.pdf",
+    "caption": "Performance comparison across baseline models and ablation variants using the full-catalog ranking evaluation protocol (1,380 SKUs)."
+  }
+]

@@ -1,0 +1,11 @@
+[model]
+use_item_id_residual = true
+
+[train]
+objective = "sampled_softmax"
+training_variant = "deep_only"
+explicit_negative_ratio = 16
+use_history_profiles = true
+view_auxiliary_weight = 0.1
+
+
