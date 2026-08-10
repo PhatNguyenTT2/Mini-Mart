@@ -15,7 +15,7 @@ describe('SupplierService', () => {
       supplierRepo.create.mockResolvedValue(FIXTURES.supplier);
 
       const result = await service.create({ company_name: 'NewCo' });
-      expect(result.company_name).toBe('Vinamilk'); // from fixture
+      expect(result.companyName).toBe('Vinamilk'); // formatted camelCase
       expect(supplierRepo.create).toHaveBeenCalled();
     });
 
@@ -36,7 +36,7 @@ describe('SupplierService', () => {
       supplierRepo.update.mockResolvedValue({ ...FIXTURES.supplier, address: 'New Address' });
 
       const result = await service.update(1, { address: 'New Address', current_debt: 999999 });
-      
+
       expect(supplierRepo.update).toHaveBeenCalledWith(1, { address: 'New Address' }); // debt stripped
       expect(result.address).toBe('New Address');
     });
@@ -50,9 +50,9 @@ describe('SupplierService', () => {
   describe('getDebtInfo()', () => {
     it('should return calculated debt info', async () => {
       supplierRepo.findById.mockResolvedValue(FIXTURES.supplier); // limit 50m, debt 10m
-      
+
       const result = await service.getDebtInfo(1);
-      
+
       expect(result.credit_limit).toBe(50000000);
       expect(result.current_debt).toBe(10000000);
       expect(result.available_credit).toBe(40000000);
@@ -60,10 +60,10 @@ describe('SupplierService', () => {
     });
 
     it('should return over_limit=true when debt > limit', async () => {
-      supplierRepo.findById.mockResolvedValue({ 
-        ...FIXTURES.supplier, credit_limit: 1000, current_debt: 5000 
+      supplierRepo.findById.mockResolvedValue({
+        ...FIXTURES.supplier, credit_limit: 1000, current_debt: 5000
       });
-      
+
       const result = await service.getDebtInfo(1);
       expect(result.available_credit).toBe(0);
       expect(result.over_limit).toBe(true);

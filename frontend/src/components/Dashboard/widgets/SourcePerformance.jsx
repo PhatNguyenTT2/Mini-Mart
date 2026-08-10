@@ -6,6 +6,7 @@ const SOURCE_CONFIG = {
   cf: { label: 'CF (Item-based)', color: '#10b981', bg: 'bg-emerald-50', text: 'text-emerald-700' },
   apriori: { label: 'Apriori', color: '#f59e0b', bg: 'bg-amber-50', text: 'text-amber-700' },
   session: { label: 'Session', color: '#f43f5e', bg: 'bg-rose-50', text: 'text-rose-700' },
+  two_tower_onnx: { label: 'Two-Tower AI', color: '#8b5cf6', bg: 'bg-purple-50', text: 'text-purple-700' },
   organic: { label: 'Organic', color: '#14b8a6', bg: 'bg-teal-50', text: 'text-teal-700' },
 };
 

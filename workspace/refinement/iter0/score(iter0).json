@@ -1,0 +1,49 @@
+{
+  "axis_scores": {
+    "scientific_depth": {
+      "score": 68,
+      "justification": "Clear novelty framing (decoupled Wide+Deep) with well-defined equations. Missing formal complexity analysis of the Wide MLP vs baseline linear wide."
+    },
+    "technical_execution": {
+      "score": 72,
+      "justification": "Complete architecture description with reproducible hyperparameters. Training convergence table strengthens reproducibility. Negative sampling strategy well-motivated."
+    },
+    "logical_flow": {
+      "score": 65,
+      "justification": "Sections follow logically from problem motivation through evaluation. Transition from Methodology to Implementation could be smoother. Per-persona analysis is insightful but could connect more explicitly to architectural design choices."
+    },
+    "writing_clarity": {
+      "score": 60,
+      "justification": "Generally clear but some dense paragraphs in Related Work. Abstract could be tighter. Some sentence-level redundancy between Introduction contributions list and Conclusion."
+    },
+    "evidence_presentation": {
+      "score": 70,
+      "justification": "Three well-formatted booktabs tables with correct numbers. All 4 figures integrated. Coverage-precision trade-off acknowledged transparently. Missing: training convergence table."
+    },
+    "academic_style": {
+      "score": 66,
+      "justification": "Formal tone appropriate for IEEE. Some phrases slightly informal (e.g., 'blind spot'). Citation density appropriate. Could benefit from more precise language in qualitative observations."
+    }
+  },
+  "overall_score": 66.8,
+  "decision_band": "Minor Revision",
+  "strengths": [
+    "Clear architectural novelty: decoupled Wide (Apriori MLP) + Deep (SBERT Two-Tower) with additive scoring",
+    "Rigorous full-catalog evaluation protocol (690K predictions) with explicit Krichene & Rendle justification",
+    "Comprehensive per-persona cluster analysis revealing differentiated Wide vs Deep branch contributions",
+    "Transparent coverage-vs-precision trade-off discussion (HR improves, NDCG slightly decreases)",
+    "Production-ready system design with concrete ONNX latency benchmarks"
+  ],
+  "weaknesses": [
+    "W1: Training convergence data (Table in experimental_log.md) not included in paper — add as table or figure reference",
+    "W2: Abstract is slightly long (~150 words); IEEE typically targets 100-150 words. Consider tightening.",
+    "W3: The ONNX citation references vaswani2017attention (Transformer paper), not an ONNX-specific paper. Add a footnote clarifying this is the foundational architecture.",
+    "W4: Section transitions between Methodology and Implementation lack explicit linkage",
+    "W5: Conclusion largely restates results without deeper synthesis of the memorization-generalization balance"
+  ],
+  "questions": [
+    "Q1: What happens when Apriori rules have zero coverage for a user-item pair? Does Score_Wide default to 0?",
+    "Q2: How was the temperature tau=0.1 selected? Was hyperparameter search performed?",
+    "Q3: Can the training convergence data from experimental_log.md be included as a table?"
+  ]
+}

@@ -14,32 +14,36 @@ const CLUSTER_DEFINITIONS = {
         name: 'Lẩu Bò / Nấu ăn',
         categoryNames: [
             'Rau lá', 'Rau củ', 'Thịt heo', 'Thịt bò',
-            'Bún, phở tươi', 'Gia vị tẩm ướp'
+            'Bún, phở tươi', 'Gia vị tẩm ướp', 'Cá, hải sản', 'Thịt, cá, trứng, hải sản'
         ],
         keywords: ['lẩu', 'bò', 'nấm', 'rau', 'nấu', 'gia vị', 'bún'],
         boost: 0.15
     },
     bua_sang: {
         name: 'Bữa Sáng / Ăn nhẹ',
-        categoryNames: ['Trứng', 'Chế biến sẵn', 'Sữa tươi', 'Bánh mì & Bánh ngọt'],
+        categoryNames: ['Trứng gà, vịt, cút', 'Sữa tươi', 'Bánh tươi, Sandwich', 'Sữa các loại'],
         keywords: ['sáng', 'bánh mì', 'sữa', 'trứng', 'sandwich', 'xúc xích'],
         boost: 0.12
     },
     an_vat: {
         name: 'Ăn vặt / Sinh viên',
-        categoryNames: ['Mì ăn liền', 'Nước ngọt có ga', 'Snack & Đồ nhắm'],
+        categoryNames: ['Mì ăn liền', 'Nước ngọt', 'Nước ngọt có ga', 'Bánh snack', 'Ăn vặt các loại'],
         keywords: ['mì', 'snack', 'nước ngọt', 'ăn vặt', 'gói', 'coca'],
         boost: 0.12
     },
     nhau: {
         name: 'Nhậu / Giải khát',
-        categoryNames: ['Bia', 'Nước ngọt có ga', 'Snack & Đồ nhắm'],
+        categoryNames: [
+            'Bia', 'Bia, nước có cồn', 'Bia, nước giải khát',
+            'Nước ngọt', 'Nước ngọt có ga',
+            'Bánh snack', 'Khô chế biến sẵn', 'Hạt khô', 'Snack & Đồ nhắm'
+        ],
         keywords: ['bia', 'nhậu', 'khô', 'đậu phộng', 'mồi', 'giải khát'],
         boost: 0.15
     },
     gia_vi: {
         name: 'Gia vị / Nêm nếm',
-        categoryNames: ['Dầu ăn', 'Gia vị tẩm ướp', 'Nước chấm'],
+        categoryNames: ['Dầu ăn', 'Gia vị nêm sẵn', 'Gia vị tẩm ướp', 'Nước mắm', 'Nước tương', 'Nước chấm, mắm', 'Dầu ăn, nước chấm, gia vị'],
         keywords: ['gia vị', 'nước mắm', 'muối', 'đường', 'bột ngọt', 'hạt nêm', 'dầu ăn'],
         boost: 0.10
     }
@@ -60,11 +64,14 @@ class SessionContextService {
                 WHERE store_id = $1 AND is_in_stock = TRUE
             `, [storeId]);
 
-            // Build resolved clusters with real product IDs
+            // Build resolved clusters with real product IDs (case-insensitive substring matching)
             this._clusters = {};
             for (const [key, def] of Object.entries(CLUSTER_DEFINITIONS)) {
                 const productIds = rows
-                    .filter(r => def.categoryNames.includes(r.category_name))
+                    .filter(r => r.category_name && def.categoryNames.some(catName =>
+                        r.category_name.toLowerCase().includes(catName.toLowerCase()) ||
+                        catName.toLowerCase().includes(r.category_name.toLowerCase())
+                    ))
                     .map(r => Number(r.product_id));
                 this._clusters[key] = { ...def, productIds };
             }

@@ -47,7 +47,10 @@ export const ProductCard = ({ product, onAddToCart, trackingSource = 'organic' }
   };
 
   const handleCardClick = () => {
-    navigate(`/product/${product.id}`);
+    const targetUrl = trackingSource && trackingSource !== 'organic'
+      ? `/product/${product.id}?ref=chat&src=${encodeURIComponent(trackingSource)}`
+      : `/product/${product.id}`;
+    navigate(targetUrl);
     if (!trackedClicksRef.current.has(product.id)) {
       chatFeedbackService.trackClick(product.id, selectedStore?.id, trackingSource);
       trackedClicksRef.current.add(product.id);
@@ -188,8 +191,8 @@ export const ProductCard = ({ product, onAddToCart, trackingSource = 'organic' }
             <button
               onClick={handleAddToCart}
               className={`flex items-center gap-1.5 transition-all duration-200 rounded-xl font-semibold ${isHovered
-                  ? 'bg-emerald-600 text-white shadow-md px-3.5 py-2'
-                  : 'bg-emerald-100 text-emerald-600 px-2.5 py-2'
+                ? 'bg-emerald-600 text-white shadow-md px-3.5 py-2'
+                : 'bg-emerald-100 text-emerald-600 px-2.5 py-2'
                 }`}
               title="Add to cart"
             >

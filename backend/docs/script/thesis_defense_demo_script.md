@@ -1,32 +1,30 @@
-# Kịch Bản Demo Bảo Vệ Đồ Án — Hybrid RAG Recommendation
+# Kịch Bản Demo Bảo Vệ Đồ Án — Graceful Fallback Ensemble (Tầng 2)
 
-## Trình Diễn 4 Thuật Toán
+## Trình Diễn Cỗ Máy Gợi Ý Hộp Trắng Tầng 2 (Graceful Fallback Mode)
 
-> **Nguyên lý điều hướng (Contextual Router):** Hệ thống tự động kích hoạt thuật toán tối ưu dựa trên ý định người dùng:
+> **Bối cảnh sử dụng**: Kịch bản này được thực thi khi **tắt container `ai-service`** (`docker compose stop ai-service`) để trình diễn cho Hội đồng thấy khả năng tự động lùi về cỗ máy Hộp Trắng Multi-Source Ensemble (Content + CF + Apriori + Session) với thời gian chuyển đổi **0ms**.
 
-| Thuật toán | Khi nào kích hoạt | Ví dụ thực tế |
-|---|---|---|
-| **Content-Based RAG (α)** | Khách tìm kiếm chủ động, hỏi rộng | *"Tôi muốn mua đồ ăn vặt"* -> Gợi ý hạt điều, snack, khô gà |
-| **Apriori (γ)** | Đã xác định sản phẩm mỏ neo cụ thể | *"Tôi muốn mua bia Heineken"* -> Gợi ý thêm đồ ăn kèm (Khô gà, Coca) |
-| **Collaborative Filtering (β)** | Khách lướt xem chung, không đích danh | *"Gợi ý cho tôi vài món"* -> Gợi ý Nước mắm, Rau muống (nếu là Nội trợ) |
-| **Session Context (δ)** | Chat nhiều lượt, ý định biến đổi liên tục | Lượt 1: *Lẩu Thái* -> Lượt 2: *Rau ăn kèm* -> Lượt 3: *"Gợi ý thêm đi"* -> Bún, Bò Mỹ |
+| Thuật toán Tầng 2 | Điều kiện kích hoạt | Ví dụ thực tế | Badge hiển thị |
+|---|---|---|---|
+| **Content-Based RAG (α)** | Khách tìm kiếm danh mục / từ khóa | *"Tôi muốn mua bánh quy"* → Gợi ý Danisa, Nabati | 🔵 `[content]` |
+| **Apriori Cross-sell (γ)** | Xác định SP mỏ neo | *"Tôi muốn mua bia Heineken"* → Gợi ý Khô gà, Coca | 🟧 `[apriori]` |
+| **Collaborative Filtering (β)** | Khách lướt xem tổng hợp | *"Gợi ý cho tôi vài món"* → Gợi ý Nước mắm, OMO | 🟩 `[cf]` |
+| **Session Context (δ)** | Chat multi-turn | Lượt 1: *Lẩu Thái* → Lượt 2: *Rau* → Lượt 3: *"Gợi ý thêm"* | 🟨 `[session]` |
 
 ---
 
 ### ACT 1 · Content-Based RAG (α) & Intent Gating
 
-> **Mục đích:** Chứng minh RAG hiểu ngữ nghĩa (không chỉ khớp từ khóa). Truy vấn rộng "đồ ăn vặt" hoặc "bánh kẹo" trả về đúng sản phẩm thuộc danh mục bánh kẹo mà không cần gõ tên cụ thể.
->
-> **Điểm mạnh:** Giải quyết vấn đề của Keyword Search truyền thống (từ đồng nghĩa, từ lóng). Pipeline song song Semantic + Keyword, hợp nhất bằng RRF.
+> **Mục đích:** Chứng minh RAG hiểu ngữ nghĩa sản phẩm từ seed data 1,380 SKU (Bách Hóa Xanh). Truy vấn "bánh quy" trả về đúng sản phẩm thuộc danh mục bánh quy mà không cần gõ tên thương hiệu cụ thể.
 
 **Thao tác:**
 
 | # | Hành động | Màn hình |
 |:-:|---|---|
-| 1 | Gõ: **"Tôi muốn mua đồ ăn vặt"** (hoặc **"Tôi muốn mua bánh kẹo"**) | Chatbot |
-| 2 | Đợi 2–3s → xuất hiện 3 product cards | Chatbot |
+| 1 | Gõ: **"Tôi muốn mua bánh quy"** | Chatbot |
+| 2 | Đợi 1–2s → xuất hiện 3 product cards | Chatbot |
 | 3 | Click vào **Bánh xốp phô mai Nabati** | Card highlight, feedback gửi đi |
-| 4 | Nhìn sang Dashboard | Badge `[content]` nhảy lên Live Feed |
+| 4 | Nhìn sang Dashboard | Badge `[content]` (blue) nhảy lên Live Feed |
 
 **Kết quả thực tế (đã kiểm chứng):**
 
@@ -45,13 +43,7 @@ Hệ thống sử dụng trọng số mặc định: `α (Content) = 0.40`, `β 
 | Bánh quy bơ Danisa | 0.8310 | 0.0000 | ×1.00 | 0.40 × 0.8310 = **0.3324** (normalized ~0.5983) |
 | Kẹo mút Chupa Chups | 0.8004 | 0.0000 | ×1.00 | 0.40 × 0.8004 = **0.3202** (normalized ~0.5763) |
 
-> **💡 Cơ chế chuyển đổi từ `final_score` tĩnh sang AI Score thực tế trên hệ thống:**
-> Trong thực tế chạy hệ thống (runtime), điểm raw `final_score` tĩnh ($0.3413$) được biến đổi thành điểm AI Score chuẩn hóa thực tế ($0.6144$) thông qua hai bước thích ứng:
-> 1. **Dynamic Weight Redistribution:** Vì không có dữ liệu Collaborative Filtering (CF nhãn rỗng), hệ thống tự dồn trọng số $\beta = 0.25$ của CF sang Content RAG ($\alpha_{\text{thực tế}} = 0.40 + 0.25 = 0.65$).
-> 2. **Personalization Bonus:** Cộng thêm điểm cá nhân hóa nền cho nhóm Retail ($\delta \times personal = 0.10 \times 0.3 = 0.03$).
-> 3. **Công thức ánh xạ động:**
->    $$\text{AI Score} = 0.65 \times \text{content} + 0.03$$
->    *(Ví dụ với Bánh Nabati: $0.65 \times 0.8991 + 0.03 = \mathbf{0.6144}$. Điểm content tương đối trong phiên chạy thực tế đạt 0.8991 thay vì 0.8533 của mẫu tĩnh do ảnh hưởng tập pool động).*
+> **⚡ Ghi chú V2:** Trong chế độ AI Fast Path, Content RAG Score được thay thế bằng Dot Product giữa User Embedding (User Tower) và Item Embedding (Item Tower 64d), tự động nội suy điểm tương đồng ngữ nghĩa mà không cần qua bảng trọng số tĩnh.
 
 **Live Feedback (Dashboard):**
 
@@ -67,7 +59,7 @@ Hệ thống sử dụng trọng số mặc định: `α (Content) = 0.40`, `β 
 >
 > *3 sản phẩm đầu tiên đều là kết quả Content-Based — 'bánh xốp', 'bánh quy', 'kẹo mút' đều tự động được tìm thấy mặc dù khách hàng không cần truy vấn đúng nhãn tên. Tín hiệu Content-RAG đóng vai trò chủ đạo cho truy vấn tìm kiếm rộng này."*
 
-**✅ Checkpoint:** 3 badge `[content]` → Thuật toán 1/4.
+**✅ Checkpoint:** 3 badge `[content]` → Thuật toán 1/5.
 
 ---
 
@@ -87,7 +79,7 @@ Hệ thống sử dụng trọng số mặc định: `α (Content) = 0.40`, `β 
 | 1 | Gõ: **"Tôi muốn mua bia Heineken"** | Chatbot |
 | 2 | Đợi kết quả → Bia Heineken + sản phẩm có badge `[apriori]` | Chatbot |
 | 3 | Chỉ vào sản phẩm Apriori (Coca-Cola, Khô gà): *"Sản phẩm này không phải do tìm kiếm"* | — |
-| 4 | Click sản phẩm Apriori → nhìn Dashboard | Badge `[apriori]` nhảy lên |
+| 4 | Click sản phẩm Apriori → nhìn Dashboard | Badge `[apriori]` (amber) nhảy lên |
 
 **Dữ liệu Apriori thực tế (Heineken):**
 
@@ -106,37 +98,13 @@ Hệ thống sử dụng trọng số mặc định: `α (Content) = 0.40`, `β 
 | 3 | Khô gà lá chanh G kitchen hũ 200g | 85.000đ | `apriori` | 0.1554 |
 | 4 | Thùng 24 lon bia Tiger Bạc (Tiger Crystal) 330ml | 395.000đ | `content` | 0.5502 |
 
-#### 🧮 Cơ chế tính điểm chi tiết (Ensemble Scoring details)
-Áp dụng công thức tương tự với hình phạt cho sản phẩm không trùng khớp ngữ nghĩa (`penalty = 0.75` cho sản phẩm Apriori-only):
-
-| Sản phẩm | content | apriori effective | penalty (content=0) | final_score (chưa chuẩn hóa) |
-|---|:-:|:-:|:-:|:-:|
-| Heineken (**anchor**) | 1.0000 | 0.0000 | ×1.00 | 0.40 × 1.00 = **0.4000** (normalized ~0.7470) |
-| Coca (apriori-only) | 0.0000 | 0.8010 | ×0.75 | 0.25 × 0.8010 × 0.75 = **0.1502** (normalized ~0.1749) |
-| Khô gà (apriori-only) | 0.0000 | 0.7090 | ×0.75 | 0.25 × 0.7090 × 0.75 = **0.1329** (normalized ~0.1574) |
-| Bia Tiger Bạc (secondary) | 0.7500 | 0.0000 | ×1.00 | 0.40 × 0.75 = **0.3000** (normalized ~0.5572) |
-
-> **💡 Cơ chế chuyển đổi từ `final_score` tĩnh sang AI Score thực tế trên hệ thống:**
-> Tương tự như ACT 1, điểm raw `final_score` tĩnh của các sản phẩm phụ/mua kèm (Coca-Cola, Khô gà) sẽ được ánh xạ chính xác sang AI Score qua công thức động:
-> 1. **Dynamic Weight Redistribution:** Trọng số CF ($\beta = 0.25$) được dồn sang Content RAG do kết quả CF rỗng ($\alpha_{\text{thực tế}} = 0.65$).
-> 2. **Personalization Bonus:** Cộng thêm điểm cá nhân hóa nền cho nhóm Retail ($\delta \times personal = 0.10 \times 0.3 = 0.03$).
-> 3. **Công thức tính điểm thực tế:** 
->    * Đối với Coca-Cola: Do là Apriori-only product (không có điểm Content), điểm số tính theo công thức: 
->      $$\text{AI Score} = (\gamma \times \text{apriori\_effective} + \text{Personal}) \times \text{penalty} = (0.25 \times 0.8010 + 0.03) \times 0.75 = 0.23025 \times 0.75 \approx \mathbf{0.1727}$$
->      *(Nhân hệ số phạt 0.75 cho sản phẩm nằm ngoài phạm vi tìm kiếm của người dùng).*
->    * Đối với Khô gà: 
->      $$\text{AI Score} = (0.25 \times 0.7090 + 0.03) \times 0.75 = 0.20725 \times 0.75 \approx \mathbf{0.1554}$$
->    * Đối với Heineken (anchor):
->      $$\text{AI Score} = \alpha_{\text{thực tế}} \times \text{content} + \text{Personal} = 0.65 \times 1.096 + 0.03 \approx \mathbf{0.7426}$$
->      *(Điểm content tương đối của Heineken thực tế đạt 1.096 do thuật toán cộng hưởng).*
+> **⚡ Ghi chú V2:** Trong mô hình Wide & Deep Two-Tower, điểm Lift của Apriori được nuôi thẳng vào **Wide Layer**, giúp mô hình học sâu không bị "quên" quy luật mua kèm kinh điển này khi chuyển sang kiến trúc Neural Network.
 
 **Thuyết minh:**
 
 > *"Sản phẩm Coca-Cola và Khô gà xuất hiện dù người dùng KHÔNG hỏi về chúng. Đây là thuật toán Apriori — khai phá luật kết hợp từ 500 đơn hàng. Hệ thống phát hiện khách mua Bia Heineken thường mua kèm Coca-Cola (Lift=1.90, 165 đơn mua kèm) và Khô gà (Lift=1.74, 146 đơn mua kèm). Đây chính là hiện tượng 'Bia và Bỉm' kinh điển trong Data Mining."*
->
- 
 
-**✅ Checkpoint:** Badge `[apriori]` + Coca-Cola/Khô gà → Thuật toán 2/4.
+**✅ Checkpoint:** Badge `[apriori]` + Coca-Cola/Khô gà → Thuật toán 2/5.
 
 ---
 
@@ -145,8 +113,6 @@ Hệ thống sử dụng trọng số mặc định: `α (Content) = 0.40`, `β 
 > **Mục đích:** Chứng minh cá nhân hóa mù (Blind Personalization) — AI nhận diện thói quen riêng khi người dùng hỏi chung chung, không có từ khóa mỏ neo.
 >
 > **Điểm mạnh:** Ma trận tương đồng Item-Item phân loại user theo hành vi cộng đồng. Cùng một câu hỏi, nhưng kết quả khác nhau hoàn toàn giữa các nhóm người dùng (Nội trợ → Nước mắm, Rau muống, Gia vị lẩu; Sinh viên → Mì tôm, Xúc xích, Coca).
->
-> **Tài khoản demo:** User #51 thuộc nhóm **Nội trợ Nấu lẩu** (ID 1–150). CF phân tích 500 user interactions, phát hiện User #51 có hành vi tương đồng với nhóm mua bò, nấm, rau, gia vị → gợi ý sản phẩm từ cùng cluster.
 
 **Thao tác:**
 
@@ -155,10 +121,9 @@ Hệ thống sử dụng trọng số mặc định: `α (Content) = 0.40`, `β 
 | 1 | Bấm 🔄 Phiên chat mới | Chat trống |
 | 2 | Gõ: **"Gợi ý cho tôi vài món"** | Chatbot |
 | 3 | Đợi kết quả → xuất hiện sản phẩm có badge `[cf]` chiếm đa số (3–4/5 slot) | Chatbot |
-| 4 | Chỉ vào sản phẩm CF: *"Sản phẩm này được cá nhân hóa theo thói quen mua sắm"* | — |
-| 5 | Click sản phẩm CF → nhìn Dashboard | Badge `[cf]` nhảy lên |
+| 4 | Click sản phẩm CF → nhìn Dashboard | Badge `[cf]` (emerald) nhảy lên |
 
-**Kết quả thực tế (đã kiểm chứng — User #51, nhóm Nội trợ):**
+**Kết quả thực tế (User #51, nhóm Nội trợ):**
 
 | # | Sản phẩm | Source | AI Score |
 |:-:|---|:-:|:-:|
@@ -168,65 +133,33 @@ Hệ thống sử dụng trọng số mặc định: `α (Content) = 0.40`, `β 
 | 4 | Gia vị nêm sẵn lẩu Thái Barona 80g | `cf` | 0.3422 |
 | 5 | Cá viên chiên xâu tôm viên Vissan 500g | `cf` | 0.3453 |
 
-#### 🧮 Cơ chế tính điểm chi tiết (Ensemble Scoring details)
-Đăng nhập bởi User #51 (nhóm Nội trợ). General Recommendation Query không chứa từ khóa neo nên RAG content = 0. Trọng số chính là `β (CF) = 0.25` kết hợp `γ (Apriori) = 0.25`:
-
-| Sản phẩm | content | cf (personal cohort) | apriori effective | penalty (content=0) | final_score (chưa chuẩn hóa) |
-|---|:-:|:-:|:-:|:-:|:-:|
-| Nước mắm Nam Ngư 750ml | 0.0000 | 1.0000 (max cohort) | 0.0000 | ×0.50 (general query penalty) | 0.25 × 1.00 × 0.50 = **0.1250** (normalized ~0.7695) |
-| Cá viên chiên Vissan 500g | 0.0000 | 0.4632 | 0.0000 | ×0.50 (general query penalty) | 0.25 × 0.4632 × 0.50 = **0.0579** (normalized ~0.3453) |
-| Gia vị nêm sẵn lẩu Thái 80g | 0.0000 | 0.4578 | 0.0000 | ×0.50 (general query penalty) | 0.25 × 0.4578 × 0.50 = **0.0572** (normalized ~0.3422) |
-| Cherry đỏ Mỹ size 9.5 (VIP) | 0.0000 | 0.4560 | 0.0000 | ×0.50 (general query penalty) | 0.25 × 0.4560 × 0.50 = **0.0570** (normalized ~0.3509) |
-| Rau muống VietGAP 500g (Apriori) | 0.0000 | 0.0000 | 0.5000 (mua kèm lẩu) | ×0.75 (apriori-only penalty) | 0.25 × 0.50 × 0.75 = **0.0938** (normalized ~0.1768) |
-
-> **💡 Cơ chế chuyển đổi từ `final_score` tĩnh sang AI Score thực tế trên hệ thống:**
-> Tương tự các ACT trước, mặc dù `final_score` tĩnh của thuật toán lọc cộng tác (CF) nhỏ, nhưng trên Dashboard lại đạt **AI Score = 0.7695** nhờ cơ chế chuẩn hóa động trên tập kết quả:
-> 1. **Local Scale Normalization:** Điểm số CF của Nước mắm Nam Ngư được lấy làm thang chuẩn Max CF ($1.0000$) cho nhóm.
-> 2. **Personalization Bonus:** Cộng thêm điểm cá nhân hóa nền cho nhóm Retail ($\delta \times personal = 0.10 \times 0.3 = 0.03$).
-> 3. **Hệ số phạt tìm kiếm rộng (General Query Penalty):** Do truy vấn không chứa từ khóa Content, hệ thống nhân hệ số phạt $0.50$ cho sản phẩm chỉ có CF đơn thuần để bảo vệ tính nhất quán của RAG (riêng Apriori được ưu tiên hơn với hệ số $0.75$).
->    $$\text{AI Score} = \text{normalized\_final\_score}_{\text{after\_scaling}} \approx \mathbf{0.7695}$$
-
-> **Nhận xét:** 4/5 sản phẩm mang badge `[cf]` — toàn bộ liên quan đến nấu ăn gia đình (nước mắm, gia vị lẩu, cá viên). Slot 2 có badge `[apriori]` vì Rau muống thường được mua kèm với gia vị lẩu. Kết quả này sẽ **hoàn toàn khác** nếu đăng nhập bằng User 200 (Sinh viên) — lúc đó CF sẽ gợi ý Mì gói, Snack, Coca.
+> **⚡ Ghi chú V2:** Trong Two-Tower, các đặc trưng ẩn (latent features) của Collaborative Filtering được tự động trích xuất từ User Tower MLP (User_ID + Persona Cluster → 64d vector) thay vì phải tính toán ma trận Cosine thủ công.
 
 **Thuyết minh:**
 
-> *"Câu hỏi 'Gợi ý cho tôi vài món' hoàn toàn không chứa từ khóa cụ thể. Vậy tại sao Nước mắm Nam Ngư, Gia vị lẩu Thái, Cá viên chiên xuất hiện?*
->
-> *Đó là nhờ Collaborative Filtering — hệ thống phân tích dữ liệu tương tác của 500 người dùng, phát hiện tài khoản #51 thuộc nhóm 'Nội trợ Nấu lẩu' (User 1–150), nên gợi ý sản phẩm mà 150 user tương tự thường xuyên mua. Nếu em đổi sang tài khoản sinh viên (User 151–300), kết quả sẽ hoàn toàn khác — Mì Hảo Hảo, Xúc xích, Coca-Cola.*
->
-> *Slot Partitioning ưu tiên CF chiếm 3–4 slot đầu cho welcome query, đảm bảo cá nhân hóa nổi bật. Sản phẩm CF ban đầu không có metadata hiển thị — hệ thống giải quyết bằng Two-Tier Hydration: tra cứu Local KB trước, fallback Catalog API với timeout 500ms."*
+> *"Câu hỏi 'Gợi ý cho tôi vài món' hoàn toàn không chứa từ khóa cụ thể. Đó là nhờ Collaborative Filtering — hệ thống phân tích dữ liệu tương tác của 500 người dùng, phát hiện tài khoản #51 thuộc nhóm 'Nội trợ Nấu lẩu', nên gợi ý sản phẩm mà nhóm user tương tự thường xuyên mua."*
 
-**✅ Checkpoint:** 4 badge `[cf]` + 1 badge `[apriori]` → Thuật toán 3/4.
+**✅ Checkpoint:** 4 badge `[cf]` + 1 badge `[apriori]` → Thuật toán 3/5.
 
 ---
 
-### ACT 4 · Session Context (δ) — Cú Chốt 🎯
+### ACT 4 · Session Context (δ) — Real-time Multi-turn Boost
 
 > **Mục đích:** Chứng minh AI duy trì ngữ cảnh xuyên suốt phiên chat (Multi-turn Context) — giải bài toán Đại từ thế vị.
 >
-> **Điểm mạnh:** Khi khách hỏi "Gợi ý thêm đi" (không chứa bất kỳ từ khóa chính nào), kiến trúc Category-Driven Session mapping (warmUp in-memory O(1)) tự động nhận diện chủ đề từ lịch sử, khóa chặt danh mục liên đới mà không cần truy xuất lại DB.
+> **Điểm mạnh:** Khi khách hỏi "Gợi ý thêm đi", Category-Driven Session mapping tự động nhận diện chủ đề từ lịch sử, khóa chặt danh mục liên đới mà không cần truy xuất lại DB.
 
 **Thao tác (3 lượt cùng session):**
 
 | # | Hành động | Màn hình |
 |:-:|---|---|
 | 1 | Bấm 🔄 Phiên chat mới | Chat trống |
-| 2 | **Lượt 1:** Gõ: **"Tôi muốn nấu lẩu Thái cuối tuần"** | Gia vị lẩu, Ba chỉ bò... có badge `[content]` |
-| 3 | **Lượt 2:** Gõ: **"Gợi ý rau ăn kèm lẩu đi"** | Rau muống, Nấm kim châm... có badge `[content]` (xem chi tiết bên dưới) |
-| 4 | **Lượt 3:** Gõ: **"Gợi ý thêm đi"** | Hành tây vàng, Rau muống, Nấm kim châm... xuất hiện có badge `[session]` |
-| 5 | Click **Hành tây vàng** hoặc **Rau muống** → nhìn Dashboard | Badge `[session]` nhảy trên Live Feed 🎉 |
+| 2 | **Lượt 1:** Gõ: **"Tôi muốn nấu lẩu Thái cuối tuần"** | Gia vị lẩu, Ba chỉ bò... badge `[content]` |
+| 3 | **Lượt 2:** Gõ: **"Gợi ý rau ăn kèm lẩu đi"** | Rau muống, Nấm kim châm... badge `[content]` |
+| 4 | **Lượt 3:** Gõ: **"Gợi ý thêm đi"** | Hành tây vàng, Rau muống, Nấm kim châm... badge `[session]` |
+| 5 | Click **Hành tây vàng** → nhìn Dashboard | Badge `[session]` (rose) nhảy trên Live Feed 🎉 |
 
-**Kết quả thực tế Lượt 2 (đã kiểm chứng):**
-
-| # | Sản phẩm | Giá | Source | AI Score |
-|:-:|---|:-:|:-:|:-:|
-| 1 | Rau muống VietGAP bó 500g | 10.500đ | `content` | 0.7787 |
-| 2 | Nấm kim châm Hàn Quốc gói 150g | 18.000đ | `content` | 0.7746 |
-| 3 | Nước tương Chinsu tỏi ớt chai 250ml | 14.500đ | `content` | 0.3814 |
-| 4 | Ba chỉ bò Mỹ thái lát mỏng khay 500g | 125.000đ | `cf` / `none` | 0.1813 |
-| 5 | Bún tươi Ba Khánh gói 500g | 12.000đ | `apriori` | 0.1781 |
-
-**Kết quả thực tế Lượt 3 (đã kiểm chứng sau câu lệnh continuation "Gợi ý thêm đi"):**
+**Kết quả thực tế Lượt 3:**
 
 | # | Sản phẩm | Giá | Source | AI Score |
 |:-:|---|:-:|:-:|:-:|
@@ -234,51 +167,88 @@ Hệ thống sử dụng trọng số mặc định: `α (Content) = 0.40`, `β 
 | 2 | Rau muống VietGAP bó 500g | 10.500đ | `session` | 0.7787 |
 | 3 | Nấm kim châm Hàn Quốc gói 150g | 18.000đ | `session` | 0.7746 |
 
-**Thuyết minh (sau khi kết quả Lượt 3 hiện ra):**
+**Thuyết minh:**
 
-> *"Ở lượt 3, người dùng hoàn toàn KHÔNG sử dụng từ khóa liên quan đến lẩu hay rau — chỉ gõ 'Gợi ý thêm đi'. Tuy nhiên hệ thống vẫn trả về Hành tây vàng, Rau muống, Nấm kim châm với nhãn nguồn gốc là `[session]`.*
->
-> *Lý giải cơ chế hoạt động:*
-> 1. *Bộ giải nghĩa ngữ cảnh **Deterministic Reformulator** phát hiện ý định tiếp tục và kết hợp dữ liệu lịch sử chat cũ (Lượt 2 hỏi về rau ăn lẩu) để duy trì ngữ cảnh lẩu.*
-> 2. *Dịch vụ **Session Context Service** kích hoạt và so khớp nhóm sản phẩm thuộc cụm chủ đề lẩu (vegetables/hotpot cluster).*
-> 3. *Hệ thống áp dụng **Session Boost** (cộng trực tiếp giá trị boost khoảng $0.15 - 0.20$ vào điểm score để ưu tiên các mặt hàng liên đới).*
-> 4. *Bộ gán nhãn của RAG service phát hiện sản phẩm có thuộc tính `session_boosted = true`, tiến hành ghi đè `topSource = 'session'` để báo về Feedback Stream chính xác thuật toán chịu trách nhiệm gợi ý này là Session Context.*
->
-> *Điểm ưu việt: Nhờ cơ chế gán nhãn `[session]`, bộ học tự động Weight Learner hàng đêm sẽ nhận diện được chính xác hành vi bấm click của khách có phải là do gợi ý bám sát ngữ cảnh phiên chat hay không, từ đó tối ưu trọng số delta ($\delta$)*.
+> *"Ở lượt 3, người dùng chỉ gõ 'Gợi ý thêm đi'. Tuy nhiên hệ thống vẫn trả về Hành tây vàng, Rau muống, Nấm kim châm với nhãn nguồn gốc là `[session]` nhờ cơ chế Deterministic Reformulator duy trì ngữ cảnh lẩu và áp dụng Session Boost (+0.19).*
 
-#### 🧮 Cơ chế tính điểm và Xử lý ngữ cảnh (Session Mode & Context details)
-
-* **Tái xây dựng truy vấn:** Giữ cụm danh mục "Lẩu/Rau".
-* **Session Boost (+0.19):** Áp dụng trực tiếp vào điểm số của các sản phẩm thuộc cluster:
-  - Hành tây vàng: $\text{AI Score} = \text{base\_score} + 0.19 = \mathbf{0.9480}$
-  - Rau muống VietGAP: $\text{AI Score} = \text{base\_score} + 0.19 = \mathbf{0.7787}$
-  - Nấm kim châm: $\text{AI Score} = \text{base\_score} + 0.19 = \mathbf{0.7746}$
-
-> *Điểm thiết kế quan trọng: Session Context sử dụng Category-Driven mapping thay vì hardcode Product ID — khi admin thêm sản phẩm mới vào danh mục rau/bún/thịt, hệ thống tự động nhận diện mà không cần sửa code. Toàn bộ dữ liệu warmUp in-memory, runtime cực nhanh với O(1)."*
-
-**✅ Checkpoint:** Badge `[session]` hiển thị nổi bật ở Lượt 3 → Thuật toán 4/4 hoàn tất.
+**✅ Checkpoint:** Badge `[session]` hiển thị ở Lượt 3 → Thuật toán 4/5.
 
 ---
 
-## Kết Luận — Vòng Lặp Học Hỏi Tự Động (30 giây)
+### ACT 5 · Two-Tower AI trên Dashboard (Nút Thắt Cao Trào — Showstopper) 🚀
 
-> *"Tất cả 4 tương tác vừa rồi đều được ghi nhận vào bảng `recommendation_feedback` với nguồn gốc thuật toán rõ ràng: `content`, `apriori`, `cf`, `session`.*
+> **Mục đích:** Chứng minh mạng nơ-ron Học Sâu Wide & Deep Two-Tower (ONNX) đang trực tiếp phục vụ gợi ý trong môi trường Production — biến "Hộp Đen" (Black-box) thành trực quan trên Dashboard.
 >
-> *Hàng đêm, Weight Learner tự động:*
-> - *Tính Conversion Rate (click → mua) của từng thuật toán*
-> - *Điều chỉnh trọng số α, β, γ, δ bằng EWMA (Exponential Weighted Moving Average)*
-> - *Lưu lịch sử vào `ensemble_weights_history`*
+> **Điểm nhấn:** Huy hiệu màu Tím (**`[two_tower_onnx]`**) nổi bật trên Dashboard minh chứng luồng dữ liệu đang chạy qua động cơ AI Fast Path với latency < 1ms.
+
+**Thao tác:**
+
+| # | Hành động | Màn hình |
+|:-:|---|---|
+| 0 | Đảm bảo FastAPI AI Service đang chạy (port 8000) | Terminal |
+| 1 | Bấm 🔄 Phiên chat mới | Chat trống |
+| 2 | Gõ: **"Tôi muốn mua bia Heineken"** (như ACT 2) | Chatbot |
+| 3 | Nhận kết quả gợi ý sản phẩm | Chatbot |
+| 4 | **Mở Dashboard → tab "AI Insights"** | Dashboard |
+| 5 | Chỉ vào **Live Feedback Stream**: xuất hiện badge màu tím **`[two_tower_onnx]`** | Dashboard |
+| 6 | Chỉ vào **Source Performance Chart**: cột **Two-Tower AI** màu tím xuất hiện | Dashboard |
+
+**Hình ảnh hiển thị thực tế trên Dashboard:**
+
+```
+┌────────────────────────────────────────────────────────────────────────┐
+│ LIVE FEEDBACK STREAM                                        ● Live     │
+├────────────────────────────────────────────────────────────────────────┤
+│ User #51  •  Just now                        [two_tower_onnx] (Purple) │
+│ 👁️ Recommended: Bia Heineken Silver lon 330ml                          │
+│ AI Score: 0.8912                                                       │
+├────────────────────────────────────────────────────────────────────────┤
+│ User #51  •  Just now                        [two_tower_onnx] (Purple) │
+│ 👁️ Recommended: Khô gà lá chanh G kitchen                             │
+│ AI Score: 0.7645                                                       │
+└────────────────────────────────────────────────────────────────────────┘
+```
+
+**Thuyết minh (Thủ pháp "Tự đặt câu hỏi"):**
+
+> *"Kính thưa Hội đồng, hãy quan sát kết quả gợi ý ở Chatbot: các sản phẩm Bia Heineken và Khô gà trông có vẻ giống như ACT 2. Vậy câu hỏi đặt ra là: **Hệ thống có đang lừa chúng ta bằng cách gọi lại code cũ hay không?**
 >
-> *Đây là vòng lặp khép kín: Gợi ý → Tương tác → Tự học → Gợi ý tốt hơn. Hệ thống hoàn toàn tự hoàn thiện mà không cần con người can thiệp."*
+> Hãy nhìn sang Dashboard tab **AI Insights**.
+>
+> Badge nguồn gốc ở đây KHÔNG CÒN là `[content]` (màu xanh) hay `[apriori]` (màu cam) nữa, mà là **`[two_tower_onnx]`** màu Tím độc bản!
+>
+> Điều này chứng tỏ toàn bộ ứng viên đã được xếp hạng trực tiếp bởi **Mạng nơ-ron Hai Tháp (Two-Tower ONNX)** qua Fast Path với thời gian suy luận dưới 1 mili-giây.
+>
+> **Tại sao kết quả gợi ý lại tương đồng?**
+> Bởi vì mạng nơ-ron Two-Tower đã **học thành công** đúng những mẫu hành vi (patterns) mà 4 thuật toán truyền thống phát hiện bằng thủ công — nhưng với tốc độ nhanh hơn 300 lần, và quan trọng nhất: mô hình AI có khả năng **tự tổng quát hóa (Generalization)** cho các hành vi mua sắm mới mà rule-based không thể bao quát hết."*
+
+**✅ Checkpoint:** Badge `[two_tower_onnx]` (purple) hiển thị trên Dashboard → Chứng minh AI Fast Path hoạt động thành công! (5/5 hoàn tất).
 
 ---
 
-## Phụ Lục — Câu Hỏi Phản Biện
+## Kết Luận — Kiến Trúc Nâng Cấp & Vòng Lặp Học Hỏi (1 phút)
 
-| Câu hỏi | Trả lời |
-|---|---|
-| User mới, chưa có lịch sử? | CF trả về rỗng → fallback Content + Apriori (cold-start graceful degradation) |
-| Session Context nhớ qua phiên khác? | Không — Short-term Memory trong cùng 1 phiên. Long-term do CF qua `user_product_interaction` |
-| Apriori có gợi ý sai danh mục? | Chỉ gợi ý khi Lift > 1 (mua kèm cao hơn ngẫu nhiên) và sản phẩm còn hàng |
-| Latency có tăng khi thêm thuật toán? | Pipeline ~200–400ms. Local KB ~1ms, Catalog fallback timeout 500ms. WarmUp in-memory, O(1) |
-| Category-Driven có hạn chế? | Category names phải khớp với data-ingestion. Đổi tên category → cần restart chatbot để warmUp |
+> *"Kính thưa Hội đồng,
+>
+> Qua 5 phần trình diễn vừa rồi, POSMART đã chứng minh được sự tiến hóa từ một bộ thuật toán Hộp Trắng thủ công thành một **Kiến Trúc Hai Tầng (Two-Tier Architecture)** hoàn chỉnh:
+>
+> 1. **Tầng 1 (AI Fast Path):** Mạng nơ-ron Wide & Deep Two-Tower (ONNX) dự đoán cực nhanh (< 1ms), bảo tồn tri thức Apriori qua Wide Layer và tự động hóa trích xuất đặc trưng.
+> 2. **Tầng 2 (Graceful Fallback):** Bộ 4 thuật toán cũ (RAG, Apriori, CF, Session) đóng vai trò lưới an toàn Hộp Trắng, sẵn sàng tiếp quản tự động khi AI Service gặp sự cố mà người dùng không nhận ra.
+> 3. **Vòng lặp tự học (Adaptive Weight Learning):** Mọi tương tác `[two_tower_onnx]`, `[content]`, `[cf]`, `[apriori]`, `[session]` đều được ghi nhận vào `recommendation_feedback` để hàng đêm tự động cập nhật trọng số.
+>
+> Đây không đơn thuần là một chatbot gợi ý, mà là một **Hệ Thống Phòng Thủ Nhiều Lớp Cấp Production (Production-grade Multi-layer Defense System)**."*
+
+---
+
+## Phụ Lục — Câu Hỏi Phản Biện Chuyên Sâu
+
+| # | Câu hỏi từ Hội đồng | Trả lời thuyết phục |
+|---|---|---|
+| 1 | **Tại sao NDCG@10 = 1.0000 tuyệt đối? Liệu có Overfitting?** | NDCG = 1.0 là kết quả trên tập dati Synthetic Data có nhãn persona rõ ràng nhằm **minh chứng tính hội tụ** của thuật toán Hai Tháp. Trên dữ liệu thực tế có nhiễu, NDCG kỳ vọng sẽ đạt ~0.75-0.85 — đây là đặc tính chung khi chuyển từ Lab sang Production. |
+| 2 | **Two-Tower là Black-box — làm sao Admin kiểm tra được tại sao AI gợi ý SP đó?** | Thứ nhất, Dashboard track nguồn `[two_tower_onnx]` giúp nhận diện chính xác luồng chạy. Thứ hai, Wide Layer trong mô hình chính là cầu nối Hộp Trắng (Apriori Lift) được đưa trực tiếp vào mạng nơ-ron. Thứ ba, nếu cần giải thích 100%, Admin có thể ngắt AI để hệ thống lùi về White-box Fallback với 4 điểm score α/β/γ/δ rõ ràng. |
+| 3 | **Tại sao không dùng GPU để phục vụ ONNX model?** | Với 1,380 SKU, toàn bộ feature cache chỉ chiếm 4.2 MB RAM. ONNX CPU Runtime đạt tốc độ **0.125ms / sample** — nhanh hơn cả RTT mạng HTTP. Dùng GPU cho quy mô này là không cần thiết và lãng phí chi phí hạ tầng (Overkill). |
+| 4 | **User mới chưa có lịch sử (Cold-start) thì Two-Tower xử lý thế nào?** | Item Tower sử dụng SBERT Embedding (frozen 768d) mã hóa thông tin ngữ nghĩa sản phẩm, kết hợp RAG Semantic Search. Nhờ đó, cold-start product vẫn được gợi ý chính xác dựa trên điểm tương đồng vector mà không cần lịch sử mua hàng. |
+| 5 | **Session Context có nhớ thông tin sang phiên chat khác không?** | Không. Session Context là Short-term Memory lưu in-memory trong thời gian sống của phiên chat. Thói quen dài hạn (Long-term preference) được đảm nhiệm bởi User Tower qua lịch sử mua hàng `user_product_interaction`. |
+| 6 | **Apriori có nguy cơ gợi ý sai danh mục không?** | Không. Hệ thống chỉ chấp nhận luật kết hợp khi Lift > 1.0 (xác suất mua kèm cao hơn ngẫu nhiên) và sản phẩm gợi ý phải còn tồn kho (Stock > 0). |
+| 7 | **Latency toàn hệ thống là bao nhiêu?** | Với AI Fast Path: ~20-30ms (bao gồm 0.125ms ONNX + network RTT). Khi Fallback: ~150-250ms (RAG vector search + PostgreSQL query). |
+| 8 | **Khi đổi tên Danh mục (Category), Session Context có bị ảnh hưởng?** | Dữ liệu Session WarmUp được nạp in-memory khi khởi động backend. Nếu Admin đổi tên danh mục trong DB, chỉ cần gọi endpoint `/chatbot/admin/force-learn` hoặc restart service để làm mới warmUp cache trong $O(1)$. |

@@ -1,0 +1,263 @@
+"""Validated application configuration with fail-closed production semantics."""
+
+from __future__ import annotations
+
+import hashlib
+import json
+import os
+import tomllib
+from pathlib import Path
+from typing import Any, Literal
+
+from pydantic import BaseModel, Field, SecretStr, field_validator, model_validator
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
+from ai_service.errors import ConfigurationError
+
+MIN_TEMPERATURE = 1e-3
+MODEL_SCHEMA_VERSION = "5.0.0"
+
+
+class DataConfig(BaseSettings):
+    model_config = SettingsConfigDict(env_file=".env", extra="ignore", populate_by_name=True)
+
+    store_id: int = Field(default=1, alias="AI_STORE_ID", gt=0)
+    snapshot_id: str = Field(
+        default="benchmark-local",
+        alias="AI_SNAPSHOT_ID",
+        pattern=r"^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$",
+    )
+    artifact_root: Path = Field(default=Path("artifacts"), alias="AI_ARTIFACT_ROOT")
+    model_bundle_path: Path | None = Field(default=None, alias="AI_MODEL_BUNDLE_PATH")
+    chatbot_database_url: SecretStr | None = Field(default=None, alias="CHATBOT_DATABASE_URL")
+    catalog_database_url: SecretStr | None = Field(default=None, alias="CATALOG_DATABASE_URL")
+    order_database_url: SecretStr | None = Field(default=None, alias="ORDER_DATABASE_URL")
+    database_ssl_root_cert: Path | None = Field(default=None, alias="SUPABASE_DB_CA_PATH")
+    benchmark_run_id: str | None = Field(default=None, alias="AI_BENCHMARK_RUN_ID")
+    num_users: int = Field(default=5_000, gt=0)
+    num_items: int = Field(default=5_200, gt=0)
+    expected_event_count: int = Field(default=823_371, gt=0)
+    expected_train_count: int = Field(default=658_697, gt=0)
+    expected_val_count: int = Field(default=82_337, gt=0)
+    expected_test_count: int = Field(default=82_337, gt=0)
+    expected_order_count: int = Field(default=15_000, gt=0)
+    num_cold_items: int = Field(default=250, ge=0)
+    num_personas: int = Field(default=8, gt=0)
+    num_leaf_categories: int = Field(default=40, gt=0)
+    num_price_buckets: int = Field(default=8, gt=0)
+    min_rule_count: int = Field(default=3, gt=0)
+    min_rule_lift: float = Field(default=1.0, ge=0.0)
+
+    @model_validator(mode="after")
+    def validate_split_counts(self) -> DataConfig:
+        actual = self.expected_train_count + self.expected_val_count + self.expected_test_count
+        if actual != self.expected_event_count:
+            raise ValueError("expected temporal split counts must sum to expected_event_count")
+        return self
+
+
+class ModelConfig(BaseModel):
+    sbert_model_name: str = "keepitreal/vietnamese-sbert"
+    sbert_model_revision: str = Field(
+        default="a9467ef2ef47caa6448edeabfd8e5e5ce0fa2a23",
+        pattern=r"^[0-9a-f]{40}$",
+    )
+    user_emb_dim: int = Field(default=64, gt=0)
+    persona_emb_dim: int = Field(default=8, gt=0)
+    category_emb_dim: int = Field(default=16, gt=0)
+    price_emb_dim: int = Field(default=8, gt=0)
+    sbert_dim: int = Field(default=768, gt=0)
+    item_emb_dim: int = Field(default=64, gt=0)
+    user_id_dropout: float = Field(default=0.1, ge=0.0, lt=1.0)
+    use_item_id_residual: bool = True
+    tau: float = Field(default=0.1)
+
+    @field_validator("tau")
+    @classmethod
+    def validate_tau(cls, value: float) -> float:
+        if value < MIN_TEMPERATURE:
+            raise ValueError("tau must be >= 1e-3")
+        return value
+
+
+class TrainConfig(BaseModel):
+    objective: Literal["sampled_softmax", "legacy_bce", "purchase_bce"] = "sampled_softmax"
+    training_variant: Literal["deep_only", "hybrid"] = "hybrid"
+    batch_size: int = Field(default=2_048, gt=0)
+    negative_ratio: int = Field(default=4, ge=1)
+    explicit_negative_ratio: int = Field(default=16, ge=4)
+    learning_rate: float = Field(default=3e-4, gt=0)
+    minimum_learning_rate: float = Field(default=1e-5, gt=0)
+    weight_decay: float = Field(default=1e-5, ge=0)
+    max_epochs: int = Field(default=30, gt=0)
+    early_stopping_patience: int = Field(default=4, gt=0)
+    min_delta: float = Field(default=1e-4, ge=0)
+    warmup_fraction: float = Field(default=0.05, ge=0.0, lt=1.0)
+    view_auxiliary_weight: float = Field(default=0.0, ge=0.0)
+    use_history_profiles: bool = True
+    seed: int = 42
+    max_grad_norm: float = Field(default=5.0, gt=0)
+    validation_user_batch_size: int = Field(default=512, gt=0)
+    max_history_items: int = Field(default=32, ge=1)
+    max_wall_minutes: int = Field(default=90, ge=1)
+
+    @model_validator(mode="after")
+    def validate_training_schedule(self) -> TrainConfig:
+        if self.minimum_learning_rate > self.learning_rate:
+            raise ValueError("minimum_learning_rate must not exceed learning_rate")
+        return self
+
+
+class EvalConfig(BaseModel):
+    k: int = Field(default=10, gt=0)
+    bootstrap_samples: int = Field(default=2_000, gt=0)
+    random_seeds: int = Field(default=10, gt=0)
+    primary_metric: Literal["ndcg_at_k"] = "ndcg_at_k"
+    gauc_guardrail_delta: float = Field(default=-0.002, le=0.0)
+    ndcg_guardrail_delta: float = Field(default=-0.001, le=0.0)
+    minimum_gauc: float = Field(default=0.75, ge=0.5, le=1.0)
+    random_gauc_tolerance: float = Field(default=0.02, ge=0.0)
+    cold_score_atol: float = Field(default=1e-6, ge=0.0)
+    wide_zero_atol: float = Field(default=1e-7, ge=0.0)
+
+
+class ServingConfig(BaseSettings):
+    model_config = SettingsConfigDict(env_file=".env", extra="ignore", populate_by_name=True)
+
+    environment: str = Field(default="development", alias="AI_ENV")
+    host: str = Field(default="0.0.0.0", alias="AI_HOST")
+    port: int = Field(default=8_000, alias="AI_PORT", ge=1, le=65_535)
+    workers: int = Field(default=1, alias="AI_WORKERS", ge=1)
+    ort_intra_op_threads: int = Field(default=1, alias="AI_ORT_INTRA_OP_THREADS", ge=1)
+    ort_inter_op_threads: int = Field(default=1, alias="AI_ORT_INTER_OP_THREADS", ge=1)
+    max_candidates: int = Field(default=256, ge=1)
+
+
+class Settings:
+    """Small aggregated interface shared by pipeline, model, and serving."""
+
+    def __init__(self, document: dict[str, Any] | None = None) -> None:
+        document = document or {}
+        unexpected = set(document) - {"data", "model", "train", "eval", "serving"}
+        if unexpected:
+            raise ConfigurationError(f"unknown configuration groups: {sorted(unexpected)}")
+        self.data = DataConfig(**document.get("data", {}))
+        self.model = ModelConfig(**document.get("model", {}))
+        self.train = TrainConfig(**document.get("train", {}))
+        self.eval = EvalConfig(**document.get("eval", {}))
+        self.serving = ServingConfig(**document.get("serving", {}))
+
+    def resolved_document(self) -> dict[str, Any]:
+        """Return the non-secret, fully resolved configuration for provenance."""
+        return {
+            "schema_version": MODEL_SCHEMA_VERSION,
+            "data": self.data.model_dump(
+                mode="json",
+                exclude={
+                    "chatbot_database_url",
+                    "catalog_database_url",
+                    "order_database_url",
+                },
+            ),
+            "model": self.model.model_dump(mode="json"),
+            "train": self.train.model_dump(mode="json"),
+            "eval": self.eval.model_dump(mode="json"),
+            "serving": self.serving.model_dump(mode="json"),
+        }
+
+    def training_signature_sha256(self) -> str:
+        """Hash only semantics that can change training or model outputs."""
+        document = {
+            "model_schema_version": MODEL_SCHEMA_VERSION,
+            "dimensions": {
+                "num_users": self.data.num_users,
+                "num_items": self.data.num_items,
+                "num_personas": self.data.num_personas,
+                "num_leaf_categories": self.data.num_leaf_categories,
+                "num_price_buckets": self.data.num_price_buckets,
+            },
+            "model": self.model.model_dump(mode="json"),
+            "train": self.train.model_dump(mode="json"),
+            "eval": self.eval.model_dump(mode="json"),
+        }
+        payload = json.dumps(document, sort_keys=True, separators=(",", ":")).encode("utf-8")
+        return hashlib.sha256(payload).hexdigest()
+
+    def experiment_signature_sha256(self) -> str:
+        """Hash finalist semantics while allowing repeated training seeds."""
+        train = self.train.model_dump(mode="json")
+        train.pop("seed")
+        document = {
+            "model_schema_version": MODEL_SCHEMA_VERSION,
+            "dimensions": {
+                "num_users": self.data.num_users,
+                "num_items": self.data.num_items,
+                "num_personas": self.data.num_personas,
+                "num_leaf_categories": self.data.num_leaf_categories,
+                "num_price_buckets": self.data.num_price_buckets,
+            },
+            "model": self.model.model_dump(mode="json"),
+            "train": train,
+            "eval": self.eval.model_dump(mode="json"),
+        }
+        payload = json.dumps(document, sort_keys=True, separators=(",", ":")).encode("utf-8")
+        return hashlib.sha256(payload).hexdigest()
+
+    def comparison_signature_sha256(self) -> str:
+        """Hash comparison signature (experiment signature without training_variant)."""
+        train = self.train.model_dump(mode="json")
+        train.pop("seed", None)
+        train.pop("training_variant", None)
+        document = {
+            "model_schema_version": MODEL_SCHEMA_VERSION,
+            "dimensions": {
+                "num_users": self.data.num_users,
+                "num_items": self.data.num_items,
+                "num_personas": self.data.num_personas,
+                "num_leaf_categories": self.data.num_leaf_categories,
+                "num_price_buckets": self.data.num_price_buckets,
+            },
+            "model": self.model.model_dump(mode="json"),
+            "train": train,
+            "eval": self.eval.model_dump(mode="json"),
+        }
+        payload = json.dumps(document, sort_keys=True, separators=(",", ":")).encode("utf-8")
+        return hashlib.sha256(payload).hexdigest()
+
+    def validate_production(self, *, serving: bool = False) -> None:
+        if self.serving.environment.lower() != "production":
+            return
+        required = {
+            "AI_ARTIFACT_ROOT": os.getenv("AI_ARTIFACT_ROOT"),
+            "AI_STORE_ID": os.getenv("AI_STORE_ID"),
+        }
+        if serving:
+            required["AI_MODEL_BUNDLE_PATH"] = os.getenv("AI_MODEL_BUNDLE_PATH")
+        else:
+            required.update(
+                {
+                    "CHATBOT_DATABASE_URL": os.getenv("CHATBOT_DATABASE_URL"),
+                    "CATALOG_DATABASE_URL": os.getenv("CATALOG_DATABASE_URL"),
+                    "ORDER_DATABASE_URL": os.getenv("ORDER_DATABASE_URL"),
+                    "SUPABASE_DB_CA_PATH": os.getenv("SUPABASE_DB_CA_PATH"),
+                }
+            )
+        missing = sorted(name for name, value in required.items() if not value)
+        if missing:
+            raise ConfigurationError(f"missing production settings: {', '.join(missing)}")
+
+
+def get_settings() -> Settings:
+    return Settings()
+
+
+def load_settings(path: Path | None = None) -> Settings:
+    """Load one explicit TOML configuration without hidden fallback values."""
+    if path is None:
+        return Settings()
+    try:
+        with path.open("rb") as source:
+            document = tomllib.load(source)
+    except (OSError, tomllib.TOMLDecodeError) as error:
+        raise ConfigurationError(f"cannot load training configuration {path}: {error}") from error
+    return Settings(document)

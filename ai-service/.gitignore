@@ -1,0 +1,43 @@
+# Python Bytecode & Cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual Environments
+.venv/
+venv/
+env/
+ENV/
+
+# Tool Caches & Test Outputs
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.uv-cache/
+.coverage
+htmlcov/
+.coverage.*
+
+# Model Checkpoints, Binary Arrays & Exported Graphs
+*.pt
+*.pth
+*.onnx
+*.onnx.data
+*.bin
+*.ckpt
+*.safetensors
+*.npy
+*.npz
+*.parquet
+
+# Local Artifacts & Runtime Outputs
+artifacts/
+runs/
+bundles/
+releases/
+
+# Local Environment Variables
+.env
+.env.*
+!.env.example

@@ -1,0 +1,110 @@
+\documentclass[tikz,border=8mm]{standalone}
+\usepackage{tikz}
+\usepackage{amsmath,amssymb}
+
+% ==========================================
+% CHUẨN HOÁ PHÔNG CHỮ IEEE (Helvetica / Arial Sans-Serif)
+% Đồng bộ với microservices_flow.tex
+% ==========================================
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+
+\usetikzlibrary{shapes,arrows,positioning,calc,fit,backgrounds}
+
+\begin{document}
+
+% ==========================================
+% ĐỊNH NGHĨA STYLE 
+% ==========================================
+\tikzstyle{block} = [rectangle, draw, fill=blue!10, text width=4.2cm, text centered, rounded corners, minimum height=1.3cm, font=\small]
+\tikzstyle{wideblock} = [rectangle, draw, fill=orange!15, text width=3.4cm, text centered, rounded corners, minimum height=1.2cm, font=\small]
+\tikzstyle{deepblock} = [rectangle, draw, fill=green!10, text width=4.0cm, text centered, rounded corners, minimum height=1.2cm, font=\small]
+\tikzstyle{normblock} = [rectangle, draw, fill=yellow!15, text width=3.4cm, text centered, rounded corners, minimum height=1.0cm, font=\small]
+\tikzstyle{line} = [draw, -latex', thick]
+
+\begin{tikzpicture}[node distance=0.6cm]
+
+    % ==================== TIÊU ĐỀ (MAIN LAYER) ====================
+    % Tăng khoảng cách ngang X: Wide (0) -> User (5.8) -> Item (11.4)
+    \node [font=\bfseries] at (0, 1.0) (wide_title) {Wide Branch (Memorization)};
+    \node [font=\bfseries] at (5.8, 1.0) (user_title) {User Tower};
+    \node [font=\bfseries] at (11.4, 1.0) (item_title) {Item Tower};
+    
+    % Tiêu đề Deep Branch nằm chính giữa (X = 8.6)
+    \path (user_title) -- (item_title) node[midway, font=\bfseries\large, above=0.7cm] (deep_title) {Deep Branch (Generalization)};
+
+    % ==================== WIDE BRANCH (X = 0) ====================
+    \node [wideblock] at (0,0) (lift) {Co-purchase Lift \\ $L(x,y)$};
+    \node [wideblock, below=of lift] (log1p) {$\log(1 + L)$ \\ Normalization};
+    \node [wideblock, below=of log1p] (widemlp) {Wide MLP \\ $\text{Linear}(1,16) \rightarrow \text{ReLU}$ \\ $\rightarrow \text{Linear}(16,1)$};
+    \node [wideblock, below=of widemlp, fill=orange!30] (scorewide) {$\text{Score}_{\text{Wide}}$};
+
+    % ==================== DEEP BRANCH ====================
+    
+    % --- User Tower (X = 5.8) ---
+    \node [deepblock] at (5.8, 0) (userin) {User Input \\ User ID (64d) + \\ Persona (8d) $= 72\text{d}$};
+    \node [deepblock, below=of userin] (usermlp) {User MLP \\ $\text{Linear}(72,128) \rightarrow \text{ReLU}$ \\ $\rightarrow \text{LayerNorm} \rightarrow \text{Linear}(128,64)$};
+    \node [normblock, below=of usermlp] (userl2) {$L_2$ Normalization \\ $\mathbf{u}(x) \in \mathbb{R}^{64}$};
+
+    % --- Item Tower (X = 11.4) ---
+    \node [deepblock] at (11.4, 0) (itemtext) {Frozen SBERT Text (768d)};
+    \node [deepblock, below=of itemtext] (textproj) {Text Projection \\ $\text{Linear}(768,128) \rightarrow \text{ReLU}$ \\ $\rightarrow 64\text{d}$};
+    \node [deepblock, below=of textproj] (itemconcat) {Concat Features \\ Text (64d) + Cat (16d) \\ + Price (8d) $= 88\text{d}$};
+    \node [deepblock, below=of itemconcat] (itemmlp) {Item MLP \\ $\text{Linear}(88,64) \rightarrow \text{ReLU}$ \\ $\rightarrow \text{Linear}(64,64)$};
+    \node [normblock, below=of itemmlp] (iteml2) {$L_2$ Normalization \\ $\mathbf{v}(y) \in \mathbb{R}^{64}$};
+
+    % --- Dot Product & Deep Score ---
+    % Đặt tại X=8.6 (Trung tâm Deep Branch), Y=-9.0
+    \node [block, fill=green!25] at (8.6, -9.0) (dotprod) {Dot Product Similarity \\ $\frac{\mathbf{u}(x) \cdot \mathbf{v}(y)}{\tau} \quad (\tau = 0.1)$};
+    \node [block, below=of dotprod, fill=green!35] (scoredeep) {$\text{Score}_{\text{Deep}}$};
+
+    % ==================== JOINT SCORING ====================
+    % Đặt tại X=4.3 (Giữa Wide và Deep Branch), Y=-13.2 (Thấp hơn hẳn khung Deep)
+    \node [rectangle, draw, fill=purple!20, text width=6.2cm, text centered, rounded corners, minimum height=1.4cm, font=\bfseries] at (4.3, -13.2) (joint) {Joint Scoring \\ $\text{Logits} = \text{Score}_{\text{Deep}} + \text{Score}_{\text{Wide}}$};
+
+    \node [rectangle, draw, fill=red!20, text width=4.8cm, text centered, rounded corners, minimum height=1.0cm, below=0.6cm of joint, font=\bfseries] (output) {Sigmoid $\sigma(\cdot)$ \\ Final Prediction $\hat{y} \in [0,1]$};
+
+    % ==================== ĐỊNH TUYẾN MŨI TÊN (EDGES) ====================
+    % Wide Branch
+    \path [line] (lift) -- (log1p);
+    \path [line] (log1p) -- (widemlp);
+    \path [line] (widemlp) -- (scorewide);
+
+    % User Tower
+    \path [line] (userin) -- (usermlp);
+    \path [line] (usermlp) -- (userl2);
+
+    % Item Tower
+    \path [line] (itemtext) -- (textproj);
+    \path [line] (textproj) -- (itemconcat);
+    \path [line] (itemconcat) -- (itemmlp);
+    \path [line] (itemmlp) -- (iteml2);
+
+    % Deep Fusion
+    \path [line] (userl2.south) -- (dotprod.north west);
+    \path [line] (iteml2.south) -- (dotprod.north east);
+    \path [line] (dotprod) -- (scoredeep);
+
+    % Joint Fusion
+    \path [line] (scorewide.south) |- (joint.west);
+    \path [line] (scoredeep.south) |- (joint.east);
+    \path [line] (joint) -- (output);
+
+    % ==================== BACKGROUND GROUPS ====================
+    \begin{scope}[on background layer]
+        % 1. Hộp Deep Branch TỔNG (Vẽ đầu tiên dưới cùng, bao bọc gọn gàng)
+        \node [fill=green!5, draw=green!40, inner sep=0.45cm, rounded corners, fit=(deep_title)(userin)(itemtext)(scoredeep)] {};
+
+        % 2. Khung User Tower
+        \node [fill=cyan!5, draw=cyan!40, inner sep=0.25cm, rounded corners, fit=(user_title)(userin)(userl2)] {};
+
+        % 3. Khung Item Tower
+        \node [fill=teal!5, draw=teal!40, inner sep=0.25cm, rounded corners, fit=(item_title)(itemtext)(iteml2)] {};
+
+        % 4. Khung Wide Branch (Tách biệt hoàn toàn, khoảng cách lề rộng rãi)
+        \node [fill=orange!5, draw=orange!40, inner sep=0.25cm, rounded corners, fit=(wide_title)(lift)(scorewide)] {};
+    \end{scope}
+
+\end{tikzpicture}
+
+\end{document}

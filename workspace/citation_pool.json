@@ -1,0 +1,527 @@
+{
+    "cutoff_date": "2026-08-01",
+    "min_cite_paper_count": 16,
+    "papers": [
+        {
+            "key": "cheng2016wide",
+            "bibtex_key": "cheng2016wide",
+            "title": "Wide & Deep Learning for Recommender Systems",
+            "authors": [
+                {
+                    "name": "Heng-Tze Cheng"
+                },
+                {
+                    "name": "Levent Koc"
+                },
+                {
+                    "name": "Jeremiah Harmsen"
+                },
+                {
+                    "name": "Tal Shaked"
+                },
+                {
+                    "name": "Tushar Chandra"
+                },
+                {
+                    "name": "Hrishi Aradhye"
+                },
+                {
+                    "name": "Glen Anderson"
+                },
+                {
+                    "name": "Greg Corrado"
+                },
+                {
+                    "name": "Wei Chai"
+                },
+                {
+                    "name": "Mustafa Ispir"
+                },
+                {
+                    "name": "Rohan Anil"
+                },
+                {
+                    "name": "Zakaria Haque"
+                },
+                {
+                    "name": "Lichan Hong"
+                },
+                {
+                    "name": "Vihan Jain"
+                },
+                {
+                    "name": "Xiaobing Liu"
+                },
+                {
+                    "name": "Hemal Shah"
+                }
+            ],
+            "year": 2016,
+            "venue": "DLRS@RecSys",
+            "abstract": "Generalized linear models with nonlinear feature transformations are widely used for large-scale regression and classification problems with sparse inputs. Memorization of feature interactions through a wide set of cross-product feature transformations are effective and interpretable, while generalization requires more feature engineering effort. With less feature engineering, deep neural networks can generalize better to unseen feature combinations through low-dimensional dense embeddings learned for the sparse features. However, deep neural networks with embeddings can over-generalize and recommend less relevant items when the user-item interactions are sparse and high-rank. In this paper, we present Wide & Deep learning—jointly trained wide linear models and deep neural networks—to combine the benefits of memorization and generalization for recommender systems.",
+            "externalIds": {
+                "DOI": "10.1145/2988450.2988454"
+            },
+            "discovered_for": "intro",
+            "paperId": "s2_cheng2016wide"
+        },
+        {
+            "key": "he2017neural",
+            "bibtex_key": "he2017neural",
+            "title": "Neural Collaborative Filtering",
+            "authors": [
+                {
+                    "name": "Xiangnan He"
+                },
+                {
+                    "name": "Lizi Liao"
+                },
+                {
+                    "name": "Hanwang Zhang"
+                },
+                {
+                    "name": "Liqiang Nie"
+                },
+                {
+                    "name": "Xia Hu"
+                },
+                {
+                    "name": "Tat-Seng Chua"
+                }
+            ],
+            "year": 2017,
+            "venue": "WWW",
+            "abstract": "In recent years, deep neural networks have yielded immense success on speech recognition, computer vision and natural language processing. However, the exploration of deep neural networks on recommender systems has received relatively less scrutiny. In this work, we strive to develop techniques based on neural networks to tackle the key problem in recommendation — collaborative filtering. We propose a general framework named NCF, short for Neural network-based Collaborative Filtering.",
+            "externalIds": {
+                "DOI": "10.1145/3038912.3052569"
+            },
+            "discovered_for": "related_work[2.2]",
+            "paperId": "s2_he2017neural"
+        },
+        {
+            "key": "guo2017deepfm",
+            "bibtex_key": "guo2017deepfm",
+            "title": "DeepFM: A Factorization-Machine based Neural Network for CTR Prediction",
+            "authors": [
+                {
+                    "name": "Huifeng Guo"
+                },
+                {
+                    "name": "Ruiming Tang"
+                },
+                {
+                    "name": "Yunming Ye"
+                },
+                {
+                    "name": "Zhenguo Li"
+                },
+                {
+                    "name": "Xiuqiang He"
+                }
+            ],
+            "year": 2017,
+            "venue": "IJCAI",
+            "abstract": "Learning sophisticated feature interactions behind user behaviors is critical in maximizing CTR for recommender systems. Despite great progress, existing methods seem to have a strong bias towards low- or high-order interactions, or require expertise feature engineering. In this paper, we show that it is possible to derive an end-to-end learning model that emphasizes both low- and high-order feature interactions. The proposed model, DeepFM, combines a factorization machine component and a deep component in a neural network architecture.",
+            "externalIds": {
+                "DOI": "10.24963/ijcai.2017/239"
+            },
+            "discovered_for": "related_work[2.2]",
+            "paperId": "s2_guo2017deepfm"
+        },
+        {
+            "key": "covington2016deep",
+            "bibtex_key": "covington2016deep",
+            "title": "Deep Neural Networks for YouTube Recommendations",
+            "authors": [
+                {
+                    "name": "Paul Covington"
+                },
+                {
+                    "name": "Jay Adams"
+                },
+                {
+                    "name": "Emre Sargin"
+                }
+            ],
+            "year": 2016,
+            "venue": "RecSys",
+            "abstract": "YouTube represents one of the largest scale and most sophisticated industrial recommendation systems in existence. In this paper, we describe the system at a high level and focus on the dramatic performance improvements brought by deep learning.",
+            "externalIds": {
+                "DOI": "10.1145/2959100.2959190"
+            },
+            "discovered_for": "intro",
+            "paperId": "s2_covington2016deep"
+        },
+        {
+            "key": "reimers2019sentence",
+            "bibtex_key": "reimers2019sentence",
+            "title": "Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks",
+            "authors": [
+                {
+                    "name": "Nils Reimers"
+                },
+                {
+                    "name": "Iryna Gurevych"
+                }
+            ],
+            "year": 2019,
+            "venue": "EMNLP",
+            "abstract": "BERT and RoBERTa has set a new state-of-the-art performance on sentence-pair regression tasks like semantic textual similarity (STS). However, it requires that both sentences are fed into the network, which causes a massive computational overhead. In this publication, we present Sentence-BERT (SBERT), a modification of the pretrained BERT network that use siamese and triplet network structures to derive semantically meaningful sentence embeddings that can be compared using cosine-similarity.",
+            "externalIds": {
+                "DOI": "10.18653/v1/D19-1410"
+            },
+            "discovered_for": "related_work[2.3]",
+            "paperId": "s2_reimers2019sentence"
+        },
+        {
+            "key": "yi2019sampling",
+            "bibtex_key": "yi2019sampling",
+            "title": "Sampling-Bias-Corrected Neural Modeling for Large Corpus Item Recommendations",
+            "authors": [
+                {
+                    "name": "Xinyang Yi"
+                },
+                {
+                    "name": "Ji Yang"
+                },
+                {
+                    "name": "Lichan Hong"
+                },
+                {
+                    "name": "Derek Zhiyuan Cheng"
+                },
+                {
+                    "name": "Lukasz Heldt"
+                },
+                {
+                    "name": "Aditee Kumthekar"
+                },
+                {
+                    "name": "Zhe Zhao"
+                },
+                {
+                    "name": "Li Wei"
+                },
+                {
+                    "name": "Ed Chi"
+                }
+            ],
+            "year": 2019,
+            "venue": "RecSys",
+            "abstract": "Many cloud-based recommendation systems use a two-tower DNN model to learn query-item relevance. However, these models are typically trained with data biased by the existing production system. We identify the source of the bias to be the commonly adopted in-batch softmax loss (also known as sampled softmax). We propose a novel sampling-bias-corrected loss function and demonstrate its effectiveness.",
+            "externalIds": {
+                "DOI": "10.1145/3298689.3346996"
+            },
+            "discovered_for": "related_work[2.3]",
+            "paperId": "s2_yi2019sampling"
+        },
+        {
+            "key": "agrawal1994fast",
+            "bibtex_key": "agrawal1994fast",
+            "title": "Fast Algorithms for Mining Association Rules in Large Databases",
+            "authors": [
+                {
+                    "name": "Rakesh Agrawal"
+                },
+                {
+                    "name": "Ramakrishnan Srikant"
+                }
+            ],
+            "year": 1994,
+            "venue": "VLDB",
+            "abstract": "We consider the problem of discovering association rules between items in a large database of sales transactions. We present two new algorithms for solving this problem that are fundamentally different from the known algorithms. Empirical evaluation shows that these algorithms outperform the known algorithms significantly.",
+            "externalIds": {},
+            "discovered_for": "related_work[2.1]",
+            "paperId": "s2_agrawal1994fast"
+        },
+        {
+            "key": "sarwar2001item",
+            "bibtex_key": "sarwar2001item",
+            "title": "Item-Based Collaborative Filtering Recommendation Algorithms",
+            "authors": [
+                {
+                    "name": "Badrul Sarwar"
+                },
+                {
+                    "name": "George Karypis"
+                },
+                {
+                    "name": "Joseph Konstan"
+                },
+                {
+                    "name": "John Riedl"
+                }
+            ],
+            "year": 2001,
+            "venue": "WWW",
+            "abstract": "Recommender systems apply knowledge discovery techniques to the problem of making personalized recommendations for information, products or services during a live interaction. These systems, especially the collaborative filtering based ones, are achieving widespread success on the web. Item-based techniques first analyze the user-item matrix to identify relationships between different items, and then use these relationships to indirectly compute recommendations for users.",
+            "externalIds": {
+                "DOI": "10.1145/371920.372071"
+            },
+            "discovered_for": "related_work[2.1]",
+            "paperId": "s2_sarwar2001item"
+        },
+        {
+            "key": "kingma2015adam",
+            "bibtex_key": "kingma2015adam",
+            "title": "Adam: A Method for Stochastic Optimization",
+            "authors": [
+                {
+                    "name": "Diederik P. Kingma"
+                },
+                {
+                    "name": "Jimmy Ba"
+                }
+            ],
+            "year": 2015,
+            "venue": "ICLR",
+            "abstract": "We introduce Adam, an algorithm for first-order gradient-based optimization of stochastic objective functions, based on adaptive estimates of lower-order moments.",
+            "externalIds": {
+                "ArXiv": "1412.6980"
+            },
+            "discovered_for": "section_plan[3.4]",
+            "paperId": "s2_kingma2015adam"
+        },
+        {
+            "key": "wang2017deep",
+            "bibtex_key": "wang2017deep",
+            "title": "Deep & Cross Network for Ad Click Predictions",
+            "authors": [
+                {
+                    "name": "Ruoxi Wang"
+                },
+                {
+                    "name": "Bin Fu"
+                },
+                {
+                    "name": "Gang Fu"
+                },
+                {
+                    "name": "Mingliang Wang"
+                }
+            ],
+            "year": 2017,
+            "venue": "ADKDD@KDD",
+            "abstract": "Feature engineering has been the key to the success of many prediction models. However, the process is nontrivial and often requires manual feature engineering or exhaustive searching. DNNs are able to learn complex feature interactions, with the drawback of capturing cross features only implicitly. We propose the Deep & Cross Network (DCN) that explicitly applies feature crossing at each layer.",
+            "externalIds": {
+                "DOI": "10.1145/3124749.3124754"
+            },
+            "discovered_for": "related_work[2.2]",
+            "paperId": "s2_wang2017deep"
+        },
+        {
+            "key": "jarvelin2002cumulated",
+            "bibtex_key": "jarvelin2002cumulated",
+            "title": "Cumulated Gain-Based Evaluation of IR Techniques",
+            "authors": [
+                {
+                    "name": "Kalervo Järvelin"
+                },
+                {
+                    "name": "Jaana Kekäläinen"
+                }
+            ],
+            "year": 2002,
+            "venue": "ACM TOIS",
+            "abstract": "Modern large retrieval environments tend to present retrieval results to their users in the form of ranked lists. For such ranked retrieval, traditional set-based evaluation measures are not satisfactory. We introduce the idea of cumulated gains, which can be used in evaluation when ranking of retrieval results is essential.",
+            "externalIds": {
+                "DOI": "10.1145/582415.582418"
+            },
+            "discovered_for": "section_plan[5.1]",
+            "paperId": "s2_jarvelin2002cumulated"
+        },
+        {
+            "key": "krichene2022sampled",
+            "bibtex_key": "krichene2022sampled",
+            "title": "On Sampled Metrics for Item Recommendation",
+            "authors": [
+                {
+                    "name": "Walid Krichene"
+                },
+                {
+                    "name": "Steffen Rendle"
+                }
+            ],
+            "year": 2022,
+            "venue": "Communications of the ACM",
+            "abstract": "Recommender system research commonly evaluates ranking quality by sampling items that a user has not interacted with, computing metrics over only the sampled set. We investigate the relation between sampled and exact (full ranking) metrics and demonstrate that sampling can create inconsistencies in evaluation.",
+            "externalIds": {
+                "DOI": "10.1145/3535335"
+            },
+            "discovered_for": "section_plan[5.1]",
+            "paperId": "s2_krichene2022sampled"
+        },
+        {
+            "key": "volkovs2017dropoutnet",
+            "bibtex_key": "volkovs2017dropoutnet",
+            "title": "DropoutNet: Addressing Cold Start in Recommender Systems",
+            "authors": [
+                {
+                    "name": "Maksims Volkovs"
+                },
+                {
+                    "name": "Guangwei Yu"
+                },
+                {
+                    "name": "Tomi Poutanen"
+                }
+            ],
+            "year": 2017,
+            "venue": "NeurIPS",
+            "abstract": "Latent models have become the default choice for recommender systems due to their performance and scalability. However, research in this area has primarily focused on the warm-start scenario and largely ignored the cold-start problem. We propose a neural network-based latent model called DropoutNet to address the cold start problem in recommender systems.",
+            "externalIds": {},
+            "discovered_for": "related_work[2.3]",
+            "paperId": "s2_volkovs2017dropoutnet"
+        },
+        {
+            "key": "yang2020mixed",
+            "bibtex_key": "yang2020mixed",
+            "title": "Mixed Negative Sampling for Learning Two-Tower Neural Networks in Recommendations",
+            "authors": [
+                {
+                    "name": "Ji Yang"
+                },
+                {
+                    "name": "Xinyang Yi"
+                },
+                {
+                    "name": "Derek Zhiyuan Cheng"
+                },
+                {
+                    "name": "Lichan Hong"
+                },
+                {
+                    "name": "Yang Li"
+                },
+                {
+                    "name": "Simon Xiaoming Wang"
+                },
+                {
+                    "name": "Taishi Xu"
+                },
+                {
+                    "name": "Ed H. Chi"
+                }
+            ],
+            "year": 2020,
+            "venue": "WWW",
+            "abstract": "We study the problem of sampling for training two-tower neural networks. We propose Mixed Negative Sampling (MNS) and demonstrate its effectiveness in improving the quality of large-scale two-tower retrieval models.",
+            "externalIds": {
+                "DOI": "10.1145/3366423.3380195"
+            },
+            "discovered_for": "related_work[2.3]",
+            "paperId": "s2_yang2020mixed"
+        },
+        {
+            "key": "zhang2019deep",
+            "bibtex_key": "zhang2019deep",
+            "title": "Deep Learning based Recommender System: A Survey and New Perspectives",
+            "authors": [
+                {
+                    "name": "Shuai Zhang"
+                },
+                {
+                    "name": "Lina Yao"
+                },
+                {
+                    "name": "Aixin Sun"
+                },
+                {
+                    "name": "Yi Tay"
+                }
+            ],
+            "year": 2019,
+            "venue": "ACM Computing Surveys",
+            "abstract": "With the ever-growing volume of online information, recommender systems have been an effective strategy to overcome such information overload. The utility of recommender systems cannot be overstated, given its widespread adoption in many web applications, along with its potential impact to ameliorate many problems related to over-choice. In recent years, deep learning has garnered considerable interest in many research fields such as computer vision and natural language processing, owing not only to stellar performance but also the capacity to learn feature representations from scratch.",
+            "externalIds": {
+                "DOI": "10.1145/3285029"
+            },
+            "discovered_for": "intro",
+            "paperId": "s2_zhang2019deep"
+        },
+        {
+            "key": "rendle2010factorization",
+            "bibtex_key": "rendle2010factorization",
+            "title": "Factorization Machines",
+            "authors": [
+                {
+                    "name": "Steffen Rendle"
+                }
+            ],
+            "year": 2010,
+            "venue": "ICDM",
+            "abstract": "In this paper, we introduce Factorization Machines (FM) which are a new model class that combines the advantages of Support Vector Machines (SVM) with factorization models.",
+            "externalIds": {
+                "DOI": "10.1109/ICDM.2010.127"
+            },
+            "discovered_for": "related_work[2.2]",
+            "paperId": "s2_rendle2010factorization"
+        },
+        {
+            "key": "devlin2019bert",
+            "bibtex_key": "devlin2019bert",
+            "title": "BERT: Pre-training of Deep Bidirectional Transformers for Language Understanding",
+            "authors": [
+                {
+                    "name": "Jacob Devlin"
+                },
+                {
+                    "name": "Ming-Wei Chang"
+                },
+                {
+                    "name": "Kenton Lee"
+                },
+                {
+                    "name": "Kristina Toutanova"
+                }
+            ],
+            "year": 2019,
+            "venue": "NAACL",
+            "abstract": "We introduce a new language representation model called BERT, which stands for Bidirectional Encoder Representations from Transformers. Unlike recent language representation models, BERT is designed to pre-train deep bidirectional representations by jointly conditioning on both left and right context in all layers.",
+            "externalIds": {
+                "DOI": "10.18653/v1/N19-1423"
+            },
+            "discovered_for": "related_work[2.3]",
+            "paperId": "s2_devlin2019bert"
+        },
+        {
+            "key": "vaswani2017attention",
+            "bibtex_key": "vaswani2017attention",
+            "title": "Attention Is All You Need",
+            "authors": [
+                {
+                    "name": "Ashish Vaswani"
+                },
+                {
+                    "name": "Noam Shazeer"
+                },
+                {
+                    "name": "Niki Parmar"
+                },
+                {
+                    "name": "Jakob Uszkoreit"
+                },
+                {
+                    "name": "Llion Jones"
+                },
+                {
+                    "name": "Aidan N. Gomez"
+                },
+                {
+                    "name": "Lukasz Kaiser"
+                },
+                {
+                    "name": "Illia Polosukhin"
+                }
+            ],
+            "year": 2017,
+            "venue": "NeurIPS",
+            "abstract": "The dominant sequence transduction models are based on complex recurrent or convolutional neural networks that include an encoder and a decoder. The best performing models also connect the encoder and decoder through an attention mechanism. We propose a new simple network architecture, the Transformer, based solely on attention mechanisms.",
+            "externalIds": {
+                "ArXiv": "1706.03762"
+            },
+            "discovered_for": "related_work[2.3]",
+            "paperId": "s2_vaswani2017attention"
+        }
+    ]
+}

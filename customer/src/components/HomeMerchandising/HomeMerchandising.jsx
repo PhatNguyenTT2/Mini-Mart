@@ -1,9 +1,10 @@
-import { useState, useEffect, useMemo, useCallback, lazy, Suspense } from 'react';
-import { ChevronRight, ChevronDown, Tag } from 'lucide-react';
+import { useState, useEffect, useMemo, useCallback, useRef, lazy, Suspense } from 'react';
+import { ChevronRight, ChevronDown, Tag, Sparkles, Bot, ArrowRight, ShoppingBag, History, Grid } from 'lucide-react';
 import categoryService from '../../services/categoryService';
 import productService from '../../services/productService';
 import { useCart } from '../../contexts/CartContext';
 import { useStore } from '../../contexts/StoreContext';
+import { useChat } from '../../contexts/ChatContext';
 import useEmblaCarousel from 'embla-carousel-react';
 import Autoplay from 'embla-carousel-autoplay';
 
@@ -14,18 +15,14 @@ const PRODUCTS_PER_PAGE = 20;
 /**
  * Homepage Merchandising Component
  * Decision.md #2: Full-width "showroom" — no sidebar on homepage.
- * Sections: Hero → Top Categories (with subcategory expansion) → Products (Load More)
- *
- * Category → Product relationship:
- *   Products belong to SUBCATEGORIES (leaf nodes).
- *   Root categories have children[]. When user clicks a root category,
- *   we collect all children IDs and filter by those.
+ * Sections: Hero → Top Categories → Recommended For You (AI/Smart Fallback) → Hot Promotions → All Products
  */
 export default function HomeMerchandising() {
   const [categoryTree, setCategoryTree] = useState([]);
   const [products, setProducts] = useState([]);
   const [recentlyViewed, setRecentlyViewed] = useState([]);
   const [displayCount, setDisplayCount] = useState(PRODUCTS_PER_PAGE);
+  const [promoDisplayCount, setPromoDisplayCount] = useState(10);
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
   const [selectedRootId, setSelectedRootId] = useState(null);
@@ -34,8 +31,41 @@ export default function HomeMerchandising() {
   const [sortBy, setSortBy] = useState('default');
   const { addToCart } = useCart();
   const { selectedStore } = useStore();
+  const { products: chatProducts } = useChat();
+  const recommendedRef = useRef(null);
 
   const [emblaRef] = useEmblaCarousel({ loop: true }, [Autoplay({ delay: 5000, stopOnInteraction: false })]);
+
+  // Smooth scroll listener when AI recommendation is generated
+  useEffect(() => {
+    const handleScrollToRecommended = () => {
+      setTimeout(() => {
+        recommendedRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 200);
+    };
+    window.addEventListener('posmart:scroll_to_recommended', handleScrollToRecommended);
+    return () => window.removeEventListener('posmart:scroll_to_recommended', handleScrollToRecommended);
+  }, []);
+
+  // Compute Recommended Products (AI Chat products or Smart Fallback)
+  const recommendedProducts = useMemo(() => {
+    if (chatProducts && chatProducts.length > 0) {
+      return chatProducts.map(p => ({
+        ...p,
+        topSource: p.topSource || p.source || 'two_tower_onnx',
+        isAiRecommended: true
+      }));
+    }
+    // Smart Fallback for Cold Users: Top discounted / popular products
+    return products
+      .filter(p => (p.discountPercentage || 0) > 0 || p.unitPrice > 0)
+      .slice(0, 5)
+      .map(p => ({
+        ...p,
+        topSource: 'popular_fallback',
+        isAiRecommended: false
+      }));
+  }, [chatProducts, products]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -267,9 +297,10 @@ export default function HomeMerchandising() {
                 </p>
                 <button
                   onClick={() => document.getElementById('products-section')?.scrollIntoView({ behavior: 'smooth' })}
-                  className="bg-white text-blue-600 font-bold text-sm px-6 py-3 rounded-xl hover:bg-blue-50 transition-colors shadow-lg"
+                  className="bg-white text-blue-600 font-bold text-sm px-6 py-3 rounded-xl hover:bg-blue-50 transition-colors shadow-lg inline-flex items-center gap-2"
                 >
-                  Order Now →
+                  <span>Order Now</span>
+                  <ArrowRight className="w-4 h-4" />
                 </button>
               </div>
               <div className="absolute right-0 top-0 w-1/2 h-full opacity-10 pointer-events-none">
@@ -283,12 +314,64 @@ export default function HomeMerchandising() {
         </div>
       </section>
 
+      {/* ── REGION 1: Recommended From Chatbot AI (Top Context Banner) ── */}
+      {chatProducts && chatProducts.length > 0 && (
+        <section id="chatbot-recommendations-section" ref={recommendedRef} className="mb-10 scroll-mt-24 bg-slate-900 text-white p-6 rounded-2xl border border-slate-800 shadow-md">
+          <div className="flex items-center justify-between mb-5">
+            <div>
+              <div className="flex items-center gap-2 mb-1.5">
+                <span className="inline-flex items-center gap-1.5 bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 text-xs font-semibold px-2.5 py-0.5 rounded-full">
+                  <Bot className="w-3.5 h-3.5" />
+                  <span>Recommended from Chatbot</span>
+                </span>
+                <span className="text-xs text-slate-400 font-medium">
+                  Live Intent Context
+                </span>
+              </div>
+              <h2 className="text-xl font-bold tracking-tight text-white font-['Poppins',sans-serif]">
+                Suggestions Based on Your Chat Session
+              </h2>
+              <p className="text-xs text-slate-400 mt-1">
+                Direct recommendations based on your conversation with our AI Assistant
+              </p>
+            </div>
+          </div>
+
+          <div>
+            <Suspense fallback={
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <div key={i} className="h-64 bg-slate-800 rounded-xl animate-pulse" />
+                ))}
+              </div>
+            }>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                {chatProducts.map((product) => (
+                  <ProductCard
+                    key={product.id}
+                    product={product}
+                    onAddToCart={handleAddToCart}
+                    trackingSource={product.topSource || product.source || 'two_tower_onnx'}
+                  />
+                ))}
+              </div>
+            </Suspense>
+          </div>
+        </section>
+      )}
+
       {/* ── Recently Viewed ── */}
       {recentlyViewed.length >= 2 && (
         <section id="recently-viewed" className="mb-10">
           <div className="flex items-center justify-between mb-5">
-            <h2 className="text-xl font-bold text-gray-800">Recently Viewed</h2>
+            <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2.5 font-['Poppins',sans-serif]">
+              <span className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shadow-xs">
+                <History className="w-4 h-4" />
+              </span>
+              <span>Recently Viewed</span>
+            </h2>
           </div>
+
           <div className="flex gap-4 overflow-x-auto pb-4 snap-x snap-mandatory custom-scrollbar">
             <Suspense fallback={<div className="h-44 w-44 bg-gray-100 rounded-xl animate-pulse flex-shrink-0" />}>
               {recentlyViewed.map((product) => (
@@ -324,13 +407,19 @@ export default function HomeMerchandising() {
       {/* ── Top Categories ── */}
       <section id="categories-section">
         <div className="flex items-center justify-between mb-5">
-          <h2 className="text-xl font-bold text-gray-800">Browse by Category</h2>
+          <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2.5 font-['Poppins',sans-serif]">
+            <span className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shadow-xs">
+              <Grid className="w-4 h-4" />
+            </span>
+            <span>Browse by Category</span>
+          </h2>
           {selectedRootId && (
             <button
               onClick={() => { setSelectedRootId(null); setSelectedSubId(null); setExpandedRoot(null); }}
-              className="text-sm text-emerald-600 hover:text-emerald-700 font-semibold transition-colors"
+              className="text-sm text-emerald-600 hover:text-emerald-700 font-semibold transition-colors inline-flex items-center gap-1"
             >
-              View All →
+              <span>View All</span>
+              <ChevronRight className="w-4 h-4" />
             </button>
           )}
         </div>
@@ -416,17 +505,64 @@ export default function HomeMerchandising() {
         )}
       </section>
 
+      {/* ── REGION 2: Recommended For You (System Personalization - Phase 5) ── */}
+      <section id="recommended-section" className="mb-10">
+        <div className="flex items-center justify-between mb-5">
+          <div>
+            <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2.5 font-['Poppins',sans-serif]">
+              <span className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center shadow-xs">
+                <Sparkles className="w-4 h-4" />
+              </span>
+              <span>Recommended For You</span>
+            </h2>
+            <p className="text-sm text-gray-500 mt-1">
+              Personalized selections powered by Multi-Arm System Engine (CF, Content & Apriori)
+            </p>
+          </div>
+        </div>
+
+        {loading ? (
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <div key={i} className="h-64 bg-gray-100 rounded-xl animate-pulse" />
+            ))}
+          </div>
+        ) : (
+          <Suspense fallback={
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+              {Array.from({ length: 5 }).map((_, i) => (
+                <div key={i} className="h-64 bg-gray-100 rounded-xl animate-pulse" />
+              ))}
+            </div>
+          }>
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+              {products
+                .filter(p => (p.discountPercentage || 0) > 0 || p.unitPrice > 0)
+                .slice(0, 5)
+                .map((product) => (
+                  <ProductCard
+                    key={product.id}
+                    product={product}
+                    onAddToCart={handleAddToCart}
+                    trackingSource={product.topSource || 'cf'}
+                  />
+                ))}
+            </div>
+          </Suspense>
+        )}
+      </section>
+
       {/* ── Promotion Products Section ── */}
       <section id="promotions" className="mb-10">
         <div className="flex items-center justify-between mb-5">
           <div>
-            <h2 className="text-xl font-bold text-red-650 flex items-center gap-2 font-['Poppins',sans-serif]">
-              <span className="inline-block bg-red-100 p-1.5 rounded-lg text-red-600">
+            <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2.5 font-['Poppins',sans-serif]">
+              <span className="w-8 h-8 rounded-lg bg-red-50 text-red-600 flex items-center justify-center shadow-xs">
                 <Tag className="w-4 h-4" />
               </span>
-              Hot Promotions
+              <span>Hot Promotions</span>
             </h2>
-            <p className="text-sm text-gray-400 mt-1">Super savings on your favorite products</p>
+            <p className="text-sm text-gray-500 mt-1">Super savings on your favorite products</p>
           </div>
         </div>
 
@@ -441,26 +577,42 @@ export default function HomeMerchandising() {
             Currently there are no dynamic promotions available. Check back later!
           </div>
         ) : (
-          <Suspense fallback={
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <div key={i} className="h-64 bg-gray-100 rounded-xl animate-pulse" />
-              ))}
-            </div>
-          }>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-              {products
-                .filter(p => (p.discountPercentage || 0) > 0)
-                .slice(0, 10)
-                .map((product) => (
-                  <ProductCard
-                    key={product.id}
-                    product={product}
-                    onAddToCart={handleAddToCart}
-                  />
+          <>
+            <Suspense fallback={
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                {Array.from({ length: 5 }).map((_, i) => (
+                  <div key={i} className="h-64 bg-gray-100 rounded-xl animate-pulse" />
                 ))}
-            </div>
-          </Suspense>
+              </div>
+            }>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                {products
+                  .filter(p => (p.discountPercentage || 0) > 0)
+                  .slice(0, promoDisplayCount)
+                  .map((product) => (
+                    <ProductCard
+                      key={product.id}
+                      product={product}
+                      onAddToCart={handleAddToCart}
+                      trackingSource="organic"
+                    />
+                  ))}
+              </div>
+            </Suspense>
+
+            {/* View More Promotions Button */}
+            {products.filter(p => (p.discountPercentage || 0) > 0).length > promoDisplayCount && (
+              <div className="flex justify-center mt-6">
+                <button
+                  onClick={() => setPromoDisplayCount(prev => prev + 10)}
+                  className="bg-red-50 border border-red-200 hover:bg-red-100 text-red-600 font-semibold text-sm px-6 py-2.5 rounded-xl transition-all duration-200 flex items-center gap-2"
+                >
+                  <span>View More Promotions ({products.filter(p => (p.discountPercentage || 0) > 0).length - promoDisplayCount} remaining)</span>
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
+            )}
+          </>
         )}
       </section>
 
@@ -468,9 +620,14 @@ export default function HomeMerchandising() {
       <section id="products-section">
         <div className="flex items-center justify-between mb-6">
           <div>
-            <h2 className="text-xl font-bold text-gray-800">{sectionTitle}</h2>
+            <h2 className="text-xl font-bold text-gray-900 flex items-center gap-2.5 font-['Poppins',sans-serif]">
+              <span className="w-8 h-8 rounded-lg bg-gray-100 text-gray-700 flex items-center justify-center shadow-xs">
+                <ShoppingBag className="w-4 h-4" />
+              </span>
+              <span>{sectionTitle}</span>
+            </h2>
             {!loading && (
-              <p className="text-sm text-gray-400 mt-1">
+              <p className="text-sm text-gray-500 mt-1">
                 {filteredProducts.length} products available
               </p>
             )}

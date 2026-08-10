@@ -20,8 +20,8 @@ class ReadHandler {
   async handleRecommendation(session, userMessage, intentMeta = {}) {
     if (this.ragService === undefined && process.env.NODE_ENV !== 'test') {
       // RAG model is loading (~87s on cold start). Wait with polling instead of fallback.
-      const maxWaitMs = 90_000;
-      const pollMs = 3_000;
+      const maxWaitMs = 15_000;
+      const pollMs = 2_000;
       const start = Date.now();
       logger.info({ sessionId: session.id }, 'RAG not ready yet, waiting for hot-swap...');
       while (Date.now() - start < maxWaitMs) {
@@ -29,8 +29,11 @@ class ReadHandler {
         if (this.ragService) break;
       }
       if (!this.ragService) {
-        logger.warn({ sessionId: session.id }, 'RAG still not ready after timeout, using fallback');
-        return this.handleSearchProductFallback(session.id, userMessage);
+        logger.warn({ sessionId: session.id }, 'RAG still not ready after 15s timeout, returning cold-start notice');
+        return {
+          content: '🔄 Hệ thống AI đang khởi tạo mô hình nhúng (khoảng 30-60 giây nữa). Vui lòng thử lại sau giây lát!',
+          products: null
+        };
       }
     } else if (!this.ragService) {
       return this.handleSearchProductFallback(session.id, userMessage);
@@ -326,8 +329,8 @@ class ReadHandler {
   async handleSearchProduct(session, userMessage) {
     if (this.ragService === undefined && process.env.NODE_ENV !== 'test') {
       // Wait for RAG hot-swap (same as handleRecommendation)
-      const maxWaitMs = 90_000;
-      const pollMs = 3_000;
+      const maxWaitMs = 15_000;
+      const pollMs = 2_000;
       const start = Date.now();
       while (Date.now() - start < maxWaitMs) {
         await new Promise(r => setTimeout(r, pollMs));

@@ -1,0 +1,311 @@
+{
+  "plotting_plan": [
+    {
+      "figure_id": "fig_architecture_overview",
+      "title": "Decoupled Wide & Deep Two-Tower System Architecture",
+      "plot_type": "diagram",
+      "data_source": "both",
+      "objective": "System Architecture Diagram demonstrating the decoupled Wide branch (Apriori Lift MLP) and Deep branch (Two-Tower with frozen Vietnamese SBERT and User Persona embeddings) combined via additive joint scoring.",
+      "aspect_ratio": "16:9"
+    },
+    {
+      "figure_id": "fig_microservices_flow",
+      "title": "Microservices Execution Flow and Serving Pipeline",
+      "plot_type": "diagram",
+      "data_source": "both",
+      "objective": "Sequence diagram illustrating async communication between Node.js Chatbot API Gateway, Python FastAPI Inference Engine, and ONNX Runtime CPU serving cache.",
+      "aspect_ratio": "16:9"
+    },
+    {
+      "figure_id": "fig_latency_comparison",
+      "title": "Inference Latency Comparison: PyTorch vs. ONNX Runtime",
+      "plot_type": "plot",
+      "data_source": "experimental_log.md",
+      "objective": "Bar Chart showcasing the 14.7x inference speedup of ONNX Runtime (0.85ms) over PyTorch Native (12.50ms) for a batch of 100 candidate items.",
+      "aspect_ratio": "4:3"
+    },
+    {
+      "figure_id": "fig_performance_ablation",
+      "title": "Performance Comparison Across Baselines and Robustness Evaluation",
+      "plot_type": "plot",
+      "data_source": "experimental_log.md",
+      "objective": "Bar Chart comparing Hit Rate@10, NDCG@10, and GAUC across Rule-based Apriori, Semantic Content-Based, Item-Item CF, Random Base, Noisy 10% Hybrid, Deep-Only Two-Tower, and Proposed Hybrid.",
+      "aspect_ratio": "4:3"
+    }
+  ],
+  "intro_related_work_plan": {
+    "introduction_strategy": {
+      "hook_hypothesis": "Modern E-commerce recommender systems face severe information overload over rapidly expanding retail product catalogs, requiring sub-millisecond real-time candidate scoring.",
+      "problem_gap_hypothesis": "Existing monolithic Wide & Deep architectures fail to balance explicit co-purchase rule memorization with semantic cold-start generalization without introducing heavy inference latency bottlenecks on proprietary retail datasets.",
+      "search_directions": [
+        "Find highly cited papers establishing real-world impact and serving latency challenges of E-commerce recommender systems",
+        "Search for comprehensive survey papers on hybrid recommender systems and deep neural recommendation architectures",
+        "Identify foundational papers establishing two-tower retrieval networks and Wide & Deep learning paradigms"
+      ]
+    },
+    "related_work_strategy": {
+      "overview": "Investigate three distinct recommendation paradigms to build a research graph demonstrating the necessity of our decoupled Wide (Apriori) + Deep (Two-Tower SBERT) architecture.",
+      "subsections": [
+        {
+          "subsection_title": "2.1 Association Rule & Memory-Based Recommenders",
+          "methodology_cluster": "Association Rule Mining & Collaborative Filtering",
+          "sota_investigation_mission": "Identify standard association rule methods (Apriori) and item-based collaborative filtering baselines from foundational literature.",
+          "limitation_hypothesis": "Memory-based association rules excel at high-confidence co-purchase memorization but suffer from severe cold-start penalties and zero generalization capability for unseen items.",
+          "limitation_search_queries": [
+            "Apriori algorithm cold start limitations recommender systems",
+            "Item-based collaborative filtering sparsity cold start penalty"
+          ],
+          "bridge_to_our_method": "Our method integrates a Deep Two-Tower branch with SBERT embeddings to supply semantic generalization for cold-start items lacking transaction history."
+        },
+        {
+          "subsection_title": "2.2 Neural & Hybrid Recommendation Frameworks",
+          "methodology_cluster": "Wide & Deep Learning & Neural Collaborative Filtering",
+          "sota_investigation_mission": "Analyze monolithic Wide & Deep models (Cheng et al., 2016), DeepFM (Guo et al., 2017), and Neural CF (He et al., 2017).",
+          "limitation_hypothesis": "Monolithic hybrid networks tightly couple feature interactions, creating computational bottlenecks that prevent sub-millisecond serving without model degradation.",
+          "limitation_search_queries": [
+            "Wide and Deep recommender latency serving bottleneck",
+            "Neural collaborative filtering serving overhead real-time recommendations"
+          ],
+          "bridge_to_our_method": "Our decoupled architecture isolates the Wide lift MLP from the Deep SBERT Two-Tower, enabling high-speed ONNX runtime optimization and sub-millisecond latency."
+        },
+        {
+          "subsection_title": "2.3 Dual-Tower & Semantic Text-Aware Recommenders",
+          "methodology_cluster": "Two-Tower Candidate Retrieval & Language Model Embeddings",
+          "sota_investigation_mission": "Examine Two-Tower architectures (Yi et al., 2019) and Sentence-BERT text embedding integrations (Reimers & Gurevych, 2019).",
+          "limitation_hypothesis": "Pure two-tower semantic models generalize well based on text descriptions but miss explicit high-confidence co-purchase rules present in transaction logs.",
+          "limitation_search_queries": [
+            "Two tower recommendation loss of explicit co-occurrence rules",
+            "Semantic text embeddings recommendation missing co-purchase lift"
+          ],
+          "bridge_to_our_method": "Our Wide branch feeds log1p-normalized Apriori lift scores directly into additive joint scoring, guaranteeing high-confidence co-purchase patterns are retained."
+        }
+      ]
+    }
+  },
+  "section_plan": [
+    {
+      "section_title": "Abstract",
+      "subsections": [
+        {
+          "subsection_title": "Abstract Content",
+          "content_bullets": [
+            "Highlight the trade-off between memorization and generalization in E-commerce recommendation.",
+            "Introduce the proposed Decoupled Wide (Apriori Lift MLP) + Deep (SBERT Two-Tower) architecture.",
+            "Summarize experimental results: Hit Rate@10 = 0.4940, NDCG@10 = 0.0644, GAUC = 0.8507 on Full-Catalog Ranking over 1,380 SKUs.",
+            "State ONNX serving speedup: 14.7x speedup (~0.85ms per batch)."
+          ],
+          "citation_hints": []
+        }
+      ]
+    },
+    {
+      "section_title": "1. Introduction",
+      "subsections": [
+        {
+          "subsection_title": "1.1 Background & Motivation",
+          "content_bullets": [
+            "Elaborate on retail E-commerce growth and catalog overload across 1,380 SKUs and 50,000+ interactions in a proprietary Vietnamese convenience store dataset.",
+            "Explain the tension between Wide memorization of co-purchase lift and Deep semantic generalization.",
+            "Formalize the serving latency challenge under production real-time constraints."
+          ],
+          "citation_hints": [
+            "Cheng et al. (Wide & Deep Learning for Recommender Systems)",
+            "research paper or technical report introducing 'Sentence-BERT'"
+          ]
+        },
+        {
+          "subsection_title": "1.2 Contributions",
+          "content_bullets": [
+            "Detail the 4 main technical contributions: Decoupled Wide & Deep Two-Tower, Frozen SBERT Cold-Start Resolution, Sub-Millisecond ONNX Microservice Serving, and Rigorous Full-Catalog Evaluation Protocol."
+          ],
+          "citation_hints": []
+        }
+      ]
+    },
+    {
+      "section_title": "2. Related Work",
+      "subsections": [
+        {
+          "subsection_title": "2.1 Association Rule & Memory-Based Recommenders",
+          "content_bullets": [
+            "Review Apriori association rule mining and item-based collaborative filtering.",
+            "Highlight reliance on transaction co-occurrence and cold-start limitations."
+          ],
+          "citation_hints": [
+            "Agrawal & Srikant (Fast algorithms for mining association rules)",
+            "Sarwar et al. (Item-based collaborative filtering recommendation algorithms)"
+          ]
+        },
+        {
+          "subsection_title": "2.2 Deep Learning & Hybrid Recommender Systems",
+          "content_bullets": [
+            "Discuss Neural Collaborative Filtering (NCF), Wide & Deep, DeepFM, and DCN.",
+            "Analyze monolithic coupling and computational overhead during online inference."
+          ],
+          "citation_hints": [
+            "He et al. (Neural Collaborative Filtering)",
+            "Guo et al. (DeepFM: A Factorization-Machine based Neural Network for CTR Prediction)",
+            "Wang et al. (Deep & Cross Network for Ad Click Predictions)"
+          ]
+        },
+        {
+          "subsection_title": "2.3 Two-Tower Architectures & Semantic Embeddings",
+          "content_bullets": [
+            "Examine Two-Tower retrieval networks, negative sampling strategies, and pretrained language model embeddings for items.",
+            "Explain how frozen SBERT provides zero-shot item representation."
+          ],
+          "citation_hints": [
+            "Yi et al. (Sampling-bias-corrected neural modeling for large corpus item recommendations)",
+            "Yang et al. (Mixed negative sampling for learning two-tower neural networks in recommendations)",
+            "Reimers & Gurevych (Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks)"
+          ]
+        }
+      ]
+    },
+    {
+      "section_title": "3. Proposed Methodology",
+      "subsections": [
+        {
+          "subsection_title": "3.1 System Overview & Cascade Architecture",
+          "content_bullets": [
+            "Define the overall two-stage cascade architecture: Retrieval / Candidate Generation followed by Wide & Deep Joint Scoring.",
+            "Reference System Architecture Diagram (fig_architecture_overview)."
+          ],
+          "citation_hints": [
+            "Covington et al. (Deep Neural Networks for YouTube Recommendations)"
+          ]
+        },
+        {
+          "subsection_title": "3.2 Wide Branch: Apriori Lift MLP",
+          "content_bullets": [
+            "Formalize Apriori co-purchase lift extraction over 10,820 association rules.",
+            "Explain log1p normalization f(L) = log(1 + L) mapping lift values from [1.01, 1926.0] to [0.0, 7.56].",
+            "Detail Wide MLP structure: Linear(1, 16) -> ReLU -> Linear(16, 1) yielding S_Wide(x, y)."
+          ],
+          "citation_hints": [
+            "Agrawal & Srikant (Fast algorithms for mining association rules)"
+          ]
+        },
+        {
+          "subsection_title": "3.3 Deep Branch: Two-Tower Network with Frozen SBERT",
+          "content_bullets": [
+            "Detail User Tower: User ID embedding (64d) + Persona Cluster embedding (8d) -> Linear(72,128) -> ReLU -> LayerNorm(128) -> Linear(128,64) -> L2 Norm.",
+            "Explain User Cold-Start Fallback mechanism using global majority cluster vector and mean user embedding.",
+            "Detail Item Tower: Frozen Vietnamese SBERT (keepitreal/vietnamese-sbert, 768d) projected to 64d + Category ID (16d) + Price Bucket (8d) -> Linear(88,64) -> ReLU -> Linear(64,64) -> L2 Norm.",
+            "Define Deep Similarity Scoring S_Deep(x, y) with temperature scaling tau = 0.1."
+          ],
+          "citation_hints": [
+            "Reimers & Gurevych (Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks)"
+          ]
+        },
+        {
+          "subsection_title": "3.4 Joint Scoring & Optimization Objective",
+          "content_bullets": [
+            "Define additive joint logits: y_hat(x, y) = S_Deep(x, y) + S_Wide(x, y) and Sigmoid activation.",
+            "Formulate Binary Cross-Entropy (BCE) Loss with Hard Negative Sampling (1:4 ratio, 50% top-20% high-impression distractors).",
+            "Specify Adam optimizer (learning rate 1e-3, weight decay 1e-5) and batch size 512."
+          ],
+          "citation_hints": [
+            "Kingma & Ba (Adam: A Method for Stochastic Optimization)",
+            "Yang et al. (Mixed negative sampling for learning two-tower neural networks in recommendations)"
+          ]
+        }
+      ]
+    },
+    {
+      "section_title": "4. System Implementation",
+      "subsections": [
+        {
+          "subsection_title": "4.1 Offline Pre-computation & Vector Caching",
+          "content_bullets": [
+            "Describe pre-computing 64d Item Tower embeddings for all 1,380 SKUs offline.",
+            "Detail RAM cache storage for instant vector retrieval during online scoring."
+          ],
+          "citation_hints": []
+        },
+        {
+          "subsection_title": "4.2 ONNX Runtime Serving & Microservices Integration",
+          "content_bullets": [
+            "Explain PyTorch to ONNX dynamic graph export, constant folding, and layer fusion.",
+            "Reference Microservices Execution Flow Diagram (fig_microservices_flow) showing Node.js Chatbot API Gateway and Python FastAPI Inference Engine.",
+            "Detail sub-millisecond serving benchmark (~0.85ms per 100 candidate items)."
+          ],
+          "citation_hints": [
+            "Bai et al. (ONNX: Open Neural Network Exchange)",
+            "Dragoni et al. (Microservices: yesterday, today, and tomorrow)"
+          ]
+        }
+      ]
+    },
+    {
+      "section_title": "5. Experiments and Results",
+      "subsections": [
+        {
+          "subsection_title": "5.1 Experimental Setup & Evaluation Protocol",
+          "content_bullets": [
+            "Describe the proprietary Vietnamese Mini-Mart E-commerce dataset (500 users, 1,380 SKUs, 50,000+ interactions, 7.2% density, 4 persona clusters).",
+            "Provide Dataset Scale Justification: Full-Catalog Ranking protocol (690,000 predictions per test run) vs sampled metrics.",
+            "Define evaluation metrics: Hit Rate@10, NDCG@10, GAUC, and Serving Latency (ms)."
+          ],
+          "citation_hints": [
+            "Jarvelin & Kekalainen (Cumulated gain-based evaluation of IR techniques)",
+            "Krichene & Rendle (On the Inconsistency of Evaluation Metrics in Recommender Systems)"
+          ]
+        },
+        {
+          "subsection_title": "5.2 Baseline Comparison & Performance Analysis",
+          "content_bullets": [
+            "Present performance table comparing Proposed Hybrid against 6 baselines (Rule-based Apriori, Semantic Text, Item-Item CF, Random Base, Noisy 10% Hybrid, Deep-Only Two-Tower).",
+            "Analyze Hit Rate@10 improvement (0.4940 vs 0.4840 Deep-Only), GAUC gain (0.8507), and NDCG coverage-vs-precision trade-off.",
+            "Explain Random Base zero-leakage verification (GAUC 0.5324) proving strict temporal isolation.",
+            "Reference Performance Ablation Chart (fig_performance_ablation)."
+          ],
+          "citation_hints": [
+            "He et al. (Neural Collaborative Filtering)"
+          ]
+        },
+        {
+          "subsection_title": "5.3 Robustness & Persona Cluster Analysis",
+          "content_bullets": [
+            "Analyze model degradation under 10% cross-persona noise injection (HR@10 drops to 0.4200, GAUC remains robust at 0.8463).",
+            "Break down per-persona cluster results: Cluster 0 (Homemaker, HR@10=0.5260), Cluster 1 (Student, HR@10=0.4880), Cluster 2 (Drinker, HR@10=0.5120), Cluster 3 (Casual, HR@10=0.4320).",
+            "Demonstrate SBERT cold-start stability for Casual retail shoppers."
+          ],
+          "citation_hints": [
+            "Volkovs et al. (DropoutNet: Addressing cold start in recommender systems)"
+          ]
+        },
+        {
+          "subsection_title": "5.4 Serving Latency & Throughput Benchmark",
+          "content_bullets": [
+            "Compare native PyTorch (12.50ms) against ONNX Runtime (0.85ms) for 100 candidate items, demonstrating a 14.7x speedup.",
+            "Reference Latency Comparison Chart (fig_latency_comparison)."
+          ],
+          "citation_hints": [
+            "Bai et al. (ONNX: Open Neural Network Exchange)"
+          ]
+        }
+      ]
+    },
+    {
+      "section_title": "6. Conclusion and Future Work",
+      "subsections": [
+        {
+          "subsection_title": "6.1 Conclusion",
+          "content_bullets": [
+            "Summarize the proposed Decoupled Wide & Deep Two-Tower architecture for Vietnamese retail E-commerce.",
+            "Reiterate state-of-the-art results: Hit Rate@10 = 0.4940, GAUC = 0.8507, and sub-millisecond ONNX serving (~0.85ms)."
+          ],
+          "citation_hints": []
+        },
+        {
+          "subsection_title": "6.2 Future Work",
+          "content_bullets": [
+            "Outline future extensions: dynamic real-time LinUCB contextual multi-armed bandit re-ranking and session-based sequence modeling."
+          ],
+          "citation_hints": []
+        }
+      ]
+    }
+  ]
+}

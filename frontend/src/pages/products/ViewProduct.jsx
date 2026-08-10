@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { Breadcrumb } from '../../components/Breadcrumb';
 import { FilterProduct } from '../../components/FilterProduct';
 import { ProductGrid, ProductListHeader, SortBy, BatchListModal } from '../../components/ViewProduct';
@@ -38,14 +38,31 @@ const ViewProduct = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
 
   // Handle pagination changes from ProductGrid
-  const handlePaginationChange = (info) => {
-    setPaginationInfo(prev => ({ ...prev, ...info }));
-  };
+  const handlePaginationChange = useCallback((info) => {
+    setPaginationInfo(prev => {
+      const isTotalEqual = prev.totalItems === info.totalItems;
+      const isCurrentEqual = prev.currentCount === info.currentCount;
+      const isLoadingEqual = prev.isLoading === info.isLoading;
+      if (isTotalEqual && isCurrentEqual && isLoadingEqual) {
+        return prev;
+      }
+      return { ...prev, ...info };
+    });
+  }, []);
 
   // Handle filter changes from FilterProduct
-  const handleFilterChange = (newFilters) => {
-    setFilters(prev => ({ ...prev, ...newFilters }));
-  };
+  const handleFilterChange = useCallback((newFilters) => {
+    setFilters(prev => {
+      const isCatEqual = JSON.stringify(prev.categories || []) === JSON.stringify(newFilters.categories || []);
+      const isMinEqual = prev.minPrice === newFilters.minPrice;
+      const isMaxEqual = prev.maxPrice === newFilters.maxPrice;
+      const isDiscEqual = prev.onlyDiscounted === newFilters.onlyDiscounted;
+      if (isCatEqual && isMinEqual && isMaxEqual && isDiscEqual) {
+        return prev;
+      }
+      return { ...prev, ...newFilters };
+    });
+  }, []);
 
   // Handle sort change from SortBy dropdown
   const handleSortChange = (newSortBy) => {

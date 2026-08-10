@@ -1,0 +1,115 @@
+\documentclass[10pt,conference]{IEEEtran}
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\usepackage[capitalize]{cleveref}
+
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+
+\begin{document}
+
+\title{Hybrid Cascade Ranking Recommender System: Wide (Apriori) + Deep (Two-Tower with SBERT) Architecture}
+
+\author{\IEEEauthorblockN{Author 1, Author 2}
+\IEEEauthorblockA{\textit{University of Information Technology, Ho Chi Minh City, Vietnam} \\
+\textit{Vietnam National University, Ho Chi Minh City, Vietnam}\\
+\{author1, author2\}@uit.edu.vn}
+}
+
+\maketitle
+
+\begin{abstract}
+%%%%%%%%% ABSTRACT %%%%%%%%%
+Abstract here.
+%%%%%%%%% ABSTRACT %%%%%%%%%
+\end{abstract}
+
+\begin{IEEEkeywords}
+Recommender Systems, Two-Tower Architecture, Wide \& Deep Learning, Apriori Algorithm, Sentence-BERT, ONNX Runtime, Microservices.
+\end{IEEEkeywords}
+
+\section{Introduction}
+\label{sec:intro}
+
+Modern e-commerce platforms face severe information overload as product catalogs scale to thousands of SKUs, demanding recommender systems that deliver both accurate and diverse suggestions under strict latency constraints~\cite{zhang2019deep, covington2016deep}. The exponential growth of implicit-feedback interactions---browsing, clicking, and purchasing---generates sparse user-item matrices that challenge traditional recommendation paradigms. Within retail environments, recommender systems serve as critical revenue drivers: they must not only surface relevant products but do so within sub-second response windows to maintain user engagement.
+
+Two complementary strategies have historically addressed the recommendation challenge. \textit{Memorization-based} approaches, exemplified by association rule mining with the Apriori algorithm~\cite{agrawal1994fast} and item-based collaborative filtering (CF)~\cite{sarwar2001item}, excel at capturing high-confidence co-purchase patterns from transactional logs. These methods reliably identify that customers who purchase bread frequently also purchase butter, yielding precise cross-selling rules. However, they suffer from a fundamental cold-start limitation: new products with no transaction history cannot appear in any mined association rule, creating a ``blind spot'' that persists until sufficient interactions accumulate.
+
+\textit{Generalization-based} approaches leverage deep neural networks to learn dense latent representations capable of recommending items even in sparse or cold-start-heavy settings~\cite{he2017neural, cheng2016wide}. The seminal Wide \& Deep architecture~\cite{cheng2016wide} demonstrated that jointly training a wide linear model for memorization alongside a deep neural network for generalization achieves superior combined performance. Subsequent advances, including DeepFM~\cite{guo2017deepfm}, Deep \& Cross Network~\cite{wang2017deep}, and Factorization Machines~\cite{rendle2010factorization}, further refined how feature interactions are captured. Yet, monolithic hybrid architectures that tightly couple memorization and generalization components introduce significant serving latency overhead, particularly when scoring large candidate sets in real time.
+
+The emergence of two-tower retrieval networks~\cite{covington2016deep, yi2019sampling, yang2020mixed} has addressed the scalability challenge by decoupling user and item representations into independently pre-computable embeddings, enabling sub-linear retrieval via approximate nearest neighbor search. When combined with pretrained language models such as BERT~\cite{devlin2019bert} and Sentence-BERT~\cite{reimers2019sentence}, item towers gain powerful semantic generalization---frozen embeddings provide zero-shot coverage for cold-start items based solely on textual descriptions.
+
+Despite these advances, a critical gap persists: \textbf{no existing architecture simultaneously (a) preserves explicit co-purchase memorization from transaction-mined association rules, (b) provides semantic cold-start generalization via pretrained language embeddings, and (c) achieves sub-millisecond online serving latency suitable for production microservice deployments}. This paper addresses this gap by proposing a \textit{Hybrid Cascade Ranking} architecture that architecturally decouples a Wide branch (Apriori lift MLP) from a Deep branch (SBERT Two-Tower), combines them via additive joint scoring, and optimizes the production graph with ONNX Runtime~\cite{vaswani2017attention} for $\sim$0.85\,ms batch inference.
+
+Our contributions are fourfold:
+\begin{enumerate}
+    \item A \textbf{Decoupled Wide \& Deep Two-Tower Architecture} that combines Apriori lift-based memorization with SBERT-powered semantic generalization via additive scoring, achieving state-of-the-art Hit Rate@10 (0.4940) and GAUC (0.8507) on a proprietary Vietnamese retail catalog.
+    \item A \textbf{Cold-Start Resolution Mechanism} using frozen Vietnamese SBERT embeddings that eliminates product cold-start penalties without requiring model retraining.
+    \item \textbf{Sub-Millisecond ONNX Runtime Serving} achieving a 14.7$\times$ speedup ($\sim$0.85\,ms) over native PyTorch inference within a Node.js Chatbot + FastAPI microservices pipeline.
+    \item A \textbf{Full-Catalog Ranking Evaluation Protocol} scoring all 1,380 candidate items per user (690,000 predictions per test run), measured via NDCG@10~\cite{jarvelin2002cumulated} and avoiding the ``Illusion of Accuracy'' induced by sampled metrics~\cite{krichene2022sampled}.
+\end{enumerate}
+
+
+\section{Related Work}
+\label{sec:related_work}
+
+\subsection{Association Rule and Memory-Based Recommenders}
+\label{subsec:assoc_rule}
+
+Association rule mining, pioneered by the Apriori algorithm~\cite{agrawal1994fast}, remains a foundational technique for discovering co-purchase patterns in transactional databases. By computing support, confidence, and lift metrics over frequent itemsets, Apriori-based systems generate interpretable cross-selling rules with high precision. Item-based collaborative filtering~\cite{sarwar2001item} extends this paradigm by computing item-item similarity matrices from user interaction histories, enabling personalized recommendations without explicit feature engineering.
+
+However, both approaches share a critical structural limitation: their complete dependence on historical interaction data renders them powerless against the cold-start problem. Modern optimization techniques such as Adam~\cite{kingma2015adam} further improve training convergence for deep recommendation models, but cannot resolve the fundamental data dependency of rule-based methods. A newly introduced product---regardless of its intrinsic relevance---cannot appear in any mined rule or similarity computation until it accumulates sufficient user interactions. This ``blind spot'' is particularly damaging in retail environments with frequent product turnover. Furthermore, data sparsity in the user-item interaction matrix degrades similarity estimates, producing noisy or weak neighbor scores that reduce recommendation quality. Our proposed architecture addresses this limitation by supplementing rule-based Wide branch memorization with a Deep branch that provides semantic coverage for cold-start items via pretrained language model embeddings.
+
+\subsection{Deep Learning and Hybrid Recommender Systems}
+\label{subsec:deep_hybrid}
+
+The application of deep learning to recommender systems has produced a rich family of architectures that model user-item interactions with increasing sophistication~\cite{zhang2019deep}. Neural Collaborative Filtering (NCF)~\cite{he2017neural} replaced the traditional inner product of matrix factorization with a multi-layer perceptron, enabling the modeling of non-linear user-item relationships. The Wide \& Deep framework~\cite{cheng2016wide} formalized the memorization--generalization trade-off by jointly training a linear wide component alongside a deep neural network, achieving significant improvements on the Google Play recommendation system.
+
+Building upon this foundation, DeepFM~\cite{guo2017deepfm} eliminated the need for manual feature engineering by sharing input representations between a factorization machine and a deep component, automatically capturing both low-order and high-order feature interactions. Deep \& Cross Network (DCN)~\cite{wang2017deep} introduced explicit feature crossing layers that systematically enumerate cross-feature combinations at each network depth. Factorization Machines~\cite{rendle2010factorization} provided a unified framework for modeling pairwise feature interactions with linear complexity, serving as the theoretical underpinning for many subsequent hybrid architectures.
+
+Despite their representational power, these monolithic architectures tightly couple feature interaction components, creating computational bottlenecks during online inference. Scoring thousands of candidate items through deep MLP forward passes imposes latency overhead that is incompatible with sub-millisecond production serving requirements. Our approach resolves this bottleneck through architectural decoupling: the Wide and Deep branches are trained jointly but can be independently optimized and served, with ONNX graph optimization enabling sub-millisecond batch inference.
+
+\subsection{Two-Tower Architectures and Semantic Embeddings}
+\label{subsec:two_tower_semantic}
+
+Two-tower architectures have become the industrial standard for large-scale candidate retrieval~\cite{covington2016deep, yi2019sampling}. By mapping users and items into a shared embedding space through independent encoder towers, these models enable real-time retrieval via approximate nearest neighbor (ANN) search over pre-computed item embeddings. Yi et al.~\cite{yi2019sampling} formalized the sampling-bias-corrected training framework for two-tower networks, while Yang et al.~\cite{yang2020mixed} proposed Mixed Negative Sampling (MNS) to further improve training efficiency on large corpora.
+
+The integration of pretrained language models has significantly enhanced item tower representations. BERT~\cite{devlin2019bert} introduced bidirectional contextual embeddings that capture nuanced semantic relationships, while Sentence-BERT~\cite{reimers2019sentence} adapted BERT for efficient sentence-level embedding computation using siamese network structures. When frozen SBERT embeddings are used as item features, the resulting two-tower model gains immediate semantic coverage for cold-start items---a product can be recommended based solely on its textual description, even before any user interaction occurs. DropoutNet~\cite{volkovs2017dropoutnet} demonstrated a complementary approach by training neural latent models that are robust to missing input features, effectively simulating cold-start conditions during training.
+
+However, pure two-tower semantic models exhibit a structural limitation: the late-fusion dot product over independent user and item embeddings cannot explicitly capture high-confidence co-purchase correlations that are prevalent in transactional logs. A semantically similar item is not necessarily a co-purchase companion---for instance, ``bread'' and ``butter'' are semantically distant but exhibit strong purchase co-occurrence. Our Hybrid Cascade Architecture resolves this limitation by feeding log1p-normalized Apriori lift scores directly through an independent Wide MLP, ensuring that explicit co-purchase patterns are additivally combined with the Deep branch's semantic generalization signal.
+
+
+\section{Proposed Methodology}
+\label{sec:method}
+%%%%%%%%% METHOD %%%%%%%%%
+Methodology here.
+%%%%%%%%% METHOD %%%%%%%%%
+
+\section{System Implementation}
+\label{sec:implementation}
+%%%%%%%%% IMPLEMENTATION %%%%%%%%%
+System implementation here.
+%%%%%%%%% IMPLEMENTATION %%%%%%%%%
+
+\section{Experiments and Results}
+\label{sec:experiments}
+%%%%%%%%% EXPERIMENTS %%%%%%%%%
+Experimental setup, results, and analysis here.
+%%%%%%%%% EXPERIMENTS %%%%%%%%%
+
+\section{Conclusion and Future Work}
+\label{sec:conclusion}
+%%%%%%%%% CONCLUSION %%%%%%%%%
+Conclusion here.
+%%%%%%%%% CONCLUSION %%%%%%%%%
+
+\bibliographystyle{IEEEtran}
+\bibliography{refs}
+
+\end{document}

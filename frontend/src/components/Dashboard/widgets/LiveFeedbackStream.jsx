@@ -14,6 +14,7 @@ const SOURCE_COLORS = {
   cf: 'bg-emerald-100 text-emerald-700',
   apriori: 'bg-amber-100 text-amber-700',
   session: 'bg-rose-100 text-rose-700',
+  two_tower_onnx: 'bg-purple-100 text-purple-700 font-semibold',
   organic: 'bg-teal-100 text-teal-700',
 };
 
@@ -95,6 +96,7 @@ export const LiveFeedbackStream = ({ data, loading, selectedSource, setSelectedS
             className="flex-1 text-xs bg-gray-50 border border-gray-200 outline-none rounded-lg px-2.5 py-1.5 text-gray-600 focus:border-indigo-300 transition-colors"
           >
             <option value="all">All algorithms</option>
+            <option value="two_tower_onnx">Two-Tower AI (ONNX)</option>
             <option value="content">Content-Based (alpha)</option>
             <option value="cf">Collaborative Filtering (beta)</option>
             <option value="apriori">Apriori Rules (gamma)</option>

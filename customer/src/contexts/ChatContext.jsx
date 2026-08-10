@@ -97,6 +97,11 @@ export const ChatProvider = ({ children }) => {
       setProducts(data.products || null)
       setSuggestedPrompts(data.suggestedPrompts || null)
 
+      // Auto-scroll homepage to Recommended section if AI recommended products
+      if (data.products && data.products.length > 0) {
+        window.dispatchEvent(new CustomEvent('posmart:scroll_to_recommended'));
+      }
+
       // Dispatch action to Customer UI (cart, navigation, etc.)
       if (data.action) {
         window.dispatchEvent(

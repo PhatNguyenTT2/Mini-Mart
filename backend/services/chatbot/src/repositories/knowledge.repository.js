@@ -19,8 +19,15 @@ class KnowledgeRepository {
     async searchSemantic(queryVector, storeId, limit = 10, anchorCategory = null) {
         const vectorStr = `[${queryVector.join(',')}]`;
         const startTime = Date.now();
-        const categoryFilter = anchorCategory ? ' AND category_name = $4' : '';
-        const params = anchorCategory
+        const isArray = Array.isArray(anchorCategory);
+        const hasCategory = anchorCategory && (!isArray || anchorCategory.length > 0);
+
+        let categoryFilter = '';
+        if (hasCategory) {
+            categoryFilter = isArray ? ' AND category_name = ANY($4::text[])' : ' AND category_name = $4';
+        }
+
+        const params = hasCategory
             ? [vectorStr, storeId, limit, anchorCategory]
             : [vectorStr, storeId, limit];
 
@@ -49,8 +56,15 @@ class KnowledgeRepository {
      */
     async searchKeyword(query, storeId, limit = 10, anchorCategory = null) {
         const startTime = Date.now();
-        const categoryFilter = anchorCategory ? ' AND category_name = $4' : '';
-        const params = anchorCategory
+        const isArray = Array.isArray(anchorCategory);
+        const hasCategory = anchorCategory && (!isArray || anchorCategory.length > 0);
+
+        let categoryFilter = '';
+        if (hasCategory) {
+            categoryFilter = isArray ? ' AND category_name = ANY($4::text[])' : ' AND category_name = $4';
+        }
+
+        const params = hasCategory
             ? [query, storeId, limit, anchorCategory]
             : [query, storeId, limit];
 
@@ -69,6 +83,46 @@ class KnowledgeRepository {
         `, params);
 
         logger.debug({ storeId, query, resultCount: rows.length, latencyMs: Date.now() - startTime }, 'Keyword search completed');
+        return rows;
+    }
+
+    /**
+     * Direct product name search via ILIKE (highest precision for exact brand/product keywords)
+     * @param {string} query - raw text/brand query (e.g. "heineken", "333")
+     * @param {number} storeId
+     * @param {number} limit
+     * @param {string|string[]|null} anchorCategories
+     * @returns {object[]} matching rows with score = 1.0
+     */
+    async searchByProductName(query, storeId, limit = 10, anchorCategories = null) {
+        const startTime = Date.now();
+        const isArray = Array.isArray(anchorCategories);
+        const hasCategory = anchorCategories && (!isArray || anchorCategories.length > 0);
+
+        let categoryFilter = '';
+        if (hasCategory) {
+            categoryFilter = isArray ? ' AND category_name = ANY($4::text[])' : ' AND category_name = $4';
+        }
+
+        const params = hasCategory
+            ? [`%${query}%`, storeId, limit, anchorCategories]
+            : [`%${query}%`, storeId, limit];
+
+        const { rows } = await this.pool.query(`
+            SELECT
+                product_id, store_id, content, category_name,
+                unit_price, is_in_stock, quantity_on_shelf,
+                1.0 AS score
+            FROM product_knowledge_base
+            WHERE store_id = $2
+              AND is_in_stock = TRUE
+              ${categoryFilter}
+              AND content ILIKE $1
+            ORDER BY product_id ASC
+            LIMIT $3
+        `, params);
+
+        logger.debug({ storeId, query, resultCount: rows.length, latencyMs: Date.now() - startTime }, 'Product name ILIKE search completed');
         return rows;
     }
 

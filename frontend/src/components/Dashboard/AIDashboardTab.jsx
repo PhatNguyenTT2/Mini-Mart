@@ -32,6 +32,8 @@ export const AIDashboardTab = () => {
   const [feedbackData, setFeedbackData] = useState(null);
   const [weightHistory, setWeightHistory] = useState(null);
   const [cfMatrixData, setCfMatrixData] = useState(null);
+  const [aiStatus, setAiStatus] = useState({ enabled: true, healthy: true });
+  const [toggleLoading, setToggleLoading] = useState(false);
 
   const intervalRef = useRef(null);
   const countdownRef = useRef(null);
@@ -47,16 +49,20 @@ export const AIDashboardTab = () => {
     setWidgetsLoading(true);
     setError(null);
     try {
-      const [recRes, latRes, whRes, cfmRes] = await Promise.all([
+      const [recRes, latRes, whRes, cfmRes, aiStatusRes] = await Promise.all([
         api.get('/chatbot/stats/recommendations', { params: { storeId: STORE_ID, days } }),
         api.get('/chatbot/stats/latency', { params: { storeId: STORE_ID } }),
         api.get('/chatbot/stats/weight-history', { params: { storeId: STORE_ID, limit: 30 } }),
-        api.get('/chatbot/stats/cf-matrix', { params: { storeId: STORE_ID } })
+        api.get('/chatbot/stats/cf-matrix', { params: { storeId: STORE_ID } }),
+        api.get('/chatbot/admin/ai-status').catch(() => null)
       ]);
       setRecData(recRes.data?.data || null);
       setLatencyData(latRes.data?.data || null);
       setWeightHistory(whRes.data?.data || null);
       setCfMatrixData(cfmRes.data?.data || null);
+      if (aiStatusRes?.data?.data) {
+        setAiStatus(aiStatusRes.data.data);
+      }
     } catch (err) {
       console.error('AI Dashboard fetch widgets error:', err);
       setError(err.response?.data?.error?.message || err.message || 'Failed to load AI metrics');
@@ -64,6 +70,21 @@ export const AIDashboardTab = () => {
       setWidgetsLoading(false);
     }
   }, [days]);
+
+  const handleToggleAi = async () => {
+    setToggleLoading(true);
+    try {
+      const targetState = !aiStatus?.enabled;
+      const res = await api.post('/chatbot/admin/ai-toggle', { enabled: targetState });
+      if (res.data?.data) {
+        setAiStatus(res.data.data);
+      }
+    } catch (err) {
+      console.error('Failed to toggle AI status:', err);
+    } finally {
+      setToggleLoading(false);
+    }
+  };
 
   const fetchFeedback = useCallback(async () => {
     setFeedbackLoading(true);
@@ -274,14 +295,27 @@ export const AIDashboardTab = () => {
               <RefreshCw size={14} className={loading ? 'animate-spin' : ''} />
               Refresh
             </button>
+            {/* AI Tier Status Indicator (Interactive Fallback Toggle) */}
             <button
-              onClick={handleForceLearn}
-              disabled={forceLoading}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-white bg-amber-500 hover:bg-amber-600 rounded-lg transition-colors disabled:opacity-50 shadow-sm"
+              onClick={handleToggleAi}
+              disabled={toggleLoading}
+              title="Click to toggle between AI Fast Path (ONNX) and Fallback Mode for demo"
+              className={`flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg border shadow-sm transition-all cursor-pointer ${aiStatus?.enabled
+                ? 'bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-100'
+                : 'bg-amber-50 text-amber-700 border-amber-300 hover:bg-amber-100'
+                }`}
             >
-              <Zap size={14} className={forceLoading ? 'animate-pulse' : ''} />
-              {forceLoading ? 'Learning...' : 'Force AI Learn'}
+              <span className={`w-2 h-2 rounded-full ${aiStatus?.enabled ? 'bg-emerald-500 animate-pulse' : 'bg-amber-500'
+                }`}></span>
+              <span>
+                {toggleLoading
+                  ? 'Toggling...'
+                  : aiStatus?.enabled
+                    ? '🟢 AI Fast Path (ONNX) Active'
+                    : '🟡 Fallback Ensemble Mode Active'}
+              </span>
             </button>
+
             <button
               onClick={() => setShowResetConfirm(true)}
               disabled={resetLoading}
@@ -294,24 +328,7 @@ export const AIDashboardTab = () => {
         </div>
 
         {/* Force Learn Result */}
-        {forceResult && (
-          <div className={`mt-3 px-3 py-2 rounded-lg text-xs ${forceResult.error
-            ? 'bg-red-50 text-red-700 border border-red-200'
-            : forceResult.skipped
-              ? 'bg-amber-50 text-amber-700 border border-amber-200'
-              : 'bg-emerald-50 text-emerald-700 border border-emerald-200'
-            }`}>
-            {forceResult.error
-              ? `❌ Error: ${forceResult.error}`
-              : forceResult.message
-            }
-            {forceResult.newWeights && !forceResult.skipped && (
-              <span className="ml-2">
-                → α={forceResult.newWeights.alpha} β={forceResult.newWeights.beta} γ={forceResult.newWeights.gamma}
-              </span>
-            )}
-          </div>
-        )}
+
 
         {/* Reset Demo Result */}
         {resetResult && (
@@ -388,7 +405,7 @@ export const AIDashboardTab = () => {
                 </div>
               </div>
             </div>
-            
+
             <div className="flex items-center justify-end gap-3 mt-6">
               <button
                 type="button"

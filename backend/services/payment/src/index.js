@@ -26,7 +26,7 @@ async function initDatabase(pool) {
 async function start() {
   try {
     // 1. Database
-    const pool = createPool();
+    const pool = createPool('payment_db', process.env.PAYMENT_DATABASE_URL || process.env.DATABASE_URL);
     await initDatabase(pool);
     logger.info('PostgreSQL connected');
 

@@ -33,6 +33,13 @@ export const ChatMessages = () => {
           {products.map((product, i) => (
             <ChatProductCard key={i} product={product} />
           ))}
+          <button
+            onClick={() => window.dispatchEvent(new CustomEvent('posmart:scroll_to_recommended'))}
+            className="w-full text-center py-2 px-3 bg-gradient-to-r from-emerald-50 to-indigo-50 border border-emerald-200 text-emerald-700 hover:text-emerald-800 rounded-xl text-xs font-semibold hover:shadow-sm transition-all duration-150 flex items-center justify-center gap-1.5"
+          >
+            <span>View All Recommendations on Homepage</span>
+            <span>→</span>
+          </button>
         </div>
       )}
 

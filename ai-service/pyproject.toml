@@ -1,0 +1,112 @@
+[build-system]
+requires = ["setuptools>=75"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "posmart-ai-service"
+version = "3.0.0"
+description = "Production hybrid Wide Apriori and Deep Two-Tower recommender"
+requires-python = ">=3.11,<3.13"
+dependencies = [
+  "numpy>=1.26,<3",
+  "pydantic>=2.9,<3",
+  "pydantic-settings>=2.5,<3",
+]
+
+[project.optional-dependencies]
+train = [
+  "pandas>=2.2,<3",
+  "pyarrow>=17,<24",
+  "psycopg[binary]>=3.2,<4",
+  "scikit-learn>=1.5,<2",
+  "sentence-transformers>=3.2,<6",
+  "nvidia-ml-py>=12,<14",
+  "torch==2.11.0",
+]
+export = [
+  "onnx>=1.17,<2",
+  "onnxruntime>=1.20,<2",
+  "onnxscript>=0.2,<1",
+]
+serve = [
+  "fastapi>=0.115,<1",
+  "onnxruntime>=1.20,<2",
+  "prometheus-client>=0.21,<1",
+  "uvicorn[standard]>=0.32,<1",
+]
+dev = [
+  "httpx>=0.28,<1",
+  "mypy>=1.13,<2",
+  "pytest>=8.3,<9",
+  "pytest-asyncio>=0.24,<1",
+  "pytest-cov>=6,<7",
+  "ruff>=0.8,<1",
+  "pandas-stubs>=2.2,<3",
+  "scipy-stubs>=1.14,<2",
+  "types-psutil>=6,<8",
+  "pandas>=2.2,<3",
+  "pyarrow>=17,<24",
+  "psycopg[binary]>=3.2,<4",
+  "scikit-learn>=1.5,<2",
+  "torch==2.11.0",
+  "onnx>=1.17,<2",
+  "onnxscript>=0.2,<1",
+]
+
+[project.scripts]
+ai-pipeline = "ai_service.cli:main"
+ai-serve = "ai_service.serving.app:main"
+
+[tool.uv.sources]
+torch = [
+  { index = "pytorch-cu128", marker = "sys_platform == 'win32'" },
+  { index = "pytorch-cpu", marker = "sys_platform != 'win32'" },
+]
+
+[[tool.uv.index]]
+name = "pytorch-cu128"
+url = "https://download.pytorch.org/whl/cu128"
+explicit = true
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--strict-markers --strict-config"
+markers = [
+  "integration: requires local services or external artifacts",
+  "benchmark: performance test on recorded hardware",
+  "gpu: requires CUDA",
+]
+
+[tool.coverage.run]
+source = ["ai_service"]
+branch = true
+
+[tool.coverage.report]
+fail_under = 85
+show_missing = true
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "BLE", "PL", "RUF"]
+ignore = ["PLR0911", "PLR0912", "PLR0913", "PLR0915", "PLR0917", "PLR2004"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+warn_unreachable = true
+plugins = ["pydantic.mypy"]
+
+[[tool.mypy.overrides]]
+module = ["sentence_transformers.*", "onnxruntime.*", "sklearn.*"]
+ignore_missing_imports = true

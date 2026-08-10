@@ -11,7 +11,7 @@ const logger = require('../../../../shared/common/logger');
 module.exports = function feedbackRoutes(hybridService) {
     router.post('/feedback', async (req, res, next) => {
         try {
-            let { userId, productId, storeId, source, action, sessionId, score } = req.body;
+            let { userId, productId, storeId, source, action, sessionId, sequenceOrder, score } = req.body;
 
             // Extract userId from JWT if not provided in body
             if (!userId) {
@@ -34,7 +34,7 @@ module.exports = function feedbackRoutes(hybridService) {
                 });
             }
 
-            const validSources = ['content', 'cf', 'apriori', 'session', 'organic'];
+            const validSources = ['content', 'cf', 'apriori', 'session', 'organic', 'two_tower_onnx'];
             const validActions = ['recommended', 'hovered', 'clicked', 'added_to_cart', 'purchased'];
 
             if (!validSources.includes(source)) {
@@ -56,7 +56,8 @@ module.exports = function feedbackRoutes(hybridService) {
             await hybridService.recordFeedback(
                 userId || null, productId, storeId, source, action,
                 sessionId || null, score || null,
-                dwellTimeMs ? { dwellTimeMs } : null
+                dwellTimeMs ? { dwellTimeMs } : null,
+                sequenceOrder ? parseInt(sequenceOrder) : 1
             );
 
             logger.info({ userId, productId, source, action }, 'Feedback recorded');

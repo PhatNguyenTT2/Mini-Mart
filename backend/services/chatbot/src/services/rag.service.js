@@ -12,7 +12,7 @@
  */
 const logger = require('../../../../shared/common/logger');
 const { getPersonalizationContext, getCoPurchaseContext, getCFHint } = require('./context.helper');
-const { CATEGORY_KEYWORD_MAP } = require('./category.constants');
+const { CATEGORY_KEYWORD_MAP, PERSONA_PREFERRED_CATEGORIES } = require('./category.constants');
 
 // Vietnamese stop words + common action verbs that don't appear in product content
 // plainto_tsquery('simple', ...) uses AND, so these extra tokens cause zero matches
@@ -58,33 +58,32 @@ const syncProductsWithResponse = (products, reply) => {
 
     const mutualContent = removeAccents(reply.toLowerCase());
 
-    const mentionedProducts = products.filter(p => {
+    const matches = [];
+    for (const p of products) {
         const name = p.content?.match(/"([^"]+)"/)?.[1] || p.name || '';
-        if (!name) return false;
+        if (!name) continue;
 
         const normalizedName = removeAccents(name.toLowerCase());
+        let pos = mutualContent.indexOf(normalizedName);
 
-        // Match 1: Full name
-        if (mutualContent.includes(normalizedName)) return true;
-
-        // Match 2: Partial — ≥3 từ đầu (LLM hay viết tắt tên SP)
-        const words = normalizedName.split(/\s+/);
-        if (words.length >= 3) {
-            const partial = words.slice(0, 3).join(' ');
-            if (mutualContent.includes(partial)) return true;
+        if (pos === -1) {
+            const words = normalizedName.split(/\s+/);
+            if (words.length >= 3) {
+                const partial = words.slice(0, 3).join(' ');
+                pos = mutualContent.indexOf(partial);
+            }
         }
 
-        // Match 3: Bigram minimum (≥2 từ) — KHÔNG dùng single-word
-        // để tránh trúng các danh từ chung phổ biến: "Nước", "Bánh", "Kẹo", "Thịt"
-        if (words.length >= 2) {
-            const bigram = words.slice(0, 2).join(' ');
-            if (mutualContent.includes(bigram)) return true;
+        if (pos !== -1) {
+            matches.push({ product: p, pos });
         }
+    }
 
-        return false;
-    });
+    if (matches.length === 0) return products.slice(0, 3);
 
-    if (mentionedProducts.length === 0) return products.slice(0, 3);
+    // Sort products by their actual appearance position in the LLM response text
+    matches.sort((a, b) => a.pos - b.pos);
+    const mentionedProducts = matches.map(m => m.product);
 
     // Safety net: Always include apriori/cf products even if LLM forgot to mention them
     const protectedProducts = products.filter(p => {
@@ -178,25 +177,50 @@ class RAGService {
             const keywordQuery = cleanQueryForKeyword(query);
 
             let earlyAnchorCategory = null;
-            if (intentMeta.isTransactional) {
+            let earlyAnchorCategories = null;
+            if (intentMeta && intentMeta.isTransactional) {
                 const queryLower = query.toLowerCase();
                 for (const [kw, cats] of Object.entries(CATEGORY_KEYWORD_MAP)) {
                     if (hasKeywordExact(queryLower, kw)) {
-                        earlyAnchorCategory = cats[0];
+                        earlyAnchorCategories = cats;
                         break;
                     }
                 }
             }
 
             let [rawSemanticResults, keywordResults] = await Promise.all([
-                earlyAnchorCategory ? this.knowledgeRepo.searchSemantic(queryVector, storeId, 30, earlyAnchorCategory) : this.knowledgeRepo.searchSemantic(queryVector, storeId, 30),
-                earlyAnchorCategory ? this.knowledgeRepo.searchKeyword(keywordQuery, storeId, 30, earlyAnchorCategory) : this.knowledgeRepo.searchKeyword(keywordQuery, storeId, 30)
+                earlyAnchorCategories ? this.knowledgeRepo.searchSemantic(queryVector, storeId, 30, earlyAnchorCategories) : this.knowledgeRepo.searchSemantic(queryVector, storeId, 30),
+                earlyAnchorCategories ? this.knowledgeRepo.searchKeyword(keywordQuery, storeId, 30, earlyAnchorCategories) : this.knowledgeRepo.searchKeyword(keywordQuery, storeId, 30)
             ]);
 
+            // Step 3.1: Direct Product Name Search (ILIKE) — Highest Priority for Exact Brand/Product Keywords
+            const targetKeywords = cleanQueryForKeyword(userMessage)
+                .toLowerCase()
+                .split(/\s+/)
+                .filter(w => w.length >= 2 && !['tôi', 'muốn', 'mua', 'cho', 'sản', 'phẩm', 'về', 'giúp'].includes(w));
+
+            const brandTokens = targetKeywords.filter(w => w.length >= 3);
+            if (brandTokens.length > 0) {
+                const exactNameQuery = brandTokens.join(' ');
+                try {
+                    const exactNameResults = await this.knowledgeRepo.searchByProductName(
+                        exactNameQuery, storeId, 10, earlyAnchorCategories
+                    );
+                    if (exactNameResults.length > 0) {
+                        const existingPids = new Set(keywordResults.map(r => Number(r.product_id)));
+                        const newExact = exactNameResults.filter(r => !existingPids.has(Number(r.product_id)));
+                        keywordResults = [...newExact, ...keywordResults];
+                        logger.info({ exactNameQuery, foundCount: exactNameResults.length }, '[STEP 3.1] Direct product name ILIKE search injected');
+                    }
+                } catch (err) {
+                    logger.warn({ err, exactNameQuery }, 'Direct product name ILIKE search failed');
+                }
+            }
+
             // Defensive fallback: if anchor filter returned 0 rows, retry without it
-            if (earlyAnchorCategory && rawSemanticResults.length === 0 && keywordResults.length === 0) {
-                logger.info({ earlyAnchorCategory, keywordQuery }, 'Anchor category filter returned 0 results, retrying without filter');
-                earlyAnchorCategory = null;
+            if (earlyAnchorCategories && rawSemanticResults.length === 0 && keywordResults.length === 0) {
+                logger.info({ earlyAnchorCategories, keywordQuery }, 'Anchor category filter returned 0 results, retrying without filter');
+                earlyAnchorCategories = null;
                 [rawSemanticResults, keywordResults] = await Promise.all([
                     this.knowledgeRepo.searchSemantic(queryVector, storeId, 30),
                     this.knowledgeRepo.searchKeyword(keywordQuery, storeId, 30)
@@ -232,11 +256,43 @@ class RAGService {
 
             const fused = this._reciprocalRankFusion(semanticResults, adjustedKeywordResults);
 
-            // Step 4.5: Anchor Category Re-ranking
+            // Step 4.2: Exact Product Title Keyword Boost (+50.0 for exact title match)
+            // Prioritize exact keyword matches in product name/title over FTS stock text matches or semantic noise
+            if (targetKeywords.length > 0) {
+                for (const item of fused) {
+                    const productName = (item.content.match(/"([^"]+)"/)?.[1] || item.content).toLowerCase();
+                    let exactTitleMatches = 0;
+                    for (const kw of targetKeywords) {
+                        if (hasKeywordExact(productName, kw) || productName.includes(kw)) {
+                            exactTitleMatches++;
+                        }
+                    }
+                    if (exactTitleMatches > 0) {
+                        item.rrf_score += exactTitleMatches * 50.0;
+                    }
+                }
+                fused.sort((a, b) => b.rrf_score - a.rrf_score);
+            }
+
+            // Step 4.5: Anchor Category Re-ranking (Only for non-general queries)
+            const rawMsgLower = userMessage.toLowerCase();
+            const generalRegex = /gợi ý|đề xuất|phù hợp|nên mua|bán chạy|có gì ngon|có món gì|sản phẩm tốt/i;
+            const isMatchedGeneral = generalRegex.test(rawMsgLower) ||
+                (rawMsgLower.includes('gợi ý') && rawMsgLower.includes('món')) ||
+                (rawMsgLower.includes('đề xuất') && rawMsgLower.includes('món')) ||
+                (rawMsgLower.includes('phù hợp'));
+
+            let containsCategoryKeyword = false;
+            for (const kw of Object.keys(CATEGORY_KEYWORD_MAP)) {
+                if (hasKeywordExact(rawMsgLower, kw)) {
+                    containsCategoryKeyword = true;
+                    break;
+                }
+            }
+            const isGeneralRecQuery = isMatchedGeneral && !containsCategoryKeyword;
+
             // Use Top 1 RRF result's category as "anchor" — boost same-category, penalize others
-            // NOTE: Use proportional boost/penalty to avoid making rrf_score negative
-            // (keyword-only RRF scores ≈ 0.016 with k=60, fixed penalties would dominate)
-            if (fused.length > 1) {
+            if (fused.length > 1 && !isGeneralRecQuery) {
                 const queryLower = query.toLowerCase();
                 const anchorCategories = new Set();
 
@@ -285,7 +341,49 @@ class RAGService {
                 top5Scores: top5.map(r => ({ productId: r.product_id, rrfScore: r.rrf_score.toFixed(4) }))
             };
 
-            if (top5.length === 0) {
+            let candidateProducts = [...top5];
+
+            if (isGeneralRecQuery) {
+                try {
+                    const uid = Number(customerId) || 0;
+                    const personaCluster = uid <= 150 ? 0 : uid <= 300 ? 1 : uid <= 400 ? 2 : 3;
+                    const preferredCats = PERSONA_PREFERRED_CATEGORIES[personaCluster] || [];
+
+                    let cfPids = [];
+                    if (customerId && this.cfService) {
+                        const cfRecs = await this.cfService.getRecommendations(customerId, storeId, 10, false);
+                        cfPids = cfRecs.map(r => Number(r.product_id));
+                    }
+
+                    const { rows: fallbackProducts } = await this.knowledgeRepo.pool.query(`
+                        SELECT product_id, content, category_name, unit_price, is_in_stock, 0.5 AS rrf_score
+                        FROM (
+                            SELECT product_id, content, category_name, unit_price, is_in_stock,
+                                   ROW_NUMBER() OVER (PARTITION BY category_name ORDER BY product_id DESC) as rn
+                            FROM product_knowledge_base
+                            WHERE store_id = $1 AND is_in_stock = TRUE
+                              AND category_name = ANY($3::text[])
+                        ) sub
+                        WHERE rn <= 3
+                        ORDER BY
+                            CASE WHEN product_id = ANY($2::int[]) THEN 0 ELSE 1 END,
+                            random()
+                        LIMIT 20
+                    `, [storeId, cfPids, preferredCats]);
+
+                    const existingPids = new Set(candidateProducts.map(c => Number(c.product_id)));
+                    for (const prod of fallbackProducts) {
+                        if (!existingPids.has(Number(prod.product_id))) {
+                            candidateProducts.push(prod);
+                            existingPids.add(Number(prod.product_id));
+                        }
+                    }
+                } catch (err) {
+                    logger.warn({ err: err.message }, 'RAG: Failed to fetch general recommendation candidates');
+                }
+            }
+
+            if (candidateProducts.length === 0) {
                 return this._buildNoResultsResponse(keywordQuery || userMessage, storeId, startTime, metadata);
             }
 
@@ -297,26 +395,12 @@ class RAGService {
                 // Step 5: Hybrid Ensemble
                 const stepStart5 = Date.now();
                 const customerContext = await getPersonalizationContext(this.apiClient, customerId);
-
-                // Detect general recommendation query before hybrid scoring
-                const generalRegex = /gợi ý vài món|đề xuất vài món|gợi ý cho tôi|gợi ý các món|gợi ý sản phẩm/i;
-                const isMatchedGeneral = generalRegex.test(query.toLowerCase()) ||
-                    (query.toLowerCase().includes('gợi ý') && query.toLowerCase().includes('món')) ||
-                    (query.toLowerCase().includes('đề xuất') && query.toLowerCase().includes('món')) ||
-                    (query.toLowerCase().trim() === 'gợi ý cho tôi vài món' || query.toLowerCase().includes('vài món'));
-
-                let containsCategoryKeyword = false;
-                for (const kw of Object.keys(CATEGORY_KEYWORD_MAP)) {
-                    if (hasKeywordExact(query.toLowerCase(), kw)) {
-                        containsCategoryKeyword = true;
-                        break;
-                    }
-                }
-                const isGeneralRecQuery = isMatchedGeneral && !containsCategoryKeyword;
+                const uid = Number(customerId) || 0;
+                const personaCluster = uid <= 150 ? 0 : uid <= 300 ? 1 : uid <= 400 ? 2 : 3;
 
                 hybridResults = await this.hybridService.score(
-                    top5, customerId, storeId, customerContext.type,
-                    { excludePurchased: !isGeneralRecQuery }
+                    candidateProducts, customerId, storeId, customerContext.type,
+                    { excludePurchased: !isGeneralRecQuery, personaCluster, isGeneralRecQuery }
                 );
 
                 logger.info({
@@ -332,12 +416,13 @@ class RAGService {
                     );
 
                     let flushSignal = false;
-                    if (earlyAnchorCategory && sessionIntent && sessionIntent.cluster !== 'exploring') {
+                    const sessionAnchor = metadata.steps.anchorRerank?.anchorCategories?.[0] || null;
+                    if (sessionAnchor && sessionIntent && sessionIntent.cluster !== 'exploring') {
                         const shiftTarget = this.sessionContextService.detectCategoryShift(
-                            earlyAnchorCategory, sessionIntent.cluster
+                            sessionAnchor, sessionIntent.cluster
                         );
                         if (shiftTarget) {
-                            logger.info({ from: sessionIntent.cluster, to: shiftTarget, anchor: earlyAnchorCategory }, 'Session: Category shift detected — flushing old context');
+                            logger.info({ from: sessionIntent.cluster, to: shiftTarget, anchor: sessionAnchor }, 'Session: Category shift detected — flushing old context');
                             flushSignal = true;
                         }
                     }
@@ -377,8 +462,21 @@ class RAGService {
 
                 // Re-rank top5 by ensemble score with partitioned ranking:
                 // Content-matched → Slots 1-3, then dedicated Apriori + CF slots.
+                // CRITICAL FIX: Preserve top5 order (RRF + Exact Title Keyword Boost priority)
+                // instead of letting ONNX neural score re-sort exact keyword matches!
                 const contentIds = new Set(top5.map(r => Number(r.product_id)));
-                const contentMatched = hybridResults.filter(r => contentIds.has(r.product_id));
+                const contentMatched = top5.map(topItem => {
+                    const pid = Number(topItem.product_id);
+                    const hybrid = hybridResults.find(r => Number(r.product_id) === pid);
+                    return {
+                        product_id: pid,
+                        final_score: hybrid?.final_score || topItem.rrf_score || 1.0,
+                        scores: hybrid?.scores || { content: topItem.score },
+                        sources: hybrid?.sources || ['content'],
+                        topSource: hybrid?.topSource || 'content',
+                        rawProduct: topItem
+                    };
+                });
 
                 // Detect broad category queries — disable cross-sell injection to eliminate noise.
                 const contentCategories = new Set(
@@ -389,8 +487,8 @@ class RAGService {
                 const isBroadQuery = !isGeneralRecQuery && !hasStrongAnchor && (contentCategories.size >= 3 || /đồ ăn vặt|ăn vặt|bánh kẹo/i.test(query.toLowerCase()));
 
                 // Pick best Apriori candidates from non-content pool.
-                const MIN_NON_CONTENT_SCORE = 0.12;
-                const MIN_APRIORI_SCORE = 0.04;
+                const MIN_NON_CONTENT_SCORE = isGeneralRecQuery ? 0.001 : 0.05;
+                const MIN_APRIORI_SCORE = 0.001;
                 const nonContent = hybridResults.filter(r => !contentIds.has(r.product_id));
                 const withApriori = nonContent
                     .filter(r => r.scores?.apriori > 0 && r.final_score >= MIN_APRIORI_SCORE)
@@ -413,9 +511,16 @@ class RAGService {
                     : contentMatched;
 
                 // Detect transactional query: uses lower threshold (0.78) than hasStrongAnchor (0.83)
-                // to catch queries like "mua bia Heineken" (score ~0.80) that are clearly transactional
-                const hasAnchorIntent = top5.length > 0 && top5[0].score >= 0.78;
-                const isTransactionalQuery = hasAnchorIntent && anchorMatched.length > 0;
+                // to catch queries like "mua bia Heineken" (score ~0.80) that are clearly transactional.
+                // NOTE: General recommendation queries ("Gợi ý cho tôi một số món phù hợp") are NEVER transactional.
+                const hasKeywordAnchor = containsCategoryKeyword || (earlyAnchorCategories && earlyAnchorCategories.length > 0);
+                const hasAnchorIntent = !isGeneralRecQuery && top5.length > 0 && (
+                    (top5[0].score && Number(top5[0].score) >= 0.78) ||
+                    hasKeywordAnchor ||
+                    Boolean(intentMeta?.isTransactional) ||
+                    (top5[0].rrf_score && Number(top5[0].rrf_score) >= 5.0)
+                );
+                const isTransactionalQuery = !isGeneralRecQuery && hasAnchorIntent && anchorMatched.length > 0;
 
                 // Gating: Expand Apriori slots for transactional, suppress CF
                 const aprioriPick = isBroadQuery ? [] : withApriori.slice(0, isTransactionalQuery ? 2 : 1);
@@ -489,42 +594,45 @@ class RAGService {
                 const novelCf = filterNovelty(cfOnlyProducts);
 
                 let partitioned = [];
-                if (isTransactionalQuery && earlyAnchorCategory && anchorMatched.length > 0) {
-                    // SLOT 1: Ưu tiên tuyệt đối sản phẩm khách hàng gọi tên (Anchor Content)
+                if (isTransactionalQuery && anchorCategory && anchorMatched.length > 0) {
+                    // SLOT 1, 2, 3: Anchor Content (Sản phẩm thuộc danh mục khách hàng tìm kiếm)
                     const filteredAnchorMatched = filterNovelty(anchorMatched);
-                    if (filteredAnchorMatched.length > 0) {
-                        partitioned.push(filteredAnchorMatched[0]);
+                    const maxAnchorCount = Math.min(3, filteredAnchorMatched.length);
+                    for (let i = 0; i < maxAnchorCount; i++) {
+                        partitioned.push(filteredAnchorMatched[i]);
                     }
 
-                    // SLOT 2 & 3: Nhường sân khấu cho Apriori Cross-sell (Chứng minh Act 2)
+                    // SLOT 4 & 5: Apriori Cross-sell (Mồi nhậu / Mua kèm mua cùng)
                     for (const pick of novelApriori.slice(0, MAX_APRIORI_SLOTS)) {
-                        partitioned.push(pick);
+                        if (partitioned.length < 5 && !partitioned.find(p => p.product_id === pick.product_id)) {
+                            partitioned.push(pick);
+                        }
                     }
 
-                    // LƯU Ý BẢO VỆ ĐỒ ÁN: Cố ý loại bỏ CF khỏi truy vấn Transactional 
-                    // để giám khảo tập trung vào luật mua kèm (Apriori), tránh nhiễu loạn UI.
-
-                    // SLOT 4 & 5: Lấp đầy bằng các sản phẩm cùng danh mục (Secondary Content)
-                    let fillIdx = 1;
-                    const fillPool = [...filteredAnchorMatched.slice(1), ...filterNovelty(otherContent)];
-                    while (partitioned.length < 5 && fillIdx <= fillPool.length) {
-                        const candidate = fillPool[fillIdx - 1];
+                    // Secondary Content fallback if slots remain empty
+                    let fillIdx = 0;
+                    const fillPool = [...filteredAnchorMatched.slice(maxAnchorCount), ...filterNovelty(otherContent)];
+                    while (partitioned.length < 5 && fillIdx < fillPool.length) {
+                        const candidate = fillPool[fillIdx];
                         if (!partitioned.find(p => p.product_id === candidate.product_id)) {
                             partitioned.push(candidate);
                         }
                         fillIdx++;
                     }
                 } else if (isGeneralRecQuery) {
-                    // ═══ ACT 3: Welcome Query — CF has maximum priority ═══
-                    // Slot 1-3: CF personalized products (cohort behaviors)
-                    for (let i = 0; i < novelCf.length && partitioned.length < 3; i++) {
+                    // ═══ ACT 3: Welcome Query — CF fills ALL slots ═══
+                    // For general queries, semantic search results are noise (random category from embedding similarity).
+                    // CF candidates are persona-accurate — fill all 5 slots from CF, then Apriori, then content as fallback.
+                    for (let i = 0; i < novelCf.length && partitioned.length < 5; i++) {
                         partitioned.push(novelCf[i]);
                     }
-                    // Slot 4: Apriori cross-sell candidate
+                    // Apriori fills remaining if CF didn't produce enough
                     for (const pick of novelApriori) {
-                        if (partitioned.length < 4) partitioned.push(pick);
+                        if (partitioned.length < 5 && !partitioned.find(p => p.product_id === pick.product_id)) {
+                            partitioned.push(pick);
+                        }
                     }
-                    // Remaining slots filled by semantic content search
+                    // Content search as last-resort fallback only
                     let contentIdx = 0;
                     while (partitioned.length < 5 && contentIdx < novelContent.length) {
                         if (!partitioned.find(p => p.product_id === novelContent[contentIdx].product_id)) {
@@ -625,33 +733,81 @@ class RAGService {
                         latencyMs: Date.now() - stepStartHydrate
                     };
                 }
-                const enrichedTop5 = rankedIds.map(pid => {
+                const enrichedTop5 = partitioned.map(item => {
+                    const pid = Number(item.product_id);
                     const original = top5.find(r => Number(r.product_id) === pid);
                     const hybrid = hybridResults.find(r => Number(r.product_id) === pid);
-                    return original
-                        ? { ...original, ensemble_score: hybrid?.final_score, ensemble_sources: hybrid?.sources, top_source: hybrid?.topSource }
-                        : hybrid?.rawProduct
-                            ? { ...hybrid.rawProduct, ensemble_score: hybrid.final_score, ensemble_sources: hybrid.sources, top_source: hybrid.topSource }
-                            : null;
+
+                    // Priority 1: Content-matched item from original RRF fusion
+                    if (original) {
+                        return { ...original, ensemble_score: hybrid?.final_score, ensemble_sources: hybrid?.sources, top_source: hybrid?.topSource };
+                    }
+
+                    // Priority 2: CF/Apriori item with rawProduct from hybridResults (AI-scored)
+                    if (hybrid?.rawProduct) {
+                        return { ...hybrid.rawProduct, ensemble_score: hybrid.final_score, ensemble_sources: hybrid.sources, top_source: hybrid.topSource };
+                    }
+
+                    // Priority 3: CF fallback item injected via candidateProducts (has content from product_knowledge_base)
+                    const candidate = candidateProducts.find(c => Number(c.product_id) === pid);
+                    if (candidate) {
+                        return { ...candidate, ensemble_score: item.final_score, ensemble_sources: item.sources, top_source: item.topSource || 'two_tower_onnx' };
+                    }
+
+                    return null;
                 }).filter(Boolean);
 
                 logger.info({
-                    enrichedIds: enrichedTop5.map(r => ({ pid: r.product_id, src: r.top_source, cat: r.category_name })),
-                    rankedIds
-                }, '[DEBUG] enrichedTop5 details');
+                    enrichedIds: enrichedTop5.map(r => ({ pid: r.product_id, src: r.top_source, cat: r.category_name, score: r.ensemble_score })),
+                    rankedIds,
+                    enrichedCount: enrichedTop5.length,
+                    top5Count: top5.length,
+                    willUseFallback: enrichedTop5.length === 0
+                }, '[TRACE] enrichedTop5 final assembly');
 
                 // Use enriched results if available
                 const finalProducts = enrichedTop5.length > 0 ? enrichedTop5 : top5;
+
+                logger.info({
+                    finalProductOrder: finalProducts.map(r => ({
+                        pid: r.product_id,
+                        name: r.content?.match(/"([^"]+)"/)?.[1]?.substring(0, 30),
+                        cat: r.category_name,
+                        score: r.ensemble_score
+                    }))
+                }, '[TRACE] Final products BEFORE LLM generation');
 
                 // Step 7: Augmented Generation
                 const stepStart7 = Date.now();
                 const coPurchaseData = isBroadQuery
                     ? []
                     : await getCoPurchaseContext(this.copurchaseRepo, finalProducts, storeId);
-                const response = await this._generateResponse(
+                let response = await this._generateResponse(
                     userMessage, query, finalProducts, coPurchaseData, [], customerContext, storeId
                 );
                 metadata.steps.generation = { latencyMs: Date.now() - stepStart7 };
+
+                // Anti-hallucination safety net:
+                // If LLM says "xin lỗi" / "không tìm thấy" / "không có" despite finalProducts having candidates,
+                // generate structured text to prevent syncProductsWithResponse from stripping UI product cards.
+                const llmText = response.content?.toLowerCase() || '';
+                const isApologyHallucination = (llmText.includes('xin lỗi') || llmText.includes('không có sản phẩm') || llmText.includes('không tìm thấy'))
+                    && finalProducts.length > 0;
+
+                if (isApologyHallucination) {
+                    logger.warn({ productCount: finalProducts.length, llmSnippet: llmText.substring(0, 100) },
+                        '[SAFETY NET] LLM hallucinated "no products" despite candidates — generating structured response');
+
+                    const productListStr = finalProducts.map((p, idx) => {
+                        const name = p.content?.match(/"([^"]+)"/)?.[1] || p.name || `Sản phẩm ${p.product_id || p.id}`;
+                        const price = Number(p.unit_price || p.unitPrice || p.price || 0).toLocaleString('vi-VN');
+                        return `${idx + 1}. ${name} — ${price}đ`;
+                    }).join('\n');
+
+                    response = {
+                        content: `Dưới đây là các sản phẩm phù hợp tại siêu thị POSMART:\n\n${productListStr}\n\nChúc bạn chọn được sản phẩm ưng ý!`
+                    };
+                }
 
                 const totalMs = Date.now() - startTime;
                 metadata.totalLatencyMs = totalMs;
@@ -670,9 +826,21 @@ class RAGService {
                 }
 
                 const syncedProducts = syncProductsWithResponse(finalProducts, response.content);
-                logger.info({ before: finalProducts.length, after: syncedProducts.length, responseSnippet: response.content?.substring(0, 100) }, '[DEBUG] Sync filter Phase 3');
+                logger.info({
+                    before: finalProducts.length,
+                    after: syncedProducts.length,
+                    responseSnippet: response.content?.substring(0, 200),
+                    syncedOrder: syncedProducts.map(r => ({
+                        pid: r.product_id || r.id,
+                        name: r.content?.match(/"([^"]+)"/)?.[1]?.substring(0, 30) || r.name?.substring(0, 30),
+                        cat: r.category_name
+                    }))
+                }, '[TRACE] syncProductsWithResponse result');
                 const hydratedProducts = await this._hydrateProductsWithCatalog(syncedProducts, storeId);
-                logger.info({ hydratedCount: hydratedProducts.length, hasImages: hydratedProducts.filter(p => p.image).length }, '[DEBUG] Catalog hydration Phase 3');
+                logger.info({
+                    hydratedCount: hydratedProducts.length,
+                    hydratedOrder: hydratedProducts.map(p => ({ id: p.id, name: p.name?.substring(0, 30), cat: p.categoryName }))
+                }, '[TRACE] Final hydrated products RETURNED TO USER');
 
                 return {
                     content: response.content,
@@ -928,7 +1096,10 @@ ${productContext}${coPurchaseContext}${cfContext}`;
                     const invResult = await this.apiClient.getInventoryPublicSummary(storeId);
                     if (invResult.success && Array.isArray(invResult.data)) {
                         invResult.data.forEach(item => {
-                            discountMap.set(Number(item.productId), Number(item.discountPercentage) || 0);
+                            discountMap.set(Number(item.productId), {
+                                discount: Number(item.discountPercentage) || 0,
+                                quantity: Number(item.quantityOnShelf ?? item.quantity_on_shelf ?? item.totalQuantity ?? 0)
+                            });
                         });
                     }
                 }
@@ -940,9 +1111,11 @@ ${productContext}${coPurchaseContext}${cfContext}`;
         return syncedProducts.map(r => {
             const pid = Number(r.product_id || r.id);
             const cp = catalogMap.get(pid);
-            const discountPercentage = discountMap.get(pid) || 0;
+            const invData = discountMap.get(pid) || { discount: 0, quantity: 0 };
+            const discountPercentage = invData.discount;
             const unitPrice = cp ? Number(cp.unitPrice || cp.price || 0) : Number(r.unit_price || r.unitPrice || r.price || 0);
             const finalPrice = Math.round(unitPrice * (1 - discountPercentage / 100));
+            const qtyOnShelf = cp?.quantityOnShelf ?? cp?.quantity_on_shelf ?? invData.quantity ?? r.quantityOnShelf ?? r.quantity_on_shelf ?? 0;
 
             return {
                 id: pid,
@@ -951,8 +1124,8 @@ ${productContext}${coPurchaseContext}${cfContext}`;
                 unitPrice,
                 discountPercentage,
                 finalPrice,
-                quantityOnShelf: cp?.quantityOnShelf ?? cp?.quantity_on_shelf ?? r.quantityOnShelf ?? r.quantity_on_shelf ?? 0,
-                isInStock: cp?.isInStock ?? cp?.is_in_stock ?? r.isInStock ?? r.is_in_stock ?? ((cp?.quantityOnShelf ?? r.quantityOnShelf ?? r.quantity_on_shelf ?? 0) > 0),
+                quantityOnShelf: qtyOnShelf,
+                isInStock: cp?.isInStock ?? cp?.is_in_stock ?? r.isInStock ?? r.is_in_stock ?? (qtyOnShelf > 0),
                 image: cp?.image || cp?.image_url || r.image || r.image_url || null,
                 isPerishable: cp?.isPerishable ?? cp?.is_perishable ?? r.isPerishable ?? r.is_perishable ?? false,
                 rrfScore: r.rrf_score || null,

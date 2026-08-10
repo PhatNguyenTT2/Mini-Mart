@@ -16,7 +16,7 @@ services:
       - "8080:80"
     mem_limit: 150m
     healthcheck:
-      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1/health || exit 1"]
+      test: [ "CMD-SHELL", "wget -qO- http://127.0.0.1/health || exit 1" ]
       interval: 30s
       timeout: 5s
       start_period: 10s
@@ -37,6 +37,8 @@ services:
     image: ghcr.io/phatnguyentt2/mini-mart/auth:latest
     container_name: minimart-auth
     mem_limit: 250m
+    environment:
+      - DATABASE_URL=${AUTH_DATABASE_URL:-$DATABASE_URL}
 
   catalog:
     <<: *common-config
@@ -51,6 +53,8 @@ services:
     image: ghcr.io/phatnguyentt2/mini-mart/order:latest
     container_name: minimart-order
     mem_limit: 250m
+    environment:
+      - DATABASE_URL=${ORDER_DATABASE_URL:-$DATABASE_URL}
 
   settings:
     <<: *common-config
@@ -62,13 +66,17 @@ services:
     <<: *common-config
     image: ghcr.io/phatnguyentt2/mini-mart/supplier:latest
     container_name: minimart-supplier
-    mem_limit: 200m
+    mem_limit: 250m
+    environment:
+      - DATABASE_URL=${SUPPLIER_DATABASE_URL:-$DATABASE_URL}
 
   inventory:
     <<: *common-config
     image: ghcr.io/phatnguyentt2/mini-mart/inventory:latest
     container_name: minimart-inventory
     mem_limit: 250m
+    environment:
+      - DATABASE_URL=${INVENTORY_DATABASE_URL:-$DATABASE_URL}
 
   payment:
     <<: *common-config
@@ -76,6 +84,7 @@ services:
     container_name: minimart-payment
     mem_limit: 250m
     environment:
+      - DATABASE_URL=${PAYMENT_DATABASE_URL:-$DATABASE_URL}
       - VNP_TMNCODE=${VNP_TMN_CODE}
       - VNP_HASHSECRET=${VNP_HASH_SECRET}
 
@@ -90,6 +99,30 @@ services:
     image: ghcr.io/phatnguyentt2/mini-mart/chatbot:latest
     container_name: minimart-chatbot
     mem_limit: 1.2g
+    depends_on:
+      ai-service:
+        condition: service_healthy
+    environment:
+      - DATABASE_URL=${CHATBOT_DATABASE_URL:-$DATABASE_URL}
+      - AI_SERVICE_URL=http://ai-service:8000
+
+  ai-service:
+    <<: *common-config
+    image: ghcr.io/phatnguyentt2/mini-mart/ai-service:latest
+    container_name: minimart-ai-service
+    mem_limit: 1g
+    environment:
+      - AI_ENV=production
+      - AI_PORT=8000
+      - AI_MODEL_BUNDLE_PATH=/models/current
+    volumes:
+      - ${AI_MODEL_BUNDLE_PATH}:/models/current:ro
+    healthcheck:
+      test: [ "CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')" ]
+      interval: 30s
+      timeout: 5s
+      start_period: 15s
+      retries: 3
 
 networks:
   minimart-net:

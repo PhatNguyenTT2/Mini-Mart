@@ -117,8 +117,11 @@ function initChatSocket(io, chatService) {
 
         // ── Event: Send message (streaming response) ──
         socket.on('chat:send_message', async (data, callback) => {
+            const GLOBAL_TIMEOUT_MS = 45_000;
+            const { session_id, message, context } = data || {};
+            let timeoutTimer = null;
+
             try {
-                const { session_id, message, context } = data || {};
                 if (!session_id || !message) {
                     throw new Error('session_id and message are required');
                 }
@@ -129,84 +132,133 @@ function initChatSocket(io, chatService) {
                 // Emit typing indicator
                 socket.emit('chat:typing', { session_id, is_typing: true });
 
-                // Stream response chunks
-                for await (const chunk of chatService.sendMessageStream(session_id, message, context)) {
-                    if (chunk.type === 'chunk') {
-                        socket.emit('chat:stream_chunk', { text: chunk.text });
-                    } else if (chunk.type === 'complete') {
-                        // Stop typing + send complete
-                        socket.emit('chat:typing', { session_id, is_typing: false });
+                // Stream response wrapped in Promise.race for 45s SLA guard
+                const streamPromise = (async () => {
+                    for await (const chunk of chatService.sendMessageStream(session_id, message, context)) {
+                        if (chunk.type === 'chunk') {
+                            socket.emit('chat:stream_chunk', { text: chunk.text });
+                        } else if (chunk.type === 'complete') {
+                            socket.emit('chat:typing', { session_id, is_typing: false });
 
-                        const completeData = {
-                            session_id,
-                            intent: chunk.intent,
-                            fullText: chunk.fullText,
-                            products: chunk.products || null,
-                            suggestedPrompts: chunk.suggestedPrompts || null,
-                            metadata: chunk.metadata,
-                            action: chunk.action || null,
-                            timestamp: new Date().toISOString()
-                        };
+                            const completeData = {
+                                session_id,
+                                intent: chunk.intent,
+                                fullText: chunk.fullText,
+                                products: chunk.products || null,
+                                suggestedPrompts: chunk.suggestedPrompts || null,
+                                metadata: chunk.metadata,
+                                action: chunk.action || null,
+                                timestamp: new Date().toISOString()
+                            };
 
-                        if (typeof callback === 'function') callback({ success: true, data: completeData });
-                        socket.emit('chat:stream_complete', completeData);
+                            if (typeof callback === 'function') callback({ success: true, data: completeData });
+                            socket.emit('chat:stream_complete', completeData);
 
-                        logger.info({ userId, sessionId: session_id, intent: chunk.intent }, 'WS stream completed');
+                            logger.info({ userId, sessionId: session_id, intent: chunk.intent }, 'WS stream completed');
+                        }
                     }
-                }
+                })();
+
+                const timeoutPromise = new Promise((_, reject) => {
+                    timeoutTimer = setTimeout(() => reject(new Error('STREAM_TIMEOUT')), GLOBAL_TIMEOUT_MS);
+                });
+
+                await Promise.race([streamPromise, timeoutPromise]);
+
             } catch (err) {
-                // Stop typing on error
-                if (data?.session_id) {
-                    socket.emit('chat:typing', { session_id: data.session_id, is_typing: false });
+                // GUARANTEED CLEANUP: Stop typing indicator under all failure modes
+                if (session_id) {
+                    socket.emit('chat:typing', { session_id, is_typing: false });
                 }
-                _emitError(socket, callback, 'chat:error', err);
+
+                if (err.message === 'STREAM_TIMEOUT') {
+                    logger.error({ userId, sessionId: session_id }, '🚨 WS Stream timed out (45s SLA threshold hit)');
+                    const timeoutData = {
+                        session_id,
+                        intent: 'TIMEOUT',
+                        fullText: '⏱ Phản hồi quá lâu (quá 45 giây). Vui lòng thử lại.',
+                        products: null,
+                        metadata: { model: 'timeout-guard' },
+                        timestamp: new Date().toISOString()
+                    };
+                    if (typeof callback === 'function') callback({ success: false, error: 'STREAM_TIMEOUT' });
+                    socket.emit('chat:stream_complete', timeoutData);
+                } else {
+                    _emitError(socket, callback, 'chat:error', err);
+                }
+            } finally {
+                if (timeoutTimer) clearTimeout(timeoutTimer);
             }
         });
 
         // ── Event: Confirm action (Yes/No response trigger) ──
         socket.on('chat:confirm_action', async (data, callback) => {
+            const GLOBAL_TIMEOUT_MS = 45_000;
+            const { session_id, confirm, context } = data || {};
+            let timeoutTimer = null;
+
             try {
-                const { session_id, confirm, context } = data || {};
                 if (!session_id || confirm === undefined) {
                     throw new Error('session_id and confirm are required');
                 }
 
                 const confirmMessage = confirm ? 'Đồng ý' : 'Không';
-
-                // Join session room if not already
                 socket.join(`session:${session_id}`);
-
-                // Emit typing indicator
                 socket.emit('chat:typing', { session_id, is_typing: true });
 
-                // Stream response chunks using the derived confirmation message
-                for await (const chunk of chatService.sendMessageStream(session_id, confirmMessage, context)) {
-                    if (chunk.type === 'chunk') {
-                        socket.emit('chat:stream_chunk', { text: chunk.text });
-                    } else if (chunk.type === 'complete') {
-                        socket.emit('chat:typing', { session_id, is_typing: false });
+                const streamPromise = (async () => {
+                    for await (const chunk of chatService.sendMessageStream(session_id, confirmMessage, context)) {
+                        if (chunk.type === 'chunk') {
+                            socket.emit('chat:stream_chunk', { text: chunk.text });
+                        } else if (chunk.type === 'complete') {
+                            socket.emit('chat:typing', { session_id, is_typing: false });
 
-                        const completeData = {
-                            session_id,
-                            intent: chunk.intent,
-                            fullText: chunk.fullText,
-                            products: chunk.products || null,
-                            suggestedPrompts: chunk.suggestedPrompts || null,
-                            metadata: chunk.metadata,
-                            timestamp: new Date().toISOString()
-                        };
+                            const completeData = {
+                                session_id,
+                                intent: chunk.intent,
+                                fullText: chunk.fullText,
+                                products: chunk.products || null,
+                                suggestedPrompts: chunk.suggestedPrompts || null,
+                                metadata: chunk.metadata,
+                                timestamp: new Date().toISOString()
+                            };
 
-                        if (typeof callback === 'function') callback({ success: true, data: completeData });
-                        socket.emit('chat:stream_complete', completeData);
+                            if (typeof callback === 'function') callback({ success: true, data: completeData });
+                            socket.emit('chat:stream_complete', completeData);
 
-                        logger.info({ userId, sessionId: session_id, intent: chunk.intent }, 'WS confirmation complete');
+                            logger.info({ userId, sessionId: session_id, intent: chunk.intent }, 'WS confirmation complete');
+                        }
                     }
-                }
+                })();
+
+                const timeoutPromise = new Promise((_, reject) => {
+                    timeoutTimer = setTimeout(() => reject(new Error('STREAM_TIMEOUT')), GLOBAL_TIMEOUT_MS);
+                });
+
+                await Promise.race([streamPromise, timeoutPromise]);
+
             } catch (err) {
-                if (data?.session_id) {
-                    socket.emit('chat:typing', { session_id: data.session_id, is_typing: false });
+                if (session_id) {
+                    socket.emit('chat:typing', { session_id, is_typing: false });
                 }
-                _emitError(socket, callback, 'chat:error', err);
+
+                if (err.message === 'STREAM_TIMEOUT') {
+                    logger.error({ userId, sessionId: session_id }, '🚨 WS Confirm Stream timed out (45s SLA threshold hit)');
+                    const timeoutData = {
+                        session_id,
+                        intent: 'TIMEOUT',
+                        fullText: '⏱ Xử lý quá lâu. Vui lòng gửi lại yêu cầu.',
+                        products: null,
+                        metadata: { model: 'timeout-guard' },
+                        timestamp: new Date().toISOString()
+                    };
+                    if (typeof callback === 'function') callback({ success: false, error: 'STREAM_TIMEOUT' });
+                    socket.emit('chat:stream_complete', timeoutData);
+                } else {
+                    _emitError(socket, callback, 'chat:error', err);
+                }
+            } finally {
+                if (timeoutTimer) clearTimeout(timeoutTimer);
             }
         });
 

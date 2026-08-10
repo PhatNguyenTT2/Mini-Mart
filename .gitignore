@@ -50,7 +50,73 @@ desktop.ini
 *.sqlite
 *.sqlite3
 
-# Uploads (nếu có)
+# Uploads & AG kit
 uploads/
 temp/
 .agents
+
+# Python, Tool Caches & AI Service
+__pycache__/
+*.py[cod]
+*$py.class
+.ruff_cache/
+.mypy_cache/
+.pytest_cache/
+.uv-cache/
+.coverage
+htmlcov/
+.coverage.*
+backend/.certs/
+
+# AI Service Generated Outputs
+ai-service/artifacts/
+ai-service/runs/
+ai-service/bundles/
+ai-service/releases/
+
+# Model Checkpoints & Binary Vectors
+*.parquet
+*.pt
+*.pth
+*.onnx
+*.onnx.data
+*.bin
+*.ckpt
+*.safetensors
+*.npy
+*.npz
+
+# Virtual Environments
+.venv/
+venv/
+env/
+ENV/
+
+# Workspace & LaTeX Build Outputs
+workspace/cache/
+*.aux
+*.bbl
+*.blg
+*.fls
+*.fdb_latexmk
+*.glg
+*.glo
+*.gls
+*.idx
+*.ilg
+*.ind
+*.ist
+*.log
+*.lot
+*.lof
+*.nav
+*.out
+*.pdfsync
+*.snm
+*.synctex.gz
+*.toc
+*.vrb
+*.bcf
+*.run.xml
+
+
