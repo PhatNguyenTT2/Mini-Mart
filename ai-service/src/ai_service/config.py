@@ -111,6 +111,11 @@ class TrainConfig(BaseModel):
     validation_user_batch_size: int = Field(default=512, gt=0)
     max_history_items: int = Field(default=32, ge=1)
     max_wall_minutes: int = Field(default=90, ge=1)
+    campaign_stage: Literal["legacy", "diagnostic", "production"] = "legacy"
+    r3_selection_artifact_sha256: str | None = Field(
+        default=None,
+        pattern=r"^[0-9a-f]{64}$",
+    )
 
     @model_validator(mode="after")
     def validate_training_schedule(self) -> TrainConfig:
@@ -198,6 +203,33 @@ class Settings:
             "eval": self.eval.model_dump(mode="json"),
             "serving": self.serving.model_dump(mode="json"),
         }
+
+    def validate_campaign_stage(self) -> None:
+        """Validate the R3 diagnostic/production promotion contract.
+
+        The model schema remains v5.0.0; this is a campaign-level invariant
+        that prevents a v3 RuleArtifact from being trained with an unpromoted
+        configuration.
+        """
+        stage = self.train.campaign_stage
+        selection_sha = self.train.r3_selection_artifact_sha256
+        is_r3_rules = self.data.rule_feature_schema_version == "3.0.0"
+        if is_r3_rules and stage == "legacy":
+            raise ConfigurationError(
+                "rule feature schema 3.0.0 requires diagnostic or production campaign_stage"
+            )
+        if not is_r3_rules and selection_sha is not None:
+            raise ConfigurationError(
+                "R3 selection receipt is only valid with rule feature schema 3.0.0"
+            )
+        if stage == "diagnostic" and selection_sha is not None:
+            raise ConfigurationError(
+                "diagnostic campaign cannot predeclare an R3 selection receipt"
+            )
+        if stage == "production" and not is_r3_rules:
+            raise ConfigurationError("production campaign requires rule feature schema 3.0.0")
+        if stage == "production" and selection_sha is None:
+            raise ConfigurationError("production campaign requires an R3 selection receipt SHA")
 
     def training_signature_sha256(self) -> str:
         """Hash only semantics that can change training or model outputs."""

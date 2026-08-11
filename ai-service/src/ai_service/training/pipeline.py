@@ -10,7 +10,7 @@ import re
 from argparse import Namespace
 from dataclasses import asdict, dataclass
 from pathlib import Path
-from typing import Any, cast
+from typing import Any, Literal, cast
 
 import numpy as np
 import pandas as pd
@@ -406,6 +406,7 @@ def _train(
     resume: bool = False,
     require_frozen_source: bool,
 ) -> tuple[HybridTwoTowerModel, PipelineState]:
+    settings.validate_campaign_stage()
     run_id = _validate_artifact_id(run_id, kind="run ID")
     run_dir = settings.data.artifact_root.resolve() / "runs" / run_id
     revision = (
@@ -424,6 +425,21 @@ def _train(
         or abs(rules.manifest.min_lift - settings.data.min_rule_lift) > 1e-12
     ):
         raise ArtifactIntegrityError("training rule artifact does not match resolved config")
+    if settings.train.campaign_stage == "production":
+        require_selected_r3_pair(
+            artifact_root=settings.data.artifact_root,
+            hybrid_flags=(
+                settings.model.use_user_id_embedding,
+                settings.model.use_price_features,
+            ),
+            deep_flags=(
+                settings.model.use_user_id_embedding,
+                settings.model.use_price_features,
+            ),
+            campaign_stage="production",
+            selection_artifact_sha256=settings.train.r3_selection_artifact_sha256,
+            lineage=lineage,
+        )
 
     # Build every potentially failing training input before publishing an immutable
     # run directory.  Trainer construction is deliberately deferred until after
@@ -840,6 +856,10 @@ def _evaluate_pair(
         base_settings, hybrid_run_id, expected_variant=TrainingVariant.HYBRID
     )
     deep = _load_run_context(base_settings, deep_run_id, expected_variant=TrainingVariant.DEEP_ONLY)
+    hybrid.settings.validate_campaign_stage()
+    deep.settings.validate_campaign_stage()
+    if hybrid.settings.train.campaign_stage != deep.settings.train.campaign_stage:
+        raise ArtifactIntegrityError("paired evaluation requires matching campaign stages")
     if hybrid.settings.train.seed != deep.settings.train.seed:
         raise ArtifactIntegrityError("paired evaluation requires matching seeds")
     if hybrid.settings.comparison_signature_sha256() != deep.settings.comparison_signature_sha256():
@@ -858,9 +878,22 @@ def _evaluate_pair(
     }:
         raise ArtifactIntegrityError("paired evaluation requires matching artifact lineage")
     if hybrid.settings.data.rule_feature_schema_version == "3.0.0":
+        campaign_stage = hybrid.settings.train.campaign_stage
+        if campaign_stage not in {"diagnostic", "production"}:
+            raise ArtifactIntegrityError("R3 evaluation requires a diagnostic or production stage")
+        if hybrid.settings.train.campaign_stage == "production":
+            if (
+                hybrid.settings.train.r3_selection_artifact_sha256
+                != deep.settings.train.r3_selection_artifact_sha256
+            ):
+                raise ArtifactIntegrityError(
+                    "production pair requires the same R3 selection receipt"
+                )
         require_selected_r3_pair(
             artifact_root=hybrid.settings.data.artifact_root,
-            selected_deep_run_id=deep.state.run_id,
+            selected_deep_run_id=(
+                deep.state.run_id if hybrid.settings.train.campaign_stage == "diagnostic" else None
+            ),
             hybrid_flags=(
                 hybrid.settings.model.use_user_id_embedding,
                 hybrid.settings.model.use_price_features,
@@ -869,6 +902,9 @@ def _evaluate_pair(
                 deep.settings.model.use_user_id_embedding,
                 deep.settings.model.use_price_features,
             ),
+            campaign_stage=cast(Literal["diagnostic", "production"], campaign_stage),
+            selection_artifact_sha256=hybrid.settings.train.r3_selection_artifact_sha256,
+            lineage=lineage,
         )
         require_hybrid_diagnostic_signal(
             hybrid.run_dir / "training" / "history.jsonl",
@@ -1102,7 +1138,7 @@ def _compare_deep_ablations(
             run_id=run.state.run_id,
             settings=run.settings,
             lifecycle_status=run.lifecycle.status,
-            git_commit=run.lifecycle.document.get("git_commit"),
+            git_commit=cast(str, run.lifecycle.document.get("git_commit")),
             lineage={
                 "snapshot": run.snapshot.manifest.content_sha256,
                 "embedding": run.embedding.manifest.content_sha256,

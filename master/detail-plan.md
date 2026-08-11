@@ -6,11 +6,11 @@
 R1 source/contracts/tests:                 PASS
 R2 seed code + database seed + readiness:  PASS
 R3 source/tests:                           PASS
-R3 diagnostic execution/config promotion: PENDING_SOURCE_FREEZE
+R3 diagnostic execution/config promotion: READY_AFTER_SOURCE_FREEZE
 R4 lineage/audit/probes/ai-service/CUDA:    PASS
 Backend monorepo legacy Jest gate:          FAIL_OUTSIDE_R2_SCOPE
 R4 documentation/final source freeze:      IN_PROGRESS
-PRODUCTION TRAINING:                       BLOCKED
+PRODUCTION TRAINING:                       BLOCKED_UNTIL_R3_SELECTION
 HYBRID VICTORY:                            NOT ESTABLISHED
 ```
 

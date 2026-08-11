@@ -335,9 +335,14 @@ def test_pipeline_test_pair_validation_gate_guards(
         lineage = {"snapshot": "b" * 64, "embedding": "c" * 64, "rules": "d" * 64}
         return SimpleNamespace(
             settings=SimpleNamespace(
-                train=SimpleNamespace(seed=42),
+                train=SimpleNamespace(
+                    seed=42,
+                    campaign_stage="diagnostic",
+                    r3_selection_artifact_sha256=None,
+                ),
                 data=SimpleNamespace(rule_feature_schema_version="2.0.0"),
                 comparison_signature_sha256=lambda: signature,
+                validate_campaign_stage=lambda: None,
             ),
             snapshot=SimpleNamespace(manifest=SimpleNamespace(content_sha256=lineage["snapshot"])),
             embedding=SimpleNamespace(

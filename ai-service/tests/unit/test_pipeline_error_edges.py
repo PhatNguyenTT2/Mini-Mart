@@ -270,6 +270,58 @@ def test_training_preflight_failure_does_not_publish_run(
     assert not (tmp_path / "runs" / f"preflight-{failure_target}").exists()
 
 
+def test_production_r3_selection_is_verified_before_training_preflight(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    """Exercise the production receipt gate before any run directory is created."""
+    settings = make_settings(tmp_path)
+    settings.data.rule_feature_schema_version = "3.0.0"
+    settings.train.campaign_stage = "production"
+    settings.train.r3_selection_artifact_sha256 = "d" * 64
+    snapshot = make_snapshot(tmp_path)
+    embedding = EmbeddingArtifact(
+        manifest=SimpleNamespace(content_sha256="b" * 64),
+        artifact_dir=tmp_path / "features" / "embedding",
+        vectors=np.zeros((snapshot.manifest.num_items, settings.model.sbert_dim), dtype=np.float32),
+    )
+    rules = SimpleNamespace(
+        manifest=SimpleNamespace(
+            feature_schema_version="3.0.0",
+            snapshot_sha256=snapshot.manifest.content_sha256,
+            min_count=settings.data.min_rule_count,
+            min_lift=settings.data.min_rule_lift,
+            content_sha256="c" * 64,
+        ),
+        require_training_capability=lambda _settings: object(),
+    )
+    selected_calls: list[dict[str, object]] = []
+    monkeypatch.setattr(
+        pipeline,
+        "require_selected_r3_pair",
+        lambda **kwargs: selected_calls.append(kwargs),
+    )
+    failure = RuntimeError("production preflight")
+    monkeypatch.setattr(
+        pipeline,
+        "build_purchase_training_index",
+        lambda *_args, **_kwargs: (_ for _ in ()).throw(failure),
+    )
+
+    with pytest.raises(RuntimeError, match="production preflight"):
+        pipeline._train(
+            settings,
+            snapshot,
+            embedding,
+            rules,  # type: ignore[arg-type]
+            run_id="production-preflight",
+            device=torch.device("cpu"),
+            require_frozen_source=False,
+        )
+
+    assert selected_calls and selected_calls[0]["campaign_stage"] == "production"
+    assert not (tmp_path / "runs" / "production-preflight").exists()
+
+
 def test_trainer_setup_failure_is_terminal_and_resumable(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ) -> None:

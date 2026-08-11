@@ -142,7 +142,7 @@ const CATEGORY_KEYWORD_MAP = {
 
 /**
  * Persona-Preferred Categories mapping for candidate generation fallback.
- * Aligned with the canonical benchmark-spec.json persona definitions:
+ * Aligned with the canonical benchmark-spec-v4.json persona definitions:
  * - 0: Nội Trợ (Thịt, rau, gia vị, trứng, dầu ăn)
  * - 1: Sinh Viên (Mì, bánh snack, nước ngọt, ăn vặt)
  * - 2: Dân Nhậu (Bia, rượu, snack & đồ nhắm, khô chế biến)

@@ -12,7 +12,7 @@
  *  -   400 Người cao tuổi (Senior): Female 55%, 55-75y (IDs 4301–4700)
  *  -   300 Tech/Geek: Male 80%, 22-35y (IDs 4701–5000)
  * 
- * Usage: node backend/docs/chatbot/seed-product/seed-customers-v2.js
+ * Usage: node backend/docs/chatbot/catalog-bootstrap/seed-customers-v2.js
  */
 
 const fs = require('fs');

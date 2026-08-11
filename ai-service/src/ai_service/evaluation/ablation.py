@@ -10,7 +10,7 @@ import tempfile
 from collections.abc import Mapping
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any
+from typing import Any, Literal
 
 import numpy as np
 import torch
@@ -36,6 +36,26 @@ from ai_service.evaluation.metrics import paired_bootstrap_delta
 from ai_service.models.two_tower_wide_deep import HybridTwoTowerModel
 
 
+class R3FeatureSelection(BaseModel):
+    use_user_id_embedding: bool
+    use_price_features: bool
+
+
+class R3ArtifactLineage(BaseModel):
+    snapshot_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    embedding_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    rule_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+
+
+class SelectedR3Configuration(BaseModel):
+    artifact_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    selected_diagnostic_run_id: str = Field(min_length=1)
+    selected_config_name: str = Field(min_length=1)
+    feature_selection: R3FeatureSelection
+    lineage: R3ArtifactLineage
+    diagnostic_git_commit: str = Field(pattern=r"^[0-9a-f]{40}$|^[0-9a-f]{64}$")
+
+
 class DeepAblationCandidate(BaseModel):
     run_id: str = Field(min_length=1)
     config_name: str = Field(min_length=1)
@@ -47,6 +67,7 @@ class DeepAblationCandidate(BaseModel):
     gauc_ci_upper_vs_control: float
     gauc_ci_lower_vs_random: float
     eligible: bool
+    feature_selection: R3FeatureSelection
 
 
 class DeepAblationDecision(BaseModel):
@@ -77,6 +98,31 @@ class DeepAblationDecision(BaseModel):
 class DeepAblationReport(DeepAblationDecision):
     per_user_metrics_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
     artifact_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    diagnostic_signature_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    diagnostic_git_commit: str = Field(pattern=r"^[0-9a-f]{40}$|^[0-9a-f]{64}$")
+    lineage: R3ArtifactLineage
+    selected_config_name: str | None
+    selected_feature_selection: R3FeatureSelection | None
+
+    @model_validator(mode="after")
+    def selected_configuration_is_consistent(self) -> DeepAblationReport:
+        if self.diagnostic_pause:
+            if self.selected_config_name is not None or self.selected_feature_selection is not None:
+                raise ValueError("paused R3 report cannot contain a selected configuration")
+        else:
+            selected = next(
+                (
+                    candidate
+                    for candidate in self.candidates
+                    if candidate.run_id == self.selected_run_id
+                ),
+                None,
+            )
+            if selected is None or self.selected_config_name != selected.config_name:
+                raise ValueError("R3 selected configuration does not match the selected candidate")
+            if self.selected_feature_selection != selected.feature_selection:
+                raise ValueError("R3 selected feature flags do not match the selected candidate")
+        return self
 
 
 @dataclass(frozen=True)
@@ -92,7 +138,7 @@ class DeepAblationRun:
     run_id: str
     settings: Settings
     lifecycle_status: RunStatus
-    git_commit: object
+    git_commit: str
     lineage: dict[str, str]
     snapshot: Snapshot
     embeddings: np.ndarray
@@ -106,6 +152,23 @@ def canonical_ablation_report_sha(document: Mapping[str, object]) -> str:
     return hashlib.sha256(
         json.dumps(payload, sort_keys=True, separators=(",", ":")).encode("utf-8")
     ).hexdigest()
+
+
+def _feature_selection_for_config(config_name: str) -> R3FeatureSelection:
+    values = {
+        "deep-control": (True, True),
+        "deep-no-user-id": (False, True),
+        "deep-no-price": (True, False),
+        "deep-no-price-no-user-id": (False, False),
+    }
+    try:
+        use_user_id_embedding, use_price_features = values[config_name]
+    except KeyError as error:
+        raise DataIntegrityError(f"unknown R3 feature configuration: {config_name}") from error
+    return R3FeatureSelection(
+        use_user_id_embedding=use_user_id_embedding,
+        use_price_features=use_price_features,
+    )
 
 
 def compare_deep_ablations(
@@ -171,6 +234,7 @@ def compare_deep_ablations(
                 gauc_ci_upper_vs_control=vs_control.upper,
                 gauc_ci_lower_vs_random=vs_random.lower,
                 eligible=eligible,
+                feature_selection=_feature_selection_for_config(config_name),
             )
         )
 
@@ -206,9 +270,21 @@ def publish_deep_ablation_artifact(
     diagnostic_signature: str,
     report: DeepAblationDecision,
     metrics: Mapping[str, np.ndarray],
+    diagnostic_git_commit: str,
+    lineage: Mapping[str, str],
 ) -> DeepAblationArtifact:
     if not _is_sha256(diagnostic_signature):
         raise ArtifactIntegrityError("diagnostic signature must be a lowercase SHA-256")
+    if not _is_git_commit(diagnostic_git_commit):
+        raise ArtifactIntegrityError("diagnostic Git commit is invalid")
+    try:
+        provenance = R3ArtifactLineage(
+            snapshot_sha256=str(lineage["snapshot"]),
+            embedding_sha256=str(lineage["embedding"]),
+            rule_sha256=str(lineage["rules"]),
+        )
+    except (KeyError, TypeError, ValueError) as error:
+        raise ArtifactIntegrityError("R3 diagnostic lineage is invalid") from error
     validated_metrics = _validate_ablation_metrics(report, metrics)
     destination = root.resolve() / "diagnostics" / "r3" / diagnostic_signature
     destination.parent.mkdir(parents=True, exist_ok=True)
@@ -221,8 +297,23 @@ def publish_deep_ablation_artifact(
         _fsync_file(metrics_path)
         document = {
             **report.model_dump(mode="json"),
+            "diagnostic_signature_sha256": diagnostic_signature,
+            "diagnostic_git_commit": diagnostic_git_commit,
+            "lineage": provenance.model_dump(mode="json"),
+            "selected_config_name": None,
+            "selected_feature_selection": None,
             "per_user_metrics_sha256": _file_sha256(metrics_path),
         }
+        if report.selected_run_id is not None:
+            selected_candidate = next(
+                candidate
+                for candidate in report.candidates
+                if candidate.run_id == report.selected_run_id
+            )
+            document["selected_config_name"] = selected_candidate.config_name
+            document["selected_feature_selection"] = (
+                selected_candidate.feature_selection.model_dump(mode="json")
+            )
         document["artifact_sha256"] = canonical_ablation_report_sha(document)
         published_report = DeepAblationReport.model_validate(document)
         report_path = temporary / "report.json"
@@ -251,6 +342,10 @@ def run_deep_ablation_comparison(
         raise ConfigurationError("R3 requires four distinct Deep run IDs")
     if any(run.settings.train.seed != 42 for run in runs):
         raise ArtifactIntegrityError("R3 Deep ablations require seed 42")
+    if any(run.settings.train.campaign_stage != "diagnostic" for run in runs):
+        raise ArtifactIntegrityError("R3 Deep ablations require diagnostic campaign configs")
+    if any(run.settings.train.r3_selection_artifact_sha256 is not None for run in runs):
+        raise ArtifactIntegrityError("R3 diagnostics cannot carry a production selection receipt")
     if any(run.lifecycle_status is not RunStatus.TRAINING for run in runs):
         raise ArtifactIntegrityError("R3 Deep ablations require completed TRAINING lifecycles")
     if any(run.git_commit != control.git_commit for run in runs[1:]):
@@ -336,27 +431,69 @@ def run_deep_ablation_comparison(
         diagnostic_signature=diagnostic_signature,
         report=report,
         metrics=metrics,
+        diagnostic_git_commit=control.git_commit,
+        lineage=control.lineage,
     )
 
 
 def require_selected_r3_pair(
     *,
     artifact_root: Path,
-    selected_deep_run_id: str,
+    selected_deep_run_id: str | None = None,
     hybrid_flags: tuple[bool, bool],
     deep_flags: tuple[bool, bool],
-) -> None:
+    campaign_stage: Literal["diagnostic", "production"] = "diagnostic",
+    selection_artifact_sha256: str | None = None,
+    lineage: Mapping[str, str] | None = None,
+) -> SelectedR3Configuration:
     if hybrid_flags != deep_flags:
         raise ArtifactIntegrityError("R3 Hybrid flags must match the selected Deep ablation")
-    matches: list[DeepAblationReport] = []
+    expected_features = R3FeatureSelection(
+        use_user_id_embedding=deep_flags[0],
+        use_price_features=deep_flags[1],
+    )
+    matches: list[DeepAblationArtifact] = []
     for path in sorted((artifact_root.resolve() / "diagnostics" / "r3").glob("*/report.json")):
-        report = load_deep_ablation_artifact(path.parent).report
-        if report.selected_run_id == selected_deep_run_id and not report.diagnostic_pause:
-            matches.append(report)
+        artifact = load_deep_ablation_artifact(path.parent)
+        report = artifact.report
+        if report.diagnostic_pause or report.selected_feature_selection != expected_features:
+            continue
+        if campaign_stage == "production":
+            if (
+                selection_artifact_sha256 is not None
+                and artifact.report.artifact_sha256 == selection_artifact_sha256
+            ):
+                matches.append(artifact)
+        elif report.selected_run_id == selected_deep_run_id:
+            matches.append(artifact)
     if len(matches) != 1:
         raise ArtifactIntegrityError(
-            "paired R3 evaluation requires exactly one immutable report selecting the Deep run"
+            "paired R3 evaluation requires exactly one immutable report selecting "
+            "the feature configuration"
         )
+    report = matches[0].report
+    if lineage is not None:
+        expected_lineage = {
+            "snapshot": report.lineage.snapshot_sha256,
+            "embedding": report.lineage.embedding_sha256,
+            "rules": report.lineage.rule_sha256,
+        }
+        if dict(lineage) != expected_lineage:
+            raise ArtifactIntegrityError(
+                "R3 selection lineage does not match the current artifacts"
+            )
+    if report.selected_run_id is None or report.selected_config_name is None:
+        raise ArtifactIntegrityError("R3 selection report has no selected configuration")
+    if report.selected_feature_selection is None:
+        raise ArtifactIntegrityError("R3 selection report has no selected feature flags")
+    return SelectedR3Configuration(
+        artifact_sha256=report.artifact_sha256,
+        selected_diagnostic_run_id=report.selected_run_id,
+        selected_config_name=report.selected_config_name,
+        feature_selection=report.selected_feature_selection,
+        lineage=report.lineage,
+        diagnostic_git_commit=report.diagnostic_git_commit,
+    )
 
 
 def require_hybrid_diagnostic_signal(
@@ -501,6 +638,15 @@ def _is_sha256(value: object) -> bool:
     )
 
 
+def _is_git_commit(value: object) -> bool:
+    return (
+        isinstance(value, str)
+        and value == value.lower()
+        and len(value) in {40, 64}
+        and all(character in "0123456789abcdef" for character in value)
+    )
+
+
 def _file_sha256(path: Path) -> str:
     digest = hashlib.sha256()
     with path.open("rb") as source:
@@ -520,6 +666,9 @@ __all__ = [
     "DeepAblationDecision",
     "DeepAblationReport",
     "DeepAblationRun",
+    "R3ArtifactLineage",
+    "R3FeatureSelection",
+    "SelectedR3Configuration",
     "canonical_ablation_report_sha",
     "compare_deep_ablations",
     "load_deep_ablation_artifact",

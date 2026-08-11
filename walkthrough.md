@@ -2,11 +2,12 @@
 
 ## Current status
 
-`BLOCKED_PENDING_R3_DIAGNOSTIC_EXECUTION_AND_SOURCE_FREEZE`.
+`READY_FOR_R3_DEEP_DIAGNOSTICS`.
 
 R1 source contracts and R2 seed/data readiness are complete. The real v4
 database seed, snapshot, embedding, RuleArtifact, audit, probes and epoch-one
-rule scan pass. R3 source/contracts pass, but its four Deep diagnostic runs,
+rule scan pass. Legacy duplicate seed spec/validator sources have been removed,
+and R3 source/contracts pass, but its four Deep diagnostic runs,
 ablation selection, selected Hybrid validation and v5/v6 config promotion have
 not run. Production training remains blocked until those diagnostics pass and
 the resulting source/config revision is committed, pushed and frozen.

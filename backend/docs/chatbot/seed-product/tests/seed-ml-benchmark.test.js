@@ -2,10 +2,30 @@
 
 const test = require('node:test');
 const assert = require('node:assert/strict');
+const fs = require('fs');
+const os = require('os');
+const path = require('path');
 const {
+  loadBenchmarkSpec,
   reclaimLegacyMlStorage,
   requireUnusedBenchmarkRun
 } = require('../seed-ml-benchmark');
+
+test('benchmark loader accepts only the canonical v4 spec', () => {
+  const spec = loadBenchmarkSpec(path.resolve(__dirname, '..', 'benchmark-spec-v4.json'));
+  assert.equal(spec.schema_version, '2.1.0');
+  assert.equal(spec.generator_version, '4.0.0');
+});
+
+test('benchmark loader rejects archived spec generations', () => {
+  const temporary = path.join(os.tmpdir(), `benchmark-spec-legacy-${process.pid}.json`);
+  fs.writeFileSync(temporary, JSON.stringify({ schema_version: '1.0.0', generator_version: '3.0.0' }));
+  assert.throws(
+    () => loadBenchmarkSpec(temporary),
+    /only benchmark generator v4\/schema 2.1 specs are supported/
+  );
+  fs.rmSync(temporary, { force: true });
+});
 
 test('legacy reclaim preserves every benchmark lineage', async () => {
   const statements = [];

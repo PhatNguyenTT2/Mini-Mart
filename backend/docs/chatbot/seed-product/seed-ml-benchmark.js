@@ -1,8 +1,9 @@
 'use strict';
 
 const crypto = require('crypto');
+const fs = require('fs');
 const path = require('path');
-let spec = require('./benchmark-spec.json');
+let spec;
 const {
   catalogChecksum,
   connectDatabases,
@@ -65,7 +66,23 @@ function argumentValue(name) {
   return index >= 0 ? process.argv[index + 1] : undefined;
 }
 
-function validateArguments({ mutating }) {
+function loadBenchmarkSpec(specPath) {
+  let parsed;
+  try {
+    parsed = JSON.parse(fs.readFileSync(specPath, 'utf8'));
+  } catch (error) {
+    throw new Error(`cannot load benchmark spec ${specPath}: ${error.message}`);
+  }
+  if (parsed.schema_version !== '2.1.0' || parsed.generator_version !== '4.0.0') {
+    throw new Error('only benchmark generator v4/schema 2.1 specs are supported');
+  }
+  if (!Number.isInteger(parsed.store_id) || !Number.isInteger(parsed.seed)) {
+    throw new Error('benchmark spec store_id and seed must be integers');
+  }
+  return parsed;
+}
+
+function validateArguments({ mutating, benchmarkSpec }) {
   if (process.env.NODE_ENV === 'production') {
     throw new Error('benchmark rebuild is forbidden when NODE_ENV=production');
   }
@@ -74,11 +91,11 @@ function validateArguments({ mutating }) {
   }
   const requestedStore = argumentValue('--store-id');
   const requestedSeed = argumentValue('--seed');
-  if (requestedStore !== undefined && Number(requestedStore) !== spec.store_id) {
-    throw new Error(`--store-id must match benchmark-spec.json (${spec.store_id})`);
+  if (requestedStore !== undefined && Number(requestedStore) !== benchmarkSpec.store_id) {
+    throw new Error(`--store-id must match the loaded benchmark spec (${benchmarkSpec.store_id})`);
   }
-  if (requestedSeed !== undefined && Number(requestedSeed) !== spec.seed) {
-    throw new Error(`--seed must match benchmark-spec.json (${spec.seed})`);
+  if (requestedSeed !== undefined && Number(requestedSeed) !== benchmarkSpec.seed) {
+    throw new Error(`--seed must match the loaded benchmark spec (${benchmarkSpec.seed})`);
   }
 }
 
@@ -304,10 +321,10 @@ async function main() {
   const specPath = path.isAbsolute(requestedSpec)
     ? requestedSpec
     : path.resolve(process.cwd(), requestedSpec);
-  spec = require(specPath);
+  spec = loadBenchmarkSpec(specPath);
   const preflightOnly = process.argv.includes('--preflight-only');
   const resumeRunId = argumentValue('--resume-run');
-  validateArguments({ mutating: !preflightOnly });
+  validateArguments({ mutating: !preflightOnly, benchmarkSpec: spec });
   const clients = await connectDatabases();
   let runId;
   try {
@@ -486,4 +503,9 @@ if (require.main === module) {
   });
 }
 
-module.exports = { main, reclaimLegacyMlStorage, requireUnusedBenchmarkRun };
+module.exports = {
+  loadBenchmarkSpec,
+  main,
+  reclaimLegacyMlStorage,
+  requireUnusedBenchmarkRun
+};

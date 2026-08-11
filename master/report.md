@@ -6,12 +6,20 @@
 R1 OBSERVABILITY/GATES SOURCE: PASS
 R2 DATABASE SEED/DATASET/RULE READINESS: PASS
 R3 SOURCE CONTRACTS: PASS
-R3 DIAGNOSTIC RUNS: PENDING SOURCE FREEZE
+R3 DIAGNOSTIC RUNS: READY TO EXECUTE AFTER SOURCE FREEZE
 R4 LINEAGE/AUDIT/PROBES/AI-SERVICE/CUDA: PASS
 BACKEND MONOREPO LEGACY JEST GATE: FAIL OUTSIDE R2 SCOPE
 PRODUCTION TRAINING: BLOCKED
 HYBRID VICTORY: NOT ESTABLISHED
 ```
+
+Pre-R3 source cleanup removed the superseded v3 benchmark spec and semantic
+validator. The active seed surface is `benchmark-spec-v4.json` plus the v4
+affinity/order/event/co-purchase pipeline. Superseded local artifacts are
+live superseded roots were removed after canonical v4 manifest verification.
+The historical `_archive` evidence remains intact because it is not safe to
+delete recursively without a separate backup approval; no database lineage is
+modified by this cleanup.
 
 Database seed canonical là `benchmark-v4-s42-7f40639b0d-ca692e71b3`, status
 `ready`, gồm đúng 15,000 benchmark orders. Snapshot
@@ -518,7 +526,7 @@ Các dominance conditions là contract mục tiêu cần được implement trư
 - Reject dataset có `non_trap_directed_rules == 0`.
 - Persist coverage evidence cùng benchmark run metadata.
 
-#### `backend/docs/chatbot/seed-product/benchmark-spec.json`
+#### `backend/docs/chatbot/seed-product/benchmark-spec-v4.json`
 
 - Thêm explicit, reviewed thresholds cho:
   - minimum non-trap directed rules;

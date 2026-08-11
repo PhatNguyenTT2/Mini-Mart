@@ -16,6 +16,8 @@ from ai_service.evaluation.ablation import (
 )
 from ai_service.evaluation.full_catalog import EvaluationResult
 
+_R3_LINEAGE = {"snapshot": "1" * 64, "embedding": "2" * 64, "rules": "3" * 64}
+
 
 def _result(gauc: float, ndcg: float = 0.2, hr: float = 0.3) -> EvaluationResult:
     users = np.arange(1, 33, dtype=np.int64)
@@ -64,6 +66,8 @@ def test_ablation_selects_best_clear_improvement_and_publishes_immutably(
         diagnostic_signature="a" * 64,
         report=report,
         metrics=metrics,
+        diagnostic_git_commit="a" * 40,
+        lineage=_R3_LINEAGE,
     )
     assert artifact.report_path.is_file()
     assert artifact.metrics_path.is_file()
@@ -74,6 +78,8 @@ def test_ablation_selects_best_clear_improvement_and_publishes_immutably(
             diagnostic_signature="a" * 64,
             report=report,
             metrics=metrics,
+            diagnostic_git_commit="a" * 40,
+            lineage=_R3_LINEAGE,
         )
 
 
@@ -96,6 +102,8 @@ def test_ablation_artifact_rejects_corrupt_or_malformed_metrics(tmp_path: Path) 
             diagnostic_signature="c" * 64,
             report=report,
             metrics={**metrics, "extra": np.ones(32, dtype=np.float64)},
+            diagnostic_git_commit="a" * 40,
+            lineage=_R3_LINEAGE,
         )
     assert not (tmp_path / "diagnostics" / "r3" / ("c" * 64)).exists()
 
@@ -104,6 +112,8 @@ def test_ablation_artifact_rejects_corrupt_or_malformed_metrics(tmp_path: Path) 
         diagnostic_signature="d" * 64,
         report=report,
         metrics=metrics,
+        diagnostic_git_commit="a" * 40,
+        lineage=_R3_LINEAGE,
     )
     artifact.metrics_path.write_bytes(artifact.metrics_path.read_bytes() + b"corrupt")
     with pytest.raises(ArtifactIntegrityError, match="metrics file SHA mismatch"):
@@ -131,6 +141,8 @@ def test_ablation_artifact_rejects_metric_dtype_and_user_order(tmp_path: Path) -
             diagnostic_signature="e" * 64,
             report=report,
             metrics=wrong_dtype,
+            diagnostic_git_commit="a" * 40,
+            lineage=_R3_LINEAGE,
         )
     wrong_users = dict(metrics)
     wrong_users["user_ids"] = wrong_users["user_ids"][::-1].copy()
@@ -140,6 +152,8 @@ def test_ablation_artifact_rejects_metric_dtype_and_user_order(tmp_path: Path) -
             diagnostic_signature="f" * 64,
             report=report,
             metrics=wrong_users,
+            diagnostic_git_commit="a" * 40,
+            lineage=_R3_LINEAGE,
         )
 
 
@@ -186,18 +200,30 @@ def test_selected_pair_and_hybrid_wide_signal_are_required(tmp_path: Path) -> No
         bootstrap_samples=64,
         minimum_control_gauc=0.55,
     )
-    publish_deep_ablation_artifact(
+    artifact = publish_deep_ablation_artifact(
         tmp_path,
         diagnostic_signature="b" * 64,
         report=report,
         metrics=metrics,
+        diagnostic_git_commit="a" * 40,
+        lineage=_R3_LINEAGE,
     )
-    require_selected_r3_pair(
+    selected = require_selected_r3_pair(
         artifact_root=tmp_path,
         selected_deep_run_id="diag-selected",
         hybrid_flags=(True, False),
         deep_flags=(True, False),
     )
+    assert selected.selected_diagnostic_run_id == "diag-selected"
+    production_selected = require_selected_r3_pair(
+        artifact_root=tmp_path,
+        hybrid_flags=(True, False),
+        deep_flags=(True, False),
+        campaign_stage="production",
+        selection_artifact_sha256=artifact.report.artifact_sha256,
+        lineage=_R3_LINEAGE,
+    )
+    assert production_selected.selected_diagnostic_run_id == "diag-selected"
     with pytest.raises(ArtifactIntegrityError, match="flags"):
         require_selected_r3_pair(
             artifact_root=tmp_path,

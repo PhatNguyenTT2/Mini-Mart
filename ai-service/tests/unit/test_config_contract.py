@@ -99,3 +99,33 @@ def test_r3_feature_flags_change_model_signatures_and_configs_are_single_variabl
     }
     assert configs["deep-control"].model.use_user_id_embedding
     assert configs["deep-control"].model.use_price_features
+
+
+def test_r3_campaign_stage_requires_a_selection_receipt_only_for_production() -> None:
+    diagnostic = Settings(
+        {
+            "data": {"rule_feature_schema_version": "3.0.0"},
+            "train": {"campaign_stage": "diagnostic"},
+        }
+    )
+    diagnostic.validate_campaign_stage()
+
+    with pytest.raises(ConfigurationError, match="requires an R3 selection receipt"):
+        Settings(
+            {
+                "data": {"rule_feature_schema_version": "3.0.0"},
+                "train": {"campaign_stage": "production"},
+            }
+        ).validate_campaign_stage()
+
+    production = Settings(
+        {
+            "data": {"rule_feature_schema_version": "3.0.0"},
+            "train": {
+                "campaign_stage": "production",
+                "r3_selection_artifact_sha256": "a" * 64,
+            },
+        }
+    )
+    production.validate_campaign_stage()
+    assert production.training_signature_sha256() != diagnostic.training_signature_sha256()

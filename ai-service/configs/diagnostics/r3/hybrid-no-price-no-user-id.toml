@@ -14,6 +14,7 @@ use_price_features = false
 [train]
 objective = "sampled_softmax"
 training_variant = "hybrid"
+campaign_stage = "diagnostic"
 explicit_negative_ratio = 16
 use_history_profiles = true
 view_auxiliary_weight = 0.1
@@ -32,4 +33,3 @@ minimum_gauc = 0.75
 random_gauc_tolerance = 0.02
 cold_score_atol = 1e-6
 wide_zero_atol = 1e-7
-

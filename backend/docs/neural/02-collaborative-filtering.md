@@ -44,7 +44,7 @@ flowchart TD
 ### Phân Cụm Persona Người Dùng (4 Clusters):
 
 ```javascript
-// Cấu trúc Persona trong seed-customers-v2.js và mock-interactions-v2.js
+// Cấu trúc Persona trong catalog-bootstrap/seed-customers-v2.js và mock-interactions-v2.js
 1. Khách hàng 1 - 150  : Nhóm Nội Trợ (Ưu tiên Thịt, Cá, Rau, Gia vị - Cat 2..22)
 2. Khách hàng 151 - 300: Nhóm Sinh Viên (Ưu tiên Mì gói, Xúc xích, Snack, Nước ngọt - Cat 28..94)
 3. Khách hàng 301 - 400: Nhóm Dân Nhậu (Ưu tiên Bia, Rượu, Khô chế biến, Hạt - Cat 71, 79, 94, 101, 103)

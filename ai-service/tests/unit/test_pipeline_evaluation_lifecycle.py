@@ -20,9 +20,19 @@ def _loaded(
 ) -> SimpleNamespace:
     lineage = lineage or {"snapshot": "b" * 64, "embedding": "c" * 64, "rules": "d" * 64}
     settings = SimpleNamespace(
-        train=SimpleNamespace(seed=seed),
+        train=SimpleNamespace(
+            seed=seed,
+            campaign_stage="diagnostic",
+            r3_selection_artifact_sha256=None,
+        ),
         data=SimpleNamespace(rule_feature_schema_version="2.0.0"),
+        model=SimpleNamespace(use_user_id_embedding=True, use_price_features=False),
+        eval=SimpleNamespace(
+            minimum_wide_to_deep_rms_ratio=0.01,
+            minimum_hybrid_deep_top_k_change_rate=0.05,
+        ),
         comparison_signature_sha256=lambda: signature,
+        validate_campaign_stage=lambda: None,
     )
     snapshot = SimpleNamespace(manifest=SimpleNamespace(content_sha256=lineage["snapshot"]))
     embedding = SimpleNamespace(manifest=SimpleNamespace(content_sha256=lineage["embedding"]))
@@ -36,6 +46,8 @@ def _loaded(
         rules=rules,
         state=state,
         lifecycle=lifecycle,
+        run_dir=Path("."),
+        checkpoint_manifest=SimpleNamespace(best_epoch=1),
     )
 
 
@@ -98,6 +110,45 @@ def test_test_pair_requires_valid_aggregate_validation_gate(
             split=SplitName.TEST,
             device=SimpleNamespace(type="cpu"),  # type: ignore[arg-type]
         )
+
+
+def test_production_pair_binds_r3_receipt_not_diagnostic_run_id(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    base = _base_settings(tmp_path)
+    hybrid = _loaded()
+    deep = _loaded()
+    for loaded in (hybrid, deep):
+        loaded.settings.data.rule_feature_schema_version = "3.0.0"
+        loaded.settings.data.artifact_root = tmp_path
+        loaded.settings.data.minimum_training_rows_with_any_rule = 0.4
+        loaded.settings.train.campaign_stage = "production"
+        loaded.settings.train.r3_selection_artifact_sha256 = "e" * 64
+    monkeypatch.setattr(
+        pipeline,
+        "_load_run_context",
+        lambda *_args, **kwargs: (
+            hybrid if kwargs.get("expected_variant") is TrainingVariant.HYBRID else deep
+        ),
+    )
+    observed: dict[str, object] = {}
+
+    def selected_pair(**kwargs: object) -> None:
+        observed.update(kwargs)
+
+    monkeypatch.setattr(pipeline, "require_selected_r3_pair", selected_pair)
+    monkeypatch.setattr(pipeline, "require_hybrid_diagnostic_signal", lambda *args, **kwargs: None)
+    with pytest.raises(ArtifactIntegrityError, match="aggregate validation gate"):
+        pipeline._evaluate_pair(
+            base,
+            hybrid_run_id="production-hybrid",
+            deep_run_id="production-deep",
+            split=SplitName.TEST,
+            device=SimpleNamespace(type="cpu"),  # type: ignore[arg-type]
+        )
+    assert observed["campaign_stage"] == "production"
+    assert observed["selected_deep_run_id"] is None
+    assert observed["selection_artifact_sha256"] == "e" * 64
 
 
 def test_pair_cli_rejects_missing_ids_before_evaluation(monkeypatch: pytest.MonkeyPatch) -> None:

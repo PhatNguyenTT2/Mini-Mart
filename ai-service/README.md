@@ -34,9 +34,10 @@ node ..\backend\docs\chatbot\seed-product\seed-ml-benchmark.js `
   --spec ..\backend\docs\chatbot\seed-product\benchmark-spec-v4.json `
   --store-id 1 --seed 42 --confirm-rebuild
 
-.\.venv\Scripts\python.exe `
-  ..\backend\docs\chatbot\seed-product\validate_semantic_traps.py `
-  --store-id 1 --strict
+node ..\backend\docs\chatbot\seed-product\inspect-ml-storage.js `
+  --semantic-readiness `
+  --spec ..\backend\docs\chatbot\seed-product\benchmark-spec-v4.json `
+  --run-id benchmark-v4-s42-7f40639b0d-ca692e71b3
 ```
 
 Install the immutable environment, configure the production shell, and run the

@@ -52,6 +52,12 @@ def _load_finalist_run(run_dir: Path, expected_variant: TrainingVariant) -> Fina
     if lifecycle.status not in {RunStatus.TRAINING, RunStatus.EVALUATED, RunStatus.SEALED}:
         raise DataIntegrityError(f"finalist run is not evaluable: {run_dir.name}")
     settings = load_resolved_settings(run_dir / "resolved-config.json")
+    settings.validate_campaign_stage()
+    if (
+        settings.data.rule_feature_schema_version == "3.0.0"
+        and settings.train.campaign_stage != "production"
+    ):
+        raise DataIntegrityError("release finalists must use production campaign configs")
     if settings.train.training_variant is not expected_variant:
         raise DataIntegrityError(f"run variant mismatch: {run_dir.name}")
     try:
@@ -134,6 +140,11 @@ def _pair_finalists_by_seed(
             raise ArtifactIntegrityError(f"seed {seed} finalist lineage differs")
         if h.settings.comparison_signature_sha256() != d.settings.comparison_signature_sha256():
             raise ArtifactIntegrityError(f"seed {seed} comparison signature differs")
+        if (
+            h.settings.train.r3_selection_artifact_sha256
+            != d.settings.train.r3_selection_artifact_sha256
+        ):
+            raise ArtifactIntegrityError(f"seed {seed} R3 selection receipt differs")
         evaluation = load_evaluation_artifacts(
             h.run_dir,
             expected_split=split,
