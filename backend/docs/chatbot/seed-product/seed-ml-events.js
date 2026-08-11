@@ -245,7 +245,7 @@ async function seedMlEvents({
     .filter((id) => !coldSet.has(id));
   const users = Array.from({ length: spec.num_users }, (_, index) => index + 1);
   if (
-    !['3.0.0', '4.0.0'].includes(spec.generator_version)
+    !['3.0.0', '4.0.0', '5.0.0'].includes(spec.generator_version)
     || spec.persona_distribution.length !== 8
     || Math.abs(spec.persona_distribution.reduce((sum, value) => sum + value, 0) - 1) > 1e-9
   ) throw new Error('benchmark v3 persona/generator contract is invalid');

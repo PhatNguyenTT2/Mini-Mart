@@ -2,15 +2,13 @@
 
 ## Current status
 
-`R3_DIAGNOSTIC_FAILED / PRODUCTION_TRAINING_BLOCKED`.
+`R2_DATASET_READY / R3_DIAGNOSTIC_REQUIRED / PRODUCTION_TRAINING_BLOCKED`.
 
-R1 source contracts and R2 seed/data readiness are complete. The real v4
-database seed, snapshot, embedding, RuleArtifact, audit, probes and epoch-one
-rule scan pass. Legacy duplicate seed spec/validator sources have been removed,
-and the four Deep diagnostics plus the selected Hybrid diagnostic have run on
-the frozen source. R3 is blocked because the selected Hybrid VAL matrix failed
-dominance and semantic-trap gates; no v5/v6 promotion or production training
-is permitted.
+R0 root-cause replay, R1 clean-slate reset, and R2 v5 database seeding are now
+complete. The v5 run is ready and independently inspected; no production GPU
+training has been started. R3 remains required on the new v5 snapshot because
+the prior v4 Hybrid VAL matrix failed dominance and semantic-trap gates; no
+production training, release, seal, or export is permitted until R3 passes.
 
 Phase 5A–5D is complete. `Trainer.fit()` is now orchestration-only: it
 preflights, restores state, delegates one epoch to `_train_epoch()`, validates,
@@ -23,6 +21,31 @@ victory is not established.
 Final two-axis review is green: Standards and Spec both pass after closing the
 archived-runbook conflict, R3 NPZ integrity binding, full rule-selector
 thresholds, epoch reset, and immutable affinity contracts.
+
+## R0–R2 execution receipt (2026-08-12, v5)
+
+- R0 diagnostic artifact remains available as root-cause evidence; it was
+  read-only and did not mutate run lifecycle/state.
+- R1 reset used exact token `RESET_BENCHMARK_V5_STORE_1` and deleted only
+  store-scoped benchmark/derived rows (orders first). Business orders without a
+  `benchmark_run_id` were preserved.
+- Ready run: `benchmark-v5-s42-7f40639b0d-c77f0824fb`.
+- Canonical spec SHA:
+  `c77f0824fb9cc8f67cb498447616084848b503738c4af50e4f405b67b13ae7d3`.
+- Counters: `823371` events, `5000` users, `5200` products, `250` cold;
+  `14250` organic + `750` semantic-trap orders; `15000` total.
+- Rule gates: `14112` directed (`14086` non-trap), `4143` distinct organic
+  rule items, trap fraction `0.0018424`, context coverage `0.9066319`, VAL
+  target-rule rate `0.4452014`, TRAIN strict target-rule replay `0.5001925`,
+  and all 10 trap aggregate/per-direction checks pass.
+- Seed-product contracts: 16 passed. AI-service contracts: 388 passed, 2
+  fixed-runner skips; branch coverage `85.27%`; all six critical coverage
+  thresholds pass. No production run ID exists.
+
+This v5 dataset is ready for Python snapshot/R3 validation, not yet for GPU
+training. The managed database event index remains intentionally dropped after
+bulk load because rebuilding it exceeded temporary storage; no validation
+threshold was weakened.
 
 ## Verification snapshot (2026-08-11, canonical benchmark v4)
 

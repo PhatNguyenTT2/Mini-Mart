@@ -65,6 +65,33 @@ class TrainingValidationPass:
     hybrid_deep_top_k_change_rate: float
 
 
+@dataclass(frozen=True)
+class TargetReplayRequest:
+    trap_id: int
+    user_id: int
+    target_item_ids: tuple[int, ...]
+
+
+@dataclass(frozen=True)
+class TargetReplayRow:
+    trap_id: int
+    user_id: int
+    deep_rank: int
+    hybrid_rank: int
+    deep_top_k_cutoff: float
+    target_deep_score: float
+    learned_wide_bonus: float
+    required_wide_bonus: float
+
+
+@dataclass(frozen=True)
+class PairDiagnosticReplay:
+    deep: EvaluationResult
+    hybrid: EvaluationResult
+    alpha_results: dict[float, EvaluationResult]
+    targets: tuple[TargetReplayRow, ...]
+
+
 def _history_and_target(snapshot: Snapshot, split: SplitName) -> tuple[pd.DataFrame, pd.DataFrame]:
     if split is SplitName.VAL:
         history = snapshot.train_df
@@ -528,6 +555,197 @@ class FullCatalogEvaluator:
             hybrid_deep_top_k_change_rate=float(top_k_change_rate),
         )
 
+    @torch.no_grad()
+    def evaluate_pair_diagnostics(
+        self,
+        *,
+        hybrid_model: HybridTwoTowerModel,
+        deep_model: HybridTwoTowerModel,
+        snapshot: Snapshot,
+        prepared_split: PreparedEvaluationSplit,
+        alpha_values: tuple[float, ...],
+        target_requests: tuple[TargetReplayRequest, ...],
+        device: torch.device | str,
+    ) -> PairDiagnosticReplay:
+        """Replay a paired model through the production streaming scorer.
+
+        This is the diagnostic seam for R3.  It deliberately returns bounded
+        per-user metrics and target rows; it never materializes a user-to-catalog
+        score dictionary.
+        """
+        if prepared_split.split is not SplitName.VAL:
+            raise ValueError("R3 pair diagnostics require a validation split")
+        if not alpha_values or len(set(alpha_values)) != len(alpha_values):
+            raise DataIntegrityError("diagnostic alpha values must be unique and non-empty")
+        if any(not np.isfinite(alpha) for alpha in alpha_values):
+            raise DataIntegrityError("diagnostic alpha values must be finite")
+        expected_users = set(int(user) for user in prepared_split.eligible_users)
+        requests_by_user: dict[int, TargetReplayRequest] = {}
+        for request in target_requests:
+            if request.user_id not in expected_users:
+                raise DataIntegrityError("diagnostic target user is not VAL-eligible")
+            if request.user_id in requests_by_user:
+                raise DataIntegrityError("diagnostic target users must be unique")
+            if not request.target_item_ids or len(set(request.target_item_ids)) != len(
+                request.target_item_ids
+            ):
+                raise DataIntegrityError("diagnostic target IDs must be unique and non-empty")
+            if any(
+                item < 0 or item >= snapshot.manifest.num_items for item in request.target_item_ids
+            ):
+                raise DataIntegrityError("diagnostic target item is outside the catalog")
+            requests_by_user[request.user_id] = request
+
+        device = torch.device(device)
+        hybrid_model = hybrid_model.to(device).eval()
+        deep_model = deep_model.to(device).eval()
+        hybrid_items = self._prepare_model_catalog(hybrid_model, snapshot, device)
+        deep_items = self._prepare_model_catalog(deep_model, snapshot, device)
+        hybrid_profiles = build_user_profile_vectors(
+            hybrid_model,
+            snapshot,
+            hybrid_items,
+            prepared_split.history_events,
+            max_history_items=self.settings.train.max_history_items,
+            device=device,
+        )
+        deep_profiles = build_user_profile_vectors(
+            deep_model,
+            snapshot,
+            deep_items,
+            prepared_split.history_events,
+            max_history_items=self.settings.train.max_history_items,
+            device=device,
+        )
+        if not self.settings.train.use_history_profiles:
+            hybrid_profiles.zero_()
+            deep_profiles.zero_()
+
+        rows: dict[str, list[tuple[int, float, float, float, tuple[int, ...]]]] = {
+            "deep": [],
+            "hybrid": [],
+            **{f"alpha:{alpha:g}": [] for alpha in alpha_values},
+        }
+        target_rows: list[TargetReplayRow] = []
+        # R3 target replay is intentionally sparse.  Full per-user metrics are
+        # loaded from the already verified VAL evaluation artifact by the
+        # diagnostic publisher; this seam only needs serving-equivalent scores
+        # for the ten trap cohorts and alpha sweep.
+        scoring_users = np.asarray(sorted(requests_by_user), dtype=np.int64)
+        batch_size = self.settings.train.validation_user_batch_size
+        for offset in range(0, len(scoring_users), batch_size):
+            users = scoring_users[offset : offset + batch_size]
+            deep, _, _ = self._score_neural_batch(
+                deep_model,
+                snapshot,
+                prepared_split,
+                deep_items,
+                users,
+                device,
+                user_profiles=deep_profiles,
+            )
+            _, hybrid_wide, hybrid = self._score_neural_batch(
+                hybrid_model,
+                snapshot,
+                prepared_split,
+                hybrid_items,
+                users,
+                device,
+                user_profiles=hybrid_profiles,
+            )
+            for row_index, user_value in enumerate(users):
+                user = int(user_value)
+                deep_scores = np.asarray(deep[row_index], dtype=np.float64)
+                hybrid_scores = np.asarray(hybrid[row_index], dtype=np.float64)
+                if not np.isfinite(deep_scores).all() or not np.isfinite(hybrid_scores).all():
+                    raise DataIntegrityError("diagnostic replay produced non-finite scores")
+                rows["deep"].append(
+                    _metric_row(user, deep_scores, prepared_split, self.settings.eval.k)
+                )
+                rows["hybrid"].append(
+                    _metric_row(user, hybrid_scores, prepared_split, self.settings.eval.k)
+                )
+                for alpha in alpha_values:
+                    rows[f"alpha:{alpha:g}"].append(
+                        _metric_row(
+                            user,
+                            deep_scores + float(alpha) * hybrid_wide[row_index],
+                            prepared_split,
+                            self.settings.eval.k,
+                        )
+                    )
+                if user not in requests_by_user:
+                    continue
+                request = requests_by_user[int(user)]
+                seen = prepared_split.seen_items.get(user, set())
+                candidate = prepared_split.candidate_item_ids.copy()
+                if seen:
+                    candidate = candidate[~np.isin(candidate, np.fromiter(seen, dtype=np.int64))]
+                raw_ids = prepared_split.raw_product_ids[candidate]
+                deep_candidate = deep_scores[candidate]
+                hybrid_candidate = hybrid_scores[candidate]
+                deep_order = np.lexsort((raw_ids, -deep_candidate))
+                hybrid_order = np.lexsort((raw_ids, -hybrid_candidate))
+                deep_ranked = candidate[deep_order]
+                hybrid_ranked = candidate[hybrid_order]
+                target_ids = np.asarray(request.target_item_ids, dtype=np.int64)
+                deep_positions = np.flatnonzero(np.isin(deep_ranked, target_ids))
+                hybrid_positions = np.flatnonzero(np.isin(hybrid_ranked, target_ids))
+                if len(deep_positions) == 0 or len(hybrid_positions) == 0:
+                    raise DataIntegrityError("diagnostic target is masked or absent from ranking")
+                deep_position = int(deep_positions.min())
+                hybrid_position = int(hybrid_positions.min())
+                deep_target = float(np.max(deep_scores[target_ids]))
+                cutoff_index = min(self.settings.eval.k - 1, len(deep_ranked) - 1)
+                cutoff = float(deep_scores[deep_ranked[cutoff_index]])
+                wide_targets, present = self.rule_store.batch_lookup(
+                    np.asarray([prepared_split.latest_prior_purchase_contexts.get(user, -1)]),
+                    target_ids.reshape(1, -1),
+                )
+                target_bonus = float(np.max(hybrid_wide[row_index, target_ids]))
+                target_features = wide_targets[0, :, 0]
+                target_rule_bonus = (
+                    float(np.max(target_features[present[0]])) if present[0].any() else 0.0
+                )
+                target_rows.append(
+                    TargetReplayRow(
+                        trap_id=request.trap_id,
+                        user_id=user,
+                        deep_rank=deep_position + 1,
+                        hybrid_rank=hybrid_position + 1,
+                        deep_top_k_cutoff=cutoff,
+                        target_deep_score=deep_target,
+                        learned_wide_bonus=target_bonus,
+                        required_wide_bonus=max(0.0, cutoff - deep_target),
+                    )
+                )
+                # Keep the lookup result exercised for rule-presence diagnostics;
+                # the production gate consumes the serving ranks above.
+                _ = target_rule_bonus
+
+        deep_result = _build_report(
+            snapshot, prepared_split, ModelVariant.DEEP_ONLY, self.settings.eval.k, rows["deep"]
+        )
+        hybrid_result = _build_report(
+            snapshot, prepared_split, ModelVariant.HYBRID, self.settings.eval.k, rows["hybrid"]
+        )
+        alpha_results = {
+            alpha: _build_report(
+                snapshot,
+                prepared_split,
+                ModelVariant.HYBRID,
+                self.settings.eval.k,
+                rows[f"alpha:{alpha:g}"],
+            )
+            for alpha in alpha_values
+        }
+        return PairDiagnosticReplay(
+            deep=deep_result,
+            hybrid=hybrid_result,
+            alpha_results=alpha_results,
+            targets=tuple(target_rows),
+        )
+
     def evaluate_external_scores(
         self,
         snapshot: Snapshot,
@@ -561,7 +779,10 @@ __all__ = [
     "EvaluationResult",
     "ExternalBatchScorer",
     "FullCatalogEvaluator",
+    "PairDiagnosticReplay",
     "PreparedEvaluationSplit",
+    "TargetReplayRequest",
+    "TargetReplayRow",
     "TrainingValidationPass",
     "prepare_split",
 ]

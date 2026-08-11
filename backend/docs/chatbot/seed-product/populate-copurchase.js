@@ -44,6 +44,18 @@ async function populateCopurchase({ chatClient, orderClient, spec, runId }) {
       lift: count * totalOrders / (leftCount * rightCount)
     });
   }
+  if (spec.generator_version === '5.0.0') {
+    for (const trap of spec.semantic_traps) {
+      for (const target of trap.targets) {
+        const key = `${Math.min(trap.anchor, target)}:${Math.max(trap.anchor, target)}`;
+        const count = pairCounts.get(key) || 0;
+        const minimumDirectionCount = spec.minimum_semantic_direction_count || 3;
+        if (count < minimumDirectionCount) {
+          throw new Error(`semantic trap pair ${trap.anchor}->${target} has only ${count} orders`);
+        }
+      }
+    }
+  }
   await chatClient.query('BEGIN');
   try {
     await chatClient.query('SET TRANSACTION READ WRITE');
@@ -110,7 +122,14 @@ async function populateCopurchase({ chatClient, orderClient, spec, runId }) {
     trapAnchoredDirectedRules,
     trapAnchoredRuleFraction,
     distinctOrganicRuleItems: organicItems.size,
-    fullCatalogOrganicPairCoverage
+    fullCatalogOrganicPairCoverage,
+    expectedTrapPairs: spec.generator_version === '5.0.0'
+      ? spec.semantic_traps.flatMap((trap) => trap.targets.map((target) => ({
+        anchor: trap.anchor,
+        target,
+        count: pairCounts.get(`${Math.min(trap.anchor, target)}:${Math.max(trap.anchor, target)}`) || 0
+      })))
+      : undefined
   };
 }
 

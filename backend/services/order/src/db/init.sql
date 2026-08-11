@@ -37,6 +37,10 @@ CREATE INDEX IF NOT EXISTS idx_sale_order_date ON sale_order(order_date);
 -- Immutable ML benchmark lineage. Business orders keep NULL; benchmark seed
 -- rows always carry a published run ID and can be replaced store-safely.
 ALTER TABLE sale_order ADD COLUMN IF NOT EXISTS benchmark_run_id TEXT;
+ALTER TABLE sale_order ADD COLUMN IF NOT EXISTS benchmark_kind TEXT;
+ALTER TABLE sale_order ADD COLUMN IF NOT EXISTS benchmark_template_id TEXT;
+ALTER TABLE sale_order ADD COLUMN IF NOT EXISTS benchmark_trap_id INTEGER;
+ALTER TABLE sale_order ADD COLUMN IF NOT EXISTS benchmark_trap_target_id BIGINT;
 CREATE INDEX IF NOT EXISTS idx_sale_order_benchmark_run
     ON sale_order(store_id, benchmark_run_id, order_date)
     WHERE benchmark_run_id IS NOT NULL;

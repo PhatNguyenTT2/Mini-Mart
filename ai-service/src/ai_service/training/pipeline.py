@@ -76,6 +76,7 @@ from ai_service.evaluation.cold_start import evaluate_cold_parity
 from ai_service.evaluation.full_catalog import FullCatalogEvaluator, prepare_split
 from ai_service.evaluation.gates import SingleSeedGateInputs, evaluate_single_seed
 from ai_service.evaluation.probes import run_data_probes
+from ai_service.evaluation.r3_diagnostics import publish_r3_diagnostic
 from ai_service.evaluation.release import evaluate_three_seed
 from ai_service.evaluation.report import load_evaluation_artifacts, publish_evaluation_artifacts
 from ai_service.evaluation.semantic_traps import evaluate_semantic_traps
@@ -1166,6 +1167,34 @@ def _compare_deep_ablations(
     }
 
 
+def _diagnose_r3(
+    base_settings: Settings,
+    *,
+    hybrid_run_id: str,
+    deep_run_id: str,
+    device: torch.device,
+) -> object:
+    """Run the immutable R3 replay; no lifecycle or pipeline state is mutated."""
+    hybrid = _load_run_context(
+        base_settings, hybrid_run_id, expected_variant=TrainingVariant.HYBRID
+    )
+    deep = _load_run_context(base_settings, deep_run_id, expected_variant=TrainingVariant.DEEP_ONLY)
+    if hybrid.settings.train.seed != deep.settings.train.seed:
+        raise ArtifactIntegrityError("R3 diagnostic requires matching seeds")
+    artifact = publish_r3_diagnostic(
+        hybrid_run=hybrid,
+        deep_run=deep,
+        split=SplitName.VAL,
+        settings=hybrid.settings,
+        artifact_root=hybrid.settings.data.artifact_root,
+        device=device,
+    )
+    return {
+        "artifact_dir": str(artifact.directory),
+        "report": artifact.report.model_dump(mode="json"),
+    }
+
+
 def execute_command(args: Namespace) -> None:
     """Execute one explicit stage without hidden source or embedding fallbacks."""
     settings = _configure(args)
@@ -1261,6 +1290,21 @@ def execute_command(args: Namespace) -> None:
                 settings,
                 control_run_id=_validate_artifact_id(str(args.control_run_id), kind="run ID"),
                 candidate_run_ids=candidate_ids,
+                device=_device(args.device),
+            )
+        )
+        return
+
+    if args.command == "diagnose-r3":
+        hybrid_run_id = _validate_artifact_id(str(args.hybrid_run_id), kind="run ID")
+        deep_run_id = _validate_artifact_id(str(args.deep_run_id), kind="run ID")
+        if SplitName(args.split) is not SplitName.VAL:
+            raise ConfigurationError("diagnose-r3 is validation-only")
+        _emit(
+            _diagnose_r3(
+                settings,
+                hybrid_run_id=hybrid_run_id,
+                deep_run_id=deep_run_id,
                 device=_device(args.device),
             )
         )

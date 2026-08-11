@@ -22,7 +22,7 @@ test('benchmark loader rejects archived spec generations', () => {
   fs.writeFileSync(temporary, JSON.stringify({ schema_version: '1.0.0', generator_version: '3.0.0' }));
   assert.throws(
     () => loadBenchmarkSpec(temporary),
-    /only benchmark generator v4\/schema 2.1 specs are supported/
+    /unsupported benchmark schema\/generator pair/
   );
   fs.rmSync(temporary, { force: true });
 });

@@ -9,7 +9,7 @@ from typing import Literal
 
 from pydantic import BaseModel, Field, field_validator, model_validator
 
-EVALUATION_SCHEMA_VERSION = "5.1.0"
+EVALUATION_SCHEMA_VERSION = "5.2.0"
 RULE_COVERAGE_SEMANTICS_VERSION = "semantic-trap-purchase-v2"
 
 
@@ -305,7 +305,7 @@ class MetricBaselineSelection(BaseModel):
 
 
 class AggregateReleaseReport(BaseModel):
-    schema_version: Literal["5.1.0"]
+    schema_version: Literal["5.2.0"]
     split: SplitName
     passed: bool
     comparison_signature_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
@@ -367,7 +367,7 @@ class ColdParityReport(BaseModel):
 
 
 class VictoryMatrix(BaseModel):
-    schema_version: Literal["5.1.0"]
+    schema_version: Literal["5.2.0"]
     random_gauc_passed: bool
     hybrid_minimum_gauc_passed: bool
     gauc_domination_passed: bool
@@ -416,6 +416,135 @@ class EvaluationReport(BaseModel):
     ndcg_at_k: float
     gauc: float
     k: int
+
+
+class RuleAlignmentEvidence(BaseModel):
+    training_targets: int = Field(ge=0)
+    strict_training_rule_targets: int = Field(ge=0)
+    strict_training_rule_rate: float = Field(ge=0.0, le=1.0)
+    positive_other_rule_hits: int = Field(ge=0)
+    in_batch_negative_rule_hits: int = Field(ge=0)
+    explicit_negative_rule_hits: int = Field(ge=0)
+    negative_only_rows: int = Field(ge=0)
+    val_eligible_users: int = Field(ge=0)
+    val_rule_aligned_users: int = Field(ge=0)
+    val_rule_aligned_rate: float = Field(ge=0.0, le=1.0)
+
+    @model_validator(mode="after")
+    def counts_are_consistent(self) -> RuleAlignmentEvidence:
+        if self.strict_training_rule_targets > self.training_targets:
+            raise ValueError("strict training rule targets exceed training targets")
+        if self.val_rule_aligned_users > self.val_eligible_users:
+            raise ValueError("aligned VAL users exceed eligible VAL users")
+        return self
+
+
+class CohortMetricDelta(BaseModel):
+    cohort_name: Literal["aligned", "unaligned"]
+    user_count: int = Field(ge=0)
+    hybrid_minus_deep_gauc: float
+    hybrid_minus_deep_hr_at_k: float
+    hybrid_minus_deep_ndcg_at_k: float
+
+    @field_validator(
+        "hybrid_minus_deep_gauc",
+        "hybrid_minus_deep_hr_at_k",
+        "hybrid_minus_deep_ndcg_at_k",
+    )
+    @classmethod
+    def finite_delta(cls, value: float) -> float:
+        if not math.isfinite(value):
+            raise ValueError("cohort deltas must be finite")
+        return value
+
+
+class TrapDiagnosticEvidence(BaseModel):
+    trap_id: int = Field(ge=1, le=10)
+    anchor_raw_id: int = Field(gt=0)
+    target_raw_ids: tuple[int, ...]
+    anchor_internal_id: int = Field(ge=0)
+    target_internal_ids: tuple[int, ...]
+    rule_present: tuple[bool, ...]
+    raw_lifts: tuple[float, ...]
+    item_query_deep_rank: int = Field(ge=1)
+    item_query_hybrid_rank: int = Field(ge=1)
+    serving_deep_rank: int = Field(ge=1)
+    serving_hybrid_rank: int = Field(ge=1)
+    deep_top_k_cutoff: float
+    learned_wide_bonus: float
+    required_wide_bonus: float
+
+    @model_validator(mode="after")
+    def target_vectors_match(self) -> TrapDiagnosticEvidence:
+        if len(self.target_raw_ids) != len(self.target_internal_ids):
+            raise ValueError("trap raw/internal target IDs must have equal length")
+        if len(self.target_raw_ids) != len(self.rule_present):
+            raise ValueError("trap rule evidence must cover every target")
+        if len(self.target_raw_ids) != len(self.raw_lifts):
+            raise ValueError("trap lift evidence must cover every target")
+        values = (
+            self.deep_top_k_cutoff,
+            self.learned_wide_bonus,
+            self.required_wide_bonus,
+            *self.raw_lifts,
+        )
+        if not all(math.isfinite(value) for value in values):
+            raise ValueError("trap score evidence must be finite")
+        return self
+
+
+class AlphaSweepEvidence(BaseModel):
+    alpha: float
+    gauc: float = Field(ge=0.0, le=1.0)
+    hr_at_k: float = Field(ge=0.0, le=1.0)
+    ndcg_at_k: float = Field(ge=0.0, le=1.0)
+    meets_absolute_floors: bool
+
+    @field_validator("alpha")
+    @classmethod
+    def finite_alpha(cls, value: float) -> float:
+        if not math.isfinite(value):
+            raise ValueError("alpha must be finite")
+        return value
+
+
+class R3DiagnosticReport(BaseModel):
+    schema_version: Literal["1.0.0"]
+    evaluation_schema_version: Literal["5.2.0"]
+    split: Literal[SplitName.VAL]
+    hybrid_run_id: str = Field(min_length=1)
+    deep_run_id: str = Field(min_length=1)
+    hybrid_checkpoint_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    deep_checkpoint_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    git_commit: str = Field(pattern=r"^[0-9a-f]{40}$|^[0-9a-f]{64}$")
+    lineage: ArtifactLineage
+    comparison_signature_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    benchmark_spec_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    semantic_cohort_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    rule_alignment: RuleAlignmentEvidence
+    cohort_deltas: tuple[CohortMetricDelta, CohortMetricDelta]
+    trap_evidence: tuple[TrapDiagnosticEvidence, ...]
+    alpha_sweep: tuple[AlphaSweepEvidence, ...]
+    per_user_metrics_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    artifact_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+
+    @model_validator(mode="after")
+    def validate_diagnostic_shape(self) -> R3DiagnosticReport:
+        if self.hybrid_run_id == self.deep_run_id:
+            raise ValueError("R3 diagnostic requires distinct Hybrid and Deep runs")
+        if tuple(sorted(item.cohort_name for item in self.cohort_deltas)) != (
+            "aligned",
+            "unaligned",
+        ):
+            raise ValueError("R3 diagnostic requires aligned and unaligned cohort deltas")
+        if len(self.trap_evidence) != 10 or {item.trap_id for item in self.trap_evidence} != set(
+            range(1, 11)
+        ):
+            raise ValueError("R3 diagnostic requires exactly trap IDs 1..10")
+        expected_alphas = (0.0, 0.25, 0.5, 1.0, 2.0, 4.0, 8.0)
+        if tuple(item.alpha for item in self.alpha_sweep) != expected_alphas:
+            raise ValueError("R3 diagnostic alpha sweep is not canonical")
+        return self
 
 
 class DataQualityReport(BaseModel):

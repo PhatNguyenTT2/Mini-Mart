@@ -48,7 +48,7 @@ METRIC_KEYS = (
 
 
 class EvaluationArtifactManifest(BaseModel):
-    schema_version: Literal["5.1.0"]
+    schema_version: Literal["5.2.0"]
     split: SplitName
     hybrid_run_id: str
     deep_run_id: str

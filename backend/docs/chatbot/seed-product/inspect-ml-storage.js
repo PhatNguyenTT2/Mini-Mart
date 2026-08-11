@@ -3,15 +3,150 @@
 const path = require('path');
 
 const { connectDatabases } = require('./benchmark-lib');
+const { canonicalSpecSha256, loadBenchmarkSpec } = require('./benchmark-spec');
 
 function argumentValue(name) {
   const index = process.argv.indexOf(name);
   return index >= 0 ? process.argv[index + 1] : undefined;
 }
 
+async function inspectTrainingRuleTargetRate({ chat, spec, runId }) {
+  const fixtureIds = spec.semantic_traps.flatMap((trap) => [trap.anchor, ...trap.targets]);
+  await chat.query(
+    `CREATE TEMP TABLE benchmark_inspector_train_purchase_rows AS
+       SELECT DISTINCT ON (user_id,product_id)
+              user_id,product_id,event_ts,event_id
+       FROM ml_interaction_event_v1
+       WHERE store_id=$1 AND benchmark_run_id=$2
+         AND event_origin='organic' AND event_type='purchase'
+         AND event_ts <= $3
+       ORDER BY user_id,product_id,event_ts,event_id`,
+    [spec.store_id, runId, spec.cutoffs.train_end]
+  );
+  try {
+    await chat.query(
+      'CREATE INDEX benchmark_inspector_train_purchase_rows_user_ts '
+        + 'ON benchmark_inspector_train_purchase_rows(user_id,event_ts,event_id)'
+    );
+    await chat.query('ANALYZE benchmark_inspector_train_purchase_rows');
+    const result = await chat.query(
+      `WITH context AS (
+         SELECT target.product_id AS target_product,prior.product_id AS context_product
+         FROM benchmark_inspector_train_purchase_rows target
+         LEFT JOIN LATERAL (
+           SELECT candidate.product_id
+           FROM benchmark_inspector_train_purchase_rows candidate
+           WHERE candidate.user_id=target.user_id
+             AND candidate.event_ts < target.event_ts
+           ORDER BY candidate.event_ts DESC,candidate.event_id DESC
+           LIMIT 1
+         ) prior ON true
+       )
+       SELECT count(*) FILTER (
+                WHERE context_product IS NOT NULL
+                  AND context_product <> ALL($1::bigint[])
+                  AND target_product <> ALL($1::bigint[])
+              )::int AS eligible,
+              count(*) FILTER (
+                WHERE context_product IS NOT NULL
+                  AND context_product <> ALL($1::bigint[])
+                  AND target_product <> ALL($1::bigint[])
+                  AND EXISTS (
+                    SELECT 1 FROM co_purchase_stats rule
+                    WHERE rule.store_id=$2
+                      AND ((rule.product_id_a=context.context_product
+                            AND rule.product_id_b=context.target_product)
+                        OR (rule.product_id_b=context.context_product
+                            AND rule.product_id_a=context.target_product))
+                  )
+              )::int AS aligned
+       FROM context`,
+      [fixtureIds, spec.store_id]
+    );
+    const eligible = Number(result.rows[0].eligible);
+    const aligned = Number(result.rows[0].aligned);
+    return {
+      eligible,
+      aligned,
+      rate: aligned / Math.max(1, eligible),
+    };
+  } finally {
+    await chat.query('DROP TABLE IF EXISTS benchmark_inspector_train_purchase_rows');
+  }
+}
+
 async function main() {
   const clients = await connectDatabases();
   try {
+    const requestedSpec = argumentValue('--spec');
+    const requestedRun = argumentValue('--run-id');
+    if (requestedSpec || requestedRun) {
+      if (!requestedSpec || !requestedRun) throw new Error('--spec and --run-id are required together');
+      const specPath = path.isAbsolute(requestedSpec)
+        ? requestedSpec : path.resolve(process.cwd(), requestedSpec);
+      const spec = loadBenchmarkSpec(specPath);
+      if (spec.generator_version !== '5.0.0') throw new Error('v5 inspector requires generator 5');
+      const specHash = canonicalSpecSha256(spec);
+      const run = await clients.chat.query(
+        `SELECT benchmark_run_id,status,catalog_sha256,benchmark_spec_sha256,rule_coverage,published_at
+         FROM ml_benchmark_run_v1 WHERE store_id=$1 AND benchmark_run_id=$2`,
+        [spec.store_id, requestedRun]
+      );
+      if (run.rowCount !== 1 || run.rows[0].status !== 'ready') throw new Error('v5 run is not ready');
+      if (run.rows[0].benchmark_spec_sha256 !== specHash) throw new Error('v5 spec hash mismatch');
+      const events = await clients.chat.query(
+        `SELECT count(*)::int AS events,count(DISTINCT user_id)::int AS users,
+                count(DISTINCT product_id)::int AS products
+         FROM ml_interaction_event_v1 WHERE store_id=$1 AND benchmark_run_id=$2`,
+        [spec.store_id, requestedRun]
+      );
+      const orders = await clients.order.query(
+        `SELECT benchmark_kind,count(*)::int AS count
+         FROM sale_order WHERE store_id=$1 AND benchmark_run_id=$2 GROUP BY benchmark_kind`,
+        [spec.store_id, requestedRun]
+      );
+      const directions = [];
+      for (const trap of spec.semantic_traps) {
+        for (const target of trap.targets) {
+          const result = await clients.chat.query(
+            `SELECT co_purchase_count::int AS count FROM co_purchase_stats
+             WHERE store_id=$1 AND product_id_a=$2 AND product_id_b=$3`,
+            [spec.store_id, trap.anchor, target]
+          );
+          directions.push({ trapId: trap.trap_id, anchor: trap.anchor, target,
+            count: Number(result.rows[0]?.count || 0) });
+        }
+      }
+      const trainingRuleTarget = await inspectTrainingRuleTargetRate({
+        chat: clients.chat,
+        spec,
+        runId: requestedRun,
+      });
+      const directionFloor = Number(spec.minimum_semantic_direction_count || 3);
+      const trapChecks = spec.semantic_traps.map((trap) => {
+        const trapDirections = directions.filter((item) => item.trapId === trap.trap_id);
+        const aggregateCount = trapDirections.reduce((sum, item) => sum + item.count, 0);
+        return {
+          trapId: trap.trap_id,
+          aggregateCount,
+          directionCounts: trapDirections.map((item) => item.count),
+          passed: trapDirections.length === trap.targets.length
+            && aggregateCount >= spec.minimum_semantic_copurchase_count
+            && trapDirections.every((item) => item.count >= directionFloor)
+        };
+      });
+      const output = { run: run.rows[0], specHash, events: events.rows[0], orders: orders.rows,
+        directions, trapChecks, trainingRuleTarget, ruleCoverage: run.rows[0].rule_coverage };
+      console.log(JSON.stringify(output));
+      if (Number(events.rows[0].events) !== spec.num_events
+          || Number(events.rows[0].users) !== spec.num_users
+          || Number(events.rows[0].products) !== spec.num_products
+          || trainingRuleTarget.rate < spec.minimum_training_rows_with_any_rule
+          || trapChecks.some((item) => !item.passed)) {
+        process.exitCode = 1;
+      }
+      return;
+    }
     if (process.argv.includes('--semantic-readiness')) {
       const requestedSpec = argumentValue('--spec');
       const runId = argumentValue('--run-id');

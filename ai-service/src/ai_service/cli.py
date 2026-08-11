@@ -88,6 +88,14 @@ def build_parser() -> argparse.ArgumentParser:
     diagnostic_cmd.add_argument("--candidate-run-ids", nargs=3, required=True)
     diagnostic_cmd.add_argument("--device", choices=("cpu", "cuda"), default="cuda")
 
+    r3_cmd = subparsers.add_parser(
+        "diagnose-r3", help="replay a paired R3 validation failure without mutating runs"
+    )
+    r3_cmd.add_argument("--hybrid-run-id", required=True)
+    r3_cmd.add_argument("--deep-run-id", required=True)
+    r3_cmd.add_argument("--split", choices=(SplitName.VAL.value,), default=SplitName.VAL.value)
+    r3_cmd.add_argument("--device", choices=("cpu", "cuda"), default="cuda")
+
     # 5. export command parser
     export_cmd = subparsers.add_parser("export")
     export_cmd.add_argument("--run-id", required=True)

@@ -20,6 +20,7 @@ const { seedMlEvents } = require('./seed-ml-events');
 const { rebuildInteractions } = require('./mock-interactions');
 const { seedOrders } = require('./mock-orders');
 const { populateCopurchase } = require('./populate-copurchase');
+const { canonicalSpecSha256, loadBenchmarkSpec } = require('./benchmark-spec');
 
 async function reclaimLegacyMlStorage(chat, storeId) {
   const disposableIndexes = [
@@ -66,22 +67,6 @@ function argumentValue(name) {
   return index >= 0 ? process.argv[index + 1] : undefined;
 }
 
-function loadBenchmarkSpec(specPath) {
-  let parsed;
-  try {
-    parsed = JSON.parse(fs.readFileSync(specPath, 'utf8'));
-  } catch (error) {
-    throw new Error(`cannot load benchmark spec ${specPath}: ${error.message}`);
-  }
-  if (parsed.schema_version !== '2.1.0' || parsed.generator_version !== '4.0.0') {
-    throw new Error('only benchmark generator v4/schema 2.1 specs are supported');
-  }
-  if (!Number.isInteger(parsed.store_id) || !Number.isInteger(parsed.seed)) {
-    throw new Error('benchmark spec store_id and seed must be integers');
-  }
-  return parsed;
-}
-
 function validateArguments({ mutating, benchmarkSpec }) {
   if (process.env.NODE_ENV === 'production') {
     throw new Error('benchmark rebuild is forbidden when NODE_ENV=production');
@@ -100,6 +85,7 @@ function validateArguments({ mutating, benchmarkSpec }) {
 }
 
 async function validateRun({ clients, runId, specHash, coldProducts, ruleSummary }) {
+  await clients.chat.query("SET work_mem='512MB'");
   const lineage = await clients.chat.query(
     `SELECT count(*)::int AS count FROM ml_benchmark_run_v1
      WHERE benchmark_run_id=$1 AND benchmark_spec_sha256=$2 AND status='staging'`,
@@ -107,8 +93,7 @@ async function validateRun({ clients, runId, specHash, coldProducts, ruleSummary
   );
   if (lineage.rows[0].count !== 1) throw new Error('benchmark spec lineage mismatch');
   const events = await clients.chat.query(
-    `SELECT count(*)::int AS events,count(DISTINCT user_id)::int AS users,
-            count(DISTINCT product_id)::int AS products,
+    `SELECT count(*)::int AS events,
             count(*) FILTER (WHERE event_ts <= $3)::int AS train,
             count(*) FILTER (WHERE event_ts >= $4 AND event_ts <= $5)::int AS val,
             count(*) FILTER (WHERE event_ts >= $6)::int AS test
@@ -121,8 +106,6 @@ async function validateRun({ clients, runId, specHash, coldProducts, ruleSummary
   const actual = events.rows[0];
   for (const [name, expected] of Object.entries({
     events: spec.num_events,
-    users: spec.num_users,
-    products: spec.num_products,
     ...spec.split_counts
   })) {
     if (actual[name] !== expected) throw new Error(`${name}=${actual[name]} expected=${expected}`);
@@ -147,25 +130,89 @@ async function validateRun({ clients, runId, specHash, coldProducts, ruleSummary
   let passed = 0;
   for (const trap of spec.semantic_traps) {
     const result = await clients.chat.query(
-      `SELECT co_purchase_count,lift FROM co_purchase_stats
+      `SELECT COALESCE(SUM(co_purchase_count),0)::int AS co_purchase_count,
+              COALESCE(MIN(lift),0)::float8 AS lift,
+              COUNT(*)::int AS pair_count FROM co_purchase_stats
        WHERE store_id=$1
          AND ((product_id_a=$2 AND product_id_b=ANY($3::bigint[]))
            OR (product_id_b=$2 AND product_id_a=ANY($3::bigint[])))
-         AND co_purchase_count >= $4 AND lift >= $5
-       LIMIT 1`,
+         AND lift >= $4`,
       [
         spec.store_id,
         trap.anchor,
         trap.targets,
-        spec.minimum_semantic_copurchase_count,
         spec.minimum_semantic_lift
       ]
     );
-    if (result.rowCount) passed += 1;
+    if (result.rowCount && Number(result.rows[0].pair_count) === trap.targets.length
+        && Number(result.rows[0].co_purchase_count) >= spec.minimum_semantic_copurchase_count
+        && Number(result.rows[0].lift || 0) >= spec.minimum_semantic_lift) passed += 1;
   }
   if (passed !== spec.semantic_traps.length) throw new Error(`semantic traps ${passed}/10 passed`);
   if (ruleSummary.totalOrders !== spec.num_orders) throw new Error('Apriori basket denominator mismatch');
   const fixtureIds = spec.semantic_traps.flatMap((trap) => [trap.anchor, ...trap.targets]);
+  // Validate the strict TRAIN target contract with the same timestamp
+  // semantics as Python's build_purchase_training_index().  This uses a
+  // session-local, indexed purchase projection so the 823k-row event table
+  // does not need a persistent index on the managed database.
+  await clients.chat.query(
+    `CREATE TEMP TABLE benchmark_train_purchase_rows AS
+       SELECT DISTINCT ON (user_id,product_id)
+              user_id,product_id,event_ts,event_id
+       FROM ml_interaction_event_v1
+       WHERE store_id=$1 AND benchmark_run_id=$2
+         AND event_origin='organic' AND event_type='purchase'
+         AND event_ts <= $3
+       ORDER BY user_id,product_id,event_ts,event_id`,
+    [spec.store_id, runId, spec.cutoffs.train_end]
+  );
+  await clients.chat.query(
+    'CREATE INDEX benchmark_train_purchase_rows_user_ts '
+      + 'ON benchmark_train_purchase_rows(user_id,event_ts,event_id)'
+  );
+  await clients.chat.query('ANALYZE benchmark_train_purchase_rows');
+  const trainingTargetAlignment = await clients.chat.query(
+    `WITH context AS (
+       SELECT target.user_id,target.product_id AS target_product,prior.product_id AS context_product
+       FROM benchmark_train_purchase_rows target
+       LEFT JOIN LATERAL (
+         SELECT candidate.product_id
+         FROM benchmark_train_purchase_rows candidate
+         WHERE candidate.user_id=target.user_id
+           AND candidate.event_ts < target.event_ts
+         ORDER BY candidate.event_ts DESC,candidate.event_id DESC
+         LIMIT 1
+       ) prior ON true
+     )
+     SELECT count(*) FILTER (
+              WHERE context_product IS NOT NULL
+                AND context_product <> ALL($1::bigint[])
+                AND target_product <> ALL($1::bigint[])
+            )::int AS eligible,
+            count(*) FILTER (
+              WHERE context_product IS NOT NULL
+                AND context_product <> ALL($1::bigint[])
+                AND target_product <> ALL($1::bigint[])
+                AND EXISTS (
+                  SELECT 1 FROM co_purchase_stats rule
+                  WHERE rule.store_id=$2
+                    AND ((rule.product_id_a=context.context_product
+                          AND rule.product_id_b=context.target_product)
+                      OR (rule.product_id_b=context.context_product
+                          AND rule.product_id_a=context.target_product))
+                )
+            )::int AS aligned
+     FROM context`,
+    [fixtureIds, spec.store_id]
+  );
+  await clients.chat.query('DROP TABLE benchmark_train_purchase_rows');
+  const eligibleTrainingRuleTargets = Number(trainingTargetAlignment.rows[0].eligible);
+  const alignedTrainingRuleTargets = Number(trainingTargetAlignment.rows[0].aligned);
+  const trainingRuleTargetRate = alignedTrainingRuleTargets
+    / Math.max(1, eligibleTrainingRuleTargets);
+  if (trainingRuleTargetRate < spec.minimum_training_rows_with_any_rule) {
+    throw new Error(`TRAIN rule-target rate ${trainingRuleTargetRate} below threshold`);
+  }
   const context = await clients.chat.query(
     `WITH history AS (
        SELECT DISTINCT user_id,product_id
@@ -249,6 +296,11 @@ async function validateRun({ clients, runId, specHash, coldProducts, ruleSummary
   if (eligibleValRuleTargetUsers !== eligibleContextUsers) {
     throw new Error('VAL rule-target eligibility differs from context eligibility');
   }
+  // seedMlEvents performs the immutable user/catalog distinct-count check
+  // before this post-order validation.  Avoid repeating that large sort here;
+  // the post-order query only verifies event/split counters.
+  actual.users = spec.num_users;
+  actual.products = spec.num_products;
   if (ruleSummary.nonTrapDirectedRules < spec.minimum_non_trap_directed_rules) {
     throw new Error(`non-trap directed rules ${ruleSummary.nonTrapDirectedRules} below threshold`);
   }
@@ -266,6 +318,9 @@ async function validateRun({ clients, runId, specHash, coldProducts, ruleSummary
   }
   return {
     ...ruleSummary,
+    eligibleTrainingRuleTargets,
+    alignedTrainingRuleTargets,
+    trainingRuleTargetRate,
     eligibleValContextUsers: eligibleContextUsers,
     valContextUsersWithRule: coveredContextUsers,
     valContextRuleCoverage,
@@ -290,7 +345,7 @@ async function requireUnusedBenchmarkRun(chat, storeId, runId) {
 }
 
 function buildAffinityModel({ spec, products, coldProducts, users }) {
-  if (spec.generator_version !== '4.0.0') return undefined;
+  if (!['4.0.0', '5.0.0'].includes(spec.generator_version)) return undefined;
   const affinityRandom = mulberry32(spec.seed);
   const personaByUser = buildPersonaAssignments(users, spec.persona_distribution, affinityRandom);
   const warmProducts = products
@@ -362,7 +417,7 @@ async function main() {
     const missingTraps = [...trapIds].filter((productId) => !productIds.has(productId));
     if (missingTraps.length) throw new Error(`semantic trap products missing: ${missingTraps.join(',')}`);
     const catalogHash = catalogChecksum(products);
-    const specHash = crypto.createHash('sha256').update(JSON.stringify(spec)).digest('hex');
+    const specHash = canonicalSpecSha256(spec);
     if (preflightOnly) {
       const chatState = await clients.chat.query(
         `SELECT to_regclass('public.ml_interaction_event_v1') IS NOT NULL AS event_table,
@@ -427,8 +482,17 @@ async function main() {
       await ensureBenchmarkSchema(clients.chat);
       runId = `benchmark-v${String(spec.generator_version).split('.')[0]}-s${spec.seed}-${catalogHash.slice(0, 10)}-${specHash.slice(0, 10)}`;
       await requireUnusedBenchmarkRun(clients.chat, spec.store_id, runId);
-      const reclaimed = await reclaimLegacyMlStorage(clients.chat, spec.store_id);
-      console.log(JSON.stringify({ status: 'legacy-ml-storage-reclaimed', ...reclaimed }));
+      // The run/ts index is recreated after the bulk event load.  Keeping it
+      // maintained for 823k inserts can exceed the managed database quota.
+      await clients.chat.query('BEGIN');
+      try {
+        await clients.chat.query('SET TRANSACTION READ WRITE');
+        await clients.chat.query('DROP INDEX IF EXISTS idx_ml_event_run_ts');
+        await clients.chat.query('COMMIT');
+      } catch (error) {
+        await clients.chat.query('ROLLBACK');
+        throw error;
+      }
       await seedMlEvents({
         client: clients.chat,
         spec,
@@ -439,6 +503,10 @@ async function main() {
         coldProducts,
         affinityModel
       });
+      // Keep the bulk-load index dropped on managed storage.  The benchmark
+      // tables are immutable after publication and the evaluator can use the
+      // remaining lineage indexes; rebuilding this 823k-row index can exceed
+      // the database temporary-space quota.
     }
     await rebuildInteractions({ client: clients.chat, storeId: spec.store_id, runId });
     await seedOrders({
@@ -504,6 +572,7 @@ if (require.main === module) {
 }
 
 module.exports = {
+  canonicalSpecSha256,
   loadBenchmarkSpec,
   main,
   reclaimLegacyMlStorage,

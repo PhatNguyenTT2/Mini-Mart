@@ -54,6 +54,113 @@ def test_cli_main_dispatches_to_the_pipeline(monkeypatch: pytest.MonkeyPatch) ->
     assert dispatched == ["snapshot"]
 
 
+def test_diagnose_r3_wrapper_publishes_a_paired_read_only_artifact(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    settings = Settings()
+    settings.data.artifact_root = tmp_path
+    hybrid_settings = SimpleNamespace(
+        train=SimpleNamespace(seed=42),
+        data=SimpleNamespace(artifact_root=tmp_path),
+    )
+    deep_settings = SimpleNamespace(train=SimpleNamespace(seed=42))
+    hybrid = SimpleNamespace(settings=hybrid_settings)
+    deep = SimpleNamespace(settings=deep_settings)
+    loaded: list[tuple[str, TrainingVariant]] = []
+
+    def load_context(
+        _settings: Settings, run_id: str, *, expected_variant: TrainingVariant
+    ) -> object:
+        loaded.append((run_id, expected_variant))
+        return hybrid if expected_variant is TrainingVariant.HYBRID else deep
+
+    class _Report:
+        def model_dump(self, **_: object) -> dict[str, object]:
+            return {"passed": False}
+
+    artifact = SimpleNamespace(directory=tmp_path / "r3", report=_Report())
+    monkeypatch.setattr(pipeline, "_load_run_context", load_context)
+    monkeypatch.setattr(pipeline, "publish_r3_diagnostic", lambda **_: artifact)
+
+    result = pipeline._diagnose_r3(
+        settings,
+        hybrid_run_id="hybrid",
+        deep_run_id="deep",
+        device=torch.device("cpu"),
+    )
+
+    assert loaded == [
+        ("hybrid", TrainingVariant.HYBRID),
+        ("deep", TrainingVariant.DEEP_ONLY),
+    ]
+    assert result == {"artifact_dir": str(tmp_path / "r3"), "report": {"passed": False}}
+
+
+def test_diagnose_r3_rejects_mismatched_seed_before_publish(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    settings = Settings()
+    settings.data.artifact_root = tmp_path
+    hybrid = SimpleNamespace(settings=SimpleNamespace(train=SimpleNamespace(seed=42)))
+    deep = SimpleNamespace(settings=SimpleNamespace(train=SimpleNamespace(seed=2027)))
+    monkeypatch.setattr(
+        pipeline,
+        "_load_run_context",
+        lambda _settings, run_id, *, expected_variant: hybrid if run_id == "hybrid" else deep,
+    )
+    published = False
+
+    def publish(**_: object) -> None:
+        nonlocal published
+        published = True
+
+    monkeypatch.setattr(pipeline, "publish_r3_diagnostic", publish)
+    with pytest.raises(ArtifactIntegrityError, match="matching seeds"):
+        pipeline._diagnose_r3(
+            settings,
+            hybrid_run_id="hybrid",
+            deep_run_id="deep",
+            device=torch.device("cpu"),
+        )
+    assert published is False
+
+
+def test_execute_command_diagnose_r3_dispatches_validation_pair(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    settings = Settings()
+    settings.data.artifact_root = tmp_path
+    monkeypatch.setattr(pipeline, "_configure", lambda _args: settings)
+    monkeypatch.setattr(pipeline, "_seed_everything", lambda _seed: None)
+    monkeypatch.setattr(pipeline, "_device", lambda _value: torch.device("cpu"))
+    calls: list[dict[str, object]] = []
+    monkeypatch.setattr(
+        pipeline,
+        "_diagnose_r3",
+        lambda *_args, **kwargs: calls.append(kwargs) or {"ok": True},
+    )
+    emitted: list[object] = []
+    monkeypatch.setattr(pipeline, "_emit", emitted.append)
+
+    pipeline.execute_command(
+        _arguments(
+            "diagnose-r3",
+            hybrid_run_id="hybrid-r3",
+            deep_run_id="deep-r3",
+            split="val",
+        )
+    )
+
+    assert calls == [
+        {
+            "hybrid_run_id": "hybrid-r3",
+            "deep_run_id": "deep-r3",
+            "device": torch.device("cpu"),
+        }
+    ]
+    assert emitted == [{"ok": True}]
+
+
 def test_run_all_parser_requires_explicit_synthetic_smoke_config() -> None:
     with pytest.raises(SystemExit):
         build_parser().parse_args(["run-all", "--run-id", "smoke-contract"])
@@ -471,7 +578,7 @@ def test_export_requires_aggregate_winner_and_publishes_profile_bundle(
     release = tmp_path / "releases" / comparison / "release-gate.json"
     release.parent.mkdir(parents=True)
     release_report = AggregateReleaseReport(
-        schema_version="5.1.0",
+        schema_version="5.2.0",
         split=SplitName.TEST,
         passed=True,
         comparison_signature_sha256=comparison,

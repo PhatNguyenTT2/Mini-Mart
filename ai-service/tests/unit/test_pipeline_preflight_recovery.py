@@ -180,7 +180,7 @@ def test_pipeline_export_preflight_guards(tmp_path: Path, monkeypatch: pytest.Mo
     release_path = tmp_path / "releases" / comparison / "release-gate.json"
     release_path.parent.mkdir(parents=True)
     report = AggregateReleaseReport(
-        schema_version="5.1.0",
+        schema_version="5.2.0",
         split=SplitName.TEST,
         passed=True,
         comparison_signature_sha256=comparison,
@@ -375,7 +375,7 @@ def test_pipeline_test_pair_validation_gate_guards(
     release_dir = tmp_path / "releases" / signature
     release_dir.mkdir(parents=True)
     report = AggregateReleaseReport(
-        schema_version="5.1.0",
+        schema_version="5.2.0",
         split=SplitName.VAL,
         passed=True,
         comparison_signature_sha256=signature,
