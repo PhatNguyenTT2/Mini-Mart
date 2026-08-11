@@ -99,13 +99,18 @@ def evaluate_cold_parity(
         if row_start != row_end or bool((rule_store.col_indices == item).any()):
             raise DataIntegrityError("cold item exists in Apriori rules")
 
-    required_test_columns = {"event_type", "internal_user_id", "internal_product_id"}
+    required_test_columns = {
+        "event_type",
+        "event_origin",
+        "internal_user_id",
+        "internal_product_id",
+    }
     if not required_test_columns.issubset(snapshot.test_df.columns):
         raise DataIntegrityError(
             "cold benchmark invalid: expected at least 250 cohort users "
-            "with an organic cold test purchase"
+            "with a cold-start fixture purchase"
         )
-    cold_test = filter_event_origin(snapshot.test_df)
+    cold_test = filter_event_origin(snapshot.test_df, "cold_start")
     cold_test = cold_test[
         (cold_test.event_type == "purchase") & cold_test.internal_product_id.isin(cold_ids)
     ]
@@ -116,7 +121,7 @@ def evaluate_cold_parity(
     if len(eligible_users) < expected_cold:
         raise DataIntegrityError(
             f"cold benchmark invalid: expected at least {expected_cold} cohort users "
-            "with an organic cold test purchase"
+            "with a cold-start fixture purchase"
         )
     cohort_users = np.asarray(eligible_users[:expected_cold], dtype=np.int64)
 

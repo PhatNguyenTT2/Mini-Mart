@@ -349,7 +349,7 @@ def test_evaluate_cold_parity_requires_exact_cohort(tmp_path: Path) -> None:
                 "internal_product_id": [250 + (i % 250) for i in range(250)],
                 "event_type": ["purchase"] * 250,
                 "event_ts": pd.date_range("2026-02-01", periods=250, tz="UTC"),
-                "event_origin": ["organic"] * 250,
+                "event_origin": ["cold_start"] * 250,
             }
         ),
         order_baskets_df=pd.DataFrame(),
