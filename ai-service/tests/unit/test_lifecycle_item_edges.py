@@ -20,7 +20,7 @@ def _valid_lifecycle(tmp_path: Path) -> tuple[Path, dict[str, object]]:
         run_dir,
         settings=settings,
         lineage={"snapshot": "a" * 64, "embedding": "b" * 64, "rules": "c" * 64},
-        git_commit="fixture",
+        git_commit="0" * 40,
     )
     return run_dir, lifecycle.document
 
@@ -32,6 +32,7 @@ def _valid_lifecycle(tmp_path: Path) -> tuple[Path, dict[str, object]]:
         ("schema", "schema version"),
         ("model", "model schema"),
         ("sha", "comparison or variant"),
+        ("git_commit", "invalid Git commit SHA"),
         ("variant", "training variant"),
         ("run_id", "ID does not"),
         ("lineage", "lineage"),
@@ -50,6 +51,8 @@ def test_run_manifest_loader_rejects_every_identity_boundary(
         document["model_schema_version"] = "4.0.0"
     elif mutation == "sha":
         document["comparison_signature_sha256"] = "not-hex"
+    elif mutation == "git_commit":
+        document["git_commit"] = "unknown"
     elif mutation == "variant":
         document["training_variant"] = "unknown"
     elif mutation == "run_id":
@@ -71,21 +74,21 @@ def test_run_create_rejects_duplicate_and_invalid_lineage(tmp_path: Path) -> Non
         run_dir,
         settings=settings,
         lineage={"snapshot": "a" * 64, "embedding": "b" * 64, "rules": "c" * 64},
-        git_commit="fixture",
+        git_commit="0" * 40,
     )
     with pytest.raises(ArtifactIntegrityError, match="immutable run already exists"):
         RunLifecycle.create(
             run_dir,
             settings=settings,
             lineage={"snapshot": "a" * 64, "embedding": "b" * 64, "rules": "c" * 64},
-            git_commit="fixture",
+            git_commit="0" * 40,
         )
     with pytest.raises(ArtifactIntegrityError, match="invalid SHA"):
         RunLifecycle.create(
             tmp_path / "runs" / "bad-lineage",
             settings=settings,
             lineage={"snapshot": "bad", "embedding": "b" * 64, "rules": "c" * 64},
-            git_commit="fixture",
+            git_commit="0" * 40,
         )
 
 

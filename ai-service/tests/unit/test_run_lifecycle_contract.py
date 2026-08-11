@@ -23,7 +23,7 @@ def test_run_lifecycle_persists_resolved_provenance_and_rejects_illegal_transiti
         run_dir,
         settings=settings,
         lineage=lineage,
-        git_commit="0123456789abcdef",
+        git_commit="0" * 40,
     )
     run.transition(RunStatus.TRAINING)
     run.transition(RunStatus.EVALUATED)
@@ -34,7 +34,7 @@ def test_run_lifecycle_persists_resolved_provenance_and_rejects_illegal_transiti
     assert manifest["status"] == "sealed"
     assert manifest["lineage"] == lineage
     assert manifest["training_signature_sha256"] == settings.training_signature_sha256()
-    assert manifest["git_commit"] == "0123456789abcdef"
+    assert manifest["git_commit"] == "0" * 40
     assert "chatbot_database_url" not in resolved["data"]
 
     with pytest.raises(ArtifactIntegrityError, match="illegal run transition"):
@@ -46,7 +46,7 @@ def test_training_run_can_be_marked_interrupted(tmp_path: Path) -> None:
         tmp_path / "run-2",
         settings=Settings(),
         lineage={"snapshot": "a" * 64, "embedding": "b" * 64, "rules": "c" * 64},
-        git_commit="unknown",
+        git_commit="1" * 40,
     )
     run.transition(RunStatus.TRAINING)
     run.transition(RunStatus.INTERRUPTED, reason="operator request")
@@ -54,3 +54,14 @@ def test_training_run_can_be_marked_interrupted(tmp_path: Path) -> None:
     manifest = json.loads((tmp_path / "run-2" / "run-manifest.json").read_text(encoding="utf-8"))
     assert manifest["status"] == "interrupted"
     assert manifest["status_reason"] == "operator request"
+
+
+@pytest.mark.parametrize("git_commit", ["unknown", "fixture", "", "A" * 40, "0" * 39])
+def test_run_lifecycle_rejects_invalid_git_commit(tmp_path: Path, git_commit: str) -> None:
+    with pytest.raises(ArtifactIntegrityError, match="invalid Git commit SHA"):
+        RunLifecycle.create(
+            tmp_path / f"invalid-{len(git_commit)}",
+            settings=Settings(),
+            lineage={"snapshot": "a" * 64, "embedding": "b" * 64, "rules": "c" * 64},
+            git_commit=git_commit,
+        )

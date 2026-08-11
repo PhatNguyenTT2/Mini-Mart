@@ -2,26 +2,27 @@
 
 ## Current status
 
-`Source implementation ready for seed-42 training`.
+`BLOCKED_BEFORE_PRODUCTION_TRAINING`.
 
-Production execution remains `BLOCKED_UNTIL_SOURCE_FREEZE`: the current
-worktree has uncommitted Phase-5 changes while `RunLifecycle` records only the
-Git `HEAD`. Commit/push the reviewed source and require a clean worktree before
-creating `deep-42-v5`. This is a provenance gate, not a source-functionality
-failure.
+Phase A provenance/lifecycle hotfix has passed the full local quality gate, but
+source freeze is not complete. Production training remains blocked until the
+hotfix is committed, pushed, and the worktree is clean. No production seed has
+been created.
 
 Phase 5A–5D is complete. `Trainer.fit()` is now orchestration-only: it
 preflights, restores state, delegates one epoch to `_train_epoch()`, validates,
 applies stopping, publishes checkpoints/history, and writes the terminal
-summary. The production seed runs do not yet exist and Hybrid victory is not
-established.
+summary. Phase A additionally preflights training inputs before run publication,
+requires a verified Git commit, and terminalizes setup/state-publication errors.
+The production seed runs do not yet exist and Hybrid victory is not established.
 
 ## Verification snapshot (2026-08-11)
 
-- Full suite: **316 passed, 2 fixed-runner skips**.
-- Branch coverage: **89.89%** (`--cov-branch`, threshold 85%).
+- Full suite: **330 passed, 2 fixed-runner skips**.
+- Phase A targeted contracts: **73 passed, 1 warning**.
+- Branch coverage: **90.06%** (`--cov-branch`, threshold 85%).
 - Critical files: checkpoint 98.55%, report 90.83%, bundle 98.79%, release
-  90.69%, trainer 87.35%, pipeline 85.49%.
+  90.69%, trainer 87.35%, pipeline 86.88%.
 - Ruff format/check and mypy pass; `scripts/check_critical_coverage.py` passes.
 - Static scans are clean: no Pareto/release-candidate checkpoints,
   `scores_by_user`, legacy Wide scaling, Softplus, or release signature

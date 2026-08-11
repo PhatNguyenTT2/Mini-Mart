@@ -37,3 +37,16 @@ single-seed Victory Gate passes. Repeat the same Deep-then-Hybrid sequence for
 `deep-2027-v5`/`hybrid-2027-v5` and `deep-31415-v5`/`hybrid-31415-v5`, then run the
 3+3 validation release gate. TEST must be evaluated for all three pairs before the
 aggregate TEST gate; a single validation winner is never a substitute.
+
+The required order is therefore:
+
+```text
+deep-42-v5 → hybrid-42-v5 → VAL gate
+deep-2027-v5 → hybrid-2027-v5 → VAL gate
+deep-31415-v5 → hybrid-31415-v5 → VAL gate
+aggregate VAL 3+3 → TEST for all three pairs → aggregate TEST 3+3
+→ seal selected Hybrid → export/verify bundle
+```
+
+The complete command block is maintained in the root `ai-service/README.md`; do
+not substitute shortened IDs or run a later seed after a failed gate.

@@ -1,180 +1,221 @@
-# Detail plan production campaign `ai-service` v5 sau Phase 5
+# Detail plan đóng blocker và mở Production Training Phase cho `ai-service`
 
-## 1. Readiness decision hiện tại
+## 1. Kết luận kiểm chứng hiện tại
 
-### Kết luận
-
-- **Source implementation:** `READY_FOR_SEED_42`.
-- **Production execution:** `BLOCKED_UNTIL_SOURCE_FREEZE`.
-- **Hybrid victory:** chưa được xác lập.
-
-Không phát hiện blocker chức năng mới trong luồng train/evaluate/release. Tuy
-nhiên, workspace hiện có 81 thay đổi và `HEAD` đang là
-`6347dc571cd959f57dc6144deb25e0ee136aaed6`. `RunLifecycle` tại
-[`run.py`](E:/UIT/cv/backend/ai-service/src/ai_service/training/run.py) chỉ lưu
-Git commit do [`_git_commit()`](E:/UIT/cv/backend/ai-service/src/ai_service/training/pipeline.py)
-trả về. Vì vậy không được bắt đầu production run trước khi source, tests,
-configs và tài liệu đã được commit/push và worktree sạch.
-
-### Evidence đã xác minh lại ngày 2026-08-11
+**Trạng thái: `BLOCKED_BEFORE_PRODUCTION_TRAINING`.**
 
 | Gate | Kết quả |
 |---|---:|
-| Ruff format/check | PASS |
-| Mypy `src scripts` | PASS |
-| Tests | 316 passed, 2 fixed-runner skips |
-| Branch coverage | 89.89% |
-| `training/checkpoint.py` | 98.55% |
-| `evaluation/report.py` | 90.83% |
-| `export/bundle.py` | 98.79% |
-| `evaluation/release.py` | 90.69% |
-| `training/trainer.py` | 87.35% |
-| `training/pipeline.py` | 85.49% |
-| Audit snapshot | PASS, 823,371 events |
-| Streaming probes | PASS, parity exact với walkthrough |
+| Git worktree | Dirty do Phase A hotfix đang triển khai |
+| `HEAD` | `1da72054da69c485079c7e43bb13f73686c14e27` |
+| `origin/main` | Commit trước hotfix, ahead/behind `0/0` |
+| Ruff format/lint | PASS |
+| Mypy | PASS |
+| Tests | 330 passed, 2 fixed-runner skips |
+| Phase A targeted contracts | 73 passed, 1 warning |
+| Branch coverage | 90.06% |
+| Sáu critical coverage targets | PASS |
+| Snapshot audit | PASS, 823,371 events |
+| Streaming probes | PASS |
 | Full-stat rules | PASS, 216 directed rules |
-| Legacy rules | Load audit-only, training reject |
-| CUDA | RTX 3060 Laptop 6 GB, Torch 2.11/CUDA 12.8 |
-| Production seed-42 IDs | Chưa tồn tại |
+| CUDA | RTX 3060 6 GB, Torch 2.11/CUDA 12.8 |
+| Production run IDs | Cả sáu ID chưa tồn tại |
+| Production environment | Chưa cấu hình trong shell hiện tại |
+| Source lifecycle safety | Phase A hotfix đã triển khai; targeted/full quality gates PASS locally; commit/push còn chờ |
 
-Numerical references được khóa:
+Source chưa được phép chạy `deep-42-v5` vì hotfix lifecycle/provenance đang nằm ngoài commit đã push. Full gate local đã PASS; hotfix vẫn phải được commit/push và xác nhận worktree sạch rồi mới chạy training.
 
-```text
-permutation GAUC = 0.5015448729863483
-Persona GAUC     = 0.7828269506844938
-ItemCF GAUC      = 0.8229374042613712
-SBERT NDCG@10    = 0.01486986701767289
+## 2. Kết quả review hai trục
+
+### Standards
+
+Vi phạm README về snapshot mặc định đã được sửa và kiểm chứng trong working tree:
+
+- [README.md](E:/UIT/cv/backend/ai-service/README.md) hiện truyền exact `--snapshot-id` và tách bootstrap/reuse; commit/push hotfix vẫn là điều kiện source-freeze.
+
+Hai design smells không chặn training và phải hoãn tới sau campaign:
+
+- `dict[str, str]` lineage lặp lại tại pipeline/release là possible Data Clumps/Primitive Obsession. Sau release mới thay bằng typed `ArtifactLineage`.
+- `execute_command()` trong [pipeline.py](E:/UIT/cv/backend/ai-service/src/ai_service/training/pipeline.py:928) sở hữu quá nhiều command family. Sau release mới tách private handlers, giữ nguyên interface CLI.
+
+### Spec
+
+Ba finding:
+
+1. **P0:** lifecycle hole đã được sửa cục bộ; preflight dựng loader/model/evaluator trước run creation và protected envelope bao phủ Trainer/setup/state publication.
+2. **P1:** provenance đã được sửa cục bộ; Git SHA bắt buộc hợp lệ, production train yêu cầu clean worktree và HEAD bằng upstream.
+3. **P1:** walkthrough/detail-plan/README đã được cập nhật cục bộ; full gate đã PASS, chỉ được chuyển trạng thái ready sau commit/push hotfix.
+
+Tổng kết review: Standards có 1 vi phạm và 2 smells; Spec có 3 finding, nghiêm trọng nhất là lifecycle hole trước `Trainer.fit()`.
+
+## 3. Phase A — Hotfix source bắt buộc trước training
+
+### Task A1 — Fail-closed repository provenance
+
+File: [pipeline.py](E:/UIT/cv/backend/ai-service/src/ai_service/training/pipeline.py)
+
+Thay `_git_commit()` bằng ba private helpers:
+
+```python
+_git_output(arguments: Sequence[str]) -> str
+_resolve_git_commit() -> str
+_require_frozen_repository() -> str
 ```
 
-Artifact lineage bắt buộc:
+`_resolve_git_commit()`:
 
-```text
-snapshot ID  = benchmark-v3-20260810-9088b0f3
-snapshot SHA = 1ffcebe7dbe4fe5275bd2108a71567038a8bcc52120fa26c126b3e2be3409494
-embedding ID = benchmark-v3-20260810-9088b0f3-real-f0453078fd58
-embedding SHA= f0453078fd588403186f80321b9ad0500d7c5ce73266f8d50de8fc3a6b09de61
-rules ID     = benchmark-v3-20260810-9088b0f3-rules-v2-ea0c72a89c41
-rules SHA    = cb6dacb984edd6d9210c7c7f03f9361f8590e41cd867051f704cb99e57250356
-comparison   = e07782c36302d4b8665ee2356fc4c852888d5a78fb3f947b1d412152393fb3ec
+- Chạy `git rev-parse HEAD` tại repository root.
+- Require lowercase SHA-1 40 ký tự hoặc SHA-256 64 ký tự.
+- Git unavailable, timeout, empty/non-hex output → `ConfigurationError`; không trả `"unknown"`.
+
+`_require_frozen_repository()`:
+
+1. Require `git status --porcelain` rỗng.
+2. Resolve upstream bằng `git rev-parse --abbrev-ref --symbolic-full-name @{u}`.
+3. Resolve upstream commit.
+4. Require upstream commit bằng HEAD.
+5. Trả verified HEAD SHA.
+
+Sửa `_train()`:
+
+```python
+def _train(
+    ...,
+    require_frozen_source: bool,
+) -> tuple[HybridTwoTowerModel, PipelineState]:
 ```
 
-## 2. Interface và ownership được khóa
+Call-site:
 
-Không thay scoring semantics, schema, configs hoặc thresholds trong campaign.
+- `execute_command("train")` truyền `require_frozen_source=True`.
+- `execute_command("run-all")` truyền `False`.
+- Production train luôn fail trước run creation nếu worktree dirty, thiếu upstream hoặc chưa push.
+- Smoke vẫn ghi commit SHA nhưng không bắt buộc worktree sạch.
 
-| Module | Interface dùng trong campaign | Ownership |
-|---|---|---|
-| [`cli.py`](E:/UIT/cv/backend/ai-service/src/ai_service/cli.py) | `train`, `evaluate`, `release-gate`, `export`, `verify-bundle` | Parse command-specific inputs |
-| [`pipeline.py`](E:/UIT/cv/backend/ai-service/src/ai_service/training/pipeline.py) | `execute_command()` | Preflight, lifecycle, lineage và orchestration |
-| [`trainer.py`](E:/UIT/cv/backend/ai-service/src/ai_service/training/trainer.py) | `Trainer.fit()` | Batch train, validation, cache, checkpoint, summary |
-| [`stopping.py`](E:/UIT/cv/backend/ai-service/src/ai_service/training/stopping.py) | `EarlyStoppingController` | Kill-switch, patience và best selection |
-| [`checkpoint.py`](E:/UIT/cv/backend/ai-service/src/ai_service/training/checkpoint.py) | `CheckpointManager` | Atomic best/last publication và strict restore |
-| [`full_catalog.py`](E:/UIT/cv/backend/ai-service/src/ai_service/evaluation/full_catalog.py) | prepared split + streaming evaluation | Metrics và Deep hard cache |
-| [`gates.py`](E:/UIT/cv/backend/ai-service/src/ai_service/evaluation/gates.py) | `evaluate_single_seed()` | Single-seed Victory Matrix |
-| [`report.py`](E:/UIT/cv/backend/ai-service/src/ai_service/evaluation/report.py) | immutable evaluation artifact | Pair evidence ownership |
-| [`release.py`](E:/UIT/cv/backend/ai-service/src/ai_service/evaluation/release.py) | `evaluate_three_seed()` | Aggregate VAL/TEST và selected-seed lock |
-| [`bundle.py`](E:/UIT/cv/backend/ai-service/src/ai_service/export/bundle.py) | export/verify | Serving bundle integrity |
+### Task A2 — Đóng lifecycle hole trước `Trainer.fit()`
 
-`Trainer.fit()` tiếp tục là external training seam duy nhất. Không thêm test
-gọi private Trainer methods và không thay đổi code giữa các production runs.
+File: [pipeline.py](E:/UIT/cv/backend/ai-service/src/ai_service/training/pipeline.py)
 
-## 3. Phase 0 — Chuẩn hóa tài liệu và freeze source
+Tổ chức lại `_train()` theo thứ tự:
 
-### Task 0.1 — Xóa tài liệu vận hành cũ/mơ hồ
+```text
+validate run ID/config/artifact lineage
+→ verify frozen repository
+→ build purchase index/sampler/loader
+→ build CPU model + evaluator
+→ create/load lifecycle
+→ protected training session:
+     transition TRAINING
+     construct Trainer/device optimizer
+     Trainer.fit()
+     validate result.checkpoint_path
+     publish PipelineState
+→ return
+```
 
-Files cần cập nhật trước commit:
+Các bước trước `RunLifecycle.create()` không được tạo `<artifact_root>/runs/<run-id>`.
 
-- [`README.md`](E:/UIT/cv/backend/ai-service/README.md): thay ví dụ
-  `benchmark-v3` bằng exact snapshot ID; dùng cùng một command style đã được
-  validate trong `.venv`; nêu TEST bắt buộc cả ba pairs.
-- [`configs/ablations/README.md`](E:/UIT/cv/backend/ai-service/configs/ablations/README.md):
-  thay `benchmark-local`/`hybrid-42` bằng production IDs; ghi rõ v3/v4 chỉ khác
-  `training_variant`.
-- [`walkthrough.md`](E:/UIT/cv/backend/walkthrough.md): giữ trạng thái source
-  ready nhưng thêm execution gate `BLOCKED_UNTIL_SOURCE_FREEZE`.
-- File này: thay hoàn toàn Phase 5 cũ bằng campaign plan hiện tại.
+Đưa các operation sau lifecycle creation vào cùng một protected envelope:
 
-Validation:
+- `lifecycle.transition(TRAINING)`;
+- `Trainer(...)`;
+- `Trainer.fit()`;
+- đọc `TrainResult`;
+- tạo và atomic-write `pipeline-state.json`.
+
+Mapping cố định:
+
+- `CatastrophicTrainingError` → summary `failed`, lifecycle `FAILED`.
+- `TrainingInterruptedError`/`KeyboardInterrupt` → summary `interrupted`, lifecycle `INTERRUPTED`.
+- CUDA OOM hoặc unexpected exception → summary `interrupted`, reason exact exception type, lifecycle `INTERRUPTED`.
+- Preflight failure trước lifecycle → không có run directory.
+- Không để trạng thái `STAGING`/`TRAINING` thiếu summary sau failure.
+
+Tách nested summary writer thành private helper:
+
+```python
+_ensure_training_terminal_summary(
+    run_dir: Path,
+    *,
+    action: TerminalAction,
+    reason: str,
+) -> None
+```
+
+Helper dùng `atomic_write_json()`; không tự viết temp/replace riêng trong pipeline.
+
+### Task A3 — Validate Git SHA trong lifecycle
+
+File: [run.py](E:/UIT/cv/backend/ai-service/src/ai_service/training/run.py)
+
+Trong `RunLifecycle.create()` và `load()`:
+
+- Require `git_commit` match `[0-9a-f]{40}` hoặc `[0-9a-f]{64}`.
+- Reject `"unknown"`, `"fixture"`, empty hoặc uppercase/non-hex values.
+- Không bump model schema hoặc tạo compatibility shim.
+- Giữ manifest schema hiện tại; chỉ siết invariant của field provenance.
+
+### Task A4 — Behavioral tests
+
+Files:
+
+- [test_pipeline_error_edges.py](E:/UIT/cv/backend/ai-service/tests/unit/test_pipeline_error_edges.py)
+- [test_pipeline_utility_edges.py](E:/UIT/cv/backend/ai-service/tests/unit/test_pipeline_utility_edges.py)
+- [test_pipeline_preflight_contracts.py](E:/UIT/cv/backend/ai-service/tests/unit/test_pipeline_preflight_contracts.py)
+- [test_run_lifecycle_contract.py](E:/UIT/cv/backend/ai-service/tests/unit/test_run_lifecycle_contract.py)
+- [test_lifecycle_item_edges.py](E:/UIT/cv/backend/ai-service/tests/unit/test_lifecycle_item_edges.py)
+- [test_pipeline_cli_contract.py](E:/UIT/cv/backend/ai-service/tests/unit/test_pipeline_cli_contract.py)
+
+Thêm tests:
+
+1. Mỗi seam `build_purchase_training_index`, sampler, iterator, model và evaluator raise → không tạo run directory.
+2. `Trainer.__init__` raise sau lifecycle → `INTERRUPTED` + exact terminal summary.
+3. `Trainer.fit()` catastrophic/interrupted/unexpected → lifecycle và summary khớp tuyệt đối.
+4. Pipeline-state publication raise → `INTERRUPTED`, không để run thành công giả.
+5. Git unavailable, empty/non-hex SHA → fail trước run creation.
+6. Dirty worktree, missing upstream, upstream mismatch → fail trước run creation.
+7. Clean worktree + HEAD bằng upstream → cho phép train.
+8. `train` bắt buộc frozen source; `run-all` chỉ yêu cầu valid commit.
+9. Lifecycle create/load reject invalid Git SHA.
+
+Không gọi private Trainer methods trong các test mới; `Trainer.fit()` tiếp tục là external training seam.
+
+### Exit gate Phase A
 
 ```powershell
-rg -n --pcre2 "benchmark-local|--run-id\s+(deep-42|hybrid-42)(?!-v5)|--snapshot-id\s+benchmark-v3(?!-20260810-9088b0f3)|BLOCKED before production training" `
-  README.md configs\ablations\README.md ..\walkthrough.md
+.\.venv\Scripts\python.exe -m pytest `
+  tests\unit\test_pipeline_error_edges.py `
+  tests\unit\test_pipeline_utility_edges.py `
+  tests\unit\test_pipeline_preflight_contracts.py `
+  tests\unit\test_run_lifecycle_contract.py `
+  tests\unit\test_lifecycle_item_edges.py `
+  tests\unit\test_pipeline_cli_contract.py -q
 ```
-
-Không được còn command production dùng artifact ID rút gọn. Các chuỗi cũ chỉ được
-xuất hiện trong chính kế hoạch dưới dạng mô tả negative test, không phải command.
-
-### Task 0.2 — Freeze repository provenance
-
-Không tự động xóa, reset hoặc bỏ qua bất kỳ thay đổi nào. Review toàn bộ dirty
-files, commit/push theo workflow của repository, sau đó ghi commit SHA vào
-walkthrough.
 
 Acceptance:
 
-```powershell
-git diff --check
-git status --porcelain
-git rev-parse HEAD
-```
+- Không failure.
+- Không setup exception nào để lại run ở `STAGING`/`TRAINING`.
+- `"unknown"` không còn được ghi vào run manifest.
+- Production run không thể bắt đầu từ dirty/unpushed source.
 
-- `git status --porcelain` phải rỗng.
-- `git rev-parse HEAD` phải khác commit cũ nếu Phase 5 chưa nằm trong commit đó.
-- Commit phải tồn tại trên remote trước khi tạo `deep-42-v5`.
-- Không sửa source/config sau khi Deep seed 42 bắt đầu. Mọi sửa đổi làm hủy
-  campaign hiện tại và yêu cầu run IDs mới.
+## 4. Phase B — Chuẩn hóa README và readiness documents
 
-### Exit gate Phase 0
+### [README.md](E:/UIT/cv/backend/ai-service/README.md)
 
-```text
-docs exact
-worktree clean
-source commit pushed
-full quality gate pass tại chính commit đó
-deep-42-v5 absent
-hybrid-42-v5 absent
-```
+Tách runbook thành hai phần:
 
-## 4. Phase 1 — Production environment và immutable lineage preflight
+1. `Bootstrap immutable lineage — chỉ khi artifact chưa tồn tại`.
+2. `Reuse verified campaign lineage — đường chạy mặc định`.
 
-### Task 1.1 — Khóa environment
+Trong reuse path:
 
-Chạy từ `E:\UIT\cv\backend\ai-service`. Đặt secrets qua secret store/shell
-ngoài log; không ghi chúng vào Markdown, JSON hoặc terminal transcript.
-
-```powershell
-$env:AI_ENV = "production"
-$env:AI_ARTIFACT_ROOT = (Resolve-Path artifacts).Path
-$env:AI_STORE_ID = "1"
-# CHATBOT_DATABASE_URL, CATALOG_DATABASE_URL, ORDER_DATABASE_URL
-# và SUPABASE_DB_CA_PATH phải được set ngoài source.
-```
-
-Validate:
-
-- `SUPABASE_DB_CA_PATH` là absolute path và file tồn tại.
-- Artifact root resolve đúng
-  `E:\UIT\cv\backend\ai-service\artifacts`.
-- Không dùng synthetic/mock adapters.
-- CUDA available; không có process khác chiếm GPU đáng kể.
-
-### Task 1.2 — Chạy lại source quality gate trên frozen commit
-
-```powershell
-.\.venv\Scripts\python.exe -m ruff format --check src tests scripts
-.\.venv\Scripts\python.exe -m ruff check src tests scripts
-.\.venv\Scripts\python.exe -m mypy src scripts
-$coverageJson = Join-Path $env:TEMP "ai-service-seed42-readiness.json"
-.\.venv\Scripts\python.exe -m pytest --cov=ai_service --cov-branch `
-  --cov-report=term-missing --cov-report=json:$coverageJson `
-  --cov-fail-under=85 -q
-.\.venv\Scripts\python.exe scripts\check_critical_coverage.py $coverageJson
-```
-
-Acceptance giữ nguyên 316 pass/2 fixed-runner skips hoặc cao hơn, không failure;
-global branch coverage `>=85%`; sáu critical-file targets pass.
-
-### Task 1.3 — Re-audit và re-probe
+- Không chứa lệnh `snapshot`, `features` hoặc `rules`.
+- Pin exact IDs:
+  - snapshot `benchmark-v3-20260810-9088b0f3`;
+  - embedding `benchmark-v3-20260810-9088b0f3-real-f0453078fd58`;
+  - rules `benchmark-v3-20260810-9088b0f3-rules-v2-ea0c72a89c41`.
+- Sửa diagnostic commands:
 
 ```powershell
 .\.venv\Scripts\python.exe -m ai_service.cli audit-data `
@@ -184,66 +225,96 @@ global branch coverage `>=85%`; sáu critical-file targets pass.
   --snapshot-id benchmark-v3-20260810-9088b0f3 --device cpu
 ```
 
-Acceptance:
+- Thêm production shell preflight: `AI_ENV`, absolute `AI_ARTIFACT_ROOT`, `AI_STORE_ID`, ba database URLs và absolute CA path.
+- Ghi rõ không log secret values.
+- Ghi đủ IDs cho seeds 42/2027/31415 và TEST cả ba pairs; không dùng comment mơ hồ thay cho command bắt buộc.
 
-- Audit `training_suitability_passed=true`, `gate_failures=[]`.
-- Counts đúng 823,371/5,000/5,200/250.
-- Bốn numerical references sai lệch tuyệt đối `<=1e-6`.
-- Permutation GAUC trong `[0.48,0.52]`.
+### [configs/ablations/README.md](E:/UIT/cv/backend/ai-service/configs/ablations/README.md)
 
-### Task 1.4 — Config/signature preflight
+- Giữ v3/v4 chỉ khác `training_variant`; config diff hiện tại đã xác minh đúng.
+- Thêm exact train/evaluate order cho ba seeds.
+- Ghi single-seed VAL fail thì dừng campaign.
+- Ghi aggregate VAL không seal; TEST phải đủ ba pair.
+- Không lặp bootstrap artifact commands.
 
-Files: [`v3.toml`](E:/UIT/cv/backend/ai-service/configs/ablations/v3.toml),
-[`v4.toml`](E:/UIT/cv/backend/ai-service/configs/ablations/v4.toml).
+### [walkthrough.md](E:/UIT/cv/backend/walkthrough.md)
 
-Resolved production values:
+Sau khi hotfix được commit/push và full gate pass:
+
+- Thay stale `BLOCKED_UNTIL_SOURCE_FREEZE`.
+- Ghi exact frozen commit mới, branch và upstream.
+- Ghi kết quả quality gate mới.
+- Giữ `Hybrid victory not established`.
+- Trạng thái chỉ được đổi thành:
 
 ```text
-objective=sampled_softmax
-max_epochs=30
-batch_size=2048
-explicit_negative_ratio=16
-validation_user_batch_size=512
-max_history_items=32
-early_stopping_patience=4
-min_delta=1e-4
-max_wall_minutes=90
+READY_FOR_DEEP_42_TRAINING
 ```
 
-Expected signatures:
+### [detail-plan.md](E:/UIT/cv/backend/master/detail-plan.md)
 
-| Seed | Deep training SHA | Hybrid training SHA |
-|---:|---|---|
-| 42 | `522143ac18a73b6485a0cd0c4edd7d1e339eca0ede2b26cbe04d1284f2a5531a` | `8fabea050692d52102f276c76ef0421b9fdaa0e03985e86fbb5fac20a794e968` |
-| 2027 | `8e9e7a910a4174dcd9e02162b8ba974530be59a560df135ac7d70731768c3c76` | `f47852f3b4e6dc956f84fb1f8dc746e6ac4234201879507e67f316fed1aa70c9` |
-| 31415 | `2e9f8b222ce20eb1fd033e7bdfe00e104ab367c10c851139a0fbf49825478427` | `552a7fc5c9429dc94beca5ec1c1514b064225d19423878337f4e0f232bd25e06` |
+- Thay HEAD cũ `6347dc5`/81 dirty entries bằng commit hotfix cuối.
+- Đưa Phase A–B của kế hoạch này thành prerequisite mới.
+- Không ghi `READY_FOR_SEED_42` trước khi lifecycle/provenance tests xanh.
+- Giữ nguyên thresholds, six-run matrix và artifact lineage hiện tại.
 
-Tất cả sáu run phải có comparison signature
-`e07782c36302d4b8665ee2356fc4c852888d5a78fb3f947b1d412152393fb3ec`.
+## 5. Phase C — Full source freeze và execution readiness
 
-### Exit gate Phase 1
+Chạy full gate:
 
-- Selectors resolve duy nhất exact real embedding và full-stat rules nêu trên.
-- `require_training_capability()` pass; legacy rules reject.
-- CUDA/Torch pass; production run IDs absent.
-- Không có release gate cũ trong comparison namespace.
+```powershell
+.\.venv\Scripts\python.exe -m ruff format --check src tests scripts
+.\.venv\Scripts\python.exe -m ruff check src tests scripts
+.\.venv\Scripts\python.exe -m mypy src scripts
 
-## 5. Phase 2 — Deep seed 42 capacity canary và production run
+$coverageJson = Join-Path $env:TEMP "ai-service-training-ready.json"
+.\.venv\Scripts\python.exe -m pytest `
+  --cov=ai_service --cov-branch `
+  --cov-report=term-missing `
+  --cov-report=json:$coverageJson `
+  --cov-fail-under=85 -q
 
-### Source ownership
+.\.venv\Scripts\python.exe scripts\check_critical_coverage.py $coverageJson
+```
 
-- [`pipeline.py`](E:/UIT/cv/backend/ai-service/src/ai_service/training/pipeline.py):
-  artifact selector, lifecycle và exception mapping.
-- [`trainer.py`](E:/UIT/cv/backend/ai-service/src/ai_service/training/trainer.py):
-  one validation/cache refresh per epoch và Deep/Wide invariant.
-- [`stopping.py`](E:/UIT/cv/backend/ai-service/src/ai_service/training/stopping.py):
-  GAUC kill-switch/patience.
-- [`checkpoint.py`](E:/UIT/cv/backend/ai-service/src/ai_service/training/checkpoint.py):
-  best/last checkpoint.
+Require:
 
-Không sửa các files này trong campaign; chỉ quan sát artifacts chúng tạo.
+- 316+ tests pass; chỉ đúng 2 fixed-runner skips.
+- Global branch coverage `>=85%`.
+- Trainer/Pipeline `>=85%`.
+- Checkpoint/report/release/bundle `>=90%`.
+- Static invariant scans sạch.
+- `git diff --check` pass.
 
-### Command
+Commit/push hotfix, sau đó:
+
+```powershell
+git status --porcelain
+git rev-parse HEAD
+git rev-parse origin/main
+```
+
+Require worktree sạch và HEAD bằng `origin/main`.
+
+Production environment phải được set; shell hiện tại chưa có biến nào:
+
+```text
+AI_ENV
+AI_ARTIFACT_ROOT
+AI_STORE_ID
+CHATBOT_DATABASE_URL
+CATALOG_DATABASE_URL
+ORDER_DATABASE_URL
+SUPABASE_DB_CA_PATH
+```
+
+Sau đó chạy lại audit/probe/rule capability/CUDA checks. Require numerical parity hiện tại và cả sáu production run ID vẫn absent.
+
+Chỉ khi toàn bộ Phase A–C pass mới đổi readiness thành `READY_FOR_DEEP_42_TRAINING`.
+
+## 6. Phase D — Deep seed 42
+
+Command:
 
 ```powershell
 .\.venv\Scripts\python.exe -m ai_service.cli train `
@@ -253,60 +324,33 @@ Không sửa các files này trong campaign; chỉ quan sát artifacts chúng t�
   --seed 42 --device cuda
 ```
 
-### Epoch-1 capacity gate
+Validate files:
 
-Smoke trước đó chỉ dùng 128 users/256 items/batch 128; vì vậy epoch đầu của
-Deep seed 42 là capacity canary cho batch 2048 và catalog 5,200 trên GPU 6 GB.
+- `artifacts/runs/deep-42-v5/run-manifest.json`
+- `artifacts/runs/deep-42-v5/resolved-config.json`
+- `artifacts/runs/deep-42-v5/training/history.jsonl`
+- `artifacts/runs/deep-42-v5/training/summary.json`
+- `artifacts/runs/deep-42-v5/checkpoints/best.pt`
+- `artifacts/runs/deep-42-v5/checkpoints/last.pt`
+- hai checkpoint manifests;
+- `pipeline-state.json`.
 
-Theo dõi:
+Require:
 
-```text
-artifacts/runs/deep-42-v5/run-manifest.json
-artifacts/runs/deep-42-v5/training/history.jsonl
-artifacts/runs/deep-42-v5/checkpoints/last.pt.manifest.json
-```
+- Lifecycle giữ `TRAINING` sau terminal training success.
+- `git_commit` bằng frozen source commit.
+- Training SHA bằng `522143ac...531a`.
+- Wide gradient toàn bộ bằng zero và Wide parameters không đổi.
+- Hard cache cập nhật mỗi completed epoch.
+- Metrics/logit RMS finite; GAUC không dưới 0.50.
+- Summary, stopping state, best manifest và `TrainResult` thống nhất.
+- Không evaluation/release/bundle/Pareto artifacts.
 
-Epoch 1 chỉ pass khi:
+CUDA OOM/unexpected → `INTERRUPTED`; non-finite/GAUC `<0.50` → `FAILED`. Không reuse/delete run ID.
 
-- mọi loss/logit/gradient/parameter finite;
-- `wide_gradient_norm == 0`;
-- Wide parameters byte-identical;
-- `model_hard_cache_updated=true`;
-- Deep/Hybrid/Wide logit RMS finite;
-- validation GAUC `>=0.50`;
-- `last.pt` strict-load được; `best.pt` tồn tại nếu controller chọn epoch 1.
+## 7. Phase E — Hybrid seed 42 và single-seed VAL
 
-Stop ngay khi CUDA OOM, non-finite, GAUC `<0.50`, sampler/cache error hoặc run
-chuyển `FAILED`/`INTERRUPTED`. Không tự giảm batch size. Nếu cần đổi capacity
-config, dừng campaign, sửa đồng thời v3/v4, dùng run IDs mới và chạy lại Phase
-0–1 vì comparison signature sẽ thay đổi.
-
-### Completion gate Deep 42
-
-Sau terminal success/plateau:
-
-- lifecycle cố ý giữ `TRAINING` để chờ paired evaluation;
-- `pipeline-state.json` trỏ exact `checkpoints/best.pt`;
-- summary, best manifest và stopping state có cùng best epoch/GAUC/NDCG/HR;
-- `last.pt` chứa current epoch nhưng giữ selected stopping state;
-- không có Pareto/release-candidate/evaluation/bundle.
-
-Resume chỉ được dùng khi lifecycle là `INTERRUPTED`, config/signature/lineage
-không đổi và `last.pt` + history còn nguyên:
-
-```powershell
-.\.venv\Scripts\python.exe -m ai_service.cli train `
-  --run-id deep-42-v5 --variant deep_only `
-  --config configs\ablations\v3.toml `
-  --snapshot-id benchmark-v3-20260810-9088b0f3 `
-  --seed 42 --device cuda --resume
-```
-
-Không resume run `FAILED` và không reuse/delete immutable run ID.
-
-## 6. Phase 3 — Hybrid seed 42
-
-Chỉ chạy khi Deep 42 completion gate pass.
+Train:
 
 ```powershell
 .\.venv\Scripts\python.exe -m ai_service.cli train `
@@ -316,25 +360,15 @@ Chỉ chạy khi Deep 42 completion gate pass.
   --seed 42 --device cuda
 ```
 
-Epoch-1 Hybrid gate:
+Require:
 
-- `wide_gradient_norm` finite và `>0`;
-- Wide parameters thay đổi so với zero-init baseline;
-- Deep/Wide/Hybrid RMS finite;
-- model-hard cache cập nhật đúng một lần;
-- validation GAUC `>=0.50`;
-- không non-finite/OOM.
+- Training SHA `8fabea05...e968`.
+- Epoch 1 Wide gradient finite và `>0`.
+- Deep/Wide/Hybrid RMS finite.
+- Same comparison signature `e07782c3...b3ec`.
+- Best/last/summary consistency.
 
-Completion gate giống Deep, cộng thêm:
-
-- Hybrid và Deep comparison signatures giống exact SHA đã khóa;
-- lineage ba parent SHA giống nhau;
-- seed đều bằng 42;
-- cả hai checkpoint schema v5 và strict-load pass.
-
-## 7. Phase 4 — Single-seed validation pair 42
-
-### Command
+Sau đó:
 
 ```powershell
 .\.venv\Scripts\python.exe -m ai_service.cli evaluate `
@@ -342,189 +376,39 @@ Completion gate giống Deep, cộng thêm:
   --deep-run-id deep-42-v5 --device cuda
 ```
 
-### Artifact ownership
+Require toàn bộ single-seed Victory Matrix pass. Bất kỳ gate fail → dừng campaign, không tạo seed 2027.
 
-[`report.py`](E:/UIT/cv/backend/ai-service/src/ai_service/evaluation/report.py)
-phải publish duy nhất dưới:
+## 8. Phase F — Ba seeds, aggregate VAL và TEST
 
-```text
-artifacts/runs/hybrid-42-v5/evaluation/val/
-  report.json
-  per-user-metrics.npz
-  victory-matrix.json
-```
+Lặp Deep → Hybrid → VAL cho seeds `2027`, `31415`, giữ exact training signatures trong detail plan.
 
-Deep state tham chiếu cùng immutable matrix; không có NPZ duplicate dưới Deep.
+Sau ba pair:
 
-### Victory gate acceptance
+1. Aggregate VAL exact 3+3; chưa seal.
+2. Evaluate TEST cho cả ba pair.
+3. Aggregate TEST exact 3+3.
+4. Selected seed/run phải giữ nguyên từ VAL.
+5. Chỉ selected Hybrid chuyển `SEALED`; hai Hybrid còn lại và ba Deep giữ `EVALUATED`.
 
-- Random GAUC nằm `[0.48,0.52]` và CI chứa 0.5.
-- Hybrid GAUC `>=0.75`.
-- Hybrid HR@10 thắng strongest competitor với paired CI lower `>0`.
-- Hybrid NDCG@10 thắng Apriori với paired CI lower `>0`.
-- Semantic traps `10/10`.
-- Cold parity pass tại `wide_zero_atol=1e-7` và `cold_score_atol=1e-6`.
-- Matrix canonical SHA, NPZ SHA, pair IDs, checkpoint SHAs và lineage verified.
+Không sửa source/config/docs giữa các production runs. Bất kỳ sửa đổi nào làm hủy campaign và yêu cầu run IDs mới.
 
-VAL pass: cả hai lifecycle vẫn `TRAINING`, state có paired IDs và
-`validation_gate_passed=true`. VAL fail: Hybrid chuyển `FAILED`, Deep giữ
-`TRAINING`; dừng toàn bộ campaign và không train seed 2027.
+## 9. Phase G — Export, verify và declaration
 
-Không chạy lại cùng pair/split khi immutable evaluation directory đã tồn tại.
-Nếu command crash sau publication nhưng trước state update, dừng và thực hiện
-recovery review; không xóa artifact để retry.
-
-## 8. Phase 5 — Seeds 2027 và 31415
-
-Chỉ mở khi seed-42 VAL matrix pass. Với từng seed, thứ tự bắt buộc là:
-
-```text
-Deep train → validate completion → Hybrid train → validate completion → VAL pair
-```
-
-Commands thay seed/run ID tương ứng:
-
-```text
-deep-2027-v5 / hybrid-2027-v5 / seed 2027
-deep-31415-v5 / hybrid-31415-v5 / seed 31415
-```
-
-Không chạy hai training jobs song song trên GPU 6 GB. Không chạy seed kế tiếp
-nếu pair hiện tại fail. Mỗi run phải khớp training SHA trong bảng Phase 1 và
-comparison SHA chung.
-
-## 9. Phase 6 — Aggregate validation 3+3
-
-```powershell
-.\.venv\Scripts\python.exe -m ai_service.cli release-gate `
-  --split val `
-  --hybrid-run-ids hybrid-42-v5 hybrid-2027-v5 hybrid-31415-v5 `
-  --deep-run-ids deep-42-v5 deep-2027-v5 deep-31415-v5
-```
-
-Validate
-`artifacts/releases/e07782c36302d4b8665ee2356fc4c852888d5a78fb3f947b1d412152393fb3ec/validation-gate.json`:
-
-- exact three seeds and six distinct run IDs;
-- exact lineage/comparison signature;
-- three single-seed VAL matrices pass và user IDs giống nhau;
-- aggregate GAUC CI lower `>=-0.002`;
-- aggregate NDCG CI lower `>=-0.001`;
-- aggregate HR CI lower `>=-0.001`;
-- selected run theo GAUC → NDCG → HR → smaller seed;
-- report canonical hash pass;
-- chưa run nào được seal.
-
-Aggregate VAL fail: dừng; không mở TEST.
-
-## 10. Phase 7 — TEST cho cả ba pairs
-
-Validation gate pass là precondition bắt buộc. Chạy cả ba:
-
-```powershell
-.\.venv\Scripts\python.exe -m ai_service.cli evaluate `
-  --split test --hybrid-run-id hybrid-42-v5 `
-  --deep-run-id deep-42-v5 --device cuda
-
-.\.venv\Scripts\python.exe -m ai_service.cli evaluate `
-  --split test --hybrid-run-id hybrid-2027-v5 `
-  --deep-run-id deep-2027-v5 --device cuda
-
-.\.venv\Scripts\python.exe -m ai_service.cli evaluate `
-  --split test --hybrid-run-id hybrid-31415-v5 `
-  --deep-run-id deep-31415-v5 --device cuda
-```
-
-Mỗi TEST pair phải pass cùng single-seed gates như VAL. Pass chuyển cả pair
-sang `EVALUATED`; fail chuyển Hybrid sang `FAILED`, Deep sang `EVALUATED` và
-dừng release.
-
-## 11. Phase 8 — Aggregate TEST, seal và selected-seed lock
-
-```powershell
-$releaseJson = .\.venv\Scripts\python.exe -m ai_service.cli release-gate `
-  --split test `
-  --hybrid-run-ids hybrid-42-v5 hybrid-2027-v5 hybrid-31415-v5 `
-  --deep-run-ids deep-42-v5 deep-2027-v5 deep-31415-v5
-$release = $releaseJson | ConvertFrom-Json
-$selectedRun = $release.selected_run_id
-```
-
-Acceptance:
-
-- exact validation finalist set/signature/report hash;
-- selected run/seed không đổi so với aggregate VAL;
-- aggregate TEST gates pass;
-- `release-gate.json` immutable và canonical hash pass;
-- chỉ selected Hybrid chuyển `SEALED`;
-- hai Hybrid runner-up và ba Deep giữ `EVALUATED`.
-
-## 12. Phase 9 — Export, verification và serving benchmark
-
-```powershell
-.\.venv\Scripts\python.exe -m ai_service.cli export `
-  --run-id $selectedRun --device cuda
-
-.\.venv\Scripts\python.exe -m ai_service.cli verify-bundle `
-  --run-id $selectedRun
-```
-
-Validate:
-
-- bundle schema v5, Hybrid variant;
-- canonical TEST Victory Matrix SHA bằng release report;
-- exact file allowlist và all checksums pass;
-- mapping/profile/item/rule shapes, CSR bounds, statistics và q99 pass;
-- ONNX parity `<=1e-5`;
-- no placeholder SHA;
-- selected PipelineState có verified `bundle_path`.
-
-Fixed-runner benchmark:
-
-```powershell
-$env:AI_BENCHMARK_BUNDLE_PATH = <absolute-verified-bundle-path>
-.\.venv\Scripts\python.exe -m pytest `
-  tests\benchmark\test_serving_performance.py -q
-```
-
-Hai skips hiện tại phải chuyển thành pass trước production deployment.
-
-## 13. Phase 10 — Walkthrough và declaration
-
-Chỉ sau Phase 9 mới cập nhật [`walkthrough.md`](E:/UIT/cv/backend/walkthrough.md)
-thành Hybrid victory report. Ghi exact:
-
-- frozen Git commit;
-- sáu run IDs và checkpoint SHAs;
-- three VAL matrices + aggregate VAL;
-- three TEST matrices + aggregate TEST;
-- selected run/seed và canonical matrix SHA;
-- bundle ID/SHA, ONNX parity, latency/throughput benchmark;
-- final HR@10, NDCG@10, GAUC với paired confidence intervals.
-
-Không tuyên bố Hybrid thành công nếu thiếu bất kỳ evidence nào.
-
-## 14. Failure/resume decision matrix
-
-| Failure point | Lifecycle/artifact action | Được tiếp tục? |
-|---|---|---|
-| Preflight trước run creation | Không tạo run directory | Sửa preflight rồi chạy lại |
-| Training wall/keyboard interruption | `INTERRUPTED`, summary + last checkpoint | Chỉ `--resume` exact run/config/lineage |
-| CUDA OOM hoặc unexpected error | `INTERRUPTED` | Dừng review; không tự đổi config/resume |
-| Non-finite hoặc GAUC `<0.50` | `FAILED` | Không resume/reuse ID |
-| Single-seed VAL fail | Hybrid `FAILED` | Dừng toàn campaign |
-| Aggregate VAL fail | Immutable evidence giữ nguyên | Không mở TEST |
-| Single-seed TEST fail | Hybrid `FAILED`, Deep `EVALUATED` | Không aggregate/seal |
-| Aggregate TEST fail | Không seal/export | Dừng release |
-| Bundle/parity/benchmark fail | Giữ bundle evidence để audit | Không deploy/claim victory |
+- Export selected sealed Hybrid bằng comparison-signature namespace.
+- Verify bundle v5, canonical TEST Victory Matrix SHA, exact rules arrays và ONNX parity `<=1e-5`.
+- Chạy fixed-runner serving benchmark.
+- Chỉ cập nhật walkthrough thành Hybrid victory khi:
+  - ba VAL matrices pass;
+  - aggregate VAL/TEST pass;
+  - selected Hybrid sealed;
+  - bundle verify pass;
+  - ONNX parity và benchmark pass.
 
 ## Assumptions khóa
 
-- Không thay đổi v3/v4, scoring, objective, schema v5, early stopping hoặc gate
-  thresholds trong campaign.
-- Early stopping kill-switch là GAUC 0.50; `minimum_gauc=0.75` thuộc Victory
-  Gate, không phải per-epoch kill threshold.
-- Không xóa artifact/run thất bại; dùng immutable audit evidence và run ID mới
-  sau khi có plan sửa cụ thể.
-- Không chạy training song song trên GPU hiện tại.
-- Không seal/export trước aggregate TEST pass.
+- Không thay scoring, objective, schema v5, v3/v4 hyperparameters, early stopping hoặc Victory thresholds.
+- Provenance/lifecycle hotfix phải hoàn tất trước production training.
+- Typed `ArtifactLineage` và tách `execute_command()` được hoãn tới sau campaign để tránh thay đổi rộng trước training.
+- Không chạy production jobs song song trên GPU 6 GB.
+- Không xóa hoặc overwrite artifact/run thất bại.
+- `Trainer.fit()` tiếp tục là external training seam duy nhất.

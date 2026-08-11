@@ -37,40 +37,92 @@ node ..\backend\docs\chatbot\seed-product\seed-ml-benchmark.js `
   --store-id 1 --strict
 ```
 
-Install the immutable environment, materialize the shared lineage once, then train
-and evaluate each finalist seed against that exact snapshot. `run-all` is a
-single-seed smoke/orchestration command and deliberately cannot export an
-unapproved run:
+Install the immutable environment, configure the production shell, and run the
+read-only readiness checks before training. Secrets are supplied through the
+environment or a secret manager and must never be written to logs or Markdown:
 
 ```powershell
 uv sync --frozen --extra train --extra export --extra dev
+$env:AI_ENV = "production"
+$env:AI_ARTIFACT_ROOT = (Resolve-Path artifacts).Path
+$env:AI_STORE_ID = "1"
+# Set CHATBOT_DATABASE_URL, CATALOG_DATABASE_URL, ORDER_DATABASE_URL, and
+# SUPABASE_DB_CA_PATH outside the transcript. The CA path must be absolute.
+```
+
+Run the diagnostics against the pinned snapshot; omitting `--snapshot-id` is not
+allowed because the application default is `benchmark-local`:
+
+```powershell
+.\.venv\Scripts\python.exe -m ai_service.cli audit-data `
+  --snapshot-id benchmark-v3-20260810-9088b0f3 --device cpu
+.\.venv\Scripts\python.exe -m ai_service.cli probe-data `
+  --snapshot-id benchmark-v3-20260810-9088b0f3 --device cpu
+```
+
+`run-all` is a single-seed synthetic/mock smoke command and deliberately cannot
+export an unapproved run. Production training uses the exact immutable lineage
+below.
+
+### Bootstrap immutable lineage (only when the destination is absent)
+
+Do not run these commands against the published campaign directories. Each
+publisher rejects an existing destination; bootstrap is a one-time operation:
+
+```powershell
 .\.venv\Scripts\python.exe -m ai_service.cli snapshot --source postgres --store-id 1 `
   --snapshot-id benchmark-v3-20260810-9088b0f3 --benchmark-run-id <published-benchmark-run-id>
 .\.venv\Scripts\python.exe -m ai_service.cli features --embedding-source real `
   --snapshot-id benchmark-v3-20260810-9088b0f3
-# Reuse these immutable, verified artifacts when their lineage/config identity matches:
-#   embedding: benchmark-v3-20260810-9088b0f3-real-f0453078fd58
-#   rules:     benchmark-v3-20260810-9088b0f3-rules-v2-ea0c72a89c41
-# Run the rules command only when the full-stat artifact above is absent; never overwrite it.
 .\.venv\Scripts\python.exe -m ai_service.cli rules `
   --snapshot-id benchmark-v3-20260810-9088b0f3
+```
 
+### Reuse verified campaign lineage
+
+The existing artifacts are the only inputs allowed for the campaign:
+
+```text
+snapshot:  benchmark-v3-20260810-9088b0f3
+embedding: benchmark-v3-20260810-9088b0f3-real-f0453078fd58
+rules:     benchmark-v3-20260810-9088b0f3-rules-v2-ea0c72a89c41
+```
+
+Train Deep before Hybrid for each seed. Do not start a later seed after a failed
+single-seed validation gate:
+
+```powershell
 .\.venv\Scripts\python.exe -m ai_service.cli train `
   --snapshot-id benchmark-v3-20260810-9088b0f3 --run-id deep-42-v5 `
   --variant deep_only --config configs\ablations\v3.toml --seed 42 --device cuda
 .\.venv\Scripts\python.exe -m ai_service.cli train `
   --snapshot-id benchmark-v3-20260810-9088b0f3 --run-id hybrid-42-v5 `
   --variant hybrid --config configs\ablations\v4.toml --seed 42 --device cuda
-.\.venv\Scripts\python.exe -m ai_service.cli evaluate --split val --hybrid-run-id hybrid-42-v5 `
-  --deep-run-id deep-42-v5 --device cuda
+.\.venv\Scripts\python.exe -m ai_service.cli evaluate --split val `
+  --hybrid-run-id hybrid-42-v5 --deep-run-id deep-42-v5 --device cuda
 
-# Repeat the paired Deep/Hybrid train + VAL evaluate commands for 2027 and 31415:
-# deep-2027-v5 / hybrid-2027-v5, then deep-31415-v5 / hybrid-31415-v5.
+.\.venv\Scripts\python.exe -m ai_service.cli train `
+  --snapshot-id benchmark-v3-20260810-9088b0f3 --run-id deep-2027-v5 `
+  --variant deep_only --config configs\ablations\v3.toml --seed 2027 --device cuda
+.\.venv\Scripts\python.exe -m ai_service.cli train `
+  --snapshot-id benchmark-v3-20260810-9088b0f3 --run-id hybrid-2027-v5 `
+  --variant hybrid --config configs\ablations\v4.toml --seed 2027 --device cuda
+.\.venv\Scripts\python.exe -m ai_service.cli evaluate --split val `
+  --hybrid-run-id hybrid-2027-v5 --deep-run-id deep-2027-v5 --device cuda
+
+.\.venv\Scripts\python.exe -m ai_service.cli train `
+  --snapshot-id benchmark-v3-20260810-9088b0f3 --run-id deep-31415-v5 `
+  --variant deep_only --config configs\ablations\v3.toml --seed 31415 --device cuda
+.\.venv\Scripts\python.exe -m ai_service.cli train `
+  --snapshot-id benchmark-v3-20260810-9088b0f3 --run-id hybrid-31415-v5 `
+  --variant hybrid --config configs\ablations\v4.toml --seed 31415 --device cuda
+.\.venv\Scripts\python.exe -m ai_service.cli evaluate --split val `
+  --hybrid-run-id hybrid-31415-v5 --deep-run-id deep-31415-v5 --device cuda
+
 .\.venv\Scripts\python.exe -m ai_service.cli release-gate --split val `
   --hybrid-run-ids hybrid-42-v5 hybrid-2027-v5 hybrid-31415-v5 `
   --deep-run-ids deep-42-v5 deep-2027-v5 deep-31415-v5
 
-# Evaluate TEST for every finalist pair (not only the validation winner).
 .\.venv\Scripts\python.exe -m ai_service.cli evaluate --split test --hybrid-run-id hybrid-42-v5 `
   --deep-run-id deep-42-v5 --device cuda
 .\.venv\Scripts\python.exe -m ai_service.cli evaluate --split test --hybrid-run-id hybrid-2027-v5 `
@@ -93,9 +145,8 @@ Every stage is fail-closed. A snapshot, SBERT, training, evaluation, parity, or 
 cannot silently switch adapters or publish a serving bundle.
 
 The locked ablation definitions and their execution order are documented in
-`configs/ablations/README.md`. Data diagnostics are available through
-`.\.venv\Scripts\python.exe -m ai_service.cli audit-data` and
-`.\.venv\Scripts\python.exe -m ai_service.cli probe-data` before any training run.
+`configs/ablations/README.md`. Always use the pinned `audit-data` and `probe-data`
+commands shown above; never omit `--snapshot-id` before a training run.
 
 ## Serving
 

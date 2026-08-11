@@ -130,6 +130,7 @@ def test_pipeline_training_preflight_rejects_mismatched_rule_before_run(
             rules,
             run_id="mismatch",
             device=torch.device("cpu"),
+            require_frozen_source=False,
         )
     assert not (tmp_path / "runs" / "mismatch").exists()
 
@@ -282,6 +283,7 @@ def test_pipeline_resume_preflight_guards(
             run_id="resume",
             device=torch.device("cpu"),
             resume=True,
+            require_frozen_source=False,
         )
 
 

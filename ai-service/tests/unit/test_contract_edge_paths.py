@@ -84,7 +84,7 @@ def test_run_lifecycle_terminal_summary_and_invalid_manifest(tmp_path: Path) -> 
         run_dir,
         settings=settings,
         lineage={"snapshot": "a" * 64, "embedding": "b" * 64, "rules": "c" * 64},
-        git_commit="fixture",
+        git_commit="0" * 40,
     )
     with pytest.raises(ArtifactIntegrityError, match="illegal run transition"):
         lifecycle.transition(RunStatus.INTERRUPTED, reason="stop")

@@ -130,6 +130,7 @@ def test_pipeline_training_preflight_writes_v5_state_without_release_candidate(
         rules,
         run_id="hybrid-smoke",
         device=torch.device("cpu"),
+        require_frozen_source=False,
     )
     assert state.model_schema_version == MODEL_SCHEMA_VERSION
     assert state.checkpoint_path is not None
@@ -219,6 +220,7 @@ def test_pipeline_sampled_softmax_path_uses_purchase_iterator(
         rules,
         run_id="sampled-smoke",
         device=torch.device("cpu"),
+        require_frozen_source=False,
     )
     assert state.run_id == "sampled-smoke"
 

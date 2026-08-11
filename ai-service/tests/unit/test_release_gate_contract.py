@@ -78,7 +78,7 @@ def _create_run(
         run_dir,
         settings=settings,
         lineage=LINEAGE,
-        git_commit="fixture",
+        git_commit="0" * 40,
     )
     lifecycle.transition(
         __import__("ai_service.contracts", fromlist=["RunStatus"]).RunStatus.TRAINING

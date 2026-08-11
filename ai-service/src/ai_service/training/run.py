@@ -26,6 +26,7 @@ _TRANSITIONS: dict[RunStatus, frozenset[RunStatus]] = {
     RunStatus.FAILED: frozenset(),
     RunStatus.SEALED: frozenset(),
 }
+_GIT_COMMIT_PATTERN = re.compile(r"(?:[0-9a-f]{40}|[0-9a-f]{64})\Z")
 
 
 @dataclass
@@ -53,6 +54,8 @@ class RunLifecycle:
             for value in lineage.values()
         ):
             raise ArtifactIntegrityError("run lineage contains an invalid SHA")
+        if _GIT_COMMIT_PATTERN.fullmatch(git_commit) is None:
+            raise ArtifactIntegrityError("run manifest contains an invalid Git commit SHA")
         run_dir.mkdir(parents=True)
         now = datetime.now(UTC).isoformat()
         document: dict[str, Any] = {
@@ -104,6 +107,9 @@ class RunLifecycle:
             raise ArtifactIntegrityError(
                 "run manifest model schema does not match " + MODEL_SCHEMA_VERSION
             )
+        git_commit = document.get("git_commit")
+        if not isinstance(git_commit, str) or _GIT_COMMIT_PATTERN.fullmatch(git_commit) is None:
+            raise ArtifactIntegrityError("run manifest contains an invalid Git commit SHA")
         sha_fields = {
             "training_signature_sha256",
             "comparison_signature_sha256",

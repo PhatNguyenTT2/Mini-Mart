@@ -117,6 +117,7 @@ def test_pipeline_maps_training_failures_to_terminal_summary(
             rules,
             run_id="failure-edge",
             device=torch.device("cpu"),
+            require_frozen_source=False,
         )
     summary = json.loads(
         (tmp_path / "runs" / "failure-edge" / "training" / "summary.json").read_text(
@@ -124,6 +125,170 @@ def test_pipeline_maps_training_failures_to_terminal_summary(
         )
     )
     assert summary["terminal_action"] in {"failed", "interrupted"}
+
+
+@pytest.mark.parametrize("failure_target", ["index", "sampler", "iterator", "model", "evaluator"])
+def test_training_preflight_failure_does_not_publish_run(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path, failure_target: str
+) -> None:
+    settings = make_settings(tmp_path)
+    settings.train.objective = "sampled_softmax"
+    snapshot = make_snapshot(tmp_path)
+    embedding = EmbeddingArtifact(
+        manifest=SimpleNamespace(content_sha256="b" * 64),
+        artifact_dir=tmp_path / "features" / "embedding",
+        vectors=np.zeros((snapshot.manifest.num_items, settings.model.sbert_dim), dtype=np.float32),
+    )
+    rules = _rules(tmp_path, snapshot.manifest.content_sha256)
+    failure = RuntimeError(failure_target)
+
+    if failure_target == "index":
+        monkeypatch.setattr(
+            pipeline,
+            "build_purchase_training_index",
+            lambda *_a, **_k: (_ for _ in ()).throw(failure),
+        )
+    else:
+        monkeypatch.setattr(pipeline, "build_purchase_training_index", lambda *_a, **_k: object())
+    if failure_target == "sampler":
+        monkeypatch.setattr(
+            pipeline, "MixedNegativeSampler", lambda *_a, **_k: (_ for _ in ()).throw(failure)
+        )
+    else:
+        monkeypatch.setattr(pipeline, "MixedNegativeSampler", lambda *_a, **_k: object())
+    if failure_target == "iterator":
+        monkeypatch.setattr(
+            pipeline, "PurchaseBatchIterator", lambda *_a, **_k: (_ for _ in ()).throw(failure)
+        )
+    else:
+        monkeypatch.setattr(pipeline, "PurchaseBatchIterator", lambda *_a, **_k: object())
+    if failure_target == "model":
+        monkeypatch.setattr(
+            pipeline, "HybridTwoTowerModel", lambda *_a, **_k: (_ for _ in ()).throw(failure)
+        )
+    else:
+        monkeypatch.setattr(pipeline, "HybridTwoTowerModel", lambda *_a, **_k: object())
+    if failure_target == "evaluator":
+        monkeypatch.setattr(
+            pipeline, "FullCatalogEvaluator", lambda *_a, **_k: (_ for _ in ()).throw(failure)
+        )
+    else:
+        monkeypatch.setattr(pipeline, "FullCatalogEvaluator", lambda *_a, **_k: object())
+
+    with pytest.raises(RuntimeError, match=failure_target):
+        pipeline._train(
+            settings,
+            snapshot,
+            embedding,
+            rules,
+            run_id=f"preflight-{failure_target}",
+            device=torch.device("cpu"),
+            require_frozen_source=False,
+        )
+    assert not (tmp_path / "runs" / f"preflight-{failure_target}").exists()
+
+
+def test_trainer_setup_failure_is_terminal_and_resumable(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    settings = make_settings(tmp_path)
+    settings.train.objective = "sampled_softmax"
+    snapshot = make_snapshot(tmp_path)
+    embedding = EmbeddingArtifact(
+        manifest=SimpleNamespace(content_sha256="b" * 64),
+        artifact_dir=tmp_path / "features" / "embedding",
+        vectors=np.zeros((snapshot.manifest.num_items, settings.model.sbert_dim), dtype=np.float32),
+    )
+    rules = _rules(tmp_path, snapshot.manifest.content_sha256)
+    monkeypatch.setattr(pipeline, "build_purchase_training_index", lambda *_a, **_k: object())
+    monkeypatch.setattr(pipeline, "MixedNegativeSampler", lambda *_a, **_k: object())
+    monkeypatch.setattr(pipeline, "PurchaseBatchIterator", lambda *_a, **_k: object())
+    monkeypatch.setattr(pipeline, "HybridTwoTowerModel", lambda *_a, **_k: object())
+    monkeypatch.setattr(pipeline, "FullCatalogEvaluator", lambda *_a, **_k: object())
+
+    class TrainerStub:
+        def __init__(self, *_args: object, **_kwargs: object) -> None:
+            raise RuntimeError("trainer setup")
+
+    monkeypatch.setattr(pipeline, "Trainer", TrainerStub)
+    with pytest.raises(RuntimeError, match="trainer setup"):
+        pipeline._train(
+            settings,
+            snapshot,
+            embedding,
+            rules,
+            run_id="trainer-setup-failure",
+            device=torch.device("cpu"),
+            require_frozen_source=False,
+        )
+    run_dir = tmp_path / "runs" / "trainer-setup-failure"
+    manifest = json.loads((run_dir / "run-manifest.json").read_text(encoding="utf-8"))
+    summary = json.loads((run_dir / "training" / "summary.json").read_text(encoding="utf-8"))
+    assert manifest["status"] == "interrupted"
+    assert manifest["status_reason"] == "RuntimeError"
+    assert summary["terminal_action"] == "interrupted"
+    assert summary["terminal_reason"] == "RuntimeError"
+
+
+def test_pipeline_state_publication_failure_is_terminal(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    settings = make_settings(tmp_path)
+    settings.train.objective = "sampled_softmax"
+    snapshot = make_snapshot(tmp_path)
+    embedding = EmbeddingArtifact(
+        manifest=SimpleNamespace(content_sha256="b" * 64),
+        artifact_dir=tmp_path / "features" / "embedding",
+        vectors=np.zeros((snapshot.manifest.num_items, settings.model.sbert_dim), dtype=np.float32),
+    )
+    rules = _rules(tmp_path, snapshot.manifest.content_sha256)
+    monkeypatch.setattr(pipeline, "build_purchase_training_index", lambda *_a, **_k: object())
+    monkeypatch.setattr(pipeline, "MixedNegativeSampler", lambda *_a, **_k: object())
+    monkeypatch.setattr(pipeline, "PurchaseBatchIterator", lambda *_a, **_k: object())
+    monkeypatch.setattr(pipeline, "HybridTwoTowerModel", lambda *_a, **_k: object())
+    monkeypatch.setattr(pipeline, "FullCatalogEvaluator", lambda *_a, **_k: object())
+    monkeypatch.setattr(
+        pipeline,
+        "Trainer",
+        type(
+            "TrainerStub",
+            (),
+            {
+                "__init__": lambda self, *_a, **_k: None,
+                "fit": lambda self, *_a, **_k: TrainResult(
+                    run_id="state-write-failure",
+                    best_epoch=1,
+                    best_gauc=0.8,
+                    best_ndcg_at_k=0.1,
+                    best_hr_at_k=0.2,
+                    history=(),
+                    checkpoint_path=tmp_path / "best.pt",
+                    stop_reason="done",
+                ),
+            },
+        ),
+    )
+    monkeypatch.setattr(
+        pipeline,
+        "_write_state",
+        lambda *_a, **_k: (_ for _ in ()).throw(RuntimeError("state write")),
+    )
+
+    with pytest.raises(RuntimeError, match="state write"):
+        pipeline._train(
+            settings,
+            snapshot,
+            embedding,
+            rules,
+            run_id="state-write-failure",
+            device=torch.device("cpu"),
+            require_frozen_source=False,
+        )
+    run_dir = tmp_path / "runs" / "state-write-failure"
+    manifest = json.loads((run_dir / "run-manifest.json").read_text(encoding="utf-8"))
+    summary = json.loads((run_dir / "training" / "summary.json").read_text(encoding="utf-8"))
+    assert manifest["status"] == "interrupted"
+    assert summary["terminal_reason"] == "RuntimeError"
 
 
 def _write_rule_manifest(
@@ -198,7 +363,12 @@ def test_run_all_smoke_executes_only_synthetic_mock_path(
     monkeypatch.setattr(pipeline, "_rules", lambda *_args: rules)
     monkeypatch.setattr(pipeline, "load_embedding_artifact", lambda *_args: embedding)
     monkeypatch.setattr(pipeline, "load_rule_artifact", lambda *_args: rules)
-    monkeypatch.setattr(pipeline, "_train", lambda *_args, **_kwargs: (object(), state))
+    train_kwargs: dict[str, object] = {}
+    monkeypatch.setattr(
+        pipeline,
+        "_train",
+        lambda *_args, **kwargs: train_kwargs.update(kwargs) or (object(), state),
+    )
     smoke_checkpoints = tmp_path / "runs" / "smoke-edge" / "checkpoints"
     smoke_checkpoints.mkdir(parents=True)
     (smoke_checkpoints / "best.pt").write_bytes(b"best")
@@ -221,3 +391,4 @@ def test_run_all_smoke_executes_only_synthetic_mock_path(
         )
     )
     assert emitted == [{"run_id": "smoke-edge"}]
+    assert train_kwargs["require_frozen_source"] is False

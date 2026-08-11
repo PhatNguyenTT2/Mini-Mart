@@ -9,6 +9,7 @@ import random
 import re
 import subprocess
 from argparse import Namespace
+from collections.abc import Sequence
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any, cast
@@ -186,19 +187,82 @@ def _seed_everything(seed: int) -> None:
         torch.backends.cudnn.benchmark = False
 
 
-def _git_commit() -> str:
+_GIT_SHA_PATTERN = re.compile(r"(?:[0-9a-f]{40}|[0-9a-f]{64})\Z")
+
+
+def _git_output(arguments: Sequence[str]) -> str:
     try:
         result = subprocess.run(
-            ["git", "rev-parse", "HEAD"],
+            ["git", *arguments],
             cwd=Path(__file__).parents[4],
             check=True,
             capture_output=True,
             text=True,
             timeout=5,
         )
-    except (OSError, subprocess.SubprocessError):
-        return "unknown"
-    return result.stdout.strip() or "unknown"
+    except (OSError, subprocess.SubprocessError) as error:
+        command = "git " + " ".join(arguments)
+        raise ConfigurationError(f"repository provenance command failed: {command}") from error
+    return result.stdout.strip()
+
+
+def _resolve_git_commit() -> str:
+    commit = _git_output(("rev-parse", "HEAD"))
+    if _GIT_SHA_PATTERN.fullmatch(commit) is None:
+        raise ConfigurationError("repository HEAD is not a valid Git commit SHA")
+    return commit
+
+
+def _require_frozen_repository() -> str:
+    status = _git_output(("status", "--porcelain", "--untracked-files=normal"))
+    if status:
+        raise ConfigurationError("production training requires a clean Git worktree")
+    try:
+        upstream = _git_output(("rev-parse", "--abbrev-ref", "--symbolic-full-name", "@{u}"))
+        upstream_commit = _git_output(("rev-parse", "@{u}"))
+    except ConfigurationError as error:
+        raise ConfigurationError(
+            "production training requires a pushed branch with a configured upstream"
+        ) from error
+    commit = _resolve_git_commit()
+    if _GIT_SHA_PATTERN.fullmatch(upstream_commit) is None or upstream_commit != commit:
+        raise ConfigurationError(f"production branch {upstream!r} is not synchronized with HEAD")
+    return commit
+
+
+def _git_commit() -> str:
+    """Return a verified commit SHA for the run manifest."""
+
+    return _resolve_git_commit()
+
+
+def _ensure_training_terminal_summary(
+    run_dir: Path,
+    *,
+    action: TerminalAction,
+    reason: str,
+) -> None:
+    summary_path = run_dir / "training" / "summary.json"
+    summary: dict[str, object] = {}
+    try:
+        loaded = json.loads(summary_path.read_text(encoding="utf-8"))
+        if isinstance(loaded, dict):
+            summary.update(loaded)
+    except (OSError, ValueError):
+        pass
+    completed_epochs = summary.get("epochs_completed", 0)
+    if not isinstance(completed_epochs, int) or completed_epochs < 0:
+        completed_epochs = 0
+    atomic_write_json(
+        summary_path,
+        {
+            **summary,
+            "terminal_action": action.value,
+            "terminal_reason": reason,
+            "stop_reason": reason,
+            "epochs_completed": completed_epochs,
+        },
+    )
 
 
 def _device(requested: str) -> torch.device:
@@ -295,9 +359,11 @@ def _train(
     run_id: str,
     device: torch.device,
     resume: bool = False,
+    require_frozen_source: bool,
 ) -> tuple[HybridTwoTowerModel, PipelineState]:
     run_id = _validate_artifact_id(run_id, kind="run ID")
     run_dir = settings.data.artifact_root.resolve() / "runs" / run_id
+    git_commit = _require_frozen_repository() if require_frozen_source else _git_commit()
     lineage = {
         "snapshot": snapshot.manifest.content_sha256,
         "embedding": embedding.manifest.content_sha256,
@@ -311,25 +377,11 @@ def _train(
         or abs(rules.manifest.min_lift - settings.data.min_rule_lift) > 1e-12
     ):
         raise ArtifactIntegrityError("training rule artifact does not match resolved config")
-    if resume:
-        lifecycle = RunLifecycle.load(run_dir)
-        if lifecycle.status is not RunStatus.INTERRUPTED:
-            raise ArtifactIntegrityError("only an interrupted run may be resumed")
-        if lifecycle.document.get("lineage") != dict(sorted(lineage.items())):
-            raise ArtifactIntegrityError("resume run lineage differs from requested artifacts")
-        if (
-            lifecycle.document.get("training_signature_sha256")
-            != settings.training_signature_sha256()
-        ):
-            raise ArtifactIntegrityError("resume run training signature differs")
-    else:
-        lifecycle = RunLifecycle.create(
-            run_dir,
-            settings=settings,
-            lineage=lineage,
-            git_commit=_git_commit(),
-        )
-    lifecycle.transition(RunStatus.TRAINING)
+
+    # Build every potentially failing training input before publishing an immutable
+    # run directory.  Trainer construction is deliberately deferred until after
+    # lifecycle transition because it moves the model to the requested device and
+    # may allocate CUDA/optimizer state.
     if settings.train.objective == "sampled_softmax":
         purchase_index = build_purchase_training_index(
             snapshot,
@@ -377,46 +429,35 @@ def _train(
         )
     model = HybridTwoTowerModel(settings)
     evaluator = FullCatalogEvaluator(settings, embedding.vectors, rule_store)
-    trainer = Trainer(
-        model,
-        settings=settings,
-        run_dir=run_dir,
-        training_variant=settings.train.training_variant,
-        device=device,
-    )
 
-    def ensure_terminal_summary(action: TerminalAction, reason: str) -> None:
-        summary_path = run_dir / "training" / "summary.json"
-        summary_path.parent.mkdir(parents=True, exist_ok=True)
-        summary: dict[str, object] = {}
-        if summary_path.is_file():
-            try:
-                loaded = json.loads(summary_path.read_text(encoding="utf-8"))
-                if isinstance(loaded, dict):
-                    summary.update(loaded)
-            except (OSError, ValueError):
-                summary = {}
-        temporary = summary_path.with_suffix(".json.tmp")
-        completed_epochs = summary.get("epochs_completed", 0)
-        if not isinstance(completed_epochs, int) or completed_epochs < 0:
-            completed_epochs = 0
-        temporary.write_text(
-            json.dumps(
-                {
-                    **summary,
-                    "terminal_action": action.value,
-                    "terminal_reason": reason,
-                    "stop_reason": reason,
-                    "epochs_completed": completed_epochs,
-                },
-                sort_keys=True,
-                indent=2,
-            ),
-            encoding="utf-8",
+    if resume:
+        lifecycle = RunLifecycle.load(run_dir)
+        if lifecycle.status is not RunStatus.INTERRUPTED:
+            raise ArtifactIntegrityError("only an interrupted run may be resumed")
+        if lifecycle.document.get("lineage") != dict(sorted(lineage.items())):
+            raise ArtifactIntegrityError("resume run lineage differs from requested artifacts")
+        if (
+            lifecycle.document.get("training_signature_sha256")
+            != settings.training_signature_sha256()
+        ):
+            raise ArtifactIntegrityError("resume run training signature differs")
+    else:
+        lifecycle = RunLifecycle.create(
+            run_dir,
+            settings=settings,
+            lineage=lineage,
+            git_commit=git_commit,
         )
-        os.replace(temporary, summary_path)
+    lifecycle.transition(RunStatus.TRAINING)
 
     try:
+        trainer = Trainer(
+            model,
+            settings=settings,
+            run_dir=run_dir,
+            training_variant=settings.train.training_variant,
+            device=device,
+        )
         result = trainer.fit(
             loader,
             snapshot,
@@ -429,42 +470,38 @@ def _train(
                 else None
             ),
         )
+        release_checkpoint = result.checkpoint_path
+        state = PipelineState(
+            model_schema_version=MODEL_SCHEMA_VERSION,
+            run_id=run_id,
+            training_variant=settings.train.training_variant,
+            snapshot_id=snapshot.manifest.artifact_id,
+            embedding_path=str(embedding.artifact_dir),
+            rule_path=str(rules.artifact_dir),
+            checkpoint_path=str(release_checkpoint),
+            paired_run_id=None,
+            validation_gate_passed=False,
+            test_gate_passed=False,
+            validation_victory_matrix_path=None,
+            test_victory_matrix_path=None,
+            bundle_path=None,
+        )
+        _write_state(settings, state)
     except CatastrophicTrainingError as error:
         reason = str(error) or type(error).__name__
-        ensure_terminal_summary(TerminalAction.FAILED, reason)
+        _ensure_training_terminal_summary(run_dir, action=TerminalAction.FAILED, reason=reason)
         lifecycle.transition_training_terminal(RunStatus.FAILED, reason=reason)
         raise
     except (TrainingInterruptedError, KeyboardInterrupt) as error:
         reason = str(error) or type(error).__name__
-        ensure_terminal_summary(TerminalAction.INTERRUPTED, reason)
+        _ensure_training_terminal_summary(run_dir, action=TerminalAction.INTERRUPTED, reason=reason)
         lifecycle.transition_training_terminal(RunStatus.INTERRUPTED, reason=reason)
         raise
     except BaseException as error:
         reason = type(error).__name__
-        ensure_terminal_summary(TerminalAction.INTERRUPTED, reason)
+        _ensure_training_terminal_summary(run_dir, action=TerminalAction.INTERRUPTED, reason=reason)
         lifecycle.transition_training_terminal(RunStatus.INTERRUPTED, reason=reason)
         raise
-    try:
-        release_checkpoint = result.checkpoint_path
-    except BaseException as error:
-        lifecycle.transition(RunStatus.INTERRUPTED, reason=type(error).__name__)
-        raise
-    state = PipelineState(
-        model_schema_version=MODEL_SCHEMA_VERSION,
-        run_id=run_id,
-        training_variant=settings.train.training_variant,
-        snapshot_id=snapshot.manifest.artifact_id,
-        embedding_path=str(embedding.artifact_dir),
-        rule_path=str(rules.artifact_dir),
-        checkpoint_path=str(release_checkpoint),
-        paired_run_id=None,
-        validation_gate_passed=False,
-        test_gate_passed=False,
-        validation_victory_matrix_path=None,
-        test_victory_matrix_path=None,
-        bundle_path=None,
-    )
-    _write_state(settings, state)
     return model, state
 
 
@@ -1111,6 +1148,7 @@ def execute_command(args: Namespace) -> None:
             smoke_rules_loaded,
             run_id=str(smoke_run_id),
             device=_device(args.device),
+            require_frozen_source=False,
         )
         smoke_run_dir = settings.data.artifact_root.resolve() / "runs" / str(smoke_run_id)
         if not (smoke_run_dir / "checkpoints" / "best.pt").is_file():
@@ -1179,6 +1217,7 @@ def execute_command(args: Namespace) -> None:
             run_id=run_id,
             device=device,
             resume=bool(getattr(args, "resume", False)),
+            require_frozen_source=True,
         )
         _emit(state.model_dump(mode="json"))
         return

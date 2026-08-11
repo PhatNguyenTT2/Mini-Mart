@@ -665,7 +665,12 @@ def test_execute_train_resolves_parent_artifacts(
     )
     monkeypatch.setattr(pipeline, "load_embedding_artifact", lambda _path: object())
     monkeypatch.setattr(pipeline, "load_rule_artifact", lambda *_args: object())
-    monkeypatch.setattr(pipeline, "_train", lambda *_args, **_kwargs: (object(), state))
+    train_kwargs: dict[str, object] = {}
+    monkeypatch.setattr(
+        pipeline,
+        "_train",
+        lambda *_args, **kwargs: train_kwargs.update(kwargs) or (object(), state),
+    )
     emitted: list[object] = []
     monkeypatch.setattr(pipeline, "_emit", emitted.append)
 
@@ -673,3 +678,4 @@ def test_execute_train_resolves_parent_artifacts(
 
     assert [path.name for path in resolved] == ["features", "rules"]
     assert emitted[0]["run_id"] == "run-contract"
+    assert train_kwargs["require_frozen_source"] is True
