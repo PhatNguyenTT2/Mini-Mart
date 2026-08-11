@@ -3,38 +3,46 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from typing import cast
 
 import numpy as np
-import pandas as pd
 import torch
 from scipy import sparse
 
 from ai_service.config import Settings
-from ai_service.contracts import EvaluationReport, ModelVariant, SplitName
+from ai_service.contracts import EvaluationReport, ModelVariant
 from ai_service.data.rules import RuleStore
 from ai_service.data.snapshot import Snapshot
-from ai_service.evaluation.full_catalog import EvaluationResult, FullCatalogEvaluator
+from ai_service.evaluation.full_catalog import (
+    EvaluationResult,
+    ExternalBatchScorer,
+    FullCatalogEvaluator,
+    PreparedEvaluationSplit,
+)
 from ai_service.models.two_tower_wide_deep import HybridTwoTowerModel
 
 
 @dataclass(frozen=True)
 class BaselineComparisonReport:
-    results: dict[str, EvaluationResult]
+    apriori_only: EvaluationResult
+    sbert_centroid: EvaluationResult
+    item_cf: EvaluationResult
+    deep_only: EvaluationResult
+    hybrid: EvaluationResult
+    noisy_hybrid: EvaluationResult
     random_seed_results: tuple[EvaluationResult, ...]
 
     @property
     def baselines(self) -> dict[str, EvaluationReport]:
-        reports = {name: result.report for name, result in self.results.items()}
-        reports["Random Base (Sanity Check)"] = _mean_report(
-            [result.report for result in self.random_seed_results]
-        )
-        return reports
-
-
-def _history(snapshot: Snapshot, split: SplitName) -> pd.DataFrame:
-    if split is SplitName.TEST:
-        return pd.concat((snapshot.train_df, snapshot.val_df), ignore_index=True)
-    return snapshot.train_df
+        return {
+            "apriori_only": self.apriori_only.report,
+            "sbert_centroid": self.sbert_centroid.report,
+            "item_cf": self.item_cf.report,
+            "deep_only": self.deep_only.report,
+            "hybrid": self.hybrid.report,
+            "noisy_hybrid": self.noisy_hybrid.report,
+            "random": _mean_report([result.report for result in self.random_seed_results]),
+        }
 
 
 def _stateless_random_scores(seed: int, user_id: int, raw_item_ids: np.ndarray) -> np.ndarray:
@@ -60,66 +68,91 @@ def _mean_report(reports: list[EvaluationReport]) -> EvaluationReport:
 
 
 def run_seven_way_baselines(
-    model: HybridTwoTowerModel,
-    snapshot: Snapshot,
     *,
+    hybrid_model: HybridTwoTowerModel,
+    deep_model: HybridTwoTowerModel,
+    snapshot: Snapshot,
     embeddings: np.ndarray,
     rule_store: RuleStore,
-    split: SplitName,
     settings: Settings,
     device: str | torch.device,
+    prepared_split: PreparedEvaluationSplit,
 ) -> BaselineComparisonReport:
     evaluator = FullCatalogEvaluator(settings, embeddings, rule_store)
-    results: dict[str, EvaluationResult] = {}
-    neural = evaluator.evaluate_variants(
-        model,
+    # 1. Neural models (Hybrid, Deep control, Noisy Hybrid)
+    hybrid_eval = evaluator.evaluate_variants(
+        hybrid_model,
         snapshot,
-        split=split,
         k=settings.eval.k,
-        variants=(
-            ModelVariant.WIDE_ONLY,
-            ModelVariant.DEEP_ONLY,
-            ModelVariant.HYBRID,
-            ModelVariant.NOISY_HYBRID,
-        ),
+        variants=(ModelVariant.HYBRID, ModelVariant.NOISY_HYBRID),
         device=device,
+        prepared_split=prepared_split,
     )
-    results["Rule-based Apriori"] = neural[ModelVariant.WIDE_ONLY]
-    results["Deep-Only Two-Tower"] = neural[ModelVariant.DEEP_ONLY]
-    results["Proposed Hybrid (Ours)"] = neural[ModelVariant.HYBRID]
-    results["Noisy 10% Hybrid"] = neural[ModelVariant.NOISY_HYBRID]
+    deep_eval = evaluator.evaluate_variants(
+        deep_model,
+        snapshot,
+        k=settings.eval.k,
+        variants=(ModelVariant.DEEP_ONLY,),
+        device=device,
+        prepared_split=prepared_split,
+    )
 
-    history = _history(snapshot, split)
-    eligible_users = sorted(
-        set(
-            snapshot.val_df.internal_user_id
-            if split is SplitName.VAL
-            else snapshot.test_df.internal_user_id
+    hybrid_result = hybrid_eval[ModelVariant.HYBRID]
+    noisy_hybrid_result = hybrid_eval[ModelVariant.NOISY_HYBRID]
+    deep_result = deep_eval[ModelVariant.DEEP_ONLY]
+
+    history = prepared_split.history_events
+
+    # 2. Raw Apriori Lift Baseline
+    def apriori_scorer(users: np.ndarray, candidates: np.ndarray) -> np.ndarray:
+        contexts = np.asarray(
+            [prepared_split.latest_prior_purchase_contexts.get(int(user), -1) for user in users],
+            dtype=np.int64,
         )
+        raw_lift, rule_pres = rule_store.batch_raw_lift(
+            contexts, np.broadcast_to(candidates, (len(users), len(candidates)))
+        )
+        return np.where(rule_pres, raw_lift, 0.0).astype(np.float32)
+
+    apriori_result = evaluator.evaluate_external_scores(
+        snapshot,
+        prepared_split=prepared_split,
+        variant=ModelVariant.WIDE_ONLY,
+        scorer=apriori_scorer,
+        k=settings.eval.k,
     )
+
+    # 3. SBERT User Centroid (ORGANIC PURCHASES ONLY)
+    organic_purchases = history[history.event_type == "purchase"]
     normalized_embeddings = embeddings / np.maximum(
         np.linalg.norm(embeddings, axis=1, keepdims=True), np.finfo(np.float32).eps
     )
-    centroid_scores: dict[int, np.ndarray] = {}
-    for user in eligible_users:
-        items = history.loc[history.internal_user_id == user, "internal_product_id"].to_numpy(
-            np.int64
-        )
+
+    centroids = np.zeros(
+        (snapshot.manifest.num_users + 1, normalized_embeddings.shape[1]), dtype=np.float32
+    )
+    for user, group in organic_purchases.groupby("internal_user_id"):
+        items = np.unique(group.internal_product_id.to_numpy(np.int64))
         if len(items):
-            centroid = normalized_embeddings[np.unique(items)].mean(axis=0)
-            centroid /= max(float(np.linalg.norm(centroid)), np.finfo(np.float32).eps)
-            centroid_scores[int(user)] = normalized_embeddings @ centroid
-        else:
-            centroid_scores[int(user)] = np.zeros(snapshot.manifest.num_items, dtype=np.float32)
-    results["SBERT User Centroid"] = evaluator.evaluate_scores(
+            centroid = normalized_embeddings[items].mean(axis=0)
+            centroids[int(cast(int, user))] = centroid / max(
+                float(np.linalg.norm(centroid)), np.finfo(np.float32).eps
+            )
+
+    def centroid_scorer(users: np.ndarray, _candidates: np.ndarray) -> np.ndarray:
+        return np.asarray(centroids[users] @ normalized_embeddings.T, dtype=np.float32)
+
+    sbert_result = evaluator.evaluate_external_scores(
         snapshot,
-        split=split,
+        prepared_split=prepared_split,
         variant=ModelVariant.SBERT_CENTROID,
-        scores_by_user=centroid_scores,
+        scorer=cast(ExternalBatchScorer, centroid_scorer),
         k=settings.eval.k,
     )
 
-    train_pairs = snapshot.train_df[["internal_user_id", "internal_product_id"]].drop_duplicates()
+    # 4. Item-Item CF (ORGANIC PURCHASES ONLY)
+    train_purchases = organic_purchases
+    train_pairs = train_purchases[["internal_user_id", "internal_product_id"]].drop_duplicates()
     matrix = sparse.csr_matrix(
         (
             np.ones(len(train_pairs), dtype=np.float32),
@@ -133,40 +166,50 @@ def run_seven_way_baselines(
     similarity = (matrix.T @ matrix).tocsr()
     similarity.setdiag(0)
     similarity.eliminate_zeros()
-    cf_scores: dict[int, np.ndarray] = {}
-    for user in eligible_users:
-        items = history.loc[history.internal_user_id == user, "internal_product_id"].to_numpy(
-            np.int64
+
+    def cf_scorer(users: np.ndarray, _candidates: np.ndarray) -> np.ndarray:
+        return np.asarray(
+            (matrix[np.asarray(users, dtype=np.int64) - 1] @ similarity).toarray(),
+            dtype=np.float32,
         )
-        cf_scores[int(user)] = (
-            np.asarray(similarity[np.unique(items)].sum(axis=0)).ravel().astype(np.float32)
-            if len(items)
-            else np.zeros(snapshot.manifest.num_items, dtype=np.float32)
-        )
-    results["Item-Item CF"] = evaluator.evaluate_scores(
+
+    cf_result = evaluator.evaluate_external_scores(
         snapshot,
-        split=split,
+        prepared_split=prepared_split,
         variant=ModelVariant.ITEM_CF,
-        scores_by_user=cf_scores,
+        scorer=cast(ExternalBatchScorer, cf_scorer),
         k=settings.eval.k,
     )
 
+    # 5. Stateless Random Baseline
     raw_ids = np.asarray(
         [snapshot.raw_product_map[index] for index in range(snapshot.manifest.num_items)],
         dtype=np.uint64,
     )
     random_results: list[EvaluationResult] = []
     for seed in range(settings.eval.random_seeds):
-        scores = {
-            int(user): _stateless_random_scores(seed, int(user), raw_ids) for user in eligible_users
-        }
+
+        def random_scorer(
+            users: np.ndarray, _candidates: np.ndarray, *, _seed: int = seed
+        ) -> np.ndarray:
+            return np.stack([_stateless_random_scores(_seed, int(user), raw_ids) for user in users])
+
         random_results.append(
-            evaluator.evaluate_scores(
+            evaluator.evaluate_external_scores(
                 snapshot,
-                split=split,
+                prepared_split=prepared_split,
                 variant=ModelVariant.RANDOM,
-                scores_by_user=scores,
+                scorer=cast(ExternalBatchScorer, random_scorer),
                 k=settings.eval.k,
             )
         )
-    return BaselineComparisonReport(results, tuple(random_results))
+
+    return BaselineComparisonReport(
+        apriori_only=apriori_result,
+        sbert_centroid=sbert_result,
+        item_cf=cf_result,
+        deep_only=deep_result,
+        hybrid=hybrid_result,
+        noisy_hybrid=noisy_hybrid_result,
+        random_seed_results=tuple(random_results),
+    )

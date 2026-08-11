@@ -26,10 +26,10 @@ def multi_positive_sampled_softmax(
     denominator_mask: torch.Tensor,
     confidence: torch.Tensor,
     temperature: torch.Tensor,
-    in_batch_wide_logits: torch.Tensor | None = None,
-    explicit_wide_logits: torch.Tensor | None = None,
+    in_batch_wide_logits: torch.Tensor,
+    explicit_wide_logits: torch.Tensor,
 ) -> ObjectiveResult:
-    """InfoNCE with multi-positive in-batch labels, row-specific hard negatives, and joint Wide logits."""
+    """InfoNCE with multi-positive labels, hard negatives, and Wide logits."""
     if user_vectors.ndim != 2 or positive_item_vectors.shape != user_vectors.shape:
         raise ValueError("user and positive item vectors must share shape [B,D]")
     batch, dimension = user_vectors.shape
@@ -44,21 +44,15 @@ def multi_positive_sampled_softmax(
     if temperature.numel() != 1 or not bool(torch.isfinite(temperature)):
         raise ValueError("temperature must be one finite scalar")
     in_batch_deep = torch.matmul(user_vectors, positive_item_vectors.T) / temperature
-    explicit_deep = torch.einsum("bd,brd->br", user_vectors, explicit_negative_vectors) / temperature
-    if in_batch_wide_logits is not None:
-        if in_batch_wide_logits.shape != (batch, batch):
-            raise ValueError("in_batch_wide_logits must have shape [B,B]")
-        in_batch = in_batch_deep + in_batch_wide_logits
-    else:
-        in_batch_wide_logits = torch.zeros_like(in_batch_deep)
-        in_batch = in_batch_deep
-    if explicit_wide_logits is not None:
-        if explicit_wide_logits.shape != explicit_deep.shape:
-            raise ValueError("explicit_wide_logits shape differs from explicit deep logits")
-        explicit = explicit_deep + explicit_wide_logits
-    else:
-        explicit_wide_logits = torch.zeros_like(explicit_deep)
-        explicit = explicit_deep
+    explicit_deep = (
+        torch.einsum("bd,brd->br", user_vectors, explicit_negative_vectors) / temperature
+    )
+    if in_batch_wide_logits.shape != (batch, batch):
+        raise ValueError("in_batch_wide_logits must have shape [B,B]")
+    if explicit_wide_logits.shape != explicit_deep.shape:
+        raise ValueError("explicit_wide_logits shape differs from explicit deep logits")
+    in_batch = in_batch_deep + in_batch_wide_logits
+    explicit = explicit_deep + explicit_wide_logits
     valid_denominator = denominator_mask | positive_mask
     if not bool(positive_mask.any(dim=1).all()):
         raise ValueError("every row requires at least one positive")
@@ -79,9 +73,9 @@ def multi_positive_sampled_softmax(
         row_wins = torch.where(valid, comparisons, torch.ones_like(comparisons)).all(dim=1)
         all_win = float(row_wins.float().mean())
 
-        deep_rms = float(torch.sqrt(torch.mean(in_batch_deep ** 2)).cpu())
-        wide_rms = float(torch.sqrt(torch.mean(in_batch_wide_logits ** 2)).cpu())
-        hybrid_rms = float(torch.sqrt(torch.mean(in_batch ** 2)).cpu())
+        deep_rms = float(torch.sqrt(torch.mean(in_batch_deep**2)).cpu())
+        wide_rms = float(torch.sqrt(torch.mean(in_batch_wide_logits**2)).cpu())
+        hybrid_rms = float(torch.sqrt(torch.mean(in_batch**2)).cpu())
 
     return ObjectiveResult(
         loss=loss,

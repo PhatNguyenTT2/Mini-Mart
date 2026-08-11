@@ -10,8 +10,9 @@ import platform
 import sys
 import time
 from dataclasses import asdict, dataclass
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
-from typing import Any, Protocol, cast
+from typing import Any, Literal, Protocol, cast
 
 import numpy as np
 import torch
@@ -22,27 +23,42 @@ from torch.optim import AdamW
 from torch.optim.lr_scheduler import LambdaLR
 
 from ai_service.config import MODEL_SCHEMA_VERSION, Settings
-from ai_service.contracts import ModelVariant, SplitName
-from ai_service.data.dataset import PurchaseBatch, PurchaseBatchIterator, TrainingBatch
-from ai_service.data.history import build_user_profile_vectors
+from ai_service.contracts import (
+    CheckpointAction,
+    EvaluationReport,
+    ModelVariant,
+    SplitName,
+    TerminalAction,
+    TrainingVariant,
+)
+from ai_service.data.dataset import PurchaseBatch, TrainingBatch
 from ai_service.data.snapshot import Snapshot
-from ai_service.errors import ModelTrainingError
+from ai_service.errors import (
+    CatastrophicTrainingError,
+    ModelTrainingError,
+    TrainingInterruptedError,
+)
+from ai_service.evaluation.full_catalog import (
+    PreparedEvaluationSplit,
+    TrainingValidationPass,
+    prepare_split,
+)
 from ai_service.models.two_tower_wide_deep import HybridTwoTowerModel
 from ai_service.training.checkpoint import CheckpointManager
 from ai_service.training.objectives import multi_positive_sampled_softmax
+from ai_service.training.stopping import EarlyStoppingController, StoppingDecision
 
 
 class ValidationEvaluator(Protocol):
-    def evaluate(
+    def evaluate_training_epoch(
         self,
         model: HybridTwoTowerModel,
         snapshot: Snapshot,
         *,
-        split: SplitName,
+        prepared_split: PreparedEvaluationSplit,
         k: int,
-        variant: ModelVariant,
         device: torch.device,
-    ) -> Any: ...
+    ) -> TrainingValidationPass: ...
 
 
 @dataclass(frozen=True)
@@ -85,6 +101,12 @@ class EpochMetrics:
     data_wait_ratio: float
     is_best: bool
     early_peak_warning: bool
+    deep_logit_rms: float = 0.0
+    wide_logit_rms: float = 0.0
+    hybrid_logit_rms: float = 0.0
+    model_hard_cache_updated: bool = False
+    terminal_action: TerminalAction = TerminalAction.CONTINUE
+    stopping_reason: str = ""
 
 
 @dataclass(frozen=True)
@@ -93,9 +115,86 @@ class TrainResult:
     best_epoch: int
     best_gauc: float
     best_ndcg_at_k: float
+    best_hr_at_k: float
     history: tuple[EpochMetrics, ...]
     checkpoint_path: Path
     stop_reason: str
+    terminal_action: TerminalAction = TerminalAction.COMPLETED
+    terminal_reason: str = ""
+
+
+@dataclass(frozen=True)
+class _TrainingEpochPass:
+    """Small, typed seam for the batch-training diagnostics produced per epoch."""
+
+    epoch: int
+    global_step: int
+    train_loss: float
+    purchase_loss: float
+    view_loss: float
+    sampled_pair_accuracy: float
+    all_negative_win_rate: float
+    margin_p10: float
+    margin_p50: float
+    margin_p90: float
+    gradient_norm: float
+    user_gradient_norm: float
+    item_gradient_norm: float
+    wide_gradient_norm: float
+    positive_logit_p10: float
+    positive_logit_p50: float
+    positive_logit_p90: float
+    negative_logit_p10: float
+    negative_logit_p50: float
+    negative_logit_p90: float
+    rule_present_rate: float
+    learning_rate: float
+    elapsed_seconds: float
+    epoch_duration_seconds: float
+    peak_ram_bytes: int
+    peak_vram_bytes: int
+    gpu_utilization_median: float
+    data_wait_ratio: float
+
+
+@dataclass(frozen=True)
+class _ResumeState:
+    start_epoch: int
+    global_step: int
+    history: tuple[EpochMetrics, ...]
+    elapsed_seconds: float
+
+
+@dataclass(frozen=True)
+class _TrainingRuntime:
+    catalog: _PreparedCatalog
+    scaler: GradScaler
+    stopping: EarlyStoppingController
+    started_at: datetime
+    started_training: float
+    deep_wide_baseline: tuple[torch.Tensor, ...]
+
+
+@dataclass(frozen=True)
+class _PreparedCatalog:
+    sbert: torch.Tensor
+    category: torch.Tensor
+    price: torch.Tensor
+    cold: torch.Tensor
+    persona_by_internal: np.ndarray
+
+
+@dataclass(frozen=True)
+class _ValidationEpochPass:
+    """Typed validation seam shared by checkpointing and hard-negative refresh."""
+
+    hybrid_report: EvaluationReport
+    deep_report: EvaluationReport
+    wide_report: EvaluationReport
+    deep_logit_rms: float
+    wide_logit_rms: float
+    hybrid_logit_rms: float
+    model_hard_cache_updated: bool
 
 
 def _settings_sha256(settings: Settings) -> str:
@@ -153,18 +252,46 @@ class Trainer:
         *,
         settings: Settings,
         run_dir: Path,
+        training_variant: TrainingVariant | None = None,
         device: str | torch.device | None = None,
     ) -> None:
         self.settings = settings
+        self.training_variant = training_variant or settings.train.training_variant
+        if self.training_variant is not settings.train.training_variant:
+            raise ModelTrainingError(
+                "requested training variant differs from resolved configuration"
+            )
         self.device = torch.device(device or ("cuda" if torch.cuda.is_available() else "cpu"))
         self.model = model.to(self.device)
         self.run_dir = run_dir
         self.run_dir.mkdir(parents=True, exist_ok=True)
-        self.optimizer = AdamW(
-            self.model.parameters(),
-            lr=settings.train.learning_rate,
-            weight_decay=settings.train.weight_decay,
-        )
+        if self.training_variant is TrainingVariant.DEEP_ONLY:
+            deep_params = [
+                p for name, p in self.model.named_parameters() if not name.startswith("wide_layer.")
+            ]
+            self.optimizer = AdamW(
+                deep_params,
+                lr=settings.train.learning_rate,
+                weight_decay=settings.train.weight_decay,
+            )
+            optimizer_ids = {
+                id(parameter)
+                for group in self.optimizer.param_groups
+                for parameter in group["params"]
+            }
+            expected_ids = {
+                id(parameter)
+                for name, parameter in self.model.named_parameters()
+                if parameter.requires_grad and not name.startswith("wide_layer.")
+            }
+            if optimizer_ids != expected_ids:
+                raise ModelTrainingError("Deep-only optimizer contains an invalid parameter set")
+        else:
+            self.optimizer = AdamW(
+                self.model.parameters(),
+                lr=settings.train.learning_rate,
+                weight_decay=settings.train.weight_decay,
+            )
         self.scheduler: LambdaLR | None = None
         self.loss_function = nn.BCEWithLogitsLoss(reduction="none")
 
@@ -185,92 +312,8 @@ class Trainer:
 
         return LambdaLR(self.optimizer, multiplier)
 
-    def _append_history(self, metrics: EpochMetrics) -> None:
-        path = self.run_dir / "training" / "history.jsonl"
-        path.parent.mkdir(parents=True, exist_ok=True)
-        with path.open("a", encoding="utf-8", newline="\n") as destination:
-            destination.write(json.dumps(asdict(metrics), sort_keys=True) + "\n")
-            destination.flush()
-            os.fsync(destination.fileno())
-
-    @torch.no_grad()
-    def _refresh_model_hard_cache(
-        self,
-        train_loader: object,
-        snapshot: Snapshot,
-        item_vectors: torch.Tensor,
-    ) -> None:
-        if not isinstance(train_loader, PurchaseBatchIterator):
-            return
-        index = train_loader.index
-        profiles = build_user_profile_vectors(
-            self.model,
-            snapshot,
-            item_vectors,
-            snapshot.train_df,
-            max_history_items=self.settings.train.max_history_items,
-            device=self.device,
-        )
-        if not self.settings.train.use_history_profiles:
-            profiles.zero_()
-        personas = np.full(
-            snapshot.manifest.num_users + 1,
-            self.settings.data.num_personas,
-            dtype=np.int64,
-        )
-        for internal_user, raw_user in snapshot.raw_user_map.items():
-            personas[int(internal_user)] = int(
-                snapshot.persona_map.get(raw_user, self.settings.data.num_personas)
-            )
-        cache_width = min(64, snapshot.manifest.num_items - len(snapshot.cold_item_ids))
-        cache = np.zeros((snapshot.manifest.num_users + 1, cache_width), dtype=np.int32)
-        cold = np.zeros(snapshot.manifest.num_items, dtype=np.bool_)
-        cold[np.asarray(snapshot.cold_item_ids, dtype=np.int64)] = True
-        for offset in range(1, snapshot.manifest.num_users + 1, 512):
-            users = np.arange(
-                offset,
-                min(offset + 512, snapshot.manifest.num_users + 1),
-                dtype=np.int64,
-            )
-            user_tensor = torch.from_numpy(users).to(self.device)
-            profile_batch = profiles[user_tensor]
-            user_vectors = self.model.encode_user(
-                user_tensor,
-                torch.from_numpy(personas[users]).to(self.device),
-                history_vector=profile_batch,
-                history_present=torch.linalg.vector_norm(profile_batch, dim=-1) > 0,
-            )
-            scores = torch.matmul(user_vectors, item_vectors.T) / self.model._temperature
-            invalid = index.known_history[users] | cold[None, :]
-            scores.masked_fill_(torch.from_numpy(invalid).to(self.device), -torch.inf)
-            if bool(torch.isneginf(scores).all(dim=1).any()):
-                raise ModelTrainingError("model-hard negative pool is exhausted")
-            cache[users] = torch.topk(scores, k=cache_width, dim=1).indices.cpu().numpy()
-        train_loader.sampler.update_model_hard_cache(cache)
-
-    def fit(
-        self,
-        train_loader: Any,
-        snapshot: Snapshot,
-        embeddings: np.ndarray,
-        val_evaluator: ValidationEvaluator | None,
-        lineage: dict[str, str],
-        *,
-        resume_from: Path | None = None,
-    ) -> TrainResult:
-        if val_evaluator is None:
-            raise ModelTrainingError("validation evaluator is mandatory")
-        required_lineage = {"snapshot", "embedding", "rules"}
-        if set(lineage) != required_lineage:
-            raise ModelTrainingError("training lineage must contain snapshot, embedding, and rules")
-        if embeddings is None or embeddings.shape != (
-            snapshot.manifest.num_items,
-            self.settings.model.sbert_dim,
-        ):
-            raise ModelTrainingError("SBERT artifact is missing or has the wrong shape")
-        if not np.isfinite(embeddings).all():
-            raise ModelTrainingError("SBERT artifact contains NaN or Inf")
-
+    def _prepare_catalog(self, snapshot: Snapshot, embeddings: np.ndarray) -> _PreparedCatalog:
+        """Encode immutable catalog features once per training run."""
         catalog = snapshot.catalog_df.sort_values("internal_product_id", kind="stable")
         sbert_catalog = torch.from_numpy(np.array(embeddings, dtype=np.float32, copy=True)).to(
             self.device
@@ -295,12 +338,792 @@ class Trainer:
             persona_by_internal[int(internal_user)] = int(
                 snapshot.persona_map.get(raw_user, self.settings.data.num_personas)
             )
-        best_gauc = float("-inf")
-        best_ndcg = float("-inf")
-        best_epoch = 0
-        no_improvement = 0
+        return _PreparedCatalog(
+            sbert=sbert_catalog,
+            category=category_catalog,
+            price=price_catalog,
+            cold=cold_catalog,
+            persona_by_internal=persona_by_internal,
+        )
+
+    def _assert_parameters_finite(self, *, stage: str) -> None:
+        """Fail with the exact parameter name as soon as a model becomes invalid."""
+        for name, parameter in self.model.named_parameters():
+            if not bool(torch.isfinite(parameter).all()):
+                raise CatastrophicTrainingError(f"parameter contains NaN or Inf {stage}: {name}")
+
+    def _assert_deep_wide_invariant(self, baseline: list[torch.Tensor]) -> None:
+        """Deep-only runs must never update or backpropagate through Wide."""
+        for parameter, before in zip(self.model.wide_layer.parameters(), baseline, strict=True):
+            if parameter.grad is not None and bool(torch.any(parameter.grad != 0)):
+                raise CatastrophicTrainingError("Deep-only training produced Wide gradients")
+            if not torch.equal(parameter.detach(), before):
+                raise CatastrophicTrainingError("Deep-only training changed Wide parameters")
+
+    def _restore_resume_state(
+        self,
+        resume_from: Path,
+        *,
+        best_path: Path,
+        lineage: dict[str, str],
+        config_sha: str,
+        stopping: EarlyStoppingController,
+        scaler: Any,
+    ) -> _ResumeState:
+        """Restore a durable ``last.pt`` without replaying stopping history."""
+        expected_last = self.run_dir / "checkpoints" / "last.pt"
+        if resume_from.resolve() != expected_last.resolve():
+            raise ModelTrainingError("resume must use this run's last.pt checkpoint")
+        state = CheckpointManager.load(
+            resume_from,
+            model=self.model,
+            optimizer=self.optimizer,
+            scheduler=self.scheduler,
+            scaler=scaler,
+            expected_lineage=lineage,
+            expected_training_signature=config_sha,
+            expected_comparison_signature=self.settings.comparison_signature_sha256(),
+            expected_training_variant=self.training_variant,
+            expected_model_schema_version=MODEL_SCHEMA_VERSION,
+            expected_checkpoint_kind="last",
+            restore_rng=True,
+        )
+        stopping_state = state.get("stopping_state")
+        if not stopping_state:
+            raise ModelTrainingError("resume checkpoint has no stopping state")
+        stopping.load_state_dict(stopping_state)
+        if stopping.selected_epoch > 0 and not best_path.is_file():
+            raise ModelTrainingError("resume stopping state references a missing best checkpoint")
+        history_path = self.run_dir / "training" / "history.jsonl"
+        if not history_path.is_file():
+            raise ModelTrainingError("resume checkpoint has no durable training history")
         history: list[EpochMetrics] = []
-        pareto_frontier: list[tuple[float, float, float, Path]] = []
+        expected_epoch = int(state["epoch"])
+        for line in history_path.read_text(encoding="utf-8").splitlines():
+            if not line.strip():
+                continue
+            try:
+                history_document = json.loads(line)
+                history_document["terminal_action"] = TerminalAction(
+                    history_document["terminal_action"]
+                )
+                history.append(EpochMetrics(**history_document))
+            except (KeyError, TypeError, ValueError, json.JSONDecodeError) as error:
+                raise ModelTrainingError(
+                    "resume history contains an invalid epoch record"
+                ) from error
+        if not history or history[-1].epoch != expected_epoch:
+            raise ModelTrainingError("resume history and checkpoint epochs differ")
+        epochs = [item.epoch for item in history]
+        if epochs != list(range(1, expected_epoch + 1)):
+            raise ModelTrainingError("resume history epochs are not contiguous")
+        return _ResumeState(
+            start_epoch=expected_epoch + 1,
+            global_step=history[-1].global_step,
+            history=tuple(history),
+            elapsed_seconds=history[-1].elapsed_seconds,
+        )
+
+    def _train_epoch(
+        self,
+        *,
+        epoch: int,
+        global_step: int,
+        train_loader: Any,
+        runtime: _TrainingRuntime,
+    ) -> _TrainingEpochPass:
+        """Run one complete batch-training epoch and return immutable diagnostics."""
+        self.model.train()
+        if hasattr(train_loader, "set_epoch"):
+            train_loader.set_epoch(epoch)
+        dataset = getattr(train_loader, "dataset", None)
+        if dataset is not None and hasattr(dataset, "set_epoch"):
+            dataset.set_epoch(epoch)
+
+        catalog = runtime.catalog
+        sbert_catalog = catalog.sbert
+        category_catalog = catalog.category
+        price_catalog = catalog.price
+        cold_catalog = catalog.cold
+        persona_by_internal = catalog.persona_by_internal
+        stopping = runtime.stopping
+        scaler = runtime.scaler
+        amp_enabled = self.device.type == "cuda"
+        amp_dtype = torch.bfloat16 if amp_enabled else torch.float32
+        if self.scheduler is None:
+            raise ModelTrainingError("training scheduler is not initialized")
+
+        weighted_loss_sum = 0.0
+        sample_count = 0
+        purchase_loss_sum = 0.0
+        purchase_weight = 0.0
+        view_loss_sum = 0.0
+        view_weight = 0.0
+        pair_correct = 0.0
+        all_negative_wins = 0
+        candidate_pairs = 0
+        margins: list[np.ndarray] = []
+        positive_logits: list[np.ndarray] = []
+        negative_logits: list[np.ndarray] = []
+        present_count = 0
+        candidate_count = 0
+        epoch_gradient_norm = 0.0
+        user_gradient_norm = 0.0
+        item_gradient_norm = 0.0
+        wide_gradient_norm = 0.0
+        data_wait_seconds = 0.0
+        epoch_started = time.perf_counter()
+        previous_batch_finished = epoch_started
+        gpu_utilization: list[float] = []
+        for batch in train_loader:
+            wall_decision = stopping.check_wall_time(
+                start_time=runtime.started_at,
+                current_time=datetime.now(UTC),
+            )
+            if wall_decision is not None:
+                raise TrainingInterruptedError(wall_decision.reason)
+            data_wait_seconds += time.perf_counter() - previous_batch_finished
+            self.optimizer.zero_grad(set_to_none=True)
+            if isinstance(batch, PurchaseBatch):
+                if self.settings.train.objective != "sampled_softmax":
+                    raise ModelTrainingError(
+                        "purchase batches require the sampled_softmax objective"
+                    )
+                users = batch.user_idx.to(self.device)
+                personas = batch.persona_idx.to(self.device)
+                positive_ids = batch.positive_item_idx.to(self.device)
+                negative_ids = batch.explicit_negative_idx.to(self.device)
+                history_ids = batch.history_item_idx.to(self.device)
+                history_mask = batch.history_mask.to(self.device)
+                history_age_days = batch.history_age_days.to(self.device)
+                positive_mask = batch.positive_mask.to(self.device)
+                denominator_mask = batch.denominator_mask.to(self.device)
+                confidence = batch.confidence.to(self.device)
+                with autocast(
+                    device_type=self.device.type,
+                    enabled=amp_enabled,
+                    dtype=amp_dtype,
+                ):
+                    positive_vectors = self.model.encode_items(
+                        sbert_catalog[positive_ids],
+                        category_catalog[positive_ids],
+                        price_catalog[positive_ids],
+                        item_idx=positive_ids,
+                        is_cold=cold_catalog[positive_ids],
+                    )
+                    negative_vectors = self.model.encode_items(
+                        sbert_catalog[negative_ids],
+                        category_catalog[negative_ids],
+                        price_catalog[negative_ids],
+                        item_idx=negative_ids,
+                        is_cold=cold_catalog[negative_ids],
+                    )
+                    safe_history_ids = history_ids.clamp_min(0)
+                    history_item_vectors = self.model.encode_items(
+                        sbert_catalog[safe_history_ids],
+                        category_catalog[safe_history_ids],
+                        price_catalog[safe_history_ids],
+                        item_idx=safe_history_ids,
+                        is_cold=cold_catalog[safe_history_ids],
+                    )
+                    if self.settings.train.use_history_profiles:
+                        history_vector, history_present = self.model.encode_history(
+                            history_item_vectors,
+                            history_mask,
+                            history_age_days,
+                        )
+                    else:
+                        history_vector = torch.zeros(
+                            (len(users), self.settings.model.item_emb_dim),
+                            dtype=history_item_vectors.dtype,
+                            device=self.device,
+                        )
+                        history_present = torch.zeros(
+                            len(users), dtype=torch.bool, device=self.device
+                        )
+                    user_vectors = self.model.encode_user(
+                        users,
+                        personas,
+                        history_vector=history_vector,
+                        history_present=history_present,
+                    )
+                    if self.training_variant is TrainingVariant.HYBRID:
+                        in_batch_wide_values = batch.in_batch_wide_values.to(self.device)
+                        in_batch_rule_present = batch.in_batch_rule_present.to(self.device)
+                        explicit_wide_values = batch.explicit_wide_values.to(self.device)
+                        explicit_rule_present = batch.explicit_rule_present.to(self.device)
+                        in_batch_wide_logits = self.model.wide_layer(
+                            in_batch_wide_values, in_batch_rule_present
+                        )
+                        explicit_wide_logits = self.model.wide_layer(
+                            explicit_wide_values, explicit_rule_present
+                        )
+                    else:
+                        in_batch_wide_logits = torch.zeros(
+                            (len(users), len(users)), dtype=torch.float32, device=self.device
+                        )
+                        explicit_wide_logits = torch.zeros(
+                            (len(users), batch.explicit_negative_idx.shape[1]),
+                            dtype=torch.float32,
+                            device=self.device,
+                        )
+                    objective = multi_positive_sampled_softmax(
+                        user_vectors,
+                        positive_vectors,
+                        negative_vectors,
+                        positive_mask=positive_mask,
+                        denominator_mask=denominator_mask,
+                        confidence=confidence,
+                        temperature=self.model._temperature,
+                        in_batch_wide_logits=in_batch_wide_logits,
+                        explicit_wide_logits=explicit_wide_logits,
+                    )
+                    purchase_objective_loss = objective.loss
+                    auxiliary_view_loss = torch.zeros((), device=self.device)
+                    if self.settings.train.view_auxiliary_weight > 0 and len(
+                        train_loader.index.view_only_pairs
+                    ):
+                        view_pairs = train_loader.index.view_only_pairs
+                        auxiliary_rng = np.random.default_rng(
+                            np.random.SeedSequence(
+                                [self.settings.train.seed, epoch, global_step, 17]
+                            )
+                        )
+                        selected_views = auxiliary_rng.choice(
+                            len(view_pairs),
+                            size=len(users),
+                            replace=len(view_pairs) < len(users),
+                        )
+                        view_users_np = view_pairs[selected_views, 0]
+                        view_items_np = view_pairs[selected_views, 1]
+                        view_negatives_np = train_loader.sampler.sample(
+                            view_users_np,
+                            view_items_np,
+                            epoch=epoch,
+                            batch_index=global_step + 1_000_000,
+                        )
+                        view_users = torch.from_numpy(view_users_np).to(self.device)
+                        view_items = torch.from_numpy(view_items_np).to(self.device)
+                        view_negatives = torch.from_numpy(view_negatives_np).to(self.device)
+                        view_positive_vectors = self.model.encode_items(
+                            sbert_catalog[view_items],
+                            category_catalog[view_items],
+                            price_catalog[view_items],
+                            item_idx=view_items,
+                            is_cold=cold_catalog[view_items],
+                        )
+                        view_negative_vectors = self.model.encode_items(
+                            sbert_catalog[view_negatives],
+                            category_catalog[view_negatives],
+                            price_catalog[view_negatives],
+                            item_idx=view_negatives,
+                            is_cold=cold_catalog[view_negatives],
+                        )
+                        view_user_vectors = self.model.encode_user(
+                            view_users,
+                            torch.from_numpy(persona_by_internal[view_users_np]).to(self.device),
+                        )
+                        view_positive_mask = train_loader.index.known_history[
+                            view_users_np[:, None], view_items_np[None, :]
+                        ]
+                        view_denominator_mask = ~view_positive_mask
+                        view_denominator_mask |= view_positive_mask
+                        view_objective = multi_positive_sampled_softmax(
+                            view_user_vectors,
+                            view_positive_vectors,
+                            view_negative_vectors,
+                            positive_mask=torch.from_numpy(view_positive_mask).to(self.device),
+                            denominator_mask=torch.from_numpy(view_denominator_mask).to(
+                                self.device
+                            ),
+                            confidence=torch.ones(len(view_users), device=self.device),
+                            temperature=self.model._temperature,
+                            in_batch_wide_logits=torch.zeros(
+                                (len(view_users), len(view_users)), device=self.device
+                            ),
+                            explicit_wide_logits=torch.zeros(
+                                (len(view_users), view_negatives.shape[1]), device=self.device
+                            ),
+                        )
+                        auxiliary_view_loss = view_objective.loss
+                    loss = purchase_objective_loss + (
+                        self.settings.train.view_auxiliary_weight * auxiliary_view_loss
+                    )
+                with torch.no_grad():
+                    in_batch = (
+                        torch.matmul(user_vectors, positive_vectors.T) / self.model._temperature
+                    )
+                    explicit = (
+                        torch.einsum("bd,brd->br", user_vectors, negative_vectors)
+                        / self.model._temperature
+                    )
+                    if not bool(torch.isfinite(in_batch).all()):
+                        raise CatastrophicTrainingError(
+                            "sampled-softmax in-batch logits contain NaN or Inf"
+                        )
+                    if not bool(torch.isfinite(explicit).all()):
+                        raise CatastrophicTrainingError(
+                            "sampled-softmax explicit logits contain NaN or Inf"
+                        )
+                    target_scores = in_batch.diagonal()
+                    in_batch_valid = denominator_mask & ~positive_mask
+                    valid_scores = torch.cat(
+                        (in_batch.masked_fill(~in_batch_valid, -torch.inf), explicit), dim=1
+                    )
+                    valid = torch.isfinite(valid_scores)
+                    comparisons = target_scores[:, None] > valid_scores
+                    pair_correct += float(comparisons[valid].sum().cpu())
+                    candidate_pairs += int(valid.sum().cpu())
+                    all_negative_wins += int(
+                        torch.where(valid, comparisons, torch.ones_like(comparisons))
+                        .all(dim=1)
+                        .sum()
+                        .cpu()
+                    )
+                    if sum(len(values) for values in margins) < 8_192:
+                        margins.append(
+                            (target_scores - valid_scores.max(dim=1).values).float().cpu().numpy()
+                        )
+                        positive_logits.append(target_scores.float().cpu().numpy())
+                        negative_logits.append(valid_scores[valid].float().cpu().numpy())
+                count = len(users)
+                purchase_loss_sum += float(purchase_objective_loss.detach()) * count
+                purchase_weight += float(count)
+                if self.settings.train.view_auxiliary_weight > 0:
+                    view_loss_sum += float(auxiliary_view_loss.detach()) * count
+                    view_weight += float(count)
+            elif isinstance(batch, TrainingBatch):
+                if self.settings.train.objective not in {"legacy_bce", "purchase_bce"}:
+                    raise ModelTrainingError(
+                        "legacy candidate batches require the legacy_bce objective"
+                    )
+                candidate_ids = batch.candidate_item_idx.to(self.device)
+                users = batch.user_idx.to(self.device)
+                personas = batch.persona_idx.to(self.device)
+                wide = batch.wide_values.to(self.device)
+                present = batch.rule_present.to(self.device)
+                labels = batch.labels.to(self.device)
+                sample_weight = batch.sample_weight.to(self.device)
+                with autocast(
+                    device_type=self.device.type,
+                    enabled=amp_enabled,
+                    dtype=amp_dtype,
+                ):
+                    logits = self.model(
+                        users,
+                        personas,
+                        sbert_catalog[candidate_ids],
+                        category_catalog[candidate_ids],
+                        price_catalog[candidate_ids],
+                        wide,
+                        present,
+                        (
+                            ModelVariant.HYBRID
+                            if self.training_variant is TrainingVariant.HYBRID
+                            else ModelVariant.DEEP_ONLY
+                        ),
+                        item_idx=candidate_ids,
+                        is_cold=cold_catalog[candidate_ids],
+                    )
+                    if not bool(torch.isfinite(logits).all()):
+                        raise CatastrophicTrainingError("training logits contain NaN or Inf")
+                    per_candidate = self.loss_function(logits, labels)
+                    per_sample = per_candidate.mean(dim=1)
+                    loss = (per_sample * sample_weight).sum() / sample_weight.sum()
+                with torch.no_grad():
+                    positive = logits[:, :1]
+                    negatives = logits[:, 1:]
+                    comparisons = positive > negatives
+                    pair_correct += float(comparisons.sum().cpu())
+                    candidate_pairs += int(comparisons.numel())
+                    all_negative_wins += int(comparisons.all(dim=1).sum().cpu())
+                    if sum(len(values) for values in margins) < 8_192:
+                        margins.append(
+                            (positive[:, 0] - negatives.max(dim=1).values).float().cpu().numpy()
+                        )
+                        positive_logits.append(positive[:, 0].float().cpu().numpy())
+                        negative_logits.append(negatives.float().cpu().numpy().reshape(-1))
+                    present_count += int(present.sum().cpu())
+                    candidate_count += int(present.numel())
+                    purchase_rows = batch.is_purchase.to(self.device)
+                    view_rows = ~purchase_rows
+                    if bool(purchase_rows.any()):
+                        weights = sample_weight[purchase_rows]
+                        purchase_loss_sum += float(
+                            (per_sample[purchase_rows] * weights).sum().cpu()
+                        )
+                        purchase_weight += float(weights.sum().cpu())
+                    if bool(view_rows.any()):
+                        weights = sample_weight[view_rows]
+                        view_loss_sum += float((per_sample[view_rows] * weights).sum().cpu())
+                        view_weight += float(weights.sum().cpu())
+                count = len(users)
+            else:
+                raise ModelTrainingError(f"unsupported training batch type: {type(batch).__name__}")
+            if not bool(torch.isfinite(loss)):
+                raise CatastrophicTrainingError("training loss contains NaN or Inf")
+            scaler.scale(loss).backward()  # type: ignore[no-untyped-call]
+            scaler.unscale_(self.optimizer)
+            for name, parameter in self.model.named_parameters():
+                if parameter.grad is not None and not bool(torch.isfinite(parameter.grad).all()):
+                    raise CatastrophicTrainingError(f"gradient contains NaN or Inf: {name}")
+            user_gradient_norm = max(
+                user_gradient_norm, _module_gradient_norm(self.model.user_tower)
+            )
+            item_gradient_norm = max(
+                item_gradient_norm, _module_gradient_norm(self.model.item_tower)
+            )
+            wide_gradient_norm = max(
+                wide_gradient_norm, _module_gradient_norm(self.model.wide_layer)
+            )
+            gradient_norm = nn.utils.clip_grad_norm_(
+                self.model.parameters(), self.settings.train.max_grad_norm
+            )
+            if not bool(torch.isfinite(gradient_norm)):
+                raise CatastrophicTrainingError("gradient norm contains NaN or Inf")
+            scaler.step(self.optimizer)
+            scaler.update()
+            self._assert_parameters_finite(stage="after optimizer step")
+            if self.training_variant is TrainingVariant.DEEP_ONLY:
+                self._assert_deep_wide_invariant(list(runtime.deep_wide_baseline))
+            self.scheduler.step()
+            global_step += 1
+            weighted_loss_sum += float(loss.detach()) * count
+            sample_count += count
+            epoch_gradient_norm = max(epoch_gradient_norm, float(gradient_norm))
+            if amp_enabled:
+                try:
+                    gpu_utilization.append(float(torch.cuda.utilization(self.device)))
+                except (RuntimeError, OSError, ImportError):
+                    pass
+            previous_batch_finished = time.perf_counter()
+        if sample_count == 0:
+            raise ModelTrainingError("training loader produced no samples")
+        if (
+            epoch == 1
+            and self.training_variant is TrainingVariant.HYBRID
+            and wide_gradient_norm <= 0.0
+        ):
+            raise CatastrophicTrainingError("Hybrid epoch 1 produced no Wide gradient")
+        margin_values = np.concatenate(margins) if margins else np.asarray([0.0])
+        positive_values = np.concatenate(positive_logits) if positive_logits else np.asarray([0.0])
+        negative_values = np.concatenate(negative_logits) if negative_logits else np.asarray([0.0])
+        epoch_duration = max(time.perf_counter() - epoch_started, np.finfo(float).eps)
+        return _TrainingEpochPass(
+            epoch=epoch,
+            global_step=global_step,
+            train_loss=weighted_loss_sum / sample_count,
+            purchase_loss=purchase_loss_sum / max(1, purchase_weight),
+            view_loss=view_loss_sum / max(1, view_weight),
+            sampled_pair_accuracy=pair_correct / max(1, candidate_pairs),
+            all_negative_win_rate=all_negative_wins / sample_count,
+            margin_p10=float(np.quantile(margin_values, 0.1)),
+            margin_p50=float(np.quantile(margin_values, 0.5)),
+            margin_p90=float(np.quantile(margin_values, 0.9)),
+            gradient_norm=epoch_gradient_norm,
+            user_gradient_norm=user_gradient_norm,
+            item_gradient_norm=item_gradient_norm,
+            wide_gradient_norm=wide_gradient_norm,
+            positive_logit_p10=float(np.quantile(positive_values, 0.1)),
+            positive_logit_p50=float(np.quantile(positive_values, 0.5)),
+            positive_logit_p90=float(np.quantile(positive_values, 0.9)),
+            negative_logit_p10=float(np.quantile(negative_values, 0.1)),
+            negative_logit_p50=float(np.quantile(negative_values, 0.5)),
+            negative_logit_p90=float(np.quantile(negative_values, 0.9)),
+            rule_present_rate=present_count / max(1, candidate_count),
+            learning_rate=float(self.optimizer.param_groups[0]["lr"]),
+            elapsed_seconds=time.perf_counter() - runtime.started_training,
+            epoch_duration_seconds=epoch_duration,
+            peak_ram_bytes=_peak_resident_bytes(),
+            peak_vram_bytes=(
+                int(torch.cuda.max_memory_allocated(self.device)) if amp_enabled else 0
+            ),
+            gpu_utilization_median=float(np.median(gpu_utilization)) if gpu_utilization else 0.0,
+            data_wait_ratio=data_wait_seconds / epoch_duration,
+        )
+
+    def _validate_epoch(
+        self,
+        val_evaluator: ValidationEvaluator,
+        snapshot: Snapshot,
+        prepared_split: PreparedEvaluationSplit,
+        train_loader: Any,
+    ) -> _ValidationEpochPass:
+        """Run exactly one typed validation pass and return its gate metrics."""
+        validation = val_evaluator.evaluate_training_epoch(
+            self.model,
+            snapshot,
+            prepared_split=prepared_split,
+            k=self.settings.eval.k,
+            device=self.device,
+        )
+        try:
+            hybrid_report = validation.variants[ModelVariant.HYBRID].report
+            deep_report = validation.variants[ModelVariant.DEEP_ONLY].report
+            wide_report = validation.variants[ModelVariant.WIDE_ONLY].report
+        except (AttributeError, KeyError, TypeError) as error:
+            raise ModelTrainingError("validation did not return all model variants") from error
+        for variant_name, report in (
+            ("hybrid", hybrid_report),
+            ("deep", deep_report),
+            ("wide", wide_report),
+        ):
+            values = (float(report.gauc), float(report.ndcg_at_k), float(report.hr_at_k))
+            if not np.isfinite(values).all():
+                raise CatastrophicTrainingError(
+                    f"validation {variant_name} metrics contain NaN or Inf"
+                )
+        diagnostics = tuple(
+            float(getattr(validation, name, 0.0))
+            for name in ("deep_logit_rms", "wide_logit_rms", "hybrid_logit_rms")
+        )
+        if not np.isfinite(diagnostics).all():
+            raise CatastrophicTrainingError("validation diagnostics contain NaN or Inf")
+        model_hard_cache = getattr(validation, "model_hard_cache", None)
+        if model_hard_cache is None:
+            raise ModelTrainingError("validation did not produce a model-hard cache")
+        sampler = getattr(train_loader, "sampler", None)
+        if sampler is None or not hasattr(sampler, "update_model_hard_cache"):
+            raise ModelTrainingError("training sampler cannot accept model-hard cache")
+        sampler.update_model_hard_cache(model_hard_cache)
+        return _ValidationEpochPass(
+            hybrid_report=hybrid_report,
+            deep_report=deep_report,
+            wide_report=wide_report,
+            deep_logit_rms=diagnostics[0],
+            wide_logit_rms=diagnostics[1],
+            hybrid_logit_rms=diagnostics[2],
+            model_hard_cache_updated=True,
+        )
+
+    def _build_epoch_metrics(
+        self,
+        *,
+        training: _TrainingEpochPass,
+        validation: _ValidationEpochPass,
+        decision: StoppingDecision,
+        stopping: EarlyStoppingController,
+    ) -> EpochMetrics:
+        """Build one immutable metrics row from typed training/validation passes."""
+        val_gauc = float(validation.hybrid_report.gauc)
+        val_ndcg = float(validation.hybrid_report.ndcg_at_k)
+        val_hr = float(validation.hybrid_report.hr_at_k)
+        guardrails_passed = (
+            val_gauc >= float(validation.deep_report.gauc) + self.settings.eval.gauc_guardrail_delta
+            and val_ndcg
+            >= max(
+                float(validation.deep_report.ndcg_at_k),
+                float(validation.wide_report.ndcg_at_k),
+            )
+            + self.settings.eval.ndcg_guardrail_delta
+            and val_hr
+            >= max(
+                float(validation.deep_report.hr_at_k),
+                float(validation.wide_report.hr_at_k),
+            )
+            + self.settings.eval.hr_guardrail_delta
+        )
+        is_best = decision.checkpoint_action is not CheckpointAction.NONE
+        terminal_action = decision.terminal_action
+        stopping_reason = decision.reason
+        if (
+            terminal_action is TerminalAction.CONTINUE
+            and training.epoch == self.settings.train.max_epochs
+        ):
+            terminal_action = TerminalAction.COMPLETED
+            stopping_reason = "maximum epochs completed"
+        metrics = EpochMetrics(
+            epoch=training.epoch,
+            global_step=training.global_step,
+            train_loss=training.train_loss,
+            purchase_loss=training.purchase_loss,
+            view_loss=training.view_loss,
+            wide_loss=0.0,
+            val_gauc=val_gauc,
+            val_hr_at_k=val_hr,
+            val_ndcg_at_k=val_ndcg,
+            val_deep_gauc=float(validation.deep_report.gauc),
+            val_deep_ndcg_at_k=float(validation.deep_report.ndcg_at_k),
+            val_wide_gauc=float(validation.wide_report.gauc),
+            val_wide_ndcg_at_k=float(validation.wide_report.ndcg_at_k),
+            checkpoint_guardrails_passed=guardrails_passed,
+            learning_rate=training.learning_rate,
+            sampled_pair_accuracy=training.sampled_pair_accuracy,
+            all_negative_win_rate=training.all_negative_win_rate,
+            margin_p10=training.margin_p10,
+            margin_p50=training.margin_p50,
+            margin_p90=training.margin_p90,
+            gradient_norm=training.gradient_norm,
+            user_tower_gradient_norm=training.user_gradient_norm,
+            item_tower_gradient_norm=training.item_gradient_norm,
+            wide_gradient_norm=training.wide_gradient_norm,
+            positive_logit_p10=training.positive_logit_p10,
+            positive_logit_p50=training.positive_logit_p50,
+            positive_logit_p90=training.positive_logit_p90,
+            negative_logit_p10=training.negative_logit_p10,
+            negative_logit_p50=training.negative_logit_p50,
+            negative_logit_p90=training.negative_logit_p90,
+            rule_present_rate=training.rule_present_rate,
+            elapsed_seconds=training.elapsed_seconds,
+            peak_ram_bytes=training.peak_ram_bytes,
+            peak_vram_bytes=training.peak_vram_bytes,
+            gpu_utilization_median=training.gpu_utilization_median,
+            data_wait_ratio=training.data_wait_ratio,
+            is_best=is_best,
+            early_peak_warning=stopping.selected_epoch <= 2 and training.epoch >= 2,
+            deep_logit_rms=validation.deep_logit_rms,
+            wide_logit_rms=validation.wide_logit_rms,
+            hybrid_logit_rms=validation.hybrid_logit_rms,
+            model_hard_cache_updated=validation.model_hard_cache_updated,
+            terminal_action=terminal_action,
+            stopping_reason=stopping_reason,
+        )
+        numeric_values = asdict(metrics)
+        for name, value in numeric_values.items():
+            if isinstance(value, float) and not math.isfinite(value):
+                raise CatastrophicTrainingError(f"epoch metric contains NaN or Inf: {name}")
+        return metrics
+
+    def _publish_epoch_checkpoints(
+        self,
+        *,
+        metrics: EpochMetrics,
+        decision: StoppingDecision,
+        lineage: dict[str, str],
+        config_sha: str,
+        run_id: str,
+        scaler: Any,
+        stopping: EarlyStoppingController,
+    ) -> None:
+        """Publish selected ``best.pt`` and the durable current ``last.pt``."""
+        checkpoint_metrics = {
+            "val_gauc": metrics.val_gauc,
+            "val_ndcg_at_k": metrics.val_ndcg_at_k,
+            "val_hr_at_k": metrics.val_hr_at_k,
+            "train_loss": metrics.train_loss,
+        }
+
+        def publish(path: Path, checkpoint_kind: Literal["best", "last"]) -> None:
+            CheckpointManager.save(
+                path,
+                model=self.model,
+                optimizer=self.optimizer,
+                scheduler=self.scheduler,
+                epoch=metrics.epoch,
+                metrics=checkpoint_metrics,
+                checkpoint_kind=checkpoint_kind,
+                lineage=lineage,
+                training_signature_sha256=config_sha,
+                comparison_signature_sha256=self.settings.comparison_signature_sha256(),
+                training_variant=self.training_variant,
+                model_schema_version=MODEL_SCHEMA_VERSION,
+                run_id=run_id,
+                scaler=scaler,
+                stopping_state=stopping.state_dict(),
+            )
+
+        if decision.checkpoint_action is not CheckpointAction.NONE:
+            publish(self.run_dir / "checkpoints" / "best.pt", "best")
+        publish(self.run_dir / "checkpoints" / "last.pt", "last")
+
+    def _append_history(self, metrics: EpochMetrics) -> None:
+        path = self.run_dir / "training" / "history.jsonl"
+        path.parent.mkdir(parents=True, exist_ok=True)
+        with path.open("a", encoding="utf-8", newline="\n") as destination:
+            destination.write(json.dumps(asdict(metrics), sort_keys=True) + "\n")
+            destination.flush()
+            os.fsync(destination.fileno())
+
+    def _write_terminal_summary(
+        self,
+        *,
+        action: TerminalAction,
+        reason: str,
+        epochs_completed: int,
+    ) -> None:
+        path = self.run_dir / "training" / "summary.json"
+        path.parent.mkdir(parents=True, exist_ok=True)
+        temporary = path.with_suffix(".json.tmp")
+        temporary.write_text(
+            json.dumps(
+                {
+                    "epochs_completed": epochs_completed,
+                    "terminal_action": action.value,
+                    "terminal_reason": reason,
+                    "stop_reason": reason,
+                },
+                indent=2,
+                sort_keys=True,
+            ),
+            encoding="utf-8",
+        )
+        os.replace(temporary, path)
+
+    def _write_training_summary(
+        self,
+        *,
+        stopping: EarlyStoppingController,
+        history: list[EpochMetrics],
+        action: TerminalAction,
+        reason: str,
+    ) -> None:
+        """Write the complete terminal summary atomically."""
+        path = self.run_dir / "training" / "summary.json"
+        path.parent.mkdir(parents=True, exist_ok=True)
+        temporary = path.with_suffix(".json.tmp")
+        temporary.write_text(
+            json.dumps(
+                {
+                    "best_epoch": stopping.selected_epoch,
+                    "best_val_ndcg_at_k": stopping.selected_ndcg,
+                    "best_val_gauc": stopping.selected_gauc,
+                    "best_val_hr_at_k": stopping.selected_hr,
+                    "epochs_completed": len(history),
+                    "stop_reason": reason,
+                    "terminal_reason": reason,
+                    "terminal_action": action.value,
+                },
+                indent=2,
+                sort_keys=True,
+            ),
+            encoding="utf-8",
+        )
+        with temporary.open("r+b") as handle:
+            handle.flush()
+            os.fsync(handle.fileno())
+        os.replace(temporary, path)
+
+    def fit(
+        self,
+        train_loader: Any,
+        snapshot: Snapshot,
+        embeddings: np.ndarray,
+        val_evaluator: ValidationEvaluator | None,
+        lineage: dict[str, str],
+        *,
+        resume_from: Path | None = None,
+    ) -> TrainResult:
+        if val_evaluator is None:
+            raise ModelTrainingError("validation evaluator is mandatory")
+        required_lineage = {"snapshot", "embedding", "rules"}
+        if set(lineage) != required_lineage:
+            raise ModelTrainingError("training lineage must contain snapshot, embedding, and rules")
+        if embeddings is None or embeddings.shape != (
+            snapshot.manifest.num_items,
+            self.settings.model.sbert_dim,
+        ):
+            raise ModelTrainingError("SBERT artifact is missing or has the wrong shape")
+        if not np.isfinite(embeddings).all():
+            raise CatastrophicTrainingError("SBERT artifact contains NaN or Inf")
+
+        prepared_split = prepare_split(snapshot, SplitName.VAL)
+        catalog = self._prepare_catalog(snapshot, embeddings)
+        stopping = EarlyStoppingController(
+            patience=self.settings.train.early_stopping_patience,
+            min_delta=self.settings.train.min_delta,
+            minimum_gauc=0.50,
+            max_wall_minutes=self.settings.train.max_wall_minutes,
+        )
         best_path = self.run_dir / "checkpoints" / "best.pt"
         config_sha = _settings_sha256(self.settings)
         run_id = self.run_dir.name
@@ -308,625 +1131,140 @@ class Trainer:
         scaler = GradScaler("cuda", enabled=amp_enabled)
         self.scheduler = self._build_scheduler(len(train_loader))
         global_step = 0
-        stop_reason = "max_epochs"
-        started_training = time.perf_counter()
+        history: list[EpochMetrics] = []
         start_epoch = 1
+        started_training = time.perf_counter()
+        started_at = datetime.now(UTC)
+
         if resume_from is not None:
-            if resume_from.resolve() != (self.run_dir / "checkpoints" / "last.pt").resolve():
-                raise ModelTrainingError("resume must use this run's last.pt checkpoint")
-            state = CheckpointManager.load(
+            resume_state = self._restore_resume_state(
                 resume_from,
-                model=self.model,
-                optimizer=self.optimizer,
-                scheduler=self.scheduler,
+                best_path=best_path,
+                lineage=lineage,
+                config_sha=config_sha,
+                stopping=stopping,
                 scaler=scaler,
-                expected_lineage=lineage,
-                expected_training_signature=config_sha,
-                expected_model_schema_version=MODEL_SCHEMA_VERSION,
-                restore_rng=True,
             )
-            start_epoch = int(state["epoch"]) + 1
-            history_path = self.run_dir / "training" / "history.jsonl"
-            if not history_path.is_file():
-                raise ModelTrainingError("resume checkpoint has no durable training history")
-            history = [
-                EpochMetrics(**json.loads(line))
-                for line in history_path.read_text(encoding="utf-8").splitlines()
-                if line.strip()
-            ]
-            if not history or history[-1].epoch != int(state["epoch"]):
-                raise ModelTrainingError("resume history and checkpoint epochs differ")
-            best_rows = [row for row in history if row.is_best]
-            if not best_rows:
-                # Runs created before diagnostic/release checkpoint separation
-                # may have no guardrail-qualified best.  The loaded last.pt is
-                # still an exact resumable model and becomes the bootstrap best.
-                best_row = history[-1]
-                CheckpointManager.save(
-                    best_path,
-                    model=self.model,
-                    optimizer=self.optimizer,
-                    scheduler=self.scheduler,
-                    epoch=best_row.epoch,
-                    metrics={
-                        "val_gauc": best_row.val_gauc,
-                        "val_ndcg_at_k": best_row.val_ndcg_at_k,
-                        "train_loss": best_row.train_loss,
-                    },
-                    lineage=lineage,
-                    training_signature_sha256=config_sha,
-                    model_schema_version=MODEL_SCHEMA_VERSION,
-                    run_id=run_id,
-                    scaler=scaler,
-                )
-            else:
-                if not best_path.is_file():
-                    raise ModelTrainingError("resume history references a missing best checkpoint")
-                best_row = best_rows[-1]
-            best_epoch = best_row.epoch
-            best_gauc = best_row.val_gauc
-            best_ndcg = best_row.val_ndcg_at_k
-            no_improvement = history[-1].epoch - best_epoch
-            global_step = history[-1].global_step
-            started_training -= history[-1].elapsed_seconds
-            if start_epoch > self.settings.train.max_epochs:
-                stop_reason = "already_complete"
-            for row in history:
-                pareto_path = self.run_dir / "checkpoints" / "pareto" / f"epoch-{row.epoch:03d}.pt"
-                if row.checkpoint_guardrails_passed and pareto_path.is_file():
-                    pareto_frontier.append(
-                        (row.val_ndcg_at_k, row.val_gauc, row.val_hr_at_k, pareto_path)
-                    )
+            start_epoch = resume_state.start_epoch
+            global_step = resume_state.global_step
+            history = list(resume_state.history)
+            started_training -= resume_state.elapsed_seconds
+            started_at -= timedelta(seconds=resume_state.elapsed_seconds)
+
+        deep_wide_baseline = tuple(
+            parameter.detach().clone() for parameter in self.model.wide_layer.parameters()
+        )
+        runtime = _TrainingRuntime(
+            catalog=catalog,
+            scaler=scaler,
+            stopping=stopping,
+            started_at=started_at,
+            started_training=started_training,
+            deep_wide_baseline=deep_wide_baseline,
+        )
         if amp_enabled:
             torch.cuda.reset_peak_memory_stats(self.device)
+        self._assert_parameters_finite(stage="before training")
 
-        for epoch in range(start_epoch, self.settings.train.max_epochs + 1):
-            self.model.train()
-            if hasattr(train_loader, "set_epoch"):
-                train_loader.set_epoch(epoch)
-            dataset = getattr(train_loader, "dataset", None)
-            if dataset is not None and hasattr(dataset, "set_epoch"):
-                dataset.set_epoch(epoch)
-            weighted_loss_sum = 0.0
-            sample_count = 0
-            purchase_loss_sum = 0.0
-            purchase_weight = 0.0
-            view_loss_sum = 0.0
-            view_weight = 0.0
-            pair_correct = 0.0
-            all_negative_wins = 0
-            candidate_pairs = 0
-            margins: list[np.ndarray] = []
-            positive_logits: list[np.ndarray] = []
-            negative_logits: list[np.ndarray] = []
-            present_count = 0
-            candidate_count = 0
-            epoch_gradient_norm = 0.0
-            user_gradient_norm = 0.0
-            item_gradient_norm = 0.0
-            wide_gradient_norm = 0.0
-            data_wait_seconds = 0.0
-            epoch_started = time.perf_counter()
-            previous_batch_finished = epoch_started
-            gpu_utilization: list[float] = []
-            for batch in train_loader:
-                data_wait_seconds += time.perf_counter() - previous_batch_finished
-                self.optimizer.zero_grad(set_to_none=True)
-                if isinstance(batch, PurchaseBatch):
-                    if self.settings.train.objective != "sampled_softmax":
-                        raise ModelTrainingError(
-                            "purchase batches require the sampled_softmax objective"
-                        )
-                    users = batch.user_idx.to(self.device)
-                    personas = batch.persona_idx.to(self.device)
-                    positive_ids = batch.positive_item_idx.to(self.device)
-                    negative_ids = batch.explicit_negative_idx.to(self.device)
-                    history_ids = batch.history_item_idx.to(self.device)
-                    history_mask = batch.history_mask.to(self.device)
-                    history_age_days = batch.history_age_days.to(self.device)
-                    positive_mask = batch.positive_mask.to(self.device)
-                    denominator_mask = batch.denominator_mask.to(self.device)
-                    confidence = batch.confidence.to(self.device)
-                    with autocast(device_type=self.device.type, enabled=amp_enabled):
-                        positive_vectors = self.model.encode_items(
-                            sbert_catalog[positive_ids],
-                            category_catalog[positive_ids],
-                            price_catalog[positive_ids],
-                            item_idx=positive_ids,
-                            is_cold=cold_catalog[positive_ids],
-                        )
-                        negative_vectors = self.model.encode_items(
-                            sbert_catalog[negative_ids],
-                            category_catalog[negative_ids],
-                            price_catalog[negative_ids],
-                            item_idx=negative_ids,
-                            is_cold=cold_catalog[negative_ids],
-                        )
-                        safe_history_ids = history_ids.clamp_min(0)
-                        history_item_vectors = self.model.encode_items(
-                            sbert_catalog[safe_history_ids],
-                            category_catalog[safe_history_ids],
-                            price_catalog[safe_history_ids],
-                            item_idx=safe_history_ids,
-                            is_cold=cold_catalog[safe_history_ids],
-                        )
-                        if self.settings.train.use_history_profiles:
-                            history_vector, history_present = self.model.encode_history(
-                                history_item_vectors,
-                                history_mask,
-                                history_age_days,
-                            )
-                        else:
-                            history_vector = torch.zeros(
-                                (len(users), self.settings.model.item_emb_dim),
-                                dtype=history_item_vectors.dtype,
-                                device=self.device,
-                            )
-                            history_present = torch.zeros(
-                                len(users), dtype=torch.bool, device=self.device
-                            )
-                        user_vectors = self.model.encode_user(
-                            users,
-                            personas,
-                            history_vector=history_vector,
-                            history_present=history_present,
-                        )
-                        objective = multi_positive_sampled_softmax(
-                            user_vectors,
-                            positive_vectors,
-                            negative_vectors,
-                            positive_mask=positive_mask,
-                            denominator_mask=denominator_mask,
-                            confidence=confidence,
-                            temperature=self.model._temperature,
-                        )
-                        purchase_objective_loss = objective.loss
-                        auxiliary_view_loss = torch.zeros((), device=self.device)
-                        if self.settings.train.view_auxiliary_weight > 0 and len(
-                            train_loader.index.view_only_pairs
-                        ):
-                            view_pairs = train_loader.index.view_only_pairs
-                            auxiliary_rng = np.random.default_rng(
-                                np.random.SeedSequence(
-                                    [self.settings.train.seed, epoch, global_step, 17]
-                                )
-                            )
-                            selected_views = auxiliary_rng.choice(
-                                len(view_pairs),
-                                size=len(users),
-                                replace=len(view_pairs) < len(users),
-                            )
-                            view_users_np = view_pairs[selected_views, 0]
-                            view_items_np = view_pairs[selected_views, 1]
-                            view_negatives_np = train_loader.sampler.sample(
-                                view_users_np,
-                                view_items_np,
-                                epoch=epoch,
-                                batch_index=global_step + 1_000_000,
-                            )
-                            view_users = torch.from_numpy(view_users_np).to(self.device)
-                            view_items = torch.from_numpy(view_items_np).to(self.device)
-                            view_negatives = torch.from_numpy(view_negatives_np).to(self.device)
-                            view_positive_vectors = self.model.encode_items(
-                                sbert_catalog[view_items],
-                                category_catalog[view_items],
-                                price_catalog[view_items],
-                                item_idx=view_items,
-                                is_cold=cold_catalog[view_items],
-                            )
-                            view_negative_vectors = self.model.encode_items(
-                                sbert_catalog[view_negatives],
-                                category_catalog[view_negatives],
-                                price_catalog[view_negatives],
-                                item_idx=view_negatives,
-                                is_cold=cold_catalog[view_negatives],
-                            )
-                            view_user_vectors = self.model.encode_user(
-                                view_users,
-                                torch.from_numpy(persona_by_internal[view_users_np]).to(
-                                    self.device
-                                ),
-                            )
-                            view_positive_mask = train_loader.index.known_history[
-                                view_users_np[:, None], view_items_np[None, :]
-                            ]
-                            view_denominator_mask = ~view_positive_mask
-                            view_denominator_mask |= view_positive_mask
-                            view_objective = multi_positive_sampled_softmax(
-                                view_user_vectors,
-                                view_positive_vectors,
-                                view_negative_vectors,
-                                positive_mask=torch.from_numpy(view_positive_mask).to(self.device),
-                                denominator_mask=torch.from_numpy(view_denominator_mask).to(
-                                    self.device
-                                ),
-                                confidence=torch.ones(len(view_users), device=self.device),
-                                temperature=self.model._temperature,
-                            )
-                            auxiliary_view_loss = view_objective.loss
-                        loss = purchase_objective_loss + (
-                            self.settings.train.view_auxiliary_weight * auxiliary_view_loss
-                        )
-                    with torch.no_grad():
-                        in_batch = (
-                            torch.matmul(user_vectors, positive_vectors.T) / self.model._temperature
-                        )
-                        explicit = (
-                            torch.einsum("bd,brd->br", user_vectors, negative_vectors)
-                            / self.model._temperature
-                        )
-                        target_scores = in_batch.diagonal()
-                        in_batch_valid = denominator_mask & ~positive_mask
-                        valid_scores = torch.cat(
-                            (
-                                in_batch.masked_fill(~in_batch_valid, -torch.inf),
-                                explicit,
-                            ),
-                            dim=1,
-                        )
-                        valid = torch.isfinite(valid_scores)
-                        comparisons = target_scores[:, None] > valid_scores
-                        pair_correct += float(comparisons[valid].sum().cpu())
-                        candidate_pairs += int(valid.sum().cpu())
-                        all_negative_wins += int(
-                            torch.where(valid, comparisons, torch.ones_like(comparisons))
-                            .all(dim=1)
-                            .sum()
-                            .cpu()
-                        )
-                        if sum(len(values) for values in margins) < 8_192:
-                            margins.append(
-                                (target_scores - valid_scores.max(dim=1).values)
-                                .float()
-                                .cpu()
-                                .numpy()
-                            )
-                            positive_logits.append(target_scores.float().cpu().numpy())
-                            negative_logits.append(valid_scores[valid].float().cpu().numpy())
-                    count = len(users)
-                    purchase_loss_sum += float(purchase_objective_loss.detach()) * count
-                    purchase_weight += float(count)
-                    if self.settings.train.view_auxiliary_weight > 0:
-                        view_loss_sum += float(auxiliary_view_loss.detach()) * count
-                        view_weight += float(count)
-                elif isinstance(batch, TrainingBatch):
-                    if self.settings.train.objective not in {"legacy_bce", "purchase_bce"}:
-                        raise ModelTrainingError(
-                            "legacy candidate batches require the legacy_bce objective"
-                        )
-                    candidate_ids = batch.candidate_item_idx.to(self.device)
-                    users = batch.user_idx.to(self.device)
-                    personas = batch.persona_idx.to(self.device)
-                    wide = batch.wide_values.to(self.device)
-                    present = batch.rule_present.to(self.device)
-                    labels = batch.labels.to(self.device)
-                    sample_weight = batch.sample_weight.to(self.device)
-                    with autocast(device_type=self.device.type, enabled=amp_enabled):
-                        logits = self.model(
-                            users,
-                            personas,
-                            sbert_catalog[candidate_ids],
-                            category_catalog[candidate_ids],
-                            price_catalog[candidate_ids],
-                            wide,
-                            present,
-                            ModelVariant.HYBRID,
-                            item_idx=candidate_ids,
-                            is_cold=cold_catalog[candidate_ids],
-                        )
-                        if not bool(torch.isfinite(logits).all()):
-                            raise ModelTrainingError("training logits contain NaN or Inf")
-                        per_candidate = self.loss_function(logits, labels)
-                        per_sample = per_candidate.mean(dim=1)
-                        loss = (per_sample * sample_weight).sum() / sample_weight.sum()
-                    with torch.no_grad():
-                        positive = logits[:, :1]
-                        negatives = logits[:, 1:]
-                        comparisons = positive > negatives
-                        pair_correct += float(comparisons.sum().cpu())
-                        candidate_pairs += int(comparisons.numel())
-                        all_negative_wins += int(comparisons.all(dim=1).sum().cpu())
-                        if sum(len(values) for values in margins) < 8_192:
-                            margins.append(
-                                (positive[:, 0] - negatives.max(dim=1).values).cpu().numpy()
-                            )
-                            positive_logits.append(positive[:, 0].float().cpu().numpy())
-                            negative_logits.append(negatives.float().cpu().numpy().reshape(-1))
-                        present_count += int(present.sum().cpu())
-                        candidate_count += int(present.numel())
-                        purchase_rows = batch.is_purchase.to(self.device)
-                        view_rows = ~purchase_rows
-                        if bool(purchase_rows.any()):
-                            weights = sample_weight[purchase_rows]
-                            purchase_loss_sum += float(
-                                (per_sample[purchase_rows] * weights).sum().cpu()
-                            )
-                            purchase_weight += float(weights.sum().cpu())
-                        if bool(view_rows.any()):
-                            weights = sample_weight[view_rows]
-                            view_loss_sum += float((per_sample[view_rows] * weights).sum().cpu())
-                            view_weight += float(weights.sum().cpu())
-                    count = len(users)
-                else:
-                    raise ModelTrainingError(
-                        f"unsupported training batch type: {type(batch).__name__}"
-                    )
-                if not bool(torch.isfinite(loss)):
-                    raise ModelTrainingError("training loss contains NaN or Inf")
-                scaler.scale(loss).backward()  # type: ignore[no-untyped-call]
-                scaler.unscale_(self.optimizer)
-                user_gradient_norm = max(
-                    user_gradient_norm, _module_gradient_norm(self.model.user_tower)
-                )
-                item_gradient_norm = max(
-                    item_gradient_norm, _module_gradient_norm(self.model.item_tower)
-                )
-                wide_gradient_norm = max(
-                    wide_gradient_norm, _module_gradient_norm(self.model.wide_layer)
-                )
-                gradient_norm = nn.utils.clip_grad_norm_(
-                    self.model.parameters(), self.settings.train.max_grad_norm
-                )
-                if not bool(torch.isfinite(gradient_norm)):
-                    raise ModelTrainingError("gradient norm contains NaN or Inf")
-                scaler.step(self.optimizer)
-                scaler.update()
-                self.scheduler.step()
-                global_step += 1
-                weighted_loss_sum += float(loss.detach()) * count
-                sample_count += count
-                epoch_gradient_norm = max(epoch_gradient_norm, float(gradient_norm))
-                if amp_enabled:
-                    try:
-                        gpu_utilization.append(float(torch.cuda.utilization(self.device)))
-                    except (RuntimeError, OSError, ImportError):
-                        pass
-                previous_batch_finished = time.perf_counter()
-            if sample_count == 0:
-                raise ModelTrainingError("training loader produced no samples")
-            train_loss = weighted_loss_sum / sample_count
-            if hasattr(val_evaluator, "evaluate_variants"):
-                variants = cast(Any, val_evaluator).evaluate_variants(
-                    self.model,
-                    snapshot,
-                    split=SplitName.VAL,
-                    k=self.settings.eval.k,
-                    variants=(
-                        ModelVariant.HYBRID,
-                        ModelVariant.DEEP_ONLY,
-                        ModelVariant.WIDE_ONLY,
-                    ),
-                    device=self.device,
-                )
-                report = variants[ModelVariant.HYBRID].report
-                deep_report = variants[ModelVariant.DEEP_ONLY].report
-                wide_report = variants[ModelVariant.WIDE_ONLY].report
-            else:
-                validation = val_evaluator.evaluate(
-                    self.model,
-                    snapshot,
-                    split=SplitName.VAL,
-                    k=self.settings.eval.k,
-                    variant=ModelVariant.HYBRID,
-                    device=self.device,
-                )
-                report = getattr(validation, "report", validation)
-                deep_report = report
-                wide_report = report
-            val_gauc = float(report.gauc)
-            val_ndcg = float(report.ndcg_at_k)
-            if not np.isfinite(val_gauc) or not np.isfinite(val_ndcg):
-                raise ModelTrainingError("validation metrics are not finite")
-            ndcg_improved = val_ndcg > best_ndcg + self.settings.train.min_delta
-            ndcg_tied = abs(val_ndcg - best_ndcg) <= self.settings.train.min_delta
-            guardrails_passed = (
-                val_gauc >= float(deep_report.gauc) + self.settings.eval.gauc_guardrail_delta
-                and val_ndcg
-                >= max(float(deep_report.ndcg_at_k), float(wide_report.ndcg_at_k))
-                + self.settings.eval.ndcg_guardrail_delta
-            )
-            # Ablations must retain their best validation checkpoint even when
-            # they intentionally fail release guardrails.  Release eligibility
-            # remains a separate measured field and is enforced downstream.
-            is_best = ndcg_improved or (ndcg_tied and val_gauc > best_gauc)
-            if is_best:
-                best_gauc = val_gauc
-                best_ndcg = val_ndcg
-                best_epoch = epoch
-                no_improvement = 0
-                CheckpointManager.save(
-                    best_path,
-                    model=self.model,
-                    optimizer=self.optimizer,
-                    scheduler=self.scheduler,
+        terminal_action = TerminalAction.COMPLETED
+        stop_reason = "maximum epochs completed"
+        try:
+            for epoch in range(start_epoch, self.settings.train.max_epochs + 1):
+                training = self._train_epoch(
                     epoch=epoch,
-                    metrics={
-                        "val_gauc": val_gauc,
-                        "val_ndcg_at_k": val_ndcg,
-                        "train_loss": train_loss,
-                    },
+                    global_step=global_step,
+                    train_loader=train_loader,
+                    runtime=runtime,
+                )
+                global_step = training.global_step
+                validation = self._validate_epoch(
+                    val_evaluator,
+                    snapshot,
+                    prepared_split,
+                    train_loader,
+                )
+                val_gauc = float(validation.hybrid_report.gauc)
+                val_ndcg = float(validation.hybrid_report.ndcg_at_k)
+                val_hr = float(validation.hybrid_report.hr_at_k)
+                decision = stopping.evaluate(
+                    epoch,
+                    val_gauc,
+                    val_ndcg,
+                    val_hr,
+                    start_time=started_at,
+                    current_time=datetime.now(UTC),
+                )
+                if decision.terminal_action is TerminalAction.FAILED:
+                    raise CatastrophicTrainingError(decision.reason)
+                if decision.terminal_action is TerminalAction.INTERRUPTED:
+                    raise TrainingInterruptedError(decision.reason)
+                metrics = self._build_epoch_metrics(
+                    training=training,
+                    validation=validation,
+                    decision=decision,
+                    stopping=stopping,
+                )
+                self._publish_epoch_checkpoints(
+                    metrics=metrics,
+                    decision=decision,
                     lineage=lineage,
-                    training_signature_sha256=config_sha,
-                    model_schema_version=MODEL_SCHEMA_VERSION,
+                    config_sha=config_sha,
                     run_id=run_id,
                     scaler=scaler,
+                    stopping=stopping,
                 )
-            else:
-                no_improvement += 1
-            point = (val_ndcg, val_gauc, float(report.hr_at_k))
-            dominated = any(
-                existing[0] >= point[0]
-                and existing[1] >= point[1]
-                and existing[2] >= point[2]
-                and (existing[0] > point[0] or existing[1] > point[1] or existing[2] > point[2])
-                for existing in pareto_frontier
+                history.append(metrics)
+                self._append_history(metrics)
+                terminal_action = metrics.terminal_action
+                stop_reason = metrics.stopping_reason
+                if decision.terminal_action is TerminalAction.STOP_PLATEAU:
+                    break
+        except CatastrophicTrainingError as error:
+            reason = str(error) or type(error).__name__
+            self._write_terminal_summary(
+                action=TerminalAction.FAILED,
+                reason=reason,
+                epochs_completed=len(history),
             )
-            if guardrails_passed and not dominated:
-                retained: list[tuple[float, float, float, Path]] = []
-                for existing in pareto_frontier:
-                    is_dominated = (
-                        point[0] >= existing[0]
-                        and point[1] >= existing[1]
-                        and point[2] >= existing[2]
-                        and (
-                            point[0] > existing[0]
-                            or point[1] > existing[1]
-                            or point[2] > existing[2]
-                        )
-                    )
-                    if is_dominated:
-                        existing[3].unlink(missing_ok=True)
-                        existing[3].with_suffix(".pt.manifest.json").unlink(missing_ok=True)
-                    else:
-                        retained.append(existing)
-                pareto_path = self.run_dir / "checkpoints" / "pareto" / f"epoch-{epoch:03d}.pt"
-                CheckpointManager.save(
-                    pareto_path,
-                    model=self.model,
-                    optimizer=self.optimizer,
-                    scheduler=self.scheduler,
-                    scaler=scaler,
-                    epoch=epoch,
-                    metrics={
-                        "val_gauc": val_gauc,
-                        "val_ndcg_at_k": val_ndcg,
-                        "train_loss": train_loss,
-                    },
-                    lineage=lineage,
-                    training_signature_sha256=config_sha,
-                    model_schema_version=MODEL_SCHEMA_VERSION,
-                    run_id=run_id,
-                )
-                pareto_frontier = [*retained, (*point, pareto_path)]
-                pareto_frontier.sort(key=lambda value: value[:3], reverse=True)
-                for discarded in pareto_frontier[3:]:
-                    discarded[3].unlink(missing_ok=True)
-                    discarded[3].with_suffix(".pt.manifest.json").unlink(missing_ok=True)
-                pareto_frontier = pareto_frontier[:3]
-            margin_values = np.concatenate(margins) if margins else np.asarray([0.0])
-            positive_values = (
-                np.concatenate(positive_logits) if positive_logits else np.asarray([0.0])
+            raise
+        except TrainingInterruptedError as error:
+            reason = str(error) or type(error).__name__
+            self._write_terminal_summary(
+                action=TerminalAction.INTERRUPTED,
+                reason=reason,
+                epochs_completed=len(history),
             )
-            negative_values = (
-                np.concatenate(negative_logits) if negative_logits else np.asarray([0.0])
-            )
-            epoch_duration = max(time.perf_counter() - epoch_started, np.finfo(float).eps)
-            metrics = EpochMetrics(
-                epoch=epoch,
-                global_step=global_step,
-                train_loss=train_loss,
-                purchase_loss=purchase_loss_sum / max(1, purchase_weight),
-                view_loss=view_loss_sum / max(1, view_weight),
-                wide_loss=0.0,
-                val_gauc=val_gauc,
-                val_hr_at_k=float(report.hr_at_k),
-                val_ndcg_at_k=val_ndcg,
-                val_deep_gauc=float(deep_report.gauc),
-                val_deep_ndcg_at_k=float(deep_report.ndcg_at_k),
-                val_wide_gauc=float(wide_report.gauc),
-                val_wide_ndcg_at_k=float(wide_report.ndcg_at_k),
-                checkpoint_guardrails_passed=guardrails_passed,
-                learning_rate=float(self.optimizer.param_groups[0]["lr"]),
-                sampled_pair_accuracy=pair_correct / max(1, candidate_pairs),
-                all_negative_win_rate=all_negative_wins / sample_count,
-                margin_p10=float(np.quantile(margin_values, 0.1)),
-                margin_p50=float(np.quantile(margin_values, 0.5)),
-                margin_p90=float(np.quantile(margin_values, 0.9)),
-                gradient_norm=epoch_gradient_norm,
-                user_tower_gradient_norm=user_gradient_norm,
-                item_tower_gradient_norm=item_gradient_norm,
-                wide_gradient_norm=wide_gradient_norm,
-                positive_logit_p10=float(np.quantile(positive_values, 0.1)),
-                positive_logit_p50=float(np.quantile(positive_values, 0.5)),
-                positive_logit_p90=float(np.quantile(positive_values, 0.9)),
-                negative_logit_p10=float(np.quantile(negative_values, 0.1)),
-                negative_logit_p50=float(np.quantile(negative_values, 0.5)),
-                negative_logit_p90=float(np.quantile(negative_values, 0.9)),
-                rule_present_rate=present_count / max(1, candidate_count),
-                elapsed_seconds=time.perf_counter() - started_training,
-                peak_ram_bytes=_peak_resident_bytes(),
-                peak_vram_bytes=(
-                    int(torch.cuda.max_memory_allocated(self.device)) if amp_enabled else 0
-                ),
-                gpu_utilization_median=(
-                    float(np.median(gpu_utilization)) if gpu_utilization else 0.0
-                ),
-                data_wait_ratio=data_wait_seconds / epoch_duration,
-                is_best=is_best,
-                early_peak_warning=best_epoch <= 2 and epoch >= 2,
-            )
-            history.append(metrics)
-            self._append_history(metrics)
-            CheckpointManager.save(
-                self.run_dir / "checkpoints" / "last.pt",
-                model=self.model,
-                optimizer=self.optimizer,
-                scheduler=self.scheduler,
-                epoch=epoch,
-                metrics={
-                    "val_gauc": val_gauc,
-                    "val_ndcg_at_k": val_ndcg,
-                    "train_loss": train_loss,
-                },
-                lineage=lineage,
-                training_signature_sha256=config_sha,
-                model_schema_version=MODEL_SCHEMA_VERSION,
-                run_id=run_id,
-                scaler=scaler,
-            )
-            if (
-                isinstance(train_loader, PurchaseBatchIterator)
-                and epoch < self.settings.train.max_epochs
-            ):
-                self.model.eval()
-                refreshed_items = self.model.encode_items(
-                    sbert_catalog,
-                    category_catalog,
-                    price_catalog,
-                    item_idx=torch.arange(
-                        snapshot.manifest.num_items,
-                        dtype=torch.int64,
-                        device=self.device,
-                    ),
-                    is_cold=cold_catalog,
-                )
-                self._refresh_model_hard_cache(train_loader, snapshot, refreshed_items)
-            if no_improvement >= self.settings.train.early_stopping_patience:
-                stop_reason = "early_stopping"
-                break
+            raise
+
+        if start_epoch > self.settings.train.max_epochs and history:
+            terminal_action = TerminalAction.COMPLETED
+            stop_reason = "already_complete"
         if not best_path.exists():
             raise ModelTrainingError("training did not produce a best checkpoint")
-        summary_path = self.run_dir / "training" / "summary.json"
-        summary_temporary = summary_path.with_suffix(".json.tmp")
-        summary_temporary.write_text(
-            json.dumps(
-                {
-                    "best_epoch": best_epoch,
-                    "best_val_ndcg_at_k": best_ndcg,
-                    "best_val_gauc": best_gauc,
-                    "epochs_completed": len(history),
-                    "stop_reason": stop_reason,
-                    "pareto_checkpoints": [str(value[3]) for value in pareto_frontier],
-                },
-                indent=2,
-                sort_keys=True,
-            ),
-            encoding="utf-8",
+        self._write_training_summary(
+            stopping=stopping,
+            history=history,
+            action=terminal_action,
+            reason=stop_reason,
         )
-        os.replace(summary_temporary, summary_path)
         CheckpointManager.load(
             best_path,
             model=self.model,
             expected_lineage=lineage,
             expected_training_signature=config_sha,
+            expected_comparison_signature=self.settings.comparison_signature_sha256(),
             expected_model_schema_version=MODEL_SCHEMA_VERSION,
+            expected_checkpoint_kind="best",
         )
         return TrainResult(
-            run_id,
-            best_epoch,
-            best_gauc,
-            best_ndcg,
-            tuple(history),
-            best_path,
-            stop_reason,
+            run_id=run_id,
+            best_epoch=stopping.selected_epoch,
+            best_gauc=stopping.selected_gauc,
+            best_ndcg_at_k=stopping.selected_ndcg,
+            best_hr_at_k=stopping.selected_hr,
+            history=tuple(history),
+            checkpoint_path=best_path,
+            stop_reason=stop_reason,
+            terminal_action=terminal_action,
+            terminal_reason=stop_reason,
         )

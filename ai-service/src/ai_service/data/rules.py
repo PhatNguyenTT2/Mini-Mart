@@ -4,6 +4,9 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
+import shutil
+import tempfile
 from collections import Counter
 from collections.abc import Sequence
 from dataclasses import dataclass
@@ -168,6 +171,13 @@ class RuleArtifact:
     manifest: RuleManifest
     artifact_dir: Path
 
+    def require_training_capability(self) -> RuleStore:
+        if not getattr(self.manifest, "has_full_statistics", False):
+            raise ArtifactIntegrityError(
+                "rule artifact missing full statistics required for training"
+            )
+        return self.store
+
 
 class AprioriRuleMiner:
     def __init__(self, settings: Settings):
@@ -223,7 +233,22 @@ class AprioriRuleMiner:
             )
         )
         checksum = hashlib.sha256(payload).hexdigest()
-        artifact_id = artifact_id or f"{snapshot.manifest.artifact_id}-rules-{checksum[:12]}"
+        identity = hashlib.sha256(
+            json.dumps(
+                {
+                    "artifact_kind": "rule-v2-fullstats",
+                    "snapshot_sha256": snapshot.manifest.content_sha256,
+                    "content_sha256": checksum,
+                    "feature_schema_version": "2.0.0",
+                    "has_full_statistics": True,
+                    "min_count": self.settings.data.min_rule_count,
+                    "min_lift": self.settings.data.min_rule_lift,
+                },
+                sort_keys=True,
+                separators=(",", ":"),
+            ).encode("utf-8")
+        ).hexdigest()
+        artifact_id = artifact_id or f"{snapshot.manifest.artifact_id}-rules-v2-{identity[:12]}"
         manifest = RuleManifest(
             artifact_id=artifact_id,
             content_sha256=checksum,
@@ -234,57 +259,174 @@ class AprioriRuleMiner:
             min_count=self.settings.data.min_rule_count,
             min_lift=self.settings.data.min_rule_lift,
             q99_log_lift=store.q99_log_lift,
+            feature_schema_version="2.0.0",
+            has_full_statistics=True,
         )
         destination = self.settings.data.artifact_root.resolve() / "rules" / artifact_id
         if destination.exists():
             raise ArtifactIntegrityError(f"immutable rule artifact exists: {destination}")
-        destination.mkdir(parents=True)
-        np.savez_compressed(
-            destination / "rules.npz",
-            crow_indices=store.crow_indices.numpy(),
-            col_indices=store.col_indices.numpy(),
-            values=store.values.numpy(),
-            features=store.features.numpy(),
-            raw_lifts=store.raw_lifts.numpy(),
-            supports=store.supports.numpy(),
-            confidences=store.confidences.numpy(),
-            counts=store.counts.numpy(),
-        )
-        (destination / "manifest.json").write_text(
-            json.dumps(manifest.model_dump(mode="json"), indent=2), encoding="utf-8"
-        )
+        root = destination.parent
+        root.mkdir(parents=True, exist_ok=True)
+        temporary = Path(tempfile.mkdtemp(prefix=f".{artifact_id}-", dir=root))
+        try:
+            np.savez_compressed(
+                temporary / "rules.npz",
+                crow_indices=store.crow_indices.numpy(),
+                col_indices=store.col_indices.numpy(),
+                values=store.values.numpy(),
+                features=store.features.numpy(),
+                raw_lifts=store.raw_lifts.numpy(),
+                supports=store.supports.numpy(),
+                confidences=store.confidences.numpy(),
+                counts=store.counts.numpy(),
+            )
+            for filename in ("rules.npz",):
+                with (temporary / filename).open("r+b") as handle:
+                    os.fsync(handle.fileno())
+            manifest_path = temporary / "manifest.json"
+            with manifest_path.open("w", encoding="utf-8", newline="\n") as handle:
+                json.dump(manifest.model_dump(mode="json"), handle, indent=2)
+                handle.flush()
+                os.fsync(handle.fileno())
+            # Validate the complete temporary artifact before exposing it.
+            load_rule_artifact(temporary, snapshot.manifest.num_items)
+            if destination.exists():
+                raise ArtifactIntegrityError(f"immutable rule artifact exists: {destination}")
+            os.replace(temporary, destination)
+        except Exception:
+            shutil.rmtree(temporary, ignore_errors=True)
+            raise
         return RuleArtifact(store=store, manifest=manifest, artifact_dir=destination)
 
 
 def load_rule_artifact(path: Path, num_items: int) -> RuleArtifact:
-    manifest = RuleManifest.model_validate_json(
-        (path / "manifest.json").read_text(encoding="utf-8")
-    )
-    arrays = np.load(path / "rules.npz")
-    statistic_names = ("features", "raw_lifts", "supports", "confidences", "counts")
-    names = ("crow_indices", "col_indices", "values") + (
-        statistic_names if all(name in arrays for name in statistic_names) else ()
-    )
-    payload = b"".join(arrays[name].tobytes() for name in names)
-    if hashlib.sha256(payload).hexdigest() != manifest.content_sha256:
-        raise ArtifactIntegrityError("rule artifact checksum mismatch")
-    rows = np.repeat(np.arange(num_items), np.diff(arrays["crow_indices"]))
-    lifts = np.expm1(arrays["values"] * manifest.q99_log_lift)
-    if "features" in arrays:
-        pairs = list(
-            zip(
-                rows.tolist(),
-                arrays["col_indices"].tolist(),
-                arrays["raw_lifts"].tolist(),
-                arrays["supports"].tolist(),
-                arrays["confidences"].tolist(),
-                arrays["counts"].tolist(),
-                strict=True,
-            )
+    try:
+        manifest = RuleManifest.model_validate_json(
+            (path / "manifest.json").read_text(encoding="utf-8")
         )
-    else:
-        pairs = list(
-            zip(rows.tolist(), arrays["col_indices"].tolist(), lifts.tolist(), strict=True)
+    except (OSError, ValueError) as error:
+        raise ArtifactIntegrityError("rule manifest cannot be loaded") from error
+    if set(manifest.parent_sha256) != {"snapshot"}:
+        raise ArtifactIntegrityError("rule manifest lineage is incomplete")
+    if manifest.parent_sha256.get("snapshot") != manifest.snapshot_sha256:
+        raise ArtifactIntegrityError("rule manifest snapshot lineage mismatch")
+    if manifest.num_directed_rules < 0 or manifest.train_basket_count < 0:
+        raise ArtifactIntegrityError("rule manifest counts are invalid")
+    if not np.isfinite(manifest.q99_log_lift) or manifest.q99_log_lift <= 0:
+        raise ArtifactIntegrityError("rule q99_log_lift is invalid")
+    try:
+        arrays = np.load(path / "rules.npz", allow_pickle=False)
+    except (OSError, ValueError) as error:
+        raise ArtifactIntegrityError("rule arrays cannot be loaded") from error
+    with arrays:
+        base_arrays = {"crow_indices", "col_indices", "values"}
+        full_arrays = {
+            "crow_indices",
+            "col_indices",
+            "values",
+            "features",
+            "raw_lifts",
+            "supports",
+            "confidences",
+            "counts",
+        }
+        payload_has_full_statistics = set(arrays.files) == full_arrays
+        expected = full_arrays if manifest.has_full_statistics else base_arrays
+        if set(arrays.files) != expected and not (
+            not manifest.has_full_statistics and payload_has_full_statistics
+        ):
+            raise ArtifactIntegrityError("rule artifact arrays do not match manifest capability")
+        if arrays["crow_indices"].dtype != np.int64 or arrays["col_indices"].dtype != np.int64:
+            raise ArtifactIntegrityError("rule CSR index arrays have invalid dtype")
+        if arrays["values"].dtype != np.float32 or not np.isfinite(arrays["values"]).all():
+            raise ArtifactIntegrityError("rule CSR values are invalid")
+        if len(arrays["crow_indices"]) != num_items + 1:
+            raise ArtifactIntegrityError("rule CSR row pointer length mismatch")
+        if (
+            arrays["crow_indices"][0] != 0
+            or np.any(np.diff(arrays["crow_indices"]) < 0)
+            or arrays["crow_indices"][-1] != manifest.num_directed_rules
+        ):
+            raise ArtifactIntegrityError("rule CSR row pointers are invalid")
+        nnz = manifest.num_directed_rules
+        if (
+            len(arrays["col_indices"]) != nnz
+            or np.any(arrays["col_indices"] < 0)
+            or np.any(arrays["col_indices"] >= num_items)
+        ):
+            raise ArtifactIntegrityError("rule CSR columns or length are invalid")
+        if manifest.has_full_statistics or payload_has_full_statistics:
+            for name in ("features", "raw_lifts", "supports", "confidences"):
+                values = arrays[name]
+                if (
+                    values.dtype != np.float32
+                    or len(values) != nnz
+                    or (name == "features" and values.shape != (nnz, 3))
+                    or not np.isfinite(values).all()
+                ):
+                    raise ArtifactIntegrityError(f"rule statistics are invalid: {name}")
+            if (
+                np.any(arrays["raw_lifts"] < 0)
+                or np.any(arrays["supports"] < 0)
+                or np.any(arrays["supports"] > 1)
+                or np.any(arrays["confidences"] < 0)
+                or np.any(arrays["confidences"] > 1)
+            ):
+                raise ArtifactIntegrityError("rule statistics are outside valid ranges")
+            if (
+                arrays["counts"].dtype != np.int64
+                or len(arrays["counts"]) != nnz
+                or np.any(arrays["counts"] < 1)
+            ):
+                raise ArtifactIntegrityError("rule counts are invalid")
+        base_names = ("crow_indices", "col_indices", "values")
+        full_names = (
+            "crow_indices",
+            "col_indices",
+            "values",
+            "features",
+            "raw_lifts",
+            "supports",
+            "confidences",
+            "counts",
         )
-    store = RuleStore(num_items, pairs, q99_log_lift=manifest.q99_log_lift)
+        payload = b"".join(
+            arrays[name].tobytes()
+            for name in (full_names if manifest.has_full_statistics else base_names)
+        )
+        payload_hash = hashlib.sha256(payload).hexdigest()
+        legacy_full_hash = hashlib.sha256(
+            b"".join(arrays[name].tobytes() for name in full_names)
+        ).hexdigest()
+        if payload_hash != manifest.content_sha256 and not (
+            not manifest.has_full_statistics
+            and payload_has_full_statistics
+            and legacy_full_hash == manifest.content_sha256
+        ):
+            raise ArtifactIntegrityError("rule artifact checksum mismatch")
+        rows = np.repeat(np.arange(num_items), np.diff(arrays["crow_indices"]))
+        lifts = np.expm1(arrays["values"] * manifest.q99_log_lift)
+        try:
+            if manifest.has_full_statistics or payload_has_full_statistics:
+                pairs = list(
+                    zip(
+                        rows.tolist(),
+                        arrays["col_indices"].tolist(),
+                        arrays["raw_lifts"].tolist(),
+                        arrays["supports"].tolist(),
+                        arrays["confidences"].tolist(),
+                        arrays["counts"].tolist(),
+                        strict=True,
+                    )
+                )
+            else:
+                pairs = list(
+                    zip(rows.tolist(), arrays["col_indices"].tolist(), lifts.tolist(), strict=True)
+                )
+        except ValueError as error:
+            raise ArtifactIntegrityError("rule CSR arrays have inconsistent lengths") from error
+    try:
+        store = RuleStore(num_items, pairs, q99_log_lift=manifest.q99_log_lift)
+    except (DataIntegrityError, ValueError) as error:
+        raise ArtifactIntegrityError("rule artifact statistics are inconsistent") from error
     return RuleArtifact(store=store, manifest=manifest, artifact_dir=path)

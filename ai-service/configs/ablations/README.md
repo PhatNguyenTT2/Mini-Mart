@@ -1,23 +1,39 @@
-# Locked ablation matrix
+# Active & Locked Ablation Matrix (v5.0.0)
 
-`P0`–`P4` run on the immutable audit-reference snapshot. `V0`–`V4` run on the
-new benchmark-v3 snapshot. Every invocation must provide a unique run ID and
-must retain the generated `resolved-config.json` and training signature.
+`v3.toml` (`deep_only`) and `v4.toml` (`hybrid`) are the **only active configs** in Pipeline v5.0.0.
+`P0`–`P4` and `V0`–`V2` are preserved in Git history for audit diagnostics.
+
+Every invocation must provide a unique run ID and must retain the generated `resolved-config.json` and training signature.
+The production campaign is pinned to snapshot `benchmark-v3-20260810-9088b0f3`,
+embedding `benchmark-v3-20260810-9088b0f3-real-f0453078fd58`, and full-stat rules
+`benchmark-v3-20260810-9088b0f3-rules-v2-ea0c72a89c41`. The legacy rules artifact is
+audit-only and must never be selected for training.
+
+`v3.toml` and `v4.toml` share the same model, training, and evaluation settings. Their
+only intentional difference is `training_variant` (`deep_only` versus `hybrid`). Use the
+following exact production IDs; do not shorten them to `deep-42` or `hybrid-42`.
 
 ```powershell
-$matrix = @('p0','p1','p2','p3','p4','v0','v1','v2','v3','v4')
-foreach ($id in $matrix) {
-  $snapshot = if ($id.StartsWith('p')) { $env:AI_CURRENT_SNAPSHOT_ID } else { $env:AI_V3_SNAPSHOT_ID }
-  uv run ai-pipeline train `
-    --config "configs/ablations/$id.toml" `
-    --snapshot-id $snapshot `
-    --run-id "ablation-$id-s42" `
-    --seed 42 `
-    --device cuda
-}
+# Deep seed 42, then Hybrid seed 42. Do not start either command before the source-freeze gate.
+.\.venv\Scripts\python.exe -m ai_service.cli train `
+  --variant deep_only `
+  --config configs/ablations/v3.toml `
+  --snapshot-id benchmark-v3-20260810-9088b0f3 `
+  --run-id deep-42-v5 `
+  --seed 42 `
+  --device cuda
+
+.\.venv\Scripts\python.exe -m ai_service.cli train `
+  --variant hybrid `
+  --config configs/ablations/v4.toml `
+  --snapshot-id benchmark-v3-20260810-9088b0f3 `
+  --run-id hybrid-42-v5 `
+  --seed 42 `
+  --device cuda
 ```
 
-Finalists are selected from validation reports only. Freeze each finalist's
-training signature, then repeat it with seeds `42`, `2027`, and `31415` before
-opening test metrics.
-
+Evaluate the paired VAL result before training the next seed. Continue only when every
+single-seed Victory Gate passes. Repeat the same Deep-then-Hybrid sequence for
+`deep-2027-v5`/`hybrid-2027-v5` and `deep-31415-v5`/`hybrid-31415-v5`, then run the
+3+3 validation release gate. TEST must be evaluated for all three pairs before the
+aggregate TEST gate; a single validation winner is never a substitute.

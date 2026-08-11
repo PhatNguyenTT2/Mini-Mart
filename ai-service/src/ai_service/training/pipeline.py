@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import random
@@ -9,7 +10,6 @@ import re
 import subprocess
 from argparse import Namespace
 from dataclasses import asdict, dataclass
-from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any, cast
 
@@ -18,8 +18,26 @@ import pandas as pd
 import torch
 from torch.utils.data import DataLoader
 
-from ai_service.config import MODEL_SCHEMA_VERSION, Settings, load_settings
-from ai_service.contracts import DataSourceKind, EmbeddingSource, RunStatus, SplitName
+from ai_service.artifact_io import atomic_write_json
+from ai_service.config import (
+    MODEL_SCHEMA_VERSION,
+    Settings,
+    load_resolved_settings,
+    load_settings,
+)
+from ai_service.contracts import (
+    AggregateReleaseReport,
+    CheckpointManifest,
+    DataSourceKind,
+    EmbeddingSource,
+    PipelineState,
+    RuleManifest,
+    RunStatus,
+    SplitName,
+    TerminalAction,
+    TrainingVariant,
+    VictoryMatrix,
+)
 from ai_service.data.dataset import (
     HybridImplicitDataset,
     PurchaseBatchIterator,
@@ -38,14 +56,21 @@ from ai_service.data.rules import AprioriRuleMiner, RuleArtifact, load_rule_arti
 from ai_service.data.sampling import MixedNegativeSampler
 from ai_service.data.snapshot import Snapshot, SnapshotBuilder, load_snapshot
 from ai_service.data.sources import DatasetSource, PostgresDatasetSource, SyntheticDatasetSource
-from ai_service.errors import ArtifactIntegrityError, ConfigurationError, DataIntegrityError
-from ai_service.evaluation.baselines import BaselineComparisonReport, run_seven_way_baselines
-from ai_service.evaluation.cold_start import evaluate_cold_start
-from ai_service.evaluation.full_catalog import FullCatalogEvaluator
-from ai_service.evaluation.metrics import BootstrapInterval, paired_bootstrap_delta
+from ai_service.errors import (
+    ArtifactIntegrityError,
+    CatastrophicTrainingError,
+    ConfigurationError,
+    DataIntegrityError,
+    TrainingInterruptedError,
+    VictoryGateError,
+)
+from ai_service.evaluation.baselines import run_seven_way_baselines
+from ai_service.evaluation.cold_start import evaluate_cold_parity
+from ai_service.evaluation.full_catalog import FullCatalogEvaluator, prepare_split
+from ai_service.evaluation.gates import SingleSeedGateInputs, evaluate_single_seed
 from ai_service.evaluation.probes import run_data_probes
-from ai_service.evaluation.release import aggregate_three_seed_release
-from ai_service.evaluation.report import write_evaluation_report
+from ai_service.evaluation.release import evaluate_three_seed
+from ai_service.evaluation.report import load_evaluation_artifacts, publish_evaluation_artifacts
 from ai_service.evaluation.semantic_traps import evaluate_semantic_traps
 from ai_service.export.bundle import BundlePublisher, file_sha256, verify_bundle
 from ai_service.export.onnx import export_onnx_models
@@ -57,19 +82,25 @@ from ai_service.training.trainer import Trainer
 
 
 @dataclass(frozen=True)
-class PipelineState:
-    run_id: str
-    training_variant: str = "hybrid"
-    snapshot_id: str = ""
-    embedding_path: str = ""
-    rule_path: str = ""
-    checkpoint_path: str | None = None
-    paired_run_id: str | None = None
-    validation_gate_passed: bool = False
-    test_gate_passed: bool = False
-    evaluation_passed: bool = False
-    victory_matrix_path: str | None = None
-    bundle_path: str | None = None
+class PairEvaluationResult:
+    split: SplitName
+    hybrid_state: PipelineState
+    deep_state: PipelineState
+    artifact_dir: Path
+    victory_matrix: VictoryMatrix
+
+
+@dataclass(frozen=True)
+class LoadedRun:
+    run_dir: Path
+    checkpoint_manifest: CheckpointManifest
+    settings: Settings
+    state: PipelineState
+    lifecycle: RunLifecycle
+    snapshot: Snapshot
+    embedding: EmbeddingArtifact
+    rules: RuleArtifact
+    model: HybridTwoTowerModel
 
 
 def _validate_artifact_id(value: str, *, kind: str) -> str:
@@ -88,10 +119,19 @@ def _state_path(settings: Settings, run_id: str) -> Path:
 
 def _write_state(settings: Settings, state: PipelineState) -> None:
     path = _state_path(settings, state.run_id)
-    path.parent.mkdir(parents=True, exist_ok=True)
-    temporary = path.with_suffix(".json.tmp")
-    temporary.write_text(json.dumps(asdict(state), indent=2, sort_keys=True), encoding="utf-8")
-    os.replace(temporary, path)
+    atomic_write_json(path, state.model_dump(mode="json"))
+
+
+def _update_pipeline_state(state: PipelineState, **updates: object) -> PipelineState:
+    """Apply state transitions through the strict v5 contract.
+
+    Pydantic's ``model_copy(update=...)`` deliberately skips validation.  A
+    pipeline state is an immutable lineage boundary, so every mutation must
+    be revalidated before it is persisted.
+    """
+    document = state.model_dump(mode="json")
+    document.update(updates)
+    return PipelineState.model_validate(document)
 
 
 def _load_state(settings: Settings, run_id: str | None) -> PipelineState:
@@ -100,26 +140,38 @@ def _load_state(settings: Settings, run_id: str | None) -> PipelineState:
     path = _state_path(settings, run_id)
     if not path.is_file():
         raise ArtifactIntegrityError(f"pipeline state does not exist: {path}")
-    return PipelineState(**json.loads(path.read_text(encoding="utf-8")))
+    state_document = json.loads(path.read_text(encoding="utf-8"))
+    if "model_schema_version" not in state_document:
+        raise ArtifactIntegrityError("pipeline state has no model schema version")
+    state = PipelineState.model_validate(state_document)
+    return state
 
 
 def _configure(args: Namespace) -> Settings:
     settings = load_settings(getattr(args, "config", None))
-    store_id = int(args.store_id)
+    store_id = int(getattr(args, "store_id", settings.data.store_id))
     if store_id <= 0:
         raise ConfigurationError("--store-id must be positive")
     settings.data.store_id = store_id
-    if args.snapshot_id:
-        settings.data.snapshot_id = _validate_artifact_id(str(args.snapshot_id), kind="snapshot ID")
-    if args.benchmark_run_id:
-        settings.data.benchmark_run_id = str(args.benchmark_run_id)
-    settings.train.seed = int(args.seed)
+    snapshot_id = getattr(args, "snapshot_id", None)
+    if snapshot_id:
+        settings.data.snapshot_id = _validate_artifact_id(str(snapshot_id), kind="snapshot ID")
+    benchmark_run_id = getattr(args, "benchmark_run_id", None)
+    if benchmark_run_id:
+        settings.data.benchmark_run_id = str(benchmark_run_id)
+    settings.train.seed = int(getattr(args, "seed", settings.train.seed))
     if settings.serving.environment.lower() == "production" and (
-        args.source != DataSourceKind.POSTGRES.value
-        or args.embedding_source != EmbeddingSource.REAL.value
+        getattr(args, "source", DataSourceKind.POSTGRES.value) != DataSourceKind.POSTGRES.value
+        or getattr(args, "embedding_source", EmbeddingSource.REAL.value)
+        != EmbeddingSource.REAL.value
     ):
         raise ConfigurationError("production requires postgres and real embedding adapters")
-    settings.validate_production(serving=args.command == "verify-bundle")
+    explicit_bundle_selector = bool(
+        getattr(args, "bundle_id", None) or getattr(args, "run_id", None)
+    )
+    settings.validate_production(
+        serving=args.command == "verify-bundle" and not explicit_bundle_selector
+    )
     return settings
 
 
@@ -189,12 +241,47 @@ def _find_single_parent_artifact(
     matches: list[Path] = []
     if root.exists():
         for manifest_path in root.glob(f"*/{manifest_name}"):
-            document = json.loads(manifest_path.read_text(encoding="utf-8"))
+            try:
+                document = json.loads(manifest_path.read_text(encoding="utf-8"))
+            except (OSError, ValueError) as error:
+                raise ArtifactIntegrityError(
+                    f"artifact manifest cannot be parsed: {manifest_path}"
+                ) from error
             if document.get("snapshot_sha256") == snapshot_sha256:
                 matches.append(manifest_path.parent)
     if len(matches) != 1:
         raise ArtifactIntegrityError(
             f"expected exactly one artifact below {root} for snapshot; found {len(matches)}"
+        )
+    return matches[0]
+
+
+def _find_training_rule_artifact(settings: Settings, snapshot_sha256: str) -> Path:
+    """Select exactly one full-stat rule artifact for the resolved training config."""
+    root = settings.data.artifact_root.resolve() / "rules"
+    matches: list[Path] = []
+    scanned: list[str] = []
+    if root.exists():
+        for manifest_path in root.glob("*/manifest.json"):
+            scanned.append(manifest_path.parent.name)
+            try:
+                manifest = RuleManifest.model_validate_json(
+                    manifest_path.read_text(encoding="utf-8")
+                )
+            except (OSError, ValueError):
+                continue
+            if (
+                manifest.snapshot_sha256 == snapshot_sha256
+                and manifest.has_full_statistics
+                and manifest.feature_schema_version == "2.0.0"
+                and manifest.min_count == settings.data.min_rule_count
+                and abs(manifest.min_lift - settings.data.min_rule_lift) <= 1e-12
+            ):
+                matches.append(manifest_path.parent)
+    if len(matches) != 1:
+        raise ArtifactIntegrityError(
+            "expected exactly one full-stat rule artifact matching the training config; "
+            f"found {len(matches)}; scanned={sorted(scanned)}"
         )
     return matches[0]
 
@@ -216,6 +303,14 @@ def _train(
         "embedding": embedding.manifest.content_sha256,
         "rules": rules.manifest.content_sha256,
     }
+    rule_store = rules.require_training_capability()
+    if (
+        rules.manifest.feature_schema_version != "2.0.0"
+        or rules.manifest.snapshot_sha256 != snapshot.manifest.content_sha256
+        or rules.manifest.min_count != settings.data.min_rule_count
+        or abs(rules.manifest.min_lift - settings.data.min_rule_lift) > 1e-12
+    ):
+        raise ArtifactIntegrityError("training rule artifact does not match resolved config")
     if resume:
         lifecycle = RunLifecycle.load(run_dir)
         if lifecycle.status is not RunStatus.INTERRUPTED:
@@ -250,13 +345,14 @@ def _train(
         loader: Any = PurchaseBatchIterator(
             purchase_index,
             sampler,
+            rule_store,
             batch_size=settings.train.batch_size,
             seed=settings.train.seed,
         )
     else:
         dataset = HybridImplicitDataset(
             snapshot,
-            rules.store,
+            rule_store,
             split=SplitName.TRAIN,
             negative_ratio=settings.train.negative_ratio,
             seed=settings.train.seed,
@@ -280,8 +376,46 @@ def _train(
             ),
         )
     model = HybridTwoTowerModel(settings)
-    evaluator = FullCatalogEvaluator(settings, embedding.vectors, rules.store)
-    trainer = Trainer(model, settings=settings, run_dir=run_dir, device=device)
+    evaluator = FullCatalogEvaluator(settings, embedding.vectors, rule_store)
+    trainer = Trainer(
+        model,
+        settings=settings,
+        run_dir=run_dir,
+        training_variant=settings.train.training_variant,
+        device=device,
+    )
+
+    def ensure_terminal_summary(action: TerminalAction, reason: str) -> None:
+        summary_path = run_dir / "training" / "summary.json"
+        summary_path.parent.mkdir(parents=True, exist_ok=True)
+        summary: dict[str, object] = {}
+        if summary_path.is_file():
+            try:
+                loaded = json.loads(summary_path.read_text(encoding="utf-8"))
+                if isinstance(loaded, dict):
+                    summary.update(loaded)
+            except (OSError, ValueError):
+                summary = {}
+        temporary = summary_path.with_suffix(".json.tmp")
+        completed_epochs = summary.get("epochs_completed", 0)
+        if not isinstance(completed_epochs, int) or completed_epochs < 0:
+            completed_epochs = 0
+        temporary.write_text(
+            json.dumps(
+                {
+                    **summary,
+                    "terminal_action": action.value,
+                    "terminal_reason": reason,
+                    "stop_reason": reason,
+                    "epochs_completed": completed_epochs,
+                },
+                sort_keys=True,
+                indent=2,
+            ),
+            encoding="utf-8",
+        )
+        os.replace(temporary, summary_path)
+
     try:
         result = trainer.fit(
             loader,
@@ -295,227 +429,43 @@ def _train(
                 else None
             ),
         )
+    except CatastrophicTrainingError as error:
+        reason = str(error) or type(error).__name__
+        ensure_terminal_summary(TerminalAction.FAILED, reason)
+        lifecycle.transition_training_terminal(RunStatus.FAILED, reason=reason)
+        raise
+    except (TrainingInterruptedError, KeyboardInterrupt) as error:
+        reason = str(error) or type(error).__name__
+        ensure_terminal_summary(TerminalAction.INTERRUPTED, reason)
+        lifecycle.transition_training_terminal(RunStatus.INTERRUPTED, reason=reason)
+        raise
     except BaseException as error:
-        lifecycle.transition(RunStatus.INTERRUPTED, reason=type(error).__name__)
+        reason = type(error).__name__
+        ensure_terminal_summary(TerminalAction.INTERRUPTED, reason)
+        lifecycle.transition_training_terminal(RunStatus.INTERRUPTED, reason=reason)
         raise
     try:
-        if settings.train.enable_wide_calibration:
-            _, release_optimizer = WideCalibrator(settings).fit(
-                model,
-                snapshot,
-                rules.store,
-                device=device,
-                output_path=run_dir / "training" / "wide-calibration.json",
-            )
-        else:
-            release_optimizer = trainer.optimizer
-        release_checkpoint = run_dir / "checkpoints" / "release-candidate.pt"
-        CheckpointManager.save(
-            release_checkpoint,
-            model=model,
-            optimizer=release_optimizer,
-            scheduler=None,
-            epoch=result.best_epoch,
-            metrics={
-                "val_gauc": result.best_gauc,
-                "val_ndcg_at_k": result.best_ndcg_at_k,
-                "train_loss": result.history[-1].train_loss,
-            },
-            lineage=lineage,
-            training_signature_sha256=settings.training_signature_sha256(),
-            model_schema_version=MODEL_SCHEMA_VERSION,
-            run_id=run_id,
-        )
+        release_checkpoint = result.checkpoint_path
     except BaseException as error:
         lifecycle.transition(RunStatus.INTERRUPTED, reason=type(error).__name__)
         raise
     state = PipelineState(
+        model_schema_version=MODEL_SCHEMA_VERSION,
         run_id=run_id,
+        training_variant=settings.train.training_variant,
         snapshot_id=snapshot.manifest.artifact_id,
         embedding_path=str(embedding.artifact_dir),
         rule_path=str(rules.artifact_dir),
         checkpoint_path=str(release_checkpoint),
+        paired_run_id=None,
+        validation_gate_passed=False,
+        test_gate_passed=False,
+        validation_victory_matrix_path=None,
+        test_victory_matrix_path=None,
+        bundle_path=None,
     )
     _write_state(settings, state)
     return model, state
-
-
-def _interval(candidate: np.ndarray, baseline: np.ndarray, settings: Settings) -> BootstrapInterval:
-    return paired_bootstrap_delta(
-        candidate,
-        baseline,
-        samples=settings.eval.bootstrap_samples,
-        seed=settings.train.seed,
-    )
-
-
-def _comparison_gates(
-    comparison: BaselineComparisonReport,
-    settings: Settings,
-) -> dict[str, Any]:
-    hybrid = comparison.results["Proposed Hybrid (Ours)"]
-    gate_document: dict[str, Any] = {}
-    passed = True
-    comparison_names = (
-        "Deep-Only Two-Tower",
-        "Rule-based Apriori",
-        "Item-Item CF",
-    )
-    for name in comparison_names:
-        baseline = comparison.results[name]
-        intervals = {
-            "gauc": _interval(hybrid.per_user_gauc, baseline.per_user_gauc, settings),
-            "hr_at_k": _interval(hybrid.per_user_hr, baseline.per_user_hr, settings),
-            "ndcg_at_k": _interval(hybrid.per_user_ndcg, baseline.per_user_ndcg, settings),
-        }
-        gauc_margin = -0.010 if name == "Item-Item CF" else -0.002
-        gate_passed = (
-            intervals["gauc"].lower >= gauc_margin and intervals["hr_at_k"].lower >= -0.001
-        )
-        if name != "Item-Item CF":
-            gate_passed &= intervals["ndcg_at_k"].lower >= -0.001
-        gate_document[name] = {
-            "passed": gate_passed,
-            "intervals": {metric: asdict(value) for metric, value in intervals.items()},
-        }
-        passed &= gate_passed
-    strongest_name = max(
-        comparison_names,
-        key=lambda name: comparison.results[name].report.ndcg_at_k,
-    )
-    strongest = comparison.results[strongest_name]
-    strongest_ndcg_interval = _interval(
-        hybrid.per_user_ndcg,
-        strongest.per_user_ndcg,
-        settings,
-    )
-    relative_ndcg_passed = (
-        hybrid.report.ndcg_at_k >= strongest.report.ndcg_at_k * 1.05
-        and strongest_ndcg_interval.lower > 0.0
-    )
-    gate_document["strongest_ndcg_baseline"] = {
-        "name": strongest_name,
-        "passed": relative_ndcg_passed,
-        "hybrid_ndcg_at_k": hybrid.report.ndcg_at_k,
-        "baseline_ndcg_at_k": strongest.report.ndcg_at_k,
-        "delta_ci": asdict(strongest_ndcg_interval),
-    }
-    # This is diagnostic for a single seed.  The release contract applies the
-    # 5% uplift and paired CI to the aggregate of all three locked seeds.
-    # Seeds are repeated measurements of the same users, not independent
-    # bootstrap units.  Average across seeds first, then resample users.
-    random_gauc = np.stack(
-        [result.per_user_gauc for result in comparison.random_seed_results]
-    ).mean(axis=0)
-    random_interval = _interval(random_gauc, np.full_like(random_gauc, 0.5), settings)
-    random_mean = float(random_gauc.mean())
-    random_passed = (
-        0.48 <= random_mean <= 0.52 and random_interval.lower <= 0.0 <= random_interval.upper
-    )
-    gate_document["random"] = {
-        "passed": random_passed,
-        "mean_gauc": random_mean,
-        "delta_from_half_ci": asdict(random_interval),
-    }
-    gate_document["passed"] = passed and random_passed
-    return gate_document
-
-
-def _evaluate(
-    settings: Settings,
-    snapshot: Snapshot,
-    embedding: EmbeddingArtifact,
-    rules: RuleArtifact,
-    model: HybridTwoTowerModel,
-    state: PipelineState,
-    *,
-    device: torch.device,
-) -> PipelineState:
-    comparison = run_seven_way_baselines(
-        model,
-        snapshot,
-        embeddings=embedding.vectors,
-        rule_store=rules.store,
-        split=SplitName.TEST,
-        settings=settings,
-        device=device,
-    )
-    gates = _comparison_gates(comparison, settings)
-    hybrid = comparison.results["Proposed Hybrid (Ours)"]
-    centroid = comparison.results["SBERT User Centroid"]
-    hybrid_cold = evaluate_cold_start(hybrid, snapshot, rules.store)
-    centroid_cold = evaluate_cold_start(centroid, snapshot, rules.store)
-    cold_passed = (
-        hybrid_cold.num_cold_items_with_test_purchase == settings.data.num_cold_items
-        and hybrid_cold.ndcg_at_k >= centroid_cold.ndcg_at_k - 0.001
-    )
-    fixture = Path(__file__).parents[1] / "evaluation" / "fixtures" / "semantic_traps.json"
-    traps = evaluate_semantic_traps(
-        model,
-        snapshot,
-        embedding.vectors,
-        rules.store,
-        fixture,
-        k=settings.eval.k,
-        device=device,
-    )
-    traps_passed = traps.total == 10 and traps.passed == 10
-    evaluation_passed = bool(gates["passed"] and cold_passed and traps_passed)
-    if state.checkpoint_path is None:
-        raise ArtifactIntegrityError("evaluation requires a checkpoint")
-    checkpoint_manifest = Path(state.checkpoint_path).with_suffix(".pt.manifest.json")
-    checkpoint_sha = json.loads(checkpoint_manifest.read_text(encoding="utf-8"))["content_sha256"]
-    payload = {
-        "baselines": {
-            name: report.model_dump(mode="json") for name, report in comparison.baselines.items()
-        },
-        "bootstrap_gates": gates,
-        "cold_start": {
-            "hybrid": asdict(hybrid_cold),
-            "sbert_centroid": asdict(centroid_cold),
-            "passed": cold_passed,
-        },
-        "semantic_traps": {**asdict(traps), "passed_gate": traps_passed},
-        "passed": evaluation_passed,
-    }
-    run_dir = Path(state.checkpoint_path).parents[1]
-    metrics_temporary = run_dir / "per-user-metrics.tmp.npz"
-    np.savez_compressed(
-        metrics_temporary,
-        user_ids=hybrid.user_ids,
-        hybrid_hr=hybrid.per_user_hr,
-        hybrid_ndcg=hybrid.per_user_ndcg,
-        hybrid_gauc=hybrid.per_user_gauc,
-        deep_hr=comparison.results["Deep-Only Two-Tower"].per_user_hr,
-        deep_ndcg=comparison.results["Deep-Only Two-Tower"].per_user_ndcg,
-        deep_gauc=comparison.results["Deep-Only Two-Tower"].per_user_gauc,
-        wide_hr=comparison.results["Rule-based Apriori"].per_user_hr,
-        wide_ndcg=comparison.results["Rule-based Apriori"].per_user_ndcg,
-        wide_gauc=comparison.results["Rule-based Apriori"].per_user_gauc,
-        item_cf_hr=comparison.results["Item-Item CF"].per_user_hr,
-        item_cf_ndcg=comparison.results["Item-Item CF"].per_user_ndcg,
-        item_cf_gauc=comparison.results["Item-Item CF"].per_user_gauc,
-    )
-    payload["per_user_metrics_sha256"] = file_sha256(metrics_temporary)
-    evaluation_dir = run_dir / "evaluation"
-    write_evaluation_report(
-        evaluation_dir,
-        payload=payload,
-        lineage={
-            "snapshot": snapshot.manifest.content_sha256,
-            "embedding": embedding.manifest.content_sha256,
-            "rules": rules.manifest.content_sha256,
-            "checkpoint": checkpoint_sha,
-        },
-    )
-    os.replace(metrics_temporary, evaluation_dir / "per-user-metrics.npz")
-    next_state = PipelineState(**{**asdict(state), "evaluation_passed": evaluation_passed})
-    _write_state(settings, next_state)
-    lifecycle = RunLifecycle.load(Path(state.checkpoint_path).parents[1])
-    lifecycle.transition(RunStatus.EVALUATED, reason=None if evaluation_passed else "gates failed")
-    if not evaluation_passed:
-        raise DataIntegrityError("model release gates failed; ONNX export is blocked")
-    return next_state
 
 
 def _export(
@@ -526,23 +476,56 @@ def _export(
     model: HybridTwoTowerModel,
     state: PipelineState,
 ) -> PipelineState:
-    if not state.evaluation_passed or state.checkpoint_path is None:
-        raise DataIntegrityError("only an evaluated best checkpoint may be exported")
+    if not state.test_gate_passed or state.checkpoint_path is None:
+        raise DataIntegrityError("only a test-evaluated best checkpoint may be exported")
     lifecycle = RunLifecycle.load(Path(state.checkpoint_path).parents[1])
     if lifecycle.status is not RunStatus.SEALED:
         raise DataIntegrityError("only a sealed training run may be exported")
-    experiment_signature = lifecycle.document["experiment_signature_sha256"]
+    comparison_signature = lifecycle.document.get("comparison_signature_sha256", "")
+    if not comparison_signature:
+        raise DataIntegrityError("sealed run has no comparison signature")
     release_path = (
         settings.data.artifact_root.resolve()
         / "releases"
-        / experiment_signature
+        / comparison_signature
         / "release-gate.json"
     )
     if not release_path.is_file():
         raise DataIntegrityError("three-seed aggregate release gate has not been published")
-    release = json.loads(release_path.read_text(encoding="utf-8"))
-    if not release.get("passed") or release.get("selected_run_id") != state.run_id:
+    release = AggregateReleaseReport.model_validate_json(release_path.read_text(encoding="utf-8"))
+    release_document = release.model_dump(mode="json")
+    claimed_release_sha = release_document.pop("artifact_sha256")
+    if (
+        hashlib.sha256(
+            json.dumps(release_document, sort_keys=True, separators=(",", ":")).encode("utf-8")
+        ).hexdigest()
+        != claimed_release_sha
+    ):
+        raise DataIntegrityError("aggregate release report hash mismatch")
+    if not release.passed or release.selected_run_id != state.run_id:
         raise DataIntegrityError("this run was not selected by the aggregate release gate")
+    test_matrix_path = state.test_victory_matrix_path
+    if not test_matrix_path or not Path(test_matrix_path).is_file():
+        raise DataIntegrityError("selected run has no immutable test victory matrix")
+    if state.paired_run_id is None:
+        raise DataIntegrityError("selected run has no paired Deep run")
+    evaluation = load_evaluation_artifacts(
+        Path(state.checkpoint_path).parents[1],
+        expected_split=SplitName.TEST,
+        expected_hybrid_run_id=state.run_id,
+        expected_deep_run_id=state.paired_run_id,
+        expected_comparison_signature=comparison_signature,
+        expected_lineage={
+            "snapshot": snapshot.manifest.content_sha256,
+            "embedding": embedding.manifest.content_sha256,
+            "rules": rules.manifest.content_sha256,
+        },
+    )
+    test_matrix = evaluation.victory_matrix
+    if not test_matrix.all_passed:
+        raise DataIntegrityError("selected test Victory Matrix did not pass all gates")
+    if test_matrix.sha256 != release.selected_victory_matrix_sha256:
+        raise DataIntegrityError("selected Victory Matrix does not match release gate")
     output_dir = Path(state.checkpoint_path).parents[1] / "export"
     paths = export_onnx_models(model, settings, output_dir)
     parity = verify_onnx_parity(model, settings, snapshot, embedding.vectors, rules.store, paths)
@@ -576,6 +559,8 @@ def _export(
         user_profiles = profile_tensor.numpy()
     checkpoint_sha = file_sha256(Path(state.checkpoint_path))
     bundle_id = f"{state.run_id}-{checkpoint_sha[:12]}"
+    if test_matrix is None:
+        raise ArtifactIntegrityError("export requires a verified test Victory Matrix artifact")
     bundle = BundlePublisher(settings).publish(
         bundle_id=bundle_id,
         run_id=state.run_id,
@@ -584,17 +569,23 @@ def _export(
         ranker_path=paths.ranker,
         item_vectors=item_vectors,
         user_profile_vectors=user_profiles,
-        semantic_vectors=np.asarray(embedding.vectors, dtype=np.float32),
+        embedding_sha256=embedding.manifest.content_sha256,
+        rule_sha256=rules.manifest.content_sha256,
         checkpoint_sha256=checkpoint_sha,
+        comparison_signature_sha256=comparison_signature,
         parity=parity,
+        victory_matrix_sha256=test_matrix.sha256,
     )
-    next_state = PipelineState(**{**asdict(state), "bundle_path": str(bundle.path)})
+    next_state = _update_pipeline_state(state, bundle_path=str(bundle.path))
     _write_state(settings, next_state)
     return next_state
 
 
 def _load_lineage(
-    settings: Settings, state: PipelineState
+    settings: Settings,
+    state: PipelineState,
+    *,
+    expected_variant: TrainingVariant | None = None,
 ) -> tuple[Snapshot, EmbeddingArtifact, RuleArtifact, HybridTwoTowerModel]:
     snapshot = load_snapshot(state.snapshot_id, settings)
     embedding = load_embedding_artifact(Path(state.embedding_path))
@@ -610,22 +601,358 @@ def _load_lineage(
                 "rules": rules.manifest.content_sha256,
             },
             expected_training_signature=settings.training_signature_sha256(),
+            expected_comparison_signature=settings.comparison_signature_sha256(),
+            expected_training_variant=expected_variant,
+            expected_checkpoint_kind="best",
             expected_model_schema_version=MODEL_SCHEMA_VERSION,
         )
     return snapshot, embedding, rules, model
+
+
+def _load_run_context(
+    base_settings: Settings,
+    run_id: str,
+    *,
+    expected_variant: TrainingVariant,
+) -> LoadedRun:
+    run_id = _validate_artifact_id(run_id, kind="run ID")
+    run_dir = base_settings.data.artifact_root.resolve() / "runs" / run_id
+    if not run_dir.is_dir() or run_dir.name != run_id:
+        raise ArtifactIntegrityError("run directory does not match requested run ID")
+    settings = load_resolved_settings(run_dir / "resolved-config.json")
+    state_document = json.loads((run_dir / "pipeline-state.json").read_text(encoding="utf-8"))
+    if "model_schema_version" not in state_document:
+        raise ArtifactIntegrityError("pipeline state has no model schema version")
+    state = PipelineState.model_validate(state_document)
+    if state.run_id != run_id:
+        raise ArtifactIntegrityError("pipeline state run ID does not match run directory")
+    if state.model_schema_version != MODEL_SCHEMA_VERSION:
+        raise ArtifactIntegrityError("pipeline state model schema mismatch")
+    if TrainingVariant(state.training_variant) is not expected_variant:
+        raise ArtifactIntegrityError(f"run {run_id} has unexpected training variant")
+    if settings.train.training_variant is not expected_variant:
+        raise ArtifactIntegrityError("resolved configuration variant differs from run state")
+    lifecycle = RunLifecycle.load(run_dir)
+    if lifecycle.document.get("training_variant") != expected_variant.value:
+        raise ArtifactIntegrityError("run manifest variant differs from run state")
+    if state.checkpoint_path is None:
+        raise ArtifactIntegrityError("run context has no checkpoint")
+    checkpoint_path = Path(state.checkpoint_path).resolve()
+    if (
+        run_dir.resolve() not in checkpoint_path.parents
+        or checkpoint_path.parent.name != "checkpoints"
+        or checkpoint_path.name != "best.pt"
+    ):
+        raise ArtifactIntegrityError("checkpoint is outside its immutable run directory")
+    manifest_path = checkpoint_path.with_suffix(checkpoint_path.suffix + ".manifest.json")
+    try:
+        checkpoint_manifest = CheckpointManifest.model_validate_json(
+            manifest_path.read_text(encoding="utf-8")
+        )
+    except (OSError, ValueError) as error:
+        raise ArtifactIntegrityError("checkpoint manifest cannot be read") from error
+    if checkpoint_manifest.run_id != run_id:
+        raise ArtifactIntegrityError("checkpoint run ID does not match requested run")
+    if checkpoint_manifest.training_variant is not expected_variant:
+        raise ArtifactIntegrityError("checkpoint variant does not match requested run")
+    if checkpoint_manifest.training_signature_sha256 != settings.training_signature_sha256():
+        raise ArtifactIntegrityError("checkpoint training signature differs from run config")
+    if checkpoint_manifest.comparison_signature_sha256 != settings.comparison_signature_sha256():
+        raise ArtifactIntegrityError("checkpoint comparison signature differs from run config")
+    if checkpoint_manifest.model_schema_version != MODEL_SCHEMA_VERSION:
+        raise ArtifactIntegrityError("checkpoint model schema differs from run state")
+    snapshot, embedding, rules, model = _load_lineage(
+        settings, state, expected_variant=expected_variant
+    )
+    rules.require_training_capability()
+    if (
+        rules.manifest.feature_schema_version != "2.0.0"
+        or rules.manifest.min_count != settings.data.min_rule_count
+        or abs(rules.manifest.min_lift - settings.data.min_rule_lift) > 1e-12
+    ):
+        raise ArtifactIntegrityError("loaded rule artifact does not match resolved training config")
+    loaded_lineage = {
+        "snapshot": snapshot.manifest.content_sha256,
+        "embedding": embedding.manifest.content_sha256,
+        "rules": rules.manifest.content_sha256,
+    }
+    if lifecycle.document.get("lineage") != loaded_lineage:
+        raise ArtifactIntegrityError("run lifecycle lineage differs from loaded artifacts")
+    if checkpoint_manifest.parent_sha256 != loaded_lineage:
+        raise ArtifactIntegrityError("checkpoint lineage differs from loaded artifacts")
+    return LoadedRun(
+        run_dir=run_dir,
+        checkpoint_manifest=checkpoint_manifest,
+        settings=settings,
+        state=state,
+        lifecycle=lifecycle,
+        snapshot=snapshot,
+        embedding=embedding,
+        rules=rules,
+        model=model,
+    )
+
+
+def _evaluate_pair(
+    base_settings: Settings,
+    *,
+    hybrid_run_id: str,
+    deep_run_id: str,
+    split: SplitName,
+    device: torch.device,
+) -> PairEvaluationResult:
+    hybrid = _load_run_context(
+        base_settings, hybrid_run_id, expected_variant=TrainingVariant.HYBRID
+    )
+    deep = _load_run_context(base_settings, deep_run_id, expected_variant=TrainingVariant.DEEP_ONLY)
+    if hybrid.settings.train.seed != deep.settings.train.seed:
+        raise ArtifactIntegrityError("paired evaluation requires matching seeds")
+    if hybrid.settings.comparison_signature_sha256() != deep.settings.comparison_signature_sha256():
+        raise ArtifactIntegrityError("paired evaluation requires matching comparison signatures")
+    lineage = {
+        "snapshot": hybrid.snapshot.manifest.content_sha256,
+        "embedding": hybrid.embedding.manifest.content_sha256,
+        "rules": hybrid.rules.manifest.content_sha256,
+    }
+    if lineage != {
+        "snapshot": deep.snapshot.manifest.content_sha256,
+        "embedding": deep.embedding.manifest.content_sha256,
+        "rules": deep.rules.manifest.content_sha256,
+    }:
+        raise ArtifactIntegrityError("paired evaluation requires matching artifact lineage")
+    if split is SplitName.TEST:
+        release_path = (
+            base_settings.data.artifact_root.resolve()
+            / "releases"
+            / hybrid.settings.comparison_signature_sha256()
+            / "validation-gate.json"
+        )
+        if not release_path.is_file():
+            raise ArtifactIntegrityError("test evaluation requires an aggregate validation gate")
+        validation_gate = AggregateReleaseReport.model_validate_json(
+            release_path.read_text(encoding="utf-8")
+        )
+        gate_document = validation_gate.model_dump(mode="json")
+        claimed_sha = gate_document.pop("artifact_sha256")
+        if (
+            hashlib.sha256(
+                json.dumps(gate_document, sort_keys=True, separators=(",", ":")).encode("utf-8")
+            ).hexdigest()
+            != claimed_sha
+        ):
+            raise ArtifactIntegrityError("validation aggregate gate hash mismatch")
+        if not validation_gate.passed or validation_gate.split is not SplitName.VAL:
+            raise ArtifactIntegrityError("aggregate validation gate did not pass")
+        if (
+            validation_gate.comparison_signature_sha256
+            != hybrid.settings.comparison_signature_sha256()
+        ):
+            raise ArtifactIntegrityError("validation gate comparison signature differs")
+        if (
+            hybrid_run_id not in validation_gate.hybrid_run_ids
+            or deep_run_id not in validation_gate.deep_run_ids
+            or validation_gate.selected_run_id not in validation_gate.hybrid_run_ids
+        ):
+            raise ArtifactIntegrityError("test pair is not part of the validated finalist set")
+
+    prepared_split = prepare_split(hybrid.snapshot, split)
+    comparison = run_seven_way_baselines(
+        hybrid_model=hybrid.model,
+        deep_model=deep.model,
+        snapshot=hybrid.snapshot,
+        embeddings=hybrid.embedding.vectors,
+        rule_store=hybrid.rules.store,
+        settings=hybrid.settings,
+        device=device,
+        prepared_split=prepared_split,
+    )
+    cold_prepared = (
+        prepared_split
+        if split is SplitName.TEST
+        else prepare_split(hybrid.snapshot, SplitName.TEST)
+    )
+    cold_parity = evaluate_cold_parity(
+        hybrid.model,
+        hybrid.snapshot,
+        hybrid.embedding.vectors,
+        hybrid.rules.store,
+        prepared_split=cold_prepared,
+        settings=hybrid.settings,
+        device=device,
+    )
+    fixture = Path(__file__).parents[1] / "evaluation" / "fixtures" / "semantic_traps.json"
+    traps = evaluate_semantic_traps(
+        hybrid.model,
+        deep.model,
+        hybrid.snapshot,
+        hybrid.embedding.vectors,
+        hybrid.rules.store,
+        fixture,
+        k=hybrid.settings.eval.k,
+        device=device,
+    )
+    matrix = evaluate_single_seed(
+        SingleSeedGateInputs(
+            comparison=comparison,
+            cold_parity=cold_parity,
+            semantic_traps=traps,
+            seed=hybrid.settings.train.seed,
+            split=split,
+            comparison_signature=hybrid.settings.comparison_signature_sha256(),
+        ),
+        settings=hybrid.settings,
+    )
+    if hybrid.state.checkpoint_path is None:
+        raise ArtifactIntegrityError("paired evaluation requires a Hybrid checkpoint")
+    checkpoint_sha = hybrid.checkpoint_manifest.content_sha256
+    if deep.state.checkpoint_path is None:
+        raise ArtifactIntegrityError("paired evaluation requires a Deep checkpoint")
+    deep_checkpoint_sha = deep.checkpoint_manifest.content_sha256
+    run_dir = Path(hybrid.state.checkpoint_path).parents[1]
+    random_results = comparison.random_seed_results
+    metrics = {
+        "user_ids": comparison.hybrid.user_ids,
+        "hybrid_hr": comparison.hybrid.per_user_hr,
+        "hybrid_ndcg": comparison.hybrid.per_user_ndcg,
+        "hybrid_gauc": comparison.hybrid.per_user_gauc,
+        "deep_hr": comparison.deep_only.per_user_hr,
+        "deep_ndcg": comparison.deep_only.per_user_ndcg,
+        "deep_gauc": comparison.deep_only.per_user_gauc,
+        "apriori_hr": comparison.apriori_only.per_user_hr,
+        "apriori_ndcg": comparison.apriori_only.per_user_ndcg,
+        "apriori_gauc": comparison.apriori_only.per_user_gauc,
+        "sbert_hr": comparison.sbert_centroid.per_user_hr,
+        "sbert_ndcg": comparison.sbert_centroid.per_user_ndcg,
+        "sbert_gauc": comparison.sbert_centroid.per_user_gauc,
+        "item_cf_hr": comparison.item_cf.per_user_hr,
+        "item_cf_ndcg": comparison.item_cf.per_user_ndcg,
+        "item_cf_gauc": comparison.item_cf.per_user_gauc,
+        "noisy_hybrid_hr": comparison.noisy_hybrid.per_user_hr,
+        "noisy_hybrid_ndcg": comparison.noisy_hybrid.per_user_ndcg,
+        "noisy_hybrid_gauc": comparison.noisy_hybrid.per_user_gauc,
+        "random_hr": np.stack([result.per_user_hr for result in random_results]),
+        "random_ndcg": np.stack([result.per_user_ndcg for result in random_results]),
+        "random_gauc": np.stack([result.per_user_gauc for result in random_results]),
+    }
+    artifact_set = publish_evaluation_artifacts(
+        run_dir=run_dir,
+        split=split,
+        hybrid_run_id=hybrid_run_id,
+        deep_run_id=deep_run_id,
+        hybrid_checkpoint_sha256=checkpoint_sha,
+        deep_checkpoint_sha256=deep_checkpoint_sha,
+        lineage=lineage,
+        comparison_signature_sha256=hybrid.settings.comparison_signature_sha256(),
+        metrics=metrics,
+        results={
+            "run_id": hybrid_run_id,
+            "paired_run_id": deep_run_id,
+            "baselines": {
+                name: report.model_dump(mode="json")
+                for name, report in comparison.baselines.items()
+            },
+            "cold_parity": cold_parity.model_dump(mode="json"),
+            "semantic_traps": asdict(traps),
+            "victory_matrix": matrix.model_dump(mode="json"),
+            "passed": matrix.all_passed,
+        },
+        victory_matrix=matrix,
+    )
+    output_dir = artifact_set.directory
+    matrix_path = artifact_set.victory_matrix_path
+
+    state_updates = {
+        "paired_run_id": deep_run_id,
+        "validation_victory_matrix_path": (
+            str(matrix_path)
+            if split is SplitName.VAL
+            else hybrid.state.validation_victory_matrix_path
+        ),
+        "test_victory_matrix_path": (
+            str(matrix_path) if split is SplitName.TEST else hybrid.state.test_victory_matrix_path
+        ),
+        "validation_gate_passed": (
+            matrix.all_passed if split is SplitName.VAL else hybrid.state.validation_gate_passed
+        ),
+        "test_gate_passed": (
+            matrix.all_passed if split is SplitName.TEST else hybrid.state.test_gate_passed
+        ),
+    }
+    next_hybrid = _update_pipeline_state(hybrid.state, **state_updates)
+    next_deep = _update_pipeline_state(
+        deep.state,
+        **{
+            "paired_run_id": hybrid_run_id,
+            "validation_victory_matrix_path": (
+                str(matrix_path)
+                if split is SplitName.VAL
+                else deep.state.validation_victory_matrix_path
+            ),
+            "test_victory_matrix_path": (
+                str(matrix_path) if split is SplitName.TEST else deep.state.test_victory_matrix_path
+            ),
+            "validation_gate_passed": (
+                matrix.all_passed if split is SplitName.VAL else deep.state.validation_gate_passed
+            ),
+            "test_gate_passed": (
+                matrix.all_passed if split is SplitName.TEST else deep.state.test_gate_passed
+            ),
+        },
+    )
+    _write_state(hybrid.settings, next_hybrid)
+    _write_state(deep.settings, next_deep)
+    if not matrix.all_passed:
+        hybrid.lifecycle.transition(
+            RunStatus.FAILED, reason=f"{split.value} single-seed gate failed"
+        )
+        if split is SplitName.TEST and deep.lifecycle.status is RunStatus.TRAINING:
+            deep.lifecycle.transition(RunStatus.EVALUATED)
+        raise VictoryGateError(f"{split.value} single-seed victory matrix failed")
+    if split is SplitName.TEST:
+        if hybrid.lifecycle.status is RunStatus.TRAINING:
+            hybrid.lifecycle.transition(RunStatus.EVALUATED)
+        if deep.lifecycle.status is RunStatus.TRAINING:
+            deep.lifecycle.transition(RunStatus.EVALUATED)
+    return PairEvaluationResult(
+        split=split,
+        hybrid_state=next_hybrid,
+        deep_state=next_deep,
+        artifact_dir=output_dir,
+        victory_matrix=matrix,
+    )
 
 
 def execute_command(args: Namespace) -> None:
     """Execute one explicit stage without hidden source or embedding fallbacks."""
     settings = _configure(args)
     _seed_everything(settings.train.seed)
-    source_kind = DataSourceKind(args.source)
-    embedding_kind = EmbeddingSource(args.embedding_source)
+    source_kind = DataSourceKind(getattr(args, "source", DataSourceKind.POSTGRES.value))
+    embedding_kind = EmbeddingSource(getattr(args, "embedding_source", EmbeddingSource.REAL.value))
 
     if args.command == "verify-bundle":
-        configured_bundle = args.bundle_id or settings.data.model_bundle_path
+        if args.bundle_id and getattr(args, "run_id", None):
+            raise ConfigurationError("--bundle-id and --run-id are mutually exclusive")
+        configured_bundle: str | Path | None = cast(
+            str | Path | None, args.bundle_id or settings.data.model_bundle_path
+        )
+        if getattr(args, "run_id", None):
+            run_id = _validate_artifact_id(str(args.run_id), kind="run ID")
+            run_dir = settings.data.artifact_root.resolve() / "runs" / run_id
+            try:
+                run_state = PipelineState.model_validate_json(
+                    (run_dir / "pipeline-state.json").read_text(encoding="utf-8")
+                )
+            except (OSError, ValueError) as error:
+                raise ConfigurationError(
+                    "--run-id does not reference a valid PipelineState"
+                ) from error
+            if run_state.run_id != run_id:
+                raise ConfigurationError("--run-id does not match PipelineState.run_id")
+            if run_state.bundle_path is None:
+                raise ConfigurationError("selected run has no bundle_path")
+            configured_bundle = run_state.bundle_path
         if configured_bundle is None:
-            raise ConfigurationError("--bundle-id or AI_MODEL_BUNDLE_PATH is required")
+            raise ConfigurationError("--bundle-id, --run-id, or AI_MODEL_BUNDLE_PATH is required")
         path = Path(configured_bundle)
         if args.bundle_id:
             bundle_id = _validate_artifact_id(str(args.bundle_id), kind="bundle ID")
@@ -636,16 +963,47 @@ def execute_command(args: Namespace) -> None:
         return
 
     if args.command == "release-gate":
-        run_ids = getattr(args, "run_ids", None)
-        if not run_ids or len(run_ids) != 3:
-            raise ConfigurationError("--run-ids requires exactly three finalist runs")
-        run_dirs = tuple(
+        split = SplitName(args.split)
+        hybrid_run_ids = getattr(args, "hybrid_run_ids", None)
+        deep_run_ids = getattr(args, "deep_run_ids", None)
+        if (
+            not hybrid_run_ids
+            or len(hybrid_run_ids) != 3
+            or not deep_run_ids
+            or len(deep_run_ids) != 3
+        ):
+            raise ConfigurationError(
+                "--hybrid-run-ids and --deep-run-ids require exactly 3 run IDs each"
+            )
+        hybrid_dirs = tuple(
             settings.data.artifact_root.resolve()
             / "runs"
-            / _validate_artifact_id(str(run_id), kind="run ID")
-            for run_id in run_ids
+            / _validate_artifact_id(str(rid), kind="run ID")
+            for rid in hybrid_run_ids
         )
-        _emit(aggregate_three_seed_release(settings, cast(tuple[Path, Path, Path], run_dirs)))
+        deep_dirs = tuple(
+            settings.data.artifact_root.resolve()
+            / "runs"
+            / _validate_artifact_id(str(rid), kind="run ID")
+            for rid in deep_run_ids
+        )
+        # Release thresholds and artifact namespace are immutable properties of
+        # the finalist runs, not of the caller's ambient/default config.
+        try:
+            release_settings = load_resolved_settings(
+                cast(tuple[Path, Path, Path], hybrid_dirs)[0] / "resolved-config.json"
+            )
+        except (OSError, ConfigurationError, ValueError) as error:
+            raise ArtifactIntegrityError(
+                "release finalists must contain a readable resolved configuration"
+            ) from error
+        release_report = evaluate_three_seed(
+            split=split,
+            hybrid_run_dirs=cast(tuple[Path, Path, Path], hybrid_dirs),
+            deep_run_dirs=cast(tuple[Path, Path, Path], deep_dirs),
+            settings=release_settings,
+        )
+        _emit(release_report.model_dump(mode="json"))
         return
 
     if args.command == "snapshot":
@@ -668,31 +1026,122 @@ def execute_command(args: Namespace) -> None:
         return
 
     if args.command in {"evaluate", "export"}:
-        state = _load_state(settings, args.run_id)
-        snapshot, embedding, rules, model = _load_lineage(settings, state)
         if args.command == "evaluate":
+            if not getattr(args, "hybrid_run_id", None) or not getattr(args, "deep_run_id", None):
+                raise ConfigurationError("evaluate requires --hybrid-run-id and --deep-run-id")
+            result = _evaluate_pair(
+                settings,
+                hybrid_run_id=args.hybrid_run_id,
+                deep_run_id=args.deep_run_id,
+                split=SplitName(args.split),
+                device=_device(args.device),
+            )
             _emit(
-                asdict(
-                    _evaluate(
-                        settings,
-                        snapshot,
-                        embedding,
-                        rules,
-                        model,
-                        state,
-                        device=_device(args.device),
-                    )
-                )
+                {
+                    "split": result.split.value,
+                    "hybrid_state": result.hybrid_state.model_dump(mode="json"),
+                    "deep_state": result.deep_state.model_dump(mode="json"),
+                    "artifact_dir": str(result.artifact_dir),
+                    "victory_matrix": result.victory_matrix.model_dump(mode="json"),
+                }
             )
             return
-        _emit(asdict(_export(settings, snapshot, embedding, rules, model, state)))
+        run = _load_run_context(settings, args.run_id, expected_variant=TrainingVariant.HYBRID)
+        _emit(
+            _export(
+                run.settings,
+                run.snapshot,
+                run.embedding,
+                run.rules,
+                run.model,
+                run.state,
+            ).model_dump(mode="json")
+        )
         return
 
-    snapshot = (
-        _snapshot(settings, source_kind)
-        if args.command == "run-all"
-        else load_snapshot(settings.data.snapshot_id, settings)
-    )
+    if args.command == "run-all":
+        if (
+            source_kind is not DataSourceKind.SYNTHETIC
+            or embedding_kind is not EmbeddingSource.MOCK
+        ):
+            raise ConfigurationError(
+                "run-all is disabled for production; smoke-only mode requires "
+                "synthetic source plus mock embeddings"
+            )
+        smoke_run_id = getattr(args, "run_id", None)
+        if not smoke_run_id:
+            raise ConfigurationError("run-all smoke requires --run-id")
+        if getattr(args, "config", None) is None:
+            raise ConfigurationError("run-all smoke requires --config")
+        if settings.train.training_variant is not TrainingVariant.DEEP_ONLY:
+            raise ConfigurationError("run-all smoke config must be deep_only")
+        if settings.train.max_epochs != 1:
+            raise ConfigurationError("run-all smoke config must set max_epochs=1")
+        snapshot_path = (
+            settings.data.artifact_root.resolve() / "snapshots" / settings.data.snapshot_id
+        )
+        smoke_snapshot = (
+            load_snapshot(settings.data.snapshot_id, settings)
+            if snapshot_path.is_dir()
+            else _snapshot(settings, source_kind)
+        )
+        try:
+            smoke_embedding_path = _find_single_parent_artifact(
+                settings.data.artifact_root.resolve() / "features",
+                snapshot_sha256=smoke_snapshot.manifest.content_sha256,
+            )
+            smoke_embedding = load_embedding_artifact(smoke_embedding_path)
+        except ArtifactIntegrityError:
+            smoke_embedding = _features(settings, smoke_snapshot, embedding_kind)
+        try:
+            smoke_rule_path = _find_training_rule_artifact(
+                settings, smoke_snapshot.manifest.content_sha256
+            )
+            smoke_rules = load_rule_artifact(smoke_rule_path, smoke_snapshot.manifest.num_items)
+        except ArtifactIntegrityError:
+            smoke_rules = _rules(settings, smoke_snapshot)
+        smoke_embedding_loaded = load_embedding_artifact(smoke_embedding.artifact_dir)
+        smoke_rules_loaded = load_rule_artifact(
+            smoke_rules.artifact_dir, smoke_snapshot.manifest.num_items
+        )
+        _, smoke_state = _train(
+            settings,
+            smoke_snapshot,
+            smoke_embedding_loaded,
+            smoke_rules_loaded,
+            run_id=str(smoke_run_id),
+            device=_device(args.device),
+        )
+        smoke_run_dir = settings.data.artifact_root.resolve() / "runs" / str(smoke_run_id)
+        if not (smoke_run_dir / "checkpoints" / "best.pt").is_file():
+            raise ArtifactIntegrityError("run-all smoke did not publish checkpoints/best.pt")
+        if not (smoke_run_dir / "checkpoints" / "last.pt").is_file():
+            raise ArtifactIntegrityError("run-all smoke did not publish checkpoints/last.pt")
+        if (smoke_run_dir / "evaluation").exists():
+            raise ArtifactIntegrityError("run-all smoke must not publish evaluation artifacts")
+        release_root = (
+            settings.data.artifact_root.resolve()
+            / "releases"
+            / settings.comparison_signature_sha256()
+        )
+        if (release_root / "validation-gate.json").exists() or (
+            release_root / "release-gate.json"
+        ).exists():
+            raise ArtifactIntegrityError("run-all smoke must not publish release gates")
+        if (
+            smoke_state.validation_gate_passed
+            or smoke_state.test_gate_passed
+            or smoke_state.bundle_path
+        ):
+            raise ArtifactIntegrityError(
+                "run-all smoke must not publish validation, test, or bundle state"
+            )
+        if RunLifecycle.load(smoke_run_dir).status is not RunStatus.TRAINING:
+            raise ArtifactIntegrityError("run-all smoke must leave the run in TRAINING")
+        _emit(smoke_state.model_dump(mode="json"))
+        return
+
+    snapshot = load_snapshot(settings.data.snapshot_id, settings)
     if args.command == "features":
         _emit(_features(settings, snapshot, embedding_kind).manifest.model_dump(mode="json"))
         return
@@ -702,36 +1151,24 @@ def execute_command(args: Namespace) -> None:
 
     device = _device(args.device)
 
-    if args.command == "run-all":
-        embedding = _features(settings, snapshot, embedding_kind)
-        rules = _rules(settings, snapshot)
-        run_id = args.run_id or (
-            f"run-{datetime.now(UTC):%Y%m%dT%H%M%SZ}-{snapshot.manifest.content_sha256[:8]}"
-        )
-        model, state = _train(
-            settings,
-            snapshot,
-            embedding,
-            rules,
-            run_id=run_id,
-            device=device,
-            resume=False,
-        )
-        state = _evaluate(settings, snapshot, embedding, rules, model, state, device=device)
-        _emit(asdict(state))
-        return
-
     if args.command == "train":
         run_id = args.run_id
         if not run_id:
             raise ConfigurationError("--run-id is required for training")
+        raw_variant = getattr(args, "variant", None) or settings.train.training_variant.value
+        variant_arg = TrainingVariant(raw_variant)
+        if variant_arg != settings.train.training_variant:
+            raise ConfigurationError(
+                "--variant must match config training_variant "
+                f"({settings.train.training_variant.value})"
+            )
+        snapshot = load_snapshot(settings.data.snapshot_id, settings)
+        device = _device(args.device)
         artifact_root = settings.data.artifact_root.resolve()
         embedding_path = _find_single_parent_artifact(
             artifact_root / "features", snapshot_sha256=snapshot.manifest.content_sha256
         )
-        rule_path = _find_single_parent_artifact(
-            artifact_root / "rules", snapshot_sha256=snapshot.manifest.content_sha256
-        )
+        rule_path = _find_training_rule_artifact(settings, snapshot.manifest.content_sha256)
         embedding = load_embedding_artifact(embedding_path)
         rules = load_rule_artifact(rule_path, snapshot.manifest.num_items)
         _, state = _train(
@@ -743,7 +1180,7 @@ def execute_command(args: Namespace) -> None:
             device=device,
             resume=bool(getattr(args, "resume", False)),
         )
-        _emit(asdict(state))
+        _emit(state.model_dump(mode="json"))
         return
 
     raise ConfigurationError(f"unsupported pipeline command: {args.command}")

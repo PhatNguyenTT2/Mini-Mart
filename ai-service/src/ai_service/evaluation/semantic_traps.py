@@ -46,7 +46,7 @@ def _rank(scores: np.ndarray, target_indices: list[int], raw_ids: np.ndarray) ->
 @torch.no_grad()
 def evaluate_semantic_traps(
     hybrid_model: HybridTwoTowerModel,
-    deep_model: HybridTwoTowerModel | None,
+    deep_model: HybridTwoTowerModel,
     snapshot: Snapshot,
     embeddings: np.ndarray,
     rule_store: RuleStore,
@@ -59,9 +59,8 @@ def evaluate_semantic_traps(
     device = torch.device(device)
     hybrid_model = hybrid_model.to(device).eval()
     if deep_model is None:
-        deep_model = hybrid_model
-    else:
-        deep_model = deep_model.to(device).eval()
+        raise ValueError("deep_model is required for semantic trap evaluation")
+    deep_model = deep_model.to(device).eval()
 
     catalog = snapshot.catalog_df.sort_values("internal_product_id", kind="stable")
     item_ids = torch.arange(snapshot.manifest.num_items, dtype=torch.int64, device=device)

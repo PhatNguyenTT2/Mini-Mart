@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import hashlib
+import json
 from dataclasses import replace
 from pathlib import Path
 from types import SimpleNamespace
@@ -19,6 +21,7 @@ from ai_service.data.features import (
 )
 from ai_service.data.rules import AprioriRuleMiner, RuleStore, load_rule_artifact
 from ai_service.data.snapshot import Snapshot
+from ai_service.errors import ArtifactIntegrityError
 
 
 def _snapshot(tmp_path: Path) -> Snapshot:
@@ -154,6 +157,23 @@ def test_rule_miner_round_trips_train_only_sparse_artifact(tmp_path: Path) -> No
     assert artifact.manifest.train_basket_count == 3
     assert artifact.manifest.num_directed_rules == 4
     assert loaded.store.lookup(0, 1) > 0
+    assert artifact.manifest.has_full_statistics is True
+    assert "rules-v2-" in artifact.manifest.artifact_id
+
+    legacy_manifest = json.loads(
+        (artifact.artifact_dir / "manifest.json").read_text(encoding="utf-8")
+    )
+    legacy_manifest["has_full_statistics"] = False
+    with np.load(artifact.artifact_dir / "rules.npz", allow_pickle=False) as arrays:
+        legacy_manifest["content_sha256"] = hashlib.sha256(
+            b"".join(arrays[name].tobytes() for name in ("crow_indices", "col_indices", "values"))
+        ).hexdigest()
+    (artifact.artifact_dir / "manifest.json").write_text(
+        json.dumps(legacy_manifest), encoding="utf-8"
+    )
+    legacy = load_rule_artifact(artifact.artifact_dir, num_items=8)
+    with pytest.raises(ArtifactIntegrityError, match="full statistics"):
+        legacy.require_training_capability()
 
 
 def test_dataset_uses_strict_purchase_context_and_dynamic_negative_ratio(tmp_path: Path) -> None:

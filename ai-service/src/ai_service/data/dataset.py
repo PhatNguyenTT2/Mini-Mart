@@ -182,18 +182,18 @@ class PurchaseBatchIterator:
         self,
         index: PurchaseTrainingIndex,
         sampler: Any,
+        rule_store: RuleStore,
         *,
         batch_size: int,
         seed: int,
-        rule_store: RuleStore | None = None,
     ) -> None:
         if batch_size < 1:
             raise ValueError("batch_size must be positive")
         self.index = index
         self.sampler = sampler
+        self.rule_store = rule_store
         self.batch_size = batch_size
         self.seed = seed
-        self.rule_store = rule_store
         self.epoch = 0
 
     def set_epoch(self, epoch: int) -> None:
@@ -221,16 +221,11 @@ class PurchaseBatchIterator:
                 batch_index=batch_index,
             )
             b = len(selected)
-            r = negatives.shape[1]
-            if self.rule_store is not None:
-                in_batch_candidates = np.broadcast_to(positives[None, :], (b, b))
-                in_batch_wide, in_batch_present = self.rule_store.batch_lookup(contexts, in_batch_candidates)
-                explicit_wide, explicit_present = self.rule_store.batch_lookup(contexts, negatives)
-            else:
-                in_batch_wide = np.zeros((b, b, 3), dtype=np.float32)
-                in_batch_present = np.zeros((b, b), dtype=np.bool_)
-                explicit_wide = np.zeros((b, r, 3), dtype=np.float32)
-                explicit_present = np.zeros((b, r), dtype=np.bool_)
+            in_batch_candidates = np.broadcast_to(positives[None, :], (b, b))
+            in_batch_wide, in_batch_present = self.rule_store.batch_lookup(
+                contexts, in_batch_candidates
+            )
+            explicit_wide, explicit_present = self.rule_store.batch_lookup(contexts, negatives)
             yield PurchaseBatch(
                 user_idx=torch.from_numpy(users),
                 persona_idx=torch.from_numpy(self.index.personas[selected]),

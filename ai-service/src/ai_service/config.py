@@ -12,10 +12,13 @@ from typing import Any, Literal
 from pydantic import BaseModel, Field, SecretStr, field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+from ai_service.contracts import TrainingVariant
 from ai_service.errors import ConfigurationError
 
 MIN_TEMPERATURE = 1e-3
 MODEL_SCHEMA_VERSION = "5.0.0"
+PINNED_SBERT_NAME = "keepitreal/vietnamese-sbert"
+PINNED_SBERT_REVISION = "a9467ef2ef47caa6448edeabfd8e5e5ce0fa2a23"
 
 
 class DataConfig(BaseSettings):
@@ -82,7 +85,7 @@ class ModelConfig(BaseModel):
 
 class TrainConfig(BaseModel):
     objective: Literal["sampled_softmax", "legacy_bce", "purchase_bce"] = "sampled_softmax"
-    training_variant: Literal["deep_only", "hybrid"] = "hybrid"
+    training_variant: TrainingVariant = TrainingVariant.HYBRID
     batch_size: int = Field(default=2_048, gt=0)
     negative_ratio: int = Field(default=4, ge=1)
     explicit_negative_ratio: int = Field(default=16, ge=4)
@@ -109,12 +112,13 @@ class TrainConfig(BaseModel):
 
 
 class EvalConfig(BaseModel):
-    k: int = Field(default=10, gt=0)
+    k: Literal[10] = 10
     bootstrap_samples: int = Field(default=2_000, gt=0)
-    random_seeds: int = Field(default=10, gt=0)
-    primary_metric: Literal["ndcg_at_k"] = "ndcg_at_k"
+    random_seeds: Literal[10] = 10
+    primary_metric: Literal["gauc"] = "gauc"
     gauc_guardrail_delta: float = Field(default=-0.002, le=0.0)
     ndcg_guardrail_delta: float = Field(default=-0.001, le=0.0)
+    hr_guardrail_delta: float = Field(default=-0.001, le=0.0)
     minimum_gauc: float = Field(default=0.75, ge=0.5, le=1.0)
     random_gauc_tolerance: float = Field(default=0.02, ge=0.0)
     cold_score_atol: float = Field(default=1e-6, ge=0.0)
@@ -146,6 +150,22 @@ class Settings:
         self.train = TrainConfig(**document.get("train", {}))
         self.eval = EvalConfig(**document.get("eval", {}))
         self.serving = ServingConfig(**document.get("serving", {}))
+
+    @classmethod
+    def from_resolved_document(cls, document: dict[str, Any]) -> Settings:
+        """Rehydrate immutable run settings without reading environment aliases."""
+        groups = {"data", "model", "train", "eval", "serving"}
+        if set(document) != groups:
+            raise ConfigurationError(
+                f"resolved configuration groups must be exactly {sorted(groups)}"
+            )
+        instance = cls.__new__(cls)
+        instance.data = DataConfig.model_validate(document.get("data", {}))
+        instance.model = ModelConfig.model_validate(document.get("model", {}))
+        instance.train = TrainConfig.model_validate(document.get("train", {}))
+        instance.eval = EvalConfig.model_validate(document.get("eval", {}))
+        instance.serving = ServingConfig.model_validate(document.get("serving", {}))
+        return instance
 
     def resolved_document(self) -> dict[str, Any]:
         """Return the non-secret, fully resolved configuration for provenance."""
@@ -227,6 +247,21 @@ class Settings:
     def validate_production(self, *, serving: bool = False) -> None:
         if self.serving.environment.lower() != "production":
             return
+        if (
+            self.model.sbert_model_name != PINNED_SBERT_NAME
+            or self.model.sbert_model_revision != PINNED_SBERT_REVISION
+        ):
+            raise ConfigurationError("production requires pinned SBERT model and revision")
+        if (
+            self.data.model_bundle_path is not None
+            and not self.data.model_bundle_path.is_absolute()
+        ):
+            raise ConfigurationError("AI_MODEL_BUNDLE_PATH must be an absolute path in production")
+        if (
+            self.data.database_ssl_root_cert is not None
+            and not self.data.database_ssl_root_cert.is_absolute()
+        ):
+            raise ConfigurationError("SUPABASE_DB_CA_PATH must be an absolute path in production")
         required = {
             "AI_ARTIFACT_ROOT": os.getenv("AI_ARTIFACT_ROOT"),
             "AI_STORE_ID": os.getenv("AI_STORE_ID"),
@@ -261,3 +296,20 @@ def load_settings(path: Path | None = None) -> Settings:
     except (OSError, tomllib.TOMLDecodeError) as error:
         raise ConfigurationError(f"cannot load training configuration {path}: {error}") from error
     return Settings(document)
+
+
+def load_resolved_settings(path: Path) -> Settings:
+    """Load the immutable configuration saved with a v5 training run."""
+    try:
+        document = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError) as error:
+        raise ConfigurationError(
+            f"cannot load resolved training configuration {path}: {error}"
+        ) from error
+    if not isinstance(document, dict) or document.get("schema_version") != MODEL_SCHEMA_VERSION:
+        raise ConfigurationError(
+            f"resolved training configuration schema does not match {MODEL_SCHEMA_VERSION}"
+        )
+    payload = dict(document)
+    payload.pop("schema_version", None)
+    return Settings.from_resolved_document(payload)

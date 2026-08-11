@@ -53,9 +53,23 @@ class MixedNegativeSampler:
         self.model_hard_cache: np.ndarray | None = None
 
     def update_model_hard_cache(self, values: np.ndarray) -> None:
-        cache = np.asarray(values, dtype=np.int32)
+        raw_cache = np.asarray(values)
+        if raw_cache.dtype != np.int32:
+            raise ValueError("model hard cache must use int32 IDs")
+        cache = raw_cache.astype(np.int32, copy=False)
         if cache.ndim != 2 or cache.shape[0] != self.index.known_history.shape[0]:
             raise ValueError("model hard cache must have shape [num_users+1,K]")
+        if cache.shape[1] < 1:
+            raise ValueError("model hard cache width must be positive")
+        if not np.all(cache[0] == -1):
+            raise ValueError("model hard cache row zero must be the -1 sentinel")
+        if np.any(cache[1:] < 0) or np.any(~np.isin(cache[1:], self.warm_items)):
+            raise ValueError("model hard cache contains cold or invalid items")
+        for user in range(1, cache.shape[0]):
+            if np.any(self.index.known_history[user, cache[user].astype(np.int64)]):
+                raise ValueError("model hard cache contains known history items")
+            if len(np.unique(cache[user])) != cache.shape[1]:
+                raise ValueError("model hard cache rows must not contain duplicate items")
         self.model_hard_cache = cache.copy()
 
     def _draw(
@@ -67,6 +81,7 @@ class MixedNegativeSampler:
         selected: set[int],
         user: int,
         positive: int,
+        allow_fallback: bool = True,
     ) -> list[int]:
         values: list[int] = []
         candidates = np.asarray(pool, dtype=np.int64)
@@ -80,7 +95,7 @@ class MixedNegativeSampler:
             values.append(item)
             if len(values) == count:
                 break
-        if len(values) < count:
+        if len(values) < count and allow_fallback:
             for candidate in rng.permutation(self.warm_items):
                 item = int(candidate)
                 if item in selected or self.index.known_history[user, item]:
@@ -105,6 +120,8 @@ class MixedNegativeSampler:
         positives = np.asarray(positive_items, dtype=np.int64)
         if users.shape != positives.shape or users.ndim != 1:
             raise ValueError("users and positive_items must be equal [B] vectors")
+        if np.any(users < 1) or np.any(users >= self.index.known_history.shape[0]):
+            raise NegativeSamplingError("sampler users must be in the range [1,num_users]")
         result = np.empty((len(users), self.ratio), dtype=np.int64)
         base = self.ratio // 4
         quotas = [base, base, base, base + self.ratio - base * 4]
@@ -115,11 +132,13 @@ class MixedNegativeSampler:
             selected: set[int] = set()
 
             semantic = self.semantic_neighbors[int(positive)]
-            model_pool = (
-                self.model_hard_cache[int(user)]
-                if epoch >= 2 and self.model_hard_cache is not None
-                else semantic
-            )
+            model_cache = self.model_hard_cache
+            if epoch >= 2:
+                if model_cache is None:
+                    raise NegativeSamplingError("model hard cache is required from epoch 2")
+                model_pool = model_cache[int(user)]
+            else:
+                model_pool = semantic
             values = [
                 *self._draw(
                     self.warm_items,
@@ -152,6 +171,7 @@ class MixedNegativeSampler:
                     selected=selected,
                     user=int(user),
                     positive=int(positive),
+                    allow_fallback=epoch < 2,
                 ),
             ]
             result[row_index] = values

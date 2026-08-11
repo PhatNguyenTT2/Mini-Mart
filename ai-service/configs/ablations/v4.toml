@@ -8,4 +8,16 @@ explicit_negative_ratio = 16
 use_history_profiles = true
 view_auxiliary_weight = 0.1
 
+[eval]
+k = 10
+bootstrap_samples = 2000
+random_seeds = 10
+gauc_guardrail_delta = -0.002
+ndcg_guardrail_delta = -0.001
+hr_guardrail_delta = -0.001
+minimum_gauc = 0.75
+random_gauc_tolerance = 0.02
+cold_score_atol = 1e-6
+wide_zero_atol = 1e-7
+
 

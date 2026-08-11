@@ -82,7 +82,7 @@ class PostgresDatasetSource:
                             """
                             SELECT benchmark_run_id
                             FROM ml_benchmark_run_v1
-                            WHERE store_id=%s AND status='ready'
+                            WHERE store_id=%s AND status='ready' AND published_at IS NOT NULL
                             ORDER BY published_at DESC
                             LIMIT 1
                             """,
@@ -92,6 +92,21 @@ class PostgresDatasetSource:
                         if row is None:
                             raise SourceReadError("no ready benchmark run exists")
                         benchmark_run_id = str(row[0])
+                    else:
+                        cursor.execute(
+                            """
+                            SELECT benchmark_run_id
+                            FROM ml_benchmark_run_v1
+                            WHERE store_id=%s AND benchmark_run_id=%s
+                              AND status='ready' AND published_at IS NOT NULL
+                            """,
+                            (store_id, benchmark_run_id),
+                        )
+                        if cursor.fetchone() is None:
+                            raise SourceReadError(
+                                f"specified benchmark run {benchmark_run_id} is not ready "
+                                "or published"
+                            )
                     events = _frame(
                         cursor,
                         """
@@ -170,6 +185,106 @@ class PostgresDatasetSource:
         )
 
 
+def _synthetic_preferred_category(user_ids: np.ndarray, num_categories: int) -> np.ndarray:
+    """Map one-based user IDs to one-based deterministic preferred categories."""
+    if num_categories <= 0:
+        raise SourceReadError("synthetic category count must be positive")
+    return ((np.asarray(user_ids, dtype=np.int64) - 1) % num_categories) + 1
+
+
+def _sample_preference_items(
+    *,
+    user_ids: np.ndarray,
+    warm_item_ids: np.ndarray,
+    item_category_ids: np.ndarray,
+    seen_by_user: dict[int, set[int]],
+    rng: np.random.Generator,
+    novel: bool,
+    preference_probability: float = 0.85,
+) -> np.ndarray:
+    """Sample deterministic preference/noise items, optionally excluding history."""
+    warm = np.asarray(warm_item_ids, dtype=np.int64)
+    categories = np.asarray(item_category_ids, dtype=np.int64)
+    if warm.ndim != 1 or categories.shape != warm.shape or warm.size == 0:
+        raise SourceReadError("synthetic warm catalog/category arrays are invalid")
+    if not 0.0 <= preference_probability <= 1.0:
+        raise SourceReadError("synthetic preference probability must be within [0,1]")
+    category_by_item = {
+        int(item): int(category) for item, category in zip(warm, categories, strict=True)
+    }
+    items_by_category: dict[int, np.ndarray] = {}
+    for category in sorted(set(category_by_item.values())):
+        items_by_category[category] = np.asarray(
+            [item for item in warm if category_by_item[int(item)] == category], dtype=np.int64
+        )
+    preferred = _synthetic_preferred_category(user_ids, max(items_by_category))
+    sampled = np.empty(len(user_ids), dtype=np.int64)
+    for index, raw_user in enumerate(np.asarray(user_ids, dtype=np.int64)):
+        user = int(raw_user)
+        preferred_pool = items_by_category.get(int(preferred[index]), warm)
+        pool = preferred_pool if rng.random() < preference_probability else warm
+        seen = seen_by_user.setdefault(user, set())
+        if novel:
+            available = np.asarray([item for item in pool if int(item) not in seen], dtype=np.int64)
+            if available.size == 0:
+                available = np.asarray(
+                    [item for item in warm if int(item) not in seen], dtype=np.int64
+                )
+            if available.size == 0:
+                raise SourceReadError(f"synthetic user {user} has no novel warm item")
+        else:
+            available = pool
+        chosen = int(available[int(rng.integers(0, len(available)))])
+        sampled[index] = chosen
+        seen.add(chosen)
+    return sampled
+
+
+def _build_synthetic_orders(
+    *,
+    user_ids: np.ndarray,
+    warm_item_ids: np.ndarray,
+    item_category_ids: np.ndarray,
+    order_count: int,
+    rng: np.random.Generator,
+) -> pd.DataFrame:
+    """Build exact-count, category-coherent train-period baskets."""
+    if order_count <= 0 or len(warm_item_ids) < 2:
+        raise SourceReadError("synthetic order generation needs at least two warm items")
+    category_by_item = {
+        int(item): int(category)
+        for item, category in zip(warm_item_ids, item_category_ids, strict=True)
+    }
+    items_by_category = {
+        category: np.asarray(
+            [item for item in warm_item_ids if category_by_item[int(item)] == category],
+            dtype=np.int64,
+        )
+        for category in sorted(set(category_by_item.values()))
+    }
+    order_rows: list[dict[str, object]] = []
+    order_base = pd.Timestamp("2026-01-01", tz="UTC")
+    for order_id in range(1, order_count + 1):
+        basket_size = int(rng.integers(2, min(5, len(warm_item_ids)) + 1))
+        category = int(rng.choice(np.asarray(sorted(items_by_category), dtype=np.int64)))
+        preferred_pool = items_by_category[category]
+        if len(preferred_pool) >= basket_size:
+            basket = rng.choice(preferred_pool, size=basket_size, replace=False)
+        else:
+            basket = rng.choice(warm_item_ids, size=basket_size, replace=False)
+        for product_id in basket:
+            order_rows.append(
+                {
+                    "order_id": order_id,
+                    "user_id": int(user_ids[(order_id - 1) % len(user_ids)]),
+                    "product_id": int(product_id),
+                    "quantity": int(rng.integers(1, 4)),
+                    "order_ts": order_base + pd.Timedelta(seconds=order_id * 500),
+                }
+            )
+    return pd.DataFrame(order_rows)
+
+
 class SyntheticDatasetSource:
     """Deterministic local adapter used only when explicitly selected."""
 
@@ -212,19 +327,51 @@ class SyntheticDatasetSource:
         if test_count < len(cold_ids):
             raise SourceReadError("synthetic test split is too small for cold ground truth")
 
-        def warm_sample(size: int, *, ensure_coverage: bool = False) -> np.ndarray:
-            values = rng.choice(warm_ids, size=size, replace=True)
-            if ensure_coverage:
-                if size < len(warm_ids):
-                    raise SourceReadError("synthetic train split cannot cover all warm items")
-                values[: len(warm_ids)] = warm_ids
-                rng.shuffle(values)
-            return values
-
-        train_items = warm_sample(train_count, ensure_coverage=True)
-        val_items = warm_sample(val_count)
-        test_items = warm_sample(test_count)
-        test_items[: len(cold_ids)] = np.asarray(cold_ids)
+        if len(warm_ids) < 2 or train_count < len(warm_ids):
+            raise SourceReadError("synthetic train split cannot cover the warm catalog")
+        item_categories = products.loc[
+            products.product_id.isin(warm_ids), ["product_id", "leaf_category_id"]
+        ].sort_values("product_id", kind="stable")
+        warm_ids = item_categories.product_id.to_numpy(np.int64)
+        warm_categories = item_categories.leaf_category_id.to_numpy(np.int64)
+        train_users = (np.arange(train_count, dtype=np.int64) % data.num_users) + 1
+        seen_by_user: dict[int, set[int]] = {user: set() for user in range(1, data.num_users + 1)}
+        coverage_users = (np.arange(len(warm_ids), dtype=np.int64) % data.num_users) + 1
+        train_items = np.empty(train_count, dtype=np.int64)
+        train_items[: len(warm_ids)] = warm_ids
+        for item, user in zip(train_items[: len(warm_ids)], coverage_users, strict=True):
+            seen_by_user[int(user)].add(int(item))
+        if train_count > len(warm_ids):
+            train_items[len(warm_ids) :] = _sample_preference_items(
+                user_ids=train_users[len(warm_ids) :],
+                warm_item_ids=warm_ids,
+                item_category_ids=warm_categories,
+                seen_by_user=seen_by_user,
+                rng=rng,
+                novel=False,
+            )
+        val_users = (np.arange(val_count, dtype=np.int64) % data.num_users) + 1
+        val_items = _sample_preference_items(
+            user_ids=val_users,
+            warm_item_ids=warm_ids,
+            item_category_ids=warm_categories,
+            seen_by_user=seen_by_user,
+            rng=rng,
+            novel=True,
+        )
+        if test_count <= len(cold_ids):
+            raise SourceReadError("synthetic test split needs warm and cold ground truth")
+        test_users = (np.arange(test_count, dtype=np.int64) % data.num_users) + 1
+        test_items = np.empty(test_count, dtype=np.int64)
+        test_items[: len(cold_ids)] = np.asarray(cold_ids, dtype=np.int64)
+        test_items[len(cold_ids) :] = _sample_preference_items(
+            user_ids=test_users[len(cold_ids) :],
+            warm_item_ids=warm_ids,
+            item_category_ids=warm_categories,
+            seen_by_user=seen_by_user,
+            rng=rng,
+            novel=True,
+        )
         all_items = np.concatenate((train_items, val_items, test_items))
 
         train_ts = pd.date_range(
@@ -232,15 +379,19 @@ class SyntheticDatasetSource:
         )
         val_ts = pd.date_range("2026-06-20T00:00:00Z", "2026-07-10T23:59:59Z", periods=val_count)
         test_ts = pd.date_range("2026-07-11T00:00:00Z", "2026-08-01T00:00:00Z", periods=test_count)
-        event_types = rng.choice(["view", "purchase"], p=[0.67, 0.33], size=self.num_events)
-        event_types[train_count + val_count : train_count + val_count + len(cold_ids)] = "purchase"
-        first_warm_test = train_count + val_count + len(cold_ids)
-        if first_warm_test < self.num_events:
-            event_types[first_warm_test] = "purchase"
+        train_event_types = np.full(train_count, "purchase", dtype=object)
+        if train_count > data.num_users:
+            train_event_types[data.num_users :] = rng.choice(
+                ["view", "purchase"],
+                p=[0.30, 0.70],
+                size=train_count - data.num_users,
+            )
+        event_types = np.concatenate(
+            (train_event_types, np.full(val_count + test_count, "purchase", dtype=object))
+        )
         if self.num_events < data.num_users:
             raise SourceReadError("synthetic event count cannot cover every configured user")
-        users = rng.integers(1, data.num_users + 1, size=self.num_events, dtype=np.int64)
-        users[: data.num_users] = np.arange(1, data.num_users + 1, dtype=np.int64)
+        users = np.concatenate((train_users, val_users, test_users))
         session_ids = np.concatenate(
             tuple(
                 np.asarray([f"{run_id}:session:{split}:{index // 2:09d}" for index in range(count)])
@@ -272,31 +423,17 @@ class SyntheticDatasetSource:
             }
         )
 
-        order_rows: list[dict[str, object]] = []
-        order_base = pd.Timestamp("2026-01-01", tz="UTC")
-        maximum_basket = min(5, len(warm_ids))
-        if maximum_basket < 2:
-            raise SourceReadError("synthetic order generation needs at least two warm items")
-        for order_id in range(1, data.expected_order_count + 1):
-            items = rng.choice(
-                warm_ids,
-                size=int(rng.integers(2, maximum_basket + 1)),
-                replace=False,
-            )
-            for product_id in items:
-                order_rows.append(
-                    {
-                        "order_id": order_id,
-                        "user_id": int(rng.integers(1, data.num_users + 1)),
-                        "product_id": int(product_id),
-                        "quantity": int(rng.integers(1, 4)),
-                        "order_ts": order_base + pd.Timedelta(seconds=order_id * 500),
-                    }
-                )
+        order_rows = _build_synthetic_orders(
+            user_ids=np.arange(1, data.num_users + 1, dtype=np.int64),
+            warm_item_ids=warm_ids,
+            item_category_ids=warm_categories,
+            order_count=data.expected_order_count,
+            rng=rng,
+        )
         return RawDataset(
             events_df=events,
             products_df=products,
-            orders_df=pd.DataFrame(order_rows),
+            orders_df=order_rows,
             cold_product_ids=cold_ids,
             source_kind=DataSourceKind.SYNTHETIC,
             benchmark_run_id=run_id,

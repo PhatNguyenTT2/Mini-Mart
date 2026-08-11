@@ -152,7 +152,6 @@ def verify_onnx_parity(
         dtype=np.int64,
     )
     all_candidates = np.arange(snapshot.manifest.num_items, dtype=np.int64)
-    cold_candidates = np.asarray(snapshot.cold_item_ids, dtype=np.int64)
     semantic_vectors = np.asarray(embeddings, dtype=np.float32)
     semantic_vectors = semantic_vectors / np.maximum(
         np.linalg.norm(semantic_vectors, axis=1, keepdims=True),

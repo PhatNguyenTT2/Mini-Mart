@@ -1,3 +1,5 @@
+import hashlib
+import json
 from argparse import Namespace
 from pathlib import Path
 from types import SimpleNamespace
@@ -9,13 +11,12 @@ import torch
 
 from ai_service import cli
 from ai_service.cli import build_parser
-from ai_service.config import Settings
-from ai_service.contracts import RunStatus
+from ai_service.config import MODEL_SCHEMA_VERSION, Settings
+from ai_service.contracts import AggregateReleaseReport, RunStatus, SplitName, TrainingVariant
 from ai_service.errors import ConfigurationError
-from ai_service.evaluation.cold_start import ColdStartReport
-from ai_service.evaluation.semantic_traps import SemanticTrapReport
 from ai_service.training import pipeline
 from ai_service.training.pipeline import PipelineState
+from tests.support.v5_factories import make_metric_gate
 
 
 def _arguments(command: str, **overrides: object) -> Namespace:
@@ -30,6 +31,10 @@ def _arguments(command: str, **overrides: object) -> Namespace:
         "seed": 42,
         "benchmark_run_id": None,
         "device": "cpu",
+        "variant": "hybrid",
+        "hybrid_run_id": "hybrid-contract",
+        "deep_run_id": "deep-contract",
+        "split": "val",
     }
     values.update(overrides)
     return Namespace(**values)
@@ -38,7 +43,7 @@ def _arguments(command: str, **overrides: object) -> Namespace:
 def test_cli_does_not_override_environment_snapshot_by_default() -> None:
     arguments = build_parser().parse_args(["export", "--run-id", "run-contract"])
 
-    assert arguments.snapshot_id is None
+    assert not hasattr(arguments, "snapshot_id")
 
 
 def test_cli_main_dispatches_to_the_pipeline(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -47,6 +52,27 @@ def test_cli_main_dispatches_to_the_pipeline(monkeypatch: pytest.MonkeyPatch) ->
 
     assert cli.main(["snapshot", "--device", "cpu"]) == 0
     assert dispatched == ["snapshot"]
+
+
+def test_run_all_parser_requires_explicit_synthetic_smoke_config() -> None:
+    with pytest.raises(SystemExit):
+        build_parser().parse_args(["run-all", "--run-id", "smoke-contract"])
+    arguments = build_parser().parse_args(
+        [
+            "run-all",
+            "--run-id",
+            "smoke-contract",
+            "--config",
+            "configs/smoke/v5.toml",
+            "--source",
+            "synthetic",
+            "--embedding-source",
+            "mock",
+        ]
+    )
+    assert arguments.source == "synthetic"
+    assert arguments.embedding_source == "mock"
+    assert arguments.config.name == "v5.toml"
 
 
 def test_audit_data_command_reports_snapshot_training_suitability(
@@ -106,24 +132,39 @@ def test_export_loads_snapshot_only_from_run_lineage(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ) -> None:
     state = PipelineState(
+        model_schema_version=MODEL_SCHEMA_VERSION,
         run_id="run-contract",
+        training_variant=TrainingVariant.HYBRID,
         snapshot_id="snapshot-from-state",
         embedding_path="feature",
         rule_path="rule",
         checkpoint_path="checkpoint",
-        evaluation_passed=True,
+        paired_run_id="deep-contract",
+        validation_gate_passed=True,
+        test_gate_passed=True,
+        validation_victory_matrix_path="validation-matrix",
+        test_victory_matrix_path="test-matrix",
+        bundle_path=None,
     )
-    loaded: list[str] = []
+    loaded: list[object] = []
     monkeypatch.setenv("AI_ARTIFACT_ROOT", str(tmp_path))
-    monkeypatch.setattr(pipeline, "_load_state", lambda _settings, _run_id: state)
     monkeypatch.setattr(
         pipeline,
-        "_load_lineage",
-        lambda _settings, loaded_state: (
-            loaded.append(loaded_state.snapshot_id) or (object(), object(), object(), object())
+        "_load_run_context",
+        lambda _settings, _run_id, **_kwargs: SimpleNamespace(
+            settings=Settings(),
+            snapshot=object(),
+            embedding=object(),
+            rules=object(),
+            model=object(),
+            state=state,
         ),
     )
-    monkeypatch.setattr(pipeline, "_export", lambda *_args, **_kwargs: state)
+    monkeypatch.setattr(
+        pipeline,
+        "_export",
+        lambda *_args, **_kwargs: loaded.append(_args[-1]) or state,
+    )
     monkeypatch.setattr(pipeline, "_emit", lambda _value: None)
     monkeypatch.setattr(
         pipeline,
@@ -133,7 +174,7 @@ def test_export_loads_snapshot_only_from_run_lineage(
 
     pipeline.execute_command(_arguments("export"))
 
-    assert loaded == ["snapshot-from-state"]
+    assert loaded == [state]
 
 
 @pytest.mark.parametrize(
@@ -163,7 +204,23 @@ def test_production_rejects_non_production_data_adapters(
 def test_pipeline_state_is_atomic_and_requires_a_run_id(tmp_path: Path) -> None:
     settings = Settings()
     settings.data.artifact_root = tmp_path
-    state = PipelineState("run-1", "snapshot-1", "feature", "rule")
+    with pytest.raises(TypeError):
+        PipelineState("run-1", "snapshot-1", "feature", "rule")
+    state = PipelineState(
+        model_schema_version=MODEL_SCHEMA_VERSION,
+        run_id="run-1",
+        training_variant=TrainingVariant.HYBRID,
+        snapshot_id="snapshot-1",
+        embedding_path="feature",
+        rule_path="rule",
+        checkpoint_path=None,
+        paired_run_id=None,
+        validation_gate_passed=False,
+        test_gate_passed=False,
+        validation_victory_matrix_path=None,
+        test_victory_matrix_path=None,
+        bundle_path=None,
+    )
 
     pipeline._write_state(settings, state)
 
@@ -184,40 +241,6 @@ def test_parent_artifact_resolution_is_unambiguous(tmp_path: Path) -> None:
     assert pipeline._find_single_parent_artifact(root, snapshot_sha256="snapshot-sha") == artifact
     with pytest.raises(Exception, match="expected exactly one artifact"):
         pipeline._find_single_parent_artifact(root, snapshot_sha256="missing")
-
-
-def test_comparison_gates_bootstrap_users_after_averaging_random_seeds() -> None:
-    settings = Settings()
-    settings.eval.bootstrap_samples = 100
-    strong = SimpleNamespace(
-        per_user_gauc=np.asarray([0.7, 0.7, 0.7]),
-        per_user_hr=np.asarray([1.0, 1.0, 1.0]),
-        per_user_ndcg=np.asarray([0.5, 0.5, 0.5]),
-        report=SimpleNamespace(ndcg_at_k=0.5),
-    )
-    weak = SimpleNamespace(
-        per_user_gauc=np.asarray([0.5, 0.5, 0.5]),
-        per_user_hr=np.asarray([0.0, 0.0, 0.0]),
-        per_user_ndcg=np.asarray([0.1, 0.1, 0.1]),
-        report=SimpleNamespace(ndcg_at_k=0.1),
-    )
-    random_runs = tuple(
-        SimpleNamespace(per_user_gauc=np.asarray([0.49, 0.50, 0.51])) for _ in range(10)
-    )
-    comparison = SimpleNamespace(
-        results={
-            "Proposed Hybrid (Ours)": strong,
-            "Deep-Only Two-Tower": weak,
-            "Rule-based Apriori": weak,
-            "Item-Item CF": weak,
-        },
-        random_seed_results=random_runs,
-    )
-
-    gates = pipeline._comparison_gates(comparison, settings)
-
-    assert gates["passed"] is True
-    assert gates["random"]["mean_gauc"] == pytest.approx(0.5)
 
 
 def _stub_settings(tmp_path: Path) -> Settings:
@@ -253,122 +276,65 @@ def test_execute_simple_artifact_commands(
     assert emitted
 
 
-def test_execute_run_all_uses_one_lineage(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> None:
+def test_execute_run_all_is_disabled_without_a_paired_control(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
     settings = _stub_settings(tmp_path)
-    snapshot = SimpleNamespace(manifest=_manifest(artifact_id="snapshot-state"))
-    embedding = object()
-    rules = object()
-    model = object()
-    initial = PipelineState("run-contract", "snapshot-state", "feature", "rule")
-    evaluated = PipelineState(
-        "run-contract", "snapshot-state", "feature", "rule", evaluation_passed=True
-    )
     monkeypatch.setattr(pipeline, "_configure", lambda _args: settings)
     monkeypatch.setattr(pipeline, "_seed_everything", lambda _seed: None)
-    monkeypatch.setattr(pipeline, "_snapshot", lambda *_args: snapshot)
-    monkeypatch.setattr(pipeline, "_features", lambda *_args: embedding)
-    monkeypatch.setattr(pipeline, "_rules", lambda *_args: rules)
-    monkeypatch.setattr(pipeline, "_train", lambda *_args, **_kwargs: (model, initial))
-    monkeypatch.setattr(pipeline, "_evaluate", lambda *_args, **_kwargs: evaluated)
+    with pytest.raises(ConfigurationError, match="run-all is disabled"):
+        pipeline.execute_command(_arguments("run-all"))
+
+
+def test_evaluate_command_requires_explicit_paired_run_ids(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    settings = _stub_settings(tmp_path)
+    state = PipelineState(
+        model_schema_version=MODEL_SCHEMA_VERSION,
+        run_id="hybrid-contract",
+        training_variant=TrainingVariant.HYBRID,
+        snapshot_id="snapshot",
+        embedding_path="feature",
+        rule_path="rule",
+        checkpoint_path=None,
+        paired_run_id="deep-contract",
+        validation_gate_passed=True,
+        test_gate_passed=False,
+        validation_victory_matrix_path="validation-matrix",
+        test_victory_matrix_path=None,
+        bundle_path=None,
+    )
+    calls: list[dict[str, object]] = []
+    monkeypatch.setattr(pipeline, "_configure", lambda _args: settings)
+    monkeypatch.setattr(pipeline, "_seed_everything", lambda _seed: None)
+    monkeypatch.setattr(pipeline, "_device", lambda _value: torch.device("cpu"))
+    pair_result = SimpleNamespace(
+        split=pipeline.SplitName.VAL,
+        hybrid_state=state,
+        deep_state=state,
+        artifact_dir=tmp_path / "evaluation",
+        victory_matrix=SimpleNamespace(model_dump=lambda **_: {}),
+    )
     monkeypatch.setattr(
         pipeline,
-        "_export",
-        lambda *_args, **_kwargs: pytest.fail("run-all must wait for three-seed release gate"),
+        "_evaluate_pair",
+        lambda *_args, **kwargs: calls.append(kwargs) or pair_result,
     )
     emitted: list[object] = []
     monkeypatch.setattr(pipeline, "_emit", emitted.append)
 
-    pipeline.execute_command(_arguments("run-all"))
+    pipeline.execute_command(_arguments("evaluate", split="val"))
 
-    assert emitted[0]["evaluation_passed"] is True
-    assert emitted[0]["bundle_path"] is None
-
-
-def _ranked_result(value: float = 0.5) -> SimpleNamespace:
-    report = SimpleNamespace(
-        ndcg_at_k=value,
-        model_dump=lambda **_kwargs: {"ndcg_at_k": value},
-    )
-    metrics = np.full(3, value, dtype=np.float64)
-    return SimpleNamespace(
-        report=report,
-        user_ids=np.asarray([1, 2, 3], dtype=np.int64),
-        per_user_hr=metrics,
-        per_user_ndcg=metrics,
-        per_user_gauc=metrics,
-    )
-
-
-def test_evaluate_publishes_measured_per_user_artifact_and_evaluated_state(
-    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
-) -> None:
-    settings = _stub_settings(tmp_path)
-    settings.data.num_cold_items = 1
-    run_dir = tmp_path / "run-evaluate"
-    checkpoint = run_dir / "checkpoints" / "release-candidate.pt"
-    checkpoint.parent.mkdir(parents=True)
-    checkpoint.write_bytes(b"checkpoint")
-    checkpoint.with_suffix(".pt.manifest.json").write_text(
-        '{"content_sha256":"' + "d" * 64 + '"}', encoding="utf-8"
-    )
-    state = PipelineState(
-        "run-evaluate",
-        "snapshot",
-        "feature",
-        "rule",
-        checkpoint_path=str(checkpoint),
-    )
-    snapshot = SimpleNamespace(manifest=SimpleNamespace(content_sha256="a" * 64))
-    embedding = SimpleNamespace(
-        vectors=np.eye(4, dtype=np.float32),
-        manifest=SimpleNamespace(content_sha256="b" * 64),
-    )
-    rules = SimpleNamespace(store=object(), manifest=SimpleNamespace(content_sha256="c" * 64))
-    result = _ranked_result()
-    comparison = SimpleNamespace(
-        results={
-            "Proposed Hybrid (Ours)": result,
-            "SBERT User Centroid": result,
-            "Deep-Only Two-Tower": result,
-            "Rule-based Apriori": result,
-            "Item-Item CF": result,
-        },
-        baselines={"hybrid": result.report},
-    )
-    cold = ColdStartReport(1, 1, 1.0, 1.0, 1.0, 1.0, 3)
-    transitions: list[tuple[RunStatus, str | None]] = []
-    monkeypatch.setattr(pipeline, "run_seven_way_baselines", lambda *_a, **_kw: comparison)
-    monkeypatch.setattr(pipeline, "_comparison_gates", lambda *_a: {"passed": True})
-    monkeypatch.setattr(pipeline, "evaluate_cold_start", lambda *_a: cold)
-    monkeypatch.setattr(
-        pipeline,
-        "evaluate_semantic_traps",
-        lambda *_a, **_kw: SemanticTrapReport(all_passed=True, passed=10, total=10, results=()),
-    )
-    monkeypatch.setattr(pipeline, "_write_state", lambda *_a: None)
-    monkeypatch.setattr(
-        pipeline.RunLifecycle,
-        "load",
-        lambda *_a: SimpleNamespace(
-            transition=lambda status, reason=None: transitions.append((status, reason))
-        ),
-    )
-
-    evaluated = pipeline._evaluate(
-        settings,
-        snapshot,
-        embedding,
-        rules,
-        object(),
-        state,
-        device=torch.device("cpu"),
-    )
-
-    report = run_dir / "evaluation" / "report.json"
-    assert evaluated.evaluation_passed is True
-    assert report.is_file()
-    assert (run_dir / "evaluation" / "per-user-metrics.npz").is_file()
-    assert transitions == [(RunStatus.EVALUATED, None)]
+    assert calls == [
+        {
+            "hybrid_run_id": "hybrid-contract",
+            "deep_run_id": "deep-contract",
+            "split": pipeline.SplitName.VAL,
+            "device": torch.device("cpu"),
+        }
+    ]
+    assert emitted[-1]["hybrid_state"]["run_id"] == "hybrid-contract"
 
 
 def test_export_requires_aggregate_winner_and_publishes_profile_bundle(
@@ -379,17 +345,50 @@ def test_export_requires_aggregate_winner_and_publishes_profile_bundle(
     checkpoint = run_dir / "checkpoints" / "release-candidate.pt"
     checkpoint.parent.mkdir(parents=True)
     checkpoint.write_bytes(b"best-checkpoint")
-    experiment = "e" * 64
-    release = tmp_path / "releases" / experiment / "release-gate.json"
+    comparison = settings.comparison_signature_sha256()
+    release = tmp_path / "releases" / comparison / "release-gate.json"
     release.parent.mkdir(parents=True)
-    release.write_text('{"passed":true,"selected_run_id":"winner"}', encoding="utf-8")
+    release_report = AggregateReleaseReport(
+        schema_version=MODEL_SCHEMA_VERSION,
+        split=SplitName.TEST,
+        passed=True,
+        comparison_signature_sha256=comparison,
+        hybrid_run_ids=("winner", "h2", "h3"),
+        deep_run_ids=("deep-winner", "d2", "d3"),
+        selected_run_id="winner",
+        selected_seed=42,
+        selected_victory_matrix_sha256="c" * 64,
+        gates=tuple(
+            make_metric_gate(name) for name in ("aggregate_gauc", "aggregate_ndcg", "aggregate_hr")
+        ),
+        artifact_sha256="0" * 64,
+    )
+    release_document = release_report.model_dump(mode="json")
+    release_document["artifact_sha256"] = hashlib.sha256(
+        json.dumps(
+            {key: value for key, value in release_document.items() if key != "artifact_sha256"},
+            sort_keys=True,
+            separators=(",", ":"),
+        ).encode("utf-8")
+    ).hexdigest()
+    release.write_text(json.dumps(release_document), encoding="utf-8")
+    matrix = run_dir / "evaluation" / "test" / "victory-matrix.json"
+    matrix.parent.mkdir(parents=True, exist_ok=True)
+    matrix.write_text("{}", encoding="utf-8")
     state = PipelineState(
-        "winner",
-        "snapshot",
-        "feature",
-        "rule",
+        model_schema_version=MODEL_SCHEMA_VERSION,
+        run_id="winner",
+        training_variant=TrainingVariant.HYBRID,
+        snapshot_id="snapshot",
+        embedding_path="feature",
+        rule_path="rule",
         checkpoint_path=str(checkpoint),
-        evaluation_passed=True,
+        paired_run_id="deep-winner",
+        validation_gate_passed=True,
+        test_gate_passed=True,
+        validation_victory_matrix_path=str(matrix),
+        test_victory_matrix_path=str(matrix),
+        bundle_path=None,
     )
     catalog = pd.DataFrame(
         {
@@ -400,14 +399,22 @@ def test_export_requires_aggregate_winner_and_publishes_profile_bundle(
     )
     empty = pd.DataFrame(columns=["event_type", "internal_user_id", "internal_product_id"])
     snapshot = SimpleNamespace(
-        manifest=SimpleNamespace(num_items=4, num_users=2),
+        manifest=SimpleNamespace(
+            num_items=4,
+            num_users=2,
+            content_sha256="a" * 64,
+            store_id=1,
+        ),
         catalog_df=catalog,
         cold_item_ids=(3,),
         train_df=empty,
         val_df=empty,
     )
-    embedding = SimpleNamespace(vectors=np.eye(4, 768, dtype=np.float32))
-    rules = SimpleNamespace(store=object())
+    embedding = SimpleNamespace(
+        vectors=np.eye(4, 768, dtype=np.float32),
+        manifest=SimpleNamespace(content_sha256="b" * 64),
+    )
+    rules = SimpleNamespace(store=object(), manifest=SimpleNamespace(content_sha256="c" * 64))
 
     class StubModel:
         def cpu(self) -> object:
@@ -425,7 +432,7 @@ def test_export_requires_aggregate_winner_and_publishes_profile_bundle(
         "load",
         lambda *_a: SimpleNamespace(
             status=RunStatus.SEALED,
-            document={"experiment_signature_sha256": experiment},
+            document={"comparison_signature_sha256": comparison},
         ),
     )
     monkeypatch.setattr(
@@ -442,6 +449,13 @@ def test_export_requires_aggregate_winner_and_publishes_profile_bundle(
         pipeline,
         "build_user_profile_vectors",
         lambda *_a, **_kw: torch.zeros(3, settings.model.item_emb_dim),
+    )
+    monkeypatch.setattr(
+        pipeline,
+        "load_evaluation_artifacts",
+        lambda *_args, **_kwargs: SimpleNamespace(
+            victory_matrix=SimpleNamespace(all_passed=True, sha256="c" * 64)
+        ),
     )
     monkeypatch.setattr(
         pipeline,
@@ -473,26 +487,40 @@ def test_execute_verify_bundle_and_evaluate(
 ) -> None:
     settings = _stub_settings(tmp_path)
     manifest = _manifest(bundle_id="bundle-1")
-    state = PipelineState("run-contract", "snapshot-state", "feature", "rule")
     monkeypatch.setattr(pipeline, "_configure", lambda _args: settings)
     monkeypatch.setattr(pipeline, "_seed_everything", lambda _seed: None)
     monkeypatch.setattr(pipeline, "verify_bundle", lambda _path: SimpleNamespace(manifest=manifest))
     emitted: list[object] = []
     monkeypatch.setattr(pipeline, "_emit", emitted.append)
-    pipeline.execute_command(_arguments("verify-bundle", bundle_id="bundle-1"))
+    pipeline.execute_command(_arguments("verify-bundle", bundle_id="bundle-1", run_id=None))
     assert emitted[-1]["bundle_id"] == "bundle-1"
 
-    monkeypatch.setattr(pipeline, "_load_state", lambda *_args: state)
-    monkeypatch.setattr(
-        pipeline, "_load_lineage", lambda *_args: (object(), object(), object(), object())
-    )
     monkeypatch.setattr(pipeline, "_device", lambda _value: torch.device("cpu"))
     evaluated = PipelineState(
-        "run-contract", "snapshot-state", "feature", "rule", evaluation_passed=True
+        model_schema_version=MODEL_SCHEMA_VERSION,
+        run_id="run-contract",
+        training_variant=TrainingVariant.HYBRID,
+        snapshot_id="snapshot-state",
+        embedding_path="feature",
+        rule_path="rule",
+        checkpoint_path=None,
+        paired_run_id="deep-contract",
+        validation_gate_passed=True,
+        test_gate_passed=True,
+        validation_victory_matrix_path="validation-matrix",
+        test_victory_matrix_path="test-matrix",
+        bundle_path=None,
     )
-    monkeypatch.setattr(pipeline, "_evaluate", lambda *_args, **_kwargs: evaluated)
-    pipeline.execute_command(_arguments("evaluate"))
-    assert emitted[-1]["evaluation_passed"] is True
+    pair_result = SimpleNamespace(
+        split=SplitName.VAL,
+        hybrid_state=evaluated,
+        deep_state=evaluated,
+        artifact_dir=tmp_path / "evaluation",
+        victory_matrix=SimpleNamespace(model_dump=lambda **_: {}),
+    )
+    monkeypatch.setattr(pipeline, "_evaluate_pair", lambda *_args, **_kwargs: pair_result)
+    pipeline.execute_command(_arguments("evaluate", split="val"))
+    assert emitted[-1]["hybrid_state"]["validation_gate_passed"] is True
 
 
 def test_snapshot_adapter_selection_and_cuda_guard(
@@ -568,7 +596,19 @@ def test_load_lineage_strictly_reloads_checkpoint(
     model = object()
     calls: list[dict[str, str]] = []
     state = PipelineState(
-        "run-contract", "snapshot-state", "feature", "rule", checkpoint_path="best.pt"
+        model_schema_version=MODEL_SCHEMA_VERSION,
+        run_id="run-contract",
+        training_variant=TrainingVariant.HYBRID,
+        snapshot_id="snapshot-state",
+        embedding_path="feature",
+        rule_path="rule",
+        checkpoint_path="best.pt",
+        paired_run_id=None,
+        validation_gate_passed=False,
+        test_gate_passed=False,
+        validation_victory_matrix_path=None,
+        test_victory_matrix_path=None,
+        bundle_path=None,
     )
     monkeypatch.setattr(pipeline, "load_snapshot", lambda *_args: snapshot)
     monkeypatch.setattr(pipeline, "load_embedding_artifact", lambda *_args: embedding)
@@ -591,7 +631,21 @@ def test_execute_train_resolves_parent_artifacts(
 ) -> None:
     settings = _stub_settings(tmp_path)
     snapshot = SimpleNamespace(manifest=_manifest(artifact_id="snapshot-state", num_items=4))
-    state = PipelineState("run-contract", "snapshot-state", "feature", "rule")
+    state = PipelineState(
+        model_schema_version=MODEL_SCHEMA_VERSION,
+        run_id="run-contract",
+        training_variant=TrainingVariant.HYBRID,
+        snapshot_id="snapshot-state",
+        embedding_path="feature",
+        rule_path="rule",
+        checkpoint_path=None,
+        paired_run_id=None,
+        validation_gate_passed=False,
+        test_gate_passed=False,
+        validation_victory_matrix_path=None,
+        test_victory_matrix_path=None,
+        bundle_path=None,
+    )
     resolved: list[Path] = []
     monkeypatch.setattr(pipeline, "_configure", lambda _args: settings)
     monkeypatch.setattr(pipeline, "_seed_everything", lambda _seed: None)
@@ -601,6 +655,13 @@ def test_execute_train_resolves_parent_artifacts(
         pipeline,
         "_find_single_parent_artifact",
         lambda root, **_kwargs: resolved.append(root) or root / "artifact",
+    )
+    monkeypatch.setattr(
+        pipeline,
+        "_find_training_rule_artifact",
+        lambda settings, snapshot_sha256: (
+            resolved.append(Path("rules")) or settings.data.artifact_root / "rules" / "artifact"
+        ),
     )
     monkeypatch.setattr(pipeline, "load_embedding_artifact", lambda _path: object())
     monkeypatch.setattr(pipeline, "load_rule_artifact", lambda *_args: object())

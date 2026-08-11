@@ -11,6 +11,7 @@ import torch
 from ai_service.data.dataset import build_purchase_training_index
 from ai_service.data.sampling import MixedNegativeSampler
 from ai_service.data.snapshot import Snapshot
+from ai_service.errors import NegativeSamplingError
 from ai_service.training.objectives import multi_positive_sampled_softmax
 
 
@@ -64,6 +65,12 @@ def test_mixed_negative_sampler_is_deterministic_and_excludes_history_and_cold(
 
     first = sampler.sample(index.users, index.positive_items, epoch=1, batch_index=0)
     repeated = sampler.sample(index.users, index.positive_items, epoch=1, batch_index=0)
+    cache = np.empty((snapshot.manifest.num_users + 1, 4), dtype=np.int32)
+    cache[0] = -1
+    for user in range(1, snapshot.manifest.num_users + 1):
+        seen = set(np.flatnonzero(index.known_history[user]))
+        cache[user] = [item for item in sampler.warm_items if int(item) not in seen][:4]
+    sampler.update_model_hard_cache(cache)
     next_epoch = sampler.sample(index.users, index.positive_items, epoch=2, batch_index=0)
 
     np.testing.assert_array_equal(first, repeated)
@@ -75,6 +82,42 @@ def test_mixed_negative_sampler_is_deterministic_and_excludes_history_and_cold(
         assert len(set(row.tolist())) == 4
         assert 7 not in row
         assert not index.known_history[int(user), row].any()
+
+
+def test_model_hard_cache_contract_rejects_invalid_epoch_two_inputs(tmp_path: Path) -> None:
+    snapshot = _snapshot(tmp_path)
+    index = build_purchase_training_index(snapshot, max_history_items=2)
+    sampler = MixedNegativeSampler(index, snapshot, np.eye(8, dtype=np.float32), ratio=4)
+    with pytest.raises(NegativeSamplingError, match="epoch 2"):
+        sampler.sample(np.array([1]), np.array([2]), epoch=2, batch_index=0)
+    with pytest.raises(ValueError, match="shape"):
+        sampler.update_model_hard_cache(np.zeros((2, 4), dtype=np.int32))
+    with pytest.raises(ValueError, match="int32"):
+        sampler.update_model_hard_cache(np.zeros((3, 4), dtype=np.int64))
+    invalid_cache = np.full((3, 4), 7, dtype=np.int32)
+    invalid_cache[0] = -1
+    with pytest.raises(ValueError, match="cold or invalid"):
+        sampler.update_model_hard_cache(invalid_cache)
+
+
+def test_objective_requires_wide_logits() -> None:
+    users = torch.tensor([[1.0, 0.0], [0.0, 1.0]])
+    positives = torch.tensor([[1.0, 0.0], [0.0, 1.0]])
+    explicit = torch.zeros(2, 1, 2)
+    positive_mask = torch.eye(2, dtype=torch.bool)
+    denominator_mask = torch.eye(2, dtype=torch.bool)
+
+    # Calling without in_batch_wide_logits and explicit_wide_logits MUST fail with TypeError
+    with pytest.raises(TypeError, match=r"in_batch_wide_logits|explicit_wide_logits"):
+        multi_positive_sampled_softmax(  # type: ignore[call-arg]
+            users,
+            positives,
+            explicit,
+            positive_mask=positive_mask,
+            denominator_mask=denominator_mask,
+            confidence=torch.ones(2),
+            temperature=torch.tensor(1.0),
+        )
 
 
 def test_multi_positive_sampled_softmax_matches_worked_example() -> None:
@@ -92,6 +135,8 @@ def test_multi_positive_sampled_softmax_matches_worked_example() -> None:
         denominator_mask=denominator_mask,
         confidence=torch.ones(2),
         temperature=torch.tensor(1.0),
+        in_batch_wide_logits=torch.zeros(2, 2),
+        explicit_wide_logits=torch.zeros(2, 1),
     )
 
     assert float(result.loss) == pytest.approx(0.3132617, abs=1e-6)
@@ -106,6 +151,8 @@ def test_sampled_softmax_rejects_every_malformed_tensor_contract() -> None:
     mask = torch.eye(2, dtype=torch.bool)
     confidence = torch.ones(2)
     temperature = torch.tensor(1.0)
+    in_batch_wide_default = torch.zeros(2, 2)
+    explicit_wide_default = torch.zeros(2, 1)
 
     def call(
         user: torch.Tensor = users,
@@ -115,6 +162,8 @@ def test_sampled_softmax_rejects_every_malformed_tensor_contract() -> None:
         denominator_mask: torch.Tensor = mask,
         weights: torch.Tensor = confidence,
         tau: torch.Tensor = temperature,
+        in_batch_wide: torch.Tensor = in_batch_wide_default,
+        explicit_wide: torch.Tensor = explicit_wide_default,
     ) -> None:
         multi_positive_sampled_softmax(
             user,
@@ -124,6 +173,8 @@ def test_sampled_softmax_rejects_every_malformed_tensor_contract() -> None:
             denominator_mask=denominator_mask,
             confidence=weights,
             temperature=tau,
+            in_batch_wide_logits=in_batch_wide,
+            explicit_wide_logits=explicit_wide,
         )
 
     with pytest.raises(ValueError, match="share shape"):
@@ -153,6 +204,8 @@ def test_sampled_softmax_handles_a_batch_with_no_negative_candidate() -> None:
         denominator_mask=torch.zeros(1, 1, dtype=torch.bool),
         confidence=torch.ones(1),
         temperature=torch.tensor(1.0),
+        in_batch_wide_logits=torch.zeros(1, 1),
+        explicit_wide_logits=torch.zeros(1, 0),
     )
 
     assert result.sampled_pair_accuracy == 1.0

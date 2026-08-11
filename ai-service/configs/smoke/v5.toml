@@ -1,0 +1,45 @@
+[data]
+snapshot_id = "synthetic-smoke-v5"
+artifact_root = "artifacts/smoke-v5"
+num_users = 128
+num_items = 256
+num_cold_items = 16
+num_personas = 8
+num_leaf_categories = 32
+num_price_buckets = 8
+expected_event_count = 4096
+expected_train_count = 3072
+expected_val_count = 512
+expected_test_count = 512
+expected_order_count = 512
+min_rule_count = 2
+min_rule_lift = 1.0
+
+[model]
+use_item_id_residual = true
+
+[train]
+objective = "sampled_softmax"
+training_variant = "deep_only"
+batch_size = 128
+explicit_negative_ratio = 16
+learning_rate = 0.0003
+minimum_learning_rate = 0.00001
+max_epochs = 1
+early_stopping_patience = 4
+validation_user_batch_size = 32
+use_history_profiles = true
+view_auxiliary_weight = 0.1
+seed = 42
+
+[eval]
+k = 10
+random_seeds = 10
+bootstrap_samples = 2000
+minimum_gauc = 0.75
+random_gauc_tolerance = 0.02
+gauc_guardrail_delta = -0.002
+ndcg_guardrail_delta = -0.001
+hr_guardrail_delta = -0.001
+cold_score_atol = 0.000001
+wide_zero_atol = 0.0000001

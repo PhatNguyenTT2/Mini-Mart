@@ -132,6 +132,23 @@ class HybridTwoTowerModel(nn.Module):
         history_vector: torch.Tensor | None = None,
         history_present: torch.Tensor | None = None,
     ) -> torch.Tensor:
+        if variant is ModelVariant.DEEP_ONLY:
+            # Keep the Deep ablation genuinely independent: evaluating a Deep
+            # score must not execute the Wide branch (or create Wide grads).
+            user_vectors = self.encode_user(
+                user_idx,
+                persona_idx,
+                history_vector=history_vector,
+                history_present=history_present,
+            )
+            if candidate_vectors.ndim == 2:
+                return torch.matmul(user_vectors, candidate_vectors.T) / self._temperature
+            if candidate_vectors.ndim == 3:
+                return (
+                    torch.matmul(candidate_vectors, user_vectors.unsqueeze(-1)).squeeze(-1)
+                    / self._temperature
+                )
+            raise ValueError("candidate_vectors must be [C,D] or [B,C,D]")
         breakdown = self.score_breakdown(
             user_idx,
             persona_idx,
@@ -141,8 +158,6 @@ class HybridTwoTowerModel(nn.Module):
             history_vector=history_vector,
             history_present=history_present,
         )
-        if variant is ModelVariant.DEEP_ONLY:
-            return breakdown.deep_logits
         if variant is ModelVariant.WIDE_ONLY:
             return breakdown.wide_logits
         if variant in {ModelVariant.HYBRID, ModelVariant.NOISY_HYBRID}:

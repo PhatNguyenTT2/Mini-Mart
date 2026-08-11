@@ -44,6 +44,52 @@ def test_synthetic_source_is_explicit_deterministic_and_snapshot_valid(tmp_path:
     assert snapshot.manifest.split_counts == {"train": 30, "val": 5, "test": 5}
 
 
+def test_synthetic_source_has_preference_signal_and_novel_targets(tmp_path: Path) -> None:
+    settings = Settings()
+    settings.data.artifact_root = tmp_path
+    settings.data.num_users = 32
+    settings.data.num_items = 128
+    settings.data.num_cold_items = 8
+    settings.data.num_leaf_categories = 16
+    settings.data.expected_event_count = 1536
+    settings.data.expected_train_count = 1024
+    settings.data.expected_val_count = 256
+    settings.data.expected_test_count = 256
+    settings.data.expected_order_count = 128
+    raw = SyntheticDatasetSource(settings).load(store_id=1, benchmark_run_id="synthetic-signal")
+    events = raw.events_df
+    train = events.iloc[: settings.data.expected_train_count]
+    val = events.iloc[
+        settings.data.expected_train_count : settings.data.expected_train_count
+        + settings.data.expected_val_count
+    ]
+    test = events.iloc[settings.data.expected_train_count + settings.data.expected_val_count :]
+    categories = dict(
+        zip(
+            raw.products_df.product_id.astype(int),
+            raw.products_df.leaf_category_id.astype(int),
+            strict=True,
+        )
+    )
+    preferred_matches = [
+        categories[int(row.product_id)]
+        == ((int(row.user_id) - 1) % settings.data.num_leaf_categories) + 1
+        for row in train.itertuples()
+        if row.event_type == "purchase"
+    ]
+    assert sum(preferred_matches) / len(preferred_matches) >= 0.75
+    train_seen = train.groupby("user_id").product_id.apply(set).to_dict()
+    for row in val.itertuples():
+        assert int(row.product_id) not in train_seen[int(row.user_id)]
+    history_seen = train.groupby("user_id").product_id.apply(set).to_dict()
+    for row in val.itertuples():
+        history_seen.setdefault(int(row.user_id), set()).add(int(row.product_id))
+    for row in test.itertuples():
+        if row.event_origin == "organic":
+            assert int(row.product_id) not in history_seen[int(row.user_id)]
+    assert sum(test.event_origin == "cold_start") == settings.data.num_cold_items
+
+
 def test_remote_postgres_source_requires_verified_ca_before_connecting(tmp_path: Path) -> None:
     settings = _small_settings(tmp_path)
     settings.data.chatbot_database_url = SecretStr("postgresql://user:pass@example.com/db")

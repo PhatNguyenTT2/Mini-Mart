@@ -28,7 +28,11 @@ from ai_service.data.snapshot import Snapshot, SnapshotBuilder
 from ai_service.data.sources import RawDataset
 from ai_service.errors import DataIntegrityError, ModelTrainingError
 from ai_service.evaluation.baselines import run_seven_way_baselines
-from ai_service.evaluation.full_catalog import FullCatalogEvaluator
+from ai_service.evaluation.full_catalog import (
+    FullCatalogEvaluator,
+    PreparedEvaluationSplit,
+    prepare_split,
+)
 from ai_service.models.two_tower_wide_deep import HybridTwoTowerModel
 from ai_service.serving.schemas import RecommendRequest
 from ai_service.training.trainer import Trainer
@@ -156,8 +160,9 @@ def test_rule_store_uses_sparse_csr_tensor() -> None:
 
 
 def test_full_catalog_split_is_typed_enum() -> None:
-    split_annotation = get_type_hints(FullCatalogEvaluator.evaluate)["split"]
-    assert split_annotation is SplitName
+    prepared_annotation = get_type_hints(FullCatalogEvaluator.evaluate)["prepared_split"]
+    assert prepared_annotation is PreparedEvaluationSplit
+    assert get_type_hints(PreparedEvaluationSplit)["split"] is SplitName
 
 
 def test_gauc_implementation_does_not_allocate_positive_by_negative_matrix() -> None:
@@ -169,25 +174,29 @@ def test_seven_way_baseline_harness_has_all_required_methods(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     settings = _small_settings()
+    model = HybridTwoTowerModel(settings)
+    snapshot = _minimal_snapshot(Path.cwd(), _training_frame())
+    prepared = prepare_split(snapshot, SplitName.TEST)
     result = run_seven_way_baselines(
-        HybridTwoTowerModel(settings),
-        snapshot=_minimal_snapshot(Path.cwd(), _training_frame()),
+        hybrid_model=model,
+        deep_model=model,
+        snapshot=snapshot,
         embeddings=np.eye(8, dtype=np.float32),
         rule_store=RuleStore(8, []),
-        split=SplitName.TEST,
+        prepared_split=prepared,
         settings=settings,
         device="cpu",
     )
 
     assert len(result.baselines) == 7
     assert {
-        "Rule-based Apriori",
-        "SBERT User Centroid",
-        "Item-Item CF",
-        "Deep-Only Two-Tower",
-        "Proposed Hybrid (Ours)",
-        "Noisy 10% Hybrid",
-        "Random Base (Sanity Check)",
+        "apriori_only",
+        "sbert_centroid",
+        "item_cf",
+        "deep_only",
+        "hybrid",
+        "noisy_hybrid",
+        "random",
     } == set(result.baselines)
 
 

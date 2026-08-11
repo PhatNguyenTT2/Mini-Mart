@@ -5,7 +5,6 @@ from types import SimpleNamespace
 
 import numpy as np
 import pandas as pd
-import pytest
 import torch
 from fastapi.testclient import TestClient
 
@@ -101,8 +100,12 @@ def test_export_bundle_and_runtime_use_real_ranker_graph(tmp_path: Path) -> None
         ranker_path=paths.ranker,
         item_vectors=item_vectors,
         user_profile_vectors=profiles,
+        embedding_sha256="a" * 64,
+        rule_sha256="c" * 64,
         checkpoint_sha256="b" * 64,
+        comparison_signature_sha256=settings.comparison_signature_sha256(),
         parity=parity,
+        victory_matrix_sha256="c" * 64,
     )
     runtime = RecommenderRuntime.load(bundle.path, settings)
     response = runtime.recommend(

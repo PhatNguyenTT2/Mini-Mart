@@ -44,41 +44,58 @@ unapproved run:
 
 ```powershell
 uv sync --frozen --extra train --extra export --extra dev
-uv run ai-pipeline snapshot --source postgres --store-id 1 `
-  --snapshot-id benchmark-v3 --benchmark-run-id <published-benchmark-run-id>
-uv run ai-pipeline features --embedding-source real --snapshot-id benchmark-v3
-uv run ai-pipeline rules --snapshot-id benchmark-v3
+.\.venv\Scripts\python.exe -m ai_service.cli snapshot --source postgres --store-id 1 `
+  --snapshot-id benchmark-v3-20260810-9088b0f3 --benchmark-run-id <published-benchmark-run-id>
+.\.venv\Scripts\python.exe -m ai_service.cli features --embedding-source real `
+  --snapshot-id benchmark-v3-20260810-9088b0f3
+# Reuse these immutable, verified artifacts when their lineage/config identity matches:
+#   embedding: benchmark-v3-20260810-9088b0f3-real-f0453078fd58
+#   rules:     benchmark-v3-20260810-9088b0f3-rules-v2-ea0c72a89c41
+# Run the rules command only when the full-stat artifact above is absent; never overwrite it.
+.\.venv\Scripts\python.exe -m ai_service.cli rules `
+  --snapshot-id benchmark-v3-20260810-9088b0f3
 
-uv run ai-pipeline train --snapshot-id benchmark-v3 --run-id finalist-42 `
-  --config configs\ablations\v4.toml --seed 42 --device cuda
-uv run ai-pipeline evaluate --run-id finalist-42 `
-  --config configs\ablations\v4.toml --seed 42 --device cuda
+.\.venv\Scripts\python.exe -m ai_service.cli train `
+  --snapshot-id benchmark-v3-20260810-9088b0f3 --run-id deep-42-v5 `
+  --variant deep_only --config configs\ablations\v3.toml --seed 42 --device cuda
+.\.venv\Scripts\python.exe -m ai_service.cli train `
+  --snapshot-id benchmark-v3-20260810-9088b0f3 --run-id hybrid-42-v5 `
+  --variant hybrid --config configs\ablations\v4.toml --seed 42 --device cuda
+.\.venv\Scripts\python.exe -m ai_service.cli evaluate --split val --hybrid-run-id hybrid-42-v5 `
+  --deep-run-id deep-42-v5 --device cuda
 
-uv run ai-pipeline train --snapshot-id benchmark-v3 --run-id finalist-2027 `
-  --config configs\ablations\v4.toml --seed 2027 --device cuda
-uv run ai-pipeline evaluate --run-id finalist-2027 `
-  --config configs\ablations\v4.toml --seed 2027 --device cuda
+# Repeat the paired Deep/Hybrid train + VAL evaluate commands for 2027 and 31415:
+# deep-2027-v5 / hybrid-2027-v5, then deep-31415-v5 / hybrid-31415-v5.
+.\.venv\Scripts\python.exe -m ai_service.cli release-gate --split val `
+  --hybrid-run-ids hybrid-42-v5 hybrid-2027-v5 hybrid-31415-v5 `
+  --deep-run-ids deep-42-v5 deep-2027-v5 deep-31415-v5
 
-uv run ai-pipeline train --snapshot-id benchmark-v3 --run-id finalist-31415 `
-  --config configs\ablations\v4.toml --seed 31415 --device cuda
-uv run ai-pipeline evaluate --run-id finalist-31415 `
-  --config configs\ablations\v4.toml --seed 31415 --device cuda
-
-uv run ai-pipeline release-gate `
-  --run-ids finalist-42 finalist-2027 finalist-31415 `
-  --config configs\ablations\v4.toml
-
-uv run ai-pipeline export --run-id <selected-run-id> `
-  --config configs\ablations\v4.toml
-uv run ai-pipeline verify-bundle --bundle-id <bundle-id>
+# Evaluate TEST for every finalist pair (not only the validation winner).
+.\.venv\Scripts\python.exe -m ai_service.cli evaluate --split test --hybrid-run-id hybrid-42-v5 `
+  --deep-run-id deep-42-v5 --device cuda
+.\.venv\Scripts\python.exe -m ai_service.cli evaluate --split test --hybrid-run-id hybrid-2027-v5 `
+  --deep-run-id deep-2027-v5 --device cuda
+.\.venv\Scripts\python.exe -m ai_service.cli evaluate --split test --hybrid-run-id hybrid-31415-v5 `
+  --deep-run-id deep-31415-v5 --device cuda
+.\.venv\Scripts\python.exe -m ai_service.cli release-gate --split test `
+  --hybrid-run-ids hybrid-42-v5 hybrid-2027-v5 hybrid-31415-v5 `
+  --deep-run-ids deep-42-v5 deep-2027-v5 deep-31415-v5
+.\.venv\Scripts\python.exe -m ai_service.cli export --run-id <selected-hybrid-run-id> --device cuda
+.\.venv\Scripts\python.exe -m ai_service.cli verify-bundle --run-id <selected-hybrid-run-id>
 ```
+
+The aggregate TEST gate requires evaluation artifacts for all three paired seeds; a single
+validation winner is not a substitute for the other two TEST pairs. `run-all` remains synthetic/
+mock smoke only: it trains one bounded epoch and never publishes evaluation, release, seal, or
+bundle artifacts.
 
 Every stage is fail-closed. A snapshot, SBERT, training, evaluation, parity, or metric-gate failure
 cannot silently switch adapters or publish a serving bundle.
 
 The locked ablation definitions and their execution order are documented in
 `configs/ablations/README.md`. Data diagnostics are available through
-`ai-pipeline audit-data` and `ai-pipeline probe-data` before any training run.
+`.\.venv\Scripts\python.exe -m ai_service.cli audit-data` and
+`.\.venv\Scripts\python.exe -m ai_service.cli probe-data` before any training run.
 
 ## Serving
 
@@ -101,17 +118,17 @@ corrupt bundles keep liveness available while readiness returns HTTP 503.
 ## Verification
 
 ```powershell
-uv run ruff format --check src tests
-uv run ruff check src tests
-uv run mypy src
-uv run pytest --cov=ai_service --cov-fail-under=85 -q
+.\.venv\Scripts\python.exe -m ruff format --check src tests scripts
+.\.venv\Scripts\python.exe -m ruff check src tests scripts
+.\.venv\Scripts\python.exe -m mypy src scripts
+.\.venv\Scripts\python.exe -m pytest --cov=ai_service --cov-branch --cov-fail-under=85 -q
 ```
 
 Fixed-hardware serving benchmarks require an already verified bundle:
 
 ```powershell
 $env:AI_BENCHMARK_BUNDLE_PATH = "E:\models\current"
-uv run pytest tests\benchmark -q
+.\.venv\Scripts\python.exe -m pytest tests\benchmark -q
 ```
 
 Generated files use immutable namespaces: `artifacts/snapshots/<snapshot-id>`,

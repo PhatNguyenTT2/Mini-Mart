@@ -49,7 +49,7 @@ max_epochs = 30
 explicit_negative_ratio = 16
 
 [eval]
-primary_metric = "ndcg_at_k"
+primary_metric = "gauc"
 """.strip(),
         encoding="utf-8",
     )
@@ -62,7 +62,7 @@ primary_metric = "ndcg_at_k"
     assert first.model.tau == 0.07
     assert first.train.learning_rate == 0.0003
     assert first.train.explicit_negative_ratio == 16
-    assert first.eval.primary_metric == "ndcg_at_k"
+    assert first.eval.primary_metric == "gauc"
     assert first.training_signature_sha256() == second.training_signature_sha256()
     second.train.seed = 2027
     assert first.training_signature_sha256() != second.training_signature_sha256()

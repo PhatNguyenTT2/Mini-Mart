@@ -1,19 +1,22 @@
-"""Cheap data-only probes that separate signal quality from model optimization."""
+"""Cheap streaming probes separating data signal from model optimization."""
 
 from __future__ import annotations
 
 from collections import Counter, defaultdict
-from itertools import combinations
-from typing import Any
+from typing import Any, cast
 
 import numpy as np
+from scipy import sparse
 
 from ai_service.config import Settings
 from ai_service.contracts import ModelVariant, SplitName
-from ai_service.data.quality import filter_event_origin
 from ai_service.data.rules import RuleStore
 from ai_service.data.snapshot import Snapshot
-from ai_service.evaluation.full_catalog import FullCatalogEvaluator
+from ai_service.evaluation.full_catalog import (
+    ExternalBatchScorer,
+    FullCatalogEvaluator,
+    prepare_split,
+)
 
 
 def _metrics(result: Any) -> dict[str, float | int]:
@@ -31,29 +34,29 @@ def run_data_probes(
     snapshot: Snapshot,
     embeddings: np.ndarray,
 ) -> dict[str, Any]:
-    """Evaluate non-neural signal probes on organic validation purchases."""
+    """Evaluate non-neural signal probes on one frozen organic validation split."""
     vectors = np.array(embeddings, dtype=np.float32, copy=True)
     vectors /= np.maximum(np.linalg.norm(vectors, axis=1, keepdims=True), np.finfo(np.float32).eps)
-    evaluator = FullCatalogEvaluator(
-        settings,
-        vectors,
-        RuleStore(snapshot.manifest.num_items, []),
-    )
-    history = filter_event_origin(snapshot.train_df)
+    prepared = prepare_split(snapshot, SplitName.VAL)
+    evaluator = FullCatalogEvaluator(settings, vectors, RuleStore(snapshot.manifest.num_items, []))
+    history = prepared.history_events
     purchases = history[history.event_type == "purchase"]
-    all_users = range(1, snapshot.manifest.num_users + 1)
+    items = prepared.candidate_item_ids
+    popularity = np.log1p(
+        np.bincount(
+            history.internal_product_id.to_numpy(np.int64),
+            minlength=snapshot.manifest.num_items,
+        ).astype(np.float32)
+    )
 
-    popularity = np.bincount(
-        history.internal_product_id.to_numpy(np.int64),
-        minlength=snapshot.manifest.num_items,
-    ).astype(np.float32)
-    popularity = np.log1p(popularity)
-    popularity_scores = {user: popularity for user in all_users}
-    popularity_result = evaluator.evaluate_scores(
+    def popularity_scorer(users: np.ndarray, _candidates: np.ndarray) -> np.ndarray:
+        return np.broadcast_to(popularity, (len(users), len(items))).copy()
+
+    popularity_result = evaluator.evaluate_external_scores(
         snapshot,
-        split=SplitName.VAL,
+        prepared_split=prepared,
         variant=ModelVariant.ITEM_CF,
-        scores_by_user=popularity_scores,
+        scorer=cast(ExternalBatchScorer, popularity_scorer),
         k=settings.eval.k,
     )
 
@@ -64,77 +67,99 @@ def run_data_probes(
     for user, item in purchases[["internal_user_id", "internal_product_id"]].itertuples(
         index=False, name=None
     ):
-        raw_user = snapshot.raw_user_map[int(user)]
-        persona = int(snapshot.persona_map.get(raw_user, settings.data.num_personas))
-        persona_category[persona][int(category_by_item[int(item)])] += 1
-    persona_vectors: dict[int, np.ndarray] = {}
+        persona = int(
+            snapshot.persona_map.get(snapshot.raw_user_map[int(user)], settings.data.num_personas)
+        )
+        persona_category[persona][int(category_by_item[int(cast(int, item))])] += 1
+    persona_vectors = np.empty((settings.data.num_personas + 1, len(items)), dtype=np.float32)
     for persona in range(settings.data.num_personas + 1):
         counts = persona_category[persona]
         persona_vectors[persona] = (
             np.asarray([counts[int(category)] for category in category_by_item], dtype=np.float32)
             + popularity * 1e-4
         )
-    persona_scores = {
-        user: persona_vectors[
-            int(snapshot.persona_map.get(snapshot.raw_user_map[user], settings.data.num_personas))
-        ]
-        for user in all_users
-    }
-    persona_result = evaluator.evaluate_scores(
+
+    def persona_scorer(users: np.ndarray, _candidates: np.ndarray) -> np.ndarray:
+        personas = np.asarray([prepared.personas[int(user)] for user in users], dtype=np.int64)
+        return persona_vectors[personas]
+
+    persona_result = evaluator.evaluate_external_scores(
         snapshot,
-        split=SplitName.VAL,
+        prepared_split=prepared,
         variant=ModelVariant.SBERT_CENTROID,
-        scores_by_user=persona_scores,
+        scorer=cast(ExternalBatchScorer, persona_scorer),
         k=settings.eval.k,
     )
 
     purchase_sets = purchases.groupby("internal_user_id").internal_product_id.apply(set).to_dict()
-    centroid_scores: dict[int, np.ndarray] = {}
-    for user in all_users:
-        items = np.asarray(sorted(purchase_sets.get(user, set())), dtype=np.int64)
-        if len(items):
-            centroid = vectors[items].mean(axis=0)
-            centroid /= max(float(np.linalg.norm(centroid)), np.finfo(np.float32).eps)
-            centroid_scores[user] = vectors @ centroid
-        else:
-            centroid_scores[user] = np.zeros(snapshot.manifest.num_items, dtype=np.float32)
-    centroid_result = evaluator.evaluate_scores(
+    centroids = np.zeros((snapshot.manifest.num_users + 1, vectors.shape[1]), dtype=np.float32)
+    for user, values in purchase_sets.items():
+        ids = np.asarray(sorted(values), dtype=np.int64)
+        if len(ids):
+            centroid = vectors[ids].mean(axis=0)
+            centroids[int(cast(int, user))] = centroid / max(
+                float(np.linalg.norm(centroid)), np.finfo(np.float32).eps
+            )
+
+    def centroid_scorer(users: np.ndarray, _candidates: np.ndarray) -> np.ndarray:
+        return np.asarray(centroids[users] @ vectors.T, dtype=np.float32)
+
+    centroid_result = evaluator.evaluate_external_scores(
         snapshot,
-        split=SplitName.VAL,
+        prepared_split=prepared,
         variant=ModelVariant.SBERT_CENTROID,
-        scores_by_user=centroid_scores,
+        scorer=cast(ExternalBatchScorer, centroid_scorer),
         k=settings.eval.k,
     )
 
-    adjacency: dict[int, Counter[int]] = defaultdict(Counter)
-    for items in purchase_sets.values():
-        for left, right in combinations(sorted(int(item) for item in items), 2):
-            adjacency[left][right] += 1
-            adjacency[right][left] += 1
-    item_cf_scores: dict[int, np.ndarray] = {}
-    for user in all_users:
-        scores = np.zeros(snapshot.manifest.num_items, dtype=np.float32)
-        for item in purchase_sets.get(user, set()):
-            for neighbor, count in adjacency[int(item)].items():
-                scores[neighbor] += count
-        item_cf_scores[user] = scores
-    item_cf_result = evaluator.evaluate_scores(
+    pairs = purchases[["internal_user_id", "internal_product_id"]].drop_duplicates()
+    matrix = sparse.csr_matrix(
+        (
+            np.ones(len(pairs), dtype=np.float32),
+            (
+                pairs.internal_user_id.to_numpy(np.int64) - 1,
+                pairs.internal_product_id.to_numpy(np.int64),
+            ),
+        ),
+        shape=(snapshot.manifest.num_users, snapshot.manifest.num_items),
+    )
+    similarity = (matrix.T @ matrix).tocsr()
+    similarity.setdiag(0)
+    similarity.eliminate_zeros()
+
+    def item_cf_scorer(users: np.ndarray, _candidates: np.ndarray) -> np.ndarray:
+        return np.asarray(
+            (matrix[np.asarray(users, dtype=np.int64) - 1] @ similarity).toarray(),
+            dtype=np.float32,
+        )
+
+    item_cf_result = evaluator.evaluate_external_scores(
         snapshot,
-        split=SplitName.VAL,
+        prepared_split=prepared,
         variant=ModelVariant.ITEM_CF,
-        scores_by_user=item_cf_scores,
+        scorer=cast(ExternalBatchScorer, item_cf_scorer),
         k=settings.eval.k,
     )
 
     rng = np.random.default_rng(settings.train.seed)
-    permuted_scores = {
-        user: rng.random(snapshot.manifest.num_items, dtype=np.float32) for user in all_users
-    }
-    permuted = evaluator.evaluate_scores(
+    next_user = 1
+
+    def permutation_scorer(users: np.ndarray, _candidates: np.ndarray) -> np.ndarray:
+        nonlocal next_user
+        rows: list[np.ndarray] = []
+        for user in users:
+            while next_user <= int(user):
+                generated = rng.random(snapshot.manifest.num_items, dtype=np.float32)
+                if next_user == int(user):
+                    rows.append(generated)
+                next_user += 1
+        return np.stack(rows)
+
+    permuted = evaluator.evaluate_external_scores(
         snapshot,
-        split=SplitName.VAL,
+        prepared_split=prepared,
         variant=ModelVariant.RANDOM,
-        scores_by_user=permuted_scores,
+        scorer=cast(ExternalBatchScorer, permutation_scorer),
         k=settings.eval.k,
     )
     return {
@@ -146,6 +171,6 @@ def run_data_probes(
         "item_item_cf": _metrics(item_cf_result),
         "label_permutation_sanity": {
             **_metrics(permuted),
-            "passed": abs(float(permuted.report.gauc) - 0.5) <= 0.02,
+            "passed": abs(float(permuted.report.gauc) - 0.5) <= settings.eval.random_gauc_tolerance,
         },
     }
