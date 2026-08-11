@@ -19,7 +19,8 @@ embedding: benchmark-v4-20260811-49b2cdb902b1-real-f0453078fd58
 rules:     benchmark-v4-20260811-49b2cdb902b1-rules-v3-d7ba48f8b8b5
 ```
 
-Production training is blocked until R3 completes. R3 uses the four Deep
+Production training is blocked because the first R3 selected Hybrid VAL
+matrix failed. R3 uses the four Deep
 diagnostic configs under `configs/diagnostics/r3/`, publishes a verified
 immutable comparison artifact, and either selects exactly one feature-flag pair
 or returns `diagnostic_pause=true`. Only the selected flags may be mirrored into

@@ -6,13 +6,22 @@
 R1 source/contracts/tests:                 PASS
 R2 seed code + database seed + readiness:  PASS
 R3 source/tests:                           PASS
-R3 diagnostic execution/config promotion: READY_AFTER_SOURCE_FREEZE
+R3 diagnostic execution: COMPLETED — SELECTED HYBRID VAL FAILED
 R4 lineage/audit/probes/ai-service/CUDA:    PASS
 Backend monorepo legacy Jest gate:          FAIL_OUTSIDE_R2_SCOPE
-R4 documentation/final source freeze:      IN_PROGRESS
-PRODUCTION TRAINING:                       BLOCKED_UNTIL_R3_SELECTION
+R4 documentation/final source freeze:      BLOCKED_BY_MODEL_QUALITY
+PRODUCTION TRAINING:                       BLOCKED_UNTIL_REMEDIATION
 HYBRID VICTORY:                            NOT ESTABLISHED
 ```
+
+R3 executed on frozen commit `15860af0d5002297baf38e0df20f761332897700`.
+The immutable Deep ablation receipt is
+`12dcf8cbd6fe6f4bbcaf1a038e77d280484f94e34eca5db7d5544ef45d80ebd5` and
+selects `deep-no-price-no-user-id`. The selected Deep reached
+GAUC `0.772305854`, HR@10 `0.051477981`, NDCG@10 `0.010313758`; the paired
+Hybrid reached GAUC `0.775218972`, HR@10 `0.054092097`, NDCG@10 `0.011513037`.
+The Hybrid VAL artifact failed GAUC/HR/NDCG dominance and semantic traps
+(`0/10`), so no production config promotion or seed run is authorized.
 
 Final two-axis source re-review: **Standards PASS / Spec PASS**. Các finding về
 archived runbook, R3 NPZ integrity, settings-aware capability, selector coverage,
@@ -64,8 +73,8 @@ CI `[0.01114156795970724, 0.021473641098241035]`; NDCG delta
 `0.027381633380347725`, CI `[0.024328941012233856, 0.030515071440077722]`.
 
 Quality gate hiện tại: Ruff/mypy pass, seed-product Node `9/9`, Python
-`374 passed, 2 fixed-runner skips`, branch coverage `88.64%`; Pipeline `85.09%`,
-Trainer `86.68%`, Checkpoint `97.24%`, Report `90.79%`, Release `91.23%`, Bundle
+`377 passed, 2 fixed-runner skips`, branch coverage `88.24%`; Pipeline `85.03%`,
+Trainer `86.68%`, Checkpoint `97.24%`, Report `90.79%`, Release `90.22%`, Bundle
 `98.79%`. Root `backend npm test` vẫn fail ở các Jest suites Catalog/Chatbot cũ;
 đây không phải regression của R2 nhưng phải được đóng hoặc waiving có chủ đích
 trước khi gọi toàn monorepo xanh. CUDA smoke `smoke-r4-readiness-20260811-2042`
@@ -1124,6 +1133,141 @@ Hybrid seed 42:
 - không tạo seed 2027.
 
 Chỉ tuyên bố Hybrid thành công khi cả ba single-seed matrices, aggregate VAL/TEST, seal, bundle verification, ONNX parity và serving benchmark đều pass.
+
+## R3 remediation plan after the 2026-08-12 VAL failure
+
+Production training remains forbidden. The failed Hybrid artifact is evidence,
+not a candidate for promotion. Do not delete or overwrite the four Deep runs,
+the selected Hybrid run, or the R3 receipt.
+
+### R3.1 — Reproduce and localize each failed gate
+
+Files:
+
+- `ai-service/src/ai_service/evaluation/gates.py`
+- `ai-service/src/ai_service/evaluation/semantic_traps.py`
+- `ai-service/src/ai_service/evaluation/full_catalog.py`
+- `ai-service/src/ai_service/evaluation/report.py`
+- `ai-service/tests/unit/test_release_gate_contract.py`
+- `ai-service/tests/unit/test_checkpoint_report_and_trap_contracts.py`
+
+Actions:
+
+1. Add diagnostic-only per-user evidence for Hybrid/Deep/ItemCF/Persona/
+   Apriori top-10 IDs and paired deltas. Do not weaken the Victory Matrix.
+2. Record exact anchor/target scores, ranks and seen/cold masks for all ten
+   semantic-trap failures; reject raw/internal ID mismatches.
+3. Preserve strongest-baseline selection and negative CI evidence. Failed
+   gates remain `passed=false` with a non-empty reason.
+4. Add corruption tests for a mutated user row, trap target and baseline
+   vector; verified loading must reject each before publication.
+
+Validation:
+
+```powershell
+.\.venv\Scripts\python.exe -m pytest `
+  tests\unit\test_release_gate_contract.py `
+  tests\unit\test_checkpoint_report_and_trap_contracts.py -q
+```
+
+The current failed matrix must reproduce before any model/data change.
+
+### R3.2 — Trace data-to-objective alignment
+
+Files:
+
+- `backend/docs/chatbot/seed-product/benchmark-affinity.js`
+- `backend/docs/chatbot/seed-product/mock-orders.js`
+- `backend/docs/chatbot/seed-product/populate-copurchase.js`
+- `backend/docs/chatbot/seed-product/inspect-ml-storage.js`
+- `ai-service/src/ai_service/data/snapshot.py`
+- `ai-service/src/ai_service/data/rules.py`
+- `ai-service/src/ai_service/evaluation/baselines.py`
+- `ai-service/tests/unit/test_data_quality_contract.py`
+
+Actions:
+
+1. Reconcile organic templates, affinity assignments, latest purchase
+   contexts and RuleArtifact edges for the failed VAL users/items. Report
+   truth novelty, seen masking, persona and rule-hit counts.
+2. Verify all non-trap rules are reachable from organic contexts. The current
+   in-batch density `0.001223` is evidence to inspect, not a reason to lower
+   the readiness floor.
+3. Compare Apriori/Persona/ItemCF IDs with Hybrid IDs. Fix shared split/context
+   or mapping code only when the evidence proves a defect; never patch gates.
+4. Keep the v4 database run immutable. Any seed rebuild uses new run,
+   snapshot, RuleArtifact and source revision IDs.
+
+Validation:
+
+```powershell
+npm.cmd run test:seed-product
+.\.venv\Scripts\python.exe -m pytest `
+  tests\unit\test_data_quality_contract.py `
+  tests\unit\test_full_catalog_contract.py -q
+```
+
+Require audit/probe parity and exact organic/trap counts before rebuilding.
+
+### R3.3 — Validate Wide signal and objective changes in isolation
+
+Files:
+
+- `ai-service/src/ai_service/training/trainer.py`
+- `ai-service/src/ai_service/models/wide_layer.py`
+- `ai-service/src/ai_service/models/two_tower_wide_deep.py`
+- `ai-service/src/ai_service/config.py`
+- `ai-service/configs/diagnostics/r3/*.toml`
+- `ai-service/tests/unit/test_trainer_contract.py`
+- `ai-service/tests/unit/test_trainer_recovery_contract.py`
+
+Actions:
+
+1. Use the failed Hybrid as baseline. Record epoch-1/selected Wide gradient,
+   Wide/Deep RMS, top-k change and Hybrid-minus-Deep/Wide deltas.
+2. Test one objective/feature change per new diagnostic config. Do not change
+   schema, early stopping or Victory thresholds.
+3. Require epoch-1 Wide gradient `>0`, finite tensors, hard-cache refreshes,
+   and unchanged Wide parameters in Deep-only.
+4. A candidate is eligible for paired VAL only when failed metric gates also
+   improve; Wide RMS alone is insufficient.
+
+Validation:
+
+```powershell
+.\.venv\Scripts\python.exe -m pytest `
+  tests\unit\test_trainer_contract.py `
+  tests\unit\test_trainer_recovery_contract.py -q
+```
+
+Stop on GAUC `<0.50`, non-finite values, missing cache, Wide-gradient failure,
+or semantic-trap regression.
+
+### R3.4 — New immutable diagnostic campaign and promotion
+
+Only after R3.1–R3.3 pass:
+
+1. Commit/push remediation source/config; verify clean worktree and
+   `HEAD == origin/main`.
+2. Generate a new snapshot/rules lineage only if R3.2 proves data misalignment;
+   otherwise reuse the verified v4 lineage unchanged.
+3. Train four Deep ablations on seed 42, publish one receipt, train selected
+   Hybrid and run paired VAL.
+4. Require all seven gates, semantic traps `10/10`, cold parity and the Wide
+   signal contract. Any failure keeps production blocked and prevents seeds
+   2027/31415.
+5. Promote v5/v6 only after the new receipt and paired VAL artifact are
+   immutable and verified; then rerun readiness before production Deep 42.
+
+Earliest permissible sequence:
+
+```text
+new R3 receipt + paired VAL pass
+  -> v5/v6 promotion and source freeze
+  -> Deep seed 42 -> Hybrid seed 42 -> VAL pass
+  -> seeds 2027/31415 -> aggregate VAL -> TEST all three pairs
+  -> aggregate TEST -> seal/export/verify/benchmark
+```
 
 ## Assumptions
 

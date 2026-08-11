@@ -2,15 +2,15 @@
 
 ## Current status
 
-`READY_FOR_R3_DEEP_DIAGNOSTICS`.
+`R3_DIAGNOSTIC_FAILED / PRODUCTION_TRAINING_BLOCKED`.
 
 R1 source contracts and R2 seed/data readiness are complete. The real v4
 database seed, snapshot, embedding, RuleArtifact, audit, probes and epoch-one
 rule scan pass. Legacy duplicate seed spec/validator sources have been removed,
-and R3 source/contracts pass, but its four Deep diagnostic runs,
-ablation selection, selected Hybrid validation and v5/v6 config promotion have
-not run. Production training remains blocked until those diagnostics pass and
-the resulting source/config revision is committed, pushed and frozen.
+and the four Deep diagnostics plus the selected Hybrid diagnostic have run on
+the frozen source. R3 is blocked because the selected Hybrid VAL matrix failed
+dominance and semantic-trap gates; no v5/v6 promotion or production training
+is permitted.
 
 Phase 5A–5D is complete. `Trainer.fit()` is now orchestration-only: it
 preflights, restores state, delegates one epoch to `_train_epoch()`, validates,
@@ -26,11 +26,11 @@ thresholds, epoch reset, and immutable affinity contracts.
 
 ## Verification snapshot (2026-08-11, canonical benchmark v4)
 
-- AI-service suite: **374 passed, 2 fixed-runner skips**; seed-product Node
+- AI-service suite: **377 passed, 2 fixed-runner skips**; seed-product Node
   contracts **9 passed**.
-- Branch coverage: **88.64%** (`--cov-branch`, threshold 85%).
+- Branch coverage: **88.24%** (`--cov-branch`, threshold 85%).
 - Critical files: checkpoint 97.24%, report 90.79%, bundle 98.79%, release
-  91.23%, trainer 86.68%, pipeline 85.09%.
+  90.22%, trainer 86.68%, pipeline 85.03%.
 - Ruff format/check and mypy pass; `scripts/check_critical_coverage.py` passes.
 - Root `backend npm test` is not green: pre-existing Catalog/Chatbot Jest suites
   fail outside the R2 seed-product files. This remains a monorepo gate blocker,
@@ -71,7 +71,34 @@ RuleArtifact above. Planned production IDs are `deep-r4-42-v5`/
 CUDA diagnostic smoke `smoke-r4-readiness-20260811-2042` completed one epoch with
 schema-v5 `best.pt` and `last.pt`, finite metrics, bfloat16 autocast, and no
 evaluation/release/seal/export side effects. It is not a production seed.
-All R3 diagnostic and R4 production run IDs remain absent.
+R3 diagnostics are retained as immutable audit evidence. The selected Deep
+configuration is `deep-no-price-no-user-id` with best GAUC `0.772305854`.
+The paired Hybrid diagnostic reached GAUC `0.775218972` and passed the minimum
+GAUC/cold-parity checks, but failed ItemCF GAUC dominance, Persona HR
+dominance, Apriori NDCG dominance and all `10/10` semantic traps. Its lifecycle
+is `FAILED`; production seed IDs remain absent and R4 is blocked.
+
+## R3 diagnostic result (2026-08-12)
+
+Frozen source: `15860af0d5002297baf38e0df20f761332897700`.
+Deep ablation receipt:
+`12dcf8cbd6fe6f4bbcaf1a038e77d280484f94e34eca5db7d5544ef45d80ebd5`.
+Selected Deep run: `diag-r3-deep-both-s42` (`GAUC=0.772305854`,
+`HR@10=0.051477981`, `NDCG@10=0.010313758`).
+
+Selected Hybrid run `diag-r3-hybrid-both-s42` (`GAUC=0.775218972`,
+`HR@10=0.054092097`, `NDCG@10=0.011513037`) passed the absolute GAUC floor
+and cold parity, but its VAL Victory Matrix failed:
+
+- GAUC dominance: `0.775218972 < ItemCF 0.827843070`.
+- HR dominance: `0.054092097 < Persona 0.080836517`.
+- NDCG dominance: `0.011513037 < Apriori 0.028209886`.
+- Semantic traps: `0/10`.
+
+This is a legitimate model-quality failure, not a training crash. Do not
+promote v5/v6, create production seed IDs, seal, export, or declare Hybrid
+victory. The next phase must repair the objective/data-alignment issue and
+rerun R3 on a new immutable campaign revision.
 
 ## Quality commands
 

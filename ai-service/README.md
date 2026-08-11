@@ -86,9 +86,10 @@ publisher rejects an existing destination; bootstrap is a one-time operation:
 ### Historical v3 campaign (audit-only)
 
 The v3 commands below are retained only to identify archived evidence. Do not
-execute them. The next production commands cannot be published until R3 Deep
-ablation selection, Hybrid diagnostics, and v5/v6 config promotion pass. The
-current executable R3 sequence is maintained in `..\master\detail-plan.md`.
+execute them. R3 has now executed on the pinned v4 lineage but the selected
+Hybrid VAL matrix failed dominance and semantic-trap gates. Production remains
+blocked; no v5/v6 config or production command is authorized. The remediation
+sequence is maintained in `..\master\detail-plan.md`.
 
 The archived v3 lineage is:
 

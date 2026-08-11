@@ -6,12 +6,26 @@
 R1 OBSERVABILITY/GATES SOURCE: PASS
 R2 DATABASE SEED/DATASET/RULE READINESS: PASS
 R3 SOURCE CONTRACTS: PASS
-R3 DIAGNOSTIC RUNS: READY TO EXECUTE AFTER SOURCE FREEZE
+R3 DIAGNOSTIC RUNS: EXECUTED — SELECTED HYBRID VAL FAILED
 R4 LINEAGE/AUDIT/PROBES/AI-SERVICE/CUDA: PASS
 BACKEND MONOREPO LEGACY JEST GATE: FAIL OUTSIDE R2 SCOPE
-PRODUCTION TRAINING: BLOCKED
+PRODUCTION TRAINING: BLOCKED — MODEL QUALITY FAILURE
 HYBRID VICTORY: NOT ESTABLISHED
 ```
+
+R3 diagnostic execution is fail-closed. Frozen source
+`15860af0d5002297baf38e0df20f761332897700` produced four Deep ablations and
+one selected Hybrid diagnostic on the canonical v4 snapshot. The immutable
+Deep selection receipt is
+`12dcf8cbd6fe6f4bbcaf1a038e77d280484f94e34eca5db7d5544ef45d80ebd5` and
+selects `deep-no-price-no-user-id`.
+
+The selected Deep best metrics were GAUC `0.772305854`, HR@10 `0.051477981`,
+NDCG@10 `0.010313758`. The paired Hybrid best metrics were GAUC `0.775218972`,
+HR@10 `0.054092097`, NDCG@10 `0.011513037`. Hybrid passed the absolute GAUC
+floor and cold parity, but failed ItemCF GAUC dominance, Persona HR dominance,
+Apriori NDCG dominance and all `10/10` semantic traps. The Hybrid lifecycle is
+`FAILED`; no production seed, config promotion, seal or export is allowed.
 
 Pre-R3 source cleanup removed the superseded v3 benchmark spec and semantic
 validator. The active seed surface is `benchmark-spec-v4.json` plus the v4
@@ -65,7 +79,7 @@ pass khi strengthened seven-gate matrix chứng minh dominance theo từng metri
 với paired CI. R3 chưa chạy nên chưa có metric Deep/Hybrid v4 hợp lệ để kết luận.
 
 Quality gate sau triển khai: Ruff/mypy pass, seed-product Node `9/9`, Python
-`374 passed, 2 skipped`, branch coverage `88.64%`; sáu critical targets đều
+`377 passed, 2 skipped`, branch coverage `88.24%`; sáu critical targets đều
 pass. Root `backend npm test` còn đỏ ở các Jest suites Catalog/Chatbot có sẵn,
 ngoài các file R2. CUDA smoke
 `smoke-r4-readiness-20260811-2042` pass và không tạo release side effects.
