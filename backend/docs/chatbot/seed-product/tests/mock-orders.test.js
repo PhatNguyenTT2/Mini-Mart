@@ -2,7 +2,7 @@
 
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const spec = require('../benchmark-spec-v4.json');
+const spec = require('../benchmark-spec-v5.json');
 const { generateOrderPlan, seedOrders } = require('../mock-orders');
 const { buildPersonaAssignments, buildUserAffinities, buildOrganicBundleTemplates } = require('../benchmark-affinity');
 const { mulberry32 } = require('../benchmark-lib');
@@ -33,7 +33,7 @@ function model() {
   return { products, users, coldProducts, affinityModel: { personaByUser, ...affinity, bundleTemplates } };
 }
 
-test('v4 order plan has exact organic/trap split and no organic fixture leakage', () => {
+test('v5 order plan has exact organic/trap split and no organic fixture leakage', () => {
   const fixture = model();
   const plan = generateOrderPlan({ spec, ...fixture });
   assert.equal(plan.length, spec.num_orders);

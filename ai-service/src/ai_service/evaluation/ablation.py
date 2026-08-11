@@ -66,6 +66,12 @@ class DeepAblationCandidate(BaseModel):
     gauc_ci_lower_vs_control: float
     gauc_ci_upper_vs_control: float
     gauc_ci_lower_vs_random: float
+    hr_delta_vs_control: float
+    hr_ci_lower_vs_control: float
+    hr_ci_upper_vs_control: float
+    ndcg_delta_vs_control: float
+    ndcg_ci_lower_vs_control: float
+    ndcg_ci_upper_vs_control: float
     eligible: bool
     feature_selection: R3FeatureSelection
 
@@ -177,15 +183,28 @@ def compare_deep_ablations(
     control: EvaluationResult,
     candidates: Mapping[str, tuple[str, EvaluationResult]],
     random_per_user_gauc: np.ndarray,
+    random_per_user_hr: np.ndarray,
+    random_per_user_ndcg: np.ndarray,
     bootstrap_samples: int,
     minimum_control_gauc: float,
+    gauc_guardrail_delta: float = 0.0,
+    hr_guardrail_delta: float = 0.0,
+    ndcg_guardrail_delta: float = 0.0,
+    minimum_candidate_gauc: float = 0.55,
+    selection_gauc_floor: float = 0.75,
+    selection_hr_floor: float = 0.15,
+    selection_ndcg_floor: float = 0.08,
 ) -> tuple[DeepAblationDecision, dict[str, np.ndarray]]:
     """Select one materially better Deep ablation or issue a diagnostic pause."""
     if len(candidates) != 3 or control_run_id in candidates:
         raise DataIntegrityError("R3 comparison requires one control and exactly three candidates")
     user_ids = np.asarray(control.user_ids, dtype=np.int64)
     control_gauc = _metric_vector(control.per_user_gauc, user_ids, "control GAUC")
+    control_hr = _metric_vector(control.per_user_hr, user_ids, "control HR")
+    control_ndcg = _metric_vector(control.per_user_ndcg, user_ids, "control NDCG")
     random_gauc = _metric_vector(random_per_user_gauc, user_ids, "random GAUC")
+    random_hr = _metric_vector(random_per_user_hr, user_ids, "random HR")
+    random_ndcg = _metric_vector(random_per_user_ndcg, user_ids, "random NDCG")
     control_random = paired_bootstrap_delta(
         control_gauc,
         random_gauc,
@@ -203,10 +222,16 @@ def compare_deep_ablations(
     arrays: dict[str, np.ndarray] = {
         "user_ids": user_ids,
         "control_gauc": control_gauc,
+        "control_hr": control_hr,
+        "control_ndcg": control_ndcg,
         "random_gauc": random_gauc,
+        "random_hr": random_hr,
+        "random_ndcg": random_ndcg,
     }
     for run_id, (config_name, result) in sorted(candidates.items()):
         candidate_gauc = _metric_vector(result.per_user_gauc, user_ids, f"{run_id} GAUC")
+        candidate_hr = _metric_vector(result.per_user_hr, user_ids, f"{run_id} HR")
+        candidate_ndcg = _metric_vector(result.per_user_ndcg, user_ids, f"{run_id} NDCG")
         vs_control = paired_bootstrap_delta(
             candidate_gauc,
             control_gauc,
@@ -217,11 +242,32 @@ def compare_deep_ablations(
             random_gauc,
             samples=bootstrap_samples,
         )
+        vs_control_hr = paired_bootstrap_delta(candidate_hr, control_hr, samples=bootstrap_samples)
+        vs_control_ndcg = paired_bootstrap_delta(
+            candidate_ndcg, control_ndcg, samples=bootstrap_samples
+        )
         catastrophic = float(result.report.gauc) < 0.50
-        eligible = not catastrophic and vs_control.lower > 0.0 and vs_random.lower > 0.0
+        candidate_is_clear = float(result.report.gauc) >= minimum_candidate_gauc
+        noninferior = (
+            vs_control.lower >= gauc_guardrail_delta
+            and vs_control_hr.lower >= hr_guardrail_delta
+            and vs_control_ndcg.lower >= ndcg_guardrail_delta
+        )
+        any_metric_better = (
+            vs_control.lower > 0.0 or vs_control_hr.lower > 0.0 or vs_control_ndcg.lower > 0.0
+        )
+        eligible = (
+            not catastrophic
+            and candidate_is_clear
+            and vs_random.lower > 0.0
+            and noninferior
+            and any_metric_better
+        )
         if catastrophic:
             pause_reasons.append(f"{run_id} GAUC is below catastrophic threshold 0.50")
         arrays[f"{run_id}_gauc"] = candidate_gauc
+        arrays[f"{run_id}_hr"] = candidate_hr
+        arrays[f"{run_id}_ndcg"] = candidate_ndcg
         records.append(
             DeepAblationCandidate(
                 run_id=run_id,
@@ -233,6 +279,12 @@ def compare_deep_ablations(
                 gauc_ci_lower_vs_control=vs_control.lower,
                 gauc_ci_upper_vs_control=vs_control.upper,
                 gauc_ci_lower_vs_random=vs_random.lower,
+                hr_delta_vs_control=vs_control_hr.mean_delta,
+                hr_ci_lower_vs_control=vs_control_hr.lower,
+                hr_ci_upper_vs_control=vs_control_hr.upper,
+                ndcg_delta_vs_control=vs_control_ndcg.mean_delta,
+                ndcg_ci_lower_vs_control=vs_control_ndcg.lower,
+                ndcg_ci_upper_vs_control=vs_control_ndcg.upper,
                 eligible=eligible,
                 feature_selection=_feature_selection_for_config(config_name),
             )
@@ -247,12 +299,42 @@ def compare_deep_ablations(
         selected = max(
             eligible_records,
             key=lambda record: (
+                min(
+                    record.gauc / selection_gauc_floor,
+                    record.hr_at_k / selection_hr_floor,
+                    record.ndcg_at_k / selection_ndcg_floor,
+                ),
                 record.gauc,
                 record.ndcg_at_k,
                 record.hr_at_k,
-                record.config_name,
             ),
         ).run_id
+        selected_record = next(record for record in eligible_records if record.run_id == selected)
+        tied = [
+            record
+            for record in eligible_records
+            if (
+                min(
+                    record.gauc / selection_gauc_floor,
+                    record.hr_at_k / selection_hr_floor,
+                    record.ndcg_at_k / selection_ndcg_floor,
+                ),
+                record.gauc,
+                record.ndcg_at_k,
+                record.hr_at_k,
+            )
+            == (
+                min(
+                    selected_record.gauc / selection_gauc_floor,
+                    selected_record.hr_at_k / selection_hr_floor,
+                    selected_record.ndcg_at_k / selection_ndcg_floor,
+                ),
+                selected_record.gauc,
+                selected_record.ndcg_at_k,
+                selected_record.hr_at_k,
+            )
+        ]
+        selected = min(tied, key=lambda record: record.config_name).run_id
     decision = DeepAblationDecision(
         control_run_id=control_run_id,
         minimum_control_gauc=minimum_control_gauc,
@@ -400,6 +482,14 @@ def run_deep_ablation_comparison(
         np.stack([result.per_user_gauc for result in random_results]),
         axis=0,
     )
+    random_hr = np.mean(
+        np.stack([result.per_user_hr for result in random_results]),
+        axis=0,
+    )
+    random_ndcg = np.mean(
+        np.stack([result.per_user_ndcg for result in random_results]),
+        axis=0,
+    )
     candidate_results = {
         run.run_id: (
             expected_flags[
@@ -414,6 +504,8 @@ def run_deep_ablation_comparison(
         control=evaluations[control.run_id],
         candidates=candidate_results,
         random_per_user_gauc=np.asarray(random_gauc, dtype=np.float64),
+        random_per_user_hr=np.asarray(random_hr, dtype=np.float64),
+        random_per_user_ndcg=np.asarray(random_ndcg, dtype=np.float64),
         bootstrap_samples=control.settings.eval.bootstrap_samples,
         minimum_control_gauc=control.settings.eval.deep_clear_random_gauc,
     )
@@ -566,8 +658,14 @@ def _validate_ablation_metrics(
     expected_keys = {
         "user_ids",
         "control_gauc",
+        "control_hr",
+        "control_ndcg",
         "random_gauc",
+        "random_hr",
+        "random_ndcg",
         *(f"{candidate.run_id}_gauc" for candidate in report.candidates),
+        *(f"{candidate.run_id}_hr" for candidate in report.candidates),
+        *(f"{candidate.run_id}_ndcg" for candidate in report.candidates),
     }
     if set(metrics) != expected_keys:
         raise ArtifactIntegrityError("Deep ablation metrics have unexpected keys")

@@ -41,7 +41,7 @@ test('reset deletes order rows before chat derived and lineage rows', async () =
   const result = await executeBenchmarkReset({
     clients,
     spec,
-    confirmation: 'RESET_BENCHMARK_V5_STORE_1'
+    confirmation: 'RESET_STORE_1_BENCHMARK_V5'
   });
   assert.equal(result.status, 'reset');
   assert.match(clients.order.queries.find((query) => query.sql.startsWith('DELETE')).sql, /sale_order/);

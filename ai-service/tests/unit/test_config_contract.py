@@ -96,6 +96,11 @@ def test_r3_feature_flags_change_model_signatures_and_configs_are_single_variabl
         "hybrid-no-price",
         "hybrid-no-user-id",
         "hybrid-no-price-no-user-id",
+        "hybrid-h0-main",
+        "hybrid-h1-rule-aux",
+        "hybrid-h2-rule-hard",
+        "hybrid-h3a-view-zero",
+        "hybrid-h3b-view-point-one",
     }
     assert configs["deep-control"].model.use_user_id_embedding
     assert configs["deep-control"].model.use_price_features

@@ -18,6 +18,7 @@ from ai_service.data.rules import RuleStore
 from ai_service.data.snapshot import Snapshot
 from ai_service.errors import ArtifactIntegrityError, DataIntegrityError
 from ai_service.evaluation.cold_start import evaluate_cold_parity
+from ai_service.evaluation.full_catalog import PairDiagnosticReplay, TargetReplayRow
 from ai_service.evaluation.report import publish_evaluation_artifacts
 from ai_service.evaluation.semantic_traps import evaluate_semantic_traps
 from ai_service.models.two_tower_wide_deep import HybridTwoTowerModel
@@ -250,6 +251,59 @@ def test_report_and_semantic_trap_outputs_are_measured_not_hard_coded(tmp_path: 
     )
     assert trap_report.total == 1
     assert trap_report.results[0].target_product_ids == (102,)
+
+
+def test_semantic_traps_use_serving_equivalent_replay_when_prepared(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    fixture = tmp_path / "traps-serving.json"
+    fixture.write_text(
+        json.dumps([{"trap_id": 1, "anchor_product_id": 101, "target_product_ids": [102]}]),
+        encoding="utf-8",
+    )
+    prepared = SimpleNamespace(
+        eligible_users=np.asarray([1], dtype=np.int64),
+        latest_prior_purchase_contexts={1: 0},
+        organic_novel_truth={1: {1}},
+    )
+
+    class _Evaluator:
+        def __init__(self, *_args: object, **_kwargs: object) -> None:
+            pass
+
+        def evaluate_pair_diagnostics(self, **_kwargs: object) -> PairDiagnosticReplay:
+            row = TargetReplayRow(
+                trap_id=1,
+                user_id=1,
+                deep_rank=20,
+                hybrid_rank=3,
+                deep_top_k_cutoff=0.0,
+                target_deep_score=0.0,
+                learned_wide_bonus=1.0,
+                required_wide_bonus=0.0,
+            )
+            return PairDiagnosticReplay(
+                deep=SimpleNamespace(),
+                hybrid=SimpleNamespace(),
+                alpha_results={},
+                targets=(row,),
+            )
+
+    monkeypatch.setattr("ai_service.evaluation.semantic_traps.FullCatalogEvaluator", _Evaluator)
+    model = HybridTwoTowerModel(_settings())
+    report = evaluate_semantic_traps(
+        model,
+        model,
+        _snapshot(tmp_path),
+        np.eye(4, dtype=np.float32),
+        RuleStore(4, [(0, 1, 10.0)]),
+        fixture,
+        k=10,
+        prepared_split=prepared,
+        settings=_settings(),
+    )
+    assert report.all_passed is True
+    assert report.results[0].hybrid_rank == 3
 
 
 def test_evaluate_cold_parity_requires_exact_cohort(tmp_path: Path) -> None:

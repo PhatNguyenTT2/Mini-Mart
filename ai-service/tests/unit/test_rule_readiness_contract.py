@@ -102,7 +102,7 @@ def test_v3_rule_artifact_contains_organic_coverage(tmp_path: Path) -> None:
     settings.data.min_rule_count = 1
     artifact = AprioriRuleMiner(settings).mine(_snapshot(tmp_path))
     assert artifact.manifest.feature_schema_version == "3.0.0"
-    assert artifact.manifest.coverage_semantics_version == "semantic-trap-purchase-v2"
+    assert artifact.manifest.coverage_semantics_version == "organic-target-alignment-v3"
     assert artifact.manifest.coverage is not None
     assert artifact.manifest.coverage.non_trap_directed_rules == 4
 

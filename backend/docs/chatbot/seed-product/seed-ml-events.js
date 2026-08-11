@@ -1,6 +1,26 @@
 'use strict';
 
+const crypto = require('crypto');
 const { mulberry32 } = require('./benchmark-lib');
+
+function stableHashInt(...parts) {
+  const digest = crypto.createHash('sha256').update(parts.join(':')).digest();
+  return digest.readUInt32BE(0);
+}
+
+function deterministicTransitionUsers(spec, users) {
+  const expected = Math.floor(users.length * spec.organic_rule_transition_fraction);
+  if (expected !== spec.transition_user_count) {
+    throw new Error('transition user count does not match the v5 fraction');
+  }
+  return new Set(
+    [...users]
+      .map((userId) => ({ userId, key: stableHashInt(spec.seed, userId) }))
+      .sort((left, right) => left.key - right.key || left.userId - right.userId)
+      .slice(0, expected)
+      .map(({ userId }) => userId)
+  );
+}
 
 function timestampAt(index, count, startValue, endValue) {
   const start = Date.parse(startValue);
@@ -64,6 +84,7 @@ function buildOrganicRows({
   lastPurchaseByUser, bundleNeighbors, random, spec
 }) {
   const rows = [];
+  const transitionUsers = deterministicTransitionUsers(spec, users);
   let sessionIndex = 0;
   const drift = split === 'train' ? 0 : split === 'val' ? 37 : 83;
   while (rows.length < count) {
@@ -89,11 +110,11 @@ function buildOrganicRows({
     const availableRuleNeighbors = (bundleNeighbors.get(priorPurchase) || []).filter(
       (productId) => !blocked.has(productId) && !seen.has(productId)
     );
-    const transitionProduct = priorPurchase !== undefined
-      && availableRuleNeighbors.length
-      && random() < spec.organic_rule_transition_probability
-      ? availableRuleNeighbors[Math.floor(random() * availableRuleNeighbors.length)]
-      : undefined;
+    let transitionProduct;
+    if (transitionUsers.has(userId) && priorPurchase !== undefined && availableRuleNeighbors.length) {
+      const offset = stableHashInt(spec.seed, userId, split, sessionIndex);
+      transitionProduct = availableRuleNeighbors[offset % availableRuleNeighbors.length];
+    }
     let mainProduct;
     if (split === 'train' && sessionIndex < warmProducts.length) {
       mainProduct = warmProducts[sessionIndex];
@@ -106,7 +127,13 @@ function buildOrganicRows({
     }
     const sessionId = `${runId}:${split}:organic:${String(sessionIndex).padStart(7, '0')}`;
     const metadata = productMetadata.get(mainProduct);
-    const willPurchase = length >= 2 && (
+    // Every deterministic transition user needs a real train context before
+    // the VAL transition is emitted.  Without this explicit purchase, the
+    // user can complete a view-only first session and silently lose the
+    // context->target rule contract even though the cohort membership is
+    // correct.
+    const forceTransitionContext = split === 'train' && transitionUsers.has(userId) && guaranteedUser;
+    const willPurchase = forceTransitionContext || (length >= 2 && (
       requireNovelPurchase
       || random() < conversionProbability(
         { ...metadata, categoryPersona: categoryPersona.get(metadata.category) },
@@ -115,7 +142,7 @@ function buildOrganicRows({
         spec,
         split
       )
-    );
+    ));
     for (let offset = 0; offset < length; offset += 1) {
       const isLast = offset === length - 1;
       const eventType = isLast && willPurchase ? 'purchase' : 'view';
@@ -245,15 +272,16 @@ async function seedMlEvents({
     .filter((id) => !coldSet.has(id));
   const users = Array.from({ length: spec.num_users }, (_, index) => index + 1);
   if (
-    !['3.0.0', '4.0.0', '5.0.0'].includes(spec.generator_version)
+    spec.generator_version !== '5.0.0'
+    || spec.schema_version !== '3.0.0'
     || spec.persona_distribution.length !== 8
     || Math.abs(spec.persona_distribution.reduce((sum, value) => sum + value, 0) - 1) > 1e-9
-  ) throw new Error('benchmark v3 persona/generator contract is invalid');
+  ) throw new Error('benchmark v5 persona/generator contract is invalid');
   if (warmProducts.length !== spec.num_products - spec.num_cold_products) {
     throw new Error(`warm catalog count mismatch: ${warmProducts.length}`);
   }
   if (!affinityModel || !affinityModel.bundleTemplates) {
-    throw new Error('v4 event generation requires one shared affinity model');
+    throw new Error('v5 event generation requires one shared affinity model');
   }
   const model = affinityModel;
   const { personaByUser, affinityByUser, preferredProducts, productMetadata, categoryPersona } = model;

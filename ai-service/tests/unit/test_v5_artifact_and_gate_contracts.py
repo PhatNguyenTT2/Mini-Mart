@@ -11,6 +11,7 @@ import pytest
 from ai_service.artifact_io import (
     canonical_json_sha256,
     immutable_write_json,
+    publish_directory_atomic,
     require_child_path,
 )
 from ai_service.contracts import (
@@ -125,7 +126,7 @@ def test_single_seed_gate_emits_complete_matrix() -> None:
         bootstrap_samples=32,
     )
     assert matrix.all_passed
-    assert len(matrix.gates) == 7
+    assert len(matrix.gates) == 9
     assert (
         matrix.sha256
         == hashlib.sha256(
@@ -288,6 +289,27 @@ def test_artifact_io_immutable_and_path_guard(tmp_path: Path) -> None:
     with pytest.raises(ArtifactIntegrityError):
         require_child_path(tmp_path, tmp_path / ".." / "escape")
     assert RuleStore(4, []).features.shape == (0, 3)
+
+
+def test_artifact_directory_publication_is_atomic_and_fail_closed(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    source = tmp_path / "source"
+    source.mkdir()
+    (source / "report.json").write_text("{}", encoding="utf-8")
+    destination = tmp_path / "published"
+    publish_directory_atomic(source, destination)
+    assert (destination / "report.json").is_file()
+    with pytest.raises(ArtifactIntegrityError, match="already exists"):
+        publish_directory_atomic(tmp_path / "other", destination)
+    failing_source = tmp_path / "failing-source"
+    failing_source.mkdir()
+    monkeypatch.setattr(
+        "ai_service.artifact_io.os.replace",
+        lambda *_args, **_kwargs: (_ for _ in ()).throw(OSError("replace")),
+    )
+    with pytest.raises(ArtifactIntegrityError, match="publication failed"):
+        publish_directory_atomic(failing_source, tmp_path / "failed")
 
 
 def test_bundle_preflight_rejects_missing_matrix_and_missing_directory(tmp_path: Path) -> None:

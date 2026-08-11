@@ -55,3 +55,14 @@ def require_child_path(root: Path, candidate: Path) -> Path:
     except ValueError as error:
         raise ArtifactIntegrityError("artifact path escapes its root") from error
     return resolved_candidate
+
+
+def publish_directory_atomic(source: Path, destination: Path) -> None:
+    """Atomically publish a fully fsynced temporary directory once."""
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    if destination.exists():
+        raise ArtifactIntegrityError(f"immutable directory already exists: {destination}")
+    try:
+        os.replace(source, destination)
+    except OSError as error:
+        raise ArtifactIntegrityError("atomic directory publication failed") from error

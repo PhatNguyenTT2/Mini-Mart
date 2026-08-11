@@ -2,7 +2,7 @@
 
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const spec = require('../benchmark-spec-v4.json');
+const spec = require('../benchmark-spec-v5.json');
 const { mulberry32 } = require('../benchmark-lib');
 const {
   buildPersonaAssignments,
@@ -35,7 +35,7 @@ function fixture() {
   return { products, users, coldProducts, personaByUser, ...affinity, bundleTemplates };
 }
 
-test('v4 affinity model is deterministic and covers all users', () => {
+test('v5 affinity model is deterministic and covers all users', () => {
   const left = fixture();
   const right = fixture();
   assert.deepEqual([...left.personaByUser], [...right.personaByUser]);

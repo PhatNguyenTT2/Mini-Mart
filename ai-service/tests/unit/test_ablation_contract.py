@@ -55,6 +55,8 @@ def test_ablation_selects_best_clear_improvement_and_publishes_immutably(
             "diag-no-both": ("deep-no-price-no-user-id", _result(0.68, 0.28, 0.38)),
         },
         random_per_user_gauc=np.full(32, 0.50, dtype=np.float64),
+        random_per_user_hr=np.full(32, 0.05, dtype=np.float64),
+        random_per_user_ndcg=np.full(32, 0.02, dtype=np.float64),
         bootstrap_samples=64,
         minimum_control_gauc=0.55,
     )
@@ -93,6 +95,8 @@ def test_ablation_artifact_rejects_corrupt_or_malformed_metrics(tmp_path: Path) 
             "diag-c": ("deep-no-price-no-user-id", _result(0.68)),
         },
         random_per_user_gauc=np.full(32, 0.50, dtype=np.float64),
+        random_per_user_hr=np.full(32, 0.05, dtype=np.float64),
+        random_per_user_ndcg=np.full(32, 0.02, dtype=np.float64),
         bootstrap_samples=64,
         minimum_control_gauc=0.55,
     )
@@ -130,6 +134,8 @@ def test_ablation_artifact_rejects_metric_dtype_and_user_order(tmp_path: Path) -
             "diag-c": ("deep-no-price-no-user-id", _result(0.68)),
         },
         random_per_user_gauc=np.full(32, 0.50, dtype=np.float64),
+        random_per_user_hr=np.full(32, 0.05, dtype=np.float64),
+        random_per_user_ndcg=np.full(32, 0.02, dtype=np.float64),
         bootstrap_samples=64,
         minimum_control_gauc=0.55,
     )
@@ -179,12 +185,35 @@ def test_ablation_diagnostic_pause_paths(
             "diag-c": ("deep-no-price-no-user-id", _result(candidate_gauc)),
         },
         random_per_user_gauc=np.full(32, 0.50, dtype=np.float64),
+        random_per_user_hr=np.full(32, 0.05, dtype=np.float64),
+        random_per_user_ndcg=np.full(32, 0.02, dtype=np.float64),
         bootstrap_samples=64,
         minimum_control_gauc=0.55,
     )
     assert report.diagnostic_pause is True
     assert report.selected_run_id is None
     assert any(reason in value for value in report.pause_reasons)
+
+
+def test_ablation_rejects_gauc_only_candidate_with_topk_regression() -> None:
+    report, _ = compare_deep_ablations(
+        control_run_id="diag-control",
+        control=_result(0.60, ndcg=0.20, hr=0.30),
+        candidates={
+            "diag-a": ("deep-no-price", _result(0.72, ndcg=0.01, hr=0.02)),
+            "diag-b": ("deep-no-user-id", _result(0.61, ndcg=0.20, hr=0.30)),
+            "diag-c": ("deep-no-price-no-user-id", _result(0.62, ndcg=0.20, hr=0.30)),
+        },
+        random_per_user_gauc=np.full(32, 0.50, dtype=np.float64),
+        random_per_user_hr=np.full(32, 0.05, dtype=np.float64),
+        random_per_user_ndcg=np.full(32, 0.02, dtype=np.float64),
+        bootstrap_samples=64,
+        minimum_control_gauc=0.55,
+    )
+    rejected = next(candidate for candidate in report.candidates if candidate.run_id == "diag-a")
+    assert rejected.eligible is False
+    assert report.diagnostic_pause is False
+    assert report.selected_run_id != "diag-a"
 
 
 def test_selected_pair_and_hybrid_wide_signal_are_required(tmp_path: Path) -> None:
@@ -197,6 +226,8 @@ def test_selected_pair_and_hybrid_wide_signal_are_required(tmp_path: Path) -> No
             "diag-c": ("deep-no-price-no-user-id", _result(0.68)),
         },
         random_per_user_gauc=np.full(32, 0.50, dtype=np.float64),
+        random_per_user_hr=np.full(32, 0.05, dtype=np.float64),
+        random_per_user_ndcg=np.full(32, 0.02, dtype=np.float64),
         bootstrap_samples=64,
         minimum_control_gauc=0.55,
     )

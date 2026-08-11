@@ -56,6 +56,7 @@ def build_parser() -> argparse.ArgumentParser:
     train_cmd.add_argument("--seed", type=int, default=42)
     train_cmd.add_argument("--device", choices=("cpu", "cuda"), default="cuda")
     train_cmd.add_argument("--resume", action="store_true")
+    train_cmd.add_argument("--r3-selection-report", type=Path)
     train_cmd.add_argument("--store-id", type=int, default=1)
     train_cmd.add_argument(
         "--source", choices=[kind.value for kind in DataSourceKind], default="postgres"

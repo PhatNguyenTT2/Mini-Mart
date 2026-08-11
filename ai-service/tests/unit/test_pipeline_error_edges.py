@@ -484,7 +484,7 @@ def test_training_rule_selector_ignores_legacy_v3_coverage_semantics(tmp_path: P
         snapshot_sha=snapshot_sha,
         full=True,
         schema="3.0.0",
-        coverage_semantics_version="semantic-trap-purchase-v2",
+        coverage_semantics_version="organic-target-alignment-v3",
         coverage={
             "total_directed_rules": 100,
             "non_trap_directed_rules": 90,
@@ -530,7 +530,7 @@ def test_training_rule_selector_filters_every_resolved_coverage_threshold(
         snapshot_sha=snapshot_sha,
         full=True,
         schema="3.0.0",
-        coverage_semantics_version="semantic-trap-purchase-v2",
+        coverage_semantics_version="organic-target-alignment-v3",
         coverage=base_coverage,
     )
     for name, mutation in (
@@ -544,7 +544,7 @@ def test_training_rule_selector_filters_every_resolved_coverage_threshold(
             snapshot_sha=snapshot_sha,
             full=True,
             schema="3.0.0",
-            coverage_semantics_version="semantic-trap-purchase-v2",
+            coverage_semantics_version="organic-target-alignment-v3",
             coverage={**base_coverage, **mutation},
         )
 

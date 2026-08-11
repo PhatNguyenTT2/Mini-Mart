@@ -37,6 +37,7 @@ from ai_service.data.snapshot import Snapshot
 from ai_service.errors import (
     CatastrophicTrainingError,
     DataIntegrityError,
+    DiagnosticQualityError,
     ModelTrainingError,
     TrainingInterruptedError,
 )
@@ -47,6 +48,7 @@ from ai_service.evaluation.full_catalog import (
 )
 from ai_service.models.two_tower_wide_deep import HybridTwoTowerModel
 from ai_service.training.checkpoint import CheckpointManager
+from ai_service.training.diagnostic_stop import DiagnosticStopReport, publish_diagnostic_stop
 from ai_service.training.objectives import multi_positive_sampled_softmax
 from ai_service.training.stopping import EarlyStoppingController, StoppingDecision
 
@@ -110,6 +112,12 @@ class EpochMetrics:
     deep_logit_rms: float = 0.0
     wide_logit_rms: float = 0.0
     hybrid_logit_rms: float = 0.0
+    strict_target_rule_rate: float = 0.0
+    other_positive_rule_rate: float = 0.0
+    valid_negative_rule_rate: float = 0.0
+    explicit_negative_rule_rate: float = 0.0
+    negative_only_row_rate: float = 0.0
+    rule_loss: float = 0.0
     model_hard_cache_updated: bool = False
     terminal_action: TerminalAction = TerminalAction.CONTINUE
     stopping_reason: str = ""
@@ -156,6 +164,12 @@ class _TrainingEpochPass:
     in_batch_rule_present_rate: float
     explicit_rule_present_rate: float
     rows_with_any_rule_rate: float
+    strict_target_rule_rate: float
+    other_positive_rule_rate: float
+    valid_negative_rule_rate: float
+    explicit_negative_rule_rate: float
+    negative_only_row_rate: float
+    rule_loss: float
     learning_rate: float
     elapsed_seconds: float
     epoch_duration_seconds: float
@@ -470,6 +484,7 @@ class Trainer:
         purchase_weight = 0.0
         view_loss_sum = 0.0
         view_weight = 0.0
+        rule_loss_sum = 0.0
         pair_correct = 0.0
         all_negative_wins = 0
         candidate_pairs = 0
@@ -591,8 +606,24 @@ class Trainer:
                         temperature=self.model._temperature,
                         in_batch_wide_logits=in_batch_wide_logits,
                         explicit_wide_logits=explicit_wide_logits,
+                        rule_positive_mask=(
+                            in_batch_rule_present
+                            if self.training_variant is TrainingVariant.HYBRID
+                            else None
+                        ),
+                        rule_negative_mask=(
+                            explicit_rule_present
+                            if self.training_variant is TrainingVariant.HYBRID
+                            else None
+                        ),
+                        rule_weight=(
+                            self.settings.train.rule_auxiliary_weight
+                            if self.training_variant is TrainingVariant.HYBRID
+                            else 0.0
+                        ),
                     )
                     purchase_objective_loss = objective.loss
+                    rule_loss_sum += float(objective.rule_loss.detach().cpu()) * len(users)
                     auxiliary_view_loss = torch.zeros((), device=self.device)
                     if self.settings.train.view_auxiliary_weight > 0 and len(
                         train_loader.index.view_only_pairs
@@ -853,6 +884,12 @@ class Trainer:
             in_batch_rule_present_rate=rule_rates.in_batch_rule_present_rate,
             explicit_rule_present_rate=rule_rates.explicit_rule_present_rate,
             rows_with_any_rule_rate=rule_rates.rows_with_any_rule_rate,
+            strict_target_rule_rate=rule_rates.strict_target_rule_rate,
+            other_positive_rule_rate=rule_rates.other_positive_rule_rate,
+            valid_negative_rule_rate=rule_rates.valid_negative_rule_rate,
+            explicit_negative_rule_rate=rule_rates.explicit_negative_rule_rate,
+            negative_only_row_rate=rule_rates.negative_only_row_rate,
+            rule_loss=rule_loss_sum / max(1, sample_count),
             learning_rate=float(self.optimizer.param_groups[0]["lr"]),
             elapsed_seconds=time.perf_counter() - runtime.started_training,
             epoch_duration_seconds=epoch_duration,
@@ -999,6 +1036,12 @@ class Trainer:
             in_batch_rule_present_rate=training.in_batch_rule_present_rate,
             explicit_rule_present_rate=training.explicit_rule_present_rate,
             rows_with_any_rule_rate=training.rows_with_any_rule_rate,
+            strict_target_rule_rate=training.strict_target_rule_rate,
+            other_positive_rule_rate=training.other_positive_rule_rate,
+            valid_negative_rule_rate=training.valid_negative_rule_rate,
+            explicit_negative_rule_rate=training.explicit_negative_rule_rate,
+            negative_only_row_rate=training.negative_only_row_rate,
+            rule_loss=training.rule_loss,
             wide_to_deep_logit_rms_ratio=wide_to_deep_ratio,
             hybrid_deep_top_k_change_rate=validation.hybrid_deep_top_k_change_rate,
             elapsed_seconds=training.elapsed_seconds,
@@ -1020,6 +1063,50 @@ class Trainer:
             if isinstance(value, float) and not math.isfinite(value):
                 raise CatastrophicTrainingError(f"epoch metric contains NaN or Inf: {name}")
         return metrics
+
+    def _checkpoint_eligibility(
+        self,
+        *,
+        epoch: int,
+        validation: _ValidationEpochPass,
+    ) -> tuple[bool, str]:
+        if self.training_variant is TrainingVariant.DEEP_ONLY:
+            return True, "deep-only control"
+        if epoch < self.settings.train.diagnostic_warmup_epochs:
+            return True, "diagnostic warmup"
+        ratio = validation.wide_logit_rms / max(validation.deep_logit_rms, np.finfo(float).eps)
+        hybrid = validation.hybrid_report
+        deep = validation.deep_report
+        wide = validation.wide_report
+        reasons: list[str] = []
+        if float(hybrid.gauc) < self.settings.eval.minimum_gauc:
+            reasons.append("absolute GAUC floor")
+        if float(hybrid.hr_at_k) < self.settings.eval.minimum_hr_at_k:
+            reasons.append("absolute HR floor")
+        if float(hybrid.ndcg_at_k) < self.settings.eval.minimum_ndcg_at_k:
+            reasons.append("absolute NDCG floor")
+        if float(hybrid.gauc) < float(deep.gauc) + self.settings.eval.aggregate_gauc_min_delta:
+            reasons.append("Hybrid GAUC guardrail")
+        if (
+            float(hybrid.hr_at_k)
+            < max(float(deep.hr_at_k), float(wide.hr_at_k))
+            + self.settings.eval.aggregate_hr_min_delta
+        ):
+            reasons.append("Hybrid HR guardrail")
+        if (
+            float(hybrid.ndcg_at_k)
+            < max(float(deep.ndcg_at_k), float(wide.ndcg_at_k))
+            + self.settings.eval.aggregate_ndcg_min_delta
+        ):
+            reasons.append("Hybrid NDCG guardrail")
+        if ratio < self.settings.eval.minimum_wide_to_deep_rms_ratio:
+            reasons.append("Wide RMS ratio")
+        if (
+            validation.hybrid_deep_top_k_change_rate
+            < self.settings.eval.minimum_hybrid_deep_top_k_change_rate
+        ):
+            reasons.append("top-k change rate")
+        return not reasons, ", ".join(reasons)
 
     def _publish_epoch_checkpoints(
         self,
@@ -1172,6 +1259,9 @@ class Trainer:
         start_epoch = 1
         started_training = time.perf_counter()
         started_at = datetime.now(UTC)
+        best_observed_gauc = -float("inf")
+        best_observed_hr = -float("inf")
+        best_observed_ndcg = -float("inf")
 
         if resume_from is not None:
             resume_state = self._restore_resume_state(
@@ -1223,6 +1313,41 @@ class Trainer:
                 val_gauc = float(validation.hybrid_report.gauc)
                 val_ndcg = float(validation.hybrid_report.ndcg_at_k)
                 val_hr = float(validation.hybrid_report.hr_at_k)
+                best_observed_gauc = max(best_observed_gauc, val_gauc)
+                best_observed_hr = max(best_observed_hr, val_hr)
+                best_observed_ndcg = max(best_observed_ndcg, val_ndcg)
+                if epoch >= self.settings.train.diagnostic_warmup_epochs and (
+                    best_observed_gauc < self.settings.train.diagnostic_minimum_gauc
+                    or best_observed_hr < self.settings.train.diagnostic_minimum_hr_at_k
+                    or best_observed_ndcg < self.settings.train.diagnostic_minimum_ndcg_at_k
+                ):
+                    reason = (
+                        "diagnostic warmup floor failed: "
+                        f"best_gauc={best_observed_gauc:.6f}, "
+                        f"best_hr={best_observed_hr:.6f}, "
+                        f"best_ndcg={best_observed_ndcg:.6f}"
+                    )
+                    publish_diagnostic_stop(
+                        self.run_dir,
+                        DiagnosticStopReport(
+                            run_id=run_id,
+                            epoch=epoch,
+                            reason=reason,
+                            best_gauc=best_observed_gauc,
+                            best_hr_at_k=best_observed_hr,
+                            best_ndcg_at_k=best_observed_ndcg,
+                            thresholds={
+                                "gauc": self.settings.train.diagnostic_minimum_gauc,
+                                "hr_at_k": self.settings.train.diagnostic_minimum_hr_at_k,
+                                "ndcg_at_k": self.settings.train.diagnostic_minimum_ndcg_at_k,
+                            },
+                        ),
+                    )
+                    raise DiagnosticQualityError(reason)
+                checkpoint_eligible, eligibility_reason = self._checkpoint_eligibility(
+                    epoch=epoch,
+                    validation=validation,
+                )
                 decision = stopping.evaluate(
                     epoch,
                     val_gauc,
@@ -1230,6 +1355,8 @@ class Trainer:
                     val_hr,
                     start_time=started_at,
                     current_time=datetime.now(UTC),
+                    checkpoint_eligible=checkpoint_eligible,
+                    eligibility_reason=eligibility_reason,
                 )
                 if decision.terminal_action is TerminalAction.FAILED:
                     raise CatastrophicTrainingError(decision.reason)
@@ -1256,6 +1383,14 @@ class Trainer:
                 stop_reason = metrics.stopping_reason
                 if decision.terminal_action is TerminalAction.STOP_PLATEAU:
                     break
+        except DiagnosticQualityError as error:
+            reason = str(error) or type(error).__name__
+            self._write_terminal_summary(
+                action=TerminalAction.FAILED,
+                reason=reason,
+                epochs_completed=len(history),
+            )
+            raise
         except CatastrophicTrainingError as error:
             reason = str(error) or type(error).__name__
             self._write_terminal_summary(
@@ -1277,7 +1412,7 @@ class Trainer:
             terminal_action = TerminalAction.COMPLETED
             stop_reason = "already_complete"
         if not best_path.exists():
-            raise ModelTrainingError("training did not produce a best checkpoint")
+            raise DiagnosticQualityError("training did not produce an eligible best checkpoint")
         self._write_training_summary(
             stopping=stopping,
             history=history,

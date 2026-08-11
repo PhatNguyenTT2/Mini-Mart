@@ -46,6 +46,43 @@ class PurchaseTrainingIndex:
     view_only_pairs: np.ndarray
 
 
+@dataclass(frozen=True)
+class RulePairIndex:
+    """Deterministic organic context→target lookup used by R3 diagnostics."""
+
+    neighbors: dict[int, tuple[int, ...]]
+
+    def candidates(self, context_item: int, positive_item: int) -> np.ndarray:
+        values = [
+            item
+            for item in self.neighbors.get(int(context_item), ())
+            if int(item) != int(positive_item)
+        ]
+        return np.asarray(values, dtype=np.int64)
+
+
+def build_rule_pair_index(snapshot: Snapshot) -> RulePairIndex:
+    """Build organic same-basket directed pairs in stable order.
+
+    Semantic-trap rows are intentionally excluded.  The event timestamp is the
+    stable basket boundary for snapshots that do not carry order IDs.
+    """
+    frame = snapshot.train_df
+    if "event_origin" in frame.columns:
+        frame = frame[frame.event_origin.astype(str) == "organic"]
+    if frame.empty:
+        return RulePairIndex({})
+    frame = frame.sort_values(["internal_user_id", "event_ts", "event_id"], kind="stable")
+    neighbors: dict[int, set[int]] = {}
+    for _, basket in frame.groupby(["internal_user_id", "event_ts"], sort=False):
+        items = sorted({int(item) for item in basket.internal_product_id})
+        for context in items:
+            neighbors.setdefault(context, set()).update(item for item in items if item != context)
+    return RulePairIndex(
+        {context: tuple(sorted(targets)) for context, targets in sorted(neighbors.items())}
+    )
+
+
 def build_purchase_training_index(
     snapshot: Snapshot,
     *,

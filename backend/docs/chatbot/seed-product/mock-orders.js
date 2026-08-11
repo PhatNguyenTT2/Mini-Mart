@@ -24,8 +24,8 @@ function orderDate(spec, orderIndex) {
 }
 
 function generateOrderPlan({ spec, users, products, coldProducts, affinityModel }) {
-  if (!['4.0.0', '5.0.0'].includes(spec.generator_version)) {
-    throw new Error('order generator is not an active benchmark generator');
+  if (spec.generator_version !== '5.0.0' || spec.schema_version !== '3.0.0') {
+    throw new Error('order generator requires benchmark v5');
   }
   const organicCount = Number(spec.organic_order_count);
   const semanticCount = Number(spec.semantic_order_count);
@@ -40,7 +40,7 @@ function generateOrderPlan({ spec, users, products, coldProducts, affinityModel 
     throw new Error('semantic order budget cannot satisfy the per-trap co-purchase threshold');
   }
   if (!affinityModel || !affinityModel.bundleTemplates) {
-    throw new Error('v4 order generation requires the shared affinity model and templates');
+    throw new Error('v5 order generation requires the shared affinity model and templates');
   }
   const cold = new Set(coldProducts);
   const productMap = new Map(products.map((product) => [Number(product.product_id), product]));
@@ -138,7 +138,6 @@ function generateOrderPlan({ spec, users, products, coldProducts, affinityModel 
       items,
       templateId: `semantic-${trap.trap_id}`,
       trapId: trap.trap_id,
-      trapTargetId: target,
       kind: 'semantic_trap'
     });
     orderIndex += 1;
@@ -165,17 +164,17 @@ async function reserveIds(client, count) {
 async function insertOrders(client, orders) {
   await client.query(
     `INSERT INTO sale_order
-      (id,store_id,customer_id,created_by,order_date,delivery_type,total_amount,payment_status,status,payment_method,benchmark_run_id,benchmark_kind,benchmark_template_id,benchmark_trap_id,benchmark_trap_target_id)
+      (id,store_id,customer_id,created_by,order_date,delivery_type,total_amount,payment_status,status,payment_method,benchmark_run_id,benchmark_kind,benchmark_template_id,benchmark_trap_id)
      OVERRIDING SYSTEM VALUE
-     SELECT id,store_id,customer_id,NULL,order_date,'pickup',total_amount,'paid','delivered','cash',benchmark_run_id,benchmark_kind,benchmark_template_id,benchmark_trap_id,benchmark_trap_target_id
-     FROM unnest($1::bigint[],$2::bigint[],$3::bigint[],$4::timestamptz[],$5::numeric[],$6::text[],$7::text[],$8::text[],$9::int[],$10::bigint[])
-       AS input(id,store_id,customer_id,order_date,total_amount,benchmark_run_id,benchmark_kind,benchmark_template_id,benchmark_trap_id,benchmark_trap_target_id)`,
+     SELECT id,store_id,customer_id,NULL,order_date,'pickup',total_amount,'paid','delivered','cash',benchmark_run_id,benchmark_kind,benchmark_template_id,benchmark_trap_id
+     FROM unnest($1::bigint[],$2::bigint[],$3::bigint[],$4::timestamptz[],$5::numeric[],$6::text[],$7::text[],$8::text[],$9::int[])
+       AS input(id,store_id,customer_id,order_date,total_amount,benchmark_run_id,benchmark_kind,benchmark_template_id,benchmark_trap_id)`,
     [
       orders.map((order) => order.id), orders.map((order) => order.storeId),
       orders.map((order) => order.userId), orders.map((order) => order.orderDate),
       orders.map((order) => order.totalAmount), orders.map((order) => order.runId),
       orders.map((order) => order.kind), orders.map((order) => order.templateId),
-      orders.map((order) => order.trapId || null), orders.map((order) => order.trapTargetId || null)
+      orders.map((order) => order.trapId || null)
     ]
   );
   const details = orders.flatMap((order) => order.items.map((item) => ({ orderId: order.id, ...item })));
@@ -211,7 +210,7 @@ async function seedOrders({ client, spec, runId, products, coldProducts, users, 
     await client.query('ALTER TABLE sale_order ADD COLUMN IF NOT EXISTS benchmark_kind TEXT');
     await client.query('ALTER TABLE sale_order ADD COLUMN IF NOT EXISTS benchmark_template_id TEXT');
     await client.query('ALTER TABLE sale_order ADD COLUMN IF NOT EXISTS benchmark_trap_id INTEGER');
-    await client.query('ALTER TABLE sale_order ADD COLUMN IF NOT EXISTS benchmark_trap_target_id BIGINT');
+    await client.query('ALTER TABLE sale_order DROP COLUMN IF EXISTS benchmark_trap_target_id');
     await client.query(`CREATE INDEX IF NOT EXISTS idx_sale_order_benchmark_run
       ON sale_order(store_id,benchmark_run_id,order_date)
       WHERE benchmark_run_id IS NOT NULL`);

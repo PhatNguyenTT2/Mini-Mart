@@ -21,23 +21,22 @@ The Windows training lock resolves Torch 2.11 from the official CUDA 12.8 index.
 serving image resolve CPU-only dependencies; the serving dependency group contains no Torch,
 Sentence Transformers, CUDA, or compiler toolchain.
 
-## Rebuild and training
+## Rebuild and training (v5 only)
 
-Run the database preflight before the explicitly confirmed store-scoped rebuild:
+The v4 lineage is obsolete. If the v5 destination is absent, reset and seed
+the store-scoped benchmark exactly once:
 
 ```powershell
-node ..\backend\docs\chatbot\seed-product\seed-ml-benchmark.js `
-  --spec ..\backend\docs\chatbot\seed-product\benchmark-spec-v4.json `
-  --store-id 1 --seed 42 --preflight-only
+node ..\backend\docs\chatbot\seed-product\reset-benchmark-v5.js `
+  --spec ..\backend\docs\chatbot\seed-product\benchmark-spec-v5.json --preflight
 
-node ..\backend\docs\chatbot\seed-product\seed-ml-benchmark.js `
-  --spec ..\backend\docs\chatbot\seed-product\benchmark-spec-v4.json `
-  --store-id 1 --seed 42 --confirm-rebuild
+node ..\backend\docs\chatbot\seed-product\reset-benchmark-v5.js `
+  --spec ..\backend\docs\chatbot\seed-product\benchmark-spec-v5.json `
+  --execute --confirm RESET_STORE_1_BENCHMARK_V5
 
 node ..\backend\docs\chatbot\seed-product\inspect-ml-storage.js `
-  --semantic-readiness `
-  --spec ..\backend\docs\chatbot\seed-product\benchmark-spec-v4.json `
-  --run-id benchmark-v4-s42-7f40639b0d-ca692e71b3
+  --semantic-readiness --spec ..\backend\docs\chatbot\seed-product\benchmark-spec-v5.json `
+  --run-id benchmark-v5-s42-7f40639b0d-1ace202aaa
 ```
 
 Install the immutable environment, configure the production shell, and run the
@@ -53,43 +52,40 @@ $env:AI_STORE_ID = "1"
 # SUPABASE_DB_CA_PATH outside the transcript. The CA path must be absolute.
 ```
 
-Run the diagnostics against the pinned snapshot; omitting `--snapshot-id` is not
+Run diagnostics against the pinned v5 snapshot; omitting `--snapshot-id` is not
 allowed because the application default is `benchmark-local`:
 
 ```powershell
 .\.venv\Scripts\python.exe -m ai_service.cli audit-data `
-  --config configs\diagnostics\r2-v4.toml `
-  --snapshot-id benchmark-v4-20260811-49b2cdb902b1 --device cpu
+  --snapshot-id benchmark-v5-s42-7f40639b0d-1ace202aaa --device cpu
 .\.venv\Scripts\python.exe -m ai_service.cli probe-data `
-  --config configs\diagnostics\r2-v4.toml `
-  --snapshot-id benchmark-v4-20260811-49b2cdb902b1 --device cpu
+  --config configs\diagnostics\r3\deep-control.toml `
+  --snapshot-id benchmark-v5-s42-7f40639b0d-1ace202aaa --device cpu
 ```
 
 `run-all` is a single-seed synthetic/mock smoke command and deliberately cannot
 export an unapproved run. Production training uses the exact immutable lineage
 below.
 
-### Bootstrap immutable lineage (only when the destination is absent)
+### Bootstrap immutable lineage (only when the v5 destination is absent)
 
 Do not run these commands against the published campaign directories. Each
 publisher rejects an existing destination; bootstrap is a one-time operation:
 
 ```powershell
 .\.venv\Scripts\python.exe -m ai_service.cli snapshot --source postgres --store-id 1 `
-  --snapshot-id <new-v4-snapshot-id> --benchmark-run-id <published-v4-benchmark-run-id>
+  --snapshot-id <new-v5-snapshot-id> --benchmark-run-id <published-v5-benchmark-run-id>
 .\.venv\Scripts\python.exe -m ai_service.cli features --embedding-source real `
-  --snapshot-id <new-v4-snapshot-id>
+  --snapshot-id <new-v5-snapshot-id>
 .\.venv\Scripts\python.exe -m ai_service.cli rules `
-  --config configs\diagnostics\r2-v4.toml --snapshot-id <new-v4-snapshot-id>
+  --config configs\diagnostics\r3\deep-control.toml --snapshot-id <new-v5-snapshot-id>
 ```
 
-### Historical v3 campaign (audit-only)
+### Historical v3/v4 campaigns (audit-only)
 
-The v3 commands below are retained only to identify archived evidence. Do not
-execute them. R3 has now executed on the pinned v4 lineage but the selected
-Hybrid VAL matrix failed dominance and semantic-trap gates. Production remains
-blocked; no v5/v6 config or production command is authorized. The remediation
-sequence is maintained in `..\master\detail-plan.md`.
+The v3/v4 commands and artifacts are retained only as historical references.
+Do not execute them. Production remains blocked until the v5 R3/R4 diagnostic
+gates pass; the remediation sequence is maintained in the master plan.
 
 The archived v3 lineage is:
 
@@ -99,11 +95,8 @@ embedding: benchmark-v3-20260810-9088b0f3-real-f0453078fd58
 rules:     benchmark-v3-20260810-9088b0f3-rules-v2-ea0c72a89c41
 ```
 
-Do not execute any v3 train/evaluate/release command. The active v4 lineage is
-`benchmark-v4-20260811-49b2cdb902b1`; it must first pass the R3 diagnostic
-sequence in `..\master\detail-plan.md`. Production command examples are added
-only after the selected feature flags are promoted into a reviewed v5/v6 config
-pair and the resulting source revision is frozen.
+Do not execute any v3/v4 train/evaluate/release command. The active lineage is
+the newly seeded v5 snapshot and it must first pass the R3 diagnostic sequence.
 
 The aggregate TEST gate requires evaluation artifacts for all three paired seeds; a single
 validation winner is not a substitute for the other two TEST pairs. `run-all` remains synthetic/
@@ -117,7 +110,7 @@ artifact lineage, and frozen Git commit recorded in its run manifest:
 ```powershell
 .\.venv\Scripts\python.exe -m ai_service.cli train `
   --run-id <interrupted-run-id> --variant <same-variant> `
-  --config <same-config> --snapshot-id <same-v4-snapshot-id> `
+  --config <same-config> --snapshot-id <same-v5-snapshot-id> `
   --seed <same-seed> --device cuda --resume
 ```
 

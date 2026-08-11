@@ -641,4 +641,47 @@ Sau đó require:
 | Multi-seed | Cả ba VAL, aggregate VAL/TEST pass |
 | Release | Selected Hybrid sealed; bundle/parity/benchmark pass |
 
+## Current R0-R4 implementation status (2026-08-12)
+
+The historical v4 metrics above remain diagnostic evidence only. The v5
+contract has been tightened and its database/artifact lineage must be reset and
+reseeded before any new R3 measurement. Current status is
+`R0_R2_CONTRACT_COMPLETE / R3_SOURCE_PENDING / PRODUCTION_TRAINING_BLOCKED`.
+
+Implemented safeguards include the deterministic 2,500-user transition cohort,
+v5-only capability parsing, store-scoped reset and fail-closed output purge,
+strict target-rule readiness, organic RulePairIndex/rule-hard sampling,
+Wide-only rule auxiliary loss, staged diagnostic stop, absolute HR/NDCG/GAUC
+floors, serving-equivalent semantic replay, and per-user R3 alpha evidence with
+`aligned_mask` and `[7,U]` arrays.
+
+Seed-product `15/15`, targeted Python contracts, Ruff and mypy pass. Full branch
+coverage and corruption/readiness gates must be rerun after the complete source
+change set. No R3 GPU job, production run, release, seal, export, or Hybrid
+victory claim is authorized. A new v5 diagnostic missing any floor must publish
+an immutable diagnostic-stop report and halt before seeds 2027/31415.
+
+## R0-R2 v5 execution receipt (2026-08-12)
+
+Status: `R0_R2_CONTRACT_COMPLETE / R3_SOURCE_PENDING / PRODUCTION_TRAINING_BLOCKED`.
+
+- Reset and purge completed with exact confirmations; business orders were
+  preserved. The failed intermediate seed was not reused.
+- Ready run: `benchmark-v5-s42-7f40639b0d-1ace202aaa`.
+- Snapshot content/spec SHA: `8966df159883fc95940bb1c226544f194eafa8e45988e945d3ef54e73a0264a4` /
+  `1ace202aaa8f54204ead66ceabe809b3c51795e097dd71c505f07b8367c80bd2`.
+- Real embedding SHA: `f0453078fd588403186f80321b9ad0500d7c5ce73266f8d50de8fc3a6b09de61`.
+- Full-stat rules: `benchmark-v5-s42-7f40639b0d-1ace202aaa-rules-v3-554b1decf887`,
+  content SHA `79b4b2beed757767261b8531f98a96c618b902c057ab6372451623bea74cf19d`.
+- Data receipt: 823,371 events, 5,000 users, 5,200 items, 15,000 orders;
+  TRAIN rule-target `0.4365897744`, VAL rule-target `0.4021464646`, VAL context
+  coverage `0.9383417508`, 14,086 non-trap rules, 4,143 organic rule items.
+- Audit, streaming probes, inspect and Python `require_training_capability()`
+  pass on this lineage. Source gate is green: 399 Python tests, 2 skips,
+  branch coverage `85.02%`, critical checker, Ruff, mypy and seed-product
+  `15/15` pass.
+- No R3 GPU diagnostic or production training has started. Hybrid victory is
+  not established; R3/R4 absolute, paired, serving-equivalent semantic and
+  cold gates remain mandatory.
+
 Không tuyên bố Hybrid thành công nếu thiếu bất kỳ dòng nào trong acceptance matrix.

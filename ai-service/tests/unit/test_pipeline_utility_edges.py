@@ -121,6 +121,94 @@ def test_pipeline_config_rejects_nonpositive_store(monkeypatch: pytest.MonkeyPat
         pipeline._configure(args)
 
 
+def test_pipeline_config_requires_verified_r3_selection_report(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    settings = Settings()
+    settings.train.r3_feature_selection_mode = "selection_artifact"
+    monkeypatch.setattr(pipeline, "load_settings", lambda _config: settings)
+    base = Namespace(
+        command="train",
+        store_id=1,
+        snapshot_id=None,
+        benchmark_run_id=None,
+        seed=42,
+        source="postgres",
+        embedding_source="real",
+        config=None,
+        r3_selection_report=None,
+    )
+    with pytest.raises(ConfigurationError, match="requires --r3-selection-report"):
+        pipeline._configure(base)
+
+    wrong_name = tmp_path / "selection.json"
+    wrong_name.write_text("{}", encoding="utf-8")
+    base.r3_selection_report = str(wrong_name)
+    with pytest.raises(ConfigurationError, match=r"verified report\.json"):
+        pipeline._configure(base)
+
+    missing = tmp_path / "report.json"
+    base.r3_selection_report = str(missing)
+    with pytest.raises(ConfigurationError, match="does not exist"):
+        pipeline._configure(base)
+
+
+def test_pipeline_config_materializes_verified_r3_features(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    settings = Settings()
+    settings.train.r3_feature_selection_mode = "selection_artifact"
+    monkeypatch.setattr(pipeline, "load_settings", lambda _config: settings)
+    report_path = tmp_path / "report.json"
+    report_path.write_text("{}", encoding="utf-8")
+    selection = Namespace(use_user_id_embedding=True, use_price_features=False)
+    report = Namespace(
+        diagnostic_pause=False,
+        selected_run_id="deep-candidate",
+        selected_feature_selection=selection,
+        artifact_sha256="a" * 64,
+    )
+    monkeypatch.setattr(
+        pipeline,
+        "load_deep_ablation_artifact",
+        lambda _directory: Namespace(report=report),
+    )
+    args = Namespace(
+        command="train",
+        store_id=1,
+        snapshot_id=None,
+        benchmark_run_id=None,
+        seed=42,
+        source="postgres",
+        embedding_source="real",
+        config=None,
+        r3_selection_report=str(report_path),
+    )
+    resolved = pipeline._configure(args)
+    assert resolved.model.use_user_id_embedding is True
+    assert resolved.model.use_price_features is False
+    assert resolved.train.r3_selection_artifact_sha256 == "a" * 64
+
+
+def test_pipeline_config_rejects_production_mock_adapters(monkeypatch: pytest.MonkeyPatch) -> None:
+    settings = Settings()
+    settings.serving.environment = "production"
+    monkeypatch.setattr(pipeline, "load_settings", lambda _config: settings)
+    args = Namespace(
+        command="train",
+        store_id=1,
+        snapshot_id=None,
+        benchmark_run_id=None,
+        seed=42,
+        source="synthetic",
+        embedding_source="mock",
+        config=None,
+        r3_selection_report=None,
+    )
+    with pytest.raises(ConfigurationError, match="postgres and real"):
+        pipeline._configure(args)
+
+
 def test_artifact_child_path_rejects_escape(tmp_path: Path) -> None:
     inside = require_child_path(tmp_path, tmp_path / "child.json")
     assert inside == (tmp_path / "child.json").resolve()

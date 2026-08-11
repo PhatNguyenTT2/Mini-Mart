@@ -54,6 +54,8 @@ class DataConfig(BaseSettings):
     minimum_non_trap_directed_rules: int = Field(default=0, ge=0)
     minimum_distinct_organic_rule_items: int = Field(default=0, ge=0)
     minimum_val_context_rule_coverage: float = Field(default=0.0, ge=0.0, le=1.0)
+    minimum_training_target_rule_rate: float = Field(default=0.40, ge=0.0, le=1.0)
+    minimum_val_rule_target_rate: float = Field(default=0.40, ge=0.0, le=1.0)
     minimum_training_rows_with_any_rule: float = Field(default=0.0, ge=0.0, le=1.0)
     maximum_trap_anchored_rule_fraction: float = Field(default=1.0, ge=0.0, le=1.0)
 
@@ -116,6 +118,13 @@ class TrainConfig(BaseModel):
         default=None,
         pattern=r"^[0-9a-f]{64}$",
     )
+    rule_auxiliary_weight: float = Field(default=0.0, ge=0.0)
+    rule_hard_negative_count: int = Field(default=0, ge=0)
+    diagnostic_warmup_epochs: int = Field(default=3, ge=1)
+    diagnostic_minimum_gauc: float = Field(default=0.65, ge=0.5, le=1.0)
+    diagnostic_minimum_hr_at_k: float = Field(default=0.10, ge=0.0, le=1.0)
+    diagnostic_minimum_ndcg_at_k: float = Field(default=0.04, ge=0.0, le=1.0)
+    r3_feature_selection_mode: Literal["fixed", "selection_artifact"] = "fixed"
 
     @model_validator(mode="after")
     def validate_training_schedule(self) -> TrainConfig:
@@ -139,6 +148,8 @@ class EvalConfig(BaseModel):
     minimum_wide_to_deep_rms_ratio: float = Field(default=0.01, gt=0.0)
     minimum_hybrid_deep_top_k_change_rate: float = Field(default=0.05, gt=0.0, le=1.0)
     minimum_gauc: float = Field(default=0.75, ge=0.5, le=1.0)
+    minimum_hr_at_k: float = Field(default=0.15, ge=0.0, le=1.0)
+    minimum_ndcg_at_k: float = Field(default=0.08, ge=0.0, le=1.0)
     random_gauc_tolerance: float = Field(default=0.02, ge=0.0)
     cold_score_atol: float = Field(default=1e-6, ge=0.0)
     wide_zero_atol: float = Field(default=1e-7, ge=0.0)
@@ -222,9 +233,17 @@ class Settings:
             raise ConfigurationError(
                 "R3 selection receipt is only valid with rule feature schema 3.0.0"
             )
-        if stage == "diagnostic" and selection_sha is not None:
+        if (
+            stage == "diagnostic"
+            and selection_sha is not None
+            and self.train.r3_feature_selection_mode != "selection_artifact"
+        ):
             raise ConfigurationError(
                 "diagnostic campaign cannot predeclare an R3 selection receipt"
+            )
+        if self.train.r3_feature_selection_mode == "selection_artifact" and selection_sha is None:
+            raise ConfigurationError(
+                "selection_artifact mode requires a verified R3 selection receipt"
             )
         if stage == "production" and not is_r3_rules:
             raise ConfigurationError("production campaign requires rule feature schema 3.0.0")

@@ -3,7 +3,15 @@ from __future__ import annotations
 import math
 from datetime import UTC, datetime, timedelta
 
+import pytest
+
 from ai_service.contracts import CheckpointAction, TerminalAction
+from ai_service.errors import ArtifactIntegrityError
+from ai_service.training.diagnostic_stop import (
+    DiagnosticStopReport,
+    load_diagnostic_stop,
+    publish_diagnostic_stop,
+)
 from ai_service.training.stopping import EarlyStoppingController
 
 
@@ -82,6 +90,54 @@ def test_catastrophic_gauc_below_050() -> None:
         or "catastrophic" in decision.reason.lower()
         or "0.5" in decision.reason
     )
+
+
+def test_ineligible_improvement_eventually_stops_and_diagnostic_stop_is_immutable(
+    tmp_path,
+) -> None:
+    controller = EarlyStoppingController(patience=2, max_wall_minutes=90)
+    now = datetime.now(UTC)
+    controller.evaluate(
+        epoch=1,
+        gauc=0.70,
+        ndcg=0.30,
+        hr=0.20,
+        start_time=now,
+        current_time=now,
+        checkpoint_eligible=False,
+        eligibility_reason="HR floor",
+    )
+    decision = controller.evaluate(
+        epoch=2,
+        gauc=0.71,
+        ndcg=0.30,
+        hr=0.20,
+        start_time=now,
+        current_time=now,
+        checkpoint_eligible=False,
+        eligibility_reason="HR floor",
+    )
+    assert decision.terminal_action is TerminalAction.STOP_PLATEAU
+    report = DiagnosticStopReport(
+        run_id="diag",
+        epoch=3,
+        reason="quality floor",
+        best_gauc=0.71,
+        best_hr_at_k=0.05,
+        best_ndcg_at_k=0.01,
+        thresholds={"gauc": 0.65, "hr_at_k": 0.10, "ndcg_at_k": 0.04},
+    )
+    path = publish_diagnostic_stop(tmp_path, report)
+    assert load_diagnostic_stop(path, expected_run_id="diag").run_id == "diag"
+    assert publish_diagnostic_stop(tmp_path, report) == path
+    with pytest.raises(ArtifactIntegrityError):
+        publish_diagnostic_stop(tmp_path, report.model_copy(update={"reason": "changed"}))
+    with pytest.raises(ArtifactIntegrityError, match="run ID"):
+        load_diagnostic_stop(path, expected_run_id="other")
+    broken = tmp_path / "broken.json"
+    broken.write_text("not-json", encoding="utf-8")
+    with pytest.raises(ArtifactIntegrityError, match="cannot be read"):
+        load_diagnostic_stop(broken)
 
 
 def test_catastrophic_nan_inf() -> None:

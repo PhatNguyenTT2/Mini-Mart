@@ -157,6 +157,8 @@ def test_postgres_source_reads_one_published_lineage_with_read_only_adapters(
             return [SimpleNamespace(name=name) for name in names]
 
         def fetchone(self) -> tuple[str] | None:
+            if "benchmark_spec_sha256" in self.query:
+                return ("a" * 64, {})
             if "ml_benchmark_run_v1" in self.query:
                 return ("benchmark-ready",)
             return None
@@ -213,3 +215,4 @@ def test_postgres_source_reads_one_published_lineage_with_read_only_adapters(
     assert raw.products_df.product_id.tolist() == [1001]
     assert raw.orders_df.order_id.tolist() == [1]
     assert raw.cold_product_ids == (1010,)
+    assert raw.benchmark_metadata.spec_sha256 == "a" * 64

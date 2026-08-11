@@ -2,11 +2,13 @@
 
 ## Current status
 
-`R2_DATASET_READY / R3_DIAGNOSTIC_REQUIRED / PRODUCTION_TRAINING_BLOCKED`.
+`R0_R2_CONTRACT_COMPLETE / R3_SOURCE_PENDING / PRODUCTION_TRAINING_BLOCKED`.
 
-R0 root-cause replay, R1 clean-slate reset, and R2 v5 database seeding are now
-complete. The v5 run is ready and independently inspected; no production GPU
-training has been started. R3 remains required on the new v5 snapshot because
+R0 root-cause replay and the first R2 receipt are historical evidence. The
+deterministic v5 contract has since changed (exact 2,500-user transition cohort
+and strict target alignment), so the prior database run is not a valid R3
+input. Reset/purge/reseed must complete before R3; no production GPU training
+has been started. R3 remains required on the new v5 snapshot because
 the prior v4 Hybrid VAL matrix failed dominance and semantic-trap gates; no
 production training, release, seal, or export is permitted until R3 passes.
 
@@ -18,7 +20,8 @@ directories atomically, locks resume to the recorded commit, and terminalizes
 transition/setup failures. The production seed runs do not yet exist and Hybrid
 victory is not established.
 
-Final two-axis review is green: Standards and Spec both pass after closing the
+The current source changes are under validation; Standards and Spec must pass
+again after closing the
 archived-runbook conflict, R3 NPZ integrity binding, full rule-selector
 thresholds, epoch reset, and immutable affinity contracts.
 
@@ -42,8 +45,8 @@ thresholds, epoch reset, and immutable affinity contracts.
   fixed-runner skips; branch coverage `85.27%`; all six critical coverage
   thresholds pass. No production run ID exists.
 
-This v5 dataset is ready for Python snapshot/R3 validation, not yet for GPU
-training. The managed database event index remains intentionally dropped after
+The historical v5 dataset is not reusable after the deterministic contract
+change. The managed database event index remains intentionally dropped after
 bulk load because rebuilding it exceeded temporary storage; no validation
 threshold was weakened.
 
@@ -171,3 +174,50 @@ $coverageJson = Join-Path $env:TEMP "ai-service-phase5-final.json"
 
 The source-level execution plan is maintained in
 [`master/detail-plan.md`](master/detail-plan.md).
+
+## Current R0-R4 implementation receipt (working tree)
+
+The implementation now contains the v5-only spec/capability parser, exact
+transition cohort contract, store-scoped reset, fail-closed artifact purge,
+strict target-rule readiness counters, organic RulePairIndex/rule-hard sampler,
+Wide-only rule auxiliary loss, staged diagnostic stop, serving-equivalent trap
+replay seam, absolute HR/NDCG gates, and per-user R3 alpha evidence with
+`aligned_mask`. These changes are source-only until the full quality gate is
+green.
+
+Required before any R3 GPU job:
+
+1. `npm.cmd run test:seed-product`.
+2. Ruff, mypy, Python tests, branch/critical coverage and `git diff --check`.
+3. Reset preflight/execute, artifact purge dry-run/execute, v5 reseed, and
+   `inspect-ml-storage` with the new spec/cohort hashes.
+4. R0 replay must reproduce the recorded v4 failure, then the four Deep R3
+   diagnostics and Hybrid H0-H3b run sequentially on one frozen v5 lineage.
+
+No production seed IDs, release, seal, export, or Hybrid victory claim is valid
+until H3b satisfies GAUC `.75`, HR@10 `.15`, NDCG@10 `.08`, strongest-baseline
+paired gates, serving-equivalent semantic traps `10/10`, cold parity, and the
+expanded lineage checks.
+
+## Current v5 R0-R2 receipt (2026-08-12)
+
+- Database reset and output purge completed with the locked confirmations;
+  business orders were preserved and no `_archive`, v4 snapshot, run, or
+  diagnostic output remains under the AI artifact root.
+- Ready benchmark run: `benchmark-v5-s42-7f40639b0d-1ace202aaa`.
+- Snapshot SHA: `8966df159883fc95940bb1c226544f194eafa8e45988e945d3ef54e73a0264a4`.
+- Benchmark spec SHA: `1ace202aaa8f54204ead66ceabe809b3c51795e097dd71c505f07b8367c80bd2`.
+- Real embedding SHA: `f0453078fd588403186f80321b9ad0500d7c5ce73266f8d50de8fc3a6b09de61`.
+- Full-stat rule artifact: `benchmark-v5-s42-7f40639b0d-1ace202aaa-rules-v3-554b1decf887`;
+  content SHA `79b4b2beed757767261b8531f98a96c618b902c057ab6372451623bea74cf19d`.
+- Seed receipt: 823,371 events, 5,000 users, 5,200 products, 15,000 orders;
+  TRAIN target-rule rate `0.4365897744`, VAL target-rule rate `0.4021464646`,
+  VAL context coverage `0.9383417508`, 14,086 non-trap rules and 4,143 organic
+  rule items. `audit-data`, `probe-data`, inspect and training-capability checks
+  pass with the new lineage.
+- Source quality gate: 399 Python tests pass, 2 fixed-runner skips, branch
+  coverage `85.02%`, critical coverage checker pass, Ruff/mypy pass, and
+  seed-product contracts `15/15` pass.
+- Readiness remains `R3_SOURCE_PENDING / PRODUCTION_TRAINING_BLOCKED`:
+  no R3 GPU diagnostic, production seed, release, seal, export, or Hybrid
+  victory claim has been made.

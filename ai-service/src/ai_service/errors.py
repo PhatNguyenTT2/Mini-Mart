@@ -33,6 +33,10 @@ class CatastrophicTrainingError(ModelTrainingError):
     """Training encountered non-finite logits/loss or GAUC collapsed below random."""
 
 
+class DiagnosticQualityError(ModelTrainingError):
+    """A diagnostic warmup or checkpoint-quality contract failed."""
+
+
 class TrainingInterruptedError(ModelTrainingError):
     """A resumable interruption, such as a configured wall-time limit."""
 

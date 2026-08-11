@@ -22,46 +22,6 @@ const { seedOrders } = require('./mock-orders');
 const { populateCopurchase } = require('./populate-copurchase');
 const { canonicalSpecSha256, loadBenchmarkSpec } = require('./benchmark-spec');
 
-async function reclaimLegacyMlStorage(chat, storeId) {
-  const disposableIndexes = [
-    'idx_ml_event_session',
-    'idx_ml_event_origin',
-    'idx_ml_event_store_ts',
-    'idx_ml_event_user_ts'
-  ];
-  for (const indexName of disposableIndexes) {
-    await chat.query('BEGIN');
-    try {
-      await chat.query('SET TRANSACTION READ WRITE');
-      await chat.query(`DROP INDEX IF EXISTS ${indexName}`);
-      await chat.query('COMMIT');
-    } catch (error) {
-      await chat.query('ROLLBACK');
-      throw error;
-    }
-  }
-  await chat.query('BEGIN');
-  try {
-    await chat.query('SET TRANSACTION READ WRITE');
-    const events = await chat.query(
-      `SELECT count(*)::int AS total
-       FROM ml_interaction_event_v1
-       WHERE store_id=$1 AND benchmark_run_id IS NULL`,
-      [storeId]
-    );
-    await chat.query(
-      `DELETE FROM ml_interaction_event_v1
-       WHERE store_id=$1 AND benchmark_run_id IS NULL`,
-      [storeId]
-    );
-    await chat.query('COMMIT');
-    return { removedLegacyEvents: events.rows[0].total };
-  } catch (error) {
-    await chat.query('ROLLBACK');
-    throw error;
-  }
-}
-
 function argumentValue(name) {
   const index = process.argv.indexOf(name);
   return index >= 0 ? process.argv[index + 1] : undefined;
@@ -183,26 +143,22 @@ async function validateRun({ clients, runId, specHash, coldProducts, ruleSummary
          ORDER BY candidate.event_ts DESC,candidate.event_id DESC
          LIMIT 1
        ) prior ON true
+     ), eligible AS (
+       SELECT context.*
+       FROM context
+       WHERE context_product IS NOT NULL
+         AND context_product <> ALL($1::bigint[])
+         AND target_product <> ALL($1::bigint[])
      )
-     SELECT count(*) FILTER (
-              WHERE context_product IS NOT NULL
-                AND context_product <> ALL($1::bigint[])
-                AND target_product <> ALL($1::bigint[])
-            )::int AS eligible,
-            count(*) FILTER (
-              WHERE context_product IS NOT NULL
-                AND context_product <> ALL($1::bigint[])
-                AND target_product <> ALL($1::bigint[])
-                AND EXISTS (
-                  SELECT 1 FROM co_purchase_stats rule
-                  WHERE rule.store_id=$2
-                    AND ((rule.product_id_a=context.context_product
-                          AND rule.product_id_b=context.target_product)
-                      OR (rule.product_id_b=context.context_product
-                          AND rule.product_id_a=context.target_product))
-                )
-            )::int AS aligned
-     FROM context`,
+     SELECT count(*)::int AS eligible,
+            count(*) FILTER (WHERE rule.id IS NOT NULL)::int AS aligned
+     FROM eligible
+     LEFT JOIN co_purchase_stats rule
+       ON rule.store_id=$2
+      AND ((rule.product_id_a=eligible.context_product
+            AND rule.product_id_b=eligible.target_product)
+        OR (rule.product_id_b=eligible.context_product
+            AND rule.product_id_a=eligible.target_product))`,
     [fixtureIds, spec.store_id]
   );
   await clients.chat.query('DROP TABLE benchmark_train_purchase_rows');
@@ -237,16 +193,22 @@ async function validateRun({ clients, runId, specHash, coldProducts, ruleSummary
        WHERE store_id=$1 AND benchmark_run_id=$2 AND event_origin='organic'
          AND event_type='purchase' AND event_ts <= $3
        ORDER BY user_id,event_ts DESC,event_id DESC
+     ), eligible_context AS (
+       SELECT latest.user_id,latest.product_id
+       FROM latest JOIN eligible USING (user_id)
+       WHERE latest.product_id <> ALL($4::bigint[])
+     ), covered AS (
+       SELECT DISTINCT context.user_id
+       FROM eligible_context context
+       JOIN co_purchase_stats c
+         ON c.store_id=$1
+        AND ((c.product_id_a=context.product_id AND c.product_id_b <> ALL($4::bigint[]))
+          OR (c.product_id_b=context.product_id AND c.product_id_a <> ALL($4::bigint[])))
      )
      SELECT count(*)::int AS eligible,
-            count(*) FILTER (WHERE EXISTS (
-              SELECT 1 FROM co_purchase_stats c
-              WHERE c.store_id=$1
-                AND latest.product_id <> ALL($4::bigint[])
-                AND ((c.product_id_a=latest.product_id AND c.product_id_b <> ALL($4::bigint[]))
-                  OR (c.product_id_b=latest.product_id AND c.product_id_a <> ALL($4::bigint[])))
-            ))::int AS covered
-     FROM latest JOIN eligible USING (user_id)`,
+            count(covered.user_id)::int AS covered
+     FROM eligible_context
+     LEFT JOIN covered USING (user_id)`,
     [spec.store_id, runId, spec.cutoffs.train_end, fixtureIds, spec.cutoffs.val_end]
   );
   const eligibleContextUsers = Number(context.rows[0].eligible);
@@ -274,19 +236,21 @@ async function validateRun({ clients, runId, specHash, coldProducts, ruleSummary
        WHERE store_id=$1 AND benchmark_run_id=$2 AND event_origin='organic'
          AND event_type='purchase' AND event_ts <= $3
        ORDER BY user_id,event_ts DESC,event_id DESC
+     ), eligible_targets AS (
+       SELECT DISTINCT targets.user_id,latest.product_id AS context_product,targets.product_id AS target_product
+       FROM targets JOIN latest USING (user_id)
+       WHERE latest.product_id <> ALL($4::bigint[])
+         AND targets.product_id <> ALL($4::bigint[])
      )
-     SELECT count(DISTINCT targets.user_id)::int AS eligible,
-            count(DISTINCT targets.user_id) FILTER (
-              WHERE latest.product_id <> ALL($4::bigint[])
-                AND targets.product_id <> ALL($4::bigint[])
-                AND EXISTS (
-                  SELECT 1 FROM co_purchase_stats c
-                  WHERE c.store_id=$1
-                    AND ((c.product_id_a=latest.product_id AND c.product_id_b=targets.product_id)
-                      OR (c.product_id_b=latest.product_id AND c.product_id_a=targets.product_id))
-                )
-            )::int AS aligned
-     FROM targets JOIN latest USING (user_id)`,
+     SELECT count(DISTINCT eligible_targets.user_id)::int AS eligible,
+            count(DISTINCT eligible_targets.user_id) FILTER (WHERE rule.id IS NOT NULL)::int AS aligned
+     FROM eligible_targets
+     LEFT JOIN co_purchase_stats rule
+       ON rule.store_id=$1
+      AND ((rule.product_id_a=eligible_targets.context_product
+            AND rule.product_id_b=eligible_targets.target_product)
+        OR (rule.product_id_b=eligible_targets.context_product
+            AND rule.product_id_a=eligible_targets.target_product))`,
     [spec.store_id, runId, spec.cutoffs.train_end, fixtureIds, spec.cutoffs.val_end]
   );
   const eligibleValRuleTargetUsers = Number(targetAlignment.rows[0].eligible);
@@ -345,7 +309,9 @@ async function requireUnusedBenchmarkRun(chat, storeId, runId) {
 }
 
 function buildAffinityModel({ spec, products, coldProducts, users }) {
-  if (!['4.0.0', '5.0.0'].includes(spec.generator_version)) return undefined;
+  if (spec.generator_version !== '5.0.0' || spec.schema_version !== '3.0.0') {
+    throw new Error('affinity generation requires benchmark v5');
+  }
   const affinityRandom = mulberry32(spec.seed);
   const personaByUser = buildPersonaAssignments(users, spec.persona_distribution, affinityRandom);
   const warmProducts = products
@@ -575,6 +541,5 @@ module.exports = {
   canonicalSpecSha256,
   loadBenchmarkSpec,
   main,
-  reclaimLegacyMlStorage,
   requireUnusedBenchmarkRun
 };

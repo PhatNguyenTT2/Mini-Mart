@@ -62,11 +62,13 @@ from ai_service.errors import (
     CatastrophicTrainingError,
     ConfigurationError,
     DataIntegrityError,
+    DiagnosticQualityError,
     TrainingInterruptedError,
     VictoryGateError,
 )
 from ai_service.evaluation.ablation import (
     DeepAblationRun,
+    load_deep_ablation_artifact,
     require_hybrid_diagnostic_signal,
     require_selected_r3_pair,
     run_deep_ablation_comparison,
@@ -172,6 +174,28 @@ def _configure(args: Namespace) -> Settings:
     if benchmark_run_id:
         settings.data.benchmark_run_id = str(benchmark_run_id)
     settings.train.seed = int(getattr(args, "seed", settings.train.seed))
+    selection_report = getattr(args, "r3_selection_report", None)
+    if selection_report is not None:
+        selection_path = Path(selection_report).resolve()
+        if not selection_path.is_file():
+            raise ConfigurationError(f"R3 selection report does not exist: {selection_path}")
+        if settings.train.r3_feature_selection_mode != "selection_artifact":
+            raise ConfigurationError(
+                "--r3-selection-report requires selection_artifact config mode"
+            )
+        if selection_path.name != "report.json":
+            raise ConfigurationError("R3 selection report must be the verified report.json")
+        artifact = load_deep_ablation_artifact(selection_path.parent)
+        if artifact.report.diagnostic_pause or artifact.report.selected_run_id is None:
+            raise ConfigurationError("R3 selection report is a diagnostic pause")
+        selection = artifact.report.selected_feature_selection
+        if selection is None:
+            raise ConfigurationError("R3 selection report has no feature selection")
+        settings.model.use_user_id_embedding = selection.use_user_id_embedding
+        settings.model.use_price_features = selection.use_price_features
+        settings.train.r3_selection_artifact_sha256 = artifact.report.artifact_sha256
+    elif settings.train.r3_feature_selection_mode == "selection_artifact":
+        raise ConfigurationError("selection_artifact config requires --r3-selection-report")
     if settings.serving.environment.lower() == "production" and (
         getattr(args, "source", DataSourceKind.POSTGRES.value) != DataSourceKind.POSTGRES.value
         or getattr(args, "embedding_source", EmbeddingSource.REAL.value)
@@ -457,6 +481,11 @@ def _train(
             embedding.vectors,
             ratio=settings.train.explicit_negative_ratio,
             seed=settings.train.seed,
+            rule_hard_negative_count=(
+                settings.train.rule_hard_negative_count
+                if settings.train.training_variant is TrainingVariant.HYBRID
+                else 0
+            ),
         )
         loader: Any = PurchaseBatchIterator(
             purchase_index,
@@ -499,6 +528,7 @@ def _train(
         rule_readiness = assess_training_rule_readiness(
             loader,
             minimum_rows_with_any_rule=settings.data.minimum_training_rows_with_any_rule,
+            minimum_training_target_rule_rate=settings.data.minimum_training_target_rule_rate,
         )
         if not rule_readiness.passed:
             raise ArtifactIntegrityError(
@@ -586,7 +616,7 @@ def _train(
             bundle_path=None,
         )
         _write_state(settings, state)
-    except CatastrophicTrainingError as error:
+    except (CatastrophicTrainingError, DiagnosticQualityError) as error:
         reason = str(error) or type(error).__name__
         _terminalize_training_session(
             lifecycle,
@@ -984,6 +1014,8 @@ def _evaluate_pair(
         fixture,
         k=hybrid.settings.eval.k,
         device=device,
+        prepared_split=prepared_split,
+        settings=hybrid.settings,
     )
     matrix = evaluate_single_seed(
         SingleSeedGateInputs(

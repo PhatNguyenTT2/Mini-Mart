@@ -10,7 +10,7 @@ from typing import Literal
 from pydantic import BaseModel, Field, field_validator, model_validator
 
 EVALUATION_SCHEMA_VERSION = "5.2.0"
-RULE_COVERAGE_SEMANTICS_VERSION = "semantic-trap-purchase-v2"
+RULE_COVERAGE_SEMANTICS_VERSION = "organic-target-alignment-v3"
 
 
 def utc_now() -> datetime:
@@ -84,6 +84,9 @@ class SnapshotManifest(ArtifactManifest):
     num_cold_items: int
     split_counts: dict[SplitName, int]
     split_boundaries: dict[str, datetime]
+    benchmark_spec_sha256: str | None = Field(default=None, pattern=r"^[0-9a-f]{64}$")
+    semantic_cohort_sha256: str | None = Field(default=None, pattern=r"^[0-9a-f]{64}$")
+    order_metadata_sha256: str | None = Field(default=None, pattern=r"^[0-9a-f]{64}$")
 
 
 class EmbeddingManifest(ArtifactManifest):
@@ -116,6 +119,22 @@ class ArtifactLineage(BaseModel):
     snapshot_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
     embedding_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
     rule_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    benchmark_spec_sha256: str | None = Field(default=None, pattern=r"^[0-9a-f]{64}$")
+    semantic_cohort_sha256: str | None = Field(default=None, pattern=r"^[0-9a-f]{64}$")
+    order_metadata_sha256: str | None = Field(default=None, pattern=r"^[0-9a-f]{64}$")
+
+    @model_validator(mode="after")
+    def metadata_lineage_is_complete(self) -> ArtifactLineage:
+        values = (
+            self.benchmark_spec_sha256,
+            self.semantic_cohort_sha256,
+            self.order_metadata_sha256,
+        )
+        if any(value is not None for value in values) and not all(
+            value is not None for value in values
+        ):
+            raise ValueError("expanded benchmark lineage must contain all metadata hashes")
+        return self
 
 
 class RuleCoverageEvidence(BaseModel):
@@ -137,11 +156,9 @@ class RuleManifest(ArtifactManifest):
     min_count: int
     min_lift: float
     q99_log_lift: float
-    feature_schema_version: str = "2.0.0"
+    feature_schema_version: str = "3.0.0"
     has_full_statistics: bool = False
-    coverage_semantics_version: (
-        Literal["semantic-trap-only-v1", "semantic-trap-purchase-v2"] | None
-    ) = None
+    coverage_semantics_version: str | None = None
     coverage: RuleCoverageEvidence | None = None
 
 
@@ -370,6 +387,8 @@ class VictoryMatrix(BaseModel):
     schema_version: Literal["5.2.0"]
     random_gauc_passed: bool
     hybrid_minimum_gauc_passed: bool
+    hybrid_minimum_hr_passed: bool = False
+    hybrid_minimum_ndcg_passed: bool = False
     gauc_domination_passed: bool
     hr_domination_passed: bool
     ndcg_domination_passed: bool
@@ -396,8 +415,16 @@ class VictoryMatrix(BaseModel):
             "semantic_traps": self.semantic_traps_passed,
             "cold_parity": self.cold_parity_passed,
         }
-        if {gate.name for gate in self.gates} != set(expected):
-            raise ValueError("victory matrix requires the seven single-seed gates")
+        gate_names = {gate.name for gate in self.gates}
+        if "hybrid_minimum_hr" in gate_names or "hybrid_minimum_ndcg" in gate_names:
+            expected.update(
+                {
+                    "hybrid_minimum_hr": self.hybrid_minimum_hr_passed,
+                    "hybrid_minimum_ndcg": self.hybrid_minimum_ndcg_passed,
+                }
+            )
+        if gate_names != set(expected):
+            raise ValueError("victory matrix single-seed gates are incomplete")
         for gate in self.gates:
             if gate.name in expected and gate.passed != expected[gate.name]:
                 raise ValueError(f"victory matrix boolean disagrees with {gate.name} gate")

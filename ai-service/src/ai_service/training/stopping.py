@@ -165,6 +165,8 @@ class EarlyStoppingController:
         start_time: datetime,
         current_time: datetime,
         non_finite_reason: str | None = None,
+        checkpoint_eligible: bool = True,
+        eligibility_reason: str = "",
     ) -> StoppingDecision:
         if non_finite_reason or not all(math.isfinite(value) for value in (gauc, ndcg, hr)):
             detail = non_finite_reason or "validation metrics contain NaN or Inf"
@@ -200,16 +202,31 @@ class EarlyStoppingController:
 
         if gauc > self.highest_gauc + self.min_delta:
             self.highest_gauc = gauc
-            self.selected_gauc = gauc
-            self.selected_ndcg = ndcg
-            self.selected_hr = hr
-            self.selected_epoch = epoch
-            self.patience_used = 0
+            if checkpoint_eligible:
+                self.selected_gauc = gauc
+                self.selected_ndcg = ndcg
+                self.selected_hr = hr
+                self.selected_epoch = epoch
+                self.patience_used = 0
+            else:
+                self.patience_used += 1
+            terminal_action = (
+                TerminalAction.STOP_PLATEAU
+                if not checkpoint_eligible and self.patience_used >= self.patience
+                else TerminalAction.CONTINUE
+            )
             return StoppingDecision(
-                checkpoint_action=CheckpointAction.SAVE_BEST,
-                terminal_action=TerminalAction.CONTINUE,
-                reason=f"val_gauc improved to {gauc:.4f}",
-                patience_used=0,
+                checkpoint_action=(
+                    CheckpointAction.SAVE_BEST if checkpoint_eligible else CheckpointAction.NONE
+                ),
+                terminal_action=terminal_action,
+                reason=(
+                    "val_gauc improved to "
+                    f"{gauc:.4f} but checkpoint is ineligible: {eligibility_reason}"
+                    if not checkpoint_eligible
+                    else f"val_gauc improved to {gauc:.4f}"
+                ),
+                patience_used=self.patience_used,
                 best_epoch=epoch,
                 best_gauc=gauc,
                 best_ndcg=ndcg,
@@ -221,8 +238,12 @@ class EarlyStoppingController:
         is_tied = abs(gauc - self.highest_gauc) <= self.min_delta
         checkpoint_action = CheckpointAction.NONE
 
-        if is_tied and (
-            ndcg > self.selected_ndcg or (ndcg == self.selected_ndcg and hr > self.selected_hr)
+        if (
+            checkpoint_eligible
+            and is_tied
+            and (
+                ndcg > self.selected_ndcg or (ndcg == self.selected_ndcg and hr > self.selected_hr)
+            )
         ):
             self.selected_gauc = gauc
             self.selected_ndcg = ndcg

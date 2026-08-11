@@ -63,6 +63,14 @@ def _content_hash(frames: tuple[pd.DataFrame, ...], cold_ids: tuple[int, ...]) -
     return digest.hexdigest()
 
 
+def _metadata_sha256(frame: pd.DataFrame, columns: tuple[str, ...]) -> str | None:
+    present = [column for column in columns if column in frame.columns]
+    if not present:
+        return None
+    normalized = frame[present].sort_values(present, kind="stable").reset_index(drop=True)
+    return hashlib.sha256(_frame_hash(normalized)).hexdigest()
+
+
 def _split_timestamp_groups(
     events: pd.DataFrame,
     *,
@@ -264,6 +272,19 @@ class SnapshotBuilder:
 
         content_sha = _content_hash((products, train, val, test, orders), cold_internal)
         cold_sha = hashlib.sha256(np.asarray(cold_raw_ids, dtype=np.int64).tobytes()).hexdigest()
+        semantic_cohort_rows = events.loc[
+            events.event_origin.astype(str) == "semantic_trap",
+            ["event_id", "user_id", "product_id", "event_ts", "cohort_id"],
+        ].sort_values(["cohort_id", "event_ts", "event_id"], kind="stable")
+        cohort_document = semantic_cohort_rows.to_dict(orient="records")
+        cohort_json = json.dumps(
+            cohort_document, sort_keys=True, default=str, separators=(",", ":")
+        )
+        semantic_cohort_sha = hashlib.sha256(cohort_json.encode("utf-8")).hexdigest()
+        order_metadata_sha = _metadata_sha256(
+            orders,
+            ("benchmark_kind", "benchmark_template_id", "benchmark_trap_id"),
+        )
         manifest = SnapshotManifest(
             artifact_id=snapshot_id,
             content_sha256=content_sha,
@@ -286,6 +307,9 @@ class SnapshotBuilder:
                 "val_max": val.event_ts.max().to_pydatetime(),
                 "test_min": test.event_ts.min().to_pydatetime(),
             },
+            benchmark_spec_sha256=raw.benchmark_metadata.spec_sha256,
+            semantic_cohort_sha256=semantic_cohort_sha,
+            order_metadata_sha256=order_metadata_sha,
         )
 
         snapshots_root = data.artifact_root.resolve() / "snapshots"
@@ -313,6 +337,9 @@ class SnapshotBuilder:
                 encoding="utf-8",
             )
             np.save(temporary / "price_boundaries.npy", boundaries)
+            (temporary / "semantic-cohort.json").write_text(
+                cohort_json, encoding="utf-8", newline="\n"
+            )
             (temporary / "manifest.json").write_text(
                 manifest.model_dump_json(indent=2), encoding="utf-8"
             )
@@ -358,6 +385,20 @@ def load_snapshot(snapshot_id: str, settings: Settings) -> Snapshot:
     actual_sha = _content_hash((products, train, val, test, orders), cold_internal)
     if actual_sha != manifest.content_sha256:
         raise ArtifactIntegrityError("snapshot content checksum mismatch")
+    if manifest.semantic_cohort_sha256 is not None:
+        cohort_path = path / "semantic-cohort.json"
+        if not cohort_path.is_file():
+            raise ArtifactIntegrityError("snapshot semantic cohort is missing")
+        cohort_sha = hashlib.sha256(cohort_path.read_bytes()).hexdigest()
+        if cohort_sha != manifest.semantic_cohort_sha256:
+            raise ArtifactIntegrityError("snapshot semantic cohort checksum mismatch")
+    if manifest.order_metadata_sha256 is not None:
+        order_sha = _metadata_sha256(
+            orders,
+            ("benchmark_kind", "benchmark_template_id", "benchmark_trap_id"),
+        )
+        if order_sha != manifest.order_metadata_sha256:
+            raise ArtifactIntegrityError("snapshot order metadata checksum mismatch")
     return Snapshot(
         manifest=manifest,
         snapshot_dir=path,

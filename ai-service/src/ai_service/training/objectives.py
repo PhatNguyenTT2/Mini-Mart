@@ -10,11 +10,33 @@ import torch
 @dataclass(frozen=True)
 class ObjectiveResult:
     loss: torch.Tensor
+    rule_loss: torch.Tensor
     sampled_pair_accuracy: float
     all_negative_win_rate: float
     deep_rms: float = 0.0
     wide_rms: float = 0.0
     hybrid_rms: float = 0.0
+
+
+def rule_pairwise_wide_loss(
+    positive_wide_logits: torch.Tensor,
+    negative_wide_logits: torch.Tensor,
+    *,
+    negative_mask: torch.Tensor | None = None,
+) -> torch.Tensor:
+    """Wide-only pairwise loss for organic rule-positive versus rule-hard negatives."""
+    if positive_wide_logits.ndim != 1 or negative_wide_logits.ndim != 2:
+        raise ValueError("rule logits must have shapes [B] and [B,R]")
+    if negative_wide_logits.shape[0] != positive_wide_logits.shape[0]:
+        raise ValueError("rule logits batch dimensions differ")
+    if negative_mask is None:
+        negative_mask = torch.ones_like(negative_wide_logits, dtype=torch.bool)
+    if negative_mask.shape != negative_wide_logits.shape:
+        raise ValueError("rule negative mask shape differs from logits")
+    if not bool(negative_mask.any()):
+        return positive_wide_logits.sum() * 0.0
+    margins = positive_wide_logits[:, None] - negative_wide_logits
+    return -torch.nn.functional.logsigmoid(margins.masked_select(negative_mask)).mean()
 
 
 def multi_positive_sampled_softmax(
@@ -28,6 +50,9 @@ def multi_positive_sampled_softmax(
     temperature: torch.Tensor,
     in_batch_wide_logits: torch.Tensor,
     explicit_wide_logits: torch.Tensor,
+    rule_positive_mask: torch.Tensor | None = None,
+    rule_negative_mask: torch.Tensor | None = None,
+    rule_weight: float = 0.0,
 ) -> ObjectiveResult:
     """InfoNCE with multi-positive labels, hard negatives, and Wide logits."""
     if user_vectors.ndim != 2 or positive_item_vectors.shape != user_vectors.shape:
@@ -77,8 +102,37 @@ def multi_positive_sampled_softmax(
         wide_rms = float(torch.sqrt(torch.mean(in_batch_wide_logits**2)).cpu())
         hybrid_rms = float(torch.sqrt(torch.mean(in_batch**2)).cpu())
 
+    rule_loss = loss.detach() * 0.0
+    if rule_weight > 0.0:
+        if rule_positive_mask is None or rule_positive_mask.shape != (batch, batch):
+            raise ValueError("rule_positive_mask must have shape [B,B]")
+        positive_wide = in_batch_wide_logits.diagonal()
+        positive_rows = rule_positive_mask.diagonal()
+        if not bool(positive_rows.any()):
+            return ObjectiveResult(
+                loss=loss,
+                rule_loss=rule_loss,
+                sampled_pair_accuracy=pair_accuracy,
+                all_negative_win_rate=all_win,
+                deep_rms=deep_rms,
+                wide_rms=wide_rms,
+                hybrid_rms=hybrid_rms,
+            )
+        selected_negative_mask = (
+            rule_negative_mask
+            if rule_negative_mask is not None
+            else torch.ones_like(explicit_wide_logits, dtype=torch.bool)
+        )
+        rule_loss = rule_pairwise_wide_loss(
+            positive_wide[positive_rows],
+            explicit_wide_logits[positive_rows],
+            negative_mask=selected_negative_mask[positive_rows],
+        )
+        loss = loss + float(rule_weight) * rule_loss
+
     return ObjectiveResult(
         loss=loss,
+        rule_loss=rule_loss,
         sampled_pair_accuracy=pair_accuracy,
         all_negative_win_rate=all_win,
         deep_rms=deep_rms,

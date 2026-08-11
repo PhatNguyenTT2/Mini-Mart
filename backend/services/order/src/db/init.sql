@@ -40,7 +40,13 @@ ALTER TABLE sale_order ADD COLUMN IF NOT EXISTS benchmark_run_id TEXT;
 ALTER TABLE sale_order ADD COLUMN IF NOT EXISTS benchmark_kind TEXT;
 ALTER TABLE sale_order ADD COLUMN IF NOT EXISTS benchmark_template_id TEXT;
 ALTER TABLE sale_order ADD COLUMN IF NOT EXISTS benchmark_trap_id INTEGER;
-ALTER TABLE sale_order ADD COLUMN IF NOT EXISTS benchmark_trap_target_id BIGINT;
+ALTER TABLE sale_order DROP COLUMN IF EXISTS benchmark_trap_target_id;
+ALTER TABLE sale_order DROP CONSTRAINT IF EXISTS sale_order_benchmark_metadata_check;
+ALTER TABLE sale_order ADD CONSTRAINT sale_order_benchmark_metadata_check CHECK (
+    (benchmark_run_id IS NULL AND benchmark_kind IS NULL AND benchmark_template_id IS NULL AND benchmark_trap_id IS NULL)
+    OR (benchmark_run_id IS NOT NULL AND benchmark_kind = 'organic' AND benchmark_template_id IS NOT NULL AND benchmark_trap_id IS NULL)
+    OR (benchmark_run_id IS NOT NULL AND benchmark_kind = 'semantic_trap' AND benchmark_template_id IS NOT NULL AND benchmark_trap_id BETWEEN 1 AND 10)
+);
 CREATE INDEX IF NOT EXISTS idx_sale_order_benchmark_run
     ON sale_order(store_id, benchmark_run_id, order_date)
     WHERE benchmark_run_id IS NOT NULL;

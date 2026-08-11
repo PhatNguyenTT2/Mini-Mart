@@ -1,0 +1,28 @@
+[data]
+rule_feature_schema_version = "3.0.0"
+minimum_non_trap_directed_rules = 5000
+minimum_distinct_organic_rule_items = 3000
+minimum_training_target_rule_rate = 0.40
+minimum_val_rule_target_rate = 0.40
+
+[model]
+use_item_id_residual = true
+use_user_id_embedding = true
+use_price_features = true
+
+[train]
+objective = "sampled_softmax"
+training_variant = "hybrid"
+campaign_stage = "diagnostic"
+explicit_negative_ratio = 16
+use_history_profiles = true
+view_auxiliary_weight = 0.1
+rule_auxiliary_weight = 0.1
+rule_hard_negative_count = 4
+diagnostic_warmup_epochs = 3
+
+[eval]
+k = 10
+minimum_gauc = 0.75
+minimum_hr_at_k = 0.15
+minimum_ndcg_at_k = 0.08

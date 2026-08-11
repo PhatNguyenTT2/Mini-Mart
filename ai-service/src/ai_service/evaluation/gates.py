@@ -179,6 +179,46 @@ def evaluate_single_seed(
             failure_reason=None if minimum_passed else "Hybrid GAUC below minimum",
         )
     )
+    hybrid_hr = float(comparison.hybrid.report.hr_at_k)
+    minimum_hr = settings.eval.minimum_hr_at_k if settings else 0.15
+    gates.append(
+        MetricGateResult(
+            name="hybrid_minimum_hr",
+            passed=hybrid_hr >= minimum_hr,
+            observed=hybrid_hr,
+            target=minimum_hr,
+            description="Hybrid HR@10 must satisfy the absolute release floor",
+            candidate_name="hybrid",
+            baseline_name="minimum",
+            candidate_mean=hybrid_hr,
+            baseline_mean=minimum_hr,
+            delta_mean=hybrid_hr - minimum_hr,
+            ci_lower=hybrid_hr - minimum_hr,
+            ci_upper=hybrid_hr - minimum_hr,
+            threshold=minimum_hr,
+            failure_reason=None if hybrid_hr >= minimum_hr else "Hybrid HR below minimum",
+        )
+    )
+    hybrid_ndcg = float(comparison.hybrid.report.ndcg_at_k)
+    minimum_ndcg = settings.eval.minimum_ndcg_at_k if settings else 0.08
+    gates.append(
+        MetricGateResult(
+            name="hybrid_minimum_ndcg",
+            passed=hybrid_ndcg >= minimum_ndcg,
+            observed=hybrid_ndcg,
+            target=minimum_ndcg,
+            description="Hybrid NDCG@10 must satisfy the absolute release floor",
+            candidate_name="hybrid",
+            baseline_name="minimum",
+            candidate_mean=hybrid_ndcg,
+            baseline_mean=minimum_ndcg,
+            delta_mean=hybrid_ndcg - minimum_ndcg,
+            ci_lower=hybrid_ndcg - minimum_ndcg,
+            ci_upper=hybrid_ndcg - minimum_ndcg,
+            threshold=minimum_ndcg,
+            failure_reason=None if hybrid_ndcg >= minimum_ndcg else "Hybrid NDCG below minimum",
+        )
+    )
     gauc_gate, gauc_baseline = _domination_gate(
         comparison,
         metric="gauc",
@@ -257,6 +297,8 @@ def evaluate_single_seed(
         "comparison_signature": inputs.comparison_signature,
         "random_gauc_passed": random_passed,
         "hybrid_minimum_gauc_passed": minimum_passed,
+        "hybrid_minimum_hr_passed": hybrid_hr >= minimum_hr,
+        "hybrid_minimum_ndcg_passed": hybrid_ndcg >= minimum_ndcg,
         "gauc_domination_passed": gauc_gate.passed,
         "hr_domination_passed": hr_gate.passed,
         "ndcg_domination_passed": ndcg_gate.passed,

@@ -20,7 +20,7 @@ from typing import Any, Protocol
 import numpy as np
 import torch
 
-from ai_service.artifact_io import canonical_json_sha256
+from ai_service.artifact_io import canonical_json_sha256, publish_directory_atomic
 from ai_service.config import Settings
 from ai_service.contracts import (
     AlphaSweepEvidence,
@@ -32,6 +32,7 @@ from ai_service.contracts import (
     TrapDiagnosticEvidence,
 )
 from ai_service.data.dataset import build_purchase_training_index
+from ai_service.data.sampling import MixedNegativeSampler
 from ai_service.errors import ArtifactIntegrityError, DataIntegrityError
 from ai_service.evaluation.full_catalog import (
     FullCatalogEvaluator,
@@ -83,6 +84,7 @@ class R3DiagnosticArtifact:
 _ALPHAS = (0.0, 0.25, 0.5, 1.0, 2.0, 4.0, 8.0)
 _METRIC_KEYS = (
     "user_ids",
+    "aligned_mask",
     "deep_hr",
     "deep_ndcg",
     "deep_gauc",
@@ -121,16 +123,26 @@ def _validate_metrics(path: Path) -> dict[str, np.ndarray]:
         raise ArtifactIntegrityError("R3 user_ids must be a non-empty int64 vector")
     if np.any(user_ids <= 0) or np.any(np.diff(user_ids) <= 0):
         raise ArtifactIntegrityError("R3 user_ids must be sorted, unique, and non-zero")
-    user_metric_keys = _METRIC_KEYS[1:7]
+    aligned = result["aligned_mask"]
+    if aligned.dtype != np.bool_ or aligned.shape != (len(user_ids),):
+        raise ArtifactIntegrityError("R3 aligned_mask must be bool [U]")
+    user_metric_keys = (
+        "deep_hr",
+        "deep_ndcg",
+        "deep_gauc",
+        "hybrid_hr",
+        "hybrid_ndcg",
+        "hybrid_gauc",
+    )
     for key in user_metric_keys:
         values = result[key]
         if values.shape != (len(user_ids),) or values.dtype != np.float64:
             raise ArtifactIntegrityError(f"R3 metric {key} has an invalid shape or dtype")
         if not np.isfinite(values).all() or np.any((values < 0) | (values > 1)):
             raise ArtifactIntegrityError(f"R3 metric {key} is outside [0,1]")
-    for key in _METRIC_KEYS[7:]:
+    for key in ("alpha_hr", "alpha_ndcg", "alpha_gauc"):
         values = result[key]
-        if values.shape != (len(_ALPHAS),) or values.dtype != np.float64:
+        if values.shape != (len(_ALPHAS), len(user_ids)) or values.dtype != np.float64:
             raise ArtifactIntegrityError(f"R3 alpha metric {key} has an invalid shape or dtype")
         if not np.isfinite(values).all() or np.any((values < 0) | (values > 1)):
             raise ArtifactIntegrityError(f"R3 alpha metric {key} is outside [0,1]")
@@ -231,7 +243,7 @@ def _cohort_delta(
 
 
 def _alignment_evidence(
-    snapshot: Any, rule_store: Any, settings: Settings
+    snapshot: Any, rule_store: Any, settings: Settings, semantic_embeddings: np.ndarray
 ) -> tuple[RuleAlignmentEvidence, set[int]]:
     index = build_purchase_training_index(
         snapshot, max_history_items=settings.train.max_history_items
@@ -242,6 +254,37 @@ def _alignment_evidence(
     positives = index.positive_items.astype(np.int64).reshape(-1, 1)
     _, present = rule_store.batch_raw_lift(context, positives)
     strict = present[:, 0]
+    other_positive_hits = 0
+    in_batch_negative_hits = 0
+    explicit_negative_hits = 0
+    negative_only_rows = 0
+    sampler = MixedNegativeSampler(
+        index,
+        snapshot,
+        semantic_embeddings,
+        ratio=settings.train.explicit_negative_ratio,
+        seed=settings.train.seed,
+        rule_hard_negative_count=0,
+    )
+    batch_size = max(1, settings.train.batch_size)
+    for offset in range(0, len(index.users), batch_size):
+        end = min(len(index.users), offset + batch_size)
+        batch_context = context[offset:end]
+        batch_positive = positives[offset:end, 0]
+        in_batch_candidates = np.broadcast_to(batch_positive[None, :], (end - offset, end - offset))
+        _, in_present = rule_store.batch_raw_lift(batch_context, in_batch_candidates)
+        diagonal = np.eye(end - offset, dtype=np.bool_)
+        other_positive_hits += int((in_present & ~diagonal).sum())
+        negatives = sampler.sample(
+            index.users[offset:end],
+            batch_positive,
+            epoch=1,
+            batch_index=offset // batch_size,
+        )
+        _, negative_present = rule_store.batch_raw_lift(batch_context, negatives)
+        in_batch_negative_hits += int(negative_present.sum())
+        explicit_negative_hits += int(negative_present.sum())
+        negative_only_rows += int((~strict[offset:end] & negative_present.any(axis=1)).sum())
     aligned_users: set[int] = set()
     prepared = prepare_split(snapshot, SplitName.VAL)
     for user in prepared.eligible_users:
@@ -259,10 +302,10 @@ def _alignment_evidence(
         training_targets=len(index.positive_items),
         strict_training_rule_targets=int(strict.sum()),
         strict_training_rule_rate=float(strict.mean()),
-        positive_other_rule_hits=0,
-        in_batch_negative_rule_hits=0,
-        explicit_negative_rule_hits=0,
-        negative_only_rows=0,
+        positive_other_rule_hits=other_positive_hits,
+        in_batch_negative_rule_hits=in_batch_negative_hits,
+        explicit_negative_rule_hits=explicit_negative_hits,
+        negative_only_rows=negative_only_rows,
         val_eligible_users=len(prepared.eligible_users),
         val_rule_aligned_users=len(aligned_users),
         val_rule_aligned_rate=float(
@@ -286,9 +329,26 @@ def _target_requests(
         target_ids = tuple(int(item) for item in fixture["target_product_ids"])
         internal_targets = tuple(snapshot.product_map[item] for item in target_ids)
         selected: int | None = None
+        anchor_internal = snapshot.product_map[int(fixture["anchor_product_id"])]
+        has_cohort = hasattr(prepared, "organic_novel_truth") and hasattr(
+            prepared, "latest_prior_purchase_contexts"
+        )
         for user in eligible:
             seen = prepared.seen_items.get(user, set())
-            if user not in selected_users and not any(item in seen for item in internal_targets):
+            if not has_cohort:
+                if user not in selected_users and not any(
+                    item in seen for item in internal_targets
+                ):
+                    selected = user
+                    break
+                continue
+            truth = prepared.organic_novel_truth.get(user, set())
+            if (
+                user not in selected_users
+                and prepared.latest_prior_purchase_contexts.get(user) == anchor_internal
+                and set(internal_targets).issubset(truth)
+                and not any(item in seen for item in internal_targets)
+            ):
                 selected = user
                 break
         if selected is None:
@@ -308,13 +368,6 @@ def _report_without_hash(document: dict[str, object]) -> dict[str, object]:
     copy = dict(document)
     copy.pop("artifact_sha256", None)
     return copy
-
-
-def _publish_directory(source: Path, destination: Path) -> None:
-    destination.parent.mkdir(parents=True, exist_ok=True)
-    if destination.exists():
-        raise ArtifactIntegrityError(f"R3 diagnostic destination already exists: {destination}")
-    os.replace(source, destination)
 
 
 def publish_r3_diagnostic(
@@ -338,11 +391,17 @@ def publish_r3_diagnostic(
         snapshot_sha256=hybrid_run.snapshot.manifest.content_sha256,
         embedding_sha256=hybrid_run.embedding.manifest.content_sha256,
         rule_sha256=hybrid_run.rules.manifest.content_sha256,
+        benchmark_spec_sha256=hybrid_run.snapshot.manifest.benchmark_spec_sha256,
+        semantic_cohort_sha256=hybrid_run.snapshot.manifest.semantic_cohort_sha256,
+        order_metadata_sha256=hybrid_run.snapshot.manifest.order_metadata_sha256,
     )
     deep_lineage = ArtifactLineage(
         snapshot_sha256=deep_run.snapshot.manifest.content_sha256,
         embedding_sha256=deep_run.embedding.manifest.content_sha256,
         rule_sha256=deep_run.rules.manifest.content_sha256,
+        benchmark_spec_sha256=deep_run.snapshot.manifest.benchmark_spec_sha256,
+        semantic_cohort_sha256=deep_run.snapshot.manifest.semantic_cohort_sha256,
+        order_metadata_sha256=deep_run.snapshot.manifest.order_metadata_sha256,
     )
     if lineage != deep_lineage:
         raise ArtifactIntegrityError("R3 diagnostic requires matching artifact lineage")
@@ -377,39 +436,37 @@ def publish_r3_diagnostic(
         Path(__file__).with_name("fixtures") / "semantic_traps.json",
         k=settings.eval.k,
         device=device,
+        prepared_split=prepared,
+        settings=settings,
     )
     evidence, aligned_users = _alignment_evidence(
-        hybrid_run.snapshot, hybrid_run.rules.store, settings
+        hybrid_run.snapshot,
+        hybrid_run.rules.store,
+        settings,
+        hybrid_run.embedding.vectors,
     )
     user_ids = source_metrics["user_ids"].astype(np.int64)
+    aligned_mask = np.asarray([int(user) in aligned_users for user in user_ids], dtype=np.bool_)
     metrics: dict[str, np.ndarray] = {
         "user_ids": user_ids,
+        "aligned_mask": aligned_mask,
         "deep_hr": source_metrics["deep_hr"],
         "deep_ndcg": source_metrics["deep_ndcg"],
         "deep_gauc": source_metrics["deep_gauc"],
         "hybrid_hr": source_metrics["hybrid_hr"],
         "hybrid_ndcg": source_metrics["hybrid_ndcg"],
         "hybrid_gauc": source_metrics["hybrid_gauc"],
-        "alpha_hr": np.asarray(
-            [replay.alpha_results[a].report.hr_at_k for a in _ALPHAS], dtype=np.float64
+        "alpha_hr": np.stack([replay.alpha_results[a].per_user_hr for a in _ALPHAS], axis=0).astype(
+            np.float64
         ),
-        "alpha_ndcg": np.asarray(
-            [replay.alpha_results[a].report.ndcg_at_k for a in _ALPHAS], dtype=np.float64
-        ),
-        "alpha_gauc": np.asarray(
-            [replay.alpha_results[a].report.gauc for a in _ALPHAS], dtype=np.float64
-        ),
+        "alpha_ndcg": np.stack(
+            [replay.alpha_results[a].per_user_ndcg for a in _ALPHAS], axis=0
+        ).astype(np.float64),
+        "alpha_gauc": np.stack(
+            [replay.alpha_results[a].per_user_gauc for a in _ALPHAS], axis=0
+        ).astype(np.float64),
     }
     # Alpha values are a bounded summary, not per-user score dictionaries.
-    metrics["alpha_hr"] = np.asarray(
-        [replay.alpha_results[a].per_user_hr.mean() for a in _ALPHAS], dtype=np.float64
-    )
-    metrics["alpha_ndcg"] = np.asarray(
-        [replay.alpha_results[a].per_user_ndcg.mean() for a in _ALPHAS], dtype=np.float64
-    )
-    metrics["alpha_gauc"] = np.asarray(
-        [replay.alpha_results[a].per_user_gauc.mean() for a in _ALPHAS], dtype=np.float64
-    )
     fixture_path = Path(__file__).with_name("fixtures") / "semantic_traps.json"
     fixtures = {
         int(item["trap_id"]): item for item in json.loads(fixture_path.read_text(encoding="utf-8"))
@@ -458,18 +515,18 @@ def publish_r3_diagnostic(
     alpha_sweep = tuple(
         AlphaSweepEvidence(
             alpha=alpha,
-            gauc=float(metrics["alpha_gauc"][index]),
-            hr_at_k=float(metrics["alpha_hr"][index]),
-            ndcg_at_k=float(metrics["alpha_ndcg"][index]),
+            gauc=float(metrics["alpha_gauc"][index].mean()),
+            hr_at_k=float(metrics["alpha_hr"][index].mean()),
+            ndcg_at_k=float(metrics["alpha_ndcg"][index].mean()),
             meets_absolute_floors=(
-                float(metrics["alpha_gauc"][index]) >= 0.70
-                and float(metrics["alpha_hr"][index]) >= 0.15
-                and float(metrics["alpha_ndcg"][index]) >= 0.08
+                float(metrics["alpha_gauc"][index].mean()) >= 0.70
+                and float(metrics["alpha_hr"][index].mean()) >= 0.15
+                and float(metrics["alpha_ndcg"][index].mean()) >= 0.08
             ),
         )
         for index, alpha in enumerate(_ALPHAS)
     )
-    benchmark_spec = _repo_file("benchmark-spec-v4.json")
+    benchmark_spec = _repo_file("benchmark-spec-v5.json")
     cohort_file = Path(__file__).with_name("fixtures") / "semantic_traps.json"
     report = R3DiagnosticReport(
         schema_version="1.0.0",
@@ -510,7 +567,7 @@ def publish_r3_diagnostic(
             os.fsync(stream.fileno())
         _validate_metrics(metrics_path)
         destination.parent.mkdir(parents=True, exist_ok=True)
-        _publish_directory(temporary, destination)
+        publish_directory_atomic(temporary, destination)
         temporary = Path()
     finally:
         if str(temporary) not in {"", "."}:

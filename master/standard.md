@@ -1,5 +1,31 @@
 # Tiêu chuẩn Đánh giá Độ thưa thớt (Sparsity) & Chỉ số Kỳ vọng trong Bài toán Gợi ý
 
+> **Chuẩn đang có hiệu lực — benchmark v5 (temporal novel-purchase full-catalog).**
+> Các giả định 1,000,000 interactions, split ngẫu nhiên và mật độ 3.85% ở bên
+> dưới chỉ là tài liệu lịch sử; không dùng để phê duyệt training/release.
+
+## Protocol v5 bắt buộc
+
+- Snapshot bất biến: **823,371 events**, **5,000 users**, **5,200 items**, **250
+  cold items**, split temporal train/VAL/TEST `658,697 / 82,337 / 82,337`.
+- Evaluation dùng organic novel purchases; history VAL = train, history TEST =
+  train+VAL; seen items bị mask và ranking full catalog ổn định theo
+  `(-score, raw_product_id)`.
+- Reference density: `356,181 / 26,000,000 = 1.3699%` distinct user-item
+  cells; event frequency `823,371 / 26,000,000 = 3.1668%`. Đây là mô tả dữ
+  liệu, không phải quality gate.
+- Hard promotion floors, không được hạ: **GAUC >= 0.75**, **HR@10 >= 0.15**,
+  **NDCG@10 >= 0.08**. Đồng thời phải pass strongest-baseline paired CI,
+  Random CI, semantic traps `10/10`, cold parity, strict rule readiness và
+  Wide readiness.
+- Safety kill-switch trong training vẫn là non-finite hoặc `val_gauc < 0.50`;
+  safety này không thay thế các promotion floors ở trên.
+- Không tuyên bố Hybrid victory nếu thiếu bất kỳ gate nào; không chạy seed kế
+  tiếp khi single-seed VAL fail.
+
+Phần dưới đây giữ lại các phép tính cũ để truy vết lịch sử, nhưng không còn là
+specification cho benchmark v5.
+
 Độ thưa thớt (**Sparsity**) là một trong những đặc điểm quan trọng nhất quyết định độ khó của bài toán gợi ý. Nó phản ánh tỷ lệ giữa số lượng tương tác đã xảy ra so với tổng số tương tác có thể xảy ra.
 
 ---

@@ -12,7 +12,10 @@ from ai_service.data.dataset import build_purchase_training_index
 from ai_service.data.sampling import MixedNegativeSampler
 from ai_service.data.snapshot import Snapshot
 from ai_service.errors import NegativeSamplingError
-from ai_service.training.objectives import multi_positive_sampled_softmax
+from ai_service.training.objectives import (
+    multi_positive_sampled_softmax,
+    rule_pairwise_wide_loss,
+)
 
 
 def _snapshot(tmp_path: Path) -> Snapshot:
@@ -210,3 +213,17 @@ def test_sampled_softmax_handles_a_batch_with_no_negative_candidate() -> None:
 
     assert result.sampled_pair_accuracy == 1.0
     assert result.all_negative_win_rate == 1.0
+
+
+def test_rule_auxiliary_loss_is_wide_only_and_finite() -> None:
+    positive = torch.tensor([1.0, 0.5], requires_grad=True)
+    negative = torch.tensor([[0.0, 0.2], [0.4, 0.1]], requires_grad=True)
+    loss = rule_pairwise_wide_loss(
+        positive,
+        negative,
+        negative_mask=torch.tensor([[True, False], [True, True]]),
+    )
+    loss.backward()
+    assert torch.isfinite(loss)
+    assert positive.grad is not None
+    assert negative.grad is not None

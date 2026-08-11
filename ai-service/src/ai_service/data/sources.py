@@ -16,6 +16,16 @@ from ai_service.errors import SourceReadError
 
 
 @dataclass(frozen=True)
+class BenchmarkRunMetadata:
+    """Receipt fields carried from the benchmark control-plane database."""
+
+    spec_sha256: str | None = None
+    semantic_cohort_sha256: str | None = None
+    transition_user_count: int | None = None
+    transition_fraction: float | None = None
+
+
+@dataclass(frozen=True)
 class RawDataset:
     events_df: pd.DataFrame
     products_df: pd.DataFrame
@@ -24,6 +34,7 @@ class RawDataset:
     source_kind: DataSourceKind
     benchmark_run_id: str
     store_id: int
+    benchmark_metadata: BenchmarkRunMetadata = BenchmarkRunMetadata()
 
 
 class DatasetSource(Protocol):
@@ -72,6 +83,7 @@ class PostgresDatasetSource:
             or not data.order_database_url
         ):
             raise SourceReadError("all three PostgreSQL URLs are required")
+        benchmark_metadata = BenchmarkRunMetadata()
         try:
             with _connect_read_only(
                 data.chatbot_database_url.get_secret_value(), self.settings
@@ -107,6 +119,38 @@ class PostgresDatasetSource:
                                 f"specified benchmark run {benchmark_run_id} is not ready "
                                 "or published"
                             )
+                    cursor.execute(
+                        """
+                        SELECT benchmark_spec_sha256, rule_coverage
+                        FROM ml_benchmark_run_v1
+                        WHERE store_id=%s AND benchmark_run_id=%s
+                          AND status='ready' AND published_at IS NOT NULL
+                        """,
+                        (store_id, benchmark_run_id),
+                    )
+                    metadata_row = cursor.fetchone()
+                    if metadata_row is None:
+                        raise SourceReadError("benchmark run metadata is missing")
+                    spec_sha256 = str(metadata_row[0])
+                    if len(spec_sha256) != 64 or any(
+                        character not in "0123456789abcdef" for character in spec_sha256
+                    ):
+                        raise SourceReadError("benchmark run has an invalid spec SHA-256")
+                    coverage = metadata_row[1] if len(metadata_row) > 1 else None
+                    transition_count = None
+                    transition_fraction = None
+                    if isinstance(coverage, dict):
+                        raw_count = coverage.get("transitionUserCount")
+                        raw_fraction = coverage.get("transitionFraction")
+                        if isinstance(raw_count, int):
+                            transition_count = raw_count
+                        if isinstance(raw_fraction, (int, float)):
+                            transition_fraction = float(raw_fraction)
+                    benchmark_metadata = BenchmarkRunMetadata(
+                        spec_sha256=spec_sha256,
+                        transition_user_count=transition_count,
+                        transition_fraction=transition_fraction,
+                    )
                     events = _frame(
                         cursor,
                         """
@@ -160,7 +204,9 @@ class PostgresDatasetSource:
                         cursor,
                         """
                         SELECT o.id AS order_id, o.customer_id AS user_id, d.product_id,
-                               d.quantity, o.order_date AS order_ts
+                               d.quantity, o.order_date AS order_ts,
+                               o.benchmark_kind, o.benchmark_template_id,
+                               o.benchmark_trap_id
                         FROM sale_order o
                         JOIN sale_order_detail d ON d.order_id=o.id
                         WHERE o.store_id=%s AND o.benchmark_run_id=%s
@@ -182,6 +228,7 @@ class PostgresDatasetSource:
             source_kind=DataSourceKind.POSTGRES,
             benchmark_run_id=benchmark_run_id,
             store_id=store_id,
+            benchmark_metadata=benchmark_metadata,
         )
 
 
@@ -438,4 +485,5 @@ class SyntheticDatasetSource:
             source_kind=DataSourceKind.SYNTHETIC,
             benchmark_run_id=run_id,
             store_id=store_id,
+            benchmark_metadata=BenchmarkRunMetadata(),
         )

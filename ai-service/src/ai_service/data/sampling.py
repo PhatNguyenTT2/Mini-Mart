@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import numpy as np
 
-from ai_service.data.dataset import PurchaseTrainingIndex
+from ai_service.data.dataset import PurchaseTrainingIndex, RulePairIndex, build_rule_pair_index
 from ai_service.data.quality import filter_event_origin
 from ai_service.data.snapshot import Snapshot
 from ai_service.errors import NegativeSamplingError
@@ -19,6 +19,8 @@ class MixedNegativeSampler:
         *,
         ratio: int = 16,
         seed: int = 42,
+        rule_pair_index: RulePairIndex | None = None,
+        rule_hard_negative_count: int = 0,
     ) -> None:
         if ratio < 4:
             raise ValueError("mixed negative ratio must be at least four")
@@ -28,6 +30,16 @@ class MixedNegativeSampler:
         self.index = index
         self.ratio = ratio
         self.seed = seed
+        if rule_hard_negative_count < 0 or rule_hard_negative_count > ratio // 4:
+            raise ValueError("rule_hard_negative_count must fit the warm quota")
+        self.rule_pair_index = rule_pair_index or build_rule_pair_index(snapshot)
+        self.rule_hard_negative_count = int(rule_hard_negative_count)
+        self._context_by_target = {
+            (int(user), int(item)): int(context)
+            for user, item, context in zip(
+                index.users, index.positive_items, index.context_items, strict=True
+            )
+        }
         cold = set(int(item) for item in snapshot.cold_item_ids)
         self.warm_items = np.asarray(
             [item for item in range(snapshot.manifest.num_items) if item not in cold],
@@ -83,6 +95,8 @@ class MixedNegativeSampler:
         positive: int,
         allow_fallback: bool = True,
     ) -> list[int]:
+        if count == 0:
+            return []
         values: list[int] = []
         candidates = np.asarray(pool, dtype=np.int64)
         if not len(candidates):
@@ -123,6 +137,39 @@ class MixedNegativeSampler:
         if np.any(users < 1) or np.any(users >= self.index.known_history.shape[0]):
             raise NegativeSamplingError("sampler users must be in the range [1,num_users]")
         result = np.empty((len(users), self.ratio), dtype=np.int64)
+        result_with_sources = self._sample_internal(
+            users, positives, epoch=epoch, batch_index=batch_index
+        )
+        result[...] = result_with_sources[0]
+        return result
+
+    def sample_with_sources(
+        self,
+        users: np.ndarray,
+        positive_items: np.ndarray,
+        *,
+        epoch: int,
+        batch_index: int,
+    ) -> tuple[np.ndarray, np.ndarray]:
+        """Return candidates and a stable source tag matrix for diagnostics."""
+        return self._sample_internal(users, positive_items, epoch=epoch, batch_index=batch_index)
+
+    def _sample_internal(
+        self,
+        users: np.ndarray,
+        positive_items: np.ndarray,
+        *,
+        epoch: int,
+        batch_index: int,
+    ) -> tuple[np.ndarray, np.ndarray]:
+        users = np.asarray(users, dtype=np.int64)
+        positives = np.asarray(positive_items, dtype=np.int64)
+        if users.shape != positives.shape or users.ndim != 1:
+            raise ValueError("users and positive_items must be equal [B] vectors")
+        if np.any(users < 1) or np.any(users >= self.index.known_history.shape[0]):
+            raise NegativeSamplingError("sampler users must be in the range [1,num_users]")
+        result = np.empty((len(users), self.ratio), dtype=np.int64)
+        sources = np.empty((len(users), self.ratio), dtype="U16")
         base = self.ratio // 4
         quotas = [base, base, base, base + self.ratio - base * 4]
         for row_index, (user, positive) in enumerate(zip(users, positives, strict=True)):
@@ -139,40 +186,66 @@ class MixedNegativeSampler:
                 model_pool = model_cache[int(user)]
             else:
                 model_pool = semantic
-            values = [
-                *self._draw(
+            values: list[int] = []
+            source_values: list[str] = []
+            if self.rule_hard_negative_count:
+                context = self._context_by_target.get((int(user), int(positive)), -1)
+                rule_pool = self.rule_pair_index.candidates(context, int(positive))
+                rule_values = self._draw(
+                    rule_pool,
+                    self.rule_hard_negative_count,
+                    rng=rng,
+                    selected=selected,
+                    user=int(user),
+                    positive=int(positive),
+                    allow_fallback=False,
+                )
+                values.extend(rule_values)
+                source_values.extend(["rule_hard"] * len(rule_values))
+            remaining_warm = max(0, quotas[0] - self.rule_hard_negative_count)
+            values.extend(
+                self._draw(
                     self.warm_items,
-                    quotas[0],
+                    remaining_warm,
                     rng=rng,
                     selected=selected,
                     user=int(user),
                     positive=int(positive),
-                ),
-                *self._draw(
-                    self.popular_items,
-                    quotas[1],
-                    rng=rng,
-                    selected=selected,
-                    user=int(user),
-                    positive=int(positive),
-                ),
-                *self._draw(
-                    semantic,
-                    quotas[2],
-                    rng=rng,
-                    selected=selected,
-                    user=int(user),
-                    positive=int(positive),
-                ),
-                *self._draw(
-                    model_pool,
-                    quotas[3],
-                    rng=rng,
-                    selected=selected,
-                    user=int(user),
-                    positive=int(positive),
-                    allow_fallback=epoch < 2,
-                ),
-            ]
+                )
+            )
+            source_values.extend(["warm"] * remaining_warm)
+            values.extend(
+                [
+                    *self._draw(
+                        self.popular_items,
+                        quotas[1],
+                        rng=rng,
+                        selected=selected,
+                        user=int(user),
+                        positive=int(positive),
+                    ),
+                    *self._draw(
+                        semantic,
+                        quotas[2],
+                        rng=rng,
+                        selected=selected,
+                        user=int(user),
+                        positive=int(positive),
+                    ),
+                    *self._draw(
+                        model_pool,
+                        quotas[3],
+                        rng=rng,
+                        selected=selected,
+                        user=int(user),
+                        positive=int(positive),
+                        allow_fallback=epoch < 2,
+                    ),
+                ]
+            )
+            source_values.extend(["popular"] * quotas[1])
+            source_values.extend(["semantic"] * quotas[2])
+            source_values.extend(["model_hard"] * quotas[3])
             result[row_index] = values
-        return result
+            sources[row_index] = source_values
+        return result, sources

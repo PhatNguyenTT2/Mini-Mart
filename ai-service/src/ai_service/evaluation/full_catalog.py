@@ -631,7 +631,9 @@ class FullCatalogEvaluator:
         # loaded from the already verified VAL evaluation artifact by the
         # diagnostic publisher; this seam only needs serving-equivalent scores
         # for the ten trap cohorts and alpha sweep.
-        scoring_users = np.asarray(sorted(requests_by_user), dtype=np.int64)
+        # Score the complete eligible cohort so alpha diagnostics are true
+        # per-user evidence rather than a ten-trap sample.
+        scoring_users = np.asarray(prepared_split.eligible_users, dtype=np.int64)
         batch_size = self.settings.train.validation_user_batch_size
         for offset in range(0, len(scoring_users), batch_size):
             users = scoring_users[offset : offset + batch_size]

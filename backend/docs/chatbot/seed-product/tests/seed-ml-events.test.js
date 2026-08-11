@@ -2,7 +2,7 @@
 
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const spec = require('../benchmark-spec-v4.json');
+const spec = require('../benchmark-spec-v5.json');
 const { buildOrganicRows, seedMlEvents } = require('../seed-ml-events');
 
 test('organic validation purchase follows an unseen bundle neighbor when selected', () => {
@@ -31,7 +31,9 @@ test('organic validation purchase follows an unseen bundle neighbor when selecte
       session_min_events: 2,
       session_max_events: 2,
       split_preference_probability: { val: 1 },
-      organic_rule_transition_probability: 1,
+      organic_rule_transition_fraction: 1,
+      transition_algorithm: 'organic-rule-transition-v1',
+      transition_user_count: 1,
       session_purchase_probability: 1,
       conversion_affinity_weight: 0,
       conversion_popularity_weight: 0,
@@ -44,7 +46,7 @@ test('organic validation purchase follows an unseen bundle neighbor when selecte
   assert.equal(lastPurchaseByUser.get(1), 11);
 });
 
-test('v4 event seeding rejects a missing shared affinity model', async () => {
+test('v5 event seeding rejects a missing shared affinity model', async () => {
   const products = Array.from({ length: spec.num_products }, (_, index) => ({
     product_id: index + 1
   }));

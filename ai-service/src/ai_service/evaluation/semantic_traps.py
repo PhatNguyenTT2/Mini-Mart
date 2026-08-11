@@ -3,15 +3,22 @@
 from __future__ import annotations
 
 import json
+from collections.abc import Sequence
 from dataclasses import dataclass
 from pathlib import Path
 
 import numpy as np
 import torch
 
+from ai_service.config import Settings
 from ai_service.data.rules import RuleStore
 from ai_service.data.snapshot import Snapshot
 from ai_service.errors import DataIntegrityError
+from ai_service.evaluation.full_catalog import (
+    FullCatalogEvaluator,
+    PreparedEvaluationSplit,
+    TargetReplayRequest,
+)
 from ai_service.models.two_tower_wide_deep import HybridTwoTowerModel
 
 
@@ -36,7 +43,7 @@ class SemanticTrapReport:
     results: tuple[TrapResult, ...]
 
 
-def _rank(scores: np.ndarray, target_indices: list[int], raw_ids: np.ndarray) -> int:
+def _rank(scores: np.ndarray, target_indices: Sequence[int], raw_ids: np.ndarray) -> int:
     order = np.lexsort((raw_ids, -scores))
     positions = np.empty(len(order), dtype=np.int64)
     positions[order] = np.arange(1, len(order) + 1)
@@ -54,6 +61,8 @@ def evaluate_semantic_traps(
     *,
     k: int = 10,
     device: str | torch.device = "cpu",
+    prepared_split: PreparedEvaluationSplit | None = None,
+    settings: Settings | None = None,
 ) -> SemanticTrapReport:
     fixtures = json.loads(fixture_path.read_text(encoding="utf-8"))
     device = torch.device(device)
@@ -61,6 +70,84 @@ def evaluate_semantic_traps(
     if deep_model is None:
         raise ValueError("deep_model is required for semantic trap evaluation")
     deep_model = deep_model.to(device).eval()
+
+    if prepared_split is not None:
+        # Production gate: replay each immutable trap through the same
+        # history/profile/masking/ranking seam as full-catalog evaluation.
+        requests: list[TargetReplayRequest] = []
+        used_users: set[int] = set()
+        for fixture in sorted(fixtures, key=lambda item: int(item["trap_id"])):
+            anchor = snapshot.product_map.get(int(fixture["anchor_product_id"]))
+            targets = tuple(
+                snapshot.product_map.get(int(value), -1) for value in fixture["target_product_ids"]
+            )
+            if anchor is None or any(item < 0 for item in targets):
+                raise DataIntegrityError("semantic trap references missing product")
+            selected = None
+            for user in prepared_split.eligible_users:
+                user_id = int(user)
+                if user_id in used_users:
+                    continue
+                if prepared_split.latest_prior_purchase_contexts.get(user_id) != anchor:
+                    continue
+                truth = prepared_split.organic_novel_truth.get(user_id, set())
+                if set(targets).issubset(truth):
+                    selected = user_id
+                    break
+            if selected is None:
+                raise DataIntegrityError(
+                    f"semantic trap {fixture['trap_id']} has no serving-equivalent cohort user"
+                )
+            used_users.add(selected)
+            requests.append(
+                TargetReplayRequest(
+                    trap_id=int(fixture["trap_id"]),
+                    user_id=selected,
+                    target_item_ids=targets,
+                )
+            )
+        evaluator = FullCatalogEvaluator(
+            settings or Settings(),
+            embeddings,
+            rule_store,
+        )
+        replay = evaluator.evaluate_pair_diagnostics(
+            hybrid_model=hybrid_model,
+            deep_model=deep_model,
+            snapshot=snapshot,
+            prepared_split=prepared_split,
+            alpha_values=(0.0,),
+            target_requests=tuple(requests),
+            device=device,
+        )
+        rows = {row.trap_id: row for row in replay.targets}
+        serving_results = tuple(
+            TrapResult(
+                trap_id=int(fixture["trap_id"]),
+                anchor_product_id=int(fixture["anchor_product_id"]),
+                target_product_ids=tuple(int(value) for value in fixture["target_product_ids"]),
+                deep_control_rank=rows[int(fixture["trap_id"])].deep_rank,
+                hybrid_deep_ablation_rank=rows[int(fixture["trap_id"])].deep_rank,
+                hybrid_rank=rows[int(fixture["trap_id"])].hybrid_rank,
+                passed_top_k=rows[int(fixture["trap_id"])].hybrid_rank <= k,
+                improved_over_deep=(
+                    rows[int(fixture["trap_id"])].hybrid_rank
+                    < rows[int(fixture["trap_id"])].deep_rank
+                ),
+                passed=(
+                    rows[int(fixture["trap_id"])].hybrid_rank <= k
+                    and rows[int(fixture["trap_id"])].hybrid_rank
+                    < rows[int(fixture["trap_id"])].deep_rank
+                ),
+            )
+            for fixture in fixtures
+        )
+        return SemanticTrapReport(
+            passed=sum(result.passed for result in serving_results),
+            total=len(serving_results),
+            all_passed=all(result.passed for result in serving_results),
+            results=serving_results,
+        )
 
     catalog = snapshot.catalog_df.sort_values("internal_product_id", kind="stable")
     item_ids = torch.arange(snapshot.manifest.num_items, dtype=torch.int64, device=device)
@@ -98,7 +185,7 @@ def evaluate_semantic_traps(
                 f"semantic trap {fixture['trap_id']} references missing product"
             )
         anchor = snapshot.product_map[anchor_raw]
-        targets = [snapshot.product_map[value] for value in target_raw]
+        legacy_targets = [snapshot.product_map[value] for value in target_raw]
 
         deep_control_scores = (
             torch.matmul(deep_item_vectors[anchor], deep_item_vectors.T).cpu().numpy()
@@ -122,9 +209,9 @@ def evaluate_semantic_traps(
 
         hybrid_scores = hybrid_deep_scores + wide_scores
 
-        deep_control_rank = _rank(deep_control_scores, targets, raw_ids)
-        hybrid_deep_ablation_rank = _rank(hybrid_deep_scores, targets, raw_ids)
-        hybrid_rank = _rank(hybrid_scores, targets, raw_ids)
+        deep_control_rank = _rank(deep_control_scores, legacy_targets, raw_ids)
+        hybrid_deep_ablation_rank = _rank(hybrid_deep_scores, legacy_targets, raw_ids)
+        hybrid_rank = _rank(hybrid_scores, legacy_targets, raw_ids)
 
         passed_top_k = hybrid_rank <= k
         improved = hybrid_rank < deep_control_rank
