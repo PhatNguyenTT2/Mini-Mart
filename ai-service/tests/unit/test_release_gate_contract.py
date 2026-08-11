@@ -258,6 +258,23 @@ def test_release_rejects_ambient_comparison_signature_mismatch(tmp_path: Path) -
         )
 
 
+def test_release_rejects_mixed_source_revisions(tmp_path: Path) -> None:
+    settings = make_settings(tmp_path)
+    hybrids, deeps = _make_fixture(tmp_path)
+    manifest_path = deeps[1] / "run-manifest.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    manifest["git_commit"] = "1" * 40
+    manifest_path.write_text(json.dumps(manifest), encoding="utf-8")
+
+    with pytest.raises(ArtifactIntegrityError, match="frozen source revision"):
+        evaluate_three_seed(
+            split=SplitName.VAL,
+            hybrid_run_dirs=hybrids,
+            deep_run_dirs=deeps,
+            settings=settings,
+        )
+
+
 def test_test_release_rejects_training_finalist_without_auto_heal(tmp_path: Path) -> None:
     settings = make_settings(tmp_path)
     hybrids, deeps = _make_fixture(tmp_path)

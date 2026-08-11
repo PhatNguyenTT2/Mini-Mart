@@ -9,7 +9,7 @@ import pytest
 import torch
 
 from ai_service.config import MODEL_SCHEMA_VERSION
-from ai_service.contracts import RuleManifest, RunStatus, TrainingVariant
+from ai_service.contracts import RuleManifest, RunStatus, TerminalAction, TrainingVariant
 from ai_service.data.features import EmbeddingArtifact
 from ai_service.data.rules import RuleArtifact
 from ai_service.errors import (
@@ -125,6 +125,88 @@ def test_pipeline_maps_training_failures_to_terminal_summary(
         )
     )
     assert summary["terminal_action"] in {"failed", "interrupted"}
+
+
+def test_pipeline_transition_failure_is_terminalized_as_failed(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    settings = make_settings(tmp_path)
+    settings.train.objective = "sampled_softmax"
+    snapshot = make_snapshot(tmp_path)
+    embedding = EmbeddingArtifact(
+        manifest=SimpleNamespace(content_sha256="b" * 64),
+        artifact_dir=tmp_path / "features" / "embedding",
+        vectors=np.zeros((snapshot.manifest.num_items, settings.model.sbert_dim), dtype=np.float32),
+    )
+    rules = _rules(tmp_path, snapshot.manifest.content_sha256)
+
+    class Lifecycle:
+        status = RunStatus.STAGING
+
+        def __init__(self) -> None:
+            self.document = {"git_commit": "0" * 40}
+
+        @classmethod
+        def create(cls, run_dir: Path, **_kwargs: object) -> Lifecycle:
+            run_dir.mkdir(parents=True, exist_ok=True)
+            return cls()
+
+        def transition(self, _status: RunStatus, **_kwargs: object) -> None:
+            raise RuntimeError("transition persistence")
+
+        def transition_training_terminal(self, status: RunStatus, *, reason: str) -> None:
+            assert status is RunStatus.FAILED
+            self.status = status
+            self.document["status_reason"] = reason
+
+    lifecycle = Lifecycle()
+    monkeypatch.setattr(
+        pipeline, "RunLifecycle", SimpleNamespace(create=lambda *_a, **_k: lifecycle)
+    )
+    monkeypatch.setattr(pipeline, "build_purchase_training_index", lambda *_a, **_k: object())
+    monkeypatch.setattr(pipeline, "MixedNegativeSampler", lambda *_a, **_k: object())
+    monkeypatch.setattr(pipeline, "PurchaseBatchIterator", lambda *_a, **_k: object())
+    monkeypatch.setattr(pipeline, "HybridTwoTowerModel", lambda _settings: object())
+    monkeypatch.setattr(pipeline, "FullCatalogEvaluator", lambda *_a: object())
+
+    with pytest.raises(RuntimeError, match="transition persistence"):
+        pipeline._train(
+            settings,
+            snapshot,
+            embedding,
+            rules,
+            run_id="transition-failure",
+            device=torch.device("cpu"),
+            require_frozen_source=False,
+        )
+    summary = json.loads(
+        (tmp_path / "runs" / "transition-failure" / "training" / "summary.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    assert summary["terminal_action"] == "failed"
+    assert summary["terminal_reason"] == "RuntimeError"
+
+
+def test_terminal_summary_write_failure_is_reported_as_artifact_integrity(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    lifecycle = SimpleNamespace(status=RunStatus.TRAINING)
+    monkeypatch.setattr(
+        pipeline,
+        "_ensure_training_terminal_summary",
+        lambda *_args, **_kwargs: (_ for _ in ()).throw(OSError("disk failure")),
+    )
+
+    with pytest.raises(ArtifactIntegrityError, match="could not be terminalized") as raised:
+        pipeline._terminalize_training_session(
+            lifecycle,
+            tmp_path,
+            requested_action=TerminalAction.INTERRUPTED,
+            reason="RuntimeError",
+        )
+
+    assert isinstance(raised.value.__cause__, OSError)
 
 
 @pytest.mark.parametrize("failure_target", ["index", "sampler", "iterator", "model", "evaluator"])

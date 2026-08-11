@@ -7,9 +7,7 @@ import json
 import os
 import random
 import re
-import subprocess
 from argparse import Namespace
-from collections.abc import Sequence
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any, cast
@@ -78,6 +76,10 @@ from ai_service.export.onnx import export_onnx_models
 from ai_service.export.parity import verify_onnx_parity
 from ai_service.models.two_tower_wide_deep import HybridTwoTowerModel
 from ai_service.training.checkpoint import CheckpointManager
+from ai_service.training.provenance import (
+    require_frozen_source_revision,
+    resolve_source_revision,
+)
 from ai_service.training.run import RunLifecycle
 from ai_service.training.trainer import Trainer
 
@@ -187,55 +189,6 @@ def _seed_everything(seed: int) -> None:
         torch.backends.cudnn.benchmark = False
 
 
-_GIT_SHA_PATTERN = re.compile(r"(?:[0-9a-f]{40}|[0-9a-f]{64})\Z")
-
-
-def _git_output(arguments: Sequence[str]) -> str:
-    try:
-        result = subprocess.run(
-            ["git", *arguments],
-            cwd=Path(__file__).parents[4],
-            check=True,
-            capture_output=True,
-            text=True,
-            timeout=5,
-        )
-    except (OSError, subprocess.SubprocessError) as error:
-        command = "git " + " ".join(arguments)
-        raise ConfigurationError(f"repository provenance command failed: {command}") from error
-    return result.stdout.strip()
-
-
-def _resolve_git_commit() -> str:
-    commit = _git_output(("rev-parse", "HEAD"))
-    if _GIT_SHA_PATTERN.fullmatch(commit) is None:
-        raise ConfigurationError("repository HEAD is not a valid Git commit SHA")
-    return commit
-
-
-def _require_frozen_repository() -> str:
-    status = _git_output(("status", "--porcelain", "--untracked-files=normal"))
-    if status:
-        raise ConfigurationError("production training requires a clean Git worktree")
-    try:
-        upstream = _git_output(("rev-parse", "--abbrev-ref", "--symbolic-full-name", "@{u}"))
-        upstream_commit = _git_output(("rev-parse", "@{u}"))
-    except ConfigurationError as error:
-        raise ConfigurationError(
-            "production training requires a pushed branch with a configured upstream"
-        ) from error
-    commit = _resolve_git_commit()
-    if _GIT_SHA_PATTERN.fullmatch(upstream_commit) is None or upstream_commit != commit:
-        raise ConfigurationError(f"production branch {upstream!r} is not synchronized with HEAD")
-    return commit
-
-
-def _git_commit() -> str:
-    """Return a verified commit SHA for the run manifest."""
-
-    return _resolve_git_commit()
-
-
 def _ensure_training_terminal_summary(
     run_dir: Path,
     *,
@@ -263,6 +216,51 @@ def _ensure_training_terminal_summary(
             "epochs_completed": completed_epochs,
         },
     )
+
+
+def _terminalize_training_session(
+    lifecycle: RunLifecycle,
+    run_dir: Path,
+    *,
+    requested_action: TerminalAction,
+    reason: str,
+) -> None:
+    """Persist a terminal summary and lifecycle status after session failure."""
+
+    action = requested_action
+    status = RunStatus.FAILED if action is TerminalAction.FAILED else RunStatus.INTERRUPTED
+    if lifecycle.status is RunStatus.STAGING:
+        # STAGING cannot transition to INTERRUPTED by contract. A failure while
+        # entering TRAINING is therefore a failed setup, not an interrupted run.
+        action = TerminalAction.FAILED
+        status = RunStatus.FAILED
+    try:
+        _ensure_training_terminal_summary(run_dir, action=action, reason=reason)
+        lifecycle.transition_training_terminal(status, reason=reason)
+    except BaseException as error:
+        raise ArtifactIntegrityError("training failure could not be terminalized") from error
+
+
+def _require_resume_history(run_dir: Path, *, checkpoint_epoch: int) -> None:
+    """Reject a resume before transition unless its durable epoch history is intact."""
+
+    history_path = run_dir / "training" / "history.jsonl"
+    if not history_path.is_file():
+        raise ArtifactIntegrityError("resume checkpoint has no durable training history")
+    epochs: list[int] = []
+    try:
+        for line in history_path.read_text(encoding="utf-8").splitlines():
+            if not line.strip():
+                continue
+            document = json.loads(line)
+            epoch = document.get("epoch") if isinstance(document, dict) else None
+            if not isinstance(epoch, int):
+                raise ValueError("history epoch is invalid")
+            epochs.append(epoch)
+    except (OSError, ValueError) as error:
+        raise ArtifactIntegrityError("resume history contains an invalid epoch record") from error
+    if epochs != list(range(1, checkpoint_epoch + 1)):
+        raise ArtifactIntegrityError("resume history and checkpoint epochs differ")
 
 
 def _device(requested: str) -> torch.device:
@@ -363,7 +361,9 @@ def _train(
 ) -> tuple[HybridTwoTowerModel, PipelineState]:
     run_id = _validate_artifact_id(run_id, kind="run ID")
     run_dir = settings.data.artifact_root.resolve() / "runs" / run_id
-    git_commit = _require_frozen_repository() if require_frozen_source else _git_commit()
+    revision = (
+        require_frozen_source_revision() if require_frozen_source else resolve_source_revision()
+    )
     lineage = {
         "snapshot": snapshot.manifest.content_sha256,
         "embedding": embedding.manifest.content_sha256,
@@ -441,16 +441,37 @@ def _train(
             != settings.training_signature_sha256()
         ):
             raise ArtifactIntegrityError("resume run training signature differs")
+        if lifecycle.document.get("training_variant") != settings.train.training_variant.value:
+            raise ArtifactIntegrityError("resume run training variant differs")
+        if lifecycle.document.get("git_commit") != revision.commit_sha:
+            raise ArtifactIntegrityError(
+                "resume run Git commit differs from the frozen source revision"
+            )
+        resume_checkpoint = run_dir / "checkpoints" / "last.pt"
+        resume_state = CheckpointManager.load(
+            resume_checkpoint,
+            model=model,
+            expected_lineage=lineage,
+            expected_training_signature=settings.training_signature_sha256(),
+            expected_comparison_signature=settings.comparison_signature_sha256(),
+            expected_training_variant=settings.train.training_variant,
+            expected_checkpoint_kind="last",
+            expected_run_id=run_id,
+            expected_model_schema_version=MODEL_SCHEMA_VERSION,
+            require_resume_state=True,
+        )
+        _require_resume_history(run_dir, checkpoint_epoch=int(resume_state["epoch"]))
     else:
+        resume_checkpoint = None
         lifecycle = RunLifecycle.create(
             run_dir,
             settings=settings,
             lineage=lineage,
-            git_commit=git_commit,
+            git_commit=revision.commit_sha,
         )
-    lifecycle.transition(RunStatus.TRAINING)
 
     try:
+        lifecycle.transition(RunStatus.TRAINING)
         trainer = Trainer(
             model,
             settings=settings,
@@ -464,11 +485,7 @@ def _train(
             embedding.vectors,
             evaluator,
             lineage,
-            resume_from=(
-                run_dir / "checkpoints" / "last.pt"
-                if resume and (run_dir / "checkpoints" / "last.pt").is_file()
-                else None
-            ),
+            resume_from=resume_checkpoint,
         )
         release_checkpoint = result.checkpoint_path
         state = PipelineState(
@@ -489,18 +506,30 @@ def _train(
         _write_state(settings, state)
     except CatastrophicTrainingError as error:
         reason = str(error) or type(error).__name__
-        _ensure_training_terminal_summary(run_dir, action=TerminalAction.FAILED, reason=reason)
-        lifecycle.transition_training_terminal(RunStatus.FAILED, reason=reason)
+        _terminalize_training_session(
+            lifecycle,
+            run_dir,
+            requested_action=TerminalAction.FAILED,
+            reason=reason,
+        )
         raise
     except (TrainingInterruptedError, KeyboardInterrupt) as error:
         reason = str(error) or type(error).__name__
-        _ensure_training_terminal_summary(run_dir, action=TerminalAction.INTERRUPTED, reason=reason)
-        lifecycle.transition_training_terminal(RunStatus.INTERRUPTED, reason=reason)
+        _terminalize_training_session(
+            lifecycle,
+            run_dir,
+            requested_action=TerminalAction.INTERRUPTED,
+            reason=reason,
+        )
         raise
     except BaseException as error:
         reason = type(error).__name__
-        _ensure_training_terminal_summary(run_dir, action=TerminalAction.INTERRUPTED, reason=reason)
-        lifecycle.transition_training_terminal(RunStatus.INTERRUPTED, reason=reason)
+        _terminalize_training_session(
+            lifecycle,
+            run_dir,
+            requested_action=TerminalAction.INTERRUPTED,
+            reason=reason,
+        )
         raise
     return model, state
 
@@ -746,6 +775,8 @@ def _evaluate_pair(
         raise ArtifactIntegrityError("paired evaluation requires matching seeds")
     if hybrid.settings.comparison_signature_sha256() != deep.settings.comparison_signature_sha256():
         raise ArtifactIntegrityError("paired evaluation requires matching comparison signatures")
+    if hybrid.lifecycle.document.get("git_commit") != deep.lifecycle.document.get("git_commit"):
+        raise ArtifactIntegrityError("paired evaluation requires matching source revisions")
     lineage = {
         "snapshot": hybrid.snapshot.manifest.content_sha256,
         "embedding": hybrid.embedding.manifest.content_sha256,

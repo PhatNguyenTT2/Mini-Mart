@@ -36,6 +36,7 @@ class FinalistRunRecord:
     seed: int
     variant: TrainingVariant
     lineage: dict[str, str]
+    git_commit: str
 
 
 @dataclass(frozen=True)
@@ -104,6 +105,7 @@ def _load_finalist_run(run_dir: Path, expected_variant: TrainingVariant) -> Fina
         seed=settings.train.seed,
         variant=expected_variant,
         lineage=dict(lineage),
+        git_commit=lifecycle.document["git_commit"],
     )
 
 
@@ -346,6 +348,8 @@ def evaluate_three_seed(
         raise DataIntegrityError("release gate requires three distinct runs per variant")
     if any(record.lineage != hybrid[0].lineage for record in (*hybrid[1:], *deep)):
         raise ArtifactIntegrityError("all six finalists must share full lineage")
+    if any(record.git_commit != hybrid[0].git_commit for record in (*hybrid[1:], *deep)):
+        raise ArtifactIntegrityError("all six finalists must share one frozen source revision")
     signatures = {record.settings.comparison_signature_sha256() for record in (*hybrid, *deep)}
     if len(signatures) != 1:
         raise ArtifactIntegrityError("all six finalists must share comparison signature")

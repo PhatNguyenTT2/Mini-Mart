@@ -197,7 +197,9 @@ class CheckpointManager:
         expected_comparison_signature: str | None = None,
         expected_training_variant: TrainingVariant | None = None,
         expected_checkpoint_kind: str | None = None,
+        expected_run_id: str | None = None,
         expected_model_schema_version: str = MODEL_SCHEMA_VERSION,
+        require_resume_state: bool = False,
         restore_rng: bool = False,
     ) -> dict[str, Any]:
         manifest_path = path.with_suffix(path.suffix + ".manifest.json")
@@ -265,6 +267,8 @@ class CheckpointManager:
             and manifest.checkpoint_kind != expected_checkpoint_kind
         ):
             raise ArtifactIntegrityError("checkpoint kind mismatch")
+        if expected_run_id is not None and manifest.run_id != expected_run_id:
+            raise ArtifactIntegrityError("checkpoint run ID mismatch")
         if state.get("lineage") != manifest.parent_sha256:
             raise ArtifactIntegrityError("checkpoint lineage state mismatch")
         payload_metrics = state.get("metrics")
@@ -293,17 +297,27 @@ class CheckpointManager:
             epoch=manifest.best_epoch,
             checkpoint_kind=manifest.checkpoint_kind,
         )
-        if restore_rng and (
-            optimizer is None
-            or scheduler is None
-            or scaler is None
-            or state.get("optimizer") is None
+        rng = state.get("rng")
+        resume_sections_missing = (
+            state.get("optimizer") is None
             or state.get("scheduler") is None
             or state.get("scaler") is None
-            or not isinstance(state.get("rng"), dict)
-        ):
+        )
+        rng_state_missing = not isinstance(rng, dict) or not {
+            "python",
+            "numpy",
+            "torch",
+            "cuda",
+        } <= set(rng)
+        if (require_resume_state or restore_rng) and resume_sections_missing:
             raise ArtifactIntegrityError(
                 "resume requires optimizer, scheduler, scaler, RNG, and stopping state"
+            )
+        if (require_resume_state or restore_rng) and rng_state_missing:
+            raise ArtifactIntegrityError("resume RNG state is missing or incomplete")
+        if restore_rng and (optimizer is None or scheduler is None or scaler is None):
+            raise ArtifactIntegrityError(
+                "resume restore requires optimizer, scheduler, and scaler instances"
             )
         try:
             model.load_state_dict(state["model"], strict=True)

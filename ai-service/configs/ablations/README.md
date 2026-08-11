@@ -50,3 +50,7 @@ aggregate VAL 3+3 → TEST for all three pairs → aggregate TEST 3+3
 
 The complete command block is maintained in the root `ai-service/README.md`; do
 not substitute shortened IDs or run a later seed after a failed gate.
+
+Resume is allowed only for an `INTERRUPTED` run with the same config, seed, lineage, and exact
+Git commit recorded in its run manifest. Do not change v3/v4 or tracked documentation after the
+campaign source freeze; a changed source revision requires a new campaign review and run IDs.

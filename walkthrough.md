@@ -4,25 +4,27 @@
 
 `BLOCKED_BEFORE_PRODUCTION_TRAINING`.
 
-Phase A provenance/lifecycle hotfix has passed the full local quality gate, but
-source freeze is not complete. Production training remains blocked until the
-hotfix is committed, pushed, and the worktree is clean. No production seed has
-been created.
+Phase 0 provenance/lifecycle hardening is implemented and has passed the full
+quality gate. Production training remains blocked until the resulting revision
+is confirmed clean and synchronized with its upstream, the production
+environment is configured, and the final readiness gate is rerun. No
+production seed has been created.
 
 Phase 5A–5D is complete. `Trainer.fit()` is now orchestration-only: it
 preflights, restores state, delegates one epoch to `_train_epoch()`, validates,
 applies stopping, publishes checkpoints/history, and writes the terminal
-summary. Phase A additionally preflights training inputs before run publication,
-requires a verified Git commit, and terminalizes setup/state-publication errors.
-The production seed runs do not yet exist and Hybrid victory is not established.
+summary. Phase 0 additionally centralizes Git provenance, publishes lifecycle
+directories atomically, locks resume to the recorded commit, and terminalizes
+transition/setup failures. The production seed runs do not yet exist and Hybrid
+victory is not established.
 
 ## Verification snapshot (2026-08-11)
 
-- Full suite: **330 passed, 2 fixed-runner skips**.
-- Phase A targeted contracts: **73 passed, 1 warning**.
-- Branch coverage: **90.06%** (`--cov-branch`, threshold 85%).
-- Critical files: checkpoint 98.55%, report 90.83%, bundle 98.79%, release
-  90.69%, trainer 87.35%, pipeline 86.88%.
+- Full suite: **352 passed, 2 fixed-runner skips**.
+- Phase 0 and campaign-freeze targeted contracts: **77 passed**.
+- Branch coverage: **89.99%** (`--cov-branch`, threshold 85%).
+- Critical files: checkpoint 97.24%, report 90.83%, bundle 98.79%, release
+  90.85%, trainer 87.35%, pipeline 86.44%.
 - Ruff format/check and mypy pass; `scripts/check_critical_coverage.py` passes.
 - Static scans are clean: no Pareto/release-candidate checkpoints,
   `scores_by_user`, legacy Wide scaling, Softplus, or release signature
@@ -81,14 +83,16 @@ $coverageJson = Join-Path $env:TEMP "ai-service-phase5-final.json"
 
 ## Next execution sequence
 
-1. Train Deep seed 42, then Hybrid seed 42.
-2. Evaluate the validation pair; stop immediately on any catastrophic signal,
+1. Confirm the Phase 0 revision is committed, pushed, clean, and identical to
+   its upstream; then run the production-environment gate.
+2. Train Deep seed 42, then Hybrid seed 42.
+3. Evaluate the validation pair; stop immediately on any catastrophic signal,
    GAUC below 0.50, or failed single-seed Victory Gate.
-3. Only after seed 42 passes, repeat Deep → Hybrid → validation for seeds 2027
+4. Only after seed 42 passes, repeat Deep → Hybrid → validation for seeds 2027
    and 31415, then run aggregate validation 3+3 without sealing.
-4. Evaluate TEST for all three pairs, run aggregate TEST, seal only the selected
+5. Evaluate TEST for all three pairs, run aggregate TEST, seal only the selected
    Hybrid, export and verify the v5 bundle.
-5. Run ONNX parity and the fixed-runner benchmark. Only then may the document
+6. Run ONNX parity and the fixed-runner benchmark. Only then may the document
    claim a Hybrid victory.
 
 The source-level execution plan is maintained in

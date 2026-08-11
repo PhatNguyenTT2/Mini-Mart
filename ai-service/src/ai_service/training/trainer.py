@@ -386,6 +386,8 @@ class Trainer:
             expected_training_variant=self.training_variant,
             expected_model_schema_version=MODEL_SCHEMA_VERSION,
             expected_checkpoint_kind="last",
+            expected_run_id=self.run_dir.name,
+            require_resume_state=True,
             restore_rng=True,
         )
         stopping_state = state.get("stopping_state")

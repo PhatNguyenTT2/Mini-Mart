@@ -141,6 +141,22 @@ validation winner is not a substitute for the other two TEST pairs. `run-all` re
 mock smoke only: it trains one bounded epoch and never publishes evaluation, release, seal, or
 bundle artifacts.
 
+An interrupted production run may be resumed only with an intact, strict-loadable
+`checkpoints/last.pt` plus its manifest/history, and with the same run ID, variant, seed, config,
+artifact lineage, and frozen Git commit recorded in its run manifest:
+
+```powershell
+.\.venv\Scripts\python.exe -m ai_service.cli train `
+  --run-id <interrupted-run-id> --variant <same-variant> `
+  --config <same-config> --snapshot-id benchmark-v3-20260810-9088b0f3 `
+  --seed <same-seed> --device cuda --resume
+```
+
+`FAILED` runs cannot be resumed or reused. If an OOM requires changing batch size or any
+signature-bearing setting, stop the campaign and create a new config and run IDs after a new
+source-freeze review. Do not edit tracked source, config, or documentation between production
+runs.
+
 Every stage is fail-closed. A snapshot, SBERT, training, evaluation, parity, or metric-gate failure
 cannot silently switch adapters or publish a serving bundle.
 

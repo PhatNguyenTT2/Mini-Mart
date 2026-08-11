@@ -27,12 +27,14 @@ def _loaded(
     embedding = SimpleNamespace(manifest=SimpleNamespace(content_sha256=lineage["embedding"]))
     rules = SimpleNamespace(manifest=SimpleNamespace(content_sha256=lineage["rules"]))
     state = SimpleNamespace(checkpoint_path="checkpoint")
+    lifecycle = SimpleNamespace(document={"git_commit": "0" * 40})
     return SimpleNamespace(
         settings=settings,
         snapshot=snapshot,
         embedding=embedding,
         rules=rules,
         state=state,
+        lifecycle=lifecycle,
     )
 
 

@@ -241,7 +241,9 @@ def test_pipeline_export_preflight_guards(tmp_path: Path, monkeypatch: pytest.Mo
         pipeline._export(settings, dummy, embedding, rules, dummy, state)
 
 
-@pytest.mark.parametrize("mutation", ["status", "lineage", "signature"])
+@pytest.mark.parametrize(
+    "mutation", ["status", "lineage", "signature", "variant", "commit", "checkpoint"]
+)
 def test_pipeline_resume_preflight_guards(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch, mutation: str
 ) -> None:
@@ -267,14 +269,26 @@ def test_pipeline_resume_preflight_guards(
         document={
             "lineage": dict(LINEAGE),
             "training_signature_sha256": settings.training_signature_sha256(),
+            "training_variant": settings.train.training_variant.value,
+            "git_commit": "0" * 40,
         },
+    )
+    monkeypatch.setattr(
+        pipeline, "resolve_source_revision", lambda: SimpleNamespace(commit_sha="0" * 40)
     )
     if mutation == "lineage":
         lifecycle.document["lineage"] = {**LINEAGE, "rules": "f" * 64}
     elif mutation == "signature":
         lifecycle.document["training_signature_sha256"] = "f" * 64
+    elif mutation == "variant":
+        lifecycle.document["training_variant"] = TrainingVariant.DEEP_ONLY.value
+    elif mutation == "commit":
+        lifecycle.document["git_commit"] = "1" * 40
     monkeypatch.setattr(pipeline.RunLifecycle, "load", lambda _path: lifecycle)
-    with pytest.raises(ArtifactIntegrityError, match=r"only an interrupted|differs"):
+    with pytest.raises(
+        ArtifactIntegrityError,
+        match=r"only an interrupted|differs|checkpoint manifest missing",
+    ):
         pipeline._train(
             settings,
             snapshot,
@@ -285,6 +299,21 @@ def test_pipeline_resume_preflight_guards(
             resume=True,
             require_frozen_source=False,
         )
+
+
+def test_resume_history_preflight_requires_contiguous_checkpoint_epoch(tmp_path: Path) -> None:
+    run_dir = tmp_path / "runs" / "resume"
+    history_path = run_dir / "training" / "history.jsonl"
+    history_path.parent.mkdir(parents=True)
+    history_path.write_text('{"epoch":1}\n{"epoch":2}\n', encoding="utf-8")
+
+    pipeline._require_resume_history(run_dir, checkpoint_epoch=2)
+    with pytest.raises(ArtifactIntegrityError, match="epochs differ"):
+        pipeline._require_resume_history(run_dir, checkpoint_epoch=3)
+
+    history_path.write_text('{"epoch":1}\nnot-json\n', encoding="utf-8")
+    with pytest.raises(ArtifactIntegrityError, match="invalid epoch record"):
+        pipeline._require_resume_history(run_dir, checkpoint_epoch=2)
 
 
 def test_pipeline_test_pair_validation_gate_guards(
@@ -307,6 +336,7 @@ def test_pipeline_test_pair_validation_gate_guards(
             ),
             rules=SimpleNamespace(manifest=SimpleNamespace(content_sha256=lineage["rules"])),
             state=SimpleNamespace(checkpoint_path="checkpoint"),
+            lifecycle=SimpleNamespace(document={"git_commit": "0" * 40}),
         )
 
     hybrid = loaded()
@@ -318,6 +348,16 @@ def test_pipeline_test_pair_validation_gate_guards(
             hybrid if kwargs.get("expected_variant") is TrainingVariant.HYBRID else deep
         ),
     )
+    deep.lifecycle.document["git_commit"] = "1" * 40
+    with pytest.raises(ArtifactIntegrityError, match="source revisions"):
+        pipeline._evaluate_pair(
+            base,
+            hybrid_run_id="hybrid",
+            deep_run_id="deep",
+            split=SplitName.VAL,
+            device=torch.device("cpu"),
+        )
+    deep.lifecycle.document["git_commit"] = "0" * 40
     release_dir = tmp_path / "releases" / signature
     release_dir.mkdir(parents=True)
     report = AggregateReleaseReport(

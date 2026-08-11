@@ -111,6 +111,30 @@ def test_checkpoint_payload_corruption_is_rejected_before_deserialize(tmp_path: 
         CheckpointManager.load(path, model=args["model"])  # type: ignore[arg-type]
 
 
+def test_checkpoint_resume_preflight_requires_exact_run_and_full_state(tmp_path: Path) -> None:
+    path = tmp_path / "checkpoints" / "last.pt"
+    args = _checkpoint_args(tmp_path)
+    CheckpointManager.save(path, **args)  # type: ignore[arg-type]
+
+    with pytest.raises(ArtifactIntegrityError, match="run ID mismatch"):
+        CheckpointManager.load(
+            path,
+            model=args["model"],  # type: ignore[arg-type]
+            expected_run_id="another-run",
+            require_resume_state=True,
+        )
+
+    rewrite_torch_payload(path, lambda payload: dict(payload, optimizer=None))
+    _refresh_payload_manifest(path)
+    with pytest.raises(ArtifactIntegrityError, match="resume requires optimizer"):
+        CheckpointManager.load(
+            path,
+            model=args["model"],  # type: ignore[arg-type]
+            expected_run_id="checkpoint-corruption",
+            require_resume_state=True,
+        )
+
+
 @pytest.mark.parametrize(
     ("field", "value", "message"),
     [
