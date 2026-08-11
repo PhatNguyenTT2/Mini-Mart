@@ -83,6 +83,11 @@ def build_parser() -> argparse.ArgumentParser:
     gate_cmd.add_argument("--hybrid-run-ids", nargs=3, required=True)
     gate_cmd.add_argument("--deep-run-ids", nargs=3, required=True)
 
+    diagnostic_cmd = subparsers.add_parser("compare-deep-ablations")
+    diagnostic_cmd.add_argument("--control-run-id", required=True)
+    diagnostic_cmd.add_argument("--candidate-run-ids", nargs=3, required=True)
+    diagnostic_cmd.add_argument("--device", choices=("cpu", "cuda"), default="cuda")
+
     # 5. export command parser
     export_cmd = subparsers.add_parser("export")
     export_cmd.add_argument("--run-id", required=True)

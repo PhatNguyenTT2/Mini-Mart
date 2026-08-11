@@ -42,6 +42,9 @@ def _metrics(score: float, baseline: float) -> dict[str, np.ndarray]:
         "deep_hr": control,
         "deep_ndcg": control,
         "deep_gauc": control,
+        "persona_hr": control,
+        "persona_ndcg": control,
+        "persona_gauc": control,
         "apriori_hr": control,
         "apriori_ndcg": control,
         "apriori_gauc": control,
@@ -51,9 +54,9 @@ def _metrics(score: float, baseline: float) -> dict[str, np.ndarray]:
         "item_cf_hr": control,
         "item_cf_ndcg": control,
         "item_cf_gauc": control,
-        "noisy_hybrid_hr": candidate,
-        "noisy_hybrid_ndcg": candidate,
-        "noisy_hybrid_gauc": candidate,
+        "noisy_hybrid_hr": control,
+        "noisy_hybrid_ndcg": control,
+        "noisy_hybrid_gauc": control,
         "random_hr": np.full((10, 4), 0.5, dtype=np.float64),
         "random_ndcg": np.full((10, 4), 0.5, dtype=np.float64),
         "random_gauc": np.full((10, 4), 0.5, dtype=np.float64),
@@ -248,7 +251,7 @@ def test_pairing_seam_loads_verified_hybrid_owned_artifacts(tmp_path: Path) -> N
 def test_release_rejects_ambient_comparison_signature_mismatch(tmp_path: Path) -> None:
     hybrids, deeps = _make_fixture(tmp_path)
     settings = make_settings(tmp_path)
-    settings.eval.hr_guardrail_delta = -0.5
+    settings.eval.aggregate_hr_min_delta = 0.5
     with pytest.raises(ArtifactIntegrityError, match="ambient settings comparison signature"):
         evaluate_three_seed(
             split=SplitName.VAL,

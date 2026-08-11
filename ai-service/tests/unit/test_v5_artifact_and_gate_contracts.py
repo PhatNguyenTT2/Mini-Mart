@@ -42,6 +42,9 @@ def _typed_metrics(users: int = 3) -> dict[str, np.ndarray]:
         "deep_hr",
         "deep_ndcg",
         "deep_gauc",
+        "persona_hr",
+        "persona_ndcg",
+        "persona_gauc",
         "apriori_hr",
         "apriori_ndcg",
         "apriori_gauc",
@@ -90,6 +93,7 @@ def test_single_seed_gate_emits_complete_matrix() -> None:
     hybrid = _evaluation(ModelVariant.HYBRID, 0.90, 0.80, 0.80)
     random = tuple(_evaluation(ModelVariant.RANDOM, 0.01, 0.01, 0.50) for _ in range(10))
     comparison = BaselineComparisonReport(
+        persona_only=_evaluation(ModelVariant.PERSONA_ONLY, 0.25, 0.30, 0.55),
         apriori_only=_evaluation(ModelVariant.ITEM_CF, 0.30, 0.40, 0.60),
         sbert_centroid=_evaluation(ModelVariant.SBERT_CENTROID, 0.40, 0.45, 0.65),
         item_cf=_evaluation(ModelVariant.ITEM_CF, 0.50, 0.35, 0.70),
@@ -121,7 +125,7 @@ def test_single_seed_gate_emits_complete_matrix() -> None:
         bootstrap_samples=32,
     )
     assert matrix.all_passed
-    assert len(matrix.gates) == 6
+    assert len(matrix.gates) == 7
     assert (
         matrix.sha256
         == hashlib.sha256(
@@ -132,6 +136,70 @@ def test_single_seed_gate_emits_complete_matrix() -> None:
             ).encode()
         ).hexdigest()
     )
+
+
+@pytest.mark.parametrize(
+    ("competitor", "metric_index", "gate_name"),
+    [
+        ("item_cf", 2, "gauc_domination"),
+        ("persona_only", 0, "hr_domination"),
+        ("sbert_centroid", 1, "ndcg_domination"),
+    ],
+)
+def test_single_seed_gate_rejects_each_metric_strongest_competitor(
+    competitor: str,
+    metric_index: int,
+    gate_name: str,
+) -> None:
+    baseline_values = {
+        name: [0.20, 0.20, 0.60]
+        for name in (
+            "persona_only",
+            "apriori_only",
+            "sbert_centroid",
+            "item_cf",
+            "deep_only",
+            "noisy_hybrid",
+        )
+    }
+    baseline_values[competitor][metric_index] = 0.90
+    variants = {
+        "persona_only": ModelVariant.PERSONA_ONLY,
+        "apriori_only": ModelVariant.WIDE_ONLY,
+        "sbert_centroid": ModelVariant.SBERT_CENTROID,
+        "item_cf": ModelVariant.ITEM_CF,
+        "deep_only": ModelVariant.DEEP_ONLY,
+        "noisy_hybrid": ModelVariant.NOISY_HYBRID,
+    }
+    comparison = BaselineComparisonReport(
+        hybrid=_evaluation(ModelVariant.HYBRID, 0.80, 0.70, 0.76),
+        random_seed_results=tuple(
+            _evaluation(ModelVariant.RANDOM, 0.01, 0.01, 0.50) for _ in range(10)
+        ),
+        **{name: _evaluation(variants[name], *values) for name, values in baseline_values.items()},
+    )
+    matrix = evaluate_single_seed(
+        SingleSeedGateInputs(
+            comparison=comparison,
+            cold_parity=ColdParityReport(
+                max_abs_wide_logit=0.0,
+                max_abs_hybrid_minus_deep=0.0,
+                cold_only_order_equality=True,
+                deep_cold_hr_at_k=0.1,
+                deep_cold_ndcg_at_k=0.1,
+                hybrid_cold_hr_at_k=0.1,
+                hybrid_cold_ndcg_at_k=0.1,
+                passed=True,
+            ),
+            semantic_traps=SemanticTrapReport(passed=10, total=10, all_passed=True, results=()),
+            seed=42,
+            split=SplitName.VAL,
+            comparison_signature="b" * 64,
+        ),
+        bootstrap_samples=32,
+    )
+    assert {gate.name: gate for gate in matrix.gates}[gate_name].passed is False
+    assert matrix.all_passed is False
 
 
 def test_evaluation_artifact_set_is_atomic_and_hash_checked(tmp_path: Path) -> None:
@@ -152,6 +220,9 @@ def test_evaluation_artifact_set_is_atomic_and_hash_checked(tmp_path: Path) -> N
                 "deep_hr",
                 "deep_ndcg",
                 "deep_gauc",
+                "persona_hr",
+                "persona_ndcg",
+                "persona_gauc",
                 "apriori_hr",
                 "apriori_ndcg",
                 "apriori_gauc",

@@ -17,19 +17,27 @@ class ItemTower(nn.Module):
         self.max_price = settings.data.num_price_buckets
         self.max_item = settings.data.num_items
         self.use_item_id_residual = settings.model.use_item_id_residual
+        self.use_price_features = settings.model.use_price_features
         self.category_embedding = nn.Embedding(
             self.max_category + 1,
             settings.model.category_emb_dim,
             padding_idx=0,
         )
-        self.price_embedding = nn.Embedding(
-            self.max_price + 1,
-            settings.model.price_emb_dim,
-            padding_idx=0,
-        )
+        self.price_embedding: nn.Embedding | None = None
+        if self.use_price_features:
+            self.price_embedding = nn.Embedding(
+                self.max_price + 1,
+                settings.model.price_emb_dim,
+                padding_idx=0,
+            )
         self.sbert_projection = nn.Linear(settings.model.sbert_dim, 64)
         self.network = nn.Sequential(
-            nn.Linear(64 + settings.model.category_emb_dim + settings.model.price_emb_dim, 64),
+            nn.Linear(
+                64
+                + settings.model.category_emb_dim
+                + (settings.model.price_emb_dim if self.use_price_features else 0),
+                64,
+            ),
             nn.ReLU(),
             nn.Linear(64, settings.model.item_emb_dim),
         )
@@ -51,14 +59,10 @@ class ItemTower(nn.Module):
         item_idx: torch.Tensor | None = None,
         is_cold: torch.Tensor | None = None,
     ) -> torch.Tensor:
-        features = torch.cat(
-            (
-                self.sbert_projection(sbert),
-                self.category_embedding(category_idx),
-                self.price_embedding(price_idx),
-            ),
-            dim=-1,
-        )
+        feature_parts = [self.sbert_projection(sbert), self.category_embedding(category_idx)]
+        if self.price_embedding is not None:
+            feature_parts.append(self.price_embedding(price_idx))
+        features = torch.cat(feature_parts, dim=-1)
         encoded = self.network(features)
         if self.use_item_id_residual and item_idx is not None:
             residual = self.item_embedding(item_idx + 1) * torch.sigmoid(self.residual_gate)

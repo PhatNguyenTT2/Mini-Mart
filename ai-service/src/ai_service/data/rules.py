@@ -17,7 +17,11 @@ import numpy as np
 import torch
 
 from ai_service.config import Settings
-from ai_service.contracts import RuleManifest
+from ai_service.contracts import (
+    RULE_COVERAGE_SEMANTICS_VERSION,
+    RuleCoverageEvidence,
+    RuleManifest,
+)
 from ai_service.data.snapshot import Snapshot
 from ai_service.errors import ArtifactIntegrityError, DataIntegrityError
 
@@ -165,17 +169,114 @@ class RuleStore:
         return lifts, present
 
 
+def _build_rule_coverage(
+    snapshot: Snapshot,
+    rules: Sequence[tuple[int, int, float, float, float, int]],
+) -> RuleCoverageEvidence:
+    """Derive organic/trap rule coverage from immutable snapshot evidence."""
+    events = np.concatenate(
+        [
+            snapshot.train_df.internal_product_id.to_numpy(np.int64),
+            snapshot.val_df.internal_product_id.to_numpy(np.int64),
+            snapshot.test_df.internal_product_id.to_numpy(np.int64),
+        ]
+    )
+    origin_frames = []
+    for frame in (snapshot.train_df, snapshot.val_df, snapshot.test_df):
+        if "event_origin" in frame:
+            origin_frames.append(frame.event_origin.astype(str).to_numpy())
+        else:
+            origin_frames.append(np.full(len(frame), "organic", dtype=object))
+    origins = np.concatenate(origin_frames)
+    fixture_items = set(int(value) for value in events[origins == "semantic_trap"])
+    organic_rules = [
+        rule
+        for rule in rules
+        if int(rule[0]) not in fixture_items and int(rule[1]) not in fixture_items
+    ]
+    trap_rules = [rule for rule in rules if rule not in organic_rules]
+    organic_items = {int(value) for rule in organic_rules for value in rule[:2]}
+    train = snapshot.train_df
+    organic_train = train[train.event_type.astype(str) == "purchase"]
+    if "event_origin" in organic_train:
+        organic_train = organic_train[organic_train.event_origin.astype(str) == "organic"]
+    latest = organic_train.sort_values(["event_ts", "event_id"], kind="stable").drop_duplicates(
+        "internal_user_id", keep="last"
+    )
+    organic_val = snapshot.val_df[snapshot.val_df.event_type.astype(str) == "purchase"]
+    if "event_origin" in organic_val:
+        organic_val = organic_val[organic_val.event_origin.astype(str) == "organic"]
+    seen = organic_train.groupby("internal_user_id").internal_product_id.apply(set).to_dict()
+    eligible = {
+        int(str(user)): group.internal_product_id.astype(int)
+        .isin(set(seen.get(int(str(user)), set())))
+        .eq(False)
+        .any()
+        for user, group in organic_val.groupby("internal_user_id")
+    }
+    eligible_users = {user for user, is_eligible in eligible.items() if is_eligible}
+    rule_sources = {int(rule[0]) for rule in organic_rules}
+    latest_eligible = latest[latest.internal_user_id.isin(eligible_users)]
+    covered = int(latest_eligible.internal_product_id.astype(int).isin(rule_sources).sum())
+    total_directed = len(rules)
+    non_trap_directed = len(organic_rules)
+    trap_directed = len(trap_rules)
+    warm_count = max(1, snapshot.manifest.num_items - len(snapshot.cold_item_ids))
+    return RuleCoverageEvidence(
+        total_directed_rules=total_directed,
+        non_trap_directed_rules=non_trap_directed,
+        trap_anchored_directed_rules=trap_directed,
+        trap_anchored_rule_fraction=trap_directed / max(1, total_directed),
+        distinct_organic_rule_items=len(organic_items),
+        eligible_val_context_users=len(eligible_users),
+        val_context_users_with_rule=covered,
+        val_context_rule_coverage=covered / max(1, len(eligible_users)),
+        full_catalog_organic_pair_coverage=non_trap_directed
+        / max(1, warm_count * (warm_count - 1)),
+    )
+
+
 @dataclass(frozen=True)
 class RuleArtifact:
     store: RuleStore
     manifest: RuleManifest
     artifact_dir: Path
 
-    def require_training_capability(self) -> RuleStore:
+    def require_training_capability(self, settings: Settings | None = None) -> RuleStore:
         if not getattr(self.manifest, "has_full_statistics", False):
             raise ArtifactIntegrityError(
                 "rule artifact missing full statistics required for training"
             )
+        if settings is not None and settings.data.rule_feature_schema_version == "3.0.0":
+            coverage = self.manifest.coverage
+            if (
+                self.manifest.feature_schema_version != "3.0.0"
+                or self.manifest.coverage_semantics_version != RULE_COVERAGE_SEMANTICS_VERSION
+                or coverage is None
+            ):
+                raise ArtifactIntegrityError(
+                    "rule artifact missing organic coverage evidence required for training"
+                )
+            if coverage.non_trap_directed_rules < settings.data.minimum_non_trap_directed_rules:
+                raise ArtifactIntegrityError("non-trap rule coverage is below training threshold")
+            if (
+                coverage.distinct_organic_rule_items
+                < settings.data.minimum_distinct_organic_rule_items
+            ):
+                raise ArtifactIntegrityError(
+                    "distinct organic rule coverage is below training threshold"
+                )
+            if coverage.val_context_rule_coverage < settings.data.minimum_val_context_rule_coverage:
+                raise ArtifactIntegrityError(
+                    "VAL context rule coverage is below training threshold"
+                )
+            if (
+                coverage.trap_anchored_rule_fraction
+                > settings.data.maximum_trap_anchored_rule_fraction
+            ):
+                raise ArtifactIntegrityError(
+                    "trap-anchored rule fraction exceeds training threshold"
+                )
         return self.store
 
 
@@ -233,22 +334,36 @@ class AprioriRuleMiner:
             )
         )
         checksum = hashlib.sha256(payload).hexdigest()
+        coverage = None
+        feature_schema_version = self.settings.data.rule_feature_schema_version
+        if feature_schema_version == "3.0.0":
+            coverage = _build_rule_coverage(snapshot, rules)
         identity = hashlib.sha256(
             json.dumps(
                 {
-                    "artifact_kind": "rule-v2-fullstats",
+                    "artifact_kind": "rule-v3-organic-coverage"
+                    if feature_schema_version == "3.0.0"
+                    else "rule-v2-fullstats",
                     "snapshot_sha256": snapshot.manifest.content_sha256,
                     "content_sha256": checksum,
-                    "feature_schema_version": "2.0.0",
+                    "feature_schema_version": feature_schema_version,
                     "has_full_statistics": True,
                     "min_count": self.settings.data.min_rule_count,
                     "min_lift": self.settings.data.min_rule_lift,
+                    "coverage_semantics_version": RULE_COVERAGE_SEMANTICS_VERSION
+                    if coverage is not None
+                    else None,
+                    "coverage": coverage.model_dump(mode="json") if coverage is not None else None,
                 },
                 sort_keys=True,
                 separators=(",", ":"),
             ).encode("utf-8")
         ).hexdigest()
-        artifact_id = artifact_id or f"{snapshot.manifest.artifact_id}-rules-v2-{identity[:12]}"
+        artifact_id = artifact_id or (
+            f"{snapshot.manifest.artifact_id}-rules-v3-{identity[:12]}"
+            if feature_schema_version == "3.0.0"
+            else f"{snapshot.manifest.artifact_id}-rules-v2-{identity[:12]}"
+        )
         manifest = RuleManifest(
             artifact_id=artifact_id,
             content_sha256=checksum,
@@ -259,8 +374,12 @@ class AprioriRuleMiner:
             min_count=self.settings.data.min_rule_count,
             min_lift=self.settings.data.min_rule_lift,
             q99_log_lift=store.q99_log_lift,
-            feature_schema_version="2.0.0",
+            feature_schema_version=feature_schema_version,
             has_full_statistics=True,
+            coverage_semantics_version=RULE_COVERAGE_SEMANTICS_VERSION
+            if coverage is not None
+            else None,
+            coverage=coverage,
         )
         destination = self.settings.data.artifact_root.resolve() / "rules" / artifact_id
         if destination.exists():
@@ -312,6 +431,14 @@ def load_rule_artifact(path: Path, num_items: int) -> RuleArtifact:
         raise ArtifactIntegrityError("rule manifest snapshot lineage mismatch")
     if manifest.num_directed_rules < 0 or manifest.train_basket_count < 0:
         raise ArtifactIntegrityError("rule manifest counts are invalid")
+    if manifest.feature_schema_version == "3.0.0":
+        coverage = manifest.coverage
+        if coverage is None or coverage.total_directed_rules != manifest.num_directed_rules:
+            raise ArtifactIntegrityError("v3 rule coverage evidence is missing or inconsistent")
+        if coverage.trap_anchored_directed_rules + coverage.non_trap_directed_rules != (
+            manifest.num_directed_rules
+        ):
+            raise ArtifactIntegrityError("v3 rule coverage rule counts are inconsistent")
     if not np.isfinite(manifest.q99_log_lift) or manifest.q99_log_lift <= 0:
         raise ArtifactIntegrityError("rule q99_log_lift is invalid")
     try:

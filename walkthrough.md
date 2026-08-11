@@ -2,13 +2,14 @@
 
 ## Current status
 
-`BLOCKED_BEFORE_PRODUCTION_TRAINING`.
+`BLOCKED_PENDING_R3_DIAGNOSTIC_EXECUTION_AND_SOURCE_FREEZE`.
 
-Phase 0 provenance/lifecycle hardening is implemented and has passed the full
-quality gate. Production training remains blocked until the resulting revision
-is confirmed clean and synchronized with its upstream, the production
-environment is configured, and the final readiness gate is rerun. No
-production seed has been created.
+R1 source contracts and R2 seed/data readiness are complete. The real v4
+database seed, snapshot, embedding, RuleArtifact, audit, probes and epoch-one
+rule scan pass. R3 source/contracts pass, but its four Deep diagnostic runs,
+ablation selection, selected Hybrid validation and v5/v6 config promotion have
+not run. Production training remains blocked until those diagnostics pass and
+the resulting source/config revision is committed, pushed and frozen.
 
 Phase 5A–5D is complete. `Trainer.fit()` is now orchestration-only: it
 preflights, restores state, delegates one epoch to `_train_epoch()`, validates,
@@ -18,39 +19,58 @@ directories atomically, locks resume to the recorded commit, and terminalizes
 transition/setup failures. The production seed runs do not yet exist and Hybrid
 victory is not established.
 
-## Verification snapshot (2026-08-11)
+Final two-axis review is green: Standards and Spec both pass after closing the
+archived-runbook conflict, R3 NPZ integrity binding, full rule-selector
+thresholds, epoch reset, and immutable affinity contracts.
 
-- Full suite: **352 passed, 2 fixed-runner skips**.
-- Phase 0 and campaign-freeze targeted contracts: **77 passed**.
-- Branch coverage: **89.99%** (`--cov-branch`, threshold 85%).
-- Critical files: checkpoint 97.24%, report 90.83%, bundle 98.79%, release
-  90.85%, trainer 87.35%, pipeline 86.44%.
+## Verification snapshot (2026-08-11, canonical benchmark v4)
+
+- AI-service suite: **374 passed, 2 fixed-runner skips**; seed-product Node
+  contracts **9 passed**.
+- Branch coverage: **88.64%** (`--cov-branch`, threshold 85%).
+- Critical files: checkpoint 97.24%, report 90.79%, bundle 98.79%, release
+  91.23%, trainer 86.68%, pipeline 85.09%.
 - Ruff format/check and mypy pass; `scripts/check_critical_coverage.py` passes.
+- Root `backend npm test` is not green: pre-existing Catalog/Chatbot Jest suites
+  fail outside the R2 seed-product files. This remains a monorepo gate blocker,
+  while the seed-product contract suite itself is green.
 - Static scans are clean: no Pareto/release-candidate checkpoints,
   `scores_by_user`, legacy Wide scaling, Softplus, or release signature
   fallbacks.
 
-The locked snapshot remains `benchmark-v3-20260810-9088b0f3` with 823,371
-events, 5,000 users, 5,200 items, and 250 cold items. Audit passed. Streaming
-probe references remain permutation GAUC `0.501545`, Persona GAUC `0.782827`,
-ItemCF GAUC `0.822937`, and SBERT NDCG@10 `0.014870`; parity tolerance is
-`1e-6`.
+The v4 snapshot is `benchmark-v4-20260811-49b2cdb902b1`, SHA-256
+`1eb1d07759a9e1ca6521794673e761b10bfc2919eb5018fa897d0a31f4b53fa6`,
+with 823,371 events, 5,000 users, 5,200 items and 250 cold items. Audit passes.
+Probe references are permutation GAUC `0.497918`, Persona GAUC `0.786681`,
+ItemCF GAUC `0.827843`, SBERT NDCG@10 `0.012888`, and Apriori GAUC/NDCG
+`0.514162`/`0.028210`. Apriori beats Random by paired CI for GAUC and NDCG.
 
-The full-stat RuleArtifact
-`benchmark-v3-20260810-9088b0f3-rules-v2-ea0c72a89c41` passed training
-capability (`feature_schema_version=2.0.0`, 216 directed rules). The legacy
-artifact remains audit-only and is rejected for training.
+The training-capable RuleArtifact is
+`benchmark-v4-20260811-49b2cdb902b1-rules-v3-d7ba48f8b8b5`: 14,106 directed
+rules, 14,086 non-trap, 20 trap-anchored, 4,143 organic items, VAL context
+coverage `0.835377`, novel VAL rule-target alignment `0.076382`, and epoch-one
+row coverage `0.690971`. Semantic trap readiness is `10/10` (75 baskets/count
+per trap, lift 200).
 
-The production runbooks are now pinned to the same immutable lineage: snapshot
-`benchmark-v3-20260810-9088b0f3`, embedding
-`benchmark-v3-20260810-9088b0f3-real-f0453078fd58`, and the full-stat rules ID
-above. The only production run IDs are `deep-42-v5`/`hybrid-42-v5`,
-`deep-2027-v5`/`hybrid-2027-v5`, and `deep-31415-v5`/`hybrid-31415-v5`.
+The canonical database run is
+`benchmark-v4-s42-7f40639b0d-ca692e71b3`, spec SHA
+`ca692e71b3fa166dd9c5ae59405e3edb15efc554c19ac8b0b136e892cad0d7ce`.
+An earlier execution exposed destructive legacy reclaim behavior and removed
+the prior event lineage from the database. Local superseded artifacts remain
+audit-only; they are not represented as complete database lineages. The source
+now rejects duplicate run IDs before mutation and has immutability regression
+tests.
 
-CUDA diagnostic smoke `smoke-v5-final-20260811-01` completed one epoch with
+The next campaign is pinned to the v4 snapshot above, embedding
+`benchmark-v4-20260811-49b2cdb902b1-real-f0453078fd58`, and the canonical v3
+RuleArtifact above. Planned production IDs are `deep-r4-42-v5`/
+`hybrid-r4-42-v5`, `deep-r4-2027-v5`/`hybrid-r4-2027-v5`, and
+`deep-r4-31415-v5`/`hybrid-r4-31415-v5`; none exists yet.
+
+CUDA diagnostic smoke `smoke-r4-readiness-20260811-2042` completed one epoch with
 schema-v5 `best.pt` and `last.pt`, finite metrics, bfloat16 autocast, and no
 evaluation/release/seal/export side effects. It is not a production seed.
-`deep-42-v5` and `hybrid-42-v5` remain absent.
+All R3 diagnostic and R4 production run IDs remain absent.
 
 ## Quality commands
 
@@ -83,17 +103,20 @@ $coverageJson = Join-Path $env:TEMP "ai-service-phase5-final.json"
 
 ## Next execution sequence
 
-1. Confirm the Phase 0 revision is committed, pushed, clean, and identical to
-   its upstream; then run the production-environment gate.
-2. Train Deep seed 42, then Hybrid seed 42.
-3. Evaluate the validation pair; stop immediately on any catastrophic signal,
-   GAUC below 0.50, or failed single-seed Victory Gate.
-4. Only after seed 42 passes, repeat Deep → Hybrid → validation for seeds 2027
-   and 31415, then run aggregate validation 3+3 without sealing.
-5. Evaluate TEST for all three pairs, run aggregate TEST, seal only the selected
-   Hybrid, export and verify the v5 bundle.
-6. Run ONNX parity and the fixed-runner benchmark. Only then may the document
-   claim a Hybrid victory.
+1. Review, commit and push the R1–R4 source/data-contract changes; require a
+   clean worktree and `HEAD == upstream`.
+2. Run four Deep R3 diagnostics on seed 42 and publish the immutable ablation
+   comparison. Stop on `diagnostic_pause=true` or a missing selected run.
+3. Train exactly one Hybrid diagnostic with the selected feature flags and
+   evaluate it against the selected Deep run on VAL. Require Wide signal and
+   all seven strengthened gates.
+4. Promote the selected flags into new paired v5/v6 ablation configs, rerun
+   quality/CUDA gates, then commit/push/freeze the final production revision.
+5. Train production Deep → Hybrid → VAL for seed 42. Only after it passes,
+   repeat for 2027 and 31415, aggregate VAL, evaluate TEST for all three pairs,
+   and aggregate TEST.
+6. Seal only the selected Hybrid, export/verify the bundle, run ONNX parity and
+   the fixed-runner benchmark. Only then may the document claim Hybrid victory.
 
 The source-level execution plan is maintained in
 [`master/detail-plan.md`](master/detail-plan.md).

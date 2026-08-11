@@ -13,7 +13,7 @@ from ai_service import cli
 from ai_service.cli import build_parser
 from ai_service.config import MODEL_SCHEMA_VERSION, Settings
 from ai_service.contracts import AggregateReleaseReport, RunStatus, SplitName, TrainingVariant
-from ai_service.errors import ConfigurationError
+from ai_service.errors import ArtifactIntegrityError, ConfigurationError
 from ai_service.training import pipeline
 from ai_service.training.pipeline import PipelineState
 from tests.support.v5_factories import make_metric_gate
@@ -73,6 +73,128 @@ def test_run_all_parser_requires_explicit_synthetic_smoke_config() -> None:
     assert arguments.source == "synthetic"
     assert arguments.embedding_source == "mock"
     assert arguments.config.name == "v5.toml"
+
+
+def test_compare_deep_ablations_parser_requires_exact_candidate_set() -> None:
+    with pytest.raises(SystemExit):
+        build_parser().parse_args(
+            [
+                "compare-deep-ablations",
+                "--control-run-id",
+                "control",
+                "--candidate-run-ids",
+                "one",
+                "two",
+            ]
+        )
+    arguments = build_parser().parse_args(
+        [
+            "compare-deep-ablations",
+            "--control-run-id",
+            "control",
+            "--candidate-run-ids",
+            "one",
+            "two",
+            "three",
+            "--device",
+            "cpu",
+        ]
+    )
+    assert arguments.candidate_run_ids == ["one", "two", "three"]
+
+
+def test_compare_deep_ablations_wrapper_builds_typed_runs_and_dispatches(
+    monkeypatch: pytest.MonkeyPatch,
+    tmp_path: Path,
+) -> None:
+    settings = Settings()
+    settings.data.artifact_root = tmp_path
+
+    def loaded(run_id: str) -> SimpleNamespace:
+        return SimpleNamespace(
+            state=SimpleNamespace(run_id=run_id),
+            settings=settings,
+            lifecycle=SimpleNamespace(status=RunStatus.TRAINING, document={"git_commit": "a" * 40}),
+            snapshot=SimpleNamespace(manifest=SimpleNamespace(content_sha256="b" * 64)),
+            embedding=SimpleNamespace(
+                manifest=SimpleNamespace(content_sha256="c" * 64),
+                vectors=np.zeros((2, 2), dtype=np.float32),
+            ),
+            rules=SimpleNamespace(
+                manifest=SimpleNamespace(content_sha256="d" * 64),
+                store=object(),
+            ),
+            model=object(),
+        )
+
+    monkeypatch.setattr(
+        pipeline,
+        "_load_run_context",
+        lambda _settings, run_id, **_kwargs: loaded(run_id),
+    )
+    captured: list[object] = []
+
+    def compare(runs: object, **_kwargs: object) -> SimpleNamespace:
+        captured.append(runs)
+        return SimpleNamespace(
+            directory=tmp_path / "diagnostics" / "r3" / ("e" * 64),
+            report=SimpleNamespace(model_dump=lambda **_kwargs: {"selected_run_id": "candidate-1"}),
+        )
+
+    monkeypatch.setattr(pipeline, "run_deep_ablation_comparison", compare)
+    result = pipeline._compare_deep_ablations(
+        settings,
+        control_run_id="control",
+        candidate_run_ids=("candidate-1", "candidate-2", "candidate-3"),
+        device=torch.device("cpu"),
+    )
+    assert len(captured[0]) == 4  # type: ignore[arg-type]
+    assert result["diagnostic_signature"] == "e" * 64
+    with pytest.raises(ConfigurationError, match="four distinct"):
+        pipeline._compare_deep_ablations(
+            settings,
+            control_run_id="control",
+            candidate_run_ids=("control", "candidate-2", "candidate-3"),
+            device=torch.device("cpu"),
+        )
+
+    emitted: list[object] = []
+    monkeypatch.setattr(pipeline, "_configure", lambda _args: settings)
+    monkeypatch.setattr(pipeline, "_seed_everything", lambda _seed: None)
+    monkeypatch.setattr(
+        pipeline,
+        "_compare_deep_ablations",
+        lambda *_args, **_kwargs: {"diagnostic": "pass"},
+    )
+    monkeypatch.setattr(pipeline, "_emit", emitted.append)
+    pipeline.execute_command(
+        Namespace(
+            command="compare-deep-ablations",
+            control_run_id="control",
+            candidate_run_ids=["candidate-1", "candidate-2", "candidate-3"],
+            device="cpu",
+        )
+    )
+    assert emitted == [{"diagnostic": "pass"}]
+    with pytest.raises(ConfigurationError, match="exactly three"):
+        pipeline.execute_command(
+            Namespace(
+                command="compare-deep-ablations",
+                control_run_id="control",
+                candidate_run_ids=["candidate-1", "candidate-2"],
+                device="cpu",
+            )
+        )
+
+    with pytest.raises(ArtifactIntegrityError, match="resolved configuration"):
+        pipeline.execute_command(
+            Namespace(
+                command="release-gate",
+                split="val",
+                hybrid_run_ids=["h1", "h2", "h3"],
+                deep_run_ids=["d1", "d2", "d3"],
+            )
+        )
 
 
 def test_audit_data_command_reports_snapshot_training_suitability(
@@ -349,7 +471,7 @@ def test_export_requires_aggregate_winner_and_publishes_profile_bundle(
     release = tmp_path / "releases" / comparison / "release-gate.json"
     release.parent.mkdir(parents=True)
     release_report = AggregateReleaseReport(
-        schema_version=MODEL_SCHEMA_VERSION,
+        schema_version="5.1.0",
         split=SplitName.TEST,
         passed=True,
         comparison_signature_sha256=comparison,
@@ -359,7 +481,15 @@ def test_export_requires_aggregate_winner_and_publishes_profile_bundle(
         selected_seed=42,
         selected_victory_matrix_sha256="c" * 64,
         gates=tuple(
-            make_metric_gate(name) for name in ("aggregate_gauc", "aggregate_ndcg", "aggregate_hr")
+            make_metric_gate(name)
+            for name in (
+                "aggregate_gauc_domination",
+                "aggregate_hr_domination",
+                "aggregate_ndcg_domination",
+                "aggregate_gauc_vs_deep",
+                "aggregate_hr_vs_deep",
+                "aggregate_ndcg_vs_deep",
+            )
         ),
         artifact_sha256="0" * 64,
     )

@@ -18,6 +18,7 @@ from torch.optim.lr_scheduler import ReduceLROnPlateau
 
 from ai_service.config import MODEL_SCHEMA_VERSION, Settings
 from ai_service.contracts import (
+    EVALUATION_SCHEMA_VERSION,
     CheckpointManifest,
     MetricGateResult,
     ModelVariant,
@@ -298,18 +299,21 @@ def make_victory_matrix(
 ) -> VictoryMatrix:
     names = (
         "random_gauc",
-        "hybrid_gauc",
+        "hybrid_minimum_gauc",
+        "gauc_domination",
         "hr_domination",
-        "relative_ndcg",
+        "ndcg_domination",
         "semantic_traps",
         "cold_parity",
     )
     gates = [make_metric_gate(name, passed=passed) for name in names]
     document = {
+        "schema_version": EVALUATION_SCHEMA_VERSION,
         "random_gauc_passed": passed,
-        "hybrid_gauc_passed": passed,
+        "hybrid_minimum_gauc_passed": passed,
+        "gauc_domination_passed": passed,
         "hr_domination_passed": passed,
-        "relative_ndcg_passed": passed,
+        "ndcg_domination_passed": passed,
         "semantic_traps_passed": passed,
         "cold_parity_passed": passed,
         "all_passed": passed,
@@ -317,7 +321,11 @@ def make_victory_matrix(
         "seed": seed,
         "split": split,
         "comparison_signature": comparison_signature,
-        "strongest_hr_baseline": "deep_only",
+        "strongest_baselines": {
+            "gauc": "deep_only",
+            "hr_at_k": "deep_only",
+            "ndcg_at_k": "deep_only",
+        },
         "sha256": "0" * 64,
     }
     matrix = VictoryMatrix.model_validate(document)
@@ -373,6 +381,7 @@ def make_training_validation_pass(
         deep_logit_rms=1.0,
         wide_logit_rms=0.1,
         hybrid_logit_rms=1.1,
+        hybrid_deep_top_k_change_rate=0.5,
     )
 
 

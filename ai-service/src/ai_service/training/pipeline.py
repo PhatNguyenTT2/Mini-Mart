@@ -25,6 +25,7 @@ from ai_service.config import (
     load_settings,
 )
 from ai_service.contracts import (
+    RULE_COVERAGE_SEMANTICS_VERSION,
     AggregateReleaseReport,
     CheckpointManifest,
     DataSourceKind,
@@ -51,6 +52,7 @@ from ai_service.data.features import (
 )
 from ai_service.data.history import build_user_profile_vectors
 from ai_service.data.quality import DataQualityAuditor
+from ai_service.data.rule_readiness import assess_training_rule_readiness
 from ai_service.data.rules import AprioriRuleMiner, RuleArtifact, load_rule_artifact
 from ai_service.data.sampling import MixedNegativeSampler
 from ai_service.data.snapshot import Snapshot, SnapshotBuilder, load_snapshot
@@ -63,7 +65,13 @@ from ai_service.errors import (
     TrainingInterruptedError,
     VictoryGateError,
 )
-from ai_service.evaluation.baselines import run_seven_way_baselines
+from ai_service.evaluation.ablation import (
+    DeepAblationRun,
+    require_hybrid_diagnostic_signal,
+    require_selected_r3_pair,
+    run_deep_ablation_comparison,
+)
+from ai_service.evaluation.baselines import run_full_catalog_comparison
 from ai_service.evaluation.cold_start import evaluate_cold_parity
 from ai_service.evaluation.full_catalog import FullCatalogEvaluator, prepare_split
 from ai_service.evaluation.gates import SingleSeedGateInputs, evaluate_single_seed
@@ -322,30 +330,69 @@ def _find_training_rule_artifact(settings: Settings, snapshot_sha256: str) -> Pa
     """Select exactly one full-stat rule artifact for the resolved training config."""
     root = settings.data.artifact_root.resolve() / "rules"
     matches: list[Path] = []
-    scanned: list[str] = []
+    scanned: dict[str, list[str]] = {}
     if root.exists():
         for manifest_path in root.glob("*/manifest.json"):
-            scanned.append(manifest_path.parent.name)
+            artifact_id = manifest_path.parent.name
             try:
                 manifest = RuleManifest.model_validate_json(
                     manifest_path.read_text(encoding="utf-8")
                 )
-            except (OSError, ValueError):
+            except (OSError, ValueError) as error:
+                scanned[artifact_id] = [f"manifest_parse:{type(error).__name__}"]
                 continue
-            if (
-                manifest.snapshot_sha256 == snapshot_sha256
-                and manifest.has_full_statistics
-                and manifest.feature_schema_version == "2.0.0"
-                and manifest.min_count == settings.data.min_rule_count
-                and abs(manifest.min_lift - settings.data.min_rule_lift) <= 1e-12
-            ):
+            reasons: list[str] = []
+            if manifest.snapshot_sha256 != snapshot_sha256:
+                reasons.append("snapshot_sha256")
+            if not manifest.has_full_statistics:
+                reasons.append("has_full_statistics")
+            if manifest.feature_schema_version != settings.data.rule_feature_schema_version:
+                reasons.append("feature_schema_version")
+            if manifest.min_count != settings.data.min_rule_count:
+                reasons.append("min_count")
+            if abs(manifest.min_lift - settings.data.min_rule_lift) > 1e-12:
+                reasons.append("min_lift")
+            if settings.data.rule_feature_schema_version == "3.0.0":
+                if manifest.coverage_semantics_version != RULE_COVERAGE_SEMANTICS_VERSION:
+                    reasons.append("coverage_semantics_version")
+                coverage = manifest.coverage
+                if coverage is None:
+                    reasons.append("coverage")
+                else:
+                    if (
+                        coverage.non_trap_directed_rules
+                        < settings.data.minimum_non_trap_directed_rules
+                    ):
+                        reasons.append("minimum_non_trap_directed_rules")
+                    if (
+                        coverage.distinct_organic_rule_items
+                        < settings.data.minimum_distinct_organic_rule_items
+                    ):
+                        reasons.append("minimum_distinct_organic_rule_items")
+                    if (
+                        coverage.val_context_rule_coverage
+                        < settings.data.minimum_val_context_rule_coverage
+                    ):
+                        reasons.append("minimum_val_context_rule_coverage")
+                    if (
+                        coverage.trap_anchored_rule_fraction
+                        > settings.data.maximum_trap_anchored_rule_fraction
+                    ):
+                        reasons.append("maximum_trap_anchored_rule_fraction")
+            scanned[artifact_id] = reasons
+            if not reasons:
                 matches.append(manifest_path.parent)
     if len(matches) != 1:
         raise ArtifactIntegrityError(
             "expected exactly one full-stat rule artifact matching the training config; "
-            f"found {len(matches)}; scanned={sorted(scanned)}"
+            f"found {len(matches)}; scanned={json.dumps(scanned, sort_keys=True)}"
         )
     return matches[0]
+
+
+def _require_rule_training_capability(rules: Any, settings: Settings) -> Any:
+    """Invoke one settings-aware capability contract for artifacts and test adapters."""
+    return rules.require_training_capability(settings)
 
 
 def _train(
@@ -369,9 +416,9 @@ def _train(
         "embedding": embedding.manifest.content_sha256,
         "rules": rules.manifest.content_sha256,
     }
-    rule_store = rules.require_training_capability()
+    rule_store = _require_rule_training_capability(rules, settings)
     if (
-        rules.manifest.feature_schema_version != "2.0.0"
+        rules.manifest.feature_schema_version != settings.data.rule_feature_schema_version
         or rules.manifest.snapshot_sha256 != snapshot.manifest.content_sha256
         or rules.manifest.min_count != settings.data.min_rule_count
         or abs(rules.manifest.min_lift - settings.data.min_rule_lift) > 1e-12
@@ -427,6 +474,19 @@ def _train(
                 generator=torch.Generator().manual_seed(settings.train.seed),
             ),
         )
+    rule_readiness = None
+    if (
+        settings.train.objective == "sampled_softmax"
+        and settings.data.rule_feature_schema_version == "3.0.0"
+    ):
+        rule_readiness = assess_training_rule_readiness(
+            loader,
+            minimum_rows_with_any_rule=settings.data.minimum_training_rows_with_any_rule,
+        )
+        if not rule_readiness.passed:
+            raise ArtifactIntegrityError(
+                "training rule readiness failed: " + "; ".join(rule_readiness.failure_reasons)
+            )
     model = HybridTwoTowerModel(settings)
     evaluator = FullCatalogEvaluator(settings, embedding.vectors, rule_store)
 
@@ -472,6 +532,11 @@ def _train(
 
     try:
         lifecycle.transition(RunStatus.TRAINING)
+        if rule_readiness is not None:
+            atomic_write_json(
+                run_dir / "training" / "preflight-rule-readiness.json",
+                rule_readiness.model_dump(mode="json"),
+            )
         trainer = Trainer(
             model,
             settings=settings,
@@ -730,9 +795,13 @@ def _load_run_context(
     snapshot, embedding, rules, model = _load_lineage(
         settings, state, expected_variant=expected_variant
     )
-    rules.require_training_capability()
+    _require_rule_training_capability(rules, settings)
+    if settings.data.rule_feature_schema_version == "3.0.0":
+        coverage = getattr(rules.manifest, "coverage", None)
+        if rules.manifest.feature_schema_version != "3.0.0" or coverage is None:
+            raise ArtifactIntegrityError("run context rule artifact lacks v3 coverage evidence")
     if (
-        rules.manifest.feature_schema_version != "2.0.0"
+        rules.manifest.feature_schema_version != settings.data.rule_feature_schema_version
         or rules.manifest.min_count != settings.data.min_rule_count
         or abs(rules.manifest.min_lift - settings.data.min_rule_lift) > 1e-12
     ):
@@ -788,6 +857,26 @@ def _evaluate_pair(
         "rules": deep.rules.manifest.content_sha256,
     }:
         raise ArtifactIntegrityError("paired evaluation requires matching artifact lineage")
+    if hybrid.settings.data.rule_feature_schema_version == "3.0.0":
+        require_selected_r3_pair(
+            artifact_root=hybrid.settings.data.artifact_root,
+            selected_deep_run_id=deep.state.run_id,
+            hybrid_flags=(
+                hybrid.settings.model.use_user_id_embedding,
+                hybrid.settings.model.use_price_features,
+            ),
+            deep_flags=(
+                deep.settings.model.use_user_id_embedding,
+                deep.settings.model.use_price_features,
+            ),
+        )
+        require_hybrid_diagnostic_signal(
+            hybrid.run_dir / "training" / "history.jsonl",
+            best_epoch=hybrid.checkpoint_manifest.best_epoch,
+            minimum_rule_row_rate=hybrid.settings.data.minimum_training_rows_with_any_rule,
+            minimum_wide_deep_ratio=hybrid.settings.eval.minimum_wide_to_deep_rms_ratio,
+            minimum_top_k_change_rate=(hybrid.settings.eval.minimum_hybrid_deep_top_k_change_rate),
+        )
     if split is SplitName.TEST:
         release_path = (
             base_settings.data.artifact_root.resolve()
@@ -824,7 +913,7 @@ def _evaluate_pair(
             raise ArtifactIntegrityError("test pair is not part of the validated finalist set")
 
     prepared_split = prepare_split(hybrid.snapshot, split)
-    comparison = run_seven_way_baselines(
+    comparison = run_full_catalog_comparison(
         hybrid_model=hybrid.model,
         deep_model=deep.model,
         snapshot=hybrid.snapshot,
@@ -886,6 +975,9 @@ def _evaluate_pair(
         "deep_hr": comparison.deep_only.per_user_hr,
         "deep_ndcg": comparison.deep_only.per_user_ndcg,
         "deep_gauc": comparison.deep_only.per_user_gauc,
+        "persona_hr": comparison.persona_only.per_user_hr,
+        "persona_ndcg": comparison.persona_only.per_user_ndcg,
+        "persona_gauc": comparison.persona_only.per_user_gauc,
         "apriori_hr": comparison.apriori_only.per_user_hr,
         "apriori_ndcg": comparison.apriori_only.per_user_ndcg,
         "apriori_gauc": comparison.apriori_only.per_user_gauc,
@@ -990,6 +1082,54 @@ def _evaluate_pair(
     )
 
 
+def _compare_deep_ablations(
+    base_settings: Settings,
+    *,
+    control_run_id: str,
+    candidate_run_ids: tuple[str, str, str],
+    device: torch.device,
+) -> dict[str, object]:
+    """Compare four immutable Deep runs without changing their lifecycle."""
+    all_run_ids = (control_run_id, *candidate_run_ids)
+    if len(set(all_run_ids)) != 4:
+        raise ConfigurationError("R3 requires four distinct Deep run IDs")
+    loaded = tuple(
+        _load_run_context(base_settings, run_id, expected_variant=TrainingVariant.DEEP_ONLY)
+        for run_id in all_run_ids
+    )
+    runs = tuple(
+        DeepAblationRun(
+            run_id=run.state.run_id,
+            settings=run.settings,
+            lifecycle_status=run.lifecycle.status,
+            git_commit=run.lifecycle.document.get("git_commit"),
+            lineage={
+                "snapshot": run.snapshot.manifest.content_sha256,
+                "embedding": run.embedding.manifest.content_sha256,
+                "rules": run.rules.manifest.content_sha256,
+            },
+            snapshot=run.snapshot,
+            embeddings=run.embedding.vectors,
+            rule_store=run.rules.store,
+            model=run.model,
+        )
+        for run in loaded
+    )
+    artifact = run_deep_ablation_comparison(
+        cast(
+            tuple[DeepAblationRun, DeepAblationRun, DeepAblationRun, DeepAblationRun],
+            runs,
+        ),
+        artifact_root=base_settings.data.artifact_root,
+        device=device,
+    )
+    return {
+        "artifact_dir": str(artifact.directory),
+        "diagnostic_signature": artifact.directory.name,
+        "report": artifact.report.model_dump(mode="json"),
+    }
+
+
 def execute_command(args: Namespace) -> None:
     """Execute one explicit stage without hidden source or embedding fallbacks."""
     settings = _configure(args)
@@ -1074,6 +1214,22 @@ def execute_command(args: Namespace) -> None:
         _emit(release_report.model_dump(mode="json"))
         return
 
+    if args.command == "compare-deep-ablations":
+        candidate_ids = tuple(
+            _validate_artifact_id(str(run_id), kind="run ID") for run_id in args.candidate_run_ids
+        )
+        if len(candidate_ids) != 3:
+            raise ConfigurationError("--candidate-run-ids requires exactly three run IDs")
+        _emit(
+            _compare_deep_ablations(
+                settings,
+                control_run_id=_validate_artifact_id(str(args.control_run_id), kind="run ID"),
+                candidate_run_ids=candidate_ids,
+                device=_device(args.device),
+            )
+        )
+        return
+
     if args.command == "snapshot":
         _emit(_snapshot(settings, source_kind).manifest.model_dump(mode="json"))
         return
@@ -1090,7 +1246,15 @@ def execute_command(args: Namespace) -> None:
             snapshot_sha256=snapshot.manifest.content_sha256,
         )
         embedding = load_embedding_artifact(embedding_path)
-        _emit(run_data_probes(settings, snapshot, embedding.vectors))
+        rules = None
+        if settings.data.rule_feature_schema_version == "3.0.0":
+            rule_path = _find_training_rule_artifact(
+                settings,
+                snapshot.manifest.content_sha256,
+            )
+            rules = load_rule_artifact(rule_path, snapshot.manifest.num_items)
+            _require_rule_training_capability(rules, settings)
+        _emit(run_data_probes(settings, snapshot, embedding.vectors, rules))
         return
 
     if args.command in {"evaluate", "export"}:

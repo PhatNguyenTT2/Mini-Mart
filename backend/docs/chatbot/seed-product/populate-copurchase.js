@@ -83,7 +83,35 @@ async function populateCopurchase({ chatClient, orderClient, spec, runId }) {
     await chatClient.query('ROLLBACK');
     throw error;
   }
-  return { totalOrders, directedRuleCount: rules.length * 2, storedPairCount: rules.length };
+  const fixtureProducts = new Set(
+    spec.semantic_traps.flatMap((trap) => [trap.anchor, ...trap.targets])
+  );
+  const organicRules = rules.filter(
+    (rule) => !fixtureProducts.has(rule.left) && !fixtureProducts.has(rule.right)
+  );
+  const trapAnchoredRules = rules.filter(
+    (rule) => fixtureProducts.has(rule.left) || fixtureProducts.has(rule.right)
+  );
+  const organicItems = new Set(organicRules.flatMap((rule) => [rule.left, rule.right]));
+  const totalDirectedRules = rules.length * 2;
+  const nonTrapDirectedRules = organicRules.length * 2;
+  const trapAnchoredDirectedRules = trapAnchoredRules.length * 2;
+  const warmItems = Math.max(1, Number(spec.num_products) - Number(spec.num_cold_products));
+  const fullCatalogOrganicPairCoverage = nonTrapDirectedRules
+    / Math.max(1, warmItems * (warmItems - 1));
+  const trapAnchoredRuleFraction = totalDirectedRules === 0
+    ? 0
+    : trapAnchoredDirectedRules / totalDirectedRules;
+  return {
+    totalOrders,
+    storedPairCount: rules.length,
+    totalDirectedRules,
+    nonTrapDirectedRules,
+    trapAnchoredDirectedRules,
+    trapAnchoredRuleFraction,
+    distinctOrganicRuleItems: organicItems.size,
+    fullCatalogOrganicPairCoverage
+  };
 }
 
 module.exports = { populateCopurchase };

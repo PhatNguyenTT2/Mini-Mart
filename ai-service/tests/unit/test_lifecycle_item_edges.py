@@ -159,3 +159,16 @@ def test_item_tower_rejects_nonfinite_sbert_and_indices(tmp_path: Path) -> None:
         tower(torch.full_like(sbert, float("nan")), category, price)
     with pytest.raises(ValueError, match="item index"):
         tower(sbert, category, price, item_idx=torch.tensor([settings.data.num_items]))
+
+
+def test_price_ablation_does_not_instantiate_price_parameters(tmp_path: Path) -> None:
+    settings = make_settings(tmp_path)
+    settings.model.use_price_features = False
+    tower = ItemTower(settings).eval()
+    assert tower.price_embedding is None
+    assert not any(name.startswith("price_embedding") for name, _ in tower.named_parameters())
+    sbert = torch.zeros((2, settings.model.sbert_dim))
+    category = torch.ones(2, dtype=torch.int64)
+    first = tower(sbert, category, torch.ones(2, dtype=torch.int64))
+    second = tower(sbert, category, torch.full((2,), 2, dtype=torch.int64))
+    assert torch.equal(first, second)

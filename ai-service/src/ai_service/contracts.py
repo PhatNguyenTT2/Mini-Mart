@@ -9,6 +9,9 @@ from typing import Literal
 
 from pydantic import BaseModel, Field, field_validator, model_validator
 
+EVALUATION_SCHEMA_VERSION = "5.1.0"
+RULE_COVERAGE_SEMANTICS_VERSION = "semantic-trap-purchase-v2"
+
 
 def utc_now() -> datetime:
     return datetime.now(UTC)
@@ -37,6 +40,7 @@ class ModelVariant(StrEnum):
     HYBRID = "hybrid"
     NOISY_HYBRID = "noisy_hybrid"
     RANDOM = "random"
+    PERSONA_ONLY = "persona_only"
 
 
 class TrainingVariant(StrEnum):
@@ -114,6 +118,18 @@ class ArtifactLineage(BaseModel):
     rule_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
 
 
+class RuleCoverageEvidence(BaseModel):
+    total_directed_rules: int = Field(ge=0)
+    non_trap_directed_rules: int = Field(ge=0)
+    trap_anchored_directed_rules: int = Field(ge=0)
+    trap_anchored_rule_fraction: float = Field(ge=0.0, le=1.0)
+    distinct_organic_rule_items: int = Field(ge=0)
+    eligible_val_context_users: int = Field(ge=0)
+    val_context_users_with_rule: int = Field(ge=0)
+    val_context_rule_coverage: float = Field(ge=0.0, le=1.0)
+    full_catalog_organic_pair_coverage: float = Field(ge=0.0, le=1.0)
+
+
 class RuleManifest(ArtifactManifest):
     snapshot_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
     num_directed_rules: int
@@ -123,6 +139,10 @@ class RuleManifest(ArtifactManifest):
     q99_log_lift: float
     feature_schema_version: str = "2.0.0"
     has_full_statistics: bool = False
+    coverage_semantics_version: (
+        Literal["semantic-trap-only-v1", "semantic-trap-purchase-v2"] | None
+    ) = None
+    coverage: RuleCoverageEvidence | None = None
 
 
 class CheckpointManifest(ArtifactManifest):
@@ -254,8 +274,38 @@ class MetricGateResult(BaseModel):
         return self
 
 
+class MetricBaselineSelection(BaseModel):
+    gauc: Literal[
+        "persona_only",
+        "item_cf",
+        "sbert_centroid",
+        "apriori_only",
+        "deep_only",
+        "noisy_hybrid",
+        "random",
+    ]
+    hr_at_k: Literal[
+        "persona_only",
+        "item_cf",
+        "sbert_centroid",
+        "apriori_only",
+        "deep_only",
+        "noisy_hybrid",
+        "random",
+    ]
+    ndcg_at_k: Literal[
+        "persona_only",
+        "item_cf",
+        "sbert_centroid",
+        "apriori_only",
+        "deep_only",
+        "noisy_hybrid",
+        "random",
+    ]
+
+
 class AggregateReleaseReport(BaseModel):
-    schema_version: Literal["5.0.0"]
+    schema_version: Literal["5.1.0"]
     split: SplitName
     passed: bool
     comparison_signature_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
@@ -277,12 +327,15 @@ class AggregateReleaseReport(BaseModel):
             raise ValueError("aggregate release requires three distinct Deep runs")
         if set(self.hybrid_run_ids) & set(self.deep_run_ids):
             raise ValueError("Hybrid and Deep finalist IDs must be disjoint")
-        if len(self.gates) != 3:
-            raise ValueError("aggregate release requires GAUC, NDCG, and HR gates")
+        if len(self.gates) != 6:
+            raise ValueError("aggregate release requires six dominance gates")
         if {gate.name for gate in self.gates} != {
-            "aggregate_gauc",
-            "aggregate_ndcg",
-            "aggregate_hr",
+            "aggregate_gauc_domination",
+            "aggregate_hr_domination",
+            "aggregate_ndcg_domination",
+            "aggregate_gauc_vs_deep",
+            "aggregate_hr_vs_deep",
+            "aggregate_ndcg_vs_deep",
         }:
             raise ValueError("aggregate release gate names are incomplete")
         if self.passed != all(gate.passed for gate in self.gates):
@@ -314,10 +367,12 @@ class ColdParityReport(BaseModel):
 
 
 class VictoryMatrix(BaseModel):
+    schema_version: Literal["5.1.0"]
     random_gauc_passed: bool
-    hybrid_gauc_passed: bool
+    hybrid_minimum_gauc_passed: bool
+    gauc_domination_passed: bool
     hr_domination_passed: bool
-    relative_ndcg_passed: bool
+    ndcg_domination_passed: bool
     semantic_traps_passed: bool
     cold_parity_passed: bool
     all_passed: bool
@@ -325,7 +380,7 @@ class VictoryMatrix(BaseModel):
     seed: int
     split: SplitName
     comparison_signature: str = Field(pattern=r"^[0-9a-f]{64}$")
-    strongest_hr_baseline: str
+    strongest_baselines: MetricBaselineSelection
     sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
 
     @model_validator(mode="after")
@@ -334,14 +389,15 @@ class VictoryMatrix(BaseModel):
             raise ValueError("victory matrix all_passed disagrees with gate evidence")
         expected = {
             "random_gauc": self.random_gauc_passed,
-            "hybrid_gauc": self.hybrid_gauc_passed,
+            "hybrid_minimum_gauc": self.hybrid_minimum_gauc_passed,
+            "gauc_domination": self.gauc_domination_passed,
             "hr_domination": self.hr_domination_passed,
-            "relative_ndcg": self.relative_ndcg_passed,
+            "ndcg_domination": self.ndcg_domination_passed,
             "semantic_traps": self.semantic_traps_passed,
             "cold_parity": self.cold_parity_passed,
         }
         if {gate.name for gate in self.gates} != set(expected):
-            raise ValueError("victory matrix requires the six single-seed gates")
+            raise ValueError("victory matrix requires the seven single-seed gates")
         for gate in self.gates:
             if gate.name in expected and gate.passed != expected[gate.name]:
                 raise ValueError(f"victory matrix boolean disagrees with {gate.name} gate")

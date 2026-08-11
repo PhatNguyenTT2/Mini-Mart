@@ -15,8 +15,7 @@ from typing import Literal
 import numpy as np
 from pydantic import BaseModel, Field, model_validator
 
-from ai_service.config import MODEL_SCHEMA_VERSION
-from ai_service.contracts import SplitName, VictoryMatrix
+from ai_service.contracts import EVALUATION_SCHEMA_VERSION, SplitName, VictoryMatrix
 from ai_service.errors import ArtifactIntegrityError
 
 METRIC_KEYS = (
@@ -36,6 +35,9 @@ METRIC_KEYS = (
     "item_cf_hr",
     "item_cf_ndcg",
     "item_cf_gauc",
+    "persona_hr",
+    "persona_ndcg",
+    "persona_gauc",
     "noisy_hybrid_hr",
     "noisy_hybrid_ndcg",
     "noisy_hybrid_gauc",
@@ -46,7 +48,7 @@ METRIC_KEYS = (
 
 
 class EvaluationArtifactManifest(BaseModel):
-    schema_version: Literal["5.0.0"]
+    schema_version: Literal["5.1.0"]
     split: SplitName
     hybrid_run_id: str
     deep_run_id: str
@@ -179,7 +181,7 @@ def publish_evaluation_artifacts(
             encoding="utf-8",
         )
         manifest = EvaluationArtifactManifest(
-            schema_version=MODEL_SCHEMA_VERSION,
+            schema_version=EVALUATION_SCHEMA_VERSION,
             split=split,
             hybrid_run_id=hybrid_run_id,
             deep_run_id=deep_run_id,

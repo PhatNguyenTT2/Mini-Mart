@@ -1,4 +1,4 @@
-"""Seven independent full-catalog benchmark methods."""
+"""Eight independent full-catalog benchmark methods."""
 
 from __future__ import annotations
 
@@ -19,11 +19,13 @@ from ai_service.evaluation.full_catalog import (
     FullCatalogEvaluator,
     PreparedEvaluationSplit,
 )
+from ai_service.evaluation.persona import prepare_persona_baseline, score_persona_batch
 from ai_service.models.two_tower_wide_deep import HybridTwoTowerModel
 
 
 @dataclass(frozen=True)
 class BaselineComparisonReport:
+    persona_only: EvaluationResult
     apriori_only: EvaluationResult
     sbert_centroid: EvaluationResult
     item_cf: EvaluationResult
@@ -35,6 +37,7 @@ class BaselineComparisonReport:
     @property
     def baselines(self) -> dict[str, EvaluationReport]:
         return {
+            "persona_only": self.persona_only.report,
             "apriori_only": self.apriori_only.report,
             "sbert_centroid": self.sbert_centroid.report,
             "item_cf": self.item_cf.report,
@@ -67,7 +70,39 @@ def _mean_report(reports: list[EvaluationReport]) -> EvaluationReport:
     )
 
 
-def run_seven_way_baselines(
+def evaluate_random_baselines(
+    *,
+    evaluator: FullCatalogEvaluator,
+    snapshot: Snapshot,
+    prepared_split: PreparedEvaluationSplit,
+    settings: Settings,
+) -> tuple[EvaluationResult, ...]:
+    """Evaluate the exact stateless Random seeds used by every release comparison."""
+    raw_ids = np.asarray(
+        [snapshot.raw_product_map[index] for index in range(snapshot.manifest.num_items)],
+        dtype=np.uint64,
+    )
+    results: list[EvaluationResult] = []
+    for seed in range(settings.eval.random_seeds):
+
+        def random_scorer(
+            users: np.ndarray, _candidates: np.ndarray, *, _seed: int = seed
+        ) -> np.ndarray:
+            return np.stack([_stateless_random_scores(_seed, int(user), raw_ids) for user in users])
+
+        results.append(
+            evaluator.evaluate_external_scores(
+                snapshot,
+                prepared_split=prepared_split,
+                variant=ModelVariant.RANDOM,
+                scorer=cast(ExternalBatchScorer, random_scorer),
+                k=settings.eval.k,
+            )
+        )
+    return tuple(results)
+
+
+def run_full_catalog_comparison(
     *,
     hybrid_model: HybridTwoTowerModel,
     deep_model: HybridTwoTowerModel,
@@ -102,6 +137,19 @@ def run_seven_way_baselines(
     deep_result = deep_eval[ModelVariant.DEEP_ONLY]
 
     history = prepared_split.history_events
+
+    persona = prepare_persona_baseline(snapshot, prepared_split)
+
+    def persona_scorer(users: np.ndarray, candidates: np.ndarray) -> np.ndarray:
+        return score_persona_batch(persona, users, candidates)
+
+    persona_result = evaluator.evaluate_external_scores(
+        snapshot,
+        prepared_split=prepared_split,
+        variant=ModelVariant.PERSONA_ONLY,
+        scorer=persona_scorer,
+        k=settings.eval.k,
+    )
 
     # 2. Raw Apriori Lift Baseline
     def apriori_scorer(users: np.ndarray, candidates: np.ndarray) -> np.ndarray:
@@ -182,34 +230,20 @@ def run_seven_way_baselines(
     )
 
     # 5. Stateless Random Baseline
-    raw_ids = np.asarray(
-        [snapshot.raw_product_map[index] for index in range(snapshot.manifest.num_items)],
-        dtype=np.uint64,
+    random_results = evaluate_random_baselines(
+        evaluator=evaluator,
+        snapshot=snapshot,
+        prepared_split=prepared_split,
+        settings=settings,
     )
-    random_results: list[EvaluationResult] = []
-    for seed in range(settings.eval.random_seeds):
-
-        def random_scorer(
-            users: np.ndarray, _candidates: np.ndarray, *, _seed: int = seed
-        ) -> np.ndarray:
-            return np.stack([_stateless_random_scores(_seed, int(user), raw_ids) for user in users])
-
-        random_results.append(
-            evaluator.evaluate_external_scores(
-                snapshot,
-                prepared_split=prepared_split,
-                variant=ModelVariant.RANDOM,
-                scorer=cast(ExternalBatchScorer, random_scorer),
-                k=settings.eval.k,
-            )
-        )
 
     return BaselineComparisonReport(
+        persona_only=persona_result,
         apriori_only=apriori_result,
         sbert_centroid=sbert_result,
         item_cf=cf_result,
         deep_only=deep_result,
         hybrid=hybrid_result,
         noisy_hybrid=noisy_hybrid_result,
-        random_seed_results=tuple(random_results),
+        random_seed_results=random_results,
     )

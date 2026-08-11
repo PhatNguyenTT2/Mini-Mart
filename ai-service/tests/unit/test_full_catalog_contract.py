@@ -6,7 +6,7 @@ import numpy as np
 
 from ai_service.contracts import ModelVariant, SplitName
 from ai_service.data.rules import RuleStore
-from ai_service.evaluation.baselines import run_seven_way_baselines
+from ai_service.evaluation.baselines import run_full_catalog_comparison
 from ai_service.evaluation.full_catalog import FullCatalogEvaluator, prepare_split
 from ai_service.models.two_tower_wide_deep import HybridTwoTowerModel
 from tests.support.v5_factories import make_settings, make_snapshot
@@ -55,7 +55,7 @@ def test_seven_way_harness_returns_distinct_named_methods(tmp_path: Path) -> Non
     prepared = prepare_split(snapshot, SplitName.TEST)
     hybrid = HybridTwoTowerModel(settings)
     deep = HybridTwoTowerModel(settings)
-    report = run_seven_way_baselines(
+    report = run_full_catalog_comparison(
         hybrid_model=hybrid,
         deep_model=deep,
         snapshot=snapshot,
@@ -67,6 +67,7 @@ def test_seven_way_harness_returns_distinct_named_methods(tmp_path: Path) -> Non
     )
     assert set(report.baselines) == {
         "apriori_only",
+        "persona_only",
         "sbert_centroid",
         "item_cf",
         "deep_only",

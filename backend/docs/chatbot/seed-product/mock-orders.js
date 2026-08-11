@@ -1,9 +1,151 @@
 'use strict';
 
-const { mulberry32 } = require('./benchmark-lib');
+function productItems(productIds, productMap, orderIndex) {
+  return productIds.map((productId, itemIndex) => {
+    const product = productMap.get(productId);
+    if (!product) throw new Error(`organic bundle references unknown product ${productId}`);
+    const quantity = 1 + ((orderIndex + itemIndex) % 2);
+    const unitPrice = Number(product.unit_price);
+    return {
+      productId,
+      productName: product.name,
+      quantity,
+      unitPrice,
+      totalPrice: Number((quantity * unitPrice).toFixed(2))
+    };
+  });
+}
 
-function pick(values, random) {
-  return values[Math.floor(random() * values.length)];
+function orderDate(spec, orderIndex) {
+  const start = Date.parse(spec.cutoffs.train_start);
+  const end = Date.parse(spec.cutoffs.train_end);
+  const ratio = spec.num_orders <= 1 ? 0 : orderIndex / (spec.num_orders - 1);
+  return new Date(Math.floor(start + (end - start) * ratio)).toISOString();
+}
+
+function generateOrderPlan({ spec, users, products, coldProducts, affinityModel }) {
+  if (spec.generator_version !== '4.0.0') {
+    throw new Error('order generator v3 is audit-only; use benchmark-spec-v4.json');
+  }
+  const organicCount = Number(spec.organic_order_count);
+  const semanticCount = Number(spec.semantic_order_count);
+  if (organicCount + semanticCount !== spec.num_orders) {
+    throw new Error('organic and semantic order counts must equal num_orders');
+  }
+  if (
+    !Number.isInteger(spec.minimum_semantic_copurchase_count)
+    || spec.minimum_semantic_copurchase_count < 3
+    || semanticCount < spec.semantic_traps.length * spec.minimum_semantic_copurchase_count
+  ) {
+    throw new Error('semantic order budget cannot satisfy the per-trap co-purchase threshold');
+  }
+  if (!affinityModel || !affinityModel.bundleTemplates) {
+    throw new Error('v4 order generation requires the shared affinity model and templates');
+  }
+  const cold = new Set(coldProducts);
+  const productMap = new Map(products.map((product) => [Number(product.product_id), product]));
+  const fixtureProducts = new Set(spec.semantic_traps.flatMap((trap) => [trap.anchor, ...trap.targets]));
+  for (const trapProduct of fixtureProducts) {
+    if (!productMap.has(trapProduct) || cold.has(trapProduct)) {
+      throw new Error(`invalid semantic trap product ${trapProduct}`);
+    }
+  }
+  const templates = affinityModel.bundleTemplates.templates;
+  const expectedTemplates = Number(spec.organic_bundle_template_count);
+  const repeatCount = Number(spec.organic_bundle_repeats);
+  if (templates.length !== expectedTemplates || templates.some((template) => template.repeatCount !== repeatCount)) {
+    throw new Error('organic template count/repeat contract is invalid');
+  }
+  if (templates.length * repeatCount !== organicCount) {
+    throw new Error('organic template repetitions do not cover organic_order_count');
+  }
+  const personaUsers = new Map();
+  users.forEach((userId) => {
+    const persona = affinityModel.personaByUser.get(userId);
+    if (persona === undefined) throw new Error(`missing persona assignment for user ${userId}`);
+    if (!personaUsers.has(persona)) personaUsers.set(persona, []);
+    personaUsers.get(persona).push(userId);
+  });
+  const slotsByPersona = new Map();
+  for (const template of templates) {
+    slotsByPersona.set(
+      template.persona,
+      (slotsByPersona.get(template.persona) || 0) + template.repeatCount
+    );
+  }
+  const remainingByUser = new Map();
+  for (const [persona, candidates] of personaUsers) {
+    const slots = slotsByPersona.get(persona) || 0;
+    if (slots < candidates.length * 2 || slots > candidates.length * 3) {
+      throw new Error(`organic order quota cannot give persona ${persona} 2-3 orders per user`);
+    }
+    const extras = slots - candidates.length * 2;
+    candidates.forEach((userId, index) => remainingByUser.set(userId, 2 + (index < extras ? 1 : 0)));
+  }
+  const personaCursors = new Map();
+  const orders = [];
+  let orderIndex = 0;
+  for (const template of templates) {
+    const candidates = personaUsers.get(template.persona) || users;
+    if (!candidates.length) throw new Error(`no users assigned to persona ${template.persona}`);
+    let cursor = personaCursors.get(template.persona) || 0;
+    for (let repeat = 0; repeat < template.repeatCount; repeat += 1) {
+      let scanned = 0;
+      while (remainingByUser.get(candidates[cursor]) === 0 && scanned < candidates.length) {
+        cursor = (cursor + 1) % candidates.length;
+        scanned += 1;
+      }
+      if (remainingByUser.get(candidates[cursor]) === 0) {
+        throw new Error(`organic order quota exhausted for persona ${template.persona}`);
+      }
+      const userId = candidates[cursor];
+      remainingByUser.set(userId, remainingByUser.get(userId) - 1);
+      const items = productItems(template.productIds, productMap, orderIndex);
+      if (items.some((item) => cold.has(item.productId) || fixtureProducts.has(item.productId))) {
+        throw new Error(`organic template ${template.templateId} contains a cold/trap product`);
+      }
+      orders.push({
+        storeId: spec.store_id,
+        runId: null,
+        userId,
+        orderDate: orderDate(spec, orderIndex),
+        totalAmount: items.reduce((sum, item) => sum + item.totalPrice, 0).toFixed(2),
+        items,
+        templateId: template.templateId,
+        kind: 'organic'
+      });
+      orderIndex += 1;
+      cursor = (cursor + 1) % candidates.length;
+    }
+    personaCursors.set(template.persona, cursor);
+  }
+  if ([...remainingByUser.values()].some((remaining) => remaining !== 0)) {
+    throw new Error('organic order quota did not cover every user exactly');
+  }
+  for (let index = 0; index < semanticCount; index += 1) {
+    const trap = spec.semantic_traps[index % spec.semantic_traps.length];
+    const items = productItems([trap.anchor, trap.targets[index % trap.targets.length]], productMap, orderIndex);
+    orders.push({
+      storeId: spec.store_id,
+      runId: null,
+      userId: users[index % users.length],
+      orderDate: orderDate(spec, orderIndex),
+      totalAmount: items.reduce((sum, item) => sum + item.totalPrice, 0).toFixed(2),
+      items,
+      templateId: `semantic-${trap.trap_id}`,
+      trapId: trap.trap_id,
+      kind: 'semantic_trap'
+    });
+    orderIndex += 1;
+  }
+  for (const trap of spec.semantic_traps) {
+    const trapOrders = orders.filter((order) => order.trapId === trap.trap_id).length;
+    if (trapOrders < spec.minimum_semantic_copurchase_count) {
+      throw new Error(`semantic trap ${trap.trap_id} has only ${trapOrders} orders`);
+    }
+  }
+  if (orders.length !== spec.num_orders) throw new Error(`generated ${orders.length} orders`);
+  return orders;
 }
 
 async function reserveIds(client, count) {
@@ -45,16 +187,15 @@ async function insertOrders(client, orders) {
   );
 }
 
-async function seedOrders({ client, spec, runId, products, coldProducts }) {
-  const random = mulberry32(spec.seed + 1000);
-  const cold = new Set(coldProducts);
-  const productMap = new Map(products.map((product) => [Number(product.product_id), product]));
-  const warm = products.map((product) => Number(product.product_id)).filter((id) => !cold.has(id));
-  for (const trap of spec.semantic_traps) {
-    for (const id of [trap.anchor, ...trap.targets]) {
-      if (!productMap.has(id) || cold.has(id)) throw new Error(`invalid semantic trap product ${id}`);
-    }
-  }
+async function seedOrders({ client, spec, runId, products, coldProducts, users, affinityModel }) {
+  const resolvedUsers = users || Array.from({ length: spec.num_users }, (_, index) => index + 1);
+  const generated = generateOrderPlan({
+    spec,
+    users: resolvedUsers,
+    products,
+    coldProducts,
+    affinityModel
+  }).map((order) => ({ ...order, runId }));
   await client.query('BEGIN');
   try {
     await client.query('SET TRANSACTION READ WRITE');
@@ -63,71 +204,21 @@ async function seedOrders({ client, spec, runId, products, coldProducts }) {
     await client.query(`CREATE INDEX IF NOT EXISTS idx_sale_order_benchmark_run
       ON sale_order(store_id,benchmark_run_id,order_date)
       WHERE benchmark_run_id IS NOT NULL`);
-    // One-time migration from the pre-lineage fixture.  Never use created_by as
-    // provenance for new rows; only remove the old block when its entire
-    // store-scoped signature is exactly the known 15,000-row benchmark.
-    const legacy = await client.query(
-      `SELECT count(*)::int AS total,
-              count(*) FILTER (
-                WHERE status='delivered' AND payment_status='paid'
-              )::int AS eligible
-       FROM sale_order
-       WHERE store_id=$1 AND benchmark_run_id IS NULL AND created_by=1`,
-      [spec.store_id]
+    const existing = await client.query(
+      `SELECT count(*)::int AS count FROM sale_order
+       WHERE store_id=$1 AND benchmark_run_id=$2`,
+      [spec.store_id, runId]
     );
-    const legacyCount = legacy.rows[0].total;
-    if (legacyCount !== 0) {
-      if (legacyCount !== spec.num_orders || legacy.rows[0].eligible !== legacyCount) {
-        throw new Error(
-          `refusing ambiguous legacy order cleanup: ${JSON.stringify(legacy.rows[0])}`
-        );
-      }
-      await client.query(
-        `DELETE FROM sale_order
-         WHERE store_id=$1 AND benchmark_run_id IS NULL AND created_by=1`,
-        [spec.store_id]
-      );
+    if (existing.rows[0].count !== 0) {
+      throw new Error(`immutable benchmark orders already exist for ${runId}`);
     }
-    await client.query(
-      'DELETE FROM sale_order WHERE store_id=$1 AND benchmark_run_id IS NOT NULL',
-      [spec.store_id]
-    );
-    const ids = await reserveIds(client, spec.num_orders);
+    const ids = await reserveIds(client, generated.length);
     for (let offset = 0; offset < spec.num_orders; offset += 500) {
-      const batch = [];
-      for (let index = offset; index < Math.min(offset + 500, spec.num_orders); index += 1) {
-        const selected = new Set();
-        if (random() < 0.45) {
-          const trap = pick(spec.semantic_traps, random);
-          selected.add(trap.anchor);
-          selected.add(pick(trap.targets, random));
-        }
-        const size = 2 + Math.floor(random() * 4);
-        while (selected.size < size) selected.add(pick(warm, random));
-        const items = [...selected].map((productId) => {
-          const product = productMap.get(productId);
-          const quantity = 1 + Math.floor(random() * 3);
-          const unitPrice = Number(product.unit_price);
-          return {
-            productId,
-            productName: product.name,
-            quantity,
-            unitPrice,
-            totalPrice: Number((quantity * unitPrice).toFixed(2))
-          };
-        });
-        const start = Date.parse(spec.cutoffs.train_start);
-        const end = Date.parse(spec.cutoffs.train_end);
-        batch.push({
-          id: ids[index],
-          storeId: spec.store_id,
-          runId,
-          userId: 1 + Math.floor(random() * spec.num_users),
-          orderDate: new Date(Math.floor(start + random() * (end - start))).toISOString(),
-          totalAmount: items.reduce((sum, item) => sum + item.totalPrice, 0).toFixed(2),
-          items
-        });
-      }
+      const batch = generated.slice(offset, offset + 500).map((order, index) => ({
+        ...order,
+        id: ids[offset + index],
+        storeId: spec.store_id
+      }));
       await insertOrders(client, batch);
     }
     const check = await client.query(
@@ -146,4 +237,4 @@ async function seedOrders({ client, spec, runId, products, coldProducts }) {
   }
 }
 
-module.exports = { seedOrders };
+module.exports = { generateOrderPlan, seedOrders };

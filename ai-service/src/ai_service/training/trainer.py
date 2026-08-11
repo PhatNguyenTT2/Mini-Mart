@@ -32,9 +32,11 @@ from ai_service.contracts import (
     TrainingVariant,
 )
 from ai_service.data.dataset import PurchaseBatch, TrainingBatch
+from ai_service.data.rule_readiness import RuleCoverageAccumulator
 from ai_service.data.snapshot import Snapshot
 from ai_service.errors import (
     CatastrophicTrainingError,
+    DataIntegrityError,
     ModelTrainingError,
     TrainingInterruptedError,
 )
@@ -93,7 +95,11 @@ class EpochMetrics:
     negative_logit_p10: float
     negative_logit_p50: float
     negative_logit_p90: float
-    rule_present_rate: float
+    in_batch_rule_present_rate: float
+    explicit_rule_present_rate: float
+    rows_with_any_rule_rate: float
+    wide_to_deep_logit_rms_ratio: float
+    hybrid_deep_top_k_change_rate: float
     elapsed_seconds: float
     peak_ram_bytes: int
     peak_vram_bytes: int
@@ -147,7 +153,9 @@ class _TrainingEpochPass:
     negative_logit_p10: float
     negative_logit_p50: float
     negative_logit_p90: float
-    rule_present_rate: float
+    in_batch_rule_present_rate: float
+    explicit_rule_present_rate: float
+    rows_with_any_rule_rate: float
     learning_rate: float
     elapsed_seconds: float
     epoch_duration_seconds: float
@@ -194,6 +202,7 @@ class _ValidationEpochPass:
     deep_logit_rms: float
     wide_logit_rms: float
     hybrid_logit_rms: float
+    hybrid_deep_top_k_change_rate: float
     model_hard_cache_updated: bool
 
 
@@ -467,8 +476,7 @@ class Trainer:
         margins: list[np.ndarray] = []
         positive_logits: list[np.ndarray] = []
         negative_logits: list[np.ndarray] = []
-        present_count = 0
-        candidate_count = 0
+        rule_coverage = RuleCoverageAccumulator()
         epoch_gradient_norm = 0.0
         user_gradient_norm = 0.0
         item_gradient_norm = 0.0
@@ -500,6 +508,10 @@ class Trainer:
                 history_age_days = batch.history_age_days.to(self.device)
                 positive_mask = batch.positive_mask.to(self.device)
                 denominator_mask = batch.denominator_mask.to(self.device)
+                try:
+                    rule_coverage.observe_purchase_batch(batch)
+                except DataIntegrityError as error:
+                    raise ModelTrainingError(str(error)) from error
                 confidence = batch.confidence.to(self.device)
                 with autocast(
                     device_type=self.device.type,
@@ -745,8 +757,10 @@ class Trainer:
                         )
                         positive_logits.append(positive[:, 0].float().cpu().numpy())
                         negative_logits.append(negatives.float().cpu().numpy().reshape(-1))
-                    present_count += int(present.sum().cpu())
-                    candidate_count += int(present.numel())
+                    try:
+                        rule_coverage.observe_legacy_mask(present)
+                    except DataIntegrityError as error:
+                        raise ModelTrainingError(str(error)) from error
                     purchase_rows = batch.is_purchase.to(self.device)
                     view_rows = ~purchase_rows
                     if bool(purchase_rows.any()):
@@ -801,6 +815,10 @@ class Trainer:
             previous_batch_finished = time.perf_counter()
         if sample_count == 0:
             raise ModelTrainingError("training loader produced no samples")
+        try:
+            rule_rates = rule_coverage.rates()
+        except DataIntegrityError as error:
+            raise ModelTrainingError(str(error)) from error
         if (
             epoch == 1
             and self.training_variant is TrainingVariant.HYBRID
@@ -832,7 +850,9 @@ class Trainer:
             negative_logit_p10=float(np.quantile(negative_values, 0.1)),
             negative_logit_p50=float(np.quantile(negative_values, 0.5)),
             negative_logit_p90=float(np.quantile(negative_values, 0.9)),
-            rule_present_rate=present_count / max(1, candidate_count),
+            in_batch_rule_present_rate=rule_rates.in_batch_rule_present_rate,
+            explicit_rule_present_rate=rule_rates.explicit_rule_present_rate,
+            rows_with_any_rule_rate=rule_rates.rows_with_any_rule_rate,
             learning_rate=float(self.optimizer.param_groups[0]["lr"]),
             elapsed_seconds=time.perf_counter() - runtime.started_training,
             epoch_duration_seconds=epoch_duration,
@@ -888,6 +908,9 @@ class Trainer:
         if sampler is None or not hasattr(sampler, "update_model_hard_cache"):
             raise ModelTrainingError("training sampler cannot accept model-hard cache")
         sampler.update_model_hard_cache(model_hard_cache)
+        top_k_change_rate = float(validation.hybrid_deep_top_k_change_rate)
+        if not math.isfinite(top_k_change_rate) or not 0.0 <= top_k_change_rate <= 1.0:
+            raise CatastrophicTrainingError("validation Hybrid/Deep top-k change rate is invalid")
         return _ValidationEpochPass(
             hybrid_report=hybrid_report,
             deep_report=deep_report,
@@ -895,6 +918,7 @@ class Trainer:
             deep_logit_rms=diagnostics[0],
             wide_logit_rms=diagnostics[1],
             hybrid_logit_rms=diagnostics[2],
+            hybrid_deep_top_k_change_rate=top_k_change_rate,
             model_hard_cache_updated=True,
         )
 
@@ -910,20 +934,27 @@ class Trainer:
         val_gauc = float(validation.hybrid_report.gauc)
         val_ndcg = float(validation.hybrid_report.ndcg_at_k)
         val_hr = float(validation.hybrid_report.hr_at_k)
-        guardrails_passed = (
-            val_gauc >= float(validation.deep_report.gauc) + self.settings.eval.gauc_guardrail_delta
+        wide_to_deep_ratio = validation.wide_logit_rms / max(
+            validation.deep_logit_rms, np.finfo(float).eps
+        )
+        guardrails_passed = self.training_variant is TrainingVariant.DEEP_ONLY or (
+            val_gauc
+            >= float(validation.deep_report.gauc) + self.settings.eval.aggregate_gauc_min_delta
             and val_ndcg
             >= max(
                 float(validation.deep_report.ndcg_at_k),
                 float(validation.wide_report.ndcg_at_k),
             )
-            + self.settings.eval.ndcg_guardrail_delta
+            + self.settings.eval.aggregate_ndcg_min_delta
             and val_hr
             >= max(
                 float(validation.deep_report.hr_at_k),
                 float(validation.wide_report.hr_at_k),
             )
-            + self.settings.eval.hr_guardrail_delta
+            + self.settings.eval.aggregate_hr_min_delta
+            and wide_to_deep_ratio >= self.settings.eval.minimum_wide_to_deep_rms_ratio
+            and validation.hybrid_deep_top_k_change_rate
+            >= self.settings.eval.minimum_hybrid_deep_top_k_change_rate
         )
         is_best = decision.checkpoint_action is not CheckpointAction.NONE
         terminal_action = decision.terminal_action
@@ -965,7 +996,11 @@ class Trainer:
             negative_logit_p10=training.negative_logit_p10,
             negative_logit_p50=training.negative_logit_p50,
             negative_logit_p90=training.negative_logit_p90,
-            rule_present_rate=training.rule_present_rate,
+            in_batch_rule_present_rate=training.in_batch_rule_present_rate,
+            explicit_rule_present_rate=training.explicit_rule_present_rate,
+            rows_with_any_rule_rate=training.rows_with_any_rule_rate,
+            wide_to_deep_logit_rms_ratio=wide_to_deep_ratio,
+            hybrid_deep_top_k_change_rate=validation.hybrid_deep_top_k_change_rate,
             elapsed_seconds=training.elapsed_seconds,
             peak_ram_bytes=training.peak_ram_bytes,
             peak_vram_bytes=training.peak_vram_bytes,

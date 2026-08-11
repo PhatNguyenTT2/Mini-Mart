@@ -93,3 +93,16 @@ def test_user_tower_and_hybrid_variants_cover_shape_and_ablation_paths() -> None
         model.score_cached(users, personas, torch.zeros(2, 4, 5, 2), wide_values, present)
     with pytest.raises(ValueError, match="variant"):
         model.score_cached(users, personas, candidates, wide_values, present, ModelVariant.RANDOM)
+
+
+def test_user_id_ablation_does_not_instantiate_identity_parameters() -> None:
+    settings = _settings()
+    settings.model.use_user_id_embedding = False
+    tower = UserTower(settings).eval()
+    assert tower.user_embedding is None
+    assert not any(name.startswith("user_embedding") for name, _ in tower.named_parameters())
+    users = torch.tensor([1, 2], dtype=torch.int64)
+    personas = torch.tensor([0, 1], dtype=torch.int64)
+    first = tower(users, personas)
+    second = tower(torch.tensor([2, 1]), personas)
+    assert torch.equal(first, second)

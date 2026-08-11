@@ -311,6 +311,7 @@ def test_pipeline_pair_evaluation_publishes_hybrid_owned_artifact(
 
     baseline = result(ModelVariant.HYBRID, 0.9)
     comparison = BaselineComparisonReport(
+        persona_only=result(ModelVariant.PERSONA_ONLY, 0.1),
         apriori_only=result(ModelVariant.ITEM_CF, 0.1),
         sbert_centroid=result(ModelVariant.SBERT_CENTROID, 0.1),
         item_cf=result(ModelVariant.ITEM_CF, 0.1),
@@ -331,7 +332,7 @@ def test_pipeline_pair_evaluation_publishes_hybrid_owned_artifact(
         lambda _s, run, *, expected_variant: loaded(run, expected_variant),
     )
     monkeypatch.setattr(pipeline, "prepare_split", lambda *_args: object())
-    monkeypatch.setattr(pipeline, "run_seven_way_baselines", lambda **_kwargs: comparison)
+    monkeypatch.setattr(pipeline, "run_full_catalog_comparison", lambda **_kwargs: comparison)
     monkeypatch.setattr(
         pipeline,
         "evaluate_cold_parity",
@@ -446,7 +447,7 @@ def test_pipeline_load_run_context_verifies_typed_checkpoint_manifest(
                     min_count=settings.data.min_rule_count,
                     min_lift=settings.data.min_rule_lift,
                 ),
-                require_training_capability=object,
+                require_training_capability=lambda _settings: object(),
             ),
             object(),
         ),

@@ -1,19 +1,26 @@
 'use strict';
 
 const crypto = require('crypto');
-const spec = require('./benchmark-spec.json');
+const path = require('path');
+let spec = require('./benchmark-spec.json');
 const {
   catalogChecksum,
   connectDatabases,
   ensureBenchmarkSchema,
   selectColdProducts
 } = require('./benchmark-lib');
+const { mulberry32 } = require('./benchmark-lib');
+const {
+  buildPersonaAssignments,
+  buildUserAffinities,
+  buildOrganicBundleTemplates
+} = require('./benchmark-affinity');
 const { seedMlEvents } = require('./seed-ml-events');
 const { rebuildInteractions } = require('./mock-interactions');
 const { seedOrders } = require('./mock-orders');
 const { populateCopurchase } = require('./populate-copurchase');
 
-async function reclaimLegacyMlStorage(chat) {
+async function reclaimLegacyMlStorage(chat, storeId) {
   const disposableIndexes = [
     'idx_ml_event_session',
     'idx_ml_event_origin',
@@ -34,32 +41,19 @@ async function reclaimLegacyMlStorage(chat) {
   await chat.query('BEGIN');
   try {
     await chat.query('SET TRANSACTION READ WRITE');
-    await chat.query('LOCK TABLE ml_interaction_event_v1 IN ACCESS EXCLUSIVE MODE');
-    await chat.query('LOCK TABLE user_product_interaction IN ACCESS EXCLUSIVE MODE');
     const events = await chat.query(
-      `SELECT count(*)::int AS total,
-              count(*) FILTER (WHERE store_id<>$1)::int AS other_store
-       FROM ml_interaction_event_v1`,
-      [spec.store_id]
+      `SELECT count(*)::int AS total
+       FROM ml_interaction_event_v1
+       WHERE store_id=$1 AND benchmark_run_id IS NULL`,
+      [storeId]
     );
-    const interactions = await chat.query(
-      `SELECT count(*)::int AS total,
-              count(*) FILTER (WHERE store_id<>$1)::int AS other_store
-       FROM user_product_interaction`,
-      [spec.store_id]
-    );
-    if (events.rows[0].other_store !== 0 || interactions.rows[0].other_store !== 0) {
-      throw new Error('refusing TRUNCATE because an ML legacy table contains another store');
-    }
-    await chat.query('TRUNCATE TABLE ml_interaction_event_v1, user_product_interaction');
     await chat.query(
-      'TRUNCATE TABLE ml_benchmark_item_partition_v1, ml_benchmark_run_v1'
+      `DELETE FROM ml_interaction_event_v1
+       WHERE store_id=$1 AND benchmark_run_id IS NULL`,
+      [storeId]
     );
     await chat.query('COMMIT');
-    return {
-      removedEvents: events.rows[0].total,
-      removedInteractions: interactions.rows[0].total
-    };
+    return { removedLegacyEvents: events.rows[0].total };
   } catch (error) {
     await chat.query('ROLLBACK');
     throw error;
@@ -140,17 +134,177 @@ async function validateRun({ clients, runId, specHash, coldProducts, ruleSummary
        WHERE store_id=$1
          AND ((product_id_a=$2 AND product_id_b=ANY($3::bigint[]))
            OR (product_id_b=$2 AND product_id_a=ANY($3::bigint[])))
-         AND co_purchase_count>=100 AND lift>=10
+         AND co_purchase_count >= $4 AND lift >= $5
        LIMIT 1`,
-      [spec.store_id, trap.anchor, trap.targets]
+      [
+        spec.store_id,
+        trap.anchor,
+        trap.targets,
+        spec.minimum_semantic_copurchase_count,
+        spec.minimum_semantic_lift
+      ]
     );
     if (result.rowCount) passed += 1;
   }
   if (passed !== spec.semantic_traps.length) throw new Error(`semantic traps ${passed}/10 passed`);
   if (ruleSummary.totalOrders !== spec.num_orders) throw new Error('Apriori basket denominator mismatch');
+  const fixtureIds = spec.semantic_traps.flatMap((trap) => [trap.anchor, ...trap.targets]);
+  const context = await clients.chat.query(
+    `WITH history AS (
+       SELECT DISTINCT user_id,product_id
+       FROM ml_interaction_event_v1
+       WHERE store_id=$1 AND benchmark_run_id=$2 AND event_origin='organic'
+         AND event_type='purchase' AND event_ts <= $3
+     ),
+     eligible AS (
+       SELECT DISTINCT target.user_id
+       FROM ml_interaction_event_v1 target
+       WHERE target.store_id=$1 AND target.benchmark_run_id=$2
+         AND target.event_origin='organic' AND target.event_type='purchase'
+         AND target.event_ts > $3 AND target.event_ts <= $5
+         AND NOT EXISTS (
+           SELECT 1 FROM history
+           WHERE history.user_id=target.user_id AND history.product_id=target.product_id
+         )
+     ),
+     latest AS (
+       SELECT DISTINCT ON (user_id) user_id,product_id
+       FROM ml_interaction_event_v1
+       WHERE store_id=$1 AND benchmark_run_id=$2 AND event_origin='organic'
+         AND event_type='purchase' AND event_ts <= $3
+       ORDER BY user_id,event_ts DESC,event_id DESC
+     )
+     SELECT count(*)::int AS eligible,
+            count(*) FILTER (WHERE EXISTS (
+              SELECT 1 FROM co_purchase_stats c
+              WHERE c.store_id=$1
+                AND latest.product_id <> ALL($4::bigint[])
+                AND ((c.product_id_a=latest.product_id AND c.product_id_b <> ALL($4::bigint[]))
+                  OR (c.product_id_b=latest.product_id AND c.product_id_a <> ALL($4::bigint[])))
+            ))::int AS covered
+     FROM latest JOIN eligible USING (user_id)`,
+    [spec.store_id, runId, spec.cutoffs.train_end, fixtureIds, spec.cutoffs.val_end]
+  );
+  const eligibleContextUsers = Number(context.rows[0].eligible);
+  const coveredContextUsers = Number(context.rows[0].covered);
+  const valContextRuleCoverage = coveredContextUsers / Math.max(1, eligibleContextUsers);
+  const targetAlignment = await clients.chat.query(
+    `WITH history AS (
+       SELECT DISTINCT user_id,product_id
+       FROM ml_interaction_event_v1
+       WHERE store_id=$1 AND benchmark_run_id=$2 AND event_origin='organic'
+         AND event_type='purchase' AND event_ts <= $3
+     ), targets AS (
+       SELECT DISTINCT target.user_id,target.product_id
+       FROM ml_interaction_event_v1 target
+       WHERE target.store_id=$1 AND target.benchmark_run_id=$2
+         AND target.event_origin='organic' AND target.event_type='purchase'
+         AND target.event_ts > $3 AND target.event_ts <= $5
+         AND NOT EXISTS (
+           SELECT 1 FROM history
+           WHERE history.user_id=target.user_id AND history.product_id=target.product_id
+         )
+     ), latest AS (
+       SELECT DISTINCT ON (user_id) user_id,product_id
+       FROM ml_interaction_event_v1
+       WHERE store_id=$1 AND benchmark_run_id=$2 AND event_origin='organic'
+         AND event_type='purchase' AND event_ts <= $3
+       ORDER BY user_id,event_ts DESC,event_id DESC
+     )
+     SELECT count(DISTINCT targets.user_id)::int AS eligible,
+            count(DISTINCT targets.user_id) FILTER (
+              WHERE latest.product_id <> ALL($4::bigint[])
+                AND targets.product_id <> ALL($4::bigint[])
+                AND EXISTS (
+                  SELECT 1 FROM co_purchase_stats c
+                  WHERE c.store_id=$1
+                    AND ((c.product_id_a=latest.product_id AND c.product_id_b=targets.product_id)
+                      OR (c.product_id_b=latest.product_id AND c.product_id_a=targets.product_id))
+                )
+            )::int AS aligned
+     FROM targets JOIN latest USING (user_id)`,
+    [spec.store_id, runId, spec.cutoffs.train_end, fixtureIds, spec.cutoffs.val_end]
+  );
+  const eligibleValRuleTargetUsers = Number(targetAlignment.rows[0].eligible);
+  const alignedValRuleTargetUsers = Number(targetAlignment.rows[0].aligned);
+  const valRuleTargetRate = alignedValRuleTargetUsers
+    / Math.max(1, eligibleValRuleTargetUsers);
+  if (eligibleValRuleTargetUsers !== eligibleContextUsers) {
+    throw new Error('VAL rule-target eligibility differs from context eligibility');
+  }
+  if (ruleSummary.nonTrapDirectedRules < spec.minimum_non_trap_directed_rules) {
+    throw new Error(`non-trap directed rules ${ruleSummary.nonTrapDirectedRules} below threshold`);
+  }
+  if (ruleSummary.distinctOrganicRuleItems < spec.minimum_distinct_organic_rule_items) {
+    throw new Error(`organic rule items ${ruleSummary.distinctOrganicRuleItems} below threshold`);
+  }
+  if (ruleSummary.trapAnchoredRuleFraction > spec.maximum_trap_anchored_rule_fraction) {
+    throw new Error(`trap-anchored rule fraction ${ruleSummary.trapAnchoredRuleFraction} above threshold`);
+  }
+  if (valContextRuleCoverage < spec.minimum_val_context_rule_coverage) {
+    throw new Error(`VAL context rule coverage ${valContextRuleCoverage} below threshold`);
+  }
+  if (valRuleTargetRate < spec.minimum_val_rule_target_rate) {
+    throw new Error(`VAL rule-target rate ${valRuleTargetRate} below threshold`);
+  }
+  return {
+    ...ruleSummary,
+    eligibleValContextUsers: eligibleContextUsers,
+    valContextUsersWithRule: coveredContextUsers,
+    valContextRuleCoverage,
+    eligibleValRuleTargetUsers,
+    alignedValRuleTargetUsers,
+    valRuleTargetRate
+  };
+}
+
+async function requireUnusedBenchmarkRun(chat, storeId, runId) {
+  const existing = await chat.query(
+    `SELECT status FROM ml_benchmark_run_v1
+     WHERE store_id=$1 AND benchmark_run_id=$2`,
+    [storeId, runId]
+  );
+  if (existing.rowCount !== 0) {
+    throw new Error(
+      `benchmark run ${runId} already exists with status ${existing.rows[0].status}; `
+      + 'benchmark lineages are immutable'
+    );
+  }
+}
+
+function buildAffinityModel({ spec, products, coldProducts, users }) {
+  if (spec.generator_version !== '4.0.0') return undefined;
+  const affinityRandom = mulberry32(spec.seed);
+  const personaByUser = buildPersonaAssignments(users, spec.persona_distribution, affinityRandom);
+  const warmProducts = products
+    .map((product) => Number(product.product_id))
+    .filter((id) => !coldProducts.includes(id));
+  const affinity = buildUserAffinities(
+    products, warmProducts, users, personaByUser, spec.persona_distribution.length
+  );
+  const fixtureProducts = spec.semantic_traps.flatMap((trap) => [trap.anchor, ...trap.targets]);
+  const bundleTemplates = buildOrganicBundleTemplates({
+    products,
+    warmProducts,
+    fixtureProducts,
+    personaByUser,
+    affinityByUser: affinity.affinityByUser,
+    categoryPersona: affinity.categoryPersona,
+    preferredProducts: affinity.preferredProducts,
+    spec
+  });
+  return { personaByUser, ...affinity, bundleTemplates };
 }
 
 async function main() {
+  const requestedSpec = argumentValue('--spec');
+  if (!requestedSpec) {
+    throw new Error('--spec is required; choose an explicit benchmark lineage');
+  }
+  const specPath = path.isAbsolute(requestedSpec)
+    ? requestedSpec
+    : path.resolve(process.cwd(), requestedSpec);
+  spec = require(specPath);
   const preflightOnly = process.argv.includes('--preflight-only');
   const resumeRunId = argumentValue('--resume-run');
   validateArguments({ mutating: !preflightOnly });
@@ -225,6 +379,8 @@ async function main() {
       return;
     }
     const coldProducts = selectColdProducts(products, spec);
+    const users = Array.from({ length: spec.num_users }, (_, index) => index + 1);
+    const affinityModel = buildAffinityModel({ spec, products, coldProducts, users });
     if (resumeRunId) {
       await ensureBenchmarkSchema(clients.chat);
       runId = resumeRunId;
@@ -243,33 +399,19 @@ async function main() {
       );
       const state = staged.rows[0];
       if (
-        staged.rowCount !== 1 || !['staging', 'failed'].includes(state.status)
+        staged.rowCount !== 1 || state.status !== 'staging'
         || state.catalog_sha256 !== catalogHash
         || state.benchmark_spec_sha256 !== specHash
         || state.events !== spec.num_events || state.products !== spec.num_products
         || state.cold_products !== spec.num_cold_products
       ) throw new Error(`resume lineage is invalid: ${JSON.stringify(state || null)}`);
-      if (state.status === 'failed') {
-        await clients.chat.query('BEGIN');
-        try {
-          await clients.chat.query('SET TRANSACTION READ WRITE');
-          await clients.chat.query(
-            `UPDATE ml_benchmark_run_v1 SET status='staging',published_at=NULL
-             WHERE store_id=$1 AND benchmark_run_id=$2`,
-            [spec.store_id, runId]
-          );
-          await clients.chat.query('COMMIT');
-        } catch (error) {
-          await clients.chat.query('ROLLBACK');
-          throw error;
-        }
-      }
       console.log(JSON.stringify({ status: 'resuming-staged-events', runId }));
     } else {
-      const reclaimed = await reclaimLegacyMlStorage(clients.chat);
-      console.log(JSON.stringify({ status: 'legacy-ml-storage-reclaimed', ...reclaimed }));
       await ensureBenchmarkSchema(clients.chat);
-      runId = `benchmark-v3-s${spec.seed}-${catalogHash.slice(0, 10)}-${specHash.slice(0, 10)}`;
+      runId = `benchmark-v${String(spec.generator_version).split('.')[0]}-s${spec.seed}-${catalogHash.slice(0, 10)}-${specHash.slice(0, 10)}`;
+      await requireUnusedBenchmarkRun(clients.chat, spec.store_id, runId);
+      const reclaimed = await reclaimLegacyMlStorage(clients.chat, spec.store_id);
+      console.log(JSON.stringify({ status: 'legacy-ml-storage-reclaimed', ...reclaimed }));
       await seedMlEvents({
         client: clients.chat,
         spec,
@@ -277,18 +419,31 @@ async function main() {
         catalogHash,
         specHash,
         products,
-        coldProducts
+        coldProducts,
+        affinityModel
       });
     }
     await rebuildInteractions({ client: clients.chat, storeId: spec.store_id, runId });
-    await seedOrders({ client: clients.order, spec, runId, products, coldProducts });
+    await seedOrders({
+      client: clients.order,
+      spec,
+      runId,
+      products,
+      coldProducts,
+      users,
+      affinityModel
+    });
     const ruleSummary = await populateCopurchase({
       chatClient: clients.chat,
       orderClient: clients.order,
       spec,
       runId
     });
-    await validateRun({ clients, runId, specHash, coldProducts, ruleSummary });
+    const coverage = await validateRun({ clients, runId, specHash, coldProducts, ruleSummary });
+    await clients.chat.query(
+      'UPDATE ml_benchmark_run_v1 SET rule_coverage=$2::jsonb WHERE benchmark_run_id=$1',
+      [runId, JSON.stringify(coverage)]
+    );
     await clients.chat.query('BEGIN');
     try {
       await clients.chat.query('SET TRANSACTION READ WRITE');
@@ -302,14 +457,16 @@ async function main() {
       await clients.chat.query('ROLLBACK');
       throw error;
     }
-    const digest = crypto.createHash('sha256').update(JSON.stringify({ runId, ruleSummary })).digest('hex');
-    console.log(JSON.stringify({ status: 'ready', runId, coldProducts: coldProducts.length, ruleSummary, digest }));
+    const digest = crypto.createHash('sha256').update(JSON.stringify({ runId, coverage })).digest('hex');
+    console.log(JSON.stringify({ status: 'ready', runId, coldProducts: coldProducts.length, ruleSummary: coverage, digest }));
   } catch (error) {
     if (runId) {
       await clients.chat.query('BEGIN').then(async () => {
         await clients.chat.query('SET TRANSACTION READ WRITE');
         await clients.chat.query(
-          `UPDATE ml_benchmark_run_v1 SET status='failed' WHERE benchmark_run_id=$1`, [runId]
+          `UPDATE ml_benchmark_run_v1 SET status='failed'
+           WHERE benchmark_run_id=$1 AND status='staging'`,
+          [runId]
         );
         await clients.chat.query('COMMIT');
       }).catch(async () => {
@@ -329,4 +486,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { main };
+module.exports = { main, reclaimLegacyMlStorage, requireUnusedBenchmarkRun };

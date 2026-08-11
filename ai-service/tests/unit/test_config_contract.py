@@ -77,3 +77,25 @@ def test_all_locked_ablation_configs_are_valid_and_semantically_distinct() -> No
     assert set(settings) == {"v3", "v4"}
     assert settings["v3"].train.training_variant == "deep_only"
     assert settings["v4"].train.training_variant == "hybrid"
+
+
+def test_r3_feature_flags_change_model_signatures_and_configs_are_single_variable() -> None:
+    baseline = Settings()
+    no_user = Settings({"model": {"use_user_id_embedding": False}})
+    no_price = Settings({"model": {"use_price_features": False}})
+    assert baseline.training_signature_sha256() != no_user.training_signature_sha256()
+    assert baseline.comparison_signature_sha256() != no_price.comparison_signature_sha256()
+
+    root = Path(__file__).parents[2] / "configs" / "diagnostics" / "r3"
+    configs = {path.stem: load_settings(path) for path in root.glob("*.toml")}
+    assert set(configs) == {
+        "deep-control",
+        "deep-no-price",
+        "deep-no-user-id",
+        "deep-no-price-no-user-id",
+        "hybrid-no-price",
+        "hybrid-no-user-id",
+        "hybrid-no-price-no-user-id",
+    }
+    assert configs["deep-control"].model.use_user_id_embedding
+    assert configs["deep-control"].model.use_price_features

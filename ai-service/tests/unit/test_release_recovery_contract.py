@@ -138,10 +138,16 @@ def test_release_public_interface_rejects_aggregate_gate_failure(
 ) -> None:
     settings = make_settings(tmp_path)
     hybrids, deeps = _make_fixture(tmp_path)
-    failed = (
-        make_metric_gate("aggregate_gauc", passed=False),
-        make_metric_gate("aggregate_ndcg", passed=True),
-        make_metric_gate("aggregate_hr", passed=True),
+    failed = tuple(
+        make_metric_gate(name, passed=name != "aggregate_gauc_domination")
+        for name in (
+            "aggregate_gauc_domination",
+            "aggregate_hr_domination",
+            "aggregate_ndcg_domination",
+            "aggregate_gauc_vs_deep",
+            "aggregate_hr_vs_deep",
+            "aggregate_ndcg_vs_deep",
+        )
     )
     monkeypatch.setattr(
         "ai_service.evaluation.release._build_aggregate_gates", lambda *_args, **_kwargs: failed
@@ -227,7 +233,14 @@ def test_release_pair_and_validation_helpers_fail_closed(tmp_path: Path) -> None
 
     candidate = np.ones(4, dtype=np.float64)
     baseline = np.zeros(4, dtype=np.float64)
-    gate = _aggregate_gate("aggregate_gauc", candidate, baseline, 2.0, 32)
+    gate = _aggregate_gate(
+        "aggregate_gauc_domination",
+        candidate,
+        baseline,
+        2.0,
+        32,
+        baseline_name="deep_only",
+    )
     assert gate.passed is False
     assert gate.failure_reason is not None
 
@@ -249,7 +262,7 @@ def test_release_pair_rejects_cross_variant_signature_and_user_ids(tmp_path: Pat
     mismatched_settings = make_settings(
         tmp_path / "other", variant=TrainingVariant.DEEP_ONLY, seed=42
     )
-    mismatched_settings.eval.hr_guardrail_delta = -0.5
+    mismatched_settings.eval.aggregate_hr_min_delta = 0.5
     with pytest.raises(ArtifactIntegrityError, match="comparison signature"):
         _pair_finalists_by_seed(
             h_records,

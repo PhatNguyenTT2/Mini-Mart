@@ -27,9 +27,11 @@ Run the database preflight before the explicitly confirmed store-scoped rebuild:
 
 ```powershell
 node ..\backend\docs\chatbot\seed-product\seed-ml-benchmark.js `
+  --spec ..\backend\docs\chatbot\seed-product\benchmark-spec-v4.json `
   --store-id 1 --seed 42 --preflight-only
 
 node ..\backend\docs\chatbot\seed-product\seed-ml-benchmark.js `
+  --spec ..\backend\docs\chatbot\seed-product\benchmark-spec-v4.json `
   --store-id 1 --seed 42 --confirm-rebuild
 
 .\.venv\Scripts\python.exe `
@@ -55,9 +57,11 @@ allowed because the application default is `benchmark-local`:
 
 ```powershell
 .\.venv\Scripts\python.exe -m ai_service.cli audit-data `
-  --snapshot-id benchmark-v3-20260810-9088b0f3 --device cpu
+  --config configs\diagnostics\r2-v4.toml `
+  --snapshot-id benchmark-v4-20260811-49b2cdb902b1 --device cpu
 .\.venv\Scripts\python.exe -m ai_service.cli probe-data `
-  --snapshot-id benchmark-v3-20260810-9088b0f3 --device cpu
+  --config configs\diagnostics\r2-v4.toml `
+  --snapshot-id benchmark-v4-20260811-49b2cdb902b1 --device cpu
 ```
 
 `run-all` is a single-seed synthetic/mock smoke command and deliberately cannot
@@ -71,16 +75,21 @@ publisher rejects an existing destination; bootstrap is a one-time operation:
 
 ```powershell
 .\.venv\Scripts\python.exe -m ai_service.cli snapshot --source postgres --store-id 1 `
-  --snapshot-id benchmark-v3-20260810-9088b0f3 --benchmark-run-id <published-benchmark-run-id>
+  --snapshot-id <new-v4-snapshot-id> --benchmark-run-id <published-v4-benchmark-run-id>
 .\.venv\Scripts\python.exe -m ai_service.cli features --embedding-source real `
-  --snapshot-id benchmark-v3-20260810-9088b0f3
+  --snapshot-id <new-v4-snapshot-id>
 .\.venv\Scripts\python.exe -m ai_service.cli rules `
-  --snapshot-id benchmark-v3-20260810-9088b0f3
+  --config configs\diagnostics\r2-v4.toml --snapshot-id <new-v4-snapshot-id>
 ```
 
-### Reuse verified campaign lineage
+### Historical v3 campaign (audit-only)
 
-The existing artifacts are the only inputs allowed for the campaign:
+The v3 commands below are retained only to identify archived evidence. Do not
+execute them. The next production commands cannot be published until R3 Deep
+ablation selection, Hybrid diagnostics, and v5/v6 config promotion pass. The
+current executable R3 sequence is maintained in `..\master\detail-plan.md`.
+
+The archived v3 lineage is:
 
 ```text
 snapshot:  benchmark-v3-20260810-9088b0f3
@@ -88,53 +97,11 @@ embedding: benchmark-v3-20260810-9088b0f3-real-f0453078fd58
 rules:     benchmark-v3-20260810-9088b0f3-rules-v2-ea0c72a89c41
 ```
 
-Train Deep before Hybrid for each seed. Do not start a later seed after a failed
-single-seed validation gate:
-
-```powershell
-.\.venv\Scripts\python.exe -m ai_service.cli train `
-  --snapshot-id benchmark-v3-20260810-9088b0f3 --run-id deep-42-v5 `
-  --variant deep_only --config configs\ablations\v3.toml --seed 42 --device cuda
-.\.venv\Scripts\python.exe -m ai_service.cli train `
-  --snapshot-id benchmark-v3-20260810-9088b0f3 --run-id hybrid-42-v5 `
-  --variant hybrid --config configs\ablations\v4.toml --seed 42 --device cuda
-.\.venv\Scripts\python.exe -m ai_service.cli evaluate --split val `
-  --hybrid-run-id hybrid-42-v5 --deep-run-id deep-42-v5 --device cuda
-
-.\.venv\Scripts\python.exe -m ai_service.cli train `
-  --snapshot-id benchmark-v3-20260810-9088b0f3 --run-id deep-2027-v5 `
-  --variant deep_only --config configs\ablations\v3.toml --seed 2027 --device cuda
-.\.venv\Scripts\python.exe -m ai_service.cli train `
-  --snapshot-id benchmark-v3-20260810-9088b0f3 --run-id hybrid-2027-v5 `
-  --variant hybrid --config configs\ablations\v4.toml --seed 2027 --device cuda
-.\.venv\Scripts\python.exe -m ai_service.cli evaluate --split val `
-  --hybrid-run-id hybrid-2027-v5 --deep-run-id deep-2027-v5 --device cuda
-
-.\.venv\Scripts\python.exe -m ai_service.cli train `
-  --snapshot-id benchmark-v3-20260810-9088b0f3 --run-id deep-31415-v5 `
-  --variant deep_only --config configs\ablations\v3.toml --seed 31415 --device cuda
-.\.venv\Scripts\python.exe -m ai_service.cli train `
-  --snapshot-id benchmark-v3-20260810-9088b0f3 --run-id hybrid-31415-v5 `
-  --variant hybrid --config configs\ablations\v4.toml --seed 31415 --device cuda
-.\.venv\Scripts\python.exe -m ai_service.cli evaluate --split val `
-  --hybrid-run-id hybrid-31415-v5 --deep-run-id deep-31415-v5 --device cuda
-
-.\.venv\Scripts\python.exe -m ai_service.cli release-gate --split val `
-  --hybrid-run-ids hybrid-42-v5 hybrid-2027-v5 hybrid-31415-v5 `
-  --deep-run-ids deep-42-v5 deep-2027-v5 deep-31415-v5
-
-.\.venv\Scripts\python.exe -m ai_service.cli evaluate --split test --hybrid-run-id hybrid-42-v5 `
-  --deep-run-id deep-42-v5 --device cuda
-.\.venv\Scripts\python.exe -m ai_service.cli evaluate --split test --hybrid-run-id hybrid-2027-v5 `
-  --deep-run-id deep-2027-v5 --device cuda
-.\.venv\Scripts\python.exe -m ai_service.cli evaluate --split test --hybrid-run-id hybrid-31415-v5 `
-  --deep-run-id deep-31415-v5 --device cuda
-.\.venv\Scripts\python.exe -m ai_service.cli release-gate --split test `
-  --hybrid-run-ids hybrid-42-v5 hybrid-2027-v5 hybrid-31415-v5 `
-  --deep-run-ids deep-42-v5 deep-2027-v5 deep-31415-v5
-.\.venv\Scripts\python.exe -m ai_service.cli export --run-id <selected-hybrid-run-id> --device cuda
-.\.venv\Scripts\python.exe -m ai_service.cli verify-bundle --run-id <selected-hybrid-run-id>
-```
+Do not execute any v3 train/evaluate/release command. The active v4 lineage is
+`benchmark-v4-20260811-49b2cdb902b1`; it must first pass the R3 diagnostic
+sequence in `..\master\detail-plan.md`. Production command examples are added
+only after the selected feature flags are promoted into a reviewed v5/v6 config
+pair and the resulting source revision is frozen.
 
 The aggregate TEST gate requires evaluation artifacts for all three paired seeds; a single
 validation winner is not a substitute for the other two TEST pairs. `run-all` remains synthetic/
@@ -148,7 +115,7 @@ artifact lineage, and frozen Git commit recorded in its run manifest:
 ```powershell
 .\.venv\Scripts\python.exe -m ai_service.cli train `
   --run-id <interrupted-run-id> --variant <same-variant> `
-  --config <same-config> --snapshot-id benchmark-v3-20260810-9088b0f3 `
+  --config <same-config> --snapshot-id <same-v4-snapshot-id> `
   --seed <same-seed> --device cuda --resume
 ```
 

@@ -62,6 +62,7 @@ class TrainingValidationPass:
     deep_logit_rms: float
     wide_logit_rms: float
     hybrid_logit_rms: float
+    hybrid_deep_top_k_change_rate: float
 
 
 def _history_and_target(snapshot: Snapshot, split: SplitName) -> tuple[pd.DataFrame, pd.DataFrame]:
@@ -506,6 +507,12 @@ class FullCatalogEvaluator:
             variant: _build_report(snapshot, prepared_split, variant, k, variant_rows)
             for variant, variant_rows in rows.items()
         }
+        hybrid_top_k = reports[ModelVariant.HYBRID].top_k_by_user
+        deep_top_k = reports[ModelVariant.DEEP_ONLY].top_k_by_user
+        if not hybrid_top_k or set(hybrid_top_k) != set(deep_top_k):
+            raise DataIntegrityError("Hybrid/Deep top-k comparison requires aligned eligible users")
+        changed_users = sum(hybrid_top_k[user] != deep_top_k[user] for user in hybrid_top_k)
+        top_k_change_rate = changed_users / len(hybrid_top_k)
         return TrainingValidationPass(
             variants=reports,
             model_hard_cache=cache,
@@ -518,6 +525,7 @@ class FullCatalogEvaluator:
             hybrid_logit_rms=float(
                 np.sqrt(sums[ModelVariant.HYBRID] / counts[ModelVariant.HYBRID])
             ),
+            hybrid_deep_top_k_change_rate=float(top_k_change_rate),
         )
 
     def evaluate_external_scores(

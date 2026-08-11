@@ -27,7 +27,7 @@ from ai_service.data.rules import RuleStore
 from ai_service.data.snapshot import Snapshot, SnapshotBuilder
 from ai_service.data.sources import RawDataset
 from ai_service.errors import DataIntegrityError, ModelTrainingError
-from ai_service.evaluation.baselines import run_seven_way_baselines
+from ai_service.evaluation.baselines import run_full_catalog_comparison
 from ai_service.evaluation.full_catalog import (
     FullCatalogEvaluator,
     PreparedEvaluationSplit,
@@ -177,7 +177,7 @@ def test_seven_way_baseline_harness_has_all_required_methods(
     model = HybridTwoTowerModel(settings)
     snapshot = _minimal_snapshot(Path.cwd(), _training_frame())
     prepared = prepare_split(snapshot, SplitName.TEST)
-    result = run_seven_way_baselines(
+    result = run_full_catalog_comparison(
         hybrid_model=model,
         deep_model=model,
         snapshot=snapshot,
@@ -188,9 +188,10 @@ def test_seven_way_baseline_harness_has_all_required_methods(
         device="cpu",
     )
 
-    assert len(result.baselines) == 7
+    assert len(result.baselines) == 8
     assert {
         "apriori_only",
+        "persona_only",
         "sbert_centroid",
         "item_cf",
         "deep_only",

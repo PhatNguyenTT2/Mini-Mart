@@ -1,0 +1,35 @@
+[data]
+rule_feature_schema_version = "3.0.0"
+minimum_non_trap_directed_rules = 5000
+minimum_distinct_organic_rule_items = 3000
+minimum_val_context_rule_coverage = 0.60
+minimum_training_rows_with_any_rule = 0.40
+maximum_trap_anchored_rule_fraction = 0.10
+
+[model]
+use_item_id_residual = true
+use_user_id_embedding = true
+use_price_features = false
+
+[train]
+objective = "sampled_softmax"
+training_variant = "hybrid"
+explicit_negative_ratio = 16
+use_history_profiles = true
+view_auxiliary_weight = 0.1
+
+[eval]
+k = 10
+bootstrap_samples = 2000
+random_seeds = 10
+aggregate_gauc_min_delta = 0.0
+aggregate_hr_min_delta = 0.0
+aggregate_ndcg_min_delta = 0.0
+deep_clear_random_gauc = 0.55
+minimum_wide_to_deep_rms_ratio = 0.01
+minimum_hybrid_deep_top_k_change_rate = 0.05
+minimum_gauc = 0.75
+random_gauc_tolerance = 0.02
+cold_score_atol = 1e-6
+wide_zero_atol = 1e-7
+

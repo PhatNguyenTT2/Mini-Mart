@@ -1,16 +1,25 @@
-"""Single-seed victory gate verification."""
+"""Strict single-seed victory gates over one aligned full-catalog comparison."""
 
 from __future__ import annotations
 
 import hashlib
 import json
 from dataclasses import dataclass
+from typing import Literal
 
 import numpy as np
 
 from ai_service.config import Settings
-from ai_service.contracts import ColdParityReport, MetricGateResult, SplitName, VictoryMatrix
+from ai_service.contracts import (
+    EVALUATION_SCHEMA_VERSION,
+    ColdParityReport,
+    MetricBaselineSelection,
+    MetricGateResult,
+    SplitName,
+    VictoryMatrix,
+)
 from ai_service.evaluation.baselines import BaselineComparisonReport, _mean_report
+from ai_service.evaluation.full_catalog import EvaluationResult
 from ai_service.evaluation.metrics import paired_bootstrap_delta
 from ai_service.evaluation.semantic_traps import SemanticTrapReport
 
@@ -25,6 +34,84 @@ class SingleSeedGateInputs:
     comparison_signature: str = ""
 
 
+def _mean_random_result(comparison: BaselineComparisonReport) -> EvaluationResult:
+    first = comparison.random_seed_results[0]
+    return EvaluationResult(
+        report=_mean_report([row.report for row in comparison.random_seed_results]),
+        user_ids=first.user_ids,
+        per_user_hr=np.mean([row.per_user_hr for row in comparison.random_seed_results], axis=0),
+        per_user_ndcg=np.mean(
+            [row.per_user_ndcg for row in comparison.random_seed_results], axis=0
+        ),
+        per_user_gauc=np.mean(
+            [row.per_user_gauc for row in comparison.random_seed_results], axis=0
+        ),
+        top_k_by_user=first.top_k_by_user,
+    )
+
+
+def _competitors(comparison: BaselineComparisonReport) -> dict[str, EvaluationResult]:
+    return {
+        "persona_only": comparison.persona_only,
+        "item_cf": comparison.item_cf,
+        "sbert_centroid": comparison.sbert_centroid,
+        "apriori_only": comparison.apriori_only,
+        "deep_only": comparison.deep_only,
+        "noisy_hybrid": comparison.noisy_hybrid,
+        "random": _mean_random_result(comparison),
+    }
+
+
+def _select_strongest_competitor(
+    comparison: BaselineComparisonReport,
+    *,
+    metric: Literal["gauc", "hr_at_k", "ndcg_at_k"],
+) -> tuple[str, EvaluationResult]:
+    competitors = _competitors(comparison)
+    name = max(
+        competitors, key=lambda candidate: float(getattr(competitors[candidate].report, metric))
+    )
+    return name, competitors[name]
+
+
+def _domination_gate(
+    comparison: BaselineComparisonReport,
+    *,
+    metric: Literal["gauc", "hr_at_k", "ndcg_at_k"],
+    gate_name: str,
+    samples: int,
+    seed: int,
+) -> tuple[MetricGateResult, str]:
+    baseline_name, baseline = _select_strongest_competitor(comparison, metric=metric)
+    per_user_name = f"per_user_{metric.replace('_at_k', '')}"
+    candidate_values = np.asarray(getattr(comparison.hybrid, per_user_name), dtype=np.float64)
+    baseline_values = np.asarray(getattr(baseline, per_user_name), dtype=np.float64)
+    interval = paired_bootstrap_delta(candidate_values, baseline_values, samples=samples, seed=seed)
+    candidate_mean = float(getattr(comparison.hybrid.report, metric))
+    baseline_mean = float(getattr(baseline.report, metric))
+    passed = candidate_mean > baseline_mean and interval.lower > 0.0
+    gate = MetricGateResult(
+        name=gate_name,
+        passed=passed,
+        observed=candidate_mean,
+        target=baseline_mean,
+        description=(
+            f"Hybrid {metric} must beat strongest competitor {baseline_name} "
+            "with paired CI lower > 0"
+        ),
+        candidate_name="hybrid",
+        baseline_name=baseline_name,
+        candidate_mean=candidate_mean,
+        baseline_mean=baseline_mean,
+        delta_mean=float(interval.mean_delta),
+        ci_lower=float(interval.lower),
+        ci_upper=float(interval.upper),
+        threshold=0.0,
+        failure_reason=None if passed else f"Hybrid {metric} does not dominate {baseline_name}",
+    )
+    return gate, baseline_name
+
+
 def evaluate_single_seed(
     inputs: SingleSeedGateInputs,
     settings: Settings | int | None = None,
@@ -34,248 +121,159 @@ def evaluate_single_seed(
     if isinstance(settings, int):
         bootstrap_samples = settings
         settings = None
-    samples = bootstrap_samples or (settings.eval.bootstrap_samples if settings else 2000)
+    samples = bootstrap_samples or (settings.eval.bootstrap_samples if settings else 2_000)
     random_tolerance = settings.eval.random_gauc_tolerance if settings else 0.02
     minimum_gauc = settings.eval.minimum_gauc if settings else 0.75
     wide_tolerance = settings.eval.wide_zero_atol if settings else 1e-7
-    comp = inputs.comparison
-    cold_parity = inputs.cold_parity
-    semantic_traps = inputs.semantic_traps
-
-    if len(comp.random_seed_results) != 10:
+    comparison = inputs.comparison
+    if len(comparison.random_seed_results) != 10:
         raise ValueError("single-seed gates require exactly 10 random baseline seeds")
-    if semantic_traps.total != 10 or semantic_traps.passed != 10:
-        traps_passed = False
-    else:
-        traps_passed = bool(semantic_traps.all_passed)
 
-    gates: list[MetricGateResult] = []
-
-    # 1. Random GAUC Mean Gate
-    random_mean_report = _mean_report([r.report for r in comp.random_seed_results])
-    random_gauc = float(random_mean_report.gauc)
-    random_per_user_gauc = np.mean([r.per_user_gauc for r in comp.random_seed_results], axis=0)
-    random_ci = paired_bootstrap_delta(
-        random_per_user_gauc,
-        np.full_like(random_per_user_gauc, 0.5),
+    random = _mean_random_result(comparison)
+    random_interval = paired_bootstrap_delta(
+        random.per_user_gauc,
+        np.full_like(random.per_user_gauc, 0.5),
         samples=samples,
         seed=inputs.seed,
     )
+    random_gauc = float(random.report.gauc)
     random_passed = (
         0.5 - random_tolerance <= random_gauc <= 0.5 + random_tolerance
-        and random_ci.lower <= 0.0 <= random_ci.upper
+        and random_interval.lower <= 0.0 <= random_interval.upper
     )
-    gates.append(
+    gates = [
         MetricGateResult(
             name="random_gauc",
             passed=random_passed,
             observed=random_gauc,
-            target=0.50,
-            description=(
-                f"Random baseline GAUC mean must be in "
-                f"[{0.5 - random_tolerance:.4f}, {0.5 + random_tolerance:.4f}]"
-            ),
+            target=0.5,
+            description="Random GAUC must remain chance-like and its CI must contain 0.5",
             candidate_name="random",
-            baseline_name="sanity_check",
+            baseline_name="chance",
             candidate_mean=random_gauc,
-            baseline_mean=0.50,
-            delta_mean=float(random_ci.mean_delta),
-            ci_lower=float(random_ci.lower),
-            ci_upper=float(random_ci.upper),
+            baseline_mean=0.5,
+            delta_mean=float(random_interval.mean_delta),
+            ci_lower=float(random_interval.lower),
+            ci_upper=float(random_interval.upper),
             threshold=random_tolerance,
-            failure_reason=None if random_passed else "random GAUC or CI guardrail failed",
+            failure_reason=None if random_passed else "random GAUC sanity failed",
         )
-    )
-
-    # 2. Hybrid GAUC Gate
-    hybrid_gauc = float(comp.hybrid.report.gauc)
-    hybrid_gauc_passed = hybrid_gauc >= minimum_gauc
+    ]
+    hybrid_gauc = float(comparison.hybrid.report.gauc)
+    minimum_passed = hybrid_gauc >= minimum_gauc
     gates.append(
         MetricGateResult(
-            name="hybrid_gauc",
-            passed=hybrid_gauc_passed,
+            name="hybrid_minimum_gauc",
+            passed=minimum_passed,
             observed=hybrid_gauc,
             target=minimum_gauc,
-            description=f"Hybrid model GAUC must be >= {minimum_gauc:.4f}",
+            description="Hybrid GAUC must satisfy the absolute release floor",
             candidate_name="hybrid",
-            baseline_name="threshold",
+            baseline_name="minimum",
             candidate_mean=hybrid_gauc,
             baseline_mean=minimum_gauc,
             delta_mean=hybrid_gauc - minimum_gauc,
             ci_lower=hybrid_gauc - minimum_gauc,
             ci_upper=hybrid_gauc - minimum_gauc,
             threshold=minimum_gauc,
-            failure_reason=None if hybrid_gauc_passed else "Hybrid GAUC below minimum threshold",
+            failure_reason=None if minimum_passed else "Hybrid GAUC below minimum",
         )
     )
-
-    # 3. HR Domination Gate (vs strongest of 6 competitors)
-    competitors = {
-        "apriori_only": comp.apriori_only,
-        "sbert_centroid": comp.sbert_centroid,
-        "item_cf": comp.item_cf,
-        "deep_only": comp.deep_only,
-        "noisy_hybrid": comp.noisy_hybrid,
-        "random": comp.random_seed_results[0].__class__(
-            report=random_mean_report,
-            user_ids=comp.random_seed_results[0].user_ids,
-            per_user_hr=np.mean([r.per_user_hr for r in comp.random_seed_results], axis=0),
-            per_user_ndcg=np.mean([r.per_user_ndcg for r in comp.random_seed_results], axis=0),
-            per_user_gauc=random_per_user_gauc,
-            top_k_by_user=comp.random_seed_results[0].top_k_by_user,
-        ),
-    }
-    strongest_name = max(competitors, key=lambda k: float(competitors[k].report.hr_at_k))
-    strongest_hr = float(competitors[strongest_name].report.hr_at_k)
-    hybrid_hr = float(comp.hybrid.report.hr_at_k)
-
-    # Compute paired bootstrap CI for HR
-    hr_delta_ci = paired_bootstrap_delta(
-        comp.hybrid.per_user_hr,
-        competitors[strongest_name].per_user_hr,
+    gauc_gate, gauc_baseline = _domination_gate(
+        comparison,
+        metric="gauc",
+        gate_name="gauc_domination",
         samples=samples,
-        seed=inputs.seed,
+        seed=inputs.seed + 11,
     )
-    hr_passed = hybrid_hr > strongest_hr and hr_delta_ci.lower > 0.0
-    gates.append(
-        MetricGateResult(
-            name="hr_domination",
-            passed=hr_passed,
-            observed=hybrid_hr,
-            target=strongest_hr,
-            description=(
-                f"Hybrid HR@10 ({hybrid_hr:.4f}) must exceed strongest baseline "
-                f"{strongest_name} ({strongest_hr:.4f}) with positive CI"
-            ),
-            candidate_name="hybrid",
-            baseline_name=strongest_name,
-            candidate_mean=hybrid_hr,
-            baseline_mean=strongest_hr,
-            delta_mean=float(hr_delta_ci.mean_delta),
-            ci_lower=float(hr_delta_ci.lower),
-            ci_upper=float(hr_delta_ci.upper),
-            threshold=0.0,
-            failure_reason=None
-            if hr_passed
-            else "Hybrid HR paired CI does not beat strongest competitor",
-        )
-    )
-
-    # 4. Relative NDCG Gate vs Apriori
-    apriori_ndcg = float(comp.apriori_only.report.ndcg_at_k)
-    hybrid_ndcg = float(comp.hybrid.report.ndcg_at_k)
-    ndcg_delta_ci = paired_bootstrap_delta(
-        comp.hybrid.per_user_ndcg,
-        comp.apriori_only.per_user_ndcg,
+    hr_gate, hr_baseline = _domination_gate(
+        comparison,
+        metric="hr_at_k",
+        gate_name="hr_domination",
         samples=samples,
-        seed=inputs.seed,
+        seed=inputs.seed + 13,
     )
-    ndcg_passed = hybrid_ndcg > apriori_ndcg and ndcg_delta_ci.lower > 0.0
-    gates.append(
-        MetricGateResult(
-            name="relative_ndcg",
-            passed=ndcg_passed,
-            observed=hybrid_ndcg,
-            target=apriori_ndcg,
-            description=(
-                f"Hybrid NDCG@10 ({hybrid_ndcg:.4f}) must exceed Apriori-only "
-                f"({apriori_ndcg:.4f}) with positive CI"
-            ),
-            candidate_name="hybrid",
-            baseline_name="apriori_only",
-            candidate_mean=hybrid_ndcg,
-            baseline_mean=apriori_ndcg,
-            delta_mean=float(ndcg_delta_ci.mean_delta),
-            ci_lower=float(ndcg_delta_ci.lower),
-            ci_upper=float(ndcg_delta_ci.upper),
-            threshold=0.0,
-            failure_reason=None if ndcg_passed else "Hybrid NDCG paired CI does not beat Apriori",
-        )
+    ndcg_gate, ndcg_baseline = _domination_gate(
+        comparison,
+        metric="ndcg_at_k",
+        gate_name="ndcg_domination",
+        samples=samples,
+        seed=inputs.seed + 17,
     )
+    gates.extend((gauc_gate, hr_gate, ndcg_gate))
 
-    # 5. Semantic Traps Gate
-    observed_traps = float(semantic_traps.passed)
+    traps_passed = bool(
+        inputs.semantic_traps.total == 10
+        and inputs.semantic_traps.passed == 10
+        and inputs.semantic_traps.all_passed
+    )
     gates.append(
         MetricGateResult(
             name="semantic_traps",
             passed=traps_passed,
-            observed=observed_traps,
+            observed=float(inputs.semantic_traps.passed),
             target=10.0,
-            description="All 10 semantic traps must pass",
+            description="All ten semantic traps must pass",
             candidate_name="hybrid",
-            baseline_name="traps",
-            candidate_mean=observed_traps,
+            baseline_name="semantic_traps",
+            candidate_mean=float(inputs.semantic_traps.passed),
             baseline_mean=10.0,
-            delta_mean=observed_traps - 10.0,
-            ci_lower=observed_traps - 10.0,
-            ci_upper=observed_traps - 10.0,
+            delta_mean=float(inputs.semantic_traps.passed - 10),
+            ci_lower=float(inputs.semantic_traps.passed - 10),
+            ci_upper=float(inputs.semantic_traps.passed - 10),
             threshold=10.0,
-            failure_reason=None if traps_passed else "one or more semantic traps failed",
+            failure_reason=None if traps_passed else "semantic traps failed",
         )
     )
-
-    # 6. Cold Parity Gate
-    cold_passed = bool(cold_parity.passed)
+    cold_passed = bool(inputs.cold_parity.passed)
     gates.append(
         MetricGateResult(
             name="cold_parity",
             passed=cold_passed,
-            observed=cold_parity.max_abs_wide_logit,
+            observed=float(inputs.cold_parity.max_abs_wide_logit),
             target=wide_tolerance,
-            description=(
-                "Cold parity must have max Wide logit <= configured tolerance "
-                "and zero-shot order equality"
-            ),
+            description="Cold items must preserve zero-Wide Hybrid/Deep parity",
             candidate_name="hybrid",
-            baseline_name="deep_ablation",
-            candidate_mean=cold_parity.max_abs_wide_logit,
+            baseline_name="deep_only",
+            candidate_mean=float(inputs.cold_parity.max_abs_wide_logit),
             baseline_mean=0.0,
-            delta_mean=cold_parity.max_abs_wide_logit,
-            ci_lower=cold_parity.max_abs_wide_logit,
-            ci_upper=cold_parity.max_abs_wide_logit,
+            delta_mean=float(inputs.cold_parity.max_abs_wide_logit),
+            ci_lower=float(inputs.cold_parity.max_abs_wide_logit),
+            ci_upper=float(inputs.cold_parity.max_abs_wide_logit),
             threshold=wide_tolerance,
-            failure_reason=None if cold_passed else "cold-start Wide/Deep parity failed",
+            failure_reason=None if cold_passed else "cold parity failed",
         )
     )
-
-    all_passed = (
-        random_passed
-        and hybrid_gauc_passed
-        and hr_passed
-        and ndcg_passed
-        and traps_passed
-        and cold_passed
+    all_passed = all(gate.passed for gate in gates)
+    selection = MetricBaselineSelection(
+        gauc=gauc_baseline,
+        hr_at_k=hr_baseline,
+        ndcg_at_k=ndcg_baseline,
     )
-
-    matrix_doc = {
+    document = {
+        "schema_version": EVALUATION_SCHEMA_VERSION,
         "seed": inputs.seed,
         "split": inputs.split.value,
         "comparison_signature": inputs.comparison_signature,
         "random_gauc_passed": random_passed,
-        "hybrid_gauc_passed": hybrid_gauc_passed,
-        "hr_domination_passed": hr_passed,
-        "relative_ndcg_passed": ndcg_passed,
+        "hybrid_minimum_gauc_passed": minimum_passed,
+        "gauc_domination_passed": gauc_gate.passed,
+        "hr_domination_passed": hr_gate.passed,
+        "ndcg_domination_passed": ndcg_gate.passed,
         "semantic_traps_passed": traps_passed,
         "cold_parity_passed": cold_passed,
         "all_passed": all_passed,
-        "strongest_hr_baseline": strongest_name,
-        "gates": [g.model_dump(mode="json") for g in gates],
+        "strongest_baselines": selection.model_dump(mode="json"),
+        "gates": [gate.model_dump(mode="json") for gate in gates],
     }
-    payload = json.dumps(matrix_doc, sort_keys=True, separators=(",", ":")).encode("utf-8")
-    sha256 = hashlib.sha256(payload).hexdigest()
+    sha256 = hashlib.sha256(
+        json.dumps(document, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    ).hexdigest()
+    return VictoryMatrix(**document, sha256=sha256)
 
-    return VictoryMatrix(
-        random_gauc_passed=random_passed,
-        hybrid_gauc_passed=hybrid_gauc_passed,
-        hr_domination_passed=hr_passed,
-        relative_ndcg_passed=ndcg_passed,
-        semantic_traps_passed=traps_passed,
-        cold_parity_passed=cold_passed,
-        all_passed=all_passed,
-        gates=gates,
-        seed=inputs.seed,
-        split=inputs.split,
-        comparison_signature=inputs.comparison_signature,
-        strongest_hr_baseline=strongest_name,
-        sha256=sha256,
-    )
+
+__all__ = [
+    "SingleSeedGateInputs",
+    "_select_strongest_competitor",
+    "evaluate_single_seed",
+]

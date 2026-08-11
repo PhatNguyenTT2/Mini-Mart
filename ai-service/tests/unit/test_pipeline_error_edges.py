@@ -374,7 +374,13 @@ def test_pipeline_state_publication_failure_is_terminal(
 
 
 def _write_rule_manifest(
-    path: Path, *, snapshot_sha: str, full: bool, schema: str = "2.0.0"
+    path: Path,
+    *,
+    snapshot_sha: str,
+    full: bool,
+    schema: str = "2.0.0",
+    coverage_semantics_version: str | None = None,
+    coverage: dict[str, object] | None = None,
 ) -> None:
     path.mkdir(parents=True)
     document = {
@@ -391,6 +397,10 @@ def _write_rule_manifest(
         "feature_schema_version": schema,
         "has_full_statistics": full,
     }
+    if coverage_semantics_version is not None:
+        document["coverage_semantics_version"] = coverage_semantics_version
+    if coverage is not None:
+        document["coverage"] = coverage
     (path / "manifest.json").write_text(json.dumps(document), encoding="utf-8")
 
 
@@ -409,6 +419,93 @@ def test_training_rule_selector_rejects_legacy_and_ambiguous_artifacts(tmp_path:
         pipeline._find_training_rule_artifact(settings, snapshot_sha)
     (root / "full-b" / "manifest.json").unlink()
     assert pipeline._find_training_rule_artifact(settings, snapshot_sha).name == "full-a"
+
+
+def test_training_rule_selector_ignores_legacy_v3_coverage_semantics(tmp_path: Path) -> None:
+    settings = make_settings(tmp_path)
+    settings.data.rule_feature_schema_version = "3.0.0"
+    root = tmp_path / "rules"
+    snapshot_sha = "a" * 64
+    _write_rule_manifest(root / "legacy-v3", snapshot_sha=snapshot_sha, full=True, schema="3.0.0")
+    _write_rule_manifest(
+        root / "semantic-trap-purchase-v3",
+        snapshot_sha=snapshot_sha,
+        full=True,
+        schema="3.0.0",
+        coverage_semantics_version="semantic-trap-purchase-v2",
+        coverage={
+            "total_directed_rules": 100,
+            "non_trap_directed_rules": 90,
+            "trap_anchored_directed_rules": 10,
+            "trap_anchored_rule_fraction": 0.1,
+            "distinct_organic_rule_items": 50,
+            "eligible_val_context_users": 10,
+            "val_context_users_with_rule": 8,
+            "val_context_rule_coverage": 0.8,
+            "full_catalog_organic_pair_coverage": 0.01,
+        },
+    )
+
+    selected = pipeline._find_training_rule_artifact(settings, snapshot_sha)
+
+    assert selected.name == "semantic-trap-purchase-v3"
+
+
+def test_training_rule_selector_filters_every_resolved_coverage_threshold(
+    tmp_path: Path,
+) -> None:
+    settings = make_settings(tmp_path)
+    settings.data.rule_feature_schema_version = "3.0.0"
+    settings.data.minimum_non_trap_directed_rules = 80
+    settings.data.minimum_distinct_organic_rule_items = 40
+    settings.data.minimum_val_context_rule_coverage = 0.7
+    settings.data.maximum_trap_anchored_rule_fraction = 0.2
+    root = tmp_path / "rules"
+    snapshot_sha = "a" * 64
+    base_coverage: dict[str, object] = {
+        "total_directed_rules": 100,
+        "non_trap_directed_rules": 90,
+        "trap_anchored_directed_rules": 10,
+        "trap_anchored_rule_fraction": 0.1,
+        "distinct_organic_rule_items": 50,
+        "eligible_val_context_users": 10,
+        "val_context_users_with_rule": 8,
+        "val_context_rule_coverage": 0.8,
+        "full_catalog_organic_pair_coverage": 0.01,
+    }
+    _write_rule_manifest(
+        root / "passing",
+        snapshot_sha=snapshot_sha,
+        full=True,
+        schema="3.0.0",
+        coverage_semantics_version="semantic-trap-purchase-v2",
+        coverage=base_coverage,
+    )
+    for name, mutation in (
+        ("low-rules", {"non_trap_directed_rules": 79}),
+        ("low-items", {"distinct_organic_rule_items": 39}),
+        ("low-context", {"val_context_rule_coverage": 0.69}),
+        ("high-traps", {"trap_anchored_rule_fraction": 0.21}),
+    ):
+        _write_rule_manifest(
+            root / name,
+            snapshot_sha=snapshot_sha,
+            full=True,
+            schema="3.0.0",
+            coverage_semantics_version="semantic-trap-purchase-v2",
+            coverage={**base_coverage, **mutation},
+        )
+
+    assert pipeline._find_training_rule_artifact(settings, snapshot_sha).name == "passing"
+
+    (root / "passing" / "manifest.json").unlink()
+    with pytest.raises(ArtifactIntegrityError) as captured:
+        pipeline._find_training_rule_artifact(settings, snapshot_sha)
+    message = str(captured.value)
+    assert "minimum_non_trap_directed_rules" in message
+    assert "minimum_distinct_organic_rule_items" in message
+    assert "minimum_val_context_rule_coverage" in message
+    assert "maximum_trap_anchored_rule_fraction" in message
 
 
 def test_run_all_smoke_executes_only_synthetic_mock_path(

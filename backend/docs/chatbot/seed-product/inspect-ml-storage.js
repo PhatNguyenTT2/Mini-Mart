@@ -1,10 +1,66 @@
 'use strict';
 
+const path = require('path');
+
 const { connectDatabases } = require('./benchmark-lib');
+
+function argumentValue(name) {
+  const index = process.argv.indexOf(name);
+  return index >= 0 ? process.argv[index + 1] : undefined;
+}
 
 async function main() {
   const clients = await connectDatabases();
   try {
+    if (process.argv.includes('--semantic-readiness')) {
+      const requestedSpec = argumentValue('--spec');
+      const runId = argumentValue('--run-id');
+      if (!requestedSpec || !runId) {
+        throw new Error('--semantic-readiness requires --spec and --run-id');
+      }
+      const specPath = path.isAbsolute(requestedSpec)
+        ? requestedSpec
+        : path.resolve(process.cwd(), requestedSpec);
+      const spec = require(specPath);
+      const results = [];
+      for (const trap of spec.semantic_traps) {
+        const baskets = await clients.order.query(
+          `SELECT count(DISTINCT o.id)::int AS baskets
+           FROM sale_order o
+           WHERE o.store_id=$1 AND o.benchmark_run_id=$2 AND o.order_date <= $3
+             AND EXISTS (
+               SELECT 1 FROM sale_order_detail d
+               WHERE d.order_id=o.id AND d.product_id=$4
+             )
+             AND EXISTS (
+               SELECT 1 FROM sale_order_detail d
+               WHERE d.order_id=o.id AND d.product_id=ANY($5::bigint[])
+             )`,
+          [spec.store_id, runId, spec.cutoffs.train_end, trap.anchor, trap.targets]
+        );
+        const rules = await clients.chat.query(
+          `SELECT max(co_purchase_count)::int AS co_purchase_count,max(lift)::float8 AS lift
+           FROM co_purchase_stats
+           WHERE store_id=$1
+             AND ((product_id_a=$2 AND product_id_b=ANY($3::bigint[]))
+               OR (product_id_b=$2 AND product_id_a=ANY($3::bigint[])))`,
+          [spec.store_id, trap.anchor, trap.targets]
+        );
+        const evidence = {
+          trapId: trap.trap_id,
+          baskets: baskets.rows[0].baskets,
+          coPurchaseCount: rules.rows[0].co_purchase_count,
+          lift: rules.rows[0].lift
+        };
+        evidence.passed = evidence.coPurchaseCount >= spec.minimum_semantic_copurchase_count
+          && evidence.lift >= spec.minimum_semantic_lift;
+        results.push(evidence);
+      }
+      const passed = results.filter((result) => result.passed).length;
+      console.log(JSON.stringify({ runId, passed, total: results.length, results }));
+      if (passed !== results.length) process.exitCode = 1;
+      return;
+    }
     const terminateIndex = process.argv.indexOf('--terminate-pid');
     if (terminateIndex >= 0) {
       const pid = Number(process.argv[terminateIndex + 1]);
@@ -63,10 +119,23 @@ async function main() {
       ORDER BY query_start DESC
       LIMIT 10
     `);
+    const runs = await clients.chat.query(`
+      SELECT r.benchmark_run_id,r.status,r.catalog_sha256,r.benchmark_spec_sha256,
+             (SELECT count(*)::int FROM ml_interaction_event_v1 e
+             WHERE e.benchmark_run_id=r.benchmark_run_id) AS events,
+             (SELECT count(*)::int FROM user_product_interaction i
+              WHERE i.store_id=r.store_id) AS interactions,
+             (SELECT count(*)::int FROM ml_benchmark_item_partition_v1 p
+              WHERE p.benchmark_run_id=r.benchmark_run_id) AS products
+      FROM ml_benchmark_run_v1 r
+      ORDER BY r.created_at DESC
+      LIMIT 5
+    `);
     console.log(JSON.stringify({
       state: state.rows[0],
       relations: relations.rows,
       indexes: indexes.rows,
+      runs: runs.rows,
       activity: activity.rows
     }));
   } finally {

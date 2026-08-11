@@ -21,18 +21,21 @@ class UserTower(nn.Module):
         self.unknown_persona = settings.data.num_personas
         self.item_emb_dim = settings.model.item_emb_dim
         self.user_id_dropout = settings.model.user_id_dropout
-        self.user_embedding = nn.Embedding(
-            settings.data.num_users + 1,
-            settings.model.user_emb_dim,
-            padding_idx=0,
-        )
+        self.use_user_id_embedding = settings.model.use_user_id_embedding
+        self.user_embedding: nn.Embedding | None = None
+        if self.use_user_id_embedding:
+            self.user_embedding = nn.Embedding(
+                settings.data.num_users + 1,
+                settings.model.user_emb_dim,
+                padding_idx=0,
+            )
         self.persona_embedding = nn.Embedding(
             settings.data.num_personas + 1,
             settings.model.persona_emb_dim,
         )
         self.network = nn.Sequential(
             nn.Linear(
-                settings.model.user_emb_dim
+                (settings.model.user_emb_dim if self.use_user_id_embedding else 0)
                 + settings.model.persona_emb_dim
                 + settings.model.item_emb_dim
                 + 1,
@@ -42,9 +45,10 @@ class UserTower(nn.Module):
             nn.LayerNorm(128),
             nn.Linear(128, settings.model.item_emb_dim),
         )
-        nn.init.normal_(self.user_embedding.weight, std=0.01)
-        with torch.no_grad():
-            self.user_embedding.weight[0].zero_()
+        if self.user_embedding is not None:
+            nn.init.normal_(self.user_embedding.weight, std=0.01)
+            with torch.no_grad():
+                self.user_embedding.weight[0].zero_()
 
     def encode_unchecked(
         self,
@@ -53,28 +57,25 @@ class UserTower(nn.Module):
         history_vector: torch.Tensor | None = None,
         history_present: torch.Tensor | None = None,
     ) -> torch.Tensor:
-        user_embedding = F.dropout(
-            self.user_embedding(user_idx), p=self.user_id_dropout, training=self.training
-        )
+        persona_embedding = self.persona_embedding(persona_idx)
+        user_embedding = None
+        if self.user_embedding is not None:
+            user_embedding = F.dropout(
+                self.user_embedding(user_idx), p=self.user_id_dropout, training=self.training
+            )
         if history_vector is None:
             history_vector = torch.zeros(
                 (*user_idx.shape, self.item_emb_dim),
-                dtype=user_embedding.dtype,
-                device=user_embedding.device,
+                dtype=persona_embedding.dtype,
+                device=persona_embedding.device,
             )
         if history_present is None:
             history_present = torch.zeros_like(user_idx, dtype=torch.bool)
-        encoded = self.network(
-            torch.cat(
-                (
-                    user_embedding,
-                    self.persona_embedding(persona_idx),
-                    history_vector,
-                    history_present.to(user_embedding.dtype).unsqueeze(-1),
-                ),
-                dim=-1,
-            )
-        )
+        features = [persona_embedding, history_vector]
+        if user_embedding is not None:
+            features.insert(0, user_embedding)
+        features.append(history_present.to(persona_embedding.dtype).unsqueeze(-1))
+        encoded = self.network(torch.cat(features, dim=-1))
         return F.normalize(encoded, p=2, dim=-1, eps=1e-8)
 
     def forward(

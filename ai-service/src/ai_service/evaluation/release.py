@@ -10,6 +10,7 @@ import numpy as np
 from ai_service.artifact_io import canonical_json_sha256, immutable_write_json
 from ai_service.config import MODEL_SCHEMA_VERSION, Settings, load_resolved_settings
 from ai_service.contracts import (
+    EVALUATION_SCHEMA_VERSION,
     AggregateReleaseReport,
     CheckpointManifest,
     MetricGateResult,
@@ -180,37 +181,69 @@ def _build_aggregate_gates(
     pairs: tuple[FinalistPairRecord, ...],
     *,
     settings: Settings,
-) -> tuple[MetricGateResult, MetricGateResult, MetricGateResult]:
-    """Build aggregate GAUC, NDCG and HR gates from paired per-user metrics."""
-    hybrid_gauc = np.mean([pair.evaluation.metrics["hybrid_gauc"] for pair in pairs], axis=0)
-    deep_gauc = np.mean([pair.evaluation.metrics["deep_gauc"] for pair in pairs], axis=0)
-    hybrid_ndcg = np.mean([pair.evaluation.metrics["hybrid_ndcg"] for pair in pairs], axis=0)
-    deep_ndcg = np.mean([pair.evaluation.metrics["deep_ndcg"] for pair in pairs], axis=0)
-    hybrid_hr = np.mean([pair.evaluation.metrics["hybrid_hr"] for pair in pairs], axis=0)
-    deep_hr = np.mean([pair.evaluation.metrics["deep_hr"] for pair in pairs], axis=0)
-    return (
-        _aggregate_gate(
-            "aggregate_gauc",
-            hybrid_gauc,
-            deep_gauc,
-            settings.eval.gauc_guardrail_delta,
-            settings.eval.bootstrap_samples,
-        ),
-        _aggregate_gate(
-            "aggregate_ndcg",
-            hybrid_ndcg,
-            deep_ndcg,
-            settings.eval.ndcg_guardrail_delta,
-            settings.eval.bootstrap_samples,
-        ),
-        _aggregate_gate(
-            "aggregate_hr",
-            hybrid_hr,
-            deep_hr,
-            settings.eval.hr_guardrail_delta,
-            settings.eval.bootstrap_samples,
-        ),
+) -> tuple[MetricGateResult, ...]:
+    """Build strict aggregate dominance and Hybrid-vs-Deep gates."""
+    gates: list[MetricGateResult] = []
+    metric_settings = (
+        ("gauc", settings.eval.aggregate_gauc_min_delta),
+        ("hr", settings.eval.aggregate_hr_min_delta),
+        ("ndcg", settings.eval.aggregate_ndcg_min_delta),
     )
+    competitor_keys = {
+        "persona_only": "persona",
+        "item_cf": "item_cf",
+        "sbert_centroid": "sbert",
+        "apriori_only": "apriori",
+        "deep_only": "deep",
+        "noisy_hybrid": "noisy_hybrid",
+        "random": "random",
+    }
+    for metric, threshold in metric_settings:
+        candidate = _aggregate_metric(pairs, f"hybrid_{metric}")
+        competitors = {
+            name: _aggregate_metric(pairs, f"{prefix}_{metric}")
+            for name, prefix in competitor_keys.items()
+        }
+        strongest_name = max(competitors, key=lambda name: float(competitors[name].mean()))
+        gates.append(
+            _aggregate_gate(
+                f"aggregate_{metric}_domination",
+                candidate,
+                competitors[strongest_name],
+                threshold,
+                settings.eval.bootstrap_samples,
+                baseline_name=strongest_name,
+            )
+        )
+        gates.append(
+            _aggregate_gate(
+                f"aggregate_{metric}_vs_deep",
+                candidate,
+                competitors["deep_only"],
+                threshold,
+                settings.eval.bootstrap_samples,
+                baseline_name="deep_only",
+            )
+        )
+    order = {
+        "aggregate_gauc_domination": 0,
+        "aggregate_hr_domination": 1,
+        "aggregate_ndcg_domination": 2,
+        "aggregate_gauc_vs_deep": 3,
+        "aggregate_hr_vs_deep": 4,
+        "aggregate_ndcg_vs_deep": 5,
+    }
+    return tuple(sorted(gates, key=lambda gate: order[gate.name]))
+
+
+def _aggregate_metric(
+    pairs: tuple[FinalistPairRecord, ...],
+    key: str,
+) -> np.ndarray:
+    values = [pair.evaluation.metrics[key] for pair in pairs]
+    if key.startswith("random_"):
+        values = [np.mean(value, axis=0) for value in values]
+    return np.asarray(np.mean(values, axis=0), dtype=np.float64)
 
 
 def _select_validation_winner(
@@ -234,9 +267,11 @@ def _aggregate_gate(
     baseline: np.ndarray,
     threshold: float,
     samples: int,
+    *,
+    baseline_name: str,
 ) -> MetricGateResult:
     interval = paired_bootstrap_delta(candidate, baseline, samples=samples, seed=42)
-    passed = interval.lower >= threshold
+    passed = interval.lower > threshold
     return MetricGateResult(
         name=name,
         passed=passed,
@@ -244,14 +279,14 @@ def _aggregate_gate(
         target=threshold,
         description=f"aggregate {name} CI lower must be >= {threshold:.6f}",
         candidate_name="hybrid",
-        baseline_name="deep_only",
+        baseline_name=baseline_name,
         candidate_mean=float(candidate.mean()),
         baseline_mean=float(baseline.mean()),
         delta_mean=interval.mean_delta,
         ci_lower=interval.lower,
         ci_upper=interval.upper,
         threshold=threshold,
-        failure_reason=None if passed else f"aggregate {name} CI lower is below threshold",
+        failure_reason=None if passed else f"aggregate {name} CI lower is not above threshold",
     )
 
 
@@ -266,12 +301,12 @@ def _build_release_report(
     split: SplitName,
     pairs: tuple[FinalistPairRecord, ...],
     selected: FinalistPairRecord,
-    gates: tuple[MetricGateResult, MetricGateResult, MetricGateResult],
+    gates: tuple[MetricGateResult, ...],
     comparison_signature: str,
 ) -> AggregateReleaseReport:
     """Build a fully validated report with canonical artifact SHA."""
     provisional = {
-        "schema_version": MODEL_SCHEMA_VERSION,
+        "schema_version": EVALUATION_SCHEMA_VERSION,
         "split": split,
         "passed": all(gate.passed for gate in gates),
         "comparison_signature_sha256": comparison_signature,

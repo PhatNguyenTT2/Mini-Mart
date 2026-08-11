@@ -50,6 +50,12 @@ class DataConfig(BaseSettings):
     num_price_buckets: int = Field(default=8, gt=0)
     min_rule_count: int = Field(default=3, gt=0)
     min_rule_lift: float = Field(default=1.0, ge=0.0)
+    rule_feature_schema_version: Literal["2.0.0", "3.0.0"] = "2.0.0"
+    minimum_non_trap_directed_rules: int = Field(default=0, ge=0)
+    minimum_distinct_organic_rule_items: int = Field(default=0, ge=0)
+    minimum_val_context_rule_coverage: float = Field(default=0.0, ge=0.0, le=1.0)
+    minimum_training_rows_with_any_rule: float = Field(default=0.0, ge=0.0, le=1.0)
+    maximum_trap_anchored_rule_fraction: float = Field(default=1.0, ge=0.0, le=1.0)
 
     @model_validator(mode="after")
     def validate_split_counts(self) -> DataConfig:
@@ -73,6 +79,8 @@ class ModelConfig(BaseModel):
     item_emb_dim: int = Field(default=64, gt=0)
     user_id_dropout: float = Field(default=0.1, ge=0.0, lt=1.0)
     use_item_id_residual: bool = True
+    use_user_id_embedding: bool = True
+    use_price_features: bool = True
     tau: float = Field(default=0.1)
 
     @field_validator("tau")
@@ -116,9 +124,15 @@ class EvalConfig(BaseModel):
     bootstrap_samples: int = Field(default=2_000, gt=0)
     random_seeds: Literal[10] = 10
     primary_metric: Literal["gauc"] = "gauc"
+    aggregate_gauc_min_delta: float = Field(default=0.0, ge=0.0)
+    aggregate_hr_min_delta: float = Field(default=0.0, ge=0.0)
+    aggregate_ndcg_min_delta: float = Field(default=0.0, ge=0.0)
     gauc_guardrail_delta: float = Field(default=-0.002, le=0.0)
     ndcg_guardrail_delta: float = Field(default=-0.001, le=0.0)
     hr_guardrail_delta: float = Field(default=-0.001, le=0.0)
+    deep_clear_random_gauc: float = Field(default=0.55, ge=0.5, le=1.0)
+    minimum_wide_to_deep_rms_ratio: float = Field(default=0.01, gt=0.0)
+    minimum_hybrid_deep_top_k_change_rate: float = Field(default=0.05, gt=0.0, le=1.0)
     minimum_gauc: float = Field(default=0.75, ge=0.5, le=1.0)
     random_gauc_tolerance: float = Field(default=0.02, ge=0.0)
     cold_score_atol: float = Field(default=1e-6, ge=0.0)

@@ -94,6 +94,7 @@ class _Evaluator:
             deep_logit_rms=1.0,
             wide_logit_rms=1.0,
             hybrid_logit_rms=1.0,
+            hybrid_deep_top_k_change_rate=0.5,
         )
 
 

@@ -132,6 +132,7 @@ async function ensureBenchmarkSchema(chat) {
     ALTER TABLE ml_interaction_event_v1 ADD COLUMN IF NOT EXISTS event_origin TEXT;
     ALTER TABLE ml_interaction_event_v1 ADD COLUMN IF NOT EXISTS cohort_id TEXT;
     ALTER TABLE ml_benchmark_run_v1 ADD COLUMN IF NOT EXISTS benchmark_spec_sha256 TEXT;
+    ALTER TABLE ml_benchmark_run_v1 ADD COLUMN IF NOT EXISTS rule_coverage JSONB;
     ALTER TABLE ml_benchmark_item_partition_v1 ADD COLUMN IF NOT EXISTS benchmark_spec_sha256 TEXT;
     DO $$ BEGIN
       ALTER TABLE ml_interaction_event_v1

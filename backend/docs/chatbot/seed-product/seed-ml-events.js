@@ -1,6 +1,6 @@
 'use strict';
 
-const { mulberry32, shuffle } = require('./benchmark-lib');
+const { mulberry32 } = require('./benchmark-lib');
 
 function timestampAt(index, count, startValue, endValue) {
   const start = Date.parse(startValue);
@@ -13,22 +13,6 @@ function zipfProduct(products, random, drift = 0) {
   if (!products.length) throw new Error('cannot sample from an empty product pool');
   const rank = Math.min(products.length - 1, Math.floor(products.length * Math.pow(random(), 2.2)));
   return products[(rank + drift) % products.length];
-}
-
-function buildPersonaAssignments(users, distribution, random) {
-  const shuffledUsers = shuffle(users, random);
-  const assignments = new Map();
-  let cursor = 0;
-  distribution.forEach((probability, persona) => {
-    const remaining = shuffledUsers.length - cursor;
-    const count = persona === distribution.length - 1
-      ? remaining
-      : Math.min(remaining, Math.round(probability * users.length));
-    shuffledUsers.slice(cursor, cursor + count).forEach((userId) => assignments.set(userId, persona));
-    cursor += count;
-  });
-  if (assignments.size !== users.length) throw new Error('persona assignment did not cover all users');
-  return assignments;
 }
 
 function buildHeldoutCohort(spec, usersPerTrap, userStart) {
@@ -57,53 +41,6 @@ function chooseAvailable(pool, blocked, seen, random, drift) {
   return candidate;
 }
 
-function buildUserAffinities(products, warmProducts, users, personaByUser) {
-  const warmSet = new Set(warmProducts);
-  const warm = products.filter((product) => warmSet.has(Number(product.product_id)));
-  const vendors = [...new Set(warm.map((product) => String(product.vendor || 'unknown'))) ].sort();
-  const prices = warm.map((product) => Number(product.unit_price)).sort((left, right) => left - right);
-  const quartiles = [0.25, 0.5, 0.75].map(
-    (quantile) => prices[Math.min(prices.length - 1, Math.floor(prices.length * quantile))]
-  );
-  const priceBand = (price) => quartiles.filter((boundary) => price > boundary).length;
-  const categories = [...new Set(warm.map((product) => Number(product.category_id)))].sort(
-    (left, right) => left - right
-  );
-  const categoryPersona = new Map(categories.map((category, index) => [category, index % 8]));
-  const productMetadata = new Map();
-  warm.forEach((product, popularityRank) => {
-    productMetadata.set(Number(product.product_id), {
-      category: Number(product.category_id),
-      vendor: String(product.vendor || 'unknown'),
-      priceBand: priceBand(Number(product.unit_price)),
-      popularity: 1 - popularityRank / Math.max(1, warm.length - 1)
-    });
-  });
-  const affinityByUser = new Map();
-  const preferredProducts = new Map();
-  users.forEach((userId) => {
-    const persona = personaByUser.get(userId);
-    const affinity = {
-      categoryPersona: persona,
-      vendor: vendors[(userId * 2654435761) % vendors.length],
-      priceBand: (userId * 17 + persona) % 4
-    };
-    affinityByUser.set(userId, affinity);
-    const exact = warmProducts.filter((productId) => {
-      const product = productMetadata.get(productId);
-      return categoryPersona.get(product.category) === affinity.categoryPersona
-        && product.vendor === affinity.vendor
-        && product.priceBand === affinity.priceBand;
-    });
-    const categoryFallback = warmProducts.filter(
-      (productId) => categoryPersona.get(productMetadata.get(productId).category)
-        === affinity.categoryPersona
-    );
-    preferredProducts.set(userId, exact.length ? exact : categoryFallback);
-  });
-  return { affinityByUser, preferredProducts, productMetadata, categoryPersona };
-}
-
 function conversionProbability(product, affinity, priorViews, spec, split) {
   const affinityMatch = [
     product.categoryPersona === affinity.categoryPersona,
@@ -123,7 +60,8 @@ function conversionProbability(product, affinity, priorViews, spec, split) {
 
 function buildOrganicRows({
   split, count, runId, users, warmProducts, preferredProducts, personaByUser,
-  affinityByUser, productMetadata, categoryPersona, blockedByUser, seenByUser, random, spec
+  affinityByUser, productMetadata, categoryPersona, blockedByUser, seenByUser,
+  lastPurchaseByUser, bundleNeighbors, random, spec
 }) {
   const rows = [];
   let sessionIndex = 0;
@@ -147,9 +85,20 @@ function buildOrganicRows({
       ? preferred
       : warmProducts;
     const requireNovelPurchase = split !== 'train' && guaranteedUser;
+    const priorPurchase = lastPurchaseByUser.get(userId);
+    const availableRuleNeighbors = (bundleNeighbors.get(priorPurchase) || []).filter(
+      (productId) => !blocked.has(productId) && !seen.has(productId)
+    );
+    const transitionProduct = priorPurchase !== undefined
+      && availableRuleNeighbors.length
+      && random() < spec.organic_rule_transition_probability
+      ? availableRuleNeighbors[Math.floor(random() * availableRuleNeighbors.length)]
+      : undefined;
     let mainProduct;
     if (split === 'train' && sessionIndex < warmProducts.length) {
       mainProduct = warmProducts[sessionIndex];
+    } else if (transitionProduct !== undefined) {
+      mainProduct = transitionProduct;
     } else if (requireNovelPurchase) {
       mainProduct = chooseAvailable(sourcePool, blocked, seen, random, drift);
     } else {
@@ -185,6 +134,7 @@ function buildOrganicRows({
         cohortId: null
       });
       seen.add(productId);
+      if (eventType === 'purchase') lastPurchaseByUser.set(userId, productId);
     }
     seenByUser.set(userId, seen);
     sessionIndex += 1;
@@ -286,26 +236,27 @@ async function insertBatch(client, rows) {
 }
 
 async function seedMlEvents({
-  client, spec, runId, catalogHash, specHash, products, coldProducts
+  client, spec, runId, catalogHash, specHash, products, coldProducts, affinityModel
 }) {
-  const random = mulberry32(spec.seed);
+  const random = mulberry32(affinityModel ? spec.seed + 17 : spec.seed);
   const coldSet = new Set(coldProducts);
   const warmProducts = products
     .map((product) => Number(product.product_id))
     .filter((id) => !coldSet.has(id));
   const users = Array.from({ length: spec.num_users }, (_, index) => index + 1);
   if (
-    spec.generator_version !== '3.0.0'
+    !['3.0.0', '4.0.0'].includes(spec.generator_version)
     || spec.persona_distribution.length !== 8
     || Math.abs(spec.persona_distribution.reduce((sum, value) => sum + value, 0) - 1) > 1e-9
   ) throw new Error('benchmark v3 persona/generator contract is invalid');
   if (warmProducts.length !== spec.num_products - spec.num_cold_products) {
     throw new Error(`warm catalog count mismatch: ${warmProducts.length}`);
   }
-  const personaByUser = buildPersonaAssignments(users, spec.persona_distribution, random);
-  const {
-    affinityByUser, preferredProducts, productMetadata, categoryPersona
-  } = buildUserAffinities(products, warmProducts, users, personaByUser);
+  if (!affinityModel || !affinityModel.bundleTemplates) {
+    throw new Error('v4 event generation requires one shared affinity model');
+  }
+  const model = affinityModel;
+  const { personaByUser, affinityByUser, preferredProducts, productMetadata, categoryPersona } = model;
 
   const validationSize = spec.semantic_traps.length * spec.semantic_validation_users_per_trap;
   const testSize = spec.semantic_traps.length * spec.semantic_test_users_per_trap;
@@ -341,6 +292,7 @@ async function seedMlEvents({
     row.reservedTargets.forEach((target) => blockedByUser.get(row.userId).add(target));
   });
   const seenByUser = new Map(users.map((userId) => [userId, new Set()]));
+  const lastPurchaseByUser = new Map();
   const semanticTrain = semanticTrainingRows(spec, runId, personaByUser);
   const trainValidationAnchors = cohortRows(
     validationCohort, runId, 'train', 'anchor', personaByUser, 'semantic_trap'
@@ -385,11 +337,12 @@ async function seedMlEvents({
     await client.query("SET LOCAL statement_timeout='20min'");
     await client.query("SET LOCAL statement_timeout='10min'");
     const existing = await client.query(
-      'SELECT count(*)::int AS count FROM ml_interaction_event_v1 WHERE store_id=$1',
-      [spec.store_id]
+      `SELECT count(*)::int AS count FROM ml_interaction_event_v1
+       WHERE store_id=$1 AND benchmark_run_id=$2`,
+      [spec.store_id, runId]
     );
     if (existing.rows[0].count !== 0) {
-      throw new Error('event target must be empty after guarded storage cleanup');
+      throw new Error(`immutable benchmark events already exist for ${runId}`);
     }
     await client.query(
       `INSERT INTO ml_benchmark_run_v1
@@ -416,6 +369,8 @@ async function seedMlEvents({
         categoryPersona,
         blockedByUser,
         seenByUser,
+        lastPurchaseByUser,
+        bundleNeighbors: model.bundleTemplates.neighborsByProduct,
         random,
         spec
       });
@@ -576,8 +531,6 @@ async function seedMlEvents({
 
 module.exports = {
   buildOrganicRows,
-  buildPersonaAssignments,
-  buildUserAffinities,
   conversionProbability,
   seedMlEvents,
   timestampAt

@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-from collections import Counter, defaultdict
 from typing import Any, cast
 
 import numpy as np
@@ -10,13 +9,15 @@ from scipy import sparse
 
 from ai_service.config import Settings
 from ai_service.contracts import ModelVariant, SplitName
-from ai_service.data.rules import RuleStore
+from ai_service.data.rules import RuleArtifact, RuleStore
 from ai_service.data.snapshot import Snapshot
 from ai_service.evaluation.full_catalog import (
     ExternalBatchScorer,
     FullCatalogEvaluator,
     prepare_split,
 )
+from ai_service.evaluation.metrics import paired_bootstrap_delta
+from ai_service.evaluation.persona import prepare_persona_baseline, score_persona_batch
 
 
 def _metrics(result: Any) -> dict[str, float | int]:
@@ -29,16 +30,53 @@ def _metrics(result: Any) -> dict[str, float | int]:
     }
 
 
+def _paired_evidence(candidate: Any, baseline: Any, settings: Settings) -> dict[str, Any]:
+    if not np.array_equal(candidate.user_ids, baseline.user_ids):
+        raise ValueError("paired probe results must use the same eligible user IDs")
+    gauc = paired_bootstrap_delta(
+        candidate.per_user_gauc,
+        baseline.per_user_gauc,
+        samples=settings.eval.bootstrap_samples,
+        seed=settings.train.seed,
+    )
+    ndcg = paired_bootstrap_delta(
+        candidate.per_user_ndcg,
+        baseline.per_user_ndcg,
+        samples=settings.eval.bootstrap_samples,
+        seed=settings.train.seed + 1,
+    )
+    return {
+        "gauc": {
+            "mean_delta": gauc.mean_delta,
+            "ci_lower": gauc.lower,
+            "ci_upper": gauc.upper,
+            "passed": gauc.lower > 0.0,
+        },
+        "ndcg_at_k": {
+            "mean_delta": ndcg.mean_delta,
+            "ci_lower": ndcg.lower,
+            "ci_upper": ndcg.upper,
+            "passed": ndcg.lower > 0.0,
+        },
+    }
+
+
 def run_data_probes(
     settings: Settings,
     snapshot: Snapshot,
     embeddings: np.ndarray,
+    rule_artifact: RuleArtifact | None = None,
 ) -> dict[str, Any]:
     """Evaluate non-neural signal probes on one frozen organic validation split."""
     vectors = np.array(embeddings, dtype=np.float32, copy=True)
     vectors /= np.maximum(np.linalg.norm(vectors, axis=1, keepdims=True), np.finfo(np.float32).eps)
     prepared = prepare_split(snapshot, SplitName.VAL)
-    evaluator = FullCatalogEvaluator(settings, vectors, RuleStore(snapshot.manifest.num_items, []))
+    rule_store = (
+        rule_artifact.store
+        if rule_artifact is not None
+        else RuleStore(snapshot.manifest.num_items, [])
+    )
+    evaluator = FullCatalogEvaluator(settings, vectors, rule_store)
     history = prepared.history_events
     purchases = history[history.event_type == "purchase"]
     items = prepared.candidate_item_ids
@@ -60,34 +98,34 @@ def run_data_probes(
         k=settings.eval.k,
     )
 
-    category_by_item = snapshot.catalog_df.sort_values(
-        "internal_product_id", kind="stable"
-    ).internal_leaf_category_id.to_numpy(np.int64)
-    persona_category: dict[int, Counter[int]] = defaultdict(Counter)
-    for user, item in purchases[["internal_user_id", "internal_product_id"]].itertuples(
-        index=False, name=None
-    ):
-        persona = int(
-            snapshot.persona_map.get(snapshot.raw_user_map[int(user)], settings.data.num_personas)
+    def apriori_scorer(users: np.ndarray, candidates: np.ndarray) -> np.ndarray:
+        contexts = np.asarray(
+            [prepared.latest_prior_purchase_contexts.get(int(user), -1) for user in users],
+            dtype=np.int64,
         )
-        persona_category[persona][int(category_by_item[int(cast(int, item))])] += 1
-    persona_vectors = np.empty((settings.data.num_personas + 1, len(items)), dtype=np.float32)
-    for persona in range(settings.data.num_personas + 1):
-        counts = persona_category[persona]
-        persona_vectors[persona] = (
-            np.asarray([counts[int(category)] for category in category_by_item], dtype=np.float32)
-            + popularity * 1e-4
+        lifts, _ = rule_store.batch_raw_lift(
+            contexts, np.broadcast_to(candidates, (len(users), len(candidates)))
         )
+        return lifts
 
-    def persona_scorer(users: np.ndarray, _candidates: np.ndarray) -> np.ndarray:
-        personas = np.asarray([prepared.personas[int(user)] for user in users], dtype=np.int64)
-        return persona_vectors[personas]
+    apriori_result = evaluator.evaluate_external_scores(
+        snapshot,
+        prepared_split=prepared,
+        variant=ModelVariant.WIDE_ONLY,
+        scorer=apriori_scorer,
+        k=settings.eval.k,
+    )
+
+    persona = prepare_persona_baseline(snapshot, prepared)
+
+    def persona_scorer(users: np.ndarray, candidates: np.ndarray) -> np.ndarray:
+        return score_persona_batch(persona, users, candidates)
 
     persona_result = evaluator.evaluate_external_scores(
         snapshot,
         prepared_split=prepared,
-        variant=ModelVariant.SBERT_CENTROID,
-        scorer=cast(ExternalBatchScorer, persona_scorer),
+        variant=ModelVariant.PERSONA_ONLY,
+        scorer=persona_scorer,
         k=settings.eval.k,
     )
 
@@ -166,6 +204,7 @@ def run_data_probes(
         "snapshot_sha256": snapshot.manifest.content_sha256,
         "embedding_shape": list(vectors.shape),
         "popularity_only": _metrics(popularity_result),
+        "apriori_only": _metrics(apriori_result),
         "persona_only": _metrics(persona_result),
         "sbert_centroid": _metrics(centroid_result),
         "item_item_cf": _metrics(item_cf_result),
@@ -173,4 +212,10 @@ def run_data_probes(
             **_metrics(permuted),
             "passed": abs(float(permuted.report.gauc) - 0.5) <= settings.eval.random_gauc_tolerance,
         },
+        "apriori_vs_random": _paired_evidence(apriori_result, permuted, settings),
+        "rule_coverage": (
+            rule_artifact.manifest.coverage.model_dump(mode="json")
+            if rule_artifact is not None and rule_artifact.manifest.coverage is not None
+            else None
+        ),
     }

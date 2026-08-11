@@ -138,3 +138,5 @@ def test_data_probes_measure_each_non_neural_signal(tmp_path: Path) -> None:
     assert report["sbert_centroid"]["eligible_users"] == 2
     assert report["item_item_cf"]["eligible_users"] == 2
     assert isinstance(report["label_permutation_sanity"]["passed"], bool)
+    assert isinstance(report["apriori_vs_random"]["gauc"]["passed"], bool)
+    assert isinstance(report["apriori_vs_random"]["ndcg_at_k"]["passed"], bool)

@@ -180,7 +180,7 @@ def test_pipeline_export_preflight_guards(tmp_path: Path, monkeypatch: pytest.Mo
     release_path = tmp_path / "releases" / comparison / "release-gate.json"
     release_path.parent.mkdir(parents=True)
     report = AggregateReleaseReport(
-        schema_version=MODEL_SCHEMA_VERSION,
+        schema_version="5.1.0",
         split=SplitName.TEST,
         passed=True,
         comparison_signature_sha256=comparison,
@@ -190,7 +190,15 @@ def test_pipeline_export_preflight_guards(tmp_path: Path, monkeypatch: pytest.Mo
         selected_seed=42,
         selected_victory_matrix_sha256="e" * 64,
         gates=tuple(
-            make_metric_gate(name) for name in ("aggregate_gauc", "aggregate_ndcg", "aggregate_hr")
+            make_metric_gate(name)
+            for name in (
+                "aggregate_gauc_domination",
+                "aggregate_hr_domination",
+                "aggregate_ndcg_domination",
+                "aggregate_gauc_vs_deep",
+                "aggregate_hr_vs_deep",
+                "aggregate_ndcg_vs_deep",
+            )
         ),
         artifact_sha256="0" * 64,
     )
@@ -262,7 +270,7 @@ def test_pipeline_resume_preflight_guards(
             min_count=settings.data.min_rule_count,
             min_lift=settings.data.min_rule_lift,
         ),
-        require_training_capability=object,
+        require_training_capability=lambda _settings: object(),
     )
     lifecycle = SimpleNamespace(
         status=RunStatus.INTERRUPTED if mutation != "status" else RunStatus.TRAINING,
@@ -328,6 +336,7 @@ def test_pipeline_test_pair_validation_gate_guards(
         return SimpleNamespace(
             settings=SimpleNamespace(
                 train=SimpleNamespace(seed=42),
+                data=SimpleNamespace(rule_feature_schema_version="2.0.0"),
                 comparison_signature_sha256=lambda: signature,
             ),
             snapshot=SimpleNamespace(manifest=SimpleNamespace(content_sha256=lineage["snapshot"])),
@@ -361,7 +370,7 @@ def test_pipeline_test_pair_validation_gate_guards(
     release_dir = tmp_path / "releases" / signature
     release_dir.mkdir(parents=True)
     report = AggregateReleaseReport(
-        schema_version=MODEL_SCHEMA_VERSION,
+        schema_version="5.1.0",
         split=SplitName.VAL,
         passed=True,
         comparison_signature_sha256=signature,
@@ -371,7 +380,15 @@ def test_pipeline_test_pair_validation_gate_guards(
         selected_seed=42,
         selected_victory_matrix_sha256="e" * 64,
         gates=tuple(
-            make_metric_gate(name) for name in ("aggregate_gauc", "aggregate_ndcg", "aggregate_hr")
+            make_metric_gate(name)
+            for name in (
+                "aggregate_gauc_domination",
+                "aggregate_hr_domination",
+                "aggregate_ndcg_domination",
+                "aggregate_gauc_vs_deep",
+                "aggregate_hr_vs_deep",
+                "aggregate_ndcg_vs_deep",
+            )
         ),
         artifact_sha256="0" * 64,
     )

@@ -21,6 +21,7 @@ def _loaded(
     lineage = lineage or {"snapshot": "b" * 64, "embedding": "c" * 64, "rules": "d" * 64}
     settings = SimpleNamespace(
         train=SimpleNamespace(seed=seed),
+        data=SimpleNamespace(rule_feature_schema_version="2.0.0"),
         comparison_signature_sha256=lambda: signature,
     )
     snapshot = SimpleNamespace(manifest=SimpleNamespace(content_sha256=lineage["snapshot"]))
