@@ -1,280 +1,236 @@
-# Detail plan còn lại: R4 diagnostic và production handoff
+# Detail plan còn lại: R3 contract closure, R4 diagnostics và production handoff
 
-## 1. Readiness receipt hiện tại
-
-Source R3-C0/C1 đã hoàn tất trong working tree:
-
-- Python: `436 passed, 2 skipped`.
-- Branch coverage: `85.02%`.
-- Critical coverage: pipeline `85.33%`, trainer `86.16%`, checkpoint `96.03%`, report `90.73%`, release `90.37%`, bundle `94.70%`.
-- Ruff format/lint, mypy, `git diff --check`: pass.
-- Node seed-product: `15 passed`.
-- Six-field lineage, selection-artifact mode, immutable diagnostic stop, rule-hard exclusion và read-only `preflight-r3` seam đã được kiểm thử.
-
-Readiness vẫn khóa:
+## Trạng thái kiểm chứng hiện tại
 
 ```text
-R3_SOURCE_READY
-R4_LINEAGE_REBUILD_PENDING
+SOURCE_IMPLEMENTATION_IN_PROGRESS
+R3_CONTRACT_REPAIR_IN_PROGRESS
+R4_DIAGNOSTIC_BLOCKED
 PRODUCTION_TRAINING_BLOCKED
 Hybrid victory not established
 ```
 
-Blocker vận hành duy nhất trước R4 là snapshot local hiện tại không có `benchmark-spec.json` và semantic cohort đang dùng shape cũ; `load_snapshot()` reject đúng contract. Không chạy GPU, không tạo R4 run và không purge database cho tới khi Phase R4.0 hoàn tất.
+Các thay đổi source đã triển khai trong working tree nhưng chưa được source-freeze:
 
-Frozen database receipt cần giữ nguyên:
+- `training/preflight.py` cung cấp `PreparedTrainingInputs` và
+  `run_r3_preflight()`; audit/probe/readiness fail trước run creation.
+- `DataProbeReport` là typed report có cờ `passed`; probe output không còn là
+  quyết định ngầm từ dictionary.
+- `semantic_cohort.py` chỉ đọc cohort thuộc snapshot và kiểm tra đủ 10 trap.
+- R3 selection có thể nhận chính xác một `report.json`, khóa selected run và
+  diagnostic commit; candidate `FAILED` được ghi ineligible thay vì làm abort
+  candidate hợp lệ.
+- `R4PromotionReport`, CLI `promote-r4` và `verify_training_run.py` đã có seam
+  ban đầu cho handoff diagnostic -> production.
+- Run lifecycle atomic publication re-raises mọi lỗi trước rename; v5 run state
+  active yêu cầu six-field lineage.
 
-```text
-benchmark_run_id = benchmark-v5-s42-7f40639b0d-1ace202aaa
-spec_sha256      = 1ace202aaa8f54204ead66ceabe809b3c51795e097dd71c505f07b8367c80bd2
-cohort_sha256    = da59e744fdb4e572be52a5fd1f76daae62fb61685fcc39fa53e0015c60ca30f7
-events           = 823371
-orders           = 15000 (14250 organic, 750 semantic_trap)
-train_alignment  = 0.43658977441932684
-val_alignment    = 0.40214646464646464
-non_trap_rules   = 14086
-organic_items    = 4143
-```
+Không được chạy R3/R4 GPU hoặc production seed khi các exit gate dưới đây chưa
+pass. Snapshot local hiện tại vẫn phải được kiểm tra lại vì schema/cohort cũ bị
+loader reject đúng contract.
 
-Không thay đổi source/config sau source freeze; mọi failed run/artifact dùng ID mới, không overwrite.
+## R3-C2 — việc còn phải đóng ở source
 
-## 2. Phase R4.0 — Rebuild immutable Python lineage
+### C2.1 Preflight và training seam
 
-### Task R4.0.1 — Production shell preflight
+Files: `ai-service/src/ai_service/training/preflight.py`,
+`training/pipeline.py`, `evaluation/probes.py`, `data/sources.py`.
 
-Files/seams:
-
-- `ai-service/src/ai_service/config.py::Settings.validate_production()` — chỉ đọc biến môi trường, không ghi secret.
-- `ai-service/src/ai_service/data/sources.py` — dùng đúng TLS helper cho ba database.
-- `ai-service/src/ai_service/training/provenance.py` — require clean worktree và `HEAD == @{u}` trước snapshot publication.
-
-Trong shell mới tại `E:\UIT\cv\backend\ai-service`, cấu hình `AI_ENV=production`, absolute `AI_ARTIFACT_ROOT`, `AI_STORE_ID=1`, ba database URL và `SUPABASE_DB_CA_PATH`. Chỉ in tên database và `PASS`; không in URL.
+1. `prepare_training_inputs()` phải là nguồn duy nhất của snapshot, embedding,
+   rules, purchase index, sampler và loader cho `train` schema `3.0.0`.
+2. `run_r3_preflight()` phải gọi `check_production_connections()` khi
+   `AI_ENV=production`, rồi audit snapshot, probes và strict target readiness.
+3. Mọi failure phải xảy ra trước `RunLifecycle.create()` và không tạo thư mục
+   run. Probe chỉ coi metrics finite/range-valid, permutation sanity và shape
+   hợp lệ là pass; Persona/ItemCF/SBERT vẫn là reference, không biến thành
+   absolute gate.
+4. `execute_command(train)` phải truyền cùng `PreparedTrainingInputs` vào
+   `_train()`; không được load/build lại sampler hoặc iterator.
 
 Validate:
 
 ```powershell
-git status --porcelain
-git rev-parse HEAD
-git rev-parse '@{u}'
-git rev-list --left-right --count HEAD...@{u}
-.\.venv\Scripts\python.exe -c "from ai_service.config import get_settings; s=get_settings(); s.validate_production(); assert s.data.database_ssl_root_cert and s.data.database_ssl_root_cert.is_file(); print('production_settings=PASS')"
+python -m pytest tests/unit/test_pipeline_preflight_contracts.py tests/unit/test_r3_c2_contract.py -q
+python -m ruff check src tests
+python -m mypy src
 ```
 
-Reject nếu worktree dirty, upstream thiếu/mismatch, CA không tồn tại hoặc bất kỳ DB `SELECT 1` nào fail.
+### C2.2 Six-field lineage
 
-### Task R4.0.2 — Purge local Python outputs only
+Files: `contracts.py`, `lineage.py`, `data/snapshot.py`,
+`training/run.py`, `training/checkpoint.py`, `evaluation/report.py`,
+`evaluation/ablation.py`, `evaluation/release.py`, `export/bundle.py`.
 
-File: `ai-service/scripts/purge_benchmark_outputs.py`.
+1. Active v5 boundaries chỉ nhận `ArtifactLineageV5` với exact keys:
+   `snapshot`, `embedding`, `rules`, `benchmark_spec`, `semantic_cohort`,
+   `order_metadata`.
+2. Snapshot loader phải verify `benchmark-spec.json`,
+   `semantic-cohort.json` và canonical order-metadata receipt; mutation hoặc
+   thiếu file phải raise `ArtifactIntegrityError`.
+3. Run manifest, pipeline state, checkpoint payload/manifest, evaluation,
+   ablation, release và bundle phải serialize cùng sáu SHA; không dựng mapping
+   ba trường trong active path.
+4. TEST aggregate phải nhận expected lineage từ VAL aggregate và reject mismatch
+   trước publication.
 
-1. Chạy `--dry-run`, kiểm tra allowlist exact (`_archive`, `snapshots`, `features`, `rules`, `runs`, `diagnostics`, `releases`, `bundles`).
-2. Xác nhận không có production/R4 run cần giữ.
-3. Chạy với confirmation token đã định nghĩa trong script.
-4. Kiểm tra root vẫn tồn tại và không còn snapshot/rule/diagnostic v4 hoặc schema cũ.
-
-Không chạy reset database; database receipt đã pass và không cần audit archive.
-
-### Task R4.0.3 — Snapshot publication
-
-Files:
-
-- `ai-service/src/ai_service/data/snapshot.py::SnapshotBuilder.build/load_snapshot` — publish và verify `benchmark-spec.json`, `semantic-cohort.json`, order metadata receipt; hash canonical JSON.
-- `ai-service/src/ai_service/cli.py` — snapshot command phải nhận `--benchmark-spec` explicit.
-- `ai-service/src/ai_service/training/pipeline.py::_configure` — resolve path và reject file không tồn tại.
-
-Tạo snapshot ID mới, không reuse local ID cũ:
-
-```text
-benchmark-v5-r3-s42-<spec-sha-prefix>-<frozen-commit-prefix>
-```
-
-Publish bằng Postgres source và canonical spec `backend/docs/chatbot/seed-product/benchmark-spec-v5.json`. Sau đó load lại snapshot bằng `load_snapshot()`; mutation hoặc thiếu bất kỳ file lineage nào phải fail.
-
-### Task R4.0.4 — Features và rules
-
-Files:
-
-- `ai-service/src/ai_service/data/features.py::SBERTArtifactBuilder` — build real pinned SBERT artifact từ snapshot mới.
-- `ai-service/src/ai_service/data/rules.py::AprioriRuleMiner/load_rule_artifact` — mine full-stat v3 rules, bind snapshot SHA/spec/cohort/order metadata và reject legacy.
-- `ai-service/src/ai_service/lineage.py::resolve_artifact_lineage` — verify sáu SHA bằng manifest thực tế.
-
-Require:
-
-```text
-events=823371, users=5000, items=5200, orders=15000
-strict TRAIN target rate >= .40
-strict VAL target rate >= .40
-non-trap directed rules >= 5000
-distinct organic rule items >= 3000
-all semantic target directions present
-```
-
-## 3. Phase R4.1 — Read-only preflight và source exit gate
-
-### Files
-
-- `ai-service/src/ai_service/training/pipeline.py::_preflight_r3` — dùng cùng snapshot/features/rules/sampler với training; không tạo run directory.
-- `ai-service/src/ai_service/data/rule_readiness.py` — strict target-rule rate, negative-only rows và denominator phải finite.
-- `ai-service/src/ai_service/evaluation/probes.py` — streaming probe parity với reference.
-
-Chạy:
+Validate bằng corruption tests của checkpoint/report/release/ONNX và kiểm tra:
 
 ```powershell
-.\.venv\Scripts\python.exe -m ai_service.cli preflight-r3 `
-  --config configs\diagnostics\r3-v5\deep-control.toml `
-  --snapshot-id <new-snapshot-id> --device cpu
+rg -n 'set\(.*snapshot.*embedding.*rules|require_v5=' src/ai_service
 ```
 
-Validate response có snapshot/embedding/rules/spec/cohort/order SHA, audit pass, strict readiness pass và probe parity `<=1e-6`. Nếu fail, dừng trước GPU.
+Chỉ compatibility path synthetic/schema 2 được phép tồn tại trong test seam;
+không được dùng trong R3/R4 hoặc production.
 
-Chạy lại quality gate sau khi snapshot lineage mới được publish:
+### C2.3 Exact selection artifact và promotion
+
+Files: `evaluation/ablation.py`, `training/pipeline.py`,
+`evaluation/promotion.py`, `cli.py`.
+
+1. Diagnostic Hybrid bắt buộc `--r3-selection-report` trỏ tới đúng
+   `report.json`; pipeline không được scan toàn bộ `diagnostics/r3`.
+2. Report phải chọn đúng Deep run, flags, comparison signature, six-field
+   lineage và `diagnostic_git_commit` bằng source revision hiện tại.
+3. Candidate `FAILED` có summary hợp lệ được ghi `eligible=false`; candidate
+   `INTERRUPTED`, corrupt checkpoint, corrupt lineage hoặc non-finite evidence
+   abort comparison. Nếu vẫn có candidate eligible thì không đặt
+   `diagnostic_pause=true` chỉ vì một candidate thất bại.
+4. `promote-r4` publish immutable `R4PromotionReport`; receipt bind selected
+   Deep/H3b checkpoints, VAL matrix, config hashes, diagnostic commit và
+   production commit. Production train chỉ nhận receipt đã verified và commit
+   hiện tại.
+
+### C2.4 Sampling và semantic gate
+
+Files: `data/dataset.py`, `data/sampling.py`, `training/objectives.py`,
+`training/trainer.py`, `data/semantic_cohort.py`,
+`evaluation/semantic_traps.py`, `evaluation/full_catalog.py`.
+
+1. `RulePairIndex` chỉ lấy organic order baskets; view/click timestamp không
+   tạo positive edge.
+2. `MixedNegativeBatch` phải giữ `source_tags`/`rule_hard_mask`. Rule-hard quota
+   đúng `4/16`, warm/unseen/unique, loại organic positive và protected trap
+   edges; thiếu quota phải fail, không fallback.
+3. Rule auxiliary loss chỉ có gradient vào Wide; Deep-only Wide parameters và
+   gradients giữ nguyên.
+4. Semantic gate chỉ đọc snapshot cohort, không fallback fixture/arbitrary user
+   cho Postgres. Mỗi trap phải có đủ target cases: mọi case rank <=10, không xấu
+   hơn Deep, có ít nhất một strict improvement/trap.
+
+Validate targeted tests:
+
+```powershell
+python -m pytest tests/unit/test_purchase_objective_contract.py tests/unit/test_semantic_trap_contract.py tests/unit/test_full_catalog_contract.py -q
+```
+
+## R3-C3 — source exit gate và tài liệu
+
+Chạy toàn bộ:
 
 ```powershell
 npm.cmd run test:seed-product
-.\.venv\Scripts\python.exe -m ruff format --check src tests scripts
-.\.venv\Scripts\python.exe -m ruff check src tests scripts
-.\.venv\Scripts\python.exe -m mypy src scripts
-.\.venv\Scripts\python.exe -m pytest --cov=ai_service --cov-branch --cov-fail-under=85 -q
-.\.venv\Scripts\python.exe scripts\check_critical_coverage.py <coverage.json>
+python -m ruff format --check src tests scripts
+python -m ruff check src tests scripts
+python -m mypy src scripts
+python -m pytest --cov=ai_service --cov-branch --cov-fail-under=85 -q
+python scripts/check_critical_coverage.py <coverage.json>
+git diff --check
 ```
 
-Require exactly two fixed-runner skips, critical thresholds như receipt trên, clean worktree và `HEAD == origin/main`.
+Acceptance: tests pass, đúng 2 fixed-runner skips, global branch >=85%,
+Trainer/Pipeline >=85%, Checkpoint/Report/Release/Bundle >=90%, không threshold
+reduction hoặc coverage exclusion.
 
-## 4. Phase R4.2 — Deep ablation seed 42
+Trước freeze:
 
-### Config/source files
+- `README.md` chỉ dùng config `configs/diagnostics/r3-v5` và yêu cầu
+  `--benchmark-spec`.
+- `configs/ablations/README.md` không còn executable v3/v4 production path.
+- `walkthrough.md` ghi `R3_SOURCE_READY / R4_LINEAGE_REBUILD_PENDING /
+  PRODUCTION_TRAINING_BLOCKED`, test receipt mới và `Hybrid victory not
+  established`.
+- Commit/push, sau đó require `git status --porcelain` rỗng,
+  `HEAD == origin/main`, ahead/behind `0/0`.
 
-- `ai-service/configs/diagnostics/r3-v5/deep-control.toml`
-- `ai-service/configs/diagnostics/r3-v5/deep-no-price.toml`
-- `ai-service/configs/diagnostics/r3-v5/deep-no-user.toml`
-- `ai-service/configs/diagnostics/r3-v5/deep-no-price-no-user-id.toml`
-- `ai-service/src/ai_service/training/pipeline.py::_train` — verify six-field lineage and diagnostic stage before `RunLifecycle.create`.
-- `ai-service/src/ai_service/training/trainer.py` — enforce post-warmup eligible checkpoint, finite metrics, cache update, Deep/Wide invariant.
+## R4.0 — rebuild immutable Python lineage
 
-Chạy tuần tự, một GPU job mỗi lần:
+Không reset database nếu receipt v5 vẫn đúng; chỉ purge local
+`ai-service/artifacts` bằng `purge_benchmark_outputs.py`. Sau source freeze:
+
+1. Load ba database URL từ allowlist trong `backend/.env`, inject qua shell
+   không log secrets; CA phải là absolute file.
+2. Chạy production settings và read-only `SELECT 1` receipt cho chatbot,
+   catalog, order; database identities phải distinct.
+3. Purge dry-run rồi execute; không xóa source, `.env` hoặc database.
+4. Tạo snapshot mới với explicit `benchmark-spec-v5.json`, real SBERT feature
+   artifact và full-stat rule artifact v3. Không reuse snapshot schema cũ.
+5. Chạy audit, probes, `inspect-ml-storage`, rule capability và preflight.
+
+Expected receipt: 823371 events, 5000 users, 5200 items, 15000 orders,
+TRAIN/VAL strict target rate >=.40, >=5000 non-trap directed rules, >=3000
+organic rule items, all ten semantic target cases and six-field lineage.
+
+## R4.1 — Deep ablation seed 42
+
+Run tuần tự, không song song GPU:
 
 ```text
 diag-v5-deep-control-s42
 diag-v5-deep-no-price-s42
-diag-v5-deep-no-user-s42
+diag-v5-deep-no-user-id-s42
 diag-v5-deep-both-s42
 ```
 
-Sau mỗi run kiểm tra `run-manifest.json`, `resolved-config.json`, `training/history.jsonl`, `training/summary.json`, `checkpoints/best.pt`, `checkpoints/last.pt` và pipeline state. Epoch trước warmup không được tạo `best.pt`; không eligible checkpoint hoặc non-finite/GAUC `<.50` là diagnostic stop và dừng ladder.
+File thật là `deep-no-user-id.toml`; không dùng `deep-no-user.toml`.
+Sau mỗi run dùng `scripts/verify_training_run.py`. Control phải hoàn tất;
+candidate `FAILED` có summary hợp lệ được ghi ineligible; interrupted/corrupt
+hoặc lineage mismatch dừng toàn bộ R4.
 
-So sánh:
+`compare-deep-ablations` phải publish một verified report chứa per-user
+GAUC/HR/NDCG, exact run IDs/checkpoint SHAs, six-field lineage, configured
+guardrails và selected run. Không có selected eligible run hoặc
+`diagnostic_pause=true` thì dừng.
 
-```powershell
-.\.venv\Scripts\python.exe -m ai_service.cli compare-deep-ablations `
-  --control-run-id diag-v5-deep-control-s42 `
-  --candidate-run-ids diag-v5-deep-no-price-s42 diag-v5-deep-no-user-s42 diag-v5-deep-both-s42 `
-  --device cuda
-```
+## R4.2 — Hybrid H0–H3b falsification ladder
 
-Selection artifact phải có exact per-user HR/NDCG/GAUC, six-field lineage, source commit và một candidate eligible theo GAUC/HR/NDCG floors + paired CI. Không có candidate eligible: publish diagnostic pause, không chạy Hybrid.
-
-## 5. Phase R4.3 — Hybrid falsification ladder
-
-### Config files
-
-- `ai-service/configs/diagnostics/r3-v5/hybrid-h0-main.toml`
-- `hybrid-h1-rule-aux.toml`
-- `hybrid-h2-rule-hard.toml`
-- `hybrid-h3a-view-zero.toml`
-- `hybrid-h3b-view-point-one.toml`
-
-Mỗi file phải giữ `r3_feature_selection_mode="selection_artifact"`; không khai báo feature flags trái selection receipt.
-
-### Execution
-
-Với selection report đã verified, chạy H0 → H1 → H2 → H3a → H3b, truyền:
+Năm config phải có `r3_feature_selection_mode="selection_artifact"` và nhận
+đúng `--r3-selection-report`:
 
 ```text
---r3-selection-report <verified-selection-report>/report.json
+H0 rule weight 0.00, rule-hard 0, view 0.10
+H1 rule weight 0.10, rule-hard 0, view 0.10
+H2 rule weight 0.10, rule-hard 4, view 0.10
+H3a rule weight 0.10, rule-hard 4, view 0.00
+H3b rule weight 0.10, rule-hard 4, view 0.10
 ```
 
-Mỗi Hybrid pair với đúng selected Deep run, cùng seed/source/six-field lineage/comparison signature. Sau mỗi run chạy `evaluate --split val` với independent Deep.
+Evaluate each against selected independent Deep on VAL. Integrity failure,
+target readiness failure, non-finite/GAUC<.50, epoch-one Wide/cache failure,
+semantic corruption, staged diagnostic stop or no eligible checkpoint stops the
+ladder. H0–H3a may fail Victory Matrix as diagnostic evidence; H3b must pass
+GAUC >=.75, HR@10 >=.15, NDCG@10 >=.08, strongest-baseline paired CI for all
+three metrics, all ten serving-equivalent traps, cold parity, strict readiness
+and Wide readiness.
 
-Dừng ngay khi selection/lineage mismatch, target readiness fail, cohort corruption, non-finite, GAUC `<.50`, epoch-1 Wide/cache fail, staged diagnostic stop hoặc không có eligible checkpoint. H0–H3a có thể fail Victory Matrix nhưng phải giữ immutable evidence trước candidate kế tiếp.
+H3b failure means no production config, no seeds 2027/31415, no seal/export,
+and status remains `PRODUCTION_TRAINING_BLOCKED`.
 
-H3b chỉ pass khi tất cả đồng thời:
+## R4.3 — promotion and conditional production campaign
 
-```text
-GAUC >= .75
-HR@10 >= .15
-NDCG@10 >= .08
-paired CI lower > 0 vs strongest baseline cho cả ba metrics
-semantic cohort đủ 10/10 target cases
-cold parity PASS
-strict target readiness PASS
-Wide readiness PASS
-```
+Only after H3b pass:
 
-Nếu H3b fail: publish diagnostic-stop/R3 report, không train seed 2027/31415, không tạo production config, seal hoặc bundle.
+1. Materialize fixed `configs/production/deep.toml` and `hybrid.toml` with
+   selected feature flags, H3b objective settings, selection SHA and six-field
+   lineage.
+2. Publish and verify `R4PromotionReport`; commit only the two production
+   config files, push and source-freeze again.
+3. Re-run full quality/corruption/CUDA smoke and confirm six production IDs are
+   absent.
+4. Train `deep-42-v5 -> hybrid-42-v5 -> VAL`; stop if any train or VAL gate
+   fails. Then repeat seeds 2027 and 31415 sequentially.
+5. Aggregate VAL 3+3, evaluate TEST for all three pairs, aggregate TEST, seal
+   only selected Hybrid, export/verify bundle, run ONNX parity and fixed-runner
+   benchmark.
 
-## 6. Phase R4.4 — Promotion gate
-
-Chỉ sau H3b pass:
-
-1. Tạo `ai-service/configs/production/deep.toml` và `hybrid.toml` với feature flags cố định.
-2. Ghi selection report SHA và six-field lineage receipt vào resolved config.
-3. Chạy full quality/corruption/CUDA smoke trong artifact root tạm.
-4. Commit/push và freeze source; không sửa tracked files trong production campaign.
-5. Verify production env/TLS, snapshot/rules/features và cả sáu production run ID chưa tồn tại.
-
-Readiness chỉ chuyển thành `READY_FOR_DEEP_42_TRAINING` sau các điều kiện trên. Khi chưa đạt, giữ `R4_DIAGNOSTIC_BLOCKED` và `Hybrid victory not established`.
-
-## 7. Source checks added in the current working tree
-
-These checks are now part of the R3 source gate and must be rerun after the
-next commit; they do not authorize a GPU campaign while snapshot rebuild is
-pending:
-
-- `evaluation/ablation.py` stores the selected comparison-signature SHA in a
-  v5 Deep selection report, and `require_selected_r3_pair()` rejects a mismatch
-  against Hybrid resolved settings after lineage and feature checks.
-- `evaluation/semantic_traps.py` rejects duplicate `(trap_id,user_id,target_id)`
-  rows before serving-equivalent scoring.
-- Regression coverage is in `test_ablation_contract.py` and
-  `test_checkpoint_report_and_trap_contracts.py`.
-
-Current validation receipt:
-
-```text
-Python tests       438 passed, 2 fixed-runner skips
-Branch coverage   85.00% (cov-branch, fail-under=85)
-Critical files    checkpoint 96.03%, report 90.73%, bundle 94.70%,
-                  release 90.37%, trainer 86.16%, pipeline 85.33%
-Node seed tests   15 passed
-Ruff/mypy         PASS
-```
-
-The local snapshot `benchmark-v5-s42-7f40639b0d-1ace202aaa` remains rejected
-because `benchmark-spec.json` is missing and its cohort uses the old shape.
-Next action is R4.0.3 snapshot publication from the verified database receipt,
-then `preflight-r3`; do not bypass this failure or start a diagnostic run.
-
-## 8. Production handoff sau R4
-
-Campaign bắt buộc tuần tự:
-
-```text
-deep-42-v5 → hybrid-42-v5 → VAL 42
-→ deep/hybrid 2027 → VAL 2027
-→ deep/hybrid 31415 → VAL 31415
-→ aggregate VAL 3+3
-→ TEST cả ba pairs
-→ aggregate TEST
-→ seal selected Hybrid
-→ export/verify bundle
-→ ONNX parity và fixed-runner benchmark
-```
-
-Các file kiểm chứng sau mỗi run:
-
-- `ai-service/src/ai_service/training/run.py` — status/reason/commit.
-- `ai-service/src/ai_service/training/checkpoint.py` — best/last hash, stopping state, six-field lineage.
-- `ai-service/src/ai_service/evaluation/report.py` — Hybrid-owned evaluation artifact.
-- `ai-service/src/ai_service/evaluation/release.py` — exact 3+3 seeds, source commit và selected winner lock.
-- `ai-service/src/ai_service/export/bundle.py` — canonical Victory Matrix SHA, allowlist/checksums, ONNX parity.
-
-Không tuyên bố Hybrid victory nếu thiếu một gate trong acceptance matrix; không xóa hoặc reuse run/artifact thất bại.
+Do not update tracked documentation between production runs. Declare Hybrid
+victory only when every acceptance gate and runtime benchmark passes.

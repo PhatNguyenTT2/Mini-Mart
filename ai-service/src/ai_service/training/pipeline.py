@@ -8,6 +8,7 @@ import os
 import random
 import re
 from argparse import Namespace
+from collections.abc import Mapping
 from dataclasses import asdict, dataclass
 from pathlib import Path
 from typing import Any, Literal, cast
@@ -27,6 +28,7 @@ from ai_service.config import (
 from ai_service.contracts import (
     RULE_COVERAGE_SEMANTICS_VERSION,
     AggregateReleaseReport,
+    ArtifactLineageV5,
     CheckpointManifest,
     DataSourceKind,
     EmbeddingSource,
@@ -79,6 +81,7 @@ from ai_service.evaluation.cold_start import evaluate_cold_parity
 from ai_service.evaluation.full_catalog import FullCatalogEvaluator, prepare_split
 from ai_service.evaluation.gates import SingleSeedGateInputs, evaluate_single_seed
 from ai_service.evaluation.probes import run_data_probes
+from ai_service.evaluation.promotion import load_r4_promotion, publish_r4_promotion
 from ai_service.evaluation.r3_diagnostics import publish_r3_diagnostic
 from ai_service.evaluation.release import evaluate_three_seed
 from ai_service.evaluation.report import load_evaluation_artifacts, publish_evaluation_artifacts
@@ -86,9 +89,14 @@ from ai_service.evaluation.semantic_traps import evaluate_semantic_traps
 from ai_service.export.bundle import BundlePublisher, file_sha256, verify_bundle
 from ai_service.export.onnx import export_onnx_models
 from ai_service.export.parity import verify_onnx_parity
-from ai_service.lineage import resolve_artifact_lineage
+from ai_service.lineage import require_v5_lineage, resolve_artifact_lineage
 from ai_service.models.two_tower_wide_deep import HybridTwoTowerModel
 from ai_service.training.checkpoint import CheckpointManager
+from ai_service.training.preflight import (
+    PreparedTrainingInputs,
+    prepare_training_inputs,
+    run_r3_preflight,
+)
 from ai_service.training.provenance import (
     require_frozen_source_revision,
     resolve_source_revision,
@@ -160,6 +168,10 @@ def _load_state(settings: Settings, run_id: str | None) -> PipelineState:
     if "model_schema_version" not in state_document:
         raise ArtifactIntegrityError("pipeline state has no model schema version")
     state = PipelineState.model_validate(state_document)
+    if settings.data.rule_feature_schema_version == "3.0.0" and not isinstance(
+        state.lineage, ArtifactLineageV5
+    ):
+        raise ArtifactIntegrityError("v5 pipeline state requires six-field lineage")
     return state
 
 
@@ -203,8 +215,15 @@ def _configure(args: Namespace) -> Settings:
         settings.model.use_price_features = selection.use_price_features
         settings.train.r3_selection_artifact_sha256 = artifact.report.artifact_sha256
         settings.train.r3_selected_deep_run_id = artifact.report.selected_run_id
+        settings.train.r3_selection_report_path = str(selection_path)
     elif settings.train.r3_feature_selection_mode == "selection_artifact":
         raise ConfigurationError("selection_artifact config requires --r3-selection-report")
+    promotion_report = getattr(args, "r4_promotion_report", None)
+    if promotion_report is not None:
+        promotion_path = Path(promotion_report).resolve()
+        if not promotion_path.is_file():
+            raise ConfigurationError(f"R4 promotion report does not exist: {promotion_path}")
+        settings.train.r4_promotion_report_path = str(promotion_path)
     if settings.serving.environment.lower() == "production" and (
         getattr(args, "source", DataSourceKind.POSTGRES.value) != DataSourceKind.POSTGRES.value
         or getattr(args, "embedding_source", EmbeddingSource.REAL.value)
@@ -437,6 +456,10 @@ def _preflight_r3(settings: Settings, *, device: torch.device) -> dict[str, obje
     artifact, and ``device`` is reported only to make the operator's command
     explicit; all checks remain CPU-safe.
     """
+    is_r3_rules = settings.data.rule_feature_schema_version == "3.0.0"
+    if is_r3_rules:
+        return run_r3_preflight(settings, device=device).model_dump(mode="json")
+
     snapshot = load_snapshot(settings.data.snapshot_id, settings)
     embedding_path = _find_single_parent_artifact(
         settings.data.artifact_root.resolve() / "features",
@@ -483,6 +506,15 @@ def _preflight_r3(settings: Settings, *, device: torch.device) -> dict[str, obje
         )
     audit = DataQualityAuditor().audit(snapshot)
     probes = run_data_probes(settings, snapshot, embedding.vectors, rules)
+    if getattr(audit, "training_suitability_passed", True) is False:
+        failures = getattr(audit, "gate_failures", ())
+        raise ArtifactIntegrityError(
+            "R3 preflight data audit failed: " + "; ".join(str(item) for item in failures)
+        )
+    if (isinstance(probes, Mapping) and probes.get("passed") is False) or (
+        hasattr(probes, "passed") and probes.passed is False
+    ):
+        raise ArtifactIntegrityError("R3 preflight probe parity/sanity failed")
     return {
         "device": str(device),
         "snapshot_id": snapshot.manifest.artifact_id,
@@ -492,7 +524,7 @@ def _preflight_r3(settings: Settings, *, device: torch.device) -> dict[str, obje
         "lineage": lineage.model_dump(mode="json"),
         "audit": audit.model_dump(mode="json"),
         "rule_readiness": readiness.model_dump(mode="json"),
-        "probes": probes,
+        "probes": probes.model_dump(mode="json") if hasattr(probes, "model_dump") else probes,
     }
 
 
@@ -506,7 +538,12 @@ def _train(
     device: torch.device,
     resume: bool = False,
     require_frozen_source: bool,
+    prepared_inputs: PreparedTrainingInputs | None = None,
 ) -> tuple[HybridTwoTowerModel, PipelineState]:
+    if prepared_inputs is not None:
+        snapshot = prepared_inputs.snapshot
+        embedding = prepared_inputs.embedding
+        rules = prepared_inputs.rules
     settings.validate_campaign_stage()
     run_id = _validate_artifact_id(run_id, kind="run ID")
     run_dir = settings.data.artifact_root.resolve() / "runs" / run_id
@@ -519,6 +556,8 @@ def _train(
         rules.manifest,
         require_v5=settings.data.rule_feature_schema_version == "3.0.0",
     )
+    if settings.data.rule_feature_schema_version == "3.0.0":
+        lineage_model = require_v5_lineage(lineage_model)
     lineage = lineage_model.as_mapping()
     rule_store = _require_rule_training_capability(rules, settings)
     if (
@@ -547,8 +586,26 @@ def _train(
             selection_artifact_sha256=settings.train.r3_selection_artifact_sha256,
             lineage=lineage_model,
             expected_comparison_signature_sha256=settings.comparison_signature_sha256(),
+            selection_report_path=(
+                Path(settings.train.r3_selection_report_path)
+                if settings.train.r3_selection_report_path
+                else None
+            ),
+            current_git_commit=(
+                revision.commit_sha if settings.train.campaign_stage != "production" else None
+            ),
         )
-    if settings.train.campaign_stage == "production":
+    if settings.train.campaign_stage == "production" and require_frozen_source:
+        promotion_path = settings.train.r4_promotion_report_path
+        if not promotion_path:
+            raise ConfigurationError("production training requires --r4-promotion-report")
+        promotion = load_r4_promotion(Path(promotion_path))
+        if promotion.production_git_commit != revision.commit_sha:
+            raise ArtifactIntegrityError(
+                "R4 promotion receipt production commit differs from current source"
+            )
+        if promotion.lineage != lineage_model:
+            raise ArtifactIntegrityError("R4 promotion lineage differs from current artifacts")
         require_selected_r3_pair(
             artifact_root=settings.data.artifact_root,
             hybrid_flags=(
@@ -563,6 +620,12 @@ def _train(
             selection_artifact_sha256=settings.train.r3_selection_artifact_sha256,
             lineage=lineage,
             expected_comparison_signature_sha256=settings.comparison_signature_sha256(),
+            selection_report_path=(
+                Path(settings.train.r3_selection_report_path)
+                if settings.train.r3_selection_report_path
+                else None
+            ),
+            current_git_commit=None,
         )
 
     # Build every potentially failing training input before publishing an immutable
@@ -570,30 +633,35 @@ def _train(
     # lifecycle transition because it moves the model to the requested device and
     # may allocate CUDA/optimizer state.
     if settings.train.objective == "sampled_softmax":
-        purchase_index = build_purchase_training_index(
-            snapshot,
-            max_history_items=settings.train.max_history_items,
-        )
-        sampler = MixedNegativeSampler(
-            purchase_index,
-            snapshot,
-            embedding.vectors,
-            ratio=settings.train.explicit_negative_ratio,
-            seed=settings.train.seed,
-            rule_store=rule_store,
-            rule_hard_negative_count=(
-                settings.train.rule_hard_negative_count
-                if settings.train.training_variant is TrainingVariant.HYBRID
-                else 0
-            ),
-        )
-        loader: Any = PurchaseBatchIterator(
-            purchase_index,
-            sampler,
-            rule_store,
-            batch_size=settings.train.batch_size,
-            seed=settings.train.seed,
-        )
+        if prepared_inputs is None:
+            purchase_index = build_purchase_training_index(
+                snapshot,
+                max_history_items=settings.train.max_history_items,
+            )
+            sampler = MixedNegativeSampler(
+                purchase_index,
+                snapshot,
+                embedding.vectors,
+                ratio=settings.train.explicit_negative_ratio,
+                seed=settings.train.seed,
+                rule_store=rule_store,
+                rule_hard_negative_count=(
+                    settings.train.rule_hard_negative_count
+                    if settings.train.training_variant is TrainingVariant.HYBRID
+                    else 0
+                ),
+            )
+            loader: Any = PurchaseBatchIterator(
+                purchase_index,
+                sampler,
+                rule_store,
+                batch_size=settings.train.batch_size,
+                seed=settings.train.seed,
+            )
+        else:
+            purchase_index = prepared_inputs.purchase_index
+            sampler = prepared_inputs.sampler
+            loader = prepared_inputs.train_loader
     else:
         dataset = HybridImplicitDataset(
             snapshot,
@@ -1357,6 +1425,35 @@ def _diagnose_r3(
 
 def execute_command(args: Namespace) -> None:
     """Execute one explicit stage without hidden source or embedding fallbacks."""
+    if args.command == "promote-r4":
+        try:
+            lineage = ArtifactLineageV5.model_validate_json(
+                args.lineage_json.read_text(encoding="utf-8")
+            )
+            feature_selection = json.loads(args.feature_selection_json.read_text(encoding="utf-8"))
+            objective_settings = json.loads(
+                args.objective_settings_json.read_text(encoding="utf-8")
+            )
+        except (OSError, ValueError, TypeError) as error:
+            raise ConfigurationError("R4 promotion inputs are invalid") from error
+        report = publish_r4_promotion(
+            args.output,
+            deep_selection_report=args.selection_report,
+            selected_deep_run_id=args.selected_deep_run_id,
+            selected_deep_checkpoint_sha256=args.selected_deep_checkpoint_sha256,
+            h3b_hybrid_run_id=args.h3b_hybrid_run_id,
+            h3b_hybrid_checkpoint_sha256=args.h3b_hybrid_checkpoint_sha256,
+            h3b_victory_matrix_sha256=args.h3b_victory_matrix_sha256,
+            lineage=lineage,
+            diagnostic_git_commit=args.diagnostic_git_commit,
+            production_git_commit=args.production_git_commit,
+            deep_config=args.deep_config,
+            hybrid_config=args.hybrid_config,
+            feature_selection=feature_selection,
+            objective_settings=objective_settings,
+        )
+        _emit(report.model_dump(mode="json"))
+        return
     settings = _configure(args)
     _seed_everything(settings.train.seed)
     source_kind = DataSourceKind(getattr(args, "source", DataSourceKind.POSTGRES.value))
@@ -1498,7 +1595,12 @@ def execute_command(args: Namespace) -> None:
             )
             rules = load_rule_artifact(rule_path, snapshot.manifest.num_items)
             _require_rule_training_capability(rules, settings)
-        _emit(run_data_probes(settings, snapshot, embedding.vectors, rules))
+        probe_report = run_data_probes(settings, snapshot, embedding.vectors, rules)
+        _emit(
+            probe_report.model_dump(mode="json")
+            if hasattr(probe_report, "model_dump")
+            else probe_report
+        )
         return
 
     if args.command in {"evaluate", "export"}:
@@ -1639,15 +1741,28 @@ def execute_command(args: Namespace) -> None:
                 "--variant must match config training_variant "
                 f"({settings.train.training_variant.value})"
             )
-        snapshot = load_snapshot(settings.data.snapshot_id, settings)
+        prepared_inputs = (
+            prepare_training_inputs(settings)
+            if settings.data.rule_feature_schema_version == "3.0.0"
+            else None
+        )
+        snapshot = (
+            prepared_inputs.snapshot
+            if prepared_inputs is not None
+            else load_snapshot(settings.data.snapshot_id, settings)
+        )
         device = _device(args.device)
         artifact_root = settings.data.artifact_root.resolve()
-        embedding_path = _find_single_parent_artifact(
-            artifact_root / "features", snapshot_sha256=snapshot.manifest.content_sha256
-        )
-        rule_path = _find_training_rule_artifact(settings, snapshot.manifest.content_sha256)
-        embedding = load_embedding_artifact(embedding_path)
-        rules = load_rule_artifact(rule_path, snapshot.manifest.num_items)
+        if prepared_inputs is None:
+            embedding_path = _find_single_parent_artifact(
+                artifact_root / "features", snapshot_sha256=snapshot.manifest.content_sha256
+            )
+            rule_path = _find_training_rule_artifact(settings, snapshot.manifest.content_sha256)
+            embedding = load_embedding_artifact(embedding_path)
+            rules = load_rule_artifact(rule_path, snapshot.manifest.num_items)
+        else:
+            embedding = prepared_inputs.embedding
+            rules = prepared_inputs.rules
         _, state = _train(
             settings,
             snapshot,
@@ -1657,6 +1772,7 @@ def execute_command(args: Namespace) -> None:
             device=device,
             resume=bool(getattr(args, "resume", False)),
             require_frozen_source=True,
+            prepared_inputs=prepared_inputs,
         )
         _emit(state.model_dump(mode="json"))
         return

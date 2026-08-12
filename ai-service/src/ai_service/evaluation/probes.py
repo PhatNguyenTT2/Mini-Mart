@@ -8,7 +8,7 @@ import numpy as np
 from scipy import sparse
 
 from ai_service.config import Settings
-from ai_service.contracts import ModelVariant, SplitName
+from ai_service.contracts import DataProbeReport, ModelVariant, SplitName
 from ai_service.data.rules import RuleArtifact, RuleStore
 from ai_service.data.snapshot import Snapshot
 from ai_service.evaluation.full_catalog import (
@@ -66,7 +66,7 @@ def run_data_probes(
     snapshot: Snapshot,
     embeddings: np.ndarray,
     rule_artifact: RuleArtifact | None = None,
-) -> dict[str, Any]:
+) -> DataProbeReport:
     """Evaluate non-neural signal probes on one frozen organic validation split."""
     vectors = np.array(embeddings, dtype=np.float32, copy=True)
     vectors /= np.maximum(np.linalg.norm(vectors, axis=1, keepdims=True), np.finfo(np.float32).eps)
@@ -200,7 +200,7 @@ def run_data_probes(
         scorer=cast(ExternalBatchScorer, permutation_scorer),
         k=settings.eval.k,
     )
-    return {
+    payload: dict[str, Any] = {
         "snapshot_sha256": snapshot.manifest.content_sha256,
         "embedding_shape": list(vectors.shape),
         "popularity_only": _metrics(popularity_result),
@@ -219,3 +219,22 @@ def run_data_probes(
             else None
         ),
     }
+    metric_values: list[float] = []
+    for key in (
+        "popularity_only",
+        "apriori_only",
+        "persona_only",
+        "sbert_centroid",
+        "item_item_cf",
+    ):
+        metric_values.extend(
+            float(payload[key][metric]) for metric in ("hr_at_k", "ndcg_at_k", "gauc")
+        )
+    permutation = payload["label_permutation_sanity"]
+    permutation_passed = bool(permutation["passed"])
+    payload["passed"] = bool(
+        np.isfinite(np.asarray(metric_values, dtype=np.float64)).all()
+        and all(0.0 <= value <= 1.0 for value in metric_values)
+        and permutation_passed
+    )
+    return DataProbeReport.model_validate(payload)

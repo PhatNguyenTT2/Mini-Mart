@@ -13,6 +13,7 @@ from ai_service.contracts import (
     EVALUATION_SCHEMA_VERSION,
     AggregateReleaseReport,
     ArtifactLineage,
+    ArtifactLineageInput,
     ArtifactLineageV5,
     CheckpointManifest,
     MetricGateResult,
@@ -349,6 +350,7 @@ def _load_validation_release(
     expected_signature: str,
     expected_hybrid_run_ids: tuple[str, str, str],
     expected_deep_run_ids: tuple[str, str, str],
+    expected_lineage: ArtifactLineageInput | None = None,
 ) -> AggregateReleaseReport:
     """Strict-load and independently hash-check the aggregate VAL report."""
     if not path.is_file():
@@ -365,6 +367,11 @@ def _load_validation_release(
         or report.deep_run_ids != expected_deep_run_ids
     ):
         raise ArtifactIntegrityError("validation aggregate finalist set differs from TEST")
+    if isinstance(expected_lineage, ArtifactLineageV5):
+        if report.lineage is None or artifact_lineage_model(
+            report.lineage
+        ) != artifact_lineage_model(expected_lineage):
+            raise ArtifactIntegrityError("validation aggregate lineage differs from TEST")
     return report
 
 
@@ -445,6 +452,7 @@ def evaluate_three_seed(
             expected_signature=comparison_signature,
             expected_hybrid_run_ids=report.hybrid_run_ids,
             expected_deep_run_ids=report.deep_run_ids,
+            expected_lineage=hybrid[0].lineage,
         )
         if (
             validation.selected_run_id != selected.hybrid.run_dir.name

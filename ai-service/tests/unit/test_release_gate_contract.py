@@ -16,6 +16,7 @@ from ai_service.errors import ArtifactIntegrityError, DataIntegrityError
 from ai_service.evaluation.release import (
     _build_release_report,
     _load_finalist_run,
+    _load_validation_release,
     _pair_finalists_by_seed,
     evaluate_three_seed,
 )
@@ -102,6 +103,60 @@ def test_release_report_binds_v5_lineage_in_canonical_hash() -> None:
     )
     assert report.lineage == lineage
     assert report.artifact_sha256 != "0" * 64
+
+
+def test_validation_release_checks_expanded_lineage(tmp_path: Path) -> None:
+    lineage = ArtifactLineageV5(
+        snapshot="a" * 64,
+        embedding="b" * 64,
+        rules="c" * 64,
+        benchmark_spec="d" * 64,
+        semantic_cohort="e" * 64,
+        order_metadata="f" * 64,
+    )
+    names = (
+        "aggregate_gauc_domination",
+        "aggregate_hr_domination",
+        "aggregate_ndcg_domination",
+        "aggregate_gauc_vs_deep",
+        "aggregate_hr_vs_deep",
+        "aggregate_ndcg_vs_deep",
+    )
+    pairs = tuple(
+        SimpleNamespace(
+            hybrid=SimpleNamespace(run_dir=Path(f"hybrid-{seed}"), seed=seed),
+            deep=SimpleNamespace(run_dir=Path(f"deep-{seed}")),
+            evaluation=SimpleNamespace(victory_matrix=SimpleNamespace(sha256=f"{seed:064d}")),
+        )
+        for seed in (42, 2027, 31415)
+    )
+    report = _build_release_report(
+        split=SplitName.VAL,
+        pairs=pairs,  # type: ignore[arg-type]
+        selected=pairs[0],  # type: ignore[arg-type]
+        gates=tuple(make_metric_gate(name) for name in names),
+        comparison_signature="1" * 64,
+        lineage=lineage,
+    )
+    path = tmp_path / "validation-gate.json"
+    path.write_text(report.model_dump_json(), encoding="utf-8")
+    loaded = _load_validation_release(
+        path,
+        expected_signature="1" * 64,
+        expected_hybrid_run_ids=("hybrid-42", "hybrid-2027", "hybrid-31415"),
+        expected_deep_run_ids=("deep-42", "deep-2027", "deep-31415"),
+        expected_lineage=lineage,
+    )
+    assert loaded.lineage == lineage
+    wrong = lineage.model_copy(update={"order_metadata": "0" * 64})
+    with pytest.raises(ArtifactIntegrityError, match="lineage"):
+        _load_validation_release(
+            path,
+            expected_signature="1" * 64,
+            expected_hybrid_run_ids=("hybrid-42", "hybrid-2027", "hybrid-31415"),
+            expected_deep_run_ids=("deep-42", "deep-2027", "deep-31415"),
+            expected_lineage=wrong,
+        )
 
 
 def _create_run(

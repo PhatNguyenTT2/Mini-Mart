@@ -57,8 +57,12 @@ allowed because the application default is `benchmark-local`:
 
 ```powershell
 .\.venv\Scripts\python.exe -m ai_service.cli audit-data `
+  --config configs\diagnostics\r3-v5\deep-control.toml `
   --snapshot-id benchmark-v5-s42-7f40639b0d-1ace202aaa --device cpu
 .\.venv\Scripts\python.exe -m ai_service.cli probe-data `
+  --config configs\diagnostics\r3-v5\deep-control.toml `
+  --snapshot-id benchmark-v5-s42-7f40639b0d-1ace202aaa --device cpu
+.\.venv\Scripts\python.exe -m ai_service.cli preflight-r3 `
   --config configs\diagnostics\r3-v5\deep-control.toml `
   --snapshot-id benchmark-v5-s42-7f40639b0d-1ace202aaa --device cpu
 ```
@@ -75,9 +79,10 @@ publisher rejects an existing destination; bootstrap is a one-time operation:
 ```powershell
 .\.venv\Scripts\python.exe -m ai_service.cli snapshot --source postgres --store-id 1 `
   --snapshot-id <new-v5-snapshot-id> --benchmark-run-id <published-v5-benchmark-run-id> `
+  --benchmark-spec ..\backend\docs\chatbot\seed-product\benchmark-spec-v5.json `
   --config configs\diagnostics\r3-v5\deep-control.toml
 .\.venv\Scripts\python.exe -m ai_service.cli features --embedding-source real `
-  --snapshot-id <new-v5-snapshot-id>
+  --snapshot-id <new-v5-snapshot-id> --config configs\diagnostics\r3-v5\deep-control.toml
 .\.venv\Scripts\python.exe -m ai_service.cli rules `
   --config configs\diagnostics\r3-v5\deep-control.toml --snapshot-id <new-v5-snapshot-id>
 ```

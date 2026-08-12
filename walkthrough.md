@@ -1,227 +1,94 @@
-# AI-service v5.0.0 — implementation verification
+# AI-service v5 — implementation verification
 
 ## Current status
 
-`R0_R2_CONTRACT_COMPLETE / R3_R4_CONTRACT_REPAIR_IN_PROGRESS / PRODUCTION_TRAINING_BLOCKED`.
+```text
+SOURCE_IMPLEMENTATION_IN_PROGRESS
+R3_CONTRACT_REPAIR_IN_PROGRESS
+R4_DIAGNOSTIC_BLOCKED
+PRODUCTION_TRAINING_BLOCKED
+Hybrid victory not established
+```
 
-R0 root-cause replay and the first R2 receipt are historical evidence. The
-deterministic v5 contract has since changed (exact 2,500-user transition cohort
-and strict target alignment), so the prior database run is not a valid R3
-input. Reset/purge/reseed must complete before R3; no production GPU training
-has been started. R3 remains required on the new v5 snapshot because
-the prior v4 Hybrid VAL matrix failed dominance and semantic-trap gates; no
-production training, release, seal, or export is permitted until R3 passes.
+The current working tree contains the R3-C2 implementation: typed R3
+preflight, fail-closed probes, snapshot-owned semantic cohort loading,
+selection-report locking, candidate-failure isolation, six-field v5 lineage
+checks, immutable R4 promotion receipt, and read-only training-run verifier.
+These changes are not source-frozen yet. No R3/R4 GPU run, production seed,
+release, seal, export, or victory claim is valid.
 
-Phase 5A–5D is complete. `Trainer.fit()` is now orchestration-only: it
-preflights, restores state, delegates one epoch to `_train_epoch()`, validates,
-applies stopping, publishes checkpoints/history, and writes the terminal
-summary. Phase 0 additionally centralizes Git provenance, publishes lifecycle
-directories atomically, locks resume to the recorded commit, and terminalizes
-transition/setup failures. The production seed runs do not yet exist and Hybrid
-victory is not established.
+## Verified baseline before the current repair
 
-The current R3-C0 source repair is implemented and remains under final
-validation. It includes selection-artifact materialization, comparison-signature
-separation, six-field v5 lineage, organic-only rule-hard sampling, serving-
-equivalent semantic replay from enriched snapshot cohort rows, post-warmup
-checkpoint eligibility, and immutable diagnostic-stop publication. The latest
-source suite is 431 passed with 2 fixed-runner skips; branch coverage is
-85.01% and all six critical-file thresholds pass. R3/R4 GPU diagnostics have
-not started and Hybrid victory is not established.
+- Previous pushed baseline: `f96a247470b408f29185e1a9d9610516705df898`.
+- Previous Python receipt: 439 passed, 2 fixed-runner skips.
+- Previous branch coverage: 85.01%; six critical-file thresholds passed.
+- Database v5 receipt exists, but the local Python snapshot is rejected because
+  its benchmark spec/cohort lineage does not match the active v5 loader.
+- The prior Hybrid VAL evidence is historical failure evidence: GAUC
+  `0.775218972`, HR@10 `0.054092097`, NDCG@10 `0.011513037`, ItemCF GAUC
+  dominance failed, Persona HR dominance failed, Apriori NDCG dominance
+  failed, and semantic traps `0/10`.
 
-## R0–R2 execution receipt (2026-08-12, v5)
+## Current source validation receipt
 
-- R0 diagnostic artifact remains available as root-cause evidence; it was
-  read-only and did not mutate run lifecycle/state.
-- R1 reset used exact token `RESET_BENCHMARK_V5_STORE_1` and deleted only
-  store-scoped benchmark/derived rows (orders first). Business orders without a
-  `benchmark_run_id` were preserved.
-- Ready run: `benchmark-v5-s42-7f40639b0d-c77f0824fb`.
-- Canonical spec SHA:
-  `c77f0824fb9cc8f67cb498447616084848b503738c4af50e4f405b67b13ae7d3`.
-- Counters: `823371` events, `5000` users, `5200` products, `250` cold;
-  `14250` organic + `750` semantic-trap orders; `15000` total.
-- Rule gates: `14112` directed (`14086` non-trap), `4143` distinct organic
-  rule items, trap fraction `0.0018424`, context coverage `0.9066319`, VAL
-  target-rule rate `0.4452014`, TRAIN strict target-rule replay `0.5001925`,
-  and all 10 trap aggregate/per-direction checks pass.
-- Seed-product contracts: 16 passed. AI-service contracts: 388 passed, 2
-  fixed-runner skips; branch coverage `85.27%`; all six critical coverage
-  thresholds pass. No production run ID exists.
-
-The historical v5 dataset is not reusable after the deterministic contract
-change. The managed database event index remains intentionally dropped after
-bulk load because rebuilding it exceeded temporary storage; no validation
-threshold was weakened.
-
-## Verification snapshot (2026-08-11, canonical benchmark v4)
-
-- AI-service suite: **377 passed, 2 fixed-runner skips**; seed-product Node
-  contracts **9 passed**.
-- Branch coverage: **88.24%** (`--cov-branch`, threshold 85%).
-- Critical files: checkpoint 97.24%, report 90.79%, bundle 98.79%, release
-  90.22%, trainer 86.68%, pipeline 85.03%.
-- Ruff format/check and mypy pass; `scripts/check_critical_coverage.py` passes.
-- Root `backend npm test` is not green: pre-existing Catalog/Chatbot Jest suites
-  fail outside the R2 seed-product files. This remains a monorepo gate blocker,
-  while the seed-product contract suite itself is green.
-- Static scans are clean: no Pareto/release-candidate checkpoints,
-  `scores_by_user`, legacy Wide scaling, Softplus, or release signature
-  fallbacks.
-
-The v4 snapshot is `benchmark-v4-20260811-49b2cdb902b1`, SHA-256
-`1eb1d07759a9e1ca6521794673e761b10bfc2919eb5018fa897d0a31f4b53fa6`,
-with 823,371 events, 5,000 users, 5,200 items and 250 cold items. Audit passes.
-Probe references are permutation GAUC `0.497918`, Persona GAUC `0.786681`,
-ItemCF GAUC `0.827843`, SBERT NDCG@10 `0.012888`, and Apriori GAUC/NDCG
-`0.514162`/`0.028210`. Apriori beats Random by paired CI for GAUC and NDCG.
-
-The training-capable RuleArtifact is
-`benchmark-v4-20260811-49b2cdb902b1-rules-v3-d7ba48f8b8b5`: 14,106 directed
-rules, 14,086 non-trap, 20 trap-anchored, 4,143 organic items, VAL context
-coverage `0.835377`, novel VAL rule-target alignment `0.076382`, and epoch-one
-row coverage `0.690971`. Semantic trap readiness is `10/10` (75 baskets/count
-per trap, lift 200).
-
-The canonical database run is
-`benchmark-v4-s42-7f40639b0d-ca692e71b3`, spec SHA
-`ca692e71b3fa166dd9c5ae59405e3edb15efc554c19ac8b0b136e892cad0d7ce`.
-An earlier execution exposed destructive legacy reclaim behavior and removed
-the prior event lineage from the database. Local superseded artifacts remain
-audit-only; they are not represented as complete database lineages. The source
-now rejects duplicate run IDs before mutation and has immutability regression
-tests.
-
-The next campaign is pinned to the v4 snapshot above, embedding
-`benchmark-v4-20260811-49b2cdb902b1-real-f0453078fd58`, and the canonical v3
-RuleArtifact above. Planned production IDs are `deep-r4-42-v5`/
-`hybrid-r4-42-v5`, `deep-r4-2027-v5`/`hybrid-r4-2027-v5`, and
-`deep-r4-31415-v5`/`hybrid-r4-31415-v5`; none exists yet.
-
-CUDA diagnostic smoke `smoke-r4-readiness-20260811-2042` completed one epoch with
-schema-v5 `best.pt` and `last.pt`, finite metrics, bfloat16 autocast, and no
-evaluation/release/seal/export side effects. It is not a production seed.
-R3 diagnostics are retained as immutable audit evidence. The selected Deep
-configuration is `deep-no-price-no-user-id` with best GAUC `0.772305854`.
-The paired Hybrid diagnostic reached GAUC `0.775218972` and passed the minimum
-GAUC/cold-parity checks, but failed ItemCF GAUC dominance, Persona HR
-dominance, Apriori NDCG dominance and all `10/10` semantic traps. Its lifecycle
-is `FAILED`; production seed IDs remain absent and R4 is blocked.
-
-## R3 diagnostic result (2026-08-12)
-
-Frozen source: `15860af0d5002297baf38e0df20f761332897700`.
-Deep ablation receipt:
-`12dcf8cbd6fe6f4bbcaf1a038e77d280484f94e34eca5db7d5544ef45d80ebd5`.
-Selected Deep run: `diag-r3-deep-both-s42` (`GAUC=0.772305854`,
-`HR@10=0.051477981`, `NDCG@10=0.010313758`).
-
-Selected Hybrid run `diag-r3-hybrid-both-s42` (`GAUC=0.775218972`,
-`HR@10=0.054092097`, `NDCG@10=0.011513037`) passed the absolute GAUC floor
-and cold parity, but its VAL Victory Matrix failed:
-
-- GAUC dominance: `0.775218972 < ItemCF 0.827843070`.
-- HR dominance: `0.054092097 < Persona 0.080836517`.
-- NDCG dominance: `0.011513037 < Apriori 0.028209886`.
-- Semantic traps: `0/10`.
-
-This is a legitimate model-quality failure, not a training crash. Do not
-promote v5/v6, create production seed IDs, seal, export, or declare Hybrid
-victory. The next phase must repair the objective/data-alignment issue and
-rerun R3 on a new immutable campaign revision.
-
-## Quality commands
-
-Run from `E:\UIT\cv\backend\ai-service`:
+The targeted R3-C2 tests pass, and Ruff/mypy pass after the implementation.
+The full branch gate is still below the required 85% while new preflight,
+promotion and pipeline branches are being covered; therefore readiness remains
+blocked. The required full gate is:
 
 ```powershell
+cd E:\UIT\cv\backend\ai-service
+npm.cmd run test:seed-product
 .\.venv\Scripts\python.exe -m ruff format --check src tests scripts
 .\.venv\Scripts\python.exe -m ruff check src tests scripts
 .\.venv\Scripts\python.exe -m mypy src scripts
-$coverageJson = Join-Path $env:TEMP "ai-service-phase5-final.json"
-.\.venv\Scripts\python.exe -m pytest --cov=ai_service --cov-branch `
-  --cov-report=term-missing --cov-report=json:$coverageJson `
-  --cov-fail-under=85 -q
-.\.venv\Scripts\python.exe scripts\check_critical_coverage.py $coverageJson
+.\.venv\Scripts\python.exe -m pytest --cov=ai_service --cov-branch --cov-fail-under=85 -q
+.\.venv\Scripts\python.exe scripts\check_critical_coverage.py <coverage.json>
+git diff --check
 ```
 
-## Locked contracts
+The two fixed-runner benchmark skips are allowed during source validation, but
+must become passes before deployment. No coverage threshold may be lowered and
+no production path may be excluded.
 
-- `MODEL_SCHEMA_VERSION` is `5.0.0`; v4 checkpoints and bundles are rejected.
-- Wide scoring is additive with a zero-initialized final layer; no Softplus or
-  dynamic `_wide_logit_scale` remains.
-- Early stopping is GAUC-primary with patience 4 and a catastrophic failure
-  for non-finite validation metrics or `val_gauc < 0.50`.
-- Full-catalog evaluation is streaming and shares one prepared split. Model-hard
-  cache rows are Deep top-64 warm unseen IDs with row 0 set to `-1`.
-- Evaluation artifacts are Hybrid-owned and bind the paired Deep checkpoint,
-  lineage, comparison signature, per-user NPZ, and canonical Victory Matrix SHA.
-- Aggregate release requires exact paired seeds `{42, 2027, 31415}` and test
-  evaluation for all three pairs; only the selected Hybrid may be sealed.
+## Data and artifact gates still required
 
-## Next execution sequence
+Before R4, rebuild the local Python lineage from the verified v5 database run
+using an explicit `benchmark-spec-v5.json`, real SBERT features and a full-stat
+RuleArtifact. Require 823371 events, 5000 users, 5200 items, 15000 orders,
+TRAIN/VAL strict target-rule rates >=0.40, all ten semantic cohort traps,
+>=5000 non-trap rules and >=3000 organic rule items. Verify the six hashes for
+snapshot, embedding, rules, benchmark spec, semantic cohort and order metadata.
 
-1. Review, commit and push the R1–R4 source/data-contract changes; require a
-   clean worktree and `HEAD == upstream`.
-2. Run four Deep R3 diagnostics on seed 42 and publish the immutable ablation
-   comparison. Stop on `diagnostic_pause=true` or a missing selected run.
-3. Train exactly one Hybrid diagnostic with the selected feature flags and
-   evaluate it against the selected Deep run on VAL. Require Wide signal and
-   all seven strengthened gates.
-4. Promote the selected flags into new paired v5/v6 ablation configs, rerun
-   quality/CUDA gates, then commit/push/freeze the final production revision.
-5. Train production Deep → Hybrid → VAL for seed 42. Only after it passes,
-   repeat for 2027 and 31415, aggregate VAL, evaluate TEST for all three pairs,
-   and aggregate TEST.
-6. Seal only the selected Hybrid, export/verify the bundle, run ONNX parity and
-   the fixed-runner benchmark. Only then may the document claim Hybrid victory.
+Production preflight must validate absolute artifact/CA paths, three distinct
+PostgreSQL identities, TLS and redacted read-only `SELECT 1` receipts. The
+current shell has not been accepted as a production shell until these checks
+pass.
 
-The source-level execution plan is maintained in
-[`master/detail-plan.md`](master/detail-plan.md).
+## Locked execution sequence
 
-## Current R0-R4 implementation receipt (working tree)
+```text
+source exit gate
+→ rebuild snapshot/features/rules
+→ four Deep R3 ablations on seed 42
+→ verified selection report
+→ Hybrid H0 → H1 → H2 → H3a → H3b
+→ H3b promotion receipt and production-config freeze
+→ deep-42-v5 → hybrid-42-v5 → VAL
+→ seeds 2027 and 31415
+→ aggregate VAL 3+3
+→ TEST all three pairs
+→ aggregate TEST
+→ seal selected Hybrid
+→ export/verify bundle
+→ ONNX parity and fixed-runner benchmark
+```
 
-The implementation now contains the v5-only spec/capability parser, exact
-transition cohort contract, store-scoped reset, fail-closed artifact purge,
-strict target-rule readiness counters, organic RulePairIndex/rule-hard sampler,
-Wide-only rule auxiliary loss, staged diagnostic stop, serving-equivalent trap
-replay seam, absolute HR/NDCG gates, and per-user R3 alpha evidence with
-`aligned_mask`. These changes are source-only until the full quality gate is
-green.
+R3/R4 diagnostic failure, corruption, non-finite metrics, GAUC below 0.50,
+coverage regression, missing lineage, or a failed absolute Victory gate stops
+the campaign. Do not weaken GAUC `.75`, HR@10 `.15`, or NDCG@10 `.08`.
 
-Required before any R3 GPU job:
-
-1. `npm.cmd run test:seed-product`.
-2. Ruff, mypy, Python tests, branch/critical coverage and `git diff --check`.
-3. Reset preflight/execute, artifact purge dry-run/execute, v5 reseed, and
-   `inspect-ml-storage` with the new spec/cohort hashes.
-4. R0 replay must reproduce the recorded v4 failure, then the four Deep R3
-   diagnostics and Hybrid H0-H3b run sequentially on one frozen v5 lineage.
-
-No production seed IDs, release, seal, export, or Hybrid victory claim is valid
-until H3b satisfies GAUC `.75`, HR@10 `.15`, NDCG@10 `.08`, strongest-baseline
-paired gates, serving-equivalent semantic traps `10/10`, cold parity, and the
-expanded lineage checks.
-
-## Current v5 R0-R2 receipt (2026-08-12)
-
-- Database reset and output purge completed with the locked confirmations;
-  business orders were preserved and no `_archive`, v4 snapshot, run, or
-  diagnostic output remains under the AI artifact root.
-- Ready benchmark run: `benchmark-v5-s42-7f40639b0d-1ace202aaa`.
-- Snapshot SHA: `8966df159883fc95940bb1c226544f194eafa8e45988e945d3ef54e73a0264a4`.
-- Benchmark spec SHA: `1ace202aaa8f54204ead66ceabe809b3c51795e097dd71c505f07b8367c80bd2`.
-- Real embedding SHA: `f0453078fd588403186f80321b9ad0500d7c5ce73266f8d50de8fc3a6b09de61`.
-- Full-stat rule artifact: `benchmark-v5-s42-7f40639b0d-1ace202aaa-rules-v3-554b1decf887`;
-  content SHA `79b4b2beed757767261b8531f98a96c618b902c057ab6372451623bea74cf19d`.
-- Seed receipt: 823,371 events, 5,000 users, 5,200 products, 15,000 orders;
-  TRAIN target-rule rate `0.4365897744`, VAL target-rule rate `0.4021464646`,
-  VAL context coverage `0.9383417508`, 14,086 non-trap rules and 4,143 organic
-  rule items. `audit-data`, `probe-data`, inspect and training-capability checks
-  pass with the new lineage.
-- Source quality gate: 399 Python tests pass, 2 fixed-runner skips, branch
-  coverage `85.02%`, critical coverage checker pass, Ruff/mypy pass, and
-  seed-product contracts `15/15` pass.
-- Readiness remains `R3_SOURCE_PENDING / PRODUCTION_TRAINING_BLOCKED`:
-  no R3 GPU diagnostic, production seed, release, seal, export, or Hybrid
-  victory claim has been made.
+The active source-level plan is
+[`detail-plan-r3-r4.md`](master/detail-plan-r3-r4.md). The master plan remains
+the authority. `Hybrid victory not established` until every listed gate is
+backed by immutable artifacts and runtime evidence.

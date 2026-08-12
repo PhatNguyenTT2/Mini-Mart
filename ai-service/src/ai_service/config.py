@@ -8,6 +8,7 @@ import os
 import tomllib
 from pathlib import Path
 from typing import Any, Literal
+from urllib.parse import urlparse
 
 from pydantic import BaseModel, Field, SecretStr, field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -120,6 +121,8 @@ class TrainConfig(BaseModel):
         pattern=r"^[0-9a-f]{64}$",
     )
     r3_selected_deep_run_id: str | None = Field(default=None, min_length=1)
+    r3_selection_report_path: str | None = Field(default=None, min_length=1)
+    r4_promotion_report_path: str | None = Field(default=None, min_length=1)
     rule_auxiliary_weight: float = Field(default=0.0, ge=0.0)
     rule_hard_negative_count: int = Field(default=0, ge=0)
     diagnostic_warmup_epochs: int = Field(default=3, ge=1)
@@ -256,6 +259,11 @@ class Settings:
 
     def training_signature_sha256(self) -> str:
         """Hash only semantics that can change training or model outputs."""
+        train = self.train.model_dump(mode="json")
+        # The absolute CLI path is an operator transport detail, not a model
+        # semantic.  The verified artifact SHA remains signature-bound.
+        train.pop("r3_selection_report_path", None)
+        train.pop("r4_promotion_report_path", None)
         document = {
             "model_schema_version": MODEL_SCHEMA_VERSION,
             "dimensions": {
@@ -266,7 +274,7 @@ class Settings:
                 "num_price_buckets": self.data.num_price_buckets,
             },
             "model": self.model.model_dump(mode="json"),
-            "train": self.train.model_dump(mode="json"),
+            "train": train,
             "eval": self.eval.model_dump(mode="json"),
         }
         payload = json.dumps(document, sort_keys=True, separators=(",", ":")).encode("utf-8")
@@ -276,6 +284,8 @@ class Settings:
         """Hash finalist semantics while allowing repeated training seeds."""
         train = self.train.model_dump(mode="json")
         train.pop("seed")
+        train.pop("r3_selection_report_path", None)
+        train.pop("r4_promotion_report_path", None)
         document = {
             "model_schema_version": MODEL_SCHEMA_VERSION,
             "dimensions": {
@@ -339,6 +349,8 @@ class Settings:
             "campaign_stage",
             "r3_selection_artifact_sha256",
             "r3_selected_deep_run_id",
+            "r3_selection_report_path",
+            "r4_promotion_report_path",
             "r3_feature_selection_mode",
             "diagnostic_warmup_epochs",
             "diagnostic_minimum_gauc",
@@ -413,6 +425,22 @@ class Settings:
         missing = sorted(name for name, value in required.items() if not value)
         if missing:
             raise ConfigurationError(f"missing production settings: {', '.join(missing)}")
+        if not serving:
+            identities: dict[str, tuple[str, int, str]] = {}
+            for name in ("CHATBOT_DATABASE_URL", "CATALOG_DATABASE_URL", "ORDER_DATABASE_URL"):
+                raw = required[name]
+                parsed = urlparse(str(raw))
+                if parsed.scheme not in {"postgres", "postgresql"} or not parsed.hostname:
+                    raise ConfigurationError(f"{name} must be a PostgreSQL URL")
+                database = parsed.path.removeprefix("/")
+                if not database:
+                    raise ConfigurationError(f"{name} must include a database name")
+                identities[name] = (parsed.hostname.lower(), parsed.port or 5432, database)
+            if len(set(identities.values())) != 3:
+                raise ConfigurationError(
+                    "CHATBOT_DATABASE_URL, CATALOG_DATABASE_URL, and ORDER_DATABASE_URL "
+                    "must target three distinct databases"
+                )
 
 
 def get_settings() -> Settings:

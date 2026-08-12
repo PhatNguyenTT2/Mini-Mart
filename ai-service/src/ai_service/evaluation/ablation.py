@@ -117,6 +117,8 @@ class DeepAblationCandidate(BaseModel):
     ndcg_ci_upper_vs_control: float
     eligible: bool
     feature_selection: R3FeatureSelection
+    status: Literal["evaluated", "failed"] = "evaluated"
+    failure_reason: str | None = None
 
 
 class DeepAblationDecision(BaseModel):
@@ -247,9 +249,15 @@ def compare_deep_ablations(
     selection_gauc_floor: float = 0.75,
     selection_hr_floor: float = 0.15,
     selection_ndcg_floor: float = 0.08,
+    candidate_failures: Mapping[str, tuple[str, str]] | None = None,
 ) -> tuple[DeepAblationDecision, dict[str, np.ndarray]]:
     """Select one materially better Deep ablation or issue a diagnostic pause."""
-    if len(candidates) != 3 or control_run_id in candidates:
+    failures = candidate_failures or {}
+    if (
+        len(candidates) + len(failures) != 3
+        or control_run_id in candidates
+        or control_run_id in failures
+    ):
         raise DataIntegrityError("R3 comparison requires one control and exactly three candidates")
     user_ids = np.asarray(control.user_ids, dtype=np.int64)
     control_gauc = _metric_vector(control.per_user_gauc, user_ids, "control GAUC")
@@ -281,7 +289,35 @@ def compare_deep_ablations(
         "random_hr": random_hr,
         "random_ndcg": random_ndcg,
     }
-    for run_id, (config_name, result) in sorted(candidates.items()):
+    all_candidate_ids = sorted(set(candidates) | set(failures))
+    for run_id in all_candidate_ids:
+        if run_id in failures:
+            config_name, reason = failures[run_id]
+            records.append(
+                DeepAblationCandidate(
+                    run_id=run_id,
+                    config_name=config_name,
+                    gauc=0.0,
+                    hr_at_k=0.0,
+                    ndcg_at_k=0.0,
+                    gauc_delta_vs_control=-1.0,
+                    gauc_ci_lower_vs_control=-1.0,
+                    gauc_ci_upper_vs_control=-1.0,
+                    gauc_ci_lower_vs_random=-1.0,
+                    hr_delta_vs_control=-1.0,
+                    hr_ci_lower_vs_control=-1.0,
+                    hr_ci_upper_vs_control=-1.0,
+                    ndcg_delta_vs_control=-1.0,
+                    ndcg_ci_lower_vs_control=-1.0,
+                    ndcg_ci_upper_vs_control=-1.0,
+                    eligible=False,
+                    feature_selection=_feature_selection_for_config(config_name),
+                    status="failed",
+                    failure_reason=reason,
+                )
+            )
+            continue
+        config_name, result = candidates[run_id]
         candidate_gauc = _metric_vector(result.per_user_gauc, user_ids, f"{run_id} GAUC")
         candidate_hr = _metric_vector(result.per_user_hr, user_ids, f"{run_id} HR")
         candidate_ndcg = _metric_vector(result.per_user_ndcg, user_ids, f"{run_id} NDCG")
@@ -342,9 +378,14 @@ def compare_deep_ablations(
         )
 
     eligible_records = [record for record in records if record.eligible]
+    failed_records = [record for record in records if record.status == "failed"]
     if records and all(record.gauc < 0.50 for record in records):
         pause_reasons.append("all candidates are below catastrophic threshold 0.50")
     if not eligible_records:
+        pause_reasons.extend(
+            f"candidate {record.run_id} failed: {record.failure_reason}"
+            for record in failed_records
+        )
         pause_reasons.append("no ablation has positive paired GAUC CI versus control")
     diagnostic_pause = bool(pause_reasons)
     selected = None
@@ -481,8 +522,10 @@ def run_deep_ablation_comparison(
         raise ArtifactIntegrityError("R3 Deep ablations require diagnostic campaign configs")
     if any(run.settings.train.r3_selection_artifact_sha256 is not None for run in runs):
         raise ArtifactIntegrityError("R3 diagnostics cannot carry a production selection receipt")
-    if any(run.lifecycle_status is not RunStatus.TRAINING for run in runs):
-        raise ArtifactIntegrityError("R3 Deep ablations require completed TRAINING lifecycles")
+    if control.lifecycle_status is not RunStatus.TRAINING:
+        raise ArtifactIntegrityError("R3 control Deep run must have a completed TRAINING lifecycle")
+    if any(run.lifecycle_status not in {RunStatus.TRAINING, RunStatus.FAILED} for run in runs[1:]):
+        raise ArtifactIntegrityError("interrupted or corrupt Deep candidates cannot be compared")
     if any(run.git_commit != control.git_commit for run in runs[1:]):
         raise ArtifactIntegrityError("R3 Deep ablations require one frozen source revision")
     if control.settings.data.rule_feature_schema_version == "3.0.0":
@@ -525,6 +568,8 @@ def run_deep_ablation_comparison(
     prepared = prepare_split(control.snapshot, SplitName.VAL)
     evaluations: dict[str, EvaluationResult] = {}
     for run in runs:
+        if run.lifecycle_status is RunStatus.FAILED:
+            continue
         evaluator = FullCatalogEvaluator(run.settings, run.embeddings, run.rule_store)
         evaluations[run.run_id] = evaluator.evaluate(
             run.model,
@@ -565,6 +610,17 @@ def run_deep_ablation_comparison(
             evaluations[run.run_id],
         )
         for run in runs[1:]
+        if run.lifecycle_status is RunStatus.TRAINING
+    }
+    candidate_failures = {
+        run.run_id: (
+            expected_flags[
+                (run.settings.model.use_user_id_embedding, run.settings.model.use_price_features)
+            ],
+            "terminal training failure",
+        )
+        for run in runs[1:]
+        if run.lifecycle_status is RunStatus.FAILED
     }
     report, metrics = compare_deep_ablations(
         control_run_id=control.run_id,
@@ -581,6 +637,7 @@ def run_deep_ablation_comparison(
         selection_gauc_floor=control.settings.eval.minimum_gauc,
         selection_hr_floor=control.settings.eval.minimum_hr_at_k,
         selection_ndcg_floor=control.settings.eval.minimum_ndcg_at_k,
+        candidate_failures=candidate_failures,
     )
     signature_document: dict[str, object] = {
         "run_ids": [run.run_id for run in runs],
@@ -621,6 +678,8 @@ def require_selected_r3_pair(
     selection_artifact_sha256: str | None = None,
     lineage: ArtifactLineageInput | None = None,
     expected_comparison_signature_sha256: str | None = None,
+    selection_report_path: Path | None = None,
+    current_git_commit: str | None = None,
 ) -> SelectedR3Configuration:
     if hybrid_flags != deep_flags:
         raise ArtifactIntegrityError("R3 Hybrid flags must match the selected Deep ablation")
@@ -629,10 +688,25 @@ def require_selected_r3_pair(
         use_price_features=deep_flags[1],
     )
     matches: list[DeepAblationArtifact] = []
-    for path in sorted((artifact_root.resolve() / "diagnostics" / "r3").glob("*/report.json")):
-        artifact = load_deep_ablation_artifact(path.parent)
+    if selection_report_path is not None:
+        report_path = selection_report_path.resolve()
+        if report_path.name != "report.json" or not report_path.is_file():
+            raise ArtifactIntegrityError("R3 selection report path is not a verified report.json")
+        candidate_artifacts: tuple[DeepAblationArtifact, ...] = (
+            load_deep_ablation_artifact(report_path.parent),
+        )
+    else:
+        candidate_artifacts = tuple(
+            load_deep_ablation_artifact(path.parent)
+            for path in sorted(
+                (artifact_root.resolve() / "diagnostics" / "r3").glob("*/report.json")
+            )
+        )
+    for artifact in candidate_artifacts:
         report = artifact.report
         if report.diagnostic_pause or report.selected_feature_selection != expected_features:
+            continue
+        if selected_deep_run_id is not None and report.selected_run_id != selected_deep_run_id:
             continue
         if campaign_stage == "production":
             if (
@@ -648,6 +722,10 @@ def require_selected_r3_pair(
             "the feature configuration"
         )
     report = matches[0].report
+    if current_git_commit is not None and report.diagnostic_git_commit != current_git_commit:
+        raise ArtifactIntegrityError(
+            "R3 selection report source commit differs from current source"
+        )
     if lineage is not None:
         expected_lineage = artifact_lineage_model(report.lineage)
         if artifact_lineage_model(lineage) != expected_lineage:
@@ -750,9 +828,21 @@ def _validate_ablation_metrics(
         "random_gauc",
         "random_hr",
         "random_ndcg",
-        *(f"{candidate.run_id}_gauc" for candidate in report.candidates),
-        *(f"{candidate.run_id}_hr" for candidate in report.candidates),
-        *(f"{candidate.run_id}_ndcg" for candidate in report.candidates),
+        *(
+            f"{candidate.run_id}_gauc"
+            for candidate in report.candidates
+            if candidate.status == "evaluated"
+        ),
+        *(
+            f"{candidate.run_id}_hr"
+            for candidate in report.candidates
+            if candidate.status == "evaluated"
+        ),
+        *(
+            f"{candidate.run_id}_ndcg"
+            for candidate in report.candidates
+            if candidate.status == "evaluated"
+        ),
     }
     if set(metrics) != expected_keys:
         raise ArtifactIntegrityError("Deep ablation metrics have unexpected keys")

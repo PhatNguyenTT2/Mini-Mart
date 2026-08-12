@@ -60,4 +60,11 @@ def resolve_artifact_lineage(
     )
 
 
-__all__ = ["resolve_artifact_lineage"]
+def require_v5_lineage(value: ArtifactLineage | ArtifactLineageV5) -> ArtifactLineageV5:
+    """Reject legacy three-field lineage at an active R3/R4 boundary."""
+    if not isinstance(value, ArtifactLineageV5):
+        raise ArtifactIntegrityError("active v5 path requires six-field artifact lineage")
+    return value
+
+
+__all__ = ["require_v5_lineage", "resolve_artifact_lineage"]

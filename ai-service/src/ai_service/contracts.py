@@ -8,7 +8,7 @@ from datetime import UTC, datetime
 from enum import StrEnum
 from typing import Literal
 
-from pydantic import BaseModel, Field, field_validator, model_validator
+from pydantic import BaseModel, ConfigDict, Field, field_validator, model_validator
 
 EVALUATION_SCHEMA_VERSION = "5.2.0"
 RULE_COVERAGE_SEMANTICS_VERSION = "organic-target-alignment-v3"
@@ -837,6 +837,30 @@ class DataQualityReport(BaseModel):
     legacy_origin_defaulted: bool
     training_suitability_passed: bool
     gate_failures: tuple[str, ...]
+
+
+class DataProbeReport(BaseModel):
+    """Typed container for streaming data probes.
+
+    Probe payloads intentionally keep the per-baseline evidence extensible, but
+    the readiness decision is explicit and cannot be inferred from a printed
+    dictionary.  ``__getitem__`` preserves the small mapping seam used by
+    existing diagnostic callers while the serialized form is a normal model.
+    """
+
+    model_config = ConfigDict(extra="allow")
+    snapshot_sha256: str | None = None
+    embedding_shape: list[int] | None = None
+    label_permutation_sanity: dict[str, object] | None = None
+    passed: bool = False
+
+    def __getitem__(self, key: str) -> object:
+        if key in type(self).model_fields:
+            return getattr(self, key)
+        extra = self.model_extra or {}
+        if key in extra:
+            return extra[key]
+        raise KeyError(key)
 
 
 class ContextRef(BaseModel):

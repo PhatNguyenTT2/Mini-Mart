@@ -12,8 +12,9 @@ import numpy as np
 import torch
 
 from ai_service.config import Settings
-from ai_service.contracts import SplitName
+from ai_service.contracts import DataSourceKind, SplitName
 from ai_service.data.rules import RuleStore
+from ai_service.data.semantic_cohort import load_semantic_cohort
 from ai_service.data.snapshot import Snapshot
 from ai_service.errors import DataIntegrityError
 from ai_service.evaluation.full_catalog import (
@@ -97,6 +98,10 @@ def evaluate_semantic_traps(
         cohort_path = snapshot.snapshot_dir / "semantic-cohort.json"
         if not cohort_path.is_file() and hasattr(prepared_split, "split"):
             raise DataIntegrityError("semantic cohort artifact is missing")
+        if getattr(snapshot.manifest, "source_kind", None) is DataSourceKind.POSTGRES:
+            # Validate the snapshot-owned typed contract before the scorer reads
+            # the richer event rows used to reconstruct histories.
+            load_semantic_cohort(snapshot.snapshot_dir, split=prepared_split.split)
         cohort_rows = (
             json.loads(cohort_path.read_text(encoding="utf-8")) if cohort_path.is_file() else []
         )
@@ -140,10 +145,14 @@ def evaluate_semantic_traps(
                 TargetReplayRequest(trap_id=trap_id, user_id=user_id, target_item_ids=(target,))
             )
             case_count[trap_id] += 1
+        if (
+            not cohort_rows
+            and getattr(snapshot.manifest, "source_kind", None) is DataSourceKind.POSTGRES
+        ):
+            raise DataIntegrityError("v5 semantic cohort cannot be empty")
         if not cohort_rows:
-            # Minimal adapter used by unit-level serving seam tests.  Real
-            # PreparedEvaluationSplit instances always take the immutable
-            # cohort branch above.
+            # Synthetic unit fixtures may opt into a local adapter. Production
+            # Postgres snapshots are handled only by the immutable cohort path.
             fixtures = json.loads(fixture_path.read_text(encoding="utf-8"))
             for fixture in fixtures:
                 targets = tuple(

@@ -191,6 +191,26 @@ class RunLifecycle:
         except (OSError, json.JSONDecodeError) as error:
             raise ArtifactIntegrityError("run manifest cannot be parsed") from error
         validated = _validate_document(document, run_dir.name)
+        resolved_path = run_dir / "resolved-config.json"
+        if resolved_path.is_file():
+            try:
+                resolved = json.loads(resolved_path.read_text(encoding="utf-8"))
+            except (OSError, json.JSONDecodeError) as error:
+                raise ArtifactIntegrityError("resolved run config cannot be parsed") from error
+            if (
+                isinstance(resolved, dict)
+                and resolved.get("data", {}).get("rule_feature_schema_version") == "3.0.0"
+                and set(validated.get("lineage", {}))
+                != {
+                    "snapshot",
+                    "embedding",
+                    "rules",
+                    "benchmark_spec",
+                    "semantic_cohort",
+                    "order_metadata",
+                }
+            ):
+                raise ArtifactIntegrityError("v5 run manifest requires six-field lineage")
         return cls(run_dir=run_dir, document=validated)
 
     @property

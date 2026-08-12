@@ -27,6 +27,7 @@ from ai_service.contracts import (
     ArtifactLineage,
     ArtifactLineageV5,
     CohortMetricDelta,
+    DataSourceKind,
     R3DiagnosticReport,
     RuleAlignmentEvidence,
     SplitName,
@@ -328,6 +329,11 @@ def _target_requests(
         if isinstance(snapshot_dir, Path)
         else Path("__missing_semantic_cohort__")
     )
+    if (
+        getattr(getattr(snapshot, "manifest", None), "source_kind", None) is DataSourceKind.POSTGRES
+        and not cohort_path.is_file()
+    ):
+        raise DataIntegrityError("v5 semantic cohort artifact is missing")
     if cohort_path.is_file() and hasattr(prepared, "split"):
         trap_specs: dict[int, tuple[int, tuple[int, ...]]] = {}
         for row in json.loads(cohort_path.read_text(encoding="utf-8")):

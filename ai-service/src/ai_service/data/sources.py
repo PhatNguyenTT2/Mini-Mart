@@ -69,6 +69,32 @@ def _connect_read_only(url: str, settings: Settings) -> psycopg.Connection[tuple
     return connection
 
 
+def check_production_connections(settings: Settings) -> dict[str, str]:
+    """Run a redacted read-only health check against all owned databases."""
+    settings.validate_production()
+    urls = {
+        "chatbot": settings.data.chatbot_database_url,
+        "catalog": settings.data.catalog_database_url,
+        "order": settings.data.order_database_url,
+    }
+    receipt: dict[str, str] = {}
+    for name, secret in urls.items():
+        if secret is None:
+            raise SourceReadError(f"{name} database URL is missing")
+        try:
+            with _connect_read_only(secret.get_secret_value(), settings) as connection:
+                with connection.cursor() as cursor:
+                    cursor.execute("SELECT 1")
+                    if cursor.fetchone() != (1,):
+                        raise SourceReadError(f"{name} database health check returned no result")
+            receipt[name] = "PASS"
+        except SourceReadError:
+            raise
+        except Exception as error:
+            raise SourceReadError(f"{name} database health check failed") from error
+    return receipt
+
+
 class PostgresDatasetSource:
     """Read a ready benchmark run from the three owned PostgreSQL databases."""
 
