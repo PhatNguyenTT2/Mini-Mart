@@ -580,12 +580,10 @@ class FullCatalogEvaluator:
         if any(not np.isfinite(alpha) for alpha in alpha_values):
             raise DataIntegrityError("diagnostic alpha values must be finite")
         expected_users = set(int(user) for user in prepared_split.eligible_users)
-        requests_by_user: dict[int, TargetReplayRequest] = {}
+        requests_by_user: dict[int, list[TargetReplayRequest]] = {}
         for request in target_requests:
             if request.user_id not in expected_users:
                 raise DataIntegrityError("diagnostic target user is not VAL-eligible")
-            if request.user_id in requests_by_user:
-                raise DataIntegrityError("diagnostic target users must be unique")
             if not request.target_item_ids or len(set(request.target_item_ids)) != len(
                 request.target_item_ids
             ):
@@ -594,7 +592,7 @@ class FullCatalogEvaluator:
                 item < 0 or item >= snapshot.manifest.num_items for item in request.target_item_ids
             ):
                 raise DataIntegrityError("diagnostic target item is outside the catalog")
-            requests_by_user[request.user_id] = request
+            requests_by_user.setdefault(request.user_id, []).append(request)
 
         device = torch.device(device)
         hybrid_model = hybrid_model.to(device).eval()
@@ -678,7 +676,6 @@ class FullCatalogEvaluator:
                     )
                 if user not in requests_by_user:
                     continue
-                request = requests_by_user[int(user)]
                 seen = prepared_split.seen_items.get(user, set())
                 candidate = prepared_split.candidate_item_ids.copy()
                 if seen:
@@ -690,40 +687,39 @@ class FullCatalogEvaluator:
                 hybrid_order = np.lexsort((raw_ids, -hybrid_candidate))
                 deep_ranked = candidate[deep_order]
                 hybrid_ranked = candidate[hybrid_order]
-                target_ids = np.asarray(request.target_item_ids, dtype=np.int64)
-                deep_positions = np.flatnonzero(np.isin(deep_ranked, target_ids))
-                hybrid_positions = np.flatnonzero(np.isin(hybrid_ranked, target_ids))
-                if len(deep_positions) == 0 or len(hybrid_positions) == 0:
-                    raise DataIntegrityError("diagnostic target is masked or absent from ranking")
-                deep_position = int(deep_positions.min())
-                hybrid_position = int(hybrid_positions.min())
-                deep_target = float(np.max(deep_scores[target_ids]))
                 cutoff_index = min(self.settings.eval.k - 1, len(deep_ranked) - 1)
                 cutoff = float(deep_scores[deep_ranked[cutoff_index]])
-                wide_targets, present = self.rule_store.batch_lookup(
-                    np.asarray([prepared_split.latest_prior_purchase_contexts.get(user, -1)]),
-                    target_ids.reshape(1, -1),
-                )
-                target_bonus = float(np.max(hybrid_wide[row_index, target_ids]))
-                target_features = wide_targets[0, :, 0]
-                target_rule_bonus = (
-                    float(np.max(target_features[present[0]])) if present[0].any() else 0.0
-                )
-                target_rows.append(
-                    TargetReplayRow(
-                        trap_id=request.trap_id,
-                        user_id=user,
-                        deep_rank=deep_position + 1,
-                        hybrid_rank=hybrid_position + 1,
-                        deep_top_k_cutoff=cutoff,
-                        target_deep_score=deep_target,
-                        learned_wide_bonus=target_bonus,
-                        required_wide_bonus=max(0.0, cutoff - deep_target),
-                    )
-                )
-                # Keep the lookup result exercised for rule-presence diagnostics;
-                # the production gate consumes the serving ranks above.
-                _ = target_rule_bonus
+                for request in requests_by_user[int(user)]:
+                    for target_id in request.target_item_ids:
+                        deep_positions = np.flatnonzero(deep_ranked == target_id)
+                        hybrid_positions = np.flatnonzero(hybrid_ranked == target_id)
+                        if len(deep_positions) == 0 or len(hybrid_positions) == 0:
+                            raise DataIntegrityError(
+                                "diagnostic target is masked or absent from ranking"
+                            )
+                        deep_position = int(deep_positions[0])
+                        hybrid_position = int(hybrid_positions[0])
+                        deep_target = float(deep_scores[target_id])
+                        target_bonus = float(hybrid_wide[row_index, target_id])
+                        target_features, present = self.rule_store.batch_lookup(
+                            np.asarray(
+                                [prepared_split.latest_prior_purchase_contexts.get(user, -1)]
+                            ),
+                            np.asarray([[target_id]], dtype=np.int64),
+                        )
+                        _ = target_features, present
+                        target_rows.append(
+                            TargetReplayRow(
+                                trap_id=request.trap_id,
+                                user_id=user,
+                                deep_rank=deep_position + 1,
+                                hybrid_rank=hybrid_position + 1,
+                                deep_top_k_cutoff=cutoff,
+                                target_deep_score=deep_target,
+                                learned_wide_bonus=target_bonus,
+                                required_wide_bonus=max(0.0, cutoff - deep_target),
+                            )
+                        )
 
         deep_result = _build_report(
             snapshot, prepared_split, ModelVariant.DEEP_ONLY, self.settings.eval.k, rows["deep"]

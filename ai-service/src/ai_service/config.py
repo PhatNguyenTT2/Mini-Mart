@@ -37,6 +37,7 @@ class DataConfig(BaseSettings):
     order_database_url: SecretStr | None = Field(default=None, alias="ORDER_DATABASE_URL")
     database_ssl_root_cert: Path | None = Field(default=None, alias="SUPABASE_DB_CA_PATH")
     benchmark_run_id: str | None = Field(default=None, alias="AI_BENCHMARK_RUN_ID")
+    benchmark_spec_path: Path | None = Field(default=None, alias="AI_BENCHMARK_SPEC_PATH")
     num_users: int = Field(default=5_000, gt=0)
     num_items: int = Field(default=5_200, gt=0)
     expected_event_count: int = Field(default=823_371, gt=0)
@@ -282,6 +283,21 @@ class Settings:
                 "num_price_buckets": self.data.num_price_buckets,
             },
             "model": self.model.model_dump(mode="json"),
+            "data_semantics": {
+                "rule_feature_schema_version": self.data.rule_feature_schema_version,
+                "min_rule_count": self.data.min_rule_count,
+                "min_rule_lift": self.data.min_rule_lift,
+                "minimum_non_trap_directed_rules": self.data.minimum_non_trap_directed_rules,
+                "minimum_distinct_organic_rule_items": (
+                    self.data.minimum_distinct_organic_rule_items
+                ),
+                "minimum_val_context_rule_coverage": self.data.minimum_val_context_rule_coverage,
+                "minimum_training_target_rule_rate": self.data.minimum_training_target_rule_rate,
+                "minimum_val_rule_target_rate": self.data.minimum_val_rule_target_rate,
+                "maximum_trap_anchored_rule_fraction": (
+                    self.data.maximum_trap_anchored_rule_fraction
+                ),
+            },
             "train": train,
             "eval": self.eval.model_dump(mode="json"),
         }
@@ -289,10 +305,43 @@ class Settings:
         return hashlib.sha256(payload).hexdigest()
 
     def comparison_signature_sha256(self) -> str:
-        """Hash comparison signature (experiment signature without training_variant)."""
+        """Hash only semantics shared by paired evaluation finalists.
+
+        R3 candidates intentionally vary objective/training knobs.  Those knobs
+        belong to the training signature, but must not make a candidate
+        incomparable with the selected Deep checkpoint.  The comparison
+        signature therefore describes the evaluation protocol, model feature
+        surface, and immutable data semantics only.
+        """
         train = self.train.model_dump(mode="json")
-        train.pop("seed", None)
-        train.pop("training_variant", None)
+        for key in (
+            "seed",
+            "training_variant",
+            "objective",
+            "batch_size",
+            "negative_ratio",
+            "explicit_negative_ratio",
+            "learning_rate",
+            "minimum_learning_rate",
+            "weight_decay",
+            "max_epochs",
+            "early_stopping_patience",
+            "min_delta",
+            "warmup_fraction",
+            "view_auxiliary_weight",
+            "rule_auxiliary_weight",
+            "rule_hard_negative_count",
+            "max_grad_norm",
+            "max_wall_minutes",
+            "campaign_stage",
+            "r3_selection_artifact_sha256",
+            "r3_feature_selection_mode",
+            "diagnostic_warmup_epochs",
+            "diagnostic_minimum_gauc",
+            "diagnostic_minimum_hr_at_k",
+            "diagnostic_minimum_ndcg_at_k",
+        ):
+            train.pop(key, None)
         document = {
             "model_schema_version": MODEL_SCHEMA_VERSION,
             "dimensions": {
@@ -303,6 +352,21 @@ class Settings:
                 "num_price_buckets": self.data.num_price_buckets,
             },
             "model": self.model.model_dump(mode="json"),
+            "data_semantics": {
+                "rule_feature_schema_version": self.data.rule_feature_schema_version,
+                "min_rule_count": self.data.min_rule_count,
+                "min_rule_lift": self.data.min_rule_lift,
+                "minimum_non_trap_directed_rules": self.data.minimum_non_trap_directed_rules,
+                "minimum_distinct_organic_rule_items": (
+                    self.data.minimum_distinct_organic_rule_items
+                ),
+                "minimum_val_context_rule_coverage": self.data.minimum_val_context_rule_coverage,
+                "minimum_training_target_rule_rate": self.data.minimum_training_target_rule_rate,
+                "minimum_val_rule_target_rate": self.data.minimum_val_rule_target_rate,
+                "maximum_trap_anchored_rule_fraction": (
+                    self.data.maximum_trap_anchored_rule_fraction
+                ),
+            },
             "train": train,
             "eval": self.eval.model_dump(mode="json"),
         }

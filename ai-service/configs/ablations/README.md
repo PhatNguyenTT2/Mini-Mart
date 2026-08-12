@@ -1,4 +1,4 @@
-# Archived v3/v4 ablations and v5 R3 promotion policy
+# Archived ablations and v5 R3/R4 promotion policy
 
 `v3.toml` (`deep_only`) and `v4.toml` (`hybrid`) describe the archived v3
 campaign. They remain in Git for audit and config-regression tests, but they are
@@ -16,11 +16,12 @@ newly seeded v5 lineage selected by R0-R2 readiness; its snapshot/rule IDs are
 recorded in the immutable snapshot manifest, never inferred from these files.
 
 Production training is blocked until R3/R4 pass. R3 uses the four Deep
-diagnostic configs under `configs/diagnostics/r3/`, publishes a verified
+diagnostic configs under `configs/diagnostics/r3-v5/`, publishes a verified
 immutable comparison artifact, and either selects exactly one feature-flag pair
 or returns `diagnostic_pause=true`. Only the selected flags may be mirrored into
-one Hybrid diagnostic. The selected Deep/Hybrid pair must then pass the VAL
-Wide-signal and seven-gate contracts.
+the five Hybrid diagnostics (`h0`, `h1`, `h2`, `h3a`, `h3b`), each configured
+with `r3_feature_selection_mode="selection_artifact"`. The selected Deep/Hybrid
+pair must then pass the VAL Wide-signal and seven-gate contracts.
 
 After R3 passes, create a new reviewed production config pair in
 `configs/production/`. The
@@ -30,7 +31,7 @@ pair must be identical except for `training_variant`; it must bind the selected
 
 The authoritative commands, exact diagnostic IDs, stop conditions, and
 promotion checklist are maintained in
-[`master/detail-plan.md`](../../../master/detail-plan.md). The root
+[`master/detail-plan-r3-r4.md`](../../../master/detail-plan-r3-r4.md). The root
 [`README.md`](../../README.md) intentionally contains no executable archived-v3
 training command.
 

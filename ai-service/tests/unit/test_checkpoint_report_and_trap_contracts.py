@@ -272,21 +272,24 @@ def test_semantic_traps_use_serving_equivalent_replay_when_prepared(
             pass
 
         def evaluate_pair_diagnostics(self, **_kwargs: object) -> PairDiagnosticReplay:
-            row = TargetReplayRow(
-                trap_id=1,
-                user_id=1,
-                deep_rank=20,
-                hybrid_rank=3,
-                deep_top_k_cutoff=0.0,
-                target_deep_score=0.0,
-                learned_wide_bonus=1.0,
-                required_wide_bonus=0.0,
+            rows = tuple(
+                TargetReplayRow(
+                    trap_id=trap_id,
+                    user_id=1,
+                    deep_rank=20,
+                    hybrid_rank=3,
+                    deep_top_k_cutoff=0.0,
+                    target_deep_score=0.0,
+                    learned_wide_bonus=1.0,
+                    required_wide_bonus=0.0,
+                )
+                for trap_id in range(1, 11)
             )
             return PairDiagnosticReplay(
                 deep=SimpleNamespace(),
                 hybrid=SimpleNamespace(),
                 alpha_results={},
-                targets=(row,),
+                targets=rows,
             )
 
     monkeypatch.setattr("ai_service.evaluation.semantic_traps.FullCatalogEvaluator", _Evaluator)
@@ -304,6 +307,84 @@ def test_semantic_traps_use_serving_equivalent_replay_when_prepared(
     )
     assert report.all_passed is True
     assert report.results[0].hybrid_rank == 3
+
+
+def test_semantic_trap_runtime_uses_snapshot_cohort_not_fixture(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    fixture = tmp_path / "traps-serving.json"
+    fixture.write_text(
+        json.dumps(
+            [
+                {"trap_id": trap_id, "anchor_product_id": 103, "target_product_ids": [104]}
+                for trap_id in range(1, 11)
+            ]
+        ),
+        encoding="utf-8",
+    )
+    _snapshot(tmp_path).snapshot_dir.joinpath("semantic-cohort.json").write_text(
+        json.dumps(
+            [
+                {
+                    "cohort_id": f"semantic-{trap_id}",
+                    "event_id": f"run:val:semantic:target:{trap_id}",
+                    "user_id": 11,
+                    "product_id": 102,
+                    "anchor_product_id": 101,
+                    "target_product_ids": [102],
+                }
+                for trap_id in range(1, 11)
+            ]
+        ),
+        encoding="utf-8",
+    )
+    prepared = SimpleNamespace(
+        eligible_users=np.asarray([1], dtype=np.int64),
+        latest_prior_purchase_contexts={1: 0},
+        organic_novel_truth={1: {1}},
+    )
+
+    class _Evaluator:
+        def __init__(self, *_args: object, **_kwargs: object) -> None:
+            pass
+
+        def evaluate_pair_diagnostics(self, **_kwargs: object) -> PairDiagnosticReplay:
+            rows = tuple(
+                TargetReplayRow(
+                    trap_id=trap_id,
+                    user_id=1,
+                    deep_rank=20,
+                    hybrid_rank=3,
+                    deep_top_k_cutoff=0.0,
+                    target_deep_score=0.0,
+                    learned_wide_bonus=1.0,
+                    required_wide_bonus=0.0,
+                )
+                for trap_id in range(1, 11)
+            )
+            return PairDiagnosticReplay(
+                deep=SimpleNamespace(),
+                hybrid=SimpleNamespace(),
+                alpha_results={},
+                targets=rows,
+            )
+
+    monkeypatch.setattr("ai_service.evaluation.semantic_traps.FullCatalogEvaluator", _Evaluator)
+    snapshot = _snapshot(tmp_path)
+    report = evaluate_semantic_traps(
+        HybridTwoTowerModel(_settings()),
+        HybridTwoTowerModel(_settings()),
+        snapshot,
+        np.eye(4, dtype=np.float32),
+        RuleStore(4, [(0, 1, 10.0)]),
+        fixture,
+        k=10,
+        prepared_split=prepared,
+        settings=_settings(),
+    )
+    assert report.all_passed is True
+    assert report.results[0].anchor_product_id == 101
+    assert report.results[0].target_product_ids == (102,)
 
 
 def test_evaluate_cold_parity_requires_exact_cohort(tmp_path: Path) -> None:

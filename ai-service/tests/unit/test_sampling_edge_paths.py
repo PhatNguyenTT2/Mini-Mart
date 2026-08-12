@@ -8,6 +8,7 @@ import pandas as pd
 import pytest
 
 from ai_service.data.dataset import RulePairIndex, build_purchase_training_index
+from ai_service.data.rules import RuleStore
 from ai_service.data.sampling import MixedNegativeSampler
 from ai_service.data.snapshot import Snapshot
 from ai_service.errors import NegativeSamplingError
@@ -69,7 +70,8 @@ def test_rule_hard_quota_has_exact_source_tag(tmp_path: Path) -> None:
         snapshot,
         np.eye(6, dtype=np.float32),
         ratio=4,
-        rule_pair_index=RulePairIndex({0: (2, 3, 4, 5)}),
+        rule_pair_index=RulePairIndex({0: (2,)}),
+        rule_store=RuleStore(6, [(0, 2, 2.0), (0, 3, 2.0), (0, 4, 2.0), (0, 5, 2.0)]),
         rule_hard_negative_count=1,
     )
     # Keep the fixture large enough for the complete four-source quota.

@@ -2,12 +2,34 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass
+
 import numpy as np
 
 from ai_service.data.dataset import PurchaseTrainingIndex, RulePairIndex, build_rule_pair_index
 from ai_service.data.quality import filter_event_origin
+from ai_service.data.rules import RuleStore
 from ai_service.data.snapshot import Snapshot
 from ai_service.errors import NegativeSamplingError
+
+
+@dataclass(frozen=True)
+class MixedNegativeBatch:
+    """Candidates plus provenance needed by the rule auxiliary objective."""
+
+    item_ids: np.ndarray
+    source_tags: np.ndarray
+    rule_hard_mask: np.ndarray
+
+    @property
+    def shape(self) -> tuple[int, ...]:
+        return self.item_ids.shape
+
+    def __array__(self, dtype: np.dtype | None = None) -> np.ndarray:
+        return np.asarray(self.item_ids, dtype=dtype)
+
+    def __iter__(self):  # type: ignore[no-untyped-def]
+        return iter(self.item_ids)
 
 
 class MixedNegativeSampler:
@@ -20,6 +42,7 @@ class MixedNegativeSampler:
         ratio: int = 16,
         seed: int = 42,
         rule_pair_index: RulePairIndex | None = None,
+        rule_store: RuleStore | None = None,
         rule_hard_negative_count: int = 0,
     ) -> None:
         if ratio < 4:
@@ -33,6 +56,7 @@ class MixedNegativeSampler:
         if rule_hard_negative_count < 0 or rule_hard_negative_count > ratio // 4:
             raise ValueError("rule_hard_negative_count must fit the warm quota")
         self.rule_pair_index = rule_pair_index or build_rule_pair_index(snapshot)
+        self.rule_store = rule_store
         self.rule_hard_negative_count = int(rule_hard_negative_count)
         self._context_by_target = {
             (int(user), int(item)): int(context)
@@ -129,19 +153,21 @@ class MixedNegativeSampler:
         *,
         epoch: int,
         batch_index: int,
-    ) -> np.ndarray:
+    ) -> MixedNegativeBatch:
         users = np.asarray(users, dtype=np.int64)
         positives = np.asarray(positive_items, dtype=np.int64)
         if users.shape != positives.shape or users.ndim != 1:
             raise ValueError("users and positive_items must be equal [B] vectors")
         if np.any(users < 1) or np.any(users >= self.index.known_history.shape[0]):
             raise NegativeSamplingError("sampler users must be in the range [1,num_users]")
-        result = np.empty((len(users), self.ratio), dtype=np.int64)
         result_with_sources = self._sample_internal(
             users, positives, epoch=epoch, batch_index=batch_index
         )
-        result[...] = result_with_sources[0]
-        return result
+        return MixedNegativeBatch(
+            item_ids=result_with_sources[0],
+            source_tags=result_with_sources[1],
+            rule_hard_mask=result_with_sources[1] == "rule_hard",
+        )
 
     def sample_with_sources(
         self,
@@ -190,7 +216,21 @@ class MixedNegativeSampler:
             source_values: list[str] = []
             if self.rule_hard_negative_count:
                 context = self._context_by_target.get((int(user), int(positive)), -1)
-                rule_pool = self.rule_pair_index.candidates(context, int(positive))
+                positive_neighbors = set(
+                    int(item) for item in self.rule_pair_index.neighbors.get(int(context), ())
+                )
+                protected_neighbors = set(
+                    int(item) for item in self.rule_pair_index.protected.get(int(context), ())
+                )
+                rule_pool = np.asarray(
+                    [
+                        int(item)
+                        for item in self._rule_store_candidates(context)
+                        if int(item) not in positive_neighbors
+                        and int(item) not in protected_neighbors
+                    ],
+                    dtype=np.int64,
+                )
                 rule_values = self._draw(
                     rule_pool,
                     self.rule_hard_negative_count,
@@ -249,3 +289,8 @@ class MixedNegativeSampler:
             result[row_index] = values
             sources[row_index] = source_values
         return result, sources
+
+    def _rule_store_candidates(self, context: int) -> np.ndarray:
+        if self.rule_store is not None:
+            return self.rule_store.candidates(int(context))
+        return np.empty(0, dtype=np.int64)

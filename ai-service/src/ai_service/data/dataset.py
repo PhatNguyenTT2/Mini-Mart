@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any, cast
 
 import numpy as np
@@ -51,6 +51,7 @@ class RulePairIndex:
     """Deterministic organic context→target lookup used by R3 diagnostics."""
 
     neighbors: dict[int, tuple[int, ...]]
+    protected: dict[int, tuple[int, ...]] = field(default_factory=dict)
 
     def candidates(self, context_item: int, positive_item: int) -> np.ndarray:
         values = [
@@ -62,24 +63,48 @@ class RulePairIndex:
 
 
 def build_rule_pair_index(snapshot: Snapshot) -> RulePairIndex:
-    """Build organic same-basket directed pairs in stable order.
+    """Build organic positive directed pairs from immutable order baskets.
 
-    Semantic-trap rows are intentionally excluded.  The event timestamp is the
-    stable basket boundary for snapshots that do not carry order IDs.
+    Training events are not baskets: grouping views/clicks by timestamp can
+    manufacture edges which do not exist in an order.  The order receipt is
+    therefore authoritative; the event fallback is retained only for small
+    synthetic unit fixtures that do not provide order columns.
     """
-    frame = snapshot.train_df
-    if "event_origin" in frame.columns:
-        frame = frame[frame.event_origin.astype(str) == "organic"]
+    frame = snapshot.order_baskets_df
+    protected_neighbors: dict[int, set[int]] = {}
+    if not frame.empty and {"order_id", "internal_product_id"}.issubset(frame.columns):
+        if "benchmark_kind" in frame.columns:
+            trap_frame = frame[frame.benchmark_kind.astype(str) == "semantic_trap"]
+            for _, basket in trap_frame.groupby("order_id", sort=False):
+                items = sorted({int(item) for item in basket.internal_product_id})
+                for context in items:
+                    protected_neighbors.setdefault(context, set()).update(
+                        item for item in items if item != context
+                    )
+            frame = frame[frame.benchmark_kind.astype(str) == "organic"]
+        group_columns = ["order_id"]
+    else:
+        frame = snapshot.train_df
+        if "event_origin" in frame.columns:
+            frame = frame[frame.event_origin.astype(str) == "organic"]
+        group_columns = ["internal_user_id", "event_ts"]
     if frame.empty:
         return RulePairIndex({})
-    frame = frame.sort_values(["internal_user_id", "event_ts", "event_id"], kind="stable")
+    sort_columns = [
+        column for column in ("order_ts", "order_id", "event_ts", "event_id") if column in frame
+    ]
+    frame = frame.sort_values(sort_columns, kind="stable")
     neighbors: dict[int, set[int]] = {}
-    for _, basket in frame.groupby(["internal_user_id", "event_ts"], sort=False):
+    for _, basket in frame.groupby(group_columns, sort=False):
         items = sorted({int(item) for item in basket.internal_product_id})
         for context in items:
             neighbors.setdefault(context, set()).update(item for item in items if item != context)
     return RulePairIndex(
-        {context: tuple(sorted(targets)) for context, targets in sorted(neighbors.items())}
+        {context: tuple(sorted(targets)) for context, targets in sorted(neighbors.items())},
+        {
+            context: tuple(sorted(targets))
+            for context, targets in sorted(protected_neighbors.items())
+        },
     )
 
 
@@ -210,6 +235,8 @@ class PurchaseBatch:
     in_batch_rule_present: torch.Tensor
     explicit_wide_values: torch.Tensor
     explicit_rule_present: torch.Tensor
+    negative_source_tags: np.ndarray | None = None
+    rule_hard_mask: torch.Tensor | None = None
 
 
 class PurchaseBatchIterator:
@@ -251,12 +278,13 @@ class PurchaseBatchIterator:
             positive_mask = self.index.known_purchases[users[:, None], positives[None, :]]
             denominator_mask = ~self.index.known_history[users[:, None], positives[None, :]]
             denominator_mask |= positive_mask
-            negatives = self.sampler.sample(
+            negative_batch = self.sampler.sample(
                 users,
                 positives,
                 epoch=self.epoch,
                 batch_index=batch_index,
             )
+            negatives = negative_batch.item_ids
             b = len(selected)
             in_batch_candidates = np.broadcast_to(positives[None, :], (b, b))
             in_batch_wide, in_batch_present = self.rule_store.batch_lookup(
@@ -279,6 +307,8 @@ class PurchaseBatchIterator:
                 in_batch_rule_present=torch.from_numpy(in_batch_present),
                 explicit_wide_values=torch.from_numpy(explicit_wide),
                 explicit_rule_present=torch.from_numpy(explicit_present),
+                negative_source_tags=negative_batch.source_tags.copy(),
+                rule_hard_mask=torch.from_numpy(negative_batch.rule_hard_mask),
             )
 
 

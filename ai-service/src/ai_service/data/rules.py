@@ -168,6 +168,14 @@ class RuleStore:
             lifts[batch_index, matched] = self.raw_lifts[start:end].numpy()[matched_positions]
         return lifts, present
 
+    def candidates(self, context_item_idx: int) -> np.ndarray:
+        """Return rule-present targets for one context in deterministic order."""
+        if context_item_idx < 0 or context_item_idx >= self.num_items:
+            return np.empty(0, dtype=np.int64)
+        start = int(self.crow_indices[context_item_idx])
+        end = int(self.crow_indices[context_item_idx + 1])
+        return self.col_indices[start:end].detach().cpu().numpy().astype(np.int64, copy=True)
+
 
 def _build_rule_coverage(
     snapshot: Snapshot,

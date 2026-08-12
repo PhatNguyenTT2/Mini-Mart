@@ -25,6 +25,7 @@ from ai_service.config import Settings
 from ai_service.contracts import (
     AlphaSweepEvidence,
     ArtifactLineage,
+    ArtifactLineageV5,
     CohortMetricDelta,
     R3DiagnosticReport,
     RuleAlignmentEvidence,
@@ -320,8 +321,44 @@ def _alignment_evidence(
 def _target_requests(
     snapshot: Any, prepared: Any, fixture_path: Path
 ) -> tuple[TargetReplayRequest, ...]:
-    fixtures = json.loads(fixture_path.read_text(encoding="utf-8"))
     requests: list[TargetReplayRequest] = []
+    snapshot_dir = getattr(snapshot, "snapshot_dir", None)
+    cohort_path = (
+        snapshot_dir / "semantic-cohort.json"
+        if isinstance(snapshot_dir, Path)
+        else Path("__missing_semantic_cohort__")
+    )
+    if cohort_path.is_file() and hasattr(prepared, "split"):
+        trap_specs: dict[int, tuple[int, tuple[int, ...]]] = {}
+        for row in json.loads(cohort_path.read_text(encoding="utf-8")):
+            cohort_id = str(row.get("cohort_id", ""))
+            if not cohort_id.startswith("semantic-") or ":val:" not in str(row.get("event_id", "")):
+                continue
+            try:
+                trap_id = int(cohort_id.removeprefix("semantic-"))
+                user_id = int(snapshot.user_map[int(row["user_id"])])
+                target = int(snapshot.product_map[int(row["product_id"])])
+                anchor_raw = int(row["anchor_product_id"])
+                target_raws = tuple(int(value) for value in row["target_product_ids"])
+                anchor = int(snapshot.product_map[anchor_raw])
+                target_metadata = tuple(int(snapshot.product_map[value]) for value in target_raws)
+            except (KeyError, TypeError, ValueError) as error:
+                raise DataIntegrityError("semantic cohort row is malformed") from error
+            if not target_raws or target not in target_metadata:
+                raise DataIntegrityError("semantic cohort target metadata is invalid")
+            expected = (anchor_raw, target_raws)
+            if trap_id in trap_specs and trap_specs[trap_id] != expected:
+                raise DataIntegrityError("semantic cohort trap metadata is inconsistent")
+            trap_specs[trap_id] = expected
+            if prepared.latest_prior_purchase_contexts.get(user_id) != anchor:
+                raise DataIntegrityError("semantic cohort anchor is not in prior history")
+            if target not in prepared.organic_novel_truth.get(user_id, set()):
+                raise DataIntegrityError("semantic cohort target is not novel VAL truth")
+            requests.append(TargetReplayRequest(trap_id, user_id, (target,)))
+        if not requests:
+            raise DataIntegrityError("semantic cohort contains no serving-equivalent VAL cases")
+        return tuple(requests)
+    fixtures = json.loads(fixture_path.read_text(encoding="utf-8"))
     eligible = [int(user) for user in prepared.eligible_users]
     selected_users: set[int] = set()
     for fixture in sorted(fixtures, key=lambda item: int(item["trap_id"])):
@@ -387,21 +424,21 @@ def publish_r3_diagnostic(
         "git_commit"
     ):
         raise ArtifactIntegrityError("R3 diagnostic requires one frozen source revision")
-    lineage = ArtifactLineage(
-        snapshot_sha256=hybrid_run.snapshot.manifest.content_sha256,
-        embedding_sha256=hybrid_run.embedding.manifest.content_sha256,
-        rule_sha256=hybrid_run.rules.manifest.content_sha256,
-        benchmark_spec_sha256=hybrid_run.snapshot.manifest.benchmark_spec_sha256,
-        semantic_cohort_sha256=hybrid_run.snapshot.manifest.semantic_cohort_sha256,
-        order_metadata_sha256=hybrid_run.snapshot.manifest.order_metadata_sha256,
+    lineage = ArtifactLineageV5(
+        snapshot=hybrid_run.snapshot.manifest.content_sha256,
+        embedding=hybrid_run.embedding.manifest.content_sha256,
+        rules=hybrid_run.rules.manifest.content_sha256,
+        benchmark_spec=hybrid_run.snapshot.manifest.benchmark_spec_sha256,
+        semantic_cohort=hybrid_run.snapshot.manifest.semantic_cohort_sha256,
+        order_metadata=hybrid_run.snapshot.manifest.order_metadata_sha256,
     )
-    deep_lineage = ArtifactLineage(
-        snapshot_sha256=deep_run.snapshot.manifest.content_sha256,
-        embedding_sha256=deep_run.embedding.manifest.content_sha256,
-        rule_sha256=deep_run.rules.manifest.content_sha256,
-        benchmark_spec_sha256=deep_run.snapshot.manifest.benchmark_spec_sha256,
-        semantic_cohort_sha256=deep_run.snapshot.manifest.semantic_cohort_sha256,
-        order_metadata_sha256=deep_run.snapshot.manifest.order_metadata_sha256,
+    deep_lineage = ArtifactLineageV5(
+        snapshot=deep_run.snapshot.manifest.content_sha256,
+        embedding=deep_run.embedding.manifest.content_sha256,
+        rules=deep_run.rules.manifest.content_sha256,
+        benchmark_spec=deep_run.snapshot.manifest.benchmark_spec_sha256,
+        semantic_cohort=deep_run.snapshot.manifest.semantic_cohort_sha256,
+        order_metadata=deep_run.snapshot.manifest.order_metadata_sha256,
     )
     if lineage != deep_lineage:
         raise ArtifactIntegrityError("R3 diagnostic requires matching artifact lineage")
@@ -467,21 +504,44 @@ def publish_r3_diagnostic(
         ).astype(np.float64),
     }
     # Alpha values are a bounded summary, not per-user score dictionaries.
-    fixture_path = Path(__file__).with_name("fixtures") / "semantic_traps.json"
-    fixtures = {
-        int(item["trap_id"]): item for item in json.loads(fixture_path.read_text(encoding="utf-8"))
-    }
+    # Trap metadata is read from the verified snapshot cohort.  The tracked
+    # fixture remains only as a compatibility fallback for tiny legacy tests.
+    cohort_path = hybrid_run.snapshot.snapshot_dir / "semantic-cohort.json"
+    trap_specs: dict[int, tuple[int, tuple[int, ...]]] = {}
+    if cohort_path.is_file():
+        for row in json.loads(cohort_path.read_text(encoding="utf-8")):
+            event_id = str(row.get("event_id", ""))
+            cohort_id = str(row.get("cohort_id", ""))
+            if ":target:" not in event_id or not cohort_id.startswith("semantic-"):
+                continue
+            trap_id = int(cohort_id.removeprefix("semantic-"))
+            spec = (
+                int(row["anchor_product_id"]),
+                tuple(int(item) for item in row["target_product_ids"]),
+            )
+            if trap_id in trap_specs and trap_specs[trap_id] != spec:
+                raise DataIntegrityError("semantic cohort trap metadata is inconsistent")
+            trap_specs[trap_id] = spec
+    else:
+        fixture_path = Path(__file__).with_name("fixtures") / "semantic_traps.json"
+        trap_specs = {
+            int(item["trap_id"]): (
+                int(item["anchor_product_id"]),
+                tuple(int(value) for value in item["target_product_ids"]),
+            )
+            for item in json.loads(fixture_path.read_text(encoding="utf-8"))
+        }
+    if set(trap_specs) != set(range(1, 11)):
+        raise DataIntegrityError("semantic cohort must contain all ten trap definitions")
     target_by_trap = {item.trap_id: item for item in replay.targets}
     item_by_trap = {item.trap_id: item for item in trap_report.results}
     trap_evidence = []
     for trap_id in range(1, 11):
-        fixture = fixtures[trap_id]
+        anchor_raw, target_raw_ids = trap_specs[trap_id]
         replay_row = target_by_trap[trap_id]
         item_row = item_by_trap[trap_id]
-        anchor_internal = hybrid_run.snapshot.product_map[int(fixture["anchor_product_id"])]
-        target_internal = tuple(
-            hybrid_run.snapshot.product_map[int(item)] for item in fixture["target_product_ids"]
-        )
+        anchor_internal = hybrid_run.snapshot.product_map[anchor_raw]
+        target_internal = tuple(hybrid_run.snapshot.product_map[item] for item in target_raw_ids)
         lifts, present = hybrid_run.rules.store.batch_raw_lift(
             np.asarray([anchor_internal], dtype=np.int64),
             np.asarray([target_internal], dtype=np.int64),
@@ -489,8 +549,8 @@ def publish_r3_diagnostic(
         trap_evidence.append(
             TrapDiagnosticEvidence(
                 trap_id=trap_id,
-                anchor_raw_id=int(fixture["anchor_product_id"]),
-                target_raw_ids=tuple(int(item) for item in fixture["target_product_ids"]),
+                anchor_raw_id=anchor_raw,
+                target_raw_ids=target_raw_ids,
                 anchor_internal_id=anchor_internal,
                 target_internal_ids=target_internal,
                 rule_present=tuple(bool(item) for item in present[0]),
@@ -519,15 +579,16 @@ def publish_r3_diagnostic(
             hr_at_k=float(metrics["alpha_hr"][index].mean()),
             ndcg_at_k=float(metrics["alpha_ndcg"][index].mean()),
             meets_absolute_floors=(
-                float(metrics["alpha_gauc"][index].mean()) >= 0.70
+                float(metrics["alpha_gauc"][index].mean()) >= settings.eval.minimum_gauc
                 and float(metrics["alpha_hr"][index].mean()) >= 0.15
                 and float(metrics["alpha_ndcg"][index].mean()) >= 0.08
             ),
         )
         for index, alpha in enumerate(_ALPHAS)
     )
-    benchmark_spec = _repo_file("benchmark-spec-v5.json")
-    cohort_file = Path(__file__).with_name("fixtures") / "semantic_traps.json"
+    cohort_file = hybrid_run.snapshot.snapshot_dir / "semantic-cohort.json"
+    if not cohort_file.is_file():
+        raise ArtifactIntegrityError("verified snapshot semantic cohort is missing")
     report = R3DiagnosticReport(
         schema_version="1.0.0",
         evaluation_schema_version="5.2.0",
@@ -539,8 +600,9 @@ def publish_r3_diagnostic(
         git_commit=str(hybrid_run.lifecycle.document["git_commit"]),
         lineage=lineage,
         comparison_signature_sha256=hybrid_run.settings.comparison_signature_sha256(),
-        benchmark_spec_sha256=_sha256_file(benchmark_spec),
-        semantic_cohort_sha256=_sha256_file(cohort_file),
+        benchmark_spec_sha256=str(lineage.benchmark_spec_sha256),
+        semantic_cohort_sha256=str(lineage.semantic_cohort_sha256),
+        order_metadata_sha256=str(lineage.order_metadata_sha256),
         rule_alignment=evidence,
         cohort_deltas=cohort_deltas,
         trap_evidence=tuple(trap_evidence),
@@ -582,7 +644,7 @@ def load_r3_diagnostic(
     *,
     expected_hybrid_run_id: str,
     expected_deep_run_id: str,
-    expected_lineage: ArtifactLineage,
+    expected_lineage: ArtifactLineage | ArtifactLineageV5,
     expected_comparison_signature: str,
 ) -> R3DiagnosticArtifact:
     directory = directory.resolve()
@@ -597,7 +659,7 @@ def load_r3_diagnostic(
     if report.hybrid_run_id != expected_hybrid_run_id or report.deep_run_id != expected_deep_run_id:
         raise ArtifactIntegrityError("R3 diagnostic pair does not match expected runs")
     if (
-        report.lineage != expected_lineage
+        report.lineage.model_dump(mode="json") != expected_lineage.model_dump(mode="json")
         or report.comparison_signature_sha256 != expected_comparison_signature
     ):
         raise ArtifactIntegrityError("R3 diagnostic lineage/signature mismatch")

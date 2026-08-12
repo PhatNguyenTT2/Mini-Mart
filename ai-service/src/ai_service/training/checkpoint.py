@@ -19,7 +19,12 @@ from torch import nn
 from torch.optim import Optimizer
 
 from ai_service.config import MODEL_SCHEMA_VERSION
-from ai_service.contracts import CheckpointManifest, TrainingVariant
+from ai_service.contracts import (
+    ArtifactLineageInput,
+    CheckpointManifest,
+    TrainingVariant,
+    normalize_artifact_lineage,
+)
 from ai_service.errors import ArtifactIntegrityError
 
 
@@ -95,7 +100,7 @@ class CheckpointManager:
         metrics: Mapping[str, float],
         stopping_state: Mapping[str, object],
         checkpoint_kind: Literal["best", "last"],
-        lineage: dict[str, str],
+        lineage: ArtifactLineageInput,
         training_signature_sha256: str,
         comparison_signature_sha256: str,
         training_variant: TrainingVariant,
@@ -116,7 +121,21 @@ class CheckpointManager:
         stopping_state = _validate_stopping_state(
             stopping_state, epoch=epoch, checkpoint_kind=checkpoint_kind
         )
-        if set(lineage) != {"snapshot", "embedding", "rules"}:
+        try:
+            lineage_mapping = normalize_artifact_lineage(lineage)
+        except ValueError as error:
+            raise ArtifactIntegrityError("checkpoint lineage is invalid") from error
+        if set(lineage_mapping) not in (
+            {"snapshot", "embedding", "rules"},
+            {
+                "snapshot",
+                "embedding",
+                "rules",
+                "benchmark_spec",
+                "semantic_cohort",
+                "order_metadata",
+            },
+        ):
             raise ArtifactIntegrityError("checkpoint lineage is incomplete")
         path.parent.mkdir(parents=True, exist_ok=True)
         state = {
@@ -128,7 +147,7 @@ class CheckpointManager:
             "scaler": scaler.state_dict() if scaler is not None else None,
             "epoch": epoch,
             "metrics": dict(metrics),
-            "lineage": lineage,
+            "lineage": lineage_mapping,
             "training_signature_sha256": training_signature_sha256,
             "comparison_signature_sha256": comparison_signature_sha256,
             "training_variant": training_variant.value,
@@ -155,11 +174,11 @@ class CheckpointManager:
                 schema_version=model_schema_version,
                 artifact_id=path.stem,
                 content_sha256=checksum,
-                parent_sha256=lineage,
+                parent_sha256=lineage_mapping,
                 run_id=run_id,
-                snapshot_sha256=lineage["snapshot"],
-                embedding_sha256=lineage["embedding"],
-                rule_sha256=lineage["rules"],
+                snapshot_sha256=lineage_mapping["snapshot"],
+                embedding_sha256=lineage_mapping["embedding"],
+                rule_sha256=lineage_mapping["rules"],
                 training_signature_sha256=training_signature_sha256,
                 comparison_signature_sha256=comparison_signature_sha256,
                 training_variant=training_variant,
@@ -169,6 +188,9 @@ class CheckpointManager:
                 best_val_ndcg_at_k=float(metrics["val_ndcg_at_k"]),
                 best_val_hr_at_k=float(metrics["val_hr_at_k"]),
                 checkpoint_kind=checkpoint_kind,
+                benchmark_spec_sha256=lineage_mapping.get("benchmark_spec"),
+                semantic_cohort_sha256=lineage_mapping.get("semantic_cohort"),
+                order_metadata_sha256=lineage_mapping.get("order_metadata"),
             )
             manifest_path = path.with_suffix(path.suffix + ".manifest.json")
             manifest_temp = manifest_path.with_name(f".{manifest_path.name}.tmp")
@@ -192,7 +214,7 @@ class CheckpointManager:
         optimizer: Optimizer | None = None,
         scheduler: Any = None,
         scaler: Any = None,
-        expected_lineage: dict[str, str] | None = None,
+        expected_lineage: ArtifactLineageInput | None = None,
         expected_training_signature: str | None = None,
         expected_comparison_signature: str | None = None,
         expected_training_variant: TrainingVariant | None = None,
@@ -215,7 +237,17 @@ class CheckpointManager:
             )
         if _sha256(path) != manifest.content_sha256:
             raise ArtifactIntegrityError("checkpoint checksum mismatch")
-        if expected_lineage and manifest.parent_sha256 != expected_lineage:
+        if expected_lineage is not None:
+            try:
+                expected_lineage_mapping = normalize_artifact_lineage(expected_lineage)
+            except ValueError as error:
+                raise ArtifactIntegrityError("expected checkpoint lineage is invalid") from error
+        else:
+            expected_lineage_mapping = None
+        if (
+            expected_lineage_mapping is not None
+            and manifest.parent_sha256 != expected_lineage_mapping
+        ):
             raise ArtifactIntegrityError("checkpoint lineage mismatch")
         if (
             expected_training_signature is not None

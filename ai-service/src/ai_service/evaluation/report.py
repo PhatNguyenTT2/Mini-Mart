@@ -15,7 +15,13 @@ from typing import Literal
 import numpy as np
 from pydantic import BaseModel, Field, model_validator
 
-from ai_service.contracts import EVALUATION_SCHEMA_VERSION, SplitName, VictoryMatrix
+from ai_service.contracts import (
+    EVALUATION_SCHEMA_VERSION,
+    ArtifactLineageInput,
+    SplitName,
+    VictoryMatrix,
+    normalize_artifact_lineage,
+)
 from ai_service.errors import ArtifactIntegrityError
 
 METRIC_KEYS = (
@@ -57,6 +63,9 @@ class EvaluationArtifactManifest(BaseModel):
     snapshot_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
     embedding_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
     rule_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    benchmark_spec_sha256: str | None = Field(default=None, pattern=r"^[0-9a-f]{64}$")
+    semantic_cohort_sha256: str | None = Field(default=None, pattern=r"^[0-9a-f]{64}$")
+    order_metadata_sha256: str | None = Field(default=None, pattern=r"^[0-9a-f]{64}$")
     comparison_signature_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
     passed: bool
     per_user_metrics_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
@@ -68,6 +77,15 @@ class EvaluationArtifactManifest(BaseModel):
             raise ValueError("evaluation run IDs cannot be empty")
         if self.hybrid_run_id == self.deep_run_id:
             raise ValueError("evaluation pair must contain distinct runs")
+        metadata = (
+            self.benchmark_spec_sha256,
+            self.semantic_cohort_sha256,
+            self.order_metadata_sha256,
+        )
+        if any(value is not None for value in metadata) and not all(
+            value is not None for value in metadata
+        ):
+            raise ValueError("evaluation expanded lineage must contain all metadata hashes")
         return self
 
 
@@ -151,15 +169,22 @@ def publish_evaluation_artifacts(
     deep_run_id: str,
     hybrid_checkpoint_sha256: str,
     deep_checkpoint_sha256: str,
-    lineage: dict[str, str],
+    lineage: ArtifactLineageInput,
     comparison_signature_sha256: str,
     metrics: Mapping[str, object],
     results: Mapping[str, object],
     victory_matrix: VictoryMatrix,
 ) -> EvaluationArtifactSet:
-    if set(lineage) != {"snapshot", "embedding", "rules"}:
-        raise ArtifactIntegrityError("evaluation lineage requires snapshot, embedding, and rules")
-    if any(not isinstance(value, str) or len(value) != 64 for value in lineage.values()):
+    try:
+        lineage_mapping = normalize_artifact_lineage(lineage)
+    except ValueError as error:
+        raise ArtifactIntegrityError("evaluation lineage is invalid") from error
+    if set(lineage_mapping) not in (
+        {"snapshot", "embedding", "rules"},
+        {"snapshot", "embedding", "rules", "benchmark_spec", "semantic_cohort", "order_metadata"},
+    ):
+        raise ArtifactIntegrityError("evaluation lineage is incomplete")
+    if any(not isinstance(value, str) or len(value) != 64 for value in lineage_mapping.values()):
         raise ArtifactIntegrityError("evaluation lineage contains an invalid SHA")
     if victory_matrix.comparison_signature != comparison_signature_sha256:
         raise ArtifactIntegrityError("Victory Matrix comparison signature mismatch")
@@ -187,9 +212,12 @@ def publish_evaluation_artifacts(
             deep_run_id=deep_run_id,
             hybrid_checkpoint_sha256=hybrid_checkpoint_sha256,
             deep_checkpoint_sha256=deep_checkpoint_sha256,
-            snapshot_sha256=lineage["snapshot"],
-            embedding_sha256=lineage["embedding"],
-            rule_sha256=lineage["rules"],
+            snapshot_sha256=lineage_mapping["snapshot"],
+            embedding_sha256=lineage_mapping["embedding"],
+            rule_sha256=lineage_mapping["rules"],
+            benchmark_spec_sha256=lineage_mapping.get("benchmark_spec"),
+            semantic_cohort_sha256=lineage_mapping.get("semantic_cohort"),
+            order_metadata_sha256=lineage_mapping.get("order_metadata"),
             comparison_signature_sha256=comparison_signature_sha256,
             passed=victory_matrix.all_passed,
             per_user_metrics_sha256=_file_sha256(metrics_path),
@@ -218,7 +246,7 @@ def publish_evaluation_artifacts(
             expected_hybrid_run_id=hybrid_run_id,
             expected_deep_run_id=deep_run_id,
             expected_comparison_signature=comparison_signature_sha256,
-            expected_lineage=lineage,
+            expected_lineage=lineage_mapping,
         )
         if destination.exists():
             raise ArtifactIntegrityError(f"evaluation artifact already exists: {destination}")
@@ -232,7 +260,7 @@ def publish_evaluation_artifacts(
         expected_hybrid_run_id=hybrid_run_id,
         expected_deep_run_id=deep_run_id,
         expected_comparison_signature=comparison_signature_sha256,
-        expected_lineage=lineage,
+        expected_lineage=lineage_mapping,
     )
 
 
@@ -243,8 +271,12 @@ def load_evaluation_artifacts(
     expected_hybrid_run_id: str,
     expected_deep_run_id: str,
     expected_comparison_signature: str,
-    expected_lineage: dict[str, str],
+    expected_lineage: ArtifactLineageInput,
 ) -> EvaluationArtifactSet:
+    try:
+        expected_lineage_mapping = normalize_artifact_lineage(expected_lineage)
+    except ValueError as error:
+        raise ArtifactIntegrityError("expected evaluation lineage is invalid") from error
     directory = directory_or_run_dir
     if not (directory / "report.json").is_file():
         directory = directory_or_run_dir / "evaluation" / expected_split.value
@@ -268,7 +300,15 @@ def load_evaluation_artifacts(
         "embedding": manifest.embedding_sha256,
         "rules": manifest.rule_sha256,
     }
-    if actual_lineage != expected_lineage:
+    if manifest.benchmark_spec_sha256 is not None:
+        actual_lineage.update(
+            {
+                "benchmark_spec": manifest.benchmark_spec_sha256,
+                "semantic_cohort": str(manifest.semantic_cohort_sha256),
+                "order_metadata": str(manifest.order_metadata_sha256),
+            }
+        )
+    if actual_lineage != expected_lineage_mapping:
         raise ArtifactIntegrityError("evaluation lineage mismatch")
     matrix = _load_matrix(matrix_path)
     if (

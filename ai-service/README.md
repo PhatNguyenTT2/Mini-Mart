@@ -59,7 +59,7 @@ allowed because the application default is `benchmark-local`:
 .\.venv\Scripts\python.exe -m ai_service.cli audit-data `
   --snapshot-id benchmark-v5-s42-7f40639b0d-1ace202aaa --device cpu
 .\.venv\Scripts\python.exe -m ai_service.cli probe-data `
-  --config configs\diagnostics\r3\deep-control.toml `
+  --config configs\diagnostics\r3-v5\deep-control.toml `
   --snapshot-id benchmark-v5-s42-7f40639b0d-1ace202aaa --device cpu
 ```
 
@@ -74,11 +74,12 @@ publisher rejects an existing destination; bootstrap is a one-time operation:
 
 ```powershell
 .\.venv\Scripts\python.exe -m ai_service.cli snapshot --source postgres --store-id 1 `
-  --snapshot-id <new-v5-snapshot-id> --benchmark-run-id <published-v5-benchmark-run-id>
+  --snapshot-id <new-v5-snapshot-id> --benchmark-run-id <published-v5-benchmark-run-id> `
+  --config configs\diagnostics\r3-v5\deep-control.toml
 .\.venv\Scripts\python.exe -m ai_service.cli features --embedding-source real `
   --snapshot-id <new-v5-snapshot-id>
 .\.venv\Scripts\python.exe -m ai_service.cli rules `
-  --config configs\diagnostics\r3\deep-control.toml --snapshot-id <new-v5-snapshot-id>
+  --config configs\diagnostics\r3-v5\deep-control.toml --snapshot-id <new-v5-snapshot-id>
 ```
 
 ### Historical v3/v4 campaigns (audit-only)
@@ -123,8 +124,11 @@ Every stage is fail-closed. A snapshot, SBERT, training, evaluation, parity, or 
 cannot silently switch adapters or publish a serving bundle.
 
 The locked ablation definitions and their execution order are documented in
-`configs/ablations/README.md`. Always use the pinned `audit-data` and `probe-data`
-commands shown above; never omit `--snapshot-id` before a training run.
+`configs/ablations/README.md` and the authoritative
+`master/detail-plan-r3-r4.md`. Always use the pinned `audit-data` and
+`probe-data` commands shown above; never omit `--snapshot-id` before a training
+run. The active diagnostic configs are exclusively under
+`configs/diagnostics/r3-v5/`.
 
 ## Serving
 

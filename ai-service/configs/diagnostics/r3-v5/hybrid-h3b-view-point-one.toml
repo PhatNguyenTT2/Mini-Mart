@@ -2,8 +2,10 @@
 rule_feature_schema_version = "3.0.0"
 minimum_non_trap_directed_rules = 5000
 minimum_distinct_organic_rule_items = 3000
+minimum_val_context_rule_coverage = 0.60
 minimum_training_target_rule_rate = 0.40
 minimum_val_rule_target_rate = 0.40
+maximum_trap_anchored_rule_fraction = 0.10
 
 [model]
 use_item_id_residual = true
@@ -19,11 +21,16 @@ explicit_negative_ratio = 16
 use_history_profiles = true
 view_auxiliary_weight = 0.1
 rule_auxiliary_weight = 0.1
-rule_hard_negative_count = 0
+rule_hard_negative_count = 4
 diagnostic_warmup_epochs = 3
+diagnostic_minimum_gauc = 0.65
+diagnostic_minimum_hr_at_k = 0.10
+diagnostic_minimum_ndcg_at_k = 0.04
 
 [eval]
 k = 10
+bootstrap_samples = 2000
+random_seeds = 10
 minimum_gauc = 0.75
 minimum_hr_at_k = 0.15
 minimum_ndcg_at_k = 0.08

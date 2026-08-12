@@ -12,12 +12,15 @@ from ai_service.config import MODEL_SCHEMA_VERSION, Settings, load_resolved_sett
 from ai_service.contracts import (
     EVALUATION_SCHEMA_VERSION,
     AggregateReleaseReport,
+    ArtifactLineage,
+    ArtifactLineageV5,
     CheckpointManifest,
     MetricGateResult,
     PipelineState,
     RunStatus,
     SplitName,
     TrainingVariant,
+    artifact_lineage_model,
 )
 from ai_service.errors import ArtifactIntegrityError, DataIntegrityError
 from ai_service.evaluation.metrics import paired_bootstrap_delta
@@ -36,7 +39,7 @@ class FinalistRunRecord:
     checkpoint_manifest: CheckpointManifest
     seed: int
     variant: TrainingVariant
-    lineage: dict[str, str]
+    lineage: ArtifactLineage | ArtifactLineageV5
     git_commit: str
 
 
@@ -84,8 +87,8 @@ def _load_finalist_run(run_dir: Path, expected_variant: TrainingVariant) -> Fina
         raise ArtifactIntegrityError("finalist checkpoint manifest cannot be read") from error
     if checkpoint_manifest.checkpoint_kind != "best" or checkpoint_manifest.run_id != run_dir.name:
         raise ArtifactIntegrityError("finalist checkpoint manifest identity mismatch")
-    lineage = lifecycle.document["lineage"]
-    if checkpoint_manifest.parent_sha256 != lineage:
+    lineage = artifact_lineage_model(lifecycle.document["lineage"])
+    if checkpoint_manifest.parent_sha256 != lineage.as_mapping():
         raise ArtifactIntegrityError("finalist checkpoint lineage mismatch")
     if checkpoint_manifest.model_schema_version != MODEL_SCHEMA_VERSION:
         raise ArtifactIntegrityError("finalist checkpoint schema mismatch")
@@ -111,7 +114,7 @@ def _load_finalist_run(run_dir: Path, expected_variant: TrainingVariant) -> Fina
         checkpoint_manifest=checkpoint_manifest,
         seed=settings.train.seed,
         variant=expected_variant,
-        lineage=dict(lineage),
+        lineage=lineage,
         git_commit=lifecycle.document["git_commit"],
     )
 

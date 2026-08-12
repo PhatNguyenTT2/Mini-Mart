@@ -2,7 +2,7 @@
 
 ## Current status
 
-`R0_R2_CONTRACT_COMPLETE / R3_SOURCE_PENDING / PRODUCTION_TRAINING_BLOCKED`.
+`R0_R2_CONTRACT_COMPLETE / R3_R4_CONTRACT_REPAIR_IN_PROGRESS / PRODUCTION_TRAINING_BLOCKED`.
 
 R0 root-cause replay and the first R2 receipt are historical evidence. The
 deterministic v5 contract has since changed (exact 2,500-user transition cohort
@@ -20,10 +20,14 @@ directories atomically, locks resume to the recorded commit, and terminalizes
 transition/setup failures. The production seed runs do not yet exist and Hybrid
 victory is not established.
 
-The current source changes are under validation; Standards and Spec must pass
-again after closing the
-archived-runbook conflict, R3 NPZ integrity binding, full rule-selector
-thresholds, epoch reset, and immutable affinity contracts.
+The current R3-C0 source repair is implemented and remains under final
+validation. It includes selection-artifact materialization, comparison-signature
+separation, six-field v5 lineage, organic-only rule-hard sampling, serving-
+equivalent semantic replay from enriched snapshot cohort rows, post-warmup
+checkpoint eligibility, and immutable diagnostic-stop publication. The latest
+source suite is 431 passed with 2 fixed-runner skips; branch coverage is
+85.01% and all six critical-file thresholds pass. R3/R4 GPU diagnostics have
+not started and Hybrid victory is not established.
 
 ## R0–R2 execution receipt (2026-08-12, v5)
 

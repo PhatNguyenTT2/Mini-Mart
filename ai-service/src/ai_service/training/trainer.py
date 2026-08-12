@@ -24,12 +24,16 @@ from torch.optim.lr_scheduler import LambdaLR
 
 from ai_service.config import MODEL_SCHEMA_VERSION, Settings
 from ai_service.contracts import (
+    ArtifactLineage,
+    ArtifactLineageInput,
+    ArtifactLineageV5,
     CheckpointAction,
     EvaluationReport,
     ModelVariant,
     SplitName,
     TerminalAction,
     TrainingVariant,
+    normalize_artifact_lineage,
 )
 from ai_service.data.dataset import PurchaseBatch, TrainingBatch
 from ai_service.data.rule_readiness import RuleCoverageAccumulator
@@ -388,7 +392,7 @@ class Trainer:
         resume_from: Path,
         *,
         best_path: Path,
-        lineage: dict[str, str],
+        lineage: ArtifactLineageInput,
         config_sha: str,
         stopping: EarlyStoppingController,
         scaler: Any,
@@ -612,7 +616,14 @@ class Trainer:
                             else None
                         ),
                         rule_negative_mask=(
-                            explicit_rule_present
+                            (
+                                explicit_rule_present
+                                & (
+                                    batch.rule_hard_mask.to(self.device).bool()
+                                    if batch.rule_hard_mask is not None
+                                    else torch.zeros_like(explicit_rule_present, dtype=torch.bool)
+                                )
+                            )
                             if self.training_variant is TrainingVariant.HYBRID
                             else None
                         ),
@@ -641,12 +652,13 @@ class Trainer:
                         )
                         view_users_np = view_pairs[selected_views, 0]
                         view_items_np = view_pairs[selected_views, 1]
-                        view_negatives_np = train_loader.sampler.sample(
+                        view_negative_batch = train_loader.sampler.sample(
                             view_users_np,
                             view_items_np,
                             epoch=epoch,
                             batch_index=global_step + 1_000_000,
                         )
+                        view_negatives_np = view_negative_batch.item_ids
                         view_users = torch.from_numpy(view_users_np).to(self.device)
                         view_items = torch.from_numpy(view_items_np).to(self.device)
                         view_negatives = torch.from_numpy(view_negatives_np).to(self.device)
@@ -1070,10 +1082,23 @@ class Trainer:
         epoch: int,
         validation: _ValidationEpochPass,
     ) -> tuple[bool, str]:
+        if self.settings.train.campaign_stage != "diagnostic":
+            return True, "legacy training contract"
+        if (
+            self.settings.train.campaign_stage == "diagnostic"
+            and epoch < self.settings.train.diagnostic_warmup_epochs
+        ):
+            return False, "diagnostic warmup"
         if self.training_variant is TrainingVariant.DEEP_ONLY:
-            return True, "deep-only control"
-        if epoch < self.settings.train.diagnostic_warmup_epochs:
-            return True, "diagnostic warmup"
+            deep = validation.deep_report
+            deep_reasons: list[str] = []
+            if float(deep.gauc) < self.settings.train.diagnostic_minimum_gauc:
+                deep_reasons.append("Deep diagnostic GAUC floor")
+            if float(deep.hr_at_k) < self.settings.train.diagnostic_minimum_hr_at_k:
+                deep_reasons.append("Deep diagnostic HR floor")
+            if float(deep.ndcg_at_k) < self.settings.train.diagnostic_minimum_ndcg_at_k:
+                deep_reasons.append("Deep diagnostic NDCG floor")
+            return not deep_reasons, ", ".join(deep_reasons) or "Deep diagnostic floors"
         ratio = validation.wide_logit_rms / max(validation.deep_logit_rms, np.finfo(float).eps)
         hybrid = validation.hybrid_report
         deep = validation.deep_report
@@ -1229,9 +1254,25 @@ class Trainer:
     ) -> TrainResult:
         if val_evaluator is None:
             raise ModelTrainingError("validation evaluator is mandatory")
-        required_lineage = {"snapshot", "embedding", "rules"}
-        if set(lineage) != required_lineage:
-            raise ModelTrainingError("training lineage must contain snapshot, embedding, and rules")
+        try:
+            lineage_mapping = normalize_artifact_lineage(lineage)
+        except ValueError as error:
+            raise ModelTrainingError("training lineage is invalid") from error
+        required_lineage = (
+            {
+                "snapshot",
+                "embedding",
+                "rules",
+                "benchmark_spec",
+                "semantic_cohort",
+                "order_metadata",
+            }
+            if self.settings.data.rule_feature_schema_version == "3.0.0"
+            else {"snapshot", "embedding", "rules"}
+        )
+        if set(lineage_mapping) != required_lineage:
+            raise ModelTrainingError("training lineage does not match the resolved artifact schema")
+        lineage = lineage_mapping
         if embeddings is None or embeddings.shape != (
             snapshot.manifest.num_items,
             self.settings.model.sbert_dim,
@@ -1296,6 +1337,29 @@ class Trainer:
         terminal_action = TerminalAction.COMPLETED
         stop_reason = "maximum epochs completed"
         try:
+            diagnostic_lineage: ArtifactLineage | ArtifactLineageV5
+            if set(lineage) == {
+                "snapshot",
+                "embedding",
+                "rules",
+                "benchmark_spec",
+                "semantic_cohort",
+                "order_metadata",
+            }:
+                diagnostic_lineage = ArtifactLineageV5(
+                    snapshot=lineage["snapshot"],
+                    embedding=lineage["embedding"],
+                    rules=lineage["rules"],
+                    benchmark_spec=lineage["benchmark_spec"],
+                    semantic_cohort=lineage["semantic_cohort"],
+                    order_metadata=lineage["order_metadata"],
+                )
+            else:
+                diagnostic_lineage = ArtifactLineage(
+                    snapshot_sha256=lineage["snapshot"],
+                    embedding_sha256=lineage["embedding"],
+                    rule_sha256=lineage["rules"],
+                )
             for epoch in range(start_epoch, self.settings.train.max_epochs + 1):
                 training = self._train_epoch(
                     epoch=epoch,
@@ -1341,6 +1405,8 @@ class Trainer:
                                 "hr_at_k": self.settings.train.diagnostic_minimum_hr_at_k,
                                 "ndcg_at_k": self.settings.train.diagnostic_minimum_ndcg_at_k,
                             },
+                            lineage=diagnostic_lineage,
+                            comparison_signature_sha256=self.settings.comparison_signature_sha256(),
                         ),
                     )
                     raise DiagnosticQualityError(reason)

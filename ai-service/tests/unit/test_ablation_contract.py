@@ -59,6 +59,9 @@ def test_ablation_selects_best_clear_improvement_and_publishes_immutably(
         random_per_user_ndcg=np.full(32, 0.02, dtype=np.float64),
         bootstrap_samples=64,
         minimum_control_gauc=0.55,
+        gauc_guardrail_delta=-0.002,
+        hr_guardrail_delta=-0.001,
+        ndcg_guardrail_delta=-0.001,
     )
     assert report.diagnostic_pause is False
     assert report.selected_run_id == "diag-no-user"
@@ -99,6 +102,9 @@ def test_ablation_artifact_rejects_corrupt_or_malformed_metrics(tmp_path: Path) 
         random_per_user_ndcg=np.full(32, 0.02, dtype=np.float64),
         bootstrap_samples=64,
         minimum_control_gauc=0.55,
+        gauc_guardrail_delta=-0.002,
+        hr_guardrail_delta=-0.001,
+        ndcg_guardrail_delta=-0.001,
     )
     with pytest.raises(ArtifactIntegrityError, match="unexpected keys"):
         publish_deep_ablation_artifact(
@@ -138,6 +144,9 @@ def test_ablation_artifact_rejects_metric_dtype_and_user_order(tmp_path: Path) -
         random_per_user_ndcg=np.full(32, 0.02, dtype=np.float64),
         bootstrap_samples=64,
         minimum_control_gauc=0.55,
+        gauc_guardrail_delta=-0.002,
+        hr_guardrail_delta=-0.001,
+        ndcg_guardrail_delta=-0.001,
     )
     wrong_dtype = dict(metrics)
     wrong_dtype["control_gauc"] = wrong_dtype["control_gauc"].astype(np.float32)
@@ -189,6 +198,9 @@ def test_ablation_diagnostic_pause_paths(
         random_per_user_ndcg=np.full(32, 0.02, dtype=np.float64),
         bootstrap_samples=64,
         minimum_control_gauc=0.55,
+        gauc_guardrail_delta=-0.002,
+        hr_guardrail_delta=-0.001,
+        ndcg_guardrail_delta=-0.001,
     )
     assert report.diagnostic_pause is True
     assert report.selected_run_id is None
@@ -209,6 +221,9 @@ def test_ablation_rejects_gauc_only_candidate_with_topk_regression() -> None:
         random_per_user_ndcg=np.full(32, 0.02, dtype=np.float64),
         bootstrap_samples=64,
         minimum_control_gauc=0.55,
+        gauc_guardrail_delta=-0.002,
+        hr_guardrail_delta=-0.001,
+        ndcg_guardrail_delta=-0.001,
     )
     rejected = next(candidate for candidate in report.candidates if candidate.run_id == "diag-a")
     assert rejected.eligible is False
@@ -230,6 +245,9 @@ def test_selected_pair_and_hybrid_wide_signal_are_required(tmp_path: Path) -> No
         random_per_user_ndcg=np.full(32, 0.02, dtype=np.float64),
         bootstrap_samples=64,
         minimum_control_gauc=0.55,
+        gauc_guardrail_delta=-0.002,
+        hr_guardrail_delta=-0.001,
+        ndcg_guardrail_delta=-0.001,
     )
     artifact = publish_deep_ablation_artifact(
         tmp_path,

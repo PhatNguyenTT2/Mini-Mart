@@ -27,12 +27,14 @@ from ai_service.config import (
 from ai_service.contracts import (
     RULE_COVERAGE_SEMANTICS_VERSION,
     AggregateReleaseReport,
+    ArtifactLineageV5,
     CheckpointManifest,
     DataSourceKind,
     EmbeddingSource,
     PipelineState,
     RuleManifest,
     RunStatus,
+    SnapshotManifest,
     SplitName,
     TerminalAction,
     TrainingVariant,
@@ -442,6 +444,25 @@ def _train(
         "embedding": embedding.manifest.content_sha256,
         "rules": rules.manifest.content_sha256,
     }
+    if settings.data.rule_feature_schema_version == "3.0.0":
+        metadata = {
+            "benchmark_spec": getattr(snapshot.manifest, "benchmark_spec_sha256", None),
+            "semantic_cohort": getattr(snapshot.manifest, "semantic_cohort_sha256", None),
+            "order_metadata": getattr(snapshot.manifest, "order_metadata_sha256", None),
+        }
+        if all(isinstance(value, str) for value in metadata.values()):
+            lineage = ArtifactLineageV5(
+                snapshot=lineage["snapshot"],
+                embedding=lineage["embedding"],
+                rules=lineage["rules"],
+                benchmark_spec=cast(str, metadata["benchmark_spec"]),
+                semantic_cohort=cast(str, metadata["semantic_cohort"]),
+                order_metadata=cast(str, metadata["order_metadata"]),
+            ).as_mapping()
+        elif type(snapshot.manifest).__name__ == SnapshotManifest.__name__:
+            raise ArtifactIntegrityError("v5 R3 snapshot is missing expanded lineage hashes")
+        elif not all(value is None for value in metadata.values()):
+            raise ArtifactIntegrityError("v5 R3 snapshot is missing expanded lineage hashes")
     rule_store = _require_rule_training_capability(rules, settings)
     if (
         rules.manifest.feature_schema_version != settings.data.rule_feature_schema_version
@@ -481,6 +502,7 @@ def _train(
             embedding.vectors,
             ratio=settings.train.explicit_negative_ratio,
             seed=settings.train.seed,
+            rule_store=rule_store,
             rule_hard_negative_count=(
                 settings.train.rule_hard_negative_count
                 if settings.train.training_variant is TrainingVariant.HYBRID
@@ -897,17 +919,60 @@ def _evaluate_pair(
         raise ArtifactIntegrityError("paired evaluation requires matching comparison signatures")
     if hybrid.lifecycle.document.get("git_commit") != deep.lifecycle.document.get("git_commit"):
         raise ArtifactIntegrityError("paired evaluation requires matching source revisions")
-    lineage = {
+    lineage: dict[str, str] = {
         "snapshot": hybrid.snapshot.manifest.content_sha256,
         "embedding": hybrid.embedding.manifest.content_sha256,
         "rules": hybrid.rules.manifest.content_sha256,
     }
-    if lineage != {
+    if hybrid.settings.data.rule_feature_schema_version == "3.0.0":
+        metadata = {
+            "benchmark_spec": getattr(hybrid.snapshot.manifest, "benchmark_spec_sha256", None),
+            "semantic_cohort": getattr(hybrid.snapshot.manifest, "semantic_cohort_sha256", None),
+            "order_metadata": getattr(hybrid.snapshot.manifest, "order_metadata_sha256", None),
+        }
+        if not all(isinstance(value, str) for value in metadata.values()) and (
+            type(hybrid.snapshot.manifest).__name__ == SnapshotManifest.__name__
+            or any(value is not None for value in metadata.values())
+        ):
+            raise ArtifactIntegrityError("paired evaluation requires expanded v5 lineage")
+        if all(isinstance(value, str) for value in metadata.values()):
+            lineage = ArtifactLineageV5(
+                snapshot=lineage["snapshot"],
+                embedding=lineage["embedding"],
+                rules=lineage["rules"],
+                benchmark_spec=cast(str, metadata["benchmark_spec"]),
+                semantic_cohort=cast(str, metadata["semantic_cohort"]),
+                order_metadata=cast(str, metadata["order_metadata"]),
+            ).as_mapping()
+    deep_base_lineage = {
         "snapshot": deep.snapshot.manifest.content_sha256,
         "embedding": deep.embedding.manifest.content_sha256,
         "rules": deep.rules.manifest.content_sha256,
-    }:
+    }
+    if any(lineage[name] != value for name, value in deep_base_lineage.items()):
         raise ArtifactIntegrityError("paired evaluation requires matching artifact lineage")
+    if hybrid.settings.data.rule_feature_schema_version == "3.0.0":
+        deep_metadata = {
+            "benchmark_spec": getattr(deep.snapshot.manifest, "benchmark_spec_sha256", None),
+            "semantic_cohort": getattr(deep.snapshot.manifest, "semantic_cohort_sha256", None),
+            "order_metadata": getattr(deep.snapshot.manifest, "order_metadata_sha256", None),
+        }
+        if not all(isinstance(value, str) for value in deep_metadata.values()) and (
+            type(deep.snapshot.manifest).__name__ == SnapshotManifest.__name__
+            or any(value is not None for value in deep_metadata.values())
+        ):
+            raise ArtifactIntegrityError("paired evaluation requires expanded v5 lineage")
+        if all(isinstance(value, str) for value in deep_metadata.values()):
+            deep_lineage = ArtifactLineageV5(
+                snapshot=deep.snapshot.manifest.content_sha256,
+                embedding=deep.embedding.manifest.content_sha256,
+                rules=deep.rules.manifest.content_sha256,
+                benchmark_spec=cast(str, deep_metadata["benchmark_spec"]),
+                semantic_cohort=cast(str, deep_metadata["semantic_cohort"]),
+                order_metadata=cast(str, deep_metadata["order_metadata"]),
+            ).as_mapping()
+            if lineage != deep_lineage:
+                raise ArtifactIntegrityError("paired evaluation requires matching artifact lineage")
     if hybrid.settings.data.rule_feature_schema_version == "3.0.0":
         campaign_stage = hybrid.settings.train.campaign_stage
         if campaign_stage not in {"diagnostic", "production"}:

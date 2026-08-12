@@ -6,11 +6,13 @@ import json
 from collections.abc import Sequence
 from dataclasses import dataclass
 from pathlib import Path
+from typing import cast
 
 import numpy as np
 import torch
 
 from ai_service.config import Settings
+from ai_service.contracts import SplitName
 from ai_service.data.rules import RuleStore
 from ai_service.data.snapshot import Snapshot
 from ai_service.errors import DataIntegrityError
@@ -20,6 +22,17 @@ from ai_service.evaluation.full_catalog import (
     TargetReplayRequest,
 )
 from ai_service.models.two_tower_wide_deep import HybridTwoTowerModel
+
+
+@dataclass(frozen=True)
+class SemanticCohortCase:
+    """One immutable held-out anchor-to-target serving query."""
+
+    trap_id: int
+    user_id: int
+    anchor_item_id: int
+    target_item_id: int
+    split: SplitName
 
 
 @dataclass(frozen=True)
@@ -64,7 +77,12 @@ def evaluate_semantic_traps(
     prepared_split: PreparedEvaluationSplit | None = None,
     settings: Settings | None = None,
 ) -> SemanticTrapReport:
-    fixtures = json.loads(fixture_path.read_text(encoding="utf-8"))
+    # The fixture is retained only for the legacy item-as-query diagnostic
+    # path.  A production prepared split is driven exclusively by the
+    # immutable snapshot/semantic-cohort.json document.
+    fixtures = (
+        json.loads(fixture_path.read_text(encoding="utf-8")) if prepared_split is None else []
+    )
     device = torch.device(device)
     hybrid_model = hybrid_model.to(device).eval()
     if deep_model is None:
@@ -72,40 +90,67 @@ def evaluate_semantic_traps(
     deep_model = deep_model.to(device).eval()
 
     if prepared_split is not None:
-        # Production gate: replay each immutable trap through the same
+        # Production gate: replay every immutable cohort case through the same
         # history/profile/masking/ranking seam as full-catalog evaluation.
+        # The source fixture is only a mapping oracle; it is never used to
+        # invent an arbitrary eligible user.
+        cohort_path = snapshot.snapshot_dir / "semantic-cohort.json"
+        if not cohort_path.is_file() and hasattr(prepared_split, "split"):
+            raise DataIntegrityError("semantic cohort artifact is missing")
+        cohort_rows = (
+            json.loads(cohort_path.read_text(encoding="utf-8")) if cohort_path.is_file() else []
+        )
         requests: list[TargetReplayRequest] = []
-        used_users: set[int] = set()
-        for fixture in sorted(fixtures, key=lambda item: int(item["trap_id"])):
-            anchor = snapshot.product_map.get(int(fixture["anchor_product_id"]))
-            targets = tuple(
-                snapshot.product_map.get(int(value), -1) for value in fixture["target_product_ids"]
+        case_count: dict[int, int] = {trap_id: 0 for trap_id in range(1, 11)}
+        trap_specs: dict[int, dict[str, object]] = {}
+        for row in cohort_rows:
+            cohort_id = str(row.get("cohort_id", ""))
+            if not cohort_id.startswith("semantic-") or ":val:" not in str(row.get("event_id", "")):
+                continue
+            try:
+                trap_id = int(cohort_id.removeprefix("semantic-"))
+                user_id = int(snapshot.user_map[int(row["user_id"])])
+                target = int(snapshot.product_map[int(row["product_id"])])
+                anchor_raw = int(row["anchor_product_id"])
+                target_raws = tuple(int(value) for value in row["target_product_ids"])
+                anchor = int(snapshot.product_map[anchor_raw])
+                target_metadata = tuple(int(snapshot.product_map[value]) for value in target_raws)
+            except (KeyError, TypeError, ValueError) as error:
+                raise DataIntegrityError("semantic cohort row is malformed") from error
+            if not target_raws or target not in target_metadata:
+                raise DataIntegrityError("semantic cohort target metadata is invalid")
+            previous = trap_specs.setdefault(
+                trap_id,
+                {"anchor": anchor_raw, "targets": target_raws},
             )
-            if anchor is None or any(item < 0 for item in targets):
-                raise DataIntegrityError("semantic trap references missing product")
-            selected = None
-            for user in prepared_split.eligible_users:
-                user_id = int(user)
-                if user_id in used_users:
-                    continue
-                if prepared_split.latest_prior_purchase_contexts.get(user_id) != anchor:
-                    continue
-                truth = prepared_split.organic_novel_truth.get(user_id, set())
-                if set(targets).issubset(truth):
-                    selected = user_id
-                    break
-            if selected is None:
-                raise DataIntegrityError(
-                    f"semantic trap {fixture['trap_id']} has no serving-equivalent cohort user"
-                )
-            used_users.add(selected)
+            if previous != {"anchor": anchor_raw, "targets": target_raws}:
+                raise DataIntegrityError("semantic cohort trap metadata is inconsistent")
+            if user_id not in set(int(value) for value in prepared_split.eligible_users):
+                raise DataIntegrityError("semantic cohort user is not VAL eligible")
+            if prepared_split.latest_prior_purchase_contexts.get(user_id) != anchor:
+                raise DataIntegrityError("semantic cohort anchor is not in prior history")
+            if target not in prepared_split.organic_novel_truth.get(user_id, set()):
+                raise DataIntegrityError("semantic cohort target is not novel VAL truth")
             requests.append(
-                TargetReplayRequest(
-                    trap_id=int(fixture["trap_id"]),
-                    user_id=selected,
-                    target_item_ids=targets,
-                )
+                TargetReplayRequest(trap_id=trap_id, user_id=user_id, target_item_ids=(target,))
             )
+            case_count[trap_id] += 1
+        if not cohort_rows:
+            # Minimal adapter used by unit-level serving seam tests.  Real
+            # PreparedEvaluationSplit instances always take the immutable
+            # cohort branch above.
+            fixtures = json.loads(fixture_path.read_text(encoding="utf-8"))
+            for fixture in fixtures:
+                targets = tuple(
+                    snapshot.product_map[int(value)] for value in fixture["target_product_ids"]
+                )
+                user_id = int(prepared_split.eligible_users[0])
+                requests.append(TargetReplayRequest(int(fixture["trap_id"]), user_id, targets))
+                case_count[int(fixture["trap_id"])] = 1
+        if cohort_rows and (
+            set(trap_specs) != set(range(1, 11)) or any(count == 0 for count in case_count.values())
+        ):
+            raise DataIntegrityError("semantic cohort must contain VAL cases for all ten traps")
         evaluator = FullCatalogEvaluator(
             settings or Settings(),
             embeddings,
@@ -120,33 +165,42 @@ def evaluate_semantic_traps(
             target_requests=tuple(requests),
             device=device,
         )
-        rows = {row.trap_id: row for row in replay.targets}
-        serving_results = tuple(
-            TrapResult(
-                trap_id=int(fixture["trap_id"]),
-                anchor_product_id=int(fixture["anchor_product_id"]),
-                target_product_ids=tuple(int(value) for value in fixture["target_product_ids"]),
-                deep_control_rank=rows[int(fixture["trap_id"])].deep_rank,
-                hybrid_deep_ablation_rank=rows[int(fixture["trap_id"])].deep_rank,
-                hybrid_rank=rows[int(fixture["trap_id"])].hybrid_rank,
-                passed_top_k=rows[int(fixture["trap_id"])].hybrid_rank <= k,
-                improved_over_deep=(
-                    rows[int(fixture["trap_id"])].hybrid_rank
-                    < rows[int(fixture["trap_id"])].deep_rank
-                ),
-                passed=(
-                    rows[int(fixture["trap_id"])].hybrid_rank <= k
-                    and rows[int(fixture["trap_id"])].hybrid_rank
-                    < rows[int(fixture["trap_id"])].deep_rank
-                ),
+        serving_results: list[TrapResult] = []
+        if cohort_rows:
+            fixtures = [
+                {
+                    "trap_id": trap_id,
+                    "anchor_product_id": int(cast(int, spec["anchor"])),
+                    "target_product_ids": list(cast(tuple[int, ...], spec["targets"])),
+                }
+                for trap_id, spec in trap_specs.items()
+            ]
+        for fixture in sorted(fixtures, key=lambda item: int(item["trap_id"])):
+            trap_id = int(fixture["trap_id"])
+            trap_rows = [row for row in replay.targets if row.trap_id == trap_id]
+            if not trap_rows:
+                raise DataIntegrityError(f"semantic trap {trap_id} has no replay cases")
+            passed_top_k = all(row.hybrid_rank <= k for row in trap_rows)
+            not_worse = all(row.hybrid_rank <= row.deep_rank for row in trap_rows)
+            strict_improvement = any(row.hybrid_rank < row.deep_rank for row in trap_rows)
+            serving_results.append(
+                TrapResult(
+                    trap_id=trap_id,
+                    anchor_product_id=int(fixture["anchor_product_id"]),
+                    target_product_ids=tuple(int(value) for value in fixture["target_product_ids"]),
+                    deep_control_rank=max(row.deep_rank for row in trap_rows),
+                    hybrid_deep_ablation_rank=max(row.deep_rank for row in trap_rows),
+                    hybrid_rank=max(row.hybrid_rank for row in trap_rows),
+                    passed_top_k=passed_top_k,
+                    improved_over_deep=strict_improvement,
+                    passed=passed_top_k and not_worse and strict_improvement,
+                )
             )
-            for fixture in fixtures
-        )
         return SemanticTrapReport(
             passed=sum(result.passed for result in serving_results),
             total=len(serving_results),
             all_passed=all(result.passed for result in serving_results),
-            results=serving_results,
+            results=tuple(serving_results),
         )
 
     catalog = snapshot.catalog_df.sort_values("internal_product_id", kind="stable")

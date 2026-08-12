@@ -222,7 +222,10 @@ def test_release_pair_and_validation_helpers_fail_closed(tmp_path: Path) -> None
     with pytest.raises(ArtifactIntegrityError, match="lineage differs"):
         _pair_finalists_by_seed(
             (
-                replace(h_records[0], lineage={**h_records[0].lineage, "rules": "f" * 64}),
+                replace(
+                    h_records[0],
+                    lineage=h_records[0].lineage.model_copy(update={"rule_sha256": "f" * 64}),
+                ),
                 *h_records[1:],
             ),
             d_records,

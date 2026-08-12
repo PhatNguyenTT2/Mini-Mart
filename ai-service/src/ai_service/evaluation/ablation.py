@@ -42,9 +42,43 @@ class R3FeatureSelection(BaseModel):
 
 
 class R3ArtifactLineage(BaseModel):
+    """Legacy report shape; v5 publishers use :class:`ArtifactLineageV5`."""
+
     snapshot_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
     embedding_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
     rule_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    benchmark_spec_sha256: str | None = Field(default=None, pattern=r"^[0-9a-f]{64}$")
+    semantic_cohort_sha256: str | None = Field(default=None, pattern=r"^[0-9a-f]{64}$")
+    order_metadata_sha256: str | None = Field(default=None, pattern=r"^[0-9a-f]{64}$")
+
+    @model_validator(mode="after")
+    def expanded_lineage_is_complete(self) -> R3ArtifactLineage:
+        values = (
+            self.benchmark_spec_sha256,
+            self.semantic_cohort_sha256,
+            self.order_metadata_sha256,
+        )
+        if any(value is not None for value in values) and not all(
+            value is not None for value in values
+        ):
+            raise ValueError("R3 lineage must contain all six artifact hashes")
+        return self
+
+    def as_mapping(self) -> dict[str, str]:
+        if self.benchmark_spec_sha256 is None:
+            return {
+                "snapshot": self.snapshot_sha256,
+                "embedding": self.embedding_sha256,
+                "rules": self.rule_sha256,
+            }
+        return {
+            "snapshot": self.snapshot_sha256,
+            "embedding": self.embedding_sha256,
+            "rules": self.rule_sha256,
+            "benchmark_spec": str(self.benchmark_spec_sha256),
+            "semantic_cohort": str(self.semantic_cohort_sha256),
+            "order_metadata": str(self.order_metadata_sha256),
+        }
 
 
 class SelectedR3Configuration(BaseModel):
@@ -187,9 +221,9 @@ def compare_deep_ablations(
     random_per_user_ndcg: np.ndarray,
     bootstrap_samples: int,
     minimum_control_gauc: float,
-    gauc_guardrail_delta: float = 0.0,
-    hr_guardrail_delta: float = 0.0,
-    ndcg_guardrail_delta: float = 0.0,
+    gauc_guardrail_delta: float,
+    hr_guardrail_delta: float,
+    ndcg_guardrail_delta: float,
     minimum_candidate_gauc: float = 0.55,
     selection_gauc_floor: float = 0.75,
     selection_hr_floor: float = 0.15,
@@ -263,8 +297,6 @@ def compare_deep_ablations(
             and noninferior
             and any_metric_better
         )
-        if catastrophic:
-            pause_reasons.append(f"{run_id} GAUC is below catastrophic threshold 0.50")
         arrays[f"{run_id}_gauc"] = candidate_gauc
         arrays[f"{run_id}_hr"] = candidate_hr
         arrays[f"{run_id}_ndcg"] = candidate_ndcg
@@ -291,6 +323,8 @@ def compare_deep_ablations(
         )
 
     eligible_records = [record for record in records if record.eligible]
+    if records and all(record.gauc < 0.50 for record in records):
+        pause_reasons.append("all candidates are below catastrophic threshold 0.50")
     if not eligible_records:
         pause_reasons.append("no ablation has positive paired GAUC CI versus control")
     diagnostic_pause = bool(pause_reasons)
@@ -364,6 +398,15 @@ def publish_deep_ablation_artifact(
             snapshot_sha256=str(lineage["snapshot"]),
             embedding_sha256=str(lineage["embedding"]),
             rule_sha256=str(lineage["rules"]),
+            benchmark_spec_sha256=(
+                str(lineage["benchmark_spec"]) if "benchmark_spec" in lineage else None
+            ),
+            semantic_cohort_sha256=(
+                str(lineage["semantic_cohort"]) if "semantic_cohort" in lineage else None
+            ),
+            order_metadata_sha256=(
+                str(lineage["order_metadata"]) if "order_metadata" in lineage else None
+            ),
         )
     except (KeyError, TypeError, ValueError) as error:
         raise ArtifactIntegrityError("R3 diagnostic lineage is invalid") from error
@@ -432,9 +475,20 @@ def run_deep_ablation_comparison(
         raise ArtifactIntegrityError("R3 Deep ablations require completed TRAINING lifecycles")
     if any(run.git_commit != control.git_commit for run in runs[1:]):
         raise ArtifactIntegrityError("R3 Deep ablations require one frozen source revision")
+    if control.settings.data.rule_feature_schema_version == "3.0.0":
+        required_lineage = {
+            "snapshot",
+            "embedding",
+            "rules",
+            "benchmark_spec",
+            "semantic_cohort",
+            "order_metadata",
+        }
+        if any(set(run.lineage) != required_lineage for run in runs):
+            raise ArtifactIntegrityError("R3 Deep ablations require complete v5 lineage")
     for run in runs[1:]:
         if run.lineage != control.lineage:
-            raise ArtifactIntegrityError("R3 Deep ablations require identical v4 lineage")
+            raise ArtifactIntegrityError("R3 Deep ablations require identical v5 lineage")
         if run.settings.eval.model_dump(mode="json") != control.settings.eval.model_dump(
             mode="json"
         ):
@@ -508,6 +562,12 @@ def run_deep_ablation_comparison(
         random_per_user_ndcg=np.asarray(random_ndcg, dtype=np.float64),
         bootstrap_samples=control.settings.eval.bootstrap_samples,
         minimum_control_gauc=control.settings.eval.deep_clear_random_gauc,
+        gauc_guardrail_delta=control.settings.eval.gauc_guardrail_delta,
+        hr_guardrail_delta=control.settings.eval.hr_guardrail_delta,
+        ndcg_guardrail_delta=control.settings.eval.ndcg_guardrail_delta,
+        selection_gauc_floor=control.settings.eval.minimum_gauc,
+        selection_hr_floor=control.settings.eval.minimum_hr_at_k,
+        selection_ndcg_floor=control.settings.eval.minimum_ndcg_at_k,
     )
     signature_document = {
         "run_ids": [run.run_id for run in runs],
@@ -570,6 +630,14 @@ def require_selected_r3_pair(
             "embedding": report.lineage.embedding_sha256,
             "rules": report.lineage.rule_sha256,
         }
+        if report.lineage.benchmark_spec_sha256 is not None:
+            expected_lineage.update(
+                {
+                    "benchmark_spec": report.lineage.benchmark_spec_sha256,
+                    "semantic_cohort": report.lineage.semantic_cohort_sha256 or "",
+                    "order_metadata": report.lineage.order_metadata_sha256 or "",
+                }
+            )
         if dict(lineage) != expected_lineage:
             raise ArtifactIntegrityError(
                 "R3 selection lineage does not match the current artifacts"

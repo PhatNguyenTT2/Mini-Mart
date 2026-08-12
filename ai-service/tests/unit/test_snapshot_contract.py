@@ -8,7 +8,7 @@ import pytest
 
 from ai_service.config import Settings
 from ai_service.contracts import DataSourceKind
-from ai_service.data.snapshot import SnapshotBuilder, load_snapshot
+from ai_service.data.snapshot import SnapshotBuilder, _semantic_cohort_document, load_snapshot
 from ai_service.data.sources import RawDataset
 from ai_service.errors import DataIntegrityError
 
@@ -77,6 +77,23 @@ def _settings(tmp_path: Path) -> Settings:
     settings.data.num_leaf_categories = 4
     settings.data.num_price_buckets = 2
     return settings
+
+
+def test_semantic_cohort_document_persists_prior_anchor_for_targets() -> None:
+    events = pd.DataFrame(
+        {
+            "event_id": ["run:val:semantic:anchor:0", "run:val:semantic:target:0"],
+            "user_id": [7, 7],
+            "product_id": [101, 102],
+            "event_ts": pd.date_range("2026-01-01", periods=2, tz="UTC"),
+            "cohort_id": ["semantic-1", "semantic-1"],
+            "event_origin": ["semantic_trap", "semantic_trap"],
+        }
+    )
+    document = _semantic_cohort_document(events)
+    assert document[0]["target_product_ids"] == []
+    assert document[1]["anchor_product_id"] == 101
+    assert document[1]["target_product_ids"] == [102]
 
 
 def test_snapshot_keeps_timestamp_groups_and_explicit_cold_partition(tmp_path: Path) -> None:

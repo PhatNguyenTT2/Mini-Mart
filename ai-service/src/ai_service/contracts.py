@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import math
+from collections.abc import Mapping
 from datetime import UTC, datetime
 from enum import StrEnum
 from typing import Literal
@@ -136,6 +137,127 @@ class ArtifactLineage(BaseModel):
             raise ValueError("expanded benchmark lineage must contain all metadata hashes")
         return self
 
+    def as_mapping(self) -> dict[str, str]:
+        mapping = {
+            "snapshot": self.snapshot_sha256,
+            "embedding": self.embedding_sha256,
+            "rules": self.rule_sha256,
+        }
+        if self.benchmark_spec_sha256 is not None:
+            mapping.update(
+                {
+                    "benchmark_spec": self.benchmark_spec_sha256,
+                    "semantic_cohort": str(self.semantic_cohort_sha256),
+                    "order_metadata": str(self.order_metadata_sha256),
+                }
+            )
+        return mapping
+
+
+class ArtifactLineageV5(BaseModel):
+    """Strict six-artifact lineage for the R3/R4 benchmark campaign."""
+
+    # The short names are the canonical serialized lineage keys.  Read-only
+    # SHA-suffixed properties below keep callers explicit without creating a
+    # second wire representation.
+    snapshot: str = Field(pattern=r"^[0-9a-f]{64}$")
+    embedding: str = Field(pattern=r"^[0-9a-f]{64}$")
+    rules: str = Field(pattern=r"^[0-9a-f]{64}$")
+    benchmark_spec: str = Field(pattern=r"^[0-9a-f]{64}$")
+    semantic_cohort: str = Field(pattern=r"^[0-9a-f]{64}$")
+    order_metadata: str = Field(pattern=r"^[0-9a-f]{64}$")
+
+    @property
+    def snapshot_sha256(self) -> str:
+        return self.snapshot
+
+    @property
+    def embedding_sha256(self) -> str:
+        return self.embedding
+
+    @property
+    def rule_sha256(self) -> str:
+        return self.rules
+
+    @property
+    def benchmark_spec_sha256(self) -> str:
+        return self.benchmark_spec
+
+    @property
+    def semantic_cohort_sha256(self) -> str:
+        return self.semantic_cohort
+
+    @property
+    def order_metadata_sha256(self) -> str:
+        return self.order_metadata
+
+    def as_mapping(self) -> dict[str, str]:
+        return {
+            "snapshot": self.snapshot,
+            "embedding": self.embedding,
+            "rules": self.rules,
+            "benchmark_spec": self.benchmark_spec,
+            "semantic_cohort": self.semantic_cohort,
+            "order_metadata": self.order_metadata,
+        }
+
+
+ArtifactLineageInput = ArtifactLineage | ArtifactLineageV5 | Mapping[str, str]
+
+
+def normalize_artifact_lineage(value: ArtifactLineageInput) -> dict[str, str]:
+    """Normalize a typed lineage at an artifact boundary.
+
+    The wire representation remains a canonical mapping because manifests and
+    checkpoint payloads are JSON documents. Callers may pass either strict
+    domain models or a mapping while legacy schema-2 audit fixtures are read;
+    all values and keys are validated before serialization.
+    """
+    if isinstance(value, (ArtifactLineage, ArtifactLineageV5)):
+        return value.as_mapping()
+    if not isinstance(value, Mapping):
+        raise ValueError("artifact lineage must be a typed lineage or mapping")
+    normalized = dict(value)
+    expected = {
+        "snapshot",
+        "embedding",
+        "rules",
+    }
+    expanded = expected | {"benchmark_spec", "semantic_cohort", "order_metadata"}
+    if set(normalized) not in (expected, expanded):
+        raise ValueError("artifact lineage keys are incomplete")
+    if any(
+        not isinstance(key, str) or not isinstance(item, str) or len(item) != 64
+        for key, item in normalized.items()
+    ):
+        raise ValueError("artifact lineage contains an invalid SHA")
+    if any(
+        any(character not in "0123456789abcdef" for character in item)
+        for item in normalized.values()
+    ):
+        raise ValueError("artifact lineage contains an invalid SHA")
+    return normalized
+
+
+def artifact_lineage_model(value: ArtifactLineageInput) -> ArtifactLineage | ArtifactLineageV5:
+    """Return the strict domain object for a verified lineage boundary."""
+
+    normalized = normalize_artifact_lineage(value)
+    if set(normalized) == {
+        "snapshot",
+        "embedding",
+        "rules",
+        "benchmark_spec",
+        "semantic_cohort",
+        "order_metadata",
+    }:
+        return ArtifactLineageV5(**normalized)
+    return ArtifactLineage(
+        snapshot_sha256=normalized["snapshot"],
+        embedding_sha256=normalized["embedding"],
+        rule_sha256=normalized["rules"],
+    )
+
 
 class RuleCoverageEvidence(BaseModel):
     total_directed_rules: int = Field(ge=0)
@@ -177,6 +299,62 @@ class CheckpointManifest(ArtifactManifest):
     checkpoint_kind: Literal["best", "last"]
     training_variant: TrainingVariant
     comparison_signature_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    benchmark_spec_sha256: str | None = Field(default=None, pattern=r"^[0-9a-f]{64}$")
+    semantic_cohort_sha256: str | None = Field(default=None, pattern=r"^[0-9a-f]{64}$")
+    order_metadata_sha256: str | None = Field(default=None, pattern=r"^[0-9a-f]{64}$")
+
+    @model_validator(mode="after")
+    def expanded_lineage_is_complete(self) -> CheckpointManifest:
+        values = (
+            self.benchmark_spec_sha256,
+            self.semantic_cohort_sha256,
+            self.order_metadata_sha256,
+        )
+        if any(value is not None for value in values) and not all(
+            value is not None for value in values
+        ):
+            raise ValueError("checkpoint expanded lineage must contain all metadata hashes")
+        parent_keys = set(self.parent_sha256)
+        if (
+            "benchmark_spec" in parent_keys
+            or "semantic_cohort" in parent_keys
+            or "order_metadata" in parent_keys
+        ):
+            if parent_keys != {
+                "snapshot",
+                "embedding",
+                "rules",
+                "benchmark_spec",
+                "semantic_cohort",
+                "order_metadata",
+            }:
+                raise ValueError("checkpoint v5 lineage must contain all six artifact hashes")
+            if {
+                "snapshot": self.snapshot_sha256,
+                "embedding": self.embedding_sha256,
+                "rules": self.rule_sha256,
+                "benchmark_spec": self.benchmark_spec_sha256,
+                "semantic_cohort": self.semantic_cohort_sha256,
+                "order_metadata": self.order_metadata_sha256,
+            } != self.parent_sha256:
+                raise ValueError("checkpoint manifest lineage fields do not match parent_sha256")
+        return self
+
+    def as_mapping(self) -> dict[str, str]:
+        mapping = {
+            "snapshot": self.snapshot_sha256,
+            "embedding": self.embedding_sha256,
+            "rules": self.rule_sha256,
+        }
+        if self.benchmark_spec_sha256 is not None:
+            mapping.update(
+                {
+                    "benchmark_spec": self.benchmark_spec_sha256,
+                    "semantic_cohort": str(self.semantic_cohort_sha256),
+                    "order_metadata": str(self.order_metadata_sha256),
+                }
+            )
+        return mapping
 
     @field_validator("best_val_gauc", "best_val_ndcg_at_k", "best_val_hr_at_k")
     @classmethod
@@ -466,6 +644,38 @@ class RuleAlignmentEvidence(BaseModel):
         return self
 
 
+class DatasetAlignmentEvidence(BaseModel):
+    """Immutable receipt for the target/useful-rule alignment preflight."""
+
+    training_target_count: int = Field(ge=0)
+    strict_target_rule_count: int = Field(ge=0)
+    strict_target_rule_rate: float = Field(ge=0.0, le=1.0)
+    val_eligible_user_count: int = Field(ge=0)
+    val_aligned_user_count: int = Field(ge=0)
+    val_aligned_user_rate: float = Field(ge=0.0, le=1.0)
+    negative_only_row_count: int = Field(ge=0)
+
+
+class RulePairIndexManifest(BaseModel):
+    """Receipt describing the organic/protected edge index used by sampling."""
+
+    schema_version: Literal["3.0.0"]
+    snapshot_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    organic_directed_edge_count: int = Field(ge=0)
+    protected_trap_edge_count: int = Field(ge=0)
+
+
+class CheckpointEligibility(BaseModel):
+    """Resolved post-warmup eligibility decision persisted in epoch evidence."""
+
+    epoch: int = Field(ge=1)
+    eligible: bool
+    reason: str
+    gauc: float = Field(ge=0.0, le=1.0)
+    hr_at_k: float = Field(ge=0.0, le=1.0)
+    ndcg_at_k: float = Field(ge=0.0, le=1.0)
+
+
 class CohortMetricDelta(BaseModel):
     cohort_name: Literal["aligned", "unaligned"]
     user_count: int = Field(ge=0)
@@ -544,10 +754,11 @@ class R3DiagnosticReport(BaseModel):
     hybrid_checkpoint_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
     deep_checkpoint_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
     git_commit: str = Field(pattern=r"^[0-9a-f]{40}$|^[0-9a-f]{64}$")
-    lineage: ArtifactLineage
+    lineage: ArtifactLineage | ArtifactLineageV5
     comparison_signature_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
     benchmark_spec_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
     semantic_cohort_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    order_metadata_sha256: str | None = Field(default=None, pattern=r"^[0-9a-f]{64}$")
     rule_alignment: RuleAlignmentEvidence
     cohort_deltas: tuple[CohortMetricDelta, CohortMetricDelta]
     trap_evidence: tuple[TrapDiagnosticEvidence, ...]
@@ -571,6 +782,17 @@ class R3DiagnosticReport(BaseModel):
         expected_alphas = (0.0, 0.25, 0.5, 1.0, 2.0, 4.0, 8.0)
         if tuple(item.alpha for item in self.alpha_sweep) != expected_alphas:
             raise ValueError("R3 diagnostic alpha sweep is not canonical")
+        lineage_spec = getattr(self.lineage, "benchmark_spec_sha256", None)
+        lineage_cohort = getattr(self.lineage, "semantic_cohort_sha256", None)
+        lineage_order = getattr(self.lineage, "order_metadata_sha256", None)
+        if isinstance(self.lineage, ArtifactLineageV5) and self.order_metadata_sha256 is None:
+            raise ValueError("v5 diagnostic reports require order metadata lineage")
+        if lineage_spec is not None and self.benchmark_spec_sha256 != lineage_spec:
+            raise ValueError("R3 diagnostic benchmark spec hash is not bound to lineage")
+        if lineage_cohort is not None and self.semantic_cohort_sha256 != lineage_cohort:
+            raise ValueError("R3 diagnostic cohort hash is not bound to lineage")
+        if lineage_order is not None and self.order_metadata_sha256 != lineage_order:
+            raise ValueError("R3 diagnostic order metadata hash is not bound to lineage")
         return self
 
 

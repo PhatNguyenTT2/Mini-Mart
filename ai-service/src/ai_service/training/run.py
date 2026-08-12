@@ -18,7 +18,12 @@ import torch
 
 from ai_service.artifact_io import atomic_write_json
 from ai_service.config import MODEL_SCHEMA_VERSION, Settings
-from ai_service.contracts import RunStatus, TrainingVariant
+from ai_service.contracts import (
+    ArtifactLineageInput,
+    RunStatus,
+    TrainingVariant,
+    normalize_artifact_lineage,
+)
 from ai_service.errors import ArtifactIntegrityError
 from ai_service.training.provenance import is_git_commit_sha
 
@@ -66,7 +71,10 @@ def _validate_document(document: object, run_id: str) -> dict[str, Any]:
     if document.get("run_id") != run_id:
         raise ArtifactIntegrityError("run manifest ID does not match its directory")
     lineage = document.get("lineage")
-    if not isinstance(lineage, dict) or set(lineage) != {"snapshot", "embedding", "rules"}:
+    if not isinstance(lineage, dict) or set(lineage) not in (
+        {"snapshot", "embedding", "rules"},
+        {"snapshot", "embedding", "rules", "benchmark_spec", "semantic_cohort", "order_metadata"},
+    ):
         raise ArtifactIntegrityError("run manifest lineage is incomplete")
     for name, value in lineage.items():
         if not isinstance(value, str) or re.fullmatch(r"[0-9a-f]{64}", value) is None:
@@ -92,16 +100,32 @@ class RunLifecycle:
         run_dir: Path,
         *,
         settings: Settings,
-        lineage: dict[str, str],
+        lineage: ArtifactLineageInput,
         git_commit: str,
     ) -> RunLifecycle:
+        try:
+            lineage_mapping = normalize_artifact_lineage(lineage)
+        except ValueError as error:
+            raise ArtifactIntegrityError(f"run lineage is invalid: {error}") from error
         if run_dir.exists():
             raise ArtifactIntegrityError(f"immutable run already exists: {run_dir}")
-        if set(lineage) != {"snapshot", "embedding", "rules"}:
-            raise ArtifactIntegrityError("run lineage must contain snapshot, embedding, and rules")
+        expected_keys = (
+            {
+                "snapshot",
+                "embedding",
+                "rules",
+                "benchmark_spec",
+                "semantic_cohort",
+                "order_metadata",
+            }
+            if settings.data.rule_feature_schema_version == "3.0.0"
+            else {"snapshot", "embedding", "rules"}
+        )
+        if set(lineage_mapping) != expected_keys:
+            raise ArtifactIntegrityError("run lineage does not match the resolved artifact schema")
         if any(
             not isinstance(value, str) or re.fullmatch(r"[0-9a-f]{64}", value) is None
-            for value in lineage.values()
+            for value in lineage_mapping.values()
         ):
             raise ArtifactIntegrityError("run lineage contains an invalid SHA")
         if not is_git_commit_sha(git_commit):
@@ -119,7 +143,7 @@ class RunLifecycle:
             "comparison_signature_sha256": settings.comparison_signature_sha256(),
             "training_variant": settings.train.training_variant.value,
             "experiment_signature_sha256": settings.experiment_signature_sha256(),
-            "lineage": dict(sorted(lineage.items())),
+            "lineage": dict(sorted(lineage_mapping.items())),
             "git_commit": git_commit,
             "hardware": {
                 "platform": platform.platform(),
