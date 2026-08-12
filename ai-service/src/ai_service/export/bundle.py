@@ -14,7 +14,13 @@ from typing import TYPE_CHECKING
 import numpy as np
 
 from ai_service.config import MODEL_SCHEMA_VERSION, Settings
-from ai_service.contracts import ModelBundleManifest, TrainingVariant
+from ai_service.contracts import (
+    ArtifactLineageInput,
+    ArtifactLineageV5,
+    ModelBundleManifest,
+    TrainingVariant,
+    artifact_lineage_model,
+)
 from ai_service.errors import ArtifactIntegrityError, ConfigurationError
 
 if TYPE_CHECKING:
@@ -79,6 +85,7 @@ class BundlePublisher:
         comparison_signature_sha256: str,
         parity: ParityReport,
         victory_matrix_sha256: str,
+        lineage: ArtifactLineageInput | None = None,
     ) -> BundleArtifact:
         if len(victory_matrix_sha256) != 64 or set(victory_matrix_sha256) == {"0"}:
             raise ArtifactIntegrityError(
@@ -97,6 +104,17 @@ class BundlePublisher:
             raise ArtifactIntegrityError("user profile cache has invalid shape or values")
         if np.any(profiles[0] != 0):
             raise ArtifactIntegrityError("unknown-user profile must be zero")
+        lineage_model: ArtifactLineageV5 | None = None
+        if lineage is not None:
+            try:
+                candidate_lineage = artifact_lineage_model(lineage)
+            except (KeyError, TypeError, ValueError) as error:
+                raise ArtifactIntegrityError("bundle lineage is invalid") from error
+            if not isinstance(candidate_lineage, ArtifactLineageV5):
+                raise ArtifactIntegrityError("v5 bundle requires expanded artifact lineage")
+            lineage_model = candidate_lineage
+        elif self.settings.data.rule_feature_schema_version == "3.0.0":
+            raise ArtifactIntegrityError("v5 bundle requires expanded artifact lineage")
         root = self.settings.data.artifact_root.resolve() / "bundles"
         root.mkdir(parents=True, exist_ok=True)
         destination = root / bundle_id
@@ -177,6 +195,7 @@ class BundlePublisher:
                 training_variant=TrainingVariant.HYBRID,
                 comparison_signature_sha256=comparison_signature_sha256,
                 victory_matrix_sha256=victory_matrix_sha256,
+                lineage=lineage_model,
             )
             (temporary / "manifest.json").write_text(
                 manifest.model_dump_json(indent=2), encoding="utf-8"
@@ -250,6 +269,13 @@ def verify_bundle(path: Path) -> BundleArtifact:
         for value in manifest.parent_sha256.values()
     ):
         raise ArtifactIntegrityError("bundle parent lineage contains an invalid SHA")
+    if manifest.lineage is not None:
+        if manifest.lineage.snapshot != manifest.parent_sha256["snapshot"]:
+            raise ArtifactIntegrityError("bundle expanded lineage snapshot mismatch")
+        if manifest.lineage.embedding != manifest.parent_sha256["embedding"]:
+            raise ArtifactIntegrityError("bundle expanded lineage embedding mismatch")
+        if manifest.lineage.rules != manifest.parent_sha256["rules"]:
+            raise ArtifactIntegrityError("bundle expanded lineage rules mismatch")
     try:
         training_signature = (
             (path / "training-signature.sha256").read_text(encoding="ascii").strip()
@@ -271,6 +297,8 @@ def verify_bundle(path: Path) -> BundleArtifact:
         raise ArtifactIntegrityError("bundle resolved configuration schema mismatch")
     if resolved_settings.train.training_variant is not TrainingVariant.HYBRID:
         raise ArtifactIntegrityError("bundle resolved configuration is not Hybrid")
+    if resolved_settings.data.rule_feature_schema_version == "3.0.0" and manifest.lineage is None:
+        raise ArtifactIntegrityError("v5 bundle manifest is missing expanded lineage")
     if resolved_settings.training_signature_sha256() != training_signature:
         raise ArtifactIntegrityError("bundle training signature does not match resolved config")
     if resolved_settings.comparison_signature_sha256() != manifest.comparison_signature_sha256:

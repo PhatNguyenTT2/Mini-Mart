@@ -279,6 +279,9 @@ def test_production_r3_selection_is_verified_before_training_preflight(
     settings.train.campaign_stage = "production"
     settings.train.r3_selection_artifact_sha256 = "d" * 64
     snapshot = make_snapshot(tmp_path)
+    snapshot.manifest.benchmark_spec_sha256 = "d" * 64
+    snapshot.manifest.semantic_cohort_sha256 = "e" * 64
+    snapshot.manifest.order_metadata_sha256 = "f" * 64
     embedding = EmbeddingArtifact(
         manifest=SimpleNamespace(content_sha256="b" * 64),
         artifact_dir=tmp_path / "features" / "embedding",

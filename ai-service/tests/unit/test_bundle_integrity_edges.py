@@ -44,6 +44,60 @@ def _build_bundle(tmp_path: Path) -> Path:
     return bundle.path
 
 
+def test_v5_bundle_binds_expanded_lineage_and_rejects_legacy_lineage(
+    tmp_path: Path,
+) -> None:
+    settings = make_settings(tmp_path)
+    settings.data.rule_feature_schema_version = "3.0.0"
+    snapshot = make_snapshot(tmp_path)
+    snapshot.manifest.benchmark_spec_sha256 = "d" * 64
+    snapshot.manifest.semantic_cohort_sha256 = "e" * 64
+    snapshot.manifest.order_metadata_sha256 = "f" * 64
+    ranker = tmp_path / "ranker-v5.onnx"
+    ranker.write_bytes(b"fixture-onnx")
+    common = {
+        "bundle_id": "bundle-v5-lineage",
+        "run_id": "hybrid-v5",
+        "snapshot": snapshot,
+        "rule_store": make_full_stat_rule_store(snapshot.manifest.num_items),
+        "ranker_path": ranker,
+        "item_vectors": np.zeros(
+            (snapshot.manifest.num_items, settings.model.item_emb_dim), dtype=np.float32
+        ),
+        "user_profile_vectors": np.zeros(
+            (snapshot.manifest.num_users + 1, settings.model.item_emb_dim), dtype=np.float32
+        ),
+        "embedding_sha256": "b" * 64,
+        "rule_sha256": "c" * 64,
+        "checkpoint_sha256": "d" * 64,
+        "comparison_signature_sha256": settings.comparison_signature_sha256(),
+        "parity": SimpleNamespace(
+            max_abs_error=0.0,
+            ranking_parity_users=4,
+            kernel_latency_ms={"p50": 0.1, "p95": 0.2},
+            hardware={"device": "cpu"},
+        ),
+        "victory_matrix_sha256": "e" * 64,
+    }
+    with pytest.raises(ArtifactIntegrityError, match="expanded artifact lineage"):
+        BundlePublisher(settings).publish(
+            **common, lineage={"snapshot": "a" * 64, "embedding": "b" * 64, "rules": "c" * 64}
+        )  # type: ignore[arg-type]
+    artifact = BundlePublisher(settings).publish(
+        **common,
+        lineage={
+            "snapshot": "a" * 64,
+            "embedding": "b" * 64,
+            "rules": "c" * 64,
+            "benchmark_spec": "d" * 64,
+            "semantic_cohort": "e" * 64,
+            "order_metadata": "f" * 64,
+        },
+    )
+    assert artifact.manifest.lineage is not None
+    assert artifact.manifest.lineage.order_metadata == "f" * 64
+
+
 def _publish_direct(
     tmp_path: Path,
     *,

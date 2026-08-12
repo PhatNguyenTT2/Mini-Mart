@@ -8,6 +8,7 @@ import pytest
 from ai_service.contracts import EvaluationReport, ModelVariant, SplitName
 from ai_service.errors import ArtifactIntegrityError, VictoryGateError
 from ai_service.evaluation.ablation import (
+    DeepAblationReport,
     compare_deep_ablations,
     load_deep_ablation_artifact,
     publish_deep_ablation_artifact,
@@ -17,6 +18,12 @@ from ai_service.evaluation.ablation import (
 from ai_service.evaluation.full_catalog import EvaluationResult
 
 _R3_LINEAGE = {"snapshot": "1" * 64, "embedding": "2" * 64, "rules": "3" * 64}
+_R3_V5_LINEAGE = {
+    **_R3_LINEAGE,
+    "benchmark_spec": "4" * 64,
+    "semantic_cohort": "5" * 64,
+    "order_metadata": "6" * 64,
+}
 
 
 def _result(gauc: float, ndcg: float = 0.2, hr: float = 0.3) -> EvaluationResult:
@@ -313,3 +320,86 @@ def test_selected_pair_and_hybrid_wide_signal_are_required(tmp_path: Path) -> No
             minimum_wide_deep_ratio=0.01,
             minimum_top_k_change_rate=0.05,
         )
+
+
+def test_v5_selection_binds_comparison_signature(tmp_path: Path) -> None:
+    report, metrics = compare_deep_ablations(
+        control_run_id="diag-control",
+        control=_result(0.60),
+        candidates={
+            "diag-selected": ("deep-no-price", _result(0.70)),
+            "diag-b": ("deep-no-user-id", _result(0.66)),
+            "diag-c": ("deep-no-price-no-user-id", _result(0.68)),
+        },
+        random_per_user_gauc=np.full(32, 0.50, dtype=np.float64),
+        random_per_user_hr=np.full(32, 0.05, dtype=np.float64),
+        random_per_user_ndcg=np.full(32, 0.02, dtype=np.float64),
+        bootstrap_samples=64,
+        minimum_control_gauc=0.55,
+        gauc_guardrail_delta=-0.002,
+        hr_guardrail_delta=-0.001,
+        ndcg_guardrail_delta=-0.001,
+    )
+    publish_deep_ablation_artifact(
+        tmp_path,
+        diagnostic_signature="7" * 64,
+        report=report,
+        metrics=metrics,
+        diagnostic_git_commit="a" * 40,
+        lineage=_R3_V5_LINEAGE,
+        comparison_signature_sha256="8" * 64,
+    )
+    selected = require_selected_r3_pair(
+        artifact_root=tmp_path,
+        selected_deep_run_id="diag-selected",
+        hybrid_flags=(True, False),
+        deep_flags=(True, False),
+        lineage=_R3_V5_LINEAGE,
+        expected_comparison_signature_sha256="8" * 64,
+    )
+    assert selected.selected_diagnostic_run_id == "diag-selected"
+    with pytest.raises(ArtifactIntegrityError, match="comparison signature"):
+        require_selected_r3_pair(
+            artifact_root=tmp_path,
+            selected_deep_run_id="diag-selected",
+            hybrid_flags=(True, False),
+            deep_flags=(True, False),
+            lineage=_R3_V5_LINEAGE,
+            expected_comparison_signature_sha256="9" * 64,
+        )
+
+
+def test_v5_ablation_report_rejects_missing_comparison_signature() -> None:
+    report, _ = compare_deep_ablations(
+        control_run_id="diag-control",
+        control=_result(0.60),
+        candidates={
+            "diag-selected": ("deep-no-price", _result(0.70)),
+            "diag-b": ("deep-no-user-id", _result(0.66)),
+            "diag-c": ("deep-no-price-no-user-id", _result(0.68)),
+        },
+        random_per_user_gauc=np.full(32, 0.50, dtype=np.float64),
+        random_per_user_hr=np.full(32, 0.05, dtype=np.float64),
+        random_per_user_ndcg=np.full(32, 0.02, dtype=np.float64),
+        bootstrap_samples=64,
+        minimum_control_gauc=0.55,
+        gauc_guardrail_delta=-0.002,
+        hr_guardrail_delta=-0.001,
+        ndcg_guardrail_delta=-0.001,
+    )
+    document = {
+        **report.model_dump(mode="json"),
+        "per_user_metrics_sha256": "1" * 64,
+        "artifact_sha256": "2" * 64,
+        "diagnostic_signature_sha256": "3" * 64,
+        "diagnostic_git_commit": "a" * 40,
+        "lineage": _R3_V5_LINEAGE,
+        "selected_config_name": "deep-no-price",
+        "selected_feature_selection": {
+            "use_user_id_embedding": True,
+            "use_price_features": False,
+        },
+        "comparison_signature_sha256": None,
+    }
+    with pytest.raises(ValueError, match="comparison signature"):
+        DeepAblationReport.model_validate(document)

@@ -12,7 +12,14 @@ import torch
 from ai_service import cli
 from ai_service.cli import build_parser
 from ai_service.config import MODEL_SCHEMA_VERSION, Settings
-from ai_service.contracts import AggregateReleaseReport, RunStatus, SplitName, TrainingVariant
+from ai_service.contracts import (
+    AggregateReleaseReport,
+    ArtifactLineage,
+    RunStatus,
+    SplitName,
+    TrainingVariant,
+)
+from ai_service.data.rule_readiness import TrainingRuleReadiness
 from ai_service.errors import ArtifactIntegrityError, ConfigurationError
 from ai_service.training import pipeline
 from ai_service.training.pipeline import PipelineState
@@ -38,6 +45,87 @@ def _arguments(command: str, **overrides: object) -> Namespace:
     }
     values.update(overrides)
     return Namespace(**values)
+
+
+def test_r3_preflight_reuses_read_only_training_seams(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    settings = Settings()
+    settings.data.artifact_root = tmp_path
+    snapshot = SimpleNamespace(
+        manifest=SimpleNamespace(artifact_id="snapshot-v5", content_sha256="a" * 64, num_items=4)
+    )
+    embedding = SimpleNamespace(
+        artifact_dir=tmp_path / "features" / "embedding",
+        vectors=np.zeros((4, settings.model.sbert_dim), dtype=np.float32),
+        manifest=SimpleNamespace(content_sha256="b" * 64),
+    )
+    rules = SimpleNamespace(
+        artifact_dir=tmp_path / "rules" / "rules-v5",
+        store=object(),
+        manifest=SimpleNamespace(content_sha256="c" * 64),
+        require_training_capability=lambda _settings: None,
+    )
+    readiness = TrainingRuleReadiness(
+        in_batch_rule_present_rate=0.5,
+        explicit_rule_present_rate=0.5,
+        rows_with_any_rule_rate=0.5,
+        examined_rows=4,
+        passed=True,
+        failure_reasons=(),
+        strict_target_rule_rate=0.5,
+    )
+    lineage = ArtifactLineage(
+        snapshot_sha256="a" * 64,
+        embedding_sha256="b" * 64,
+        rule_sha256="c" * 64,
+    )
+    monkeypatch.setattr(pipeline, "load_snapshot", lambda *_args: snapshot)
+    monkeypatch.setattr(pipeline, "_find_single_parent_artifact", lambda *_args, **_kw: tmp_path)
+    monkeypatch.setattr(pipeline, "load_embedding_artifact", lambda *_args: embedding)
+    monkeypatch.setattr(pipeline, "_find_training_rule_artifact", lambda *_args: tmp_path)
+    monkeypatch.setattr(pipeline, "load_rule_artifact", lambda *_args: rules)
+    monkeypatch.setattr(pipeline, "resolve_artifact_lineage", lambda *_args, **_kw: lineage)
+    monkeypatch.setattr(pipeline, "build_purchase_training_index", lambda *_args, **_kw: object())
+    monkeypatch.setattr(pipeline, "MixedNegativeSampler", lambda *_args, **_kw: object())
+    monkeypatch.setattr(pipeline, "PurchaseBatchIterator", lambda *_args, **_kw: object())
+    monkeypatch.setattr(pipeline, "assess_training_rule_readiness", lambda *_args, **_kw: readiness)
+    monkeypatch.setattr(
+        pipeline.DataQualityAuditor,
+        "audit",
+        lambda *_args, **_kw: SimpleNamespace(model_dump=lambda **_dump_kw: {"passed": True}),
+    )
+    monkeypatch.setattr(pipeline, "run_data_probes", lambda *_args, **_kw: {"parity": True})
+
+    result = pipeline._preflight_r3(settings, device=torch.device("cpu"))
+
+    assert result["snapshot_id"] == "snapshot-v5"
+    assert result["lineage"] == lineage.model_dump(mode="json")
+    assert result["rule_readiness"]["passed"] is True  # type: ignore[index]
+    assert result["probes"] == {"parity": True}
+    failed_readiness = readiness.model_copy(
+        update={"passed": False, "failure_reasons": ("strict target floor",)}
+    )
+    monkeypatch.setattr(
+        pipeline, "assess_training_rule_readiness", lambda *_args, **_kw: failed_readiness
+    )
+    with pytest.raises(ArtifactIntegrityError, match="strict target floor"):
+        pipeline._preflight_r3(settings, device=torch.device("cpu"))
+
+
+def test_preflight_r3_cli_dispatches_read_only_report(
+    monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
+) -> None:
+    settings = Settings()
+    monkeypatch.setattr(pipeline, "_configure", lambda _args: settings)
+    monkeypatch.setattr(pipeline, "_seed_everything", lambda _seed: None)
+    monkeypatch.setattr(
+        pipeline,
+        "_preflight_r3",
+        lambda _settings, *, device: {"device": str(device), "passed": True},
+    )
+    pipeline.execute_command(Namespace(command="preflight-r3", device="cpu"))
+    assert '"passed": true' in capsys.readouterr().out
 
 
 def test_cli_does_not_override_environment_snapshot_by_default() -> None:

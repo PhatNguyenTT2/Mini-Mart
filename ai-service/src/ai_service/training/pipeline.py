@@ -27,14 +27,13 @@ from ai_service.config import (
 from ai_service.contracts import (
     RULE_COVERAGE_SEMANTICS_VERSION,
     AggregateReleaseReport,
-    ArtifactLineageV5,
     CheckpointManifest,
     DataSourceKind,
     EmbeddingSource,
     PipelineState,
     RuleManifest,
     RunStatus,
-    SnapshotManifest,
+    SnapshotManifest,  # noqa: F401 - retained as a typed test seam
     SplitName,
     TerminalAction,
     TrainingVariant,
@@ -87,6 +86,7 @@ from ai_service.evaluation.semantic_traps import evaluate_semantic_traps
 from ai_service.export.bundle import BundlePublisher, file_sha256, verify_bundle
 from ai_service.export.onnx import export_onnx_models
 from ai_service.export.parity import verify_onnx_parity
+from ai_service.lineage import resolve_artifact_lineage
 from ai_service.models.two_tower_wide_deep import HybridTwoTowerModel
 from ai_service.training.checkpoint import CheckpointManager
 from ai_service.training.provenance import (
@@ -175,6 +175,12 @@ def _configure(args: Namespace) -> Settings:
     benchmark_run_id = getattr(args, "benchmark_run_id", None)
     if benchmark_run_id:
         settings.data.benchmark_run_id = str(benchmark_run_id)
+    benchmark_spec = getattr(args, "benchmark_spec", None)
+    if benchmark_spec is not None:
+        spec_path = Path(benchmark_spec).resolve()
+        if not spec_path.is_file():
+            raise ConfigurationError(f"benchmark spec does not exist: {spec_path}")
+        settings.data.benchmark_spec_path = spec_path
     settings.train.seed = int(getattr(args, "seed", settings.train.seed))
     selection_report = getattr(args, "r3_selection_report", None)
     if selection_report is not None:
@@ -196,6 +202,7 @@ def _configure(args: Namespace) -> Settings:
         settings.model.use_user_id_embedding = selection.use_user_id_embedding
         settings.model.use_price_features = selection.use_price_features
         settings.train.r3_selection_artifact_sha256 = artifact.report.artifact_sha256
+        settings.train.r3_selected_deep_run_id = artifact.report.selected_run_id
     elif settings.train.r3_feature_selection_mode == "selection_artifact":
         raise ConfigurationError("selection_artifact config requires --r3-selection-report")
     if settings.serving.environment.lower() == "production" and (
@@ -422,6 +429,73 @@ def _require_rule_training_capability(rules: Any, settings: Settings) -> Any:
     return rules.require_training_capability(settings)
 
 
+def _preflight_r3(settings: Settings, *, device: torch.device) -> dict[str, object]:
+    """Run the complete read-only v5 readiness seam before any GPU job.
+
+    This deliberately reuses the same snapshot, feature, rule and sampler
+    loaders as training.  It does not create a run directory or mutate an
+    artifact, and ``device`` is reported only to make the operator's command
+    explicit; all checks remain CPU-safe.
+    """
+    snapshot = load_snapshot(settings.data.snapshot_id, settings)
+    embedding_path = _find_single_parent_artifact(
+        settings.data.artifact_root.resolve() / "features",
+        snapshot_sha256=snapshot.manifest.content_sha256,
+    )
+    embedding = load_embedding_artifact(embedding_path)
+    rule_path = _find_training_rule_artifact(settings, snapshot.manifest.content_sha256)
+    rules = load_rule_artifact(rule_path, snapshot.manifest.num_items)
+    _require_rule_training_capability(rules, settings)
+    lineage = resolve_artifact_lineage(
+        snapshot.manifest,
+        embedding.manifest,
+        rules.manifest,
+        require_v5=settings.data.rule_feature_schema_version == "3.0.0",
+    )
+    purchase_index = build_purchase_training_index(
+        snapshot,
+        max_history_items=settings.train.max_history_items,
+    )
+    sampler = MixedNegativeSampler(
+        purchase_index,
+        snapshot,
+        embedding.vectors,
+        ratio=settings.train.explicit_negative_ratio,
+        seed=settings.train.seed,
+        rule_store=rules.store,
+        rule_hard_negative_count=settings.train.rule_hard_negative_count,
+    )
+    loader = PurchaseBatchIterator(
+        purchase_index,
+        sampler,
+        rules.store,
+        batch_size=settings.train.batch_size,
+        seed=settings.train.seed,
+    )
+    readiness = assess_training_rule_readiness(
+        loader,
+        minimum_rows_with_any_rule=settings.data.minimum_training_rows_with_any_rule,
+        minimum_training_target_rule_rate=settings.data.minimum_training_target_rule_rate,
+    )
+    if not readiness.passed:
+        raise ArtifactIntegrityError(
+            "R3 preflight rule readiness failed: " + "; ".join(readiness.failure_reasons)
+        )
+    audit = DataQualityAuditor().audit(snapshot)
+    probes = run_data_probes(settings, snapshot, embedding.vectors, rules)
+    return {
+        "device": str(device),
+        "snapshot_id": snapshot.manifest.artifact_id,
+        "snapshot_sha256": snapshot.manifest.content_sha256,
+        "embedding_artifact": str(embedding.artifact_dir),
+        "rule_artifact": str(rules.artifact_dir),
+        "lineage": lineage.model_dump(mode="json"),
+        "audit": audit.model_dump(mode="json"),
+        "rule_readiness": readiness.model_dump(mode="json"),
+        "probes": probes,
+    }
+
+
 def _train(
     settings: Settings,
     snapshot: Snapshot,
@@ -439,30 +513,13 @@ def _train(
     revision = (
         require_frozen_source_revision() if require_frozen_source else resolve_source_revision()
     )
-    lineage = {
-        "snapshot": snapshot.manifest.content_sha256,
-        "embedding": embedding.manifest.content_sha256,
-        "rules": rules.manifest.content_sha256,
-    }
-    if settings.data.rule_feature_schema_version == "3.0.0":
-        metadata = {
-            "benchmark_spec": getattr(snapshot.manifest, "benchmark_spec_sha256", None),
-            "semantic_cohort": getattr(snapshot.manifest, "semantic_cohort_sha256", None),
-            "order_metadata": getattr(snapshot.manifest, "order_metadata_sha256", None),
-        }
-        if all(isinstance(value, str) for value in metadata.values()):
-            lineage = ArtifactLineageV5(
-                snapshot=lineage["snapshot"],
-                embedding=lineage["embedding"],
-                rules=lineage["rules"],
-                benchmark_spec=cast(str, metadata["benchmark_spec"]),
-                semantic_cohort=cast(str, metadata["semantic_cohort"]),
-                order_metadata=cast(str, metadata["order_metadata"]),
-            ).as_mapping()
-        elif type(snapshot.manifest).__name__ == SnapshotManifest.__name__:
-            raise ArtifactIntegrityError("v5 R3 snapshot is missing expanded lineage hashes")
-        elif not all(value is None for value in metadata.values()):
-            raise ArtifactIntegrityError("v5 R3 snapshot is missing expanded lineage hashes")
+    lineage_model = resolve_artifact_lineage(
+        snapshot.manifest,
+        embedding.manifest,
+        rules.manifest,
+        require_v5=settings.data.rule_feature_schema_version == "3.0.0",
+    )
+    lineage = lineage_model.as_mapping()
     rule_store = _require_rule_training_capability(rules, settings)
     if (
         rules.manifest.feature_schema_version != settings.data.rule_feature_schema_version
@@ -471,6 +528,26 @@ def _train(
         or abs(rules.manifest.min_lift - settings.data.min_rule_lift) > 1e-12
     ):
         raise ArtifactIntegrityError("training rule artifact does not match resolved config")
+    if settings.train.training_variant is TrainingVariant.HYBRID and (
+        settings.train.r3_feature_selection_mode == "selection_artifact"
+        or settings.train.r3_selection_artifact_sha256 is not None
+    ):
+        require_selected_r3_pair(
+            artifact_root=settings.data.artifact_root,
+            selected_deep_run_id=settings.train.r3_selected_deep_run_id,
+            hybrid_flags=(
+                settings.model.use_user_id_embedding,
+                settings.model.use_price_features,
+            ),
+            deep_flags=(
+                settings.model.use_user_id_embedding,
+                settings.model.use_price_features,
+            ),
+            campaign_stage=cast(Literal["diagnostic", "production"], settings.train.campaign_stage),
+            selection_artifact_sha256=settings.train.r3_selection_artifact_sha256,
+            lineage=lineage_model,
+            expected_comparison_signature_sha256=settings.comparison_signature_sha256(),
+        )
     if settings.train.campaign_stage == "production":
         require_selected_r3_pair(
             artifact_root=settings.data.artifact_root,
@@ -485,6 +562,7 @@ def _train(
             campaign_stage="production",
             selection_artifact_sha256=settings.train.r3_selection_artifact_sha256,
             lineage=lineage,
+            expected_comparison_signature_sha256=settings.comparison_signature_sha256(),
         )
 
     # Build every potentially failing training input before publishing an immutable
@@ -636,6 +714,7 @@ def _train(
             validation_victory_matrix_path=None,
             test_victory_matrix_path=None,
             bundle_path=None,
+            lineage=lineage_model,
         )
         _write_state(settings, state)
     except (CatastrophicTrainingError, DiagnosticQualityError) as error:
@@ -709,17 +788,19 @@ def _export(
         raise DataIntegrityError("selected run has no immutable test victory matrix")
     if state.paired_run_id is None:
         raise DataIntegrityError("selected run has no paired Deep run")
+    export_lineage = resolve_artifact_lineage(
+        snapshot.manifest,
+        embedding.manifest,
+        rules.manifest,
+        require_v5=settings.data.rule_feature_schema_version == "3.0.0",
+    )
     evaluation = load_evaluation_artifacts(
         Path(state.checkpoint_path).parents[1],
         expected_split=SplitName.TEST,
         expected_hybrid_run_id=state.run_id,
         expected_deep_run_id=state.paired_run_id,
         expected_comparison_signature=comparison_signature,
-        expected_lineage={
-            "snapshot": snapshot.manifest.content_sha256,
-            "embedding": embedding.manifest.content_sha256,
-            "rules": rules.manifest.content_sha256,
-        },
+        expected_lineage=export_lineage,
     )
     test_matrix = evaluation.victory_matrix
     if not test_matrix.all_passed:
@@ -775,6 +856,7 @@ def _export(
         comparison_signature_sha256=comparison_signature,
         parity=parity,
         victory_matrix_sha256=test_matrix.sha256,
+        lineage=export_lineage,
     )
     next_state = _update_pipeline_state(state, bundle_path=str(bundle.path))
     _write_state(settings, next_state)
@@ -792,14 +874,19 @@ def _load_lineage(
     rules = load_rule_artifact(Path(state.rule_path), snapshot.manifest.num_items)
     model = HybridTwoTowerModel(settings)
     if state.checkpoint_path is not None:
+        lineage = resolve_artifact_lineage(
+            snapshot.manifest,
+            embedding.manifest,
+            rules.manifest,
+            require_v5=settings.data.rule_feature_schema_version == "3.0.0",
+        )
+        expected_lineage: Any = (
+            lineage if hasattr(lineage, "benchmark_spec") else lineage.as_mapping()
+        )
         CheckpointManager.load(
             Path(state.checkpoint_path),
             model=model,
-            expected_lineage={
-                "snapshot": snapshot.manifest.content_sha256,
-                "embedding": embedding.manifest.content_sha256,
-                "rules": rules.manifest.content_sha256,
-            },
+            expected_lineage=expected_lineage,
             expected_training_signature=settings.training_signature_sha256(),
             expected_comparison_signature=settings.comparison_signature_sha256(),
             expected_training_variant=expected_variant,
@@ -866,6 +953,8 @@ def _load_run_context(
     )
     _require_rule_training_capability(rules, settings)
     if settings.data.rule_feature_schema_version == "3.0.0":
+        if state.lineage is None:
+            raise ArtifactIntegrityError("v5 pipeline state is missing expanded lineage")
         coverage = getattr(rules.manifest, "coverage", None)
         if rules.manifest.feature_schema_version != "3.0.0" or coverage is None:
             raise ArtifactIntegrityError("run context rule artifact lacks v3 coverage evidence")
@@ -875,15 +964,21 @@ def _load_run_context(
         or abs(rules.manifest.min_lift - settings.data.min_rule_lift) > 1e-12
     ):
         raise ArtifactIntegrityError("loaded rule artifact does not match resolved training config")
-    loaded_lineage = {
-        "snapshot": snapshot.manifest.content_sha256,
-        "embedding": embedding.manifest.content_sha256,
-        "rules": rules.manifest.content_sha256,
-    }
+    loaded_lineage_model = resolve_artifact_lineage(
+        snapshot.manifest,
+        embedding.manifest,
+        rules.manifest,
+        require_v5=settings.data.rule_feature_schema_version == "3.0.0",
+    )
+    loaded_lineage = loaded_lineage_model.as_mapping()
     if lifecycle.document.get("lineage") != loaded_lineage:
         raise ArtifactIntegrityError("run lifecycle lineage differs from loaded artifacts")
     if checkpoint_manifest.parent_sha256 != loaded_lineage:
         raise ArtifactIntegrityError("checkpoint lineage differs from loaded artifacts")
+    if state.lineage is not None and state.lineage.model_dump(mode="json") != (
+        loaded_lineage_model.model_dump(mode="json")
+    ):
+        raise ArtifactIntegrityError("pipeline state lineage differs from loaded artifacts")
     return LoadedRun(
         run_dir=run_dir,
         checkpoint_manifest=checkpoint_manifest,
@@ -915,64 +1010,30 @@ def _evaluate_pair(
         raise ArtifactIntegrityError("paired evaluation requires matching campaign stages")
     if hybrid.settings.train.seed != deep.settings.train.seed:
         raise ArtifactIntegrityError("paired evaluation requires matching seeds")
+    selected_deep = getattr(hybrid.settings.train, "r3_selected_deep_run_id", None)
+    if selected_deep is not None and selected_deep != deep.state.run_id:
+        raise ArtifactIntegrityError(
+            "paired evaluation Deep run does not match the verified R3 selection"
+        )
     if hybrid.settings.comparison_signature_sha256() != deep.settings.comparison_signature_sha256():
         raise ArtifactIntegrityError("paired evaluation requires matching comparison signatures")
     if hybrid.lifecycle.document.get("git_commit") != deep.lifecycle.document.get("git_commit"):
         raise ArtifactIntegrityError("paired evaluation requires matching source revisions")
-    lineage: dict[str, str] = {
-        "snapshot": hybrid.snapshot.manifest.content_sha256,
-        "embedding": hybrid.embedding.manifest.content_sha256,
-        "rules": hybrid.rules.manifest.content_sha256,
-    }
-    if hybrid.settings.data.rule_feature_schema_version == "3.0.0":
-        metadata = {
-            "benchmark_spec": getattr(hybrid.snapshot.manifest, "benchmark_spec_sha256", None),
-            "semantic_cohort": getattr(hybrid.snapshot.manifest, "semantic_cohort_sha256", None),
-            "order_metadata": getattr(hybrid.snapshot.manifest, "order_metadata_sha256", None),
-        }
-        if not all(isinstance(value, str) for value in metadata.values()) and (
-            type(hybrid.snapshot.manifest).__name__ == SnapshotManifest.__name__
-            or any(value is not None for value in metadata.values())
-        ):
-            raise ArtifactIntegrityError("paired evaluation requires expanded v5 lineage")
-        if all(isinstance(value, str) for value in metadata.values()):
-            lineage = ArtifactLineageV5(
-                snapshot=lineage["snapshot"],
-                embedding=lineage["embedding"],
-                rules=lineage["rules"],
-                benchmark_spec=cast(str, metadata["benchmark_spec"]),
-                semantic_cohort=cast(str, metadata["semantic_cohort"]),
-                order_metadata=cast(str, metadata["order_metadata"]),
-            ).as_mapping()
-    deep_base_lineage = {
-        "snapshot": deep.snapshot.manifest.content_sha256,
-        "embedding": deep.embedding.manifest.content_sha256,
-        "rules": deep.rules.manifest.content_sha256,
-    }
-    if any(lineage[name] != value for name, value in deep_base_lineage.items()):
+    lineage_model = resolve_artifact_lineage(
+        hybrid.snapshot.manifest,
+        hybrid.embedding.manifest,
+        hybrid.rules.manifest,
+        require_v5=hybrid.settings.data.rule_feature_schema_version == "3.0.0",
+    )
+    lineage = lineage_model.as_mapping()
+    deep_lineage_model = resolve_artifact_lineage(
+        deep.snapshot.manifest,
+        deep.embedding.manifest,
+        deep.rules.manifest,
+        require_v5=deep.settings.data.rule_feature_schema_version == "3.0.0",
+    )
+    if lineage_model != deep_lineage_model:
         raise ArtifactIntegrityError("paired evaluation requires matching artifact lineage")
-    if hybrid.settings.data.rule_feature_schema_version == "3.0.0":
-        deep_metadata = {
-            "benchmark_spec": getattr(deep.snapshot.manifest, "benchmark_spec_sha256", None),
-            "semantic_cohort": getattr(deep.snapshot.manifest, "semantic_cohort_sha256", None),
-            "order_metadata": getattr(deep.snapshot.manifest, "order_metadata_sha256", None),
-        }
-        if not all(isinstance(value, str) for value in deep_metadata.values()) and (
-            type(deep.snapshot.manifest).__name__ == SnapshotManifest.__name__
-            or any(value is not None for value in deep_metadata.values())
-        ):
-            raise ArtifactIntegrityError("paired evaluation requires expanded v5 lineage")
-        if all(isinstance(value, str) for value in deep_metadata.values()):
-            deep_lineage = ArtifactLineageV5(
-                snapshot=deep.snapshot.manifest.content_sha256,
-                embedding=deep.embedding.manifest.content_sha256,
-                rules=deep.rules.manifest.content_sha256,
-                benchmark_spec=cast(str, deep_metadata["benchmark_spec"]),
-                semantic_cohort=cast(str, deep_metadata["semantic_cohort"]),
-                order_metadata=cast(str, deep_metadata["order_metadata"]),
-            ).as_mapping()
-            if lineage != deep_lineage:
-                raise ArtifactIntegrityError("paired evaluation requires matching artifact lineage")
     if hybrid.settings.data.rule_feature_schema_version == "3.0.0":
         campaign_stage = hybrid.settings.train.campaign_stage
         if campaign_stage not in {"diagnostic", "production"}:
@@ -1001,6 +1062,7 @@ def _evaluate_pair(
             campaign_stage=cast(Literal["diagnostic", "production"], campaign_stage),
             selection_artifact_sha256=hybrid.settings.train.r3_selection_artifact_sha256,
             lineage=lineage,
+            expected_comparison_signature_sha256=hybrid.settings.comparison_signature_sha256(),
         )
         require_hybrid_diagnostic_signal(
             hybrid.run_dir / "training" / "history.jsonl",
@@ -1237,11 +1299,12 @@ def _compare_deep_ablations(
             settings=run.settings,
             lifecycle_status=run.lifecycle.status,
             git_commit=cast(str, run.lifecycle.document.get("git_commit")),
-            lineage={
-                "snapshot": run.snapshot.manifest.content_sha256,
-                "embedding": run.embedding.manifest.content_sha256,
-                "rules": run.rules.manifest.content_sha256,
-            },
+            lineage=resolve_artifact_lineage(
+                run.snapshot.manifest,
+                run.embedding.manifest,
+                run.rules.manifest,
+                require_v5=run.settings.data.rule_feature_schema_version == "3.0.0",
+            ),
             snapshot=run.snapshot,
             embeddings=run.embedding.vectors,
             rule_store=run.rules.store,
@@ -1298,6 +1361,10 @@ def execute_command(args: Namespace) -> None:
     _seed_everything(settings.train.seed)
     source_kind = DataSourceKind(getattr(args, "source", DataSourceKind.POSTGRES.value))
     embedding_kind = EmbeddingSource(getattr(args, "embedding_source", EmbeddingSource.REAL.value))
+
+    if args.command == "preflight-r3":
+        _emit(_preflight_r3(settings, device=_device(args.device)))
+        return
 
     if args.command == "verify-bundle":
         if args.bundle_id and getattr(args, "run_id", None):

@@ -317,6 +317,7 @@ def _build_release_report(
     selected: FinalistPairRecord,
     gates: tuple[MetricGateResult, ...],
     comparison_signature: str,
+    lineage: ArtifactLineage | ArtifactLineageV5,
 ) -> AggregateReleaseReport:
     """Build a fully validated report with canonical artifact SHA."""
     provisional = {
@@ -332,6 +333,9 @@ def _build_release_report(
         "gates": gates,
         "artifact_sha256": "0" * 64,
     }
+    lineage_model = artifact_lineage_model(lineage)
+    if isinstance(lineage_model, ArtifactLineageV5):
+        provisional["lineage"] = lineage_model.model_dump(mode="json")
     provisional_report = AggregateReleaseReport.model_validate(provisional)
     provisional_document = provisional_report.model_dump(mode="json")
     provisional_document.pop("artifact_sha256", None)
@@ -419,6 +423,7 @@ def evaluate_three_seed(
         selected=selected,
         gates=gates,
         comparison_signature=comparison_signature,
+        lineage=hybrid[0].lineage,
     )
     release_root = (
         finalist_settings.data.artifact_root.resolve() / "releases" / comparison_signature

@@ -103,6 +103,7 @@ def evaluate_semantic_traps(
         requests: list[TargetReplayRequest] = []
         case_count: dict[int, int] = {trap_id: 0 for trap_id in range(1, 11)}
         trap_specs: dict[int, dict[str, object]] = {}
+        seen_cases: set[tuple[int, int, int]] = set()
         for row in cohort_rows:
             cohort_id = str(row.get("cohort_id", ""))
             if not cohort_id.startswith("semantic-") or ":val:" not in str(row.get("event_id", "")):
@@ -131,6 +132,10 @@ def evaluate_semantic_traps(
                 raise DataIntegrityError("semantic cohort anchor is not in prior history")
             if target not in prepared_split.organic_novel_truth.get(user_id, set()):
                 raise DataIntegrityError("semantic cohort target is not novel VAL truth")
+            case_key = (trap_id, user_id, target)
+            if case_key in seen_cases:
+                raise DataIntegrityError("semantic cohort contains duplicate target cases")
+            seen_cases.add(case_key)
             requests.append(
                 TargetReplayRequest(trap_id=trap_id, user_id=user_id, target_item_ids=(target,))
             )

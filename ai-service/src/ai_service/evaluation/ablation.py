@@ -16,8 +16,17 @@ import numpy as np
 import torch
 from pydantic import BaseModel, Field, model_validator
 
+from ai_service.artifact_io import publish_directory_atomic
 from ai_service.config import Settings
-from ai_service.contracts import ModelVariant, RunStatus, SplitName
+from ai_service.contracts import (
+    ArtifactLineage,
+    ArtifactLineageInput,
+    ArtifactLineageV5,
+    ModelVariant,
+    RunStatus,
+    SplitName,
+    artifact_lineage_model,
+)
 from ai_service.data.rules import RuleStore
 from ai_service.data.snapshot import Snapshot
 from ai_service.errors import (
@@ -86,7 +95,7 @@ class SelectedR3Configuration(BaseModel):
     selected_diagnostic_run_id: str = Field(min_length=1)
     selected_config_name: str = Field(min_length=1)
     feature_selection: R3FeatureSelection
-    lineage: R3ArtifactLineage
+    lineage: ArtifactLineage | ArtifactLineageV5
     diagnostic_git_commit: str = Field(pattern=r"^[0-9a-f]{40}$|^[0-9a-f]{64}$")
 
 
@@ -140,12 +149,22 @@ class DeepAblationReport(DeepAblationDecision):
     artifact_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
     diagnostic_signature_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
     diagnostic_git_commit: str = Field(pattern=r"^[0-9a-f]{40}$|^[0-9a-f]{64}$")
-    lineage: R3ArtifactLineage
+    lineage: ArtifactLineage | ArtifactLineageV5
     selected_config_name: str | None
     selected_feature_selection: R3FeatureSelection | None
+    # The report must carry the comparison protocol of the selected Deep
+    # checkpoint.  It is optional only for legacy three-field fixtures; active
+    # v5 selection reports are required to populate it by the publisher and
+    # the paired-training verifier.
+    comparison_signature_sha256: str | None = Field(
+        default=None,
+        pattern=r"^[0-9a-f]{64}$",
+    )
 
     @model_validator(mode="after")
     def selected_configuration_is_consistent(self) -> DeepAblationReport:
+        if isinstance(self.lineage, ArtifactLineageV5) and self.comparison_signature_sha256 is None:
+            raise ValueError("v5 Deep ablation reports require a comparison signature")
         if self.diagnostic_pause:
             if self.selected_config_name is not None or self.selected_feature_selection is not None:
                 raise ValueError("paused R3 report cannot contain a selected configuration")
@@ -179,7 +198,7 @@ class DeepAblationRun:
     settings: Settings
     lifecycle_status: RunStatus
     git_commit: str
-    lineage: dict[str, str]
+    lineage: ArtifactLineage | ArtifactLineageV5
     snapshot: Snapshot
     embeddings: np.ndarray
     rule_store: RuleStore
@@ -387,29 +406,19 @@ def publish_deep_ablation_artifact(
     report: DeepAblationDecision,
     metrics: Mapping[str, np.ndarray],
     diagnostic_git_commit: str,
-    lineage: Mapping[str, str],
+    lineage: ArtifactLineageInput,
+    comparison_signature_sha256: str | None = None,
 ) -> DeepAblationArtifact:
     if not _is_sha256(diagnostic_signature):
         raise ArtifactIntegrityError("diagnostic signature must be a lowercase SHA-256")
     if not _is_git_commit(diagnostic_git_commit):
         raise ArtifactIntegrityError("diagnostic Git commit is invalid")
     try:
-        provenance = R3ArtifactLineage(
-            snapshot_sha256=str(lineage["snapshot"]),
-            embedding_sha256=str(lineage["embedding"]),
-            rule_sha256=str(lineage["rules"]),
-            benchmark_spec_sha256=(
-                str(lineage["benchmark_spec"]) if "benchmark_spec" in lineage else None
-            ),
-            semantic_cohort_sha256=(
-                str(lineage["semantic_cohort"]) if "semantic_cohort" in lineage else None
-            ),
-            order_metadata_sha256=(
-                str(lineage["order_metadata"]) if "order_metadata" in lineage else None
-            ),
-        )
+        provenance = artifact_lineage_model(lineage)
     except (KeyError, TypeError, ValueError) as error:
         raise ArtifactIntegrityError("R3 diagnostic lineage is invalid") from error
+    if isinstance(provenance, ArtifactLineageV5) and not _is_sha256(comparison_signature_sha256):
+        raise ArtifactIntegrityError("v5 Deep ablation artifacts require a comparison signature")
     validated_metrics = _validate_ablation_metrics(report, metrics)
     destination = root.resolve() / "diagnostics" / "r3" / diagnostic_signature
     destination.parent.mkdir(parents=True, exist_ok=True)
@@ -428,6 +437,7 @@ def publish_deep_ablation_artifact(
             "selected_config_name": None,
             "selected_feature_selection": None,
             "per_user_metrics_sha256": _file_sha256(metrics_path),
+            "comparison_signature_sha256": comparison_signature_sha256,
         }
         if report.selected_run_id is not None:
             selected_candidate = next(
@@ -445,7 +455,7 @@ def publish_deep_ablation_artifact(
         report_path.write_text(json.dumps(document, indent=2, sort_keys=True), encoding="utf-8")
         _fsync_file(report_path)
         load_deep_ablation_artifact(temporary)
-        os.replace(temporary, destination)
+        publish_directory_atomic(temporary, destination)
     except Exception:
         shutil.rmtree(temporary, ignore_errors=True)
         raise
@@ -484,10 +494,13 @@ def run_deep_ablation_comparison(
             "semantic_cohort",
             "order_metadata",
         }
-        if any(set(run.lineage) != required_lineage for run in runs):
+        if any(
+            set(artifact_lineage_model(run.lineage).as_mapping()) != required_lineage
+            for run in runs
+        ):
             raise ArtifactIntegrityError("R3 Deep ablations require complete v5 lineage")
     for run in runs[1:]:
-        if run.lineage != control.lineage:
+        if artifact_lineage_model(run.lineage) != artifact_lineage_model(control.lineage):
             raise ArtifactIntegrityError("R3 Deep ablations require identical v5 lineage")
         if run.settings.eval.model_dump(mode="json") != control.settings.eval.model_dump(
             mode="json"
@@ -569,12 +582,21 @@ def run_deep_ablation_comparison(
         selection_hr_floor=control.settings.eval.minimum_hr_at_k,
         selection_ndcg_floor=control.settings.eval.minimum_ndcg_at_k,
     )
-    signature_document = {
+    signature_document: dict[str, object] = {
         "run_ids": [run.run_id for run in runs],
         "git_commit": control.git_commit,
-        "lineage": control.lineage,
+        "lineage": artifact_lineage_model(control.lineage).model_dump(mode="json"),
         "evaluation": control.settings.eval.model_dump(mode="json"),
     }
+    # A paused report still binds the comparison protocol.  There is no
+    # selected feature surface in that case, so use the control signature as
+    # the immutable protocol receipt; a selected report is replaced with the
+    # selected candidate's feature-aware signature below.
+    selected_comparison_signature: str | None = control.settings.comparison_signature_sha256()
+    if report.selected_run_id is not None:
+        selected_run = next(run for run in runs if run.run_id == report.selected_run_id)
+        selected_comparison_signature = selected_run.settings.comparison_signature_sha256()
+    signature_document["selected_comparison_signature_sha256"] = selected_comparison_signature
     diagnostic_signature = hashlib.sha256(
         json.dumps(signature_document, sort_keys=True, separators=(",", ":")).encode("utf-8")
     ).hexdigest()
@@ -585,6 +607,7 @@ def run_deep_ablation_comparison(
         metrics=metrics,
         diagnostic_git_commit=control.git_commit,
         lineage=control.lineage,
+        comparison_signature_sha256=selected_comparison_signature,
     )
 
 
@@ -596,7 +619,8 @@ def require_selected_r3_pair(
     deep_flags: tuple[bool, bool],
     campaign_stage: Literal["diagnostic", "production"] = "diagnostic",
     selection_artifact_sha256: str | None = None,
-    lineage: Mapping[str, str] | None = None,
+    lineage: ArtifactLineageInput | None = None,
+    expected_comparison_signature_sha256: str | None = None,
 ) -> SelectedR3Configuration:
     if hybrid_flags != deep_flags:
         raise ArtifactIntegrityError("R3 Hybrid flags must match the selected Deep ablation")
@@ -625,22 +649,17 @@ def require_selected_r3_pair(
         )
     report = matches[0].report
     if lineage is not None:
-        expected_lineage = {
-            "snapshot": report.lineage.snapshot_sha256,
-            "embedding": report.lineage.embedding_sha256,
-            "rules": report.lineage.rule_sha256,
-        }
-        if report.lineage.benchmark_spec_sha256 is not None:
-            expected_lineage.update(
-                {
-                    "benchmark_spec": report.lineage.benchmark_spec_sha256,
-                    "semantic_cohort": report.lineage.semantic_cohort_sha256 or "",
-                    "order_metadata": report.lineage.order_metadata_sha256 or "",
-                }
-            )
-        if dict(lineage) != expected_lineage:
+        expected_lineage = artifact_lineage_model(report.lineage)
+        if artifact_lineage_model(lineage) != expected_lineage:
             raise ArtifactIntegrityError(
                 "R3 selection lineage does not match the current artifacts"
+            )
+    if expected_comparison_signature_sha256 is not None:
+        if not _is_sha256(expected_comparison_signature_sha256):
+            raise ArtifactIntegrityError("expected R3 comparison signature is invalid")
+        if report.comparison_signature_sha256 != expected_comparison_signature_sha256:
+            raise ArtifactIntegrityError(
+                "R3 selection comparison signature does not match the current config"
             )
     if report.selected_run_id is None or report.selected_config_name is None:
         raise ArtifactIntegrityError("R3 selection report has no selected configuration")

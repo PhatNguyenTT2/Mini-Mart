@@ -89,6 +89,20 @@ class SnapshotManifest(ArtifactManifest):
     semantic_cohort_sha256: str | None = Field(default=None, pattern=r"^[0-9a-f]{64}$")
     order_metadata_sha256: str | None = Field(default=None, pattern=r"^[0-9a-f]{64}$")
 
+    @model_validator(mode="after")
+    def postgres_v5_lineage_is_complete(self) -> SnapshotManifest:
+        if self.schema_version == "3.0.0" and self.source_kind is DataSourceKind.POSTGRES:
+            if not all(
+                isinstance(value, str)
+                for value in (
+                    self.benchmark_spec_sha256,
+                    self.semantic_cohort_sha256,
+                    self.order_metadata_sha256,
+                )
+            ):
+                raise ValueError("postgres v5 snapshot requires expanded lineage hashes")
+        return self
+
 
 class EmbeddingManifest(ArtifactManifest):
     snapshot_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
@@ -380,6 +394,10 @@ class PipelineState(BaseModel):
     validation_victory_matrix_path: str | None
     test_victory_matrix_path: str | None
     bundle_path: str | None
+    # Active v5 runs always populate this typed lineage.  ``None`` remains
+    # accepted for legacy unit/synthetic state fixtures that never cross a
+    # production artifact boundary.
+    lineage: ArtifactLineage | ArtifactLineageV5 | None = None
 
     @field_validator("run_id", "snapshot_id", "embedding_path", "rule_path")
     @classmethod
@@ -424,6 +442,7 @@ class ModelBundleManifest(ArtifactManifest):
     training_variant: Literal[TrainingVariant.HYBRID]
     comparison_signature_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
     victory_matrix_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    lineage: ArtifactLineageV5 | None = None
 
 
 class MetricGateResult(BaseModel):
@@ -511,6 +530,7 @@ class AggregateReleaseReport(BaseModel):
     selected_victory_matrix_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
     gates: tuple[MetricGateResult, ...]
     artifact_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    lineage: ArtifactLineageV5 | None = None
 
     @model_validator(mode="after")
     def rollup_is_consistent(self) -> AggregateReleaseReport:

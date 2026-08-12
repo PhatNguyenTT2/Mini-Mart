@@ -31,6 +31,7 @@ def build_parser() -> argparse.ArgumentParser:
         )
         child.add_argument("--seed", type=int, default=42)
         child.add_argument("--benchmark-run-id")
+        child.add_argument("--benchmark-spec", type=Path)
         child.add_argument("--device", choices=("cpu", "cuda"), default="cuda")
         child.add_argument("--config", type=Path)
 
@@ -75,6 +76,14 @@ def build_parser() -> argparse.ArgumentParser:
     eval_cmd.add_argument("--hybrid-run-id", required=True)
     eval_cmd.add_argument("--deep-run-id", required=True)
     eval_cmd.add_argument("--device", choices=("cpu", "cuda"), default="cuda")
+
+    preflight_cmd = subparsers.add_parser(
+        "preflight-r3", help="run read-only v5 R3 readiness checks"
+    )
+    preflight_cmd.add_argument("--config", type=Path, required=True)
+    preflight_cmd.add_argument("--snapshot-id", required=True)
+    preflight_cmd.add_argument("--device", choices=("cpu", "cuda"), default="cpu")
+    preflight_cmd.add_argument("--store-id", type=int, default=1)
 
     # 4. release-gate command parser
     gate_cmd = subparsers.add_parser("release-gate")

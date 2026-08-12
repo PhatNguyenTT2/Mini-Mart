@@ -119,6 +119,7 @@ class TrainConfig(BaseModel):
         default=None,
         pattern=r"^[0-9a-f]{64}$",
     )
+    r3_selected_deep_run_id: str | None = Field(default=None, min_length=1)
     rule_auxiliary_weight: float = Field(default=0.0, ge=0.0)
     rule_hard_negative_count: int = Field(default=0, ge=0)
     diagnostic_warmup_epochs: int = Field(default=3, ge=1)
@@ -242,9 +243,11 @@ class Settings:
             raise ConfigurationError(
                 "diagnostic campaign cannot predeclare an R3 selection receipt"
             )
-        if self.train.r3_feature_selection_mode == "selection_artifact" and selection_sha is None:
+        if self.train.r3_feature_selection_mode == "selection_artifact" and (
+            selection_sha is None or self.train.r3_selected_deep_run_id is None
+        ):
             raise ConfigurationError(
-                "selection_artifact mode requires a verified R3 selection receipt"
+                "selection_artifact mode requires a verified R3 selection receipt and selected run"
             )
         if stage == "production" and not is_r3_rules:
             raise ConfigurationError("production campaign requires rule feature schema 3.0.0")
@@ -335,6 +338,7 @@ class Settings:
             "max_wall_minutes",
             "campaign_stage",
             "r3_selection_artifact_sha256",
+            "r3_selected_deep_run_id",
             "r3_feature_selection_mode",
             "diagnostic_warmup_epochs",
             "diagnostic_minimum_gauc",

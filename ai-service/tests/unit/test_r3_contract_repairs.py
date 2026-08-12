@@ -33,6 +33,7 @@ from ai_service.evaluation.report import (
     EvaluationArtifactManifest,
     publish_evaluation_artifacts,
 )
+from ai_service.lineage import resolve_artifact_lineage
 from ai_service.training import pipeline as training_pipeline
 from ai_service.training.diagnostic_stop import (
     DiagnosticStopReport,
@@ -42,6 +43,26 @@ from ai_service.training.diagnostic_stop import (
 from ai_service.training.objectives import multi_positive_sampled_softmax, rule_pairwise_wide_loss
 from ai_service.training.trainer import Trainer, _ValidationEpochPass
 from tests.support.v5_factories import make_victory_matrix
+
+
+def test_v5_lineage_resolver_requires_matching_parent_artifacts() -> None:
+    snapshot = SimpleNamespace(
+        content_sha256="a" * 64,
+        benchmark_spec_sha256="d" * 64,
+        semantic_cohort_sha256="e" * 64,
+        order_metadata_sha256="f" * 64,
+    )
+    embedding = SimpleNamespace(snapshot_sha256="b" * 64, content_sha256="b" * 64)
+    rules = SimpleNamespace(snapshot_sha256="a" * 64, content_sha256="c" * 64)
+    with pytest.raises(ArtifactIntegrityError, match="embedding does not belong"):
+        resolve_artifact_lineage(snapshot, embedding, rules, require_v5=True)  # type: ignore[arg-type]
+    embedding.snapshot_sha256 = "a" * 64
+    resolved = resolve_artifact_lineage(snapshot, embedding, rules, require_v5=True)  # type: ignore[arg-type]
+    assert isinstance(resolved, ArtifactLineageV5)
+    assert resolved.order_metadata == "f" * 64
+    rules.snapshot_sha256 = "9" * 64
+    with pytest.raises(ArtifactIntegrityError, match="rules do not belong"):
+        resolve_artifact_lineage(snapshot, embedding, rules, require_v5=True)  # type: ignore[arg-type]
 
 
 def _report(variant: ModelVariant, *, gauc: float, hr: float, ndcg: float) -> EvaluationReport:
@@ -438,6 +459,23 @@ def test_diagnostic_stop_is_immutable_and_hash_verified(tmp_path: Path) -> None:
     )
     with pytest.raises(ArtifactIntegrityError, match="hash mismatch"):
         load_diagnostic_stop(path)
+
+
+def test_diagnostic_stop_loader_accepts_unhashed_legacy_fixture(tmp_path: Path) -> None:
+    report = DiagnosticStopReport(
+        run_id="legacy",
+        epoch=1,
+        reason="fixture",
+        best_gauc=0.6,
+        best_hr_at_k=0.1,
+        best_ndcg_at_k=0.02,
+        thresholds={},
+    )
+    document = report.model_dump(mode="json")
+    document["artifact_sha256"] = None
+    path = tmp_path / "diagnostic-stop.json"
+    path.write_text(json.dumps(document), encoding="utf-8")
+    assert load_diagnostic_stop(path).artifact_sha256 is None
 
 
 def test_diagnostic_stop_binds_v5_lineage_and_run_id(tmp_path: Path) -> None:

@@ -11,9 +11,10 @@ from torch.optim import AdamW
 from torch.optim.lr_scheduler import ReduceLROnPlateau
 
 from ai_service.config import MODEL_SCHEMA_VERSION, Settings
-from ai_service.contracts import PipelineState, SplitName, TrainingVariant
+from ai_service.contracts import ArtifactLineageV5, PipelineState, SplitName, TrainingVariant
 from ai_service.errors import ArtifactIntegrityError, DataIntegrityError
 from ai_service.evaluation.release import (
+    _build_release_report,
     _load_finalist_run,
     _pair_finalists_by_seed,
     evaluate_three_seed,
@@ -25,7 +26,7 @@ from ai_service.evaluation.report import (
 from ai_service.models.two_tower_wide_deep import HybridTwoTowerModel
 from ai_service.training.checkpoint import CheckpointManager
 from ai_service.training.run import RunLifecycle
-from tests.support.v5_factories import make_settings, make_victory_matrix
+from tests.support.v5_factories import make_metric_gate, make_settings, make_victory_matrix
 
 LINEAGE = {"snapshot": "a" * 64, "embedding": "b" * 64, "rules": "c" * 64}
 
@@ -61,6 +62,46 @@ def _metrics(score: float, baseline: float) -> dict[str, np.ndarray]:
         "random_ndcg": np.full((10, 4), 0.5, dtype=np.float64),
         "random_gauc": np.full((10, 4), 0.5, dtype=np.float64),
     }
+
+
+def test_release_report_binds_v5_lineage_in_canonical_hash() -> None:
+    lineage = ArtifactLineageV5(
+        snapshot="a" * 64,
+        embedding="b" * 64,
+        rules="c" * 64,
+        benchmark_spec="d" * 64,
+        semantic_cohort="e" * 64,
+        order_metadata="f" * 64,
+    )
+    gates = tuple(
+        make_metric_gate(name)
+        for name in (
+            "aggregate_gauc_domination",
+            "aggregate_hr_domination",
+            "aggregate_ndcg_domination",
+            "aggregate_gauc_vs_deep",
+            "aggregate_hr_vs_deep",
+            "aggregate_ndcg_vs_deep",
+        )
+    )
+    pairs = tuple(
+        SimpleNamespace(
+            hybrid=SimpleNamespace(run_dir=Path(f"hybrid-{seed}"), seed=seed),
+            deep=SimpleNamespace(run_dir=Path(f"deep-{seed}")),
+            evaluation=SimpleNamespace(victory_matrix=SimpleNamespace(sha256=f"{seed:064d}")),
+        )
+        for seed in (42, 2027, 31415)
+    )
+    report = _build_release_report(
+        split=SplitName.VAL,
+        pairs=pairs,  # type: ignore[arg-type]
+        selected=pairs[0],  # type: ignore[arg-type]
+        gates=gates,
+        comparison_signature="1" * 64,
+        lineage=lineage,
+    )
+    assert report.lineage == lineage
+    assert report.artifact_sha256 != "0" * 64
 
 
 def _create_run(

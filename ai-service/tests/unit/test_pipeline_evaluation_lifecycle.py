@@ -124,6 +124,9 @@ def test_production_pair_binds_r3_receipt_not_diagnostic_run_id(
         loaded.settings.data.minimum_training_rows_with_any_rule = 0.4
         loaded.settings.train.campaign_stage = "production"
         loaded.settings.train.r3_selection_artifact_sha256 = "e" * 64
+        loaded.snapshot.manifest.benchmark_spec_sha256 = "1" * 64
+        loaded.snapshot.manifest.semantic_cohort_sha256 = "2" * 64
+        loaded.snapshot.manifest.order_metadata_sha256 = "3" * 64
     monkeypatch.setattr(
         pipeline,
         "_load_run_context",

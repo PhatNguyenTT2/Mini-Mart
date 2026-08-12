@@ -385,6 +385,21 @@ def test_semantic_trap_runtime_uses_snapshot_cohort_not_fixture(
     assert report.all_passed is True
     assert report.results[0].anchor_product_id == 101
     assert report.results[0].target_product_ids == (102,)
+    cohort_path = snapshot.snapshot_dir / "semantic-cohort.json"
+    cohort_rows = json.loads(cohort_path.read_text(encoding="utf-8"))
+    cohort_path.write_text(json.dumps([*cohort_rows, cohort_rows[0]]), encoding="utf-8")
+    with pytest.raises(DataIntegrityError, match="duplicate target cases"):
+        evaluate_semantic_traps(
+            HybridTwoTowerModel(_settings()),
+            HybridTwoTowerModel(_settings()),
+            snapshot,
+            np.eye(4, dtype=np.float32),
+            RuleStore(4, [(0, 1, 10.0)]),
+            fixture,
+            k=10,
+            prepared_split=prepared,
+            settings=_settings(),
+        )
 
 
 def test_evaluate_cold_parity_requires_exact_cohort(tmp_path: Path) -> None:
