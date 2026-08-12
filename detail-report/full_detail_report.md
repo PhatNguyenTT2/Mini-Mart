@@ -189,7 +189,7 @@ Bảng minh họa sự bù trừ giữa hai nhánh:
 
 ### 2.1. Sơ đồ Tổng quan Kiến trúc Mạng Neural
 
-![Kiến trúc tổng quan mô hình Decoupled Wide & Deep Two-Tower — Ba nhánh xử lý song song: Wide Branch (trái), User Tower (giữa), Item Tower (phải), hội tụ tại Joint Scoring Layer](file:///e:/UIT/cv/backend/detail-report/figures/architecture_overview.png)
+![Kiến trúc tổng quan mô hình Decoupled Wide & Deep Two-Tower — Ba nhánh xử lý song song: Wide Branch (trái), User Tower (giữa), Item Tower (phải), hội tụ tại Joint Scoring Layer](./figures/architecture_overview.png)
 
 ### 2.2. Giải thích Chi tiết Luồng Tính toán trong Sơ đồ
 
@@ -273,7 +273,7 @@ $$\text{Logits} = S_{\text{Deep}} + S_{\text{Wide}}$$
 
 ### 3.1. Sơ đồ Luồng Hoạt Động
 
-![Luồng vận hành hệ thống Microservices — Từ User/Web Client qua Chatbot Service, RAG Service, AI Client Guard (Circuit Breaker 300ms SLA), đến FastAPI AI Service chạy ONNX Runtime Engine, với cơ chế White-box Ensemble Fallback](file:///e:/UIT/cv/backend/detail-report/figures/microservices_flow.png)
+![Luồng vận hành hệ thống Microservices — Từ User/Web Client qua Chatbot Service, RAG Service, AI Client Guard (Circuit Breaker 300ms SLA), đến FastAPI AI Service chạy ONNX Runtime Engine, với cơ chế White-box Ensemble Fallback](./figures/microservices_flow.png)
 
 ### 3.2. Giải thích Chi tiết Từng Bước trong Luồng Hoạt Động
 
@@ -332,7 +332,7 @@ Kết quả xếp hạng (từ luồng bình thường hoặc luồng dự phòn
 
 ### 3.3. Đánh giá Hiệu năng Phục vụ
 
-![So sánh Inference Latency giữa PyTorch Native (12.5ms) và ONNX Runtime (0.85ms) — Tăng tốc 14.7 lần trên batch size 100 candidates](file:///e:/UIT/cv/backend/detail-report/figures/latency_comparison.png)
+![So sánh Inference Latency giữa PyTorch Native (12.5ms) và ONNX Runtime (0.85ms) — Tăng tốc 14.7 lần trên batch size 100 candidates](./figures/latency_comparison.png)
 
 Biểu đồ cột trên so sánh thời gian thực thi (inference latency) giữa hai engine với cùng batch size 100 candidates:
 
@@ -453,7 +453,7 @@ Ba nguyên nhân toán học:
 
 ### 5.1. Kết quả Ablation Study
 
-![Biểu đồ so sánh Ablation Study trên Full-Catalog (1,380 SKUs POC) — Trục trái: HR@10 (cột xanh), Trục phải: GAUC (đường đỏ). Proposed Hybrid đạt HR@10 cao nhất (0.4940) và GAUC cao nhất (0.8507)](file:///e:/UIT/cv/backend/detail-report/figures/performance_ablation.png)
+![Biểu đồ so sánh Ablation Study trên Full-Catalog (1,380 SKUs POC) — Trục trái: HR@10 (cột xanh), Trục phải: GAUC (đường đỏ). Proposed Hybrid đạt HR@10 cao nhất (0.4940) và GAUC cao nhất (0.8507)](./figures/performance_ablation.png)
 
 > **Giải thích — Ablation Study (Thí nghiệm Bóc tách):** Là phương pháp đánh giá trong đó từng thành phần của mô hình được loại bỏ/thay đổi một cách có hệ thống để đo lường đóng góp riêng lẻ của nó. Giống như cách bác sĩ kiểm tra từng bộ phận cơ thể: nếu bỏ nhánh Wide thì mất bao nhiêu điểm? Bỏ nhánh Deep thì mất bao nhiêu? Từ đó chứng minh mỗi thành phần đều cần thiết.
 
