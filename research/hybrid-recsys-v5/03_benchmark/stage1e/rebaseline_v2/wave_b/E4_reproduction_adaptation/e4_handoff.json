@@ -1,0 +1,234 @@
+{
+  "schema_version": "stage1e_rebaseline_v2_e4_handoff.v1",
+  "lane_id": "E4_reproduction_adaptation",
+  "material_passport": {
+    "origin_skill": "ars-codex:academic-research-suite",
+    "origin_mode": "experiment-agent/repo-dataset-metric-lock/planning-only",
+    "origin_date": "2026-08-22T01:39:11+07:00",
+    "verification_status": "UNVERIFIED",
+    "version_label": "stage1e_rebaseline_v2_wave_b_E4_v1",
+    "upstream_dependencies": [
+      "stage1e_rebaseline_v2_wave_a_E1",
+      "stage1e_rebaseline_v2_wave_a_E2",
+      "stage1e_rebaseline_v2_wave_a_E3",
+      "stage1e_rebaseline_v2_E4_frozen_input_manifest"
+    ],
+    "repro_lock": {
+      "schema_version": "1.0",
+      "stochasticity_declaration": "LLM outputs are not byte-reproducible. This lockfile documents configuration, not a deterministic replay guarantee.",
+      "ars_version": "3.21.0",
+      "model": {
+        "family": "openai",
+        "id": "gpt-5.6-sol",
+        "weight_stable": false
+      },
+      "prompts": {
+        "hash_timing": "skill-load",
+        "skill_md_hash": "sha256:9c2cb6e3b5aad7fb747f79163b144cfbddffa85d67e2bdcc5a5fa5470252ad00",
+        "agents_bundle_hash": "sha256:54937084589413787fe328ab1561329791cc2ca83222d9bf8283949399cf66de"
+      },
+      "materials": {
+        "list_hash": "sha256:0cebe1806fc62245a87235ddb5ef0c51a7300b642c3ccdd347fdfbbed07c79b2",
+        "count": 28
+      },
+      "external_protocols": {
+        "s2_api_protocol_version": "NOT_USED",
+        "s2_snapshot_available": false
+      },
+      "cross_model": {
+        "enabled": false,
+        "secondary_model_id": null
+      }
+    },
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-22T01:39:11+07:00",
+      "declared_by": "scholar"
+    }
+  },
+  "skill_package_version": "0.1.26",
+  "workflow": "academic-research-suite/experiment-agent",
+  "model": "gpt-5.6-sol",
+  "reasoning": "xhigh",
+  "status": "COMPLETE_FAIL_CLOSED",
+  "verification_status": "UNVERIFIED",
+  "access_date": "2026-08-22",
+  "authoritative_input_root": "E:/UIT/cv/backend",
+  "frozen_manifest_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_frozen_input_manifest.json",
+  "frozen_manifest_canonical_lf_sha256": "e320eff700eae6e12d8e4059e25656b88dfd1ac1904e42290fce32944ddf41d2",
+  "frozen_contract_canonical_lf_sha256": "368df1ab39df6f4cf03565cd871ba2fc5276a886f314557c6c0ff1244e9e63e5",
+  "wave_a_validation_receipt_canonical_lf_sha256": "1024cd38692a6632e4972484f37fd58e24ea05744e00bd33b61eca4af470b44a",
+  "input_verification": {
+    "hash_policy": "UTF-8 strict decode, normalize CRLF to LF, then SHA-256",
+    "manifest_hash_verified": true,
+    "contract_hash_verified": true,
+    "wave_a_receipt_hash_verified": true,
+    "listed_inputs": 28,
+    "listed_inputs_present": 28,
+    "listed_inputs_matched": 28,
+    "listed_inputs_missing": 0,
+    "listed_inputs_mismatched": 0,
+    "verdict": "PASS"
+  },
+  "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_b/E4_reproduction_adaptation",
+  "output_hash_policy": "Canonical-LF SHA-256: strict UTF-8 decode, CRLF normalized to LF, then SHA-256",
+  "outputs": [
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_b/E4_reproduction_adaptation/selected_reference_bundle.json",
+      "canonical_lf_sha256": "b4a817b62706bfafe4a30d33566cd9fea74a0571307519be2a7924184f326eb4",
+      "verification_status": "UNVERIFIED"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_b/E4_reproduction_adaptation/reproduction_execution_plan.md",
+      "canonical_lf_sha256": "be3bd215197b0db7c21fc41adaf3fec801272685e4fdcc69a240fb9d8c30dccb",
+      "verification_status": "UNVERIFIED"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_b/E4_reproduction_adaptation/v5_adapter_and_evaluator_contract.md",
+      "canonical_lf_sha256": "d8a9ea4bb7f4ba3ea10f22d265989b6e065b4709e9cce5b5edf9311c0104f49b",
+      "verification_status": "UNVERIFIED"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_b/E4_reproduction_adaptation/cross_dataset_reporting_contract.md",
+      "canonical_lf_sha256": "1948a42778e24e3f758015d5d68806585f522c403655f98498dcd5104cfe25a3",
+      "verification_status": "UNVERIFIED"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_b/E4_reproduction_adaptation/exact_command_confirmation_packet.json",
+      "canonical_lf_sha256": "4d43435e51caa8d8215e21464c151e9ef7169de61311f774b5e8010a47679514",
+      "verification_status": "UNVERIFIED"
+    }
+  ],
+  "handoff_artifact": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_b/E4_reproduction_adaptation/e4_handoff.json",
+    "sha256_policy": "The canonical-LF SHA-256 of this self-referential handoff is reported out-of-band with the commit and is not embedded in this file."
+  },
+  "repro_lock_derivation": {
+    "skill_hash_policy": "canonical-LF SHA-256 of the complete loaded SKILL.md",
+    "agent_bundle_members_in_canonical_order": [
+      "ars/experiment-agent/agents/code_runner_agent.md"
+    ],
+    "agent_bundle_hash_policy": "canonical-LF SHA-256 of the loaded agent prompt bundle in the listed order",
+    "materials_hash_policy": "SHA-256 of UTF-8 compact JSON [{filename,sha256},...] sorted by filename; sha256 values are the frozen manifest canonical-LF digests"
+  },
+  "truth_state": {
+    "result_status": "NOT_RUN",
+    "test_set_opened": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER",
+    "empirical_claims_made": false,
+    "execution_authorized": false
+  },
+  "candidate_status_counts": {
+    "READY_FOR_E5_AUDIT": 0,
+    "ACQUISITION_GATE": 0,
+    "EXTERNAL_COMPUTE_GATE": 0,
+    "PENDING_EVIDENCE": 7,
+    "REJECTED": 6,
+    "total_candidate_rows": 13
+  },
+  "assessment_counts": {
+    "movielens_framework_assessments": 2,
+    "exact_movielens_framework_reproduction_centers": 0,
+    "external_dataset_assessments": 4,
+    "full_external_validation_eligible": 0
+  },
+  "minimum_defensible_bundle": {
+    "official_reproduction_rows": 0,
+    "lock_resolution_priority": [
+      "E3-LIGHTGCN-GOWALLA-PYTORCH-001"
+    ],
+    "priority_is_execution_selected": false,
+    "reason": "No candidate clears repository, dataset, command/config, metric, checkpoint, and evaluator identity simultaneously."
+  },
+  "blocker_accounting": {
+    "wave_a_blockers_total": 26,
+    "RESOLVED": 1,
+    "CARRIED": 18,
+    "REJECTED_WITH_ROW": 7,
+    "all_blockers_mapped": true,
+    "disposition_source": "selected_reference_bundle.json#blocker_dispositions"
+  },
+  "unresolved_blockers": [
+    {
+      "blocker_id": "U1",
+      "scope": "all seven pending official rows",
+      "blocker": "No row has a complete lawful provider-to-raw-to-processed-to-split identity and hash receipt matching its reported center."
+    },
+    {
+      "blocker_id": "U2",
+      "scope": "LightGCN, QRec, SELFRec, LightGCL, AlphaRec, and local v5 surfaces",
+      "blocker": "One or more pinned states lack an explicit code license grant; public visibility or a badge is not substituted."
+    },
+    {
+      "blocker_id": "U3",
+      "scope": "pending official rows",
+      "blocker": "Dependency locks, result-bound seed/run identities, checkpoint artifacts/policies, and tie handling are incomplete."
+    },
+    {
+      "blocker_id": "U4",
+      "scope": "MovieLens 1M and 10M",
+      "blocker": "No exact framework-authoritative reproduction center meets the E4 identity lock. RecBole-GNN ML-1M is a documented framework reference but lacks result-bound run/checkpoint/dependency/split/tie receipts; ML-10M has no matching top-N center in replayed official sources."
+    },
+    {
+      "blocker_id": "U5",
+      "scope": "external validation",
+      "blocker": "No dataset passes the frozen persistent-user/history/order/basket, rights, version, hash, split, and evaluator contract. Amazon-M2 is rejected for the full contract; a reduced anonymous-session study remains an acquisition gate only."
+    },
+    {
+      "blocker_id": "U6",
+      "scope": "local v5",
+      "blocker": "The local CLI/training pipeline is not at a clean immutable commit, and the evaluator lacks the locked Recall@10, hierarchical seed-plus-user bootstrap, and typed baseline registry."
+    },
+    {
+      "blocker_id": "U7",
+      "scope": "execution control",
+      "blocker": "The hashed environment lock, lawful dataset receipt, and audited Windows resource-control wrapper named by the command packet do not exist; all commands remain blocked and unconfirmed."
+    }
+  ],
+  "dataset_findings": {
+    "movielens_1m_exact_framework_authoritative_center": false,
+    "movielens_10m_exact_framework_authoritative_center": false,
+    "amazon_m2_full_external_contract": "REJECTED",
+    "external_validation_verdict": "NO_DATASET_PASSES_CURRENT_EXTERNAL_CONTRACT"
+  },
+  "sequence_lock": [
+    "OFFICIAL_REPRODUCTION_ACCEPTANCE",
+    "METHOD_FAITHFUL_V5_ADAPTATION",
+    "HARMONIZED_V5_COMPARISON",
+    "SEPARATE_EXTERNAL_VALIDATION"
+  ],
+  "scope_guards": {
+    "repository_clone_performed": false,
+    "repository_fetch_performed": false,
+    "dataset_download_performed": false,
+    "authenticated_dataset_access_performed": false,
+    "package_installation_performed": false,
+    "environment_creation_performed": false,
+    "source_code_modification_performed": false,
+    "training_performed": false,
+    "evaluation_performed": false,
+    "smoke_test_performed": false,
+    "benchmark_execution_performed": false,
+    "test_access_performed": false,
+    "primary_source_web_replay_performed": true,
+    "local_read_only_inspection_performed": true,
+    "cross_dataset_raw_metric_comparison_allowed": false,
+    "e5_created": false,
+    "self_authorized_execution": false
+  },
+  "command_confirmation": {
+    "user_confirmation_required": true,
+    "confirmed": false,
+    "execution_authorized": false,
+    "new_packet_required_for_execution": true,
+    "retry_policy": "NO_AUTO_RETRY"
+  },
+  "git_commit": {
+    "sha": null,
+    "policy": "The commit containing this handoff is created after the handoff bytes are frozen and is reported out-of-band."
+  },
+  "verdict": "BLOCKED_NO_READY_REFERENCE_BUNDLE",
+  "fail_closed": true,
+  "next_gate": "Independent E5 evidence audit only after carried blockers are resolved; no execution is authorized and E5 is not created by this task."
+}

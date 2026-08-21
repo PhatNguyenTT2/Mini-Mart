@@ -1,0 +1,491 @@
+{
+  "schema_version": "1.0",
+  "artifact": "selected_reference_bundle",
+  "created_at": "2026-08-22",
+  "evidence_status": "UNVERIFIED",
+  "result_status": "NOT_RUN",
+  "test_set_opened": "NO",
+  "accepted_result_rows": 0,
+  "execution_authorized": false,
+  "entry_gate": {
+    "hash_policy": "UTF-8 strict decode, CRLF normalized to LF, then SHA-256",
+    "contract_canonical_lf_sha256": "368df1ab39df6f4cf03565cd871ba2fc5276a886f314557c6c0ff1244e9e63e5",
+    "manifest_canonical_lf_sha256": "e320eff700eae6e12d8e4059e25656b88dfd1ac1904e42290fce32944ddf41d2",
+    "wave_a_receipt_canonical_lf_sha256": "1024cd38692a6632e4972484f37fd58e24ea05744e00bd33b61eca4af470b44a",
+    "manifest_entries": 28,
+    "present": 28,
+    "matched": 28,
+    "missing": 0,
+    "mismatched": 0,
+    "verdict": "PASS"
+  },
+  "status_vocabulary": [
+    "READY_FOR_E5_AUDIT",
+    "ACQUISITION_GATE",
+    "EXTERNAL_COMPUTE_GATE",
+    "PENDING_EVIDENCE",
+    "REJECTED"
+  ],
+  "status_counts": {
+    "scope": "candidate_rows",
+    "READY_FOR_E5_AUDIT": 0,
+    "ACQUISITION_GATE": 0,
+    "EXTERNAL_COMPUTE_GATE": 0,
+    "PENDING_EVIDENCE": 7,
+    "REJECTED": 6,
+    "total": 13
+  },
+  "sources": {
+    "S_LIGHTGCN_README": {
+      "url": "https://raw.githubusercontent.com/gusye1234/LightGCN-PyTorch/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/README.md",
+      "access_date": "2026-08-22",
+      "locator": "Environment and bundled-data command at lines 22-39; fixed seed output at lines 60-64; final result and stopping description at lines 69-82"
+    },
+    "S_LIGHTGCN_REPO": {
+      "url": "https://github.com/gusye1234/LightGCN-PyTorch/tree/947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+      "access_date": "2026-08-22",
+      "locator": "Repository tree at immutable commit 947ca2b3b1d2d3545b114145710cb06c4e57b3d2"
+    },
+    "S_SIM_GCL_PAPER": {
+      "url": "https://arxiv.org/abs/2207.09037",
+      "access_date": "2026-08-22",
+      "locator": "Official paper record and linked PDF; experimental tables and implementation details"
+    },
+    "S_QREC_REPO": {
+      "url": "https://github.com/Coder-Yu/QRec/tree/a141bb37cb7706b2f53b2eed5843de3269f9f37f",
+      "access_date": "2026-08-22",
+      "locator": "Pinned official author-framework tree; main.py selector and config/SimGCL.conf"
+    },
+    "S_XSIMGCL_PAPER": {
+      "url": "https://arxiv.org/abs/2209.02544",
+      "access_date": "2026-08-22",
+      "locator": "Official paper PDF, Table 4 layer ablation and Table 6 overall comparison"
+    },
+    "S_SELFREC_REPO": {
+      "url": "https://github.com/Coder-Yu/SELFRec/tree/5b0229423cb1c727e85a704d63e460368c8b9dde",
+      "access_date": "2026-08-22",
+      "locator": "Pinned official author-framework tree; main.py selector and conf/XSimGCL.yaml"
+    },
+    "S_LIGHTGCL_PAPER": {
+      "url": "https://arxiv.org/html/2302.08191",
+      "access_date": "2026-08-22",
+      "locator": "Implementation settings at lines 173-179; Appendix E sampler change and updated results at lines 448-470"
+    },
+    "S_LIGHTGCL_REPO": {
+      "url": "https://github.com/HKUDS/LightGCL/tree/5590453ad86782f58017e58d0b698d7f32175be3",
+      "access_date": "2026-08-22",
+      "locator": "Pinned official repository tree; README run command and main.py pipeline"
+    },
+    "S_UNISREC_PAPER": {
+      "url": "https://arxiv.org/html/2206.05941",
+      "access_date": "2026-08-22",
+      "locator": "Scientific dataset results/statistics at lines 183-202 and preprocessing description at lines 223-230"
+    },
+    "S_UNISREC_REPO": {
+      "url": "https://github.com/RUCAIBox/UniSRec/tree/05aa5cba2809112c32808f70d16abc61c05c6538",
+      "access_date": "2026-08-22",
+      "locator": "Pinned official repository tree; README downstream and SASRec quick-start commands, props/UniSRec.yaml and props/finetune.yaml"
+    },
+    "S_BTBR_PAPER": {
+      "url": "https://arxiv.org/pdf/2308.01308",
+      "access_date": "2026-08-22",
+      "locator": "Sections 4.2, 5.2 and 5.4; Table 5 on page 13, TaFeng joint pretrain-finetune"
+    },
+    "S_BTBR_REPO": {
+      "url": "https://github.com/liming-7/Mask-Swap-NNBR/tree/8e0b796a9910888d6a8142f2d39dc7cbe87e349c",
+      "access_date": "2026-08-22",
+      "locator": "Pinned official repository tree; README Method 1 and Method 2 commands"
+    },
+    "S_ALPHAREC_PAPER": {
+      "url": "https://proceedings.iclr.cc/paper_files/paper/2025/file/e4bab1843c8d5a69f5abfd0824593493-Paper-Conference.pdf",
+      "access_date": "2026-08-22",
+      "locator": "Table 3 page 7, Movies and TV AlphaRec; Appendix C.1 pages 19-20; Appendix E pages 25-27"
+    },
+    "S_ALPHAREC_REPO": {
+      "url": "https://github.com/LehengTHU/AlphaRec/tree/4b6c6cf378f292c31dd75b09a8075e8344561415",
+      "access_date": "2026-08-22",
+      "locator": "Pinned official repository tree; README Dataset downloading and Commands for running > Movies and TV"
+    },
+    "S_RECBLEGNN_RESULT": {
+      "url": "https://github.com/RUCAIBox/RecBole-GNN/blob/818babfe03268c78a01215376f7ceea48df159f8/results/general/ml-1m.md",
+      "access_date": "2026-08-22",
+      "locator": "Dataset filtering, 8:1:1 full-sort protocol, common configuration, BPR row, and LightGCN row"
+    },
+    "S_RECBLEGNN_README": {
+      "url": "https://github.com/RUCAIBox/RecBole-GNN/blob/632ef888589944c190ad8f449b49ca559618d4df/README.md",
+      "access_date": "2026-08-22",
+      "locator": "Requirements and quick-start command; repository main commit resolved through the official GitHub API"
+    },
+    "S_RECBLEGNN_LICENSE": {
+      "url": "https://github.com/RUCAIBox/RecBole-GNN/blob/632ef888589944c190ad8f449b49ca559618d4df/LICENSE",
+      "access_date": "2026-08-22",
+      "locator": "MIT license grant"
+    },
+    "S_RECBOLE_LICENSE": {
+      "url": "https://github.com/RUCAIBox/RecBole/blob/7b02be5ec80a88310f2d04a27a82adfcbb5dc211/LICENSE",
+      "access_date": "2026-08-22",
+      "locator": "Complete MIT license file at the pinned RecBole commit"
+    },
+    "S_RECBOLE_README": {
+      "url": "https://github.com/RUCAIBox/RecBole/blob/7b02be5ec80a88310f2d04a27a82adfcbb5dc211/README.md",
+      "access_date": "2026-08-22",
+      "locator": "README License section containing academic-purpose wording"
+    },
+    "S_ML1M_README": {
+      "url": "https://files.grouplens.org/datasets/movielens/ml-1m-README.txt",
+      "access_date": "2026-08-22",
+      "locator": "Dataset description and use/redistribution terms at lines 3-24; no official ranking split is specified"
+    },
+    "S_ML1M_MD5": {
+      "url": "https://files.grouplens.org/datasets/movielens/ml-1m.zip.md5",
+      "access_date": "2026-08-22",
+      "locator": "Provider checksum sidecar: c4d9eecfca2ab87c1945afe126590906"
+    },
+    "S_ML10M_README": {
+      "url": "https://files.grouplens.org/datasets/movielens/ml-10m-README.html",
+      "access_date": "2026-08-22",
+      "locator": "Use terms at lines 0-15; five-fold scripts for rating prediction at lines 101-109"
+    },
+    "S_ML10M_MD5": {
+      "url": "https://files.grouplens.org/datasets/movielens/ml-10m.zip.md5",
+      "access_date": "2026-08-22",
+      "locator": "Provider checksum sidecar: ce571fd55effeba0271552578f2648bd"
+    },
+    "S_AMAZONM2_PAPER": {
+      "url": "https://papers.nips.cc/paper_files/paper/2023/file/193df57a2366d032fb18dcac0698d09a-Paper-Datasets_and_Benchmarks.pdf",
+      "access_date": "2026-08-22",
+      "locator": "Anonymous sessions and products at PDF text lines 55-60; 30-minute sessionization, chronological span, and split at lines 869-902; release statement at lines 1005-1009"
+    },
+    "S_AMAZONM2_PROVIDER": {
+      "url": "https://www.aicrowd.com/challenges/amazon-kdd-cup-23-multilingual-recommendation-challenge",
+      "access_date": "2026-08-22",
+      "locator": "Canonical provider route redirected to authenticated sign-in; no unauthenticated provider digest was exposed"
+    },
+    "S_AMAZONM2_REPO": {
+      "url": "https://github.com/amazon-science/amazon-m2",
+      "access_date": "2026-08-22",
+      "locator": "Official author repository landing page and dataset/challenge pointers"
+    },
+    "S_TAFENG_PAPER": {
+      "url": "https://arxiv.org/abs/2308.01308",
+      "access_date": "2026-08-22",
+      "locator": "Original Mask-Swap/BTBR paper record, lines 8-24; linked PDF Sections 5.2 and 5.4 and Table 5"
+    },
+    "S_TAFENG_REPO": {
+      "url": "https://github.com/liming-7/Mask-Swap-NNBR/tree/8e0b796a9910888d6a8142f2d39dc7cbe87e349c",
+      "access_date": "2026-08-22",
+      "locator": "Pinned author repository; README Method 1 and Method 2 surfaces; no canonical Ta-Feng provider grant is supplied"
+    },
+    "S_VIFOODREC_RECORD": {
+      "url": "https://aclanthology.org/2024.paclic-1.4/",
+      "access_date": "2026-08-22",
+      "locator": "Archival title/authors/venue at lines 33-35 and 58-96; paper link at lines 94-96"
+    },
+    "S_VIFOODREC_PAPER": {
+      "url": "https://aclanthology.org/2024.paclic-1.4.pdf",
+      "access_date": "2026-08-22",
+      "locator": "Original paper, Dataset, Data Preprocessing, and Recommendation Models and Evaluation sections"
+    },
+    "S_VIFOODREC_REPO": {
+      "url": "https://github.com/QuocAn55/A-New-Dataset-and-Empirical-Evaluation-for-Vietnamese-Food-Recommendation-System",
+      "access_date": "2026-08-22",
+      "locator": "Author repository lines 116-181; Data directory and README; repository page exposes no license grant"
+    }
+  },
+  "minimum_defensible_bundle": {
+    "selection_status": "NO_READY_ROW",
+    "official_reproduction_rows": [],
+    "lock_resolution_priority": [
+      "E3-LIGHTGCN-GOWALLA-PYTORCH-001"
+    ],
+    "reason": "This is the strongest existing command-to-center binding, but the bundled processed Gowalla lineage and rights, license grant, environment lock, tie policy, and immutable execution receipts are not sufficient. It is a resolution target, not an accepted reproduction row.",
+    "coverage_policy": "No row is promoted to improve family or dataset coverage. E5 may audit only a row that clears every carried gate without changing its source-bound center."
+  },
+  "candidate_rows": [
+    {
+      "row_id": "E3-LIGHTGCN-GOWALLA-PYTORCH-001",
+      "method": "LightGCN",
+      "provenance": "author repository",
+      "repository": {
+        "url": "https://github.com/gusye1234/LightGCN-PyTorch",
+        "immutable_sha": "947ca2b3b1d2d3545b114145710cb06c4e57b3d2"
+      },
+      "dataset": "Gowalla processed pack bundled in the repository",
+      "source_bound_command": "cd code && python main.py --decay=1e-4 --lr=0.001 --layer=3 --seed=2020 --dataset=\"gowalla\" --topks=\"[20]\" --recdim=64",
+      "reported_centers": [
+        {"metric": "Recall@20", "center": 0.1824, "tolerance": 0.00912},
+        {"metric": "NDCG@20", "center": 0.1547, "tolerance": 0.007735},
+        {"metric": "Precision@20", "center": 0.05589, "tolerance": 0.005}
+      ],
+      "metric_semantics": "Repository full-ranking output for the bundled Gowalla pipeline; final README row after the source-described stopping procedure. The tolerance is frozen from Wave A and is not a new empirical interval.",
+      "status": "PENDING_EVIDENCE",
+      "selected_for_execution": false,
+      "rationale": "The command, seed, layer count, and repository-reported center are source-bound, and the README identifies the final result. The raw-to-processed lineage, dataset permissions, code license, dependency lock, candidate/tie semantics, checkpoint artifact, and run receipt remain missing.",
+      "unresolved": ["dataset_lineage", "dataset_rights", "repository_license", "dependency_lock", "tie_policy", "checkpoint_receipt"],
+      "source_ids": ["S_LIGHTGCN_README", "S_LIGHTGCN_REPO"]
+    },
+    {
+      "row_id": "E3-SIMGCL-YELP2018-QREC-001",
+      "method": "SimGCL",
+      "provenance": "author framework repository",
+      "repository": {"url": "https://github.com/Coder-Yu/QRec", "immutable_sha": "a141bb37cb7706b2f53b2eed5843de3269f9f37f"},
+      "dataset": "Yelp2018 processed configuration",
+      "source_bound_command": "python main.py, then select SimGCL with the pinned repository configuration",
+      "reported_centers": [
+        {"metric": "Recall@20", "center": 0.0721, "tolerance": 0.005},
+        {"metric": "NDCG@20", "center": 0.0601, "tolerance": 0.005}
+      ],
+      "metric_semantics": "Source-reported Yelp2018 top-20 ranking metrics under the QRec configuration; tolerance frozen by Wave A.",
+      "status": "PENDING_EVIDENCE",
+      "selected_for_execution": false,
+      "rationale": "The interactive selector is not a non-interactive exact command packet, and processed-data hashes, raw lineage, seeds/run identities, checkpoint selection, table-to-config proof, and tie handling remain absent.",
+      "unresolved": ["noninteractive_command", "dataset_hash", "dataset_lineage", "seed_schedule", "checkpoint_policy", "config_table_binding", "tie_policy"],
+      "source_ids": ["S_SIM_GCL_PAPER", "S_QREC_REPO"]
+    },
+    {
+      "row_id": "E3-XSIMGCL-YELP2018-SELFREC-001",
+      "method": "XSimGCL",
+      "provenance": "author framework repository",
+      "repository": {"url": "https://github.com/Coder-Yu/SELFRec", "immutable_sha": "5b0229423cb1c727e85a704d63e460368c8b9dde"},
+      "dataset": "Yelp2018 processed configuration",
+      "source_bound_command": "python main.py, then select XSimGCL with the pinned three-layer repository configuration",
+      "reported_centers": [
+        {"metric": "Recall@20", "center": 0.0723, "tolerance": 0.005},
+        {"metric": "NDCG@20", "center": 0.0604, "tolerance": 0.005}
+      ],
+      "metric_semantics": "Three-layer README/configuration result only; the four-layer paper row is explicitly excluded.",
+      "status": "PENDING_EVIDENCE",
+      "selected_for_execution": false,
+      "rationale": "The three-layer center is kept separate from the four-layer paper center. Exact non-interactive command, dependency resolution, dataset lineage/hash, seed/run identities, checkpoint rule, and tie policy remain unresolved; the pinned repository has no license file.",
+      "unresolved": ["noninteractive_command", "repository_license", "dependency_lock", "dataset_lineage", "seed_schedule", "checkpoint_policy", "tie_policy"],
+      "source_ids": ["S_XSIMGCL_PAPER", "S_SELFREC_REPO"]
+    },
+    {
+      "row_id": "E3-LIGHTGCL-YELP-UPDATED-001",
+      "method": "LightGCL",
+      "provenance": "author repository",
+      "repository": {"url": "https://github.com/HKUDS/LightGCL", "immutable_sha": "5590453ad86782f58017e58d0b698d7f32175be3"},
+      "dataset": "Yelp processed configuration",
+      "source_bound_command": "python main.py --data yelp",
+      "reported_centers": [
+        {"metric": "Recall@20", "center": 0.0985, "tolerance": 0.005},
+        {"metric": "NDCG@20", "center": 0.0842, "tolerance": 0.005},
+        {"metric": "Recall@40", "center": 0.1553, "tolerance": 0.007765},
+        {"metric": "NDCG@40", "center": 0.1051, "tolerance": 0.005255}
+      ],
+      "metric_semantics": "Appendix E updated interaction-sampler row only; Table 1 centers are not attached to this command.",
+      "status": "PENDING_EVIDENCE",
+      "selected_for_execution": false,
+      "rationale": "The primary paper confirms that Appendix E changes the sampler and reports new centers. Dataset lineage/hash, repository license, seed schedule, checkpoint selection, candidate universe, and tie policy remain missing.",
+      "unresolved": ["repository_license", "dataset_lineage", "dataset_hash", "seed_schedule", "checkpoint_policy", "candidate_universe", "tie_policy"],
+      "source_ids": ["S_LIGHTGCL_PAPER", "S_LIGHTGCL_REPO"]
+    },
+    {
+      "row_id": "E3-UNISREC-SCIENTIFIC-TRANS-001",
+      "method": "UniSRec",
+      "provenance": "author repository",
+      "repository": {"url": "https://github.com/RUCAIBox/UniSRec", "immutable_sha": "05aa5cba2809112c32808f70d16abc61c05c6538"},
+      "dataset": "Scientific processed archive",
+      "source_bound_command": "python finetune.py -d Scientific -p saved/UniSRec-FHCKM-300.pth",
+      "reported_centers": [
+        {"metric": "Recall@10", "center": 0.1235, "tolerance": 0.006175},
+        {"metric": "NDCG@10", "center": 0.0634, "tolerance": 0.005},
+        {"metric": "Recall@50", "center": 0.2473, "tolerance": 0.012365},
+        {"metric": "NDCG@50", "center": 0.0904, "tolerance": 0.005}
+      ],
+      "metric_semantics": "UniSRec Scientific full-sort centers under the paper's preprocessing; tolerance frozen by Wave A.",
+      "status": "PENDING_EVIDENCE",
+      "selected_for_execution": false,
+      "rationale": "The author command and center are framework-bound, but the processed archive, pretrained checkpoint, and text artifacts lack provider hashes and raw lineage; seed/run schedule, checkpoint selection, and ties remain unresolved.",
+      "unresolved": ["archive_hash", "raw_lineage", "checkpoint_hash", "text_rights", "seed_schedule", "checkpoint_policy", "tie_policy"],
+      "source_ids": ["S_UNISREC_PAPER", "S_UNISREC_REPO"]
+    },
+    {
+      "row_id": "E3-SASREC-SCIENTIFIC-UNISREC-FRAMEWORK-001",
+      "method": "SASRec",
+      "provenance": "framework baseline inside author experiment",
+      "repository": {"url": "https://github.com/RUCAIBox/UniSRec", "immutable_sha": "05aa5cba2809112c32808f70d16abc61c05c6538"},
+      "dataset": "Scientific processed archive",
+      "source_bound_command": "python run_baseline.py -m SASRec -d Scientific --config_files=props/finetune.yaml --hidden_size=300",
+      "reported_centers": [
+        {"metric": "Recall@10", "center": 0.108, "tolerance": 0.0054},
+        {"metric": "NDCG@10", "center": 0.0553, "tolerance": 0.005},
+        {"metric": "Recall@50", "center": 0.2042, "tolerance": 0.01021},
+        {"metric": "NDCG@50", "center": 0.076, "tolerance": 0.005}
+      ],
+      "metric_semantics": "SASRec as executed within the UniSRec paper framework; not transferable to a different SASRec repository or evaluator.",
+      "status": "PENDING_EVIDENCE",
+      "selected_for_execution": false,
+      "rationale": "The row is usable only as a UniSRec-framework baseline. Dataset/checkpoint hashes, exact objective configuration, seeds/runs, checkpoint selection, and tie handling are missing.",
+      "unresolved": ["archive_hash", "raw_lineage", "objective_config", "seed_schedule", "checkpoint_policy", "tie_policy"],
+      "source_ids": ["S_UNISREC_PAPER", "S_UNISREC_REPO"]
+    },
+    {
+      "row_id": "E3-BTBR-TAFENG-JOINT-001",
+      "method": "BTBR",
+      "provenance": "author repository and paper",
+      "repository": {"url": "https://github.com/liming-7/Mask-Swap-NNBR", "immutable_sha": "8e0b796a9910888d6a8142f2d39dc7cbe87e349c"},
+      "dataset": "Ta-Feng",
+      "source_bound_command": null,
+      "reported_centers": [
+        {"metric": "Recall@10", "center": 0.1057, "tolerance": 0.005285},
+        {"metric": "NDCG@10", "center": 0.087, "tolerance": 0.005},
+        {"metric": "Recall@20", "center": 0.1353, "tolerance": 0.006765},
+        {"metric": "NDCG@20", "center": 0.0973, "tolerance": 0.005}
+      ],
+      "metric_semantics": "Paper Table 5 joint-task, batch size 128, five-run row; not the public README item-selection batch-64 command.",
+      "status": "REJECTED",
+      "selected_for_execution": false,
+      "rationale": "No exact public command matches the Table 5 joint-task center, the exposed command changes task and batch size, and E2 found no canonical lawful Ta-Feng provider/version. The row cannot be repaired by inference.",
+      "unresolved": [],
+      "source_ids": ["S_BTBR_PAPER", "S_BTBR_REPO"]
+    },
+    {
+      "row_id": "E3-ALPHAREC-MOVIES-TV-001",
+      "method": "AlphaRec",
+      "provenance": "author repository",
+      "repository": {"url": "https://github.com/LehengTHU/AlphaRec", "immutable_sha": "4b6c6cf378f292c31dd75b09a8075e8344561415"},
+      "dataset": "Amazon Movies and TV processed/text/embedding bundle",
+      "source_bound_command": "nohup python main.py --rs_type General --clear_checkpoints --saveID tau_0.15_v3_mlp_ --dataset amazon_movie --model_name AlphaRec --n_layers 2 --patience 20 --cuda 1 --no_wandb --train_norm --pred_norm --neg_sample 256 --lm_model v3 --model_version mlp --tau 0.15 --infonce 1 &>logs/amazon_movie_tau_0.15_v3_mlp__2.log &",
+      "reported_centers": [
+        {"metric": "Recall@20", "center": 0.1221, "tolerance": 0.006105},
+        {"metric": "NDCG@20", "center": 0.1144, "tolerance": 0.00572},
+        {"metric": "Hit@20", "center": 0.5587, "tolerance": 0.027935}
+      ],
+      "metric_semantics": "Author-registry Movies and TV row only; no cross-dataset comparison is licensed.",
+      "status": "PENDING_EVIDENCE",
+      "selected_for_execution": false,
+      "rationale": "Dataset, processed text, and embedding hashes/rights are missing; the repository exposes an MIT badge but no license grant file at the locked state; run count, formula/aggregation detail, checkpoint selection, and tie handling are unresolved.",
+      "unresolved": ["repository_license", "dataset_hash", "embedding_hash", "text_rights", "seed_schedule", "checkpoint_policy", "metric_formula", "tie_policy"],
+      "source_ids": ["S_ALPHAREC_PAPER", "S_ALPHAREC_REPO"]
+    },
+    {
+      "row_id": "E3-RB001-LIGHTGCL-TABLE1-CURRENT-COMMAND",
+      "method": "LightGCL",
+      "status": "REJECTED",
+      "selected_for_execution": false,
+      "rationale": "The current command uses the Appendix E interaction sampler; binding it to older Table 1 centers changes the sampler and is invalid.",
+      "source_ids": ["S_LIGHTGCL_PAPER"]
+    },
+    {
+      "row_id": "E3-RB002-XSIMGCL-THREELAYER-FOURLAYER-CENTER",
+      "method": "XSimGCL",
+      "status": "REJECTED",
+      "selected_for_execution": false,
+      "rationale": "The three-layer repository configuration cannot inherit the four-layer paper center Recall@20 0.0733 and NDCG@20 0.0606.",
+      "source_ids": ["S_XSIMGCL_PAPER"]
+    },
+    {
+      "row_id": "E3-RB003-MASKSWAP-BTBR-TABLE5",
+      "method": "Mask-Swap-NNBR",
+      "status": "REJECTED",
+      "selected_for_execution": false,
+      "rationale": "The public Method-1 command is not the BTBR Table 5 joint-task command and cannot inherit that center.",
+      "source_ids": ["S_BTBR_PAPER"]
+    },
+    {
+      "row_id": "E3-RB004-LIGHTGCN-PAPER-CENTER-PYTORCH-README-COMMAND",
+      "method": "LightGCN",
+      "status": "REJECTED",
+      "selected_for_execution": false,
+      "rationale": "The PyTorch README command is bound only to the README center. It cannot be attached to a paper center produced by another implementation or pipeline.",
+      "source_ids": ["S_LIGHTGCN_README"]
+    },
+    {
+      "row_id": "E3-RB005-OFFICIAL-METRIC-AS-V5-SUPERIORITY",
+      "method": "all",
+      "status": "REJECTED",
+      "selected_for_execution": false,
+      "rationale": "A raw official-reproduction metric on another dataset or evaluator is not evidence of superiority on the harmonized v5 seam.",
+      "source_ids": []
+    }
+  ],
+  "framework_center_assessments": [
+    {
+      "assessment_id": "E4-ML1M-RECBOLE-GNN",
+      "dataset": "MovieLens 1M",
+      "repository_sha": "632ef888589944c190ad8f449b49ca559618d4df",
+      "result_page_sha": "818babfe03268c78a01215376f7ceea48df159f8",
+      "provider_md5": "c4d9eecfca2ab87c1945afe126590906",
+      "framework_centers_present": true,
+      "exact_framework_authoritative_reproduction_center": false,
+      "status": "PENDING_EVIDENCE",
+      "assessment": "The official RecBole-GNN result page binds BPR and LightGCN centers to a documented >=3 interaction filter, 8:1:1 ratio split, full-sort evaluator, metrics, and common configuration. It does not bind those centers to a result seed/run count, checkpoint artifact/policy, exact dependency lock, dataset byte-to-split receipt, or tie policy. The GroupLens provider supplies an archive checksum and terms but no official top-N split. Therefore this is a useful framework reference, not an exact reproduction lock.",
+      "source_ids": ["S_RECBLEGNN_RESULT", "S_RECBLEGNN_README", "S_RECBLEGNN_LICENSE", "S_ML1M_README", "S_ML1M_MD5"]
+    },
+    {
+      "assessment_id": "E4-ML10M-FRAMEWORK",
+      "dataset": "MovieLens 10M",
+      "provider_md5": "ce571fd55effeba0271552578f2648bd",
+      "framework_centers_present": false,
+      "exact_framework_authoritative_reproduction_center": false,
+      "status": "PENDING_EVIDENCE",
+      "assessment": "The canonical archive and provider checksum are available. The provider's five-fold scripts are for rating prediction, not a framework-owned top-N center, split, sampler, checkpoint, and evaluator bundle. No exact framework-authoritative reproduction center was found in the replayed official sources.",
+      "source_ids": ["S_ML10M_README", "S_ML10M_MD5"]
+    }
+  ],
+  "external_validation_assessments": [
+    {
+      "assessment_id": "E4-EXT-AMAZON-M2-FULL-CONTRACT",
+      "dataset": "Amazon-M2",
+      "status": "REJECTED",
+      "full_external_validation_eligible": false,
+      "rationale": "The primary paper defines anonymous 30-minute sessions, not persistent users with cross-order history, and the canonical provider requires authenticated access while exposing no unauthenticated provider digest. This fails the frozen external-validation identity/history/order/basket contract and the acquisition/hash gate.",
+      "source_ids": ["S_AMAZONM2_PAPER", "S_AMAZONM2_PROVIDER", "S_AMAZONM2_REPO"]
+    },
+    {
+      "assessment_id": "E4-EXT-AMAZON-M2-SESSION-SENSITIVITY",
+      "dataset": "Amazon-M2",
+      "status": "ACQUISITION_GATE",
+      "full_external_validation_eligible": false,
+      "rationale": "A separately labelled anonymous-session sensitivity study may be designed only after terms, authorized acquisition, release identity, hashes, locale/task selection, and a non-identity-equivalent protocol are locked. It cannot satisfy or substitute for the frozen full external-validation contract.",
+      "source_ids": ["S_AMAZONM2_PAPER", "S_AMAZONM2_PROVIDER"]
+    },
+    {
+      "assessment_id": "E4-EXT-TAFENG",
+      "dataset": "Ta-Feng",
+      "status": "REJECTED",
+      "full_external_validation_eligible": false,
+      "rationale": "Wave A found no canonical provider, version, rights grant, or provider hash; no row is promoted by a paper-hosted processed copy.",
+      "source_ids": ["S_TAFENG_PAPER", "S_TAFENG_REPO"]
+    },
+    {
+      "assessment_id": "E4-EXT-VIFOODREC",
+      "dataset": "ViFoodRec",
+      "status": "REJECTED",
+      "full_external_validation_eligible": false,
+      "rationale": "Wave A found a task mismatch, imputed rather than observed structure, absent event time/basket identity, and no license. It is not the frozen external task.",
+      "source_ids": ["S_VIFOODREC_RECORD", "S_VIFOODREC_PAPER", "S_VIFOODREC_REPO"]
+    }
+  ],
+  "external_validation_verdict": "NO_DATASET_PASSES_CURRENT_EXTERNAL_CONTRACT",
+  "blocker_dispositions": [
+    {"blocker_id": "E1-B01", "origin": "E1", "blocker": "E2 must independently verify every dataset origin, license, redistribution and permitted-use claim", "disposition": "CARRIED", "mapped_to": ["E3-LIGHTGCN-GOWALLA-PYTORCH-001", "E3-SIMGCL-YELP2018-QREC-001", "E3-XSIMGCL-YELP2018-SELFREC-001", "E3-LIGHTGCL-YELP-UPDATED-001", "E3-UNISREC-SCIENTIFIC-TRANS-001", "E3-SASREC-SCIENTIFIC-UNISREC-FRAMEWORK-001", "E3-ALPHAREC-MOVIES-TV-001"], "rationale": "E2 verified some providers but not the processed packs used by these centers."},
+    {"blocker_id": "E1-B02", "origin": "E1", "blocker": "E3 must lock split, candidate universe, negative sampling, metric semantics and checkpoint selection before command adaptation", "disposition": "CARRIED", "mapped_to": ["E3-LIGHTGCN-GOWALLA-PYTORCH-001", "E3-SIMGCL-YELP2018-QREC-001", "E3-XSIMGCL-YELP2018-SELFREC-001", "E3-LIGHTGCL-YELP-UPDATED-001", "E3-UNISREC-SCIENTIFIC-TRANS-001", "E3-SASREC-SCIENTIFIC-UNISREC-FRAMEWORK-001", "E3-ALPHAREC-MOVIES-TV-001"], "rationale": "No candidate has all five evaluator/checkpoint fields locked."},
+    {"blocker_id": "E1-B03", "origin": "E1", "blocker": "RecBole MIT LICENSE versus README academic-purpose wording requires E4 review", "disposition": "CARRIED", "mapped_to": ["E4-ML1M-RECBOLE-GNN"], "rationale": "The pinned official repository contains a complete MIT license and also retains academic-purpose wording in the README. E4 does not make a legal interpretation that erases the tension; code, dataset, and artifact permissions remain separately gated.", "source_ids": ["S_RECBOLE_LICENSE", "S_RECBOLE_README"]},
+    {"blocker_id": "E1-B04", "origin": "E1", "blocker": "LightGCN, Mask-Swap-NNBR, QRec, SELFRec, LightGCL and local project expose no license file at locked state", "disposition": "CARRIED", "mapped_to": ["E3-LIGHTGCN-GOWALLA-PYTORCH-001", "E3-SIMGCL-YELP2018-QREC-001", "E3-XSIMGCL-YELP2018-SELFREC-001", "E3-LIGHTGCL-YELP-UPDATED-001", "E3-RB003-MASKSWAP-BTBR-TABLE5"], "rationale": "No license is inferred from public visibility."},
+    {"blocker_id": "E1-B05", "origin": "E1", "blocker": "AlphaRec MIT badge but no license grant file", "disposition": "CARRIED", "mapped_to": ["E3-ALPHAREC-MOVIES-TV-001"], "rationale": "A badge is not treated as an immutable grant file."},
+    {"blocker_id": "E1-B06", "origin": "E1", "blocker": "Mask-Swap lacks dependency lock and raw preprocessing", "disposition": "REJECTED_WITH_ROW", "mapped_to": ["E3-RB003-MASKSWAP-BTBR-TABLE5"], "rationale": "The only proposed center join is rejected; no execution row remains."},
+    {"blocker_id": "E1-B07", "origin": "E1", "blocker": "SELFRec README/requirements version-floor/pin tension", "disposition": "CARRIED", "mapped_to": ["E3-XSIMGCL-YELP2018-SELFREC-001"], "rationale": "No environment was created and no lock resolution evidence exists."},
+    {"blocker_id": "E1-B08", "origin": "E1", "blocker": "local v5 cli.py/training/pipeline.py modified versus HEAD needs clean commit", "disposition": "CARRIED", "mapped_to": ["V5-LOCAL-ADAPTER-GATE"], "rationale": "The inherited dirty state is preserved; no local source is treated as immutable."},
+    {"blocker_id": "E1-B09", "origin": "E1", "blocker": "bounded method-preserving collectors need E4 design where no native file", "disposition": "RESOLVED", "mapped_to": ["V5-LOCAL-ADAPTER-GATE"], "rationale": "The adapter/evaluator contract defines a bounded collector envelope without changing model mathematics; implementation and parity evidence remain for E5."},
+    {"blocker_id": "E1-B10", "origin": "E1", "blocker": "all artifacts UNVERIFIED until E4/E5", "disposition": "CARRIED", "mapped_to": ["ALL"], "rationale": "E4 remains UNVERIFIED and executes nothing."},
+    {"blocker_id": "E2-B01", "origin": "E2", "blocker": "LightGCN, LightGCL and SELFRec processed packs lack raw-to-processed version/filter/split lineage and dataset rights", "disposition": "CARRIED", "mapped_to": ["E3-LIGHTGCN-GOWALLA-PYTORCH-001", "E3-XSIMGCL-YELP2018-SELFREC-001", "E3-LIGHTGCL-YELP-UPDATED-001"], "rationale": "Repository-bundled files do not establish lawful canonical lineage."},
+    {"blocker_id": "E2-B02", "origin": "E2", "blocker": "UniSRec and AlphaRec bundles lack immutable release/hash/raw lineage and text/embedding rights", "disposition": "CARRIED", "mapped_to": ["E3-UNISREC-SCIENTIFIC-TRANS-001", "E3-SASREC-SCIENTIFIC-UNISREC-FRAMEWORK-001", "E3-ALPHAREC-MOVIES-TV-001"], "rationale": "No immutable provider release or complete artifact manifest was found."},
+    {"blocker_id": "E2-B03", "origin": "E2", "blocker": "Amazon Reviews 2018 has mutable metadata and no digest/license/split/basket lock", "disposition": "CARRIED", "mapped_to": ["E3-ALPHAREC-MOVIES-TV-001"], "rationale": "The Movies and TV row depends on unresolved Amazon artifacts."},
+    {"blocker_id": "E2-B04", "origin": "E2", "blocker": "Amazon-M2 requires authentication/terms, has no provider digest, and lacks persistent user/order/basket identity", "disposition": "REJECTED_WITH_ROW", "mapped_to": ["E4-EXT-AMAZON-M2-FULL-CONTRACT", "E4-EXT-AMAZON-M2-SESSION-SENSITIVITY"], "rationale": "Rejected for the full contract; any reduced anonymous-session study remains an acquisition gate and cannot substitute."},
+    {"blocker_id": "E2-B05", "origin": "E2", "blocker": "Complete Journey current route/schema/version/hash/terms unresolved", "disposition": "CARRIED", "mapped_to": ["EXTERNAL-ACQUISITION-BACKLOG"], "rationale": "No row is promoted and the acquisition gate remains."},
+    {"blocker_id": "E2-B06", "origin": "E2", "blocker": "Instacart official competition is disabled/original unavailable and mirrors are excluded", "disposition": "CARRIED", "mapped_to": ["EXTERNAL-ACQUISITION-BACKLOG"], "rationale": "No lawful canonical acquisition route was established."},
+    {"blocker_id": "E2-B07", "origin": "E2", "blocker": "Tenrec current license/files/hash/task/config not locked", "disposition": "CARRIED", "mapped_to": ["EXTERNAL-ACQUISITION-BACKLOG"], "rationale": "No row is promoted."},
+    {"blocker_id": "E2-B08", "origin": "E2", "blocker": "Ta-Feng has no primary provider/rights/version", "disposition": "REJECTED_WITH_ROW", "mapped_to": ["E3-BTBR-TAFENG-JOINT-001", "E4-EXT-TAFENG"], "rationale": "Both metric binding and external use are rejected."},
+    {"blocker_id": "E2-B09", "origin": "E2", "blocker": "ViFoodRec has wrong task, imputed structure, no event time/basket, and no license", "disposition": "REJECTED_WITH_ROW", "mapped_to": ["E4-EXT-VIFOODREC"], "rationale": "The dataset is rejected for the frozen external task."},
+    {"blocker_id": "E3-B01", "origin": "E3", "blocker": "No candidate is E4/E5 validated; all are UNVERIFIED", "disposition": "CARRIED", "mapped_to": ["ALL"], "rationale": "No command was executed and no result was accepted."},
+    {"blocker_id": "E3-B02", "origin": "E3", "blocker": "One or more rows lack immutable dataset hash and raw-to-split receipt", "disposition": "CARRIED", "mapped_to": ["ALL_PENDING_ROWS"], "rationale": "Provider archive checksums do not replace processed split receipts."},
+    {"blocker_id": "E3-B03", "origin": "E3", "blocker": "Seed/checkpoint/run values and dispersion are absent for one or more rows", "disposition": "CARRIED", "mapped_to": ["ALL_PENDING_ROWS"], "rationale": "No absent result metadata is inferred."},
+    {"blocker_id": "E3-B04", "origin": "E3", "blocker": "LightGCL current command uses Appendix E interaction sampler; Table 1 centers cannot bind", "disposition": "REJECTED_WITH_ROW", "mapped_to": ["E3-RB001-LIGHTGCL-TABLE1-CURRENT-COMMAND"], "rationale": "The invalid cross-sampler join is explicitly rejected."},
+    {"blocker_id": "E3-B05", "origin": "E3", "blocker": "BTBR public item-selection batch-64 command is not Table 5 joint-task batch-128", "disposition": "REJECTED_WITH_ROW", "mapped_to": ["E3-BTBR-TAFENG-JOINT-001", "E3-RB003-MASKSWAP-BTBR-TABLE5"], "rationale": "No exact command exists for the center."},
+    {"blocker_id": "E3-B06", "origin": "E3", "blocker": "Framework commands are not interchangeable with author centers", "disposition": "REJECTED_WITH_ROW", "mapped_to": ["E3-RB004-LIGHTGCN-PAPER-CENTER-PYTORCH-README-COMMAND"], "rationale": "The bundle keeps each center inside its source framework."},
+    {"blocker_id": "E3-B07", "origin": "E3", "blocker": "Tie handling is unstated for most rows", "disposition": "CARRIED", "mapped_to": ["ALL_PENDING_ROWS"], "rationale": "No deterministic tie rule is invented for official reproduction."}
+  ],
+  "fail_closed_verdict": "BLOCKED_NO_READY_REFERENCE_BUNDLE"
+}
