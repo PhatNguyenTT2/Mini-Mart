@@ -1,0 +1,615 @@
+{
+  "schema_version": "stage1e.reference_dataset_registry.v2",
+  "lane_id": "E2_reference_datasets",
+  "material_passport": {
+    "origin_skill": "ars-codex:academic-research-suite",
+    "origin_workflow": "ars/experiment-agent/WORKFLOW.md evidence-discovery and lock",
+    "origin_date": "2026-08-22",
+    "access_date": "2026-08-22",
+    "version_label": "stage1e_rebaseline_v2_e2_v1",
+    "verification_status": "UNVERIFIED_UNTIL_E4_E5",
+    "model": "gpt-5.6-sol",
+    "reasoning": "xhigh",
+    "input_manifest_sha256": "107299c026434366ed6ddb18f4ee6e25fd790d9799fd81c1c1e87871ed60744d",
+    "authoritative_input_root": "E:/UIT/cv/backend",
+    "result_status": "NOT_RUN",
+    "accepted_result_rows": 0,
+    "test_set_opened": "NO"
+  },
+  "decision_rules": {
+    "source_policy": "Direct primary sources only: provider pages, author-official repositories, original papers/proceedings.",
+    "size_policy": "Users, items, and interactions are populated only when an official provider, original paper, or author-official repository states them.",
+    "hash_policy": "A provider checksum, immutable repository commit, release asset digest, or an E4 acquisition SHA-256 is required before bytes are executable.",
+    "rights_policy": "Dataset rights are not inferred from a repository code license. Research use, commercial use, redistribution, derivative artifacts, and model-output rights are separate.",
+    "comparison_policy": "Raw metrics across different datasets, filters, splits, or candidate policies are not directly comparable.",
+    "vietnamese_policy": "Vietnamese language is an audit dimension, not evidence of task, split, rights, basket, history, or cold-item compatibility."
+  },
+  "status_counts": {
+    "REFERENCE_REPRODUCTION_READY": 2,
+    "HARMONIZED_EXTERNAL_CANDIDATE": 1,
+    "SENSITIVITY_ONLY": 2,
+    "PENDING": 9,
+    "REJECTED": 2,
+    "total": 16
+  },
+  "source_catalog": {
+    "S01": {
+      "url": "https://grouplens.org/datasets/movielens/",
+      "locator": "Older Datasets, MovieLens 1M and MovieLens 10M entries; release labels, stability statements, download and checksum links",
+      "verification_status": "VERIFIED_PRIMARY"
+    },
+    "S02": {
+      "url": "https://files.grouplens.org/datasets/movielens/ml-1m-README.txt",
+      "locator": "Summary; Usage License; Ratings File Description; Movies File Description",
+      "verification_status": "VERIFIED_PRIMARY"
+    },
+    "S03": {
+      "url": "https://files.grouplens.org/datasets/movielens/ml-1m.zip.md5",
+      "locator": "provider-published checksum sidecar linked by GroupLens",
+      "verification_status": "URL_VERIFIED_VALUE_PENDING_E4"
+    },
+    "S04": {
+      "url": "https://files.grouplens.org/datasets/movielens/ml-10m-README.html",
+      "locator": "Summary; Usage License; User IDs; Ratings/Tags; Movies; Cross-Validation",
+      "verification_status": "VERIFIED_PRIMARY"
+    },
+    "S05": {
+      "url": "https://files.grouplens.org/datasets/movielens/ml-10m.zip.md5",
+      "locator": "provider-published checksum sidecar linked by GroupLens",
+      "verification_status": "URL_VERIFIED_VALUE_PENDING_E4"
+    },
+    "S06": {
+      "url": "https://github.com/kang205/SASRec",
+      "locator": "README, Running the code; Input Data format; included processed datasets; MovieLens-1M command",
+      "verification_status": "VERIFIED_AUTHOR_OFFICIAL"
+    },
+    "S07": {
+      "url": "https://github.com/FeiSun/BERT4Rec",
+      "locator": "README, Usage and Data Generation; author-official implementation",
+      "verification_status": "VERIFIED_AUTHOR_OFFICIAL"
+    },
+    "S08": {
+      "url": "https://github.com/FeiSun/BERT4Rec/blob/master/run_ml-1m.sh",
+      "locator": "entire author-provided MovieLens-1M launch configuration",
+      "verification_status": "VERIFIED_AUTHOR_OFFICIAL"
+    },
+    "S09": {
+      "url": "https://github.com/gusye1234/LightGCN-PyTorch",
+      "locator": "README, An example to run a 3-layer LightGCN; Dataset; archived repository notice",
+      "verification_status": "VERIFIED_AUTHOR_OFFICIAL"
+    },
+    "S10": {
+      "url": "https://snap.stanford.edu/data/loc-gowalla.html",
+      "locator": "Dataset information and Files sections",
+      "verification_status": "VERIFIED_PROVIDER"
+    },
+    "S11": {
+      "url": "https://business.yelp.com/data/resources/open-dataset/",
+      "locator": "Yelp Open Dataset download description and educational-use statement",
+      "verification_status": "VERIFIED_PROVIDER_CURRENT_NOT_YELP2018_LOCK"
+    },
+    "S12": {
+      "url": "https://github.com/Coder-Yu/SELFRec",
+      "locator": "README, supported models and Yelp2018 result table",
+      "verification_status": "VERIFIED_FRAMEWORK_OFFICIAL"
+    },
+    "S13": {
+      "url": "https://github.com/Coder-Yu/SELFRec/tree/main/conf",
+      "locator": "configuration directory containing BERT4Rec, LightGCN, MF, SASRec, SimGCL and XSimGCL YAML files",
+      "verification_status": "VERIFIED_FRAMEWORK_OFFICIAL"
+    },
+    "S14": {
+      "url": "https://github.com/Coder-Yu/SELFRec/blob/main/conf/XSimGCL.yaml",
+      "locator": "dataset, training, test and model parameter keys",
+      "verification_status": "VERIFIED_FRAMEWORK_OFFICIAL"
+    },
+    "S15": {
+      "url": "https://github.com/Coder-Yu/SELFRec/blob/main/conf/SimGCL.yaml",
+      "locator": "dataset, training, test and model parameter keys",
+      "verification_status": "VERIFIED_FRAMEWORK_OFFICIAL"
+    },
+    "S16": {
+      "url": "https://github.com/Coder-Yu/SELFRec/tree/main/dataset",
+      "locator": "dataset directory listing including yelp2018 and other bundled processed sets",
+      "verification_status": "VERIFIED_FRAMEWORK_OFFICIAL"
+    },
+    "S17": {
+      "url": "https://github.com/HKUDS/LightGCL",
+      "locator": "README, Datasets and Examples; exact Yelp, Gowalla, MovieLens-10M, Amazon and Tmall commands",
+      "verification_status": "VERIFIED_AUTHOR_OFFICIAL"
+    },
+    "S18": {
+      "url": "https://github.com/HKUDS/LightGCL/tree/main/data",
+      "locator": "author-official processed data directory",
+      "verification_status": "VERIFIED_AUTHOR_OFFICIAL_RIGHTS_PENDING"
+    },
+    "S19": {
+      "url": "https://openreview.net/pdf?id=FKXVK9dyMM",
+      "locator": "LightGCL original paper, Experimental Settings and dataset table",
+      "verification_status": "VERIFIED_ORIGINAL_PAPER"
+    },
+    "S20": {
+      "url": "https://cseweb.ucsd.edu/~jmcauley/datasets/amazon_v2/index.html",
+      "locator": "Amazon Review Data (2018); Important Notes; per-category files; review and metadata schema examples",
+      "verification_status": "VERIFIED_AUTHOR_PROVIDER"
+    },
+    "S21": {
+      "url": "https://github.com/RUCAIBox/UniSRec",
+      "locator": "README, Quick Start, fine-tuning and inductive commands, SASRec baseline, processed-data link and preprocessing guidance",
+      "verification_status": "VERIFIED_AUTHOR_OFFICIAL"
+    },
+    "S22": {
+      "url": "https://github.com/LehengTHU/AlphaRec",
+      "locator": "README, Status, Dataset, Project Structure and exact dataset commands",
+      "verification_status": "VERIFIED_AUTHOR_OFFICIAL"
+    },
+    "S23": {
+      "url": "https://papers.nips.cc/paper_files/paper/2023/file/193df57a2366d032fb18dcac0698d09a-Paper-Datasets_and_Benchmarks.pdf",
+      "locator": "Amazon-M2 original paper, pp.2-4 Tasks and Table 1; p.16 temporal split; p.17 Availability and license",
+      "verification_status": "VERIFIED_ORIGINAL_PAPER"
+    },
+    "S24": {
+      "url": "https://github.com/HaitaoMao/Amazon-M2-Session-Recommendation",
+      "locator": "README, Overview, Tasks, Dataset, Models and Usage",
+      "verification_status": "VERIFIED_AUTHOR_OFFICIAL"
+    },
+    "S25": {
+      "url": "https://www.aicrowd.com/challenges/amazon-kdd-cup-23-multilingual-recommendation-challenge/problems/task-1-next-product-recommendation/dataset_files",
+      "locator": "current dataset-files endpoint; authentication/sign-in state observed 2026-08-22",
+      "verification_status": "CURRENT_STATE_OBSERVED_AUTH_REQUIRED"
+    },
+    "S26": {
+      "url": "https://www.dunnhumby.com/source-files/",
+      "locator": "The Complete Journey section; two-year, 2,500-household, purchases, attributes, marketing-contact and academic-use descriptions",
+      "verification_status": "VERIFIED_PROVIDER_PAGE_CURRENT_LINK_PENDING"
+    },
+    "S27": {
+      "url": "https://www.kaggle.com/c/basket-analysis/overview",
+      "locator": "Instacart Market Basket Analysis official competition overview; disabled-at-host-request notice; task description",
+      "verification_status": "VERIFIED_OFFICIAL_COMPETITION_CURRENT_DISABLED"
+    },
+    "S28": {
+      "url": "https://www.instacart.com/datasets/grocery-shopping-2017",
+      "locator": "original provider dataset URL cited by primary papers; current availability check",
+      "verification_status": "CURRENTLY_UNAVAILABLE"
+    },
+    "S29": {
+      "url": "https://www.ijcai.org/proceedings/2019/0389.pdf",
+      "locator": "original paper, Section 5.1 datasets; Ta-Feng temporal coverage and transaction/basket description",
+      "verification_status": "VERIFIED_ORIGINAL_PAPER_MIRROR_CITATION_NOT_CANONICAL"
+    },
+    "S30": {
+      "url": "https://arxiv.org/abs/2308.01308",
+      "locator": "Mask-Swap original paper, Evaluation Protocol and Dataset sections",
+      "verification_status": "VERIFIED_ORIGINAL_PAPER"
+    },
+    "S31": {
+      "url": "https://github.com/liming-7/Mask-Swap-NNBR",
+      "locator": "README, exact Ta-Feng command and Complete Journey W&B fold configuration",
+      "verification_status": "VERIFIED_AUTHOR_OFFICIAL_DATA_RIGHTS_PENDING"
+    },
+    "S32": {
+      "url": "https://github.com/liming-7/A-Next-Basket-Recommendation-Reality-Check",
+      "locator": "README, Dataset, Preprocess Dataset and Input Data Format",
+      "verification_status": "VERIFIED_AUTHOR_OFFICIAL_DATA_RIGHTS_PENDING"
+    },
+    "S33": {
+      "url": "https://github.com/yuangh-x/2022-nips-tenrec",
+      "locator": "README, official website/license acceptance route and task examples",
+      "verification_status": "VERIFIED_AUTHOR_OFFICIAL"
+    },
+    "S34": {
+      "url": "https://static.qblv.qq.com/qblv/h5/algo-frontend/tenrec_dataset.html",
+      "locator": "official Tenrec access page",
+      "verification_status": "CURRENT_ENDPOINT_REACHABLE_TERMS_CAPTURE_PENDING"
+    },
+    "S35": {
+      "url": "https://proceedings.neurips.cc/paper_files/paper/2022/file/4ad4fc1528374422dd7a69dea9e72948-Paper-Datasets_and_Benchmarks.pdf",
+      "locator": "Tenrec original paper, data fields and ordering; sequential recommendation protocol; checklist license response",
+      "verification_status": "VERIFIED_ORIGINAL_PAPER"
+    },
+    "S36": {
+      "url": "https://doras.dcu.ie/29693/",
+      "locator": "ViEcomRec institutional-record title, authors, publication and files",
+      "verification_status": "VERIFIED_INSTITUTIONAL_RECORD"
+    },
+    "S37": {
+      "url": "https://doras.dcu.ie/29693/1/viecomrec.pdf",
+      "locator": "ViEcomRec original paper, pp.2-4 Dataset Creation, Problem Formulation and Experimental Setting",
+      "verification_status": "VERIFIED_ORIGINAL_PAPER"
+    },
+    "S38": {
+      "url": "https://github.com/linh222/face_cleanser_recommendation_dataset",
+      "locator": "README, dataset description, download route, non-commercial statement and official baselines",
+      "verification_status": "VERIFIED_AUTHOR_OFFICIAL"
+    },
+    "S39": {
+      "url": "https://github.com/linh222/face_cleanser_recommendation_dataset/blob/main/LICENSE",
+      "locator": "CC BY-NC-SA 4.0 legal code; grant, attribution, noncommercial and ShareAlike sections",
+      "verification_status": "VERIFIED_AUTHOR_OFFICIAL"
+    },
+    "S40": {
+      "url": "https://aclanthology.org/2024.paclic-1.4/",
+      "locator": "ViFoodRec archival proceedings record and PDF",
+      "verification_status": "VERIFIED_PROCEEDINGS"
+    },
+    "S41": {
+      "url": "https://aclanthology.org/2024.paclic-1.4.pdf",
+      "locator": "ViFoodRec original paper, Dataset; Data Preprocessing; Recommendation Models and Evaluation",
+      "verification_status": "VERIFIED_ORIGINAL_PAPER"
+    },
+    "S42": {
+      "url": "https://github.com/QuocAn55/DS300",
+      "locator": "author-referenced repository, README and Data directory; no repository license observed",
+      "verification_status": "VERIFIED_AUTHOR_REPOSITORY_RIGHTS_PENDING"
+    },
+    "S43": {
+      "url": "https://github.com/MinhNguyenDS/ViHoRec",
+      "locator": "README, dataset summary, license, anonymization, official leave-last-one-out benchmark and scripts",
+      "verification_status": "VERIFIED_AUTHOR_OFFICIAL"
+    },
+    "S44": {
+      "url": "https://github.com/MinhNguyenDS/ViHoRec/blob/Master/DATASHEET.md",
+      "locator": "Composition; Collection Process; Preprocessing; Uses; Distribution; Maintenance; source-platform restrictions and known risks",
+      "verification_status": "VERIFIED_AUTHOR_OFFICIAL"
+    },
+    "S45": {
+      "url": "https://arxiv.org/abs/2607.12946",
+      "locator": "ViHoRec concurrent preprint record and date",
+      "verification_status": "VERIFIED_AUTHOR_PREPRINT"
+    }
+  },
+  "datasets": [
+    {
+      "dataset_id": "movielens_1m",
+      "official_name": "MovieLens 1M Dataset",
+      "provider": "GroupLens Research, University of Minnesota",
+      "canonical_url": "https://grouplens.org/datasets/movielens/",
+      "release": {"label": "stable benchmark data set", "date": "2003-02", "status": "VERIFIED_PRIMARY"},
+      "version_lock": {"mechanism": "provider ZIP plus provider MD5 sidecar; E4 records MD5 and SHA-256", "published_hash": null, "status": "CHECKSUM_VALUE_PENDING_E4"},
+      "access": {"lawful_route": "direct GroupLens download", "current_availability": "AVAILABLE", "observed_at": "2026-08-22"},
+      "rights": {
+        "license_terms": "GroupLens README usage terms, not an OSI or Creative Commons license",
+        "research_use": "ALLOWED_WITH_ACKNOWLEDGEMENT",
+        "commercial_use": "PERMISSION_REQUIRED",
+        "redistribution": "PROHIBITED_WITHOUT_SEPARATE_PERMISSION",
+        "derivative_artifacts": "NOT_STATED",
+        "model_output_rights": "NOT_STATED"
+      },
+      "task": {"interaction": "explicit 1-5 star movie rating", "labels": "whole-star ratings", "users": 6040, "items": "approximately 3900 movies", "interactions": 1000209},
+      "signals": {"timestamps": "Unix seconds", "order": "recoverable per user", "session": false, "basket": false, "user_history": true, "item_text": "movie title and genre labels", "language": "titles as supplied; no dataset-level language guarantee", "cold_item_support": "NOT_OFFICIAL"},
+      "official_protocol": {"preprocessing": "each included user has at least 20 ratings", "filtering": "provider statement only", "split": "NONE_OFFICIAL_FOR_1M", "negative_or_candidate_policy": "NONE_OFFICIAL"},
+      "repo_bindings": [
+        {"repository": "https://github.com/kang205/SASRec", "model": "SASRec", "config_or_command": "README MovieLens-1M command: python main.py --dataset=ml-1m --train_dir=default --maxlen=200 --dropout_rate=0.2", "status": "DOCUMENTED_AUTHOR_OFFICIAL"},
+        {"repository": "https://github.com/FeiSun/BERT4Rec", "model": "BERT4Rec", "config_or_command": "run_ml-1m.sh", "status": "DOCUMENTED_AUTHOR_OFFICIAL"}
+      ],
+      "privacy": "User IDs are anonymized; README demographics exist. Re-identification review remains an E5 gate.",
+      "compatibility": {"reference_reproduction": true, "harmonized_external": false, "full_contract": false},
+      "status": "REFERENCE_REPRODUCTION_READY",
+      "status_reason": "Canonical stable provider release, direct access, stated task/schema and official author configurations; execution still requires E4 byte hash and E5 rights confirmation.",
+      "pending_gates": ["E4 acquire without opening TEST and record MD5/SHA-256", "E5 interpret derivatives/model-output rights and privacy constraints"],
+      "evidence_map": {"identity_release_access": ["S01", "S03"], "rights_task_signals": ["S02"], "repo_bindings": ["S06", "S07", "S08"]}
+    },
+    {
+      "dataset_id": "movielens_10m",
+      "official_name": "MovieLens 10M Dataset",
+      "provider": "GroupLens Research, University of Minnesota",
+      "canonical_url": "https://grouplens.org/datasets/movielens/",
+      "release": {"label": "stable benchmark data set", "date": "2009-01", "status": "VERIFIED_PRIMARY"},
+      "version_lock": {"mechanism": "provider ZIP plus provider MD5 sidecar; E4 records MD5 and SHA-256", "published_hash": null, "status": "CHECKSUM_VALUE_PENDING_E4"},
+      "access": {"lawful_route": "direct GroupLens download", "current_availability": "AVAILABLE", "observed_at": "2026-08-22"},
+      "rights": {
+        "license_terms": "GroupLens README usage terms, not an OSI or Creative Commons license",
+        "research_use": "ALLOWED_WITH_ACKNOWLEDGEMENT",
+        "commercial_use": "PERMISSION_REQUIRED",
+        "redistribution": "PROHIBITED_WITHOUT_SEPARATE_PERMISSION",
+        "derivative_artifacts": "NOT_STATED",
+        "model_output_rights": "NOT_STATED"
+      },
+      "task": {"interaction": "explicit 0.5-5.0 movie rating plus free-text tags", "labels": "half-star ratings and tag events", "users": 71567, "items": 10681, "interactions": {"ratings": 10000054, "tags": 95580}},
+      "signals": {"timestamps": "Unix seconds", "order": "recoverable per user", "session": false, "basket": false, "user_history": true, "item_text": "movie title, genre labels, user tags", "language": "not guaranteed", "cold_item_support": "NOT_OFFICIAL"},
+      "official_protocol": {"preprocessing": "README schema", "filtering": "not stated beyond distribution construction", "split": "provider includes deterministic five-fold rating scripts", "negative_or_candidate_policy": "NONE_OFFICIAL"},
+      "repo_bindings": [
+        {"repository": "https://github.com/HKUDS/LightGCL", "model": "LightGCL", "config_or_command": "README MovieLens-10M command; bundled data path data/ml10m", "status": "DOCUMENTED_AUTHOR_OFFICIAL_DATA_RIGHTS_PENDING"}
+      ],
+      "privacy": "Anonymized user IDs; re-identification review remains E5.",
+      "compatibility": {"reference_reproduction": true, "harmonized_external": false, "full_contract": false},
+      "status": "REFERENCE_REPRODUCTION_READY",
+      "status_reason": "Stable canonical provider release with a provider split artifact and an exact LightGCL command; author-bundled processed-byte lineage remains separately pending.",
+      "pending_gates": ["E4 acquire provider bytes and record MD5/SHA-256", "E4 diff provider-to-LightGCL processed lineage", "E5 rights/privacy review"],
+      "evidence_map": {"identity_release_access": ["S01", "S05"], "rights_task_protocol": ["S04"], "repo_bindings": ["S17", "S18", "S19"]}
+    },
+    {
+      "dataset_id": "lightgcn_processed_pack",
+      "official_name": "LightGCN-PyTorch processed dataset pack",
+      "provider": "LightGCN authors",
+      "canonical_url": "https://github.com/gusye1234/LightGCN-PyTorch",
+      "release": {"label": "repository main/master state; repository archived 2023-10-17", "date": null, "status": "NO_DATA_RELEASE_TAG"},
+      "version_lock": {"mechanism": "immutable Git commit for repository files plus E4 SHA-256 for any externally acquired bytes", "published_hash": null, "status": "PENDING_COMMIT_SELECTION"},
+      "access": {"lawful_route": "read-only author repository and its documented data layout", "current_availability": "AVAILABLE_REPOSITORY", "observed_at": "2026-08-22"},
+      "rights": {"license_terms": "Code repository license does not establish underlying Gowalla, Yelp2018, Amazon-book or LastFM data rights", "research_use": "PENDING", "commercial_use": "PENDING", "redistribution": "PENDING", "derivative_artifacts": "PENDING", "model_output_rights": "PENDING"},
+      "task": {"interaction": "author-processed implicit user-item graph", "labels": "positive edges; exact raw-event mapping not fully documented", "users": null, "items": null, "interactions": null},
+      "signals": {"timestamps": "not used in documented input", "order": false, "session": false, "basket": false, "user_history": true, "item_text": false, "language": null, "cold_item_support": false},
+      "official_protocol": {"preprocessing": "author-provided processed pack", "filtering": "PENDING exact transformation lineage", "split": "train/test files documented by repository", "negative_or_candidate_policy": "repository evaluator required; E3 code lock needed"},
+      "repo_bindings": [{"repository": "https://github.com/gusye1234/LightGCN-PyTorch", "model": "LightGCN", "config_or_command": "README: python main.py --decay=1e-4 --lr=0.001 --layer=3 --seed=2020 --dataset=gowalla --topks=[20] --recdim=64", "status": "DOCUMENTED_AUTHOR_OFFICIAL"}],
+      "privacy": "Gowalla canonical source contains location check-ins; location and re-identification review required.",
+      "compatibility": {"reference_reproduction": "BLOCKED_RIGHTS_AND_LINEAGE", "harmonized_external": false, "full_contract": false},
+      "status": "PENDING",
+      "status_reason": "Exact author command exists, but one code license cannot clear four underlying datasets and the processed transformation/version is not release-locked.",
+      "pending_gates": ["E4 select immutable repository commit and map every processed file to raw source", "E5 resolve dataset-specific rights and Gowalla location privacy"],
+      "evidence_map": {"identity_access_protocol_repo": ["S09"], "gowalla_raw": ["S10"], "yelp_current_not_2018": ["S11"]}
+    },
+    {
+      "dataset_id": "selfrec_yelp2018",
+      "official_name": "SELFRec bundled Yelp2018 processed dataset",
+      "provider": "SELFRec framework authors",
+      "canonical_url": "https://github.com/Coder-Yu/SELFRec/tree/main/dataset",
+      "release": {"label": "repository main state", "date": null, "status": "NO_DATA_RELEASE_TAG"},
+      "version_lock": {"mechanism": "immutable Git commit and per-file SHA-256", "published_hash": null, "status": "PENDING_COMMIT_SELECTION"},
+      "access": {"lawful_route": "author-maintained framework repository", "current_availability": "AVAILABLE_REPOSITORY", "observed_at": "2026-08-22"},
+      "rights": {"license_terms": "Framework code license is not evidence for Yelp data redistribution", "research_use": "PENDING_YELP_TERMS_VERSION", "commercial_use": "PENDING", "redistribution": "PENDING", "derivative_artifacts": "PENDING", "model_output_rights": "PENDING"},
+      "task": {"interaction": "processed implicit user-item recommendation", "labels": "positive train/test edges", "users": null, "items": null, "interactions": null},
+      "signals": {"timestamps": "not present in framework train/test format", "order": false, "session": false, "basket": false, "user_history": true, "item_text": false, "language": null, "cold_item_support": false},
+      "official_protocol": {"preprocessing": "PENDING provenance/filter reconstruction", "filtering": "PENDING", "split": "YAML train/test paths", "negative_or_candidate_policy": "top-N evaluator configured; exact candidate semantics require E3 code lock"},
+      "repo_bindings": [
+        {"repository": "https://github.com/Coder-Yu/SELFRec", "model": "SimGCL", "config_or_command": "conf/SimGCL.yaml", "status": "DOCUMENTED_FRAMEWORK_OFFICIAL_NOT_MODEL_AUTHOR"},
+        {"repository": "https://github.com/Coder-Yu/SELFRec", "model": "XSimGCL", "config_or_command": "conf/XSimGCL.yaml", "status": "DOCUMENTED_FRAMEWORK_OFFICIAL_NOT_MODEL_AUTHOR"}
+      ],
+      "privacy": "Business/review-source terms and user pseudonymization lineage are unresolved.",
+      "compatibility": {"reference_reproduction": "CONDITIONAL_FRAMEWORK_CONFIG_ONLY", "harmonized_external": false, "full_contract": false},
+      "status": "PENDING",
+      "status_reason": "Useful exact framework configurations exist, but framework authority is not model-author authority and the bundled Yelp2018 data lacks a canonical version-and-rights bridge.",
+      "pending_gates": ["E3 label authority tier correctly", "E4 reconstruct Yelp source/version/filter lineage", "E5 clear Yelp terms and redistribution"],
+      "evidence_map": {"identity_repo": ["S12", "S13", "S14", "S15", "S16"], "current_yelp_provider_context": ["S11"]}
+    },
+    {
+      "dataset_id": "lightgcl_processed_pack",
+      "official_name": "LightGCL processed data pack",
+      "provider": "LightGCL authors",
+      "canonical_url": "https://github.com/HKUDS/LightGCL/tree/main/data",
+      "release": {"label": "repository main state", "date": null, "status": "NO_DATA_RELEASE_TAG"},
+      "version_lock": {"mechanism": "immutable Git commit and per-file SHA-256", "published_hash": null, "status": "PENDING_COMMIT_SELECTION"},
+      "access": {"lawful_route": "author-official repository", "current_availability": "AVAILABLE_REPOSITORY", "observed_at": "2026-08-22"},
+      "rights": {"license_terms": "Repository code terms do not establish rights for Yelp, Gowalla, MovieLens-10M, Amazon or Tmall data", "research_use": "DATASET_SPECIFIC_PENDING_EXCEPT_ML10M_TERMS_KNOWN", "commercial_use": "PENDING", "redistribution": "PENDING", "derivative_artifacts": "PENDING", "model_output_rights": "PENDING"},
+      "task": {"interaction": "processed implicit graph recommendation", "labels": "positive edges", "users": null, "items": null, "interactions": null},
+      "signals": {"timestamps": "not in documented graph input", "order": false, "session": false, "basket": false, "user_history": true, "item_text": false, "language": null, "cold_item_support": false},
+      "official_protocol": {"preprocessing": "author pack", "filtering": "paper/repository-specific; exact byte transformation pending", "split": "bundled train/test graph files", "negative_or_candidate_policy": "E3 code lock required"},
+      "repo_bindings": [{"repository": "https://github.com/HKUDS/LightGCL", "model": "LightGCL", "config_or_command": "README exact commands for all five named datasets", "status": "DOCUMENTED_AUTHOR_OFFICIAL"}],
+      "privacy": "Dataset-specific; Gowalla location and Yelp user/business terms require review.",
+      "compatibility": {"reference_reproduction": "ML10M_ROUTE_PLAUSIBLE_OTHERS_BLOCKED", "harmonized_external": false, "full_contract": false},
+      "status": "PENDING",
+      "status_reason": "Official commands and bundled files exist, but the multi-provider pack is not a single rights-cleared release.",
+      "pending_gates": ["E4 immutable commit and raw-to-processed mapping", "E5 rights per underlying dataset"],
+      "evidence_map": {"identity_repo_protocol": ["S17", "S18", "S19"], "ml10m_provider": ["S01", "S04"], "gowalla_provider": ["S10"]}
+    },
+    {
+      "dataset_id": "amazon_reviews_2018",
+      "official_name": "Amazon Review Data (2018)",
+      "provider": "UCSD McAuley Lab",
+      "canonical_url": "https://cseweb.ucsd.edu/~jmcauley/datasets/amazon_v2/index.html",
+      "release": {"label": "2018 collection; metadata files changed in 2020-08 and 2021-05", "date": "2018", "status": "VERIFIED_MUTABLE_PROVIDER_FILES"},
+      "version_lock": {"mechanism": "exact category URL plus E4 acquisition SHA-256; page has no published immutable digest", "published_hash": null, "status": "PENDING_ACQUISITION_HASH"},
+      "access": {"lawful_route": "direct category downloads from author/provider page", "current_availability": "AVAILABLE", "observed_at": "2026-08-22"},
+      "rights": {"license_terms": "No dataset license located on canonical page", "research_use": "PENDING", "commercial_use": "PENDING", "redistribution": "PENDING", "derivative_artifacts": "PENDING", "model_output_rights": "PENDING"},
+      "task": {"interaction": "review/rating events by reviewer and ASIN", "labels": "overall rating plus review text", "users": null, "items": null, "interactions": null},
+      "signals": {"timestamps": "Unix reviewTime", "order": "recoverable per reviewer", "session": false, "basket": false, "user_history": true, "item_text": "title, feature, description, category and review text where present", "language": "not guaranteed by category files", "cold_item_support": "possible to construct but not official"},
+      "official_protocol": {"preprocessing": "raw and k-core variants are separately offered", "filtering": "k-core only when named in file", "split": "NONE_OFFICIAL", "negative_or_candidate_policy": "NONE_OFFICIAL"},
+      "repo_bindings": [],
+      "privacy": "Reviewer IDs and free text may carry disclosure/re-identification risk; E5 review required.",
+      "compatibility": {"reference_reproduction": false, "harmonized_external": "POSSIBLE_AFTER_RIGHTS_AND_CATEGORY_LOCK", "full_contract": false},
+      "status": "PENDING",
+      "status_reason": "Strong text/time/user-history substrate, but mutable metadata, no published digest, no verified license, no basket/order structure, and no official split.",
+      "pending_gates": ["E4 choose exact categories/variant and hash bytes", "E5 establish lawful research, redistribution, derivatives and output path", "E3 define preregistered adapter if retained"],
+      "evidence_map": {"all_claimed_fields": ["S20"]}
+    },
+    {
+      "dataset_id": "unisrec_processed_bundle",
+      "official_name": "UniSRec processed downstream-domain bundle",
+      "provider": "UniSRec authors",
+      "canonical_url": "https://github.com/RUCAIBox/UniSRec",
+      "release": {"label": "repository-linked Google Drive/Baidu processed bundle", "date": null, "status": "NO_DATA_RELEASE_TAG"},
+      "version_lock": {"mechanism": "immutable repository commit for scripts/config plus E4 SHA-256 for Drive artifacts", "published_hash": null, "status": "PENDING"},
+      "access": {"lawful_route": "author repository links to hosted processed data", "current_availability": "LINK_ADVERTISED_AUTH_OR_HOST_STATE_NOT_LOCKED", "observed_at": "2026-08-22"},
+      "rights": {"license_terms": "MIT code license does not establish rights for processed Amazon-domain data or text embeddings", "research_use": "PENDING", "commercial_use": "PENDING", "redistribution": "PENDING", "derivative_artifacts": "PENDING", "model_output_rights": "PENDING"},
+      "task": {"interaction": "sequential recommendation transfer/fine-tuning", "labels": "next-item sequence events", "users": null, "items": null, "interactions": null},
+      "signals": {"timestamps": "not guaranteed in distributed processed sequence files", "order": true, "session": false, "basket": false, "user_history": true, "item_text": "precomputed item representations and text preprocessing are integral", "language": "domain dependent; not locked", "cold_item_support": "inductive evaluation documented"},
+      "official_protocol": {"preprocessing": "author scripts and intermediate products", "filtering": "PENDING exact source transformation", "split": "fine-tune and inductive modes documented", "negative_or_candidate_policy": "requires E3 code lock"},
+      "repo_bindings": [{"repository": "https://github.com/RUCAIBox/UniSRec", "model": "UniSRec and SASRec baseline", "config_or_command": "README commands using props/finetune.yaml and named Scientific/Pantry/Instruments/Arts/Office/OR datasets", "status": "DOCUMENTED_AUTHOR_OFFICIAL"}],
+      "privacy": "Underlying review identities/text and embedding provenance require review.",
+      "compatibility": {"reference_reproduction": "BLOCKED_ARTIFACT_AND_RIGHTS", "harmonized_external": false, "full_contract": false},
+      "status": "PENDING",
+      "status_reason": "The defensible UniSRec route is author-documented, but the hosted bytes, raw-data lineage, version and text rights are not locked.",
+      "pending_gates": ["E4 acquire and hash exact bundle without TEST access", "E4 map each named domain to canonical raw source", "E5 text/embedding/dataset rights"],
+      "evidence_map": {"repo_protocol_access": ["S21"], "plausible_raw_context_not_asserted_as_lineage": ["S20"]}
+    },
+    {
+      "dataset_id": "alpharec_processed_bundle",
+      "official_name": "AlphaRec processed recommendation datasets",
+      "provider": "AlphaRec authors",
+      "canonical_url": "https://github.com/LehengTHU/AlphaRec",
+      "release": {"label": "anonymous hosted bundle referenced by repository", "date": null, "status": "NO_RELEASE_OR_VERSION"},
+      "version_lock": {"mechanism": "immutable repository commit plus E4 acquisition SHA-256", "published_hash": null, "status": "PENDING"},
+      "access": {"lawful_route": "author repository links to hosted bundle", "current_availability": "LINK_ADVERTISED_NOT_LOCKED", "observed_at": "2026-08-22"},
+      "rights": {"license_terms": "No dataset-specific license established", "research_use": "PENDING", "commercial_use": "PENDING", "redistribution": "PENDING", "derivative_artifacts": "PENDING", "model_output_rights": "PENDING"},
+      "task": {"interaction": "implicit recommendation over author-processed Amazon datasets", "labels": "positive interactions", "users": null, "items": null, "interactions": null},
+      "signals": {"timestamps": "not established", "order": "not established", "session": false, "basket": false, "user_history": true, "item_text": "model consumes external semantic representations; exact artifact rights pending", "language": "not established", "cold_item_support": "zero-shot/user-intention artifacts marked unfinished in repository"},
+      "official_protocol": {"preprocessing": "author processed bundle", "filtering": "PENDING", "split": "PENDING", "negative_or_candidate_policy": "requires E3 code lock"},
+      "repo_bindings": [{"repository": "https://github.com/LehengTHU/AlphaRec", "model": "AlphaRec", "config_or_command": "README exact commands for amazon_book_2014, amazon_movie and amazon_game", "status": "DOCUMENTED_AUTHOR_OFFICIAL"}],
+      "privacy": "Underlying review/user IDs and semantic artifacts require E5 review.",
+      "compatibility": {"reference_reproduction": "BLOCKED_RELEASE_RIGHTS", "harmonized_external": false, "full_contract": false},
+      "status": "PENDING",
+      "status_reason": "Exact commands exist, but the data host is not an immutable release, data rights are absent, and advertised zero-shot artifacts are not released.",
+      "pending_gates": ["E4 artifact acquisition/hash and lineage", "E5 data/text/model-output rights", "E3 freeze actually released feature set only"],
+      "evidence_map": {"all_claimed_fields": ["S22"]}
+    },
+    {
+      "dataset_id": "amazon_m2",
+      "official_name": "Amazon-M2: A Multilingual Multi-locale Shopping Session Dataset for Recommendation and Text Generation",
+      "provider": "Amazon / KDD Cup 2023 authors; distributed through AIcrowd",
+      "canonical_url": "https://www.aicrowd.com/challenges/amazon-kdd-cup-23-multilingual-recommendation-challenge/problems/task-1-next-product-recommendation/dataset_files",
+      "release": {"label": "KDD Cup 2023 Amazon-M2 release", "date": "2023", "status": "VERIFIED_ORIGINAL_PAPER"},
+      "version_lock": {"mechanism": "authenticated AIcrowd acquisition plus E4 per-file SHA-256 and manifest; no provider digest located", "published_hash": null, "status": "PENDING_ACQUISITION_HASH"},
+      "access": {"lawful_route": "AIcrowd challenge dataset-files route after authentication and acceptance of current terms", "current_availability": "AUTHENTICATION_REQUIRED", "observed_at": "2026-08-22"},
+      "rights": {
+        "license_terms": "Original paper states Apache License 2.0",
+        "research_use": "ALLOWED_SUBJECT_TO_LICENSE_AND_ACCESS_TERMS",
+        "commercial_use": "LICENSE_TEXT_PERMITS_USE_BUT_E5_MUST_RECONCILE_ACCESS_AND_THIRD_PARTY_CONTENT",
+        "redistribution": "LICENSE_TEXT_PERMITS_SUBJECT_TO_NOTICE_AND_TERMS; E5_REVIEW_REQUIRED",
+        "derivative_artifacts": "LICENSE_TEXT_PERMITS_MODIFICATIONS_SUBJECT_TO_LICENSE_CONDITIONS; E5_REVIEW_REQUIRED",
+        "model_output_rights": "NOT_EXPLICITLY_CLASSIFIED; PENDING_E5_FOR_TEXT_OR_IDENTIFIER_MEMORIZATION"
+      },
+      "task": {"interaction": "chronologically ordered product engagements within shopping sessions", "labels": "Task 1 next product; Task 2 next title generation; Task 3 next product including unseen products", "users": null, "items": 1410675, "interactions": {"train": 15306183, "test": 1483822, "train_sessions": 3606249, "test_sessions": 361659}},
+      "signals": {"timestamps": "dataset spans three weeks but row-level timestamps are not stated as distributed fields", "order": true, "session": true, "basket": false, "user_history": "within-session only; no persistent customer identity established", "item_text": "title, locale, brand, color, size, model and description fields", "language": "six locales and multiple languages", "cold_item_support": "official Task 3 includes unseen products"},
+      "official_protocol": {"preprocessing": "official locale/task files", "filtering": "paper-defined task construction", "split": "first two weeks train, remaining week test; test randomly divided into challenge phases", "negative_or_candidate_policy": "Task 1/3 rank product candidates under challenge definition; exact released candidate files must be locked by E4"},
+      "repo_bindings": [{"repository": "https://github.com/HaitaoMao/Amazon-M2-Session-Recommendation", "model": "CORE, GRU4Rec++, NARM, SRGNN, STAMP baselines", "config_or_command": "README Dataset, Models and Usage sections", "status": "DOCUMENTED_AUTHOR_OFFICIAL"}],
+      "privacy": "Session data are intended as public benchmark data; residual product-text/identifier and locale review remains E5.",
+      "compatibility": {"reference_reproduction": false, "harmonized_external": true, "full_contract": false, "contract_gap": "no persistent user history, orders or baskets; session-only semantics"},
+      "status": "HARMONIZED_EXTERNAL_CANDIDATE",
+      "status_reason": "Best primary-supported public commerce candidate for multilingual text and cold items, but only a reduced session-specific external contract is defensible.",
+      "pending_gates": ["E4 authenticate, record accepted access terms, acquire TRAIN-side assets only and hash them", "E3 preregister session-only harmonized adapter and prohibit full-contract claims", "E5 license/access/product-text/output review"],
+      "evidence_map": {"release_rights_task_size_signals_protocol": ["S23"], "repo_binding": ["S24"], "current_access": ["S25"]}
+    },
+    {
+      "dataset_id": "dunnhumby_complete_journey",
+      "official_name": "The Complete Journey",
+      "provider": "dunnhumby",
+      "canonical_url": "https://www.dunnhumby.com/source-files/",
+      "release": {"label": "provider source-file offering", "date": null, "status": "NO_VERSION_FOUND"},
+      "version_lock": {"mechanism": "E4 provider artifact acquisition and SHA-256 after exact package/version is identified", "published_hash": null, "status": "PENDING"},
+      "access": {"lawful_route": "provider Source Files page", "current_availability": "DATASET_ADVERTISED_BUT_DIRECT_FILE_ROUTE_NOT_EXPOSED_IN_OBSERVED_PAGE", "observed_at": "2026-08-22"},
+      "rights": {"license_terms": "Dataset-specific terms not located on provider page", "research_use": "PROVIDER_PAGE_STATES_ADVANCED_CLASSROOM_AND_ACADEMIC_RESEARCH_PURPOSE", "commercial_use": "PENDING", "redistribution": "PENDING", "derivative_artifacts": "PENDING", "model_output_rights": "PENDING"},
+      "task": {"interaction": "household store purchases plus customer attributes and marketing contacts", "labels": "transaction line/basket prediction labels require adapter; not specified by provider", "users": "2500 households", "items": null, "interactions": null},
+      "signals": {"timestamps": "two years of purchases stated; exact field schema pending", "order": true, "session": "transaction grouping plausible but schema verification pending", "basket": true, "user_history": true, "item_text": "PENDING_SCHEMA", "language": "PENDING", "cold_item_support": "NOT_OFFICIAL"},
+      "official_protocol": {"preprocessing": "NONE_OFFICIAL_LOCATED", "filtering": "NONE_OFFICIAL_LOCATED", "split": "NONE_OFFICIAL_LOCATED", "negative_or_candidate_policy": "NONE_OFFICIAL_LOCATED"},
+      "repo_bindings": [
+        {"repository": "https://github.com/liming-7/Mask-Swap-NNBR", "model": "Mask-Swap/BTBR", "config_or_command": "README Complete Journey W&B configuration and fold commands", "status": "DOCUMENTED_AUTHOR_OFFICIAL_PROCESSED_DATA_RIGHTS_PENDING"}
+      ],
+      "privacy": "Household purchase and marketing-contact data require E5 privacy/contract review despite public research positioning.",
+      "compatibility": {"reference_reproduction": "BLOCKED_ACCESS_RIGHTS", "harmonized_external": "HIGH_PRIORITY_AFTER_GATES", "full_contract": "LIKELY_BASKET_HISTORY_MATCH; TEXT_COLD_ITEM_PENDING"},
+      "status": "PENDING",
+      "status_reason": "Strong basket/history commerce fit and primary provider evidence, but current download route, exact schema, version, hash, license and redistribution rights are unresolved.",
+      "pending_gates": ["E4 obtain provider route/package/schema and hash", "E5 obtain applicable terms and privacy clearance", "E3 preregister split/filter/candidate adapter"],
+      "evidence_map": {"provider_identity_access_scope_rights": ["S26"], "repo_protocol": ["S30", "S31", "S32"]}
+    },
+    {
+      "dataset_id": "instacart_market_basket_2017",
+      "official_name": "Instacart Market Basket Analysis",
+      "provider": "Instacart; official 2017 Kaggle competition host",
+      "canonical_url": "https://www.kaggle.com/c/basket-analysis/overview",
+      "release": {"label": "2017 competition release", "date": "2017", "status": "VERIFIED_COMPETITION"},
+      "version_lock": {"mechanism": "requires restored official competition files/rules plus E4 SHA-256; arbitrary mirrors are not accepted", "published_hash": null, "status": "BLOCKED_OFFICIAL_FILES_DISABLED"},
+      "access": {"lawful_route": "official competition or original Instacart provider route only", "current_availability": "DISABLED_AT_HOST_REQUEST; ORIGINAL_PROVIDER_URL_UNAVAILABLE", "observed_at": "2026-08-22"},
+      "rights": {"license_terms": "Official competition rules/data terms not available in observed disabled state", "research_use": "PENDING", "commercial_use": "PENDING", "redistribution": "PENDING", "derivative_artifacts": "PENDING", "model_output_rights": "PENDING"},
+      "task": {"interaction": "anonymized customer orders over time", "labels": "which previously purchased products will be in the next order", "users": null, "items": null, "interactions": null},
+      "signals": {"timestamps": "relative/order timing described by competition but exact fields pending official files", "order": true, "session": true, "basket": true, "user_history": true, "item_text": "product labels only if official schema restored", "language": "not established", "cold_item_support": false},
+      "official_protocol": {"preprocessing": "competition files; currently unavailable", "filtering": "PENDING", "split": "official competition train/test structure; TEST must remain unopened", "negative_or_candidate_policy": "predict repeat products; exact scoring candidate universe pending restored rules"},
+      "repo_bindings": [{"repository": "https://github.com/liming-7/A-Next-Basket-Recommendation-Reality-Check", "model": "next-basket baselines", "config_or_command": "README preprocess and input-format sections", "status": "DOCUMENTED_AUTHOR_OFFICIAL_PROCESSED_DATA_RIGHTS_PENDING"}],
+      "privacy": "Anonymization asserted by competition; E5 terms/privacy review required.",
+      "compatibility": {"reference_reproduction": "BLOCKED_OFFICIAL_ACCESS", "harmonized_external": "STRONG_IF_OFFICIAL_ACCESS_RESTORED", "full_contract": "BASKET_HISTORY_MATCH; TEXT_AND_COLD_ITEM_GAPS"},
+      "status": "PENDING",
+      "status_reason": "High task fit, but the official host is disabled and mirrors cannot supply canonical rights/version evidence.",
+      "pending_gates": ["Restore official access and rules", "E4 acquire/hash TRAIN assets only", "E5 competition terms and redistribution/derivative review"],
+      "evidence_map": {"official_identity_task_current_state": ["S27", "S28"], "repo_protocol": ["S30", "S32"]}
+    },
+    {
+      "dataset_id": "ta_feng_grocery",
+      "official_name": "Ta-Feng grocery transaction dataset",
+      "provider": "Ta-Feng retailer/provider not located in a current canonical public source",
+      "canonical_url": null,
+      "release": {"label": "November 2000-February 2001 transactions reported by original papers", "date": null, "status": "PRIMARY_PROVIDER_RELEASE_NOT_FOUND"},
+      "version_lock": {"mechanism": "none acceptable; Git-locking an author-processed copy does not cure missing provider rights", "published_hash": null, "status": "UNAVAILABLE"},
+      "access": {"lawful_route": "no canonical provider route established", "current_availability": "ONLY_NONCANONICAL_MIRRORS_OR_AUTHOR_PROCESSED_COPIES_LOCATED", "observed_at": "2026-08-22"},
+      "rights": {"license_terms": "PENDING_NOT_FOUND", "research_use": "PENDING", "commercial_use": "PENDING", "redistribution": "PENDING", "derivative_artifacts": "PENDING", "model_output_rights": "PENDING"},
+      "task": {"interaction": "grocery transactions grouped as baskets", "labels": "next-basket under paper-specific transformations", "users": null, "items": null, "interactions": null},
+      "signals": {"timestamps": "transaction period documented; exact canonical schema absent", "order": true, "session": true, "basket": true, "user_history": true, "item_text": "not established", "language": "not established", "cold_item_support": "not official"},
+      "official_protocol": {"preprocessing": "paper-specific only", "filtering": "Mask-Swap filters basket-count 3-50, removes least-frequent items and fixes K to 10/20", "split": "Mask-Swap cross-user 80/20 with 10% training validation and five repeats", "negative_or_candidate_policy": "Mask-Swap novel-only per-user candidates"},
+      "repo_bindings": [{"repository": "https://github.com/liming-7/Mask-Swap-NNBR", "model": "Mask-Swap/BTBR", "config_or_command": "README exact Ta-Feng command", "status": "DOCUMENTED_AUTHOR_OFFICIAL_BUT_UNDERLYING_DATA_BLOCKED"}],
+      "privacy": "Customer transaction privacy and anonymization cannot be audited without canonical documentation.",
+      "compatibility": {"reference_reproduction": false, "harmonized_external": false, "full_contract": "UNASSESSABLE"},
+      "status": "REJECTED",
+      "status_reason": "No canonical provider, lawful access terms, release lock or dataset license was found; a Kaggle mirror or bundled copy is not a substitute.",
+      "pending_gates": ["Re-open only if a primary provider release, applicable terms and immutable bytes are produced"],
+      "evidence_map": {"paper_description_and_noncanonical_source_problem": ["S29", "S30"], "author_processed_protocol": ["S31", "S32"]}
+    },
+    {
+      "dataset_id": "tenrec",
+      "official_name": "Tenrec: A Large-scale Multipurpose Benchmark Dataset for Recommender Systems",
+      "provider": "Tencent / Tenrec authors",
+      "canonical_url": "https://static.qblv.qq.com/qblv/h5/algo-frontend/tenrec_dataset.html",
+      "release": {"label": "NeurIPS 2022 Tenrec release", "date": "2022", "status": "VERIFIED_ORIGINAL_PAPER"},
+      "version_lock": {"mechanism": "accept official-site terms, acquire named files, record terms snapshot and E4 SHA-256", "published_hash": null, "status": "PENDING"},
+      "access": {"lawful_route": "author repository directs users to official website and license agreement", "current_availability": "OFFICIAL_ENDPOINT_REACHABLE; TERMS_AND_FILES_NOT_CAPTURED", "observed_at": "2026-08-22"},
+      "rights": {"license_terms": "Repository requires license acceptance; original paper checklist states license not mentioned", "research_use": "PENDING_CURRENT_TERMS", "commercial_use": "PENDING", "redistribution": "PENDING", "derivative_artifacts": "PENDING", "model_output_rights": "PENDING"},
+      "task": {"interaction": "multi-behavior short-video/feed recommendation", "labels": "click, like, share, follow and watch-related signals", "users": null, "items": null, "interactions": null},
+      "signals": {"timestamps": "absolute timestamps removed; interactions remain time ordered", "order": true, "session": "session-based subset/protocol documented", "basket": false, "user_history": true, "item_text": "category and user/item fields, not commerce description text", "language": "not a Vietnamese commerce corpus", "cold_item_support": "not official"},
+      "official_protocol": {"preprocessing": "task-specific; sequential protocol filters sessions shorter than 10", "filtering": "paper task dependent", "split": "sequential recommendation uses per-user 8:1:1 in paper supplement", "negative_or_candidate_policy": "task-dependent; code lock required"},
+      "repo_bindings": [{"repository": "https://github.com/yuangh-x/2022-nips-tenrec", "model": "MF, NCF, NGCF, LightGCN and task examples", "config_or_command": "README and original-paper supplement", "status": "DOCUMENTED_AUTHOR_OFFICIAL"}],
+      "privacy": "Timestamps were removed for privacy; E5 must inspect current terms and remaining attributes.",
+      "compatibility": {"reference_reproduction": "CONDITIONAL_MULTI_BEHAVIOR", "harmonized_external": false, "full_contract": false},
+      "status": "PENDING",
+      "status_reason": "Useful multi-behavior sensitivity substrate, but current terms, exact files/version/hash and executable protocol lock are unresolved; it is not a commerce basket contract.",
+      "pending_gates": ["E4 capture accepted license and file hashes", "E3 exact task/config lock", "E5 privacy and rights review"],
+      "evidence_map": {"repo_access": ["S33", "S34"], "task_signals_protocol_license_gap": ["S35"]}
+    },
+    {
+      "dataset_id": "viecomrec",
+      "official_name": "ViEcomRec: A Dataset for Vietnamese E-Commerce Recommendation",
+      "provider": "ViEcomRec authors; institutional paper record at Dublin City University",
+      "canonical_url": "https://github.com/linh222/face_cleanser_recommendation_dataset",
+      "release": {"label": "author repository/Drive dataset associated with 2024 publication", "date": "2024", "status": "NO_DATA_RELEASE_TAG"},
+      "version_lock": {"mechanism": "immutable Git commit for repository plus E4 SHA-256 for linked data artifact", "published_hash": null, "status": "PENDING"},
+      "access": {"lawful_route": "author repository and linked hosted artifact", "current_availability": "PUBLIC_REPOSITORY; HOSTED_BYTES_NOT_LOCKED", "observed_at": "2026-08-22"},
+      "rights": {"license_terms": "CC BY-NC-SA 4.0 in author repository", "research_use": "ALLOWED_NONCOMMERCIAL_WITH_ATTRIBUTION", "commercial_use": "PROHIBITED_UNDER_LICENSE_ABSENT_SEPARATE_PERMISSION", "redistribution": "ALLOWED_WITH_ATTRIBUTION_LICENSE_NOTICE_AND_SA_CONDITIONS", "derivative_artifacts": "ALLOWED_NONCOMMERCIAL_WITH_ATTRIBUTION_AND_SHAREALIKE", "model_output_rights": "PENDING_E5_CLASSIFICATION_IF_OUTPUT_REPRODUCES_LICENSED_TEXT_OR_ATTRIBUTES"},
+      "task": {"interaction": "Vietnamese face-cleanser product reviews/ratings used for next-item recommendation", "labels": "rating/review interaction; paper defines next item", "users": 304708, "items": 2244, "interactions": 369099},
+      "signals": {"timestamps": "review date-time", "order": true, "session": false, "basket": false, "user_history": true, "item_text": "long Vietnamese descriptions and nine annotated/extracted product attributes", "language": "Vietnamese", "cold_item_support": "not an official protocol"},
+      "official_protocol": {"preprocessing": "Shopee crawl and attribute extraction checked by an annotator", "filtering": "paper-specific; exact artifact audit pending", "split": "leave-one-out; last two interactions are validation and test; paper reports 358591 train and 5254 each validation/test", "negative_or_candidate_policy": "not sufficiently locked for selected v5 contract"},
+      "repo_bindings": [{"repository": "https://github.com/linh222/face_cleanser_recommendation_dataset", "model": "TF-IDF, BLIP, PhoBERT and Ada embeddings baselines", "config_or_command": "README code/data layout", "status": "DOCUMENTED_AUTHOR_OFFICIAL_NOT_SELECTED_FULL_CONTRACT_PIPELINE"}],
+      "privacy": "Shopee reviewer/user linkage and anonymization method are not sufficiently documented in the primary sources; E5 review required.",
+      "compatibility": {"reference_reproduction": false, "harmonized_external": false, "full_contract": false, "language_only_warning": true},
+      "status": "SENSITIVITY_ONLY",
+      "status_reason": "Valuable Vietnamese text/time sensitivity data, but it lacks baskets, sessions, persistent order structure and an official cold-item contract; language does not cure these gaps.",
+      "pending_gates": ["E4 artifact/commit hash and exact split verification without TEST opening", "E5 Shopee provenance/privacy and CC BY-NC-SA output review"],
+      "evidence_map": {"institutional_identity": ["S36"], "task_size_signals_protocol": ["S37"], "access_repo": ["S38"], "rights": ["S39"]}
+    },
+    {
+      "dataset_id": "vifoodrec",
+      "official_name": "ViFoodRec: A Vietnamese Food Recommendation Dataset",
+      "provider": "ViFoodRec authors",
+      "canonical_url": "https://aclanthology.org/2024.paclic-1.4/",
+      "release": {"label": "PACLIC 2024 paper and author repository", "date": "2024", "status": "PAPER_VERIFIED_DATA_RELEASE_UNVERSIONED"},
+      "version_lock": {"mechanism": "repository commit could lock files, but no license or authoritative release hash is present", "published_hash": null, "status": "RIGHTS_BLOCKED"},
+      "access": {"lawful_route": "author-referenced GitHub repository", "current_availability": "REPOSITORY_AVAILABLE", "observed_at": "2026-08-22"},
+      "rights": {"license_terms": "No dataset/repository license located; source-site content rights unresolved", "research_use": "PENDING", "commercial_use": "PENDING", "redistribution": "PENDING", "derivative_artifacts": "PENDING", "model_output_rights": "PENDING"},
+      "task": {"interaction": "explicit food rating matrix and content similarity/rating prediction", "labels": "0-5 ratings in 0.5 increments; missing values imputed", "users": 100, "items": 5509, "interactions": {"collected_ratings": 50000, "post_imputation_approximate_ratings": 180000}},
+      "signals": {"timestamps": false, "order": false, "session": false, "basket": false, "user_history": "rating vector only", "item_text": "Vietnamese dish descriptions/ingredients/categories from websites", "language": "Vietnamese", "cold_item_support": "not official"},
+      "official_protocol": {"preprocessing": "deduplication and roughly 40 percent missing-value imputation", "filtering": "paper described", "split": "content similarity and rating-prediction evaluation, not chronological next-item", "negative_or_candidate_policy": "not applicable to required next-item/basket contract"},
+      "repo_bindings": [{"repository": "https://github.com/QuocAn55/DS300", "model": "paper-specific content/collaborative models", "config_or_command": "README/Data directory only; exact selected-pipeline config not established", "status": "INSUFFICIENT"}],
+      "privacy": "Participant consent and food-source website terms are not fully established by accessible release artifacts.",
+      "compatibility": {"reference_reproduction": false, "harmonized_external": false, "full_contract": false, "language_only_warning": true},
+      "status": "REJECTED",
+      "status_reason": "Wrong interaction/evaluation contract, imputed rather than observed expansion, no time/order/baskets, and no established data license or source-content rights.",
+      "pending_gates": ["Re-open only for a separately scoped content/rating study after rights and participant provenance are cleared"],
+      "evidence_map": {"paper_record": ["S40"], "task_size_preprocessing_protocol": ["S41"], "repository_and_license_gap": ["S42"]}
+    },
+    {
+      "dataset_id": "vihorec",
+      "official_name": "ViHoRec: A Vietnamese Hotel Recommendation Dataset",
+      "provider": "ViHoRec authors",
+      "canonical_url": "https://github.com/MinhNguyenDS/ViHoRec",
+      "release": {"label": "author repository and July 2026 preprint", "date": "2026-07", "status": "CONCURRENT_PREPRINT_NO_DOI_RELEASE_LOCK"},
+      "version_lock": {"mechanism": "immutable Git commit and E4 per-file SHA-256; datasheet mentions a versioned DOI only as an example and no actual DOI was verified", "published_hash": null, "status": "PENDING"},
+      "access": {"lawful_route": "author repository", "current_availability": "AVAILABLE_REPOSITORY", "observed_at": "2026-08-22"},
+      "rights": {"license_terms": "Repository states CC BY-NC 4.0, while datasheet also warns source platforms restrict scraping and commercial reuse", "research_use": "CONDITIONALLY_ALLOWED_NONCOMMERCIAL_PENDING_SOURCE_PLATFORM_REVIEW", "commercial_use": "PROHIBITED_BY_DECLARED_LICENSE_AND_SOURCE_RESTRICTIONS", "redistribution": "CONDITIONALLY_ALLOWED_WITH_ATTRIBUTION_PENDING_SOURCE_RIGHTS", "derivative_artifacts": "CONDITIONALLY_ALLOWED_NONCOMMERCIAL_WITH_ATTRIBUTION_PENDING_SOURCE_RIGHTS", "model_output_rights": "PENDING_E5"},
+      "task": {"interaction": "hotel review/rating recommendation", "labels": "rating interactions with date and source", "users": 6832, "items": 560, "interactions": 18267},
+      "signals": {"timestamps": "review date", "order": true, "session": false, "basket": false, "user_history": true, "item_text": "raw review text excluded from released benchmark according to datasheet", "language": "Vietnamese context; released text support limited", "cold_item_support": "not official"},
+      "official_protocol": {"preprocessing": "author scripts, HMAC-SHA256 pseudonyms, deduplication and QC", "filtering": "official benchmark subset reported as 800 users and 535 items", "split": "leave-last-one-out; README reports 9787 train and 800 test interactions", "negative_or_candidate_policy": "author benchmark scripts; exact candidate lock pending E3"},
+      "repo_bindings": [{"repository": "https://github.com/MinhNguyenDS/ViHoRec", "model": "Random, MostPop, ItemKNN and BPR-MF", "config_or_command": "README official benchmark scripts and leave-last-one-out section", "status": "DOCUMENTED_AUTHOR_OFFICIAL"}],
+      "privacy": "Datasheet documents HMAC pseudonyms and a known cross-source user-ID merge risk; source-platform takedown and ToS obligations remain.",
+      "compatibility": {"reference_reproduction": false, "harmonized_external": false, "full_contract": false, "language_only_warning": true},
+      "status": "SENSITIVITY_ONLY",
+      "status_reason": "Potential Vietnam rating/time sensitivity lane only. It is not a basket commerce contract, the public record is a concurrent preprint, and source-platform rights remain a hard E5 execution gate.",
+      "pending_gates": ["E1 venue-cutoff/admissibility decision", "E4 immutable commit/artifact hash", "E5 reconcile CC BY-NC with source-platform restrictions and known linkage risk"],
+      "evidence_map": {"repo_task_size_protocol": ["S43"], "datasheet_rights_privacy_provenance": ["S44"], "publication_date": ["S45"]}
+    }
+  ]
+}

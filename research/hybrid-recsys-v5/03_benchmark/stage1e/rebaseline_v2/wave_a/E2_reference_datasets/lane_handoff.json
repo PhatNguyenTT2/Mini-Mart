@@ -1,0 +1,163 @@
+{
+  "schema_version": "stage1e.lane_handoff.v2",
+  "lane_id": "E2_reference_datasets",
+  "model": "gpt-5.6-sol",
+  "reasoning": "xhigh",
+  "status": "EVIDENCE_LOCK_COMPLETE_UNVERIFIED",
+  "verdict": "CONDITIONAL_PASS_TO_E4_E5",
+  "material_passport": {
+    "origin_skill": "ars-codex:academic-research-suite",
+    "origin_workflow": "ars/experiment-agent/WORKFLOW.md evidence-discovery and lock",
+    "origin_date": "2026-08-22",
+    "access_date": "2026-08-22",
+    "version_label": "stage1e_rebaseline_v2_e2_v1",
+    "verification_status": "UNVERIFIED_UNTIL_E4_E5",
+    "model": "gpt-5.6-sol",
+    "reasoning": "xhigh"
+  },
+  "input_manifest_sha256": "107299c026434366ed6ddb18f4ee6e25fd790d9799fd81c1c1e87871ed60744d",
+  "authoritative_input_root": "E:/UIT/cv/backend",
+  "input_manifest_verification": {
+    "manifest_hash_match": true,
+    "listed_inputs_checked": 9,
+    "listed_inputs_hash_and_size_matches": 9,
+    "superseded_wave1_v1_outputs_used": false
+  },
+  "write_set": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_a/E2_reference_datasets/",
+  "outputs": [
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_a/E2_reference_datasets/reference_dataset_registry.json",
+      "sha256": "618a8b0cb83e679e6a4d52b18e7470c0a6277c3408079a83644732e026543e6a",
+      "bytes": 59202
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_a/E2_reference_datasets/dataset_repo_compatibility_matrix.md",
+      "sha256": "2b61a7d16894823adf710fa3c982dc1cfb1c762a85c07f533d5bae3410a6b2a5",
+      "bytes": 17344
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_a/E2_reference_datasets/rights_and_access_matrix.md",
+      "sha256": "6e2a2c2620b5e6d247faeea24a0e439ce3000b2773b345964bbc85f4ac183825",
+      "bytes": 15548
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_a/E2_reference_datasets/dataset_exclusion_log.md",
+      "sha256": "3874b040d48b0939a49c0cf6889245832726be7b3cdf05ed43938a4069a999ea",
+      "bytes": 12394
+    }
+  ],
+  "handoff_self": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_a/E2_reference_datasets/lane_handoff.json",
+    "sha256": null,
+    "reason": "A file cannot embed its own final SHA-256 without changing that digest; the final Git commit binds this handoff."
+  },
+  "counts": {
+    "dataset_records": 16,
+    "verified_count": 5,
+    "verified_count_definition": "Primary-source-supported non-PENDING classifications: 2 REFERENCE_REPRODUCTION_READY, 1 HARMONIZED_EXTERNAL_CANDIDATE and 2 SENSITIVITY_ONLY. This is source-classification verification, not E4/E5 execution verification.",
+    "execution_verified_count": 0,
+    "pending_count": 9,
+    "rejected_count": 2,
+    "reference_reproduction_ready": 2,
+    "harmonized_external_candidate": 1,
+    "sensitivity_only": 2
+  },
+  "verified_classifications": [
+    {
+      "dataset_id": "movielens_1m",
+      "status": "REFERENCE_REPRODUCTION_READY",
+      "condition": "E4 provider checksum/SHA-256 and E5 rights/privacy still required"
+    },
+    {
+      "dataset_id": "movielens_10m",
+      "status": "REFERENCE_REPRODUCTION_READY",
+      "condition": "E4 provider checksum/SHA-256, processed-lineage check and E5 rights/privacy still required"
+    },
+    {
+      "dataset_id": "amazon_m2",
+      "status": "HARMONIZED_EXTERNAL_CANDIDATE",
+      "condition": "reduced session-only multilingual/text/cold-item contract; authenticated access/hash and E5 review required"
+    },
+    {
+      "dataset_id": "viecomrec",
+      "status": "SENSITIVITY_ONLY",
+      "condition": "not basket/session/full-contract; artifact, source-platform/privacy and output-rights gates remain"
+    },
+    {
+      "dataset_id": "vihorec",
+      "status": "SENSITIVITY_ONLY",
+      "condition": "E1 venue-cutoff and E5 source-platform rights gates; not basket/text/cold-item full contract"
+    }
+  ],
+  "blockers": [
+    {
+      "scope": "LightGCN, LightGCL and SELFRec processed packs",
+      "blocker": "raw-to-processed version/filter/split lineage and dataset-specific rights are not established by repository code licenses",
+      "owner_gate": "E3_E4_E5"
+    },
+    {
+      "scope": "UniSRec and AlphaRec hosted bundles",
+      "blocker": "no immutable data release/hash, incomplete canonical raw lineage, and unresolved text/embedding/data rights",
+      "owner_gate": "E3_E4_E5"
+    },
+    {
+      "scope": "Amazon Review Data (2018)",
+      "blocker": "mutable post-label metadata, no published digest/license, no official split and no basket/order contract",
+      "owner_gate": "E3_E4_E5"
+    },
+    {
+      "scope": "Amazon-M2",
+      "blocker": "current access requires authentication/terms acceptance; no provider digest; full contract fails on persistent user/order/basket semantics",
+      "owner_gate": "E3_E4_E5"
+    },
+    {
+      "scope": "The Complete Journey",
+      "blocker": "current file route, exact schema/package/version/hash and dataset-specific terms are unresolved",
+      "owner_gate": "E4_E5"
+    },
+    {
+      "scope": "Instacart",
+      "blocker": "official competition disabled at host request and original provider route unavailable; mirrors excluded",
+      "owner_gate": "E4_E5"
+    },
+    {
+      "scope": "Tenrec",
+      "blocker": "current license agreement/files/hash and exact selected task/config are not locked",
+      "owner_gate": "E3_E4_E5"
+    },
+    {
+      "scope": "Ta-Feng",
+      "blocker": "no primary provider release, rights or version lock",
+      "owner_gate": "REJECTED_UNLESS_NEW_PRIMARY_EVIDENCE"
+    },
+    {
+      "scope": "ViFoodRec",
+      "blocker": "wrong rating/content task, imputed interaction expansion, no time/basket contract and no established dataset/source license",
+      "owner_gate": "REJECTED_FOR_CURRENT_CONTRACT"
+    }
+  ],
+  "guardrails": {
+    "canonical_sources_only": true,
+    "repository_clone_performed": false,
+    "dataset_download_performed": false,
+    "package_install_performed": false,
+    "test_or_training_run": false,
+    "external_data_upload": false,
+    "source_modification": false,
+    "raw_cross_dataset_metric_comparison_permitted": false,
+    "vietnamese_language_confers_full_contract_compatibility": false
+  },
+  "TEST_SET_OPENED": "NO",
+  "RESULT_STATUS": "NOT_RUN",
+  "ACCEPTED_RESULT_ROWS": 0,
+  "next_gate": {
+    "gate": "E4_E5_ACQUISITION_INTEGRITY_RIGHTS_VERIFICATION",
+    "instructions": [
+      "E4 may acquire only E1/E3-admitted TRAIN-side assets through the recorded canonical routes, snapshot applicable terms, and record resolved URLs, filenames, byte sizes and SHA-256.",
+      "E4 must preserve provider checksums, lock repository commits, and prove raw-to-processed lineage; do not open TEST.",
+      "E5 must decide research, commercial, redistribution, derivative-artifact, model-output and privacy fields separately; PENDING is not approval.",
+      "E3 must preregister each executable split/filter/negative-or-candidate policy and label author-official versus framework-official authority.",
+      "No paper result or cross-dataset center may be accepted from this evidence lock."
+    ]
+  }
+}
