@@ -1,0 +1,233 @@
+{
+  "schema_version": "stage1e_rebaseline_v2_e4_r1a_handoff.v1",
+  "lane_id": "E4_R1A_provenance_config",
+  "material_passport": {
+    "origin_skill": "ars-codex:academic-research-suite/experiment-agent",
+    "origin_mode": "plan/remediation-only",
+    "origin_date": "2026-08-22T03:14:40+07:00",
+    "verification_status": "UNVERIFIED",
+    "version_label": "stage1e_rebaseline_v2_wave_d_E4_R1A_v1",
+    "upstream_dependencies": [
+      "stage1e_rebaseline_v2_wave_b_E4_frozen_packet",
+      "stage1e_rebaseline_v2_wave_c_E5_independent_lock_audit",
+      "stage1e_rebaseline_v2_E4_R1_parallel_remediation_contract",
+      "stage1e_rebaseline_v2_E4_R1_frozen_input_manifest"
+    ],
+    "repro_lock": {
+      "schema_version": "1.0",
+      "stochasticity_declaration": "LLM outputs are not byte-reproducible. This lockfile documents configuration, not a deterministic replay guarantee.",
+      "ars_version": "3.21.0",
+      "model": {
+        "family": "openai",
+        "id": "gpt-5.6-sol",
+        "weight_stable": false
+      },
+      "prompts": {
+        "hash_timing": "skill-load",
+        "skill_md_hash": "sha256:9c2cb6e3b5aad7fb747f79163b144cfbddffa85d67e2bdcc5a5fa5470252ad00",
+        "agents_bundle_hash": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "materials": {
+        "list_hash": "sha256:d913938397a9906ed7c428d8e51768f946c39f73b785cfdcf7045ebc1f45381d",
+        "count": 18
+      },
+      "external_protocols": {
+        "s2_api_protocol_version": "NOT_USED",
+        "s2_snapshot_available": false
+      },
+      "cross_model": {
+        "enabled": false,
+        "secondary_model_id": null
+      }
+    },
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-22T03:14:40+07:00",
+      "declared_by": "scholar"
+    }
+  },
+  "skill_package_version": "0.1.26",
+  "ars_suite_version": "3.21.0",
+  "workflow": "academic-research-suite/experiment-agent",
+  "model": "gpt-5.6-sol",
+  "reasoning": "xhigh",
+  "status": "COMPLETE_FAIL_CLOSED",
+  "verification_status": "UNVERIFIED",
+  "access_date": "2026-08-22",
+  "frozen_manifest": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r1_frozen_input_manifest.json",
+    "canonical_lf_bytes": 8440,
+    "canonical_lf_sha256": "d0a5db377c36f7109b4b56089ac024bb8ddcd4b5badc5aeb464969aa2e13d817",
+    "self_hash_verified": true
+  },
+  "frozen_contract": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r1_parallel_remediation_contract.md",
+    "canonical_lf_bytes": 10518,
+    "canonical_lf_sha256": "b51c41a931ef88a1fcc356394600b3c2fcdafad68b5599477c9a894040d82538"
+  },
+  "input_verification": {
+    "hash_policy": "strict UTF-8 decode, replace CRLF with LF, encode UTF-8, then SHA-256",
+    "manifest_hash_verified": true,
+    "manifest_entries_expected": 17,
+    "manifest_entries_matched": 17,
+    "missing": 0,
+    "mismatched": 0,
+    "json_inputs_expected": 11,
+    "json_inputs_parsed_by_powershell": 11,
+    "json_inputs_parsed_by_standard_parser": 11,
+    "json_inputs_with_duplicate_or_case_colliding_keys": 0,
+    "verdict": "PASS"
+  },
+  "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_d/E4_R1A_provenance_config",
+  "output_hash_policy": "Canonical-LF SHA-256: strict UTF-8 decode, replace CRLF with LF, then SHA-256",
+  "outputs": [
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_d/E4_R1A_provenance_config/source_and_binding_corrections.json",
+      "canonical_lf_bytes": 14258,
+      "canonical_lf_sha256": "ce1ae9194e24dc1c35ce736aec039a3564674912ef0a0452ac2a045d3e64214b",
+      "verification_status": "UNVERIFIED"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_d/E4_R1A_provenance_config/candidate_readiness_delta.json",
+      "canonical_lf_bytes": 57368,
+      "canonical_lf_sha256": "3d53f30e284edaefc02737fa7a7cad7326fb53cf2f3db0b218a93f3c1137fb32",
+      "verification_status": "UNVERIFIED"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_d/E4_R1A_provenance_config/r1a_evidence_report.md",
+      "canonical_lf_bytes": 15790,
+      "canonical_lf_sha256": "abb168412aca37238f75618182777d6784cabfae817f69e07c6823437215684b",
+      "verification_status": "UNVERIFIED"
+    }
+  ],
+  "handoff_artifact": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_d/E4_R1A_provenance_config/r1a_handoff.json",
+    "sha256_policy": "The canonical-LF SHA-256 of this self-referential handoff is reported out-of-band with the commit and is not embedded in this file."
+  },
+  "repro_lock_derivation": {
+    "skill_hash_policy": "canonical-LF SHA-256 of the complete loaded academic-research-suite SKILL.md",
+    "agent_bundle_members_in_canonical_order": [],
+    "agent_bundle_hash_policy": "SHA-256 of empty bytes because plan/remediation-only mode was performed inline and no ARS agent prompt was loaded",
+    "additional_instruction_hashes": {
+      "experiment_agent_workflow_md": "sha256:c89cb26ec05ed9facf80301df04ec1d892d74b5c7c68d42afbb2511a7c3268ef",
+      "ars_integration_guide_md": "sha256:7e76dbc0b9019305d2906e9f0c9b7a24a90b9f24a357091d7816b1a5748c1303",
+      "handoff_schemas_md": "sha256:c91b127d87d2370aee44f99395c5ae5e538729bead802d67bc6116fef0f841d3",
+      "artifact_reproducibility_pattern_md": "sha256:661d2331dbac1739621021cf6f1b2a9f03420fe7948387f164f38bd854fe9be3"
+    },
+    "materials_hash_policy": "SHA-256 of UTF-8 compact JSON [{filename,sha256},...] sorted by filename over the frozen manifest plus its 17 listed inputs"
+  },
+  "coverage": {
+    "required_output_files": {
+      "expected": 4,
+      "present": 4
+    },
+    "binding_corrections": {
+      "expected": 3,
+      "completed": 3
+    },
+    "owned_findings": {
+      "expected": 2,
+      "disposed": 2
+    },
+    "candidate_rows": {
+      "expected": 13,
+      "replayed": 13
+    },
+    "prohibited_joins": {
+      "expected": 5,
+      "replayed": 5
+    },
+    "reported_tolerances": {
+      "expected": 26,
+      "preserved": 26,
+      "mismatched": 0
+    }
+  },
+  "finding_dispositions": [
+    {
+      "finding_id": "E5-F001",
+      "disposition": "PROPOSED_CORRECTION_COMPLETE_PENDING_E4_R1C_SYNTHESIS",
+      "source_identity_corrected": true,
+      "candidate_readiness_promoted": false,
+      "residual_blockers_visible": true
+    },
+    {
+      "finding_id": "E5-F002",
+      "disposition": "PROPOSED_CORRECTION_COMPLETE_PENDING_E4_R1C_SYNTHESIS",
+      "spec_path_and_hash_corrected": true,
+      "candidate_readiness_promoted": false,
+      "residual_blockers_visible": true
+    }
+  ],
+  "candidate_status_counts": {
+    "READY_FOR_E4_R1C_CONSIDERATION": 0,
+    "PENDING_EVIDENCE": 7,
+    "REJECTED": 6,
+    "total": 13
+  },
+  "minimum_defensible_official_reproduction": {
+    "selection_status": "NO_READY_ROW",
+    "priority_row": "E3-LIGHTGCN-GOWALLA-PYTORCH-001",
+    "priority_is_selection": false,
+    "priority_is_execution_authority": false,
+    "residual_blockers_visible": true
+  },
+  "source_replay": {
+    "primary_or_authoritative_sources_only": true,
+    "search_snippets_used_to_close_gate": false,
+    "forks_or_mirrors_used_to_close_gate": false,
+    "live_unavailability_inferred_as_pass": false,
+    "frozen_e5_primary_replay_references_preserved": true,
+    "source_replay_details_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_d/E4_R1A_provenance_config/source_and_binding_corrections.json"
+  },
+  "scope_separation": {
+    "official_reproduction_separate_from_harmonized_v5": true,
+    "external_validation_separate_from_official_reproduction": true,
+    "movielens_1m_separate_framework_assessment": true,
+    "movielens_10m_separate_framework_assessment": true,
+    "amazon_m2_separate_external_assessment": true,
+    "raw_cross_dataset_metric_league_allowed": false
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER",
+    "empirical_claims_made": false,
+    "execution_authorized": false,
+    "confirmed": false
+  },
+  "authorization": {
+    "authorized": false,
+    "user_confirmation_required": true,
+    "confirmed": false,
+    "replacement_e4_packet_created_by_r1a": false,
+    "replacement_e4_packet_required_from_e4_r1c": true,
+    "new_independent_e5_r1_audit_required": true,
+    "pass_execution_authorized_emitted": false
+  },
+  "scope_guards": {
+    "repository_clone_performed": false,
+    "repository_fetch_performed": false,
+    "dataset_download_performed": false,
+    "authenticated_dataset_access_performed": false,
+    "package_installation_performed": false,
+    "environment_creation_performed": false,
+    "source_model_or_data_modification_performed": false,
+    "training_evaluation_smoke_benchmark_performed": false,
+    "test_access_performed": false,
+    "e4_command_execution_performed": false,
+    "e1_e5_edit_performed": false,
+    "control_input_master_spec_or_application_edit_performed": false,
+    "other_remediation_lane_edit_performed": false,
+    "central_replacement_e4_packet_created": false,
+    "cross_model_external_upload_performed": false
+  },
+  "git_commit": {
+    "sha": null,
+    "policy": "The commit containing only the assigned lane write-set is created after the handoff bytes are frozen and is reported out-of-band."
+  },
+  "verdict": "R1A_COMPLETE_WITH_UNRESOLVED_EVIDENCE",
+  "fail_closed": true,
+  "next_gate": "E4-R1C remains blocked until both lane handoffs pass central intake. E4-R1C must synthesize and freeze a replacement E4 packet, then dispatch a fresh independent E5-R1 audit. Only a future E5-R1 pass may precede explicit user confirmation of exact commands."
+}

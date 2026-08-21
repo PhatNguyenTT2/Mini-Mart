@@ -1,0 +1,311 @@
+{
+  "schema_version": "stage1e_rebaseline_v2_e4_r1a_source_binding_corrections.v1",
+  "artifact": "source_and_binding_corrections",
+  "lane_id": "E4_R1A_provenance_config",
+  "created_at": "2026-08-22T03:14:40+07:00",
+  "evidence_status": "ANALYZED_PROPOSAL",
+  "frozen_basis": {
+    "contract_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r1_parallel_remediation_contract.md",
+    "contract_canonical_lf_sha256": "b51c41a931ef88a1fcc356394600b3c2fcdafad68b5599477c9a894040d82538",
+    "manifest_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r1_frozen_input_manifest.json",
+    "manifest_canonical_lf_sha256": "d0a5db377c36f7109b4b56089ac024bb8ddcd4b5badc5aeb464969aa2e13d817",
+    "manifest_self_hash_verified": true,
+    "listed_inputs_expected": 17,
+    "listed_inputs_matched": 17
+  },
+  "source_replay_policy": {
+    "authority_order": [
+      "immutable author-maintained repository file or commit",
+      "official paper, supplement, or proceedings copy",
+      "canonical dataset provider, checksum, license, or terms page",
+      "framework-owned documentation or result artifact"
+    ],
+    "search_snippets_used_to_close_gate": false,
+    "forks_or_mirrors_used_to_close_gate": false,
+    "unavailable_evidence_inferred_as_pass": false,
+    "access_date": "2026-08-22"
+  },
+  "source_replays": [
+    {
+      "replay_id": "R1A-SR001",
+      "authority": "official arXiv record",
+      "url": "https://arxiv.org/abs/2207.09037",
+      "revision": "arXiv:2207.09037v2",
+      "locator": "title, authors, subject, abstract, and submission history",
+      "claim_tested": "arXiv:2207.09037 is the official SimGCL paper",
+      "lane_replay_result": "CONTRADICTED",
+      "frozen_e5_replay_id": "SR004",
+      "frozen_e5_replay_result": "CONTRADICTED",
+      "residual_ambiguity": "None for identity: this is condensed-matter research and is unrelated to SimGCL."
+    },
+    {
+      "replay_id": "R1A-SR002",
+      "authority": "official arXiv record",
+      "url": "https://arxiv.org/abs/2112.08679",
+      "revision": "arXiv:2112.08679v4",
+      "locator": "title, authors, abstract, code link, and submission history",
+      "claim_tested": "arXiv:2112.08679 is the official SimGCL record and links QRec",
+      "lane_replay_result": "CONFIRMED",
+      "frozen_e5_replay_id": "SR005",
+      "frozen_e5_replay_result": "CONFIRMED",
+      "residual_ambiguity": "The record establishes paper and repository identity, not result-bound run or artifact identity."
+    },
+    {
+      "replay_id": "R1A-SR003",
+      "authority": "immutable author-maintained repository file",
+      "url": "https://raw.githubusercontent.com/Coder-Yu/QRec/a141bb37cb7706b2f53b2eed5843de3269f9f37f/main.py",
+      "revision": "a141bb37cb7706b2f53b2eed5843de3269f9f37f",
+      "locator": "interactive model selector q5 and SimGCL configuration dispatch",
+      "claim_tested": "the pinned QRec tree exposes the public SimGCL selection surface",
+      "lane_replay_result": "UNAVAILABLE_ON_LIVE_REPLAY_SURFACE",
+      "frozen_e5_replay_id": "SR006",
+      "frozen_e5_replay_result": "CONFIRMED",
+      "effective_evidence_state": "CONFIRMED_BY_FROZEN_E5_PRIMARY_REPLAY_WITH_LIVE_REPLAY_UNAVAILABLE",
+      "residual_ambiguity": "The selector remains interactive and is not a result-bound noninteractive argv receipt."
+    },
+    {
+      "replay_id": "R1A-SR004",
+      "authority": "immutable author-maintained repository file",
+      "url": "https://raw.githubusercontent.com/Coder-Yu/QRec/a141bb37cb7706b2f53b2eed5843de3269f9f37f/config/SimGCL.conf",
+      "revision": "a141bb37cb7706b2f53b2eed5843de3269f9f37f",
+      "locator": "ratings, testSet, topN, epoch, and batch fields",
+      "claim_tested": "the pinned QRec configuration names Yelp2018 and top-20 evaluation",
+      "lane_replay_result": "UNAVAILABLE_ON_LIVE_REPLAY_SURFACE",
+      "frozen_e5_replay_id": "SR007",
+      "frozen_e5_replay_result": "CONFIRMED",
+      "effective_evidence_state": "CONFIRMED_BY_FROZEN_E5_PRIMARY_REPLAY_WITH_LIVE_REPLAY_UNAVAILABLE",
+      "residual_ambiguity": "Dataset bytes, dependency lock, exact executed config receipt, tie handling, and checkpoint receipt remain absent."
+    },
+    {
+      "replay_id": "R1A-SR005",
+      "authority": "frozen local benchmark specification",
+      "path": "backend/docs/chatbot/seed-product/benchmark-spec-v5.json",
+      "revision": "frozen worktree input",
+      "locator": "strict UTF-8 canonical-LF byte and SHA-256 replay",
+      "claim_tested": "the one existing v5 specification path has the frozen digest",
+      "lane_replay_result": "CONFIRMED",
+      "canonical_lf_bytes": 2629,
+      "canonical_lf_sha256": "acef1c62cc2a9a3ae04fdf2f4b2fb24b3eb8d2634f15e085fbe1878be8dc166d",
+      "residual_ambiguity": "None for path and frozen byte identity; adapter implementation and execution evidence remain outside this correction."
+    },
+    {
+      "replay_id": "R1A-SR006",
+      "authority": "frozen local path existence check",
+      "path": "research/hybrid-recsys-v5/03_benchmark/benchmark_spec_v5.json",
+      "revision": "frozen worktree input",
+      "locator": "literal path lookup",
+      "claim_tested": "the old adapter-contract specification path exists",
+      "lane_replay_result": "CONTRADICTED",
+      "residual_ambiguity": "None for path existence: the path is absent."
+    }
+  ],
+  "corrections": [
+    {
+      "binding_id": "R1A-BIND-SIMGCL-PAPER-001",
+      "binding_type": "official_paper_identity",
+      "disposition": "CORRECT",
+      "finding_id": "E5-F001",
+      "old_value": {
+        "source_id": "S_SIM_GCL_PAPER",
+        "url": "https://arxiv.org/abs/2207.09037",
+        "locator": "Official paper record and linked PDF; experimental tables and implementation details"
+      },
+      "proposed_value": {
+        "source_id": "S_SIM_GCL_PAPER",
+        "url": "https://arxiv.org/abs/2112.08679",
+        "immutable_revision": "arXiv:2112.08679v4",
+        "title": "Are Graph Augmentations Necessary? Simple Graph Contrastive Learning for Recommendation",
+        "locator": "official record title/authors/code link; official paper experimental settings, Table 3 and Table 5"
+      },
+      "primary_evidence_ids": [
+        "R1A-SR001",
+        "R1A-SR002"
+      ],
+      "affected_downstream": {
+        "artifacts": [
+          "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_b/E4_reproduction_adaptation/selected_reference_bundle.json"
+        ],
+        "fields": [
+          "sources.S_SIM_GCL_PAPER.url",
+          "sources.S_SIM_GCL_PAPER.locator",
+          "candidate_rows[row_id=E3-SIMGCL-YELP2018-QREC-001].source_ids",
+          "candidate_rows[row_id=E3-SIMGCL-YELP2018-QREC-001].rationale",
+          "candidate_rows[row_id=E3-SIMGCL-YELP2018-QREC-001].unresolved"
+        ],
+        "candidate_rows": [
+          "E3-SIMGCL-YELP2018-QREC-001"
+        ],
+        "prohibited_join_rows": []
+      },
+      "confirmed_evidence": [
+        "The old identifier resolves to an unrelated condensed-matter paper.",
+        "The proposed identifier resolves to the SimGCL paper and the official record links QRec."
+      ],
+      "inference": [
+        "Replacing the paper identity repairs the contradictory provenance edge but does not prove that a particular public configuration produced a particular run artifact."
+      ],
+      "recommendation": [
+        "E4-R1C should replace the source catalog value and regenerate every dependent SimGCL binding from the corrected record."
+      ],
+      "unresolved_blockers": [
+        "noninteractive exact argv",
+        "result-bound executed configuration receipt",
+        "dataset provider, rights, release, and acquired-byte hashes",
+        "raw-to-processed-to-split receipt",
+        "dependency lock and environment receipt",
+        "seed identities and run receipts",
+        "checkpoint policy and checkpoint artifact",
+        "standalone evaluator identity or exact integrated-evaluator receipt",
+        "deterministic tie policy"
+      ],
+      "readiness_promoted": false,
+      "execution_authorized": false
+    },
+    {
+      "binding_id": "R1A-BIND-SIMGCL-QREC-001",
+      "binding_type": "paper_repository_configuration_binding",
+      "disposition": "REAFFIRM_WITH_FAIL_CLOSED_LIMITS",
+      "finding_id": "E5-F001",
+      "old_value": {
+        "repository_url": "https://github.com/Coder-Yu/QRec",
+        "immutable_sha": "a141bb37cb7706b2f53b2eed5843de3269f9f37f",
+        "command_surface": "python main.py, then select SimGCL with the pinned repository configuration",
+        "binding_status": "CONTRADICTED_BY_WRONG_PAPER_IDENTITY"
+      },
+      "proposed_value": {
+        "repository_url": "https://github.com/Coder-Yu/QRec",
+        "immutable_sha": "a141bb37cb7706b2f53b2eed5843de3269f9f37f",
+        "command_surface": "python main.py, then select SimGCL with config/SimGCL.conf",
+        "paper_url": "https://arxiv.org/abs/2112.08679",
+        "binding_status": "PARTIAL_CONFIRMED_IDENTITY_AND_PUBLIC_CONFIG_ONLY"
+      },
+      "primary_evidence_ids": [
+        "R1A-SR002",
+        "R1A-SR003",
+        "R1A-SR004"
+      ],
+      "affected_downstream": {
+        "artifacts": [
+          "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_b/E4_reproduction_adaptation/selected_reference_bundle.json",
+          "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_b/E4_reproduction_adaptation/reproduction_execution_plan.md",
+          "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_b/E4_reproduction_adaptation/v5_adapter_and_evaluator_contract.md"
+        ],
+        "fields": [
+          "sources.S_QREC_REPO",
+          "candidate_rows[row_id=E3-SIMGCL-YELP2018-QREC-001].repository",
+          "candidate_rows[row_id=E3-SIMGCL-YELP2018-QREC-001].source_bound_command",
+          "candidate_rows[row_id=E3-SIMGCL-YELP2018-QREC-001].metric_semantics",
+          "method_registry[method=SimGCL].authoritative_surface"
+        ],
+        "candidate_rows": [
+          "E3-SIMGCL-YELP2018-QREC-001"
+        ],
+        "prohibited_join_rows": []
+      },
+      "confirmed_evidence": [
+        "The official SimGCL record links QRec.",
+        "Frozen E5 primary replay confirms the pinned selector and Yelp2018 top-20 configuration fields."
+      ],
+      "inference": [
+        "Paper-to-repository and public-config identity are defensible; exact result-producing config and run identity are not."
+      ],
+      "recommendation": [
+        "Carry this as a partial binding and keep the SimGCL row PENDING_EVIDENCE."
+      ],
+      "unresolved_blockers": [
+        "exact executed config hash",
+        "noninteractive argv",
+        "run, checkpoint, data-byte, dependency, evaluator, and tie receipts"
+      ],
+      "readiness_promoted": false,
+      "execution_authorized": false
+    },
+    {
+      "binding_id": "R1A-BIND-V5-SPEC-001",
+      "binding_type": "frozen_benchmark_specification_path_and_hash",
+      "disposition": "CORRECT",
+      "finding_id": "E5-F002",
+      "old_value": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/benchmark_spec_v5.json",
+        "canonical_lf_sha256": "acef1c62cc2a9a3ae04fdf2f4b2fb24b3eb8d2634f15e085fbe1878be8dc166d",
+        "path_exists": false
+      },
+      "proposed_value": {
+        "path": "backend/docs/chatbot/seed-product/benchmark-spec-v5.json",
+        "canonical_lf_bytes": 2629,
+        "canonical_lf_sha256": "acef1c62cc2a9a3ae04fdf2f4b2fb24b3eb8d2634f15e085fbe1878be8dc166d",
+        "path_exists": true
+      },
+      "primary_evidence_ids": [
+        "R1A-SR005",
+        "R1A-SR006"
+      ],
+      "affected_downstream": {
+        "artifacts": [
+          "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_b/E4_reproduction_adaptation/v5_adapter_and_evaluator_contract.md"
+        ],
+        "fields": [
+          "line 17 frozen v5 benchmark specification path",
+          "all future adapter manifests.spec_path",
+          "all future adapter manifests.spec_canonical_lf_sha256",
+          "all future evaluator manifests.spec_path",
+          "all future evaluator manifests.spec_canonical_lf_sha256"
+        ],
+        "candidate_rows": [],
+        "prohibited_join_rows": [
+          "E3-RB005-OFFICIAL-METRIC-AS-V5-SUPERIORITY"
+        ]
+      },
+      "confirmed_evidence": [
+        "The proposed path is the one existing frozen specification path.",
+        "Its canonical-LF byte count and SHA-256 reproduce the frozen manifest values.",
+        "The old path is absent."
+      ],
+      "inference": [
+        "Correct path-plus-hash identity removes the specification-address ambiguity but does not validate an adapter, evaluator, or harmonized result."
+      ],
+      "recommendation": [
+        "E4-R1C should use only the proposed path and digest in every replacement adapter/evaluator binding."
+      ],
+      "unresolved_blockers": [
+        "adapter implementation and immutable adapter SHA",
+        "evaluator implementation and immutable evaluator SHA",
+        "parity receipts",
+        "snapshot and split receipts",
+        "authorized TEST gate"
+      ],
+      "readiness_promoted": false,
+      "execution_authorized": false
+    }
+  ],
+  "coverage": {
+    "correction_rows": 3,
+    "findings_owned": 2,
+    "findings_addressed": 2,
+    "affected_candidate_rows": 1,
+    "affected_prohibited_join_rows": 1,
+    "unaffected_prohibited_join_rows": 4
+  },
+  "finding_dispositions": [
+    {
+      "finding_id": "E5-F001",
+      "lane_disposition": "PROPOSED_CORRECTION_COMPLETE_PENDING_E4_R1C_SYNTHESIS",
+      "readiness_effect": "NONE",
+      "residual_evidence": "VISIBLE"
+    },
+    {
+      "finding_id": "E5-F002",
+      "lane_disposition": "PROPOSED_CORRECTION_COMPLETE_PENDING_E4_R1C_SYNTHESIS",
+      "readiness_effect": "NONE",
+      "residual_evidence": "VISIBLE"
+    }
+  ],
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "confirmed": false
+  },
+  "next_gate": "E4-R1C must synthesize the corrections with the independent E4-R1B handoff, freeze a replacement E4 packet, and obtain a fresh independent E5-R1 audit before any user confirmation can be requested."
+}

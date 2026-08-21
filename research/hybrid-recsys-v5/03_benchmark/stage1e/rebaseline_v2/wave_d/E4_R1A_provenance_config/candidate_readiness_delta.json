@@ -1,0 +1,1476 @@
+{
+  "schema_version": "stage1e_rebaseline_v2_e4_r1a_candidate_readiness_delta.v1",
+  "artifact": "candidate_readiness_delta",
+  "lane_id": "E4_R1A_provenance_config",
+  "created_at": "2026-08-22T03:14:40+07:00",
+  "evidence_status": "ANALYZED_PROPOSAL",
+  "delta_basis": {
+    "e4_bundle_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_b/E4_reproduction_adaptation/selected_reference_bundle.json",
+    "e4_bundle_canonical_lf_sha256": "b4a817b62706bfafe4a30d33566cd9fea74a0571307519be2a7924184f326eb4",
+    "e5_audit_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_c/E5_independent_lock_audit/independent_lock_audit.md",
+    "e5_audit_canonical_lf_sha256": "6bc961e8fed6ce0443d78762239d90707abc4342bf0c67ed9ee6a1cf83d269e4",
+    "e5_replay_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_c/E5_independent_lock_audit/replay_receipt.json",
+    "e5_replay_canonical_lf_sha256": "e333c41c75cfd9d9717d4856745d4ab4fa99a8b961738c4f86cac309f7585502",
+    "sim_gcl_correction_artifact": "source_and_binding_corrections.json",
+    "v5_spec_path": "backend/docs/chatbot/seed-product/benchmark-spec-v5.json",
+    "v5_spec_canonical_lf_sha256": "acef1c62cc2a9a3ae04fdf2f4b2fb24b3eb8d2634f15e085fbe1878be8dc166d"
+  },
+  "field_policy": {
+    "null_meaning": "The required evidence was not available in the frozen E4/E5 packet or authoritative replay and was not inferred.",
+    "tolerance_meaning": "Frozen Wave A/E4 acceptance band, not an empirical confidence interval.",
+    "ready_rule": "A row may be proposed ready only if repository, data, rights, lineage, objective, dependency, evaluator, tie, checkpoint, seed, metric, and receipt fields are all authoritatively supported.",
+    "execution_authority_from_this_artifact": false
+  },
+  "status_vocabulary": [
+    "READY_FOR_E4_R1C_CONSIDERATION",
+    "PENDING_EVIDENCE",
+    "REJECTED"
+  ],
+  "previous_status_counts": {
+    "READY_FOR_E5_AUDIT": 0,
+    "PENDING_EVIDENCE": 7,
+    "REJECTED": 6,
+    "total": 13
+  },
+  "proposed_status_counts": {
+    "READY_FOR_E4_R1C_CONSIDERATION": 0,
+    "PENDING_EVIDENCE": 7,
+    "REJECTED": 6,
+    "total": 13
+  },
+  "coverage": {
+    "candidate_rows_expected": 13,
+    "candidate_rows_replayed": 13,
+    "prohibited_joins_expected": 5,
+    "prohibited_joins_replayed": 5,
+    "reported_tolerances_expected": 26,
+    "reported_tolerances_preserved": 26,
+    "ready_rows": 0
+  },
+  "evidence_catalog": {
+    "R1A-EV001": {
+      "authority": "immutable author-maintained repository file",
+      "url": "https://raw.githubusercontent.com/gusye1234/LightGCN-PyTorch/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/README.md",
+      "access_date": "2026-08-22",
+      "revision": "947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+      "locator": "environment and data at lines 22-32; command at lines 33-39; fixed seed at lines 60-64; top-20 results at lines 69-82",
+      "lane_replay_result": "CONFIRMED",
+      "frozen_e5_replay_id": "SR001"
+    },
+    "R1A-EV002": {
+      "authority": "official paper",
+      "url": "https://arxiv.org/html/2002.02126v4",
+      "access_date": "2026-08-22",
+      "revision": "arXiv:2002.02126v4",
+      "locator": "experimental settings and Gowalla result tables",
+      "lane_replay_result": "CONFIRMED",
+      "frozen_e5_replay_id": "SR003"
+    },
+    "R1A-EV003": {
+      "authority": "official arXiv record",
+      "url": "https://arxiv.org/abs/2112.08679",
+      "access_date": "2026-08-22",
+      "revision": "arXiv:2112.08679v4",
+      "locator": "title, authors, abstract, code link, submission history; paper Table 3 and Table 5",
+      "lane_replay_result": "CONFIRMED",
+      "frozen_e5_replay_id": "SR005"
+    },
+    "R1A-EV004": {
+      "authority": "immutable author-maintained repository files",
+      "url": "https://github.com/Coder-Yu/QRec/tree/a141bb37cb7706b2f53b2eed5843de3269f9f37f",
+      "access_date": "2026-08-22",
+      "revision": "a141bb37cb7706b2f53b2eed5843de3269f9f37f",
+      "locator": "main.py selector q5 and config/SimGCL.conf ratings, testSet, topN, epoch, and batch fields",
+      "lane_replay_result": "LIVE_SURFACE_UNAVAILABLE",
+      "frozen_e5_replay_ids": [
+        "SR006",
+        "SR007"
+      ],
+      "effective_evidence_state": "CONFIRMED_BY_FROZEN_E5_PRIMARY_REPLAY"
+    },
+    "R1A-EV005": {
+      "authority": "official paper",
+      "url": "https://arxiv.org/html/2209.02544",
+      "access_date": "2026-08-22",
+      "revision": "arXiv:2209.02544",
+      "locator": "Table IV layer comparison; Table VI overall comparison; section 4.1 split, five-run average, and all-item evaluation",
+      "lane_replay_result": "CONFIRMED",
+      "frozen_e5_replay_id": "SR008"
+    },
+    "R1A-EV006": {
+      "authority": "immutable author-maintained repository tree",
+      "url": "https://github.com/Coder-Yu/SELFRec/tree/5b0229423cb1c727e85a704d63e460368c8b9dde",
+      "access_date": "2026-08-22",
+      "revision": "5b0229423cb1c727e85a704d63e460368c8b9dde",
+      "locator": "README use selector and Yelp2018 leaderboard; XSimGCL three-layer row",
+      "lane_replay_result": "CONFIRMED",
+      "frozen_e5_replay_id": "SR009"
+    },
+    "R1A-EV007": {
+      "authority": "official paper",
+      "url": "https://arxiv.org/html/2302.08191",
+      "access_date": "2026-08-22",
+      "revision": "arXiv:2302.08191v3",
+      "locator": "section 4.2 note on changed positive/negative sampling; Appendix E lines 448-470 and Table 6",
+      "lane_replay_result": "CONFIRMED",
+      "frozen_e5_replay_id": "SR010"
+    },
+    "R1A-EV008": {
+      "authority": "immutable author-maintained repository file",
+      "url": "https://raw.githubusercontent.com/HKUDS/LightGCL/5590453ad86782f58017e58d0b698d7f32175be3/README.md",
+      "access_date": "2026-08-22",
+      "revision": "5590453ad86782f58017e58d0b698d7f32175be3",
+      "locator": "dataset note and Yelp command",
+      "lane_replay_result": "LIVE_SURFACE_UNAVAILABLE",
+      "frozen_e5_replay_id": "SR011",
+      "effective_evidence_state": "CONFIRMED_BY_FROZEN_E5_PRIMARY_REPLAY"
+    },
+    "R1A-EV009": {
+      "authority": "official paper",
+      "url": "https://arxiv.org/html/2206.05941",
+      "access_date": "2026-08-22",
+      "revision": "arXiv:2206.05941",
+      "locator": "Table 2 Scientific statistics; Table 3 UniSRec/SASRec centers; sections 3.1.3-3.1.4 evaluation and checkpoint settings",
+      "lane_replay_result": "CONFIRMED",
+      "frozen_e5_replay_id": "SR012"
+    },
+    "R1A-EV010": {
+      "authority": "immutable author-maintained repository file",
+      "url": "https://raw.githubusercontent.com/RUCAIBox/UniSRec/05aa5cba2809112c32808f70d16abc61c05c6538/README.md",
+      "access_date": "2026-08-22",
+      "revision": "05aa5cba2809112c32808f70d16abc61c05c6538",
+      "locator": "Scientific fine-tune and SASRec commands",
+      "lane_replay_result": "LIVE_SURFACE_UNAVAILABLE",
+      "frozen_e5_replay_id": "SR013",
+      "effective_evidence_state": "CONFIRMED_BY_FROZEN_E5_PRIMARY_REPLAY"
+    },
+    "R1A-EV011": {
+      "authority": "official paper",
+      "url": "https://arxiv.org/pdf/2308.01308",
+      "access_date": "2026-08-22",
+      "revision": "arXiv:2308.01308",
+      "locator": "sections 4.2, 5.2, and 5.4; Table 5 Ta-Feng joint pretrain-finetune row",
+      "lane_replay_result": "CONFIRMED_IDENTITY; TABLE_DETAIL_CARRIED_FROM_FROZEN_E5_REPLAY",
+      "frozen_e5_replay_ids": [
+        "SR014",
+        "SR033"
+      ]
+    },
+    "R1A-EV012": {
+      "authority": "immutable author-maintained repository file",
+      "url": "https://raw.githubusercontent.com/liming-7/Mask-Swap-NNBR/8e0b796a9910888d6a8142f2d39dc7cbe87e349c/README.md",
+      "access_date": "2026-08-22",
+      "revision": "8e0b796a9910888d6a8142f2d39dc7cbe87e349c",
+      "locator": "Method 1 batch-64 command and Method 2 sweep",
+      "lane_replay_result": "LIVE_SURFACE_UNAVAILABLE",
+      "frozen_e5_replay_id": "SR015",
+      "effective_evidence_state": "CONFIRMED_BY_FROZEN_E5_PRIMARY_REPLAY"
+    },
+    "R1A-EV013": {
+      "authority": "official ICLR proceedings paper",
+      "url": "https://proceedings.iclr.cc/paper_files/paper/2025/file/e4bab1843c8d5a69f5abfd0824593493-Paper-Conference.pdf",
+      "access_date": "2026-08-22",
+      "revision": "ICLR 2025 proceedings",
+      "locator": "Table 3 page 7; Appendix E pages 25-27; all-ranking and early-stop settings",
+      "lane_replay_result": "CONFIRMED",
+      "frozen_e5_replay_id": "SR016"
+    },
+    "R1A-EV014": {
+      "authority": "immutable author-maintained repository file",
+      "url": "https://raw.githubusercontent.com/LehengTHU/AlphaRec/4b6c6cf378f292c31dd75b09a8075e8344561415/README.md",
+      "access_date": "2026-08-22",
+      "revision": "4b6c6cf378f292c31dd75b09a8075e8344561415",
+      "locator": "dataset acquisition pointer and Movies and TV command",
+      "lane_replay_result": "LIVE_SURFACE_UNAVAILABLE",
+      "frozen_e5_replay_id": "SR017",
+      "effective_evidence_state": "CONFIRMED_BY_FROZEN_E5_PRIMARY_REPLAY"
+    },
+    "R1A-EV015": {
+      "authority": "canonical dataset provider documentation",
+      "url": "https://files.grouplens.org/datasets/movielens/ml-1m-README.txt",
+      "access_date": "2026-08-22",
+      "revision": "provider stable archive documentation",
+      "locator": "summary, use and redistribution terms, ratings format; no provider top-N split",
+      "lane_replay_result": "CONFIRMED",
+      "frozen_e5_replay_ids": [
+        "SR022",
+        "SR023"
+      ]
+    },
+    "R1A-EV016": {
+      "authority": "canonical dataset provider documentation",
+      "url": "https://files.grouplens.org/datasets/movielens/ml-10m-README.html",
+      "access_date": "2026-08-22",
+      "revision": "provider stable archive documentation",
+      "locator": "use terms and five-fold rating-prediction scripts",
+      "lane_replay_result": "CONFIRMED",
+      "frozen_e5_replay_ids": [
+        "SR024",
+        "SR025"
+      ]
+    }
+  },
+  "minimum_defensible_official_reproduction": {
+    "selection_status": "NO_READY_ROW",
+    "priority_row": "E3-LIGHTGCN-GOWALLA-PYTORCH-001",
+    "priority_is_selection": false,
+    "priority_is_execution_authority": false,
+    "reason": "The pinned author README gives the strongest command-seed-center binding, but dataset lineage and rights, code license, dependency lock, candidate/tie semantics, checkpoint artifact, evaluator receipt, and immutable execution receipts remain absent.",
+    "recommendation": "E4-R1C may keep LightGCN/Gowalla first in the evidence-resolution queue; it must not label it ready or selected."
+  },
+  "candidate_rows": [
+    {
+      "row_id": "E3-LIGHTGCN-GOWALLA-PYTORCH-001",
+      "row_kind": "official_reproduction_candidate",
+      "prohibited_join": false,
+      "method": "LightGCN",
+      "repository": {
+        "identity_status": "CONFIRMED",
+        "url": "https://github.com/gusye1234/LightGCN-PyTorch",
+        "immutable_sha": "947ca2b3b1d2d3545b114145710cb06c4e57b3d2"
+      },
+      "source_config_binding": {
+        "status": "CONFIRMED_COMMAND_SEED_CENTER_PARTIAL_PIPELINE",
+        "command": "cd code && python main.py --decay=1e-4 --lr=0.001 --layer=3 --seed=2020 --dataset=\"gowalla\" --topks=\"[20]\" --recdim=64",
+        "config_identity": "README three-layer PyTorch configuration",
+        "evidence_ids": [
+          "R1A-EV001",
+          "R1A-EV002"
+        ]
+      },
+      "code_license": {
+        "status": "UNRESOLVED_NO_AFFIRMATIVE_GRANT_AT_PINNED_STATE",
+        "license": null,
+        "code_rights_separate_from_dataset_rights": true
+      },
+      "dataset_rights": {
+        "status": "UNRESOLVED_REPOSITORY_BUNDLE_NOT_CANONICAL_RIGHTS_PROOF",
+        "provider": null,
+        "release": null,
+        "provider_digest": null
+      },
+      "lineage": {
+        "raw_bytes_hashes": [],
+        "processed_bytes": "repository-bundled Gowalla pack",
+        "processed_hashes": [],
+        "split_identity": null,
+        "split_hashes": [],
+        "raw_to_processed_to_split_receipt": null,
+        "status": "UNRESOLVED"
+      },
+      "experiment_contract": {
+        "objective": "BPR pairwise objective with three-layer LightGCN propagation",
+        "seed_count": 1,
+        "seed_values": [
+          2020
+        ],
+        "reported_run_count": 1,
+        "checkpoint_policy": "README reports results after 1000 epochs",
+        "checkpoint_artifact": null,
+        "sampler": "repository BPR negative sampler; exact distribution receipt unavailable",
+        "candidate_universe": "repository full-ranking output asserted; exact masking/candidate receipt unavailable",
+        "tie_policy": null,
+        "evaluator": "integrated source evaluator; no separate evaluate-only command or immutable evaluator receipt",
+        "dependency_lock": null
+      },
+      "reported_metrics": [
+        {
+          "metric": "Recall",
+          "cutoff": 20,
+          "center": 0.1824,
+          "tolerance": 0.00912,
+          "averaging_unit": null,
+          "reported_center_kind": "README final single-seed result",
+          "locator": "R1A-EV001 lines 69-82"
+        },
+        {
+          "metric": "NDCG",
+          "cutoff": 20,
+          "center": 0.1547,
+          "tolerance": 0.007735,
+          "averaging_unit": null,
+          "reported_center_kind": "README final single-seed result",
+          "locator": "R1A-EV001 lines 69-82"
+        },
+        {
+          "metric": "Precision",
+          "cutoff": 20,
+          "center": 0.05589,
+          "tolerance": 0.005,
+          "averaging_unit": null,
+          "reported_center_kind": "README final single-seed result",
+          "locator": "R1A-EV001 lines 69-82"
+        }
+      ],
+      "previous_status": "PENDING_EVIDENCE",
+      "e5_replay_result": "PARTIAL",
+      "proposed_status": "PENDING_EVIDENCE",
+      "status_delta": "UNCHANGED",
+      "blockers": [
+        "dataset provider, release, rights, and raw hashes",
+        "raw-to-processed-to-split lineage receipt",
+        "affirmative code license grant",
+        "dependency and environment lock",
+        "exact candidate-mask and tie semantics",
+        "checkpoint artifact and immutable run/evaluator receipts"
+      ],
+      "execution_authorized": false
+    },
+    {
+      "row_id": "E3-SIMGCL-YELP2018-QREC-001",
+      "row_kind": "official_reproduction_candidate",
+      "prohibited_join": false,
+      "method": "SimGCL",
+      "repository": {
+        "identity_status": "CONFIRMED_BY_CORRECTED_OFFICIAL_RECORD",
+        "url": "https://github.com/Coder-Yu/QRec",
+        "immutable_sha": "a141bb37cb7706b2f53b2eed5843de3269f9f37f"
+      },
+      "source_config_binding": {
+        "status": "PARTIAL_CONFIRMED_AFTER_F001_CORRECTION",
+        "command": "python main.py, then select SimGCL with config/SimGCL.conf",
+        "config_identity": "pinned QRec Yelp2018 top-20 public configuration",
+        "old_paper_url_rejected": "https://arxiv.org/abs/2207.09037",
+        "correct_paper_url": "https://arxiv.org/abs/2112.08679",
+        "evidence_ids": [
+          "R1A-EV003",
+          "R1A-EV004"
+        ]
+      },
+      "code_license": {
+        "status": "UNRESOLVED_NO_AFFIRMATIVE_GRANT_AT_PINNED_STATE",
+        "license": null,
+        "code_rights_separate_from_dataset_rights": true
+      },
+      "dataset_rights": {
+        "status": "UNRESOLVED",
+        "provider": null,
+        "release": null,
+        "provider_digest": null
+      },
+      "lineage": {
+        "raw_bytes_hashes": [],
+        "processed_bytes": "Yelp2018 processed configuration",
+        "processed_hashes": [],
+        "split_identity": "paper reports 7:1:2 train/validation/test",
+        "split_hashes": [],
+        "raw_to_processed_to_split_receipt": null,
+        "status": "PARTIAL_PROTOCOL_ONLY"
+      },
+      "experiment_contract": {
+        "objective": "BPR recommendation objective plus SimGCL contrastive uniform-noise views",
+        "seed_count": null,
+        "seed_values": [],
+        "reported_run_count": null,
+        "checkpoint_policy": null,
+        "checkpoint_artifact": null,
+        "sampler": "QRec public config is identified; result-bound sampler receipt unavailable",
+        "candidate_universe": "paper all-item evaluation",
+        "tie_policy": null,
+        "evaluator": "paper all-item protocol and QRec integrated evaluation; exact immutable evaluator receipt unavailable",
+        "dependency_lock": null
+      },
+      "reported_metrics": [
+        {
+          "metric": "Recall",
+          "cutoff": 20,
+          "center": 0.0721,
+          "tolerance": 0.005,
+          "averaging_unit": null,
+          "reported_center_kind": "source-reported Yelp2018 center",
+          "locator": "R1A-EV003 Table 3/Table 5 and R1A-EV004 pinned configuration"
+        },
+        {
+          "metric": "NDCG",
+          "cutoff": 20,
+          "center": 0.0601,
+          "tolerance": 0.005,
+          "averaging_unit": null,
+          "reported_center_kind": "source-reported Yelp2018 center",
+          "locator": "R1A-EV003 Table 3/Table 5 and R1A-EV004 pinned configuration"
+        }
+      ],
+      "previous_status": "PENDING_EVIDENCE",
+      "e5_replay_result": "CONTRADICTED_SOURCE_IDENTITY",
+      "proposed_status": "PENDING_EVIDENCE",
+      "status_delta": "SOURCE_IDENTITY_CORRECTED_NO_READINESS_PROMOTION",
+      "blockers": [
+        "noninteractive exact argv and executed config hash",
+        "dataset provider, rights, release, acquired-byte hashes, and lineage receipt",
+        "dependency and environment lock",
+        "seed identities and run receipts",
+        "checkpoint rule and artifact",
+        "exact evaluator receipt and deterministic tie policy"
+      ],
+      "execution_authorized": false
+    },
+    {
+      "row_id": "E3-XSIMGCL-YELP2018-SELFREC-001",
+      "row_kind": "official_reproduction_candidate",
+      "prohibited_join": false,
+      "method": "XSimGCL",
+      "repository": {
+        "identity_status": "CONFIRMED",
+        "url": "https://github.com/Coder-Yu/SELFRec",
+        "immutable_sha": "5b0229423cb1c727e85a704d63e460368c8b9dde"
+      },
+      "source_config_binding": {
+        "status": "CONFIRMED_THREE_LAYER_CENTER_PARTIAL_EXECUTION_BINDING",
+        "command": "python main.py, then select XSimGCL with the pinned three-layer configuration",
+        "config_identity": "SELFRec Yelp2018 three-layer leaderboard/config only",
+        "evidence_ids": [
+          "R1A-EV005",
+          "R1A-EV006"
+        ]
+      },
+      "code_license": {
+        "status": "UNRESOLVED_NO_AFFIRMATIVE_GRANT_AT_PINNED_STATE",
+        "license": null,
+        "code_rights_separate_from_dataset_rights": true
+      },
+      "dataset_rights": {
+        "status": "UNRESOLVED",
+        "provider": null,
+        "release": null,
+        "provider_digest": null
+      },
+      "lineage": {
+        "raw_bytes_hashes": [],
+        "processed_bytes": "Yelp2018 processed configuration",
+        "processed_hashes": [],
+        "split_identity": "paper reports 7:1:2 train/validation/test",
+        "split_hashes": [],
+        "raw_to_processed_to_split_receipt": null,
+        "status": "PARTIAL_PROTOCOL_ONLY"
+      },
+      "experiment_contract": {
+        "objective": "BPR recommendation objective plus XSimGCL contrastive objective and noise view",
+        "seed_count": null,
+        "seed_values": [],
+        "reported_run_count": 5,
+        "checkpoint_policy": null,
+        "checkpoint_artifact": null,
+        "sampler": "three-layer SELFRec configuration; exact result-bound sampler receipt unavailable",
+        "candidate_universe": "paper all-item evaluation",
+        "tie_policy": null,
+        "evaluator": "paper protocol and SELFRec integrated evaluator; immutable receipt unavailable",
+        "dependency_lock": null
+      },
+      "reported_metrics": [
+        {
+          "metric": "Recall",
+          "cutoff": 20,
+          "center": 0.0723,
+          "tolerance": 0.005,
+          "averaging_unit": "average across five reported runs; exact seed identities unavailable",
+          "reported_center_kind": "three-layer source row",
+          "locator": "R1A-EV005 Table IV and R1A-EV006 leaderboard"
+        },
+        {
+          "metric": "NDCG",
+          "cutoff": 20,
+          "center": 0.0604,
+          "tolerance": 0.005,
+          "averaging_unit": "average across five reported runs; exact seed identities unavailable",
+          "reported_center_kind": "three-layer source row",
+          "locator": "R1A-EV005 Table IV and R1A-EV006 leaderboard"
+        }
+      ],
+      "previous_status": "PENDING_EVIDENCE",
+      "e5_replay_result": "PARTIAL",
+      "proposed_status": "PENDING_EVIDENCE",
+      "status_delta": "UNCHANGED",
+      "blockers": [
+        "noninteractive exact argv",
+        "affirmative code license grant",
+        "dependency and environment lock",
+        "dataset rights, release, hashes, and lineage receipt",
+        "exact seed identities and run receipts",
+        "checkpoint artifact and deterministic tie policy"
+      ],
+      "execution_authorized": false
+    },
+    {
+      "row_id": "E3-LIGHTGCL-YELP-UPDATED-001",
+      "row_kind": "official_reproduction_candidate",
+      "prohibited_join": false,
+      "method": "LightGCL",
+      "repository": {
+        "identity_status": "CONFIRMED",
+        "url": "https://github.com/HKUDS/LightGCL",
+        "immutable_sha": "5590453ad86782f58017e58d0b698d7f32175be3"
+      },
+      "source_config_binding": {
+        "status": "CONFIRMED_APPENDIX_E_SAMPLER_CENTER_PARTIAL_RUN_BINDING",
+        "command": "python main.py --data yelp",
+        "config_identity": "Appendix E interaction-based sampler only",
+        "evidence_ids": [
+          "R1A-EV007",
+          "R1A-EV008"
+        ]
+      },
+      "code_license": {
+        "status": "UNRESOLVED_NO_AFFIRMATIVE_GRANT_AT_PINNED_STATE",
+        "license": null,
+        "code_rights_separate_from_dataset_rights": true
+      },
+      "dataset_rights": {
+        "status": "UNRESOLVED",
+        "provider": null,
+        "release": null,
+        "provider_digest": null
+      },
+      "lineage": {
+        "raw_bytes_hashes": [],
+        "processed_bytes": "repository Yelp processed pack",
+        "processed_hashes": [],
+        "split_identity": null,
+        "split_hashes": [],
+        "raw_to_processed_to_split_receipt": null,
+        "status": "UNRESOLVED"
+      },
+      "experiment_contract": {
+        "objective": "BPR recommendation loss plus LightGCL local-global InfoNCE and SVD-guided augmentation",
+        "seed_count": null,
+        "seed_values": [],
+        "reported_run_count": null,
+        "checkpoint_policy": null,
+        "checkpoint_artifact": null,
+        "sampler": "Appendix E directly samples positive and negative item pairs from interactions",
+        "candidate_universe": null,
+        "tie_policy": null,
+        "evaluator": "paper/repository integrated result surface; immutable evaluator receipt unavailable",
+        "dependency_lock": null
+      },
+      "reported_metrics": [
+        {
+          "metric": "Recall",
+          "cutoff": 20,
+          "center": 0.0985,
+          "tolerance": 0.005,
+          "averaging_unit": null,
+          "reported_center_kind": "Appendix E updated interaction-sampler row",
+          "locator": "R1A-EV007 Appendix E Table 6"
+        },
+        {
+          "metric": "NDCG",
+          "cutoff": 20,
+          "center": 0.0842,
+          "tolerance": 0.005,
+          "averaging_unit": null,
+          "reported_center_kind": "Appendix E updated interaction-sampler row",
+          "locator": "R1A-EV007 Appendix E Table 6"
+        },
+        {
+          "metric": "Recall",
+          "cutoff": 40,
+          "center": 0.1553,
+          "tolerance": 0.007765,
+          "averaging_unit": null,
+          "reported_center_kind": "Appendix E updated interaction-sampler row",
+          "locator": "R1A-EV007 Appendix E Table 6"
+        },
+        {
+          "metric": "NDCG",
+          "cutoff": 40,
+          "center": 0.1051,
+          "tolerance": 0.005255,
+          "averaging_unit": null,
+          "reported_center_kind": "Appendix E updated interaction-sampler row",
+          "locator": "R1A-EV007 Appendix E Table 6"
+        }
+      ],
+      "previous_status": "PENDING_EVIDENCE",
+      "e5_replay_result": "PARTIAL",
+      "proposed_status": "PENDING_EVIDENCE",
+      "status_delta": "UNCHANGED",
+      "blockers": [
+        "affirmative code license grant",
+        "dataset provider, rights, release, hashes, and lineage receipt",
+        "dependency and environment lock",
+        "seed identities and run receipts",
+        "checkpoint policy and artifact",
+        "candidate universe, evaluator receipt, and deterministic tie policy"
+      ],
+      "execution_authorized": false
+    },
+    {
+      "row_id": "E3-UNISREC-SCIENTIFIC-TRANS-001",
+      "row_kind": "official_reproduction_candidate",
+      "prohibited_join": false,
+      "method": "UniSRec",
+      "repository": {
+        "identity_status": "CONFIRMED",
+        "url": "https://github.com/RUCAIBox/UniSRec",
+        "immutable_sha": "05aa5cba2809112c32808f70d16abc61c05c6538"
+      },
+      "source_config_binding": {
+        "status": "CONFIRMED_COMMAND_CENTER_PARTIAL_ARTIFACT_BINDING",
+        "command": "python finetune.py -d Scientific -p saved/UniSRec-FHCKM-300.pth",
+        "config_identity": "Scientific transductive UniSRec_t+ID row",
+        "evidence_ids": [
+          "R1A-EV009",
+          "R1A-EV010"
+        ]
+      },
+      "code_license": {
+        "status": "NO_NEW_R1A_DETERMINATION",
+        "license": null,
+        "code_rights_separate_from_dataset_rights": true
+      },
+      "dataset_rights": {
+        "status": "UNRESOLVED_PROCESSED_TEXT_AND_PRETRAINED_ARTIFACT_RIGHTS",
+        "provider": "Amazon review data lineage asserted by paper",
+        "release": null,
+        "provider_digest": null
+      },
+      "lineage": {
+        "raw_bytes_hashes": [],
+        "processed_bytes": "Scientific processed archive plus item text and pretrained checkpoint",
+        "processed_hashes": [],
+        "split_identity": "leave-one-out: final item test, penultimate validation, earlier interactions train",
+        "split_hashes": [],
+        "raw_to_processed_to_split_receipt": null,
+        "status": "PARTIAL_PROTOCOL_ONLY"
+      },
+      "experiment_contract": {
+        "objective": "transductive UniSRec_t+ID fine-tuning with sequence and item-text representations",
+        "seed_count": null,
+        "seed_values": [],
+        "reported_run_count": null,
+        "checkpoint_policy": "early stopping patience 10 with validation NDCG@10 indicator",
+        "checkpoint_artifact": null,
+        "sampler": null,
+        "candidate_universe": "all other items ranked for each sequence",
+        "tie_policy": null,
+        "evaluator": "Recall/NDCG at 10 and 50, average over test users",
+        "dependency_lock": null
+      },
+      "reported_metrics": [
+        {
+          "metric": "Recall",
+          "cutoff": 10,
+          "center": 0.1235,
+          "tolerance": 0.006175,
+          "averaging_unit": "test users",
+          "reported_center_kind": "paper Table 3 UniSRec_t+ID Scientific center",
+          "locator": "R1A-EV009 Table 3"
+        },
+        {
+          "metric": "NDCG",
+          "cutoff": 10,
+          "center": 0.0634,
+          "tolerance": 0.005,
+          "averaging_unit": "test users",
+          "reported_center_kind": "paper Table 3 UniSRec_t+ID Scientific center",
+          "locator": "R1A-EV009 Table 3"
+        },
+        {
+          "metric": "Recall",
+          "cutoff": 50,
+          "center": 0.2473,
+          "tolerance": 0.012365,
+          "averaging_unit": "test users",
+          "reported_center_kind": "paper Table 3 UniSRec_t+ID Scientific center",
+          "locator": "R1A-EV009 Table 3"
+        },
+        {
+          "metric": "NDCG",
+          "cutoff": 50,
+          "center": 0.0904,
+          "tolerance": 0.005,
+          "averaging_unit": "test users",
+          "reported_center_kind": "paper Table 3 UniSRec_t+ID Scientific center",
+          "locator": "R1A-EV009 Table 3"
+        }
+      ],
+      "previous_status": "PENDING_EVIDENCE",
+      "e5_replay_result": "PARTIAL",
+      "proposed_status": "PENDING_EVIDENCE",
+      "status_delta": "UNCHANGED",
+      "blockers": [
+        "processed archive, text, and pretrained checkpoint release identities and hashes",
+        "raw lineage and rights",
+        "dependency and environment lock",
+        "exact seed/run schedule and receipts",
+        "checkpoint artifact",
+        "sampler and deterministic tie policy"
+      ],
+      "execution_authorized": false
+    },
+    {
+      "row_id": "E3-SASREC-SCIENTIFIC-UNISREC-FRAMEWORK-001",
+      "row_kind": "official_reproduction_candidate",
+      "prohibited_join": false,
+      "method": "SASRec",
+      "repository": {
+        "identity_status": "CONFIRMED_FRAMEWORK_BOUND",
+        "url": "https://github.com/RUCAIBox/UniSRec",
+        "immutable_sha": "05aa5cba2809112c32808f70d16abc61c05c6538"
+      },
+      "source_config_binding": {
+        "status": "CONFIRMED_UNISREC_FRAMEWORK_BASELINE_ONLY",
+        "command": "python run_baseline.py -m SASRec -d Scientific --config_files=props/finetune.yaml --hidden_size=300",
+        "config_identity": "SASRec baseline executed within the UniSRec framework",
+        "evidence_ids": [
+          "R1A-EV009",
+          "R1A-EV010"
+        ]
+      },
+      "code_license": {
+        "status": "NO_NEW_R1A_DETERMINATION",
+        "license": null,
+        "code_rights_separate_from_dataset_rights": true
+      },
+      "dataset_rights": {
+        "status": "UNRESOLVED_PROCESSED_ARCHIVE_RIGHTS",
+        "provider": "Amazon review data lineage asserted by paper",
+        "release": null,
+        "provider_digest": null
+      },
+      "lineage": {
+        "raw_bytes_hashes": [],
+        "processed_bytes": "Scientific processed archive",
+        "processed_hashes": [],
+        "split_identity": "leave-one-out: final item test, penultimate validation, earlier interactions train",
+        "split_hashes": [],
+        "raw_to_processed_to_split_receipt": null,
+        "status": "PARTIAL_PROTOCOL_ONLY"
+      },
+      "experiment_contract": {
+        "objective": "SASRec next-item objective as configured by the UniSRec framework",
+        "seed_count": null,
+        "seed_values": [],
+        "reported_run_count": null,
+        "checkpoint_policy": "early stopping patience 10 with validation NDCG@10 indicator",
+        "checkpoint_artifact": null,
+        "sampler": null,
+        "candidate_universe": "all other items ranked for each sequence",
+        "tie_policy": null,
+        "evaluator": "Recall/NDCG at 10 and 50, average over test users",
+        "dependency_lock": null
+      },
+      "reported_metrics": [
+        {
+          "metric": "Recall",
+          "cutoff": 10,
+          "center": 0.108,
+          "tolerance": 0.0054,
+          "averaging_unit": "test users",
+          "reported_center_kind": "paper Table 3 SASRec Scientific framework center",
+          "locator": "R1A-EV009 Table 3"
+        },
+        {
+          "metric": "NDCG",
+          "cutoff": 10,
+          "center": 0.0553,
+          "tolerance": 0.005,
+          "averaging_unit": "test users",
+          "reported_center_kind": "paper Table 3 SASRec Scientific framework center",
+          "locator": "R1A-EV009 Table 3"
+        },
+        {
+          "metric": "Recall",
+          "cutoff": 50,
+          "center": 0.2042,
+          "tolerance": 0.01021,
+          "averaging_unit": "test users",
+          "reported_center_kind": "paper Table 3 SASRec Scientific framework center",
+          "locator": "R1A-EV009 Table 3"
+        },
+        {
+          "metric": "NDCG",
+          "cutoff": 50,
+          "center": 0.076,
+          "tolerance": 0.005,
+          "averaging_unit": "test users",
+          "reported_center_kind": "paper Table 3 SASRec Scientific framework center",
+          "locator": "R1A-EV009 Table 3"
+        }
+      ],
+      "previous_status": "PENDING_EVIDENCE",
+      "e5_replay_result": "PARTIAL",
+      "proposed_status": "PENDING_EVIDENCE",
+      "status_delta": "UNCHANGED",
+      "blockers": [
+        "framework-specific objective/config hash",
+        "processed archive release, rights, hashes, and raw lineage",
+        "dependency and environment lock",
+        "exact seed/run schedule and receipts",
+        "checkpoint artifact",
+        "sampler and deterministic tie policy"
+      ],
+      "execution_authorized": false
+    },
+    {
+      "row_id": "E3-BTBR-TAFENG-JOINT-001",
+      "row_kind": "official_reproduction_candidate",
+      "prohibited_join": false,
+      "method": "BTBR",
+      "repository": {
+        "identity_status": "CONFIRMED_REPOSITORY_IDENTITY_NO_MATCHING_COMMAND",
+        "url": "https://github.com/liming-7/Mask-Swap-NNBR",
+        "immutable_sha": "8e0b796a9910888d6a8142f2d39dc7cbe87e349c"
+      },
+      "source_config_binding": {
+        "status": "REJECTED_NO_PUBLIC_COMMAND_FOR_TABLE5_JOINT_TASK",
+        "command": null,
+        "config_identity": "paper Table 5 joint task, batch size 128, five reported runs",
+        "evidence_ids": [
+          "R1A-EV011",
+          "R1A-EV012"
+        ]
+      },
+      "code_license": {
+        "status": "UNRESOLVED_NO_AFFIRMATIVE_GRANT_AT_PINNED_STATE",
+        "license": null,
+        "code_rights_separate_from_dataset_rights": true
+      },
+      "dataset_rights": {
+        "status": "UNRESOLVED_NO_CANONICAL_TA_FENG_PROVIDER_GRANT",
+        "provider": null,
+        "release": null,
+        "provider_digest": null
+      },
+      "lineage": {
+        "raw_bytes_hashes": [],
+        "processed_bytes": "paper/repository Ta-Feng surface",
+        "processed_hashes": [],
+        "split_identity": null,
+        "split_hashes": [],
+        "raw_to_processed_to_split_receipt": null,
+        "status": "UNRESOLVED"
+      },
+      "experiment_contract": {
+        "objective": "BTBR joint next-basket pretrain-finetune task",
+        "seed_count": null,
+        "seed_values": [],
+        "reported_run_count": 5,
+        "checkpoint_policy": null,
+        "checkpoint_artifact": null,
+        "sampler": "paper joint-task batch size 128; public Method 1 uses different item-selection batch-64 semantics",
+        "candidate_universe": null,
+        "tie_policy": null,
+        "evaluator": null,
+        "dependency_lock": null
+      },
+      "reported_metrics": [
+        {
+          "metric": "Recall",
+          "cutoff": 10,
+          "center": 0.1057,
+          "tolerance": 0.005285,
+          "averaging_unit": "paper reports five runs; exact seeds unavailable",
+          "reported_center_kind": "paper Table 5 joint-task row",
+          "locator": "R1A-EV011 Table 5"
+        },
+        {
+          "metric": "NDCG",
+          "cutoff": 10,
+          "center": 0.087,
+          "tolerance": 0.005,
+          "averaging_unit": "paper reports five runs; exact seeds unavailable",
+          "reported_center_kind": "paper Table 5 joint-task row",
+          "locator": "R1A-EV011 Table 5"
+        },
+        {
+          "metric": "Recall",
+          "cutoff": 20,
+          "center": 0.1353,
+          "tolerance": 0.006765,
+          "averaging_unit": "paper reports five runs; exact seeds unavailable",
+          "reported_center_kind": "paper Table 5 joint-task row",
+          "locator": "R1A-EV011 Table 5"
+        },
+        {
+          "metric": "NDCG",
+          "cutoff": 20,
+          "center": 0.0973,
+          "tolerance": 0.005,
+          "averaging_unit": "paper reports five runs; exact seeds unavailable",
+          "reported_center_kind": "paper Table 5 joint-task row",
+          "locator": "R1A-EV011 Table 5"
+        }
+      ],
+      "previous_status": "REJECTED",
+      "e5_replay_result": "CONFIRMED_REJECTION",
+      "proposed_status": "REJECTED",
+      "status_delta": "UNCHANGED",
+      "blockers": [
+        "no exact public joint-task command",
+        "public command changes task and batch semantics",
+        "no canonical Ta-Feng provider, rights, version, or hash",
+        "no dependency, seed, checkpoint, evaluator, tie, or run receipt lock"
+      ],
+      "execution_authorized": false
+    },
+    {
+      "row_id": "E3-ALPHAREC-MOVIES-TV-001",
+      "row_kind": "official_reproduction_candidate",
+      "prohibited_join": false,
+      "method": "AlphaRec",
+      "repository": {
+        "identity_status": "CONFIRMED",
+        "url": "https://github.com/LehengTHU/AlphaRec",
+        "immutable_sha": "4b6c6cf378f292c31dd75b09a8075e8344561415"
+      },
+      "source_config_binding": {
+        "status": "CONFIRMED_COMMAND_CENTER_PARTIAL_ARTIFACT_BINDING",
+        "command": "nohup python main.py --rs_type General --clear_checkpoints --saveID tau_0.15_v3_mlp_ --dataset amazon_movie --model_name AlphaRec --n_layers 2 --patience 20 --cuda 1 --no_wandb --train_norm --pred_norm --neg_sample 256 --lm_model v3 --model_version mlp --tau 0.15 --infonce 1 &>logs/amazon_movie_tau_0.15_v3_mlp__2.log &",
+        "config_identity": "Movies and TV AlphaRec, text-embeddings-3-large, two graph layers",
+        "evidence_ids": [
+          "R1A-EV013",
+          "R1A-EV014"
+        ]
+      },
+      "code_license": {
+        "status": "UNRESOLVED_BADGE_WITHOUT_PINNED_GRANT_FILE",
+        "license": null,
+        "code_rights_separate_from_dataset_rights": true
+      },
+      "dataset_rights": {
+        "status": "UNRESOLVED_DATA_TEXT_AND_EMBEDDING_RIGHTS",
+        "provider": "Amazon Reviews Movies and TV lineage asserted",
+        "release": null,
+        "provider_digest": null
+      },
+      "lineage": {
+        "raw_bytes_hashes": [],
+        "processed_bytes": "Movies and TV processed interactions, titles, and embedding bundle",
+        "processed_hashes": [],
+        "split_identity": null,
+        "split_hashes": [],
+        "raw_to_processed_to_split_receipt": null,
+        "status": "UNRESOLVED"
+      },
+      "experiment_contract": {
+        "objective": "InfoNCE over language-derived item representations with graph propagation",
+        "seed_count": null,
+        "seed_values": [],
+        "reported_run_count": null,
+        "checkpoint_policy": "stop if validation Recall@20 does not improve for 20 successive evaluations",
+        "checkpoint_artifact": null,
+        "sampler": "256 sampled negative items",
+        "candidate_universe": "all-ranking: all items except positive training items",
+        "tie_policy": null,
+        "evaluator": "paper all-ranking result surface; exact formula/receipt unavailable",
+        "dependency_lock": null
+      },
+      "reported_metrics": [
+        {
+          "metric": "Recall",
+          "cutoff": 20,
+          "center": 0.1221,
+          "tolerance": 0.006105,
+          "averaging_unit": null,
+          "reported_center_kind": "ICLR Table 3 Movies and TV AlphaRec row",
+          "locator": "R1A-EV013 Table 3 page 7"
+        },
+        {
+          "metric": "NDCG",
+          "cutoff": 20,
+          "center": 0.1144,
+          "tolerance": 0.00572,
+          "averaging_unit": null,
+          "reported_center_kind": "ICLR Table 3 Movies and TV AlphaRec row",
+          "locator": "R1A-EV013 Table 3 page 7"
+        },
+        {
+          "metric": "HitRate",
+          "cutoff": 20,
+          "center": 0.5587,
+          "tolerance": 0.027935,
+          "averaging_unit": null,
+          "reported_center_kind": "ICLR Table 3 Movies and TV AlphaRec row",
+          "locator": "R1A-EV013 Table 3 page 7"
+        }
+      ],
+      "previous_status": "PENDING_EVIDENCE",
+      "e5_replay_result": "PARTIAL",
+      "proposed_status": "PENDING_EVIDENCE",
+      "status_delta": "UNCHANGED",
+      "blockers": [
+        "affirmative code license grant",
+        "dataset, text, and embedding rights and hashes",
+        "raw-to-processed-to-split lineage receipt",
+        "dependency and environment lock",
+        "exact seed/run schedule and receipts",
+        "checkpoint artifact, metric aggregation detail, evaluator receipt, and deterministic tie policy"
+      ],
+      "execution_authorized": false
+    },
+    {
+      "row_id": "E3-RB001-LIGHTGCL-TABLE1-CURRENT-COMMAND",
+      "row_kind": "prohibited_join",
+      "prohibited_join": true,
+      "method": "LightGCL",
+      "repository": {
+        "identity_status": "CONFIRMED",
+        "url": "https://github.com/HKUDS/LightGCL",
+        "immutable_sha": "5590453ad86782f58017e58d0b698d7f32175be3"
+      },
+      "source_config_binding": {
+        "status": "PROHIBITED_CROSS_SAMPLER_JOIN",
+        "command": "python main.py --data yelp",
+        "config_identity": "current Appendix E interaction sampler incorrectly joined to older Table 1 centers",
+        "evidence_ids": [
+          "R1A-EV007",
+          "R1A-EV008"
+        ]
+      },
+      "code_license": {
+        "status": "UNRESOLVED_NOT_NEEDED_TO_ESTABLISH_PROHIBITION",
+        "license": null,
+        "code_rights_separate_from_dataset_rights": true
+      },
+      "dataset_rights": {
+        "status": "UNRESOLVED_NOT_NEEDED_TO_ESTABLISH_PROHIBITION",
+        "provider": null,
+        "release": null,
+        "provider_digest": null
+      },
+      "lineage": {
+        "raw_bytes_hashes": [],
+        "processed_bytes": null,
+        "processed_hashes": [],
+        "split_identity": null,
+        "split_hashes": [],
+        "raw_to_processed_to_split_receipt": null,
+        "status": "NOT_APPLICABLE_PROHIBITED_JOIN"
+      },
+      "experiment_contract": {
+        "objective": "LightGCL BPR plus local-global contrastive objective",
+        "seed_count": null,
+        "seed_values": [],
+        "reported_run_count": null,
+        "checkpoint_policy": null,
+        "checkpoint_artifact": null,
+        "sampler": "join mixes older Table 1 sampler with current Appendix E interaction sampler",
+        "candidate_universe": null,
+        "tie_policy": null,
+        "evaluator": null,
+        "dependency_lock": null
+      },
+      "reported_metrics": [],
+      "rejected_metric_surface": {
+        "locator": "R1A-EV007 Table 1 versus Appendix E Table 6",
+        "tolerance": null,
+        "reason": "No acceptance tolerance is attached to a prohibited cross-sampler join."
+      },
+      "previous_status": "REJECTED",
+      "e5_replay_result": "CONFIRMED_PROHIBITION",
+      "proposed_status": "REJECTED",
+      "status_delta": "UNCHANGED",
+      "blockers": [
+        "sampler identity mismatch is dispositive"
+      ],
+      "execution_authorized": false
+    },
+    {
+      "row_id": "E3-RB002-XSIMGCL-THREELAYER-FOURLAYER-CENTER",
+      "row_kind": "prohibited_join",
+      "prohibited_join": true,
+      "method": "XSimGCL",
+      "repository": {
+        "identity_status": "CONFIRMED",
+        "url": "https://github.com/Coder-Yu/SELFRec",
+        "immutable_sha": "5b0229423cb1c727e85a704d63e460368c8b9dde"
+      },
+      "source_config_binding": {
+        "status": "PROHIBITED_CROSS_LAYER_JOIN",
+        "command": "python main.py, then select the pinned three-layer XSimGCL configuration",
+        "config_identity": "three-layer public configuration incorrectly joined to four-layer center",
+        "evidence_ids": [
+          "R1A-EV005",
+          "R1A-EV006"
+        ]
+      },
+      "code_license": {
+        "status": "UNRESOLVED_NOT_NEEDED_TO_ESTABLISH_PROHIBITION",
+        "license": null,
+        "code_rights_separate_from_dataset_rights": true
+      },
+      "dataset_rights": {
+        "status": "UNRESOLVED_NOT_NEEDED_TO_ESTABLISH_PROHIBITION",
+        "provider": null,
+        "release": null,
+        "provider_digest": null
+      },
+      "lineage": {
+        "raw_bytes_hashes": [],
+        "processed_bytes": null,
+        "processed_hashes": [],
+        "split_identity": "paper 7:1:2 protocol",
+        "split_hashes": [],
+        "raw_to_processed_to_split_receipt": null,
+        "status": "NOT_APPLICABLE_PROHIBITED_JOIN"
+      },
+      "experiment_contract": {
+        "objective": "XSimGCL objective with configuration-specific layer count",
+        "seed_count": null,
+        "seed_values": [],
+        "reported_run_count": 5,
+        "checkpoint_policy": null,
+        "checkpoint_artifact": null,
+        "sampler": "paper protocol",
+        "candidate_universe": "all items",
+        "tie_policy": null,
+        "evaluator": "paper evaluation surface",
+        "dependency_lock": null
+      },
+      "reported_metrics": [],
+      "rejected_metric_surface": {
+        "centers": [
+          {
+            "metric": "Recall",
+            "cutoff": 20,
+            "center": 0.0733
+          },
+          {
+            "metric": "NDCG",
+            "cutoff": 20,
+            "center": 0.0606
+          }
+        ],
+        "locator": "R1A-EV005 Table IV four-layer row",
+        "tolerance": null,
+        "reason": "Four-layer centers cannot bind the three-layer configuration."
+      },
+      "previous_status": "REJECTED",
+      "e5_replay_result": "CONFIRMED_PROHIBITION",
+      "proposed_status": "REJECTED",
+      "status_delta": "UNCHANGED",
+      "blockers": [
+        "layer-count identity mismatch is dispositive"
+      ],
+      "execution_authorized": false
+    },
+    {
+      "row_id": "E3-RB003-MASKSWAP-BTBR-TABLE5",
+      "row_kind": "prohibited_join",
+      "prohibited_join": true,
+      "method": "Mask-Swap-NNBR",
+      "repository": {
+        "identity_status": "CONFIRMED",
+        "url": "https://github.com/liming-7/Mask-Swap-NNBR",
+        "immutable_sha": "8e0b796a9910888d6a8142f2d39dc7cbe87e349c"
+      },
+      "source_config_binding": {
+        "status": "PROHIBITED_CROSS_TASK_AND_BATCH_JOIN",
+        "command": "public Method 1 item-selection command, batch size 64",
+        "config_identity": "public Mask-Swap command incorrectly joined to BTBR Table 5 joint-task batch-128 center",
+        "evidence_ids": [
+          "R1A-EV011",
+          "R1A-EV012"
+        ]
+      },
+      "code_license": {
+        "status": "UNRESOLVED_NO_AFFIRMATIVE_GRANT_AT_PINNED_STATE",
+        "license": null,
+        "code_rights_separate_from_dataset_rights": true
+      },
+      "dataset_rights": {
+        "status": "UNRESOLVED_NO_CANONICAL_TA_FENG_PROVIDER_GRANT",
+        "provider": null,
+        "release": null,
+        "provider_digest": null
+      },
+      "lineage": {
+        "raw_bytes_hashes": [],
+        "processed_bytes": null,
+        "processed_hashes": [],
+        "split_identity": null,
+        "split_hashes": [],
+        "raw_to_processed_to_split_receipt": null,
+        "status": "NOT_APPLICABLE_PROHIBITED_JOIN"
+      },
+      "experiment_contract": {
+        "objective": "public item-selection task versus paper joint next-basket task",
+        "seed_count": null,
+        "seed_values": [],
+        "reported_run_count": 5,
+        "checkpoint_policy": null,
+        "checkpoint_artifact": null,
+        "sampler": "public batch 64 versus paper batch 128",
+        "candidate_universe": null,
+        "tie_policy": null,
+        "evaluator": null,
+        "dependency_lock": null
+      },
+      "reported_metrics": [],
+      "rejected_metric_surface": {
+        "centers": [
+          {
+            "metric": "Recall",
+            "cutoff": 10,
+            "center": 0.1057
+          },
+          {
+            "metric": "NDCG",
+            "cutoff": 10,
+            "center": 0.087
+          },
+          {
+            "metric": "Recall",
+            "cutoff": 20,
+            "center": 0.1353
+          },
+          {
+            "metric": "NDCG",
+            "cutoff": 20,
+            "center": 0.0973
+          }
+        ],
+        "locator": "R1A-EV011 Table 5",
+        "tolerance": null,
+        "reason": "The public Method 1 command changes task and batch semantics."
+      },
+      "previous_status": "REJECTED",
+      "e5_replay_result": "CONFIRMED_PROHIBITION",
+      "proposed_status": "REJECTED",
+      "status_delta": "UNCHANGED",
+      "blockers": [
+        "task and batch identity mismatch is dispositive",
+        "canonical Ta-Feng rights/version/hash remain absent"
+      ],
+      "execution_authorized": false
+    },
+    {
+      "row_id": "E3-RB004-LIGHTGCN-PAPER-CENTER-PYTORCH-README-COMMAND",
+      "row_kind": "prohibited_join",
+      "prohibited_join": true,
+      "method": "LightGCN",
+      "repository": {
+        "identity_status": "CONFIRMED_DISTINCT_IMPLEMENTATION_SURFACES",
+        "url": "https://github.com/gusye1234/LightGCN-PyTorch",
+        "immutable_sha": "947ca2b3b1d2d3545b114145710cb06c4e57b3d2"
+      },
+      "source_config_binding": {
+        "status": "PROHIBITED_CROSS_IMPLEMENTATION_CENTER_JOIN",
+        "command": "README PyTorch three-layer Gowalla command",
+        "config_identity": "PyTorch README command incorrectly joined to paper center from another locked result surface",
+        "evidence_ids": [
+          "R1A-EV001",
+          "R1A-EV002"
+        ]
+      },
+      "code_license": {
+        "status": "UNRESOLVED_NOT_NEEDED_TO_ESTABLISH_PROHIBITION",
+        "license": null,
+        "code_rights_separate_from_dataset_rights": true
+      },
+      "dataset_rights": {
+        "status": "UNRESOLVED_NOT_NEEDED_TO_ESTABLISH_PROHIBITION",
+        "provider": null,
+        "release": null,
+        "provider_digest": null
+      },
+      "lineage": {
+        "raw_bytes_hashes": [],
+        "processed_bytes": null,
+        "processed_hashes": [],
+        "split_identity": null,
+        "split_hashes": [],
+        "raw_to_processed_to_split_receipt": null,
+        "status": "NOT_APPLICABLE_PROHIBITED_JOIN"
+      },
+      "experiment_contract": {
+        "objective": "LightGCN BPR objective",
+        "seed_count": null,
+        "seed_values": [],
+        "reported_run_count": null,
+        "checkpoint_policy": null,
+        "checkpoint_artifact": null,
+        "sampler": null,
+        "candidate_universe": null,
+        "tie_policy": null,
+        "evaluator": null,
+        "dependency_lock": null
+      },
+      "reported_metrics": [],
+      "rejected_metric_surface": {
+        "centers": [
+          {
+            "metric": "Recall",
+            "cutoff": 20,
+            "center": 0.183
+          },
+          {
+            "metric": "NDCG",
+            "cutoff": 20,
+            "center": 0.1554
+          }
+        ],
+        "locator": "R1A-EV002 paper Gowalla table; distinct from R1A-EV001 README .1824/.1547",
+        "tolerance": null,
+        "reason": "The paper and PyTorch README centers are not interchangeable."
+      },
+      "previous_status": "REJECTED",
+      "e5_replay_result": "CONFIRMED_PROHIBITION",
+      "proposed_status": "REJECTED",
+      "status_delta": "UNCHANGED",
+      "blockers": [
+        "implementation and result-surface mismatch is dispositive"
+      ],
+      "execution_authorized": false
+    },
+    {
+      "row_id": "E3-RB005-OFFICIAL-METRIC-AS-V5-SUPERIORITY",
+      "row_kind": "prohibited_join",
+      "prohibited_join": true,
+      "method": "all",
+      "repository": {
+        "identity_status": "NOT_APPLICABLE_CONCEPTUAL_CROSS_DATASET_JOIN",
+        "url": null,
+        "immutable_sha": null
+      },
+      "source_config_binding": {
+        "status": "PROHIBITED_CROSS_DATASET_EVALUATOR_JOIN",
+        "command": null,
+        "config_identity": "source-reported official metric incorrectly treated as evidence of superiority on the harmonized v5 seam",
+        "correct_v5_spec_path": "backend/docs/chatbot/seed-product/benchmark-spec-v5.json",
+        "correct_v5_spec_canonical_lf_sha256": "acef1c62cc2a9a3ae04fdf2f4b2fb24b3eb8d2634f15e085fbe1878be8dc166d",
+        "evidence_ids": []
+      },
+      "code_license": {
+        "status": "NOT_APPLICABLE_CONCEPTUAL_PROHIBITION",
+        "license": null,
+        "code_rights_separate_from_dataset_rights": true
+      },
+      "dataset_rights": {
+        "status": "NOT_APPLICABLE_CONCEPTUAL_PROHIBITION",
+        "provider": null,
+        "release": null,
+        "provider_digest": null
+      },
+      "lineage": {
+        "raw_bytes_hashes": [],
+        "processed_bytes": null,
+        "processed_hashes": [],
+        "split_identity": null,
+        "split_hashes": [],
+        "raw_to_processed_to_split_receipt": null,
+        "status": "NOT_APPLICABLE_PROHIBITED_JOIN"
+      },
+      "experiment_contract": {
+        "objective": null,
+        "seed_count": null,
+        "seed_values": [],
+        "reported_run_count": null,
+        "checkpoint_policy": null,
+        "checkpoint_artifact": null,
+        "sampler": null,
+        "candidate_universe": "official source seam and harmonized v5 seam differ",
+        "tie_policy": null,
+        "evaluator": "official source evaluator and frozen v5 evaluator are not interchangeable",
+        "dependency_lock": null
+      },
+      "reported_metrics": [],
+      "rejected_metric_surface": {
+        "centers": [],
+        "locator": "E4 cross-dataset reporting contract and E5 sequence-lock replay",
+        "tolerance": null,
+        "reason": "No raw official-reproduction metric can establish v5 superiority without a shared v5 split, candidate universe, evaluator, seed schedule, and receipts."
+      },
+      "previous_status": "REJECTED",
+      "e5_replay_result": "CONFIRMED_PROHIBITION",
+      "proposed_status": "REJECTED",
+      "status_delta": "V5_SPEC_PATH_CORRECTED_PROHIBITION_UNCHANGED",
+      "blockers": [
+        "dataset, split, candidate universe, evaluator, and metric seam mismatch is dispositive"
+      ],
+      "execution_authorized": false
+    }
+  ],
+  "prohibited_join_replay": [
+    {
+      "row_id": "E3-RB001-LIGHTGCL-TABLE1-CURRENT-COMMAND",
+      "replay_result": "CONFIRMED_REMAINS_PROHIBITED",
+      "reason": "Current command uses Appendix E interaction sampling and cannot inherit Table 1 centers.",
+      "affected_by_f001": false,
+      "affected_by_f002": false
+    },
+    {
+      "row_id": "E3-RB002-XSIMGCL-THREELAYER-FOURLAYER-CENTER",
+      "replay_result": "CONFIRMED_REMAINS_PROHIBITED",
+      "reason": "Three-layer and four-layer source rows are distinct.",
+      "affected_by_f001": false,
+      "affected_by_f002": false
+    },
+    {
+      "row_id": "E3-RB003-MASKSWAP-BTBR-TABLE5",
+      "replay_result": "CONFIRMED_REMAINS_PROHIBITED",
+      "reason": "Public task and batch semantics do not bind the BTBR joint-task row.",
+      "affected_by_f001": false,
+      "affected_by_f002": false
+    },
+    {
+      "row_id": "E3-RB004-LIGHTGCN-PAPER-CENTER-PYTORCH-README-COMMAND",
+      "replay_result": "CONFIRMED_REMAINS_PROHIBITED",
+      "reason": "Paper and PyTorch README result surfaces are not interchangeable.",
+      "affected_by_f001": false,
+      "affected_by_f002": false
+    },
+    {
+      "row_id": "E3-RB005-OFFICIAL-METRIC-AS-V5-SUPERIORITY",
+      "replay_result": "CONFIRMED_REMAINS_PROHIBITED",
+      "reason": "Correcting the v5 spec path does not make source and v5 metric seams comparable.",
+      "affected_by_f001": false,
+      "affected_by_f002": true
+    }
+  ],
+  "separate_scope_assessments": [
+    {
+      "assessment_id": "R1A-SCOPE-ML1M",
+      "scope": "framework reference, separate from the 13 official-reproduction candidate rows",
+      "dataset": "MovieLens 1M",
+      "provider_digest": "md5:c4d9eecfca2ab87c1945afe126590906",
+      "status": "PENDING_EVIDENCE_NOT_PROMOTED",
+      "evidence_ids": [
+        "R1A-EV015"
+      ],
+      "reason": "Provider identity and terms plus a framework result page do not supply result-bound seeds, checkpoint, dependency, byte-to-split, tie, and receipt evidence."
+    },
+    {
+      "assessment_id": "R1A-SCOPE-ML10M",
+      "scope": "framework reference, separate from the 13 official-reproduction candidate rows",
+      "dataset": "MovieLens 10M",
+      "provider_digest": "md5:ce571fd55effeba0271552578f2648bd",
+      "status": "PENDING_EVIDENCE_NO_MATCHING_TOP_N_CENTER",
+      "evidence_ids": [
+        "R1A-EV016"
+      ],
+      "reason": "Provider five-fold scripts address rating prediction and do not create an authoritative top-N reproduction center."
+    },
+    {
+      "assessment_id": "R1A-SCOPE-AMAZON-M2",
+      "scope": "external validation only, never official reproduction",
+      "dataset": "Amazon-M2",
+      "status": "REJECTED_FOR_FULL_EXTERNAL_CONTRACT",
+      "reduced_session_study_status": "ACQUISITION_GATE_SEPARATE_SENSITIVITY_ONLY",
+      "reason": "The frozen E5 primary replay confirms anonymous 30-minute sessions and unresolved authenticated provider bytes/digest; it does not meet persistent-user/order/basket external identity."
+    },
+    {
+      "assessment_id": "R1A-SCOPE-EXTERNAL",
+      "scope": "external validation only",
+      "dataset": "all reviewed external datasets",
+      "status": "NO_DATASET_PASSES_CURRENT_EXTERNAL_CONTRACT",
+      "reason": "No external conclusion is pooled with official reproduction or harmonized v5 evidence."
+    }
+  ],
+  "comparison_guards": {
+    "official_reproduction_separate_from_harmonized_v5": true,
+    "external_validation_separate_from_official_reproduction": true,
+    "movielens_1m_and_10m_separate_framework_assessments": true,
+    "amazon_m2_separate_external_assessment": true,
+    "raw_cross_dataset_metric_league_allowed": false
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "confirmed": false
+  },
+  "fail_closed_verdict": "R1A_COMPLETE_WITH_UNRESOLVED_EVIDENCE"
+}
