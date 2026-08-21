@@ -1,0 +1,109 @@
+{
+  "schema_version": "stage1e_rebaseline_v2_e5_audit_findings.v1",
+  "created_at": "2026-08-22T02:33:05+07:00",
+  "e5_verdict": "REVISE_E4_ADDITIONAL_FINDINGS",
+  "finding_counts": {
+    "CRITICAL": 0,
+    "MAJOR": 4,
+    "MINOR": 0,
+    "total": 4
+  },
+  "findings": [
+    {
+      "finding_id": "E5-F001",
+      "severity": "MAJOR",
+      "criterion": "primary-source provenance and exact repository-dataset-metric binding",
+      "affected_artifact": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_b/E4_reproduction_adaptation/selected_reference_bundle.json",
+      "affected_row": "sources.S_SIM_GCL_PAPER; E3-SIMGCL-YELP2018-QREC-001",
+      "observed_fact": "E4 identifies https://arxiv.org/abs/2207.09037 as the official SimGCL paper. That record is 'Depinning in the quenched Kardar-Parisi-Zhang class II: Field theory', not SimGCL. The official SimGCL record is arXiv:2112.08679 and links the QRec repository.",
+      "primary_evidence": [
+        {
+          "url": "https://arxiv.org/abs/2207.09037",
+          "locator": "title, authors, subject and abstract"
+        },
+        {
+          "url": "https://arxiv.org/abs/2112.08679",
+          "locator": "title, authors, abstract, code link and submission history"
+        },
+        {
+          "url": "https://arxiv.org/pdf/2112.08679",
+          "locator": "Table 3 and Table 5; Yelp2018 SimGCL centers and evaluation settings"
+        }
+      ],
+      "impact": "The promoted SimGCL row has contradictory provenance. Although the row is already pending and cannot authorize execution, the E4 source catalog and every dependent binding must be regenerated before a future audit.",
+      "disposition": "REGENERATE_E4_CORRECT_SOURCE_AND_DEPENDENT_BINDINGS",
+      "owner": "E4_REPRODUCTION_ADAPTATION_OWNER"
+    },
+    {
+      "finding_id": "E5-F002",
+      "severity": "MAJOR",
+      "criterion": "frozen v5 benchmark specification path and hash identity",
+      "affected_artifact": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_b/E4_reproduction_adaptation/v5_adapter_and_evaluator_contract.md",
+      "affected_row": "line 17 frozen v5 benchmark specification binding",
+      "observed_fact": "The adapter contract names research/hybrid-recsys-v5/03_benchmark/benchmark_spec_v5.json, which does not exist in the frozen worktree. The E4 parent manifest binds canonical-LF SHA-256 acef1c62cc2a9a3ae04fdf2f4b2fb24b3eb8d2634f15e085fbe1878be8dc166d to backend/docs/chatbot/seed-product/benchmark-spec-v5.json, which does exist and hashes to that value.",
+      "primary_evidence": [
+        {
+          "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_b/E4_reproduction_adaptation/v5_adapter_and_evaluator_contract.md",
+          "locator": "line 17"
+        },
+        {
+          "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_frozen_input_manifest.json",
+          "locator": "current_v5_spec row"
+        },
+        {
+          "path": "backend/docs/chatbot/seed-product/benchmark-spec-v5.json",
+          "locator": "strict UTF-8 canonical-LF hash replay"
+        }
+      ],
+      "impact": "A future adapter manifest cannot unambiguously bind the frozen benchmark specification by both path and hash. This is a source/config identity defect requiring E4 regeneration.",
+      "disposition": "REGENERATE_E4_WITH_ONE_EXISTING_EXACT_SPEC_PATH_AND_HASH",
+      "owner": "E4_REPRODUCTION_ADAPTATION_OWNER"
+    },
+    {
+      "finding_id": "E5-F003",
+      "severity": "MAJOR",
+      "criterion": "exact-command safety, namespace, hardware, source-state and receipt enforcement",
+      "affected_artifact": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_b/E4_reproduction_adaptation/exact_command_confirmation_packet.json",
+      "affected_row": "E4-LGCN-000-PREFLIGHT; E4-LGCN-010-CLONE; E4-LGCN-020-CHECKOUT; E4-LGCN-030-VERIFY-SOURCE; E4-LGCN-060-PREPROCESS-GATE; E4-LGCN-070-TRAIN-AND-INTEGRATED-EVALUATE; E4-LGCN-090-FINALIZE-RECEIPTS",
+      "observed_fact": "The preflight only checks a literal root, marker existence and successful nvidia-smi output; it does not assert GPU identity/index/capacity/free VRAM, resource-wrapper existence/hash/enforcement, marker contents or reparse/nested namespace safety. Source verification prints dirty/submodule state without rejecting it. The preprocessing gate checks only property presence and a label. Finalization lists and hashes files but does not validate required receipts, schemas, duplicate/case-colliding names or emit its declared manifest. Several commands do not create their declared receipts.",
+      "primary_evidence": [
+        {
+          "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_b/E4_reproduction_adaptation/exact_command_confirmation_packet.json",
+          "locator": "namespaces, resource_contract, receipt_requirements and the seven affected command records"
+        },
+        {
+          "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_b/E4_reproduction_adaptation/reproduction_execution_plan.md",
+          "locator": "namespace map, phase sequence, resource envelope and receipt requirements"
+        }
+      ],
+      "impact": "The exact strings do not mechanically enforce several safety and provenance claims stated by their failure semantics. They must not be made executable or confirmed without replacement in a newly frozen E4 packet.",
+      "disposition": "REPLACE_COMMAND_PACKET_WITH_MECHANICALLY_ENFORCED_CONTROLS_AND_RECEIPTS",
+      "owner": "E4_COMMAND_PACKET_OWNER"
+    },
+    {
+      "finding_id": "E5-F004",
+      "severity": "MAJOR",
+      "criterion": "phase ownership and future authorization sequence",
+      "affected_artifact": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_b/E4_reproduction_adaptation/exact_command_confirmation_packet.json; research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_b/E4_reproduction_adaptation/v5_adapter_and_evaluator_contract.md; research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_b/E4_reproduction_adaptation/reproduction_execution_plan.md",
+      "affected_row": "packet global_prerequisites and phases; commands 040 and 060; adapter lines 27 and 133; plan lines 46 and 104",
+      "observed_fact": "E4 repeatedly assigns E5 responsibility for supplying the runtime/dependency lock, raw-to-processed receipt, exact adapter argv and a new execution/confirmation packet. The authoritative E5 contract is audit-only and requires blocker remediation, a new frozen E4 packet, a new E5 audit and only then explicit user confirmation.",
+      "primary_evidence": [
+        {
+          "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e5_independent_lock_audit_contract.md",
+          "locator": "sections 1, 4 and 6 authorization and audit-only boundaries"
+        },
+        {
+          "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_b/E4_reproduction_adaptation/exact_command_confirmation_packet.json",
+          "locator": "global_prerequisites, phase_contracts.install, commands 040 and 060"
+        },
+        {
+          "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_b/E4_reproduction_adaptation/v5_adapter_and_evaluator_contract.md",
+          "locator": "lines 27 and 133"
+        }
+      ],
+      "impact": "Following the E4 text would cause E5 to repair upstream evidence or construct an execution packet, violating the independent audit boundary. Future remediation must remain an E4 responsibility and be re-frozen before E5 review.",
+      "disposition": "REGENERATE_E4_WITH_CORRECT_PHASE_OWNERSHIP_AND_NEW_E4_THEN_E5_SEQUENCE",
+      "owner": "STAGE1E_CONTROL_OWNER"
+    }
+  ]
+}

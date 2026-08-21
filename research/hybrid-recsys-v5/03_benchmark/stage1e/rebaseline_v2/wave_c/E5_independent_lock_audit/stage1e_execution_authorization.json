@@ -1,0 +1,25 @@
+{
+  "schema_version": "stage1e_rebaseline_v2_e5_execution_authorization.v1",
+  "created_at": "2026-08-22T02:33:05+07:00",
+  "stage": "Stage 1E / Rebaseline v2 / Wave C / E5",
+  "authorized": false,
+  "decision": "DENIED_E4_FAIL_NOT_READY_ADDITIONAL_FINDINGS",
+  "basis": [
+    "E4 status is COMPLETE_FAIL_CLOSED with zero READY_FOR_E5_AUDIT rows",
+    "the command packet is DRAFT_BLOCKED_NOT_EXECUTABLE",
+    "E5 independently identified four MAJOR E4 defects requiring regeneration",
+    "this frozen packet cannot receive execution authorization"
+  ],
+  "replacement_e4_packet_required": true,
+  "new_e5_audit_required": true,
+  "user_confirmation_required_after_future_pass": true,
+  "confirmed": false,
+  "RESULT_STATUS": "NOT_RUN",
+  "TEST_SET_OPENED": "NO",
+  "ACCEPTED_RESULT_ROWS": 0,
+  "execution_authorized": false,
+  "retry_policy": "NO_AUTO_RETRY",
+  "current_packet_may_be_confirmed": false,
+  "pass_execution_authorized_emitted": false,
+  "e5_verdict": "REVISE_E4_ADDITIONAL_FINDINGS"
+}
