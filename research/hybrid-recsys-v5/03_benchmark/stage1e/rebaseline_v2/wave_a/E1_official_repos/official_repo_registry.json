@@ -1,0 +1,338 @@
+{
+  "schema_version": "stage1e.official_repo_registry.v2",
+  "lane_id": "E1_official_repos",
+  "access_date": "2026-08-22",
+  "verification_state": "UNVERIFIED_PENDING_E4_E5",
+  "material_passport": {
+    "origin_skill": "ars-codex:academic-research-suite/experiment-agent",
+    "origin_skill_version": "0.1.26",
+    "mode": "plan",
+    "model": "gpt-5.6-sol",
+    "reasoning": "xhigh",
+    "date": "2026-08-22",
+    "verification_status": "UNVERIFIED",
+    "version_label": "Stage 1E Rebaseline v2 / Wave A / E1"
+  },
+  "input_lock": {
+    "authoritative_root": "E:/UIT/cv/backend",
+    "input_manifest": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/stage1e_rebaseline_v2_input_manifest.json",
+    "input_manifest_sha256": "107299c026434366ed6ddb18f4ee6e25fd790d9799fd81c1c1e87871ed60744d",
+    "manifest_files_verified": 9,
+    "manifest_files_mismatched": 0,
+    "superseded_lane_material_used": false
+  },
+  "result_safety": {
+    "result_status": "NOT_RUN",
+    "accepted_result_rows": 0,
+    "test_set_opened": "NO",
+    "pre_existing_project_numbers": "INVALID_FOR_PAPER",
+    "cross_pipeline_raw_metric_comparability": "PROHIBITED"
+  },
+  "provenance_precedence": [
+    "AUTHOR_OFFICIAL",
+    "FRAMEWORK_AUTHORITATIVE",
+    "INDEPENDENT",
+    "REJECTED"
+  ],
+  "license_rule": "code-license evidence is recorded independently from repository dataset presence, dataset terms, and paper licenses; no dataset license is inferred here",
+  "repository_candidates": [
+    {
+      "candidate_id": "recbole",
+      "name": "RecBole",
+      "repository": "https://github.com/RUCAIBox/RecBole",
+      "provenance_class": "FRAMEWORK_AUTHORITATIVE",
+      "authority_scope": ["Random", "MostPop", "ItemKNN", "BPR-MF"],
+      "revision": {
+        "sha": "7b02be5ec80a88310f2d04a27a82adfcbb5dc211",
+        "branch": "master",
+        "tag_relationship": "current master is untagged; latest observed release tag v1.2.1 resolves to 9a6f63d8d4a5b989fe27955a833f813a6d86041e",
+        "status": "VERIFIED",
+        "url": "https://github.com/RUCAIBox/RecBole/commit/7b02be5ec80a88310f2d04a27a82adfcbb5dc211",
+        "tag_url": "https://github.com/RUCAIBox/RecBole/releases/tag/v1.2.1",
+        "locator": "official Git refs for refs/heads/master and refs/tags/v1.2.1, observed 2026-08-22"
+      },
+      "paper_identity": {
+        "title": "RecBole: Towards a Unified, Comprehensive and Efficient Framework for Recommendation Algorithms",
+        "authors": ["Wayne Xin Zhao", "Junhua Chen", "Pengfei Wang", "Qi Gu", "Jiashuai Feng", "Xiangnan He", "Zhenwei Zhang", "Yaoqiang Sun", "Yixin Zhang", "Kai Zheng", "Qi Liu", "Xing Xie"],
+        "url": "https://arxiv.org/abs/2011.01731",
+        "locator": "title/authors and repository README Citation section",
+        "status": "VERIFIED"
+      },
+      "code_license": {
+        "spdx": "MIT",
+        "status": "VERIFIED_WITH_README_CONFLICT_PENDING_REVIEW",
+        "url": "https://github.com/RUCAIBox/RecBole/blob/7b02be5ec80a88310f2d04a27a82adfcbb5dc211/LICENSE",
+        "locator": "LICENSE:1-21; README License section also states academic-purpose language",
+        "dataset_license": "PENDING_E2_SEPARATE"
+      },
+      "native_stack": {
+        "framework": "PyTorch",
+        "constraints": "README: Python >=3.7, PyTorch >=1.7.0, cudatoolkit >=9.2; locked requirements.txt requires torch>=1.10.0 plus numpy, scipy, pandas, scikit-learn and ray<=2.6.3",
+        "hardware": "no GPU model documented; CUDA toolkit floor only",
+        "status": "VERIFIED_WITH_VERSION_DRIFT_NOTE",
+        "url": "https://github.com/RUCAIBox/RecBole/blob/7b02be5ec80a88310f2d04a27a82adfcbb5dc211/README.md",
+        "locator": "Requirements; requirements.txt"
+      },
+      "official_data_and_configs": {
+        "datasets": ["ml-100k quick-start example; broader atomic-file dataset interface"],
+        "configs": ["recbole/properties/model/BPR.yaml", "recbole/properties/model/ItemKNN.yaml", "recbole/properties/model/Pop.yaml", "recbole/properties/dataset/ml-100k.yaml"],
+        "dataset_license": "PENDING_E2_SEPARATE",
+        "status": "VERIFIED",
+        "url": "https://github.com/RUCAIBox/RecBole/tree/7b02be5ec80a88310f2d04a27a82adfcbb5dc211/recbole/properties",
+        "locator": "model and dataset property paths"
+      },
+      "pipeline_surface": {
+        "preprocessing": "Dataset/create_dataset and data_preparation in recbole/data; automatic atomic-file preprocessing",
+        "training_evaluation": "run_recbole.py -> run_recbole() -> Trainer.fit()/evaluate()",
+        "checkpoint": "saved/<model>-<dataset>-<timestamp>.pth when saved=True",
+        "results": "logged best-valid and test result dictionaries",
+        "status": "VERIFIED",
+        "url": "https://github.com/RUCAIBox/RecBole/blob/7b02be5ec80a88310f2d04a27a82adfcbb5dc211/run_recbole.py",
+        "locator": "run_recbole.py; recbole/quick_start/quick_start.py; recbole/trainer/trainer.py"
+      },
+      "per_user_export": {
+        "predictions": "YES_NATIVE_API_NOT_NATIVE_FILE: recbole.utils.case_study.full_sort_topk/full_sort_scores",
+        "metrics": "BOUNDED_ADAPTER_REQUIRED: collect evaluator rows before aggregation",
+        "changes_method": false,
+        "status": "VERIFIED",
+        "url": "https://github.com/RUCAIBox/RecBole/blob/7b02be5ec80a88310f2d04a27a82adfcbb5dc211/recbole/utils/case_study.py",
+        "locator": "full_sort_scores and full_sort_topk"
+      }
+    },
+    {
+      "candidate_id": "mlxtend_apriori",
+      "name": "mlxtend frequent_patterns.apriori",
+      "repository": "https://github.com/rasbt/mlxtend",
+      "provenance_class": "FRAMEWORK_AUTHORITATIVE",
+      "authority_scope": ["Apriori frequent-itemset mining component only"],
+      "revision": {
+        "sha": "9aadcee334f8b07003246d436cd9135b6d62a6b2",
+        "branch": "master",
+        "tag_relationship": "current master is untagged; observed v0.25.0 annotated tag peels to 974e0bac1cf985b07543c3367aee6941f839cb1d",
+        "status": "VERIFIED",
+        "url": "https://github.com/rasbt/mlxtend/commit/9aadcee334f8b07003246d436cd9135b6d62a6b2",
+        "tag_url": "https://github.com/rasbt/mlxtend/releases/tag/v0.25.0",
+        "locator": "official Git refs observed 2026-08-22"
+      },
+      "paper_identity": {
+        "title": "Fast Algorithms for Mining Association Rules",
+        "authors": ["Rakesh Agrawal", "Ramakrishnan Srikant"],
+        "venue_year": "VLDB 1994",
+        "url": "http://www.vldb.org/conf/1994/P487.PDF",
+        "locator": "paper title page and Apriori algorithm sections",
+        "status": "VERIFIED"
+      },
+      "code_license": {
+        "spdx": "BSD-3-Clause",
+        "status": "VERIFIED",
+        "url": "https://github.com/rasbt/mlxtend/blob/9aadcee334f8b07003246d436cd9135b6d62a6b2/LICENSE-BSD3.txt",
+        "locator": "complete license file",
+        "dataset_license": "NOT_APPLICABLE_TO_LIBRARY"
+      },
+      "native_stack": {
+        "framework": "Python/scikit-learn-style utilities",
+        "constraints": "locked pyproject.toml requires Python >=3.11 and declares numpy, scipy, pandas, scikit-learn, matplotlib and joblib constraints",
+        "hardware": "CPU; no CUDA/hardware claim",
+        "status": "VERIFIED",
+        "url": "https://github.com/rasbt/mlxtend/blob/9aadcee334f8b07003246d436cd9135b6d62a6b2/pyproject.toml",
+        "locator": "project.requires-python and dependencies"
+      },
+      "official_data_and_configs": {
+        "datasets": ["README/notebook transaction examples only; no official recommender split"],
+        "configs": ["mlxtend/frequent_patterns/apriori.py"],
+        "dataset_license": "NOT_APPLICABLE",
+        "status": "VERIFIED",
+        "url": "https://github.com/rasbt/mlxtend/blob/9aadcee334f8b07003246d436cd9135b6d62a6b2/mlxtend/frequent_patterns/apriori.py",
+        "locator": "apriori() implementation"
+      },
+      "pipeline_surface": {
+        "preprocessing": "TransactionEncoder transformation in official user guide",
+        "training_evaluation": "apriori(encoded_dataframe, min_support=..., use_colnames=True); no recommender training/evaluation loop",
+        "checkpoint": "NONE",
+        "results": "returned pandas DataFrame of supports/itemsets",
+        "status": "VERIFIED_COMPONENT_ONLY_REJECTED_END_TO_END",
+        "url": "https://rasbt.github.io/mlxtend/user_guide/frequent_patterns/apriori/",
+        "locator": "API example and Parameters/Returns"
+      },
+      "per_user_export": {
+        "predictions": "NO_RECOMMENDER_PREDICTION_SURFACE",
+        "metrics": "NO_RECOMMENDER_METRIC_SURFACE",
+        "changes_method": "not applicable",
+        "status": "VERIFIED"
+      }
+    },
+    {
+      "candidate_id": "lightgcn_author_tf",
+      "name": "LightGCN author TensorFlow implementation",
+      "repository": "https://github.com/kuandeng/LightGCN",
+      "provenance_class": "AUTHOR_OFFICIAL",
+      "authority_scope": ["LightGCN"],
+      "revision": {"sha": "b067ec05f16a24e0e1efe63cd82385f0c469af20", "branch": "master", "tag_relationship": "no tags observed", "status": "VERIFIED", "url": "https://github.com/kuandeng/LightGCN/commit/b067ec05f16a24e0e1efe63cd82385f0c469af20", "tag_url": "https://github.com/kuandeng/LightGCN/tags", "locator": "official Git refs observed 2026-08-22"},
+      "paper_identity": {"title": "LightGCN: Simplifying and Powering Graph Convolution Network for Recommendation", "authors": ["Xiangnan He", "Kuan Deng", "Xiang Wang", "Yan Li", "Yongdong Zhang", "Meng Wang"], "venue_year": "SIGIR 2020", "url": "https://arxiv.org/abs/2002.02126", "locator": "title/authors; code link", "status": "VERIFIED"},
+      "code_license": {"spdx": null, "status": "PENDING_NO_LICENSE_FILE_FOUND", "url": "https://github.com/kuandeng/LightGCN/tree/b067ec05f16a24e0e1efe63cd82385f0c469af20", "locator": "repository root tree contains no LICENSE/COPYING", "dataset_license": "PENDING_E2_SEPARATE"},
+      "native_stack": {"framework": "TensorFlow", "constraints": "Python 3.6.5, TensorFlow 1.11.0, numpy 1.14.3, scipy 1.1.0, sklearn 0.19.1; C++ evaluator compiled with g++", "hardware": "no hardware model documented", "status": "VERIFIED", "url": "https://github.com/kuandeng/LightGCN/blob/b067ec05f16a24e0e1efe63cd82385f0c469af20/README.md", "locator": "Environment Requirement and Evaluation"},
+      "official_data_and_configs": {"datasets": ["Gowalla", "Yelp2018", "Amazon-Book"], "configs": ["parser.py CLI arguments", "Data/<dataset>/train.txt", "Data/<dataset>/test.txt"], "dataset_license": "PENDING_E2_SEPARATE", "status": "VERIFIED", "url": "https://github.com/kuandeng/LightGCN/blob/b067ec05f16a24e0e1efe63cd82385f0c469af20/README.md", "locator": "Examples to run the codes and Dataset"},
+      "pipeline_surface": {"preprocessing": "repo consumes train.txt/test.txt and compiles evaluator; no raw-data preprocessing script", "training_evaluation": "LightGCN.py with parser.py flags; test() in batch_test.py", "checkpoint": "tf.train.Saver output only when --save_flag 1", "results": "output/<dataset>/LightGCN.result", "status": "VERIFIED", "url": "https://github.com/kuandeng/LightGCN/blob/b067ec05f16a24e0e1efe63cd82385f0c469af20/LightGCN.py", "locator": "Saver, training loop, test call and output path"},
+      "per_user_export": {"predictions": "BOUNDED_ADAPTER: serialize rate_batch/ranked items inside batch_test.py", "metrics": "BOUNDED_ADAPTER: retain per-user test_one_user returns before aggregate", "changes_method": false, "status": "VERIFIED", "url": "https://github.com/kuandeng/LightGCN/blob/b067ec05f16a24e0e1efe63cd82385f0c469af20/batch_test.py", "locator": "test_one_user and test batch aggregation"}
+    },
+    {
+      "candidate_id": "sasrec_author_tf",
+      "name": "SASRec author TensorFlow implementation",
+      "repository": "https://github.com/kang205/SASRec",
+      "provenance_class": "AUTHOR_OFFICIAL",
+      "authority_scope": ["SASRec"],
+      "revision": {"sha": "e3738967fddab206d6eeb4fda433e7a7034dd8b1", "branch": "master", "tag_relationship": "no tags observed", "status": "VERIFIED", "url": "https://github.com/kang205/SASRec/commit/e3738967fddab206d6eeb4fda433e7a7034dd8b1", "tag_url": "https://github.com/kang205/SASRec/tags", "locator": "official Git refs observed 2026-08-22"},
+      "paper_identity": {"title": "Self-Attentive Sequential Recommendation", "authors": ["Wang-Cheng Kang", "Julian McAuley"], "venue_year": "ICDM 2018", "url": "https://cseweb.ucsd.edu/~jmcauley/pdfs/icdm18.pdf", "locator": "title page and repository footnote", "status": "VERIFIED"},
+      "code_license": {"spdx": "Apache-2.0", "status": "VERIFIED", "url": "https://github.com/kang205/SASRec/blob/e3738967fddab206d6eeb4fda433e7a7034dd8b1/LICENSE", "locator": "complete license file", "dataset_license": "PENDING_E2_SEPARATE"},
+      "native_stack": {"framework": "TensorFlow", "constraints": "Python 2, TensorFlow 1.12.0", "hardware": "README says tested on Linux with NVIDIA GTX 1080 Ti", "status": "VERIFIED", "url": "https://github.com/kang205/SASRec/blob/e3738967fddab206d6eeb4fda433e7a7034dd8b1/README.md", "locator": "Requirements"},
+      "official_data_and_configs": {"datasets": ["MovieLens-1M", "Amazon Video Games", "Steam"], "configs": ["data/*.txt", "data/DataProcessing.ipynb", "main.py arguments"], "dataset_license": "PENDING_E2_SEPARATE", "status": "VERIFIED", "url": "https://github.com/kang205/SASRec/blob/e3738967fddab206d6eeb4fda433e7a7034dd8b1/README.md", "locator": "Datasets and Training"},
+      "pipeline_surface": {"preprocessing": "data/DataProcessing.ipynb; util.py data_partition leave-last-two split", "training_evaluation": "main.py train loop and evaluate()/evaluate_valid()", "checkpoint": "NONE in locked main.py", "results": "<dataset>_<train_dir>/log.txt and args.txt", "status": "VERIFIED", "url": "https://github.com/kang205/SASRec/blob/e3738967fddab206d6eeb4fda433e7a7034dd8b1/main.py", "locator": "argument parser, output directory and epoch evaluation"},
+      "per_user_export": {"predictions": "BOUNDED_ADAPTER via model.predict", "metrics": "BOUNDED_ADAPTER inside util.evaluate before averaging", "changes_method": false, "status": "VERIFIED", "url": "https://github.com/kang205/SASRec/blob/e3738967fddab206d6eeb4fda433e7a7034dd8b1/util.py", "locator": "evaluate and evaluate_valid"}
+    },
+    {
+      "candidate_id": "bert4rec_author_tf",
+      "name": "BERT4Rec author TensorFlow implementation",
+      "repository": "https://github.com/FeiSun/BERT4Rec",
+      "provenance_class": "AUTHOR_OFFICIAL",
+      "authority_scope": ["BERT4Rec"],
+      "revision": {"sha": "615eaf2004abecda487a38d5b0c72f3dcfcae5b3", "branch": "master", "tag_relationship": "no tags observed", "status": "VERIFIED", "url": "https://github.com/FeiSun/BERT4Rec/commit/615eaf2004abecda487a38d5b0c72f3dcfcae5b3", "tag_url": "https://github.com/FeiSun/BERT4Rec/tags", "locator": "official Git refs observed 2026-08-22"},
+      "paper_identity": {"title": "BERT4Rec: Sequential Recommendation with Bidirectional Encoder Representations from Transformer", "authors": ["Fei Sun", "Jun Liu", "Jian Wu", "Changhua Pei", "Xiao Lin", "Wenwu Ou", "Peng Jiang"], "venue_year": "CIKM 2019", "url": "https://dl.acm.org/doi/10.1145/3357384.3357895", "locator": "paper landing page", "status": "VERIFIED"},
+      "code_license": {"spdx": "Apache-2.0", "status": "VERIFIED", "url": "https://github.com/FeiSun/BERT4Rec/blob/615eaf2004abecda487a38d5b0c72f3dcfcae5b3/LICENSE", "locator": "complete license file", "dataset_license": "PENDING_E2_SEPARATE"},
+      "native_stack": {"framework": "TensorFlow Estimator", "constraints": "Python 2.7+, TensorFlow 1.12 GPU; matching CUDA/cuDNN required", "hardware": "GPU requested but no model documented", "status": "VERIFIED", "url": "https://github.com/FeiSun/BERT4Rec/blob/615eaf2004abecda487a38d5b0c72f3dcfcae5b3/README.md", "locator": "Environment Requirement"},
+      "official_data_and_configs": {"datasets": ["MovieLens-1M", "MovieLens-20M", "Amazon Beauty", "Steam"], "configs": ["run_ml-1m.sh", "run_ml-20m.sh", "run_beauty.sh", "run_steam.sh", "bert_config.json"], "dataset_license": "PENDING_E2_SEPARATE", "status": "VERIFIED", "url": "https://github.com/FeiSun/BERT4Rec/tree/615eaf2004abecda487a38d5b0c72f3dcfcae5b3", "locator": "root scripts and README Training section"},
+      "pipeline_surface": {"preprocessing": "gen_data_fin.py writes TFRecord, vocab and user-history files", "training_evaluation": "run.py with --do_train=true --do_eval=true, normally through run_*.sh", "checkpoint": "TensorFlow Estimator checkpoint_dir; save_checkpoints_steps", "results": "eval_results.txt under checkpoint directory plus estimator logs", "status": "VERIFIED", "url": "https://github.com/FeiSun/BERT4Rec/blob/615eaf2004abecda487a38d5b0c72f3dcfcae5b3/run.py", "locator": "flags, estimator train/evaluate and eval_results.txt"},
+      "per_user_export": {"predictions": "BOUNDED_ADAPTER from estimator prediction/logits", "metrics": "BOUNDED_ADAPTER before estimator metric aggregation", "changes_method": false, "status": "VERIFIED", "url": "https://github.com/FeiSun/BERT4Rec/blob/615eaf2004abecda487a38d5b0c72f3dcfcae5b3/modeling.py", "locator": "output logits consumed by run.py model_fn"}
+    },
+    {
+      "candidate_id": "maskswap_author",
+      "name": "BTBR / Mask-Swap-NNBR author implementation",
+      "repository": "https://github.com/liming-7/Mask-Swap-NNBR",
+      "provenance_class": "AUTHOR_OFFICIAL",
+      "authority_scope": ["BTBR", "Mask-Swap-NNBR"],
+      "revision": {"sha": "8e0b796a9910888d6a8142f2d39dc7cbe87e349c", "branch": "main", "tag_relationship": "no tags observed", "status": "VERIFIED", "url": "https://github.com/liming-7/Mask-Swap-NNBR/commit/8e0b796a9910888d6a8142f2d39dc7cbe87e349c", "tag_url": "https://github.com/liming-7/Mask-Swap-NNBR/tags", "locator": "official Git refs observed 2026-08-22"},
+      "paper_identity": {"title": "Masked and Swapped Sequence Modeling for Next Novel Basket Recommendation in Grocery Shopping", "authors": ["Ming Li", "Mozhdeh Ariannezhad", "Andrew Yates", "Maarten de Rijke"], "venue_year": "RecSys 2023", "url": "https://arxiv.org/abs/2308.01308", "locator": "lines 8-25; related DOI 10.1145/3604915.3608803; repository README lines 1-2", "status": "VERIFIED"},
+      "code_license": {"spdx": null, "status": "PENDING_NO_LICENSE_FILE_FOUND", "url": "https://github.com/liming-7/Mask-Swap-NNBR/tree/8e0b796a9910888d6a8142f2d39dc7cbe87e349c", "locator": "repository root tree contains no LICENSE/COPYING", "dataset_license": "PENDING_E2_SEPARATE"},
+      "native_stack": {"framework": "PyTorch plus Weights & Biases", "constraints": "no environment/requirements manifest in locked tree", "hardware": "CUDA used when available, CPU fallback in script; no model documented", "status": "PENDING_DEPENDENCY_LOCK", "url": "https://github.com/liming-7/Mask-Swap-NNBR/blob/8e0b796a9910888d6a8142f2d39dc7cbe87e349c/nnbr/train_main_gpu_batch.py", "locator": "imports and device selection"},
+      "official_data_and_configs": {"datasets": ["Ta-Feng", "Dunnhumby", "Instacart"], "configs": ["train_main_gpu_batch.py CLI flags", "wandb sweep configuration in README"], "dataset_license": "PENDING_E2_SEPARATE", "status": "VERIFIED", "url": "https://github.com/liming-7/Mask-Swap-NNBR/blob/8e0b796a9910888d6a8142f2d39dc7cbe87e349c/README.md", "locator": "Datasets and run command"},
+      "pipeline_surface": {"preprocessing": "expects ../keyset and ../mergeddata artifacts; no raw preprocessing entrypoint documented", "training_evaluation": "README prints python train_main_gpu_batch.py with full flags; cd nnbr is a composed precondition inferred from the locked file location/relative paths", "checkpoint": "NONE_ACTIVE; save calls are commented out", "results": "wandb metrics and pred/.../best_overall_prediction.json", "status": "VERIFIED_WITH_COMPOSED_WORKDIR_AND_PREPROCESSING_PENDING", "url": "https://github.com/liming-7/Mask-Swap-NNBR/blob/8e0b796a9910888d6a8142f2d39dc7cbe87e349c/nnbr/train_main_gpu_batch.py", "locator": "README:4-60; script CLI, relative paths, training loop, evaluation, commented checkpoint and prediction JSON"},
+      "per_user_export": {"predictions": "YES_NATIVE_FILE: best_overall_prediction.json", "metrics": "BOUNDED_ADAPTER before aggregate", "changes_method": false, "status": "VERIFIED", "url": "https://github.com/liming-7/Mask-Swap-NNBR/blob/8e0b796a9910888d6a8142f2d39dc7cbe87e349c/nnbr/train_main_gpu_batch.py", "locator": "expl_pred_dict serialization"}
+    },
+    {
+      "candidate_id": "unisrec_author",
+      "name": "UniSRec author implementation",
+      "repository": "https://github.com/RUCAIBox/UniSRec",
+      "provenance_class": "AUTHOR_OFFICIAL",
+      "authority_scope": ["UniSRec"],
+      "revision": {"sha": "05aa5cba2809112c32808f70d16abc61c05c6538", "branch": "master", "tag_relationship": "no tags observed", "status": "VERIFIED", "url": "https://github.com/RUCAIBox/UniSRec/commit/05aa5cba2809112c32808f70d16abc61c05c6538", "tag_url": "https://github.com/RUCAIBox/UniSRec/tags", "locator": "official Git refs observed 2026-08-22"},
+      "paper_identity": {"title": "Towards Universal Sequence Representation Learning for Recommender Systems", "authors": ["Yupeng Hou", "Shanlei Mu", "Wayne Xin Zhao", "Yaliang Li", "Bolin Ding", "Ji-Rong Wen"], "venue_year": "KDD 2022", "url": "https://arxiv.org/abs/2206.05941", "locator": "lines 8-24 and README citation", "status": "VERIFIED"},
+      "code_license": {"spdx": "MIT", "status": "VERIFIED", "url": "https://github.com/RUCAIBox/UniSRec/blob/05aa5cba2809112c32808f70d16abc61c05c6538/LICENSE", "locator": "complete license file", "dataset_license": "PENDING_E2_SEPARATE"},
+      "native_stack": {"framework": "PyTorch on RecBole", "constraints": "Python >=3.9.7, PyTorch >=1.11.0, cudatoolkit >=11.3.1, RecBole >=1.1.1", "hardware": "single-GPU and four-process DDP commands documented; no GPU model", "status": "VERIFIED", "url": "https://github.com/RUCAIBox/UniSRec/blob/05aa5cba2809112c32808f70d16abc61c05c6538/README.md", "locator": "Requirements and Pre-training"},
+      "official_data_and_configs": {"datasets": ["Scientific", "Pantry", "Instruments", "Arts", "Office", "OR", "Food", "Home", "CDs", "Kindle", "Movies"], "configs": ["props/UniSRec.yaml", "props/pretrain.yaml", "preprocess/process_amazon.py"], "dataset_license": "PENDING_E2_SEPARATE", "status": "VERIFIED", "url": "https://github.com/RUCAIBox/UniSRec/blob/05aa5cba2809112c32808f70d16abc61c05c6538/README.md", "locator": "Datasets, Fine-tuning and Pre-training"},
+      "pipeline_surface": {"preprocessing": "preprocess/process_amazon.py and linked preprocessing procedure", "training_evaluation": "finetune.py; pretrain.py; ddp_pretrain.py; run_baseline.py", "checkpoint": "RecBole .pth and pretraining checkpoints", "results": "RecBole logged best-valid/test dictionaries", "status": "VERIFIED", "url": "https://github.com/RUCAIBox/UniSRec/tree/05aa5cba2809112c32808f70d16abc61c05c6538", "locator": "root entry scripts, props and preprocess paths"},
+      "per_user_export": {"predictions": "BOUNDED_ADAPTER using RecBole full-sort scoring", "metrics": "BOUNDED_ADAPTER before RecBole aggregation", "changes_method": false, "status": "VERIFIED", "url": "https://github.com/RUCAIBox/UniSRec/blob/05aa5cba2809112c32808f70d16abc61c05c6538/finetune.py", "locator": "RecBole dataset/trainer integration"}
+    },
+    {
+      "candidate_id": "alpharec_author",
+      "name": "AlphaRec author implementation",
+      "repository": "https://github.com/LehengTHU/AlphaRec",
+      "provenance_class": "AUTHOR_OFFICIAL",
+      "authority_scope": ["AlphaRec"],
+      "revision": {"sha": "4b6c6cf378f292c31dd75b09a8075e8344561415", "branch": "master", "tag_relationship": "no tags observed", "status": "VERIFIED", "url": "https://github.com/LehengTHU/AlphaRec/commit/4b6c6cf378f292c31dd75b09a8075e8344561415", "tag_url": "https://github.com/LehengTHU/AlphaRec/tags", "locator": "official Git refs observed 2026-08-22"},
+      "paper_identity": {"title": "Language Representations Can be What Recommenders Need: Findings and Potentials", "authors": ["Leheng Sheng", "An Zhang", "Yi Zhang", "Yuxin Chen", "Xiang Wang", "Tat-Seng Chua"], "venue_year": "ICLR 2025 Oral", "url": "https://arxiv.org/abs/2407.05441", "locator": "lines 8-25 and README citation", "status": "VERIFIED"},
+      "code_license": {"spdx": null, "status": "PENDING_MIT_BADGE_ONLY_NO_LICENSE_FILE", "url": "https://github.com/LehengTHU/AlphaRec/blob/4b6c6cf378f292c31dd75b09a8075e8344561415/README.md#L1-L6", "locator": "MIT badge at README line 5; root tree has no license grant", "dataset_license": "PENDING_E2_SEPARATE"},
+      "native_stack": {"framework": "PyTorch", "constraints": "Python 3.9.12, PyTorch 1.13.1+cu117; README warns Python >3.10 may break reckit; requirements.txt additionally pins dependencies", "hardware": "CUDA device commands only; no GPU model documented", "status": "VERIFIED", "url": "https://github.com/LehengTHU/AlphaRec/blob/4b6c6cf378f292c31dd75b09a8075e8344561415/README.md#L98-L115", "locator": "Quick Start / Dependencies"},
+      "official_data_and_configs": {"datasets": ["amazon_book_2014", "amazon_movie", "amazon_game"], "configs": ["main.py CLI", "models/General/base/setup.py evaluator"], "dataset_license": "PENDING_E2_SEPARATE", "status": "VERIFIED", "url": "https://github.com/LehengTHU/AlphaRec/blob/4b6c6cf378f292c31dd75b09a8075e8344561415/README.md#L117-L147", "locator": "Dataset downloading and Commands for running"},
+      "pipeline_surface": {"preprocessing": "prebuilt data folder expected; no raw preprocessing command; user-intention datasets and zero-shot scripts remain TODO", "training_evaluation": "main.py --rs_type General --model_name AlphaRec; compiled evaluator under models/General/base", "checkpoint": "weights/General/<dataset>/<model>/<saveID>/epoch=*.checkpoint.pth.tar", "results": "logs/*.log plus stats/result outputs and optional wandb", "status": "VERIFIED_WITH_UNRELEASED_TODO_EXCLUSIONS", "url": "https://github.com/LehengTHU/AlphaRec/blob/4b6c6cf378f292c31dd75b09a8075e8344561415/README.md#L92-L147", "locator": "TODO and Quick Start"},
+      "per_user_export": {"predictions": "BOUNDED_ADAPTER via recommender predict(users, items=None)", "metrics": "BOUNDED_ADAPTER around evaluator before aggregation", "changes_method": false, "status": "VERIFIED", "url": "https://github.com/LehengTHU/AlphaRec/tree/4b6c6cf378f292c31dd75b09a8075e8344561415/models/General", "locator": "base recommender predict and runner evaluation paths"}
+    },
+    {
+      "candidate_id": "qrec_simgcl_author",
+      "name": "QRec SimGCL author implementation",
+      "repository": "https://github.com/Coder-Yu/QRec",
+      "provenance_class": "AUTHOR_OFFICIAL",
+      "authority_scope": ["SimGCL"],
+      "revision": {"sha": "a141bb37cb7706b2f53b2eed5843de3269f9f37f", "branch": "master", "tag_relationship": "no tags observed", "status": "VERIFIED", "url": "https://github.com/Coder-Yu/QRec/commit/a141bb37cb7706b2f53b2eed5843de3269f9f37f", "tag_url": "https://github.com/Coder-Yu/QRec/tags", "locator": "official Git refs observed 2026-08-22"},
+      "paper_identity": {"title": "Are Graph Augmentations Necessary? Simple Graph Contrastive Learning for Recommendation", "authors": ["Junliang Yu", "Hongzhi Yin", "Xin Xia", "Tong Chen", "Lizhen Cui", "Quoc Viet Hung Nguyen"], "venue_year": "SIGIR 2022", "url": "https://arxiv.org/abs/2112.08679", "locator": "lines 8-24; code link", "status": "VERIFIED"},
+      "code_license": {"spdx": null, "status": "PENDING_NO_LICENSE_FILE_FOUND", "url": "https://github.com/Coder-Yu/QRec/tree/a141bb37cb7706b2f53b2eed5843de3269f9f37f", "locator": "repository root tree contains no LICENSE/COPYING", "dataset_license": "PENDING_E2_SEPARATE"},
+      "native_stack": {"framework": "TensorFlow", "constraints": "Python 3.7.4, TensorFlow 1.14+, with locked README requirements including numpy 1.20.3, scipy 1.6.2, numba 0.53.1", "hardware": "no GPU model documented", "status": "VERIFIED", "url": "https://github.com/Coder-Yu/QRec/blob/a141bb37cb7706b2f53b2eed5843de3269f9f37f/README.md#L1-L58", "locator": "Introduction and Requirements"},
+      "official_data_and_configs": {"datasets": ["Yelp2018 in config/SimGCL.conf; framework also documents Yelp and Amazon-Book"], "configs": ["config/SimGCL.conf"], "dataset_license": "PENDING_E2_SEPARATE", "status": "VERIFIED", "url": "https://github.com/Coder-Yu/QRec/blob/a141bb37cb7706b2f53b2eed5843de3269f9f37f/config/SimGCL.conf", "locator": "ratings and evaluation/output options"},
+      "pipeline_surface": {"preprocessing": "pre-split train/test paths in SimGCL.conf; no raw-data preprocessing entrypoint", "training_evaluation": "python main.py, then interactive choice q5 for SimGCL", "checkpoint": "NONE_PERSISTENT; best embeddings retained in memory", "results": "configured ./results directory contains top-N recommendations and aggregate measures", "status": "VERIFIED", "url": "https://github.com/Coder-Yu/QRec/blob/a141bb37cb7706b2f53b2eed5843de3269f9f37f/main.py", "locator": "interactive selector and execute()"},
+      "per_user_export": {"predictions": "YES_NATIVE_FILE: top-N recommendation output", "metrics": "BOUNDED_ADAPTER before aggregate measure output", "changes_method": false, "status": "VERIFIED", "url": "https://github.com/Coder-Yu/QRec/tree/a141bb37cb7706b2f53b2eed5843de3269f9f37f/base", "locator": "ranking evaluation/output routines"}
+    },
+    {
+      "candidate_id": "selfrec_xsimgcl_author",
+      "name": "SELFRec XSimGCL author implementation",
+      "repository": "https://github.com/Coder-Yu/SELFRec",
+      "provenance_class": "AUTHOR_OFFICIAL",
+      "authority_scope": ["XSimGCL"],
+      "revision": {"sha": "5b0229423cb1c727e85a704d63e460368c8b9dde", "branch": "main", "tag_relationship": "no tags observed", "status": "VERIFIED", "url": "https://github.com/Coder-Yu/SELFRec/commit/5b0229423cb1c727e85a704d63e460368c8b9dde", "tag_url": "https://github.com/Coder-Yu/SELFRec/tags", "locator": "official Git refs observed 2026-08-22"},
+      "paper_identity": {"title": "XSimGCL: Towards Extremely Simple Graph Contrastive Learning for Recommendation", "authors": ["Junliang Yu", "Xin Xia", "Tong Chen", "Lizhen Cui", "Nguyen Quoc Viet Hung", "Hongzhi Yin"], "venue_year": "IEEE TKDE 2023", "url": "https://arxiv.org/abs/2209.02544", "locator": "title/authors and code release statement", "status": "VERIFIED"},
+      "code_license": {"spdx": null, "status": "PENDING_NO_LICENSE_FILE_FOUND", "url": "https://github.com/Coder-Yu/SELFRec/tree/5b0229423cb1c727e85a704d63e460368c8b9dde", "locator": "repository root tree contains no LICENSE/COPYING", "dataset_license": "PENDING_E2_SEPARATE"},
+      "native_stack": {"framework": "PyTorch", "constraints": "README badge says Python 3.7+/PyTorch 1.7+; feature text says Python 3.9+/PyTorch 1.8+; locked requirements pins torch 1.13.1 and must be reconciled", "hardware": "GPU-powered statement; no GPU model/CUDA toolkit documented", "status": "PENDING_VERSION_CONFLICT_RECONCILIATION", "url": "https://github.com/Coder-Yu/SELFRec/blob/5b0229423cb1c727e85a704d63e460368c8b9dde/README.md#L1-L31", "locator": "badges, Features and How to Use"},
+      "official_data_and_configs": {"datasets": ["Yelp2018 in conf/XSimGCL.yaml; related dataset list includes Yelp and Amazon-Book"], "configs": ["conf/XSimGCL.yaml"], "dataset_license": "PENDING_E2_SEPARATE", "status": "VERIFIED", "url": "https://github.com/Coder-Yu/SELFRec/blob/5b0229423cb1c727e85a704d63e460368c8b9dde/conf/XSimGCL.yaml", "locator": "training/evaluation/output keys"},
+      "pipeline_surface": {"preprocessing": "pre-split train/test paths in YAML; no raw-data preprocessing entrypoint", "training_evaluation": "python main.py, then interactive XSimGCL selection", "checkpoint": "NONE_PERSISTENT; best embeddings retained by save()", "results": "configured results directory contains per-user top-N and aggregate performance", "status": "VERIFIED", "url": "https://github.com/Coder-Yu/SELFRec/blob/5b0229423cb1c727e85a704d63e460368c8b9dde/main.py", "locator": "model selector and execute()"},
+      "per_user_export": {"predictions": "YES_NATIVE_FILE: GraphRecommender top-N output", "metrics": "BOUNDED_ADAPTER before aggregation", "changes_method": false, "status": "VERIFIED", "url": "https://github.com/Coder-Yu/SELFRec/tree/5b0229423cb1c727e85a704d63e460368c8b9dde/base", "locator": "graph recommender test and output routines"}
+    },
+    {
+      "candidate_id": "lightgcl_author",
+      "name": "LightGCL author implementation",
+      "repository": "https://github.com/HKUDS/LightGCL",
+      "provenance_class": "AUTHOR_OFFICIAL",
+      "authority_scope": ["LightGCL"],
+      "revision": {"sha": "5590453ad86782f58017e58d0b698d7f32175be3", "branch": "main", "tag_relationship": "no tags observed", "status": "VERIFIED", "url": "https://github.com/HKUDS/LightGCL/commit/5590453ad86782f58017e58d0b698d7f32175be3", "tag_url": "https://github.com/HKUDS/LightGCL/tags", "locator": "official Git refs observed 2026-08-22"},
+      "paper_identity": {"title": "LightGCL: Simple Yet Effective Graph Contrastive Learning for Recommendation", "authors": ["Xuheng Cai", "Chao Huang", "Lianghao Xia", "Xubin Ren"], "venue_year": "ICLR 2023", "url": "https://openreview.net/forum?id=FKXVK9dyMM", "locator": "official forum and repository README lines 1-2, 73-81", "status": "VERIFIED"},
+      "code_license": {"spdx": null, "status": "PENDING_NO_LICENSE_FILE_FOUND", "url": "https://github.com/HKUDS/LightGCL/tree/5590453ad86782f58017e58d0b698d7f32175be3", "locator": "repository root tree contains no LICENSE/COPYING", "dataset_license": "PENDING_E2_SEPARATE"},
+      "native_stack": {"framework": "PyTorch", "constraints": "Python 3.9.12, torch 1.12.0+cu113, numpy 1.21.5, tqdm 4.64.0", "hardware": "CUDA-selectable GPU; no model documented", "status": "VERIFIED", "url": "https://github.com/HKUDS/LightGCL/blob/5590453ad86782f58017e58d0b698d7f32175be3/README.md#L16-L25", "locator": "Running environment"},
+      "official_data_and_configs": {"datasets": ["Yelp", "Gowalla", "ML-10M", "Tmall", "Amazon"], "configs": ["parser.py CLI", "data/<dataset>/trnMat.pkl", "data/<dataset>/tstMat.pkl"], "dataset_license": "PENDING_E2_SEPARATE", "status": "VERIFIED", "url": "https://github.com/HKUDS/LightGCL/blob/5590453ad86782f58017e58d0b698d7f32175be3/README.md#L11-L55", "locator": "datasets/directories and run commands"},
+      "pipeline_surface": {"preprocessing": "prebuilt pickled matrices; README only instructs unzip", "training_evaluation": "main.py with --data and dataset-specific flags", "checkpoint": "saved_model directory; model and optimizer state at periodic/final saves", "results": "log/result_<data>_<hour>.csv", "status": "VERIFIED", "url": "https://github.com/HKUDS/LightGCL/blob/5590453ad86782f58017e58d0b698d7f32175be3/main.py", "locator": "data load, train/test loop, save and CSV result path"},
+      "per_user_export": {"predictions": "BOUNDED_ADAPTER from test-time rankings", "metrics": "BOUNDED_ADAPTER from per-user rows before mean", "changes_method": false, "status": "VERIFIED", "url": "https://github.com/HKUDS/LightGCL/blob/5590453ad86782f58017e58d0b698d7f32175be3/metrics.py", "locator": "ranking metric computation called by main.py"}
+    },
+    {
+      "candidate_id": "local_v5_pipeline",
+      "name": "Local v5 Deep/Hybrid and baseline pipeline",
+      "repository": "https://github.com/PhatNguyenTT2/Mini-Mart",
+      "provenance_class": "INDEPENDENT",
+      "authority_scope": ["Apriori project condition", "Deep local condition", "Hybrid local condition", "local Random and ItemCF audit comparators"],
+      "revision": {
+        "sha": null,
+        "observed_repository_head": "31d8092554119aa7d1ba22db2e094d701ba83c29",
+        "working_tree_relationship": "current authoritative E:/UIT/cv/backend source is not fully represented by HEAD: ai-service/src/ai_service/cli.py and ai-service/src/ai_service/training/pipeline.py are modified",
+        "status": "PENDING_CLEAN_IMMUTABLE_COMMIT",
+        "url": "https://github.com/PhatNguyenTT2/Mini-Mart/commit/31d8092554119aa7d1ba22db2e094d701ba83c29",
+        "locator": "local git HEAD plus status observed 2026-08-22"
+      },
+      "paper_identity": {"title": "No singular external paper: project-native two-tower Deep and learned Apriori-wide Hybrid conditions", "authors": [], "venue_year": null, "url": "https://github.com/PhatNguyenTT2/Mini-Mart", "locator": "ai-service/README.md and pyproject.toml description", "status": "NOT_APPLICABLE_PROJECT_CONDITION"},
+      "code_license": {"spdx": null, "status": "PENDING_NO_LICENSE_FILE_FOUND", "url": "https://github.com/PhatNguyenTT2/Mini-Mart/tree/31d8092554119aa7d1ba22db2e094d701ba83c29", "locator": "repository tree and local root search contain no LICENSE/COPYING", "dataset_license": "PENDING_E2_SEPARATE"},
+      "native_stack": {"framework": "PyTorch two-tower/wide-deep; PostgreSQL data; sentence-transformers feature build", "constraints": "Python >=3.11,<3.13; torch==2.11.0; Windows torch cu128 source; README also documents CPU Linux serving", "hardware": "CUDA training supported but no exact training GPU documented", "status": "VERIFIED_FILE_HASH_LOCK_ONLY", "local_sha256": {"ai-service/README.md": "0460df5104b74f06eab9e3d8dd84edf6785b7d6824541869fc26f2d0879eea38", "ai-service/pyproject.toml": "9c395a77d281c9088093add076399f8f206da16565f108f60bbaaf20c5729c96"}, "locator": "E:/UIT/cv/backend/ai-service/README.md:8-53; pyproject.toml project/dependency/source tables"},
+      "official_data_and_configs": {"datasets": ["project production PostgreSQL snapshot; no external dataset license claimed"], "configs": ["configs/diagnostics/r3-v5/deep-control.toml", "configs/diagnostics/r3-v5/hybrid-h0-main.toml"], "dataset_license": "PENDING_E2_SEPARATE", "status": "VERIFIED_FILE_HASH_LOCK_ONLY", "local_sha256": {"deep-control.toml": "b391445c30d1e8a3afe1690adc59ff0943fd5144b9c5fd92f224621240478a71", "hybrid-h0-main.toml": "237a6cbebc6f6e81551d02e2840b8c6c33fbae4fc1e56e36e7c86b2ba26e264b"}, "locator": "E:/UIT/cv/backend/ai-service/configs/diagnostics/r3-v5"},
+      "pipeline_surface": {"preprocessing": "ai-pipeline snapshot/features/rules; AprioriRuleMiner mines train-only directed pair rules", "training_evaluation": "ai-pipeline train --variant deep_only|hybrid; ai-pipeline evaluate --split val --hybrid-run-id ... --deep-run-id ...", "checkpoint": "artifacts/runs/<run-id>/checkpoints/{best.pt,last.pt}", "results": "artifacts/runs/<run-id>/evaluation/<split>/{per-user-metrics.npz,victory-matrix.json,report.json}", "status": "VERIFIED_FILE_HASH_LOCK_ONLY_PENDING_COMMIT", "local_sha256": {"cli.py": "93ce7d1aea4080753fe540103a79da99eb4b721fc8da1c4696666e2e828579d4", "rules.py": "ec2fde60f9608ca6b7a8db4eedaaf04bee4891477fc55b49ea0d73fcc4a8fab4", "training/pipeline.py": "ad5f83ea6ee36404e46dc7919c37fd7e9b3c1d0470078177ac8b7702ba8154e1", "evaluation/report.py": "803e21cb3f99bcf7ee0882ee97887bb6482718fae11dde476974fd529c1c42e9"}, "locator": "E:/UIT/cv/backend/ai-service/README.md:55-136; cli.py:51-79; data/rules.py:291-423; evaluation/report.py:168-236"},
+      "per_user_export": {"predictions": "BOUNDED_ADAPTER: EvaluationReport retains top_k_by_user in memory but publisher does not serialize it", "metrics": "YES_NATIVE_FILE: per-user-metrics.npz", "changes_method": false, "status": "VERIFIED_FILE_HASH_LOCK_ONLY", "local_sha256": {"evaluation/full_catalog.py": "927d1ed05956112e959f4902b3418129db99692db7d899cc25404b31d4feeb6f", "evaluation/report.py": "803e21cb3f99bcf7ee0882ee97887bb6482718fae11dde476974fd529c1c42e9"}, "locator": "full_catalog.py:55,215,359-450; report.py:193-236"}
+    }
+  ],
+  "method_registry": [
+    {"method": "Random", "paper": {"identity": "heuristic control; no singular canonical original paper", "status": "NOT_APPLICABLE"}, "selected_candidate": "recbole", "model_entry": "Random", "selection": "CONDITIONAL_FRAMEWORK_AUTHORITY", "alternates": ["local_v5_pipeline"], "provenance_class": "FRAMEWORK_AUTHORITATIVE"},
+    {"method": "MostPop", "paper": {"identity": "heuristic control; no singular canonical original paper", "status": "NOT_APPLICABLE"}, "selected_candidate": "recbole", "model_entry": "Pop", "selection": "CONDITIONAL_FRAMEWORK_AUTHORITY", "alternates": [], "provenance_class": "FRAMEWORK_AUTHORITATIVE"},
+    {"method": "ItemCF/ItemKNN", "paper": {"title": "Item-Based Top-N Recommendation Algorithms", "authors": ["Mukund Deshpande", "George Karypis"], "venue_year": "ACM TOIS 2004", "url": "https://dl.acm.org/doi/10.1145/963770.963776", "locator": "official DOI landing page", "status": "VERIFIED"}, "selected_candidate": "recbole", "model_entry": "ItemKNN", "selection": "CONDITIONAL_FRAMEWORK_AUTHORITY", "alternates": ["local_v5_pipeline"], "provenance_class": "FRAMEWORK_AUTHORITATIVE"},
+    {"method": "Apriori", "paper": {"title": "Fast Algorithms for Mining Association Rules", "authors": ["Rakesh Agrawal", "Ramakrishnan Srikant"], "venue_year": "VLDB 1994", "url": "http://www.vldb.org/conf/1994/P487.PDF", "locator": "title page and Apriori sections", "status": "VERIFIED"}, "selected_candidate": "local_v5_pipeline", "model_entry": "AprioriRuleMiner plus raw-lift WIDE_ONLY comparator", "selection": "PENDING_CLEAN_LOCAL_COMMIT", "alternates": ["mlxtend_apriori"], "provenance_class": "INDEPENDENT", "note": "mlxtend is authoritative for mining but rejected as an end-to-end recommender pipeline"},
+    {"method": "BPR-MF", "paper": {"title": "BPR: Bayesian Personalized Ranking from Implicit Feedback", "authors": ["Steffen Rendle", "Christoph Freudenthaler", "Zeno Gantner", "Lars Schmidt-Thieme"], "venue_year": "UAI 2009", "url": "https://www.auai.org/uai2009/papers/UAI2009_0139_48141db02b9f0b02bc7158819ebfa2c7.pdf", "locator": "title page and algorithm section", "status": "VERIFIED"}, "selected_candidate": "recbole", "model_entry": "BPR", "selection": "CONDITIONAL_FRAMEWORK_AUTHORITY_NO_AUTHOR_REPO_IDENTIFIED", "alternates": [], "provenance_class": "FRAMEWORK_AUTHORITATIVE"},
+    {"method": "LightGCN", "paper_ref": "lightgcn_author_tf.paper_identity", "selected_candidate": "lightgcn_author_tf", "model_entry": "LightGCN.py --alg_type lightgcn", "selection": "SELECTED_AUTHOR_OFFICIAL_LICENSE_BLOCKED", "alternates": ["recbole", "selfrec_xsimgcl_author"], "provenance_class": "AUTHOR_OFFICIAL"},
+    {"method": "SASRec", "paper_ref": "sasrec_author_tf.paper_identity", "selected_candidate": "sasrec_author_tf", "model_entry": "main.py", "selection": "SELECTED_AUTHOR_OFFICIAL", "alternates": ["recbole", "selfrec_xsimgcl_author"], "provenance_class": "AUTHOR_OFFICIAL"},
+    {"method": "BERT4Rec", "paper_ref": "bert4rec_author_tf.paper_identity", "selected_candidate": "bert4rec_author_tf", "model_entry": "run_*.sh -> run.py", "selection": "SELECTED_AUTHOR_OFFICIAL", "alternates": ["recbole", "selfrec_xsimgcl_author"], "provenance_class": "AUTHOR_OFFICIAL"},
+    {"method": "BTBR/Mask-Swap-NNBR", "paper_ref": "maskswap_author.paper_identity", "selected_candidate": "maskswap_author", "model_entry": "nnbr/train_main_gpu_batch.py", "selection": "SELECTED_AUTHOR_OFFICIAL_LICENSE_AND_PREPROCESSING_BLOCKED", "alternates": [], "provenance_class": "AUTHOR_OFFICIAL"},
+    {"method": "UniSRec", "paper_ref": "unisrec_author.paper_identity", "selected_candidate": "unisrec_author", "model_entry": "finetune.py / pretrain.py", "selection": "SELECTED_AUTHOR_OFFICIAL", "alternates": ["recbole"], "provenance_class": "AUTHOR_OFFICIAL"},
+    {"method": "AlphaRec", "paper_ref": "alpharec_author.paper_identity", "selected_candidate": "alpharec_author", "model_entry": "main.py --model_name AlphaRec", "selection": "SELECTED_AUTHOR_OFFICIAL_LICENSE_BLOCKED", "alternates": [], "provenance_class": "AUTHOR_OFFICIAL"},
+    {"method": "SimGCL", "paper_ref": "qrec_simgcl_author.paper_identity", "selected_candidate": "qrec_simgcl_author", "model_entry": "main.py interactive q5 / config/SimGCL.conf", "selection": "SELECTED_AUTHOR_OFFICIAL_LICENSE_BLOCKED", "alternates": ["selfrec_xsimgcl_author", "recbole"], "provenance_class": "AUTHOR_OFFICIAL"},
+    {"method": "XSimGCL", "paper_ref": "selfrec_xsimgcl_author.paper_identity", "selected_candidate": "selfrec_xsimgcl_author", "model_entry": "main.py interactive XSimGCL / conf/XSimGCL.yaml", "selection": "SELECTED_AUTHOR_OFFICIAL_LICENSE_AND_VERSION_BLOCKED", "alternates": ["recbole"], "provenance_class": "AUTHOR_OFFICIAL"},
+    {"method": "LightGCL", "paper_ref": "lightgcl_author.paper_identity", "selected_candidate": "lightgcl_author", "model_entry": "main.py", "selection": "SELECTED_AUTHOR_OFFICIAL_LICENSE_BLOCKED", "alternates": ["recbole"], "provenance_class": "AUTHOR_OFFICIAL"},
+    {"method": "Deep local condition", "paper": {"identity": "project-native deep_only two-tower control", "status": "NOT_APPLICABLE_PROJECT_CONDITION"}, "selected_candidate": "local_v5_pipeline", "model_entry": "ai-pipeline train --variant deep_only", "selection": "PENDING_CLEAN_IMMUTABLE_COMMIT", "alternates": [], "provenance_class": "INDEPENDENT"},
+    {"method": "Hybrid local condition", "paper": {"identity": "project-native hybrid two-tower plus learned Apriori-wide condition", "status": "NOT_APPLICABLE_PROJECT_CONDITION"}, "selected_candidate": "local_v5_pipeline", "model_entry": "ai-pipeline train --variant hybrid", "selection": "PENDING_CLEAN_IMMUTABLE_COMMIT", "alternates": [], "provenance_class": "INDEPENDENT"}
+  ],
+  "global_pending_gates": [
+    "E2 must independently lock every dataset origin, license and permitted use; repository-bundled data is not a license claim",
+    "E3 must lock evaluation semantics before commands are adapted to the project protocol",
+    "E4 must review code-license blockers and the RecBole README/LICENSE tension",
+    "E4 must define bounded, method-preserving prediction/per-user metric collectors where native files do not exist",
+    "local v5 Deep/Hybrid/Apriori requires a clean immutable commit containing current cli.py and training/pipeline.py bytes",
+    "E5 must independently verify all evidence and hashes"
+  ]
+}

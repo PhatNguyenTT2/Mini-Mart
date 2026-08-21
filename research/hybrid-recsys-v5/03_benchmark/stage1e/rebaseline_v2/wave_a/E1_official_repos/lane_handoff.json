@@ -1,0 +1,81 @@
+{
+  "schema_version": "stage1e.lane_handoff.v2",
+  "lane_id": "E1_official_repos",
+  "model": "gpt-5.6-sol",
+  "reasoning": "xhigh",
+  "status": "COMPLETE_WITH_PENDING_GATES",
+  "verdict": "READY_FOR_E4_E5_REVIEW_WITH_BLOCKERS",
+  "access_date": "2026-08-22",
+  "verification_state": "UNVERIFIED",
+  "material_passport": {
+    "origin_skill": "ars-codex:academic-research-suite/experiment-agent",
+    "origin_skill_version": "0.1.26",
+    "mode": "plan",
+    "model": "gpt-5.6-sol",
+    "reasoning": "xhigh",
+    "date": "2026-08-22",
+    "verification_status": "UNVERIFIED",
+    "version_label": "Stage 1E Rebaseline v2 / Wave A / E1"
+  },
+  "input_manifest_path": "E:/UIT/cv/backend/research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/stage1e_rebaseline_v2_input_manifest.json",
+  "input_manifest_sha256": "107299c026434366ed6ddb18f4ee6e25fd790d9799fd81c1c1e87871ed60744d",
+  "input_manifest_files_verified": 9,
+  "input_manifest_files_mismatched": 0,
+  "superseded_lane_material_used": false,
+  "outputs": [
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_a/E1_official_repos/official_repo_registry.json",
+      "sha256": "59227a7355c2efaa285d01e165ec99836a0672dd7a952aa921564b75a3b5b4aa"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_a/E1_official_repos/training_pipeline_command_map.md",
+      "sha256": "9f9ea53474bef6ca848f4d29f865ab3f34c3fd03c15ba958080f1851b60b6086"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_a/E1_official_repos/implementation_provenance_matrix.md",
+      "sha256": "13790d41a342157bfb133daf4a13c948048cb109b5ef167b1308c4045bf4058b"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_a/E1_official_repos/repo_exclusion_log.md",
+      "sha256": "a628010580f6ad4a4fb5ef5f7ca9d07b63a6bd95539ed1e87874019e22cd43d2"
+    }
+  ],
+  "handoff_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_a/E1_official_repos/lane_handoff.json",
+  "counts": {
+    "required_method_records": 16,
+    "repository_candidates_admitted": 12,
+    "external_immutable_revision_locks_verified": 11,
+    "local_immutable_revision_locks_pending": 1,
+    "author_official_method_selections": 9,
+    "framework_authoritative_method_selections": 4,
+    "independent_method_selections": 3,
+    "pending_code_license_decisions": 8,
+    "rejected_implementation_decisions": 8,
+    "accepted_result_rows": 0
+  },
+  "verified_count": 11,
+  "pending_count": 11,
+  "rejected_count": 8,
+  "count_basis": {
+    "verified_count": "external official/framework repository HEAD SHA locks",
+    "pending_count": "8 code-license decisions + local clean immutable commit + Mask-Swap dependency/preprocess lock + SELFRec version reconciliation",
+    "rejected_count": "numbered implementation decisions in repo_exclusion_log.md"
+  },
+  "blockers": [
+    "E2 must independently verify every dataset origin, license, redistribution and permitted-use claim",
+    "E3 must lock split, candidate universe, negative sampling, metric semantics and checkpoint selection before any command adaptation",
+    "RecBole MIT LICENSE versus README academic-purpose wording requires E4 review",
+    "LightGCN, Mask-Swap-NNBR, QRec, SELFRec, LightGCL and the local project expose no license file at the locked state",
+    "AlphaRec exposes an MIT badge but no license grant file",
+    "Mask-Swap-NNBR lacks a dependency lock and raw preprocessing entrypoint",
+    "SELFRec README and requirements expose version-floor/pin tension",
+    "current local v5 cli.py and training/pipeline.py bytes are modified relative to repository HEAD and require a clean immutable commit",
+    "bounded method-preserving prediction/per-user metric collectors require E4 design review where no native file exists",
+    "all artifacts remain UNVERIFIED until independent E4/E5 review"
+  ],
+  "test_set_opened": "NO",
+  "result_status": "NOT_RUN",
+  "accepted_result_rows": 0,
+  "pre_existing_project_numbers": "INVALID_FOR_PAPER",
+  "next_gate": "E4 compatibility, licensing and bounded-adapter review after E2/E3 locks; then E5 independent verification"
+}
