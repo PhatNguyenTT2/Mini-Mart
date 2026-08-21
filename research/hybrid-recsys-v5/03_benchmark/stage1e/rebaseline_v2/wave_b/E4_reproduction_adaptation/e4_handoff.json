@@ -228,7 +228,8 @@
     "sha": null,
     "policy": "The commit containing this handoff is created after the handoff bytes are frozen and is reported out-of-band."
   },
-  "verdict": "BLOCKED_NO_READY_REFERENCE_BUNDLE",
+  "verdict": "FAIL_NOT_READY_FOR_E5",
+  "verdict_detail": "BLOCKED_NO_READY_REFERENCE_BUNDLE",
   "fail_closed": true,
-  "next_gate": "Independent E5 evidence audit only after carried blockers are resolved; no execution is authorized and E5 is not created by this task."
+  "next_gate": "Independent E5 may audit this frozen fail-closed packet now. E5 cannot authorize execution from this packet; carried blockers must be remediated and a new frozen E4 packet issued before any future PASS or execution authorization."
 }
