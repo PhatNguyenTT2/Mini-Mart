@@ -1,0 +1,668 @@
+{
+  "schema_version": "stage1e-e3-official-benchmark-registry-1.0",
+  "lane_id": "E3_metric_benchmarks",
+  "material_passport": {
+    "origin_skill": "ars-codex:academic-research-suite v0.1.26",
+    "origin_mode": "experiment-agent/evidence-discovery-lock",
+    "origin_date": "2026-08-22",
+    "verification_status": "UNVERIFIED",
+    "version_label": "stage1e_rebaseline_v2_wave_a_E3",
+    "model": "gpt-5.6-sol",
+    "reasoning": "xhigh",
+    "input_manifest_sha256": "107299c026434366ed6ddb18f4ee6e25fd790d9799fd81c1c1e87871ed60744d"
+  },
+  "access_date": "2026-08-22",
+  "authority_root": "E:/UIT/cv/backend",
+  "truth_state": {
+    "existing_project_benchmarks": "INVALID_FOR_PAPER",
+    "RESULT_STATUS": "NOT_RUN",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "TEST_SET_OPENED": "NO",
+    "reference_baselines": "NOT_REPRODUCED"
+  },
+  "scope": {
+    "track": "OFFICIAL_PROTOCOL_REPRODUCTION",
+    "purpose": "Implementation-validity targets only; never evidence that v5 is superior.",
+    "raw_cross_dataset_metric_comparison": "PROHIBITED",
+    "execution_authorized": false,
+    "notes": [
+      "A reported center is kept with its own repository, dataset, configuration and evaluator evidence bundle.",
+      "PENDING is used whenever exact seed identities, processed-data revision, checkpoint selection, metric semantics or command-to-center binding is not proven.",
+      "No repository, dataset or artifact was cloned or downloaded and no benchmark was executed."
+    ]
+  },
+  "default_tolerance": {
+    "formula": "max(0.005 absolute, 0.05 * abs(reported_center))",
+    "boundary": "inclusive",
+    "source": {
+      "url": "local-authority:E:/UIT/cv/backend/research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/stage1e_rebaseline_v2_contract.md",
+      "locator": "Section 5, line 115",
+      "verification_status": "VERIFIED_LOCAL_SHA256"
+    }
+  },
+  "verdict_semantics": {
+    "PASS": "All identity/protocol gates match and every required observed metric lies within its frozen tolerance.",
+    "FAIL": "All identity/protocol gates match, the required execution completed, and at least one required metric is outside tolerance.",
+    "INCOMPARABLE": "A completed or proposed result differs on repository implementation, dataset revision, split, preprocessing, objective/config, checkpoint rule, metric semantics, cutoff, eligible users, relevance, candidate set or run aggregation.",
+    "PENDING": "The run has not occurred or at least one acceptance-critical source field remains unresolved."
+  },
+  "candidate_pairs": [
+    {
+      "pair_id": "E3-LIGHTGCN-GOWALLA-PYTORCH-001",
+      "model_family": "LightGCN",
+      "gate_family": "Gate1",
+      "provenance_class": "AUTHOR_OFFICIAL",
+      "repository": {
+        "url": "https://github.com/gusye1234/LightGCN-PyTorch",
+        "revision": "947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+        "revision_locator": "https://github.com/gusye1234/LightGCN-PyTorch/commit/947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+        "observed_branch": "master",
+        "verification_status": "VERIFIED_CURRENT_WEB_STATE",
+        "license": {
+          "value": "PENDING",
+          "url": "https://github.com/gusye1234/LightGCN-PyTorch/tree/947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+          "locator": "repository root; no license field is asserted by E3",
+          "verification_status": "PENDING"
+        }
+      },
+      "paper": {
+        "url": "https://arxiv.org/abs/2002.02126",
+        "locator": "paper abstract/code references; repository README identifies this as the authors' PyTorch implementation",
+        "verification_status": "VERIFIED_PRIMARY"
+      },
+      "dataset": {
+        "name": "Gowalla (repository-bundled processed split)",
+        "revision": "Git tree at repository revision 947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+        "config": "--dataset=gowalla; code/data files train.txt and test.txt",
+        "preprocessing": "Processed artifacts are public in the repository; raw-source release, filtering recipe and raw-to-processed hash chain are not stated in the README.",
+        "split": "Pre-split train.txt/test.txt consumed directly; split generation is PENDING.",
+        "sources": [
+          {
+            "url": "https://github.com/gusye1234/LightGCN-PyTorch/blob/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/README.md",
+            "locator": "Dataset; An example to run a 3-layer LightGCN",
+            "verification_status": "VERIFIED_PRIMARY"
+          },
+          {
+            "url": "https://github.com/gusye1234/LightGCN-PyTorch/blob/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/code/dataloader.py",
+            "locator": "Loader.__init__; train_file/test_file parsing",
+            "verification_status": "VERIFIED_PRIMARY"
+          }
+        ]
+      },
+      "pipeline": {
+        "entrypoint_command": "cd code && python main.py --decay=1e-4 --lr=0.001 --layer=3 --seed=2020 --dataset=\"gowalla\" --topks=\"[20]\" --recdim=64",
+        "config": "3 layers; embedding 64; lr 0.001; L2 decay 1e-4; 1000 epochs per README result note",
+        "objective": "BPR pairwise loss plus embedding regularization",
+        "training_negative_sampling": "One negative item per sampled user-positive interaction in the repository sampler; distribution implementation is uniform rejection over item IDs.",
+        "seed_schedule": [2020],
+        "checkpoint_selection": "README says results stop at 1000 epochs but does not provide a separately named checkpoint/result file; exact row-selection semantics remain PENDING.",
+        "reported_runs": 1,
+        "sources": [
+          {
+            "url": "https://github.com/gusye1234/LightGCN-PyTorch/blob/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/README.md",
+            "locator": "An example to run a 3-layer LightGCN; NOTE 4; Results",
+            "verification_status": "VERIFIED_PRIMARY"
+          },
+          {
+            "url": "https://github.com/gusye1234/LightGCN-PyTorch/blob/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/code/Procedure.py",
+            "locator": "BPR_train_original and Test",
+            "verification_status": "VERIFIED_PRIMARY"
+          }
+        ]
+      },
+      "metric_protocol": {
+        "metrics": ["Recall@20", "NDCG@20", "Precision@20"],
+        "formula_locator": "metric_protocol_matrix.md row E3-LIGHTGCN-GOWALLA-PYTORCH-001",
+        "averaging_unit": "macro average over users present in testDict",
+        "eligible_user_rule": "users in repository testDict",
+        "relevance": "binary membership in each user's test item set",
+        "tie_handling": "torch.topk implementation order; no stable secondary key is specified",
+        "candidate_evaluation": "full catalog scored, training positives masked to -1024 before top-k",
+        "evaluation_negative_count": 0,
+        "evaluation_sampler": "none"
+      },
+      "reported_targets": [
+        {"metric": "Recall@20", "center": 0.1824, "dispersion": null, "runs": 1, "tolerance": 0.00912},
+        {"metric": "NDCG@20", "center": 0.1547, "dispersion": null, "runs": 1, "tolerance": 0.007735},
+        {"metric": "Precision@20", "center": 0.05589, "dispersion": null, "runs": 1, "tolerance": 0.005}
+      ],
+      "reported_result_source": {
+        "url": "https://github.com/gusye1234/LightGCN-PyTorch/blob/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/README.md",
+        "locator": "Results > gowalla > layer=3; all metrics under top-20; seed=2020",
+        "verification_status": "VERIFIED_PRIMARY"
+      },
+      "public_artifact_sufficiency": "PARTIAL_PROCESSED_ARTIFACT_READY_RAW_LINEAGE_AND_CHECKPOINT_RULE_PENDING",
+      "acceptance_rule_id": "AR-NUMERIC-ALL-REQUIRED-AFTER-IDENTITY-GATE",
+      "current_verdict": "PENDING",
+      "blockers": ["raw dataset release/filter lineage", "explicit checkpoint/result-row selection semantics", "tie policy"]
+    },
+    {
+      "pair_id": "E3-SIMGCL-YELP2018-QREC-001",
+      "model_family": "SimGCL",
+      "gate_family": "Gate2",
+      "provenance_class": "AUTHOR_OFFICIAL",
+      "repository": {
+        "url": "https://github.com/Coder-Yu/QRec",
+        "revision": "a141bb37cb7706b2f53b2eed5843de3269f9f37f",
+        "revision_locator": "https://github.com/Coder-Yu/QRec/commit/a141bb37cb7706b2f53b2eed5843de3269f9f37f",
+        "observed_branch": "master",
+        "verification_status": "VERIFIED_CURRENT_WEB_STATE",
+        "license": {"value": "PENDING", "url": "https://github.com/Coder-Yu/QRec/tree/a141bb37cb7706b2f53b2eed5843de3269f9f37f", "locator": "repository root", "verification_status": "PENDING"}
+      },
+      "paper": {
+        "url": "https://arxiv.org/pdf/2112.08679",
+        "locator": "page 1 abstract/code URL; Section 4.1; Table 3 page 6",
+        "verification_status": "VERIFIED_PRIMARY"
+      },
+      "dataset": {
+        "name": "Yelp2018",
+        "revision": "PENDING; paper reports 31,668 users, 38,048 items, 1,561,406 interactions",
+        "config": "QRec config/SimGCL.conf at the pinned revision is the candidate config, but its complete paper-result binding is not proven.",
+        "preprocessing": "Paper does not state a Yelp-specific raw transformation beyond using the benchmark dataset.",
+        "split": "training/validation/test = 7:1:2",
+        "sources": [{"url": "https://arxiv.org/pdf/2112.08679", "locator": "Section 4.1, page 6", "verification_status": "VERIFIED_PRIMARY"}]
+      },
+      "pipeline": {
+        "entrypoint_command": "python main.py (select SimGCL using QRec configuration config/SimGCL.conf)",
+        "config": "Paper general settings: Xavier, embedding 64, L2 1e-4, batch 2048, Adam lr 0.001, temperature 0.2; target row is 3-layer Yelp2018.",
+        "objective": "BPR recommendation loss plus InfoNCE contrastive loss using uniform-noise embedding views",
+        "training_negative_sampling": "One randomly sampled negative item in each BPR triplet; distribution not stated.",
+        "seed_schedule": "PENDING; paper states five runs but not seed identities",
+        "checkpoint_selection": "PENDING; paper discusses best performance/convergence on the test set but does not publish an executable checkpoint rule for the table row",
+        "reported_runs": 5,
+        "sources": [
+          {"url": "https://arxiv.org/pdf/2112.08679", "locator": "Equation 5; Section 4.1; Table 3, 3-Layer", "verification_status": "VERIFIED_PRIMARY"},
+          {"url": "https://github.com/Coder-Yu/QRec/blob/a141bb37cb7706b2f53b2eed5843de3269f9f37f/config/SimGCL.conf", "locator": "entire config", "verification_status": "PARTIALLY_VERIFIED_RATE_LIMITED_AT_FINAL_REPLAY"}
+        ]
+      },
+      "metric_protocol": {
+        "metrics": ["Recall@20", "NDCG@20"],
+        "formula_locator": "metric_protocol_matrix.md row E3-SIMGCL-YELP2018-QREC-001",
+        "averaging_unit": "mean across users within each run, then mean across five runs; per-user formula is not stated in the paper",
+        "eligible_user_rule": "PENDING",
+        "relevance": "implicit positive test interactions",
+        "tie_handling": "PENDING",
+        "candidate_evaluation": "full catalog; paper says all items ranked",
+        "evaluation_negative_count": 0,
+        "evaluation_sampler": "none"
+      },
+      "reported_targets": [
+        {"metric": "Recall@20", "center": 0.0721, "dispersion": null, "runs": 5, "tolerance": 0.005},
+        {"metric": "NDCG@20", "center": 0.0601, "dispersion": null, "runs": 5, "tolerance": 0.005}
+      ],
+      "reported_result_source": {"url": "https://arxiv.org/pdf/2112.08679", "locator": "Table 3, page 6, Yelp2018, 3-Layer, SimGCL", "verification_status": "VERIFIED_PRIMARY"},
+      "public_artifact_sufficiency": "PARTIAL_SEED_IDS_DATA_REVISION_AND_CONFIG_TO_TABLE_BINDING_PENDING",
+      "acceptance_rule_id": "AR-NUMERIC-ALL-REQUIRED-AFTER-IDENTITY-GATE",
+      "current_verdict": "PENDING",
+      "blockers": ["five seed identities", "processed dataset revision/hash", "checkpoint selection", "complete pinned-config replay"]
+    },
+    {
+      "pair_id": "E3-XSIMGCL-YELP2018-SELFREC-001",
+      "model_family": "XSimGCL",
+      "gate_family": "Gate2",
+      "provenance_class": "AUTHOR_OFFICIAL",
+      "repository": {
+        "url": "https://github.com/Coder-Yu/SELFRec",
+        "revision": "5b0229423cb1c727e85a704d63e460368c8b9dde",
+        "revision_locator": "https://github.com/Coder-Yu/SELFRec/commit/5b0229423cb1c727e85a704d63e460368c8b9dde",
+        "observed_branch": "main",
+        "verification_status": "VERIFIED_CURRENT_WEB_STATE",
+        "license": {"value": "PENDING", "url": "https://github.com/Coder-Yu/SELFRec/tree/5b0229423cb1c727e85a704d63e460368c8b9dde", "locator": "repository root", "verification_status": "PENDING"}
+      },
+      "paper": {"url": "https://arxiv.org/pdf/2209.02544", "locator": "page 1 code URL; Section 4.1; Tables 4-6", "verification_status": "VERIFIED_PRIMARY"},
+      "dataset": {
+        "name": "Yelp2018 (SELFRec repository dataset)",
+        "revision": "Git tree at pinned repository revision; raw provider release and raw-to-processed hash chain PENDING",
+        "config": "conf/XSimGCL.yaml; repository leaderboard reports a 3-layer setting",
+        "preprocessing": "Paper benchmark statistics are 31,668 users, 38,048 items, 1,561,406 interactions.",
+        "split": "paper: 7:1:2, validation-tune then merge train+validation before test; current repository dataset/config binding requires E4 verification",
+        "sources": [
+          {"url": "https://arxiv.org/pdf/2209.02544", "locator": "Table 3 and Section 4.1, page 8", "verification_status": "VERIFIED_PRIMARY"},
+          {"url": "https://github.com/Coder-Yu/SELFRec/blob/5b0229423cb1c727e85a704d63e460368c8b9dde/conf/XSimGCL.yaml", "locator": "data and model configuration", "verification_status": "VERIFIED_PRIMARY"}
+        ]
+      },
+      "pipeline": {
+        "entrypoint_command": "python main.py, choose XSimGCL, with conf/XSimGCL.yaml",
+        "config": "Repository leaderboard target: batch 2048, embedding 64, lr 0.001, L2 1e-4, lambda 0.2, epsilon 0.2, l*=1, tau 0.15, layer=3.",
+        "objective": "BPR recommendation loss plus cross-layer InfoNCE contrastive loss",
+        "training_negative_sampling": "One randomly sampled negative item per BPR pair is stated by the paper; exact current sampler distribution PENDING.",
+        "seed_schedule": "PENDING; repository leaderboard and paper do not state seed identities",
+        "checkpoint_selection": "Current framework selects/evaluates during training; exact leaderboard row-selection receipt is PENDING.",
+        "reported_runs": "PENDING for repository leaderboard; paper Table 6 is five-run mean but is a different 4-layer center",
+        "sources": [
+          {"url": "https://github.com/Coder-Yu/SELFRec/blob/5b0229423cb1c727e85a704d63e460368c8b9dde/README.md", "locator": "How to Use; Leaderboard > XSimGCL", "verification_status": "VERIFIED_PRIMARY"},
+          {"url": "https://arxiv.org/pdf/2209.02544", "locator": "Equations 1-3; Section 4.1; Tables 4-6", "verification_status": "VERIFIED_PRIMARY"}
+        ]
+      },
+      "metric_protocol": {
+        "metrics": ["Recall@20", "NDCG@20"],
+        "formula_locator": "metric_protocol_matrix.md row E3-XSIMGCL-YELP2018-SELFREC-001",
+        "averaging_unit": "repository leaderboard aggregation PENDING",
+        "eligible_user_rule": "PENDING",
+        "relevance": "implicit positive test interactions",
+        "tie_handling": "PENDING",
+        "candidate_evaluation": "paper uses full catalog; current leaderboard evaluator binding PENDING",
+        "evaluation_negative_count": 0,
+        "evaluation_sampler": "none if paper protocol is confirmed"
+      },
+      "reported_targets": [
+        {"metric": "Recall@20", "center": 0.0723, "dispersion": null, "runs": null, "tolerance": 0.005},
+        {"metric": "NDCG@20", "center": 0.0604, "dispersion": null, "runs": null, "tolerance": 0.005}
+      ],
+      "reported_result_source": {"url": "https://github.com/Coder-Yu/SELFRec/blob/5b0229423cb1c727e85a704d63e460368c8b9dde/README.md", "locator": "Leaderboard > Yelp2018 > XSimGCL, layer=3", "verification_status": "VERIFIED_PRIMARY"},
+      "public_artifact_sufficiency": "PARTIAL_REPOSITORY_CENTER_BOUND_BUT_RUN_AGGREGATION_AND_SPLIT_RECEIPT_PENDING",
+      "acceptance_rule_id": "AR-NUMERIC-ALL-REQUIRED-AFTER-IDENTITY-GATE",
+      "current_verdict": "PENDING",
+      "blockers": ["seed/run schedule", "leaderboard checkpoint receipt", "current processed split hash", "tie policy"],
+      "explicit_mismatch": "Paper Table 6 reports 0.0733/0.0606 as a five-run best-method center, while the current repository leaderboard reports 0.0723/0.0604 for layer=3. These centers are separate targets and are not merged."
+    },
+    {
+      "pair_id": "E3-LIGHTGCL-YELP-UPDATED-001",
+      "model_family": "LightGCL",
+      "gate_family": "Gate2",
+      "provenance_class": "AUTHOR_OFFICIAL",
+      "repository": {
+        "url": "https://github.com/HKUDS/LightGCL",
+        "revision": "5590453ad86782f58017e58d0b698d7f32175be3",
+        "revision_locator": "https://github.com/HKUDS/LightGCL/commit/5590453ad86782f58017e58d0b698d7f32175be3",
+        "observed_branch": "main",
+        "verification_status": "VERIFIED_CURRENT_WEB_STATE",
+        "license": {"value": "PENDING", "url": "https://github.com/HKUDS/LightGCL/tree/5590453ad86782f58017e58d0b698d7f32175be3", "locator": "repository root", "verification_status": "PENDING"}
+      },
+      "paper": {"url": "https://arxiv.org/html/2302.08191", "locator": "Section 4.1; Section 4.2 note; Appendix E Table 6", "verification_status": "VERIFIED_PRIMARY"},
+      "dataset": {
+        "name": "Yelp (updated LightGCL setting)",
+        "revision": "Git tree at pinned repository revision; raw provider release/hash PENDING",
+        "config": "--data yelp with parser defaults at pinned revision",
+        "preprocessing": "Paper reports 29,601 users, 24,734 items, 1,069,128 interactions; exact filtering and split are PENDING.",
+        "split": "PENDING",
+        "sources": [
+          {"url": "https://arxiv.org/html/2302.08191", "locator": "Section 4.1.1, lines 145-148", "verification_status": "VERIFIED_PRIMARY"},
+          {"url": "https://github.com/HKUDS/LightGCL/blob/5590453ad86782f58017e58d0b698d7f32175be3/README.md", "locator": "Note on datasets and directories; How to run > Yelp", "verification_status": "VERIFIED_PRIMARY"}
+        ]
+      },
+      "pipeline": {
+        "entrypoint_command": "python main.py --data yelp",
+        "config": "Paper fixed embedding 32, batch 256, 2 convolution layers, SVD rank q=5; repository defaults supply the remaining Yelp settings.",
+        "objective": "Pairwise hinge recommendation loss + local-global InfoNCE + L2 regularization",
+        "training_negative_sampling": "Updated setting directly samples positive/negative interaction pairs; one negative score appears per pair in Equation 7, sampler distribution PENDING.",
+        "seed_schedule": "PENDING",
+        "checkpoint_selection": "PENDING",
+        "reported_runs": "PENDING; no count or dispersion is stated for Appendix E Table 6",
+        "sources": [
+          {"url": "https://github.com/HKUDS/LightGCL/blob/5590453ad86782f58017e58d0b698d7f32175be3/README.md", "locator": "How to run the codes > Yelp", "verification_status": "VERIFIED_PRIMARY"},
+          {"url": "https://arxiv.org/html/2302.08191", "locator": "Equation 7; Section 4.1.3; Appendix E", "verification_status": "VERIFIED_PRIMARY"}
+        ]
+      },
+      "metric_protocol": {
+        "metrics": ["Recall@20", "NDCG@20", "Recall@40", "NDCG@40"],
+        "formula_locator": "metric_protocol_matrix.md row E3-LIGHTGCL-YELP-UPDATED-001",
+        "averaging_unit": "PENDING",
+        "eligible_user_rule": "PENDING",
+        "relevance": "implicit positive test interactions",
+        "tie_handling": "PENDING",
+        "candidate_evaluation": "PENDING; source-bound confirmation from evaluator code is required",
+        "evaluation_negative_count": "PENDING",
+        "evaluation_sampler": "PENDING"
+      },
+      "reported_targets": [
+        {"metric": "Recall@20", "center": 0.0985, "dispersion": null, "runs": null, "tolerance": 0.005},
+        {"metric": "NDCG@20", "center": 0.0842, "dispersion": null, "runs": null, "tolerance": 0.005},
+        {"metric": "Recall@40", "center": 0.1553, "dispersion": null, "runs": null, "tolerance": 0.007765},
+        {"metric": "NDCG@40", "center": 0.1051, "dispersion": null, "runs": null, "tolerance": 0.005255}
+      ],
+      "reported_result_source": {"url": "https://arxiv.org/html/2302.08191", "locator": "Appendix E, Table 6, Yelp, LightGCL", "verification_status": "VERIFIED_PRIMARY"},
+      "public_artifact_sufficiency": "PARTIAL_UPDATED_COMMAND_AND_CENTER_BOUND_SEEDS_SPLIT_EVALUATOR_PENDING",
+      "acceptance_rule_id": "AR-NUMERIC-ALL-REQUIRED-AFTER-IDENTITY-GATE",
+      "current_verdict": "PENDING",
+      "blockers": ["split/preprocessing revision", "seed/run count", "checkpoint selection", "candidate and tie semantics"],
+      "explicit_mismatch": "The current command is bound only to Appendix E's updated direct interaction-pair sampler. Original Table 1 used user-first fixed positive/negative sampling and is rejected for this command."
+    },
+    {
+      "pair_id": "E3-UNISREC-SCIENTIFIC-TRANS-001",
+      "model_family": "UniSRec",
+      "gate_family": "Gate2",
+      "provenance_class": "AUTHOR_OFFICIAL",
+      "repository": {
+        "url": "https://github.com/RUCAIBox/UniSRec",
+        "revision": "05aa5cba2809112c32808f70d16abc61c05c6538",
+        "revision_locator": "https://github.com/RUCAIBox/UniSRec/commit/05aa5cba2809112c32808f70d16abc61c05c6538",
+        "observed_branch": "master",
+        "verification_status": "VERIFIED_CURRENT_WEB_STATE",
+        "license": {"value": "MIT", "url": "https://github.com/RUCAIBox/UniSRec/blob/05aa5cba2809112c32808f70d16abc61c05c6538/LICENSE", "locator": "entire LICENSE file", "verification_status": "VERIFIED_PRIMARY"}
+      },
+      "paper": {"url": "https://arxiv.org/html/2206.05941", "locator": "Section 3.1; Table 3", "verification_status": "VERIFIED_PRIMARY"},
+      "dataset": {
+        "name": "Amazon Industrial and Scientific, repository label Scientific",
+        "revision": "Unversioned processed downstream artifact linked from README; exact archive hash PENDING",
+        "config": "Scientific; transductive_ft; saved/UniSRec-FHCKM-300.pth",
+        "preprocessing": "Amazon five-core; filter users/items below five interactions; group by user and timestamp-sort; item text concatenates title, categories and brand; truncate beyond 512 tokens.",
+        "split": "leave-one-out: last item test, penultimate validation, remaining interactions train",
+        "sources": [
+          {"url": "https://arxiv.org/html/2206.05941", "locator": "Sections 3.1.1 and 3.1.3", "verification_status": "VERIFIED_PRIMARY"},
+          {"url": "https://github.com/RUCAIBox/UniSRec/blob/05aa5cba2809112c32808f70d16abc61c05c6538/README.md", "locator": "Download Datasets and Pre-trained Model; Quick Start", "verification_status": "VERIFIED_PRIMARY"}
+        ]
+      },
+      "pipeline": {
+        "entrypoint_command": "python finetune.py -d Scientific -p saved/UniSRec-FHCKM-300.pth",
+        "config": "Transductive setting (text + item ID); pre-trained FHCKM 300 checkpoint; batch 2048; Adam; early-stop patience 10 on NDCG@10; hyperparameter search described in paper.",
+        "objective": "Pretraining uses sequence-item and sequence-sequence contrastive tasks; transductive fine-tuning is next-item cross-entropy in the repository configuration.",
+        "training_negative_sampling": "Full-softmax CE in fine-tuning; multi-domain negatives in pretraining. Exact sampler counts for the published checkpoint are PENDING.",
+        "seed_schedule": "PENDING",
+        "checkpoint_selection": "Early stopping patience 10 with NDCG@10 indicator; exact saved checkpoint epoch PENDING.",
+        "reported_runs": "PENDING; paper gives significance tests but no run count/dispersion for Table 3",
+        "sources": [
+          {"url": "https://github.com/RUCAIBox/UniSRec/blob/05aa5cba2809112c32808f70d16abc61c05c6538/README.md", "locator": "Quick Start > Train and evaluate on downstream datasets", "verification_status": "VERIFIED_PRIMARY"},
+          {"url": "https://arxiv.org/html/2206.05941", "locator": "Sections 3.1.4 and 3.2; Table 3", "verification_status": "VERIFIED_PRIMARY"},
+          {"url": "https://github.com/RUCAIBox/UniSRec/blob/05aa5cba2809112c32808f70d16abc61c05c6538/props/UniSRec.yaml", "locator": "loss_type and train_stage", "verification_status": "VERIFIED_PRIMARY"}
+        ]
+      },
+      "metric_protocol": {
+        "metrics": ["Recall@10", "NDCG@10", "Recall@50", "NDCG@50"],
+        "formula_locator": "metric_protocol_matrix.md row E3-UNISREC-SCIENTIFIC-TRANS-001",
+        "averaging_unit": "average across all test users",
+        "eligible_user_rule": "users surviving five-core preprocessing with leave-one-out test item",
+        "relevance": "single held-out last item",
+        "tie_handling": "PENDING",
+        "candidate_evaluation": "ground-truth item ranked among all other items",
+        "evaluation_negative_count": 0,
+        "evaluation_sampler": "none"
+      },
+      "reported_targets": [
+        {"metric": "Recall@10", "center": 0.1235, "dispersion": null, "runs": null, "tolerance": 0.006175},
+        {"metric": "NDCG@10", "center": 0.0634, "dispersion": null, "runs": null, "tolerance": 0.005},
+        {"metric": "Recall@50", "center": 0.2473, "dispersion": null, "runs": null, "tolerance": 0.012365},
+        {"metric": "NDCG@50", "center": 0.0904, "dispersion": null, "runs": null, "tolerance": 0.005}
+      ],
+      "reported_result_source": {"url": "https://arxiv.org/html/2206.05941", "locator": "Table 3, Scientific, UniSRec_t+ID", "verification_status": "VERIFIED_PRIMARY"},
+      "public_artifact_sufficiency": "PARTIAL_COMMAND_AND_CHECKPOINT_PUBLIC_DATA_HASH_AND_SEEDS_PENDING",
+      "acceptance_rule_id": "AR-NUMERIC-ALL-REQUIRED-AFTER-IDENTITY-GATE",
+      "current_verdict": "PENDING",
+      "blockers": ["processed archive revision/hash", "seed/run schedule", "published-checkpoint hash", "tie policy"]
+    },
+    {
+      "pair_id": "E3-SASREC-SCIENTIFIC-UNISREC-FRAMEWORK-001",
+      "model_family": "SASRec",
+      "gate_family": "Gate1",
+      "provenance_class": "FRAMEWORK_AUTHORITATIVE",
+      "repository": {
+        "url": "https://github.com/RUCAIBox/UniSRec",
+        "revision": "05aa5cba2809112c32808f70d16abc61c05c6538",
+        "revision_locator": "https://github.com/RUCAIBox/UniSRec/commit/05aa5cba2809112c32808f70d16abc61c05c6538",
+        "observed_branch": "master",
+        "verification_status": "VERIFIED_CURRENT_WEB_STATE",
+        "license": {"value": "MIT", "url": "https://github.com/RUCAIBox/UniSRec/blob/05aa5cba2809112c32808f70d16abc61c05c6538/LICENSE", "locator": "entire LICENSE file", "verification_status": "VERIFIED_PRIMARY"}
+      },
+      "paper": {"url": "https://arxiv.org/html/2206.05941", "locator": "Sections 3.1.2-3.1.4; Table 3", "verification_status": "VERIFIED_PRIMARY"},
+      "dataset": {
+        "name": "Scientific (same processed downstream artifact as UniSRec)",
+        "revision": "Unversioned processed archive; hash PENDING",
+        "config": "props/finetune.yaml with hidden_size=300",
+        "preprocessing": "Same five-core/text/order preprocessing documented for UniSRec; SASRec uses item sequences.",
+        "split": "leave-one-out: final item test, penultimate item validation",
+        "sources": [{"url": "https://arxiv.org/html/2206.05941", "locator": "Sections 3.1.1 and 3.1.3", "verification_status": "VERIFIED_PRIMARY"}]
+      },
+      "pipeline": {
+        "entrypoint_command": "python run_baseline.py -m SASRec -d Scientific --config_files=props/finetune.yaml --hidden_size=300",
+        "config": "RecBole-based SASRec baseline, hidden size 300; paper common batch 2048, Adam and early-stop protocol.",
+        "objective": "Next-item sequential recommendation; exact CE/BPR setting used for this published row requires pinned config replay.",
+        "training_negative_sampling": "PENDING until loss_type and sampler are replayed from the exact config stack.",
+        "seed_schedule": "PENDING",
+        "checkpoint_selection": "Paper: early stopping patience 10, indicator NDCG@10; exact checkpoint receipt PENDING.",
+        "reported_runs": "PENDING",
+        "sources": [
+          {"url": "https://github.com/RUCAIBox/UniSRec/blob/05aa5cba2809112c32808f70d16abc61c05c6538/README.md", "locator": "Quick Start > Run baseline SASRec", "verification_status": "VERIFIED_PRIMARY"},
+          {"url": "https://arxiv.org/html/2206.05941", "locator": "Sections 3.1.2-3.1.4", "verification_status": "VERIFIED_PRIMARY"}
+        ]
+      },
+      "metric_protocol": {
+        "metrics": ["Recall@10", "NDCG@10", "Recall@50", "NDCG@50"],
+        "formula_locator": "metric_protocol_matrix.md row E3-SASREC-SCIENTIFIC-UNISREC-FRAMEWORK-001",
+        "averaging_unit": "average across all test users",
+        "eligible_user_rule": "users surviving preprocessing with held-out final item",
+        "relevance": "single held-out final item",
+        "tie_handling": "PENDING",
+        "candidate_evaluation": "full catalog",
+        "evaluation_negative_count": 0,
+        "evaluation_sampler": "none"
+      },
+      "reported_targets": [
+        {"metric": "Recall@10", "center": 0.1080, "dispersion": null, "runs": null, "tolerance": 0.0054},
+        {"metric": "NDCG@10", "center": 0.0553, "dispersion": null, "runs": null, "tolerance": 0.005},
+        {"metric": "Recall@50", "center": 0.2042, "dispersion": null, "runs": null, "tolerance": 0.01021},
+        {"metric": "NDCG@50", "center": 0.0760, "dispersion": null, "runs": null, "tolerance": 0.005}
+      ],
+      "reported_result_source": {"url": "https://arxiv.org/html/2206.05941", "locator": "Table 3, Scientific, SASRec", "verification_status": "VERIFIED_PRIMARY"},
+      "public_artifact_sufficiency": "PARTIAL_FRAMEWORK_COMMAND_PUBLIC_EXACT_CONFIG_STACK_DATA_HASH_SEEDS_PENDING",
+      "acceptance_rule_id": "AR-NUMERIC-ALL-REQUIRED-AFTER-IDENTITY-GATE",
+      "current_verdict": "PENDING",
+      "blockers": ["processed archive hash", "exact objective/sampler config", "seed/run count", "checkpoint receipt"],
+      "provenance_warning": "This is framework-authoritative for the UniSRec experiment, not author-official SASRec."
+    },
+    {
+      "pair_id": "E3-BTBR-TAFENG-JOINT-001",
+      "model_family": "BTBR/Mask-Swap",
+      "gate_family": "Gate2",
+      "provenance_class": "AUTHOR_OFFICIAL",
+      "repository": {
+        "url": "https://github.com/liming-7/Mask-Swap-NNBR",
+        "revision": "8e0b796a9910888d6a8142f2d39dc7cbe87e349c",
+        "revision_locator": "https://github.com/liming-7/Mask-Swap-NNBR/commit/8e0b796a9910888d6a8142f2d39dc7cbe87e349c",
+        "observed_branch": "main",
+        "verification_status": "VERIFIED_CURRENT_WEB_STATE",
+        "license": {"value": "PENDING", "url": "https://github.com/liming-7/Mask-Swap-NNBR/tree/8e0b796a9910888d6a8142f2d39dc7cbe87e349c", "locator": "repository root; no license field asserted", "verification_status": "PENDING"}
+      },
+      "paper": {"url": "https://arxiv.org/pdf/2308.01308", "locator": "Sections 4.2, 5.2 and 5.4; Table 5", "verification_status": "VERIFIED_PRIMARY"},
+      "dataset": {
+        "name": "TaFeng grocery, processed for next-novel-basket recommendation",
+        "revision": "PENDING; paper links a Kaggle page without archive hash/revision",
+        "config": "paper joint item-select pretrain then basket-all fine-tune; five user-split repetitions",
+        "preprocessing": "Users with basket-sequence length 3-50; remove least-frequent items (threshold not stated); 11,997 items and 13,858 users after preprocessing.",
+        "split": "Across users: 80% train, 20% test; 10% of training users validation; repeat splitting/experiments five times.",
+        "sources": [{"url": "https://arxiv.org/pdf/2308.01308", "locator": "Section 5.2 and Table 3, page 9", "verification_status": "VERIFIED_PRIMARY"}]
+      },
+      "pipeline": {
+        "entrypoint_command": "PENDING; the README publishes a single item-select example, not the Table 5 joint pretrain-finetune recipe.",
+        "config": "Paper: 2 self-attention layers, 8 heads, Adam lr 0.001, TaFeng batch 128, embedding tuned in {16,32,64,128}; joint pretrain-finetune strategy.",
+        "objective": "Mean negative log-likelihood of masked items; item-select pretraining followed by basket-all fine-tuning.",
+        "training_negative_sampling": "No sampled-negative objective is stated; probability is computed over the item scoring space for masked items.",
+        "seed_schedule": "Five repeated random splits/runs; seed identities PENDING",
+        "checkpoint_selection": "Validation-selected best performance is implied by tuning; exact checkpoint rule PENDING",
+        "reported_runs": 5,
+        "sources": [
+          {"url": "https://arxiv.org/pdf/2308.01308", "locator": "Equation 4; Section 5.2; Table 5", "verification_status": "VERIFIED_PRIMARY"},
+          {"url": "https://github.com/liming-7/Mask-Swap-NNBR/blob/8e0b796a9910888d6a8142f2d39dc7cbe87e349c/README.md", "locator": "Wandb; Method 1; Method 2", "verification_status": "VERIFIED_PRIMARY"}
+        ]
+      },
+      "metric_protocol": {
+        "metrics": ["Recall@10", "nDCG@10", "Recall@20", "nDCG@20"],
+        "formula_locator": "metric_protocol_matrix.md row E3-BTBR-TAFENG-JOINT-001",
+        "averaging_unit": "macro over eligible users, then average across five splits/runs",
+        "eligible_user_rule": "users who will purchase at least one novel item in the next basket",
+        "relevance": "items in next basket not bought previously by that user",
+        "tie_handling": "PENDING",
+        "candidate_evaluation": "full per-user novel-item catalog; all repeat items removed before ranking",
+        "evaluation_negative_count": 0,
+        "evaluation_sampler": "none"
+      },
+      "reported_targets": [
+        {"metric": "Recall@10", "center": 0.1057, "dispersion": null, "runs": 5, "tolerance": 0.005285},
+        {"metric": "nDCG@10", "center": 0.0870, "dispersion": null, "runs": 5, "tolerance": 0.005},
+        {"metric": "Recall@20", "center": 0.1353, "dispersion": null, "runs": 5, "tolerance": 0.006765},
+        {"metric": "nDCG@20", "center": 0.0973, "dispersion": null, "runs": 5, "tolerance": 0.005}
+      ],
+      "reported_result_source": {"url": "https://arxiv.org/pdf/2308.01308", "locator": "Table 5, page 13, TaFeng, Joint Pretrain-Finetune", "verification_status": "VERIFIED_PRIMARY"},
+      "public_artifact_sufficiency": "INSUFFICIENT_EXACT_JOINT_COMMAND_DATA_REVISION_SEEDS_AND_PUBLIC_RESULT_ARTIFACT_PENDING",
+      "acceptance_rule_id": "AR-PENDING-UNTIL-EXACT-COMMAND",
+      "current_verdict": "PENDING",
+      "blockers": ["exact joint command", "dataset archive revision/hash", "seed identities", "checkpoint rule", "public W&B result artifact"],
+      "explicit_mismatch": "README Method 1 is item-select, batch_size=64, foldk=0. The paper's TaFeng setup states batch_size=128 and Table 5 joint pretrain-finetune averages five splits. The README command is rejected for all Table 5 centers."
+    },
+    {
+      "pair_id": "E3-ALPHAREC-MOVIES-TV-001",
+      "model_family": "AlphaRec",
+      "gate_family": "Gate2",
+      "provenance_class": "AUTHOR_OFFICIAL",
+      "repository": {
+        "url": "https://github.com/LehengTHU/AlphaRec",
+        "revision": "4b6c6cf378f292c31dd75b09a8075e8344561415",
+        "revision_locator": "https://github.com/LehengTHU/AlphaRec/commit/4b6c6cf378f292c31dd75b09a8075e8344561415",
+        "observed_branch": "master",
+        "verification_status": "VERIFIED_CURRENT_WEB_STATE",
+        "license": {"value": "PENDING", "url": "https://github.com/LehengTHU/AlphaRec/tree/4b6c6cf378f292c31dd75b09a8075e8344561415", "locator": "repository root; no license field asserted", "verification_status": "PENDING"}
+      },
+      "paper": {"url": "https://proceedings.iclr.cc/paper_files/paper/2025/file/e4bab1843c8d5a69f5abfd0824593493-Paper-Conference.pdf", "locator": "Sections 4.1-4.2; Table 3; Appendix C.1 and E", "verification_status": "VERIFIED_PRIMARY"},
+      "dataset": {
+        "name": "Amazon Movies & TV (repository label amazon_movie)",
+        "revision": "Unversioned anonymous Google Drive artifact; exact archive hash PENDING",
+        "config": "amazon_movie; text-embeddings-3-large item-title representations; tau 0.15",
+        "preprocessing": "Remove users with fewer than 20 interactions; user histories split 4:3:3; remove validation/test items absent from train; item title only.",
+        "split": "per-user history train/validation/test = 4:3:3",
+        "sources": [
+          {"url": "https://proceedings.iclr.cc/paper_files/paper/2025/file/e4bab1843c8d5a69f5abfd0824593493-Paper-Conference.pdf", "locator": "Appendix C.1, pages 19-20", "verification_status": "VERIFIED_PRIMARY"},
+          {"url": "https://github.com/LehengTHU/AlphaRec/blob/4b6c6cf378f292c31dd75b09a8075e8344561415/README.md", "locator": "Dataset downloading; Commands > Movies & TV", "verification_status": "VERIFIED_PRIMARY"}
+        ]
+      },
+      "pipeline": {
+        "entrypoint_command": "nohup python main.py --rs_type General --clear_checkpoints --saveID tau_0.15_v3_mlp_ --dataset amazon_movie --model_name AlphaRec --n_layers 2 --patience 20 --cuda 1 --no_wandb --train_norm --pred_norm --neg_sample 256 --lm_model v3 --model_version mlp --tau 0.15 --infonce 1 &>logs/amazon_movie_tau_0.15_v3_mlp__2.log &",
+        "config": "2-layer graph propagation; 2-layer MLP 3072->1536->64; text-embeddings-3-large; tau 0.15; Adam; 256 negatives.",
+        "objective": "InfoNCE with cosine similarity over observed user-item positives and sampled unadopted items",
+        "training_negative_sampling": "256 negative items randomly sampled from items the user did not adopt",
+        "seed_schedule": "PENDING",
+        "checkpoint_selection": "Early stop when validation Recall@20 does not increase for 20 successive evaluations",
+        "reported_runs": "PENDING; paper reports significance but no run count/dispersion for Table 3",
+        "sources": [
+          {"url": "https://github.com/LehengTHU/AlphaRec/blob/4b6c6cf378f292c31dd75b09a8075e8344561415/README.md", "locator": "Commands for running > Movies & TV", "verification_status": "VERIFIED_PRIMARY"},
+          {"url": "https://proceedings.iclr.cc/paper_files/paper/2025/file/e4bab1843c8d5a69f5abfd0824593493-Paper-Conference.pdf", "locator": "Equation 4; Appendix E, pages 25-27", "verification_status": "VERIFIED_PRIMARY"}
+        ]
+      },
+      "metric_protocol": {
+        "metrics": ["Recall@20", "NDCG@20", "HR@20"],
+        "formula_locator": "metric_protocol_matrix.md row E3-ALPHAREC-MOVIES-TV-001",
+        "averaging_unit": "PENDING; table reports dataset-level metrics but formula/aggregation is not stated",
+        "eligible_user_rule": "users surviving >=20 interaction filter",
+        "relevance": "held-out implicit positive interactions in the 30% test portion",
+        "tie_handling": "PENDING",
+        "candidate_evaluation": "all-ranking: all items except positive training items",
+        "evaluation_negative_count": 0,
+        "evaluation_sampler": "none"
+      },
+      "reported_targets": [
+        {"metric": "Recall@20", "center": 0.1221, "dispersion": null, "runs": null, "tolerance": 0.006105},
+        {"metric": "NDCG@20", "center": 0.1144, "dispersion": null, "runs": null, "tolerance": 0.00572},
+        {"metric": "HR@20", "center": 0.5587, "dispersion": null, "runs": null, "tolerance": 0.027935}
+      ],
+      "reported_result_source": {"url": "https://proceedings.iclr.cc/paper_files/paper/2025/file/e4bab1843c8d5a69f5abfd0824593493-Paper-Conference.pdf", "locator": "Table 3, page 7, Movies & TV, AlphaRec", "verification_status": "VERIFIED_PRIMARY"},
+      "public_artifact_sufficiency": "PARTIAL_COMMAND_PUBLIC_DATA_AND_EMBEDDING_REVISION_SEEDS_METRIC_FORMULAS_PENDING",
+      "acceptance_rule_id": "AR-NUMERIC-ALL-REQUIRED-AFTER-IDENTITY-GATE",
+      "current_verdict": "PENDING",
+      "blockers": ["dataset and language-embedding artifact hashes", "seed/run count", "metric formula/aggregation", "tie policy"]
+    }
+  ],
+  "family_coverage_without_acceptable_center": [
+    {
+      "family": "Random",
+      "gate_family": "Gate0",
+      "status": "INCOMPARABLE",
+      "reason": "Project sanity condition; no external source-bound center is required or accepted."
+    },
+    {
+      "family": "MostPop",
+      "gate_family": "Gate0",
+      "status": "INCOMPARABLE",
+      "reason": "Project sanity condition; dataset-specific values cannot be transported across protocols."
+    },
+    {
+      "family": "ItemKNN/ItemCF",
+      "gate_family": "Gate0",
+      "status": "PENDING",
+      "reason": "No chosen official repository-dataset-result triple is locked."
+    },
+    {
+      "family": "Apriori",
+      "gate_family": "Gate0",
+      "status": "PENDING",
+      "reason": "No chosen official repository-dataset-result triple is locked."
+    },
+    {
+      "family": "BPR-MF via RecBole",
+      "gate_family": "Gate1",
+      "status": "PENDING",
+      "reason": "RecBole is framework-authoritative, not author-official BPR. The official quick-start has no locked metric center/config result artifact for an acceptance row.",
+      "source": {"url": "https://github.com/RUCAIBox/RecBole", "locator": "Quick-Start; Time and Memory Costs", "verification_status": "VERIFIED_PRIMARY"}
+    },
+    {
+      "family": "LightGCN via RecBole",
+      "gate_family": "Gate1",
+      "status": "PENDING",
+      "reason": "The author-official PyTorch row above must not be combined with RecBole commands/configuration.",
+      "source": {"url": "https://github.com/RUCAIBox/RecBole/blob/master/recbole/model/general_recommender/lightgcn.py", "locator": "module reference and implementation", "verification_status": "VERIFIED_PRIMARY"}
+    },
+    {
+      "family": "BERT4Rec via RecBole",
+      "gate_family": "Gate1",
+      "status": "PENDING",
+      "reason": "Official framework documentation gives a running example but no source-bound benchmark center for the same dataset/config.",
+      "source": {"url": "https://recbole.io/docs/user_guide/model/sequential/bert4rec.html", "locator": "A Running Example", "verification_status": "VERIFIED_PRIMARY"}
+    },
+    {
+      "family": "Independent Deep",
+      "gate_family": "Gate3",
+      "status": "INCOMPARABLE",
+      "reason": "Project condition, not an external official reproduction row."
+    },
+    {
+      "family": "Current Hybrid",
+      "gate_family": "Gate3",
+      "status": "INCOMPARABLE",
+      "reason": "Project condition, not an external official reproduction row; pre-existing values are INVALID_FOR_PAPER."
+    }
+  ],
+  "rejected_bindings": [
+    {
+      "binding_id": "RB-001",
+      "status": "REJECTED",
+      "claim": "Use LightGCL current README command with original paper Table 1 values.",
+      "reason": "Paper Section 4.2 and Appendix E explicitly state the current code uses a new direct interaction-pair sampler; original Table 1 used user-first fixed sampling.",
+      "source": {"url": "https://arxiv.org/html/2302.08191", "locator": "Section 4.2 note; Appendix E lines 448-470", "verification_status": "VERIFIED_PRIMARY"}
+    },
+    {
+      "binding_id": "RB-002",
+      "status": "REJECTED",
+      "claim": "Use SELFRec current layer=3 leaderboard command/config with XSimGCL paper Table 6 center 0.0733/0.0606.",
+      "reason": "The current repository leaderboard reports 0.0723/0.0604 for layer=3; paper Table 6 uses best centers and Table 4 locates 0.0733/0.0606 at 4 layers.",
+      "source": {"url": "https://arxiv.org/pdf/2209.02544", "locator": "Tables 4-6, pages 9-10", "verification_status": "VERIFIED_PRIMARY"}
+    },
+    {
+      "binding_id": "RB-003",
+      "status": "REJECTED",
+      "claim": "Use Mask-Swap README Method 1 command for BTBR Table 5 joint result or item-select paper center.",
+      "reason": "README uses batch 64/fold 0 and item-select; paper states TaFeng batch 128, five repeated splits and a distinct joint pretrain-finetune column.",
+      "sources": [
+        {"url": "https://github.com/liming-7/Mask-Swap-NNBR/blob/8e0b796a9910888d6a8142f2d39dc7cbe87e349c/README.md", "locator": "Method 1", "verification_status": "VERIFIED_PRIMARY"},
+        {"url": "https://arxiv.org/pdf/2308.01308", "locator": "Section 5.2 and Table 5", "verification_status": "VERIFIED_PRIMARY"}
+      ]
+    },
+    {
+      "binding_id": "RB-004",
+      "status": "REJECTED",
+      "claim": "Use LightGCN paper table center with the PyTorch README command.",
+      "reason": "The registry uses only the PyTorch repository README's own center; paper and repository centers/configurations are not merged.",
+      "source": {"url": "https://github.com/gusye1234/LightGCN-PyTorch/blob/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/README.md", "locator": "Results", "verification_status": "VERIFIED_PRIMARY"}
+    },
+    {
+      "binding_id": "RB-005",
+      "status": "REJECTED",
+      "claim": "Treat any official-dataset center as evidence that v5 is superior or inferior.",
+      "reason": "Official-protocol reproduction validates implementation only; raw metrics across datasets/pipelines are prohibited from direct comparison.",
+      "source": {"url": "local-authority:E:/UIT/cv/backend/research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/stage1e_rebaseline_v2_contract.md", "locator": "Sections 6-7, official/harmonized track separation and cross-dataset rule", "verification_status": "VERIFIED_LOCAL_SHA256"}
+    }
+  ],
+  "counts": {
+    "verified_count": 0,
+    "pending_count": 8,
+    "rejected_count": 5,
+    "accepted_result_rows": 0,
+    "counting_rule": "verified_count counts E4/E5-validated executable acceptance rows (none); pending_count counts candidate pair rows; rejected_count counts forbidden command/center bindings."
+  }
+}

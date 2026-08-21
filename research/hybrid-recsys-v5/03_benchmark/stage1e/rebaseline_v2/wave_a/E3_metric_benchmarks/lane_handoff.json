@@ -1,0 +1,82 @@
+{
+  "schema_version": "stage1e_rebaseline_v2_lane_handoff.v1",
+  "lane_id": "E3_metric_benchmarks",
+  "material_passport": {
+    "model": "gpt-5.6-sol",
+    "reasoning": "xhigh",
+    "skill": "ars-codex:academic-research-suite",
+    "skill_version": "0.1.26",
+    "workflow": "ars/experiment-agent/WORKFLOW.md"
+  },
+  "model": "gpt-5.6-sol",
+  "reasoning": "xhigh",
+  "status": "COMPLETE_WITH_PENDING_EVIDENCE",
+  "verdict": "PENDING",
+  "verification_status": "UNVERIFIED_UNTIL_E4_E5",
+  "access_date": "2026-08-22",
+  "authoritative_input_root": "E:/UIT/cv/backend",
+  "input_manifest_sha256": "107299c026434366ed6ddb18f4ee6e25fd790d9799fd81c1c1e87871ed60744d",
+  "input_verification": {
+    "manifest_hash_verified": true,
+    "listed_file_hashes_verified": 9,
+    "listed_file_hash_failures": 0,
+    "verification_root": "E:/UIT/cv/backend",
+    "superseded_lane_outputs_accessed": false
+  },
+  "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_a/E3_metric_benchmarks",
+  "outputs": [
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_a/E3_metric_benchmarks/official_benchmark_registry.json",
+      "sha256": "80ada6ec79b2292999009ef07c220f88bbd10f943b8fa52e8232e03e90bc7011",
+      "verification_status": "UNVERIFIED_UNTIL_E4_E5"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_a/E3_metric_benchmarks/metric_protocol_matrix.md",
+      "sha256": "ecbc53aa54f767044313c9d8aece4b42932192277a76e8942aa52ea74867b9cd",
+      "verification_status": "UNVERIFIED_UNTIL_E4_E5"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_a/E3_metric_benchmarks/reported_result_locator_map.md",
+      "sha256": "395e61dac87abb8e4e68725c9b356e13a80b8089f85393de922e3f8108784068",
+      "verification_status": "UNVERIFIED_UNTIL_E4_E5"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_a/E3_metric_benchmarks/reproduction_acceptance_rules.md",
+      "sha256": "0612a5f63fd949fc8f8134e238b6fcfe59badc1528c512c09e1e7de6af8296d5",
+      "verification_status": "UNVERIFIED_UNTIL_E4_E5"
+    }
+  ],
+  "handoff_artifact": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_a/E3_metric_benchmarks/lane_handoff.json",
+    "sha256_policy": "The byte-level SHA-256 of this self-referential handoff is reported out-of-band with the commit; it is not embedded in this file."
+  },
+  "count_semantics": "Counts classify candidate reproduction rows at this E3 lock. VERIFIED means E4/E5-validated and runnable without a material evidence gap; PENDING means a plausible source-bound pair remains blocked; REJECTED means an explicitly prohibited cross-implementation or protocol binding.",
+  "verified_count": 0,
+  "pending_count": 8,
+  "rejected_count": 5,
+  "candidate_pair_count": 8,
+  "blockers": [
+    "No candidate row is E4/E5-validated; all outputs remain UNVERIFIED.",
+    "One or more pairs lack an immutable dataset artifact hash or a complete public raw-to-split construction receipt.",
+    "Seed schedules, checkpoint-selection receipts, run-level values, or dispersion are absent for one or more reported centers.",
+    "LightGCL's current official implementation uses the Appendix E interaction-pair sampler; the paper's earlier Table 1 sampler and centers cannot be bound to the current command.",
+    "BTBR's public item-select command uses batch_size=64 and does not reproduce the joint pretrain-finetune Table 5 row documented with batch size 128.",
+    "Framework commands are not interchangeable with author-official result centers; prohibited joins remain rejected.",
+    "Metric tie handling is unstated for most pairs and must not be inferred as an official convention."
+  ],
+  "scope_guards": {
+    "direct_primary_sources_only": true,
+    "repository_clone_performed": false,
+    "dataset_download_performed": false,
+    "package_installation_performed": false,
+    "training_or_benchmark_execution_performed": false,
+    "external_data_upload_performed": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER",
+    "cross_dataset_raw_metric_comparison_allowed": false,
+    "official_dataset_values_may_support_v5_superiority": false
+  },
+  "TEST_SET_OPENED": "NO",
+  "RESULT_STATUS": "NOT_RUN",
+  "ACCEPTED_RESULT_ROWS": 0,
+  "next_gate": "E4_REPO_DATASET_METRIC_MATCHING_AND_ADAPTATION_LOCK_AFTER_E4_E5_VALIDATE_E3"
+}
