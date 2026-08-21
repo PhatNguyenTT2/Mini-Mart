@@ -1,0 +1,278 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r1b-handoff-1.0",
+  "lane_id": "E4_R1B_command_controls",
+  "material_passport": {
+    "origin_skill": "ars-codex:academic-research-suite",
+    "origin_mode": "experiment-agent/plan/remediation-only/command-controls",
+    "origin_date": "2026-08-22T03:22:58.7117629+07:00",
+    "verification_status": "UNVERIFIED",
+    "version_label": "stage1e_rebaseline_v2_wave_d_E4_R1B_v1",
+    "upstream_dependencies": [
+      "stage1e_rebaseline_v2_E4_R1_parallel_remediation_contract",
+      "stage1e_rebaseline_v2_E4_R1_frozen_input_manifest",
+      "stage1e_rebaseline_v2_wave_c_E5_findings_F003_F004"
+    ],
+    "repro_lock": {
+      "schema_version": "1.0",
+      "stochasticity_declaration": "LLM outputs are not byte-reproducible. This lockfile documents configuration, not a deterministic replay guarantee.",
+      "ars_version": "3.21.0",
+      "model": {
+        "family": "openai",
+        "id": "gpt-5.6-sol",
+        "weight_stable": false
+      },
+      "prompts": {
+        "hash_timing": "skill-load",
+        "skill_md_hash": "sha256:9c2cb6e3b5aad7fb747f79163b144cfbddffa85d67e2bdcc5a5fa5470252ad00",
+        "agents_bundle_hash": "sha256:54937084589413787fe328ab1561329791cc2ca83222d9bf8283949399cf66de"
+      },
+      "materials": {
+        "list_hash": "sha256:999ed0c9d0be25c655a13922345b75fb19acf3a4f572c69a67feff3d64c7c7f9",
+        "count": 17
+      },
+      "external_protocols": {
+        "s2_api_protocol_version": "NOT_USED",
+        "s2_snapshot_available": false
+      },
+      "cross_model": {
+        "enabled": false,
+        "secondary_model_id": null
+      }
+    },
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-22T03:22:58.7117629+07:00",
+      "declared_by": "scholar"
+    }
+  },
+  "skill_package_version": "0.1.26",
+  "workflow": "academic-research-suite/experiment-agent",
+  "model": "gpt-5.6-sol",
+  "reasoning": "xhigh",
+  "status": "COMPLETE_FAIL_CLOSED",
+  "verification_status": "UNVERIFIED",
+  "access_date": "2026-08-22",
+  "frozen_manifest_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r1_frozen_input_manifest.json",
+  "frozen_manifest_canonical_lf_sha256": "d0a5db377c36f7109b4b56089ac024bb8ddcd4b5badc5aeb464969aa2e13d817",
+  "frozen_contract_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r1_parallel_remediation_contract.md",
+  "frozen_contract_canonical_lf_sha256": "b51c41a931ef88a1fcc356394600b3c2fcdafad68b5599477c9a894040d82538",
+  "input_verification": {
+    "hash_policy": "Strict UTF-8 decode, replace CRLF with LF, then SHA-256",
+    "manifest_self_hash_verified": true,
+    "listed_inputs_expected": 17,
+    "listed_inputs_present": 17,
+    "listed_inputs_byte_count_matched": 17,
+    "listed_inputs_hash_matched": 17,
+    "listed_inputs_missing": 0,
+    "listed_inputs_mismatched": 0,
+    "json_documents_checked": 11,
+    "json_standard_parser_passed": 11,
+    "json_powershell_convertfrom_json_passed": 11,
+    "duplicate_or_case_colliding_key_failures": 0,
+    "verdict": "PASS"
+  },
+  "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_d/E4_R1B_command_controls",
+  "output_hash_policy": "Canonical-LF SHA-256: strict UTF-8 decode, CRLF normalized to LF, then SHA-256",
+  "outputs": [
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_d/E4_R1B_command_controls/mechanical_control_spec.md",
+      "canonical_lf_bytes": 26307,
+      "canonical_lf_sha256": "6d9d00114fe1da84d8f6df312906ad82da408800523a66cc60423f38585dcdf7",
+      "verification_status": "UNVERIFIED"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_d/E4_R1B_command_controls/replacement_command_packet_draft.json",
+      "canonical_lf_bytes": 28921,
+      "canonical_lf_sha256": "40b8a7e753c896cd19ec38c10764e8b073f158050e7452af3549292b85c5c41b",
+      "verification_status": "UNVERIFIED"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_d/E4_R1B_command_controls/receipt_schema_bundle.json",
+      "canonical_lf_bytes": 36294,
+      "canonical_lf_sha256": "0d462872340130eeeadbf54eb41301c6e6675c2e7006384a85c36960ccf8fb32",
+      "verification_status": "UNVERIFIED"
+    }
+  ],
+  "handoff_artifact": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_d/E4_R1B_command_controls/r1b_handoff.json",
+    "sha256_policy": "The canonical-LF SHA-256 of this self-referential handoff is reported out of band with the commit and is not embedded in this file."
+  },
+  "repro_lock_derivation": {
+    "skill_hash_policy": "Canonical-LF SHA-256 of the complete loaded SKILL.md",
+    "agent_bundle_members_in_canonical_order": [
+      "ars/experiment-agent/agents/code_runner_agent.md"
+    ],
+    "agent_bundle_hash_policy": "Canonical-LF SHA-256 of the loaded code_runner_agent role prompt",
+    "materials_hash_policy": "SHA-256 of UTF-8 compact JSON [{filename,sha256},...] sorted by filename over the 17 frozen manifest input rows",
+    "additional_instruction_hashes": {
+      "experiment_agent_workflow_md": "sha256:c89cb26ec05ed9facf80301df04ec1d892d74b5c7c68d42afbb2511a7c3268ef",
+      "stall_detection_protocol_md": "sha256:a4c044555b35a6085139cda24ff3214198d8e58674322ed655165697b64a926f",
+      "ars_integration_guide_md": "sha256:7e76dbc0b9019305d2906e9f0c9b7a24a90b9f24a357091d7816b1a5748c1303",
+      "handoff_schemas_md": "sha256:c91b127d87d2370aee44f99395c5ae5e538729bead802d67bc6116fef0f841d3",
+      "artifact_reproducibility_pattern_md": "sha256:661d2331dbac1739621021cf6f1b2a9f03420fe7948387f164f38bd854fe9be3"
+    }
+  },
+  "command_audit_coverage": {
+    "required": 10,
+    "audited": 10,
+    "contradicted": 5,
+    "partial": 3,
+    "confirmed_fail_closed": 2,
+    "credential_literals_found": 0,
+    "all_user_confirmation_required": true,
+    "all_confirmed_false": true,
+    "all_execution_authorized_false": true,
+    "all_no_auto_retry": true,
+    "existing_command_ids": [
+      "E4-LGCN-000-PREFLIGHT",
+      "E4-LGCN-010-CLONE",
+      "E4-LGCN-020-CHECKOUT",
+      "E4-LGCN-030-VERIFY-SOURCE",
+      "E4-LGCN-040-CREATE-ENV",
+      "E4-LGCN-050-INSTALL",
+      "E4-LGCN-060-PREPROCESS-GATE",
+      "E4-LGCN-070-TRAIN-AND-INTEGRATED-EVALUATE",
+      "E4-LGCN-080-STANDALONE-EVALUATE",
+      "E4-LGCN-090-FINALIZE-RECEIPTS"
+    ]
+  },
+  "replacement_draft_coverage": {
+    "ordered_command_records_required": 10,
+    "ordered_command_records_present": 10,
+    "command_strings_null": 10,
+    "command_strings_nonnull": 0,
+    "all_commands_non_executable": true,
+    "all_commands_user_confirmation_required": true,
+    "all_commands_confirmed_false": true,
+    "all_commands_execution_authorized_false": true,
+    "all_commands_no_auto_retry": true,
+    "receipt_schemas_required": 7,
+    "receipt_schemas_present": 7,
+    "command_receipt_mappings_required": 10,
+    "command_receipt_mappings_present": 10,
+    "control_domains_required": [
+      "path_namespace",
+      "gpu_resource",
+      "source_state",
+      "dependency_environment",
+      "dataset_lineage",
+      "preprocessing",
+      "run_monitoring",
+      "standalone_evaluation",
+      "receipt_final_manifest",
+      "no_auto_retry_confirmation",
+      "phase_ownership"
+    ],
+    "control_domains_covered": [
+      "path_namespace",
+      "gpu_resource",
+      "source_state",
+      "dependency_environment",
+      "dataset_lineage",
+      "preprocessing",
+      "run_monitoring",
+      "standalone_evaluation",
+      "receipt_final_manifest",
+      "no_auto_retry_confirmation",
+      "phase_ownership"
+    ]
+  },
+  "finding_dispositions": [
+    {
+      "finding_id": "E5-F003",
+      "severity": "MAJOR",
+      "disposition": "REMEDIATED_AT_DESIGN_SCOPE_BLOCKED_PENDING_MATERIALIZATION",
+      "evidence": [
+        "mechanical_control_spec.md#audit-of-all-ten-existing-command-records",
+        "mechanical_control_spec.md#enforcement-architecture",
+        "replacement_command_packet_draft.json#commands",
+        "receipt_schema_bundle.json#schemas"
+      ],
+      "residual_blocker": "No controller/wrapper implementation or hash, source/data/environment/run/evaluator lock, candidate-specific inventory, or executable command string exists. A new central packet and independent audit are still required."
+    },
+    {
+      "finding_id": "E5-F004",
+      "severity": "MAJOR",
+      "disposition": "REMEDIATED_AT_OWNERSHIP_CONTRACT_SCOPE",
+      "evidence": [
+        "mechanical_control_spec.md#phase-ownership-and-gate-sequence",
+        "replacement_command_packet_draft.json#phase_ownership"
+      ],
+      "residual_blocker": "E4-R1C must synthesize and freeze the central packet. Future E5-R1 remains audit-only and cannot repair upstream evidence or issue confirmation/authorization."
+    }
+  ],
+  "blocking_prerequisites": {
+    "required": 15,
+    "resolved": 0,
+    "unresolved": 15,
+    "unknown_values_remain_null": true,
+    "ids": [
+      "P01_CANDIDATE_SELECTION",
+      "P02_CONTROLLER_IDENTITY",
+      "P03_RESOURCE_WRAPPER_IDENTITY",
+      "P04_SOURCE_IDENTITY",
+      "P05_SOURCE_RIGHTS_SUBMODULE_TREE_LOCK",
+      "P06_INTERPRETER_ENVIRONMENT_LOCK",
+      "P07_DEPENDENCY_WHEEL_LOCK",
+      "P08_DATASET_PROVIDER_RELEASE_RIGHTS_RAW_HASHES",
+      "P09_PREPROCESSING_LINEAGE_ARGV_SCHEMA_COUNTS",
+      "P10_MODEL_CONFIG_SEED_CHECKPOINT_SAMPLER_CANDIDATE_TIE",
+      "P11_EVALUATOR_ADAPTER_METRIC_IDENTITY",
+      "P12_EXACT_LOG_OUTPUT_INVENTORIES",
+      "P13_NEW_FROZEN_CENTRAL_PACKET",
+      "P14_FUTURE_INDEPENDENT_E5_R1_PASS",
+      "P15_EXPLICIT_USER_CONFIRMATION_AND_AUTHORITY_RECEIPT"
+    ]
+  },
+  "phase_ownership": {
+    "E4_R1A": "Source and candidate evidence proposal only.",
+    "E4_R1B": "Mechanical controls, non-executable command draft, and receipt schema proposal only.",
+    "E4_R1C": "Central replacement packet synthesis and freeze.",
+    "FUTURE_E5_R1": "Independent read-only audit only; no remediation, argv, receipt, packet, confirmation, or authorization production.",
+    "USER": "Explicit confirmation only after a future E5-R1 pass of the exact frozen packet.",
+    "FUTURE_EXECUTOR": "Exact confirmed and separately authorized packet only; no automatic retry."
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER",
+    "empirical_claims_made": false,
+    "execution_authorized": false,
+    "confirmed": false
+  },
+  "authorization": {
+    "authorized": false,
+    "confirmation_recorded": false,
+    "current_packet_executable": false,
+    "central_replacement_packet_created": false,
+    "new_e5_r1_audit_required": true,
+    "user_confirmation_required_after_future_e5_r1_pass": true
+  },
+  "scope_guards": {
+    "web_access_performed": false,
+    "repository_clone_performed": false,
+    "repository_fetch_performed": false,
+    "dataset_download_performed": false,
+    "authenticated_dataset_access_performed": false,
+    "package_installation_performed": false,
+    "environment_creation_performed": false,
+    "source_model_or_data_modification_performed": false,
+    "training_evaluation_smoke_benchmark_performed": false,
+    "test_access_performed": false,
+    "e4_command_execution_performed": false,
+    "e1_e5_edit_performed": false,
+    "control_input_master_spec_edit_performed": false,
+    "application_or_source_code_edit_performed": false,
+    "other_remediation_lane_edit_performed": false,
+    "central_replacement_packet_created": false,
+    "cross_model_external_upload_performed": false
+  },
+  "git_commit": {
+    "sha": null,
+    "policy": "The commit containing only this lane write-set is created after the handoff bytes are frozen and is reported out of band."
+  },
+  "verdict": "R1B_COMPLETE_WITH_BLOCKING_PREREQUISITES",
+  "fail_closed": true,
+  "next_gate": "Central intake must validate both lane handoffs. Only E4-R1C may then synthesize and freeze a new E4 packet, which requires a fresh independent E5-R1 audit before exact-command user confirmation can be requested."
+}
