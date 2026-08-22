@@ -1,0 +1,248 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r5-m1-v5-adapter-feasibility-1.0",
+  "created_at": "2026-08-23",
+  "stage_id": "R5-M1B",
+  "candidate_id": "R5-CAND-RECBOLE-GNN-LIGHTGCN-ML1M-001",
+  "source_full_revision": "632ef888589944c190ad8f449b49ca559618d4df",
+  "v5_spec_binding": {
+    "path": "backend/docs/chatbot/seed-product/benchmark-spec-v5.json",
+    "canonical_lf_bytes": 2629,
+    "canonical_lf_sha256": "acef1c62cc2a9a3ae04fdf2f4b2fb24b3eb8d2634f15e085fbe1878be8dc166d"
+  },
+  "feasibility_verdict": "BOUNDED_REPRESENTATION_ADAPTER_PLAUSIBLE_NOT_READY",
+  "method_preserving_adapter_plausible": true,
+  "adapter_ready": false,
+  "evaluator_ready": false,
+  "execution_authorized": false,
+  "reasoning": "LightGCN has a source-visible pairwise BPR objective, train-graph constructor and all-item dot-product score surface. A future adapter can preserve those scores while mapping IDs and serializing immutable artifacts. Readiness fails because no exact environment, v5 dataset snapshot, input serializer, ID map, score-export artifact, standalone evaluator, parity suite or receipt exists, and the provided orchestration opens TEST automatically.",
+  "source_method_contract": {
+    "model_class": {
+      "path": "recbole_gnn/model/general_recommender/lightgcn.py",
+      "locator": "class LightGCN, lines 26-133",
+      "sha256_raw_bytes": "e07285def5c71ebf09f9fc742e7c616f0923f4e8e69d9a66ca118382870c214d"
+    },
+    "input_type": "PAIRWISE",
+    "objective": "BPRLoss on user-positive versus user-negative dot-product scores plus reg_weight times EmbLoss over ego embeddings",
+    "graph": "symmetric normalized user-item interaction graph without self loops, built from the dataset supplied to model construction",
+    "layer_aggregation": "mean of ego embedding and every propagated layer embedding",
+    "score_direction": "higher dot product is better",
+    "full_score_surface": "flattened user-by-all-internal-items score matrix from full_sort_predict",
+    "source_local_defaults": {
+      "embedding_size": 64,
+      "n_layers": 2,
+      "reg_weight": 0.00001,
+      "require_pow": true
+    },
+    "source_leaderboard_overrides": {
+      "learning_rate": 0.002,
+      "n_layers": 3,
+      "reg_weight": 0.0001
+    },
+    "unresolved_method_inputs": [
+      "negative-sampling configuration and seed",
+      "optimizer and all inherited RecBole training defaults",
+      "exact sparse versus edge-index execution path",
+      "checkpoint-selection and stopping settings beyond valid_metric=MRR@10",
+      "complete resolved configuration hash"
+    ]
+  },
+  "v5_field_mapping": [
+    {
+      "mapping_id": "R5M1B-A01",
+      "v5_surface": "training user identity",
+      "v5_requirement": "deterministic raw user identity with user 0 excluded from evaluation",
+      "source_surface": "interaction[self.USER_ID] indexes user embeddings",
+      "source_path": "recbole_gnn/model/general_recommender/lightgcn.py",
+      "locator": "calculate_loss lines 83-105 and full_sort_predict lines 123-131",
+      "source_sha256_raw_bytes": "e07285def5c71ebf09f9fc742e7c616f0923f4e8e69d9a66ca118382870c214d",
+      "mapping_status": "PLAUSIBLE_REQUIRES_ID_MAP",
+      "required_adapter_behavior": "Hash-bind a total raw_user_id to internal-user-index map; preserve order; explicitly exclude user 0 only in the standalone evaluator.",
+      "parity_requirement": "Round-trip every eligible raw user and prove no collision, unknown or silent drop."
+    },
+    {
+      "mapping_id": "R5M1B-A02",
+      "v5_surface": "catalog item identity",
+      "v5_requirement": "all 5,200 raw_product_id values remain candidates, including cold items, with reserved/internal IDs accounted for",
+      "source_surface": "interaction item IDs index item embeddings and full_sort_predict scores every internal item",
+      "source_path": "recbole_gnn/model/general_recommender/lightgcn.py",
+      "locator": "embedding construction lines 45-50 and full_sort_predict lines 123-133",
+      "source_sha256_raw_bytes": "e07285def5c71ebf09f9fc742e7c616f0923f4e8e69d9a66ca118382870c214d",
+      "mapping_status": "PLAUSIBLE_REQUIRES_ID_MAP_AND_RESERVED_ID_AUDIT",
+      "required_adapter_behavior": "Hash-bind a total raw_product_id to internal-item-index map and an inverse evaluator map; never map missing scores to zero.",
+      "parity_requirement": "Prove exactly 5,200 catalog identities, identify any internal padding/reserved index from frozen RecBole behavior, and prove cold items are retained."
+    },
+    {
+      "mapping_id": "R5M1B-A03",
+      "v5_surface": "training interactions",
+      "v5_requirement": "train-window organic purchases only, serialized without TEST access",
+      "source_surface": "RecBole atomic interaction fields and a GeneralGraphDataset built from train_data.dataset",
+      "source_path": "recbole_gnn/model/abstract_recommender.py",
+      "locator": "GeneralGraphRecommender.__init__, lines 7-20",
+      "source_sha256_raw_bytes": "230b3be29fc0bb59de92bf834ace2f903e57047ee689df8d6f61ea494aabeb79",
+      "mapping_status": "PLAUSIBLE_REQUIRES_FROZEN_PREPROCESSOR",
+      "required_adapter_behavior": "Use a separately hash-bound, lineage-bearing preprocessor to emit only the frozen training interactions in RecBole atomic format; do not reuse the source ratio split.",
+      "parity_requirement": "Reconcile input row count, distinct user-item cells, train-window timestamps and organic-purchase filter to the frozen v5 snapshot receipt."
+    },
+    {
+      "mapping_id": "R5M1B-A04",
+      "v5_surface": "graph construction",
+      "v5_requirement": "graph derives from training interactions only",
+      "source_surface": "get_norm_adj_mat uses dataset.inter_feat to form symmetric normalized user-item edges without self loops",
+      "source_path": "recbole_gnn/data/dataset.py",
+      "locator": "GeneralGraphDataset.get_norm_adj_mat, lines 49-79",
+      "source_sha256_raw_bytes": "076872db87b2c26a28060ee5cd3aaad9586e8a6f1c8a4f7e91697e6c9bbd5916",
+      "mapping_status": "SOURCE_BOUND_REQUIRES_SPLIT_PROOF",
+      "required_adapter_behavior": "Pass only the verified train dataset object to LightGCN and record sparse-mode choice.",
+      "parity_requirement": "Prove graph endpoints equal the frozen training interaction map and contain no validation or TEST-only edge."
+    },
+    {
+      "mapping_id": "R5M1B-A05",
+      "v5_surface": "validation score export",
+      "v5_requirement": "immutable per-user scores over the full catalog before masking and deterministic ranking",
+      "source_surface": "full_sort_predict returns flattened all-item dot-product scores",
+      "source_path": "recbole_gnn/model/general_recommender/lightgcn.py",
+      "locator": "LightGCN.full_sort_predict, lines 123-133",
+      "source_sha256_raw_bytes": "e07285def5c71ebf09f9fc742e7c616f0923f4e8e69d9a66ca118382870c214d",
+      "mapping_status": "PLAUSIBLE_EXPORT_SEAM",
+      "required_adapter_behavior": "Capture scores with explicit user order, item order, shape, dtype, device-to-host conversion policy and raw-byte hashes; do not calibrate, impute or rerank.",
+      "parity_requirement": "Verify score direction, matrix shape, per-user slicing, item order, finite/missing values and byte replay."
+    },
+    {
+      "mapping_id": "R5M1B-A06",
+      "v5_surface": "candidate universe and seen-item masking",
+      "v5_requirement": "score all 5,200 products and mask all history-seen items to negative infinity",
+      "source_surface": "model emits all-item scores; local source does not implement the mask",
+      "source_path": "recbole_gnn/model/general_recommender/lightgcn.py",
+      "locator": "LightGCN.full_sort_predict, lines 123-133",
+      "source_sha256_raw_bytes": "e07285def5c71ebf09f9fc742e7c616f0923f4e8e69d9a66ca118382870c214d",
+      "mapping_status": "STANDALONE_EVALUATOR_REQUIRED",
+      "required_adapter_behavior": "Export unmasked scores; apply v5 full-catalog coverage and history masks only in the standalone v5 evaluator bound to frozen history manifests.",
+      "parity_requirement": "Adversarial fixtures for seen positives, unseen positives, cold items, missing IDs and exact candidate counts."
+    },
+    {
+      "mapping_id": "R5M1B-A07",
+      "v5_surface": "truth and eligible users",
+      "v5_requirement": "novel organic purchases in target split; mean only over users with non-empty novel truth",
+      "source_surface": "no local truth/eligibility implementation; general evaluation delegates to RecBole",
+      "source_path": "recbole_gnn/utils.py",
+      "locator": "data_preparation delegation, lines 99-142",
+      "source_sha256_raw_bytes": "c6b4e2fea15a7cd47341d935280691141dd386e7f99dbc67d0c88db15b50fb60",
+      "mapping_status": "STANDALONE_EVALUATOR_REQUIRED",
+      "required_adapter_behavior": "Construct truth and eligibility solely from frozen v5 split/history manifests; do not inherit MovieLens/RecBole truth semantics.",
+      "parity_requirement": "Verify eligible-user IDs, users without novel truth, truth cardinalities and denominators against hand-checkable fixtures."
+    },
+    {
+      "mapping_id": "R5M1B-A08",
+      "v5_surface": "deterministic ranking ties",
+      "v5_requirement": "score descending, then raw_product_id ascending",
+      "source_surface": "no local sort or tie policy after score generation",
+      "source_path": "recbole_gnn/model/general_recommender/lightgcn.py",
+      "locator": "predict/full_sort_predict, lines 112-133",
+      "source_sha256_raw_bytes": "e07285def5c71ebf09f9fc742e7c616f0923f4e8e69d9a66ca118382870c214d",
+      "mapping_status": "STANDALONE_EVALUATOR_REQUIRED",
+      "required_adapter_behavior": "Preserve raw scores and apply the frozen v5 secondary raw_product_id key only in the standalone evaluator.",
+      "parity_requirement": "Equal-score fixtures spanning seen, unseen and cold items must produce exact raw_product_id order."
+    },
+    {
+      "mapping_id": "R5M1B-A09",
+      "v5_surface": "HR@10, NDCG@10, GAUC and per-user vectors",
+      "v5_requirement": "v5 formulas, eligible-user macro means, exact user AUC tie handling and retained per-user evidence",
+      "source_surface": "source page names top-10 metrics, but evaluator implementation is delegated and no per-user artifact is emitted",
+      "source_path": "results/general/ml-1m.md",
+      "locator": "lines 7-9 and 47-60",
+      "source_sha256_raw_bytes": "5e535d13b084104e824ac45af680103a231d68a3eed3344e69e1664ec72a88e1",
+      "mapping_status": "SOURCE_METRICS_NOT_REUSABLE_FOR_V5",
+      "required_adapter_behavior": "Use a separately implemented and hash-bound v5 evaluator; keep source-integrated metrics only in an official-source reproduction namespace.",
+      "parity_requirement": "Manual formula fixtures at cutoff 10, empty/undefined cases, GAUC average-rank ties, per-user vector and aggregate reconciliation."
+    },
+    {
+      "mapping_id": "R5M1B-A10",
+      "v5_surface": "TEST isolation",
+      "v5_requirement": "no TEST read before independent gate and frozen configuration",
+      "source_surface": "both quick-start run and hyper objective construct and evaluate test_data",
+      "source_path": "recbole_gnn/quick_start.py",
+      "locator": "run_recbole_gnn lines 32-56; objective_function lines 82-95",
+      "source_sha256_raw_bytes": "9059d3366dc3da77c4cc2451b3a686880dcb6884f96007d09cd0c73c76b58a2d",
+      "mapping_status": "CONFLICT_REQUIRES_NEW_ORCHESTRATION_SEAM",
+      "required_adapter_behavior": "Do not call these orchestration functions unchanged; freeze a validation-only path with TEST absent, then a separately authorized one-shot TEST path.",
+      "parity_requirement": "Negative access test proving validation execution cannot resolve, open or evaluate TEST artifacts."
+    }
+  ],
+  "allowed_representation_only_operations": [
+    "serialize frozen train-only user-item interactions into a hash-bound RecBole atomic representation without semantic filtering beyond the preregistered v5 rules",
+    "map raw user and product IDs bijectively to verified internal IDs and back",
+    "export model-produced all-item scores with explicit order, shape, dtype and hashes",
+    "validate schemas, counts, finite/missing values and score direction",
+    "apply v5 masking, eligibility, deterministic tie-breaking and metrics in a separate frozen evaluator",
+    "emit immutable manifests and receipts"
+  ],
+  "prohibited_operations": [
+    "change LightGCN graph propagation, pairwise BPR objective, regularization, negative sampling or scoring function",
+    "use run_hyper.py or objective_function unchanged for v5 tuning",
+    "use run_recbole_gnn unchanged before a TEST gate because it automatically evaluates test_data",
+    "reuse ratio-based 8:1:1 source splits as v5 temporal splits",
+    "treat RecBole metric names or 0.2538 as v5 evaluator evidence",
+    "calibrate, impute, rerank or silently drop users/items",
+    "infer dependency versions, seeds, defaults, evaluator ties or producer receipts",
+    "open project v5 TEST in this source-audit stage"
+  ],
+  "acceptance_gates": [
+    {
+      "gate_id": "A-G01",
+      "gate": "exact dependency/environment lock and source hash binding",
+      "status": "BLOCKED"
+    },
+    {
+      "gate_id": "A-G02",
+      "gate": "MovieLens source-reproduction dataset lineage and complete producer contract",
+      "status": "BLOCKED"
+    },
+    {
+      "gate_id": "A-G03",
+      "gate": "official-source evaluator semantics and preregistered tolerance",
+      "status": "BLOCKED"
+    },
+    {
+      "gate_id": "A-G04",
+      "gate": "v5 snapshot six-field lineage and temporal split manifests",
+      "status": "BLOCKED"
+    },
+    {
+      "gate_id": "A-G05",
+      "gate": "hash-bound input serializer, ID maps and score exporter",
+      "status": "BLOCKED"
+    },
+    {
+      "gate_id": "A-G06",
+      "gate": "standalone v5 evaluator and adversarial parity fixtures",
+      "status": "BLOCKED"
+    },
+    {
+      "gate_id": "A-G07",
+      "gate": "validation-only no-TEST-read proof",
+      "status": "BLOCKED"
+    },
+    {
+      "gate_id": "A-G08",
+      "gate": "independent packet audit, user confirmation and execution authorization",
+      "status": "BLOCKED"
+    }
+  ],
+  "numeric_surface_decision": {
+    "displayed_source_target": {
+      "metric": "NDCG@10",
+      "value": 0.2538,
+      "status": "PROVISIONAL_SOURCE_LOCATED_NOT_PRODUCER_BOUND"
+    },
+    "official_source_reproduction_use": "PERMITTED_ONLY_AFTER_COMPLETE_PRODUCER_FREEZE_AND_AUTHORIZED_RERUN",
+    "harmonized_v5_use": "PROHIBITED",
+    "paper_use": "INVALID_FOR_PAPER"
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

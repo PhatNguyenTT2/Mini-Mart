@@ -1,0 +1,525 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r5-m1-source-fact-matrix-1.0",
+  "created_at": "2026-08-23",
+  "stage_id": "R5-M1B",
+  "candidate_id": "R5-CAND-RECBOLE-GNN-LIGHTGCN-ML1M-001",
+  "method": "RecBole-GNN LightGCN",
+  "reference_dataset": "MovieLens 1M",
+  "source_root": "E:/UIT/cv/backend/research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_gnn_632ef88",
+  "full_revision": "632ef888589944c190ad8f449b49ca559618d4df",
+  "audit_mode": "READ_ONLY_PINNED_SOURCE_SEMANTIC_AUDIT_NO_EXECUTION",
+  "required_source_fact_fields": [
+    "fact_id",
+    "dimension_id",
+    "status",
+    "claim",
+    "source_relative_path",
+    "symbol_or_line_locator",
+    "source_sha256_raw_bytes",
+    "evidence_excerpt_or_paraphrase",
+    "scope_limit"
+  ],
+  "control_integrity": {
+    "repository_commit": "b4944a9c1db6f88fe2222ade73b4231fb88ecd36",
+    "repository_commit_is_at_or_after_required_baseline": true,
+    "materialization_receipt_status": "PASS_HASH_LOCKED_SOURCE_ONLY",
+    "detached_head_observed": "632ef888589944c190ad8f449b49ca559618d4df",
+    "selected_blob_hash_algorithm": "sha256_raw_bytes",
+    "selected_blob_count": 65,
+    "selected_blob_hashes_replayed": 65,
+    "selected_blob_hash_failures": 0,
+    "mandatory_input_canonical_hash_replay": {
+      "mandatory_paths_read": 7,
+      "listed_and_checked": 6,
+      "matched": 6,
+      "mismatched": 0,
+      "unlisted_non_failing": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r5_m1_frozen_input_manifest.json",
+        "observed_canonical_lf_bytes": 4814,
+        "observed_canonical_lf_sha256": "473ce1e6749d3eebcbaf45560fc33631c86e4f820f8cff54b1ac3c0dbb95746b",
+        "scope": "The manifest does not list itself among inputs; no declared self-digest exists to compare, so this is not a mismatch or gate failure."
+      }
+    }
+  },
+  "dimension_status_counts": {
+    "PASS_SOURCE_ESTABLISHED": 1,
+    "PARTIAL_SOURCE_BOUND": 4,
+    "FAIL_MISSING": 1,
+    "FAIL_CONFLICT": 1,
+    "DEFER_REQUIRES_DATA_OR_RUN": 2
+  },
+  "source_fact_status_counts": {
+    "PASS_SOURCE_ESTABLISHED": 22,
+    "PARTIAL_SOURCE_BOUND": 6,
+    "FAIL_MISSING": 1,
+    "FAIL_CONFLICT": 4,
+    "DEFER_REQUIRES_DATA_OR_RUN": 2
+  },
+  "source_fact_count": 35,
+  "dimensions": [
+    {
+      "dimension_id": "S01_REVISION_LICENSE_SOURCE_INTEGRITY",
+      "criterion": "Reconfirm detached revision, source hashes, owner identity and code license from materialized files.",
+      "status": "PASS_SOURCE_ESTABLISHED",
+      "summary": "The control receipt binds the detached revision, all 65 selected blobs replay against the frozen raw-byte hashes, and materialized source files establish RUCAIBox identity and an MIT code license.",
+      "facts": [
+        {
+          "fact_id": "R5M1B-S01-F001",
+          "dimension_id": "S01_REVISION_LICENSE_SOURCE_INTEGRITY",
+          "status": "PASS_SOURCE_ESTABLISHED",
+          "claim": "The materialized code license is MIT and names RUCAIBox as the 2021 copyright holder.",
+          "source_relative_path": "LICENSE",
+          "symbol_or_line_locator": "lines 1-3",
+          "source_sha256_raw_bytes": "ea7cf07fe7c17cf5691de7fafbfbc98727bb53163a40c903984b1c9cf2b8251a",
+          "evidence_excerpt_or_paraphrase": "The file begins with 'MIT License' and 'Copyright (c) 2021 RUCAIBox'.",
+          "scope_limit": "This establishes the code file's license text at the pinned source bytes; it does not establish dataset rights."
+        },
+        {
+          "fact_id": "R5M1B-S01-F002",
+          "dimension_id": "S01_REVISION_LICENSE_SOURCE_INTEGRITY",
+          "status": "PASS_SOURCE_ESTABLISHED",
+          "claim": "The source identifies RecBole-GNN as developed and maintained by RUCAIBox members and names its principal developers.",
+          "source_relative_path": "README.md",
+          "symbol_or_line_locator": "The Team, lines 112-118",
+          "source_sha256_raw_bytes": "3b31b9e73f4f1841f6139f8a1a6cd9d8b32255659ea1027eccfaa3ec7281ec8e",
+          "evidence_excerpt_or_paraphrase": "The team section attributes initial development and maintenance to RUCAIBox members and the acknowledgement says the implementation is based on RecBole.",
+          "scope_limit": "This is source-owner identity, not an independent legal-entity or trademark verification."
+        },
+        {
+          "fact_id": "R5M1B-S01-F003",
+          "dimension_id": "S01_REVISION_LICENSE_SOURCE_INTEGRITY",
+          "status": "PASS_SOURCE_ESTABLISHED",
+          "claim": "The pinned source describes RecBole-GNN as a PyTorch/RecBole library for graph-neural-network recommenders and lists LightGCN as an implemented general recommender.",
+          "source_relative_path": "README.md",
+          "symbol_or_line_locator": "lines 19-33 and 64-67",
+          "source_sha256_raw_bytes": "3b31b9e73f4f1841f6139f8a1a6cd9d8b32255659ea1027eccfaa3ec7281ec8e",
+          "evidence_excerpt_or_paraphrase": "The overview names PyTorch, RecBole and PyG, while the implemented-model list links LightGCN to the local model file.",
+          "scope_limit": "This establishes repository surface identity, not empirical correctness or official-original-code status for LightGCN."
+        }
+      ]
+    },
+    {
+      "dimension_id": "S02_ENVIRONMENT_DECLARATIONS_AND_UNRESOLVED_LOCK",
+      "criterion": "Extract Python/framework/direct dependency declarations and identify every version/platform/transitive gap; never invent a lock.",
+      "status": "PARTIAL_SOURCE_BOUND",
+      "summary": "The README declares one exact RecBole version and minimum-only Python/PyTorch/PyG versions, while the full pinned tree has no environment or dependency lock. Exact Python, PyTorch build/CUDA ABI, PyG companion packages, platform, hardware, and transitive versions remain unresolved.",
+      "facts": [
+        {
+          "fact_id": "R5M1B-S02-F001",
+          "dimension_id": "S02_ENVIRONMENT_DECLARATIONS_AND_UNRESOLVED_LOCK",
+          "status": "PASS_SOURCE_ESTABLISHED",
+          "claim": "The source dependency declaration is recbole==1.1.1, pyg>=2.0.4, pytorch>=1.7.0, and python>=3.7.0.",
+          "source_relative_path": "README.md",
+          "symbol_or_line_locator": "Requirements, lines 35-44",
+          "source_sha256_raw_bytes": "3b31b9e73f4f1841f6139f8a1a6cd9d8b32255659ea1027eccfaa3ec7281ec8e",
+          "evidence_excerpt_or_paraphrase": "The requirements code block gives an exact RecBole claim but only lower bounds for PyG, PyTorch and Python; the following note directs RecBole 1.0.1 users to another branch.",
+          "scope_limit": "These are prose declarations, not an installable lock, wheel hash set, exact interpreter build, or platform receipt."
+        },
+        {
+          "fact_id": "R5M1B-S02-F002",
+          "dimension_id": "S02_ENVIRONMENT_DECLARATIONS_AND_UNRESOLVED_LOCK",
+          "status": "PASS_SOURCE_ESTABLISHED",
+          "claim": "Code contains RecBole-1.1.1-specific compatibility branches but does not reject other RecBole versions.",
+          "source_relative_path": "recbole_gnn/config.py",
+          "symbol_or_line_locator": "Config.__init__ and compatibility_settings, lines 9-33",
+          "source_sha256_raw_bytes": "ce1e2847de64ef15f260a4c2b2f71de8c4cdb96957ae3ba5ecc0098dcb8d9050",
+          "evidence_excerpt_or_paraphrase": "Compatibility aliases for NumPy are applied only when recbole.__version__ equals 1.1.1, after which construction delegates to RecBole Config.",
+          "scope_limit": "A conditional compatibility branch is not a runtime version lock or proof that 1.1.1 produced the stored result."
+        },
+        {
+          "fact_id": "R5M1B-S02-F003",
+          "dimension_id": "S02_ENVIRONMENT_DECLARATIONS_AND_UNRESOLVED_LOCK",
+          "status": "PASS_SOURCE_ESTABLISHED",
+          "claim": "The LightGCN import path directly depends on torch, torch_geometric and torch_sparse in addition to RecBole.",
+          "source_relative_path": "recbole_gnn/model/layers.py",
+          "symbol_or_line_locator": "module imports and LightGCNConv, lines 1-20",
+          "source_sha256_raw_bytes": "994ecbff189cbdc3d3698c04469840139ce92cc79354c0120d8c97ca62b53740",
+          "evidence_excerpt_or_paraphrase": "MessagePassing is imported from torch_geometric and matmul is imported unconditionally from torch_sparse; the layer also imports torch.",
+          "scope_limit": "No exact torch_sparse or ABI-compatible wheel version is declared in the selected source."
+        },
+        {
+          "fact_id": "R5M1B-S02-F004",
+          "dimension_id": "S02_ENVIRONMENT_DECLARATIONS_AND_UNRESOLVED_LOCK",
+          "status": "PARTIAL_SOURCE_BOUND",
+          "claim": "Additional import-time packages are visible, but their versions and the complete transitive environment are not source-locked.",
+          "source_relative_path": "recbole_gnn/data/dataset.py",
+          "symbol_or_line_locator": "module imports, lines 1-21",
+          "source_sha256_raw_bytes": "076872db87b2c26a28060ee5cd3aaad9586e8a6f1c8a4f7e91697e6c9bbd5916",
+          "evidence_excerpt_or_paraphrase": "The data module imports torch, numpy, pandas, tqdm, torch_geometric, and RecBole; a torch_sparse import is optional there, although another selected module imports torch_sparse unconditionally.",
+          "scope_limit": "The pinned 78-entry tree contains no requirements file, setup metadata, pyproject, environment file, lockfile, or container recipe; transitive versions must not be inferred."
+        }
+      ]
+    },
+    {
+      "dimension_id": "S03_TRAIN_ENTRYPOINT_CONFIG_DEFAULT_RESOLUTION",
+      "criterion": "Trace the exact source-owned training entrypoint, method registration, config precedence, defaults, seed and tuning surfaces.",
+      "status": "PARTIAL_SOURCE_BOUND",
+      "summary": "The wrapper, local model lookup, local YAML merge and run sequence are source-visible. Exact effective configuration precedence, RecBole defaults, seed value, sampler, optimizer, stopping behavior and resolved configuration remain dependency- or run-bound.",
+      "facts": [
+        {
+          "fact_id": "R5M1B-S03-F001",
+          "dimension_id": "S03_TRAIN_ENTRYPOINT_CONFIG_DEFAULT_RESOLUTION",
+          "status": "PASS_SOURCE_ESTABLISHED",
+          "claim": "The source-owned CLI entrypoint defaults to BPR on ml-100k, so this lane requires explicit model=LightGCN and dataset=ml-1m overrides.",
+          "source_relative_path": "run_recbole_gnn.py",
+          "symbol_or_line_locator": "main argument parser, lines 6-15",
+          "source_sha256_raw_bytes": "1877c009d1a94bcbc494f18d2cafdc9055105995a923926f9b694efa93ff1e2d",
+          "evidence_excerpt_or_paraphrase": "--model defaults to BPR, --dataset defaults to ml-100k, and optional config_files are split on spaces before run_recbole_gnn is called.",
+          "scope_limit": "No literal argv or resolved config receipt for the published LightGCN/ml-1m row is present."
+        },
+        {
+          "fact_id": "R5M1B-S03-F002",
+          "dimension_id": "S03_TRAIN_ENTRYPOINT_CONFIG_DEFAULT_RESOLUTION",
+          "status": "PASS_SOURCE_ESTABLISHED",
+          "claim": "Model resolution searches RecBole-GNN general, sequential and social modules first and delegates to RecBole only if no local model module is found.",
+          "source_relative_path": "recbole_gnn/utils.py",
+          "symbol_or_line_locator": "get_model, lines 62-85",
+          "source_sha256_raw_bytes": "c6b4e2fea15a7cd47341d935280691141dd386e7f99dbc67d0c88db15b50fb60",
+          "evidence_excerpt_or_paraphrase": "The function imports a lower-cased local module and returns its named class; otherwise it calls RecBole get_model.",
+          "scope_limit": "This establishes class lookup, not package import behavior under an unknown environment."
+        },
+        {
+          "fact_id": "R5M1B-S03-F003",
+          "dimension_id": "S03_TRAIN_ENTRYPOINT_CONFIG_DEFAULT_RESOLUTION",
+          "status": "PASS_SOURCE_ESTABLISHED",
+          "claim": "Local configuration delegates first to RecBole's internal-config loader and then merges a model-specific YAML when present.",
+          "source_relative_path": "recbole_gnn/config.py",
+          "symbol_or_line_locator": "Config._load_internal_config_dict, lines 65-80",
+          "source_sha256_raw_bytes": "ce1e2847de64ef15f260a4c2b2f71de8c4cdb96957ae3ba5ecc0098dcb8d9050",
+          "evidence_excerpt_or_paraphrase": "The override calls super()._load_internal_config_dict, resolves properties/model/<model>.yaml, and updates the internal dictionary from that file before model-type base adjustments.",
+          "scope_limit": "External file/dict/CLI precedence and RecBole's default layers are implemented in the unmaterialized dependency and are not established here."
+        },
+        {
+          "fact_id": "R5M1B-S03-F004",
+          "dimension_id": "S03_TRAIN_ENTRYPOINT_CONFIG_DEFAULT_RESOLUTION",
+          "status": "PASS_SOURCE_ESTABLISHED",
+          "claim": "The pinned local LightGCN YAML defaults are embedding_size=64, n_layers=2, reg_weight=1e-05 and require_pow=True.",
+          "source_relative_path": "recbole_gnn/properties/model/LightGCN.yaml",
+          "symbol_or_line_locator": "lines 1-4",
+          "source_sha256_raw_bytes": "546152ccb08fca203021a492e2316b770016f7415a9ad9b838e6e387c725d036",
+          "evidence_excerpt_or_paraphrase": "The four-line YAML provides the complete local model-specific default block.",
+          "scope_limit": "The leaderboard reports n_layers=3 and reg_weight=0.0001 as tuned values, so the local defaults alone cannot produce the reported row."
+        },
+        {
+          "fact_id": "R5M1B-S03-F005",
+          "dimension_id": "S03_TRAIN_ENTRYPOINT_CONFIG_DEFAULT_RESOLUTION",
+          "status": "PASS_SOURCE_ESTABLISHED",
+          "claim": "The quick-start path constructs Config, initializes the RecBole seed routine before data creation and again before model construction, then fits on train/validation and evaluates test.",
+          "source_relative_path": "recbole_gnn/quick_start.py",
+          "symbol_or_line_locator": "run_recbole_gnn, lines 19-63",
+          "source_sha256_raw_bytes": "9059d3366dc3da77c4cc2451b3a686880dcb6884f96007d09cd0c73c76b58a2d",
+          "evidence_excerpt_or_paraphrase": "init_seed(config['seed'], config['reproducibility']) appears before dataset creation and before model construction; trainer.fit receives train and valid loaders, followed by trainer.evaluate(test_data).",
+          "scope_limit": "The seed value and reproducibility flag are not declared by this file and no run receipt confirms them."
+        },
+        {
+          "fact_id": "R5M1B-S03-F006",
+          "dimension_id": "S03_TRAIN_ENTRYPOINT_CONFIG_DEFAULT_RESOLUTION",
+          "status": "PARTIAL_SOURCE_BOUND",
+          "claim": "The source acknowledges model/dataset selection from explicit arguments, config files, config dictionaries or command line, but the exact precedence is not locally implemented.",
+          "source_relative_path": "recbole_gnn/config.py",
+          "symbol_or_line_locator": "Config.__init__ and _get_model_and_dataset, lines 9-22 and 35-63",
+          "source_sha256_raw_bytes": "ce1e2847de64ef15f260a4c2b2f71de8c4cdb96957ae3ba5ecc0098dcb8d9050",
+          "evidence_excerpt_or_paraphrase": "The docstring and error text enumerate variable, config file, config dict and command line sources before delegation to RecBole Config.",
+          "scope_limit": "Without the exact RecBole 1.1.1 configurator source and a resolved-config receipt, precedence, default resolution and unknown-argument handling remain unverified."
+        }
+      ]
+    },
+    {
+      "dimension_id": "S04_EVALUATOR_CANDIDATE_MASK_AGGREGATION_TIES",
+      "criterion": "Trace metric formula, full/sampled candidate construction, seen-item masking, aggregation and tie behavior with exact file/symbol locators.",
+      "status": "PARTIAL_SOURCE_BOUND",
+      "summary": "The model's all-item dot-product score surface and RecBole delegation are explicit, but the selected RecBole-GNN tree contains no evaluator formula, history mask, averaging denominator or tie implementation. Those semantics cannot be inferred from the metric names.",
+      "facts": [
+        {
+          "fact_id": "R5M1B-S04-F001",
+          "dimension_id": "S04_EVALUATOR_CANDIDATE_MASK_AGGREGATION_TIES",
+          "status": "PASS_SOURCE_ESTABLISHED",
+          "claim": "LightGCN full_sort_predict computes user-to-all-item dot-product scores and returns them flattened.",
+          "source_relative_path": "recbole_gnn/model/general_recommender/lightgcn.py",
+          "symbol_or_line_locator": "LightGCN.full_sort_predict, lines 123-133",
+          "source_sha256_raw_bytes": "e07285def5c71ebf09f9fc742e7c616f0923f4e8e69d9a66ca118382870c214d",
+          "evidence_excerpt_or_paraphrase": "The selected users index cached user embeddings, matrix-multiply against all item embeddings, and return scores.view(-1).",
+          "scope_limit": "This function does not mask seen items, exclude reserved IDs, sort scores, resolve ties, construct truth, or aggregate a metric."
+        },
+        {
+          "fact_id": "R5M1B-S04-F002",
+          "dimension_id": "S04_EVALUATOR_CANDIDATE_MASK_AGGREGATION_TIES",
+          "status": "PASS_SOURCE_ESTABLISHED",
+          "claim": "For a general model such as LightGCN, data preparation delegates to RecBole, and trainer lookup delegates to the RecBole trainer when no named local trainer exists.",
+          "source_relative_path": "recbole_gnn/utils.py",
+          "symbol_or_line_locator": "data_preparation and get_trainer, lines 99-156",
+          "source_sha256_raw_bytes": "c6b4e2fea15a7cd47341d935280691141dd386e7f99dbc67d0c88db15b50fb60",
+          "evidence_excerpt_or_paraphrase": "Only sequential modules use the custom split-loader branch; the else path returns recbole_data_preparation, and get_trainer falls back to get_recbole_trainer after a missing local <Model>Trainer.",
+          "scope_limit": "The delegated RecBole evaluator/trainer bytes are absent from this candidate's selected source and may not be borrowed from another candidate."
+        },
+        {
+          "fact_id": "R5M1B-S04-F003",
+          "dimension_id": "S04_EVALUATOR_CANDIDATE_MASK_AGGREGATION_TIES",
+          "status": "PASS_SOURCE_ESTABLISHED",
+          "claim": "The local customized full-sort dataloader adds no LightGCN-specific candidate, mask or tie logic beyond its RecBole superclass.",
+          "source_relative_path": "recbole_gnn/data/dataloader.py",
+          "symbol_or_line_locator": "CustomizedFullSortEvalDataLoader, lines 55-59",
+          "source_sha256_raw_bytes": "9b09576dd0ebe60d0c71e231e77978187f2acbd39d62d196ef9e5db87a176dd8",
+          "evidence_excerpt_or_paraphrase": "The class calls FullSortEvalDataLoader.__init__ and conditionally assigns a graph transform; it defines no collation, masking, ranking or metric override.",
+          "scope_limit": "Superclass behavior is not established by these bytes."
+        },
+        {
+          "fact_id": "R5M1B-S04-F004",
+          "dimension_id": "S04_EVALUATOR_CANDIDATE_MASK_AGGREGATION_TIES",
+          "status": "PARTIAL_SOURCE_BOUND",
+          "claim": "The source result page labels the protocol as full sort and names top-10 metrics, but it does not define formulas, denominators, seen-item masking, candidate exclusions or tie policy.",
+          "source_relative_path": "results/general/ml-1m.md",
+          "symbol_or_line_locator": "Experimental Setting and Evaluation Results, lines 1-34 and 47-60",
+          "source_sha256_raw_bytes": "5e535d13b084104e824ac45af680103a231d68a3eed3344e69e1664ec72a88e1",
+          "evidence_excerpt_or_paraphrase": "The page says ratio-based 8:1:1, full sort and lists Recall@10, 'NGCG'@10, MRR@10, Hit@10 and Precision@10; the results table labels NDCG@10.",
+          "scope_limit": "Metric-name and full-sort labels are insufficient to establish evaluator semantics or equivalence to the frozen v5 evaluator."
+        }
+      ]
+    },
+    {
+      "dimension_id": "S05_TEST_ISOLATION_AND_LEAKAGE_SURFACES",
+      "criterion": "Identify whether schema/cardinality/filtering/tuning/checkpoint selection can derive from evaluation TEST; absence of proof remains partial.",
+      "status": "FAIL_CONFLICT",
+      "summary": "The ordinary fit call receives train and validation before a later test evaluation, but TEST is materialized in the same quick-start process. More importantly, the source hyper-tuning objective evaluates test for every trial, directly conflicting with the v5 rule that TEST remain sealed during tuning.",
+      "facts": [
+        {
+          "fact_id": "R5M1B-S05-F001",
+          "dimension_id": "S05_TEST_ISOLATION_AND_LEAKAGE_SURFACES",
+          "status": "PASS_SOURCE_ESTABLISHED",
+          "claim": "The ordinary quick-start fit call receives train and validation loaders, and test is passed only to the subsequent evaluate call.",
+          "source_relative_path": "recbole_gnn/quick_start.py",
+          "symbol_or_line_locator": "run_recbole_gnn, lines 32-56",
+          "source_sha256_raw_bytes": "9059d3366dc3da77c4cc2451b3a686880dcb6884f96007d09cd0c73c76b58a2d",
+          "evidence_excerpt_or_paraphrase": "Dataset creation precedes a three-way data_preparation; trainer.fit(train_data, valid_data) is followed by trainer.evaluate(test_data).",
+          "scope_limit": "The test loader already exists in-process, and inherited dataset construction/filtering/cardinality behavior cannot be audited from this candidate tree."
+        },
+        {
+          "fact_id": "R5M1B-S05-F002",
+          "dimension_id": "S05_TEST_ISOLATION_AND_LEAKAGE_SURFACES",
+          "status": "FAIL_CONFLICT",
+          "claim": "The hyper-tuning objective evaluates test data on every objective invocation and returns test_result together with validation results.",
+          "source_relative_path": "recbole_gnn/quick_start.py",
+          "symbol_or_line_locator": "objective_function, lines 66-95",
+          "source_sha256_raw_bytes": "9059d3366dc3da77c4cc2451b3a686880dcb6884f96007d09cd0c73c76b58a2d",
+          "evidence_excerpt_or_paraphrase": "Each objective call creates train/valid/test loaders, fits on train/valid, calls trainer.evaluate(test_data), and includes test_result in its return value.",
+          "scope_limit": "This is an explicit TEST-access surface; the source does not prove whether leaderboard producers inspected or selected on those returned test values."
+        },
+        {
+          "fact_id": "R5M1B-S05-F003",
+          "dimension_id": "S05_TEST_ISOLATION_AND_LEAKAGE_SURFACES",
+          "status": "FAIL_CONFLICT",
+          "claim": "The provided hyperparameter entrypoint runs exhaustive HyperTuning over that TEST-evaluating objective.",
+          "source_relative_path": "run_hyper.py",
+          "symbol_or_line_locator": "main, lines 7-22",
+          "source_sha256_raw_bytes": "6f6ce96ffb517ead5edcf0a4ffd73d38b472c2f6c9266e6fd1f3ed454fd7d63c",
+          "evidence_excerpt_or_paraphrase": "HyperTuning is constructed with objective_function and algo='exhaustive', then run and exported with best parameters/results.",
+          "scope_limit": "The code does not establish that best-parameter selection itself uses TEST, but it necessarily opens and exposes TEST during tuning, which violates the frozen v5 access boundary."
+        },
+        {
+          "fact_id": "R5M1B-S05-F004",
+          "dimension_id": "S05_TEST_ISOLATION_AND_LEAKAGE_SURFACES",
+          "status": "FAIL_CONFLICT",
+          "claim": "The source leaderboard protocol uses a ratio-based 8:1:1 split, which cannot be substituted for the preregistered temporal v5 split.",
+          "source_relative_path": "results/general/ml-1m.md",
+          "symbol_or_line_locator": "Experimental Setting, lines 3-9",
+          "source_sha256_raw_bytes": "5e535d13b084104e824ac45af680103a231d68a3eed3344e69e1664ec72a88e1",
+          "evidence_excerpt_or_paraphrase": "The page identifies MovieLens-1M, filters ratings below 3, and states ratio-based 8:1:1 full-sort evaluation.",
+          "scope_limit": "This conflict is seam-bounded: it blocks relabeling the source protocol as v5 but does not by itself invalidate a separately implemented temporal v5 adapter."
+        }
+      ]
+    },
+    {
+      "dimension_id": "S06_NUMERIC_TARGET_PRODUCER_BINDING",
+      "criterion": "Assess whether the stored numeric target is tied to this exact revision, data, full config, seed, environment, evaluator and run receipt.",
+      "status": "FAIL_MISSING",
+      "summary": "The source page binds a displayed LightGCN NDCG@10 value of 0.2538 to a named MovieLens-1M protocol and partial settings, but it does not bind that number to this revision, provider bytes, complete resolved configuration, seed, environment, evaluator bytes, checkpoint or run receipt.",
+      "facts": [
+        {
+          "fact_id": "R5M1B-S06-F001",
+          "dimension_id": "S06_NUMERIC_TARGET_PRODUCER_BINDING",
+          "status": "PASS_SOURCE_ESTABLISHED",
+          "claim": "The pinned results table displays LightGCN NDCG@10=0.2538 on its MovieLens-1M page.",
+          "source_relative_path": "results/general/ml-1m.md",
+          "symbol_or_line_locator": "Evaluation Results, lines 47-55; LightGCN row line 54",
+          "source_sha256_raw_bytes": "5e535d13b084104e824ac45af680103a231d68a3eed3344e69e1664ec72a88e1",
+          "evidence_excerpt_or_paraphrase": "The LightGCN row reports Recall 0.1861, MRR 0.4388, NDCG 0.2538, Hit 0.7330 and Precision 0.1863 at cutoff 10.",
+          "scope_limit": "This establishes only a source-located displayed number; it is not a reproduced or accepted result."
+        },
+        {
+          "fact_id": "R5M1B-S06-F002",
+          "dimension_id": "S06_NUMERIC_TARGET_PRODUCER_BINDING",
+          "status": "PASS_SOURCE_ESTABLISHED",
+          "claim": "The result page supplies partial common producer settings: rating>=3 filtering, ratio 8:1:1 full sort, selected fields, 500 epochs, train batch 4096, validation metric MRR@10, evaluation batch 4096000 and embedding size 64.",
+          "source_relative_path": "results/general/ml-1m.md",
+          "symbol_or_line_locator": "Experimental Setting and Properties, lines 1-39",
+          "source_sha256_raw_bytes": "5e535d13b084104e824ac45af680103a231d68a3eed3344e69e1664ec72a88e1",
+          "evidence_excerpt_or_paraphrase": "A YAML snippet records dataset fields/filtering and four training/evaluation fields, followed by an embedding-size restriction.",
+          "scope_limit": "The snippet is not a complete resolved config and does not identify every inherited default."
+        },
+        {
+          "fact_id": "R5M1B-S06-F003",
+          "dimension_id": "S06_NUMERIC_TARGET_PRODUCER_BINDING",
+          "status": "PASS_SOURCE_ESTABLISHED",
+          "claim": "The page reports LightGCN best values learning_rate=0.002, n_layers=3 and reg_weight=0.0001 with their tuning ranges.",
+          "source_relative_path": "results/general/ml-1m.md",
+          "symbol_or_line_locator": "Hyper-parameters table, lines 62-70; LightGCN row line 69",
+          "source_sha256_raw_bytes": "5e535d13b084104e824ac45af680103a231d68a3eed3344e69e1664ec72a88e1",
+          "evidence_excerpt_or_paraphrase": "The LightGCN row lists three selected values and finite choice ranges for learning rate, layer count and regularization weight.",
+          "scope_limit": "No trial receipt, selection log, seed schedule or post-override config hash accompanies these values."
+        },
+        {
+          "fact_id": "R5M1B-S06-F004",
+          "dimension_id": "S06_NUMERIC_TARGET_PRODUCER_BINDING",
+          "status": "FAIL_MISSING",
+          "claim": "The source page does not provide the complete producer binding required to accept 0.2538 as a reproduction center.",
+          "source_relative_path": "results/general/ml-1m.md",
+          "symbol_or_line_locator": "entire document, lines 1-75",
+          "source_sha256_raw_bytes": "5e535d13b084104e824ac45af680103a231d68a3eed3344e69e1664ec72a88e1",
+          "evidence_excerpt_or_paraphrase": "The document contains settings, dataset statistics, a result table and tuning ranges, but no full revision, raw dataset hash, transformed/split hashes, exact seed, resolved-config hash, environment lock, evaluator hash, run ID, checkpoint hash, stdout/stderr receipt or metric artifact.",
+          "scope_limit": "Absence is assessed only within the pinned 78-entry tree and frozen selected source; no missing value is inferred or repaired."
+        }
+      ]
+    },
+    {
+      "dimension_id": "S07_DATASET_LINEAGE_REQUIREMENTS",
+      "criterion": "Identify source data loaders/converters and the exact additional provider-byte and transformation receipts required later; do not acquire data.",
+      "status": "DEFER_REQUIRES_DATA_OR_RUN",
+      "summary": "The source establishes RecBole atomic-file field expectations and a rating>=3 transformation description, but the MovieLens provider bytes, rights/release record, extraction, transformation, split and ID-map receipts are absent and must be acquired only in a separately authorized dataset stage.",
+      "facts": [
+        {
+          "fact_id": "R5M1B-S07-F001",
+          "dimension_id": "S07_DATASET_LINEAGE_REQUIREMENTS",
+          "status": "PASS_SOURCE_ESTABLISHED",
+          "claim": "RecBole-GNN declares that it shares RecBole's atomic-file input API, and the ml-1m page names user_id, item_id and rating interaction fields.",
+          "source_relative_path": "README.md",
+          "symbol_or_line_locator": "Highlights, lines 26-33",
+          "source_sha256_raw_bytes": "3b31b9e73f4f1841f6139f8a1a6cd9d8b32255659ea1027eccfaa3ec7281ec8e",
+          "evidence_excerpt_or_paraphrase": "The README says the library shares RecBole's unified API and atomic-file input.",
+          "scope_limit": "The actual RecBole parser/converter implementation and its exact versioned behavior are outside this candidate tree."
+        },
+        {
+          "fact_id": "R5M1B-S07-F002",
+          "dimension_id": "S07_DATASET_LINEAGE_REQUIREMENTS",
+          "status": "PASS_SOURCE_ESTABLISHED",
+          "claim": "The source protocol says ratings below 3 are removed and reports the resulting dataset as 6,040 users, 3,629 items and 836,478 interactions.",
+          "source_relative_path": "results/general/ml-1m.md",
+          "symbol_or_line_locator": "lines 3-27 and Dataset Statistics lines 41-45",
+          "source_sha256_raw_bytes": "5e535d13b084104e824ac45af680103a231d68a3eed3344e69e1664ec72a88e1",
+          "evidence_excerpt_or_paraphrase": "The page links MovieLens-1M, specifies val_interval rating '[3,inf)', drops rating after filtering, and prints post-filter counts.",
+          "scope_limit": "Printed counts are not raw-byte, transformation or split receipts."
+        },
+        {
+          "fact_id": "R5M1B-S07-F003",
+          "dimension_id": "S07_DATASET_LINEAGE_REQUIREMENTS",
+          "status": "DEFER_REQUIRES_DATA_OR_RUN",
+          "claim": "The source identifies MovieLens-1M only by a provider hyperlink and human-readable settings, leaving byte-verifiable dataset lineage unresolved.",
+          "source_relative_path": "results/general/ml-1m.md",
+          "symbol_or_line_locator": "Dataset and Properties, lines 1-34",
+          "source_sha256_raw_bytes": "5e535d13b084104e824ac45af680103a231d68a3eed3344e69e1664ec72a88e1",
+          "evidence_excerpt_or_paraphrase": "No archive filename/hash, provider release receipt, rights record, extraction inventory, atomic-file hash, ID map, split assignment or per-split hash is included.",
+          "scope_limit": "Network and dataset acquisition are prohibited in R5-M1B; closure is deferred, and no provider version or missing transformation detail is inferred."
+        }
+      ]
+    },
+    {
+      "dimension_id": "S08_BOUNDED_V5_ADAPTER_FEASIBILITY",
+      "criterion": "Map v5 fields to source interfaces and decide whether a representation-only adapter is plausibly bounded without changing objective or evaluator.",
+      "status": "PARTIAL_SOURCE_BOUND",
+      "summary": "A representation-only score-export seam is plausible because LightGCN consumes user/item interactions and exposes all-item dot-product scores. It is not ready: v5 input serialization, ID maps, score artifacts, standalone evaluator, deterministic tie/mask parity and receipts do not exist.",
+      "facts": [
+        {
+          "fact_id": "R5M1B-S08-F001",
+          "dimension_id": "S08_BOUNDED_V5_ADAPTER_FEASIBILITY",
+          "status": "PASS_SOURCE_ESTABLISHED",
+          "claim": "The LightGCN method surface is pairwise BPR over user, positive-item and negative-item IDs with embedding regularization.",
+          "source_relative_path": "recbole_gnn/model/general_recommender/lightgcn.py",
+          "symbol_or_line_locator": "class declaration and calculate_loss, lines 26-34 and 83-110",
+          "source_sha256_raw_bytes": "e07285def5c71ebf09f9fc742e7c616f0923f4e8e69d9a66ca118382870c214d",
+          "evidence_excerpt_or_paraphrase": "input_type is PAIRWISE; positive and negative dot-product scores feed BPRLoss and an embedding regularization term.",
+          "scope_limit": "An adapter must not change this objective, negative sampling semantics, graph construction or scoring function."
+        },
+        {
+          "fact_id": "R5M1B-S08-F002",
+          "dimension_id": "S08_BOUNDED_V5_ADAPTER_FEASIBILITY",
+          "status": "PASS_SOURCE_ESTABLISHED",
+          "claim": "The graph is constructed from the dataset supplied to model initialization, and quick-start supplies train_data.dataset.",
+          "source_relative_path": "recbole_gnn/model/abstract_recommender.py",
+          "symbol_or_line_locator": "GeneralGraphRecommender.__init__, lines 7-20",
+          "source_sha256_raw_bytes": "230b3be29fc0bb59de92bf834ace2f903e57047ee689df8d6f61ea494aabeb79",
+          "evidence_excerpt_or_paraphrase": "The base graph recommender calls dataset.get_norm_adj_mat; quick-start constructs LightGCN with train_data.dataset.",
+          "scope_limit": "Correct train-only construction still depends on a verified external split and RecBole dataset semantics."
+        },
+        {
+          "fact_id": "R5M1B-S08-F003",
+          "dimension_id": "S08_BOUNDED_V5_ADAPTER_FEASIBILITY",
+          "status": "PARTIAL_SOURCE_BOUND",
+          "claim": "The source can expose score direction and all-item ordering inputs, but it does not emit a hash-bound per-user score artifact or raw-ID map.",
+          "source_relative_path": "recbole_gnn/model/general_recommender/lightgcn.py",
+          "symbol_or_line_locator": "predict and full_sort_predict, lines 112-133",
+          "source_sha256_raw_bytes": "e07285def5c71ebf09f9fc742e7c616f0923f4e8e69d9a66ca118382870c214d",
+          "evidence_excerpt_or_paraphrase": "Both prediction methods return uncalibrated dot-product scores; full_sort_predict flattens the user-by-item matrix.",
+          "scope_limit": "A future exporter must bind user order, item order, reserved IDs, shapes, hashes and score direction without calibration or reranking."
+        },
+        {
+          "fact_id": "R5M1B-S08-F004",
+          "dimension_id": "S08_BOUNDED_V5_ADAPTER_FEASIBILITY",
+          "status": "PARTIAL_SOURCE_BOUND",
+          "claim": "Using source-integrated evaluation cannot establish v5 parity; a standalone v5 evaluator must consume frozen scores and apply the v5 candidate, mask, eligibility and tie rules.",
+          "source_relative_path": "recbole_gnn/utils.py",
+          "symbol_or_line_locator": "data_preparation and get_trainer delegation, lines 99-156",
+          "source_sha256_raw_bytes": "c6b4e2fea15a7cd47341d935280691141dd386e7f99dbc67d0c88db15b50fb60",
+          "evidence_excerpt_or_paraphrase": "General-model preparation and training/evaluation are handed to RecBole, whose evaluator bytes are not present in this candidate tree.",
+          "scope_limit": "Feasibility is architectural and source-bound only; no adapter, evaluator, fixture, TEST access or execution is authorized."
+        }
+      ]
+    },
+    {
+      "dimension_id": "S09_NEXT_GATE_AND_REPRODUCTION_PRECONDITIONS",
+      "criterion": "List the minimal dataset, environment, config, parity and rerun actions needed before benchmark admission or execution.",
+      "status": "DEFER_REQUIRES_DATA_OR_RUN",
+      "summary": "Immediate admission is blocked. Control-manifest repair, dependency locking, dataset lineage, a complete source-producer contract, TEST-safe entrypoints, adapter/evaluator implementation, parity receipts, preregistered tolerance and an actual authorized rerun are all still required.",
+      "facts": [
+        {
+          "fact_id": "R5M1B-S09-F001",
+          "dimension_id": "S09_NEXT_GATE_AND_REPRODUCTION_PRECONDITIONS",
+          "status": "PARTIAL_SOURCE_BOUND",
+          "claim": "A future source run must explicitly bind model, dataset, config files/dict, seed/reproducibility, sparse mode, data preparation, trainer and checkpoint behavior rather than rely on wrapper defaults.",
+          "source_relative_path": "recbole_gnn/quick_start.py",
+          "symbol_or_line_locator": "run_recbole_gnn, lines 9-63",
+          "source_sha256_raw_bytes": "9059d3366dc3da77c4cc2451b3a686880dcb6884f96007d09cd0c73c76b58a2d",
+          "evidence_excerpt_or_paraphrase": "The run function composes each of those runtime surfaces and logs Config, but no immutable command/config/run receipt is present in the pinned tree.",
+          "scope_limit": "This fact identifies required bindings; it does not supply or authorize them."
+        },
+        {
+          "fact_id": "R5M1B-S09-F002",
+          "dimension_id": "S09_NEXT_GATE_AND_REPRODUCTION_PRECONDITIONS",
+          "status": "FAIL_CONFLICT",
+          "claim": "The provided quick-start and hyper-tuning entrypoints are not acceptable unchanged for a sealed-TEST v5 campaign because they automatically evaluate test.",
+          "source_relative_path": "recbole_gnn/quick_start.py",
+          "symbol_or_line_locator": "run_recbole_gnn lines 47-56 and objective_function lines 82-95",
+          "source_sha256_raw_bytes": "9059d3366dc3da77c4cc2451b3a686880dcb6884f96007d09cd0c73c76b58a2d",
+          "evidence_excerpt_or_paraphrase": "Both paths call trainer.evaluate(test_data); the hyper objective does so for every trial.",
+          "scope_limit": "A future packet must use a separately audited validation-only path and preserve the source method without silently changing objective or evaluator semantics."
+        },
+        {
+          "fact_id": "R5M1B-S09-F003",
+          "dimension_id": "S09_NEXT_GATE_AND_REPRODUCTION_PRECONDITIONS",
+          "status": "DEFER_REQUIRES_DATA_OR_RUN",
+          "claim": "No source reproduction or harmonized v5 result can be accepted from source inspection alone.",
+          "source_relative_path": "results/general/ml-1m.md",
+          "symbol_or_line_locator": "entire source result record, lines 1-75",
+          "source_sha256_raw_bytes": "5e535d13b084104e824ac45af680103a231d68a3eed3344e69e1664ec72a88e1",
+          "evidence_excerpt_or_paraphrase": "The source supplies a human-readable target record but no immutable producer, adapter, evaluator, prediction, checkpoint or metric receipt.",
+          "scope_limit": "Dataset acquisition and any rerun are explicitly outside R5-M1B and require a later freeze, independent audit, user confirmation and execution authorization."
+        }
+      ]
+    }
+  ],
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

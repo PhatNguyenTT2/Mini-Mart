@@ -1,0 +1,310 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r5-m1-gap-closure-assessment-1.0",
+  "created_at": "2026-08-23",
+  "stage_id": "R5-M1B",
+  "candidate_id": "R5-CAND-RECBOLE-GNN-LIGHTGCN-ML1M-001",
+  "assessment_status": "SOURCE_AUDIT_COMPLETE_GAPS_REMAIN",
+  "candidate_status": "SOURCE_INCOMPLETE_CANDIDATE_FOR_R5_G1",
+  "reproducibility_status": "SOURCE_INCOMPLETE_NOT_RUN",
+  "status_vocabulary": [
+    "CLOSED_BY_PINNED_SOURCE",
+    "PARTIALLY_CLOSED_SOURCE_BOUND",
+    "OPEN_REQUIRES_FROZEN_ARTIFACT",
+    "CONFLICT_REQUIRES_PROTOCOL_BOUNDARY",
+    "DEFERRED_REQUIRES_AUTHORIZED_DATA_OR_RUN"
+  ],
+  "source_closed_items": [
+    {
+      "closure_id": "R5M1B-C01",
+      "dimensions": [
+        "S01_REVISION_LICENSE_SOURCE_INTEGRITY"
+      ],
+      "status": "CLOSED_BY_PINNED_SOURCE",
+      "claim": "Candidate revision/materialization integrity, selected raw-byte hashes, RUCAIBox source identity and MIT code-license text are established for the pinned source tree.",
+      "evidence": [
+        {
+          "path": "LICENSE",
+          "locator": "lines 1-3",
+          "sha256_raw_bytes": "ea7cf07fe7c17cf5691de7fafbfbc98727bb53163a40c903984b1c9cf2b8251a"
+        },
+        {
+          "path": "README.md",
+          "locator": "lines 112-118",
+          "sha256_raw_bytes": "3b31b9e73f4f1841f6139f8a1a6cd9d8b32255659ea1027eccfaa3ec7281ec8e"
+        }
+      ],
+      "scope_limit": "Dataset rights and execution reproducibility are not closed by the code license or source hash replay."
+    },
+    {
+      "closure_id": "R5M1B-C02",
+      "dimensions": [
+        "S03_TRAIN_ENTRYPOINT_CONFIG_DEFAULT_RESOLUTION",
+        "S08_BOUNDED_V5_ADAPTER_FEASIBILITY"
+      ],
+      "status": "PARTIALLY_CLOSED_SOURCE_BOUND",
+      "claim": "The local entrypoint, LightGCN class/defaults, pairwise BPR objective, train-graph construction and all-item score function are source-located.",
+      "evidence": [
+        {
+          "path": "run_recbole_gnn.py",
+          "locator": "lines 6-15",
+          "sha256_raw_bytes": "1877c009d1a94bcbc494f18d2cafdc9055105995a923926f9b694efa93ff1e2d"
+        },
+        {
+          "path": "recbole_gnn/model/general_recommender/lightgcn.py",
+          "locator": "LightGCN, lines 26-133",
+          "sha256_raw_bytes": "e07285def5c71ebf09f9fc742e7c616f0923f4e8e69d9a66ca118382870c214d"
+        }
+      ],
+      "scope_limit": "The effective RecBole configuration, environment and evaluator remain unresolved."
+    }
+  ],
+  "bounded_conflicts": [
+    {
+      "conflict_id": "R5M1B-X01",
+      "dimension_id": "S05_TEST_ISOLATION_AND_LEAKAGE_SURFACES",
+      "status": "CONFLICT_REQUIRES_PROTOCOL_BOUNDARY",
+      "conflict": "objective_function evaluates test_data and returns test_result for every HyperTuning trial.",
+      "source_path": "recbole_gnn/quick_start.py",
+      "locator": "objective_function, lines 66-95",
+      "source_sha256_raw_bytes": "9059d3366dc3da77c4cc2451b3a686880dcb6884f96007d09cd0c73c76b58a2d",
+      "effect": "run_hyper.py and objective_function are prohibited unchanged in any sealed-TEST v5 packet.",
+      "resolution_required": "Freeze and independently audit a validation-only training/export command that cannot construct or evaluate TEST before the TEST gate.",
+      "candidate_dispositive": false,
+      "reason_not_candidate_dispositive": "The conflict is isolated to provided orchestration paths; a method-preserving lower-level LightGCN score-export seam remains plausible."
+    },
+    {
+      "conflict_id": "R5M1B-X02",
+      "dimension_id": "S05_TEST_ISOLATION_AND_LEAKAGE_SURFACES",
+      "status": "CONFLICT_REQUIRES_PROTOCOL_BOUNDARY",
+      "conflict": "The source leaderboard uses rating>=3, ratio-based 8:1:1 full-sort evaluation, whereas v5 requires a frozen temporal split, organic novel truth, full 5,200-item catalog, seen masking and raw_product_id tie-breaking.",
+      "source_path": "results/general/ml-1m.md",
+      "locator": "lines 3-34",
+      "source_sha256_raw_bytes": "5e535d13b084104e824ac45af680103a231d68a3eed3344e69e1664ec72a88e1",
+      "effect": "The displayed 0.2538 source number can only be a provisional official-source reproduction target; it cannot be relabeled or compared as a harmonized v5 result.",
+      "resolution_required": "Keep official-source reproduction and harmonized-v5 evaluation in separate artifact namespaces and tables.",
+      "candidate_dispositive": false,
+      "reason_not_candidate_dispositive": "The mismatch is expected across evaluator seams and can be contained by separate protocols."
+    },
+    {
+      "conflict_id": "R5M1B-X03",
+      "dimension_id": "S06_NUMERIC_TARGET_PRODUCER_BINDING",
+      "status": "CONFLICT_REQUIRES_PROTOCOL_BOUNDARY",
+      "conflict": "The metric list spells 'NGCG@10' while the result-table header spells 'NDCG@10'.",
+      "source_path": "results/general/ml-1m.md",
+      "locator": "lines 9 and 49-54",
+      "source_sha256_raw_bytes": "5e535d13b084104e824ac45af680103a231d68a3eed3344e69e1664ec72a88e1",
+      "effect": "The intended metric is strongly suggested by the table but must be bound to exact evaluator bytes before use as a target.",
+      "resolution_required": "Future source-producer contract must name the metric implementation and cutoff explicitly; no correction is made in this audit.",
+      "candidate_dispositive": false,
+      "reason_not_candidate_dispositive": "The documentary inconsistency is material but remediable through exact evaluator binding."
+    }
+  ],
+  "open_gaps": [
+    {
+      "gap_id": "R5M1B-G01",
+      "dimensions": [
+        "S02_ENVIRONMENT_DECLARATIONS_AND_UNRESOLVED_LOCK"
+      ],
+      "status": "OPEN_REQUIRES_FROZEN_ARTIFACT",
+      "blocker": "No exact environment lock exists for Python, RecBole, PyTorch build/CUDA ABI, PyG, torch_sparse, NumPy, pandas, tqdm, platform, driver or transitive packages.",
+      "source_boundary": "README.md lines 35-44 contains declarations only; the pinned 78-entry tree contains no dependency/environment lock path.",
+      "required_closure_artifacts": [
+        "closed dependency lock with exact versions and package hashes",
+        "interpreter and OS/platform identity",
+        "PyTorch build, CUDA/runtime, driver and hardware compatibility receipt",
+        "PyG and torch_sparse ABI-compatible package identities",
+        "environment construction manifest and immutable digest"
+      ],
+      "closure_stage": "future E4 environment materialization before any command freeze",
+      "source_audit_can_close": false,
+      "execution_required_to_close": false
+    },
+    {
+      "gap_id": "R5M1B-G02",
+      "dimensions": [
+        "S03_TRAIN_ENTRYPOINT_CONFIG_DEFAULT_RESOLUTION",
+        "S06_NUMERIC_TARGET_PRODUCER_BINDING"
+      ],
+      "status": "OPEN_REQUIRES_FROZEN_ARTIFACT",
+      "blocker": "Exact RecBole 1.1.1 configuration precedence, inherited defaults and a complete resolved LightGCN/ml-1m producer config are absent.",
+      "source_boundary": "Local Config merges a model YAML after RecBole internal config, but external precedence and defaults live in the unmaterialized dependency.",
+      "required_closure_artifacts": [
+        "hash-locked RecBole 1.1.1 dependency source or exact installed package artifact",
+        "literal source-reproduction argv and working directory",
+        "complete base config plus every override",
+        "resolved-config JSON/YAML with raw hash",
+        "seed, reproducibility flag, negative sampler, optimizer, stopping, checkpoint and sparse-mode bindings"
+      ],
+      "closure_stage": "future source-reproduction packet freeze",
+      "source_audit_can_close": false,
+      "execution_required_to_close": false
+    },
+    {
+      "gap_id": "R5M1B-G03",
+      "dimensions": [
+        "S04_EVALUATOR_CANDIDATE_MASK_AGGREGATION_TIES"
+      ],
+      "status": "OPEN_REQUIRES_FROZEN_ARTIFACT",
+      "blocker": "RecBole evaluator formulas, candidate construction, reserved-ID handling, history mask, denominators, empty cases, aggregation and tie behavior are not in the candidate source tree.",
+      "source_boundary": "RecBole-GNN delegates general-model preparation/training/evaluation to RecBole and only emits raw all-item scores locally.",
+      "required_closure_artifacts": [
+        "exact RecBole 1.1.1 evaluator/trainer/data-loader source hashes",
+        "source evaluator semantic contract for each displayed metric",
+        "manually checkable candidate/mask/tie/empty-case fixtures",
+        "evaluator identity and receipt schema"
+      ],
+      "closure_stage": "future official-source reproduction contract",
+      "source_audit_can_close": false,
+      "execution_required_to_close": false
+    },
+    {
+      "gap_id": "R5M1B-G04",
+      "dimensions": [
+        "S05_TEST_ISOLATION_AND_LEAKAGE_SURFACES",
+        "S09_NEXT_GATE_AND_REPRODUCTION_PRECONDITIONS"
+      ],
+      "status": "CONFLICT_REQUIRES_PROTOCOL_BOUNDARY",
+      "blocker": "Provided orchestration automatically evaluates TEST, including during hyperparameter trials.",
+      "source_boundary": "recbole_gnn/quick_start.py lines 47-56 and 82-95.",
+      "required_closure_artifacts": [
+        "validation-only command path with TEST paths absent or sealed",
+        "negative test proving TEST cannot be constructed or read before authorization",
+        "separate one-shot TEST command packet created only after validation freeze",
+        "immutable TEST access receipt"
+      ],
+      "closure_stage": "future adapter/command implementation and independent audit",
+      "source_audit_can_close": false,
+      "execution_required_to_close": false
+    },
+    {
+      "gap_id": "R5M1B-G05",
+      "dimensions": [
+        "S06_NUMERIC_TARGET_PRODUCER_BINDING"
+      ],
+      "status": "OPEN_REQUIRES_FROZEN_ARTIFACT",
+      "blocker": "NDCG@10=0.2538 lacks a complete producer binding and run receipt.",
+      "source_boundary": "results/general/ml-1m.md supplies a displayed row, partial common config and tuned values only.",
+      "required_closure_artifacts": [
+        "exact revision/dataset/split/config/seed/environment/evaluator binding",
+        "frozen pre-run tolerance and aggregation rule",
+        "run ID, checkpoint hash, prediction hash, evaluator receipt and metric artifact",
+        "stdout/stderr and terminal-state receipts"
+      ],
+      "closure_stage": "future official-source reproduction freeze and authorized rerun",
+      "source_audit_can_close": false,
+      "execution_required_to_close": true
+    },
+    {
+      "gap_id": "R5M1B-G06",
+      "dimensions": [
+        "S07_DATASET_LINEAGE_REQUIREMENTS"
+      ],
+      "status": "DEFERRED_REQUIRES_AUTHORIZED_DATA_OR_RUN",
+      "blocker": "MovieLens-1M provider bytes, release/rights and raw-to-filtered-to-split lineage are absent.",
+      "source_boundary": "The source page gives a provider hyperlink, rating>=3 rule and printed counts but no byte-level receipts.",
+      "required_closure_artifacts": [
+        "provider/release identity and rights receipt",
+        "raw archive and extracted-file hashes",
+        "rating-filter implementation/config hash and transformed atomic-file hash",
+        "deterministic raw-to-internal ID map",
+        "split algorithm/order/seed receipt and train/validation/test hashes",
+        "post-filter and per-split cardinality reconciliation"
+      ],
+      "closure_stage": "separately authorized dataset acquisition/materialization",
+      "source_audit_can_close": false,
+      "execution_required_to_close": true
+    },
+    {
+      "gap_id": "R5M1B-G07",
+      "dimensions": [
+        "S07_DATASET_LINEAGE_REQUIREMENTS",
+        "S08_BOUNDED_V5_ADAPTER_FEASIBILITY"
+      ],
+      "status": "DEFERRED_REQUIRES_AUTHORIZED_DATA_OR_RUN",
+      "blocker": "The v5 snapshot and six required lineage hashes remain PENDING in inputs/experimental_log.md.",
+      "source_boundary": "The frozen v5 spec defines contract counts and dates, not an acquired immutable dataset snapshot.",
+      "required_closure_artifacts": [
+        "snapshot, embedding, rules, benchmark-spec, semantic-cohort and order-metadata hashes",
+        "product source/license and Vietnamese-language audit",
+        "temporal split and eligible-user manifests",
+        "frozen catalog and raw-product-ID ordering metadata"
+      ],
+      "closure_stage": "future v5 dataset materialization before adapter execution",
+      "source_audit_can_close": false,
+      "execution_required_to_close": true
+    },
+    {
+      "gap_id": "R5M1B-G08",
+      "dimensions": [
+        "S08_BOUNDED_V5_ADAPTER_FEASIBILITY"
+      ],
+      "status": "OPEN_REQUIRES_FROZEN_ARTIFACT",
+      "blocker": "No adapter, score-export schema, ID map, standalone evaluator, fixtures or parity receipts exist.",
+      "source_boundary": "LightGCN.full_sort_predict exposes flattened all-item scores but no immutable export or v5 semantics.",
+      "required_closure_artifacts": [
+        "hash-bound representation-only adapter and literal argv",
+        "raw/internal/evaluator ID maps with unknown/duplicate/reserved-ID policy",
+        "per-user all-catalog score artifact schema and hashes",
+        "standalone v5 evaluator bound to benchmark-spec-v5",
+        "score direction, rank order, mask, exclusion, equal-score tie and count parity fixtures",
+        "no-TEST-read receipt"
+      ],
+      "closure_stage": "future E4 adapter/evaluator implementation and independent audit",
+      "source_audit_can_close": false,
+      "execution_required_to_close": false
+    },
+    {
+      "gap_id": "R5M1B-G09",
+      "dimensions": [
+        "S09_NEXT_GATE_AND_REPRODUCTION_PRECONDITIONS"
+      ],
+      "status": "DEFERRED_REQUIRES_AUTHORIZED_DATA_OR_RUN",
+      "blocker": "No preregistered source-reproduction tolerance or authorized rerun exists.",
+      "source_boundary": "The source page has a single displayed center with no variance, seeds or producer receipt.",
+      "required_closure_artifacts": [
+        "frozen source statistic and metric semantics",
+        "seed/aggregation schedule and tolerance fixed before output",
+        "resource envelope and timeout",
+        "independently audited command packet",
+        "explicit user confirmation and execution authorization",
+        "completed run/checkpoint/prediction/evaluation receipts"
+      ],
+      "closure_stage": "future official-source reproduction run",
+      "source_audit_can_close": false,
+      "execution_required_to_close": true
+    },
+    {
+      "gap_id": "R5M1B-G10",
+      "dimensions": [
+        "S09_NEXT_GATE_AND_REPRODUCTION_PRECONDITIONS"
+      ],
+      "status": "DEFERRED_REQUIRES_AUTHORIZED_DATA_OR_RUN",
+      "blocker": "No harmonized validation result or locked-baseline registry entry exists for LightGCN.",
+      "source_boundary": "inputs/experimental_log.md marks LightGCN NOT_ADAPTED and all v5 result rows NOT_RUN.",
+      "required_closure_artifacts": [
+        "adapter READY record after source reproduction and parity",
+        "three-seed validation receipts for 42, 2027 and 31415",
+        "per-user HR/NDCG/GAUC evidence and paired intervals",
+        "typed locked-baseline registry and validation-only selection receipt",
+        "separate post-freeze TEST authorization if later requested"
+      ],
+      "closure_stage": "future harmonized-v5 validation and later TEST gate",
+      "source_audit_can_close": false,
+      "execution_required_to_close": true
+    }
+  ],
+  "r5_g1_assessment": {
+    "recommendation": "HOLD_NOT_READY_FOR_SELECTION_OR_EXECUTION",
+    "rationale": "The candidate has a clear, hash-bound LightGCN implementation and plausible score-export seam, but the environment, RecBole evaluator, complete producer config, dataset lineage, TEST-safe orchestration and adapter/evaluator receipts are unresolved.",
+    "candidate_dispositive_conflicts": [],
+    "immediate_execution_authorized": false,
+    "paper_result_admission": "REJECT_CURRENT_NUMERIC_TARGET"
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

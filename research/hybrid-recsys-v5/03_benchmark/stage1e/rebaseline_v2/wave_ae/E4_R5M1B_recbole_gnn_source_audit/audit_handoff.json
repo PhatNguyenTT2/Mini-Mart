@@ -1,0 +1,147 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r5-m1-audit-handoff-1.0",
+  "created_at": "2026-08-23",
+  "stage_id": "R5-M1B",
+  "candidate_id": "R5-CAND-RECBOLE-GNN-LIGHTGCN-ML1M-001",
+  "method": "RecBole-GNN LightGCN",
+  "reference_dataset": "MovieLens 1M",
+  "source_full_revision": "632ef888589944c190ad8f449b49ca559618d4df",
+  "candidate_status": "SOURCE_INCOMPLETE_CANDIDATE_FOR_R5_G1",
+  "reproducibility_status": "SOURCE_INCOMPLETE_NOT_RUN",
+  "source_fact_count": 35,
+  "status_counts": {
+    "dimensions": {
+      "PASS_SOURCE_ESTABLISHED": 1,
+      "PARTIAL_SOURCE_BOUND": 4,
+      "FAIL_MISSING": 1,
+      "FAIL_CONFLICT": 1,
+      "DEFER_REQUIRES_DATA_OR_RUN": 2,
+      "pass": 1,
+      "partial": 4,
+      "fail": 2,
+      "defer": 2,
+      "total": 9
+    },
+    "source_facts": {
+      "PASS_SOURCE_ESTABLISHED": 22,
+      "PARTIAL_SOURCE_BOUND": 6,
+      "FAIL_MISSING": 1,
+      "FAIL_CONFLICT": 4,
+      "DEFER_REQUIRES_DATA_OR_RUN": 2,
+      "total": 35
+    }
+  },
+  "dispositive_conflicts": [],
+  "bounded_conflicts": [
+    {
+      "conflict_id": "R5M1B-X01",
+      "summary": "The provided HyperTuning objective evaluates and returns TEST results on every trial.",
+      "effect": "The source hyperparameter entrypoint is prohibited unchanged for sealed-TEST v5 work."
+    },
+    {
+      "conflict_id": "R5M1B-X02",
+      "summary": "The source ratio-based MovieLens protocol is not the temporal v5 protocol.",
+      "effect": "Official-source and harmonized-v5 seams must remain separate."
+    },
+    {
+      "conflict_id": "R5M1B-X03",
+      "summary": "The source settings spell NGCG@10 while the results table spells NDCG@10.",
+      "effect": "The intended metric must be bound to exact evaluator bytes before 0.2538 can be a source-reproduction target."
+    }
+  ],
+  "remaining_blockers": [
+    {
+      "blocker_id": "R5M1B-B01",
+      "blocker": "Exact Python/RecBole/PyTorch/PyG/torch_sparse/platform dependency lock and environment receipt are absent."
+    },
+    {
+      "blocker_id": "R5M1B-B02",
+      "blocker": "Exact RecBole 1.1.1 config precedence, inherited defaults and complete resolved LightGCN/ml-1m producer config are absent."
+    },
+    {
+      "blocker_id": "R5M1B-B03",
+      "blocker": "RecBole evaluator formulas, candidate construction, history masking, denominators, empty cases and tie behavior are not materialized for this candidate."
+    },
+    {
+      "blocker_id": "R5M1B-B04",
+      "blocker": "Provided run and hyper-tuning orchestration automatically evaluates TEST; a validation-only no-TEST-read path is not frozen."
+    },
+    {
+      "blocker_id": "R5M1B-B05",
+      "blocker": "NDCG@10=0.2538 lacks exact revision/data/config/seed/environment/evaluator/checkpoint/run/metric receipts and a preregistered tolerance."
+    },
+    {
+      "blocker_id": "R5M1B-B06",
+      "blocker": "MovieLens-1M provider bytes, rights/release, extraction, filtering, ID-map and split lineage are absent."
+    },
+    {
+      "blocker_id": "R5M1B-B07",
+      "blocker": "The v5 dataset snapshot and six-field lineage remain PENDING."
+    },
+    {
+      "blocker_id": "R5M1B-B08",
+      "blocker": "No hash-bound v5 input serializer, score exporter, ID map, standalone evaluator, parity fixtures or receipts exist."
+    },
+    {
+      "blocker_id": "R5M1B-B09",
+      "blocker": "No independently audited command packet, user confirmation, execution authorization or completed source/v5 run exists."
+    }
+  ],
+  "r5_g1_recommendation": {
+    "recommendation": "HOLD_NOT_READY_FOR_SELECTION_OR_EXECUTION",
+    "admit_candidate_now": false,
+    "reject_candidate_permanently": false,
+    "paper_use": "REJECT_CURRENT_NUMERIC_TARGET",
+    "next_action": "Return to E4 gap closure for environment, dependency source, producer contract, dataset lineage and TEST-safe adapter/evaluator materialization before any new gate review.",
+    "reason": "The model and raw score seam are source-bound, but the source producer, evaluator, environment, data lineage and v5 parity chain are incomplete."
+  },
+  "adapter_feasibility": {
+    "verdict": "BOUNDED_REPRESENTATION_ADAPTER_PLAUSIBLE_NOT_READY",
+    "method_preserving_adapter_plausible": true,
+    "adapter_ready": false,
+    "evaluator_ready": false,
+    "source_integrated_metrics_acceptable_for_v5": false
+  },
+  "numeric_target": {
+    "metric": "NDCG@10",
+    "displayed_value": 0.2538,
+    "source_locator": "results/general/ml-1m.md line 54",
+    "source_sha256_raw_bytes": "5e535d13b084104e824ac45af680103a231d68a3eed3344e69e1664ec72a88e1",
+    "status": "PROVISIONAL_SOURCE_LOCATED_NOT_PRODUCER_BOUND",
+    "valid_for_paper": false
+  },
+  "input_and_source_integrity": {
+    "repository_commit": "b4944a9c1db6f88fe2222ade73b4231fb88ecd36",
+    "required_baseline_satisfied": true,
+    "mandatory_inputs_read": 7,
+    "listed_mandatory_input_hashes_checked": 6,
+    "listed_mandatory_input_hashes_matched": 6,
+    "listed_mandatory_input_hash_failures": 0,
+    "frozen_manifest_self_entry": "NOT_LISTED_NO_COMPARISON_AVAILABLE",
+    "candidate_selected_blobs_checked": 65,
+    "candidate_selected_blobs_matched": 65,
+    "candidate_selected_blob_hash_failures": 0,
+    "vendor_source_modified": false
+  },
+  "model_profile": {
+    "display_name": "Sol XHigh Standard",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "xhigh",
+    "service_tier": "standard",
+    "dispatch_service_tier_override": null
+  },
+  "outputs": [
+    "source_fact_matrix.json",
+    "gap_closure_assessment.json",
+    "v5_adapter_feasibility.json",
+    "audit_report.md",
+    "audit_handoff.json"
+  ],
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}
