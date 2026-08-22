@@ -937,7 +937,7 @@
         "benchmark_admission_authorized": false
       },
       "r6": {
-        "status": "R6_ATTEMPT002_FAIL_CLOSED_RECOVERY_AUDIT_IN_PROGRESS",
+        "status": "R6_C1R2_ATTEMPT003_PACKET_DISPATCH_FROZEN",
         "stage_map": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_materialization_stage_map.json",
         "contract": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_bounded_materialization_contract.md",
         "s0": {
@@ -1049,12 +1049,22 @@
           "experiment_execution_authorized": false
         },
         "c1r2": {
-          "status": "INDEPENDENT_RECOVERY_AUDIT_IN_PROGRESS",
+          "status": "ATTEMPT003_PACKET_ASSEMBLY_DISPATCH_FROZEN",
           "purpose": "NEW_IMMUTABLE_ATTEMPT003_PACKET_AFTER_ATTEMPT002_PACKET_RUNTIME_AND_AMBIENT_INSTALLER_COLLISION",
           "agent_id": "01a02b8c-3d55-7f11-be8e-0bac060680c8",
           "nickname": "Zeno",
           "model_profile": "Sol XHigh Fast",
-          "write_scope": "READ_ONLY_AUDIT",
+          "audit_write_scope": "READ_ONLY",
+          "audit_receipt": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_c1r2_recovery_audit_receipt.json",
+          "audit_receipt_raw_bytes": 6515,
+          "audit_receipt_raw_sha256": "2c66845e65c3752e04cd4a55b1ef60a1623700aabf14674921f065f9420f8604",
+          "runtime_strategy": "OFFICIAL_CPYTHON_NUGET_PACKAGE_SAFE_EXTRACTION",
+          "contract": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_c1r2_attempt003_recovery_contract.md",
+          "contract_raw_sha256": "8b08e543e061e01762b55e5f5367a985ed77711cd95a54ce70304c985dca9054",
+          "dispatch": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_c1r2_dispatch.json",
+          "dispatch_raw_sha256": "0a09363fd5895bc7e270e826b246098571315fd6d37a7a6a9eb9db5e3e09b8ea",
+          "packet_worker_profile": "Sol High Fast",
+          "packet_output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ak/E4_R6C1R2_attempt003_command_packet",
           "attempt003_packet_created": false,
           "attempt003_materialization_gate_open": false,
           "experiment_execution_authorized": false
@@ -1121,7 +1131,7 @@
         "project_benchmark_numbers": "INVALID_FOR_PAPER"
       },
       "execution_authorized": false,
-      "next_gate": "COMPLETE_INDEPENDENT_R6_C1R2_RECOVERY_AUDIT_THEN_BUILD_AND_VALIDATE_NEW_ATTEMPT003_PACKET"
+      "next_gate": "ASSEMBLE_THEN_CENTRALLY_VALIDATE_R6_C1R2_ATTEMPT003_FIVE_FILE_PACKET"
     }
   },
   "central_preregistration_lock": "PASS_R6_S0_BOUNDED_MATERIALIZATION_SCOPE_LOCKED",
@@ -1129,5 +1139,5 @@
   "harmonized_v5": "BLOCKED",
   "external_validation": "BLOCKED",
   "efficiency": "BLOCKED_AFTER_ACCURACY",
-  "next_gate": "Complete the independent R6-C1R2 recovery audit, then build and centrally validate a new immutable attempt-003 packet. Training, evaluation, benchmark admission and TEST access remain blocked."
+  "next_gate": "Assemble and centrally validate the frozen R6-C1R2 attempt-003 five-file packet. Training, evaluation, benchmark admission and TEST access remain blocked."
 }

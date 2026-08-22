@@ -1,0 +1,122 @@
+{
+  "schema_version": "stage1e-r6-c1r2-recovery-audit-receipt-1.0",
+  "created_at": "2026-08-23",
+  "stage_id": "R6-C1R2-AUDIT",
+  "status": "COMPLETE_INDEPENDENTLY_AUDITED_READY_FOR_ATTEMPT003_PACKET_ASSEMBLY",
+  "entry_gate": "FAIL_CLOSED_PACKET_RUNTIME_AND_AMBIENT_INSTALLER_COLLISION",
+  "independent_auditor": {
+    "agent_id": "01a02b8c-3d55-7f11-be8e-0bac060680c8",
+    "nickname": "Zeno",
+    "model": "gpt-5.6-sol",
+    "reasoning_effort": "xhigh",
+    "service_tier": "priority",
+    "display_profile": "Sol XHigh Fast",
+    "write_scope": "READ_ONLY",
+    "scientific_execution_performed": false
+  },
+  "audited_failure_receipt": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_m0_m1_attempt_002_failure_receipt.json",
+    "raw_bytes": 10801,
+    "raw_sha256": "fd8339245b73db6bfd9767aa5a682ca5bf5be1ac48cbd8ae3e5f25a1cdc4df2c"
+  },
+  "findings": {
+    "dataset": {
+      "verdict": "PACKET_RUNTIME_DEFECT_NOT_DATASET_DEFECT",
+      "failed_command": "M05_SAFE_EXTRACT_AND_HASH",
+      "failing_expression": "[Collections.Generic.HashSet[string]]::new($names,[StringComparer]::Ordinal)",
+      "required_fix": "Construct expected and actual HashSet instances with the comparer-only constructor and Add each explicitly typed string before SetEquals.",
+      "attempt_002_root_reusable": false
+    },
+    "environment": {
+      "verdict": "CONFIRMED_EXTERNAL_SYSTEM_MUTATION_AND_FAILED_ISOLATED_RUNTIME",
+      "failed_boundary": "E04 completed with exit code 0 outside the declared write set; E05 executable was absent.",
+      "requested_target": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-002\\runtime",
+      "effective_target": "C:\\Program Files\\Python311\\",
+      "related_bundle_version": "3.11.3",
+      "effective_version": "3.11.9",
+      "prior_bundle_uninstall_observed": true,
+      "automatic_rollback_allowed": false,
+      "attempt_002_root_reusable": false
+    },
+    "runner": {
+      "verdict": "POSTCONDITION_AND_WRITE_SET_ENFORCEMENT_INSUFFICIENT",
+      "required_fixes": [
+        "Catch OSError and FileNotFoundError at process launch and journal the failure.",
+        "Verify each command's declared required outputs after exit code acceptance.",
+        "Enforce the declared write set and reject observed writes outside the attempt root.",
+        "Persist an append-only execution journal after every command.",
+        "Snapshot defined ambient Python registry and filesystem sentinels before and after each environment command and fail on any change."
+      ]
+    }
+  },
+  "runtime_strategy_decision": {
+    "selected": "OFFICIAL_CPYTHON_NUGET_PACKAGE_SAFE_EXTRACTION",
+    "package_id": "python",
+    "package_version": "3.11.9",
+    "package_url": "https://api.nuget.org/v3-flatcontainer/python/3.11.9/python.3.11.9.nupkg",
+    "registration_leaf_url": "https://api.nuget.org/v3/registration5-semver1/python/3.11.9.json",
+    "catalog_leaf_url": "https://api.nuget.org/v3/catalog0/data/2024.04.02.13.14.51/python.3.11.9.json",
+    "publisher": "Python Software Foundation",
+    "description": "Installs 64-bit Python for use in build scenarios.",
+    "published": "2024-04-02T13:09:41.627Z",
+    "package_bytes": 17478009,
+    "package_md5": "0deb9c5d73bc95ca7b66dd72b0f8d8a2",
+    "package_sha256": "9283876d58c017e0e846f95b490da3bca0fc0a6ee1134b2870677cfb7eec3c67",
+    "package_sha512_base64": "41On79FZ75irnOEBGFSjDV13j1nZb8m7EbB87SmQs1XwMEhrBwf3mMc8RCAXOrERh2qW6tWYFxi2BMTN1xxVjQ==",
+    "metadata_replay": "PASS_EXACT_SIZE_MD5_SHA256_AND_CATALOG_SHA512",
+    "execution_semantics": "Treat nupkg as inert ZIP bytes; do not execute downloaded code during runtime materialization.",
+    "rejected_alternatives": {
+      "full_windows_installer": "Rejected because CPython bundle relationship detection can enter maintenance or major-upgrade mode and override the isolated target.",
+      "ambient_system_python": "Rejected because it is mutable machine state and would not create a self-contained attempt runtime.",
+      "embeddable_zip": "Rejected because official Python documentation says normal pip dependency management is unsupported and the package omits pip.",
+      "nuget_exe": "Rejected because no package-manager executable is needed; direct hash-locked nupkg acquisition and safe extraction have a smaller execution surface."
+    }
+  },
+  "primary_sources": [
+    {
+      "title": "Python 3.11 documentation: the nuget.org packages",
+      "url": "https://docs.python.org/3.11/using/windows.html#the-nuget-org-packages"
+    },
+    {
+      "title": "CPython Windows layout presets",
+      "url": "https://github.com/python/cpython/blob/main/PC/layout/README.md"
+    },
+    {
+      "title": "NuGet Gallery: python 3.11.9",
+      "url": "https://www.nuget.org/packages/python/3.11.9"
+    },
+    {
+      "title": "Python 3.11 documentation: embeddable package",
+      "url": "https://docs.python.org/3.11/using/windows.html#the-embeddable-package"
+    }
+  ],
+  "attempt_003_pairing": {
+    "dataset_root": "E:\\UIT\\cv\\materialized-data\\hybrid-recsys-v5\\stage1e\\r6\\official_source\\grouplens_ml100k\\attempt-003",
+    "environment_root": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003",
+    "runtime_python": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003\\runtime\\python.exe",
+    "venv_root": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003\\venv",
+    "bridge_pairing": "DATASET_ATTEMPT003_TO_ENVIRONMENT_ATTEMPT003_ONLY",
+    "cross_attempt_pairing_allowed": false
+  },
+  "gate_requirements": {
+    "new_five_file_packet": true,
+    "new_central_validator": true,
+    "new_validation_receipt": true,
+    "new_dispatch": true,
+    "new_runner": true,
+    "packet_must_be_validated_before_root_creation": true,
+    "bridge_requires_separate_dataset_and_environment_pass_receipts": true,
+    "dataset_load_authorized": false,
+    "training_authorized": false,
+    "evaluation_authorized": false,
+    "test_access_authorized": false,
+    "benchmark_admission_authorized": false
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "next_gate": "ASSEMBLE_R6_C1R2_ATTEMPT003_FIVE_FILE_PACKET_WITH_SOL_HIGH_FAST"
+}

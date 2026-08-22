@@ -1,0 +1,149 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r6-c1r2-dispatch-1.0",
+  "created_at": "2026-08-23",
+  "stage_id": "R6-C1R2",
+  "status": "FROZEN_READY_FOR_ATTEMPT003_PACKET_ASSEMBLY",
+  "entry_commit": "097f4fc",
+  "entry_gate": "COMPLETE_INDEPENDENTLY_AUDITED_READY_FOR_ATTEMPT003_PACKET_ASSEMBLY",
+  "objective": "Create a proposal-only five-file attempt-003 command packet using official CPython NuGet bytes, corrected dataset extraction semantics, strict postconditions, write-set enforcement, and ambient-system sentinels.",
+  "worker_profile": {
+    "display_name": "Sol High Fast",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "high",
+    "service_tier": "priority"
+  },
+  "central_profile": {
+    "display_name": "Sol Max Standard",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "max",
+    "service_tier": "standard"
+  },
+  "write_scope": {
+    "exact_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ak/E4_R6C1R2_attempt003_command_packet",
+    "exact_files": [
+      "dataset_materialization_packet.json",
+      "environment_materialization_packet.json",
+      "recbole_dataset_bridge_packet.json",
+      "execution_boundary_and_negative_assertions.json",
+      "audit_handoff.json"
+    ],
+    "other_repository_writes_allowed": false,
+    "external_writes_allowed": false
+  },
+  "frozen_inputs": [
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r5_m2_user_approval_receipt.json",
+      "raw_bytes": 3831,
+      "raw_sha256": "331bd5878ab5f1fa29ccc3681c7715e717a99da505b8075c9be647f243ca6aeb"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_m0_m1_attempt_002_failure_receipt.json",
+      "raw_bytes": 10801,
+      "raw_sha256": "fd8339245b73db6bfd9767aa5a682ca5bf5be1ac48cbd8ae3e5f25a1cdc4df2c"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_c1r2_recovery_audit_receipt.json",
+      "raw_bytes": 6515,
+      "raw_sha256": "2c66845e65c3752e04cd4a55b1ef60a1623700aabf14674921f065f9420f8604"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_c1r2_attempt003_recovery_contract.md",
+      "raw_bytes": 8087,
+      "raw_sha256": "8b08e543e061e01762b55e5f5367a985ed77711cd95a54ce70304c985dca9054"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_c1r1_validation_receipt.json",
+      "raw_bytes": 8142,
+      "raw_sha256": "a115b5c2b3bb81c646fdad055c21c0bf5daf28c332af6ca58f8fbc2be0e2a1cd"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_aj/E4_R6C1R1_attempt002_command_packet/dataset_materialization_packet.json",
+      "raw_bytes": 56691,
+      "raw_sha256": "56b07d575e28879e485c463fe5706f3987b8fbf9b3583c64179410a996aebb4e"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_aj/E4_R6C1R1_attempt002_command_packet/environment_materialization_packet.json",
+      "raw_bytes": 175457,
+      "raw_sha256": "e9ceadec0aa367a8b2d02a5c9cde107e9532cef193c733dce0a175d391691275"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_aj/E4_R6C1R1_attempt002_command_packet/recbole_dataset_bridge_packet.json",
+      "raw_bytes": 24331,
+      "raw_sha256": "9df9f04de7adad75ca526ca5ee86fb683f7d5ae16600ec18943ff5c6266cac0c"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_aj/E4_R6C1R1_attempt002_command_packet/execution_boundary_and_negative_assertions.json",
+      "raw_bytes": 46718,
+      "raw_sha256": "977cc068cc7b97f8432ac329310d02b8e3190915b8a45c3d242786d68b14057d"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_aj/E4_R6C1R1_attempt002_command_packet/audit_handoff.json",
+      "raw_bytes": 21144,
+      "raw_sha256": "809f26f63dcb4b049a2d8b142d32b1074f3ee2ca2065b16183b85145aa92d71d"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_g0_decision_freeze.json",
+      "raw_bytes": 12890,
+      "raw_sha256": "32f7e4c82ee1ffd105d365a98306cdef2a9b21f72dd1be10113188e40bf1c5c1"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ac/E4_R5M0_source_materialization/selected_blob_manifest.json",
+      "raw_bytes": 102765,
+      "raw_sha256": "c5794b9daccdd01ca600c6ef7f890918825fbbb872efa67036c4565234e87016"
+    }
+  ],
+  "source_lock": {
+    "package_id": "python",
+    "version": "3.11.9",
+    "package_url": "https://api.nuget.org/v3-flatcontainer/python/3.11.9/python.3.11.9.nupkg",
+    "package_bytes": 17478009,
+    "package_md5": "0deb9c5d73bc95ca7b66dd72b0f8d8a2",
+    "package_sha256": "9283876d58c017e0e846f95b490da3bca0fc0a6ee1134b2870677cfb7eec3c67",
+    "package_sha512_base64": "41On79FZ75irnOEBGFSjDV13j1nZb8m7EbB87SmQs1XwMEhrBwf3mMc8RCAXOrERh2qW6tWYFxi2BMTN1xxVjQ=="
+  },
+  "attempt_pairing": {
+    "dataset": "E:\\UIT\\cv\\materialized-data\\hybrid-recsys-v5\\stage1e\\r6\\official_source\\grouplens_ml100k\\attempt-003",
+    "environment": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003",
+    "cross_attempt_pairing_allowed": false
+  },
+  "required_controls": [
+    "M05_COMPARER_ONLY_HASHSET_PLUS_TYPED_ADD",
+    "NUPKG_INERT_BYTE_ACQUISITION",
+    "NUPKG_METADATA_AND_FOUR_HASH_SIZE_LOCK",
+    "SAFE_ZIP_SCAN_BEFORE_EXTRACTION",
+    "NO_DOWNLOADED_EXECUTABLE_DURING_ACQUISITION_OR_EXTRACTION",
+    "REQUIRED_OUTPUT_POSTCONDITIONS",
+    "DECLARED_WRITE_SET_ENFORCEMENT",
+    "AMBIENT_PYTHON_SENTINEL_BEFORE_AFTER",
+    "PROCESS_LAUNCH_OSERROR_JOURNALING",
+    "ATTEMPT003_ONLY_BRIDGE_PAIRING",
+    "NO_DATASET_LOAD_TRAIN_EVAL_TEST_OR_BENCHMARK_ADMISSION"
+  ],
+  "forbidden_actions": {
+    "materialization_execution": true,
+    "download_execution": true,
+    "external_root_creation": true,
+    "existing_attempt_edit_delete_or_reuse": true,
+    "system_python_repair_uninstall_or_rollback": true,
+    "dataset_construction_or_load": true,
+    "training_or_evaluation": true,
+    "test_access": true,
+    "benchmark_admission": true
+  },
+  "acceptance": {
+    "exact_output_count": 5,
+    "strict_json": "5/5",
+    "all_commands_literal_argv": true,
+    "all_attempt_paths_exact_attempt003": true,
+    "all_scientific_negative_assertions_explicit": true,
+    "central_validation_required": true,
+    "worker_may_self_declare_execution_ready": false
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "next_gate": "CENTRAL_VALIDATE_ALL_FIVE_ATTEMPT003_PACKET_FILES"
+}
