@@ -1,0 +1,274 @@
+{
+  "schema_version": "1.0",
+  "lane_id": "R2-A2",
+  "artifact": "provider_release_rights_matrix",
+  "generated_at": "2026-08-22T17:12:16+07:00",
+  "decision_rules": {
+    "public_page_is_not_automatic_permission": true,
+    "code_license_is_not_dataset_license": true,
+    "current_terms_do_not_retroactively_bind_historical_bytes": true,
+    "same_name_does_not_establish_release_identity": true,
+    "provider_checksum_absence_is_not_replaced_by_repository_hash": true,
+    "acquisition_requires_central_r2_m0": true
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "terms_accepted": false,
+    "authentication_performed": false,
+    "dataset_downloaded": false
+  },
+  "candidate_rows": [
+    {
+      "row_id": "E3-LIGHTGCN-GOWALLA-PYTORCH-001",
+      "provider_identity": {
+        "underlying_collection_candidate": "SNAP Gowalla network/check-in collection",
+        "canonical_for_row": "NOT_ESTABLISHED",
+        "authoritative_locator": "https://snap.stanford.edu/data/loc-gowalla.html",
+        "binding_reason": "No authoritative evidence links SNAP raw files to the processed LightGCN/NGCF split."
+      },
+      "release_identity": {
+        "provider_release": "NOT_PUBLISHED_OR_NOT_LOCATED",
+        "collection_period": "February 2009 to October 2010",
+        "provider_files_visible": ["loc-gowalla_edges.txt.gz", "loc-gowalla_totalCheckins.txt.gz"],
+        "repository_processed_revision": "LightGCN-PyTorch commit 947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+        "provider_checksums": "NOT_PUBLISHED_OR_NOT_LOCATED",
+        "acquired_byte_hashes": "NOT_ACQUIRED"
+      },
+      "rights": {
+        "dataset_license": "NOT_PUBLISHED_OR_NOT_LOCATED_ON_PROVIDER_DATASET_PAGE",
+        "terms_locator": "NOT_LOCATED_FOR_THE_EXACT_DATASET BYTES",
+        "lawful_research_use_basis": "UNRESOLVED",
+        "acceptance_required": "UNKNOWN",
+        "authentication_required": "NO_FOR_PUBLIC_PAGE; ACQUISITION_NOT_PERFORMED",
+        "redistribution_permission": "UNRESOLVED",
+        "processed_derivative_permission": "UNRESOLVED",
+        "privacy_constraints": "Location/check-in records create a material privacy review requirement; the provider page states collection through a public API but does not supply a reuse license."
+      },
+      "future_user_action_required": true,
+      "r2_m0_actions": [
+        "Obtain legal/data-steward approval for the exact raw and processed artifacts before any acquisition.",
+        "Identify an authoritative document binding the LightGCN/NGCF processed split to a named raw release.",
+        "If approved, acquire through the authorized provider path without redistributing bytes, record terms/acceptance receipt, and hash the raw and processed artifacts immediately.",
+        "Do not substitute the SNAP software license for dataset rights."
+      ],
+      "evidence_status": "EVIDENCE_INCOMPLETE"
+    },
+    {
+      "row_id": "E3-SIMGCL-YELP2018-QREC-001",
+      "provider_identity": {
+        "underlying_platform": "Yelp",
+        "canonical_for_row": "HISTORICAL_PROVIDER_RELEASE_NOT_ESTABLISHED",
+        "current_authoritative_locator": "https://business.yelp.com/data/resources/open-dataset/",
+        "binding_reason": "The current Yelp subset and its current size are not evidence for the historical Yelp2018 processed benchmark."
+      },
+      "release_identity": {
+        "provider_release": "HISTORICAL_YELP2018_VERSION_NOT_LOCATED",
+        "repository_processed_revision": "QRec commit a141bb37cb7706b2f53b2eed5843de3269f9f37f, dataset/yelp2018 train.txt and test.txt",
+        "provider_checksums": "NOT_PUBLISHED_OR_NOT_LOCATED",
+        "repository_dataset_checksums": "NOT_PUBLISHED_OR_NOT_LOCATED",
+        "acquired_byte_hashes": "NOT_ACQUIRED"
+      },
+      "rights": {
+        "dataset_license": "HISTORICAL_LICENSE_OR_DATASET_AGREEMENT_NOT_LOCATED",
+        "current_page_statement": "Current Yelp Open Dataset page describes an educational-use subset; this does not close historical-version rights.",
+        "lawful_research_use_basis": "UNRESOLVED_FOR_EXACT_QREC_BYTES",
+        "acceptance_required": "UNKNOWN_FOR_HISTORICAL_RELEASE",
+        "authentication_required": "UNKNOWN_FOR_HISTORICAL_RELEASE",
+        "redistribution_permission": "UNRESOLVED; repository presence is not affirmative permission",
+        "processed_derivative_permission": "UNRESOLVED"
+      },
+      "future_user_action_required": true,
+      "r2_m0_actions": [
+        "Locate and archive the exact historical Yelp dataset agreement/release notice governing the benchmark snapshot.",
+        "Have the user or data steward accept/authenticate only if the exact provider flow requires it and central R2-M0 approves.",
+        "Obtain affirmative authority to use and retain the QRec processed copy; do not infer it from QRec code licensing.",
+        "After approved acquisition, record provider/repository byte hashes and preserve the historical terms receipt."
+      ],
+      "evidence_status": "EVIDENCE_INCOMPLETE"
+    },
+    {
+      "row_id": "E3-XSIMGCL-YELP2018-SELFREC-001",
+      "provider_identity": {
+        "underlying_platform": "Yelp",
+        "canonical_for_row": "HISTORICAL_PROVIDER_RELEASE_NOT_ESTABLISHED",
+        "current_authoritative_locator": "https://business.yelp.com/data/resources/open-dataset/",
+        "binding_reason": "The XSimGCL paper names Yelp2018 and SELFRec distribution but does not identify a provider release or terms version."
+      },
+      "release_identity": {
+        "provider_release": "HISTORICAL_YELP2018_VERSION_NOT_LOCATED",
+        "repository_processed_revision": "SELFRec commit 5b0229423cb1c727e85a704d63e460368c8b9dde; processed byte identity not verified",
+        "provider_checksums": "NOT_PUBLISHED_OR_NOT_LOCATED",
+        "repository_dataset_checksums": "NOT_PUBLISHED_OR_NOT_LOCATED",
+        "acquired_byte_hashes": "NOT_ACQUIRED"
+      },
+      "rights": {
+        "dataset_license": "HISTORICAL_LICENSE_OR_DATASET_AGREEMENT_NOT_LOCATED",
+        "current_page_statement": "Current educational-use statement is not transferred to the historical SELFRec bundle.",
+        "lawful_research_use_basis": "UNRESOLVED_FOR_EXACT_SELFREC_BYTES",
+        "acceptance_required": "UNKNOWN_FOR_HISTORICAL_RELEASE",
+        "authentication_required": "UNKNOWN_FOR_HISTORICAL_RELEASE",
+        "redistribution_permission": "UNRESOLVED",
+        "processed_derivative_permission": "UNRESOLVED"
+      },
+      "future_user_action_required": true,
+      "r2_m0_actions": [
+        "Independently identify the historical Yelp release and terms for this SELFRec row; do not inherit closure from the QRec row.",
+        "Obtain central approval for any provider acceptance/authentication and for access to repository-hosted processed bytes.",
+        "Record an immutable dataset tree/archive identity and terms receipt before materialization.",
+        "Hash every approved raw and processed artifact without redistributing restricted data."
+      ],
+      "evidence_status": "EVIDENCE_INCOMPLETE"
+    },
+    {
+      "row_id": "E3-LIGHTGCL-YELP-UPDATED-001",
+      "provider_identity": {
+        "underlying_platform": "Yelp",
+        "canonical_for_row": "PROVIDER_RELEASE_NOT_BOUND_TO_UPDATED_PACK",
+        "current_authoritative_locator": "https://business.yelp.com/data/resources/open-dataset/",
+        "binding_reason": "Paper-level platform attribution and repository data presence do not identify a provider snapshot."
+      },
+      "release_identity": {
+        "provider_release": "NOT_PUBLISHED_OR_NOT_LOCATED_FOR_UPDATED_PACK",
+        "repository_processed_revision": "LightGCL commit 5590453ad86782f58017e58d0b698d7f32175be3",
+        "provider_checksums": "NOT_PUBLISHED_OR_NOT_LOCATED",
+        "repository_dataset_checksums": "NOT_PUBLISHED_OR_NOT_LOCATED",
+        "acquired_byte_hashes": "NOT_ACQUIRED"
+      },
+      "rights": {
+        "dataset_license": "APPLICABLE RELEASE-SPECIFIC TERMS NOT_LOCATED",
+        "current_page_statement": "Current Yelp Open Dataset educational-use statement cannot identify or govern the updated LightGCL pack without a release binding.",
+        "lawful_research_use_basis": "UNRESOLVED",
+        "acceptance_required": "UNKNOWN",
+        "authentication_required": "UNKNOWN",
+        "redistribution_permission": "UNRESOLVED",
+        "processed_derivative_permission": "UNRESOLVED"
+      },
+      "future_user_action_required": true,
+      "r2_m0_actions": [
+        "Ask the authors/provider for the exact updated Yelp snapshot identifier, terms and redistribution status.",
+        "Obtain central legal/data-steward approval before accepting terms, authenticating or acquiring any bytes.",
+        "Lock the provider release and repository processed pack with hashes after approved access.",
+        "Do not treat current Yelp page statistics or terms as the historical pack by name alone."
+      ],
+      "evidence_status": "EVIDENCE_INCOMPLETE"
+    },
+    {
+      "row_id": "E3-UNISREC-SCIENTIFIC-TRANS-001",
+      "provider_identity": {
+        "canonical_raw_provider": "UCSD McAuley Lab Amazon Review Data",
+        "underlying_platform": "Amazon",
+        "authoritative_locator": "https://cseweb.ucsd.edu/~jmcauley/datasets/amazon_v2/index.html",
+        "binding_reason": "UniSRec paper identifies Amazon Reviews 2018 Industrial and Scientific and cites Ni et al. 2019."
+      },
+      "release_identity": {
+        "provider_release": "Amazon Review Data (2018), Industrial and Scientific category",
+        "release_precision": "CATEGORY_FAMILY_ONLY; exact raw versus ratings-only versus 5-core and metadata-update bytes unresolved",
+        "provider_update_notes": ["metadata updated August 2020", "metadata updated May 2021"],
+        "repository_processed_release": "UNVERSIONED_GOOGLE_DRIVE_OR_BAIDU_DOWNSTREAM_ARCHIVE",
+        "provider_checksums": "NOT_PUBLISHED_OR_NOT_LOCATED",
+        "processed_archive_checksums": "NOT_PUBLISHED_OR_NOT_LOCATED",
+        "acquired_byte_hashes": "NOT_ACQUIRED"
+      },
+      "rights": {
+        "dataset_license": "AFFIRMATIVE_LICENSE_NOT_PUBLISHED_OR_NOT_LOCATED_ON_PROVIDER_PAGE",
+        "provider_page_conditions": "Citation request and public research dataset description are visible; neither is recorded as an affirmative license grant.",
+        "lawful_research_use_basis": "UNRESOLVED_PENDING_RIGHTS_REVIEW",
+        "acceptance_required": "NO_ACCEPTANCE FLOW OBSERVED ON PUBLIC PROVIDER PAGE; LINKED_HOST_FLOW_NOT_TESTED",
+        "authentication_required": "UNKNOWN_FOR_LINKED_PROCESSED_ARCHIVE; NOT_ATTEMPTED",
+        "redistribution_permission": "UNRESOLVED",
+        "processed_derivative_permission": "UNRESOLVED_FOR_TEXT_AND_ID_MAPS"
+      },
+      "future_user_action_required": true,
+      "r2_m0_actions": [
+        "Have the data steward determine the lawful basis for Amazon review/metadata research use and derived text storage.",
+        "Select the exact provider raw and metadata variants only after central G1/R2-M0 authorization.",
+        "Use the author-hosted processed archive only after its access and redistribution conditions are affirmatively cleared.",
+        "On approved acquisition, record terms/access receipts plus raw, metadata, intermediate and archive hashes."
+      ],
+      "evidence_status": "EVIDENCE_INCOMPLETE"
+    },
+    {
+      "row_id": "E3-SASREC-SCIENTIFIC-UNISREC-FRAMEWORK-001",
+      "provider_identity": {
+        "canonical_raw_provider": "UCSD McAuley Lab Amazon Review Data",
+        "underlying_platform": "Amazon",
+        "authoritative_locator": "https://cseweb.ucsd.edu/~jmcauley/datasets/amazon_v2/index.html",
+        "binding_reason": "The UniSRec framework paper attributes Scientific to Amazon Reviews 2018; this row is evaluated independently from the UniSRec method row."
+      },
+      "release_identity": {
+        "provider_release": "Amazon Review Data (2018), Industrial and Scientific category",
+        "release_precision": "CATEGORY_FAMILY_ONLY; exact bytes unresolved",
+        "provider_update_notes": ["metadata updated August 2020", "metadata updated May 2021"],
+        "repository_processed_release": "UNVERSIONED_SCIENTIFIC_DOWNSTREAM_ARCHIVE_IN_UNISREC_FRAMEWORK",
+        "provider_checksums": "NOT_PUBLISHED_OR_NOT_LOCATED",
+        "processed_archive_checksums": "NOT_PUBLISHED_OR_NOT_LOCATED",
+        "acquired_byte_hashes": "NOT_ACQUIRED"
+      },
+      "rights": {
+        "dataset_license": "AFFIRMATIVE_LICENSE_NOT_PUBLISHED_OR_NOT_LOCATED_ON_PROVIDER PAGE",
+        "provider_page_conditions": "Citation request is not treated as a complete rights grant.",
+        "lawful_research_use_basis": "UNRESOLVED_PENDING_RIGHTS_REVIEW",
+        "acceptance_required": "NO_ACCEPTANCE FLOW OBSERVED ON PUBLIC PROVIDER PAGE; LINKED_HOST FLOW NOT TESTED",
+        "authentication_required": "UNKNOWN_FOR_PROCESSED_ARCHIVE; NOT_ATTEMPTED",
+        "redistribution_permission": "UNRESOLVED",
+        "processed_derivative_permission": "UNRESOLVED"
+      },
+      "future_user_action_required": true,
+      "r2_m0_actions": [
+        "Perform a row-specific rights review for SASRec use; do not auto-join the UniSRec row's outcome.",
+        "Identify and approve the exact provider files and processed Scientific archive.",
+        "Record any host authentication/acceptance receipts without granting redistribution beyond the terms.",
+        "Hash all acquired layers after authorization and retain a row-specific custody receipt."
+      ],
+      "evidence_status": "EVIDENCE_INCOMPLETE"
+    },
+    {
+      "row_id": "E3-ALPHAREC-MOVIES-TV-001",
+      "provider_identity": {
+        "canonical_raw_provider": "UCSD McAuley Lab Amazon Review Data",
+        "underlying_platform": "Amazon",
+        "authoritative_locator": "https://cseweb.ucsd.edu/~jmcauley/datasets/amazon_v2/index.html",
+        "binding_reason": "AlphaRec paper identifies Amazon review datasets from Ni et al. 2019 and the Movies and TV category."
+      },
+      "release_identity": {
+        "provider_release": "Amazon Review Data (2018), Movies and TV category family",
+        "release_precision": "RAW/RATINGS_ONLY/5-CORE AND METADATA UPDATE VARIANT UNRESOLVED",
+        "provider_update_notes": ["metadata updated August 2020", "metadata updated May 2021"],
+        "repository_processed_release": "UNVERSIONED_ANONYMOUS_GOOGLE_DRIVE_AMAZON_MOVIE_BUNDLE",
+        "provider_checksums": "NOT_PUBLISHED_OR_NOT_LOCATED",
+        "processed_bundle_checksums": "NOT_PUBLISHED_OR_NOT_LOCATED",
+        "embedding_checksums": "NOT_PUBLISHED_OR_NOT_LOCATED",
+        "acquired_byte_hashes": "NOT_ACQUIRED"
+      },
+      "rights": {
+        "dataset_license": "AFFIRMATIVE_LICENSE_NOT_PUBLISHED_OR_NOT_LOCATED_ON_PROVIDER_PAGE",
+        "lawful_research_use_basis": "UNRESOLVED_PENDING_REVIEW_OF_REVIEWS_METADATA_TEXT_AND_EMBEDDINGS",
+        "acceptance_required": "NO_PROVIDER ACCEPTANCE FLOW OBSERVED; ANONYMOUS HOST FLOW NOT TESTED",
+        "authentication_required": "UNKNOWN; NOT_ATTEMPTED",
+        "redistribution_permission": "UNRESOLVED_FOR_RAW_AND_PROCESSED_BUNDLE",
+        "processed_derivative_permission": "UNRESOLVED_FOR_TITLE_TEXT_ID_MAPS_AND_EMBEDDINGS",
+        "api_derived_asset_constraint": "The paper's embedding API use does not establish permission to redistribute derived embeddings or source title text."
+      },
+      "future_user_action_required": true,
+      "r2_m0_actions": [
+        "Obtain rights review covering Amazon reviews/metadata, extracted titles, ID maps and derived embedding storage.",
+        "Resolve the exact provider raw/metadata variants and whether the anonymous bundle may be lawfully accessed and retained.",
+        "If embedding regeneration is later authorized, separately approve provider/API terms and retention policy; this lane grants no such authority.",
+        "After approved acquisition, hash raw, metadata, processed interaction, item-info and embedding artifacts separately."
+      ],
+      "evidence_status": "EVIDENCE_INCOMPLETE"
+    }
+  ],
+  "coverage": {
+    "expected_rows": 7,
+    "present_rows": 7,
+    "ordered_exactly_as_manifest": true,
+    "rows_with_affirmative_lawful_basis": 0,
+    "rows_with_provider_checksum": 0,
+    "rows_with_acquired_bytes": 0,
+    "status_counts": {"EVIDENCE_INCOMPLETE": 7}
+  }
+}

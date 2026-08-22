@@ -1,0 +1,250 @@
+{
+  "schema_version": "1.0",
+  "lane_id": "R2-A2",
+  "artifact": "lineage_requirement_map",
+  "generated_at": "2026-08-22T17:12:16+07:00",
+  "lineage_policy": {
+    "required_chain": ["canonical_raw", "repository_processed", "paper_specific_split"],
+    "all_edges_must_be_evidenced": true,
+    "cross_row_inheritance_allowed": false,
+    "unpublished_step_may_be_inferred": false,
+    "acquired_byte_hashes": "NOT_ACQUIRED",
+    "exact_split_reconstruction_authorized": false
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "preprocessing_executed": false,
+    "split_generation_executed": false
+  },
+  "candidate_rows": [
+    {
+      "row_id": "E3-LIGHTGCN-GOWALLA-PYTORCH-001",
+      "layers": {
+        "canonical_raw": {
+          "identity": "UNBOUND; SNAP same-name collection is not accepted as the row's canonical raw source",
+          "visible_candidate_schema": ["friendship edge: user_id, friend_id", "check-in: user_id, timestamp, latitude, longitude, location_id"],
+          "byte_hash": "NOT_ACQUIRED"
+        },
+        "repository_processed": {
+          "identity": "LightGCN-PyTorch commit 947ca2b3b1d2d3545b114145710cb06c4e57b3d2, data/gowalla train.txt/test.txt",
+          "consumer_format": "one user ID followed by item IDs per line",
+          "byte_hash": "NOT_ACQUIRED"
+        },
+        "paper_specific_split": {
+          "identity": "train/test split requested from NGCF authors",
+          "reported_counts": {"users": 29858, "items": 40981, "interactions": 1027370},
+          "byte_hash": "NOT_ACQUIRED"
+        }
+      },
+      "confirmed_transformations": ["Repository loader consumes pre-split train.txt and test.txt; it does not document producing them."],
+      "missing_lineage_edges": [
+        "named provider release to NGCF processed interactions",
+        "raw check-ins or another raw source to implicit user-item edges",
+        "filtering/k-core/deduplication/time-window decisions",
+        "interaction graph to train/test row membership",
+        "NGCF split bytes to LightGCN repository bytes"
+      ],
+      "required_reconstruction_record": {
+        "source_revision": ["immutable raw release identifier", "exact preprocessing code commit", "exact repository dataset tree identity"],
+        "argv_and_config": ["all preprocessing commands", "filter thresholds", "timestamp/timezone rules", "split algorithm and seed"],
+        "schemas": ["raw file encoding/delimiter/types", "processed row grammar", "train/test multiplicity and ordering"],
+        "counts": ["raw records", "post-dedup records", "post-filter users/items/interactions", "train/test users/items/interactions"],
+        "id_requirements": ["raw user-to-index map", "raw location/item-to-index map", "mapping order and zero/one-based convention"],
+        "hash_requirements": ["provider raw files", "normalized raw inputs if any", "intermediate edge list", "ID maps", "train.txt", "test.txt", "split membership manifest"]
+      },
+      "exact_split_reconstructable_now": false,
+      "r2_m0_actions": ["Resolve rights and raw-release binding", "Acquire only after approval", "Run a reviewed deterministic materializer with full receipts", "Compare stage counts and hashes to author-provided reference receipts"],
+      "evidence_status": "EVIDENCE_INCOMPLETE"
+    },
+    {
+      "row_id": "E3-SIMGCL-YELP2018-QREC-001",
+      "layers": {
+        "canonical_raw": {"identity": "UNRESOLVED historical Yelp snapshot", "byte_hash": "NOT_ACQUIRED"},
+        "repository_processed": {"identity": "QRec commit a141bb37cb7706b2f53b2eed5843de3269f9f37f dataset/yelp2018 train.txt and test.txt", "content_not_opened": true, "byte_hash": "NOT_ACQUIRED"},
+        "paper_specific_split": {"identity": "Yelp2018 7:1:2 training/validation/test protocol", "reported_counts": {"users": 31668, "items": 38048, "interactions": 1561406}, "byte_hash": "NOT_ACQUIRED"}
+      },
+      "confirmed_transformations": ["Paper states a 7:1:2 split.", "Pinned QRec directory exposes train.txt and test.txt, not a separately identified validation artifact."],
+      "missing_lineage_edges": [
+        "historical Yelp provider snapshot to filtered implicit interactions",
+        "rating threshold/binarization and review-to-interaction conversion",
+        "business/user eligibility, k-core, deduplication and cold-start filtering",
+        "7:1:2 randomization/per-user or global semantics and seed",
+        "validation selection and any merge into repository train.txt",
+        "paper split membership to QRec pinned bytes"
+      ],
+      "required_reconstruction_record": {
+        "source_revision": ["historical Yelp release and terms version", "preprocessing code commit", "QRec dataset tree/archive identity"],
+        "argv_and_config": ["input file choices", "rating/binarization threshold", "filter order", "split unit/algorithm/seed", "validation merge command"],
+        "schemas": ["raw JSON/table fields and types", "processed train/validation/test row grammar", "encoding and sort order"],
+        "counts": ["raw reviews/businesses/users", "post-filter users/items/interactions", "each 7:1:2 partition", "merged train if used"],
+        "id_requirements": ["raw Yelp user/business IDs to dense indices", "mapping order", "unknown/cold-start handling"],
+        "hash_requirements": ["provider raw archive", "each selected raw member", "filtered interaction table", "ID maps", "train/validation/test membership", "QRec train.txt/test.txt"]
+      },
+      "exact_split_reconstructable_now": false,
+      "r2_m0_actions": ["Approve historical Yelp access/terms", "Obtain split-generation source or author membership manifest", "Materialize deterministically only after approval", "Hash and reconcile each partition independently"],
+      "evidence_status": "EVIDENCE_INCOMPLETE"
+    },
+    {
+      "row_id": "E3-XSIMGCL-YELP2018-SELFREC-001",
+      "layers": {
+        "canonical_raw": {"identity": "UNRESOLVED historical Yelp snapshot", "byte_hash": "NOT_ACQUIRED"},
+        "repository_processed": {"identity": "SELFRec commit 5b0229423cb1c727e85a704d63e460368c8b9dde dataset family referenced by the paper/config; exact pinned byte listing not retrieved", "byte_hash": "NOT_ACQUIRED"},
+        "paper_specific_split": {"identity": "7:1:2 followed by merge of training and validation after tuning", "reported_counts": {"users": 31668, "items": 38048, "interactions": 1561406}, "byte_hash": "NOT_ACQUIRED"}
+      },
+      "confirmed_transformations": ["Paper states 7:1:2.", "Paper states validation is used for tuning and then training and validation are merged for test evaluation."],
+      "missing_lineage_edges": [
+        "historical provider bytes to SELFRec Yelp2018 interactions",
+        "Yelp-specific rating/filter/dedup/cold-start transformations",
+        "split unit, random permutation and seed",
+        "pre-merge train and validation membership",
+        "merge command/order and resulting file identity",
+        "paper dataset release statement to exact pinned repository bytes"
+      ],
+      "required_reconstruction_record": {
+        "source_revision": ["historical Yelp release", "SELFRec preprocessing/split source commit", "immutable processed archive/tree"],
+        "argv_and_config": ["raw selection", "filter thresholds/order", "split algorithm/seed", "validation merge command/config"],
+        "schemas": ["raw Yelp fields", "intermediate interactions", "pre-merge partitions", "post-merge train and test"],
+        "counts": ["raw and every filtered stage", "7:1:2 partitions", "post-merge train", "final unique users/items/interactions"],
+        "id_requirements": ["user/business ID maps", "index base/order", "cold-start mapping policy"],
+        "hash_requirements": ["provider archive", "filtered interactions", "ID maps", "three original partitions", "merged train", "final test"]
+      },
+      "exact_split_reconstructable_now": false,
+      "r2_m0_actions": ["Resolve this row's Yelp rights separately", "Obtain exact SELFRec dataset identity and original three-way membership", "Approve and perform deterministic merge only after central authorization", "Hash pre- and post-merge artifacts"],
+      "evidence_status": "EVIDENCE_INCOMPLETE"
+    },
+    {
+      "row_id": "E3-LIGHTGCL-YELP-UPDATED-001",
+      "layers": {
+        "canonical_raw": {"identity": "UNRESOLVED Yelp release/snapshot", "byte_hash": "NOT_ACQUIRED"},
+        "repository_processed": {"identity": "LightGCL commit 5590453ad86782f58017e58d0b698d7f32175be3 Yelp data pack", "byte_hash": "NOT_ACQUIRED"},
+        "paper_specific_split": {"identity": "UNPUBLISHED", "reported_counts": {"users": 29601, "items": 24734, "interactions": 1069128}, "byte_hash": "NOT_ACQUIRED"}
+      },
+      "confirmed_transformations": ["Paper reports the final Yelp counts and platform attribution only."],
+      "missing_lineage_edges": [
+        "provider snapshot to LightGCL updated interaction graph",
+        "rating-to-implicit conversion, time range, deduplication and filter thresholds",
+        "meaning and production of the updated pack",
+        "train/validation/test split algorithm and seed",
+        "paper count table to repository byte identity"
+      ],
+      "required_reconstruction_record": {
+        "source_revision": ["Yelp release/snapshot", "preprocessing code commit", "processed pack release/tree"],
+        "argv_and_config": ["raw file selection", "rating threshold", "filter/fixpoint order", "split algorithm/seed"],
+        "schemas": ["raw provider schema", "processed edge schema", "partition schema and ordering"],
+        "counts": ["raw", "post-dedup", "each filter pass", "train/validation/test", "final totals matching paper"],
+        "id_requirements": ["raw user/business mapping", "index ordering/base", "unknown and cold-start handling"],
+        "hash_requirements": ["provider archive", "raw members", "filtered edges", "ID maps", "all split files and membership manifest"]
+      },
+      "exact_split_reconstructable_now": false,
+      "r2_m0_actions": ["Request an author release/lineage statement for the updated pack", "Clear Yelp rights", "Acquire and materialize only after central approval", "Require counts plus hashes at every stage"],
+      "evidence_status": "EVIDENCE_INCOMPLETE"
+    },
+    {
+      "row_id": "E3-UNISREC-SCIENTIFIC-TRANS-001",
+      "layers": {
+        "canonical_raw": {"identity": "Amazon Review Data (2018), Industrial and Scientific category family; exact raw/rating/5-core and metadata-update choice unresolved", "byte_hash": "NOT_ACQUIRED"},
+        "repository_processed": {"identity": "UniSRec downstream Scientific archive linked at commit 05aa5cba2809112c32808f70d16abc61c05c6538; intermediate .text, .user2index and .item2index products described", "byte_hash": "NOT_ACQUIRED"},
+        "paper_specific_split": {"identity": "timestamp-ordered leave-one-out: final item test, penultimate validation, remainder train", "reported_counts": {"users": 8442, "items": 4385, "interactions": 59427}, "byte_hash": "NOT_ACQUIRED"}
+      },
+      "confirmed_transformations": [
+        "Use Amazon Industrial and Scientific.",
+        "Keep five-core data and filter users/items with fewer than five interactions.",
+        "Group interactions by user and sort ascending by timestamp.",
+        "Concatenate title, categories and brand for item text and truncate inputs beyond 512 tokens.",
+        "Hold out last item for test and penultimate item for validation."
+      ],
+      "missing_lineage_edges": [
+        "exact provider raw/rating/5-core and metadata revision to input bytes",
+        "whether provider five-core is consumed directly or recomputed and exact iterative filter order",
+        "review deduplication, timestamp ties, invalid/missing values and minimum-history edge cases",
+        "category normalization and title/categories/brand serialization",
+        "tokenizer/model revision and exact 512-token truncation argv/config",
+        "author downstream archive identity to documented transformation outputs"
+      ],
+      "required_reconstruction_record": {
+        "source_revision": ["exact UCSD file URLs and update revision", "preprocessing source commit", "tokenizer/text encoder identity", "archive version/host object ID"],
+        "argv_and_config": ["all preprocessing commands", "five-core/fixpoint flags", "timestamp/dedup/tie rules", "text field separator/null policy", "tokenizer and max length", "leave-one-out command"],
+        "schemas": ["raw review and metadata JSON schemas", "interaction intermediate", "clean .text", "user2index/item2index", "sequence and split schemas"],
+        "counts": ["provider raw and 5-core counts", "each filter iteration", "metadata joins/misses", "text truncation/null counts", "train/validation/test totals"],
+        "id_requirements": ["reviewerID/asin to dense indices", "ordering/base", "map serialization", "items missing metadata policy"],
+        "hash_requirements": ["raw reviews", "metadata", "filtered interactions", "clean text", "ID maps", "sequences", "train/validation/test", "downstream archive"]
+      },
+      "exact_split_reconstructable_now": false,
+      "r2_m0_actions": ["Approve exact Amazon files and rights", "Obtain author preprocessing revision/config or equivalent immutable recipe", "Materialize with per-stage counts and hashes after approval", "Compare against an author archive digest or request one"],
+      "evidence_status": "EVIDENCE_INCOMPLETE"
+    },
+    {
+      "row_id": "E3-SASREC-SCIENTIFIC-UNISREC-FRAMEWORK-001",
+      "layers": {
+        "canonical_raw": {"identity": "Amazon Review Data (2018), Industrial and Scientific category family; exact bytes unresolved for this SASRec row", "byte_hash": "NOT_ACQUIRED"},
+        "repository_processed": {"identity": "UniSRec framework Scientific downstream archive at commit 05aa5cba2809112c32808f70d16abc61c05c6538; unversioned", "byte_hash": "NOT_ACQUIRED"},
+        "paper_specific_split": {"identity": "timestamp-ordered leave-one-out sequence split", "reported_counts": {"users": 8442, "items": 4385, "interactions": 59427}, "byte_hash": "NOT_ACQUIRED"}
+      },
+      "confirmed_transformations": ["Paper provides the Scientific preprocessing narrative and leave-one-out protocol in the shared framework context."],
+      "missing_lineage_edges": [
+        "exact Amazon provider bytes to the Scientific archive",
+        "SASRec-specific dataset/config materialization receipt",
+        "filter fixpoint, deduplication, timestamp tie and short-history rules",
+        "ID mapping and sequence serialization",
+        "archive contents to the specific SASRec input paths"
+      ],
+      "required_reconstruction_record": {
+        "source_revision": ["exact UCSD raw/metadata variants", "preprocessing source commit", "UniSRec archive object identity", "SASRec config revision"],
+        "argv_and_config": ["raw selection", "filter/dedup/order rules", "leave-one-out materialization", "SASRec input adapter options"],
+        "schemas": ["raw review/metadata", "dense ID maps", "ordered sequences", "SASRec train/validation/test inputs"],
+        "counts": ["raw", "each filter pass", "mapped users/items/interactions", "sequence length distribution", "all partitions"],
+        "id_requirements": ["reviewerID/asin mappings", "map ordering/base", "unmapped and missing-metadata policy"],
+        "hash_requirements": ["raw reviews", "metadata", "filtered interactions", "ID maps", "sequences", "SASRec partitions", "archive"]
+      },
+      "exact_split_reconstructable_now": false,
+      "r2_m0_actions": ["Approve this row independently", "Obtain the exact SASRec data adapter receipt", "Materialize only after authorization", "Hash and reconcile each SASRec input without inheriting the UniSRec row's closure"],
+      "evidence_status": "EVIDENCE_INCOMPLETE"
+    },
+    {
+      "row_id": "E3-ALPHAREC-MOVIES-TV-001",
+      "layers": {
+        "canonical_raw": {"identity": "Amazon Review Data (2018), Movies and TV category family; exact raw/rating/5-core and metadata-update variants unresolved", "byte_hash": "NOT_ACQUIRED"},
+        "repository_processed": {"identity": "AlphaRec anonymous amazon_movie bundle linked at commit 4b6c6cf378f292c31dd75b09a8075e8344561415 with cf_data and item_info", "byte_hash": "NOT_ACQUIRED"},
+        "paper_specific_split": {"identity": "remove users below 20 interactions; per-user history 4:3:3; remove validation/test items unseen in train", "reported_counts": {"users": 26073, "items": 12464, "interactions": 876027}, "byte_hash": "NOT_ACQUIRED"}
+      },
+      "confirmed_transformations": [
+        "Use Amazon Movies and TV from the Ni et al. 2019 collection family.",
+        "Remove users with fewer than 20 interactions.",
+        "Split user histories 4:3:3 into train/validation/test.",
+        "Remove validation/test items that do not occur in training.",
+        "Use item title only for text; paper reports text-embedding-3-large as the default representation."
+      ],
+      "missing_lineage_edges": [
+        "exact provider review/metadata variants and update revision",
+        "implicit-feedback conversion, duplicate review and timestamp-tie handling",
+        "whether user filtering is single-pass or iterative with unseen-item removal",
+        "4:3:3 rounding, boundary and random-versus-chronological semantics",
+        "item-title normalization/null handling and API request serialization",
+        "API/model snapshot and returned-vector receipt",
+        "anonymous bundle object identity to paper preprocessing outputs"
+      ],
+      "required_reconstruction_record": {
+        "source_revision": ["exact UCSD review/metadata files", "preprocessing source commit", "AlphaRec bundle object/version", "embedding provider/model snapshot"],
+        "argv_and_config": ["interaction threshold/filter order", "dedup/timestamp order", "4:3:3 rounding/boundaries/seed", "unseen-item pass", "title normalization", "embedding request parameters"],
+        "schemas": ["raw reviews and metadata", "cf_data train/validation/test", "item_info", "ID maps", "embedding matrix and item-row alignment"],
+        "counts": ["raw", "post-user-filter", "pre/post-unseen-item removal", "all partitions", "text-null/drop counts", "embedding row/dimension counts"],
+        "id_requirements": ["reviewerID/asin maps", "dense index order/base", "item_info-to-embedding row map", "unseen/missing-title policy"],
+        "hash_requirements": ["raw reviews", "metadata", "filtered interactions", "ID maps", "all partitions", "item_info/title corpus", "embedding request manifest", "embedding matrix", "bundle archive"]
+      },
+      "exact_split_reconstructable_now": false,
+      "r2_m0_actions": ["Clear rights for raw data, title text and derived embeddings", "Identify exact provider and bundle bytes", "Approve any later API access separately", "Materialize and hash every stage only after central authorization"],
+      "evidence_status": "EVIDENCE_INCOMPLETE"
+    }
+  ],
+  "coverage": {
+    "expected_rows": 7,
+    "present_rows": 7,
+    "ordered_exactly_as_manifest": true,
+    "exact_split_reconstructable_rows": 0,
+    "rows_requiring_r2_m0": 7,
+    "status_counts": {"EVIDENCE_INCOMPLETE": 7}
+  }
+}

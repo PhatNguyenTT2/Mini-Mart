@@ -1,0 +1,231 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r2a2-handoff-1.0",
+  "lane_id": "R2-A2",
+  "material_passport": {
+    "origin_skill": "ars-codex:academic-research-suite/experiment-agent",
+    "origin_mode": "plan-evidence-only/fail-closed",
+    "origin_date": "2026-08-22T17:12:16+07:00",
+    "verification_status": "UNVERIFIED",
+    "version_label": "stage1e_rebaseline_v2_wave_g_E4_R2A2_dataset_evidence_v1",
+    "upstream_dependencies": [
+      "stage1e_rebaseline_v2_E4_R2_evidence_tracks_contract",
+      "stage1e_rebaseline_v2_E4_R2_frozen_input_manifest",
+      "stage1e_rebaseline_v2_E4_R2_evidence_gate_receipt"
+    ],
+    "repro_lock": {
+      "schema_version": "1.0",
+      "stochasticity_declaration": "LLM evidence synthesis is not byte-reproducible. Frozen inputs, loaded instruction identities, source locators, mechanical validation and final artifacts are hash-bound; no experiment or benchmark was run.",
+      "ars_version": "3.21.0",
+      "skill_package": {
+        "name": "ars-codex:academic-research-suite",
+        "adapter_version": "0.1.26",
+        "ars_suite_version": "3.21.0",
+        "suite_version_local_evidence": "skills/academic-research-suite/manifest.json and ars/README.md"
+      },
+      "model": {
+        "family": "openai",
+        "id": "gpt-5.6-sol",
+        "reasoning": "xhigh",
+        "weight_stable": false
+      },
+      "prompts": {
+        "loaded_instruction_files": [
+          {"path": "SKILL.md", "canonical_lf_bytes": 30499, "canonical_lf_sha256": "9c2cb6e3b5aad7fb747f79163b144cfbddffa85d67e2bdcc5a5fa5470252ad00"},
+          {"path": "ars/experiment-agent/WORKFLOW.md", "canonical_lf_bytes": 11555, "canonical_lf_sha256": "c89cb26ec05ed9facf80301df04ec1d892d74b5c7c68d42afbb2511a7c3268ef"},
+          {"path": "ars/experiment-agent/references/ars_integration_guide.md", "canonical_lf_bytes": 3588, "canonical_lf_sha256": "7e76dbc0b9019305d2906e9f0c9b7a24a90b9f24a357091d7816b1a5748c1303"},
+          {"path": "ars/shared/handoff_schemas.md", "canonical_lf_bytes": 93000, "canonical_lf_sha256": "c91b127d87d2370aee44f99395c5ae5e538729bead802d67bc6116fef0f841d3"}
+        ]
+      },
+      "materials": {
+        "manifest_input_count": 35,
+        "manifest_canonical_lf_sha256": "52de342742b16d036d46e1e283ecbad7e4aab4a90bd8119653195074062228a1",
+        "all_inputs_replayed": true
+      },
+      "external_protocols": {
+        "public_primary_authoritative_web_verification": true,
+        "dataset_or_source_archive_download": "NOT_USED",
+        "authenticated_provider_access": "NOT_USED",
+        "terms_acceptance": "NOT_USED"
+      },
+      "cross_model": {
+        "enabled": false,
+        "secondary_model_id": null,
+        "external_upload": false
+      }
+    },
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-22T17:12:16+07:00",
+      "declared_by": "R2-A2 evidence lane",
+      "note": "This is a lane-owned no-result declaration. No scholar-owned experiment provenance is asserted or fabricated."
+    }
+  },
+  "workflow": "ars/experiment-agent/WORKFLOW.md plan/validate discipline applied to an evidence-only, non-execution dataset rights and lineage packet",
+  "actual_model": "gpt-5.6-sol",
+  "actual_reasoning": "xhigh",
+  "frozen_contract": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r2_evidence_tracks_contract.md",
+    "canonical_lf_bytes": 13667,
+    "canonical_lf_sha256": "551a5c5c3a3fdc1dc6e58d0940c91271cf60237363dbc0275cd6547cc5318293"
+  },
+  "frozen_manifest": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r2_evidence_frozen_input_manifest.json",
+    "canonical_lf_bytes": 15978,
+    "canonical_lf_sha256": "52de342742b16d036d46e1e283ecbad7e4aab4a90bd8119653195074062228a1"
+  },
+  "entry_gate_receipt": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r2_evidence_gate_receipt.json",
+    "canonical_lf_bytes": 2651,
+    "canonical_lf_sha256": "b53603248fddd52bb560be0441978024ead3b588659c090d74be6eb209c11300",
+    "verdict": "PASS_R2_EVIDENCE_GATE_35_OF_35_READY_FOR_PARALLEL_DISPATCH"
+  },
+  "input_verification": {
+    "hash_policy": "Strict UTF-8 decode, normalize CRLF and CR to LF, encode UTF-8, then byte count and SHA-256",
+    "official_validator": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r2_evidence_gate.py",
+      "exit_code": 0,
+      "verdict": "PASS_R2_EVIDENCE_GATE_35_OF_35_READY_FOR_PARALLEL_DISPATCH",
+      "inputs_expected": 35,
+      "inputs_verified": 35,
+      "json_inputs_strict_parsed": 17
+    },
+    "independent_replay": {
+      "implementation": "PowerShell/.NET strict UTF-8 and SHA-256 with recursive duplicate and case-colliding JSON-key rejection",
+      "inputs_expected": 35,
+      "inputs_verified": 35,
+      "json_inputs_strict_parsed": 17,
+      "failures": []
+    }
+  },
+  "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence",
+  "output_hash_policy": "Strict UTF-8 decode, normalize CRLF and CR to LF, encode UTF-8, then byte count and SHA-256",
+  "required_output_set": [
+    "dataset_evidence_register.json",
+    "provider_release_rights_matrix.json",
+    "lineage_requirement_map.json",
+    "a2_handoff.json"
+  ],
+  "outputs": [
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/dataset_evidence_register.json",
+      "canonical_lf_bytes": 23596,
+      "canonical_lf_sha256": "9aecff376f90b824b1a5c10d41b6aeb47a814f163e6eab7b86c3de94f9077623",
+      "verification_status": "UNVERIFIED"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/provider_release_rights_matrix.json",
+      "canonical_lf_bytes": 16397,
+      "canonical_lf_sha256": "a78f3c0e99f63450bc656ba98b6c5f3dc9bf98c0ba1a837e63d8f3c55fef6714",
+      "verification_status": "UNVERIFIED"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/lineage_requirement_map.json",
+      "canonical_lf_bytes": 19327,
+      "canonical_lf_sha256": "7b06e825ae48caec49493aa785fb971b2d9cb054c0c007b224173c67d0ed6d85",
+      "verification_status": "UNVERIFIED"
+    }
+  ],
+  "self_artifact": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/a2_handoff.json",
+    "sha256_policy": "The exact canonical-LF byte count and SHA-256 of this self-referential handoff are reported out-of-band after final validation and commit; embedding them would change the hashed bytes."
+  },
+  "candidate_coverage": {
+    "expected_rows": 7,
+    "present_rows": 7,
+    "ordered_exactly_as_manifest": true,
+    "priority_row_id": "E3-LIGHTGCN-GOWALLA-PYTORCH-001",
+    "priority_is_selection": false,
+    "selection_cardinality": 0,
+    "status_counts": {
+      "EVIDENCE_SUFFICIENT_FOR_G1_REVIEW": 0,
+      "EVIDENCE_INCOMPLETE": 7,
+      "DISPOSITIVE_REJECT": 0
+    }
+  },
+  "authoritative_source_search": {
+    "searched_domains": [
+      "snap.stanford.edu",
+      "business.yelp.com",
+      "cseweb.ucsd.edu",
+      "arxiv.org",
+      "proceedings.iclr.cc",
+      "github.com"
+    ],
+    "source_locators": [
+      {"url": "https://snap.stanford.edu/data/loc-gowalla.html", "purpose": "SNAP Gowalla collection metadata/files/schema"},
+      {"url": "https://business.yelp.com/data/resources/open-dataset/", "purpose": "current authoritative Yelp Open Dataset availability/use statement; not used as historical release closure"},
+      {"url": "https://cseweb.ucsd.edu/~jmcauley/datasets/amazon_v2/index.html", "purpose": "Amazon Review Data (2018) provider variants, schemas, counts and update notes"},
+      {"url": "https://arxiv.org/html/2002.02126", "purpose": "LightGCN Gowalla counts and obtained train/test split provenance"},
+      {"url": "https://arxiv.org/html/2112.08679v4", "purpose": "SimGCL Yelp2018 counts and 7:1:2 protocol"},
+      {"url": "https://arxiv.org/html/2209.02544", "purpose": "XSimGCL Yelp2018 counts, merge protocol and SELFRec availability statement"},
+      {"url": "https://arxiv.org/html/2302.08191", "purpose": "LightGCL Yelp counts and platform attribution"},
+      {"url": "https://arxiv.org/html/2206.05941", "purpose": "UniSRec Scientific provider attribution, transformations, counts and leave-one-out split"},
+      {"url": "https://proceedings.iclr.cc/paper_files/paper/2025/file/e4bab1843c8d5a69f5abfd0824593493-Paper-Conference.pdf", "purpose": "AlphaRec Amazon source attribution, Movies and TV counts, filters, split and text choice"},
+      {"url": "https://github.com/gusye1234/LightGCN-PyTorch/blob/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/README.md", "purpose": "pinned processed Gowalla pack declaration"},
+      {"url": "https://github.com/Coder-Yu/QRec/tree/a141bb37cb7706b2f53b2eed5843de3269f9f37f/dataset/yelp2018", "purpose": "pinned QRec Yelp2018 train/test directory listing without opening data files"},
+      {"url": "https://github.com/Coder-Yu/SELFRec/blob/5b0229423cb1c727e85a704d63e460368c8b9dde/conf/XSimGCL.yaml", "purpose": "pinned SELFRec candidate dataset/config locator"},
+      {"url": "https://github.com/HKUDS/LightGCL/blob/5590453ad86782f58017e58d0b698d7f32175be3/README.md", "purpose": "pinned LightGCL Yelp pack locator"},
+      {"url": "https://github.com/RUCAIBox/UniSRec/blob/05aa5cba2809112c32808f70d16abc61c05c6538/README.md", "purpose": "pinned author-hosted processed Scientific artifact and intermediate-product notes"},
+      {"url": "https://github.com/LehengTHU/AlphaRec/blob/4b6c6cf378f292c31dd75b09a8075e8344561415/README.md", "purpose": "pinned anonymous processed bundle and directory layout"}
+    ],
+    "retrieval_failures": [
+      {"url": "https://business.yelp.com/data/resources/open-dataset/", "failure": "Direct page open returned HTTP 403; indexed authoritative snippet was retrievable. No download or terms acceptance was attempted.", "impact": "Current high-level statement only; historical Yelp2018 release/terms remain unresolved."},
+      {"url": "https://github.com/gusye1234/LightGCN-PyTorch/tree/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/data/gowalla", "failure": "Exact pinned directory page did not render through the public fetcher.", "impact": "Relied only on pinned README and frozen local evidence; no dataset file was opened."},
+      {"url": "https://github.com/Coder-Yu/QRec/blob/a141bb37cb7706b2f53b2eed5843de3269f9f37f/config/SimGCL.conf", "failure": "Exact pinned config page could not be retrieved; current-master config was observed but explicitly excluded from pinned closure.", "impact": "No pinned config-to-data lineage claim is closed."},
+      {"url": "https://github.com/Coder-Yu/SELFRec/tree/5b0229423cb1c727e85a704d63e460368c8b9dde/dataset", "failure": "Exact pinned dataset tree could not be retrieved.", "impact": "Processed byte identity remains unresolved."},
+      {"url": "https://github.com/HKUDS/LightGCL/tree/5590453ad86782f58017e58d0b698d7f32175be3/data", "failure": "Exact pinned data tree could not be retrieved.", "impact": "Processed byte identity remains unresolved."},
+      {"url": "https://api.github.com/repos/{owner}/{repo}/git/trees/{commit}?recursive=1", "failure": "Read-only GitHub REST tree attempts failed with a TLS/connection error for the candidate repositories.", "impact": "No REST metadata was used to close any release, hash or lineage field."}
+    ]
+  },
+  "lane_scoped_claims": [
+    "All seven candidate rows have a plausible public dataset family or repository-processed artifact, but none has complete public evidence for provider release identity, affirmative rights and the full raw-to-processed-to-split hash chain.",
+    "The Amazon rows have authoritative collection-family attribution and published transformations, but exact provider variants, mutable metadata revision, rights, processed archive identity and checksums remain unresolved.",
+    "Current Yelp educational-use availability is not a substitute for the historical Yelp2018 release and terms.",
+    "No source page supplied a provider-published checksum sufficient to bind an acquired artifact, and no dataset bytes were acquired."
+  ],
+  "limitations_and_unresolved_evidence": [
+    "No affirmative lawful research-use basis was established for the exact bytes of any row.",
+    "No exact end-to-end raw-to-processed-to-split chain is reproducible from public evidence alone.",
+    "Public web pages can verify identity statements but cannot verify inaccessible or unversioned hosted artifact bytes.",
+    "Retrieval failure is retained as failure and never replaced with a current branch, same-name dataset or another candidate row."
+  ],
+  "r2_m0_summary": {
+    "required_for_all_rows": true,
+    "actions": [
+      "Central G1 must first decide whether any row remains worth materialization; this lane selects none.",
+      "A user/data steward must review and approve exact release-specific rights and any acceptance/authentication step.",
+      "Approved acquisitions must create immutable custody, terms, schema, count, ID-map and canonical-LF/binary hash receipts.",
+      "Materialization must be deterministic and separately authorized; preprocessing, split generation and TEST remain forbidden here."
+    ]
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false
+  },
+  "forbidden_operation_flags": {
+    "git_clone": false,
+    "git_fetch": false,
+    "source_archive_download": false,
+    "dataset_download": false,
+    "authenticated_dataset_access": false,
+    "dataset_terms_accepted": false,
+    "dependency_install": false,
+    "environment_created": false,
+    "container_created_or_run": false,
+    "repository_experiment_code_run": false,
+    "preprocessing_run": false,
+    "training_run": false,
+    "evaluation_run": false,
+    "benchmark_run": false,
+    "test_set_opened": false,
+    "candidate_selected": false,
+    "pipeline_state_mutated": false,
+    "other_lane_output_mutated": false
+  },
+  "control_validator_executed": true,
+  "fail_closed": true,
+  "lane_verdict": "COMPLETE_FAIL_CLOSED_READY_FOR_CENTRAL_G1",
+  "verdict_semantics": "The four-file evidence lane is complete and may be validated/intersected by central G1. It does not make any candidate ready and authorizes no acquisition, materialization or execution."
+}
