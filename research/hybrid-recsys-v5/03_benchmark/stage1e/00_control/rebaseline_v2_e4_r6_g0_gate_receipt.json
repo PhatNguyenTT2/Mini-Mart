@@ -1,0 +1,114 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r6-g0-gate-receipt-1.0",
+  "created_at": "2026-08-23",
+  "stage_id": "R6-G0",
+  "status": "COMPLETE_CENTRALLY_VALIDATED",
+  "entry_commit": "de3fddc853f0264aebf5a6485fec1f5e43239b6f",
+  "decision": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_g0_decision_freeze.json",
+    "canonical_lf_bytes": 12890,
+    "canonical_lf_sha256": "32f7e4c82ee1ffd105d365a98306cdef2a9b21f72dd1be10113188e40bf1c5c1"
+  },
+  "frozen_input_manifest": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_g0_frozen_input_manifest.json",
+    "canonical_lf_bytes": 13959,
+    "canonical_lf_sha256": "1624a007ff5ad0326a3f426f95f1e880f7d75c00725b4c5da452eb31ec973e7b",
+    "verified_inputs": 31,
+    "expected_inputs": 31,
+    "strict_json_inputs": 19,
+    "expected_strict_json_inputs": 19
+  },
+  "validator": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_g0_gate.py",
+    "canonical_lf_bytes": 24082,
+    "canonical_lf_sha256": "ed1dd0de5468f7aba92569bcee9c5228da1d6aa9f1e5559147fd3d66748b6ef6"
+  },
+  "validation_run": {
+    "command": "python research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_g0_gate.py",
+    "exit_code": 0,
+    "passed": true,
+    "verdict": "PASS_R6_G0_FROZEN_31_OF_31_READY_FOR_R6_C1",
+    "checks_passed": 35,
+    "checks_expected": 35,
+    "failure_count": 0,
+    "direct_requirements": 20,
+    "r6_c1_exact_outputs": 5
+  },
+  "validator_correction_audit": [
+    {
+      "attempt": 1,
+      "result": "PRECHECK_EXCEPTION_NO_GATE_CHECKS_EXECUTED",
+      "cause": "The validator workspace locator selected E:/UIT/cv instead of E:/UIT/cv/backend.",
+      "correction": "Changed only the validator parent index from 6 to 5; decision and manifest bytes were unchanged."
+    },
+    {
+      "attempt": 2,
+      "result": "FAIL_34_OF_35",
+      "failure_id": "r6_c1_packet_requirements_complete",
+      "cause": "The validator searched for the generic token resource while the frozen requirement spells out CPU, memory and disk limits.",
+      "correction": "Changed only the validator fragment to the exact frozen phrase; decision and manifest bytes were unchanged."
+    },
+    {
+      "attempt": 3,
+      "result": "PASS_35_OF_35"
+    }
+  ],
+  "central_primary_source_replay": [
+    {
+      "authority": "Python Software Foundation",
+      "url": "https://www.python.org/downloads/release/python-3119/",
+      "retrieved_at": "2026-08-23",
+      "supported_facts": [
+        "Python 3.11.9 was released 2024-04-02 and is labeled the last bugfix release of Python 3.11.",
+        "The recommended Windows 64-bit installer is linked at the frozen installer URL.",
+        "The page lists MD5 e8dcd502e34932eebcaf1be056d5cbcd for that installer."
+      ]
+    },
+    {
+      "authority": "Python 3.11 official documentation",
+      "url": "https://docs.python.org/3.11/using/windows.html#installing-without-ui",
+      "retrieved_at": "2026-08-23",
+      "supported_facts": [
+        "The full Windows installer accepts /quiet and name=value unattended options.",
+        "Officially documented options include InstallAllUsers, TargetDir, PrependPath, Include_launcher, Include_pip and Include_test."
+      ]
+    }
+  ],
+  "frozen_decisions": {
+    "dataset_profile_count": 1,
+    "environment_profile_count": 1,
+    "canonical_dataset": "CURRENT_OFFICIAL_GROUPLENS_MOVIELENS_100K",
+    "environment": "CURRENT_CPU_COMPATIBLE_RECBOLE_1_2_1_PY3119_TORCH222",
+    "environment_root": "EXTERNAL_NON_GIT_IMMUTABLE_ATTEMPT",
+    "python_runtime": "OFFICIAL_CPYTHON_3_11_9_WINDOWS_AMD64_LOCAL_TARGET",
+    "recbole_data_path_resolution": "BYTE_IDENTICAL_SINGLE_INTER_FILE_BRIDGE_IN_INSTALLED_PACKAGE_PATH",
+    "recbole_source_modified": false,
+    "recbole_s3_allowed": false,
+    "historical_environment_claimed": false,
+    "historical_checksum_claimed": false
+  },
+  "gate_effect": {
+    "r6_c1_command_assembly_authorized": true,
+    "r6_c1_model": "Sol High Fast",
+    "materialization_authorized_by_this_gate_receipt": false,
+    "materialization_requires_centrally_validated_r6_c1": true,
+    "dataset_loader_invocation_authorized": false,
+    "experiment_execution_authorized": false,
+    "test_access_authorized": false,
+    "benchmark_admission_authorized": false
+  },
+  "materialization_observation": {
+    "dataset_bytes_downloaded": 0,
+    "environment_packages_downloaded": 0,
+    "environment_created": false,
+    "commands_executed": 0
+  },
+  "next_gate": "DISPATCH_R6_C1_SOL_HIGH_FAST_AND_CENTRALLY_VALIDATE_EXACT_FIVE_FILE_PACKET",
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}
