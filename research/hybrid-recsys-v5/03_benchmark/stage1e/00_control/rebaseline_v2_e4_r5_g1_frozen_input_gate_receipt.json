@@ -1,0 +1,47 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r5-g1-frozen-input-gate-receipt-1.0",
+  "created_at": "2026-08-23",
+  "stage_id": "R5-G1-FROZEN-INPUT-CENTRAL-VALIDATION",
+  "validator": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r5_g1_frozen_inputs.py",
+  "frozen_input_manifest": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r5_g1_frozen_input_manifest.json",
+  "passed": true,
+  "verdict": "PASS_R5_G1_FROZEN_23_OF_23_READY_FOR_CENTRAL_SYNTHESIS",
+  "failure_count": 0,
+  "mechanical_checks": {
+    "passed": 13,
+    "expected": 13
+  },
+  "frozen_inputs": {
+    "matched": 23,
+    "expected": 23,
+    "strict_json_verified": 18,
+    "strict_json_expected": 18
+  },
+  "candidate_state": {
+    "candidate_count": 2,
+    "source_incomplete_not_run": 2,
+    "dispositive_conflict_count": 0,
+    "benchmark_admitted_count": 0,
+    "selection_cardinality_max": 1
+  },
+  "central_model_profile": {
+    "display_name": "Sol Max Standard",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "max",
+    "service_tier": "standard"
+  },
+  "selection_boundary": {
+    "numeric_target_magnitude_used_for_selection": false,
+    "cross_candidate_fact_borrowing": false,
+    "selection_is_benchmark_admission": false,
+    "selection_authorizes_data_environment_or_run": false,
+    "positive_selection_opens_user_checkpoint_only": "R5-M2"
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}
