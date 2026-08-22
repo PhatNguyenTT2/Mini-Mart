@@ -1,0 +1,173 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r6-c1-validation-receipt-1.0",
+  "created_at": "2026-08-23",
+  "stage_id": "R6-C1",
+  "status": "COMPLETE_CENTRALLY_VALIDATED_AFTER_FAIL_CLOSED_REWORK",
+  "entry_commit": "60e51b017f5a37e9839c09e2ab014ba0f9a29b4d",
+  "entry_gate": "PASS_R6_G0_FROZEN_31_OF_31_READY_FOR_R6_C1",
+  "contract": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_c1_central_validation_contract.md",
+    "canonical_lf_bytes": 7220,
+    "canonical_lf_sha256": "3b78aeae7e7ce811c46e759edb946546909d0fc367993c76618060b85a8727f4"
+  },
+  "validator": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_c1_packet.py",
+    "canonical_lf_bytes": 45785,
+    "canonical_lf_sha256": "b895594cd3ee0159b77f853947db2bfc57e8bf71238f808001cda677078aff10"
+  },
+  "validation_run": {
+    "command": "python research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_c1_packet.py",
+    "exit_code": 0,
+    "passed": true,
+    "verdict": "PASS_R6_C1_EXACT_COMMAND_PACKET_READY_FOR_BOUNDED_R6_M0_R6_M1",
+    "checks_passed": 44,
+    "checks_expected": 44,
+    "failure_count": 0,
+    "exact_output_files": 5,
+    "strict_json_outputs": 5,
+    "literal_argv_commands": 36,
+    "dataset_commands": 8,
+    "environment_commands": 25,
+    "bridge_commands": 3,
+    "python_ast_errors": 0,
+    "powershell_parser_errors": 0,
+    "forbidden_execution_matches": 0
+  },
+  "worker": {
+    "agent_id": "01a02b25-866a-7eb0-b162-1800d5355bff",
+    "nickname": "Laplace",
+    "actual_model_profile": {
+      "display_name": "Sol High Fast",
+      "runtime_model_id": "gpt-5.6-sol",
+      "reasoning_effort": "high",
+      "service_tier": "priority"
+    },
+    "commit_created": false,
+    "proposed_commands_executed": 0,
+    "network_used": false,
+    "materialization_performed": false
+  },
+  "central_rework_history": [
+    {
+      "finding_id": "R6-C1-F001",
+      "severity": "BLOCKER",
+      "finding": "Repository source was verified before copy, but source-staging was not hash-replayed before wheel build.",
+      "resolution": "E16 now replays source and staging exactly; E17 replays staging immediately before build."
+    },
+    {
+      "finding_id": "R6-C1-F002",
+      "severity": "HARDENING",
+      "finding": "Windows PowerShell 5.1 Set-Content UTF-8 behavior was BOM-dependent.",
+      "resolution": "Text receipts are written deterministically as UTF-8 without BOM with LF newlines."
+    },
+    {
+      "finding_id": "R6-C1-F003",
+      "severity": "MAJOR",
+      "finding": "B02 argv did not equal executable plus arguments.",
+      "resolution": "All 36 records now pass exact argv recomposition."
+    },
+    {
+      "finding_id": "R6-C1-F004",
+      "severity": "BLOCKER",
+      "finding": "Compileall would create bytecode inside hash-locked source-staging.",
+      "resolution": "E24 compiles the exact staged Python bytes in memory and writes only an external receipt."
+    },
+    {
+      "finding_id": "R6-C1-F005",
+      "severity": "BLOCKER",
+      "finding": "A local setuptools build could add build metadata to its input tree.",
+      "resolution": "E17 builds from a separately verified ephemeral copy and proves source-staging remains exact post-build."
+    },
+    {
+      "finding_id": "R6-C1-F006",
+      "severity": "MAJOR",
+      "finding": "Curl could inherit a user curl configuration or proxy route.",
+      "resolution": "All five curl commands disable default config and ambient proxy routing."
+    },
+    {
+      "finding_id": "R6-C1-F007",
+      "severity": "MAJOR",
+      "finding": "Pip could inherit user configuration and PIP environment state.",
+      "resolution": "All resolution, build and install surfaces use pip isolated mode."
+    }
+  ],
+  "validator_alignment_audit": {
+    "first_post_rework_run": {
+      "result": "FAIL_39_OF_44",
+      "artifact_defects_found": 0,
+      "validator_alignment_failures": 5,
+      "failure_ids": [
+        "wheel_build_uses_verified_ephemeral_copy_and_preserves_staging",
+        "syntax_check_is_read_only_and_generates_no_bytecode",
+        "powershell_text_receipts_are_utf8_no_bom_deterministic",
+        "boundary_counts_orders_and_36_scan_entries_exact",
+        "handoff_zero_execution_and_exact_counts"
+      ]
+    },
+    "evidence": [
+      "E17 used the exact POSTBUILD status vocabulary and binary receipts rather than the validator's narrower post_build marker.",
+      "E24 wrote deterministic bytes through an exclusive binary stream rather than write_text or WriteAllText.",
+      "E20-E22 and E24 used Python binary receipt writers rather than the validator's PowerShell-specific UTF-8 API markers.",
+      "The reworked boundary schema records argv_recomposition_match instead of the original literal_argv_present field.",
+      "The reworked handoff correctly changed READY_FOR_CENTRAL_VALIDATION to READY_FOR_CENTRAL_REVALIDATION."
+    ],
+    "correction": "Only the central validator marker and field alignment was changed. The five worker artifact fingerprints were unchanged between FAIL_39_OF_44 and PASS_44_OF_44.",
+    "final_result": "PASS_44_OF_44"
+  },
+  "output_fingerprints": [
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ai/E4_R6C1_materialization_command_packet/dataset_materialization_packet.json",
+      "raw_bytes": 51905,
+      "raw_sha256": "0f2daf0f4f9441046019991549006258aa0411b5d3c439b052f457e5f75eae66",
+      "canonical_lf_bytes": 51905,
+      "canonical_lf_sha256": "0f2daf0f4f9441046019991549006258aa0411b5d3c439b052f457e5f75eae66"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ai/E4_R6C1_materialization_command_packet/environment_materialization_packet.json",
+      "raw_bytes": 171024,
+      "raw_sha256": "896fb502b7492d39fd8fd33489c1d739a04181d83a016ecf2be6d03a910cba6e",
+      "canonical_lf_bytes": 171024,
+      "canonical_lf_sha256": "896fb502b7492d39fd8fd33489c1d739a04181d83a016ecf2be6d03a910cba6e"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ai/E4_R6C1_materialization_command_packet/recbole_dataset_bridge_packet.json",
+      "raw_bytes": 20469,
+      "raw_sha256": "eb4b276a554360a24378061ba09319c540507270175bb3c083432d9cd63aa56b",
+      "canonical_lf_bytes": 20469,
+      "canonical_lf_sha256": "eb4b276a554360a24378061ba09319c540507270175bb3c083432d9cd63aa56b"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ai/E4_R6C1_materialization_command_packet/execution_boundary_and_negative_assertions.json",
+      "raw_bytes": 42087,
+      "raw_sha256": "d0c775370b3bb618d926b1b36dc79379f8ca5ebd3b8be9e9fc7cc8697ad733a6",
+      "canonical_lf_bytes": 42087,
+      "canonical_lf_sha256": "d0c775370b3bb618d926b1b36dc79379f8ca5ebd3b8be9e9fc7cc8697ad733a6"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ai/E4_R6C1_materialization_command_packet/audit_handoff.json",
+      "raw_bytes": 16739,
+      "raw_sha256": "382977df2bf8ee903e75052226954e3287e80b6de853df75ee1c2d0b2f40cfb3",
+      "canonical_lf_bytes": 16739,
+      "canonical_lf_sha256": "382977df2bf8ee903e75052226954e3287e80b6de853df75ee1c2d0b2f40cfb3"
+    }
+  ],
+  "gate_effect": {
+    "r6_m0_dataset_materialization_allowed": true,
+    "r6_m1_environment_materialization_allowed": true,
+    "r6_m0_r6_m1_may_run_independently": true,
+    "bridge_execution_allowed_before_separate_m0_m1_receipts": false,
+    "recbole_dataset_loading_allowed": false,
+    "training_allowed": false,
+    "evaluation_allowed": false,
+    "test_access_allowed": false,
+    "benchmark_admission_allowed": false
+  },
+  "next_gate": "FREEZE_R6_M0_M1_DISPATCH_AND_RUN_CENTRAL_LITERAL_ARGV_MATERIALIZATION",
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

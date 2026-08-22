@@ -2,7 +2,7 @@
   "schema_version": "stage1e-rebaseline-v2-e4-r6-c1-dispatch-1.0",
   "created_at": "2026-08-23",
   "stage_id": "R6-C1",
-  "status": "RUNNING",
+  "status": "COMPLETE_CENTRALLY_VALIDATED_AFTER_FAIL_CLOSED_REWORK",
   "entry_commit": "60e51b017f5a37e9839c09e2ab014ba0f9a29b4d",
   "entry_gate": "PASS_R6_G0_FROZEN_31_OF_31_READY_FOR_R6_C1",
   "frozen_controls": [
@@ -73,7 +73,29 @@
     "byte-identical installed-package dataset bridge",
     "machine-readable negative execution assertions"
   ],
-  "next_gate": "CENTRAL_EXACT_HASH_SCHEMA_SEMANTIC_AND_COMMAND_SAFETY_VALIDATION_BEFORE_R6_M0_R6_M1",
+  "worker_completion": {
+    "verdict": "READY_FOR_CENTRAL_REVALIDATION_OF_R6_C1_ONLY_FAIL_CLOSED",
+    "frozen_inputs_replayed": 31,
+    "strict_json_inputs_replayed": 19,
+    "output_files": 5,
+    "proposed_commands": 36,
+    "proposed_commands_executed": 0,
+    "network_used": false,
+    "materialization_performed": false,
+    "commit_created": false
+  },
+  "central_validation": {
+    "verdict": "PASS_R6_C1_EXACT_COMMAND_PACKET_READY_FOR_BOUNDED_R6_M0_R6_M1",
+    "receipt": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_c1_validation_receipt.json",
+    "checks_passed": 44,
+    "checks_expected": 44,
+    "failure_count": 0,
+    "fail_closed_findings_resolved": 7,
+    "materialization_gate_open": true,
+    "bridge_gate_open": false,
+    "experiment_execution_authorized": false
+  },
+  "next_gate": "FREEZE_R6_M0_M1_DISPATCH_AND_RUN_CENTRAL_LITERAL_ARGV_MATERIALIZATION",
   "truth_state": {
     "RESULT_STATUS": "NOT_RUN",
     "TEST_SET_OPENED": "NO",

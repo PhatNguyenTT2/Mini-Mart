@@ -1,0 +1,949 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r6-c1-execution-boundary-and-negative-assertions-1.1",
+  "created_at": "2026-08-23",
+  "stage_id": "R6-C1",
+  "packet_id": "R6-C1-EXECUTION-BOUNDARY-AND-NEGATIVE-ASSERTIONS",
+  "proposal_only": true,
+  "execution_performed": false,
+  "execution_authorized": false,
+  "cross_packet_dependency_graph": {
+    "prerequisite": "CENTRAL_VALIDATION_OF_EXACT_R6_C1_FIVE_FILE_PACKET",
+    "independent_after_prerequisite": [
+      {
+        "stage": "R6-M0",
+        "packet": "dataset_materialization_packet.json",
+        "depends_on": [
+          "CENTRAL_VALIDATION_OF_R6_C1"
+        ],
+        "scientific_execution": false
+      },
+      {
+        "stage": "R6-M1",
+        "packet": "environment_materialization_packet.json",
+        "depends_on": [
+          "CENTRAL_VALIDATION_OF_R6_C1"
+        ],
+        "scientific_execution": false
+      }
+    ],
+    "bridge": {
+      "stage": "R6-BRIDGE",
+      "packet": "recbole_dataset_bridge_packet.json",
+      "depends_on": [
+        "R6-M0_SUCCESS_WITH_INDEPENDENT_RECEIPTS",
+        "R6-M1_SUCCESS_WITH_INDEPENDENT_RECEIPTS"
+      ],
+      "may_run_in_parallel_with_m0_or_m1": false,
+      "scientific_execution": false
+    },
+    "training_evaluation_or_test_dependency_present": false
+  },
+  "command_counts": {
+    "dataset_materialization_packet": 8,
+    "environment_materialization_packet": 25,
+    "recbole_dataset_bridge_packet": 3,
+    "total": 36
+  },
+  "command_order": {
+    "dataset": [
+      "M00_CREATE_EMPTY_NON_GIT_ATTEMPT",
+      "M01_FETCH_OFFICIAL_README",
+      "M02_FETCH_OFFICIAL_CHECKSUM",
+      "M03_FETCH_OFFICIAL_ARCHIVE",
+      "M04_VERIFY_AND_PROMOTE_DOWNLOADS",
+      "M05_SAFE_EXTRACT_AND_HASH",
+      "M06_CONVERT_U_DATA_TO_RECBOLE_INTER_AND_EXPECTED_MAPS",
+      "M07_RECONCILE_RAW_TO_ATOMIC"
+    ],
+    "environment": [
+      "E00_CREATE_EXTERNAL_IMMUTABLE_ATTEMPT",
+      "E01_FETCH_OFFICIAL_CPYTHON_INSTALLER",
+      "E02_FETCH_OFFICIAL_CPYTHON_SIGSTORE",
+      "E03_VERIFY_AND_PROMOTE_CPYTHON_BOOTSTRAP",
+      "E04_INSTALL_LOCAL_CPYTHON_3119_AMD64",
+      "E05_VERIFY_EXACT_LOCAL_RUNTIME_IDENTITY",
+      "E06_VERIFY_FROZEN_SOURCE_MANIFEST",
+      "E07_CREATE_ISOLATED_VENV",
+      "E08_VERIFY_BUNDLED_PIP_24",
+      "E09_WRITE_LITERAL_PIN_FILES",
+      "E10_DOWNLOAD_TORCH_CPU_WHEEL",
+      "E11_RESOLVE_AND_DOWNLOAD_PYPI_WHEELS",
+      "E12_ASSERT_WHEEL_ONLY_CPU_CLOSURE",
+      "E13_CAPTURE_WHEEL_HASHES_AND_HASHED_REQUIREMENTS",
+      "E14_OFFLINE_RESOLUTION_REPORT",
+      "E15_INSTALL_HASHED_THIRD_PARTY_CLOSURE",
+      "E16_COPY_VERIFIED_SOURCE_TO_STAGING",
+      "E17_BUILD_LOCAL_RECBOLE_WHEEL",
+      "E18_HASH_LOCAL_RECBOLE_WHEEL",
+      "E19_INSTALL_HASHED_LOCAL_RECBOLE_WHEEL",
+      "E20_CAPTURE_PIP_CHECK",
+      "E21_CAPTURE_FROZEN_INVENTORY",
+      "E22_CAPTURE_PIP_INSPECT",
+      "E23_BOUNDED_IMPORT_AND_VERSION_CHECK",
+      "E24_BOUNDED_SYNTAX_CHECK"
+    ],
+    "bridge": [
+      "B00_RESOLVE_INSTALLED_PACKAGE_AND_REQUIRE_ABSENT_TARGET",
+      "B01_BINARY_COPY_CANONICAL_INTER_AND_WRITE_RECEIPT",
+      "B02_CONFIG_ONLY_RESOLVED_PATH_CHECK"
+    ]
+  },
+  "exact_network_allowlists": {
+    "dataset": {
+      "hosts": [
+        "files.grouplens.org"
+      ],
+      "exact_urls": [
+        "https://files.grouplens.org/datasets/movielens/ml-100k-README.txt",
+        "https://files.grouplens.org/datasets/movielens/ml-100k.zip.md5",
+        "https://files.grouplens.org/datasets/movielens/ml-100k.zip"
+      ],
+      "redirects": 0,
+      "mirrors": false,
+      "recbole_s3": false,
+      "curl_default_config_disabled": true,
+      "curl_ambient_proxy_disabled": true,
+      "required_first_options": [
+        "--disable",
+        "--proxy",
+        ""
+      ]
+    },
+    "environment": {
+      "hosts": [
+        "www.python.org",
+        "pypi.org",
+        "files.pythonhosted.org",
+        "download.pytorch.org",
+        "download-r2.pytorch.org"
+      ],
+      "exact_bootstrap_urls": [
+        "https://www.python.org/ftp/python/3.11.9/python-3.11.9-amd64.exe",
+        "https://www.python.org/ftp/python/3.11.9/python-3.11.9-amd64.exe.sigstore"
+      ],
+      "indexes": [
+        "https://pypi.org/simple",
+        "https://download.pytorch.org/whl/cpu"
+      ],
+      "other_hosts": false,
+      "curl_default_config_disabled": true,
+      "curl_ambient_proxy_disabled": true,
+      "required_first_options": [
+        "--disable",
+        "--proxy",
+        ""
+      ],
+      "pip_isolated_required": true,
+      "pip_network_indexes_explicit": true,
+      "pip_offline_no_index_preserved": true,
+      "runtime_host_allowlist_enforcement_required": true
+    },
+    "bridge": {
+      "hosts": [],
+      "urls": [],
+      "all_network_denied": true
+    }
+  },
+  "aggregate_write_roots": {
+    "future_materialization_persistent_roots": [
+      "E:\\UIT\\cv\\materialized-data\\hybrid-recsys-v5\\stage1e\\r6\\official_source\\grouplens_ml100k\\attempt-001",
+      "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001"
+    ],
+    "dataset_root": "E:\\UIT\\cv\\materialized-data\\hybrid-recsys-v5\\stage1e\\r6\\official_source\\grouplens_ml100k\\attempt-001",
+    "environment_and_bridge_root": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001",
+    "repository_materialization_writes_allowed": false,
+    "harmonized_v5_writes_allowed": false,
+    "project_v5_test_writes_allowed": false,
+    "r6_c1_worker_write_root": "E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\rebaseline_v2\\wave_ai\\E4_R6C1_materialization_command_packet",
+    "r6_c1_worker_other_writes_allowed": false,
+    "environment_immutable_source_staging_root": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\source-staging\\recbole_v1_2_1_9a6f63d",
+    "environment_ephemeral_build_source_root": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\temp\\recbole-build-source",
+    "environment_external_receipts": [
+      "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\receipts\\recbole-source-staging-verification.json",
+      "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\receipts\\recbole-ephemeral-build-source-receipt.json",
+      "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\receipts\\recbole-staging-syntax-check.json"
+    ],
+    "writes_under_immutable_source_staging_after_E16_allowed": false,
+    "ephemeral_build_outputs_confined_to_build_source": true
+  },
+  "aggregate_resource_bounds": {
+    "maximum_cpu_processes": 1,
+    "maximum_parallel_commands_per_packet": 1,
+    "aggregate_materialization_concurrency": 2,
+    "concurrency_explanation": "After central validation only, R6-M0 and R6-M1 may each run one command and may materialize independently; bridge concurrency remains one and starts only after both succeed.",
+    "dataset_maximum_resident_memory_bytes_per_process": 536870912,
+    "environment_maximum_resident_memory_bytes_per_process": 2147483648,
+    "bridge_maximum_resident_memory_bytes_per_process": 536870912,
+    "dataset_maximum_attempt_bytes": 2147483648,
+    "environment_maximum_attempt_bytes": 4294967296,
+    "bridge_maximum_copy_bytes": 104857600,
+    "maximum_single_network_timeout_seconds": 900,
+    "dataset_hard_timeout_seconds": 1800,
+    "environment_hard_timeout_seconds": 7200,
+    "bridge_hard_timeout_seconds": 360,
+    "dataset_retry_count": 0,
+    "environment_retry_count_per_network_command": 1,
+    "bridge_retry_count": 0,
+    "gpu_devices": 0,
+    "ray_workers": 0
+  },
+  "failure_cleanup_and_immutable_retry_rules": [
+    "Stop the active packet on the first nonzero exit, timeout, host, hash, signature, inventory, write-set, ambient-state or negative-scan failure; no later command runs.",
+    "Never promote a partial dataset download, extraction tree, atomic file, installer, wheel, staging tree, build-source receipt or bridge destination as successful.",
+    "E16 must replay both frozen source manifests and all 265 file hashes immediately before binary copying only that set into a previously absent staging root.",
+    "E17 must revalidate the immutable staging receipt and exact staging/source state immediately before copying to a previously absent ephemeral build source, build only from that verified copy, then replay source-staging unchanged.",
+    "Any source/staging/build-source link, junction, reparse point, non-regular file, missing or unexpected path, case collision, byte-count mismatch or SHA-256 mismatch fails closed.",
+    "No build, egg-info, __pycache__ or pyc output may appear under immutable source-staging; E24 compiles exact staged Python bytes only in memory.",
+    "E16/E17/E20/E21/E22/E24 deterministic receipts use exact venv Python and UTF-8 without BOM with LF; PowerShell 5.1 Set-Content encoding is not used.",
+    "Every curl command must retain literal first options --disable --proxy empty; every applicable pip resolve/download/build/install command must retain --isolated.",
+    "Bounded command-local partial or ephemeral files may be cleaned only by a separately validated handler inside the exact attempt root; broad recursive deletion is not authorized.",
+    "A failed dataset or environment attempt-001 is retained as failed evidence and is never repaired, merged, reused or retried in place.",
+    "A bridge failure makes the bound environment attempt ineligible and is never repaired or retried in place.",
+    "Every retry beyond the one byte-identical transient environment network retry requires a new immutable attempt identifier and renewed central validation.",
+    "No hash, checksum, URL, host, package pin, source revision, source tree, Python identity or scientific choice may change during cleanup or retry."
+  ],
+  "executable_argv_scan": {
+    "scan_scope": "Every executable plus literal argv/arguments record in all three command-bearing packets; canonical argv hash is SHA-256 of compact UTF-8 JSON with ensure_ascii=false.",
+    "rules": [
+      {
+        "rule_id": "RUN_RECBOLE",
+        "pattern": "\\brun_recbole(?:\\.py)?\\b",
+        "flags": "i"
+      },
+      {
+        "rule_id": "QUICK_START_EXECUTION",
+        "pattern": "(?:quick_start\\.(?:run_recbole|objective_function)|from\\s+recbole\\.quick_start\\s+import)",
+        "flags": "i"
+      },
+      {
+        "rule_id": "TRAINER_CONSTRUCTION",
+        "pattern": "\\bTrainer\\s*\\(",
+        "flags": "i"
+      },
+      {
+        "rule_id": "FIT_CALL",
+        "pattern": "\\.fit\\s*\\(",
+        "flags": "i"
+      },
+      {
+        "rule_id": "EVALUATE_CALL",
+        "pattern": "\\.evaluate\\s*\\(",
+        "flags": "i"
+      },
+      {
+        "rule_id": "DATASET_CONSTRUCTION",
+        "pattern": "\\bDataset\\s*\\(",
+        "flags": "i"
+      },
+      {
+        "rule_id": "CREATE_DATASET_CALL",
+        "pattern": "\\bcreate_dataset\\s*\\(",
+        "flags": "i"
+      },
+      {
+        "rule_id": "DATA_PREPARATION_CALL",
+        "pattern": "\\bdata_preparation\\s*\\(",
+        "flags": "i"
+      },
+      {
+        "rule_id": "LOAD_DATA_CALL",
+        "pattern": "\\bload_data\\s*\\(",
+        "flags": "i"
+      },
+      {
+        "rule_id": "HYPERTUNING",
+        "pattern": "\\bHyperTuning\\s*\\(",
+        "flags": "i"
+      },
+      {
+        "rule_id": "HYPEROPT",
+        "pattern": "\\bhyperopt\\b",
+        "flags": "i"
+      },
+      {
+        "rule_id": "RAY_WORKER_EXECUTION",
+        "pattern": "(?:\\btune\\.run\\s*\\(|\\bray\\.init\\s*\\(|\\bray\\s+start\\b)",
+        "flags": "i"
+      },
+      {
+        "rule_id": "DISTRIBUTED_EXECUTION",
+        "pattern": "(?:torchrun|torch\\.distributed\\.init_process_group|distributed\\.launch)",
+        "flags": "i"
+      },
+      {
+        "rule_id": "WANDB_EXECUTION",
+        "pattern": "(?:\\bwandb\\.init\\s*\\(|\\blog_wandb['\"]?\\s*[:=]\\s*true)",
+        "flags": "i"
+      },
+      {
+        "rule_id": "CHECKPOINT_OR_RESULT_RETRIEVAL",
+        "pattern": "(?:download[^\\r\\n]{0,40}(?:checkpoint|pretrained|result)|(?:checkpoint|pretrained)[^\\r\\n]{0,40}(?:http|s3))",
+        "flags": "i"
+      },
+      {
+        "rule_id": "PROJECT_V5_TEST",
+        "pattern": "(?:project[-_\\\\/]?v5[\\\\\\/][^\\r\\n]*test|harmonized[_-]?v5[\\\\\\/][^\\r\\n]*test)",
+        "flags": "i"
+      },
+      {
+        "rule_id": "BENCHMARK_ADMISSION",
+        "pattern": "(?:admit_benchmark|accept_result|paper_metric|paper_number)",
+        "flags": "i"
+      }
+    ],
+    "allowed_inert_observations_policy": "Imports alone and explicit false CPU/config flags are observations, not execution and do not waive any execution rule.",
+    "scanned_command_count": 36,
+    "rejected_command_count": 0,
+    "all_literal_argv": true,
+    "all_argv_recomposition_match": true,
+    "packet_counts": {
+      "dataset_materialization_packet": 8,
+      "environment_materialization_packet": 25,
+      "recbole_dataset_bridge_packet": 3
+    },
+    "ambient_state_static_scan": {
+      "curl_command_ids": [
+        "M01_FETCH_OFFICIAL_README",
+        "M02_FETCH_OFFICIAL_CHECKSUM",
+        "M03_FETCH_OFFICIAL_ARCHIVE",
+        "E01_FETCH_OFFICIAL_CPYTHON_INSTALLER",
+        "E02_FETCH_OFFICIAL_CPYTHON_SIGSTORE"
+      ],
+      "curl_first_options_exact": [
+        "--disable",
+        "--proxy",
+        ""
+      ],
+      "curl_first_options_verified_count": 5,
+      "curl_https_only": true,
+      "curl_redirect_count": 0,
+      "pip_resolve_download_build_install_command_ids": [
+        "E10_DOWNLOAD_TORCH_CPU_WHEEL",
+        "E11_RESOLVE_AND_DOWNLOAD_PYPI_WHEELS",
+        "E14_OFFLINE_RESOLUTION_REPORT",
+        "E15_INSTALL_HASHED_THIRD_PARTY_CLOSURE",
+        "E17_BUILD_LOCAL_RECBOLE_WHEEL",
+        "E19_INSTALL_HASHED_LOCAL_RECBOLE_WHEEL"
+      ],
+      "pip_observation_command_ids_also_isolated": [
+        "E20_CAPTURE_PIP_CHECK",
+        "E21_CAPTURE_FROZEN_INVENTORY",
+        "E22_CAPTURE_PIP_INSPECT"
+      ],
+      "pip_isolated_verified_count": 9,
+      "network_pip_indexes_explicit": true,
+      "offline_no_index_preserved": true,
+      "offline_require_hashes_preserved_where_applicable": true,
+      "verdict": "PASS_C1_F006_F007_STATIC_GUARDS"
+    },
+    "entries": [
+      {
+        "packet": "dataset_materialization_packet.json",
+        "command_id": "M00_CREATE_EMPTY_NON_GIT_ATTEMPT",
+        "executable": "powershell.exe",
+        "argv_token_count": 8,
+        "arguments_token_count": 7,
+        "argv_recomposition_match": true,
+        "argv_canonical_sha256": "3eb82ff247935f803ae5efec82dfcebd7431b19bd6e6a9c9ee082a254491a4ab",
+        "network_declared": false,
+        "forbidden_execution_matches": [],
+        "allowed_inert_observations": [],
+        "scan_verdict": "PASS"
+      },
+      {
+        "packet": "dataset_materialization_packet.json",
+        "command_id": "M01_FETCH_OFFICIAL_README",
+        "executable": "curl.exe",
+        "argv_token_count": 23,
+        "arguments_token_count": 22,
+        "argv_recomposition_match": true,
+        "argv_canonical_sha256": "2c110b3457e47c4c5890cd874703e9c2481791a04cabeef97a0da10ea8425375",
+        "network_declared": true,
+        "forbidden_execution_matches": [],
+        "allowed_inert_observations": [],
+        "scan_verdict": "PASS"
+      },
+      {
+        "packet": "dataset_materialization_packet.json",
+        "command_id": "M02_FETCH_OFFICIAL_CHECKSUM",
+        "executable": "curl.exe",
+        "argv_token_count": 23,
+        "arguments_token_count": 22,
+        "argv_recomposition_match": true,
+        "argv_canonical_sha256": "5de74ab406d50dd8f759f7f9c0c94035ded483d194c270a52e1c603561fd9013",
+        "network_declared": true,
+        "forbidden_execution_matches": [],
+        "allowed_inert_observations": [],
+        "scan_verdict": "PASS"
+      },
+      {
+        "packet": "dataset_materialization_packet.json",
+        "command_id": "M03_FETCH_OFFICIAL_ARCHIVE",
+        "executable": "curl.exe",
+        "argv_token_count": 23,
+        "arguments_token_count": 22,
+        "argv_recomposition_match": true,
+        "argv_canonical_sha256": "02b8062af9483da7a24d6b6bd82482e622e4a6013e34980165d26db99d84637e",
+        "network_declared": true,
+        "forbidden_execution_matches": [],
+        "allowed_inert_observations": [],
+        "scan_verdict": "PASS"
+      },
+      {
+        "packet": "dataset_materialization_packet.json",
+        "command_id": "M04_VERIFY_AND_PROMOTE_DOWNLOADS",
+        "executable": "powershell.exe",
+        "argv_token_count": 8,
+        "arguments_token_count": 7,
+        "argv_recomposition_match": true,
+        "argv_canonical_sha256": "07265dd4faf88cb57a98f40775a39b36f032d1ef7004ce90bd0d0f8035b8ea50",
+        "network_declared": false,
+        "forbidden_execution_matches": [],
+        "allowed_inert_observations": [],
+        "scan_verdict": "PASS"
+      },
+      {
+        "packet": "dataset_materialization_packet.json",
+        "command_id": "M05_SAFE_EXTRACT_AND_HASH",
+        "executable": "powershell.exe",
+        "argv_token_count": 8,
+        "arguments_token_count": 7,
+        "argv_recomposition_match": true,
+        "argv_canonical_sha256": "a89fbb59fcce3879157a94cc1157d6dc73a8e72d8eabffecf636c3660cc2a9c2",
+        "network_declared": false,
+        "forbidden_execution_matches": [],
+        "allowed_inert_observations": [],
+        "scan_verdict": "PASS"
+      },
+      {
+        "packet": "dataset_materialization_packet.json",
+        "command_id": "M06_CONVERT_U_DATA_TO_RECBOLE_INTER_AND_EXPECTED_MAPS",
+        "executable": "powershell.exe",
+        "argv_token_count": 8,
+        "arguments_token_count": 7,
+        "argv_recomposition_match": true,
+        "argv_canonical_sha256": "ac3c8a9caf45a685f285167c5649c5a0e9308104653b9ec2501b546699cb1c5d",
+        "network_declared": false,
+        "forbidden_execution_matches": [],
+        "allowed_inert_observations": [],
+        "scan_verdict": "PASS"
+      },
+      {
+        "packet": "dataset_materialization_packet.json",
+        "command_id": "M07_RECONCILE_RAW_TO_ATOMIC",
+        "executable": "powershell.exe",
+        "argv_token_count": 8,
+        "arguments_token_count": 7,
+        "argv_recomposition_match": true,
+        "argv_canonical_sha256": "0b901be3c27aee60e94246605ee8c6518d7cc669d19bb9087ea72739d7ad4c26",
+        "network_declared": false,
+        "forbidden_execution_matches": [],
+        "allowed_inert_observations": [],
+        "scan_verdict": "PASS"
+      },
+      {
+        "packet": "environment_materialization_packet.json",
+        "command_id": "E00_CREATE_EXTERNAL_IMMUTABLE_ATTEMPT",
+        "executable": "powershell.exe",
+        "argv_token_count": 8,
+        "arguments_token_count": 7,
+        "argv_recomposition_match": true,
+        "argv_canonical_sha256": "90e4f462b8487d770cad5189597bc313367858a5fb12f455abef122629e4e005",
+        "network_declared": false,
+        "forbidden_execution_matches": [],
+        "allowed_inert_observations": [],
+        "scan_verdict": "PASS"
+      },
+      {
+        "packet": "environment_materialization_packet.json",
+        "command_id": "E01_FETCH_OFFICIAL_CPYTHON_INSTALLER",
+        "executable": "curl.exe",
+        "argv_token_count": 23,
+        "arguments_token_count": 22,
+        "argv_recomposition_match": true,
+        "argv_canonical_sha256": "2233fd87201b706c0fed55f551733fa470c2a563c7c6071c320697463b4475f7",
+        "network_declared": true,
+        "forbidden_execution_matches": [],
+        "allowed_inert_observations": [],
+        "scan_verdict": "PASS"
+      },
+      {
+        "packet": "environment_materialization_packet.json",
+        "command_id": "E02_FETCH_OFFICIAL_CPYTHON_SIGSTORE",
+        "executable": "curl.exe",
+        "argv_token_count": 23,
+        "arguments_token_count": 22,
+        "argv_recomposition_match": true,
+        "argv_canonical_sha256": "3a334baadffd607c0c1872b8894b71c2f715c4a3f4f635e94d0427968d7b412e",
+        "network_declared": true,
+        "forbidden_execution_matches": [],
+        "allowed_inert_observations": [],
+        "scan_verdict": "PASS"
+      },
+      {
+        "packet": "environment_materialization_packet.json",
+        "command_id": "E03_VERIFY_AND_PROMOTE_CPYTHON_BOOTSTRAP",
+        "executable": "powershell.exe",
+        "argv_token_count": 8,
+        "arguments_token_count": 7,
+        "argv_recomposition_match": true,
+        "argv_canonical_sha256": "9d20e4297e885d54cc11da963c5b7e6dbe758a61b46494f2386e4c92d8f34b99",
+        "network_declared": false,
+        "forbidden_execution_matches": [],
+        "allowed_inert_observations": [],
+        "scan_verdict": "PASS"
+      },
+      {
+        "packet": "environment_materialization_packet.json",
+        "command_id": "E04_INSTALL_LOCAL_CPYTHON_3119_AMD64",
+        "executable": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\downloads\\python-3.11.9-amd64.exe",
+        "argv_token_count": 18,
+        "arguments_token_count": 17,
+        "argv_recomposition_match": true,
+        "argv_canonical_sha256": "681e30f75d61cc322a924f7319a5a156574e8477a962141ac69dd151406e1324",
+        "network_declared": false,
+        "forbidden_execution_matches": [],
+        "allowed_inert_observations": [],
+        "scan_verdict": "PASS"
+      },
+      {
+        "packet": "environment_materialization_packet.json",
+        "command_id": "E05_VERIFY_EXACT_LOCAL_RUNTIME_IDENTITY",
+        "executable": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\runtime\\python.exe",
+        "argv_token_count": 3,
+        "arguments_token_count": 2,
+        "argv_recomposition_match": true,
+        "argv_canonical_sha256": "18af6bf9f98b2b9744446f0034a6ac8e14fa74c11e10d6bcb6365c07fa642022",
+        "network_declared": false,
+        "forbidden_execution_matches": [],
+        "allowed_inert_observations": [],
+        "scan_verdict": "PASS"
+      },
+      {
+        "packet": "environment_materialization_packet.json",
+        "command_id": "E06_VERIFY_FROZEN_SOURCE_MANIFEST",
+        "executable": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\runtime\\python.exe",
+        "argv_token_count": 3,
+        "arguments_token_count": 2,
+        "argv_recomposition_match": true,
+        "argv_canonical_sha256": "2dd8de86f43a239780f21d91000815017113ad137b62b11f2e230bd7d99ab3a7",
+        "network_declared": false,
+        "forbidden_execution_matches": [],
+        "allowed_inert_observations": [],
+        "scan_verdict": "PASS"
+      },
+      {
+        "packet": "environment_materialization_packet.json",
+        "command_id": "E07_CREATE_ISOLATED_VENV",
+        "executable": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\runtime\\python.exe",
+        "argv_token_count": 4,
+        "arguments_token_count": 3,
+        "argv_recomposition_match": true,
+        "argv_canonical_sha256": "b58d05934b9e45842a31f406ad1a24a90c0dd2adeb37dc7df9cb50b62999be62",
+        "network_declared": false,
+        "forbidden_execution_matches": [],
+        "allowed_inert_observations": [],
+        "scan_verdict": "PASS"
+      },
+      {
+        "packet": "environment_materialization_packet.json",
+        "command_id": "E08_VERIFY_BUNDLED_PIP_24",
+        "executable": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv\\Scripts\\python.exe",
+        "argv_token_count": 3,
+        "arguments_token_count": 2,
+        "argv_recomposition_match": true,
+        "argv_canonical_sha256": "220970d59f1898e9041c6eb27758d8913ea2075f363937e5ed89148b8b31fe75",
+        "network_declared": false,
+        "forbidden_execution_matches": [],
+        "allowed_inert_observations": [],
+        "scan_verdict": "PASS"
+      },
+      {
+        "packet": "environment_materialization_packet.json",
+        "command_id": "E09_WRITE_LITERAL_PIN_FILES",
+        "executable": "powershell.exe",
+        "argv_token_count": 5,
+        "arguments_token_count": 4,
+        "argv_recomposition_match": true,
+        "argv_canonical_sha256": "e5d5f5614f3afce06e123ba1c5adc24a251b26e09716718936b400eb686c2658",
+        "network_declared": false,
+        "forbidden_execution_matches": [],
+        "allowed_inert_observations": [],
+        "scan_verdict": "PASS"
+      },
+      {
+        "packet": "environment_materialization_packet.json",
+        "command_id": "E10_DOWNLOAD_TORCH_CPU_WHEEL",
+        "executable": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv\\Scripts\\python.exe",
+        "argv_token_count": 21,
+        "arguments_token_count": 20,
+        "argv_recomposition_match": true,
+        "argv_canonical_sha256": "d186cf368f182cbaa0831e179f9048163c02802edce6e79b00389306b6526598",
+        "network_declared": true,
+        "forbidden_execution_matches": [],
+        "allowed_inert_observations": [],
+        "scan_verdict": "PASS"
+      },
+      {
+        "packet": "environment_materialization_packet.json",
+        "command_id": "E11_RESOLVE_AND_DOWNLOAD_PYPI_WHEELS",
+        "executable": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv\\Scripts\\python.exe",
+        "argv_token_count": 24,
+        "arguments_token_count": 23,
+        "argv_recomposition_match": true,
+        "argv_canonical_sha256": "a207f7ab1dd3a1fae768dd5a027c1803aeb771348bc3c9ff0367bed9e19016ca",
+        "network_declared": true,
+        "forbidden_execution_matches": [],
+        "allowed_inert_observations": [],
+        "scan_verdict": "PASS"
+      },
+      {
+        "packet": "environment_materialization_packet.json",
+        "command_id": "E12_ASSERT_WHEEL_ONLY_CPU_CLOSURE",
+        "executable": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv\\Scripts\\python.exe",
+        "argv_token_count": 3,
+        "arguments_token_count": 2,
+        "argv_recomposition_match": true,
+        "argv_canonical_sha256": "d12be54e8af7a3f2aa20425f54a5b91295b51c4e5b680bb5c225b69692b84ba2",
+        "network_declared": false,
+        "forbidden_execution_matches": [],
+        "allowed_inert_observations": [],
+        "scan_verdict": "PASS"
+      },
+      {
+        "packet": "environment_materialization_packet.json",
+        "command_id": "E13_CAPTURE_WHEEL_HASHES_AND_HASHED_REQUIREMENTS",
+        "executable": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv\\Scripts\\python.exe",
+        "argv_token_count": 3,
+        "arguments_token_count": 2,
+        "argv_recomposition_match": true,
+        "argv_canonical_sha256": "3c25ff0b852fb15a5ae59e7f5167acc587e468c0dca8708dfbee8341320867d2",
+        "network_declared": false,
+        "forbidden_execution_matches": [],
+        "allowed_inert_observations": [],
+        "scan_verdict": "PASS"
+      },
+      {
+        "packet": "environment_materialization_packet.json",
+        "command_id": "E14_OFFLINE_RESOLUTION_REPORT",
+        "executable": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv\\Scripts\\python.exe",
+        "argv_token_count": 17,
+        "arguments_token_count": 16,
+        "argv_recomposition_match": true,
+        "argv_canonical_sha256": "43a9da34b8c37da1cf655b15541d24b00c620514b2d9c39598ce9eb284848451",
+        "network_declared": false,
+        "forbidden_execution_matches": [],
+        "allowed_inert_observations": [],
+        "scan_verdict": "PASS"
+      },
+      {
+        "packet": "environment_materialization_packet.json",
+        "command_id": "E15_INSTALL_HASHED_THIRD_PARTY_CLOSURE",
+        "executable": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv\\Scripts\\python.exe",
+        "argv_token_count": 14,
+        "arguments_token_count": 13,
+        "argv_recomposition_match": true,
+        "argv_canonical_sha256": "191b9a06cb5554b9a48bd7ba223892ce4e7500121c0a3d017a574a042a58652f",
+        "network_declared": false,
+        "forbidden_execution_matches": [],
+        "allowed_inert_observations": [],
+        "scan_verdict": "PASS"
+      },
+      {
+        "packet": "environment_materialization_packet.json",
+        "command_id": "E16_COPY_VERIFIED_SOURCE_TO_STAGING",
+        "executable": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv\\Scripts\\python.exe",
+        "argv_token_count": 4,
+        "arguments_token_count": 3,
+        "argv_recomposition_match": true,
+        "argv_canonical_sha256": "df296aced98a2b3ea8ad6884ac2fc24356f3034ab48fec910047d66436f7dd4d",
+        "network_declared": false,
+        "forbidden_execution_matches": [],
+        "allowed_inert_observations": [],
+        "scan_verdict": "PASS"
+      },
+      {
+        "packet": "environment_materialization_packet.json",
+        "command_id": "E17_BUILD_LOCAL_RECBOLE_WHEEL",
+        "executable": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv\\Scripts\\python.exe",
+        "argv_token_count": 4,
+        "arguments_token_count": 3,
+        "argv_recomposition_match": true,
+        "argv_canonical_sha256": "9c35c0e61a988c33badac952e6b10289332321bb212af562c53c5c71ed2a57c9",
+        "network_declared": false,
+        "forbidden_execution_matches": [],
+        "allowed_inert_observations": [],
+        "scan_verdict": "PASS"
+      },
+      {
+        "packet": "environment_materialization_packet.json",
+        "command_id": "E18_HASH_LOCAL_RECBOLE_WHEEL",
+        "executable": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv\\Scripts\\python.exe",
+        "argv_token_count": 4,
+        "arguments_token_count": 3,
+        "argv_recomposition_match": true,
+        "argv_canonical_sha256": "cfdb8dc7d010558a85419383cd38822305aa5b0b6ec2be4b7c3c966fa89e88bc",
+        "network_declared": false,
+        "forbidden_execution_matches": [],
+        "allowed_inert_observations": [],
+        "scan_verdict": "PASS"
+      },
+      {
+        "packet": "environment_materialization_packet.json",
+        "command_id": "E19_INSTALL_HASHED_LOCAL_RECBOLE_WHEEL",
+        "executable": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv\\Scripts\\python.exe",
+        "argv_token_count": 12,
+        "arguments_token_count": 11,
+        "argv_recomposition_match": true,
+        "argv_canonical_sha256": "eb73da5a7284df735a209516f532d928bbc38e42d5fc29aa9c1a0e6c9d53205a",
+        "network_declared": false,
+        "forbidden_execution_matches": [],
+        "allowed_inert_observations": [],
+        "scan_verdict": "PASS"
+      },
+      {
+        "packet": "environment_materialization_packet.json",
+        "command_id": "E20_CAPTURE_PIP_CHECK",
+        "executable": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv\\Scripts\\python.exe",
+        "argv_token_count": 4,
+        "arguments_token_count": 3,
+        "argv_recomposition_match": true,
+        "argv_canonical_sha256": "34e1972d7e7cba34786a015518bd41af4ea94134f782301110cb11de7e3ac71d",
+        "network_declared": false,
+        "forbidden_execution_matches": [],
+        "allowed_inert_observations": [],
+        "scan_verdict": "PASS"
+      },
+      {
+        "packet": "environment_materialization_packet.json",
+        "command_id": "E21_CAPTURE_FROZEN_INVENTORY",
+        "executable": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv\\Scripts\\python.exe",
+        "argv_token_count": 4,
+        "arguments_token_count": 3,
+        "argv_recomposition_match": true,
+        "argv_canonical_sha256": "179fec68af2c92584315cecd1745286be6081a1c37bbe7b51c99a8ec86467bf5",
+        "network_declared": false,
+        "forbidden_execution_matches": [],
+        "allowed_inert_observations": [],
+        "scan_verdict": "PASS"
+      },
+      {
+        "packet": "environment_materialization_packet.json",
+        "command_id": "E22_CAPTURE_PIP_INSPECT",
+        "executable": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv\\Scripts\\python.exe",
+        "argv_token_count": 4,
+        "arguments_token_count": 3,
+        "argv_recomposition_match": true,
+        "argv_canonical_sha256": "671009967cfdcddc2e16cb19643fb03db502df1a1822d50f84eb61e001ef4f44",
+        "network_declared": false,
+        "forbidden_execution_matches": [],
+        "allowed_inert_observations": [],
+        "scan_verdict": "PASS"
+      },
+      {
+        "packet": "environment_materialization_packet.json",
+        "command_id": "E23_BOUNDED_IMPORT_AND_VERSION_CHECK",
+        "executable": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv\\Scripts\\python.exe",
+        "argv_token_count": 3,
+        "arguments_token_count": 2,
+        "argv_recomposition_match": true,
+        "argv_canonical_sha256": "93cb44727894481a3eab64801d29ba308c8081bdabb07fce2eb21aedb355b7bd",
+        "network_declared": false,
+        "forbidden_execution_matches": [],
+        "allowed_inert_observations": [
+          "IMPORT_ONLY_RECOBole_QUICK_START_TRAINER_EVALUATOR_AND_RAY_TUNE"
+        ],
+        "scan_verdict": "PASS"
+      },
+      {
+        "packet": "environment_materialization_packet.json",
+        "command_id": "E24_BOUNDED_SYNTAX_CHECK",
+        "executable": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv\\Scripts\\python.exe",
+        "argv_token_count": 4,
+        "arguments_token_count": 3,
+        "argv_recomposition_match": true,
+        "argv_canonical_sha256": "06f26cfb140c60bec5b4045df0abee682259015842b30b38d8f8fb85f60d8f42",
+        "network_declared": false,
+        "forbidden_execution_matches": [],
+        "allowed_inert_observations": [],
+        "scan_verdict": "PASS"
+      },
+      {
+        "packet": "recbole_dataset_bridge_packet.json",
+        "command_id": "B00_RESOLVE_INSTALLED_PACKAGE_AND_REQUIRE_ABSENT_TARGET",
+        "executable": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv\\Scripts\\python.exe",
+        "argv_token_count": 4,
+        "arguments_token_count": 3,
+        "argv_recomposition_match": true,
+        "argv_canonical_sha256": "ec6f0669629c4cd4b4be9bdb5f297538a2dc8fedbed22786724a6740e77d72f8",
+        "network_declared": false,
+        "forbidden_execution_matches": [],
+        "allowed_inert_observations": [],
+        "scan_verdict": "PASS"
+      },
+      {
+        "packet": "recbole_dataset_bridge_packet.json",
+        "command_id": "B01_BINARY_COPY_CANONICAL_INTER_AND_WRITE_RECEIPT",
+        "executable": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv\\Scripts\\python.exe",
+        "argv_token_count": 4,
+        "arguments_token_count": 3,
+        "argv_recomposition_match": true,
+        "argv_canonical_sha256": "12377485dae93bd354da8830a0967c2e82b7bba196594e908f67e0e6caabe7fe",
+        "network_declared": false,
+        "forbidden_execution_matches": [],
+        "allowed_inert_observations": [],
+        "scan_verdict": "PASS"
+      },
+      {
+        "packet": "recbole_dataset_bridge_packet.json",
+        "command_id": "B02_CONFIG_ONLY_RESOLVED_PATH_CHECK",
+        "executable": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv\\Scripts\\python.exe",
+        "argv_token_count": 4,
+        "arguments_token_count": 3,
+        "argv_recomposition_match": true,
+        "argv_canonical_sha256": "6809acfe9a857a11f39d00769b2e9e913e2e0a88baf30b46febbb8217daa5627",
+        "network_declared": false,
+        "forbidden_execution_matches": [],
+        "allowed_inert_observations": [
+          "WANDB_EXPLICIT_FALSE_CONFIG_ONLY"
+        ],
+        "scan_verdict": "PASS"
+      }
+    ],
+    "verdict": "PASS_36_OF_36_ARGV_RECOMPOSITION_AND_NO_FORBIDDEN_EXECUTION_SURFACE"
+  },
+  "negative_assertions": {
+    "no_run_recbole": true,
+    "no_quick_start_execution": true,
+    "no_trainer_construction": true,
+    "no_fit": true,
+    "no_evaluate": true,
+    "no_dataset_or_create_dataset_construction": true,
+    "no_loader_construction": true,
+    "no_split_generation": true,
+    "no_metric_calculation": true,
+    "no_hyper_tuning_or_hyperopt": true,
+    "no_ray_workers_or_distributed_execution": true,
+    "no_wandb_execution": true,
+    "no_checkpoint_pretrained_or_result_retrieval": true,
+    "no_project_v5_test_discovery_path_access_or_loading": true,
+    "no_benchmark_admission_result_acceptance_or_paper_number_generation": true,
+    "no_recbole_s3_access": true,
+    "no_ambient_curl_config": true,
+    "no_ambient_curl_proxy_route": true,
+    "no_nonisolated_pip_resolution_download_build_or_install": true,
+    "no_unapproved_pip_index_or_host": true,
+    "no_unverified_source_staging_build": true,
+    "no_wheel_build_directly_from_immutable_staging": true,
+    "no_build_egg_info_pycache_or_pyc_write_under_immutable_staging": true,
+    "no_compileall": true,
+    "no_syntax_check_staging_write": true,
+    "no_powershell_51_dependent_utf8_receipt_write": true,
+    "no_source_or_destination_link_junction_reparse_or_nonregular_file": true
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "authorization_effect": {
+    "central_validation_only": true,
+    "authorized_next_action": "CENTRAL_VALIDATION_OF_R6_C1",
+    "materialization_authorized_by_this_artifact": false,
+    "bridge_execution_authorized": false,
+    "experiment_execution_authorized": false
+  },
+  "central_fail_closed_rework": {
+    "status": "C1_F001_THROUGH_C1_F007_REWORKED_PENDING_CENTRAL_REVALIDATION",
+    "command_counts_preserved": {
+      "dataset": 8,
+      "environment": 25,
+      "bridge": 3,
+      "total": 36
+    },
+    "findings": [
+      {
+        "id": "C1-F001",
+        "affected_commands": [
+          "E16_COPY_VERIFIED_SOURCE_TO_STAGING",
+          "E17_BUILD_LOCAL_RECBOLE_WHEEL",
+          "E18_HASH_LOCAL_RECBOLE_WHEEL"
+        ],
+        "closure": "Exact source/tree manifest replay, exact 265-file binary staging copy and destination replay, deterministic external staging receipt, and immediate E17 fail-closed replay."
+      },
+      {
+        "id": "C1-F002",
+        "affected_commands": [
+          "E20_CAPTURE_PIP_CHECK",
+          "E21_CAPTURE_FROZEN_INVENTORY",
+          "E22_CAPTURE_PIP_INSPECT",
+          "E24_BOUNDED_SYNTAX_CHECK"
+        ],
+        "closure": "Exact venv Python writes deterministic UTF-8-no-BOM LF receipts; PowerShell Set-Content receipt encoding removed."
+      },
+      {
+        "id": "C1-F003",
+        "affected_commands": [
+          "B02_CONFIG_ONLY_RESOLVED_PATH_CHECK"
+        ],
+        "closure": "All 36 records satisfy argv == [executable] + arguments exactly."
+      },
+      {
+        "id": "C1-F004",
+        "affected_commands": [
+          "E24_BOUNDED_SYNTAX_CHECK"
+        ],
+        "closure": "Exact 150-file staged Python inventory, in-memory compile only, no compileall/pyc/__pycache__, external deterministic receipt."
+      },
+      {
+        "id": "C1-F005",
+        "affected_commands": [
+          "E17_BUILD_LOCAL_RECBOLE_WHEEL",
+          "E18_HASH_LOCAL_RECBOLE_WHEEL"
+        ],
+        "closure": "Previously absent exact 265-file ephemeral build-source copy, wheel built only from it, then immutable staging exact replay with no build artifacts."
+      },
+      {
+        "id": "C1-F006",
+        "affected_commands": [
+          "M01_FETCH_OFFICIAL_README",
+          "M02_FETCH_OFFICIAL_CHECKSUM",
+          "M03_FETCH_OFFICIAL_ARCHIVE",
+          "E01_FETCH_OFFICIAL_CPYTHON_INSTALLER",
+          "E02_FETCH_OFFICIAL_CPYTHON_SIGSTORE"
+        ],
+        "closure": "Each curl argv begins with --disable --proxy empty while exact HTTPS URLs and zero redirects remain."
+      },
+      {
+        "id": "C1-F007",
+        "affected_commands": [
+          "E10_DOWNLOAD_TORCH_CPU_WHEEL",
+          "E11_RESOLVE_AND_DOWNLOAD_PYPI_WHEELS",
+          "E14_OFFLINE_RESOLUTION_REPORT",
+          "E15_INSTALL_HASHED_THIRD_PARTY_CLOSURE",
+          "E17_BUILD_LOCAL_RECBOLE_WHEEL",
+          "E19_INSTALL_HASHED_LOCAL_RECBOLE_WHEEL",
+          "E20_CAPTURE_PIP_CHECK",
+          "E21_CAPTURE_FROZEN_INVENTORY",
+          "E22_CAPTURE_PIP_INSPECT"
+        ],
+        "closure": "Every applicable pip CLI uses --isolated; explicit online indexes and offline no-index/hash boundaries remain."
+      }
+    ],
+    "scientific_boundary_expanded": false,
+    "proposed_commands_executed": 0,
+    "network_used_for_rework": false
+  },
+  "static_validation_summary": {
+    "strict_json_files_expected": 5,
+    "strict_json_files_parsed_before_final_hash_capture": 5,
+    "python_inline_scripts_ast_parsed": 16,
+    "powershell_command_scripts_parsed": 8,
+    "command_records_scanned": 36,
+    "argv_recomposition_passed": 36,
+    "proposed_commands_executed": 0,
+    "syntax_result": "PASS_STATIC_PARSE_ONLY"
+  }
+}

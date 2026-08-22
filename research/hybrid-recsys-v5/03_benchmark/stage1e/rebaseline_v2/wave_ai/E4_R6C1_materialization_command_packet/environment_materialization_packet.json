@@ -1,0 +1,1581 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r6-c1-environment-materialization-packet-1.0",
+  "created_at": "2026-08-23",
+  "stage_id": "R6-C1",
+  "packet_id": "R6-C1-ENVIRONMENT-MATERIALIZATION-PACKET",
+  "proposal_only": true,
+  "execution_performed": false,
+  "execution_authorized": false,
+  "assembly_semantics": "MECHANICAL_REBASE_OF_ACCEPTED_R6_E1_PACKET_TO_FROZEN_EXTERNAL_ATTEMPT_ROOT_WITH_FROZEN_G0_CPYTHON_BOOTSTRAP_PREPENDED",
+  "source_provenance": {
+    "central_commit": "60e51b017f5a37e9839c09e2ab014ba0f9a29b4d",
+    "r6_e1_command_source_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ah/E4_R6E1_recbole_environment_closure/environment_command_proposal.json",
+    "r6_e1_command_source_raw_sha256": "0f603b15b4b2f34a06c8821b672b0c7a44157231a13e2a397ca1225ce18dd34b",
+    "r6_e1_lock_source_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ah/E4_R6E1_recbole_environment_closure/environment_lock_proposal.json",
+    "r6_e1_lock_source_raw_sha256": "c9814a370583f6b90dc7be116c39fdaf0c2e09abf0beacdc675d73492be192fd"
+  },
+  "environment_profile": {
+    "profile_id": "RECBOLE-1.2.1-9A6F63D-WIN-AMD64-PY3119-TORCH222-CPU-R6-1.0",
+    "attempt_root": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001",
+    "runtime_root": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\runtime",
+    "venv_root": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv",
+    "receipt_root": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\receipts",
+    "exact_runtime_python": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\runtime\\python.exe",
+    "venv_python": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv\\Scripts\\python.exe",
+    "system_python_3_11_3_reuse_allowed": false,
+    "py_launcher_resolution_used": false,
+    "retry_policy": "Never repair or reuse attempt-001; a failed retry receives a new immutable attempt identifier."
+  },
+  "cpython_bootstrap": {
+    "release_page": "https://www.python.org/downloads/release/python-3119/",
+    "installer_url": "https://www.python.org/ftp/python/3.11.9/python-3.11.9-amd64.exe",
+    "sigstore_url": "https://www.python.org/ftp/python/3.11.9/python-3.11.9-amd64.exe.sigstore",
+    "official_page_expected_md5": "e8dcd502e34932eebcaf1be056d5cbcd",
+    "local_sha256_resolution_stage": "R6-M1_LOCAL_BYTE_REPLAY",
+    "authenticode_status_required": "Valid",
+    "runtime_identity": {
+      "implementation": "CPython",
+      "version": "3.11.9",
+      "bitness": 64,
+      "sys_platform": "win32",
+      "required_binary_tag": "cp311-cp311-win_amd64"
+    }
+  },
+  "exact_direct_requirements": [
+    "pip==24.0",
+    "setuptools==69.5.1",
+    "wheel==0.43.0",
+    "torch==2.2.2+cpu",
+    "numpy==1.26.4",
+    "scipy==1.11.4",
+    "pandas==2.1.4",
+    "scikit-learn==1.3.2",
+    "PyYAML==6.0.2",
+    "tqdm==4.66.5",
+    "colorlog==4.7.2",
+    "colorama==0.4.4",
+    "texttable==1.7.0",
+    "tensorboard==2.15.2",
+    "ray==2.6.3",
+    "thop==0.1.1.post2207130030",
+    "tabulate==0.9.0",
+    "plotly==5.18.0",
+    "psutil==5.9.8",
+    "recbole==1.2.1+local.9a6f63d"
+  ],
+  "direct_requirement_count": 20,
+  "recbole_source_lock": {
+    "installed_distribution_version": "1.2.1",
+    "profile_requirement_label": "recbole==1.2.1+local.9a6f63d",
+    "revision": "9a6f63d8d4a5b989fe27955a833f813a6d86041e",
+    "git_tree": "08915121fea069a30f7e3e97a72e16e7e76d43c6",
+    "installation_source": "HASH_LOCKED_LOCAL_SOURCE_WHEEL_ONLY",
+    "pypi_recbole_allowed": false,
+    "editable_install_allowed": false,
+    "source_modification_allowed": false
+  },
+  "network_allowlist": {
+    "policy": "Only the exact hosts below over HTTPS; redirect targets must remain on this list and the two CPython fetches permit zero redirects.",
+    "hosts": [
+      "www.python.org",
+      "pypi.org",
+      "files.pythonhosted.org",
+      "download.pytorch.org",
+      "download-r2.pytorch.org"
+    ],
+    "exact_bootstrap_urls": [
+      "https://www.python.org/ftp/python/3.11.9/python-3.11.9-amd64.exe",
+      "https://www.python.org/ftp/python/3.11.9/python-3.11.9-amd64.exe.sigstore"
+    ],
+    "indexes": [
+      "https://pypi.org/simple",
+      "https://download.pytorch.org/whl/cpu"
+    ],
+    "other_hosts_allowed": false,
+    "ambient_curl_config_allowed": false,
+    "ambient_proxy_allowed": false,
+    "curl_required_prefix": [
+      "--disable",
+      "--proxy",
+      ""
+    ],
+    "pip_isolated_required": true,
+    "pip_ambient_index_or_config_allowed": false
+  },
+  "preconditions": [
+    "Exact central commit and R6-G0 frozen-input replay pass.",
+    "The external attempt-001 root is absent and no existing parent is a reparse point.",
+    "A later central validation has authorized R6-M1 environment materialization; this packet alone does not.",
+    "Frozen source revision, tree, selected file sizes and SHA-256 values replay exactly.",
+    "No system Python, py.exe resolution, source edit, PyPI RecBole, unpinned VCS, sdist, CUDA or tuning fallback is permitted.",
+    "E16 and E17 must replay both frozen manifests, the exact selected payload, and the deterministic staging receipt before any local RecBole wheel build."
+  ],
+  "command_groups": [
+    {
+      "group": "official_cpython_bootstrap",
+      "commands": [
+        {
+          "id": "E00_CREATE_EXTERNAL_IMMUTABLE_ATTEMPT",
+          "executable": "powershell.exe",
+          "arguments": [
+            "-NoLogo",
+            "-NoProfile",
+            "-NonInteractive",
+            "-ExecutionPolicy",
+            "Bypass",
+            "-Command",
+            "$ErrorActionPreference='Stop'; $repo=[IO.Path]::GetFullPath('E:\\UIT\\cv\\backend'); $root=[IO.Path]::GetFullPath('E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001'); if($root.StartsWith($repo+[IO.Path]::DirectorySeparatorChar,[StringComparison]::OrdinalIgnoreCase)){throw 'WRITE_ROOT_INSIDE_REPOSITORY'}; if(Test-Path -LiteralPath $root){throw 'ATTEMPT_ROOT_ALREADY_EXISTS'}; $probe=Split-Path -Parent $root; while($probe -and (Test-Path -LiteralPath $probe)){if(((Get-Item -LiteralPath $probe -Force).Attributes -band [IO.FileAttributes]::ReparsePoint) -ne 0){throw ('REPARSE_PARENT:'+$probe)}; $next=Split-Path -Parent $probe; if($next -eq $probe){break}; $probe=$next}; @('downloads','receipts','receipts\\http','runtime','wheelhouse','local-wheel','source-staging','temp') | ForEach-Object {[IO.Directory]::CreateDirectory((Join-Path $root $_))|Out-Null}"
+          ],
+          "working_directory": "E:\\UIT\\cv\\backend",
+          "timeout_seconds": 60,
+          "network": false,
+          "writes": [
+            "downloads/",
+            "receipts/",
+            "receipts/http/",
+            "runtime/",
+            "wheelhouse/",
+            "local-wheel/",
+            "source-staging/",
+            "temp/"
+          ],
+          "argv": [
+            "powershell.exe",
+            "-NoLogo",
+            "-NoProfile",
+            "-NonInteractive",
+            "-ExecutionPolicy",
+            "Bypass",
+            "-Command",
+            "$ErrorActionPreference='Stop'; $repo=[IO.Path]::GetFullPath('E:\\UIT\\cv\\backend'); $root=[IO.Path]::GetFullPath('E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001'); if($root.StartsWith($repo+[IO.Path]::DirectorySeparatorChar,[StringComparison]::OrdinalIgnoreCase)){throw 'WRITE_ROOT_INSIDE_REPOSITORY'}; if(Test-Path -LiteralPath $root){throw 'ATTEMPT_ROOT_ALREADY_EXISTS'}; $probe=Split-Path -Parent $root; while($probe -and (Test-Path -LiteralPath $probe)){if(((Get-Item -LiteralPath $probe -Force).Attributes -band [IO.FileAttributes]::ReparsePoint) -ne 0){throw ('REPARSE_PARENT:'+$probe)}; $next=Split-Path -Parent $probe; if($next -eq $probe){break}; $probe=$next}; @('downloads','receipts','receipts\\http','runtime','wheelhouse','local-wheel','source-staging','temp') | ForEach-Object {[IO.Directory]::CreateDirectory((Join-Path $root $_))|Out-Null}"
+          ],
+          "environment_overrides": {}
+        },
+        {
+          "id": "E01_FETCH_OFFICIAL_CPYTHON_INSTALLER",
+          "executable": "curl.exe",
+          "arguments": [
+            "--disable",
+            "--proxy",
+            "",
+            "--fail",
+            "--silent",
+            "--show-error",
+            "--proto",
+            "=https",
+            "--proto-redir",
+            "=https",
+            "--location",
+            "--max-redirs",
+            "0",
+            "--connect-timeout",
+            "30",
+            "--max-time",
+            "600",
+            "--dump-header",
+            "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\receipts\\http\\python-installer.headers.txt",
+            "--output",
+            "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\downloads\\python-3.11.9-amd64.exe.partial",
+            "https://www.python.org/ftp/python/3.11.9/python-3.11.9-amd64.exe"
+          ],
+          "working_directory": "E:\\UIT\\cv\\backend",
+          "timeout_seconds": 620,
+          "network": true,
+          "allowed_hosts": [
+            "www.python.org"
+          ],
+          "writes": [
+            "downloads/python-3.11.9-amd64.exe.partial",
+            "receipts/http/python-installer.headers.txt"
+          ],
+          "argv": [
+            "curl.exe",
+            "--disable",
+            "--proxy",
+            "",
+            "--fail",
+            "--silent",
+            "--show-error",
+            "--proto",
+            "=https",
+            "--proto-redir",
+            "=https",
+            "--location",
+            "--max-redirs",
+            "0",
+            "--connect-timeout",
+            "30",
+            "--max-time",
+            "600",
+            "--dump-header",
+            "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\receipts\\http\\python-installer.headers.txt",
+            "--output",
+            "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\downloads\\python-3.11.9-amd64.exe.partial",
+            "https://www.python.org/ftp/python/3.11.9/python-3.11.9-amd64.exe"
+          ],
+          "environment_overrides": {
+            "TEMP": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\temp",
+            "TMP": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\temp",
+            "PIP_NO_CACHE_DIR": "1",
+            "PIP_DISABLE_PIP_VERSION_CHECK": "1",
+            "PIP_NO_INPUT": "1"
+          },
+          "ambient_state_guards": {
+            "curl_default_config_disabled": true,
+            "curl_proxy_option": "",
+            "ambient_proxy_disabled": true
+          }
+        },
+        {
+          "id": "E02_FETCH_OFFICIAL_CPYTHON_SIGSTORE",
+          "executable": "curl.exe",
+          "arguments": [
+            "--disable",
+            "--proxy",
+            "",
+            "--fail",
+            "--silent",
+            "--show-error",
+            "--proto",
+            "=https",
+            "--proto-redir",
+            "=https",
+            "--location",
+            "--max-redirs",
+            "0",
+            "--connect-timeout",
+            "30",
+            "--max-time",
+            "120",
+            "--dump-header",
+            "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\receipts\\http\\python-sigstore.headers.txt",
+            "--output",
+            "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\downloads\\python-3.11.9-amd64.exe.sigstore.partial",
+            "https://www.python.org/ftp/python/3.11.9/python-3.11.9-amd64.exe.sigstore"
+          ],
+          "working_directory": "E:\\UIT\\cv\\backend",
+          "timeout_seconds": 140,
+          "network": true,
+          "allowed_hosts": [
+            "www.python.org"
+          ],
+          "writes": [
+            "downloads/python-3.11.9-amd64.exe.sigstore.partial",
+            "receipts/http/python-sigstore.headers.txt"
+          ],
+          "argv": [
+            "curl.exe",
+            "--disable",
+            "--proxy",
+            "",
+            "--fail",
+            "--silent",
+            "--show-error",
+            "--proto",
+            "=https",
+            "--proto-redir",
+            "=https",
+            "--location",
+            "--max-redirs",
+            "0",
+            "--connect-timeout",
+            "30",
+            "--max-time",
+            "120",
+            "--dump-header",
+            "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\receipts\\http\\python-sigstore.headers.txt",
+            "--output",
+            "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\downloads\\python-3.11.9-amd64.exe.sigstore.partial",
+            "https://www.python.org/ftp/python/3.11.9/python-3.11.9-amd64.exe.sigstore"
+          ],
+          "environment_overrides": {
+            "TEMP": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\temp",
+            "TMP": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\temp",
+            "PIP_NO_CACHE_DIR": "1",
+            "PIP_DISABLE_PIP_VERSION_CHECK": "1",
+            "PIP_NO_INPUT": "1"
+          },
+          "ambient_state_guards": {
+            "curl_default_config_disabled": true,
+            "curl_proxy_option": "",
+            "ambient_proxy_disabled": true
+          }
+        },
+        {
+          "id": "E03_VERIFY_AND_PROMOTE_CPYTHON_BOOTSTRAP",
+          "executable": "powershell.exe",
+          "arguments": [
+            "-NoLogo",
+            "-NoProfile",
+            "-NonInteractive",
+            "-ExecutionPolicy",
+            "Bypass",
+            "-Command",
+            "$ErrorActionPreference='Stop'; $root='E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001'; $exe=Join-Path $root 'downloads\\python-3.11.9-amd64.exe.partial'; $sig=Join-Path $root 'downloads\\python-3.11.9-amd64.exe.sigstore.partial'; if(-not (Test-Path -LiteralPath $exe -PathType Leaf) -or -not (Test-Path -LiteralPath $sig -PathType Leaf)){throw 'BOOTSTRAP_DOWNLOAD_MISSING'}; $md5=(Get-FileHash -LiteralPath $exe -Algorithm MD5).Hash.ToLowerInvariant(); if($md5 -cne 'e8dcd502e34932eebcaf1be056d5cbcd'){throw 'PYTHON_INSTALLER_MD5_MISMATCH'}; $sha=(Get-FileHash -LiteralPath $exe -Algorithm SHA256).Hash.ToLowerInvariant(); $sigSha=(Get-FileHash -LiteralPath $sig -Algorithm SHA256).Hash.ToLowerInvariant(); $auth=Get-AuthenticodeSignature -LiteralPath $exe; if([string]$auth.Status -cne 'Valid'){throw ('PYTHON_INSTALLER_AUTHENTICODE_'+$auth.Status)}; $signer=if($auth.SignerCertificate){$auth.SignerCertificate.Subject}else{$null}; Move-Item -LiteralPath $exe -Destination (Join-Path $root 'downloads\\python-3.11.9-amd64.exe'); Move-Item -LiteralPath $sig -Destination (Join-Path $root 'downloads\\python-3.11.9-amd64.exe.sigstore'); $receipt=[ordered]@{schema_version='cpython-3119-bootstrap-receipt-1.0'; installer_url='https://www.python.org/ftp/python/3.11.9/python-3.11.9-amd64.exe'; sigstore_url='https://www.python.org/ftp/python/3.11.9/python-3.11.9-amd64.exe.sigstore'; expected_official_page_md5='e8dcd502e34932eebcaf1be056d5cbcd'; installer_md5=$md5; installer_sha256=$sha; installer_bytes=(Get-Item -LiteralPath (Join-Path $root 'downloads\\python-3.11.9-amd64.exe')).Length; sigstore_sha256=$sigSha; sigstore_bytes=(Get-Item -LiteralPath (Join-Path $root 'downloads\\python-3.11.9-amd64.exe.sigstore')).Length; authenticode_status=[string]$auth.Status; authenticode_signer_subject=$signer}; [IO.File]::WriteAllText((Join-Path $root 'receipts\\cpython-bootstrap-receipt.json'),(($receipt|ConvertTo-Json -Depth 6)+[char]10),[Text.UTF8Encoding]::new($false))"
+          ],
+          "working_directory": "E:\\UIT\\cv\\backend",
+          "timeout_seconds": 120,
+          "network": false,
+          "writes": [
+            "downloads/python-3.11.9-amd64.exe",
+            "downloads/python-3.11.9-amd64.exe.sigstore",
+            "receipts/cpython-bootstrap-receipt.json"
+          ],
+          "argv": [
+            "powershell.exe",
+            "-NoLogo",
+            "-NoProfile",
+            "-NonInteractive",
+            "-ExecutionPolicy",
+            "Bypass",
+            "-Command",
+            "$ErrorActionPreference='Stop'; $root='E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001'; $exe=Join-Path $root 'downloads\\python-3.11.9-amd64.exe.partial'; $sig=Join-Path $root 'downloads\\python-3.11.9-amd64.exe.sigstore.partial'; if(-not (Test-Path -LiteralPath $exe -PathType Leaf) -or -not (Test-Path -LiteralPath $sig -PathType Leaf)){throw 'BOOTSTRAP_DOWNLOAD_MISSING'}; $md5=(Get-FileHash -LiteralPath $exe -Algorithm MD5).Hash.ToLowerInvariant(); if($md5 -cne 'e8dcd502e34932eebcaf1be056d5cbcd'){throw 'PYTHON_INSTALLER_MD5_MISMATCH'}; $sha=(Get-FileHash -LiteralPath $exe -Algorithm SHA256).Hash.ToLowerInvariant(); $sigSha=(Get-FileHash -LiteralPath $sig -Algorithm SHA256).Hash.ToLowerInvariant(); $auth=Get-AuthenticodeSignature -LiteralPath $exe; if([string]$auth.Status -cne 'Valid'){throw ('PYTHON_INSTALLER_AUTHENTICODE_'+$auth.Status)}; $signer=if($auth.SignerCertificate){$auth.SignerCertificate.Subject}else{$null}; Move-Item -LiteralPath $exe -Destination (Join-Path $root 'downloads\\python-3.11.9-amd64.exe'); Move-Item -LiteralPath $sig -Destination (Join-Path $root 'downloads\\python-3.11.9-amd64.exe.sigstore'); $receipt=[ordered]@{schema_version='cpython-3119-bootstrap-receipt-1.0'; installer_url='https://www.python.org/ftp/python/3.11.9/python-3.11.9-amd64.exe'; sigstore_url='https://www.python.org/ftp/python/3.11.9/python-3.11.9-amd64.exe.sigstore'; expected_official_page_md5='e8dcd502e34932eebcaf1be056d5cbcd'; installer_md5=$md5; installer_sha256=$sha; installer_bytes=(Get-Item -LiteralPath (Join-Path $root 'downloads\\python-3.11.9-amd64.exe')).Length; sigstore_sha256=$sigSha; sigstore_bytes=(Get-Item -LiteralPath (Join-Path $root 'downloads\\python-3.11.9-amd64.exe.sigstore')).Length; authenticode_status=[string]$auth.Status; authenticode_signer_subject=$signer}; [IO.File]::WriteAllText((Join-Path $root 'receipts\\cpython-bootstrap-receipt.json'),(($receipt|ConvertTo-Json -Depth 6)+[char]10),[Text.UTF8Encoding]::new($false))"
+          ],
+          "environment_overrides": {
+            "TEMP": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\temp",
+            "TMP": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\temp",
+            "PIP_NO_CACHE_DIR": "1",
+            "PIP_DISABLE_PIP_VERSION_CHECK": "1",
+            "PIP_NO_INPUT": "1"
+          }
+        },
+        {
+          "id": "E04_INSTALL_LOCAL_CPYTHON_3119_AMD64",
+          "executable": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\downloads\\python-3.11.9-amd64.exe",
+          "arguments": [
+            "/quiet",
+            "InstallAllUsers=0",
+            "TargetDir=E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\runtime",
+            "PrependPath=0",
+            "AppendPath=0",
+            "AssociateFiles=0",
+            "Shortcuts=0",
+            "Include_launcher=0",
+            "Include_pip=1",
+            "Include_test=0",
+            "Include_doc=0",
+            "Include_tcltk=0",
+            "Include_exe=1",
+            "Include_lib=1",
+            "Include_dev=1",
+            "Include_tools=1",
+            "CompileAll=0"
+          ],
+          "working_directory": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001",
+          "timeout_seconds": 900,
+          "network": false,
+          "allowed_exit_codes": [
+            0
+          ],
+          "writes": [
+            "runtime/**",
+            "temp/**"
+          ],
+          "argv": [
+            "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\downloads\\python-3.11.9-amd64.exe",
+            "/quiet",
+            "InstallAllUsers=0",
+            "TargetDir=E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\runtime",
+            "PrependPath=0",
+            "AppendPath=0",
+            "AssociateFiles=0",
+            "Shortcuts=0",
+            "Include_launcher=0",
+            "Include_pip=1",
+            "Include_test=0",
+            "Include_doc=0",
+            "Include_tcltk=0",
+            "Include_exe=1",
+            "Include_lib=1",
+            "Include_dev=1",
+            "Include_tools=1",
+            "CompileAll=0"
+          ],
+          "environment_overrides": {
+            "TEMP": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\temp",
+            "TMP": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\temp",
+            "PIP_NO_CACHE_DIR": "1",
+            "PIP_DISABLE_PIP_VERSION_CHECK": "1",
+            "PIP_NO_INPUT": "1"
+          }
+        },
+        {
+          "id": "E05_VERIFY_EXACT_LOCAL_RUNTIME_IDENTITY",
+          "executable": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\runtime\\python.exe",
+          "arguments": [
+            "-c",
+            "import json,pathlib,platform,struct,sys; ok=(sys.implementation.name=='cpython' and platform.python_version()=='3.11.9' and struct.calcsize('P')*8==64 and sys.platform=='win32' and pathlib.Path(sys.executable).resolve()==pathlib.Path(r'E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\runtime\\python.exe').resolve()); out={'implementation':sys.implementation.name,'version':platform.python_version(),'bits':struct.calcsize('P')*8,'platform':sys.platform,'executable':sys.executable,'required_binary_tag':'cp311-cp311-win_amd64','ok':ok}; pathlib.Path(r'E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\receipts\\runtime-identity.json').write_text(json.dumps(out,indent=2,sort_keys=True)+'\\n',encoding='utf-8'); raise SystemExit(0 if ok else 42)"
+          ],
+          "working_directory": "E:\\UIT\\cv\\backend",
+          "timeout_seconds": 60,
+          "network": false,
+          "writes": [
+            "receipts/runtime-identity.json"
+          ],
+          "argv": [
+            "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\runtime\\python.exe",
+            "-c",
+            "import json,pathlib,platform,struct,sys; ok=(sys.implementation.name=='cpython' and platform.python_version()=='3.11.9' and struct.calcsize('P')*8==64 and sys.platform=='win32' and pathlib.Path(sys.executable).resolve()==pathlib.Path(r'E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\runtime\\python.exe').resolve()); out={'implementation':sys.implementation.name,'version':platform.python_version(),'bits':struct.calcsize('P')*8,'platform':sys.platform,'executable':sys.executable,'required_binary_tag':'cp311-cp311-win_amd64','ok':ok}; pathlib.Path(r'E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\receipts\\runtime-identity.json').write_text(json.dumps(out,indent=2,sort_keys=True)+'\\n',encoding='utf-8'); raise SystemExit(0 if ok else 42)"
+          ],
+          "environment_overrides": {
+            "TEMP": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\temp",
+            "TMP": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\temp",
+            "PIP_NO_CACHE_DIR": "1",
+            "PIP_DISABLE_PIP_VERSION_CHECK": "1",
+            "PIP_NO_INPUT": "1"
+          }
+        }
+      ]
+    },
+    {
+      "group": "rebased_r6_e1_environment_closure",
+      "commands": [
+        {
+          "id": "E06_VERIFY_FROZEN_SOURCE_MANIFEST",
+          "executable": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\runtime\\python.exe",
+          "arguments": [
+            "-c",
+            "import hashlib,json,pathlib,sys; w=pathlib.Path(r'E:\\UIT\\cv\\backend'); mp=w/r'research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\rebaseline_v2\\wave_ac\\E4_R5M0_source_materialization\\selected_blob_manifest.json'; tp=w/r'research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\rebaseline_v2\\wave_ac\\E4_R5M0_source_materialization\\source_tree_manifest.json'; m=json.loads(mp.read_text(encoding='utf-8')); t=json.loads(tp.read_text(encoding='utf-8')); c=next(x for x in m['candidates'] if x['candidate_id']=='R5-CAND-RECBOLE-BPR-ML100K-001'); tc=next(x for x in t['candidates'] if x['candidate_id']==c['candidate_id']); assert tc['full_revision']=='9a6f63d8d4a5b989fe27955a833f813a6d86041e' and tc['git_tree']=='08915121fea069a30f7e3e97a72e16e7e76d43c6' and tc['selected_tree_entry_count']==c['file_count']; selected={e['path']:(e['git_object_id'],e['mode']) for e in tc['entries'] if e['selected_by_sparse_policy']}; root=w/pathlib.Path(c['local_root']); bad=[]; [(bad.append(f['path']) if (not (root/f['path']).is_file() or (root/f['path']).stat().st_size!=f['size_bytes'] or hashlib.sha256((root/f['path']).read_bytes()).hexdigest()!=f['sha256_raw_bytes'] or selected.get(f['path'])!=(f['git_blob_id'],f['git_mode'])) else None) for f in c['files']]; total=sum((root/f['path']).stat().st_size for f in c['files'] if (root/f['path']).is_file()); out={'candidate_id':c['candidate_id'],'expected_files':c['file_count'],'verified_files':c['file_count']-len(bad),'expected_bytes':c['total_size_bytes'],'verified_bytes':total,'selected_manifest_sha256':hashlib.sha256(mp.read_bytes()).hexdigest(),'tree_manifest_sha256':hashlib.sha256(tp.read_bytes()).hexdigest(),'revision':tc['full_revision'],'git_tree':tc['git_tree'],'mismatches':bad}; print(json.dumps(out,sort_keys=True)); raise SystemExit(0 if not bad and total==c['total_size_bytes'] and len(selected)==c['file_count'] else 43)"
+          ],
+          "working_directory": "E:\\UIT\\cv\\backend",
+          "timeout_seconds": 120,
+          "network": false,
+          "writes": [],
+          "argv": [
+            "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\runtime\\python.exe",
+            "-c",
+            "import hashlib,json,pathlib,sys; w=pathlib.Path(r'E:\\UIT\\cv\\backend'); mp=w/r'research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\rebaseline_v2\\wave_ac\\E4_R5M0_source_materialization\\selected_blob_manifest.json'; tp=w/r'research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\rebaseline_v2\\wave_ac\\E4_R5M0_source_materialization\\source_tree_manifest.json'; m=json.loads(mp.read_text(encoding='utf-8')); t=json.loads(tp.read_text(encoding='utf-8')); c=next(x for x in m['candidates'] if x['candidate_id']=='R5-CAND-RECBOLE-BPR-ML100K-001'); tc=next(x for x in t['candidates'] if x['candidate_id']==c['candidate_id']); assert tc['full_revision']=='9a6f63d8d4a5b989fe27955a833f813a6d86041e' and tc['git_tree']=='08915121fea069a30f7e3e97a72e16e7e76d43c6' and tc['selected_tree_entry_count']==c['file_count']; selected={e['path']:(e['git_object_id'],e['mode']) for e in tc['entries'] if e['selected_by_sparse_policy']}; root=w/pathlib.Path(c['local_root']); bad=[]; [(bad.append(f['path']) if (not (root/f['path']).is_file() or (root/f['path']).stat().st_size!=f['size_bytes'] or hashlib.sha256((root/f['path']).read_bytes()).hexdigest()!=f['sha256_raw_bytes'] or selected.get(f['path'])!=(f['git_blob_id'],f['git_mode'])) else None) for f in c['files']]; total=sum((root/f['path']).stat().st_size for f in c['files'] if (root/f['path']).is_file()); out={'candidate_id':c['candidate_id'],'expected_files':c['file_count'],'verified_files':c['file_count']-len(bad),'expected_bytes':c['total_size_bytes'],'verified_bytes':total,'selected_manifest_sha256':hashlib.sha256(mp.read_bytes()).hexdigest(),'tree_manifest_sha256':hashlib.sha256(tp.read_bytes()).hexdigest(),'revision':tc['full_revision'],'git_tree':tc['git_tree'],'mismatches':bad}; print(json.dumps(out,sort_keys=True)); raise SystemExit(0 if not bad and total==c['total_size_bytes'] and len(selected)==c['file_count'] else 43)"
+          ],
+          "environment_overrides": {
+            "TEMP": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\temp",
+            "TMP": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\temp",
+            "PIP_NO_CACHE_DIR": "1",
+            "PIP_DISABLE_PIP_VERSION_CHECK": "1",
+            "PIP_NO_INPUT": "1"
+          }
+        },
+        {
+          "id": "E07_CREATE_ISOLATED_VENV",
+          "executable": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\runtime\\python.exe",
+          "arguments": [
+            "-m",
+            "venv",
+            "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv"
+          ],
+          "working_directory": "E:\\UIT\\cv\\backend",
+          "timeout_seconds": 120,
+          "network": false,
+          "writes": [
+            "venv/"
+          ],
+          "argv": [
+            "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\runtime\\python.exe",
+            "-m",
+            "venv",
+            "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv"
+          ],
+          "environment_overrides": {
+            "TEMP": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\temp",
+            "TMP": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\temp",
+            "PIP_NO_CACHE_DIR": "1",
+            "PIP_DISABLE_PIP_VERSION_CHECK": "1",
+            "PIP_NO_INPUT": "1"
+          }
+        },
+        {
+          "id": "E08_VERIFY_BUNDLED_PIP_24",
+          "executable": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv\\Scripts\\python.exe",
+          "arguments": [
+            "-c",
+            "import importlib.metadata as m,sys; v=m.version('pip'); print(v); raise SystemExit(0 if v=='24.0' else 44)"
+          ],
+          "working_directory": "E:\\UIT\\cv\\backend",
+          "timeout_seconds": 30,
+          "network": false,
+          "writes": [],
+          "argv": [
+            "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv\\Scripts\\python.exe",
+            "-c",
+            "import importlib.metadata as m,sys; v=m.version('pip'); print(v); raise SystemExit(0 if v=='24.0' else 44)"
+          ],
+          "environment_overrides": {
+            "TEMP": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\temp",
+            "TMP": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\temp",
+            "PIP_NO_CACHE_DIR": "1",
+            "PIP_DISABLE_PIP_VERSION_CHECK": "1",
+            "PIP_NO_INPUT": "1"
+          }
+        },
+        {
+          "id": "E09_WRITE_LITERAL_PIN_FILES",
+          "executable": "powershell.exe",
+          "arguments": [
+            "-NoProfile",
+            "-NonInteractive",
+            "-Command",
+            "$r='E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001'; Set-Content -LiteralPath (Join-Path $r 'torch-pin.txt') -Encoding ascii -Value @('torch==2.2.2+cpu'); Set-Content -LiteralPath (Join-Path $r 'pypi-direct-pins.txt') -Encoding ascii -Value @('pip==24.0','setuptools==69.5.1','wheel==0.43.0','numpy==1.26.4','scipy==1.11.4','pandas==2.1.4','scikit-learn==1.3.2','PyYAML==6.0.2','tqdm==4.66.5','colorlog==4.7.2','colorama==0.4.4','texttable==1.7.0','tensorboard==2.15.2','ray==2.6.3','thop==0.1.1.post2207130030','tabulate==0.9.0','plotly==5.18.0','psutil==5.9.8'); Set-Content -LiteralPath (Join-Path $r 'constraints.txt') -Encoding ascii -Value @('torch==2.2.2+cpu','pip==24.0','setuptools==69.5.1','wheel==0.43.0','numpy==1.26.4','scipy==1.11.4','pandas==2.1.4','scikit-learn==1.3.2','PyYAML==6.0.2','tqdm==4.66.5','colorlog==4.7.2','colorama==0.4.4','texttable==1.7.0','tensorboard==2.15.2','ray==2.6.3','thop==0.1.1.post2207130030','tabulate==0.9.0','plotly==5.18.0','psutil==5.9.8')"
+          ],
+          "working_directory": "E:\\UIT\\cv\\backend",
+          "timeout_seconds": 30,
+          "network": false,
+          "writes": [
+            "torch-pin.txt",
+            "pypi-direct-pins.txt",
+            "constraints.txt"
+          ],
+          "argv": [
+            "powershell.exe",
+            "-NoProfile",
+            "-NonInteractive",
+            "-Command",
+            "$r='E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001'; Set-Content -LiteralPath (Join-Path $r 'torch-pin.txt') -Encoding ascii -Value @('torch==2.2.2+cpu'); Set-Content -LiteralPath (Join-Path $r 'pypi-direct-pins.txt') -Encoding ascii -Value @('pip==24.0','setuptools==69.5.1','wheel==0.43.0','numpy==1.26.4','scipy==1.11.4','pandas==2.1.4','scikit-learn==1.3.2','PyYAML==6.0.2','tqdm==4.66.5','colorlog==4.7.2','colorama==0.4.4','texttable==1.7.0','tensorboard==2.15.2','ray==2.6.3','thop==0.1.1.post2207130030','tabulate==0.9.0','plotly==5.18.0','psutil==5.9.8'); Set-Content -LiteralPath (Join-Path $r 'constraints.txt') -Encoding ascii -Value @('torch==2.2.2+cpu','pip==24.0','setuptools==69.5.1','wheel==0.43.0','numpy==1.26.4','scipy==1.11.4','pandas==2.1.4','scikit-learn==1.3.2','PyYAML==6.0.2','tqdm==4.66.5','colorlog==4.7.2','colorama==0.4.4','texttable==1.7.0','tensorboard==2.15.2','ray==2.6.3','thop==0.1.1.post2207130030','tabulate==0.9.0','plotly==5.18.0','psutil==5.9.8')"
+          ],
+          "environment_overrides": {
+            "TEMP": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\temp",
+            "TMP": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\temp",
+            "PIP_NO_CACHE_DIR": "1",
+            "PIP_DISABLE_PIP_VERSION_CHECK": "1",
+            "PIP_NO_INPUT": "1"
+          }
+        },
+        {
+          "id": "E10_DOWNLOAD_TORCH_CPU_WHEEL",
+          "executable": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv\\Scripts\\python.exe",
+          "arguments": [
+            "-m",
+            "pip",
+            "--isolated",
+            "--no-cache-dir",
+            "--disable-pip-version-check",
+            "--retries",
+            "0",
+            "--timeout",
+            "30",
+            "--log",
+            "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\receipts\\torch-download.log",
+            "download",
+            "--dest",
+            "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\wheelhouse",
+            "--only-binary=:all:",
+            "--no-deps",
+            "--index-url",
+            "https://download.pytorch.org/whl/cpu",
+            "--requirement",
+            "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\torch-pin.txt"
+          ],
+          "working_directory": "E:\\UIT\\cv\\backend",
+          "timeout_seconds": 900,
+          "network": true,
+          "allowed_hosts": [
+            "download.pytorch.org",
+            "download-r2.pytorch.org"
+          ],
+          "writes": [
+            "wheelhouse/torch-2.2.2+cpu-cp311-cp311-win_amd64.whl (expected identity; exact downloaded filename must be recorded, not assumed)",
+            "receipts/torch-download.log"
+          ],
+          "argv": [
+            "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv\\Scripts\\python.exe",
+            "-m",
+            "pip",
+            "--isolated",
+            "--no-cache-dir",
+            "--disable-pip-version-check",
+            "--retries",
+            "0",
+            "--timeout",
+            "30",
+            "--log",
+            "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\receipts\\torch-download.log",
+            "download",
+            "--dest",
+            "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\wheelhouse",
+            "--only-binary=:all:",
+            "--no-deps",
+            "--index-url",
+            "https://download.pytorch.org/whl/cpu",
+            "--requirement",
+            "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\torch-pin.txt"
+          ],
+          "environment_overrides": {
+            "TEMP": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\temp",
+            "TMP": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\temp",
+            "PIP_NO_CACHE_DIR": "1",
+            "PIP_DISABLE_PIP_VERSION_CHECK": "1",
+            "PIP_NO_INPUT": "1"
+          },
+          "ambient_state_guards": {
+            "pip_isolated": true,
+            "pip_user_config_ignored": true,
+            "pip_environment_index_ignored": true,
+            "pip_cache_disabled_by_cli": true,
+            "pip_version_check_disabled_by_cli": true
+          }
+        },
+        {
+          "id": "E11_RESOLVE_AND_DOWNLOAD_PYPI_WHEELS",
+          "executable": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv\\Scripts\\python.exe",
+          "arguments": [
+            "-m",
+            "pip",
+            "--isolated",
+            "--no-cache-dir",
+            "--disable-pip-version-check",
+            "--retries",
+            "0",
+            "--timeout",
+            "30",
+            "--log",
+            "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\receipts\\pypi-download.log",
+            "download",
+            "--dest",
+            "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\wheelhouse",
+            "--only-binary=:all:",
+            "--index-url",
+            "https://pypi.org/simple",
+            "--find-links",
+            "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\wheelhouse",
+            "--constraint",
+            "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\constraints.txt",
+            "--requirement",
+            "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\pypi-direct-pins.txt"
+          ],
+          "working_directory": "E:\\UIT\\cv\\backend",
+          "timeout_seconds": 900,
+          "network": true,
+          "allowed_hosts": [
+            "pypi.org",
+            "files.pythonhosted.org"
+          ],
+          "writes": [
+            "wheelhouse/*.whl",
+            "receipts/pypi-download.log"
+          ],
+          "argv": [
+            "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv\\Scripts\\python.exe",
+            "-m",
+            "pip",
+            "--isolated",
+            "--no-cache-dir",
+            "--disable-pip-version-check",
+            "--retries",
+            "0",
+            "--timeout",
+            "30",
+            "--log",
+            "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\receipts\\pypi-download.log",
+            "download",
+            "--dest",
+            "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\wheelhouse",
+            "--only-binary=:all:",
+            "--index-url",
+            "https://pypi.org/simple",
+            "--find-links",
+            "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\wheelhouse",
+            "--constraint",
+            "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\constraints.txt",
+            "--requirement",
+            "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\pypi-direct-pins.txt"
+          ],
+          "environment_overrides": {
+            "TEMP": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\temp",
+            "TMP": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\temp",
+            "PIP_NO_CACHE_DIR": "1",
+            "PIP_DISABLE_PIP_VERSION_CHECK": "1",
+            "PIP_NO_INPUT": "1"
+          },
+          "ambient_state_guards": {
+            "pip_isolated": true,
+            "pip_user_config_ignored": true,
+            "pip_environment_index_ignored": true,
+            "pip_cache_disabled_by_cli": true,
+            "pip_version_check_disabled_by_cli": true
+          }
+        },
+        {
+          "id": "E12_ASSERT_WHEEL_ONLY_CPU_CLOSURE",
+          "executable": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv\\Scripts\\python.exe",
+          "arguments": [
+            "-c",
+            "import pathlib,re,sys; w=pathlib.Path(r'E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\wheelhouse'); files=sorted(p.name for p in w.iterdir()); bad=[n for n in files if not n.lower().endswith('.whl') or re.search(r'(^|[-_.])(nvidia|cuda|cudnn|rocm|triton)([-_.]|$)',n,re.I)]; tw=[n for n in files if re.match(r'torch-2\\.2\\.2\\+cpu-cp311-cp311-win_amd64\\.whl$',n,re.I)]; print({'files':len(files),'torch_cpu_matches':tw,'rejected':bad}); raise SystemExit(0 if files and len(tw)==1 and not bad else 45)"
+          ],
+          "working_directory": "E:\\UIT\\cv\\backend",
+          "timeout_seconds": 60,
+          "network": false,
+          "writes": [],
+          "argv": [
+            "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv\\Scripts\\python.exe",
+            "-c",
+            "import pathlib,re,sys; w=pathlib.Path(r'E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\wheelhouse'); files=sorted(p.name for p in w.iterdir()); bad=[n for n in files if not n.lower().endswith('.whl') or re.search(r'(^|[-_.])(nvidia|cuda|cudnn|rocm|triton)([-_.]|$)',n,re.I)]; tw=[n for n in files if re.match(r'torch-2\\.2\\.2\\+cpu-cp311-cp311-win_amd64\\.whl$',n,re.I)]; print({'files':len(files),'torch_cpu_matches':tw,'rejected':bad}); raise SystemExit(0 if files and len(tw)==1 and not bad else 45)"
+          ],
+          "environment_overrides": {
+            "TEMP": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\temp",
+            "TMP": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\temp",
+            "PIP_NO_CACHE_DIR": "1",
+            "PIP_DISABLE_PIP_VERSION_CHECK": "1",
+            "PIP_NO_INPUT": "1"
+          }
+        },
+        {
+          "id": "E13_CAPTURE_WHEEL_HASHES_AND_HASHED_REQUIREMENTS",
+          "executable": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv\\Scripts\\python.exe",
+          "arguments": [
+            "-c",
+            "import email,hashlib,json,pathlib,re,urllib.parse,zipfile; r=pathlib.Path(r'E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001'); w=r/'wheelhouse'; log_text='\\n'.join((r/'receipts'/n).read_text(encoding='utf-8',errors='strict') for n in ('torch-download.log','pypi-download.log')); urls=sorted(set(x.rstrip('.,);') for x in re.findall(r'https://[^\\s\"<>]+',log_text))); allowed={'download.pytorch.org','download-r2.pytorch.org','pypi.org','files.pythonhosted.org'}; rec=[]; seen={}; canon=lambda s:re.sub(r'[-_.]+','-',s).lower(); files=sorted(w.glob('*.whl')); assert files; exec(\"for p in files:\\n z=zipfile.ZipFile(p)\\n mn=next(n for n in z.namelist() if n.endswith('.dist-info/METADATA'))\\n wn=next(n for n in z.namelist() if n.endswith('.dist-info/WHEEL'))\\n m=email.message_from_bytes(z.read(mn))\\n wm=email.message_from_bytes(z.read(wn))\\n tags=wm.get_all('Tag') or []\\n assert tags\\n name=m['Name']; ver=m['Version']; key=canon(name)\\n seen.setdefault(key,[]).append(p.name)\\n candidates=[u for u in urls if urllib.parse.unquote(urllib.parse.urlparse(u).path.rsplit('/',1)[-1])==p.name]\\n candidates=sorted(set(candidates))\\n assert len(candidates)==1,(p.name,candidates)\\n host=(urllib.parse.urlparse(candidates[0]).hostname or '').lower()\\n assert host in allowed,(p.name,host)\\n rec.append({'identity':name,'normalized_identity':key,'version':ver,'filename':p.name,'wheel_tags':tags,'exact_url':candidates[0],'url_host':host,'size_bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest(),'wheel_metadata_path':mn,'wheel_descriptor_path':wn})\"); dup={k:v for k,v in seen.items() if len(v)!=1}; assert not dup,dup; assert seen.get('torch') and '+cpu' in next(x['version'] for x in rec if x['normalized_identity']=='torch'); (r/'resolved-wheel-manifest.json').write_text(json.dumps({'schema_version':'1.0.0','generated_from_actual_downloads':True,'records':rec},indent=2,sort_keys=True)+'\\n',encoding='utf-8'); (r/'requirements-hashed.txt').write_text(''.join(f\"{x['identity']}=={x['version']} --hash=sha256:{x['sha256']}\\n\" for x in sorted(rec,key=lambda y:y['normalized_identity'])),encoding='ascii')"
+          ],
+          "working_directory": "E:\\UIT\\cv\\backend",
+          "timeout_seconds": 120,
+          "network": false,
+          "writes": [
+            "resolved-wheel-manifest.json",
+            "requirements-hashed.txt"
+          ],
+          "argv": [
+            "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv\\Scripts\\python.exe",
+            "-c",
+            "import email,hashlib,json,pathlib,re,urllib.parse,zipfile; r=pathlib.Path(r'E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001'); w=r/'wheelhouse'; log_text='\\n'.join((r/'receipts'/n).read_text(encoding='utf-8',errors='strict') for n in ('torch-download.log','pypi-download.log')); urls=sorted(set(x.rstrip('.,);') for x in re.findall(r'https://[^\\s\"<>]+',log_text))); allowed={'download.pytorch.org','download-r2.pytorch.org','pypi.org','files.pythonhosted.org'}; rec=[]; seen={}; canon=lambda s:re.sub(r'[-_.]+','-',s).lower(); files=sorted(w.glob('*.whl')); assert files; exec(\"for p in files:\\n z=zipfile.ZipFile(p)\\n mn=next(n for n in z.namelist() if n.endswith('.dist-info/METADATA'))\\n wn=next(n for n in z.namelist() if n.endswith('.dist-info/WHEEL'))\\n m=email.message_from_bytes(z.read(mn))\\n wm=email.message_from_bytes(z.read(wn))\\n tags=wm.get_all('Tag') or []\\n assert tags\\n name=m['Name']; ver=m['Version']; key=canon(name)\\n seen.setdefault(key,[]).append(p.name)\\n candidates=[u for u in urls if urllib.parse.unquote(urllib.parse.urlparse(u).path.rsplit('/',1)[-1])==p.name]\\n candidates=sorted(set(candidates))\\n assert len(candidates)==1,(p.name,candidates)\\n host=(urllib.parse.urlparse(candidates[0]).hostname or '').lower()\\n assert host in allowed,(p.name,host)\\n rec.append({'identity':name,'normalized_identity':key,'version':ver,'filename':p.name,'wheel_tags':tags,'exact_url':candidates[0],'url_host':host,'size_bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest(),'wheel_metadata_path':mn,'wheel_descriptor_path':wn})\"); dup={k:v for k,v in seen.items() if len(v)!=1}; assert not dup,dup; assert seen.get('torch') and '+cpu' in next(x['version'] for x in rec if x['normalized_identity']=='torch'); (r/'resolved-wheel-manifest.json').write_text(json.dumps({'schema_version':'1.0.0','generated_from_actual_downloads':True,'records':rec},indent=2,sort_keys=True)+'\\n',encoding='utf-8'); (r/'requirements-hashed.txt').write_text(''.join(f\"{x['identity']}=={x['version']} --hash=sha256:{x['sha256']}\\n\" for x in sorted(rec,key=lambda y:y['normalized_identity'])),encoding='ascii')"
+          ],
+          "environment_overrides": {
+            "TEMP": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\temp",
+            "TMP": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\temp",
+            "PIP_NO_CACHE_DIR": "1",
+            "PIP_DISABLE_PIP_VERSION_CHECK": "1",
+            "PIP_NO_INPUT": "1"
+          }
+        },
+        {
+          "id": "E14_OFFLINE_RESOLUTION_REPORT",
+          "executable": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv\\Scripts\\python.exe",
+          "arguments": [
+            "-m",
+            "pip",
+            "--isolated",
+            "--no-cache-dir",
+            "--disable-pip-version-check",
+            "install",
+            "--dry-run",
+            "--ignore-installed",
+            "--no-index",
+            "--find-links",
+            "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\wheelhouse",
+            "--require-hashes",
+            "--report",
+            "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\resolver-report.json",
+            "--requirement",
+            "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\requirements-hashed.txt"
+          ],
+          "working_directory": "E:\\UIT\\cv\\backend",
+          "timeout_seconds": 300,
+          "network": false,
+          "writes": [
+            "resolver-report.json"
+          ],
+          "argv": [
+            "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv\\Scripts\\python.exe",
+            "-m",
+            "pip",
+            "--isolated",
+            "--no-cache-dir",
+            "--disable-pip-version-check",
+            "install",
+            "--dry-run",
+            "--ignore-installed",
+            "--no-index",
+            "--find-links",
+            "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\wheelhouse",
+            "--require-hashes",
+            "--report",
+            "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\resolver-report.json",
+            "--requirement",
+            "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\requirements-hashed.txt"
+          ],
+          "environment_overrides": {
+            "TEMP": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\temp",
+            "TMP": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\temp",
+            "PIP_NO_CACHE_DIR": "1",
+            "PIP_DISABLE_PIP_VERSION_CHECK": "1",
+            "PIP_NO_INPUT": "1"
+          },
+          "ambient_state_guards": {
+            "pip_isolated": true,
+            "pip_user_config_ignored": true,
+            "pip_environment_index_ignored": true,
+            "pip_cache_disabled_by_cli": true,
+            "pip_version_check_disabled_by_cli": true
+          }
+        },
+        {
+          "id": "E15_INSTALL_HASHED_THIRD_PARTY_CLOSURE",
+          "executable": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv\\Scripts\\python.exe",
+          "arguments": [
+            "-m",
+            "pip",
+            "--isolated",
+            "--no-cache-dir",
+            "--disable-pip-version-check",
+            "install",
+            "--no-index",
+            "--find-links",
+            "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\wheelhouse",
+            "--require-hashes",
+            "--no-deps",
+            "--requirement",
+            "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\requirements-hashed.txt"
+          ],
+          "working_directory": "E:\\UIT\\cv\\backend",
+          "timeout_seconds": 600,
+          "network": false,
+          "writes": [
+            "venv/"
+          ],
+          "argv": [
+            "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv\\Scripts\\python.exe",
+            "-m",
+            "pip",
+            "--isolated",
+            "--no-cache-dir",
+            "--disable-pip-version-check",
+            "install",
+            "--no-index",
+            "--find-links",
+            "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\wheelhouse",
+            "--require-hashes",
+            "--no-deps",
+            "--requirement",
+            "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\requirements-hashed.txt"
+          ],
+          "environment_overrides": {
+            "TEMP": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\temp",
+            "TMP": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\temp",
+            "PIP_NO_CACHE_DIR": "1",
+            "PIP_DISABLE_PIP_VERSION_CHECK": "1",
+            "PIP_NO_INPUT": "1"
+          },
+          "ambient_state_guards": {
+            "pip_isolated": true,
+            "pip_user_config_ignored": true,
+            "pip_environment_index_ignored": true,
+            "pip_cache_disabled_by_cli": true,
+            "pip_version_check_disabled_by_cli": true
+          }
+        },
+        {
+          "id": "E16_COPY_VERIFIED_SOURCE_TO_STAGING",
+          "executable": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv\\Scripts\\python.exe",
+          "arguments": [
+            "-B",
+            "-c",
+            "import hashlib,json,os,pathlib,stat\nCANDIDATE=\"R5-CAND-RECBOLE-BPR-ML100K-001\"\nREVISION=\"9a6f63d8d4a5b989fe27955a833f813a6d86041e\"\nTREE=\"08915121fea069a30f7e3e97a72e16e7e76d43c6\"\nSELECTED_SHA=\"c5794b9daccdd01ca600c6ef7f890918825fbbb872efa67036c4565234e87016\"\nTREE_SHA=\"c3e460f63bc9f205764a710fa61cf1bc968c235af462e1eac9560b68a2497e6c\"\nworkspace=pathlib.Path(r'E:\\UIT\\cv\\backend')\nsource=pathlib.Path(r'E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\materialized_sources\\r5\\recbole_v1_2_1_9a6f63d')\ndestination=pathlib.Path(r'E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\source-staging\\recbole_v1_2_1_9a6f63d')\nreceipt_path=pathlib.Path(r'E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\receipts\\recbole-source-staging-verification.json')\nselected_path=pathlib.Path(r'E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\rebaseline_v2\\wave_ac\\E4_R5M0_source_materialization\\selected_blob_manifest.json')\ntree_path=pathlib.Path(r'E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\rebaseline_v2\\wave_ac\\E4_R5M0_source_materialization\\source_tree_manifest.json')\nREPARSE=0x400\ndef strict_pairs(pairs):\n    out={}\n    folded={}\n    for key,value in pairs:\n        if key in out:\n            raise ValueError('DUPLICATE_JSON_KEY:'+key)\n        normalized=key.casefold()\n        if normalized in folded:\n            raise ValueError('CASE_COLLIDING_JSON_KEY:'+folded[normalized]+'|'+key)\n        folded[normalized]=key\n        out[key]=value\n    return out\ndef load_manifest(path,expected_sha):\n    payload=path.read_bytes()\n    if payload.startswith(b'\\xef\\xbb\\xbf') or hashlib.sha256(payload).hexdigest()!=expected_sha:\n        raise RuntimeError('MANIFEST_BYTE_IDENTITY_MISMATCH:'+str(path))\n    return json.loads(payload.decode('utf-8'),object_pairs_hook=strict_pairs),len(payload)\ndef attrs(path):\n    return getattr(path.lstat(),'st_file_attributes',0)\ndef assert_no_link_or_reparse(path,kind):\n    st=path.lstat()\n    if path.is_symlink() or attrs(path)&REPARSE:\n        raise RuntimeError(kind+'_LINK_OR_REPARSE:'+str(path))\n    return st\ndef safe_relative(raw):\n    if not raw or '\\\\' in raw or '\\x00' in raw or ':' in raw:\n        return False\n    pure=pathlib.PurePosixPath(raw)\n    return (not pure.is_absolute() and pure.as_posix()==raw and all(part not in ('','.','..') for part in pure.parts))\ndef hash_regular(path,root,kind):\n    st=assert_no_link_or_reparse(path,kind)\n    if not stat.S_ISREG(st.st_mode):\n        raise RuntimeError(kind+'_NON_REGULAR:'+str(path))\n    resolved=path.resolve(strict=True)\n    try:\n        resolved.relative_to(root.resolve(strict=True))\n    except ValueError:\n        raise RuntimeError(kind+'_ESCAPES_ROOT:'+str(path))\n    digest=hashlib.sha256()\n    count=0\n    with path.open('rb') as stream:\n        while True:\n            chunk=stream.read(1048576)\n            if not chunk:\n                break\n            digest.update(chunk)\n            count+=len(chunk)\n    return count,digest.hexdigest(),st\nselected,selected_bytes=load_manifest(selected_path,SELECTED_SHA)\ntree_manifest,tree_bytes=load_manifest(tree_path,TREE_SHA)\ncandidate_record=next(row for row in selected['candidates'] if row['candidate_id']==CANDIDATE)\ntree_record=next(row for row in tree_manifest['candidates'] if row['candidate_id']==CANDIDATE)\nif (workspace/pathlib.Path(candidate_record['local_root'])).resolve(strict=True)!=source.resolve(strict=True):\n    raise RuntimeError('SOURCE_ROOT_MANIFEST_MISMATCH')\nif tree_record['full_revision']!=REVISION or tree_record['git_tree']!=TREE:\n    raise RuntimeError('REVISION_OR_TREE_MISMATCH')\nrecords=sorted(candidate_record['files'],key=lambda row:row['path'])\nif candidate_record['file_count']!=265 or candidate_record['total_size_bytes']!=1541044 or len(records)!=265:\n    raise RuntimeError('SELECTED_COUNT_OR_TOTAL_MISMATCH')\npaths=[row['path'] for row in records]\nif any(not safe_relative(value) for value in paths) or len(set(paths))!=len(paths) or len({value.casefold() for value in paths})!=len(paths):\n    raise RuntimeError('UNSAFE_DUPLICATE_OR_CASE_COLLIDING_SELECTED_PATH')\ntree_selected={row['path']:row for row in tree_record['entries'] if row['selected_by_sparse_policy']}\nif tree_record['selected_tree_entry_count']!=265 or set(tree_selected)!=set(paths):\n    raise RuntimeError('TREE_SELECTED_SET_MISMATCH')\nfor row in records:\n    entry=tree_selected[row['path']]\n    if entry['object_type']!='blob' or entry['git_object_id']!=row['git_blob_id'] or entry['mode']!=row['git_mode']:\n        raise RuntimeError('TREE_BLOB_OR_MODE_MISMATCH:'+row['path'])\nassert_no_link_or_reparse(source,'SOURCE_ROOT_LEXICAL')\nsource=source.resolve(strict=True)\nassert_no_link_or_reparse(source,'SOURCE_ROOT_RESOLVED')\nexpected_files=set(paths)\nexpected_dirs=set()\nfor value in paths:\n    parent=pathlib.PurePosixPath(value).parent\n    while parent.as_posix()!='.':\n        expected_dirs.add(parent.as_posix())\n        parent=parent.parent\nactual_files=set()\nactual_dirs=set()\nfor current in source.rglob('*'):\n    relative=current.relative_to(source).as_posix()\n    st=assert_no_link_or_reparse(current,'SOURCE')\n    if relative=='.git' or relative.startswith('.git/'):\n        if not (stat.S_ISREG(st.st_mode) or stat.S_ISDIR(st.st_mode)):\n            raise RuntimeError('SOURCE_GIT_CONTROL_NON_REGULAR:'+relative)\n        continue\n    if stat.S_ISREG(st.st_mode):\n        actual_files.add(relative)\n    elif stat.S_ISDIR(st.st_mode):\n        actual_dirs.add(relative)\n    else:\n        raise RuntimeError('SOURCE_NON_REGULAR:'+relative)\nif actual_files!=expected_files or actual_dirs!=expected_dirs:\n    raise RuntimeError('SOURCE_UNEXPECTED_OR_MISSING_PAYLOAD')\nsource_rows=[]\nsource_total=0\nfor row in records:\n    size,digest,_=hash_regular(source/pathlib.PurePosixPath(row['path']),source,'SOURCE_FILE')\n    if size!=row['size_bytes'] or digest!=row['sha256_raw_bytes']:\n        raise RuntimeError('SOURCE_SIZE_OR_HASH_MISMATCH:'+row['path'])\n    source_total+=size\n    source_rows.append({'git_blob_id':row['git_blob_id'],'git_mode':row['git_mode'],'path':row['path'],'sha256':digest,'size_bytes':size})\nif source_total!=candidate_record['total_size_bytes']:\n    raise RuntimeError('SOURCE_TOTAL_BYTES_MISMATCH')\nif destination.exists() or destination.is_symlink() or receipt_path.exists() or receipt_path.is_symlink():\n    raise RuntimeError('STAGING_OR_RECEIPT_ALREADY_EXISTS')\nassert_no_link_or_reparse(destination.parent,'STAGING_PARENT_LEXICAL')\nassert_no_link_or_reparse(receipt_path.parent,'RECEIPT_PARENT_LEXICAL')\nparent=destination.parent.resolve(strict=True)\nassert_no_link_or_reparse(parent,'STAGING_PARENT_RESOLVED')\nassert_no_link_or_reparse(receipt_path.parent.resolve(strict=True),'RECEIPT_PARENT_RESOLVED')\ndestination.mkdir()\nassert_no_link_or_reparse(destination,'STAGING_ROOT')\nfor relative in sorted(expected_dirs,key=lambda value:(len(pathlib.PurePosixPath(value).parts),value)):\n    target=destination/pathlib.PurePosixPath(relative)\n    target.mkdir()\n    assert_no_link_or_reparse(target,'STAGING_DIRECTORY')\ncopied_rows=[]\ncopied_total=0\nfor row in records:\n    src=source/pathlib.PurePosixPath(row['path'])\n    dst=destination/pathlib.PurePosixPath(row['path'])\n    before=src.lstat()\n    digest=hashlib.sha256()\n    copied=0\n    with src.open('rb') as input_stream,dst.open('xb') as output_stream:\n        while True:\n            chunk=input_stream.read(1048576)\n            if not chunk:\n                break\n            output_stream.write(chunk)\n            digest.update(chunk)\n            copied+=len(chunk)\n        output_stream.flush()\n        os.fsync(output_stream.fileno())\n    after=src.lstat()\n    if (before.st_size,before.st_mtime_ns,getattr(before,'st_ino',0))!=(after.st_size,after.st_mtime_ns,getattr(after,'st_ino',0)):\n        raise RuntimeError('SOURCE_CHANGED_DURING_COPY:'+row['path'])\n    if copied!=row['size_bytes'] or digest.hexdigest()!=row['sha256_raw_bytes']:\n        raise RuntimeError('COPIED_STREAM_IDENTITY_MISMATCH:'+row['path'])\n    dst_size,dst_hash,_=hash_regular(dst,destination,'STAGING_FILE')\n    if dst_size!=row['size_bytes'] or dst_hash!=row['sha256_raw_bytes']:\n        raise RuntimeError('STAGING_SIZE_OR_HASH_MISMATCH:'+row['path'])\n    copied_total+=dst_size\n    copied_rows.append({'git_blob_id':row['git_blob_id'],'git_mode':row['git_mode'],'path':row['path'],'sha256':dst_hash,'size_bytes':dst_size})\nfinal_files=set()\nfinal_dirs=set()\nfor current in destination.rglob('*'):\n    relative=current.relative_to(destination).as_posix()\n    st=assert_no_link_or_reparse(current,'STAGING_FINAL')\n    if stat.S_ISREG(st.st_mode):\n        final_files.add(relative)\n    elif stat.S_ISDIR(st.st_mode):\n        final_dirs.add(relative)\n    else:\n        raise RuntimeError('STAGING_FINAL_NON_REGULAR:'+relative)\nif final_files!=expected_files or final_dirs!=expected_dirs or copied_total!=1541044:\n    raise RuntimeError('STAGING_FINAL_SET_OR_TOTAL_MISMATCH')\nreceipt={\n    'candidate_id':CANDIDATE,\n    'destination_root':str(destination),\n    'file_count':len(copied_rows),\n    'files':copied_rows,\n    'git_control_metadata_policy':'SOURCE_DOT_GIT_REPARSE_AND_FILE_TYPES_CHECKED_BUT_EXCLUDED_FROM_FROZEN_PAYLOAD_AND_NEVER_COPIED',\n    'revision':REVISION,\n    'schema_version':'recbole-source-staging-verification-receipt-1.0',\n    'selected_blob_manifest_bytes':selected_bytes,\n    'selected_blob_manifest_sha256':SELECTED_SHA,\n    'source_git_tree':TREE,\n    'source_root':str(source),\n    'source_tree_manifest_bytes':tree_bytes,\n    'source_tree_manifest_sha256':TREE_SHA,\n    'total_bytes':copied_total,\n    'verification':'PASS_EXACT_SELECTED_FILE_SET_SOURCE_AND_DESTINATION'\n}\nencoded=(json.dumps(receipt,ensure_ascii=True,indent=2,sort_keys=True)+'\\n').encode('utf-8')\nwith receipt_path.open('xb') as stream:\n    stream.write(encoded)\n    stream.flush()\n    os.fsync(stream.fileno())\nif receipt_path.read_bytes()!=encoded or encoded.startswith(b'\\xef\\xbb\\xbf'):\n    raise RuntimeError('STAGING_RECEIPT_ENCODING_MISMATCH')"
+          ],
+          "working_directory": "E:\\UIT\\cv\\backend",
+          "timeout_seconds": 300,
+          "network": false,
+          "writes": [
+            "source-staging/recbole_v1_2_1_9a6f63d/**",
+            "receipts/recbole-source-staging-verification.json"
+          ],
+          "argv": [
+            "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv\\Scripts\\python.exe",
+            "-B",
+            "-c",
+            "import hashlib,json,os,pathlib,stat\nCANDIDATE=\"R5-CAND-RECBOLE-BPR-ML100K-001\"\nREVISION=\"9a6f63d8d4a5b989fe27955a833f813a6d86041e\"\nTREE=\"08915121fea069a30f7e3e97a72e16e7e76d43c6\"\nSELECTED_SHA=\"c5794b9daccdd01ca600c6ef7f890918825fbbb872efa67036c4565234e87016\"\nTREE_SHA=\"c3e460f63bc9f205764a710fa61cf1bc968c235af462e1eac9560b68a2497e6c\"\nworkspace=pathlib.Path(r'E:\\UIT\\cv\\backend')\nsource=pathlib.Path(r'E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\materialized_sources\\r5\\recbole_v1_2_1_9a6f63d')\ndestination=pathlib.Path(r'E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\source-staging\\recbole_v1_2_1_9a6f63d')\nreceipt_path=pathlib.Path(r'E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\receipts\\recbole-source-staging-verification.json')\nselected_path=pathlib.Path(r'E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\rebaseline_v2\\wave_ac\\E4_R5M0_source_materialization\\selected_blob_manifest.json')\ntree_path=pathlib.Path(r'E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\rebaseline_v2\\wave_ac\\E4_R5M0_source_materialization\\source_tree_manifest.json')\nREPARSE=0x400\ndef strict_pairs(pairs):\n    out={}\n    folded={}\n    for key,value in pairs:\n        if key in out:\n            raise ValueError('DUPLICATE_JSON_KEY:'+key)\n        normalized=key.casefold()\n        if normalized in folded:\n            raise ValueError('CASE_COLLIDING_JSON_KEY:'+folded[normalized]+'|'+key)\n        folded[normalized]=key\n        out[key]=value\n    return out\ndef load_manifest(path,expected_sha):\n    payload=path.read_bytes()\n    if payload.startswith(b'\\xef\\xbb\\xbf') or hashlib.sha256(payload).hexdigest()!=expected_sha:\n        raise RuntimeError('MANIFEST_BYTE_IDENTITY_MISMATCH:'+str(path))\n    return json.loads(payload.decode('utf-8'),object_pairs_hook=strict_pairs),len(payload)\ndef attrs(path):\n    return getattr(path.lstat(),'st_file_attributes',0)\ndef assert_no_link_or_reparse(path,kind):\n    st=path.lstat()\n    if path.is_symlink() or attrs(path)&REPARSE:\n        raise RuntimeError(kind+'_LINK_OR_REPARSE:'+str(path))\n    return st\ndef safe_relative(raw):\n    if not raw or '\\\\' in raw or '\\x00' in raw or ':' in raw:\n        return False\n    pure=pathlib.PurePosixPath(raw)\n    return (not pure.is_absolute() and pure.as_posix()==raw and all(part not in ('','.','..') for part in pure.parts))\ndef hash_regular(path,root,kind):\n    st=assert_no_link_or_reparse(path,kind)\n    if not stat.S_ISREG(st.st_mode):\n        raise RuntimeError(kind+'_NON_REGULAR:'+str(path))\n    resolved=path.resolve(strict=True)\n    try:\n        resolved.relative_to(root.resolve(strict=True))\n    except ValueError:\n        raise RuntimeError(kind+'_ESCAPES_ROOT:'+str(path))\n    digest=hashlib.sha256()\n    count=0\n    with path.open('rb') as stream:\n        while True:\n            chunk=stream.read(1048576)\n            if not chunk:\n                break\n            digest.update(chunk)\n            count+=len(chunk)\n    return count,digest.hexdigest(),st\nselected,selected_bytes=load_manifest(selected_path,SELECTED_SHA)\ntree_manifest,tree_bytes=load_manifest(tree_path,TREE_SHA)\ncandidate_record=next(row for row in selected['candidates'] if row['candidate_id']==CANDIDATE)\ntree_record=next(row for row in tree_manifest['candidates'] if row['candidate_id']==CANDIDATE)\nif (workspace/pathlib.Path(candidate_record['local_root'])).resolve(strict=True)!=source.resolve(strict=True):\n    raise RuntimeError('SOURCE_ROOT_MANIFEST_MISMATCH')\nif tree_record['full_revision']!=REVISION or tree_record['git_tree']!=TREE:\n    raise RuntimeError('REVISION_OR_TREE_MISMATCH')\nrecords=sorted(candidate_record['files'],key=lambda row:row['path'])\nif candidate_record['file_count']!=265 or candidate_record['total_size_bytes']!=1541044 or len(records)!=265:\n    raise RuntimeError('SELECTED_COUNT_OR_TOTAL_MISMATCH')\npaths=[row['path'] for row in records]\nif any(not safe_relative(value) for value in paths) or len(set(paths))!=len(paths) or len({value.casefold() for value in paths})!=len(paths):\n    raise RuntimeError('UNSAFE_DUPLICATE_OR_CASE_COLLIDING_SELECTED_PATH')\ntree_selected={row['path']:row for row in tree_record['entries'] if row['selected_by_sparse_policy']}\nif tree_record['selected_tree_entry_count']!=265 or set(tree_selected)!=set(paths):\n    raise RuntimeError('TREE_SELECTED_SET_MISMATCH')\nfor row in records:\n    entry=tree_selected[row['path']]\n    if entry['object_type']!='blob' or entry['git_object_id']!=row['git_blob_id'] or entry['mode']!=row['git_mode']:\n        raise RuntimeError('TREE_BLOB_OR_MODE_MISMATCH:'+row['path'])\nassert_no_link_or_reparse(source,'SOURCE_ROOT_LEXICAL')\nsource=source.resolve(strict=True)\nassert_no_link_or_reparse(source,'SOURCE_ROOT_RESOLVED')\nexpected_files=set(paths)\nexpected_dirs=set()\nfor value in paths:\n    parent=pathlib.PurePosixPath(value).parent\n    while parent.as_posix()!='.':\n        expected_dirs.add(parent.as_posix())\n        parent=parent.parent\nactual_files=set()\nactual_dirs=set()\nfor current in source.rglob('*'):\n    relative=current.relative_to(source).as_posix()\n    st=assert_no_link_or_reparse(current,'SOURCE')\n    if relative=='.git' or relative.startswith('.git/'):\n        if not (stat.S_ISREG(st.st_mode) or stat.S_ISDIR(st.st_mode)):\n            raise RuntimeError('SOURCE_GIT_CONTROL_NON_REGULAR:'+relative)\n        continue\n    if stat.S_ISREG(st.st_mode):\n        actual_files.add(relative)\n    elif stat.S_ISDIR(st.st_mode):\n        actual_dirs.add(relative)\n    else:\n        raise RuntimeError('SOURCE_NON_REGULAR:'+relative)\nif actual_files!=expected_files or actual_dirs!=expected_dirs:\n    raise RuntimeError('SOURCE_UNEXPECTED_OR_MISSING_PAYLOAD')\nsource_rows=[]\nsource_total=0\nfor row in records:\n    size,digest,_=hash_regular(source/pathlib.PurePosixPath(row['path']),source,'SOURCE_FILE')\n    if size!=row['size_bytes'] or digest!=row['sha256_raw_bytes']:\n        raise RuntimeError('SOURCE_SIZE_OR_HASH_MISMATCH:'+row['path'])\n    source_total+=size\n    source_rows.append({'git_blob_id':row['git_blob_id'],'git_mode':row['git_mode'],'path':row['path'],'sha256':digest,'size_bytes':size})\nif source_total!=candidate_record['total_size_bytes']:\n    raise RuntimeError('SOURCE_TOTAL_BYTES_MISMATCH')\nif destination.exists() or destination.is_symlink() or receipt_path.exists() or receipt_path.is_symlink():\n    raise RuntimeError('STAGING_OR_RECEIPT_ALREADY_EXISTS')\nassert_no_link_or_reparse(destination.parent,'STAGING_PARENT_LEXICAL')\nassert_no_link_or_reparse(receipt_path.parent,'RECEIPT_PARENT_LEXICAL')\nparent=destination.parent.resolve(strict=True)\nassert_no_link_or_reparse(parent,'STAGING_PARENT_RESOLVED')\nassert_no_link_or_reparse(receipt_path.parent.resolve(strict=True),'RECEIPT_PARENT_RESOLVED')\ndestination.mkdir()\nassert_no_link_or_reparse(destination,'STAGING_ROOT')\nfor relative in sorted(expected_dirs,key=lambda value:(len(pathlib.PurePosixPath(value).parts),value)):\n    target=destination/pathlib.PurePosixPath(relative)\n    target.mkdir()\n    assert_no_link_or_reparse(target,'STAGING_DIRECTORY')\ncopied_rows=[]\ncopied_total=0\nfor row in records:\n    src=source/pathlib.PurePosixPath(row['path'])\n    dst=destination/pathlib.PurePosixPath(row['path'])\n    before=src.lstat()\n    digest=hashlib.sha256()\n    copied=0\n    with src.open('rb') as input_stream,dst.open('xb') as output_stream:\n        while True:\n            chunk=input_stream.read(1048576)\n            if not chunk:\n                break\n            output_stream.write(chunk)\n            digest.update(chunk)\n            copied+=len(chunk)\n        output_stream.flush()\n        os.fsync(output_stream.fileno())\n    after=src.lstat()\n    if (before.st_size,before.st_mtime_ns,getattr(before,'st_ino',0))!=(after.st_size,after.st_mtime_ns,getattr(after,'st_ino',0)):\n        raise RuntimeError('SOURCE_CHANGED_DURING_COPY:'+row['path'])\n    if copied!=row['size_bytes'] or digest.hexdigest()!=row['sha256_raw_bytes']:\n        raise RuntimeError('COPIED_STREAM_IDENTITY_MISMATCH:'+row['path'])\n    dst_size,dst_hash,_=hash_regular(dst,destination,'STAGING_FILE')\n    if dst_size!=row['size_bytes'] or dst_hash!=row['sha256_raw_bytes']:\n        raise RuntimeError('STAGING_SIZE_OR_HASH_MISMATCH:'+row['path'])\n    copied_total+=dst_size\n    copied_rows.append({'git_blob_id':row['git_blob_id'],'git_mode':row['git_mode'],'path':row['path'],'sha256':dst_hash,'size_bytes':dst_size})\nfinal_files=set()\nfinal_dirs=set()\nfor current in destination.rglob('*'):\n    relative=current.relative_to(destination).as_posix()\n    st=assert_no_link_or_reparse(current,'STAGING_FINAL')\n    if stat.S_ISREG(st.st_mode):\n        final_files.add(relative)\n    elif stat.S_ISDIR(st.st_mode):\n        final_dirs.add(relative)\n    else:\n        raise RuntimeError('STAGING_FINAL_NON_REGULAR:'+relative)\nif final_files!=expected_files or final_dirs!=expected_dirs or copied_total!=1541044:\n    raise RuntimeError('STAGING_FINAL_SET_OR_TOTAL_MISMATCH')\nreceipt={\n    'candidate_id':CANDIDATE,\n    'destination_root':str(destination),\n    'file_count':len(copied_rows),\n    'files':copied_rows,\n    'git_control_metadata_policy':'SOURCE_DOT_GIT_REPARSE_AND_FILE_TYPES_CHECKED_BUT_EXCLUDED_FROM_FROZEN_PAYLOAD_AND_NEVER_COPIED',\n    'revision':REVISION,\n    'schema_version':'recbole-source-staging-verification-receipt-1.0',\n    'selected_blob_manifest_bytes':selected_bytes,\n    'selected_blob_manifest_sha256':SELECTED_SHA,\n    'source_git_tree':TREE,\n    'source_root':str(source),\n    'source_tree_manifest_bytes':tree_bytes,\n    'source_tree_manifest_sha256':TREE_SHA,\n    'total_bytes':copied_total,\n    'verification':'PASS_EXACT_SELECTED_FILE_SET_SOURCE_AND_DESTINATION'\n}\nencoded=(json.dumps(receipt,ensure_ascii=True,indent=2,sort_keys=True)+'\\n').encode('utf-8')\nwith receipt_path.open('xb') as stream:\n    stream.write(encoded)\n    stream.flush()\n    os.fsync(stream.fileno())\nif receipt_path.read_bytes()!=encoded or encoded.startswith(b'\\xef\\xbb\\xbf'):\n    raise RuntimeError('STAGING_RECEIPT_ENCODING_MISMATCH')"
+          ],
+          "environment_overrides": {
+            "TEMP": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\temp",
+            "TMP": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\temp",
+            "PIP_NO_CACHE_DIR": "1",
+            "PIP_DISABLE_PIP_VERSION_CHECK": "1",
+            "PIP_NO_INPUT": "1"
+          },
+          "purpose": "Replay both frozen manifests and every source payload file immediately before copying only the exact selected file set; then replay every destination byte/hash and emit a deterministic staging verification receipt outside the staging tree.",
+          "receipt_encoding": "UTF-8_NO_BOM_LF_WHERE_TEXT_RECEIPT_IS_WRITTEN",
+          "preconditions": [
+            "source-staging/recbole_v1_2_1_9a6f63d is absent",
+            "receipts/recbole-source-staging-verification.json is absent",
+            "selected_blob_manifest.json raw SHA-256 equals the frozen value",
+            "source_tree_manifest.json raw SHA-256 equals the frozen value"
+          ]
+        },
+        {
+          "id": "E17_BUILD_LOCAL_RECBOLE_WHEEL",
+          "executable": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv\\Scripts\\python.exe",
+          "arguments": [
+            "-B",
+            "-c",
+            "import hashlib,json,os,pathlib,stat,subprocess,sys\nCANDIDATE=\"R5-CAND-RECBOLE-BPR-ML100K-001\"\nREVISION=\"9a6f63d8d4a5b989fe27955a833f813a6d86041e\"\nTREE=\"08915121fea069a30f7e3e97a72e16e7e76d43c6\"\nSELECTED_SHA=\"c5794b9daccdd01ca600c6ef7f890918825fbbb872efa67036c4565234e87016\"\nTREE_SHA=\"c3e460f63bc9f205764a710fa61cf1bc968c235af462e1eac9560b68a2497e6c\"\nsource_path=pathlib.Path(r'E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\materialized_sources\\r5\\recbole_v1_2_1_9a6f63d')\nstaging_path=pathlib.Path(r'E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\source-staging\\recbole_v1_2_1_9a6f63d')\nstaging_receipt_path=pathlib.Path(r'E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\receipts\\recbole-source-staging-verification.json')\nbuild_source=pathlib.Path(r'E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\temp\\recbole-build-source')\nbuild_receipt_path=pathlib.Path(r'E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\receipts\\recbole-ephemeral-build-source-receipt.json')\nselected_path=pathlib.Path(r'E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\rebaseline_v2\\wave_ac\\E4_R5M0_source_materialization\\selected_blob_manifest.json')\ntree_path=pathlib.Path(r'E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\rebaseline_v2\\wave_ac\\E4_R5M0_source_materialization\\source_tree_manifest.json')\nwheel_dir=pathlib.Path(r'E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\local-wheel')\nREPARSE=0x400\ndef strict_pairs(pairs):\n    out={}\n    folded={}\n    for key,value in pairs:\n        if key in out:\n            raise ValueError('DUPLICATE_JSON_KEY:'+key)\n        normalized=key.casefold()\n        if normalized in folded:\n            raise ValueError('CASE_COLLIDING_JSON_KEY:'+folded[normalized]+'|'+key)\n        folded[normalized]=key\n        out[key]=value\n    return out\ndef load_json_bytes(path,expected_sha=None):\n    payload=path.read_bytes()\n    if payload.startswith(b'\\xef\\xbb\\xbf'):\n        raise RuntimeError('UTF8_BOM_FORBIDDEN:'+str(path))\n    if expected_sha is not None and hashlib.sha256(payload).hexdigest()!=expected_sha:\n        raise RuntimeError('HASH_MISMATCH:'+str(path))\n    parsed=json.loads(payload.decode('utf-8'),object_pairs_hook=strict_pairs)\n    return payload,parsed\ndef attrs(path):\n    return getattr(path.lstat(),'st_file_attributes',0)\ndef assert_kind(path,kind,directory):\n    st=path.lstat()\n    if path.is_symlink() or attrs(path)&REPARSE:\n        raise RuntimeError(kind+'_LINK_OR_REPARSE:'+str(path))\n    if directory and not stat.S_ISDIR(st.st_mode):\n        raise RuntimeError(kind+'_NON_DIRECTORY:'+str(path))\n    if not directory and not stat.S_ISREG(st.st_mode):\n        raise RuntimeError(kind+'_NON_REGULAR:'+str(path))\n    return st\ndef safe_relative(raw):\n    if not raw or '\\\\' in raw or '\\x00' in raw or ':' in raw:\n        return False\n    pure=pathlib.PurePosixPath(raw)\n    return not pure.is_absolute() and pure.as_posix()==raw and all(part not in ('','.','..') for part in pure.parts)\ndef hash_file(path,root,expected_size,expected_sha,kind):\n    assert_kind(path,kind,False)\n    try:\n        path.resolve(strict=True).relative_to(root.resolve(strict=True))\n    except ValueError:\n        raise RuntimeError(kind+'_ESCAPES_ROOT:'+str(path))\n    digest=hashlib.sha256()\n    size=0\n    with path.open('rb') as stream:\n        while True:\n            chunk=stream.read(1048576)\n            if not chunk:\n                break\n            digest.update(chunk)\n            size+=len(chunk)\n    if size!=expected_size or digest.hexdigest()!=expected_sha:\n        raise RuntimeError(kind+'_SIZE_OR_HASH_MISMATCH:'+str(path))\n    return size\nselected_payload,selected=load_json_bytes(selected_path,SELECTED_SHA)\ntree_payload,tree_manifest=load_json_bytes(tree_path,TREE_SHA)\nstaging_receipt_payload,staging_receipt=load_json_bytes(staging_receipt_path)\nif staging_receipt_payload!=(json.dumps(staging_receipt,ensure_ascii=True,indent=2,sort_keys=True)+'\\n').encode('utf-8'):\n    raise RuntimeError('STAGING_RECEIPT_NOT_DETERMINISTIC_UTF8_NO_BOM')\ncandidate_record=next(row for row in selected['candidates'] if row['candidate_id']==CANDIDATE)\ntree_record=next(row for row in tree_manifest['candidates'] if row['candidate_id']==CANDIDATE)\nrecords=sorted(candidate_record['files'],key=lambda row:row['path'])\npaths=[row['path'] for row in records]\nexpected_files=set(paths)\nif candidate_record['file_count']!=265 or candidate_record['total_size_bytes']!=1541044 or len(records)!=265:\n    raise RuntimeError('MANIFEST_COUNT_OR_TOTAL_MISMATCH')\nif any(not safe_relative(value) for value in paths) or len(expected_files)!=265 or len({value.casefold() for value in paths})!=265:\n    raise RuntimeError('UNSAFE_DUPLICATE_OR_CASE_COLLIDING_SELECTED_PATH')\ntree_selected={row['path']:row for row in tree_record['entries'] if row['selected_by_sparse_policy']}\nif tree_record['full_revision']!=REVISION or tree_record['git_tree']!=TREE or tree_record['selected_tree_entry_count']!=265 or set(tree_selected)!=expected_files:\n    raise RuntimeError('REVISION_TREE_OR_SELECTED_SET_MISMATCH')\nexpected_receipt_files=[]\nfor row in records:\n    entry=tree_selected[row['path']]\n    if entry['object_type']!='blob' or entry['git_object_id']!=row['git_blob_id'] or entry['mode']!=row['git_mode']:\n        raise RuntimeError('TREE_RECORD_MISMATCH:'+row['path'])\n    expected_receipt_files.append({'git_blob_id':row['git_blob_id'],'git_mode':row['git_mode'],'path':row['path'],'sha256':row['sha256_raw_bytes'],'size_bytes':row['size_bytes']})\nexpected_receipt_header={\n    'candidate_id':CANDIDATE,\n    'file_count':265,\n    'revision':REVISION,\n    'schema_version':'recbole-source-staging-verification-receipt-1.0',\n    'selected_blob_manifest_bytes':len(selected_payload),\n    'selected_blob_manifest_sha256':SELECTED_SHA,\n    'source_git_tree':TREE,\n    'source_tree_manifest_bytes':len(tree_payload),\n    'source_tree_manifest_sha256':TREE_SHA,\n    'total_bytes':1541044,\n    'verification':'PASS_EXACT_SELECTED_FILE_SET_SOURCE_AND_DESTINATION'\n}\nfor key,value in expected_receipt_header.items():\n    if staging_receipt.get(key)!=value:\n        raise RuntimeError('STAGING_RECEIPT_FIELD_MISMATCH:'+key)\nif staging_receipt.get('files')!=expected_receipt_files:\n    raise RuntimeError('STAGING_RECEIPT_FILE_ROWS_MISMATCH')\nexpected_dirs=set()\nfor value in expected_files:\n    parent=pathlib.PurePosixPath(value).parent\n    while parent.as_posix()!='.':\n        expected_dirs.add(parent.as_posix())\n        parent=parent.parent\nfor lexical,kind in ((source_path,'SOURCE_ROOT'),(staging_path,'STAGING_ROOT'),(selected_path,'SELECTED_MANIFEST'),(tree_path,'TREE_MANIFEST'),(staging_receipt_path,'STAGING_RECEIPT'),(wheel_dir,'LOCAL_WHEEL_DIRECTORY'),(build_source.parent,'BUILD_SOURCE_PARENT'),(build_receipt_path.parent,'BUILD_RECEIPT_PARENT')):\n    assert_kind(lexical,kind,kind.endswith('ROOT') or kind.endswith('DIRECTORY') or kind.endswith('PARENT'))\nsource=source_path.resolve(strict=True)\nstaging=staging_path.resolve(strict=True)\ndef scan_exact(root_path,allow_git,kind):\n    actual_files=set()\n    actual_dirs=set()\n    for current in root_path.rglob('*'):\n        relative=current.relative_to(root_path).as_posix()\n        st=current.lstat()\n        if current.is_symlink() or attrs(current)&REPARSE:\n            raise RuntimeError(kind+'_LINK_OR_REPARSE:'+relative)\n        if allow_git and (relative=='.git' or relative.startswith('.git/')):\n            if not (stat.S_ISREG(st.st_mode) or stat.S_ISDIR(st.st_mode)):\n                raise RuntimeError(kind+'_GIT_CONTROL_NON_REGULAR:'+relative)\n            continue\n        if stat.S_ISREG(st.st_mode):\n            actual_files.add(relative)\n        elif stat.S_ISDIR(st.st_mode):\n            actual_dirs.add(relative)\n        else:\n            raise RuntimeError(kind+'_NON_REGULAR:'+relative)\n    if actual_files!=expected_files or actual_dirs!=expected_dirs:\n        raise RuntimeError(kind+'_UNEXPECTED_OR_MISSING_FILE_SET')\n    total=0\n    for row in records:\n        total+=hash_file(root_path/pathlib.PurePosixPath(row['path']),root_path,row['size_bytes'],row['sha256_raw_bytes'],kind+'_FILE')\n    if total!=1541044:\n        raise RuntimeError(kind+'_TOTAL_BYTES_MISMATCH')\n    return total\nscan_exact(source,True,'SOURCE_PREBUILD')\nscan_exact(staging,False,'STAGING_PREBUILD')\nif build_source.exists() or build_source.is_symlink() or build_receipt_path.exists() or build_receipt_path.is_symlink():\n    raise RuntimeError('BUILD_SOURCE_OR_RECEIPT_ALREADY_EXISTS')\nbuild_source.mkdir()\nassert_kind(build_source,'BUILD_SOURCE_ROOT',True)\nfor relative in sorted(expected_dirs,key=lambda value:(len(pathlib.PurePosixPath(value).parts),value)):\n    directory=build_source/pathlib.PurePosixPath(relative)\n    directory.mkdir()\n    assert_kind(directory,'BUILD_SOURCE_DIRECTORY',True)\nfor row in records:\n    src=staging/pathlib.PurePosixPath(row['path'])\n    dst=build_source/pathlib.PurePosixPath(row['path'])\n    before=src.lstat()\n    digest=hashlib.sha256()\n    copied=0\n    with src.open('rb') as input_stream,dst.open('xb') as output_stream:\n        while True:\n            chunk=input_stream.read(1048576)\n            if not chunk:\n                break\n            output_stream.write(chunk)\n            digest.update(chunk)\n            copied+=len(chunk)\n        output_stream.flush()\n        os.fsync(output_stream.fileno())\n    after=src.lstat()\n    if (before.st_size,before.st_mtime_ns,getattr(before,'st_ino',0))!=(after.st_size,after.st_mtime_ns,getattr(after,'st_ino',0)):\n        raise RuntimeError('STAGING_CHANGED_DURING_EPHEMERAL_COPY:'+row['path'])\n    if copied!=row['size_bytes'] or digest.hexdigest()!=row['sha256_raw_bytes']:\n        raise RuntimeError('BUILD_SOURCE_COPY_HASH_MISMATCH:'+row['path'])\nscan_exact(build_source,False,'BUILD_SOURCE_PREBUILD')\nif list(wheel_dir.glob('*.whl')):\n    raise RuntimeError('LOCAL_WHEEL_OUTPUT_ALREADY_EXISTS')\nbuild_argv=[sys.executable,'-m','pip','--isolated','--disable-pip-version-check','--no-cache-dir','wheel','--no-index','--no-deps','--no-build-isolation','--wheel-dir',str(wheel_dir),str(build_source)]\ncompleted=subprocess.run(build_argv,cwd=r'E:\\UIT\\cv\\backend',shell=False,check=False)\nif completed.returncode!=0:\n    raise SystemExit(completed.returncode)\nwheels=sorted(path.name for path in wheel_dir.glob('*.whl'))\nif len(wheels)!=1:\n    raise RuntimeError('LOCAL_WHEEL_COUNT_MISMATCH')\nscan_exact(source,True,'SOURCE_POSTBUILD')\nscan_exact(staging,False,'STAGING_POSTBUILD')\nfor row in records:\n    hash_file(build_source/pathlib.PurePosixPath(row['path']),build_source,row['size_bytes'],row['sha256_raw_bytes'],'BUILD_SOURCE_SELECTED_POSTBUILD')\nallowed_extra=[]\nfor current in build_source.rglob('*'):\n    relative=current.relative_to(build_source).as_posix()\n    if relative in expected_files or relative in expected_dirs:\n        continue\n    st=current.lstat()\n    if current.is_symlink() or attrs(current)&REPARSE or not (stat.S_ISREG(st.st_mode) or stat.S_ISDIR(st.st_mode)):\n        raise RuntimeError('BUILD_SOURCE_POSTBUILD_UNSAFE_EXTRA:'+relative)\n    parts=pathlib.PurePosixPath(relative).parts\n    allowed=(parts and (parts[0]=='build' or parts[0].lower().endswith('.egg-info'))) or '__pycache__' in parts or relative.lower().endswith('.pyc')\n    if not allowed:\n        raise RuntimeError('BUILD_SOURCE_POSTBUILD_UNEXPECTED_EXTRA:'+relative)\n    allowed_extra.append({'kind':'directory' if stat.S_ISDIR(st.st_mode) else 'file','path':relative,'size_bytes':0 if stat.S_ISDIR(st.st_mode) else st.st_size})\nreceipt={\n    'build_argv':build_argv,\n    'build_source_ephemeral':True,\n    'build_source_prebuild_file_count':265,\n    'build_source_prebuild_total_bytes':1541044,\n    'build_source_prebuild_verification':'PASS_EXACT_SELECTED_FILE_SET',\n    'build_source_root':str(build_source.resolve(strict=True)),\n    'candidate_id':CANDIDATE,\n    'local_wheel_filenames':wheels,\n    'postbuild_allowed_ephemeral_additions':sorted(allowed_extra,key=lambda row:row['path']),\n    'revision':REVISION,\n    'schema_version':'recbole-ephemeral-build-source-receipt-1.0',\n    'source_git_tree':TREE,\n    'source_staging_postbuild_file_count':265,\n    'source_staging_postbuild_total_bytes':1541044,\n    'source_staging_postbuild_verification':'PASS_EXACT_UNMODIFIED_NO_BUILD_EGG_INFO_PYCACHE_OR_PYC_ADDITIONS',\n    'source_staging_verification_receipt_sha256':hashlib.sha256(staging_receipt_payload).hexdigest()\n}\nencoded=(json.dumps(receipt,ensure_ascii=True,indent=2,sort_keys=True)+'\\n').encode('utf-8')\nwith build_receipt_path.open('xb') as stream:\n    stream.write(encoded)\n    stream.flush()\n    os.fsync(stream.fileno())\nif build_receipt_path.read_bytes()!=encoded or encoded.startswith(b'\\xef\\xbb\\xbf'):\n    raise RuntimeError('BUILD_SOURCE_RECEIPT_ENCODING_MISMATCH')"
+          ],
+          "working_directory": "E:\\UIT\\cv\\backend",
+          "timeout_seconds": 600,
+          "network": false,
+          "writes": [
+            "local-wheel/recbole-1.2.1-*.whl",
+            "receipts/recbole-ephemeral-build-source-receipt.json"
+          ],
+          "argv": [
+            "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv\\Scripts\\python.exe",
+            "-B",
+            "-c",
+            "import hashlib,json,os,pathlib,stat,subprocess,sys\nCANDIDATE=\"R5-CAND-RECBOLE-BPR-ML100K-001\"\nREVISION=\"9a6f63d8d4a5b989fe27955a833f813a6d86041e\"\nTREE=\"08915121fea069a30f7e3e97a72e16e7e76d43c6\"\nSELECTED_SHA=\"c5794b9daccdd01ca600c6ef7f890918825fbbb872efa67036c4565234e87016\"\nTREE_SHA=\"c3e460f63bc9f205764a710fa61cf1bc968c235af462e1eac9560b68a2497e6c\"\nsource_path=pathlib.Path(r'E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\materialized_sources\\r5\\recbole_v1_2_1_9a6f63d')\nstaging_path=pathlib.Path(r'E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\source-staging\\recbole_v1_2_1_9a6f63d')\nstaging_receipt_path=pathlib.Path(r'E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\receipts\\recbole-source-staging-verification.json')\nbuild_source=pathlib.Path(r'E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\temp\\recbole-build-source')\nbuild_receipt_path=pathlib.Path(r'E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\receipts\\recbole-ephemeral-build-source-receipt.json')\nselected_path=pathlib.Path(r'E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\rebaseline_v2\\wave_ac\\E4_R5M0_source_materialization\\selected_blob_manifest.json')\ntree_path=pathlib.Path(r'E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\rebaseline_v2\\wave_ac\\E4_R5M0_source_materialization\\source_tree_manifest.json')\nwheel_dir=pathlib.Path(r'E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\local-wheel')\nREPARSE=0x400\ndef strict_pairs(pairs):\n    out={}\n    folded={}\n    for key,value in pairs:\n        if key in out:\n            raise ValueError('DUPLICATE_JSON_KEY:'+key)\n        normalized=key.casefold()\n        if normalized in folded:\n            raise ValueError('CASE_COLLIDING_JSON_KEY:'+folded[normalized]+'|'+key)\n        folded[normalized]=key\n        out[key]=value\n    return out\ndef load_json_bytes(path,expected_sha=None):\n    payload=path.read_bytes()\n    if payload.startswith(b'\\xef\\xbb\\xbf'):\n        raise RuntimeError('UTF8_BOM_FORBIDDEN:'+str(path))\n    if expected_sha is not None and hashlib.sha256(payload).hexdigest()!=expected_sha:\n        raise RuntimeError('HASH_MISMATCH:'+str(path))\n    parsed=json.loads(payload.decode('utf-8'),object_pairs_hook=strict_pairs)\n    return payload,parsed\ndef attrs(path):\n    return getattr(path.lstat(),'st_file_attributes',0)\ndef assert_kind(path,kind,directory):\n    st=path.lstat()\n    if path.is_symlink() or attrs(path)&REPARSE:\n        raise RuntimeError(kind+'_LINK_OR_REPARSE:'+str(path))\n    if directory and not stat.S_ISDIR(st.st_mode):\n        raise RuntimeError(kind+'_NON_DIRECTORY:'+str(path))\n    if not directory and not stat.S_ISREG(st.st_mode):\n        raise RuntimeError(kind+'_NON_REGULAR:'+str(path))\n    return st\ndef safe_relative(raw):\n    if not raw or '\\\\' in raw or '\\x00' in raw or ':' in raw:\n        return False\n    pure=pathlib.PurePosixPath(raw)\n    return not pure.is_absolute() and pure.as_posix()==raw and all(part not in ('','.','..') for part in pure.parts)\ndef hash_file(path,root,expected_size,expected_sha,kind):\n    assert_kind(path,kind,False)\n    try:\n        path.resolve(strict=True).relative_to(root.resolve(strict=True))\n    except ValueError:\n        raise RuntimeError(kind+'_ESCAPES_ROOT:'+str(path))\n    digest=hashlib.sha256()\n    size=0\n    with path.open('rb') as stream:\n        while True:\n            chunk=stream.read(1048576)\n            if not chunk:\n                break\n            digest.update(chunk)\n            size+=len(chunk)\n    if size!=expected_size or digest.hexdigest()!=expected_sha:\n        raise RuntimeError(kind+'_SIZE_OR_HASH_MISMATCH:'+str(path))\n    return size\nselected_payload,selected=load_json_bytes(selected_path,SELECTED_SHA)\ntree_payload,tree_manifest=load_json_bytes(tree_path,TREE_SHA)\nstaging_receipt_payload,staging_receipt=load_json_bytes(staging_receipt_path)\nif staging_receipt_payload!=(json.dumps(staging_receipt,ensure_ascii=True,indent=2,sort_keys=True)+'\\n').encode('utf-8'):\n    raise RuntimeError('STAGING_RECEIPT_NOT_DETERMINISTIC_UTF8_NO_BOM')\ncandidate_record=next(row for row in selected['candidates'] if row['candidate_id']==CANDIDATE)\ntree_record=next(row for row in tree_manifest['candidates'] if row['candidate_id']==CANDIDATE)\nrecords=sorted(candidate_record['files'],key=lambda row:row['path'])\npaths=[row['path'] for row in records]\nexpected_files=set(paths)\nif candidate_record['file_count']!=265 or candidate_record['total_size_bytes']!=1541044 or len(records)!=265:\n    raise RuntimeError('MANIFEST_COUNT_OR_TOTAL_MISMATCH')\nif any(not safe_relative(value) for value in paths) or len(expected_files)!=265 or len({value.casefold() for value in paths})!=265:\n    raise RuntimeError('UNSAFE_DUPLICATE_OR_CASE_COLLIDING_SELECTED_PATH')\ntree_selected={row['path']:row for row in tree_record['entries'] if row['selected_by_sparse_policy']}\nif tree_record['full_revision']!=REVISION or tree_record['git_tree']!=TREE or tree_record['selected_tree_entry_count']!=265 or set(tree_selected)!=expected_files:\n    raise RuntimeError('REVISION_TREE_OR_SELECTED_SET_MISMATCH')\nexpected_receipt_files=[]\nfor row in records:\n    entry=tree_selected[row['path']]\n    if entry['object_type']!='blob' or entry['git_object_id']!=row['git_blob_id'] or entry['mode']!=row['git_mode']:\n        raise RuntimeError('TREE_RECORD_MISMATCH:'+row['path'])\n    expected_receipt_files.append({'git_blob_id':row['git_blob_id'],'git_mode':row['git_mode'],'path':row['path'],'sha256':row['sha256_raw_bytes'],'size_bytes':row['size_bytes']})\nexpected_receipt_header={\n    'candidate_id':CANDIDATE,\n    'file_count':265,\n    'revision':REVISION,\n    'schema_version':'recbole-source-staging-verification-receipt-1.0',\n    'selected_blob_manifest_bytes':len(selected_payload),\n    'selected_blob_manifest_sha256':SELECTED_SHA,\n    'source_git_tree':TREE,\n    'source_tree_manifest_bytes':len(tree_payload),\n    'source_tree_manifest_sha256':TREE_SHA,\n    'total_bytes':1541044,\n    'verification':'PASS_EXACT_SELECTED_FILE_SET_SOURCE_AND_DESTINATION'\n}\nfor key,value in expected_receipt_header.items():\n    if staging_receipt.get(key)!=value:\n        raise RuntimeError('STAGING_RECEIPT_FIELD_MISMATCH:'+key)\nif staging_receipt.get('files')!=expected_receipt_files:\n    raise RuntimeError('STAGING_RECEIPT_FILE_ROWS_MISMATCH')\nexpected_dirs=set()\nfor value in expected_files:\n    parent=pathlib.PurePosixPath(value).parent\n    while parent.as_posix()!='.':\n        expected_dirs.add(parent.as_posix())\n        parent=parent.parent\nfor lexical,kind in ((source_path,'SOURCE_ROOT'),(staging_path,'STAGING_ROOT'),(selected_path,'SELECTED_MANIFEST'),(tree_path,'TREE_MANIFEST'),(staging_receipt_path,'STAGING_RECEIPT'),(wheel_dir,'LOCAL_WHEEL_DIRECTORY'),(build_source.parent,'BUILD_SOURCE_PARENT'),(build_receipt_path.parent,'BUILD_RECEIPT_PARENT')):\n    assert_kind(lexical,kind,kind.endswith('ROOT') or kind.endswith('DIRECTORY') or kind.endswith('PARENT'))\nsource=source_path.resolve(strict=True)\nstaging=staging_path.resolve(strict=True)\ndef scan_exact(root_path,allow_git,kind):\n    actual_files=set()\n    actual_dirs=set()\n    for current in root_path.rglob('*'):\n        relative=current.relative_to(root_path).as_posix()\n        st=current.lstat()\n        if current.is_symlink() or attrs(current)&REPARSE:\n            raise RuntimeError(kind+'_LINK_OR_REPARSE:'+relative)\n        if allow_git and (relative=='.git' or relative.startswith('.git/')):\n            if not (stat.S_ISREG(st.st_mode) or stat.S_ISDIR(st.st_mode)):\n                raise RuntimeError(kind+'_GIT_CONTROL_NON_REGULAR:'+relative)\n            continue\n        if stat.S_ISREG(st.st_mode):\n            actual_files.add(relative)\n        elif stat.S_ISDIR(st.st_mode):\n            actual_dirs.add(relative)\n        else:\n            raise RuntimeError(kind+'_NON_REGULAR:'+relative)\n    if actual_files!=expected_files or actual_dirs!=expected_dirs:\n        raise RuntimeError(kind+'_UNEXPECTED_OR_MISSING_FILE_SET')\n    total=0\n    for row in records:\n        total+=hash_file(root_path/pathlib.PurePosixPath(row['path']),root_path,row['size_bytes'],row['sha256_raw_bytes'],kind+'_FILE')\n    if total!=1541044:\n        raise RuntimeError(kind+'_TOTAL_BYTES_MISMATCH')\n    return total\nscan_exact(source,True,'SOURCE_PREBUILD')\nscan_exact(staging,False,'STAGING_PREBUILD')\nif build_source.exists() or build_source.is_symlink() or build_receipt_path.exists() or build_receipt_path.is_symlink():\n    raise RuntimeError('BUILD_SOURCE_OR_RECEIPT_ALREADY_EXISTS')\nbuild_source.mkdir()\nassert_kind(build_source,'BUILD_SOURCE_ROOT',True)\nfor relative in sorted(expected_dirs,key=lambda value:(len(pathlib.PurePosixPath(value).parts),value)):\n    directory=build_source/pathlib.PurePosixPath(relative)\n    directory.mkdir()\n    assert_kind(directory,'BUILD_SOURCE_DIRECTORY',True)\nfor row in records:\n    src=staging/pathlib.PurePosixPath(row['path'])\n    dst=build_source/pathlib.PurePosixPath(row['path'])\n    before=src.lstat()\n    digest=hashlib.sha256()\n    copied=0\n    with src.open('rb') as input_stream,dst.open('xb') as output_stream:\n        while True:\n            chunk=input_stream.read(1048576)\n            if not chunk:\n                break\n            output_stream.write(chunk)\n            digest.update(chunk)\n            copied+=len(chunk)\n        output_stream.flush()\n        os.fsync(output_stream.fileno())\n    after=src.lstat()\n    if (before.st_size,before.st_mtime_ns,getattr(before,'st_ino',0))!=(after.st_size,after.st_mtime_ns,getattr(after,'st_ino',0)):\n        raise RuntimeError('STAGING_CHANGED_DURING_EPHEMERAL_COPY:'+row['path'])\n    if copied!=row['size_bytes'] or digest.hexdigest()!=row['sha256_raw_bytes']:\n        raise RuntimeError('BUILD_SOURCE_COPY_HASH_MISMATCH:'+row['path'])\nscan_exact(build_source,False,'BUILD_SOURCE_PREBUILD')\nif list(wheel_dir.glob('*.whl')):\n    raise RuntimeError('LOCAL_WHEEL_OUTPUT_ALREADY_EXISTS')\nbuild_argv=[sys.executable,'-m','pip','--isolated','--disable-pip-version-check','--no-cache-dir','wheel','--no-index','--no-deps','--no-build-isolation','--wheel-dir',str(wheel_dir),str(build_source)]\ncompleted=subprocess.run(build_argv,cwd=r'E:\\UIT\\cv\\backend',shell=False,check=False)\nif completed.returncode!=0:\n    raise SystemExit(completed.returncode)\nwheels=sorted(path.name for path in wheel_dir.glob('*.whl'))\nif len(wheels)!=1:\n    raise RuntimeError('LOCAL_WHEEL_COUNT_MISMATCH')\nscan_exact(source,True,'SOURCE_POSTBUILD')\nscan_exact(staging,False,'STAGING_POSTBUILD')\nfor row in records:\n    hash_file(build_source/pathlib.PurePosixPath(row['path']),build_source,row['size_bytes'],row['sha256_raw_bytes'],'BUILD_SOURCE_SELECTED_POSTBUILD')\nallowed_extra=[]\nfor current in build_source.rglob('*'):\n    relative=current.relative_to(build_source).as_posix()\n    if relative in expected_files or relative in expected_dirs:\n        continue\n    st=current.lstat()\n    if current.is_symlink() or attrs(current)&REPARSE or not (stat.S_ISREG(st.st_mode) or stat.S_ISDIR(st.st_mode)):\n        raise RuntimeError('BUILD_SOURCE_POSTBUILD_UNSAFE_EXTRA:'+relative)\n    parts=pathlib.PurePosixPath(relative).parts\n    allowed=(parts and (parts[0]=='build' or parts[0].lower().endswith('.egg-info'))) or '__pycache__' in parts or relative.lower().endswith('.pyc')\n    if not allowed:\n        raise RuntimeError('BUILD_SOURCE_POSTBUILD_UNEXPECTED_EXTRA:'+relative)\n    allowed_extra.append({'kind':'directory' if stat.S_ISDIR(st.st_mode) else 'file','path':relative,'size_bytes':0 if stat.S_ISDIR(st.st_mode) else st.st_size})\nreceipt={\n    'build_argv':build_argv,\n    'build_source_ephemeral':True,\n    'build_source_prebuild_file_count':265,\n    'build_source_prebuild_total_bytes':1541044,\n    'build_source_prebuild_verification':'PASS_EXACT_SELECTED_FILE_SET',\n    'build_source_root':str(build_source.resolve(strict=True)),\n    'candidate_id':CANDIDATE,\n    'local_wheel_filenames':wheels,\n    'postbuild_allowed_ephemeral_additions':sorted(allowed_extra,key=lambda row:row['path']),\n    'revision':REVISION,\n    'schema_version':'recbole-ephemeral-build-source-receipt-1.0',\n    'source_git_tree':TREE,\n    'source_staging_postbuild_file_count':265,\n    'source_staging_postbuild_total_bytes':1541044,\n    'source_staging_postbuild_verification':'PASS_EXACT_UNMODIFIED_NO_BUILD_EGG_INFO_PYCACHE_OR_PYC_ADDITIONS',\n    'source_staging_verification_receipt_sha256':hashlib.sha256(staging_receipt_payload).hexdigest()\n}\nencoded=(json.dumps(receipt,ensure_ascii=True,indent=2,sort_keys=True)+'\\n').encode('utf-8')\nwith build_receipt_path.open('xb') as stream:\n    stream.write(encoded)\n    stream.flush()\n    os.fsync(stream.fileno())\nif build_receipt_path.read_bytes()!=encoded or encoded.startswith(b'\\xef\\xbb\\xbf'):\n    raise RuntimeError('BUILD_SOURCE_RECEIPT_ENCODING_MISMATCH')"
+          ],
+          "environment_overrides": {
+            "TEMP": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\temp",
+            "TMP": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\temp",
+            "PIP_NO_CACHE_DIR": "1",
+            "PIP_DISABLE_PIP_VERSION_CHECK": "1",
+            "PIP_NO_INPUT": "1",
+            "PIP_NO_INDEX": "1"
+          },
+          "purpose": "Revalidate immutable source-staging, create and revalidate a previously absent exact ephemeral build-source copy under attempt temp, build only from that copy, then replay source-staging unchanged before writing a deterministic build-source receipt.",
+          "receipt_encoding": "UTF-8_NO_BOM_DETERMINISTIC_SORTED_KEYS_LF",
+          "preconditions": [
+            "E16 and its deterministic staging receipt remain exact",
+            "temp/recbole-build-source is absent",
+            "receipts/recbole-ephemeral-build-source-receipt.json is absent",
+            "source-staging is exactly the original 265-file/1,541,044-byte selected set",
+            "local-wheel contains no wheel"
+          ],
+          "ephemeral_writes": [
+            "temp/recbole-build-source/**"
+          ],
+          "ambient_state_guards": {
+            "pip_isolated": true,
+            "pip_user_config_ignored": true,
+            "pip_environment_index_ignored": true,
+            "pip_cache_disabled_by_cli": true,
+            "pip_version_check_disabled_by_cli": true,
+            "offline_no_index": true
+          }
+        },
+        {
+          "id": "E18_HASH_LOCAL_RECBOLE_WHEEL",
+          "executable": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv\\Scripts\\python.exe",
+          "arguments": [
+            "-B",
+            "-c",
+            "import email,hashlib,json,pathlib,zipfile\nroot=pathlib.Path(r'E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001')\nwheels=list((root/'local-wheel').glob('*.whl'))\nassert len(wheels)==1,wheels\nwheel_path=wheels[0]\nwith zipfile.ZipFile(wheel_path) as archive:\n    metadata_path=next(name for name in archive.namelist() if name.endswith('.dist-info/METADATA'))\n    metadata=email.message_from_bytes(archive.read(metadata_path))\nassert metadata['Name'].lower()=='recbole' and metadata['Version']=='1.2.1',(metadata['Name'],metadata['Version'])\nstaging_receipt=root/'receipts'/'recbole-source-staging-verification.json'\nbuild_source_receipt=root/'receipts'/'recbole-ephemeral-build-source-receipt.json'\nstaging_payload=staging_receipt.read_bytes()\nbuild_source_payload=build_source_receipt.read_bytes()\nassert staging_payload and build_source_payload and not staging_payload.startswith(b'\\xef\\xbb\\xbf') and not build_source_payload.startswith(b'\\xef\\xbb\\xbf')\ndigest=hashlib.sha256(wheel_path.read_bytes()).hexdigest()\nreceipt={\n    'build_source_verification_receipt':'receipts/recbole-ephemeral-build-source-receipt.json',\n    'build_source_verification_receipt_sha256':hashlib.sha256(build_source_payload).hexdigest(),\n    'build_tools':{'pip':'24.0','setuptools':'69.5.1','wheel':'0.43.0'},\n    'filename':wheel_path.name,\n    'identity':metadata['Name'],\n    'python':'3.11.9',\n    'sha256':digest,\n    'size_bytes':wheel_path.stat().st_size,\n    'source_git_tree':'08915121fea069a30f7e3e97a72e16e7e76d43c6',\n    'source_revision':'9a6f63d8d4a5b989fe27955a833f813a6d86041e',\n    'source_staging_verification_receipt':'receipts/recbole-source-staging-verification.json',\n    'source_staging_verification_receipt_sha256':hashlib.sha256(staging_payload).hexdigest(),\n    'version':metadata['Version']\n}\n(root/'recbole-local-wheel-build-receipt.json').write_bytes((json.dumps(receipt,ensure_ascii=True,indent=2,sort_keys=True)+'\\n').encode('utf-8'))\n(root/'recbole-local-wheel-hashed.txt').write_bytes((wheel_path.resolve().as_uri()+' --hash=sha256:'+digest+'\\n').encode('ascii'))"
+          ],
+          "working_directory": "E:\\UIT\\cv\\backend",
+          "timeout_seconds": 60,
+          "network": false,
+          "writes": [
+            "recbole-local-wheel-build-receipt.json",
+            "recbole-local-wheel-hashed.txt"
+          ],
+          "argv": [
+            "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv\\Scripts\\python.exe",
+            "-B",
+            "-c",
+            "import email,hashlib,json,pathlib,zipfile\nroot=pathlib.Path(r'E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001')\nwheels=list((root/'local-wheel').glob('*.whl'))\nassert len(wheels)==1,wheels\nwheel_path=wheels[0]\nwith zipfile.ZipFile(wheel_path) as archive:\n    metadata_path=next(name for name in archive.namelist() if name.endswith('.dist-info/METADATA'))\n    metadata=email.message_from_bytes(archive.read(metadata_path))\nassert metadata['Name'].lower()=='recbole' and metadata['Version']=='1.2.1',(metadata['Name'],metadata['Version'])\nstaging_receipt=root/'receipts'/'recbole-source-staging-verification.json'\nbuild_source_receipt=root/'receipts'/'recbole-ephemeral-build-source-receipt.json'\nstaging_payload=staging_receipt.read_bytes()\nbuild_source_payload=build_source_receipt.read_bytes()\nassert staging_payload and build_source_payload and not staging_payload.startswith(b'\\xef\\xbb\\xbf') and not build_source_payload.startswith(b'\\xef\\xbb\\xbf')\ndigest=hashlib.sha256(wheel_path.read_bytes()).hexdigest()\nreceipt={\n    'build_source_verification_receipt':'receipts/recbole-ephemeral-build-source-receipt.json',\n    'build_source_verification_receipt_sha256':hashlib.sha256(build_source_payload).hexdigest(),\n    'build_tools':{'pip':'24.0','setuptools':'69.5.1','wheel':'0.43.0'},\n    'filename':wheel_path.name,\n    'identity':metadata['Name'],\n    'python':'3.11.9',\n    'sha256':digest,\n    'size_bytes':wheel_path.stat().st_size,\n    'source_git_tree':'08915121fea069a30f7e3e97a72e16e7e76d43c6',\n    'source_revision':'9a6f63d8d4a5b989fe27955a833f813a6d86041e',\n    'source_staging_verification_receipt':'receipts/recbole-source-staging-verification.json',\n    'source_staging_verification_receipt_sha256':hashlib.sha256(staging_payload).hexdigest(),\n    'version':metadata['Version']\n}\n(root/'recbole-local-wheel-build-receipt.json').write_bytes((json.dumps(receipt,ensure_ascii=True,indent=2,sort_keys=True)+'\\n').encode('utf-8'))\n(root/'recbole-local-wheel-hashed.txt').write_bytes((wheel_path.resolve().as_uri()+' --hash=sha256:'+digest+'\\n').encode('ascii'))"
+          ],
+          "environment_overrides": {
+            "TEMP": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\temp",
+            "TMP": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\temp",
+            "PIP_NO_CACHE_DIR": "1",
+            "PIP_DISABLE_PIP_VERSION_CHECK": "1",
+            "PIP_NO_INPUT": "1"
+          },
+          "purpose": "Hash the one local RecBole wheel and bind it to both immutable staging and ephemeral build-source verification receipt SHA-256 values.",
+          "receipt_encoding": "UTF-8_NO_BOM_DETERMINISTIC_SORTED_KEYS_LF"
+        },
+        {
+          "id": "E19_INSTALL_HASHED_LOCAL_RECBOLE_WHEEL",
+          "executable": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv\\Scripts\\python.exe",
+          "arguments": [
+            "-m",
+            "pip",
+            "--isolated",
+            "--no-cache-dir",
+            "--disable-pip-version-check",
+            "install",
+            "--no-index",
+            "--require-hashes",
+            "--no-deps",
+            "--requirement",
+            "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\recbole-local-wheel-hashed.txt"
+          ],
+          "working_directory": "E:\\UIT\\cv\\backend",
+          "timeout_seconds": 180,
+          "network": false,
+          "writes": [
+            "venv/"
+          ],
+          "argv": [
+            "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv\\Scripts\\python.exe",
+            "-m",
+            "pip",
+            "--isolated",
+            "--no-cache-dir",
+            "--disable-pip-version-check",
+            "install",
+            "--no-index",
+            "--require-hashes",
+            "--no-deps",
+            "--requirement",
+            "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\recbole-local-wheel-hashed.txt"
+          ],
+          "environment_overrides": {
+            "TEMP": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\temp",
+            "TMP": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\temp",
+            "PIP_NO_CACHE_DIR": "1",
+            "PIP_DISABLE_PIP_VERSION_CHECK": "1",
+            "PIP_NO_INPUT": "1"
+          },
+          "ambient_state_guards": {
+            "pip_isolated": true,
+            "pip_user_config_ignored": true,
+            "pip_environment_index_ignored": true,
+            "pip_cache_disabled_by_cli": true,
+            "pip_version_check_disabled_by_cli": true
+          }
+        },
+        {
+          "id": "E20_CAPTURE_PIP_CHECK",
+          "executable": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv\\Scripts\\python.exe",
+          "arguments": [
+            "-B",
+            "-c",
+            "import os,pathlib,subprocess,sys\nenv=os.environ.copy()\nenv.update({'NO_COLOR':'1','PYTHONIOENCODING':'utf-8','PYTHONUTF8':'1'})\ncompleted=subprocess.run([\"E:\\\\UIT\\\\cv\\\\materialized-environments\\\\hybrid-recsys-v5\\\\stage1e\\\\r6\\\\recbole_bpr_ml100k_py3119_cpu\\\\attempt-001\\\\venv\\\\Scripts\\\\python.exe\",\"-m\",\"pip\",\"--isolated\",\"--disable-pip-version-check\",\"check\"],stdout=subprocess.PIPE,stderr=subprocess.PIPE,env=env,shell=False,check=False)\nstdout=completed.stdout.decode('utf-8','strict').replace('\\r\\n','\\n').replace('\\r','\\n')\nstderr=completed.stderr.decode('utf-8','strict').replace('\\r\\n','\\n').replace('\\r','\\n')\nif stderr:\n    sys.stderr.write(stderr)\nif completed.returncode!=0 or stderr:\n    raise SystemExit(completed.returncode or 70)\nif stdout and not stdout.endswith('\\n'):\n    stdout+='\\n'\npath=pathlib.Path(r'E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\pip-check.txt')\nwith path.open('xb') as stream:\n    stream.write(stdout.encode('utf-8'))\nraise SystemExit(0)"
+          ],
+          "working_directory": "E:\\UIT\\cv\\backend",
+          "timeout_seconds": 120,
+          "network": false,
+          "writes": [
+            "pip-check.txt"
+          ],
+          "argv": [
+            "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv\\Scripts\\python.exe",
+            "-B",
+            "-c",
+            "import os,pathlib,subprocess,sys\nenv=os.environ.copy()\nenv.update({'NO_COLOR':'1','PYTHONIOENCODING':'utf-8','PYTHONUTF8':'1'})\ncompleted=subprocess.run([\"E:\\\\UIT\\\\cv\\\\materialized-environments\\\\hybrid-recsys-v5\\\\stage1e\\\\r6\\\\recbole_bpr_ml100k_py3119_cpu\\\\attempt-001\\\\venv\\\\Scripts\\\\python.exe\",\"-m\",\"pip\",\"--isolated\",\"--disable-pip-version-check\",\"check\"],stdout=subprocess.PIPE,stderr=subprocess.PIPE,env=env,shell=False,check=False)\nstdout=completed.stdout.decode('utf-8','strict').replace('\\r\\n','\\n').replace('\\r','\\n')\nstderr=completed.stderr.decode('utf-8','strict').replace('\\r\\n','\\n').replace('\\r','\\n')\nif stderr:\n    sys.stderr.write(stderr)\nif completed.returncode!=0 or stderr:\n    raise SystemExit(completed.returncode or 70)\nif stdout and not stdout.endswith('\\n'):\n    stdout+='\\n'\npath=pathlib.Path(r'E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\pip-check.txt')\nwith path.open('xb') as stream:\n    stream.write(stdout.encode('utf-8'))\nraise SystemExit(0)"
+          ],
+          "environment_overrides": {
+            "TEMP": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\temp",
+            "TMP": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\temp",
+            "PIP_NO_CACHE_DIR": "1",
+            "PIP_DISABLE_PIP_VERSION_CHECK": "1",
+            "PIP_NO_INPUT": "1"
+          },
+          "purpose": "Capture successful pip check output as deterministic UTF-8 without BOM with LF newlines using the exact frozen venv Python.",
+          "receipt_encoding": "UTF-8_NO_BOM_LF_WHERE_TEXT_RECEIPT_IS_WRITTEN",
+          "ambient_state_guards": {
+            "pip_isolated": true,
+            "pip_user_config_ignored": true,
+            "pip_environment_index_ignored": true,
+            "pip_version_check_disabled_by_cli": true
+          }
+        },
+        {
+          "id": "E21_CAPTURE_FROZEN_INVENTORY",
+          "executable": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv\\Scripts\\python.exe",
+          "arguments": [
+            "-B",
+            "-c",
+            "import os,pathlib,subprocess,sys\nenv=os.environ.copy()\nenv.update({'NO_COLOR':'1','PYTHONIOENCODING':'utf-8','PYTHONUTF8':'1'})\ncompleted=subprocess.run([\"E:\\\\UIT\\\\cv\\\\materialized-environments\\\\hybrid-recsys-v5\\\\stage1e\\\\r6\\\\recbole_bpr_ml100k_py3119_cpu\\\\attempt-001\\\\venv\\\\Scripts\\\\python.exe\",\"-m\",\"pip\",\"--isolated\",\"--disable-pip-version-check\",\"freeze\",\"--all\"],stdout=subprocess.PIPE,stderr=subprocess.PIPE,env=env,shell=False,check=False)\nstdout=completed.stdout.decode('utf-8','strict').replace('\\r\\n','\\n').replace('\\r','\\n')\nstderr=completed.stderr.decode('utf-8','strict').replace('\\r\\n','\\n').replace('\\r','\\n')\nif stderr:\n    sys.stderr.write(stderr)\nif completed.returncode!=0 or stderr:\n    raise SystemExit(completed.returncode or 71)\nlines=[line.strip() for line in stdout.split('\\n') if line.strip()]\nif len({line.casefold() for line in lines})!=len(lines):\n    raise RuntimeError('CASE_COLLIDING_INVENTORY_LINES')\npayload=('\\n'.join(sorted(lines,key=lambda value:value.casefold()))+'\\n').encode('utf-8')\npath=pathlib.Path(r'E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\installed-inventory.txt')\nwith path.open('xb') as stream:\n    stream.write(payload)\nraise SystemExit(0)"
+          ],
+          "working_directory": "E:\\UIT\\cv\\backend",
+          "timeout_seconds": 120,
+          "network": false,
+          "writes": [
+            "installed-inventory.txt"
+          ],
+          "argv": [
+            "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv\\Scripts\\python.exe",
+            "-B",
+            "-c",
+            "import os,pathlib,subprocess,sys\nenv=os.environ.copy()\nenv.update({'NO_COLOR':'1','PYTHONIOENCODING':'utf-8','PYTHONUTF8':'1'})\ncompleted=subprocess.run([\"E:\\\\UIT\\\\cv\\\\materialized-environments\\\\hybrid-recsys-v5\\\\stage1e\\\\r6\\\\recbole_bpr_ml100k_py3119_cpu\\\\attempt-001\\\\venv\\\\Scripts\\\\python.exe\",\"-m\",\"pip\",\"--isolated\",\"--disable-pip-version-check\",\"freeze\",\"--all\"],stdout=subprocess.PIPE,stderr=subprocess.PIPE,env=env,shell=False,check=False)\nstdout=completed.stdout.decode('utf-8','strict').replace('\\r\\n','\\n').replace('\\r','\\n')\nstderr=completed.stderr.decode('utf-8','strict').replace('\\r\\n','\\n').replace('\\r','\\n')\nif stderr:\n    sys.stderr.write(stderr)\nif completed.returncode!=0 or stderr:\n    raise SystemExit(completed.returncode or 71)\nlines=[line.strip() for line in stdout.split('\\n') if line.strip()]\nif len({line.casefold() for line in lines})!=len(lines):\n    raise RuntimeError('CASE_COLLIDING_INVENTORY_LINES')\npayload=('\\n'.join(sorted(lines,key=lambda value:value.casefold()))+'\\n').encode('utf-8')\npath=pathlib.Path(r'E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\installed-inventory.txt')\nwith path.open('xb') as stream:\n    stream.write(payload)\nraise SystemExit(0)"
+          ],
+          "environment_overrides": {
+            "TEMP": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\temp",
+            "TMP": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\temp",
+            "PIP_NO_CACHE_DIR": "1",
+            "PIP_DISABLE_PIP_VERSION_CHECK": "1",
+            "PIP_NO_INPUT": "1"
+          },
+          "purpose": "Capture, normalize and deterministically sort the exact pip freeze --all inventory as UTF-8 without BOM with LF newlines.",
+          "receipt_encoding": "UTF-8_NO_BOM_LF_WHERE_TEXT_RECEIPT_IS_WRITTEN",
+          "ambient_state_guards": {
+            "pip_isolated": true,
+            "pip_user_config_ignored": true,
+            "pip_environment_index_ignored": true,
+            "pip_version_check_disabled_by_cli": true
+          }
+        },
+        {
+          "id": "E22_CAPTURE_PIP_INSPECT",
+          "executable": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv\\Scripts\\python.exe",
+          "arguments": [
+            "-B",
+            "-c",
+            "import json,os,pathlib,subprocess,sys\nenv=os.environ.copy()\nenv.update({'NO_COLOR':'1','PYTHONIOENCODING':'utf-8','PYTHONUTF8':'1'})\ncompleted=subprocess.run([\"E:\\\\UIT\\\\cv\\\\materialized-environments\\\\hybrid-recsys-v5\\\\stage1e\\\\r6\\\\recbole_bpr_ml100k_py3119_cpu\\\\attempt-001\\\\venv\\\\Scripts\\\\python.exe\",\"-m\",\"pip\",\"--isolated\",\"--disable-pip-version-check\",\"inspect\",\"--local\"],stdout=subprocess.PIPE,stderr=subprocess.PIPE,env=env,shell=False,check=False)\nstdout=completed.stdout.decode('utf-8','strict').replace('\\r\\n','\\n').replace('\\r','\\n')\nstderr=completed.stderr.decode('utf-8','strict').replace('\\r\\n','\\n').replace('\\r','\\n')\nif stderr:\n    sys.stderr.write(stderr)\nif completed.returncode!=0 or stderr:\n    raise SystemExit(completed.returncode or 72)\ndef strict_pairs(pairs):\n    out={}\n    folded={}\n    for key,value in pairs:\n        if key in out or key.casefold() in folded:\n            raise ValueError('DUPLICATE_OR_CASE_COLLIDING_JSON_KEY:'+key)\n        folded[key.casefold()]=key\n        out[key]=value\n    return out\nparsed=json.loads(stdout,object_pairs_hook=strict_pairs)\npayload=(json.dumps(parsed,ensure_ascii=True,indent=2,sort_keys=True)+'\\n').encode('utf-8')\npath=pathlib.Path(r'E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\pip-inspect.json')\nwith path.open('xb') as stream:\n    stream.write(payload)\nraise SystemExit(0)"
+          ],
+          "working_directory": "E:\\UIT\\cv\\backend",
+          "timeout_seconds": 120,
+          "network": false,
+          "writes": [
+            "pip-inspect.json"
+          ],
+          "argv": [
+            "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv\\Scripts\\python.exe",
+            "-B",
+            "-c",
+            "import json,os,pathlib,subprocess,sys\nenv=os.environ.copy()\nenv.update({'NO_COLOR':'1','PYTHONIOENCODING':'utf-8','PYTHONUTF8':'1'})\ncompleted=subprocess.run([\"E:\\\\UIT\\\\cv\\\\materialized-environments\\\\hybrid-recsys-v5\\\\stage1e\\\\r6\\\\recbole_bpr_ml100k_py3119_cpu\\\\attempt-001\\\\venv\\\\Scripts\\\\python.exe\",\"-m\",\"pip\",\"--isolated\",\"--disable-pip-version-check\",\"inspect\",\"--local\"],stdout=subprocess.PIPE,stderr=subprocess.PIPE,env=env,shell=False,check=False)\nstdout=completed.stdout.decode('utf-8','strict').replace('\\r\\n','\\n').replace('\\r','\\n')\nstderr=completed.stderr.decode('utf-8','strict').replace('\\r\\n','\\n').replace('\\r','\\n')\nif stderr:\n    sys.stderr.write(stderr)\nif completed.returncode!=0 or stderr:\n    raise SystemExit(completed.returncode or 72)\ndef strict_pairs(pairs):\n    out={}\n    folded={}\n    for key,value in pairs:\n        if key in out or key.casefold() in folded:\n            raise ValueError('DUPLICATE_OR_CASE_COLLIDING_JSON_KEY:'+key)\n        folded[key.casefold()]=key\n        out[key]=value\n    return out\nparsed=json.loads(stdout,object_pairs_hook=strict_pairs)\npayload=(json.dumps(parsed,ensure_ascii=True,indent=2,sort_keys=True)+'\\n').encode('utf-8')\npath=pathlib.Path(r'E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\pip-inspect.json')\nwith path.open('xb') as stream:\n    stream.write(payload)\nraise SystemExit(0)"
+          ],
+          "environment_overrides": {
+            "TEMP": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\temp",
+            "TMP": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\temp",
+            "PIP_NO_CACHE_DIR": "1",
+            "PIP_DISABLE_PIP_VERSION_CHECK": "1",
+            "PIP_NO_INPUT": "1"
+          },
+          "purpose": "Parse pip inspect output with duplicate/case-collision rejection and write deterministic sorted UTF-8 JSON without BOM and with LF newlines.",
+          "receipt_encoding": "UTF-8_NO_BOM_LF_WHERE_TEXT_RECEIPT_IS_WRITTEN",
+          "ambient_state_guards": {
+            "pip_isolated": true,
+            "pip_user_config_ignored": true,
+            "pip_environment_index_ignored": true,
+            "pip_version_check_disabled_by_cli": true
+          }
+        },
+        {
+          "id": "E23_BOUNDED_IMPORT_AND_VERSION_CHECK",
+          "executable": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv\\Scripts\\python.exe",
+          "arguments": [
+            "-c",
+            "import importlib.metadata as md,json,pathlib,platform,struct,sys; expected={'pip':'24.0','setuptools':'69.5.1','wheel':'0.43.0','torch':'2.2.2+cpu','numpy':'1.26.4','scipy':'1.11.4','pandas':'2.1.4','scikit-learn':'1.3.2','PyYAML':'6.0.2','tqdm':'4.66.5','colorlog':'4.7.2','colorama':'0.4.4','texttable':'1.7.0','tensorboard':'2.15.2','ray':'2.6.3','thop':'0.1.1.post2207130030','tabulate':'0.9.0','plotly':'5.18.0','psutil':'5.9.8','RecBole':'1.2.1'}; actual={k:md.version(k) for k in expected}; assert actual==expected,(actual,expected); import torch,numpy,scipy,pandas,sklearn,yaml,colorlog,colorama,texttable,tensorboard,ray,thop,tabulate,plotly,psutil,recbole; from torch.utils.tensorboard import SummaryWriter; from ray import tune; from thop.profile import register_hooks; import recbole.config,recbole.data,recbole.evaluator,recbole.trainer,recbole.quick_start,recbole.model.general_recommender.bpr; assert torch.__version__=='2.2.2+cpu' and torch.version.cuda is None and not torch.cuda.is_available(); out={'python':platform.python_version(),'bits':struct.calcsize('P')*8,'platform':sys.platform,'versions':actual,'torch_cuda_version':torch.version.cuda,'torch_cuda_available':torch.cuda.is_available(),'imports':['recbole','recbole.config','recbole.data','recbole.evaluator','recbole.trainer','recbole.quick_start','recbole.model.general_recommender.bpr','torch.utils.tensorboard.SummaryWriter','ray.tune','thop.profile.register_hooks'],'execution_scope':'imports_and_version_assertions_only'}; pathlib.Path(r'E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\import-version-check.json').write_text(json.dumps(out,indent=2,sort_keys=True)+'\\n',encoding='utf-8')"
+          ],
+          "working_directory": "E:\\UIT\\cv\\backend",
+          "timeout_seconds": 180,
+          "network": false,
+          "writes": [
+            "import-version-check.json"
+          ],
+          "argv": [
+            "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv\\Scripts\\python.exe",
+            "-c",
+            "import importlib.metadata as md,json,pathlib,platform,struct,sys; expected={'pip':'24.0','setuptools':'69.5.1','wheel':'0.43.0','torch':'2.2.2+cpu','numpy':'1.26.4','scipy':'1.11.4','pandas':'2.1.4','scikit-learn':'1.3.2','PyYAML':'6.0.2','tqdm':'4.66.5','colorlog':'4.7.2','colorama':'0.4.4','texttable':'1.7.0','tensorboard':'2.15.2','ray':'2.6.3','thop':'0.1.1.post2207130030','tabulate':'0.9.0','plotly':'5.18.0','psutil':'5.9.8','RecBole':'1.2.1'}; actual={k:md.version(k) for k in expected}; assert actual==expected,(actual,expected); import torch,numpy,scipy,pandas,sklearn,yaml,colorlog,colorama,texttable,tensorboard,ray,thop,tabulate,plotly,psutil,recbole; from torch.utils.tensorboard import SummaryWriter; from ray import tune; from thop.profile import register_hooks; import recbole.config,recbole.data,recbole.evaluator,recbole.trainer,recbole.quick_start,recbole.model.general_recommender.bpr; assert torch.__version__=='2.2.2+cpu' and torch.version.cuda is None and not torch.cuda.is_available(); out={'python':platform.python_version(),'bits':struct.calcsize('P')*8,'platform':sys.platform,'versions':actual,'torch_cuda_version':torch.version.cuda,'torch_cuda_available':torch.cuda.is_available(),'imports':['recbole','recbole.config','recbole.data','recbole.evaluator','recbole.trainer','recbole.quick_start','recbole.model.general_recommender.bpr','torch.utils.tensorboard.SummaryWriter','ray.tune','thop.profile.register_hooks'],'execution_scope':'imports_and_version_assertions_only'}; pathlib.Path(r'E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\import-version-check.json').write_text(json.dumps(out,indent=2,sort_keys=True)+'\\n',encoding='utf-8')"
+          ],
+          "environment_overrides": {
+            "TEMP": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\temp",
+            "TMP": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\temp",
+            "PIP_NO_CACHE_DIR": "1",
+            "PIP_DISABLE_PIP_VERSION_CHECK": "1",
+            "PIP_NO_INPUT": "1"
+          }
+        },
+        {
+          "id": "E24_BOUNDED_SYNTAX_CHECK",
+          "executable": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv\\Scripts\\python.exe",
+          "arguments": [
+            "-B",
+            "-c",
+            "import hashlib,json,pathlib,stat\nCANDIDATE=\"R5-CAND-RECBOLE-BPR-ML100K-001\"\nREVISION=\"9a6f63d8d4a5b989fe27955a833f813a6d86041e\"\nTREE=\"08915121fea069a30f7e3e97a72e16e7e76d43c6\"\nSELECTED_SHA=\"c5794b9daccdd01ca600c6ef7f890918825fbbb872efa67036c4565234e87016\"\nstaging=pathlib.Path(r'E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\source-staging\\recbole_v1_2_1_9a6f63d')\nselected_path=pathlib.Path(r'E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\rebaseline_v2\\wave_ac\\E4_R5M0_source_materialization\\selected_blob_manifest.json')\nstaging_receipt_path=pathlib.Path(r'E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\receipts\\recbole-source-staging-verification.json')\nsyntax_receipt_path=pathlib.Path(r'E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\receipts\\recbole-staging-syntax-check.json')\nREPARSE=0x400\ndef strict_pairs(pairs):\n    out={}\n    folded={}\n    for key,value in pairs:\n        if key in out:\n            raise ValueError('DUPLICATE_JSON_KEY:'+key)\n        normalized=key.casefold()\n        if normalized in folded:\n            raise ValueError('CASE_COLLIDING_JSON_KEY:'+folded[normalized]+'|'+key)\n        folded[normalized]=key\n        out[key]=value\n    return out\ndef attrs(path):\n    return getattr(path.lstat(),'st_file_attributes',0)\ndef load_json(path,expected_sha=None):\n    payload=path.read_bytes()\n    if payload.startswith(b'\\xef\\xbb\\xbf'):\n        raise RuntimeError('UTF8_BOM_FORBIDDEN:'+str(path))\n    if expected_sha is not None and hashlib.sha256(payload).hexdigest()!=expected_sha:\n        raise RuntimeError('HASH_MISMATCH:'+str(path))\n    return payload,json.loads(payload.decode('utf-8'),object_pairs_hook=strict_pairs)\nselected_payload,selected=load_json(selected_path,SELECTED_SHA)\nstaging_receipt_payload,staging_receipt=load_json(staging_receipt_path)\ncandidate_record=next(row for row in selected['candidates'] if row['candidate_id']==CANDIDATE)\nrecords=sorted(candidate_record['files'],key=lambda row:row['path'])\nexpected_files={row['path'] for row in records}\nexpected_python=[row for row in records if row['path'].lower().endswith('.py')]\nexpected_python_paths={row['path'] for row in expected_python}\nexpected_dirs=set()\nfor value in expected_files:\n    parent=pathlib.PurePosixPath(value).parent\n    while parent.as_posix()!='.':\n        expected_dirs.add(parent.as_posix())\n        parent=parent.parent\nif candidate_record['file_count']!=265 or candidate_record['total_size_bytes']!=1541044 or len(expected_python)!=150 or sum(row['size_bytes'] for row in expected_python)!=1378341:\n    raise RuntimeError('EXPECTED_SELECTED_OR_PYTHON_INVENTORY_MISMATCH')\nif staging_receipt.get('revision')!=REVISION or staging_receipt.get('source_git_tree')!=TREE or staging_receipt.get('files')!=[{'git_blob_id':row['git_blob_id'],'git_mode':row['git_mode'],'path':row['path'],'sha256':row['sha256_raw_bytes'],'size_bytes':row['size_bytes']} for row in records]:\n    raise RuntimeError('STAGING_RECEIPT_BINDING_MISMATCH')\nfor path,kind,directory in ((staging,'STAGING_ROOT',True),(selected_path,'SELECTED_MANIFEST',False),(staging_receipt_path,'STAGING_RECEIPT',False),(syntax_receipt_path.parent,'SYNTAX_RECEIPT_PARENT',True)):\n    st=path.lstat()\n    if path.is_symlink() or attrs(path)&REPARSE or (directory and not stat.S_ISDIR(st.st_mode)) or (not directory and not stat.S_ISREG(st.st_mode)):\n        raise RuntimeError(kind+'_LINK_REPARSE_OR_TYPE_MISMATCH')\nif syntax_receipt_path.exists() or syntax_receipt_path.is_symlink():\n    raise RuntimeError('SYNTAX_RECEIPT_ALREADY_EXISTS')\ndef scan_no_bytecode_and_exact_set():\n    actual_files=set()\n    actual_dirs=set()\n    for current in staging.rglob('*'):\n        relative=current.relative_to(staging).as_posix()\n        st=current.lstat()\n        parts=pathlib.PurePosixPath(relative).parts\n        if current.is_symlink() or attrs(current)&REPARSE or '__pycache__' in parts or relative.lower().endswith('.pyc'):\n            raise RuntimeError('STAGING_LINK_REPARSE_OR_BYTECODE_ARTIFACT:'+relative)\n        if stat.S_ISREG(st.st_mode):\n            actual_files.add(relative)\n        elif stat.S_ISDIR(st.st_mode):\n            actual_dirs.add(relative)\n        else:\n            raise RuntimeError('STAGING_NON_REGULAR:'+relative)\n    if actual_files!=expected_files or actual_dirs!=expected_dirs:\n        raise RuntimeError('STAGING_NOT_EXACT_SELECTED_SET')\n    actual_python={value for value in actual_files if value.lower().endswith('.py')}\n    if actual_python!=expected_python_paths or len({value.casefold() for value in actual_python})!=150:\n        raise RuntimeError('STAGING_PYTHON_INVENTORY_MISMATCH')\nscan_no_bytecode_and_exact_set()\ncompiled=[]\nfor row in expected_python:\n    path=staging/pathlib.PurePosixPath(row['path'])\n    st=path.lstat()\n    if path.is_symlink() or attrs(path)&REPARSE or not stat.S_ISREG(st.st_mode):\n        raise RuntimeError('PYTHON_SOURCE_LINK_REPARSE_OR_NON_REGULAR:'+row['path'])\n    payload=path.read_bytes()\n    digest=hashlib.sha256(payload).hexdigest()\n    if len(payload)!=row['size_bytes'] or digest!=row['sha256_raw_bytes']:\n        raise RuntimeError('PYTHON_SOURCE_SIZE_OR_HASH_MISMATCH:'+row['path'])\n    compile(payload,row['path'],'exec',dont_inherit=True,optimize=0)\n    compiled.append({'path':row['path'],'sha256':digest,'size_bytes':len(payload)})\nscan_no_bytecode_and_exact_set()\nfor row in expected_python:\n    path=staging/pathlib.PurePosixPath(row['path'])\n    payload=path.read_bytes()\n    if len(payload)!=row['size_bytes'] or hashlib.sha256(payload).hexdigest()!=row['sha256_raw_bytes']:\n        raise RuntimeError('PYTHON_SOURCE_CHANGED_DURING_IN_MEMORY_COMPILE:'+row['path'])\nreceipt={\n    'bytecode_written':False,\n    'candidate_id':CANDIDATE,\n    'compile_mode':'exec',\n    'compiled_in_memory':True,\n    'opened_non_python_staging_files':False,\n    'python_file_count':len(compiled),\n    'python_source_total_bytes':sum(row['size_bytes'] for row in compiled),\n    'python_sources':compiled,\n    'revision':REVISION,\n    'schema_version':'recbole-staging-read-only-syntax-receipt-1.0',\n    'source_git_tree':TREE,\n    'source_staging_exact_postcheck':True,\n    'source_staging_modified':False,\n    'source_staging_verification_receipt_sha256':hashlib.sha256(staging_receipt_payload).hexdigest(),\n    'verdict':'PASS_READ_ONLY_IN_MEMORY_COMPILE_NO_PYC_OR_PYCACHE'\n}\nencoded=(json.dumps(receipt,ensure_ascii=True,indent=2,sort_keys=True)+'\\n').encode('utf-8')\nwith syntax_receipt_path.open('xb') as stream:\n    stream.write(encoded)"
+          ],
+          "working_directory": "E:\\UIT\\cv\\backend",
+          "timeout_seconds": 240,
+          "network": false,
+          "writes": [
+            "receipts/recbole-staging-syntax-check.json"
+          ],
+          "argv": [
+            "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv\\Scripts\\python.exe",
+            "-B",
+            "-c",
+            "import hashlib,json,pathlib,stat\nCANDIDATE=\"R5-CAND-RECBOLE-BPR-ML100K-001\"\nREVISION=\"9a6f63d8d4a5b989fe27955a833f813a6d86041e\"\nTREE=\"08915121fea069a30f7e3e97a72e16e7e76d43c6\"\nSELECTED_SHA=\"c5794b9daccdd01ca600c6ef7f890918825fbbb872efa67036c4565234e87016\"\nstaging=pathlib.Path(r'E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\source-staging\\recbole_v1_2_1_9a6f63d')\nselected_path=pathlib.Path(r'E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\rebaseline_v2\\wave_ac\\E4_R5M0_source_materialization\\selected_blob_manifest.json')\nstaging_receipt_path=pathlib.Path(r'E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\receipts\\recbole-source-staging-verification.json')\nsyntax_receipt_path=pathlib.Path(r'E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\receipts\\recbole-staging-syntax-check.json')\nREPARSE=0x400\ndef strict_pairs(pairs):\n    out={}\n    folded={}\n    for key,value in pairs:\n        if key in out:\n            raise ValueError('DUPLICATE_JSON_KEY:'+key)\n        normalized=key.casefold()\n        if normalized in folded:\n            raise ValueError('CASE_COLLIDING_JSON_KEY:'+folded[normalized]+'|'+key)\n        folded[normalized]=key\n        out[key]=value\n    return out\ndef attrs(path):\n    return getattr(path.lstat(),'st_file_attributes',0)\ndef load_json(path,expected_sha=None):\n    payload=path.read_bytes()\n    if payload.startswith(b'\\xef\\xbb\\xbf'):\n        raise RuntimeError('UTF8_BOM_FORBIDDEN:'+str(path))\n    if expected_sha is not None and hashlib.sha256(payload).hexdigest()!=expected_sha:\n        raise RuntimeError('HASH_MISMATCH:'+str(path))\n    return payload,json.loads(payload.decode('utf-8'),object_pairs_hook=strict_pairs)\nselected_payload,selected=load_json(selected_path,SELECTED_SHA)\nstaging_receipt_payload,staging_receipt=load_json(staging_receipt_path)\ncandidate_record=next(row for row in selected['candidates'] if row['candidate_id']==CANDIDATE)\nrecords=sorted(candidate_record['files'],key=lambda row:row['path'])\nexpected_files={row['path'] for row in records}\nexpected_python=[row for row in records if row['path'].lower().endswith('.py')]\nexpected_python_paths={row['path'] for row in expected_python}\nexpected_dirs=set()\nfor value in expected_files:\n    parent=pathlib.PurePosixPath(value).parent\n    while parent.as_posix()!='.':\n        expected_dirs.add(parent.as_posix())\n        parent=parent.parent\nif candidate_record['file_count']!=265 or candidate_record['total_size_bytes']!=1541044 or len(expected_python)!=150 or sum(row['size_bytes'] for row in expected_python)!=1378341:\n    raise RuntimeError('EXPECTED_SELECTED_OR_PYTHON_INVENTORY_MISMATCH')\nif staging_receipt.get('revision')!=REVISION or staging_receipt.get('source_git_tree')!=TREE or staging_receipt.get('files')!=[{'git_blob_id':row['git_blob_id'],'git_mode':row['git_mode'],'path':row['path'],'sha256':row['sha256_raw_bytes'],'size_bytes':row['size_bytes']} for row in records]:\n    raise RuntimeError('STAGING_RECEIPT_BINDING_MISMATCH')\nfor path,kind,directory in ((staging,'STAGING_ROOT',True),(selected_path,'SELECTED_MANIFEST',False),(staging_receipt_path,'STAGING_RECEIPT',False),(syntax_receipt_path.parent,'SYNTAX_RECEIPT_PARENT',True)):\n    st=path.lstat()\n    if path.is_symlink() or attrs(path)&REPARSE or (directory and not stat.S_ISDIR(st.st_mode)) or (not directory and not stat.S_ISREG(st.st_mode)):\n        raise RuntimeError(kind+'_LINK_REPARSE_OR_TYPE_MISMATCH')\nif syntax_receipt_path.exists() or syntax_receipt_path.is_symlink():\n    raise RuntimeError('SYNTAX_RECEIPT_ALREADY_EXISTS')\ndef scan_no_bytecode_and_exact_set():\n    actual_files=set()\n    actual_dirs=set()\n    for current in staging.rglob('*'):\n        relative=current.relative_to(staging).as_posix()\n        st=current.lstat()\n        parts=pathlib.PurePosixPath(relative).parts\n        if current.is_symlink() or attrs(current)&REPARSE or '__pycache__' in parts or relative.lower().endswith('.pyc'):\n            raise RuntimeError('STAGING_LINK_REPARSE_OR_BYTECODE_ARTIFACT:'+relative)\n        if stat.S_ISREG(st.st_mode):\n            actual_files.add(relative)\n        elif stat.S_ISDIR(st.st_mode):\n            actual_dirs.add(relative)\n        else:\n            raise RuntimeError('STAGING_NON_REGULAR:'+relative)\n    if actual_files!=expected_files or actual_dirs!=expected_dirs:\n        raise RuntimeError('STAGING_NOT_EXACT_SELECTED_SET')\n    actual_python={value for value in actual_files if value.lower().endswith('.py')}\n    if actual_python!=expected_python_paths or len({value.casefold() for value in actual_python})!=150:\n        raise RuntimeError('STAGING_PYTHON_INVENTORY_MISMATCH')\nscan_no_bytecode_and_exact_set()\ncompiled=[]\nfor row in expected_python:\n    path=staging/pathlib.PurePosixPath(row['path'])\n    st=path.lstat()\n    if path.is_symlink() or attrs(path)&REPARSE or not stat.S_ISREG(st.st_mode):\n        raise RuntimeError('PYTHON_SOURCE_LINK_REPARSE_OR_NON_REGULAR:'+row['path'])\n    payload=path.read_bytes()\n    digest=hashlib.sha256(payload).hexdigest()\n    if len(payload)!=row['size_bytes'] or digest!=row['sha256_raw_bytes']:\n        raise RuntimeError('PYTHON_SOURCE_SIZE_OR_HASH_MISMATCH:'+row['path'])\n    compile(payload,row['path'],'exec',dont_inherit=True,optimize=0)\n    compiled.append({'path':row['path'],'sha256':digest,'size_bytes':len(payload)})\nscan_no_bytecode_and_exact_set()\nfor row in expected_python:\n    path=staging/pathlib.PurePosixPath(row['path'])\n    payload=path.read_bytes()\n    if len(payload)!=row['size_bytes'] or hashlib.sha256(payload).hexdigest()!=row['sha256_raw_bytes']:\n        raise RuntimeError('PYTHON_SOURCE_CHANGED_DURING_IN_MEMORY_COMPILE:'+row['path'])\nreceipt={\n    'bytecode_written':False,\n    'candidate_id':CANDIDATE,\n    'compile_mode':'exec',\n    'compiled_in_memory':True,\n    'opened_non_python_staging_files':False,\n    'python_file_count':len(compiled),\n    'python_source_total_bytes':sum(row['size_bytes'] for row in compiled),\n    'python_sources':compiled,\n    'revision':REVISION,\n    'schema_version':'recbole-staging-read-only-syntax-receipt-1.0',\n    'source_git_tree':TREE,\n    'source_staging_exact_postcheck':True,\n    'source_staging_modified':False,\n    'source_staging_verification_receipt_sha256':hashlib.sha256(staging_receipt_payload).hexdigest(),\n    'verdict':'PASS_READ_ONLY_IN_MEMORY_COMPILE_NO_PYC_OR_PYCACHE'\n}\nencoded=(json.dumps(receipt,ensure_ascii=True,indent=2,sort_keys=True)+'\\n').encode('utf-8')\nwith syntax_receipt_path.open('xb') as stream:\n    stream.write(encoded)"
+          ],
+          "environment_overrides": {
+            "TEMP": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\temp",
+            "TMP": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\temp",
+            "PIP_NO_CACHE_DIR": "1",
+            "PIP_DISABLE_PIP_VERSION_CHECK": "1",
+            "PIP_NO_INPUT": "1"
+          },
+          "purpose": "Verify the exact staged 150-file Python inventory, compile only those staged .py bytes in memory with mode exec, prove no pyc/__pycache__ or staging mutation, and write only a deterministic receipt outside source-staging.",
+          "receipt_encoding": "UTF-8_NO_BOM_DETERMINISTIC_SORTED_KEYS_LF",
+          "read_set": [
+            "source-staging/recbole_v1_2_1_9a6f63d/**/*.py",
+            "selected_blob_manifest.json",
+            "receipts/recbole-source-staging-verification.json"
+          ],
+          "staging_writes": [],
+          "bytecode_generation": false
+        }
+      ]
+    }
+  ],
+  "command_order": [
+    "E00_CREATE_EXTERNAL_IMMUTABLE_ATTEMPT",
+    "E01_FETCH_OFFICIAL_CPYTHON_INSTALLER",
+    "E02_FETCH_OFFICIAL_CPYTHON_SIGSTORE",
+    "E03_VERIFY_AND_PROMOTE_CPYTHON_BOOTSTRAP",
+    "E04_INSTALL_LOCAL_CPYTHON_3119_AMD64",
+    "E05_VERIFY_EXACT_LOCAL_RUNTIME_IDENTITY",
+    "E06_VERIFY_FROZEN_SOURCE_MANIFEST",
+    "E07_CREATE_ISOLATED_VENV",
+    "E08_VERIFY_BUNDLED_PIP_24",
+    "E09_WRITE_LITERAL_PIN_FILES",
+    "E10_DOWNLOAD_TORCH_CPU_WHEEL",
+    "E11_RESOLVE_AND_DOWNLOAD_PYPI_WHEELS",
+    "E12_ASSERT_WHEEL_ONLY_CPU_CLOSURE",
+    "E13_CAPTURE_WHEEL_HASHES_AND_HASHED_REQUIREMENTS",
+    "E14_OFFLINE_RESOLUTION_REPORT",
+    "E15_INSTALL_HASHED_THIRD_PARTY_CLOSURE",
+    "E16_COPY_VERIFIED_SOURCE_TO_STAGING",
+    "E17_BUILD_LOCAL_RECBOLE_WHEEL",
+    "E18_HASH_LOCAL_RECBOLE_WHEEL",
+    "E19_INSTALL_HASHED_LOCAL_RECBOLE_WHEEL",
+    "E20_CAPTURE_PIP_CHECK",
+    "E21_CAPTURE_FROZEN_INVENTORY",
+    "E22_CAPTURE_PIP_INSPECT",
+    "E23_BOUNDED_IMPORT_AND_VERSION_CHECK",
+    "E24_BOUNDED_SYNTAX_CHECK"
+  ],
+  "expected_write_set": {
+    "only_allowed_persistent_root": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001",
+    "persistent_relative_paths": [
+      "downloads/python-3.11.9-amd64.exe",
+      "downloads/python-3.11.9-amd64.exe.sigstore",
+      "receipts/http/*.headers.txt",
+      "receipts/cpython-bootstrap-receipt.json",
+      "receipts/runtime-identity.json",
+      "runtime/**",
+      "venv/**",
+      "wheelhouse/*.whl",
+      "local-wheel/*.whl",
+      "receipts/*.log",
+      "source-staging/**",
+      "receipts/recbole-source-staging-verification.json",
+      "receipts/recbole-staging-syntax-check.json",
+      "receipts/recbole-ephemeral-build-source-receipt.json",
+      "torch-pin.txt",
+      "pypi-direct-pins.txt",
+      "constraints.txt",
+      "requirements-hashed.txt",
+      "resolved-wheel-manifest.json",
+      "resolver-report.json",
+      "recbole-local-wheel-build-receipt.json",
+      "recbole-local-wheel-hashed.txt",
+      "pip-check.txt",
+      "installed-inventory.txt",
+      "pip-inspect.json",
+      "import-version-check.json"
+    ],
+    "ephemeral_relative_paths": [
+      "downloads/python-3.11.9-amd64.exe.partial",
+      "downloads/python-3.11.9-amd64.exe.sigstore.partial",
+      "temp/**",
+      "temp/recbole-build-source/**"
+    ],
+    "explicitly_read_only": [
+      "E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\00_control\\**",
+      "E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\materialized_sources\\r5\\recbole_v1_2_1_9a6f63d\\**"
+    ],
+    "outside_root_write_policy": "STOP"
+  },
+  "wheelhouse_receipt_contract": {
+    "binary_wheels_only": true,
+    "actual_resolution_facts_deferred_to_R6_M1": true,
+    "required_record_fields": [
+      "identity",
+      "normalized_identity",
+      "version",
+      "filename",
+      "wheel_tags",
+      "exact_url",
+      "url_host",
+      "size_bytes",
+      "sha256",
+      "wheel_metadata_path",
+      "wheel_descriptor_path"
+    ],
+    "offline_install_required": true,
+    "offline_flags": [
+      "--no-index",
+      "--find-links",
+      "--require-hashes"
+    ],
+    "pip_check_required": true,
+    "import_version_cpu_check_required": true,
+    "syntax_only_check_required": true
+  },
+  "resource_and_timeout_bounds": {
+    "maximum_network_command_seconds": 900,
+    "maximum_local_build_seconds": 300,
+    "maximum_install_seconds": 900,
+    "maximum_check_seconds": 180,
+    "hard_packet_timeout_seconds": 7200,
+    "maximum_wheelhouse_bytes": 2147483648,
+    "maximum_total_attempt_bytes": 4294967296,
+    "maximum_resident_memory_bytes_per_process": 2147483648,
+    "maximum_cpu_processes": 1,
+    "maximum_parallel_commands": 1,
+    "maximum_ray_workers": 0,
+    "gpu_devices": 0,
+    "retry_count_per_network_command": 1,
+    "retry_semantics": "At most one retry only for a demonstrably transient connection interruption, using byte-identical argv, pins, indexes and attempt root; no version/index/platform fallback.",
+    "concurrency": 1,
+    "internal_pip_retry_count": 0,
+    "external_identical_transient_retry_count": 1
+  },
+  "stop_rules": [
+    "STOP if exact CPython 3.11.9 64-bit is unavailable or if the exact local runtime identity differs.",
+    "STOP if the materialization root already exists; do not delete, repair, merge, or reuse it without a new control decision.",
+    "STOP on any frozen source path, size, or SHA-256 mismatch, or if the candidate/revision/tree identity differs.",
+    "STOP if the source payload outside .git control metadata or the destination staging tree differs from the exact 265-file, 1,541,044-byte selected manifest set; reject every missing, unexpected, case-colliding, linked, reparse or non-regular path.",
+    "STOP if the deterministic staging verification receipt is absent, noncanonical, BOM-bearing, mismatched to revision/tree/manifests, or no longer replays immediately before E17 starts the shell-free offline wheel build.",
+    "STOP if any network host outside the allowlist appears in pip logs, including an unapproved mirror, VCS host, or package index.",
+    "STOP if any third-party dependency lacks a compatible wheel, if pip proposes an sdist/egg, or if a wheel tag is incompatible with CPython 3.11 Windows AMD64.",
+    "STOP if torch does not resolve to exactly 2.2.2+cpu from the official CPU index or if a CUDA/ROCm/nvidia/triton distribution appears.",
+    "STOP on duplicate normalized package identities, direct-pin substitution, resolver conflict, hash mismatch, or non-deterministic second resolution.",
+    "STOP if the legacy local wheel build accesses the network, mutates the frozen source, produces zero or multiple wheels, or emits metadata other than RecBole 1.2.1.",
+    "STOP if pip check is non-zero, any exact version assertion fails, any bounded import fails, torch reports a CUDA build/device, or syntax compilation fails.",
+    "STOP if any command contains or invokes a forbidden training, evaluation, tuning, checkpoint, download, or project TEST operation.",
+    "STOP when any timeout, byte limit, process limit, or expected-write-set boundary is exceeded.",
+    "STOP rather than changing Python, torch, NumPy, Ray, any direct pin, the source revision, the source code, or the feature exclusions. Escalate to a new reviewed proposal.",
+    "STOP if E20, E21, E22 or E24 cannot write its receipt using exact venv Python as deterministic UTF-8 without BOM; PowerShell Set-Content encoding is not permitted.",
+    "STOP if E17 cannot create a previously absent temp/recbole-build-source exact copy, if that copy differs from the same 265-file manifest before build, or if the wheel build reads any source other than that ephemeral verified copy.",
+    "STOP if source-staging differs by any path, size or SHA-256 after E17, including build, *.egg-info, __pycache__ or *.pyc additions.",
+    "STOP if E24 observes a staged Python inventory other than the exact 150 files/1,378,341 bytes, opens a non-Python staging file, creates bytecode/cache, writes under source-staging, or cannot emit its external deterministic syntax receipt.",
+    "STOP if E01 or E02 curl argv does not begin with literal --disable --proxy \"\", or if default curl config/ambient proxy routing is observed.",
+    "STOP if any pip resolve/download/build/install command omits global --isolated; network indexes and offline --no-index/--require-hashes boundaries remain explicit and may not be widened by user config or PIP_* environment."
+  ],
+  "negative_assertions": {
+    "assertion_scope": "All executable/argument arrays in this proposal were statically reviewed; the only RecBole operations proposed are a local wheel build, metadata inventory, imports, version assertions, and syntax compilation.",
+    "no_recbole_train_command": true,
+    "no_recbole_evaluate_command": true,
+    "no_project_test_command": true,
+    "no_preprocess_command": true,
+    "no_checkpoint_command": true,
+    "no_tuning_command": true,
+    "no_vendor_entrypoint_command": true,
+    "no_dataset_open_or_download_command": true,
+    "forbidden_execution_patterns": [
+      "run_recbole.py",
+      "run_hyper.py",
+      "python -m recbole",
+      "run_recbole(",
+      "objective_function(",
+      "trainer.fit(",
+      "trainer.evaluate(",
+      "HyperTuning(",
+      "tune.run(",
+      "ray.init(",
+      "load_data(",
+      "create_dataset(",
+      "data_preparation(",
+      "project_v5/TEST",
+      "dataset='TEST'",
+      "phase='test'",
+      "test_data",
+      "checkpoint",
+      ".pth"
+    ],
+    "allowed_import_only_tokens": [
+      "import recbole.quick_start",
+      "from ray import tune",
+      "import recbole.trainer",
+      "import recbole.evaluator"
+    ],
+    "proof_limit": "This is a proposal-time syntactic assertion, not an execution receipt. The later central runner must repeat the static scan immediately before execution and stop on a match.",
+    "system_python_3_11_3_used": false,
+    "py_launcher_used": false,
+    "unhashed_online_install": false,
+    "source_distribution_allowed": false,
+    "editable_install_allowed": false,
+    "pypi_recbole_allowed": false,
+    "cuda_or_tuning_execution_allowed": false,
+    "wheel_built_from_unverified_staging": false,
+    "source_staging_copy_item_recurse_used": false,
+    "powershell_set_content_utf8_receipt_write_used": false,
+    "powershell_version_dependent_receipt_encoding": false,
+    "local_wheel_built_directly_in_immutable_staging": false,
+    "immutable_staging_modified_by_wheel_build": false,
+    "compileall_invoked": false,
+    "pycache_or_pyc_written_to_staging": false,
+    "syntax_check_writes_to_staging": false,
+    "ambient_curl_config_used": false,
+    "ambient_proxy_route_used": false,
+    "pip_user_config_used": false,
+    "pip_environment_index_used": false,
+    "nonisolated_pip_materialization_command": false
+  },
+  "postconditions": [
+    "Official installer MD5 equals the frozen official-page value, local installer and Sigstore SHA-256 values are captured, and Authenticode Status is Valid.",
+    "Exact local CPython runtime identity and venv identity are captured.",
+    "All 20 direct requirements remain exact; every third-party selected wheel has URL, filename, size and SHA-256 receipts.",
+    "RecBole is built once from the hash-replayed local revision/tree, hash-locked, and installed offline without dependencies.",
+    "The local RecBole wheel was built only after E16 and E17 independently replayed the exact 265-file/1,541,044-byte source and staging sets, every SHA-256, revision, tree and deterministic staging receipt.",
+    "pip check, frozen inventory, pip inspect, import/version/CPU assertions and syntax-only checks pass.",
+    "No unexpected write, network host, package identity, platform tag or forbidden execution token is observed.",
+    "pip-check.txt, installed-inventory.txt, pip-inspect.json and receipts/recbole-staging-syntax-check.json are written by exact venv Python as deterministic UTF-8 without BOM with LF newlines; no PowerShell encoding dependency remains.",
+    "E17 built from only a previously absent, exact hash-replayed ephemeral build-source copy under temp; immutable source-staging replayed unchanged after build with no build/egg-info/pycache/pyc additions.",
+    "E24 opened only the exact 150 selected staged .py files, compiled them in memory, created no bytecode/cache, left source-staging exact, and wrote only receipts/recbole-staging-syntax-check.json.",
+    "All curl fetches suppressed default curl config and ambient proxy routing; all pip resolution/download/build/install surfaces used --isolated with explicit online indexes or offline --no-index boundaries."
+  ],
+  "unresolved_runtime_facts": [
+    "actual Python installer SHA-256, Sigstore payload SHA-256, byte sizes and Authenticode signer identity",
+    "actual direct and transitive wheel URLs, filenames, sizes and SHA-256 values",
+    "actual installed interpreter, package, OS and hardware inventory",
+    "actual local RecBole wheel filename, size and SHA-256",
+    "actual deterministic recbole-source-staging-verification.json bytes and SHA-256 after authorized E16 materialization",
+    "actual deterministic recbole-ephemeral-build-source-receipt.json and recbole-staging-syntax-check.json bytes and SHA-256 values after authorized materialization"
+  ],
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "command_execution_contract": {
+    "runner_must_pass_literal_argv_without_shell_reassembly": true,
+    "runner_must_apply_exact_environment_overrides": true,
+    "runner_must_clear_proxy_and_package_index_environment_variables_not_explicitly_declared": true,
+    "ordered_sequential_execution_only": true,
+    "stop_on_nonzero_or_unexpected_exit": true,
+    "materializer_must_revalidate_exact_packet_hash_before_execution": true,
+    "r6_c1_worker_must_not_execute_any_command": true
+  },
+  "source_staging_verification_contract": {
+    "blocker_id": "C1-F001",
+    "status": "CLOSED_IN_PROPOSAL_PENDING_CENTRAL_REVALIDATION",
+    "command_ids": [
+      "E16_COPY_VERIFIED_SOURCE_TO_STAGING",
+      "E17_BUILD_LOCAL_RECBOLE_WHEEL",
+      "E18_HASH_LOCAL_RECBOLE_WHEEL"
+    ],
+    "candidate_id": "R5-CAND-RECBOLE-BPR-ML100K-001",
+    "revision": "9a6f63d8d4a5b989fe27955a833f813a6d86041e",
+    "git_tree": "08915121fea069a30f7e3e97a72e16e7e76d43c6",
+    "selected_blob_manifest": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ac/E4_R5M0_source_materialization/selected_blob_manifest.json",
+      "raw_sha256": "c5794b9daccdd01ca600c6ef7f890918825fbbb872efa67036c4565234e87016"
+    },
+    "source_tree_manifest": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ac/E4_R5M0_source_materialization/source_tree_manifest.json",
+      "raw_sha256": "c3e460f63bc9f205764a710fa61cf1bc968c235af462e1eac9560b68a2497e6c"
+    },
+    "exact_selected_file_count": 265,
+    "exact_selected_total_bytes": 1541044,
+    "source_payload_policy": "Exact selected payload only; .git control metadata is link/type checked, excluded from payload equality, and never copied.",
+    "destination_policy": "Previously absent root; exact selected files/directories only; no missing, unexpected, case-colliding, linked, reparse or non-regular path.",
+    "receipt_path": "receipts/recbole-source-staging-verification.json",
+    "receipt_encoding": "UTF-8_NO_BOM_DETERMINISTIC_SORTED_KEYS_LF",
+    "prebuild_replay_required": true,
+    "build_source": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\temp\\recbole-build-source",
+    "shell_build_allowed": false,
+    "network_build_allowed": false,
+    "immutable_source_staging_root": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\source-staging\\recbole_v1_2_1_9a6f63d",
+    "ephemeral_build_source_root": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\temp\\recbole-build-source",
+    "build_source_receipt": "receipts/recbole-ephemeral-build-source-receipt.json",
+    "build_source_copy_revalidated_before_build": true,
+    "source_staging_replayed_after_build": true,
+    "source_staging_build_outputs_allowed": false,
+    "wheel_build_input": "EPHEMERAL_EXACT_HASH_REPLAYED_COPY_DERIVED_ONLY_FROM_IMMUTABLE_SOURCE_STAGING",
+    "source_modification_allowed": false
+  },
+  "deterministic_text_receipt_contract": {
+    "blocker_id": "C1-F002",
+    "status": "CLOSED_IN_PROPOSAL_PENDING_CENTRAL_REVALIDATION",
+    "command_ids": [
+      "E20_CAPTURE_PIP_CHECK",
+      "E21_CAPTURE_FROZEN_INVENTORY",
+      "E22_CAPTURE_PIP_INSPECT"
+    ],
+    "writer": "EXACT_FROZEN_VENV_CPYTHON_PATHLIB_WRITE_BYTES",
+    "encoding": "UTF-8",
+    "bom": false,
+    "newline": "LF",
+    "powershell_set_content_used": false,
+    "powershell_version_dependency": false,
+    "note": "E24 writes a deterministic UTF-8-no-BOM JSON syntax receipt under the separate read_only_syntax_check_contract."
+  },
+  "central_rework": {
+    "status": "C1_F001_THROUGH_C1_F007_REWORKED_PENDING_CENTRAL_REVALIDATION",
+    "blocker_C1_F001": "E16 exact selected-set source/destination replay plus deterministic receipt; E17 immediate full replay before shell-free offline build; E18 wheel receipt binds staging receipt hash.",
+    "hardening_C1_F002": "E20/E21/E22/E24 use exact venv Python write_bytes with UTF-8 no BOM and LF; no Set-Content remains.",
+    "command_ids_preserved": true,
+    "command_order_preserved": true,
+    "environment_command_count": 25,
+    "scientific_boundary_expanded": false,
+    "blocker_C1_F004": "E24 exact staged Python inventory plus read-only in-memory compile; no compileall, pyc, pycache or staging write; deterministic external JSON receipt.",
+    "blocker_C1_F005": "E17 exact ephemeral build-source copy under attempt temp, prebuild hash replay, wheel build only from copy, and postbuild immutable staging replay.",
+    "blocker_C1_F006": "E01/E02 curl argv start with --disable --proxy empty; HTTPS-only exact URLs and zero redirects preserved.",
+    "blocker_C1_F007": "All pip resolve/download/build/install commands use --isolated; explicit indexes/no-index/hash boundaries remain."
+  },
+  "read_only_syntax_check_contract": {
+    "blocker_id": "C1-F004",
+    "status": "CLOSED_IN_PROPOSAL_PENDING_CENTRAL_REVALIDATION",
+    "command_id": "E24_BOUNDED_SYNTAX_CHECK",
+    "immutable_staging_root": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\source-staging\\recbole_v1_2_1_9a6f63d",
+    "expected_python_file_count": 150,
+    "expected_python_total_bytes": 1378341,
+    "inventory_source": "frozen selected_blob_manifest.json plus staging verification receipt",
+    "source_open_scope": "ONLY_EXACT_SELECTED_STAGED_DOT_PY_FILES",
+    "compile_api": "compile(source_bytes, filename, mode='exec', dont_inherit=True, optimize=0)",
+    "in_memory_only": true,
+    "pyc_written": false,
+    "pycache_created": false,
+    "staging_writes": [],
+    "receipt_path": "receipts/recbole-staging-syntax-check.json",
+    "receipt_encoding": "UTF-8_NO_BOM_DETERMINISTIC_SORTED_KEYS_LF"
+  },
+  "ephemeral_build_source_contract": {
+    "blocker_id": "C1-F005",
+    "status": "CLOSED_IN_PROPOSAL_PENDING_CENTRAL_REVALIDATION",
+    "command_id": "E17_BUILD_LOCAL_RECBOLE_WHEEL",
+    "immutable_staging_root": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\source-staging\\recbole_v1_2_1_9a6f63d",
+    "ephemeral_build_source_root": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\temp\\recbole-build-source",
+    "previously_absent_required": true,
+    "prebuild_exact_manifest_replay": true,
+    "prebuild_file_count": 265,
+    "prebuild_total_bytes": 1541044,
+    "wheel_built_from_ephemeral_copy_only": true,
+    "source_staging_postbuild_exact_replay": true,
+    "source_staging_postbuild_forbidden_additions": [
+      "build/**",
+      "*.egg-info/**",
+      "**/__pycache__/**",
+      "**/*.pyc"
+    ],
+    "build_source_receipt": "receipts/recbole-ephemeral-build-source-receipt.json",
+    "expected_ephemeral_writes": [
+      "temp/recbole-build-source/**"
+    ],
+    "scientific_execution": false
+  },
+  "ambient_state_hardening_contract": {
+    "status": "C1_F006_AND_C1_F007_REWORKED_PENDING_CENTRAL_REVALIDATION",
+    "C1_F006": {
+      "curl_command_ids": [
+        "E01_FETCH_OFFICIAL_CPYTHON_INSTALLER",
+        "E02_FETCH_OFFICIAL_CPYTHON_SIGSTORE"
+      ],
+      "required_first_options": [
+        "--disable",
+        "--proxy",
+        ""
+      ],
+      "ambient_config_allowed": false,
+      "ambient_proxy_allowed": false
+    },
+    "C1_F007": {
+      "pip_resolve_download_build_install_command_ids": [
+        "E10_DOWNLOAD_TORCH_CPU_WHEEL",
+        "E11_RESOLVE_AND_DOWNLOAD_PYPI_WHEELS",
+        "E14_OFFLINE_RESOLUTION_REPORT",
+        "E15_INSTALL_HASHED_THIRD_PARTY_CLOSURE",
+        "E17_BUILD_LOCAL_RECBOLE_WHEEL",
+        "E19_INSTALL_HASHED_LOCAL_RECBOLE_WHEEL"
+      ],
+      "additional_consistent_check_command_ids": [
+        "E20_CAPTURE_PIP_CHECK",
+        "E21_CAPTURE_FROZEN_INVENTORY",
+        "E22_CAPTURE_PIP_INSPECT"
+      ],
+      "pip_isolated_required": true,
+      "network_indexes_explicit": true,
+      "offline_no_index_preserved": true,
+      "hash_requirements_preserved": true
+    }
+  }
+}

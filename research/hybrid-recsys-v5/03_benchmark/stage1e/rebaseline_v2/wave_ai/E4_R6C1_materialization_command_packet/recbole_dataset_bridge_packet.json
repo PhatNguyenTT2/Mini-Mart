@@ -1,0 +1,227 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r6-c1-recbole-dataset-bridge-packet-1.0",
+  "created_at": "2026-08-23",
+  "stage_id": "R6-C1",
+  "packet_id": "R6-C1-RECBOLE-DATASET-BRIDGE-PACKET",
+  "proposal_only": true,
+  "execution_performed": false,
+  "execution_authorized": false,
+  "source_fact": {
+    "summary": "Pinned Config._set_default_parameters forces recbole/dataset_example/ml-100k whenever dataset is ml-100k; if absent, pinned Dataset._load_data can invoke the downloader, whose url.yaml mapping is a noncanonical RecBole S3 artifact.",
+    "evidence": [
+      {
+        "path": "recbole/config/configurator.py",
+        "raw_sha256": "a5f3f3ba902537d2f678c0f011e7a6d5d706606fae041074913bb651811f1aed",
+        "locator": "Config._set_default_parameters lines 327-338"
+      },
+      {
+        "path": "recbole/data/dataset/dataset.py",
+        "raw_sha256": "9e752eea85d84280f1ea5c752a3be055ab8deb1c03c1196d1a02f46065deee5e",
+        "locator": "Dataset._load_data lines 255-258 and Dataset._download lines 232-248"
+      },
+      {
+        "path": "recbole/properties/dataset/url.yaml",
+        "raw_sha256": "6bd6c438a9b2cce7fa8d81ea6dbe0333b37f83270046d37162ce2775ada51d03",
+        "locator": "ml-100k noncanonical S3 URL mapping"
+      }
+    ],
+    "recbole_s3_provider_authority": false
+  },
+  "prerequisites": [
+    "Central validation of the exact R6-C1 five-file packet has passed.",
+    "R6-M0 dataset materialization has completed with valid independent receipts at the canonical official-source attempt-001 root.",
+    "R6-M1 environment materialization has completed with valid independent receipts at the frozen environment attempt-001 root.",
+    "The installed recbole package resolves under the exact frozen venv site-packages path.",
+    "The installed-package target directory has never existed.",
+    "Dataset construction/loading and all network access remain unauthorized."
+  ],
+  "bridge_contract": {
+    "canonical_source_file": "E:\\UIT\\cv\\materialized-data\\hybrid-recsys-v5\\stage1e\\r6\\official_source\\grouplens_ml100k\\attempt-001\\recbole_atomic\\ml-100k\\ml-100k.inter",
+    "runtime_destination_resolution": "Resolve pathlib.Path(recbole.__file__).parent / 'dataset_example' / 'ml-100k' only after hash-locked local wheel installation.",
+    "required_package_root": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv\\Lib\\site-packages\\recbole",
+    "destination_directory": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv\\Lib\\site-packages\\recbole\\dataset_example\\ml-100k",
+    "destination_file": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv\\Lib\\site-packages\\recbole\\dataset_example\\ml-100k\\ml-100k.inter",
+    "destination_exact_file_set": [
+      "ml-100k.inter"
+    ],
+    "item_or_user_files_allowed": false,
+    "repository_dataset_blob_used": false,
+    "source_modification_allowed": false,
+    "symlink_hardlink_or_junction_allowed": false,
+    "copy_mode": "BINARY_BYTES_ONLY_NO_DECODE_OR_TRANSFORMATION",
+    "source_destination_byte_count_equal_required": true,
+    "source_destination_sha256_equal_required": true,
+    "source_destination_data_row_count_equal_required": true,
+    "expected_data_rows": 100000,
+    "bridge_receipt": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\receipts\\recbole_dataset_bridge_receipt.json",
+    "config_receipt": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\receipts\\recbole_config_path_check_receipt.json",
+    "receipts_outside_consumer_directory": true
+  },
+  "network_allowlist": {
+    "hosts": [],
+    "urls": [],
+    "recbole_s3_allowed": false,
+    "all_network_denied": true
+  },
+  "expected_write_set": {
+    "persistent_files": [
+      "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv\\Lib\\site-packages\\recbole\\dataset_example\\ml-100k\\ml-100k.inter",
+      "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\receipts\\recbole_dataset_bridge_receipt.json",
+      "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\receipts\\recbole_config_path_check_receipt.json"
+    ],
+    "ephemeral_files": [],
+    "destination_directory_exact_final_files": [
+      "ml-100k.inter"
+    ],
+    "writes_outside_environment_attempt_root_allowed": false,
+    "writes_to_repository_allowed": false,
+    "writes_to_canonical_source_allowed": false
+  },
+  "commands": [
+    {
+      "command_id": "B00_RESOLVE_INSTALLED_PACKAGE_AND_REQUIRE_ABSENT_TARGET",
+      "purpose": "Resolve installed recbole.__file__, require the exact frozen venv package root, canonical source presence, reparse-free ancestry, and a previously absent target.",
+      "executable": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv\\Scripts\\python.exe",
+      "argv": [
+        "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv\\Scripts\\python.exe",
+        "-B",
+        "-c",
+        "import json,pathlib,recbole,sys; venv=pathlib.Path(r'E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv').resolve(); package=pathlib.Path(recbole.__file__).resolve().parent; expected=(venv/'Lib'/'site-packages'/'recbole').resolve(); source=pathlib.Path(r'E:\\UIT\\cv\\materialized-data\\hybrid-recsys-v5\\stage1e\\r6\\official_source\\grouplens_ml100k\\attempt-001\\recbole_atomic\\ml-100k\\ml-100k.inter'); target=package/'dataset_example'/'ml-100k'; attrs=lambda p:getattr(p.stat(),'st_file_attributes',0); reparse=0x400; checks={'package':str(package),'expected_package':str(expected),'source':str(source),'target':str(target),'package_exact':package==expected,'source_is_file':source.is_file() and not source.is_symlink() and not (attrs(source)&reparse),'target_absent':not target.exists(),'target_parent_under_package':package in target.resolve(strict=False).parents,'reparse_free':all((not p.exists()) or (not p.is_symlink() and not (attrs(p)&reparse)) for p in [venv,venv/'Lib',venv/'Lib'/'site-packages',package,package/'dataset_example'])}; print(json.dumps(checks,sort_keys=True)); raise SystemExit(0 if all([checks['package_exact'],checks['source_is_file'],checks['target_absent'],checks['target_parent_under_package'],checks['reparse_free']]) else 61)"
+      ],
+      "working_directory": "E:\\UIT\\cv\\backend",
+      "timeout_seconds": 60,
+      "network": false,
+      "persistent_writes": [],
+      "ephemeral_writes": [],
+      "arguments": [
+        "-B",
+        "-c",
+        "import json,pathlib,recbole,sys; venv=pathlib.Path(r'E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv').resolve(); package=pathlib.Path(recbole.__file__).resolve().parent; expected=(venv/'Lib'/'site-packages'/'recbole').resolve(); source=pathlib.Path(r'E:\\UIT\\cv\\materialized-data\\hybrid-recsys-v5\\stage1e\\r6\\official_source\\grouplens_ml100k\\attempt-001\\recbole_atomic\\ml-100k\\ml-100k.inter'); target=package/'dataset_example'/'ml-100k'; attrs=lambda p:getattr(p.stat(),'st_file_attributes',0); reparse=0x400; checks={'package':str(package),'expected_package':str(expected),'source':str(source),'target':str(target),'package_exact':package==expected,'source_is_file':source.is_file() and not source.is_symlink() and not (attrs(source)&reparse),'target_absent':not target.exists(),'target_parent_under_package':package in target.resolve(strict=False).parents,'reparse_free':all((not p.exists()) or (not p.is_symlink() and not (attrs(p)&reparse)) for p in [venv,venv/'Lib',venv/'Lib'/'site-packages',package,package/'dataset_example'])}; print(json.dumps(checks,sort_keys=True)); raise SystemExit(0 if all([checks['package_exact'],checks['source_is_file'],checks['target_absent'],checks['target_parent_under_package'],checks['reparse_free']]) else 61)"
+      ]
+    },
+    {
+      "command_id": "B01_BINARY_COPY_CANONICAL_INTER_AND_WRITE_RECEIPT",
+      "purpose": "Create only the absent consumer directory, binary-copy canonical ml-100k.inter, and require byte-count, SHA-256 and binary newline row-count equality.",
+      "executable": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv\\Scripts\\python.exe",
+      "argv": [
+        "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv\\Scripts\\python.exe",
+        "-B",
+        "-c",
+        "import hashlib,json,pathlib,recbole,shutil; source=pathlib.Path(r'E:\\UIT\\cv\\materialized-data\\hybrid-recsys-v5\\stage1e\\r6\\official_source\\grouplens_ml100k\\attempt-001\\recbole_atomic\\ml-100k\\ml-100k.inter'); package=pathlib.Path(recbole.__file__).resolve().parent; expected=(pathlib.Path(r'E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv')/'Lib'/'site-packages'/'recbole').resolve(); target=package/'dataset_example'/'ml-100k'; dest=target/'ml-100k.inter'; receipt=pathlib.Path(r'E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\receipts\\recbole_dataset_bridge_receipt.json'); attrs=lambda p:getattr(p.stat(),'st_file_attributes',0); reparse=0x400; parent=package/'dataset_example'; assert package==expected and source.is_file() and not source.is_symlink() and not (attrs(source)&reparse) and not target.exists() and not receipt.exists() and ((not parent.exists()) or (not parent.is_symlink() and not (attrs(parent)&reparse))); sb=source.read_bytes(); assert sb.startswith(b'user_id:token\\titem_id:token\\trating:float\\ttimestamp:float\\n') and sb.endswith(b'\\n'); source_rows=sb.count(b'\\n')-1; assert source_rows==100000; target.mkdir(parents=True,exist_ok=False); assert not target.is_symlink(); f=dest.open('xb'); f.write(sb); f.flush(); f.close(); assert not dest.is_symlink(); db=dest.read_bytes(); files=sorted(p.name for p in target.iterdir() if p.is_file()); assert files==['ml-100k.inter'] and len(list(target.iterdir()))==1; out={'schema_version':'recbole-installed-package-dataset-bridge-receipt-1.0','bridge_id':'RECBOLE-ML100K-BUILTIN-PATH-OFFICIAL-BYTE-BRIDGE-1.0','source':str(source),'destination':str(dest),'source_byte_count':len(sb),'destination_byte_count':len(db),'source_sha256':hashlib.sha256(sb).hexdigest(),'destination_sha256':hashlib.sha256(db).hexdigest(),'source_data_rows':source_rows,'destination_data_rows':db.count(b'\\n')-1,'byte_count_equal':len(sb)==len(db),'sha256_equal':hashlib.sha256(sb).digest()==hashlib.sha256(db).digest(),'row_count_equal':source_rows==db.count(b'\\n')-1,'destination_exact_file_set':files,'repository_blob_used':False,'source_modified':False,'symlink_or_junction_used':False}; assert out['byte_count_equal'] and out['sha256_equal'] and out['row_count_equal']; receipt.write_text(json.dumps(out,indent=2,sort_keys=True)+'\\n',encoding='utf-8')"
+      ],
+      "working_directory": "E:\\UIT\\cv\\backend",
+      "timeout_seconds": 180,
+      "network": false,
+      "persistent_writes": [
+        "venv/Lib/site-packages/recbole/dataset_example/ml-100k/ml-100k.inter",
+        "receipts/recbole_dataset_bridge_receipt.json"
+      ],
+      "ephemeral_writes": [],
+      "arguments": [
+        "-B",
+        "-c",
+        "import hashlib,json,pathlib,recbole,shutil; source=pathlib.Path(r'E:\\UIT\\cv\\materialized-data\\hybrid-recsys-v5\\stage1e\\r6\\official_source\\grouplens_ml100k\\attempt-001\\recbole_atomic\\ml-100k\\ml-100k.inter'); package=pathlib.Path(recbole.__file__).resolve().parent; expected=(pathlib.Path(r'E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv')/'Lib'/'site-packages'/'recbole').resolve(); target=package/'dataset_example'/'ml-100k'; dest=target/'ml-100k.inter'; receipt=pathlib.Path(r'E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\receipts\\recbole_dataset_bridge_receipt.json'); attrs=lambda p:getattr(p.stat(),'st_file_attributes',0); reparse=0x400; parent=package/'dataset_example'; assert package==expected and source.is_file() and not source.is_symlink() and not (attrs(source)&reparse) and not target.exists() and not receipt.exists() and ((not parent.exists()) or (not parent.is_symlink() and not (attrs(parent)&reparse))); sb=source.read_bytes(); assert sb.startswith(b'user_id:token\\titem_id:token\\trating:float\\ttimestamp:float\\n') and sb.endswith(b'\\n'); source_rows=sb.count(b'\\n')-1; assert source_rows==100000; target.mkdir(parents=True,exist_ok=False); assert not target.is_symlink(); f=dest.open('xb'); f.write(sb); f.flush(); f.close(); assert not dest.is_symlink(); db=dest.read_bytes(); files=sorted(p.name for p in target.iterdir() if p.is_file()); assert files==['ml-100k.inter'] and len(list(target.iterdir()))==1; out={'schema_version':'recbole-installed-package-dataset-bridge-receipt-1.0','bridge_id':'RECBOLE-ML100K-BUILTIN-PATH-OFFICIAL-BYTE-BRIDGE-1.0','source':str(source),'destination':str(dest),'source_byte_count':len(sb),'destination_byte_count':len(db),'source_sha256':hashlib.sha256(sb).hexdigest(),'destination_sha256':hashlib.sha256(db).hexdigest(),'source_data_rows':source_rows,'destination_data_rows':db.count(b'\\n')-1,'byte_count_equal':len(sb)==len(db),'sha256_equal':hashlib.sha256(sb).digest()==hashlib.sha256(db).digest(),'row_count_equal':source_rows==db.count(b'\\n')-1,'destination_exact_file_set':files,'repository_blob_used':False,'source_modified':False,'symlink_or_junction_used':False}; assert out['byte_count_equal'] and out['sha256_equal'] and out['row_count_equal']; receipt.write_text(json.dumps(out,indent=2,sort_keys=True)+'\\n',encoding='utf-8')"
+      ]
+    },
+    {
+      "command_id": "B02_CONFIG_ONLY_RESOLVED_PATH_CHECK",
+      "purpose": "Construct Config only for BPR/ml-100k with frozen CPU overrides and assert the forced resolved data_path; do not construct or load a dataset.",
+      "executable": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv\\Scripts\\python.exe",
+      "argv": [
+        "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\venv\\Scripts\\python.exe",
+        "-B",
+        "-c",
+        "import json,pathlib,recbole; from recbole.config import Config; package=pathlib.Path(recbole.__file__).resolve().parent; expected=(package/'dataset_example'/'ml-100k').resolve(); config=Config(model='BPR',dataset='ml-100k',config_dict={'use_gpu':False,'gpu_id':'','nproc':1,'world_size':-1,'local_rank':0,'log_wandb':False}); actual=pathlib.Path(config['data_path']).resolve(); ok=actual==expected; out={'schema_version':'recbole-config-only-path-check-1.0','model':'BPR','dataset':'ml-100k','resolved_data_path':str(actual),'expected_data_path':str(expected),'equal':ok,'config_only':True,'dataset_constructed':False,'dataset_loaded':False,'rows_opened':0,'s3_accessed':False}; pathlib.Path(r'E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\receipts\\recbole_config_path_check_receipt.json').write_text(json.dumps(out,indent=2,sort_keys=True)+'\\n',encoding='utf-8'); raise SystemExit(0 if ok else 62)"
+      ],
+      "working_directory": "E:\\UIT\\cv\\backend",
+      "timeout_seconds": 120,
+      "network": false,
+      "persistent_writes": [
+        "receipts/recbole_config_path_check_receipt.json"
+      ],
+      "ephemeral_writes": [],
+      "arguments": [
+        "-B",
+        "-c",
+        "import json,pathlib,recbole; from recbole.config import Config; package=pathlib.Path(recbole.__file__).resolve().parent; expected=(package/'dataset_example'/'ml-100k').resolve(); config=Config(model='BPR',dataset='ml-100k',config_dict={'use_gpu':False,'gpu_id':'','nproc':1,'world_size':-1,'local_rank':0,'log_wandb':False}); actual=pathlib.Path(config['data_path']).resolve(); ok=actual==expected; out={'schema_version':'recbole-config-only-path-check-1.0','model':'BPR','dataset':'ml-100k','resolved_data_path':str(actual),'expected_data_path':str(expected),'equal':ok,'config_only':True,'dataset_constructed':False,'dataset_loaded':False,'rows_opened':0,'s3_accessed':False}; pathlib.Path(r'E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001\\receipts\\recbole_config_path_check_receipt.json').write_text(json.dumps(out,indent=2,sort_keys=True)+'\\n',encoding='utf-8'); raise SystemExit(0 if ok else 62)"
+      ]
+    }
+  ],
+  "command_order": [
+    "B00_RESOLVE_INSTALLED_PACKAGE_AND_REQUIRE_ABSENT_TARGET",
+    "B01_BINARY_COPY_CANONICAL_INTER_AND_WRITE_RECEIPT",
+    "B02_CONFIG_ONLY_RESOLVED_PATH_CHECK"
+  ],
+  "resource_and_timeout_bounds": {
+    "maximum_command_seconds": 180,
+    "hard_packet_timeout_seconds": 360,
+    "maximum_copy_bytes": 104857600,
+    "maximum_resident_memory_bytes_per_process": 536870912,
+    "maximum_cpu_processes": 1,
+    "maximum_parallel_commands": 1,
+    "retry_count": 0,
+    "concurrency": 1
+  },
+  "failure_rules": [
+    "Any nonzero exit stops the bridge packet and no later command runs.",
+    "Any absent or mismatched prerequisite, unexpected existing target, package-root mismatch, reparse point, link, extra destination file, receipt collision, byte-count mismatch, SHA-256 mismatch or row-count mismatch fails closed.",
+    "Any bridge failure makes the environment attempt ineligible; do not repair or retry in attempt-001. A future retry requires newly authorized dataset and environment attempt identifiers.",
+    "No source or destination bytes are rewritten, decoded, normalized or inferred.",
+    "No S3, mirror, repository blob or alternate dataset artifact is substituted.",
+    "Any bridge command whose argv is not exactly [executable] plus arguments fails static validation before any execution."
+  ],
+  "allowed_check": {
+    "scope": "CONFIG_ONLY_BPR_ML100K_RESOLVED_PATH",
+    "cpu_overrides": {
+      "use_gpu": false,
+      "gpu_id": "",
+      "nproc": 1,
+      "world_size": -1,
+      "local_rank": 0,
+      "log_wandb": false
+    },
+    "dataset_construction": false,
+    "dataset_loading": false,
+    "interaction_rows_opened_by_config_check": 0,
+    "s3_access": false
+  },
+  "negative_assertions": {
+    "run_recbole_invoked": false,
+    "quick_start_execution_invoked": false,
+    "trainer_invoked": false,
+    "fit_invoked": false,
+    "evaluate_invoked": false,
+    "dataset_class_constructed": false,
+    "create_dataset_invoked": false,
+    "data_loader_invoked": false,
+    "split_generated": false,
+    "metric_computed": false,
+    "hyper_tuning_invoked": false,
+    "checkpoint_or_result_retrieved": false,
+    "project_v5_test_path_touched": false,
+    "benchmark_admitted": false,
+    "recbole_s3_accessed": false
+  },
+  "postconditions": [
+    "Installed-package destination directory contains exactly ml-100k.inter.",
+    "Canonical source and destination byte count, SHA-256 and binary newline data-row count are equal and receipted.",
+    "No source edit, repository blob, .item, .user, symlink, hardlink, junction or S3 request occurred.",
+    "Config-only BPR/ml-100k resolved path equals the installed bridge directory without dataset construction or row loading."
+  ],
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "central_rework": {
+    "status": "C1_F003_REWORKED_PENDING_CENTRAL_REVALIDATION",
+    "blocker_id": "C1-F003",
+    "command_id": "B02_CONFIG_ONLY_RESOLVED_PATH_CHECK",
+    "invariant": "argv == [executable] + arguments",
+    "all_bridge_records_required_to_match": true,
+    "command_count_preserved": 3,
+    "execution_performed": false
+  }
+}

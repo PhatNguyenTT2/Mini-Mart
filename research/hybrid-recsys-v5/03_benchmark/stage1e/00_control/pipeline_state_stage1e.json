@@ -2,7 +2,7 @@
   "schema_version": "academic-research-pipeline-state-1.0",
   "project": "hybrid-recsys-v5",
   "stage": "1E",
-  "state": "stage1e_rebaseline_v2_r6_c1_running",
+  "state": "stage1e_rebaseline_v2_r6_c1_complete_r6_m0_m1_dispatch_preparation",
   "updated_at": "2026-08-23",
   "model": "gpt-5.6-sol",
   "reasoning": "max",
@@ -778,7 +778,7 @@
       "next_gate": "SUPERSEDED_BY_USER_DECISION_AUTHORIZE_TARGETED_SOURCE_ONLY_EVIDENCE_MATERIALIZATION_REDESIGN"
     },
     "e4_r5": {
-      "status": "R6_C1_RUNNING_BOUNDED_COMMAND_ASSEMBLY",
+      "status": "R6_C1_COMPLETE_CENTRALLY_VALIDATED_R6_M0_M1_DISPATCH_PREPARATION",
       "entry_checkpoint": "USER_CONFIRMED_TARGETED_SOURCE_ONLY_EVIDENCE_MATERIALIZATION_REDESIGN",
       "source_stage": "R4-G0",
       "source_verdict": "NO_ADMISSIBLE_BUNDLE_STOP_FAIL_CLOSED",
@@ -937,7 +937,7 @@
         "benchmark_admission_authorized": false
       },
       "r6": {
-        "status": "R6_C1_RUNNING_BOUNDED_COMMAND_ASSEMBLY",
+        "status": "R6_C1_COMPLETE_CENTRALLY_VALIDATED_R6_M0_M1_DISPATCH_PREPARATION",
         "stage_map": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_materialization_stage_map.json",
         "contract": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_bounded_materialization_contract.md",
         "s0": {
@@ -997,15 +997,39 @@
           "materialization_gate_open": false
         },
         "c1": {
-          "status": "RUNNING",
+          "status": "COMPLETE_CENTRALLY_VALIDATED_AFTER_FAIL_CLOSED_REWORK",
           "agent_id": "01a02b25-866a-7eb0-b162-1800d5355bff",
           "nickname": "Laplace",
           "model_profile": "Sol High Fast",
           "dispatch": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_c1_dispatch.json",
           "entry_gate": "PASS_R6_G0_FROZEN_31_OF_31_READY_FOR_R6_C1",
           "expected_outputs": 5,
+          "observed_outputs": 5,
+          "proposed_commands": 36,
           "materialization_commands_executed": 0,
-          "materialization_gate_open": false
+          "central_validation": {
+            "verdict": "PASS_R6_C1_EXACT_COMMAND_PACKET_READY_FOR_BOUNDED_R6_M0_R6_M1",
+            "receipt": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_c1_validation_receipt.json",
+            "checks": "44/44",
+            "strict_json_outputs": "5/5",
+            "literal_argv_commands": "36/36",
+            "fail_closed_findings_resolved": 7,
+            "failure_count": 0
+          },
+          "materialization_gate_open": true,
+          "bridge_gate_open": false,
+          "experiment_execution_authorized": false
+        },
+        "m0_m1": {
+          "status": "CENTRAL_EXECUTION_CONTRACT_PREREGISTERED_DISPATCH_NOT_YET_FROZEN",
+          "context": "current_central",
+          "model_profile": "Sol Max Standard",
+          "contract": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_m0_m1_central_execution_contract.md",
+          "dataset_attempt_root_exists": false,
+          "environment_attempt_root_exists": false,
+          "dataset_commands_executed": 0,
+          "environment_commands_executed": 0,
+          "bridge_commands_executed": 0
         },
         "materialization_authorized": true,
         "experiment_execution_authorized": false,
@@ -1019,7 +1043,7 @@
         "project_benchmark_numbers": "INVALID_FOR_PAPER"
       },
       "execution_authorized": false,
-      "next_gate": "CENTRALLY_VALIDATE_R6_C1_EXACT_FIVE_FILE_COMMAND_PACKET"
+      "next_gate": "FREEZE_R6_M0_M1_DISPATCH_AND_RUN_CENTRAL_LITERAL_ARGV_MATERIALIZATION"
     }
   },
   "central_preregistration_lock": "PASS_R6_S0_BOUNDED_MATERIALIZATION_SCOPE_LOCKED",
@@ -1027,5 +1051,5 @@
   "harmonized_v5": "BLOCKED",
   "external_validation": "BLOCKED",
   "efficiency": "BLOCKED_AFTER_ACCURACY",
-  "next_gate": "Await R6-C1 Sol High Fast, then centrally validate its exact five-file command packet. Dataset download and environment installation remain blocked until that validation passes; training, evaluation, benchmark admission and TEST access remain blocked."
+  "next_gate": "Freeze the R6-M0/R6-M1 dispatch against the validated R6-C1 packet, then run bounded central materialization. Training, evaluation, benchmark admission and TEST access remain blocked."
 }
