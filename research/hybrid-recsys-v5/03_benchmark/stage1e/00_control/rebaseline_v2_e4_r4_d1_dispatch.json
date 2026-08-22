@@ -1,0 +1,77 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r4-d1-dispatch-1.0",
+  "created_at": "2026-08-22",
+  "stage_group": "R4-D1",
+  "dispatch_status": "DISPATCHED_IN_PARALLEL_AFTER_VALIDATED_R4_S0",
+  "start_commit": "0e59511",
+  "entry_gate": {
+    "receipt": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r4_s0_gate_receipt.json",
+    "verdict": "PASS_R4_S0_STRICT_GATE_20_OF_20_READY_FOR_R4_D1",
+    "frozen_inputs": "20/20",
+    "strict_json_inputs": "12/12",
+    "mandatory_dimensions": 12
+  },
+  "model_profile": {
+    "display_name": "Sol XHigh Standard",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "xhigh",
+    "service_tier": "standard",
+    "dispatch_service_tier_override": null
+  },
+  "lanes": [
+    {
+      "stage_id": "R4-D1A",
+      "agent_id": "01a02a3e-d3b0-7363-8b4d-c779e74f0061",
+      "nickname": "Zeno",
+      "source_family": "official_artifact_reproduction_package_and_archival_supplement",
+      "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_u/E4_R4D1A_artifact_package_scout",
+      "proposal_namespace": "R4-D1A-PROP-*"
+    },
+    {
+      "stage_id": "R4-D1B",
+      "agent_id": "01a02a3e-d485-7c20-b6f0-fc2617315b59",
+      "nickname": "Ohm",
+      "source_family": "official_benchmark_suite_and_immutable_results",
+      "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_v/E4_R4D1B_benchmark_suite_scout",
+      "proposal_namespace": "R4-D1B-PROP-*"
+    },
+    {
+      "stage_id": "R4-D1C",
+      "agent_id": "01a02a3e-d58f-70a3-b34e-d2795eb16d05",
+      "nickname": "Lovelace",
+      "source_family": "official_framework_complete_packet",
+      "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_w/E4_R4D1C_framework_packet_scout",
+      "proposal_namespace": "R4-D1C-PROP-*"
+    }
+  ],
+  "output_contract": {
+    "exact_files_per_lane": 5,
+    "filenames": [
+      "scout_candidates.json",
+      "source_replay_log.json",
+      "excluded_candidate_log.json",
+      "scout_report.md",
+      "scout_handoff.json"
+    ],
+    "extra_files_allowed": false,
+    "zero_admission_is_valid": true,
+    "central_replay_required_after_worker_admission": true
+  },
+  "execution_boundary": {
+    "public_primary_source_web_research": true,
+    "read_only_local_inspection": true,
+    "repository_or_asset_download": false,
+    "environment_creation": false,
+    "preprocessing_training_evaluation": false,
+    "test_access": false,
+    "execution_authorized": false
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "next_gate": "WAIT_FOR_ALL_R4_D1_LANES_THEN_CENTRAL_SCHEMA_HASH_VALIDATION"
+}

@@ -2,7 +2,7 @@
   "schema_version": "academic-research-pipeline-state-1.0",
   "project": "hybrid-recsys-v5",
   "stage": "1E",
-  "state": "stage1e_rebaseline_v2_r3_g1_complete_fail_closed_no_selection_awaiting_user_scope_decision",
+  "state": "stage1e_rebaseline_v2_r4_d1_strict_discovery_running",
   "updated_at": "2026-08-22",
   "model": "gpt-5.6-sol",
   "reasoning": "max",
@@ -15,7 +15,7 @@
     "record": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/wave1_v1_supersession_record.json"
   },
   "rebaseline_v2": {
-    "status": "e4_r3_g1_complete_fail_closed_no_selection_awaiting_user_scope_decision",
+    "status": "e4_r4_d1_strict_discovery_running",
     "wave_a_expected": 3,
     "wave_a_active": 0,
     "wave_a_complete": 3,
@@ -665,13 +665,73 @@
         "project_benchmark_numbers": "INVALID_FOR_PAPER"
       },
       "execution_authorized": false,
-      "next_gate": "MANDATORY_USER_SCOPE_DECISION_TARGETED_REMEDIATION_NEW_DISCOVERY_OR_PAUSE"
+      "next_gate": "SUPERSEDED_BY_USER_DECISION_START_NEW_STRICT_DISCOVERY_WAVE"
+    },
+    "e4_r4": {
+      "status": "D1_PARALLEL_RUNNING_AFTER_S0_PASS",
+      "entry_checkpoint": "USER_CONFIRMED_START_NEW_STRICT_DISCOVERY_WAVE",
+      "source_stage": "R3-G1",
+      "source_verdict": "NO_SELECTION_EVIDENCE_REMAINS_INSUFFICIENT",
+      "model_policy": {
+        "workers": {
+          "display_name": "Sol XHigh Standard",
+          "model": "gpt-5.6-sol",
+          "reasoning": "xhigh",
+          "service_tier": "standard"
+        },
+        "central": {
+          "display_name": "Sol Max Standard",
+          "model": "gpt-5.6-sol",
+          "reasoning": "max",
+          "service_tier": "standard"
+        }
+      },
+      "s0": {
+        "status": "COMPLETE_CENTRALLY_VALIDATED",
+        "commit": "0e59511",
+        "gate": "PASS_R4_S0_STRICT_GATE_20_OF_20_READY_FOR_R4_D1",
+        "frozen_inputs": "20/20",
+        "strict_json_inputs": "12/12",
+        "mandatory_dimensions": 12,
+        "unresolved_mandatory_fields_allowed": 0
+      },
+      "d1_parallel_group": {
+        "expected": 3,
+        "active": 3,
+        "complete": 0,
+        "dispatch": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r4_d1_dispatch.json",
+        "stages": {
+          "R4-D1A": {
+            "agent_id": "01a02a3e-d3b0-7363-8b4d-c779e74f0061",
+            "status": "RUNNING",
+            "source_family": "official_artifact_reproduction_package_and_archival_supplement"
+          },
+          "R4-D1B": {
+            "agent_id": "01a02a3e-d485-7c20-b6f0-fc2617315b59",
+            "status": "RUNNING",
+            "source_family": "official_benchmark_suite_and_immutable_results"
+          },
+          "R4-D1C": {
+            "agent_id": "01a02a3e-d58f-70a3-b34e-d2795eb16d05",
+            "status": "RUNNING",
+            "source_family": "official_framework_complete_packet"
+          }
+        }
+      },
+      "truth_state": {
+        "RESULT_STATUS": "NOT_RUN",
+        "TEST_SET_OPENED": "NO",
+        "ACCEPTED_RESULT_ROWS": 0,
+        "project_benchmark_numbers": "INVALID_FOR_PAPER"
+      },
+      "execution_authorized": false,
+      "next_gate": "WAIT_ALL_R4_D1_THEN_CENTRAL_SCHEMA_HASH_VALIDATION_AND_G0_REPLAY"
     }
   },
-  "central_preregistration_lock": "BLOCKED_R3_G1_NO_SELECTION",
-  "adapt_reproduce": "BLOCKED_R3_G1_NO_SELECTION_SCOPE_DECISION_REQUIRED",
+  "central_preregistration_lock": "PASS_R4_S0_STRICT_GATE_20_OF_20",
+  "adapt_reproduce": "BLOCKED_R4_STRICT_DISCOVERY_AND_AUDIT_NOT_COMPLETE",
   "harmonized_v5": "BLOCKED",
   "external_validation": "BLOCKED",
   "efficiency": "BLOCKED_AFTER_ACCURACY",
-  "next_gate": "MANDATORY USER CHECKPOINT: choose targeted evidence remediation for one named frozen bundle, start another change-controlled discovery wave with stricter complete-bundle admission, or pause the empirical reference track. R3-M0 was not opened; all materialization, execution and TEST access remain blocked."
+  "next_gate": "WAIT FOR R4-D1A/D1B/D1C, validate exact five-file outputs and hashes centrally, then run R4-G0 replay/dedup. Materialization, execution and TEST access remain blocked until a positive R4-G1 plus explicit R4-M0 user approval."
 }
