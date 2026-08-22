@@ -1,0 +1,36 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r3-supersession-registry-1.0",
+  "created_at": "2026-08-22",
+  "trigger": {
+    "source_stage": "R2-ER1-G1",
+    "source_verdict": "NO_SELECTION_EVIDENCE_REMAINS_INSUFFICIENT",
+    "user_decision": "CREATE_NEW_FRAMEWORK_DATASET_ROW"
+  },
+  "policy": {
+    "artifact_deletion_performed": false,
+    "model_asset_deletion_required": false,
+    "reason_no_model_asset_deletion": "No repository, dataset, environment, checkpoint, training run or evaluation was materialized for the prior candidates.",
+    "old_rows_may_be_cross_joined_into_r3": false,
+    "old_rows_execution_eligible": false
+  },
+  "source_matrix": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_h/E4_R2G1_candidate_selection/candidate_decision_matrix.json",
+  "rows": [
+    {"row_id":"E3-LIGHTGCN-GOWALLA-PYTORCH-001","prior_decision":"PRIORITY_ONLY_NOT_SELECTED","new_status":"ARCHIVED_SUPERSEDED_NOT_EXECUTION_ELIGIBLE"},
+    {"row_id":"E3-SIMGCL-YELP2018-QREC-001","prior_decision":"KEEP_PENDING","new_status":"ARCHIVED_SUPERSEDED_NOT_EXECUTION_ELIGIBLE"},
+    {"row_id":"E3-XSIMGCL-YELP2018-SELFREC-001","prior_decision":"REJECT_CURRENT_ROW","new_status":"ARCHIVED_SUPERSEDED_NOT_EXECUTION_ELIGIBLE"},
+    {"row_id":"E3-LIGHTGCL-YELP-UPDATED-001","prior_decision":"KEEP_PENDING","new_status":"ARCHIVED_SUPERSEDED_NOT_EXECUTION_ELIGIBLE"},
+    {"row_id":"E3-UNISREC-SCIENTIFIC-TRANS-001","prior_decision":"KEEP_PENDING_CODE_LICENSE_ONLY","new_status":"ARCHIVED_SUPERSEDED_NOT_EXECUTION_ELIGIBLE"},
+    {"row_id":"E3-SASREC-SCIENTIFIC-UNISREC-FRAMEWORK-001","prior_decision":"KEEP_PENDING","new_status":"ARCHIVED_SUPERSEDED_NOT_EXECUTION_ELIGIBLE"},
+    {"row_id":"E3-ALPHAREC-MOVIES-TV-001","prior_decision":"KEEP_PENDING","new_status":"ARCHIVED_SUPERSEDED_NOT_EXECUTION_ELIGIBLE"}
+  ],
+  "row_count": 7,
+  "replacement_namespace": "R3-BUNDLE-*",
+  "replacement_label": "FRAMEWORK_REPRODUCTION_REFERENCE",
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

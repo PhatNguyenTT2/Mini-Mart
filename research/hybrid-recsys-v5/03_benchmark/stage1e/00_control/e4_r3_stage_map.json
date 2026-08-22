@@ -1,0 +1,128 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r3-framework-dataset-stage-map-1.0",
+  "created_at": "2026-08-22",
+  "stage_id": "E4_R3_FRAMEWORK_DATASET_BUNDLE_DISCOVERY",
+  "status": "PREPARED_AWAITING_FD0_GATE",
+  "entry_checkpoint": {
+    "user_confirmed": true,
+    "decision": "CREATE_NEW_FRAMEWORK_DATASET_ROW",
+    "source_stage": "R2-ER1-G1",
+    "source_verdict": "NO_SELECTION_EVIDENCE_REMAINS_INSUFFICIENT"
+  },
+  "candidate_policy": {
+    "seed_min": 3,
+    "seed_max": 5,
+    "selection_cardinality_max": 1,
+    "bundle_label": "FRAMEWORK_REPRODUCTION_REFERENCE",
+    "old_rows_execution_eligible": false,
+    "cross_join_allowed": false,
+    "automatic_fallback_allowed": false
+  },
+  "model_policy": {
+    "central": {
+      "display_name": "Sol Max Standard",
+      "runtime_model_id": "gpt-5.6-sol",
+      "reasoning_effort": "max",
+      "service_tier": "standard",
+      "dispatch_service_tier_override": null
+    },
+    "workers": {
+      "display_name": "Sol XHigh Standard",
+      "runtime_model_id": "gpt-5.6-sol",
+      "reasoning_effort": "xhigh",
+      "service_tier": "standard",
+      "dispatch_service_tier_override": null
+    }
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "phases": [
+    {
+      "id": "R3-FD0",
+      "name": "central_change_control_supersession_and_input_freeze",
+      "context": "current_central",
+      "status": "IN_PROGRESS",
+      "dependencies": ["R2-ER1-G1", "USER_SCOPE_DECISION"],
+      "model_profile": "central"
+    },
+    {
+      "id": "R3-FD1",
+      "name": "candidate_bundle_seed_discovery",
+      "context": "fresh_worker",
+      "status": "BLOCKED_ON_R3_FD0",
+      "dependencies": ["R3-FD0"],
+      "model_profile": "workers",
+      "write_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_p/E4_R3FD1_bundle_seed_discovery"
+    },
+    {
+      "id": "R3-FD2",
+      "name": "repository_license_dataset_rights_lineage_verification",
+      "context": "fresh_worker",
+      "status": "BLOCKED_ON_VALIDATED_R3_FD1",
+      "dependencies": ["R3-FD1", "R3-FD1-CENTRAL-VALIDATION"],
+      "parallel_group": "R3-FD-V",
+      "model_profile": "workers",
+      "write_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_q/E4_R3FD2_rights_lineage_verification"
+    },
+    {
+      "id": "R3-FD3",
+      "name": "benchmark_config_training_evaluator_verification",
+      "context": "fresh_worker",
+      "status": "BLOCKED_ON_VALIDATED_R3_FD1",
+      "dependencies": ["R3-FD1", "R3-FD1-CENTRAL-VALIDATION"],
+      "parallel_group": "R3-FD-V",
+      "model_profile": "workers",
+      "write_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_r/E4_R3FD3_benchmark_evaluator_verification"
+    },
+    {
+      "id": "R3-FD4",
+      "name": "v5_compatibility_and_adaptation_stress_test",
+      "context": "fresh_worker",
+      "status": "BLOCKED_ON_VALIDATED_R3_FD1",
+      "dependencies": ["R3-FD1", "R3-FD1-CENTRAL-VALIDATION"],
+      "parallel_group": "R3-FD-V",
+      "model_profile": "workers",
+      "write_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_s/E4_R3FD4_v5_compatibility_stress_test"
+    },
+    {
+      "id": "R3-G1",
+      "name": "central_exact_join_dedup_locator_replay_and_bundle_selection",
+      "context": "current_central",
+      "status": "BLOCKED_ON_R3_FD_V",
+      "dependencies": ["R3-FD2", "R3-FD3", "R3-FD4", "CENTRAL_LANE_VALIDATION"],
+      "model_profile": "central",
+      "allowed_decisions": [
+        "PROVISIONAL_SINGLE_BUNDLE_FOR_MATERIALIZATION",
+        "NO_SELECTION_EVIDENCE_REMAINS_INSUFFICIENT"
+      ],
+      "write_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_t/E4_R3G1_bundle_selection"
+    },
+    {
+      "id": "R3-M0",
+      "name": "mandatory_exact_materialization_approval",
+      "context": "user_and_central_control",
+      "status": "BLOCKED_ON_POSITIVE_R3_G1",
+      "dependencies": ["R3-G1"],
+      "model_profile": null
+    }
+  ],
+  "execution_boundary": {
+    "public_primary_source_web_research": true,
+    "read_only_local_inspection": true,
+    "repository_clone_fetch_or_archive_download": false,
+    "dataset_checkpoint_or_asset_download": false,
+    "authenticated_access_or_terms_acceptance": false,
+    "package_install_or_environment_creation": false,
+    "preprocessing_training_evaluation": false,
+    "test_access": false,
+    "maintainer_contact": false,
+    "execution_authorized": false
+  },
+  "next_gate": "CREATE_AND_VALIDATE_R3_FD0_FROZEN_INPUT_MANIFEST"
+}
+

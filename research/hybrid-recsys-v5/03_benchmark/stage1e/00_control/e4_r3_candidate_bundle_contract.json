@@ -1,0 +1,110 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r3-candidate-bundle-contract-1.0",
+  "created_at": "2026-08-22",
+  "candidate_id_pattern": "^R3-BUNDLE-[A-Z0-9][A-Z0-9-]{2,63}-[0-9]{3}$",
+  "seed_cardinality": {"minimum": 3, "maximum": 5},
+  "selection_cardinality_max": 1,
+  "closed_status_sets": {
+    "fd1": ["PLAUSIBLE_COMPLETE_SEED", "SEED_INCOMPLETE_EXCLUDED"],
+    "fd2": ["EVIDENCE_SUFFICIENT_FOR_G1_REVIEW", "EVIDENCE_INCOMPLETE", "DISPOSITIVE_REJECT"],
+    "fd3": ["EVIDENCE_SUFFICIENT_FOR_G1_REVIEW", "EVIDENCE_INCOMPLETE", "DISPOSITIVE_REJECT"],
+    "fd4": ["COMPATIBLE_WITH_BOUNDED_ADAPTER", "COMPATIBILITY_INCOMPLETE", "DISPOSITIVE_REJECT"]
+  },
+  "required_seed_fields": [
+    "candidate_id",
+    "bundle_label",
+    "framework_name",
+    "repository_locator",
+    "immutable_revision_locator",
+    "repository_license_locator",
+    "reference_paper_locator",
+    "dataset_name",
+    "dataset_provider_locator",
+    "dataset_release_id",
+    "dataset_terms_locator",
+    "preprocessing_split_locator",
+    "training_entrypoint_locator",
+    "configuration_locator",
+    "evaluator_locator",
+    "benchmark_target_locator",
+    "task_family",
+    "source_inventory",
+    "fd1_status",
+    "unresolved_fields"
+  ],
+  "source_record_fields": [
+    "evidence_id",
+    "url",
+    "authority_type",
+    "claim_scope",
+    "access_status",
+    "retrieved_at",
+    "notes"
+  ],
+  "join_key": "candidate_id",
+  "cross_join_allowed": false,
+  "required_fd2_surfaces": [
+    "repository_identity",
+    "affirmative_code_license",
+    "dataset_provider_release",
+    "dataset_lawful_use_basis",
+    "raw_or_source_data_identity",
+    "preprocessing_and_split_lineage",
+    "acquisition_boundaries",
+    "decision_bearing_sources",
+    "status",
+    "unresolved_fields"
+  ],
+  "required_fd3_surfaces": [
+    "repository_revision",
+    "environment_or_dependency_lock",
+    "training_entrypoint",
+    "configuration_and_seed_protocol",
+    "source_dataset_and_split_binding",
+    "evaluator_and_metric_semantics",
+    "published_numeric_target",
+    "same_surface_join_verdict",
+    "decision_bearing_sources",
+    "status",
+    "unresolved_fields"
+  ],
+  "required_fd4_surfaces": [
+    "current_v5_contract_binding",
+    "task_and_objective_fit",
+    "input_schema_fit",
+    "split_candidate_and_masking_fit",
+    "evaluator_adapter_fit",
+    "baseline_coverage",
+    "environment_isolation_fit",
+    "bounded_patch_plan",
+    "dispositive_mismatches",
+    "status",
+    "unresolved_fields"
+  ],
+  "central_positive_rule": {
+    "fd1": "PLAUSIBLE_COMPLETE_SEED",
+    "fd2": "EVIDENCE_SUFFICIENT_FOR_G1_REVIEW",
+    "fd3": "EVIDENCE_SUFFICIENT_FOR_G1_REVIEW",
+    "fd4": "COMPATIBLE_WITH_BOUNDED_ADAPTER",
+    "central_locator_replay": "PASS_ALL_DECISION_BEARING",
+    "same_surface_join": true,
+    "affirmative_code_and_data_rights": true,
+    "dispositive_mismatch_count": 0
+  },
+  "ranking_order": [
+    "provenance_completeness",
+    "legal_clarity",
+    "protocol_fit",
+    "evaluator_parity_feasibility",
+    "adaptation_cost",
+    "maintenance_recency"
+  ],
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}
+
