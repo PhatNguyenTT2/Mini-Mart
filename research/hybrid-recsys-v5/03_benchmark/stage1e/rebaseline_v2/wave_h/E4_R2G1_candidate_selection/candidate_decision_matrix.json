@@ -1,0 +1,34 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r2-g1-decision-matrix-1.0",
+  "created_at": "2026-08-22",
+  "decision_rule": "A provisional candidate requires three sufficient lane statuses, no dispositive mismatch, a conforming common-row contract and one exact lawful source-dataset-result-evaluator join.",
+  "rows": [
+    {"row_id":"E3-LIGHTGCN-GOWALLA-PYTORCH-001","A1":"INCOMPLETE","A2":"INCOMPLETE","A3":"INCOMPLETE","schema_conformant_across_inputs":false,"dispositive_reject":false,"selected":false,"decision":"PRIORITY_ONLY_NOT_SELECTED","next_evidence_request":"Affirmative pinned code license; lawful exact Gowalla release/split lineage; immutable checkpoint/run/evaluator/tie receipt."},
+    {"row_id":"E3-SIMGCL-YELP2018-QREC-001","A1":"INCOMPLETE","A2":"INCOMPLETE","A3":"INCOMPLETE","schema_conformant_across_inputs":false,"dispositive_reject":false,"selected":false,"decision":"KEEP_PENDING","next_evidence_request":"Code license and noninteractive command; historical Yelp rights and exact split; seed/checkpoint/evaluator receipt."},
+    {"row_id":"E3-XSIMGCL-YELP2018-SELFREC-001","A1":"DISPOSITIVE_REJECT","A2":"INCOMPLETE","A3":"INCOMPLETE","schema_conformant_across_inputs":false,"dispositive_reject":true,"selected":false,"decision":"REJECT_CURRENT_ROW","next_evidence_request":"Do not repair by cross-joining. Create a new row only if one immutable matching layer/config/result/run identity is found."},
+    {"row_id":"E3-LIGHTGCL-YELP-UPDATED-001","A1":"INCOMPLETE","A2":"INCOMPLETE","A3":"INCOMPLETE","schema_conformant_across_inputs":false,"dispositive_reject":false,"selected":false,"decision":"KEEP_PENDING","next_evidence_request":"License; updated sampler revision; provider/split lineage; run/checkpoint/evaluator receipt."},
+    {"row_id":"E3-UNISREC-SCIENTIFIC-TRANS-001","A1":"INCOMPLETE","A2":"INCOMPLETE","A3":"INCOMPLETE","schema_conformant_across_inputs":false,"dispositive_reject":false,"selected":false,"decision":"KEEP_PENDING_CODE_LICENSE_ONLY","next_evidence_request":"External asset/checkpoint rights and hashes; Scientific provider lineage; exact RecBole/run/evaluator receipts."},
+    {"row_id":"E3-SASREC-SCIENTIFIC-UNISREC-FRAMEWORK-001","A1":"INCOMPLETE","A2":"INCOMPLETE","A3":"INCOMPLETE","schema_conformant_across_inputs":false,"dispositive_reject":false,"selected":false,"decision":"KEEP_PENDING","next_evidence_request":"Exact framework/SASRec revision and config; independent Scientific lineage; checkpoint/evaluator receipt."},
+    {"row_id":"E3-ALPHAREC-MOVIES-TV-001","A1":"INCOMPLETE","A2":"INCOMPLETE","A3":"INCOMPLETE","schema_conformant_across_inputs":false,"dispositive_reject":false,"selected":false,"decision":"KEEP_PENDING","next_evidence_request":"Code/data/text/embedding rights and hashes; exact preprocessing; checkpoint/evaluator receipt."}
+  ],
+  "decision_counts": {
+    "PROVISIONAL_SINGLE_CANDIDATE_FOR_MATERIALIZATION": 0,
+    "PRIORITY_ONLY_NOT_SELECTED": 1,
+    "KEEP_PENDING": 5,
+    "REJECT_CURRENT_ROW": 1,
+    "selected": 0
+  },
+  "downstream_routing": {
+    "R2-M0": "BLOCKED_NO_SELECTED_CANDIDATE",
+    "R2-B1": "BLOCKED",
+    "R2-B2": "BLOCKED",
+    "R2-B3": "BLOCKED",
+    "R2-G2": "BLOCKED",
+    "E5-R2": "BLOCKED",
+    "R2-U": "BLOCKED",
+    "R2-D": "BLOCKED",
+    "R2-G3": "BLOCKED"
+  },
+  "verdict": "NO_SELECTION_EVIDENCE_REMAINS_INSUFFICIENT",
+  "execution_authorized": false
+}

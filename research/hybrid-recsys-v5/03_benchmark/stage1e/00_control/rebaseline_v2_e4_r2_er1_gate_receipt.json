@@ -1,0 +1,75 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r2-er1-gate-receipt-1.0",
+  "created_at": "2026-08-22",
+  "passed": true,
+  "verdict": "PASS_R2_ER1_GATE_31_OF_31_READY_FOR_PARALLEL_DISPATCH",
+  "failure_count": 0,
+  "failures": [],
+  "validator": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r2_er1_gate.py",
+    "canonical_lf_bytes": 9482,
+    "canonical_lf_sha256": "cb30f7733ca6633bf0143d91ea2afa755c21f24bd5181a0e583b69bc0874b6bb",
+    "exit_code": 0,
+    "strict_json_duplicate_and_case_collision_rejection": "PASS"
+  },
+  "validation_attempts": {
+    "total": 2,
+    "first_attempt": "VALIDATOR_EXPECTED_JSON_COUNTER_23_BUT_OBSERVED_24",
+    "correction": "VALIDATOR_EXPECTATION_ONLY_CHANGED_TO_24",
+    "frozen_input_bytes_changed": false,
+    "scientific_effect": "NONE"
+  },
+  "frozen_manifest": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r2_er1_frozen_input_manifest.json",
+    "canonical_lf_bytes": 8355,
+    "canonical_lf_sha256": "12cff269c80e9cef5eb35c4a822a6ab756a480a4769e24c31861cd581748d916",
+    "expected_inputs": 31,
+    "matched_inputs": 31,
+    "strict_json_inputs_verified": 24
+  },
+  "contract": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r2_er1_change_control_contract.md",
+    "canonical_lf_bytes": 8725,
+    "canonical_lf_sha256": "6b9c03359a77c6a66535bb5cb9a26f6562bd0b82cc07b292836aa2497003f8c7"
+  },
+  "stage_map": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r2_er1_stage_map.json",
+    "canonical_lf_bytes": 5100,
+    "canonical_lf_sha256": "4ebb2e2e4c45e3f7d628ddd445fcffbdf59a87736d6cf8fc3d66e1ffb86d2076"
+  },
+  "checks": {
+    "manifest_input_count_31": true,
+    "frozen_inputs_31_of_31": true,
+    "strict_json_inputs_24_of_24": true,
+    "user_checkpoint_confirmed": true,
+    "candidate_scope_lightgcn_only": true,
+    "prior_g1_no_selection_validated": true,
+    "prior_contract_findings_preserved": true,
+    "prior_truth_state_preserved": true,
+    "all_six_substantive_stages_sol_max_fast": true,
+    "reasoning_max_all_stages": true,
+    "service_tier_priority_all_stages": true,
+    "execution_boundary_fail_closed": true
+  },
+  "model_policy": {
+    "display_name": "Sol Max Fast",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "max",
+    "service_tier": "priority",
+    "speed_label": "Fast"
+  },
+  "parallel_dispatch_authorized": [
+    "R2-ER1-S",
+    "R2-ER1-A1",
+    "R2-ER1-A2",
+    "R2-ER1-A3"
+  ],
+  "execution_authorized": false,
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "next_gate": "DISPATCH_R2_ER1_PARALLEL_GROUP_WITH_GPT_5_6_SOL_MAX_PRIORITY"
+}

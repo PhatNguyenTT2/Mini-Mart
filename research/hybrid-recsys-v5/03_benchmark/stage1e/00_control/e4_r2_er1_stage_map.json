@@ -1,0 +1,140 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r2-er1-stage-map-1.0",
+  "created_at": "2026-08-22",
+  "stage_id": "E4_R2_ER1_CHANGE_CONTROLLED_EVIDENCE_REMEDIATION",
+  "status": "PREPARED_AWAITING_FROZEN_INPUT_GATE",
+  "entry_checkpoint": {
+    "user_confirmed": true,
+    "decision": "CONTINUE_CHANGE_CONTROLLED_EVIDENCE_REMEDIATION",
+    "source_verdict": "NO_SELECTION_EVIDENCE_REMAINS_INSUFFICIENT",
+    "source_validation": "PASS_R2_G1_NO_SELECTION_FAIL_CLOSED_DOWNSTREAM_BLOCKED"
+  },
+  "candidate_scope": {
+    "cardinality": 1,
+    "row_id": "E3-LIGHTGCN-GOWALLA-PYTORCH-001",
+    "method": "LightGCN",
+    "dataset_surface": "Gowalla repository-bundled processed split",
+    "priority_is_selection": false,
+    "new_candidate_or_dataset_allowed": false
+  },
+  "model_policy": {
+    "display_name": "Sol Max Fast",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "max",
+    "service_tier": "priority",
+    "speed_label": "Fast",
+    "applies_to": "all substantive stages in R2-ER1",
+    "standard_speed_allowed": false,
+    "lower_reasoning_allowed": false
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "parallel_group": {
+    "id": "R2-ER1-P",
+    "dependencies": ["R2-ER1-0"],
+    "members": ["R2-ER1-S", "R2-ER1-A1", "R2-ER1-A2", "R2-ER1-A3"],
+    "dispatch_condition": "FROZEN_INPUT_GATE_PASS"
+  },
+  "phases": [
+    {
+      "id": "R2-ER1-0",
+      "name": "central_change_control_contract_and_input_freeze",
+      "context": "current_central",
+      "status": "IN_PROGRESS",
+      "dependencies": ["R2-G1", "USER_CHECKPOINT"],
+      "model": "gpt-5.6-sol",
+      "reasoning": "max",
+      "service_tier": "priority"
+    },
+    {
+      "id": "R2-ER1-S",
+      "name": "immutable_schema_carrier_normalization_sidecars",
+      "context": "central_control_substage",
+      "status": "BLOCKED_ON_R2_ER1_0",
+      "dependencies": ["R2-ER1-0"],
+      "parallel_group": "R2-ER1-P",
+      "model": "gpt-5.6-sol",
+      "reasoning": "max",
+      "service_tier": "priority",
+      "write_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_m/E4_R2ER1S_schema_normalization"
+    },
+    {
+      "id": "R2-ER1-A1",
+      "name": "lightgcn_repo_config_license_evidence",
+      "context": "fresh_independent_evidence",
+      "status": "BLOCKED_ON_R2_ER1_0",
+      "dependencies": ["R2-ER1-0"],
+      "parallel_group": "R2-ER1-P",
+      "model": "gpt-5.6-sol",
+      "reasoning": "max",
+      "service_tier": "priority",
+      "write_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_n/E4_R2ER1A1_repo_license"
+    },
+    {
+      "id": "R2-ER1-A2",
+      "name": "lightgcn_gowalla_rights_and_lineage_evidence",
+      "context": "fresh_independent_evidence",
+      "status": "BLOCKED_ON_R2_ER1_0",
+      "dependencies": ["R2-ER1-0"],
+      "parallel_group": "R2-ER1-P",
+      "model": "gpt-5.6-sol",
+      "reasoning": "max",
+      "service_tier": "priority",
+      "write_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_n/E4_R2ER1A2_dataset_lineage"
+    },
+    {
+      "id": "R2-ER1-A3",
+      "name": "lightgcn_result_center_checkpoint_evaluator_evidence",
+      "context": "fresh_independent_evidence",
+      "status": "BLOCKED_ON_R2_ER1_0",
+      "dependencies": ["R2-ER1-0"],
+      "parallel_group": "R2-ER1-P",
+      "model": "gpt-5.6-sol",
+      "reasoning": "max",
+      "service_tier": "priority",
+      "write_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_n/E4_R2ER1A3_result_evaluator"
+    },
+    {
+      "id": "R2-ER1-G1",
+      "name": "fresh_central_intersection_and_candidate_decision",
+      "context": "current_central",
+      "status": "BLOCKED_ON_R2_ER1_P",
+      "dependencies": ["R2-ER1-S", "R2-ER1-A1", "R2-ER1-A2", "R2-ER1-A3"],
+      "model": "gpt-5.6-sol",
+      "reasoning": "max",
+      "service_tier": "priority",
+      "allowed_decisions": [
+        "PROVISIONAL_SINGLE_CANDIDATE_FOR_MATERIALIZATION",
+        "NO_SELECTION_EVIDENCE_REMAINS_INSUFFICIENT"
+      ],
+      "write_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_o/E4_R2ER1G1_candidate_selection"
+    },
+    {
+      "id": "R2-M0",
+      "name": "exact_user_material_acquisition_approval",
+      "context": "user_and_central_control",
+      "status": "BLOCKED_ON_POSITIVE_R2_ER1_G1",
+      "dependencies": ["R2-ER1-G1"],
+      "model": null,
+      "reasoning": null,
+      "service_tier": null
+    }
+  ],
+  "execution_boundary": {
+    "public_primary_source_web_replay": true,
+    "repository_clone_fetch_or_archive_download": false,
+    "dataset_checkpoint_or_asset_download": false,
+    "authenticated_access_or_terms_acceptance": false,
+    "package_install_or_environment_creation": false,
+    "preprocessing_training_evaluation": false,
+    "test_access": false,
+    "maintainer_contact": false,
+    "execution_authorized": false
+  },
+  "next_gate": "CREATE_AND_VALIDATE_R2_ER1_FROZEN_INPUT_MANIFEST"
+}

@@ -1,0 +1,145 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r2-g1-intersection-1.0",
+  "created_at": "2026-08-22",
+  "stage_id": "R2-G1",
+  "context": "current_central",
+  "model": "gpt-5.6-sol",
+  "reasoning": "high",
+  "entry_validation": {
+    "receipt": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r2_evidence_lanes_validation_receipt.json",
+    "mechanical_import_passed": true,
+    "contract_conformity_passed": false,
+    "contract_finding_ids": ["R2-CF-A1-001", "R2-CF-A2-001", "R2-CF-A3-001"],
+    "positive_selection_gate_passed": false,
+    "no_selection_synthesis_allowed": true
+  },
+  "join_policy": {
+    "key": "exact row_id only",
+    "required_positive_lane_status": "EVIDENCE_SUFFICIENT_FOR_G1_REVIEW",
+    "required_positive_lane_count": 3,
+    "cross_row_join_allowed": false,
+    "priority_is_selection": false,
+    "missing_evidence_may_be_inferred": false
+  },
+  "candidate_rows": [
+    {
+      "row_id": "E3-LIGHTGCN-GOWALLA-PYTORCH-001",
+      "method": "LightGCN",
+      "reference_dataset": "Gowalla repository-bundled processed split",
+      "lane_statuses": {"R2-A1":"EVIDENCE_INCOMPLETE","R2-A2":"EVIDENCE_INCOMPLETE","R2-A3":"EVIDENCE_INCOMPLETE"},
+      "unresolved_field_counts": {"R2-A1":5,"R2-A2":6,"R2-A3":6,"total_mentions":17},
+      "positive_selection_eligible": false,
+      "central_disposition": "KEEP_AS_EVIDENCE_PRIORITY_NOT_SELECTED",
+      "blocking_dimensions": [
+        "No affirmative code-license grant was established at the pinned revision.",
+        "No lawful exact raw-to-processed-to-split Gowalla lineage is closed.",
+        "No hash-bound checkpoint, run, evaluator or deterministic tie receipt is closed."
+      ]
+    },
+    {
+      "row_id": "E3-SIMGCL-YELP2018-QREC-001",
+      "method": "SimGCL",
+      "reference_dataset": "Yelp2018 QRec processed split",
+      "lane_statuses": {"R2-A1":"EVIDENCE_INCOMPLETE","R2-A2":"EVIDENCE_INCOMPLETE","R2-A3":"EVIDENCE_INCOMPLETE"},
+      "unresolved_field_counts": {"R2-A1":5,"R2-A2":6,"R2-A3":6,"total_mentions":17},
+      "positive_selection_eligible": false,
+      "central_disposition": "KEEP_PENDING",
+      "blocking_dimensions": [
+        "No affirmative code license or noninteractive exact argv is closed.",
+        "Historical Yelp release/rights and 7:1:2 split lineage are not closed.",
+        "Five-run seed identities, exact evaluator and checkpoint receipts are absent."
+      ]
+    },
+    {
+      "row_id": "E3-XSIMGCL-YELP2018-SELFREC-001",
+      "method": "XSimGCL",
+      "reference_dataset": "Yelp2018 SELFRec processed split",
+      "lane_statuses": {"R2-A1":"DISPOSITIVE_REJECT","R2-A2":"EVIDENCE_INCOMPLETE","R2-A3":"EVIDENCE_INCOMPLETE"},
+      "unresolved_field_counts": {"R2-A1":4,"R2-A2":6,"R2-A3":5,"total_mentions":15},
+      "positive_selection_eligible": false,
+      "central_disposition": "REJECT_CURRENT_ROW",
+      "dispositive_mismatch": "The pinned README result center is layer=3 while the pinned conf/XSimGCL.yaml sets n_layer: 2; the result center may not be joined to that config.",
+      "reentry_rule": "Only a new change-controlled candidate row with one immutable matching center-config-run identity may re-enter."
+    },
+    {
+      "row_id": "E3-LIGHTGCL-YELP-UPDATED-001",
+      "method": "LightGCL",
+      "reference_dataset": "Yelp updated interaction-sampler surface",
+      "lane_statuses": {"R2-A1":"EVIDENCE_INCOMPLETE","R2-A2":"EVIDENCE_INCOMPLETE","R2-A3":"EVIDENCE_INCOMPLETE"},
+      "unresolved_field_counts": {"R2-A1":5,"R2-A2":5,"R2-A3":6,"total_mentions":16},
+      "positive_selection_eligible": false,
+      "central_disposition": "KEEP_PENDING",
+      "blocking_dimensions": [
+        "No affirmative code license, dependency lock or checkpoint receipt is closed.",
+        "Provider snapshot, rights and exact updated preprocessing/split lineage are absent.",
+        "The corrected sampler revision and complete evaluator semantics lack an immutable run receipt."
+      ]
+    },
+    {
+      "row_id": "E3-UNISREC-SCIENTIFIC-TRANS-001",
+      "method": "UniSRec",
+      "reference_dataset": "Scientific transductive fine-tuning",
+      "lane_statuses": {"R2-A1":"EVIDENCE_INCOMPLETE","R2-A2":"EVIDENCE_INCOMPLETE","R2-A3":"EVIDENCE_INCOMPLETE"},
+      "unresolved_field_counts": {"R2-A1":5,"R2-A2":6,"R2-A3":5,"total_mentions":16},
+      "positive_selection_eligible": false,
+      "central_disposition": "KEEP_PENDING_POSITIVE_CODE_LICENSE_ONLY",
+      "confirmed_boundary": "The pinned repository LICENSE is MIT for repository code.",
+      "blocking_dimensions": [
+        "MIT code licensing does not close pretrained checkpoint, processed asset or dataset rights.",
+        "Scientific provider variant and complete preprocessing/hash lineage are absent.",
+        "Seed schedule, exact RecBole evaluator revision and run/checkpoint receipts are absent."
+      ]
+    },
+    {
+      "row_id": "E3-SASREC-SCIENTIFIC-UNISREC-FRAMEWORK-001",
+      "method": "SASRec",
+      "reference_dataset": "Scientific through UniSRec and external RecBole",
+      "lane_statuses": {"R2-A1":"EVIDENCE_INCOMPLETE","R2-A2":"EVIDENCE_INCOMPLETE","R2-A3":"EVIDENCE_INCOMPLETE"},
+      "unresolved_field_counts": {"R2-A1":5,"R2-A2":5,"R2-A3":5,"total_mentions":15},
+      "positive_selection_eligible": false,
+      "central_disposition": "KEEP_PENDING_FRAMEWORK_IDENTITY_UNCLOSED",
+      "blocking_dimensions": [
+        "The exact external RecBole/SASRec revision, license scope and defaults are not bound.",
+        "SASRec-specific Scientific preprocessing and lawful lineage are not closed.",
+        "Training objective, negative sampling, checkpoint and evaluator receipt are not closed."
+      ]
+    },
+    {
+      "row_id": "E3-ALPHAREC-MOVIES-TV-001",
+      "method": "AlphaRec",
+      "reference_dataset": "Amazon Movies & TV language-embedding bundle",
+      "lane_statuses": {"R2-A1":"EVIDENCE_INCOMPLETE","R2-A2":"EVIDENCE_INCOMPLETE","R2-A3":"EVIDENCE_INCOMPLETE"},
+      "unresolved_field_counts": {"R2-A1":5,"R2-A2":6,"R2-A3":5,"total_mentions":16},
+      "positive_selection_eligible": false,
+      "central_disposition": "KEEP_PENDING",
+      "blocking_dimensions": [
+        "No affirmative code license or external embedding/data identity is closed.",
+        "Rights for reviews, metadata, item text and derived embeddings are not closed.",
+        "Exact preprocessing, checkpoint and metric/evaluator receipts are absent."
+      ]
+    }
+  ],
+  "source_deduplication": {
+    "authoritative_source_mentions": 77,
+    "unique_urls": 62,
+    "duplicate_mentions_removed_from_independence_count": 15,
+    "dedup_key": "exact URL string",
+    "repeated_url_is_independent_evidence": false
+  },
+  "intersection_summary": {
+    "candidate_count": 7,
+    "fully_sufficient_candidates": 0,
+    "incomplete_candidates": 6,
+    "dispositive_reject_candidates": 1,
+    "selected_candidate_count": 0,
+    "selected_candidate_row_id": null
+  },
+  "verdict": "NO_SELECTION_EVIDENCE_REMAINS_INSUFFICIENT",
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

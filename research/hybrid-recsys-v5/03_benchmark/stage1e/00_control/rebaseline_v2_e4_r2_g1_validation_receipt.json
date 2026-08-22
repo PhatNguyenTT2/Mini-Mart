@@ -1,0 +1,96 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r2-g1-validation-1.0",
+  "created_at": "2026-08-22",
+  "passed": true,
+  "verdict": "PASS_R2_G1_NO_SELECTION_FAIL_CLOSED_DOWNSTREAM_BLOCKED",
+  "failure_count": 0,
+  "failures": [],
+  "validator": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r2_g1.py",
+    "canonical_lf_bytes": 13034,
+    "canonical_lf_sha256": "a3f9f0f3219cd8afa4fbd423d0a7d9f26bd8f26265895db4e23211d509b6344e",
+    "exit_code": 0,
+    "strict_json_parser_with_duplicate_and_case_collision_rejection": "PASS"
+  },
+  "checks": {
+    "exact_five_file_output_set": true,
+    "frozen_inputs_21_of_21": true,
+    "manifest_candidate_order": true,
+    "manifest_no_selection_only": true,
+    "lane_receipt_gate": true,
+    "four_non_handoff_output_hashes": true,
+    "material_passport_and_repro_lock": true,
+    "handoff_model": true,
+    "handoff_truth_state": true,
+    "all_forbidden_operations_false": true,
+    "intersection_7_rows_in_order": true,
+    "intersection_zero_positive": true,
+    "xsim_current_row_rejected": true,
+    "source_deduplication": true,
+    "decision_matrix_zero_selected": true,
+    "all_downstream_gates_blocked": true,
+    "primary_locator_replay_6_of_6": true,
+    "replay_scope_closed": true,
+    "report_fail_closed_language": true,
+    "handoff_verdict_and_routing": true
+  },
+  "frozen_inputs": {
+    "expected": 21,
+    "matched": 21,
+    "manifest": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r2_g1_frozen_input_manifest.json",
+      "canonical_lf_bytes": 6065,
+      "canonical_lf_sha256": "5d1e52f3401e32ae20d48118ca1e8142240146a853105cf01ad09b49fdd85652"
+    },
+    "contract": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r2_g1_central_synthesis_contract.md",
+      "canonical_lf_bytes": 4528,
+      "canonical_lf_sha256": "324f64b50e1f042ca580e2fd0be45003dc902f8768cb9cff539d451d75c9f1c4"
+    },
+    "lane_validation_receipt": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r2_evidence_lanes_validation_receipt.json",
+      "canonical_lf_bytes": 4646,
+      "canonical_lf_sha256": "1335836553caa160d93fe3cc8baee041afbbe9846f0e18fd2b4eb68d4c3607b8"
+    }
+  },
+  "outputs": {
+    "expected_files": 5,
+    "present_files": 5,
+    "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_h/E4_R2G1_candidate_selection",
+    "files": {
+      "central_evidence_intersection.json": {"canonical_lf_bytes":7194,"canonical_lf_sha256":"fc439ac8747d25775aad3bb14c6eb0b2cd9c392447bfa3fabfc9be14a16de539"},
+      "candidate_decision_matrix.json": {"canonical_lf_bytes":3372,"canonical_lf_sha256":"ea58afb47a1d53c929f27f623a3d62572623c83f6b0d0fd3be59eaa6e2082bce"},
+      "primary_locator_replay_log.json": {"canonical_lf_bytes":3965,"canonical_lf_sha256":"f769d64b8e238ee840f00ab00f1c9e4c7c0dcb1d03a0b42c356c82674694209f"},
+      "r2_g1_no_selection_report.md": {"canonical_lf_bytes":4570,"canonical_lf_sha256":"953d1bf47da04b85234bd0c7ff9608f3cdc623ec7905bc37b54ca8be84e3c6a8"},
+      "r2_g1_handoff.json": {"canonical_lf_bytes":6868,"canonical_lf_sha256":"9b96b6f423d354932cb0d53f60586bf180dc7472fe2bccbb031778bd38748855"}
+    }
+  },
+  "selection": {
+    "candidate_count": 7,
+    "fully_sufficient": 0,
+    "selected": 0,
+    "priority_only": "E3-LIGHTGCN-GOWALLA-PYTORCH-001",
+    "dispositive_reject": "E3-XSIMGCL-YELP2018-SELFREC-001",
+    "verdict": "NO_SELECTION_EVIDENCE_REMAINS_INSUFFICIENT"
+  },
+  "contract_findings_preserved": ["R2-CF-A1-001", "R2-CF-A2-001", "R2-CF-A3-001"],
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "downstream": {
+    "R2-M0": "BLOCKED_NO_SELECTION",
+    "R2-B1": "BLOCKED",
+    "R2-B2": "BLOCKED",
+    "R2-B3": "BLOCKED",
+    "R2-G2": "BLOCKED",
+    "E5-R2": "BLOCKED",
+    "R2-U": "BLOCKED",
+    "R2-D": "BLOCKED",
+    "R2-G3": "BLOCKED"
+  },
+  "next_gate": "USER_CHECKPOINT_BEFORE_CHANGE_CONTROLLED_EVIDENCE_REMEDIATION"
+}

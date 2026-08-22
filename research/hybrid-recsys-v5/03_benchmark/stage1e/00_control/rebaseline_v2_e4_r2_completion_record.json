@@ -1,0 +1,75 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r2-completion-record-1.0",
+  "created_at": "2026-08-22",
+  "status": "R2_A_LANES_IMPORTED_G1_COMPLETE_FAIL_CLOSED_NO_SELECTION",
+  "dispatch_snapshot": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r2_evidence_dispatch.json",
+    "canonical_lf_bytes": 4813,
+    "canonical_lf_sha256": "235d7556ab538ad412448420eef4f639dd8b323f5dfdb24347686d41baad6c0b",
+    "note": "The dispatch snapshot remains immutable as a frozen G1 input; this completion record carries later status."
+  },
+  "lane_imports": {
+    "common_source_parent": "c2211cb9a4536f747fad5b44dfd725319838b6d6",
+    "R2-A1": {
+      "thread_id": "01a028e9-6359-7a92-b771-dbf83f38580d",
+      "source_commit": "91d8f8902f36e35db88124287aa3bf0df82283bd",
+      "central_commit": "775f778c8d6fb7941c6603f7ae1323f15db66254",
+      "status": "COMPLETED_IMPORTED_HASH_VALIDATED_CONTRACT_FINDING_PRESERVED"
+    },
+    "R2-A2": {
+      "thread_id": "01a028e9-6353-7150-b0e5-8a515ae4f44d",
+      "source_commit": "50596505de3fea758601a63fe840c0e324e1ece1",
+      "central_commit": "6fe784d8313aafd03c9f55fd261d48bb59238372",
+      "status": "COMPLETED_IMPORTED_HASH_VALIDATED_CONTRACT_FINDING_PRESERVED"
+    },
+    "R2-A3": {
+      "thread_id": "01a028e9-6381-78d0-8524-9e2ec9a7fdd2",
+      "source_commit": "bef1b22875ec8bb5aec568e50a4018a4252b129e",
+      "central_commit": "7ed8b34d3219ac99b33f0e42555e463cc7f1f7db",
+      "status": "COMPLETED_IMPORTED_HASH_VALIDATED_CONTRACT_FINDING_PRESERVED"
+    }
+  },
+  "lane_validation": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r2_evidence_lanes_validation_receipt.json",
+    "canonical_lf_bytes": 4646,
+    "canonical_lf_sha256": "1335836553caa160d93fe3cc8baee041afbbe9846f0e18fd2b4eb68d4c3607b8",
+    "verdict": "R2_LANES_IMPORTED_HASH_VALIDATED_CONTRACT_NONCONFORMANT_NO_SELECTION_ONLY",
+    "contract_finding_ids": ["R2-CF-A1-001", "R2-CF-A2-001", "R2-CF-A3-001"]
+  },
+  "g1": {
+    "status": "COMPLETE_FAIL_CLOSED",
+    "context": "current_central",
+    "model": "gpt-5.6-sol",
+    "reasoning": "high",
+    "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_h/E4_R2G1_candidate_selection",
+    "validation_receipt": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r2_g1_validation_receipt.json",
+      "canonical_lf_bytes": 4145,
+      "canonical_lf_sha256": "94ca0c42b78c6f79a246c6c2f89021187c411e201fc61ee200f7c15e7cebffc2",
+      "verdict": "PASS_R2_G1_NO_SELECTION_FAIL_CLOSED_DOWNSTREAM_BLOCKED"
+    },
+    "candidate_count": 7,
+    "fully_sufficient_candidates": 0,
+    "selected_candidate_count": 0,
+    "verdict": "NO_SELECTION_EVIDENCE_REMAINS_INSUFFICIENT"
+  },
+  "downstream": {
+    "R2-M0": "BLOCKED_NO_SELECTION",
+    "R2-B1": "BLOCKED",
+    "R2-B2": "BLOCKED",
+    "R2-B3": "BLOCKED",
+    "R2-G2": "BLOCKED",
+    "E5-R2": "BLOCKED",
+    "R2-U": "BLOCKED",
+    "R2-D": "BLOCKED",
+    "R2-G3": "BLOCKED"
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "next_gate": "USER_CHECKPOINT_BEFORE_CHANGE_CONTROLLED_EVIDENCE_REMEDIATION"
+}

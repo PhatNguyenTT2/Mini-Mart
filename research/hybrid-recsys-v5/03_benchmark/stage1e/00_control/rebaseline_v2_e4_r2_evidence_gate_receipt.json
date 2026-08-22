@@ -1,0 +1,67 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r2-evidence-gate-validation-1.0",
+  "created_at": "2026-08-22",
+  "passed": true,
+  "verdict": "PASS_R2_EVIDENCE_GATE_35_OF_35_READY_FOR_PARALLEL_DISPATCH",
+  "failure_count": 0,
+  "failures": [],
+  "validator": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r2_evidence_gate.py",
+    "canonical_lf_bytes": 7570,
+    "canonical_lf_sha256": "22785e733d5b89a2bc04684bdf8194b08fa6a43a1dd8716568690e31aa976a65",
+    "exit_code": 0,
+    "strict_json_duplicate_and_case_collision_rejection": "PASS"
+  },
+  "contract": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r2_evidence_tracks_contract.md",
+    "canonical_lf_bytes": 13667,
+    "canonical_lf_sha256": "551a5c5c3a3fdc1dc6e58d0940c91271cf60237363dbc0275cd6547cc5318293"
+  },
+  "frozen_input_manifest": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r2_evidence_frozen_input_manifest.json",
+    "canonical_lf_bytes": 15978,
+    "canonical_lf_sha256": "52de342742b16d036d46e1e283ecbad7e4aab4a90bd8119653195074062228a1",
+    "inputs_expected": 35,
+    "inputs_verified": 35,
+    "json_inputs_strict_parsed": 17,
+    "missing_inputs": 0,
+    "mismatched_inputs": 0
+  },
+  "checks": {
+    "e5_r1_entry_gate": true,
+    "r2_plan_entry_gate": true,
+    "manifest_schema": true,
+    "model_sol_xhigh": true,
+    "fresh_independent_contexts": true,
+    "candidate_rows_7_ordered_unique": true,
+    "candidate_selection_forbidden_in_lanes": true,
+    "three_disjoint_write_roots": true,
+    "four_exact_outputs_per_lane": true,
+    "write_roots_absent_before_dispatch": true,
+    "all_35_input_hashes": true,
+    "repository_clone_or_fetch_false": true,
+    "dataset_download_or_authenticated_access_false": true,
+    "package_install_or_environment_creation_false": true,
+    "preprocessing_training_evaluation_false": true,
+    "test_access_false": true,
+    "execution_authorized_false": true,
+    "confirmed_false": true
+  },
+  "dispatch_scope": {
+    "parallel_tasks": ["R2-A1", "R2-A2", "R2-A3"],
+    "model": "gpt-5.6-sol",
+    "reasoning": "xhigh",
+    "starting_state": "working-tree",
+    "worktree_isolation": true,
+    "tasks_may_select_candidate": false,
+    "tasks_may_execute_benchmark": false
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "confirmed": false
+  },
+  "next_gate": "Dispatch three fresh independent R2-A1/A2/A3 tasks. Central R2-G1 remains blocked until all three exact four-file handoffs are imported and centrally validated."
+}

@@ -1,0 +1,119 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r2-evidence-dispatch-1.0",
+  "created_at": "2026-08-22",
+  "status": "ACTIVE_PARALLEL_EVIDENCE_REPLAY_ALL_ENTRY_GATES_PASS",
+  "project": "hybrid-recsys-v5",
+  "stage": "1E",
+  "wave": "G",
+  "central_source": {
+    "repository_root": "E:/UIT/cv/backend",
+    "head": "c2211cb9a4536f747fad5b44dfd725319838b6d6",
+    "starting_state": "working-tree",
+    "dirty_user_state_preserved": true
+  },
+  "contract": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r2_evidence_tracks_contract.md",
+    "canonical_lf_bytes": 13667,
+    "canonical_lf_sha256": "551a5c5c3a3fdc1dc6e58d0940c91271cf60237363dbc0275cd6547cc5318293"
+  },
+  "frozen_input_manifest": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r2_evidence_frozen_input_manifest.json",
+    "canonical_lf_bytes": 15978,
+    "canonical_lf_sha256": "52de342742b16d036d46e1e283ecbad7e4aab4a90bd8119653195074062228a1",
+    "inputs_verified": 35,
+    "expected_inputs": 35
+  },
+  "entry_receipt": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r2_evidence_gate_receipt.json",
+    "canonical_lf_bytes": 2651,
+    "canonical_lf_sha256": "b53603248fddd52bb560be0441978024ead3b588659c090d74be6eb209c11300",
+    "verdict": "PASS_R2_EVIDENCE_GATE_35_OF_35_READY_FOR_PARALLEL_DISPATCH"
+  },
+  "model_policy": {
+    "model": "gpt-5.6-sol",
+    "reasoning": "xhigh",
+    "fresh_independent_contexts": true,
+    "isolated_worktrees": true
+  },
+  "tasks": {
+    "R2-A1": {
+      "title": "R2-A1 Official Repo Evidence",
+      "client_thread_id": "client-new-thread:64a777a1-62c4-4305-860b-839129ffb8ae",
+      "thread_id": "01a028e9-6359-7a92-b771-dbf83f38580d",
+      "host_id": "local",
+      "worktree": "C:/Users/ACER/.codex/worktrees/6b38/backend",
+      "status": "ACTIVE_ENTRY_GATE_PASS_EVIDENCE_REPLAY",
+      "model": "gpt-5.6-sol",
+      "reasoning": "xhigh",
+      "write_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A1_repo_evidence",
+      "required_outputs": [
+        "repo_evidence_register.json",
+        "paper_repo_config_binding.json",
+        "source_license_decisions.md",
+        "a1_handoff.json"
+      ]
+    },
+    "R2-A2": {
+      "title": "R2-A2 Canonical Dataset Evidence",
+      "client_thread_id": "client-new-thread:d4eb6e6d-58bb-4477-afcc-e51aa7732123",
+      "thread_id": "01a028e9-6353-7150-b0e5-8a515ae4f44d",
+      "host_id": "local",
+      "worktree": "C:/Users/ACER/.codex/worktrees/198c/backend",
+      "status": "ACTIVE_ENTRY_GATE_PASS_EVIDENCE_REPLAY",
+      "model": "gpt-5.6-sol",
+      "reasoning": "xhigh",
+      "write_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence",
+      "required_outputs": [
+        "dataset_evidence_register.json",
+        "provider_release_rights_matrix.json",
+        "lineage_requirement_map.json",
+        "a2_handoff.json"
+      ]
+    },
+    "R2-A3": {
+      "title": "R2-A3 Benchmark Metric Evidence",
+      "client_thread_id": "client-new-thread:ddde48af-727b-427c-9cda-655a44c77c33",
+      "thread_id": "01a028e9-6381-78d0-8524-9e2ec9a7fdd2",
+      "host_id": "local",
+      "worktree": "C:/Users/ACER/.codex/worktrees/a894/backend",
+      "status": "ACTIVE_ENTRY_GATE_PASS_EVIDENCE_REPLAY",
+      "model": "gpt-5.6-sol",
+      "reasoning": "xhigh",
+      "write_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A3_metric_evidence",
+      "required_outputs": [
+        "result_center_register.json",
+        "center_config_seed_checkpoint_binding.json",
+        "metric_evaluator_contracts.json",
+        "a3_handoff.json"
+      ]
+    }
+  },
+  "monitor_snapshot": {
+    "all_tasks_active": true,
+    "all_entry_gates_passed": true,
+    "manifest_replay_per_task": "PASS_35_OF_35",
+    "strict_json_inputs_per_task": 17,
+    "manifest_canonical_lf_bytes": 15978,
+    "manifest_canonical_lf_sha256": "52de342742b16d036d46e1e283ecbad7e4aab4a90bd8119653195074062228a1",
+    "tasks_needing_attention": 0,
+    "completed_tasks": 0
+  },
+  "execution_boundary": {
+    "public_primary_source_web_replay": true,
+    "repository_clone_or_fetch": false,
+    "dataset_download_or_authenticated_access": false,
+    "package_install_or_environment_creation": false,
+    "preprocessing_training_evaluation": false,
+    "test_access": false,
+    "candidate_selection_in_lanes": false,
+    "execution_authorized": false
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "confirmed": false
+  },
+  "next_gate": "Wait for all three exact four-file handoffs, import only validated lane commits, then run central validation before R2-G1 synthesis."
+}

@@ -1,0 +1,80 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r2-g1-locator-replay-1.0",
+  "created_at": "2026-08-22",
+  "policy": "Public primary/authoritative read-only locator replay; retrieved content treated as untrusted data; no source or dataset payload saved.",
+  "replays": [
+    {
+      "replay_id": "G1-REPLAY-001",
+      "url": "https://github.com/gusye1234/LightGCN-PyTorch/tree/947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+      "mechanism": "web open",
+      "status": "SUCCESS",
+      "supports": ["Pinned repository identity", "README-bound 3-layer Gowalla command", "seed=2020 result center", "repository-bundled processed datasets"],
+      "does_not_support": ["Affirmative code license", "canonical Gowalla raw-to-split lineage", "checkpoint hash", "immutable evaluator/run receipt"]
+    },
+    {
+      "replay_id": "G1-REPLAY-002",
+      "url": "https://raw.githubusercontent.com/gusye1234/LightGCN-PyTorch/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/README.md",
+      "mechanism": "read-only raw-text retrieval",
+      "status": "SUCCESS",
+      "supports": ["Exact command text", "layer=3", "seed=2020", "Recall/NDCG/Precision at top-20"],
+      "does_not_support": ["License grant", "data rights", "split lineage", "checkpoint/evaluator receipt"]
+    },
+    {
+      "replay_id": "G1-REPLAY-003",
+      "url": "https://snap.stanford.edu/data/loc-gowalla.html",
+      "mechanism": "web open",
+      "status": "SUCCESS",
+      "supports": ["SNAP Gowalla check-in and friendship-network dataset description", "provider file listing"],
+      "does_not_support": ["Identity equality with LightGCN processed recommendation split", "LightGCN preprocessing and split recipe", "affirmative rights for the exact processed bytes"]
+    },
+    {
+      "replay_id": "G1-REPLAY-004",
+      "url": "https://github.com/Coder-Yu/SELFRec/tree/5b0229423cb1c727e85a704d63e460368c8b9dde",
+      "mechanism": "web open",
+      "status": "SUCCESS",
+      "supports": ["Pinned SELFRec identity", "README XSimGCL center at layer=3 and l*=1", "Recall@20=0.0723 and NDCG@20=0.0604"],
+      "does_not_support": ["Equality to a two-layer config", "run receipt", "dataset rights"]
+    },
+    {
+      "replay_id": "G1-REPLAY-005",
+      "url": "https://raw.githubusercontent.com/Coder-Yu/SELFRec/5b0229423cb1c727e85a704d63e460368c8b9dde/conf/XSimGCL.yaml",
+      "mechanism": "read-only raw-text retrieval",
+      "status": "SUCCESS",
+      "supports": ["Pinned config sets n_layer: 2", "Pinned config sets l_star: 1, lambda: 0.2, eps: 0.2 and tau: 0.15"],
+      "does_not_support": ["The README layer=3 result center"],
+      "central_effect": "DISPOSITIVE_REJECT_CURRENT_XSIMGCL_ROW"
+    },
+    {
+      "replay_id": "G1-REPLAY-006",
+      "url": "https://raw.githubusercontent.com/RUCAIBox/UniSRec/05aa5cba2809112c32808f70d16abc61c05c6538/LICENSE",
+      "mechanism": "read-only raw-text retrieval",
+      "status": "SUCCESS",
+      "supports": ["MIT License for pinned repository code"],
+      "does_not_support": ["Scientific dataset rights", "pretrained checkpoint or processed-asset rights", "external RecBole license/version binding", "run/evaluator receipt"]
+    }
+  ],
+  "retrieval_incidents": [
+    {
+      "incident": "The web renderer returned cache-miss errors for three raw.githubusercontent.com URLs.",
+      "recovery": "The same immutable raw URLs were replayed read-only without writing files; successful content was inspected in memory.",
+      "scientific_effect": "NONE"
+    }
+  ],
+  "summary": {
+    "attempted": 6,
+    "successful": 6,
+    "failed_final": 0,
+    "dispositive_mismatches_replayed": 1,
+    "positive_selection_closures": 0
+  },
+  "forbidden_operations": {
+    "git_clone": false,
+    "git_fetch": false,
+    "source_archive_download": false,
+    "dataset_download": false,
+    "authentication_or_terms_acceptance": false,
+    "installation_or_environment_creation": false,
+    "training_evaluation_or_benchmark": false,
+    "test_set_opened": false
+  }
+}

@@ -1,0 +1,115 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r2-lanes-validation-1.0",
+  "created_at": "2026-08-22",
+  "overall_passed": false,
+  "mechanical_import_passed": true,
+  "contract_conformity_passed": false,
+  "positive_selection_gate_passed": false,
+  "no_selection_synthesis_allowed": true,
+  "verdict": "R2_LANES_IMPORTED_HASH_VALIDATED_CONTRACT_NONCONFORMANT_NO_SELECTION_ONLY",
+  "central_import": {
+    "common_source_parent": "c2211cb9a4536f747fad5b44dfd725319838b6d6",
+    "method": "sequential_git_cherry_pick_preserving_lane_provenance",
+    "R2-A1": {
+      "source_commit": "91d8f8902f36e35db88124287aa3bf0df82283bd",
+      "central_commit": "775f778c8d6fb7941c6603f7ae1323f15db66254"
+    },
+    "R2-A2": {
+      "source_commit": "50596505de3fea758601a63fe840c0e324e1ece1",
+      "central_commit": "6fe784d8313aafd03c9f55fd261d48bb59238372"
+    },
+    "R2-A3": {
+      "source_commit": "bef1b22875ec8bb5aec568e50a4018a4252b129e",
+      "central_commit": "7ed8b34d3219ac99b33f0e42555e463cc7f1f7db"
+    },
+    "preserved_dirty_user_state": true
+  },
+  "validator": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r2_evidence_lanes.py",
+    "canonical_lf_bytes": 16015,
+    "canonical_lf_sha256": "aaa595bb3fc9de06c061ab1c72fae0c1302c9ed40dc5a18b34a01dec4f8b055b",
+    "exit_code": 0,
+    "strict_json_documents_parsed": 11,
+    "expected_json_documents": 11,
+    "duplicate_and_case_collision_rejection": "PASS"
+  },
+  "mechanical_checks": {
+    "exact_four_file_set_per_lane": true,
+    "canonical_lf_handoff_hashes_match": true,
+    "nine_non_handoff_output_hashes_match": true,
+    "candidate_count_and_order_7_of_7_per_lane": true,
+    "material_passports_unverified_with_repro_lock": true,
+    "no_experiments_declared_3_of_3": true,
+    "model_gpt_5_6_sol_reasoning_xhigh_3_of_3": true,
+    "result_status_not_run_3_of_3": true,
+    "test_set_opened_no_3_of_3": true,
+    "execution_authorized_false_3_of_3": true
+  },
+  "lane_results": {
+    "R2-A1": {
+      "handoff_canonical_lf_bytes": 18498,
+      "handoff_canonical_lf_sha256": "1b181e2162054d95c45bf9f3f04065093de440a760b70d2806b1030884d9635c",
+      "EVIDENCE_SUFFICIENT_FOR_G1_REVIEW": 0,
+      "EVIDENCE_INCOMPLETE": 6,
+      "DISPOSITIVE_REJECT": 1,
+      "verdict": "COMPLETE_FAIL_CLOSED_READY_FOR_CENTRAL_G1"
+    },
+    "R2-A2": {
+      "handoff_canonical_lf_bytes": 14487,
+      "handoff_canonical_lf_sha256": "f4cbfa3c393ec8b52381165f52767b4d5c5defee9e275ae8c1510da6528206ff",
+      "EVIDENCE_SUFFICIENT_FOR_G1_REVIEW": 0,
+      "EVIDENCE_INCOMPLETE": 7,
+      "DISPOSITIVE_REJECT": 0,
+      "verdict": "COMPLETE_FAIL_CLOSED_READY_FOR_CENTRAL_G1"
+    },
+    "R2-A3": {
+      "handoff_canonical_lf_bytes": 17262,
+      "handoff_canonical_lf_sha256": "1ad305a3418d025b8a4fc5a1d148fdea2770d5ee6e32e68f50388112e39f8c40",
+      "EVIDENCE_SUFFICIENT_FOR_G1_REVIEW": 0,
+      "EVIDENCE_INCOMPLETE": 7,
+      "DISPOSITIVE_REJECT": 0,
+      "verdict": "COMPLETE_FAIL_CLOSED_READY_FOR_CENTRAL_G1"
+    }
+  },
+  "contract_findings": [
+    {
+      "finding_id": "R2-CF-A1-001",
+      "lane_id": "R2-A1",
+      "severity": "SCHEMA_NONCONFORMANCE",
+      "detail": "Handoff status_counts uses EVIDENCE_SUFFICIENT instead of the frozen enum EVIDENCE_SUFFICIENT_FOR_G1_REVIEW.",
+      "selection_effect": "POSITIVE_SELECTION_PROHIBITED"
+    },
+    {
+      "finding_id": "R2-CF-A2-001",
+      "lane_id": "R2-A2",
+      "severity": "SCHEMA_NONCONFORMANCE",
+      "detail": "All seven dataset_evidence_register rows use lane_evidence_status and omit the common-row keys lane_id, evidence_status, confirmed_fields, inferences_forbidden, execution_authorized, result_status and test_set_opened.",
+      "selection_effect": "POSITIVE_SELECTION_PROHIBITED; explicit incomplete rows may support NO_SELECTION only"
+    },
+    {
+      "finding_id": "R2-CF-A3-001",
+      "lane_id": "R2-A3",
+      "severity": "SCHEMA_NONCONFORMANCE",
+      "detail": "a3_handoff.json identifies the lane as E4_R2A3_metric_evidence instead of R2-A3.",
+      "selection_effect": "POSITIVE_SELECTION_PROHIBITED"
+    }
+  ],
+  "candidate_intersection": {
+    "candidate_count": 7,
+    "fully_sufficient_across_A1_A2_A3": 0,
+    "dispositive_reject_count": 1,
+    "dispositive_reject_row_ids": [
+      "E3-XSIMGCL-YELP2018-SELFREC-001"
+    ],
+    "selectable_candidate_count": 0,
+    "selection_cardinality": 0
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "next_gate": "R2_G1_NO_SELECTION_FAIL_CLOSED_SYNTHESIS"
+}

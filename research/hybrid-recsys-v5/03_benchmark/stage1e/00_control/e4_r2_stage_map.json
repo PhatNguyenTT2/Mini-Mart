@@ -1,0 +1,280 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r2-stage-map-1.0",
+  "created_at": "2026-08-22",
+  "stage_id": "E4_R2_EVIDENCE_AND_MATERIALIZATION",
+  "status": "PLAN_PREPARED_NOT_DISPATCHED",
+  "entry_gate": {
+    "verdict": "PASS_E5_R1_REMEDIATION_INTEGRITY_EXECUTION_DENIED",
+    "validation_receipt_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e5_r1_validation_receipt.json",
+    "validation_receipt_canonical_lf_sha256": "0bc91aea1eda8d9ea9a6c9c59e1df2548e168f4fc1037ff0b42ef5961882785f",
+    "frozen_inputs_verified": 19,
+    "output_files_verified": 5,
+    "mechanical_assertions_passed": 28,
+    "mechanical_assertions_expected": 28,
+    "new_findings": {
+      "critical": 0,
+      "major": 0,
+      "minor": 0
+    }
+  },
+  "empirical_truth": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER",
+    "execution_authorized": false,
+    "confirmed": false
+  },
+  "current_packet": {
+    "ready_candidates": 0,
+    "pending_candidates": 7,
+    "rejected_candidates": 6,
+    "prohibited_joins_rejected": 5,
+    "selected_candidate": null,
+    "command_records": 10,
+    "null_commands": 10,
+    "prerequisites_required": 15,
+    "prerequisites_resolved": 1,
+    "only_resolved_prerequisite": "P13_NEW_FROZEN_CENTRAL_PACKET",
+    "reproducibility_verdict": "CANNOT_VERIFY",
+    "authorization_decision": "DENIED_CURRENT_NULL_COMMAND_PACKET_NOT_EXECUTABLE"
+  },
+  "future_packet_initial_state": {
+    "prerequisites_required": 15,
+    "prerequisites_resolved": 0,
+    "prerequisites_unresolved": 15,
+    "old_p13_carries_forward": false,
+    "commands_may_be_materialized_only_after_p01_through_p12": true,
+    "execution_authorized": false
+  },
+  "execution_boundary": {
+    "planning_only_now": true,
+    "tasks_dispatched": 0,
+    "repository_clone_or_fetch": false,
+    "dataset_download_or_authenticated_access": false,
+    "package_install_or_environment_creation": false,
+    "preprocessing": false,
+    "training_or_evaluation": false,
+    "test_access": false,
+    "accepted_results": false,
+    "automatic_retry": false
+  },
+  "model_policy": {
+    "default_future_model": "gpt-5.6-sol",
+    "default_reasoning": "high",
+    "official_repo_dataset_metric_lock_exception": {
+      "stages": ["R2-A1", "R2-A2", "R2-A3"],
+      "model": "gpt-5.6-sol",
+      "reasoning": "xhigh",
+      "basis": "user override for official repository, canonical dataset, and benchmark metric locks"
+    },
+    "independent_audit_requires_fresh_context": true
+  },
+  "candidate_scope": {
+    "source_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_e/E4_R1C_reproduction_adaptation/selected_reference_bundle.json",
+    "priority_row_id": "E3-LIGHTGCN-GOWALLA-PYTORCH-001",
+    "priority_is_selection": false,
+    "priority_is_execution_authority": false,
+    "pending_row_ids": [
+      "E3-LIGHTGCN-GOWALLA-PYTORCH-001",
+      "E3-SIMGCL-YELP2018-QREC-001",
+      "E3-XSIMGCL-YELP2018-SELFREC-001",
+      "E3-LIGHTGCL-YELP-UPDATED-001",
+      "E3-UNISREC-SCIENTIFIC-TRANS-001",
+      "E3-SASREC-SCIENTIFIC-UNISREC-FRAMEWORK-001",
+      "E3-ALPHAREC-MOVIES-TV-001"
+    ],
+    "selection_cardinality_max": 1,
+    "automatic_fallback_allowed": false,
+    "framework_movielens_is_official_selection": false,
+    "raw_cross_dataset_metric_ranking_allowed": false
+  },
+  "phases": [
+    {
+      "id": "R2-0",
+      "name": "central_plan_and_input_freeze",
+      "status": "PLAN_PREPARED_INPUT_MANIFEST_PENDING",
+      "dependencies": ["E5-R1"],
+      "context": "current_central",
+      "model": "gpt-5.6-sol",
+      "reasoning": "high",
+      "may_execute_benchmark": false
+    },
+    {
+      "id": "R2-A1",
+      "name": "official_repository_license_config_evidence",
+      "status": "PENDING_NOT_DISPATCHED",
+      "dependencies": ["R2-0"],
+      "context": "fresh_independent_evidence",
+      "model": "gpt-5.6-sol",
+      "reasoning": "xhigh",
+      "parallel_group": "R2-A",
+      "proposed_output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A1_repo_evidence",
+      "may_execute_benchmark": false
+    },
+    {
+      "id": "R2-A2",
+      "name": "canonical_dataset_rights_release_lineage_evidence",
+      "status": "PENDING_NOT_DISPATCHED",
+      "dependencies": ["R2-0"],
+      "context": "fresh_independent_evidence",
+      "model": "gpt-5.6-sol",
+      "reasoning": "xhigh",
+      "parallel_group": "R2-A",
+      "proposed_output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence",
+      "may_download_dataset": false,
+      "may_execute_benchmark": false
+    },
+    {
+      "id": "R2-A3",
+      "name": "source_bound_result_metric_evaluator_evidence",
+      "status": "PENDING_NOT_DISPATCHED",
+      "dependencies": ["R2-0"],
+      "context": "fresh_independent_evidence",
+      "model": "gpt-5.6-sol",
+      "reasoning": "xhigh",
+      "parallel_group": "R2-A",
+      "proposed_output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A3_metric_evidence",
+      "may_execute_benchmark": false
+    },
+    {
+      "id": "R2-G1",
+      "name": "central_evidence_merge_dedup_and_provisional_selection",
+      "status": "BLOCKED_ON_R2_A",
+      "dependencies": ["R2-A1", "R2-A2", "R2-A3"],
+      "context": "current_central",
+      "model": "gpt-5.6-sol",
+      "reasoning": "high",
+      "allowed_decisions": ["PROVISIONAL_SINGLE_CANDIDATE", "NO_SELECTION"],
+      "proposed_output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_h/E4_R2G1_candidate_selection",
+      "may_execute_benchmark": false
+    },
+    {
+      "id": "R2-M0",
+      "name": "non_benchmark_material_acquisition_approval",
+      "status": "BLOCKED_ON_R2_G1",
+      "dependencies": ["R2-G1"],
+      "context": "user_and_central_control",
+      "model": null,
+      "reasoning": null,
+      "scope": "exact source data and environment operations only",
+      "may_execute_benchmark": false
+    },
+    {
+      "id": "R2-B1",
+      "name": "controller_resource_source_runtime_dependency_materialization",
+      "status": "BLOCKED_ON_R2_G1_AND_R2_M0",
+      "dependencies": ["R2-G1", "R2-M0"],
+      "context": "isolated_implementation_worktree",
+      "model": "gpt-5.6-sol",
+      "reasoning": "high",
+      "parallel_group": "R2-B12",
+      "prerequisites_owned": ["P02", "P03", "P04", "P05", "P06", "P07"],
+      "proposed_output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_i/E4_R2B1_source_runtime_controls",
+      "may_execute_benchmark": false
+    },
+    {
+      "id": "R2-B2",
+      "name": "lawful_dataset_and_split_lineage_materialization",
+      "status": "BLOCKED_ON_R2_G1_AND_R2_M0",
+      "dependencies": ["R2-G1", "R2-M0"],
+      "context": "isolated_data_materialization_worktree",
+      "model": "gpt-5.6-sol",
+      "reasoning": "high",
+      "parallel_group": "R2-B12",
+      "prerequisites_owned": ["P08", "P09"],
+      "proposed_output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_i/E4_R2B2_dataset_lineage",
+      "test_access": false,
+      "may_execute_benchmark": false
+    },
+    {
+      "id": "R2-B3",
+      "name": "model_adapter_evaluator_and_inventory_materialization",
+      "status": "BLOCKED_ON_R2_B1_AND_R2_B2",
+      "dependencies": ["R2-B1", "R2-B2"],
+      "context": "isolated_adapter_evaluator_worktree",
+      "model": "gpt-5.6-sol",
+      "reasoning": "high",
+      "prerequisites_owned": ["P10", "P11", "P12"],
+      "proposed_output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_i/E4_R2B3_adapter_evaluator",
+      "may_execute_benchmark": false
+    },
+    {
+      "id": "R2-G2",
+      "name": "central_materialized_packet_freeze",
+      "status": "BLOCKED_ON_R2_B1_B2_B3",
+      "dependencies": ["R2-B1", "R2-B2", "R2-B3"],
+      "context": "current_central",
+      "model": "gpt-5.6-sol",
+      "reasoning": "high",
+      "prerequisites_owned": ["P01", "P13"],
+      "proposed_output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_j/E4_R2G2_materialized_packet",
+      "commands_confirmed": false,
+      "execution_authorized": false
+    },
+    {
+      "id": "E5-R2",
+      "name": "fresh_independent_materialized_packet_audit",
+      "status": "BLOCKED_ON_R2_G2",
+      "dependencies": ["R2-G2"],
+      "context": "fresh_independent_read_only_audit",
+      "model": "gpt-5.6-sol",
+      "reasoning": "high",
+      "prerequisites_owned": ["P14"],
+      "proposed_output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_k/E5_R2_materialized_packet_audit",
+      "may_repair_audited_packet": false,
+      "may_authorize_execution": false
+    },
+    {
+      "id": "R2-U",
+      "name": "exact_user_confirmation_and_separate_authority",
+      "status": "BLOCKED_ON_E5_R2",
+      "dependencies": ["E5-R2"],
+      "context": "user_and_central_control",
+      "model": null,
+      "reasoning": null,
+      "prerequisites_owned": ["P15"],
+      "packet_hash_bound": true
+    },
+    {
+      "id": "R2-D",
+      "name": "official_reproduction_execution",
+      "status": "BLOCKED_ON_R2_U",
+      "dependencies": ["R2-U"],
+      "context": "isolated_execution",
+      "model": "gpt-5.6-sol",
+      "reasoning": "high",
+      "proposed_output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_l/E4_R2D_official_reproduction",
+      "retry_policy": "NO_AUTO_RETRY",
+      "test_access": false
+    },
+    {
+      "id": "R2-G3",
+      "name": "central_reproduction_accept_or_exclude",
+      "status": "BLOCKED_ON_R2_D",
+      "dependencies": ["R2-D"],
+      "context": "current_central",
+      "model": "gpt-5.6-sol",
+      "reasoning": "high",
+      "allowed_decisions": ["OFFICIAL_REPRODUCTION_ACCEPTED", "BASELINE_EXCLUDED_WITH_FAILURE_REPORT"]
+    }
+  ],
+  "verification_rules": {
+    "canonical_lf_sha256": true,
+    "exact_input_and_output_sets": true,
+    "duplicate_and_case_collision_rejection": true,
+    "primary_source_locator_replay": true,
+    "immutable_revision_required": true,
+    "cross_row_join_rejection": true,
+    "fresh_read_only_audit": true,
+    "explicit_packet_hash_confirmation": true,
+    "test_sealed_until_later_preregistered_gate": true
+  },
+  "dispatch": {
+    "dispatch_ready": false,
+    "tasks_created": 0,
+    "reason": "R2 evidence contract and frozen input manifest must be generated and centrally validated first",
+    "next_parallel_group": ["R2-A1", "R2-A2", "R2-A3"]
+  },
+  "next_gate": "R2_A1_A2_A3_DISPATCH_REQUIRES_FROZEN_R2_INPUT_MANIFEST"
+}
