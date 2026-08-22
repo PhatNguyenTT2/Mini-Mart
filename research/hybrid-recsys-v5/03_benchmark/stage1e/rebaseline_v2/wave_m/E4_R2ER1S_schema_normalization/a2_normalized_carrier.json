@@ -1,0 +1,1703 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r2-er1-s-normalized-carrier-1.0",
+  "stage_id": "R2-ER1-S",
+  "lane_id": "R2-A2",
+  "finding_id": "R2-CF-A2-001",
+  "carrier_kind": "IMMUTABLE_NORMALIZATION_SIDECAR",
+  "created_at": "2026-08-22T18:37:27+07:00",
+  "source_artifacts": [
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/dataset_evidence_register.json",
+      "canonical_lf_bytes": 23596,
+      "canonical_lf_sha256": "9aecff376f90b824b1a5c10d41b6aeb47a814f163e6eab7b86c3de94f9077623",
+      "role": "defective_seven_candidate_row_carrier_and_truth_state"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/a2_handoff.json",
+      "canonical_lf_bytes": 14487,
+      "canonical_lf_sha256": "f4cbfa3c393ec8b52381165f52767b4d5c5defee9e275ae8c1510da6528206ff",
+      "role": "lane_identity_cross_check"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r2_evidence_lanes_validation_receipt.json",
+      "canonical_lf_bytes": 4646,
+      "canonical_lf_sha256": "1335836553caa160d93fe3cc8baee041afbbe9846f0e18fd2b4eb68d4c3607b8",
+      "json_pointer": "/contract_findings/1",
+      "role": "finding_authority"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r2_evidence_tracks_contract.md",
+      "canonical_lf_bytes": 13667,
+      "canonical_lf_sha256": "551a5c5c3a3fdc1dc6e58d0940c91271cf60237363dbc0275cd6547cc5318293",
+      "section": "7. Common JSON row requirements",
+      "role": "common_row_schema_authority"
+    }
+  ],
+  "normalization_constraints": {
+    "original_artifacts_modified": false,
+    "source_scientific_values_copied_exactly": true,
+    "structural_default_count_per_row": 1,
+    "structural_default_key": "inferences_forbidden",
+    "structural_defaults_create_scientific_claims": false,
+    "status_values_promoted": false,
+    "mismatch_removed": false,
+    "evidence_created": false,
+    "candidate_selected": false,
+    "execution_authorized": false
+  },
+  "common_row_schema_fields": [
+    "row_id",
+    "method",
+    "dataset_scope",
+    "lane_id",
+    "evidence_status",
+    "authoritative_sources",
+    "confirmed_fields",
+    "unresolved_fields",
+    "dispositive_mismatches",
+    "inferences_forbidden",
+    "recommended_g1_disposition",
+    "execution_authorized",
+    "result_status",
+    "test_set_opened"
+  ],
+  "candidate_order": [
+    "E3-LIGHTGCN-GOWALLA-PYTORCH-001",
+    "E3-SIMGCL-YELP2018-QREC-001",
+    "E3-XSIMGCL-YELP2018-SELFREC-001",
+    "E3-LIGHTGCL-YELP-UPDATED-001",
+    "E3-UNISREC-SCIENTIFIC-TRANS-001",
+    "E3-SASREC-SCIENTIFIC-UNISREC-FRAMEWORK-001",
+    "E3-ALPHAREC-MOVIES-TV-001"
+  ],
+  "candidate_rows": [
+    {
+      "row_id": "E3-LIGHTGCN-GOWALLA-PYTORCH-001",
+      "method": "LightGCN",
+      "dataset_scope": "Gowalla repository-bundled processed train/test pack",
+      "lane_id": "R2-A2",
+      "evidence_status": "EVIDENCE_INCOMPLETE",
+      "authoritative_sources": [
+        {
+          "url": "https://arxiv.org/html/2002.02126",
+          "locator": "Section 4.1, Table 2 and paragraphs immediately below it",
+          "supports": [
+            "Gowalla processed benchmark counts",
+            "authors requested experimented datasets including train/test splits from NGCF authors"
+          ],
+          "does_not_support": [
+            "canonical raw provider",
+            "raw release identifier",
+            "raw-to-processed transformation",
+            "dataset rights",
+            "checksums"
+          ]
+        },
+        {
+          "url": "https://github.com/gusye1234/LightGCN-PyTorch/blob/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/README.md",
+          "locator": "Dataset section",
+          "supports": [
+            "repository provides a processed Gowalla dataset at the pinned source revision"
+          ],
+          "does_not_support": [
+            "provider release",
+            "provider license",
+            "filter/split generation",
+            "data hashes"
+          ]
+        },
+        {
+          "url": "https://snap.stanford.edu/data/loc-gowalla.html",
+          "locator": "Dataset information, files and statistics",
+          "supports": [
+            "SNAP hosts a Gowalla network/check-in collection",
+            "collection interval February 2009 to October 2010",
+            "public file names and raw schemas"
+          ],
+          "does_not_support": [
+            "binding to the LightGCN processed pack",
+            "provider release version",
+            "dataset license",
+            "provider checksum"
+          ]
+        }
+      ],
+      "confirmed_fields": {
+        "canonical_raw": "UNBOUND; SNAP page lists loc-gowalla_edges.txt.gz and loc-gowalla_totalCheckins.txt.gz but the row-specific binding is absent",
+        "repository_processed": "train.txt and test.txt are consumed from the pinned repository pack",
+        "paper_split": "authors report using an obtained train/test split; exact construction is not published"
+      },
+      "unresolved_fields": [
+        "canonical provider and raw release binding",
+        "affirmative lawful research-use basis for the exact raw and processed bytes",
+        "acceptance/authentication/redistribution constraints",
+        "provider and processed-byte checksums",
+        "complete raw-to-processed-to-split code, revision, argv, config and random seed",
+        "raw/processed schemas, deduplication, filtering, ID maps and ordered counts at every step"
+      ],
+      "dispositive_mismatches": [],
+      "inferences_forbidden": [],
+      "recommended_g1_disposition": "KEEP_PENDING",
+      "execution_authorized": false,
+      "result_status": "NOT_RUN",
+      "test_set_opened": "NO",
+      "canonical_provider": {
+        "value": null,
+        "status": "NOT_ESTABLISHED_FOR_THIS_PROCESSED_PACK",
+        "note": "The paper says the experimented train/test split was requested from the NGCF authors. The public SNAP Gowalla collection is a plausible same-name raw source, but no authoritative row-specific evidence binds SNAP raw bytes to this processed pack; that join is therefore refused."
+      },
+      "authoritative_release": {
+        "value": null,
+        "status": "NO_PROVIDER_RELEASE_OR_PROCESSED_DATA_RELEASE_ID",
+        "repository_processed_identity": "Git tree at LightGCN-PyTorch commit 947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+        "paper_reported_counts": {
+          "users": 29858,
+          "items": 40981,
+          "interactions": 1027370
+        }
+      }
+    },
+    {
+      "row_id": "E3-SIMGCL-YELP2018-QREC-001",
+      "method": "SimGCL",
+      "dataset_scope": "Yelp2018 processed QRec split",
+      "lane_id": "R2-A2",
+      "evidence_status": "EVIDENCE_INCOMPLETE",
+      "authoritative_sources": [
+        {
+          "url": "https://arxiv.org/html/2112.08679v4",
+          "locator": "Section 4.1, Datasets",
+          "supports": [
+            "Yelp2018 counts",
+            "7:1:2 training/validation/test protocol",
+            "five runs and all-item ranking"
+          ],
+          "does_not_support": [
+            "historical Yelp release/version",
+            "Yelp-specific raw preprocessing",
+            "split seed or index manifest",
+            "dataset rights",
+            "hashes"
+          ]
+        },
+        {
+          "url": "https://github.com/Coder-Yu/QRec/tree/a141bb37cb7706b2f53b2eed5843de3269f9f37f/dataset/yelp2018",
+          "locator": "Pinned directory listing",
+          "supports": [
+            "processed train.txt and test.txt artifacts exist at the exact repository revision"
+          ],
+          "does_not_support": [
+            "raw provider lineage",
+            "whether train.txt is pre- or post-validation merge",
+            "split algorithm/seed",
+            "data license",
+            "content digests"
+          ]
+        },
+        {
+          "url": "https://business.yelp.com/data/resources/open-dataset/",
+          "locator": "Current Yelp Open Dataset landing page",
+          "supports": [
+            "Yelp currently describes a downloadable educational-use subset"
+          ],
+          "does_not_support": [
+            "the historical Yelp2018 benchmark release",
+            "terms applicable to the pinned QRec bytes",
+            "redistribution of the processed pack"
+          ]
+        }
+      ],
+      "confirmed_fields": {
+        "canonical_raw": "UNRESOLVED historical Yelp source snapshot",
+        "repository_processed": "pinned QRec train.txt/test.txt directory listing only; dataset files were not opened",
+        "paper_split": "7:1:2 stated; exact row membership and seed absent"
+      },
+      "unresolved_fields": [
+        "historical provider release/version and governing terms",
+        "lawful research-use and processed redistribution basis",
+        "acceptance/authentication requirements for the historical release",
+        "raw and processed provider checksums",
+        "raw-to-Yelp2018 filter/binarization/dedup/time-range recipe",
+        "7:1:2 permutation/seed, validation merge semantics, schemas, ID maps, ordered counts and hashes"
+      ],
+      "dispositive_mismatches": [],
+      "inferences_forbidden": [],
+      "recommended_g1_disposition": "KEEP_PENDING",
+      "execution_authorized": false,
+      "result_status": "NOT_RUN",
+      "test_set_opened": "NO",
+      "canonical_provider": {
+        "value": "Yelp is the named underlying platform; the authoritative provider/release for the exact historical processed benchmark is not established",
+        "status": "HISTORICAL_RELEASE_BINDING_NOT_ESTABLISHED"
+      },
+      "authoritative_release": {
+        "value": null,
+        "status": "NO_HISTORICAL_YELP2018_RELEASE_IDENTIFIER_OR_DIGEST",
+        "repository_processed_identity": "QRec dataset/yelp2018 tree at commit a141bb37cb7706b2f53b2eed5843de3269f9f37f contains train.txt and test.txt",
+        "paper_reported_counts": {
+          "users": 31668,
+          "items": 38048,
+          "interactions": 1561406
+        },
+        "paper_reported_split": "training/validation/test = 7:1:2"
+      }
+    },
+    {
+      "row_id": "E3-XSIMGCL-YELP2018-SELFREC-001",
+      "method": "XSimGCL",
+      "dataset_scope": "Yelp2018 processed SELFRec split",
+      "lane_id": "R2-A2",
+      "evidence_status": "EVIDENCE_INCOMPLETE",
+      "authoritative_sources": [
+        {
+          "url": "https://arxiv.org/html/2209.02544",
+          "locator": "Experimental settings, Yelp2018 table and dataset protocol",
+          "supports": [
+            "Yelp2018 counts",
+            "7:1:2 split",
+            "training-plus-validation merge after tuning",
+            "paper states used datasets were released with SELFRec"
+          ],
+          "does_not_support": [
+            "historical provider release",
+            "raw transformations",
+            "split seed/index manifest",
+            "dataset rights",
+            "hashes"
+          ]
+        },
+        {
+          "url": "https://github.com/Coder-Yu/SELFRec/blob/5b0229423cb1c727e85a704d63e460368c8b9dde/conf/XSimGCL.yaml",
+          "locator": "Pinned data/config declaration",
+          "supports": [
+            "candidate binds XSimGCL to SELFRec Yelp2018 configuration"
+          ],
+          "does_not_support": [
+            "canonical raw release",
+            "processed byte identity",
+            "rights",
+            "complete split-generation provenance"
+          ]
+        },
+        {
+          "url": "https://business.yelp.com/data/resources/open-dataset/",
+          "locator": "Current Yelp Open Dataset landing page",
+          "supports": [
+            "Yelp currently describes an educational-use subset"
+          ],
+          "does_not_support": [
+            "the historical SELFRec Yelp2018 bytes or their governing terms"
+          ]
+        }
+      ],
+      "confirmed_fields": {
+        "canonical_raw": "UNRESOLVED historical Yelp source snapshot",
+        "repository_processed": "paper-to-SELFRec availability statement and pinned config locator; processed byte identity not verified",
+        "paper_split": "7:1:2 with post-tuning train+validation merge; membership and seed absent"
+      },
+      "unresolved_fields": [
+        "historical release/version and applicable rights terms",
+        "affirmative use and redistribution basis",
+        "acceptance/authentication restrictions",
+        "provider and repository checksums",
+        "raw filters, binarization, deduplication, timestamp handling and cold-start policy",
+        "split seed/index manifest, merge implementation, schemas, ID mappings, counts and hashes"
+      ],
+      "dispositive_mismatches": [],
+      "inferences_forbidden": [],
+      "recommended_g1_disposition": "KEEP_PENDING",
+      "execution_authorized": false,
+      "result_status": "NOT_RUN",
+      "test_set_opened": "NO",
+      "canonical_provider": {
+        "value": "Yelp is the named underlying platform; the authoritative provider/release for the exact SELFRec benchmark bytes is not established",
+        "status": "HISTORICAL_RELEASE_BINDING_NOT_ESTABLISHED"
+      },
+      "authoritative_release": {
+        "value": null,
+        "status": "NO_HISTORICAL_YELP2018_RELEASE_IDENTIFIER_OR_DIGEST",
+        "repository_processed_identity": "SELFRec Git tree at commit 5b0229423cb1c727e85a704d63e460368c8b9dde; exact pinned dataset-tree page retrieval failed",
+        "paper_reported_counts": {
+          "users": 31668,
+          "items": 38048,
+          "interactions": 1561406
+        },
+        "paper_reported_split": "7:1:2, then merge training and validation after tuning"
+      }
+    },
+    {
+      "row_id": "E3-LIGHTGCL-YELP-UPDATED-001",
+      "method": "LightGCL",
+      "dataset_scope": "Yelp updated LightGCL repository pack",
+      "lane_id": "R2-A2",
+      "evidence_status": "EVIDENCE_INCOMPLETE",
+      "authoritative_sources": [
+        {
+          "url": "https://arxiv.org/html/2302.08191",
+          "locator": "Section 4.1.1 dataset table and accompanying text",
+          "supports": [
+            "Yelp is described as collected from the Yelp platform",
+            "processed benchmark counts"
+          ],
+          "does_not_support": [
+            "provider release/version",
+            "exact filters",
+            "split construction",
+            "dataset rights",
+            "hashes"
+          ]
+        },
+        {
+          "url": "https://github.com/HKUDS/LightGCL/blob/5590453ad86782f58017e58d0b698d7f32175be3/README.md",
+          "locator": "Dataset directory note and Yelp invocation",
+          "supports": [
+            "repository expects a Yelp data directory at the pinned source revision"
+          ],
+          "does_not_support": [
+            "raw release binding",
+            "processed archive version/hash",
+            "rights",
+            "lineage recipe"
+          ]
+        },
+        {
+          "url": "https://business.yelp.com/data/resources/open-dataset/",
+          "locator": "Current Yelp Open Dataset landing page",
+          "supports": [
+            "current Yelp educational-use subset availability"
+          ],
+          "does_not_support": [
+            "the updated LightGCL pack identity or historical terms"
+          ]
+        }
+      ],
+      "confirmed_fields": {
+        "canonical_raw": "UNRESOLVED Yelp snapshot",
+        "repository_processed": "Yelp pack expected by the pinned repository; exact bytes/version not provider-identified",
+        "paper_split": "UNPUBLISHED"
+      },
+      "unresolved_fields": [
+        "provider release and exact source snapshot",
+        "lawful research-use, acceptance, authentication and redistribution basis",
+        "provider and processed checksums",
+        "rating threshold, k-core, deduplication, time scope and cold-start transformations",
+        "split algorithm, seed, schemas, ID mappings, counts by stage and hashes"
+      ],
+      "dispositive_mismatches": [],
+      "inferences_forbidden": [],
+      "recommended_g1_disposition": "KEEP_PENDING",
+      "execution_authorized": false,
+      "result_status": "NOT_RUN",
+      "test_set_opened": "NO",
+      "canonical_provider": {
+        "value": "Yelp is the named underlying platform; no authoritative release is bound to the updated processed pack",
+        "status": "PROCESSED_PACK_TO_PROVIDER_RELEASE_NOT_ESTABLISHED"
+      },
+      "authoritative_release": {
+        "value": null,
+        "status": "NO_RELEASE_VERSION_OR_CHECKSUM_FOR_UPDATED_YELP_PACK",
+        "repository_processed_identity": "LightGCL Git tree at commit 5590453ad86782f58017e58d0b698d7f32175be3",
+        "paper_reported_counts": {
+          "users": 29601,
+          "items": 24734,
+          "interactions": 1069128
+        }
+      }
+    },
+    {
+      "row_id": "E3-UNISREC-SCIENTIFIC-TRANS-001",
+      "method": "UniSRec",
+      "dataset_scope": "Amazon Industrial and Scientific / repository label Scientific",
+      "lane_id": "R2-A2",
+      "evidence_status": "EVIDENCE_INCOMPLETE",
+      "authoritative_sources": [
+        {
+          "url": "https://cseweb.ucsd.edu/~jmcauley/datasets/amazon_v2/index.html",
+          "locator": "Amazon Review Data (2018), update notes, category tables and schemas",
+          "supports": [
+            "provider collection family",
+            "Industrial and Scientific raw/ratings/5-core variants",
+            "raw schemas",
+            "metadata update dates"
+          ],
+          "does_not_support": [
+            "provider checksum",
+            "affirmative dataset license",
+            "exact UniSRec variant binding",
+            "processed archive rights"
+          ]
+        },
+        {
+          "url": "https://arxiv.org/html/2206.05941",
+          "locator": "Sections 3.1.1 and 3.1.3 and dataset statistics table",
+          "supports": [
+            "Industrial and Scientific source attribution",
+            "five-core filtering",
+            "user/item minimum-five filtering",
+            "timestamp ordering",
+            "title/categories/brand text and 512-token truncation",
+            "leave-one-out test/validation protocol",
+            "processed counts"
+          ],
+          "does_not_support": [
+            "exact raw filenames/revision",
+            "tie/dedup rules",
+            "executable argv/config",
+            "ID map contents",
+            "hashes",
+            "rights"
+          ]
+        },
+        {
+          "url": "https://github.com/RUCAIBox/UniSRec/blob/05aa5cba2809112c32808f70d16abc61c05c6538/README.md",
+          "locator": "Download Datasets and Pre-trained Model; update notes",
+          "supports": [
+            "author-hosted processed downstream archive",
+            "intermediate text and user/item index products are described"
+          ],
+          "does_not_support": [
+            "immutable data release",
+            "archive digest",
+            "provider-to-archive chain",
+            "data-specific license"
+          ]
+        }
+      ],
+      "confirmed_fields": {
+        "canonical_raw": "Amazon Review Data (2018) Industrial and Scientific family; exact raw/5-core file choice remains unbound",
+        "repository_processed": "author-hosted Scientific downstream archive plus described intermediate .text/user2index/item2index products; no version/hash",
+        "paper_split": "timestamp order; last item test, penultimate validation, remainder train"
+      },
+      "unresolved_fields": [
+        "exact provider file variant and post-update byte revision",
+        "affirmative license/terms and lawful use/redistribution basis",
+        "provider and processed checksums",
+        "acceptance/authentication requirements for linked hosting",
+        "complete preprocessing source revision, argv/config, fixpoint order, dedup/timestamp-tie/null-text rules",
+        "raw/intermediate/final schemas, ordered counts, user/item mappings and hash chain"
+      ],
+      "dispositive_mismatches": [],
+      "inferences_forbidden": [],
+      "recommended_g1_disposition": "KEEP_PENDING",
+      "execution_authorized": false,
+      "result_status": "NOT_RUN",
+      "test_set_opened": "NO",
+      "canonical_provider": {
+        "value": "UCSD McAuley Amazon Review Data (2018), citing Ni et al. 2019",
+        "status": "RAW_COLLECTION_FAMILY_ESTABLISHED_PROCESSED_BINDING_INCOMPLETE"
+      },
+      "authoritative_release": {
+        "value": "Amazon Review Data (2018), Industrial and Scientific category",
+        "status": "NAMED_RELEASE_WITH_MUTABLE_METADATA_AND_NO_PROVIDER_DIGEST",
+        "provider_notes": "Provider page covers May 1996 through October 2018 and notes metadata updates in August 2020 and May 2021.",
+        "repository_processed_identity": "Unversioned downstream archive linked from UniSRec README at commit 05aa5cba2809112c32808f70d16abc61c05c6538",
+        "paper_reported_counts": {
+          "users": 8442,
+          "items": 4385,
+          "interactions": 59427
+        }
+      }
+    },
+    {
+      "row_id": "E3-SASREC-SCIENTIFIC-UNISREC-FRAMEWORK-001",
+      "method": "SASRec in UniSRec framework",
+      "dataset_scope": "Scientific processed archive used through UniSRec framework",
+      "lane_id": "R2-A2",
+      "evidence_status": "EVIDENCE_INCOMPLETE",
+      "authoritative_sources": [
+        {
+          "url": "https://cseweb.ucsd.edu/~jmcauley/datasets/amazon_v2/index.html",
+          "locator": "Amazon Review Data (2018), Industrial and Scientific rows and schemas",
+          "supports": [
+            "raw collection family and available category variants",
+            "provider schemas and update notes"
+          ],
+          "does_not_support": [
+            "exact processed binding",
+            "checksum",
+            "affirmative dataset license",
+            "redistribution basis"
+          ]
+        },
+        {
+          "url": "https://arxiv.org/html/2206.05941",
+          "locator": "Sections 3.1.1 and 3.1.3 and statistics table",
+          "supports": [
+            "Scientific source and preprocessing narrative",
+            "timestamp-ordered leave-one-out split",
+            "processed counts"
+          ],
+          "does_not_support": [
+            "SASRec-specific data materialization receipt",
+            "raw file revision",
+            "hashes",
+            "rights"
+          ]
+        },
+        {
+          "url": "https://github.com/RUCAIBox/UniSRec/blob/05aa5cba2809112c32808f70d16abc61c05c6538/README.md",
+          "locator": "Processed downstream dataset links and intermediate-product notes",
+          "supports": [
+            "framework-hosted Scientific processed artifact family"
+          ],
+          "does_not_support": [
+            "immutable release/digest",
+            "raw-to-SASRec split chain",
+            "data-specific rights"
+          ]
+        }
+      ],
+      "confirmed_fields": {
+        "canonical_raw": "Amazon Review Data (2018) Industrial and Scientific family; exact file variant unresolved for this row",
+        "repository_processed": "unversioned Scientific archive used by the UniSRec framework",
+        "paper_split": "last item test, penultimate validation after timestamp ordering"
+      },
+      "unresolved_fields": [
+        "exact provider file and metadata-update revision",
+        "lawful research-use, acceptance/authentication and redistribution basis",
+        "provider/archive checksums",
+        "SASRec-specific preprocessing/config binding without borrowing closure from the UniSRec row",
+        "dedup/tie/null handling, fixpoint filter order, schemas, ID maps, counts and full hash chain"
+      ],
+      "dispositive_mismatches": [],
+      "inferences_forbidden": [],
+      "recommended_g1_disposition": "KEEP_PENDING",
+      "execution_authorized": false,
+      "result_status": "NOT_RUN",
+      "test_set_opened": "NO",
+      "canonical_provider": {
+        "value": "UCSD McAuley Amazon Review Data (2018), citing Ni et al. 2019",
+        "status": "RAW_COLLECTION_FAMILY_ESTABLISHED_PROCESSED_BINDING_INCOMPLETE"
+      },
+      "authoritative_release": {
+        "value": "Amazon Review Data (2018), Industrial and Scientific category",
+        "status": "NAMED_RELEASE_WITH_MUTABLE_METADATA_AND_NO_PROVIDER_DIGEST",
+        "provider_notes": "Provider page notes later metadata updates; no exact SASRec/Scientific byte lock is published.",
+        "repository_processed_identity": "Unversioned Scientific downstream archive referenced by UniSRec commit 05aa5cba2809112c32808f70d16abc61c05c6538",
+        "paper_reported_counts": {
+          "users": 8442,
+          "items": 4385,
+          "interactions": 59427
+        }
+      }
+    },
+    {
+      "row_id": "E3-ALPHAREC-MOVIES-TV-001",
+      "method": "AlphaRec",
+      "dataset_scope": "Amazon Movies and TV processed/text/embedding bundle",
+      "lane_id": "R2-A2",
+      "evidence_status": "EVIDENCE_INCOMPLETE",
+      "authoritative_sources": [
+        {
+          "url": "https://cseweb.ucsd.edu/~jmcauley/datasets/amazon_v2/index.html",
+          "locator": "Amazon Review Data (2018), Movies and TV raw/ratings/5-core rows, schemas and metadata updates",
+          "supports": [
+            "raw collection family",
+            "multiple Movies and TV variants",
+            "schemas",
+            "metadata update dates"
+          ],
+          "does_not_support": [
+            "which variant AlphaRec used",
+            "provider checksum",
+            "affirmative license",
+            "processed bundle rights"
+          ]
+        },
+        {
+          "url": "https://proceedings.iclr.cc/paper_files/paper/2025/file/e4bab1843c8d5a69f5abfd0824593493-Paper-Conference.pdf",
+          "locator": "Appendix C.1 dataset statistics and preprocessing",
+          "supports": [
+            "Ni et al. 2019 Amazon source family",
+            "Movies and TV counts",
+            "remove users below 20 interactions",
+            "4:3:3 history split",
+            "remove validation/test items unseen in train",
+            "item title text",
+            "text-embedding-3-large representation"
+          ],
+          "does_not_support": [
+            "exact provider file revision",
+            "transformation code/argv/seed",
+            "ID maps",
+            "hashes",
+            "data or embedding redistribution rights"
+          ]
+        },
+        {
+          "url": "https://github.com/LehengTHU/AlphaRec/blob/4b6c6cf378f292c31dd75b09a8075e8344561415/README.md",
+          "locator": "Dataset downloading, directory structure and Movies and TV command",
+          "supports": [
+            "anonymous hosted processed bundle and expected cf_data/item_info layout"
+          ],
+          "does_not_support": [
+            "immutable release/version",
+            "archive checksum",
+            "provider lineage receipt",
+            "data-specific rights"
+          ]
+        }
+      ],
+      "confirmed_fields": {
+        "canonical_raw": "Amazon Review Data (2018) Movies and TV family; exact raw/rating/5-core and metadata-update variant unresolved",
+        "repository_processed": "anonymous hosted amazon_movie bundle with cf_data and item_info; no immutable identity or hash",
+        "paper_split": "remove users with fewer than 20 interactions; per-user 4:3:3 history split; remove validation/test items absent from train"
+      },
+      "unresolved_fields": [
+        "exact provider raw/metadata variants and byte revisions",
+        "affirmative rights for reviews, metadata, processed IDs, item text and derived embeddings",
+        "acceptance/authentication and redistribution constraints",
+        "provider, bundle and embedding checksums",
+        "ordering, rounding, timestamp-tie, deduplication and iterative filter implementation",
+        "source revision, argv/config/seed, schemas, ID maps, stage counts and complete hash chain"
+      ],
+      "dispositive_mismatches": [],
+      "inferences_forbidden": [],
+      "recommended_g1_disposition": "KEEP_PENDING",
+      "execution_authorized": false,
+      "result_status": "NOT_RUN",
+      "test_set_opened": "NO",
+      "canonical_provider": {
+        "value": "UCSD McAuley Amazon Review Data (2018), cited by the paper as Ni et al. 2019",
+        "status": "RAW_COLLECTION_FAMILY_ESTABLISHED_EXACT_VARIANT_AND_BUNDLE_BINDING_INCOMPLETE"
+      },
+      "authoritative_release": {
+        "value": "Amazon Review Data (2018), Movies and TV category family",
+        "status": "NAMED_RELEASE_WITH_MULTIPLE_VARIANTS_MUTABLE_METADATA_AND_NO_PROVIDER_DIGEST",
+        "repository_processed_identity": "Unversioned anonymous Google Drive artifact linked by AlphaRec at commit 4b6c6cf378f292c31dd75b09a8075e8344561415",
+        "paper_reported_counts": {
+          "users": 26073,
+          "items": 12464,
+          "interactions": 876027
+        }
+      }
+    }
+  ],
+  "normalized_handoff_fields": {
+    "lane_id": "R2-A2"
+  },
+  "coverage": {
+    "expected_rows": 7,
+    "present_rows": 7,
+    "ordered_exactly_as_manifest": true,
+    "status_counts": {
+      "EVIDENCE_SUFFICIENT_FOR_G1_REVIEW": 0,
+      "EVIDENCE_INCOMPLETE": 7,
+      "DISPOSITIVE_REJECT": 0
+    }
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "dataset_bytes_acquired": false
+  },
+  "transformation_ledger": [
+    {
+      "transformation_id": "A2-T001",
+      "classification": "COPIED_VALUE",
+      "operation": "COPY_EXISTING_MEMBERS_EXACT",
+      "source": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/dataset_evidence_register.json",
+        "json_pointer": "/candidate_rows/0"
+      },
+      "target_json_pointer": "/candidate_rows/0",
+      "copied_member_map": [
+        {
+          "source_member": "row_id",
+          "target_member": "row_id"
+        },
+        {
+          "source_member": "method",
+          "target_member": "method"
+        },
+        {
+          "source_member": "dataset_scope",
+          "target_member": "dataset_scope"
+        },
+        {
+          "source_member": "authoritative_sources",
+          "target_member": "authoritative_sources"
+        },
+        {
+          "source_member": "unresolved_fields",
+          "target_member": "unresolved_fields"
+        },
+        {
+          "source_member": "dispositive_mismatches",
+          "target_member": "dispositive_mismatches"
+        },
+        {
+          "source_member": "recommended_g1_disposition",
+          "target_member": "recommended_g1_disposition"
+        },
+        {
+          "source_member": "canonical_provider",
+          "target_member": "canonical_provider"
+        },
+        {
+          "source_member": "authoritative_release",
+          "target_member": "authoritative_release"
+        }
+      ],
+      "scientific_payload_changed": false
+    },
+    {
+      "transformation_id": "A2-T002",
+      "classification": "COPIED_VALUE",
+      "operation": "COPY_EXACT_VALUE_WITH_KEY_NORMALIZATION",
+      "source": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/dataset_evidence_register.json",
+        "json_pointer": "/candidate_rows/0/lane_evidence_status"
+      },
+      "target_json_pointer": "/candidate_rows/0/evidence_status",
+      "source_key": "lane_evidence_status",
+      "target_key": "evidence_status",
+      "value_changed": false
+    },
+    {
+      "transformation_id": "A2-T003",
+      "classification": "COPIED_VALUE",
+      "operation": "COPY_EXACT_SUBTREE_WITH_KEY_NORMALIZATION",
+      "source": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/dataset_evidence_register.json",
+        "json_pointer": "/candidate_rows/0/confirmed_dataset_layers"
+      },
+      "target_json_pointer": "/candidate_rows/0/confirmed_fields",
+      "source_key": "confirmed_dataset_layers",
+      "target_key": "confirmed_fields",
+      "value_changed": false
+    },
+    {
+      "transformation_id": "A2-T004",
+      "classification": "COPIED_VALUE",
+      "operation": "COPY_DOCUMENT_SCOPE_VALUE_INTO_COMMON_ROW",
+      "source": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/dataset_evidence_register.json",
+        "json_pointer": "/lane_id"
+      },
+      "target_json_pointer": "/candidate_rows/0/lane_id"
+    },
+    {
+      "transformation_id": "A2-T005",
+      "classification": "STRUCTURAL_DEFAULT",
+      "operation": "ADD_EMPTY_ARRAY_REQUIRED_BY_COMMON_ROW_SCHEMA",
+      "source": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/dataset_evidence_register.json",
+        "json_pointer": "/candidate_rows/0"
+      },
+      "finding_authority": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r2_evidence_lanes_validation_receipt.json",
+        "json_pointer": "/contract_findings/1/detail"
+      },
+      "default_authority": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r2_evidence_tracks_contract.md",
+        "section": "7. Common JSON row requirements",
+        "required_key": "inferences_forbidden[]"
+      },
+      "target_json_pointer": "/candidate_rows/0/inferences_forbidden",
+      "value": [],
+      "scientific_semantics": "Carrier-only empty-array default. It does not assert that no inference prohibition exists and creates no evidence."
+    },
+    {
+      "transformation_id": "A2-T006",
+      "classification": "COPIED_VALUE",
+      "operation": "COPY_TRUTH_GUARD_INTO_COMMON_ROW",
+      "source": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/dataset_evidence_register.json",
+        "json_pointer": "/truth_state/execution_authorized"
+      },
+      "target_json_pointer": "/candidate_rows/0/execution_authorized"
+    },
+    {
+      "transformation_id": "A2-T007",
+      "classification": "COPIED_VALUE",
+      "operation": "COPY_TRUTH_GUARD_WITH_KEY_NORMALIZATION",
+      "source": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/dataset_evidence_register.json",
+        "json_pointer": "/truth_state/RESULT_STATUS"
+      },
+      "target_json_pointer": "/candidate_rows/0/result_status",
+      "value_changed": false
+    },
+    {
+      "transformation_id": "A2-T008",
+      "classification": "COPIED_VALUE",
+      "operation": "COPY_TRUTH_GUARD_WITH_KEY_NORMALIZATION",
+      "source": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/dataset_evidence_register.json",
+        "json_pointer": "/truth_state/TEST_SET_OPENED"
+      },
+      "target_json_pointer": "/candidate_rows/0/test_set_opened",
+      "value_changed": false
+    },
+    {
+      "transformation_id": "A2-T009",
+      "classification": "COPIED_VALUE",
+      "operation": "COPY_EXISTING_MEMBERS_EXACT",
+      "source": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/dataset_evidence_register.json",
+        "json_pointer": "/candidate_rows/1"
+      },
+      "target_json_pointer": "/candidate_rows/1",
+      "copied_member_map": [
+        {
+          "source_member": "row_id",
+          "target_member": "row_id"
+        },
+        {
+          "source_member": "method",
+          "target_member": "method"
+        },
+        {
+          "source_member": "dataset_scope",
+          "target_member": "dataset_scope"
+        },
+        {
+          "source_member": "authoritative_sources",
+          "target_member": "authoritative_sources"
+        },
+        {
+          "source_member": "unresolved_fields",
+          "target_member": "unresolved_fields"
+        },
+        {
+          "source_member": "dispositive_mismatches",
+          "target_member": "dispositive_mismatches"
+        },
+        {
+          "source_member": "recommended_g1_disposition",
+          "target_member": "recommended_g1_disposition"
+        },
+        {
+          "source_member": "canonical_provider",
+          "target_member": "canonical_provider"
+        },
+        {
+          "source_member": "authoritative_release",
+          "target_member": "authoritative_release"
+        }
+      ],
+      "scientific_payload_changed": false
+    },
+    {
+      "transformation_id": "A2-T010",
+      "classification": "COPIED_VALUE",
+      "operation": "COPY_EXACT_VALUE_WITH_KEY_NORMALIZATION",
+      "source": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/dataset_evidence_register.json",
+        "json_pointer": "/candidate_rows/1/lane_evidence_status"
+      },
+      "target_json_pointer": "/candidate_rows/1/evidence_status",
+      "source_key": "lane_evidence_status",
+      "target_key": "evidence_status",
+      "value_changed": false
+    },
+    {
+      "transformation_id": "A2-T011",
+      "classification": "COPIED_VALUE",
+      "operation": "COPY_EXACT_SUBTREE_WITH_KEY_NORMALIZATION",
+      "source": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/dataset_evidence_register.json",
+        "json_pointer": "/candidate_rows/1/confirmed_dataset_layers"
+      },
+      "target_json_pointer": "/candidate_rows/1/confirmed_fields",
+      "source_key": "confirmed_dataset_layers",
+      "target_key": "confirmed_fields",
+      "value_changed": false
+    },
+    {
+      "transformation_id": "A2-T012",
+      "classification": "COPIED_VALUE",
+      "operation": "COPY_DOCUMENT_SCOPE_VALUE_INTO_COMMON_ROW",
+      "source": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/dataset_evidence_register.json",
+        "json_pointer": "/lane_id"
+      },
+      "target_json_pointer": "/candidate_rows/1/lane_id"
+    },
+    {
+      "transformation_id": "A2-T013",
+      "classification": "STRUCTURAL_DEFAULT",
+      "operation": "ADD_EMPTY_ARRAY_REQUIRED_BY_COMMON_ROW_SCHEMA",
+      "source": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/dataset_evidence_register.json",
+        "json_pointer": "/candidate_rows/1"
+      },
+      "finding_authority": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r2_evidence_lanes_validation_receipt.json",
+        "json_pointer": "/contract_findings/1/detail"
+      },
+      "default_authority": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r2_evidence_tracks_contract.md",
+        "section": "7. Common JSON row requirements",
+        "required_key": "inferences_forbidden[]"
+      },
+      "target_json_pointer": "/candidate_rows/1/inferences_forbidden",
+      "value": [],
+      "scientific_semantics": "Carrier-only empty-array default. It does not assert that no inference prohibition exists and creates no evidence."
+    },
+    {
+      "transformation_id": "A2-T014",
+      "classification": "COPIED_VALUE",
+      "operation": "COPY_TRUTH_GUARD_INTO_COMMON_ROW",
+      "source": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/dataset_evidence_register.json",
+        "json_pointer": "/truth_state/execution_authorized"
+      },
+      "target_json_pointer": "/candidate_rows/1/execution_authorized"
+    },
+    {
+      "transformation_id": "A2-T015",
+      "classification": "COPIED_VALUE",
+      "operation": "COPY_TRUTH_GUARD_WITH_KEY_NORMALIZATION",
+      "source": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/dataset_evidence_register.json",
+        "json_pointer": "/truth_state/RESULT_STATUS"
+      },
+      "target_json_pointer": "/candidate_rows/1/result_status",
+      "value_changed": false
+    },
+    {
+      "transformation_id": "A2-T016",
+      "classification": "COPIED_VALUE",
+      "operation": "COPY_TRUTH_GUARD_WITH_KEY_NORMALIZATION",
+      "source": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/dataset_evidence_register.json",
+        "json_pointer": "/truth_state/TEST_SET_OPENED"
+      },
+      "target_json_pointer": "/candidate_rows/1/test_set_opened",
+      "value_changed": false
+    },
+    {
+      "transformation_id": "A2-T017",
+      "classification": "COPIED_VALUE",
+      "operation": "COPY_EXISTING_MEMBERS_EXACT",
+      "source": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/dataset_evidence_register.json",
+        "json_pointer": "/candidate_rows/2"
+      },
+      "target_json_pointer": "/candidate_rows/2",
+      "copied_member_map": [
+        {
+          "source_member": "row_id",
+          "target_member": "row_id"
+        },
+        {
+          "source_member": "method",
+          "target_member": "method"
+        },
+        {
+          "source_member": "dataset_scope",
+          "target_member": "dataset_scope"
+        },
+        {
+          "source_member": "authoritative_sources",
+          "target_member": "authoritative_sources"
+        },
+        {
+          "source_member": "unresolved_fields",
+          "target_member": "unresolved_fields"
+        },
+        {
+          "source_member": "dispositive_mismatches",
+          "target_member": "dispositive_mismatches"
+        },
+        {
+          "source_member": "recommended_g1_disposition",
+          "target_member": "recommended_g1_disposition"
+        },
+        {
+          "source_member": "canonical_provider",
+          "target_member": "canonical_provider"
+        },
+        {
+          "source_member": "authoritative_release",
+          "target_member": "authoritative_release"
+        }
+      ],
+      "scientific_payload_changed": false
+    },
+    {
+      "transformation_id": "A2-T018",
+      "classification": "COPIED_VALUE",
+      "operation": "COPY_EXACT_VALUE_WITH_KEY_NORMALIZATION",
+      "source": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/dataset_evidence_register.json",
+        "json_pointer": "/candidate_rows/2/lane_evidence_status"
+      },
+      "target_json_pointer": "/candidate_rows/2/evidence_status",
+      "source_key": "lane_evidence_status",
+      "target_key": "evidence_status",
+      "value_changed": false
+    },
+    {
+      "transformation_id": "A2-T019",
+      "classification": "COPIED_VALUE",
+      "operation": "COPY_EXACT_SUBTREE_WITH_KEY_NORMALIZATION",
+      "source": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/dataset_evidence_register.json",
+        "json_pointer": "/candidate_rows/2/confirmed_dataset_layers"
+      },
+      "target_json_pointer": "/candidate_rows/2/confirmed_fields",
+      "source_key": "confirmed_dataset_layers",
+      "target_key": "confirmed_fields",
+      "value_changed": false
+    },
+    {
+      "transformation_id": "A2-T020",
+      "classification": "COPIED_VALUE",
+      "operation": "COPY_DOCUMENT_SCOPE_VALUE_INTO_COMMON_ROW",
+      "source": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/dataset_evidence_register.json",
+        "json_pointer": "/lane_id"
+      },
+      "target_json_pointer": "/candidate_rows/2/lane_id"
+    },
+    {
+      "transformation_id": "A2-T021",
+      "classification": "STRUCTURAL_DEFAULT",
+      "operation": "ADD_EMPTY_ARRAY_REQUIRED_BY_COMMON_ROW_SCHEMA",
+      "source": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/dataset_evidence_register.json",
+        "json_pointer": "/candidate_rows/2"
+      },
+      "finding_authority": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r2_evidence_lanes_validation_receipt.json",
+        "json_pointer": "/contract_findings/1/detail"
+      },
+      "default_authority": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r2_evidence_tracks_contract.md",
+        "section": "7. Common JSON row requirements",
+        "required_key": "inferences_forbidden[]"
+      },
+      "target_json_pointer": "/candidate_rows/2/inferences_forbidden",
+      "value": [],
+      "scientific_semantics": "Carrier-only empty-array default. It does not assert that no inference prohibition exists and creates no evidence."
+    },
+    {
+      "transformation_id": "A2-T022",
+      "classification": "COPIED_VALUE",
+      "operation": "COPY_TRUTH_GUARD_INTO_COMMON_ROW",
+      "source": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/dataset_evidence_register.json",
+        "json_pointer": "/truth_state/execution_authorized"
+      },
+      "target_json_pointer": "/candidate_rows/2/execution_authorized"
+    },
+    {
+      "transformation_id": "A2-T023",
+      "classification": "COPIED_VALUE",
+      "operation": "COPY_TRUTH_GUARD_WITH_KEY_NORMALIZATION",
+      "source": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/dataset_evidence_register.json",
+        "json_pointer": "/truth_state/RESULT_STATUS"
+      },
+      "target_json_pointer": "/candidate_rows/2/result_status",
+      "value_changed": false
+    },
+    {
+      "transformation_id": "A2-T024",
+      "classification": "COPIED_VALUE",
+      "operation": "COPY_TRUTH_GUARD_WITH_KEY_NORMALIZATION",
+      "source": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/dataset_evidence_register.json",
+        "json_pointer": "/truth_state/TEST_SET_OPENED"
+      },
+      "target_json_pointer": "/candidate_rows/2/test_set_opened",
+      "value_changed": false
+    },
+    {
+      "transformation_id": "A2-T025",
+      "classification": "COPIED_VALUE",
+      "operation": "COPY_EXISTING_MEMBERS_EXACT",
+      "source": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/dataset_evidence_register.json",
+        "json_pointer": "/candidate_rows/3"
+      },
+      "target_json_pointer": "/candidate_rows/3",
+      "copied_member_map": [
+        {
+          "source_member": "row_id",
+          "target_member": "row_id"
+        },
+        {
+          "source_member": "method",
+          "target_member": "method"
+        },
+        {
+          "source_member": "dataset_scope",
+          "target_member": "dataset_scope"
+        },
+        {
+          "source_member": "authoritative_sources",
+          "target_member": "authoritative_sources"
+        },
+        {
+          "source_member": "unresolved_fields",
+          "target_member": "unresolved_fields"
+        },
+        {
+          "source_member": "dispositive_mismatches",
+          "target_member": "dispositive_mismatches"
+        },
+        {
+          "source_member": "recommended_g1_disposition",
+          "target_member": "recommended_g1_disposition"
+        },
+        {
+          "source_member": "canonical_provider",
+          "target_member": "canonical_provider"
+        },
+        {
+          "source_member": "authoritative_release",
+          "target_member": "authoritative_release"
+        }
+      ],
+      "scientific_payload_changed": false
+    },
+    {
+      "transformation_id": "A2-T026",
+      "classification": "COPIED_VALUE",
+      "operation": "COPY_EXACT_VALUE_WITH_KEY_NORMALIZATION",
+      "source": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/dataset_evidence_register.json",
+        "json_pointer": "/candidate_rows/3/lane_evidence_status"
+      },
+      "target_json_pointer": "/candidate_rows/3/evidence_status",
+      "source_key": "lane_evidence_status",
+      "target_key": "evidence_status",
+      "value_changed": false
+    },
+    {
+      "transformation_id": "A2-T027",
+      "classification": "COPIED_VALUE",
+      "operation": "COPY_EXACT_SUBTREE_WITH_KEY_NORMALIZATION",
+      "source": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/dataset_evidence_register.json",
+        "json_pointer": "/candidate_rows/3/confirmed_dataset_layers"
+      },
+      "target_json_pointer": "/candidate_rows/3/confirmed_fields",
+      "source_key": "confirmed_dataset_layers",
+      "target_key": "confirmed_fields",
+      "value_changed": false
+    },
+    {
+      "transformation_id": "A2-T028",
+      "classification": "COPIED_VALUE",
+      "operation": "COPY_DOCUMENT_SCOPE_VALUE_INTO_COMMON_ROW",
+      "source": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/dataset_evidence_register.json",
+        "json_pointer": "/lane_id"
+      },
+      "target_json_pointer": "/candidate_rows/3/lane_id"
+    },
+    {
+      "transformation_id": "A2-T029",
+      "classification": "STRUCTURAL_DEFAULT",
+      "operation": "ADD_EMPTY_ARRAY_REQUIRED_BY_COMMON_ROW_SCHEMA",
+      "source": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/dataset_evidence_register.json",
+        "json_pointer": "/candidate_rows/3"
+      },
+      "finding_authority": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r2_evidence_lanes_validation_receipt.json",
+        "json_pointer": "/contract_findings/1/detail"
+      },
+      "default_authority": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r2_evidence_tracks_contract.md",
+        "section": "7. Common JSON row requirements",
+        "required_key": "inferences_forbidden[]"
+      },
+      "target_json_pointer": "/candidate_rows/3/inferences_forbidden",
+      "value": [],
+      "scientific_semantics": "Carrier-only empty-array default. It does not assert that no inference prohibition exists and creates no evidence."
+    },
+    {
+      "transformation_id": "A2-T030",
+      "classification": "COPIED_VALUE",
+      "operation": "COPY_TRUTH_GUARD_INTO_COMMON_ROW",
+      "source": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/dataset_evidence_register.json",
+        "json_pointer": "/truth_state/execution_authorized"
+      },
+      "target_json_pointer": "/candidate_rows/3/execution_authorized"
+    },
+    {
+      "transformation_id": "A2-T031",
+      "classification": "COPIED_VALUE",
+      "operation": "COPY_TRUTH_GUARD_WITH_KEY_NORMALIZATION",
+      "source": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/dataset_evidence_register.json",
+        "json_pointer": "/truth_state/RESULT_STATUS"
+      },
+      "target_json_pointer": "/candidate_rows/3/result_status",
+      "value_changed": false
+    },
+    {
+      "transformation_id": "A2-T032",
+      "classification": "COPIED_VALUE",
+      "operation": "COPY_TRUTH_GUARD_WITH_KEY_NORMALIZATION",
+      "source": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/dataset_evidence_register.json",
+        "json_pointer": "/truth_state/TEST_SET_OPENED"
+      },
+      "target_json_pointer": "/candidate_rows/3/test_set_opened",
+      "value_changed": false
+    },
+    {
+      "transformation_id": "A2-T033",
+      "classification": "COPIED_VALUE",
+      "operation": "COPY_EXISTING_MEMBERS_EXACT",
+      "source": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/dataset_evidence_register.json",
+        "json_pointer": "/candidate_rows/4"
+      },
+      "target_json_pointer": "/candidate_rows/4",
+      "copied_member_map": [
+        {
+          "source_member": "row_id",
+          "target_member": "row_id"
+        },
+        {
+          "source_member": "method",
+          "target_member": "method"
+        },
+        {
+          "source_member": "dataset_scope",
+          "target_member": "dataset_scope"
+        },
+        {
+          "source_member": "authoritative_sources",
+          "target_member": "authoritative_sources"
+        },
+        {
+          "source_member": "unresolved_fields",
+          "target_member": "unresolved_fields"
+        },
+        {
+          "source_member": "dispositive_mismatches",
+          "target_member": "dispositive_mismatches"
+        },
+        {
+          "source_member": "recommended_g1_disposition",
+          "target_member": "recommended_g1_disposition"
+        },
+        {
+          "source_member": "canonical_provider",
+          "target_member": "canonical_provider"
+        },
+        {
+          "source_member": "authoritative_release",
+          "target_member": "authoritative_release"
+        }
+      ],
+      "scientific_payload_changed": false
+    },
+    {
+      "transformation_id": "A2-T034",
+      "classification": "COPIED_VALUE",
+      "operation": "COPY_EXACT_VALUE_WITH_KEY_NORMALIZATION",
+      "source": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/dataset_evidence_register.json",
+        "json_pointer": "/candidate_rows/4/lane_evidence_status"
+      },
+      "target_json_pointer": "/candidate_rows/4/evidence_status",
+      "source_key": "lane_evidence_status",
+      "target_key": "evidence_status",
+      "value_changed": false
+    },
+    {
+      "transformation_id": "A2-T035",
+      "classification": "COPIED_VALUE",
+      "operation": "COPY_EXACT_SUBTREE_WITH_KEY_NORMALIZATION",
+      "source": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/dataset_evidence_register.json",
+        "json_pointer": "/candidate_rows/4/confirmed_dataset_layers"
+      },
+      "target_json_pointer": "/candidate_rows/4/confirmed_fields",
+      "source_key": "confirmed_dataset_layers",
+      "target_key": "confirmed_fields",
+      "value_changed": false
+    },
+    {
+      "transformation_id": "A2-T036",
+      "classification": "COPIED_VALUE",
+      "operation": "COPY_DOCUMENT_SCOPE_VALUE_INTO_COMMON_ROW",
+      "source": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/dataset_evidence_register.json",
+        "json_pointer": "/lane_id"
+      },
+      "target_json_pointer": "/candidate_rows/4/lane_id"
+    },
+    {
+      "transformation_id": "A2-T037",
+      "classification": "STRUCTURAL_DEFAULT",
+      "operation": "ADD_EMPTY_ARRAY_REQUIRED_BY_COMMON_ROW_SCHEMA",
+      "source": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/dataset_evidence_register.json",
+        "json_pointer": "/candidate_rows/4"
+      },
+      "finding_authority": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r2_evidence_lanes_validation_receipt.json",
+        "json_pointer": "/contract_findings/1/detail"
+      },
+      "default_authority": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r2_evidence_tracks_contract.md",
+        "section": "7. Common JSON row requirements",
+        "required_key": "inferences_forbidden[]"
+      },
+      "target_json_pointer": "/candidate_rows/4/inferences_forbidden",
+      "value": [],
+      "scientific_semantics": "Carrier-only empty-array default. It does not assert that no inference prohibition exists and creates no evidence."
+    },
+    {
+      "transformation_id": "A2-T038",
+      "classification": "COPIED_VALUE",
+      "operation": "COPY_TRUTH_GUARD_INTO_COMMON_ROW",
+      "source": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/dataset_evidence_register.json",
+        "json_pointer": "/truth_state/execution_authorized"
+      },
+      "target_json_pointer": "/candidate_rows/4/execution_authorized"
+    },
+    {
+      "transformation_id": "A2-T039",
+      "classification": "COPIED_VALUE",
+      "operation": "COPY_TRUTH_GUARD_WITH_KEY_NORMALIZATION",
+      "source": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/dataset_evidence_register.json",
+        "json_pointer": "/truth_state/RESULT_STATUS"
+      },
+      "target_json_pointer": "/candidate_rows/4/result_status",
+      "value_changed": false
+    },
+    {
+      "transformation_id": "A2-T040",
+      "classification": "COPIED_VALUE",
+      "operation": "COPY_TRUTH_GUARD_WITH_KEY_NORMALIZATION",
+      "source": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/dataset_evidence_register.json",
+        "json_pointer": "/truth_state/TEST_SET_OPENED"
+      },
+      "target_json_pointer": "/candidate_rows/4/test_set_opened",
+      "value_changed": false
+    },
+    {
+      "transformation_id": "A2-T041",
+      "classification": "COPIED_VALUE",
+      "operation": "COPY_EXISTING_MEMBERS_EXACT",
+      "source": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/dataset_evidence_register.json",
+        "json_pointer": "/candidate_rows/5"
+      },
+      "target_json_pointer": "/candidate_rows/5",
+      "copied_member_map": [
+        {
+          "source_member": "row_id",
+          "target_member": "row_id"
+        },
+        {
+          "source_member": "method",
+          "target_member": "method"
+        },
+        {
+          "source_member": "dataset_scope",
+          "target_member": "dataset_scope"
+        },
+        {
+          "source_member": "authoritative_sources",
+          "target_member": "authoritative_sources"
+        },
+        {
+          "source_member": "unresolved_fields",
+          "target_member": "unresolved_fields"
+        },
+        {
+          "source_member": "dispositive_mismatches",
+          "target_member": "dispositive_mismatches"
+        },
+        {
+          "source_member": "recommended_g1_disposition",
+          "target_member": "recommended_g1_disposition"
+        },
+        {
+          "source_member": "canonical_provider",
+          "target_member": "canonical_provider"
+        },
+        {
+          "source_member": "authoritative_release",
+          "target_member": "authoritative_release"
+        }
+      ],
+      "scientific_payload_changed": false
+    },
+    {
+      "transformation_id": "A2-T042",
+      "classification": "COPIED_VALUE",
+      "operation": "COPY_EXACT_VALUE_WITH_KEY_NORMALIZATION",
+      "source": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/dataset_evidence_register.json",
+        "json_pointer": "/candidate_rows/5/lane_evidence_status"
+      },
+      "target_json_pointer": "/candidate_rows/5/evidence_status",
+      "source_key": "lane_evidence_status",
+      "target_key": "evidence_status",
+      "value_changed": false
+    },
+    {
+      "transformation_id": "A2-T043",
+      "classification": "COPIED_VALUE",
+      "operation": "COPY_EXACT_SUBTREE_WITH_KEY_NORMALIZATION",
+      "source": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/dataset_evidence_register.json",
+        "json_pointer": "/candidate_rows/5/confirmed_dataset_layers"
+      },
+      "target_json_pointer": "/candidate_rows/5/confirmed_fields",
+      "source_key": "confirmed_dataset_layers",
+      "target_key": "confirmed_fields",
+      "value_changed": false
+    },
+    {
+      "transformation_id": "A2-T044",
+      "classification": "COPIED_VALUE",
+      "operation": "COPY_DOCUMENT_SCOPE_VALUE_INTO_COMMON_ROW",
+      "source": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/dataset_evidence_register.json",
+        "json_pointer": "/lane_id"
+      },
+      "target_json_pointer": "/candidate_rows/5/lane_id"
+    },
+    {
+      "transformation_id": "A2-T045",
+      "classification": "STRUCTURAL_DEFAULT",
+      "operation": "ADD_EMPTY_ARRAY_REQUIRED_BY_COMMON_ROW_SCHEMA",
+      "source": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/dataset_evidence_register.json",
+        "json_pointer": "/candidate_rows/5"
+      },
+      "finding_authority": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r2_evidence_lanes_validation_receipt.json",
+        "json_pointer": "/contract_findings/1/detail"
+      },
+      "default_authority": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r2_evidence_tracks_contract.md",
+        "section": "7. Common JSON row requirements",
+        "required_key": "inferences_forbidden[]"
+      },
+      "target_json_pointer": "/candidate_rows/5/inferences_forbidden",
+      "value": [],
+      "scientific_semantics": "Carrier-only empty-array default. It does not assert that no inference prohibition exists and creates no evidence."
+    },
+    {
+      "transformation_id": "A2-T046",
+      "classification": "COPIED_VALUE",
+      "operation": "COPY_TRUTH_GUARD_INTO_COMMON_ROW",
+      "source": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/dataset_evidence_register.json",
+        "json_pointer": "/truth_state/execution_authorized"
+      },
+      "target_json_pointer": "/candidate_rows/5/execution_authorized"
+    },
+    {
+      "transformation_id": "A2-T047",
+      "classification": "COPIED_VALUE",
+      "operation": "COPY_TRUTH_GUARD_WITH_KEY_NORMALIZATION",
+      "source": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/dataset_evidence_register.json",
+        "json_pointer": "/truth_state/RESULT_STATUS"
+      },
+      "target_json_pointer": "/candidate_rows/5/result_status",
+      "value_changed": false
+    },
+    {
+      "transformation_id": "A2-T048",
+      "classification": "COPIED_VALUE",
+      "operation": "COPY_TRUTH_GUARD_WITH_KEY_NORMALIZATION",
+      "source": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/dataset_evidence_register.json",
+        "json_pointer": "/truth_state/TEST_SET_OPENED"
+      },
+      "target_json_pointer": "/candidate_rows/5/test_set_opened",
+      "value_changed": false
+    },
+    {
+      "transformation_id": "A2-T049",
+      "classification": "COPIED_VALUE",
+      "operation": "COPY_EXISTING_MEMBERS_EXACT",
+      "source": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/dataset_evidence_register.json",
+        "json_pointer": "/candidate_rows/6"
+      },
+      "target_json_pointer": "/candidate_rows/6",
+      "copied_member_map": [
+        {
+          "source_member": "row_id",
+          "target_member": "row_id"
+        },
+        {
+          "source_member": "method",
+          "target_member": "method"
+        },
+        {
+          "source_member": "dataset_scope",
+          "target_member": "dataset_scope"
+        },
+        {
+          "source_member": "authoritative_sources",
+          "target_member": "authoritative_sources"
+        },
+        {
+          "source_member": "unresolved_fields",
+          "target_member": "unresolved_fields"
+        },
+        {
+          "source_member": "dispositive_mismatches",
+          "target_member": "dispositive_mismatches"
+        },
+        {
+          "source_member": "recommended_g1_disposition",
+          "target_member": "recommended_g1_disposition"
+        },
+        {
+          "source_member": "canonical_provider",
+          "target_member": "canonical_provider"
+        },
+        {
+          "source_member": "authoritative_release",
+          "target_member": "authoritative_release"
+        }
+      ],
+      "scientific_payload_changed": false
+    },
+    {
+      "transformation_id": "A2-T050",
+      "classification": "COPIED_VALUE",
+      "operation": "COPY_EXACT_VALUE_WITH_KEY_NORMALIZATION",
+      "source": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/dataset_evidence_register.json",
+        "json_pointer": "/candidate_rows/6/lane_evidence_status"
+      },
+      "target_json_pointer": "/candidate_rows/6/evidence_status",
+      "source_key": "lane_evidence_status",
+      "target_key": "evidence_status",
+      "value_changed": false
+    },
+    {
+      "transformation_id": "A2-T051",
+      "classification": "COPIED_VALUE",
+      "operation": "COPY_EXACT_SUBTREE_WITH_KEY_NORMALIZATION",
+      "source": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/dataset_evidence_register.json",
+        "json_pointer": "/candidate_rows/6/confirmed_dataset_layers"
+      },
+      "target_json_pointer": "/candidate_rows/6/confirmed_fields",
+      "source_key": "confirmed_dataset_layers",
+      "target_key": "confirmed_fields",
+      "value_changed": false
+    },
+    {
+      "transformation_id": "A2-T052",
+      "classification": "COPIED_VALUE",
+      "operation": "COPY_DOCUMENT_SCOPE_VALUE_INTO_COMMON_ROW",
+      "source": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/dataset_evidence_register.json",
+        "json_pointer": "/lane_id"
+      },
+      "target_json_pointer": "/candidate_rows/6/lane_id"
+    },
+    {
+      "transformation_id": "A2-T053",
+      "classification": "STRUCTURAL_DEFAULT",
+      "operation": "ADD_EMPTY_ARRAY_REQUIRED_BY_COMMON_ROW_SCHEMA",
+      "source": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/dataset_evidence_register.json",
+        "json_pointer": "/candidate_rows/6"
+      },
+      "finding_authority": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r2_evidence_lanes_validation_receipt.json",
+        "json_pointer": "/contract_findings/1/detail"
+      },
+      "default_authority": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r2_evidence_tracks_contract.md",
+        "section": "7. Common JSON row requirements",
+        "required_key": "inferences_forbidden[]"
+      },
+      "target_json_pointer": "/candidate_rows/6/inferences_forbidden",
+      "value": [],
+      "scientific_semantics": "Carrier-only empty-array default. It does not assert that no inference prohibition exists and creates no evidence."
+    },
+    {
+      "transformation_id": "A2-T054",
+      "classification": "COPIED_VALUE",
+      "operation": "COPY_TRUTH_GUARD_INTO_COMMON_ROW",
+      "source": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/dataset_evidence_register.json",
+        "json_pointer": "/truth_state/execution_authorized"
+      },
+      "target_json_pointer": "/candidate_rows/6/execution_authorized"
+    },
+    {
+      "transformation_id": "A2-T055",
+      "classification": "COPIED_VALUE",
+      "operation": "COPY_TRUTH_GUARD_WITH_KEY_NORMALIZATION",
+      "source": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/dataset_evidence_register.json",
+        "json_pointer": "/truth_state/RESULT_STATUS"
+      },
+      "target_json_pointer": "/candidate_rows/6/result_status",
+      "value_changed": false
+    },
+    {
+      "transformation_id": "A2-T056",
+      "classification": "COPIED_VALUE",
+      "operation": "COPY_TRUTH_GUARD_WITH_KEY_NORMALIZATION",
+      "source": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/dataset_evidence_register.json",
+        "json_pointer": "/truth_state/TEST_SET_OPENED"
+      },
+      "target_json_pointer": "/candidate_rows/6/test_set_opened",
+      "value_changed": false
+    },
+    {
+      "transformation_id": "A2-T057",
+      "classification": "COPIED_VALUE",
+      "operation": "COPY_EXACT_SUBTREE",
+      "source": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/dataset_evidence_register.json",
+        "json_pointer": "/coverage"
+      },
+      "target_json_pointer": "/coverage"
+    },
+    {
+      "transformation_id": "A2-T058",
+      "classification": "COPIED_VALUE",
+      "operation": "COPY_EXACT_SUBTREE",
+      "source": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/dataset_evidence_register.json",
+        "json_pointer": "/truth_state"
+      },
+      "target_json_pointer": "/truth_state"
+    },
+    {
+      "transformation_id": "A2-T059",
+      "classification": "COPIED_VALUE",
+      "operation": "COPY_EXACT_VALUE",
+      "source": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/a2_handoff.json",
+        "json_pointer": "/lane_id"
+      },
+      "target_json_pointer": "/normalized_handoff_fields/lane_id"
+    }
+  ],
+  "validation_assertions": {
+    "candidate_count": 7,
+    "candidate_order_preserved": true,
+    "evidence_status_values_exactly_copied": true,
+    "confirmed_dataset_layers_exactly_copied_to_confirmed_fields": true,
+    "all_original_scientific_members_represented": true,
+    "structural_defaults_explicit_and_non_scientific": true,
+    "scientific_truth_preserved": true
+  }
+}

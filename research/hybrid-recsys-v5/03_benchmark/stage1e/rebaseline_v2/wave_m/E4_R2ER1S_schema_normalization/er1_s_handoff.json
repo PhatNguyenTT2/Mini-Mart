@@ -1,0 +1,290 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r2-er1-s-handoff-1.0",
+  "stage_id": "R2-ER1-S",
+  "created_at": "2026-08-22T18:37:27+07:00",
+  "workflow": "ars-codex:academic-research-suite/experiment-agent evidence-only immutable schema normalization and reproducibility validation; no experiment execution",
+  "material_passport": {
+    "origin_skill": "ars-codex:academic-research-suite/experiment-agent",
+    "origin_mode": "evidence-only/schema-normalization/reproducibility-validation/fail-closed",
+    "origin_date": "2026-08-22T18:37:27+07:00",
+    "verification_status": "UNVERIFIED",
+    "version_label": "stage1e_rebaseline_v2_wave_m_E4_R2ER1S_schema_normalization_v1",
+    "upstream_dependencies": [
+      "stage1e_rebaseline_v2_e4_r2_er1_change_control_contract",
+      "stage1e_rebaseline_v2_e4_r2_er1_frozen_input_manifest",
+      "stage1e_rebaseline_v2_e4_r2_er1_gate_receipt",
+      "stage1e_rebaseline_v2_e4_r2_evidence_lanes_validation_receipt"
+    ],
+    "repro_lock": {
+      "schema_version": "1.0",
+      "ars_version": "3.21.0",
+      "stochasticity_declaration": "No experiment was run. The deterministic carrier normalization is replayable from hash-bound frozen JSON inputs and explicit transformation ledgers; model-authored report wording is not a byte-replay guarantee.",
+      "skill_package": {
+        "name": "ars-codex:academic-research-suite",
+        "adapter_version": "0.1.26",
+        "ars_suite_version": "3.21.0",
+        "workflow": "experiment-agent"
+      },
+      "model": {
+        "family": "openai",
+        "id": "gpt-5.6-sol",
+        "display_name": "Sol Max Fast",
+        "reasoning_effort": "max",
+        "service_tier": "priority",
+        "speed_label": "Fast",
+        "weight_stable": false
+      },
+      "frozen_materials": {
+        "manifest_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r2_er1_frozen_input_manifest.json",
+        "manifest_canonical_lf_bytes": 8355,
+        "manifest_canonical_lf_sha256": "12cff269c80e9cef5eb35c4a822a6ab756a480a4769e24c31861cd581748d916",
+        "manifest_input_count": 31,
+        "replayed_hashes": "31/31",
+        "strict_json_inputs": "24/24"
+      },
+      "external_protocols": {
+        "web_research": "NOT_USED",
+        "repository_or_dataset_acquisition": "NOT_USED",
+        "experiment_execution": "NOT_USED",
+        "test_access": "NOT_USED"
+      },
+      "cross_model": {
+        "enabled": false,
+        "secondary_model_id": null,
+        "external_upload": false
+      }
+    },
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-22T18:37:27+07:00",
+      "declared_by": "scholar",
+      "statement": "R2-ER1-S is an immutable schema-carrier normalization stage and declares no experiment result or scholar-owned experiment provenance."
+    }
+  },
+  "actual_model": {
+    "id": "gpt-5.6-sol",
+    "reasoning_effort": "max",
+    "service_tier": "priority",
+    "display_name": "Sol Max Fast",
+    "speed_label": "Fast"
+  },
+  "skill_adapter_version": "0.1.26",
+  "ars_suite_version": "3.21.0",
+  "frozen_controls": [
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r2_er1_change_control_contract.md",
+      "canonical_lf_bytes": 8725,
+      "canonical_lf_sha256": "6b9c03359a77c6a66535bb5cb9a26f6562bd0b82cc07b292836aa2497003f8c7"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r2_er1_frozen_input_manifest.json",
+      "canonical_lf_bytes": 8355,
+      "canonical_lf_sha256": "12cff269c80e9cef5eb35c4a822a6ab756a480a4769e24c31861cd581748d916"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r2_er1_gate_receipt.json",
+      "canonical_lf_bytes": 2789,
+      "canonical_lf_sha256": "0de02930581306fd6758ee529d58dcf3c159e55afec15ad24ba91235371c680e"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r2_evidence_tracks_contract.md",
+      "canonical_lf_bytes": 13667,
+      "canonical_lf_sha256": "551a5c5c3a3fdc1dc6e58d0940c91271cf60237363dbc0275cd6547cc5318293"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r2_evidence_lanes_validation_receipt.json",
+      "canonical_lf_bytes": 4646,
+      "canonical_lf_sha256": "1335836553caa160d93fe3cc8baee041afbbe9846f0e18fd2b4eb68d4c3607b8"
+    }
+  ],
+  "entry_gate_replay": {
+    "validator": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r2_er1_gate.py",
+      "canonical_lf_bytes": 9482,
+      "canonical_lf_sha256": "cb30f7733ca6633bf0143d91ea2afa755c21f24bd5181a0e583b69bc0874b6bb",
+      "invocation": "python -B research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r2_er1_gate.py",
+      "execution_scope": "read-only deterministic control validation; not a repository test or experiment",
+      "exit_code": 0
+    },
+    "expected_inputs": 31,
+    "matched_inputs": 31,
+    "strict_json_inputs_expected": 24,
+    "strict_json_inputs_parsed": 24,
+    "failures": [],
+    "passed": true,
+    "verdict": "PASS_R2_ER1_GATE_31_OF_31_READY_FOR_PARALLEL_DISPATCH"
+  },
+  "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_m/E4_R2ER1S_schema_normalization",
+  "exact_output_file_list": [
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_m/E4_R2ER1S_schema_normalization/a1_normalized_carrier.json",
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_m/E4_R2ER1S_schema_normalization/a2_normalized_carrier.json",
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_m/E4_R2ER1S_schema_normalization/a3_normalized_carrier.json",
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_m/E4_R2ER1S_schema_normalization/schema_normalization_report.md",
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_m/E4_R2ER1S_schema_normalization/er1_s_handoff.json"
+  ],
+  "output_hash_policy": "Strict UTF-8 decode; normalize CRLF and CR to LF; encode UTF-8; then compute byte count and SHA-256.",
+  "non_handoff_outputs": [
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_m/E4_R2ER1S_schema_normalization/a1_normalized_carrier.json",
+      "canonical_lf_bytes": 67375,
+      "canonical_lf_sha256": "88d502afe56e39e001f465d2da9eac1edef7ce2f5b5fa9290a5bd2979d591856",
+      "verification_status": "UNVERIFIED"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_m/E4_R2ER1S_schema_normalization/a2_normalized_carrier.json",
+      "canonical_lf_bytes": 69916,
+      "canonical_lf_sha256": "7a00acec44535d14445d280396b9d454f9621efca6df7785dfc1f9e3c3137fb5",
+      "verification_status": "UNVERIFIED"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_m/E4_R2ER1S_schema_normalization/a3_normalized_carrier.json",
+      "canonical_lf_bytes": 51730,
+      "canonical_lf_sha256": "5a6b5ad9723fcb0027cb35d31fc97aa81657cf611e444556add56594bde2a792",
+      "verification_status": "UNVERIFIED"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_m/E4_R2ER1S_schema_normalization/schema_normalization_report.md",
+      "canonical_lf_bytes": 5693,
+      "canonical_lf_sha256": "93567cc42814ff35008e48e78fdb01cb5d3b8a0530a7ba99b84ff2d8d9f8ee1e",
+      "verification_status": "UNVERIFIED"
+    }
+  ],
+  "handoff_artifact": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_m/E4_R2ER1S_schema_normalization/er1_s_handoff.json",
+    "canonical_lf_bytes": null,
+    "canonical_lf_sha256": null,
+    "self_hash_reported_out_of_band": true,
+    "self_hash_policy": "The final canonical-LF handoff hash is computed after finalization and reported out of band because embedding it would change the hashed bytes."
+  },
+  "normalized_findings": [
+    {
+      "finding_id": "R2-CF-A1-001",
+      "lane_id": "R2-A1",
+      "disposition": "NORMALIZED_IN_IMMUTABLE_SIDECAR",
+      "scientific_truth_changed": false
+    },
+    {
+      "finding_id": "R2-CF-A2-001",
+      "lane_id": "R2-A2",
+      "disposition": "NORMALIZED_IN_IMMUTABLE_SIDECAR",
+      "scientific_truth_changed": false
+    },
+    {
+      "finding_id": "R2-CF-A3-001",
+      "lane_id": "R2-A3",
+      "disposition": "NORMALIZED_IN_IMMUTABLE_SIDECAR",
+      "scientific_truth_changed": false
+    }
+  ],
+  "coverage": {
+    "candidate_order": [
+      "E3-LIGHTGCN-GOWALLA-PYTORCH-001",
+      "E3-SIMGCL-YELP2018-QREC-001",
+      "E3-XSIMGCL-YELP2018-SELFREC-001",
+      "E3-LIGHTGCL-YELP-UPDATED-001",
+      "E3-UNISREC-SCIENTIFIC-TRANS-001",
+      "E3-SASREC-SCIENTIFIC-UNISREC-FRAMEWORK-001",
+      "E3-ALPHAREC-MOVIES-TV-001"
+    ],
+    "lane_count": 3,
+    "candidate_rows_per_lane": 7,
+    "normalized_candidate_row_instances": 21,
+    "all_common_row_keys_present": true,
+    "lane_status_counts": {
+      "R2-A1": {
+        "EVIDENCE_SUFFICIENT_FOR_G1_REVIEW": 0,
+        "EVIDENCE_INCOMPLETE": 6,
+        "DISPOSITIVE_REJECT": 1,
+        "HANDOFF_INCOMPLETE": 0
+      },
+      "R2-A2": {
+        "EVIDENCE_SUFFICIENT_FOR_G1_REVIEW": 0,
+        "EVIDENCE_INCOMPLETE": 7,
+        "DISPOSITIVE_REJECT": 0
+      },
+      "R2-A3": {
+        "EVIDENCE_SUFFICIENT_FOR_G1_REVIEW": 0,
+        "EVIDENCE_INCOMPLETE": 7,
+        "DISPOSITIVE_REJECT": 0,
+        "total": 7
+      }
+    },
+    "accepted_result_rows": 0,
+    "selected_candidate": null
+  },
+  "validation_summary": {
+    "strict_json_duplicate_and_case_collision_rejection": "PASS",
+    "output_json_documents": "PASS_4_OF_4",
+    "exact_output_file_set": "PASS_5_OF_5",
+    "candidate_order": "PASS_7_OF_7_EACH_LANE",
+    "common_row_keys": "PASS_21_OF_21_ROWS",
+    "copied_scientific_values": "DEEP_EQUAL_AFTER_REVERSIBLE_STRUCTURAL_KEY_MAPPING",
+    "non_handoff_hashes": "PASS_4_OF_4",
+    "status_promotions": 0,
+    "mismatches_removed": 0,
+    "truth_state_changes": 0,
+    "dispositions_changed": 0,
+    "evidence_created": 0,
+    "candidates_selected": 0
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "forbidden_operation_flags": {
+    "web_research_performed": false,
+    "git_clone_performed": false,
+    "git_fetch_performed": false,
+    "source_archive_download_performed": false,
+    "dataset_download_performed": false,
+    "checkpoint_or_asset_download_performed": false,
+    "authenticated_asset_access_performed": false,
+    "terms_accepted_on_user_behalf": false,
+    "credentials_used": false,
+    "dependency_install_performed": false,
+    "environment_created": false,
+    "container_created_or_run": false,
+    "repository_code_executed": false,
+    "preprocessing_run": false,
+    "training_run": false,
+    "evaluation_run": false,
+    "benchmark_run": false,
+    "test_run": false,
+    "test_set_access_performed": false,
+    "candidate_selected": false,
+    "evidence_created": false,
+    "evidence_status_promoted": false,
+    "mismatch_removed": false,
+    "disposition_changed": false,
+    "truth_state_changed": false,
+    "original_a1_artifact_modified": false,
+    "original_a2_artifact_modified": false,
+    "original_a3_artifact_modified": false,
+    "original_g1_artifact_modified": false,
+    "pipeline_state_modified": false,
+    "control_file_modified": false,
+    "other_track_output_modified": false,
+    "cross_row_join_performed": false,
+    "automatic_semantic_fallback_performed": false,
+    "maintainer_contacted": false,
+    "output_file_created_outside_declared_root": false
+  },
+  "authorization": {
+    "execution_authorized": false,
+    "acquisition_authorized": false,
+    "candidate_selection_authorized": false,
+    "central_validation_authorized_to_consume_sidecars": true
+  },
+  "incidents": [],
+  "RESULT_STATUS": "NOT_RUN",
+  "TEST_SET_OPENED": "NO",
+  "ACCEPTED_RESULT_ROWS": 0,
+  "execution_authorized": false,
+  "verdict": "COMPLETE_SCHEMA_NORMALIZATION_TRUTH_PRESERVED_READY_FOR_CENTRAL_VALIDATION",
+  "verdict_detail": "All three known immutable carrier findings are structurally normalized across all seven original rows per lane, with copied values and structural defaults explicitly source-bound. Scientific status, sources, unresolved fields, mismatches, dispositions, counts, and truth-state values are preserved. No selection, evidence creation, TEST access, or execution authority is introduced.",
+  "fail_closed": true,
+  "next_gate": "CENTRAL_R2_ER1_VALIDATION_OF_EXACT_FIVE_FILE_HANDOFF"
+}
