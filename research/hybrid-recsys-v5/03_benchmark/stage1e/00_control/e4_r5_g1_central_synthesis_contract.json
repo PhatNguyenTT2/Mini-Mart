@@ -1,0 +1,117 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r5-g1-central-synthesis-contract-1.0",
+  "created_at": "2026-08-23",
+  "stage_id": "R5-G1",
+  "status": "PREREGISTERED_BLOCKED_ON_VALIDATED_R5_M1_OUTPUT_FREEZE",
+  "entry_requirements": [
+    "PASS_R5_M1_TWO_SOURCE_AUDITS_READY_FOR_CENTRAL_R5_G1_FREEZE",
+    "R5_G1_FROZEN_INPUT_MANIFEST_HASH_PASS"
+  ],
+  "context": "current_central",
+  "model_profile": {
+    "display_name": "Sol Max Standard",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "max",
+    "service_tier": "standard"
+  },
+  "candidate_count": 2,
+  "selection_cardinality_min": 0,
+  "selection_cardinality_max": 1,
+  "selection_is_benchmark_admission": false,
+  "selection_authorizes_dataset_environment_or_run": false,
+  "selection_purpose": "Choose at most one hash-locked source candidate for a later change-controlled dataset, environment and official-surface rerun proposal at user checkpoint R5-M2.",
+  "mandatory_central_checks": [
+    {
+      "id": "G01_SOURCE_HASH_AND_REVISION_INTEGRITY",
+      "criterion": "All decision-bearing source facts replay against the R5-M0 blob manifest and exact detached revision."
+    },
+    {
+      "id": "G02_NO_DISPOSITIVE_SOURCE_CONFLICT",
+      "criterion": "The lane reports no license, identity, objective, result-surface or executable-source conflict that permanently rejects the candidate."
+    },
+    {
+      "id": "G03_ENVIRONMENT_CLOSURE_IS_DETERMINISTIC_PROPOSAL",
+      "criterion": "Missing environment lock fields are enumerated and can be tested later without silently guessing target-producing versions."
+    },
+    {
+      "id": "G04_PROTOCOL_AND_EVALUATOR_GAPS_ARE_EXPLICIT",
+      "criterion": "Config precedence, seed, candidate, masking, aggregation and tie gaps are explicitly located and not falsely marked closed."
+    },
+    {
+      "id": "G05_NUMERIC_TARGET_REMAINS_PROVISIONAL_RERUN_REQUIRED",
+      "criterion": "The numeric target is never accepted from documentation alone; a same-surface rerun and receipt remain mandatory."
+    },
+    {
+      "id": "G06_DATA_LINEAGE_PLAN_IS_CANONICAL_AND_BYTE_VERIFIABLE",
+      "criterion": "A later provider-to-atomic-input lineage plan is concrete; no repository-carried or transformed data are assumed equivalent."
+    },
+    {
+      "id": "G07_V5_ADAPTER_IS_REPRESENTATION_ONLY_IN_PRINCIPLE",
+      "criterion": "The adapter feasibility finding does not require changing the training objective, split/candidate policy or shared evaluator semantics."
+    },
+    {
+      "id": "G08_NEXT_PHASE_SCOPE_IS_BOUNDED",
+      "criterion": "The candidate has a finite, explicit data/environment/rerun proposal that can be separately approved at R5-M2."
+    }
+  ],
+  "candidate_central_statuses": [
+    "PROVISIONALLY_ELIGIBLE_FOR_R5_M2_PROPOSAL",
+    "NOT_SELECTED_SOURCE_GAPS_LARGER",
+    "INELIGIBLE_UNBOUNDED_OR_CONFLICTING_SOURCE",
+    "INELIGIBLE_EVIDENCE_REMAINS_INSUFFICIENT"
+  ],
+  "allowed_decisions": [
+    "PROVISIONAL_SINGLE_CANDIDATE_FOR_DATA_ENVIRONMENT_PROPOSAL",
+    "NO_SELECTION_SOURCE_EVIDENCE_REMAINS_INSUFFICIENT",
+    "REJECT_ALL_SOURCE_CONFLICT"
+  ],
+  "selection_invariants": {
+    "exact_candidate_identity_join_only": true,
+    "cross_candidate_fact_borrowing_allowed": false,
+    "numeric_target_magnitude_used_for_selection": false,
+    "missing_evidence_can_be_inferred": false,
+    "source_audit_can_claim_verified_reproducibility": false,
+    "zero_selection_is_valid": true,
+    "automatic_candidate_replacement_allowed": false,
+    "dataset_or_checkpoint_acquisition_allowed": false,
+    "package_install_or_environment_creation_allowed": false,
+    "vendor_source_execution_allowed": false,
+    "preprocessing_training_evaluation_allowed": false,
+    "project_v5_test_access_allowed": false
+  },
+  "tie_break_policy_if_both_provisionally_eligible": [
+    "fewer_unbounded_source_or_protocol_gaps",
+    "more explicit deterministic environment_and_data_lineage_closure_plan",
+    "more direct alignment_with_frozen_mandatory_baseline_suite",
+    "never_higher_documented_metric"
+  ],
+  "output_contract": {
+    "write_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_af/E4_R5G1_source_evidence_selection",
+    "exact_filenames": [
+      "source_audit_merge.json",
+      "candidate_gap_comparison.json",
+      "selection_decision.json",
+      "r5_g1_report.md",
+      "r5_g1_handoff.json"
+    ],
+    "extra_files_allowed": false,
+    "strict_json_file_count": 4,
+    "markdown_file_count": 1
+  },
+  "downstream_boundary": {
+    "positive_decision_opens": "R5-M2_MANDATORY_USER_CHECKPOINT_ONLY",
+    "repository_source_materialization": "ALREADY_COMPLETE_READ_ONLY",
+    "dataset_checkpoint_or_asset_acquisition": "BLOCKED",
+    "environment_creation_or_package_install": "BLOCKED",
+    "preprocessing_training_evaluation": "BLOCKED",
+    "test_access": "BLOCKED",
+    "paper_benchmark_claim": "BLOCKED"
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}
