@@ -1,0 +1,350 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r2-er1-a3-center-run-checkpoint-binding-1.0",
+  "stage_id": "R2-ER1-A3",
+  "lane_id": "E4-R2ER1-A3-LIGHTGCN-RESULT-EVALUATOR",
+  "created_at": "2026-08-22T18:40:00+07:00",
+  "access_date": "2026-08-22",
+  "candidate_order": [
+    "E3-LIGHTGCN-GOWALLA-PYTORCH-001"
+  ],
+  "surface_policy": {
+    "selected_surface": "The PyTorch repository README's Gowalla, 3-layer, top-20 Results row at immutable commit 947ca2b3b1d2d3545b114145710cb06c4e57b3d2, interpreted only with that same commit's README command and PyTorch source.",
+    "cross_join_prohibited": true,
+    "paper_table_is_a_distinct_surface": true,
+    "printed_metrics_are_run_receipts": false,
+    "source_owned_result_fields_require_source_owned_support": true
+  },
+  "tolerance_policy": {
+    "source": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/reproduction_acceptance_rules.md",
+    "formula": "t = max(0.005, 0.05 * abs(center))",
+    "interval_semantics": "inclusive",
+    "status": "PREREGISTERABLE_BUT_DORMANT",
+    "activation_gate": "The implementation, exact result-producing run and checkpoint, evaluator identity and execution receipt, metric semantics, candidate/masking semantics, and deterministic tie semantics must first be source-bound without cross-joining.",
+    "not_a_confidence_interval": true,
+    "does_not_repair_missing_provenance": true
+  },
+  "rows": [
+    {
+      "row_id": "E3-LIGHTGCN-GOWALLA-PYTORCH-001",
+      "method": "LightGCN",
+      "dataset_scope": "Gowalla on the source repository's bundled train.txt/test.txt split; not the v5 synthetic store/split",
+      "lane_id": "E4-R2ER1-A3-LIGHTGCN-RESULT-EVALUATOR",
+      "evidence_status": "EVIDENCE_INCOMPLETE",
+      "authoritative_sources": [
+        {
+          "url": "https://raw.githubusercontent.com/gusye1234/LightGCN-PyTorch/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/README.md",
+          "source_type": "author_repository_readme_result_and_command",
+          "immutable_identity_or_version": "git commit 947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+          "accessed_at": "2026-08-22",
+          "locator": "README.md lines 33-40 (Gowalla command), 41-64 (partial printed log and fixed-seed repeatability assertion), and 69-83 (Results description and PyTorch Gowalla 3-layer row)",
+          "supports": [
+            "the selected surface's center values and cutoff",
+            "the explicit command parameters",
+            "the README's statement to stop at 1000 epochs and use seed 2020"
+          ],
+          "does_not_support": [
+            "a result-producing run identifier",
+            "the selected checkpoint epoch or bytes",
+            "a complete evaluator execution receipt",
+            "run count, center aggregation, or variation"
+          ]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/gusye1234/LightGCN-PyTorch/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/code/main.py",
+          "source_type": "author_repository_training_evaluation_checkpoint_entrypoint",
+          "immutable_identity_or_version": "git commit 947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+          "accessed_at": "2026-08-22",
+          "locator": "main.py lines 10-44: seed setup; model and optimizer construction; generated weight filename; optional load; range(TRAIN_epochs); Test before training when epoch % 10 == 0; BPR_train; torch.save to the same path",
+          "supports": [
+            "the integrated evaluation and save schedule",
+            "repeated overwrite of one generated model-state filename",
+            "absence of validation-driven selection in this entrypoint"
+          ],
+          "does_not_support": [
+            "which Test invocation generated the README Results row",
+            "which overwritten model state generated the README Results row",
+            "a retained result-bound checkpoint or run receipt"
+          ]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/gusye1234/LightGCN-PyTorch/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/code/parse.py",
+          "source_type": "author_repository_cli_configuration",
+          "immutable_identity_or_version": "git commit 947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+          "accessed_at": "2026-08-22",
+          "locator": "parse.py lines 9-44: bpr_batch, recdim, layer, lr, decay, dropout, keepprob, A_split, testbatch, dataset, path, topks, tensorboard, comment, load, epochs, multicore, pretrain, seed and model arguments/defaults",
+          "supports": [
+            "omitted command defaults used to describe the source configuration"
+          ],
+          "does_not_support": [
+            "an executed argv receipt",
+            "result-bound runtime identity"
+          ]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/gusye1234/LightGCN-PyTorch/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/code/world.py",
+          "source_type": "author_repository_runtime_configuration",
+          "immutable_identity_or_version": "git commit 947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+          "accessed_at": "2026-08-22",
+          "locator": "world.py lines 17-62: ROOT_PATH, CODE_PATH, DATA_PATH, BOARD_PATH, FILE_PATH, config assembly, device selection, seed, epochs, topks and model",
+          "supports": [
+            "source data, runs and checkpoints path construction",
+            "A_split=false and automatic CUDA/CPU selection"
+          ],
+          "does_not_support": [
+            "a result-bound device, dependency, or filesystem receipt"
+          ]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/gusye1234/LightGCN-PyTorch/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/code/utils.py",
+          "source_type": "author_repository_seed_objective_filename_and_sampling_source",
+          "immutable_identity_or_version": "git commit 947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+          "accessed_at": "2026-08-22",
+          "locator": "utils.py set_seed; BPRLoss and BPR_train_original; UniformSample_original and UniformSample_original_python; getFileName",
+          "supports": [
+            "torch, CUDA and NumPy seed calls",
+            "BPR softplus objective, L2 regularization, Adam optimizer and minibatch training",
+            "the lgn-gowalla-3-64.pth.tar filename derivation",
+            "an optional C++ sampler route and Python fallback route"
+          ],
+          "does_not_support": [
+            "which sampler route produced the README Results row",
+            "a complete source listing for the C++ sampler",
+            "a checkpoint digest or run receipt"
+          ]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/gusye1234/LightGCN-PyTorch/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/code/model.py",
+          "source_type": "author_repository_model_implementation",
+          "immutable_identity_or_version": "git commit 947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+          "accessed_at": "2026-08-22",
+          "locator": "model.py LightGCN.__init_weight, computer, getUsersRating and bpr_loss",
+          "supports": [
+            "64-dimensional embeddings, normal initialization with standard deviation 0.1, three propagation layers, unweighted mean of layer-0 through layer-3 embeddings, inner-product scores and sigmoid in getUsersRating"
+          ],
+          "does_not_support": [
+            "result-bound initialized tensors or checkpoint bytes"
+          ]
+        },
+        {
+          "url": "https://github.com/gusye1234/LightGCN-PyTorch/releases",
+          "source_type": "official_project_release_surface",
+          "immutable_identity_or_version": "repository release listing as accessed 2026-08-22",
+          "accessed_at": "2026-08-22",
+          "locator": "Releases page rendered message: There aren't any releases here",
+          "supports": [
+            "no release artifact was exposed on the inspected official release surface at access time"
+          ],
+          "does_not_support": [
+            "a universal proof that no source-owned run or checkpoint ever existed elsewhere",
+            "a result-bound checkpoint or evaluator receipt"
+          ]
+        },
+        {
+          "url": "https://arxiv.org/pdf/2002.02126",
+          "source_type": "direct_author_paper_negative_control",
+          "immutable_identity_or_version": "arXiv:2002.02126v4; DOI 10.1145/3397271.3401063",
+          "accessed_at": "2026-08-22",
+          "locator": "Section 4.1 Experimental Settings; Section 4.1.2 Hyper-parameter Settings; Table 3, Gowalla, 3 Layers, LightGCN row",
+          "supports": [
+            "the paper's distinct Gowalla 3-layer cells Recall@20=0.1823 and NDCG@20=0.1555",
+            "paper-surface settings that demonstrate why the paper must not be used to fill missing README-surface fields"
+          ],
+          "does_not_support": [
+            "the README row's different center",
+            "the README row's producing checkpoint, run, or evaluator receipt"
+          ]
+        }
+      ],
+      "confirmed_fields": {
+        "reported_result_surface": {
+          "owner": "gusye1234/LightGCN-PyTorch",
+          "surface": "README Results table, PyTorch subsection, Gowalla, layer=3 row",
+          "immutable_revision": "947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+          "cutoff": 20,
+          "centers": {
+            "recall_at_20": 0.1824,
+            "ndcg_at_20": 0.1547,
+            "precision_at_20": 0.05589
+          },
+          "printed_precision_digits": {
+            "recall_at_20": 4,
+            "ndcg_at_20": 4,
+            "precision_at_20": 5
+          },
+          "receipt_classification": "PRINTED_RESULT_CENTER_ONLY_NOT_A_RUN_RECEIPT"
+        },
+        "implementation_binding": {
+          "repository": "https://github.com/gusye1234/LightGCN-PyTorch",
+          "revision_type": "git_commit",
+          "revision": "947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+          "framework": "PyTorch",
+          "selected_surface_implementation_binding": "README command and code at the same immutable revision",
+          "cross_framework_join_used": false,
+          "cross_revision_join_used": false
+        },
+        "documented_command": "cd code && python main.py --decay=1e-4 --lr=0.001 --layer=3 --seed=2020 --dataset=\"gowalla\" --topks=\"[20]\" --recdim=64",
+        "source_configuration": {
+          "model": "lgn",
+          "dataset": "gowalla",
+          "embedding_dimension": 64,
+          "propagation_layers": 3,
+          "layer_aggregation": "unweighted arithmetic mean of layer-0, layer-1, layer-2 and layer-3 user/item embeddings",
+          "embedding_initialization": "torch normal, standard deviation 0.1",
+          "adjacency_dropout": false,
+          "a_split": false,
+          "learning_rate": 0.001,
+          "weight_decay_argument": 0.0001,
+          "objective": "pairwise BPR softplus with source L2 regularization",
+          "optimizer": "Adam",
+          "bpr_batch_size_default": 2048,
+          "test_user_batch_size_default": 100,
+          "epochs_default": 1000,
+          "pretrain_default": 0,
+          "load_default": 0,
+          "multicore_default": 0,
+          "topks": [
+            20
+          ],
+          "score_for_evaluator": "sigmoid(user-item inner product); monotone-equivalent to the inner product for ranking",
+          "executed_argv_receipt_available": false
+        },
+        "seed_and_run_schedule": {
+          "documented_seed": 2020,
+          "source_seed_calls": [
+            "torch.manual_seed",
+            "torch.cuda.manual_seed_all",
+            "numpy.random.seed"
+          ],
+          "documented_epoch_count": 1000,
+          "number_of_result_producing_runs": null,
+          "run_seed_list_or_schedule": null,
+          "center_aggregation_statistic": null,
+          "variation_or_dispersion": null,
+          "binding_status": "SEED_VALUE_DOCUMENTED_RUN_PROVENANCE_UNBOUND"
+        },
+        "integrated_loop_schedule": {
+          "loop": "for epoch in range(1000)",
+          "evaluation_condition": "epoch % 10 == 0",
+          "evaluation_order": "evaluation occurs before the current loop position's training call",
+          "evaluation_loop_positions": "0, 10, 20, ..., 990",
+          "number_of_evaluation_calls_implied_by_code": 100,
+          "training_calls": 1000,
+          "last_integrated_evaluation_state": "after 990 completed training calls, at loop position 990 before that position's training call",
+          "final_saved_state": "after 1000 completed training calls",
+          "final_saved_state_evaluated_by_this_loop": false,
+          "readme_result_evaluation_call": null
+        },
+        "checkpoint_binding": {
+          "generated_relative_path": "code/checkpoints/lgn-gowalla-3-64.pth.tar",
+          "serialized_object": "Recmodel.state_dict()",
+          "save_frequency": "after every training loop position",
+          "overwrite_behavior": "the same filename is overwritten repeatedly",
+          "validation_or_early_stop_selection_in_main": false,
+          "selected_checkpoint_epoch_or_step": null,
+          "selected_checkpoint_hash": null,
+          "published_checkpoint_artifact": null,
+          "result_to_checkpoint_binding_receipt": null,
+          "binding_status": "UNBOUND"
+        },
+        "run_and_evaluator_artifact_binding": {
+          "readme_partial_log": "printed illustrative output only",
+          "immutable_complete_run_log": null,
+          "run_id": null,
+          "argv_receipt": null,
+          "environment_receipt": null,
+          "dataset_input_hash_receipt": null,
+          "prediction_or_ranking_artifact": null,
+          "evaluator_input_output_hash_receipt": null,
+          "source_owned_run_evaluator_receipt": null,
+          "binding_status": "UNBOUND"
+        },
+        "preregisterable_reproduction_tolerance": {
+          "recall_at_20": {
+            "center": 0.1824,
+            "tolerance": 0.00912,
+            "inclusive_lower": 0.17328,
+            "inclusive_upper": 0.19152
+          },
+          "ndcg_at_20": {
+            "center": 0.1547,
+            "tolerance": 0.007735,
+            "inclusive_lower": 0.146965,
+            "inclusive_upper": 0.162435
+          },
+          "precision_at_20": {
+            "center": 0.05589,
+            "tolerance": 0.005,
+            "inclusive_lower": 0.05089,
+            "inclusive_upper": 0.06089
+          },
+          "state": "DORMANT_UNTIL_PROVENANCE_AND_SEMANTIC_GATES_CLOSE"
+        },
+        "binding_verdict": "INCOMPLETE_NO_RESULT_BOUND_CHECKPOINT_RUN_EVALUATOR_RECEIPT"
+      },
+      "unresolved_fields": [
+        "the exact run that produced the README Results row",
+        "the number of result-producing runs and any seed schedule beyond the documented seed value 2020",
+        "whether the displayed center is a single observation, best observation, final observation, mean, or another aggregation",
+        "variation or dispersion",
+        "the exact integrated Test invocation that produced the displayed row",
+        "the selected checkpoint epoch or optimizer step",
+        "the result-bound checkpoint bytes, digest and immutable artifact identity",
+        "a complete immutable log with argv, environment, data, model, checkpoint and evaluator linkage",
+        "the sampler implementation route used by the producing run",
+        "dependency, device, nondeterminism and runtime identity",
+        "a source-owned evaluator input/output receipt",
+        "deterministic tie semantics"
+      ],
+      "dispositive_mismatches": [
+        {
+          "type": "PAPER_README_CENTER_MISMATCH",
+          "detail": "Paper Table 3's distinct 3-layer Gowalla LightGCN cells are Recall@20=0.1823 and NDCG@20=0.1555, while the selected README PyTorch row is 0.1824 and 0.1547 and additionally prints Precision@20=0.05589.",
+          "effect": "The paper table cannot supply missing provenance or semantics for the selected README center."
+        },
+        {
+          "type": "PAPER_REPOSITORY_CONFIGURATION_MISMATCH",
+          "detail": "The paper describes Xavier initialization and a Gowalla mini-batch size of 1024, whereas the selected pinned PyTorch code initializes embeddings with normal standard deviation 0.1 and the README command inherits bpr_batch=2048.",
+          "effect": "Paper settings cannot be cross-joined into the README/PyTorch row."
+        },
+        {
+          "type": "CHECKPOINT_SCHEDULE_AMBIGUITY",
+          "detail": "The source loop evaluates before every tenth training call and saves after every training call to one overwriting filename; the final 1000-training-call saved state is not evaluated in that loop.",
+          "effect": "Neither '1000 epochs' nor the generated filename identifies the result-producing checkpoint."
+        },
+        {
+          "type": "V5_DATA_SURFACE_MISMATCH",
+          "detail": "The source center is for repository Gowalla train.txt/test.txt, while v5 is a separate synthetic store/split.",
+          "effect": "The center is not transportable as a v5 score or paper-grade v5 result."
+        }
+      ],
+      "inferences_forbidden": [
+        "Do not describe seed=2020 as proof that the center is a single run.",
+        "Do not infer that the final overwritten checkpoint produced the README Results row.",
+        "Do not treat the README's printed metrics or partial log as an immutable run/evaluator receipt.",
+        "Do not import paper-table values, Xavier initialization, batch size, validation or early-stopping settings into this README/PyTorch row.",
+        "Do not infer zero variation from a fixed seed or a repeatability assertion.",
+        "Do not activate the tolerance interval before the result-producing run, checkpoint and evaluator semantics are source-bound.",
+        "Do not use this Gowalla center as a v5 center."
+      ],
+      "recommended_g1_disposition": "KEEP_PENDING",
+      "execution_authorized": false,
+      "result_status": "NOT_RUN",
+      "test_set_opened": "NO"
+    }
+  ],
+  "status_counts": {
+    "candidate_rows": 1,
+    "evidence_complete": 0,
+    "evidence_incomplete": 1,
+    "keep_pending": 1,
+    "accepted": 0,
+    "rejected": 0
+  },
+  "truth_state": {
+    "execution_performed": false,
+    "result_status": "NOT_RUN",
+    "test_set_opened": "NO",
+    "accepted_candidate_count": 0,
+    "project_numbers_status": "INVALID_FOR_PAPER"
+  }
+}

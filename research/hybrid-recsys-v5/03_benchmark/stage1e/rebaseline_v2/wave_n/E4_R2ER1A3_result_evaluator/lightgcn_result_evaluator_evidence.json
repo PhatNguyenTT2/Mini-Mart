@@ -1,0 +1,438 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r2-er1-a3-lightgcn-result-evaluator-evidence-1.0",
+  "stage_id": "R2-ER1-A3",
+  "lane_id": "R2-ER1-A3",
+  "created_at": "2026-08-22T18:40:00+07:00",
+  "access_date": "2026-08-22",
+  "candidate_scope": {
+    "row_id": "E3-LIGHTGCN-GOWALLA-PYTORCH-001",
+    "method": "LightGCN",
+    "dataset_surface": "Gowalla repository-bundled processed train.txt/test.txt split",
+    "candidate_count": 1,
+    "scope_expansion_allowed": false,
+    "new_row_created": false
+  },
+  "surface_policy": {
+    "selected_surface": "official_source_repository_readme_pytorch_layer_3_gowalla",
+    "reported_center_owner": "gusye1234/LightGCN-PyTorch README at git commit 947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+    "implementation_owner": "gusye1234/LightGCN-PyTorch at the same git commit",
+    "dataset_owner_for_this_lane": "the same repository's data/gowalla train.txt and test.txt paths; rights and raw lineage remain A2-owned",
+    "cross_join_allowed": false,
+    "paper_center_import_allowed": false,
+    "third_party_reproduction_closure_allowed": false,
+    "printed_metrics_are_run_receipts": false,
+    "harmonized_v5_transport_allowed": false
+  },
+  "rows": [
+    {
+      "row_id": "E3-LIGHTGCN-GOWALLA-PYTORCH-001",
+      "method": "LightGCN",
+      "dataset_scope": "Gowalla source repository split",
+      "lane_id": "R2-ER1-A3",
+      "evidence_status": "EVIDENCE_INCOMPLETE",
+      "authoritative_sources": [
+        {
+          "url": "https://raw.githubusercontent.com/gusye1234/LightGCN-PyTorch/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/README.md",
+          "source_type": "author_repository_readme_result_and_command",
+          "immutable_identity_or_version": "git commit 947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+          "accessed_at": "2026-08-22",
+          "locator": "README.md lines 33-40 (Gowalla 3-layer command), 41-64 (partial log and fixed-seed repeatability assertion), and 69-83 (Results; top-20; PyTorch; stop at 1000 epochs; seed=2020; Gowalla layer=3 row)",
+          "supports": [
+            "the exact README-owned PyTorch Gowalla layer-3 center: Recall@20=0.1824, NDCG@20=0.1547, Precision@20=0.05589",
+            "the command-bound dataset, layer count, seed, learning rate, decay, cutoff and embedding dimension",
+            "a source assertion that the fixed-seed command should reproduce the shown intermediate log despite runtime differences"
+          ],
+          "does_not_support": [
+            "the number of result-producing runs or a center aggregation statistic",
+            "variation or dispersion",
+            "the epoch/checkpoint that produced the Results row",
+            "checkpoint bytes or hash",
+            "a complete immutable run/evaluator receipt",
+            "deterministic tie semantics"
+          ]
+        },
+        {
+          "url": "https://arxiv.org/pdf/2002.02126",
+          "source_type": "direct_author_paper_negative_control_and_relationship_source",
+          "immutable_identity_or_version": "arXiv:2002.02126v4; DOI 10.1145/3397271.3401063",
+          "accessed_at": "2026-08-22",
+          "locator": "paper page 1 implementation footnotes; Section 4.1 Experimental Settings; Section 4.1.2 Hyper-parameter Settings; Table 3, Gowalla, 3 Layers, LightGCN row",
+          "supports": [
+            "the paper identifies author TensorFlow and PyTorch implementation surfaces",
+            "the paper's own all-ranking description and experiment settings",
+            "the paper's distinct 3-layer Gowalla cells Recall@20=0.1823 and NDCG@20=0.1555"
+          ],
+          "does_not_support": [
+            "the different README-owned 0.1824/0.1547/0.05589 result row",
+            "importing paper initialization, batch, validation or early-stopping semantics into the README row",
+            "a source-owned checkpoint or run receipt for the README row"
+          ]
+        },
+        {
+          "url": "https://github.com/gusye1234/LightGCN-PyTorch/tree/947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+          "source_type": "author_repository_immutable_tree",
+          "immutable_identity_or_version": "git commit 947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+          "accessed_at": "2026-08-22",
+          "locator": "repository root tree, folders and files, and rendered README at commit 947ca2b",
+          "supports": [
+            "immutable repository identity",
+            "the root-level code and data surfaces used by the README command",
+            "the repository's self-identification as the PyTorch implementation of the SIGIR 2020 paper"
+          ],
+          "does_not_support": [
+            "a published run directory",
+            "a result-producing checkpoint artifact",
+            "an evaluator execution receipt"
+          ]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/gusye1234/LightGCN-PyTorch/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/code/main.py",
+          "source_type": "author_repository_training_and_evaluation_entrypoint",
+          "immutable_identity_or_version": "git commit 947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+          "accessed_at": "2026-08-22",
+          "locator": "main.py lines 10-44: seed setup, model construction, weight filename/load, evaluation cadence, training call, and repeated save",
+          "supports": [
+            "evaluation at zero-based loop positions divisible by 10 before that position's training call",
+            "saving the same model-state path after every training loop position",
+            "absence of a validation-driven checkpoint-selection branch in this entrypoint"
+          ],
+          "does_not_support": [
+            "which evaluation call generated the README Results row",
+            "which overwritten checkpoint state generated the README Results row",
+            "a retained run artifact or receipt"
+          ]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/gusye1234/LightGCN-PyTorch/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/code/parse.py",
+          "source_type": "author_repository_configuration_source",
+          "immutable_identity_or_version": "git commit 947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+          "accessed_at": "2026-08-22",
+          "locator": "parse.py lines 9-44: defaults for bpr_batch, recdim, layer, lr, decay, dropout, keep probability, test batch, dataset, topks, epochs, multicore, pretrain, seed and model",
+          "supports": [
+            "the command's omitted defaults, including bpr_batch=2048, dropout=0, testbatch=100, epochs=1000, multicore=0, pretrain=0, load=0 and model=lgn"
+          ],
+          "does_not_support": [
+            "the executed argv receipt",
+            "dependency or hardware identity",
+            "the Results-row checkpoint"
+          ]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/gusye1234/LightGCN-PyTorch/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/code/world.py",
+          "source_type": "author_repository_runtime_configuration_source",
+          "immutable_identity_or_version": "git commit 947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+          "accessed_at": "2026-08-22",
+          "locator": "world.py lines 17-62: data, runs and checkpoints paths; config assembly; device selection; seed, epochs, topks and model binding",
+          "supports": [
+            "data path ../data/gowalla through repository registration",
+            "runtime-created code/checkpoints and code/runs paths",
+            "A_split=false and automatic CPU/CUDA device selection"
+          ],
+          "does_not_support": [
+            "a pinned runtime/dependency/device receipt",
+            "published checkpoint or tensorboard bytes"
+          ]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/gusye1234/LightGCN-PyTorch/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/code/model.py",
+          "source_type": "author_repository_model_source",
+          "immutable_identity_or_version": "git commit 947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+          "accessed_at": "2026-08-22",
+          "locator": "model.py lines 80-113 and 135-174: LightGCN dimensions/layers, normal initialization, graph propagation, layer mean and sigmoid-scored full item matrix",
+          "supports": [
+            "three graph-propagation layers from the bound config",
+            "unweighted mean of layer-0 through layer-3 embeddings",
+            "normal initialization with standard deviation 0.1 when pretrain=0",
+            "sigmoid of user-item inner products for all-item scores"
+          ],
+          "does_not_support": [
+            "the table-producing model-state bytes",
+            "runtime numerical determinism"
+          ]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/gusye1234/LightGCN-PyTorch/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/code/Procedure.py",
+          "source_type": "author_repository_evaluator_source",
+          "immutable_identity_or_version": "git commit 947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+          "accessed_at": "2026-08-22",
+          "locator": "Procedure.py lines 57-69 and 72-149: per-batch metric dispatch; test users; all-item scores; training-positive mask; torch.topk; accumulation and division by evaluated-user count",
+          "supports": [
+            "full-item score generation",
+            "training-positive masking with -1024",
+            "top-k selection through torch.topk",
+            "macro averaging across users present in testDict"
+          ],
+          "does_not_support": [
+            "an explicit secondary tie key",
+            "a result-bound evaluator invocation receipt",
+            "a checkpoint-to-README-row binding"
+          ]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/gusye1234/LightGCN-PyTorch/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/code/utils.py",
+          "source_type": "author_repository_metric_sampler_and_checkpoint_naming_source",
+          "immutable_identity_or_version": "git commit 947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+          "accessed_at": "2026-08-22",
+          "locator": "utils.py lines 18-27, 49-106, and 196-258: optional C++ sampler dispatch, Python fallback sampler, seed calls, checkpoint filename, Recall/Precision/NDCG formulas and binary labels",
+          "supports": [
+            "binary test-membership relevance",
+            "Recall, Precision and NDCG denominator formulas",
+            "checkpoint filename lgn-gowalla-3-64.pth.tar for the bound command",
+            "NumPy/Torch/CUDA seeding and optional sampler-extension seeding",
+            "the Python fallback's uniform user/positive/unobserved-item sampling route"
+          ],
+          "does_not_support": [
+            "which optional sampler route produced the README row",
+            "the retrieved C++ sampler implementation in this lane",
+            "stable tie order",
+            "checkpoint bytes/hash or a run receipt"
+          ]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/gusye1234/LightGCN-PyTorch/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/code/dataloader.py",
+          "source_type": "author_repository_dataset_and_eligible_user_source",
+          "immutable_identity_or_version": "git commit 947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+          "accessed_at": "2026-08-22",
+          "locator": "dataloader.py lines 208-265 and 353-382: Gowalla Loader train.txt/test.txt parsing, item/user ranges, testDict construction and training-positive retrieval",
+          "supports": [
+            "repository train.txt/test.txt split file identity",
+            "eligible evaluation users as keys with test items in testDict",
+            "training positives as nonzero entries of UserItemNet"
+          ],
+          "does_not_support": [
+            "canonical raw-to-processed lineage or rights",
+            "a split-byte receipt for the README run"
+          ]
+        },
+        {
+          "url": "https://github.com/gusye1234/LightGCN-PyTorch/releases",
+          "source_type": "author_repository_release_surface",
+          "immutable_identity_or_version": "repository release page inspected 2026-08-22; repository archived by owner",
+          "accessed_at": "2026-08-22",
+          "locator": "Releases page heading and 'There aren't any releases here' message",
+          "supports": [
+            "no GitHub Release artifact was exposed on the inspected author-repository release surface"
+          ],
+          "does_not_support": [
+            "a universal proof that no private or unlinked run artifact ever existed",
+            "a checkpoint/run/evaluator receipt"
+          ]
+        }
+      ],
+      "confirmed_fields": {
+        "result_surface": "official_source_repository_readme",
+        "result_center_locator": "README.md Results; 'all metrics is under top-20'; 'pytorch version results (stop at 1000 epochs)'; '(for seed=2020)'; Gowalla table; layer=3 row; Recall, ndcg and precision columns",
+        "reported_centers": [
+          {
+            "metric": "Recall",
+            "cutoff": 20,
+            "center": 0.1824,
+            "variation": null,
+            "result_aggregation": null,
+            "printed_precision": 4
+          },
+          {
+            "metric": "NDCG",
+            "cutoff": 20,
+            "center": 0.1547,
+            "variation": null,
+            "result_aggregation": null,
+            "printed_precision": 4
+          },
+          {
+            "metric": "Precision",
+            "cutoff": 20,
+            "center": 0.05589,
+            "variation": null,
+            "result_aggregation": null,
+            "printed_precision": 5
+          }
+        ],
+        "implementation_identity": {
+          "repository": "https://github.com/gusye1234/LightGCN-PyTorch",
+          "full_commit": "947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+          "entrypoint": "code/main.py",
+          "model_class": "code/model.py::LightGCN",
+          "status": "PINNED_SOURCE_VERIFIED"
+        },
+        "model_configuration": {
+          "dataset": "gowalla",
+          "model": "lgn",
+          "embedding_dimension": 64,
+          "graph_layers": 3,
+          "layer_embeddings_combined": "unweighted arithmetic mean of layer 0, 1, 2 and 3 embeddings",
+          "objective": "BPR pairwise softplus loss plus L2 regularization",
+          "optimizer": "Adam",
+          "learning_rate": 0.001,
+          "decay": 0.0001,
+          "bpr_batch_size": 2048,
+          "epochs": 1000,
+          "dropout_enabled": false,
+          "keep_probability_inactive_default": 0.6,
+          "adjacency_split": false,
+          "test_user_batch_size": 100,
+          "topks": [20],
+          "multicore_evaluation": false,
+          "pretrain": false,
+          "load_existing_checkpoint": false,
+          "initialization": "normal with standard deviation 0.1",
+          "score_function": "sigmoid of final user-item embedding inner product",
+          "binding_status": "README_EXPLICIT_ARGUMENTS_PLUS_SAME_COMMIT_DEFAULTS"
+        },
+        "seed_and_result_reporting": {
+          "documented_seed_identities": [2020],
+          "source_repeatability_assertion": "README says the fixed NumPy/Torch seed command should reproduce the shown intermediate log apart from runtime",
+          "run_count": null,
+          "run_schedule": null,
+          "center_statistic": null,
+          "variation": null,
+          "status": "ONE_SEED_DECLARED_RESULT_RUN_PROVENANCE_UNKNOWN"
+        },
+        "source_code_run_schedule": {
+          "epoch_loop": "range(1000)",
+          "evaluation_positions": "zero-based positions 0,10,...,990; 100 calls; each occurs before that position's training call",
+          "save_positions": "after every training call to one reused checkpoint filename",
+          "validation_loop": null,
+          "early_stopping": null,
+          "result_row_selection_rule": null,
+          "status": "CODE_SCHEDULE_VERIFIED_RESULT_BINDING_ABSENT"
+        },
+        "checkpoint_and_receipt": {
+          "generated_filename": "code/checkpoints/lgn-gowalla-3-64.pth.tar",
+          "save_behavior": "same path overwritten after each epoch-loop training call",
+          "selected_epoch_or_evaluation_position": null,
+          "checkpoint_artifact_url": null,
+          "checkpoint_sha256": null,
+          "run_id": null,
+          "complete_log_artifact_url": null,
+          "complete_log_sha256": null,
+          "prediction_artifact": null,
+          "immutable_run_receipt": null,
+          "immutable_evaluator_receipt": null,
+          "readme_partial_log_classification": "PRINTED_PARTIAL_LOG_NOT_A_RUN_RECEIPT",
+          "release_artifact_status": "NO_GITHUB_RELEASE_EXPOSED_ON_INSPECTED_SOURCE_SURFACE"
+        },
+        "evaluator_summary": {
+          "revision": "947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+          "code_identity": [
+            "code/Procedure.py::Test",
+            "code/Procedure.py::test_one_batch",
+            "code/utils.py::getLabel",
+            "code/utils.py::RecallPrecision_ATk",
+            "code/utils.py::NDCGatK_r",
+            "code/model.py::LightGCN.getUsersRating",
+            "code/dataloader.py::Loader"
+          ],
+          "eligible_users": "users present as keys in testDict built from test.txt",
+          "candidate_universe": "all repository item IDs scored for each eligible user",
+          "train_seen_masking": "all UserItemNet training positives receive score -1024 before top-k",
+          "evaluation_negative_sampling": "none; full-item scoring after training-positive masking",
+          "ranking_primitive": "torch.topk at K=20",
+          "deterministic_secondary_tie_key": null,
+          "user_averaging": "macro average over eligible testDict users",
+          "status": "CODE_SEMANTICS_VERIFIED_TIE_AND_EXECUTION_RECEIPT_ABSENT"
+        },
+        "paper_surface_separation": {
+          "paper_three_layer_cells": {
+            "Recall@20": 0.1823,
+            "NDCG@20": 0.1555
+          },
+          "readme_three_layer_cells": {
+            "Recall@20": 0.1824,
+            "NDCG@20": 0.1547,
+            "Precision@20": 0.05589
+          },
+          "additional_setting_differences": [
+            "paper Section 4.1.2 states Xavier initialization while pinned PyTorch model.py uses normal(std=0.1) for the README command's pretrain=0 default",
+            "paper Section 4.1.2 states Gowalla mini-batch size 1024 while pinned PyTorch parse.py defaults bpr_batch=2048 and the README command does not override it",
+            "paper refers to NGCF validation/early stopping while pinned PyTorch main.py has no validation or early-stopping branch"
+          ],
+          "join_verdict": "PROHIBITED_DISTINCT_RESULT_AND_CONFIGURATION_SURFACES"
+        },
+        "reproduction_tolerance": {
+          "rule": "inclusive max(0.005 absolute, 0.05 * abs(center))",
+          "classification": "bounded preregisterable engineering acceptance envelope; not a confidence interval and not a substitute for variation",
+          "activation_gate": "dormant until exact source implementation, repository split, optional sampler route/runtime, result-producing checkpoint/run, evaluator invocation and tie behavior are receipt-bound",
+          "metrics": [
+            {
+              "metric": "Recall@20",
+              "center": 0.1824,
+              "tolerance": 0.00912,
+              "inclusive_lower": 0.17328,
+              "inclusive_upper": 0.19152
+            },
+            {
+              "metric": "NDCG@20",
+              "center": 0.1547,
+              "tolerance": 0.007735,
+              "inclusive_lower": 0.146965,
+              "inclusive_upper": 0.162435
+            },
+            {
+              "metric": "Precision@20",
+              "center": 0.05589,
+              "tolerance": 0.005,
+              "inclusive_lower": 0.05089,
+              "inclusive_upper": 0.06089
+            }
+          ]
+        },
+        "evidence_assessment": {
+          "source_center_located": true,
+          "same_commit_implementation_located": true,
+          "same_commit_evaluator_code_located": true,
+          "exact_result_checkpoint_located": false,
+          "immutable_source_owned_run_receipt_located": false,
+          "immutable_source_owned_evaluator_receipt_located": false,
+          "deterministic_tie_contract_located": false,
+          "verdict": "EVIDENCE_INCOMPLETE"
+        }
+      },
+      "unresolved_fields": [
+        "result-producing run count",
+        "result aggregation statistic for the README centers",
+        "variation or dispersion",
+        "exact source environment, dependency and hardware identity for the README run",
+        "whether the optional C++ sampler or Python fallback sampler produced the README run",
+        "exact result-producing evaluation loop position or separately invoked evaluation",
+        "selected checkpoint artifact identity, bytes and SHA-256",
+        "complete immutable stdout/tensorboard/prediction artifact identity and hashes",
+        "immutable source-owned run receipt binding command, data, checkpoint, evaluator and Results row",
+        "explicit deterministic tie semantics for equal scores",
+        "immutable source-owned evaluator execution receipt",
+        "hash-bound equality to any harmonized-v5 adapter/evaluator"
+      ],
+      "dispositive_mismatches": [
+        "The paper's three-layer Gowalla cells and settings are distinct from the pinned PyTorch README center and cannot close README-row fields.",
+        "The source Gowalla integrated-evaluator center is not a harmonized-v5 result and cannot be transported to the v5 surface."
+      ],
+      "inferences_forbidden": [
+        "Do not treat the README's printed partial log or printed Results cells as a run receipt.",
+        "Do not infer one run, a mean, a best run or any dispersion from the phrase 'for seed=2020'.",
+        "Do not infer a selected epoch or result-producing checkpoint from 'stop at 1000 epochs'.",
+        "Do not treat the final overwritten checkpoint filename as the result-producing artifact without a receipt.",
+        "Do not infer deterministic ties from torch.topk or add a raw-item-ID tie break while labeling the result official-source reproduction.",
+        "Do not import paper Table 3 values, Xavier initialization, batch size or early-stopping semantics into the README center.",
+        "Do not transport any README center to the harmonized-v5 or external-dataset surface."
+      ],
+      "recommended_g1_disposition": "KEEP_PENDING",
+      "execution_authorized": false,
+      "result_status": "NOT_RUN",
+      "test_set_opened": "NO"
+    }
+  ],
+  "status_counts": {
+    "EVIDENCE_SUFFICIENT_FOR_G1_REVIEW": 0,
+    "EVIDENCE_INCOMPLETE": 1,
+    "DISPOSITIVE_REJECT": 0,
+    "HANDOFF_INCOMPLETE": 0,
+    "total": 1
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

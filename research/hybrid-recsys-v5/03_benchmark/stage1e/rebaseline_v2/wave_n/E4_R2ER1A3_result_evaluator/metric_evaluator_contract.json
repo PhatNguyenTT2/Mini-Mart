@@ -1,0 +1,353 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r2-er1-a3-metric-evaluator-contract-1.0",
+  "stage_id": "R2-ER1-A3",
+  "lane_id": "E4-R2ER1-A3-LIGHTGCN-RESULT-EVALUATOR",
+  "created_at": "2026-08-22T18:40:00+07:00",
+  "access_date": "2026-08-22",
+  "candidate_order": [
+    "E3-LIGHTGCN-GOWALLA-PYTORCH-001"
+  ],
+  "surface_separation": {
+    "source_evaluator_surface": "Pinned LightGCN-PyTorch integrated Procedure.Test and utils metric functions over the repository Gowalla split",
+    "v5_surface": "Local v5 synthetic-store benchmark, whose standalone evaluator artifacts and metric/candidate/tie contracts remain unmaterialized",
+    "cross_surface_equivalence_established": false,
+    "cross_join_performed": false
+  },
+  "v5_shared_evaluator_contract": {
+    "benchmark_spec_path": "backend/docs/chatbot/seed-product/benchmark-spec-v5.json",
+    "benchmark_spec_canonical_lf_sha256": "acef1c62cc2a9a3ae04fdf2f4b2fb24b3eb8d2634f15e085fbe1878be8dc166d",
+    "adapter_evaluator_contract_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/v5_adapter_and_evaluator_contract.md",
+    "adapter_evaluator_contract_canonical_lf_sha256": "486a6ba5cae4d174b603b52de7cf04883f5842a5c3685370382ebc927c210812",
+    "reproduction_acceptance_rules_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/reproduction_acceptance_rules.md",
+    "reproduction_acceptance_rules_canonical_lf_sha256": "0612a5f63fd949fc8f8134e238b6fcfe59badc1528c512c09e1e7de6af8296d5",
+    "standalone_adapter_artifact": null,
+    "standalone_evaluator_artifact": null,
+    "metric_contract_artifact": null,
+    "candidate_universe_contract_artifact": null,
+    "mask_contract_artifact": null,
+    "tie_contract_artifact": null,
+    "parity_receipt": null,
+    "status": "UNMATERIALIZED"
+  },
+  "rows": [
+    {
+      "row_id": "E3-LIGHTGCN-GOWALLA-PYTORCH-001",
+      "method": "LightGCN",
+      "dataset_scope": "Gowalla on the source repository's bundled train.txt/test.txt split; not the v5 synthetic store/split",
+      "lane_id": "E4-R2ER1-A3-LIGHTGCN-RESULT-EVALUATOR",
+      "evidence_status": "EVIDENCE_INCOMPLETE",
+      "authoritative_sources": [
+        {
+          "url": "https://raw.githubusercontent.com/gusye1234/LightGCN-PyTorch/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/code/Procedure.py",
+          "source_type": "author_repository_integrated_evaluator",
+          "immutable_identity_or_version": "git commit 947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+          "accessed_at": "2026-08-22",
+          "locator": "Procedure.py Test and test_one_batch: testDict user list; batched getUsersRating; train-positive mask to -(1 << 10); torch.topk; binary relevance construction; multicore map; sum then divide by number of users",
+          "supports": [
+            "eligible-user denominator",
+            "full-item scoring followed by train-seen masking",
+            "top-k extraction and binary relevance construction",
+            "macro averaging of per-user metrics"
+          ],
+          "does_not_support": [
+            "an explicit deterministic secondary tie key",
+            "a result-bound evaluator invocation or immutable input/output receipt",
+            "equivalence to the unmaterialized v5 evaluator"
+          ]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/gusye1234/LightGCN-PyTorch/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/code/utils.py",
+          "source_type": "author_repository_metric_and_training_sampler_source",
+          "immutable_identity_or_version": "git commit 947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+          "accessed_at": "2026-08-22",
+          "locator": "utils.py getLabel, RecallPrecision_ATk and NDCGatK_r; UniformSample_original and UniformSample_original_python",
+          "supports": [
+            "binary relevance labels",
+            "precision, recall and NDCG formulas",
+            "the Python fallback's training negative rejection sampling and the existence of an optional C++ route"
+          ],
+          "does_not_support": [
+            "the producing run's sampler route",
+            "the inaccessible C++ sampler's exact algorithm",
+            "evaluation-time negative sampling because the evaluator does not call these training samplers"
+          ]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/gusye1234/LightGCN-PyTorch/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/code/model.py",
+          "source_type": "author_repository_scoring_source",
+          "immutable_identity_or_version": "git commit 947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+          "accessed_at": "2026-08-22",
+          "locator": "model.py LightGCN.computer and getUsersRating",
+          "supports": [
+            "three propagation layers and mean layer aggregation",
+            "sigmoid of the user-item inner product as the evaluator score matrix"
+          ],
+          "does_not_support": [
+            "deterministic handling of equal scores",
+            "a result-bound score matrix digest"
+          ]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/gusye1234/LightGCN-PyTorch/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/code/dataloader.py",
+          "source_type": "author_repository_dataset_split_and_denominator_source",
+          "immutable_identity_or_version": "git commit 947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+          "accessed_at": "2026-08-22",
+          "locator": "dataloader.py Loader.__init__, allPos, __testDict and testDict: parse train.txt/test.txt; build UserItemNet from train interactions; construct test-user-to-item lists",
+          "supports": [
+            "repository split-file interpretation",
+            "training-positive sets used for masking",
+            "testDict as the eligible-user and relevant-item source"
+          ],
+          "does_not_support": [
+            "v5 split equivalence",
+            "a result-bound dataset digest receipt"
+          ]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/gusye1234/LightGCN-PyTorch/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/code/register.py",
+          "source_type": "author_repository_dataset_and_model_registry",
+          "immutable_identity_or_version": "git commit 947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+          "accessed_at": "2026-08-22",
+          "locator": "register.py dataset branch selecting Loader(path=../data/gowalla) and MODELS mapping lgn to LightGCN",
+          "supports": [
+            "the command's binding to the repository Gowalla loader and LightGCN class"
+          ],
+          "does_not_support": [
+            "v5 dataset or evaluator binding"
+          ]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/gusye1234/LightGCN-PyTorch/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/code/parse.py",
+          "source_type": "author_repository_cli_configuration",
+          "immutable_identity_or_version": "git commit 947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+          "accessed_at": "2026-08-22",
+          "locator": "parse.py topks default [20], testbatch default 100 and multicore default 0",
+          "supports": [
+            "cutoff and evaluator batching defaults used by the README command"
+          ],
+          "does_not_support": [
+            "an executed argv receipt"
+          ]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/gusye1234/LightGCN-PyTorch/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/code/world.py",
+          "source_type": "author_repository_runtime_configuration",
+          "immutable_identity_or_version": "git commit 947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+          "accessed_at": "2026-08-22",
+          "locator": "world.py topks parsing, TEST_BATCH_SIZE, multicore and device",
+          "supports": [
+            "top-k list and test-batch runtime variables"
+          ],
+          "does_not_support": [
+            "a result-bound runtime receipt"
+          ]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/gusye1234/LightGCN-PyTorch/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/README.md",
+          "source_type": "author_repository_readme_result_surface",
+          "immutable_identity_or_version": "git commit 947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+          "accessed_at": "2026-08-22",
+          "locator": "README.md lines 33-40 and 69-83: topks=[20] Gowalla command and PyTorch Results table",
+          "supports": [
+            "the selected result surface's cutoff and printed metric names"
+          ],
+          "does_not_support": [
+            "a complete evaluator contract or execution receipt"
+          ]
+        }
+      ],
+      "confirmed_fields": {
+        "evaluator_identity": {
+          "repository": "https://github.com/gusye1234/LightGCN-PyTorch",
+          "revision": "947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+          "entrypoint": "code/Procedure.py::Test",
+          "metric_worker": "code/Procedure.py::test_one_batch",
+          "metric_functions": [
+            "code/utils.py::getLabel",
+            "code/utils.py::RecallPrecision_ATk",
+            "code/utils.py::NDCGatK_r"
+          ],
+          "integration": "training-loop-integrated evaluator",
+          "standalone": false,
+          "result_bound_execution_receipt": null
+        },
+        "cutoff": {
+          "k": 20,
+          "source": "README command --topks=[20] and same-commit default",
+          "topk_requested_from_torch": 20
+        },
+        "eligible_user_denominator": {
+          "eligible_users": "all user keys in dataset.testDict constructed from users present in test.txt",
+          "per_user_empty_relevance_case": "not represented by an empty test list in the parsed testDict construction; only parsed test-file user rows enter the dictionary",
+          "global_averaging_denominator": "len(users), where users = list(dataset.testDict.keys())",
+          "averaging": "macro arithmetic mean across eligible testDict users",
+          "user_weighting": "equal weight per eligible user"
+        },
+        "candidate_universe_and_masking": {
+          "catalog_universe": "all item columns returned by getUsersRating for the repository dataset, indexed 0 through m_items-1",
+          "score_all_catalog_items_before_mask": true,
+          "train_seen_source": "dataset.getUserPosItems(batch_users), backed by UserItemNet built from train.txt",
+          "train_seen_mask_value": -1024,
+          "train_seen_excluded_before_topk": true,
+          "test_positive_exclusion": false,
+          "other_test_item_exclusion": false,
+          "evaluation_negative_sampling": false,
+          "ranking_mode": "full-catalog scoring with train-seen masking, followed by top-k",
+          "catalog_membership_hash_receipt": null,
+          "mask_membership_hash_receipt": null
+        },
+        "relevance": {
+          "type": "binary",
+          "definition": "predicted item is relevant iff it is a member of the user's testDict positive-item list",
+          "graded_relevance": false,
+          "threshold": "implicit membership in the repository test split; no rating threshold is applied by the evaluator",
+          "duplicate_handling_receipt": null
+        },
+        "metric_contracts": {
+          "recall_at_20": {
+            "per_user_numerator": "number of relevant items in the user's top-20 ranking",
+            "per_user_denominator": "number of relevant items in that user's testDict list",
+            "aggregation": "macro mean over eligible testDict users"
+          },
+          "precision_at_20": {
+            "per_user_numerator": "number of relevant items in the user's top-20 ranking",
+            "per_user_denominator": 20,
+            "aggregation": "macro mean over eligible testDict users"
+          },
+          "ndcg_at_20": {
+            "gain": "binary relevance",
+            "discount": "1 / log2(rank + 2) for zero-based rank",
+            "dcg": "sum of discounted binary gains over the first 20 ranked positions",
+            "idcg": "sum of the same discounts for min(number of user test positives, 20) ideal relevant positions",
+            "zero_idcg_handling": "IDCG zeros are replaced with 1 before division",
+            "per_user_value": "DCG / IDCG",
+            "aggregation": "macro mean over eligible testDict users"
+          }
+        },
+        "ranking_and_ties": {
+          "score": "sigmoid of user-item inner product",
+          "ranking_operator": "torch.topk(rating, k=20)",
+          "requested_order": "highest scores",
+          "explicit_secondary_tie_key": null,
+          "raw_item_id_ascending_tiebreak": false,
+          "stable_sort_contract": null,
+          "deterministic_equal_score_semantics": null,
+          "tie_contract_status": "ABSENT"
+        },
+        "sampling": {
+          "evaluation_negative_sampling": "NONE; all item scores are produced and training positives are masked",
+          "training_sampler_relevance_to_evaluator": "training provenance only, not an evaluation candidate sampler",
+          "training_sampler_dispatch": "utils.UniformSample_original attempts sources.sampling.sample_negative and falls back to UniformSample_original_python on exception",
+          "python_fallback": "draw trainDataSize users uniformly with replacement; for each sampled user with positives, choose one train positive uniformly and repeatedly draw an item uniformly until it is not a train positive",
+          "result_producing_sampler_route": null,
+          "cpp_sampler_algorithm": null
+        },
+        "averaging_and_reporting": {
+          "per_batch_behavior": "sum metric vectors returned for user batches",
+          "final_behavior": "divide summed vectors by total eligible-user count",
+          "run_level_aggregation": null,
+          "run_count": null,
+          "variation": null
+        },
+        "evaluator_receipt": {
+          "immutable_source_revision": "947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+          "source_code_located": true,
+          "source_owned_run_id": null,
+          "executed_argv": null,
+          "input_data_digest": null,
+          "checkpoint_digest": null,
+          "score_or_ranking_digest": null,
+          "output_metric_digest": null,
+          "complete_immutable_log": null,
+          "receipt_status": "ABSENT"
+        },
+        "contract_verdict": "FORMULAS_AND_CANDIDATE_FLOW_LOCATED_BUT_TIES_AND_RESULT_BOUND_RECEIPT_ABSENT"
+      },
+      "unresolved_fields": [
+        "an explicit deterministic secondary ordering rule for equal torch.topk scores",
+        "whether equal-score behavior was stable and reproducible in the result-producing runtime",
+        "the exact runtime, PyTorch version, device and determinism settings",
+        "the exact producing evaluator invocation and its argv",
+        "result-bound data, checkpoint, score/ranking and metric-output digests",
+        "a complete immutable source-owned run/evaluator receipt",
+        "the producing training sampler route and the optional C++ sampler's exact source semantics",
+        "run-level aggregation and variation",
+        "equivalence to a materialized v5 candidate, mask, metric and tie contract",
+        "parity between this integrated evaluator and any future v5 standalone evaluator"
+      ],
+      "dispositive_mismatches": [
+        {
+          "type": "SOURCE_V5_DATASET_SPLIT_MISMATCH",
+          "source_semantics": "repository Gowalla train.txt/test.txt and repository item index universe",
+          "v5_requirement_or_state": "separate synthetic store/split",
+          "classification": "DIFFERENT_RESULT_SURFACE",
+          "effect": "Source centers cannot be transported to v5."
+        },
+        {
+          "type": "INTEGRATED_VERSUS_STANDALONE_EVALUATOR",
+          "source_semantics": "Procedure.Test is called inside main.py's training loop",
+          "v5_requirement_or_state": "a standalone shared evaluator with immutable input/output and argv receipts is required",
+          "classification": "INCOMPATIBLE_UNTIL_ADAPTER_AND_PARITY_RECEIPT_EXIST",
+          "effect": "The source evaluator cannot be deemed the v5 shared evaluator."
+        },
+        {
+          "type": "TIE_CONTRACT_MISMATCH",
+          "source_semantics": "torch.topk with no explicit secondary key",
+          "v5_requirement_or_state": "deterministic ordering is required; the frozen reproduction rules specify (-score, raw_item_id) where tie harmonization is applied",
+          "classification": "SOURCE_TIE_SEMANTICS_ABSENT",
+          "effect": "Adding raw-item-ID tie ordering would define a harmonized evaluation, not prove exact official reproduction."
+        },
+        {
+          "type": "V5_CONTRACTS_UNMATERIALIZED",
+          "source_semantics": "source metric and candidate flow can be described from pinned code",
+          "v5_requirement_or_state": "standalone evaluator, metric, candidate-universe, mask and tie artifacts are null/unmaterialized",
+          "classification": "EQUALITY_NOT_ESTABLISHED",
+          "effect": "No source-to-v5 evaluator equivalence claim is allowed."
+        },
+        {
+          "type": "SEALED_TEST_ARCHITECTURE_CONFLICT_IF_COPIED",
+          "source_semantics": "source test evaluation occurs repeatedly during training",
+          "v5_requirement_or_state": "v5 TEST must remain sealed until its authorized gate",
+          "classification": "ARCHITECTURAL_INCOMPATIBILITY",
+          "effect": "The source loop design must not be copied to v5; this evidence work did not open v5 TEST."
+        },
+        {
+          "type": "RECEIPT_ABSENCE",
+          "source_semantics": "printed README metrics and partial console text",
+          "v5_requirement_or_state": "immutable run, checkpoint, evaluator, argv and input/output hash receipts",
+          "classification": "INSUFFICIENT_PROVENANCE",
+          "effect": "Printed metrics cannot close the v5 receipt gates."
+        }
+      ],
+      "inferences_forbidden": [
+        "Do not infer deterministic tie semantics from torch.topk.",
+        "Do not infer a sampled-negative evaluator from the existence of training samplers.",
+        "Do not infer v5 candidate-universe, mask, denominator or metric equality from similarly named metrics.",
+        "Do not treat the pinned evaluator source as proof that it produced the README row.",
+        "Do not treat printed metrics as an evaluator execution receipt.",
+        "Do not add (-score, raw_item_id) and call the result an exact official reproduction; that is a harmonized contract.",
+        "Do not execute the source's repeated test-evaluation schedule against sealed v5 TEST.",
+        "Do not import paper-surface all-ranking prose to repair missing result-bound source receipts."
+      ],
+      "recommended_g1_disposition": "KEEP_PENDING",
+      "execution_authorized": false,
+      "result_status": "NOT_RUN",
+      "test_set_opened": "NO"
+    }
+  ],
+  "status_counts": {
+    "candidate_rows": 1,
+    "evidence_complete": 0,
+    "evidence_incomplete": 1,
+    "keep_pending": 1,
+    "accepted": 0,
+    "rejected": 0
+  },
+  "truth_state": {
+    "execution_performed": false,
+    "result_status": "NOT_RUN",
+    "test_set_opened": "NO",
+    "accepted_candidate_count": 0,
+    "project_numbers_status": "INVALID_FOR_PAPER"
+  }
+}

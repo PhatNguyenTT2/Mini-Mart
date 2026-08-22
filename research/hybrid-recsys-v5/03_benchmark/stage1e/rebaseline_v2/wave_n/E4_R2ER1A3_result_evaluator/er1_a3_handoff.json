@@ -1,0 +1,415 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r2-er1-a3-handoff-1.0",
+  "stage_id": "R2-ER1-A3",
+  "lane_id": "E4-R2ER1-A3-LIGHTGCN-RESULT-EVALUATOR",
+  "created_at": "2026-08-22T18:40:00+07:00",
+  "workflow": "ars-codex:academic-research-suite/deep-research/fact-check/source-verification",
+  "material_passport": {
+    "origin_skill": "ars-codex:academic-research-suite/deep-research",
+    "origin_mode": "fact-check/source-verification/source-bound-result-evaluator/fail-closed",
+    "origin_date": "2026-08-22",
+    "verification_status": "UNVERIFIED",
+    "version_label": "stage1e_rebaseline_v2_wave_n_E4_R2ER1A3_v1",
+    "upstream_dependencies": [
+      "stage1e_rebaseline_v2_E4_R2_ER1_change_control_contract",
+      "stage1e_rebaseline_v2_E4_R2_ER1_frozen_input_manifest",
+      "stage1e_rebaseline_v2_E4_R2_ER1_gate_receipt",
+      "stage1e_rebaseline_v2_wave_g_E4_R2A3_metric_evidence",
+      "stage1e_rebaseline_v2_wave_h_E4_R2G1_candidate_selection"
+    ],
+    "repro_lock": {
+      "schema_version": "1.0",
+      "stochasticity_declaration": "LLM evidence synthesis is not byte-reproducible. This lock records the actual model metadata, loaded instruction identities, frozen inputs and source-verification protocol; it is not a deterministic replay guarantee and does not verify a reproduction run.",
+      "skill_adapter_version": "0.1.26",
+      "ars_suite_version": "3.21.0",
+      "model": {
+        "family": "openai",
+        "id": "gpt-5.6-sol",
+        "reasoning": "max",
+        "service_tier": "priority",
+        "display": "Sol Max Fast",
+        "speed": "Fast",
+        "weight_stable": false
+      },
+      "instruction_hashes": [
+        {
+          "path": "SKILL.md",
+          "canonical_lf_bytes": 30499,
+          "canonical_lf_sha256": "9c2cb6e3b5aad7fb747f79163b144cfbddffa85d67e2bdcc5a5fa5470252ad00"
+        },
+        {
+          "path": "ars/deep-research/WORKFLOW.md",
+          "canonical_lf_bytes": 36979,
+          "canonical_lf_sha256": "5bd35498c80ddce2ab624de6d8e538a425a6149c20bb9da8b9d8f4f96f979c31"
+        },
+        {
+          "path": "ars/deep-research/agents/source_verification_agent.md",
+          "canonical_lf_bytes": 10364,
+          "canonical_lf_sha256": "3ffecae526acdde6d28bb8d2a9f5a88f95c00f51338c8f4d4a724ced3f7777bf"
+        },
+        {
+          "path": "ars/shared/handoff_schemas.md",
+          "canonical_lf_bytes": 93000,
+          "canonical_lf_sha256": "c91b127d87d2370aee44f99395c5ae5e538729bead802d67bc6116fef0f841d3"
+        },
+        {
+          "path": "ars/shared/references/evidence_row_protocol.md",
+          "canonical_lf_bytes": 13730,
+          "canonical_lf_sha256": "d206df0eca8eef18b41a26b7f2401ca15c36ac9b0696300f09d2852511de6211"
+        }
+      ],
+      "cross_model": {
+        "enabled": false,
+        "secondary_model_id": null
+      },
+      "external_protocols": {
+        "public_web_primary_source_verification": true,
+        "direct_paper_author_repository_and_official_project_sources_only": true,
+        "third_party_reproduction_used_to_close_fields": false,
+        "programmatic_resolver_clients": "NOT_USED"
+      }
+    },
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-22T18:40:00+07:00",
+      "declared_by": "scholar",
+      "statement": "The task explicitly declares an evidence-only lane. No preprocessing, training, evaluation, benchmark or TEST experiment was performed or claimed."
+    }
+  },
+  "skill_adapter_version": "0.1.26",
+  "ars_suite_version": "3.21.0",
+  "actual_model": "gpt-5.6-sol",
+  "actual_reasoning": "max",
+  "actual_service_tier": "priority",
+  "actual_display": "Sol Max Fast",
+  "actual_speed": "Fast",
+  "verification_status": "UNVERIFIED",
+  "access_date": "2026-08-22",
+  "frozen_control": {
+    "contract": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r2_er1_change_control_contract.md",
+      "canonical_lf_bytes": 8725,
+      "canonical_lf_sha256": "6b9c03359a77c6a66535bb5cb9a26f6562bd0b82cc07b292836aa2497003f8c7"
+    },
+    "manifest": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r2_er1_frozen_input_manifest.json",
+      "canonical_lf_bytes": 8355,
+      "canonical_lf_sha256": "12cff269c80e9cef5eb35c4a822a6ab756a480a4769e24c31861cd581748d916"
+    },
+    "gate_receipt": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r2_er1_gate_receipt.json",
+      "canonical_lf_bytes": 2789,
+      "canonical_lf_sha256": "0de02930581306fd6758ee529d58dcf3c159e55afec15ad24ba91235371c680e"
+    },
+    "entry_validator": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r2_er1_gate.py",
+      "canonical_lf_bytes": 9482,
+      "canonical_lf_sha256": "cb30f7733ca6633bf0143d91ea2afa755c21f24bd5181a0e583b69bc0874b6bb"
+    },
+    "local_v5_contracts": [
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/v5_adapter_and_evaluator_contract.md",
+        "canonical_lf_bytes": 9142,
+        "canonical_lf_sha256": "486a6ba5cae4d174b603b52de7cf04883f5842a5c3685370382ebc927c210812"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/reproduction_acceptance_rules.md",
+        "canonical_lf_bytes": 10220,
+        "canonical_lf_sha256": "0612a5f63fd949fc8f8134e238b6fcfe59badc1528c512c09e1e7de6af8296d5"
+      },
+      {
+        "path": "backend/docs/chatbot/seed-product/benchmark-spec-v5.json",
+        "canonical_lf_bytes": 2629,
+        "canonical_lf_sha256": "acef1c62cc2a9a3ae04fdf2f4b2fb24b3eb8d2634f15e085fbe1878be8dc166d"
+      }
+    ]
+  },
+  "input_replay": {
+    "validator_command": "python research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r2_er1_gate.py",
+    "validator_exit_code": 0,
+    "validator_stdout_verdict": "PASS_R2_ER1_GATE_31_OF_31_READY_FOR_PARALLEL_DISPATCH",
+    "hash_policy": "Strict UTF-8 decode, normalize CRLF and CR to LF, encode UTF-8, then SHA-256",
+    "manifest_entries_expected": 31,
+    "manifest_entries_present": 31,
+    "manifest_entries_byte_count_matched": 31,
+    "manifest_entries_hash_matched": 31,
+    "manifest_entries_missing": 0,
+    "manifest_entries_mismatched": 0,
+    "strict_json_inputs_expected": 24,
+    "strict_json_inputs_parsed": 24,
+    "failures": [],
+    "independent_hash_replay": "PASS_31_OF_31",
+    "verdict": "PASS"
+  },
+  "prior_packet_inputs": [
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A3_metric_evidence/result_center_register.json",
+      "canonical_lf_bytes": 32753,
+      "canonical_lf_sha256": "06be5f8d371463b44f2fdc8dc1ab4d478c072472cbeba3f08493f264ef26438b"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A3_metric_evidence/center_config_seed_checkpoint_binding.json",
+      "canonical_lf_bytes": 27009,
+      "canonical_lf_sha256": "ee5255e6be960c17b438ff30b635315b1384d0b4d5acd1f4749306132dbe54ea"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A3_metric_evidence/metric_evaluator_contracts.json",
+      "canonical_lf_bytes": 25268,
+      "canonical_lf_sha256": "42c0b1eba16a5aaf3d74871fdff48a1a0949b49960fd39e19d25ce1e677c2f28"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A3_metric_evidence/a3_handoff.json",
+      "canonical_lf_bytes": 17262,
+      "canonical_lf_sha256": "1ad305a3418d025b8a4fc5a1d148fdea2770d5ee6e32e68f50388112e39f8c40"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_h/E4_R2G1_candidate_selection/central_evidence_intersection.json",
+      "canonical_lf_bytes": 7194,
+      "canonical_lf_sha256": "fc439ac8747d25775aad3bb14c6eb0b2cd9c392447bfa3fabfc9be14a16de539"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_h/E4_R2G1_candidate_selection/candidate_decision_matrix.json",
+      "canonical_lf_bytes": 3372,
+      "canonical_lf_sha256": "ea58afb47a1d53c929f27f623a3d62572623c83f6b0d0fd3be59eaa6e2082bce"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_h/E4_R2G1_candidate_selection/primary_locator_replay_log.json",
+      "canonical_lf_bytes": 3965,
+      "canonical_lf_sha256": "f769d64b8e238ee840f00ab00f1c9e4c7c0dcb1d03a0b42c356c82674694209f"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_h/E4_R2G1_candidate_selection/r2_g1_no_selection_report.md",
+      "canonical_lf_bytes": 4570,
+      "canonical_lf_sha256": "953d1bf47da04b85234bd0c7ff9608f3cdc623ec7905bc37b54ca8be84e3c6a8"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_h/E4_R2G1_candidate_selection/r2_g1_handoff.json",
+      "canonical_lf_bytes": 6868,
+      "canonical_lf_sha256": "9b96b6f423d354932cb0d53f60586bf180dc7472fe2bccbb031778bd38748855"
+    }
+  ],
+  "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_n/E4_R2ER1A3_result_evaluator",
+  "output_hash_policy": "Strict UTF-8 decode, normalize CRLF and CR to LF, encode UTF-8, then SHA-256",
+  "exact_output_file_count": 4,
+  "exact_output_file_list": [
+    "lightgcn_result_evaluator_evidence.json",
+    "center_run_checkpoint_binding.json",
+    "metric_evaluator_contract.json",
+    "er1_a3_handoff.json"
+  ],
+  "outputs": [
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_n/E4_R2ER1A3_result_evaluator/lightgcn_result_evaluator_evidence.json",
+      "canonical_lf_bytes": 23038,
+      "canonical_lf_sha256": "914e1b50edab014ba0947b8e9fe2786cad54393bc5c4d9d97aa8e484ac044292",
+      "verification_status": "UNVERIFIED"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_n/E4_R2ER1A3_result_evaluator/center_run_checkpoint_binding.json",
+      "canonical_lf_bytes": 18387,
+      "canonical_lf_sha256": "009bd63ee5ac5a744b7a919236f09fc8ad10e673057926444fe1a6f0700062fd",
+      "verification_status": "UNVERIFIED"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_n/E4_R2ER1A3_result_evaluator/metric_evaluator_contract.json",
+      "canonical_lf_bytes": 19252,
+      "canonical_lf_sha256": "a9a690196c1d632b6fd2072428399588cb68d9edfca834e6c89530c7503f66d7",
+      "verification_status": "UNVERIFIED"
+    }
+  ],
+  "handoff_artifact": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_n/E4_R2ER1A3_result_evaluator/er1_a3_handoff.json",
+    "canonical_lf_bytes": null,
+    "canonical_lf_sha256": null,
+    "self_hash_reported_out_of_band": true,
+    "sha256_policy": "The canonical-LF hash of this self-referential handoff is computed after finalization and reported out of band; embedding that final self-hash would change the hashed bytes."
+  },
+  "coverage": {
+    "candidate_scope_exact": [
+      "E3-LIGHTGCN-GOWALLA-PYTORCH-001"
+    ],
+    "candidate_rows_expected": 1,
+    "candidate_rows_written": 1,
+    "new_candidate_row_created": false,
+    "source_surfaces_checked": [
+      "direct author paper",
+      "official author repository immutable root and code trees",
+      "same-revision README result and command",
+      "same-revision configuration, model, loader, registry, sampler, training, checkpoint and evaluator code",
+      "official project releases and tags surfaces"
+    ],
+    "required_dimensions_checked": [
+      "reported result table and cell locator",
+      "implementation and immutable revision",
+      "model, configuration, layer count and aggregation",
+      "seed value, run schedule, run count, aggregation and variation",
+      "checkpoint selection and run/checkpoint artifact identity",
+      "metric, cutoff, averaging, relevance and denominator",
+      "candidate universe, train-seen masking, full versus negative ranking and sampling",
+      "tie semantics",
+      "evaluator code/revision and immutable source-owned run/evaluator receipt",
+      "v5 incompatibilities and bounded preregisterable tolerance"
+    ],
+    "coverage_verdict": "COMPLETE_SCOPE_COVERAGE_WITH_EXPLICIT_UNRESOLVED_FIELDS"
+  },
+  "authoritative_web_research": {
+    "source_policy": "Direct author paper/proceedings, author repository/config/evaluator/log/result/release/checkpoint and official project sources only. No third-party reproduction was used to close a source-owned result field.",
+    "selected_immutable_revision": "947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+    "verified_sources": [
+      {
+        "url": "https://arxiv.org/pdf/2002.02126",
+        "type": "direct_author_paper",
+        "identity": "arXiv:2002.02126v4; DOI 10.1145/3397271.3401063",
+        "use": "relationship and negative-control comparison only; not used to fill missing fields on the distinct README result surface"
+      },
+      {
+        "url": "https://github.com/gusye1234/LightGCN-PyTorch/tree/947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+        "type": "official_author_repository_immutable_tree",
+        "use": "immutable implementation and source-surface identity"
+      },
+      {
+        "url": "https://raw.githubusercontent.com/gusye1234/LightGCN-PyTorch/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/README.md",
+        "type": "same_revision_result_and_command",
+        "use": "selected result-cell locator and documented command"
+      },
+      {
+        "url": "https://github.com/gusye1234/LightGCN-PyTorch/tree/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/code",
+        "type": "official_author_repository_immutable_code_tree",
+        "use": "entrypoint, configuration, model, loader, registry, metric, evaluator, sampler and checkpoint source inspection"
+      },
+      {
+        "url": "https://github.com/gusye1234/LightGCN-PyTorch/commit/947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+        "type": "official_commit_surface",
+        "use": "immutable revision identity"
+      },
+      {
+        "url": "https://github.com/gusye1234/LightGCN-PyTorch/releases",
+        "type": "official_release_surface",
+        "use": "no release artifact exposed on the inspected surface at access time; not a universal absence proof"
+      },
+      {
+        "url": "https://github.com/gusye1234/LightGCN-PyTorch/tags",
+        "type": "official_tag_surface",
+        "use": "official project tag surface inspection; not used as a universal absence proof"
+      }
+    ],
+    "retrieval_failures": [
+      {
+        "target": "https://raw.githubusercontent.com/gusye1234/LightGCN-PyTorch/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/code/sources/sampling.cpp",
+        "failure": "The direct raw source was unavailable through the permitted retrieval routes during this lane; no payload was saved and no authenticated access was attempted.",
+        "impact": "The optional C++ sampler algorithm and the producing run's sampler route remain unresolved."
+      },
+      {
+        "target": "https://raw.githubusercontent.com/gusye1234/LightGCN-PyTorch/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/requirements.txt",
+        "failure": "The direct pinned requirements payload was unavailable through the permitted retrieval route.",
+        "impact": "Dependency and runtime versions remain unresolved."
+      },
+      {
+        "target": "https://raw.githubusercontent.com/gusye1234/LightGCN-PyTorch/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/.gitignore",
+        "failure": "The direct pinned ignore-file payload was unavailable through the permitted retrieval route.",
+        "impact": "Generated-artifact exclusion rules were not established; this is not used as an absence proof."
+      },
+      {
+        "target": "https://api.github.com/repos/gusye1234/LightGCN-PyTorch/git/trees/947ca2b3b1d2d3545b114145710cb06c4e57b3d2?recursive=1",
+        "failure": "The recursive tree API route was unavailable under the permitted unauthenticated source-verification path.",
+        "impact": "No exhaustive repository-tree negative proof is claimed; rendered immutable root/code trees and official release surfaces were inspected instead."
+      },
+      {
+        "target": "https://doi.org/10.1145/3397271.3401063",
+        "failure": "The ACM proceedings route returned an internal retrieval error.",
+        "impact": "No decision-bearing loss: the direct author arXiv v4 paper was successfully inspected."
+      }
+    ]
+  },
+  "lane_scoped_claims": [
+    "The one exact selected surface is the same-revision PyTorch README Gowalla 3-layer row: Recall@20=0.1824, NDCG@20=0.1547 and Precision@20=0.05589.",
+    "The same revision binds the README command to a three-layer, 64-dimensional LightGCN using unweighted mean aggregation across layer 0 through layer 3 and documented seed 2020.",
+    "The source evaluator computes binary full-catalog top-20 rankings after masking train positives, with macro per-user Recall, Precision and NDCG over testDict users.",
+    "The source does not bind the printed center to an immutable producing run, selected checkpoint, full log or evaluator input/output receipt, and it supplies no explicit deterministic equal-score tie rule.",
+    "The paper table is a distinct result/configuration surface and was not cross-joined with the selected README center.",
+    "The frozen tolerance is recorded but remains dormant because identity, run/checkpoint, receipt and tie gates are open."
+  ],
+  "unresolved_evidence": [
+    "result-producing run ID and complete immutable run log",
+    "run count, seed schedule beyond the documented seed value, center aggregation and variation",
+    "selected checkpoint epoch/step, bytes, hash and result binding",
+    "executed argv, environment, device, dependency and determinism receipt",
+    "result-producing sampler route and optional C++ sampler semantics",
+    "evaluator input/output, score/ranking and metric-output receipts",
+    "explicit deterministic equal-score tie semantics",
+    "materialized v5 standalone evaluator, metric, candidate-universe, mask and tie contracts",
+    "source-to-v5 evaluator parity",
+    "any valid transport of the source Gowalla center to the separate v5 synthetic store/split"
+  ],
+  "candidate_status": {
+    "row_id": "E3-LIGHTGCN-GOWALLA-PYTORCH-001",
+    "evidence_status": "EVIDENCE_INCOMPLETE",
+    "recommended_g1_disposition": "KEEP_PENDING",
+    "selection_status": "NOT_SELECTED",
+    "execution_authorized": false
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_performed": false,
+    "execution_authorized": false,
+    "empirical_claims_made": false,
+    "candidate_selected": false,
+    "new_candidate_row_created": false,
+    "project_numbers_status": "INVALID_FOR_PAPER"
+  },
+  "truth_state_guards": {
+    "printed_metrics_are_run_receipts": false,
+    "paper_and_readme_surfaces_cross_joinable": false,
+    "missing_source_owned_fields_closed_by_third_party": false,
+    "fixed_seed_proves_single_run": false,
+    "final_overwritten_checkpoint_proves_result_checkpoint": false,
+    "source_torch_topk_proves_deterministic_ties": false,
+    "source_gowalla_center_is_valid_for_v5": false,
+    "dormant_tolerance_repairs_missing_provenance": false,
+    "source_evaluator_equals_v5_shared_evaluator": false,
+    "unverified_evidence_is_paper_grade": false
+  },
+  "forbidden_operation_flags": {
+    "git_clone_performed": false,
+    "git_fetch_performed": false,
+    "git_checkout_performed": false,
+    "source_archive_download_performed": false,
+    "source_payload_saved": false,
+    "dataset_download_performed": false,
+    "checkpoint_download_performed": false,
+    "authenticated_access_performed": false,
+    "authenticated_dataset_access_performed": false,
+    "terms_acceptance_performed": false,
+    "package_installation_performed": false,
+    "environment_creation_performed": false,
+    "container_creation_or_execution_performed": false,
+    "repository_code_execution_performed": false,
+    "preprocessing_performed": false,
+    "training_performed": false,
+    "evaluation_performed": false,
+    "benchmark_performed": false,
+    "test_performed": false,
+    "test_set_access_performed": false,
+    "maintainer_contact_performed": false,
+    "new_candidate_row_created": false,
+    "candidate_selection_performed": false,
+    "cross_row_join_performed": false,
+    "auto_fallback_performed": false,
+    "pipeline_state_edit_performed": false,
+    "control_file_edit_performed": false,
+    "other_track_output_edit_performed": false
+  },
+  "git_commit": {
+    "sha": null,
+    "parent": null,
+    "reported_out_of_band": true,
+    "reason": "Embedding the commit identity in a file included by that commit is self-referential; the final commit and parent are reported after commit creation."
+  },
+  "lane_status": "COMPLETE_FAIL_CLOSED",
+  "verdict": "COMPLETE_FAIL_CLOSED_READY_FOR_CENTRAL_G1",
+  "verdict_detail": "All required LightGCN source surfaces were checked within the permitted evidence-only scope. The exact README center, immutable implementation/configuration and evaluator formulas are located, but source-owned run, selected checkpoint, evaluator receipt, run aggregation/variation and deterministic tie semantics remain unbound. The row therefore remains EVIDENCE_INCOMPLETE and KEEP_PENDING.",
+  "fail_closed": true,
+  "next_gate": "Central R2-G1 may validate this packet and retain the candidate as pending. This handoff does not select a candidate or authorize acquisition, materialization, preprocessing, training, evaluation, benchmark execution or TEST access."
+}
