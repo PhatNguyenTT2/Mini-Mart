@@ -1,0 +1,516 @@
+{
+  "schema_version": "academic-research-pipeline-state-1.0",
+  "project": "hybrid-recsys-v5",
+  "stage": "1E",
+  "state": "stage1e_rebaseline_v2_r2_er1_parallel_evidence_active",
+  "updated_at": "2026-08-22",
+  "model": "gpt-5.6-sol",
+  "reasoning": "max",
+  "service_tier": "priority",
+  "model_profile": "Sol Max Fast",
+  "result_status": "NOT_RUN",
+  "test_set_opened": "NO",
+  "superseded_wave1_v1": {
+    "status": "ARCHIVED_NOT_IMPORTED",
+    "record": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/wave1_v1_supersession_record.json"
+  },
+  "rebaseline_v2": {
+    "status": "e4_r2_er1_parallel_evidence_active",
+    "wave_a_expected": 3,
+    "wave_a_active": 0,
+    "wave_a_complete": 3,
+    "wave_a_threads": {
+      "E1_official_repos": {"thread_id":"01a02559-88f0-7b72-9a72-7ffc9f0ddf26","status":"completed_imported","central_tip":"013b361"},
+      "E2_reference_datasets": {"thread_id":"01a02559-88ea-7d21-8eef-0021fddcc619","status":"completed_imported","central_tip":"87e64a5"},
+      "E3_metric_benchmarks": {"thread_id":"01a02559-88ef-78e1-9d09-ccb55482f1cb","status":"completed_imported","central_tip":"9d43216"}
+    },
+    "wave_a_validation": {
+      "verdict": "PASS_STRUCTURALLY_READY_FOR_E4",
+      "content_status": "UNVERIFIED_WITH_BLOCKERS",
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_wave_a_validation_receipt.json",
+      "canonical_lf_sha256": "1024cd38692a6632e4972484f37fd58e24ea05744e00bd33b61eca4af470b44a"
+    },
+    "e4_contract": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_reproduction_adaptation_contract.md",
+      "canonical_lf_sha256": "368df1ab39df6f4cf03565cd871ba2fc5276a886f314557c6c0ff1244e9e63e5"
+    },
+    "e4_input_manifest": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_frozen_input_manifest.json",
+      "sha256": "e320eff700eae6e12d8e4059e25656b88dfd1ac1904e42290fce32944ddf41d2",
+      "input_count": 28,
+      "validation": "PASS"
+    },
+    "e4_status": "COMPLETE_FAIL_CLOSED_IMPORTED",
+    "e4_task": {
+      "client_thread_id": "client-new-thread:37c9f5d6-2113-4c39-806b-d60302ea7e9f",
+      "thread_id": "01a02589-6ebe-7110-8564-3bd748a19952",
+      "host_id": "local",
+      "worktree": "C:/Users/ACER/.codex/worktrees/237c/backend",
+      "dispatch": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_dispatch.json",
+      "source_tip": "c348218b0c128ed3adc1a402ef272114725a8453",
+      "central_tip": "c898702"
+    },
+    "e4_entry_gate": {
+      "status": "PASS",
+      "verified_inputs": 28,
+      "expected_inputs": 28,
+      "failure_count": 0
+    },
+    "e4_result": {
+      "verdict": "FAIL_NOT_READY_FOR_E5",
+      "verdict_detail": "BLOCKED_NO_READY_REFERENCE_BUNDLE",
+      "ready_reference_rows": 0,
+      "pending_rows": 7,
+      "rejected_rows": 6,
+      "wave_a_blockers_mapped": 26,
+      "execution_authorized": false,
+      "validation_receipt": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_validation_receipt.json"
+    },
+    "e5_contract": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e5_independent_lock_audit_contract.md",
+      "canonical_lf_sha256": "59394ab80d3d78c491d20346bf44cfab5ab7d75e8acbab45ae3ecaf50c62dff5"
+    },
+    "e5_input_manifest": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e5_frozen_input_manifest.json",
+      "sha256": "f06e3b4e60afd53923fb343b74cedd4e1a49c75d2b4e0151197adc9c7945446f",
+      "direct_inputs": 10,
+      "transitive_inputs": 28,
+      "total_checks": 38,
+      "validation": "PASS"
+    },
+    "e5_status": "COMPLETE_FAIL_CLOSED_IMPORTED_VALIDATED",
+    "e5_task": {
+      "client_thread_id": "client-new-thread:4c4d9122-2b97-450a-95dc-13942af509d7",
+      "thread_id": "01a025bf-9b0c-74c1-9af0-aab542ad70e8",
+      "host_id": "local",
+      "worktree": "C:/Users/ACER/.codex/worktrees/87bd/backend",
+      "dispatch": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e5_dispatch.json",
+      "source_commit": "cc1d72a6e5f8369da60d97416f90fd541b912cd9",
+      "central_tip": "cc1d72a"
+    },
+    "e5_entry_gate": {
+      "status": "PASS",
+      "manifest_self_check": 1,
+      "direct_inputs_verified": 10,
+      "transitive_inputs_verified": 28,
+      "total_artifact_checks": 38,
+      "failure_count": 0
+    },
+    "e5_central_validation": {
+      "status": "PASS_E5_COMPLETE_FAIL_CLOSED_REMEDIATION_REQUIRED",
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e5_validation_receipt.json",
+      "canonical_lf_sha256": "ea25c3e4fa30d5e4fe68bfae93adc4646385f30aad162366958e2cca37aa3aed",
+      "direct_inputs_verified": 10,
+      "transitive_inputs_verified": 28,
+      "output_files_verified": 5,
+      "failure_count": 0
+    },
+    "e5_result": {
+      "verdict": "REVISE_E4_ADDITIONAL_FINDINGS",
+      "authorization_decision": "DENIED_E4_FAIL_NOT_READY_ADDITIONAL_FINDINGS",
+      "critical_findings": 0,
+      "major_findings": 4,
+      "minor_findings": 0,
+      "ready_reference_rows": 0,
+      "pending_rows": 7,
+      "rejected_rows": 6,
+      "execution_authorized": false,
+      "result_status": "NOT_RUN",
+      "test_set_opened": "NO"
+    },
+    "e4_r1_remediation": {
+      "status": "COMPLETE_LANES_IMPORTED_VALIDATED_R1C_COMPLETE",
+      "required_findings": ["E5-F001", "E5-F002", "E5-F003", "E5-F004"],
+      "contract": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r1_parallel_remediation_contract.md",
+        "canonical_lf_sha256": "b51c41a931ef88a1fcc356394600b3c2fcdafad68b5599477c9a894040d82538"
+      },
+      "input_manifest": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r1_frozen_input_manifest.json",
+        "canonical_lf_sha256": "d0a5db377c36f7109b4b56089ac024bb8ddcd4b5badc5aeb464969aa2e13d817",
+        "verified_inputs": 17,
+        "expected_inputs": 17,
+        "validation": "PASS"
+      },
+      "dispatch": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r1_dispatch.json",
+      "lanes": {
+        "E4_R1A_provenance_config": {
+          "thread_id": "01a025ef-990a-7ef3-8b32-deba5ae17208",
+          "host_id": "local",
+          "worktree": "C:/Users/ACER/.codex/worktrees/699f/backend",
+          "model": "gpt-5.6-sol",
+          "reasoning": "xhigh",
+          "status": "completed_imported_validated",
+          "source_commit": "48d0bbd031f4850750c9659de8244408ac6eb4e0",
+          "central_tip": "48d0bbd031f4850750c9659de8244408ac6eb4e0",
+          "handoff_canonical_lf_sha256": "6d779deeebd1422860665d42713da567c59fc3075045f406d308933aa9f13f26",
+          "owns_findings": ["E5-F001", "E5-F002"]
+        },
+        "E4_R1B_command_controls": {
+          "thread_id": "01a025ef-990a-7ef3-8b32-de9a0bfcad42",
+          "host_id": "local",
+          "worktree": "C:/Users/ACER/.codex/worktrees/0050/backend",
+          "model": "gpt-5.6-sol",
+          "reasoning": "xhigh",
+          "status": "completed_imported_validated",
+          "source_commit": "196e6c0ad295c282127dfb7fbd0d0a22ede33c39",
+          "central_tip": "de91bdd06df280aa60082e775fc6e06a1c1cc810",
+          "handoff_canonical_lf_sha256": "61dd6a87dacb09916ef0e10f0798ffffc3f4c641f3a3b3dbe6add8f39652a84b",
+          "owns_findings": ["E5-F003", "E5-F004"]
+        }
+      },
+      "lane_central_validation": {
+        "status": "PASS_BOTH_LANES_READY_FOR_E4_R1C_SYNTHESIS",
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r1_lanes_validation_receipt.json",
+        "canonical_lf_sha256": "d790eaf2503f9dba8dcff231b894ad8a50cefb98ae96d7f7ef9b363e0231edf2",
+        "frozen_inputs_verified": 17,
+        "failure_count": 0
+      },
+      "e4_r1c": {
+        "status": "COMPLETE_CORRECTED_FAIL_CLOSED_CENTRALLY_VALIDATED",
+        "model": "gpt-5.6-sol",
+        "reasoning": "high",
+        "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_e/E4_R1C_reproduction_adaptation",
+        "contract": {
+          "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r1c_central_synthesis_contract.md",
+          "canonical_lf_sha256": "192a49d4afec4e52d52515879ec28e4e58f8acf4f9038afe9ff0a3d06d7765c9"
+        },
+        "input_manifest": {
+          "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r1c_frozen_input_manifest.json",
+          "canonical_lf_sha256": "3f1a1c6eb350120674a57dc6df846c58f456d61df30e0da27ebb7aea17923d87",
+          "verified_inputs": 20,
+          "expected_inputs": 20,
+          "validation": "PASS"
+        },
+        "central_validation": {
+          "status": "PASS_E4_R1C_CORRECTED_FAIL_CLOSED_READY_FOR_E5_R1_AUDIT",
+          "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r1c_validation_receipt.json",
+          "canonical_lf_sha256": "bd7e0ed6b3e204ee14f707cab0af33e346f40067bd132e7e9311920ecbd31d2c",
+          "output_files_verified": 6,
+          "failure_count": 0
+        },
+        "result": {
+          "verdict": "COMPLETE_CORRECTED_FAIL_CLOSED_READY_FOR_E5_R1_AUDIT",
+          "ready_reference_rows": 0,
+          "pending_rows": 7,
+          "rejected_rows": 6,
+          "prohibited_joins_rejected": 5,
+          "command_records": 10,
+          "null_commands": 10,
+          "prerequisites_required": 15,
+          "prerequisites_resolved": 1,
+          "prerequisites_unresolved": 14,
+          "execution_authorized": false,
+          "confirmed": false,
+          "result_status": "NOT_RUN",
+          "test_set_opened": "NO"
+        }
+      },
+      "e5_r1": {
+        "status": "COMPLETE_RECOVERED_IMPORTED_CENTRALLY_VALIDATED",
+        "thread_id": "01a02621-27b7-76a2-94ae-cd2642321118",
+        "host_id": "local",
+        "worktree": "C:/Users/ACER/.codex/worktrees/4589/backend",
+        "model": "gpt-5.6-sol",
+        "reasoning": "xhigh",
+        "dispatch": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e5_r1_dispatch.json",
+        "contract": {
+          "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e5_r1_independent_remediation_audit_contract.md",
+          "canonical_lf_sha256": "7147cdbf3732f8c8c46c275c8b9c21bad392a0abea76b50217d0616e7868320e"
+        },
+        "input_manifest": {
+          "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e5_r1_frozen_input_manifest.json",
+          "canonical_lf_sha256": "25a44c845b3a034fea82c4d335923dfff931eb7252f118c3ae7e614ba696895e",
+          "verified_inputs": 19,
+          "expected_inputs": 19,
+          "central_validation": "PASS"
+        },
+        "task_incident": {
+          "state": "SYSTEM_ERROR_USAGE_LIMIT_AFTER_OUTPUT_CREATION_BEFORE_COMMIT",
+          "recovered": true,
+          "scientific_effect": "NONE",
+          "recovery_policy": "EXACT_WRITE_SET_VALIDATION_COMMIT_AND_FAST_FORWARD"
+        },
+        "git": {
+          "source_commit": "c2211cb9a4536f747fad5b44dfd725319838b6d6",
+          "parent_commit": "de91bdd06df280aa60082e775fc6e06a1c1cc810",
+          "central_tip": "c2211cb9a4536f747fad5b44dfd725319838b6d6",
+          "import_method": "git-fast-forward"
+        },
+        "central_validation": {
+          "status": "PASS_E5_R1_REMEDIATION_INTEGRITY_EXECUTION_DENIED",
+          "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e5_r1_validation_receipt.json",
+          "canonical_lf_sha256": "0bc91aea1eda8d9ea9a6c9c59e1df2548e168f4fc1037ff0b42ef5961882785f",
+          "frozen_inputs_verified": 19,
+          "output_files_verified": 5,
+          "mechanical_assertions_passed": 28,
+          "mechanical_assertions_expected": 28,
+          "failure_count": 0
+        },
+        "result": {
+          "verdict": "PASS_REMEDIATION_INTEGRITY_EXECUTION_DENIED",
+          "verification_status": "ANALYZED",
+          "reproducibility_verdict": "CANNOT_VERIFY",
+          "new_critical": 0,
+          "new_major": 0,
+          "new_minor": 0,
+          "original_findings_closed_for_remediation_integrity": 4,
+          "original_findings_closed_for_execution_readiness": 0,
+          "ready_reference_rows": 0,
+          "pending_rows": 7,
+          "rejected_rows": 6,
+          "null_commands": 10,
+          "unresolved_prerequisites": 14,
+          "authorization_decision": "DENIED_CURRENT_NULL_COMMAND_PACKET_NOT_EXECUTABLE",
+          "result_status": "NOT_RUN",
+          "test_set_opened": "NO"
+        },
+        "execution_authorized": false
+      },
+      "replacement_e4_packet_required": false,
+      "future_materialized_e4_packet_required_for_execution": true,
+      "new_independent_e5_required": true,
+      "execution_authorized": false
+    },
+    "e4_r2": {
+      "status": "R2_G1_COMPLETE_FAIL_CLOSED_NO_SELECTION",
+      "entry_gate": "PASS_E5_R1_REMEDIATION_INTEGRITY_EXECUTION_DENIED",
+      "plan": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r2_evidence_materialization_plan.md",
+        "canonical_lf_bytes": 14363,
+        "canonical_lf_sha256": "bf2c2d98ed3b036a0a1233f6b326b4dc160501bc0087ca0f94e31295727e5798"
+      },
+      "stage_map": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r2_stage_map.json",
+        "canonical_lf_bytes": 10642,
+        "canonical_lf_sha256": "4cc484f895b12ee3e1622f19fcc34d1f7754751b37cf88ed24ea81ddb51dd180",
+        "json_parse": "PASS"
+      },
+      "central_plan_validation": {
+        "status": "PASS_E4_R2_PLAN_PREPARED_NOT_DISPATCHED_EXECUTION_DENIED",
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r2_plan_validation_receipt.json",
+        "canonical_lf_bytes": 2847,
+        "canonical_lf_sha256": "3cbd3a75d8525f27749bde195c5e7fd349f9d19b25eb03b021f9d5a57073ac8e",
+        "failure_count": 0
+      },
+      "evidence_contract": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r2_evidence_tracks_contract.md",
+        "canonical_lf_bytes": 13667,
+        "canonical_lf_sha256": "551a5c5c3a3fdc1dc6e58d0940c91271cf60237363dbc0275cd6547cc5318293"
+      },
+      "evidence_input_manifest": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r2_evidence_frozen_input_manifest.json",
+        "canonical_lf_bytes": 15978,
+        "canonical_lf_sha256": "52de342742b16d036d46e1e283ecbad7e4aab4a90bd8119653195074062228a1",
+        "verified_inputs": 35,
+        "expected_inputs": 35
+      },
+      "evidence_gate_validation": {
+        "status": "PASS_R2_EVIDENCE_GATE_35_OF_35_READY_FOR_PARALLEL_DISPATCH",
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r2_evidence_gate_receipt.json",
+        "canonical_lf_bytes": 2651,
+        "canonical_lf_sha256": "b53603248fddd52bb560be0441978024ead3b588659c090d74be6eb209c11300",
+        "failure_count": 0
+      },
+      "candidate_scope": {
+        "pending_rows": 7,
+        "selection_cardinality_max": 1,
+        "priority_row_id": "E3-LIGHTGCN-GOWALLA-PYTORCH-001",
+        "priority_is_selection": false,
+        "automatic_fallback_allowed": false
+      },
+      "model_policy": {
+        "evidence_lanes": {
+          "stage_ids": ["R2-A1", "R2-A2", "R2-A3"],
+          "model": "gpt-5.6-sol",
+          "reasoning": "xhigh"
+        },
+        "central_materialization_audit_execution": {
+          "model": "gpt-5.6-sol",
+          "reasoning": "high"
+        },
+        "independent_audit_fresh_context": true
+      },
+      "completed_parallel_group": ["R2-A1", "R2-A2", "R2-A3"],
+      "r2_input_contract_created": true,
+      "r2_frozen_input_manifest_created": true,
+      "r2_evidence_gate_passed": true,
+      "dispatch_ready": true,
+      "evidence_dispatch": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r2_evidence_dispatch.json",
+        "canonical_lf_bytes": 4813,
+        "canonical_lf_sha256": "235d7556ab538ad412448420eef4f639dd8b323f5dfdb24347686d41baad6c0b"
+      },
+      "evidence_tracks": {
+        "R2-A1": {
+          "thread_id": "01a028e9-6359-7a92-b771-dbf83f38580d",
+          "host_id": "local",
+          "worktree": "C:/Users/ACER/.codex/worktrees/6b38/backend",
+          "model": "gpt-5.6-sol",
+          "reasoning": "xhigh",
+          "status": "COMPLETED_IMPORTED_HASH_VALIDATED_CONTRACT_FINDING_PRESERVED",
+          "input_replay": "PASS_35_OF_35",
+          "source_commit": "91d8f8902f36e35db88124287aa3bf0df82283bd",
+          "central_commit": "775f778c8d6fb7941c6603f7ae1323f15db66254",
+          "handoff_canonical_lf_sha256": "1b181e2162054d95c45bf9f3f04065093de440a760b70d2806b1030884d9635c"
+        },
+        "R2-A2": {
+          "thread_id": "01a028e9-6353-7150-b0e5-8a515ae4f44d",
+          "host_id": "local",
+          "worktree": "C:/Users/ACER/.codex/worktrees/198c/backend",
+          "model": "gpt-5.6-sol",
+          "reasoning": "xhigh",
+          "status": "COMPLETED_IMPORTED_HASH_VALIDATED_CONTRACT_FINDING_PRESERVED",
+          "input_replay": "PASS_35_OF_35",
+          "source_commit": "50596505de3fea758601a63fe840c0e324e1ece1",
+          "central_commit": "6fe784d8313aafd03c9f55fd261d48bb59238372",
+          "handoff_canonical_lf_sha256": "f4cbfa3c393ec8b52381165f52767b4d5c5defee9e275ae8c1510da6528206ff"
+        },
+        "R2-A3": {
+          "thread_id": "01a028e9-6381-78d0-8524-9e2ec9a7fdd2",
+          "host_id": "local",
+          "worktree": "C:/Users/ACER/.codex/worktrees/a894/backend",
+          "model": "gpt-5.6-sol",
+          "reasoning": "xhigh",
+          "status": "COMPLETED_IMPORTED_HASH_VALIDATED_CONTRACT_FINDING_PRESERVED",
+          "input_replay": "PASS_35_OF_35",
+          "source_commit": "bef1b22875ec8bb5aec568e50a4018a4252b129e",
+          "central_commit": "7ed8b34d3219ac99b33f0e42555e463cc7f1f7db",
+          "handoff_canonical_lf_sha256": "1ad305a3418d025b8a4fc5a1d148fdea2770d5ee6e32e68f50388112e39f8c40"
+        }
+      },
+      "tasks_dispatched": 3,
+      "tasks_active": 0,
+      "tasks_complete": 3,
+      "central_lane_validation": {
+        "status": "R2_LANES_IMPORTED_HASH_VALIDATED_CONTRACT_NONCONFORMANT_NO_SELECTION_ONLY",
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r2_evidence_lanes_validation_receipt.json",
+        "canonical_lf_bytes": 4646,
+        "canonical_lf_sha256": "1335836553caa160d93fe3cc8baee041afbbe9846f0e18fd2b4eb68d4c3607b8",
+        "mechanical_import_passed": true,
+        "contract_conformity_passed": false,
+        "contract_finding_ids": ["R2-CF-A1-001", "R2-CF-A2-001", "R2-CF-A3-001"],
+        "no_selection_synthesis_allowed": true
+      },
+      "g1": {
+        "status": "COMPLETE_FAIL_CLOSED_CENTRALLY_VALIDATED",
+        "model": "gpt-5.6-sol",
+        "reasoning": "high",
+        "contract": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r2_g1_central_synthesis_contract.md",
+        "input_manifest": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r2_g1_frozen_input_manifest.json",
+        "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_h/E4_R2G1_candidate_selection",
+        "central_validation": {
+          "status": "PASS_R2_G1_NO_SELECTION_FAIL_CLOSED_DOWNSTREAM_BLOCKED",
+          "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r2_g1_validation_receipt.json",
+          "canonical_lf_bytes": 4145,
+          "canonical_lf_sha256": "94ca0c42b78c6f79a246c6c2f89021187c411e201fc61ee200f7c15e7cebffc2"
+        },
+        "candidate_count": 7,
+        "fully_sufficient_candidates": 0,
+        "selected_candidate_count": 0,
+        "priority_row_id": "E3-LIGHTGCN-GOWALLA-PYTORCH-001",
+        "priority_is_selection": false,
+        "dispositive_reject_row_id": "E3-XSIMGCL-YELP2018-SELFREC-001",
+        "verdict": "NO_SELECTION_EVIDENCE_REMAINS_INSUFFICIENT",
+        "materialization_allowed": false
+      },
+      "completion_record": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r2_completion_record.json",
+        "canonical_lf_bytes": 3321,
+        "canonical_lf_sha256": "f52c1071133db06d0be2e580ea8b4056b403df8fb8dd584ac7e0b0a4da982e61"
+      },
+      "repository_clone_or_fetch": false,
+      "dataset_download_or_authenticated_access": false,
+      "package_install_or_environment_creation": false,
+      "training_or_evaluation": false,
+      "test_set_opened": "NO",
+      "result_status": "NOT_RUN",
+      "execution_authorized": false
+    },
+    "e4_r2_er1": {
+      "status": "PARALLEL_GROUP_ACTIVE_SOL_MAX_FAST",
+      "entry_checkpoint": "USER_CONFIRMED_CHANGE_CONTROLLED_EVIDENCE_REMEDIATION",
+      "source_verdict": "NO_SELECTION_EVIDENCE_REMAINS_INSUFFICIENT",
+      "candidate_scope": {
+        "row_id": "E3-LIGHTGCN-GOWALLA-PYTORCH-001",
+        "method": "LightGCN",
+        "selection_cardinality_max": 1,
+        "priority_is_selection": false,
+        "scope_expansion_allowed": false
+      },
+      "contract": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r2_er1_change_control_contract.md",
+        "canonical_lf_bytes": 8725,
+        "canonical_lf_sha256": "6b9c03359a77c6a66535bb5cb9a26f6562bd0b82cc07b292836aa2497003f8c7"
+      },
+      "frozen_input_manifest": {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r2_er1_frozen_input_manifest.json",
+        "canonical_lf_bytes": 8355,
+        "canonical_lf_sha256": "12cff269c80e9cef5eb35c4a822a6ab756a480a4769e24c31861cd581748d916",
+        "verified_inputs": 31,
+        "expected_inputs": 31,
+        "strict_json_inputs_verified": 24
+      },
+      "entry_gate": {
+        "status": "PASS_R2_ER1_GATE_31_OF_31_READY_FOR_PARALLEL_DISPATCH",
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r2_er1_gate_receipt.json",
+        "canonical_lf_bytes": 2789,
+        "canonical_lf_sha256": "0de02930581306fd6758ee529d58dcf3c159e55afec15ad24ba91235371c680e",
+        "failure_count": 0
+      },
+      "dispatch": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r2_er1_dispatch.json",
+      "model_policy": {
+        "display_name": "Sol Max Fast",
+        "model": "gpt-5.6-sol",
+        "reasoning": "max",
+        "service_tier": "priority",
+        "applies_to_all_substantive_stages": true
+      },
+      "parallel_group": {
+        "expected": 4,
+        "active": 4,
+        "complete": 0,
+        "stages": {
+          "R2-ER1-S": {
+            "agent_id": "01a0293e-294b-75c1-9570-3662a7e7caf4",
+            "status": "ACTIVE",
+            "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_m/E4_R2ER1S_schema_normalization"
+          },
+          "R2-ER1-A1": {
+            "agent_id": "01a0293e-2a15-7522-89c9-72e374aa9148",
+            "status": "ACTIVE",
+            "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_n/E4_R2ER1A1_repo_license"
+          },
+          "R2-ER1-A2": {
+            "agent_id": "01a0293e-2b01-7e40-90dc-5cfb73299ee3",
+            "status": "ACTIVE",
+            "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_n/E4_R2ER1A2_dataset_lineage"
+          },
+          "R2-ER1-A3": {
+            "agent_id": "01a0293e-2c01-7e10-bdb4-deebefcd5178",
+            "status": "ACTIVE",
+            "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_n/E4_R2ER1A3_result_evaluator"
+          }
+        }
+      },
+      "truth_state": {
+        "RESULT_STATUS": "NOT_RUN",
+        "TEST_SET_OPENED": "NO",
+        "ACCEPTED_RESULT_ROWS": 0,
+        "project_benchmark_numbers": "INVALID_FOR_PAPER"
+      },
+      "repository_clone_or_fetch": false,
+      "dataset_or_checkpoint_download": false,
+      "package_install_or_environment_creation": false,
+      "training_or_evaluation": false,
+      "execution_authorized": false,
+      "next_gate": "ALL_FOUR_HANDOFFS_REQUIRE_CENTRAL_EXACT_SET_SCHEMA_HASH_VALIDATION_BEFORE_R2_ER1_G1"
+    }
+  },
+  "central_preregistration_lock": "BLOCKED_R2_ER1_ACTIVE_NO_SELECTION",
+  "adapt_reproduce": "BLOCKED_R2_ER1_EVIDENCE_REMEDIATION_ACTIVE",
+  "harmonized_v5": "BLOCKED",
+  "external_validation": "BLOCKED",
+  "efficiency": "BLOCKED_AFTER_ACCURACY",
+  "next_gate": "WAIT_FOR_R2_ER1_S_A1_A2_A3_THEN_CENTRAL_VALIDATE. R2-M0 and all materialization/execution stages remain blocked; clone, download, install, preprocess, train, evaluate, candidate selection, and TEST access remain denied."
+}

@@ -1,0 +1,94 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r2-er1-dispatch-1.0",
+  "created_at": "2026-08-22",
+  "status": "ACTIVE_PARALLEL_GROUP_SOL_MAX_FAST",
+  "project": "hybrid-recsys-v5",
+  "stage": "1E",
+  "round": "R2-ER1",
+  "central_base_commit": "8f362e2ea30ac105344d31e5c8fb0b522a79441d",
+  "entry_gate": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r2_er1_gate_receipt.json",
+    "canonical_lf_bytes": 2789,
+    "canonical_lf_sha256": "0de02930581306fd6758ee529d58dcf3c159e55afec15ad24ba91235371c680e",
+    "verdict": "PASS_R2_ER1_GATE_31_OF_31_READY_FOR_PARALLEL_DISPATCH"
+  },
+  "model_policy": {
+    "display_name": "Sol Max Fast",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "max",
+    "service_tier": "priority",
+    "speed_label": "Fast",
+    "explicit_override_sent_to_every_agent": true
+  },
+  "parallel_group": {
+    "id": "R2-ER1-P",
+    "task_count": 4,
+    "all_contexts_independent": true,
+    "all_write_roots_disjoint": true,
+    "tasks": {
+      "R2-ER1-S": {
+        "agent_id": "01a0293e-294b-75c1-9570-3662a7e7caf4",
+        "nickname": "Lagrange",
+        "status": "ACTIVE",
+        "model": "gpt-5.6-sol",
+        "reasoning": "max",
+        "service_tier": "priority",
+        "write_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_m/E4_R2ER1S_schema_normalization",
+        "web_research_allowed": false
+      },
+      "R2-ER1-A1": {
+        "agent_id": "01a0293e-2a15-7522-89c9-72e374aa9148",
+        "nickname": "Ampere",
+        "status": "ACTIVE",
+        "model": "gpt-5.6-sol",
+        "reasoning": "max",
+        "service_tier": "priority",
+        "write_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_n/E4_R2ER1A1_repo_license",
+        "web_research_allowed": true
+      },
+      "R2-ER1-A2": {
+        "agent_id": "01a0293e-2b01-7e40-90dc-5cfb73299ee3",
+        "nickname": "Gauss",
+        "status": "ACTIVE",
+        "model": "gpt-5.6-sol",
+        "reasoning": "max",
+        "service_tier": "priority",
+        "write_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_n/E4_R2ER1A2_dataset_lineage",
+        "web_research_allowed": true
+      },
+      "R2-ER1-A3": {
+        "agent_id": "01a0293e-2c01-7e10-bdb4-deebefcd5178",
+        "nickname": "Russell",
+        "status": "ACTIVE",
+        "model": "gpt-5.6-sol",
+        "reasoning": "max",
+        "service_tier": "priority",
+        "write_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_n/E4_R2ER1A3_result_evaluator",
+        "web_research_allowed": true
+      }
+    }
+  },
+  "candidate_scope": {
+    "row_id": "E3-LIGHTGCN-GOWALLA-PYTORCH-001",
+    "priority_is_selection": false,
+    "new_candidate_or_dataset_allowed": false
+  },
+  "execution_boundary": {
+    "repository_clone_or_fetch": false,
+    "source_archive_or_payload_download": false,
+    "dataset_checkpoint_or_asset_download": false,
+    "authenticated_access_or_terms_acceptance": false,
+    "dependency_install_or_environment_creation": false,
+    "preprocessing_training_evaluation": false,
+    "test_access": false,
+    "maintainer_contact": false,
+    "execution_authorized": false
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "next_gate": "WAIT_FOR_ALL_FOUR_EXACT_HANDOFFS_THEN_CENTRAL_VALIDATE_BEFORE_R2_ER1_G1"
+}
