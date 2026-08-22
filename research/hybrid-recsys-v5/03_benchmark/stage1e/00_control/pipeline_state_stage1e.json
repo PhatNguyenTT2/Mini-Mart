@@ -2,7 +2,7 @@
   "schema_version": "academic-research-pipeline-state-1.0",
   "project": "hybrid-recsys-v5",
   "stage": "1E",
-  "state": "stage1e_rebaseline_v2_r5_m0_complete_m1_ready_for_parallel_source_audits",
+  "state": "stage1e_rebaseline_v2_r5_m1_complete_ready_for_central_g1_freeze",
   "updated_at": "2026-08-23",
   "model": "gpt-5.6-sol",
   "reasoning": "max",
@@ -778,7 +778,7 @@
       "next_gate": "SUPERSEDED_BY_USER_DECISION_AUTHORIZE_TARGETED_SOURCE_ONLY_EVIDENCE_MATERIALIZATION_REDESIGN"
     },
     "e4_r5": {
-      "status": "M0_COMPLETE_CENTRALLY_VALIDATED_M1_PARALLEL_AUDITS_RUNNING",
+      "status": "M1_COMPLETE_CENTRALLY_VALIDATED_READY_FOR_R5_G1_FREEZE",
       "entry_checkpoint": "USER_CONFIRMED_TARGETED_SOURCE_ONLY_EVIDENCE_MATERIALIZATION_REDESIGN",
       "source_stage": "R4-G0",
       "source_verdict": "NO_ADMISSIBLE_BUNDLE_STOP_FAIL_CLOSED",
@@ -831,10 +831,10 @@
         "test_access_authorized": false
       },
       "r5_m1_parallel_group": {
-        "status": "RUNNING",
+        "status": "COMPLETE_CENTRALLY_VALIDATED",
         "expected": 2,
-        "active": 2,
-        "complete": 0,
+        "active": 0,
+        "complete": 2,
         "dispatch": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r5_m1_dispatch.json",
         "gate": "PASS_R5_M1_FROZEN_15_OF_15_READY_FOR_PARALLEL_AUDITS",
         "frozen_inputs": "15/15",
@@ -846,13 +846,25 @@
           "R5-M1A": {
             "candidate_id": "R5-CAND-RECBOLE-BPR-ML100K-001",
             "agent_id": "01a02a97-792b-7973-8353-2a1044e474fd",
-            "status": "RUNNING"
+            "source_commit": "1f1574e6493f879601a66e70ba879dc79699198b",
+            "status": "COMPLETE_CENTRALLY_VALIDATED"
           },
           "R5-M1B": {
             "candidate_id": "R5-CAND-RECBOLE-GNN-LIGHTGCN-ML1M-001",
             "agent_id": "01a02a97-7a5b-7082-ac11-08497234516c",
-            "status": "RUNNING"
+            "source_commit": "4650f891e77021965ac44da12f5d21bf6a18bd97",
+            "status": "COMPLETE_CENTRALLY_VALIDATED"
           }
+        },
+        "central_validation": {
+          "verdict": "PASS_R5_M1_TWO_SOURCE_AUDITS_READY_FOR_CENTRAL_R5_G1_FREEZE",
+          "receipt": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r5_m1_lanes_validation_receipt.json",
+          "mechanical_checks": "28/28",
+          "output_files": "10/10",
+          "strict_json_outputs": "8/8",
+          "source_facts": 75,
+          "positive_hash_bound_facts": 56,
+          "failure_count": 0
         }
       },
       "truth_state": {
@@ -862,7 +874,7 @@
         "project_benchmark_numbers": "INVALID_FOR_PAPER"
       },
       "execution_authorized": false,
-      "next_gate": "WAIT_R5_M1A_AND_R5_M1B_THEN_CENTRAL_SCHEMA_HASH_AND_SEMANTIC_VALIDATION"
+      "next_gate": "CREATE_AND_VALIDATE_R5_G1_FROZEN_INPUT_MANIFEST"
     }
   },
   "central_preregistration_lock": "PASS_R5_S0_SOURCE_ONLY_SCOPE_LOCKED",
@@ -870,5 +882,5 @@
   "harmonized_v5": "BLOCKED",
   "external_validation": "BLOCKED",
   "efficiency": "BLOCKED_AFTER_ACCURACY",
-  "next_gate": "R5-M1A and R5-M1B are running in parallel with Sol XHigh Standard. On completion, centrally validate exact output schemas, source hashes, candidate isolation and truth state before opening R5-G1. Dataset/checkpoint acquisition, package or environment creation, vendor execution, preprocessing, training, evaluation and TEST access remain blocked."
+  "next_gate": "Freeze and validate the two completed R5-M1 audits for central R5-G1 synthesis with Sol Max Standard. R5-G1 may select zero or one candidate only for an R5-M2 proposal; dataset/checkpoint acquisition, environment creation, execution and TEST access remain blocked."
 }

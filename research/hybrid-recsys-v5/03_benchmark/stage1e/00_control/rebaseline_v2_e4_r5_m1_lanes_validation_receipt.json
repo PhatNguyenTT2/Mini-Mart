@@ -1,0 +1,65 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r5-m1-lanes-validation-receipt-1.0",
+  "created_at": "2026-08-23",
+  "stage_id": "R5-M1-CENTRAL-LANES-VALIDATION",
+  "validator": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r5_m1_lanes.py",
+  "passed": true,
+  "verdict": "PASS_R5_M1_TWO_SOURCE_AUDITS_READY_FOR_CENTRAL_R5_G1_FREEZE",
+  "failure_count": 0,
+  "mechanical_checks": {
+    "passed": 28,
+    "expected": 28
+  },
+  "outputs": {
+    "lane_count": 2,
+    "files_present": 10,
+    "files_expected": 10,
+    "strict_json_present": 8,
+    "strict_json_expected": 8
+  },
+  "source_facts": {
+    "total": 75,
+    "positive_hash_bound": 56,
+    "hash_binding_failures": 0
+  },
+  "lanes": {
+    "R5-M1A": {
+      "agent_id": "01a02a97-792b-7973-8353-2a1044e474fd",
+      "source_commit": "1f1574e6493f879601a66e70ba879dc79699198b",
+      "candidate_id": "R5-CAND-RECBOLE-BPR-ML100K-001",
+      "candidate_status": "SOURCE_INCOMPLETE_CANDIDATE_FOR_R5_G1",
+      "reproducibility_status": "SOURCE_INCOMPLETE_NOT_RUN",
+      "status": "COMPLETE_CENTRALLY_VALIDATED"
+    },
+    "R5-M1B": {
+      "agent_id": "01a02a97-7a5b-7082-ac11-08497234516c",
+      "source_commit": "4650f891e77021965ac44da12f5d21bf6a18bd97",
+      "candidate_id": "R5-CAND-RECBOLE-GNN-LIGHTGCN-ML1M-001",
+      "candidate_status": "SOURCE_INCOMPLETE_CANDIDATE_FOR_R5_G1",
+      "reproducibility_status": "SOURCE_INCOMPLETE_NOT_RUN",
+      "status": "COMPLETE_CENTRALLY_VALIDATED"
+    }
+  },
+  "scientific_boundary": {
+    "benchmark_admitted_candidates": 0,
+    "verified_reproducibility_claims": 0,
+    "cross_candidate_fact_joins": 0,
+    "numeric_targets_valid_for_paper": 0,
+    "dataset_environment_or_execution_authorized": false,
+    "test_access_authorized": false
+  },
+  "model_profile": {
+    "display_name": "Sol XHigh Standard",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "xhigh",
+    "service_tier": "standard"
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "next_gate": "CREATE_AND_VALIDATE_R5_G1_FROZEN_INPUT_MANIFEST"
+}

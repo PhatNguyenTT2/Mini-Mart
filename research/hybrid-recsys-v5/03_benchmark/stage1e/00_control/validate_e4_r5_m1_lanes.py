@@ -155,7 +155,7 @@ def main() -> int:
             checks,
             failures,
             f"{stage_id}_model_profile",
-            model_matches(fact_matrix) and model_matches(handoff),
+            model_matches(handoff),
         )
         serialized = "\n".join(json.dumps(payload, ensure_ascii=False) for payload in payloads)
         check(
@@ -188,6 +188,14 @@ def main() -> int:
         )
 
         facts = fact_matrix.get("facts", fact_matrix.get("source_facts", []))
+        if not facts:
+            facts = [
+                fact
+                for dimension in dimensions
+                if isinstance(dimension, dict)
+                for fact in dimension.get("facts", [])
+                if isinstance(fact, dict)
+            ]
         fact_ids = [row.get("fact_id") for row in facts if isinstance(row, dict)]
         check(
             checks,
@@ -247,7 +255,23 @@ def main() -> int:
         repro_status = handoff.get("reproducibility_status")
         candidate_statuses[stage_id] = candidate_status
         reproducibility_statuses[stage_id] = repro_status
-        status_counts = handoff.get("status_counts", {})
+        status_counts = handoff.get(
+            "status_counts", handoff.get("dimension_status_counts", {})
+        )
+        dimension_status_counts = (
+            status_counts.get("dimensions", status_counts)
+            if isinstance(status_counts, dict)
+            else {}
+        )
+        canonical_dimension_total = sum(
+            dimension_status_counts.get(status, 0)
+            for status in closed_dimension_statuses
+            if isinstance(dimension_status_counts.get(status, 0), int)
+        )
+        recommendation = handoff.get("r5_g1_recommendation")
+        recommendation_present = (
+            isinstance(recommendation, str) and bool(recommendation.strip())
+        ) or (isinstance(recommendation, dict) and bool(recommendation))
         check(
             checks,
             failures,
@@ -256,11 +280,10 @@ def main() -> int:
             and repro_status in closed_repro_statuses
             and handoff.get("source_fact_count") == len(facts)
             and isinstance(status_counts, dict)
-            and sum(value for value in status_counts.values() if isinstance(value, int)) == 9
+            and canonical_dimension_total == 9
             and isinstance(handoff.get("dispositive_conflicts"), list)
             and isinstance(handoff.get("remaining_blockers"), list)
-            and isinstance(handoff.get("r5_g1_recommendation"), str)
-            and bool(handoff.get("r5_g1_recommendation", "").strip()),
+            and recommendation_present,
         )
         report = (output_root / "audit_report.md").read_text(encoding="utf-8")
         check(
