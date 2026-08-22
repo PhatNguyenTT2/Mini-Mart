@@ -1,0 +1,154 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r5-g1-candidate-gap-comparison-1.0",
+  "created_at": "2026-08-23",
+  "stage_id": "R5-G1",
+  "comparison_policy": {
+    "selection_cardinality_max": 1,
+    "selection_is_benchmark_admission": false,
+    "numeric_target_magnitude_used": false,
+    "cross_candidate_fact_borrowing": false,
+    "tie_break_order": [
+      "fewer_unbounded_source_or_protocol_gaps",
+      "more_explicit_deterministic_environment_and_data_lineage_closure_plan",
+      "more_direct_alignment_with_frozen_mandatory_baseline_suite",
+      "never_higher_documented_metric"
+    ]
+  },
+  "candidates": [
+    {
+      "candidate_id": "R5-CAND-RECBOLE-BPR-ML100K-001",
+      "central_status": "PROVISIONALLY_ELIGIBLE_FOR_R5_M2_PROPOSAL",
+      "checks": [
+        {
+          "check_id": "G01_SOURCE_HASH_AND_REVISION_INTEGRITY",
+          "status": "PASS",
+          "basis": "R5-M0 and R5-M1A replayed the selected source blobs against RecBole revision 9a6f63d8d4a5b989fe27955a833f813a6d86041e with zero hash failures."
+        },
+        {
+          "check_id": "G02_NO_DISPOSITIVE_SOURCE_CONFLICT",
+          "status": "PASS",
+          "basis": "The lane recorded zero dispositive conflicts; five conflicts are explicitly bounded by official-source versus harmonized-v5 protocol separation."
+        },
+        {
+          "check_id": "G03_ENVIRONMENT_CLOSURE_IS_DETERMINISTIC_PROPOSAL",
+          "status": "PASS_BOUNDED_FOR_PROPOSAL_NOT_CLOSED",
+          "basis": "Direct declarations are source-located and every missing Python, platform, Torch, accelerator and transitive lock field is enumerated. R5-M2 must freeze a compatibility/closure procedure and may not guess target-producing versions."
+        },
+        {
+          "check_id": "G04_PROTOCOL_AND_EVALUATOR_GAPS_ARE_EXPLICIT",
+          "status": "PASS_GAPS_EXPLICIT_NOT_CLOSED",
+          "basis": "Config precedence, seed behavior, history masking, source top-k tie behavior, weighted source GAUC, random split and TEST-opening tuning paths are source-located and separately bounded."
+        },
+        {
+          "check_id": "G05_NUMERIC_TARGET_REMAINS_PROVISIONAL_RERUN_REQUIRED",
+          "status": "PASS",
+          "basis": "README NDCG@10=0.2768 remains provisional, not producer-bound, invalid for paper use and unused in candidate selection."
+        },
+        {
+          "check_id": "G06_DATA_LINEAGE_PLAN_IS_CANONICAL_AND_BYTE_VERIFIABLE",
+          "status": "PASS_PLAN_DEFINED_NOT_MATERIALIZED",
+          "basis": "The lane enumerates provider/release identity, rights receipt, archive and extracted hashes, conversion inventory, atomic files, split membership and ID-map hashes required for MovieLens 100K."
+        },
+        {
+          "check_id": "G07_V5_ADAPTER_IS_REPRESENTATION_ONLY_IN_PRINCIPLE",
+          "status": "PASS_IN_PRINCIPLE_NOT_READY",
+          "basis": "The pinned BPR objective and complete score function can remain unchanged while full scores are exported before source top-k; the standalone v5 evaluator must own masking, deterministic raw-product ties and macro metrics."
+        },
+        {
+          "check_id": "G08_NEXT_PHASE_SCOPE_IS_BOUNDED",
+          "status": "PASS_FOR_R5_M2_PROPOSAL_ONLY",
+          "basis": "The exact source producer surface is already materialized. The next scope is finite: canonical MovieLens 100K lineage, deterministic environment closure, TEST-safe validation runner, numeric-target policy, representation adapter and evaluator parity."
+        }
+      ],
+      "bounded_next_phase_components": [
+        "canonical MovieLens 100K provider and rights receipt",
+        "raw archive, extraction and RecBole atomic-input byte lineage",
+        "deterministic environment closure without producer-version inference",
+        "resolved official-source configuration and validation-only runner",
+        "provisional target statistic and tolerance preregistration",
+        "full-score representation adapter and standalone v5 evaluator parity",
+        "separate later execution and TEST gates"
+      ],
+      "unresolved_handoff_blockers": 8
+    },
+    {
+      "candidate_id": "R5-CAND-RECBOLE-GNN-LIGHTGCN-ML1M-001",
+      "central_status": "NOT_SELECTED_SOURCE_GAPS_LARGER",
+      "checks": [
+        {
+          "check_id": "G01_SOURCE_HASH_AND_REVISION_INTEGRITY",
+          "status": "PASS",
+          "basis": "R5-M0 and R5-M1B replayed the selected RecBole-GNN source blobs against revision 632ef888589944c190ad8f449b49ca559618d4df with zero hash failures."
+        },
+        {
+          "check_id": "G02_NO_DISPOSITIVE_SOURCE_CONFLICT",
+          "status": "PASS",
+          "basis": "The lane recorded zero dispositive conflicts; the three observed conflicts can be bounded by separating source and v5 protocols."
+        },
+        {
+          "check_id": "G03_ENVIRONMENT_CLOSURE_IS_DETERMINISTIC_PROPOSAL",
+          "status": "PARTIAL_ADDITIONAL_DEPENDENCY_SOURCE_REQUIRED",
+          "basis": "The local model names RecBole 1.1.1 and a PyG/Torch sparse stack, but exact inherited RecBole behavior and the ABI-compatible dependency closure are not materialized. A new dependency-source lock is required before the environment proposal is as bounded as BPR."
+        },
+        {
+          "check_id": "G04_PROTOCOL_AND_EVALUATOR_GAPS_ARE_EXPLICIT",
+          "status": "PARTIAL_EVALUATOR_SURFACE_NOT_MATERIALIZED",
+          "basis": "The gaps are explicitly listed, but candidate construction, masking, denominators, empty cases, aggregation and tie behavior live in the unmaterialized RecBole 1.1.1 dependency rather than the locked candidate tree."
+        },
+        {
+          "check_id": "G05_NUMERIC_TARGET_REMAINS_PROVISIONAL_RERUN_REQUIRED",
+          "status": "PASS",
+          "basis": "Documented NDCG@10=0.2538 remains provisional, not producer-bound, invalid for paper use and unused in candidate selection."
+        },
+        {
+          "check_id": "G06_DATA_LINEAGE_PLAN_IS_CANONICAL_AND_BYTE_VERIFIABLE",
+          "status": "PASS_PLAN_DEFINED_NOT_MATERIALIZED",
+          "basis": "The lane enumerates provider/release, rights, archive/extracted hashes, rating filter, ID maps, split algorithm and cardinality reconciliation for MovieLens 1M."
+        },
+        {
+          "check_id": "G07_V5_ADAPTER_IS_REPRESENTATION_ONLY_IN_PRINCIPLE",
+          "status": "PASS_IN_PRINCIPLE_NOT_READY",
+          "basis": "LightGCN exposes a method-preserving all-item score seam, but no adapter, source evaluator identity, TEST-safe runner or parity receipt exists."
+        },
+        {
+          "check_id": "G08_NEXT_PHASE_SCOPE_IS_BOUNDED",
+          "status": "PARTIAL_SCOPE_LARGER_THAN_SELECTED_CANDIDATE",
+          "basis": "Before equivalent data/environment work, this candidate needs an additional exact RecBole 1.1.1 dependency source/config/evaluator lock and a PyTorch/PyG/torch_sparse ABI closure."
+        }
+      ],
+      "additional_precondition_before_equivalent_r5_m2_scope": "Hash-lock and audit the exact RecBole 1.1.1 dependency source or package artifact, including inherited configuration, trainer, data loader and evaluator semantics.",
+      "unresolved_handoff_blockers": 9,
+      "permanent_rejection": false
+    }
+  ],
+  "tie_break_application": [
+    {
+      "criterion": "fewer_unbounded_source_or_protocol_gaps",
+      "winner": "R5-CAND-RECBOLE-BPR-ML100K-001",
+      "reason": "RecBole BPR already contains the exact-revision configuration, trainer, evaluator and score surfaces; RecBole-GNN delegates material decision surfaces to an unmaterialized RecBole dependency."
+    },
+    {
+      "criterion": "more_explicit_deterministic_environment_and_data_lineage_closure_plan",
+      "winner": "R5-CAND-RECBOLE-BPR-ML100K-001",
+      "reason": "Its remaining closure can proceed directly from the locked source tree to a candidate-specific MovieLens 100K and environment proposal, while LightGCN first needs an additional dependency-source lock."
+    },
+    {
+      "criterion": "more_direct_alignment_with_frozen_mandatory_baseline_suite",
+      "winner": "R5-CAND-RECBOLE-BPR-ML100K-001",
+      "reason": "BPR-MF is an explicit mandatory latent baseline in inputs/experimental_log.md, and this candidate is a method-faithful pairwise BPR surface with a complete score-export seam. LightGCN also remains mandatory but is not discarded; it is deferred."
+    },
+    {
+      "criterion": "never_higher_documented_metric",
+      "winner": null,
+      "reason": "The values 0.2768 and 0.2538 were explicitly excluded from comparison and selection."
+    }
+  ],
+  "comparison_conclusion": "Select RecBole BPR only for construction of an R5-M2 proposal. Do not admit it as a benchmark and do not permanently reject RecBole-GNN LightGCN; defer LightGCN until its inherited dependency source and evaluator surface are hash-locked.",
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

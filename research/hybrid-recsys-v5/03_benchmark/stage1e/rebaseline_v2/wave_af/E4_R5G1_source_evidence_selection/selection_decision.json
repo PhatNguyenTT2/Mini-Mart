@@ -1,0 +1,96 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r5-g1-selection-decision-1.0",
+  "created_at": "2026-08-23",
+  "stage_id": "R5-G1",
+  "decision": "PROVISIONAL_SINGLE_CANDIDATE_FOR_DATA_ENVIRONMENT_PROPOSAL",
+  "decision_status": "COMPLETE_FAIL_CLOSED_AWAITING_R5_M2_USER_SCOPE_APPROVAL",
+  "selected_count": 1,
+  "selection_cardinality_max": 1,
+  "selected_candidate": {
+    "candidate_id": "R5-CAND-RECBOLE-BPR-ML100K-001",
+    "central_status": "PROVISIONALLY_ELIGIBLE_FOR_R5_M2_PROPOSAL",
+    "repository": "https://github.com/RUCAIBox/RecBole",
+    "source_revision": "9a6f63d8d4a5b989fe27955a833f813a6d86041e",
+    "method": "BPR",
+    "reference_dataset": "MovieLens 100K",
+    "selection_scope": "R5_M2_PROPOSAL_CONSTRUCTION_ONLY",
+    "reason": "The locked source tree contains the candidate's entrypoint, configuration precedence, trainer, evaluator, masking behavior and full-score seam at one exact revision. Remaining data, environment, TEST-isolation, numeric-target and v5-parity gaps are explicit and finite, so a candidate-specific proposal can be reviewed without importing evidence from another repository."
+  },
+  "not_selected_candidates": [
+    {
+      "candidate_id": "R5-CAND-RECBOLE-GNN-LIGHTGCN-ML1M-001",
+      "central_status": "NOT_SELECTED_SOURCE_GAPS_LARGER",
+      "permanent_rejection": false,
+      "reason": "The local LightGCN implementation is hash-bound, but its inherited RecBole 1.1.1 configuration, data-loading, trainer and evaluator surfaces are not materialized. This adds a prerequisite source-lock and ABI-closure stage before an equally bounded data/environment proposal."
+    }
+  ],
+  "selection_basis": {
+    "used": [
+      "exact source revision and blob integrity",
+      "absence of dispositive source conflict",
+      "boundedness of missing environment and protocol evidence",
+      "explicit byte-verifiable data-lineage plan",
+      "method-preserving full-score adapter feasibility",
+      "direct alignment with the mandatory BPR-MF baseline role"
+    ],
+    "not_used": [
+      "documented NDCG@10 magnitude",
+      "cross-candidate source facts",
+      "assumed dependency versions",
+      "unverified repository or dataset equivalence",
+      "paper benchmark values"
+    ]
+  },
+  "selection_boundaries": {
+    "selection_is_benchmark_admission": false,
+    "selection_verifies_reproducibility": false,
+    "selection_accepts_documented_numeric_target": false,
+    "selection_authorizes_dataset_or_asset_acquisition": false,
+    "selection_authorizes_environment_creation_or_package_install": false,
+    "selection_authorizes_vendor_source_execution": false,
+    "selection_authorizes_preprocessing_training_or_evaluation": false,
+    "selection_authorizes_project_v5_test_access": false,
+    "selection_creates_paper_result_row": false
+  },
+  "r5_m2_checkpoint": {
+    "status": "OPEN_AWAITING_EXPLICIT_USER_SCOPE_APPROVAL",
+    "checkpoint_type": "MANDATORY_DATASET_ENVIRONMENT_AND_RUN_SCOPE_APPROVAL",
+    "proposal_candidate_id": "R5-CAND-RECBOLE-BPR-ML100K-001",
+    "proposal_must_freeze": [
+      "canonical MovieLens 100K provider, release and rights/terms receipt",
+      "exact acquisition target, archive hash plan, extraction inventory and RecBole atomic conversion lineage",
+      "deterministic environment-closure matrix without claiming unknown target-producing versions",
+      "exact source-reproduction entrypoint, configuration-resolution capture and TEST-safe validation-only wrapper",
+      "provisional numeric target policy, statistic, seed schedule, tolerance and failure rule fixed before run output",
+      "representation-only full-score adapter and standalone v5 evaluator identities plus parity fixtures",
+      "resource, timeout, write-set, network and secret boundaries",
+      "separate future authorization points for materialization, execution and one-time TEST access"
+    ],
+    "currently_authorized_actions": [
+      "read-only local inspection",
+      "write a proposal and command plan without executing it",
+      "validate hashes and schemas of existing artifacts"
+    ],
+    "currently_blocked_actions": [
+      "dataset, checkpoint or binary asset acquisition",
+      "authenticated access or terms acceptance",
+      "environment creation or package installation",
+      "vendor source execution",
+      "preprocessing, training or evaluation",
+      "project v5 TEST access"
+    ]
+  },
+  "model_profile": {
+    "display_name": "Sol Max Standard",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "max",
+    "service_tier": "standard"
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

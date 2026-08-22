@@ -1,0 +1,168 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r5-g1-source-audit-merge-1.0",
+  "created_at": "2026-08-23",
+  "stage_id": "R5-G1",
+  "status": "CENTRAL_SOURCE_AUDITS_MERGED_WITH_EXACT_CANDIDATE_IDENTITY_JOINS",
+  "model_profile": {
+    "display_name": "Sol Max Standard",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "max",
+    "service_tier": "standard"
+  },
+  "frozen_input_binding": {
+    "manifest_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r5_g1_frozen_input_manifest.json",
+    "canonical_lf_bytes": 6814,
+    "canonical_lf_sha256": "8ef3d2ef000051fdb69edea75297e1a6a5d5434d6abce5e7693ae506f0f38400",
+    "gate_receipt_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r5_g1_frozen_input_gate_receipt.json",
+    "gate_verdict": "PASS_R5_G1_FROZEN_23_OF_23_READY_FOR_CENTRAL_SYNTHESIS",
+    "inputs_verified": "23/23",
+    "strict_json_inputs_verified": "18/18"
+  },
+  "lane_validation": {
+    "receipt_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r5_m1_lanes_validation_receipt.json",
+    "verdict": "PASS_R5_M1_TWO_SOURCE_AUDITS_READY_FOR_CENTRAL_R5_G1_FREEZE",
+    "mechanical_checks": "28/28",
+    "output_files": "10/10",
+    "strict_json_outputs": "8/8",
+    "source_facts": 75,
+    "positive_hash_bound_source_facts": 56,
+    "hash_binding_failures": 0,
+    "dispositive_conflicts": 0
+  },
+  "candidates": [
+    {
+      "candidate_id": "R5-CAND-RECBOLE-BPR-ML100K-001",
+      "lane_id": "R5-M1A",
+      "lane_source_commit": "1f1574e6493f879601a66e70ba879dc79699198b",
+      "repository": "https://github.com/RUCAIBox/RecBole",
+      "source_revision": "9a6f63d8d4a5b989fe27955a833f813a6d86041e",
+      "method": "BPR",
+      "reference_dataset": "MovieLens 100K",
+      "candidate_status_from_lane": "SOURCE_INCOMPLETE_CANDIDATE_FOR_R5_G1",
+      "reproducibility_status_from_lane": "SOURCE_INCOMPLETE_NOT_RUN",
+      "source_fact_count": 40,
+      "dispositive_conflicts": 0,
+      "bounded_non_dispositive_conflicts": 5,
+      "handoff_blockers": 8,
+      "source_closure_summary": {
+        "identity_license_method": "SOURCE_ESTABLISHED_AT_EXACT_REVISION",
+        "entrypoint_config_precedence_and_seed_behavior": "SOURCE_LOCATED_AT_EXACT_REVISION",
+        "evaluator_and_masking_surface": "SOURCE_LOCATED_WITH_BOUNDED_V5_TIE_AND_GAUC_CONFLICTS",
+        "full_score_export_seam": "SOURCE_LOCATED",
+        "environment_lock": "MISSING_ENUMERATED_NO_VERSION_INFERENCE_ALLOWED",
+        "dataset_lineage": "MISSING_REQUIRES_SEPARATE_AUTHORIZATION",
+        "official_rerun": "NOT_RUN",
+        "harmonized_v5_result": "NOT_RUN"
+      },
+      "numeric_target": {
+        "metric": "NDCG@10",
+        "documented_value": 0.2768,
+        "status": "PROVISIONAL_DOCUMENTATION_ONLY_NOT_PRODUCER_BOUND",
+        "used_for_selection": false,
+        "valid_for_paper": false,
+        "rerun_required": true
+      },
+      "adapter_finding": "CONDITIONALLY_BOUNDED_REPRESENTATION_ONLY_SCORE_ADAPTER_NOT_READY",
+      "lane_artifacts": [
+        {
+          "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ad/E4_R5M1A_recbole_source_audit/source_fact_matrix.json",
+          "canonical_lf_sha256": "f427a53d8eccc7c517749876127409cb8cb79b903404e2cf253fe34d17aff90e"
+        },
+        {
+          "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ad/E4_R5M1A_recbole_source_audit/gap_closure_assessment.json",
+          "canonical_lf_sha256": "1e0bc820e3ed419d6896f00953da0e593f397932b49f870764cb524289104f18"
+        },
+        {
+          "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ad/E4_R5M1A_recbole_source_audit/v5_adapter_feasibility.json",
+          "canonical_lf_sha256": "c16aa48b73fe736fd233c8b017d48d0f03b97059a9891d83e668df10b3c43748"
+        },
+        {
+          "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ad/E4_R5M1A_recbole_source_audit/audit_report.md",
+          "canonical_lf_sha256": "208dde58806b02a4aa0b37d3063ecea0d67b3490d5ad2d3efef37f963d846e31"
+        },
+        {
+          "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ad/E4_R5M1A_recbole_source_audit/audit_handoff.json",
+          "canonical_lf_sha256": "f44c2cc25554ba58d932f18e195a555066cbf6f75c535768f04b81f7381aed1b"
+        }
+      ]
+    },
+    {
+      "candidate_id": "R5-CAND-RECBOLE-GNN-LIGHTGCN-ML1M-001",
+      "lane_id": "R5-M1B",
+      "lane_source_commit": "4650f891e77021965ac44da12f5d21bf6a18bd97",
+      "repository": "https://github.com/RUCAIBox/RecBole-GNN",
+      "source_revision": "632ef888589944c190ad8f449b49ca559618d4df",
+      "method": "LightGCN",
+      "reference_dataset": "MovieLens 1M",
+      "candidate_status_from_lane": "SOURCE_INCOMPLETE_CANDIDATE_FOR_R5_G1",
+      "reproducibility_status_from_lane": "SOURCE_INCOMPLETE_NOT_RUN",
+      "source_fact_count": 35,
+      "dispositive_conflicts": 0,
+      "bounded_non_dispositive_conflicts": 3,
+      "handoff_blockers": 9,
+      "source_closure_summary": {
+        "identity_license_and_local_method": "SOURCE_ESTABLISHED_AT_EXACT_REVISION",
+        "local_entrypoint_and_full_score_seam": "SOURCE_LOCATED_AT_EXACT_REVISION",
+        "inherited_recbole_1_1_1_config_and_evaluator": "NOT_MATERIALIZED_FOR_THIS_CANDIDATE",
+        "environment_lock": "MISSING_WITH_ADDITIONAL_ABI_DEPENDENCY_SURFACE",
+        "dataset_lineage": "MISSING_REQUIRES_SEPARATE_AUTHORIZATION",
+        "test_safe_runner": "MISSING_STOCK_ORCHESTRATION_OPENS_TEST",
+        "official_rerun": "NOT_RUN",
+        "harmonized_v5_result": "NOT_RUN"
+      },
+      "numeric_target": {
+        "metric": "NDCG@10",
+        "documented_value": 0.2538,
+        "status": "PROVISIONAL_SOURCE_LOCATED_NOT_PRODUCER_BOUND",
+        "used_for_selection": false,
+        "valid_for_paper": false,
+        "rerun_required": true
+      },
+      "adapter_finding": "BOUNDED_REPRESENTATION_ADAPTER_PLAUSIBLE_NOT_READY",
+      "lane_artifacts": [
+        {
+          "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ae/E4_R5M1B_recbole_gnn_source_audit/source_fact_matrix.json",
+          "canonical_lf_sha256": "a84723076969ff87380a544094ebf237cf1c0ce20ef291f95e1ade23b66c8f83"
+        },
+        {
+          "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ae/E4_R5M1B_recbole_gnn_source_audit/gap_closure_assessment.json",
+          "canonical_lf_sha256": "fb9b9cfff86e1037370717c2cbcd367a017dfb6c677c95db3fcc3d4ed175e24d"
+        },
+        {
+          "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ae/E4_R5M1B_recbole_gnn_source_audit/v5_adapter_feasibility.json",
+          "canonical_lf_sha256": "a453267629920ba4ab3fadcbc8e9e9b29b034b3ca933300e5f7d1212f44641dc"
+        },
+        {
+          "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ae/E4_R5M1B_recbole_gnn_source_audit/audit_report.md",
+          "canonical_lf_sha256": "4d61e4f9030ece84d7af7303d6d23fa331820aee8db8deb5a64947b2d583ef26"
+        },
+        {
+          "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ae/E4_R5M1B_recbole_gnn_source_audit/audit_handoff.json",
+          "canonical_lf_sha256": "48cbca71569ee1759700715a2bc2dcdc1e214b9c2aef6df1a03361678ad7669f"
+        }
+      ]
+    }
+  ],
+  "merge_invariants": {
+    "candidate_identity_join_key": "candidate_id",
+    "exact_candidate_identity_join_only": true,
+    "cross_candidate_fact_borrowing_detected": false,
+    "numeric_target_magnitude_used_for_selection": false,
+    "missing_evidence_inferred": false,
+    "source_audit_claims_verified_reproducibility": false,
+    "benchmark_admitted_candidates": 0
+  },
+  "merge_conclusion": "Both candidates are source-authentic and free of dispositive source conflicts, but neither is reproducibility-verified. RecBole BPR has the more self-contained exact-revision producer, configuration, evaluator and full-score source surface; RecBole-GNN LightGCN still requires separate materialization of the inherited RecBole 1.1.1 configuration/evaluator surface before its next-phase scope is equally bounded.",
+  "operational_change_after_input_freeze": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r5_future_subagent_model_policy.json",
+    "scientific_input_to_r5_g1": false,
+    "effect": "Future dispatch latency/profile only; no frozen evidence or selection criterion changed."
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

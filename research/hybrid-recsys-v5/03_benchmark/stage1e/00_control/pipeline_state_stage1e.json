@@ -2,7 +2,7 @@
   "schema_version": "academic-research-pipeline-state-1.0",
   "project": "hybrid-recsys-v5",
   "stage": "1E",
-  "state": "stage1e_rebaseline_v2_r5_g1_inputs_frozen_ready_for_central_synthesis",
+  "state": "stage1e_rebaseline_v2_r5_g1_complete_r5_m2_user_scope_approval_required",
   "updated_at": "2026-08-23",
   "model": "gpt-5.6-sol",
   "reasoning": "max",
@@ -778,7 +778,7 @@
       "next_gate": "SUPERSEDED_BY_USER_DECISION_AUTHORIZE_TARGETED_SOURCE_ONLY_EVIDENCE_MATERIALIZATION_REDESIGN"
     },
     "e4_r5": {
-      "status": "R5_G1_INPUTS_FROZEN_CENTRALLY_VALIDATED_READY_FOR_SYNTHESIS",
+      "status": "R5_G1_COMPLETE_CENTRALLY_VALIDATED_R5_M2_USER_CHECKPOINT_OPEN",
       "entry_checkpoint": "USER_CONFIRMED_TARGETED_SOURCE_ONLY_EVIDENCE_MATERIALIZATION_REDESIGN",
       "source_stage": "R4-G0",
       "source_verdict": "NO_ADMISSIBLE_BUNDLE_STOP_FAIL_CLOSED",
@@ -787,7 +787,25 @@
           "display_name": "Sol XHigh Standard",
           "model": "gpt-5.6-sol",
           "reasoning": "xhigh",
-          "service_tier": "standard"
+          "service_tier": "standard",
+          "scope": "HISTORICAL_ACTUAL_PROFILE_FOR_COMPLETED_R5_M1A_AND_R5_M1B"
+        },
+        "future_subagents": {
+          "change_control": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r5_future_subagent_model_policy.json",
+          "critical_judgment": {
+            "display_name": "Sol XHigh Fast",
+            "model": "gpt-5.6-sol",
+            "reasoning": "xhigh",
+            "service_tier": "priority"
+          },
+          "bounded_execution": {
+            "display_name": "Sol High Fast",
+            "model": "gpt-5.6-sol",
+            "reasoning": "high",
+            "service_tier": "priority"
+          },
+          "effective_scope": "DISPATCHES_CREATED_AFTER_2026_08_23_CHANGE_CONTROL",
+          "completed_valid_stage_rerun_required": false
         },
         "central": {
           "display_name": "Sol Max Standard",
@@ -878,6 +896,42 @@
         "selection_cardinality_max": 1,
         "benchmark_admitted_candidates": 0
       },
+      "r5_g1": {
+        "status": "COMPLETE_CENTRALLY_VALIDATED",
+        "context": "current_central",
+        "model": "gpt-5.6-sol",
+        "reasoning": "max",
+        "service_tier": "standard",
+        "display_name": "Sol Max Standard",
+        "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_af/E4_R5G1_source_evidence_selection",
+        "central_validation": {
+          "verdict": "PASS_R5_G1_PROVISIONAL_BPR_SELECTION_R5_M2_USER_CHECKPOINT_REQUIRED",
+          "receipt": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r5_g1_validation_receipt.json",
+          "receipt_canonical_lf_bytes": 4307,
+          "receipt_canonical_lf_sha256": "68416087ab2d3e2fee1d9bf024e55bcefe7000afc1d4c673bd22b7df4395a806",
+          "mechanical_checks": "162/162",
+          "output_files": "5/5",
+          "strict_json_outputs": "4/4",
+          "failure_count": 0
+        },
+        "decision": "PROVISIONAL_SINGLE_CANDIDATE_FOR_DATA_ENVIRONMENT_PROPOSAL",
+        "selected_candidate_id": "R5-CAND-RECBOLE-BPR-ML100K-001",
+        "selected_candidate_status": "PROVISIONALLY_ELIGIBLE_FOR_R5_M2_PROPOSAL",
+        "deferred_candidate_id": "R5-CAND-RECBOLE-GNN-LIGHTGCN-ML1M-001",
+        "deferred_candidate_status": "NOT_SELECTED_SOURCE_GAPS_LARGER",
+        "selection_count": 1,
+        "benchmark_admitted_candidates": 0,
+        "accepted_numeric_targets": 0,
+        "verified_reproducibility_claims": 0
+      },
+      "r5_m2": {
+        "status": "OPEN_AWAITING_EXPLICIT_USER_SCOPE_APPROVAL",
+        "purpose": "CANDIDATE_SPECIFIC_MOVIELENS_100K_DATA_ENVIRONMENT_TEST_SAFE_COMMAND_AND_PARITY_PROPOSAL",
+        "dataset_or_asset_acquisition_authorized": false,
+        "environment_creation_or_package_install_authorized": false,
+        "preprocessing_training_or_evaluation_authorized": false,
+        "test_access_authorized": false
+      },
       "truth_state": {
         "RESULT_STATUS": "NOT_RUN",
         "TEST_SET_OPENED": "NO",
@@ -885,13 +939,13 @@
         "project_benchmark_numbers": "INVALID_FOR_PAPER"
       },
       "execution_authorized": false,
-      "next_gate": "CENTRAL_R5_G1_SOL_MAX_STANDARD_SOURCE_EVIDENCE_SYNTHESIS"
+      "next_gate": "R5_M2_MANDATORY_USER_SCOPE_APPROVAL_FOR_SELECTED_RECBOLE_BPR_CANDIDATE"
     }
   },
   "central_preregistration_lock": "PASS_R5_S0_SOURCE_ONLY_SCOPE_LOCKED",
-  "adapt_reproduce": "BLOCKED_UNTIL_R5_G1_AND_R5_M2_DATA_ENVIRONMENT_RUN_APPROVAL",
+  "adapt_reproduce": "BLOCKED_UNTIL_R5_M2_MATERIALIZATION_SCOPE_AND_LATER_EXECUTION_APPROVAL",
   "harmonized_v5": "BLOCKED",
   "external_validation": "BLOCKED",
   "efficiency": "BLOCKED_AFTER_ACCURACY",
-  "next_gate": "Execute central R5-G1 source-evidence synthesis with Sol Max Standard on 23/23 frozen inputs. R5-G1 may select zero or one candidate only for an R5-M2 proposal; dataset/checkpoint acquisition, environment creation, execution and TEST access remain blocked."
+  "next_gate": "R5-M2 mandatory user checkpoint: approve, reject or revise the bounded MovieLens 100K data-lineage, deterministic-environment, TEST-safe command and v5 parity proposal for R5-CAND-RECBOLE-BPR-ML100K-001. Dataset/checkpoint acquisition, environment creation, execution and TEST access remain blocked."
 }

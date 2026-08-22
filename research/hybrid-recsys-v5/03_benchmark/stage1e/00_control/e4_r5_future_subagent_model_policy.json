@@ -1,0 +1,131 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-future-subagent-model-policy-1.0",
+  "created_at": "2026-08-23",
+  "effective_scope": "SUBAGENT_DISPATCHES_CREATED_AFTER_THIS_CHANGE_CONTROL_RECORD",
+  "user_decision": "USE_XHIGH_FAST_OR_HIGH_FAST_FOR_FUTURE_SUBAGENTS_AND_SELECT_BY_STAGE_IMPORTANCE",
+  "scientific_effect": "NONE_OPERATIONAL_SCHEDULING_ONLY",
+  "historical_artifact_policy": {
+    "retroactive_rewrite_allowed": false,
+    "rerun_completed_valid_stages_required": false,
+    "r5_m1a_actual_profile": {
+      "display_name": "Sol XHigh Standard",
+      "runtime_model_id": "gpt-5.6-sol",
+      "reasoning_effort": "xhigh",
+      "service_tier": "standard"
+    },
+    "r5_m1b_actual_profile": {
+      "display_name": "Sol XHigh Standard",
+      "runtime_model_id": "gpt-5.6-sol",
+      "reasoning_effort": "xhigh",
+      "service_tier": "standard"
+    },
+    "reason": "Both R5-M1 lanes were already completed and centrally validated before this policy changed. Their recorded runtime identities remain immutable."
+  },
+  "future_subagent_profiles": {
+    "critical_judgment": {
+      "display_name": "Sol XHigh Fast",
+      "runtime_model_id": "gpt-5.6-sol",
+      "reasoning_effort": "xhigh",
+      "service_tier": "priority",
+      "importance": "HIGH_OR_CRITICAL",
+      "use_for": [
+        "official repository, immutable revision, license, dataset and metric-source lock audits",
+        "methodology, evaluator-semantics, leakage and reproducibility audits",
+        "independent audit before source, data, environment, command or result admission",
+        "candidate evidence-quality or admissibility judgments when delegated",
+        "conflict resolution where an error can change the scientific conclusion"
+      ],
+      "must_not_be_downgraded_for": [
+        "source-to-claim verification",
+        "protocol equivalence decisions",
+        "benchmark comparability decisions",
+        "paper-facing evidence admission"
+      ]
+    },
+    "bounded_execution": {
+      "display_name": "Sol High Fast",
+      "runtime_model_id": "gpt-5.6-sol",
+      "reasoning_effort": "high",
+      "service_tier": "priority",
+      "importance": "LOW_OR_MEDIUM_WITH_FROZEN_CONTRACT",
+      "use_for": [
+        "hash, schema, manifest and exact-write-set verification",
+        "deterministic inventory and receipt assembly",
+        "format conversion and mechanical normalization",
+        "command-packet assembly after every scientific choice is frozen",
+        "compatibility-matrix population where criteria and evidence locators are fixed"
+      ],
+      "preconditions": [
+        "input manifest is frozen",
+        "output schema and allowed decisions are explicit",
+        "task cannot select a candidate or authorize scientific execution",
+        "ambiguous evidence must be escalated rather than inferred"
+      ]
+    }
+  },
+  "central_profile": {
+    "display_name": "Sol Max Standard",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "max",
+    "service_tier": "standard",
+    "unchanged": true,
+    "reserved_for": [
+      "central synthesis across independent lanes",
+      "zero-or-one candidate selection",
+      "benchmark admission and execution authorization gates",
+      "final audit integration and paper-facing claim decisions",
+      "mandatory user-checkpoint proposal construction"
+    ]
+  },
+  "importance_rubric": [
+    {
+      "level": "CRITICAL",
+      "decision_effect": "Can admit or reject a candidate, open data/environment/run scope, alter metric meaning, or change a paper claim.",
+      "profile": "CENTRAL_SOL_MAX_STANDARD_OR_DELEGATED_SOL_XHIGH_FAST",
+      "default_context": "central for final decisions; independent subagent only for audit evidence"
+    },
+    {
+      "level": "HIGH",
+      "decision_effect": "Requires source interpretation, conflict analysis, methodology judgment, or reproducibility assessment.",
+      "profile": "SOL_XHIGH_FAST",
+      "default_context": "fresh independent subagent"
+    },
+    {
+      "level": "MEDIUM",
+      "decision_effect": "Applies a frozen scientific contract but may detect bounded inconsistencies.",
+      "profile": "SOL_HIGH_FAST",
+      "default_context": "fresh subagent with fail-closed escalation"
+    },
+    {
+      "level": "LOW",
+      "decision_effect": "Purely mechanical validation or artifact assembly with no scientific judgment.",
+      "profile": "SOL_HIGH_FAST",
+      "default_context": "subagent only when parallelism materially reduces latency"
+    }
+  ],
+  "escalation_rules": [
+    "A Sol High Fast lane must stop and escalate to Sol XHigh Fast when evidence is ambiguous, contradictory, missing outside the frozen contract, or requires semantic interpretation.",
+    "Any delegated result that could change candidate selection, benchmark admission, execution authorization, TEST access or a paper-facing claim returns to central Sol Max Standard for the final decision.",
+    "Fast service changes scheduling latency only; it does not relax hashes, frozen inputs, source hierarchy, reproducibility gates or fail-closed behavior.",
+    "Record the actual runtime model, reasoning effort and service tier in every dispatch and handoff; never rewrite historical profiles."
+  ],
+  "r5_g1_disposition": {
+    "stage_importance": "CRITICAL",
+    "context": "current_central",
+    "profile": "Sol Max Standard",
+    "reason": "R5-G1 locks at most one candidate and therefore remains a central scientific judgment, not a future subagent task."
+  },
+  "scientific_boundaries": {
+    "model_speed_can_change_admission_gate": false,
+    "model_speed_can_replace_source_evidence": false,
+    "model_speed_can_authorize_execution": false,
+    "completed_valid_stage_rerun_required": false
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

@@ -1,0 +1,69 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r5-g1-handoff-1.0",
+  "created_at": "2026-08-23",
+  "stage_id": "R5-G1",
+  "status": "COMPLETE_CENTRAL_SELECTION_R5_M2_CHECKPOINT_OPEN",
+  "decision": "PROVISIONAL_SINGLE_CANDIDATE_FOR_DATA_ENVIRONMENT_PROPOSAL",
+  "selected_candidate_id": "R5-CAND-RECBOLE-BPR-ML100K-001",
+  "selected_candidate_status": "PROVISIONALLY_ELIGIBLE_FOR_R5_M2_PROPOSAL",
+  "not_selected_candidate": {
+    "candidate_id": "R5-CAND-RECBOLE-GNN-LIGHTGCN-ML1M-001",
+    "status": "NOT_SELECTED_SOURCE_GAPS_LARGER",
+    "permanent_rejection": false
+  },
+  "selection_count": 1,
+  "benchmark_admitted_candidates": 0,
+  "verified_reproducibility_claims": 0,
+  "accepted_numeric_targets": 0,
+  "frozen_input_binding": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r5_g1_frozen_input_manifest.json",
+    "canonical_lf_bytes": 6814,
+    "canonical_lf_sha256": "8ef3d2ef000051fdb69edea75297e1a6a5d5434d6abce5e7693ae506f0f38400",
+    "gate": "PASS_R5_G1_FROZEN_23_OF_23_READY_FOR_CENTRAL_SYNTHESIS"
+  },
+  "output_contract": {
+    "root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_af/E4_R5G1_source_evidence_selection",
+    "files": [
+      "source_audit_merge.json",
+      "candidate_gap_comparison.json",
+      "selection_decision.json",
+      "r5_g1_report.md",
+      "r5_g1_handoff.json"
+    ],
+    "extra_files_allowed": false
+  },
+  "next_gate": {
+    "id": "R5-M2",
+    "status": "OPEN_AWAITING_EXPLICIT_USER_SCOPE_APPROVAL",
+    "purpose": "Approve, reject or revise a candidate-specific MovieLens 100K data-lineage, deterministic-environment, TEST-safe command and parity-materialization proposal.",
+    "automatic_materialization_allowed": false,
+    "automatic_execution_allowed": false
+  },
+  "downstream_requirements": [
+    "Keep official-source reproduction and harmonized-v5 evaluation in separate namespaces.",
+    "Do not treat README NDCG@10=0.2768 as an accepted center or paper result.",
+    "Freeze provider, byte lineage, environment closure, config, seed schedule, statistic, tolerance, adapter, evaluator and parity contracts before execution.",
+    "Require a separate independently audited execution packet after materialization.",
+    "Keep project v5 TEST sealed until a later one-time TEST authorization gate."
+  ],
+  "future_subagent_model_policy": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r5_future_subagent_model_policy.json",
+    "critical_audit": "Sol XHigh Fast",
+    "bounded_execution": "Sol High Fast",
+    "central_gate": "Sol Max Standard",
+    "historical_r5_m1_profiles_rewritten": false
+  },
+  "model_profile": {
+    "display_name": "Sol Max Standard",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "max",
+    "service_tier": "standard"
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

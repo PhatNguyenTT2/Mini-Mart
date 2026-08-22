@@ -1,0 +1,102 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r5-g1-central-validation-receipt-1.0",
+  "created_at": "2026-08-23",
+  "stage_id": "R5-G1-CENTRAL-VALIDATION",
+  "validator": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r5_g1.py",
+    "canonical_lf_bytes": 13606,
+    "canonical_lf_sha256": "426b42feb50363c46b7f3dfb55d7118501a765ad0aaf54c8b87a8127c866b946"
+  },
+  "passed": true,
+  "verdict": "PASS_R5_G1_PROVISIONAL_BPR_SELECTION_R5_M2_USER_CHECKPOINT_REQUIRED",
+  "failure_count": 0,
+  "mechanical_checks": {
+    "passed": 162,
+    "expected": 162
+  },
+  "frozen_inputs": {
+    "manifest": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r5_g1_frozen_input_manifest.json",
+    "canonical_lf_bytes": 6814,
+    "canonical_lf_sha256": "8ef3d2ef000051fdb69edea75297e1a6a5d5434d6abce5e7693ae506f0f38400",
+    "matched": 23,
+    "expected": 23,
+    "strict_json_verified": 18,
+    "strict_json_expected": 18
+  },
+  "outputs": [
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_af/E4_R5G1_source_evidence_selection/source_audit_merge.json",
+      "canonical_lf_bytes": 8722,
+      "canonical_lf_sha256": "1fdacb3c3ff011165ff0997ae9af791555da7f3273acaa0fcb727ca9bd4ea3bc"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_af/E4_R5G1_source_evidence_selection/candidate_gap_comparison.json",
+      "canonical_lf_bytes": 9057,
+      "canonical_lf_sha256": "076d5c49031035cda3494a56a49eb9a4cecd527403e015a26dd03a1d5d067bb0"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_af/E4_R5G1_source_evidence_selection/selection_decision.json",
+      "canonical_lf_bytes": 4767,
+      "canonical_lf_sha256": "61cfb67d74101896029bb38b48dc7865e921a7e41fa8e01001470ea26bcbc7fd"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_af/E4_R5G1_source_evidence_selection/r5_g1_report.md",
+      "canonical_lf_bytes": 4748,
+      "canonical_lf_sha256": "8b1603466bf94617a17779aafa3e7d71592bc7303e8bc3e1fdac53bf53ea68e5"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_af/E4_R5G1_source_evidence_selection/r5_g1_handoff.json",
+      "canonical_lf_bytes": 3013,
+      "canonical_lf_sha256": "037f4502eb8645dca002d47ba4c8129f686aa9f84031f1534b0d670771717b00"
+    }
+  ],
+  "output_contract": {
+    "files_present": 5,
+    "files_expected": 5,
+    "strict_json_present": 4,
+    "strict_json_expected": 4,
+    "extra_files": 0
+  },
+  "decision": {
+    "value": "PROVISIONAL_SINGLE_CANDIDATE_FOR_DATA_ENVIRONMENT_PROPOSAL",
+    "selected_count": 1,
+    "selection_cardinality_max": 1,
+    "selected_candidate_id": "R5-CAND-RECBOLE-BPR-ML100K-001",
+    "selected_candidate_status": "PROVISIONALLY_ELIGIBLE_FOR_R5_M2_PROPOSAL",
+    "deferred_candidate_id": "R5-CAND-RECBOLE-GNN-LIGHTGCN-ML1M-001",
+    "deferred_candidate_status": "NOT_SELECTED_SOURCE_GAPS_LARGER",
+    "benchmark_admitted_candidates": 0,
+    "accepted_numeric_targets": 0,
+    "verified_reproducibility_claims": 0
+  },
+  "r5_m2": {
+    "status": "OPEN_AWAITING_EXPLICIT_USER_SCOPE_APPROVAL",
+    "dataset_or_asset_acquisition_authorized": false,
+    "environment_creation_or_package_install_authorized": false,
+    "preprocessing_training_or_evaluation_authorized": false,
+    "test_access_authorized": false
+  },
+  "model_policy_change_control": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r5_future_subagent_model_policy.json",
+    "canonical_lf_bytes": 5933,
+    "canonical_lf_sha256": "e097b7829dd873552370da194f1767f6a05090cd7bfefcf3a9bcb713a3121d13",
+    "future_critical_subagents": "Sol XHigh Fast",
+    "future_bounded_subagents": "Sol High Fast",
+    "central_gates": "Sol Max Standard",
+    "scientific_input_to_frozen_r5_g1": false,
+    "historical_profiles_rewritten": false
+  },
+  "central_model_profile": {
+    "display_name": "Sol Max Standard",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "max",
+    "service_tier": "standard"
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}
