@@ -1,0 +1,71 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r6-s0-gate-receipt-1.0",
+  "created_at": "2026-08-23",
+  "stage_id": "R6-S0-CENTRAL-ENTRY-GATE",
+  "validator": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_s0_gate.py",
+    "canonical_lf_bytes": 16471,
+    "canonical_lf_sha256": "641edc11732f11c31ff21927d7a735938568645da7be3c9ae5cdbcd4b397fe9d"
+  },
+  "frozen_input_manifest": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_s0_frozen_input_manifest.json",
+    "canonical_lf_bytes": 11148,
+    "canonical_lf_sha256": "3c3c229dd427a831204266f1e3c61f2ff0ab7096a4b30ccfac9098e659cc245b"
+  },
+  "passed": true,
+  "verdict": "PASS_R6_S0_FROZEN_36_OF_36_READY_FOR_PARALLEL_R6_D1_R6_E1",
+  "failure_count": 0,
+  "mechanical_checks": {
+    "passed": 26,
+    "expected": 26
+  },
+  "frozen_inputs": {
+    "matched": 36,
+    "expected": 36,
+    "strict_json_verified": 17,
+    "strict_json_expected": 17
+  },
+  "selected_candidate": {
+    "candidate_id": "R5-CAND-RECBOLE-BPR-ML100K-001",
+    "source_revision": "9a6f63d8d4a5b989fe27955a833f813a6d86041e",
+    "reference_dataset": "GroupLens MovieLens 100K",
+    "benchmark_admission": "NONE"
+  },
+  "parallel_stages": [
+    {
+      "stage_id": "R6-D1",
+      "purpose": "official_grouplens_ml100k_authority_rights_and_lineage_lock",
+      "status": "READY_FOR_DISPATCH",
+      "write_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ag/E4_R6D1_movielens100k_authority_lineage"
+    },
+    {
+      "stage_id": "R6-E1",
+      "purpose": "recbole_bpr_current_compatible_environment_closure",
+      "status": "READY_FOR_DISPATCH",
+      "write_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ah/E4_R6E1_recbole_environment_closure"
+    }
+  ],
+  "model_profile": {
+    "display_name": "Sol XHigh Fast",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "xhigh",
+    "service_tier": "priority"
+  },
+  "authorization_boundary": {
+    "authoritative_source_research": true,
+    "worker_download_or_extraction": false,
+    "worker_environment_creation_or_package_install": false,
+    "training_or_evaluation": false,
+    "project_v5_test_access": false,
+    "materialization_after_r6_g0_and_validated_r6_c1": true,
+    "experiment_execution_authorized": false,
+    "benchmark_admission": false
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

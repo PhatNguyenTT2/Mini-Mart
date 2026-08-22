@@ -1,0 +1,149 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r6-bounded-materialization-stage-map-1.0",
+  "created_at": "2026-08-23",
+  "stage_id": "E4_R6_BOUNDED_DATASET_ENVIRONMENT_COMMAND_MATERIALIZATION",
+  "status": "PREPARED_AWAITING_R6_S0_GATE",
+  "entry_checkpoint": {
+    "stage": "R5-M2",
+    "status": "USER_APPROVED",
+    "receipt": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r5_m2_user_approval_receipt.json",
+    "candidate_id": "R5-CAND-RECBOLE-BPR-ML100K-001",
+    "scope": "GROUPLENS_ML100K_DATA_LINEAGE_ISOLATED_ENVIRONMENT_AND_COMMAND_PROPOSAL_ONLY"
+  },
+  "model_policy": {
+    "change_control": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r5_future_subagent_model_policy.json",
+    "central": {
+      "display_name": "Sol Max Standard",
+      "runtime_model_id": "gpt-5.6-sol",
+      "reasoning_effort": "max",
+      "service_tier": "standard"
+    },
+    "critical_judgment_worker": {
+      "display_name": "Sol XHigh Fast",
+      "runtime_model_id": "gpt-5.6-sol",
+      "reasoning_effort": "xhigh",
+      "service_tier": "priority"
+    },
+    "bounded_execution_worker": {
+      "display_name": "Sol High Fast",
+      "runtime_model_id": "gpt-5.6-sol",
+      "reasoning_effort": "high",
+      "service_tier": "priority"
+    }
+  },
+  "phases": [
+    {
+      "id": "R6-S0",
+      "name": "central_preregistration_authorization_replay_and_input_freeze",
+      "importance": "CRITICAL",
+      "context": "current_central",
+      "model_profile": "central",
+      "status": "IN_PROGRESS",
+      "dependencies": ["R5-G1", "R5-M2"]
+    },
+    {
+      "id": "R6-D1",
+      "name": "official_grouplens_ml100k_authority_rights_and_lineage_lock",
+      "importance": "HIGH",
+      "context": "fresh_independent_worker",
+      "model_profile": "critical_judgment_worker",
+      "status": "BLOCKED_ON_R6_S0",
+      "dependencies": ["R6-S0"],
+      "parallel_group": "R6-DE",
+      "write_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ag/E4_R6D1_movielens100k_authority_lineage"
+    },
+    {
+      "id": "R6-E1",
+      "name": "recbole_bpr_current_compatible_environment_closure",
+      "importance": "HIGH",
+      "context": "fresh_independent_worker",
+      "model_profile": "critical_judgment_worker",
+      "status": "BLOCKED_ON_R6_S0",
+      "dependencies": ["R6-S0"],
+      "parallel_group": "R6-DE",
+      "write_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ah/E4_R6E1_recbole_environment_closure"
+    },
+    {
+      "id": "R6-G0",
+      "name": "central_authority_environment_merge_and_exact_materialization_freeze",
+      "importance": "CRITICAL",
+      "context": "current_central",
+      "model_profile": "central",
+      "status": "BLOCKED_ON_R6_D1_R6_E1",
+      "dependencies": ["R6-D1", "R6-E1", "CENTRAL_LANE_VALIDATION"]
+    },
+    {
+      "id": "R6-C1",
+      "name": "exact_dataset_environment_and_test_safe_command_packet_assembly",
+      "importance": "MEDIUM",
+      "context": "fresh_bounded_worker",
+      "model_profile": "bounded_execution_worker",
+      "status": "BLOCKED_ON_R6_G0",
+      "dependencies": ["R6-G0"],
+      "write_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ai/E4_R6C1_materialization_command_packet"
+    },
+    {
+      "id": "R6-M0",
+      "name": "materialize_canonical_ml100k_and_byte_lineage",
+      "importance": "MEDIUM",
+      "context": "central_mechanical_execution",
+      "model_profile": "central",
+      "status": "BLOCKED_ON_VALIDATED_R6_C1",
+      "dependencies": ["R6-C1", "CENTRAL_COMMAND_PACKET_VALIDATION"]
+    },
+    {
+      "id": "R6-M1",
+      "name": "materialize_isolated_recbole_environment_and_inventory",
+      "importance": "MEDIUM",
+      "context": "central_mechanical_execution",
+      "model_profile": "central",
+      "status": "BLOCKED_ON_VALIDATED_R6_C1",
+      "dependencies": ["R6-C1", "CENTRAL_COMMAND_PACKET_VALIDATION"]
+    },
+    {
+      "id": "R6-A1",
+      "name": "independent_materialization_lineage_environment_and_no_execution_audit",
+      "importance": "HIGH",
+      "context": "fresh_independent_worker",
+      "model_profile": "critical_judgment_worker",
+      "status": "BLOCKED_ON_R6_M0_R6_M1",
+      "dependencies": ["R6-M0", "R6-M1"]
+    },
+    {
+      "id": "R6-G1",
+      "name": "central_materialization_admission_and_execution_proposal_gate",
+      "importance": "CRITICAL",
+      "context": "current_central",
+      "model_profile": "central",
+      "status": "BLOCKED_ON_R6_A1",
+      "dependencies": ["R6-A1"]
+    }
+  ],
+  "parallelization": {
+    "parallel_now": ["R6-D1", "R6-E1"],
+    "sequential_after_parallel": ["R6-G0", "R6-C1", "R6-M0_AND_R6_M1", "R6-A1", "R6-G1"],
+    "reason": "Command assembly needs both authority/lineage and environment decisions; materialization needs a validated exact command packet; audit needs produced bytes and environment receipts."
+  },
+  "execution_boundary": {
+    "official_primary_source_web_research": true,
+    "official_grouplens_ml100k_download_after_exact_freeze": true,
+    "isolated_environment_creation_after_exact_freeze": true,
+    "package_install_after_exact_freeze": true,
+    "raw_to_recbole_atomic_conversion_after_exact_freeze": true,
+    "training": false,
+    "evaluation": false,
+    "hyperparameter_search": false,
+    "checkpoint_download": false,
+    "project_v5_test_access": false,
+    "paper_benchmark_admission": false,
+    "experiment_execution_authorized": false
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "next_gate": "CREATE_AND_VALIDATE_R6_S0_FROZEN_INPUT_MANIFEST"
+}

@@ -2,7 +2,7 @@
   "schema_version": "academic-research-pipeline-state-1.0",
   "project": "hybrid-recsys-v5",
   "stage": "1E",
-  "state": "stage1e_rebaseline_v2_r5_g1_complete_r5_m2_user_scope_approval_required",
+  "state": "stage1e_rebaseline_v2_r6_s0_complete_r6_d1_e1_ready_for_dispatch",
   "updated_at": "2026-08-23",
   "model": "gpt-5.6-sol",
   "reasoning": "max",
@@ -778,7 +778,7 @@
       "next_gate": "SUPERSEDED_BY_USER_DECISION_AUTHORIZE_TARGETED_SOURCE_ONLY_EVIDENCE_MATERIALIZATION_REDESIGN"
     },
     "e4_r5": {
-      "status": "R5_G1_COMPLETE_CENTRALLY_VALIDATED_R5_M2_USER_CHECKPOINT_OPEN",
+      "status": "R5_M2_USER_APPROVED_R6_S0_COMPLETE_READY_FOR_PARALLEL_R6_D1_R6_E1",
       "entry_checkpoint": "USER_CONFIRMED_TARGETED_SOURCE_ONLY_EVIDENCE_MATERIALIZATION_REDESIGN",
       "source_stage": "R4-G0",
       "source_verdict": "NO_ADMISSIBLE_BUNDLE_STOP_FAIL_CLOSED",
@@ -925,12 +925,51 @@
         "verified_reproducibility_claims": 0
       },
       "r5_m2": {
-        "status": "OPEN_AWAITING_EXPLICIT_USER_SCOPE_APPROVAL",
+        "status": "USER_APPROVED_BOUNDED_MATERIALIZATION_SCOPE",
         "purpose": "CANDIDATE_SPECIFIC_MOVIELENS_100K_DATA_ENVIRONMENT_TEST_SAFE_COMMAND_AND_PARITY_PROPOSAL",
-        "dataset_or_asset_acquisition_authorized": false,
-        "environment_creation_or_package_install_authorized": false,
+        "approval_receipt": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r5_m2_user_approval_receipt.json",
+        "official_grouplens_ml100k_acquisition_authorized": true,
+        "checkpoint_or_pretrained_asset_acquisition_authorized": false,
+        "environment_creation_or_package_install_authorized": true,
+        "raw_to_atomic_conversion_authorized": true,
         "preprocessing_training_or_evaluation_authorized": false,
-        "test_access_authorized": false
+        "test_access_authorized": false,
+        "benchmark_admission_authorized": false
+      },
+      "r6": {
+        "status": "S0_COMPLETE_CENTRALLY_VALIDATED_PARALLEL_LANES_READY_FOR_DISPATCH",
+        "stage_map": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_materialization_stage_map.json",
+        "contract": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_bounded_materialization_contract.md",
+        "s0": {
+          "status": "COMPLETE_CENTRALLY_VALIDATED",
+          "gate": "PASS_R6_S0_FROZEN_36_OF_36_READY_FOR_PARALLEL_R6_D1_R6_E1",
+          "manifest": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_s0_frozen_input_manifest.json",
+          "receipt": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_s0_gate_receipt.json",
+          "frozen_inputs": "36/36",
+          "strict_json_inputs": "17/17",
+          "mechanical_checks": "26/26",
+          "failure_count": 0
+        },
+        "parallel_group": {
+          "status": "READY_FOR_DISPATCH",
+          "expected": 2,
+          "active": 0,
+          "complete": 0,
+          "stages": {
+            "R6-D1": {
+              "status": "READY_FOR_DISPATCH",
+              "model_profile": "Sol XHigh Fast"
+            },
+            "R6-E1": {
+              "status": "READY_FOR_DISPATCH",
+              "model_profile": "Sol XHigh Fast"
+            }
+          }
+        },
+        "materialization_authorized": true,
+        "experiment_execution_authorized": false,
+        "test_access_authorized": false,
+        "benchmark_admission_authorized": false
       },
       "truth_state": {
         "RESULT_STATUS": "NOT_RUN",
@@ -939,13 +978,13 @@
         "project_benchmark_numbers": "INVALID_FOR_PAPER"
       },
       "execution_authorized": false,
-      "next_gate": "R5_M2_MANDATORY_USER_SCOPE_APPROVAL_FOR_SELECTED_RECBOLE_BPR_CANDIDATE"
+      "next_gate": "DISPATCH_AND_CENTRALLY_VALIDATE_R6_D1_R6_E1_BEFORE_R6_G0"
     }
   },
-  "central_preregistration_lock": "PASS_R5_S0_SOURCE_ONLY_SCOPE_LOCKED",
-  "adapt_reproduce": "BLOCKED_UNTIL_R5_M2_MATERIALIZATION_SCOPE_AND_LATER_EXECUTION_APPROVAL",
+  "central_preregistration_lock": "PASS_R6_S0_BOUNDED_MATERIALIZATION_SCOPE_LOCKED",
+  "adapt_reproduce": "BLOCKED_UNTIL_R6_DATA_ENVIRONMENT_COMMAND_MATERIALIZATION_AUDIT_AND_LATER_EXPLICIT_EXECUTION_APPROVAL",
   "harmonized_v5": "BLOCKED",
   "external_validation": "BLOCKED",
   "efficiency": "BLOCKED_AFTER_ACCURACY",
-  "next_gate": "R5-M2 mandatory user checkpoint: approve, reject or revise the bounded MovieLens 100K data-lineage, deterministic-environment, TEST-safe command and v5 parity proposal for R5-CAND-RECBOLE-BPR-ML100K-001. Dataset/checkpoint acquisition, environment creation, execution and TEST access remain blocked."
+  "next_gate": "Dispatch R6-D1 and R6-E1 with Sol XHigh Fast, centrally validate their exact five-file outputs, then freeze R6-G0 before any dataset download or environment installation. Training, evaluation, benchmark admission and TEST access remain blocked."
 }

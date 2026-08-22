@@ -1,0 +1,95 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r6-s0-frozen-input-manifest-1.0",
+  "created_at": "2026-08-23",
+  "stage_id": "R6-S0",
+  "status": "FROZEN_FOR_BOUNDED_MATERIALIZATION_PREREGISTRATION",
+  "canonicalization": "strict UTF-8 bytes with CRLF and CR normalized to LF; no other byte transformation",
+  "input_count": 36,
+  "json_input_count": 17,
+  "entry_gate": "R5_M2_USER_APPROVED_BOUNDED_DATASET_ENVIRONMENT_AND_COMMAND_MATERIALIZATION",
+  "selected_candidate": {
+    "candidate_id": "R5-CAND-RECBOLE-BPR-ML100K-001",
+    "source_revision": "9a6f63d8d4a5b989fe27955a833f813a6d86041e",
+    "reference_dataset": "GroupLens MovieLens 100K",
+    "selection_scope": "R6_DATA_LINEAGE_ENVIRONMENT_AND_COMMAND_MATERIALIZATION_ONLY"
+  },
+  "parallel_stages": ["R6-D1", "R6-E1"],
+  "parallel_stage_count": 2,
+  "model_policy": {
+    "central": {
+      "display_name": "Sol Max Standard",
+      "runtime_model_id": "gpt-5.6-sol",
+      "reasoning_effort": "max",
+      "service_tier": "standard"
+    },
+    "parallel_workers": {
+      "display_name": "Sol XHigh Fast",
+      "runtime_model_id": "gpt-5.6-sol",
+      "reasoning_effort": "xhigh",
+      "service_tier": "priority"
+    }
+  },
+  "source_hierarchy": {
+    "dataset_authority": "current official GroupLens surfaces only",
+    "consumer_behavior": "pinned RecBole source revision only",
+    "environment_compatibility": "pinned RecBole source plus official runtime and package distribution documentation",
+    "recbole_processed_dataset_s3_route_is_canonical_provider_authority": false,
+    "mirrors_or_search_snippets_are_decision_bearing": false
+  },
+  "stage_boundary": {
+    "worker_web_research_on_authoritative_sources": true,
+    "worker_download_or_extraction": false,
+    "worker_environment_creation_or_package_install": false,
+    "worker_vendor_source_execution": false,
+    "worker_training_or_evaluation": false,
+    "worker_project_v5_test_access": false,
+    "central_materialization_before_r6_g0_and_validated_r6_c1": false,
+    "experiment_execution_authorized": false,
+    "benchmark_admission_authorized": false
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "inputs": [
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r5_m2_user_approval_receipt.json","canonical_lf_bytes":3831,"canonical_lf_sha256":"331bd5878ab5f1fa29ccc3681c7715e717a99da505b8075c9be647f243ca6aeb"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_materialization_stage_map.json","canonical_lf_bytes":5735,"canonical_lf_sha256":"dad8827cc8194077d3d400eda26ea8b22a5b7f567427a48b28897f93386219f0"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_bounded_materialization_contract.md","canonical_lf_bytes":6534,"canonical_lf_sha256":"d2b06c09b1178194f99677ac1316f643b8e1028142574e20fff6c30b11b59c41"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r5_future_subagent_model_policy.json","canonical_lf_bytes":5933,"canonical_lf_sha256":"e097b7829dd873552370da194f1767f6a05090cd7bfefcf3a9bcb713a3121d13"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r5_candidate_lock.json","canonical_lf_bytes":4575,"canonical_lf_sha256":"1733b0300700cf1cbef3ba00a8d5f56c006215687a06748432f6e793d338bce3"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r5_g1_validation_receipt.json","canonical_lf_bytes":4307,"canonical_lf_sha256":"68416087ab2d3e2fee1d9bf024e55bcefe7000afc1d4c673bd22b7df4395a806"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_af/E4_R5G1_source_evidence_selection/selection_decision.json","canonical_lf_bytes":4767,"canonical_lf_sha256":"61cfb67d74101896029bb38b48dc7865e921a7e41fa8e01001470ea26bcbc7fd"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_af/E4_R5G1_source_evidence_selection/source_audit_merge.json","canonical_lf_bytes":8722,"canonical_lf_sha256":"1fdacb3c3ff011165ff0997ae9af791555da7f3273acaa0fcb727ca9bd4ea3bc"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_af/E4_R5G1_source_evidence_selection/candidate_gap_comparison.json","canonical_lf_bytes":9057,"canonical_lf_sha256":"076d5c49031035cda3494a56a49eb9a4cecd527403e015a26dd03a1d5d067bb0"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_af/E4_R5G1_source_evidence_selection/r5_g1_handoff.json","canonical_lf_bytes":3013,"canonical_lf_sha256":"037f4502eb8645dca002d47ba4c8129f686aa9f84031f1534b0d670771717b00"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_af/E4_R5G1_source_evidence_selection/r5_g1_report.md","canonical_lf_bytes":4748,"canonical_lf_sha256":"8b1603466bf94617a17779aafa3e7d71592bc7303e8bc3e1fdac53bf53ea68e5"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ad/E4_R5M1A_recbole_source_audit/audit_handoff.json","canonical_lf_bytes":6622,"canonical_lf_sha256":"f44c2cc25554ba58d932f18e195a555066cbf6f75c535768f04b81f7381aed1b"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ad/E4_R5M1A_recbole_source_audit/gap_closure_assessment.json","canonical_lf_bytes":11267,"canonical_lf_sha256":"1e0bc820e3ed419d6896f00953da0e593f397932b49f870764cb524289104f18"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ad/E4_R5M1A_recbole_source_audit/v5_adapter_feasibility.json","canonical_lf_bytes":12298,"canonical_lf_sha256":"c16aa48b73fe736fd233c8b017d48d0f03b97059a9891d83e668df10b3c43748"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ad/E4_R5M1A_recbole_source_audit/source_fact_matrix.json","canonical_lf_bytes":41657,"canonical_lf_sha256":"f427a53d8eccc7c517749876127409cb8cb79b903404e2cf253fe34d17aff90e"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ac/E4_R5M0_source_materialization/selected_blob_manifest.json","canonical_lf_bytes":102765,"canonical_lf_sha256":"c5794b9daccdd01ca600c6ef7f890918825fbbb872efa67036c4565234e87016"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ac/E4_R5M0_source_materialization/source_tree_manifest.json","canonical_lf_bytes":215586,"canonical_lf_sha256":"c3e460f63bc9f205764a710fa61cf1bc968c235af462e1eac9560b68a2497e6c"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_w/E4_R4D1C_framework_packet_scout/source_replay_log.json","canonical_lf_bytes":30170,"canonical_lf_sha256":"0d70b55ff931cd7ad359fb364068be8018fe573ff9c2b60935608dea651f4468"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_w/E4_R4D1C_framework_packet_scout/scout_report.md","canonical_lf_bytes":8640,"canonical_lf_sha256":"15c22bb3ef24028386f1fd454d7dd2152f6f37ed412d909b7e42d1275193ed53"},
+    {"path":"inputs/experimental_log.md","canonical_lf_bytes":23581,"canonical_lf_sha256":"bd4ba08719667df6a71feccc915d0b84307b71e536bc533735cc61157e8bcf9f"},
+    {"path":"backend/docs/chatbot/seed-product/benchmark-spec-v5.json","canonical_lf_bytes":2629,"canonical_lf_sha256":"acef1c62cc2a9a3ae04fdf2f4b2fb24b3eb8d2634f15e085fbe1878be8dc166d"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d/README.md","canonical_lf_bytes":27309,"canonical_lf_sha256":"95e10093d8a270be26957ca65bb64f92b75d58c0be872de48b3299bf584a84e4"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d/setup.py","canonical_lf_bytes":2170,"canonical_lf_sha256":"099de0464f9082702d5a1a1dd960444c90af00a95a160a25608043e81e905646"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d/requirements.txt","canonical_lf_bytes":280,"canonical_lf_sha256":"63f1e65c891eb35ba8a9f05000c27449b882d74cce566bc692038b2235016a46"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d/run_recbole.py","canonical_lf_bytes":1629,"canonical_lf_sha256":"d0af23a38b248cf971df9be15e521a71f47d37d96c9779c48b5e10890a76a5bc"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d/recbole/properties/overall.yaml","canonical_lf_bytes":4037,"canonical_lf_sha256":"d82f7ace4ee4a2548d801b268f339d6e355ff63fa3fe9fb6fd25f41b380e87bc"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d/recbole/properties/dataset/ml-100k.yaml","canonical_lf_bytes":3662,"canonical_lf_sha256":"bb257d32efafd3e03b366fd4cd4e3f37285236c70cbea5cd9aad20850cda2e5a"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d/recbole/properties/dataset/url.yaml","canonical_lf_bytes":20763,"canonical_lf_sha256":"9dce9d5a880af7adac2056d565d9d2166b3f61aa3eb28c05f04f68fbaf9af66d"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d/recbole/properties/model/BPR.yaml","canonical_lf_bytes":78,"canonical_lf_sha256":"07796763ae9a51e1873e9c9d6971fe59f54ca6de1464f4239280ab373bd3a306"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d/recbole/model/general_recommender/bpr.py","canonical_lf_bytes":3224,"canonical_lf_sha256":"d7f859638fc1578ee1ab1b0c147b11bc3cda797f4aedb029100466eea4d6a151"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d/recbole/quick_start/quick_start.py","canonical_lf_bytes":8719,"canonical_lf_sha256":"72088c35784d802a046a7beac00909dcf31eaa3664102ef12c29ac0afb229060"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d/recbole/config/configurator.py","canonical_lf_bytes":26100,"canonical_lf_sha256":"fa9bc256b8bed0c364ab5a9939465f905695d194cdf1c195beb195b47f392618"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d/recbole/data/dataset/dataset.py","canonical_lf_bytes":88419,"canonical_lf_sha256":"0e8c17f6e33d3a8dc775121d7523af18264f385357f5c3fd571e70f0b560a6dd"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d/recbole/evaluator/evaluator.py","canonical_lf_bytes":1363,"canonical_lf_sha256":"d2364abd625d65c59037168eb92156cdb96a520f1e03b658a6ae6650e1732ca3"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d/recbole/evaluator/collector.py","canonical_lf_bytes":8635,"canonical_lf_sha256":"bb35bca5562a9bf0aff16e8d26ba374bec00840e822b92f7176a2dfd171577b3"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d/recbole/utils/url.py","canonical_lf_bytes":3135,"canonical_lf_sha256":"2afce665556429759ae6f7912554f750d7411e84ec773780ae8ce939ec5e3caa"}
+  ]
+}

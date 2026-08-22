@@ -1,0 +1,71 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r5-m2-user-approval-receipt-1.0",
+  "created_at": "2026-08-23",
+  "stage_id": "R5-M2",
+  "status": "USER_APPROVED_BOUNDED_DATASET_ENVIRONMENT_AND_COMMAND_MATERIALIZATION_SCOPE",
+  "source_checkpoint": {
+    "r5_g1_decision": "PROVISIONAL_SINGLE_CANDIDATE_FOR_DATA_ENVIRONMENT_PROPOSAL",
+    "selected_candidate_id": "R5-CAND-RECBOLE-BPR-ML100K-001",
+    "selected_source_revision": "9a6f63d8d4a5b989fe27955a833f813a6d86041e",
+    "selection_decision_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_af/E4_R5G1_source_evidence_selection/selection_decision.json"
+  },
+  "user_response": {
+    "response": "Đồng ý; Continue",
+    "accepted_scope_statement": "Lock canonical GroupLens MovieLens 100K as the reference dataset for RecBole BPR; keep it fully separate from the project v5 dataset; materialize only dataset bytes and lineage, an isolated environment, and an exact command proposal; do not train, evaluate, or open TEST.",
+    "interpretation_requires_no_scope_expansion": true
+  },
+  "authorization_grants": {
+    "canonical_dataset_provider": "GroupLens MovieLens 100K only",
+    "official_provider_metadata_and_terms_retrieval": true,
+    "official_dataset_archive_download": true,
+    "archive_checksum_and_byte_inventory": true,
+    "local_extraction_and_read_only_raw_snapshot": true,
+    "recbole_atomic_representation_materialization": true,
+    "byte_verifiable_raw_to_atomic_lineage": true,
+    "isolated_environment_creation": true,
+    "package_download_and_install_for_frozen_environment": true,
+    "environment_inventory_and_lock_receipts": true,
+    "test_safe_command_config_and_wrapper_proposal": true,
+    "adapter_and_evaluator_parity_fixture_proposal": true
+  },
+  "authorization_conditions": [
+    "Use only authoritative GroupLens, pinned RecBole source, official language/runtime documentation and official package distribution surfaces for decision-bearing facts.",
+    "Do not infer that repository-carried ml-100k atomic files are byte-equivalent to the canonical GroupLens archive; establish or reject the transformation join explicitly.",
+    "Keep official-source reproduction artifacts and harmonized-v5 artifacts in separate namespaces.",
+    "Record literal commands, final URLs, byte counts, SHA-256 values, extraction inventory, conversion identities and environment package identities.",
+    "A compatible current environment is not a claim that it is the unknown historical environment that produced README NDCG@10=0.2768.",
+    "Any ambiguity, rights issue, unexpected archive content, dependency conflict or scope expansion fails closed and returns to central review."
+  ],
+  "still_prohibited": {
+    "authenticated_access_or_click_through_terms_acceptance": true,
+    "non_grouplens_dataset_or_mirror_download": true,
+    "checkpoint_or_pretrained_weight_download": true,
+    "vendor_training_execution": true,
+    "hyperparameter_search": true,
+    "source_evaluator_execution": true,
+    "harmonized_v5_evaluation": true,
+    "project_v5_test_access": true,
+    "paper_benchmark_admission": true,
+    "acceptance_of_documented_ndcg_0_2768": true
+  },
+  "authorization_state": {
+    "materialization_authorized": true,
+    "experiment_execution_authorized": false,
+    "test_access_authorized": false,
+    "benchmark_admission_authorized": false
+  },
+  "next_stage": "R6-S0_BOUNDED_MATERIALIZATION_PREREGISTRATION_AND_INPUT_FREEZE",
+  "model_profile": {
+    "display_name": "Sol Max Standard",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "max",
+    "service_tier": "standard"
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}
