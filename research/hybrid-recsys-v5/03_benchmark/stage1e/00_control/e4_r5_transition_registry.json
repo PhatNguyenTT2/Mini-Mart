@@ -1,0 +1,51 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r5-transition-registry-1.0",
+  "created_at": "2026-08-23",
+  "trigger": {
+    "source_stage": "R4-G0",
+    "source_verdict": "NO_ADMISSIBLE_BUNDLE_STOP_FAIL_CLOSED",
+    "user_decision": "AUTHORIZE_TARGETED_SOURCE_ONLY_EVIDENCE_MATERIALIZATION_REDESIGN"
+  },
+  "policy": {
+    "r4_artifact_deletion_performed": false,
+    "r4_exclusion_statuses_overwritten": false,
+    "r4_rows_execution_eligible": false,
+    "r5_targeted_rows_benchmark_admitted": false,
+    "cross_join_allowed": false,
+    "automatic_fallback_or_replacement_allowed": false,
+    "source_only_materialization_is_reproducibility_verification": false
+  },
+  "source_decision": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_x/E4_R4G0_strict_admission_freeze/r4_g0_admission_decision.json",
+  "r4_proposal_count": 18,
+  "targeted_source_inspection_count": 2,
+  "archived_not_reconsidered_count": 16,
+  "rows": [
+    {"row_id":"R4-D1A-PROP-001","r5_status":"ARCHIVED_R4_EXCLUSION_NOT_RECONSIDERED"},
+    {"row_id":"R4-D1A-PROP-002","r5_status":"ARCHIVED_R4_EXCLUSION_NOT_RECONSIDERED"},
+    {"row_id":"R4-D1A-PROP-003","r5_status":"ARCHIVED_R4_EXCLUSION_NOT_RECONSIDERED"},
+    {"row_id":"R4-D1A-PROP-004","r5_status":"ARCHIVED_R4_EXCLUSION_NOT_RECONSIDERED"},
+    {"row_id":"R4-D1A-PROP-005","r5_status":"ARCHIVED_R4_EXCLUSION_NOT_RECONSIDERED"},
+    {"row_id":"R4-D1B-PROP-001","r5_status":"ARCHIVED_R4_EXCLUSION_NOT_RECONSIDERED"},
+    {"row_id":"R4-D1B-PROP-002","r5_status":"ARCHIVED_R4_EXCLUSION_NOT_RECONSIDERED"},
+    {"row_id":"R4-D1B-PROP-003","r5_status":"TARGETED_SOURCE_INSPECTION_ONLY_NOT_ADMITTED","r5_candidate_id":"R5-CAND-RECBOLE-GNN-LIGHTGCN-ML1M-001"},
+    {"row_id":"R4-D1B-PROP-004","r5_status":"ARCHIVED_R4_EXCLUSION_NOT_RECONSIDERED"},
+    {"row_id":"R4-D1B-PROP-005","r5_status":"ARCHIVED_R4_EXCLUSION_NOT_RECONSIDERED"},
+    {"row_id":"R4-D1C-PROP-001","r5_status":"TARGETED_SOURCE_INSPECTION_ONLY_NOT_ADMITTED","r5_candidate_id":"R5-CAND-RECBOLE-BPR-ML100K-001"},
+    {"row_id":"R4-D1C-PROP-002","r5_status":"ARCHIVED_R4_EXCLUSION_NOT_RECONSIDERED"},
+    {"row_id":"R4-D1C-PROP-003","r5_status":"ARCHIVED_R4_EXCLUSION_NOT_RECONSIDERED"},
+    {"row_id":"R4-D1C-PROP-004","r5_status":"ARCHIVED_R4_EXCLUSION_NOT_RECONSIDERED"},
+    {"row_id":"R4-D1C-PROP-005","r5_status":"ARCHIVED_R4_EXCLUSION_NOT_RECONSIDERED"},
+    {"row_id":"R4-D1C-PROP-006","r5_status":"ARCHIVED_R4_EXCLUSION_NOT_RECONSIDERED"},
+    {"row_id":"R4-D1C-PROP-007","r5_status":"ARCHIVED_R4_EXCLUSION_NOT_RECONSIDERED"},
+    {"row_id":"R4-D1C-PROP-008","r5_status":"ARCHIVED_R4_EXCLUSION_NOT_RECONSIDERED"}
+  ],
+  "replacement_candidate_namespace": "R5-CAND-*",
+  "source_materialization_namespace": "R5-M0",
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

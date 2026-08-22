@@ -1,0 +1,108 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r5-targeted-candidate-lock-1.0",
+  "created_at": "2026-08-23",
+  "stage_id": "R5-S0",
+  "status": "LOCKED_FOR_SOURCE_ONLY_INSPECTION_NOT_BENCHMARK_ADMISSION",
+  "candidate_count": 2,
+  "selection_cardinality_max": 1,
+  "candidates": [
+    {
+      "candidate_id": "R5-CAND-RECBOLE-BPR-ML100K-001",
+      "origin_r4_proposal_id": "R4-D1C-PROP-001",
+      "framework": "RecBole v1.2.1",
+      "method": "BPR",
+      "dataset": "MovieLens 100K",
+      "repository_url": "https://github.com/RUCAIBox/RecBole.git",
+      "canonical_repository_url": "https://github.com/RUCAIBox/RecBole",
+      "full_revision": "9a6f63d8d4a5b989fe27955a833f813a6d86041e",
+      "reference_surface": {
+        "protocol_id": "recbole-v1.2.1-quickstart-bpr-ml100k-random-80-10-10-full",
+        "config_id": "run_recbole.py-defaults-plus-overall.yaml",
+        "evaluator_id": "recbole-full-sort-topk10-history-mask",
+        "numeric_target_id": "pinned-readme-example-output-ndcg-at-10-0.2768",
+        "numeric_target_status": "PROVISIONAL_NOT_REPRODUCED_INVALID_FOR_PAPER"
+      },
+      "r4_exclusion_status": "EXCLUDE_INCOMPLETE_BUNDLE",
+      "r4_failed_dimension_ids": [
+        "D03_BYTE_VERIFIABLE_LINEAGE",
+        "D05_ENVIRONMENT_LOCK",
+        "D07_EXACT_PROTOCOL_CONFIG_SEEDS",
+        "D08_EVALUATOR_SEMANTICS",
+        "D09_SAME_SURFACE_NUMERIC_TARGET",
+        "D10_NO_TEST_DERIVATION",
+        "D11_BOUNDED_V5_ADAPTER"
+      ],
+      "dispositive_conflicts": [],
+      "pre_materialization_gate": {
+        "named_repository_and_owner_verified": "PASS",
+        "full_immutable_revision_verified": "PASS",
+        "affirmative_code_license_verified": "PASS_R4_D1C_EVID_008_MIT",
+        "public_unauthenticated_source_access": "PASS",
+        "no_dispositive_conflict": "PASS",
+        "scope_and_sparse_path_policy_locked": "PASS"
+      },
+      "source_materialization_status": "AUTHORIZED_ONLY_AFTER_PASSING_R5_S0",
+      "benchmark_admission_status": "NOT_ADMITTED"
+    },
+    {
+      "candidate_id": "R5-CAND-RECBOLE-GNN-LIGHTGCN-ML1M-001",
+      "origin_r4_proposal_id": "R4-D1B-PROP-003",
+      "framework": "RecBole-GNN",
+      "method": "LightGCN",
+      "dataset": "MovieLens 1M",
+      "repository_url": "https://github.com/RUCAIBox/RecBole-GNN.git",
+      "canonical_repository_url": "https://github.com/RUCAIBox/RecBole-GNN",
+      "full_revision": "632ef888589944c190ad8f449b49ca559618d4df",
+      "reference_surface": {
+        "protocol_id": "rating-ge-3-ratio-8-1-1-full-sort-top10",
+        "config_id": "ml-1m.md-common-settings-plus-lightgcn-best-hyperparameters",
+        "evaluator_id": "recbole-1.1.1-full-sort-evaluator",
+        "numeric_target_id": "recbole-gnn-ml-1m-lightgcn-ndcg-at-10-0.2538",
+        "numeric_target_status": "PROVISIONAL_NOT_REPRODUCED_INVALID_FOR_PAPER"
+      },
+      "r4_exclusion_status": "EXCLUDE_INCOMPLETE_BUNDLE",
+      "r4_failed_dimension_ids": [
+        "D01_AFFIRMATIVE_CODE_LICENSE",
+        "D02_CANONICAL_DATASET_RIGHTS",
+        "D03_BYTE_VERIFIABLE_LINEAGE",
+        "D05_ENVIRONMENT_LOCK",
+        "D07_EXACT_PROTOCOL_CONFIG_SEEDS",
+        "D08_EVALUATOR_SEMANTICS",
+        "D09_SAME_SURFACE_NUMERIC_TARGET",
+        "D10_NO_TEST_DERIVATION",
+        "D11_BOUNDED_V5_ADAPTER"
+      ],
+      "dispositive_conflicts": [],
+      "pre_materialization_gate": {
+        "named_repository_and_owner_verified": "PASS",
+        "full_immutable_revision_verified": "PASS",
+        "affirmative_code_license_verified": "PASS_E5_SR019_MIT_AT_PINNED_REVISION",
+        "public_unauthenticated_source_access": "PASS",
+        "no_dispositive_conflict": "PASS",
+        "scope_and_sparse_path_policy_locked": "PASS"
+      },
+      "source_materialization_status": "AUTHORIZED_ONLY_AFTER_PASSING_R5_S0",
+      "benchmark_admission_status": "NOT_ADMITTED"
+    }
+  ],
+  "candidate_choice_rationale": {
+    "required_properties": [
+      "official_owner_repository",
+      "full_immutable_revision",
+      "affirmative_source_license_before_clone",
+      "source_owned_training_and_evaluation_surface",
+      "no_dispositive_conflict",
+      "direct_alignment_with_frozen_project_baseline_plan"
+    ],
+    "ranking_or_numeric_result_used_as_admission_evidence": false,
+    "cross_candidate_evidence_join_allowed": false,
+    "automatic_candidate_replacement_allowed": false
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

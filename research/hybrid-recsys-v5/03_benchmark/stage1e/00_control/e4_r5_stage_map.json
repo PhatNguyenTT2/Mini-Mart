@@ -1,0 +1,124 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r5-source-materialization-stage-map-1.0",
+  "created_at": "2026-08-23",
+  "stage_id": "E4_R5_TARGETED_SOURCE_ONLY_EVIDENCE_MATERIALIZATION",
+  "status": "PREPARED_AWAITING_R5_S0_GATE",
+  "entry_checkpoint": {
+    "user_confirmed": true,
+    "decision": "AUTHORIZE_TARGETED_SOURCE_ONLY_EVIDENCE_MATERIALIZATION_REDESIGN",
+    "source_stage": "R4-G0",
+    "source_verdict": "NO_ADMISSIBLE_BUNDLE_STOP_FAIL_CLOSED",
+    "authorization_scope": "NAMED_REPOSITORY_SOURCE_ONLY_NO_DATA_NO_EXECUTION"
+  },
+  "candidate_policy": {
+    "locked_candidate_count": 2,
+    "candidate_addition_allowed_after_s0": false,
+    "source_materialization_candidate_maximum": 2,
+    "central_selection_cardinality_max": 1,
+    "r5_selection_is_final_benchmark_admission": false,
+    "cross_join_allowed": false,
+    "automatic_fallback_allowed": false,
+    "dispositive_r4_rows_eligible": false
+  },
+  "model_policy": {
+    "central": {
+      "display_name": "Sol Max Standard",
+      "runtime_model_id": "gpt-5.6-sol",
+      "reasoning_effort": "max",
+      "service_tier": "standard",
+      "dispatch_service_tier_override": null
+    },
+    "workers": {
+      "display_name": "Sol XHigh Standard",
+      "runtime_model_id": "gpt-5.6-sol",
+      "reasoning_effort": "xhigh",
+      "service_tier": "standard",
+      "dispatch_service_tier_override": null
+    }
+  },
+  "phases": [
+    {
+      "id": "R5-S0",
+      "name": "central_change_control_candidate_lock_and_input_freeze",
+      "context": "current_central",
+      "status": "IN_PROGRESS",
+      "dependencies": ["R4-G0", "USER_SCOPE_DECISION"],
+      "model_profile": "central"
+    },
+    {
+      "id": "R5-M0",
+      "name": "central_sparse_source_materialization_and_hash_receipt",
+      "context": "current_central",
+      "status": "BLOCKED_ON_R5_S0",
+      "dependencies": ["R5-S0"],
+      "model_profile": "central",
+      "write_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ac/E4_R5M0_source_materialization"
+    },
+    {
+      "id": "R5-M1A",
+      "name": "recbole_bpr_pinned_source_audit",
+      "context": "fresh_worker",
+      "status": "BLOCKED_ON_PASSING_R5_M0",
+      "dependencies": ["R5-M0"],
+      "parallel_group": "R5-M1",
+      "model_profile": "workers",
+      "candidate_id": "R5-CAND-RECBOLE-BPR-ML100K-001",
+      "write_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ad/E4_R5M1A_recbole_source_audit"
+    },
+    {
+      "id": "R5-M1B",
+      "name": "recbole_gnn_lightgcn_pinned_source_audit",
+      "context": "fresh_worker",
+      "status": "BLOCKED_ON_PASSING_R5_M0",
+      "dependencies": ["R5-M0"],
+      "parallel_group": "R5-M1",
+      "model_profile": "workers",
+      "candidate_id": "R5-CAND-RECBOLE-GNN-LIGHTGCN-ML1M-001",
+      "write_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ae/E4_R5M1B_recbole_gnn_source_audit"
+    },
+    {
+      "id": "R5-G1",
+      "name": "central_hash_validation_gap_closure_and_zero_or_one_selection",
+      "context": "current_central",
+      "status": "BLOCKED_ON_R5_M1",
+      "dependencies": ["R5-M1A", "R5-M1B", "CENTRAL_AUDIT_VALIDATION"],
+      "model_profile": "central",
+      "allowed_decisions": [
+        "PROVISIONAL_SINGLE_CANDIDATE_FOR_DATA_ENVIRONMENT_PROPOSAL",
+        "NO_SELECTION_SOURCE_EVIDENCE_REMAINS_INSUFFICIENT",
+        "REJECT_ALL_SOURCE_CONFLICT"
+      ],
+      "write_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_af/E4_R5G1_source_evidence_selection"
+    },
+    {
+      "id": "R5-M2",
+      "name": "mandatory_dataset_environment_and_run_scope_approval",
+      "context": "user_and_central_control",
+      "status": "BLOCKED_ON_POSITIVE_R5_G1",
+      "dependencies": ["R5-G1"],
+      "model_profile": null
+    }
+  ],
+  "execution_boundary": {
+    "public_primary_source_web_research": true,
+    "read_only_local_inspection": true,
+    "named_repository_metadata_and_allowlisted_source_after_s0": true,
+    "generic_repository_or_archive_download": false,
+    "dataset_checkpoint_or_asset_download": false,
+    "authenticated_access_or_terms_acceptance": false,
+    "package_install_or_environment_creation": false,
+    "vendor_source_execution": false,
+    "preprocessing_training_evaluation": false,
+    "test_access": false,
+    "maintainer_contact": false,
+    "execution_authorized": false
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "next_gate": "CREATE_AND_VALIDATE_R5_S0_FROZEN_INPUT_MANIFEST"
+}

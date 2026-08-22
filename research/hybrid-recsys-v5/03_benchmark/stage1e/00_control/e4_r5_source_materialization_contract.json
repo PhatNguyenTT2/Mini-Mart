@@ -1,0 +1,119 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r5-source-materialization-contract-1.0",
+  "created_at": "2026-08-23",
+  "stage_id": "R5-M0",
+  "entry_gate": "PASS_R5_S0_SOURCE_ONLY_GATE",
+  "operation_mode": "NETWORKED_GIT_METADATA_PLUS_SPARSE_ALLOWLISTED_SOURCE_BLOBS",
+  "overwrite_existing_target_allowed": false,
+  "candidate_count": 2,
+  "materializations": [
+    {
+      "candidate_id": "R5-CAND-RECBOLE-BPR-ML100K-001",
+      "repository_url": "https://github.com/RUCAIBox/RecBole.git",
+      "full_revision": "9a6f63d8d4a5b989fe27955a833f813a6d86041e",
+      "local_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d",
+      "sparse_cone_directories": ["recbole"],
+      "required_materialized_paths": [
+        "LICENSE",
+        "README.md",
+        "requirements.txt",
+        "run_recbole.py",
+        "recbole/properties/overall.yaml",
+        "recbole/evaluator/collector.py",
+        "recbole/trainer/trainer.py"
+      ]
+    },
+    {
+      "candidate_id": "R5-CAND-RECBOLE-GNN-LIGHTGCN-ML1M-001",
+      "repository_url": "https://github.com/RUCAIBox/RecBole-GNN.git",
+      "full_revision": "632ef888589944c190ad8f449b49ca559618d4df",
+      "local_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_gnn_632ef88",
+      "sparse_cone_directories": ["recbole_gnn", "properties", "results"],
+      "required_materialized_paths": [
+        "LICENSE",
+        "README.md",
+        "requirements.txt",
+        "results/general/ml-1m.md"
+      ]
+    }
+  ],
+  "required_operation_sequence": [
+    "assert_local_root_absent",
+    "clone_blob_filtered_no_checkout_no_submodules",
+    "verify_origin_url",
+    "verify_locked_commit_object",
+    "inventory_full_tree_metadata_before_checkout",
+    "reject_selected_submodule_symlink_or_prohibited_artifact",
+    "initialize_cone_sparse_checkout_with_declared_directories_only",
+    "checkout_detached_locked_commit_with_lfs_smudge_disabled",
+    "verify_head_origin_sparse_scope_and_required_paths",
+    "hash_every_materialized_non_git_file",
+    "emit_receipt_tree_manifest_blob_manifest_log_and_handoff"
+  ],
+  "source_scope": {
+    "root_level_regular_source_and_metadata_files_are_allowed": true,
+    "declared_sparse_cone_directories_only": true,
+    "root_level_prohibited_extensions": [
+      ".csv", ".tsv", ".parquet", ".inter", ".item", ".user", ".npy", ".npz",
+      ".pt", ".pth", ".ckpt", ".onnx", ".safetensors", ".zip", ".tar", ".gz", ".7z"
+    ],
+    "prohibited_top_level_directories": [
+      "data", "dataset", "datasets", "dataset_example", "checkpoints", "checkpoint",
+      "pretrained", "saved", "runs", "logs", "assets"
+    ],
+    "git_submodules_allowed": false,
+    "git_lfs_objects_allowed": false,
+    "selected_symlinks_allowed": false,
+    "vendor_source_modification_allowed": false,
+    "vendor_source_execution_allowed": false
+  },
+  "forbidden_operations": {
+    "repository_not_in_candidate_lock": true,
+    "different_revision_or_branch_head_substitution": true,
+    "release_or_source_archive_download": true,
+    "dataset_or_example_dataset_checkout_or_download": true,
+    "checkpoint_model_or_large_asset_download": true,
+    "submodule_initialization": true,
+    "git_lfs_fetch_or_checkout": true,
+    "authentication_or_terms_acceptance": true,
+    "package_install_or_environment_creation": true,
+    "preprocessing_training_evaluation_or_tuning": true,
+    "project_v5_test_access": true
+  },
+  "artifact_contract": {
+    "write_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ac/E4_R5M0_source_materialization",
+    "exact_filenames": [
+      "materialization_receipt.json",
+      "source_tree_manifest.json",
+      "selected_blob_manifest.json",
+      "operation_log.md",
+      "materialization_handoff.json"
+    ],
+    "extra_files_allowed": false,
+    "vendor_roots_are_git_ignored": true,
+    "all_text_hashes_use_canonical_lf": false,
+    "blob_hash_algorithm": "sha256_raw_bytes",
+    "git_object_identity_recorded_separately": true
+  },
+  "exit_gate": {
+    "all_candidates_materialized_or_fail_closed": true,
+    "detached_head_equals_locked_revision": true,
+    "origin_equals_locked_repository": true,
+    "required_paths_present": true,
+    "prohibited_selected_artifact_count": 0,
+    "selected_submodule_count": 0,
+    "selected_symlink_count": 0,
+    "selected_lfs_pointer_count": 0,
+    "vendor_worktree_modification_count": 0,
+    "dataset_bytes_acquired": false,
+    "execution_performed": false,
+    "test_opened": false
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

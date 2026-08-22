@@ -1,0 +1,65 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r5-s0-gate-receipt-1.0",
+  "created_at": "2026-08-23",
+  "stage_id": "R5-S0-CENTRAL-VALIDATION",
+  "validator": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r5_s0_gate.py",
+  "frozen_input_manifest": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r5_s0_frozen_input_manifest.json",
+  "passed": true,
+  "verdict": "PASS_R5_S0_SOURCE_ONLY_GATE_20_OF_20_READY_FOR_R5_M0",
+  "failure_count": 0,
+  "mechanical_checks": {
+    "passed": 38,
+    "expected": 38
+  },
+  "frozen_inputs": {
+    "matched": 20,
+    "expected": 20,
+    "strict_json_verified": 13,
+    "strict_json_expected": 13
+  },
+  "candidate_lock": {
+    "locked_candidate_count": 2,
+    "source_materialization_maximum": 2,
+    "benchmark_admitted_count": 0,
+    "candidate_ids": [
+      "R5-CAND-RECBOLE-BPR-ML100K-001",
+      "R5-CAND-RECBOLE-GNN-LIGHTGCN-ML1M-001"
+    ]
+  },
+  "gate_redesign": {
+    "final_r4_d01_d12_gate_retained": true,
+    "source_materialization_is_benchmark_admission": false,
+    "local_source_inspection_can_verify_reproducibility_without_rerun": false,
+    "next_user_checkpoint_before_data_environment_run": "R5-M2"
+  },
+  "model_policy": {
+    "central": {
+      "display_name": "Sol Max Standard",
+      "runtime_model_id": "gpt-5.6-sol",
+      "reasoning_effort": "max",
+      "service_tier": "standard"
+    },
+    "workers": {
+      "display_name": "Sol XHigh Standard",
+      "runtime_model_id": "gpt-5.6-sol",
+      "reasoning_effort": "xhigh",
+      "service_tier": "standard"
+    }
+  },
+  "execution_boundary": {
+    "named_source_only_after_gate": "AUTHORIZED_FOR_R5_M0",
+    "generic_repository_or_archive_download": "BLOCKED",
+    "dataset_or_checkpoint_download": "BLOCKED",
+    "environment_creation_or_package_install": "BLOCKED",
+    "vendor_source_execution": "BLOCKED",
+    "preprocessing_training_evaluation": "BLOCKED",
+    "test_access": "BLOCKED"
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}
