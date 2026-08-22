@@ -1,0 +1,220 @@
+{
+  "schema_version": "stage1e-r6-m0-m1-attempt-failure-receipt-1.0",
+  "created_at": "2026-08-23",
+  "stage_id": "R6-M0-R6-M1-ATTEMPT-001",
+  "status": "FAIL_CLOSED_CONTROL_PLANE_CAPABILITY_MISMATCH",
+  "entry": {
+    "dispatch": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_m0_m1_dispatch.json",
+    "dispatch_raw_sha256": "02889bd1176cadbd37b1152d73ec20bcd2c4d02736c9cdc5c308ecbad980f900",
+    "runner": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_materialization.py",
+    "runner_raw_sha256": "053a037586f5504f37c2dd92a81360f5c3a686f4a771b3761197b007c990240e",
+    "packet_validation_verdict": "PASS_R6_C1_EXACT_COMMAND_PACKET_READY_FOR_BOUNDED_R6_M0_R6_M1",
+    "entry_commit": "914b17f",
+    "preflight": {
+      "status": "PASS",
+      "frozen_artifacts_verified": "15/15",
+      "c1_live_revalidation": "PASS",
+      "repository_clean": true,
+      "both_attempt_roots_absent": true,
+      "ancestors_non_reparse": true,
+      "free_bytes": 122312552448,
+      "source_date_epoch": "1740319008"
+    }
+  },
+  "failure": {
+    "first_failed_capability": "Get-FileHash",
+    "failure_class": "CONTROL_PLANE_EXECUTABLE_AND_MODULE_AUTOLOAD_MISMATCH",
+    "scientific_method_failure": false,
+    "dataset_failure_command": "M04_VERIFY_AND_PROMOTE_DOWNLOADS",
+    "dataset_failure_stderr_sha256": "03dcca188854a3c993d7c6eb7a9b1b663e63a542f8ef50a92cab8e572155537d",
+    "environment_failure_command": "E03_VERIFY_AND_PROMOTE_CPYTHON_BOOTSTRAP",
+    "environment_failure_stderr_sha256": "9131b75b262c218ecbca4d4924584257139e04bb87e0f5ad876d0cd9494905ad",
+    "observed_error": "The term 'Get-FileHash' is not recognized as the name of a cmdlet, function, script file, or operable program.",
+    "automatic_retries": 0,
+    "in_place_repair_performed": false,
+    "cleanup_performed": false
+  },
+  "control_plane_diagnosis": {
+    "packet_executable_token": "powershell.exe",
+    "resolved_executable": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+    "resolved_executable_bytes": 454656,
+    "resolved_executable_sha256": "7600ffe12da441fe89d035b13801e8e91d064bc544a27b19a5cf49f6ab8b18f5",
+    "engine_version": "5.1.26100.9168",
+    "runner_sanitized_environment_observation": {
+      "ps_module_path": "C:\\Users\\ACER\\Documents\\PowerShell\\Modules;C:\\Program Files\\PowerShell\\Modules;c:\\users\\acer\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\powershell\\Modules;C:\\Program Files\\WindowsPowerShell\\Modules;C:\\WINDOWS\\system32\\WindowsPowerShell\\v1.0\\Modules",
+      "module_candidates": [
+        {
+          "name": "Microsoft.PowerShell.Utility",
+          "version": "7.0.0.0",
+          "path": "C:\\Users\\ACER\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\powershell\\Modules\\Microsoft.PowerShell.Utility\\Microsoft.PowerShell.Utility.psd1"
+        },
+        {
+          "name": "Microsoft.PowerShell.Utility",
+          "version": "3.1.0.0",
+          "path": "C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\Modules\\Microsoft.PowerShell.Utility\\Microsoft.PowerShell.Utility.psd1"
+        }
+      ],
+      "get_file_hash_autoload_available": false,
+      "autoload_observation_exit_code": 11,
+      "explicit_import_of_windows_utility_module": "PASS",
+      "causal_interpretation": "The failure is bound to automatic command discovery in Windows PowerShell 5.1 under the runner-sanitized mixed module path. The observation does not establish a scientific or data defect."
+    },
+    "recovery_executable": {
+      "path": "C:\\Users\\ACER\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\powershell\\pwsh.exe",
+      "bytes": 301368,
+      "sha256": "db6dd81183fe57d22e03b911ec9a30a2fd7c40542e97743615355a6fb44f458f",
+      "engine_version": "7.6.4",
+      "sanitized_environment_capability_check_exit_code": 0,
+      "get_file_hash_source": "Microsoft.PowerShell.Utility",
+      "get_authenticode_signature_source": "Microsoft.PowerShell.Security"
+    }
+  },
+  "lanes": {
+    "dataset": {
+      "stage_id": "R6-M0",
+      "attempt_root": "E:\\UIT\\cv\\materialized-data\\hybrid-recsys-v5\\stage1e\\r6\\official_source\\grouplens_ml100k\\attempt-001",
+      "preservation": "IMMUTABLE_FAILED_ATTEMPT_RETAIN_DO_NOT_EDIT_DELETE_OR_REUSE",
+      "declared_commands": 8,
+      "commands_started": 5,
+      "commands_succeeded": 4,
+      "commands_failed": 1,
+      "not_executed": [
+        "M05_SAFE_EXTRACT_AND_HASH",
+        "M06_CONVERT_U_DATA_TO_RECBOLE_INTER_AND_EXPECTED_MAPS",
+        "M07_RECONCILE_RAW_TO_ATOMIC"
+      ],
+      "root_observation": {
+        "files": 6,
+        "directories_including_root": 9,
+        "bytes": 4931527,
+        "extraction_performed": false,
+        "atomic_conversion_performed": false
+      },
+      "files": [
+        {
+          "path": "download/ml-100k.zip.partial",
+          "bytes": 4924029,
+          "sha256": "50d2a982c66986937beb9ffb3aa76efe955bf3d5c6b761f4e3a7cd717c6a3229"
+        },
+        {
+          "path": "provider_metadata/ml-100k-README.txt.partial",
+          "bytes": 6748,
+          "sha256": "fc0be8d2cd0f597d904bcf74f792c58ae547f8588286f5f0f794c68578353310"
+        },
+        {
+          "path": "provider_metadata/ml-100k.zip.md5.partial",
+          "bytes": 53,
+          "sha256": "f70d34e92d8c193be2de801a659ce7ec21133e5f32bdbad67a1cc585423dc3b5"
+        },
+        {
+          "path": "receipts/http/archive.headers.txt",
+          "bytes": 226,
+          "sha256": "2c6237eb8152d5e078d81af9ef52cc339e83b3916ba793bbc98403f268f527fc"
+        },
+        {
+          "path": "receipts/http/checksum.headers.txt",
+          "bytes": 217,
+          "sha256": "340a3765c23ffdbf932b82314b6df02e3a845f54c417cfdb1f05e72f73181062"
+        },
+        {
+          "path": "receipts/http/readme.headers.txt",
+          "bytes": 254,
+          "sha256": "47a55e92090246933cd799c181a11bced210e0a410229f39b4e41c3d0c28ee89"
+        }
+      ],
+      "read_only_byte_replay": {
+        "archive_md5": "0e33842e24a9c977be4e0107933c0723",
+        "archive_sha256": "50d2a982c66986937beb9ffb3aa76efe955bf3d5c6b761f4e3a7cd717c6a3229",
+        "provider_sidecar_body_exact": "MD5 (ml-100k.zip) = 0e33842e24a9c977be4e0107933c0723",
+        "download_bytes_consistent_with_frozen_packet": true,
+        "materialization_success_inferred": false
+      }
+    },
+    "environment": {
+      "stage_id": "R6-M1",
+      "attempt_root": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-001",
+      "preservation": "IMMUTABLE_FAILED_ATTEMPT_RETAIN_DO_NOT_EDIT_DELETE_OR_REUSE",
+      "declared_commands": 25,
+      "commands_started": 4,
+      "commands_succeeded": 3,
+      "commands_failed": 1,
+      "not_executed_range": "E04-E24",
+      "root_observation": {
+        "files": 4,
+        "directories_including_root": 9,
+        "bytes": 26223921,
+        "installer_promoted": false,
+        "runtime_installed": false,
+        "venv_created": false,
+        "packages_installed": false
+      },
+      "files": [
+        {
+          "path": "downloads/python-3.11.9-amd64.exe.partial",
+          "bytes": 26216840,
+          "sha256": "5ee42c4eee1e6b4464bb23722f90b45303f79442df63083f05322f1785f5fdde"
+        },
+        {
+          "path": "downloads/python-3.11.9-amd64.exe.sigstore.partial",
+          "bytes": 5903,
+          "sha256": "e2df4f35aeb64946e27c604a94e7510202e0180fec5dc26cd1e54a9f83acea0b"
+        },
+        {
+          "path": "receipts/http/python-installer.headers.txt",
+          "bytes": 593,
+          "sha256": "28a3b10fd29989efcc2edabfaf0ef3a0a4d3bf95522963581dd995fcfcb0e49e"
+        },
+        {
+          "path": "receipts/http/python-sigstore.headers.txt",
+          "bytes": 585,
+          "sha256": "a5a5942ed6f301a7a2e09019307ada16a20d1d875fb4e01d1eb6f0a64c001e80"
+        }
+      ],
+      "read_only_byte_replay": {
+        "installer_md5": "e8dcd502e34932eebcaf1be056d5cbcd",
+        "installer_sha256": "5ee42c4eee1e6b4464bb23722f90b45303f79442df63083f05322f1785f5fdde",
+        "authenticode_status": "Valid",
+        "authenticode_signer_subject": "CN=Python Software Foundation, O=Python Software Foundation, L=Beaverton, S=Oregon, C=US",
+        "download_bytes_consistent_with_frozen_packet": true,
+        "environment_success_inferred": false
+      }
+    }
+  },
+  "negative_execution_assertions": {
+    "archive_extracted": false,
+    "raw_to_atomic_conversion_executed": false,
+    "python_installer_executed": false,
+    "recbole_environment_created": false,
+    "recbole_dataset_constructed_or_loaded": false,
+    "training_executed": false,
+    "evaluation_executed": false,
+    "metrics_computed": false,
+    "test_set_opened": false,
+    "benchmark_rows_admitted": 0,
+    "repository_changed_by_attempt": false
+  },
+  "evidence_limitations": {
+    "runner_console_result_persisted_as_raw_file": false,
+    "command_failure_hashes_recovered_from_runner_result": true,
+    "external_roots_replayed_independently_after_failure": true,
+    "failed_attempt_is_not_a_success_receipt": true
+  },
+  "recovery_gate": {
+    "required_stage": "R6-C1R1",
+    "required_new_attempt_id": "attempt-002",
+    "required_exact_control_plane_executable": "C:\\Users\\ACER\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\powershell\\pwsh.exe",
+    "requires_pre_creation_capability_gate": true,
+    "requires_new_five_file_packet": true,
+    "requires_new_central_validation_receipt": true,
+    "requires_new_dispatch_and_runner": true,
+    "attempt_001_reuse_allowed": false
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "next_gate": "VALIDATE_NEW_R6_C1R1_ATTEMPT_002_PACKET_BEFORE_ANY_RETRY"
+}
