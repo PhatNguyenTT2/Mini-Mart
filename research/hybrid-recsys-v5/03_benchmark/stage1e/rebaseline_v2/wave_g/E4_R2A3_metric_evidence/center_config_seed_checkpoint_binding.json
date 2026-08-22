@@ -1,0 +1,393 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r2a3-center-binding-1.0",
+  "lane_id": "E4_R2A3_metric_evidence",
+  "access_date": "2026-08-22",
+  "tolerance_policy": {
+    "rule": "For each reported center c, inclusive tolerance=max(0.005,0.05*abs(c)).",
+    "provenance": "Frozen reproduction_acceptance_rules.md consumed through the R2 evidence manifest.",
+    "application_gate": "The numeric envelope is usable only after exact implementation, configuration, dataset/split, metric/evaluator and checkpoint/run identity gates pass.",
+    "interpretation": "This is a preregisterable engineering acceptance envelope, not an inferred confidence interval and not a substitute for missing dispersion.",
+    "surface": "official_source_only"
+  },
+  "candidate_order": [
+    "E3-LIGHTGCN-GOWALLA-PYTORCH-001",
+    "E3-SIMGCL-YELP2018-QREC-001",
+    "E3-XSIMGCL-YELP2018-SELFREC-001",
+    "E3-LIGHTGCL-YELP-UPDATED-001",
+    "E3-UNISREC-SCIENTIFIC-TRANS-001",
+    "E3-SASREC-SCIENTIFIC-UNISREC-FRAMEWORK-001",
+    "E3-ALPHAREC-MOVIES-TV-001"
+  ],
+  "rows": [
+    {
+      "row_id": "E3-LIGHTGCN-GOWALLA-PYTORCH-001",
+      "method": "LightGCN",
+      "dataset_scope": "Gowalla source repository split",
+      "lane_id": "E4_R2A3_metric_evidence",
+      "evidence_status": "EVIDENCE_INCOMPLETE",
+      "authoritative_sources": [
+        {
+          "url": "https://raw.githubusercontent.com/gusye1234/LightGCN-PyTorch/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/README.md",
+          "source_type": "official_repository_readme",
+          "immutable_identity_or_version": "git commit 947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+          "accessed_at": "2026-08-22",
+          "locator": "Gowalla command, fixed-seed note and layer=3 Results row",
+          "supports": ["center/config/seed declaration", "stop-at-1000 instruction"],
+          "does_not_support": ["run count", "dispersion", "checkpoint artifact or receipt"]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/gusye1234/LightGCN-PyTorch/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/code/main.py",
+          "source_type": "official_repository_source",
+          "immutable_identity_or_version": "git commit 947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+          "accessed_at": "2026-08-22",
+          "locator": "main.py evaluation cadence and weight-save calls",
+          "supports": ["evaluation every ten epoch-loop positions before the training call", "weight save each epoch-loop position"],
+          "does_not_support": ["which saved state generated the README row", "artifact bytes/hash"]
+        }
+      ],
+      "confirmed_fields": {
+        "center_binding": "README Gowalla layer=3 row at pinned commit",
+        "implementation_binding": {"repository": "gusye1234/LightGCN-PyTorch", "commit": "947ca2b3b1d2d3545b114145710cb06c4e57b3d2", "status": "PINNED_SOURCE_VERIFIED"},
+        "configuration_binding": {"dataset": "gowalla", "recdim": 64, "layers": 3, "learning_rate": 0.001, "decay": 0.0001, "topks": [20], "status": "README_BOUND"},
+        "dataset_split_binding": {"identity": "repository-bundled Gowalla split", "canonical_raw_lineage": null, "status": "SOURCE_SPLIT_ONLY"},
+        "seed_schedule": {"seed_identities": [2020], "schedule": "fixed seed declaration", "run_count": null, "status": "SEED_DECLARED_RUN_COUNT_UNKNOWN"},
+        "run_aggregation": {"method": null, "variation_reporting": null, "status": "UNKNOWN"},
+        "checkpoint_rule": {"observed_text": "README says stop at 1000 epochs; code evaluates periodically and saves weights each epoch-loop position", "selection_rule": null, "status": "NOT_RESULT_BOUND"},
+        "checkpoint_artifact": {"path_or_locator": null, "sha256": null, "available": false},
+        "immutable_run_receipt": null,
+        "reproduction_tolerances": [
+          {"metric": "Recall@20", "center": 0.1824, "tolerance": 0.00912, "inclusive_lower": 0.17328, "inclusive_upper": 0.19152},
+          {"metric": "NDCG@20", "center": 0.1547, "tolerance": 0.007735, "inclusive_lower": 0.146965, "inclusive_upper": 0.162435},
+          {"metric": "Precision@20", "center": 0.05589, "tolerance": 0.005, "inclusive_lower": 0.05089, "inclusive_upper": 0.06089}
+        ],
+        "binding_verdict": "INCOMPLETE_NO_CHECKPOINT_RUN_RECEIPT"
+      },
+      "unresolved_fields": ["run count", "aggregation", "dispersion", "exact result-producing checkpoint", "artifact hash", "run receipt"],
+      "dispositive_mismatches": [],
+      "inferences_forbidden": ["Do not infer a selected epoch from stop-at-1000 text.", "Do not treat any generic saved file as the result-producing checkpoint."],
+      "recommended_g1_disposition": "KEEP_PENDING",
+      "execution_authorized": false,
+      "result_status": "NOT_RUN",
+      "test_set_opened": "NO"
+    },
+    {
+      "row_id": "E3-SIMGCL-YELP2018-QREC-001",
+      "method": "SimGCL",
+      "dataset_scope": "Yelp2018, paper 7:1:2 split",
+      "lane_id": "E4_R2A3_metric_evidence",
+      "evidence_status": "EVIDENCE_INCOMPLETE",
+      "authoritative_sources": [
+        {
+          "url": "https://arxiv.org/pdf/2112.08679",
+          "source_type": "author_paper",
+          "immutable_identity_or_version": "arXiv:2112.08679v4",
+          "accessed_at": "2026-08-22",
+          "locator": "Table 3 and Experimental Settings",
+          "supports": ["three-layer center", "five-run mean", "7:1:2 split", "general configuration"],
+          "does_not_support": ["seed identities", "dispersion", "result checkpoint", "immutable run receipt"]
+        },
+        {
+          "url": "https://github.com/Coder-Yu/QRec",
+          "source_type": "official_repository_locator",
+          "immutable_identity_or_version": "frozen upstream pin a141bb37cb7706b2f53b2eed5843de3269f9f37f",
+          "accessed_at": "2026-08-22",
+          "locator": "Paper-linked repository; pinned raw config/evaluator retrieval failed",
+          "supports": ["implementation repository identity"],
+          "does_not_support": ["live pinned config", "checkpoint artifact", "run receipt"]
+        }
+      ],
+      "confirmed_fields": {
+        "center_binding": "Paper Table 3 Yelp2018 three-layer SimGCL row",
+        "implementation_binding": {"repository": "Coder-Yu/QRec", "commit": "a141bb37cb7706b2f53b2eed5843de3269f9f37f", "status": "FROZEN_PIN_LIVE_CONTENT_UNAVAILABLE"},
+        "configuration_binding": {"layers": 3, "embedding_dimension": 64, "l2": 0.0001, "batch_size": 2048, "optimizer": "Adam", "learning_rate": 0.001, "temperature": 0.2, "status": "PAPER_BOUND_CODE_EQUALITY_UNVERIFIED"},
+        "dataset_split_binding": {"dataset": "Yelp2018", "users": 31668, "items": 38048, "interactions": 1561406, "split": "7:1:2", "status": "PAPER_BOUND"},
+        "seed_schedule": {"seed_identities": [], "schedule": null, "run_count": 5, "status": "COUNT_ONLY"},
+        "run_aggregation": {"method": "mean", "variation_reporting": null, "status": "MEAN_CONFIRMED_DISPERSION_ABSENT"},
+        "checkpoint_rule": {"selection_rule": null, "status": "UNKNOWN"},
+        "checkpoint_artifact": {"path_or_locator": null, "sha256": null, "available": false},
+        "immutable_run_receipt": null,
+        "reproduction_tolerances": [
+          {"metric": "Recall@20", "center": 0.0721, "tolerance": 0.005, "inclusive_lower": 0.0671, "inclusive_upper": 0.0771},
+          {"metric": "NDCG@20", "center": 0.0601, "tolerance": 0.005, "inclusive_lower": 0.0551, "inclusive_upper": 0.0651}
+        ],
+        "binding_verdict": "INCOMPLETE_NO_SEED_CHECKPOINT_EVALUATOR_RECEIPT"
+      },
+      "unresolved_fields": ["five seed identities", "dispersion", "source config equality", "checkpoint selection", "checkpoint artifact", "run/evaluator receipt"],
+      "dispositive_mismatches": [],
+      "inferences_forbidden": ["Do not fabricate five seeds.", "Do not bind Table 3 to a QRec checkpoint without a receipt."],
+      "recommended_g1_disposition": "KEEP_PENDING",
+      "execution_authorized": false,
+      "result_status": "NOT_RUN",
+      "test_set_opened": "NO"
+    },
+    {
+      "row_id": "E3-XSIMGCL-YELP2018-SELFREC-001",
+      "method": "XSimGCL",
+      "dataset_scope": "Yelp2018 SELFRec repository leaderboard surface",
+      "lane_id": "E4_R2A3_metric_evidence",
+      "evidence_status": "EVIDENCE_INCOMPLETE",
+      "authoritative_sources": [
+        {
+          "url": "https://github.com/Coder-Yu/SELFRec/tree/5b0229423cb1c727e85a704d63e460368c8b9dde",
+          "source_type": "official_repository_readme",
+          "immutable_identity_or_version": "git commit 5b0229423cb1c727e85a704d63e460368c8b9dde",
+          "accessed_at": "2026-08-22",
+          "locator": "README Yelp2018 leaderboard and configuration notes",
+          "supports": ["0.0723/0.0604 center", "layer=3/l*=1 configuration"],
+          "does_not_support": ["run count", "seeds", "aggregation", "checkpoint artifact"]
+        },
+        {
+          "url": "https://arxiv.org/pdf/2209.02544",
+          "source_type": "author_paper",
+          "immutable_identity_or_version": "arXiv:2209.02544",
+          "accessed_at": "2026-08-22",
+          "locator": "Experimental Settings and Tables 4-6",
+          "supports": ["paper five-run mean protocol", "paper split", "separate l*=2 and four-layer surfaces"],
+          "does_not_support": ["identity receipt joining paper protocol to README l*=1 row", "seed identities", "checkpoint artifact"]
+        }
+      ],
+      "confirmed_fields": {
+        "center_binding": "Pinned SELFRec README Yelp2018 XSimGCL row, not paper Table 6",
+        "implementation_binding": {"repository": "Coder-Yu/SELFRec", "commit": "5b0229423cb1c727e85a704d63e460368c8b9dde", "status": "PINNED_README_VERIFIED_PINNED_CONFIG_UNAVAILABLE"},
+        "configuration_binding": {"layers": 3, "lambda": 0.2, "epsilon": 0.2, "l_star": 1, "temperature": 0.15, "batch_size": 2048, "embedding_dimension": 64, "learning_rate": 0.001, "l2": 0.0001, "status": "README_BOUND"},
+        "dataset_split_binding": {"dataset": "Yelp2018", "split": null, "status": "README_ROW_SPLIT_UNBOUND"},
+        "seed_schedule": {"seed_identities": [], "schedule": null, "run_count": null, "status": "UNKNOWN_FOR_README_ROW"},
+        "run_aggregation": {"method": null, "variation_reporting": null, "status": "UNKNOWN_FOR_README_ROW"},
+        "checkpoint_rule": {"selection_rule": null, "status": "UNKNOWN_FOR_README_ROW"},
+        "checkpoint_artifact": {"path_or_locator": null, "sha256": null, "available": false},
+        "immutable_run_receipt": null,
+        "reproduction_tolerances": [
+          {"metric": "Recall@20", "center": 0.0723, "tolerance": 0.005, "inclusive_lower": 0.0673, "inclusive_upper": 0.0773},
+          {"metric": "NDCG@20", "center": 0.0604, "tolerance": 0.005, "inclusive_lower": 0.0554, "inclusive_upper": 0.0654}
+        ],
+        "binding_verdict": "INCOMPLETE_README_CENTER_HAS_NO_RUN_CHECKPOINT_RECEIPT"
+      },
+      "unresolved_fields": ["README-row split", "run count", "seeds", "aggregation", "dispersion", "pinned config file", "checkpoint", "receipt"],
+      "dispositive_mismatches": ["Paper best l*=2 cannot be joined to README l*=1.", "Paper four-layer 0.0733/0.0606 is a separate center."],
+      "inferences_forbidden": ["Do not import the paper five-run mean into the README row.", "Do not auto-fallback to Table 6."],
+      "recommended_g1_disposition": "KEEP_PENDING",
+      "execution_authorized": false,
+      "result_status": "NOT_RUN",
+      "test_set_opened": "NO"
+    },
+    {
+      "row_id": "E3-LIGHTGCL-YELP-UPDATED-001",
+      "method": "LightGCL",
+      "dataset_scope": "Yelp updated interaction-pair sampler result surface",
+      "lane_id": "E4_R2A3_metric_evidence",
+      "evidence_status": "EVIDENCE_INCOMPLETE",
+      "authoritative_sources": [
+        {
+          "url": "https://arxiv.org/html/2302.08191v3",
+          "source_type": "author_paper",
+          "immutable_identity_or_version": "arXiv:2302.08191v3",
+          "accessed_at": "2026-08-22",
+          "locator": "Appendix E Table 6 and correction note; experimental settings",
+          "supports": ["updated centers", "updated sampler family", "embedding/batch/layer/q configuration"],
+          "does_not_support": ["seeds/runs", "split implementation", "checkpoint receipt"]
+        },
+        {
+          "url": "https://github.com/HKUDS/LightGCL",
+          "source_type": "official_repository_locator",
+          "immutable_identity_or_version": "frozen upstream pin 5590453ad86782f58017e58d0b698d7f32175be3",
+          "accessed_at": "2026-08-22",
+          "locator": "Official repository; pinned content retrieval failed",
+          "supports": ["repository identity"],
+          "does_not_support": ["updated sampler commit equality", "checkpoint artifact", "run receipt"]
+        }
+      ],
+      "confirmed_fields": {
+        "center_binding": "arXiv v3 Appendix E updated Table 6 Yelp LightGCL row",
+        "implementation_binding": {"repository": "HKUDS/LightGCL", "commit": "5590453ad86782f58017e58d0b698d7f32175be3", "status": "FROZEN_PIN_UPDATED_CODE_EQUALITY_UNVERIFIED"},
+        "configuration_binding": {"sampler": "direct interaction-based positive/negative pairs", "embedding_dimension": 32, "batch_size": 256, "graph_layers": 2, "q": 5, "status": "PAPER_BOUND_PARTIAL"},
+        "dataset_split_binding": {"dataset": "Yelp", "users": 29601, "items": 24734, "interactions": 1069128, "split": null, "status": "STATISTICS_ONLY"},
+        "seed_schedule": {"seed_identities": [], "schedule": null, "run_count": null, "status": "UNKNOWN"},
+        "run_aggregation": {"method": null, "variation_reporting": null, "status": "UNKNOWN"},
+        "checkpoint_rule": {"selection_rule": null, "status": "UNKNOWN"},
+        "checkpoint_artifact": {"path_or_locator": null, "sha256": null, "available": false},
+        "immutable_run_receipt": null,
+        "reproduction_tolerances": [
+          {"metric": "Recall@20", "center": 0.0985, "tolerance": 0.005, "inclusive_lower": 0.0935, "inclusive_upper": 0.1035},
+          {"metric": "NDCG@20", "center": 0.0842, "tolerance": 0.005, "inclusive_lower": 0.0792, "inclusive_upper": 0.0892},
+          {"metric": "Recall@40", "center": 0.1553, "tolerance": 0.007765, "inclusive_lower": 0.147535, "inclusive_upper": 0.163065},
+          {"metric": "NDCG@40", "center": 0.1051, "tolerance": 0.005255, "inclusive_lower": 0.099845, "inclusive_upper": 0.110355}
+        ],
+        "binding_verdict": "INCOMPLETE_UPDATED_CENTER_NOT_BOUND_TO_EXECUTABLE_RECEIPT"
+      },
+      "unresolved_fields": ["updated-code revision equality", "split/filter", "seeds", "runs", "aggregation", "dispersion", "checkpoint", "receipt"],
+      "dispositive_mismatches": ["Pre-correction Table 1 is a different sampler surface."],
+      "inferences_forbidden": ["Do not fall back to original centers.", "Do not bind the frozen repository pin to Appendix E without a code locator."],
+      "recommended_g1_disposition": "KEEP_PENDING",
+      "execution_authorized": false,
+      "result_status": "NOT_RUN",
+      "test_set_opened": "NO"
+    },
+    {
+      "row_id": "E3-UNISREC-SCIENTIFIC-TRANS-001",
+      "method": "UniSRec_t+ID",
+      "dataset_scope": "Amazon Industrial and Scientific transductive setting",
+      "lane_id": "E4_R2A3_metric_evidence",
+      "evidence_status": "EVIDENCE_INCOMPLETE",
+      "authoritative_sources": [
+        {
+          "url": "https://arxiv.org/html/2206.05941",
+          "source_type": "author_paper",
+          "immutable_identity_or_version": "arXiv:2206.05941",
+          "accessed_at": "2026-08-22",
+          "locator": "Table 3; evaluation protocol; preprocessing; implementation details",
+          "supports": ["center", "Scientific split", "RecBole framework", "NDCG@10 patience-10 early stop"],
+          "does_not_support": ["seeds/runs/dispersion", "exact dependency lock", "selected checkpoint artifact"]
+        },
+        {
+          "url": "https://github.com/RUCAIBox/UniSRec",
+          "source_type": "official_repository_locator",
+          "immutable_identity_or_version": "frozen upstream pin 05aa5cba2809112c32808f70d16abc61c05c6538",
+          "accessed_at": "2026-08-22",
+          "locator": "Frozen evidence names UniSRec-FHCKM-300.pth; pinned content retrieval failed",
+          "supports": ["repository and filename locator"],
+          "does_not_support": ["artifact availability/hash", "fine-tuned checkpoint receipt"]
+        }
+      ],
+      "confirmed_fields": {
+        "center_binding": "Paper Table 3 Scientific UniSRec_t+ID row",
+        "implementation_binding": {"repository": "RUCAIBox/UniSRec", "commit": "05aa5cba2809112c32808f70d16abc61c05c6538", "status": "FROZEN_PIN_LIVE_CONTENT_UNAVAILABLE"},
+        "configuration_binding": {"setting": "transductive t+ID", "pretrained_checkpoint_filename": "UniSRec-FHCKM-300.pth", "optimizer": "Adam", "batch_size": 2048, "early_stop_metric": "NDCG@10", "patience": 10, "status": "PAPER_PLUS_FROZEN_FILENAME_PARTIAL"},
+        "dataset_split_binding": {"dataset": "Amazon Industrial and Scientific", "filter": "five-core", "ordering": "timestamp ascending", "validation": "penultimate item", "test": "last item", "status": "PAPER_BOUND"},
+        "seed_schedule": {"seed_identities": [], "schedule": null, "run_count": null, "status": "UNKNOWN"},
+        "run_aggregation": {"method": null, "variation_reporting": null, "status": "UNKNOWN"},
+        "checkpoint_rule": {"selection_signal": "validation NDCG@10", "patience": 10, "retained_epoch_rule": null, "status": "EARLY_STOP_SIGNAL_ONLY"},
+        "checkpoint_artifact": {"pretrained_locator": "saved/UniSRec-FHCKM-300.pth", "pretrained_sha256": null, "fine_tuned_result_artifact": null, "available": false},
+        "immutable_run_receipt": null,
+        "reproduction_tolerances": [
+          {"metric": "Recall@10", "center": 0.1235, "tolerance": 0.006175, "inclusive_lower": 0.117325, "inclusive_upper": 0.129675},
+          {"metric": "NDCG@10", "center": 0.0634, "tolerance": 0.005, "inclusive_lower": 0.0584, "inclusive_upper": 0.0684},
+          {"metric": "Recall@50", "center": 0.2473, "tolerance": 0.012365, "inclusive_lower": 0.234935, "inclusive_upper": 0.259665},
+          {"metric": "NDCG@50", "center": 0.0904, "tolerance": 0.005, "inclusive_lower": 0.0854, "inclusive_upper": 0.0954}
+        ],
+        "binding_verdict": "INCOMPLETE_NO_SEED_DEPENDENCY_CHECKPOINT_RECEIPT"
+      },
+      "unresolved_fields": ["seeds/runs/aggregation/dispersion", "artifact bytes/hash", "fine-tuned selected checkpoint", "dependency lock", "run receipt"],
+      "dispositive_mismatches": [],
+      "inferences_forbidden": ["Do not treat the pretrained filename as an acquired artifact.", "Do not infer the fine-tuned result checkpoint from the pretraining checkpoint."],
+      "recommended_g1_disposition": "KEEP_PENDING",
+      "execution_authorized": false,
+      "result_status": "NOT_RUN",
+      "test_set_opened": "NO"
+    },
+    {
+      "row_id": "E3-SASREC-SCIENTIFIC-UNISREC-FRAMEWORK-001",
+      "method": "SASRec",
+      "dataset_scope": "Amazon Industrial and Scientific under the UniSRec/RecBole experiment framework",
+      "lane_id": "E4_R2A3_metric_evidence",
+      "evidence_status": "EVIDENCE_INCOMPLETE",
+      "authoritative_sources": [
+        {
+          "url": "https://arxiv.org/html/2206.05941",
+          "source_type": "framework_authoritative_paper_not_sasrec_author_official",
+          "immutable_identity_or_version": "arXiv:2206.05941",
+          "accessed_at": "2026-08-22",
+          "locator": "Table 3; evaluation protocol; preprocessing; implementation details",
+          "supports": ["framework center", "Scientific split", "RecBole framework", "NDCG@10 patience-10 early stop"],
+          "does_not_support": ["author-official SASRec status", "seeds/runs/dispersion", "dependency lock", "checkpoint artifact"]
+        },
+        {
+          "url": "https://github.com/RUCAIBox/UniSRec",
+          "source_type": "experiment_framework_repository_locator",
+          "immutable_identity_or_version": "frozen upstream pin 05aa5cba2809112c32808f70d16abc61c05c6538",
+          "accessed_at": "2026-08-22",
+          "locator": "Frozen run_baseline.py SASRec command; pinned content retrieval failed",
+          "supports": ["framework command locator and hidden_size=300"],
+          "does_not_support": ["live config equality", "checkpoint receipt", "author-official implementation"]
+        }
+      ],
+      "confirmed_fields": {
+        "center_binding": "UniSRec paper Table 3 Scientific SASRec framework-baseline row",
+        "implementation_binding": {"repository": "RUCAIBox/UniSRec", "commit": "05aa5cba2809112c32808f70d16abc61c05c6538", "status": "FRAMEWORK_PIN_NOT_AUTHOR_OFFICIAL_LIVE_CONTENT_UNAVAILABLE"},
+        "configuration_binding": {"model": "SASRec", "dataset": "Scientific", "config_file": "props/finetune.yaml", "hidden_size": 300, "optimizer": "Adam", "batch_size": 2048, "early_stop_metric": "NDCG@10", "patience": 10, "status": "FROZEN_COMMAND_PLUS_PAPER_PARTIAL"},
+        "dataset_split_binding": {"dataset": "Amazon Industrial and Scientific", "filter": "five-core", "ordering": "timestamp ascending", "validation": "penultimate item", "test": "last item", "status": "PAPER_BOUND"},
+        "seed_schedule": {"seed_identities": [], "schedule": null, "run_count": null, "status": "UNKNOWN"},
+        "run_aggregation": {"method": null, "variation_reporting": null, "status": "UNKNOWN"},
+        "checkpoint_rule": {"selection_signal": "validation NDCG@10", "patience": 10, "retained_epoch_rule": null, "status": "EARLY_STOP_SIGNAL_ONLY"},
+        "checkpoint_artifact": {"path_or_locator": null, "sha256": null, "available": false},
+        "immutable_run_receipt": null,
+        "reproduction_tolerances": [
+          {"metric": "Recall@10", "center": 0.108, "tolerance": 0.0054, "inclusive_lower": 0.1026, "inclusive_upper": 0.1134},
+          {"metric": "NDCG@10", "center": 0.0553, "tolerance": 0.005, "inclusive_lower": 0.0503, "inclusive_upper": 0.0603},
+          {"metric": "Recall@50", "center": 0.2042, "tolerance": 0.01021, "inclusive_lower": 0.19399, "inclusive_upper": 0.21441},
+          {"metric": "NDCG@50", "center": 0.076, "tolerance": 0.005, "inclusive_lower": 0.071, "inclusive_upper": 0.081}
+        ],
+        "binding_verdict": "INCOMPLETE_FRAMEWORK_BASELINE_NO_SEED_CONFIG_CHECKPOINT_RECEIPT"
+      },
+      "unresolved_fields": ["seeds/runs/aggregation/dispersion", "exact config/dependency lock", "training sampler", "selected checkpoint", "run receipt"],
+      "dispositive_mismatches": [],
+      "inferences_forbidden": ["Do not relabel the framework baseline as author-official SASRec.", "Do not transfer UniSRec checkpoint evidence to SASRec."],
+      "recommended_g1_disposition": "KEEP_PENDING",
+      "execution_authorized": false,
+      "result_status": "NOT_RUN",
+      "test_set_opened": "NO"
+    },
+    {
+      "row_id": "E3-ALPHAREC-MOVIES-TV-001",
+      "method": "AlphaRec",
+      "dataset_scope": "Amazon Movies and TV source paper split",
+      "lane_id": "E4_R2A3_metric_evidence",
+      "evidence_status": "EVIDENCE_INCOMPLETE",
+      "authoritative_sources": [
+        {
+          "url": "https://proceedings.iclr.cc/paper_files/paper/2025/file/e4bab1843c8d5a69f5abfd0824593493-Paper-Conference.pdf",
+          "source_type": "official_conference_paper",
+          "immutable_identity_or_version": "ICLR 2025 proceedings paper e4bab1843c8d5a69f5abfd0824593493",
+          "accessed_at": "2026-08-22",
+          "locator": "Table 3, Appendix C.1 and Appendix E",
+          "supports": ["center", "4:3:3 split/filter", "256 train negatives", "all-ranking", "Recall@20 patience-20 early stop", "tau=0.15"],
+          "does_not_support": ["seed/run aggregation/dispersion", "checkpoint artifact", "immutable run receipt"]
+        },
+        {
+          "url": "https://github.com/LehengTHU/AlphaRec",
+          "source_type": "official_repository_locator",
+          "immutable_identity_or_version": "frozen upstream pin 4b6c6cf378f292c31dd75b09a8075e8344561415",
+          "accessed_at": "2026-08-22",
+          "locator": "Frozen amazon_movie command; pinned raw content retrieval failed",
+          "supports": ["repository identity and command surface"],
+          "does_not_support": ["live config equality", "checkpoint/evaluator receipt"]
+        }
+      ],
+      "confirmed_fields": {
+        "center_binding": "ICLR 2025 Table 3 Movies & TV AlphaRec row",
+        "implementation_binding": {"repository": "LehengTHU/AlphaRec", "commit": "4b6c6cf378f292c31dd75b09a8075e8344561415", "status": "FROZEN_PIN_LIVE_CONTENT_UNAVAILABLE"},
+        "configuration_binding": {"dataset_argument": "amazon_movie", "model": "AlphaRec", "graph_layers": 2, "patience": 20, "negative_samples": 256, "language_model": "v3", "model_version": "mlp", "temperature": 0.15, "loss": "InfoNCE", "status": "PAPER_PLUS_FROZEN_COMMAND_BOUND"},
+        "dataset_split_binding": {"dataset": "Amazon Movies and TV", "user_filter": "at least 20 interactions", "per_user_split": "4:3:3", "cold_item_policy": "remove validation/test items absent from train", "text": "title only", "status": "PAPER_BOUND"},
+        "seed_schedule": {"seed_identities": [], "schedule": null, "run_count": null, "status": "UNKNOWN"},
+        "run_aggregation": {"method": null, "variation_reporting": null, "status": "UNKNOWN"},
+        "checkpoint_rule": {"selection_signal": "validation Recall@20", "patience_evaluations": 20, "retained_epoch_rule": null, "status": "EARLY_STOP_SIGNAL_ONLY"},
+        "checkpoint_artifact": {"path_or_locator": null, "sha256": null, "available": false},
+        "immutable_run_receipt": null,
+        "reproduction_tolerances": [
+          {"metric": "Recall@20", "center": 0.1221, "tolerance": 0.006105, "inclusive_lower": 0.115995, "inclusive_upper": 0.128205},
+          {"metric": "NDCG@20", "center": 0.1144, "tolerance": 0.00572, "inclusive_lower": 0.10868, "inclusive_upper": 0.12012},
+          {"metric": "HitRatio@20", "center": 0.5587, "tolerance": 0.027935, "inclusive_lower": 0.530765, "inclusive_upper": 0.586635}
+        ],
+        "binding_verdict": "INCOMPLETE_NO_SEED_RUN_CHECKPOINT_EVALUATOR_RECEIPT"
+      },
+      "unresolved_fields": ["seeds/runs/aggregation/dispersion", "full data-release receipt", "selected checkpoint/artifact", "run/evaluator receipt"],
+      "dispositive_mismatches": [],
+      "inferences_forbidden": ["Do not infer run count from significance marks.", "Do not treat early-stop text as a selected checkpoint artifact."],
+      "recommended_g1_disposition": "KEEP_PENDING",
+      "execution_authorized": false,
+      "result_status": "NOT_RUN",
+      "test_set_opened": "NO"
+    }
+  ],
+  "status_counts": {
+    "EVIDENCE_SUFFICIENT_FOR_G1_REVIEW": 0,
+    "EVIDENCE_INCOMPLETE": 7,
+    "DISPOSITIVE_REJECT": 0,
+    "total": 7
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false
+  }
+}

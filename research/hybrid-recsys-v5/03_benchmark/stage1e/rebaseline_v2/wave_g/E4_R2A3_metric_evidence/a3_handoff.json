@@ -1,0 +1,275 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r2a3-handoff-1.0",
+  "lane_id": "E4_R2A3_metric_evidence",
+  "material_passport": {
+    "origin_skill": "ars-codex:academic-research-suite/experiment-agent",
+    "origin_mode": "evidence-only/source-bound-benchmark-center-metric-evaluator/fail-closed",
+    "origin_date": "2026-08-22",
+    "verification_status": "UNVERIFIED",
+    "version_label": "stage1e_rebaseline_v2_wave_g_E4_R2A3_v1",
+    "upstream_dependencies": [
+      "stage1e_rebaseline_v2_E4_R2_evidence_tracks_contract",
+      "stage1e_rebaseline_v2_E4_R2_evidence_frozen_input_manifest",
+      "stage1e_rebaseline_v2_E4_R2_evidence_gate_receipt",
+      "stage1e_rebaseline_v2_wave_e_E4_R1C_reproduction_adaptation",
+      "stage1e_rebaseline_v2_wave_f_E5_R1_independent_remediation_audit"
+    ],
+    "repro_lock": {
+      "schema_version": "1.0",
+      "stochasticity_declaration": "LLM evidence synthesis is not byte-reproducible. This lock records the actual model, reasoning tier and loaded instruction identities; it is not a deterministic replay guarantee and does not verify a reproduction run.",
+      "skill_adapter_version": "0.1.26",
+      "ars_suite_version": "3.21.0",
+      "model": {
+        "family": "openai",
+        "id": "gpt-5.6-sol",
+        "reasoning": "xhigh",
+        "weight_stable": false
+      },
+      "instruction_hashes": [
+        {"path": "SKILL.md", "canonical_lf_bytes": 30499, "canonical_lf_sha256": "9c2cb6e3b5aad7fb747f79163b144cfbddffa85d67e2bdcc5a5fa5470252ad00"},
+        {"path": "ars/experiment-agent/WORKFLOW.md", "canonical_lf_bytes": 11555, "canonical_lf_sha256": "c89cb26ec05ed9facf80301df04ec1d892d74b5c7c68d42afbb2511a7c3268ef"},
+        {"path": "ars/experiment-agent/references/ars_integration_guide.md", "canonical_lf_bytes": 3588, "canonical_lf_sha256": "7e76dbc0b9019305d2906e9f0c9b7a24a90b9f24a357091d7816b1a5748c1303"},
+        {"path": "ars/shared/handoff_schemas.md", "canonical_lf_bytes": 93000, "canonical_lf_sha256": "c91b127d87d2370aee44f99395c5ae5e538729bead802d67bc6116fef0f841d3"}
+      ],
+      "cross_model": {"enabled": false, "secondary_model_id": null},
+      "external_protocols": {"public_web_primary_source_verification": true, "programmatic_resolver_clients": "NOT_USED"}
+    },
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-22",
+      "declared_by": "E4_R2A3 evidence lane runtime",
+      "statement": "This lane declares no experiment result and does not attribute experiment provenance to a scholar or user."
+    }
+  },
+  "skill_adapter_version": "0.1.26",
+  "ars_suite_version": "3.21.0",
+  "ars_suite_version_source": "Local academic-research-suite manifest runtime note for tracked ARS v3.21.0 content",
+  "workflow": "academic-research-suite/experiment-agent",
+  "actual_model": "gpt-5.6-sol",
+  "actual_reasoning": "xhigh",
+  "verification_status": "UNVERIFIED",
+  "access_date": "2026-08-22",
+  "frozen_contract": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r2_evidence_tracks_contract.md",
+    "canonical_lf_bytes": 13667,
+    "canonical_lf_sha256": "551a5c5c3a3fdc1dc6e58d0940c91271cf60237363dbc0275cd6547cc5318293"
+  },
+  "frozen_manifest": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r2_evidence_frozen_input_manifest.json",
+    "canonical_lf_bytes": 15978,
+    "canonical_lf_sha256": "52de342742b16d036d46e1e283ecbad7e4aab4a90bd8119653195074062228a1",
+    "self_hash_verdict": "PASS"
+  },
+  "entry_gate_receipt": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r2_evidence_gate_receipt.json",
+    "canonical_lf_bytes": 2651,
+    "canonical_lf_sha256": "b53603248fddd52bb560be0441978024ead3b588659c090d74be6eb209c11300",
+    "verdict": "PASS_R2_EVIDENCE_GATE_35_OF_35_READY_FOR_PARALLEL_DISPATCH"
+  },
+  "entry_validator": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r2_evidence_gate.py",
+    "canonical_lf_bytes": 7570,
+    "canonical_lf_sha256": "22785e733d5b89a2bc04684bdf8194b08fa6a43a1dd8716568690e31aa976a65",
+    "invocation_scope": "read-only entry validation only",
+    "observed_verdict": "PASS_R2_EVIDENCE_GATE_35_OF_35_READY_FOR_PARALLEL_DISPATCH"
+  },
+  "input_verification": {
+    "hash_policy": "Strict UTF-8 decode, normalize CRLF and CR to LF, encode UTF-8, then SHA-256",
+    "manifest_entries_expected": 35,
+    "manifest_entries_present": 35,
+    "manifest_entries_byte_count_matched": 35,
+    "manifest_entries_hash_matched": 35,
+    "manifest_entries_missing": 0,
+    "manifest_entries_mismatched": 0,
+    "strict_json_inputs_expected": 17,
+    "strict_json_inputs_parsed_by_entry_validator": 17,
+    "json_inputs_parsed_by_independent_second_parser": 17,
+    "candidate_rows_expected": 7,
+    "candidate_rows_present": 7,
+    "independent_hash_replay": "PASS_35_OF_35",
+    "failures": [],
+    "verdict": "PASS"
+  },
+  "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A3_metric_evidence",
+  "output_hash_policy": "Canonical-LF SHA-256: strict UTF-8 decode, normalize CRLF and CR to LF, encode UTF-8, then SHA-256",
+  "exact_output_file_list": [
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A3_metric_evidence/result_center_register.json",
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A3_metric_evidence/center_config_seed_checkpoint_binding.json",
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A3_metric_evidence/metric_evaluator_contracts.json",
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A3_metric_evidence/a3_handoff.json"
+  ],
+  "outputs": [
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A3_metric_evidence/result_center_register.json",
+      "canonical_lf_bytes": 32753,
+      "canonical_lf_sha256": "06be5f8d371463b44f2fdc8dc1ab4d478c072472cbeba3f08493f264ef26438b",
+      "verification_status": "UNVERIFIED"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A3_metric_evidence/center_config_seed_checkpoint_binding.json",
+      "canonical_lf_bytes": 27009,
+      "canonical_lf_sha256": "ee5255e6be960c17b438ff30b635315b1384d0b4d5acd1f4749306132dbe54ea",
+      "verification_status": "UNVERIFIED"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A3_metric_evidence/metric_evaluator_contracts.json",
+      "canonical_lf_bytes": 25268,
+      "canonical_lf_sha256": "42c0b1eba16a5aaf3d74871fdff48a1a0949b49960fd39e19d25ce1e677c2f28",
+      "verification_status": "UNVERIFIED"
+    }
+  ],
+  "handoff_artifact": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A3_metric_evidence/a3_handoff.json",
+    "canonical_lf_bytes": null,
+    "canonical_lf_sha256": null,
+    "self_hash_reported_out_of_band": true,
+    "sha256_policy": "The canonical-LF hash of this self-referential handoff is computed after finalization and reported in the task response; embedding that final self-hash would change the hashed bytes."
+  },
+  "coverage": {
+    "required_output_files": {"expected": 4, "present": 4},
+    "candidate_rows": {"expected": 7, "present": 7, "ordered_as_manifest": true, "unique": true},
+    "result_centers_with_exact_table_row_column_locator": 7,
+    "source_implementation_bindings_reviewed": 7,
+    "seed_run_aggregation_bindings_reviewed": 7,
+    "checkpoint_bindings_reviewed": 7,
+    "metric_evaluator_contracts_reviewed": 7,
+    "surface_separation_reviewed": 7,
+    "candidate_selection_performed": false,
+    "lightgcn_priority_treated_as_selection": false
+  },
+  "candidate_status_counts": {
+    "EVIDENCE_SUFFICIENT_FOR_G1_REVIEW": 0,
+    "EVIDENCE_INCOMPLETE": 7,
+    "DISPOSITIVE_REJECT": 0,
+    "total": 7
+  },
+  "candidate_dispositions_in_manifest_order": [
+    {"row_id": "E3-LIGHTGCN-GOWALLA-PYTORCH-001", "evidence_status": "EVIDENCE_INCOMPLETE", "recommended_g1_disposition": "KEEP_PENDING", "principal_gap": "No exact result-producing checkpoint/run receipt or deterministic tie contract."},
+    {"row_id": "E3-SIMGCL-YELP2018-QREC-001", "evidence_status": "EVIDENCE_INCOMPLETE", "recommended_g1_disposition": "KEEP_PENDING", "principal_gap": "Five seeds, dispersion, pinned evaluator and checkpoint/run receipts are absent."},
+    {"row_id": "E3-XSIMGCL-YELP2018-SELFREC-001", "evidence_status": "EVIDENCE_INCOMPLETE", "recommended_g1_disposition": "KEEP_PENDING", "principal_gap": "README center lacks its own split/run/checkpoint/evaluator receipt; paper facts cannot be cross-joined."},
+    {"row_id": "E3-LIGHTGCL-YELP-UPDATED-001", "evidence_status": "EVIDENCE_INCOMPLETE", "recommended_g1_disposition": "KEEP_PENDING", "principal_gap": "Updated center is not bound to exact split, updated source revision, evaluator or run receipt."},
+    {"row_id": "E3-UNISREC-SCIENTIFIC-TRANS-001", "evidence_status": "EVIDENCE_INCOMPLETE", "recommended_g1_disposition": "KEEP_PENDING", "principal_gap": "Seed/run evidence, artifact hashes and exact RecBole evaluator/dependency receipt are absent."},
+    {"row_id": "E3-SASREC-SCIENTIFIC-UNISREC-FRAMEWORK-001", "evidence_status": "EVIDENCE_INCOMPLETE", "recommended_g1_disposition": "KEEP_PENDING", "principal_gap": "Framework baseline is not author-official and lacks exact config/dependency/checkpoint/evaluator receipts."},
+    {"row_id": "E3-ALPHAREC-MOVIES-TV-001", "evidence_status": "EVIDENCE_INCOMPLETE", "recommended_g1_disposition": "KEEP_PENDING", "principal_gap": "Seed/run aggregation, exact metric formulas, tie handling and checkpoint/evaluator receipts are absent."}
+  ],
+  "authoritative_web_research": {
+    "required_and_performed": true,
+    "accessed_at": "2026-08-22",
+    "domains": ["raw.githubusercontent.com", "github.com", "arxiv.org", "proceedings.iclr.cc"],
+    "searched_urls": [
+      "https://raw.githubusercontent.com/gusye1234/LightGCN-PyTorch/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/README.md",
+      "https://raw.githubusercontent.com/gusye1234/LightGCN-PyTorch/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/code/Procedure.py",
+      "https://raw.githubusercontent.com/gusye1234/LightGCN-PyTorch/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/code/utils.py",
+      "https://raw.githubusercontent.com/gusye1234/LightGCN-PyTorch/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/code/main.py",
+      "https://raw.githubusercontent.com/gusye1234/LightGCN-PyTorch/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/code/dataloader.py",
+      "https://arxiv.org/abs/2112.08679",
+      "https://arxiv.org/pdf/2112.08679",
+      "https://github.com/Coder-Yu/QRec",
+      "https://github.com/Coder-Yu/SELFRec/tree/5b0229423cb1c727e85a704d63e460368c8b9dde",
+      "https://arxiv.org/pdf/2209.02544",
+      "https://arxiv.org/html/2302.08191v3",
+      "https://github.com/HKUDS/LightGCL",
+      "https://arxiv.org/html/2206.05941",
+      "https://github.com/RUCAIBox/UniSRec",
+      "https://proceedings.iclr.cc/paper/2025/hash/e4bab1843c8d5a69f5abfd0824593493-Abstract-Conference.html",
+      "https://proceedings.iclr.cc/paper_files/paper/2025/file/e4bab1843c8d5a69f5abfd0824593493-Paper-Conference.pdf",
+      "https://github.com/LehengTHU/AlphaRec"
+    ],
+    "retrieval_failures": [
+      {
+        "target": "Coder-Yu/QRec pinned raw config, main and evaluator routes at a141bb37cb7706b2f53b2eed5843de3269f9f37f",
+        "failure": "Public raw-source retrieval returned tool Internal Error; no source archive, clone, fetch or alternate unpinned code was used.",
+        "impact": "Pinned config/evaluator/checkpoint binding remains unresolved."
+      },
+      {
+        "target": "Coder-Yu/SELFRec pinned raw config and evaluator routes at 5b0229423cb1c727e85a704d63e460368c8b9dde",
+        "failure": "Pinned tree/README rendered, but pinned raw config/evaluator retrieval returned Internal Error; a direct public raw request also failed authentication in this runtime.",
+        "impact": "README center cannot be bound to pinned executable config/evaluator behavior."
+      },
+      {
+        "target": "HKUDS/LightGCL pinned README/source routes at 5590453ad86782f58017e58d0b698d7f32175be3",
+        "failure": "Public GitHub/raw routes returned cache miss or Internal Error.",
+        "impact": "Appendix E updated sampler/result cannot be bound to an exact source revision or evaluator."
+      },
+      {
+        "target": "RUCAIBox/UniSRec pinned README, finetune config and baseline routes at 05aa5cba2809112c32808f70d16abc61c05c6538",
+        "failure": "Public GitHub/raw routes returned Internal Error.",
+        "impact": "UniSRec and SASRec config/dependency/evaluator/checkpoint receipts remain unresolved."
+      },
+      {
+        "target": "LehengTHU/AlphaRec pinned README/source routes at 4b6c6cf378f292c31dd75b09a8075e8344561415",
+        "failure": "Public GitHub/raw routes returned Internal Error or cache miss.",
+        "impact": "Paper protocol could not be closed with pinned metric/evaluator/checkpoint code receipts."
+      }
+    ]
+  },
+  "lane_scoped_claims": [
+    "All seven source-reported centers were located at a method/dataset/table-row/metric-column surface without selecting a candidate.",
+    "LightGCN has the strongest source-code-level metric/evaluator evidence in this lane, but still lacks a result-producing checkpoint/run receipt and deterministic tie contract.",
+    "XSimGCL paper, repository README and sensitivity-table surfaces were kept separate; numerically equal values were not used to cross-bind incompatible or unreceipted configurations.",
+    "LightGCL updated Appendix E centers were not joined to superseded original-table results.",
+    "The UniSRec paper's SASRec row is identified only as a framework-authoritative baseline, not an author-official SASRec reproduction.",
+    "No source center is evidence for harmonized-v5 superiority or external-dataset performance."
+  ],
+  "limitations": [
+    "Public web verification confirms source text and repository locators, not reproducibility.",
+    "No repository or dataset bytes were acquired, so missing immutable artifacts and receipts remain missing.",
+    "No candidate has complete seed, checkpoint, evaluator and immutable run evidence.",
+    "The harmonized-v5 spec is hash-bound, but no candidate adapter/evaluator/run receipt is materialized.",
+    "The numeric tolerance is preregistered only as a post-identity gate and cannot compensate for missing semantics or dispersion."
+  ],
+  "unresolved_evidence": [
+    "Exact result-producing seed/run schedules for six rows and run count for all except SimGCL remain absent.",
+    "No candidate has a hash-bound result checkpoint and immutable run receipt.",
+    "Except for LightGCN source code, exact source metric denominators/evaluator implementations remain incomplete; all rows lack deterministic tie receipts.",
+    "Pinned source retrieval failures prevent closure for QRec, SELFRec config/evaluator, LightGCL, UniSRec framework and AlphaRec.",
+    "No v5 or external-dataset evaluator surface is executable or result-bound."
+  ],
+  "surface_verdicts": {
+    "official_source": "SEVEN_CENTERS_REGISTERED_BUT_ZERO_ROWS_EVIDENCE_SUFFICIENT",
+    "harmonized_v5": "ZERO_SOURCE_CENTERS_TRANSPORTABLE",
+    "external_dataset": "ZERO_SOURCE_CENTERS_TRANSPORTABLE"
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "empirical_claims_made": false,
+    "candidate_selected": false,
+    "lightgcn_priority_only": true
+  },
+  "forbidden_operation_flags": {
+    "git_clone_performed": false,
+    "git_fetch_performed": false,
+    "source_archive_download_performed": false,
+    "dataset_download_performed": false,
+    "authenticated_dataset_access_performed": false,
+    "package_installation_performed": false,
+    "environment_creation_performed": false,
+    "container_creation_or_execution_performed": false,
+    "repository_code_execution_performed": false,
+    "preprocessing_performed": false,
+    "training_performed": false,
+    "evaluation_performed": false,
+    "benchmark_performed": false,
+    "test_performed": false,
+    "test_set_access_performed": false,
+    "candidate_selection_performed": false,
+    "cross_row_join_performed": false,
+    "auto_fallback_performed": false,
+    "pipeline_state_edit_performed": false,
+    "control_file_edit_performed": false,
+    "other_track_output_edit_performed": false
+  },
+  "git_commit": {
+    "sha": null,
+    "parent": null,
+    "policy": "Commit identity is created only after exact four-file validation and is reported out of band because embedding it would change this artifact."
+  },
+  "lane_status": "COMPLETE_FAIL_CLOSED",
+  "verdict": "COMPLETE_FAIL_CLOSED_READY_FOR_CENTRAL_G1",
+  "verdict_detail": "THE_EVIDENCE_ASSESSMENT_IS_COMPLETE_FOR_INTERSECTION; ALL_SEVEN_CANDIDATES_REMAIN_EVIDENCE_INCOMPLETE; NO_SELECTION_OR_EXECUTION_AUTHORITY",
+  "fail_closed": true,
+  "next_gate": "Central R2-G1 may validate and intersect R2-A1/R2-A2/R2-A3 evidence. This handoff neither selects a candidate nor authorizes acquisition, materialization or execution."
+}
