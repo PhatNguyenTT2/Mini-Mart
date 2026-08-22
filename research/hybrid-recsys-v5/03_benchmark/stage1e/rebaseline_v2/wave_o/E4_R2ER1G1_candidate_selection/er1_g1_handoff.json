@@ -1,0 +1,184 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r2-er1-g1-handoff-1.0",
+  "stage_id": "R2-ER1-G1",
+  "created_at": "2026-08-22",
+  "workflow": "ars-codex:academic-research-suite/academic-pipeline with experiment-agent evidence discipline",
+  "material_passport": {
+    "origin_skill": "ars-codex:academic-research-suite/academic-pipeline",
+    "origin_mode": "fresh-central-evidence-intersection/fail-closed-no-selection",
+    "origin_date": "2026-08-22",
+    "verification_status": "UNVERIFIED",
+    "version_label": "stage1e_rebaseline_v2_wave_o_E4_R2ER1G1_no_selection_v1",
+    "upstream_dependencies": [
+      "stage1e_rebaseline_v2_E4_R2_ER1_change_control",
+      "stage1e_rebaseline_v2_E4_R2_ER1_schema_normalization",
+      "stage1e_rebaseline_v2_E4_R2_ER1_A1_repo_license",
+      "stage1e_rebaseline_v2_E4_R2_ER1_A2_dataset_lineage",
+      "stage1e_rebaseline_v2_E4_R2_ER1_A3_result_evaluator",
+      "stage1e_rebaseline_v2_E4_R2_ER1_lane_validation",
+      "stage1e_rebaseline_v2_E4_R2_ER1_G1_frozen_manifest"
+    ],
+    "repro_lock": {
+      "schema_version": "1.0",
+      "stochasticity_declaration": "Central evidence synthesis and locator interpretation are not byte-reproducible. Frozen local inputs, exact provenance commits, direct authoritative locators, deterministic validators and output hashes are recorded for audit; no experiment or benchmark was run.",
+      "skill_package": {
+        "name": "ars-codex:academic-research-suite",
+        "adapter_version": "0.1.26",
+        "ars_suite_version": "3.21.0"
+      },
+      "model": {
+        "family": "openai",
+        "id": "gpt-5.6-sol",
+        "reasoning": "max",
+        "service_tier": "priority",
+        "display_name": "Sol Max Fast",
+        "speed_label": "Fast",
+        "weight_stable": false
+      },
+      "frozen_materials": {
+        "manifest_input_count": 30,
+        "manifest_json_input_count": 23,
+        "manifest_canonical_lf_sha256": "61af3797eac88a32f697d89ed8fe9c8313884f7eb205a833b02eb216090aaa37",
+        "replayed_hashes": "30/30",
+        "strict_json_inputs": "23/23"
+      },
+      "external_protocols": {
+        "public_primary_authoritative_locator_replay": true,
+        "locator_attempts": 10,
+        "locator_successes": 7,
+        "repository_clone_fetch_or_archive_download": "NOT_USED",
+        "dataset_checkpoint_or_payload_download": "NOT_USED",
+        "execution": "NOT_USED"
+      },
+      "cross_model": {
+        "enabled": false,
+        "secondary_model_id": null,
+        "external_upload": false
+      }
+    },
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-22",
+      "declared_by": "R2-ER1-G1 central evidence synthesis",
+      "note": "This stage reports no empirical result and does not create scholar-owned experiment provenance."
+    }
+  },
+  "actual_model": "gpt-5.6-sol",
+  "actual_reasoning": "max",
+  "actual_service_tier": "priority",
+  "actual_display": "Sol Max Fast",
+  "actual_speed": "Fast",
+  "frozen_contract": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r2_er1_g1_central_synthesis_contract.md",
+    "canonical_lf_bytes": 3987,
+    "canonical_lf_sha256": "4b62dbd5c1df2ee0f2e0a30f404c3e5f6713007ddf6eaeb916d6a8deb99c03a6"
+  },
+  "frozen_manifest": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r2_er1_g1_frozen_input_manifest.json",
+    "canonical_lf_bytes": 8664,
+    "canonical_lf_sha256": "61af3797eac88a32f697d89ed8fe9c8313884f7eb205a833b02eb216090aaa37",
+    "input_count": 30,
+    "json_input_count": 23,
+    "input_replay": "PASS_30_OF_30",
+    "strict_json_replay": "PASS_23_OF_23"
+  },
+  "lane_validation": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r2_er1_lanes_validation_receipt.json",
+    "canonical_lf_bytes": 4742,
+    "canonical_lf_sha256": "4635f1e4a4c3a50870b9b269479b42a82ad3e4b7c9d8399525f6a8f57dfb9ef7",
+    "passed": true,
+    "verdict": "PASS_R2_ER1_PARALLEL_LANES_READY_FOR_FRESH_G1"
+  },
+  "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_o/E4_R2ER1G1_candidate_selection",
+  "exact_output_file_count": 5,
+  "outputs": [
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_o/E4_R2ER1G1_candidate_selection/lightgcn_evidence_intersection.json",
+      "canonical_lf_bytes": 4526,
+      "canonical_lf_sha256": "70cb06c1b4f1467e5ecae244a92fd6259d1855d4036033033b1e948c227e8d27"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_o/E4_R2ER1G1_candidate_selection/locator_replay_log.json",
+      "canonical_lf_bytes": 7447,
+      "canonical_lf_sha256": "585de9f226fff74c64f05cbac0099fb1579f5fa6af892673fced58fa6f1dac4d"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_o/E4_R2ER1G1_candidate_selection/selection_decision.json",
+      "canonical_lf_bytes": 3208,
+      "canonical_lf_sha256": "2088b764e87251c7586c913737e0c05e38bac95fde4ac69055f913116f1515be"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_o/E4_R2ER1G1_candidate_selection/er1_g1_report.md",
+      "canonical_lf_bytes": 3083,
+      "canonical_lf_sha256": "ca120a7794570b2295c487cfacfe31374e2cd88d198a96e57e9a59915a6506b8"
+    }
+  ],
+  "handoff_artifact": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_o/E4_R2ER1G1_candidate_selection/er1_g1_handoff.json",
+    "canonical_lf_sha256": null,
+    "self_hash_reported_out_of_band": true
+  },
+  "coverage": {
+    "candidate_rows_expected": 1,
+    "candidate_rows_present": 1,
+    "lane_statuses_joined": "3/3",
+    "schema_rows_validated": "21/21",
+    "authoritative_source_mentions": 43,
+    "unique_authoritative_urls": 36,
+    "duplicate_mentions_deduplicated": 7,
+    "locator_replays_successful": 7,
+    "locator_replays_attempted": 10,
+    "failed_replays_used_as_positive_evidence": 0
+  },
+  "selection": {
+    "allowed_positive_decision": false,
+    "fully_sufficient_candidates": 0,
+    "selected_candidate_count": 0,
+    "selected_candidate_row_id": null,
+    "lightgcn_priority_is_selection": false,
+    "lane_statuses": {
+      "R2-ER1-A1": "EVIDENCE_INCOMPLETE",
+      "R2-ER1-A2": "EVIDENCE_INCOMPLETE",
+      "R2-ER1-A3": "EVIDENCE_INCOMPLETE"
+    }
+  },
+  "downstream": {
+    "R2-M0": "BLOCKED_NO_SELECTION",
+    "materialization": "BLOCKED",
+    "execution": "BLOCKED",
+    "next_gate": "USER_CHECKPOINT_FOR_SCOPE_DECISION"
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "forbidden_operation_flags": {
+    "git_clone": false,
+    "git_fetch": false,
+    "git_checkout": false,
+    "source_archive_download": false,
+    "source_payload_saved": false,
+    "dataset_download": false,
+    "checkpoint_or_asset_download": false,
+    "authenticated_access": false,
+    "terms_acceptance": false,
+    "dependency_install": false,
+    "environment_or_container_creation": false,
+    "preprocessing": false,
+    "training": false,
+    "evaluation": false,
+    "benchmark": false,
+    "test_set_opened": false,
+    "maintainer_contact": false,
+    "new_candidate_or_dataset_created": false,
+    "candidate_selected": false,
+    "materialization_approval_packet_created": false
+  },
+  "fail_closed": true,
+  "verdict": "NO_SELECTION_EVIDENCE_REMAINS_INSUFFICIENT",
+  "verdict_detail": "ZERO_OF_ONE_CANDIDATES_PASS_ALL_THREE_EVIDENCE_LANES",
+  "next_gate": "USER_CHECKPOINT_CHOOSE_MAINTAINER_CONTACT_NEW_FRAMEWORK_DATASET_ROW_OR_PAUSE"
+}

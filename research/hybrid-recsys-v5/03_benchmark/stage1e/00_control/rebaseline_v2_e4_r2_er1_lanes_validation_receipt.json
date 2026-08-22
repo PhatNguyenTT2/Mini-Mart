@@ -1,0 +1,117 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r2-er1-lanes-validation-receipt-1.0",
+  "created_at": "2026-08-22",
+  "passed": true,
+  "verdict": "PASS_R2_ER1_PARALLEL_LANES_READY_FOR_FRESH_G1",
+  "failure_count": 0,
+  "failures": [],
+  "validator": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r2_er1_lanes.py",
+    "canonical_lf_bytes": 15463,
+    "canonical_lf_sha256": "119d3d4fc8d12edc2a097f2411c510b295977b72ab9434f460aa57480891b0e6",
+    "exit_code": 0,
+    "strict_json_duplicate_and_case_collision_rejection": "PASS"
+  },
+  "validation_attempts": {
+    "total": 2,
+    "first_attempt": {
+      "verdict": "FAIL_R2_ER1_PARALLEL_LANES_BLOCKED_BEFORE_G1",
+      "finding_count": 2,
+      "findings": [
+        "CENTRAL_VALIDATOR_DID_NOT_RECOGNIZE_A3_actual_display",
+        "CENTRAL_VALIDATOR_DID_NOT_RECOGNIZE_A3_manifest_entries_*_31_COUNTERS"
+      ]
+    },
+    "inspection_result": "A3_HANDOFF_ALREADY_CONTAINED_SOL_MAX_FAST_AND_31_OF_31_REPLAY",
+    "correction": "CENTRAL_VALIDATOR_ALIAS_ADAPTER_ONLY",
+    "lane_artifact_bytes_changed": false,
+    "scientific_effect": "NONE"
+  },
+  "contract": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r2_er1_lane_validation_contract.md",
+    "canonical_lf_bytes": 3644,
+    "canonical_lf_sha256": "6cb2075e6381ed3bab3394c9696f621c0a6cb464de2b2568a6d6721ad690503f"
+  },
+  "dispatch": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r2_er1_dispatch.json",
+    "canonical_lf_bytes": 3483,
+    "canonical_lf_sha256": "f68eed2a6ccf8b07f560f7961e982c14411e1d3c2b15ea5cfe57e0f3c1370e63"
+  },
+  "provenance_chain": {
+    "central_dispatch_commit": "3e04d2617ca0a5f95ec122bcf4d6fe554f676b22",
+    "R2-ER1-S": {
+      "commit": "528ddaaa04a6045241556504aaecd288cc727d39",
+      "parent": "3e04d2617ca0a5f95ec122bcf4d6fe554f676b22",
+      "exact_files": 5,
+      "handoff_canonical_lf_sha256": "2545adbed052d4ee2855dfbe5095a05b274b91e202f29cbf98a8a6929a4e65f5"
+    },
+    "R2-ER1-A1": {
+      "commit": "9a3d1ddc3b35e68ab58b488d9516a57ad5ecd31f",
+      "parent": "528ddaaa04a6045241556504aaecd288cc727d39",
+      "exact_files": 4,
+      "handoff_canonical_lf_sha256": "ed986ee9698e76bd748f272577c33c9d2b19c93198fab680c1333cc5df98a5cb"
+    },
+    "R2-ER1-A3": {
+      "commit": "9190ce8af2246bd8a388759f25dd708e96b0681d",
+      "parent": "9a3d1ddc3b35e68ab58b488d9516a57ad5ecd31f",
+      "exact_files": 4,
+      "handoff_canonical_lf_sha256": "078b940e0754139399f15c09b5c3be857109bf9d52ffe6d2d254e19015f5153b"
+    },
+    "R2-ER1-A2": {
+      "commit": "c40aeca03b9167da157f2f5be0fc21738b02fd97",
+      "parent": "9190ce8af2246bd8a388759f25dd708e96b0681d",
+      "exact_files": 4,
+      "handoff_canonical_lf_sha256": "95359f80557276b1172f36f2fddf74e31eb0bc6881f020ec5c07bab74f4d8ff4"
+    },
+    "central_tip_after_lanes": "c40aeca03b9167da157f2f5be0fc21738b02fd97"
+  },
+  "checks": {
+    "entry_gate_pass": true,
+    "exact_output_files_17_of_17": true,
+    "strict_json_outputs_15_of_15": true,
+    "handoff_input_replay_4_of_4_at_31_of_31": true,
+    "non_handoff_hash_bindings_13_of_13": true,
+    "schema_rows_21_of_21_common_contract": true,
+    "schema_candidate_order_21_of_21": true,
+    "schema_scientific_fields_preserved_21_of_21": true,
+    "schema_status_promotions": 0,
+    "schema_mismatches_removed": 0,
+    "evidence_rows_3_of_3_lightgcn_only": true,
+    "source_shapes_3_of_3": true,
+    "material_passports_4_of_4_unverified": true,
+    "no_experiments_declared_4_of_4": true,
+    "sol_max_fast_model_4_of_4": true,
+    "reasoning_max_4_of_4": true,
+    "service_tier_priority_4_of_4": true,
+    "all_forbidden_operation_flags_false": true,
+    "truth_state_preserved_4_of_4": true
+  },
+  "lane_statuses": {
+    "R2-ER1-A1": "EVIDENCE_INCOMPLETE",
+    "R2-ER1-A2": "EVIDENCE_INCOMPLETE",
+    "R2-ER1-A3": "EVIDENCE_INCOMPLETE"
+  },
+  "schema_finding_disposition": {
+    "R2-CF-A1-001": "CLOSED_IN_NORMALIZATION_SIDECAR_ONLY",
+    "R2-CF-A2-001": "CLOSED_IN_NORMALIZATION_SIDECAR_ONLY",
+    "R2-CF-A3-001": "CLOSED_IN_NORMALIZATION_SIDECAR_ONLY",
+    "scientific_truth_changed": false
+  },
+  "model_policy": {
+    "display_name": "Sol Max Fast",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "max",
+    "service_tier": "priority",
+    "speed_label": "Fast"
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "fresh_g1_authorized": true,
+  "materialization_or_execution_authorized": false,
+  "next_gate": "FREEZE_R2_ER1_G1_INPUTS_AND_EMIT_NO_SELECTION_UNLESS_ALL_THREE_LANES_ARE_SUFFICIENT"
+}

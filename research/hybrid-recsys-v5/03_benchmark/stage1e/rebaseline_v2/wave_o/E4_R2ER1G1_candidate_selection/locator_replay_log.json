@@ -1,0 +1,167 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r2-er1-g1-locator-replay-1.0",
+  "created_at": "2026-08-22",
+  "stage_id": "R2-ER1-G1",
+  "access_mode": "read-only public authoritative locator replay without saving source or dataset payloads",
+  "model_profile": {
+    "display_name": "Sol Max Fast",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "max",
+    "service_tier": "priority"
+  },
+  "entries": [
+    {
+      "id": "ER1-G1-LR-001",
+      "dimension": "paper_repository_relationship",
+      "url": "https://hexiangnan.github.io/papers/sigir20-LightGCN.pdf",
+      "source_type": "official_author_hosted_proceedings_copy",
+      "locator": "page 1 implementation statement and PyTorch footnote; experimental settings and result table",
+      "retrieval_status": "SUCCESS",
+      "supports": [
+        "LightGCN paper identity and DOI",
+        "paper-linked PyTorch implementation relationship",
+        "paper experimental surface as a distinct comparison boundary"
+      ],
+      "does_not_support": [
+        "repository code license",
+        "README producing run receipt",
+        "Gowalla data rights or exact lineage"
+      ]
+    },
+    {
+      "id": "ER1-G1-LR-002",
+      "dimension": "immutable_repository_revision",
+      "url": "https://github.com/gusye1234/LightGCN-PyTorch/commit/947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+      "source_type": "official_repository_commit",
+      "locator": "commit 947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+      "retrieval_status": "SUCCESS",
+      "supports": ["immutable candidate implementation revision"],
+      "does_not_support": ["affirmative license", "executed run identity"]
+    },
+    {
+      "id": "ER1-G1-LR-003",
+      "dimension": "repository_license_tree_inventory",
+      "url": "https://api.github.com/repos/gusye1234/LightGCN-PyTorch/git/trees/69cd7ff201f745598757cc99566705aa0364c2f6?recursive=1",
+      "source_type": "official_repository_tree_api",
+      "locator": "root tree 69cd7ff201f745598757cc99566705aa0364c2f6",
+      "retrieval_status": "FAILED_CENTRAL_WEB_CLIENT_INTERNAL_ERROR",
+      "supports": [],
+      "does_not_support": ["a new affirmative license closure"],
+      "decision_effect": "Preserve A1 EVIDENCE_INCOMPLETE; a replay failure cannot promote the row."
+    },
+    {
+      "id": "ER1-G1-LR-004",
+      "dimension": "result_center_and_command",
+      "url": "https://raw.githubusercontent.com/gusye1234/LightGCN-PyTorch/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/README.md",
+      "source_type": "immutable_repository_file",
+      "locator": "dataset statement, 3-layer Gowalla command, fixed-seed note and Results table",
+      "retrieval_status": "SUCCESS",
+      "supports": [
+        "repository-bundled processed datasets",
+        "one documented noninteractive Gowalla command",
+        "one printed top-20 seed-2020 result surface"
+      ],
+      "does_not_support": [
+        "code or data permission",
+        "run count or result aggregation",
+        "selected checkpoint or immutable run/evaluator receipt"
+      ]
+    },
+    {
+      "id": "ER1-G1-LR-005",
+      "dimension": "canonical_provider_family",
+      "url": "https://snap.stanford.edu/data/loc-gowalla.html",
+      "source_type": "canonical_provider_dataset_page",
+      "locator": "dataset information, collection window/statistics, citation and named check-in file",
+      "retrieval_status": "SUCCESS",
+      "supports": [
+        "SNAP provider family",
+        "semantic raw Gowalla check-in surface",
+        "provider-reported collection statistics and file name"
+      ],
+      "does_not_support": [
+        "release-specific checksum",
+        "NGCF parent artifact",
+        "10-core/ID-map/split execution lineage"
+      ]
+    },
+    {
+      "id": "ER1-G1-LR-006",
+      "dimension": "provider_terms_boundary",
+      "url": "https://www.stanford.edu/terms",
+      "source_type": "canonical_provider_site_terms",
+      "locator": "current site-wide terms and intellectual-property/permission boundary",
+      "retrieval_status": "SUCCESS",
+      "supports": ["current mutable site-use and permission boundary"],
+      "does_not_support": [
+        "historical release-specific research-use grant",
+        "processed-data redistribution permission",
+        "rights for the exact bytes consumed by NGCF"
+      ]
+    },
+    {
+      "id": "ER1-G1-LR-007",
+      "dimension": "ngcf_processed_object_metadata",
+      "url": "https://api.github.com/repos/xiangwang1223/neural_graph_collaborative_filtering/contents/Data/gowalla?ref=a718a4f2df7c3942ca0df6759926975762c61eed",
+      "source_type": "official_repository_object_metadata",
+      "locator": "pinned NGCF Gowalla directory entries",
+      "retrieval_status": "FAILED_CENTRAL_WEB_CLIENT_INTERNAL_ERROR",
+      "supports": [],
+      "does_not_support": ["fresh central promotion of the processed-object edge"],
+      "decision_effect": "Frozen A2 evidence remains reviewable but cannot close the raw lineage or rights gap."
+    },
+    {
+      "id": "ER1-G1-LR-008",
+      "dimension": "lightgcn_processed_object_metadata",
+      "url": "https://api.github.com/repos/gusye1234/LightGCN-PyTorch/contents/data/gowalla?ref=947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+      "source_type": "official_repository_object_metadata",
+      "locator": "pinned LightGCN Gowalla directory entries",
+      "retrieval_status": "FAILED_CENTRAL_WEB_CLIENT_INTERNAL_ERROR",
+      "supports": [],
+      "does_not_support": ["fresh central promotion of data rights or lineage"],
+      "decision_effect": "No change to A2 EVIDENCE_INCOMPLETE."
+    },
+    {
+      "id": "ER1-G1-LR-009",
+      "dimension": "training_checkpoint_schedule",
+      "url": "https://raw.githubusercontent.com/gusye1234/LightGCN-PyTorch/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/code/main.py",
+      "source_type": "immutable_repository_training_entrypoint",
+      "locator": "seed setup, model/checkpoint load, evaluation cadence, training loop and repeated checkpoint overwrite",
+      "retrieval_status": "SUCCESS",
+      "supports": ["source training/evaluation schedule and checkpoint overwrite behavior"],
+      "does_not_support": ["which checkpoint or evaluation produced the printed center", "immutable run receipt"]
+    },
+    {
+      "id": "ER1-G1-LR-010",
+      "dimension": "source_evaluator_semantics",
+      "url": "https://raw.githubusercontent.com/gusye1234/LightGCN-PyTorch/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/code/Procedure.py",
+      "source_type": "immutable_repository_evaluator_source",
+      "locator": "test users, all-item score matrix, train-positive mask, torch.topk and macro metric accumulation",
+      "retrieval_status": "SUCCESS",
+      "supports": [
+        "full-item source scoring after masking train positives",
+        "top-k ranking primitive",
+        "macro per-test-user Recall/Precision/NDCG aggregation"
+      ],
+      "does_not_support": [
+        "explicit deterministic equal-score tie rule",
+        "source-owned evaluator execution receipt",
+        "parity with the future v5 shared evaluator"
+      ]
+    }
+  ],
+  "summary": {
+    "attempted": 10,
+    "successful": 7,
+    "failed": 3,
+    "failed_replays_used_as_positive_evidence": 0,
+    "positive_selection_supported": false
+  },
+  "verdict": "REPLAY_SUPPORTS_NO_SELECTION_ONLY",
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false
+  }
+}

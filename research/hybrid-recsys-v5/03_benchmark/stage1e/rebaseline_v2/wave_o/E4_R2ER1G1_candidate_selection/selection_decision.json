@@ -1,0 +1,85 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r2-er1-g1-selection-decision-1.0",
+  "created_at": "2026-08-22",
+  "stage_id": "R2-ER1-G1",
+  "model_profile": {
+    "display_name": "Sol Max Fast",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "max",
+    "service_tier": "priority"
+  },
+  "candidate_scope": {
+    "candidate_count": 1,
+    "row_id": "E3-LIGHTGCN-GOWALLA-PYTORCH-001",
+    "selection_cardinality_max": 1
+  },
+  "positive_gate": {
+    "required_status": "EVIDENCE_SUFFICIENT_FOR_G1_REVIEW",
+    "required_lane_count": 3,
+    "observed_positive_lane_count": 0,
+    "observed_lane_statuses": {
+      "R2-ER1-A1": "EVIDENCE_INCOMPLETE",
+      "R2-ER1-A2": "EVIDENCE_INCOMPLETE",
+      "R2-ER1-A3": "EVIDENCE_INCOMPLETE"
+    },
+    "schema_normalization_passed": true,
+    "scientific_truth_changed_by_normalization": false,
+    "all_positive_conditions_passed": false
+  },
+  "decision": {
+    "verdict": "NO_SELECTION_EVIDENCE_REMAINS_INSUFFICIENT",
+    "selected_candidate_count": 0,
+    "selected_candidate_row_id": null,
+    "lightgcn_priority_is_selection": false,
+    "materialization_allowed": false,
+    "execution_allowed": false,
+    "reason": "All three evidence lanes remain EVIDENCE_INCOMPLETE. Code permission, exact lawful dataset lineage and immutable producing run/checkpoint/evaluator receipts are not jointly closed."
+  },
+  "remaining_required_evidence": {
+    "A1": [
+      "affirmative repository code-use grant or maintainer-provided license clarification",
+      "immutable executed config/runtime/sampler branch receipt"
+    ],
+    "A2": [
+      "release-specific lawful-use basis for exact Gowalla bytes",
+      "exact SNAP/intermediate-to-NGCF preprocessing, ID-map, split and validation lineage with hashes"
+    ],
+    "A3": [
+      "immutable producing run and selected checkpoint identity/hash",
+      "source-owned evaluator receipt, run aggregation/variation and explicit tie contract"
+    ]
+  },
+  "downstream": {
+    "R2-M0": "BLOCKED_NO_SELECTION",
+    "R2-B1": "BLOCKED",
+    "R2-B2": "BLOCKED",
+    "R2-B3": "BLOCKED",
+    "R2-G2": "BLOCKED",
+    "E5-R2": "BLOCKED",
+    "R2-U": "BLOCKED",
+    "R2-D": "BLOCKED",
+    "R2-G3": "BLOCKED"
+  },
+  "next_user_decision_options": [
+    {
+      "id": "CONTACT_MAINTAINERS",
+      "description": "Seek explicit code-license clarification plus source run/checkpoint/evaluator and dataset-lineage provenance. No contact has been authorized or performed."
+    },
+    {
+      "id": "CREATE_NEW_FRAMEWORK_DATASET_ROW",
+      "description": "Open a new change-controlled row for a reproducible licensed framework and lawfully traceable dataset. It must be labeled framework reproduction, not official reproduction of the LightGCN paper center."
+    },
+    {
+      "id": "PAUSE_OFFICIAL_REPRODUCTION_TRACK",
+      "description": "Keep Stage 1E blocked and proceed only with non-empirical paper sections that do not rely on comparative benchmark numbers."
+    }
+  ],
+  "automatic_fallback_allowed": false,
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

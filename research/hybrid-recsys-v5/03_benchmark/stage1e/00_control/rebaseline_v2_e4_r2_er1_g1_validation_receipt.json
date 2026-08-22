@@ -1,0 +1,121 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r2-er1-g1-validation-receipt-1.0",
+  "created_at": "2026-08-22",
+  "passed": true,
+  "verdict": "PASS_R2_ER1_G1_NO_SELECTION_FAIL_CLOSED_DOWNSTREAM_BLOCKED",
+  "failure_count": 0,
+  "failures": [],
+  "validator": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r2_er1_g1.py",
+    "canonical_lf_bytes": 12001,
+    "canonical_lf_sha256": "a266556d6bba446592f27e9cae98650c1d3fe37ca8a1fd2041b2ff3be60b1eab",
+    "exit_code": 0,
+    "strict_json_duplicate_and_case_collision_rejection": "PASS"
+  },
+  "frozen_inputs": {
+    "manifest": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r2_er1_g1_frozen_input_manifest.json",
+      "canonical_lf_bytes": 8664,
+      "canonical_lf_sha256": "b64cd596b7b432cac43301984e75c9db9471dbdbc33ef165b729f2f94d298a8e"
+    },
+    "expected": 30,
+    "matched": 30,
+    "strict_json_expected": 23,
+    "strict_json_matched": 23
+  },
+  "checks": {
+    "manifest_30_of_30": true,
+    "strict_json_inputs_23_of_23": true,
+    "lane_validation_pass": true,
+    "lane_statuses_all_incomplete": true,
+    "exact_output_files_5_of_5": true,
+    "strict_json_outputs_4_of_4": true,
+    "intersection_exact_candidate": true,
+    "intersection_three_incomplete_lanes": true,
+    "intersection_zero_selection": true,
+    "source_deduplication_43_mentions_36_unique": true,
+    "locator_replay_10_attempted_7_successful": true,
+    "failed_locator_replays_used_as_positive_evidence": 0,
+    "decision_gate_0_of_3": true,
+    "all_downstream_gates_blocked": true,
+    "automatic_fallback_disabled": true,
+    "material_passport_unverified": true,
+    "no_experiments_declared": true,
+    "sol_max_fast_model": true,
+    "reasoning_max": true,
+    "service_tier_priority": true,
+    "handoff_output_hashes_4_of_4": true,
+    "all_forbidden_operation_flags_false": true,
+    "truth_state_preserved": true
+  },
+  "outputs": {
+    "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_o/E4_R2ER1G1_candidate_selection",
+    "expected_files": 5,
+    "present_files": 5,
+    "files": {
+      "lightgcn_evidence_intersection.json": {
+        "canonical_lf_bytes": 4526,
+        "canonical_lf_sha256": "70cb06c1b4f1467e5ecae244a92fd6259d1855d4036033033b1e948c227e8d27"
+      },
+      "locator_replay_log.json": {
+        "canonical_lf_bytes": 7447,
+        "canonical_lf_sha256": "585de9f226fff74c64f05cbac0099fb1579f5fa6af892673fced58fa6f1dac4d"
+      },
+      "selection_decision.json": {
+        "canonical_lf_bytes": 3208,
+        "canonical_lf_sha256": "2088b764e87251c7586c913737e0c05e38bac95fde4ac69055f913116f1515be"
+      },
+      "er1_g1_report.md": {
+        "canonical_lf_bytes": 3083,
+        "canonical_lf_sha256": "ca120a7794570b2295c487cfacfe31374e2cd88d198a96e57e9a59915a6506b8"
+      },
+      "er1_g1_handoff.json": {
+        "canonical_lf_bytes": 7698,
+        "canonical_lf_sha256": "447feff9006b2d62fcbbf29d9e66a0e569781fa3f54a7445ce73f96235e6bc39"
+      }
+    }
+  },
+  "selection": {
+    "candidate_count": 1,
+    "fully_sufficient": 0,
+    "selected": 0,
+    "selected_candidate_row_id": null,
+    "lane_statuses": {
+      "R2-ER1-A1": "EVIDENCE_INCOMPLETE",
+      "R2-ER1-A2": "EVIDENCE_INCOMPLETE",
+      "R2-ER1-A3": "EVIDENCE_INCOMPLETE"
+    },
+    "verdict": "NO_SELECTION_EVIDENCE_REMAINS_INSUFFICIENT"
+  },
+  "model_policy": {
+    "display_name": "Sol Max Fast",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "max",
+    "service_tier": "priority",
+    "speed_label": "Fast"
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "downstream": {
+    "R2-M0": "BLOCKED_NO_SELECTION",
+    "R2-B1": "BLOCKED",
+    "R2-B2": "BLOCKED",
+    "R2-B3": "BLOCKED",
+    "R2-G2": "BLOCKED",
+    "E5-R2": "BLOCKED",
+    "R2-U": "BLOCKED",
+    "R2-D": "BLOCKED",
+    "R2-G3": "BLOCKED"
+  },
+  "upstream_validation_incident": {
+    "receipt": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r2_er1_lanes_validation_receipt.json",
+    "summary": "Central alias adapter was widened after confirming the A3 handoff already contained Sol Max Fast and 31/31 replay fields; no lane bytes changed.",
+    "scientific_effect": "NONE"
+  },
+  "next_gate": "MANDATORY_USER_CHECKPOINT_CHOOSE_MAINTAINER_CONTACT_NEW_FRAMEWORK_DATASET_ROW_OR_PAUSE"
+}

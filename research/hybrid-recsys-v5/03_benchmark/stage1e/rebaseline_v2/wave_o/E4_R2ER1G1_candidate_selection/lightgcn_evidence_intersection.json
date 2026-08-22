@@ -1,0 +1,100 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r2-er1-g1-intersection-1.0",
+  "created_at": "2026-08-22",
+  "stage_id": "R2-ER1-G1",
+  "context": "current_central",
+  "model_profile": {
+    "display_name": "Sol Max Fast",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "max",
+    "service_tier": "priority",
+    "speed_label": "Fast"
+  },
+  "entry_gate": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r2_er1_lanes_validation_receipt.json",
+    "verdict": "PASS_R2_ER1_PARALLEL_LANES_READY_FOR_FRESH_G1",
+    "schema_findings_closed_in_sidecars": [
+      "R2-CF-A1-001",
+      "R2-CF-A2-001",
+      "R2-CF-A3-001"
+    ],
+    "scientific_truth_changed_by_normalization": false
+  },
+  "join_policy": {
+    "key": "exact row_id plus immutable implementation, dataset/split and result/evaluator identity",
+    "required_positive_lane_status": "EVIDENCE_SUFFICIENT_FOR_G1_REVIEW",
+    "required_positive_lane_count": 3,
+    "cross_surface_join_allowed": false,
+    "missing_evidence_may_be_inferred": false,
+    "priority_is_selection": false
+  },
+  "candidate": {
+    "row_id": "E3-LIGHTGCN-GOWALLA-PYTORCH-001",
+    "method": "LightGCN",
+    "dataset_surface": "Gowalla repository-bundled processed split",
+    "lane_statuses": {
+      "R2-ER1-A1": "EVIDENCE_INCOMPLETE",
+      "R2-ER1-A2": "EVIDENCE_INCOMPLETE",
+      "R2-ER1-A3": "EVIDENCE_INCOMPLETE"
+    },
+    "positive_lane_count": 0,
+    "required_positive_lane_count": 3,
+    "positive_selection_eligible": false,
+    "central_disposition": "KEEP_PENDING_NOT_SELECTED",
+    "evidence_delta_since_R2_G1": {
+      "repo_license": [
+        "The SIGIR paper-to-PyTorch-repository relationship is directly bound.",
+        "The repository command, configuration and immutable commit/tree identity are substantially bound.",
+        "No affirmative code-use grant for the repository-owned Python, C++ or documentation is established at the pin.",
+        "The paper center and pinned PyTorch README center are distinct surfaces and remain non-cross-joinable."
+      ],
+      "dataset_lineage": [
+        "The canonical SNAP Gowalla provider family and semantic raw check-in file are identified.",
+        "Five NGCF and LightGCN processed objects are bound by matching immutable Git object IDs and sizes.",
+        "The SNAP-to-NGCF raw, filtering, ID-map, split, validation and lawful-redistribution chain remains unclosed."
+      ],
+      "result_evaluator": [
+        "The pinned README result center, command, model configuration and same-revision evaluator code are located.",
+        "Full-catalog scoring after train-positive masking and macro per-user metric aggregation are source-bound.",
+        "The producing run count, checkpoint identity/hash, immutable run/evaluator receipt and deterministic tie contract remain absent."
+      ]
+    },
+    "blocking_dimensions": [
+      "No affirmative repository code-use license basis is closed.",
+      "No exact lawful raw-to-processed-to-split Gowalla lineage is closed.",
+      "No immutable source-owned producing run/checkpoint/evaluator receipt is closed.",
+      "Paper and README result/configuration surfaces cannot be cross-joined.",
+      "Source evaluator semantics are not yet parity-bound to a materialized v5 shared evaluator."
+    ],
+    "prohibited_inferences": [
+      "Public repository visibility is not permission.",
+      "Matching processed Git objects do not prove canonical raw lineage or rights.",
+      "A printed README result is not a producing-run receipt.",
+      "A fixed seed does not establish run count, aggregation or selected checkpoint.",
+      "torch.topk does not establish an explicit deterministic secondary tie key.",
+      "A source-dataset center cannot be transported to harmonized v5."
+    ]
+  },
+  "source_deduplication": {
+    "authoritative_source_mentions": 43,
+    "unique_exact_urls": 36,
+    "duplicate_mentions_removed_from_independence_count": 7,
+    "dedup_key": "exact URL string",
+    "repeated_url_is_independent_evidence": false
+  },
+  "intersection_summary": {
+    "candidate_count": 1,
+    "fully_sufficient_candidates": 0,
+    "incomplete_candidates": 1,
+    "selected_candidate_count": 0,
+    "selected_candidate_row_id": null
+  },
+  "verdict": "NO_SELECTION_EVIDENCE_REMAINS_INSUFFICIENT",
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

@@ -2,7 +2,7 @@
   "schema_version": "academic-research-pipeline-state-1.0",
   "project": "hybrid-recsys-v5",
   "stage": "1E",
-  "state": "stage1e_rebaseline_v2_r2_er1_parallel_evidence_active",
+  "state": "stage1e_rebaseline_v2_r2_er1_g1_complete_fail_closed_no_selection_awaiting_user_checkpoint",
   "updated_at": "2026-08-22",
   "model": "gpt-5.6-sol",
   "reasoning": "max",
@@ -15,7 +15,7 @@
     "record": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/wave1_v1_supersession_record.json"
   },
   "rebaseline_v2": {
-    "status": "e4_r2_er1_parallel_evidence_active",
+    "status": "e4_r2_er1_g1_complete_fail_closed_no_selection_awaiting_user_checkpoint",
     "wave_a_expected": 3,
     "wave_a_active": 0,
     "wave_a_complete": 3,
@@ -428,7 +428,7 @@
       "execution_authorized": false
     },
     "e4_r2_er1": {
-      "status": "PARALLEL_GROUP_ACTIVE_SOL_MAX_FAST",
+      "status": "G1_COMPLETE_FAIL_CLOSED_NO_SELECTION_AWAITING_USER_CHECKPOINT",
       "entry_checkpoint": "USER_CONFIRMED_CHANGE_CONTROLLED_EVIDENCE_REMEDIATION",
       "source_verdict": "NO_SELECTION_EVIDENCE_REMAINS_INSUFFICIENT",
       "candidate_scope": {
@@ -468,30 +468,78 @@
       },
       "parallel_group": {
         "expected": 4,
-        "active": 4,
-        "complete": 0,
+        "active": 0,
+        "complete": 4,
         "stages": {
           "R2-ER1-S": {
             "agent_id": "01a0293e-294b-75c1-9570-3662a7e7caf4",
-            "status": "ACTIVE",
+            "status": "COMPLETED_COMMITTED_CENTRALLY_VALIDATED",
+            "commit": "528ddaaa04a6045241556504aaecd288cc727d39",
+            "verdict": "COMPLETE_SCHEMA_NORMALIZATION_TRUTH_PRESERVED_READY_FOR_CENTRAL_VALIDATION",
             "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_m/E4_R2ER1S_schema_normalization"
           },
           "R2-ER1-A1": {
             "agent_id": "01a0293e-2a15-7522-89c9-72e374aa9148",
-            "status": "ACTIVE",
+            "status": "COMPLETED_COMMITTED_CENTRALLY_VALIDATED",
+            "commit": "9a3d1ddc3b35e68ab58b488d9516a57ad5ecd31f",
+            "evidence_status": "EVIDENCE_INCOMPLETE",
             "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_n/E4_R2ER1A1_repo_license"
           },
           "R2-ER1-A2": {
             "agent_id": "01a0293e-2b01-7e40-90dc-5cfb73299ee3",
-            "status": "ACTIVE",
+            "status": "COMPLETED_COMMITTED_CENTRALLY_VALIDATED",
+            "commit": "c40aeca03b9167da157f2f5be0fc21738b02fd97",
+            "evidence_status": "EVIDENCE_INCOMPLETE",
             "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_n/E4_R2ER1A2_dataset_lineage"
           },
           "R2-ER1-A3": {
             "agent_id": "01a0293e-2c01-7e10-bdb4-deebefcd5178",
-            "status": "ACTIVE",
+            "status": "COMPLETED_COMMITTED_CENTRALLY_VALIDATED",
+            "commit": "9190ce8af2246bd8a388759f25dd708e96b0681d",
+            "evidence_status": "EVIDENCE_INCOMPLETE",
             "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_n/E4_R2ER1A3_result_evaluator"
           }
         }
+      },
+      "lane_validation": {
+        "status": "PASS_R2_ER1_PARALLEL_LANES_READY_FOR_FRESH_G1",
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r2_er1_lanes_validation_receipt.json",
+        "canonical_lf_bytes": 4742,
+        "canonical_lf_sha256": "4635f1e4a4c3a50870b9b269479b42a82ad3e4b7c9d8399525f6a8f57dfb9ef7",
+        "exact_output_files": "17/17",
+        "schema_rows": "21/21",
+        "failure_count": 0
+      },
+      "g1": {
+        "status": "COMPLETE_FAIL_CLOSED_CENTRALLY_VALIDATED",
+        "context": "current_central",
+        "model": "gpt-5.6-sol",
+        "reasoning": "max",
+        "service_tier": "priority",
+        "display_name": "Sol Max Fast",
+        "contract": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r2_er1_g1_central_synthesis_contract.md",
+        "input_manifest": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r2_er1_g1_frozen_input_manifest.json",
+        "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_o/E4_R2ER1G1_candidate_selection",
+        "central_validation": {
+          "status": "PASS_R2_ER1_G1_NO_SELECTION_FAIL_CLOSED_DOWNSTREAM_BLOCKED",
+          "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r2_er1_g1_validation_receipt.json",
+          "failure_count": 0,
+          "frozen_inputs": "30/30",
+          "strict_json_inputs": "23/23",
+          "output_files": "5/5"
+        },
+        "candidate_count": 1,
+        "fully_sufficient_candidates": 0,
+        "selected_candidate_count": 0,
+        "selected_candidate_row_id": null,
+        "lane_statuses": {
+          "R2-ER1-A1": "EVIDENCE_INCOMPLETE",
+          "R2-ER1-A2": "EVIDENCE_INCOMPLETE",
+          "R2-ER1-A3": "EVIDENCE_INCOMPLETE"
+        },
+        "verdict": "NO_SELECTION_EVIDENCE_REMAINS_INSUFFICIENT",
+        "materialization_allowed": false,
+        "next_gate": "MANDATORY_USER_SCOPE_DECISION"
       },
       "truth_state": {
         "RESULT_STATUS": "NOT_RUN",
@@ -504,13 +552,13 @@
       "package_install_or_environment_creation": false,
       "training_or_evaluation": false,
       "execution_authorized": false,
-      "next_gate": "ALL_FOUR_HANDOFFS_REQUIRE_CENTRAL_EXACT_SET_SCHEMA_HASH_VALIDATION_BEFORE_R2_ER1_G1"
+      "next_gate": "USER_CHECKPOINT_CHOOSE_MAINTAINER_CONTACT_NEW_FRAMEWORK_DATASET_ROW_OR_PAUSE"
     }
   },
-  "central_preregistration_lock": "BLOCKED_R2_ER1_ACTIVE_NO_SELECTION",
-  "adapt_reproduce": "BLOCKED_R2_ER1_EVIDENCE_REMEDIATION_ACTIVE",
+  "central_preregistration_lock": "BLOCKED_R2_ER1_G1_NO_SELECTION",
+  "adapt_reproduce": "BLOCKED_R2_ER1_G1_NO_SELECTION_SCOPE_DECISION_REQUIRED",
   "harmonized_v5": "BLOCKED",
   "external_validation": "BLOCKED",
   "efficiency": "BLOCKED_AFTER_ACCURACY",
-  "next_gate": "WAIT_FOR_R2_ER1_S_A1_A2_A3_THEN_CENTRAL_VALIDATE. R2-M0 and all materialization/execution stages remain blocked; clone, download, install, preprocess, train, evaluate, candidate selection, and TEST access remain denied."
+  "next_gate": "MANDATORY USER CHECKPOINT: choose maintainer contact, a new separately labeled framework/dataset row, or pause the official-reproduction track. R2-M0 and all materialization/execution stages remain blocked; clone, download, install, preprocess, train, evaluate, candidate selection, and TEST access remain denied."
 }

@@ -1,0 +1,66 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r2-er1-g1-frozen-input-manifest-1.0",
+  "created_at": "2026-08-22",
+  "stage_id": "R2-ER1-G1",
+  "status": "FROZEN_FOR_CENTRAL_NO_SELECTION_SYNTHESIS",
+  "canonicalization": "strict UTF-8 bytes with CRLF and CR normalized to LF; no other byte transformation",
+  "input_count": 30,
+  "json_input_count": 23,
+  "candidate_scope": {
+    "row_id": "E3-LIGHTGCN-GOWALLA-PYTORCH-001",
+    "selection_cardinality_max": 1,
+    "positive_selection_precondition": "A1=A2=A3=EVIDENCE_SUFFICIENT_FOR_G1_REVIEW",
+    "observed_lane_statuses": {
+      "R2-ER1-A1": "EVIDENCE_INCOMPLETE",
+      "R2-ER1-A2": "EVIDENCE_INCOMPLETE",
+      "R2-ER1-A3": "EVIDENCE_INCOMPLETE"
+    },
+    "allowed_decision": "NO_SELECTION_EVIDENCE_REMAINS_INSUFFICIENT"
+  },
+  "model_policy": {
+    "display_name": "Sol Max Fast",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "max",
+    "service_tier": "priority",
+    "speed_label": "Fast"
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "inputs": [
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r2_er1_change_control_contract.md","canonical_lf_bytes":8725,"canonical_lf_sha256":"6b9c03359a77c6a66535bb5cb9a26f6562bd0b82cc07b292836aa2497003f8c7"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r2_er1_frozen_input_manifest.json","canonical_lf_bytes":8355,"canonical_lf_sha256":"12cff269c80e9cef5eb35c4a822a6ab756a480a4769e24c31861cd581748d916"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r2_er1_gate_receipt.json","canonical_lf_bytes":2789,"canonical_lf_sha256":"0de02930581306fd6758ee529d58dcf3c159e55afec15ad24ba91235371c680e"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r2_er1_dispatch.json","canonical_lf_bytes":3483,"canonical_lf_sha256":"f68eed2a6ccf8b07f560f7961e982c14411e1d3c2b15ea5cfe57e0f3c1370e63"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r2_er1_lane_validation_contract.md","canonical_lf_bytes":3644,"canonical_lf_sha256":"6cb2075e6381ed3bab3394c9696f621c0a6cb464de2b2568a6d6721ad690503f"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r2_er1_lanes.py","canonical_lf_bytes":15463,"canonical_lf_sha256":"119d3d4fc8d12edc2a097f2411c510b295977b72ab9434f460aa57480891b0e6"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r2_er1_lanes_validation_receipt.json","canonical_lf_bytes":4742,"canonical_lf_sha256":"4635f1e4a4c3a50870b9b269479b42a82ad3e4b7c9d8399525f6a8f57dfb9ef7"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r2_er1_g1_central_synthesis_contract.md","canonical_lf_bytes":3987,"canonical_lf_sha256":"4b62dbd5c1df2ee0f2e0a30f404c3e5f6713007ddf6eaeb916d6a8deb99c03a6"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_m/E4_R2ER1S_schema_normalization/a1_normalized_carrier.json","canonical_lf_bytes":67375,"canonical_lf_sha256":"88d502afe56e39e001f465d2da9eac1edef7ce2f5b5fa9290a5bd2979d591856"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_m/E4_R2ER1S_schema_normalization/a2_normalized_carrier.json","canonical_lf_bytes":69916,"canonical_lf_sha256":"7a00acec44535d14445d280396b9d454f9621efca6df7785dfc1f9e3c3137fb5"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_m/E4_R2ER1S_schema_normalization/a3_normalized_carrier.json","canonical_lf_bytes":51730,"canonical_lf_sha256":"5a6b5ad9723fcb0027cb35d31fc97aa81657cf611e444556add56594bde2a792"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_m/E4_R2ER1S_schema_normalization/schema_normalization_report.md","canonical_lf_bytes":5693,"canonical_lf_sha256":"93567cc42814ff35008e48e78fdb01cb5d3b8a0530a7ba99b84ff2d8d9f8ee1e"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_m/E4_R2ER1S_schema_normalization/er1_s_handoff.json","canonical_lf_bytes":12672,"canonical_lf_sha256":"2545adbed052d4ee2855dfbe5095a05b274b91e202f29cbf98a8a6929a4e65f5"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_n/E4_R2ER1A1_repo_license/lightgcn_repo_license_evidence.json","canonical_lf_bytes":25196,"canonical_lf_sha256":"6e00fec674fb54206955c82e06d1507efadab2dde856e5962a02a7ac809117af"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_n/E4_R2ER1A1_repo_license/paper_repo_config_binding.json","canonical_lf_bytes":18114,"canonical_lf_sha256":"5d8456d76c6719b10b7e9f6a6695bd9474b32f50f4171e50aabc48bdda8a7fcf"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_n/E4_R2ER1A1_repo_license/repo_license_report.md","canonical_lf_bytes":8342,"canonical_lf_sha256":"f946babcb0955a2974a1ee58e9b7f309c096de1c450d3450785583dac0404f0c"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_n/E4_R2ER1A1_repo_license/er1_a1_handoff.json","canonical_lf_bytes":13360,"canonical_lf_sha256":"ed986ee9698e76bd748f272577c33c9d2b19c93198fab680c1333cc5df98a5cb"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_n/E4_R2ER1A2_dataset_lineage/lightgcn_dataset_lineage_evidence.json","canonical_lf_bytes":28553,"canonical_lf_sha256":"0ffa18a8d6e9b3e56117a445ba0ff061136303e3816828cc866642e3d6cc2a0b"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_n/E4_R2ER1A2_dataset_lineage/rights_release_matrix.json","canonical_lf_bytes":21138,"canonical_lf_sha256":"15fba88dcadfed414f2580ebb113e182baadf7b3e0e5f90f7f74c64e2295b7a3"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_n/E4_R2ER1A2_dataset_lineage/processed_split_lineage_map.json","canonical_lf_bytes":30955,"canonical_lf_sha256":"42653e7bdbd1602553a732b425fe663c7baa01d4ed2d63f50523ec254a48334b"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_n/E4_R2ER1A2_dataset_lineage/er1_a2_handoff.json","canonical_lf_bytes":22502,"canonical_lf_sha256":"95359f80557276b1172f36f2fddf74e31eb0bc6881f020ec5c07bab74f4d8ff4"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_n/E4_R2ER1A3_result_evaluator/lightgcn_result_evaluator_evidence.json","canonical_lf_bytes":23038,"canonical_lf_sha256":"914e1b50edab014ba0947b8e9fe2786cad54393bc5c4d9d97aa8e484ac044292"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_n/E4_R2ER1A3_result_evaluator/center_run_checkpoint_binding.json","canonical_lf_bytes":18387,"canonical_lf_sha256":"009bd63ee5ac5a744b7a919236f09fc8ad10e673057926444fe1a6f0700062fd"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_n/E4_R2ER1A3_result_evaluator/metric_evaluator_contract.json","canonical_lf_bytes":19252,"canonical_lf_sha256":"a9a690196c1d632b6fd2072428399588cb68d9edfca834e6c89530c7503f66d7"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_n/E4_R2ER1A3_result_evaluator/er1_a3_handoff.json","canonical_lf_bytes":21618,"canonical_lf_sha256":"078b940e0754139399f15c09b5c3be857109bf9d52ffe6d2d254e19015f5153b"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_h/E4_R2G1_candidate_selection/central_evidence_intersection.json","canonical_lf_bytes":7194,"canonical_lf_sha256":"fc439ac8747d25775aad3bb14c6eb0b2cd9c392447bfa3fabfc9be14a16de539"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_h/E4_R2G1_candidate_selection/candidate_decision_matrix.json","canonical_lf_bytes":3372,"canonical_lf_sha256":"ea58afb47a1d53c929f27f623a3d62572623c83f6b0d0fd3be59eaa6e2082bce"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_h/E4_R2G1_candidate_selection/primary_locator_replay_log.json","canonical_lf_bytes":3965,"canonical_lf_sha256":"f769d64b8e238ee840f00ab00f1c9e4c7c0dcb1d03a0b42c356c82674694209f"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_h/E4_R2G1_candidate_selection/r2_g1_no_selection_report.md","canonical_lf_bytes":4570,"canonical_lf_sha256":"953d1bf47da04b85234bd0c7ff9608f3cdc623ec7905bc37b54ca8be84e3c6a8"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_h/E4_R2G1_candidate_selection/r2_g1_handoff.json","canonical_lf_bytes":6868,"canonical_lf_sha256":"9b96b6f423d354932cb0d53f60586bf180dc7472fe2bccbb031778bd38748855"}
+  ]
+}
