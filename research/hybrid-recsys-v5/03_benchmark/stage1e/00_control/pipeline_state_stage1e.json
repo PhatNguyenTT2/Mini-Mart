@@ -778,7 +778,7 @@
       "next_gate": "SUPERSEDED_BY_USER_DECISION_AUTHORIZE_TARGETED_SOURCE_ONLY_EVIDENCE_MATERIALIZATION_REDESIGN"
     },
     "e4_r5": {
-      "status": "R6_ATTEMPT002_DISPATCH_FROZEN_AWAITING_PREFLIGHT",
+      "status": "R6_C1R2_ATTEMPT003_PACKET_VALIDATED_AWAITING_RUNNER_AND_MATERIALIZATION_DISPATCH_CHECKPOINT",
       "entry_checkpoint": "USER_CONFIRMED_TARGETED_SOURCE_ONLY_EVIDENCE_MATERIALIZATION_REDESIGN",
       "source_stage": "R4-G0",
       "source_verdict": "NO_ADMISSIBLE_BUNDLE_STOP_FAIL_CLOSED",
@@ -791,20 +791,22 @@
           "scope": "HISTORICAL_ACTUAL_PROFILE_FOR_COMPLETED_R5_M1A_AND_R5_M1B"
         },
         "future_subagents": {
-          "change_control": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r5_future_subagent_model_policy.json",
+          "change_control": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_future_agent_model_policy_standard.json",
+          "supersedes": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r5_future_subagent_model_policy.json",
           "critical_judgment": {
-            "display_name": "Sol XHigh Fast",
+            "display_name": "Sol XHigh Standard",
             "model": "gpt-5.6-sol",
             "reasoning": "xhigh",
-            "service_tier": "priority"
+            "service_tier": "standard"
           },
           "bounded_execution": {
-            "display_name": "Sol High Fast",
+            "display_name": "Sol High Standard",
             "model": "gpt-5.6-sol",
             "reasoning": "high",
-            "service_tier": "priority"
+            "service_tier": "standard"
           },
-          "effective_scope": "DISPATCHES_CREATED_AFTER_2026_08_23_CHANGE_CONTROL",
+          "effective_scope": "ALL_AGENTS_CREATED_AFTER_R6_STANDARD_CHANGE_CONTROL",
+          "fast_profiles_allowed": false,
           "completed_valid_stage_rerun_required": false
         },
         "central": {
@@ -1049,12 +1051,15 @@
           "experiment_execution_authorized": false
         },
         "c1r2": {
-          "status": "ATTEMPT003_PACKET_ASSEMBLY_DISPATCH_FROZEN",
+          "status": "COMPLETE_CENTRALLY_VALIDATED_AWAITING_ATTEMPT003_RUNNER_AND_MATERIALIZATION_DISPATCH",
           "purpose": "NEW_IMMUTABLE_ATTEMPT003_PACKET_AFTER_ATTEMPT002_PACKET_RUNTIME_AND_AMBIENT_INSTALLER_COLLISION",
-          "agent_id": "01a02b8c-3d55-7f11-be8e-0bac060680c8",
-          "nickname": "Zeno",
-          "model_profile": "Sol XHigh Fast",
-          "audit_write_scope": "READ_ONLY",
+          "recovery_audit": {
+            "agent_id": "01a02b8c-3d55-7f11-be8e-0bac060680c8",
+            "nickname": "Zeno",
+            "model_profile": "Sol XHigh Fast",
+            "historical_profile": true,
+            "write_scope": "READ_ONLY"
+          },
           "audit_receipt": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_c1r2_recovery_audit_receipt.json",
           "audit_receipt_raw_bytes": 6515,
           "audit_receipt_raw_sha256": "2c66845e65c3752e04cd4a55b1ef60a1623700aabf14674921f065f9420f8604",
@@ -1067,9 +1072,40 @@
           "contract_raw_sha256": "8b08e543e061e01762b55e5f5367a985ed77711cd95a54ce70304c985dca9054",
           "dispatch": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_c1r2_dispatch.json",
           "dispatch_raw_sha256": "0a09363fd5895bc7e270e826b246098571315fd6d37a7a6a9eb9db5e3e09b8ea",
-          "packet_worker_profile": "Sol High Fast",
+          "packet_assembly": {
+            "initial_draft": {
+              "agent_id": "01a02b98-d5e6-71e3-a44a-78bf551c1e25",
+              "nickname": "Gibbs",
+              "model_profile": "Sol High Fast",
+              "historical_profile": true,
+              "status": "ERRORED_AFTER_WRITING_DRAFT_OUTPUTS"
+            },
+            "standard_rework": {
+              "agent_id": "01a02bb7-7c60-7572-aeb6-e3fdbce55ceb",
+              "nickname": "Euclid",
+              "model_profile": "Sol High Standard",
+              "status": "COMPLETE"
+            }
+          },
           "packet_output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ak/E4_R6C1R2_attempt003_command_packet",
-          "attempt003_packet_created": false,
+          "attempt003_packet_created": true,
+          "proposed_commands": 37,
+          "materialization_commands_executed": 0,
+          "central_validation": {
+            "context": "current_central",
+            "model_profile": "Sol Max Standard",
+            "verdict": "PASS_R6_C1R2_ATTEMPT003_PACKET_READY_FOR_BOUNDED_R6_M0_R6_M1_DISPATCH",
+            "validator": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_c1r2_packet.py",
+            "receipt": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_c1r2_validation_receipt.json",
+            "checks": "56/56",
+            "strict_json_outputs": "5/5",
+            "literal_argv_commands": "37/37",
+            "powershell_sources": "10/10",
+            "python_inline_sources": "14/14",
+            "failure_count": 0
+          },
+          "attempt003_runner_created": false,
+          "attempt003_materialization_dispatch_created": false,
           "attempt003_materialization_gate_open": false,
           "experiment_execution_authorized": false
         },
@@ -1135,7 +1171,7 @@
         "project_benchmark_numbers": "INVALID_FOR_PAPER"
       },
       "execution_authorized": false,
-      "next_gate": "ASSEMBLE_THEN_CENTRALLY_VALIDATE_R6_C1R2_ATTEMPT003_FIVE_FILE_PACKET"
+      "next_gate": "CREATE_STATICALLY_VALIDATE_AND_COMMIT_ATTEMPT003_RUNNER_AND_MATERIALIZATION_DISPATCH"
     }
   },
   "central_preregistration_lock": "PASS_R6_S0_BOUNDED_MATERIALIZATION_SCOPE_LOCKED",
@@ -1143,5 +1179,5 @@
   "harmonized_v5": "BLOCKED",
   "external_validation": "BLOCKED",
   "efficiency": "BLOCKED_AFTER_ACCURACY",
-  "next_gate": "Assemble and centrally validate the frozen R6-C1R2 attempt-003 five-file packet. Training, evaluation, benchmark admission and TEST access remain blocked."
+  "next_gate": "Create, statically validate and commit the attempt-003 runner and bounded R6-M0/R6-M1 materialization dispatch. Root creation, bridge execution, training, evaluation, benchmark admission and TEST access remain blocked until their explicit gates pass."
 }

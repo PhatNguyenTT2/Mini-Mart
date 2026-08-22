@@ -1,0 +1,166 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r6-c1r2-attempt003-validation-receipt-1.0",
+  "created_at": "2026-08-23",
+  "stage_id": "R6-C1R2",
+  "status": "PASS_R6_C1R2_ATTEMPT003_PACKET_READY_FOR_BOUNDED_R6_M0_R6_M1_DISPATCH",
+  "entry_checkpoint": {
+    "commit": "42166e6c1c813959beaea96346b454f512be5023",
+    "repository_changes_before_validation": [
+      "untracked central validator",
+      "untracked five-file attempt-003 packet"
+    ]
+  },
+  "ars_workflow": {
+    "router": "ars-codex:academic-research-suite 0.1.26",
+    "selected_workflow": "experiment-agent",
+    "mode": "fail-closed proposal validation",
+    "scientific_execution_performed": false
+  },
+  "model_provenance": {
+    "central_validator": {
+      "display_name": "Sol Max Standard",
+      "runtime_model_id": "gpt-5.6-sol",
+      "reasoning_effort": "max",
+      "speed_profile": "standard"
+    },
+    "current_packet_rework": {
+      "agent_id": "01a02bb7-7c60-7572-aeb6-e3fdbce55ceb",
+      "nickname": "Euclid",
+      "display_name": "Sol High Standard",
+      "runtime_model_id": "gpt-5.6-sol",
+      "reasoning_effort": "high",
+      "speed_profile": "standard",
+      "status": "COMPLETE"
+    },
+    "historical_initial_draft": {
+      "agent_id": "01a02b98-d5e6-71e3-a44a-78bf551c1e25",
+      "nickname": "Gibbs",
+      "display_name": "Sol High Fast",
+      "status": "ERRORED_AFTER_WRITING_DRAFT_OUTPUTS",
+      "historical_only": true
+    },
+    "future_agent_policy": {
+      "allowed": [
+        "Sol High Standard",
+        "Sol XHigh Standard"
+      ],
+      "fast_profiles_allowed": false,
+      "central_context": "Sol Max Standard"
+    }
+  },
+  "rework_cycle": {
+    "initial_central_precheck": {
+      "checks_passed": 34,
+      "checks_total": 37,
+      "reported_failures": [
+        "group_lens_archive_lock_preserved",
+        "literal_argv_and_executable_policy",
+        "runner_handoff_controls_explicit"
+      ]
+    },
+    "finding_resolution": {
+      "group_lens_archive_lock_preserved": "REAL_PACKET_DEFECT_RESOLVED_BY_EXACT_SHA256_COMPARISON_BEFORE_PROMOTION",
+      "literal_argv_and_executable_policy": "VALIDATOR_SCHEMA_OVERCONSTRAINT_RESOLVED; THE FROZEN CONTRACT REQUIRES LITERAL_ARGV_AND_DOES_NOT_REQUIRE_A_REDUNDANT_EXECUTABLE_FIELD",
+      "runner_handoff_controls_explicit": "VALIDATOR_TOKEN_NORMALIZATION_RESOLVED_AND_CANONICAL_EIGHT_CONTROL_LIST_ADDED"
+    },
+    "packet_files_changed_by_standard_rework": 4,
+    "environment_packet_changed": false
+  },
+  "frozen_gate_replay": {
+    "dispatch_inputs": "PASS_12_OF_12_RAW_BYTES_AND_SHA256",
+    "strict_json_frozen_inputs": "PASS_11_OF_11",
+    "attempt002_failure_status": "FAIL_CLOSED_PACKET_RUNTIME_AND_AMBIENT_INSTALLER_COLLISION",
+    "nuget_source_replay_status": "PASS_OFFICIAL_CPYTHON_NUGET_3119_INERT_BYTE_REPLAY",
+    "dataset_attempt003_root_absent": true,
+    "environment_attempt003_root_absent": true
+  },
+  "validator": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_c1r2_packet.py",
+    "raw_bytes": 28897,
+    "raw_sha256": "670e07dc309bea24ae854ca02d1ddb8cf7f4878f654b00f43ea1a22174d4ebc6",
+    "python_executable": "C:\\Users\\ACER\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+    "execution_flags": [
+      "-I",
+      "-B"
+    ],
+    "exit_code": 0,
+    "checks_passed": 56,
+    "checks_total": 56,
+    "failures": [],
+    "strict_json_outputs": "5/5",
+    "literal_argv_commands": "37/37",
+    "powershell_sources_parsed": "10/10",
+    "python_inline_sources_parsed": "14/14",
+    "runner_control_groups": "8/8",
+    "network_failures": 0,
+    "command_contract_failures": 0,
+    "scientific_execution_matches": 0
+  },
+  "packet": {
+    "root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ak/E4_R6C1R2_attempt003_command_packet",
+    "exact_output_files": "5/5",
+    "proposal_only": true,
+    "execution_performed": false,
+    "execution_authorized": false,
+    "command_counts": {
+      "dataset": 8,
+      "environment": 26,
+      "bridge": 3,
+      "total": 37
+    },
+    "files": [
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ak/E4_R6C1R2_attempt003_command_packet/dataset_materialization_packet.json",
+        "raw_bytes": 29657,
+        "raw_sha256": "2277e987b59a8de7e3e82e0093a82990c57453db1b000ecda95cd3ca50c17628"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ak/E4_R6C1R2_attempt003_command_packet/environment_materialization_packet.json",
+        "raw_bytes": 59749,
+        "raw_sha256": "e15adf51345f7e9e4bc19ab834bbc3a0b0e94a3d4d50b5b3cd8279e6612b733b"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ak/E4_R6C1R2_attempt003_command_packet/recbole_dataset_bridge_packet.json",
+        "raw_bytes": 12387,
+        "raw_sha256": "d003e0520429e7dd0dd9a82d09ad6b6d3b144089b2db558f0b93349bc107b5c8"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ak/E4_R6C1R2_attempt003_command_packet/execution_boundary_and_negative_assertions.json",
+        "raw_bytes": 13384,
+        "raw_sha256": "3954d43d8c73d679e2fad9ab399ee037734548685eebbcc13a3754267c75f5d7"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ak/E4_R6C1R2_attempt003_command_packet/audit_handoff.json",
+        "raw_bytes": 12379,
+        "raw_sha256": "812f370ef7039f75d6e872f02fcdde50ee13110038fba6c739ebdda0f7518df3"
+      }
+    ]
+  },
+  "source_locks": {
+    "grouplens_ml100k_archive_md5": "0e33842e24a9c977be4e0107933c0723",
+    "grouplens_ml100k_archive_sha256": "50d2a982c66986937beb9ffb3aa76efe955bf3d5c6b761f4e3a7cd717c6a3229",
+    "grouplens_sha256_guard_precedes_first_promotion": true,
+    "cpython_nuget_version": "3.11.9",
+    "cpython_nuget_sha256": "9283876d58c017e0e846f95b490da3bca0fc0a6ee1134b2870677cfb7eec3c67",
+    "cpython_nuget_complete_inventory_sha256": "5b6fb34361dc7d120329363730678c13db857d6069d88d3505406526ba4ed63a",
+    "cpython_runtime_inventory_sha256": "62f76352a94a53dd4aeb406d00a14151b23cb544bd52fde5a899a7f62cdb33bd"
+  },
+  "gate_effect": {
+    "attempt003_packet_validated": true,
+    "bounded_r6_m0_r6_m1_dispatch_drafting_allowed": true,
+    "attempt003_root_creation_allowed_now": false,
+    "reason_root_creation_remains_blocked": "A NEW ATTEMPT003 RUNNER AND MATERIALIZATION DISPATCH MUST PASS STATIC VALIDATION AND BE COMMITTED FIRST",
+    "bridge_execution_allowed": false,
+    "dataset_load_allowed": false,
+    "training_allowed": false,
+    "evaluation_allowed": false,
+    "test_access_allowed": false,
+    "benchmark_admission_allowed": false
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

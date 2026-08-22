@@ -1,0 +1,377 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r6-c1r2-attempt003-environment-materialization-packet-1.0",
+  "created_at": "2026-08-23",
+  "stage_id": "R6-C1R2",
+  "packet_id": "R6-C1R2-ATTEMPT003-ENVIRONMENT-MATERIALIZATION-PACKET",
+  "proposal_only": true,
+  "execution_performed": false,
+  "execution_authorized": false,
+  "attempt": "attempt-003",
+  "roots": {
+    "repository": "E:\\UIT\\cv\\backend",
+    "attempt_root": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003",
+    "runtime": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003\\runtime",
+    "runtime_python": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003\\runtime\\python.exe",
+    "venv": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003\\venv",
+    "venv_python": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003\\venv\\Scripts\\python.exe",
+    "downloads": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003\\downloads",
+    "wheelhouse": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003\\wheelhouse",
+    "receipts": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003\\receipts",
+    "source_staging": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003\\source-staging\\recbole_v1_2_1_9a6f63d",
+    "ephemeral_build_source": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003\\temp\\recbole-build-source"
+  },
+  "root_policy": {
+    "exact_attempt_root_must_be_absent": true,
+    "repository_contained_root_rejected": true,
+    "all_existing_ancestors_must_be_non_reparse": true,
+    "attempt_001_and_attempt_002_are_immutable": true,
+    "cleanup_overwrite_retry_in_place_or_fallback_allowed": false,
+    "external_root_creation_by_packet_assembler": false
+  },
+  "cpython_source_lock": {
+    "strategy": "OFFICIAL_CPYTHON_NUGET_PACKAGE_SAFE_EXTRACTION_AS_INERT_ZIP_BYTES",
+    "package_id": "python",
+    "version": "3.11.9",
+    "package_url": "https://api.nuget.org/v3-flatcontainer/python/3.11.9/python.3.11.9.nupkg",
+    "registration_leaf_url": "https://api.nuget.org/v3/registration5-semver1/python/3.11.9.json",
+    "catalog_leaf_url": "https://api.nuget.org/v3/catalog0/data/2024.04.02.13.14.51/python.3.11.9.json",
+    "publisher": "Python Software Foundation",
+    "published": "2024-04-02T13:09:41.627Z",
+    "bytes": 17478009,
+    "md5": "0deb9c5d73bc95ca7b66dd72b0f8d8a2",
+    "sha256": "9283876d58c017e0e846f95b490da3bca0fc0a6ee1134b2870677cfb7eec3c67",
+    "sha512_base64": "41On79FZ75irnOEBGFSjDV13j1nZb8m7EbB87SmQs1XwMEhrBwf3mMc8RCAXOrERh2qW6tWYFxi2BMTN1xxVjQ==",
+    "acquisition_semantics": "retain registration, catalog, and nupkg separately; promote only after metadata plus four byte/hash locks; never invoke nupkg or a downloaded executable during acquisition/extraction"
+  },
+  "frozen_nupkg_inventory": {
+    "evidence_class": "CENTRAL_READ_ONLY_IN_MEMORY_REPLAY",
+    "inventory_format": "relative_forward_slash_path<TAB>bytes<TAB>sha256<LF>, ordinal path order",
+    "archive_entries": 1773,
+    "archive_file_entries": 1773,
+    "archive_explicit_directory_entries": 0,
+    "archive_uncompressed_bytes": 45644754,
+    "archive_inventory_sha256": "5b6fb34361dc7d120329363730678c13db857d6069d88d3505406526ba4ed63a",
+    "largest_member": {"path": "tools/python311.dll", "bytes": 5800216},
+    "exact_top_level_set": ["_rels", ".signature.p7s", "[Content_Types].xml", "build", "images", "package", "python.nuspec", "tools"],
+    "pip_prefix_file_count": 517,
+    "observed_unix_type_set": [0],
+    "case_insensitive_duplicate_names": 0,
+    "unsafe_names": 0,
+    "required_anchors": {
+      ".signature.p7s": {"bytes": 24461, "sha256": "4e82149e4ccf03cfbfe0ddb28d18522004d173c8220352cbb929107225718539"},
+      "python.nuspec": {"bytes": 828, "sha256": "1aaf1dcce32ca65f4283377e0956b17586dbc303607e528cdfa84c732b058ac0"},
+      "tools/Lib/site-packages/pip/__init__.py": {"bytes": 355, "sha256": "a009359c5a4b994552e4b9fb371bcda06527e55927e851908cf68d0dff10f299"},
+      "tools/Lib/venv/__init__.py": {"bytes": 25704, "sha256": "d8e4d35b527c30de646956b7cf06f44aeba089f78dc8e6c53cb593ad4d64630e"},
+      "tools/python.exe": {"bytes": 103192, "sha256": "5f7b89a612c9b8af1d6456cdfcd1dbe5ca630849e79aebced9bee9a6694952ec"},
+      "tools/python311.dll": {"bytes": 5800216, "sha256": "0817a2a657a24c0d5fbb60df56960f42fc66b3039d522ec952dab83e2d869364"}
+    },
+    "safe_scan_limits": {"maximum_entries": 2000, "maximum_member_uncompressed_bytes": 8388608, "maximum_total_uncompressed_bytes": 67108864},
+    "promoted_runtime": {"strip_prefix": "tools/", "exact_files": 1766, "exact_bytes": 45610489, "inventory_sha256": "62f76352a94a53dd4aeb406d00a14151b23cb544bd52fde5a899a7f62cdb33bd"},
+    "reject": ["traversal", "rooted_paths", "drive_qualified_paths", "backslashes", "alternate_data_stream_colons", "NUL", "symlink_or_unsupported_unix_types", "explicit_directory_entries", "reparse_points", "duplicate_names", "case_insensitive_collisions", "unexpected_inventory", "missing_anchor", "target_escape", "overwrite", "entry_limit", "member_limit", "aggregate_limit"]
+  },
+  "prohibited_runtime_mechanisms": {
+    "during_acquisition_and_extraction": ["CPython Windows installer", "Burn", "MSI", "msiexec", "ambient python", "ambient python3", "py launcher", "nuget.exe", "winget", "Microsoft Store", "uv python install", "Conda", "embeddable ZIP bootstrap", "any downloaded executable"],
+    "only_downloaded_executable_later_allowed": "hash-verified attempt-003/runtime/python.exe after E05 promotion and within or after E06 identity verification",
+    "ambient_interpreter_or_PATH_resolution_allowed": false
+  },
+  "network_allowlist": {
+    "bootstrap_exact_urls": ["https://api.nuget.org/v3/registration5-semver1/python/3.11.9.json", "https://api.nuget.org/v3/catalog0/data/2024.04.02.13.14.51/python.3.11.9.json", "https://api.nuget.org/v3-flatcontainer/python/3.11.9/python.3.11.9.nupkg"],
+    "bootstrap_hosts": ["api.nuget.org"],
+    "package_indexes": ["https://pypi.org/simple", "https://download.pytorch.org/whl/cpu"],
+    "package_hosts": ["pypi.org", "files.pythonhosted.org", "download.pytorch.org", "download-r2.pytorch.org"],
+    "redirects_for_bootstrap": 0,
+    "curl_required_first_options": ["--disable", "--proxy", ""],
+    "ambient_proxy_or_credentials_allowed": false,
+    "other_hosts_or_fallbacks_allowed": false
+  },
+  "exact_direct_requirements": ["pip==24.0", "setuptools==69.5.1", "wheel==0.43.0", "torch==2.2.2+cpu", "numpy==1.26.4", "scipy==1.11.4", "pandas==2.1.4", "scikit-learn==1.3.2", "PyYAML==6.0.2", "tqdm==4.66.5", "colorlog==4.7.2", "colorama==0.4.4", "texttable==1.7.0", "tensorboard==2.15.2", "ray==2.6.3", "thop==0.1.1.post2207130030", "tabulate==0.9.0", "plotly==5.18.0", "psutil==5.9.8", "recbole==1.2.1+local.9a6f63d"],
+  "direct_requirement_count": 20,
+  "recbole_source_lock": {
+    "revision": "9a6f63d8d4a5b989fe27955a833f813a6d86041e",
+    "git_tree": "08915121fea069a30f7e3e97a72e16e7e76d43c6",
+    "source_root": "E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\materialized_sources\\r5\\recbole_v1_2_1_9a6f63d",
+    "selected_manifest": "E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\rebaseline_v2\\wave_ac\\E4_R5M0_source_materialization\\selected_blob_manifest.json",
+    "selected_manifest_bytes": 102765,
+    "selected_manifest_sha256": "c5794b9daccdd01ca600c6ef7f890918825fbbb872efa67036c4565234e87016",
+    "selected_file_count": 265,
+    "selected_total_bytes": 1541044,
+    "staged_python_file_count": 150,
+    "staged_python_total_bytes": 1378341,
+    "pypi_recbole_editable_or_unpinned_vcs_allowed": false
+  },
+  "isolated_process_environment": {
+    "profile_id": "ATTEMPT003_NO_AMBIENT_PYTHON_OR_PIP_STATE",
+    "set": {"PYTHONNOUSERSITE": "1", "PYTHONPATH": "", "PYTHONHOME": "", "PIP_CONFIG_FILE": "NUL", "PIP_NO_CACHE_DIR": "1", "PIP_DISABLE_PIP_VERSION_CHECK": "1", "PIP_REQUIRE_VIRTUALENV": "0"},
+    "remove": ["HTTP_PROXY", "HTTPS_PROXY", "ALL_PROXY", "NO_PROXY", "PIP_INDEX_URL", "PIP_EXTRA_INDEX_URL", "PIP_TRUSTED_HOST", "VIRTUAL_ENV"],
+    "inherit_PATH_for_python_resolution": false,
+    "all_python_argv0_values_are_exact_attempt_paths": true,
+    "pip_commands_require_isolated": true,
+    "user_site_cache_and_ambient_config_allowed": false
+  },
+  "ambient_python_sentinels": {
+    "apply_before_and_after_every_environment_command": true,
+    "registry_keys": ["HKLM\\SOFTWARE\\Python\\PythonCore", "HKLM\\SOFTWARE\\WOW6432Node\\Python\\PythonCore", "HKCU\\SOFTWARE\\Python\\PythonCore", "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall", "HKLM\\SOFTWARE\\WOW6432Node\\Microsoft\\Windows\\CurrentVersion\\Uninstall", "HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall"],
+    "registry_filter": "Python or CPython values/subkeys only; canonical ordinal key/value/type/data serialization hashed with SHA-256",
+    "filesystem_paths": ["C:\\Program Files\\Python311", "C:\\Program Files (x86)\\Python311", "C:\\Users\\ACER\\AppData\\Local\\Programs\\Python\\Python311", "C:\\Users\\ACER\\AppData\\Local\\Programs\\Python\\Launcher", "C:\\Windows\\py.exe", "C:\\Windows\\System32\\py.exe"],
+    "filesystem_snapshot": "existence, type, reparse state, relative ordinal inventory, byte counts, last-write ticks, and SHA-256 for regular files",
+    "snapshot_storage": "append-only journal inside attempt-003 after E00; hold E00 pre-snapshot in memory and persist immediately after root creation",
+    "any_change": "FAIL_CLOSED_EXTERNAL_MUTATION_NO_ROLLBACK"
+  },
+  "runner_contract": {
+    "profile_id": "ENVIRONMENT_STRICT",
+    "literal_argv_without_shell_reconstruction": true,
+    "sequential_only": true,
+    "catch_process_launch_OSError_and_FileNotFoundError": true,
+    "launch_failure_record": ["command_id", "argv_sha256", "exception_type", "winerror_or_errno", "message", "utc_time", "pre_sentinel_hashes"],
+    "append_only_journal_after_every_command_or_launch_failure": true,
+    "journal_fsync_before_advance": true,
+    "required_outputs_and_postconditions_before_advance": true,
+    "declared_command_and_lane_write_set_enforced": true,
+    "write_detection": "compare repository tree, attempt-root inventory, and ambient sentinels before/after every command; any write outside command write_set fails closed",
+    "repository_mutation_forbidden": true,
+    "ambient_sentinel_before_after_each_command": true,
+    "no_automatic_retry_cleanup_rollback_or_fallback": true,
+    "unexpected_network_host_timeout_memory_disk_missing_output_or_nonzero_exit_fails_closed": true
+  },
+  "commands": [
+    {
+      "id": "E00_CREATE_EXTERNAL_IMMUTABLE_ATTEMPT",
+      "purpose": "Create only the absent attempt-003 environment layout after external-root and reparse checks.",
+      "argv": ["C:\\Users\\ACER\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\powershell\\pwsh.exe", "-NoLogo", "-NoProfile", "-NonInteractive", "-ExecutionPolicy", "Bypass", "-Command", "$ErrorActionPreference='Stop';$repo=[IO.Path]::GetFullPath('E:\\UIT\\cv\\backend');$root=[IO.Path]::GetFullPath('E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003');if($root.StartsWith($repo+[IO.Path]::DirectorySeparatorChar,[StringComparison]::OrdinalIgnoreCase)){throw 'WRITE_ROOT_INSIDE_REPOSITORY'};if(Test-Path -LiteralPath $root){throw 'ATTEMPT_ROOT_ALREADY_EXISTS'};$probe=Split-Path -Parent $root;while($probe-and(Test-Path -LiteralPath $probe)){if(((Get-Item -LiteralPath $probe -Force).Attributes-band[IO.FileAttributes]::ReparsePoint)-ne0){throw ('REPARSE_PARENT:'+$probe)};$next=Split-Path -Parent $probe;if($next-eq$probe){break};$probe=$next};@('downloads','provenance','receipts','receipts\\http','extract-staging','wheelhouse','local-wheel','source-staging','temp')|ForEach-Object{[IO.Directory]::CreateDirectory((Join-Path $root $_))|Out-Null}"],
+      "environment_profile": "ATTEMPT003_NO_AMBIENT_PYTHON_OR_PIP_STATE", "network": false, "timeout_seconds": 60,
+      "write_set": ["downloads/", "provenance/", "receipts/", "receipts/http/", "extract-staging/", "wheelhouse/", "local-wheel/", "source-staging/", "temp/"],
+      "required_outputs": ["attempt root and nine declared ordinary directories"],
+      "postconditions": ["attempt root was absent", "root is outside repository", "all ancestors and created directories are non-reparse", "runtime and venv remain absent", "pre-E00 sentinel snapshot persisted", "no other path changed"]
+    },
+    {
+      "id": "E01_FETCH_NUGET_REGISTRATION_METADATA",
+      "purpose": "Fetch exact NuGet registration leaf as retained provenance.",
+      "argv": ["curl.exe", "--disable", "--proxy", "", "--fail", "--silent", "--show-error", "--proto", "=https", "--proto-redir", "=https", "--location", "--max-redirs", "0", "--connect-timeout", "30", "--max-time", "120", "--dump-header", "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003\\receipts\\http\\nuget-registration.headers.txt", "--output", "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003\\provenance\\python.3.11.9.registration.json.partial", "https://api.nuget.org/v3/registration5-semver1/python/3.11.9.json"],
+      "environment_profile": "ATTEMPT003_NO_AMBIENT_PYTHON_OR_PIP_STATE", "network": true, "timeout_seconds": 120,
+      "write_set": ["receipts/http/nuget-registration.headers.txt", "provenance/python.3.11.9.registration.json.partial"], "required_outputs": ["registration headers", "registration partial bytes"],
+      "postconditions": ["HTTP 200", "zero redirects", "exact requested/final URL", "only api.nuget.org contacted", "no downloaded executable invoked"]
+    },
+    {
+      "id": "E02_FETCH_NUGET_CATALOG_METADATA",
+      "purpose": "Fetch exact NuGet catalog leaf as retained provenance.",
+      "argv": ["curl.exe", "--disable", "--proxy", "", "--fail", "--silent", "--show-error", "--proto", "=https", "--proto-redir", "=https", "--location", "--max-redirs", "0", "--connect-timeout", "30", "--max-time", "120", "--dump-header", "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003\\receipts\\http\\nuget-catalog.headers.txt", "--output", "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003\\provenance\\python.3.11.9.catalog.json.partial", "https://api.nuget.org/v3/catalog0/data/2024.04.02.13.14.51/python.3.11.9.json"],
+      "environment_profile": "ATTEMPT003_NO_AMBIENT_PYTHON_OR_PIP_STATE", "network": true, "timeout_seconds": 120,
+      "write_set": ["receipts/http/nuget-catalog.headers.txt", "provenance/python.3.11.9.catalog.json.partial"], "required_outputs": ["catalog headers", "catalog partial bytes"],
+      "postconditions": ["HTTP 200", "zero redirects", "exact requested/final URL", "only api.nuget.org contacted", "no downloaded executable invoked"]
+    },
+    {
+      "id": "E03_FETCH_OFFICIAL_CPYTHON_NUPKG_BYTES",
+      "purpose": "Fetch exact official nupkg as inert partial ZIP bytes.",
+      "argv": ["curl.exe", "--disable", "--proxy", "", "--fail", "--silent", "--show-error", "--proto", "=https", "--proto-redir", "=https", "--location", "--max-redirs", "0", "--connect-timeout", "30", "--max-time", "600", "--dump-header", "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003\\receipts\\http\\python-nupkg.headers.txt", "--output", "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003\\downloads\\python.3.11.9.nupkg.partial", "https://api.nuget.org/v3-flatcontainer/python/3.11.9/python.3.11.9.nupkg"],
+      "environment_profile": "ATTEMPT003_NO_AMBIENT_PYTHON_OR_PIP_STATE", "network": true, "timeout_seconds": 600,
+      "write_set": ["receipts/http/python-nupkg.headers.txt", "downloads/python.3.11.9.nupkg.partial"], "required_outputs": ["nupkg headers", "nupkg partial bytes"],
+      "postconditions": ["HTTP 200", "zero redirects", "exact requested/final URL", "only api.nuget.org contacted", "partial bytes do not exceed 17478009", "nupkg not invoked"]
+    },
+    {
+      "id": "E04_VERIFY_METADATA_HASHES_AND_PROMOTE_NUPKG",
+      "purpose": "Require registration/catalog identity and package metadata, independently verify size plus MD5/SHA-256/SHA-512, then promote retained bytes.",
+      "argv": ["C:\\Users\\ACER\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\powershell\\pwsh.exe", "-NoLogo", "-NoProfile", "-NonInteractive", "-ExecutionPolicy", "Bypass", "-Command", "$ErrorActionPreference='Stop';$root='E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003';$rp=Join-Path $root 'provenance\\python.3.11.9.registration.json.partial';$cp=Join-Path $root 'provenance\\python.3.11.9.catalog.json.partial';$np=Join-Path $root 'downloads\\python.3.11.9.nupkg.partial';$reg=Get-Content -Raw $rp|ConvertFrom-Json -Depth 100;$cat=Get-Content -Raw $cp|ConvertFrom-Json -Depth 100;$ce=$reg.catalogEntry;if($ce-is[string]){throw 'REGISTRATION_CATALOG_ENTRY_NOT_INLINE'};$url='https://api.nuget.org/v3-flatcontainer/python/3.11.9/python.3.11.9.nupkg';if($reg.packageContent-cne$url-or$ce.id-cne'python'-or$ce.version-cne'3.11.9'-or$ce.authors-cne'Python Software Foundation'-or([DateTimeOffset]$ce.published).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ss.fffZ')-cne'2024-04-02T13:09:41.627Z'){throw 'REGISTRATION_IDENTITY'};if($cat.id-cne'python'-or$cat.version-cne'3.11.9'-or$cat.authors-cne'Python Software Foundation'-or[int64]$cat.packageSize-ne17478009-or$cat.packageHashAlgorithm-cne'SHA512'-or$cat.packageHash-cne'41On79FZ75irnOEBGFSjDV13j1nZb8m7EbB87SmQs1XwMEhrBwf3mMc8RCAXOrERh2qW6tWYFxi2BMTN1xxVjQ=='){throw 'CATALOG_IDENTITY'};if((Get-Item $np).Length-ne17478009){throw 'SIZE'};$md5=(Get-FileHash $np -Algorithm MD5).Hash.ToLowerInvariant();$sha256=(Get-FileHash $np -Algorithm SHA256).Hash.ToLowerInvariant();$sha512=[Convert]::ToBase64String([Security.Cryptography.SHA512]::HashData([IO.File]::ReadAllBytes($np)));if($md5-cne'0deb9c5d73bc95ca7b66dd72b0f8d8a2'-or$sha256-cne'9283876d58c017e0e846f95b490da3bca0fc0a6ee1134b2870677cfb7eec3c67'-or$sha512-cne'41On79FZ75irnOEBGFSjDV13j1nZb8m7EbB87SmQs1XwMEhrBwf3mMc8RCAXOrERh2qW6tWYFxi2BMTN1xxVjQ=='){throw 'HASH'};Move-Item $rp (Join-Path $root 'provenance\\python.3.11.9.registration.json');Move-Item $cp (Join-Path $root 'provenance\\python.3.11.9.catalog.json');Move-Item $np (Join-Path $root 'downloads\\python.3.11.9.nupkg');$r=[ordered]@{schema_version='cpython-nupkg-acquisition-receipt-1.0';attempt='attempt-003';id='python';version='3.11.9';publisher='Python Software Foundation';published='2024-04-02T13:09:41.627Z';package_url=$url;bytes=17478009;md5=$md5;sha256=$sha256;sha512_base64=$sha512;downloaded_executable_invoked=$false};[IO.File]::WriteAllText((Join-Path $root 'receipts\\nupkg-acquisition.json'),(($r|ConvertTo-Json -Depth 8)+[char]10),[Text.UTF8Encoding]::new($false))"],
+      "environment_profile": "ATTEMPT003_NO_AMBIENT_PYTHON_OR_PIP_STATE", "network": false, "timeout_seconds": 180,
+      "write_set": ["provenance/python.3.11.9.registration.json", "provenance/python.3.11.9.catalog.json", "downloads/python.3.11.9.nupkg", "receipts/nupkg-acquisition.json"],
+      "required_outputs": ["promoted registration", "promoted catalog", "promoted nupkg", "acquisition receipt"],
+      "postconditions": ["metadata ID/version/author/published/package URL/size/SHA-512 exact", "package size/MD5/SHA-256/SHA-512 exact", "partial files absent", "no downloaded executable invoked"]
+    },
+    {
+      "id": "E05_SAFE_SCAN_EXTRACT_AND_PROMOTE_RUNTIME",
+      "purpose": "Open nupkg only as ZIP data; scan/hash all entries before extraction; verify exact inventory; extract create-new; preserve anchors; promote only tools.",
+      "argv": ["C:\\Users\\ACER\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\powershell\\pwsh.exe", "-NoLogo", "-NoProfile", "-NonInteractive", "-ExecutionPolicy", "Bypass", "-Command", "$ErrorActionPreference='Stop';Add-Type -AssemblyName System.IO.Compression.FileSystem;$root='E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003';$pkg=Join-Path $root 'downloads\\python.3.11.9.nupkg';$stage=Join-Path $root 'extract-staging';$runtime=Join-Path $root 'runtime';if(Test-Path $runtime){throw 'RUNTIME_EXISTS'};if((Get-ChildItem $stage -Force|Measure-Object).Count-ne0){throw 'STAGE_NOT_EMPTY'};$required=[ordered]@{'.signature.p7s'=@(24461,'4e82149e4ccf03cfbfe0ddb28d18522004d173c8220352cbb929107225718539');'python.nuspec'=@(828,'1aaf1dcce32ca65f4283377e0956b17586dbc303607e528cdfa84c732b058ac0');'tools/Lib/site-packages/pip/__init__.py'=@(355,'a009359c5a4b994552e4b9fb371bcda06527e55927e851908cf68d0dff10f299');'tools/Lib/venv/__init__.py'=@(25704,'d8e4d35b527c30de646956b7cf06f44aeba089f78dc8e6c53cb593ad4d64630e');'tools/python.exe'=@(103192,'5f7b89a612c9b8af1d6456cdfcd1dbe5ca630849e79aebced9bee9a6694952ec');'tools/python311.dll'=@(5800216,'0817a2a657a24c0d5fbb60df56960f42fc66b3039d522ec952dab83e2d869364')};$seen=[Collections.Generic.HashSet[string]]::new([StringComparer]::Ordinal);$seenCI=[Collections.Generic.HashSet[string]]::new([StringComparer]::OrdinalIgnoreCase);$top=[Collections.Generic.HashSet[string]]::new([StringComparer]::Ordinal);$lines=[Collections.Generic.List[string]]::new();$zip=[IO.Compression.ZipFile]::OpenRead($pkg);try{$total=[int64]0;$max=[int64]0;$maxName='';$pip=0;foreach($e in $zip.Entries){$n=[string]$e.FullName;if([string]::IsNullOrWhiteSpace($n)-or$n.Contains('\\')-or$n.Contains([char]0)-or$n.StartsWith('/')-or$n-match'^[A-Za-z]:'-or$n.Contains(':')-or$n.EndsWith('/')){throw('UNSAFE_OR_DIRECTORY:'+$n)};$seg=$n.Split('/');if($seg-contains'.'-or$seg-contains'..'){throw('TRAVERSAL:'+$n)};$ut=(($e.ExternalAttributes-shr 16)-band0xF000);if($ut-ne0){throw('UNIX_TYPE:'+$n)};if(-not$seen.Add([string]$n)-or-not$seenCI.Add([string]$n)){throw('DUPLICATE_OR_CASE:'+$n)};[void]$top.Add([string]$seg[0]);if($e.Length-gt8388608){throw('MEMBER_LIMIT:'+$n)};$total+=[int64]$e.Length;if($total-gt67108864){throw'TOTAL_LIMIT'};if($e.Length-gt$max){$max=$e.Length;$maxName=$n};if($n.StartsWith('tools/Lib/site-packages/pip/',[StringComparison]::Ordinal)){$pip++};$s=$e.Open();try{$h=[Security.Cryptography.SHA256]::Create();try{$digest=([BitConverter]::ToString($h.ComputeHash($s))).Replace('-','').ToLowerInvariant()}finally{$h.Dispose()}}finally{$s.Dispose()};$lines.Add($n+[char]9+[string]$e.Length+[char]9+$digest);if($required.Contains($n)){if([int64]$required[$n][0]-ne$e.Length-or[string]$required[$n][1]-cne$digest){throw('ANCHOR:'+$n)}}};if($seen.Count-ne1773-or$total-ne45644754-or$max-ne5800216-or$maxName-cne'tools/python311.dll'-or$pip-ne517){throw'ARCHIVE_FACTS'};$expectedTop=[Collections.Generic.HashSet[string]]::new([StringComparer]::Ordinal);foreach($x in @('_rels','.signature.p7s','[Content_Types].xml','build','images','package','python.nuspec','tools')){[void]$expectedTop.Add([string]$x)};if(-not$top.SetEquals($expectedTop)){throw'TOP_LEVEL'};foreach($k in $required.Keys){if(-not$seen.Contains([string]$k)){throw('MISSING_ANCHOR:'+$k)}};$arr=$lines.ToArray();[Array]::Sort($arr,[StringComparer]::Ordinal);$inventory=[string]::Join([char]10,$arr)+[char]10;$invHash=([BitConverter]::ToString([Security.Cryptography.SHA256]::HashData([Text.Encoding]::UTF8.GetBytes($inventory)))).Replace('-','').ToLowerInvariant();if($invHash-cne'5b6fb34361dc7d120329363730678c13db857d6069d88d3505406526ba4ed63a'){throw'ARCHIVE_INVENTORY'};$stageFull=[IO.Path]::GetFullPath($stage).TrimEnd('\\')+'\\';foreach($e in $zip.Entries){$target=[IO.Path]::GetFullPath((Join-Path $stage ($e.FullName.Replace('/','\\'))));if(-not$target.StartsWith($stageFull,[StringComparison]::OrdinalIgnoreCase)){throw'TARGET_ESCAPE'};[IO.Directory]::CreateDirectory((Split-Path -Parent $target))|Out-Null;$src=$e.Open();try{$dst=[IO.File]::Open($target,[IO.FileMode]::CreateNew,[IO.FileAccess]::Write,[IO.FileShare]::None);try{$src.CopyTo($dst)}finally{$dst.Dispose()}}finally{$src.Dispose()}}}finally{$zip.Dispose()};foreach($x in Get-ChildItem $stage -Force -Recurse){if(($x.Attributes-band[IO.FileAttributes]::ReparsePoint)-ne0){throw('REPARSE:'+$x.FullName)}};[IO.File]::WriteAllText((Join-Path $root 'receipts\\nupkg-complete-inventory.tsv'),$inventory,[Text.UTF8Encoding]::new($false));[IO.File]::Copy((Join-Path $stage '.signature.p7s'),(Join-Path $root 'provenance\\.signature.p7s'),$false);[IO.File]::Copy((Join-Path $stage 'python.nuspec'),(Join-Path $root 'provenance\\python.nuspec'),$false);$tools=Join-Path $stage 'tools';$rt=[Collections.Generic.List[string]]::new();$rtBytes=[int64]0;foreach($f in Get-ChildItem $tools -File -Recurse -Force){$rel=[IO.Path]::GetRelativePath($tools,$f.FullName).Replace('\\','/');$rtBytes+=[int64]$f.Length;$rt.Add($rel+[char]9+[string]$f.Length+[char]9+(Get-FileHash $f.FullName -Algorithm SHA256).Hash.ToLowerInvariant())};$rtArr=$rt.ToArray();[Array]::Sort($rtArr,[StringComparer]::Ordinal);$rtInv=[string]::Join([char]10,$rtArr)+[char]10;$rtHash=([BitConverter]::ToString([Security.Cryptography.SHA256]::HashData([Text.Encoding]::UTF8.GetBytes($rtInv)))).Replace('-','').ToLowerInvariant();if($rtArr.Count-ne1766-or$rtBytes-ne45610489-or$rtHash-cne'62f76352a94a53dd4aeb406d00a14151b23cb544bd52fde5a899a7f62cdb33bd'){throw'RUNTIME_INVENTORY'};Move-Item $tools $runtime;[IO.File]::WriteAllText((Join-Path $root 'receipts\\runtime-inventory.tsv'),$rtInv,[Text.UTF8Encoding]::new($false));$r=[ordered]@{schema_version='cpython-nupkg-safe-extraction-receipt-1.0';attempt='attempt-003';archive_entries=1773;archive_files=1773;explicit_directories=0;archive_uncompressed_bytes=45644754;archive_inventory_sha256=$invHash;largest_member=$maxName;largest_member_bytes=$max;pip_prefix_files=$pip;unix_type_set=@(0);unsafe_names=0;case_collisions=0;runtime_files=$rtArr.Count;runtime_bytes=$rtBytes;runtime_inventory_sha256=$rtHash;strip_prefix='tools/';downloaded_executable_invoked=$false};[IO.File]::WriteAllText((Join-Path $root 'receipts\\nupkg-safe-extraction.json'),(($r|ConvertTo-Json -Depth 8)+[char]10),[Text.UTF8Encoding]::new($false))"],
+      "environment_profile": "ATTEMPT003_NO_AMBIENT_PYTHON_OR_PIP_STATE", "network": false, "timeout_seconds": 1200,
+      "write_set": ["extract-staging/**", "runtime/**", "provenance/.signature.p7s", "provenance/python.nuspec", "receipts/nupkg-complete-inventory.tsv", "receipts/runtime-inventory.tsv", "receipts/nupkg-safe-extraction.json"],
+      "required_outputs": ["runtime exact 1766 files", "preserved nuspec/signature", "complete archive inventory", "runtime inventory", "safe-extraction receipt"],
+      "postconditions": ["scan and exact archive inventory pass before extraction", "all safety rejection classes pass", "anchor sizes/hashes exact", "runtime exact 1766 files/45610489 bytes/frozen hash", "no downloaded executable invoked during acquisition/extraction"]
+    },
+    {
+      "id": "E06_VERIFY_EXACT_PROMOTED_RUNTIME_IDENTITY",
+      "purpose": "First allowed execution of promoted python.exe; verify hash, exact executable/prefix identity, CPython 3.11.9 AMD64 tag, pip and venv.",
+      "argv": ["E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003\\runtime\\python.exe", "-I", "-B", "-c", "import hashlib,importlib.util,json,pathlib,platform,struct,sys,sysconfig;root=pathlib.Path(r'E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003');runtime=(root/'runtime').resolve();exe=(runtime/'python.exe').resolve();c={'implementation':platform.python_implementation(),'version':platform.python_version(),'bits':struct.calcsize('P')*8,'platform':sys.platform,'machine':platform.machine(),'sys_executable':str(pathlib.Path(sys.executable).resolve()),'sys_prefix':str(pathlib.Path(sys.prefix).resolve()),'sys_base_prefix':str(pathlib.Path(sys.base_prefix).resolve()),'soabi':sysconfig.get_config_var('SOABI'),'pip':importlib.util.find_spec('pip') is not None,'venv':importlib.util.find_spec('venv') is not None,'python_sha256':hashlib.sha256(exe.read_bytes()).hexdigest()};ok=c['implementation']=='CPython' and c['version']=='3.11.9' and c['bits']==64 and c['platform']=='win32' and c['machine'].upper() in ('AMD64','X86_64') and pathlib.Path(c['sys_executable'])==exe and pathlib.Path(c['sys_prefix'])==runtime and pathlib.Path(c['sys_base_prefix'])==runtime and str(c['soabi']).startswith('cp311') and c['pip'] and c['venv'] and c['python_sha256']=='5f7b89a612c9b8af1d6456cdfcd1dbe5ca630849e79aebced9bee9a6694952ec';(root/'receipts'/'runtime-identity.json').write_text(json.dumps({'schema_version':'cpython-runtime-identity-1.0','attempt':'attempt-003','required_binary_tag':'cp311-cp311-win_amd64','checks':c,'pass':ok},indent=2,sort_keys=True)+'\\n',encoding='utf-8');raise SystemExit(0 if ok else 71)"],
+      "environment_profile": "ATTEMPT003_NO_AMBIENT_PYTHON_OR_PIP_STATE", "network": false, "timeout_seconds": 120,
+      "write_set": ["receipts/runtime-identity.json"], "required_outputs": ["receipts/runtime-identity.json"],
+      "postconditions": ["python anchor hash exact", "CPython 3.11.9 64-bit win32 AMD64 cp311 exact", "sys.executable/prefix/base_prefix exact attempt runtime", "pip and venv available"]
+    },
+    {
+      "id": "E07_VERIFY_FROZEN_SOURCE_MANIFEST",
+      "purpose": "Replay frozen selected RecBole source manifest and every file before staging.",
+      "argv": ["C:\\Users\\ACER\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\powershell\\pwsh.exe", "-NoLogo", "-NoProfile", "-NonInteractive", "-ExecutionPolicy", "Bypass", "-Command", "$ErrorActionPreference='Stop';$manifest='E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\rebaseline_v2\\wave_ac\\E4_R5M0_source_materialization\\selected_blob_manifest.json';$source='E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\materialized_sources\\r5\\recbole_v1_2_1_9a6f63d';if((Get-Item $manifest).Length-ne102765-or(Get-FileHash $manifest -Algorithm SHA256).Hash.ToLowerInvariant()-cne'c5794b9daccdd01ca600c6ef7f890918825fbbb872efa67036c4565234e87016'){throw'MANIFEST_LOCK'};$m=Get-Content -Raw $manifest|ConvertFrom-Json -Depth 100;$c=@($m.candidates|Where-Object candidate_id -eq 'R5-CAND-RECBOLE-BPR-ML100K-001');if($c.Count-ne1-or$c[0].file_count-ne265-or$c[0].total_size_bytes-ne1541044){throw'CANDIDATE_LOCK'};foreach($row in $c[0].files){$p=Join-Path $source ($row.path.Replace('/','\\'));if(-not(Test-Path $p -PathType Leaf)-or(Get-Item $p).Length-ne$row.size_bytes-or(Get-FileHash $p -Algorithm SHA256).Hash.ToLowerInvariant()-cne$row.sha256){throw('SOURCE_FILE:'+$row.path)}};$r=[ordered]@{schema_version='recbole-source-manifest-replay-1.0';revision='9a6f63d8d4a5b989fe27955a833f813a6d86041e';tree='08915121fea069a30f7e3e97a72e16e7e76d43c6';files=265;bytes=1541044;verdict='PASS'};[IO.File]::WriteAllText('E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003\\receipts\\source-manifest-replay.json',(($r|ConvertTo-Json -Depth 6)+[char]10),[Text.UTF8Encoding]::new($false))"],
+      "environment_profile": "ATTEMPT003_NO_AMBIENT_PYTHON_OR_PIP_STATE", "network": false, "timeout_seconds": 300,
+      "write_set": ["receipts/source-manifest-replay.json"], "required_outputs": ["receipts/source-manifest-replay.json"],
+      "postconditions": ["manifest lock exact", "265 files/1541044 bytes exact", "every source size/hash exact", "repository source unchanged"]
+    },
+    {
+      "id": "E08_CREATE_ISOLATED_VENV",
+      "purpose": "Create venv only with verified attempt-003 runtime.",
+      "argv": ["E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003\\runtime\\python.exe", "-I", "-B", "-m", "venv", "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003\\venv"],
+      "environment_profile": "ATTEMPT003_NO_AMBIENT_PYTHON_OR_PIP_STATE", "network": false, "timeout_seconds": 300,
+      "write_set": ["venv/**"], "required_outputs": ["venv/Scripts/python.exe", "venv/pyvenv.cfg", "venv/Lib/site-packages/**"],
+      "postconditions": ["venv previously absent", "only exact runtime launched", "all venv paths under attempt-003", "no ambient interpreter or launcher"]
+    },
+    {
+      "id": "E09_VERIFY_VENV_AND_BUNDLED_PIP",
+      "purpose": "Verify venv executable/prefix/base-prefix, pyvenv home, pip 24.0, and package/build roots.",
+      "argv": ["E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003\\venv\\Scripts\\python.exe", "-I", "-B", "-c", "import json,pathlib,pip,sys;root=pathlib.Path(r'E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003').resolve();venv=(root/'venv').resolve();runtime=(root/'runtime').resolve();cfg=(venv/'pyvenv.cfg').read_text(encoding='utf-8');c={'exe':pathlib.Path(sys.executable).resolve()==venv/'Scripts'/'python.exe','prefix':pathlib.Path(sys.prefix).resolve()==venv,'base_prefix':pathlib.Path(sys.base_prefix).resolve()==runtime,'pip':pip.__version__=='24.0','home':str(runtime).lower() in cfg.lower(),'paths':all(root in p.resolve(strict=False).parents or p.resolve(strict=False)==root for p in [venv,root/'wheelhouse',root/'source-staging',root/'temp',root/'receipts'])};(root/'receipts'/'venv-identity.json').write_text(json.dumps({'schema_version':'venv-identity-1.0','checks':c,'pass':all(c.values())},indent=2,sort_keys=True)+'\\n',encoding='utf-8');raise SystemExit(0 if all(c.values()) else 72)"],
+      "environment_profile": "ATTEMPT003_NO_AMBIENT_PYTHON_OR_PIP_STATE", "network": false, "timeout_seconds": 120,
+      "write_set": ["receipts/venv-identity.json"], "required_outputs": ["receipts/venv-identity.json"],
+      "postconditions": ["venv executable/prefix exact", "base prefix and pyvenv home exact runtime", "pip 24.0", "all roots under attempt-003"]
+    },
+    {
+      "id": "E10_WRITE_LITERAL_PIN_FILES",
+      "purpose": "Write exact direct pins and PyPI-only pins as deterministic UTF-8 LF.",
+      "argv": ["C:\\Users\\ACER\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\powershell\\pwsh.exe", "-NoLogo", "-NoProfile", "-NonInteractive", "-ExecutionPolicy", "Bypass", "-Command", "$ErrorActionPreference='Stop';$r='E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003';$all=@('pip==24.0','setuptools==69.5.1','wheel==0.43.0','torch==2.2.2+cpu','numpy==1.26.4','scipy==1.11.4','pandas==2.1.4','scikit-learn==1.3.2','PyYAML==6.0.2','tqdm==4.66.5','colorlog==4.7.2','colorama==0.4.4','texttable==1.7.0','tensorboard==2.15.2','ray==2.6.3','thop==0.1.1.post2207130030','tabulate==0.9.0','plotly==5.18.0','psutil==5.9.8','recbole==1.2.1+local.9a6f63d');$pypi=@($all|Where-Object{$_-notlike'recbole*'-and$_-notlike'torch*'});[IO.File]::WriteAllText((Join-Path $r 'receipts\\direct-requirements.txt'),([string]::Join([char]10,$all)+[char]10),[Text.UTF8Encoding]::new($false));[IO.File]::WriteAllText((Join-Path $r 'receipts\\pypi-direct-requirements.txt'),([string]::Join([char]10,$pypi)+[char]10),[Text.UTF8Encoding]::new($false))"],
+      "environment_profile": "ATTEMPT003_NO_AMBIENT_PYTHON_OR_PIP_STATE", "network": false, "timeout_seconds": 60,
+      "write_set": ["receipts/direct-requirements.txt", "receipts/pypi-direct-requirements.txt"], "required_outputs": ["two exact pin files"],
+      "postconditions": ["20 pins exact", "RecBole local-only", "torch reserved for CPU index", "UTF-8 no BOM LF"]
+    },
+    {
+      "id": "E11_DOWNLOAD_TORCH_CPU_WHEEL",
+      "purpose": "Download pinned torch CPU wheel closure from explicit CPU index.",
+      "argv": ["E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003\\venv\\Scripts\\python.exe", "-I", "-B", "-m", "pip", "--isolated", "download", "--only-binary=:all:", "--dest", "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003\\wheelhouse", "--index-url", "https://download.pytorch.org/whl/cpu", "torch==2.2.2+cpu"],
+      "environment_profile": "ATTEMPT003_NO_AMBIENT_PYTHON_OR_PIP_STATE", "network": true, "timeout_seconds": 1800,
+      "write_set": ["wheelhouse/*.whl"], "required_outputs": ["torch 2.2.2+cpu wheel closure"],
+      "postconditions": ["wheel-only", "CPU index/allowlisted hosts", "no GPU artifact", "no cache/user-site/ambient config"]
+    },
+    {
+      "id": "E12_DOWNLOAD_PINNED_PYPI_WHEELS",
+      "purpose": "Download pinned non-torch third-party wheel closure from explicit PyPI index.",
+      "argv": ["E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003\\venv\\Scripts\\python.exe", "-I", "-B", "-m", "pip", "--isolated", "download", "--only-binary=:all:", "--dest", "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003\\wheelhouse", "--index-url", "https://pypi.org/simple", "-r", "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003\\receipts\\pypi-direct-requirements.txt"],
+      "environment_profile": "ATTEMPT003_NO_AMBIENT_PYTHON_OR_PIP_STATE", "network": true, "timeout_seconds": 3600,
+      "write_set": ["wheelhouse/*.whl"], "required_outputs": ["complete pinned third-party wheel closure"],
+      "postconditions": ["wheel-only", "PyPI/allowlisted hosts", "no RecBole distribution", "no sdist/cache/ambient config"]
+    },
+    {
+      "id": "E13_ASSERT_WHEEL_ONLY_CPU_CLOSURE",
+      "purpose": "Reject non-wheel, GPU, RecBole, link, reparse, or missing torch CPU artifacts.",
+      "argv": ["E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003\\venv\\Scripts\\python.exe", "-I", "-B", "-c", "import json,pathlib;root=pathlib.Path(r'E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003');files=sorted((root/'wheelhouse').iterdir(),key=lambda p:p.name);names=[p.name.lower() for p in files];assert files and all(p.is_file() and not p.is_symlink() and p.suffix=='.whl' for p in files);assert not any(x in n for n in names for x in ('cu11','cu12','cuda','rocm','recbole'));assert any(n.startswith('torch-2.2.2+cpu-') for n in names);(root/'receipts'/'wheel-closure-prehash.json').write_text(json.dumps({'schema_version':'wheel-closure-prehash-1.0','files':[p.name for p in files],'wheel_only':True,'cpu_only':True,'recbole_absent':True},indent=2,sort_keys=True)+'\\n',encoding='utf-8')"],
+      "environment_profile": "ATTEMPT003_NO_AMBIENT_PYTHON_OR_PIP_STATE", "network": false, "timeout_seconds": 180,
+      "write_set": ["receipts/wheel-closure-prehash.json"], "required_outputs": ["wheel closure receipt"],
+      "postconditions": ["wheel-only CPU closure", "torch CPU present", "RecBole/GPU absent", "ordinary files only"]
+    },
+    {
+      "id": "E14_CAPTURE_WHEEL_HASHES_AND_HASHED_REQUIREMENTS",
+      "purpose": "Hash every wheel and derive deterministic hash-locked offline requirements from METADATA.",
+      "argv": ["E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003\\venv\\Scripts\\python.exe", "-I", "-B", "-c", "import email,hashlib,json,pathlib,re,zipfile;root=pathlib.Path(r'E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003');rows=[];req=[];seen=set();exec(\"for p in sorted((root/'wheelhouse').glob('*.whl'),key=lambda x:x.name):\\n b=p.read_bytes();h=hashlib.sha256(b).hexdigest()\\n with zipfile.ZipFile(p) as z:\\n  meta=[n for n in z.namelist() if n.endswith('.dist-info/METADATA')];assert len(meta)==1;m=email.message_from_bytes(z.read(meta[0]));name=m['Name'];version=m['Version']\\n key=re.sub(r'[-_.]+','-',name).lower();assert key not in seen;seen.add(key);rows.append({'file':p.name,'bytes':len(b),'sha256':h,'name':name,'version':version});req.append(f'{name}=={version} --hash=sha256:{h}')\");(root/'receipts'/'wheelhouse-manifest.json').write_text(json.dumps({'schema_version':'wheelhouse-manifest-1.0','wheels':rows},indent=2,sort_keys=True)+'\\n',encoding='utf-8');(root/'receipts'/'hashed-third-party-requirements.txt').write_text('\\n'.join(sorted(req,key=str.casefold))+'\\n',encoding='utf-8')"],
+      "environment_profile": "ATTEMPT003_NO_AMBIENT_PYTHON_OR_PIP_STATE", "network": false, "timeout_seconds": 600,
+      "write_set": ["receipts/wheelhouse-manifest.json", "receipts/hashed-third-party-requirements.txt"], "required_outputs": ["wheel manifest", "hashed requirements"],
+      "postconditions": ["every wheel size/hash", "one METADATA identity per wheel", "no duplicate project", "deterministic UTF-8 LF"]
+    },
+    {
+      "id": "E15_OFFLINE_RESOLUTION_REPORT",
+      "purpose": "Prove hash-locked wheelhouse resolves offline before installation.",
+      "argv": ["E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003\\venv\\Scripts\\python.exe", "-I", "-B", "-m", "pip", "--isolated", "install", "--dry-run", "--ignore-installed", "--require-hashes", "--only-binary=:all:", "--no-index", "--find-links", "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003\\wheelhouse", "--report", "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003\\receipts\\offline-resolution.json", "-r", "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003\\receipts\\hashed-third-party-requirements.txt"],
+      "environment_profile": "ATTEMPT003_NO_AMBIENT_PYTHON_OR_PIP_STATE", "network": false, "timeout_seconds": 900,
+      "write_set": ["receipts/offline-resolution.json"], "required_outputs": ["offline resolution report"],
+      "postconditions": ["offline no-index success", "exact wheelhouse only", "all hashes enforced"]
+    },
+    {
+      "id": "E16_INSTALL_HASHED_THIRD_PARTY_CLOSURE",
+      "purpose": "Install only verified third-party wheel closure offline.",
+      "argv": ["E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003\\venv\\Scripts\\python.exe", "-I", "-B", "-m", "pip", "--isolated", "install", "--require-hashes", "--only-binary=:all:", "--no-index", "--find-links", "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003\\wheelhouse", "-r", "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003\\receipts\\hashed-third-party-requirements.txt"],
+      "environment_profile": "ATTEMPT003_NO_AMBIENT_PYTHON_OR_PIP_STATE", "network": false, "timeout_seconds": 1800,
+      "write_set": ["venv/**"], "required_outputs": ["installed third-party distributions under exact venv"],
+      "postconditions": ["no network/source builds", "all packages under exact venv", "RecBole absent"]
+    },
+    {
+      "id": "E17_COPY_VERIFIED_SOURCE_TO_IMMUTABLE_STAGING",
+      "purpose": "Binary-copy exactly 265 frozen RecBole files into absent immutable staging and receipt every hash.",
+      "argv": ["E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003\\venv\\Scripts\\python.exe", "-I", "-B", "-c", "import hashlib,json,pathlib;repo=pathlib.Path(r'E:\\UIT\\cv\\backend');root=pathlib.Path(r'E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003');src=repo/'research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d';manifest=json.loads((repo/'research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ac/E4_R5M0_source_materialization/selected_blob_manifest.json').read_text(encoding='utf-8'));c=[x for x in manifest['candidates'] if x['candidate_id']=='R5-CAND-RECBOLE-BPR-ML100K-001'][0];dst=root/'source-staging'/'recbole_v1_2_1_9a6f63d';assert not dst.exists();rows=[];exec(\"for row in c['files']:\\n s=src/pathlib.PurePosixPath(row['path']);b=s.read_bytes();assert len(b)==row['size_bytes'] and hashlib.sha256(b).hexdigest()==row['sha256'];d=dst/pathlib.PurePosixPath(row['path']);d.parent.mkdir(parents=True,exist_ok=True);d.write_bytes(b);db=d.read_bytes();assert db==b;rows.append({'path':row['path'],'bytes':len(db),'sha256':hashlib.sha256(db).hexdigest()})\");assert len(rows)==265 and sum(x['bytes'] for x in rows)==1541044;(root/'receipts'/'recbole-source-staging-verification.json').write_text(json.dumps({'schema_version':'recbole-source-staging-1.0','revision':'9a6f63d8d4a5b989fe27955a833f813a6d86041e','tree':'08915121fea069a30f7e3e97a72e16e7e76d43c6','files':rows},indent=2,sort_keys=True)+'\\n',encoding='utf-8')"],
+      "environment_profile": "ATTEMPT003_NO_AMBIENT_PYTHON_OR_PIP_STATE", "network": false, "timeout_seconds": 600,
+      "write_set": ["source-staging/recbole_v1_2_1_9a6f63d/**", "receipts/recbole-source-staging-verification.json"], "required_outputs": ["exact immutable staging", "staging receipt"],
+      "postconditions": ["265 files/1541044 bytes exact", "every source/destination hash exact", "no links/extra files", "source unchanged", "no later staging writes"]
+    },
+    {
+      "id": "E18_BUILD_LOCAL_RECBOLE_WHEEL_FROM_EPHEMERAL_COPY",
+      "purpose": "Build one local RecBole wheel from a separately verified ephemeral copy; immutable staging remains unchanged.",
+      "argv": ["E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003\\venv\\Scripts\\python.exe", "-I", "-B", "-m", "pip", "--isolated", "wheel", "--no-deps", "--no-build-isolation", "--wheel-dir", "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003\\local-wheel", "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003\\temp\\recbole-build-source"],
+      "environment_profile": "ATTEMPT003_NO_AMBIENT_PYTHON_OR_PIP_STATE", "network": false, "timeout_seconds": 1200,
+      "write_set": ["temp/recbole-build-source/**", "local-wheel/*.whl", "receipts/recbole-ephemeral-build-source-receipt.json"], "required_outputs": ["one local wheel", "ephemeral copy receipt"],
+      "preconditions": ["runner creates exact verified 265-file/1541044-byte ephemeral copy immediately before launch", "runner replays immutable staging before and after"],
+      "postconditions": ["one local wheel", "no network/build isolation", "immutable staging unchanged", "build artifacts confined to temp"]
+    },
+    {
+      "id": "E19_HASH_LOCAL_RECBOLE_WHEEL",
+      "purpose": "Hash sole local RecBole wheel and write one hash-locked local requirement.",
+      "argv": ["E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003\\venv\\Scripts\\python.exe", "-I", "-B", "-c", "import hashlib,json,pathlib;root=pathlib.Path(r'E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003');w=list((root/'local-wheel').glob('*.whl'));assert len(w)==1;p=w[0];b=p.read_bytes();h=hashlib.sha256(b).hexdigest();assert p.name.lower().startswith('recbole-1.2.1+local.9a6f63d-');(root/'receipts'/'local-recbole-wheel.json').write_text(json.dumps({'schema_version':'local-recbole-wheel-1.0','file':p.name,'bytes':len(b),'sha256':h,'revision':'9a6f63d8d4a5b989fe27955a833f813a6d86041e'},indent=2,sort_keys=True)+'\\n',encoding='utf-8');(root/'receipts'/'hashed-local-recbole-requirement.txt').write_text(f'recbole==1.2.1+local.9a6f63d --hash=sha256:{h}\\n',encoding='utf-8')"],
+      "environment_profile": "ATTEMPT003_NO_AMBIENT_PYTHON_OR_PIP_STATE", "network": false, "timeout_seconds": 180,
+      "write_set": ["receipts/local-recbole-wheel.json", "receipts/hashed-local-recbole-requirement.txt"], "required_outputs": ["local wheel receipt", "hashed local requirement"],
+      "postconditions": ["exactly one local revision wheel", "size/hash receipted", "UTF-8 LF"]
+    },
+    {
+      "id": "E20_INSTALL_HASHED_LOCAL_RECBOLE_WHEEL",
+      "purpose": "Install only hash-locked local RecBole wheel offline.",
+      "argv": ["E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003\\venv\\Scripts\\python.exe", "-I", "-B", "-m", "pip", "--isolated", "install", "--no-deps", "--require-hashes", "--only-binary=:all:", "--no-index", "--find-links", "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003\\local-wheel", "-r", "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003\\receipts\\hashed-local-recbole-requirement.txt"],
+      "environment_profile": "ATTEMPT003_NO_AMBIENT_PYTHON_OR_PIP_STATE", "network": false, "timeout_seconds": 600,
+      "write_set": ["venv/**"], "required_outputs": ["installed local RecBole distribution"],
+      "postconditions": ["offline no-index/no-deps", "hash required", "exact venv only", "no PyPI/editable RecBole"]
+    },
+    {
+      "id": "E21_CAPTURE_PIP_CHECK",
+      "purpose": "Capture deterministic pip check output and exit code.",
+      "argv": ["E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003\\venv\\Scripts\\python.exe", "-I", "-B", "-c", "import json,pathlib,subprocess,sys;root=pathlib.Path(r'E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003');p=subprocess.run([sys.executable,'-m','pip','--isolated','check'],capture_output=True,text=True,encoding='utf-8');(root/'receipts'/'pip-check.json').write_text(json.dumps({'schema_version':'pip-check-1.0','exit_code':p.returncode,'stdout':p.stdout.replace('\\r\\n','\\n'),'stderr':p.stderr.replace('\\r\\n','\\n')},indent=2,sort_keys=True)+'\\n',encoding='utf-8');raise SystemExit(p.returncode)"],
+      "environment_profile": "ATTEMPT003_NO_AMBIENT_PYTHON_OR_PIP_STATE", "network": false, "timeout_seconds": 300,
+      "write_set": ["receipts/pip-check.json"], "required_outputs": ["pip check receipt"],
+      "postconditions": ["exit zero", "UTF-8 LF", "no network"]
+    },
+    {
+      "id": "E22_CAPTURE_FROZEN_INVENTORY",
+      "purpose": "Capture exact installed distribution inventory from isolated venv.",
+      "argv": ["E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003\\venv\\Scripts\\python.exe", "-I", "-B", "-c", "import importlib.metadata as m,json,pathlib;root=pathlib.Path(r'E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003');rows=sorted(({'name':d.metadata['Name'],'version':d.version} for d in m.distributions()),key=lambda x:x['name'].casefold());(root/'receipts'/'installed-distributions.json').write_text(json.dumps({'schema_version':'installed-distributions-1.0','distributions':rows},indent=2,sort_keys=True)+'\\n',encoding='utf-8')"],
+      "environment_profile": "ATTEMPT003_NO_AMBIENT_PYTHON_OR_PIP_STATE", "network": false, "timeout_seconds": 180,
+      "write_set": ["receipts/installed-distributions.json"], "required_outputs": ["installed distribution inventory"],
+      "postconditions": ["direct pins replay", "local RecBole exact", "torch CPU exact", "all paths exact venv"]
+    },
+    {
+      "id": "E23_CAPTURE_PIP_INSPECT",
+      "purpose": "Capture isolated pip inspect JSON without network.",
+      "argv": ["E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003\\venv\\Scripts\\python.exe", "-I", "-B", "-c", "import json,pathlib,subprocess,sys;root=pathlib.Path(r'E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003');p=subprocess.run([sys.executable,'-m','pip','--isolated','inspect','--local'],capture_output=True,text=True,encoding='utf-8');assert p.returncode==0;obj=json.loads(p.stdout);(root/'receipts'/'pip-inspect.json').write_text(json.dumps(obj,indent=2,sort_keys=True)+'\\n',encoding='utf-8')"],
+      "environment_profile": "ATTEMPT003_NO_AMBIENT_PYTHON_OR_PIP_STATE", "network": false, "timeout_seconds": 300,
+      "write_set": ["receipts/pip-inspect.json"], "required_outputs": ["pip inspect JSON"],
+      "postconditions": ["valid JSON", "all paths under exact venv", "UTF-8 LF", "no network"]
+    },
+    {
+      "id": "E24_BOUNDED_IMPORT_AND_VERSION_CHECK",
+      "purpose": "Import bounded package surfaces and capture versions/hardware without Dataset, training, evaluation, or workers.",
+      "argv": ["E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003\\venv\\Scripts\\python.exe", "-I", "-B", "-c", "import json,pathlib,platform,sys;import numpy,pandas,recbole,scipy,sklearn,torch;root=pathlib.Path(r'E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003');out={'schema_version':'bounded-import-check-1.0','python':platform.python_version(),'executable':sys.executable,'recbole':recbole.__version__,'torch':torch.__version__,'torch_cuda':torch.version.cuda,'cuda_available':torch.cuda.is_available(),'numpy':numpy.__version__,'scipy':scipy.__version__,'pandas':pandas.__version__,'sklearn':sklearn.__version__,'dataset_constructed':False,'training':False,'evaluation':False};assert out['python']=='3.11.9' and out['recbole'].startswith('1.2.1') and out['torch']=='2.2.2+cpu' and out['torch_cuda'] is None and not out['cuda_available'];(root/'receipts'/'bounded-import-check.json').write_text(json.dumps(out,indent=2,sort_keys=True)+'\\n',encoding='utf-8')"],
+      "environment_profile": "ATTEMPT003_NO_AMBIENT_PYTHON_OR_PIP_STATE", "network": false, "timeout_seconds": 300,
+      "write_set": ["receipts/bounded-import-check.json"], "required_outputs": ["bounded import receipt"],
+      "postconditions": ["versions exact", "CPU-only torch", "no Dataset/load", "no worker/trainer/evaluator/metric/TEST/benchmark"]
+    },
+    {
+      "id": "E25_BOUNDED_READ_ONLY_SOURCE_SYNTAX_CHECK",
+      "purpose": "Compile exact staged Python source bytes in memory only; no import, pyc, cache, or staging write.",
+      "argv": ["E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003\\venv\\Scripts\\python.exe", "-I", "-B", "-c", "import hashlib,json,pathlib;root=pathlib.Path(r'E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003');stage=root/'source-staging'/'recbole_v1_2_1_9a6f63d';files=sorted(stage.rglob('*.py'),key=lambda p:p.as_posix());rows=[];total=0;exec(\"for p in files:\\n b=p.read_bytes();total+=len(b);compile(b,str(p),'exec',dont_inherit=True,optimize=0);rows.append({'path':p.relative_to(stage).as_posix(),'bytes':len(b),'sha256':hashlib.sha256(b).hexdigest()})\");assert len(rows)==150 and total==1378341;assert not list(stage.rglob('__pycache__')) and not list(stage.rglob('*.pyc'));(root/'receipts'/'recbole-staging-syntax-check.json').write_text(json.dumps({'schema_version':'recbole-staging-syntax-check-1.0','files':rows,'file_count':len(rows),'bytes':total,'in_memory_only':True},indent=2,sort_keys=True)+'\\n',encoding='utf-8')"],
+      "environment_profile": "ATTEMPT003_NO_AMBIENT_PYTHON_OR_PIP_STATE", "network": false, "timeout_seconds": 600,
+      "write_set": ["receipts/recbole-staging-syntax-check.json"], "required_outputs": ["source syntax receipt"],
+      "postconditions": ["150 files/1378341 bytes", "compile in memory", "no pyc/cache", "immutable staging unchanged"]
+    }
+  ],
+  "command_order": ["E00_CREATE_EXTERNAL_IMMUTABLE_ATTEMPT", "E01_FETCH_NUGET_REGISTRATION_METADATA", "E02_FETCH_NUGET_CATALOG_METADATA", "E03_FETCH_OFFICIAL_CPYTHON_NUPKG_BYTES", "E04_VERIFY_METADATA_HASHES_AND_PROMOTE_NUPKG", "E05_SAFE_SCAN_EXTRACT_AND_PROMOTE_RUNTIME", "E06_VERIFY_EXACT_PROMOTED_RUNTIME_IDENTITY", "E07_VERIFY_FROZEN_SOURCE_MANIFEST", "E08_CREATE_ISOLATED_VENV", "E09_VERIFY_VENV_AND_BUNDLED_PIP", "E10_WRITE_LITERAL_PIN_FILES", "E11_DOWNLOAD_TORCH_CPU_WHEEL", "E12_DOWNLOAD_PINNED_PYPI_WHEELS", "E13_ASSERT_WHEEL_ONLY_CPU_CLOSURE", "E14_CAPTURE_WHEEL_HASHES_AND_HASHED_REQUIREMENTS", "E15_OFFLINE_RESOLUTION_REPORT", "E16_INSTALL_HASHED_THIRD_PARTY_CLOSURE", "E17_COPY_VERIFIED_SOURCE_TO_IMMUTABLE_STAGING", "E18_BUILD_LOCAL_RECBOLE_WHEEL_FROM_EPHEMERAL_COPY", "E19_HASH_LOCAL_RECBOLE_WHEEL", "E20_INSTALL_HASHED_LOCAL_RECBOLE_WHEEL", "E21_CAPTURE_PIP_CHECK", "E22_CAPTURE_FROZEN_INVENTORY", "E23_CAPTURE_PIP_INSPECT", "E24_BOUNDED_IMPORT_AND_VERSION_CHECK", "E25_BOUNDED_READ_ONLY_SOURCE_SYNTAX_CHECK"],
+  "command_count": 26,
+  "lane_write_set": {
+    "only_root": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003",
+    "read_only_repository_source": "E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\materialized_sources\\r5\\recbole_v1_2_1_9a6f63d",
+    "repository_writes": false,
+    "ambient_python_writes": false,
+    "unexpected_paths_fail_closed": true
+  },
+  "resource_bounds": {"hard_packet_timeout_seconds": 14400, "maximum_attempt_root_bytes": 21474836480, "minimum_free_bytes_before_E00": 32212254720, "maximum_resident_memory_bytes_per_process": 4294967296, "maximum_parallel_commands": 1, "maximum_child_processes": 4, "retry_count": 0},
+  "negative_assertions": {
+    "windows_installer_burn_msi_or_msiexec_invoked": false,
+    "nuget_exe_winget_store_uv_conda_or_embeddable_bootstrap_invoked": false,
+    "ambient_python_python3_py_or_PATH_python_invoked": false,
+    "downloaded_executable_invoked_during_acquisition_or_extraction": false,
+    "system_python_repair_uninstall_upgrade_or_rollback": false,
+    "recbole_dataset_constructed_or_loaded": false,
+    "training": false,
+    "evaluation": false,
+    "metrics": false,
+    "test_opened": false,
+    "benchmark_admission": false,
+    "checkpoint_or_pretrained_asset_downloaded": false,
+    "distributed_ray_worker_or_tuning_launched": false
+  },
+  "unresolved_until_future_materialization": ["actual HTTP metadata response hashes", "actual wheel filenames/URLs/sizes/SHA-256 closure", "actual local RecBole wheel identity", "actual installed distribution and hardware receipts"],
+  "truth_state": {"RESULT_STATUS": "NOT_RUN", "TEST_SET_OPENED": "NO", "ACCEPTED_RESULT_ROWS": 0, "execution_authorized": false, "project_benchmark_numbers": "INVALID_FOR_PAPER"}
+}

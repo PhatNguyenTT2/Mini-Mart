@@ -1,0 +1,262 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r6-c1r2-attempt003-execution-boundary-1.0",
+  "created_at": "2026-08-23",
+  "stage_id": "R6-C1R2",
+  "packet_id": "R6-C1R2-ATTEMPT003-EXECUTION-BOUNDARY",
+  "proposal_only": true,
+  "execution_performed": false,
+  "execution_authorized": false,
+  "packet_provenance": {
+    "prior_draft_provenance": {
+      "display_name": "Sol High Fast",
+      "runtime_model_id": "gpt-5.6-sol",
+      "reasoning_effort": "high",
+      "service_tier": "priority",
+      "historical_only": true
+    },
+    "bounded_rework_provenance": {
+      "display_name": "Sol High Standard",
+      "runtime_model_id": "gpt-5.6-sol",
+      "reasoning_effort": "high",
+      "service_tier": "standard",
+      "fast_or_priority_override_used": false
+    },
+    "central_validation_profile": {
+      "display_name": "Sol Max Standard",
+      "runtime_model_id": "gpt-5.6-sol",
+      "reasoning_effort": "max",
+      "service_tier": "standard"
+    }
+  },
+  "packet_files": [
+    "dataset_materialization_packet.json",
+    "environment_materialization_packet.json",
+    "recbole_dataset_bridge_packet.json",
+    "execution_boundary_and_negative_assertions.json",
+    "audit_handoff.json"
+  ],
+  "command_counts": {
+    "dataset": 8,
+    "environment": 26,
+    "bridge": 3,
+    "total": 37,
+    "executed_by_packet_assembler": 0
+  },
+  "lane_order": [
+    "central validate all five packet files and commit a new PASS receipt plus dispatch",
+    "dataset lane may run only under a later separately authorized central runner",
+    "environment lane may run only under a later separately authorized central runner",
+    "separate central dataset and environment PASS receipts must exist",
+    "bridge may then run attempt003-to-attempt003 only",
+    "Dataset construction/load, training, evaluation, TEST, metrics, and admission remain blocked"
+  ],
+  "roots_and_pairing": {
+    "dataset": "E:\\UIT\\cv\\materialized-data\\hybrid-recsys-v5\\stage1e\\r6\\official_source\\grouplens_ml100k\\attempt-003",
+    "environment": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003",
+    "runtime_python": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003\\runtime\\python.exe",
+    "venv_python": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003\\venv\\Scripts\\python.exe",
+    "bridge_pairing": "DATASET_ATTEMPT003_TO_ENVIRONMENT_ATTEMPT003_ONLY",
+    "cross_attempt_pairing_allowed": false,
+    "root_creation_requires_absence_and_non_reparse_ancestors": true,
+    "repository_contained_external_roots_allowed": false,
+    "cleanup_overwrite_or_retry_in_place_allowed": false
+  },
+  "exact_network_allowlists": {
+    "dataset": {
+      "hosts": ["files.grouplens.org"],
+      "urls": ["https://files.grouplens.org/datasets/movielens/ml-100k-README.txt", "https://files.grouplens.org/datasets/movielens/ml-100k.zip.md5", "https://files.grouplens.org/datasets/movielens/ml-100k.zip"],
+      "redirects": 0
+    },
+    "environment_bootstrap": {
+      "hosts": ["api.nuget.org"],
+      "urls": ["https://api.nuget.org/v3/registration5-semver1/python/3.11.9.json", "https://api.nuget.org/v3/catalog0/data/2024.04.02.13.14.51/python.3.11.9.json", "https://api.nuget.org/v3-flatcontainer/python/3.11.9/python.3.11.9.nupkg"],
+      "redirects": 0
+    },
+    "environment_packages": {
+      "hosts": ["pypi.org", "files.pythonhosted.org", "download.pytorch.org", "download-r2.pytorch.org"],
+      "indexes": ["https://pypi.org/simple", "https://download.pytorch.org/whl/cpu"]
+    },
+    "bridge": {"hosts": [], "urls": [], "network_denied": true},
+    "curl_first_options": ["--disable", "--proxy", ""],
+    "ambient_proxy_credentials_config_or_fallback_allowed": false
+  },
+  "source_locks": {
+    "dataset": {
+      "archive_bytes": 4924029,
+      "provider_md5": "0e33842e24a9c977be4e0107933c0723",
+      "frozen_c1r1_archive_sha256": "50d2a982c66986937beb9ffb3aa76efe955bf3d5c6b761f4e3a7cd717c6a3229",
+      "exact_raw_files": 23,
+      "interaction_rows": 100000
+    },
+    "cpython_nupkg": {
+      "id": "python",
+      "version": "3.11.9",
+      "bytes": 17478009,
+      "md5": "0deb9c5d73bc95ca7b66dd72b0f8d8a2",
+      "sha256": "9283876d58c017e0e846f95b490da3bca0fc0a6ee1134b2870677cfb7eec3c67",
+      "sha512_base64": "41On79FZ75irnOEBGFSjDV13j1nZb8m7EbB87SmQs1XwMEhrBwf3mMc8RCAXOrERh2qW6tWYFxi2BMTN1xxVjQ==",
+      "archive_inventory_sha256": "5b6fb34361dc7d120329363730678c13db857d6069d88d3505406526ba4ed63a",
+      "runtime_inventory_sha256": "62f76352a94a53dd4aeb406d00a14151b23cb544bd52fde5a899a7f62cdb33bd"
+    },
+    "recbole": {
+      "revision": "9a6f63d8d4a5b989fe27955a833f813a6d86041e",
+      "tree": "08915121fea069a30f7e3e97a72e16e7e76d43c6",
+      "selected_files": 265,
+      "selected_bytes": 1541044
+    }
+  },
+  "phase_executable_policy": {
+    "dataset": {
+      "allowed_argv0": ["C:\\Users\\ACER\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\powershell\\pwsh.exe", "curl.exe"],
+      "shell_reconstruction": false
+    },
+    "environment_acquisition_and_extraction_E00_through_E05": {
+      "allowed_argv0": ["C:\\Users\\ACER\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\powershell\\pwsh.exe", "curl.exe"],
+      "downloaded_executable_allowed": false,
+      "nupkg_treated_as": "ZIP_DATA_ONLY"
+    },
+    "environment_after_runtime_promotion": {
+      "first_allowed_downloaded_argv0": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003\\runtime\\python.exe",
+      "first_allowed_command": "E06_VERIFY_EXACT_PROMOTED_RUNTIME_IDENTITY",
+      "later_allowed_argv0": ["E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003\\runtime\\python.exe", "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003\\venv\\Scripts\\python.exe", "C:\\Users\\ACER\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\powershell\\pwsh.exe"],
+      "PATH_or_ambient_python_resolution": false
+    },
+    "always_forbidden_argv0_or_launcher": ["python", "python3", "py", "py.exe", "nuget.exe", "winget", "msiexec", "uv", "conda", "mamba", "python-3.11.9-amd64.exe"],
+    "windows_installer_burn_msi_store_embeddable_bootstrap_allowed": false
+  },
+  "runner_contract": {
+    "canonical_runner_required_controls": [
+      {"id": "R01_LITERAL_ARGV", "requirement": "Execute literal argv without shell reconstruction.", "required": true},
+      {"id": "R02_LAUNCH_FAILURES", "requirement": "Catch process-launch OSError and File Not Found errors and journal the failure before stopping.", "required": true},
+      {"id": "R03_APPEND_ONLY_JOURNAL", "requirement": "Persist an append-only command journal after every command or launch failure.", "required": true},
+      {"id": "R04_OUTPUT_POSTCONDITIONS", "requirement": "Verify required outputs and postconditions before advancing.", "required": true},
+      {"id": "R05_WRITE_SETS", "requirement": "Enforce declared command write sets and lane write sets.", "required": true},
+      {"id": "R06_AMBIENT_SENTINELS", "requirement": "Snapshot and hash ambient Python registry keys and filesystem sentinels before and after every environment and bridge command.", "required": true},
+      {"id": "R07_FAIL_CLOSED_BOUNDS", "requirement": "Fail closed on any sentinel change, write outside the attempt root, repository mutation, timeout, memory or disk bound, unexpected network host, or missing output.", "required": true},
+      {"id": "R08_NORETRY_RECOVERY_ACTION", "requirement": "No retry of any kind, including automatic retry; no cleanup, rollback, repair, or fallback.", "required": true}
+    ],
+    "literal_argv": {
+      "required": true,
+      "shell": false,
+      "command_string_reconstruction": false,
+      "argv_hash_journaled_before_launch": true
+    },
+    "process_launch_failures": {
+      "catch": ["OSError", "FileNotFoundError"],
+      "journal_before_stop": true,
+      "required_fields": ["command_id", "argv_sha256", "exception_type", "errno_or_winerror", "message", "utc_time", "pre_sentinel_hashes"],
+      "automatic_retry": false
+    },
+    "journal": {
+      "append_only": true,
+      "persist_after_every_command_or_launch_failure": true,
+      "fsync_before_advance": true,
+      "records_stdout_stderr_byte_counts_and_sha256": true,
+      "records_exit_code_elapsed_time_network_observation_write_diff_postconditions_and_sentinels": true
+    },
+    "per_command_gate": {
+      "allowed_exit_code": 0,
+      "required_outputs_present": true,
+      "required_outputs_within_declared_write_set": true,
+      "all_declared_postconditions_pass": true,
+      "no_unexpected_output_or_write": true,
+      "advance_only_after_gate_pass": true
+    },
+    "write_set_enforcement": {
+      "command_write_set_is_authoritative": true,
+      "lane_root_is_upper_bound": true,
+      "repository_snapshot_before_after": true,
+      "attempt_root_inventory_before_after": true,
+      "writes_outside_lane_root_fail_closed": true,
+      "writes_inside_lane_root_but_outside_command_write_set_fail_closed": true,
+      "repository_mutation_fails_closed": true
+    },
+    "ambient_python_sentinels": {
+      "before_and_after_every_environment_and_bridge_command": true,
+      "registry_keys": ["HKLM\\SOFTWARE\\Python\\PythonCore", "HKLM\\SOFTWARE\\WOW6432Node\\Python\\PythonCore", "HKCU\\SOFTWARE\\Python\\PythonCore", "Python/CPython-filtered machine and user uninstall registry subtrees"],
+      "filesystem_paths": ["C:\\Program Files\\Python311", "C:\\Program Files (x86)\\Python311", "C:\\Users\\ACER\\AppData\\Local\\Programs\\Python\\Python311", "C:\\Users\\ACER\\AppData\\Local\\Programs\\Python\\Launcher", "C:\\Windows\\py.exe", "C:\\Windows\\System32\\py.exe"],
+      "canonical_snapshot_hash_required": true,
+      "any_change": "FAIL_CLOSED_EXTERNAL_MUTATION_NO_AUTOMATIC_ROLLBACK"
+    },
+    "resource_failures": {
+      "timeout": "FAIL_CLOSED",
+      "memory_bound": "FAIL_CLOSED",
+      "disk_bound": "FAIL_CLOSED",
+      "unexpected_network_host": "FAIL_CLOSED",
+      "missing_output": "FAIL_CLOSED"
+    },
+    "automatic_retry_cleanup_rollback_repair_or_fallback": false
+  },
+  "aggregate_write_set": {
+    "dataset_lane_only": "E:\\UIT\\cv\\materialized-data\\hybrid-recsys-v5\\stage1e\\r6\\official_source\\grouplens_ml100k\\attempt-003",
+    "environment_and_bridge_only": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003",
+    "repository_materialization_writes": false,
+    "external_system_python_writes": false,
+    "harmonized_v5_writes": false,
+    "project_v5_test_reads_or_writes": false,
+    "other_external_roots": false
+  },
+  "bridge_gate": {
+    "status": "BLOCKED_PENDING_SEPARATE_CENTRAL_PASS_RECEIPTS",
+    "dataset_attempt003_pass_receipt_required": true,
+    "environment_attempt003_pass_receipt_required": true,
+    "both_receipts_committed_and_hash_bound": true,
+    "cross_attempt_pairing_allowed": false,
+    "config_only_check_after_binary_copy": true,
+    "dataset_construction_or_load_allowed": false
+  },
+  "negative_assertions": {
+    "packet_assembly": {
+      "materialization_executed": false,
+      "network_download_executed": false,
+      "package_installation_executed": false,
+      "external_root_created": false,
+      "other_repository_file_written": false,
+      "commit_created": false
+    },
+    "runtime_and_environment": {
+      "windows_installer_burn_msi_or_msiexec_invoked": false,
+      "nuget_exe_winget_store_uv_conda_or_embeddable_bootstrap_invoked": false,
+      "ambient_python_python3_py_or_PATH_python_invoked": false,
+      "downloaded_executable_invoked_during_acquisition_or_extraction": false,
+      "ambient_system_python_mutated_repaired_uninstalled_or_rolled_back": false
+    },
+    "scientific": {
+      "recbole_dataset_constructed": false,
+      "recbole_dataset_loaded": false,
+      "interaction_rows_opened_for_scientific_use": 0,
+      "split_generated_or_selected": false,
+      "training_or_fit": false,
+      "evaluation": false,
+      "metrics_calculated": false,
+      "comparison_performed": false,
+      "hyperparameter_search": false,
+      "checkpoint_or_pretrained_asset_retrieved": false,
+      "project_v5_test_resolved_or_opened": false,
+      "benchmark_rows_admitted": 0,
+      "paper_result_created": false
+    }
+  },
+  "central_validation_required_before_any_root_creation": {
+    "strict_json_5_of_5": true,
+    "exact_file_set": true,
+    "attempt003_paths_and_pairing": true,
+    "command_counts_order_and_literal_argv": true,
+    "source_locks": true,
+    "embedded_powershell_and_python_syntax": true,
+    "prohibited_invocation_scan": true,
+    "per_command_postconditions": true,
+    "write_sets": true,
+    "sentinels": true,
+    "scientific_boundary": true,
+    "new_central_receipt_and_dispatch_must_be_committed": true,
+    "worker_may_self_declare_execution_ready": false
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "schema_version": "stage1e-e4-r6-future-agent-model-policy-standard-1.0",
+  "created_at": "2026-08-23",
+  "status": "ACTIVE",
+  "scope": "ALL_AGENTS_CREATED_AFTER_THIS_CHANGE_CONTROL",
+  "supersedes": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r5_future_subagent_model_policy.json",
+  "central_context": {
+    "display_name": "Sol Max Standard",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "max",
+    "speed_profile": "standard"
+  },
+  "agent_profiles": {
+    "critical_judgment": {
+      "display_name": "Sol XHigh Standard",
+      "runtime_model_id": "gpt-5.6-sol",
+      "reasoning_effort": "xhigh",
+      "speed_profile": "standard"
+    },
+    "bounded_implementation_or_verification": {
+      "display_name": "Sol High Standard",
+      "runtime_model_id": "gpt-5.6-sol",
+      "reasoning_effort": "high",
+      "speed_profile": "standard"
+    }
+  },
+  "prohibitions": {
+    "fast_profiles": true,
+    "priority_service_tier_override": true,
+    "luna_or_terra_substitution_without_new_user_decision": true
+  },
+  "selection_rule": "Use Sol XHigh Standard for source admission, recovery strategy, experimental-boundary judgment and final audit; use Sol High Standard for bounded packet, runner and mechanical verification work.",
+  "historical_outputs": {
+    "retain_exact_model_provenance": true,
+    "completed_stage_rerun_required_only_due_to_this_policy_change": false,
+    "fast_profile_records_are_historical_not_current_authority": true
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}
