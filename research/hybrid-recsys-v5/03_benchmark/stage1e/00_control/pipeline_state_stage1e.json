@@ -778,7 +778,7 @@
       "next_gate": "SUPERSEDED_BY_USER_DECISION_AUTHORIZE_TARGETED_SOURCE_ONLY_EVIDENCE_MATERIALIZATION_REDESIGN"
     },
     "e4_r5": {
-      "status": "R6_C1R2_ATTEMPT003_PACKET_VALIDATED_AWAITING_RUNNER_AND_MATERIALIZATION_DISPATCH_CHECKPOINT",
+      "status": "R6_PC0_CONTAINMENT_FEASIBILITY_CONTRACT_FROZEN_AWAITING_RUNNER_AND_DISPATCH",
       "entry_checkpoint": "USER_CONFIRMED_TARGETED_SOURCE_ONLY_EVIDENCE_MATERIALIZATION_REDESIGN",
       "source_stage": "R4-G0",
       "source_verdict": "NO_ADMISSIBLE_BUNDLE_STOP_FAIL_CLOSED",
@@ -1051,7 +1051,7 @@
           "experiment_execution_authorized": false
         },
         "c1r2": {
-          "status": "COMPLETE_CENTRALLY_VALIDATED_AWAITING_ATTEMPT003_RUNNER_AND_MATERIALIZATION_DISPATCH",
+          "status": "STATIC_VALIDATION_PASS_EXECUTION_READINESS_SUPERSEDED_BY_RUNNER_COMPATIBILITY_AUDIT",
           "purpose": "NEW_IMMUTABLE_ATTEMPT003_PACKET_AFTER_ATTEMPT002_PACKET_RUNTIME_AND_AMBIENT_INSTALLER_COLLISION",
           "recovery_audit": {
             "agent_id": "01a02b8c-3d55-7f11-be8e-0bac060680c8",
@@ -1102,11 +1102,57 @@
             "literal_argv_commands": "37/37",
             "powershell_sources": "10/10",
             "python_inline_sources": "14/14",
-            "failure_count": 0
+            "failure_count": 0,
+            "scope": "STATIC_PACKET_VALIDATION_ONLY",
+            "execution_readiness_superseded": true
           },
+          "runner_compatibility_audit": {
+            "status": "REWORK_REQUIRED_BEFORE_ATTEMPT003_RUNNER",
+            "agent_id": "01a02bc5-2156-7793-b018-933fd754bb0a",
+            "nickname": "Hooke",
+            "model_profile": "Sol XHigh Standard",
+            "write_scope": "READ_ONLY",
+            "receipt": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_c1r2_runner_compatibility_audit_receipt.json",
+            "critical_packet_defects": 5,
+            "critical_runner_requirements": 2,
+            "high_findings": 3,
+            "attempt003_roots_created": false,
+            "scientific_execution_performed": false
+          },
+          "next_packet_revision": "R6-C1R3",
           "attempt003_runner_created": false,
           "attempt003_materialization_dispatch_created": false,
           "attempt003_materialization_gate_open": false,
+          "experiment_execution_authorized": false
+        },
+        "pc0": {
+          "status": "CONTAINMENT_FEASIBILITY_CONTRACT_FROZEN_AWAITING_BOUNDED_IMPLEMENTATION",
+          "purpose": "INERTLY_MATERIALIZE_AND_READ_ONLY_PROBE_MICROSOFT_MXC_BEFORE_R6_C1R3_PACKET_REWORK",
+          "contract": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc0_mxc_containment_feasibility_contract.md",
+          "candidate": {
+            "provider": "Microsoft",
+            "repository": "https://github.com/microsoft/mxc",
+            "tag": "v0.7.0-rc1",
+            "commit": "0e02a720e32416b151dbcb0a00e3d4ac2b891559",
+            "release_id": 338912027,
+            "asset_id": 446369484,
+            "asset_bytes": 180948670,
+            "asset_sha256": "450ad608bd2268a8cbe126597be209601c51fbfe36141cec08abb017e828aba5",
+            "release_prerelease": true,
+            "release_immutable": false,
+            "admission_state": "PENDING_INERT_MATERIALIZATION_AUTHENTICODE_AND_READ_ONLY_PROBE"
+          },
+          "external_root": "E:\\UIT\\cv\\materialized-tools\\hybrid-recsys-v5\\stage1e\\r6\\mxc_v0_7_0_rc1\\attempt-001",
+          "model_policy": {
+            "bounded_implementation": "Sol High Standard",
+            "independent_admission_audit": "Sol XHigh Standard",
+            "central_validation": "Sol Max Standard",
+            "fast_profiles_allowed": false
+          },
+          "materialization_executed": false,
+          "probe_executed": false,
+          "sandbox_workload_executed": false,
+          "attempt003_roots_created": false,
           "experiment_execution_authorized": false
         },
         "m0_m1": {
@@ -1171,7 +1217,7 @@
         "project_benchmark_numbers": "INVALID_FOR_PAPER"
       },
       "execution_authorized": false,
-      "next_gate": "CREATE_STATICALLY_VALIDATE_AND_COMMIT_ATTEMPT003_RUNNER_AND_MATERIALIZATION_DISPATCH"
+      "next_gate": "CREATE_VALIDATE_AND_COMMIT_R6_PC0_MXC_INERT_MATERIALIZATION_AND_READ_ONLY_PROBE_RUNNER_DISPATCH"
     }
   },
   "central_preregistration_lock": "PASS_R6_S0_BOUNDED_MATERIALIZATION_SCOPE_LOCKED",
@@ -1179,5 +1225,5 @@
   "harmonized_v5": "BLOCKED",
   "external_validation": "BLOCKED",
   "efficiency": "BLOCKED_AFTER_ACCURACY",
-  "next_gate": "Create, statically validate and commit the attempt-003 runner and bounded R6-M0/R6-M1 materialization dispatch. Root creation, bridge execution, training, evaluation, benchmark admission and TEST access remain blocked until their explicit gates pass."
+  "next_gate": "Create, validate and commit the R6-PC0 Microsoft MXC inert-materialization and read-only probe runner/dispatch. The attempt-003 packet requires R6-C1R3 rework; data/environment root creation, bridge execution, training, evaluation, benchmark admission and TEST access remain blocked."
 }

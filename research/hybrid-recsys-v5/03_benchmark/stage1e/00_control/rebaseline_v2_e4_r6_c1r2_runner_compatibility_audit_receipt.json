@@ -1,0 +1,192 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r6-c1r2-runner-compatibility-audit-receipt-1.0",
+  "created_at": "2026-08-23",
+  "stage_id": "R6-C1R2-RUNNER-COMPATIBILITY-AUDIT",
+  "status": "REWORK_REQUIRED_BEFORE_ATTEMPT003_RUNNER",
+  "entry_checkpoint": "276f5940d81aab0b24f8a8c46f51b16878b19558",
+  "ars_workflow": {
+    "router": "ars-codex:academic-research-suite 0.1.26",
+    "selected_workflow": "experiment-agent",
+    "mode": "fail-closed packet-to-runner compatibility audit",
+    "scientific_execution_performed": false
+  },
+  "auditor": {
+    "agent_id": "01a02bc5-2156-7793-b018-933fd754bb0a",
+    "nickname": "Hooke",
+    "display_name": "Sol XHigh Standard",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "xhigh",
+    "speed_profile": "standard",
+    "write_scope": "READ_ONLY"
+  },
+  "scope": {
+    "packet_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ak/E4_R6C1R2_attempt003_command_packet",
+    "static_validation_receipt": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_c1r2_validation_receipt.json",
+    "historical_runner": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_materialization_attempt002.py",
+    "commands_audited": 37,
+    "canonical_runner_controls_audited": 8
+  },
+  "verdict_interpretation": {
+    "c1r2_static_validation_remains_true_for_its_declared_scope": true,
+    "c1r2_static_checks": "56/56",
+    "c1r2_execution_readiness_gate_superseded": true,
+    "reason": "The earlier gate proved strict JSON, source locks, literal argv and syntax, but did not prove that a concrete runner could enforce mutation, network and postcondition controls without weakening them."
+  },
+  "findings": [
+    {
+      "id": "RC01_MOVE_SOURCE_MUTATIONS_OMITTED",
+      "severity": "CRITICAL",
+      "classification": "PACKET_DEFECT",
+      "commands": [
+        "M04_VERIFY_AND_PROMOTE_DOWNLOADS",
+        "E04_VERIFY_METADATA_HASHES_AND_PROMOTE_NUPKG"
+      ],
+      "detail": "Move-Item source deletions for six .partial files are absent from command write sets.",
+      "required_resolution": "Declare each rename source and target with explicit mutation kinds."
+    },
+    {
+      "id": "RC02_ROOT_AND_PARENT_DIRECTORY_MUTATIONS_OMITTED",
+      "severity": "CRITICAL",
+      "classification": "PACKET_DEFECT",
+      "commands": [
+        "M00_CREATE_EMPTY_NON_GIT_ATTEMPT",
+        "E00_CREATE_EXTERNAL_IMMUTABLE_ATTEMPT",
+        "B01_BINARY_COPY_CANONICAL_INTER_AND_WRITE_RECEIPT"
+      ],
+      "detail": "Attempt-root creation and bridge target-directory creation are not represented explicitly.",
+      "required_resolution": "Declare directory-entry creation and implied parent semantics explicitly."
+    },
+    {
+      "id": "RC03_WRITE_SET_GRAMMAR_UNVERSIONED",
+      "severity": "CRITICAL",
+      "classification": "PACKET_DEFECT",
+      "commands": [
+        "M05_SAFE_EXTRACT_AND_HASH",
+        "E05_SAFE_SCAN_EXTRACT_AND_PROMOTE_RUNTIME",
+        "E11_DOWNLOAD_TORCH_CPU_WHEEL",
+        "E12_DOWNLOAD_PINNED_PYPI_WHEELS"
+      ],
+      "detail": "Free-form entries such as '** during command', '*.whl' and trailing slash paths do not define root inclusion, directory metadata, rename or transient-write semantics.",
+      "required_resolution": "Replace free text with a versioned mutation schema supporting CREATE, MODIFY, DELETE, RENAME_SOURCE and RENAME_TARGET."
+    },
+    {
+      "id": "RC04_TEMP_CONTAINMENT_MISSING",
+      "severity": "CRITICAL",
+      "classification": "PACKET_DEFECT",
+      "commands": [
+        "E08_CREATE_ISOLATED_VENV",
+        "E11_DOWNLOAD_TORCH_CPU_WHEEL",
+        "E12_DOWNLOAD_PINNED_PYPI_WHEELS",
+        "E15_OFFLINE_RESOLUTION_REPORT",
+        "E16_INSTALL_HASHED_THIRD_PARTY_CLOSURE",
+        "E18_BUILD_LOCAL_RECBOLE_WHEEL_FROM_EPHEMERAL_COPY",
+        "E20_INSTALL_HASHED_LOCAL_RECBOLE_WHEEL",
+        "E21_CAPTURE_PIP_CHECK",
+        "E23_CAPTURE_PIP_INSPECT"
+      ],
+      "detail": "TMP, TEMP and TMPDIR are not pinned to per-command directories under attempt-003; before/after inventory cannot observe transient system-temp writes that are deleted before command exit.",
+      "required_resolution": "Use OS-enforced process-tree containment and isolated per-command temp roots declared in the mutation schema."
+    },
+    {
+      "id": "RC05_E18_HIDDEN_RUNNER_MATERIALIZATION",
+      "severity": "CRITICAL",
+      "classification": "PACKET_DEFECT",
+      "commands": [
+        "E18_BUILD_LOCAL_RECBOLE_WHEEL_FROM_EPHEMERAL_COPY"
+      ],
+      "detail": "E18 requires the future runner to create a 265-file ephemeral source and receipt before launching literal argv, but that mutation is not itself a frozen command.",
+      "required_resolution": "Split ephemeral-copy preparation into a preceding literal-argv command with its own output and postcondition adapter."
+    },
+    {
+      "id": "RC06_BEFORE_AFTER_DIFF_NOT_CONTAINMENT",
+      "severity": "CRITICAL",
+      "classification": "RUNNER_REQUIREMENT",
+      "detail": "Inventory comparison cannot detect writes that are created and removed during a command and does not constrain child processes.",
+      "required_resolution": "Require a kernel-enforced process-tree filesystem policy; retain inventory comparison as evidence, not as the security boundary."
+    },
+    {
+      "id": "RC07_NETWORK_ARGV_SCAN_NOT_ENFORCEMENT",
+      "severity": "CRITICAL",
+      "classification": "RUNNER_REQUIREMENT",
+      "detail": "URLs in argv do not prove actual destinations and do not deny network for network=false commands or child processes.",
+      "required_resolution": "Require kernel default-deny network plus a fail-closed host allowlist/proxy for the eight network commands, with actual connection evidence."
+    },
+    {
+      "id": "RC08_FREE_TEXT_POSTCONDITIONS",
+      "severity": "HIGH",
+      "classification": "VALIDATOR_GAP",
+      "commands": "ALL_37",
+      "detail": "required_outputs and postconditions are free-text lists without machine-verifiable adapter identifiers.",
+      "required_resolution": "Assign every command a versioned postcondition adapter and typed expected values."
+    },
+    {
+      "id": "RC09_LAUNCH_FAILURE_JOURNAL_BOOTSTRAP",
+      "severity": "HIGH",
+      "classification": "PACKET_DEFECT",
+      "commands": [
+        "M00_CREATE_EMPTY_NON_GIT_ATTEMPT",
+        "E00_CREATE_EXTERNAL_IMMUTABLE_ATTEMPT"
+      ],
+      "detail": "A journal located only inside an attempt root cannot persist an OSError or FileNotFoundError occurring before root creation.",
+      "required_resolution": "Declare a separate pre-existing append-only control journal root and freeze its lifecycle."
+    },
+    {
+      "id": "RC10_SENTINEL_SERIALIZATION_NOT_CANONICAL",
+      "severity": "HIGH",
+      "classification": "RUNNER_REQUIREMENT",
+      "detail": "Registry views, absent/access-denied states, value encoding, filtering, reparse metadata and canonical ordering are not fully specified.",
+      "required_resolution": "Freeze a versioned canonical sentinel schema and retain before/after hashes for E00-E25 and B00-B02."
+    }
+  ],
+  "acceptable_explicit_semantics": {
+    "DENY_ALL_WRITES": "Valid control token if inventory is captured before the runner appends its own journal event.",
+    "artifact_hash_order": "Commit runner and adapters first, then commit a dispatch that freezes their hashes; neither artifact may self-hash or embed its own containing commit."
+  },
+  "local_containment_discovery": {
+    "windows_version": "10.0.26200.0",
+    "processmodel_dll_present": true,
+    "Experimental_CreateProcessInSandbox_export_present": true,
+    "Experimental_CreateProcessAsUserInSandbox_export_present": true,
+    "wxc_exec_present": false,
+    "procmon_present": false,
+    "wpr_present": true,
+    "pktmon_present": true,
+    "windows_sandbox_cli_present": false,
+    "docker_daemon_available": false,
+    "interpretation": "Symbol presence is insufficient. A read-only policy-specific capability probe is required; diagnostics-only WPR/PktMon cannot substitute for enforcement."
+  },
+  "candidate_containment_source": {
+    "provider": "Microsoft",
+    "repository": "https://github.com/microsoft/mxc",
+    "tag": "v0.7.0-rc1",
+    "tag_object_sha": "d1ed7f29b5e0574602c2cf289db7144e49a4de36",
+    "commit_sha": "0e02a720e32416b151dbcb0a00e3d4ac2b891559",
+    "commit_signature_verified_by_github": true,
+    "annotated_tag_signature_verified": false,
+    "release_id": 338912027,
+    "release_prerelease": true,
+    "release_immutable": false,
+    "asset_id": 446369484,
+    "asset_name": "mxc-release-binaries.zip",
+    "asset_bytes": 180948670,
+    "asset_sha256": "450ad608bd2268a8cbe126597be209601c51fbfe36141cec08abb017e828aba5",
+    "asset_url": "https://github.com/microsoft/mxc/releases/download/v0.7.0-rc1/mxc-release-binaries.zip",
+    "admission_state": "PENDING_INERT_MATERIALIZATION_AUTHENTICODE_AND_POLICY_SPECIFIC_READ_ONLY_PROBE",
+    "warning": "MXC is an early preview and its own README says profiles should not currently be treated as security boundaries; admission therefore requires a narrow host-specific fail-closed proof and no policy fallback."
+  },
+  "gate_effect": {
+    "attempt003_runner_implementation_allowed": false,
+    "attempt003_materialization_dispatch_allowed": false,
+    "next_stage": "R6-PC0-MXC-CONTAINMENT-SOURCE-MATERIALIZATION-AND-READ-ONLY-PROBE",
+    "packet_revision_required": "R6-C1R3",
+    "attempt003_root_creation_allowed": false,
+    "bridge_execution_allowed": false,
+    "training_evaluation_test_or_benchmark_allowed": false
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}
