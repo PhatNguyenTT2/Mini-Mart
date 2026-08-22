@@ -1,0 +1,84 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r6-c1-dispatch-1.0",
+  "created_at": "2026-08-23",
+  "stage_id": "R6-C1",
+  "status": "RUNNING",
+  "entry_commit": "60e51b017f5a37e9839c09e2ab014ba0f9a29b4d",
+  "entry_gate": "PASS_R6_G0_FROZEN_31_OF_31_READY_FOR_R6_C1",
+  "frozen_controls": [
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_g0_decision_freeze.json",
+      "canonical_lf_bytes": 12890,
+      "canonical_lf_sha256": "32f7e4c82ee1ffd105d365a98306cdef2a9b21f72dd1be10113188e40bf1c5c1"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_g0_frozen_input_manifest.json",
+      "canonical_lf_bytes": 13959,
+      "canonical_lf_sha256": "1624a007ff5ad0326a3f426f95f1e880f7d75c00725b4c5da452eb31ec973e7b"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_g0_gate_receipt.json",
+      "canonical_lf_bytes": 4810,
+      "canonical_lf_sha256": "faa4d3a3466d62d99115f17460f3adab3b1f53eff779fe02e87b148b406ee0d6"
+    }
+  ],
+  "worker": {
+    "agent_id": "01a02b25-866a-7eb0-b162-1800d5355bff",
+    "nickname": "Laplace",
+    "context": "fresh_bounded_worker",
+    "importance": "MEDIUM",
+    "model_profile": {
+      "display_name": "Sol High Fast",
+      "runtime_model_id": "gpt-5.6-sol",
+      "reasoning_effort": "high",
+      "service_tier": "priority"
+    }
+  },
+  "write_contract": {
+    "exclusive_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ai/E4_R6C1_materialization_command_packet",
+    "exact_output_files": [
+      "dataset_materialization_packet.json",
+      "environment_materialization_packet.json",
+      "recbole_dataset_bridge_packet.json",
+      "execution_boundary_and_negative_assertions.json",
+      "audit_handoff.json"
+    ],
+    "exact_output_count": 5,
+    "other_writes_allowed": false,
+    "worker_commit_allowed": false
+  },
+  "scope_guards": {
+    "proposal_only": true,
+    "new_source_interpretation": false,
+    "network_access": false,
+    "dataset_download_or_extraction": false,
+    "raw_to_atomic_conversion_execution": false,
+    "environment_creation_or_package_install": false,
+    "recbole_dataset_construction_or_loading": false,
+    "training_or_evaluation": false,
+    "hyperparameter_search": false,
+    "checkpoint_or_result_retrieval": false,
+    "project_v5_test_access": false,
+    "benchmark_admission": false
+  },
+  "required_central_validation": [
+    "exact five-file set and strict JSON",
+    "frozen input and source commit replay",
+    "literal argv and ordered dependency graph",
+    "exact URL and host allowlists",
+    "expected persistent and ephemeral write sets",
+    "timeouts and CPU, memory, disk, retry and concurrency limits",
+    "GroupLens and Python installer checksum semantics",
+    "twenty direct package pins and local RecBole source lock",
+    "byte-identical installed-package dataset bridge",
+    "machine-readable negative execution assertions"
+  ],
+  "next_gate": "CENTRAL_EXACT_HASH_SCHEMA_SEMANTIC_AND_COMMAND_SAFETY_VALIDATION_BEFORE_R6_M0_R6_M1",
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}
