@@ -1,0 +1,421 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r6-c1r1-attempt002-audit-handoff-1.1",
+  "created_at": "2026-08-23",
+  "stage_id": "R6-C1R1",
+  "artifact": "audit_handoff",
+  "proposal_only": true,
+  "execution_performed": false,
+  "execution_authorized": false,
+  "verdict": "READY_FOR_CENTRAL_VALIDATION_OF_R6_C1R1_ATTEMPT002_ONLY_FAIL_CLOSED",
+  "source_commit": "914b17fc9e4758a852948ae92b9f2591b3796459",
+  "entry_state": {
+    "workspace": "E:\\UIT\\cv\\backend",
+    "exact_entry_commit": "60e51b017f5a37e9839c09e2ab014ba0f9a29b4d",
+    "entry_gate_command": "python research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_g0_gate.py",
+    "entry_gate_exit_code": 0,
+    "entry_gate_verdict": "PASS_R6_G0_FROZEN_31_OF_31_READY_FOR_R6_C1",
+    "frozen_inputs_verified": 31,
+    "frozen_inputs_expected": 31,
+    "strict_json_inputs_verified": 19,
+    "strict_json_inputs_expected": 19,
+    "gate_checks_passed": 35,
+    "gate_checks_expected": 35
+  },
+  "input_replay": {
+    "status": "PASS",
+    "hash_algorithm": "SHA-256",
+    "raw_and_canonical_lf_replay": "31_OF_31",
+    "strict_json_duplicate_and_case_collision_replay": "19_OF_19",
+    "frozen_controls": [
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_g0_decision_freeze.json",
+        "canonical_lf_bytes": 12890,
+        "canonical_lf_sha256": "32f7e4c82ee1ffd105d365a98306cdef2a9b21f72dd1be10113188e40bf1c5c1"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_g0_frozen_input_manifest.json",
+        "canonical_lf_bytes": 13959,
+        "canonical_lf_sha256": "1624a007ff5ad0326a3f426f95f1e880f7d75c00725b4c5da452eb31ec973e7b"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_g0_gate_receipt.json",
+        "canonical_lf_bytes": 4810,
+        "canonical_lf_sha256": "faa4d3a3466d62d99115f17460f3adab3b1f53eff779fe02e87b148b406ee0d6"
+      }
+    ],
+    "candidate_id": "R5-CAND-RECBOLE-BPR-ML100K-001",
+    "recbole_revision": "9a6f63d8d4a5b989fe27955a833f813a6d86041e",
+    "recbole_git_tree": "08915121fea069a30f7e3e97a72e16e7e76d43c6"
+  },
+  "actual_model_profile": {
+    "display": "Sol High Fast",
+    "runtime_model": "gpt-5.6-sol",
+    "reasoning": "high",
+    "service_tier": "priority"
+  },
+  "authorship_boundary": {
+    "exclusive_write_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_aj/E4_R6C1R1_attempt002_command_packet",
+    "exact_file_count": 5,
+    "exact_files": [
+      "dataset_materialization_packet.json",
+      "environment_materialization_packet.json",
+      "recbole_dataset_bridge_packet.json",
+      "execution_boundary_and_negative_assertions.json",
+      "audit_handoff.json"
+    ],
+    "files_outside_exclusive_root_written_by_worker": 0,
+    "worker_commit_created": false,
+    "new_source_interpretation_performed": false,
+    "scientific_choice_changed": false,
+    "changed_files_in_this_fail_closed_rework": [
+      "dataset_materialization_packet.json",
+      "environment_materialization_packet.json",
+      "recbole_dataset_bridge_packet.json",
+      "execution_boundary_and_negative_assertions.json",
+      "audit_handoff.json"
+    ],
+    "new_files_created_by_rework": 5,
+    "files_deleted_by_rework": 0
+  },
+  "central_contract_observation": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_c1_central_validation_contract.md",
+    "read_completely": true,
+    "workspace_head_after_central_preregistration": "397a71fbbc8023102e00fabb014c45a8ece360c5",
+    "scope_effect": "NO_SCOPE_WIDENING",
+    "edited_by_worker": false,
+    "entry_commit_remains": "60e51b017f5a37e9839c09e2ab014ba0f9a29b4d"
+  },
+  "command_counts": {
+    "dataset_materialization_packet": 8,
+    "environment_materialization_packet": 25,
+    "recbole_dataset_bridge_packet": 3,
+    "total_proposed_commands": 36,
+    "proposed_commands_executed": 0,
+    "materialization_commands_executed": 0,
+    "experiment_commands_executed": 0,
+    "argv_recomposition_verified": 36,
+    "argv_recomposition_failed": 0,
+    "command_ids_and_order_preserved": true
+  },
+  "url_and_host_allowlists": {
+    "dataset": {
+      "hosts": [
+        "files.grouplens.org"
+      ],
+      "exact_urls": [
+        "https://files.grouplens.org/datasets/movielens/ml-100k-README.txt",
+        "https://files.grouplens.org/datasets/movielens/ml-100k.zip.md5",
+        "https://files.grouplens.org/datasets/movielens/ml-100k.zip"
+      ],
+      "curl_required_first_options": [
+        "--disable",
+        "--proxy",
+        ""
+      ],
+      "ambient_curl_config_allowed": false,
+      "ambient_proxy_allowed": false,
+      "redirects": 0
+    },
+    "environment": {
+      "hosts": [
+        "www.python.org",
+        "pypi.org",
+        "files.pythonhosted.org",
+        "download.pytorch.org",
+        "download-r2.pytorch.org"
+      ],
+      "exact_bootstrap_urls": [
+        "https://www.python.org/ftp/python/3.11.9/python-3.11.9-amd64.exe",
+        "https://www.python.org/ftp/python/3.11.9/python-3.11.9-amd64.exe.sigstore"
+      ],
+      "indexes": [
+        "https://pypi.org/simple",
+        "https://download.pytorch.org/whl/cpu"
+      ],
+      "curl_required_first_options": [
+        "--disable",
+        "--proxy",
+        ""
+      ],
+      "ambient_curl_config_allowed": false,
+      "ambient_proxy_allowed": false,
+      "pip_isolated_required": true,
+      "unapproved_index_or_host_allowed": false
+    },
+    "bridge": {
+      "hosts": [],
+      "urls": [],
+      "all_network_denied": true
+    }
+  },
+  "expected_future_write_roots": {
+    "dataset": "E:\\UIT\\cv\\materialized-data\\hybrid-recsys-v5\\stage1e\\r6\\official_source\\grouplens_ml100k\\attempt-002",
+    "environment_and_bridge": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-002",
+    "both_external_non_git": true,
+    "harmonized_v5": false,
+    "project_v5_test": false,
+    "repository_materialization_writes": false,
+    "immutable_source_staging": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-002\\source-staging\\recbole_v1_2_1_9a6f63d",
+    "ephemeral_build_source": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-002\\temp\\recbole-build-source",
+    "external_environment_receipts": [
+      "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-002\\receipts\\recbole-source-staging-verification.json",
+      "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-002\\receipts\\recbole-ephemeral-build-source-receipt.json",
+      "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-002\\receipts\\recbole-staging-syntax-check.json"
+    ],
+    "source_staging_writes_after_E16": false,
+    "ephemeral_build_artifacts_confined_to_temp_build_source": true
+  },
+  "unresolved_runtime_facts": [
+    "Actual GroupLens archive bytes, locally replayed MD5 and SHA-256, and extracted member byte/hash inventory.",
+    "Actual canonical atomic ml-100k.inter byte count and SHA-256.",
+    "Actual Python installer and Sigstore byte sizes and SHA-256 values, Authenticode signer identity, and installed CPython runtime identity.",
+    "Actual direct and transitive wheel URLs, filenames, wheel tags, sizes and SHA-256 values.",
+    "Actual E16 source-staging verification receipt and exact destination replay.",
+    "Actual E17 ephemeral build-source receipt, build outputs confined to the ephemeral copy, and postbuild immutable staging replay.",
+    "Actual local RecBole wheel filename, size and SHA-256.",
+    "Actual deterministic E20/E21/E22 receipts and E24 read-only syntax receipt.",
+    "Actual installed interpreter, package, OS and hardware inventory.",
+    "Actual installed-package bridge destination byte count, SHA-256 and row-count receipt."
+  ],
+  "no_execution_assertions": {
+    "dataset_downloaded_or_extracted": false,
+    "raw_to_atomic_conversion_executed": false,
+    "environment_created": false,
+    "package_downloaded_or_installed": false,
+    "recbole_dataset_bridge_created": false,
+    "recbole_dataset_constructed_or_loaded": false,
+    "training_executed": false,
+    "evaluation_executed": false,
+    "tuning_executed": false,
+    "checkpoint_or_result_retrieved": false,
+    "project_v5_test_opened": false,
+    "benchmark_admitted": false,
+    "paper_metric_created": false,
+    "network_used_by_worker": false,
+    "source_staging_created": false,
+    "ephemeral_build_source_created": false,
+    "local_recbole_wheel_built": false,
+    "syntax_check_executed": false,
+    "proposed_curl_command_executed": false,
+    "proposed_pip_command_executed": false,
+    "proposed_command_executed": false,
+    "materialization_performed": false,
+    "commit_created": false
+  },
+  "validation_commands_executed_by_worker": {
+    "mandatory_entry_gate_command_count": 0,
+    "mandatory_entry_gate_commands": [],
+    "entry_gate_classification": "SOURCE_C1_GATE_RETAINED_AS_HISTORICAL_PROVENANCE_NOT_REEXECUTED_IN_R6_C1R1",
+    "rework_validation_categories": [
+      "read-only file and Git-state inspection",
+      "strict UTF-8 JSON duplicate/case-collision parsing",
+      "raw and canonical-LF SHA-256 calculation",
+      "Python ast.parse of embedded -c source without executing it",
+      "PowerShell Parser.ParseInput of embedded -Command source without executing it",
+      "static argv recomposition, forbidden-surface, curl-prefix, pip-isolated, write-set and marker assertions"
+    ],
+    "proposed_command_count_executed": 0,
+    "network_command_count_executed": 0,
+    "materialization_command_count_executed": 0,
+    "install_command_count_executed": 0,
+    "experiment_command_count_executed": 0
+  },
+  "packet_validation_summary": {
+    "strict_utf8_json_required": true,
+    "utf8_bom_allowed": false,
+    "duplicate_keys_allowed": false,
+    "case_colliding_keys_allowed": false,
+    "exact_packet_file_count": 5,
+    "literal_argv_command_count": 36,
+    "argv_recomposition_result": "PASS_36_OF_36",
+    "command_counts": {
+      "dataset": 8,
+      "environment": 25,
+      "bridge": 3
+    },
+    "command_order_preserved": true,
+    "embedded_python_ast_parse_result": "PASS_16_OF_16_STATIC_ONLY",
+    "embedded_powershell_parse_result": "PASS_8_OF_8_STATIC_ONLY",
+    "forbidden_execution_scan_result": "PASS_NO_FORBIDDEN_EXECUTION_SURFACE",
+    "curl_ambient_guard_result": "PASS_5_OF_5",
+    "pip_isolated_guard_result": "PASS_9_OF_9_APPLICABLE_COMMANDS",
+    "source_staging_hardening_static_result": "PASS_F001_F004_F005_MARKERS",
+    "proposed_commands_executed": 0
+  },
+  "authorization": {
+    "authorized_next_action": "CENTRAL_VALIDATION_OF_R6_C1R1_ATTEMPT002",
+    "materialization_authorized": false,
+    "environment_creation_authorized": false,
+    "bridge_execution_authorized": false,
+    "experiment_execution_authorized": false,
+    "network_execution_authorized": false,
+    "other_action_authorized": false
+  },
+  "fail_closed_conditions": [
+    "Any file-set, UTF-8/BOM, duplicate-key, case-collision, hash, command-order, argv-recomposition, allowlist, write-set, resource-bound, checksum, signature, source-lock, staging/build-source immutability, bridge-equality or forbidden-execution mismatch returns FAIL_R6_C1R1_ATTEMPT002_REWORK_REQUIRED.",
+    "Any curl command lacking exact first options --disable --proxy empty, or any applicable pip command lacking --isolated, returns FAIL_R6_C1R1_ATTEMPT002_REWORK_REQUIRED.",
+    "Any E16/E17 source, staging, manifest, revision/tree, 265-file, 1,541,044-byte or per-file SHA-256 mismatch returns FAIL_R6_C1R1_ATTEMPT002_REWORK_REQUIRED.",
+    "Any link, junction, reparse, non-regular, missing, unexpected or case-colliding source/staging/build-source path returns FAIL_R6_C1R1_ATTEMPT002_REWORK_REQUIRED.",
+    "Any E17 build from immutable staging, any post-E16 staging mutation, or any staging build/egg-info/__pycache__/pyc artifact returns FAIL_R6_C1R1_ATTEMPT002_REWORK_REQUIRED.",
+    "Any E20/E21/E22/E24 BOM, nondeterministic encoding, PowerShell Set-Content receipt write, compileall, pyc/cache or staging write returns FAIL_R6_C1R1_ATTEMPT002_REWORK_REQUIRED.",
+    "Unresolved runtime facts remain unresolved and cannot be fabricated, repaired or promoted by this handoff.",
+    "This handoff authorizes only CENTRAL_VALIDATION_OF_R6_C1R1_ATTEMPT002 and cannot authorize R6-M0, R6-M1, bridge execution, Dataset loading, training, evaluation, TEST access, benchmark admission or a paper claim."
+  ],
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "central_fail_closed_rework": {
+    "status": "R6_C1R1_ATTEMPT002_MECHANICAL_RECOVERY_PACKET_PENDING_CENTRAL_VALIDATION",
+    "findings": [
+      {
+        "id": "C1-F001",
+        "closure": "E16 validates both frozen manifests and exact source immediately before exact binary copy, then validates all destination bytes/hashes and writes an external deterministic receipt; E17 replays the same facts immediately before build."
+      },
+      {
+        "id": "C1-F002",
+        "closure": "E20/E21/E22/E24 deterministic text/JSON receipts are emitted by exact venv Python as UTF-8 without BOM and LF; no PowerShell 5.1 Set-Content encoding dependency."
+      },
+      {
+        "id": "C1-F003",
+        "closure": "All 36 command records satisfy argv == [executable] + arguments; B02 arguments contain -B, -c and script."
+      },
+      {
+        "id": "C1-F004",
+        "closure": "E24 validates exact 150-file/1,378,341-byte Python inventory and compiles bytes in memory only; no compileall, pyc, __pycache__ or staging write."
+      },
+      {
+        "id": "C1-F005",
+        "closure": "E17 creates and revalidates a previously absent exact 265-file/1,541,044-byte ephemeral build-source, builds only from it, then replays immutable staging unchanged."
+      },
+      {
+        "id": "C1-F006",
+        "closure": "All five curl argv arrays begin with --disable --proxy empty, remain HTTPS-only, use exact URLs and allow zero redirects."
+      },
+      {
+        "id": "C1-F007",
+        "closure": "Six pip resolve/download/build/install surfaces and three additional pip observation surfaces use --isolated; explicit indexes/no-index/hash boundaries remain."
+      }
+    ],
+    "source_revision": "9a6f63d8d4a5b989fe27955a833f813a6d86041e",
+    "source_tree": "08915121fea069a30f7e3e97a72e16e7e76d43c6",
+    "selected_file_count": 265,
+    "selected_total_bytes": 1541044,
+    "staged_python_file_count": 150,
+    "staged_python_total_bytes": 1378341,
+    "command_counts_changed": false,
+    "scientific_boundary_expanded": false,
+    "materialization_or_experiment_executed": false,
+    "attempt_001_failure_receipt_required": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_m0_m1_attempt_001_failure_receipt.json",
+    "control_plane_replacement": "C:\\Users\\ACER\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\powershell\\pwsh.exe",
+    "attempt_001_failure_receipt_raw_bytes": 9902,
+    "attempt_001_failure_receipt_raw_sha256": "79f90bf974ad19a364b6f09d0270e0f9211144470aeab3ab046d68634a9f0745",
+    "attempt_001_failure_receipt_status": "FAIL_CLOSED_CONTROL_PLANE_CAPABILITY_MISMATCH"
+  },
+  "output_integrity_non_self_referential": {
+    "hash_semantics": "raw bytes and UTF-8 text canonicalized CRLF/CR to LF; all listed files have raw bytes equal canonical-LF bytes at capture",
+    "files": [
+      {
+        "file": "dataset_materialization_packet.json",
+        "raw_bytes": 56691,
+        "raw_sha256": "56b07d575e28879e485c463fe5706f3987b8fbf9b3583c64179410a996aebb4e",
+        "canonical_lf_bytes": 56691,
+        "canonical_lf_sha256": "56b07d575e28879e485c463fe5706f3987b8fbf9b3583c64179410a996aebb4e"
+      },
+      {
+        "file": "environment_materialization_packet.json",
+        "raw_bytes": 175457,
+        "raw_sha256": "e9ceadec0aa367a8b2d02a5c9cde107e9532cef193c733dce0a175d391691275",
+        "canonical_lf_bytes": 175457,
+        "canonical_lf_sha256": "e9ceadec0aa367a8b2d02a5c9cde107e9532cef193c733dce0a175d391691275"
+      },
+      {
+        "file": "recbole_dataset_bridge_packet.json",
+        "raw_bytes": 24331,
+        "raw_sha256": "9df9f04de7adad75ca526ca5ee86fb683f7d5ae16600ec18943ff5c6266cac0c",
+        "canonical_lf_bytes": 24331,
+        "canonical_lf_sha256": "9df9f04de7adad75ca526ca5ee86fb683f7d5ae16600ec18943ff5c6266cac0c"
+      },
+      {
+        "file": "execution_boundary_and_negative_assertions.json",
+        "raw_bytes": 46718,
+        "raw_sha256": "977cc068cc7b97f8432ac329310d02b8e3190915b8a45c3d242786d68b14057d",
+        "canonical_lf_bytes": 46718,
+        "canonical_lf_sha256": "977cc068cc7b97f8432ac329310d02b8e3190915b8a45c3d242786d68b14057d"
+      }
+    ],
+    "audit_handoff_self_hash_policy": "Not embedded because self-hashing is circular; report final raw/canonical audit_handoff hash externally after write."
+  },
+  "recovery_provenance": {
+    "recovery_stage": "R6-C1R1",
+    "recovery_attempt": "attempt-002",
+    "source_packet_stage": "R6-C1",
+    "source_packet_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ai/E4_R6C1_materialization_command_packet",
+    "source_packet_artifacts": [
+      {
+        "file": "dataset_materialization_packet.json",
+        "raw_bytes": 51905,
+        "raw_sha256": "0f2daf0f4f9441046019991549006258aa0411b5d3c439b052f457e5f75eae66",
+        "canonical_lf_bytes": 51905,
+        "canonical_lf_sha256": "0f2daf0f4f9441046019991549006258aa0411b5d3c439b052f457e5f75eae66"
+      },
+      {
+        "file": "environment_materialization_packet.json",
+        "raw_bytes": 171024,
+        "raw_sha256": "896fb502b7492d39fd8fd33489c1d739a04181d83a016ecf2be6d03a910cba6e",
+        "canonical_lf_bytes": 171024,
+        "canonical_lf_sha256": "896fb502b7492d39fd8fd33489c1d739a04181d83a016ecf2be6d03a910cba6e"
+      },
+      {
+        "file": "recbole_dataset_bridge_packet.json",
+        "raw_bytes": 20469,
+        "raw_sha256": "eb4b276a554360a24378061ba09319c540507270175bb3c083432d9cd63aa56b",
+        "canonical_lf_bytes": 20469,
+        "canonical_lf_sha256": "eb4b276a554360a24378061ba09319c540507270175bb3c083432d9cd63aa56b"
+      },
+      {
+        "file": "execution_boundary_and_negative_assertions.json",
+        "raw_bytes": 42087,
+        "raw_sha256": "d0c775370b3bb618d926b1b36dc79379f8ca5ebd3b8be9e9fc7cc8697ad733a6",
+        "canonical_lf_bytes": 42087,
+        "canonical_lf_sha256": "d0c775370b3bb618d926b1b36dc79379f8ca5ebd3b8be9e9fc7cc8697ad733a6"
+      },
+      {
+        "file": "audit_handoff.json",
+        "raw_bytes": 16739,
+        "raw_sha256": "382977df2bf8ee903e75052226954e3287e80b6de853df75ee1c2d0b2f40cfb3",
+        "canonical_lf_bytes": 16739,
+        "canonical_lf_sha256": "382977df2bf8ee903e75052226954e3287e80b6de853df75ee1c2d0b2f40cfb3"
+      }
+    ],
+    "attempt_001_failure_receipt": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_m0_m1_attempt_001_failure_receipt.json",
+    "failure_receipt_binding": "PATH_RAW_AND_CANONICAL_SHA256_BOUND_AT_FINALIZATION",
+    "failure_receipt_present_at_generation": false,
+    "failure_receipt_required_before_central_validation": true,
+    "recovery_reason": "Prior immutable attempt failed before extraction or installation because the selected Windows PowerShell control plane could not resolve required hashing commands under the sanitized environment; attempt-002 binds every PowerShell command to the exact pwsh control-plane executable.",
+    "exact_control_plane_executable": "C:\\Users\\ACER\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\powershell\\pwsh.exe",
+    "source_packet_modified": false,
+    "prior_attempt_root_modified_deleted_or_reused": false,
+    "scientific_scope_changed": false,
+    "command_ids_order_or_counts_changed": false,
+    "network_or_scientific_command_executed_during_generation": false,
+    "generated_from_git_head": "914b17fc9e4758a852948ae92b9f2591b3796459",
+    "failure_receipt_present_at_finalization": true,
+    "failure_receipt_raw_bytes": 9902,
+    "failure_receipt_raw_sha256": "79f90bf974ad19a364b6f09d0270e0f9211144470aeab3ab046d68634a9f0745",
+    "failure_receipt_canonical_lf_bytes": 9902,
+    "failure_receipt_canonical_lf_sha256": "79f90bf974ad19a364b6f09d0270e0f9211144470aeab3ab046d68634a9f0745",
+    "failure_receipt_strict_utf8_json": true,
+    "failure_receipt_status_observed": "FAIL_CLOSED_CONTROL_PLANE_CAPABILITY_MISMATCH",
+    "failure_receipt_truth_state_observed": {
+      "RESULT_STATUS": "NOT_RUN",
+      "TEST_SET_OPENED": "NO",
+      "ACCEPTED_RESULT_ROWS": 0,
+      "execution_authorized": false,
+      "project_benchmark_numbers": "INVALID_FOR_PAPER"
+    }
+  }
+}

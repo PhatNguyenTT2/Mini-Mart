@@ -1,0 +1,163 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r6-c1r1-validation-receipt-1.0",
+  "created_at": "2026-08-23",
+  "stage_id": "R6-C1R1",
+  "status": "COMPLETE_CENTRALLY_VALIDATED",
+  "recovery_of": {
+    "failed_stage": "R6-M0-R6-M1-ATTEMPT-001",
+    "failure_receipt": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_m0_m1_attempt_001_failure_receipt.json",
+    "failure_receipt_raw_bytes": 9902,
+    "failure_receipt_raw_sha256": "79f90bf974ad19a364b6f09d0270e0f9211144470aeab3ab046d68634a9f0745",
+    "failure_state": "FAIL_CLOSED_CONTROL_PLANE_CAPABILITY_MISMATCH",
+    "failed_attempt_retained_immutable": true,
+    "in_place_retry_or_repair": false
+  },
+  "entry": {
+    "worker_source_commit": "914b17fc9e4758a852948ae92b9f2591b3796459",
+    "failure_evidence_commit": "cbec90945a574871bd9c48aeee85e7c2279f881c",
+    "historical_c1_validation_receipt": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_c1_validation_receipt.json",
+    "historical_c1_validation_receipt_raw_sha256": "058a6dfaf3fac9fa81c6544a03a88669992ff072be693073af7e14dd96f108e8",
+    "historical_c1_verdict": "PASS_R6_C1_EXACT_COMMAND_PACKET_READY_FOR_BOUNDED_R6_M0_R6_M1"
+  },
+  "contract": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_c1r1_attempt002_recovery_contract.md",
+    "raw_bytes": 5391,
+    "raw_sha256": "6dadc7e8a8565229d67406c0402dfa2350bf148e3bf052ece2bff838a160796b",
+    "canonical_lf_bytes": 5391,
+    "canonical_lf_sha256": "6dadc7e8a8565229d67406c0402dfa2350bf148e3bf052ece2bff838a160796b"
+  },
+  "validator": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_c1r1_packet.py",
+    "raw_bytes": 36846,
+    "raw_sha256": "1ed39898e25c2b953cb7dfe98501ff1507a55b0406be5176e7eb830acda55f5e",
+    "canonical_lf_bytes": 36846,
+    "canonical_lf_sha256": "1ed39898e25c2b953cb7dfe98501ff1507a55b0406be5176e7eb830acda55f5e"
+  },
+  "worker": {
+    "agent_id": "01a02b6f-fa7f-7711-8e87-fc8ff57a7542",
+    "nickname": "Franklin",
+    "actual_model_profile": {
+      "display_name": "Sol High Fast",
+      "runtime_model_id": "gpt-5.6-sol",
+      "reasoning_effort": "high",
+      "service_tier": "priority"
+    },
+    "exclusive_write_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_aj/E4_R6C1R1_attempt002_command_packet",
+    "network_used": false,
+    "materialization_commands_executed": 0,
+    "scientific_commands_executed": 0,
+    "commit_created": false
+  },
+  "validation_run": {
+    "command": "python -B research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_c1r1_packet.py",
+    "exit_code": 0,
+    "passed": true,
+    "verdict": "PASS_R6_C1R1_ATTEMPT_002_PACKET_READY_FOR_BOUNDED_R6_M0_R6_M1",
+    "checks_passed": 26,
+    "checks_expected": 26,
+    "failure_count": 0,
+    "exact_output_files": 5,
+    "strict_utf8_no_bom_lf_json_outputs": 5,
+    "literal_argv_commands": 36,
+    "dataset_commands": 8,
+    "environment_commands": 25,
+    "bridge_commands": 3,
+    "pwsh_commands": 8,
+    "python_inline_sources": 16,
+    "forbidden_execution_matches": 0
+  },
+  "central_validation_scope": {
+    "historical_source_packet_hashes_replayed": "5/5",
+    "historical_c1_pass_receipt_replayed": true,
+    "attempt001_dataset_inventory_replayed": "6 files / 4931527 bytes / 9 directories",
+    "attempt001_environment_inventory_replayed": "4 files / 26223921 bytes / 9 directories",
+    "attempt002_roots_absent": true,
+    "commands_semantically_equal_after_only_attempt_and_control_plane_normalization": "36/36",
+    "argv_hashes_recomputed": "36/36",
+    "pwsh_static_parse": "8/8",
+    "python_ast_parse": "16/16",
+    "control_plane_capability_gate": "PASS_PWSH_7_6_4_GET_FILE_HASH_AND_AUTHENTICODE",
+    "scientific_scope_change": false
+  },
+  "historical_live_replay_interpretation": {
+    "r6_g0_current_result": "EXPECTED_FAIL_33_OF_35_AFTER_ATTEMPT001_ROOT_CREATION",
+    "r6_g0_expected_only_failures": [
+      "dataset_root_external_non_git_and_absent",
+      "environment_external_non_git_immutable_attempt"
+    ],
+    "historical_c1_current_result": "EXPECTED_FAIL_41_OF_44_AFTER_ATTEMPT001_ROOT_CREATION",
+    "historical_c1_expected_only_failures": [
+      "r6_g0_replay_still_passes",
+      "dataset_external_root_only_harmonized_and_repo_writes_denied",
+      "environment_external_exact_python_3119_no_ambient_interpreter"
+    ],
+    "unexpected_hash_or_strict_json_failure": false,
+    "interpretation": "The historical absence preconditions are consumed by the retained failed attempt. All other historical checks replay; attempt-002 receives a new absence gate."
+  },
+  "validator_alignment_audit": {
+    "artifact_defects_found": 0,
+    "validator_corrections_before_final_pass": [
+      "Use raw binary fingerprinting for the locked pwsh executable rather than UTF-8 text canonicalization.",
+      "Normalize escaped Windows paths inside embedded Python source for command-equivalence comparison.",
+      "Match the handoff non-self-referential fingerprint schema's file field rather than a full path field."
+    ],
+    "worker_output_fingerprints_changed_during_central_alignment": false,
+    "final_result": "PASS_26_OF_26"
+  },
+  "output_fingerprints": [
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_aj/E4_R6C1R1_attempt002_command_packet/dataset_materialization_packet.json",
+      "raw_bytes": 56691,
+      "raw_sha256": "56b07d575e28879e485c463fe5706f3987b8fbf9b3583c64179410a996aebb4e",
+      "canonical_lf_bytes": 56691,
+      "canonical_lf_sha256": "56b07d575e28879e485c463fe5706f3987b8fbf9b3583c64179410a996aebb4e"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_aj/E4_R6C1R1_attempt002_command_packet/environment_materialization_packet.json",
+      "raw_bytes": 175457,
+      "raw_sha256": "e9ceadec0aa367a8b2d02a5c9cde107e9532cef193c733dce0a175d391691275",
+      "canonical_lf_bytes": 175457,
+      "canonical_lf_sha256": "e9ceadec0aa367a8b2d02a5c9cde107e9532cef193c733dce0a175d391691275"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_aj/E4_R6C1R1_attempt002_command_packet/recbole_dataset_bridge_packet.json",
+      "raw_bytes": 24331,
+      "raw_sha256": "9df9f04de7adad75ca526ca5ee86fb683f7d5ae16600ec18943ff5c6266cac0c",
+      "canonical_lf_bytes": 24331,
+      "canonical_lf_sha256": "9df9f04de7adad75ca526ca5ee86fb683f7d5ae16600ec18943ff5c6266cac0c"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_aj/E4_R6C1R1_attempt002_command_packet/execution_boundary_and_negative_assertions.json",
+      "raw_bytes": 46718,
+      "raw_sha256": "977cc068cc7b97f8432ac329310d02b8e3190915b8a45c3d242786d68b14057d",
+      "canonical_lf_bytes": 46718,
+      "canonical_lf_sha256": "977cc068cc7b97f8432ac329310d02b8e3190915b8a45c3d242786d68b14057d"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_aj/E4_R6C1R1_attempt002_command_packet/audit_handoff.json",
+      "raw_bytes": 21144,
+      "raw_sha256": "809f26f63dcb4b049a2d8b142d32b1074f3ee2ca2065b16183b85145aa92d71d",
+      "canonical_lf_bytes": 21144,
+      "canonical_lf_sha256": "809f26f63dcb4b049a2d8b142d32b1074f3ee2ca2065b16183b85145aa92d71d"
+    }
+  ],
+  "gate_effect": {
+    "attempt002_dispatch_freeze_allowed": true,
+    "attempt002_dataset_materialization_allowed_after_new_dispatch_and_preflight": true,
+    "attempt002_environment_materialization_allowed_after_new_dispatch_and_preflight": true,
+    "bridge_execution_allowed_before_separate_successful_m0_m1_receipts": false,
+    "recbole_dataset_loading_allowed": false,
+    "training_allowed": false,
+    "evaluation_allowed": false,
+    "test_access_allowed": false,
+    "benchmark_admission_allowed": false
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "next_gate": "FREEZE_NEW_ATTEMPT002_DISPATCH_RUNNER_AND_RUN_CENTRAL_PREFLIGHT"
+}
