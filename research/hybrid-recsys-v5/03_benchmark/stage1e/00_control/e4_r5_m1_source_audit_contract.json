@@ -1,0 +1,142 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r5-m1-source-audit-contract-1.0",
+  "created_at": "2026-08-23",
+  "stage_id": "R5-M1",
+  "entry_gate": "PASS_R5_M0_TWO_HASH_LOCKED_SOURCE_TREES_READY_FOR_R5_M1",
+  "audit_mode": "READ_ONLY_PINNED_SOURCE_SEMANTIC_AUDIT_NO_EXECUTION",
+  "model_profile": {
+    "display_name": "Sol XHigh Standard",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "xhigh",
+    "service_tier": "standard",
+    "dispatch_service_tier_override": null
+  },
+  "closed_status_sets": {
+    "dimension": [
+      "PASS_SOURCE_ESTABLISHED",
+      "PARTIAL_SOURCE_BOUND",
+      "FAIL_MISSING",
+      "FAIL_CONFLICT",
+      "DEFER_REQUIRES_DATA_OR_RUN"
+    ],
+    "candidate": [
+      "SOURCE_AUDITED_CANDIDATE_FOR_R5_G1",
+      "SOURCE_INCOMPLETE_CANDIDATE_FOR_R5_G1",
+      "SOURCE_CONFLICT_REJECT"
+    ],
+    "reproducibility": [
+      "SOURCE_AUDITED_NOT_RUN",
+      "SOURCE_INCOMPLETE_NOT_RUN",
+      "SOURCE_CONFLICT_NOT_RUN"
+    ]
+  },
+  "mandatory_audit_dimensions": [
+    {
+      "id": "S01_REVISION_LICENSE_SOURCE_INTEGRITY",
+      "criterion": "Reconfirm detached revision, source hashes, owner identity and code license from materialized files."
+    },
+    {
+      "id": "S02_ENVIRONMENT_DECLARATIONS_AND_UNRESOLVED_LOCK",
+      "criterion": "Extract Python/framework/direct dependency declarations and identify every version/platform/transitive gap; never invent a lock."
+    },
+    {
+      "id": "S03_TRAIN_ENTRYPOINT_CONFIG_DEFAULT_RESOLUTION",
+      "criterion": "Trace the exact source-owned training entrypoint, method registration, config precedence, defaults, seed and tuning surfaces."
+    },
+    {
+      "id": "S04_EVALUATOR_CANDIDATE_MASK_AGGREGATION_TIES",
+      "criterion": "Trace metric formula, full/sampled candidate construction, seen-item masking, aggregation and tie behavior with exact file/symbol locators."
+    },
+    {
+      "id": "S05_TEST_ISOLATION_AND_LEAKAGE_SURFACES",
+      "criterion": "Identify whether schema/cardinality/filtering/tuning/checkpoint selection can derive from evaluation TEST; absence of proof remains partial."
+    },
+    {
+      "id": "S06_NUMERIC_TARGET_PRODUCER_BINDING",
+      "criterion": "Assess whether the stored numeric target is tied to this exact revision, data, full config, seed, environment, evaluator and run receipt."
+    },
+    {
+      "id": "S07_DATASET_LINEAGE_REQUIREMENTS",
+      "criterion": "Identify source data loaders/converters and the exact additional provider-byte and transformation receipts required later; do not acquire data."
+    },
+    {
+      "id": "S08_BOUNDED_V5_ADAPTER_FEASIBILITY",
+      "criterion": "Map v5 fields to source interfaces and decide whether a representation-only adapter is plausibly bounded without changing objective or evaluator."
+    },
+    {
+      "id": "S09_NEXT_GATE_AND_REPRODUCTION_PRECONDITIONS",
+      "criterion": "List the minimal dataset, environment, config, parity and rerun actions needed before benchmark admission or execution."
+    }
+  ],
+  "lanes": [
+    {
+      "stage_id": "R5-M1A",
+      "candidate_id": "R5-CAND-RECBOLE-BPR-ML100K-001",
+      "source_root": "E:/UIT/cv/backend/research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d",
+      "full_revision": "9a6f63d8d4a5b989fe27955a833f813a6d86041e",
+      "write_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ad/E4_R5M1A_recbole_source_audit"
+    },
+    {
+      "stage_id": "R5-M1B",
+      "candidate_id": "R5-CAND-RECBOLE-GNN-LIGHTGCN-ML1M-001",
+      "source_root": "E:/UIT/cv/backend/research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_gnn_632ef88",
+      "full_revision": "632ef888589944c190ad8f449b49ca559618d4df",
+      "write_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ae/E4_R5M1B_recbole_gnn_source_audit"
+    }
+  ],
+  "required_source_fact_fields": [
+    "fact_id",
+    "dimension_id",
+    "status",
+    "claim",
+    "source_relative_path",
+    "symbol_or_line_locator",
+    "source_sha256_raw_bytes",
+    "evidence_excerpt_or_paraphrase",
+    "scope_limit"
+  ],
+  "output_contract": {
+    "exact_filenames": [
+      "source_fact_matrix.json",
+      "gap_closure_assessment.json",
+      "v5_adapter_feasibility.json",
+      "audit_report.md",
+      "audit_handoff.json"
+    ],
+    "extra_files_allowed": false,
+    "strict_json_file_count": 4,
+    "markdown_file_count": 1
+  },
+  "audit_invariants": {
+    "all_nine_dimensions_present_once": true,
+    "every_positive_fact_bound_to_materialized_blob_hash": true,
+    "source_files_are_read_only": true,
+    "network_access_allowed": false,
+    "cross_candidate_evidence_join_allowed": false,
+    "inferred_dependency_version_allowed": false,
+    "dataset_or_checkpoint_acquisition_allowed": false,
+    "package_install_or_environment_creation_allowed": false,
+    "vendor_source_execution_allowed": false,
+    "preprocessing_training_evaluation_allowed": false,
+    "project_v5_test_access_allowed": false,
+    "verified_reproducibility_claim_allowed_without_rerun": false,
+    "numeric_target_valid_for_paper": false
+  },
+  "handoff_requirements": {
+    "candidate_status_required": true,
+    "reproducibility_status_required": true,
+    "source_fact_count_required": true,
+    "pass_partial_fail_defer_counts_required": true,
+    "dispositive_conflicts_required": true,
+    "remaining_blockers_required": true,
+    "r5_g1_recommendation_required": true,
+    "truth_state_required": true
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

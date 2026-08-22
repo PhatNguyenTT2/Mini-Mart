@@ -1,0 +1,54 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r5-m0-validation-receipt-1.0",
+  "created_at": "2026-08-23",
+  "stage_id": "R5-M0-CENTRAL-VALIDATION",
+  "validator": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r5_m0.py",
+  "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ac/E4_R5M0_source_materialization",
+  "passed": true,
+  "verdict": "PASS_R5_M0_TWO_HASH_LOCKED_SOURCE_TREES_READY_FOR_R5_M1",
+  "failure_count": 0,
+  "mechanical_checks": {
+    "passed": 19,
+    "expected": 19
+  },
+  "output_files": {
+    "present": 5,
+    "expected": 5,
+    "strict_json_present": 4,
+    "strict_json_expected": 4
+  },
+  "materialization": {
+    "candidate_count": 2,
+    "candidate_count_verified": 2,
+    "tree_entries": 814,
+    "selected_tree_entries": 330,
+    "materialized_files": 330,
+    "materialized_files_hash_verified": 330,
+    "materialized_total_size_bytes": 1786352,
+    "prohibited_selected_artifacts": 0,
+    "submodules": 0,
+    "symlinks": 0,
+    "lfs_pointers": 0,
+    "vendor_worktree_modifications": 0
+  },
+  "candidate_revisions": {
+    "R5-CAND-RECBOLE-BPR-ML100K-001": "9a6f63d8d4a5b989fe27955a833f813a6d86041e",
+    "R5-CAND-RECBOLE-GNN-LIGHTGCN-ML1M-001": "632ef888589944c190ad8f449b49ca559618d4df"
+  },
+  "execution_boundary": {
+    "source_only_materialization": "COMPLETE",
+    "dataset_or_checkpoint_download": "NOT_PERFORMED_BLOCKED",
+    "environment_creation_or_package_install": "NOT_PERFORMED_BLOCKED",
+    "vendor_source_execution": "NOT_PERFORMED_BLOCKED",
+    "preprocessing_training_evaluation": "NOT_PERFORMED_BLOCKED",
+    "test_access": "NOT_PERFORMED_BLOCKED",
+    "benchmark_admission": "NONE"
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r5-m1-gate-receipt-1.0",
+  "created_at": "2026-08-23",
+  "stage_id": "R5-M1-CENTRAL-ENTRY-GATE",
+  "validator": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r5_m1_gate.py",
+  "frozen_input_manifest": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r5_m1_frozen_input_manifest.json",
+  "passed": true,
+  "verdict": "PASS_R5_M1_FROZEN_15_OF_15_READY_FOR_PARALLEL_AUDITS",
+  "failure_count": 0,
+  "mechanical_checks": {
+    "passed": 14,
+    "expected": 14
+  },
+  "frozen_inputs": {
+    "matched": 15,
+    "expected": 15,
+    "strict_json_verified": 11,
+    "strict_json_expected": 11
+  },
+  "parallel_stages": [
+    {
+      "stage_id": "R5-M1A",
+      "candidate_id": "R5-CAND-RECBOLE-BPR-ML100K-001",
+      "status": "READY_FOR_DISPATCH"
+    },
+    {
+      "stage_id": "R5-M1B",
+      "candidate_id": "R5-CAND-RECBOLE-GNN-LIGHTGCN-ML1M-001",
+      "status": "READY_FOR_DISPATCH"
+    }
+  ],
+  "model_profile": {
+    "display_name": "Sol XHigh Standard",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "xhigh",
+    "service_tier": "standard",
+    "dispatch_service_tier_override": null
+  },
+  "audit_boundary": {
+    "source_read_only": true,
+    "network_access": false,
+    "dataset_environment_execution": false,
+    "test_access": false,
+    "verified_reproducibility_claim": false,
+    "benchmark_admission": false
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

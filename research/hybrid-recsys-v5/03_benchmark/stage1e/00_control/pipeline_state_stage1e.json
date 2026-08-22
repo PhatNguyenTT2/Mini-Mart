@@ -2,7 +2,7 @@
   "schema_version": "academic-research-pipeline-state-1.0",
   "project": "hybrid-recsys-v5",
   "stage": "1E",
-  "state": "stage1e_rebaseline_v2_r5_s0_complete_ready_for_source_only_materialization",
+  "state": "stage1e_rebaseline_v2_r5_m0_complete_m1_ready_for_parallel_source_audits",
   "updated_at": "2026-08-23",
   "model": "gpt-5.6-sol",
   "reasoning": "max",
@@ -778,7 +778,7 @@
       "next_gate": "SUPERSEDED_BY_USER_DECISION_AUTHORIZE_TARGETED_SOURCE_ONLY_EVIDENCE_MATERIALIZATION_REDESIGN"
     },
     "e4_r5": {
-      "status": "S0_COMPLETE_CENTRALLY_VALIDATED_READY_FOR_R5_M0_SOURCE_ONLY",
+      "status": "M0_COMPLETE_CENTRALLY_VALIDATED_M1_GATE_PASS_READY_FOR_PARALLEL_AUDITS",
       "entry_checkpoint": "USER_CONFIRMED_TARGETED_SOURCE_ONLY_EVIDENCE_MATERIALIZATION_REDESIGN",
       "source_stage": "R4-G0",
       "source_verdict": "NO_ADMISSIBLE_BUNDLE_STOP_FAIL_CLOSED",
@@ -818,10 +818,39 @@
         "R5-CAND-RECBOLE-GNN-LIGHTGCN-ML1M-001"
       ],
       "r5_m0": {
-        "status": "READY_NOT_STARTED",
+        "status": "COMPLETE_CENTRALLY_VALIDATED",
         "scope": "EXACT_TWO_NAMED_REPOSITORIES_SPARSE_SOURCE_ONLY",
+        "verdict": "PASS_R5_M0_TWO_HASH_LOCKED_SOURCE_TREES_READY_FOR_R5_M1",
+        "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ac/E4_R5M0_source_materialization",
+        "validation_receipt": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r5_m0_validation_receipt.json",
+        "candidate_count": 2,
+        "tree_entries": 814,
+        "materialized_files_hash_verified": 330,
+        "prohibited_selected_artifacts": 0,
         "dataset_environment_execution_authorized": false,
         "test_access_authorized": false
+      },
+      "r5_m1_parallel_group": {
+        "status": "ENTRY_GATE_PASS_READY_FOR_DISPATCH",
+        "expected": 2,
+        "active": 0,
+        "complete": 0,
+        "gate": "PASS_R5_M1_FROZEN_15_OF_15_READY_FOR_PARALLEL_AUDITS",
+        "frozen_inputs": "15/15",
+        "strict_json_inputs": "11/11",
+        "model": "gpt-5.6-sol",
+        "reasoning": "xhigh",
+        "service_tier": "standard",
+        "stages": {
+          "R5-M1A": {
+            "candidate_id": "R5-CAND-RECBOLE-BPR-ML100K-001",
+            "status": "READY_FOR_DISPATCH"
+          },
+          "R5-M1B": {
+            "candidate_id": "R5-CAND-RECBOLE-GNN-LIGHTGCN-ML1M-001",
+            "status": "READY_FOR_DISPATCH"
+          }
+        }
       },
       "truth_state": {
         "RESULT_STATUS": "NOT_RUN",
@@ -830,7 +859,7 @@
         "project_benchmark_numbers": "INVALID_FOR_PAPER"
       },
       "execution_authorized": false,
-      "next_gate": "R5-M0_CENTRAL_SPARSE_SOURCE_MATERIALIZATION_AND_HASH_RECEIPT"
+      "next_gate": "DISPATCH_R5_M1A_AND_R5_M1B_SOL_XHIGH_STANDARD_READ_ONLY_SOURCE_AUDITS"
     }
   },
   "central_preregistration_lock": "PASS_R5_S0_SOURCE_ONLY_SCOPE_LOCKED",
@@ -838,5 +867,5 @@
   "harmonized_v5": "BLOCKED",
   "external_validation": "BLOCKED",
   "efficiency": "BLOCKED_AFTER_ACCURACY",
-  "next_gate": "R5-M0: materialize only the two named repositories at locked commits through sparse source checkout, verify provenance and hashes, and emit source-only receipts. Dataset/checkpoint acquisition, package or environment creation, vendor execution, preprocessing, training, evaluation and TEST access remain blocked until a positive R5-G1 and explicit R5-M2 user checkpoint."
+  "next_gate": "Dispatch R5-M1A and R5-M1B in parallel with Sol XHigh Standard for read-only pinned-source audits. Dataset/checkpoint acquisition, package or environment creation, vendor execution, preprocessing, training, evaluation and TEST access remain blocked until a positive R5-G1 and explicit R5-M2 user checkpoint."
 }
