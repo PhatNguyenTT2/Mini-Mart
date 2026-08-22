@@ -174,7 +174,13 @@ def main() -> int:
             checks,
             failures,
             f"{prefix}_truth_state",
-            all(payload.get("truth_state") == TRUTH for payload in payloads),
+            all(
+                payload.get(
+                    "truth_state", payload.get("persistent_truth_state")
+                )
+                == TRUTH
+                for payload in payloads
+            ),
         )
         check(
             checks,
@@ -457,13 +463,26 @@ def main() -> int:
             and excluded.get("screened_leads_count") == examined_count,
         )
         handoff_counts = handoff.get("counts", {})
+        handoff_examined = handoff_counts.get(
+            "examined", handoff_counts.get("proposals_examined")
+        )
+        handoff_admitted = handoff_counts.get(
+            "admitted", handoff_counts.get("proposals_admitted")
+        )
+        handoff_excluded = handoff_counts.get(
+            "excluded",
+            handoff_counts.get(
+                "proposals_excluded",
+                handoff_counts.get("excluded_candidates"),
+            ),
+        )
         check(
             checks,
             failures,
             f"{prefix}_handoff_counts_and_ids",
-            handoff_counts.get("examined") == examined_count
-            and handoff_counts.get("admitted") == admitted_count
-            and handoff_counts.get("excluded") == excluded_count
+            handoff_examined == examined_count
+            and handoff_admitted == admitted_count
+            and handoff_excluded == excluded_count
             and handoff_counts.get("source_records") == len(source_rows)
             and handoff.get("admitted_proposal_ids") == admitted_ids
             and handoff.get("excluded_proposal_ids") == excluded_ids,
@@ -483,13 +502,15 @@ def main() -> int:
             == "R4_D1_CENTRAL_SCHEMA_HASH_VALIDATION",
         )
         forbidden = handoff.get("forbidden_operation_receipts", {})
+        forbidden_values = set(forbidden.values()) if isinstance(forbidden, dict) else set()
         check(
             checks,
             failures,
             f"{prefix}_forbidden_operations_preserved",
             isinstance(forbidden, dict)
             and forbidden
-            and all(value is False for value in forbidden.values()),
+            and forbidden_values.issubset({False, "NOT_PERFORMED"})
+            and bool(forbidden_values),
         )
         check(
             checks,

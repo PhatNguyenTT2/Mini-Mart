@@ -1,0 +1,51 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r4-g0-frozen-input-gate-receipt-1.0",
+  "created_at": "2026-08-22",
+  "stage_id": "R4-G0-FROZEN-INPUT-VALIDATION",
+  "validator": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r4_g0_frozen_inputs.py",
+  "manifest": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r4_g0_frozen_input_manifest.json",
+  "passed": true,
+  "verdict": "PASS_R4_G0_FROZEN_22_OF_22_READY_FOR_CENTRAL_SYNTHESIS",
+  "failure_count": 0,
+  "mechanical_checks": {
+    "passed": 14,
+    "expected": 14
+  },
+  "frozen_inputs": {
+    "matched": 22,
+    "expected": 22,
+    "strict_json_verified": 17,
+    "strict_json_expected": 17,
+    "worker_outputs_matched": 15,
+    "worker_outputs_expected": 15
+  },
+  "recomputed_worker_totals": {
+    "lanes": 3,
+    "proposals_examined": 18,
+    "proposals_admitted": 0,
+    "proposals_excluded": 18,
+    "source_record_mentions": 90,
+    "unique_exact_source_urls": 88,
+    "duplicate_source_mentions": 2
+  },
+  "central_replay_scope": {
+    "required_proposals": 0,
+    "required_urls": 0,
+    "attempted": 0,
+    "reason": "No worker proposal satisfied the preregistered twelve-dimension admission conjunction; central replay cannot repair a worker exclusion."
+  },
+  "model_profile": {
+    "display_name": "Sol Max Standard",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "max",
+    "service_tier": "standard"
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "next_gate": "R4_G0_CENTRAL_SYNTHESIS_FAIL_CLOSED_ZERO_WORKER_ADMISSIONS"
+}

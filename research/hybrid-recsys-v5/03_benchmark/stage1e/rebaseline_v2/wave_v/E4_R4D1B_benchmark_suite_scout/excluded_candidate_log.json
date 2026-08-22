@@ -1,0 +1,247 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r4-d1b-excluded-candidate-log-1.0",
+  "created_at": "2026-08-22",
+  "stage_id": "R4-D1B",
+  "lane_scope": "official_benchmark_suites_and_project_owned_immutable_result_packages",
+  "model_profile": {
+    "display_name": "Sol XHigh Standard",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "xhigh",
+    "service_tier": "standard"
+  },
+  "screened_leads_count": 5,
+  "excluded_count": 5,
+  "excluded_candidates": [
+    {
+      "proposal_id": "R4-D1B-PROP-001",
+      "identity_summary": {
+        "repository_url": "https://github.com/reczoo/BARS",
+        "full_revision": "5b5e61fe2e4ddf676dd12984365da0ae775fb863",
+        "dataset_provider": "Stanford SNAP raw Gowalla plus RecZoo/BARS derivative split",
+        "dataset_release_id": "Gowalla Feb. 2009-Oct. 2010 raw collection / mutable Gowalla_m1 derivative",
+        "protocol_id": "BARS Matching MF_BPR_gowalla_m1; NGCF/LightGCN-derived split",
+        "config_id": "CONFLICT: linked DEEM SimpleX_yelp18_x0_tuner_config.yaml",
+        "evaluator_id": "DEEM/BARS matching evaluator identity unresolved",
+        "numeric_target_id": "BARS MF_BPR_gowalla_x0 final logged Recall/NDCG/HitRate row"
+      },
+      "failed_dimension_ids": [
+        "D02_CANONICAL_DATASET_RIGHTS",
+        "D03_BYTE_VERIFIABLE_LINEAGE",
+        "D05_ENVIRONMENT_LOCK",
+        "D06_EXECUTABLE_TRAIN_ENTRYPOINT",
+        "D07_EXACT_PROTOCOL_CONFIG_SEEDS",
+        "D08_EVALUATOR_SEMANTICS",
+        "D09_SAME_SURFACE_NUMERIC_TARGET",
+        "D10_NO_TEST_DERIVATION",
+        "D11_BOUNDED_V5_ADAPTER"
+      ],
+      "dispositive_conflicts": [
+        "The immutable MF-BPR/Gowalla result README links a SimpleX/Yelp18 tuner configuration, so the asserted producing configuration and result identity cannot be the same tuple."
+      ],
+      "unresolved_mandatory_fields": [
+        "exact lawful-use terms for the joined processed split",
+        "immutable processed-dataset release",
+        "raw-to-processed checksum chain",
+        "complete environment lock",
+        "source-owned MF-BPR/Gowalla train entrypoint and full config",
+        "seed protocol",
+        "evaluator candidate/mask/aggregation/tie semantics",
+        "proof of no TEST derivation",
+        "bounded v5 adapter"
+      ],
+      "evidence_ids": [
+        "R4-D1B-PROP-001-SRC-001",
+        "R4-D1B-PROP-001-SRC-002",
+        "R4-D1B-PROP-001-SRC-003",
+        "R4-D1B-PROP-001-SRC-004",
+        "R4-D1B-PROP-001-SRC-005",
+        "R4-D1B-PROP-001-SRC-006"
+      ],
+      "exclusion_status": "DISPOSITIVE_REJECT",
+      "reason": "The wrong dataset/model configuration is linked from the immutable result package, which breaks D07 and D09 without any permissible repair or cross-join."
+    },
+    {
+      "proposal_id": "R4-D1B-PROP-002",
+      "identity_summary": {
+        "repository_url": "https://github.com/amazon-science/RecArena",
+        "full_revision": "b5a02616e35276398703512e231904cf2ca8d586",
+        "dataset_provider": "GroupLens Research",
+        "dataset_release_id": "MovieLens 20M stable release 2015-04, updated 2016-10",
+        "protocol_id": "RecArena leave-one-out full-ranking experiment family",
+        "config_id": "model/experiment configuration present; exact numeric-producing config absent",
+        "evaluator_id": "RecArena ranking evaluator; deterministic tie policy unresolved",
+        "numeric_target_id": "NONE_SOURCE_OWNED_AT_PINNED_REVISION"
+      },
+      "failed_dimension_ids": [
+        "D01_AFFIRMATIVE_CODE_LICENSE",
+        "D02_CANONICAL_DATASET_RIGHTS",
+        "D03_BYTE_VERIFIABLE_LINEAGE",
+        "D06_EXECUTABLE_TRAIN_ENTRYPOINT",
+        "D07_EXACT_PROTOCOL_CONFIG_SEEDS",
+        "D08_EVALUATOR_SEMANTICS",
+        "D09_SAME_SURFACE_NUMERIC_TARGET",
+        "D10_NO_TEST_DERIVATION",
+        "D11_BOUNDED_V5_ADAPTER"
+      ],
+      "dispositive_conflicts": [],
+      "unresolved_mandatory_fields": [
+        "pinned license text replay",
+        "provider terms replay",
+        "provider checksum enforcement and processed-output hashes",
+        "one exact training entrypoint/config/seed tuple",
+        "candidate/mask/aggregation/tie semantics",
+        "same-surface numeric target",
+        "proof of no TEST derivation",
+        "bounded v5 adapter"
+      ],
+      "evidence_ids": [
+        "R4-D1B-PROP-002-SRC-001",
+        "R4-D1B-PROP-002-SRC-002",
+        "R4-D1B-PROP-002-SRC-003",
+        "R4-D1B-PROP-002-SRC-004",
+        "R4-D1B-PROP-002-SRC-005"
+      ],
+      "exclusion_status": "EXCLUDE_INCOMPLETE_BUNDLE",
+      "reason": "The pinned suite has a strong dependency lock and experiment code but no committed numeric result target, and its data-preparation path does not verify provider or derived bytes."
+    },
+    {
+      "proposal_id": "R4-D1B-PROP-003",
+      "identity_summary": {
+        "repository_url": "https://github.com/RUCAIBox/RecBole-GNN",
+        "full_revision": "632ef888589944c190ad8f449b49ca559618d4df",
+        "dataset_provider": "GroupLens Research",
+        "dataset_release_id": "MovieLens 1M stable release 2003-02",
+        "protocol_id": "rating>=3 filtering; ratio 8:1:1; full-sort top-10 evaluation",
+        "config_id": "ml-1m.md common settings plus LightGCN best hyperparameters; seed and complete producer config absent",
+        "evaluator_id": "RecBole 1.1.1 full-sort evaluator; deterministic tie policy unresolved",
+        "numeric_target_id": "RecBole-GNN ml-1m LightGCN NDCG@10=0.2538"
+      },
+      "failed_dimension_ids": [
+        "D01_AFFIRMATIVE_CODE_LICENSE",
+        "D02_CANONICAL_DATASET_RIGHTS",
+        "D03_BYTE_VERIFIABLE_LINEAGE",
+        "D05_ENVIRONMENT_LOCK",
+        "D07_EXACT_PROTOCOL_CONFIG_SEEDS",
+        "D08_EVALUATOR_SEMANTICS",
+        "D09_SAME_SURFACE_NUMERIC_TARGET",
+        "D10_NO_TEST_DERIVATION",
+        "D11_BOUNDED_V5_ADAPTER"
+      ],
+      "dispositive_conflicts": [],
+      "unresolved_mandatory_fields": [
+        "pinned license text replay",
+        "provider terms replay",
+        "raw-to-atomic-file checksums and transformation chain",
+        "exact Python/PyTorch/PyG environment",
+        "complete producer config and seed protocol",
+        "candidate/mask/aggregation/tie semantics",
+        "immutable same-surface result binding",
+        "proof of no TEST derivation",
+        "bounded v5 adapter"
+      ],
+      "evidence_ids": [
+        "R4-D1B-PROP-003-SRC-001",
+        "R4-D1B-PROP-003-SRC-002",
+        "R4-D1B-PROP-003-SRC-003",
+        "R4-D1B-PROP-003-SRC-004"
+      ],
+      "exclusion_status": "EXCLUDE_INCOMPLETE_BUNDLE",
+      "reason": "The owner result page publishes useful protocol and target information, but not the complete environment, byte lineage, exact seed/config, evaluator tie semantics, or v5 adapter required by D01-D12."
+    },
+    {
+      "proposal_id": "R4-D1B-PROP-004",
+      "identity_summary": {
+        "repository_url": "https://github.com/cxcscmu/RecSys-Benchmark",
+        "full_revision": "ac7d8a9838e3e43e8727074f4398a8b6c402af4d",
+        "dataset_provider": "ORBIT/CMU public-dataset and ClueWeb-Reco surfaces",
+        "dataset_release_id": "exact immutable release and checksum identity unresolved",
+        "protocol_id": "ORBIT public benchmark plus hidden-test leaderboard protocols",
+        "config_id": "repository configs/scripts requiring user path and variable edits",
+        "evaluator_id": "RecBole evaluation and ClueWeb-Reco get_metrics surfaces; exact target join unresolved",
+        "numeric_target_id": "dynamic leaderboard row; no immutable same-config target selected"
+      },
+      "failed_dimension_ids": [
+        "D01_AFFIRMATIVE_CODE_LICENSE",
+        "D02_CANONICAL_DATASET_RIGHTS",
+        "D03_BYTE_VERIFIABLE_LINEAGE",
+        "D05_ENVIRONMENT_LOCK",
+        "D07_EXACT_PROTOCOL_CONFIG_SEEDS",
+        "D08_EVALUATOR_SEMANTICS",
+        "D09_SAME_SURFACE_NUMERIC_TARGET",
+        "D10_NO_TEST_DERIVATION",
+        "D11_BOUNDED_V5_ADAPTER"
+      ],
+      "dispositive_conflicts": [],
+      "unresolved_mandatory_fields": [
+        "affirmative code license",
+        "exact canonical dataset release and lawful-use basis",
+        "provider and transformed-file checksums",
+        "complete environment lock",
+        "frozen paths/config/seeds without manual edits",
+        "complete evaluator semantics",
+        "immutable same-surface numeric result",
+        "proof of no TEST derivation across public and hidden tracks",
+        "bounded v5 adapter"
+      ],
+      "evidence_ids": [
+        "R4-D1B-PROP-004-SRC-001",
+        "R4-D1B-PROP-004-SRC-002",
+        "R4-D1B-PROP-004-SRC-003",
+        "R4-D1B-PROP-004-SRC-004"
+      ],
+      "exclusion_status": "EXCLUDE_INCOMPLETE_BUNDLE",
+      "reason": "ORBIT is an official suite, but the replayed repository/site do not expose one licensed, byte-identified, immutable config/environment/evaluator/result tuple; a dynamic leaderboard row cannot fill those gaps."
+    },
+    {
+      "proposal_id": "R4-D1B-PROP-005",
+      "identity_summary": {
+        "repository_url": "https://github.com/recommenders-team/recommenders",
+        "full_revision": "0bb4b3690941ffb668118e31ccaf8a7d19f8212a",
+        "dataset_provider": "GroupLens Research",
+        "dataset_release_id": "MovieLens 100K stable release 1998-04",
+        "protocol_id": "75/25 stratified split; top-10 illustrative algorithm comparison",
+        "config_id": "examples/06_benchmarks/movielens.ipynb with empirical/default model parameters",
+        "evaluator_id": "Recommenders evaluation utilities; exact shared candidate/tie contract not bound",
+        "numeric_target_id": "owner README/notebook comparison table, including LightGCN NDCG@10=0.419100"
+      },
+      "failed_dimension_ids": [
+        "D01_AFFIRMATIVE_CODE_LICENSE",
+        "D02_CANONICAL_DATASET_RIGHTS",
+        "D03_BYTE_VERIFIABLE_LINEAGE",
+        "D05_ENVIRONMENT_LOCK",
+        "D07_EXACT_PROTOCOL_CONFIG_SEEDS",
+        "D08_EVALUATOR_SEMANTICS",
+        "D09_SAME_SURFACE_NUMERIC_TARGET",
+        "D10_NO_TEST_DERIVATION",
+        "D11_BOUNDED_V5_ADAPTER"
+      ],
+      "dispositive_conflicts": [],
+      "unresolved_mandatory_fields": [
+        "pinned license text replay",
+        "provider terms replay",
+        "provider checksum replay and processed-input hashes",
+        "complete per-row environment lock",
+        "exact per-model producer configs and seeds",
+        "shared candidate/mask/aggregation/tie semantics",
+        "immutable notebook-output-to-revision binding",
+        "proof of no TEST derivation",
+        "bounded v5 adapter"
+      ],
+      "evidence_ids": [
+        "R4-D1B-PROP-005-SRC-001",
+        "R4-D1B-PROP-005-SRC-002",
+        "R4-D1B-PROP-005-SRC-003",
+        "R4-D1B-PROP-005-SRC-004"
+      ],
+      "exclusion_status": "EXCLUDE_INCOMPLETE_BUNDLE",
+      "reason": "This is an official generic example notebook, expressly outside the lane's admissible class unless a complete exact-producing result package is present; the replayed surfaces do not provide one."
+    }
+  ],
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

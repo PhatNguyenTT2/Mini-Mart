@@ -1,0 +1,254 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r4-d1a-excluded-candidate-log-1.0",
+  "created_at": "2026-08-22",
+  "stage_id": "R4-D1A",
+  "lane_scope": "official_conference_artifact_pages_author_or_proceedings_linked_reproduction_packages_and_authoritative_archival_supplements",
+  "model_profile": {
+    "display_name": "Sol XHigh Standard",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "xhigh",
+    "service_tier": "standard"
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "screened_leads_count": 5,
+  "excluded_count": 5,
+  "excluded_candidates": [
+    {
+      "proposal_id": "R4-D1A-PROP-001",
+      "identity_summary": {
+        "framework_name": "BERT4Rec reproducibility package",
+        "repository_url": "https://github.com/asash/bert4rec_repro",
+        "full_revision": "76f15e738780fc0b2f9a70d037fe0c23a0324b72",
+        "dataset_provider": "GroupLens",
+        "dataset_release_id": "MovieLens 1M; exact byte release unresolved",
+        "protocol_id": "UNRESOLVED_EXACT_PROTOCOL_ID",
+        "config_id": "UNRESOLVED_SINGLE_CONFIG_ID",
+        "evaluator_id": "UNRESOLVED_EVALUATOR_ID",
+        "numeric_target_id": "UNRESOLVED_SAME_SURFACE_TARGET_ID"
+      },
+      "failed_dimension_ids": [
+        "D01_AFFIRMATIVE_CODE_LICENSE",
+        "D02_CANONICAL_DATASET_RIGHTS",
+        "D03_BYTE_VERIFIABLE_LINEAGE",
+        "D05_ENVIRONMENT_LOCK",
+        "D07_EXACT_PROTOCOL_CONFIG_SEEDS",
+        "D08_EVALUATOR_SEMANTICS",
+        "D09_SAME_SURFACE_NUMERIC_TARGET",
+        "D10_NO_TEST_DERIVATION",
+        "D11_BOUNDED_V5_ADAPTER",
+        "D12_ALL_LOCATORS_REPLAYED"
+      ],
+      "dispositive_conflicts": [],
+      "unresolved_mandatory_fields": [
+        "affirmative_code_license_at_full_revision",
+        "dataset_release_byte_identity",
+        "provider_checksum",
+        "complete_environment_lock",
+        "single_exact_config_and_seed_protocol",
+        "evaluator_candidate_mask_aggregation_and_tie_semantics",
+        "same_surface_numeric_target_binding",
+        "no_test_derivation_proof",
+        "bounded_v5_adapter_spec"
+      ],
+      "evidence_ids": [
+        "R4-D1A-EVID-002",
+        "R4-D1A-EVID-003",
+        "R4-D1A-EVID-004",
+        "R4-D1A-EVID-005",
+        "R4-D1A-EVID-006"
+      ],
+      "exclusion_status": "EXCLUDE_INCOMPLETE_BUNDLE",
+      "reason": "The proceedings-linked package has an immutable revision and executable examples, but no replayed affirmative code license, no byte-verifiable MovieLens lineage, no complete deterministic environment lock, and no exact same-surface evaluator/config/seed/target binding. The checksum locator was inaccessible; nothing was inferred."
+    },
+    {
+      "proposal_id": "R4-D1A-PROP-002",
+      "identity_summary": {
+        "framework_name": "Repetition-exploration-SR",
+        "repository_url": "https://github.com/liming-7/Repetition-exploration-SR",
+        "full_revision": "f3ff08651ef5c3c5ad9bbe9a17ea178b9cf2a81c",
+        "dataset_provider": "UNRESOLVED_FOR_DIGINETICA_OR_YOOCHOOSE",
+        "dataset_release_id": "UNRESOLVED",
+        "protocol_id": "README_SWEEP_SURFACE_NOT_EXACT_PROTOCOL",
+        "config_id": "UNRESOLVED_SINGLE_CONFIG_ID",
+        "evaluator_id": "UNRESOLVED_EVALUATOR_ID",
+        "numeric_target_id": "NOT_EXPOSED_ON_REPLAYED_PACKAGE_SURFACE"
+      },
+      "failed_dimension_ids": [
+        "D01_AFFIRMATIVE_CODE_LICENSE",
+        "D02_CANONICAL_DATASET_RIGHTS",
+        "D03_BYTE_VERIFIABLE_LINEAGE",
+        "D05_ENVIRONMENT_LOCK",
+        "D07_EXACT_PROTOCOL_CONFIG_SEEDS",
+        "D08_EVALUATOR_SEMANTICS",
+        "D09_SAME_SURFACE_NUMERIC_TARGET",
+        "D10_NO_TEST_DERIVATION",
+        "D11_BOUNDED_V5_ADAPTER"
+      ],
+      "dispositive_conflicts": [],
+      "unresolved_mandatory_fields": [
+        "affirmative_code_license_at_full_revision",
+        "canonical_dataset_provider_and_release",
+        "dataset_checksum_and_transform_chain",
+        "versioned_environment_lock",
+        "preprocessing_split_tuning_and_seed_protocol",
+        "evaluator_candidate_mask_aggregation_and_tie_semantics",
+        "same_surface_numeric_target",
+        "no_test_derivation_proof",
+        "bounded_v5_adapter_spec"
+      ],
+      "evidence_ids": [
+        "R4-D1A-EVID-007",
+        "R4-D1A-EVID-008",
+        "R4-D1A-EVID-009"
+      ],
+      "exclusion_status": "EXCLUDE_INCOMPLETE_BUNDLE",
+      "reason": "The official reproducibility paper links to source code, but the pinned README provides unversioned package names, an external experiment-tracking dependency, a sweep space instead of one exact protocol, and no replayed numeric result tied to a complete identity tuple. Dataset rights and byte lineage are unresolved."
+    },
+    {
+      "proposal_id": "R4-D1A-PROP-003",
+      "identity_summary": {
+        "framework_name": "RL4Rec state-encoder reproducibility package",
+        "repository_url": "https://github.com/BetsyHJ/RL4Rec",
+        "full_revision": "f198f7dbcaba7b607f813b3a87d46613654edc6e",
+        "dataset_provider": "Yahoo Webscope or Coat source; exact canonical binding unresolved",
+        "dataset_release_id": "UNRESOLVED",
+        "protocol_id": "DQN_DEBIASED_SIMULATOR_TEN_RUN_PROTOCOL",
+        "config_id": "README_STATE_ENCODER_COMMANDS",
+        "evaluator_id": "INTERACTIVE_SIMULATOR_REWARD_EVALUATION",
+        "numeric_target_id": "RESULT_ARCHIVE_TARGET_NOT_REPLAYED_AS_TEXT"
+      },
+      "failed_dimension_ids": [
+        "D02_CANONICAL_DATASET_RIGHTS",
+        "D03_BYTE_VERIFIABLE_LINEAGE",
+        "D07_EXACT_PROTOCOL_CONFIG_SEEDS",
+        "D08_EVALUATOR_SEMANTICS",
+        "D09_SAME_SURFACE_NUMERIC_TARGET",
+        "D10_NO_TEST_DERIVATION",
+        "D11_BOUNDED_V5_ADAPTER",
+        "D12_ALL_LOCATORS_REPLAYED"
+      ],
+      "dispositive_conflicts": [
+        "The package evaluates DQN policies in debiased interactive simulators and optimizes simulated sequential reward; adapting it to the frozen v5 offline top-N objective and shared evaluator would change the task objective and protocol."
+      ],
+      "unresolved_mandatory_fields": [
+        "canonical_dataset_release_and_lawful_use_basis",
+        "dataset_checksum_and_raw_to_simulator_lineage",
+        "complete_preprocessing_and_split_binding",
+        "ranking_evaluator_candidate_mask_aggregation_and_tie_semantics",
+        "same_surface_textual_numeric_target",
+        "no_test_derivation_proof",
+        "v5_objective_preserving_adapter"
+      ],
+      "evidence_ids": [
+        "R4-D1A-EVID-010",
+        "R4-D1A-EVID-011",
+        "R4-D1A-EVID-012",
+        "R4-D1A-EVID-013",
+        "R4-D1A-EVID-014"
+      ],
+      "exclusion_status": "DISPOSITIVE_REJECT",
+      "reason": "The package has unusually strong license, revision, environment, command, and seed evidence, but its canonical dataset lineage and evaluator/target surface are incomplete, its linked data share was inaccessible, and its interactive-RL objective is dispositively incompatible with a bounded v5 adapter."
+    },
+    {
+      "proposal_id": "R4-D1A-PROP-004",
+      "identity_summary": {
+        "framework_name": "FairRecSys user-oriented fairness reproduction package",
+        "repository_url": "https://github.com/rahmanidashti/FairRecSys",
+        "full_revision": "9e8a4a64e55b88b18cc99ca0a815d90d607572fa",
+        "dataset_provider": "MULTIPLE_PROVIDERS_NOT_BOUND_TO_ONE_CANDIDATE",
+        "dataset_release_id": "UNRESOLVED_SINGLE_RELEASE",
+        "protocol_id": "FAIRNESS_RERANKING_NOTEBOOK_WORKFLOW",
+        "config_id": "README_EXAMPLE_ONLY_NOT_FROZEN_SINGLE_CONFIG",
+        "evaluator_id": "NOTEBOOK_METRIC_PIPELINE_NOT_FULLY_REPLAYED",
+        "numeric_target_id": "UNRESOLVED_SAME_SURFACE_TARGET_ID"
+      },
+      "failed_dimension_ids": [
+        "D01_AFFIRMATIVE_CODE_LICENSE",
+        "D02_CANONICAL_DATASET_RIGHTS",
+        "D03_BYTE_VERIFIABLE_LINEAGE",
+        "D04_IMMUTABLE_FULL_REVISION",
+        "D05_ENVIRONMENT_LOCK",
+        "D07_EXACT_PROTOCOL_CONFIG_SEEDS",
+        "D08_EVALUATOR_SEMANTICS",
+        "D09_SAME_SURFACE_NUMERIC_TARGET",
+        "D10_NO_TEST_DERIVATION",
+        "D11_BOUNDED_V5_ADAPTER"
+      ],
+      "dispositive_conflicts": [
+        "The package's decision surface is a user/item-group fairness re-ranking workflow over base recommenders; preserving that objective and grouping policy is not the frozen v5 benchmark objective, while removing it would change the candidate's task."
+      ],
+      "unresolved_mandatory_fields": [
+        "affirmative_code_license_at_full_revision",
+        "single_canonical_dataset_provider_release_and_rights_basis",
+        "dataset_checksum_and_transform_chain",
+        "revision_pinned_replay_of_all_code_bearing_evidence",
+        "complete_environment_lock",
+        "exact_seed_and_tuning_protocol",
+        "complete_evaluator_semantics",
+        "same_surface_numeric_target_binding",
+        "no_test_derivation_proof",
+        "v5_objective_preserving_adapter"
+      ],
+      "evidence_ids": [
+        "R4-D1A-EVID-010",
+        "R4-D1A-EVID-015",
+        "R4-D1A-EVID-016"
+      ],
+      "exclusion_status": "DISPOSITIVE_REJECT",
+      "reason": "The official package exposes notebooks, processed datasets, results, and metric columns, but lacks replayed license and environment evidence, does not bind one canonical dataset release and byte lineage, and targets fairness re-ranking rather than the unchanged frozen v5 objective."
+    },
+    {
+      "proposal_id": "R4-D1A-PROP-005",
+      "identity_summary": {
+        "framework_name": "Graph-RSs-Reproducibility",
+        "repository_url": "https://github.com/sisinflab/Graph-RSs-Reproducibility",
+        "full_revision": "57423d1503d5312815d515ce94b1caa5b4bad1a9",
+        "dataset_provider": "INDIRECT_MODEL_REPOSITORY_SPLITS_FOR_GOWALLA_YELP2018_OR_AMAZON_BOOK",
+        "dataset_release_id": "UNRESOLVED_CANONICAL_RELEASE",
+        "protocol_id": "RECSYS2023_GRAPH_CF_REPRODUCTION_SURFACE",
+        "config_id": "UNRESOLVED_SINGLE_MODEL_DATASET_CONFIG",
+        "evaluator_id": "ELLIOT_DERIVED_EVALUATOR_NOT_FULLY_REPLAYED",
+        "numeric_target_id": "UNRESOLVED_SAME_SURFACE_TARGET_ID"
+      },
+      "failed_dimension_ids": [
+        "D01_AFFIRMATIVE_CODE_LICENSE",
+        "D02_CANONICAL_DATASET_RIGHTS",
+        "D03_BYTE_VERIFIABLE_LINEAGE",
+        "D05_ENVIRONMENT_LOCK",
+        "D07_EXACT_PROTOCOL_CONFIG_SEEDS",
+        "D08_EVALUATOR_SEMANTICS",
+        "D09_SAME_SURFACE_NUMERIC_TARGET",
+        "D10_NO_TEST_DERIVATION",
+        "D11_BOUNDED_V5_ADAPTER"
+      ],
+      "dispositive_conflicts": [
+        "At full revision 57423d1503d5312815d515ce94b1caa5b4bad1a9, the README states PyTorch 1.12.0 with CUDA 10.2 while requirements.txt specifies torch 1.13.0+cu116; no deterministic environment can be chosen without guessing or substituting evidence."
+      ],
+      "unresolved_mandatory_fields": [
+        "affirmative_code_license_at_full_revision",
+        "canonical_dataset_provider_release_and_rights_basis",
+        "provider_checksum_and_raw_to_mapped_tsv_lineage",
+        "conflict_free_complete_environment_lock",
+        "single_exact_model_dataset_config_and_seed_protocol",
+        "evaluator_candidate_mask_aggregation_and_tie_semantics",
+        "same_surface_numeric_target_binding",
+        "no_test_derivation_proof",
+        "bounded_v5_adapter_spec"
+      ],
+      "evidence_ids": [
+        "R4-D1A-EVID-017",
+        "R4-D1A-EVID-018",
+        "R4-D1A-EVID-019",
+        "R4-D1A-EVID-020"
+      ],
+      "exclusion_status": "DISPOSITIVE_REJECT",
+      "reason": "The official RecSys reproducibility package has commands and configuration links, but its dataset sources are indirect processed splits without canonical rights/checksums, its evaluator and target tuple is incomplete, no license was displayed, and the revision-pinned environment evidence is internally contradictory."
+    }
+  ]
+}

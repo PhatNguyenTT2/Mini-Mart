@@ -1,0 +1,68 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r4-d1-validation-receipt-1.0",
+  "created_at": "2026-08-22",
+  "stage_id": "R4-D1-CENTRAL-VALIDATION",
+  "validator": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r4_d1_scouts.py",
+  "passed": true,
+  "verdict": "PASS_R4_D1_SCOUTS_READY_FOR_CENTRAL_HASH_FREEZE",
+  "failure_count": 0,
+  "mechanical_checks": {
+    "passed": 63,
+    "expected": 63
+  },
+  "output_files": {
+    "lanes": 3,
+    "present": 15,
+    "expected": 15,
+    "strict_json_present": 12,
+    "strict_json_expected": 12
+  },
+  "lane_summary": {
+    "R4-D1A": {
+      "examined": 5,
+      "admitted": 0,
+      "excluded": 5,
+      "source_records": 20
+    },
+    "R4-D1B": {
+      "examined": 5,
+      "admitted": 0,
+      "excluded": 5,
+      "source_records": 23
+    },
+    "R4-D1C": {
+      "examined": 8,
+      "admitted": 0,
+      "excluded": 8,
+      "source_records": 47
+    }
+  },
+  "aggregate": {
+    "examined": 18,
+    "admitted": 0,
+    "excluded": 18,
+    "source_record_mentions": 90
+  },
+  "carrier_correction": {
+    "stage_id": "R4-D1A",
+    "type": "ADD_FROZEN_TRUTH_STATE_TO_JSON_CARRIERS",
+    "scientific_content_changed": false,
+    "evidence_changed": false,
+    "counts_changed": false,
+    "verdict_changed": false
+  },
+  "model_profile": {
+    "display_name": "Sol Max Standard",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "max",
+    "service_tier": "standard"
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "next_gate": "FREEZE_R4_D1_OUTPUT_HASHES_FOR_R4_G0"
+}

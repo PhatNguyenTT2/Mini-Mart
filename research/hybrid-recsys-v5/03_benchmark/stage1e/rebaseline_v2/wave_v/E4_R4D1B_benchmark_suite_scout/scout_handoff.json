@@ -1,0 +1,76 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r4-d1b-scout-handoff-1.0",
+  "created_at": "2026-08-22",
+  "stage_id": "R4-D1B",
+  "lane_scope": "official_benchmark_suites_and_project_owned_immutable_result_packages",
+  "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_v/E4_R4D1B_benchmark_suite_scout",
+  "exact_filenames": [
+    "scout_candidates.json",
+    "source_replay_log.json",
+    "excluded_candidate_log.json",
+    "scout_report.md",
+    "scout_handoff.json"
+  ],
+  "counts": {
+    "proposals_examined": 5,
+    "proposals_admitted": 0,
+    "proposals_excluded": 5,
+    "source_records": 23,
+    "accepted_result_rows": 0
+  },
+  "admitted_proposal_ids": [],
+  "excluded_proposal_ids": [
+    "R4-D1B-PROP-001",
+    "R4-D1B-PROP-002",
+    "R4-D1B-PROP-003",
+    "R4-D1B-PROP-004",
+    "R4-D1B-PROP-005"
+  ],
+  "source_record_count": 23,
+  "allowed_operation_receipts": {
+    "entry_validator_run_read_only": true,
+    "entry_validator_verdict": "PASS_R4_S0_STRICT_GATE_20_OF_20_READY_FOR_R4_D1",
+    "frozen_controls_and_inputs_read": true,
+    "public_page_level_research": true,
+    "decision_bearing_urls_replayed": true,
+    "writes_confined_to_assigned_output_root": true,
+    "json_parse_validation": true,
+    "exact_five_file_validation": true,
+    "git_diff_check": true
+  },
+  "forbidden_operation_receipts": {
+    "repository_clone": false,
+    "repository_fetch": false,
+    "source_archive_download": false,
+    "dataset_download": false,
+    "checkpoint_download": false,
+    "binary_or_asset_download": false,
+    "terms_acceptance": false,
+    "authentication": false,
+    "package_install": false,
+    "environment_creation": false,
+    "container_creation": false,
+    "preprocessing_execution": false,
+    "training_execution": false,
+    "evaluation_execution": false,
+    "test_set_access": false,
+    "maintainer_contact": false,
+    "paper_metric_write": false,
+    "git_add": false,
+    "git_commit": false
+  },
+  "model_profile": {
+    "display_name": "Sol XHigh Standard",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "xhigh",
+    "service_tier": "standard"
+  },
+  "persistent_truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "next_gate": "R4_D1_CENTRAL_SCHEMA_HASH_VALIDATION"
+}

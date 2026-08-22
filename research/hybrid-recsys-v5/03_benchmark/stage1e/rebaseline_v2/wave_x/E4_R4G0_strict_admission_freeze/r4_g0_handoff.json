@@ -1,0 +1,96 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r4-g0-handoff-1.0",
+  "created_at": "2026-08-22",
+  "stage_id": "R4-G0",
+  "status": "COMPLETE_FAIL_CLOSED_ZERO_ADMISSIBLE_BUNDLES",
+  "model_profile": {
+    "display_name": "Sol Max Standard",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "max",
+    "service_tier": "standard"
+  },
+  "exact_filenames": [
+    "r4_g0_admission_decision.json",
+    "frozen_complete_bundles.json",
+    "central_source_replay_log.json",
+    "deduplication_log.json",
+    "r4_g0_report.md",
+    "r4_g0_handoff.json"
+  ],
+  "output_hashes": [
+    {
+      "filename": "r4_g0_admission_decision.json",
+      "canonical_lf_bytes": 3361,
+      "canonical_lf_sha256": "34f731c681825b353e264d965267f582abfe33d34540e5f55c7b26c95cb3b539"
+    },
+    {
+      "filename": "frozen_complete_bundles.json",
+      "canonical_lf_bytes": 729,
+      "canonical_lf_sha256": "8b557c9128599f7fcd96292e2ecf2924bc13c4f6036a1c59aebe064950c3cbf2"
+    },
+    {
+      "filename": "central_source_replay_log.json",
+      "canonical_lf_bytes": 1186,
+      "canonical_lf_sha256": "539c875be3066e7c4727d03032229fe8b4bb079ad0488834792ab43549f9a921"
+    },
+    {
+      "filename": "deduplication_log.json",
+      "canonical_lf_bytes": 2020,
+      "canonical_lf_sha256": "59c5e8b0ad1f616b81d026f542fc6dab7e997bc79d39abccc1315872865422d2"
+    },
+    {
+      "filename": "r4_g0_report.md",
+      "canonical_lf_bytes": 3861,
+      "canonical_lf_sha256": "136e1442777e712f4a1f27e19fa338c263929947268f1ec5850cc705a74e7f79"
+    }
+  ],
+  "self_hash_policy": "The handoff does not recursively hash itself; the central validation receipt freezes and verifies all six output files.",
+  "counts": {
+    "worker_lanes": 3,
+    "worker_output_files": 15,
+    "proposals_examined": 18,
+    "worker_admitted": 0,
+    "worker_excluded": 18,
+    "central_replay_required_proposals": 0,
+    "central_replay_required_urls": 0,
+    "central_replays_attempted": 0,
+    "frozen_complete_bundles": 0,
+    "source_record_mentions": 90,
+    "unique_exact_source_urls": 88,
+    "g0_output_files": 6,
+    "accepted_result_rows": 0
+  },
+  "decision": {
+    "verdict": "NO_ADMISSIBLE_BUNDLE_STOP_FAIL_CLOSED",
+    "audit_dispatch_allowed": false,
+    "materialization_allowed": false,
+    "execution_allowed": false
+  },
+  "operation_receipts": {
+    "read_only_local_validation": "PERFORMED",
+    "worker_source_inventory_deduplication": "PERFORMED",
+    "central_admission_url_replay": "NOT_TRIGGERED_ZERO_WORKER_ADMISSIONS",
+    "repository_clone_fetch_or_archive_download": "NOT_PERFORMED",
+    "dataset_checkpoint_binary_or_asset_download": "NOT_PERFORMED",
+    "terms_acceptance_or_authentication": "NOT_PERFORMED",
+    "package_install_or_environment_creation": "NOT_PERFORMED",
+    "preprocessing_training_or_evaluation": "NOT_PERFORMED",
+    "test_set_access": "NOT_PERFORMED",
+    "maintainer_contact": "NOT_PERFORMED",
+    "paper_metric_write": "NOT_PERFORMED"
+  },
+  "downstream": {
+    "R4-A1_A3": "NOT_LAUNCHED",
+    "R4-G1": "NOT_OPENED",
+    "R4-M0": "NOT_OPENED",
+    "automatic_next_wave": "NOT_AUTHORIZED"
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "next_gate": "MANDATORY_USER_DECISION_TARGETED_EVIDENCE_MATERIALIZATION_REDESIGN_OR_PAUSE"
+}

@@ -1,0 +1,366 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r4-d1c-excluded-candidate-log-1.0",
+  "created_at": "2026-08-22",
+  "stage_id": "R4-D1C",
+  "lane_scope": "official_framework_complete_packet_scout",
+  "model_profile": {
+    "display_name": "Sol XHigh Standard",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "xhigh",
+    "service_tier": "standard"
+  },
+  "screened_leads_count": 8,
+  "excluded_count": 8,
+  "excluded_candidates": [
+    {
+      "proposal_id": "R4-D1C-PROP-001",
+      "identity_summary": {
+        "repository_url": "https://github.com/RUCAIBox/RecBole",
+        "full_revision": "9a6f63d8d4a5b989fe27955a833f813a6d86041e",
+        "dataset_provider": "GroupLens Research",
+        "dataset_release_id": "MovieLens 100K, released 1998-04",
+        "protocol_id": "recbole-v1.2.1-quickstart-bpr-ml100k-random-80-10-10-full",
+        "config_id": "run_recbole.py-defaults-plus-overall.yaml",
+        "evaluator_id": "recbole-full-sort-topk10-history-mask",
+        "numeric_target_id": "pinned-readme-example-output-ndcg-at-10-0.2768"
+      },
+      "failed_dimension_ids": [
+        "D03_BYTE_VERIFIABLE_LINEAGE",
+        "D05_ENVIRONMENT_LOCK",
+        "D07_EXACT_PROTOCOL_CONFIG_SEEDS",
+        "D08_EVALUATOR_SEMANTICS",
+        "D09_SAME_SURFACE_NUMERIC_TARGET",
+        "D10_NO_TEST_DERIVATION",
+        "D11_BOUNDED_V5_ADAPTER"
+      ],
+      "dispositive_conflicts": [],
+      "unresolved_mandatory_fields": [
+        "provider_archive checksum joined to the repository-carried processed MovieLens files",
+        "raw-to-.inter/.item/.user transformation receipt",
+        "complete transitive runtime lock",
+        "single exact BPR configuration and tuning boundary producing the documented output",
+        "deterministic secondary key for tied scores",
+        "same-surface run receipt for the example numeric target",
+        "proof that schema and cardinality are independent of TEST",
+        "bounded adapter proof against the frozen v5 evaluator contract"
+      ],
+      "evidence_ids": [
+        "R4-D1C-EVID-001",
+        "R4-D1C-EVID-002",
+        "R4-D1C-EVID-003",
+        "R4-D1C-EVID-004",
+        "R4-D1C-EVID-005",
+        "R4-D1C-EVID-006",
+        "R4-D1C-EVID-007",
+        "R4-D1C-EVID-008",
+        "R4-D1C-EVID-009",
+        "R4-D1C-EVID-010",
+        "R4-D1C-EVID-011",
+        "R4-D1C-EVID-012",
+        "R4-D1C-EVID-013"
+      ],
+      "exclusion_status": "EXCLUDE_INCOMPLETE_BUNDLE",
+      "reason": "The release supplies a runnable framework example, but it does not close byte lineage, a complete environment lock, exact output-producing configuration, deterministic tie handling, no-TEST derivation, or the bounded v5 adapter. The README's example output cannot compensate for those missing dimensions."
+    },
+    {
+      "proposal_id": "R4-D1C-PROP-002",
+      "identity_summary": {
+        "repository_url": "https://github.com/recommenders-team/recommenders",
+        "full_revision": "5c862afa751f53559b5ad98b92e098760f530ad8",
+        "dataset_provider": "GroupLens Research",
+        "dataset_release_id": "MovieLens 100K, released 1998-04",
+        "protocol_id": "recommenders-1.2.1-movielens-benchmark-stratified-75-25",
+        "config_id": "movielens.ipynb-bpr_params-seed-42",
+        "evaluator_id": "ranking_metrics_python-k10-full-train-catalog-remove-seen",
+        "numeric_target_id": "movielens.ipynb-stored-bpr-ml100k-ndcg-at-10-0.441997"
+      },
+      "failed_dimension_ids": [
+        "D03_BYTE_VERIFIABLE_LINEAGE",
+        "D05_ENVIRONMENT_LOCK",
+        "D08_EVALUATOR_SEMANTICS",
+        "D09_SAME_SURFACE_NUMERIC_TARGET",
+        "D11_BOUNDED_V5_ADAPTER"
+      ],
+      "dispositive_conflicts": [
+        "At revision 5c862afa751f53559b5ad98b92e098760f530ad8, the stored benchmark notebook reports Cornac 1.14.2 while setup.py requires cornac>=1.15.2,<3; therefore the stored BPR target is not joinable to an environment valid for the pinned release."
+      ],
+      "unresolved_mandatory_fields": [
+        "provider archive checksum enforced by the MovieLens loader",
+        "complete transitive runtime lock for the target-producing run",
+        "deterministic item-level secondary key for tied prediction scores",
+        "numeric target produced under dependencies valid for the pinned revision",
+        "bounded adapter proof against the frozen v5 evaluator contract"
+      ],
+      "evidence_ids": [
+        "R4-D1C-EVID-001",
+        "R4-D1C-EVID-002",
+        "R4-D1C-EVID-003",
+        "R4-D1C-EVID-014",
+        "R4-D1C-EVID-015",
+        "R4-D1C-EVID-016",
+        "R4-D1C-EVID-017",
+        "R4-D1C-EVID-018",
+        "R4-D1C-EVID-019",
+        "R4-D1C-EVID-020",
+        "R4-D1C-EVID-021",
+        "R4-D1C-EVID-022",
+        "R4-D1C-EVID-023",
+        "R4-D1C-EVID-024",
+        "R4-D1C-EVID-025",
+        "R4-D1C-EVID-026"
+      ],
+      "exclusion_status": "DISPOSITIVE_REJECT",
+      "reason": "The stored target-producing environment conflicts with the pinned release's own dependency floor. Independent of that conflict, checksum enforcement, deterministic tie policy, a complete lock, and a bounded v5 adapter remain absent."
+    },
+    {
+      "proposal_id": "R4-D1C-PROP-003",
+      "identity_summary": {
+        "repository_url": "https://github.com/lyst/lightfm",
+        "full_revision": "688feded0717f289933b95a0134bad6fbe547331",
+        "dataset_provider": "GroupLens Research via project-owner lightfm_datasets v0.1.0 repackaging",
+        "dataset_release_id": "MovieLens 100K ua.base/ua.test lineage unresolved",
+        "protocol_id": "lightfm-1.17-quickstart-warp-ua-split-min-rating-5",
+        "config_id": "quickstart-loss-warp-epochs-30-num-threads-2-unseeded",
+        "evaluator_id": "lightfm-precision-at-5-predict-rank",
+        "numeric_target_id": "quickstart-rounded-test-precision-at-5-0.04"
+      },
+      "failed_dimension_ids": [
+        "D01_AFFIRMATIVE_CODE_LICENSE",
+        "D03_BYTE_VERIFIABLE_LINEAGE",
+        "D05_ENVIRONMENT_LOCK",
+        "D07_EXACT_PROTOCOL_CONFIG_SEEDS",
+        "D08_EVALUATOR_SEMANTICS",
+        "D09_SAME_SURFACE_NUMERIC_TARGET",
+        "D10_NO_TEST_DERIVATION",
+        "D11_BOUNDED_V5_ADAPTER"
+      ],
+      "dispositive_conflicts": [
+        "At revision 688feded0717f289933b95a0134bad6fbe547331, LICENSE contains Apache License 2.0 while setup.py declares license='MIT' and the MIT classifier; the pinned code-rights representation is internally conflicting."
+      ],
+      "unresolved_mandatory_fields": [
+        "unambiguous project license for the pinned revision",
+        "canonical-provider archive checksum and transformation receipt for lightfm_datasets v0.1.0/movielens.zip",
+        "complete transitive runtime lock",
+        "training random seed and deterministic multithread protocol",
+        "deterministic tie policy for predict_rank",
+        "unrounded same-surface numeric target with producing run receipt",
+        "proof that matrix dimensions are independent of TEST interactions",
+        "bounded adapter proof against the frozen v5 evaluator contract"
+      ],
+      "evidence_ids": [
+        "R4-D1C-EVID-001",
+        "R4-D1C-EVID-002",
+        "R4-D1C-EVID-003",
+        "R4-D1C-EVID-027",
+        "R4-D1C-EVID-028",
+        "R4-D1C-EVID-029",
+        "R4-D1C-EVID-030",
+        "R4-D1C-EVID-031",
+        "R4-D1C-EVID-032",
+        "R4-D1C-EVID-033",
+        "R4-D1C-EVID-034",
+        "R4-D1C-EVID-035",
+        "R4-D1C-EVID-036",
+        "R4-D1C-EVID-037",
+        "R4-D1C-EVID-038"
+      ],
+      "exclusion_status": "DISPOSITIVE_REJECT",
+      "reason": "The pinned revision has an internal Apache-2.0-versus-MIT license conflict. Its documentation run is also unseeded and multithreaded, its repackaged dataset is not checksum-joined to GroupLens, its environment is unpinned, and its rounded target lacks a producing receipt."
+    },
+    {
+      "proposal_id": "R4-D1C-PROP-004",
+      "identity_summary": {
+        "repository_url": "https://github.com/tensorflow/recommenders",
+        "full_revision": "cf1dafa988f223ed5f30b68cb9aed518484b3a1d",
+        "dataset_provider": "TensorFlow Datasets wrapping GroupLens MovieLens",
+        "dataset_release_id": "tfds movielens builder version unresolved because no version is requested",
+        "protocol_id": "tfrs-v0.7.7-basic-retrieval-random-80k-20k",
+        "config_id": "basic_retrieval-seed-42-adagrad-0.5-three-epochs",
+        "evaluator_id": "factorized-top-k-streaming-full-candidate-categorical-accuracy",
+        "numeric_target_id": "UNRESOLVED_NO_STORED_NUMERIC_EVALUATION_OUTPUT"
+      },
+      "failed_dimension_ids": [
+        "D02_CANONICAL_DATASET_RIGHTS",
+        "D03_BYTE_VERIFIABLE_LINEAGE",
+        "D05_ENVIRONMENT_LOCK",
+        "D07_EXACT_PROTOCOL_CONFIG_SEEDS",
+        "D08_EVALUATOR_SEMANTICS",
+        "D09_SAME_SURFACE_NUMERIC_TARGET",
+        "D11_BOUNDED_V5_ADAPTER"
+      ],
+      "dispositive_conflicts": [],
+      "unresolved_mandatory_fields": [
+        "exact TensorFlow Datasets MovieLens builder version and canonical release identity",
+        "provider-byte-to-TFDS-example checksum and transformation chain",
+        "complete transitive runtime lock including tensorflow-datasets",
+        "declared tuning boundary and fully deterministic training pipeline",
+        "deterministic secondary key for tf.math.top_k ties",
+        "stored same-surface numeric evaluation target",
+        "bounded adapter proof against the frozen v5 evaluator contract"
+      ],
+      "evidence_ids": [
+        "R4-D1C-EVID-001",
+        "R4-D1C-EVID-002",
+        "R4-D1C-EVID-003",
+        "R4-D1C-EVID-039",
+        "R4-D1C-EVID-040",
+        "R4-D1C-EVID-041",
+        "R4-D1C-EVID-042",
+        "R4-D1C-EVID-043",
+        "R4-D1C-EVID-044",
+        "R4-D1C-EVID-045",
+        "R4-D1C-EVID-046",
+        "R4-D1C-EVID-047"
+      ],
+      "exclusion_status": "EXCLUDE_INCOMPLETE_BUNDLE",
+      "reason": "The official release has a runnable tutorial, but it leaves the TFDS builder release implicit, supplies only open dependency ranges, does not define a deterministic secondary tie key, stores no numeric evaluation output, and does not prove a bounded v5 adapter."
+    },
+    {
+      "proposal_id": "R4-D1C-PROP-005",
+      "identity_summary": {
+        "repository_url": "https://github.com/lenskit/lkpy",
+        "full_revision": "UNRESOLVED_LOCATOR_ONLY",
+        "dataset_provider": "UNRESOLVED_LOCATOR_ONLY",
+        "dataset_release_id": "UNRESOLVED_LOCATOR_ONLY",
+        "protocol_id": "UNRESOLVED_LOCATOR_ONLY",
+        "config_id": "UNRESOLVED_LOCATOR_ONLY",
+        "evaluator_id": "UNRESOLVED_LOCATOR_ONLY",
+        "numeric_target_id": "UNRESOLVED_LOCATOR_ONLY"
+      },
+      "failed_dimension_ids": [
+        "D01_AFFIRMATIVE_CODE_LICENSE",
+        "D02_CANONICAL_DATASET_RIGHTS",
+        "D03_BYTE_VERIFIABLE_LINEAGE",
+        "D04_IMMUTABLE_FULL_REVISION",
+        "D05_ENVIRONMENT_LOCK",
+        "D06_EXECUTABLE_TRAIN_ENTRYPOINT",
+        "D07_EXACT_PROTOCOL_CONFIG_SEEDS",
+        "D08_EVALUATOR_SEMANTICS",
+        "D09_SAME_SURFACE_NUMERIC_TARGET",
+        "D10_NO_TEST_DERIVATION",
+        "D11_BOUNDED_V5_ADAPTER",
+        "D12_ALL_LOCATORS_REPLAYED"
+      ],
+      "dispositive_conflicts": [],
+      "unresolved_mandatory_fields": [
+        "all identity-tuple fields except repository locator",
+        "all D01-D12 primary evidence"
+      ],
+      "evidence_ids": [],
+      "exclusion_status": "EXCLUDE_INCOMPLETE_BUNDLE",
+      "reason": "LensKit remained a locator-only framework lead. No exact official release packet with a same-surface numeric target was replayed before the discovery time-box, so every unverified dimension fails closed."
+    },
+    {
+      "proposal_id": "R4-D1C-PROP-006",
+      "identity_summary": {
+        "repository_url": "https://github.com/LienM/recpack",
+        "full_revision": "UNRESOLVED_LOCATOR_ONLY",
+        "dataset_provider": "UNRESOLVED_LOCATOR_ONLY",
+        "dataset_release_id": "UNRESOLVED_LOCATOR_ONLY",
+        "protocol_id": "UNRESOLVED_LOCATOR_ONLY",
+        "config_id": "UNRESOLVED_LOCATOR_ONLY",
+        "evaluator_id": "UNRESOLVED_LOCATOR_ONLY",
+        "numeric_target_id": "UNRESOLVED_LOCATOR_ONLY"
+      },
+      "failed_dimension_ids": [
+        "D01_AFFIRMATIVE_CODE_LICENSE",
+        "D02_CANONICAL_DATASET_RIGHTS",
+        "D03_BYTE_VERIFIABLE_LINEAGE",
+        "D04_IMMUTABLE_FULL_REVISION",
+        "D05_ENVIRONMENT_LOCK",
+        "D06_EXECUTABLE_TRAIN_ENTRYPOINT",
+        "D07_EXACT_PROTOCOL_CONFIG_SEEDS",
+        "D08_EVALUATOR_SEMANTICS",
+        "D09_SAME_SURFACE_NUMERIC_TARGET",
+        "D10_NO_TEST_DERIVATION",
+        "D11_BOUNDED_V5_ADAPTER",
+        "D12_ALL_LOCATORS_REPLAYED"
+      ],
+      "dispositive_conflicts": [],
+      "unresolved_mandatory_fields": [
+        "all identity-tuple fields except repository locator",
+        "all D01-D12 primary evidence"
+      ],
+      "evidence_ids": [],
+      "exclusion_status": "EXCLUDE_INCOMPLETE_BUNDLE",
+      "reason": "RecPack remained a locator-only framework lead. No exact official release packet with a same-surface numeric target was replayed before the discovery time-box, so every unverified dimension fails closed."
+    },
+    {
+      "proposal_id": "R4-D1C-PROP-007",
+      "identity_summary": {
+        "repository_url": "https://github.com/NVIDIA-Merlin/models",
+        "full_revision": "UNRESOLVED_LOCATOR_ONLY",
+        "dataset_provider": "UNRESOLVED_LOCATOR_ONLY",
+        "dataset_release_id": "UNRESOLVED_LOCATOR_ONLY",
+        "protocol_id": "UNRESOLVED_LOCATOR_ONLY",
+        "config_id": "UNRESOLVED_LOCATOR_ONLY",
+        "evaluator_id": "UNRESOLVED_LOCATOR_ONLY",
+        "numeric_target_id": "UNRESOLVED_LOCATOR_ONLY"
+      },
+      "failed_dimension_ids": [
+        "D01_AFFIRMATIVE_CODE_LICENSE",
+        "D02_CANONICAL_DATASET_RIGHTS",
+        "D03_BYTE_VERIFIABLE_LINEAGE",
+        "D04_IMMUTABLE_FULL_REVISION",
+        "D05_ENVIRONMENT_LOCK",
+        "D06_EXECUTABLE_TRAIN_ENTRYPOINT",
+        "D07_EXACT_PROTOCOL_CONFIG_SEEDS",
+        "D08_EVALUATOR_SEMANTICS",
+        "D09_SAME_SURFACE_NUMERIC_TARGET",
+        "D10_NO_TEST_DERIVATION",
+        "D11_BOUNDED_V5_ADAPTER",
+        "D12_ALL_LOCATORS_REPLAYED"
+      ],
+      "dispositive_conflicts": [],
+      "unresolved_mandatory_fields": [
+        "all identity-tuple fields except repository locator",
+        "all D01-D12 primary evidence"
+      ],
+      "evidence_ids": [],
+      "exclusion_status": "EXCLUDE_INCOMPLETE_BUNDLE",
+      "reason": "NVIDIA Merlin Models remained a locator-only framework lead. No exact official release packet with a same-surface numeric target was replayed before the discovery time-box, so every unverified dimension fails closed."
+    },
+    {
+      "proposal_id": "R4-D1C-PROP-008",
+      "identity_summary": {
+        "repository_url": "https://github.com/massquantity/LibRecommender",
+        "full_revision": "UNRESOLVED_LOCATOR_ONLY",
+        "dataset_provider": "UNRESOLVED_LOCATOR_ONLY",
+        "dataset_release_id": "UNRESOLVED_LOCATOR_ONLY",
+        "protocol_id": "UNRESOLVED_LOCATOR_ONLY",
+        "config_id": "UNRESOLVED_LOCATOR_ONLY",
+        "evaluator_id": "UNRESOLVED_LOCATOR_ONLY",
+        "numeric_target_id": "UNRESOLVED_LOCATOR_ONLY"
+      },
+      "failed_dimension_ids": [
+        "D01_AFFIRMATIVE_CODE_LICENSE",
+        "D02_CANONICAL_DATASET_RIGHTS",
+        "D03_BYTE_VERIFIABLE_LINEAGE",
+        "D04_IMMUTABLE_FULL_REVISION",
+        "D05_ENVIRONMENT_LOCK",
+        "D06_EXECUTABLE_TRAIN_ENTRYPOINT",
+        "D07_EXACT_PROTOCOL_CONFIG_SEEDS",
+        "D08_EVALUATOR_SEMANTICS",
+        "D09_SAME_SURFACE_NUMERIC_TARGET",
+        "D10_NO_TEST_DERIVATION",
+        "D11_BOUNDED_V5_ADAPTER",
+        "D12_ALL_LOCATORS_REPLAYED"
+      ],
+      "dispositive_conflicts": [],
+      "unresolved_mandatory_fields": [
+        "all identity-tuple fields except repository locator",
+        "all D01-D12 primary evidence"
+      ],
+      "evidence_ids": [],
+      "exclusion_status": "EXCLUDE_INCOMPLETE_BUNDLE",
+      "reason": "LibRecommender remained a locator-only framework lead. No exact official release packet with a same-surface numeric target was replayed before the discovery time-box, so every unverified dimension fails closed."
+    }
+  ],
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r4-g0-validation-receipt-1.0",
+  "created_at": "2026-08-22",
+  "stage_id": "R4-G0-CENTRAL-VALIDATION",
+  "validator": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r4_g0.py",
+  "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_x/E4_R4G0_strict_admission_freeze",
+  "passed": true,
+  "verdict": "PASS_R4_G0_NO_ADMISSIBLE_BUNDLE_FAIL_CLOSED_AUDITS_NOT_LAUNCHED",
+  "failure_count": 0,
+  "mechanical_checks": {
+    "passed": 19,
+    "expected": 19
+  },
+  "output_files": {
+    "present": 6,
+    "expected": 6,
+    "strict_json_present": 5,
+    "strict_json_expected": 5
+  },
+  "decision": {
+    "proposals_examined": 18,
+    "worker_admitted": 0,
+    "centrally_admissible": 0,
+    "frozen_complete_bundles": 0,
+    "verdict": "NO_ADMISSIBLE_BUNDLE_STOP_FAIL_CLOSED"
+  },
+  "exclusions": {
+    "incomplete_bundle": 12,
+    "dispositive_reject": 6,
+    "universal_failed_dimensions": [
+      "D03_BYTE_VERIFIABLE_LINEAGE",
+      "D08_EVALUATOR_SEMANTICS",
+      "D09_SAME_SURFACE_NUMERIC_TARGET",
+      "D11_BOUNDED_V5_ADAPTER"
+    ]
+  },
+  "source_deduplication": {
+    "source_record_mentions": 90,
+    "unique_exact_urls": 88,
+    "duplicate_mentions": 2
+  },
+  "central_replay": {
+    "required_proposals": 0,
+    "required_urls": 0,
+    "attempted": 0,
+    "reason": "No worker proposal passed all twelve strict admission dimensions."
+  },
+  "downstream": {
+    "R4-A1_A3": "NOT_LAUNCHED",
+    "R4-G1": "NOT_OPENED",
+    "R4-M0": "NOT_OPENED",
+    "automatic_new_wave": "NOT_AUTHORIZED"
+  },
+  "model_profile": {
+    "display_name": "Sol Max Standard",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "max",
+    "service_tier": "standard"
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "next_gate": "MANDATORY_USER_DECISION_TARGETED_EVIDENCE_MATERIALIZATION_REDESIGN_OR_PAUSE"
+}

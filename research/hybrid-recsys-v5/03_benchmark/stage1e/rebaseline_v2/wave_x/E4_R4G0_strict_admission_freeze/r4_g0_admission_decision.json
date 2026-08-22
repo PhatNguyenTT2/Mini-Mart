@@ -1,0 +1,92 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r4-g0-admission-decision-1.0",
+  "created_at": "2026-08-22",
+  "stage_id": "R4-G0",
+  "model_profile": {
+    "display_name": "Sol Max Standard",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "max",
+    "service_tier": "standard"
+  },
+  "frozen_input_binding": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r4_g0_frozen_input_manifest.json",
+    "canonical_lf_bytes": 6930,
+    "canonical_lf_sha256": "742e424ddc2edc34baa96ef257c93bbab3f15065baf48bc4ed2ddeb25be51a0c",
+    "gate_verdict": "PASS_R4_G0_FROZEN_22_OF_22_READY_FOR_CENTRAL_SYNTHESIS"
+  },
+  "worker_lane_summary": [
+    {
+      "stage_id": "R4-D1A",
+      "source_family": "official_artifact_reproduction_package_and_archival_supplement",
+      "examined": 5,
+      "admitted": 0,
+      "excluded": 5,
+      "source_records": 20
+    },
+    {
+      "stage_id": "R4-D1B",
+      "source_family": "official_benchmark_suite_and_immutable_results",
+      "examined": 5,
+      "admitted": 0,
+      "excluded": 5,
+      "source_records": 23
+    },
+    {
+      "stage_id": "R4-D1C",
+      "source_family": "official_framework_complete_packet",
+      "examined": 8,
+      "admitted": 0,
+      "excluded": 8,
+      "source_records": 47
+    }
+  ],
+  "aggregate": {
+    "proposals_examined": 18,
+    "worker_admitted": 0,
+    "worker_excluded": 18,
+    "excluded_incomplete_bundle": 12,
+    "dispositive_reject": 6,
+    "source_record_mentions": 90,
+    "unique_exact_source_urls": 88,
+    "duplicate_source_mentions": 2
+  },
+  "central_admission_gate": {
+    "worker_admitted_proposals_received": 0,
+    "central_replay_required_proposals": 0,
+    "central_replay_required_urls": 0,
+    "central_replays_attempted": 0,
+    "centrally_admissible_bundle_count": 0,
+    "frozen_complete_bundle_count": 0,
+    "reason_no_replay": "No worker proposal passed all twelve preregistered mandatory dimensions. Central replay is defined only for worker-admitted proposals and cannot repair an excluded proposal."
+  },
+  "decision": {
+    "verdict": "NO_ADMISSIBLE_BUNDLE_STOP_FAIL_CLOSED",
+    "frozen_bundle_count": 0,
+    "selection_cardinality_max": 1,
+    "audit_lanes_authorized": false,
+    "materialization_allowed": false,
+    "execution_allowed": false,
+    "automatic_new_wave_allowed": false,
+    "reason": "All 18 proposals failed the strict complete-bundle admission conjunction before central replay. The four universal gaps were byte-verifiable lineage, evaluator semantics, same-surface numeric-target binding, and a bounded v5 adapter."
+  },
+  "downstream": {
+    "R4-A1": "NOT_LAUNCHED_ZERO_FROZEN_BUNDLES",
+    "R4-A2": "NOT_LAUNCHED_ZERO_FROZEN_BUNDLES",
+    "R4-A3": "NOT_LAUNCHED_ZERO_FROZEN_BUNDLES",
+    "R4-G1": "NOT_OPENED_ZERO_FROZEN_BUNDLES",
+    "R4-M0": "NOT_OPENED_NO_SELECTION",
+    "repository_materialization": "BLOCKED",
+    "dataset_acquisition": "BLOCKED",
+    "environment_creation": "BLOCKED",
+    "preprocessing_training_evaluation": "BLOCKED",
+    "test_access": "BLOCKED"
+  },
+  "next_user_checkpoint": "CHOOSE_TARGETED_EVIDENCE_MATERIALIZATION_REDESIGN_OR_PAUSE_REFERENCE_TRACK",
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

@@ -1,0 +1,252 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r4-d1b-source-replay-log-1.0",
+  "created_at": "2026-08-22",
+  "stage_id": "R4-D1B",
+  "lane_scope": "official_benchmark_suites_and_project_owned_immutable_result_packages",
+  "model_profile": {
+    "display_name": "Sol XHigh Standard",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "xhigh",
+    "service_tier": "standard"
+  },
+  "source_record_count": 23,
+  "source_records": [
+    {
+      "evidence_id": "R4-D1B-PROP-001-SRC-001",
+      "url": "https://github.com/reczoo/BARS/commits/main",
+      "authority_type": "official_owner_revision_index",
+      "claim_scope": "Repository head and full immutable revision identity.",
+      "immutable_binding": "HEAD resolved on the replayed owner page to 5b5e61fe2e4ddf676dd12984365da0ae775fb863.",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "The full revision was read from the project-owner commit history; no repository fetch or archive download was performed."
+    },
+    {
+      "evidence_id": "R4-D1B-PROP-001-SRC-002",
+      "url": "https://github.com/reczoo/BARS/blob/5b5e61fe2e4ddf676dd12984365da0ae775fb863/LICENSE",
+      "authority_type": "official_owner_license_blob",
+      "claim_scope": "Affirmative Apache-2.0 code license at the pinned revision.",
+      "immutable_binding": "git blob path at commit 5b5e61fe2e4ddf676dd12984365da0ae775fb863",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "The complete license text was rendered on the exact-commit owner page."
+    },
+    {
+      "evidence_id": "R4-D1B-PROP-001-SRC-003",
+      "url": "https://github.com/reczoo/BARS/blob/5b5e61fe2e4ddf676dd12984365da0ae775fb863/requirements.txt",
+      "authority_type": "official_owner_environment_blob",
+      "claim_scope": "Published dependency surface for the BARS repository.",
+      "immutable_binding": "git blob path at commit 5b5e61fe2e4ddf676dd12984365da0ae775fb863",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "The file contains only unpinned fuxictr and recbox requirements and is not a complete deterministic environment lock."
+    },
+    {
+      "evidence_id": "R4-D1B-PROP-001-SRC-004",
+      "url": "https://github.com/reczoo/BARS/blob/5b5e61fe2e4ddf676dd12984365da0ae775fb863/matching/cf/MF_BPR/MF_BPR_gowalla_m1/README.md",
+      "authority_type": "official_owner_immutable_result_blob",
+      "claim_scope": "MF-BPR Gowalla_m1 environment narrative, logged metrics, and linked producing configuration.",
+      "immutable_binding": "git blob path at commit 5b5e61fe2e4ddf676dd12984365da0ae775fb863",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "The result log is present, but its configuration hyperlink resolves to a DEEM SimpleX/Yelp18 tuner configuration rather than MF-BPR/Gowalla, creating a dispositive same-surface identity conflict."
+    },
+    {
+      "evidence_id": "R4-D1B-PROP-001-SRC-005",
+      "url": "https://github.com/reczoo/Datasets/tree/main/Gowalla/Gowalla_m1",
+      "authority_type": "official_suite_dataset_derivative_page",
+      "claim_scope": "BARS/RecZoo processed Gowalla_m1 file statistics and MD5 values.",
+      "immutable_binding": "NONE; mutable main-branch derivative-data page",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "The page publishes checksums for processed files but does not bind an immutable dataset revision or a byte-verifiable raw-to-processed transformation chain."
+    },
+    {
+      "evidence_id": "R4-D1B-PROP-001-SRC-006",
+      "url": "https://snap.stanford.edu/data/loc-gowalla.html",
+      "authority_type": "canonical_dataset_provider_page",
+      "claim_scope": "Stanford SNAP Gowalla source identity, collection period, schema, and raw file locators.",
+      "immutable_binding": "provider page identifies the Feb. 2009-Oct. 2010 collection but publishes no release checksum on the replayed page",
+      "access_status": "REPLAYED_AUTHORITATIVE",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "The provider page gives source facts and file links, but no affirmative terms/release/checksum evidence sufficient to join the BARS processed split."
+    },
+    {
+      "evidence_id": "R4-D1B-PROP-002-SRC-001",
+      "url": "https://github.com/amazon-science/RecArena/commits/main",
+      "authority_type": "official_owner_revision_index",
+      "claim_scope": "Repository head and full immutable revision identity.",
+      "immutable_binding": "HEAD resolved on the replayed owner page to b5a02616e35276398703512e231904cf2ca8d586.",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "The project-owner history supplied the full revision without cloning or fetching."
+    },
+    {
+      "evidence_id": "R4-D1B-PROP-002-SRC-002",
+      "url": "https://github.com/amazon-science/RecArena/tree/b5a02616e35276398703512e231904cf2ca8d586",
+      "authority_type": "official_owner_immutable_tree",
+      "claim_scope": "Pinned repository inventory, experiment documentation, and absence of a committed numeric result package in the inspected root tree.",
+      "immutable_binding": "git tree at commit b5a02616e35276398703512e231904cf2ca8d586",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "The tree exposes source, tests, catalog, requirements, and experiment instructions; no result artifact or numeric target was present in the inspected repository surface."
+    },
+    {
+      "evidence_id": "R4-D1B-PROP-002-SRC-003",
+      "url": "https://github.com/amazon-science/RecArena/blob/b5a02616e35276398703512e231904cf2ca8d586/requirements.txt",
+      "authority_type": "official_owner_environment_blob",
+      "claim_scope": "Autogenerated, pinned Python 3.13 transitive dependency set.",
+      "immutable_binding": "git blob path at commit b5a02616e35276398703512e231904cf2ca8d586",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "This is a strong environment surface, but it cannot compensate for missing dataset lineage, target, and evaluator details."
+    },
+    {
+      "evidence_id": "R4-D1B-PROP-002-SRC-004",
+      "url": "https://github.com/amazon-science/RecArena/blob/b5a02616e35276398703512e231904cf2ca8d586/src/rec_arena/experiments/prepare_datasets.py",
+      "authority_type": "official_owner_preprocessing_blob",
+      "claim_scope": "Dataset acquisition, parsing, k-core processing, remapping, and leave-one-out split implementation.",
+      "immutable_binding": "git blob path at commit b5a02616e35276398703512e231904cf2ca8d586",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "The script downloads named upstream archives and creates validation/test holdouts, but performs no provider-checksum verification and emits no processed-output hashes."
+    },
+    {
+      "evidence_id": "R4-D1B-PROP-002-SRC-005",
+      "url": "https://grouplens.org/datasets/movielens/20m/",
+      "authority_type": "canonical_dataset_provider_release_page",
+      "claim_scope": "MovieLens 20M stable release identity, update date, archive, README, and checksum locators.",
+      "immutable_binding": "MovieLens 20M released 2015-04 and updated 2016-10; provider labels it a stable benchmark dataset",
+      "access_status": "REPLAYED_AUTHORITATIVE",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "The provider page is authoritative, but the RecArena acquisition script does not replay the provider checksum into a verified transformation chain."
+    },
+    {
+      "evidence_id": "R4-D1B-PROP-003-SRC-001",
+      "url": "https://github.com/RUCAIBox/RecBole-GNN/commits/main",
+      "authority_type": "official_owner_revision_index",
+      "claim_scope": "Repository head and full immutable revision identity.",
+      "immutable_binding": "HEAD resolved on the replayed owner page to 632ef888589944c190ad8f449b49ca559618d4df.",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "The full revision was read from the owner commit history."
+    },
+    {
+      "evidence_id": "R4-D1B-PROP-003-SRC-002",
+      "url": "https://github.com/RUCAIBox/RecBole-GNN",
+      "authority_type": "official_owner_repository_page",
+      "claim_scope": "Suite purpose, dependency ranges, entrypoints, model coverage, and owner-linked result pages.",
+      "immutable_binding": "NONE; mutable main page, with head revision independently resolved by R4-D1B-PROP-003-SRC-001",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "Requirements include recbole==1.1.1 but leave Python, PyTorch, and PyG as ranges, so they do not form a complete environment lock."
+    },
+    {
+      "evidence_id": "R4-D1B-PROP-003-SRC-003",
+      "url": "https://github.com/RUCAIBox/RecBole-GNN/blob/main/results/general/ml-1m.md",
+      "authority_type": "official_owner_result_page",
+      "claim_scope": "MovieLens 1M protocol summary, inline common settings, best hyperparameters, and result table.",
+      "immutable_binding": "NONE; mutable main-branch result page observed while head was 632ef888589944c190ad8f449b49ca559618d4df",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "The page reports ratio 8:1:1 full-sort evaluation and numeric rows, but does not bind seeds, a complete producing config, dependency lock, dataset bytes, or deterministic tie behavior."
+    },
+    {
+      "evidence_id": "R4-D1B-PROP-003-SRC-004",
+      "url": "https://grouplens.org/datasets/movielens/1m/",
+      "authority_type": "canonical_dataset_provider_release_page",
+      "claim_scope": "MovieLens 1M stable release identity, release date, archive, README, and checksum locators.",
+      "immutable_binding": "MovieLens 1M stable release dated 2003-02",
+      "access_status": "REPLAYED_AUTHORITATIVE",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "The provider release is authoritative; the inspected suite page does not establish a byte-verified conversion from that archive to its reported 836,478-interaction input."
+    },
+    {
+      "evidence_id": "R4-D1B-PROP-004-SRC-001",
+      "url": "https://www.open-reco-bench.ai/about",
+      "authority_type": "official_benchmark_site",
+      "claim_scope": "ORBIT benchmark purpose, standardized public suite, and hidden ClueWeb-Reco test design.",
+      "immutable_binding": "NONE; mutable official project site",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "The project describes hidden-test evaluation and links its owner codebase, but the site does not itself bind an immutable producing config/result tuple."
+    },
+    {
+      "evidence_id": "R4-D1B-PROP-004-SRC-002",
+      "url": "https://github.com/cxcscmu/RecSys-Benchmark/commits/main",
+      "authority_type": "official_owner_revision_index",
+      "claim_scope": "Repository head and full immutable revision identity.",
+      "immutable_binding": "HEAD resolved on the replayed owner page to ac7d8a9838e3e43e8727074f4398a8b6c402af4d.",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "The full SHA was obtained from the project-owner commit history."
+    },
+    {
+      "evidence_id": "R4-D1B-PROP-004-SRC-003",
+      "url": "https://github.com/cxcscmu/RecSys-Benchmark",
+      "authority_type": "official_owner_repository_page",
+      "claim_scope": "Repository inventory, data preparation, editable experiment scripts/configs, evaluator entrypoints, and hidden-test submission format.",
+      "immutable_binding": "NONE; mutable main page, with head revision independently resolved by R4-D1B-PROP-004-SRC-002",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "The replayed root has no affirmative license file, instructs users to modify paths and variables, relies on externally preprocessed Google Drive data, and does not bind a selected immutable leaderboard row to one exact config."
+    },
+    {
+      "evidence_id": "R4-D1B-PROP-004-SRC-004",
+      "url": "https://www.open-reco-bench.ai/leaderboard",
+      "authority_type": "official_benchmark_leaderboard",
+      "claim_scope": "Centralized project leaderboard surface.",
+      "immutable_binding": "NONE; dynamic leaderboard surface",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "No row was accepted because the dynamic surface did not expose an immutable same-revision producing config, environment, evaluator, and dataset-byte identity."
+    },
+    {
+      "evidence_id": "R4-D1B-PROP-005-SRC-001",
+      "url": "https://github.com/recommenders-team/recommenders/commits/main",
+      "authority_type": "official_owner_revision_index",
+      "claim_scope": "Repository head and full immutable revision identity.",
+      "immutable_binding": "HEAD resolved on the replayed owner page to 0bb4b3690941ffb668118e31ccaf8a7d19f8212a.",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "The full SHA was obtained from the owner commit history."
+    },
+    {
+      "evidence_id": "R4-D1B-PROP-005-SRC-002",
+      "url": "https://github.com/recommenders-team/recommenders",
+      "authority_type": "official_owner_repository_page",
+      "claim_scope": "Project purpose and MovieLens 100K algorithm-comparison table.",
+      "immutable_binding": "NONE; mutable main page, with head revision independently resolved by R4-D1B-PROP-005-SRC-001",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "The owner characterizes the repository as examples and best practices; the comparison is an illustrative notebook benchmark, which the lane instructions require excluding absent a complete exact-producing bundle."
+    },
+    {
+      "evidence_id": "R4-D1B-PROP-005-SRC-003",
+      "url": "https://github.com/recommenders-team/recommenders/blob/main/examples/06_benchmarks/movielens.ipynb",
+      "authority_type": "official_owner_benchmark_notebook",
+      "claim_scope": "Illustrative MovieLens comparison notebook linked by the owner result table.",
+      "immutable_binding": "NONE; mutable main-branch notebook observed while head was 0bb4b3690941ffb668118e31ccaf8a7d19f8212a",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "The notebook is a generic example surface, not an immutable result package with a complete shared config/environment/evaluator identity."
+    },
+    {
+      "evidence_id": "R4-D1B-PROP-005-SRC-004",
+      "url": "https://grouplens.org/datasets/movielens/100k/",
+      "authority_type": "canonical_dataset_provider_release_page",
+      "claim_scope": "MovieLens 100K stable release identity, release date, archive, README, and checksum locators.",
+      "immutable_binding": "MovieLens 100K stable release dated 1998-04",
+      "access_status": "REPLAYED_AUTHORITATIVE",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "The provider page is authoritative, but the inspected notebook surface does not bind provider checksum replay and processed-input bytes to each reported row."
+    }
+  ],
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

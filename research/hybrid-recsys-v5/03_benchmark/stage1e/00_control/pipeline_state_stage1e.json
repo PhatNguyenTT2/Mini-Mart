@@ -2,7 +2,7 @@
   "schema_version": "academic-research-pipeline-state-1.0",
   "project": "hybrid-recsys-v5",
   "stage": "1E",
-  "state": "stage1e_rebaseline_v2_r4_d1_strict_discovery_running",
+  "state": "stage1e_rebaseline_v2_r4_g0_complete_fail_closed_no_admissible_bundle",
   "updated_at": "2026-08-22",
   "model": "gpt-5.6-sol",
   "reasoning": "max",
@@ -15,7 +15,7 @@
     "record": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/wave1_v1_supersession_record.json"
   },
   "rebaseline_v2": {
-    "status": "e4_r4_d1_strict_discovery_running",
+    "status": "e4_r4_g0_complete_fail_closed_no_admissible_bundle",
     "wave_a_expected": 3,
     "wave_a_active": 0,
     "wave_a_complete": 3,
@@ -668,7 +668,7 @@
       "next_gate": "SUPERSEDED_BY_USER_DECISION_START_NEW_STRICT_DISCOVERY_WAVE"
     },
     "e4_r4": {
-      "status": "D1_PARALLEL_RUNNING_AFTER_S0_PASS",
+      "status": "G0_COMPLETE_FAIL_CLOSED_NO_ADMISSIBLE_BUNDLE_AWAITING_USER_DECISION",
       "entry_checkpoint": "USER_CONFIRMED_START_NEW_STRICT_DISCOVERY_WAVE",
       "source_stage": "R3-G1",
       "source_verdict": "NO_SELECTION_EVIDENCE_REMAINS_INSUFFICIENT",
@@ -697,26 +697,76 @@
       },
       "d1_parallel_group": {
         "expected": 3,
-        "active": 3,
-        "complete": 0,
+        "active": 0,
+        "complete": 3,
         "dispatch": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r4_d1_dispatch.json",
         "stages": {
           "R4-D1A": {
             "agent_id": "01a02a3e-d3b0-7363-8b4d-c779e74f0061",
-            "status": "RUNNING",
+            "status": "COMPLETE_ZERO_ADMISSIONS_CENTRALLY_VALIDATED",
             "source_family": "official_artifact_reproduction_package_and_archival_supplement"
           },
           "R4-D1B": {
             "agent_id": "01a02a3e-d485-7c20-b6f0-fc2617315b59",
-            "status": "RUNNING",
+            "status": "COMPLETE_ZERO_ADMISSIONS_CENTRALLY_VALIDATED",
             "source_family": "official_benchmark_suite_and_immutable_results"
           },
           "R4-D1C": {
             "agent_id": "01a02a3e-d58f-70a3-b34e-d2795eb16d05",
-            "status": "RUNNING",
+            "status": "COMPLETE_ZERO_ADMISSIONS_CENTRALLY_VALIDATED",
             "source_family": "official_framework_complete_packet"
           }
+        },
+        "aggregate": {
+          "proposals_examined": 18,
+          "proposals_admitted": 0,
+          "proposals_excluded": 18,
+          "source_record_mentions": 90
+        },
+        "central_validation": {
+          "status": "PASS_R4_D1_SCOUTS_READY_FOR_CENTRAL_HASH_FREEZE",
+          "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r4_d1_validation_receipt.json",
+          "mechanical_checks": "63/63",
+          "exact_output_files": "15/15",
+          "failure_count": 0
         }
+      },
+      "g0_frozen_inputs": {
+        "status": "PASS_R4_G0_FROZEN_22_OF_22_READY_FOR_CENTRAL_SYNTHESIS",
+        "manifest": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r4_g0_frozen_input_manifest.json",
+        "gate_receipt": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r4_g0_frozen_input_gate_receipt.json",
+        "frozen_inputs": "22/22",
+        "strict_json_inputs": "17/17",
+        "worker_outputs": "15/15",
+        "worker_admitted_proposals": 0
+      },
+      "g0": {
+        "status": "COMPLETE_FAIL_CLOSED_CENTRALLY_VALIDATED",
+        "context": "current_central",
+        "model": "gpt-5.6-sol",
+        "reasoning": "max",
+        "service_tier": "standard",
+        "display_name": "Sol Max Standard",
+        "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_x/E4_R4G0_strict_admission_freeze",
+        "central_validation": {
+          "status": "PASS_R4_G0_NO_ADMISSIBLE_BUNDLE_FAIL_CLOSED_AUDITS_NOT_LAUNCHED",
+          "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r4_g0_validation_receipt.json",
+          "mechanical_checks": "19/19",
+          "output_files": "6/6",
+          "strict_json_outputs": "5/5",
+          "failure_count": 0
+        },
+        "proposals_examined": 18,
+        "worker_admitted": 0,
+        "centrally_admissible": 0,
+        "frozen_complete_bundles": 0,
+        "verdict": "NO_ADMISSIBLE_BUNDLE_STOP_FAIL_CLOSED",
+        "central_replay_required_proposals": 0,
+        "central_replay_required_urls": 0,
+        "central_replays_attempted": 0,
+        "R4-A1_A3": "NOT_LAUNCHED",
+        "R4-G1": "NOT_OPENED",
+        "R4-M0": "NOT_OPENED"
       },
       "truth_state": {
         "RESULT_STATUS": "NOT_RUN",
@@ -725,13 +775,13 @@
         "project_benchmark_numbers": "INVALID_FOR_PAPER"
       },
       "execution_authorized": false,
-      "next_gate": "WAIT_ALL_R4_D1_THEN_CENTRAL_SCHEMA_HASH_VALIDATION_AND_G0_REPLAY"
+      "next_gate": "MANDATORY_USER_DECISION_TARGETED_EVIDENCE_MATERIALIZATION_REDESIGN_OR_PAUSE"
     }
   },
-  "central_preregistration_lock": "PASS_R4_S0_STRICT_GATE_20_OF_20",
-  "adapt_reproduce": "BLOCKED_R4_STRICT_DISCOVERY_AND_AUDIT_NOT_COMPLETE",
+  "central_preregistration_lock": "BLOCKED_R4_G0_NO_ADMISSIBLE_BUNDLE",
+  "adapt_reproduce": "BLOCKED_R4_G0_NO_ADMISSIBLE_BUNDLE_SCOPE_DECISION_REQUIRED",
   "harmonized_v5": "BLOCKED",
   "external_validation": "BLOCKED",
   "efficiency": "BLOCKED_AFTER_ACCURACY",
-  "next_gate": "WAIT FOR R4-D1A/D1B/D1C, validate exact five-file outputs and hashes centrally, then run R4-G0 replay/dedup. Materialization, execution and TEST access remain blocked until a positive R4-G1 plus explicit R4-M0 user approval."
+  "next_gate": "MANDATORY USER CHECKPOINT: choose a new change-controlled evidence-materialization design for named near-complete candidates, redesign which evidence is pre-materialization versus locally reproduced without weakening the final benchmark gate, or pause the external reference track. R4-A1-A3, R4-G1 and R4-M0 were not opened; all execution and TEST access remain blocked."
 }

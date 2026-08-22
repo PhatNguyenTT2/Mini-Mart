@@ -1,0 +1,492 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r4-d1c-source-replay-log-1.0",
+  "created_at": "2026-08-22",
+  "stage_id": "R4-D1C",
+  "lane_scope": "official_framework_complete_packet_scout",
+  "model_profile": {
+    "display_name": "Sol XHigh Standard",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "xhigh",
+    "service_tier": "standard"
+  },
+  "source_records_count": 47,
+  "source_records": [
+    {
+      "evidence_id": "R4-D1C-EVID-001",
+      "url": "https://grouplens.org/datasets/movielens/100k/",
+      "authority_type": "canonical_dataset_provider_release_page",
+      "claim_scope": "MovieLens 100K provider identity, April 1998 release date, provider README, archive, and checksum locators.",
+      "immutable_binding": "Canonical provider release page; release identity is stated but the HTML page is not content-addressed.",
+      "access_status": "REPLAYED_AUTHORITATIVE",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "Opened directly. Used only for provider release identity and authoritative locators."
+    },
+    {
+      "evidence_id": "R4-D1C-EVID-002",
+      "url": "https://files.grouplens.org/datasets/movielens/ml-100k-README.txt",
+      "authority_type": "canonical_dataset_provider_terms_and_schema",
+      "claim_scope": "MovieLens 100K research-use conditions, file schema, and canonical split-file descriptions.",
+      "immutable_binding": "Provider-hosted release-specific README path; not content-addressed.",
+      "access_status": "REPLAYED_AUTHORITATIVE",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "Opened directly. The terms prohibit redistribution or commercial use without permission and require acknowledgments."
+    },
+    {
+      "evidence_id": "R4-D1C-EVID-003",
+      "url": "https://files.grouplens.org/datasets/movielens/ml-100k.zip.md5",
+      "authority_type": "canonical_dataset_provider_checksum_sidecar",
+      "claim_scope": "Provider checksum for the MovieLens 100K archive.",
+      "immutable_binding": "Release-specific provider checksum locator; content could not be replayed.",
+      "access_status": "INACCESSIBLE",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "The public endpoint was opened, but its response was handled as binary content. No binary retrieval was attempted, so no checksum value was accepted."
+    },
+    {
+      "evidence_id": "R4-D1C-EVID-004",
+      "url": "https://github.com/RUCAIBox/RecBole/releases/tag/v1.2.1",
+      "authority_type": "project_owner_release",
+      "claim_scope": "RecBole v1.2.1 release identity and release-to-commit locator.",
+      "immutable_binding": "Project-owner tag page joined to immutable commit 9a6f63d8d4a5b989fe27955a833f813a6d86041e.",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "Opened directly; the release page exposes short commit 9a6f63d."
+    },
+    {
+      "evidence_id": "R4-D1C-EVID-005",
+      "url": "https://github.com/RUCAIBox/RecBole/commit/9a6f63d8d4a5b989fe27955a833f813a6d86041e",
+      "authority_type": "project_owner_immutable_commit",
+      "claim_scope": "Full immutable RecBole revision for all code-bearing joins.",
+      "immutable_binding": "Full Git commit SHA 9a6f63d8d4a5b989fe27955a833f813a6d86041e.",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "Opened directly and used as the sole RecBole code revision."
+    },
+    {
+      "evidence_id": "R4-D1C-EVID-006",
+      "url": "https://raw.githubusercontent.com/RUCAIBox/RecBole/9a6f63d8d4a5b989fe27955a833f813a6d86041e/README.md",
+      "authority_type": "project_owner_immutable_blob",
+      "claim_scope": "Quickstart command, default BPR and ml-100k identity, example test metrics, and project description.",
+      "immutable_binding": "Raw blob selected by full Git commit SHA.",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "The README says output is 'like' the displayed metrics; it does not provide a producing run receipt."
+    },
+    {
+      "evidence_id": "R4-D1C-EVID-007",
+      "url": "https://raw.githubusercontent.com/RUCAIBox/RecBole/9a6f63d8d4a5b989fe27955a833f813a6d86041e/requirements.txt",
+      "authority_type": "project_owner_immutable_dependency_recipe",
+      "claim_scope": "Direct runtime dependency declarations.",
+      "immutable_binding": "Raw blob selected by full Git commit SHA.",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "Most dependencies are lower-bounded ranges, not exact versions; no transitive or platform lock is supplied."
+    },
+    {
+      "evidence_id": "R4-D1C-EVID-008",
+      "url": "https://raw.githubusercontent.com/RUCAIBox/RecBole/9a6f63d8d4a5b989fe27955a833f813a6d86041e/LICENSE",
+      "authority_type": "project_owner_immutable_license",
+      "claim_scope": "RecBole code license at the pinned revision.",
+      "immutable_binding": "Raw license blob selected by full Git commit SHA.",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "MIT license text replayed."
+    },
+    {
+      "evidence_id": "R4-D1C-EVID-009",
+      "url": "https://raw.githubusercontent.com/RUCAIBox/RecBole/9a6f63d8d4a5b989fe27955a833f813a6d86041e/recbole/properties/overall.yaml",
+      "authority_type": "project_owner_immutable_configuration",
+      "claim_scope": "Seed 2020, reproducibility flag, random 0.8/0.1/0.1 split, full evaluation mode, metrics, and top-k 10.",
+      "immutable_binding": "Raw configuration blob selected by full Git commit SHA.",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "Configuration surface replayed; it is not a complete target-producing run receipt or environment lock."
+    },
+    {
+      "evidence_id": "R4-D1C-EVID-010",
+      "url": "https://raw.githubusercontent.com/RUCAIBox/RecBole/9a6f63d8d4a5b989fe27955a833f813a6d86041e/run_recbole.py",
+      "authority_type": "project_owner_immutable_training_entrypoint",
+      "claim_scope": "Executable training entrypoint and default BPR/ml-100k dispatch.",
+      "immutable_binding": "Raw source blob selected by full Git commit SHA.",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "Executable path was identified but not executed."
+    },
+    {
+      "evidence_id": "R4-D1C-EVID-011",
+      "url": "https://api.github.com/repos/RUCAIBox/RecBole/contents/dataset/ml-100k?ref=9a6f63d8d4a5b989fe27955a833f813a6d86041e",
+      "authority_type": "project_owner_immutable_tree_metadata",
+      "claim_scope": "Repository-carried ml-100k.inter, ml-100k.item, and ml-100k.user blob identities.",
+      "immutable_binding": "GitHub contents API bound to full Git commit SHA.",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "Only tree metadata was inspected. No dataset blob was downloaded. The tree does not supply a provider-archive-to-processed-files transformation receipt."
+    },
+    {
+      "evidence_id": "R4-D1C-EVID-012",
+      "url": "https://raw.githubusercontent.com/RUCAIBox/RecBole/9a6f63d8d4a5b989fe27955a833f813a6d86041e/recbole/evaluator/collector.py",
+      "authority_type": "project_owner_immutable_evaluator_source",
+      "claim_scope": "Full-sort score collection and top-k selection.",
+      "immutable_binding": "Raw evaluator blob selected by full Git commit SHA.",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "The implementation calls torch.topk without an explicit item-id secondary tie key."
+    },
+    {
+      "evidence_id": "R4-D1C-EVID-013",
+      "url": "https://raw.githubusercontent.com/RUCAIBox/RecBole/9a6f63d8d4a5b989fe27955a833f813a6d86041e/recbole/trainer/trainer.py",
+      "authority_type": "project_owner_immutable_evaluator_source",
+      "claim_scope": "Full-sort evaluation path and masking of padding and interaction-history items.",
+      "immutable_binding": "Raw trainer blob selected by full Git commit SHA.",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "Seen-item masking was observed; deterministic tie semantics were not."
+    },
+    {
+      "evidence_id": "R4-D1C-EVID-014",
+      "url": "https://github.com/recommenders-team/recommenders/releases/tag/1.2.1",
+      "authority_type": "project_owner_release",
+      "claim_scope": "Recommenders 1.2.1 release identity and release-to-commit binding.",
+      "immutable_binding": "Project-owner release page joined to immutable commit 5c862afa751f53559b5ad98b92e098760f530ad8.",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "Opened directly."
+    },
+    {
+      "evidence_id": "R4-D1C-EVID-015",
+      "url": "https://github.com/recommenders-team/recommenders/commit/5c862afa751f53559b5ad98b92e098760f530ad8",
+      "authority_type": "project_owner_immutable_commit",
+      "claim_scope": "Full immutable Recommenders revision for all code-bearing joins.",
+      "immutable_binding": "Full Git commit SHA 5c862afa751f53559b5ad98b92e098760f530ad8.",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "Opened directly and used as the sole Recommenders code revision."
+    },
+    {
+      "evidence_id": "R4-D1C-EVID-016",
+      "url": "https://raw.githubusercontent.com/recommenders-team/recommenders/5c862afa751f53559b5ad98b92e098760f530ad8/README.md",
+      "authority_type": "project_owner_immutable_blob",
+      "claim_scope": "MovieLens benchmark table, 75/25 split statement, k=10, BPR target row, hardware description, and install recipe.",
+      "immutable_binding": "Raw README blob selected by full Git commit SHA.",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "The BPR ML-100K row reports MAP 0.132478, nDCG 0.441997, precision 0.388229, and recall 0.212522."
+    },
+    {
+      "evidence_id": "R4-D1C-EVID-017",
+      "url": "https://raw.githubusercontent.com/recommenders-team/recommenders/5c862afa751f53559b5ad98b92e098760f530ad8/LICENSE",
+      "authority_type": "project_owner_immutable_license",
+      "claim_scope": "Recommenders code license at the pinned revision.",
+      "immutable_binding": "Raw license blob selected by full Git commit SHA.",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "MIT license text replayed."
+    },
+    {
+      "evidence_id": "R4-D1C-EVID-018",
+      "url": "https://raw.githubusercontent.com/recommenders-team/recommenders/5c862afa751f53559b5ad98b92e098760f530ad8/setup.py",
+      "authority_type": "project_owner_immutable_dependency_recipe",
+      "claim_scope": "Release dependency ranges, including cornac>=1.15.2,<3.",
+      "immutable_binding": "Raw setup blob selected by full Git commit SHA.",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "Dependencies are ranges, not a transitive lock. The Cornac floor conflicts with the notebook's stored Cornac 1.14.2 environment output."
+    },
+    {
+      "evidence_id": "R4-D1C-EVID-019",
+      "url": "https://api.github.com/repos/recommenders-team/recommenders/git/trees/5c862afa751f53559b5ad98b92e098760f530ad8?recursive=1",
+      "authority_type": "project_owner_immutable_tree_metadata",
+      "claim_scope": "Complete repository tree inspection for environment-lock artifacts.",
+      "immutable_binding": "Git tree API bound to full Git commit SHA; response reported truncated=false.",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "No complete lockfile was present; setup and environment recipes remained range-based."
+    },
+    {
+      "evidence_id": "R4-D1C-EVID-020",
+      "url": "https://raw.githubusercontent.com/recommenders-team/recommenders/5c862afa751f53559b5ad98b92e098760f530ad8/examples/06_benchmarks/movielens.ipynb",
+      "authority_type": "project_owner_immutable_executable_notebook",
+      "claim_scope": "MovieLens loading, stratified 75/25 split, BPR parameters, seed, evaluator dispatch, stored package versions, and stored numeric outputs.",
+      "immutable_binding": "Raw notebook blob selected by full Git commit SHA.",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "Notebook JSON was inspected without execution. It stores Cornac 1.14.2 while the pinned setup requires Cornac >=1.15.2; the target-producing join is therefore conflicting."
+    },
+    {
+      "evidence_id": "R4-D1C-EVID-021",
+      "url": "https://raw.githubusercontent.com/recommenders-team/recommenders/5c862afa751f53559b5ad98b92e098760f530ad8/recommenders/datasets/movielens.py",
+      "authority_type": "project_owner_immutable_dataset_loader",
+      "claim_scope": "Canonical GroupLens archive URL, selected files, and extraction path.",
+      "immutable_binding": "Raw loader blob selected by full Git commit SHA.",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "The loader invokes maybe_download without a checksum argument and extracts u.data/u.item."
+    },
+    {
+      "evidence_id": "R4-D1C-EVID-022",
+      "url": "https://raw.githubusercontent.com/recommenders-team/recommenders/5c862afa751f53559b5ad98b92e098760f530ad8/recommenders/datasets/download_utils.py",
+      "authority_type": "project_owner_immutable_download_helper",
+      "claim_scope": "Download integrity behavior for dataset acquisition.",
+      "immutable_binding": "Raw helper blob selected by full Git commit SHA.",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "The helper can check expected byte count when supplied, but MovieLens does not supply it and no cryptographic checksum is enforced."
+    },
+    {
+      "evidence_id": "R4-D1C-EVID-023",
+      "url": "https://raw.githubusercontent.com/recommenders-team/recommenders/5c862afa751f53559b5ad98b92e098760f530ad8/examples/06_benchmarks/benchmark_utils.py",
+      "authority_type": "project_owner_immutable_protocol_source",
+      "claim_scope": "BPR training dispatch, full training-catalog scoring, seen-item removal, and ranking evaluator dispatch.",
+      "immutable_binding": "Raw benchmark helper blob selected by full Git commit SHA.",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "BPR uses Cornac over train users/items and removes training interactions before metric computation."
+    },
+    {
+      "evidence_id": "R4-D1C-EVID-024",
+      "url": "https://raw.githubusercontent.com/recommenders-team/recommenders/5c862afa751f53559b5ad98b92e098760f530ad8/recommenders/utils/constants.py",
+      "authority_type": "project_owner_immutable_configuration_source",
+      "claim_scope": "Default k and seed constants.",
+      "immutable_binding": "Raw constants blob selected by full Git commit SHA.",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "DEFAULT_K=10 and SEED=42 were replayed."
+    },
+    {
+      "evidence_id": "R4-D1C-EVID-025",
+      "url": "https://raw.githubusercontent.com/recommenders-team/recommenders/5c862afa751f53559b5ad98b92e098760f530ad8/recommenders/models/cornac/cornac_utils.py",
+      "authority_type": "project_owner_immutable_candidate_generation_source",
+      "claim_scope": "Cornac all-item prediction surface and seen-item removal.",
+      "immutable_binding": "Raw adapter blob selected by full Git commit SHA.",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "Predictions are generated for mapped train users and train items; remove_seen filters observed train pairs."
+    },
+    {
+      "evidence_id": "R4-D1C-EVID-026",
+      "url": "https://raw.githubusercontent.com/recommenders-team/recommenders/5c862afa751f53559b5ad98b92e098760f530ad8/recommenders/evaluation/python_evaluation.py",
+      "authority_type": "project_owner_immutable_evaluator_source",
+      "claim_scope": "Top-k construction, ranks, nDCG, precision, recall, and macro user aggregation.",
+      "immutable_binding": "Raw evaluator blob selected by full Git commit SHA.",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "Top-k sorts only by user and prediction score, then takes head(k); no item-id secondary tie key is specified."
+    },
+    {
+      "evidence_id": "R4-D1C-EVID-027",
+      "url": "https://github.com/lyst/lightfm/releases/tag/1.17",
+      "authority_type": "project_owner_release",
+      "claim_scope": "LightFM 1.17 release identity and release-to-commit locator.",
+      "immutable_binding": "Project-owner release page joined to immutable commit 688feded0717f289933b95a0134bad6fbe547331.",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "Opened directly."
+    },
+    {
+      "evidence_id": "R4-D1C-EVID-028",
+      "url": "https://github.com/lyst/lightfm/commit/688feded0717f289933b95a0134bad6fbe547331",
+      "authority_type": "project_owner_immutable_commit",
+      "claim_scope": "Full immutable LightFM revision for all code-bearing joins.",
+      "immutable_binding": "Full Git commit SHA 688feded0717f289933b95a0134bad6fbe547331.",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "Opened directly and used as the sole LightFM code revision."
+    },
+    {
+      "evidence_id": "R4-D1C-EVID-029",
+      "url": "https://raw.githubusercontent.com/lyst/lightfm/688feded0717f289933b95a0134bad6fbe547331/README.md",
+      "authority_type": "project_owner_immutable_blob",
+      "claim_scope": "Quickstart dataset, WARP model, 30 epochs, two training threads, and precision-at-5 evaluator call.",
+      "immutable_binding": "Raw README blob selected by full Git commit SHA.",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "The quickstart supplies no random_state and no numeric output in the README."
+    },
+    {
+      "evidence_id": "R4-D1C-EVID-030",
+      "url": "https://raw.githubusercontent.com/lyst/lightfm/688feded0717f289933b95a0134bad6fbe547331/doc/quickstart.rst",
+      "authority_type": "project_owner_immutable_protocol_and_result_document",
+      "claim_scope": "MovieLens preprocessing description, WARP training call, precision-at-5 formula description, and rounded train/test output.",
+      "immutable_binding": "Raw documentation blob selected by full Git commit SHA.",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "The document reports train precision 0.43 and test precision 0.04, but the run is unseeded, multithreaded, rounded, and has no environment receipt."
+    },
+    {
+      "evidence_id": "R4-D1C-EVID-031",
+      "url": "https://raw.githubusercontent.com/lyst/lightfm/688feded0717f289933b95a0134bad6fbe547331/setup.py",
+      "authority_type": "project_owner_immutable_build_and_rights_metadata",
+      "claim_scope": "Dependency ranges and declared MIT license metadata.",
+      "immutable_binding": "Raw setup blob selected by full Git commit SHA.",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "Dependencies are unpinned; license metadata says MIT, conflicting with the Apache-2.0 LICENSE blob at the same revision."
+    },
+    {
+      "evidence_id": "R4-D1C-EVID-032",
+      "url": "https://raw.githubusercontent.com/lyst/lightfm/688feded0717f289933b95a0134bad6fbe547331/LICENSE",
+      "authority_type": "project_owner_immutable_license",
+      "claim_scope": "LightFM license text at the pinned revision.",
+      "immutable_binding": "Raw license blob selected by full Git commit SHA.",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "Apache License 2.0 text conflicts with setup.py's MIT declaration."
+    },
+    {
+      "evidence_id": "R4-D1C-EVID-033",
+      "url": "https://api.github.com/repos/lyst/lightfm/git/trees/688feded0717f289933b95a0134bad6fbe547331?recursive=1",
+      "authority_type": "project_owner_immutable_tree_metadata",
+      "claim_scope": "Complete repository tree inspection for environment-lock artifacts.",
+      "immutable_binding": "Git tree API bound to full Git commit SHA; response reported truncated=false.",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "The tree exposes Dockerfile, setup.cfg, and setup.py but no complete dependency/runtime lock."
+    },
+    {
+      "evidence_id": "R4-D1C-EVID-034",
+      "url": "https://raw.githubusercontent.com/lyst/lightfm/688feded0717f289933b95a0134bad6fbe547331/Dockerfile",
+      "authority_type": "project_owner_immutable_environment_recipe",
+      "claim_scope": "Container base and package installation recipe.",
+      "immutable_binding": "Raw Dockerfile blob selected by full Git commit SHA.",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "ubuntu:16.04 is unpinned by digest, Miniconda uses latest, and conda/pip dependencies are not version-locked."
+    },
+    {
+      "evidence_id": "R4-D1C-EVID-035",
+      "url": "https://raw.githubusercontent.com/lyst/lightfm/688feded0717f289933b95a0134bad6fbe547331/lightfm/datasets/movielens.py",
+      "authority_type": "project_owner_immutable_dataset_loader",
+      "claim_scope": "Repackaged dataset URL, ua.base/ua.test parsing, dimensions, and min-rating preprocessing.",
+      "immutable_binding": "Raw loader blob selected by full Git commit SHA.",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "The loader uses a project-owner lightfm_datasets v0.1.0 release asset rather than the canonical GroupLens archive and derives matrix dimensions from train plus test."
+    },
+    {
+      "evidence_id": "R4-D1C-EVID-036",
+      "url": "https://raw.githubusercontent.com/lyst/lightfm/688feded0717f289933b95a0134bad6fbe547331/lightfm/datasets/_common.py",
+      "authority_type": "project_owner_immutable_download_helper",
+      "claim_scope": "Dataset download integrity behavior.",
+      "immutable_binding": "Raw helper blob selected by full Git commit SHA.",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "The helper streams bytes and checks HTTP status only; it performs no size or cryptographic checksum verification."
+    },
+    {
+      "evidence_id": "R4-D1C-EVID-037",
+      "url": "https://raw.githubusercontent.com/lyst/lightfm/688feded0717f289933b95a0134bad6fbe547331/lightfm/evaluation.py",
+      "authority_type": "project_owner_immutable_evaluator_source",
+      "claim_scope": "Precision-at-k semantics, optional train masking, user filtering, and predict_rank dispatch.",
+      "immutable_binding": "Raw evaluator blob selected by full Git commit SHA.",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "The quickstart omits train_interactions, and the Python surface does not state a deterministic secondary tie policy."
+    },
+    {
+      "evidence_id": "R4-D1C-EVID-038",
+      "url": "https://raw.githubusercontent.com/lyst/lightfm/688feded0717f289933b95a0134bad6fbe547331/lightfm/lightfm.py",
+      "authority_type": "project_owner_immutable_model_source",
+      "claim_scope": "Random-state initialization, shuffled SGD, multithread training, and predict_rank implementation surface.",
+      "immutable_binding": "Raw model blob selected by full Git commit SHA.",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "random_state=None creates a fresh RandomState; the quickstart does not override it and requests two training threads."
+    },
+    {
+      "evidence_id": "R4-D1C-EVID-039",
+      "url": "https://github.com/tensorflow/recommenders/releases/tag/v0.7.7",
+      "authority_type": "project_owner_release",
+      "claim_scope": "TensorFlow Recommenders v0.7.7 release identity and short commit locator.",
+      "immutable_binding": "Project-owner release page joined through the owner tag reference to full commit cf1dafa988f223ed5f30b68cb9aed518484b3a1d.",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "Opened directly; release page exposes short commit cf1dafa."
+    },
+    {
+      "evidence_id": "R4-D1C-EVID-040",
+      "url": "https://api.github.com/repos/tensorflow/recommenders/git/ref/tags/v0.7.7",
+      "authority_type": "project_owner_tag_reference",
+      "claim_scope": "Resolution of v0.7.7 to the full immutable commit.",
+      "immutable_binding": "Git reference resolves directly to commit cf1dafa988f223ed5f30b68cb9aed518484b3a1d.",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "Read-only API replay returned object type commit and the full SHA."
+    },
+    {
+      "evidence_id": "R4-D1C-EVID-041",
+      "url": "https://api.github.com/repos/tensorflow/recommenders/git/trees/cf1dafa988f223ed5f30b68cb9aed518484b3a1d?recursive=1",
+      "authority_type": "project_owner_immutable_tree_metadata",
+      "claim_scope": "Complete repository tree inspection for locks, tutorial notebook, and example surfaces.",
+      "immutable_binding": "Git tree API bound to full Git commit SHA; response reported truncated=false.",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "No complete lockfile was present; requirements.txt and setup.py are the dependency surfaces."
+    },
+    {
+      "evidence_id": "R4-D1C-EVID-042",
+      "url": "https://raw.githubusercontent.com/tensorflow/recommenders/cf1dafa988f223ed5f30b68cb9aed518484b3a1d/README.md",
+      "authority_type": "project_owner_immutable_protocol_blob",
+      "claim_scope": "TFDS dataset locators, feature mapping, seed 42, 80k/20k random split, model, training, and FactorizedTopK evaluation call.",
+      "immutable_binding": "Raw README blob selected by full Git commit SHA.",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "tfds.load omits a builder version, and the README evaluation call has no stored numeric result."
+    },
+    {
+      "evidence_id": "R4-D1C-EVID-043",
+      "url": "https://raw.githubusercontent.com/tensorflow/recommenders/cf1dafa988f223ed5f30b68cb9aed518484b3a1d/requirements.txt",
+      "authority_type": "project_owner_immutable_dependency_recipe",
+      "claim_scope": "Direct TensorFlow Recommenders runtime dependency declarations.",
+      "immutable_binding": "Raw requirements blob selected by full Git commit SHA.",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "TensorFlow and absl-py use lower-bounded ranges, tf-keras is unpinned, and tensorflow-datasets is not declared."
+    },
+    {
+      "evidence_id": "R4-D1C-EVID-044",
+      "url": "https://raw.githubusercontent.com/tensorflow/recommenders/cf1dafa988f223ed5f30b68cb9aed518484b3a1d/setup.py",
+      "authority_type": "project_owner_immutable_build_metadata",
+      "claim_scope": "Version 0.7.7, requirements consumption, and Apache-2.0 package metadata.",
+      "immutable_binding": "Raw setup blob selected by full Git commit SHA.",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "setup.py consumes the range-based requirements file and does not establish a transitive environment lock."
+    },
+    {
+      "evidence_id": "R4-D1C-EVID-045",
+      "url": "https://raw.githubusercontent.com/tensorflow/recommenders/cf1dafa988f223ed5f30b68cb9aed518484b3a1d/docs/examples/basic_retrieval.ipynb",
+      "authority_type": "project_owner_immutable_executable_notebook",
+      "claim_scope": "Basic retrieval data load, split, model, candidate set, three-epoch training, and evaluation call.",
+      "immutable_binding": "Raw notebook blob selected by full Git commit SHA.",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "Notebook JSON was inspected without execution. The fit and evaluate cells have no execution counts or stored outputs, so no numeric target is bound."
+    },
+    {
+      "evidence_id": "R4-D1C-EVID-046",
+      "url": "https://raw.githubusercontent.com/tensorflow/recommenders/cf1dafa988f223ed5f30b68cb9aed518484b3a1d/tensorflow_recommenders/metrics/factorized_top_k.py",
+      "authority_type": "project_owner_immutable_evaluator_source",
+      "claim_scope": "FactorizedTopK candidate retrieval and top-k categorical accuracy semantics.",
+      "immutable_binding": "Raw metric blob selected by full Git commit SHA.",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "The metric defines k values and score- or id-based matching but delegates ranking to the candidate index."
+    },
+    {
+      "evidence_id": "R4-D1C-EVID-047",
+      "url": "https://raw.githubusercontent.com/tensorflow/recommenders/cf1dafa988f223ed5f30b68cb9aed518484b3a1d/tensorflow_recommenders/layers/factorized_top_k.py",
+      "authority_type": "project_owner_immutable_ranking_source",
+      "claim_scope": "Streaming and brute-force top-k ranking plus query-time exclusions.",
+      "immutable_binding": "Raw ranking blob selected by full Git commit SHA.",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "The implementation uses tf.math.top_k and supplies no explicit item-identifier secondary tie key."
+    }
+  ],
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

@@ -1,0 +1,221 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r4-d1a-source-replay-log-1.0",
+  "created_at": "2026-08-22",
+  "stage_id": "R4-D1A",
+  "lane_scope": "official_conference_artifact_pages_author_or_proceedings_linked_reproduction_packages_and_authoritative_archival_supplements",
+  "model_profile": {
+    "display_name": "Sol XHigh Standard",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "xhigh",
+    "service_tier": "standard"
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "source_records": [
+    {
+      "evidence_id": "R4-D1A-EVID-001",
+      "url": "https://sigir.org/general-information/acm-sigir-artifact-badging/",
+      "authority_type": "OFFICIAL_CONFERENCE_POLICY",
+      "claim_scope": "SIGIR artifact-badging provenance and artifact expectations",
+      "immutable_binding": "NONE_OFFICIAL_POLICY_PAGE",
+      "access_status": "REPLAYED_AUTHORITATIVE",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "The official SIGIR page was opened directly. It establishes the conference artifact-badging context; a badge or proceedings placement does not itself supply the lane's missing identity fields."
+    },
+    {
+      "evidence_id": "R4-D1A-EVID-002",
+      "url": "https://recsys.acm.org/recsys22/accepted-contributions/",
+      "authority_type": "OFFICIAL_CONFERENCE_PROCEEDINGS_INDEX",
+      "claim_scope": "Proceedings provenance for the BERT4Rec reproducibility paper",
+      "immutable_binding": "RECSYS_2022_ACCEPTED_CONTRIBUTIONS",
+      "access_status": "REPLAYED_AUTHORITATIVE",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "The official RecSys page was opened directly and lists A Systematic Review and Replicability Study of BERT4Rec for Sequential Recommendation in the reproducibility track."
+    },
+    {
+      "evidence_id": "R4-D1A-EVID-003",
+      "url": "https://github.com/asash/bert4rec_repro",
+      "authority_type": "PROJECT_OWNER_REPOSITORY",
+      "claim_scope": "Repository provenance, root inventory, run instructions, environment description, and reported targets",
+      "immutable_binding": "MUTABLE_DEFAULT_BRANCH_WITH_LATEST_SHA_RESOLVED_SEPARATELY",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "The project-owner repository page was opened directly. Its visible root did not show a LICENSE file. The README supplies example commands and numeric MovieLens targets but uses ranged dependencies and references another repository without a revision pin."
+    },
+    {
+      "evidence_id": "R4-D1A-EVID-004",
+      "url": "https://github.com/asash/bert4rec_repro/blob/76f15e738780fc0b2f9a70d037fe0c23a0324b72/README.md",
+      "authority_type": "PROJECT_OWNER_IMMUTABLE_TEXT_BLOB",
+      "claim_scope": "Revision-pinned BERT4Rec package documentation, configurations, execution examples, and numeric table",
+      "immutable_binding": "76f15e738780fc0b2f9a70d037fe0c23a0324b72",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "The revision-pinned README was opened directly. It identifies configuration paths and MovieLens-1M results, but does not bind a single numeric cell to a complete exact dataset-byte, environment, seed, evaluator, and config tuple."
+    },
+    {
+      "evidence_id": "R4-D1A-EVID-005",
+      "url": "https://grouplens.org/datasets/movielens/1m/",
+      "authority_type": "CANONICAL_DATASET_PROVIDER",
+      "claim_scope": "Canonical MovieLens 1M dataset identity and provider page",
+      "immutable_binding": "MOVIELENS_1M_PROVIDER_PAGE_NO_REPLAYED_BYTE_DIGEST",
+      "access_status": "REPLAYED_AUTHORITATIVE",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "The canonical GroupLens MovieLens 1M page was opened directly. It establishes provider provenance but did not yield a replayed checksum or a complete raw-to-framework-input lineage for this candidate."
+    },
+    {
+      "evidence_id": "R4-D1A-EVID-006",
+      "url": "https://files.grouplens.org/datasets/movielens/ml-1m.zip.md5",
+      "authority_type": "CANONICAL_DATASET_PROVIDER_CHECKSUM_LOCATOR",
+      "claim_scope": "Attempted byte-level checksum replay for MovieLens 1M",
+      "immutable_binding": "UNVERIFIED_CHECKSUM_SIDECAR",
+      "access_status": "INACCESSIBLE",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "The direct checksum-sidecar URL was opened, but the replay returned an internal access failure with no digest. No checksum was inferred."
+    },
+    {
+      "evidence_id": "R4-D1A-EVID-007",
+      "url": "https://sigir.org/sigir2023/program/proceedings/",
+      "authority_type": "OFFICIAL_CONFERENCE_PROCEEDINGS_INDEX",
+      "claim_scope": "Proceedings provenance for Repetition and Exploration in Sequential Recommendation",
+      "immutable_binding": "SIGIR_2023_PROCEEDINGS",
+      "access_status": "REPLAYED_AUTHORITATIVE",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "The official SIGIR 2023 proceedings page was opened directly and places the work in the reproducibility-papers session."
+    },
+    {
+      "evidence_id": "R4-D1A-EVID-008",
+      "url": "https://github.com/liming-7/Repetition-exploration-SR",
+      "authority_type": "PROJECT_OWNER_REPOSITORY",
+      "claim_scope": "Repository provenance and visible root inventory",
+      "immutable_binding": "LATEST_SHA_f3ff08651ef5c3c5ad9bbe9a17ea178b9cf2a81c",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "The project-owner repository was opened directly. The visible root contained data, methods, and README.md, with no displayed license or environment lock."
+    },
+    {
+      "evidence_id": "R4-D1A-EVID-009",
+      "url": "https://github.com/liming-7/Repetition-exploration-SR/blob/f3ff08651ef5c3c5ad9bbe9a17ea178b9cf2a81c/README.md",
+      "authority_type": "PROJECT_OWNER_IMMUTABLE_TEXT_BLOB",
+      "claim_scope": "Revision-pinned package instructions and experiment parameter surface",
+      "immutable_binding": "f3ff08651ef5c3c5ad9bbe9a17ea178b9cf2a81c",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "The pinned README was opened directly. It names RecBole, PyTorch, and Weights & Biases without versions, requires a user project/login or code replacement, gives a sweep space, and exposes no same-surface numeric target."
+    },
+    {
+      "evidence_id": "R4-D1A-EVID-010",
+      "url": "https://sigir.org/sigir2022/program/proceedings/",
+      "authority_type": "OFFICIAL_CONFERENCE_PROCEEDINGS_INDEX",
+      "claim_scope": "Proceedings provenance for the RL4Rec and FairRecSys reproducibility papers",
+      "immutable_binding": "SIGIR_2022_PROCEEDINGS",
+      "access_status": "REPLAYED_AUTHORITATIVE",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "The official SIGIR 2022 proceedings page was opened directly and lists both State Encoders in Reinforcement Learning for Recommendation and Experiments on Generalizability of User-Oriented Fairness in Recommender Systems as reproducibility papers."
+    },
+    {
+      "evidence_id": "R4-D1A-EVID-011",
+      "url": "https://github.com/BetsyHJ/RL4Rec",
+      "authority_type": "PROJECT_OWNER_REPOSITORY",
+      "claim_scope": "Repository provenance, license display, root inventory, commands, seeds, datasets, and result-artifact description",
+      "immutable_binding": "LATEST_SHA_f198f7dbcaba7b607f813b3a87d46613654edc6e",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "The source repository was opened directly. It displays an MIT license, environment.yml, executable commands, seeds 2012 through 2021, and an interactive DQN/simulator experiment objective. Numeric paper results are described as stored in archives rather than exposed as a replayed text target."
+    },
+    {
+      "evidence_id": "R4-D1A-EVID-012",
+      "url": "https://github.com/BetsyHJ/RL4Rec/blob/f198f7dbcaba7b607f813b3a87d46613654edc6e/README.md",
+      "authority_type": "PROJECT_OWNER_IMMUTABLE_TEXT_BLOB",
+      "claim_scope": "Revision-pinned RL4Rec commands, seed protocol, dataset locator, and result-artifact description",
+      "immutable_binding": "f198f7dbcaba7b607f813b3a87d46613654edc6e",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "The pinned README was opened directly. It confirms the DQN-based simulated-interaction task, commands, ten-run seed range, and a third-party shared-file locator for Yahoo R3 data."
+    },
+    {
+      "evidence_id": "R4-D1A-EVID-013",
+      "url": "https://github.com/BetsyHJ/RL4Rec/blob/f198f7dbcaba7b607f813b3a87d46613654edc6e/environment.yml",
+      "authority_type": "PROJECT_OWNER_IMMUTABLE_ENVIRONMENT_SPEC",
+      "claim_scope": "Revision-pinned RL4Rec runtime and dependency lock",
+      "immutable_binding": "f198f7dbcaba7b607f813b3a87d46613654edc6e",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "The pinned environment file was opened directly and contains exact conda package/build pins plus a pinned pip dependency. This strength cannot compensate for dataset-lineage, evaluator, target, TEST, and objective failures."
+    },
+    {
+      "evidence_id": "R4-D1A-EVID-014",
+      "url": "https://surfdrive.surf.nl/files/index.php/s/U8bh3zzzaDdlR5u",
+      "authority_type": "PROJECT_LINKED_SHARED_STORAGE",
+      "claim_scope": "Yahoo R3 simulation data locator linked by the project README",
+      "immutable_binding": "NONE_MUTABLE_SHARE_LOCATOR",
+      "access_status": "INACCESSIBLE",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "The direct shared-storage page could not be replayed. It is not a canonical dataset-provider release/checksum page, and no dataset asset was downloaded."
+    },
+    {
+      "evidence_id": "R4-D1A-EVID-015",
+      "url": "https://github.com/rahmanidashti/FairRecSys",
+      "authority_type": "PROJECT_OWNER_REPOSITORY",
+      "claim_scope": "Repository provenance, root inventory, notebook workflow, processed datasets, result tables, and metric columns",
+      "immutable_binding": "LATEST_SHA_9e8a4a64e55b88b18cc99ca0a815d90d607572fa",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "The official project repository was opened directly. The visible root showed notebooks, configs, processed datasets, results, and tables, but no displayed license or environment lock. The workflow is fairness re-ranking with user/item grouping rather than the frozen v5 objective."
+    },
+    {
+      "evidence_id": "R4-D1A-EVID-016",
+      "url": "https://github.com/rahmanidashti/FairRecSys/commits/main/",
+      "authority_type": "PROJECT_OWNER_COMMIT_HISTORY",
+      "claim_scope": "Resolution of the latest full revision for the screened FairRecSys surface",
+      "immutable_binding": "9e8a4a64e55b88b18cc99ca0a815d90d607572fa",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "The project-owner commit history was opened directly and exposed the full latest SHA. The inspected README/root evidence remained on the moving main URL, so the complete code-bearing evidence surface was not replayed at that SHA."
+    },
+    {
+      "evidence_id": "R4-D1A-EVID-017",
+      "url": "https://recsys.acm.org/recsys23/accepted-contributions/",
+      "authority_type": "OFFICIAL_CONFERENCE_PROCEEDINGS_INDEX",
+      "claim_scope": "Proceedings provenance for the graph-CF reproducibility paper",
+      "immutable_binding": "RECSYS_2023_ACCEPTED_CONTRIBUTIONS",
+      "access_status": "REPLAYED_AUTHORITATIVE",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "The official RecSys page was opened directly and lists Challenging the Myth of Graph Collaborative Filtering in the reproducibility track."
+    },
+    {
+      "evidence_id": "R4-D1A-EVID-018",
+      "url": "https://github.com/sisinflab/Graph-RSs-Reproducibility",
+      "authority_type": "PROJECT_OWNER_REPOSITORY",
+      "claim_scope": "Repository provenance, root inventory, environment prose, dataset locators, commands, and configuration surface",
+      "immutable_binding": "LATEST_SHA_57423d1503d5312815d515ce94b1caa5b4bad1a9",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "The official repository was opened directly. The README specifies PyTorch 1.12.0 with CUDA 10.2, points to processed splits in other model repositories rather than canonical provider releases, and the visible root did not show a LICENSE file."
+    },
+    {
+      "evidence_id": "R4-D1A-EVID-019",
+      "url": "https://github.com/sisinflab/Graph-RSs-Reproducibility/commits/main/",
+      "authority_type": "PROJECT_OWNER_COMMIT_HISTORY",
+      "claim_scope": "Resolution of the latest full graph-CF repository revision",
+      "immutable_binding": "57423d1503d5312815d515ce94b1caa5b4bad1a9",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "The project-owner commit history was opened directly and exposed the latest full SHA used to pin the dependency-file replay."
+    },
+    {
+      "evidence_id": "R4-D1A-EVID-020",
+      "url": "https://github.com/sisinflab/Graph-RSs-Reproducibility/blob/57423d1503d5312815d515ce94b1caa5b4bad1a9/requirements.txt",
+      "authority_type": "PROJECT_OWNER_IMMUTABLE_ENVIRONMENT_SPEC",
+      "claim_scope": "Revision-pinned graph-CF dependency declarations",
+      "immutable_binding": "57423d1503d5312815d515ce94b1caa5b4bad1a9",
+      "access_status": "REPLAYED_PRIMARY",
+      "retrieved_at": "2026-08-22",
+      "evidence_note": "The pinned requirements file was opened directly. It specifies torch 1.13.0+cu116 while leaving most packages unpinned, conflicting with the README's PyTorch 1.12.0/CUDA 10.2 environment claim."
+    }
+  ]
+}

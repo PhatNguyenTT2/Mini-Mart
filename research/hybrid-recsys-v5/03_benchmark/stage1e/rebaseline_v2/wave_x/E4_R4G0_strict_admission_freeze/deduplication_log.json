@@ -1,0 +1,73 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r4-g0-deduplication-log-1.0",
+  "created_at": "2026-08-22",
+  "stage_id": "R4-G0",
+  "proposal_deduplication": {
+    "proposal_id_mentions": 18,
+    "unique_proposal_ids": 18,
+    "duplicate_proposal_ids": 0
+  },
+  "provenance_tuple_deduplication": {
+    "tuple_definition": [
+      "repository_url",
+      "full_revision",
+      "dataset_provider",
+      "dataset_release_id",
+      "protocol_id",
+      "config_id",
+      "evaluator_id",
+      "numeric_target_id"
+    ],
+    "tuple_mentions": 18,
+    "unique_exact_tuples": 18,
+    "duplicate_exact_tuples": 0,
+    "collapsed_proposals": []
+  },
+  "repository_identity_overlap": {
+    "unique_repository_urls": 17,
+    "overlapping_repository_url_count": 1,
+    "overlaps": [
+      {
+        "repository_url": "https://github.com/recommenders-team/recommenders",
+        "proposal_ids": [
+          "R4-D1B-PROP-005",
+          "R4-D1C-PROP-002"
+        ],
+        "same_exact_provenance_tuple": false,
+        "reason_not_collapsed": "The proposals bind different full revisions and different protocol/config/evaluator/numeric-target identities."
+      }
+    ]
+  },
+  "source_url_deduplication": {
+    "source_record_mentions": 90,
+    "unique_exact_urls": 88,
+    "duplicate_mentions": 2,
+    "duplicate_urls": [
+      {
+        "url": "https://grouplens.org/datasets/movielens/100k/",
+        "mention_count": 2,
+        "evidence_ids": [
+          "R4-D1B-PROP-005-SRC-004",
+          "R4-D1C-EVID-001"
+        ]
+      },
+      {
+        "url": "https://grouplens.org/datasets/movielens/1m/",
+        "mention_count": 2,
+        "evidence_ids": [
+          "R4-D1A-EVID-005",
+          "R4-D1B-PROP-003-SRC-004"
+        ]
+      }
+    ]
+  },
+  "cross_join_performed": false,
+  "central_repair_performed": false,
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

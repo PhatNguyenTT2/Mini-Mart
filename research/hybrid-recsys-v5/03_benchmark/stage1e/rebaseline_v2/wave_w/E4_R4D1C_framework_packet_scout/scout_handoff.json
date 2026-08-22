@@ -1,0 +1,88 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r4-d1c-scout-handoff-1.0",
+  "created_at": "2026-08-22",
+  "stage_id": "R4-D1C",
+  "lane_scope": "official_framework_complete_packet_scout",
+  "model_profile": {
+    "display_name": "Sol XHigh Standard",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "xhigh",
+    "service_tier": "standard"
+  },
+  "runtime_profile_receipt": "Assignment metadata preserved exactly; the worker interface exposed no independent runtime-profile attestation.",
+  "admission_contract_binding": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r4_strict_admission_contract.json",
+    "canonical_lf_sha256": "19006183b216f9b5b7f83dd39d9b5e6256ff0f70b5b285f9f521b526fb623816"
+  },
+  "exact_filenames": [
+    "scout_candidates.json",
+    "source_replay_log.json",
+    "excluded_candidate_log.json",
+    "scout_report.md",
+    "scout_handoff.json"
+  ],
+  "counts": {
+    "screened_leads": 8,
+    "proposals_examined": 8,
+    "proposals_admitted": 0,
+    "proposals_excluded": 8,
+    "excluded_incomplete_bundles": 6,
+    "dispositive_rejects": 2,
+    "source_records": 47,
+    "accepted_result_rows": 0,
+    "output_files": 5
+  },
+  "admitted_proposal_ids": [],
+  "excluded_proposal_ids": [
+    "R4-D1C-PROP-001",
+    "R4-D1C-PROP-002",
+    "R4-D1C-PROP-003",
+    "R4-D1C-PROP-004",
+    "R4-D1C-PROP-005",
+    "R4-D1C-PROP-006",
+    "R4-D1C-PROP-007",
+    "R4-D1C-PROP-008"
+  ],
+  "source_record_count": 47,
+  "allowed_operation_receipts": {
+    "strict_entry_validator": "PASS_R4_S0_STRICT_GATE_20_OF_20_READY_FOR_R4_D1",
+    "frozen_controls_and_inputs_read": "COMPLETED_READ_ONLY",
+    "r3_identity_deduplication_inputs_read": "COMPLETED_READ_ONLY",
+    "public_primary_page_replay": "COMPLETED_READ_ONLY",
+    "project_owner_text_blob_replay": "COMPLETED_READ_ONLY",
+    "project_owner_tree_metadata_replay": "COMPLETED_READ_ONLY",
+    "output_writes": "LIMITED_TO_ASSIGNED_OUTPUT_ROOT_WITH_APPLY_PATCH"
+  },
+  "forbidden_operation_receipts": {
+    "repository_clone_or_fetch": "NOT_PERFORMED",
+    "repository_archive_download": "NOT_PERFORMED",
+    "dataset_download": "NOT_PERFORMED",
+    "checkpoint_binary_or_asset_download": "NOT_PERFORMED",
+    "terms_acceptance": "NOT_PERFORMED",
+    "authentication": "NOT_PERFORMED",
+    "package_installation": "NOT_PERFORMED",
+    "environment_or_container_creation": "NOT_PERFORMED",
+    "preprocessing": "NOT_PERFORMED",
+    "training": "NOT_PERFORMED",
+    "evaluation": "NOT_PERFORMED",
+    "test_set_access": "NOT_PERFORMED",
+    "maintainer_contact": "NOT_PERFORMED",
+    "candidate_metric_written_to_paper": "NOT_PERFORMED"
+  },
+  "validation_receipts": {
+    "strict_json_parse": "PASS_4_OF_4_JSON_FILES",
+    "duplicate_or_case_colliding_json_keys": "PASS_NONE_FOUND",
+    "required_source_record_field_exactness": "PASS_47_OF_47_EXACT_EIGHT_FIELDS",
+    "global_evidence_id_uniqueness": "PASS_47_OF_47_UNIQUE",
+    "exact_output_file_count": "PASS_5_OF_5_EXACT_CONTRACTED_FILENAMES",
+    "git_diff_check": "PASS"
+  },
+  "persistent_truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "next_gate": "R4_D1_CENTRAL_SCHEMA_HASH_VALIDATION"
+}

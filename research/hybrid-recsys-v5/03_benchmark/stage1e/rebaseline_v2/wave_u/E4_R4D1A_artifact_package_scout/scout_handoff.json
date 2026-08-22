@@ -1,0 +1,81 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r4-d1a-scout-handoff-1.0",
+  "created_at": "2026-08-22",
+  "stage_id": "R4-D1A",
+  "lane_scope": "official_conference_artifact_pages_author_or_proceedings_linked_reproduction_packages_and_authoritative_archival_supplements",
+  "model_profile": {
+    "display_name": "Sol XHigh Standard",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "xhigh",
+    "service_tier": "standard"
+  },
+  "admission_contract_binding": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r4_strict_admission_contract.json",
+    "canonical_lf_sha256": "19006183b216f9b5b7f83dd39d9b5e6256ff0f70b5b285f9f521b526fb623816"
+  },
+  "exact_filenames": [
+    "scout_candidates.json",
+    "source_replay_log.json",
+    "excluded_candidate_log.json",
+    "scout_report.md",
+    "scout_handoff.json"
+  ],
+  "counts": {
+    "proposals_examined": 5,
+    "proposals_admitted": 0,
+    "screened_leads": 5,
+    "excluded_candidates": 5,
+    "source_records": 20,
+    "accepted_result_rows": 0
+  },
+  "admitted_proposal_ids": [],
+  "excluded_proposal_ids": [
+    "R4-D1A-PROP-001",
+    "R4-D1A-PROP-002",
+    "R4-D1A-PROP-003",
+    "R4-D1A-PROP-004",
+    "R4-D1A-PROP-005"
+  ],
+  "entry_gate_receipt": {
+    "command": "python research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r4_s0_gate.py",
+    "exit_code": 0,
+    "verdict": "PASS_R4_S0_STRICT_GATE_20_OF_20_READY_FOR_R4_D1"
+  },
+  "allowed_operation_receipts": [
+    "READ_ONLY_ENTRY_VALIDATOR_RUN",
+    "FROZEN_CONTROL_AND_INPUT_FILES_READ_IN_FULL",
+    "PUBLIC_PRIMARY_AND_AUTHORITATIVE_PAGE_REPLAY",
+    "PROJECT_OWNER_TEXT_BLOB_REPLAY",
+    "READ_ONLY_REPOSITORY_REVISION_RESOLUTION",
+    "OUTPUTS_WRITTEN_ONLY_UNDER_ASSIGNED_ROOT_WITH_APPLY_PATCH"
+  ],
+  "forbidden_operation_receipts": {
+    "repository_clone_fetch_or_archive_download": "NOT_PERFORMED",
+    "dataset_checkpoint_binary_or_asset_download": "NOT_PERFORMED",
+    "terms_acceptance_or_authentication": "NOT_PERFORMED",
+    "package_installation": "NOT_PERFORMED",
+    "environment_or_container_creation": "NOT_PERFORMED",
+    "preprocessing_training_or_evaluation": "NOT_PERFORMED",
+    "test_set_open": "NOT_PERFORMED",
+    "maintainer_contact": "NOT_PERFORMED",
+    "candidate_metric_write_into_paper": "NOT_PERFORMED",
+    "control_or_prior_artifact_edit": "NOT_PERFORMED",
+    "git_commit": "NOT_PERFORMED"
+  },
+  "persistent_truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "admission_outcome": "ZERO_ADMISSIONS_STRICT_FAIL_CLOSED",
+  "next_gate": "R4_D1_CENTRAL_SCHEMA_HASH_VALIDATION"
+}
