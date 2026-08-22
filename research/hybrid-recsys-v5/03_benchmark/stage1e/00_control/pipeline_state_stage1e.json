@@ -937,7 +937,7 @@
         "benchmark_admission_authorized": false
       },
       "r6": {
-        "status": "R6_ATTEMPT002_DISPATCH_FROZEN_AWAITING_PREFLIGHT",
+        "status": "R6_ATTEMPT002_FAIL_CLOSED_RECOVERY_AUDIT_IN_PROGRESS",
         "stage_map": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_materialization_stage_map.json",
         "contract": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_bounded_materialization_contract.md",
         "s0": {
@@ -1048,8 +1048,19 @@
           "bridge_gate_open": false,
           "experiment_execution_authorized": false
         },
+        "c1r2": {
+          "status": "INDEPENDENT_RECOVERY_AUDIT_IN_PROGRESS",
+          "purpose": "NEW_IMMUTABLE_ATTEMPT003_PACKET_AFTER_ATTEMPT002_PACKET_RUNTIME_AND_AMBIENT_INSTALLER_COLLISION",
+          "agent_id": "01a02b8c-3d55-7f11-be8e-0bac060680c8",
+          "nickname": "Zeno",
+          "model_profile": "Sol XHigh Fast",
+          "write_scope": "READ_ONLY_AUDIT",
+          "attempt003_packet_created": false,
+          "attempt003_materialization_gate_open": false,
+          "experiment_execution_authorized": false
+        },
         "m0_m1": {
-          "status": "ATTEMPT002_DISPATCH_FROZEN_AWAITING_PREFLIGHT",
+          "status": "ATTEMPT002_FAIL_CLOSED_BOTH_ROOTS_RETAINED_IMMUTABLE",
           "context": "current_central",
           "model_profile": "Sol Max Standard",
           "contract": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_c1r1_attempt002_recovery_contract.md",
@@ -1070,13 +1081,33 @@
           "runner": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_materialization_attempt002.py",
           "entry_commit": "7ecd3bd8082ef426fe8701834c7a921413e3f0d4",
           "frozen_artifacts": "22/22",
-          "preflight_status": "NOT_RUN",
-          "dataset_attempt002_root_exists": false,
-          "environment_attempt002_root_exists": false,
-          "dataset_commands_executed": 0,
-          "environment_commands_executed": 0,
+          "preflight_status": "PASS",
+          "attempt_002": {
+            "status": "FAIL_CLOSED_PACKET_RUNTIME_AND_AMBIENT_INSTALLER_COLLISION",
+            "failure_receipt": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_m0_m1_attempt_002_failure_receipt.json",
+            "failure_receipt_raw_bytes": 10801,
+            "failure_receipt_raw_sha256": "fd8339245b73db6bfd9767aa5a682ca5bf5be1ac48cbd8ae3e5f25a1cdc4df2c",
+            "dataset_attempt_root_exists": true,
+            "environment_attempt_root_exists": true,
+            "dataset_commands_started": 6,
+            "dataset_commands_succeeded": 5,
+            "dataset_failed_command": "M05_SAFE_EXTRACT_AND_HASH",
+            "environment_commands_completed": 5,
+            "environment_commands_succeeded": 5,
+            "environment_runner_launch_failure_before": "E05_VERIFY_EXACT_LOCAL_RUNTIME_IDENTITY",
+            "ambient_system_python_major_upgrade_observed": true,
+            "bridge_commands_executed": 0,
+            "retained_immutable": true,
+            "cleanup_or_in_place_retry": false
+          },
+          "dataset_attempt002_root_exists": true,
+          "environment_attempt002_root_exists": true,
+          "dataset_commands_executed": 6,
+          "environment_commands_executed": 5,
           "bridge_commands_executed": 0,
-          "exact_pwsh_capability_gate_required": true
+          "exact_pwsh_capability_gate_required": true,
+          "attempt003_dispatch_created": false,
+          "attempt003_materialization_gate_open": false
         },
         "materialization_authorized": true,
         "experiment_execution_authorized": false,
@@ -1090,7 +1121,7 @@
         "project_benchmark_numbers": "INVALID_FOR_PAPER"
       },
       "execution_authorized": false,
-      "next_gate": "RUN_R6_ATTEMPT002_CENTRAL_PREFLIGHT_THEN_LITERAL_ARGV_MATERIALIZATION"
+      "next_gate": "COMPLETE_INDEPENDENT_R6_C1R2_RECOVERY_AUDIT_THEN_BUILD_AND_VALIDATE_NEW_ATTEMPT003_PACKET"
     }
   },
   "central_preregistration_lock": "PASS_R6_S0_BOUNDED_MATERIALIZATION_SCOPE_LOCKED",
@@ -1098,5 +1129,5 @@
   "harmonized_v5": "BLOCKED",
   "external_validation": "BLOCKED",
   "efficiency": "BLOCKED_AFTER_ACCURACY",
-  "next_gate": "Run the frozen attempt-002 R6-M0/R6-M1 central preflight, then bounded literal-argv materialization. Training, evaluation, benchmark admission and TEST access remain blocked."
+  "next_gate": "Complete the independent R6-C1R2 recovery audit, then build and centrally validate a new immutable attempt-003 packet. Training, evaluation, benchmark admission and TEST access remain blocked."
 }

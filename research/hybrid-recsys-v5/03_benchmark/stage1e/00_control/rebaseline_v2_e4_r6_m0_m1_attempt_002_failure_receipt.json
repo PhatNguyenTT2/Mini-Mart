@@ -1,0 +1,216 @@
+{
+  "schema_version": "stage1e-r6-m0-m1-attempt-failure-receipt-1.1",
+  "created_at": "2026-08-23",
+  "stage_id": "R6-M0-R6-M1-ATTEMPT-002",
+  "status": "FAIL_CLOSED_PACKET_RUNTIME_AND_AMBIENT_INSTALLER_COLLISION",
+  "entry": {
+    "dispatch": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_m0_m1_attempt002_dispatch.json",
+    "dispatch_raw_sha256": "a434c9104c82df627976830b24b969635be4a74ebd6a5ba9ad07e52086e5cb0a",
+    "runner": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_materialization_attempt002.py",
+    "runner_raw_sha256": "70039f54ff2798b01c7a8b224c92d5659758738186fd62bda7148d339defd067",
+    "packet_validation_verdict": "PASS_R6_C1R1_ATTEMPT_002_PACKET_READY_FOR_BOUNDED_R6_M0_R6_M1",
+    "entry_commit": "087c8827f5871e4ac9baad6b5e44f2d732d56d3c",
+    "preflight": {
+      "status": "PASS",
+      "frozen_artifacts_verified": "22/22",
+      "c1r1_live_revalidation": "PASS",
+      "repository_clean": true,
+      "both_attempt_roots_absent": true,
+      "ancestors_non_reparse": true,
+      "exact_pwsh_capability_gate": "PASS",
+      "free_bytes": 122280271872
+    }
+  },
+  "failure_summary": {
+    "scientific_method_failure": false,
+    "dataset_failure_class": "POWERSHELL_GENERIC_CONSTRUCTOR_RUNTIME_BINDING_MISMATCH",
+    "environment_failure_class": "AMBIENT_CPYTHON_BUNDLE_MAJOR_UPGRADE_OVERRIDES_ISOLATED_TARGET",
+    "automatic_retries": 0,
+    "in_place_repair_performed": false,
+    "cleanup_performed": false,
+    "both_attempt_002_roots_retained_immutable": true,
+    "bridge_executed": false
+  },
+  "lanes": {
+    "dataset": {
+      "stage_id": "R6-M0-ATTEMPT-002",
+      "attempt_root": "E:\\UIT\\cv\\materialized-data\\hybrid-recsys-v5\\stage1e\\r6\\official_source\\grouplens_ml100k\\attempt-002",
+      "preservation": "IMMUTABLE_FAILED_ATTEMPT_RETAIN_DO_NOT_EDIT_DELETE_OR_REUSE",
+      "packet": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_aj/E4_R6C1R1_attempt002_command_packet/dataset_materialization_packet.json",
+      "packet_raw_sha256": "56b07d575e28879e485c463fe5706f3987b8fbf9b3583c64179410a996aebb4e",
+      "declared_commands": 8,
+      "commands_started": 6,
+      "commands_succeeded": 5,
+      "commands_failed": 1,
+      "failed_command": "M05_SAFE_EXTRACT_AND_HASH",
+      "failed_argv_canonical_sha256": "a99b4337665f5360b7e88489d4a83ba67a1008ce25f7268ff425da54158c04a5",
+      "failed_stderr_bytes": 100,
+      "failed_stderr_sha256": "cc59c4ffec72a621ba228329c461479622fafc54147564aa2e5d3abdf260a298",
+      "observed_error": "ParentContainsErrorRecordException: Cannot find an overload for \"new\" and the argument count: \"2\".",
+      "not_executed": [
+        "M06_CONVERT_U_DATA_TO_RECBOLE_INTER_AND_EXPECTED_MAPS",
+        "M07_RECONCILE_RAW_TO_ATOMIC"
+      ],
+      "root_observation": {
+        "files": 30,
+        "directories_including_root": 10,
+        "bytes": 21033081,
+        "inventory_canonical_format": "relative_posix_path<TAB>bytes<TAB>sha256<LF> sorted by absolute path",
+        "inventory_sha256": "6d886e0a7402fb90c1ea9a7724d7f04c693601b62cc1bbe83a64d637450c4de8",
+        "archive_downloaded_and_promoted": true,
+        "safe_inventory_scan_completed": true,
+        "archive_members_extracted_to_staging": true,
+        "raw_root_promoted": false,
+        "atomic_conversion_performed": false,
+        "recbole_atomic_files": 0
+      },
+      "key_bytes": {
+        "archive": {
+          "path": "download/ml-100k.zip",
+          "bytes": 4924029,
+          "md5": "0e33842e24a9c977be4e0107933c0723",
+          "sha256": "50d2a982c66986937beb9ffb3aa76efe955bf3d5c6b761f4e3a7cd717c6a3229"
+        },
+        "staged_u_data": {
+          "path": "extract-staging/ml-100k/u.data",
+          "bytes": 1979173,
+          "sha256": "06416e597f82b7342361e41163890c81036900f418ad91315590814211dca490"
+        }
+      },
+      "causal_replay": {
+        "control_plane_executable": "C:\\Users\\ACER\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\powershell\\pwsh.exe",
+        "engine_version": "7.6.4",
+        "failing_expression": "[Collections.Generic.HashSet[string]]::new($names,[StringComparer]::Ordinal)",
+        "isolated_read_only_reproduction": "PASS_REPRODUCED_SAME_OVERLOAD_ERROR",
+        "iterative_hashset_construction_and_setequals": "PASS",
+        "dataset_or_archive_defect_established": false
+      }
+    },
+    "environment": {
+      "stage_id": "R6-M1-ATTEMPT-002",
+      "attempt_root": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-002",
+      "preservation": "IMMUTABLE_FAILED_ATTEMPT_RETAIN_DO_NOT_EDIT_DELETE_OR_REUSE",
+      "packet": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_aj/E4_R6C1R1_attempt002_command_packet/environment_materialization_packet.json",
+      "packet_raw_sha256": "e9ceadec0aa367a8b2d02a5c9cde107e9532cef193c733dce0a175d391691275",
+      "declared_commands": 25,
+      "commands_completed": 5,
+      "commands_succeeded": 5,
+      "runner_launch_failure_before_command_event": "E05_VERIFY_EXACT_LOCAL_RUNTIME_IDENTITY",
+      "runner_error_type": "FileNotFoundError",
+      "runner_error": "[WinError 2] The system cannot find the file specified",
+      "last_completed_command": "E04_INSTALL_LOCAL_CPYTHON_3119_AMD64",
+      "last_completed_argv_canonical_sha256": "9c68e362a1e2ea7339ce7c4fef9444febc0fc5dba93fe8a97c5f931c33fc2fd0",
+      "last_completed_exit_code": 0,
+      "last_completed_elapsed_seconds": 140.868403,
+      "not_executed_range": "E05-E24",
+      "root_observation": {
+        "files": 20,
+        "directories_including_root": 9,
+        "bytes": 47169535,
+        "inventory_canonical_format": "relative_posix_path<TAB>bytes<TAB>sha256<LF> sorted by absolute path",
+        "inventory_sha256": "67f53ead9992f1826ace366372bb2812a6bbcfa5f8cc4fe4e03549b07f7ed7f0",
+        "installer_promoted": true,
+        "attempt_local_runtime_python_exists": false,
+        "venv_created": false,
+        "packages_installed_into_attempt_root": false
+      },
+      "bootstrap_bytes": {
+        "installer": {
+          "path": "downloads/python-3.11.9-amd64.exe",
+          "bytes": 26216840,
+          "md5": "e8dcd502e34932eebcaf1be056d5cbcd",
+          "sha256": "5ee42c4eee1e6b4464bb23722f90b45303f79442df63083f05322f1785f5fdde",
+          "authenticode_status": "Valid"
+        },
+        "sigstore": {
+          "path": "downloads/python-3.11.9-amd64.exe.sigstore",
+          "bytes": 5903,
+          "sha256": "e2df4f35aeb64946e27c604a94e7510202e0180fec5dc26cd1e54a9f83acea0b"
+        },
+        "main_installer_log": {
+          "path": "temp/Python 3.11.9 (64-bit)_20260823051222.log",
+          "bytes": 91148,
+          "sha256": "2562b173638d2156eaecbd74642b8f7f7ec97d1a5e9bad12d7d3c5a8356c8406"
+        }
+      },
+      "ambient_collision_evidence": {
+        "requested_install_all_users": 0,
+        "requested_target": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-002\\runtime",
+        "related_bundle_detected": {
+          "bundle_id": "{c6a7d2cb-61ea-4f5e-bc56-95faa938bacf}",
+          "version": "3.11.3150.0",
+          "operation": "MajorUpgrade",
+          "log_line": 75
+        },
+        "effective_install_all_users": 1,
+        "effective_target": "C:\\Program Files\\Python311\\",
+        "effective_target_log_line": 94,
+        "prior_bundle_uninstall_invoked": true,
+        "prior_bundle_version": "3.11.3",
+        "prior_bundle_uninstall_log_line": 503,
+        "apply_complete_exit_code": 0,
+        "apply_complete_log_line": 507,
+        "causal_interpretation": "The official installer entered a major-upgrade relationship with ambient CPython 3.11.3, overrode the isolated TargetDir, installed 3.11.9 to Program Files, and uninstalled the related 3.11.3 bundle. Exit code 0 therefore does not establish attempt-root materialization success."
+      }
+    }
+  },
+  "external_state_observation": {
+    "material_external_state_change_observed": true,
+    "change_authorized_as_intended_output": false,
+    "automatic_rollback_performed": false,
+    "automatic_rollback_reason": "Rollback or uninstall could damage the user's system Python and requires separate explicit authorization plus a recovery plan.",
+    "observed_system_runtime": {
+      "path": "C:\\Program Files\\Python311\\python.exe",
+      "version_observed_after_attempt": "3.11.9",
+      "bytes": 103192,
+      "sha256": "5f7b89a612c9b8af1d6456cdfcd1dbe5ca630849e79aebced9bee9a6694952ec"
+    },
+    "pre_attempt_system_runtime_byte_hash_available": false,
+    "causality_basis": "Installer-owned logs record the MajorUpgrade, effective Program Files target, component application, related 3.11.3 uninstall, and successful apply within E04."
+  },
+  "negative_execution_assertions": {
+    "dataset_archive_downloaded": true,
+    "archive_extracted_to_failed_attempt_staging": true,
+    "raw_to_atomic_conversion_executed": false,
+    "python_installer_executed": true,
+    "isolated_attempt_runtime_created": false,
+    "recbole_environment_created": false,
+    "recbole_dataset_constructed_or_loaded": false,
+    "training_executed": false,
+    "evaluation_executed": false,
+    "metrics_computed": false,
+    "test_set_opened": false,
+    "benchmark_rows_admitted": 0,
+    "repository_changed_by_attempt_commands": false
+  },
+  "evidence_limitations": {
+    "runner_console_result_persisted_as_raw_file": false,
+    "dataset_command_failure_hash_recovered_from_runner_result": true,
+    "environment_runner_failure_recovered_from_runner_result": true,
+    "external_roots_replayed_independently_after_failure": true,
+    "pre_attempt_system_python_inventory_available": false,
+    "failed_attempt_is_not_a_success_receipt": true
+  },
+  "recovery_gate": {
+    "required_stage": "R6-C1R2",
+    "required_new_attempt_id": "attempt-003",
+    "requires_new_immutable_dataset_root": true,
+    "requires_new_immutable_environment_root": true,
+    "requires_dataset_hashset_runtime_fix": true,
+    "requires_installer_free_or_collision-proof_runtime_materialization_strategy": true,
+    "requires_preflight_rejection_of_ambient_product_collision": true,
+    "requires_write_set_enforcement_outside_attempt_root": true,
+    "requires_new_five_file_packet": true,
+    "requires_new_central_validation_receipt": true,
+    "requires_new_dispatch_and_runner": true,
+    "attempt_002_reuse_allowed": false
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "next_gate": "INDEPENDENT_R6_C1R2_RECOVERY_AUDIT_THEN_NEW_ATTEMPT003_PACKET_VALIDATION"
+}
