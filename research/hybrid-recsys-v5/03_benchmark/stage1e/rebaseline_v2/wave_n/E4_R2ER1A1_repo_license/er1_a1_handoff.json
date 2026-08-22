@@ -1,0 +1,297 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r2-er1-a1-handoff-1.0",
+  "stage_id": "R2-ER1-A1",
+  "created_at": "2026-08-22T18:46:54+07:00",
+  "workflow": "ars-codex:academic-research-suite/deep-research source-verification evidence-only fail-closed",
+  "material_passport": {
+    "origin_skill": "ars-codex:academic-research-suite/deep-research",
+    "origin_mode": "source-verification/fact-check/evidence-only/fail-closed",
+    "origin_date": "2026-08-22T18:46:54+07:00",
+    "verification_status": "UNVERIFIED",
+    "version_label": "stage1e_rebaseline_v2_wave_n_E4_R2ER1A1_repo_license_v1",
+    "upstream_dependencies": [
+      "stage1e_e4_r2_er1_change_control_contract",
+      "stage1e_e4_r2_er1_frozen_input_manifest",
+      "stage1e_rebaseline_v2_e4_r2_er1_gate_receipt",
+      "stage1e_rebaseline_v2_wave_g_E4_R2A1_repo_evidence_v1",
+      "stage1e_rebaseline_v2_wave_h_E4_R2G1_no_selection_v1"
+    ],
+    "repro_lock": {
+      "schema_version": "1.0",
+      "ars_version": "3.21.0",
+      "stochasticity_declaration": "Web retrieval and LLM-authored source synthesis are not byte-reproducible. Frozen local inputs, immutable source and blob locators, loaded-instruction hashes, deterministic replay receipts and output hashes are recorded. No experiment or benchmark was run.",
+      "skill_package": {
+        "name": "ars-codex:academic-research-suite",
+        "adapter_version": "0.1.26",
+        "ars_suite_version": "3.21.0"
+      },
+      "model": {
+        "family": "openai",
+        "id": "gpt-5.6-sol",
+        "reasoning_effort": "max",
+        "service_tier": "priority",
+        "display_name": "Sol Max Fast",
+        "speed_label": "Fast",
+        "weight_stable": false
+      },
+      "loaded_instruction_bundle": {
+        "canonicalization": "UTF-8 with CRLF and CR normalized to LF",
+        "members": [
+          {
+            "path": "SKILL.md",
+            "canonical_lf_bytes": 30499,
+            "canonical_lf_sha256": "9c2cb6e3b5aad7fb747f79163b144cfbddffa85d67e2bdcc5a5fa5470252ad00"
+          },
+          {
+            "path": "ars/deep-research/WORKFLOW.md",
+            "canonical_lf_bytes": 36979,
+            "canonical_lf_sha256": "5bd35498c80ddce2ab624de6d8e538a425a6149c20bb9da8b9d8f4f96f979c31"
+          },
+          {
+            "path": "ars/deep-research/agents/source_verification_agent.md",
+            "canonical_lf_bytes": 10364,
+            "canonical_lf_sha256": "3ffecae526acdde6d28bb8d2a9f5a88f95c00f51338c8f4d4a724ced3f7777bf"
+          },
+          {
+            "path": "ars/shared/references/evidence_row_protocol.md",
+            "canonical_lf_bytes": 13730,
+            "canonical_lf_sha256": "d206df0eca8eef18b41a26b7f2401ca15c36ac9b0696300f09d2852511de6211"
+          },
+          {
+            "path": "ars/shared/handoff_schemas.md",
+            "canonical_lf_bytes": 93000,
+            "canonical_lf_sha256": "c91b127d87d2370aee44f99395c5ae5e538729bead802d67bc6116fef0f841d3"
+          }
+        ]
+      },
+      "frozen_materials": {
+        "manifest_input_count": 31,
+        "manifest_json_input_count": 24,
+        "manifest_canonical_lf_sha256": "12cff269c80e9cef5eb35c4a822a6ab756a480a4769e24c31861cd581748d916",
+        "replayed_hashes": "31/31",
+        "strict_json_replays": "24/24"
+      },
+      "external_protocols": {
+        "public_primary_authoritative_web_replay": true,
+        "immutable_github_api_commit_tree_and_blob_replay": true,
+        "search_used_for_discovery_only": true,
+        "repository_clone_fetch_checkout_or_archive_download": "NOT_USED",
+        "source_payload_save": "NOT_USED",
+        "dataset_checkpoint_or_authenticated_asset_download": "NOT_USED",
+        "execution": "NOT_USED"
+      },
+      "cross_model": {
+        "enabled": false,
+        "secondary_model_id": null,
+        "external_upload": false
+      }
+    },
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-22T18:46:54+07:00",
+      "declared_by": "R2-ER1-A1 evidence lane",
+      "note": "This lane performed source verification only and reports no empirical result or scholar-owned experiment provenance."
+    }
+  },
+  "actual_model": {
+    "id": "gpt-5.6-sol",
+    "reasoning_effort": "max",
+    "service_tier": "priority",
+    "display_name": "Sol Max Fast",
+    "speed_label": "Fast"
+  },
+  "frozen_contract": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r2_er1_change_control_contract.md",
+    "canonical_lf_bytes": 8725,
+    "canonical_lf_sha256": "6b9c03359a77c6a66535bb5cb9a26f6562bd0b82cc07b292836aa2497003f8c7"
+  },
+  "frozen_manifest": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r2_er1_frozen_input_manifest.json",
+    "canonical_lf_bytes": 8355,
+    "canonical_lf_sha256": "12cff269c80e9cef5eb35c4a822a6ab756a480a4769e24c31861cd581748d916",
+    "expected_inputs": 31,
+    "json_inputs": 24
+  },
+  "gate_receipt": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r2_er1_gate_receipt.json",
+    "canonical_lf_bytes": 2789,
+    "canonical_lf_sha256": "0de02930581306fd6758ee529d58dcf3c159e55afec15ad24ba91235371c680e",
+    "passed": true,
+    "verdict": "PASS_R2_ER1_GATE_31_OF_31_READY_FOR_PARALLEL_DISPATCH"
+  },
+  "stage_map": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r2_er1_stage_map.json",
+    "canonical_lf_bytes": 5100,
+    "canonical_lf_sha256": "4ebb2e2e4c45e3f7d628ddd445fcffbdf59a87736d6cf8fc3d66e1ffb86d2076"
+  },
+  "gate_validator": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r2_er1_gate.py",
+    "canonical_lf_bytes": 9482,
+    "canonical_lf_sha256": "cb30f7733ca6633bf0143d91ea2afa755c21f24bd5181a0e583b69bc0874b6bb"
+  },
+  "input_replay": {
+    "command": "python research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r2_er1_gate.py",
+    "exit_code": 0,
+    "passed": true,
+    "verdict": "PASS_R2_ER1_GATE_31_OF_31_READY_FOR_PARALLEL_DISPATCH",
+    "expected_inputs": 31,
+    "matched_inputs": 31,
+    "strict_json_inputs_expected": 24,
+    "strict_json_inputs_verified": 24,
+    "failure_count": 0,
+    "replayed_at": "2026-08-22"
+  },
+  "candidate_scope": {
+    "candidate_count": 1,
+    "row_id": "E3-LIGHTGCN-GOWALLA-PYTORCH-001",
+    "method": "LightGCN",
+    "dataset_surface": "Gowalla repository-bundled processed split",
+    "candidate_selected": false,
+    "new_candidate_created": false,
+    "candidate_substitution_performed": false,
+    "scope_expansion_performed": false
+  },
+  "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_n/E4_R2ER1A1_repo_license",
+  "exact_output_file_count": 4,
+  "required_output_files": [
+    "lightgcn_repo_license_evidence.json",
+    "paper_repo_config_binding.json",
+    "repo_license_report.md",
+    "er1_a1_handoff.json"
+  ],
+  "output_hash_policy": "SHA-256 over UTF-8 bytes after CRLF and CR normalization to LF; files currently contain LF-only UTF-8 bytes",
+  "outputs": [
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_n/E4_R2ER1A1_repo_license/lightgcn_repo_license_evidence.json",
+      "canonical_lf_bytes": 25196,
+      "canonical_lf_sha256": "6e00fec674fb54206955c82e06d1507efadab2dde856e5962a02a7ac809117af"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_n/E4_R2ER1A1_repo_license/paper_repo_config_binding.json",
+      "canonical_lf_bytes": 18114,
+      "canonical_lf_sha256": "5d8456d76c6719b10b7e9f6a6695bd9474b32f50f4171e50aabc48bdda8a7fcf"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_n/E4_R2ER1A1_repo_license/repo_license_report.md",
+      "canonical_lf_bytes": 8342,
+      "canonical_lf_sha256": "f946babcb0955a2974a1ee58e9b7f309c096de1c450d3450785583dac0404f0c"
+    }
+  ],
+  "handoff_artifact": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_n/E4_R2ER1A1_repo_license/er1_a1_handoff.json",
+    "canonical_lf_sha256": null,
+    "self_hash_reported_out_of_band": true
+  },
+  "evidence_summary": {
+    "row_id": "E3-LIGHTGCN-GOWALLA-PYTORCH-001",
+    "evidence_status": "EVIDENCE_INCOMPLETE",
+    "recommended_g1_disposition": "KEEP_PENDING",
+    "paper_repository_relationship": "CONFIRMED_PAPER_LINK_WITH_RENAMED_PATH_REDIRECT",
+    "repository_commit": "947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+    "repository_root_tree": "69cd7ff201f745598757cc99566705aa0364c2f6",
+    "repository_command_identity": "CONFIRMED_AT_PIN",
+    "affirmative_code_use_basis": false,
+    "license_decision": "NO_AFFIRMATIVE_CODE_USE_GRANT_FOUND_AT_PIN",
+    "submodule_gitlinks": 0,
+    "symlink_entries": 0,
+    "sampler_center_binding": "AMBIGUOUS_FOR_PRINTED_CENTER",
+    "paper_repository_center_alignment": "DISTINCT_NON_EQUAL_SURFACES_DO_NOT_CROSS_JOIN"
+  },
+  "source_retrieval_failures": [
+    {
+      "target": "ACM DOI and doi.org landing pages",
+      "failure": "HTTP 403",
+      "resolution": "Needed identity, implementation-link and configuration claims were closed with the author-hosted proceedings copy and official arXiv record; no ACM-only claim was used."
+    },
+    {
+      "target": "GitHub commit and tree API through the browser retrieval layer",
+      "failure": "internal retrieval error",
+      "resolution": "The exact official GitHub API commit and recursive-tree requests succeeded through an approved read-only network replay; no payload was saved."
+    },
+    {
+      "target": "Initial sandboxed PowerShell request to the official GitHub API",
+      "failure": "authentication or TLS/network-boundary failure",
+      "resolution": "The identical read-only request succeeded under approved network execution."
+    },
+    {
+      "target": "Rendered or raw register.py, requirements.txt, sampling.cpp and Gowalla README retrieval",
+      "failure": "cache miss or internal retrieval error",
+      "resolution": "Exact blobs at the pinned revision were decoded in memory from the official GitHub blob API; no source payload was written."
+    }
+  ],
+  "remaining_blockers": [
+    "No affirmative code-use or reuse license basis is established for repository-owned Python, C++ or documentation at the pinned revision.",
+    "The exact C++ or Python sampler branch that produced the printed seed-2020 Gowalla center is not identified.",
+    "pybind11, cppimport and the generated extension lack immutable version and artifact-hash identities.",
+    "The paper Table 3 center and pinned PyTorch repository center/configuration differ and must remain separate.",
+    "No immutable executed-config dump, checkpoint hash or run receipt binds the printed repository center."
+  ],
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "candidate_selected": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "truth_state_guards": {
+    "persistent_truth_state_preserved": true,
+    "missing_evidence_inferred": false,
+    "public_visibility_treated_as_permission": false,
+    "missing_license_file_treated_as_permission": false,
+    "paper_terms_transferred_to_code": false,
+    "dependency_license_transferred_to_repository": false,
+    "paper_and_repository_centers_cross_joined": false,
+    "candidate_replaced": false,
+    "execution_receipt_fabricated": false
+  },
+  "forbidden_operation_flags": {
+    "git_clone": false,
+    "git_fetch": false,
+    "repository_checkout": false,
+    "source_archive_download": false,
+    "source_payload_saved": false,
+    "dataset_download": false,
+    "processed_split_download": false,
+    "checkpoint_download": false,
+    "authenticated_asset_download": false,
+    "authenticated_access": false,
+    "terms_acceptance": false,
+    "credentials_used": false,
+    "dependency_install": false,
+    "environment_creation": false,
+    "container_creation": false,
+    "preprocessing": false,
+    "training": false,
+    "evaluation": false,
+    "benchmark_execution": false,
+    "test_set_opened": false,
+    "maintainer_contact": false,
+    "new_candidate_created": false,
+    "candidate_substituted": false,
+    "candidate_selected": false,
+    "scope_expanded": false,
+    "current_benchmark_number_validated_for_paper": false,
+    "materialization_approval_packet_created": false
+  },
+  "scope_guards": {
+    "write_scope_exact": true,
+    "writes_outside_declared_output_root": false,
+    "public_primary_or_authoritative_sources_only": true,
+    "search_results_used_for_closure": false,
+    "candidate_count": 1,
+    "candidate_row_id_preserved": true
+  },
+  "authorization": {
+    "evidence_only": true,
+    "public_authoritative_read_only_web_replay": true,
+    "deterministic_validation_and_hashing": true,
+    "execution_authorized": false,
+    "materialization_authorized": false
+  },
+  "fail_closed": true,
+  "verdict": "LANE_COMPLETE_EVIDENCE_INCOMPLETE",
+  "verdict_detail": "A1 resolved the official repository, immutable source tree, command/config surfaces and component boundaries, but affirmative code-use permission and exact center execution binding remain absent.",
+  "handoff_disposition": "COMPLETE_FAIL_CLOSED_READY_FOR_CENTRAL_G1_INTERSECTION",
+  "next_gate": "R2-ER1-G1_AFTER_R2-ER1-S_A1_A2_A3_EXACT_SET_SCHEMA_AND_HASH_VALIDATION"
+}

@@ -1,0 +1,470 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r2-er1-a1-paper-repo-config-binding-1.0",
+  "stage_id": "R2-ER1-A1",
+  "created_at": "2026-08-22T18:40:30+07:00",
+  "binding_rule": "This artifact binds only E3-LIGHTGCN-GOWALLA-PYTORCH-001 to the paper-linked PyTorch repository, one immutable commit/root tree, repository-owned command and configuration surfaces, and the repository-owned PyTorch result center. Paper Table 3 and the TensorFlow implementation remain distinct surfaces and are not cross-joined.",
+  "candidate_binding": {
+    "row_id": "E3-LIGHTGCN-GOWALLA-PYTORCH-001",
+    "method": "LightGCN",
+    "dataset_scope": "Gowalla repository-bundled processed split",
+    "paper": {
+      "title": "LightGCN: Simplifying and Powering Graph Convolution Network for Recommendation",
+      "authors": [
+        "Xiangnan He",
+        "Kuan Deng",
+        "Xiang Wang",
+        "Yan Li",
+        "Yongdong Zhang",
+        "Meng Wang"
+      ],
+      "venue": "SIGIR 2020",
+      "doi": "10.1145/3397271.3401063",
+      "official_record": "https://arxiv.org/abs/2002.02126",
+      "record_version": "arXiv:2002.02126v4",
+      "author_hosted_proceedings_copy": "https://hexiangnan.github.io/papers/sigir20-LightGCN.pdf",
+      "paper_linked_tensorflow_url": "https://github.com/kuandeng/LightGCN",
+      "paper_linked_pytorch_url": "https://github.com/gusye1234/pytorch-light-gcn",
+      "pytorch_link_locator": "proceedings-copy PDF page 1 footnote 2 and page 6 footnote 7",
+      "paper_to_repository_relation": "CONFIRMED_PAPER_LINK_WITH_RENAMED_PATH_REDIRECT",
+      "relation_evidence": [
+        "The proceedings paper states that implementations are available in both TensorFlow and PyTorch and footnotes the gusye1234 PyTorch URL.",
+        "GitHub redirects the paper's original gusye1234/pytorch-light-gcn URL to gusye1234/LightGCN-PyTorch.",
+        "The official author slides directly list gusye1234/LightGCN-PyTorch as Code(Pytorch)."
+      ],
+      "relation_boundary": "Official implementation status is confirmed. The evidence does not establish that every change in the later 2023 pinned revision was authored or maintained by a listed paper author."
+    },
+    "repository": {
+      "current_url": "https://github.com/gusye1234/LightGCN-PyTorch",
+      "original_paper_url": "https://github.com/gusye1234/pytorch-light-gcn",
+      "owner": "gusye1234",
+      "archived": true,
+      "default_branch": "master",
+      "pin_kind": "full_commit",
+      "full_commit": "947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+      "commit_api": "https://api.github.com/repos/gusye1234/LightGCN-PyTorch/git/commits/947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+      "commit_url": "https://github.com/gusye1234/LightGCN-PyTorch/commit/947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+      "commit_author": "Hozayfa El Rifai <p-p-h@hotmail.com>",
+      "commit_author_date": "2023-03-20T08:05:33Z",
+      "commit_parent_count": 1,
+      "commit_message_summary": "Removing change base directory (#36)",
+      "root_tree": "69cd7ff201f745598757cc99566705aa0364c2f6",
+      "root_tree_api": "https://api.github.com/repos/gusye1234/LightGCN-PyTorch/git/trees/69cd7ff201f745598757cc99566705aa0364c2f6?recursive=1",
+      "commit_resolved": true,
+      "tree_resolved": true,
+      "release_or_tag_substituted": false
+    },
+    "license_binding": {
+      "decision": "NO_AFFIRMATIVE_CODE_USE_GRANT_FOUND_AT_PIN",
+      "license_file": null,
+      "spdx": null,
+      "repository_metadata_license": null,
+      "affirmative_code_use_basis": false,
+      "complete_code_use_basis": false,
+      "tree_search_scope": {
+        "tree_entries": 43,
+        "tree_truncated": false,
+        "license_like_names_checked": [
+          "LICENSE",
+          "LICENCE",
+          "COPYING",
+          "COPYRIGHT",
+          "NOTICE"
+        ],
+        "matching_paths": []
+      },
+      "readme_grant_text_found": false,
+      "paper_license_transferred_to_code": false,
+      "dependency_licenses_transferred_to_repository": false,
+      "scope_by_component": [
+        {
+          "component": "repository Python source",
+          "paths": [
+            "code/main.py",
+            "code/parse.py",
+            "code/world.py",
+            "code/register.py",
+            "code/model.py",
+            "code/utils.py",
+            "code/Procedure.py",
+            "code/dataloader.py"
+          ],
+          "license_basis": "NO_AFFIRMATIVE_GRANT_ESTABLISHED"
+        },
+        {
+          "component": "repository C++ sampler source",
+          "paths": [
+            "code/sources/sampling.cpp"
+          ],
+          "license_basis": "NO_AFFIRMATIVE_GRANT_ESTABLISHED"
+        },
+        {
+          "component": "repository README and documentation",
+          "paths": [
+            "README.md",
+            "data/gowalla/README.md"
+          ],
+          "license_basis": "NO_AFFIRMATIVE_GRANT_ESTABLISHED"
+        },
+        {
+          "component": "repository-bundled processed Gowalla artifacts",
+          "paths": [
+            "data/gowalla/train.txt",
+            "data/gowalla/test.txt",
+            "data/gowalla/user_list.txt",
+            "data/gowalla/item_list.txt",
+            "data/gowalla/s_adj_mat.npz",
+            "data/gowalla/s_pre_adj_mat.npz"
+          ],
+          "license_basis": "NOT_ASSESSED_BY_R2_ER1_A1"
+        },
+        {
+          "component": "external Python and build dependencies",
+          "paths": [],
+          "license_basis": "SEPARATE_COMPONENT_LICENSES_OUTSIDE_THE_PIN; NO_LICENSE_TRANSFER_TO_LIGHTGCN_CODE"
+        }
+      ],
+      "decision_boundary": "A complete pinned tree and null repository license metadata are negative observations only. They do not establish permission. The required affirmative basis remains absent, so the candidate cannot receive EVIDENCE_SUFFICIENT_FOR_G1_REVIEW from A1."
+    },
+    "tree_binding": {
+      "recursive_tree_entries": 43,
+      "truncated": false,
+      "gitlinks_mode_160000": 0,
+      "symlinks_mode_120000": 0,
+      "gitmodules_files": 0,
+      "gitattributes_files": 0,
+      "tree_level_lfs_markers": 0,
+      "source_blobs": [
+        {
+          "path": "README.md",
+          "mode": "100644",
+          "blob": "924434894b9cabaecb99144f4e14af8175a04e24",
+          "size": 3831
+        },
+        {
+          "path": "requirements.txt",
+          "mode": "100644",
+          "blob": "79737ec500d747588806f51d5bf45c047789554e",
+          "size": 106
+        },
+        {
+          "path": "code/main.py",
+          "mode": "100644",
+          "blob": "0e7def0fa8afca078a489ca7fde97bae6b8798cf",
+          "size": 1662
+        },
+        {
+          "path": "code/parse.py",
+          "mode": "100644",
+          "blob": "dad7e7a2d3ed354a29e173dedf0567ce5b2ee9d7",
+          "size": 2555
+        },
+        {
+          "path": "code/world.py",
+          "mode": "100644",
+          "blob": "4767e684cb15c15412172e5d9e2ee39a47247343",
+          "size": 2618
+        },
+        {
+          "path": "code/register.py",
+          "mode": "100644",
+          "blob": "a03363aedb4a136d0bc354273fdb31fa24b8933f",
+          "size": 675
+        },
+        {
+          "path": "code/model.py",
+          "mode": "100644",
+          "blob": "26133df130f09c7e7280932b9a02421823535097",
+          "size": 8339
+        },
+        {
+          "path": "code/utils.py",
+          "mode": "100644",
+          "blob": "057678faf91c6e81a10b0636af5de7f21b9f2132",
+          "size": 8395
+        },
+        {
+          "path": "code/Procedure.py",
+          "mode": "100644",
+          "blob": "ab1426d66cc828be8198b3db73e32157c1c82477",
+          "size": 5950
+        },
+        {
+          "path": "code/sources/sampling.cpp",
+          "mode": "100644",
+          "blob": "0324e1a7cdfb76acebcf063a8b0c76f6496e7127",
+          "size": 3092
+        }
+      ],
+      "gowalla_blobs": [
+        {
+          "path": "data/gowalla/train.txt",
+          "blob": "a27782bd7a1d4d0744148dc0460ea94da74763f2",
+          "size": 4633414
+        },
+        {
+          "path": "data/gowalla/test.txt",
+          "blob": "9ed5af4b5d21511f33740b4e22e3852f45671800",
+          "size": 1372559
+        },
+        {
+          "path": "data/gowalla/user_list.txt",
+          "blob": "6be41d0eedf17a8d9345ee4f7b70124cd4423bc4",
+          "size": 351203
+        },
+        {
+          "path": "data/gowalla/item_list.txt",
+          "blob": "ced87ec4352ba75a70b4c3afc62361aa655cc293",
+          "size": 506926
+        },
+        {
+          "path": "data/gowalla/s_adj_mat.npz",
+          "blob": "cbf3d4e7d3cbcab3791dd94d5a2090b4fe6b082d",
+          "size": 3635865
+        },
+        {
+          "path": "data/gowalla/s_pre_adj_mat.npz",
+          "blob": "7ebb09d7fac6b1608b1f2803c08dda24f5ca192f",
+          "size": 7226916
+        }
+      ],
+      "external_and_generated_boundaries": [
+        {
+          "boundary": "Python dependencies",
+          "identity": "requirements.txt pins seven versions but contains no package hashes",
+          "repository_owned": false,
+          "complete": false
+        },
+        {
+          "boundary": "C++ sampler build dependencies",
+          "identity": "README names pybind11 and cppimport without versions; requirements.txt omits both",
+          "repository_owned": false,
+          "complete": false
+        },
+        {
+          "boundary": "compiled sampler extension",
+          "identity": "generated from code/sources/sampling.cpp through cppimport/pybind11",
+          "repository_owned": false,
+          "complete": false
+        },
+        {
+          "boundary": "checkpoint",
+          "identity": "code/checkpoints/lgn-gowalla-3-64.pth.tar, generated and overwritten each epoch",
+          "repository_owned": false,
+          "complete": false
+        },
+        {
+          "boundary": "tensorboard runs",
+          "identity": "code/runs timestamped runtime output",
+          "repository_owned": false,
+          "complete": false
+        }
+      ]
+    },
+    "training_surface": {
+      "entry_point": "code/main.py",
+      "entry_blob": "0e7def0fa8afca078a489ca7fde97bae6b8798cf",
+      "argv_parser": "code/parse.py",
+      "argv_parser_blob": "dad7e7a2d3ed354a29e173dedf0567ce5b2ee9d7",
+      "runtime_config_mapper": "code/world.py",
+      "runtime_config_mapper_blob": "4767e684cb15c15412172e5d9e2ee39a47247343",
+      "registry": "code/register.py",
+      "registry_blob": "a03363aedb4a136d0bc354273fdb31fa24b8933f",
+      "noninteractive": true,
+      "working_directory": "repository/code",
+      "published_command": "cd code && python main.py --decay=1e-4 --lr=0.001 --layer=3 --seed=2020 --dataset=\"gowalla\" --topks=\"[20]\" --recdim=64",
+      "command_source": "README.md blob 924434894b9cabaecb99144f4e14af8175a04e24 lines 33-39",
+      "model_mapping": "lgn -> model.LightGCN",
+      "dataset_mapping": "gowalla -> dataloader.Loader(path=\"../data/gowalla\")",
+      "command_identity_status": "CONFIRMED_AT_PIN"
+    },
+    "configuration_binding": {
+      "kind": "README argv plus immutable argparse defaults and fixed world values",
+      "explicit_values": {
+        "decay": 0.0001,
+        "lr": 0.001,
+        "layer": 3,
+        "seed": 2020,
+        "dataset": "gowalla",
+        "topks": [
+          20
+        ],
+        "recdim": 64
+      },
+      "implicit_parser_defaults": {
+        "bpr_batch": 2048,
+        "dropout": 0,
+        "keepprob": 0.6,
+        "a_fold": 100,
+        "testbatch": 100,
+        "path": "./checkpoints",
+        "tensorboard": 1,
+        "comment": "lgn",
+        "load": 0,
+        "epochs": 1000,
+        "multicore": 0,
+        "pretrain": 0,
+        "model": "lgn"
+      },
+      "fixed_runtime_values": {
+        "A_split": false,
+        "bigdata": false,
+        "Neg_k": 1
+      },
+      "model_variant": {
+        "implementation": "PyTorch LightGCN",
+        "embedding_dimensions": 64,
+        "propagation_layers": 3,
+        "layer_combination": "uniform mean of layers 0, 1, 2 and 3",
+        "dropout_active": false,
+        "embedding_initialization": "normal standard deviation 0.1",
+        "pretraining_active": false
+      },
+      "objective": {
+        "ranking_loss": "mean softplus(negative_score - positive_score)",
+        "regularization": "L2 on ego user, positive-item and negative-item embeddings multiplied by 0.0001",
+        "optimizer": "Adam",
+        "learning_rate": 0.001
+      },
+      "schedule_and_outputs": {
+        "epochs": 1000,
+        "test_cadence": "epoch 0 and every 10 epochs before that epoch's training",
+        "validation_stage": null,
+        "early_stopping": false,
+        "checkpoint_filename": "lgn-gowalla-3-64.pth.tar",
+        "checkpoint_write_rule": "overwrite after every epoch",
+        "tensorboard_default": true
+      },
+      "configuration_hash_receipt_available": false,
+      "executed_configuration_receipt_available": false
+    },
+    "sampler_binding": {
+      "call_chain": "code/main.py -> Procedure.BPR_train_original -> utils.UniformSample_original",
+      "branch_selector": "runtime success or failure of cppimport/pybind11 import and compilation",
+      "argv_selects_branch": false,
+      "compiled_branch": {
+        "source": "code/sources/sampling.cpp",
+        "source_blob": "0324e1a7cdfb76acebcf063a8b0c76f6496e7127",
+        "semantics": "for each user, sample floor(train_interactions/user_count) positive-negative pairs"
+      },
+      "python_fallback_branch": {
+        "source": "code/utils.py lines 59-91",
+        "source_blob": "057678faf91c6e81a10b0636af5de7f21b9f2132",
+        "semantics": "draw trainDataSize random users, then one positive and one unobserved negative for each sampled nonempty user"
+      },
+      "center_branch_receipt": null,
+      "binding_status": "AMBIGUOUS_FOR_PRINTED_CENTER",
+      "effect": "The public command alone does not fully identify the executable training semantics for the printed center."
+    },
+    "repository_center": {
+      "source": "README.md blob 924434894b9cabaecb99144f4e14af8175a04e24",
+      "scope": "PyTorch version, seed 2020, stop at 1000 epochs, all metrics under top-20",
+      "dataset": "gowalla",
+      "layer": 3,
+      "metrics": {
+        "recall_at_20": 0.1824,
+        "ndcg_at_20": 0.1547,
+        "precision_at_20": 0.05589
+      },
+      "command_binding": "The README command sets layer=3, seed=2020, Gowalla and top-20 and consumes the 1000-epoch parser default.",
+      "remaining_binding_gap": "No immutable config dump, sampler-branch receipt, checkpoint hash or run log binds the printed values to one execution."
+    },
+    "paper_center": {
+      "source": "SIGIR proceedings-copy PDF page 6, Table 3",
+      "dataset": "Gowalla",
+      "layer": 3,
+      "metrics": {
+        "recall_at_20": 0.1823,
+        "ndcg_at_20": 0.1555
+      },
+      "paper_hyperparameters": {
+        "embedding_dimensions": 64,
+        "initialization": "Xavier",
+        "optimizer": "Adam",
+        "learning_rate": 0.001,
+        "gowalla_batch_size": 1024,
+        "typical_l2": 0.0001,
+        "early_stopping_and_validation": "same as NGCF"
+      }
+    },
+    "center_config_alignment": {
+      "repository_command_to_repository_center": "PARTIAL_CONFIRMED",
+      "paper_center_to_repository_config": "MISMATCH_DO_NOT_CROSS_JOIN",
+      "mismatches": [
+        {
+          "field": "batch_size",
+          "paper": 1024,
+          "repository": 2048
+        },
+        {
+          "field": "embedding_initialization",
+          "paper": "Xavier",
+          "repository": "normal standard deviation 0.1"
+        },
+        {
+          "field": "selection_rule",
+          "paper": "early stopping and validation same as NGCF",
+          "repository": "fixed 1000-epoch loop, no validation, checkpoint overwritten every epoch"
+        },
+        {
+          "field": "three_layer_gowalla_metrics",
+          "paper": {
+            "recall_at_20": 0.1823,
+            "ndcg_at_20": 0.1555
+          },
+          "repository": {
+            "recall_at_20": 0.1824,
+            "ndcg_at_20": 0.1547
+          }
+        }
+      ],
+      "candidate_effect": "The repository-specific PyTorch center may remain a distinct evidence target, but it cannot be represented as the paper Table 3 center. A1 remains incomplete independently because no affirmative code-use basis and no sampler/run binding are available."
+    },
+    "environment_binding": {
+      "requirements_file": "requirements.txt",
+      "requirements_blob": "79737ec500d747588806f51d5bf45c047789554e",
+      "declared_requirements": [
+        "torch==1.4.0",
+        "pandas==0.24.2",
+        "scipy==1.3.0",
+        "numpy==1.22.0",
+        "tensorboardX==1.8",
+        "scikit-learn==0.23.2",
+        "tqdm==4.48.2"
+      ],
+      "readme_only_build_requirements": [
+        "pybind11, version unspecified",
+        "cppimport, version unspecified"
+      ],
+      "hash_locked": false,
+      "interpreter_version_pinned": false,
+      "compiled_artifact_pinned": false,
+      "complete_environment_identity": false,
+      "environment_actions_performed": false
+    },
+    "coupling_verdict": "PARTIAL_BINDING_EVIDENCE_INCOMPLETE",
+    "blockers": [
+      "no affirmative code-use or reuse license at the pinned revision",
+      "the exact sampler branch for the printed center is not identified",
+      "pybind11/cppimport and generated extension identities are unpinned",
+      "the paper and repository centers/configurations differ and must remain separate",
+      "no immutable executed-config, checkpoint or run receipt binds the repository center"
+    ],
+    "execution_authorized": false
+  },
+  "scope_guards": {
+    "dataset_rights_decided": false,
+    "dataset_lineage_decided": false,
+    "metric_evaluator_parity_decided": false,
+    "candidate_selected": false,
+    "candidate_substituted": false,
+    "cross_repository_config_joined": false,
+    "execution_authorized": false
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

@@ -1,0 +1,519 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r2-er1-a1-repo-license-evidence-1.0",
+  "stage_id": "R2-ER1-A1",
+  "created_at": "2026-08-22T18:40:30+07:00",
+  "candidate_scope": {
+    "row_id": "E3-LIGHTGCN-GOWALLA-PYTORCH-001",
+    "method": "LightGCN",
+    "candidate_count": 1,
+    "scope_expansion_allowed": false,
+    "candidate_selected": false
+  },
+  "evidence_policy": {
+    "evidence_only": true,
+    "fail_closed": true,
+    "public_primary_or_authoritative_sources_only": true,
+    "search_results_used_for_discovery_only": true,
+    "public_visibility_treated_as_permission": false,
+    "absence_of_license_search_treated_as_permission": false,
+    "cross_candidate_join_performed": false,
+    "candidate_substitution_performed": false,
+    "source_payloads_saved": false
+  },
+  "candidate_rows": [
+    {
+      "row_id": "E3-LIGHTGCN-GOWALLA-PYTORCH-001",
+      "method": "LightGCN",
+      "dataset_scope": "Gowalla / repository-bundled processed split; dataset rights and lineage are not decided by R2-ER1-A1",
+      "lane_id": "R2-ER1-A1",
+      "evidence_status": "EVIDENCE_INCOMPLETE",
+      "authoritative_sources": [
+        {
+          "url": "https://arxiv.org/abs/2002.02126",
+          "source_type": "official_paper_record",
+          "immutable_identity_or_version": "arXiv:2002.02126v4",
+          "accessed_at": "2026-08-22T18:38:30+07:00",
+          "locator": "title, authors, accepted-by-SIGIR comment, v1-v4 submission history",
+          "supports": [
+            "paper identity",
+            "paper author list",
+            "v4 revision identity"
+          ],
+          "does_not_support": [
+            "a code license",
+            "the immutable PyTorch repository revision",
+            "an executed configuration or run receipt"
+          ]
+        },
+        {
+          "url": "https://hexiangnan.github.io/papers/sigir20-LightGCN.pdf",
+          "source_type": "official_author_hosted_proceedings_copy",
+          "immutable_identity_or_version": "SIGIR 2020 proceedings paper; DOI 10.1145/3397271.3401063; 10 pages",
+          "accessed_at": "2026-08-22T18:38:30+07:00",
+          "locator": "PDF page 1, implementation statement and footnotes 1-2; PDF pages 5-6, Section 4.1.2 and Table 3",
+          "supports": [
+            "the paper expressly identifies both TensorFlow and PyTorch implementations",
+            "the PyTorch link is https://github.com/gusye1234/pytorch-light-gcn",
+            "paper-side hyperparameter and three-layer Gowalla result surfaces"
+          ],
+          "does_not_support": [
+            "a repository code-license grant",
+            "identity equality between the paper Table 3 center and the later pinned PyTorch README center",
+            "the pinned repository commit or tree"
+          ]
+        },
+        {
+          "url": "https://hexiangnan.github.io/slides/sigir20-slides-LightGCN.pdf",
+          "source_type": "official_author_presentation",
+          "immutable_identity_or_version": "SIGIR 2020 LightGCN author slides; 24 pages",
+          "accessed_at": "2026-08-22T18:38:30+07:00",
+          "locator": "PDF page 24, Code(Tensorflow) and Code(Pytorch) links",
+          "supports": [
+            "the author presentation links the current PyTorch repository path https://github.com/gusye1234/LightGCN-PyTorch"
+          ],
+          "does_not_support": [
+            "a code license",
+            "an immutable repository revision",
+            "a run receipt"
+          ]
+        },
+        {
+          "url": "https://github.com/gusye1234/pytorch-light-gcn",
+          "source_type": "official_repository_rename_redirect",
+          "immutable_identity_or_version": "GitHub redirect observed to https://github.com/gusye1234/LightGCN-PyTorch",
+          "accessed_at": "2026-08-22T18:38:30+07:00",
+          "locator": "HTTP/GitHub page redirect destination and archived repository header",
+          "supports": [
+            "the paper's original PyTorch URL resolves to the current repository"
+          ],
+          "does_not_support": [
+            "a code license",
+            "revision identity",
+            "paper-result and repository-result equality"
+          ]
+        },
+        {
+          "url": "https://api.github.com/repos/gusye1234/LightGCN-PyTorch/git/commits/947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+          "source_type": "immutable_repository_commit_metadata",
+          "immutable_identity_or_version": "commit 947ca2b3b1d2d3545b114145710cb06c4e57b3d2; root tree 69cd7ff201f745598757cc99566705aa0364c2f6",
+          "accessed_at": "2026-08-22T18:37:44.7126754+07:00",
+          "locator": "resolved SHA, one parent, author and committer date 2023-03-20T08:05:33Z, root tree",
+          "supports": [
+            "the full immutable commit resolves",
+            "the exact root-tree identity",
+            "the pinned commit is a later external-contributor change within the paper-linked repository"
+          ],
+          "does_not_support": [
+            "a release tag",
+            "a code license",
+            "paper-author authorship of every change in the pinned revision"
+          ]
+        },
+        {
+          "url": "https://api.github.com/repos/gusye1234/LightGCN-PyTorch/git/trees/69cd7ff201f745598757cc99566705aa0364c2f6?recursive=1",
+          "source_type": "immutable_repository_tree",
+          "immutable_identity_or_version": "root tree 69cd7ff201f745598757cc99566705aa0364c2f6; 43 entries; truncated=false",
+          "accessed_at": "2026-08-22T18:37:44.7126754+07:00",
+          "locator": "complete recursive path, mode, type, blob SHA and size inventory",
+          "supports": [
+            "no LICENSE, LICENCE, COPYING, COPYRIGHT or NOTICE path is present",
+            "no .gitmodules or .gitattributes path is present",
+            "no gitlink mode 160000 or symlink mode 120000 entry is present",
+            "all repository code, processed Gowalla files and the C++ sampler are regular Git objects at this tree"
+          ],
+          "does_not_support": [
+            "permission to use repository code",
+            "absence of every external runtime dependency",
+            "dataset rights or lineage",
+            "identity of generated build, checkpoint or tensorboard artifacts"
+          ]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/gusye1234/LightGCN-PyTorch/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/README.md",
+          "source_type": "immutable_repository_file",
+          "immutable_identity_or_version": "commit 947ca2b3b1d2d3545b114145710cb06c4e57b3d2; blob 924434894b9cabaecb99144f4e14af8175a04e24",
+          "accessed_at": "2026-08-22T18:36:00+07:00",
+          "locator": "lines 0-15, 22-39 and 60-91",
+          "supports": [
+            "repository self-identification as the paper's PyTorch implementation",
+            "the exact public three-layer Gowalla command",
+            "seed 2020, top-20 and fixed 1000-epoch PyTorch result surface",
+            "pybind11 and cppimport are needed to enable the C++ sampler"
+          ],
+          "does_not_support": [
+            "a code-license grant",
+            "which sampler branch produced the printed center",
+            "an immutable run, checkpoint or environment receipt",
+            "dataset rights"
+          ]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/gusye1234/LightGCN-PyTorch/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/code/parse.py",
+          "source_type": "immutable_repository_file",
+          "immutable_identity_or_version": "blob dad7e7a2d3ed354a29e173dedf0567ce5b2ee9d7",
+          "accessed_at": "2026-08-22T18:38:00+07:00",
+          "locator": "lines 9-44",
+          "supports": [
+            "noninteractive argparse interface",
+            "all explicit command parameters and parser defaults"
+          ],
+          "does_not_support": [
+            "a code license",
+            "an executed configuration receipt",
+            "the active C++ or Python sampler branch"
+          ]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/gusye1234/LightGCN-PyTorch/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/code/main.py",
+          "source_type": "immutable_repository_file",
+          "immutable_identity_or_version": "blob 0e7def0fa8afca078a489ca7fde97bae6b8798cf",
+          "accessed_at": "2026-08-22T18:38:00+07:00",
+          "locator": "lines 10-44",
+          "supports": [
+            "seed application",
+            "model and dataset registry dispatch",
+            "BPR training loop, ten-epoch test cadence and every-epoch checkpoint overwrite"
+          ],
+          "does_not_support": [
+            "early stopping or validation selection",
+            "which checkpoint produced the README center",
+            "a code license"
+          ]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/gusye1234/LightGCN-PyTorch/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/code/world.py",
+          "source_type": "immutable_repository_file",
+          "immutable_identity_or_version": "blob 4767e684cb15c15412172e5d9e2ee39a47247343",
+          "accessed_at": "2026-08-22T18:38:00+07:00",
+          "locator": "lines 12-63",
+          "supports": [
+            "argv-to-runtime configuration mapping",
+            "Gowalla and lgn allowlists",
+            "A_split=false and bigdata=false fixed runtime values",
+            "checkpoint and tensorboard output paths"
+          ],
+          "does_not_support": [
+            "a dependency artifact lock",
+            "a run receipt",
+            "a code license"
+          ]
+        },
+        {
+          "url": "https://api.github.com/repos/gusye1234/LightGCN-PyTorch/git/blobs/a03363aedb4a136d0bc354273fdb31fa24b8933f",
+          "source_type": "immutable_repository_blob",
+          "immutable_identity_or_version": "code/register.py blob a03363aedb4a136d0bc354273fdb31fa24b8933f",
+          "accessed_at": "2026-08-22T18:37:44.7126754+07:00",
+          "locator": "entire 675-byte UTF-8 blob",
+          "supports": [
+            "gowalla dispatches to ../data/gowalla",
+            "model key lgn dispatches to model.LightGCN"
+          ],
+          "does_not_support": [
+            "working-directory independence",
+            "dataset rights",
+            "a code license"
+          ]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/gusye1234/LightGCN-PyTorch/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/code/model.py",
+          "source_type": "immutable_repository_file",
+          "immutable_identity_or_version": "blob 26133df130f09c7e7280932b9a02421823535097",
+          "accessed_at": "2026-08-22T18:38:00+07:00",
+          "locator": "lines 80-113, 135-167 and 186-199",
+          "supports": [
+            "LightGCN layer propagation and uniform layer aggregation",
+            "normal standard-deviation 0.1 embedding initialization",
+            "pairwise BPR objective and L2 regularization surface"
+          ],
+          "does_not_support": [
+            "the paper's stated Xavier initialization",
+            "a run receipt",
+            "a code license"
+          ]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/gusye1234/LightGCN-PyTorch/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/code/utils.py",
+          "source_type": "immutable_repository_file",
+          "immutable_identity_or_version": "blob 057678faf91c6e81a10b0636af5de7f21b9f2132",
+          "accessed_at": "2026-08-22T18:38:00+07:00",
+          "locator": "lines 18-27, 29-58, 59-106",
+          "supports": [
+            "environment-dependent C++-extension versus Python sampler branch",
+            "NumPy and Torch seed application",
+            "Adam optimizer and checkpoint filename"
+          ],
+          "does_not_support": [
+            "which sampler branch produced the README result center",
+            "a complete deterministic runtime guarantee",
+            "a code license"
+          ]
+        },
+        {
+          "url": "https://api.github.com/repos/gusye1234/LightGCN-PyTorch/git/blobs/0324e1a7cdfb76acebcf063a8b0c76f6496e7127",
+          "source_type": "immutable_repository_blob",
+          "immutable_identity_or_version": "code/sources/sampling.cpp blob 0324e1a7cdfb76acebcf063a8b0c76f6496e7127",
+          "accessed_at": "2026-08-22T18:37:44.7126754+07:00",
+          "locator": "entire 3092-byte UTF-8 blob; setup_pybind11 and sample_negative definitions",
+          "supports": [
+            "the compiled sampler is repository-owned regular source",
+            "it requires pybind11/cppimport generation",
+            "its per-user sampling shape differs from the Python fallback's random-user sampling shape"
+          ],
+          "does_not_support": [
+            "a compiled artifact identity",
+            "the external build dependency versions or licenses",
+            "which branch produced the README center",
+            "a code license for this C++ source"
+          ]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/gusye1234/LightGCN-PyTorch/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/code/Procedure.py",
+          "source_type": "immutable_repository_file",
+          "immutable_identity_or_version": "blob ab1426d66cc828be8198b3db73e32157c1c82477",
+          "accessed_at": "2026-08-22T18:38:00+07:00",
+          "locator": "lines 24-54 and 72-149",
+          "supports": [
+            "the training loop consumes UniformSample_original",
+            "the executable source masks train positives and computes top-k through the repository evaluator path"
+          ],
+          "does_not_support": [
+            "the exact sampler branch used for the center",
+            "a deterministic tie policy",
+            "a code license"
+          ]
+        },
+        {
+          "url": "https://api.github.com/repos/gusye1234/LightGCN-PyTorch/git/blobs/79737ec500d747588806f51d5bf45c047789554e",
+          "source_type": "immutable_repository_blob",
+          "immutable_identity_or_version": "requirements.txt blob 79737ec500d747588806f51d5bf45c047789554e",
+          "accessed_at": "2026-08-22T18:37:44.7126754+07:00",
+          "locator": "entire 106-byte UTF-8 blob",
+          "supports": [
+            "seven version-pinned Python requirements",
+            "pybind11 and cppimport are absent from this requirements file",
+            "no package hashes are present"
+          ],
+          "does_not_support": [
+            "a complete environment lock",
+            "license scope for the LightGCN repository",
+            "identity of installed artifacts"
+          ]
+        }
+      ],
+      "confirmed_fields": {
+        "paper_repository_relationship": {
+          "status": "CONFIRMED_PAPER_LINK_WITH_RENAMED_PATH_REDIRECT",
+          "paper_title": "LightGCN: Simplifying and Powering Graph Convolution Network for Recommendation",
+          "paper_doi": "10.1145/3397271.3401063",
+          "paper_linked_pytorch_url": "https://github.com/gusye1234/pytorch-light-gcn",
+          "current_repository_url": "https://github.com/gusye1234/LightGCN-PyTorch",
+          "relationship_basis": "The SIGIR paper explicitly states that implementations are available in TensorFlow and PyTorch and footnotes the original gusye1234 PyTorch URL; GitHub redirects that URL to the current archived repository.",
+          "maintenance_qualification": "Official paper-linked implementation is confirmed. The stricter label author-maintained is not established for every change at the 2023 pin: file headers credit Jianbai Ye, who is not in the paper author list, and the pinned tip commit is authored by Hozayfa El Rifai."
+        },
+        "immutable_source_identity": {
+          "repository": "https://github.com/gusye1234/LightGCN-PyTorch",
+          "pin_kind": "full_commit",
+          "commit": "947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+          "root_tree": "69cd7ff201f745598757cc99566705aa0364c2f6",
+          "commit_resolved": true,
+          "parent_count": 1,
+          "tree_entries": 43,
+          "tree_truncated": false,
+          "repository_archived": true
+        },
+        "repository_license": {
+          "status": "NO_AFFIRMATIVE_CODE_USE_GRANT_FOUND_AT_PIN",
+          "spdx": null,
+          "license_file": null,
+          "affirmative_code_use_basis": false,
+          "repository_metadata_license": null,
+          "negative_observations": [
+            "The complete pinned tree contains no LICENSE, LICENCE, COPYING, COPYRIGHT or NOTICE path.",
+            "The pinned README contains no license or permission grant.",
+            "GitHub repository metadata exposes no detected SPDX license."
+          ],
+          "scope": {
+            "repository_python_code": "NO_AFFIRMATIVE_GRANT_ESTABLISHED",
+            "repository_cpp_sampler_source": "NO_AFFIRMATIVE_GRANT_ESTABLISHED",
+            "repository_documentation": "NO_AFFIRMATIVE_GRANT_ESTABLISHED",
+            "repository_processed_data": "NOT_DECIDED_BY_R2_ER1_A1",
+            "external_dependencies": "SEPARATE_COMPONENTS_NOT_LICENSED_BY_THIS_REPOSITORY",
+            "paper_copy": "PAPER_COPYRIGHT_NOTICE_DOES_NOT_LICENSE_REPOSITORY_CODE"
+          },
+          "boundary": "These negative observations do not create permission and are not a legal conclusion. Under the frozen evidence contract, public access and paper publication cannot substitute for an affirmative repository code-use basis."
+        },
+        "tree_and_external_boundaries": {
+          "submodule_gitlinks": 0,
+          "gitmodules_files": 0,
+          "symlink_entries": 0,
+          "gitattributes_files": 0,
+          "tree_level_lfs_markers": 0,
+          "regular_repository_cpp_source": "code/sources/sampling.cpp at blob 0324e1a7cdfb76acebcf063a8b0c76f6496e7127",
+          "external_runtime_dependencies": [
+            "torch==1.4.0",
+            "pandas==0.24.2",
+            "scipy==1.3.0",
+            "numpy==1.22.0",
+            "tensorboardX==1.8",
+            "scikit-learn==0.23.2",
+            "tqdm==4.48.2",
+            "pybind11 version unspecified",
+            "cppimport version unspecified"
+          ],
+          "generated_surfaces": [
+            "compiled cppimport/pybind11 sampler extension",
+            "code/checkpoints/lgn-gowalla-3-64.pth.tar",
+            "code/runs tensorboard output"
+          ],
+          "data_boundary": "Gowalla train/test, mapping and adjacency files are regular blobs in the pinned tree. Their presence proves Git object identity only; it does not prove provider rights or raw-to-split lineage."
+        },
+        "repository_command_identity": {
+          "entry_point": "code/main.py",
+          "working_directory": "repository/code",
+          "interface": "noninteractive argparse",
+          "published_command": "cd code && python main.py --decay=1e-4 --lr=0.001 --layer=3 --seed=2020 --dataset=\"gowalla\" --topks=\"[20]\" --recdim=64",
+          "dataset_dispatch": "../data/gowalla",
+          "model_dispatch": "lgn -> model.LightGCN",
+          "command_resolves_at_pin": true
+        },
+        "repository_configuration_identity": {
+          "explicit_argv": {
+            "decay": 0.0001,
+            "lr": 0.001,
+            "layer": 3,
+            "seed": 2020,
+            "dataset": "gowalla",
+            "topks": [
+              20
+            ],
+            "recdim": 64
+          },
+          "parser_defaults_consumed": {
+            "bpr_batch": 2048,
+            "dropout": 0,
+            "keepprob": 0.6,
+            "a_fold": 100,
+            "testbatch": 100,
+            "path": "./checkpoints",
+            "tensorboard": 1,
+            "comment": "lgn",
+            "load": 0,
+            "epochs": 1000,
+            "multicore": 0,
+            "pretrain": 0,
+            "model": "lgn"
+          },
+          "fixed_world_values": {
+            "A_split": false,
+            "bigdata": false
+          },
+          "training_surface": {
+            "optimizer": "Adam",
+            "objective": "pairwise BPR softplus loss plus L2 regularization",
+            "negative_ratio": 1,
+            "embedding_initialization": "normal standard deviation 0.1",
+            "layer_aggregation": "uniform mean over layer-0 through layer-3 embeddings",
+            "evaluation_cadence": "before training at epoch 0 and every 10 epochs",
+            "checkpoint_write": "overwrite lgn-gowalla-3-64.pth.tar after every epoch",
+            "early_stopping": false
+          }
+        },
+        "sampler_branch_binding": {
+          "status": "AMBIGUOUS_FOR_PRINTED_CENTER",
+          "branch_selector": "Successful import/build of cppimport and pybind11 at runtime; no argv selects the branch",
+          "compiled_branch": "code/sources/sampling.cpp samples a fixed floor(train_interactions/users) count for every user",
+          "fallback_branch": "UniformSample_original_python draws trainDataSize random users and then samples one positive and one unobserved negative",
+          "requirements_gap": "pybind11 and cppimport are named by README but absent from requirements.txt and have no pinned versions or hashes",
+          "center_receipt": "The README does not identify which branch produced the printed Gowalla center."
+        },
+        "paper_and_repository_center_alignment": {
+          "status": "DISTINCT_NON_EQUAL_SURFACES_DO_NOT_CROSS_JOIN",
+          "matching_dimensions": [
+            "LightGCN model family",
+            "Gowalla dataset display identity",
+            "embedding dimension 64",
+            "learning rate 0.001",
+            "typical L2 coefficient 0.0001",
+            "three layers",
+            "BPR objective",
+            "1000-epoch ceiling"
+          ],
+          "mismatches": [
+            {
+              "dimension": "Gowalla mini-batch size",
+              "paper": 1024,
+              "pinned_pytorch": 2048
+            },
+            {
+              "dimension": "embedding initialization",
+              "paper": "Xavier",
+              "pinned_pytorch": "normal standard deviation 0.1"
+            },
+            {
+              "dimension": "checkpoint/selection rule",
+              "paper": "early stopping and validation strategy same as NGCF",
+              "pinned_pytorch": "no validation or early stopping in code/main.py; fixed loop and every-epoch overwrite"
+            },
+            {
+              "dimension": "three-layer Gowalla center",
+              "paper": {
+                "recall_at_20": 0.1823,
+                "ndcg_at_20": 0.1555
+              },
+              "pinned_pytorch_readme": {
+                "recall_at_20": 0.1824,
+                "ndcg_at_20": 0.1547,
+                "precision_at_20": 0.05589,
+                "seed": 2020
+              }
+            }
+          ],
+          "effect": "The pinned repository command is internally bound to the repository-owned PyTorch center, but that center must not be relabeled as the paper Table 3 center."
+        }
+      },
+      "unresolved_fields": [
+        "affirmative code-use or reuse license basis for repository-owned Python, C++ and documentation at the pinned revision",
+        "strict author-maintained status for the full 2023 pinned revision, despite the paper-confirmed official implementation relationship",
+        "which negative-sampler branch produced the repository's printed seed-2020 Gowalla center",
+        "exact pybind11 and cppimport versions, licenses, build artifacts and hashes",
+        "complete dependency artifact lock and compatible interpreter/platform identity",
+        "immutable executed-config, run and checkpoint receipt for the repository center"
+      ],
+      "dispositive_mismatches": [],
+      "inferences_forbidden": [
+        "Do not treat the paper copyright notice, paper availability or arXiv license as a repository code license.",
+        "Do not treat GitHub public visibility, stars, forks, archival status or a missing LICENSE path as permission.",
+        "Do not transfer any license from TensorFlow, PyTorch or another dependency to the LightGCN repository code.",
+        "Do not treat repository-bundled Gowalla blobs as dataset rights or raw-to-processed lineage.",
+        "Do not infer that the C++ sampler produced the center merely because README recommends installing its build dependencies.",
+        "Do not cross-join paper Table 3 values or settings with the distinct pinned PyTorch README center.",
+        "Do not replace the candidate, repository, dataset or immutable revision."
+      ],
+      "recommended_g1_disposition": "KEEP_PENDING",
+      "execution_authorized": false,
+      "result_status": "NOT_RUN",
+      "test_set_opened": "NO"
+    }
+  ],
+  "coverage": {
+    "expected_rows": 1,
+    "actual_rows": 1,
+    "ordered_row_ids": [
+      "E3-LIGHTGCN-GOWALLA-PYTORCH-001"
+    ],
+    "status_counts": {
+      "EVIDENCE_SUFFICIENT_FOR_G1_REVIEW": 0,
+      "EVIDENCE_INCOMPLETE": 1,
+      "DISPOSITIVE_REJECT": 0,
+      "HANDOFF_INCOMPLETE": 0
+    }
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "candidate_selected": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}
