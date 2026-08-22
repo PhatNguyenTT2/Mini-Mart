@@ -1,0 +1,592 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r2-er1-a2-processed-split-lineage-map-1.0",
+  "stage_id": "R2-ER1-A2",
+  "created_at": "2026-08-22",
+  "scope": {
+    "row_id": "E3-LIGHTGCN-GOWALLA-PYTORCH-001",
+    "method": "LightGCN",
+    "dataset_scope": "SNAP Gowalla raw family through the repository-bundled NGCF/LightGCN processed split",
+    "lineage_direction": "raw -> filtering -> interaction semantics -> ID mapping -> train/test split -> repository transfer -> LightGCN consumption",
+    "scope_expansion_allowed": false
+  },
+  "candidate_rows": [
+    {
+      "row_id": "E3-LIGHTGCN-GOWALLA-PYTORCH-001",
+      "method": "LightGCN",
+      "dataset_scope": "SNAP Gowalla raw family through the repository-bundled NGCF/LightGCN processed split",
+      "lane_id": "R2-ER1-A2",
+      "evidence_status": "EVIDENCE_INCOMPLETE",
+      "authoritative_sources": [
+        {
+          "url": "https://snap.stanford.edu/data/loc-gowalla.html",
+          "source_type": "canonical_provider_dataset_page",
+          "immutable_identity_or_version": "MUTABLE_PROVIDER_PAGE_NO_RELEASE_VERSION_OR_PAGE_REVISION_EXPOSED",
+          "accessed_at": "2026-08-22",
+          "locator": "Dataset information; Dataset statistics; Files; Example of check-in information",
+          "supports": [
+            "The raw collection family, collection period, 6,442,890 reported check-ins, semantic check-in filename, and five-field check-in schema"
+          ],
+          "does_not_support": [
+            "The exact downloaded archive bytes, release revision, checksum, or downstream preprocessing"
+          ]
+        },
+        {
+          "url": "https://arxiv.org/pdf/1510.07025",
+          "source_type": "original_paper",
+          "immutable_identity_or_version": "arXiv:1510.07025v2",
+          "accessed_at": "2026-08-22",
+          "locator": "PDF page 5, Table 1 and Sections 5.1-5.2; extracted lines 581-642",
+          "supports": [
+            "ExpoMF's Gowalla preprocessing statement requiring retained users and venues to have at least 20 check-ins",
+            "ExpoMF's resulting 57,629 users, 47,198 items, and approximately 2.3 million nonzero interactions",
+            "ExpoMF's separate 70/20/10 random split protocol"
+          ],
+          "does_not_support": [
+            "That NGCF consumed ExpoMF's preprocessed archive or split",
+            "Exact implementation, deduplication, mapping, seed, or file hashes"
+          ]
+        },
+        {
+          "url": "https://github.com/dawenl/expo-mf/blob/0968ad2c477413616067a96d46537c9c54e26e18/README.md#L14-L18",
+          "source_type": "author_maintained_repository_file",
+          "immutable_identity_or_version": "expo-mf commit 0968ad2c477413616067a96d46537c9c54e26e18; README Git blob 7a5950e600e37c26c967a580ad4b6f9b54fb024d",
+          "accessed_at": "2026-08-22",
+          "locator": "README.md lines 14-18, Datasets",
+          "supports": [
+            "Original-author links from Gowalla to SNAP and to an author-hosted gowalla_pro.zip preprocessed artifact"
+          ],
+          "does_not_support": [
+            "Archive identity, contents, checksum, generation recipe, or NGCF use"
+          ]
+        },
+        {
+          "url": "https://arxiv.org/html/1905.08108v2",
+          "source_type": "original_paper",
+          "immutable_identity_or_version": "arXiv:1905.08108v2 (2020-07-03)",
+          "accessed_at": "2026-08-22",
+          "locator": "Table 1 and Section 4.1, HTML lines 224-238",
+          "supports": [
+            "NGCF's post-processing counts of 29,858 users, 40,981 items, and 1,027,370 interactions",
+            "The 10-core policy and per-user random 80/20 train/test policy",
+            "A subsequent random 10 percent validation selection from training"
+          ],
+          "does_not_support": [
+            "The exact parent artifact, raw parsing and deduplication, core algorithm, mapping order, PRNG, seeds, rounding, membership, or hashes"
+          ]
+        },
+        {
+          "url": "https://github.com/xiangwang1223/neural_graph_collaborative_filtering/blob/a718a4f2df7c3942ca0df6759926975762c61eed/Data/gowalla/README.md#L1-L2",
+          "source_type": "author_maintained_repository_file",
+          "immutable_identity_or_version": "NGCF commit a718a4f2df7c3942ca0df6759926975762c61eed; Git blob 52e5254ad5cf21a2af611a41130b4d78f10747df",
+          "accessed_at": "2026-08-22",
+          "locator": "Data/gowalla/README.md lines 1-2",
+          "supports": [
+            "The NGCF processed-data directory points to SNAP as the full Gowalla dataset"
+          ],
+          "does_not_support": [
+            "An exact raw archive or transformation receipt"
+          ]
+        },
+        {
+          "url": "https://github.com/xiangwang1223/neural_graph_collaborative_filtering/blob/a718a4f2df7c3942ca0df6759926975762c61eed/README.md#L68-L86",
+          "source_type": "author_maintained_repository_file",
+          "immutable_identity_or_version": "NGCF commit a718a4f2df7c3942ca0df6759926975762c61eed; README Git blob c321d9a8ddf55294ca856cddaca5e8d9e8b783a3",
+          "accessed_at": "2026-08-22",
+          "locator": "README.md lines 68-86, Dataset",
+          "supports": [
+            "The processed train/test line format",
+            "The presence and original-ID/remapped-ID meaning of user_list.txt and item_list.txt"
+          ],
+          "does_not_support": [
+            "Mapping generation order or split-generation code"
+          ]
+        },
+        {
+          "url": "https://github.com/xiangwang1223/neural_graph_collaborative_filtering/blob/a718a4f2df7c3942ca0df6759926975762c61eed/NGCF/utility/load_data.py#L14-L82",
+          "source_type": "author_maintained_repository_source_file",
+          "immutable_identity_or_version": "NGCF commit a718a4f2df7c3942ca0df6759926975762c61eed; Git blob b10a7379d7ce27e7384c79ecc66f3531b961869a",
+          "accessed_at": "2026-08-22",
+          "locator": "Data.__init__, lines 14-82",
+          "supports": [
+            "NGCF consumes pre-existing train.txt and test.txt files, parses integer user/item IDs, counts interactions, and constructs the interaction matrix"
+          ],
+          "does_not_support": [
+            "Raw parsing, 10-core filtering, ID-map creation, or random split generation"
+          ]
+        },
+        {
+          "url": "https://api.github.com/repos/xiangwang1223/neural_graph_collaborative_filtering/contents/Data/gowalla?ref=a718a4f2df7c3942ca0df6759926975762c61eed",
+          "source_type": "author_repository_immutable_object_metadata",
+          "immutable_identity_or_version": "NGCF commit a718a4f2df7c3942ca0df6759926975762c61eed",
+          "accessed_at": "2026-08-22",
+          "locator": "JSON entries for README.md, user_list.txt, item_list.txt, train.txt, and test.txt",
+          "supports": [
+            "Exact NGCF repository Git blob IDs and byte sizes"
+          ],
+          "does_not_support": [
+            "File semantic contents, SHA-256, or upstream raw lineage"
+          ]
+        },
+        {
+          "url": "https://github.com/xiangwang1223/neural_graph_collaborative_filtering/commit/2767183f24ea26b4a14134cf8c5eb444d69f6163",
+          "source_type": "author_repository_commit_record",
+          "immutable_identity_or_version": "NGCF commit 2767183f24ea26b4a14134cf8c5eb444d69f6163 (2019-05-01)",
+          "accessed_at": "2026-08-22",
+          "locator": "Add files via upload; path-history replay for all four data/map paths",
+          "supports": [
+            "The introduction revision for train.txt, test.txt, user_list.txt, and item_list.txt"
+          ],
+          "does_not_support": [
+            "A generation script, command, configuration, seed, or pre-upload chain of custody"
+          ]
+        },
+        {
+          "url": "https://arxiv.org/html/2002.02126v4",
+          "source_type": "original_paper",
+          "immutable_identity_or_version": "arXiv:2002.02126v4",
+          "accessed_at": "2026-08-22",
+          "locator": "Table 2 and Section 4.1, HTML lines 234-242",
+          "supports": [
+            "The LightGCN authors obtained the datasets including train/test splits from NGCF authors",
+            "The LightGCN Gowalla counts match NGCF and the paper says Gowalla is exactly the same as NGCF's"
+          ],
+          "does_not_support": [
+            "Exact transferred bytes or upstream raw lineage"
+          ]
+        },
+        {
+          "url": "https://api.github.com/repos/gusye1234/LightGCN-PyTorch/contents/data/gowalla?ref=947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+          "source_type": "author_repository_immutable_object_metadata",
+          "immutable_identity_or_version": "LightGCN-PyTorch commit 947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+          "accessed_at": "2026-08-22",
+          "locator": "Pinned Gowalla directory object metadata",
+          "supports": [
+            "Exact Git-object equality and equal byte sizes with NGCF for the provider-link README, two ID maps, train split, and test split",
+            "Two additional repository-bundled adjacency-cache NPZ objects and their Git object metadata"
+          ],
+          "does_not_support": [
+            "Raw lineage or a regeneration receipt for the adjacency caches"
+          ]
+        },
+        {
+          "url": "https://github.com/gusye1234/LightGCN-PyTorch/commit/a75bbdb2a1b63ae40c14e2b3af7b925c4c8621af",
+          "source_type": "author_repository_commit_record",
+          "immutable_identity_or_version": "LightGCN-PyTorch commit a75bbdb2a1b63ae40c14e2b3af7b925c4c8621af (2020-03-05)",
+          "accessed_at": "2026-08-22",
+          "locator": "add gowalla; train.txt path-history replay",
+          "supports": [
+            "The LightGCN introduction revision for the Gowalla train path"
+          ],
+          "does_not_support": [
+            "Transfer method or preprocessing provenance"
+          ]
+        },
+        {
+          "url": "https://github.com/gusye1234/LightGCN-PyTorch/blob/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/code/dataloader.py#L228-L276",
+          "source_type": "author_maintained_repository_source_file",
+          "immutable_identity_or_version": "LightGCN-PyTorch commit 947ca2b3b1d2d3545b114145710cb06c4e57b3d2; Git blob e735db1312de49f16b15db9aa89928f9bda17602",
+          "accessed_at": "2026-08-22",
+          "locator": "Loader.__init__ train.txt/test.txt parsing block, lines 228-276",
+          "supports": [
+            "LightGCN consumes the pre-existing train/test files and derives dimensions and interaction counts while loading"
+          ],
+          "does_not_support": [
+            "Any upstream preprocessing or split generation"
+          ]
+        },
+        {
+          "url": "https://github.com/gusye1234/LightGCN-PyTorch/blob/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/README.md#L32-L44",
+          "source_type": "author_maintained_repository_file",
+          "immutable_identity_or_version": "LightGCN-PyTorch commit 947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+          "accessed_at": "2026-08-22",
+          "locator": "Dataset and Gowalla invocation lines 32-44; seed note line 71",
+          "supports": [
+            "The exact published LightGCN consumer command and runtime seed 2020"
+          ],
+          "does_not_support": [
+            "The preprocessing or split-generation argv/config/seed"
+          ]
+        }
+      ],
+      "confirmed_fields": {
+        "lineage_nodes": [
+          {
+            "node_id": "N0_SNAP_GOWALLA_COLLECTION",
+            "artifact_class": "provider_collection_record",
+            "identity": "Stanford SNAP Gowalla",
+            "counts": {
+              "checkins": 6442890,
+              "collection_window": "2009-02 through 2010-10"
+            },
+            "hashes": "NONE_PUBLISHED_OR_LOCATED",
+            "custody": "NOT_ACQUIRED",
+            "status": "PROVIDER_FAMILY_CONFIRMED_RELEASE_BYTES_UNRESOLVED"
+          },
+          {
+            "node_id": "N1_SNAP_CHECKIN_ARCHIVE",
+            "artifact_class": "canonical_semantic_raw_file",
+            "identity": "loc-gowalla_totalCheckins.txt.gz",
+            "schema": [
+              "user",
+              "check-in time",
+              "latitude",
+              "longitude",
+              "location id"
+            ],
+            "release_version": "NOT_PUBLISHED",
+            "bytes": "NOT_PUBLISHED",
+            "hashes": "NONE_PUBLISHED_OR_LOCATED",
+            "custody": "NOT_ACQUIRED",
+            "status": "SEMANTIC_FILE_CONFIRMED_EXACT_RELEASE_UNRESOLVED"
+          },
+          {
+            "node_id": "N2_EXPOMF_PREPROCESSED_CANDIDATE",
+            "artifact_class": "cited_original-author_intermediate_candidate",
+            "identity": "gowalla_pro.zip link from ExpoMF author repository",
+            "documented_filter": "Retain users and venues having at least 20 check-ins",
+            "documented_counts": {
+              "users": 57629,
+              "items": 47198,
+              "interactions": "approximately 2.3 million nonzero entries"
+            },
+            "archive_bytes": "NOT_ACQUIRED",
+            "hashes": "NONE_PUBLISHED_OR_LOCATED",
+            "status": "AUTHORITATIVE_INTERMEDIATE_EXISTS_RELATIONSHIP_TO_NGCF_UNRESOLVED"
+          },
+          {
+            "node_id": "N3_NGCF_FILTERED_INTERACTION_GRAPH",
+            "artifact_class": "paper_described_processed_interaction_graph",
+            "identity": "NGCF Gowalla 10-core implicit interaction graph",
+            "documented_filter": "Retain users and items with at least ten interactions",
+            "counts": {
+              "users": 29858,
+              "items": 40981,
+              "interactions": 1027370,
+              "density": 0.00084
+            },
+            "hashes": "NO_PRE_SPLIT_GRAPH_HASH_PUBLISHED",
+            "status": "POLICY_AND_AGGREGATE_COUNTS_CONFIRMED_EXACT_ARTIFACT_UNRESOLVED"
+          },
+          {
+            "node_id": "N4_NGCF_ID_MAPS",
+            "artifact_class": "repository_processed_mapping_files",
+            "identity": "user_list.txt and item_list.txt at NGCF commit a718a4f2df7c3942ca0df6759926975762c61eed",
+            "format": "Original ID to remapped ID records documented by the author README",
+            "objects": [
+              {
+                "path": "Data/gowalla/user_list.txt",
+                "git_blob_oid_sha1": "6be41d0eedf17a8d9345ee4f7b70124cd4423bc4",
+                "bytes": 351203
+              },
+              {
+                "path": "Data/gowalla/item_list.txt",
+                "git_blob_oid_sha1": "ced87ec4352ba75a70b4c3afc62361aa655cc293",
+                "bytes": 506926
+              }
+            ],
+            "generation_code": "NOT_PUBLISHED_OR_LOCATED",
+            "status": "EXACT_OUTPUT_OBJECTS_CONFIRMED_GENERATION_UNRESOLVED"
+          },
+          {
+            "node_id": "N5_NGCF_TRAIN_TEST_SPLIT",
+            "artifact_class": "repository_processed_interaction_files",
+            "identity": "train.txt and test.txt at NGCF commit a718a4f2df7c3942ca0df6759926975762c61eed",
+            "documented_policy": "Random per-user 80 percent train and remainder test; random 10 percent validation sampled from training",
+            "objects": [
+              {
+                "path": "Data/gowalla/train.txt",
+                "git_blob_oid_sha1": "a27782bd7a1d4d0744148dc0460ea94da74763f2",
+                "bytes": 4633414,
+                "interaction_count": "NOT_PUBLISHED_IN_INSPECTED_AUTHORITATIVE_SOURCES"
+              },
+              {
+                "path": "Data/gowalla/test.txt",
+                "git_blob_oid_sha1": "9ed5af4b5d21511f33740b4e22e3852f45671800",
+                "bytes": 1372559,
+                "interaction_count": "NOT_PUBLISHED_IN_INSPECTED_AUTHORITATIVE_SOURCES"
+              }
+            ],
+            "separate_validation_object": "NOT_PRESENT_IN_THE_PINNED_DATA_DIRECTORY_METADATA",
+            "generation_code": "NOT_PUBLISHED_OR_LOCATED",
+            "status": "EXACT_OUTPUT_OBJECTS_CONFIRMED_EXACT_SPLIT_RUN_UNRESOLVED"
+          },
+          {
+            "node_id": "N6_LIGHTGCN_REPOSITORY_BUNDLE",
+            "artifact_class": "candidate_repository_processed_bundle",
+            "identity": "data/gowalla at LightGCN-PyTorch commit 947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+            "objects": [
+              {
+                "path": "data/gowalla/README.md",
+                "git_blob_oid_sha1": "52e5254ad5cf21a2af611a41130b4d78f10747df",
+                "bytes": 103,
+                "ngcf_object_match": true
+              },
+              {
+                "path": "data/gowalla/user_list.txt",
+                "git_blob_oid_sha1": "6be41d0eedf17a8d9345ee4f7b70124cd4423bc4",
+                "bytes": 351203,
+                "ngcf_object_match": true
+              },
+              {
+                "path": "data/gowalla/item_list.txt",
+                "git_blob_oid_sha1": "ced87ec4352ba75a70b4c3afc62361aa655cc293",
+                "bytes": 506926,
+                "ngcf_object_match": true
+              },
+              {
+                "path": "data/gowalla/train.txt",
+                "git_blob_oid_sha1": "a27782bd7a1d4d0744148dc0460ea94da74763f2",
+                "bytes": 4633414,
+                "ngcf_object_match": true
+              },
+              {
+                "path": "data/gowalla/test.txt",
+                "git_blob_oid_sha1": "9ed5af4b5d21511f33740b4e22e3852f45671800",
+                "bytes": 1372559,
+                "ngcf_object_match": true
+              }
+            ],
+            "additional_cache_objects": [
+              {
+                "path": "data/gowalla/s_adj_mat.npz",
+                "git_blob_oid_sha1": "cbf3d4e7d3cbcab3791dd94d5a2090b4fe6b082d",
+                "bytes": 3635865,
+                "regeneration_receipt": "NOT_AVAILABLE"
+              },
+              {
+                "path": "data/gowalla/s_pre_adj_mat.npz",
+                "git_blob_oid_sha1": "7ebb09d7fac6b1608b1f2803c08dda24f5ca192f",
+                "bytes": 7226916,
+                "regeneration_receipt": "NOT_AVAILABLE"
+              }
+            ],
+            "status": "EXACT_NGCF_TO_LIGHTGCN_OBJECT_TRANSFER_CONFIRMED"
+          },
+          {
+            "node_id": "N7_LIGHTGCN_LOADER",
+            "artifact_class": "source_consumer",
+            "identity": "code/dataloader.py at LightGCN-PyTorch commit 947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+            "git_blob_oid_sha1": "e735db1312de49f16b15db9aa89928f9bda17602",
+            "inputs": [
+              "data/gowalla/train.txt",
+              "data/gowalla/test.txt"
+            ],
+            "published_argv": "cd code && python main.py --decay=1e-4 --lr=0.001 --layer=3 --seed=2020 --dataset=\"gowalla\" --topks=\"[20]\" --recdim=64",
+            "published_seed_scope": "LightGCN runtime; not the upstream split",
+            "status": "CONSUMER_BINDING_CONFIRMED_NO_GENERATOR_ROLE"
+          }
+        ],
+        "lineage_edges": [
+          {
+            "edge_id": "E0_COLLECTION_TO_RAW_FILE",
+            "from": "N0_SNAP_GOWALLA_COLLECTION",
+            "to": "N1_SNAP_CHECKIN_ARCHIVE",
+            "operation": "Provider packages time-and-location check-ins as loc-gowalla_totalCheckins.txt.gz",
+            "code_revision": "NOT_APPLICABLE_PROVIDER_PUBLICATION",
+            "argv_or_config": "NOT_PUBLISHED",
+            "counts": "Provider reports 6,442,890 collection check-ins",
+            "hashes": "NOT_PUBLISHED_OR_LOCATED",
+            "edge_status": "SEMANTIC_BINDING_CONFIRMED_EXACT_RELEASE_BYTES_UNRESOLVED"
+          },
+          {
+            "edge_id": "E1_RAW_TO_EXPOMF_INTERMEDIATE_CANDIDATE",
+            "from": "N1_SNAP_CHECKIN_ARCHIVE",
+            "to": "N2_EXPOMF_PREPROCESSED_CANDIDATE",
+            "operation": "Original ExpoMF paper describes retaining users and venues with at least 20 check-ins",
+            "code_revision": "NO_PREPROCESSING_CODE_REVISION_PUBLISHED_OR_LOCATED",
+            "argv_or_config": "NOT_PUBLISHED",
+            "counts": "57,629 users; 47,198 venues; approximately 2.3 million nonzero entries",
+            "hashes": "NOT_PUBLISHED_OR_LOCATED",
+            "edge_status": "POLICY_LEVEL_ONLY_EXACT_TRANSFORMATION_NOT_REPRODUCIBLE"
+          },
+          {
+            "edge_id": "E2_PARENT_TO_NGCF_10_CORE",
+            "from": "N1_SNAP_CHECKIN_ARCHIVE_OR_N2_EXPOMF_PREPROCESSED_CANDIDATE",
+            "to": "N3_NGCF_FILTERED_INTERACTION_GRAPH",
+            "operation": "Create implicit user-venue interactions and apply the NGCF 10-core policy",
+            "parent_selection": "UNRESOLVED",
+            "code_revision": "NO_NGCF_PREPROCESSING_CODE_REVISION_PUBLISHED_OR_LOCATED",
+            "argv_or_config": "NOT_PUBLISHED",
+            "missing_semantics": [
+              "Repeated-check-in aggregation or deduplication",
+              "Malformed-row handling",
+              "Whether timestamps or coordinates affect inclusion",
+              "Core fixpoint and user/item pruning order"
+            ],
+            "counts": "29,858 users; 40,981 items; 1,027,370 interactions",
+            "hashes": "NO_PRE_SPLIT_GRAPH_HASH_PUBLISHED",
+            "edge_status": "POLICY_AND_OUTPUT_COUNTS_CONFIRMED_PARENT_AND_EXACT_RUN_UNRESOLVED"
+          },
+          {
+            "edge_id": "E3_FILTERED_GRAPH_TO_ID_MAPS",
+            "from": "N3_NGCF_FILTERED_INTERACTION_GRAPH",
+            "to": "N4_NGCF_ID_MAPS",
+            "operation": "Assign zero-based remapped user/item IDs and emit original-to-remapped map files",
+            "code_revision": "NOT_PUBLISHED_OR_LOCATED",
+            "argv_or_config": "NOT_PUBLISHED",
+            "ordering_rule": "NOT_PUBLISHED_OR_LOCATED",
+            "counts": "Map row counts not opened or executed in this lane",
+            "hashes": "Exact output Git blob OIDs and byte sizes recorded",
+            "edge_status": "OUTPUT_OBJECTS_PRESENT_GENERATION_EDGE_UNRESOLVED"
+          },
+          {
+            "edge_id": "E4_ID_MAPPED_INTERACTIONS_TO_SPLIT",
+            "from": "N4_NGCF_ID_MAPS_AND_N3_NGCF_FILTERED_INTERACTION_GRAPH",
+            "to": "N5_NGCF_TRAIN_TEST_SPLIT",
+            "operation": "Randomly assign 80 percent of each user's interactions to train and the remainder to test; randomly select 10 percent from train for validation",
+            "code_revision": "NOT_PUBLISHED_OR_LOCATED",
+            "argv_or_config": "NOT_PUBLISHED",
+            "prng": "NOT_PUBLISHED",
+            "seed": "NOT_PUBLISHED",
+            "rounding": "NOT_PUBLISHED",
+            "membership_receipt": "NOT_PUBLISHED",
+            "validation_relationship_to_train_txt": "NOT_PUBLISHED",
+            "counts": "Total processed interactions published; per-file counts not published in inspected authoritative sources",
+            "hashes": "Exact train/test Git blob OIDs and byte sizes recorded; no acquired SHA-256",
+            "edge_status": "SPLIT_POLICY_CONFIRMED_EXACT_SPLIT_RUN_UNRESOLVED"
+          },
+          {
+            "edge_id": "E5_NGCF_SPLIT_TO_LIGHTGCN_BUNDLE",
+            "from": "N4_NGCF_ID_MAPS_AND_N5_NGCF_TRAIN_TEST_SPLIT",
+            "to": "N6_LIGHTGCN_REPOSITORY_BUNDLE",
+            "operation": "Transfer or copy repository objects into LightGCN-PyTorch",
+            "code_revision": "NGCF a718a4f2df7c3942ca0df6759926975762c61eed joined to LightGCN 947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+            "argv_or_config": "NOT_APPLICABLE_TO_OBJECT_IDENTITY",
+            "counts": "LightGCN paper aggregate counts equal NGCF",
+            "hashes": "All five shared files have equal Git SHA-1 blob OIDs and equal byte sizes",
+            "edge_status": "CONFIRMED_EXACT_REPOSITORY_OBJECT_IDENTITY"
+          },
+          {
+            "edge_id": "E6_LIGHTGCN_BUNDLE_TO_CONSUMER",
+            "from": "N6_LIGHTGCN_REPOSITORY_BUNDLE",
+            "to": "N7_LIGHTGCN_LOADER",
+            "operation": "Parse pre-existing train.txt and test.txt into integer interaction arrays and a training interaction matrix",
+            "code_revision": "LightGCN 947ca2b3b1d2d3545b114145710cb06c4e57b3d2; dataloader Git blob e735db1312de49f16b15db9aa89928f9bda17602",
+            "argv_or_config": "Published consumer command recorded at N7",
+            "counts": "Loader would count file interactions, but no execution was performed",
+            "hashes": "Input Git blob OIDs recorded",
+            "edge_status": "CONFIRMED_SOURCE_TO_PREEXISTING_OBJECT_BINDING"
+          }
+        ],
+        "code_revision_argv_config_matrix": [
+          {
+            "stage": "SNAP raw publication",
+            "revision": "NO_DATA_RELEASE_REVISION_PUBLISHED",
+            "code": "NOT_PUBLISHED",
+            "argv": "NOT_PUBLISHED",
+            "config": "NOT_PUBLISHED",
+            "status": "UNRESOLVED"
+          },
+          {
+            "stage": "ExpoMF Gowalla preprocessing",
+            "revision": "Paper arXiv:1510.07025v2; repository commit 0968ad2c477413616067a96d46537c9c54e26e18",
+            "code": "NO_DATA_PREPROCESSING_IMPLEMENTATION_LOCATED_IN_THE_INSPECTED_AUTHOR_REPOSITORY_SURFACE",
+            "argv": "NOT_PUBLISHED",
+            "config": "20-check-in threshold described in paper only",
+            "status": "UNRESOLVED_EXACT_RUN"
+          },
+          {
+            "stage": "NGCF interaction/filter/map/split generation",
+            "revision": "Processed files introduced at 2767183f24ea26b4a14134cf8c5eb444d69f6163; inspected repository revision a718a4f2df7c3942ca0df6759926975762c61eed",
+            "code": "NO_GENERATOR_IMPLEMENTATION_PUBLISHED_OR_LOCATED; NGCF/utility/load_data.py blob b10a7379d7ce27e7384c79ecc66f3531b961869a is a consumer",
+            "argv": "NOT_PUBLISHED",
+            "config": "10-core, per-user 80/20 random split, and 10 percent validation described in paper only",
+            "status": "UNRESOLVED_EXACT_RUN"
+          },
+          {
+            "stage": "LightGCN processed split consumption",
+            "revision": "947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+            "code": "code/dataloader.py Git blob e735db1312de49f16b15db9aa89928f9bda17602",
+            "argv": "cd code && python main.py --decay=1e-4 --lr=0.001 --layer=3 --seed=2020 --dataset=\"gowalla\" --topks=\"[20]\" --recdim=64",
+            "config": "Dataset gowalla; runtime seed 2020",
+            "status": "CONSUMER_BINDING_CONFIRMED_SEED_NOT_APPLICABLE_TO_UPSTREAM_SPLIT"
+          }
+        ],
+        "exact_object_join": {
+          "join_key": "Git blob object ID plus byte size at immutable repository commits",
+          "shared_object_count": 5,
+          "shared_objects_matching": 5,
+          "shared_objects_mismatching": 0,
+          "objects": [
+            "README.md: 52e5254ad5cf21a2af611a41130b4d78f10747df / 103 bytes",
+            "user_list.txt: 6be41d0eedf17a8d9345ee4f7b70124cd4423bc4 / 351203 bytes",
+            "item_list.txt: ced87ec4352ba75a70b4c3afc62361aa655cc293 / 506926 bytes",
+            "train.txt: a27782bd7a1d4d0744148dc0460ea94da74763f2 / 4633414 bytes",
+            "test.txt: 9ed5af4b5d21511f33740b4e22e3852f45671800 / 1372559 bytes"
+          ],
+          "conclusion": "NGCF_TO_LIGHTGCN_PROCESSED_ARTIFACT_IDENTITY_CLOSED",
+          "limit": "SNAP_OR_EXPOMF_TO_NGCF_LINEAGE_NOT_CLOSED"
+        },
+        "required_exact_reconstruction_receipt": [
+          "Approved canonical raw URL and immutable release identity",
+          "Raw byte count and provider-published checksum or approved locally computed SHA-256",
+          "Any intermediary archive identity, member manifest, and per-member hashes",
+          "Exact raw parser and malformed-row policy",
+          "Repeated-check-in aggregation or deduplication rule",
+          "Core-filter implementation, thresholds, fixpoint/order semantics, revision, argv, and config",
+          "ID-map ordering algorithm and map hashes",
+          "Split implementation, per-user rounding, PRNG family/version, seed, input order, and membership hashes",
+          "Validation extraction and its exact relationship to repository train.txt",
+          "Train/test/validation counts and SHA-256 hashes",
+          "Environment/dependency lock and complete stdout/stderr run receipt",
+          "Independent equality check against the pinned NGCF and LightGCN Git objects"
+        ],
+        "reconstruction_verdict": "END_TO_END_RAW_TO_SPLIT_REPLAY_IS_NOT_POSSIBLE_FROM_PUBLIC_AUTHORITATIVE_EVIDENCE_REVIEWED"
+      },
+      "unresolved_fields": [
+        "Exact immutable SNAP archive release and bytes",
+        "Actual NGCF parent artifact: direct SNAP raw, ExpoMF preprocessed archive, or another intermediary",
+        "Raw parser, malformed-row behavior, and use of timestamp/coordinates",
+        "Repeated-check-in aggregation/deduplication and implicit-interaction semantics",
+        "Relationship between ExpoMF's 20-check-in preprocessing and NGCF's 10-core graph",
+        "10-core fixpoint/order implementation and code revision",
+        "ID remapping algorithm, sort order, determinism, and generation code",
+        "Split code, argv/config, PRNG, seed, input order, and rounding",
+        "Validation membership and relationship to train.txt",
+        "Exact per-file interaction counts from an authoritative non-executed source",
+        "Provider checksums and acquired SHA-256 hashes",
+        "Adjacency-cache regeneration provenance"
+      ],
+      "dispositive_mismatches": [],
+      "inferences_forbidden": [
+        "Do not cross-join ExpoMF's 70/20/10 split with NGCF's 80/20 plus validation policy",
+        "Do not treat citation to ExpoMF as proof of gowalla_pro.zip consumption",
+        "Do not treat matching aggregate counts as file identity",
+        "Do not treat matching NGCF/LightGCN Git objects as raw lineage",
+        "Do not treat LightGCN runtime seed 2020 as the split seed",
+        "Do not infer mapping order from zero-based loader expectations",
+        "Do not infer validation handling from the absence of a validation file",
+        "Do not infer train/test interaction counts from file byte sizes",
+        "Do not treat repository Git SHA-1 object IDs as provider raw checksums"
+      ],
+      "recommended_g1_disposition": "KEEP_PENDING",
+      "execution_authorized": false,
+      "result_status": "NOT_RUN",
+      "test_set_opened": "NO"
+    }
+  ],
+  "coverage": {
+    "expected_rows": 1,
+    "present_rows": 1,
+    "manifest_row_order": [
+      "E3-LIGHTGCN-GOWALLA-PYTORCH-001"
+    ],
+    "actual_row_order": [
+      "E3-LIGHTGCN-GOWALLA-PYTORCH-001"
+    ],
+    "ordered_exactly_as_manifest": true,
+    "status_counts": {
+      "EVIDENCE_SUFFICIENT_FOR_G1_REVIEW": 0,
+      "EVIDENCE_INCOMPLETE": 1,
+      "DISPOSITIVE_REJECT": 0,
+      "HANDOFF_INCOMPLETE": 0
+    }
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

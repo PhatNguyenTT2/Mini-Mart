@@ -1,0 +1,421 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r2-er1-a2-handoff-1.0",
+  "lane_id": "R2-ER1-A2",
+  "created_at": "2026-08-22T18:45:17+07:00",
+  "workflow": "ars-codex:academic-research-suite/deep-research source verification and fail-closed synthesis applied to a no-execution dataset rights and lineage packet",
+  "material_passport": {
+    "origin_skill": "ars-codex:academic-research-suite/deep-research",
+    "origin_mode": "source-verification/fail-closed-evidence-only",
+    "origin_date": "2026-08-22T18:45:17+07:00",
+    "verification_status": "UNVERIFIED",
+    "version_label": "stage1e_rebaseline_v2_wave_n_E4_R2ER1A2_dataset_lineage_v1",
+    "upstream_dependencies": [
+      "stage1e_rebaseline_v2_E4_R2_ER1_change_control_contract",
+      "stage1e_rebaseline_v2_E4_R2_ER1_frozen_input_manifest",
+      "stage1e_rebaseline_v2_E4_R2_ER1_gate_receipt",
+      "stage1e_rebaseline_v2_wave_g_E4_R2A2_dataset_evidence_v1",
+      "stage1e_rebaseline_v2_wave_h_E4_R2G1_no_selection_v1"
+    ],
+    "repro_lock": {
+      "schema_version": "1.0",
+      "stochasticity_declaration": "LLM evidence synthesis is not byte-reproducible. Frozen local inputs, exact authoritative locators, immutable repository commits and Git object metadata, deterministic gate replay, strict JSON validation, and final artifact hashes are recorded. No dataset bytes were acquired and no experiment, preprocessing, training, evaluation, benchmark, or TEST operation was run.",
+      "ars_version": "3.21.0",
+      "skill_package": {
+        "name": "ars-codex:academic-research-suite",
+        "adapter_version": "0.1.26",
+        "ars_suite_version": "3.21.0"
+      },
+      "model": {
+        "family": "openai",
+        "id": "gpt-5.6-sol",
+        "reasoning": "max",
+        "service_tier": "priority",
+        "display_name": "Sol Max Fast",
+        "speed_label": "Fast",
+        "weight_stable": false
+      },
+      "prompts": {
+        "loaded_instruction_files": [
+          {
+            "path": "SKILL.md",
+            "canonical_lf_bytes": 30499,
+            "canonical_lf_sha256": "9c2cb6e3b5aad7fb747f79163b144cfbddffa85d67e2bdcc5a5fa5470252ad00"
+          },
+          {
+            "path": "ars/deep-research/WORKFLOW.md",
+            "canonical_lf_bytes": 36979,
+            "canonical_lf_sha256": "5bd35498c80ddce2ab624de6d8e538a425a6149c20bb9da8b9d8f4f96f979c31"
+          },
+          {
+            "path": "ars/deep-research/agents/source_verification_agent.md",
+            "canonical_lf_bytes": 10364,
+            "canonical_lf_sha256": "3ffecae526acdde6d28bb8d2a9f5a88f95c00f51338c8f4d4a724ced3f7777bf"
+          },
+          {
+            "path": "ars/deep-research/agents/synthesis_agent.md",
+            "canonical_lf_bytes": 27636,
+            "canonical_lf_sha256": "6aae4702e25ff40d103beb57b76635a550f2c5944b1a8811de797feb82c09403"
+          },
+          {
+            "path": "ars/deep-research/references/source_quality_hierarchy.md",
+            "canonical_lf_bytes": 10351,
+            "canonical_lf_sha256": "16fd63d6a97d8c31b60ee66cb1268c3b078ff7f8eec9487177229be5cb39f92b"
+          },
+          {
+            "path": "ars/shared/handoff_schemas.md",
+            "canonical_lf_bytes": 93000,
+            "canonical_lf_sha256": "c91b127d87d2370aee44f99395c5ae5e538729bead802d67bc6116fef0f841d3"
+          }
+        ]
+      },
+      "materials": {
+        "manifest_input_count": 31,
+        "manifest_canonical_lf_sha256": "12cff269c80e9cef5eb35c4a822a6ab756a480a4769e24c31861cd581748d916",
+        "all_inputs_replayed": true,
+        "replayed_hashes": "31/31",
+        "strict_json_inputs_verified": "24/24"
+      },
+      "external_protocols": {
+        "public_primary_authoritative_web_verification": true,
+        "immutable_public_github_metadata_verification": true,
+        "author_source_files_viewed_in_memory_without_saving": true,
+        "dataset_or_processed_split_download": "NOT_USED",
+        "source_archive_or_checkpoint_download": "NOT_USED",
+        "authenticated_provider_access": "NOT_USED",
+        "active_terms_acceptance": "NOT_USED",
+        "payload_saved": false
+      },
+      "cross_model": {
+        "enabled": false,
+        "secondary_model_id": null,
+        "external_upload": false
+      }
+    },
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-22T18:45:17+07:00",
+      "declared_by": "R2-ER1-A2 evidence lane",
+      "note": "This is a lane-owned no-result declaration. No scholar-owned experiment provenance is asserted or fabricated."
+    }
+  },
+  "actual_model": "gpt-5.6-sol",
+  "actual_reasoning": "max",
+  "actual_service_tier": "priority",
+  "actual_display_name": "Sol Max Fast",
+  "actual_speed_label": "Fast",
+  "frozen_contract": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r2_er1_change_control_contract.md",
+    "canonical_lf_bytes": 8725,
+    "canonical_lf_sha256": "6b9c03359a77c6a66535bb5cb9a26f6562bd0b82cc07b292836aa2497003f8c7"
+  },
+  "frozen_manifest": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r2_er1_frozen_input_manifest.json",
+    "canonical_lf_bytes": 8355,
+    "canonical_lf_sha256": "12cff269c80e9cef5eb35c4a822a6ab756a480a4769e24c31861cd581748d916",
+    "input_count": 31,
+    "json_input_count": 24
+  },
+  "entry_gate_receipt": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r2_er1_gate_receipt.json",
+    "canonical_lf_bytes": 2789,
+    "canonical_lf_sha256": "0de02930581306fd6758ee529d58dcf3c159e55afec15ad24ba91235371c680e",
+    "verdict": "PASS_R2_ER1_GATE_31_OF_31_READY_FOR_PARALLEL_DISPATCH"
+  },
+  "stage_map": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r2_er1_stage_map.json",
+    "canonical_lf_bytes": 5100,
+    "canonical_lf_sha256": "4ebb2e2e4c45e3f7d628ddd445fcffbdf59a87736d6cf8fc3d66e1ffb86d2076"
+  },
+  "input_verification": {
+    "hash_policy": "Strict UTF-8 decode, normalize CRLF and CR to LF, encode UTF-8, then byte count and SHA-256",
+    "official_validator": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r2_er1_gate.py",
+      "canonical_lf_bytes": 9482,
+      "canonical_lf_sha256": "cb30f7733ca6633bf0143d91ea2afa755c21f24bd5181a0e583b69bc0874b6bb",
+      "executions_in_lane": 2,
+      "entry_execution_exit_code": 0,
+      "final_replay_exit_code": 0,
+      "verdict": "PASS_R2_ER1_GATE_31_OF_31_READY_FOR_PARALLEL_DISPATCH",
+      "inputs_expected": 31,
+      "inputs_verified": 31,
+      "json_inputs_strict_parsed": 24,
+      "failure_count": 0,
+      "failures": []
+    },
+    "mandatory_reads": {
+      "all_read_completely": true,
+      "paths": [
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r2_er1_change_control_contract.md",
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r2_er1_frozen_input_manifest.json",
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r2_er1_gate_receipt.json",
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/dataset_evidence_register.json",
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/provider_release_rights_matrix.json",
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/lineage_requirement_map.json",
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A2_dataset_evidence/a2_handoff.json",
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_h/E4_R2G1_candidate_selection/central_evidence_intersection.json",
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_h/E4_R2G1_candidate_selection/candidate_decision_matrix.json",
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_h/E4_R2G1_candidate_selection/primary_locator_replay_log.json",
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_h/E4_R2G1_candidate_selection/r2_g1_no_selection_report.md",
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_h/E4_R2G1_candidate_selection/r2_g1_handoff.json"
+      ]
+    }
+  },
+  "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_n/E4_R2ER1A2_dataset_lineage",
+  "output_hash_policy": "Strict UTF-8 decode, normalize CRLF and CR to LF, encode UTF-8, then byte count and SHA-256",
+  "required_output_set": [
+    "lightgcn_dataset_lineage_evidence.json",
+    "rights_release_matrix.json",
+    "processed_split_lineage_map.json",
+    "er1_a2_handoff.json"
+  ],
+  "outputs": [
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_n/E4_R2ER1A2_dataset_lineage/lightgcn_dataset_lineage_evidence.json",
+      "canonical_lf_bytes": 28553,
+      "canonical_lf_sha256": "0ffa18a8d6e9b3e56117a445ba0ff061136303e3816828cc866642e3d6cc2a0b",
+      "verification_status": "UNVERIFIED"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_n/E4_R2ER1A2_dataset_lineage/rights_release_matrix.json",
+      "canonical_lf_bytes": 21138,
+      "canonical_lf_sha256": "15fba88dcadfed414f2580ebb113e182baadf7b3e0e5f90f7f74c64e2295b7a3",
+      "verification_status": "UNVERIFIED"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_n/E4_R2ER1A2_dataset_lineage/processed_split_lineage_map.json",
+      "canonical_lf_bytes": 30955,
+      "canonical_lf_sha256": "42653e7bdbd1602553a732b425fe663c7baa01d4ed2d63f50523ec254a48334b",
+      "verification_status": "UNVERIFIED"
+    }
+  ],
+  "self_artifact": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_n/E4_R2ER1A2_dataset_lineage/er1_a2_handoff.json",
+    "sha256_policy": "The exact canonical-LF byte count and SHA-256 of this self-referential handoff are reported out-of-band after final validation and commit; embedding them would change the hashed bytes."
+  },
+  "candidate_coverage": {
+    "expected_rows": 1,
+    "present_rows": 1,
+    "ordered_exactly_as_manifest": true,
+    "row_id": "E3-LIGHTGCN-GOWALLA-PYTORCH-001",
+    "priority_is_selection": false,
+    "selection_cardinality": 0,
+    "status_counts": {
+      "EVIDENCE_SUFFICIENT_FOR_G1_REVIEW": 0,
+      "EVIDENCE_INCOMPLETE": 1,
+      "DISPOSITIVE_REJECT": 0,
+      "HANDOFF_INCOMPLETE": 0
+    }
+  },
+  "authoritative_source_search": {
+    "searched_domains": [
+      "snap.stanford.edu",
+      "stanford.edu",
+      "arxiv.org",
+      "github.com",
+      "api.github.com",
+      "raw.githubusercontent.com"
+    ],
+    "source_locators": [
+      {
+        "url": "https://snap.stanford.edu/data/loc-gowalla.html",
+        "purpose": "Canonical provider collection identity, semantic raw filenames, schema, counts, and collection window"
+      },
+      {
+        "url": "https://www.stanford.edu/terms",
+        "purpose": "Current site-wide assent, personal/non-commercial download, and redistribution boundaries"
+      },
+      {
+        "url": "https://snap.stanford.edu/citing.html",
+        "purpose": "Provider citation guidance without treating it as a license"
+      },
+      {
+        "url": "https://snap.stanford.edu/snap-2.2/license.html",
+        "purpose": "Negative scope boundary showing the BSD page is for SNAP software"
+      },
+      {
+        "url": "https://arxiv.org/pdf/1510.07025",
+        "purpose": "Original ExpoMF Gowalla 20-check-in preprocessing, counts, and separate split protocol"
+      },
+      {
+        "url": "https://github.com/dawenl/expo-mf/blob/0968ad2c477413616067a96d46537c9c54e26e18/README.md#L14-L18",
+        "purpose": "Original-author SNAP source link and unversioned gowalla_pro.zip intermediary locator"
+      },
+      {
+        "url": "https://arxiv.org/html/1905.08108v2",
+        "purpose": "Original NGCF counts, 10-core filter, per-user 80/20 split, and validation policy"
+      },
+      {
+        "url": "https://github.com/xiangwang1223/neural_graph_collaborative_filtering/blob/a718a4f2df7c3942ca0df6759926975762c61eed/Data/gowalla/README.md#L1-L2",
+        "purpose": "NGCF-author binding from the processed data directory to canonical SNAP"
+      },
+      {
+        "url": "https://github.com/xiangwang1223/neural_graph_collaborative_filtering/blob/a718a4f2df7c3942ca0df6759926975762c61eed/README.md#L68-L86",
+        "purpose": "NGCF processed split and ID-map format"
+      },
+      {
+        "url": "https://api.github.com/repos/xiangwang1223/neural_graph_collaborative_filtering/contents/Data/gowalla?ref=a718a4f2df7c3942ca0df6759926975762c61eed",
+        "purpose": "Pinned NGCF Git blob IDs and byte sizes"
+      },
+      {
+        "url": "https://github.com/xiangwang1223/neural_graph_collaborative_filtering/commit/2767183f24ea26b4a14134cf8c5eb444d69f6163",
+        "purpose": "NGCF data/map introduction commit"
+      },
+      {
+        "url": "https://github.com/xiangwang1223/neural_graph_collaborative_filtering/blob/a718a4f2df7c3942ca0df6759926975762c61eed/NGCF/utility/load_data.py#L14-L82",
+        "purpose": "Pinned NGCF consumer-only loader behavior"
+      },
+      {
+        "url": "https://github.com/xiangwang1223/neural_graph_collaborative_filtering/blob/a718a4f2df7c3942ca0df6759926975762c61eed/LICENSE#L1-L21",
+        "purpose": "Pinned NGCF software-license scope boundary"
+      },
+      {
+        "url": "https://arxiv.org/html/2002.02126v4",
+        "purpose": "Original LightGCN statement that Gowalla train/test came from NGCF authors and aggregate counts match"
+      },
+      {
+        "url": "https://api.github.com/repos/gusye1234/LightGCN-PyTorch/contents/data/gowalla?ref=947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+        "purpose": "Pinned LightGCN Git blob IDs and byte sizes establishing exact processed-object equality with NGCF"
+      },
+      {
+        "url": "https://github.com/gusye1234/LightGCN-PyTorch/commit/a75bbdb2a1b63ae40c14e2b3af7b925c4c8621af",
+        "purpose": "LightGCN Gowalla train-path introduction commit"
+      },
+      {
+        "url": "https://github.com/gusye1234/LightGCN-PyTorch/blob/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/code/dataloader.py#L228-L276",
+        "purpose": "Pinned LightGCN split consumer binding"
+      },
+      {
+        "url": "https://github.com/gusye1234/LightGCN-PyTorch/blob/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/README.md#L32-L44",
+        "purpose": "Published LightGCN Gowalla consumer argv and runtime seed"
+      }
+    ],
+    "retrieval_failures": [
+      {
+        "url": "https://github.com/gusye1234/LightGCN-PyTorch/blob/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/README.md",
+        "failure": "The public web fetcher returned a cache miss for the exact README page; the exact commit-pinned raw source was subsequently viewed in memory without saving.",
+        "impact": "No dataset payload was opened; the command and dataset statements were recovered from the same immutable author file."
+      },
+      {
+        "url": "https://api.github.com/repos/xiangwang1223/neural_graph_collaborative_filtering/... and https://api.github.com/repos/gusye1234/LightGCN-PyTorch/...",
+        "failure": "Initial sandboxed curl and PowerShell REST attempts failed with Windows TLS credential errors (SEC_E_NO_CREDENTIALS). Approved read-only curl requests outside the sandbox then succeeded and wrote no files.",
+        "impact": "Exact commit and object metadata were used only after successful authoritative replay; failed attempts did not close fields."
+      },
+      {
+        "url": "https://api.github.com/repos/gusye1234/LightGCN-PyTorch/contents/LICENSE?ref=947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+        "failure": "The exact pinned LICENSE endpoint returned HTTP 404.",
+        "impact": "No LightGCN data-specific license was inferred from absence; the rights field remains unresolved."
+      },
+      {
+        "url": "https://arxiv.org/html/1510.07025v4",
+        "failure": "The HTML endpoint could not be fetched.",
+        "impact": "The original official arXiv PDF was retrieved successfully and used instead; no third-party rendering closed any field."
+      },
+      {
+        "url": "http://dawenl.github.io/data/gowalla_pro.zip",
+        "failure": "Not requested because dataset/intermediate archive acquisition was forbidden.",
+        "impact": "Archive version, bytes, members, checksums, rights, and relationship to NGCF remain unresolved."
+      },
+      {
+        "url": "https://snap.stanford.edu/data/loc-gowalla_totalCheckins.txt.gz",
+        "failure": "Not requested because canonical dataset acquisition was forbidden.",
+        "impact": "Raw bytes, response metadata, content length, local hash, and custody are NOT_ACQUIRED."
+      }
+    ]
+  },
+  "lane_scoped_claims": [
+    "The NGCF authors' own Gowalla data README closes the provider-family locator to the canonical Stanford SNAP Gowalla record; this is stronger than a same-name association.",
+    "The semantic raw check-in file is identifiable as loc-gowalla_totalCheckins.txt.gz, but no immutable provider release, checksum, exact consumed bytes, or custody receipt is public in the inspected sources.",
+    "The NGCF and pinned LightGCN repositories carry byte-identical Git objects for README.md, user_list.txt, item_list.txt, train.txt, and test.txt; this closes only the processed NGCF-to-LightGCN transfer edge.",
+    "The original papers publish aggregate counts and high-level filter/split rules, but not the raw parser, intermediary selection, deduplication, core algorithm, ID-map order, preprocessing code/argv/config, split PRNG/seed/rounding, validation membership, or end-to-end hashes.",
+    "Current Stanford site-wide terms do not provide an affirmative project-specific institutional research and redistribution basis for the exact raw or processed bytes.",
+    "No dispositive factual mismatch is proved; unresolved rights-chain tensions and missing exact lineage are independently sufficient to keep the row EVIDENCE_INCOMPLETE."
+  ],
+  "limitations_and_unresolved_evidence": [
+    "Current mutable site terms cannot establish historical terms applicable to upstream authors' acquisition events.",
+    "The ExpoMF paper and repository expose a plausible upstream processing surface but do not prove that NGCF used the author-hosted preprocessed archive.",
+    "Repository metadata can prove Git-object identity but cannot prove provider provenance, lawful rights inheritance, or unobserved transformation steps.",
+    "No data payload was opened, so per-file interaction counts and SHA-256 hashes were not locally computed.",
+    "No preprocessing generator or exact split receipt was available in the inspected author-maintained source surfaces.",
+    "Rights conclusions are evidence classifications, not legal advice or approval."
+  ],
+  "truth_state_guards": [
+    "EVIDENCE_INCOMPLETE cannot be promoted because the downstream processed blobs match.",
+    "Public accessibility cannot be substituted for affirmative lawful-use and redistribution evidence.",
+    "The ExpoMF 70/20/10 protocol cannot be cross-joined into the NGCF 80/20 plus validation lineage.",
+    "LightGCN runtime seed 2020 cannot be represented as the missing upstream split seed.",
+    "Git SHA-1 blob object IDs cannot be represented as provider-published raw-data checksums.",
+    "UNVERIFIED is mandatory because no lawful acquisition or exact lineage reproduction occurred.",
+    "No project benchmark number is valid for paper use and no result row is accepted."
+  ],
+  "r2_m0_summary": {
+    "current_gate": "BLOCKED_EVIDENCE_INCOMPLETE_NO_POSITIVE_G1",
+    "required_before_any_operation": [
+      "Fresh central G1 must join A1/A2/A3 and provisionally select the exact row",
+      "User/data-steward/counsel approval of exact release-specific rights, assent, storage, and transfer boundaries",
+      "Closure of the actual raw/intermediate parent and exact preprocessing/split recipe"
+    ],
+    "exact_operations_that_require_future_r2_m0_approval": [
+      "Canonical SNAP raw archive acquisition with terms and HTTP custody receipt",
+      "ExpoMF intermediate acquisition only if authoritatively bound as the NGCF parent",
+      "Pinned NGCF and LightGCN processed-object acquisition and Git-object/SHA-256 verification",
+      "Creation of an immutable access-controlled custody package with TEST remaining sealed"
+    ],
+    "downstream_execution_not_authorized": [
+      "Preprocessing",
+      "Split generation",
+      "Training",
+      "Evaluation",
+      "Benchmark execution",
+      "TEST opening"
+    ]
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "forbidden_operation_flags": {
+    "git_clone": false,
+    "git_fetch": false,
+    "git_checkout": false,
+    "source_archive_download": false,
+    "source_file_payload_saved": false,
+    "dataset_download": false,
+    "raw_dataset_download": false,
+    "processed_split_download": false,
+    "intermediate_archive_download": false,
+    "checkpoint_download": false,
+    "dataset_payload_opened": false,
+    "processed_split_payload_opened": false,
+    "checkpoint_payload_opened": false,
+    "authentication": false,
+    "credentials_used": false,
+    "terms_accepted": false,
+    "active_clickthrough_performed": false,
+    "payload_saved": false,
+    "dependency_install": false,
+    "environment_created": false,
+    "container_created_or_run": false,
+    "repository_experiment_code_run": false,
+    "preprocessing": false,
+    "split_generation": false,
+    "training": false,
+    "evaluation": false,
+    "benchmark": false,
+    "test_set_opened": false,
+    "maintainer_contact": false,
+    "scope_expansion": false,
+    "candidate_selected": false,
+    "materialization": false,
+    "pipeline_state_mutated": false,
+    "other_lane_output_mutated": false
+  },
+  "control_validator_executed": true,
+  "fail_closed": true,
+  "evidence_status": "EVIDENCE_INCOMPLETE",
+  "recommended_g1_disposition": "KEEP_PENDING",
+  "lane_verdict": "COMPLETE_FAIL_CLOSED_READY_FOR_CENTRAL_G1",
+  "verdict_semantics": "The exact four-file R2-ER1-A2 evidence packet is complete and may be validated and intersected by central G1. The candidate evidence remains incomplete and this packet authorizes no acquisition, materialization, execution, or TEST access."
+}

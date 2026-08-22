@@ -1,0 +1,362 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r2-er1-a2-rights-release-matrix-1.0",
+  "stage_id": "R2-ER1-A2",
+  "created_at": "2026-08-22",
+  "scope": {
+    "row_id": "E3-LIGHTGCN-GOWALLA-PYTORCH-001",
+    "method": "LightGCN",
+    "dataset_scope": "Gowalla raw provider surface and the exact NGCF/LightGCN repository-bundled processed objects",
+    "legal_advice_provided": false,
+    "scope_expansion_allowed": false
+  },
+  "candidate_rows": [
+    {
+      "row_id": "E3-LIGHTGCN-GOWALLA-PYTORCH-001",
+      "method": "LightGCN",
+      "dataset_scope": "Gowalla raw provider surface and the exact NGCF/LightGCN repository-bundled processed objects",
+      "lane_id": "R2-ER1-A2",
+      "evidence_status": "EVIDENCE_INCOMPLETE",
+      "authoritative_sources": [
+        {
+          "url": "https://snap.stanford.edu/data/loc-gowalla.html",
+          "source_type": "canonical_provider_dataset_page",
+          "immutable_identity_or_version": "MUTABLE_PROVIDER_PAGE_NO_RELEASE_VERSION_OR_PAGE_REVISION_EXPOSED",
+          "accessed_at": "2026-08-22",
+          "locator": "Dataset information; Files; Source (citation)",
+          "supports": [
+            "Canonical SNAP Gowalla provider-family identity",
+            "A public metadata page and direct links for loc-gowalla_totalCheckins.txt.gz and loc-gowalla_edges.txt.gz",
+            "The check-in collection window, reported count, file purpose, and check-in schema"
+          ],
+          "does_not_support": [
+            "Release version, publication date, provider checksum, dataset-specific license, acceptance workflow, or redistribution permission",
+            "Exact bytes consumed by the author repositories"
+          ]
+        },
+        {
+          "url": "https://www.stanford.edu/terms",
+          "source_type": "canonical_provider_site_terms",
+          "immutable_identity_or_version": "MUTABLE_SITE_WIDE_TERMS_NO_REVISION_DATE_EXPOSED",
+          "accessed_at": "2026-08-22",
+          "locator": "Opening assent paragraph; Permission to Use Materials",
+          "supports": [
+            "Current site-wide access is conditioned on assent by use",
+            "Current permission is personal, non-exclusive, and non-transferable",
+            "Current download permission is limited to personal, non-commercial use",
+            "Current terms otherwise restrict copying, reproduction, retransmission, distribution, publication, commercial exploitation, and transfer"
+          ],
+          "does_not_support": [
+            "A Gowalla-specific license",
+            "Affirmative institutional research use, derivative-dataset redistribution, or archival sharing",
+            "The historical terms applicable to 2016, 2019, or 2020 acquisition events"
+          ]
+        },
+        {
+          "url": "https://snap.stanford.edu/citing.html",
+          "source_type": "canonical_provider_citation_guidance",
+          "immutable_identity_or_version": "MUTABLE_PROVIDER_CITATION_PAGE",
+          "accessed_at": "2026-08-22",
+          "locator": "Citing SNAP; SNAP network datasets citation",
+          "supports": [
+            "Provider citation expectations for users of SNAP datasets"
+          ],
+          "does_not_support": [
+            "A license or transfer grant"
+          ]
+        },
+        {
+          "url": "https://snap.stanford.edu/snap-2.2/license.html",
+          "source_type": "canonical_provider_software_license_boundary",
+          "immutable_identity_or_version": "SNAP_2.2_SOFTWARE_LICENSE_PAGE",
+          "accessed_at": "2026-08-22",
+          "locator": "License",
+          "supports": [
+            "The displayed BSD grant concerns SNAP software"
+          ],
+          "does_not_support": [
+            "A BSD grant over Gowalla dataset bytes or derivatives"
+          ]
+        },
+        {
+          "url": "https://github.com/dawenl/expo-mf/blob/0968ad2c477413616067a96d46537c9c54e26e18/README.md#L14-L18",
+          "source_type": "author_maintained_repository_file",
+          "immutable_identity_or_version": "expo-mf commit 0968ad2c477413616067a96d46537c9c54e26e18; README Git blob 7a5950e600e37c26c967a580ad4b6f9b54fb024d",
+          "accessed_at": "2026-08-22",
+          "locator": "README.md lines 14-18, Datasets",
+          "supports": [
+            "An original-author link to SNAP for Gowalla and a separate public link to the preprocessed gowalla_pro.zip used by ExpoMF"
+          ],
+          "does_not_support": [
+            "A license for the raw or processed data, checksum, archive contents, or NGCF use of that archive"
+          ]
+        },
+        {
+          "url": "https://github.com/xiangwang1223/neural_graph_collaborative_filtering/blob/a718a4f2df7c3942ca0df6759926975762c61eed/Data/gowalla/README.md#L1-L2",
+          "source_type": "author_maintained_repository_file",
+          "immutable_identity_or_version": "NGCF commit a718a4f2df7c3942ca0df6759926975762c61eed; Git blob 52e5254ad5cf21a2af611a41130b4d78f10747df",
+          "accessed_at": "2026-08-22",
+          "locator": "Data/gowalla/README.md lines 1-2",
+          "supports": [
+            "The NGCF data directory identifies the canonical SNAP page as the full-dataset destination"
+          ],
+          "does_not_support": [
+            "A data license, permission receipt, or exact raw release"
+          ]
+        },
+        {
+          "url": "https://github.com/xiangwang1223/neural_graph_collaborative_filtering/blob/a718a4f2df7c3942ca0df6759926975762c61eed/LICENSE#L1-L21",
+          "source_type": "author_repository_software_license",
+          "immutable_identity_or_version": "NGCF commit a718a4f2df7c3942ca0df6759926975762c61eed; LICENSE Git blob 61d293ea3fd15982c90c5389d57cd71dc336e22a",
+          "accessed_at": "2026-08-22",
+          "locator": "MIT License text, lines 1-21",
+          "supports": [
+            "The repository carries an MIT grant over the Software and associated documentation files"
+          ],
+          "does_not_support": [
+            "An explicit data-specific grant over Gowalla raw or processed bytes",
+            "Authority to override upstream provider terms"
+          ]
+        },
+        {
+          "url": "https://api.github.com/repos/xiangwang1223/neural_graph_collaborative_filtering/contents/Data/gowalla?ref=a718a4f2df7c3942ca0df6759926975762c61eed",
+          "source_type": "author_repository_immutable_object_metadata",
+          "immutable_identity_or_version": "NGCF commit a718a4f2df7c3942ca0df6759926975762c61eed",
+          "accessed_at": "2026-08-22",
+          "locator": "Five Gowalla directory entries with Git blob IDs and byte sizes",
+          "supports": [
+            "Public availability and exact repository object identity of the NGCF processed split and maps"
+          ],
+          "does_not_support": [
+            "Lawful upstream redistribution, raw custody, or provider checksums"
+          ]
+        },
+        {
+          "url": "https://api.github.com/repos/gusye1234/LightGCN-PyTorch/contents/data/gowalla?ref=947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+          "source_type": "author_repository_immutable_object_metadata",
+          "immutable_identity_or_version": "LightGCN-PyTorch commit 947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+          "accessed_at": "2026-08-22",
+          "locator": "Pinned Gowalla directory entries with Git blob IDs and byte sizes",
+          "supports": [
+            "Public availability and exact Git-object identity of the LightGCN processed split and maps with NGCF"
+          ],
+          "does_not_support": [
+            "A LightGCN data license, upstream redistribution authorization, or provider checksum"
+          ]
+        }
+      ],
+      "confirmed_fields": {
+        "release_and_rights_surfaces": [
+          {
+            "surface_id": "SNAP-GOWALLA-RAW",
+            "artifact_role": "Canonical provider raw collection family",
+            "provider": "Stanford Network Analysis Project (SNAP)",
+            "provider_record": "Gowalla",
+            "semantic_raw_file": "loc-gowalla_totalCheckins.txt.gz",
+            "exact_release": "UNRESOLVED_NO_VERSION_DATE_OR_CHECKSUM_ON_CANONICAL_PAGE",
+            "metadata_access": "PUBLIC_WEB_PAGE_OBSERVED",
+            "asset_access": "DIRECT_FILE_LINK_VISIBLE_NOT_FOLLOWED",
+            "authentication": "NO_AUTHENTICATION_PROMPT_OBSERVED_ON_METADATA_PAGE_ASSET_ACCESS_NOT_ATTEMPTED",
+            "acceptance": "CURRENT_SITE_WIDE_TERMS_DECLARE_ASSENT_BY_USE_NO_ACTIVE_CLICKTHROUGH_OR_ACCEPTANCE_PERFORMED",
+            "research_use": "PERSONAL_NONCOMMERCIAL_DOWNLOAD_LANGUAGE_OBSERVED_IN_CURRENT_SITE_TERMS_INSTITUTIONAL_RESEARCH_BASIS_NOT_CLOSED",
+            "redistribution": "CURRENT_SITE_TERMS_RESTRICT_RETRANSMISSION_DISTRIBUTION_PUBLICATION_AND_TRANSFER_ABSENT_OTHER_PERMISSION",
+            "dataset_specific_license": "NOT_PUBLISHED_OR_LOCATED_ON_CANONICAL_DATASET_PAGE",
+            "checksum": "NOT_PUBLISHED_OR_LOCATED",
+            "custody": "NOT_ACQUIRED",
+            "rights_status": "EVIDENCE_INCOMPLETE"
+          },
+          {
+            "surface_id": "EXPOMF-GOWALLA-PRO",
+            "artifact_role": "Original-paper author-hosted preprocessed intermediary candidate",
+            "provider": "ExpoMF authors via dawenl.github.io link from the author-maintained repository",
+            "artifact": "gowalla_pro.zip",
+            "exact_release": "UNVERSIONED_PUBLIC_LINK",
+            "metadata_access": "LINK_TEXT_ONLY_OBSERVED_IN_PINNED_AUTHOR_README",
+            "asset_access": "NOT_ATTEMPTED",
+            "authentication": "NOT_EVALUATED_BECAUSE_ASSET_ACCESS_WAS_FORBIDDEN",
+            "acceptance": "NO_ACTIVE_ACCEPTANCE_PERFORMED",
+            "research_use": "NO_ARCHIVE_SPECIFIC_GRANT_LOCATED",
+            "redistribution": "UNRESOLVED_AND_DEPENDENT_ON_UPSTREAM_RIGHTS",
+            "dataset_specific_license": "NOT_LOCATED",
+            "checksum": "NOT_PUBLISHED_OR_LOCATED",
+            "custody": "NOT_ACQUIRED",
+            "relationship_to_ngcf": "UNPROVEN",
+            "rights_status": "EVIDENCE_INCOMPLETE"
+          },
+          {
+            "surface_id": "NGCF-GOWALLA-PROCESSED",
+            "artifact_role": "Author-repository processed split and ID maps",
+            "provider": "NGCF author-maintained GitHub repository",
+            "artifact": "Data/gowalla/{README.md,user_list.txt,item_list.txt,train.txt,test.txt}",
+            "exact_release": "Commit a718a4f2df7c3942ca0df6759926975762c61eed with data paths introduced at commit 2767183f24ea26b4a14134cf8c5eb444d69f6163",
+            "metadata_access": "PUBLIC_IMMUTABLE_GITHUB_OBJECT_METADATA_OBSERVED",
+            "asset_access": "DATA_FILE_PAYLOADS_NOT_OPENED_OR_SAVED",
+            "authentication": "NONE_USED",
+            "acceptance": "NO_ACTIVE_ACCEPTANCE_PERFORMED",
+            "research_use": "REPOSITORY MIT LICENSE IS SOFTWARE-SCOPED_AND_NOT_AN_EXPLICIT_DATA_RIGHTS_CLOSURE",
+            "redistribution": "PUBLIC_REPOSITORY_PRESENCE_CONFIRMED_UPSTREAM_AUTHORIZATION_NOT_ESTABLISHED",
+            "dataset_specific_license": "NOT_LOCATED_IN_THE_PINNED_DATA_DIRECTORY_OR_AUTHOR_README",
+            "checksum": "GIT_BLOB_OIDS_AND_SIZES_PUBLISHED_SHA256_NOT_ACQUIRED_OR_COMPUTED",
+            "custody": "NOT_ACQUIRED_METADATA_ONLY",
+            "rights_status": "EVIDENCE_INCOMPLETE"
+          },
+          {
+            "surface_id": "LIGHTGCN-GOWALLA-PROCESSED",
+            "artifact_role": "Candidate repository-bundled processed split and ID maps",
+            "provider": "LightGCN-PyTorch author-maintained GitHub repository",
+            "artifact": "data/gowalla/{README.md,user_list.txt,item_list.txt,train.txt,test.txt}",
+            "exact_release": "Commit 947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+            "metadata_access": "PUBLIC_IMMUTABLE_GITHUB_OBJECT_METADATA_OBSERVED",
+            "asset_access": "DATA_FILE_PAYLOADS_NOT_OPENED_OR_SAVED",
+            "authentication": "NONE_USED",
+            "acceptance": "NO_ACTIVE_ACCEPTANCE_PERFORMED",
+            "research_use": "NO_DATA_SPECIFIC_GRANT_LOCATED_AT_THE_PINNED_SURFACE",
+            "redistribution": "PUBLIC_REPOSITORY_PRESENCE_CONFIRMED_UPSTREAM_AUTHORIZATION_NOT_ESTABLISHED",
+            "dataset_specific_license": "NOT_LOCATED; PINNED LICENSE ENDPOINT RETURNED HTTP 404",
+            "checksum": "GIT_BLOB_OIDS_AND_SIZES_PUBLISHED_SHA256_NOT_ACQUIRED_OR_COMPUTED",
+            "custody": "NOT_ACQUIRED_METADATA_ONLY",
+            "rights_status": "EVIDENCE_INCOMPLETE"
+          }
+        ],
+        "raw_vs_processed_boundary": {
+          "canonical_raw": "SNAP loc-gowalla_totalCheckins.txt.gz collection surface",
+          "possible_intermediate": "ExpoMF author-hosted gowalla_pro.zip",
+          "repository_processed": "NGCF and LightGCN user/item maps plus train/test interaction files",
+          "byte_identity_closed_only_for": "NGCF processed Git objects to LightGCN processed Git objects",
+          "rights_inheritance_closed": false,
+          "raw_lineage_closed": false
+        },
+        "rights_chain_tensions": [
+          {
+            "finding": "The current Stanford terms describe site permission as personal and non-transferable and restrict redistribution, while processed derivatives are publicly present in the two author repositories",
+            "decision": "UNRESOLVED_RIGHTS_CHAIN_GAP",
+            "why_not_dispositive": "The provider page and terms are mutable; historical terms and any separate permissions are unknown; this evidence lane does not adjudicate ownership or legal defenses"
+          },
+          {
+            "finding": "The NGCF MIT license grants rights in Software and associated documentation but does not explicitly identify the Gowalla data as licensed data",
+            "decision": "SOFTWARE_LICENSE_NOT_USED_AS_DATA_LICENSE"
+          },
+          {
+            "finding": "Public file links and repository availability are access facts, not affirmative evidence of a complete institutional research-use and redistribution grant",
+            "decision": "PUBLIC_ACCESS_NOT_TREATED_AS_RIGHTS_CLOSURE"
+          }
+        ],
+        "lawful_use_decision": {
+          "exact_raw_research_use": "NOT_ESTABLISHED_FOR_THIS_PROJECT",
+          "exact_processed_research_use": "NOT_ESTABLISHED_FOR_THIS_PROJECT",
+          "redistribution": "NOT_AUTHORIZED_BY_THE_EVIDENCE_REVIEWED",
+          "authentication_required": "NOT_OBSERVED_FOR_METADATA; ASSET ACCESS NOT EXERCISED",
+          "active_terms_acceptance_required": "NO_DATASET_CLICKTHROUGH_OBSERVED; SITE_WIDE_ASSENT_BY_USE_LANGUAGE EXISTS",
+          "decision_authority": "USER_DATA_STEWARD_OR_COUNSEL",
+          "lane_conclusion": "FAIL_CLOSED_NO_ACQUISITION"
+        },
+        "provider_checksum_decision": {
+          "loc_gowalla_totalCheckins_txt_gz": "NOT_PUBLISHED_OR_LOCATED_ON_CANONICAL_PROVIDER_PAGE",
+          "loc_gowalla_edges_txt_gz": "NOT_PUBLISHED_OR_LOCATED_ON_CANONICAL_PROVIDER_PAGE",
+          "gowalla_pro_zip": "NOT_PUBLISHED_OR_LOCATED_ON_AUTHOR_REPOSITORY_PAGE",
+          "raw_bytes": "NOT_ACQUIRED",
+          "processed_bytes": "NOT_ACQUIRED",
+          "locally_computed_hashes": "NOT_COMPUTED",
+          "repository_metadata_hashes": "GIT_SHA1_BLOB_OIDS_RECORDED_SEPARATELY_FROM_PROVIDER_CHECKSUMS"
+        },
+        "r2_m0_boundary": {
+          "current_state": "R2_M0_BLOCKED_BECAUSE_A2_IS_NOT_EVIDENCE_SUFFICIENT_AND_NO_POSITIVE_G1_EXISTS",
+          "preconditions": [
+            "A fresh central G1 must first join A1, A2, and A3 and issue a provisional single-candidate decision",
+            "A user, data steward, or counsel must affirm the exact lawful basis and approve any site assent, authentication, storage, and redistribution constraints",
+            "The exact raw or intermediate parent of the NGCF bundle and the missing preprocessing/split recipe must be closed before claiming an end-to-end reproducible lineage"
+          ],
+          "operations_requiring_explicit_r2_m0_approval_if_preconditions_are_later_met": [
+            {
+              "operation_id": "R2-M0-A2-01",
+              "operation": "Acquire loc-gowalla_totalCheckins.txt.gz only from the approved canonical SNAP URL",
+              "required_receipt": "Approved terms snapshot/version, approver, URL, UTC retrieval time, HTTP response metadata, filename, byte count, and SHA-256 or stronger digest",
+              "current_action": "NOT_PERFORMED"
+            },
+            {
+              "operation_id": "R2-M0-A2-02",
+              "operation": "If authoritative evidence establishes it as the NGCF parent, acquire the ExpoMF gowalla_pro.zip intermediary from the original-author link",
+              "required_receipt": "Rights approval, final resolved URL, UTC retrieval time, archive byte count/digest, safe member manifest, and per-member digests",
+              "current_action": "NOT_PERFORMED"
+            },
+            {
+              "operation_id": "R2-M0-A2-03",
+              "operation": "Acquire the NGCF processed README, user map, item map, train split, and test split from commit a718a4f2df7c3942ca0df6759926975762c61eed or their introduction commit as approved",
+              "required_receipt": "Exact commit and path, Git blob OID verification, byte count, SHA-256, custody location, and rights basis for each object",
+              "current_action": "NOT_PERFORMED"
+            },
+            {
+              "operation_id": "R2-M0-A2-04",
+              "operation": "Acquire the matching LightGCN processed objects from commit 947ca2b3b1d2d3545b114145710cb06c4e57b3d2 only if a separate local candidate copy is required",
+              "required_receipt": "Exact commit/path, Git blob OID verification, byte count, SHA-256, and proof of equality with approved NGCF objects",
+              "current_action": "NOT_PERFORMED"
+            },
+            {
+              "operation_id": "R2-M0-A2-05",
+              "operation": "Materialize an immutable, access-controlled custody package without semantic inspection of the TEST payload",
+              "required_receipt": "Manifest covering raw, intermediary, mappings, train/test files, terms, provenance, hashes, access controls, and TEST-seal state",
+              "current_action": "NOT_PERFORMED"
+            }
+          ],
+          "not_authorized_by_this_packet": [
+            "Terms acceptance",
+            "Authentication",
+            "Any dataset or processed-file download",
+            "Preprocessing or split generation",
+            "Training, evaluation, benchmark execution, or TEST opening"
+          ]
+        }
+      },
+      "unresolved_fields": [
+        "Immutable SNAP Gowalla release identity and historical release terms",
+        "Dataset-specific license or other affirmative grant covering institutional research",
+        "Provider permission for derived-data storage, internal sharing, publication, and redistribution",
+        "Whether any separate Gowalla/SNAP permission was supplied to the ExpoMF, NGCF, or LightGCN authors",
+        "Rights and exact contents of the author-hosted ExpoMF gowalla_pro.zip",
+        "Whether the NGCF MIT license was intended and legally able to cover the Gowalla data files",
+        "A data-specific license or notice in the pinned LightGCN repository",
+        "Authentication, geo-restriction, or other conditions at the asset endpoints because asset access was not attempted",
+        "Provider-published checksums for the raw archives",
+        "Approved project-specific custody and retention controls for timestamped precise-geolocation records"
+      ],
+      "dispositive_mismatches": [],
+      "inferences_forbidden": [
+        "Do not infer a data license from the SNAP software BSD license",
+        "Do not infer a data license from the NGCF repository MIT software license",
+        "Do not infer institutional research permission from personal non-commercial download language",
+        "Do not infer redistribution permission from public repository availability",
+        "Do not infer historical terms from the current mutable Stanford terms page",
+        "Do not infer that author redistribution proves an upstream permission",
+        "Do not infer checksum equality or custody from GitHub metadata alone",
+        "Do not treat this evidence matrix as legal advice or as the approval required at R2-M0"
+      ],
+      "recommended_g1_disposition": "KEEP_PENDING",
+      "execution_authorized": false,
+      "result_status": "NOT_RUN",
+      "test_set_opened": "NO"
+    }
+  ],
+  "coverage": {
+    "expected_rows": 1,
+    "present_rows": 1,
+    "manifest_row_order": [
+      "E3-LIGHTGCN-GOWALLA-PYTORCH-001"
+    ],
+    "actual_row_order": [
+      "E3-LIGHTGCN-GOWALLA-PYTORCH-001"
+    ],
+    "ordered_exactly_as_manifest": true,
+    "status_counts": {
+      "EVIDENCE_SUFFICIENT_FOR_G1_REVIEW": 0,
+      "EVIDENCE_INCOMPLETE": 1,
+      "DISPOSITIVE_REJECT": 0,
+      "HANDOFF_INCOMPLETE": 0
+    }
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

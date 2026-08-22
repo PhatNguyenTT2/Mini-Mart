@@ -1,0 +1,474 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r2-er1-a2-dataset-lineage-evidence-1.0",
+  "stage_id": "R2-ER1-A2",
+  "created_at": "2026-08-22",
+  "scope": {
+    "row_id": "E3-LIGHTGCN-GOWALLA-PYTORCH-001",
+    "method": "LightGCN",
+    "dataset_scope": "Gowalla repository-bundled processed split in the author-maintained LightGCN-PyTorch repository",
+    "candidate_row_count": 1,
+    "scope_expansion_allowed": false
+  },
+  "evidence_policy": {
+    "decision_sources": "Direct canonical provider/release/terms pages, official dataset or project records, author-maintained repository files, and original papers only",
+    "locator_only_sources": "Third-party mirrors, forks, reproductions, search snippets, and same-name datasets cannot close rights or lineage",
+    "raw_lineage_guard": "Repository-bundled processed data and matching repository object IDs do not prove the canonical raw release or its transformation history",
+    "missing_evidence_rule": "Missing release, rights, code, argv, seed, count, checksum, or custody evidence remains unresolved and is not inferred"
+  },
+  "candidate_rows": [
+    {
+      "row_id": "E3-LIGHTGCN-GOWALLA-PYTORCH-001",
+      "method": "LightGCN",
+      "dataset_scope": "Gowalla repository-bundled processed split in LightGCN-PyTorch",
+      "lane_id": "R2-ER1-A2",
+      "evidence_status": "EVIDENCE_INCOMPLETE",
+      "authoritative_sources": [
+        {
+          "url": "https://snap.stanford.edu/data/loc-gowalla.html",
+          "source_type": "canonical_provider_dataset_page",
+          "immutable_identity_or_version": "MUTABLE_PROVIDER_PAGE_NO_RELEASE_VERSION_OR_PAGE_REVISION_EXPOSED",
+          "accessed_at": "2026-08-22",
+          "locator": "Dataset information; Dataset statistics; Source (citation); Files; Example of check-in information",
+          "supports": [
+            "Stanford SNAP identifies the Gowalla location-based social-network collection and says the friendship network was collected through the public API",
+            "The page reports 6,442,890 check-ins collected from February 2009 through October 2010",
+            "The provider names loc-gowalla_totalCheckins.txt.gz as the time-and-location check-in file and shows the user, timestamp, latitude, longitude, and location-ID schema",
+            "The provider separates the check-in file from loc-gowalla_edges.txt.gz"
+          ],
+          "does_not_support": [
+            "An immutable raw-data release number, release timestamp, content length, or checksum",
+            "A dataset-specific license or institutional research-use grant",
+            "That any exact SNAP archive bytes were the input to ExpoMF, NGCF, or LightGCN"
+          ]
+        },
+        {
+          "url": "https://www.stanford.edu/terms",
+          "source_type": "canonical_provider_site_terms",
+          "immutable_identity_or_version": "MUTABLE_SITE_WIDE_TERMS_NO_REVISION_DATE_EXPOSED",
+          "accessed_at": "2026-08-22",
+          "locator": "Opening assent paragraph; Rules for Online Conduct; Permission to Use Materials",
+          "supports": [
+            "The current site-wide terms state that use of Stanford sites signifies agreement to the terms",
+            "The permission section grants a personal, non-exclusive, non-transferable license to access and use the sites",
+            "The permission section limits downloading to personal, non-commercial use and otherwise restricts copying, retransmission, distribution, publication, commercial exploitation, and transfer",
+            "The terms place the burden of determining permissible use on the user"
+          ],
+          "does_not_support": [
+            "A Gowalla-specific data license",
+            "An affirmative institutional or project research-use grant",
+            "Terms in force when the NGCF files were created in 2019 or the LightGCN files were created in 2020",
+            "Permission for the public redistribution of the processed NGCF or LightGCN data files"
+          ]
+        },
+        {
+          "url": "https://snap.stanford.edu/citing.html",
+          "source_type": "canonical_provider_citation_guidance",
+          "immutable_identity_or_version": "MUTABLE_PROVIDER_CITATION_PAGE",
+          "accessed_at": "2026-08-22",
+          "locator": "Citing SNAP; SNAP network datasets citation",
+          "supports": [
+            "SNAP encourages citation when its datasets are used and supplies a collection citation"
+          ],
+          "does_not_support": [
+            "A data license, redistribution permission, exact Gowalla release identity, or checksum"
+          ]
+        },
+        {
+          "url": "https://snap.stanford.edu/snap-2.2/license.html",
+          "source_type": "canonical_provider_software_license_boundary",
+          "immutable_identity_or_version": "SNAP_2.2_SOFTWARE_LICENSE_PAGE",
+          "accessed_at": "2026-08-22",
+          "locator": "License",
+          "supports": [
+            "The BSD language on this page is expressly presented as the license for SNAP software"
+          ],
+          "does_not_support": [
+            "Applying the SNAP software BSD license to the Gowalla dataset or its derived processed files"
+          ]
+        },
+        {
+          "url": "https://arxiv.org/pdf/1510.07025",
+          "source_type": "original_paper",
+          "immutable_identity_or_version": "arXiv:1510.07025v2",
+          "accessed_at": "2026-08-22",
+          "locator": "PDF page 5, Table 1 and Sections 5.1-5.2; extracted lines 581-642",
+          "supports": [
+            "The cited ExpoMF paper describes Gowalla user-venue check-ins and a preprocessing rule requiring every retained user and venue to have at least 20 check-ins",
+            "Its post-preprocessing table reports 57,629 users, 47,198 items, and approximately 2.3 million nonzero interactions",
+            "Its own experiment randomly split observed interactions 70/20/10 into train/test/validation"
+          ],
+          "does_not_support": [
+            "That NGCF consumed the ExpoMF preprocessed archive or ExpoMF split",
+            "The preprocessing implementation, convergence semantics, ID-map ordering, PRNG, or seed",
+            "The NGCF 80/20 split membership"
+          ]
+        },
+        {
+          "url": "https://github.com/dawenl/expo-mf/blob/0968ad2c477413616067a96d46537c9c54e26e18/README.md#L14-L18",
+          "source_type": "author_maintained_repository_file",
+          "immutable_identity_or_version": "expo-mf commit 0968ad2c477413616067a96d46537c9c54e26e18; README Git blob 7a5950e600e37c26c967a580ad4b6f9b54fb024d",
+          "accessed_at": "2026-08-22",
+          "locator": "README.md lines 14-18, Datasets",
+          "supports": [
+            "The ExpoMF authors link Gowalla to the canonical SNAP page",
+            "The authors separately link an author-hosted gowalla_pro.zip described as the preprocessed data used in their paper"
+          ],
+          "does_not_support": [
+            "The archive checksum, member manifest, rights terms, or byte identity",
+            "That the NGCF authors used gowalla_pro.zip"
+          ]
+        },
+        {
+          "url": "https://arxiv.org/html/1905.08108v2",
+          "source_type": "original_paper",
+          "immutable_identity_or_version": "arXiv:1905.08108v2 (2020-07-03)",
+          "accessed_at": "2026-08-22",
+          "locator": "Table 1 and Section 4.1, HTML lines 224-238",
+          "supports": [
+            "NGCF reports Gowalla as 29,858 users, 40,981 items, and 1,027,370 interactions",
+            "NGCF describes Gowalla as a check-in dataset obtained from Gowalla and cites Liang et al. 2016",
+            "NGCF states a 10-core setting retaining users and items with at least ten interactions",
+            "NGCF states that 80 percent of each user's historical interactions are randomly assigned to training and the remainder to test, followed by a random 10 percent validation selection from training"
+          ],
+          "does_not_support": [
+            "The exact raw archive or intermediary artifact used",
+            "Preprocessing code revision, executable command, iteration order, duplicate handling, ID-map order, split PRNG, random seed, rounding, or membership hashes",
+            "How the validation subset relates to the two repository files"
+          ]
+        },
+        {
+          "url": "https://github.com/xiangwang1223/neural_graph_collaborative_filtering/blob/a718a4f2df7c3942ca0df6759926975762c61eed/Data/gowalla/README.md#L1-L2",
+          "source_type": "author_maintained_repository_file",
+          "immutable_identity_or_version": "NGCF commit a718a4f2df7c3942ca0df6759926975762c61eed; Git blob 52e5254ad5cf21a2af611a41130b4d78f10747df",
+          "accessed_at": "2026-08-22",
+          "locator": "Data/gowalla/README.md lines 1-2",
+          "supports": [
+            "The NGCF authors' Gowalla data directory directs readers looking for the full dataset to the canonical SNAP Gowalla page"
+          ],
+          "does_not_support": [
+            "The exact SNAP raw file revision or a byte-level raw-to-NGCF transformation"
+          ]
+        },
+        {
+          "url": "https://github.com/xiangwang1223/neural_graph_collaborative_filtering/blob/a718a4f2df7c3942ca0df6759926975762c61eed/README.md#L68-L86",
+          "source_type": "author_maintained_repository_file",
+          "immutable_identity_or_version": "NGCF commit a718a4f2df7c3942ca0df6759926975762c61eed; README Git blob c321d9a8ddf55294ca856cddaca5e8d9e8b783a3",
+          "accessed_at": "2026-08-22",
+          "locator": "README.md lines 68-86, Dataset",
+          "supports": [
+            "The NGCF repository labels Gowalla as a processed dataset",
+            "It documents train.txt and test.txt as one user followed by positive item IDs per line",
+            "It documents user_list.txt and item_list.txt as original-ID to remapped-ID records"
+          ],
+          "does_not_support": [
+            "The code or ordering rule that generated the mappings and split",
+            "Any dataset-specific license"
+          ]
+        },
+        {
+          "url": "https://api.github.com/repos/xiangwang1223/neural_graph_collaborative_filtering/contents/Data/gowalla?ref=a718a4f2df7c3942ca0df6759926975762c61eed",
+          "source_type": "author_repository_immutable_object_metadata",
+          "immutable_identity_or_version": "NGCF commit a718a4f2df7c3942ca0df6759926975762c61eed",
+          "accessed_at": "2026-08-22",
+          "locator": "JSON entries for README.md, user_list.txt, item_list.txt, train.txt, and test.txt",
+          "supports": [
+            "Exact Git blob object IDs and byte sizes for the five published NGCF Gowalla files at the pinned commit"
+          ],
+          "does_not_support": [
+            "A provider-published checksum, SHA-256, file contents, or raw lineage"
+          ]
+        },
+        {
+          "url": "https://github.com/xiangwang1223/neural_graph_collaborative_filtering/commit/2767183f24ea26b4a14134cf8c5eb444d69f6163",
+          "source_type": "author_repository_commit_record",
+          "immutable_identity_or_version": "NGCF commit 2767183f24ea26b4a14134cf8c5eb444d69f6163 (2019-05-01)",
+          "accessed_at": "2026-08-22",
+          "locator": "Commit Add files via upload; path-history replay for train.txt, test.txt, user_list.txt, and item_list.txt",
+          "supports": [
+            "Public Git path histories return this commit as the introduction commit for all four NGCF processed data and mapping files"
+          ],
+          "does_not_support": [
+            "A preprocessing implementation, command, configuration, or custody receipt preceding the upload"
+          ]
+        },
+        {
+          "url": "https://arxiv.org/html/2002.02126v4",
+          "source_type": "original_paper",
+          "immutable_identity_or_version": "arXiv:2002.02126v4",
+          "accessed_at": "2026-08-22",
+          "locator": "Table 2 and Section 4.1, HTML lines 234-242",
+          "supports": [
+            "LightGCN reports the same 29,858 users, 40,981 items, and 1,027,370 interactions for Gowalla",
+            "The LightGCN authors state that they requested the experimented datasets including train/test splits from the NGCF authors and that Gowalla is exactly the same as used in the NGCF paper"
+          ],
+          "does_not_support": [
+            "The exact transferred files, checksums, raw release, or raw-to-split transformation run"
+          ]
+        },
+        {
+          "url": "https://api.github.com/repos/gusye1234/LightGCN-PyTorch/contents/data/gowalla?ref=947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+          "source_type": "author_repository_immutable_object_metadata",
+          "immutable_identity_or_version": "LightGCN-PyTorch commit 947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+          "accessed_at": "2026-08-22",
+          "locator": "JSON entries for README.md, user_list.txt, item_list.txt, train.txt, test.txt, s_adj_mat.npz, and s_pre_adj_mat.npz",
+          "supports": [
+            "The LightGCN directory carries the same Git blob IDs and byte sizes as NGCF for README.md, user_list.txt, item_list.txt, train.txt, and test.txt",
+            "The pinned directory additionally contains two adjacency-cache NPZ objects with separately identified Git blobs"
+          ],
+          "does_not_support": [
+            "A provider raw checksum or proof that the cached adjacency objects were regenerated from the pinned train split under a recorded environment"
+          ]
+        },
+        {
+          "url": "https://github.com/gusye1234/LightGCN-PyTorch/commit/a75bbdb2a1b63ae40c14e2b3af7b925c4c8621af",
+          "source_type": "author_repository_commit_record",
+          "immutable_identity_or_version": "LightGCN-PyTorch commit a75bbdb2a1b63ae40c14e2b3af7b925c4c8621af (2020-03-05)",
+          "accessed_at": "2026-08-22",
+          "locator": "Commit add gowalla; train.txt path-history replay",
+          "supports": [
+            "Public Git path history identifies this as the LightGCN train.txt introduction commit"
+          ],
+          "does_not_support": [
+            "The transfer mechanism, preprocessing run, or upstream raw custody"
+          ]
+        },
+        {
+          "url": "https://github.com/gusye1234/LightGCN-PyTorch/blob/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/code/dataloader.py#L228-L276",
+          "source_type": "author_maintained_repository_source_file",
+          "immutable_identity_or_version": "LightGCN-PyTorch commit 947ca2b3b1d2d3545b114145710cb06c4e57b3d2; Git blob e735db1312de49f16b15db9aa89928f9bda17602",
+          "accessed_at": "2026-08-22",
+          "locator": "Loader.__init__ train.txt/test.txt parsing block, lines 228-276",
+          "supports": [
+            "The pinned LightGCN loader consumes pre-existing train.txt and test.txt files, interpreting each line as a user ID followed by integer item IDs",
+            "The loader derives user/item cardinalities from maximum remapped IDs and counts interactions while loading"
+          ],
+          "does_not_support": [
+            "Any raw preprocessing, filtering, mapping generation, or train/test split generation"
+          ]
+        },
+        {
+          "url": "https://github.com/gusye1234/LightGCN-PyTorch/blob/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/README.md#L32-L44",
+          "source_type": "author_maintained_repository_file",
+          "immutable_identity_or_version": "LightGCN-PyTorch commit 947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+          "accessed_at": "2026-08-22",
+          "locator": "README Dataset and Gowalla invocation, lines 32-44; seed note line 71",
+          "supports": [
+            "The repository calls Gowalla a processed dataset and publishes the consumer invocation cd code && python main.py --decay=1e-4 --lr=0.001 --layer=3 --seed=2020 --dataset=gowalla --topks=[20] --recdim=64",
+            "The seed is documented for LightGCN runtime reproducibility"
+          ],
+          "does_not_support": [
+            "That seed 2020 generated the NGCF train/test split",
+            "A raw preprocessing argv or configuration"
+          ]
+        }
+      ],
+      "confirmed_fields": {
+        "canonical_provider_family": {
+          "provider": "Stanford Network Analysis Project (SNAP)",
+          "dataset_record": "Gowalla",
+          "collection_origin": "Gowalla public API",
+          "collection_window": "2009-02 through 2010-10",
+          "provider_reported_checkins": 6442890,
+          "provider_named_checkin_file": "loc-gowalla_totalCheckins.txt.gz",
+          "provider_named_checkin_schema": [
+            "user",
+            "check-in time",
+            "latitude",
+            "longitude",
+            "location id"
+          ],
+          "binding_status": "AUTHORITATIVE_PROVIDER_FAMILY_AND_SEMANTIC_RAW_FILE_IDENTIFIED_EXACT_CONSUMED_RELEASE_BYTES_UNRESOLVED"
+        },
+        "release_identity": {
+          "provider_release_version": "NOT_PUBLISHED_ON_CANONICAL_PAGE",
+          "provider_release_date": "NOT_PUBLISHED_ON_CANONICAL_PAGE",
+          "provider_content_length": "NOT_PUBLISHED_ON_CANONICAL_PAGE",
+          "provider_checksum": "NOT_PUBLISHED_OR_LOCATED_ON_CANONICAL_PROVIDER_PAGE",
+          "exact_raw_release_status": "UNRESOLVED"
+        },
+        "cited_upstream_intermediate": {
+          "surface": "ExpoMF Gowalla preprocessing described by Liang et al. and an author-hosted gowalla_pro.zip link",
+          "paper_rule": "Retain users and venues with at least 20 check-ins",
+          "paper_counts": {
+            "users": 57629,
+            "items": 47198,
+            "interactions": "approximately 2.3 million nonzero user-venue entries"
+          },
+          "paper_split": "Random 70/20/10 train/test/validation for ExpoMF experiments",
+          "relationship_to_ngcf": "CITED_UPSTREAM_SURFACE_ONLY_NOT_BYTE_BOUND_AS_NGCF_INPUT"
+        },
+        "ngcf_published_transformation_policy": {
+          "input_semantics": "Gowalla check-in interactions",
+          "filter": "10-core retaining users and items with at least ten interactions",
+          "interaction_polarity": "Each observed user-item interaction is positive",
+          "train_test_split": "For each user, randomly select 80 percent of historical interactions for training and use the remainder for test",
+          "validation_split": "Randomly select 10 percent of training interactions for validation",
+          "published_counts": {
+            "users": 29858,
+            "items": 40981,
+            "interactions": 1027370,
+            "density": 0.00084,
+            "train_interactions": "NOT_PUBLISHED_IN_THE_INSPECTED_AUTHORITATIVE_SOURCES",
+            "test_interactions": "NOT_PUBLISHED_IN_THE_INSPECTED_AUTHORITATIVE_SOURCES",
+            "validation_interactions": "NOT_PUBLISHED_IN_THE_INSPECTED_AUTHORITATIVE_SOURCES"
+          },
+          "exact_run_status": "POLICY_LEVEL_ONLY_NO_PREPROCESSING_CODE_REVISION_ARGV_CONFIG_OR_RANDOMIZATION_RECEIPT"
+        },
+        "processed_repository_objects": {
+          "ngcf_introduction_commit": "2767183f24ea26b4a14134cf8c5eb444d69f6163",
+          "ngcf_pinned_commit": "a718a4f2df7c3942ca0df6759926975762c61eed",
+          "lightgcn_introduction_commit_for_train_path": "a75bbdb2a1b63ae40c14e2b3af7b925c4c8621af",
+          "lightgcn_pinned_commit": "947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+          "objects": [
+            {
+              "logical_name": "provider-link README",
+              "ngcf_path": "Data/gowalla/README.md",
+              "lightgcn_path": "data/gowalla/README.md",
+              "git_blob_oid_sha1": "52e5254ad5cf21a2af611a41130b4d78f10747df",
+              "bytes": 103,
+              "object_identity": "MATCH"
+            },
+            {
+              "logical_name": "user ID map",
+              "ngcf_path": "Data/gowalla/user_list.txt",
+              "lightgcn_path": "data/gowalla/user_list.txt",
+              "git_blob_oid_sha1": "6be41d0eedf17a8d9345ee4f7b70124cd4423bc4",
+              "bytes": 351203,
+              "object_identity": "MATCH"
+            },
+            {
+              "logical_name": "item ID map",
+              "ngcf_path": "Data/gowalla/item_list.txt",
+              "lightgcn_path": "data/gowalla/item_list.txt",
+              "git_blob_oid_sha1": "ced87ec4352ba75a70b4c3afc62361aa655cc293",
+              "bytes": 506926,
+              "object_identity": "MATCH"
+            },
+            {
+              "logical_name": "training interactions",
+              "ngcf_path": "Data/gowalla/train.txt",
+              "lightgcn_path": "data/gowalla/train.txt",
+              "git_blob_oid_sha1": "a27782bd7a1d4d0744148dc0460ea94da74763f2",
+              "bytes": 4633414,
+              "object_identity": "MATCH"
+            },
+            {
+              "logical_name": "test interactions",
+              "ngcf_path": "Data/gowalla/test.txt",
+              "lightgcn_path": "data/gowalla/test.txt",
+              "git_blob_oid_sha1": "9ed5af4b5d21511f33740b4e22e3852f45671800",
+              "bytes": 1372559,
+              "object_identity": "MATCH"
+            }
+          ],
+          "identity_conclusion": "The author-repository metadata establishes exact Git-object identity for the processed split, ID maps, and provider-link README between the pinned NGCF and LightGCN revisions",
+          "identity_limit": "Git-object identity closes only the NGCF-to-LightGCN repository transfer edge; it does not close the SNAP-to-processed edge"
+        },
+        "lightgcn_consumer_binding": {
+          "code_revision": "947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+          "loader_path": "code/dataloader.py",
+          "loader_git_blob_oid_sha1": "e735db1312de49f16b15db9aa89928f9bda17602",
+          "input_files": [
+            "data/gowalla/train.txt",
+            "data/gowalla/test.txt"
+          ],
+          "format": "Each nonempty line is an integer user ID followed by integer item IDs; IDs are expected to start at zero",
+          "published_consumer_argv": "cd code && python main.py --decay=1e-4 --lr=0.001 --layer=3 --seed=2020 --dataset=\"gowalla\" --topks=\"[20]\" --recdim=64",
+          "seed_scope": "LightGCN runtime seed only; not evidence of the upstream NGCF split seed",
+          "generation_behavior": "CONSUMES_PREEXISTING_SPLIT_DOES_NOT_GENERATE_RAW_FILTER_ID_MAP_OR_SPLIT"
+        },
+        "custody_and_checksum_state": {
+          "canonical_raw_bytes": "NOT_ACQUIRED",
+          "expomf_processed_archive": "NOT_ACQUIRED",
+          "ngcf_processed_files": "NOT_ACQUIRED_METADATA_ONLY",
+          "lightgcn_processed_files": "NOT_ACQUIRED_METADATA_ONLY",
+          "provider_published_checksum": "NOT_PUBLISHED_OR_LOCATED",
+          "locally_computed_dataset_checksum": "NOT_COMPUTED",
+          "public_repository_object_ids": "RECORDED_AS_GIT_SHA1_BLOB_OIDS_NOT_MISREPRESENTED_AS_PROVIDER_CHECKSUMS"
+        },
+        "non_dispositive_tensions": [
+          {
+            "tension": "ExpoMF documents a 20-check-in filter and 70/20/10 split, while NGCF documents a 10-core filter and per-user 80/20 split followed by validation sampling",
+            "resolution": "These are distinct published protocols. Citation to ExpoMF does not prove that its split or archive was reused; the actual NGCF parent artifact remains unbound."
+          },
+          {
+            "tension": "The current Stanford site-wide terms restrict transfer and redistribution while NGCF and LightGCN publicly contain derived processed files",
+            "resolution": "No historical terms or separate provider permission were located, so the rights chain is unresolved rather than adjudicated as a dispositive violation."
+          },
+          {
+            "tension": "NGCF describes a validation subset, but its published Gowalla directory and the identical LightGCN directory expose no separate validation file",
+            "resolution": "The relationship between validation membership and the published train.txt file is not documented and remains unresolved."
+          }
+        ],
+        "lineage_closure": {
+          "snap_provider_family_to_semantic_checkin_file": "PARTIALLY_CONFIRMED",
+          "exact_snap_release_bytes_to_upstream_interactions": "UNRESOLVED",
+          "upstream_intermediate_to_ngcf_10_core": "UNRESOLVED",
+          "ngcf_10_core_to_id_maps": "ARTIFACTS_PRESENT_GENERATION_UNRESOLVED",
+          "id_maps_to_train_test_membership": "POLICY_PUBLISHED_EXACT_RUN_UNRESOLVED",
+          "ngcf_processed_objects_to_lightgcn_processed_objects": "CONFIRMED_EXACT_GIT_OBJECT_IDENTITY",
+          "lightgcn_processed_objects_to_loader": "CONFIRMED_CONSUMER_BINDING",
+          "end_to_end_exact_lawful_lineage": "NOT_CLOSED"
+        }
+      },
+      "unresolved_fields": [
+        "Dataset-specific lawful-use grant for the exact SNAP Gowalla bytes and its scope for institutional research",
+        "Release-specific terms in force when the upstream data were obtained, including any separate permission not visible on the current provider page",
+        "Exact immutable SNAP raw release, byte length, checksum, retrieval timestamp, and chain-of-custody receipt",
+        "Whether NGCF started from loc-gowalla_totalCheckins.txt.gz directly, the ExpoMF gowalla_pro.zip artifact, or another author-supplied intermediate",
+        "Checksum and member manifest of the author-hosted ExpoMF gowalla_pro.zip artifact",
+        "Raw check-in parsing rules, malformed-row handling, timestamp or coordinate use, and location-ID normalization",
+        "Repeated user-venue check-in aggregation or deduplication semantics and the exact definition of one NGCF interaction",
+        "Whether and how the ExpoMF 20-check-in preprocessing participates in the NGCF lineage",
+        "10-core implementation, fixpoint behavior, user/item pruning order, tie behavior, and code revision",
+        "Original-to-remapped user and item ID assignment algorithm, ordering, determinism, and generation code",
+        "Preprocessing executable, argv, configuration, dependency environment, and run log",
+        "Per-user 80/20 split PRNG implementation, seed, shuffle order, rounding rule, and exact membership",
+        "Validation PRNG, seed, membership, and whether validation interactions remain in repository train.txt",
+        "Authoritative train, test, and validation interaction counts for the exact public objects without opening or executing them",
+        "Cryptographic SHA-256 or stronger hashes for acquired raw, intermediate, map, train, test, and validation bytes",
+        "Affirmative upstream authorization for redistribution of the processed files bundled by NGCF and LightGCN"
+      ],
+      "dispositive_mismatches": [],
+      "inferences_forbidden": [
+        "Do not infer lawful research use or redistribution permission from public HTTP or GitHub accessibility",
+        "Do not apply the SNAP software BSD license or the NGCF software MIT license to Gowalla data without an explicit data-scope statement",
+        "Do not infer canonical raw lineage from matching NGCF and LightGCN processed Git objects",
+        "Do not infer that the ExpoMF preprocessed ZIP was NGCF's input merely because NGCF cites the ExpoMF paper",
+        "Do not infer that LightGCN seed 2020 is the NGCF preprocessing or split seed",
+        "Do not infer split counts, membership, or validation handling from the total interaction count",
+        "Do not treat Git SHA-1 blob object IDs as provider-published raw-data checksums",
+        "Do not infer historical provider terms from the current mutable Stanford terms page",
+        "Do not interpret failure to locate a checksum or separate permission as proof that none has ever existed"
+      ],
+      "recommended_g1_disposition": "KEEP_PENDING",
+      "execution_authorized": false,
+      "result_status": "NOT_RUN",
+      "test_set_opened": "NO"
+    }
+  ],
+  "coverage": {
+    "expected_rows": 1,
+    "present_rows": 1,
+    "manifest_row_order": [
+      "E3-LIGHTGCN-GOWALLA-PYTORCH-001"
+    ],
+    "actual_row_order": [
+      "E3-LIGHTGCN-GOWALLA-PYTORCH-001"
+    ],
+    "ordered_exactly_as_manifest": true,
+    "status_counts": {
+      "EVIDENCE_SUFFICIENT_FOR_G1_REVIEW": 0,
+      "EVIDENCE_INCOMPLETE": 1,
+      "DISPOSITIVE_REJECT": 0,
+      "HANDOFF_INCOMPLETE": 0
+    }
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}
