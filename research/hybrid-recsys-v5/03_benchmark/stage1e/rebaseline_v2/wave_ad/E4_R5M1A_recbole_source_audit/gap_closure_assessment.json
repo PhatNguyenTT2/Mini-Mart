@@ -1,0 +1,222 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r5-m1-gap-closure-assessment-1.0",
+  "created_at": "2026-08-23",
+  "stage_id": "R5-M1A",
+  "candidate_id": "R5-CAND-RECBOLE-BPR-ML100K-001",
+  "source_revision": "9a6f63d8d4a5b989fe27955a833f813a6d86041e",
+  "assessment": "SOURCE_INCOMPLETE_WITH_BOUNDED_NON_DISPOSITIVE_GAPS",
+  "source_established": [
+    {
+      "area": "identity_and_license",
+      "fact_ids": ["R5M1A-F001", "R5M1A-F002", "R5M1A-F003"],
+      "finding": "RecBole 1.2.1, RecBoleTeam/RUCAIBox identity, and MIT code license are source-established at the locked revision."
+    },
+    {
+      "area": "method",
+      "fact_ids": ["R5M1A-F013", "R5M1A-F039", "R5M1A-F040"],
+      "finding": "The BPR pairwise matrix-factorization objective and complete score function are source-established."
+    },
+    {
+      "area": "configuration",
+      "fact_ids": ["R5M1A-F007", "R5M1A-F008", "R5M1A-F009", "R5M1A-F010", "R5M1A-F011", "R5M1A-F012"],
+      "finding": "Entry point, precedence, defaults, and seed initialization are source-established as current code behavior."
+    },
+    {
+      "area": "ranking_metrics",
+      "fact_ids": ["R5M1A-F014", "R5M1A-F017", "R5M1A-F018", "R5M1A-F034", "R5M1A-F035", "R5M1A-F038"],
+      "finding": "Full-score masking, HR/NDCG formulae, top-k user means, cumulative phase histories, and GAUC average-rank handling are locatable."
+    },
+    {
+      "area": "representation_interfaces",
+      "fact_ids": ["R5M1A-F030", "R5M1A-F031"],
+      "finding": "Reversible ID maps and full per-user score vectors provide a plausible representation-only export seam."
+    }
+  ],
+  "partial_source_facts": [
+    {
+      "area": "environment",
+      "fact_ids": ["R5M1A-F004", "R5M1A-F005", "R5M1A-F006"],
+      "finding": "Direct dependency declarations exist, but no deterministic runtime lock is derivable."
+    },
+    {
+      "area": "history_and_truth",
+      "fact_ids": ["R5M1A-F015"],
+      "finding": "Seen masking is explicit, but source truth includes current target items unless v5 novel truth is prepared externally."
+    },
+    {
+      "area": "normal_checkpoint_selection",
+      "fact_ids": ["R5M1A-F022"],
+      "finding": "Checkpoint selection is validation-based, but the quick-start surface supplies no TEST gate or immutable receipt."
+    },
+    {
+      "area": "data_interface",
+      "fact_ids": ["R5M1A-F028", "R5M1A-F029", "R5M1A-F032"],
+      "finding": "Loader, atomic-field, and pre-split interfaces are known; bytes, lineage, and TEST-sealed use are unresolved."
+    }
+  ],
+  "conflicts": [
+    {
+      "conflict_id": "R5M1A-C01",
+      "dimensions": ["S04_EVALUATOR_CANDIDATE_MASK_AGGREGATION_TIES"],
+      "fact_ids": ["R5M1A-F016"],
+      "finding": "torch.topk has no source-defined raw_product_id ascending secondary key.",
+      "disposition": "NON_DISPOSITIVE_IF_FULL_SCORES_ARE_EXPORTED_BEFORE_TOPK_AND_THE_STANDALONE_V5_EVALUATOR_OWNS_RANKING",
+      "cannot_be_claimed": "Stock RecBole top-k output is v5 tie-parity compliant."
+    },
+    {
+      "conflict_id": "R5M1A-C02",
+      "dimensions": ["S04_EVALUATOR_CANDIDATE_MASK_AGGREGATION_TIES"],
+      "fact_ids": ["R5M1A-F019"],
+      "finding": "RecBole GAUC weights users by positive count; v5 requires an unweighted macro user mean.",
+      "disposition": "NON_DISPOSITIVE_IF_SOURCE_GAUC_REMAINS_ON_THE_OFFICIAL_SEAM_AND_V5_GAUC_IS_COMPUTED_ONLY_BY_THE_FROZEN_STANDALONE_EVALUATOR",
+      "cannot_be_claimed": "Source GAUC and v5 GAUC are interchangeable."
+    },
+    {
+      "conflict_id": "R5M1A-C03",
+      "dimensions": ["S05_TEST_ISOLATION_AND_LEAKAGE_SURFACES"],
+      "fact_ids": ["R5M1A-F020", "R5M1A-F021"],
+      "finding": "Global preprocessing precedes splitting and the stock default is random user-grouped 80/10/10, not the frozen v5 temporal split.",
+      "disposition": "NON_DISPOSITIVE_ONLY_IF_A_PROJECT_OWNED_PREPARED_SPLIT_AND_TEST_SEAL_ARE_IMPLEMENTED_WITHOUT_CHANGING_BPR_MATHEMATICS",
+      "cannot_be_claimed": "The README evaluation protocol is harmonized v5."
+    },
+    {
+      "conflict_id": "R5M1A-C04",
+      "dimensions": ["S05_TEST_ISOLATION_AND_LEAKAGE_SURFACES"],
+      "fact_ids": ["R5M1A-F023", "R5M1A-F036"],
+      "finding": "Stock hyperparameter tuning opens TEST every trial; the Ray route selects TEST recall@10.",
+      "disposition": "NON_DISPOSITIVE_IF_STOCK_HYPERPARAMETER_ENTRYPOINTS_ARE_FORBIDDEN_AND_A_VALIDATION_ONLY_PREREGISTERED_SEARCH_OR_FIXED_CONFIG_IS_USED",
+      "cannot_be_claimed": "run_hyper.py is TEST-isolated."
+    },
+    {
+      "conflict_id": "R5M1A-C05",
+      "dimensions": ["S06_NUMERIC_TARGET_PRODUCER_BINDING"],
+      "fact_ids": ["R5M1A-F026", "R5M1A-F037"],
+      "finding": "README calls the shown model BPRMF while the pinned executable class is BPR.",
+      "disposition": "README_CENTER_REMAINS_PROVISIONAL_AND_CANNOT_BE_AN_EXACT_EXECUTABLE_SURFACE_BINDING",
+      "cannot_be_claimed": "The README block is an immutable receipt from the pinned executable."
+    }
+  ],
+  "deferred_to_dataset_acquisition_or_run": [
+    {
+      "area": "provider_lineage",
+      "fact_ids": ["R5M1A-F027", "R5M1A-F028", "R5M1A-F029"],
+      "deferred_until": "SEPARATELY_AUTHORIZED_R5_M2_DATASET_MATERIALIZATION",
+      "required_evidence": [
+        "provider identity, exact release, rights/license terms, and acquisition timestamp",
+        "raw archive byte count and SHA-256",
+        "literal acquisition command and redirect/final-source record",
+        "extractor identity/version and extraction inventory",
+        "pre-rename and post-rename atomic-file paths, byte counts, and SHA-256 values",
+        "atomic headers, row counts, duplicate policy, and conversion receipt",
+        "train/validation/test index hashes and user/item raw-to-internal map hashes"
+      ]
+    },
+    {
+      "area": "runtime_lock",
+      "fact_ids": ["R5M1A-F004", "R5M1A-F005", "R5M1A-F006"],
+      "deferred_until": "SEPARATELY_AUTHORIZED_R5_M2_ENVIRONMENT_MATERIALIZATION",
+      "required_evidence": [
+        "exact Python implementation and version",
+        "exact platform, architecture, and OS build",
+        "resolved direct and transitive package versions plus artifact hashes",
+        "exact Torch build and CPU/GPU/CUDA/cuDNN/driver identity where applicable",
+        "determinism settings and a compatibility receipt for the pinned source",
+        "immutable environment manifest and lock hash"
+      ]
+    },
+    {
+      "area": "official_source_rerun",
+      "fact_ids": ["R5M1A-F024", "R5M1A-F025", "R5M1A-F026", "R5M1A-F037"],
+      "deferred_until": "TARGET_PROTOCOL_AND_TOLERANCE_FROZEN_THEN_EXECUTION_SEPARATELY_AUTHORIZED",
+      "required_evidence": [
+        "source-dataset byte lineage",
+        "literal argv and canonical resolved-config SHA-256",
+        "seed schedule and aggregation rule frozen before output is seen",
+        "reported center policy that does not assume README 0.2768 is producer-bound",
+        "absolute/relative tolerance and deterministic pass rule frozen before rerun",
+        "runtime, checkpoint, prediction, evaluator, per-user metric, stdout, stderr, and terminal receipts"
+      ]
+    },
+    {
+      "area": "harmonized_v5",
+      "fact_ids": ["R5M1A-F030", "R5M1A-F031", "R5M1A-F032", "R5M1A-F033"],
+      "deferred_until": "ADAPTER_AND_EVALUATOR_IDENTITIES_HASHED_AND_ALL_PARITY_FIXTURES_PASS",
+      "required_evidence": [
+        "six-field v5 dataset lineage and eligible-user-id hash",
+        "TEST-sealed train/validation orchestration that never loads TEST before authorization",
+        "full 5,200-product ID-map coverage including cold products and explicit padding exclusion",
+        "untruncated score artifact with raw user/product IDs and hashes",
+        "v5 seen-mask, novel-truth, eligibility, deterministic tie, HR/NDCG/GAUC, and per-user parity receipts",
+        "adapter/evaluator paths, commits, raw hashes, exact argv, schemas, inventories, and terminal receipts"
+      ]
+    }
+  ],
+  "numeric_target_assessment": {
+    "documented_value": 0.2768,
+    "metric_label": "ndcg@10",
+    "source_locator": "README.md lines 147-191",
+    "classification": "SOURCE_DOCUMENTED_ILLUSTRATIVE_PROVISIONAL_TARGET_NOT_PRODUCER_BOUND",
+    "same_method_dataset_family": true,
+    "same_documented_split_family": "RANDOM_USER_GROUPED_80_10_10",
+    "same_documented_candidate_mode": "FULL_SORT",
+    "same_pinned_executable_identity_established": false,
+    "same_revision_producer_binding_established": false,
+    "same_dataset_bytes_established": false,
+    "complete_resolved_config_established": false,
+    "producer_seed_established": false,
+    "producer_environment_established": false,
+    "checkpoint_and_prediction_binding_established": false,
+    "tie_policy_established": false,
+    "run_receipt_established": false,
+    "v5_comparable": false,
+    "reason": "The README is introduced as output 'like' the shown block, lacks every immutable producer binding, uses random source-default splitting rather than v5 temporal splitting, and labels the model BPRMF while the pinned class is BPR.",
+    "allowed_use": "May be retained only as a provisional source-documentation lead when designing a separately frozen official-source protocol; it is not an accepted center, result row, or paper number."
+  },
+  "closure_sequence": [
+    {
+      "order": 1,
+      "gate": "R5-G1",
+      "action": "Central replay of hashes and comparison of bounded gaps; select zero or one source candidate only.",
+      "execution_allowed": false
+    },
+    {
+      "order": 2,
+      "gate": "R5-M2_USER_CHECKPOINT",
+      "action": "Freeze a candidate-specific data and environment materialization proposal, exact scope, and commands for separate user approval.",
+      "execution_allowed": false
+    },
+    {
+      "order": 3,
+      "gate": "POST_R5_M2_MATERIALIZATION",
+      "action": "Acquire and hash only the approved dataset/environment inputs; freeze official target policy, tolerances, config, seeds, adapter, evaluator, and parity fixtures.",
+      "execution_allowed": false
+    },
+    {
+      "order": 4,
+      "gate": "SEPARATE_EXECUTION_AUTHORIZATION",
+      "action": "Run official-source reproduction and harmonized validation in distinct namespaces; preserve all receipts and negative outcomes.",
+      "execution_allowed": false
+    },
+    {
+      "order": 5,
+      "gate": "LATER_TEST_GATE",
+      "action": "Open project v5 TEST once only after validation selection, registry, parity, and independent authorization pass.",
+      "execution_allowed": false
+    }
+  ],
+  "inference_prohibitions": [
+    "Do not infer Python, Torch, CUDA, cuDNN, driver, platform, or transitive dependency versions.",
+    "Do not infer that current defaults produced README NDCG@10=0.2768.",
+    "Do not infer provider bytes from a URL or dataset name.",
+    "Do not infer equal-score order from internal item index or torch.topk output.",
+    "Do not infer a producer seed, tuning budget, early-stop epoch, checkpoint, or data lineage.",
+    "Do not treat source semantic audit as reproducibility verification."
+  ],
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

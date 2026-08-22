@@ -1,0 +1,550 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r5-m1-source-fact-matrix-1.0",
+  "created_at": "2026-08-23",
+  "stage_id": "R5-M1A",
+  "candidate_id": "R5-CAND-RECBOLE-BPR-ML100K-001",
+  "audit_mode": "READ_ONLY_PINNED_SOURCE_SEMANTIC_AUDIT_NO_EXECUTION",
+  "repository_baseline": {
+    "minimum_commit": "b4944a9",
+    "observed_commit": "b4944a9c1db6f88fe2222ade73b4231fb88ecd36",
+    "minimum_commit_is_ancestor": true
+  },
+  "source_integrity": {
+    "source_root": "E:/UIT/cv/backend/research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d",
+    "expected_revision": "9a6f63d8d4a5b989fe27955a833f813a6d86041e",
+    "observed_revision": "9a6f63d8d4a5b989fe27955a833f813a6d86041e",
+    "detached_head": true,
+    "vendor_worktree_clean": true,
+    "selected_blob_manifest": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ac/E4_R5M0_source_materialization/selected_blob_manifest.json",
+    "hash_algorithm": "sha256_raw_bytes",
+    "selected_files_checked": 265,
+    "hash_mismatches": 0
+  },
+  "model_profile": {
+    "display_name": "Sol XHigh Standard",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "xhigh",
+    "service_tier": "standard"
+  },
+  "status_legend": {
+    "PASS_SOURCE_ESTABLISHED": "The pinned source establishes the stated behavior within the declared scope.",
+    "PARTIAL_SOURCE_BOUND": "The pinned source establishes part of the claim but leaves an enumerated boundary unresolved.",
+    "FAIL_MISSING": "A required binding is absent and is not inferred.",
+    "FAIL_CONFLICT": "The pinned source behavior conflicts with the frozen v5 requirement or another pinned source claim.",
+    "DEFER_REQUIRES_DATA_OR_RUN": "The item cannot be closed by source inspection and is deferred to authorized acquisition or execution."
+  },
+  "dimensions": [
+    {
+      "dimension_id": "S01_REVISION_LICENSE_SOURCE_INTEGRITY",
+      "status": "PASS_SOURCE_ESTABLISHED",
+      "criterion": "Reconfirm detached revision, source hashes, owner identity and code license from materialized files.",
+      "assessment": "Detached revision, clean worktree, and all selected raw-byte hashes replay exactly. The package declares version 1.2.1, RecBoleTeam/RUCAIBox identity, and MIT licensing.",
+      "fact_ids": ["R5M1A-F001", "R5M1A-F002", "R5M1A-F003"]
+    },
+    {
+      "dimension_id": "S02_ENVIRONMENT_DECLARATIONS_AND_UNRESOLVED_LOCK",
+      "status": "PARTIAL_SOURCE_BOUND",
+      "criterion": "Extract Python/framework/direct dependency declarations and identify every version/platform/transitive gap; never invent a lock.",
+      "assessment": "Direct requirements are declared, but they are predominantly lower bounds, two declarations differ, Python and platform are not constrained, and no complete direct/transitive lock or runtime receipt is present.",
+      "fact_ids": ["R5M1A-F004", "R5M1A-F005", "R5M1A-F006"]
+    },
+    {
+      "dimension_id": "S03_TRAIN_ENTRYPOINT_CONFIG_DEFAULT_RESOLUTION",
+      "status": "PASS_SOURCE_ESTABLISHED",
+      "criterion": "Trace the exact source-owned training entrypoint, method registration, config precedence, defaults, seed and tuning surfaces.",
+      "assessment": "The source-owned quick-start path, BPR registration, merge precedence, default BPR/ml-100k settings, pairwise objective, seed calls, validation checkpoint rule, and tuning entrypoints are all locatable. This establishes source behavior, not the README producer configuration.",
+      "fact_ids": ["R5M1A-F007", "R5M1A-F008", "R5M1A-F009", "R5M1A-F010", "R5M1A-F011", "R5M1A-F012", "R5M1A-F013", "R5M1A-F039", "R5M1A-F040"]
+    },
+    {
+      "dimension_id": "S04_EVALUATOR_CANDIDATE_MASK_AGGREGATION_TIES",
+      "status": "FAIL_CONFLICT",
+      "criterion": "Trace metric formula, full/sampled candidate construction, seen-item masking, aggregation and tie behavior with exact file/symbol locators.",
+      "assessment": "Full-sort scoring, padding/seen masking, HR/NDCG formulae, and user-mean aggregation are explicit. Top-k ties have no source-defined raw-ID secondary key, and source GAUC is positive-count weighted rather than the frozen v5 macro user mean. The stock evaluator therefore cannot be the harmonized v5 evaluator.",
+      "fact_ids": ["R5M1A-F014", "R5M1A-F015", "R5M1A-F016", "R5M1A-F017", "R5M1A-F018", "R5M1A-F019", "R5M1A-F034", "R5M1A-F035", "R5M1A-F038"]
+    },
+    {
+      "dimension_id": "S05_TEST_ISOLATION_AND_LEAKAGE_SURFACES",
+      "status": "FAIL_CONFLICT",
+      "criterion": "Identify whether schema/cardinality/filtering/tuning/checkpoint selection can derive from evaluation TEST; absence of proof remains partial.",
+      "assessment": "Dataset filtering and ID remapping precede splitting, so schema/cardinality can be transductive. The normal trainer selects checkpoints on validation, but the quick-start automatically evaluates TEST afterward and the stock hyperparameter objective evaluates TEST on every trial; Ray tuning selects a reported TEST recall metric. No source-enforced TEST seal exists.",
+      "fact_ids": ["R5M1A-F020", "R5M1A-F021", "R5M1A-F022", "R5M1A-F023", "R5M1A-F036"]
+    },
+    {
+      "dimension_id": "S06_NUMERIC_TARGET_PRODUCER_BINDING",
+      "status": "FAIL_MISSING",
+      "criterion": "Assess whether the stored numeric target is tied to this exact revision, data, full config, seed, environment, evaluator and run receipt.",
+      "assessment": "README NDCG@10=0.2768 is illustrative documentation for a BPR/ml-100k random 80/10/10 full-sort example, not an immutable producer receipt. Revision-producing commit, provider bytes, complete resolved config, actual seed, environment, checkpoint, predictions, tie behavior, and run receipt are absent; the README model label also conflicts with the pinned class name.",
+      "fact_ids": ["R5M1A-F024", "R5M1A-F025", "R5M1A-F026", "R5M1A-F037"]
+    },
+    {
+      "dimension_id": "S07_DATASET_LINEAGE_REQUIREMENTS",
+      "status": "DEFER_REQUIRES_DATA_OR_RUN",
+      "criterion": "Identify source data loaders/converters and the exact additional provider-byte and transformation receipts required later; do not acquire data.",
+      "assessment": "The source declares a processed-dataset URL, archive download/extract/rename behavior, and the expected ml-100k atomic fields. No dataset bytes, provider release/rights receipt, archive hash, extracted-file hashes, or transformation receipt are in the selected tree.",
+      "fact_ids": ["R5M1A-F027", "R5M1A-F028", "R5M1A-F029"]
+    },
+    {
+      "dimension_id": "S08_BOUNDED_V5_ADAPTER_FEASIBILITY",
+      "status": "PARTIAL_SOURCE_BOUND",
+      "criterion": "Map v5 fields to source interfaces and decide whether a representation-only adapter is plausibly bounded without changing objective or evaluator.",
+      "assessment": "Raw-to-internal ID maps and complete per-user item score vectors provide a bounded score-export seam that can preserve BPR mathematics. Readiness remains blocked because the stock pre-split loader concatenates all split files before remapping, source top-k/tie/GAUC semantics cannot implement v5, and a TEST-sealed orchestration plus standalone v5 evaluator and parity fixtures do not exist.",
+      "fact_ids": ["R5M1A-F030", "R5M1A-F031", "R5M1A-F032"]
+    },
+    {
+      "dimension_id": "S09_NEXT_GATE_AND_REPRODUCTION_PRECONDITIONS",
+      "status": "DEFER_REQUIRES_DATA_OR_RUN",
+      "criterion": "List the minimal dataset, environment, config, parity and rerun actions needed before benchmark admission or execution.",
+      "assessment": "The source returns scalar result dictionaries and saves a checkpoint, but it does not emit the immutable data/config/environment/prediction/evaluator receipt chain required by the frozen project contract. Closure therefore requires a separately authorized R5-M2 proposal and later runs.",
+      "fact_ids": ["R5M1A-F033"]
+    }
+  ],
+  "facts": [
+    {
+      "fact_id": "R5M1A-F001",
+      "dimension_id": "S01_REVISION_LICENSE_SOURCE_INTEGRITY",
+      "status": "PASS_SOURCE_ESTABLISHED",
+      "claim": "The materialized package declares RecBole version 1.2.1.",
+      "source_relative_path": "recbole/__init__.py",
+      "symbol_or_line_locator": "module constant __version__, line 5",
+      "source_sha256_raw_bytes": "9bda7db19982dca0d8a67f2b5f0e783df15e99fccfd3190506a0f4109b3f520d",
+      "evidence_excerpt_or_paraphrase": "__version__ is assigned the string 1.2.1.",
+      "scope_limit": "A package version declaration does not by itself prove the producing environment or numeric result."
+    },
+    {
+      "fact_id": "R5M1A-F002",
+      "dimension_id": "S01_REVISION_LICENSE_SOURCE_INTEGRITY",
+      "status": "PASS_SOURCE_ESTABLISHED",
+      "claim": "The source carries an MIT License with a 2020 RUCAIBox copyright notice.",
+      "source_relative_path": "LICENSE",
+      "symbol_or_line_locator": "lines 1-20",
+      "source_sha256_raw_bytes": "680261591718142ed6da54bc3a4a8fbb9bd9263724aa51d1509377e88f284dbb",
+      "evidence_excerpt_or_paraphrase": "The file is headed MIT License, identifies Copyright (c) 2020 RUCAIBox, and states the MIT grant and conditions.",
+      "scope_limit": "This establishes the code-tree license notice only; dataset rights are separate and absent."
+    },
+    {
+      "fact_id": "R5M1A-F003",
+      "dimension_id": "S01_REVISION_LICENSE_SOURCE_INTEGRITY",
+      "status": "PASS_SOURCE_ESTABLISHED",
+      "claim": "Package metadata identifies RecBoleTeam as author and the RUCAIBox/RecBole repository URL.",
+      "source_relative_path": "setup.py",
+      "symbol_or_line_locator": "setup(...) metadata, lines 52-67",
+      "source_sha256_raw_bytes": "9fd93b134e7586757a47a2fcad689fdf0a300c4c3033990f95e58449d568ef06",
+      "evidence_excerpt_or_paraphrase": "setup() declares name recbole, version 1.2.1, URL https://github.com/RUCAIBox/RecBole, author RecBoleTeam, and an MIT classifier.",
+      "scope_limit": "Metadata identity is not a dataset-provider or run-producer attestation."
+    },
+    {
+      "fact_id": "R5M1A-F004",
+      "dimension_id": "S02_ENVIRONMENT_DECLARATIONS_AND_UNRESOLVED_LOCK",
+      "status": "PARTIAL_SOURCE_BOUND",
+      "claim": "setup.py declares direct dependencies but mostly as open lower bounds rather than exact versions.",
+      "source_relative_path": "setup.py",
+      "symbol_or_line_locator": "install_requires and extras_require, lines 9-30",
+      "source_sha256_raw_bytes": "9fd93b134e7586757a47a2fcad689fdf0a300c4c3033990f95e58449d568ef06",
+      "evidence_excerpt_or_paraphrase": "torch>=1.10.0, numpy>=1.17.2, scipy>=1.6.0, pandas>=1.3.0 and other lower bounds are declared; colorlog 4.7.2 and colorama 0.4.4 are exact; Ray is bounded; hyperopt is an exact optional extra.",
+      "scope_limit": "No resolved direct set, transitive graph, wheel/build identity, interpreter, OS, accelerator, or driver is fixed."
+    },
+    {
+      "fact_id": "R5M1A-F005",
+      "dimension_id": "S02_ENVIRONMENT_DECLARATIONS_AND_UNRESOLVED_LOCK",
+      "status": "PARTIAL_SOURCE_BOUND",
+      "claim": "requirements.txt is a second non-lock direct-dependency declaration with predominantly open lower bounds and an exact hyperopt entry.",
+      "source_relative_path": "requirements.txt",
+      "symbol_or_line_locator": "lines 1-17",
+      "source_sha256_raw_bytes": "35ad60ffac72ef6f7f69a9a0ec06a21b771851fd5fedc559e724486db07b3def",
+      "evidence_excerpt_or_paraphrase": "The file uses lower bounds for Torch, NumPy, SciPy, pandas, colorlog, colorama, and other packages, includes hyperopt==0.2.5, and does not enumerate transitive artifacts.",
+      "scope_limit": "Compared with the separately recorded setup.py fact, declaration differences remain unresolved; the audit does not choose or infer installed versions."
+    },
+    {
+      "fact_id": "R5M1A-F006",
+      "dimension_id": "S02_ENVIRONMENT_DECLARATIONS_AND_UNRESOLVED_LOCK",
+      "status": "FAIL_MISSING",
+      "claim": "The package metadata does not declare a Python version requirement or a platform/runtime lock.",
+      "source_relative_path": "setup.py",
+      "symbol_or_line_locator": "setup(...) call, lines 52-68; no python_requires or platform constraint",
+      "source_sha256_raw_bytes": "9fd93b134e7586757a47a2fcad689fdf0a300c4c3033990f95e58449d568ef06",
+      "evidence_excerpt_or_paraphrase": "The setup call has package, version, author, dependency, and classifier fields but no python_requires, lock hash, OS, CUDA, cuDNN, driver, CPU, or GPU binding.",
+      "scope_limit": "Absence is reported without inferring a compatible Python or hardware version."
+    },
+    {
+      "fact_id": "R5M1A-F007",
+      "dimension_id": "S03_TRAIN_ENTRYPOINT_CONFIG_DEFAULT_RESOLUTION",
+      "status": "PASS_SOURCE_ESTABLISHED",
+      "claim": "The source-owned CLI entrypoint defaults to model BPR and dataset ml-100k and delegates to the quick-start run API.",
+      "source_relative_path": "run_recbole.py",
+      "symbol_or_line_locator": "__main__, lines 14-55",
+      "source_sha256_raw_bytes": "f3771bfd38c9a635825bf4d054ba2f610ff9fe03b552c4161e8f9514cc49fa93",
+      "evidence_excerpt_or_paraphrase": "argparse defaults --model to BPR and --dataset to ml-100k, splits config_files, and calls run(...).",
+      "scope_limit": "This establishes current defaults, not the exact argv of the README-producing run."
+    },
+    {
+      "fact_id": "R5M1A-F008",
+      "dimension_id": "S03_TRAIN_ENTRYPOINT_CONFIG_DEFAULT_RESOLUTION",
+      "status": "PASS_SOURCE_ESTABLISHED",
+      "claim": "For ordinary parameters, external precedence is config files in list order, then config_dict, then --name=value CLI arguments.",
+      "source_relative_path": "recbole/config/configurator.py",
+      "symbol_or_line_locator": "Config._load_config_files, _load_cmd_line, _merge_external_config_dict, lines 149-200",
+      "source_sha256_raw_bytes": "a5f3f3ba902537d2f678c0f011e7a6d5d706606fae041074913bb651811f1aed",
+      "evidence_excerpt_or_paraphrase": "Each later config file updates the same dictionary; external merging then updates file values with config_dict and finally command-line values.",
+      "scope_limit": "Only CLI tokens of the form --name=value enter Config; other tokens are warned as unused by this parser."
+    },
+    {
+      "fact_id": "R5M1A-F009",
+      "dimension_id": "S03_TRAIN_ENTRYPOINT_CONFIG_DEFAULT_RESOLUTION",
+      "status": "PASS_SOURCE_ESTABLISHED",
+      "claim": "Internal defaults merge overall, model, sample-dataset, and named-dataset YAML in that order, after which the merged external dictionary overrides internal values.",
+      "source_relative_path": "recbole/config/configurator.py",
+      "symbol_or_line_locator": "Config._load_internal_config_dict and _get_final_config_dict, lines 238-325",
+      "source_sha256_raw_bytes": "a5f3f3ba902537d2f678c0f011e7a6d5d706606fae041074913bb651811f1aed",
+      "evidence_excerpt_or_paraphrase": "The internal file loop is overall, model, sample, dataset; final_config_dict updates internal first and external second.",
+      "scope_limit": "The merge algorithm does not supply an immutable resolved-config receipt."
+    },
+    {
+      "fact_id": "R5M1A-F010",
+      "dimension_id": "S03_TRAIN_ENTRYPOINT_CONFIG_DEFAULT_RESOLUTION",
+      "status": "PASS_SOURCE_ESTABLISHED",
+      "claim": "Explicit model and dataset function arguments take identity precedence over external model/dataset values.",
+      "source_relative_path": "recbole/config/configurator.py",
+      "symbol_or_line_locator": "Config._get_model_and_dataset, lines 202-229",
+      "source_sha256_raw_bytes": "a5f3f3ba902537d2f678c0f011e7a6d5d706606fae041074913bb651811f1aed",
+      "evidence_excerpt_or_paraphrase": "External model or dataset is consulted only when the corresponding constructor argument is None; run_recbole.py passes both defaults explicitly.",
+      "scope_limit": "This special identity precedence is distinct from ordinary parameter precedence."
+    },
+    {
+      "fact_id": "R5M1A-F011",
+      "dimension_id": "S03_TRAIN_ENTRYPOINT_CONFIG_DEFAULT_RESOLUTION",
+      "status": "PASS_SOURCE_ESTABLISHED",
+      "claim": "Default training uses seed 2020, reproducibility true, 300 epochs, Adam at 0.001, one uniform training negative, and validation MRR@10 early stopping with patience threshold 10.",
+      "source_relative_path": "recbole/properties/overall.yaml",
+      "symbol_or_line_locator": "environment/training/evaluation settings, lines 1-52",
+      "source_sha256_raw_bytes": "fc31c19d87716df3a82202ef11df46af890a3aad97b6401314685a9f7a00238e",
+      "evidence_excerpt_or_paraphrase": "The YAML also defaults to user-grouped random 0.8/0.1/0.1 splitting, random order, full evaluation, topk 10, and Recall/MRR/NDCG/Hit/Precision.",
+      "scope_limit": "Defaults are overrideable and are not proof of the README producer's resolved values."
+    },
+    {
+      "fact_id": "R5M1A-F012",
+      "dimension_id": "S03_TRAIN_ENTRYPOINT_CONFIG_DEFAULT_RESOLUTION",
+      "status": "PASS_SOURCE_ESTABLISHED",
+      "claim": "Seed initialization covers Python random, NumPy, Torch CPU/CUDA, and cuDNN benchmark/deterministic flags.",
+      "source_relative_path": "recbole/utils/utils.py",
+      "symbol_or_line_locator": "init_seed, lines 188-205",
+      "source_sha256_raw_bytes": "d4a3827ef109b3b25b55de255b1838723f4ccc333fd6d187bc7c312503bcd541",
+      "evidence_excerpt_or_paraphrase": "init_seed calls random.seed, np.random.seed, torch.manual_seed, CUDA seed functions, then toggles cuDNN benchmark and deterministic.",
+      "scope_limit": "The source does not prove every operation deterministic for an unresolved Torch/platform build, and no producer seed receipt exists."
+    },
+    {
+      "fact_id": "R5M1A-F013",
+      "dimension_id": "S03_TRAIN_ENTRYPOINT_CONFIG_DEFAULT_RESOLUTION",
+      "status": "PASS_SOURCE_ESTABLISHED",
+      "claim": "The pinned BPR implementation is pairwise matrix factorization with config-supplied embedding size and dot-product positive and negative scores passed to BPRLoss.",
+      "source_relative_path": "recbole/model/general_recommender/bpr.py",
+      "symbol_or_line_locator": "class BPR, __init__, calculate_loss, predict, full_sort_predict, lines 27-97",
+      "source_sha256_raw_bytes": "191d4a8707833a7f4a4bfa0eadff12431bbf70d17ef25e39474bc9b8e588357a",
+      "evidence_excerpt_or_paraphrase": "BPR declares pairwise input, reads embedding_size from config, creates user/item embeddings, passes positive and negative dot-product scores to BPRLoss, and multiplies users against every item embedding for full-sort scores.",
+      "scope_limit": "This establishes method mathematics, not trained parameters or a result."
+    },
+    {
+      "fact_id": "R5M1A-F014",
+      "dimension_id": "S04_EVALUATOR_CANDIDATE_MASK_AGGREGATION_TIES",
+      "status": "PASS_SOURCE_ESTABLISHED",
+      "claim": "Full-sort evaluation reshapes scores over the complete internal item cardinality, masks padding item 0, and masks history items to negative infinity.",
+      "source_relative_path": "recbole/trainer/trainer.py",
+      "symbol_or_line_locator": "Trainer._full_sort_batch_eval and evaluate, lines 521-540 and 593-600",
+      "source_sha256_raw_bytes": "52548168ccdf96ca7f404d890365284a4fdf9d6a01a4abf9d4c1ed702fc9fc47",
+      "evidence_excerpt_or_paraphrase": "Scores are viewed as users by tot_item_num, scores[:,0] is set to -inf, and scores at history_index are set to -inf.",
+      "scope_limit": "The internal item universe is data-derived and is not proven equal to the frozen 5,200-item v5 catalog."
+    },
+    {
+      "fact_id": "R5M1A-F015",
+      "dimension_id": "S04_EVALUATOR_CANDIDATE_MASK_AGGREGATION_TIES",
+      "status": "PARTIAL_SOURCE_BOUND",
+      "claim": "For full-sort evaluation, the loader defines each user's history mask as the sampler-provided used-item set minus current positive items.",
+      "source_relative_path": "recbole/data/dataloader/general_dataloader.py",
+      "symbol_or_line_locator": "FullSortEvalDataLoader.__init__ and _set_user_property, lines 196-242",
+      "source_sha256_raw_bytes": "1c32595ecb66c7e5381ce1b0fde2440d9f8fc7cd44a37800d6a5c1affa030168",
+      "evidence_excerpt_or_paraphrase": "The loader reads sampler.used_ids, collects each user's target positive set, and stores history_item = used_item - positive_item.",
+      "scope_limit": "Unless target truth is prefiltered to novel items, a target item also present in prior history is removed from the mask; v5 requires novel-only truth and all seen items masked."
+    },
+    {
+      "fact_id": "R5M1A-F016",
+      "dimension_id": "S04_EVALUATOR_CANDIDATE_MASK_AGGREGATION_TIES",
+      "status": "FAIL_CONFLICT",
+      "claim": "Top-k ranking uses torch.topk without an explicit equal-score secondary key, so the source does not implement the v5 score-descending/raw_product_id-ascending tie contract.",
+      "source_relative_path": "recbole/evaluator/collector.py",
+      "symbol_or_line_locator": "Collector.eval_batch_collect, lines 151-169",
+      "source_sha256_raw_bytes": "3557954a637113f9bcc35aa30c0f83587d2e9d7b27ac31fc3e31cd1422799492",
+      "evidence_excerpt_or_paraphrase": "Both rec.items and rec.topk call torch.topk(scores_tensor, max(topk), dim=-1); no stable flag, item-ID sort, or secondary comparison appears.",
+      "scope_limit": "Equal-score ordering is delegated to the unresolved Torch runtime and is not inferred from item indices."
+    },
+    {
+      "fact_id": "R5M1A-F017",
+      "dimension_id": "S04_EVALUATOR_CANDIDATE_MASK_AGGREGATION_TIES",
+      "status": "PASS_SOURCE_ESTABLISHED",
+      "claim": "Source NDCG uses binary relevance, logarithmic discount, and IDCG capped by min(positive count, k).",
+      "source_relative_path": "recbole/evaluator/metrics.py",
+      "symbol_or_line_locator": "class NDCG.metric_info, lines 163-202",
+      "source_sha256_raw_bytes": "31a4260a4a77fb86fcbfc66fa384ab01147c9fac8bc87a726ff5cb47259b3199",
+      "evidence_excerpt_or_paraphrase": "DCG and IDCG are cumulative 1/log2(rank+1) arrays, IDCG length is capped by positive count and cutoff, and the per-user result is dcg/idcg.",
+      "scope_limit": "Formula alignment alone does not align candidate universe, eligible-user denominator, novel truth, split, or tie ordering."
+    },
+    {
+      "fact_id": "R5M1A-F018",
+      "dimension_id": "S04_EVALUATOR_CANDIDATE_MASK_AGGREGATION_TIES",
+      "status": "PASS_SOURCE_ESTABLISHED",
+      "claim": "Source Hit@k is one when at least one relevant item appears by k.",
+      "source_relative_path": "recbole/evaluator/metrics.py",
+      "symbol_or_line_locator": "class Hit.metric_info, lines 39-64",
+      "source_sha256_raw_bytes": "31a4260a4a77fb86fcbfc66fa384ab01147c9fac8bc87a726ff5cb47259b3199",
+      "evidence_excerpt_or_paraphrase": "The cumulative positive indicator is thresholded at greater than zero for each rank position.",
+      "scope_limit": "It matches v5 HR only after v5 eligibility, truth, candidate, masking, and tie contracts are enforced."
+    },
+    {
+      "fact_id": "R5M1A-F019",
+      "dimension_id": "S04_EVALUATOR_CANDIDATE_MASK_AGGREGATION_TIES",
+      "status": "FAIL_CONFLICT",
+      "claim": "Source GAUC aggregates user AUC weighted by each user's positive count, conflicting with v5's unweighted macro per-user GAUC.",
+      "source_relative_path": "recbole/evaluator/metrics.py",
+      "symbol_or_line_locator": "class GAUC, lines 233-317",
+      "source_sha256_raw_bytes": "31a4260a4a77fb86fcbfc66fa384ab01147c9fac8bc87a726ff5cb47259b3199",
+      "evidence_excerpt_or_paraphrase": "GAUC computes user_auc and returns sum(user_auc * pos_len)/sum(pos_len).",
+      "scope_limit": "This source GAUC must remain on the official-source seam and cannot be relabeled as v5 GAUC."
+    },
+    {
+      "fact_id": "R5M1A-F020",
+      "dimension_id": "S05_TEST_ISOLATION_AND_LEAKAGE_SURFACES",
+      "status": "FAIL_CONFLICT",
+      "claim": "The default dataset path loads and preprocesses the complete interaction table before evaluation splitting, so filtering, ID maps, and cardinalities can depend on held-out records.",
+      "source_relative_path": "recbole/data/dataset/dataset.py",
+      "symbol_or_line_locator": "Dataset._from_scratch and _data_processing, lines 103-170; Dataset.build, lines 1806-1873",
+      "source_sha256_raw_bytes": "9e752eea85d84280f1ea5c752a3be055ab8deb1c03c1196d1a02f46065deee5e",
+      "evidence_excerpt_or_paraphrase": "Loading, filtering, remapping, feature preparation, imputation, label conversion, and normalization occur before build() orders and splits interactions.",
+      "scope_limit": "This is a source-level transductive surface; no claim is made that it changed the README number or that all such preprocessing is necessarily statistically harmful."
+    },
+    {
+      "fact_id": "R5M1A-F021",
+      "dimension_id": "S05_TEST_ISOLATION_AND_LEAKAGE_SURFACES",
+      "status": "FAIL_CONFLICT",
+      "claim": "The stock default uses random ordering and user-grouped random 80/10/10 splitting rather than the frozen v5 temporal boundaries.",
+      "source_relative_path": "recbole/data/dataset/dataset.py",
+      "symbol_or_line_locator": "Dataset.build, lines 1824-1853; defaults in overall.yaml lines 41-45",
+      "source_sha256_raw_bytes": "9e752eea85d84280f1ea5c752a3be055ab8deb1c03c1196d1a02f46065deee5e",
+      "evidence_excerpt_or_paraphrase": "RO calls shuffle(); RS with group_by user calls split_by_ratio per user. The default ratios are 0.8, 0.1, 0.1.",
+      "scope_limit": "A future official-source reproduction may use this source surface, but a harmonized v5 run may not."
+    },
+    {
+      "fact_id": "R5M1A-F022",
+      "dimension_id": "S05_TEST_ISOLATION_AND_LEAKAGE_SURFACES",
+      "status": "PARTIAL_SOURCE_BOUND",
+      "claim": "The normal trainer chooses and saves checkpoints using the configured validation metric.",
+      "source_relative_path": "recbole/trainer/trainer.py",
+      "symbol_or_line_locator": "Trainer.fit, lines 457-514; Trainer.evaluate, lines 561-630",
+      "source_sha256_raw_bytes": "52548168ccdf96ca7f404d890365284a4fdf9d6a01a4abf9d4c1ed702fc9fc47",
+      "evidence_excerpt_or_paraphrase": "Validation score drives early_stopping and update_flag; an improved score causes the checkpoint and best_valid_result to update.",
+      "scope_limit": "Validation-based selection is source-established, but this trainer fact does not establish a project TEST seal or producer receipt."
+    },
+    {
+      "fact_id": "R5M1A-F023",
+      "dimension_id": "S05_TEST_ISOLATION_AND_LEAKAGE_SURFACES",
+      "status": "FAIL_CONFLICT",
+      "claim": "The stock hyperparameter objective evaluates TEST on every trial and reports the resulting metrics to the tuning backend.",
+      "source_relative_path": "recbole/quick_start/quick_start.py",
+      "symbol_or_line_locator": "objective_function, lines 196-230",
+      "source_sha256_raw_bytes": "723bf8a1a24483ea08336694d7e141ca8b7b2e5b24d327b2870012cb2f1f2306",
+      "evidence_excerpt_or_paraphrase": "objective_function fits on train/valid, evaluates test, calls tune.report with test_result, and returns test_result.",
+      "scope_limit": "This stock objective is inadmissible for v5 regardless of whether a calling tuner chooses parameters from another returned field."
+    },
+    {
+      "fact_id": "R5M1A-F024",
+      "dimension_id": "S06_NUMERIC_TARGET_PRODUCER_BINDING",
+      "status": "PARTIAL_SOURCE_BOUND",
+      "claim": "README documents an illustrative BPR/ml-100k example with random 80/10/10 splitting, full negative sampling, and test NDCG@10 of 0.2768.",
+      "source_relative_path": "README.md",
+      "symbol_or_line_locator": "Quick-Start example, lines 147-191",
+      "source_sha256_raw_bytes": "359c15e2a9b0fd27f0574f85e4ea204d7dd4d310c42aa46403c41981848d8c07",
+      "evidence_excerpt_or_paraphrase": "The README says the script runs BPR on ml-100k, shows random by-ratio 0.8/0.1/0.1 and full evaluation, then lists ndcg@10: 0.2768 in the test result.",
+      "scope_limit": "This is documentation evidence for a method/dataset/evaluator family, not an immutable producer binding or v5-comparable result."
+    },
+    {
+      "fact_id": "R5M1A-F025",
+      "dimension_id": "S06_NUMERIC_TARGET_PRODUCER_BINDING",
+      "status": "FAIL_MISSING",
+      "claim": "The README numeric example does not bind its producing revision, dataset bytes, complete resolved config, actual seed, environment, checkpoint, prediction artifact, tie policy, or run receipt.",
+      "source_relative_path": "README.md",
+      "symbol_or_line_locator": "wording 'We will obtain some output like' and output block, lines 154-191",
+      "source_sha256_raw_bytes": "359c15e2a9b0fd27f0574f85e4ea204d7dd4d310c42aa46403c41981848d8c07",
+      "evidence_excerpt_or_paraphrase": "The example is introduced as output 'like' the shown block and contains log excerpts only; none of the required immutable producer fields is present.",
+      "scope_limit": "Current source defaults cannot be backfilled as historical producer facts."
+    },
+    {
+      "fact_id": "R5M1A-F026",
+      "dimension_id": "S06_NUMERIC_TARGET_PRODUCER_BINDING",
+      "status": "FAIL_CONFLICT",
+      "claim": "The README output names the model BPRMF.",
+      "source_relative_path": "README.md",
+      "symbol_or_line_locator": "Quick-Start output, line 171",
+      "source_sha256_raw_bytes": "359c15e2a9b0fd27f0574f85e4ea204d7dd4d310c42aa46403c41981848d8c07",
+      "evidence_excerpt_or_paraphrase": "The shown model representation begins INFO BPRMF(...).",
+      "scope_limit": "The label mismatch does not prove different mathematics, but it prevents exact executable-surface identity from documentation alone."
+    },
+    {
+      "fact_id": "R5M1A-F027",
+      "dimension_id": "S07_DATASET_LINEAGE_REQUIREMENTS",
+      "status": "DEFER_REQUIRES_DATA_OR_RUN",
+      "claim": "The source maps ml-100k to a RecBole-hosted processed-dataset archive URL.",
+      "source_relative_path": "recbole/properties/dataset/url.yaml",
+      "symbol_or_line_locator": "ml-100k mapping, line 133",
+      "source_sha256_raw_bytes": "6bd6c438a9b2cce7fa8d81ea6dbe0333b37f83270046d37162ce2775ada51d03",
+      "evidence_excerpt_or_paraphrase": "ml-100k points to a ProcessedDatasets/MovieLens/ml-100k.zip URL on RecBole's S3 endpoint.",
+      "scope_limit": "A URL is not provider-byte identity, release identity, rights evidence, or a hash; no acquisition occurred."
+    },
+    {
+      "fact_id": "R5M1A-F028",
+      "dimension_id": "S07_DATASET_LINEAGE_REQUIREMENTS",
+      "status": "PARTIAL_SOURCE_BOUND",
+      "claim": "The dataset loader would download, extract, remove the archive, and rename atomic files when the configured dataset path is absent.",
+      "source_relative_path": "recbole/data/dataset/dataset.py",
+      "symbol_or_line_locator": "Dataset._download and _load_data, lines 232-273",
+      "source_sha256_raw_bytes": "9e752eea85d84280f1ea5c752a3be055ab8deb1c03c1196d1a02f46065deee5e",
+      "evidence_excerpt_or_paraphrase": "_download resolves the URL, downloads and extracts the zip, deletes it, and calls rename_atomic_files; _load_data invokes this when dataset_path does not exist.",
+      "scope_limit": "The audit did not call this path. Future closure must hash the provider archive and every transformed atomic file and record the rename/extract toolchain."
+    },
+    {
+      "fact_id": "R5M1A-F029",
+      "dimension_id": "S07_DATASET_LINEAGE_REQUIREMENTS",
+      "status": "PARTIAL_SOURCE_BOUND",
+      "claim": "The ml-100k config loads user_id, item_id, rating, and timestamp and applies no rating threshold by default.",
+      "source_relative_path": "recbole/properties/dataset/ml-100k.yaml",
+      "symbol_or_line_locator": "basic information and load_col, lines 5-12 and 30-41",
+      "source_sha256_raw_bytes": "9890771341fe556dc14ee0f004ec6b72efeeac2fef8bfca2c78f7416e6c4f449",
+      "evidence_excerpt_or_paraphrase": "The interaction columns are the four named fields and threshold is null, so the default BPR surface does not source-define a rating cutoff.",
+      "scope_limit": "No atomic file bytes are present, and the audit does not infer provider release, schema values, or transformation history."
+    },
+    {
+      "fact_id": "R5M1A-F030",
+      "dimension_id": "S08_BOUNDED_V5_ADAPTER_FEASIBILITY",
+      "status": "PASS_SOURCE_ESTABLISHED",
+      "claim": "The dataset interface provides reversible raw-token/internal-ID mappings suitable for a representation-preserving ID adapter.",
+      "source_relative_path": "recbole/data/dataset/dataset.py",
+      "symbol_or_line_locator": "Dataset._remap, token2id, id2token, lines 1196-1218 and 1354-1390",
+      "source_sha256_raw_bytes": "9e752eea85d84280f1ea5c752a3be055ab8deb1c03c1196d1a02f46065deee5e",
+      "evidence_excerpt_or_paraphrase": "pandas.factorize creates IDs starting at 1 with [PAD] at 0 and stores both field2id_token and field2token_id; token2id/id2token expose both directions.",
+      "scope_limit": "Parity still requires a frozen raw_product_id map, unknown/duplicate policy, and byte hashes."
+    },
+    {
+      "fact_id": "R5M1A-F031",
+      "dimension_id": "S08_BOUNDED_V5_ADAPTER_FEASIBILITY",
+      "status": "PASS_SOURCE_ESTABLISHED",
+      "claim": "BPR can export an untruncated per-user score vector over all internal item embeddings without changing its training objective.",
+      "source_relative_path": "recbole/model/general_recommender/bpr.py",
+      "symbol_or_line_locator": "BPR.full_sort_predict, lines 92-97",
+      "source_sha256_raw_bytes": "191d4a8707833a7f4a4bfa0eadff12431bbf70d17ef25e39474bc9b8e588357a",
+      "evidence_excerpt_or_paraphrase": "full_sort_predict multiplies each selected user embedding by the transpose of the complete item-embedding matrix and returns the flattened scores.",
+      "scope_limit": "A future adapter must export full scores plus raw IDs before source top-k, prove all 5,200 v5 products are represented, and exclude padding."
+    },
+    {
+      "fact_id": "R5M1A-F032",
+      "dimension_id": "S08_BOUNDED_V5_ADAPTER_FEASIBILITY",
+      "status": "PARTIAL_SOURCE_BOUND",
+      "claim": "RecBole's pre-split benchmark-file interface concatenates every named split before global preprocessing and returns them later by stored file sizes.",
+      "source_relative_path": "recbole/data/dataset/dataset.py",
+      "symbol_or_line_locator": "Dataset._load_inter_feat, lines 277-318; Dataset.build, lines 1815-1822",
+      "source_sha256_raw_bytes": "9e752eea85d84280f1ea5c752a3be055ab8deb1c03c1196d1a02f46065deee5e",
+      "evidence_excerpt_or_paraphrase": "Each benchmark suffix is loaded, all frames are concatenated, global processing/remapping occurs, and build later slices by file_size_list.",
+      "scope_limit": "Placing sealed v5 TEST in this path before authorization is inadmissible; a project-owned TEST-sealed orchestration seam must be designed and parity-tested without editing vendor source."
+    },
+    {
+      "fact_id": "R5M1A-F033",
+      "dimension_id": "S09_NEXT_GATE_AND_REPRODUCTION_PRECONDITIONS",
+      "status": "DEFER_REQUIRES_DATA_OR_RUN",
+      "claim": "The quick-start surface logs argv/config and returns best-validation and test metric dictionaries but does not produce the project's immutable lineage and receipt bundle.",
+      "source_relative_path": "recbole/quick_start/quick_start.py",
+      "symbol_or_line_locator": "run_recbole, lines 114-170",
+      "source_sha256_raw_bytes": "723bf8a1a24483ea08336694d7e141ca8b7b2e5b24d327b2870012cb2f1f2306",
+      "evidence_excerpt_or_paraphrase": "The function constructs Config, seeds, creates/splits data, fits, evaluates, logs environment and results, and returns scalar result dictionaries.",
+      "scope_limit": "No dataset lineage hash, resolved-config hash, environment-lock hash, checkpoint hash, prediction hash, evaluator hash, per-user artifact, or TEST authorization receipt is emitted."
+    },
+    {
+      "fact_id": "R5M1A-F034",
+      "dimension_id": "S04_EVALUATOR_CANDIDATE_MASK_AGGREGATION_TIES",
+      "status": "PASS_SOURCE_ESTABLISHED",
+      "claim": "The shared top-k metric aggregator computes an unweighted arithmetic mean over evaluated users before selecting requested cutoffs.",
+      "source_relative_path": "recbole/evaluator/base_metric.py",
+      "symbol_or_line_locator": "TopkMetric.topk_result, lines 67-82",
+      "source_sha256_raw_bytes": "88f304da7a2cd9c6795dd4a3f334fe3570141884b3f923eb7bf0102d470730dc",
+      "evidence_excerpt_or_paraphrase": "topk_result applies value.mean(axis=0), then emits each configured k with metric_decimal_place rounding.",
+      "scope_limit": "The evaluated-user population comes from the dataloader; source aggregation does not by itself enforce v5 eligible-user construction."
+    },
+    {
+      "fact_id": "R5M1A-F035",
+      "dimension_id": "S04_EVALUATOR_CANDIDATE_MASK_AGGREGATION_TIES",
+      "status": "PASS_SOURCE_ESTABLISHED",
+      "claim": "The source GAUC rank collector assigns average ranks to equal scores.",
+      "source_relative_path": "recbole/evaluator/collector.py",
+      "symbol_or_line_locator": "Collector._average_rank and rec.meanrank collection, lines 96-135 and 171-188",
+      "source_sha256_raw_bytes": "3557954a637113f9bcc35aa30c0f83587d2e9d7b27ac31fc3e31cd1422799492",
+      "evidence_excerpt_or_paraphrase": "After descending torch.sort, adjacent equal scores are grouped and assigned the midpoint of their occupied rank positions.",
+      "scope_limit": "This average-rank rule applies to GAUC collection, not to torch.topk ordering for HR/NDCG."
+    },
+    {
+      "fact_id": "R5M1A-F036",
+      "dimension_id": "S05_TEST_ISOLATION_AND_LEAKAGE_SURFACES",
+      "status": "FAIL_CONFLICT",
+      "claim": "The stock Ray tuning path selects the best trial by recall@10 from the metrics reported by objective_function, which are TEST metrics.",
+      "source_relative_path": "run_hyper.py",
+      "symbol_or_line_locator": "ray_tune, lines 88-105",
+      "source_sha256_raw_bytes": "0a90a22cdbfc3384a5ce37ca04bd475dc266f387a4ac265a1b4430047232479f",
+      "evidence_excerpt_or_paraphrase": "ASHAScheduler is configured for recall@10 and result.get_best_trial selects recall@10; objective_function separately establishes that tune.report receives test_result.",
+      "scope_limit": "This path is forbidden for v5 tuning and must not be repaired by assuming the metric came from validation."
+    },
+    {
+      "fact_id": "R5M1A-F037",
+      "dimension_id": "S06_NUMERIC_TARGET_PRODUCER_BINDING",
+      "status": "FAIL_CONFLICT",
+      "claim": "The pinned executable model class is named BPR, not BPRMF.",
+      "source_relative_path": "recbole/model/general_recommender/bpr.py",
+      "symbol_or_line_locator": "class BPR, line 27",
+      "source_sha256_raw_bytes": "191d4a8707833a7f4a4bfa0eadff12431bbf70d17ef25e39474bc9b8e588357a",
+      "evidence_excerpt_or_paraphrase": "The model module declares class BPR(GeneralRecommender).",
+      "scope_limit": "Together with the README BPRMF fact, this is an identity-label conflict; it does not prove the underlying historical algorithm differed."
+    },
+    {
+      "fact_id": "R5M1A-F038",
+      "dimension_id": "S04_EVALUATOR_CANDIDATE_MASK_AGGREGATION_TIES",
+      "status": "PASS_SOURCE_ESTABLISHED",
+      "claim": "Sampler used-item sets are cumulative by phase: validation includes train plus validation interactions and test includes train, validation, plus test interactions.",
+      "source_relative_path": "recbole/sampler/sampler.py",
+      "symbol_or_line_locator": "Sampler.get_used_ids and set_phase, lines 238-279",
+      "source_sha256_raw_bytes": "6fee42497697225977fe64f81f89d5181dd8026f3c78acc99db133eb89858d5e",
+      "evidence_excerpt_or_paraphrase": "For each phase, cur copies the prior phase's sets and adds current interactions; set_phase selects that phase's cumulative array.",
+      "scope_limit": "The full-sort loader subsequently subtracts current positives; exact v5 novel-truth behavior still requires externally frozen truth preparation."
+    },
+    {
+      "fact_id": "R5M1A-F039",
+      "dimension_id": "S03_TRAIN_ENTRYPOINT_CONFIG_DEFAULT_RESOLUTION",
+      "status": "PASS_SOURCE_ESTABLISHED",
+      "claim": "BPRLoss is the mean negative log sigmoid of the positive-minus-negative score, with gamma 1e-10 added inside the log.",
+      "source_relative_path": "recbole/model/loss.py",
+      "symbol_or_line_locator": "BPRLoss.__init__ and forward, lines 41-47",
+      "source_sha256_raw_bytes": "788e67226d93e04b80e852494c1a26bf2e2781a089cf946ac459fec8a8a92db1",
+      "evidence_excerpt_or_paraphrase": "forward returns -log(gamma + sigmoid(pos_score - neg_score)).mean().",
+      "scope_limit": "This establishes the training objective only, not optimizer state, sampled negatives, or trained parameters."
+    },
+    {
+      "fact_id": "R5M1A-F040",
+      "dimension_id": "S03_TRAIN_ENTRYPOINT_CONFIG_DEFAULT_RESOLUTION",
+      "status": "PASS_SOURCE_ESTABLISHED",
+      "claim": "The model-specific BPR default embedding size is 64.",
+      "source_relative_path": "recbole/properties/model/BPR.yaml",
+      "symbol_or_line_locator": "embedding_size, line 1",
+      "source_sha256_raw_bytes": "07796763ae9a51e1873e9c9d6971fe59f54ca6de1464f4239280ab373bd3a306",
+      "evidence_excerpt_or_paraphrase": "embedding_size is set to 64 in the BPR model YAML.",
+      "scope_limit": "This is an overrideable current default, not proof that the README producer used 64."
+    }
+  ],
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

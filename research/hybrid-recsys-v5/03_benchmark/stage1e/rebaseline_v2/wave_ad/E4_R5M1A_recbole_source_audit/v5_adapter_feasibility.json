@@ -1,0 +1,229 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r5-m1-v5-adapter-feasibility-1.0",
+  "created_at": "2026-08-23",
+  "stage_id": "R5-M1A",
+  "candidate_id": "R5-CAND-RECBOLE-BPR-ML100K-001",
+  "source_revision": "9a6f63d8d4a5b989fe27955a833f813a6d86041e",
+  "v5_spec_binding": {
+    "path": "backend/docs/chatbot/seed-product/benchmark-spec-v5.json",
+    "canonical_lf_bytes": 2629,
+    "canonical_lf_sha256": "acef1c62cc2a9a3ae04fdf2f4b2fb24b3eb8d2634f15e085fbe1878be8dc166d"
+  },
+  "feasibility_decision": "CONDITIONALLY_BOUNDED_REPRESENTATION_ONLY_SCORE_ADAPTER_NOT_READY",
+  "representation_only_feasible_in_principle": true,
+  "adapter_ready": false,
+  "vendor_source_edit_required": false,
+  "bpr_objective_change_required": false,
+  "source_topk_reuse_for_v5_allowed": false,
+  "source_gauc_reuse_for_v5_allowed": false,
+  "standalone_frozen_v5_evaluator_required": true,
+  "test_access_authorized": false,
+  "decision_basis": "The pinned source exposes reversible ID maps and untruncated full item-score vectors, so an adapter can export identity-preserving scores before source top-k. Readiness is blocked by missing data/environment/config bindings, the absence of a TEST-sealed training/validation orchestration, incomplete catalog/ID parity, and conflicts between source and v5 split, truth, tie, and GAUC semantics.",
+  "source_interfaces": [
+    {
+      "interface": "method",
+      "source_fact_ids": ["R5M1A-F013", "R5M1A-F039"],
+      "source_symbols": [
+        "recbole/model/general_recommender/bpr.py::BPR.calculate_loss",
+        "recbole/model/loss.py::BPRLoss.forward"
+      ],
+      "adapter_use": "Invoke without changing pairwise BPR mathematics or negative-sampling policy."
+    },
+    {
+      "interface": "identity_map",
+      "source_fact_ids": ["R5M1A-F030"],
+      "source_symbols": [
+        "recbole/data/dataset/dataset.py::Dataset._remap",
+        "recbole/data/dataset/dataset.py::Dataset.token2id",
+        "recbole/data/dataset/dataset.py::Dataset.id2token"
+      ],
+      "adapter_use": "Freeze and hash raw user/product token to internal ID maps; preserve [PAD]=0 as an excluded sentinel."
+    },
+    {
+      "interface": "full_score_export",
+      "source_fact_ids": ["R5M1A-F031"],
+      "source_symbols": [
+        "recbole/model/general_recommender/bpr.py::BPR.full_sort_predict"
+      ],
+      "adapter_use": "Export every internal item score for selected users before torch.topk, masking, or reranking."
+    },
+    {
+      "interface": "source_full_sort_reference",
+      "source_fact_ids": ["R5M1A-F014", "R5M1A-F015", "R5M1A-F016", "R5M1A-F038"],
+      "source_symbols": [
+        "recbole/data/dataloader/general_dataloader.py::FullSortEvalDataLoader",
+        "recbole/trainer/trainer.py::Trainer._full_sort_batch_eval",
+        "recbole/evaluator/collector.py::Collector.eval_batch_collect"
+      ],
+      "adapter_use": "Use only as a semantic reference and official-source seam; do not reuse its top-k output for harmonized v5."
+    }
+  ],
+  "conceptual_field_mapping": [
+    {
+      "v5_concept": "raw user identity",
+      "source_interface": "configured USER_ID_FIELD token remapped by Dataset",
+      "mapping_status": "PLAUSIBLE_REQUIRES_FROZEN_SCHEMA_AND_ID_MAP",
+      "rule": "Preserve the exact raw token and internal ID bidirectionally; user 0 exclusion belongs to the v5 preparation/evaluator contract, not an inferred source rule."
+    },
+    {
+      "v5_concept": "raw_product_id",
+      "source_interface": "configured ITEM_ID_FIELD token remapped by Dataset",
+      "mapping_status": "PLAUSIBLE_REQUIRES_5200_OF_5200_COVERAGE",
+      "rule": "Bind every catalog product to one internal item ID, exclude only [PAD] internal ID 0, and preserve raw_product_id for deterministic tie resolution."
+    },
+    {
+      "v5_concept": "training implicit-positive interaction",
+      "source_interface": "atomic .inter row consumed by Dataset and pairwise TrainDataLoader",
+      "mapping_status": "DEFERRED_TO_V5_SNAPSHOT_SCHEMA_AND_TRANSFORMATION_RECEIPT",
+      "rule": "Materialize only the preregistered v5 training-positive event class. The exact snapshot field name is not present in the frozen inputs and is not invented here."
+    },
+    {
+      "v5_concept": "event time and temporal split membership",
+      "source_interface": "configured TIME_FIELD plus externally prepared split membership",
+      "mapping_status": "SOURCE_DEFAULT_NOT_ACCEPTABLE_PROJECT_SPLIT_REQUIRED",
+      "rule": "Use frozen v5 boundaries and split-index hashes. Do not invoke the random RO/RS default and do not let source preprocessing derive split identity."
+    },
+    {
+      "v5_concept": "validation novel truth",
+      "source_interface": "standalone evaluator truth set keyed by raw user/product IDs",
+      "mapping_status": "EXTERNAL_EVALUATOR_REQUIRED",
+      "rule": "Subtract all historical seen products before evaluation and exclude users with no novel organic purchase; do not rely on source used-minus-positive semantics for repeated targets."
+    },
+    {
+      "v5_concept": "full 5200-product candidate universe including cold products",
+      "source_interface": "full score export joined to the frozen catalog ID map",
+      "mapping_status": "UNPROVEN_REQUIRES_CATALOG_AND_COLD_ITEM_PARITY",
+      "rule": "Reject if any product is absent, duplicated, unknown, or silently zero-filled. A catalog-only item may enter the model identity space only through a frozen, source-supported item mapping with parity evidence."
+    },
+    {
+      "v5_concept": "seen-item exclusion",
+      "source_interface": "standalone evaluator mask over full score artifact",
+      "mapping_status": "EXTERNAL_EVALUATOR_REQUIRED",
+      "rule": "Mask all v5 history products to -inf using frozen history hashes before ranking."
+    },
+    {
+      "v5_concept": "deterministic rank",
+      "source_interface": "standalone evaluator sort",
+      "mapping_status": "SOURCE_TOPK_CONFLICT_EXTERNAL_EVALUATOR_REQUIRED",
+      "rule": "Sort by score descending and then raw_product_id ascending; source torch.topk output is not accepted."
+    },
+    {
+      "v5_concept": "HR@10 and NDCG@10",
+      "source_interface": "standalone evaluator over v5 candidates and truth",
+      "mapping_status": "FORMULA_COMPATIBLE_ONLY_AFTER_PARITY",
+      "rule": "Source formulae are compatible in form, but only the shared evaluator may establish v5 denominators, masks, eligibility, ties, and per-user vectors."
+    },
+    {
+      "v5_concept": "macro per-user GAUC",
+      "source_interface": "standalone evaluator exact unseen-positive versus unseen-negative AUC",
+      "mapping_status": "SOURCE_AGGREGATION_CONFLICT_EXTERNAL_EVALUATOR_REQUIRED",
+      "rule": "Use average ranks for score ties and an unweighted mean over eligible users; never import source positive-count-weighted GAUC."
+    }
+  ],
+  "adapter_boundary": {
+    "allowed": [
+      "Read an immutable, already-produced full score artifact and its exact source run manifest.",
+      "Map internal RecBole user/item IDs back to frozen raw IDs with total coverage checks.",
+      "Remove the [PAD] sentinel by identity, not by score.",
+      "Normalize schema and numeric serialization without changing values or score direction.",
+      "Emit count/hash/schema manifests and pass full scores to the separately frozen v5 evaluator."
+    ],
+    "forbidden": [
+      "Change BPR embeddings, loss, optimizer, negative sampling, checkpoint, or scoring function.",
+      "Use run_hyper.py or objective_function for project tuning.",
+      "Load project v5 TEST during dataset remapping, training, tuning, validation, or adapter parity.",
+      "Use RecBole torch.topk ordering as the v5 tie policy.",
+      "Relabel positive-count-weighted RecBole GAUC as v5 macro GAUC.",
+      "Drop unknown users/items, omit cold products, impute missing scores, convert missing values to zero, calibrate, rerank, or truncate before export."
+    ]
+  },
+  "source_runner_preconditions": [
+    {
+      "id": "R5M1A-RP01",
+      "requirement": "A project-owned train/validation orchestration must be frozen that does not invoke quick-start's automatic TEST evaluation and cannot resolve any TEST path before authorization.",
+      "reason": "run_recbole and objective_function construct and evaluate test_data; objective_function reports it to tuning."
+    },
+    {
+      "id": "R5M1A-RP02",
+      "requirement": "Prepared v5 split membership, raw ID maps, and the 5,200-product catalog must be immutable inputs with hashes before source dataset construction.",
+      "reason": "Source default global preprocessing and random split are not the v5 protocol."
+    },
+    {
+      "id": "R5M1A-RP03",
+      "requirement": "The exact runtime lock, literal argv/config, seed, negative sampler, checkpoint rule, and resource envelope must be frozen before execution.",
+      "reason": "Source declarations are ranges and documentation does not bind a producing configuration."
+    },
+    {
+      "id": "R5M1A-RP04",
+      "requirement": "Official-source reproduction and harmonized v5 validation must use separate namespaces, tables, and receipts.",
+      "reason": "The source random-split evaluator and v5 temporal standalone evaluator are different estimands."
+    }
+  ],
+  "required_parity_fixtures": [
+    {
+      "fixture": "raw_internal_id_roundtrip",
+      "must_prove": "Every exported user/product ID round-trips exactly and [PAD] alone is excluded."
+    },
+    {
+      "fixture": "catalog_coverage_and_cold_items",
+      "must_prove": "Exactly 5,200 unique v5 products, including the 250 cold products, have one score per evaluated user."
+    },
+    {
+      "fixture": "score_direction_and_count_equality",
+      "must_prove": "Adapter output preserves every source score bit/value, order-independent identity join, row count, and no missingness imputation."
+    },
+    {
+      "fixture": "seen_and_repeated_target",
+      "must_prove": "All historical products are masked and a repeated target is excluded from novel truth rather than unmasked as a source positive."
+    },
+    {
+      "fixture": "equal_score_adversary",
+      "must_prove": "Top-k order is score descending then raw_product_id ascending independently of internal ID and Torch behavior."
+    },
+    {
+      "fixture": "hr_ndcg_manual_cases",
+      "must_prove": "HR@10 and binary NDCG@10 match manually computed values for single and multiple truths and only eligible users enter the mean."
+    },
+    {
+      "fixture": "gauc_weighting_adversary",
+      "must_prove": "v5 GAUC uses average score-tie ranks and an unweighted user mean, with a case where positive-count weighting would differ."
+    },
+    {
+      "fixture": "test_seal_sentinel",
+      "must_prove": "Training, tuning, validation, score export, and parity fail closed if any project TEST path or hash is requested before the later TEST gate."
+    },
+    {
+      "fixture": "artifact_set_equality",
+      "must_prove": "Declared adapter/evaluator inputs and outputs equal the physical file sets and every byte hash replays."
+    }
+  ],
+  "official_source_seam": {
+    "feasibility": "SOURCE_CODE_SEMANTICS_LOCATABLE_TARGET_CENTER_NOT_BOUND",
+    "dataset": "MOVIELENS_100K_EXACT_PROVIDER_BYTES_DEFERRED",
+    "protocol": "RANDOM_USER_GROUPED_80_10_10_FULL_SORT_SOURCE_FAMILY",
+    "documented_ndcg_at_10": 0.2768,
+    "documented_center_accepted": false,
+    "required_before_rerun": "Freeze provider lineage, exact environment, literal argv/resolved config, seeds/aggregation, source evaluator identity, target policy, tolerance, and receipts without using output to choose them."
+  },
+  "harmonized_v5_seam": {
+    "feasibility": "PLAUSIBLE_BUT_UNIMPLEMENTED_AND_UNVERIFIED",
+    "training_objective": "PRESERVE_PINNED_BPR",
+    "source_score_surface": "FULL_SORT_PREDICT_BEFORE_TOPK",
+    "ranking_and_metrics": "FROZEN_STANDALONE_V5_EVALUATOR_ONLY",
+    "test_state": "SEALED",
+    "paper_use": "BLOCKED"
+  },
+  "model_profile": {
+    "display_name": "Sol XHigh Standard",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "xhigh",
+    "service_tier": "standard"
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

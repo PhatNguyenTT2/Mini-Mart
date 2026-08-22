@@ -1,0 +1,128 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r5-m1-audit-handoff-1.0",
+  "created_at": "2026-08-23",
+  "stage_id": "R5-M1A",
+  "candidate_id": "R5-CAND-RECBOLE-BPR-ML100K-001",
+  "source_revision": "9a6f63d8d4a5b989fe27955a833f813a6d86041e",
+  "candidate_status": "SOURCE_INCOMPLETE_CANDIDATE_FOR_R5_G1",
+  "candidate_status_reason": "The pinned source establishes identity, license, BPR mathematics, config precedence, seed handling, score interfaces, masks, and metric formulae, but exact environment/data lineage, TEST isolation, deterministic v5 ties, macro GAUC parity, numeric producer binding, adapter receipts, and rerun evidence remain open. The gaps are finite and do not require changing BPR mathematics, so central comparison is appropriate without admission or execution.",
+  "reproducibility_status": "SOURCE_INCOMPLETE_NOT_RUN",
+  "source_fact_count": 40,
+  "status_counts": {
+    "PASS_SOURCE_ESTABLISHED": 2,
+    "PARTIAL_SOURCE_BOUND": 2,
+    "FAIL_MISSING": 1,
+    "FAIL_CONFLICT": 2,
+    "DEFER_REQUIRES_DATA_OR_RUN": 2
+  },
+  "dispositive_conflicts": [],
+  "bounded_non_dispositive_conflicts": [
+    {
+      "id": "R5M1A-C01",
+      "summary": "Source torch.topk does not implement the v5 raw_product_id ascending tie rule.",
+      "required_disposition": "Export full scores before source top-k and use only the standalone frozen v5 evaluator for harmonized ranking."
+    },
+    {
+      "id": "R5M1A-C02",
+      "summary": "Source GAUC is positive-count weighted, whereas v5 GAUC is an unweighted macro user mean.",
+      "required_disposition": "Keep source GAUC on the official seam and compute v5 GAUC independently with parity fixtures."
+    },
+    {
+      "id": "R5M1A-C03",
+      "summary": "Source global preprocessing and random split are not the v5 temporal, TEST-sealed protocol.",
+      "required_disposition": "Use immutable project-prepared train/validation membership and a runner that cannot resolve TEST before authorization."
+    },
+    {
+      "id": "R5M1A-C04",
+      "summary": "Stock tuning evaluates TEST every trial; Ray tuning selects reported TEST recall@10.",
+      "required_disposition": "Forbid run_hyper.py and objective_function for v5; freeze validation-only tuning or a fixed config."
+    },
+    {
+      "id": "R5M1A-C05",
+      "summary": "README's BPRMF label conflicts with the pinned executable class BPR.",
+      "required_disposition": "Do not treat README NDCG@10=0.2768 as an exact producer-bound center."
+    }
+  ],
+  "remaining_blockers": [
+    {
+      "id": "R5M1A-B01",
+      "area": "environment",
+      "blocker": "No exact Python/platform/direct/transitive/Torch/accelerator lock or runtime receipt exists.",
+      "closure_gate": "R5-M2 proposal then separately authorized environment materialization"
+    },
+    {
+      "id": "R5M1A-B02",
+      "area": "official_dataset_lineage",
+      "blocker": "No exact MovieLens provider release, rights receipt, raw archive hash, extracted atomic-file hashes, or conversion/split/ID-map receipt exists.",
+      "closure_gate": "R5-M2 proposal then separately authorized dataset materialization"
+    },
+    {
+      "id": "R5M1A-B03",
+      "area": "numeric_target",
+      "blocker": "README NDCG@10=0.2768 lacks revision/data/config/seed/environment/checkpoint/prediction/tie/run binding and is not an accepted reproduction center.",
+      "closure_gate": "Freeze target policy and tolerance before any official-source rerun"
+    },
+    {
+      "id": "R5M1A-B04",
+      "area": "test_isolation",
+      "blocker": "Stock quick-start and tuning surfaces do not enforce the project TEST seal; pre-split loading can concatenate every named split before global remapping.",
+      "closure_gate": "Hash-bound validation-only runner and TEST sentinel parity before execution"
+    },
+    {
+      "id": "R5M1A-B05",
+      "area": "v5_data_and_catalog",
+      "blocker": "The six-field v5 lineage, eligible-user hash, exact temporal split/history/truth artifacts, 5,200-product map, and cold-product coverage receipt are absent.",
+      "closure_gate": "Future v5 adapter materialization with TEST still sealed"
+    },
+    {
+      "id": "R5M1A-B06",
+      "area": "adapter_and_evaluator",
+      "blocker": "No adapter/evaluator identity, raw hash, exact argv, schema, inventory, deterministic tie implementation, macro GAUC implementation, or parity receipt exists.",
+      "closure_gate": "Frozen implementation and all representation/metric parity fixtures"
+    },
+    {
+      "id": "R5M1A-B07",
+      "area": "official_rerun",
+      "blocker": "No authorized same-surface rerun, checkpoint, prediction, per-user metric, evaluator, terminal, or comparison receipt exists.",
+      "closure_gate": "Separate execution authorization after data/environment/config/tolerance freeze"
+    },
+    {
+      "id": "R5M1A-B08",
+      "area": "harmonized_validation_and_test",
+      "blocker": "No harmonized v5 validation exists and project TEST is not authorized to open.",
+      "closure_gate": "Validation run after parity; later one-time TEST gate only after locked selection"
+    }
+  ],
+  "r5_g1_recommendation": "ADVANCE_TO_R5_G1_CENTRAL_COMPARISON_ONLY_NO_SELECTION_ADMISSION_OR_EXECUTION_AUTHORITY",
+  "r5_g1_recommendation_reason": "The source audit is complete enough for hash replay and bounded-gap comparison, no permanent license/identity/objective conflict was found, and a representation-only full-score seam is plausible. Central R5-G1 may select zero or one candidate for a later R5-M2 proposal; it may not use documented metric magnitude for selection or authorize acquisition, environment creation, execution, or TEST access.",
+  "numeric_target_status": {
+    "metric": "NDCG@10",
+    "documented_value": 0.2768,
+    "status": "PROVISIONAL_DOCUMENTATION_ONLY_NOT_PRODUCER_BOUND",
+    "valid_for_paper": false,
+    "valid_as_v5_comparator": false,
+    "rerun_required": true
+  },
+  "adapter_status": {
+    "decision": "CONDITIONALLY_BOUNDED_REPRESENTATION_ONLY_SCORE_ADAPTER_NOT_READY",
+    "bpr_objective_preserved": true,
+    "full_score_export_available": true,
+    "source_topk_usable_for_v5": false,
+    "source_gauc_usable_for_v5": false,
+    "test_sealed_runner_materialized": false,
+    "parity_receipts_present": false
+  },
+  "model_profile": {
+    "display_name": "Sol XHigh Standard",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "xhigh",
+    "service_tier": "standard"
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}
