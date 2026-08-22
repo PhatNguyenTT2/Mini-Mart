@@ -1,0 +1,344 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r3-fd1b-scout-candidates-1.0",
+  "created_at": "2026-08-22T13:27:05Z",
+  "stage_id": "R3-FD1B",
+  "scope": "academic_benchmark_and_reproducibility_suites",
+  "model_profile": {
+    "display_name": "Sol XHigh Standard",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "xhigh",
+    "service_tier": "standard"
+  },
+  "proposal_count": 2,
+  "proposals": [
+    {
+      "proposal_id": "R3-FD1B-PROP-001",
+      "framework_name": "Elliot v0.3.1 reproducible recommender evaluation suite",
+      "repository_locator": "https://github.com/sisinflab/elliot",
+      "immutable_revision_locator": "https://github.com/sisinflab/elliot/commit/641100a89c707619e557eafc46df7ff46c359a73",
+      "repository_license_locator": "https://github.com/sisinflab/elliot/blob/641100a89c707619e557eafc46df7ff46c359a73/LICENSE",
+      "reference_paper_locator": "https://doi.org/10.1145/3404835.3463245",
+      "dataset_name": "MovieLens 1M",
+      "dataset_provider_locator": "https://grouplens.org/datasets/movielens/1m/",
+      "dataset_release_id": "MovieLens 1M stable release 2003-02; ml-1m.zip; provider-published MD5 sidecar",
+      "dataset_terms_locator": "https://files.grouplens.org/datasets/movielens/ml-1m-README.txt",
+      "preprocessing_split_locator": "https://github.com/sisinflab/elliot/blob/641100a89c707619e557eafc46df7ff46c359a73/config_files/advanced_configuration.yml",
+      "training_entrypoint_locator": "https://github.com/sisinflab/elliot/blob/641100a89c707619e557eafc46df7ff46c359a73/start_experiments.py",
+      "configuration_locator": "https://github.com/sisinflab/elliot/blob/641100a89c707619e557eafc46df7ff46c359a73/config_files/advanced_configuration.yml",
+      "evaluator_locator": "https://github.com/sisinflab/elliot/blob/641100a89c707619e557eafc46df7ff46c359a73/elliot/evaluation/metrics/accuracy/ndcg/ndcg.py",
+      "benchmark_target_locator": "https://abellogin.github.io/2021/sigir.pdf",
+      "benchmark_target_summary": {
+        "dataset_split": "MovieLens 1M converted from ratings.dat to dataset.tsv; iterative 10-core prefilter; 20% random-subsampling test split; 5-fold random-cross-validation validation split",
+        "method_config": "BPRMF under the source-owned advanced_configuration.yml; five random hyperparameter evaluations; 50 epochs; the exact learning-rate, batch-size and regularization search spaces are pinned in the config",
+        "metric": "nDCG",
+        "cutoff": 50,
+        "value": 0.2390,
+        "result_locator": "https://abellogin.github.io/2021/sigir.pdf",
+        "protocol_caveats": [
+          "The numeric target is Table 3 of the Elliot SIGIR 2021 paper and is only a future reference-reproduction target.",
+          "The random holdout/CV protocol, relevance threshold and nDCG@50 are not comparable to the v5 temporal novel-purchase full-catalog protocol.",
+          "FD3 must replay the v0.3.1 defaults, random-state behavior and selected hyperparameter realization before materialization."
+        ]
+      },
+      "task_family": "top-N recommendation evaluation over timestamped explicit ratings converted to Elliot's user-item-rating-timestamp TSV surface",
+      "source_inventory": [
+        {
+          "evidence_id": "R3-FD1B-PROP-001-SRC-001",
+          "url": "https://github.com/sisinflab/elliot",
+          "authority_type": "official_owner_repository",
+          "claim_scope": "Repository identity, academic reproducibility purpose, entry-point overview and Apache-2.0 license declaration.",
+          "access_status": "ACCESSIBLE_WEB_200",
+          "retrieved_at": "2026-08-22T13:27:05Z",
+          "notes": "Owner repository states that one configuration drives loading, splitting, optimization, training, evaluation and result collection."
+        },
+        {
+          "evidence_id": "R3-FD1B-PROP-001-SRC-002",
+          "url": "https://github.com/sisinflab/elliot/commit/641100a89c707619e557eafc46df7ff46c359a73",
+          "authority_type": "official_owner_immutable_commit",
+          "claim_scope": "Immutable revision behind the v0.3.1 release.",
+          "access_status": "RESOLVED_GITHUB_API_METADATA",
+          "retrieved_at": "2026-08-22T13:27:05Z",
+          "notes": "GitHub API resolved release short SHA 641100a to full commit 641100a89c707619e557eafc46df7ff46c359a73 dated 2021-07-08."
+        },
+        {
+          "evidence_id": "R3-FD1B-PROP-001-SRC-003",
+          "url": "https://github.com/sisinflab/elliot/releases/tag/v0.3.1",
+          "authority_type": "official_owner_release",
+          "claim_scope": "Release-to-commit binding and v0.3.1 command-line/config release notes.",
+          "access_status": "ACCESSIBLE_WEB_SEARCH_RECORD",
+          "retrieved_at": "2026-08-22T13:27:05Z",
+          "notes": "Official release surface identifies v0.3.1, short SHA 641100a and start_experiments.py --conf support."
+        },
+        {
+          "evidence_id": "R3-FD1B-PROP-001-SRC-004",
+          "url": "https://github.com/sisinflab/elliot/blob/641100a89c707619e557eafc46df7ff46c359a73/LICENSE",
+          "authority_type": "official_owner_license_blob",
+          "claim_scope": "Affirmative Apache License 2.0 code license at the pinned revision.",
+          "access_status": "ACCESSIBLE_HTTP_HEAD_200_AND_REPOSITORY_LICENSE_RENDER",
+          "retrieved_at": "2026-08-22T13:27:05Z",
+          "notes": "Exact-commit license blob returned HTTP 200; the owner repository renders Apache-2.0."
+        },
+        {
+          "evidence_id": "R3-FD1B-PROP-001-SRC-005",
+          "url": "https://doi.org/10.1145/3404835.3463245",
+          "authority_type": "original_peer_reviewed_paper_doi",
+          "claim_scope": "SIGIR 2021 source-of-record identity for Elliot.",
+          "access_status": "ACCESSIBLE_DOI_RECORD",
+          "retrieved_at": "2026-08-22T13:27:05Z",
+          "notes": "The owner repository cites this DOI and paper identity."
+        },
+        {
+          "evidence_id": "R3-FD1B-PROP-001-SRC-006",
+          "url": "https://grouplens.org/datasets/movielens/1m/",
+          "authority_type": "canonical_dataset_provider_release",
+          "claim_scope": "Stable MovieLens 1M provider identity, 2003-02 release, archive and checksum links.",
+          "access_status": "ACCESSIBLE_WEB_200",
+          "retrieved_at": "2026-08-22T13:27:05Z",
+          "notes": "GroupLens identifies 1,000,209 ratings, 6,040 users and approximately 3,900 movies in the release README."
+        },
+        {
+          "evidence_id": "R3-FD1B-PROP-001-SRC-007",
+          "url": "https://files.grouplens.org/datasets/movielens/ml-1m-README.txt",
+          "authority_type": "canonical_dataset_terms",
+          "claim_scope": "Dataset research-use conditions, acknowledgement, non-redistribution and non-commercial restrictions, plus raw schema.",
+          "access_status": "ACCESSIBLE_TEXT_200",
+          "retrieved_at": "2026-08-22T13:27:05Z",
+          "notes": "Affirmative research use is conditional; no redistribution and no commercial/revenue-bearing use without permission."
+        },
+        {
+          "evidence_id": "R3-FD1B-PROP-001-SRC-008",
+          "url": "https://files.grouplens.org/datasets/movielens/ml-1m.zip.md5",
+          "authority_type": "canonical_dataset_checksum",
+          "claim_scope": "Provider checksum sidecar for the exact ml-1m.zip release.",
+          "access_status": "ACCESSIBLE_PROVIDER_LOCATOR",
+          "retrieved_at": "2026-08-22T13:27:05Z",
+          "notes": "Locator only; archive and checksum bytes were not downloaded."
+        },
+        {
+          "evidence_id": "R3-FD1B-PROP-001-SRC-009",
+          "url": "https://github.com/sisinflab/elliot/blob/641100a89c707619e557eafc46df7ff46c359a73/sample_main.py",
+          "authority_type": "official_owner_preprocessing_recipe",
+          "claim_scope": "Source-owned conversion of MovieLens ratings.dat double-colon rows to Elliot dataset.tsv and experiment invocation.",
+          "access_status": "ACCESSIBLE_HTTP_HEAD_200_AND_BRANCH_BLOB_RENDER",
+          "retrieved_at": "2026-08-22T13:27:05Z",
+          "notes": "Exact-commit blob exists; branch render shows extraction of ml-1m/ratings.dat and replacement of :: with tab before run_experiment."
+        },
+        {
+          "evidence_id": "R3-FD1B-PROP-001-SRC-010",
+          "url": "https://github.com/sisinflab/elliot/blob/641100a89c707619e557eafc46df7ff46c359a73/config_files/advanced_configuration.yml",
+          "authority_type": "official_owner_frozen_configuration",
+          "claim_scope": "MovieLens 1M path, 10-core prefilter, random test/validation split, BPRMF search/training settings, nDCG evaluator and cutoff.",
+          "access_status": "ACCESSIBLE_HTTP_HEAD_200_AND_BRANCH_BLOB_RENDER",
+          "retrieved_at": "2026-08-22T13:27:05Z",
+          "notes": "The same named configuration is printed in the paper and is the producer of Table 3."
+        },
+        {
+          "evidence_id": "R3-FD1B-PROP-001-SRC-011",
+          "url": "https://github.com/sisinflab/elliot/blob/641100a89c707619e557eafc46df7ff46c359a73/start_experiments.py",
+          "authority_type": "official_owner_training_entrypoint",
+          "claim_scope": "Pinned command-line experiment entry point for a configuration file.",
+          "access_status": "ACCESSIBLE_HTTP_HEAD_200",
+          "retrieved_at": "2026-08-22T13:27:05Z",
+          "notes": "Exact-commit blob returned HTTP 200; release notes bind it to --conf execution."
+        },
+        {
+          "evidence_id": "R3-FD1B-PROP-001-SRC-012",
+          "url": "https://github.com/sisinflab/elliot/blob/641100a89c707619e557eafc46df7ff46c359a73/elliot/evaluation/metrics/accuracy/ndcg/ndcg.py",
+          "authority_type": "official_owner_evaluator_blob",
+          "claim_scope": "Pinned nDCG evaluator implementation used by the suite.",
+          "access_status": "ACCESSIBLE_HTTP_HEAD_200",
+          "retrieved_at": "2026-08-22T13:27:05Z",
+          "notes": "Exact-commit evaluator blob exists; FD3 must replay metric semantics before materialization."
+        },
+        {
+          "evidence_id": "R3-FD1B-PROP-001-SRC-013",
+          "url": "https://abellogin.github.io/2021/sigir.pdf",
+          "authority_type": "author_hosted_original_paper_pdf",
+          "claim_scope": "Configuration 3 and Table 3 same-paper binding; BPRMF nDCG@50 = 0.2390.",
+          "access_status": "ACCESSIBLE_PDF_TEXT",
+          "retrieved_at": "2026-08-22T13:27:05Z",
+          "notes": "Paper states Table 3 is produced by Configuration 3 and reports the numeric target."
+        }
+      ],
+      "scout_status": "PLAUSIBLE_COMPLETE_PROPOSAL",
+      "unresolved_fields": []
+    },
+    {
+      "proposal_id": "R3-FD1B-PROP-002",
+      "framework_name": "DaisyRec 2.0 rigorous-evaluation benchmark suite",
+      "repository_locator": "https://github.com/recsys-benchmark/DaisyRec-v2.0",
+      "immutable_revision_locator": "https://github.com/recsys-benchmark/DaisyRec-v2.0/commit/e9d0326457fb8aa138f7bb04ab751b17345cdb65",
+      "repository_license_locator": "https://github.com/recsys-benchmark/DaisyRec-v2.0/blob/e9d0326457fb8aa138f7bb04ab751b17345cdb65/LICENSE",
+      "reference_paper_locator": "https://doi.org/10.1109/TPAMI.2022.3231891",
+      "dataset_name": "MovieLens 1M",
+      "dataset_provider_locator": "https://grouplens.org/datasets/movielens/1m/",
+      "dataset_release_id": "MovieLens 1M stable release 2003-02; ml-1m.zip; provider-published MD5 sidecar",
+      "dataset_terms_locator": "https://files.grouplens.org/datasets/movielens/ml-1m-README.txt",
+      "preprocessing_split_locator": "https://github.com/recsys-benchmark/DaisyRec-v2.0/blob/e9d0326457fb8aa138f7bb04ab751b17345cdb65/daisy/utils/splitter.py",
+      "training_entrypoint_locator": "https://github.com/recsys-benchmark/DaisyRec-v2.0/blob/e9d0326457fb8aa138f7bb04ab751b17345cdb65/main.py",
+      "configuration_locator": "https://github.com/recsys-benchmark/DaisyRec-v2.0/blob/e9d0326457fb8aa138f7bb04ab751b17345cdb65/appendix.pdf",
+      "evaluator_locator": "https://github.com/recsys-benchmark/DaisyRec-v2.0/blob/e9d0326457fb8aa138f7bb04ab751b17345cdb65/daisy/utils/metrics.py",
+      "benchmark_target_locator": "https://github.com/recsys-benchmark/DaisyRec-v2.0-Ranking_results/blob/440c95534cbb21dd0f7b8a7d551bfddbfcb2422e/docs/source/tsbr_results/BPRMF.rst",
+      "benchmark_target_summary": {
+        "dataset_split": "MovieLens 1M origin view; global time-aware split-by-ratio with rho=80%; latest 10% of training held out for validation",
+        "method_config": "BPRMF with original BPR objective, uniform negative sampler and 30 Bayesian HyperOpt trials optimized on NDCG@10; best TSBR hyperparameters are source-owned in appendix Tables 16-18",
+        "metric": "NDCG",
+        "cutoff": 10,
+        "value": 0.5275,
+        "result_locator": "https://github.com/recsys-benchmark/DaisyRec-v2.0-Ranking_results/blob/440c95534cbb21dd0f7b8a7d551bfddbfcb2422e/docs/source/tsbr_results/BPRMF.rst",
+        "protocol_caveats": [
+          "The target is the DaisyRec-owned TSBR ranking-result surface for BPRMF on the unfiltered origin view.",
+          "The suite reports multiple metrics and cutoffs; this proposal freezes only NDCG@10 = 0.5275 as the reference target.",
+          "TSBR preprocessing, negative sampling and evaluator semantics differ from v5 and cannot support direct cross-dataset comparison."
+        ]
+      },
+      "task_family": "rigorous top-N recommendation benchmarking with time-aware splitting, model-faithful objectives and a shared ranking evaluator",
+      "source_inventory": [
+        {
+          "evidence_id": "R3-FD1B-PROP-002-SRC-001",
+          "url": "https://github.com/recsys-benchmark/DaisyRec-v2.0",
+          "authority_type": "official_owner_repository",
+          "claim_scope": "Repository identity, fair-comparison scope, code/paper mapping, datasets, entrypoints, TSBR/TLOO protocol and ranking-result links.",
+          "access_status": "ACCESSIBLE_WEB_200",
+          "retrieved_at": "2026-08-22T13:27:05Z",
+          "notes": "Owner README maps the main branch to DaisyRec 2.0 and describes the ranking protocol and result surfaces."
+        },
+        {
+          "evidence_id": "R3-FD1B-PROP-002-SRC-002",
+          "url": "https://github.com/recsys-benchmark/DaisyRec-v2.0/commit/e9d0326457fb8aa138f7bb04ab751b17345cdb65",
+          "authority_type": "official_owner_immutable_commit",
+          "claim_scope": "Immutable main-branch revision for the paper-mapped DaisyRec 2.0 code surface.",
+          "access_status": "RESOLVED_GITHUB_API_METADATA",
+          "retrieved_at": "2026-08-22T13:27:05Z",
+          "notes": "GitHub API resolved main to e9d0326457fb8aa138f7bb04ab751b17345cdb65, dated 2023-07-05."
+        },
+        {
+          "evidence_id": "R3-FD1B-PROP-002-SRC-003",
+          "url": "https://github.com/recsys-benchmark/DaisyRec-v2.0/blob/e9d0326457fb8aa138f7bb04ab751b17345cdb65/LICENSE",
+          "authority_type": "official_owner_license_blob",
+          "claim_scope": "Affirmative MIT code license at the pinned revision.",
+          "access_status": "ACCESSIBLE_HTTP_HEAD_200_AND_REPOSITORY_LICENSE_RENDER",
+          "retrieved_at": "2026-08-22T13:27:05Z",
+          "notes": "Exact-commit license blob returned HTTP 200; the repository renders MIT."
+        },
+        {
+          "evidence_id": "R3-FD1B-PROP-002-SRC-004",
+          "url": "https://doi.org/10.1109/TPAMI.2022.3231891",
+          "authority_type": "original_peer_reviewed_paper_doi",
+          "claim_scope": "TPAMI source-of-record identity for DaisyRec 2.0.",
+          "access_status": "ACCESSIBLE_DOI_RECORD",
+          "retrieved_at": "2026-08-22T13:27:05Z",
+          "notes": "The paper presents standardized procedures and reference performance across models, metrics and datasets."
+        },
+        {
+          "evidence_id": "R3-FD1B-PROP-002-SRC-005",
+          "url": "https://grouplens.org/datasets/movielens/1m/",
+          "authority_type": "canonical_dataset_provider_release",
+          "claim_scope": "Stable MovieLens 1M provider identity, 2003-02 release, archive and checksum links.",
+          "access_status": "ACCESSIBLE_WEB_200",
+          "retrieved_at": "2026-08-22T13:27:05Z",
+          "notes": "The owner README directly links this canonical MovieLens 1M page."
+        },
+        {
+          "evidence_id": "R3-FD1B-PROP-002-SRC-006",
+          "url": "https://files.grouplens.org/datasets/movielens/ml-1m-README.txt",
+          "authority_type": "canonical_dataset_terms",
+          "claim_scope": "Research-use conditions, acknowledgement, non-redistribution/non-commercial restrictions and raw schema.",
+          "access_status": "ACCESSIBLE_TEXT_200",
+          "retrieved_at": "2026-08-22T13:27:05Z",
+          "notes": "Affirmative research use is conditional; acquisition must preserve provider terms."
+        },
+        {
+          "evidence_id": "R3-FD1B-PROP-002-SRC-007",
+          "url": "https://files.grouplens.org/datasets/movielens/ml-1m.zip.md5",
+          "authority_type": "canonical_dataset_checksum",
+          "claim_scope": "Provider checksum sidecar for the exact ml-1m.zip release.",
+          "access_status": "ACCESSIBLE_PROVIDER_LOCATOR",
+          "retrieved_at": "2026-08-22T13:27:05Z",
+          "notes": "Locator only; archive and checksum bytes were not downloaded."
+        },
+        {
+          "evidence_id": "R3-FD1B-PROP-002-SRC-008",
+          "url": "https://github.com/recsys-benchmark/DaisyRec-v2.0/blob/e9d0326457fb8aa138f7bb04ab751b17345cdb65/README.md",
+          "authority_type": "official_owner_protocol_documentation",
+          "claim_scope": "TSBR/TLOO definitions, 30-trial NDCG@10 tuning policy, objective preservation, uniform sampler and result/appendix binding.",
+          "access_status": "ACCESSIBLE_HTTP_HEAD_200_AND_REPOSITORY_RENDER",
+          "retrieved_at": "2026-08-22T13:27:05Z",
+          "notes": "Pinned README exists; the owner-rendered README supplies the same protocol text and links the ranking-result site."
+        },
+        {
+          "evidence_id": "R3-FD1B-PROP-002-SRC-009",
+          "url": "https://github.com/recsys-benchmark/DaisyRec-v2.0/blob/e9d0326457fb8aa138f7bb04ab751b17345cdb65/main.py",
+          "authority_type": "official_owner_training_entrypoint",
+          "claim_scope": "Pinned main experiment entrypoint on the stable main surface.",
+          "access_status": "ACCESSIBLE_HTTP_HEAD_200",
+          "retrieved_at": "2026-08-22T13:27:05Z",
+          "notes": "Git tree metadata identifies main.py and the exact-commit blob returned HTTP 200."
+        },
+        {
+          "evidence_id": "R3-FD1B-PROP-002-SRC-010",
+          "url": "https://github.com/recsys-benchmark/DaisyRec-v2.0/blob/e9d0326457fb8aa138f7bb04ab751b17345cdb65/daisy/utils/config.py",
+          "authority_type": "official_owner_configuration_code",
+          "claim_scope": "Pinned argument/configuration surface consumed by the main experiment entrypoint.",
+          "access_status": "ACCESSIBLE_HTTP_HEAD_200",
+          "retrieved_at": "2026-08-22T13:27:05Z",
+          "notes": "Git tree metadata and HTTP HEAD bind config.py to the pinned code revision."
+        },
+        {
+          "evidence_id": "R3-FD1B-PROP-002-SRC-011",
+          "url": "https://github.com/recsys-benchmark/DaisyRec-v2.0/blob/e9d0326457fb8aa138f7bb04ab751b17345cdb65/daisy/utils/splitter.py",
+          "authority_type": "official_owner_preprocessing_split_code",
+          "claim_scope": "Pinned train/test split implementation used by the benchmark suite.",
+          "access_status": "ACCESSIBLE_HTTP_HEAD_200",
+          "retrieved_at": "2026-08-22T13:27:05Z",
+          "notes": "Exact-commit split implementation exists; protocol parameters are documented by the owner README."
+        },
+        {
+          "evidence_id": "R3-FD1B-PROP-002-SRC-012",
+          "url": "https://github.com/recsys-benchmark/DaisyRec-v2.0/blob/e9d0326457fb8aa138f7bb04ab751b17345cdb65/daisy/utils/metrics.py",
+          "authority_type": "official_owner_evaluator_blob",
+          "claim_scope": "Pinned ranking metric implementation and result export surface.",
+          "access_status": "ACCESSIBLE_HTTP_HEAD_200",
+          "retrieved_at": "2026-08-22T13:27:05Z",
+          "notes": "Exact-commit evaluator blob returned HTTP 200."
+        },
+        {
+          "evidence_id": "R3-FD1B-PROP-002-SRC-013",
+          "url": "https://github.com/recsys-benchmark/DaisyRec-v2.0/blob/e9d0326457fb8aa138f7bb04ab751b17345cdb65/appendix.pdf",
+          "authority_type": "official_owner_configuration_appendix",
+          "claim_scope": "Source-owned best hyperparameter tables for TSBR and TLOO experiments.",
+          "access_status": "ACCESSIBLE_HTTP_HEAD_200",
+          "retrieved_at": "2026-08-22T13:27:05Z",
+          "notes": "Repository README identifies Tables 16-18 as TSBR best settings and Table 19 as TLOO best settings."
+        },
+        {
+          "evidence_id": "R3-FD1B-PROP-002-SRC-014",
+          "url": "https://github.com/recsys-benchmark/DaisyRec-v2.0-Ranking_results/commit/440c95534cbb21dd0f7b8a7d551bfddbfcb2422e",
+          "authority_type": "official_owner_immutable_result_commit",
+          "claim_scope": "Immutable revision behind the source-owned ranking-result documentation.",
+          "access_status": "RESOLVED_GITHUB_API_METADATA",
+          "retrieved_at": "2026-08-22T13:27:05Z",
+          "notes": "Read the Docs displays short revision 440c9553; GitHub API resolved it to full commit 440c95534cbb21dd0f7b8a7d551bfddbfcb2422e dated 2022-06-14 with message 'add results'."
+        },
+        {
+          "evidence_id": "R3-FD1B-PROP-002-SRC-015",
+          "url": "https://github.com/recsys-benchmark/DaisyRec-v2.0-Ranking_results/blob/440c95534cbb21dd0f7b8a7d551bfddbfcb2422e/docs/source/tsbr_results/BPRMF.rst",
+          "authority_type": "official_owner_numeric_result_table",
+          "claim_scope": "BPRMF TSBR table for MovieLens 1M origin/5-filter/10-filter views; origin NDCG@10 = 0.5275.",
+          "access_status": "ACCESSIBLE_HTTP_HEAD_200_AND_RENDERED_DOC_TEXT",
+          "retrieved_at": "2026-08-22T13:27:05Z",
+          "notes": "The exact result blob exists and its rendered source-owned documentation exposes the full cutoff table."
+        }
+      ],
+      "scout_status": "PLAUSIBLE_COMPLETE_PROPOSAL",
+      "unresolved_fields": []
+    }
+  ],
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

@@ -1,0 +1,191 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r3-fd1-candidate-bundle-seeds-1.0",
+  "created_at": "2026-08-22",
+  "stage_id": "R3-FD1",
+  "search_cutoff_date": "2026-08-22",
+  "bundle_label": "FRAMEWORK_REPRODUCTION_REFERENCE",
+  "model_profile": {
+    "display_name": "Sol Max Standard",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "max",
+    "service_tier": "standard"
+  },
+  "scout_model_profile": {
+    "display_name": "Sol XHigh Standard",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "xhigh",
+    "service_tier": "standard"
+  },
+  "candidate_count": 3,
+  "selection_performed": false,
+  "selected_candidate_id": null,
+  "candidates": [
+    {
+      "candidate_id": "R3-BUNDLE-CORNAC-ML100K-001",
+      "origin_proposal_ids": ["R3-FD1A-PROP-001"],
+      "bundle_label": "FRAMEWORK_REPRODUCTION_REFERENCE",
+      "framework_name": "Cornac 2.6.0",
+      "repository_locator": "https://github.com/PreferredAI/cornac",
+      "immutable_revision_locator": "https://github.com/PreferredAI/cornac/commit/42a327f26241790e99f56284e89c3ab903b69c45",
+      "repository_license_locator": "https://github.com/PreferredAI/cornac/blob/42a327f26241790e99f56284e89c3ab903b69c45/LICENSE",
+      "reference_paper_locator": "https://www.jmlr.org/papers/v21/19-805.html",
+      "dataset_name": "MovieLens 100K",
+      "dataset_provider_locator": "https://grouplens.org/datasets/movielens/100k/",
+      "dataset_release_id": "MovieLens 100K stable release 1998-04; ml-100k.zip",
+      "dataset_terms_locator": "https://files.grouplens.org/datasets/movielens/ml-100k-README.txt",
+      "preprocessing_split_locator": "https://github.com/PreferredAI/cornac/blob/42a327f26241790e99f56284e89c3ab903b69c45/cornac/eval_methods/ratio_split.py",
+      "training_entrypoint_locator": "https://github.com/PreferredAI/cornac/blob/42a327f26241790e99f56284e89c3ab903b69c45/README.md",
+      "configuration_locator": "https://github.com/PreferredAI/cornac/blob/42a327f26241790e99f56284e89c3ab903b69c45/README.md",
+      "evaluator_locator": "https://github.com/PreferredAI/cornac/blob/42a327f26241790e99f56284e89c3ab903b69c45/cornac/eval_methods/base_method.py",
+      "benchmark_target_locator": "https://github.com/PreferredAI/cornac/blob/42a327f26241790e99f56284e89c3ab903b69c45/README.md",
+      "benchmark_target_summary": {
+        "dataset_split": "MovieLens 100K; shuffled RatioSplit; test_size=0.2; rating_threshold=4.0; seed=123; exclude_unknowns=True",
+        "method_config": "BPR(k=10, max_iter=200, learning_rate=0.001, lambda_reg=0.01, seed=123)",
+        "metric": "NDCG",
+        "cutoff": 10,
+        "value": 0.15,
+        "result_locator": "https://github.com/PreferredAI/cornac/blob/42a327f26241790e99f56284e89c3ab903b69c45/README.md",
+        "protocol_caveats": [
+          "Shuffled 80/20 reference protocol is not the v5 temporal protocol.",
+          "Candidate universe, seen-item masking, tie policy and exact per-user aggregation require FD3 verification.",
+          "Numeric value is a future reference-reproduction target, not a project result."
+        ]
+      },
+      "task_family": "general top-N implicit-feedback ranking with a BPR baseline",
+      "source_inventory": [
+        {"evidence_id":"R3-BUNDLE-CORNAC-ML100K-001-SRC-001","url":"https://github.com/PreferredAI/cornac","authority_type":"official_owner_repository","claim_scope":"Framework identity, purpose, recipe and current result surface.","access_status":"REPLAYED_OK_PUBLIC_OWNER_PAGE","retrieved_at":"2026-08-22","notes":"Owner repository only; immutable file binding is verified separately."},
+        {"evidence_id":"R3-BUNDLE-CORNAC-ML100K-001-SRC-002","url":"https://github.com/PreferredAI/cornac/commit/42a327f26241790e99f56284e89c3ab903b69c45","authority_type":"official_owner_immutable_commit","claim_scope":"Full immutable revision for v2.6.0.","access_status":"CENTRAL_REPLAY_PASS","retrieved_at":"2026-08-22","notes":"Central web replay showed the 2.6.0 version-bump commit."},
+        {"evidence_id":"R3-BUNDLE-CORNAC-ML100K-001-SRC-003","url":"https://github.com/PreferredAI/cornac/blob/42a327f26241790e99f56284e89c3ab903b69c45/LICENSE","authority_type":"official_owner_license_blob","claim_scope":"Revision-pinned Apache-2.0 license locator.","access_status":"CENTRAL_REPLAY_CACHE_MISS_UNRESOLVED","retrieved_at":"2026-08-22","notes":"Current owner license replayed in the scout; FD2 must replay the pinned blob."},
+        {"evidence_id":"R3-BUNDLE-CORNAC-ML100K-001-SRC-004","url":"https://www.jmlr.org/papers/v21/19-805.html","authority_type":"original_peer_reviewed_paper","claim_scope":"Original Cornac framework publication.","access_status":"REPLAYED_OK_PUBLISHER_PAGE","retrieved_at":"2026-08-22","notes":"JMLR source of record."},
+        {"evidence_id":"R3-BUNDLE-CORNAC-ML100K-001-SRC-005","url":"https://grouplens.org/datasets/movielens/100k/","authority_type":"canonical_dataset_provider","claim_scope":"Stable MovieLens 100K release identity.","access_status":"REPLAYED_OK_CANONICAL_PROVIDER_PAGE","retrieved_at":"2026-08-22","notes":"Provider release locator; no archive acquired."},
+        {"evidence_id":"R3-BUNDLE-CORNAC-ML100K-001-SRC-006","url":"https://files.grouplens.org/datasets/movielens/ml-100k-README.txt","authority_type":"canonical_dataset_terms","claim_scope":"Research-use conditions, release composition and schema.","access_status":"CENTRAL_REPLAY_PASS","retrieved_at":"2026-08-22","notes":"Research use is conditional; redistribution and commercial use require permission."},
+        {"evidence_id":"R3-BUNDLE-CORNAC-ML100K-001-SRC-007","url":"https://github.com/PreferredAI/cornac/blob/42a327f26241790e99f56284e89c3ab903b69c45/README.md","authority_type":"official_owner_recipe_and_result","claim_scope":"Pinned loader, split, BPR config, evaluator invocation and numeric target.","access_status":"CENTRAL_REPLAY_CACHE_MISS_UNRESOLVED","retrieved_at":"2026-08-22","notes":"FD3 must replay before a positive G1 status."},
+        {"evidence_id":"R3-BUNDLE-CORNAC-ML100K-001-SRC-008","url":"https://github.com/PreferredAI/cornac/blob/42a327f26241790e99f56284e89c3ab903b69c45/cornac/eval_methods/ratio_split.py","authority_type":"official_owner_preprocessing_split","claim_scope":"Pinned split implementation.","access_status":"SCOUT_PINNED_REPLAY_PENDING","retrieved_at":"2026-08-22","notes":"Path continuity is plausible; exact content remains for FD3."},
+        {"evidence_id":"R3-BUNDLE-CORNAC-ML100K-001-SRC-009","url":"https://github.com/PreferredAI/cornac/blob/42a327f26241790e99f56284e89c3ab903b69c45/cornac/eval_methods/base_method.py","authority_type":"official_owner_evaluator","claim_scope":"Pinned evaluation implementation.","access_status":"SCOUT_PINNED_REPLAY_PENDING","retrieved_at":"2026-08-22","notes":"Metric and candidate semantics remain for FD3."}
+      ],
+      "fd1_status": "PLAUSIBLE_COMPLETE_SEED",
+      "unresolved_fields": [
+        "revision-pinned license, README, split and evaluator replay",
+        "framework-served MovieLens bytes to canonical GroupLens release lineage",
+        "candidate universe, seen-item masking, tie policy and per-user aggregation"
+      ]
+    },
+    {
+      "candidate_id": "R3-BUNDLE-ELLIOT-ML1M-001",
+      "origin_proposal_ids": ["R3-FD1B-PROP-001"],
+      "bundle_label": "FRAMEWORK_REPRODUCTION_REFERENCE",
+      "framework_name": "Elliot v0.3.1 reproducible recommender evaluation suite",
+      "repository_locator": "https://github.com/sisinflab/elliot",
+      "immutable_revision_locator": "https://github.com/sisinflab/elliot/commit/641100a89c707619e557eafc46df7ff46c359a73",
+      "repository_license_locator": "https://github.com/sisinflab/elliot/blob/641100a89c707619e557eafc46df7ff46c359a73/LICENSE",
+      "reference_paper_locator": "https://doi.org/10.1145/3404835.3463245",
+      "dataset_name": "MovieLens 1M",
+      "dataset_provider_locator": "https://grouplens.org/datasets/movielens/1m/",
+      "dataset_release_id": "MovieLens 1M stable release 2003-02; ml-1m.zip; provider MD5 sidecar",
+      "dataset_terms_locator": "https://files.grouplens.org/datasets/movielens/ml-1m-README.txt",
+      "preprocessing_split_locator": "https://github.com/sisinflab/elliot/blob/641100a89c707619e557eafc46df7ff46c359a73/config_files/advanced_configuration.yml",
+      "training_entrypoint_locator": "https://github.com/sisinflab/elliot/blob/641100a89c707619e557eafc46df7ff46c359a73/start_experiments.py",
+      "configuration_locator": "https://github.com/sisinflab/elliot/blob/641100a89c707619e557eafc46df7ff46c359a73/config_files/advanced_configuration.yml",
+      "evaluator_locator": "https://github.com/sisinflab/elliot/blob/641100a89c707619e557eafc46df7ff46c359a73/elliot/evaluation/metrics/accuracy/ndcg/ndcg.py",
+      "benchmark_target_locator": "https://abellogin.github.io/2021/sigir.pdf",
+      "benchmark_target_summary": {
+        "dataset_split": "MovieLens 1M converted to TSV; iterative 10-core prefilter; 20% random test split; 5-fold random-CV validation",
+        "method_config": "BPRMF under source-owned advanced_configuration.yml; five random hyperparameter evaluations; 50 epochs",
+        "metric": "nDCG",
+        "cutoff": 50,
+        "value": 0.239,
+        "result_locator": "https://abellogin.github.io/2021/sigir.pdf",
+        "protocol_caveats": [
+          "Paper Table 3 target is bound to its Configuration 3 surface.",
+          "Random holdout/CV and nDCG@50 are not comparable to v5 temporal full-catalog metrics.",
+          "Exact defaults, random-state behavior and selected hyperparameters require FD3 verification."
+        ]
+      },
+      "task_family": "top-N recommendation evaluation over timestamped explicit ratings converted to user-item-rating-timestamp TSV",
+      "source_inventory": [
+        {"evidence_id":"R3-BUNDLE-ELLIOT-ML1M-001-SRC-001","url":"https://github.com/sisinflab/elliot","authority_type":"official_owner_repository","claim_scope":"Framework identity and reproducible experiment scope.","access_status":"REPLAYED_OK_PUBLIC_OWNER_PAGE","retrieved_at":"2026-08-22","notes":"Configuration-driven pipeline from data loading through result collection."},
+        {"evidence_id":"R3-BUNDLE-ELLIOT-ML1M-001-SRC-002","url":"https://github.com/sisinflab/elliot/commit/641100a89c707619e557eafc46df7ff46c359a73","authority_type":"official_owner_immutable_commit","claim_scope":"Full revision behind v0.3.1.","access_status":"SCOUT_RESOLVED_GITHUB_METADATA_CENTRAL_CACHE_MISS","retrieved_at":"2026-08-22","notes":"FD2/FD3 must independently replay."},
+        {"evidence_id":"R3-BUNDLE-ELLIOT-ML1M-001-SRC-003","url":"https://github.com/sisinflab/elliot/releases/tag/v0.3.1","authority_type":"official_owner_release","claim_scope":"Release-to-revision and CLI/config release surface.","access_status":"SCOUT_REPLAY_PASS","retrieved_at":"2026-08-22","notes":"Official release locator."},
+        {"evidence_id":"R3-BUNDLE-ELLIOT-ML1M-001-SRC-004","url":"https://github.com/sisinflab/elliot/blob/641100a89c707619e557eafc46df7ff46c359a73/LICENSE","authority_type":"official_owner_license_blob","claim_scope":"Pinned Apache-2.0 license.","access_status":"SCOUT_HTTP_200_CENTRAL_CACHE_MISS","retrieved_at":"2026-08-22","notes":"FD2 must replay license text and scope."},
+        {"evidence_id":"R3-BUNDLE-ELLIOT-ML1M-001-SRC-005","url":"https://doi.org/10.1145/3404835.3463245","authority_type":"original_peer_reviewed_paper_doi","claim_scope":"SIGIR 2021 source-of-record identity.","access_status":"SCOUT_REPLAY_PASS","retrieved_at":"2026-08-22","notes":"Original framework paper."},
+        {"evidence_id":"R3-BUNDLE-ELLIOT-ML1M-001-SRC-006","url":"https://grouplens.org/datasets/movielens/1m/","authority_type":"canonical_dataset_provider","claim_scope":"MovieLens 1M stable release identity and checksum links.","access_status":"SCOUT_REPLAY_PASS","retrieved_at":"2026-08-22","notes":"No archive acquired."},
+        {"evidence_id":"R3-BUNDLE-ELLIOT-ML1M-001-SRC-007","url":"https://files.grouplens.org/datasets/movielens/ml-1m-README.txt","authority_type":"canonical_dataset_terms","claim_scope":"Research-use terms and raw schema.","access_status":"CENTRAL_REPLAY_PASS","retrieved_at":"2026-08-22","notes":"Research use conditional; redistribution and commercial use restricted."},
+        {"evidence_id":"R3-BUNDLE-ELLIOT-ML1M-001-SRC-008","url":"https://github.com/sisinflab/elliot/blob/641100a89c707619e557eafc46df7ff46c359a73/sample_main.py","authority_type":"official_owner_preprocessing_recipe","claim_scope":"MovieLens conversion and experiment invocation.","access_status":"SCOUT_REPLAY_PASS","retrieved_at":"2026-08-22","notes":"Exact-commit source path."},
+        {"evidence_id":"R3-BUNDLE-ELLIOT-ML1M-001-SRC-009","url":"https://github.com/sisinflab/elliot/blob/641100a89c707619e557eafc46df7ff46c359a73/config_files/advanced_configuration.yml","authority_type":"official_owner_frozen_configuration","claim_scope":"Dataset path, filtering, split, BPRMF search and nDCG cutoff.","access_status":"SCOUT_REPLAY_PASS_CENTRAL_CACHE_MISS","retrieved_at":"2026-08-22","notes":"FD3 must replay exact content."},
+        {"evidence_id":"R3-BUNDLE-ELLIOT-ML1M-001-SRC-010","url":"https://github.com/sisinflab/elliot/blob/641100a89c707619e557eafc46df7ff46c359a73/start_experiments.py","authority_type":"official_owner_training_entrypoint","claim_scope":"Pinned command-line experiment entry point.","access_status":"SCOUT_HTTP_200","retrieved_at":"2026-08-22","notes":"Exact argv remains for FD3."},
+        {"evidence_id":"R3-BUNDLE-ELLIOT-ML1M-001-SRC-011","url":"https://github.com/sisinflab/elliot/blob/641100a89c707619e557eafc46df7ff46c359a73/elliot/evaluation/metrics/accuracy/ndcg/ndcg.py","authority_type":"official_owner_evaluator","claim_scope":"Pinned nDCG implementation.","access_status":"SCOUT_HTTP_200","retrieved_at":"2026-08-22","notes":"Candidate and aggregation semantics remain for FD3."},
+        {"evidence_id":"R3-BUNDLE-ELLIOT-ML1M-001-SRC-012","url":"https://abellogin.github.io/2021/sigir.pdf","authority_type":"author_hosted_original_paper_pdf","claim_scope":"Configuration 3 to Table 3 binding and BPRMF nDCG@50 target.","access_status":"SCOUT_REPLAY_PASS","retrieved_at":"2026-08-22","notes":"Future reproduction target only."}
+      ],
+      "fd1_status": "PLAUSIBLE_COMPLETE_SEED",
+      "unresolved_fields": [
+        "central replay of pinned commit/license/config locators",
+        "exact environment lock and selected hyperparameter realization",
+        "candidate universe, relevance threshold, tie and aggregation semantics",
+        "raw-to-TSV checksum lineage"
+      ]
+    },
+    {
+      "candidate_id": "R3-BUNDLE-DAISYREC-ML1M-001",
+      "origin_proposal_ids": ["R3-FD1B-PROP-002"],
+      "bundle_label": "FRAMEWORK_REPRODUCTION_REFERENCE",
+      "framework_name": "DaisyRec 2.0 rigorous-evaluation benchmark suite",
+      "repository_locator": "https://github.com/recsys-benchmark/DaisyRec-v2.0",
+      "immutable_revision_locator": "https://github.com/recsys-benchmark/DaisyRec-v2.0/commit/e9d0326457fb8aa138f7bb04ab751b17345cdb65",
+      "repository_license_locator": "https://github.com/recsys-benchmark/DaisyRec-v2.0/blob/e9d0326457fb8aa138f7bb04ab751b17345cdb65/LICENSE",
+      "reference_paper_locator": "https://doi.org/10.1109/TPAMI.2022.3231891",
+      "dataset_name": "MovieLens 1M",
+      "dataset_provider_locator": "https://grouplens.org/datasets/movielens/1m/",
+      "dataset_release_id": "MovieLens 1M stable release 2003-02; ml-1m.zip; provider MD5 sidecar",
+      "dataset_terms_locator": "https://files.grouplens.org/datasets/movielens/ml-1m-README.txt",
+      "preprocessing_split_locator": "https://github.com/recsys-benchmark/DaisyRec-v2.0/blob/e9d0326457fb8aa138f7bb04ab751b17345cdb65/daisy/utils/splitter.py",
+      "training_entrypoint_locator": "https://github.com/recsys-benchmark/DaisyRec-v2.0/blob/e9d0326457fb8aa138f7bb04ab751b17345cdb65/main.py",
+      "configuration_locator": "https://github.com/recsys-benchmark/DaisyRec-v2.0/blob/e9d0326457fb8aa138f7bb04ab751b17345cdb65/appendix.pdf",
+      "evaluator_locator": "https://github.com/recsys-benchmark/DaisyRec-v2.0/blob/e9d0326457fb8aa138f7bb04ab751b17345cdb65/daisy/utils/metrics.py",
+      "benchmark_target_locator": "https://github.com/recsys-benchmark/DaisyRec-v2.0-Ranking_results/blob/440c95534cbb21dd0f7b8a7d551bfddbfcb2422e/docs/source/tsbr_results/BPRMF.rst",
+      "benchmark_target_summary": {
+        "dataset_split": "MovieLens 1M origin view; global time-aware split-by-ratio rho=80%; latest 10% of train used for validation",
+        "method_config": "BPRMF original objective, uniform negatives, 30 Bayesian HyperOpt trials on NDCG@10; source-owned TSBR settings",
+        "metric": "NDCG",
+        "cutoff": 10,
+        "value": 0.5275,
+        "result_locator": "https://github.com/recsys-benchmark/DaisyRec-v2.0-Ranking_results/blob/440c95534cbb21dd0f7b8a7d551bfddbfcb2422e/docs/source/tsbr_results/BPRMF.rst",
+        "protocol_caveats": [
+          "Target is the source-owned TSBR BPRMF row on the unfiltered origin view.",
+          "Preprocessing, negative sampling and evaluator differ from v5.",
+          "Numeric value is a future reference-reproduction target only."
+        ]
+      },
+      "task_family": "rigorous top-N recommendation benchmarking with time-aware splitting and shared ranking evaluation",
+      "source_inventory": [
+        {"evidence_id":"R3-BUNDLE-DAISYREC-ML1M-001-SRC-001","url":"https://github.com/recsys-benchmark/DaisyRec-v2.0","authority_type":"official_owner_repository","claim_scope":"DaisyRec 2.0 identity, protocol and result links.","access_status":"SCOUT_REPLAY_PASS","retrieved_at":"2026-08-22","notes":"Owner repository for the benchmark suite."},
+        {"evidence_id":"R3-BUNDLE-DAISYREC-ML1M-001-SRC-002","url":"https://github.com/recsys-benchmark/DaisyRec-v2.0/commit/e9d0326457fb8aa138f7bb04ab751b17345cdb65","authority_type":"official_owner_immutable_commit","claim_scope":"Pinned main revision for paper-mapped code.","access_status":"SCOUT_RESOLVED_GITHUB_METADATA_CENTRAL_CACHE_MISS","retrieved_at":"2026-08-22","notes":"FD2/FD3 must independently replay."},
+        {"evidence_id":"R3-BUNDLE-DAISYREC-ML1M-001-SRC-003","url":"https://github.com/recsys-benchmark/DaisyRec-v2.0/blob/e9d0326457fb8aa138f7bb04ab751b17345cdb65/LICENSE","authority_type":"official_owner_license_blob","claim_scope":"Pinned MIT code license.","access_status":"SCOUT_HTTP_200_CENTRAL_CACHE_MISS","retrieved_at":"2026-08-22","notes":"FD2 must verify exact text and scope."},
+        {"evidence_id":"R3-BUNDLE-DAISYREC-ML1M-001-SRC-004","url":"https://doi.org/10.1109/TPAMI.2022.3231891","authority_type":"original_peer_reviewed_paper_doi","claim_scope":"TPAMI source-of-record identity.","access_status":"SCOUT_REPLAY_PASS","retrieved_at":"2026-08-22","notes":"Original DaisyRec 2.0 publication."},
+        {"evidence_id":"R3-BUNDLE-DAISYREC-ML1M-001-SRC-005","url":"https://grouplens.org/datasets/movielens/1m/","authority_type":"canonical_dataset_provider","claim_scope":"MovieLens 1M release and checksum locator.","access_status":"SCOUT_REPLAY_PASS","retrieved_at":"2026-08-22","notes":"No archive acquired."},
+        {"evidence_id":"R3-BUNDLE-DAISYREC-ML1M-001-SRC-006","url":"https://files.grouplens.org/datasets/movielens/ml-1m-README.txt","authority_type":"canonical_dataset_terms","claim_scope":"Research-use terms and raw schema.","access_status":"CENTRAL_REPLAY_PASS","retrieved_at":"2026-08-22","notes":"Research use conditional; redistribution/commercial use restricted."},
+        {"evidence_id":"R3-BUNDLE-DAISYREC-ML1M-001-SRC-007","url":"https://github.com/recsys-benchmark/DaisyRec-v2.0/blob/e9d0326457fb8aa138f7bb04ab751b17345cdb65/README.md","authority_type":"official_owner_protocol_documentation","claim_scope":"TSBR definition, tuning policy, objectives and result binding.","access_status":"SCOUT_REPLAY_PASS","retrieved_at":"2026-08-22","notes":"Pinned protocol locator."},
+        {"evidence_id":"R3-BUNDLE-DAISYREC-ML1M-001-SRC-008","url":"https://github.com/recsys-benchmark/DaisyRec-v2.0/blob/e9d0326457fb8aa138f7bb04ab751b17345cdb65/main.py","authority_type":"official_owner_training_entrypoint","claim_scope":"Pinned experiment entrypoint.","access_status":"SCOUT_HTTP_200","retrieved_at":"2026-08-22","notes":"Exact argv extraction remains for FD3."},
+        {"evidence_id":"R3-BUNDLE-DAISYREC-ML1M-001-SRC-009","url":"https://github.com/recsys-benchmark/DaisyRec-v2.0/blob/e9d0326457fb8aa138f7bb04ab751b17345cdb65/daisy/utils/splitter.py","authority_type":"official_owner_preprocessing_split","claim_scope":"Pinned split implementation.","access_status":"SCOUT_HTTP_200","retrieved_at":"2026-08-22","notes":"FD3 must verify exact TSBR behavior."},
+        {"evidence_id":"R3-BUNDLE-DAISYREC-ML1M-001-SRC-010","url":"https://github.com/recsys-benchmark/DaisyRec-v2.0/blob/e9d0326457fb8aa138f7bb04ab751b17345cdb65/daisy/utils/metrics.py","authority_type":"official_owner_evaluator","claim_scope":"Pinned ranking metric implementation.","access_status":"SCOUT_HTTP_200","retrieved_at":"2026-08-22","notes":"FD3 must verify candidate/masking/tie semantics."},
+        {"evidence_id":"R3-BUNDLE-DAISYREC-ML1M-001-SRC-011","url":"https://github.com/recsys-benchmark/DaisyRec-v2.0/blob/e9d0326457fb8aa138f7bb04ab751b17345cdb65/appendix.pdf","authority_type":"official_owner_configuration_appendix","claim_scope":"TSBR best hyperparameter tables.","access_status":"SCOUT_HTTP_200","retrieved_at":"2026-08-22","notes":"FD3 must extract the exact BPRMF row."},
+        {"evidence_id":"R3-BUNDLE-DAISYREC-ML1M-001-SRC-012","url":"https://github.com/recsys-benchmark/DaisyRec-v2.0-Ranking_results/commit/440c95534cbb21dd0f7b8a7d551bfddbfcb2422e","authority_type":"official_owner_result_commit","claim_scope":"Immutable source-owned result documentation revision.","access_status":"SCOUT_RESOLVED_GITHUB_METADATA","retrieved_at":"2026-08-22","notes":"Result commit dated 2022-06-14."},
+        {"evidence_id":"R3-BUNDLE-DAISYREC-ML1M-001-SRC-013","url":"https://github.com/recsys-benchmark/DaisyRec-v2.0-Ranking_results/blob/440c95534cbb21dd0f7b8a7d551bfddbfcb2422e/docs/source/tsbr_results/BPRMF.rst","authority_type":"official_owner_numeric_result_table","claim_scope":"BPRMF TSBR MovieLens 1M origin NDCG@10 target.","access_status":"SCOUT_REPLAY_PASS_CENTRAL_CACHE_MISS","retrieved_at":"2026-08-22","notes":"FD3 must independently replay and bind exact row."}
+      ],
+      "fd1_status": "PLAUSIBLE_COMPLETE_SEED",
+      "unresolved_fields": [
+        "central replay of pinned code/license/result locators",
+        "exact BPRMF TSBR configuration extraction and dependency lock",
+        "canonical archive to framework input checksum lineage",
+        "candidate, masking, tie and aggregation semantics"
+      ]
+    }
+  ],
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}
+

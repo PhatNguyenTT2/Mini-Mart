@@ -1,10 +1,10 @@
 # Stage 1E — R3-FD1 central import/validation contract
 
 Date: `2026-08-22`  
-Validator context: `Sol Max Standard` (`gpt-5.6-sol`, reasoning `max`, service
-tier `standard`)  
-Producer context: `Sol XHigh Standard` (`gpt-5.6-sol`, reasoning `xhigh`,
-service tier `standard`)
+Validator/final-composer context: `Sol Max Standard` (`gpt-5.6-sol`, reasoning
+`max`, service tier `standard`)
+Evidence-scout contexts: `Sol XHigh Standard` (`gpt-5.6-sol`, reasoning `xhigh`,
+service tier `standard`), as frozen by `e4_r3_fd1_recovery_dispatch.json`
 
 ## Purpose
 
@@ -45,7 +45,8 @@ The central validator requires:
   benchmark target;
 - source inventories with decision-bearing locators and explicit access state;
 - no old R2 row ID reuse;
-- producer runtime recorded as Sol XHigh Standard;
+- final composer runtime recorded as Sol Max Standard and all imported scout
+  runtimes recorded as Sol XHigh Standard;
 - unchanged empirical truth and explicit forbidden-operation assertions.
 
 The validator prints a bounded JSON result and does not rewrite producer files.
@@ -58,4 +59,3 @@ Mechanical PASS means only that all verification lanes can inspect the same
 candidate set. FD2 verifies rights/lineage, FD3 verifies benchmark/evaluator
 same-surface provenance, FD4 stress-tests adaptation compatibility, and R3-G1
 performs final authoritative locator replay. No FD1 metric is a project result.
-

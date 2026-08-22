@@ -67,7 +67,7 @@ def is_https(value: Any) -> bool:
     return parsed.scheme == "https" and bool(parsed.netloc)
 
 
-def model_is_xhigh_standard(value: Any) -> bool:
+def model_is_max_standard(value: Any) -> bool:
     if not isinstance(value, dict):
         return False
     model = value.get("runtime_model_id", value.get("model"))
@@ -76,9 +76,9 @@ def model_is_xhigh_standard(value: Any) -> bool:
     display = value.get("display_name", value.get("model_profile"))
     return (
         model == "gpt-5.6-sol"
-        and reasoning == "xhigh"
+        and reasoning == "max"
         and tier == "standard"
-        and display == "Sol XHigh Standard"
+        and display == "Sol Max Standard"
     )
 
 
@@ -206,8 +206,8 @@ def main() -> int:
     if handoff_ids is None and isinstance(handoff.get("candidate_summary"), dict):
         handoff_ids = handoff["candidate_summary"].get("candidate_ids")
     check(checks, failures, "handoff_candidate_ids_exact", isinstance(handoff_ids, list) and set(handoff_ids) == set(ids) and len(handoff_ids) == len(ids))
-    check(checks, failures, "handoff_model_xhigh_standard", model_is_xhigh_standard(handoff.get("model_profile", handoff.get("runtime_model_profile"))))
-    check(checks, failures, "seeds_model_xhigh_standard", model_is_xhigh_standard(seeds_doc.get("model_profile", seeds_doc.get("runtime_model_profile"))))
+    check(checks, failures, "handoff_model_max_standard", model_is_max_standard(handoff.get("model_profile", handoff.get("runtime_model_profile"))))
+    check(checks, failures, "seeds_model_max_standard", model_is_max_standard(seeds_doc.get("model_profile", seeds_doc.get("runtime_model_profile"))))
     check(checks, failures, "handoff_truth_state", handoff.get("truth_state") == TRUTH)
     check(checks, failures, "seeds_truth_state", seeds_doc.get("truth_state") == TRUTH)
 

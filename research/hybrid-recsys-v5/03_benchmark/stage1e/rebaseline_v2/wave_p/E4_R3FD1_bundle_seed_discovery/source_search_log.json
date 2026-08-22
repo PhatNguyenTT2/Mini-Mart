@@ -1,0 +1,48 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r3-fd1-source-search-log-1.0",
+  "created_at": "2026-08-22",
+  "stage_id": "R3-FD1",
+  "search_cutoff_date": "2026-08-22",
+  "scout_validation": {
+    "verdict": "PASS_R3_FD1_SCOUTS_READY_FOR_CENTRAL_COMPOSITION",
+    "scout_count": 3,
+    "proposal_count": 7,
+    "plausible_proposal_count": 4,
+    "source_record_count": 81
+  },
+  "scout_inputs": [
+    {"stage_id":"R3-FD1A","path":"research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_p/E4_R3FD1A_framework_scout/scout_candidates.json","proposal_ids":["R3-FD1A-PROP-001","R3-FD1A-PROP-002"],"plausible_ids":["R3-FD1A-PROP-001","R3-FD1A-PROP-002"]},
+    {"stage_id":"R3-FD1B","path":"research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_p/E4_R3FD1B_benchmark_scout/scout_candidates.json","proposal_ids":["R3-FD1B-PROP-001","R3-FD1B-PROP-002"],"plausible_ids":["R3-FD1B-PROP-001","R3-FD1B-PROP-002"]},
+    {"stage_id":"R3-FD1C","path":"research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_p/E4_R3FD1C_toolkit_scout/scout_candidates.json","proposal_ids":["R3-FD1C-PROP-001","R3-FD1C-PROP-002","R3-FD1C-PROP-003"],"plausible_ids":[]}
+  ],
+  "deduplication": [
+    {
+      "canonical_surface": "recommenders-team/recommenders@6232b154548c955315650d58dca6bf1411c56020 + MovieLens 100K + README/notebook LightGCN target",
+      "proposal_ids": ["R3-FD1A-PROP-002", "R3-FD1C-PROP-001"],
+      "status_conflict": ["PLAUSIBLE_COMPLETE_PROPOSAL", "INCOMPLETE_EXCLUDED"],
+      "central_resolution": "EXCLUDED_FROM_FINAL_SEEDS_FAIL_CLOSED",
+      "reason": "The independent scout disagreement is decision-bearing and central exact-commit notebook/license/result replay cache-missed. Partial rows were not merged to promote the surface."
+    }
+  ],
+  "central_locator_replay": [
+    {"url":"https://github.com/PreferredAI/cornac/commit/42a327f26241790e99f56284e89c3ab903b69c45","expected_scope":"Cornac immutable revision","access_status":"PASS","observed_identity":"Cornac commit 42a327f; version bump to 2.6.0","decision_effect":"seed_identity_supported"},
+    {"url":"https://github.com/PreferredAI/cornac/blob/42a327f26241790e99f56284e89c3ab903b69c45/LICENSE","expected_scope":"Cornac pinned license","access_status":"CACHE_MISS_UNRESOLVED","observed_identity":null,"decision_effect":"retain_for_fd2_verification"},
+    {"url":"https://github.com/PreferredAI/cornac/blob/42a327f26241790e99f56284e89c3ab903b69c45/README.md","expected_scope":"Cornac pinned recipe and target","access_status":"CACHE_MISS_UNRESOLVED","observed_identity":null,"decision_effect":"retain_for_fd3_verification"},
+    {"url":"https://github.com/sisinflab/elliot/commit/641100a89c707619e557eafc46df7ff46c359a73","expected_scope":"Elliot immutable revision","access_status":"CACHE_MISS_UNRESOLVED","observed_identity":null,"decision_effect":"retain_scout_metadata_for_fd2_fd3_replay"},
+    {"url":"https://github.com/sisinflab/elliot/blob/641100a89c707619e557eafc46df7ff46c359a73/LICENSE","expected_scope":"Elliot pinned license","access_status":"CACHE_MISS_UNRESOLVED","observed_identity":null,"decision_effect":"retain_for_fd2_verification"},
+    {"url":"https://github.com/sisinflab/elliot/blob/641100a89c707619e557eafc46df7ff46c359a73/config_files/advanced_configuration.yml","expected_scope":"Elliot pinned config","access_status":"CACHE_MISS_UNRESOLVED","observed_identity":null,"decision_effect":"retain_for_fd3_verification"},
+    {"url":"https://github.com/recsys-benchmark/DaisyRec-v2.0/commit/e9d0326457fb8aa138f7bb04ab751b17345cdb65","expected_scope":"DaisyRec immutable revision","access_status":"CACHE_MISS_UNRESOLVED","observed_identity":null,"decision_effect":"retain_scout_metadata_for_fd2_fd3_replay"},
+    {"url":"https://github.com/recsys-benchmark/DaisyRec-v2.0/blob/e9d0326457fb8aa138f7bb04ab751b17345cdb65/LICENSE","expected_scope":"DaisyRec pinned license","access_status":"CACHE_MISS_UNRESOLVED","observed_identity":null,"decision_effect":"retain_for_fd2_verification"},
+    {"url":"https://github.com/recsys-benchmark/DaisyRec-v2.0-Ranking_results/blob/440c95534cbb21dd0f7b8a7d551bfddbfcb2422e/docs/source/tsbr_results/BPRMF.rst","expected_scope":"DaisyRec pinned numeric target","access_status":"CACHE_MISS_UNRESOLVED","observed_identity":null,"decision_effect":"retain_for_fd3_verification"},
+    {"url":"https://files.grouplens.org/datasets/movielens/ml-100k-README.txt","expected_scope":"MovieLens 100K release and terms","access_status":"PASS","observed_identity":"100,000 ratings; conditional research use; no redistribution; noncommercial without permission","decision_effect":"dataset_terms_supported"},
+    {"url":"https://files.grouplens.org/datasets/movielens/ml-1m-README.txt","expected_scope":"MovieLens 1M release and terms","access_status":"PASS","observed_identity":"1,000,209 ratings; conditional research use; no redistribution; noncommercial without permission","decision_effect":"dataset_terms_supported"}
+  ],
+  "admitted_candidate_ids": [
+    "R3-BUNDLE-CORNAC-ML100K-001",
+    "R3-BUNDLE-ELLIOT-ML1M-001",
+    "R3-BUNDLE-DAISYREC-ML1M-001"
+  ],
+  "selection_performed": false,
+  "execution_authorized": false
+}
+

@@ -1,0 +1,66 @@
+{
+  "stage_id": "R3-FD1A",
+  "model_profile": {
+    "display_name": "Sol XHigh Standard",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "xhigh",
+    "service_tier": "standard"
+  },
+  "proposal_ids": [
+    "R3-FD1A-PROP-001",
+    "R3-FD1A-PROP-002"
+  ],
+  "plausible_proposal_ids": [
+    "R3-FD1A-PROP-001",
+    "R3-FD1A-PROP-002"
+  ],
+  "exact_changed_files": [
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_p/E4_R3FD1A_framework_scout/scout_candidates.json",
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_p/E4_R3FD1A_framework_scout/scout_report.md",
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_p/E4_R3FD1A_framework_scout/scout_handoff.json"
+  ],
+  "source_record_count": 28,
+  "unresolved_fields": {
+    "R3-FD1A-PROP-001": [
+      "direct replay of the revision-pinned README, LICENSE, loader, split, evaluator, and metric blobs",
+      "byte identity or documented equivalence between the framework-served MovieLens payload and canonical GroupLens ml-100k.zip",
+      "candidate-universe construction, seen-item masking, score-tie policy, and exact per-user aggregation for the README target",
+      "reference replay and tolerance check (NOT_RUN)"
+    ],
+    "R3-FD1A-PROP-002": [
+      "direct replay of the revision-pinned README, benchmark notebook, LICENSE, loader, splitter, and evaluator blobs",
+      "exact LightGCN hyperparameter cells, dependency lock, and all notebook output provenance at the full SHA",
+      "candidate-universe construction, seen-item masking, score-tie policy, and seed or run aggregation for the target",
+      "direct publisher replay of the ACM reference-paper page (HTTP 403 during scout access)",
+      "reference replay and tolerance check (NOT_RUN)"
+    ]
+  },
+  "selection_performed": false,
+  "selected_candidate_id": null,
+  "forbidden_operations": {
+    "repository_clone_performed": false,
+    "repository_fetch_performed": false,
+    "repository_or_source_download_performed": false,
+    "dataset_download_performed": false,
+    "checkpoint_download_performed": false,
+    "environment_created": false,
+    "dependency_installed": false,
+    "preprocessing_performed": false,
+    "training_performed": false,
+    "evaluation_performed": false,
+    "test_set_opened": false,
+    "maintainer_contacted": false,
+    "file_modified_outside_write_root": false,
+    "git_add_performed": false,
+    "git_commit_performed": false,
+    "selection_performed": false,
+    "final_r3_bundle_id_created": false
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

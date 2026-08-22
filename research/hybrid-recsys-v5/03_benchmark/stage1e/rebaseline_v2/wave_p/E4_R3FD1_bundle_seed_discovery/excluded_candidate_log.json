@@ -1,0 +1,40 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r3-fd1-excluded-candidate-log-1.0",
+  "created_at": "2026-08-22",
+  "stage_id": "R3-FD1",
+  "excluded_unique_surface_count": 3,
+  "rows": [
+    {
+      "surface_id": "FD1-EXCLUDED-RECOMMENDERS-ML100K-001",
+      "origin_proposal_ids": ["R3-FD1A-PROP-002", "R3-FD1C-PROP-001"],
+      "framework": "recommenders-team/recommenders",
+      "status": "INCOMPLETE_EXCLUDED_DEDUP_CONFLICT",
+      "reason": "Independent scouts disagreed on plausibility; exact-commit license, notebook/evaluator and result-table bindings did not replay centrally. No partial-row merge or status promotion was allowed.",
+      "may_reenter_without_new_change_control": false
+    },
+    {
+      "surface_id": "FD1-EXCLUDED-TFRS-ML100K-001",
+      "origin_proposal_ids": ["R3-FD1C-PROP-002"],
+      "framework": "tensorflow/recommenders",
+      "status": "INCOMPLETE_EXCLUDED",
+      "reason": "No original toolkit paper was located and the tutorial recipe/result was not bound to the proposed immutable release; exact-release license binding also remained unresolved.",
+      "may_reenter_without_new_change_control": false
+    },
+    {
+      "surface_id": "FD1-EXCLUDED-RECHORUS-AMAZON-001",
+      "origin_proposal_ids": ["R3-FD1C-PROP-003"],
+      "framework": "THUwangcy/ReChorus",
+      "status": "INCOMPLETE_EXCLUDED",
+      "reason": "The canonical Amazon provider surface did not establish affirmative dataset-use terms and exact canonical-to-preprocessed lineage remained unresolved.",
+      "may_reenter_without_new_change_control": false
+    }
+  ],
+  "old_r2_rows": {
+    "status": "ARCHIVED_SUPERSEDED_NOT_EXECUTION_ELIGIBLE",
+    "registry": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r3_supersession_registry.json",
+    "count": 7
+  },
+  "selection_performed": false,
+  "execution_authorized": false
+}
+

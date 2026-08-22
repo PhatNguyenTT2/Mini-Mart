@@ -1,0 +1,71 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r3-fd1-handoff-1.0",
+  "created_at": "2026-08-22",
+  "stage_id": "R3-FD1",
+  "status": "COMPLETE_READY_FOR_CENTRAL_VALIDATION_AND_FD2_FD4",
+  "entry_gate": "PASS_R3_FD0_GATE_17_OF_17_READY_FOR_FD1",
+  "scout_gate": "PASS_R3_FD1_SCOUTS_READY_FOR_CENTRAL_COMPOSITION",
+  "model_profile": {
+    "display_name": "Sol Max Standard",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "max",
+    "service_tier": "standard"
+  },
+  "scout_model_profile": {
+    "display_name": "Sol XHigh Standard",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "xhigh",
+    "service_tier": "standard"
+  },
+  "candidate_count": 3,
+  "candidate_ids": [
+    "R3-BUNDLE-CORNAC-ML100K-001",
+    "R3-BUNDLE-ELLIOT-ML1M-001",
+    "R3-BUNDLE-DAISYREC-ML1M-001"
+  ],
+  "source_record_count": 34,
+  "scout_source_record_count": 81,
+  "excluded_unique_surface_count": 3,
+  "selection_performed": false,
+  "selected_candidate_id": null,
+  "exact_changed_files": [
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_p/E4_R3FD1_bundle_seed_discovery/candidate_bundle_seeds.json",
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_p/E4_R3FD1_bundle_seed_discovery/source_search_log.json",
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_p/E4_R3FD1_bundle_seed_discovery/excluded_candidate_log.json",
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_p/E4_R3FD1_bundle_seed_discovery/fd1_report.md",
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_p/E4_R3FD1_bundle_seed_discovery/fd1_handoff.json"
+  ],
+  "unresolved_fields": [
+    "revision-pinned GitHub locator replay for all three seeds",
+    "exact code-license text and scope replay",
+    "canonical archive to framework input/split checksum lineage",
+    "exact dependency/config/seed/evaluator semantics",
+    "bounded adapter compatibility with v5"
+  ],
+  "forbidden_operations": {
+    "repository_clone": false,
+    "repository_fetch": false,
+    "source_archive_download": false,
+    "dataset_download": false,
+    "checkpoint_or_asset_download": false,
+    "authenticated_access_or_terms_acceptance": false,
+    "package_install": false,
+    "environment_or_container_creation": false,
+    "preprocessing_execution": false,
+    "training_execution": false,
+    "evaluation_execution": false,
+    "test_set_access": false,
+    "maintainer_contact": false,
+    "candidate_selection": false,
+    "git_add": false,
+    "git_commit": false
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "next_gate": "CENTRAL_VALIDATE_AND_FREEZE_FD1_OUTPUTS"
+}

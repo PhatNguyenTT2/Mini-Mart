@@ -1,0 +1,358 @@
+{
+  "schema_version": "stage1e-e4-r3-fd1-scout-candidates-1.0",
+  "created_at": "2026-08-22T20:33:51+07:00",
+  "stage_id": "R3-FD1A",
+  "scope": "Established recommender frameworks with owner-published dataset conversion, training, evaluation, and same-surface numeric benchmark targets",
+  "model_profile": {
+    "display_name": "Sol XHigh Standard",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "xhigh",
+    "service_tier": "standard"
+  },
+  "proposal_count": 2,
+  "proposals": [
+    {
+      "proposal_id": "R3-FD1A-PROP-001",
+      "framework_name": "Cornac 2.6.0",
+      "repository_locator": "https://github.com/PreferredAI/cornac",
+      "immutable_revision_locator": "https://github.com/PreferredAI/cornac/commit/42a327f26241790e99f56284e89c3ab903b69c45",
+      "repository_license_locator": "https://github.com/PreferredAI/cornac/blob/42a327f26241790e99f56284e89c3ab903b69c45/LICENSE",
+      "reference_paper_locator": "https://www.jmlr.org/papers/v21/19-805.html",
+      "dataset_name": "MovieLens 100K",
+      "dataset_provider_locator": "https://grouplens.org/datasets/movielens/100k/",
+      "dataset_release_id": "MovieLens 100K stable benchmark release 1998-04 (ml-100k.zip; 100,000 ratings, 943 users, 1,682 movies per canonical README)",
+      "dataset_terms_locator": "https://files.grouplens.org/datasets/movielens/ml-100k-README.txt",
+      "preprocessing_split_locator": "https://github.com/PreferredAI/cornac/blob/42a327f26241790e99f56284e89c3ab903b69c45/cornac/eval_methods/ratio_split.py",
+      "training_entrypoint_locator": "https://github.com/PreferredAI/cornac/blob/42a327f26241790e99f56284e89c3ab903b69c45/README.md",
+      "configuration_locator": "https://github.com/PreferredAI/cornac/blob/42a327f26241790e99f56284e89c3ab903b69c45/README.md",
+      "evaluator_locator": "https://github.com/PreferredAI/cornac/blob/42a327f26241790e99f56284e89c3ab903b69c45/cornac/eval_methods/base_method.py",
+      "benchmark_target_locator": "https://github.com/PreferredAI/cornac/blob/42a327f26241790e99f56284e89c3ab903b69c45/README.md",
+      "benchmark_target_summary": {
+        "dataset_split": "MovieLens 100K loaded by cornac.datasets.movielens.load_feedback(); shuffled RatioSplit with test_size=0.2, val_size=0.0, rating_threshold=4.0, seed=123, and exclude_unknowns=True by default",
+        "method_config": "BPR(k=10, max_iter=200, learning_rate=0.001, lambda_reg=0.01, seed=123); cornac.Experiment(..., user_based=True)",
+        "metric": "NDCG",
+        "cutoff": 10,
+        "value": 0.15,
+        "result_locator": "https://github.com/PreferredAI/cornac/blob/42a327f26241790e99f56284e89c3ab903b69c45/README.md",
+        "protocol_caveats": [
+          "The owner recipe is a shuffled 80/20 reference protocol, not the Stage 1E temporal split.",
+          "The README target does not fully state the candidate-universe construction, seen-item masking, score-tie policy, or per-user aggregation details.",
+          "This value is an external reproduction target only and is not comparable to harmonized v5 results.",
+          "No package installation, dataset retrieval, preprocessing, training, or evaluation was performed by this scout."
+        ]
+      },
+      "task_family": "general top-N implicit-feedback ranking with a BPR baseline",
+      "source_inventory": [
+        {
+          "evidence_id": "R3-FD1A-P001-S01",
+          "url": "https://github.com/PreferredAI/cornac",
+          "authority_type": "official_owner_repository",
+          "claim_scope": "Framework ownership, framework purpose, Apache-2.0 declaration, executable MovieLens 100K recipe, BPR configuration, evaluator call, and numeric output table",
+          "access_status": "REPLAYED_OK_PUBLIC_OWNER_PAGE",
+          "retrieved_at": "2026-08-22",
+          "notes": "Owner README directly binds loader, split, model/config, metrics, Experiment evaluator, and BPR NDCG@10=0.1500 on one framework surface."
+        },
+        {
+          "evidence_id": "R3-FD1A-P001-S02",
+          "url": "https://github.com/PreferredAI/cornac/releases/tag/v2.6.0",
+          "authority_type": "official_owner_release",
+          "claim_scope": "Cornac 2.6.0 release and release commit association",
+          "access_status": "REPLAYED_OK_PUBLIC_OWNER_RELEASE",
+          "retrieved_at": "2026-08-22",
+          "notes": "Release page identifies v2.6.0 and short commit 42a327f."
+        },
+        {
+          "evidence_id": "R3-FD1A-P001-S03",
+          "url": "https://github.com/PreferredAI/cornac/commit/42a327f26241790e99f56284e89c3ab903b69c45",
+          "authority_type": "official_owner_commit",
+          "claim_scope": "Immutable full revision for Cornac 2.6.0",
+          "access_status": "REPLAYED_OK_PUBLIC_OWNER_COMMIT",
+          "retrieved_at": "2026-08-22",
+          "notes": "Full SHA was resolved from the official release commit link."
+        },
+        {
+          "evidence_id": "R3-FD1A-P001-S04",
+          "url": "https://github.com/PreferredAI/cornac/blob/master/LICENSE",
+          "authority_type": "official_owner_license",
+          "claim_scope": "Affirmative Apache License 2.0 grant",
+          "access_status": "REPLAYED_OK_PUBLIC_OWNER_BLOB_CURRENT_BRANCH",
+          "retrieved_at": "2026-08-22",
+          "notes": "The owner license text contains the Apache-2.0 copyright and patent grants; the immutable locator is recorded separately."
+        },
+        {
+          "evidence_id": "R3-FD1A-P001-S05",
+          "url": "https://github.com/PreferredAI/cornac/blob/42a327f26241790e99f56284e89c3ab903b69c45/LICENSE",
+          "authority_type": "official_owner_license_immutable",
+          "claim_scope": "Revision-pinned license locator",
+          "access_status": "DIRECT_REPLAY_CACHE_MISS_UNRESOLVED",
+          "retrieved_at": "2026-08-22",
+          "notes": "The path is derived from a verified full SHA and the replayed current owner blob, but the pinned URL itself cache-missed; downstream must replay it."
+        },
+        {
+          "evidence_id": "R3-FD1A-P001-S06",
+          "url": "https://www.jmlr.org/papers/v21/19-805.html",
+          "authority_type": "original_peer_reviewed_paper",
+          "claim_scope": "Cornac framework identity, purpose, and original publication",
+          "access_status": "REPLAYED_OK_PUBLISHER_PAGE",
+          "retrieved_at": "2026-08-22",
+          "notes": "JMLR volume 21, paper 95 (2020), published by the journal."
+        },
+        {
+          "evidence_id": "R3-FD1A-P001-S07",
+          "url": "https://grouplens.org/datasets/movielens/100k/",
+          "authority_type": "canonical_dataset_provider",
+          "claim_scope": "MovieLens 100K stable release identity, release month, archive name, and canonical links",
+          "access_status": "REPLAYED_OK_CANONICAL_PROVIDER_PAGE",
+          "retrieved_at": "2026-08-22",
+          "notes": "GroupLens labels this a stable benchmark and records release 4/1998."
+        },
+        {
+          "evidence_id": "R3-FD1A-P001-S08",
+          "url": "https://files.grouplens.org/datasets/movielens/ml-100k-README.txt",
+          "authority_type": "canonical_dataset_terms",
+          "claim_scope": "MovieLens 100K dataset composition and research-use terms",
+          "access_status": "REPLAYED_OK_CANONICAL_TERMS_TEXT",
+          "retrieved_at": "2026-08-22",
+          "notes": "Terms permit research use with acknowledgment, prohibit redistribution without permission, and prohibit commercial/revenue-bearing use without permission."
+        },
+        {
+          "evidence_id": "R3-FD1A-P001-S09",
+          "url": "https://github.com/PreferredAI/cornac/blob/master/cornac/datasets/movielens.py",
+          "authority_type": "official_owner_dataset_loader",
+          "claim_scope": "Framework-owned MovieLens conversion/loading surface",
+          "access_status": "REPLAYED_OK_PUBLIC_OWNER_BLOB_CURRENT_BRANCH",
+          "retrieved_at": "2026-08-22",
+          "notes": "Confirms the owner-maintained loader path used by the README recipe; byte identity with the canonical archive remains a downstream check."
+        },
+        {
+          "evidence_id": "R3-FD1A-P001-S10",
+          "url": "https://github.com/PreferredAI/cornac/blob/master/cornac/eval_methods/ratio_split.py",
+          "authority_type": "official_owner_preprocessing_split",
+          "claim_scope": "RatioSplit behavior and defaults",
+          "access_status": "REPLAYED_OK_PUBLIC_OWNER_BLOB_CURRENT_BRANCH",
+          "retrieved_at": "2026-08-22",
+          "notes": "Source states data are shuffled before split, documents test_size, rating_threshold, seed, exclude_unknowns, and implements the permutation split."
+        },
+        {
+          "evidence_id": "R3-FD1A-P001-S11",
+          "url": "https://github.com/PreferredAI/cornac/blob/master/cornac/eval_methods/base_method.py",
+          "authority_type": "official_owner_evaluator_source",
+          "claim_scope": "Framework evaluation implementation surface",
+          "access_status": "REPLAYED_OK_PUBLIC_OWNER_BLOB_CURRENT_BRANCH",
+          "retrieved_at": "2026-08-22",
+          "notes": "Owner evaluator source exists on the same repository surface as the recipe and benchmark target."
+        },
+        {
+          "evidence_id": "R3-FD1A-P001-S12",
+          "url": "https://github.com/PreferredAI/cornac/blob/master/cornac/metrics/ranking.py",
+          "authority_type": "official_owner_metric_source",
+          "claim_scope": "Framework ranking-metric implementation including NDCG",
+          "access_status": "REPLAYED_OK_PUBLIC_OWNER_BLOB_CURRENT_BRANCH",
+          "retrieved_at": "2026-08-22",
+          "notes": "Owner metric source is separately locatable for downstream evaluator-parity review."
+        },
+        {
+          "evidence_id": "R3-FD1A-P001-S13",
+          "url": "https://github.com/PreferredAI/cornac/blob/42a327f26241790e99f56284e89c3ab903b69c45/README.md",
+          "authority_type": "official_owner_recipe_and_result_immutable",
+          "claim_scope": "Revision-pinned training entrypoint, configuration, evaluator invocation, and numeric benchmark target",
+          "access_status": "DIRECT_REPLAY_CACHE_MISS_UNRESOLVED",
+          "retrieved_at": "2026-08-22",
+          "notes": "The current owner README replayed successfully and the full SHA is verified, but this exact pinned blob cache-missed; downstream must replay before admission."
+        },
+        {
+          "evidence_id": "R3-FD1A-P001-S14",
+          "url": "https://github.com/PreferredAI/cornac/blob/42a327f26241790e99f56284e89c3ab903b69c45/cornac/eval_methods/ratio_split.py",
+          "authority_type": "official_owner_preprocessing_split_immutable",
+          "claim_scope": "Revision-pinned preprocessing and split implementation",
+          "access_status": "PINNED_LOCATOR_RECORDED_REPLAY_PENDING",
+          "retrieved_at": "2026-08-22",
+          "notes": "Path continuity is supported by the replayed current blob and verified release SHA; exact pinned-content replay remains unresolved."
+        }
+      ],
+      "scout_status": "PLAUSIBLE_COMPLETE_PROPOSAL",
+      "unresolved_fields": [
+        "direct replay of the revision-pinned README, LICENSE, loader, split, evaluator, and metric blobs",
+        "byte identity or documented equivalence between the framework-served MovieLens payload and canonical GroupLens ml-100k.zip",
+        "candidate-universe construction, seen-item masking, score-tie policy, and exact per-user aggregation for the README target",
+        "reference replay and tolerance check (NOT_RUN)"
+      ]
+    },
+    {
+      "proposal_id": "R3-FD1A-PROP-002",
+      "framework_name": "Recommenders (Linux Foundation AI & Data owner repository) at 6232b154548c955315650d58dca6bf1411c56020",
+      "repository_locator": "https://github.com/recommenders-team/recommenders",
+      "immutable_revision_locator": "https://github.com/recommenders-team/recommenders/commit/6232b154548c955315650d58dca6bf1411c56020",
+      "repository_license_locator": "https://github.com/recommenders-team/recommenders/blob/6232b154548c955315650d58dca6bf1411c56020/LICENSE",
+      "reference_paper_locator": "https://dl.acm.org/doi/10.1145/3366424.3382692",
+      "dataset_name": "MovieLens 100K",
+      "dataset_provider_locator": "https://grouplens.org/datasets/movielens/100k/",
+      "dataset_release_id": "MovieLens 100K stable benchmark release 1998-04 (ml-100k.zip; 100,000 ratings, 943 users, 1,682 movies per canonical README)",
+      "dataset_terms_locator": "https://files.grouplens.org/datasets/movielens/ml-100k-README.txt",
+      "preprocessing_split_locator": "https://github.com/recommenders-team/recommenders/blob/6232b154548c955315650d58dca6bf1411c56020/examples/06_benchmarks/movielens.ipynb",
+      "training_entrypoint_locator": "https://github.com/recommenders-team/recommenders/blob/6232b154548c955315650d58dca6bf1411c56020/examples/06_benchmarks/movielens.ipynb",
+      "configuration_locator": "https://github.com/recommenders-team/recommenders/blob/6232b154548c955315650d58dca6bf1411c56020/examples/06_benchmarks/movielens.ipynb",
+      "evaluator_locator": "https://github.com/recommenders-team/recommenders/blob/6232b154548c955315650d58dca6bf1411c56020/recommenders/evaluation/python_evaluation.py",
+      "benchmark_target_locator": "https://github.com/recommenders-team/recommenders/blob/6232b154548c955315650d58dca6bf1411c56020/README.md",
+      "benchmark_target_summary": {
+        "dataset_split": "MovieLens 100K; framework benchmark notebook; 75/25 stratified train/test split; top-k ranking evaluation with k=10",
+        "method_config": "LightGCN row produced by the owner benchmark notebook at the pinned revision; exact model hyperparameter cells and dependency lock require downstream pinned-notebook replay",
+        "metric": "NDCG",
+        "cutoff": 10,
+        "value": 0.4191,
+        "result_locator": "https://github.com/recommenders-team/recommenders/blob/6232b154548c955315650d58dca6bf1411c56020/README.md",
+        "protocol_caveats": [
+          "The owner benchmark uses a random stratified 75/25 protocol, not the Stage 1E temporal split.",
+          "The current owner README reports a 24-CPU, 30-GB RAM, GeForce RTX 5090 24-GB run; hardware timing is not a paper target here.",
+          "The README does not fully state seed aggregation, candidate-universe construction, seen-item masking, or score-tie handling; those require pinned-notebook and evaluator inspection.",
+          "This value is an external reproduction target only and is not comparable to harmonized v5 results.",
+          "No package installation, dataset retrieval, preprocessing, training, or evaluation was performed by this scout."
+        ]
+      },
+      "task_family": "general top-N collaborative-filtering ranking with a LightGCN baseline",
+      "source_inventory": [
+        {
+          "evidence_id": "R3-FD1A-P002-S01",
+          "url": "https://github.com/recommenders-team/recommenders",
+          "authority_type": "official_owner_repository",
+          "claim_scope": "Linux Foundation AI & Data framework ownership, framework purpose, benchmark recipe, protocol summary, and current numeric result table",
+          "access_status": "REPLAYED_OK_PUBLIC_OWNER_PAGE",
+          "retrieved_at": "2026-08-22",
+          "notes": "Owner README directly binds the benchmark notebook, MovieLens 100K, 75/25 stratified split, k=10, and LightGCN NDCG@10=0.419100."
+        },
+        {
+          "evidence_id": "R3-FD1A-P002-S02",
+          "url": "https://github.com/recommenders-team/recommenders/commits/main/",
+          "authority_type": "official_owner_commit_history",
+          "claim_scope": "Owner-maintained history and immutable-head discovery",
+          "access_status": "REPLAYED_OK_PUBLIC_OWNER_HISTORY",
+          "retrieved_at": "2026-08-22",
+          "notes": "History identifies 6232b15 as the May 26, 2026 main revision used for this proposal."
+        },
+        {
+          "evidence_id": "R3-FD1A-P002-S03",
+          "url": "https://github.com/recommenders-team/recommenders/commit/6232b154548c955315650d58dca6bf1411c56020",
+          "authority_type": "official_owner_commit",
+          "claim_scope": "Immutable full revision and benchmark/evaluator change context",
+          "access_status": "REPLAYED_OK_PUBLIC_OWNER_COMMIT",
+          "retrieved_at": "2026-08-22",
+          "notes": "Full SHA is visible on the owner commit page; merged history includes evaluator fixes, LightGCN refactoring, notebook reruns, and benchmark-argument corrections."
+        },
+        {
+          "evidence_id": "R3-FD1A-P002-S04",
+          "url": "https://github.com/recommenders-team/recommenders/blob/main/LICENSE",
+          "authority_type": "official_owner_license",
+          "claim_scope": "Affirmative MIT License grant",
+          "access_status": "REPLAYED_OK_PUBLIC_OWNER_BLOB_CURRENT_BRANCH",
+          "retrieved_at": "2026-08-22",
+          "notes": "The owner license grants use, copy, modify, merge, publish, distribute, sublicense, and sell subject to notice retention."
+        },
+        {
+          "evidence_id": "R3-FD1A-P002-S05",
+          "url": "https://github.com/recommenders-team/recommenders/blob/6232b154548c955315650d58dca6bf1411c56020/LICENSE",
+          "authority_type": "official_owner_license_immutable",
+          "claim_scope": "Revision-pinned license locator",
+          "access_status": "DIRECT_REPLAY_CACHE_MISS_UNRESOLVED",
+          "retrieved_at": "2026-08-22",
+          "notes": "The path is derived from a verified full SHA and the replayed current owner blob, but the pinned URL itself cache-missed; downstream must replay it."
+        },
+        {
+          "evidence_id": "R3-FD1A-P002-S06",
+          "url": "https://dl.acm.org/doi/10.1145/3366424.3382692",
+          "authority_type": "original_proceedings_paper",
+          "claim_scope": "Original Microsoft Recommenders framework publication",
+          "access_status": "LOCATOR_CONFIRMED_BY_OWNER_README_PUBLISHER_REPLAY_FORBIDDEN_403",
+          "retrieved_at": "2026-08-22",
+          "notes": "The owner README cites the ACM WWW 2020 paper; direct ACM replay returned HTTP 403, so bibliographic content remains downstream-verifiable."
+        },
+        {
+          "evidence_id": "R3-FD1A-P002-S07",
+          "url": "https://grouplens.org/datasets/movielens/100k/",
+          "authority_type": "canonical_dataset_provider",
+          "claim_scope": "MovieLens 100K stable release identity, release month, archive name, and canonical links",
+          "access_status": "REPLAYED_OK_CANONICAL_PROVIDER_PAGE",
+          "retrieved_at": "2026-08-22",
+          "notes": "GroupLens labels this a stable benchmark and records release 4/1998."
+        },
+        {
+          "evidence_id": "R3-FD1A-P002-S08",
+          "url": "https://files.grouplens.org/datasets/movielens/ml-100k-README.txt",
+          "authority_type": "canonical_dataset_terms",
+          "claim_scope": "MovieLens 100K dataset composition and research-use terms",
+          "access_status": "REPLAYED_OK_CANONICAL_TERMS_TEXT",
+          "retrieved_at": "2026-08-22",
+          "notes": "Terms permit research use with acknowledgment, prohibit redistribution without permission, and prohibit commercial/revenue-bearing use without permission."
+        },
+        {
+          "evidence_id": "R3-FD1A-P002-S09",
+          "url": "https://github.com/recommenders-team/recommenders/blob/main/examples/06_benchmarks/movielens.ipynb",
+          "authority_type": "official_owner_benchmark_notebook",
+          "claim_scope": "Source-owned conversion, split, training, configuration, evaluator invocation, and result-generation surface",
+          "access_status": "REPLAYED_OK_PUBLIC_OWNER_NOTEBOOK_CURRENT_BRANCH",
+          "retrieved_at": "2026-08-22",
+          "notes": "The owner notebook path is present and directly linked by the README; exact pinned cells remain a downstream replay item."
+        },
+        {
+          "evidence_id": "R3-FD1A-P002-S10",
+          "url": "https://github.com/recommenders-team/recommenders/blob/6232b154548c955315650d58dca6bf1411c56020/examples/06_benchmarks/movielens.ipynb",
+          "authority_type": "official_owner_benchmark_notebook_immutable",
+          "claim_scope": "Revision-pinned preprocessing, training, configuration, and evaluation recipe",
+          "access_status": "DIRECT_REPLAY_CACHE_MISS_UNRESOLVED",
+          "retrieved_at": "2026-08-22",
+          "notes": "The exact pinned notebook URL cache-missed even though the current owner notebook and full SHA replayed; downstream must inspect all parameter and output cells."
+        },
+        {
+          "evidence_id": "R3-FD1A-P002-S11",
+          "url": "https://github.com/recommenders-team/recommenders/blob/main/recommenders/datasets/movielens.py",
+          "authority_type": "official_owner_dataset_loader",
+          "claim_scope": "Framework-owned MovieLens loading and conversion surface",
+          "access_status": "REPLAYED_OK_PUBLIC_OWNER_BLOB_CURRENT_BRANCH",
+          "retrieved_at": "2026-08-22",
+          "notes": "Owner loader supports MovieLens sizes including 100k and belongs to the same framework repository."
+        },
+        {
+          "evidence_id": "R3-FD1A-P002-S12",
+          "url": "https://github.com/recommenders-team/recommenders/blob/main/recommenders/datasets/python_splitters.py",
+          "authority_type": "official_owner_preprocessing_split",
+          "claim_scope": "Framework-owned random, chronological, and stratified splitter implementation",
+          "access_status": "REPLAYED_OK_PUBLIC_OWNER_BLOB_CURRENT_BRANCH",
+          "retrieved_at": "2026-08-22",
+          "notes": "The benchmark README binds its 75/25 protocol to a stratified split; the owner splitter source is separately available for parity inspection."
+        },
+        {
+          "evidence_id": "R3-FD1A-P002-S13",
+          "url": "https://github.com/recommenders-team/recommenders/blob/main/recommenders/evaluation/python_evaluation.py",
+          "authority_type": "official_owner_evaluator_source",
+          "claim_scope": "Framework ranking evaluator including NDCG at k",
+          "access_status": "REPLAYED_OK_PUBLIC_OWNER_BLOB_CURRENT_BRANCH",
+          "retrieved_at": "2026-08-22",
+          "notes": "The owner evaluator is on the same repository surface; the selected commit page records recent ranking-evaluator corrections."
+        },
+        {
+          "evidence_id": "R3-FD1A-P002-S14",
+          "url": "https://github.com/recommenders-team/recommenders/blob/6232b154548c955315650d58dca6bf1411c56020/README.md",
+          "authority_type": "official_owner_result_table_immutable",
+          "claim_scope": "Revision-pinned numeric benchmark target and protocol summary",
+          "access_status": "DIRECT_REPLAY_CACHE_MISS_UNRESOLVED",
+          "retrieved_at": "2026-08-22",
+          "notes": "The current owner README replayed with LightGCN NDCG@10=0.419100 and the full SHA is verified, but the exact pinned blob cache-missed; downstream must replay before admission."
+        }
+      ],
+      "scout_status": "PLAUSIBLE_COMPLETE_PROPOSAL",
+      "unresolved_fields": [
+        "direct replay of the revision-pinned README, benchmark notebook, LICENSE, loader, splitter, and evaluator blobs",
+        "exact LightGCN hyperparameter cells, dependency lock, and all notebook output provenance at the full SHA",
+        "candidate-universe construction, seen-item masking, score-tie policy, and seed or run aggregation for the target",
+        "direct publisher replay of the ACM reference-paper page (HTTP 403 during scout access)",
+        "reference replay and tolerance check (NOT_RUN)"
+      ]
+    }
+  ],
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

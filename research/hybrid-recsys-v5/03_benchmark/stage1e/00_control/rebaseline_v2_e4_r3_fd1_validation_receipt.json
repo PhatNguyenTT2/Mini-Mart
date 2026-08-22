@@ -1,0 +1,43 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r3-fd1-validation-result-1.0",
+  "created_at": "2026-08-22",
+  "validator": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r3_fd1.py",
+  "passed": true,
+  "verdict": "PASS_R3_FD1_SEEDS_READY_FOR_FREEZE_AND_PARALLEL_VERIFICATION",
+  "failure_count": 0,
+  "failures": [],
+  "checks": {
+    "exact_five_file_write_set": true,
+    "candidates_is_list": true,
+    "candidate_count_three_to_five": true,
+    "declared_candidate_count_matches": true,
+    "candidate_ids_unique": true,
+    "candidate_ids_do_not_reuse_old_rows": true,
+    "all_required_seed_fields_present": true,
+    "all_seed_rows_have_closed_label_and_status": true,
+    "all_primary_locators_are_https": true,
+    "source_inventories_structurally_valid": true,
+    "handoff_candidate_ids_exact": true,
+    "handoff_model_max_standard": true,
+    "seeds_model_max_standard": true,
+    "handoff_truth_state": true,
+    "seeds_truth_state": true,
+    "forbidden_operations_not_performed": true
+  },
+  "candidate_count": 3,
+  "candidate_ids": [
+    "R3-BUNDLE-CORNAC-ML100K-001",
+    "R3-BUNDLE-ELLIOT-ML1M-001",
+    "R3-BUNDLE-DAISYREC-ML1M-001"
+  ],
+  "source_record_count": 34,
+  "exact_output_files": [
+    "candidate_bundle_seeds.json",
+    "excluded_candidate_log.json",
+    "fd1_handoff.json",
+    "fd1_report.md",
+    "source_search_log.json"
+  ],
+  "selection_performed": false,
+  "execution_authorized": false
+}

@@ -1,0 +1,374 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r3-fd1c-scout-candidates-1.0",
+  "created_at": "2026-08-22T20:30:55+07:00",
+  "stage_id": "R3-FD1C",
+  "scope": "production_research_recommendation_toolkits_with_source_owned_recipes",
+  "model_profile": {
+    "display_name": "Sol XHigh Standard",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "xhigh",
+    "service_tier": "standard"
+  },
+  "proposal_count": 3,
+  "proposals": [
+    {
+      "proposal_id": "R3-FD1C-PROP-001",
+      "framework_name": "Recommenders production-ready recommendation toolkit",
+      "repository_locator": "https://github.com/recommenders-team/recommenders",
+      "immutable_revision_locator": "https://github.com/recommenders-team/recommenders/commit/6232b154548c955315650d58dca6bf1411c56020",
+      "repository_license_locator": "https://github.com/recommenders-team/recommenders/blob/6232b154548c955315650d58dca6bf1411c56020/LICENSE",
+      "reference_paper_locator": "https://arxiv.org/abs/2008.13528",
+      "dataset_name": "MovieLens 100K",
+      "dataset_provider_locator": "https://files.grouplens.org/datasets/movielens/",
+      "dataset_release_id": "GroupLens ml-100k; ml-100k.zip; 100,000 ratings from 943 users on 1,682 movies; collection period 1997-09-19 through 1998-04-22",
+      "dataset_terms_locator": "https://files.grouplens.org/datasets/movielens/ml-100k-README.txt",
+      "preprocessing_split_locator": "https://github.com/recommenders-team/recommenders/blob/6232b154548c955315650d58dca6bf1411c56020/examples/06_benchmarks/movielens.ipynb",
+      "training_entrypoint_locator": "https://github.com/recommenders-team/recommenders/blob/6232b154548c955315650d58dca6bf1411c56020/examples/06_benchmarks/movielens.ipynb",
+      "configuration_locator": "https://github.com/recommenders-team/recommenders/blob/6232b154548c955315650d58dca6bf1411c56020/examples/06_benchmarks/movielens.ipynb",
+      "evaluator_locator": "https://github.com/recommenders-team/recommenders/blob/6232b154548c955315650d58dca6bf1411c56020/recommenders/evaluation/python_evaluation.py",
+      "benchmark_target_locator": "https://github.com/recommenders-team/recommenders#algorithm-comparison",
+      "benchmark_target_summary": {
+        "dataset_split": "MovieLens 100K; source-owned benchmark states a 75/25 stratified train/test split",
+        "method_config": "LightGCN in the source-owned MovieLens benchmark notebook; ranking k=10; the exact pinned notebook cells did not replay in this scout",
+        "metric": "nDCG",
+        "cutoff": 10,
+        "value": 0.4191,
+        "result_locator": "https://github.com/recommenders-team/recommenders#algorithm-comparison",
+        "protocol_caveats": [
+          "This is a reference-reproduction target only; it is not an executed v5 result and is invalid for paper reporting.",
+          "The current owner README reports the value, split and cutoff, but the exact-commit README, notebook, evaluator and license blob all returned cache-miss replay failures.",
+          "Candidate generation, seen-item handling and the exact LightGCN hyperparameter realization must be re-verified at the pinned revision before materialization.",
+          "The 75/25 stratified protocol is not comparable to the v5 temporal novel-purchase full-catalog protocol."
+        ]
+      },
+      "task_family": "top-N collaborative-filtering recommendation quality benchmarking",
+      "source_inventory": [
+        {
+          "evidence_id": "R3-FD1C-PROP-001-SRC-001",
+          "url": "https://github.com/recommenders-team/recommenders",
+          "authority_type": "official_owner_repository",
+          "claim_scope": "Toolkit identity, production/research purpose, algorithm inventory, benchmark protocol, numeric table and MIT license declaration.",
+          "access_status": "ACCESSIBLE_WEB_200_CURRENT_BRANCH",
+          "retrieved_at": "2026-08-22T20:30:55+07:00",
+          "notes": "The owner README reports MovieLens 100K, 75/25 stratified split, k=10 and LightGCN nDCG@10 = 0.419100."
+        },
+        {
+          "evidence_id": "R3-FD1C-PROP-001-SRC-002",
+          "url": "https://github.com/recommenders-team/recommenders/commit/6232b154548c955315650d58dca6bf1411c56020",
+          "authority_type": "official_owner_immutable_commit",
+          "claim_scope": "Full immutable SHA for the latest owner main revision visible before the 2026-08-22 cutoff.",
+          "access_status": "ACCESSIBLE_WEB_200",
+          "retrieved_at": "2026-08-22T20:30:55+07:00",
+          "notes": "Commit page resolves full SHA 6232b154548c955315650d58dca6bf1411c56020."
+        },
+        {
+          "evidence_id": "R3-FD1C-PROP-001-SRC-003",
+          "url": "https://github.com/recommenders-team/recommenders/releases/tag/1.2.1",
+          "authority_type": "official_owner_release",
+          "claim_scope": "Existence of an owner release and release-to-commit binding for toolkit version 1.2.1.",
+          "access_status": "ACCESSIBLE_WEB_200",
+          "retrieved_at": "2026-08-22T20:30:55+07:00",
+          "notes": "Release 1.2.1 is bound by GitHub to commit 5c862afa751f53559b5ad98b92e098760f530ad8; this older release is inventory evidence, not the current numeric-table revision."
+        },
+        {
+          "evidence_id": "R3-FD1C-PROP-001-SRC-004",
+          "url": "https://github.com/recommenders-team/recommenders/blob/6232b154548c955315650d58dca6bf1411c56020/LICENSE",
+          "authority_type": "official_owner_license_blob",
+          "claim_scope": "Affirmative MIT repository license at the proposed immutable revision.",
+          "access_status": "REPLAY_FAILED_CACHE_MISS",
+          "retrieved_at": "2026-08-22T20:30:55+07:00",
+          "notes": "The current repository renders MIT, but the exact-commit license blob did not replay; this remains unresolved under the scout rule."
+        },
+        {
+          "evidence_id": "R3-FD1C-PROP-001-SRC-005",
+          "url": "https://github.com/recommenders-team/recommenders/blob/6232b154548c955315650d58dca6bf1411c56020/examples/06_benchmarks/movielens.ipynb",
+          "authority_type": "official_owner_recipe_and_benchmark_notebook",
+          "claim_scope": "Pinned preprocessing/split, training entrypoint, configuration and result-producing notebook.",
+          "access_status": "REPLAY_FAILED_CACHE_MISS",
+          "retrieved_at": "2026-08-22T20:30:55+07:00",
+          "notes": "The current owner README binds to this notebook path, but the exact-commit notebook did not replay."
+        },
+        {
+          "evidence_id": "R3-FD1C-PROP-001-SRC-006",
+          "url": "https://github.com/recommenders-team/recommenders/blob/6232b154548c955315650d58dca6bf1411c56020/recommenders/evaluation/python_evaluation.py",
+          "authority_type": "official_owner_evaluator_blob",
+          "claim_scope": "Pinned ranking evaluator implementation for nDCG and related metrics.",
+          "access_status": "REPLAY_FAILED_CACHE_MISS",
+          "retrieved_at": "2026-08-22T20:30:55+07:00",
+          "notes": "The mutable main evaluator rendered, but the exact-commit blob did not replay."
+        },
+        {
+          "evidence_id": "R3-FD1C-PROP-001-SRC-007",
+          "url": "https://arxiv.org/abs/2008.13528",
+          "authority_type": "original_paper_record",
+          "claim_scope": "Original Microsoft Recommenders paper identity and toolkit purpose.",
+          "access_status": "ACCESSIBLE_WEB_200",
+          "retrieved_at": "2026-08-22T20:30:55+07:00",
+          "notes": "Author manuscript record for the toolkit paper."
+        },
+        {
+          "evidence_id": "R3-FD1C-PROP-001-SRC-008",
+          "url": "https://files.grouplens.org/datasets/movielens/ml-100k-README.txt",
+          "authority_type": "canonical_dataset_release_and_terms",
+          "claim_scope": "Exact MovieLens 100K identity, collection period, schema and research-use conditions.",
+          "access_status": "ACCESSIBLE_TEXT_200",
+          "retrieved_at": "2026-08-22T20:30:55+07:00",
+          "notes": "Research use requires acknowledgement; redistribution is forbidden without permission and commercial/revenue-bearing use requires prior permission."
+        }
+      ],
+      "scout_status": "INCOMPLETE_EXCLUDED",
+      "unresolved_fields": [
+        "repository_license_locator: exact-commit replay failed",
+        "preprocessing_split_locator: exact-commit replay failed",
+        "training_entrypoint_locator: exact-commit replay failed",
+        "configuration_locator: exact-commit replay failed",
+        "evaluator_locator: exact-commit replay failed",
+        "benchmark_target_locator: current-table-to-immutable-revision binding not replayed"
+      ]
+    },
+    {
+      "proposal_id": "R3-FD1C-PROP-002",
+      "framework_name": "TensorFlow Recommenders retrieval toolkit",
+      "repository_locator": "https://github.com/tensorflow/recommenders",
+      "immutable_revision_locator": "https://github.com/tensorflow/recommenders/commit/7caed557b9d5194202d8323f2d4795231a5d0b1d",
+      "repository_license_locator": "https://github.com/tensorflow/recommenders/blob/main/LICENSE",
+      "reference_paper_locator": null,
+      "dataset_name": "MovieLens 100K through TensorFlow Datasets movielens/100k-ratings and movielens/100k-movies",
+      "dataset_provider_locator": "https://www.tensorflow.org/datasets/catalog/movielens",
+      "dataset_release_id": "TFDS MovieLens builder 0.1.1; configs movielens/100k-ratings and movielens/100k-movies; upstream GroupLens ml-100k",
+      "dataset_terms_locator": "https://files.grouplens.org/datasets/movielens/ml-100k-README.txt",
+      "preprocessing_split_locator": "https://www.tensorflow.org/recommenders/examples/basic_retrieval",
+      "training_entrypoint_locator": "https://github.com/tensorflow/recommenders/blob/main/docs/examples/basic_retrieval.ipynb",
+      "configuration_locator": "https://www.tensorflow.org/recommenders/examples/basic_retrieval",
+      "evaluator_locator": "https://www.tensorflow.org/recommenders/api_docs/python/tfrs/metrics/FactorizedTopK",
+      "benchmark_target_locator": "https://www.tensorflow.org/recommenders/examples/basic_retrieval",
+      "benchmark_target_summary": {
+        "dataset_split": "TFDS MovieLens 100K ratings shuffled with seed 42 and reshuffle_each_iteration=false; first 80,000 interactions train, remaining 20,000 test",
+        "method_config": "Two-tower user/movie-title retrieval model; 32-dimensional embeddings; FactorizedTopK over all 1,682 movie-title candidates; Adagrad learning rate 0.1; train batch 8,192; test batch 4,096; 3 epochs",
+        "metric": "factorized_top_k/top_10_categorical_accuracy",
+        "cutoff": 10,
+        "value": 0.021150000393390656,
+        "result_locator": "https://www.tensorflow.org/recommenders/examples/basic_retrieval",
+        "protocol_caveats": [
+          "The tutorial uses an interaction-random 80/20 split rather than a temporal split.",
+          "Evaluation searches the entire movie candidate set but does not exclude previously watched movies; the tutorial explicitly warns that seen movies can crowd out test positives.",
+          "The metric is true-candidate top-k categorical accuracy, not v5 HR/NDCG/GAUC, and the result is reference-only.",
+          "The tutorial was last updated 2023-05-27; its exact binding to release v0.7.3 and full commit 7caed557b9d5194202d8323f2d4795231a5d0b1d was not replayed."
+        ]
+      },
+      "task_family": "full-candidate two-tower retrieval recommendation",
+      "source_inventory": [
+        {
+          "evidence_id": "R3-FD1C-PROP-002-SRC-001",
+          "url": "https://github.com/tensorflow/recommenders",
+          "authority_type": "official_owner_repository",
+          "claim_scope": "TensorFlow Recommenders toolkit identity and owner source surface.",
+          "access_status": "ACCESSIBLE_WEB_200",
+          "retrieved_at": "2026-08-22T20:30:55+07:00",
+          "notes": "Official TensorFlow repository; not among the seven superseded candidate repositories."
+        },
+        {
+          "evidence_id": "R3-FD1C-PROP-002-SRC-002",
+          "url": "https://github.com/tensorflow/recommenders/releases/tag/v0.7.3",
+          "authority_type": "official_owner_release",
+          "claim_scope": "Release v0.7.3 and short commit binding.",
+          "access_status": "ACCESSIBLE_WEB_200",
+          "retrieved_at": "2026-08-22T20:30:55+07:00",
+          "notes": "The release page exposes short SHA 7caed55; the full commit URL resolved to 7caed557b9d5194202d8323f2d4795231a5d0b1d but its page replay failed."
+        },
+        {
+          "evidence_id": "R3-FD1C-PROP-002-SRC-003",
+          "url": "https://github.com/tensorflow/recommenders/blob/main/LICENSE",
+          "authority_type": "official_owner_license_blob",
+          "claim_scope": "Affirmative Apache License 2.0 repository license.",
+          "access_status": "ACCESSIBLE_WEB_200_CURRENT_BRANCH",
+          "retrieved_at": "2026-08-22T20:30:55+07:00",
+          "notes": "The main-branch license rendered; a pinned v0.7.3 license replay was not established."
+        },
+        {
+          "evidence_id": "R3-FD1C-PROP-002-SRC-004",
+          "url": "https://github.com/tensorflow/recommenders/blob/main/CITATION.cff",
+          "authority_type": "official_owner_citation_metadata",
+          "claim_scope": "Owner-provided software citation metadata.",
+          "access_status": "ACCESSIBLE_WEB_200_CURRENT_BRANCH",
+          "retrieved_at": "2026-08-22T20:30:55+07:00",
+          "notes": "CITATION.cff cites the TensorFlow Recommenders software; no original toolkit paper or proceedings record was located in the bounded search."
+        },
+        {
+          "evidence_id": "R3-FD1C-PROP-002-SRC-005",
+          "url": "https://www.tensorflow.org/recommenders/examples/basic_retrieval",
+          "authority_type": "source_owner_recipe_config_and_result",
+          "claim_scope": "Dataset loading, random split, model, optimizer, batch sizes, epochs, evaluator construction, numeric test output and protocol caveats.",
+          "access_status": "ACCESSIBLE_WEB_200",
+          "retrieved_at": "2026-08-22T20:30:55+07:00",
+          "notes": "Official tutorial reports top-10 categorical accuracy 0.021150000393390656 and explicitly states that prior watches are not excluded."
+        },
+        {
+          "evidence_id": "R3-FD1C-PROP-002-SRC-006",
+          "url": "https://www.tensorflow.org/recommenders/api_docs/python/tfrs/metrics/FactorizedTopK",
+          "authority_type": "source_owner_evaluator_documentation",
+          "claim_scope": "FactorizedTopK definition, default cutoffs and top-k categorical-accuracy semantics.",
+          "access_status": "ACCESSIBLE_WEB_200",
+          "retrieved_at": "2026-08-22T20:30:55+07:00",
+          "notes": "The API defines the metric as how often the true candidate occurs in the top-k candidates."
+        },
+        {
+          "evidence_id": "R3-FD1C-PROP-002-SRC-007",
+          "url": "https://www.tensorflow.org/datasets/catalog/movielens",
+          "authority_type": "canonical_dataset_adapter_documentation",
+          "claim_scope": "TFDS builder version 0.1.1, 100K config identity, feature schema and upstream GroupLens homepage.",
+          "access_status": "ACCESSIBLE_WEB_200",
+          "retrieved_at": "2026-08-22T20:30:55+07:00",
+          "notes": "TFDS documents 100,000 examples for 100k-ratings and 1,682 candidates for 100k-movies."
+        },
+        {
+          "evidence_id": "R3-FD1C-PROP-002-SRC-008",
+          "url": "https://files.grouplens.org/datasets/movielens/ml-100k-README.txt",
+          "authority_type": "canonical_upstream_dataset_terms",
+          "claim_scope": "MovieLens 100K release identity and conditional research-use terms.",
+          "access_status": "ACCESSIBLE_TEXT_200",
+          "retrieved_at": "2026-08-22T20:30:55+07:00",
+          "notes": "Research use requires acknowledgement; redistribution and commercial/revenue-bearing use are restricted."
+        }
+      ],
+      "scout_status": "INCOMPLETE_EXCLUDED",
+      "unresolved_fields": [
+        "reference_paper_locator: no original toolkit paper or proceedings record located",
+        "immutable_revision_locator: full commit page replay failed",
+        "repository_license_locator: exact-release license binding not replayed",
+        "training_entrypoint_locator: tutorial source was not replayed at the proposed immutable revision",
+        "configuration_locator: tutorial-to-release binding not established",
+        "benchmark_target_locator: tutorial numeric output is not bound to the proposed immutable revision"
+      ]
+    },
+    {
+      "proposal_id": "R3-FD1C-PROP-003",
+      "framework_name": "ReChorus2.0 modular recommendation research toolkit",
+      "repository_locator": "https://github.com/THUwangcy/ReChorus",
+      "immutable_revision_locator": "https://github.com/THUwangcy/ReChorus/commit/c164ec4303cc20ddcfbd1b57de366a481811d1e5",
+      "repository_license_locator": "https://github.com/THUwangcy/ReChorus/blob/master/LICENSE",
+      "reference_paper_locator": "https://arxiv.org/abs/2405.18058",
+      "dataset_name": "Amazon product data 2014 Grocery and Gourmet Food 5-core, ReChorus preprocessed derivative",
+      "dataset_provider_locator": "https://cseweb.ucsd.edu/~jmcauley/datasets/amazon/links.html",
+      "dataset_release_id": "UCSD Amazon product data older release covering May 1996 through July 2014; Grocery and Gourmet Food 5-core; 151,254 reviews",
+      "dataset_terms_locator": null,
+      "preprocessing_split_locator": "https://raw.githubusercontent.com/THUwangcy/ReChorus/c164ec4303cc20ddcfbd1b57de366a481811d1e5/docs/demo_scripts_results/README.md",
+      "training_entrypoint_locator": "https://raw.githubusercontent.com/THUwangcy/ReChorus/c164ec4303cc20ddcfbd1b57de366a481811d1e5/docs/demo_scripts_results/Topk_Amazon.sh",
+      "configuration_locator": "https://raw.githubusercontent.com/THUwangcy/ReChorus/c164ec4303cc20ddcfbd1b57de366a481811d1e5/docs/demo_scripts_results/Topk_Amazon.sh",
+      "evaluator_locator": "https://raw.githubusercontent.com/THUwangcy/ReChorus/c164ec4303cc20ddcfbd1b57de366a481811d1e5/src/helpers/BaseRunner.py",
+      "benchmark_target_locator": "https://raw.githubusercontent.com/THUwangcy/ReChorus/c164ec4303cc20ddcfbd1b57de366a481811d1e5/docs/demo_scripts_results/README.md",
+      "benchmark_target_summary": {
+        "dataset_split": "Grocery and Gourmet Food 5-core ReChorus derivative; per-user leave-one-out by recency: latest interaction test, second latest validation, remaining interactions train; 99 randomly sampled negatives per test case",
+        "method_config": "DirectAU; embedding size 64; learning rate 1e-3; L2 1e-5; gamma 0.3; 500 epochs; source-owned Topk_Amazon.sh",
+        "metric": "NDCG",
+        "cutoff": 5,
+        "value": 0.2779,
+        "result_locator": "https://raw.githubusercontent.com/THUwangcy/ReChorus/c164ec4303cc20ddcfbd1b57de366a481811d1e5/docs/demo_scripts_results/README.md",
+        "protocol_caveats": [
+          "The ranking target is over one positive plus 99 sampled negatives, not the v5 full catalog.",
+          "The repository supplies a preprocessed derivative and source-owned split description, but the exact transformation lineage from the canonical 151,254-review release was not fully replayed.",
+          "The canonical UCSD provider page identifies the release but exposes no affirmative dataset-use terms on the inspected surface; dataset_terms_locator therefore remains null.",
+          "This value is a reference target only and is invalid for paper reporting until an authorized reproduction exists."
+        ]
+      },
+      "task_family": "sampled-negative top-k recommendation evaluation",
+      "source_inventory": [
+        {
+          "evidence_id": "R3-FD1C-PROP-003-SRC-001",
+          "url": "https://github.com/THUwangcy/ReChorus",
+          "authority_type": "official_owner_repository",
+          "claim_scope": "ReChorus2.0 toolkit identity, supported tasks, source-owned demo results, paper citation and MIT license declaration.",
+          "access_status": "ACCESSIBLE_WEB_200",
+          "retrieved_at": "2026-08-22T20:30:55+07:00",
+          "notes": "Owner README binds the framework to demo scripts/results and the ReChorus2.0 paper."
+        },
+        {
+          "evidence_id": "R3-FD1C-PROP-003-SRC-002",
+          "url": "https://github.com/THUwangcy/ReChorus/commits/master/",
+          "authority_type": "official_owner_commit_history",
+          "claim_scope": "Latest master commit identity before the cutoff.",
+          "access_status": "ACCESSIBLE_WEB_200",
+          "retrieved_at": "2026-08-22T20:30:55+07:00",
+          "notes": "Commit history shows short SHA c164ec4 on 2026-02-11; the exact commit link resolved to c164ec4303cc20ddcfbd1b57de366a481811d1e5 but its page replay failed."
+        },
+        {
+          "evidence_id": "R3-FD1C-PROP-003-SRC-003",
+          "url": "https://github.com/THUwangcy/ReChorus/blob/master/LICENSE",
+          "authority_type": "official_owner_license_blob",
+          "claim_scope": "Affirmative MIT repository license.",
+          "access_status": "ACCESSIBLE_WEB_200_CURRENT_BRANCH",
+          "retrieved_at": "2026-08-22T20:30:55+07:00",
+          "notes": "Current master license rendered as MIT; the exact-commit raw license returned cache miss."
+        },
+        {
+          "evidence_id": "R3-FD1C-PROP-003-SRC-004",
+          "url": "https://arxiv.org/abs/2405.18058",
+          "authority_type": "original_paper_record",
+          "claim_scope": "Original ReChorus2.0 paper identity, later cited by the owner as RecSys 2024 proceedings work.",
+          "access_status": "ACCESSIBLE_WEB_200",
+          "retrieved_at": "2026-08-22T20:30:55+07:00",
+          "notes": "Original paper record for the modular task-flexible recommendation library."
+        },
+        {
+          "evidence_id": "R3-FD1C-PROP-003-SRC-005",
+          "url": "https://raw.githubusercontent.com/THUwangcy/ReChorus/c164ec4303cc20ddcfbd1b57de366a481811d1e5/docs/demo_scripts_results/README.md",
+          "authority_type": "official_owner_pinned_protocol_and_result_table",
+          "claim_scope": "Amazon leave-one-out split, 99-negative evaluation and numeric HR/NDCG table.",
+          "access_status": "ACCESSIBLE_TEXT_200",
+          "retrieved_at": "2026-08-22T20:30:55+07:00",
+          "notes": "Pinned result table reports DirectAU NDCG@5 = 0.2779 on Grocery and Gourmet Food."
+        },
+        {
+          "evidence_id": "R3-FD1C-PROP-003-SRC-006",
+          "url": "https://raw.githubusercontent.com/THUwangcy/ReChorus/c164ec4303cc20ddcfbd1b57de366a481811d1e5/docs/demo_scripts_results/Topk_Amazon.sh",
+          "authority_type": "official_owner_pinned_training_configuration",
+          "claim_scope": "DirectAU training command and exact hyperparameters for the Amazon target.",
+          "access_status": "ACCESSIBLE_TEXT_200",
+          "retrieved_at": "2026-08-22T20:30:55+07:00",
+          "notes": "Pinned script specifies emb_size=64, lr=1e-3, l2=1e-5, gamma=0.3 and epoch=500."
+        },
+        {
+          "evidence_id": "R3-FD1C-PROP-003-SRC-007",
+          "url": "https://raw.githubusercontent.com/THUwangcy/ReChorus/c164ec4303cc20ddcfbd1b57de366a481811d1e5/src/helpers/BaseRunner.py",
+          "authority_type": "official_owner_pinned_evaluator",
+          "claim_scope": "HR/NDCG evaluator implementation, cutoff defaults, candidate-score convention and all-item seen-item masking behavior.",
+          "access_status": "ACCESSIBLE_TEXT_200",
+          "retrieved_at": "2026-08-22T20:30:55+07:00",
+          "notes": "Evaluator computes rank of the first-column positive and NDCG as hit/log2(rank+1); sampled-negative mode does not invoke full-catalog masking."
+        },
+        {
+          "evidence_id": "R3-FD1C-PROP-003-SRC-008",
+          "url": "https://raw.githubusercontent.com/THUwangcy/ReChorus/c164ec4303cc20ddcfbd1b57de366a481811d1e5/data/README.md",
+          "authority_type": "official_owner_pinned_dataset_documentation",
+          "claim_scope": "Repository binding to the canonical Amazon dataset, built-in preprocessed derivative and train/dev/test schema.",
+          "access_status": "ACCESSIBLE_TEXT_200",
+          "retrieved_at": "2026-08-22T20:30:55+07:00",
+          "notes": "Owner data README names Grocery and Gourmet Food 5-core with metadata and documents the candidate-list file format."
+        },
+        {
+          "evidence_id": "R3-FD1C-PROP-003-SRC-009",
+          "url": "https://cseweb.ucsd.edu/~jmcauley/datasets/amazon/links.html",
+          "authority_type": "canonical_dataset_provider_release",
+          "claim_scope": "Older Amazon product data release identity, time span, 5-core definition and Grocery and Gourmet Food count.",
+          "access_status": "ACCESSIBLE_WEB_200_TERMS_NOT_FOUND",
+          "retrieved_at": "2026-08-22T20:30:55+07:00",
+          "notes": "Canonical provider reports 151,254 reviews for the category and calls the old release a reproduction surface, but the inspected page has citation instructions rather than affirmative use/license terms."
+        }
+      ],
+      "scout_status": "INCOMPLETE_EXCLUDED",
+      "unresolved_fields": [
+        "dataset_terms_locator: no affirmative canonical use/license terms found",
+        "preprocessing_split_locator: exact canonical-to-preprocessed transformation lineage not fully replayed",
+        "repository_license_locator: exact-commit license replay failed",
+        "immutable_revision_locator: exact commit page replay failed although the full SHA was resolved"
+      ]
+    }
+  ],
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

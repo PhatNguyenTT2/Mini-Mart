@@ -1,0 +1,37 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r3-fd1-frozen-output-gate-result-1.0",
+  "created_at": "2026-08-22",
+  "validator": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r3_fd1_frozen_outputs.py",
+  "manifest": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r3_fd1_frozen_output_manifest.json",
+  "passed": true,
+  "verdict": "PASS_R3_FD1_FROZEN_16_OF_16_READY_FOR_PARALLEL_FD2_FD4",
+  "failure_count": 0,
+  "failures": [],
+  "checks": {
+    "inputs_is_list": true,
+    "input_count_16": true,
+    "paths_unique": true,
+    "frozen_outputs_16_of_16": true,
+    "strict_json_12_of_12": true,
+    "candidate_ids_frozen": true,
+    "truth_state_frozen": true,
+    "seed_binding_replays": true,
+    "seed_ids_exact_order": true,
+    "seed_truth_state": true,
+    "no_selection": true,
+    "scout_receipt_pass": true,
+    "fd1_receipt_pass": true
+  },
+  "frozen_outputs": {"expected":16,"matched":16,"strict_json_verified":12},
+  "candidate_ids": [
+    "R3-BUNDLE-CORNAC-ML100K-001",
+    "R3-BUNDLE-ELLIOT-ML1M-001",
+    "R3-BUNDLE-DAISYREC-ML1M-001"
+  ],
+  "seed_binding": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_p/E4_R3FD1_bundle_seed_discovery/candidate_bundle_seeds.json",
+    "canonical_lf_bytes": 23034,
+    "canonical_lf_sha256": "dce058850afb537f062531d1b128a1c36685bc878a3761e35a22db3d72db8781"
+  },
+  "execution_authorized": false
+}
