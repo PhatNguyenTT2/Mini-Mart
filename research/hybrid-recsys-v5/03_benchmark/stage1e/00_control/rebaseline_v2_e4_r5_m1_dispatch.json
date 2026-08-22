@@ -1,0 +1,52 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r5-m1-dispatch-1.0",
+  "created_at": "2026-08-23",
+  "stage_id": "R5-M1-PARALLEL-DISPATCH",
+  "entry_gate": "PASS_R5_M1_FROZEN_15_OF_15_READY_FOR_PARALLEL_AUDITS",
+  "frozen_input_manifest": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r5_m1_frozen_input_manifest.json",
+  "model_profile": {
+    "display_name": "Sol XHigh Standard",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "xhigh",
+    "service_tier": "standard",
+    "dispatch_service_tier_override": null
+  },
+  "parallel_group": "R5-M1",
+  "expected_stage_count": 2,
+  "stages": [
+    {
+      "stage_id": "R5-M1A",
+      "agent_id": "01a02a97-792b-7973-8353-2a1044e474fd",
+      "nickname": "Noether",
+      "candidate_id": "R5-CAND-RECBOLE-BPR-ML100K-001",
+      "status": "RUNNING",
+      "write_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ad/E4_R5M1A_recbole_source_audit"
+    },
+    {
+      "stage_id": "R5-M1B",
+      "agent_id": "01a02a97-7a5b-7082-ac11-08497234516c",
+      "nickname": "Meitner",
+      "candidate_id": "R5-CAND-RECBOLE-GNN-LIGHTGCN-ML1M-001",
+      "status": "RUNNING",
+      "write_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ae/E4_R5M1B_recbole_gnn_source_audit"
+    }
+  ],
+  "scope_guards": {
+    "source_read_only": true,
+    "network_access": false,
+    "dataset_or_checkpoint_acquisition": false,
+    "package_install_or_environment_creation": false,
+    "vendor_source_execution": false,
+    "preprocessing_training_evaluation": false,
+    "project_v5_test_access": false,
+    "cross_candidate_evidence_join": false,
+    "benchmark_admission": false
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

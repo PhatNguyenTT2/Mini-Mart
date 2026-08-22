@@ -778,7 +778,7 @@
       "next_gate": "SUPERSEDED_BY_USER_DECISION_AUTHORIZE_TARGETED_SOURCE_ONLY_EVIDENCE_MATERIALIZATION_REDESIGN"
     },
     "e4_r5": {
-      "status": "M0_COMPLETE_CENTRALLY_VALIDATED_M1_GATE_PASS_READY_FOR_PARALLEL_AUDITS",
+      "status": "M0_COMPLETE_CENTRALLY_VALIDATED_M1_PARALLEL_AUDITS_RUNNING",
       "entry_checkpoint": "USER_CONFIRMED_TARGETED_SOURCE_ONLY_EVIDENCE_MATERIALIZATION_REDESIGN",
       "source_stage": "R4-G0",
       "source_verdict": "NO_ADMISSIBLE_BUNDLE_STOP_FAIL_CLOSED",
@@ -831,10 +831,11 @@
         "test_access_authorized": false
       },
       "r5_m1_parallel_group": {
-        "status": "ENTRY_GATE_PASS_READY_FOR_DISPATCH",
+        "status": "RUNNING",
         "expected": 2,
-        "active": 0,
+        "active": 2,
         "complete": 0,
+        "dispatch": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r5_m1_dispatch.json",
         "gate": "PASS_R5_M1_FROZEN_15_OF_15_READY_FOR_PARALLEL_AUDITS",
         "frozen_inputs": "15/15",
         "strict_json_inputs": "11/11",
@@ -844,11 +845,13 @@
         "stages": {
           "R5-M1A": {
             "candidate_id": "R5-CAND-RECBOLE-BPR-ML100K-001",
-            "status": "READY_FOR_DISPATCH"
+            "agent_id": "01a02a97-792b-7973-8353-2a1044e474fd",
+            "status": "RUNNING"
           },
           "R5-M1B": {
             "candidate_id": "R5-CAND-RECBOLE-GNN-LIGHTGCN-ML1M-001",
-            "status": "READY_FOR_DISPATCH"
+            "agent_id": "01a02a97-7a5b-7082-ac11-08497234516c",
+            "status": "RUNNING"
           }
         }
       },
@@ -859,7 +862,7 @@
         "project_benchmark_numbers": "INVALID_FOR_PAPER"
       },
       "execution_authorized": false,
-      "next_gate": "DISPATCH_R5_M1A_AND_R5_M1B_SOL_XHIGH_STANDARD_READ_ONLY_SOURCE_AUDITS"
+      "next_gate": "WAIT_R5_M1A_AND_R5_M1B_THEN_CENTRAL_SCHEMA_HASH_AND_SEMANTIC_VALIDATION"
     }
   },
   "central_preregistration_lock": "PASS_R5_S0_SOURCE_ONLY_SCOPE_LOCKED",
@@ -867,5 +870,5 @@
   "harmonized_v5": "BLOCKED",
   "external_validation": "BLOCKED",
   "efficiency": "BLOCKED_AFTER_ACCURACY",
-  "next_gate": "Dispatch R5-M1A and R5-M1B in parallel with Sol XHigh Standard for read-only pinned-source audits. Dataset/checkpoint acquisition, package or environment creation, vendor execution, preprocessing, training, evaluation and TEST access remain blocked until a positive R5-G1 and explicit R5-M2 user checkpoint."
+  "next_gate": "R5-M1A and R5-M1B are running in parallel with Sol XHigh Standard. On completion, centrally validate exact output schemas, source hashes, candidate isolation and truth state before opening R5-G1. Dataset/checkpoint acquisition, package or environment creation, vendor execution, preprocessing, training, evaluation and TEST access remain blocked."
 }
