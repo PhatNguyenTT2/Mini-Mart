@@ -1,0 +1,16 @@
+{
+  "schema_version": "stage1b-r1-r7-root-hash-1.0",
+  "hash_algorithm": "SHA-256",
+  "preimage_encoding": "UTF-8",
+  "preimage_format": "JSON array of lexicographically path-sorted [path,bytes,sha256,role] tuples",
+  "preimage_serialization": "json.dumps(ensure_ascii=False,separators=(',',':')); no trailing newline",
+  "member_count": 193,
+  "preimage_bytes": 43928,
+  "canonical_root_sha256": "f0f2d56e42ce0f181f83182ddffe1060bf8994f50ababd4b0dbe563a942370dd",
+  "exclusions": [
+    "timestamps",
+    "absolute_or_worktree_paths",
+    "mutable_pipeline_state",
+    "R7_output_self_hashes"
+  ]
+}

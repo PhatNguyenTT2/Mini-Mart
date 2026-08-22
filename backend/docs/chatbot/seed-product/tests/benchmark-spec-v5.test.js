@@ -3,7 +3,7 @@
 const assert = require('node:assert/strict');
 const test = require('node:test');
 const path = require('node:path');
-const { canonicalSpecSha256, loadBenchmarkSpec } = require('../benchmark-spec');
+const { canonicalSpecJson, canonicalSpecSha256, loadBenchmarkSpec } = require('../benchmark-spec');
 
 test('v5 spec is explicit, frozen, and canonically hashed', () => {
   const spec = loadBenchmarkSpec(path.resolve(__dirname, '..', 'benchmark-spec-v5.json'));
@@ -12,7 +12,11 @@ test('v5 spec is explicit, frozen, and canonically hashed', () => {
   assert.equal(spec.reset_confirmation, 'RESET_STORE_1_BENCHMARK_V5');
   assert.equal(spec.organic_rule_transition_fraction, 0.5);
   assert.equal(spec.transition_user_count, 2500);
-  assert.equal(canonicalSpecSha256(spec).length, 64);
+  assert.equal(
+    canonicalSpecSha256(spec),
+    '1ace202aaa8f54204ead66ceabe809b3c51795e097dd71c505f07b8367c80bd2'
+  );
+  assert.equal(canonicalSpecJson(spec).startsWith('{"conversion_affinity_weight":0.1,'), true);
   assert.throws(() => { spec.store_id = 9; }, TypeError);
 });
 

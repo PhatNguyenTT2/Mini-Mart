@@ -1,0 +1,251 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-input-1.0",
+  "material_passport": {
+    "origin_skill": "ars-codex:academic-research-suite/experiment-agent",
+    "origin_mode": "central-freeze",
+    "origin_date": "2026-08-22",
+    "verification_status": "UNVERIFIED",
+    "version_label": "Stage 1E Rebaseline v2 E4 frozen input packet"
+  },
+  "project": "hybrid-recsys-v5",
+  "stage": "1E",
+  "wave": "B",
+  "task": "E4_reproduction_adaptation",
+  "authority_root": "E:/UIT/cv/backend",
+  "git": {
+    "central_head_after_wave_a_import": "9d432167f9b4434774e37dd5ad92ef08d9b638af",
+    "working_tree": "DIRTY_USER_STATE",
+    "starting_state_policy": "working-tree",
+    "preserve_user_changes": true
+  },
+  "hash_policy": {
+    "algorithm": "SHA-256",
+    "canonicalization": "Decode UTF-8 bytes and replace CRLF with LF before hashing",
+    "reason": "Tracked Wave A text artifacts are materialized with different line endings across Windows Git worktrees",
+    "fail_closed": true
+  },
+  "model_policy": {
+    "model": "gpt-5.6-sol",
+    "reasoning": "xhigh"
+  },
+  "wave_a_gate": {
+    "structural_validation": "PASS_STRUCTURALLY_READY_FOR_E4",
+    "scientific_verification": "UNVERIFIED",
+    "clone_or_execution_authorized": false,
+    "accepted_result_rows": 0,
+    "result_status": "NOT_RUN",
+    "test_set_opened": "NO"
+  },
+  "inputs": [
+    {
+      "role": "e4_execution_contract",
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_reproduction_adaptation_contract.md",
+      "canonical_lf_bytes": 13187,
+      "canonical_lf_sha256": "368df1ab39df6f4cf03565cd871ba2fc5276a886f314557c6c0ff1244e9e63e5",
+      "status": "authoritative_e4_contract"
+    },
+    {
+      "role": "parent_rebaseline_contract",
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/stage1e_rebaseline_v2_contract.md",
+      "canonical_lf_bytes": 9566,
+      "canonical_lf_sha256": "19bd5f1a21c34f7d7a98d41be7479c8d3c54dba21831c467991f9d7cb26111b5",
+      "status": "authoritative_parent_contract"
+    },
+    {
+      "role": "parent_wave_a_input_manifest",
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/stage1e_rebaseline_v2_input_manifest.json",
+      "canonical_lf_bytes": 3780,
+      "canonical_lf_sha256": "107299c026434366ed6ddb18f4ee6e25fd790d9799fd81c1c1e87871ed60744d",
+      "status": "authoritative_parent_manifest"
+    },
+    {
+      "role": "wave_a_validator",
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_rebaseline_v2_wave_a.py",
+      "canonical_lf_bytes": 6752,
+      "canonical_lf_sha256": "f80784e0b52c858f8899d56fec3fd52d1a657518eb685f4248c82634f84347f5",
+      "status": "central_validator"
+    },
+    {
+      "role": "wave_a_validation_receipt",
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_wave_a_validation_receipt.json",
+      "canonical_lf_bytes": 4977,
+      "canonical_lf_sha256": "1024cd38692a6632e4972484f37fd58e24ea05744e00bd33b61eca4af470b44a",
+      "status": "structural_pass_evidence_unverified"
+    },
+    {
+      "role": "master_plan",
+      "path": "master/academic-research-master-plan.md",
+      "canonical_lf_bytes": 21600,
+      "canonical_lf_sha256": "50fe3376bbfdb6233f45e3dd7328bb231ed1e708a1f93766f0378d66ceb1f0a7",
+      "status": "authoritative_plan"
+    },
+    {
+      "role": "rq_brief",
+      "path": "research/hybrid-recsys-v5/01_research/rq_brief.md",
+      "canonical_lf_bytes": 14418,
+      "canonical_lf_sha256": "c64dd8293da8e489a3f6d9fd220620a988bedb78b83ec1d2e9b280918a179b5b",
+      "status": "stage1a_frozen"
+    },
+    {
+      "role": "methodology",
+      "path": "research/hybrid-recsys-v5/01_research/methodology_blueprint.md",
+      "canonical_lf_bytes": 16138,
+      "canonical_lf_sha256": "dfe581aaffa48bdfa5567f151f27525bdb47a704d43f501bdfa7b6572496e0d1",
+      "status": "stage1a_frozen"
+    },
+    {
+      "role": "estimand_matrix",
+      "path": "research/hybrid-recsys-v5/01_research/rq_estimand_matrix.md",
+      "canonical_lf_bytes": 5466,
+      "canonical_lf_sha256": "05dbdc1915af9fa18bd9e794ddb466f3c8159c207688364a50d94ff8b724ebce",
+      "status": "stage1a_frozen"
+    },
+    {
+      "role": "experiment_protocol",
+      "path": "inputs/experimental_log.md",
+      "canonical_lf_bytes": 23581,
+      "canonical_lf_sha256": "bd4ba08719667df6a71feccc915d0b84307b71e536bc533735cc61157e8bcf9f",
+      "status": "authoritative_not_run_protocol"
+    },
+    {
+      "role": "idea_context",
+      "path": "inputs/idea.md",
+      "canonical_lf_bytes": 27189,
+      "canonical_lf_sha256": "b8d6867df658331650421d576ac336f40fea9c838efc17cde8a16eb80ee7c13e",
+      "status": "context_only"
+    },
+    {
+      "role": "current_v5_spec",
+      "path": "backend/docs/chatbot/seed-product/benchmark-spec-v5.json",
+      "canonical_lf_bytes": 2629,
+      "canonical_lf_sha256": "acef1c62cc2a9a3ae04fdf2f4b2fb24b3eb8d2634f15e085fbe1878be8dc166d",
+      "status": "invalid_for_model_benchmark_pending_lineage_audit"
+    },
+    {
+      "role": "stage1b_seal",
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase6_seal/r9_stage1b_seal/stage1b_r1_seal_manifest.json",
+      "canonical_lf_bytes": 13529,
+      "canonical_lf_sha256": "49ae115285679a99e7b8099d541c50219c2346c930458d5ae25db25885ab3717",
+      "status": "literature_sealed_not_empirical_authority"
+    },
+    {
+      "role": "e1_repo_registry",
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_a/E1_official_repos/official_repo_registry.json",
+      "canonical_lf_bytes": 46054,
+      "canonical_lf_sha256": "59227a7355c2efaa285d01e165ec99836a0672dd7a952aa921564b75a3b5b4aa",
+      "status": "unverified_wave_a_evidence"
+    },
+    {
+      "role": "e1_command_map",
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_a/E1_official_repos/training_pipeline_command_map.md",
+      "canonical_lf_bytes": 22958,
+      "canonical_lf_sha256": "9f9ea53474bef6ca848f4d29f865ab3f34c3fd03c15ba958080f1851b60b6086",
+      "status": "unverified_wave_a_evidence"
+    },
+    {
+      "role": "e1_provenance_matrix",
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_a/E1_official_repos/implementation_provenance_matrix.md",
+      "canonical_lf_bytes": 11472,
+      "canonical_lf_sha256": "13790d41a342157bfb133daf4a13c948048cb109b5ef167b1308c4045bf4058b",
+      "status": "unverified_wave_a_evidence"
+    },
+    {
+      "role": "e1_exclusion_log",
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_a/E1_official_repos/repo_exclusion_log.md",
+      "canonical_lf_bytes": 7279,
+      "canonical_lf_sha256": "a628010580f6ad4a4fb5ef5f7ca9d07b63a6bd95539ed1e87874019e22cd43d2",
+      "status": "unverified_wave_a_evidence"
+    },
+    {
+      "role": "e1_handoff",
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_a/E1_official_repos/lane_handoff.json",
+      "canonical_lf_bytes": 4219,
+      "canonical_lf_sha256": "a2f46e1867778678c3709adaa72d529421cd515adc5d2ac611fdc37a4f56c672",
+      "status": "structurally_valid_with_blockers"
+    },
+    {
+      "role": "e2_dataset_registry",
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_a/E2_reference_datasets/reference_dataset_registry.json",
+      "canonical_lf_bytes": 59202,
+      "canonical_lf_sha256": "618a8b0cb83e679e6a4d52b18e7470c0a6277c3408079a83644732e026543e6a",
+      "status": "unverified_wave_a_evidence"
+    },
+    {
+      "role": "e2_compatibility_matrix",
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_a/E2_reference_datasets/dataset_repo_compatibility_matrix.md",
+      "canonical_lf_bytes": 17344,
+      "canonical_lf_sha256": "2b61a7d16894823adf710fa3c982dc1cfb1c762a85c07f533d5bae3410a6b2a5",
+      "status": "unverified_wave_a_evidence"
+    },
+    {
+      "role": "e2_rights_matrix",
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_a/E2_reference_datasets/rights_and_access_matrix.md",
+      "canonical_lf_bytes": 15548,
+      "canonical_lf_sha256": "6e2a2c2620b5e6d247faeea24a0e439ce3000b2773b345964bbc85f4ac183825",
+      "status": "unverified_wave_a_evidence"
+    },
+    {
+      "role": "e2_exclusion_log",
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_a/E2_reference_datasets/dataset_exclusion_log.md",
+      "canonical_lf_bytes": 12394,
+      "canonical_lf_sha256": "3874b040d48b0939a49c0cf6889245832726be7b3cdf05ed43938a4069a999ea",
+      "status": "unverified_wave_a_evidence"
+    },
+    {
+      "role": "e2_handoff",
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_a/E2_reference_datasets/lane_handoff.json",
+      "canonical_lf_bytes": 7105,
+      "canonical_lf_sha256": "0e8357b0a6817c528121587d88d7c2d05e1c328157b46fa13d5d88a419494cdc",
+      "status": "structurally_valid_conditional"
+    },
+    {
+      "role": "e3_benchmark_registry",
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_a/E3_metric_benchmarks/official_benchmark_registry.json",
+      "canonical_lf_bytes": 46095,
+      "canonical_lf_sha256": "80ada6ec79b2292999009ef07c220f88bbd10f943b8fa52e8232e03e90bc7011",
+      "status": "unverified_wave_a_evidence"
+    },
+    {
+      "role": "e3_metric_matrix",
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_a/E3_metric_benchmarks/metric_protocol_matrix.md",
+      "canonical_lf_bytes": 13090,
+      "canonical_lf_sha256": "ecbc53aa54f767044313c9d8aece4b42932192277a76e8942aa52ea74867b9cd",
+      "status": "unverified_wave_a_evidence"
+    },
+    {
+      "role": "e3_result_locator_map",
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_a/E3_metric_benchmarks/reported_result_locator_map.md",
+      "canonical_lf_bytes": 9336,
+      "canonical_lf_sha256": "395e61dac87abb8e4e68725c9b356e13a80b8089f85393de922e3f8108784068",
+      "status": "unverified_wave_a_evidence"
+    },
+    {
+      "role": "e3_acceptance_rules",
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_a/E3_metric_benchmarks/reproduction_acceptance_rules.md",
+      "canonical_lf_bytes": 10220,
+      "canonical_lf_sha256": "0612a5f63fd949fc8f8134e238b6fcfe59badc1528c512c09e1e7de6af8296d5",
+      "status": "unverified_wave_a_evidence"
+    },
+    {
+      "role": "e3_handoff",
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_a/E3_metric_benchmarks/lane_handoff.json",
+      "canonical_lf_bytes": 4571,
+      "canonical_lf_sha256": "2c1676ed8a630edc9abf3ea691e28d2bbc986b83aac944f0a1154394fc15e62f",
+      "status": "structurally_valid_pending_evidence"
+    }
+  ],
+  "execution_authority": {
+    "primary_source_web_replay": true,
+    "local_read_only_inspection": true,
+    "repository_clone": false,
+    "dataset_download": false,
+    "package_install": false,
+    "source_modification": false,
+    "training": false,
+    "validation_execution": false,
+    "test_evaluation": false,
+    "command_design_only": true,
+    "independent_e5_audit_required": true,
+    "explicit_user_command_confirmation_required_after_e5": true
+  }
+}

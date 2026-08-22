@@ -1,0 +1,200 @@
+{
+  "schema_version": "stage1b-r1-old-lane-disposition-1.0",
+  "project": "hybrid-recsys-v5",
+  "stage": "1B",
+  "round": "remediation R1",
+  "lane": "L1_evaluation_reproducibility",
+  "research_cutoff": "2026-08-14",
+  "old_lane_path": "research/hybrid-recsys-v5/01_research/literature_review/phase2_investigation/lanes/L1_evaluation_reproducibility.md",
+  "old_lane_reported_deduplicated_count": 18,
+  "old_lane_actual_distinct_candidate_count": 19,
+  "disposition_counts": {
+    "RETAIN": 11,
+    "REPLACE": 4,
+    "REMOVE": 4,
+    "MOVE_TO_RESOURCE_REGISTRY": 0
+  },
+  "criteria": {
+    "inclusion": [
+      "Direct claim-level value for the locked L1 coverage",
+      "Canonical identity and metadata traceable to an official source of record",
+      "Non-redundant methodological or foundational coverage",
+      "Support scope can be bounded without cross-pipeline metric comparison"
+    ],
+    "exclusion_or_replacement": [
+      "Later communication, predecessor, or journal extension already represented in one version family",
+      "Broad or toolkit-only coverage duplicated by a more direct source",
+      "No project-specific reproduction evidence",
+      "Metadata conflict unresolved and no unique claim-level value"
+    ]
+  },
+  "entries": [
+    {
+      "old_candidate_id": "OLD-L1-001",
+      "candidate_title": "On Sampled Metrics for Item Recommendation",
+      "official_id": "10.1145/3394486.3403226",
+      "old_lane_bucket": "accepted",
+      "disposition": "RETAIN",
+      "retained_source_keys": ["krichene_rendle_2020_kdd"],
+      "reason": "Core theoretical evidence that naive sampled metrics need not preserve ordering under exact evaluation; exact KDD artifact acquisition remains explicit."
+    },
+    {
+      "old_candidate_id": "OLD-L1-002",
+      "candidate_title": "On Estimating Recommendation Evaluation Metrics under Sampling",
+      "official_id": "10.1609/aaai.v35i5.16537",
+      "old_lane_bucket": "accepted",
+      "disposition": "REPLACE",
+      "replacement_source_keys": ["li_jin_liu_ren_gao_liu_2023_aaai", "li_jin_liu_ren_gao_liu_2024_tors"],
+      "reason": "The later item-sampling work and its consolidated journal family provide current estimator and blind-spot coverage with clearer version provenance; retaining all three would overweight one research line."
+    },
+    {
+      "old_candidate_id": "OLD-L1-003",
+      "candidate_title": "Towards Reliable Item Sampling for Recommendation Evaluation",
+      "official_id": "10.1609/aaai.v37i4.25561",
+      "old_lane_bucket": "accepted",
+      "disposition": "RETAIN",
+      "retained_source_keys": ["li_jin_liu_ren_gao_liu_2023_aaai"],
+      "reason": "Direct, current counter-evidence to an absolute anti-sampling conclusion and authoritative full content is acquired."
+    },
+    {
+      "old_candidate_id": "OLD-L1-004",
+      "candidate_title": "Revisiting Alternative Experimental Settings for Evaluating Top-N Item Recommendation Algorithms",
+      "official_id": "10.1145/3340531.3412095",
+      "old_lane_bucket": "accepted",
+      "disposition": "RETAIN",
+      "retained_source_keys": ["zhao_chen_wang_gu_wen_2020_cikm"],
+      "reason": "Direct evidence for split, sampled-metric, domain, and comparative-ranking dependence; full artifact acquired."
+    },
+    {
+      "old_candidate_id": "OLD-L1-005",
+      "candidate_title": "Quality Metrics in Recommender Systems: Do We Calculate Metrics Consistently?",
+      "official_id": "10.1145/3460231.3478848",
+      "old_lane_bucket": "accepted",
+      "disposition": "RETAIN",
+      "retained_source_keys": ["tamm_damdinov_vasilev_2021_recsys"],
+      "reason": "Distinct direct evidence that shared metric names do not guarantee shared formula or implementation semantics."
+    },
+    {
+      "old_candidate_id": "OLD-L1-006",
+      "candidate_title": "Cumulated Gain-Based Evaluation of IR Techniques",
+      "official_id": "10.1145/582415.582418",
+      "old_lane_bucket": "accepted",
+      "disposition": "RETAIN",
+      "retained_source_keys": ["jarvelin_kekalainen_2002_tois"],
+      "reason": "Foundational normalized discounted cumulative gain source; retained only for metric provenance, not for recommender-protocol conclusions."
+    },
+    {
+      "old_candidate_id": "OLD-L1-007",
+      "candidate_title": "The Use of the Area Under the ROC Curve in the Evaluation of Machine Learning Algorithms",
+      "official_id": "10.1016/S0031-3203(96)00142-2",
+      "old_lane_bucket": "accepted",
+      "disposition": "RETAIN",
+      "retained_source_keys": ["bradley_1997_pattern_recognition"],
+      "reason": "Foundational ROC-AUC interpretation source; retained with strict prohibition against using it to define project-specific GAUC aggregation."
+    },
+    {
+      "old_candidate_id": "OLD-L1-008",
+      "candidate_title": "Offline Evaluation Options for Recommender Systems",
+      "official_id": "10.1007/s10791-020-09371-3",
+      "old_lane_bucket": "accepted",
+      "disposition": "RETAIN",
+      "retained_source_keys": ["canamares_castells_moffat_2020_irj"],
+      "reason": "Direct experimental evidence for split, target selection, empty-result handling, and user aggregation dependence; full artifact acquired."
+    },
+    {
+      "old_candidate_id": "OLD-L1-009",
+      "candidate_title": "A Troubling Analysis of Reproducibility and Progress in Recommender Systems Research",
+      "official_id": "10.1145/3434185",
+      "old_lane_bucket": "accepted",
+      "disposition": "RETAIN",
+      "retained_source_keys": ["dacrema_boglio_cremonesi_jannach_2021_tois"],
+      "reason": "Core full-study evidence for reproducibility criteria, baseline tuning, split/preprocessing control, and the insufficiency of code availability alone."
+    },
+    {
+      "old_candidate_id": "OLD-L1-010",
+      "candidate_title": "DaisyRec 2.0: Benchmarking Recommendation for Rigorous Evaluation",
+      "official_id": "10.1109/TPAMI.2022.3231891",
+      "old_lane_bucket": "accepted",
+      "disposition": "RETAIN",
+      "retained_source_keys": ["sun_fang_yang_qu_liu_yu_ong_zhang_2023_tpami"],
+      "reason": "Direct evaluation-chain evidence for model-independent and model-dependent hyper-factors, including tuning and protocol controls."
+    },
+    {
+      "old_candidate_id": "OLD-L1-011",
+      "candidate_title": "RecBole 2.0: Towards a More Up-to-Date Recommendation Library",
+      "official_id": "10.1145/3511808.3557680",
+      "old_lane_bucket": "accepted",
+      "disposition": "RETAIN",
+      "retained_source_keys": ["zhao_hou_pan_yang_zhang_lin_zhang_bian_tang_sun_chen_xu_zhang_tian_tian_mu_fan_chen_wen_2022_cikm"],
+      "reason": "Retained as implementation/evaluation infrastructure evidence only; it does not certify project-specific adapter parity or reproduction."
+    },
+    {
+      "old_candidate_id": "OLD-L1-012",
+      "candidate_title": "Improving Methodological Standards in Recommender Systems Offline Evaluation",
+      "official_id": "10.1145/3800587",
+      "old_lane_bucket": "accepted",
+      "disposition": "RETAIN",
+      "retained_source_keys": ["jannach_chen_2026_tors_editorial"],
+      "reason": "Current methodological checklist with exact publisher content inspected; classification corrected to editorial/essay and peer review left unknown."
+    },
+    {
+      "old_candidate_id": "OLD-L1-013",
+      "candidate_title": "On Sampled Metrics for Item Recommendation",
+      "official_id": "10.1145/3535335",
+      "old_lane_bucket": "excluded",
+      "disposition": "REPLACE",
+      "replacement_source_keys": ["krichene_rendle_2020_kdd", "krichene_rendle_2021_ijcai_extended"],
+      "reason": "The 2022 Communications of the ACM article is a later communication in the same research family; the source-of-record KDD work and authoritative IJCAI extended abstract provide cleaner provenance."
+    },
+    {
+      "old_candidate_id": "OLD-L1-014",
+      "candidate_title": "On Sampling Top-K Recommendation Evaluation",
+      "official_id": "10.1145/3394486.3403262",
+      "old_lane_bucket": "excluded",
+      "disposition": "REPLACE",
+      "replacement_source_keys": ["li_jin_liu_ren_gao_liu_2024_tors"],
+      "reason": "The later consolidated journal article represents the evolved estimator work in the same methodological line and prevents predecessor inflation."
+    },
+    {
+      "old_candidate_id": "OLD-L1-015",
+      "candidate_title": "A Survey of Accuracy Evaluation Metrics of Recommendation Tasks",
+      "official_id": "JMLR-WCP-5-293",
+      "old_lane_bucket": "excluded",
+      "disposition": "REMOVE",
+      "reason": "Broad older survey is redundant for the locked claims, which are supported by direct metric and protocol studies plus foundational metric sources."
+    },
+    {
+      "old_candidate_id": "OLD-L1-016",
+      "candidate_title": "Are We Really Making Much Progress? A Worrying Analysis of Recent Neural Recommendation Approaches",
+      "official_id": "10.1145/3298689.3347058",
+      "old_lane_bucket": "excluded",
+      "disposition": "REPLACE",
+      "replacement_source_keys": ["dacrema_boglio_cremonesi_jannach_2021_tois"],
+      "reason": "The 2021 journal study is the broader full treatment and is retained as the canonical evidence for this reproduction program."
+    },
+    {
+      "old_candidate_id": "OLD-L1-017",
+      "candidate_title": "Elliot: A Comprehensive and Rigorous Framework for Reproducible Recommender Systems Evaluation",
+      "official_id": "10.1145/3404835.3463245",
+      "old_lane_bucket": "excluded",
+      "disposition": "REMOVE",
+      "reason": "Valid toolkit paper but redundant after direct evaluation-chain studies; toolkit availability would not certify v5 adapter parity."
+    },
+    {
+      "old_candidate_id": "OLD-L1-018",
+      "candidate_title": "BARS: Towards Open Benchmarking for Recommender Systems",
+      "official_id": "10.1145/3477495.3531723",
+      "old_lane_bucket": "excluded",
+      "disposition": "REMOVE",
+      "reason": "Toolkit/benchmark coverage is redundant and the old lane recorded an author-metadata conflict; it has no unique claim-level value needed by L1."
+    },
+    {
+      "old_candidate_id": "OLD-L1-019",
+      "candidate_title": "Cornac: A Comparative Framework for Multimodal Recommender Systems",
+      "official_id": "JMLR-20-238",
+      "old_lane_bucket": "excluded",
+      "disposition": "REMOVE",
+      "reason": "Framework paper is not direct evidence for the locked temporal, candidate-universe, aggregation, or reproduction claims and cannot certify a project-specific adapter."
+    }
+  ]
+}

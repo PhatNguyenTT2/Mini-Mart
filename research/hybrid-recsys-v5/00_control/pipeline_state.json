@@ -1,0 +1,251 @@
+{
+  "topic": "Reproducible hybrid recommendation for Vietnamese retail",
+  "language": {
+    "control_records": "vi",
+    "manuscript": "en"
+  },
+  "pipeline_version": "ARS-Codex 0.1.24 / academic-pipeline 3.19.0",
+  "master_plan_extension": "Phase 0 precedes the canonical ARS Stage 1",
+  "entry_point": "0",
+  "current_stage": "0",
+  "next_stage": "1A",
+  "pipeline_state": "awaiting_confirmation",
+  "consecutive_continue_count": 0,
+  "paper_direction": "methods_empirical",
+  "target_venue": "NOT_SELECTED",
+  "input_manifest_id": "phase0-inputs-4456b4381737",
+  "active_passport": "intake_v1",
+  "stages": {
+    "0": {
+      "name": "INTAKE_GOVERNANCE",
+      "skill": "academic-pipeline",
+      "status": "completed",
+      "mode": "phase-0-intake-governance",
+      "outputs": [
+        "phase0_intake.md",
+        "input_manifest.json",
+        "material_passport.json",
+        "venue_matrix.md",
+        "decision_log.md",
+        "phase0_seal.json"
+      ],
+      "started_at": "2026-08-13T10:46:57.174Z",
+      "completed_at": "2026-08-13T10:53:24.638Z",
+      "checkpoint_confirmed": false,
+      "checkpoint_type": "FULL",
+      "schema_validated": true,
+      "dialogue_log_ref": "current task: explicit Phase 0 execution request"
+    },
+    "1A": {
+      "name": "RQ_METHODOLOGY_BACKFILL",
+      "skill": "deep-research",
+      "status": "pending",
+      "mode": "targeted-full",
+      "outputs": [],
+      "checkpoint_confirmed": false,
+      "schema_validated": false
+    },
+    "1B": {
+      "name": "TARGETED_LITERATURE_REVIEW",
+      "skill": "deep-research",
+      "status": "pending",
+      "mode": "lit-review",
+      "outputs": [],
+      "checkpoint_confirmed": false,
+      "schema_validated": false
+    },
+    "1E": {
+      "name": "EXPERIMENT_BRIDGE",
+      "skill": "experiment-agent",
+      "status": "pending",
+      "mode": "plan-run-validate",
+      "outputs": [],
+      "checkpoint_confirmed": false,
+      "schema_validated": false
+    },
+    "2": {
+      "name": "WRITE",
+      "skill": "academic-paper",
+      "status": "pending",
+      "mode": null,
+      "outputs": [],
+      "checkpoint_confirmed": false,
+      "schema_validated": false
+    },
+    "2.5": {
+      "name": "INTEGRITY",
+      "agent": "integrity_verification_agent",
+      "status": "pending",
+      "mode": "pre-review",
+      "outputs": [],
+      "checkpoint_confirmed": false,
+      "checkpoint_type": "MANDATORY",
+      "schema_validated": false
+    },
+    "3": {
+      "name": "REVIEW",
+      "skill": "academic-paper-reviewer",
+      "status": "pending",
+      "mode": "full",
+      "outputs": [],
+      "checkpoint_confirmed": false,
+      "checkpoint_type": "MANDATORY",
+      "schema_validated": false
+    },
+    "4": {
+      "name": "REVISE",
+      "skill": "academic-paper",
+      "status": "pending",
+      "mode": "revision",
+      "outputs": [],
+      "checkpoint_confirmed": false,
+      "schema_validated": false
+    },
+    "3p": {
+      "name": "RE_REVIEW",
+      "skill": "academic-paper-reviewer",
+      "status": "pending",
+      "mode": "re-review",
+      "outputs": [],
+      "checkpoint_confirmed": false,
+      "checkpoint_type": "MANDATORY",
+      "schema_validated": false
+    },
+    "4p": {
+      "name": "RE_REVISE",
+      "skill": "academic-paper",
+      "status": "pending",
+      "mode": "revision",
+      "outputs": [],
+      "checkpoint_confirmed": false,
+      "schema_validated": false
+    },
+    "4.5": {
+      "name": "FINAL_INTEGRITY",
+      "agent": "integrity_verification_agent",
+      "status": "pending",
+      "mode": "final-check",
+      "outputs": [],
+      "checkpoint_confirmed": false,
+      "checkpoint_type": "MANDATORY",
+      "schema_validated": false
+    },
+    "5": {
+      "name": "FINALIZE",
+      "skill": "academic-paper",
+      "status": "pending",
+      "mode": "format-convert",
+      "outputs": [],
+      "checkpoint_confirmed": false,
+      "schema_validated": false
+    },
+    "6": {
+      "name": "PROCESS_SUMMARY",
+      "skill": "academic-pipeline",
+      "status": "pending",
+      "mode": "auto",
+      "outputs": [],
+      "checkpoint_confirmed": false,
+      "schema_validated": false
+    }
+  },
+  "materials": {
+    "phase0_intake": true,
+    "input_manifest": true,
+    "material_passport": true,
+    "venue_matrix": true,
+    "decision_log": true,
+    "phase0_seal": true,
+    "rq_brief": false,
+    "methodology_blueprint": false,
+    "bibliography": false,
+    "synthesis_report": false,
+    "accepted_experiment_results": false,
+    "paper_draft": false,
+    "integrity_report_pre": false,
+    "review_reports": false,
+    "revised_draft": false,
+    "integrity_report_final": false,
+    "final_paper": false
+  },
+  "experiment_state": {
+    "intake_status": "experiments_declared",
+    "accepted_results": 0,
+    "result_status": "NOT_RUN",
+    "experiment_ids": [
+      "EXP-REF-REPRO",
+      "EXP-V5-HARMONIZED",
+      "EXP-EXTERNAL-VALIDITY"
+    ]
+  },
+  "model_runtime": {
+    "execution_mode": "inline",
+    "model_id": "runtime-model-id-not-exposed",
+    "ars_model_tiering": "unset",
+    "cross_model": "unset",
+    "ultra_orchestration_used": false,
+    "note": "Per-phase model assignment was not simulated; Phase 0 used the active session model."
+  },
+  "blocking_conditions": [
+    {
+      "id": "B-VENUE-001",
+      "scope": "submission_formatting",
+      "status": "BLOCKED",
+      "reason": "Target venue and target-year CFP are not selected and verified."
+    },
+    {
+      "id": "B-RESULT-001",
+      "scope": "empirical_claims",
+      "status": "BLOCKED",
+      "reason": "No experiment has an accepted sealed result."
+    },
+    {
+      "id": "B-WRITE-001",
+      "scope": "final_introduction_and_related_work_prose",
+      "status": "BLOCKED",
+      "reason": "Stage 1 source verification and claim-citation mapping are incomplete."
+    }
+  ],
+  "schema_validation_log": [
+    {
+      "transition": "Phase 0 control bundle seal",
+      "schemas_checked": [
+        "JSON syntax",
+        "Material Passport Schema 9 required fields",
+        "repro_lock v1.0",
+        "experiment provenance entry schema",
+        "EP-INV declaration/provenance consistency",
+        "locked-input hash recheck"
+      ],
+      "result": "PASS",
+      "missing_fields": [],
+      "timestamp": "2026-08-13T10:53:24.638Z"
+    }
+  ],
+  "integrity_history": [],
+  "revision_history": [],
+  "collaboration_depth_history": [
+    {
+      "stage_id": "0",
+      "checkpoint_type": "FULL",
+      "timestamp": "2026-08-13T10:54:59.978Z",
+      "dialogue_log_ref": "Phase 0 window contains one user instruction and the corresponding execution updates",
+      "zone": "insufficient_evidence",
+      "scores": {
+        "delegation_intensity": null,
+        "cognitive_vigilance": null,
+        "cognitive_reallocation": null
+      },
+      "evidence": [
+        "The user delegated the complete Phase 0 control task as one coherent work package."
+      ],
+      "counter_evidence": [
+        "The stage contains fewer than five user turns, so critical evaluation or challenge behavior cannot be scored reliably.",
+        "No post-deliverable user reflection is yet visible, so cognitive reallocation cannot be inferred."
+      ],
+      "cross_model_divergence": null,
+      "advisory_only": true,
+      "blocking": false
+    }
+  ]
+}

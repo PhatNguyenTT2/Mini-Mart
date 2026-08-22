@@ -1,0 +1,310 @@
+{
+  "schema_version": "stage1b-r1-claim-cards-1.0",
+  "project": "hybrid-recsys-v5",
+  "stage": "1B",
+  "round": "remediation R1",
+  "lane": "L1_evaluation_reproducibility",
+  "research_cutoff": "2026-08-14",
+  "count": 11,
+  "claim_cards": [
+    {
+      "claim_id": "L1-CC-001",
+      "claim_text_bounded": "For the sampled-negative protocol analyzed in the Krichene and Rendle study family, naive sampled ranking metrics need not preserve the relative ordering obtained from exact evaluation; sampled and exact results therefore remain different estimands.",
+      "evidence_kind": "theoretical analysis plus empirical evaluation",
+      "source_keys": ["krichene_rendle_2020_kdd", "krichene_rendle_2021_ijcai_extended", "li_jin_liu_ren_gao_liu_2023_aaai", "pereira_said_santos_2025_recsys"],
+      "source_family_ids": ["sf_krichene_sampled_metrics", "sf_li_item_sampling_evaluation", "sf_pereira_sampling_reliability"],
+      "support_scope": "Top-N item recommendation when a relevant item is ranked against sampled non-relevant items rather than the exact candidate universe.",
+      "support_verdict": "supported",
+      "locator": {
+        "artifact_type": "publisher_pdf",
+        "uri": "source_artifacts/krichene_rendle_2020_kdd_author_copy.pdf",
+        "anchor": "PDF pp. 1, 8–9; abstract, empirical ordering results, Sections 7–8",
+        "basis": "original_content",
+        "accessed_at": "2026-08-14",
+        "sha256": "51095e67875ba6577e7c53df099c49c4b6d02ee4049e2484e7c880ba6b620694"
+      },
+      "locator_basis": "original_content",
+      "forbidden_extrapolations": [
+        "Do not relabel sampled metrics as exact or full-catalog metrics.",
+        "Do not conclude that every sampling estimator is invalid.",
+        "Do not transfer numerical results to v5."
+      ],
+      "counter_evidence": [
+        "Li, Jin, Liu, Ren, Gao, and Liu 2023 develop estimators and adaptive sampling that improve recovery under stated assumptions.",
+        "Pereira, Said, and Santos 2025 evaluate resolution, fidelity, robustness, and predictive power rather than treating all sampling designs as equivalent."
+      ],
+      "planning_only": true
+    },
+    {
+      "claim_id": "L1-CC-002",
+      "claim_text_bounded": "Candidate-universe construction, including the number and selection of decoy or non-relevant items, is part of the evaluation protocol and can alter metric estimates and comparative conclusions.",
+      "evidence_kind": "simulation and multi-configuration empirical evaluation",
+      "source_keys": ["zhao_chen_wang_gu_wen_2020_cikm", "ihemelandu_ekstrand_2023_wiiat", "pereira_said_santos_2025_recsys", "parajuli_barenji_ekstrand_2026_recsys"],
+      "source_family_ids": ["sf_zhao_alternative_settings", "sf_ihemelandu_candidate_sampling", "sf_pereira_sampling_reliability", "sf_parajuli_convergent_validity"],
+      "support_scope": "Offline Top-N evaluation where models rank a constructed candidate set or a sampled approximation to a larger universe.",
+      "support_verdict": "supported",
+      "locator": {
+        "artifact_type": "accepted_manuscript",
+        "uri": "source_artifacts/ihemelandu2023_candidate_sampling.pdf",
+        "anchor": "PDF pp. 1–7, abstract, Sections I–V",
+        "basis": "original_content",
+        "accessed_at": "2026-08-14",
+        "sha256": "c7f7343cba7fdb73d37d8df8d410d230b17399bda7129fb66e196c59b4447ec7"
+      },
+      "locator_basis": "original_content",
+      "forbidden_extrapolations": [
+        "Do not compare raw scores produced from different candidate universes.",
+        "Do not assume one candidate-sampling policy is uniformly least biased across datasets and targets.",
+        "Do not treat candidate generation by another algorithm as full-catalog evaluation."
+      ],
+      "counter_evidence": [
+        "Some sampling designs can improve specific bias or fidelity properties under their reference assumptions.",
+        "Parajuli, Vaez Barenji, and Ekstrand 2026 report no uniformly best offline evaluation design across their tested reference targets."
+      ],
+      "planning_only": true
+    },
+    {
+      "claim_id": "L1-CC-003",
+      "claim_text_bounded": "Temporal, random, leave-one-out, and global-temporal splitting policies can yield different metrics and model rankings, so the split policy and target-selection rule must be locked and reported.",
+      "evidence_kind": "comparative empirical evaluation across split configurations",
+      "source_keys": ["zhao_chen_wang_gu_wen_2020_cikm", "gusak_volodkevich_klenitskiy_vasilev_frolov_2025_recsys", "parajuli_barenji_ekstrand_2026_recsys"],
+      "source_family_ids": ["sf_zhao_alternative_settings", "sf_gusak_time_to_split", "sf_parajuli_convergent_validity"],
+      "support_scope": "Offline Top-N and sequential next-item evaluation under the split variants directly tested by the cited studies.",
+      "support_verdict": "supported",
+      "locator": {
+        "artifact_type": "accepted_manuscript",
+        "uri": "source_artifacts/gusak2025_time_to_split.pdf",
+        "anchor": "PDF pp. 1–3 and 7–10, Figure 1, Sections 1–3 and results",
+        "basis": "original_content",
+        "accessed_at": "2026-08-14",
+        "sha256": "bacc8bdfe282550958cf596c52c585141e246606f151934ae66632023800455d"
+      },
+      "locator_basis": "original_content",
+      "forbidden_extrapolations": [
+        "Do not assert that temporal splitting is universally superior for every recommendation task.",
+        "Do not compare raw scores across split policies.",
+        "Do not transfer sequential next-item findings unchanged to non-sequential tasks."
+      ],
+      "counter_evidence": [
+        "Zhao, Chen, Wang, Gu, and Wen 2020 state that an appropriate ordering option depends on the task.",
+        "Parajuli, Vaez Barenji, and Ekstrand 2026 find configuration validity depends on dataset and dense reference target."
+      ],
+      "planning_only": true
+    },
+    {
+      "claim_id": "L1-CC-004",
+      "claim_text_bounded": "Metric name alone is insufficient to identify an evaluand: formula, eligible-user rule, empty-result handling, per-user aggregation, cutoff, and candidate scope must be specified and parity-tested.",
+      "evidence_kind": "implementation audit and evaluation-design experiments",
+      "source_keys": ["tamm_damdinov_vasilev_2021_recsys", "canamares_castells_moffat_2020_irj", "castells_moffat_2022_ai_magazine"],
+      "source_family_ids": ["sf_tamm_metric_consistency", "sf_canamares_offline_options", "sf_castells_moffat_offline_challenges"],
+      "support_scope": "Offline recommender metrics and aggregation choices examined by the cited implementation and evaluation-design studies.",
+      "support_verdict": "supported",
+      "locator": {
+        "artifact_type": "accepted_manuscript",
+        "uri": "source_artifacts/canamares2020_offline_options.pdf",
+        "anchor": "PDF pp. 7 and 12–21, Decision C3 and evaluation-design experiments",
+        "basis": "original_content",
+        "accessed_at": "2026-08-14",
+        "sha256": "da4c698baa81e256236a85f14a02909edb915e6be651ae98013366168b67d72e"
+      },
+      "locator_basis": "original_content",
+      "forbidden_extrapolations": [
+        "Do not infer semantic equality from a shared label such as Recall, Hit Rate, NDCG, AUC, or GAUC.",
+        "Do not infer that a library default implements the v5 metric contract.",
+        "Do not use Bradley 1997 as a source for project-specific GAUC aggregation."
+      ],
+      "counter_evidence": [
+        "No retained source establishes one universally correct recommender aggregation for every task; v5 must state its own estimand-driven rule."
+      ],
+      "planning_only": true
+    },
+    {
+      "claim_id": "L1-CC-005",
+      "claim_text_bounded": "Tuning budget, search space, validation criterion, baseline optimization, preprocessing, seeds, stopping rules, and evaluation implementation are part of the comparison protocol and can affect claims of progress.",
+      "evidence_kind": "reproduction studies, benchmark methodology analysis, and methodological guidance",
+      "source_keys": ["dacrema_boglio_cremonesi_jannach_2021_tois", "sun_fang_yang_qu_liu_yu_ong_zhang_2023_tpami", "benigni_dacrema_jannach_2026_tors", "jannach_chen_2026_tors_editorial"],
+      "source_family_ids": ["sf_dacrema_reproducibility", "sf_daisyrec_rigorous_evaluation", "sf_benigni_diffusion_reproduction", "sf_jannach_chen_methodological_editorial"],
+      "support_scope": "Offline recommender comparisons and the reproduced/benchmarked algorithm sets directly examined by the cited works.",
+      "support_verdict": "supported",
+      "locator": {
+        "artifact_type": "accepted_manuscript",
+        "uri": "source_artifacts/dacrema2021_reproducibility.pdf",
+        "anchor": "PDF pp. 4–6, reproducible-setup criteria and Section 3 evaluation methodology",
+        "basis": "original_content",
+        "accessed_at": "2026-08-14",
+        "sha256": "b87b08a4b3f1801ba10cfb2b5e6773f3d69ef107a012f60e5ec502b72470f49b"
+      },
+      "locator_basis": "original_content",
+      "forbidden_extrapolations": [
+        "Do not attribute performance differences to architecture when tuning budgets or evaluation chains differ.",
+        "Do not treat reported best hyperparameters as a fair shared budget.",
+        "Do not transfer reproduced numerical rankings to v5."
+      ],
+      "counter_evidence": [
+        "Standardized frameworks can reduce implementation variation, but they do not remove the need to declare project-specific choices and parity tests."
+      ],
+      "planning_only": true
+    },
+    {
+      "claim_id": "L1-CC-006",
+      "claim_text_bounded": "Public availability of code or a repository can enable a reproduction attempt but does not by itself establish that data transformations, splits, dependencies, hyperparameters, or numerical results were reproduced.",
+      "evidence_kind": "reproducibility classification and empirical reproduction evidence",
+      "source_keys": ["dacrema_boglio_cremonesi_jannach_2021_tois", "shehzad_breuer_maistro_jannach_2025_recsys", "zhao_hou_pan_yang_zhang_lin_zhang_bian_tang_sun_chen_xu_zhang_tian_tian_mu_fan_chen_wen_2022_cikm"],
+      "source_family_ids": ["sf_dacrema_reproducibility", "sf_shehzad_code_reproducibility", "sf_recbole2_library"],
+      "support_scope": "Research artifacts and recommender evaluations where a public repository is available or claimed.",
+      "support_verdict": "supported",
+      "locator": {
+        "artifact_type": "accepted_manuscript",
+        "uri": "source_artifacts/dacrema2021_reproducibility.pdf",
+        "anchor": "PDF p. 4, reproducible-setup criteria; Section 3; footnote distinguishing setup from exact numerical reproduction",
+        "basis": "original_content",
+        "accessed_at": "2026-08-14",
+        "sha256": "b87b08a4b3f1801ba10cfb2b5e6773f3d69ef107a012f60e5ec502b72470f49b"
+      },
+      "locator_basis": "original_content",
+      "forbidden_extrapolations": [
+        "Do not label a v5 adapter reproduced solely because its upstream repository is public.",
+        "Do not infer a license or redistribution right from public accessibility.",
+        "Do not generalize the Shehzad audit beyond its 65-paper SIGIR 2022–2024 sample or treat artifact availability as proof of numerical reproduction."
+      ],
+      "counter_evidence": [
+        "A complete, tested repository can improve repeatability and inspectability; the bounded claim is only that repository presence is not sufficient proof."
+      ],
+      "planning_only": true
+    },
+    {
+      "claim_id": "L1-CC-007",
+      "claim_text_bounded": "For v5 planning, an official-protocol reproduction should test fidelity to each source implementation, while a harmonized benchmark should hold the v5 data, candidate, metric, and tuning contract constant; the two outputs answer different questions and should be reported separately.",
+      "evidence_kind": "methodological design inference from reproduction and benchmark sources",
+      "source_keys": ["dacrema_boglio_cremonesi_jannach_2021_tois", "sun_fang_yang_qu_liu_yu_ong_zhang_2023_tpami", "zhao_hou_pan_yang_zhang_lin_zhang_bian_tang_sun_chen_xu_zhang_tian_tian_mu_fan_chen_wen_2022_cikm", "jannach_chen_2026_tors_editorial"],
+      "source_family_ids": ["sf_dacrema_reproducibility", "sf_daisyrec_rigorous_evaluation", "sf_recbole2_library", "sf_jannach_chen_methodological_editorial"],
+      "support_scope": "A project reporting design that separates implementation-faithfulness checks from controlled cross-model comparison.",
+      "support_verdict": "partially_supported",
+      "locator": {
+        "artifact_type": "publisher_html",
+        "uri": "https://dl.acm.org/doi/full/10.1145/3800587",
+        "anchor": "Publisher HTML, Section 3, Raising the Standards: Main Guidelines and Expectations",
+        "basis": "original_content",
+        "accessed_at": "2026-08-14"
+      },
+      "locator_basis": "original_content",
+      "forbidden_extrapolations": [
+        "Do not call a harmonized reimplementation an official reproduction without adapter-parity evidence.",
+        "Do not compare official-protocol raw metrics across incompatible datasets or pipelines.",
+        "Do not claim the cited sources prescribe the exact v5 two-table format."
+      ],
+      "counter_evidence": [
+        "The exact official-versus-harmonized reporting split is an estimand-driven v5 design inference, not a verbatim prescription from one source."
+      ],
+      "planning_only": true
+    },
+    {
+      "claim_id": "L1-CC-008",
+      "claim_text_bounded": "A raw offline metric value is interpretable only within its dataset, split, target, candidate universe, metric implementation, aggregation, and tuning pipeline; values from different pipelines are not directly comparable without a justified harmonization.",
+      "evidence_kind": "cross-configuration empirical evidence and evaluation methodology",
+      "source_keys": ["zhao_chen_wang_gu_wen_2020_cikm", "canamares_castells_moffat_2020_irj", "gusak_volodkevich_klenitskiy_vasilev_frolov_2025_recsys", "parajuli_barenji_ekstrand_2026_recsys"],
+      "source_family_ids": ["sf_zhao_alternative_settings", "sf_canamares_offline_options", "sf_gusak_time_to_split", "sf_parajuli_convergent_validity"],
+      "support_scope": "Offline recommender metrics produced under varying evaluation designs.",
+      "support_verdict": "supported",
+      "locator": {
+        "artifact_type": "accepted_manuscript",
+        "uri": "source_artifacts/zhao2020_alternative_settings.pdf",
+        "anchor": "PDF pp. 1–4, abstract and comparative rankings under alternate settings",
+        "basis": "original_content",
+        "accessed_at": "2026-08-14",
+        "sha256": "94077242766b97a6e889a5cef3cb202985dbce80d27730e1002d3ec84c7e1345"
+      },
+      "locator_basis": "original_content",
+      "forbidden_extrapolations": [
+        "Do not pool or rank raw metrics across v5, external datasets, or published papers with different protocols.",
+        "Do not infer deployment superiority from a higher offline score measured under another pipeline.",
+        "Do not treat a shared metric name as sufficient harmonization."
+      ],
+      "counter_evidence": [
+        "Comparable values may be produced after a documented common pipeline and parity-tested metric implementation; this must be demonstrated rather than assumed."
+      ],
+      "planning_only": true
+    },
+    {
+      "claim_id": "L1-CC-009",
+      "claim_text_bounded": "Negative or target-item sampling has multiple reliability dimensions—ordering consistency, estimation error, resolution, fidelity, robustness to exposure bias, and predictive alignment—so it should not be judged by one metric or one sample size alone.",
+      "evidence_kind": "theory, estimator analysis, simulation, and fully observed reference-data experiments",
+      "source_keys": ["krichene_rendle_2021_ijcai_extended", "li_jin_liu_ren_gao_liu_2023_aaai", "hidasi_czapp_2023_recsys", "ihemelandu_ekstrand_2023_wiiat", "pereira_said_santos_2025_recsys", "liu_medlar_glowacka_2023_recsys"],
+      "source_family_ids": ["sf_krichene_sampled_metrics", "sf_li_item_sampling_evaluation", "sf_hidasi_offline_flaws", "sf_ihemelandu_candidate_sampling", "sf_pereira_sampling_reliability", "sf_liu_sampled_metric_tradeoffs"],
+      "support_scope": "Offline Top-N evaluation with sampled candidates or sampled target/reference sets under the cited studies' assumptions.",
+      "support_verdict": "supported",
+      "locator": {
+        "artifact_type": "accepted_manuscript",
+        "uri": "source_artifacts/pereira2025_sampling_reliability.pdf",
+        "anchor": "Sections 3 and 5, definitions and fidelity/robustness analyses; section anchor only because PDF preflight was degraded",
+        "basis": "original_content",
+        "accessed_at": "2026-08-14",
+        "sha256": "0375893704e4402b9e6911f71f78de0e68238112e992a53576a248849b509ad6"
+      },
+      "locator_basis": "original_content",
+      "forbidden_extrapolations": [
+        "Do not generalize one sampling result to all logging biases, datasets, models, metrics, or sample sizes.",
+        "Do not claim sampled evaluation is always invalid or always reliable.",
+        "Do not treat higher discriminative power as proof of fidelity to full evaluation."
+      ],
+      "counter_evidence": [
+        "Sampling can improve computational feasibility and, under some estimators, recovery or resolution.",
+        "Naive sampling can still distort exact ordering or introduce study-specific bias."
+      ],
+      "planning_only": true
+    },
+    {
+      "claim_id": "L1-CC-010",
+      "claim_text_bounded": "A generic ROC-AUC citation does not determine v5's per-user GAUC eligibility, weighting, tie handling, or hierarchical uncertainty procedure; those remain project-specific estimand choices requiring explicit definition.",
+      "evidence_kind": "scope-boundary analysis using original recommender metric-semantics studies",
+      "source_keys": ["tamm_damdinov_vasilev_2021_recsys", "canamares_castells_moffat_2020_irj"],
+      "source_family_ids": ["sf_tamm_metric_consistency", "sf_canamares_offline_options"],
+      "support_scope": "The boundary between generic ROC-AUC provenance and a recommender project's specified GAUC aggregation/uncertainty estimand.",
+      "support_verdict": "partially_supported",
+      "locator": {
+        "artifact_type": "accepted_manuscript",
+        "uri": "source_artifacts/tamm2021_quality_metrics.pdf",
+        "anchor": "PDF pp. 1–5, metric-name and implementation consistency analysis",
+        "basis": "original_content",
+        "accessed_at": "2026-08-14",
+        "sha256": "d624e786e63ba879aea9db8c15bc5a0a2ef85d09cddc5c3084890f27518c2048"
+      },
+      "locator_basis": "original_content",
+      "forbidden_extrapolations": [
+        "Do not claim Bradley 1997 validates a particular v5 GAUC formula.",
+        "Do not infer user weighting or bootstrap structure from generic AUC.",
+        "Do not report a GAUC result until eligible-user and denominator rules are frozen."
+      ],
+      "counter_evidence": [
+        "A project may adopt a documented GAUC definition, but that is a methodological choice requiring its own formula and parity tests."
+      ],
+      "planning_only": true
+    },
+    {
+      "claim_id": "L1-CC-011",
+      "claim_text_bounded": "Jannach and Chen 2026 is an editorial/essay that provides methodological guidance; its peer-review status is unknown because no direct evidence of external peer review was located.",
+      "evidence_kind": "exact publisher-content and author-page genre verification",
+      "source_keys": ["jannach_chen_2026_tors_editorial"],
+      "source_family_ids": ["sf_jannach_chen_methodological_editorial"],
+      "support_scope": "Bibliographic genre and peer-review-status classification for this record only.",
+      "support_verdict": "supported",
+      "locator": {
+        "artifact_type": "publisher_html",
+        "uri": "https://dl.acm.org/doi/full/10.1145/3800587",
+        "anchor": "Publisher HTML abstract identifies an editorial; article text identifies an essay",
+        "basis": "original_content",
+        "accessed_at": "2026-08-14"
+      },
+      "locator_basis": "original_content",
+      "forbidden_extrapolations": [
+        "Do not classify the work as a systematic review or empirical benchmark.",
+        "Do not set peer_reviewed=true without direct evidence.",
+        "Do not treat editorial guidance as measured effect size evidence."
+      ],
+      "counter_evidence": [
+        "Publication in a journal does not, by itself, establish the review process for an editorial genre."
+      ],
+      "planning_only": true
+    }
+  ]
+}

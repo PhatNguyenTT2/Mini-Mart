@@ -1,0 +1,72 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r2-plan-validation-1.0",
+  "created_at": "2026-08-22",
+  "passed": true,
+  "verdict": "PASS_E4_R2_PLAN_PREPARED_NOT_DISPATCHED_EXECUTION_DENIED",
+  "failure_count": 0,
+  "failures": [],
+  "entry_gate": {
+    "verdict": "PASS_E5_R1_REMEDIATION_INTEGRITY_EXECUTION_DENIED",
+    "validation_receipt_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e5_r1_validation_receipt.json",
+    "validation_receipt_canonical_lf_sha256": "0bc91aea1eda8d9ea9a6c9c59e1df2548e168f4fc1037ff0b42ef5961882785f"
+  },
+  "artifacts": {
+    "plan": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r2_evidence_materialization_plan.md",
+      "canonical_lf_bytes": 14363,
+      "canonical_lf_sha256": "bf2c2d98ed3b036a0a1233f6b326b4dc160501bc0087ca0f94e31295727e5798"
+    },
+    "stage_map": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r2_stage_map.json",
+      "canonical_lf_bytes": 10642,
+      "canonical_lf_sha256": "4cc484f895b12ee3e1622f19fcc34d1f7754751b37cf88ed24ea81ddb51dd180",
+      "json_parse": "PASS"
+    }
+  },
+  "checks": {
+    "pipeline_state_transition": true,
+    "plan_hash_matches_state": true,
+    "stage_map_hash_matches_state": true,
+    "e5_r1_entry_hash_matches": true,
+    "pending_candidate_rows_7": true,
+    "pending_candidate_rows_unique": true,
+    "phase_records_14": true,
+    "r2_a1_a2_a3_sol_xhigh": true,
+    "future_default_sol_high": true,
+    "fresh_independent_audit_required": true,
+    "tasks_dispatched_0": true,
+    "dispatch_not_ready_before_contract_and_manifest": true,
+    "repository_clone_or_fetch_false": true,
+    "dataset_download_or_authenticated_access_false": true,
+    "package_install_or_environment_creation_false": true,
+    "preprocessing_false": true,
+    "training_or_evaluation_false": true,
+    "test_access_false": true,
+    "accepted_results_false": true,
+    "execution_authorized_false": true,
+    "confirmed_false": true,
+    "result_status_not_run": true,
+    "test_set_opened_no": true
+  },
+  "candidate_and_packet_state": {
+    "ready_candidates": 0,
+    "pending_candidates": 7,
+    "rejected_candidates": 6,
+    "priority_row_id": "E3-LIGHTGCN-GOWALLA-PYTORCH-001",
+    "priority_is_selection": false,
+    "selection_cardinality_max": 1,
+    "current_null_commands": 10,
+    "future_packet_prerequisites_resolved": 0,
+    "future_packet_prerequisites_unresolved": 15,
+    "old_p13_carries_forward": false
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER",
+    "execution_authorized": false,
+    "confirmed": false
+  },
+  "next_gate": "CREATE_AND_VALIDATE_E4_R2_EVIDENCE_CONTRACT_AND_FROZEN_INPUT_MANIFEST_BEFORE_R2_A1_A2_A3_DISPATCH"
+}

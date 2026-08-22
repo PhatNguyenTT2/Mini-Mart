@@ -1,0 +1,211 @@
+{
+  "schema_version": "1.0",
+  "state_id": "hybrid-recsys-v5-stage1a-v1",
+  "supersedes": {
+    "path": "research/hybrid-recsys-v5/00_control/pipeline_state.json",
+    "sha256": "dd33ad4c96f80defe20673c9e851db3f9112adc0f1f872c30e7bcef385fb9eeb",
+    "reason": "Preserve the immutable Phase 0 seal while creating a versioned current-state snapshot."
+  },
+  "pipeline_version": "ARS-Codex 0.1.24 / academic-pipeline 3.19.0",
+  "topic": "Reproducible hybrid recommendation for Vietnamese retail",
+  "paper_direction": "methods_empirical",
+  "current_stage": "1A",
+  "current_stage_status": "completed",
+  "next_stage": "1B",
+  "pipeline_state": "awaiting_confirmation",
+  "consecutive_continue_count": 1,
+  "active_passport": "stage1a_v1",
+  "input_manifest_id": "phase0-inputs-4456b4381737",
+  "input_lock_verified_at": "2026-08-13T11:13:31.653Z",
+  "target_venue": "NOT_SELECTED",
+  "language": {
+    "control_records": "vi",
+    "manuscript": "en"
+  },
+  "checkpoint_confirmations": {
+    "0": {
+      "confirmed": true,
+      "evidence": "User instructed: Continue cho stage 1A"
+    },
+    "1A": {
+      "confirmed": false,
+      "checkpoint_type": "FULL",
+      "user_confirmation_required": true
+    }
+  },
+  "stages": {
+    "0": {
+      "name": "INTAKE_GOVERNANCE",
+      "status": "completed",
+      "checkpoint_confirmed": true,
+      "sealed_artifact": "research/hybrid-recsys-v5/00_control/phase0_seal.json"
+    },
+    "1A": {
+      "name": "RQ_METHODOLOGY_BACKFILL",
+      "skill": "deep-research",
+      "mode": "targeted-full-stage1a-scoping",
+      "status": "completed",
+      "started_at": "2026-08-13T11:13:31.653Z",
+      "completed_at": "2026-08-13T11:18:51.588Z",
+      "checkpoint_confirmed": false,
+      "checkpoint_type": "FULL",
+      "schema_validated": true,
+      "devils_advocate_verdict": "PASS",
+      "outputs": [
+        "research/hybrid-recsys-v5/01_research/rq_brief.md",
+        "research/hybrid-recsys-v5/01_research/rq_brief.schema1.json",
+        "research/hybrid-recsys-v5/01_research/rq_estimand_matrix.md",
+        "research/hybrid-recsys-v5/01_research/methodology_blueprint.md",
+        "research/hybrid-recsys-v5/01_research/devils_advocate_checkpoint1.md",
+        "research/hybrid-recsys-v5/01_research/material_passport_stage1a.json",
+        "research/hybrid-recsys-v5/01_research/pipeline_state_stage1a.json",
+        "research/hybrid-recsys-v5/01_research/stage1a_seal.json"
+      ]
+    },
+    "1B": {
+      "name": "TARGETED_LITERATURE_REVIEW",
+      "skill": "deep-research",
+      "mode": "lit-review",
+      "status": "pending",
+      "checkpoint_confirmed": false
+    },
+    "1E": {
+      "name": "EXPERIMENT_BRIDGE",
+      "skill": "experiment-agent",
+      "mode": "plan-run-validate",
+      "status": "pending",
+      "checkpoint_confirmed": false
+    },
+    "2": {
+      "name": "WRITE",
+      "status": "pending"
+    },
+    "2.5": {
+      "name": "INTEGRITY",
+      "status": "pending"
+    },
+    "3": {
+      "name": "REVIEW",
+      "status": "pending"
+    },
+    "4": {
+      "name": "REVISE",
+      "status": "pending"
+    },
+    "4.5": {
+      "name": "FINAL_INTEGRITY",
+      "status": "pending"
+    },
+    "5": {
+      "name": "FINALIZE",
+      "status": "pending"
+    },
+    "6": {
+      "name": "PROCESS_SUMMARY",
+      "status": "pending"
+    }
+  },
+  "materials": {
+    "rq_brief": true,
+    "rq_brief_schema1": true,
+    "rq_estimand_matrix": true,
+    "methodology_blueprint": true,
+    "devils_advocate_checkpoint1": true,
+    "bibliography": false,
+    "synthesis_report": false,
+    "accepted_experiment_results": false,
+    "paper_draft": false
+  },
+  "experiment_state": {
+    "intake_status": "experiments_declared",
+    "accepted_results": 0,
+    "result_status": "NOT_RUN",
+    "experiment_ids": [
+      "EXP-REF-REPRO",
+      "EXP-V5-HARMONIZED",
+      "EXP-EXTERNAL-VALIDITY"
+    ],
+    "execution_authorized_by_stage1a": false
+  },
+  "stage1a_decisions": [
+    "NDCG@10 is the primary inferential estimand; HR@10 and macro per-user GAUC remain conjunctive H1 gates.",
+    "Strongest baseline is selected per metric on validation data and locked before TEST.",
+    "Cold-item claims do not extend to cold-user or zero-history recommendation.",
+    "Apriori/Wide is a mechanism contribution only if the train-defined cohort ablation supports H3.",
+    "External datasets that drop essential signals are reduced-method sensitivity tracks and cannot pass H4.",
+    "Efficiency is evaluated only after accuracy passes and after numerical runtime gates are frozen."
+  ],
+  "blocking_conditions": [
+    {
+      "id": "B-VENUE-001",
+      "scope": "submission_formatting",
+      "status": "BLOCKED",
+      "reason": "Target venue and target-year CFP are not selected and verified."
+    },
+    {
+      "id": "B-SOURCE-001",
+      "scope": "introduction_related_work_and_novelty_claims",
+      "status": "BLOCKED",
+      "reason": "Stage 1B has not verified the literature corpus or claim-source map."
+    },
+    {
+      "id": "B-EXPERIMENT-PLAN-001",
+      "scope": "confirmatory_experiment_execution",
+      "status": "BLOCKED",
+      "reason": "Stage 1E must freeze adapter revisions/tolerances, tuning budget, finalist set, cohort implementations, external compatibility, runtime gates, and preregistration before execution."
+    },
+    {
+      "id": "B-RESULT-001",
+      "scope": "empirical_claims",
+      "status": "BLOCKED",
+      "reason": "No experiment has an accepted sealed result."
+    }
+  ],
+  "schema_validation_log": [
+    {
+      "transition": "Stage 1A scoping bundle",
+      "schemas_checked": [
+        "RQ Brief Handoff Schema 1 required fields",
+        "Research question single-sentence/question-mark rule",
+        "FINER range and sub-question/keyword counts",
+        "RQ1-RQ5 dataset/metric/comparator/table traceability",
+        "Material Passport Schema 9 required fields and experiment declaration symmetry",
+        "Phase 0 seal and locked-input hash recheck"
+      ],
+      "result": "PASS",
+      "missing_fields": [],
+      "timestamp": "2026-08-13T11:18:51.588Z"
+    }
+  ],
+  "model_runtime": {
+    "execution_mode": "inline",
+    "model_id": "runtime-model-id-not-exposed",
+    "ars_model_tiering": "unset",
+    "cross_model": "unset",
+    "ultra_orchestration_used": false,
+    "note": "Stage 1A used the active session model; the master-plan Sol XHigh recommendation was not simulated as a separate model run."
+  },
+  "collaboration_depth_history": [
+    {
+      "stage_id": "1A",
+      "checkpoint_type": "FULL",
+      "timestamp": "2026-08-13T11:18:51.588Z",
+      "dialogue_log_ref": "Stage 1A window contains one explicit user continuation instruction",
+      "zone": "insufficient_evidence",
+      "scores": {
+        "delegation_intensity": null,
+        "cognitive_vigilance": null,
+        "cognitive_reallocation": null
+      },
+      "evidence": [
+        "The user explicitly authorized continuation from sealed Phase 0 into Stage 1A."
+      ],
+      "counter_evidence": [
+        "The stage contains fewer than five user turns, so collaboration-depth scores cannot be inferred reliably."
+      ],
+      "cross_model_divergence": null,
+      "advisory_only": true,
+      "blocking": false
+    }
+  ]
+}

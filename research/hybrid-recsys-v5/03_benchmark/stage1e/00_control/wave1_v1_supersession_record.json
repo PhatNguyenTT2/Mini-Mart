@@ -1,0 +1,28 @@
+{
+  "schema_version": "stage1e-wave-supersession-1.0",
+  "project": "hybrid-recsys-v5",
+  "superseded_wave": "stage1e_plan_wave1_v1",
+  "replacement_wave": "stage1e_rebaseline_v2",
+  "decision_date": "2026-08-22",
+  "reason": "The user clarified that all existing benchmarks are invalid and changed the evidence-lock model policy from gpt-5.6-sol/high to gpt-5.6-sol/xhigh. Official repository, reference dataset and metric ground truth must be established before clone, reproduction, adaptation or harmonized comparison.",
+  "old_outputs_imported_to_central": false,
+  "old_outputs_authorized": false,
+  "old_threads": [
+    {"lane_id":"E1_dataset_protocol","thread_id":"01a02541-74e2-7a10-bf28-10c67f85c881","status":"ARCHIVED_SUPERSEDED"},
+    {"lane_id":"E2_baseline_provenance","thread_id":"01a02541-74ec-7e73-b368-8bdb05f3d81f","status":"ARCHIVED_SUPERSEDED"},
+    {"lane_id":"E3_evaluator_statistics","thread_id":"01a02541-74df-7622-84cf-24545a0e3615","status":"ARCHIVED_SUPERSEDED"},
+    {"lane_id":"E4_external_data","thread_id":"01a02541-74de-7161-a398-35b04a03a86d","status":"ARCHIVED_SUPERSEDED"},
+    {"lane_id":"E5_compute_runtime","thread_id":"01a02541-7561-7790-8d15-5b63ae403744","status":"ARCHIVED_SUPERSEDED"}
+  ],
+  "worktree_cleanup": {
+    "git_registration_removed": true,
+    "physical_directories_removed": false,
+    "reason": "Codex desktop retained open directory handles after archival; residual directories are orphaned, non-authoritative and outside the active pipeline.",
+    "recoverability": "Old detached commits remain historical only and must not be imported."
+  },
+  "truth_state": {
+    "accepted_result_rows": 0,
+    "result_status": "NOT_RUN",
+    "test_set_opened": "NO"
+  }
+}

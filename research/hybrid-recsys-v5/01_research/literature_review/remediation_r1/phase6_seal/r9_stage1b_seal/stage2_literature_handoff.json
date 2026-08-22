@@ -1,0 +1,198 @@
+{
+  "schema_version": "stage1b-r1-r9-stage2-literature-handoff-1.0",
+  "project": "hybrid-recsys-v5",
+  "stage1b_seal_verdict": "PASS_STAGE1B_SEALED",
+  "authorization": "BOUNDED_STAGE2_LITERATURE_DRAFTING",
+  "authorization_excludes": [
+    "fabricated_citations",
+    "fabricated_results",
+    "benchmark_claims",
+    "planning_only_claims"
+  ],
+  "drafting_targets": [
+    "Introduction",
+    "Related Work"
+  ],
+  "drafting_action_in_r9": "NOT_PERFORMED",
+  "claim_authority": {
+    "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/remediation_r6/claim_source_map_r1_remediated.json",
+    "sha256": "0d6d8d17ccf51132f6bf9a36ab08245f1d1e73bea831b5cb148a4fc00146f7da"
+  },
+  "authorized_claims": [
+    {"claim_id": "L2-CLAIM-GRAPH-ZERO-EDGE-005", "pointer": "/claims/20"},
+    {"claim_id": "L2-CLAIM-ITEMCF-BPR-001", "pointer": "/claims/22"},
+    {"claim_id": "L2-CLAIM-NCF-DEEPFM-002", "pointer": "/claims/23"},
+    {"claim_id": "L2-CLAIM-OBJECTIVE-006", "pointer": "/claims/24"},
+    {"claim_id": "L2-CLAIM-RECENT-TOWER-CONTROLS-007", "pointer": "/claims/25"},
+    {"claim_id": "L2-CLAIM-TWO-STAGE-003", "pointer": "/claims/26"},
+    {"claim_id": "L2-CLAIM-WIDE-DEEP-004", "pointer": "/claims/27"},
+    {"claim_id": "L3-APR-001", "pointer": "/claims/28"},
+    {"claim_id": "L3-BTBR-005", "pointer": "/claims/29"},
+    {"claim_id": "L3-HYB-006", "pointer": "/claims/31"},
+    {"claim_id": "L3-NBR-004", "pointer": "/claims/32"},
+    {"claim_id": "L3-PROTO-007", "pointer": "/claims/33"},
+    {"claim_id": "L3-RULE-002", "pointer": "/claims/34"},
+    {"claim_id": "L3-SEQ-003", "pointer": "/claims/35"},
+    {"claim_id": "L4-CC-01", "pointer": "/claims/36"},
+    {"claim_id": "L4-CC-02", "pointer": "/claims/37"},
+    {"claim_id": "L4-CC-03", "pointer": "/claims/38"},
+    {"claim_id": "L4-CC-04", "pointer": "/claims/39"},
+    {"claim_id": "L4-CC-05", "pointer": "/claims/40"},
+    {"claim_id": "L4-CC-06", "pointer": "/claims/41"},
+    {"claim_id": "L4-CC-07", "pointer": "/claims/42"},
+    {"claim_id": "L4-CC-08", "pointer": "/claims/43"}
+  ],
+  "prohibited_claims": [
+    {"claim_id": "C-L5-EXT-01", "pointer": "/claims/0"},
+    {"claim_id": "C-L5-EXT-02", "pointer": "/claims/1"},
+    {"claim_id": "C-L5-EXT-03", "pointer": "/claims/2"},
+    {"claim_id": "C-L5-EXT-04", "pointer": "/claims/3"},
+    {"claim_id": "C-L5-EXT-05", "pointer": "/claims/4"},
+    {"claim_id": "C-L5-RIGHTS-01", "pointer": "/claims/5"},
+    {"claim_id": "C-L5-SCOPE-01", "pointer": "/claims/6"},
+    {"claim_id": "C-L5-VN-01", "pointer": "/claims/7"},
+    {"claim_id": "C-L5-VN-02", "pointer": "/claims/8"},
+    {"claim_id": "L1-CC-001", "pointer": "/claims/9"},
+    {"claim_id": "L1-CC-002", "pointer": "/claims/10"},
+    {"claim_id": "L1-CC-003", "pointer": "/claims/11"},
+    {"claim_id": "L1-CC-004", "pointer": "/claims/12"},
+    {"claim_id": "L1-CC-005", "pointer": "/claims/13"},
+    {"claim_id": "L1-CC-006", "pointer": "/claims/14"},
+    {"claim_id": "L1-CC-007", "pointer": "/claims/15"},
+    {"claim_id": "L1-CC-008", "pointer": "/claims/16"},
+    {"claim_id": "L1-CC-009", "pointer": "/claims/17"},
+    {"claim_id": "L1-CC-010", "pointer": "/claims/18"},
+    {"claim_id": "L1-CC-011", "pointer": "/claims/19"},
+    {"claim_id": "L2-CLAIM-HARMONIZED-EVAL-008", "pointer": "/claims/21"},
+    {"claim_id": "L3-GAP-008", "pointer": "/claims/30"}
+  ],
+  "claim_use_policy": {
+    "authorized_count": 22,
+    "authorized_meaning": "Citation-ready candidates may be used only with their frozen bounded claim text, evidence scope, source and locator bindings, forbidden extrapolations, counter-evidence, and source-family constraints.",
+    "prohibited_count": 22,
+    "prohibited_meaning": "Planning-only claims remain prohibited from production citation until each frozen prerequisite is independently satisfied and a later authorized gate explicitly promotes it.",
+    "no_implicit_promotion": true
+  },
+  "verified_citation_locator_pairs": {
+    "count": 33,
+    "all_non_none": true,
+    "all_verified_against_original": true,
+    "page_anchors": 0,
+    "pair_surface": {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/remediation_r6/synthesis_report_r1_remediated.md",
+      "sha256": "136a1baf26a1108ceac54943e0a8bc9fa89647210af5cefd206f1c049d95aa2d",
+      "pointer_rule": "all 33 adjacent <!--ref:...--><!--anchor:...--> pairs"
+    },
+    "locator_authority": {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/locator_registry.json",
+      "sha256": "0af823257c2a5429b6b224a76e52bb7de1f5b4005c05cdec4d0574dce1230ae2"
+    }
+  },
+  "authority_artifacts": [
+    {
+      "role": "scholarly_corpus",
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/integration/literature_corpus_r1.json",
+      "sha256": "7a1800fcd3bf234bc19151e1a94cae8b834f14f194c2770573d472d96be5969f"
+    },
+    {
+      "role": "operational_resource_separation",
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/integration/operational_resource_registry.json",
+      "sha256": "e1bd73108707d53ded153a0d3be9710e7b10bb07f7d0e8708ea82911056bcb6b"
+    },
+    {
+      "role": "source_quality",
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/integration/source_quality_matrix_r1.json",
+      "sha256": "631db428ff327380ad4d6ca33b963464f5301f5ec31d113f9a85fb2f617fc82d"
+    },
+    {
+      "role": "source_family_dependence",
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/integration/source_family_map_r1.json",
+      "sha256": "44f5bcf30baa87bd67ce4c2d2efd45c775d0c7749c299b35bb31aa492ef6a513"
+    },
+    {
+      "role": "claim_intent",
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/claim_intent_manifest_r1.json",
+      "sha256": "bbfa5fcef77aca3e4df16dcfc4b6445af3a0073a733732c0525bd389e4c90943"
+    },
+    {
+      "role": "claim_source_map",
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/remediation_r6/claim_source_map_r1_remediated.json",
+      "sha256": "0d6d8d17ccf51132f6bf9a36ab08245f1d1e73bea831b5cb148a4fc00146f7da"
+    },
+    {
+      "role": "counter_evidence",
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/remediation_r6/claim_counter_evidence_overlay.json",
+      "sha256": "5b72ced4927d9c37ada5cc31eec3a1490bc1ba8e1eaeaac35c404c300f106373"
+    },
+    {
+      "role": "theme_denominators",
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/remediation_r6/theme_evidence_denominators.json",
+      "sha256": "aa8857a028b495e91a2ebdd2c10217fcf8325c2dc9089d282ef23aa064531bda"
+    },
+    {
+      "role": "tension_overlay",
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/cross_paper_tensions_r1.json",
+      "sha256": "56a16ed2f19b7467b5d43ff4d2136fa72dd5ecf9e04bd7ac826a3025ab032943"
+    },
+    {
+      "role": "scholar_tension_packet",
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/devils_advocate_cp2_reaudit/tension_adjudication_packet_reaudit.json",
+      "sha256": "e7bb44414272d9592ffe1c98ce63e2b4e93edd2ed64c39342bd079ac2404607d"
+    },
+    {
+      "role": "bounded_synthesis",
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/remediation_r6/synthesis_report_r1_remediated.md",
+      "sha256": "136a1baf26a1108ceac54943e0a8bc9fa89647210af5cefd206f1c049d95aa2d"
+    },
+    {
+      "role": "locator_registry",
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/locator_registry.json",
+      "sha256": "0af823257c2a5429b6b224a76e52bb7de1f5b4005c05cdec4d0574dce1230ae2"
+    },
+    {
+      "role": "core_source_acquisition",
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_acquisition_manifest.json",
+      "sha256": "a74156901a5ded6f0b853aff2a13fc2c9ca2c6e8b9e0fa09ba43b970b41a639a"
+    },
+    {
+      "role": "claim_acquisition",
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/r4_claim_acquisition_map.json",
+      "sha256": "1dac3853f0cb5da0577acdf417fefc499325cd94299b1553c8619f224eceee39"
+    },
+    {
+      "role": "rights_access",
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/rights_access_registry.json",
+      "sha256": "4007f58b6911dbcbfcea208b4bf1e4fecda648a9b77045ce8436fee82cb20f2c"
+    }
+  ],
+  "carried_constraints": {
+    "claim_and_source_constraints": "Every authorized row is consumed from the claim authority by immutable pointer; its bounded wording, evidence scope, canonical source keys, operational resource keys, locator IDs, source-family IDs, forbidden extrapolations, readiness basis, and counter-evidence binding remain mandatory.",
+    "counter_evidence": "All 44 claim rows retain the 51-item, 136-pointer counter-evidence overlay; 22 operational pointers remain bounded planning/audit context and cannot be promoted to source-text evidence.",
+    "source_family_dependence": "Canonical-record and dependency-adjusted-family denominators remain separate; Theme 4 retains its dependence caveat and Theme 5 remains FRAGILE_SINGLE_FAMILY.",
+    "theme_denominators": "T1 6/6/6; T2 8/8/8; T3 8/8/8; T4 9/9/8; T5 2 operational records/1 operational family/1 dependency-adjusted family.",
+    "tensions": "All 12 original pairs remain historical; the scholar overlay confirms 11 and disputes/reclassifies T-002 to no_material_conflict/not_applicable, with zero pending or unresolved.",
+    "corpus_boundary": "The literature corpus is targeted and non-systematic; scholarly records and operational resources remain separate.",
+    "core_and_acquisition": "The 24-object core is 23 scholarly records plus one operational family; 24/24 core objects meet the frozen acquisition/content/locator contract, and all 13 queue targets are terminally resolved.",
+    "rights": "Availability, provider access, package/code license, paper license, dataset rights, execution, sharing, and redistribution remain separate statuses. Literature authorization does not grant dataset execution or redistribution rights."
+  },
+  "preserved_r8_observations": {
+    "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase5_audit/r8_independent_audit/r8_findings.json",
+    "sha256": "cd6118ee8ec24a99b04c6c367fd69deb7a3cccf9a25817cea7c1913ce9204296",
+    "count": 5,
+    "policy": "All five observations remain visible and nonblocking; none is rewritten as a clean certificate."
+  },
+  "experiment_boundary": {
+    "h1_h4": "NOT_RUN",
+    "benchmark_training_evaluation": "NOT_RUN",
+    "forbidden_factual_claims": [
+      "H1-H4 results",
+      "benchmark comparison",
+      "empirical superiority",
+      "cross-dataset compatibility",
+      "training results",
+      "evaluation results"
+    ],
+    "future_empirical_gate": "A common dataset and reference protocol plus completed benchmark, training, and evaluation pipeline is required before any result or superiority claim."
+  },
+  "downstream_instruction": "Drafting may prioritize Introduction and Related Work using only the 22 authorized citation-ready candidates and all frozen constraints. Do not draft from the 22 planning-only rows, invent citations, promote operational pointers to original-source evidence, or state empirical/benchmark results."
+}

@@ -20,16 +20,52 @@ from ai_service.contracts import (
     TrainingVariant,
 )
 from ai_service.data.features import EmbeddingArtifact
-from ai_service.data.semantic_cohort import load_semantic_cohort
+from ai_service.data.semantic_cohort import canonical_semantic_cohort_bytes, load_semantic_cohort
 from ai_service.errors import ArtifactIntegrityError, ConfigurationError
 from ai_service.evaluation import r3_diagnostics
 from ai_service.evaluation.ablation import R3FeatureSelection
-from ai_service.evaluation.promotion import (
-    load_r4_promotion,
-    publish_r4_promotion,
-)
+from ai_service.evaluation.promotion import load_r4_promotion
 from ai_service.training import pipeline, preflight
 from tests.unit.test_pipeline_error_edges import make_settings, make_snapshot
+
+
+def _typed_cohort_document(
+    *,
+    user_id: int = 1,
+    anchor_product_id: int = 101,
+    target_product_id: int = 201,
+) -> dict[str, object]:
+    cases: list[dict[str, object]] = []
+    for split, target_timestamp in (
+        ("val", "2026-06-20T00:00:00Z"),
+        ("test", "2026-07-11T00:00:00Z"),
+    ):
+        for trap_id in range(1, 11):
+            cases.append(
+                {
+                    "trap_id": trap_id,
+                    "user_id": user_id,
+                    "anchor_product_id": anchor_product_id,
+                    "target_product_id": target_product_id,
+                    "split": split,
+                    "anchor_event_id": f"anchor-{split}-{trap_id}",
+                    "target_event_id": f"target-{split}-{trap_id}",
+                    "anchor_event_ts": "2026-01-01T00:00:00Z",
+                    "target_event_ts": target_timestamp,
+                }
+            )
+    return {
+        "schema_version": "1.0.0",
+        "benchmark_run_id": "benchmark-v5",
+        "benchmark_spec_sha256": "a" * 64,
+        "cases": cases,
+    }
+
+
+def _write_typed_cohort(path: Path, **kwargs: object) -> dict[str, object]:
+    document = _typed_cohort_document(**kwargs)
+    path.write_bytes(canonical_semantic_cohort_bytes(document))
+    return document
 
 
 def _lineage() -> ArtifactLineageV5:
@@ -52,57 +88,17 @@ def test_probe_report_keeps_typed_readiness_and_legacy_evidence() -> None:
 
 
 def test_semantic_cohort_requires_all_traps_and_rejects_duplicates(tmp_path: Path) -> None:
-    rows = [
-        {
-            "cohort_id": f"semantic-{trap}",
-            "event_id": f"semantic-{trap}:val:0",
-            "user_id": trap,
-            "anchor_product_id": 100 + trap,
-            "target_product_ids": [200 + trap],
-        }
-        for trap in range(1, 11)
-    ]
-    (tmp_path / "semantic-cohort.json").write_text(json.dumps(rows), encoding="utf-8")
-    cases = load_semantic_cohort(tmp_path)
-    assert len(cases) == 10
-    rows.append(rows[0])
-    (tmp_path / "semantic-cohort.json").write_text(json.dumps(rows), encoding="utf-8")
+    path = tmp_path / "semantic-cohort.json"
+    document = _write_typed_cohort(path)
+    cohort = load_semantic_cohort(tmp_path)
+    assert len(cohort.cases) == 20
+    cases = document["cases"]
+    assert isinstance(cases, list)
+    document["cases"] = [*cases, cases[0]]
+    path.write_bytes(canonical_semantic_cohort_bytes(document))
     with pytest.raises(ArtifactIntegrityError, match="duplicate"):
         load_semantic_cohort(tmp_path)
 
-
-def test_r4_promotion_is_immutable_and_hash_verified(tmp_path: Path) -> None:
-    selection = tmp_path / "report.json"
-    deep_config = tmp_path / "deep.toml"
-    hybrid_config = tmp_path / "hybrid.toml"
-    for path, value in ((selection, "selection"), (deep_config, "deep"), (hybrid_config, "hybrid")):
-        path.write_text(value, encoding="utf-8")
-    output = tmp_path / "promotion.json"
-    report = publish_r4_promotion(
-        output,
-        deep_selection_report=selection,
-        selected_deep_run_id="deep",
-        selected_deep_checkpoint_sha256="1" * 64,
-        h3b_hybrid_run_id="hybrid",
-        h3b_hybrid_checkpoint_sha256="2" * 64,
-        h3b_victory_matrix_sha256="3" * 64,
-        lineage=_lineage(),
-        diagnostic_git_commit="4" * 40,
-        production_git_commit="5" * 40,
-        deep_config=deep_config,
-        hybrid_config=hybrid_config,
-        feature_selection={"include_user_id": False, "include_price": False},
-        objective_settings={"rule_auxiliary_weight": 0.1},
-    )
-    assert load_r4_promotion(output) == report
-    with pytest.raises(ArtifactIntegrityError, match="hash mismatch"):
-        output.write_text(
-            output.read_text(encoding="utf-8").replace(
-                '"selected_deep_run_id": "deep"', '"selected_deep_run_id": "other"'
-            ),
-            encoding="utf-8",
-        )
-        load_r4_promotion(output)
 
 
 def test_preflight_delegation_is_fail_closed(monkeypatch: pytest.MonkeyPatch) -> None:
@@ -223,31 +219,22 @@ def test_preflight_artifact_selectors_and_preparation(
     assert result.lineage == _lineage()
 
 
-def test_promote_r4_command_has_explicit_inputs(
+def test_promote_r4_command_derives_all_evidence(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path
 ) -> None:
-    files = {}
-    for name, value in (
-        ("selection", "{}"),
-        ("lineage", _lineage().model_dump_json()),
-        ("features", "{}"),
-        ("objective", "{}"),
-        ("deep", "deep"),
-        ("hybrid", "hybrid"),
-    ):
-        path = (
-            tmp_path / f"{name}.json"
-            if name not in {"deep", "hybrid"}
-            else tmp_path / f"{name}.toml"
-        )
-        path.write_text(value, encoding="utf-8")
-        files[name] = path
+    selection = tmp_path / "artifacts" / "diagnostics" / "r3" / "receipt" / "report.json"
+    selection.parent.mkdir(parents=True)
+    selection.write_text("{}", encoding="utf-8")
+    deep_config = tmp_path / "deep.toml"
+    hybrid_config = tmp_path / "hybrid.toml"
+    deep_config.write_text("deep", encoding="utf-8")
+    hybrid_config.write_text("hybrid", encoding="utf-8")
     observed: dict[str, object] = {}
     monkeypatch.setattr(
         pipeline,
         "publish_r4_promotion",
         lambda destination, **kwargs: (
-            observed.update(kwargs)
+            observed.update({"destination": destination, **kwargs})
             or SimpleNamespace(model_dump=lambda mode=None: {"passed": True})
         ),
     )
@@ -255,37 +242,19 @@ def test_promote_r4_command_has_explicit_inputs(
         [
             "promote-r4",
             "--selection-report",
-            str(files["selection"]),
-            "--selected-deep-run-id",
-            "deep",
-            "--selected-deep-checkpoint-sha256",
-            "1" * 64,
-            "--h3b-hybrid-run-id",
+            str(selection),
+            "--hybrid-run-id",
             "hybrid",
-            "--h3b-hybrid-checkpoint-sha256",
-            "2" * 64,
-            "--h3b-victory-matrix-sha256",
-            "3" * 64,
-            "--lineage-json",
-            str(files["lineage"]),
             "--deep-config",
-            str(files["deep"]),
+            str(deep_config),
             "--hybrid-config",
-            str(files["hybrid"]),
-            "--diagnostic-git-commit",
-            "4" * 40,
-            "--production-git-commit",
-            "5" * 40,
-            "--feature-selection-json",
-            str(files["features"]),
-            "--objective-settings-json",
-            str(files["objective"]),
-            "--output",
-            str(tmp_path / "out.json"),
+            str(hybrid_config),
         ]
     )
     pipeline.execute_command(args)
-    assert observed["selected_deep_run_id"] == "deep"
+    assert observed["selection_report"] == selection.resolve()
+    assert observed["hybrid_run_id"] == "hybrid"
+    assert "selected_deep_checkpoint_sha256" not in observed
 
 
 def test_r3_metric_archive_validator_accepts_exact_schema_and_rejects_corruption(
@@ -348,28 +317,26 @@ def test_r3_diagnostic_helpers_cover_cohorts_and_fixture_requests(tmp_path: Path
     r3_diagnostics._write_metrics(path, values)
     assert path.is_file()
 
-    fixture = tmp_path / "fixture.json"
-    fixture.write_text(
-        json.dumps(
-            [
-                {
-                    "trap_id": 1,
-                    "anchor_product_id": 10,
-                    "target_product_ids": [20],
-                }
-            ]
-        ),
-        encoding="utf-8",
+    cohort_path = tmp_path / "semantic-cohort.json"
+    _write_typed_cohort(
+        cohort_path,
+        user_id=10,
+        anchor_product_id=10,
+        target_product_id=20,
     )
     snapshot = SimpleNamespace(
+        manifest=SimpleNamespace(semantic_cohort_sha256=None),
         product_map={10: 0, 20: 1},
-        snapshot_dir=tmp_path / "missing",
+        user_map={10: 1},
+        snapshot_dir=tmp_path,
     )
     prepared = SimpleNamespace(
+        split=SplitName.VAL,
         eligible_users=np.asarray([1], dtype=np.int64),
-        seen_items={1: set()},
+        latest_prior_purchase_contexts={1: 0},
+        organic_novel_truth={1: {1}},
     )
-    requests = r3_diagnostics._target_requests(snapshot, prepared, fixture)
+    requests = r3_diagnostics._target_requests(snapshot, prepared, tmp_path / "unused.json")
     assert requests[0].target_item_ids == (1,)
 
 
@@ -556,23 +523,12 @@ def test_semantic_loader_rejects_missing_empty_and_incomplete_documents(tmp_path
         load_semantic_cohort(tmp_path)
     path = tmp_path / "semantic-cohort.json"
     path.write_text("[]", encoding="utf-8")
-    with pytest.raises(ArtifactIntegrityError, match="no cases"):
+    with pytest.raises(ArtifactIntegrityError, match="typed document"):
         load_semantic_cohort(tmp_path)
-    path.write_text(
-        json.dumps(
-            [
-                {
-                    "cohort_id": "semantic-1",
-                    "event_id": "x:val:0",
-                    "user_id": 1,
-                    "anchor_product_id": 1,
-                    "target_product_ids": [],
-                }
-            ]
-        ),
-        encoding="utf-8",
-    )
-    with pytest.raises(ArtifactIntegrityError, match="malformed"):
+    document = _typed_cohort_document()
+    document["cases"] = []
+    path.write_bytes(canonical_semantic_cohort_bytes(document))
+    with pytest.raises(ArtifactIntegrityError, match="no cases"):
         load_semantic_cohort(tmp_path)
 
 
@@ -601,23 +557,7 @@ def test_r4_promotion_rejects_missing_inputs_and_non_object_documents(tmp_path: 
     path.write_text("[]", encoding="utf-8")
     with pytest.raises(ArtifactIntegrityError, match="object"):
         load_r4_promotion(path)
-    with pytest.raises(ArtifactIntegrityError, match="input is missing"):
-        publish_r4_promotion(
-            tmp_path / "out.json",
-            deep_selection_report=tmp_path / "selection.json",
-            selected_deep_run_id="deep",
-            selected_deep_checkpoint_sha256="1" * 64,
-            h3b_hybrid_run_id="hybrid",
-            h3b_hybrid_checkpoint_sha256="2" * 64,
-            h3b_victory_matrix_sha256="3" * 64,
-            lineage=_lineage(),
-            diagnostic_git_commit="4" * 40,
-            production_git_commit="5" * 40,
-            deep_config=tmp_path / "deep.toml",
-            hybrid_config=tmp_path / "hybrid.toml",
-            feature_selection={},
-            objective_settings={},
-        )
+
 
 
 def test_pipeline_state_loader_rejects_v5_three_field_lineage(tmp_path: Path) -> None:
@@ -695,33 +635,15 @@ def test_r3_metric_archive_rejects_invalid_shapes_dtype_and_values(
 
 def test_semantic_loader_rejects_wrong_split_and_malformed_rows(tmp_path: Path) -> None:
     path = tmp_path / "semantic-cohort.json"
-    path.write_text(
-        json.dumps(
-            [
-                {
-                    "cohort_id": "semantic-1",
-                    "event_id": "semantic-1:test:0",
-                    "user_id": 1,
-                    "anchor_product_id": 2,
-                    "target_product_ids": [3],
-                },
-                {
-                    "cohort_id": "semantic-2",
-                    "event_id": "semantic-2:val:0",
-                    "user_id": 1,
-                    "anchor_product_id": 2,
-                    "target_product_ids": [3],
-                },
-            ]
-        ),
-        encoding="utf-8",
-    )
-    with pytest.raises(ArtifactIntegrityError, match="all ten"):
+    document = _typed_cohort_document()
+    cases = document["cases"]
+    assert isinstance(cases, list)
+    document["cases"] = [case for case in cases if case["split"] == "test"]
+    path.write_bytes(canonical_semantic_cohort_bytes(document))
+    with pytest.raises(ArtifactIntegrityError, match="VAL and TEST"):
         load_semantic_cohort(tmp_path)
-    with pytest.raises(ArtifactIntegrityError, match="all ten"):
-        load_semantic_cohort(tmp_path, split=SplitName.TEST)
     path.write_text(json.dumps(["not-a-row"]), encoding="utf-8")
-    with pytest.raises(ArtifactIntegrityError, match="row is invalid"):
+    with pytest.raises(ArtifactIntegrityError, match="typed document"):
         load_semantic_cohort(tmp_path)
 
 
@@ -744,35 +666,6 @@ def test_preflight_selectors_reject_zero_and_multiple_matches(tmp_path: Path) ->
     assert settings.data.artifact_root == tmp_path
 
 
-def test_r4_promotion_rejects_tampered_existing_receipt(tmp_path: Path) -> None:
-    selection = tmp_path / "report.json"
-    deep_config = tmp_path / "deep.toml"
-    hybrid_config = tmp_path / "hybrid.toml"
-    for path in (selection, deep_config, hybrid_config):
-        path.write_text("content", encoding="utf-8")
-    output = tmp_path / "promotion.json"
-    publish_r4_promotion(
-        output,
-        deep_selection_report=selection,
-        selected_deep_run_id="deep",
-        selected_deep_checkpoint_sha256="1" * 64,
-        h3b_hybrid_run_id="hybrid",
-        h3b_hybrid_checkpoint_sha256="2" * 64,
-        h3b_victory_matrix_sha256="3" * 64,
-        lineage=_lineage(),
-        diagnostic_git_commit="4" * 40,
-        production_git_commit="5" * 40,
-        deep_config=deep_config,
-        hybrid_config=hybrid_config,
-        feature_selection={"include_price": False},
-        objective_settings={"rule_weight": 0.1},
-    )
-    document = json.loads(output.read_text(encoding="utf-8"))
-    document["selected_deep_run_id"] = "other"
-    output.write_text(json.dumps(document), encoding="utf-8")
-    with pytest.raises(ArtifactIntegrityError, match="hash mismatch"):
-        load_r4_promotion(output)
-
 
 def test_r3_diagnostic_small_helpers_cover_empty_cohort_and_metric_publication(
     tmp_path: Path,
@@ -792,56 +685,6 @@ def test_r3_diagnostic_small_helpers_cover_empty_cohort_and_metric_publication(
     r3_diagnostics._write_metrics(path, _valid_r3_arrays())
     assert path.is_file()
 
-
-def test_r4_promotion_rejects_corrupt_existing_destination_and_write_failure(
-    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
-) -> None:
-    selection = tmp_path / "report.json"
-    deep_config = tmp_path / "deep.toml"
-    hybrid_config = tmp_path / "hybrid.toml"
-    for path in (selection, deep_config, hybrid_config):
-        path.write_text("content", encoding="utf-8")
-    output = tmp_path / "promotion.json"
-    output.write_text("not-json", encoding="utf-8")
-    with pytest.raises(ArtifactIntegrityError, match="cannot be read"):
-        publish_r4_promotion(
-            output,
-            deep_selection_report=selection,
-            selected_deep_run_id="deep",
-            selected_deep_checkpoint_sha256="1" * 64,
-            h3b_hybrid_run_id="hybrid",
-            h3b_hybrid_checkpoint_sha256="2" * 64,
-            h3b_victory_matrix_sha256="3" * 64,
-            lineage=_lineage(),
-            diagnostic_git_commit="4" * 40,
-            production_git_commit="5" * 40,
-            deep_config=deep_config,
-            hybrid_config=hybrid_config,
-            feature_selection={},
-            objective_settings={},
-        )
-    output.unlink()
-    monkeypatch.setattr(
-        "ai_service.evaluation.promotion.immutable_write_json",
-        lambda *_args, **_kwargs: (_ for _ in ()).throw(OSError("disk full")),
-    )
-    with pytest.raises(ArtifactIntegrityError, match="publication failed"):
-        publish_r4_promotion(
-            output,
-            deep_selection_report=selection,
-            selected_deep_run_id="deep",
-            selected_deep_checkpoint_sha256="1" * 64,
-            h3b_hybrid_run_id="hybrid",
-            h3b_hybrid_checkpoint_sha256="2" * 64,
-            h3b_victory_matrix_sha256="3" * 64,
-            lineage=_lineage(),
-            diagnostic_git_commit="4" * 40,
-            production_git_commit="5" * 40,
-            deep_config=deep_config,
-            hybrid_config=hybrid_config,
-            feature_selection={},
-            objective_settings={},
-        )
 
 
 def test_pipeline_config_and_terminal_summary_handle_explicit_spec_and_corrupt_summary(

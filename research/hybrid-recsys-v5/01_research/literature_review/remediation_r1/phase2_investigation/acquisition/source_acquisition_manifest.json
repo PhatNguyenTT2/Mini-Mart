@@ -1,0 +1,3326 @@
+{
+  "schema_version": "stage1b-r1-r4-source-acquisition-manifest-1.0",
+  "project": "hybrid-recsys-v5",
+  "stage": "1B",
+  "round": "R1",
+  "step": "R4_source_acquisition_and_locator_completion",
+  "ars_codex_version": "0.1.26",
+  "research_cutoff": "2026-08-21",
+  "generated_at": "2026-08-21T19:00:00+07:00",
+  "input_gate": {
+    "input_manifest": {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/r4_input_manifest.json",
+      "bytes": 4212,
+      "sha256": "56cac16b697d6bde6878e1274bef397face00ec5697b8291a4d8e5ed13627aeb"
+    },
+    "contract": {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/r4_acquisition_contract.md",
+      "bytes": 7731,
+      "sha256": "1d9debe6dde2303784d0057c86d4aae8bd76e48b586875e0f84e9e98ca2a4571"
+    },
+    "frozen_r3_files_checked": 12,
+    "r3_handoff_sha256": "caaaa51b1cfda308bac8603287b41dc5e3ae42f6aa3eb6bfe7f9cf623712c888",
+    "r3_verdict": "PASS",
+    "r3_independent_audit": "20/20 PASS",
+    "transitive_artifacts_revalidated": 64,
+    "transitive_artifact_failures": 0,
+    "core_population_recomputed": {
+      "scholarly": 23,
+      "operational_families": 1,
+      "total": 24
+    },
+    "frozen_queue_targets": 13,
+    "result": "PASS"
+  },
+  "scope_rule": "23 frozen scholarly core objects plus one frozen operational core family and six additional non-core scholarly queue targets; no broad discovery.",
+  "counts": {
+    "acquisition_records": 30,
+    "scholarly_target_records": 29,
+    "operational_family_records": 1,
+    "core_scholarly": 23,
+    "core_operational_families": 1,
+    "core_total": 24,
+    "core_acquired": 24,
+    "core_content_verified": 24,
+    "core_locator_ready": 24,
+    "local_artifacts": 35,
+    "queue_targets": 13,
+    "queue_terminal_resolved": 13
+  },
+  "acquisitions": [
+    {
+      "acquisition_key": "AQ-R4-S-agrawal1994_apriori",
+      "record_type": "scholarly_work",
+      "source_key": "agrawal1994_apriori",
+      "resource_keys": [],
+      "source_family_id": "SF-R1-001",
+      "priority": "core",
+      "core_object": true,
+      "queue_target": false,
+      "supported_claim_ids": [
+        "L3-APR-001",
+        "L3-GAP-008"
+      ],
+      "identity": {
+        "title": "Fast Algorithms for Mining Association Rules in Large Databases",
+        "authors": [
+          "Rakesh Agrawal",
+          "Ramakrishnan Srikant"
+        ],
+        "publication_year": 1994,
+        "venue": "Proceedings of the 20th International Conference on Very Large Data Bases",
+        "document_type": "conference_paper",
+        "publication_status": "published",
+        "doi": null,
+        "official_id": "VLDB 1994, pp. 487-499",
+        "official_url": "https://www.vldb.org/conf/1994/P487.PDF",
+        "version_relation": [
+          "Canonical VLDB proceedings paper; no DOI was assigned."
+        ]
+      },
+      "accessed_at": "2026-08-21T19:00:00+07:00",
+      "acquisition_route": "lawful_local_same_work_artifact",
+      "acquisition_url": "source_artifacts/agrawal1994_apriori.pdf",
+      "local_artifacts": [
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/agrawal1994_apriori.pdf",
+          "bytes": 1359718,
+          "sha256": "99c6057d4fb42b5a1f9c2176a5bce0db2b860f69e897db46e68e9ef09d1154e2",
+          "media_type": "application/pdf",
+          "role": "authoritative_original_or_same_work_copy",
+          "source_uri": "source_artifacts/agrawal1994_apriori.pdf",
+          "acquired_at": "2026-08-21T19:00:00+07:00",
+          "local_only": true,
+          "redistribution_in_bundle": false
+        }
+      ],
+      "no_lawful_local_copy_reason": null,
+      "rights_access": {
+        "availability": "lawfully accessible through the recorded official or author/repository route",
+        "license": "No broader redistribution license inferred unless stated by the source",
+        "access": "research inspection/download only; no paywall, authentication, TLS, robots, or provider control bypassed",
+        "dataset_rights": null,
+        "redistribution": "not authorized by this record; local-only original artifact",
+        "commit_status": "LOCAL_ONLY"
+      },
+      "source_acquired": true,
+      "exact_target_source_acquired": true,
+      "source_content_verified": true,
+      "source_verified_against_original": true,
+      "affirmative_verification": {
+        "method": "local_pdf_text_extraction_title_marker_and_sha256",
+        "reader": "pypdf",
+        "pages_examined": 5,
+        "title_token_overlap": 1.0,
+        "matched_title_tokens": [
+          "algorithms",
+          "association",
+          "databases",
+          "fast",
+          "large",
+          "mining",
+          "rules"
+        ],
+        "result": "PASS"
+      },
+      "locator_ready": true,
+      "locator_ids": [
+        "LOC-R4-S-agrawal1994_apriori-01"
+      ],
+      "pdf_preflight": {
+        "sidecar_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/agrawal1994_apriori.preflight.json",
+        "sidecar_sha256": "a8d6b339abb788740f0fe29bbad425c98bfa8262ce44fc041f4193362193368b",
+        "verdict": "PASS",
+        "page_anchors_permitted": true
+      },
+      "replacement": null,
+      "terminal_disposition": null,
+      "limitations": [
+        "The paper mines rules; it does not define a recommender ranking model.",
+        "No evidence about the v5 H3 estimand or current benchmark outcomes."
+      ],
+      "unresolved_blockers": [],
+      "forbidden_downstream_use": [
+        "R4 does not authorize production citation.",
+        "Do not use before R5 claim-map rebuild and bounded synthesis."
+      ],
+      "r4_contract_satisfied": true
+    },
+    {
+      "acquisition_key": "AQ-R4-S-cheng2016_wide_deep",
+      "record_type": "scholarly_work",
+      "source_key": "cheng2016_wide_deep",
+      "resource_keys": [],
+      "source_family_id": "SF-R1-007",
+      "priority": "core",
+      "core_object": true,
+      "queue_target": false,
+      "supported_claim_ids": [
+        "L2-CLAIM-WIDE-DEEP-004",
+        "L3-GAP-008",
+        "L3-HYB-006"
+      ],
+      "identity": {
+        "title": "Wide & Deep Learning for Recommender Systems",
+        "authors": [
+          "Heng-Tze Cheng",
+          "Levent Koc",
+          "Jeremiah Harmsen",
+          "Tal Shaked",
+          "Tushar Chandra",
+          "Hrishi Aradhye",
+          "Glen Anderson",
+          "Greg Corrado",
+          "Wei Chai",
+          "Mustafa Ispir",
+          "Rohan Anil",
+          "Zakaria Haque",
+          "Lichan Hong",
+          "Vihan Jain",
+          "Xiaobing Liu",
+          "Hemal Shah"
+        ],
+        "publication_year": 2016,
+        "venue": "Proceedings of the 1st Workshop on Deep Learning for Recommender Systems",
+        "document_type": "workshop_paper",
+        "publication_status": "published",
+        "doi": "10.1145/2988450.2988454",
+        "official_id": null,
+        "official_url": "https://doi.org/10.1145/2988450.2988454",
+        "version_relation": [
+          "arXiv manuscript and ACM workshop record are one publication family.",
+          "Canonical workshop paper; inspected arXiv author version is the same work."
+        ]
+      },
+      "accessed_at": "2026-08-21T19:00:00+07:00",
+      "acquisition_route": "lawful_local_same_work_artifact",
+      "acquisition_url": "https://arxiv.org/pdf/1606.07792",
+      "local_artifacts": [
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/cheng2016_wide_deep.pdf",
+          "bytes": 409971,
+          "sha256": "0f04fd0659345008ddcb4b0742b6d0e5475bb0c2cf2a2b222f1b06d109c6c4c8",
+          "media_type": "application/pdf",
+          "role": "authoritative_original_or_same_work_copy",
+          "source_uri": "https://arxiv.org/pdf/1606.07792",
+          "acquired_at": "2026-08-21T19:00:00+07:00",
+          "local_only": true,
+          "redistribution_in_bundle": false
+        }
+      ],
+      "no_lawful_local_copy_reason": null,
+      "rights_access": {
+        "availability": "lawfully accessible through the recorded official or author/repository route",
+        "license": "No broader redistribution license inferred unless stated by the source",
+        "access": "research inspection/download only; no paywall, authentication, TLS, robots, or provider control bypassed",
+        "dataset_rights": null,
+        "redistribution": "not authorized by this record; local-only original artifact",
+        "commit_status": "LOCAL_ONLY"
+      },
+      "source_acquired": true,
+      "exact_target_source_acquired": true,
+      "source_content_verified": true,
+      "source_verified_against_original": true,
+      "affirmative_verification": {
+        "method": "local_pdf_text_extraction_title_marker_and_sha256",
+        "reader": "pypdf",
+        "pages_examined": 4,
+        "title_token_overlap": 1.0,
+        "matched_title_tokens": [
+          "deep",
+          "learning",
+          "recommender",
+          "systems",
+          "wide"
+        ],
+        "result": "PASS"
+      },
+      "locator_ready": true,
+      "locator_ids": [
+        "LOC-R4-S-cheng2016_wide_deep-01"
+      ],
+      "pdf_preflight": {
+        "sidecar_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/cheng2016_wide_deep.preflight.json",
+        "sidecar_sha256": "ffc87c7168850842f5291fd17e70108d48037a2db02e37d9d34e99d93aada4c2",
+        "verdict": "PASS",
+        "page_anchors_permitted": true
+      },
+      "replacement": null,
+      "terminal_disposition": null,
+      "limitations": [
+        "Feature crosses require explicit engineering and leakage controls.",
+        "Review-process status remains unknown from inspected official records.",
+        "Commercial app-ranking task, not basket or novel-purchase evaluation.",
+        "The wide component uses engineered cross-products and is not identical to the v5 wide branch."
+      ],
+      "unresolved_blockers": [],
+      "forbidden_downstream_use": [
+        "R4 does not authorize production citation.",
+        "Do not use before R5 claim-map rebuild and bounded synthesis."
+      ],
+      "r4_contract_satisfied": true
+    },
+    {
+      "acquisition_key": "AQ-R4-S-covington2016_youtube",
+      "record_type": "scholarly_work",
+      "source_key": "covington2016_youtube",
+      "resource_keys": [],
+      "source_family_id": "SF-R1-008",
+      "priority": "core",
+      "core_object": true,
+      "queue_target": false,
+      "supported_claim_ids": [
+        "L2-CLAIM-TWO-STAGE-003"
+      ],
+      "identity": {
+        "title": "Deep Neural Networks for YouTube Recommendations",
+        "authors": [
+          "Paul Covington",
+          "Jay Adams",
+          "Emre Sargin"
+        ],
+        "publication_year": 2016,
+        "venue": "Proceedings of the 10th ACM Conference on Recommender Systems",
+        "document_type": "conference_paper",
+        "publication_status": "published",
+        "doi": "10.1145/2959100.2959190",
+        "official_id": null,
+        "official_url": "https://doi.org/10.1145/2959100.2959190",
+        "version_relation": [
+          "Google Research author artifact corresponds to the canonical ACM proceedings work."
+        ]
+      },
+      "accessed_at": "2026-08-21T19:00:00+07:00",
+      "acquisition_route": "lawful_local_same_work_artifact",
+      "acquisition_url": "https://research.google.com/pubs/archive/45530.pdf",
+      "local_artifacts": [
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/covington2016_youtube.pdf",
+          "bytes": 898498,
+          "sha256": "efb4aa82a1a4cd720be05b837752aab7fee92b2a8a22f30ca6aa6fc24ed482ab",
+          "media_type": "application/pdf",
+          "role": "authoritative_original_or_same_work_copy",
+          "source_uri": "https://research.google.com/pubs/archive/45530.pdf",
+          "acquired_at": "2026-08-21T19:00:00+07:00",
+          "local_only": true,
+          "redistribution_in_bundle": false
+        }
+      ],
+      "no_lawful_local_copy_reason": null,
+      "rights_access": {
+        "availability": "lawfully accessible through the recorded official or author/repository route",
+        "license": "No broader redistribution license inferred unless stated by the source",
+        "access": "research inspection/download only; no paywall, authentication, TLS, robots, or provider control bypassed",
+        "dataset_rights": null,
+        "redistribution": "not authorized by this record; local-only original artifact",
+        "commit_status": "LOCAL_ONLY"
+      },
+      "source_acquired": true,
+      "exact_target_source_acquired": true,
+      "source_content_verified": true,
+      "source_verified_against_original": true,
+      "affirmative_verification": {
+        "method": "local_pdf_text_extraction_title_marker_and_sha256",
+        "reader": "pypdf",
+        "pages_examined": 5,
+        "title_token_overlap": 1.0,
+        "matched_title_tokens": [
+          "deep",
+          "networks",
+          "neural",
+          "recommendations",
+          "youtube"
+        ],
+        "result": "PASS"
+      },
+      "locator_ready": true,
+      "locator_ids": [
+        "LOC-R4-S-covington2016_youtube-01"
+      ],
+      "pdf_preflight": {
+        "sidecar_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/covington2016_youtube.preflight.json",
+        "sidecar_sha256": "b5c4a59900dcec940cf7c656ce9dcb8d61276e37653a581c90d44e76ae09199e",
+        "verdict": "PASS",
+        "page_anchors_permitted": true
+      },
+      "replacement": null,
+      "terminal_disposition": null,
+      "limitations": [
+        "Inputs and objectives are platform-specific.",
+        "The design is not a controlled v5 architecture benchmark."
+      ],
+      "unresolved_blockers": [],
+      "forbidden_downstream_use": [
+        "R4 does not authorize production citation.",
+        "Do not use before R5 claim-map rebuild and bounded synthesis."
+      ],
+      "r4_contract_satisfied": true
+    },
+    {
+      "acquisition_key": "AQ-R4-S-dacrema2021_reproducibility",
+      "record_type": "scholarly_work",
+      "source_key": "dacrema2021_reproducibility",
+      "resource_keys": [],
+      "source_family_id": "SF-R1-009",
+      "priority": "core",
+      "core_object": true,
+      "queue_target": false,
+      "supported_claim_ids": [
+        "L1-CC-005",
+        "L1-CC-006",
+        "L1-CC-007"
+      ],
+      "identity": {
+        "title": "A Troubling Analysis of Reproducibility and Progress in Recommender Systems Research",
+        "authors": [
+          "Maurizio Ferrari Dacrema",
+          "Simone Boglio",
+          "Paolo Cremonesi",
+          "Dietmar Jannach"
+        ],
+        "publication_year": 2021,
+        "venue": "ACM Transactions on Information Systems",
+        "document_type": "journal_article",
+        "publication_status": "published",
+        "doi": "10.1145/3434185",
+        "official_id": null,
+        "official_url": "https://doi.org/10.1145/3434185",
+        "version_relation": [
+          "Journal extension replacing the 2019 predecessor 10.1145/3298689.3347058 in the L1 shortlist."
+        ]
+      },
+      "accessed_at": "2026-08-21T19:00:00+07:00",
+      "acquisition_route": "lawful_local_same_work_artifact",
+      "acquisition_url": "source_artifacts/dacrema2021_reproducibility.pdf",
+      "local_artifacts": [
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/dacrema2021_reproducibility.pdf",
+          "bytes": 1027996,
+          "sha256": "b87b08a4b3f1801ba10cfb2b5e6773f3d69ef107a012f60e5ec502b72470f49b",
+          "media_type": "application/pdf",
+          "role": "authoritative_original_or_same_work_copy",
+          "source_uri": "source_artifacts/dacrema2021_reproducibility.pdf",
+          "acquired_at": "2026-08-21T19:00:00+07:00",
+          "local_only": true,
+          "redistribution_in_bundle": false
+        }
+      ],
+      "no_lawful_local_copy_reason": null,
+      "rights_access": {
+        "availability": "lawfully accessible through the recorded official or author/repository route",
+        "license": "No broader redistribution license inferred unless stated by the source",
+        "access": "research inspection/download only; no paywall, authentication, TLS, robots, or provider control bypassed",
+        "dataset_rights": null,
+        "redistribution": "not authorized by this record; local-only original artifact",
+        "commit_status": "LOCAL_ONLY"
+      },
+      "source_acquired": true,
+      "exact_target_source_acquired": true,
+      "source_content_verified": true,
+      "source_verified_against_original": true,
+      "affirmative_verification": {
+        "method": "local_pdf_text_extraction_title_marker_and_sha256",
+        "reader": "pypdf",
+        "pages_examined": 5,
+        "title_token_overlap": 1.0,
+        "matched_title_tokens": [
+          "analysis",
+          "progress",
+          "recommender",
+          "reproducibility",
+          "research",
+          "systems",
+          "troubling"
+        ],
+        "result": "PASS"
+      },
+      "locator_ready": true,
+      "locator_ids": [
+        "LOC-R4-S-dacrema2021_reproducibility-01"
+      ],
+      "pdf_preflight": {
+        "sidecar_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/dacrema2021_reproducibility.preflight.json",
+        "sidecar_sha256": "50bfe1260a74d2257d8cc42f43f6945bbda9150408b6c69dff2d0ecced0d760c",
+        "verdict": "PASS",
+        "page_anchors_permitted": true
+      },
+      "replacement": null,
+      "terminal_disposition": null,
+      "limitations": [
+        "Reproduction sample and tested algorithms are bounded; no raw result transfers to v5."
+      ],
+      "unresolved_blockers": [],
+      "forbidden_downstream_use": [
+        "R4 does not authorize production citation.",
+        "Do not use before R5 claim-map rebuild and bounded synthesis."
+      ],
+      "r4_contract_satisfied": true
+    },
+    {
+      "acquisition_key": "AQ-R4-S-ghoshal2014_multi_item_rules",
+      "record_type": "scholarly_work",
+      "source_key": "ghoshal2014_multi_item_rules",
+      "resource_keys": [],
+      "source_family_id": "SF-R1-011",
+      "priority": "core",
+      "core_object": true,
+      "queue_target": false,
+      "supported_claim_ids": [
+        "L3-GAP-008",
+        "L3-RULE-002"
+      ],
+      "identity": {
+        "title": "Association Rules for Recommendations with Multiple Items",
+        "authors": [
+          "Abhijeet Ghoshal",
+          "Sumit Sarkar"
+        ],
+        "publication_year": 2014,
+        "venue": "INFORMS Journal on Computing, 26(3), 433-448",
+        "document_type": "journal_article",
+        "publication_status": "published",
+        "doi": "10.1287/ijoc.2013.0575",
+        "official_id": null,
+        "official_url": "https://pubsonline.informs.org/doi/10.1287/ijoc.2013.0575",
+        "version_relation": [
+          "Canonical journal article; inspected lawful author-hosted manuscript is the same work."
+        ]
+      },
+      "accessed_at": "2026-08-21T19:00:00+07:00",
+      "acquisition_route": "lawful_local_same_work_artifact",
+      "acquisition_url": "source_artifacts/ghoshal2014_multi_item_author.pdf",
+      "local_artifacts": [
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/ghoshal2014_multi_item_rules.pdf",
+          "bytes": 547988,
+          "sha256": "46d1b26bcb4ba3dbcc56296dbd68229921de43c29b6655130f2fe7ef8861a908",
+          "media_type": "application/pdf",
+          "role": "authoritative_original_or_same_work_copy",
+          "source_uri": "source_artifacts/ghoshal2014_multi_item_author.pdf",
+          "acquired_at": "2026-08-21T19:00:00+07:00",
+          "local_only": true,
+          "redistribution_in_bundle": false
+        }
+      ],
+      "no_lawful_local_copy_reason": null,
+      "rights_access": {
+        "availability": "lawfully accessible through the recorded official or author/repository route",
+        "license": "No broader redistribution license inferred unless stated by the source",
+        "access": "research inspection/download only; no paywall, authentication, TLS, robots, or provider control bypassed",
+        "dataset_rights": null,
+        "redistribution": "not authorized by this record; local-only original artifact",
+        "commit_status": "LOCAL_ONLY"
+      },
+      "source_acquired": true,
+      "exact_target_source_acquired": true,
+      "source_content_verified": true,
+      "source_verified_against_original": true,
+      "affirmative_verification": {
+        "method": "local_pdf_text_extraction_title_marker_and_sha256",
+        "reader": "pypdf",
+        "pages_examined": 5,
+        "title_token_overlap": 1.0,
+        "matched_title_tokens": [
+          "association",
+          "items",
+          "multiple",
+          "recommendations",
+          "rules"
+        ],
+        "result": "PASS"
+      },
+      "locator_ready": true,
+      "locator_ids": [
+        "LOC-R4-S-ghoshal2014_multi_item_rules-01"
+      ],
+      "pdf_preflight": {
+        "sidecar_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/ghoshal2014_multi_item_rules.preflight.json",
+        "sidecar_sha256": "c046ce69adf9988ca17f647ee7cc1c813ecb31a361c195bfa2f809809c394f44",
+        "verdict": "PASS",
+        "page_anchors_permitted": true
+      },
+      "replacement": null,
+      "terminal_disposition": null,
+      "limitations": [
+        "Empirical advantages vary with data characteristics; sparse clickstream results are not uniformly favorable.",
+        "The task, data, and metrics differ from v5."
+      ],
+      "unresolved_blockers": [],
+      "forbidden_downstream_use": [
+        "R4 does not authorize production citation.",
+        "Do not use before R5 claim-map rebuild and bounded synthesis."
+      ],
+      "r4_contract_satisfied": true
+    },
+    {
+      "acquisition_key": "AQ-R4-S-gusak2025_time_split",
+      "record_type": "scholarly_work",
+      "source_key": "gusak2025_time_split",
+      "resource_keys": [],
+      "source_family_id": "SF-R1-013",
+      "priority": "core",
+      "core_object": true,
+      "queue_target": false,
+      "supported_claim_ids": [
+        "L1-CC-003",
+        "L1-CC-008",
+        "L3-PROTO-007"
+      ],
+      "identity": {
+        "title": "Time to Split: Exploring Data Splitting Strategies for Offline Evaluation of Sequential Recommenders",
+        "authors": [
+          "Danil Gusak",
+          "Anna Volodkevich",
+          "Anton Klenitskiy",
+          "Alexey Vasilev",
+          "Evgeny Frolov"
+        ],
+        "publication_year": 2025,
+        "venue": "Proceedings of the 19th ACM Conference on Recommender Systems",
+        "document_type": "conference_paper",
+        "publication_status": "published",
+        "doi": "10.1145/3705328.3748164",
+        "official_id": null,
+        "official_url": "https://doi.org/10.1145/3705328.3748164",
+        "version_relation": [
+          null,
+          "Canonical RecSys paper; inspected author arXiv version states its accepted-version status."
+        ]
+      },
+      "accessed_at": "2026-08-21T19:00:00+07:00",
+      "acquisition_route": "lawful_local_same_work_artifact",
+      "acquisition_url": "source_artifacts/gusak2025_time_to_split.pdf",
+      "local_artifacts": [
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/gusak2025_time_split.pdf",
+          "bytes": 1421328,
+          "sha256": "bacc8bdfe282550958cf596c52c585141e246606f151934ae66632023800455d",
+          "media_type": "application/pdf",
+          "role": "authoritative_original_or_same_work_copy",
+          "source_uri": "source_artifacts/gusak2025_time_to_split.pdf",
+          "acquired_at": "2026-08-21T19:00:00+07:00",
+          "local_only": true,
+          "redistribution_in_bundle": false
+        }
+      ],
+      "no_lawful_local_copy_reason": null,
+      "rights_access": {
+        "availability": "lawfully accessible through the recorded official or author/repository route",
+        "license": "No broader redistribution license inferred unless stated by the source",
+        "access": "research inspection/download only; no paywall, authentication, TLS, robots, or provider control bypassed",
+        "dataset_rights": null,
+        "redistribution": "not authorized by this record; local-only original artifact",
+        "commit_status": "LOCAL_ONLY"
+      },
+      "source_acquired": true,
+      "exact_target_source_acquired": true,
+      "source_content_verified": true,
+      "source_verified_against_original": true,
+      "affirmative_verification": {
+        "method": "local_pdf_text_extraction_title_marker_and_sha256",
+        "reader": "pypdf",
+        "pages_examined": 5,
+        "title_token_overlap": 1.0,
+        "matched_title_tokens": [
+          "data",
+          "evaluation",
+          "exploring",
+          "offline",
+          "recommenders",
+          "sequential",
+          "split",
+          "splitting",
+          "strategies",
+          "time"
+        ],
+        "result": "PASS"
+      },
+      "locator_ready": true,
+      "locator_ids": [
+        "LOC-R4-S-gusak2025_time_split-01"
+      ],
+      "pdf_preflight": {
+        "sidecar_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/gusak2025_time_split.preflight.json",
+        "sidecar_sha256": "e8dd55d2bf4dfdb4ddfb9d5bf984c4d34c393e9612355e3c712211cac8a44afd",
+        "verdict": "PASS",
+        "page_anchors_permitted": true
+      },
+      "replacement": null,
+      "terminal_disposition": null,
+      "limitations": [
+        "Sequential next-item settings and tested split variants do not automatically transfer to non-sequential tasks.",
+        "Not specific to the v5 grocery basket datasets.",
+        "Does not decide the locked v5 split; it supports sensitivity analysis and protocol discipline."
+      ],
+      "unresolved_blockers": [],
+      "forbidden_downstream_use": [
+        "R4 does not authorize production citation.",
+        "Do not use before R5 claim-map rebuild and bounded synthesis."
+      ],
+      "r4_contract_satisfied": true
+    },
+    {
+      "acquisition_key": "AQ-R4-S-he2020_lightgcn",
+      "record_type": "scholarly_work",
+      "source_key": "he2020_lightgcn",
+      "resource_keys": [],
+      "source_family_id": "SF-R1-015",
+      "priority": "core",
+      "core_object": true,
+      "queue_target": false,
+      "supported_claim_ids": [
+        "L2-CLAIM-GRAPH-ZERO-EDGE-005",
+        "L2-CLAIM-HARMONIZED-EVAL-008"
+      ],
+      "identity": {
+        "title": "LightGCN: Simplifying and Powering Graph Convolution Network for Recommendation",
+        "authors": [
+          "Xiangnan He",
+          "Kuan Deng",
+          "Xiang Wang",
+          "Yan Li",
+          "Yongdong Zhang",
+          "Meng Wang"
+        ],
+        "publication_year": 2020,
+        "venue": "Proceedings of the 43rd International ACM SIGIR Conference on Research and Development in Information Retrieval",
+        "document_type": "conference_paper",
+        "publication_status": "published",
+        "doi": "10.1145/3397271.3401063",
+        "official_id": null,
+        "official_url": "https://doi.org/10.1145/3397271.3401063",
+        "version_relation": [
+          "Author-hosted manuscript corresponds to the canonical ACM SIGIR work."
+        ]
+      },
+      "accessed_at": "2026-08-21T19:00:00+07:00",
+      "acquisition_route": "lawful_local_same_work_artifact",
+      "acquisition_url": "https://hexiangnan.github.io/papers/sigir20-LightGCN.pdf",
+      "local_artifacts": [
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/he2020_lightgcn.pdf",
+          "bytes": 1209591,
+          "sha256": "1f8fa2ab18921643f8858613a5bf6d91a51cd10f9ed9460c0a9bd26ca8cdb59d",
+          "media_type": "application/pdf",
+          "role": "authoritative_original_or_same_work_copy",
+          "source_uri": "https://hexiangnan.github.io/papers/sigir20-LightGCN.pdf",
+          "acquired_at": "2026-08-21T19:00:00+07:00",
+          "local_only": true,
+          "redistribution_in_bundle": false
+        }
+      ],
+      "no_lawful_local_copy_reason": null,
+      "rights_access": {
+        "availability": "lawfully accessible through the recorded official or author/repository route",
+        "license": "No broader redistribution license inferred unless stated by the source",
+        "access": "research inspection/download only; no paywall, authentication, TLS, robots, or provider control bypassed",
+        "dataset_rights": null,
+        "redistribution": "not authorized by this record; local-only original artifact",
+        "commit_status": "LOCAL_ONLY"
+      },
+      "source_acquired": true,
+      "exact_target_source_acquired": true,
+      "source_content_verified": true,
+      "source_verified_against_original": true,
+      "affirmative_verification": {
+        "method": "local_pdf_text_extraction_title_marker_and_sha256",
+        "reader": "pypdf",
+        "pages_examined": 5,
+        "title_token_overlap": 1.0,
+        "matched_title_tokens": [
+          "convolution",
+          "graph",
+          "lightgcn",
+          "network",
+          "powering",
+          "recommendation",
+          "simplifying"
+        ],
+        "result": "PASS"
+      },
+      "locator_ready": true,
+      "locator_ids": [
+        "LOC-R4-S-he2020_lightgcn-01"
+      ],
+      "pdf_preflight": {
+        "sidecar_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/he2020_lightgcn.preflight.json",
+        "sidecar_sha256": "5dfc05c274800b33d952a21a23ded082b35600e03b1d3864e0260826cdc03a2f",
+        "verdict": "PASS",
+        "page_anchors_permitted": true
+      },
+      "replacement": null,
+      "terminal_disposition": null,
+      "limitations": [
+        "ID embeddings and propagation require observed nodes/edges for collaborative signal.",
+        "Transductive setup does not itself solve unseen zero-edge items."
+      ],
+      "unresolved_blockers": [],
+      "forbidden_downstream_use": [
+        "R4 does not authorize production citation.",
+        "Do not use before R5 claim-map rebuild and bounded synthesis."
+      ],
+      "r4_contract_satisfied": true
+    },
+    {
+      "acquisition_key": "AQ-R4-S-hou2022_unisrec",
+      "record_type": "scholarly_work",
+      "source_key": "hou2022_unisrec",
+      "resource_keys": [],
+      "source_family_id": "SF-R1-017",
+      "priority": "core",
+      "core_object": true,
+      "queue_target": true,
+      "supported_claim_ids": [
+        "L4-CC-05",
+        "L4-CC-08"
+      ],
+      "identity": {
+        "title": "Towards Universal Sequence Representation Learning for Recommender Systems",
+        "authors": [
+          "Yupeng Hou",
+          "Shanlei Mu",
+          "Wayne Xin Zhao",
+          "Yaliang Li",
+          "Bolin Ding",
+          "Ji-Rong Wen"
+        ],
+        "publication_year": 2022,
+        "venue": "Proceedings of the 28th ACM SIGKDD Conference on Knowledge Discovery and Data Mining",
+        "document_type": "conference_paper",
+        "publication_status": "published",
+        "doi": "10.1145/3534678.3539381",
+        "official_id": null,
+        "official_url": "https://doi.org/10.1145/3534678.3539381",
+        "version_relation": [
+          "Canonical KDD paper linked to inspected author manuscript."
+        ]
+      },
+      "accessed_at": "2026-08-21T19:00:00+07:00",
+      "acquisition_route": "lawful_local_same_work_artifact",
+      "acquisition_url": "https://arxiv.org/pdf/2206.05941",
+      "local_artifacts": [
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/hou2022_unisrec.pdf",
+          "bytes": 1096274,
+          "sha256": "62efa6a2ba06de9004513cc7e9df4614cbb6b5247c079c6b9360d753963a05b7",
+          "media_type": "application/pdf",
+          "role": "authoritative_original_or_same_work_copy",
+          "source_uri": "https://arxiv.org/pdf/2206.05941",
+          "acquired_at": "2026-08-21T19:00:00+07:00",
+          "local_only": true,
+          "redistribution_in_bundle": false
+        }
+      ],
+      "no_lawful_local_copy_reason": null,
+      "rights_access": {
+        "availability": "lawfully accessible through the recorded official or author/repository route",
+        "license": "No broader redistribution license inferred unless stated by the source",
+        "access": "research inspection/download only; no paywall, authentication, TLS, robots, or provider control bypassed",
+        "dataset_rights": null,
+        "redistribution": "not authorized by this record; local-only original artifact",
+        "commit_status": "LOCAL_ONLY"
+      },
+      "source_acquired": true,
+      "exact_target_source_acquired": true,
+      "source_content_verified": true,
+      "source_verified_against_original": true,
+      "affirmative_verification": {
+        "method": "local_pdf_text_extraction_title_marker_and_sha256",
+        "reader": "pypdf",
+        "pages_examined": 5,
+        "title_token_overlap": 1.0,
+        "matched_title_tokens": [
+          "learning",
+          "recommender",
+          "representation",
+          "sequence",
+          "systems",
+          "towards",
+          "universal"
+        ],
+        "result": "PASS"
+      },
+      "locator_ready": true,
+      "locator_ids": [
+        "LOC-R4-S-hou2022_unisrec-01"
+      ],
+      "pdf_preflight": {
+        "sidecar_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/hou2022_unisrec.preflight.json",
+        "sidecar_sha256": "e7e815ec41b9a1a4f11fefee374812fe9d1b4a0792dbd3d7a251fc3a020efaec",
+        "verdict": "PASS",
+        "page_anchors_permitted": true
+      },
+      "replacement": null,
+      "terminal_disposition": "same_work_lawful_local_artifact_acquired",
+      "limitations": [
+        "Transfer claims are bounded to the paper's domains, encoders, fine-tuning, and evaluation protocol."
+      ],
+      "unresolved_blockers": [],
+      "forbidden_downstream_use": [
+        "R4 does not authorize production citation.",
+        "Do not use before R5 claim-map rebuild and bounded synthesis."
+      ],
+      "r4_contract_satisfied": true
+    },
+    {
+      "acquisition_key": "AQ-R4-S-hou2023_vqrec",
+      "record_type": "scholarly_work",
+      "source_key": "hou2023_vqrec",
+      "resource_keys": [],
+      "source_family_id": "SF-R1-018",
+      "priority": "production_claim",
+      "core_object": false,
+      "queue_target": true,
+      "supported_claim_ids": [
+        "L4-CC-05",
+        "L4-CC-06",
+        "L4-CC-08"
+      ],
+      "identity": {
+        "title": "Learning Vector-Quantized Item Representation for Transferable Sequential Recommenders",
+        "authors": [
+          "Yupeng Hou",
+          "Zhankui He",
+          "Julian McAuley",
+          "Wayne Xin Zhao"
+        ],
+        "publication_year": 2023,
+        "venue": "Proceedings of the ACM Web Conference 2023",
+        "document_type": "conference_paper",
+        "publication_status": "published",
+        "doi": "10.1145/3543507.3583434",
+        "official_id": null,
+        "official_url": "https://doi.org/10.1145/3543507.3583434",
+        "version_relation": [
+          "Canonical WWW paper linked to inspected author manuscript."
+        ]
+      },
+      "accessed_at": "2026-08-21T19:00:00+07:00",
+      "acquisition_route": "lawful_local_same_work_artifact",
+      "acquisition_url": "https://arxiv.org/pdf/2210.12316",
+      "local_artifacts": [
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/hou2023_vqrec.pdf",
+          "bytes": 1109650,
+          "sha256": "ef2a1742c6161a1eec5d03638e130347994c9252e3bd9b95d96dd8dd5a29e6cd",
+          "media_type": "application/pdf",
+          "role": "authoritative_original_or_same_work_copy",
+          "source_uri": "https://arxiv.org/pdf/2210.12316",
+          "acquired_at": "2026-08-21T19:00:00+07:00",
+          "local_only": true,
+          "redistribution_in_bundle": false
+        }
+      ],
+      "no_lawful_local_copy_reason": null,
+      "rights_access": {
+        "availability": "lawfully accessible through the recorded official or author/repository route",
+        "license": "No broader redistribution license inferred unless stated by the source",
+        "access": "research inspection/download only; no paywall, authentication, TLS, robots, or provider control bypassed",
+        "dataset_rights": null,
+        "redistribution": "not authorized by this record; local-only original artifact",
+        "commit_status": "LOCAL_ONLY"
+      },
+      "source_acquired": true,
+      "exact_target_source_acquired": true,
+      "source_content_verified": true,
+      "source_verified_against_original": true,
+      "affirmative_verification": {
+        "method": "local_pdf_text_extraction_title_marker_and_sha256",
+        "reader": "pypdf",
+        "pages_examined": 5,
+        "title_token_overlap": 1.0,
+        "matched_title_tokens": [
+          "item",
+          "learning",
+          "quantized",
+          "recommenders",
+          "representation",
+          "sequential",
+          "transferable",
+          "vector"
+        ],
+        "result": "PASS"
+      },
+      "locator_ready": true,
+      "locator_ids": [
+        "LOC-R4-S-hou2023_vqrec-01"
+      ],
+      "pdf_preflight": {
+        "sidecar_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/hou2023_vqrec.preflight.json",
+        "sidecar_sha256": "e721700d94f7c431fcd5bece0580a7d223d1e379d1891dbd3b32a20b7e80bfb4",
+        "verdict": "PASS",
+        "page_anchors_permitted": true
+      },
+      "replacement": null,
+      "terminal_disposition": "same_work_lawful_local_artifact_acquired",
+      "limitations": [
+        "Most domains share Amazon review lineage; one external Online Retail dataset does not erase that dependence."
+      ],
+      "unresolved_blockers": [],
+      "forbidden_downstream_use": [
+        "R4 does not authorize production citation.",
+        "Do not use before R5 claim-map rebuild and bounded synthesis."
+      ],
+      "r4_contract_satisfied": true
+    },
+    {
+      "acquisition_key": "AQ-R4-S-huang2023_aldi",
+      "record_type": "scholarly_work",
+      "source_key": "huang2023_aldi",
+      "resource_keys": [],
+      "source_family_id": "SF-R1-021",
+      "priority": "production_claim",
+      "core_object": false,
+      "queue_target": true,
+      "supported_claim_ids": [
+        "L4-CC-01",
+        "L4-CC-02"
+      ],
+      "identity": {
+        "title": "Aligning Distillation For Cold-start Item Recommendation",
+        "authors": [
+          "Feiran Huang",
+          "Zefan Wang",
+          "Xiao Huang",
+          "Yufeng Qian",
+          "Zhetao Li",
+          "Hao Chen"
+        ],
+        "publication_year": 2023,
+        "venue": "Proceedings of the 46th International ACM SIGIR Conference on Research and Development in Information Retrieval",
+        "document_type": "conference_paper",
+        "publication_status": "published",
+        "doi": "10.1145/3539618.3591732",
+        "official_id": null,
+        "official_url": "https://doi.org/10.1145/3539618.3591732",
+        "version_relation": [
+          "Canonical SIGIR paper linked to inspected author manuscript."
+        ]
+      },
+      "accessed_at": "2026-08-21T19:00:00+07:00",
+      "acquisition_route": "lawful_local_same_work_artifact",
+      "acquisition_url": "https://www4.comp.polyu.edu.hk/~xiaohuang/docs/2023SIGIR_Feiran.pdf",
+      "local_artifacts": [
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/huang2023_aldi.pdf",
+          "bytes": 996268,
+          "sha256": "984d30f7b3d49d1f3fe15d5c7a18ab5460a85d5441a6744a89311572ecaecff7",
+          "media_type": "application/pdf",
+          "role": "authoritative_original_or_same_work_copy",
+          "source_uri": "https://www4.comp.polyu.edu.hk/~xiaohuang/docs/2023SIGIR_Feiran.pdf",
+          "acquired_at": "2026-08-21T19:00:00+07:00",
+          "local_only": true,
+          "redistribution_in_bundle": false
+        }
+      ],
+      "no_lawful_local_copy_reason": null,
+      "rights_access": {
+        "availability": "lawfully accessible through the recorded official or author/repository route",
+        "license": "No broader redistribution license inferred unless stated by the source",
+        "access": "research inspection/download only; no paywall, authentication, TLS, robots, or provider control bypassed",
+        "dataset_rights": null,
+        "redistribution": "not authorized by this record; local-only original artifact",
+        "commit_status": "LOCAL_ONLY"
+      },
+      "source_acquired": true,
+      "exact_target_source_acquired": true,
+      "source_content_verified": true,
+      "source_verified_against_original": true,
+      "affirmative_verification": {
+        "method": "local_pdf_text_extraction_title_marker_and_sha256",
+        "reader": "pypdf",
+        "pages_examined": 5,
+        "title_token_overlap": 1.0,
+        "matched_title_tokens": [
+          "aligning",
+          "cold",
+          "distillation",
+          "item",
+          "recommendation",
+          "start"
+        ],
+        "result": "PASS"
+      },
+      "locator_ready": true,
+      "locator_ids": [
+        "LOC-R4-S-huang2023_aldi-01"
+      ],
+      "pdf_preflight": {
+        "sidecar_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/huang2023_aldi.preflight.json",
+        "sidecar_sha256": "01e481700f306d8fe2f2222b37a2aa7cc427f8782c479c26ddb38d9dd75503d2",
+        "verdict": "PASS",
+        "page_anchors_permitted": true
+      },
+      "replacement": null,
+      "terminal_disposition": "same_work_lawful_local_artifact_acquired",
+      "limitations": [
+        "Author manuscript inspected remotely; no local redistribution copy stored."
+      ],
+      "unresolved_blockers": [],
+      "forbidden_downstream_use": [
+        "R4 does not authorize production citation.",
+        "Do not use before R5 claim-map rebuild and bounded synthesis."
+      ],
+      "r4_contract_satisfied": true
+    },
+    {
+      "acquisition_key": "AQ-R4-S-jannach2026_methodological_standards",
+      "record_type": "scholarly_work",
+      "source_key": "jannach2026_methodological_standards",
+      "resource_keys": [],
+      "source_family_id": "SF-R1-023",
+      "priority": "core",
+      "core_object": true,
+      "queue_target": true,
+      "supported_claim_ids": [
+        "L1-CC-005",
+        "L1-CC-007",
+        "L1-CC-011"
+      ],
+      "identity": {
+        "title": "Improving Methodological Standards in Recommender Systems Offline Evaluation",
+        "authors": [
+          "Dietmar Jannach",
+          "Li Chen"
+        ],
+        "publication_year": 2026,
+        "venue": "ACM Transactions on Recommender Systems",
+        "document_type": "editorial",
+        "publication_status": "published",
+        "doi": "10.1145/3800587",
+        "official_id": null,
+        "official_url": "https://doi.org/10.1145/3800587",
+        "version_relation": [
+          null
+        ]
+      },
+      "accessed_at": "2026-08-21T19:00:00+07:00",
+      "acquisition_route": "authoritative_publisher_html_remote_original",
+      "acquisition_url": "https://dl.acm.org/doi/full/10.1145/3800587",
+      "local_artifacts": [
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/jannach2026_hkbu_identity.html",
+          "bytes": 51885,
+          "sha256": "77026916f543dc15be7eda56ffaa20cc87954893de42f8c34901c5091d32c900",
+          "media_type": "text/html",
+          "role": "official_identity_metadata_support",
+          "source_uri": "https://scholars.hkbu.edu.hk/en/publications/improving-methodological-standards-in-recommender-systems-offline-/",
+          "acquired_at": "2026-08-21T19:00:00+07:00",
+          "local_only": true,
+          "redistribution_in_bundle": false
+        }
+      ],
+      "no_lawful_local_copy_reason": "The official ACM article was inspected through the lawful publisher HTML route; direct automated retrieval returned HTTP 403, so no restriction was bypassed and no local publisher copy was stored.",
+      "rights_access": {
+        "availability": "lawfully accessible through the recorded official or author/repository route",
+        "license": "No broader redistribution license inferred unless stated by the source",
+        "access": "research inspection/download only; no paywall, authentication, TLS, robots, or provider control bypassed",
+        "dataset_rights": null,
+        "redistribution": "not authorized by this record; local-only original artifact",
+        "commit_status": "LOCAL_ONLY"
+      },
+      "source_acquired": true,
+      "exact_target_source_acquired": true,
+      "source_content_verified": true,
+      "source_verified_against_original": true,
+      "affirmative_verification": {
+        "method": "authoritative_publisher_html_section_inspection",
+        "sections_verified": [
+          "Abstract",
+          "1",
+          "2",
+          "3",
+          "5",
+          "Appendix"
+        ],
+        "result": "PASS"
+      },
+      "locator_ready": true,
+      "locator_ids": [
+        "LOC-R4-S-jannach2026_methodological_standards-01"
+      ],
+      "pdf_preflight": null,
+      "replacement": null,
+      "terminal_disposition": "same_work_authoritative_remote_acquired",
+      "limitations": [
+        "Editorial/essay, not an empirical benchmark study.",
+        "Peer-review status must not be upgraded without direct evidence."
+      ],
+      "unresolved_blockers": [],
+      "forbidden_downstream_use": [
+        "R4 does not authorize production citation.",
+        "Do not use before R5 claim-map rebuild and bounded synthesis."
+      ],
+      "r4_contract_satisfied": true
+    },
+    {
+      "acquisition_key": "AQ-R4-S-jin2023_amazon_m2",
+      "record_type": "scholarly_work",
+      "source_key": "jin2023_amazon_m2",
+      "resource_keys": [],
+      "source_family_id": "SF-R1-025",
+      "priority": "core",
+      "core_object": true,
+      "queue_target": false,
+      "supported_claim_ids": [
+        "C-L5-EXT-01"
+      ],
+      "identity": {
+        "title": "Amazon-M2: A Multilingual Multi-locale Shopping Session Dataset for Recommendation and Text Generation",
+        "authors": [
+          "Wei Jin",
+          "Haitao Mao",
+          "Zheng Li",
+          "Haoming Jiang",
+          "Chen Luo",
+          "Hongzhi Wen",
+          "Haoyu Han",
+          "Hanqing Lu",
+          "Zhengyang Wang",
+          "Ruirui Li",
+          "Zhen Li",
+          "Monica Cheng",
+          "Rahul Goutam",
+          "Haiyang Zhang",
+          "Karthik Subbian",
+          "Suhang Wang",
+          "Yizhou Sun",
+          "Jiliang Tang",
+          "Bing Yin",
+          "Xianfeng Tang"
+        ],
+        "publication_year": 2023,
+        "venue": "Advances in Neural Information Processing Systems 36, Datasets and Benchmarks Track",
+        "document_type": "conference_paper",
+        "publication_status": "published",
+        "doi": "10.52202/075280-0351",
+        "official_id": null,
+        "official_url": "https://doi.org/10.52202/075280-0351",
+        "version_relation": [
+          "NeurIPS 2023 proceedings paper is canonical; competition and repository pages are operational companions."
+        ]
+      },
+      "accessed_at": "2026-08-21T19:00:00+07:00",
+      "acquisition_route": "lawful_local_same_work_artifact",
+      "acquisition_url": "https://proceedings.neurips.cc/",
+      "local_artifacts": [
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/jin2023_amazon_m2.pdf",
+          "bytes": 833629,
+          "sha256": "10b87e5653e8a53a57fa0053917224ab8621b30c8871ee84c83b6491fa4ef537",
+          "media_type": "application/pdf",
+          "role": "authoritative_original_or_same_work_copy",
+          "source_uri": "https://proceedings.neurips.cc/",
+          "acquired_at": "2026-08-21T19:00:00+07:00",
+          "local_only": true,
+          "redistribution_in_bundle": false
+        }
+      ],
+      "no_lawful_local_copy_reason": null,
+      "rights_access": {
+        "availability": "lawfully accessible through the recorded official or author/repository route",
+        "license": "No broader redistribution license inferred unless stated by the source",
+        "access": "research inspection/download only; no paywall, authentication, TLS, robots, or provider control bypassed",
+        "dataset_rights": null,
+        "redistribution": "not authorized by this record; local-only original artifact",
+        "commit_status": "LOCAL_ONLY"
+      },
+      "source_acquired": true,
+      "exact_target_source_acquired": true,
+      "source_content_verified": true,
+      "source_verified_against_original": true,
+      "affirmative_verification": {
+        "method": "local_pdf_text_extraction_title_marker_and_sha256",
+        "reader": "pypdf",
+        "pages_examined": 5,
+        "title_token_overlap": 1.0,
+        "matched_title_tokens": [
+          "amazon",
+          "dataset",
+          "generation",
+          "locale",
+          "multi",
+          "multilingual",
+          "recommendation",
+          "session",
+          "shopping",
+          "text"
+        ],
+        "result": "PASS"
+      },
+      "locator_ready": true,
+      "locator_ids": [
+        "LOC-R4-S-jin2023_amazon_m2-01"
+      ],
+      "pdf_preflight": {
+        "sidecar_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/jin2023_amazon_m2.preflight.json",
+        "sidecar_sha256": "30667c24cc53ef154f2cb24eb41575f7b5c71782c2407a6b1141e7c9520b81ab",
+        "verdict": "PASS",
+        "page_anchors_permitted": true
+      },
+      "replacement": null,
+      "terminal_disposition": null,
+      "limitations": [
+        "The target is the next engaged product in a session, not a verified purchase outcome.",
+        "Session identifiers do not establish a persistent user across sessions."
+      ],
+      "unresolved_blockers": [],
+      "forbidden_downstream_use": [
+        "R4 does not authorize production citation.",
+        "Do not use before R5 claim-map rebuild and bounded synthesis."
+      ],
+      "r4_contract_satisfied": true
+    },
+    {
+      "acquisition_key": "AQ-R4-S-kang2018_sasrec",
+      "record_type": "scholarly_work",
+      "source_key": "kang2018_sasrec",
+      "resource_keys": [],
+      "source_family_id": "SF-R1-026",
+      "priority": "core",
+      "core_object": true,
+      "queue_target": false,
+      "supported_claim_ids": [
+        "L3-SEQ-003"
+      ],
+      "identity": {
+        "title": "Self-Attentive Sequential Recommendation",
+        "authors": [
+          "Wang-Cheng Kang",
+          "Julian McAuley"
+        ],
+        "publication_year": 2018,
+        "venue": "2018 IEEE International Conference on Data Mining, 197-206",
+        "document_type": "conference_paper",
+        "publication_status": "published",
+        "doi": "10.1109/icdm.2018.00035",
+        "official_id": null,
+        "official_url": "https://doi.org/10.1109/ICDM.2018.00035",
+        "version_relation": [
+          "Canonical ICDM paper; inspected arXiv author version is the same work."
+        ]
+      },
+      "accessed_at": "2026-08-21T19:00:00+07:00",
+      "acquisition_route": "lawful_local_same_work_artifact",
+      "acquisition_url": "source_artifacts/kang2018_sasrec_arxiv.pdf",
+      "local_artifacts": [
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/kang2018_sasrec.pdf",
+          "bytes": 1432399,
+          "sha256": "d58f18384a055a265f5ecf2776ed28e8a745c0d9a183db078449249599bf604a",
+          "media_type": "application/pdf",
+          "role": "authoritative_original_or_same_work_copy",
+          "source_uri": "source_artifacts/kang2018_sasrec_arxiv.pdf",
+          "acquired_at": "2026-08-21T19:00:00+07:00",
+          "local_only": true,
+          "redistribution_in_bundle": false
+        }
+      ],
+      "no_lawful_local_copy_reason": null,
+      "rights_access": {
+        "availability": "lawfully accessible through the recorded official or author/repository route",
+        "license": "No broader redistribution license inferred unless stated by the source",
+        "access": "research inspection/download only; no paywall, authentication, TLS, robots, or provider control bypassed",
+        "dataset_rights": null,
+        "redistribution": "not authorized by this record; local-only original artifact",
+        "commit_status": "LOCAL_ONLY"
+      },
+      "source_acquired": true,
+      "exact_target_source_acquired": true,
+      "source_content_verified": true,
+      "source_verified_against_original": true,
+      "affirmative_verification": {
+        "method": "local_pdf_text_extraction_title_marker_and_sha256",
+        "reader": "pypdf",
+        "pages_examined": 5,
+        "title_token_overlap": 1.0,
+        "matched_title_tokens": [
+          "attentive",
+          "recommendation",
+          "self",
+          "sequential"
+        ],
+        "result": "PASS"
+      },
+      "locator_ready": true,
+      "locator_ids": [
+        "LOC-R4-S-kang2018_sasrec-01"
+      ],
+      "pdf_preflight": {
+        "sidecar_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/kang2018_sasrec.preflight.json",
+        "sidecar_sha256": "9783420af569047396bbdfc1ab2d5666d064b64454db404d8810e39ccf33ac98",
+        "verdict": "PASS",
+        "page_anchors_permitted": true
+      },
+      "replacement": null,
+      "terminal_disposition": null,
+      "limitations": [
+        "Next-item rather than next-basket objective.",
+        "The paper evaluates against 100 sampled negatives, not v5 full-catalog evaluation."
+      ],
+      "unresolved_blockers": [],
+      "forbidden_downstream_use": [
+        "R4 does not authorize production citation.",
+        "Do not use before R5 claim-map rebuild and bounded synthesis."
+      ],
+      "r4_contract_satisfied": true
+    },
+    {
+      "acquisition_key": "AQ-R4-S-krichene2020_sampled_metrics",
+      "record_type": "scholarly_work",
+      "source_key": "krichene2020_sampled_metrics",
+      "resource_keys": [],
+      "source_family_id": "SF-R1-028",
+      "priority": "core",
+      "core_object": true,
+      "queue_target": false,
+      "supported_claim_ids": [
+        "L1-CC-001"
+      ],
+      "identity": {
+        "title": "On Sampled Metrics for Item Recommendation",
+        "authors": [
+          "Walid Krichene",
+          "Steffen Rendle"
+        ],
+        "publication_year": 2020,
+        "venue": "Proceedings of the 26th ACM SIGKDD International Conference on Knowledge Discovery & Data Mining",
+        "document_type": "conference_paper",
+        "publication_status": "published",
+        "doi": "10.1145/3394486.3403226",
+        "official_id": null,
+        "official_url": "https://doi.org/10.1145/3394486.3403226",
+        "version_relation": [
+          "Original KDD conference version; an author-hosted ACM-formatted copy was acquired and inspected. krichene_rendle_2021_ijcai_extended is the authoritative IJCAI extended abstract in the same family."
+        ]
+      },
+      "accessed_at": "2026-08-21T19:00:00+07:00",
+      "acquisition_route": "lawful_local_same_work_artifact",
+      "acquisition_url": "source_artifacts/krichene_rendle_2020_kdd_author_copy.pdf",
+      "local_artifacts": [
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/krichene2020_sampled_metrics.pdf",
+          "bytes": 1166022,
+          "sha256": "51095e67875ba6577e7c53df099c49c4b6d02ee4049e2484e7c880ba6b620694",
+          "media_type": "application/pdf",
+          "role": "authoritative_original_or_same_work_copy",
+          "source_uri": "source_artifacts/krichene_rendle_2020_kdd_author_copy.pdf",
+          "acquired_at": "2026-08-21T19:00:00+07:00",
+          "local_only": true,
+          "redistribution_in_bundle": false
+        }
+      ],
+      "no_lawful_local_copy_reason": null,
+      "rights_access": {
+        "availability": "lawfully accessible through the recorded official or author/repository route",
+        "license": "No broader redistribution license inferred unless stated by the source",
+        "access": "research inspection/download only; no paywall, authentication, TLS, robots, or provider control bypassed",
+        "dataset_rights": null,
+        "redistribution": "not authorized by this record; local-only original artifact",
+        "commit_status": "LOCAL_ONLY"
+      },
+      "source_acquired": true,
+      "exact_target_source_acquired": true,
+      "source_content_verified": true,
+      "source_verified_against_original": true,
+      "affirmative_verification": {
+        "method": "local_pdf_text_extraction_title_marker_and_sha256",
+        "reader": "pypdf",
+        "pages_examined": 5,
+        "title_token_overlap": 1.0,
+        "matched_title_tokens": [
+          "item",
+          "metrics",
+          "recommendation",
+          "sampled"
+        ],
+        "result": "PASS"
+      },
+      "locator_ready": true,
+      "locator_ids": [
+        "LOC-R4-S-krichene2020_sampled_metrics-01"
+      ],
+      "pdf_preflight": {
+        "sidecar_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/krichene2020_sampled_metrics.preflight.json",
+        "sidecar_sha256": "acc75f34e16edbd3be61858d3f0ee69c71be8c1af41e4b5cef9ce1c71d4057df",
+        "verdict": "PASS",
+        "page_anchors_permitted": true
+      },
+      "replacement": null,
+      "terminal_disposition": null,
+      "limitations": [
+        "The analysis is scoped to sampled candidate evaluation and includes a single-relevant-item assumption for the main derivations.",
+        "Does not define v5 temporal splitting, candidate masking, or aggregation."
+      ],
+      "unresolved_blockers": [],
+      "forbidden_downstream_use": [
+        "R4 does not authorize production citation.",
+        "Do not use before R5 claim-map rebuild and bounded synthesis."
+      ],
+      "r4_contract_satisfied": true
+    },
+    {
+      "acquisition_key": "AQ-R4-S-li2023_nbr_reality",
+      "record_type": "scholarly_work",
+      "source_key": "li2023_nbr_reality",
+      "resource_keys": [],
+      "source_family_id": "SF-R1-030",
+      "priority": "core",
+      "core_object": true,
+      "queue_target": false,
+      "supported_claim_ids": [
+        "L3-GAP-008",
+        "L3-NBR-004"
+      ],
+      "identity": {
+        "title": "A Next Basket Recommendation Reality Check",
+        "authors": [
+          "Ming Li",
+          "Sami Jullien",
+          "Mozhdeh Ariannezhad",
+          "Maarten de Rijke"
+        ],
+        "publication_year": 2023,
+        "venue": "ACM Transactions on Information Systems, 41(4), Article 116",
+        "document_type": "journal_article",
+        "publication_status": "published",
+        "doi": "10.1145/3587153",
+        "official_id": null,
+        "official_url": "https://doi.org/10.1145/3587153",
+        "version_relation": [
+          "Canonical ACM TOIS article; inspected arXiv author version is the same work family."
+        ]
+      },
+      "accessed_at": "2026-08-21T19:00:00+07:00",
+      "acquisition_route": "lawful_local_same_work_artifact",
+      "acquisition_url": "source_artifacts/li2021_reality_check_arxiv.pdf",
+      "local_artifacts": [
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/li2023_nbr_reality.pdf",
+          "bytes": 1736505,
+          "sha256": "66bf549d33ce1ffe757c6162c157809f7fdcd03e18c3ca244155ba2468621a36",
+          "media_type": "application/pdf",
+          "role": "authoritative_original_or_same_work_copy",
+          "source_uri": "source_artifacts/li2021_reality_check_arxiv.pdf",
+          "acquired_at": "2026-08-21T19:00:00+07:00",
+          "local_only": true,
+          "redistribution_in_bundle": false
+        }
+      ],
+      "no_lawful_local_copy_reason": null,
+      "rights_access": {
+        "availability": "lawfully accessible through the recorded official or author/repository route",
+        "license": "No broader redistribution license inferred unless stated by the source",
+        "access": "research inspection/download only; no paywall, authentication, TLS, robots, or provider control bypassed",
+        "dataset_rights": null,
+        "redistribution": "not authorized by this record; local-only original artifact",
+        "commit_status": "LOCAL_ONLY"
+      },
+      "source_acquired": true,
+      "exact_target_source_acquired": true,
+      "source_content_verified": true,
+      "source_verified_against_original": true,
+      "affirmative_verification": {
+        "method": "local_pdf_text_extraction_title_marker_and_sha256",
+        "reader": "pypdf",
+        "pages_examined": 5,
+        "title_token_overlap": 1.0,
+        "matched_title_tokens": [
+          "basket",
+          "check",
+          "next",
+          "reality",
+          "recommendation"
+        ],
+        "result": "PASS"
+      },
+      "locator_ready": true,
+      "locator_ids": [
+        "LOC-R4-S-li2023_nbr_reality-01"
+      ],
+      "pdf_preflight": {
+        "sidecar_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/li2023_nbr_reality.preflight.json",
+        "sidecar_sha256": "9ec992668e7c7c021551e65c9eac45ea5e1d9aa93e698a56a8376a3a326798dc",
+        "verdict": "PASS",
+        "page_anchors_permitted": true
+      },
+      "replacement": null,
+      "terminal_disposition": null,
+      "limitations": [
+        "Cross-dataset observational/computational evidence, not a v5 ablation.",
+        "Definitions must be aligned before use in v5."
+      ],
+      "unresolved_blockers": [],
+      "forbidden_downstream_use": [
+        "R4 does not authorize production citation.",
+        "Do not use before R5 claim-map rebuild and bounded synthesis."
+      ],
+      "r4_contract_satisfied": true
+    },
+    {
+      "acquisition_key": "AQ-R4-S-li2023_reliable_sampling",
+      "record_type": "scholarly_work",
+      "source_key": "li2023_reliable_sampling",
+      "resource_keys": [],
+      "source_family_id": "SF-R1-031",
+      "priority": "core",
+      "core_object": true,
+      "queue_target": false,
+      "supported_claim_ids": [
+        "L1-CC-001",
+        "L1-CC-009"
+      ],
+      "identity": {
+        "title": "Towards Reliable Item Sampling for Recommendation Evaluation",
+        "authors": [
+          "Dong Li",
+          "Ruoming Jin",
+          "Zhenming Liu",
+          "Bin Ren",
+          "Jing Gao",
+          "Zhi Liu"
+        ],
+        "publication_year": 2023,
+        "venue": "Proceedings of the AAAI Conference on Artificial Intelligence",
+        "document_type": "conference_paper",
+        "publication_status": "published",
+        "doi": "10.1609/aaai.v37i4.25561",
+        "official_id": null,
+        "official_url": "https://ojs.aaai.org/index.php/AAAI/article/view/25561",
+        "version_relation": [
+          "Conference version in the same consolidated research family as li_jin_liu_ren_gao_liu_2024_tors."
+        ]
+      },
+      "accessed_at": "2026-08-21T19:00:00+07:00",
+      "acquisition_route": "lawful_local_same_work_artifact",
+      "acquisition_url": "source_artifacts/li2023_reliable_sampling.pdf",
+      "local_artifacts": [
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/li2023_reliable_sampling.pdf",
+          "bytes": 218520,
+          "sha256": "541d349c9c4599b38ac0b2e56b69ec84f0848966e256b0fcaa2119d36100cd57",
+          "media_type": "application/pdf",
+          "role": "authoritative_original_or_same_work_copy",
+          "source_uri": "source_artifacts/li2023_reliable_sampling.pdf",
+          "acquired_at": "2026-08-21T19:00:00+07:00",
+          "local_only": true,
+          "redistribution_in_bundle": false
+        }
+      ],
+      "no_lawful_local_copy_reason": null,
+      "rights_access": {
+        "availability": "lawfully accessible through the recorded official or author/repository route",
+        "license": "No broader redistribution license inferred unless stated by the source",
+        "access": "research inspection/download only; no paywall, authentication, TLS, robots, or provider control bypassed",
+        "dataset_rights": null,
+        "redistribution": "not authorized by this record; local-only original artifact",
+        "commit_status": "LOCAL_ONLY"
+      },
+      "source_acquired": true,
+      "exact_target_source_acquired": true,
+      "source_content_verified": true,
+      "source_verified_against_original": true,
+      "affirmative_verification": {
+        "method": "local_pdf_text_extraction_title_marker_and_sha256",
+        "reader": "pypdf",
+        "pages_examined": 5,
+        "title_token_overlap": 1.0,
+        "matched_title_tokens": [
+          "evaluation",
+          "item",
+          "recommendation",
+          "reliable",
+          "sampling",
+          "towards"
+        ],
+        "result": "PASS"
+      },
+      "locator_ready": true,
+      "locator_ids": [
+        "LOC-R4-S-li2023_reliable_sampling-01"
+      ],
+      "pdf_preflight": {
+        "sidecar_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/li2023_reliable_sampling.preflight.json",
+        "sidecar_sha256": "bb6a3fb5170d8dc07a3a4f1cc80c1490ba9056eace2cb9402c41f1ac87b55ba8",
+        "verdict": "PASS",
+        "page_anchors_permitted": true
+      },
+      "replacement": null,
+      "terminal_disposition": null,
+      "limitations": [
+        "Estimator and adaptive-sampling results depend on their sampling assumptions.",
+        "Does not authorize sampled values to be relabeled as exact full-catalog values."
+      ],
+      "unresolved_blockers": [],
+      "forbidden_downstream_use": [
+        "R4 does not authorize production citation.",
+        "Do not use before R5 claim-map rebuild and bounded synthesis."
+      ],
+      "r4_contract_satisfied": true
+    },
+    {
+      "acquisition_key": "AQ-R4-S-li2023_repetition_exploration",
+      "record_type": "scholarly_work",
+      "source_key": "li2023_repetition_exploration",
+      "resource_keys": [],
+      "source_family_id": "SF-R1-032",
+      "priority": "production_claim",
+      "core_object": false,
+      "queue_target": true,
+      "supported_claim_ids": [
+        "L3-NBR-004"
+      ],
+      "identity": {
+        "title": "Repetition and Exploration in Sequential Recommendation",
+        "authors": [
+          "Ming Li",
+          "Ali Vardasbi",
+          "Andrew Yates",
+          "Maarten de Rijke"
+        ],
+        "publication_year": 2023,
+        "venue": "Proceedings of the 46th International ACM SIGIR Conference on Research and Development in Information Retrieval, 2532-2541",
+        "document_type": "conference_paper",
+        "publication_status": "published",
+        "doi": "10.1145/3539618.3591914",
+        "official_id": null,
+        "official_url": "https://doi.org/10.1145/3539618.3591914",
+        "version_relation": [
+          "Canonical SIGIR paper; lawful author-hosted full paper inspected remotely."
+        ]
+      },
+      "accessed_at": "2026-08-21T19:00:00+07:00",
+      "acquisition_route": "lawful_local_same_work_artifact",
+      "acquisition_url": "https://irlab.science.uva.nl/wp-content/papercite-data/pdf/li-2023-repetition.pdf",
+      "local_artifacts": [
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/li2023_repetition_exploration.pdf",
+          "bytes": 1686585,
+          "sha256": "bb909d4643b36c3633c42945045818c4ac46117dc8ea0810272db7918756bbb7",
+          "media_type": "application/pdf",
+          "role": "authoritative_original_or_same_work_copy",
+          "source_uri": "https://irlab.science.uva.nl/wp-content/papercite-data/pdf/li-2023-repetition.pdf",
+          "acquired_at": "2026-08-21T19:00:00+07:00",
+          "local_only": true,
+          "redistribution_in_bundle": false
+        }
+      ],
+      "no_lawful_local_copy_reason": null,
+      "rights_access": {
+        "availability": "lawfully accessible through the recorded official or author/repository route",
+        "license": "No broader redistribution license inferred unless stated by the source",
+        "access": "research inspection/download only; no paywall, authentication, TLS, robots, or provider control bypassed",
+        "dataset_rights": null,
+        "redistribution": "not authorized by this record; local-only original artifact",
+        "commit_status": "LOCAL_ONLY"
+      },
+      "source_acquired": true,
+      "exact_target_source_acquired": true,
+      "source_content_verified": true,
+      "source_verified_against_original": true,
+      "affirmative_verification": {
+        "method": "local_pdf_text_extraction_title_marker_and_sha256",
+        "reader": "pypdf",
+        "pages_examined": 5,
+        "title_token_overlap": 1.0,
+        "matched_title_tokens": [
+          "exploration",
+          "recommendation",
+          "repetition",
+          "sequential"
+        ],
+        "result": "PASS"
+      },
+      "locator_ready": true,
+      "locator_ids": [
+        "LOC-R4-S-li2023_repetition_exploration-01"
+      ],
+      "pdf_preflight": {
+        "sidecar_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/li2023_repetition_exploration.preflight.json",
+        "sidecar_sha256": "798e04bb9f39597df65bd7b2c4229917660e321c91dcbbbe3e8c1bb480f6d354",
+        "verdict": "UNAVAILABLE",
+        "page_anchors_permitted": false
+      },
+      "replacement": null,
+      "terminal_disposition": "same_work_lawful_local_artifact_acquired",
+      "limitations": [
+        "Sequential next-item setting is broader than grocery baskets.",
+        "Post-filter findings are protocol-specific."
+      ],
+      "unresolved_blockers": [],
+      "forbidden_downstream_use": [
+        "R4 does not authorize production citation.",
+        "Do not use before R5 claim-map rebuild and bounded synthesis."
+      ],
+      "r4_contract_satisfied": true
+    },
+    {
+      "acquisition_key": "AQ-R4-S-liu2009_hybrid_seq_cf",
+      "record_type": "scholarly_work",
+      "source_key": "liu2009_hybrid_seq_cf",
+      "resource_keys": [],
+      "source_family_id": "SF-R1-033",
+      "priority": "core",
+      "core_object": true,
+      "queue_target": true,
+      "supported_claim_ids": [
+        "L3-GAP-008",
+        "L3-HYB-006"
+      ],
+      "identity": {
+        "title": "A Hybrid of Sequential Rules and Collaborative Filtering for Product Recommendation",
+        "authors": [
+          "Duen-Ren Liu",
+          "Chin-Hui Lai",
+          "Wang-Jung Lee"
+        ],
+        "publication_year": 2009,
+        "venue": "Information Sciences, 179(20), 3505-3519",
+        "document_type": "journal_article",
+        "publication_status": "published",
+        "doi": "10.1016/j.ins.2009.06.004",
+        "official_id": null,
+        "official_url": "https://www.sciencedirect.com/science/article/abs/pii/S0020025509002503",
+        "version_relation": [
+          "Conference predecessor to the expanded 2009 Information Sciences article; it is not a substitute for verifying the later article's exact content.",
+          "Expanded journal work following the 2007 conference paper; exact full text remains unverified."
+        ]
+      },
+      "accessed_at": "2026-08-21T19:00:00+07:00",
+      "acquisition_route": "accepted_equivalent_same_family_replacement",
+      "acquisition_url": "https://ir.lib.nycu.edu.tw/bitstream/11536/7824/1/000250044300024.pdf",
+      "local_artifacts": [
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/liu2009_nycu_identity_abstract.html",
+          "bytes": 55950,
+          "sha256": "599ed718e0b28d11ec42c57acb1fb12dc4fbdde783028bdf863dd5351e54844a",
+          "media_type": "text/html",
+          "role": "official_2009_identity_and_abstract_support",
+          "source_uri": "https://www.sciencedirect.com/science/article/abs/pii/S0020025509002503",
+          "acquired_at": "2026-08-21T19:00:00+07:00",
+          "local_only": true,
+          "redistribution_in_bundle": false
+        }
+      ],
+      "no_lawful_local_copy_reason": "The exact 2009 journal full text was not lawfully available. The official NYCU repository served the 2007 predecessor interactively, but scripted retrieval yielded a challenge document; no TLS or access control was bypassed.",
+      "rights_access": {
+        "availability": "lawfully accessible through the recorded official or author/repository route",
+        "license": "No broader redistribution license inferred unless stated by the source",
+        "access": "research inspection/download only; no paywall, authentication, TLS, robots, or provider control bypassed",
+        "dataset_rights": null,
+        "redistribution": "not authorized by this record; local-only original artifact",
+        "commit_status": "LOCAL_ONLY"
+      },
+      "source_acquired": true,
+      "exact_target_source_acquired": false,
+      "source_content_verified": true,
+      "source_verified_against_original": true,
+      "affirmative_verification": {
+        "method": "authoritative_repository_pdf_section_and_figure_inspection",
+        "sections_verified": [
+          "1",
+          "2.2.2",
+          "3",
+          "3.1",
+          "Conclusions"
+        ],
+        "figures_verified": [
+          "1",
+          "2",
+          "3",
+          "4"
+        ],
+        "result": "PASS"
+      },
+      "locator_ready": true,
+      "locator_ids": [
+        "LOC-R4-S-liu2009_hybrid_seq_cf-01"
+      ],
+      "pdf_preflight": null,
+      "replacement": {
+        "decision": "accepted_for_bounded_hybrid_method_evidence",
+        "source_family_id": "SF-R1-033",
+        "title": "A Hybrid of Sequential Rules and Collaborative Filtering for Product Recommendation",
+        "authors": [
+          "Duen-Ren Liu",
+          "Chin-Hui Lai",
+          "Wang-Jung Lee"
+        ],
+        "publication_year": 2007,
+        "venue": "IEEE International Conference on e-Business Engineering",
+        "doi": "10.1109/ICEBE.2007.6",
+        "official_repository_url": "https://ir.lib.nycu.edu.tw/bitstream/11536/7824/1/000250044300024.pdf",
+        "family_relation": "Conference predecessor with the same title and authors; the 2009 Information Sciences article is the expanded journal work in the same frozen family.",
+        "evidence_coverage": "Sequential-rule score, collaborative-filtering score, hybrid score, architecture, and comparative experiment structure.",
+        "equivalence_scope": "Equivalent for the bounded L3-HYB-006 hybrid-method proposition only; not equivalent for journal-specific details or numerical results.",
+        "exclusion_rationale": "The exact 2009 publisher record provides authoritative identity and abstract but no lawfully acquired full text; metadata alone cannot verify exact journal content."
+      },
+      "terminal_disposition": "equivalent_replacement_accepted",
+      "limitations": [
+        "Older conference study with a different task and evaluation design.",
+        "Same source family as the 2009 expanded article; do not count as independent corroboration.",
+        "Original content of the exact 2009 work was not acquired or inspected.",
+        "The 2007 predecessor cannot establish the exact contents of the 2009 article.",
+        "The accepted 2007 replacement cannot establish exact 2009 journal-specific content or results."
+      ],
+      "unresolved_blockers": [],
+      "forbidden_downstream_use": [
+        "R4 does not authorize production citation.",
+        "Do not use before R5 claim-map rebuild and bounded synthesis."
+      ],
+      "r4_contract_satisfied": true
+    },
+    {
+      "acquisition_key": "AQ-R4-S-meehan2025_cold_popbias",
+      "record_type": "scholarly_work",
+      "source_key": "meehan2025_cold_popbias",
+      "resource_keys": [],
+      "source_family_id": "SF-R1-036",
+      "priority": "production_claim",
+      "core_object": false,
+      "queue_target": true,
+      "supported_claim_ids": [
+        "L4-CC-07"
+      ],
+      "identity": {
+        "title": "On Inherited Popularity Bias in Cold-Start Item Recommendation",
+        "authors": [
+          "Gregor Meehan",
+          "Johan Pauwels"
+        ],
+        "publication_year": 2025,
+        "venue": "Proceedings of the 19th ACM Conference on Recommender Systems",
+        "document_type": "conference_paper",
+        "publication_status": "published",
+        "doi": "10.1145/3705328.3748035",
+        "official_id": null,
+        "official_url": "https://doi.org/10.1145/3705328.3748035",
+        "version_relation": [
+          "Canonical RecSys paper linked to inspected author manuscript."
+        ]
+      },
+      "accessed_at": "2026-08-21T19:00:00+07:00",
+      "acquisition_route": "lawful_local_same_work_artifact",
+      "acquisition_url": "https://arxiv.org/pdf/2510.11402",
+      "local_artifacts": [
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/meehan2025_cold_popbias.pdf",
+          "bytes": 1088904,
+          "sha256": "89bb9b7c0fc22b6bf1b6bc4093df63c7c2e6d5829de6972fa1b811290aa87abf",
+          "media_type": "application/pdf",
+          "role": "authoritative_original_or_same_work_copy",
+          "source_uri": "https://arxiv.org/pdf/2510.11402",
+          "acquired_at": "2026-08-21T19:00:00+07:00",
+          "local_only": true,
+          "redistribution_in_bundle": false
+        }
+      ],
+      "no_lawful_local_copy_reason": null,
+      "rights_access": {
+        "availability": "lawfully accessible through the recorded official or author/repository route",
+        "license": "No broader redistribution license inferred unless stated by the source",
+        "access": "research inspection/download only; no paywall, authentication, TLS, robots, or provider control bypassed",
+        "dataset_rights": null,
+        "redistribution": "not authorized by this record; local-only original artifact",
+        "commit_status": "LOCAL_ONLY"
+      },
+      "source_acquired": true,
+      "exact_target_source_acquired": true,
+      "source_content_verified": true,
+      "source_verified_against_original": true,
+      "affirmative_verification": {
+        "method": "local_pdf_text_extraction_title_marker_and_sha256",
+        "reader": "pypdf",
+        "pages_examined": 5,
+        "title_token_overlap": 1.0,
+        "matched_title_tokens": [
+          "bias",
+          "cold",
+          "inherited",
+          "item",
+          "popularity",
+          "recommendation",
+          "start"
+        ],
+        "result": "PASS"
+      },
+      "locator_ready": true,
+      "locator_ids": [
+        "LOC-R4-S-meehan2025_cold_popbias-01"
+      ],
+      "pdf_preflight": {
+        "sidecar_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/meehan2025_cold_popbias.preflight.json",
+        "sidecar_sha256": "5f42e6916b25bb8d86a108ee06dd310f9399c67ce5c35186c0fe4220fbbd2c90",
+        "verdict": "PASS",
+        "page_anchors_permitted": true
+      },
+      "replacement": null,
+      "terminal_disposition": "same_work_lawful_local_artifact_acquired",
+      "limitations": [
+        "Bias findings are bounded to the evaluated methods, splits, and datasets.",
+        "Author manuscript notice does not authorize redistribution; no local artifact stored."
+      ],
+      "unresolved_blockers": [],
+      "forbidden_downstream_use": [
+        "R4 does not authorize production citation.",
+        "Do not use before R5 claim-map rebuild and bounded synthesis."
+      ],
+      "r4_contract_satisfied": true
+    },
+    {
+      "acquisition_key": "AQ-R4-S-meehan2026_semco",
+      "record_type": "scholarly_work",
+      "source_key": "meehan2026_semco",
+      "resource_keys": [],
+      "source_family_id": "SF-R1-037",
+      "priority": "production_claim",
+      "core_object": false,
+      "queue_target": true,
+      "supported_claim_ids": [
+        "L4-CC-04",
+        "L4-CC-07"
+      ],
+      "identity": {
+        "title": "Sparse Contrastive Learning for Content-Based Cold Item Recommendation",
+        "authors": [
+          "Gregor Meehan",
+          "Johan Pauwels"
+        ],
+        "publication_year": 2026,
+        "venue": "Proceedings of the 49th International ACM SIGIR Conference on Research and Development in Information Retrieval",
+        "document_type": "conference_paper",
+        "publication_status": "published",
+        "doi": "10.1145/3805712.3809975",
+        "official_id": null,
+        "official_url": "https://doi.org/10.1145/3805712.3809975",
+        "version_relation": [
+          "Canonical SIGIR paper linked to inspected author manuscript."
+        ]
+      },
+      "accessed_at": "2026-08-21T19:00:00+07:00",
+      "acquisition_route": "lawful_local_same_work_artifact",
+      "acquisition_url": "https://arxiv.org/pdf/2604.12990",
+      "local_artifacts": [
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/meehan2026_semco.pdf",
+          "bytes": 841051,
+          "sha256": "8b1faa3b7af449cc4bab34ac62fb47cc23fb4aeb6cc8efaf96855a8004bb6ac6",
+          "media_type": "application/pdf",
+          "role": "authoritative_original_or_same_work_copy",
+          "source_uri": "https://arxiv.org/pdf/2604.12990",
+          "acquired_at": "2026-08-21T19:00:00+07:00",
+          "local_only": true,
+          "redistribution_in_bundle": false
+        }
+      ],
+      "no_lawful_local_copy_reason": null,
+      "rights_access": {
+        "availability": "lawfully accessible through the recorded official or author/repository route",
+        "license": "No broader redistribution license inferred unless stated by the source",
+        "access": "research inspection/download only; no paywall, authentication, TLS, robots, or provider control bypassed",
+        "dataset_rights": null,
+        "redistribution": "not authorized by this record; local-only original artifact",
+        "commit_status": "LOCAL_ONLY"
+      },
+      "source_acquired": true,
+      "exact_target_source_acquired": true,
+      "source_content_verified": true,
+      "source_verified_against_original": true,
+      "affirmative_verification": {
+        "method": "local_pdf_text_extraction_title_marker_and_sha256",
+        "reader": "pypdf",
+        "pages_examined": 5,
+        "title_token_overlap": 1.0,
+        "matched_title_tokens": [
+          "based",
+          "cold",
+          "content",
+          "contrastive",
+          "item",
+          "learning",
+          "recommendation",
+          "sparse"
+        ],
+        "result": "PASS"
+      },
+      "locator_ready": true,
+      "locator_ids": [
+        "LOC-R4-S-meehan2026_semco-01"
+      ],
+      "pdf_preflight": {
+        "sidecar_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/meehan2026_semco.preflight.json",
+        "sidecar_sha256": "5bdf8f43f437a700bf8a094fd8610c3ba2a9af331ec239361304e9f3022963e5",
+        "verdict": "PASS",
+        "page_anchors_permitted": true
+      },
+      "replacement": null,
+      "terminal_disposition": "same_work_lawful_local_artifact_acquired",
+      "limitations": [
+        "Evidence is bounded to paper-native data, splits, baselines, and objective.",
+        "Author manuscript notice does not authorize redistribution; no local artifact stored."
+      ],
+      "unresolved_blockers": [],
+      "forbidden_downstream_use": [
+        "R4 does not authorize production citation.",
+        "Do not use before R5 claim-map rebuild and bounded synthesis."
+      ],
+      "r4_contract_satisfied": true
+    },
+    {
+      "acquisition_key": "AQ-R4-S-reimers2019_sbert",
+      "record_type": "scholarly_work",
+      "source_key": "reimers2019_sbert",
+      "resource_keys": [],
+      "source_family_id": "SF-R1-046",
+      "priority": "core",
+      "core_object": true,
+      "queue_target": true,
+      "supported_claim_ids": [
+        "L4-CC-04"
+      ],
+      "identity": {
+        "title": "Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks",
+        "authors": [
+          "Nils Reimers",
+          "Iryna Gurevych"
+        ],
+        "publication_year": 2019,
+        "venue": "Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natural Language Processing",
+        "document_type": "conference_paper",
+        "publication_status": "published",
+        "doi": "10.18653/v1/d19-1410",
+        "official_id": null,
+        "official_url": "https://aclanthology.org/D19-1410/",
+        "version_relation": [
+          "Canonical ACL Anthology proceedings version."
+        ]
+      },
+      "accessed_at": "2026-08-21T19:00:00+07:00",
+      "acquisition_route": "lawful_local_same_work_artifact",
+      "acquisition_url": "https://aclanthology.org/D19-1410.pdf",
+      "local_artifacts": [
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/reimers2019_sbert.pdf",
+          "bytes": 570263,
+          "sha256": "e2703128039850ba7e098bfc6c7d9f3f3e75e6318815c5dd90af71085b1d384e",
+          "media_type": "application/pdf",
+          "role": "authoritative_original_or_same_work_copy",
+          "source_uri": "https://aclanthology.org/D19-1410.pdf",
+          "acquired_at": "2026-08-21T19:00:00+07:00",
+          "local_only": true,
+          "redistribution_in_bundle": false
+        }
+      ],
+      "no_lawful_local_copy_reason": null,
+      "rights_access": {
+        "availability": "lawfully accessible through the recorded official or author/repository route",
+        "license": "No broader redistribution license inferred unless stated by the source",
+        "access": "research inspection/download only; no paywall, authentication, TLS, robots, or provider control bypassed",
+        "dataset_rights": null,
+        "redistribution": "not authorized by this record; local-only original artifact",
+        "commit_status": "LOCAL_ONLY"
+      },
+      "source_acquired": true,
+      "exact_target_source_acquired": true,
+      "source_content_verified": true,
+      "source_verified_against_original": true,
+      "affirmative_verification": {
+        "method": "local_pdf_text_extraction_title_marker_and_sha256",
+        "reader": "pypdf",
+        "pages_examined": 5,
+        "title_token_overlap": 1.0,
+        "matched_title_tokens": [
+          "bert",
+          "embeddings",
+          "networks",
+          "sentence",
+          "siamese"
+        ],
+        "result": "PASS"
+      },
+      "locator_ready": true,
+      "locator_ids": [
+        "LOC-R4-S-reimers2019_sbert-01"
+      ],
+      "pdf_preflight": {
+        "sidecar_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/reimers2019_sbert.preflight.json",
+        "sidecar_sha256": "45130f5c0552ab1ac485536ccf2e46b74b3963dab9c08a854bb037289428cafd",
+        "verdict": "PASS",
+        "page_anchors_permitted": true
+      },
+      "replacement": null,
+      "terminal_disposition": "same_work_lawful_local_artifact_acquired",
+      "limitations": [
+        "The paper contains no retail recommendation objective, collaborative signal, or cold-item evaluation."
+      ],
+      "unresolved_blockers": [],
+      "forbidden_downstream_use": [
+        "R4 does not authorize production citation.",
+        "Do not use before R5 claim-map rebuild and bounded synthesis."
+      ],
+      "r4_contract_satisfied": true
+    },
+    {
+      "acquisition_key": "AQ-R4-S-rendle2009_bpr",
+      "record_type": "scholarly_work",
+      "source_key": "rendle2009_bpr",
+      "resource_keys": [],
+      "source_family_id": "SF-R1-047",
+      "priority": "core",
+      "core_object": true,
+      "queue_target": false,
+      "supported_claim_ids": [
+        "L2-CLAIM-HARMONIZED-EVAL-008",
+        "L2-CLAIM-ITEMCF-BPR-001",
+        "L2-CLAIM-OBJECTIVE-006"
+      ],
+      "identity": {
+        "title": "BPR: Bayesian Personalized Ranking from Implicit Feedback",
+        "authors": [
+          "Steffen Rendle",
+          "Christoph Freudenthaler",
+          "Zeno Gantner",
+          "Lars Schmidt-Thieme"
+        ],
+        "publication_year": 2009,
+        "venue": "Proceedings of the Twenty-Fifth Conference on Uncertainty in Artificial Intelligence",
+        "document_type": "conference_paper",
+        "publication_status": "published",
+        "doi": null,
+        "official_id": "UAI2009_0139",
+        "official_url": "https://www.auai.org/uai2009/papers/UAI2009_0139.pdf",
+        "version_relation": [
+          "Official UAI 2009 proceedings version is canonical; later repository/index years are the same version family."
+        ]
+      },
+      "accessed_at": "2026-08-21T19:00:00+07:00",
+      "acquisition_route": "lawful_local_same_work_artifact",
+      "acquisition_url": "https://www.auai.org/uai2009/papers/UAI2009_0139.pdf",
+      "local_artifacts": [
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/rendle2009_bpr.pdf",
+          "bytes": 292992,
+          "sha256": "9a28d1b9f447a86ca9cca4581d2e1a5b231d30b09a3127e176bdfebfb35ed02d",
+          "media_type": "application/pdf",
+          "role": "authoritative_original_or_same_work_copy",
+          "source_uri": "https://www.auai.org/uai2009/papers/UAI2009_0139.pdf",
+          "acquired_at": "2026-08-21T19:00:00+07:00",
+          "local_only": true,
+          "redistribution_in_bundle": false
+        }
+      ],
+      "no_lawful_local_copy_reason": null,
+      "rights_access": {
+        "availability": "lawfully accessible through the recorded official or author/repository route",
+        "license": "No broader redistribution license inferred unless stated by the source",
+        "access": "research inspection/download only; no paywall, authentication, TLS, robots, or provider control bypassed",
+        "dataset_rights": null,
+        "redistribution": "not authorized by this record; local-only original artifact",
+        "commit_status": "LOCAL_ONLY"
+      },
+      "source_acquired": true,
+      "exact_target_source_acquired": true,
+      "source_content_verified": true,
+      "source_verified_against_original": true,
+      "affirmative_verification": {
+        "method": "local_pdf_text_extraction_title_marker_and_sha256",
+        "reader": "pypdf",
+        "pages_examined": 5,
+        "title_token_overlap": 1.0,
+        "matched_title_tokens": [
+          "bayesian",
+          "bpr",
+          "feedback",
+          "from",
+          "implicit",
+          "personalized",
+          "ranking"
+        ],
+        "result": "PASS"
+      },
+      "locator_ready": true,
+      "locator_ids": [
+        "LOC-R4-S-rendle2009_bpr-01"
+      ],
+      "pdf_preflight": {
+        "sidecar_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/rendle2009_bpr.preflight.json",
+        "sidecar_sha256": "66ef20a27726fac8c8257f38a339c1f4e22d22c6451af93688942aaa093d8f6d",
+        "verdict": "PASS",
+        "page_anchors_permitted": true
+      },
+      "replacement": null,
+      "terminal_disposition": null,
+      "limitations": [
+        "Results depend on the unobserved-item sampling distribution.",
+        "The objective does not by itself solve cold items with no features or interactions."
+      ],
+      "unresolved_blockers": [],
+      "forbidden_downstream_use": [
+        "R4 does not authorize production citation.",
+        "Do not use before R5 claim-map rebuild and bounded synthesis."
+      ],
+      "r4_contract_satisfied": true
+    },
+    {
+      "acquisition_key": "AQ-R4-S-sarwar2001_itemcf",
+      "record_type": "scholarly_work",
+      "source_key": "sarwar2001_itemcf",
+      "resource_keys": [],
+      "source_family_id": "SF-R1-050",
+      "priority": "core",
+      "core_object": true,
+      "queue_target": false,
+      "supported_claim_ids": [
+        "L2-CLAIM-HARMONIZED-EVAL-008",
+        "L2-CLAIM-ITEMCF-BPR-001"
+      ],
+      "identity": {
+        "title": "Item-Based Collaborative Filtering Recommendation Algorithms",
+        "authors": [
+          "Badrul Sarwar",
+          "George Karypis",
+          "Joseph A. Konstan",
+          "John Riedl"
+        ],
+        "publication_year": 2001,
+        "venue": "Proceedings of the 10th International Conference on World Wide Web",
+        "document_type": "conference_paper",
+        "publication_status": "published",
+        "doi": "10.1145/371920.372071",
+        "official_id": "WWW10-519",
+        "official_url": "https://doi.org/10.1145/371920.372071",
+        "version_relation": [
+          "Canonical ACM proceedings work; GroupLens author-hosted full artifact used for lawful inspection."
+        ]
+      },
+      "accessed_at": "2026-08-21T19:00:00+07:00",
+      "acquisition_route": "lawful_local_same_work_artifact",
+      "acquisition_url": "https://files.grouplens.org/papers/www10_sarwar.pdf",
+      "local_artifacts": [
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/sarwar2001_itemcf.pdf",
+          "bytes": 249764,
+          "sha256": "7962b08a72b28ae732a674e1245e010b8d5883b1c08bff9aea4d185961e27fd5",
+          "media_type": "application/pdf",
+          "role": "authoritative_original_or_same_work_copy",
+          "source_uri": "https://files.grouplens.org/papers/www10_sarwar.pdf",
+          "acquired_at": "2026-08-21T19:00:00+07:00",
+          "local_only": true,
+          "redistribution_in_bundle": false
+        }
+      ],
+      "no_lawful_local_copy_reason": null,
+      "rights_access": {
+        "availability": "lawfully accessible through the recorded official or author/repository route",
+        "license": "No broader redistribution license inferred unless stated by the source",
+        "access": "research inspection/download only; no paywall, authentication, TLS, robots, or provider control bypassed",
+        "dataset_rights": null,
+        "redistribution": "not authorized by this record; local-only original artifact",
+        "commit_status": "LOCAL_ONLY"
+      },
+      "source_acquired": true,
+      "exact_target_source_acquired": true,
+      "source_content_verified": true,
+      "source_verified_against_original": true,
+      "affirmative_verification": {
+        "method": "local_pdf_text_extraction_title_marker_and_sha256",
+        "reader": "pypdf",
+        "pages_examined": 5,
+        "title_token_overlap": 1.0,
+        "matched_title_tokens": [
+          "algorithms",
+          "based",
+          "collaborative",
+          "filtering",
+          "item",
+          "recommendation"
+        ],
+        "result": "PASS"
+      },
+      "locator_ready": true,
+      "locator_ids": [
+        "LOC-R4-S-sarwar2001_itemcf-01"
+      ],
+      "pdf_preflight": {
+        "sidecar_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/sarwar2001_itemcf.preflight.json",
+        "sidecar_sha256": "bb77c269c01d80ddd0648ed938f4446de42e9541c9d5d8acdf994011d0c409be",
+        "verdict": "PASS",
+        "page_anchors_permitted": true
+      },
+      "replacement": null,
+      "terminal_disposition": null,
+      "limitations": [
+        "Similarity quality depends on interaction overlap and chosen normalization.",
+        "The paper predates modern full-catalog temporal evaluation conventions."
+      ],
+      "unresolved_blockers": [],
+      "forbidden_downstream_use": [
+        "R4 does not authorize production citation.",
+        "Do not use before R5 claim-map rebuild and bounded synthesis."
+      ],
+      "r4_contract_satisfied": true
+    },
+    {
+      "acquisition_key": "AQ-R4-S-sheng2025_alpharec",
+      "record_type": "scholarly_work",
+      "source_key": "sheng2025_alpharec",
+      "resource_keys": [],
+      "source_family_id": "SF-R1-052",
+      "priority": "core",
+      "core_object": true,
+      "queue_target": true,
+      "supported_claim_ids": [
+        "L4-CC-03",
+        "L4-CC-04",
+        "L4-CC-06",
+        "L4-CC-08"
+      ],
+      "identity": {
+        "title": "Language Representations Can Be What Recommenders Need: Findings and Potentials",
+        "authors": [
+          "Leheng Sheng",
+          "An Zhang",
+          "Yi Zhang",
+          "Yuxin Chen",
+          "Xiang Wang",
+          "Tat-Seng Chua"
+        ],
+        "publication_year": 2025,
+        "venue": "The Thirteenth International Conference on Learning Representations",
+        "document_type": "conference_paper",
+        "publication_status": "published",
+        "doi": null,
+        "official_id": "ICLR-2025-e4bab1843c8d5a69f5abfd0824593493",
+        "official_url": "https://proceedings.iclr.cc/paper_files/paper/2025/hash/e4bab1843c8d5a69f5abfd0824593493-Abstract-Conference.html",
+        "version_relation": [
+          "Canonical ICLR proceedings version."
+        ]
+      },
+      "accessed_at": "2026-08-21T19:00:00+07:00",
+      "acquisition_route": "lawful_local_same_work_artifact",
+      "acquisition_url": "https://proceedings.iclr.cc/paper_files/paper/2025/file/e4bab1843c8d5a69f5abfd0824593493-Paper-Conference.pdf",
+      "local_artifacts": [
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/sheng2025_alpharec.pdf",
+          "bytes": 7776094,
+          "sha256": "48a07c7a724a04303d405201ac9765139932a8801413bf3c3e51e431cee3a5aa",
+          "media_type": "application/pdf",
+          "role": "authoritative_original_or_same_work_copy",
+          "source_uri": "https://proceedings.iclr.cc/paper_files/paper/2025/file/e4bab1843c8d5a69f5abfd0824593493-Paper-Conference.pdf",
+          "acquired_at": "2026-08-21T19:00:00+07:00",
+          "local_only": true,
+          "redistribution_in_bundle": false
+        }
+      ],
+      "no_lawful_local_copy_reason": null,
+      "rights_access": {
+        "availability": "lawfully accessible through the recorded official or author/repository route",
+        "license": "No broader redistribution license inferred unless stated by the source",
+        "access": "research inspection/download only; no paywall, authentication, TLS, robots, or provider control bypassed",
+        "dataset_rights": null,
+        "redistribution": "not authorized by this record; local-only original artifact",
+        "commit_status": "LOCAL_ONLY"
+      },
+      "source_acquired": true,
+      "exact_target_source_acquired": true,
+      "source_content_verified": true,
+      "source_verified_against_original": true,
+      "affirmative_verification": {
+        "method": "local_pdf_text_extraction_title_marker_and_sha256",
+        "reader": "pypdf",
+        "pages_examined": 5,
+        "title_token_overlap": 1.0,
+        "matched_title_tokens": [
+          "findings",
+          "language",
+          "need",
+          "potentials",
+          "recommenders",
+          "representations",
+          "what"
+        ],
+        "result": "PASS"
+      },
+      "locator_ready": true,
+      "locator_ids": [
+        "LOC-R4-S-sheng2025_alpharec-01"
+      ],
+      "pdf_preflight": {
+        "sidecar_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/sheng2025_alpharec.preflight.json",
+        "sidecar_sha256": "ddc79a7f7051cd649e7bb252e47e13448ba923325b1b65a7529a0beb45f8d5c9",
+        "verdict": "PASS",
+        "page_anchors_permitted": true
+      },
+      "replacement": null,
+      "terminal_disposition": "same_work_lawful_local_artifact_acquired",
+      "limitations": [
+        "Zero-shot protocol still depends on item text and paper-specific preprocessing, modified baselines, and evaluation choices.",
+        "The paper itself notes stronger performance on the Amazon target may reflect same-platform behavioral patterns."
+      ],
+      "unresolved_blockers": [],
+      "forbidden_downstream_use": [
+        "R4 does not authorize production citation.",
+        "Do not use before R5 claim-map rebuild and bounded synthesis."
+      ],
+      "r4_contract_satisfied": true
+    },
+    {
+      "acquisition_key": "AQ-R4-S-tagliabue2021_coveo",
+      "record_type": "scholarly_work",
+      "source_key": "tagliabue2021_coveo",
+      "resource_keys": [],
+      "source_family_id": "SF-R1-055",
+      "priority": "core",
+      "core_object": true,
+      "queue_target": false,
+      "supported_claim_ids": [
+        "C-L5-EXT-02"
+      ],
+      "identity": {
+        "title": "SIGIR 2021 E-Commerce Workshop Data Challenge",
+        "authors": [
+          "Jacopo Tagliabue",
+          "Ciro Greco",
+          "Jean-Francis Roy",
+          "Bingqing Yu",
+          "Patrick John Chia",
+          "Federico Bianchi",
+          "Giovanni Cassani"
+        ],
+        "publication_year": 2021,
+        "venue": "SIGIR 2021 E-Commerce Workshop",
+        "document_type": "workshop_paper",
+        "publication_status": "published",
+        "doi": "10.48550/arxiv.2104.09423",
+        "official_id": null,
+        "official_url": "https://arxiv.org/abs/2104.09423",
+        "version_relation": [
+          "arXiv 2104.09423v4 is the inspected version; repository commit 4132dfb86bc1e0f808a09034f5b7dd852e3db143 contains the operational terms."
+        ]
+      },
+      "accessed_at": "2026-08-21T19:00:00+07:00",
+      "acquisition_route": "lawful_local_same_work_artifact",
+      "acquisition_url": "https://arxiv.org/abs/2104.09423",
+      "local_artifacts": [
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/tagliabue2021_coveo.pdf",
+          "bytes": 156470,
+          "sha256": "0b54749bc915f85ba4e8f2b1123086113ba0ea04dff140ba2584b0e526b24ce7",
+          "media_type": "application/pdf",
+          "role": "authoritative_original_or_same_work_copy",
+          "source_uri": "https://arxiv.org/abs/2104.09423",
+          "acquired_at": "2026-08-21T19:00:00+07:00",
+          "local_only": true,
+          "redistribution_in_bundle": false
+        }
+      ],
+      "no_lawful_local_copy_reason": null,
+      "rights_access": {
+        "availability": "lawfully accessible through the recorded official or author/repository route",
+        "license": "No broader redistribution license inferred unless stated by the source",
+        "access": "research inspection/download only; no paywall, authentication, TLS, robots, or provider control bypassed",
+        "dataset_rights": null,
+        "redistribution": "not authorized by this record; local-only original artifact",
+        "commit_status": "LOCAL_ONLY"
+      },
+      "source_acquired": true,
+      "exact_target_source_acquired": true,
+      "source_content_verified": true,
+      "source_verified_against_original": true,
+      "affirmative_verification": {
+        "method": "local_pdf_text_extraction_title_marker_and_sha256",
+        "reader": "pypdf",
+        "pages_examined": 5,
+        "title_token_overlap": 1.0,
+        "matched_title_tokens": [
+          "2021",
+          "challenge",
+          "commerce",
+          "data",
+          "sigir",
+          "workshop"
+        ],
+        "result": "PASS"
+      },
+      "locator_ready": true,
+      "locator_ids": [
+        "LOC-R4-S-tagliabue2021_coveo-01"
+      ],
+      "pdf_preflight": {
+        "sidecar_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/tagliabue2021_coveo.preflight.json",
+        "sidecar_sha256": "12a2ad7e8b8e4a54aba9bb6e8c6079f5ba6e65bc8a28c226a9afd3f0b92e8eb3",
+        "verdict": "PASS",
+        "page_anchors_permitted": true
+      },
+      "replacement": null,
+      "terminal_disposition": null,
+      "limitations": [
+        "The dataset is session-level and has no persistent user identifier.",
+        "Dataset terms prohibit redistribution and limit use to non-commercial research and education."
+      ],
+      "unresolved_blockers": [],
+      "forbidden_downstream_use": [
+        "R4 does not authorize production citation.",
+        "Do not use before R5 claim-map rebuild and bounded synthesis."
+      ],
+      "r4_contract_satisfied": true
+    },
+    {
+      "acquisition_key": "AQ-R4-S-tran2024_viecomrec",
+      "record_type": "scholarly_work",
+      "source_key": "tran2024_viecomrec",
+      "resource_keys": [],
+      "source_family_id": "SF-R1-038",
+      "priority": "core",
+      "core_object": true,
+      "queue_target": false,
+      "supported_claim_ids": [
+        "C-L5-VN-01"
+      ],
+      "identity": {
+        "title": "ViEcomRec: A Dataset for Recommendation in Vietnamese E-Commerce",
+        "authors": [
+          "Quang-Linh Tran",
+          "Binh T. Nguyen",
+          "Gareth J. F. Jones",
+          "Cathal Gurrin"
+        ],
+        "publication_year": 2024,
+        "venue": "Computational Data and Social Networks: CSoNet 2023, Lecture Notes in Computer Science 14479",
+        "document_type": "conference_paper",
+        "publication_status": "published",
+        "doi": "10.1007/978-981-97-0669-3_7",
+        "official_id": null,
+        "official_url": "https://doras.dcu.ie/29693/",
+        "version_relation": [
+          "Published chapter and DORAS accepted manuscript are one work family."
+        ]
+      },
+      "accessed_at": "2026-08-21T19:00:00+07:00",
+      "acquisition_route": "lawful_local_same_work_artifact",
+      "acquisition_url": "https://doras.dcu.ie/29693/",
+      "local_artifacts": [
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/tran2024_viecomrec.pdf",
+          "bytes": 166944,
+          "sha256": "7989a7ec514c4ffb52668d0c446f86782d87371f6e5ff2662207db3fd59f4cc1",
+          "media_type": "application/pdf",
+          "role": "authoritative_original_or_same_work_copy",
+          "source_uri": "https://doras.dcu.ie/29693/",
+          "acquired_at": "2026-08-21T19:00:00+07:00",
+          "local_only": true,
+          "redistribution_in_bundle": false
+        }
+      ],
+      "no_lawful_local_copy_reason": null,
+      "rights_access": {
+        "availability": "lawfully accessible through the recorded official or author/repository route",
+        "license": "No broader redistribution license inferred unless stated by the source",
+        "access": "research inspection/download only; no paywall, authentication, TLS, robots, or provider control bypassed",
+        "dataset_rights": null,
+        "redistribution": "not authorized by this record; local-only original artifact",
+        "commit_status": "LOCAL_ONLY"
+      },
+      "source_acquired": true,
+      "exact_target_source_acquired": true,
+      "source_content_verified": true,
+      "source_verified_against_original": true,
+      "affirmative_verification": {
+        "method": "local_pdf_text_extraction_title_marker_and_sha256",
+        "reader": "pypdf",
+        "pages_examined": 5,
+        "title_token_overlap": 1.0,
+        "matched_title_tokens": [
+          "commerce",
+          "dataset",
+          "recommendation",
+          "viecomrec",
+          "vietnamese"
+        ],
+        "result": "PASS"
+      },
+      "locator_ready": true,
+      "locator_ids": [
+        "LOC-R4-S-tran2024_viecomrec-01"
+      ],
+      "pdf_preflight": {
+        "sidecar_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/tran2024_viecomrec.preflight.json",
+        "sidecar_sha256": "8c2e3097555ac684a6a71ce5ceac521cf0346ba39eb2f6084c6d55ede6352afa",
+        "verdict": "PASS",
+        "page_anchors_permitted": true
+      },
+      "replacement": null,
+      "terminal_disposition": null,
+      "limitations": [
+        "A review is described as post-purchase, but the released records are reviews rather than complete transaction baskets.",
+        "The corpus is limited to face-cleanser products from one platform."
+      ],
+      "unresolved_blockers": [],
+      "forbidden_downstream_use": [
+        "R4 does not authorize production citation.",
+        "Do not use before R5 claim-map rebuild and bounded synthesis."
+      ],
+      "r4_contract_satisfied": true
+    },
+    {
+      "acquisition_key": "AQ-R4-S-volkovs2017_dropoutnet",
+      "record_type": "scholarly_work",
+      "source_key": "volkovs2017_dropoutnet",
+      "resource_keys": [],
+      "source_family_id": "SF-R1-059",
+      "priority": "core",
+      "core_object": true,
+      "queue_target": true,
+      "supported_claim_ids": [
+        "L4-CC-01",
+        "L4-CC-02",
+        "L4-CC-03"
+      ],
+      "identity": {
+        "title": "DropoutNet: Addressing Cold Start in Recommender Systems",
+        "authors": [
+          "Maksims Volkovs",
+          "Guangwei Yu",
+          "Tomi Poutanen"
+        ],
+        "publication_year": 2017,
+        "venue": "Advances in Neural Information Processing Systems 30",
+        "document_type": "conference_paper",
+        "publication_status": "published",
+        "doi": null,
+        "official_id": "NeurIPS-2017-dbd22ba3bd0df8f385bdac3e9f8be207",
+        "official_url": "https://papers.neurips.cc/paper_files/paper/2017/hash/dbd22ba3bd0df8f385bdac3e9f8be207-Abstract.html",
+        "version_relation": [
+          "Canonical NeurIPS proceedings version."
+        ]
+      },
+      "accessed_at": "2026-08-21T19:00:00+07:00",
+      "acquisition_route": "lawful_local_same_work_artifact",
+      "acquisition_url": "https://papers.neurips.cc/paper_files/paper/2017/file/dbd22ba3bd0df8f385bdac3e9f8be207-Paper.pdf",
+      "local_artifacts": [
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/volkovs2017_dropoutnet.pdf",
+          "bytes": 815883,
+          "sha256": "f6e36b907b5f3336d355b925721b53f47298b8bb350fa24a28395f661f2d899b",
+          "media_type": "application/pdf",
+          "role": "authoritative_original_or_same_work_copy",
+          "source_uri": "https://papers.neurips.cc/paper_files/paper/2017/file/dbd22ba3bd0df8f385bdac3e9f8be207-Paper.pdf",
+          "acquired_at": "2026-08-21T19:00:00+07:00",
+          "local_only": true,
+          "redistribution_in_bundle": false
+        }
+      ],
+      "no_lawful_local_copy_reason": null,
+      "rights_access": {
+        "availability": "lawfully accessible through the recorded official or author/repository route",
+        "license": "No broader redistribution license inferred unless stated by the source",
+        "access": "research inspection/download only; no paywall, authentication, TLS, robots, or provider control bypassed",
+        "dataset_rights": null,
+        "redistribution": "not authorized by this record; local-only original artifact",
+        "commit_status": "LOCAL_ONLY"
+      },
+      "source_acquired": true,
+      "exact_target_source_acquired": true,
+      "source_content_verified": true,
+      "source_verified_against_original": true,
+      "affirmative_verification": {
+        "method": "local_pdf_text_extraction_title_marker_and_sha256",
+        "reader": "pypdf",
+        "pages_examined": 5,
+        "title_token_overlap": 1.0,
+        "matched_title_tokens": [
+          "addressing",
+          "cold",
+          "dropoutnet",
+          "recommender",
+          "start",
+          "systems"
+        ],
+        "result": "PASS"
+      },
+      "locator_ready": true,
+      "locator_ids": [
+        "LOC-R4-S-volkovs2017_dropoutnet-01"
+      ],
+      "pdf_preflight": {
+        "sidecar_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/volkovs2017_dropoutnet.preflight.json",
+        "sidecar_sha256": "9081bf8504190319314db6e47d76218ecad3e6f83078b959df146e400b5ed15c",
+        "verdict": "PASS",
+        "page_anchors_permitted": true
+      },
+      "replacement": null,
+      "terminal_disposition": "same_work_lawful_local_artifact_acquired",
+      "limitations": [
+        "Cold-start protocol and datasets are paper-specific and precede modern text encoders.",
+        "No lawful local redistribution copy was stored."
+      ],
+      "unresolved_blockers": [],
+      "forbidden_downstream_use": [
+        "R4 does not authorize production citation.",
+        "Do not use before R5 claim-map rebuild and bounded synthesis."
+      ],
+      "r4_contract_satisfied": true
+    },
+    {
+      "acquisition_key": "AQ-R4-S-zhao2020_alternative_settings",
+      "record_type": "scholarly_work",
+      "source_key": "zhao2020_alternative_settings",
+      "resource_keys": [],
+      "source_family_id": "SF-R1-069",
+      "priority": "core",
+      "core_object": true,
+      "queue_target": false,
+      "supported_claim_ids": [
+        "L1-CC-002",
+        "L1-CC-003",
+        "L1-CC-008"
+      ],
+      "identity": {
+        "title": "Revisiting Alternative Experimental Settings for Evaluating Top-N Item Recommendation Algorithms",
+        "authors": [
+          "Wayne Xin Zhao",
+          "Junhua Chen",
+          "Pengfei Wang",
+          "Qi Gu",
+          "Ji-Rong Wen"
+        ],
+        "publication_year": 2020,
+        "venue": "Proceedings of the 29th ACM International Conference on Information & Knowledge Management",
+        "document_type": "conference_paper",
+        "publication_status": "published",
+        "doi": "10.1145/3340531.3412095",
+        "official_id": null,
+        "official_url": "https://doi.org/10.1145/3340531.3412095",
+        "version_relation": [
+          null
+        ]
+      },
+      "accessed_at": "2026-08-21T19:00:00+07:00",
+      "acquisition_route": "lawful_local_same_work_artifact",
+      "acquisition_url": "source_artifacts/zhao2020_alternative_settings.pdf",
+      "local_artifacts": [
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/zhao2020_alternative_settings.pdf",
+          "bytes": 1233020,
+          "sha256": "94077242766b97a6e889a5cef3cb202985dbce80d27730e1002d3ec84c7e1345",
+          "media_type": "application/pdf",
+          "role": "authoritative_original_or_same_work_copy",
+          "source_uri": "source_artifacts/zhao2020_alternative_settings.pdf",
+          "acquired_at": "2026-08-21T19:00:00+07:00",
+          "local_only": true,
+          "redistribution_in_bundle": false
+        }
+      ],
+      "no_lawful_local_copy_reason": null,
+      "rights_access": {
+        "availability": "lawfully accessible through the recorded official or author/repository route",
+        "license": "No broader redistribution license inferred unless stated by the source",
+        "access": "research inspection/download only; no paywall, authentication, TLS, robots, or provider control bypassed",
+        "dataset_rights": null,
+        "redistribution": "not authorized by this record; local-only original artifact",
+        "commit_status": "LOCAL_ONLY"
+      },
+      "source_acquired": true,
+      "exact_target_source_acquired": true,
+      "source_content_verified": true,
+      "source_verified_against_original": true,
+      "affirmative_verification": {
+        "method": "local_pdf_text_extraction_title_marker_and_sha256",
+        "reader": "pypdf",
+        "pages_examined": 4,
+        "title_token_overlap": 1.0,
+        "matched_title_tokens": [
+          "algorithms",
+          "alternative",
+          "evaluating",
+          "experimental",
+          "item",
+          "recommendation",
+          "revisiting",
+          "settings",
+          "top"
+        ],
+        "result": "PASS"
+      },
+      "locator_ready": true,
+      "locator_ids": [
+        "LOC-R4-S-zhao2020_alternative_settings-01"
+      ],
+      "pdf_preflight": {
+        "sidecar_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/zhao2020_alternative_settings.preflight.json",
+        "sidecar_sha256": "6b1e29ed4cbc748fbffe8cac8aebc4b91238c563de0d11fa9dc8c0c8ac91937c",
+        "verdict": "PASS",
+        "page_anchors_permitted": true
+      },
+      "replacement": null,
+      "terminal_disposition": null,
+      "limitations": [
+        "Uses its own datasets, algorithms, and tested settings; results do not transfer as raw v5 metrics."
+      ],
+      "unresolved_blockers": [],
+      "forbidden_downstream_use": [
+        "R4 does not authorize production citation.",
+        "Do not use before R5 claim-map rebuild and bounded synthesis."
+      ],
+      "r4_contract_satisfied": true
+    },
+    {
+      "acquisition_key": "AQ-R4-S-zheng2026_utgrec",
+      "record_type": "scholarly_work",
+      "source_key": "zheng2026_utgrec",
+      "resource_keys": [],
+      "source_family_id": "SF-R1-071",
+      "priority": "production_claim",
+      "core_object": false,
+      "queue_target": true,
+      "supported_claim_ids": [
+        "L4-CC-05",
+        "L4-CC-06",
+        "L4-CC-08"
+      ],
+      "identity": {
+        "title": "Universal Item Tokenization for Transferable Generative Recommendation",
+        "authors": [
+          "Bowen Zheng",
+          "Hongyu Lu",
+          "Yu Chen",
+          "Wayne Xin Zhao",
+          "Ji-Rong Wen"
+        ],
+        "publication_year": 2026,
+        "venue": "Proceedings of the 49th International ACM SIGIR Conference on Research and Development in Information Retrieval",
+        "document_type": "conference_paper",
+        "publication_status": "published",
+        "doi": "10.1145/3805712.3809720",
+        "official_id": null,
+        "official_url": "https://doi.org/10.1145/3805712.3809720",
+        "version_relation": [
+          "Canonical SIGIR paper linked to inspected author manuscript; arXiv identifier originated in 2025 and is not the publication year."
+        ]
+      },
+      "accessed_at": "2026-08-21T19:00:00+07:00",
+      "acquisition_route": "lawful_local_same_work_artifact",
+      "acquisition_url": "https://arxiv.org/pdf/2504.04405",
+      "local_artifacts": [
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/zheng2026_utgrec.pdf",
+          "bytes": 1028332,
+          "sha256": "30bcd3d6a614f6d9c48f978aa7a3742abfe5c990f755f510c31522751e3c4a86",
+          "media_type": "application/pdf",
+          "role": "authoritative_original_or_same_work_copy",
+          "source_uri": "https://arxiv.org/pdf/2504.04405",
+          "acquired_at": "2026-08-21T19:00:00+07:00",
+          "local_only": true,
+          "redistribution_in_bundle": false
+        }
+      ],
+      "no_lawful_local_copy_reason": null,
+      "rights_access": {
+        "availability": "lawfully accessible through the recorded official or author/repository route",
+        "license": "No broader redistribution license inferred unless stated by the source",
+        "access": "research inspection/download only; no paywall, authentication, TLS, robots, or provider control bypassed",
+        "dataset_rights": null,
+        "redistribution": "not authorized by this record; local-only original artifact",
+        "commit_status": "LOCAL_ONLY"
+      },
+      "source_acquired": true,
+      "exact_target_source_acquired": true,
+      "source_content_verified": true,
+      "source_verified_against_original": true,
+      "affirmative_verification": {
+        "method": "local_pdf_text_extraction_title_marker_and_sha256",
+        "reader": "pypdf",
+        "pages_examined": 5,
+        "title_token_overlap": 1.0,
+        "matched_title_tokens": [
+          "generative",
+          "item",
+          "recommendation",
+          "tokenization",
+          "transferable",
+          "universal"
+        ],
+        "result": "PASS"
+      },
+      "locator_ready": true,
+      "locator_ids": [
+        "LOC-R4-S-zheng2026_utgrec-01"
+      ],
+      "pdf_preflight": {
+        "sidecar_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/zheng2026_utgrec.preflight.json",
+        "sidecar_sha256": "4aaa4b4c720aa8e4a2975e0145a345b25ea8face6710587135b3945971afc3db",
+        "verdict": "PASS",
+        "page_anchors_permitted": true
+      },
+      "replacement": null,
+      "terminal_disposition": "same_work_lawful_local_artifact_acquired",
+      "limitations": [
+        "Evaluation is transferable sequential recommendation, not a strict zero-collaborative-edge cohort.",
+        "The inspected author artifact contains a prepublication template footer; canonical identity comes from the DOI record."
+      ],
+      "unresolved_blockers": [],
+      "forbidden_downstream_use": [
+        "R4 does not authorize production citation.",
+        "Do not use before R5 claim-map rebuild and bounded synthesis."
+      ],
+      "r4_contract_satisfied": true
+    },
+    {
+      "acquisition_key": "AQ-R4-F-SF-R1-075",
+      "record_type": "operational_family",
+      "source_key": null,
+      "resource_keys": [
+        "R-L5-COMPLETE-JOURNEY-PROVIDER",
+        "R-L5-COMPLETEJOURNEY-R-PACKAGE"
+      ],
+      "source_family_id": "SF-R1-075",
+      "priority": "core",
+      "core_object": true,
+      "queue_target": true,
+      "supported_claim_ids": [
+        "C-L5-EXT-03",
+        "C-L5-RIGHTS-01",
+        "C-L5-SCOPE-01"
+      ],
+      "identity": {
+        "provider": "dunnhumby",
+        "dataset_family": "The Complete Journey / Complete Journey 2.0",
+        "selected_package_edition": "completejourney 1.1.1, CRAN publication 2025-11-26",
+        "provider_page_snapshot": "2026-08-21",
+        "package_doi": "10.32614/CRAN.package.completejourney",
+        "package_authors": [
+          "Brad Boehmke",
+          "Steven Mortimer"
+        ]
+      },
+      "accessed_at": "2026-08-21T19:00:00+07:00",
+      "acquisition_route": "official_provider_pages_plus_official_cran_package",
+      "acquisition_url": "https://cran.r-project.org/package=completejourney",
+      "local_artifacts": [
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/complete_journey_provider_page_2026-08-21.html",
+          "bytes": 374797,
+          "sha256": "5fb537e70416f4bf7b20556ea01b45dd54a71541eeb8e7aaa599736df2adc503",
+          "media_type": "text/html",
+          "role": "provider_page",
+          "source_uri": "https://www.dunnhumby.com/source-files/",
+          "acquired_at": "2026-08-21T19:00:00+07:00",
+          "local_only": true,
+          "redistribution_in_bundle": false
+        },
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/complete_journey_provider_terms_2026-08-21.html",
+          "bytes": 268381,
+          "sha256": "f88091a14a73ca7418baa40b6e25d586b7935672d703e9ad79d153aaf977f1e0",
+          "media_type": "text/html",
+          "role": "provider_terms",
+          "source_uri": "https://www.dunnhumby.com/terms-and-conditions/",
+          "acquired_at": "2026-08-21T19:00:00+07:00",
+          "local_only": true,
+          "redistribution_in_bundle": false
+        },
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/completejourney_1.1.1_cran_page.html",
+          "bytes": 7034,
+          "sha256": "9d979899c7f455435f656a39c76f6314c3e80b098f8a499164b2619f9fe38579",
+          "media_type": "text/html",
+          "role": "cran_page",
+          "source_uri": "https://cran.r-project.org/package=completejourney",
+          "acquired_at": "2026-08-21T19:00:00+07:00",
+          "local_only": true,
+          "redistribution_in_bundle": false
+        },
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/completejourney_1.1.1_manual.pdf",
+          "bytes": 114371,
+          "sha256": "09167367aa7d73984d1d25a1a19d0478ecf83d7fbbe8b31acaa499e005c9c31c",
+          "media_type": "application/pdf",
+          "role": "package_manual",
+          "source_uri": "https://cran.r-project.org/web/packages/completejourney/completejourney.pdf",
+          "acquired_at": "2026-08-21T19:00:00+07:00",
+          "local_only": true,
+          "redistribution_in_bundle": false
+        },
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/completejourney_1.1.1_user_guide.html",
+          "bytes": 151432,
+          "sha256": "f0d8814977ca29c3ac06e199308e116b168cc3a322c2eca60cd2e995ecedeee0",
+          "media_type": "text/html",
+          "role": "user_guide",
+          "source_uri": "https://bradleyboehmke.github.io/completejourney/",
+          "acquired_at": "2026-08-21T19:00:00+07:00",
+          "local_only": true,
+          "redistribution_in_bundle": false
+        },
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/completejourney_1.1.1.tar.gz",
+          "bytes": 3450462,
+          "sha256": "e13716feb9118d510b03077a39682a7a7aea75fa8f32aef38d1570d7df999376",
+          "media_type": "application/gzip",
+          "role": "package_tarball",
+          "source_uri": "https://cran.r-project.org/src/contrib/completejourney_1.1.1.tar.gz",
+          "acquired_at": "2026-08-21T19:00:00+07:00",
+          "local_only": true,
+          "redistribution_in_bundle": false
+        }
+      ],
+      "no_lawful_local_copy_reason": "The provider full payload was not requested through the interactive email/terms form; only the public evidence and official CRAN package payload were acquired.",
+      "rights_access": {
+        "availability": "Public provider page with an interactive terms/form route; public CRAN package",
+        "license": "CC0 applies to the R package only",
+        "access": "CRAN package acquired; provider full payload requires interactive terms/form completion",
+        "dataset_rights": "Provider terms permit one copy for research, personal, or non-commercial use subject to conditions; other rights are reserved",
+        "redistribution": "No general upstream dataset redistribution permission established",
+        "commit_status": "LOCAL_ONLY because the package contains derived upstream data"
+      },
+      "source_acquired": true,
+      "exact_target_source_acquired": true,
+      "source_content_verified": true,
+      "source_verified_against_original": true,
+      "affirmative_verification": {
+        "method": "local_tar_structure_plus_provider_terms_page_manual_and_guide_marker_verification",
+        "tar_entries": 60,
+        "built_in_rda_objects": 8,
+        "built_in_rda_members": [
+          "completejourney/data/campaign_descriptions.rda",
+          "completejourney/data/campaigns.rda",
+          "completejourney/data/coupon_redemptions.rda",
+          "completejourney/data/coupons.rda",
+          "completejourney/data/demographics.rda",
+          "completejourney/data/products.rda",
+          "completejourney/data/promotions_sample.rda",
+          "completejourney/data/transactions_sample.rda"
+        ],
+        "result": "PASS"
+      },
+      "locator_ready": true,
+      "locator_ids": [
+        "LOC-R4-R-R-L5-COMPLETE-JOURNEY-PROVIDER-01",
+        "LOC-R4-R-R-L5-COMPLETEJOURNEY-R-PACKAGE-01"
+      ],
+      "pdf_preflight": {
+        "sidecar_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/completejourney_1.1.1_manual.preflight.json",
+        "sidecar_sha256": "ab74aeda88c4af33e4565de66f55b340ad31c2810daad4d6063d7eb2cedbf425",
+        "verdict": "PASS",
+        "page_anchors_permitted": true
+      },
+      "replacement": null,
+      "terminal_disposition": "operational_family_rights_access_payload_state_resolved",
+      "limitations": [
+        "The full upstream provider payload was not acquired because the current route requires interactive form submission and terms consent.",
+        "Package CC0 does not grant CC0 rights in upstream Complete Journey data.",
+        "Local execution is established for the CRAN package and built-in data, not for the unacquired full provider payload."
+      ],
+      "unresolved_blockers": [],
+      "forbidden_downstream_use": [
+        "Do not redistribute upstream data.",
+        "R4 does not authorize production citation or benchmark execution."
+      ],
+      "r4_contract_satisfied": true
+    }
+  ],
+  "queue_dispositions": [
+    {
+      "queue_target_id": "hou2022_unisrec",
+      "source_key": "hou2022_unisrec",
+      "source_family_id": "SF-R1-017",
+      "priority": "core",
+      "status": "resolved",
+      "terminal": true,
+      "terminal_disposition": "same_work_lawful_local_artifact_acquired",
+      "acquisition_key": "AQ-R4-S-hou2022_unisrec"
+    },
+    {
+      "queue_target_id": "hou2023_vqrec",
+      "source_key": "hou2023_vqrec",
+      "source_family_id": "SF-R1-018",
+      "priority": "production_claim",
+      "status": "resolved",
+      "terminal": true,
+      "terminal_disposition": "same_work_lawful_local_artifact_acquired",
+      "acquisition_key": "AQ-R4-S-hou2023_vqrec"
+    },
+    {
+      "queue_target_id": "huang2023_aldi",
+      "source_key": "huang2023_aldi",
+      "source_family_id": "SF-R1-021",
+      "priority": "production_claim",
+      "status": "resolved",
+      "terminal": true,
+      "terminal_disposition": "same_work_lawful_local_artifact_acquired",
+      "acquisition_key": "AQ-R4-S-huang2023_aldi"
+    },
+    {
+      "queue_target_id": "jannach2026_methodological_standards",
+      "source_key": "jannach2026_methodological_standards",
+      "source_family_id": "SF-R1-023",
+      "priority": "core",
+      "status": "resolved",
+      "terminal": true,
+      "terminal_disposition": "same_work_authoritative_remote_acquired",
+      "acquisition_key": "AQ-R4-S-jannach2026_methodological_standards"
+    },
+    {
+      "queue_target_id": "li2023_repetition_exploration",
+      "source_key": "li2023_repetition_exploration",
+      "source_family_id": "SF-R1-032",
+      "priority": "production_claim",
+      "status": "resolved",
+      "terminal": true,
+      "terminal_disposition": "same_work_lawful_local_artifact_acquired",
+      "acquisition_key": "AQ-R4-S-li2023_repetition_exploration"
+    },
+    {
+      "queue_target_id": "liu2009_hybrid_seq_cf",
+      "source_key": "liu2009_hybrid_seq_cf",
+      "source_family_id": "SF-R1-033",
+      "priority": "core",
+      "status": "resolved",
+      "terminal": true,
+      "terminal_disposition": "equivalent_replacement_accepted",
+      "acquisition_key": "AQ-R4-S-liu2009_hybrid_seq_cf"
+    },
+    {
+      "queue_target_id": "meehan2025_cold_popbias",
+      "source_key": "meehan2025_cold_popbias",
+      "source_family_id": "SF-R1-036",
+      "priority": "production_claim",
+      "status": "resolved",
+      "terminal": true,
+      "terminal_disposition": "same_work_lawful_local_artifact_acquired",
+      "acquisition_key": "AQ-R4-S-meehan2025_cold_popbias"
+    },
+    {
+      "queue_target_id": "meehan2026_semco",
+      "source_key": "meehan2026_semco",
+      "source_family_id": "SF-R1-037",
+      "priority": "production_claim",
+      "status": "resolved",
+      "terminal": true,
+      "terminal_disposition": "same_work_lawful_local_artifact_acquired",
+      "acquisition_key": "AQ-R4-S-meehan2026_semco"
+    },
+    {
+      "queue_target_id": "reimers2019_sbert",
+      "source_key": "reimers2019_sbert",
+      "source_family_id": "SF-R1-046",
+      "priority": "core",
+      "status": "resolved",
+      "terminal": true,
+      "terminal_disposition": "same_work_lawful_local_artifact_acquired",
+      "acquisition_key": "AQ-R4-S-reimers2019_sbert"
+    },
+    {
+      "queue_target_id": "sheng2025_alpharec",
+      "source_key": "sheng2025_alpharec",
+      "source_family_id": "SF-R1-052",
+      "priority": "core",
+      "status": "resolved",
+      "terminal": true,
+      "terminal_disposition": "same_work_lawful_local_artifact_acquired",
+      "acquisition_key": "AQ-R4-S-sheng2025_alpharec"
+    },
+    {
+      "queue_target_id": "volkovs2017_dropoutnet",
+      "source_key": "volkovs2017_dropoutnet",
+      "source_family_id": "SF-R1-059",
+      "priority": "core",
+      "status": "resolved",
+      "terminal": true,
+      "terminal_disposition": "same_work_lawful_local_artifact_acquired",
+      "acquisition_key": "AQ-R4-S-volkovs2017_dropoutnet"
+    },
+    {
+      "queue_target_id": "zheng2026_utgrec",
+      "source_key": "zheng2026_utgrec",
+      "source_family_id": "SF-R1-071",
+      "priority": "production_claim",
+      "status": "resolved",
+      "terminal": true,
+      "terminal_disposition": "same_work_lawful_local_artifact_acquired",
+      "acquisition_key": "AQ-R4-S-zheng2026_utgrec"
+    },
+    {
+      "queue_target_id": "SF-R1-075",
+      "source_key": null,
+      "source_family_id": "SF-R1-075",
+      "resource_keys": [
+        "R-L5-COMPLETE-JOURNEY-PROVIDER",
+        "R-L5-COMPLETEJOURNEY-R-PACKAGE"
+      ],
+      "priority": "core",
+      "status": "resolved",
+      "terminal": true,
+      "terminal_disposition": "operational_family_rights_access_payload_state_resolved",
+      "acquisition_key": "AQ-R4-F-SF-R1-075"
+    }
+  ],
+  "degradation_ledger": [
+    {
+      "route": "ACM direct automated full-article retrieval",
+      "target": "jannach2026_methodological_standards",
+      "result": "HTTP 403",
+      "handling": "No bypass; verified the official full publisher HTML through the lawful browser route and stored only official institutional identity metadata."
+    },
+    {
+      "route": "Exact 2009 journal full text",
+      "target": "liu2009_hybrid_seq_cf",
+      "result": "No lawful open full copy located",
+      "handling": "Accepted the 2007 official-repository predecessor for bounded hybrid-method evidence; retained exact 2009 identity/abstract and exclusion rationale."
+    },
+    {
+      "route": "NYCU scripted repository download",
+      "target": "liu2009_hybrid_seq_cf replacement",
+      "result": "Challenge HTML instead of PDF",
+      "handling": "Rejected the payload; no TLS/access bypass; original content was verified through the authoritative repository browser artifact."
+    },
+    {
+      "route": "ETH proceedings PDF",
+      "target": "liu2009_hybrid_seq_cf replacement",
+      "result": "Table of contents only",
+      "handling": "Rejected as non-original-content evidence."
+    },
+    {
+      "route": "System Python structural preflight",
+      "target": "all local PDFs",
+      "result": "pypdf unavailable and Windows output writer incompatible",
+      "handling": "Re-ran the unmodified ARS v0.1.26 preflight under the bundled workspace Python and mechanically retained stdout sidecars."
+    },
+    {
+      "route": "ARS structural PDF preflight",
+      "target": "li2023_repetition_exploration",
+      "result": "UNAVAILABLE due stale/unreachable xref object advisory",
+      "handling": "Prohibited page anchors; retained a verified Introduction/analysis structural locator."
+    },
+    {
+      "route": "Frozen R3 arXiv locator",
+      "target": "huang2023_aldi",
+      "result": "Resolved to an unrelated Web3 money-laundering paper",
+      "handling": "Rejected the wrong payload, acquired the exact author-hosted PolyU ALDI paper, and recorded the corrected R4 overlay locator without editing frozen R3."
+    },
+    {
+      "route": "Frozen R3 arXiv locator",
+      "target": "meehan2025_cold_popbias",
+      "result": "Resolved to an unrelated multimodal target-selection paper",
+      "handling": "Rejected the wrong payload, acquired the exact same-work arXiv manuscript 2510.11402, and recorded the corrected R4 overlay locator without editing frozen R3."
+    },
+    {
+      "route": "Frozen R3 arXiv locator",
+      "target": "meehan2026_semco",
+      "result": "Resolved to an unrelated mathematics paper",
+      "handling": "Rejected the wrong payload, acquired the exact same-work arXiv manuscript 2604.12990, and recorded the corrected R4 overlay locator without editing frozen R3."
+    },
+    {
+      "route": "dunnhumby full provider payload",
+      "target": "SF-R1-075",
+      "result": "Interactive form/terms/email route required",
+      "handling": "Did not submit or automate consent; recorded the exact access state and acquired the official CRAN package, manual, guide, provider page, and terms."
+    }
+  ],
+  "phase_boundary": {
+    "r5": "NOT_PERFORMED",
+    "phase3_synthesis": "NOT_PERFORMED",
+    "h1_h4": "NOT_RUN",
+    "stage2_production_citations": "NOT_AUTHORIZED"
+  }
+}

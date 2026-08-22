@@ -24,6 +24,7 @@ from ai_service.contracts import (
 from ai_service.data.dataset import build_rule_pair_index
 from ai_service.data.rules import RuleStore
 from ai_service.data.sampling import MixedNegativeBatch
+from ai_service.data.semantic_cohort import canonical_semantic_cohort_bytes
 from ai_service.errors import ArtifactIntegrityError, DataIntegrityError
 from ai_service.evaluation import ablation
 from ai_service.evaluation.ablation import DeepAblationRun, R3ArtifactLineage
@@ -43,6 +44,43 @@ from ai_service.training.diagnostic_stop import (
 from ai_service.training.objectives import multi_positive_sampled_softmax, rule_pairwise_wide_loss
 from ai_service.training.trainer import Trainer, _ValidationEpochPass
 from tests.support.v5_factories import make_victory_matrix
+
+
+def _write_typed_cohort(
+    path: Path,
+    *,
+    anchor_product_id: int = 200,
+    target_product_id: int = 201,
+) -> None:
+    cases: list[dict[str, object]] = []
+    for split, target_timestamp in (
+        ("val", "2026-06-20T00:00:00Z"),
+        ("test", "2026-07-11T00:00:00Z"),
+    ):
+        for trap_id in range(1, 11):
+            cases.append(
+                {
+                    "trap_id": trap_id,
+                    "user_id": 10,
+                    "anchor_product_id": anchor_product_id,
+                    "target_product_id": target_product_id,
+                    "split": split,
+                    "anchor_event_id": f"anchor-{split}-{trap_id}",
+                    "target_event_id": f"target-{split}-{trap_id}",
+                    "anchor_event_ts": "2026-01-01T00:00:00Z",
+                    "target_event_ts": target_timestamp,
+                }
+            )
+    path.write_bytes(
+        canonical_semantic_cohort_bytes(
+            {
+                "schema_version": "1.0.0",
+                "benchmark_run_id": "benchmark-v5",
+                "benchmark_spec_sha256": "a" * 64,
+                "cases": cases,
+            }
+        )
+    )
 
 
 def test_v5_lineage_resolver_requires_matching_parent_artifacts() -> None:
@@ -599,21 +637,12 @@ def test_legacy_lineage_serializes_both_supported_shapes() -> None:
 
 
 def test_r3_semantic_cohort_target_requests_use_immutable_rows(tmp_path: Path) -> None:
-    cohort = tmp_path / "semantic-cohort.json"
-    cohort.write_text(
-        '[{"cohort_id":"semantic-1","event_id":"semantic-1:val:target:0",'
-        '"user_id":10,"product_id":201,"anchor_product_id":200,"target_product_ids":[201]}]',
-        encoding="utf-8",
-    )
-    fixture = tmp_path / "traps.json"
-    fixture.write_text(
-        '[{"trap_id":1,"anchor_product_id":200,"target_product_ids":[201]}]',
-        encoding="utf-8",
-    )
+    _write_typed_cohort(tmp_path / "semantic-cohort.json")
     snapshot = type(
         "SnapshotAdapter",
         (),
         {
+            "manifest": SimpleNamespace(semantic_cohort_sha256=None),
             "snapshot_dir": tmp_path,
             "user_map": {10: 1},
             "product_map": {200: 0, 201: 1},
@@ -629,23 +658,19 @@ def test_r3_semantic_cohort_target_requests_use_immutable_rows(tmp_path: Path) -
             "organic_novel_truth": {1: {1}},
         },
     )()
-    requests = _target_requests(snapshot, prepared, fixture)
-    assert len(requests) == 1
+    requests = _target_requests(snapshot, prepared, tmp_path / "unused.json")
+    assert len(requests) == 10
     assert requests[0].target_item_ids == (1,)
 
 
 def test_r3_semantic_cohort_requests_reject_missing_or_misaligned_metadata(
     tmp_path: Path,
 ) -> None:
-    fixture = tmp_path / "traps.json"
-    fixture.write_text(
-        '[{"trap_id":1,"anchor_product_id":200,"target_product_ids":[201]}]',
-        encoding="utf-8",
-    )
     snapshot = type(
         "SnapshotAdapter",
         (),
         {
+            "manifest": SimpleNamespace(semantic_cohort_sha256=None),
             "snapshot_dir": tmp_path,
             "user_map": {10: 1},
             "product_map": {200: 0, 201: 1, 202: 2},
@@ -662,34 +687,39 @@ def test_r3_semantic_cohort_requests_reject_missing_or_misaligned_metadata(
         },
     )()
     cohort = tmp_path / "semantic-cohort.json"
-    cohort.write_text(
-        '[{"cohort_id":"semantic-1","event_id":"run:val:target:0","user_id":10,"product_id":201}]',
-        encoding="utf-8",
-    )
-    with pytest.raises(DataIntegrityError, match="malformed"):
-        _target_requests(snapshot, prepared, fixture)
+    cohort.write_text("[]", encoding="utf-8")
+    with pytest.raises(DataIntegrityError, match="typed document"):
+        _target_requests(snapshot, prepared, tmp_path / "unused.json")
 
-    cohort.write_text(
-        '[{"cohort_id":"semantic-1","event_id":"run:val:target:0",'
-        '"user_id":10,"product_id":201,"anchor_product_id":202,'
-        '"target_product_ids":[201]}]',
-        encoding="utf-8",
-    )
+    _write_typed_cohort(cohort, anchor_product_id=202)
     with pytest.raises(DataIntegrityError, match="anchor"):
-        _target_requests(snapshot, prepared, fixture)
+        _target_requests(snapshot, prepared, tmp_path / "unused.json")
 
 
 def test_r3_semantic_cohort_requests_reject_empty_val_projection(tmp_path: Path) -> None:
-    fixture = tmp_path / "traps.json"
-    fixture.write_text("[]", encoding="utf-8")
-    (tmp_path / "semantic-cohort.json").write_text(
-        '[{"cohort_id":"cold-1","event_id":"run:val:target:0","user_id":10,"product_id":201}]',
-        encoding="utf-8",
-    )
-    snapshot = type("SnapshotAdapter", (), {"snapshot_dir": tmp_path})()
-    prepared = type("PreparedAdapter", (), {"split": SplitName.VAL})()
-    with pytest.raises(DataIntegrityError, match="no serving-equivalent"):
-        _target_requests(snapshot, prepared, fixture)
+    _write_typed_cohort(tmp_path / "semantic-cohort.json")
+    snapshot = type(
+        "SnapshotAdapter",
+        (),
+        {
+            "manifest": SimpleNamespace(semantic_cohort_sha256=None),
+            "snapshot_dir": tmp_path,
+            "user_map": {10: 1},
+            "product_map": {200: 0, 201: 1},
+        },
+    )()
+    prepared = type(
+        "PreparedAdapter",
+        (),
+        {
+            "split": SplitName.VAL,
+            "eligible_users": np.asarray([], dtype=np.int64),
+            "latest_prior_purchase_contexts": {1: 0},
+            "organic_novel_truth": {1: {1}},
+        },
+    )()
+    with pytest.raises(DataIntegrityError, match="not eligible"):
+        _target_requests(snapshot, prepared, tmp_path / "unused.json")
 
 
 def test_r3_deep_comparison_orchestrates_four_runs(

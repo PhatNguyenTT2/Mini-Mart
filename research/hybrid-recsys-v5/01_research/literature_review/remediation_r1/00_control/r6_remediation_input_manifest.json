@@ -1,0 +1,84 @@
+{
+  "schema_version": "stage1b-r1-r6-remediation-input-manifest-1.0",
+  "project": "hybrid-recsys-v5",
+  "stage": "1B",
+  "round": "R1",
+  "step": "R6_findings_remediation_overlay",
+  "frozen_at": "2026-08-21",
+  "runtime_lock": {
+    "model": "gpt-5.6-sol",
+    "reasoning": "high",
+    "execution_mode": "fresh_dedicated_worktree_task"
+  },
+  "remediation_contract": {
+    "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/r6_remediation_contract.md",
+    "bytes": 3962,
+    "sha256": "ee441685230cf52bcd26b16e5e466173c71d86ef890c6ffd5be581672515c7df"
+  },
+  "transitive_r5_r6_input": {
+    "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/r6_input_manifest.json",
+    "bytes": 3984,
+    "sha256": "52caf72b133c1368b68afac8fbaf50a544ef9f92001b818b01a71b76e861546a"
+  },
+  "r5_gate": {
+    "verdict": "PASS",
+    "final_validation": "PASS_29_OF_29",
+    "final_receipt_payload_sha256": "db101ad4c4ff5c1be5522d070b5c8048b89502082f52cf6f36031499186d3ee8",
+    "handoff_sha256": "9e36da152895a46dda164bae4a79d4052267a3ba4a089e04250571a284904435"
+  },
+  "r6_gate": {
+    "verdict": "REVISE",
+    "final_validation": "PASS_26_OF_26",
+    "final_receipt_payload_sha256": "4ec21b9f5355da14d20049d120e3b3a883501010d0c78b664dc90d6c6a5b66ba",
+    "handoff_sha256": "d76bee713b0d6eb342af491e9466139966fa63abb49c17e61a5a9bc478e70508",
+    "severity_counts": {
+      "Critical": 0,
+      "Major": 1,
+      "Minor": 2,
+      "Observation": 5
+    },
+    "blocking_finding_id": "R6-MAJ-001",
+    "tension_pairs": 12,
+    "pending_scholar_confirmations": 12,
+    "r7_authorized": false
+  },
+  "frozen_r6_files": [
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/devils_advocate_cp2/devils_advocate_checkpoint2_r1.md",
+      "bytes": 19552,
+      "sha256": "3b0e35de93b664f26ab758fbaddfea244ae16a67f3b51821fd7c406ef1f92557"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/devils_advocate_cp2/r6_findings.json",
+      "bytes": 11923,
+      "sha256": "ce86f1408309f6bede2532d903a9d3b40d1c550c0ab879715c6b63e1a13de5bb"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/devils_advocate_cp2/r6_handoff.json",
+      "bytes": 5781,
+      "sha256": "d76bee713b0d6eb342af491e9466139966fa63abb49c17e61a5a9bc478e70508"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/devils_advocate_cp2/r6_validation_receipt.json",
+      "bytes": 3909,
+      "sha256": "340de35c766ef9b3238ec21b60322682108831e598b6aa78fd7a8c5866ab86b6"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/devils_advocate_cp2/tension_adjudication_packet.json",
+      "bytes": 7925,
+      "sha256": "eeb908c5b563640d740a0e6934a60b84135cefd513c0e01a5eceb5acd7cc0ccc"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/devils_advocate_cp2/validate_r6_checkpoint.py",
+      "bytes": 15035,
+      "sha256": "574d5f3ee1343f22b79e0ca6444511bac817679684c6a39b068b3c15354ee793"
+    }
+  ],
+  "remediation_targets": [
+    "R6-MAJ-001",
+    "R6-MIN-002"
+  ],
+  "scholar_owned_unmodified_target": "R6-MIN-001/T-002",
+  "write_scope": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/remediation_r6/",
+  "next_gate": "A remediation PASS authorizes only a fresh R6 re-audit; it does not authorize R7 or resolve scholar confirmations."
+}

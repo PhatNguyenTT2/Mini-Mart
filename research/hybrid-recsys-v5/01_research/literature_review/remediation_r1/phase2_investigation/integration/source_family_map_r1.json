@@ -1,0 +1,1182 @@
+{
+  "schema_version": "r3-source-family-map-r1-1.0",
+  "project": "hybrid-recsys-v5",
+  "generated_at": "2026-08-21T00:00:00+07:00",
+  "counting_rules": {
+    "canonical_record": "One merged bibliographic work identity; publication manifestations remain enumerated.",
+    "independent_family": "Versions, adapters, repositories, and upstream dataset manifestations count once for independence-sensitive evidence.",
+    "benchmark_reuse": "Benchmark or backbone reuse is a dependency edge, not automatic identity equivalence."
+  },
+  "counts": {
+    "canonical_scholarly_records": 74,
+    "scholarly_families": 71,
+    "operational_root_families": 12,
+    "unique_families_across_registries": 75
+  },
+  "family_alias_map": {
+    "F-L4-ALDI-2023": "SF-R1-021",
+    "F-L4-ALPHAREC-2025": "SF-R1-052",
+    "F-L4-CGRC-2024": "SF-R1-027",
+    "F-L4-CLCREC-2021": "SF-R1-062",
+    "F-L4-DROPOUTNET-2017": "SF-R1-059",
+    "F-L4-INHERITED-BIAS-2025": "SF-R1-036",
+    "F-L4-LIGHTGCL-2023": "SF-R1-004",
+    "F-L4-MTPR-2020": "SF-R1-010",
+    "F-L4-SBERT-2019": "SF-R1-046",
+    "F-L4-SEMCO-2026": "SF-R1-037",
+    "F-L4-SIMGCL-2022": "SF-R1-065",
+    "F-L4-UNISREC-2022": "SF-R1-017",
+    "F-L4-UTGREC-2026": "SF-R1-071",
+    "F-L4-VQREC-2023": "SF-R1-018",
+    "F-L4-XSIMGCL-2024": "SF-R1-066",
+    "FAM-L2-CAI-LIGHTGCL-2023": "SF-R1-004",
+    "FAM-L2-CHENG-WIDE-DEEP-2016": "SF-R1-007",
+    "FAM-L2-COVINGTON-YOUTUBE-2016": "SF-R1-008",
+    "FAM-L2-GUO-DEEPFM-2017": "SF-R1-012",
+    "FAM-L2-HE-LIGHTGCN-2020": "SF-R1-015",
+    "FAM-L2-HE-NCF-2017": "SF-R1-014",
+    "FAM-L2-HUANG-DSSM-2013": "SF-R1-020",
+    "FAM-L2-RENDLE-BPR-2009": "SF-R1-047",
+    "FAM-L2-SARWAR-ITEMCF-2001": "SF-R1-050",
+    "FAM-L2-WANG-DIRECTAU-2022": "SF-R1-060",
+    "FAM-L2-WANG-T2DIFF-2025": "SF-R1-061",
+    "FAM-L2-YI-NDR-2019": "SF-R1-064",
+    "FAM-L2-YU-SIMGCL-2022": "SF-R1-065",
+    "FAM-L2-YUAN-CONTEXTGNN-2025": "SF-R1-068",
+    "fam_amazon_m2": "SF-R1-025",
+    "fam_amazon_reviews_2018": "SF-R1-073",
+    "fam_amazon_reviews_2023": "SF-R1-019",
+    "fam_complete_journey": "SF-R1-075",
+    "fam_coveo": "SF-R1-055",
+    "fam_hm": "SF-R1-074",
+    "fam_otto": "SF-R1-072",
+    "fam_relbench_benchmark": "SF-R1-048",
+    "fam_taobao_mm": "SF-R1-063",
+    "fam_tenrec": "SF-R1-067",
+    "fam_viecomrec": "SF-R1-038",
+    "fam_vietnamese_opinion_mining": "SF-R1-058",
+    "fam_vietnamese_restaurant_images": "SF-R1-045",
+    "fam_vifoodrec": "SF-R1-057",
+    "fam_vihorec": "SF-R1-039",
+    "family_agrawal_srikant_apriori_1994": "SF-R1-001",
+    "family_bert4rec_original": "SF-R1-053",
+    "family_bert4rec_replication_petrov": "SF-R1-044",
+    "family_cheng_wide_deep_2016": "SF-R1-007",
+    "family_ghoshal_sarkar_multi_item_rules": "SF-R1-011",
+    "family_ham_hybrid_associations": "SF-R1-041",
+    "family_liu_hybrid_sequential_rules_cf": "SF-R1-033",
+    "family_m2_next_basket": "SF-R1-042",
+    "family_mask_swap_nnbr": "SF-R1-029",
+    "family_nbr_reality_check": "SF-R1-030",
+    "family_repeat_explore_lightgcn_2026": "SF-R1-035",
+    "family_repetition_exploration_sequential": "SF-R1-032",
+    "family_sasrec_original": "SF-R1-026",
+    "family_time_to_split_2025": "SF-R1-013",
+    "sf_benigni_diffusion_reproduction": "SF-R1-002",
+    "sf_canamares_offline_options": "SF-R1-005",
+    "sf_castells_moffat_offline_challenges": "SF-R1-006",
+    "sf_dacrema_reproducibility": "SF-R1-009",
+    "sf_daisyrec_rigorous_evaluation": "SF-R1-054",
+    "sf_gusak_time_to_split": "SF-R1-013",
+    "sf_hidasi_offline_flaws": "SF-R1-016",
+    "sf_ihemelandu_candidate_sampling": "SF-R1-022",
+    "sf_jannach_chen_methodological_editorial": "SF-R1-023",
+    "sf_krichene_sampled_metrics": "SF-R1-028",
+    "sf_li_item_sampling_evaluation": "SF-R1-031",
+    "sf_liu_sampled_metric_tradeoffs": "SF-R1-034",
+    "sf_ndcg_foundation": "SF-R1-024",
+    "sf_parajuli_convergent_validity": "SF-R1-040",
+    "sf_pereira_sampling_reliability": "SF-R1-043",
+    "sf_recbole2_library": "SF-R1-070",
+    "sf_roc_auc_foundation": "SF-R1-003",
+    "sf_said_reproducibility_survey": "SF-R1-049",
+    "sf_shehzad_code_reproducibility": "SF-R1-051",
+    "sf_tamm_metric_consistency": "SF-R1-056",
+    "sf_zhao_alternative_settings": "SF-R1-069"
+  },
+  "families": [
+    {
+      "source_family_id": "SF-R1-001",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "agrawal1994_apriori"
+      ],
+      "operational_resource_keys": [],
+      "original_family_aliases": [
+        "family_agrawal_srikant_apriori_1994"
+      ],
+      "family_scope": "scholarly"
+    },
+    {
+      "source_family_id": "SF-R1-002",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "benigni2026_diffusion_recommender_models_and_the_illusion_of_progress_"
+      ],
+      "operational_resource_keys": [],
+      "original_family_aliases": [
+        "sf_benigni_diffusion_reproduction"
+      ],
+      "family_scope": "scholarly"
+    },
+    {
+      "source_family_id": "SF-R1-003",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "bradley1997_auc"
+      ],
+      "operational_resource_keys": [],
+      "original_family_aliases": [
+        "sf_roc_auc_foundation"
+      ],
+      "family_scope": "scholarly"
+    },
+    {
+      "source_family_id": "SF-R1-004",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "cai2023_lightgcl"
+      ],
+      "operational_resource_keys": [],
+      "original_family_aliases": [
+        "F-L4-LIGHTGCL-2023",
+        "FAM-L2-CAI-LIGHTGCL-2023"
+      ],
+      "family_scope": "scholarly"
+    },
+    {
+      "source_family_id": "SF-R1-005",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "canamares2020_offline_options"
+      ],
+      "operational_resource_keys": [],
+      "original_family_aliases": [
+        "sf_canamares_offline_options"
+      ],
+      "family_scope": "scholarly"
+    },
+    {
+      "source_family_id": "SF-R1-006",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "castells2022_offline_recommender_system_evaluation_challenges_and_new_d"
+      ],
+      "operational_resource_keys": [],
+      "original_family_aliases": [
+        "sf_castells_moffat_offline_challenges"
+      ],
+      "family_scope": "scholarly"
+    },
+    {
+      "source_family_id": "SF-R1-007",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "cheng2016_wide_deep"
+      ],
+      "operational_resource_keys": [],
+      "original_family_aliases": [
+        "FAM-L2-CHENG-WIDE-DEEP-2016",
+        "family_cheng_wide_deep_2016"
+      ],
+      "family_scope": "scholarly"
+    },
+    {
+      "source_family_id": "SF-R1-008",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "covington2016_youtube"
+      ],
+      "operational_resource_keys": [],
+      "original_family_aliases": [
+        "FAM-L2-COVINGTON-YOUTUBE-2016"
+      ],
+      "family_scope": "scholarly"
+    },
+    {
+      "source_family_id": "SF-R1-009",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "dacrema2021_reproducibility"
+      ],
+      "operational_resource_keys": [],
+      "original_family_aliases": [
+        "sf_dacrema_reproducibility"
+      ],
+      "family_scope": "scholarly"
+    },
+    {
+      "source_family_id": "SF-R1-010",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "du2020_mtpr"
+      ],
+      "operational_resource_keys": [],
+      "original_family_aliases": [
+        "F-L4-MTPR-2020"
+      ],
+      "family_scope": "scholarly"
+    },
+    {
+      "source_family_id": "SF-R1-011",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "ghoshal2014_multi_item_rules"
+      ],
+      "operational_resource_keys": [],
+      "original_family_aliases": [
+        "family_ghoshal_sarkar_multi_item_rules"
+      ],
+      "family_scope": "scholarly"
+    },
+    {
+      "source_family_id": "SF-R1-012",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "guo2017_deepfm"
+      ],
+      "operational_resource_keys": [],
+      "original_family_aliases": [
+        "FAM-L2-GUO-DEEPFM-2017"
+      ],
+      "family_scope": "scholarly"
+    },
+    {
+      "source_family_id": "SF-R1-013",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "gusak2025_time_split"
+      ],
+      "operational_resource_keys": [],
+      "original_family_aliases": [
+        "family_time_to_split_2025",
+        "sf_gusak_time_to_split"
+      ],
+      "family_scope": "scholarly"
+    },
+    {
+      "source_family_id": "SF-R1-014",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "he2017_ncf"
+      ],
+      "operational_resource_keys": [],
+      "original_family_aliases": [
+        "FAM-L2-HE-NCF-2017"
+      ],
+      "family_scope": "scholarly"
+    },
+    {
+      "source_family_id": "SF-R1-015",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "he2020_lightgcn"
+      ],
+      "operational_resource_keys": [],
+      "original_family_aliases": [
+        "FAM-L2-HE-LIGHTGCN-2020"
+      ],
+      "family_scope": "scholarly"
+    },
+    {
+      "source_family_id": "SF-R1-016",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "hidasi2023_widespread_flaws_in_offline_evaluation_of_recommender_syst"
+      ],
+      "operational_resource_keys": [],
+      "original_family_aliases": [
+        "sf_hidasi_offline_flaws"
+      ],
+      "family_scope": "scholarly"
+    },
+    {
+      "source_family_id": "SF-R1-017",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "hou2022_unisrec"
+      ],
+      "operational_resource_keys": [],
+      "original_family_aliases": [
+        "F-L4-UNISREC-2022"
+      ],
+      "family_scope": "scholarly"
+    },
+    {
+      "source_family_id": "SF-R1-018",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "hou2023_vqrec"
+      ],
+      "operational_resource_keys": [],
+      "original_family_aliases": [
+        "F-L4-VQREC-2023"
+      ],
+      "family_scope": "scholarly"
+    },
+    {
+      "source_family_id": "SF-R1-019",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "hou2026_blair"
+      ],
+      "operational_resource_keys": [
+        "R-L5-AMAZON-REVIEWS-2023"
+      ],
+      "original_family_aliases": [
+        "fam_amazon_reviews_2023"
+      ],
+      "family_scope": "mixed"
+    },
+    {
+      "source_family_id": "SF-R1-020",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "huang2013_dssm"
+      ],
+      "operational_resource_keys": [],
+      "original_family_aliases": [
+        "FAM-L2-HUANG-DSSM-2013"
+      ],
+      "family_scope": "scholarly"
+    },
+    {
+      "source_family_id": "SF-R1-021",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "huang2023_aldi"
+      ],
+      "operational_resource_keys": [],
+      "original_family_aliases": [
+        "F-L4-ALDI-2023"
+      ],
+      "family_scope": "scholarly"
+    },
+    {
+      "source_family_id": "SF-R1-022",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "ihemelandu2023_candidate_set_sampling_for_evaluating_top_n_recommendation"
+      ],
+      "operational_resource_keys": [],
+      "original_family_aliases": [
+        "sf_ihemelandu_candidate_sampling"
+      ],
+      "family_scope": "scholarly"
+    },
+    {
+      "source_family_id": "SF-R1-023",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "jannach2026_methodological_standards"
+      ],
+      "operational_resource_keys": [],
+      "original_family_aliases": [
+        "sf_jannach_chen_methodological_editorial"
+      ],
+      "family_scope": "scholarly"
+    },
+    {
+      "source_family_id": "SF-R1-024",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "jarvelin2002_ndcg"
+      ],
+      "operational_resource_keys": [],
+      "original_family_aliases": [
+        "sf_ndcg_foundation"
+      ],
+      "family_scope": "scholarly"
+    },
+    {
+      "source_family_id": "SF-R1-025",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "jin2023_amazon_m2"
+      ],
+      "operational_resource_keys": [
+        "R-L5-AMAZON-M2"
+      ],
+      "original_family_aliases": [
+        "fam_amazon_m2"
+      ],
+      "family_scope": "mixed"
+    },
+    {
+      "source_family_id": "SF-R1-026",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "kang2018_sasrec"
+      ],
+      "operational_resource_keys": [],
+      "original_family_aliases": [
+        "family_sasrec_original"
+      ],
+      "family_scope": "scholarly"
+    },
+    {
+      "source_family_id": "SF-R1-027",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "kim2024_content_based_graph_reconstruction_for_cold_start_item_rec"
+      ],
+      "operational_resource_keys": [],
+      "original_family_aliases": [
+        "F-L4-CGRC-2024"
+      ],
+      "family_scope": "scholarly"
+    },
+    {
+      "source_family_id": "SF-R1-028",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "krichene2020_sampled_metrics",
+        "krichene2021_on_sampled_metrics_for_item_recommendation_extended_abstra"
+      ],
+      "operational_resource_keys": [],
+      "original_family_aliases": [
+        "sf_krichene_sampled_metrics"
+      ],
+      "family_scope": "scholarly"
+    },
+    {
+      "source_family_id": "SF-R1-029",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "li2023_mask_swap"
+      ],
+      "operational_resource_keys": [],
+      "original_family_aliases": [
+        "family_mask_swap_nnbr"
+      ],
+      "family_scope": "scholarly"
+    },
+    {
+      "source_family_id": "SF-R1-030",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "li2023_nbr_reality"
+      ],
+      "operational_resource_keys": [],
+      "original_family_aliases": [
+        "family_nbr_reality_check"
+      ],
+      "family_scope": "scholarly"
+    },
+    {
+      "source_family_id": "SF-R1-031",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "li2023_reliable_sampling",
+        "li2024_on_item_sampling_evaluation_for_recommender_system"
+      ],
+      "operational_resource_keys": [],
+      "original_family_aliases": [
+        "sf_li_item_sampling_evaluation"
+      ],
+      "family_scope": "scholarly"
+    },
+    {
+      "source_family_id": "SF-R1-032",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "li2023_repetition_exploration"
+      ],
+      "operational_resource_keys": [],
+      "original_family_aliases": [
+        "family_repetition_exploration_sequential"
+      ],
+      "family_scope": "scholarly"
+    },
+    {
+      "source_family_id": "SF-R1-033",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "liu2009_hybrid_seq_cf"
+      ],
+      "operational_resource_keys": [],
+      "original_family_aliases": [
+        "family_liu_hybrid_sequential_rules_cf"
+      ],
+      "family_scope": "scholarly"
+    },
+    {
+      "source_family_id": "SF-R1-034",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "liu2023_on_the_consistency_discriminative_power_and_robustness_of_"
+      ],
+      "operational_resource_keys": [],
+      "original_family_aliases": [
+        "sf_liu_sampled_metric_tradeoffs"
+      ],
+      "family_scope": "scholarly"
+    },
+    {
+      "source_family_id": "SF-R1-035",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "mansouri2026_repeat_explore_lightgcn"
+      ],
+      "operational_resource_keys": [],
+      "original_family_aliases": [
+        "family_repeat_explore_lightgcn_2026"
+      ],
+      "family_scope": "scholarly"
+    },
+    {
+      "source_family_id": "SF-R1-036",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "meehan2025_cold_popbias"
+      ],
+      "operational_resource_keys": [],
+      "original_family_aliases": [
+        "F-L4-INHERITED-BIAS-2025"
+      ],
+      "family_scope": "scholarly"
+    },
+    {
+      "source_family_id": "SF-R1-037",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "meehan2026_semco"
+      ],
+      "operational_resource_keys": [],
+      "original_family_aliases": [
+        "F-L4-SEMCO-2026"
+      ],
+      "family_scope": "scholarly"
+    },
+    {
+      "source_family_id": "SF-R1-038",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "nguyen2025_viecomrec_graph",
+        "tran2024_viecomrec"
+      ],
+      "operational_resource_keys": [
+        "R-L5-VIECOMREC"
+      ],
+      "original_family_aliases": [
+        "fam_viecomrec"
+      ],
+      "family_scope": "mixed"
+    },
+    {
+      "source_family_id": "SF-R1-039",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "nguyen2026_vihorec"
+      ],
+      "operational_resource_keys": [
+        "R-L5-VIHOREC"
+      ],
+      "original_family_aliases": [
+        "fam_vihorec"
+      ],
+      "family_scope": "mixed"
+    },
+    {
+      "source_family_id": "SF-R1-040",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "parajuli2026_on_the_convergent_validity_of_offline_evaluation_designs_f"
+      ],
+      "operational_resource_keys": [],
+      "original_family_aliases": [
+        "sf_parajuli_convergent_validity"
+      ],
+      "family_scope": "scholarly"
+    },
+    {
+      "source_family_id": "SF-R1-041",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "peng2022_ham"
+      ],
+      "operational_resource_keys": [],
+      "original_family_aliases": [
+        "family_ham_hybrid_associations"
+      ],
+      "family_scope": "scholarly"
+    },
+    {
+      "source_family_id": "SF-R1-042",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "peng2023_m2"
+      ],
+      "operational_resource_keys": [],
+      "original_family_aliases": [
+        "family_m2_next_basket"
+      ],
+      "family_scope": "scholarly"
+    },
+    {
+      "source_family_id": "SF-R1-043",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "pereira2025_on_the_reliability_of_sampling_strategies_in_offline_recom"
+      ],
+      "operational_resource_keys": [],
+      "original_family_aliases": [
+        "sf_pereira_sampling_reliability"
+      ],
+      "family_scope": "scholarly"
+    },
+    {
+      "source_family_id": "SF-R1-044",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "petrov2022_a_systematic_review_and_replicability_study_of_bert4rec_fo"
+      ],
+      "operational_resource_keys": [],
+      "original_family_aliases": [
+        "family_bert4rec_replication_petrov"
+      ],
+      "family_scope": "scholarly"
+    },
+    {
+      "source_family_id": "SF-R1-045",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "pham2024_developing_a_restaurant_recommended_system_via_the_vietnam"
+      ],
+      "operational_resource_keys": [],
+      "original_family_aliases": [
+        "fam_vietnamese_restaurant_images"
+      ],
+      "family_scope": "scholarly"
+    },
+    {
+      "source_family_id": "SF-R1-046",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "reimers2019_sbert"
+      ],
+      "operational_resource_keys": [],
+      "original_family_aliases": [
+        "F-L4-SBERT-2019"
+      ],
+      "family_scope": "scholarly"
+    },
+    {
+      "source_family_id": "SF-R1-047",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "rendle2009_bpr"
+      ],
+      "operational_resource_keys": [],
+      "original_family_aliases": [
+        "FAM-L2-RENDLE-BPR-2009"
+      ],
+      "family_scope": "scholarly"
+    },
+    {
+      "source_family_id": "SF-R1-048",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "robinson2024_relbench"
+      ],
+      "operational_resource_keys": [],
+      "original_family_aliases": [
+        "fam_relbench_benchmark"
+      ],
+      "family_scope": "scholarly"
+    },
+    {
+      "source_family_id": "SF-R1-049",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "said2026_reproducibility_in_recommender_systems_a_survey"
+      ],
+      "operational_resource_keys": [],
+      "original_family_aliases": [
+        "sf_said_reproducibility_survey"
+      ],
+      "family_scope": "scholarly"
+    },
+    {
+      "source_family_id": "SF-R1-050",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "sarwar2001_itemcf"
+      ],
+      "operational_resource_keys": [],
+      "original_family_aliases": [
+        "FAM-L2-SARWAR-ITEMCF-2001"
+      ],
+      "family_scope": "scholarly"
+    },
+    {
+      "source_family_id": "SF-R1-051",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "shehzad2025_we_share_our_code_online_why_this_is_not_enough_to_ensure_"
+      ],
+      "operational_resource_keys": [],
+      "original_family_aliases": [
+        "sf_shehzad_code_reproducibility"
+      ],
+      "family_scope": "scholarly"
+    },
+    {
+      "source_family_id": "SF-R1-052",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "sheng2025_alpharec"
+      ],
+      "operational_resource_keys": [],
+      "original_family_aliases": [
+        "F-L4-ALPHAREC-2025"
+      ],
+      "family_scope": "scholarly"
+    },
+    {
+      "source_family_id": "SF-R1-053",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "sun2019_bert4rec"
+      ],
+      "operational_resource_keys": [],
+      "original_family_aliases": [
+        "family_bert4rec_original"
+      ],
+      "family_scope": "scholarly"
+    },
+    {
+      "source_family_id": "SF-R1-054",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "sun2023_daisyrec2"
+      ],
+      "operational_resource_keys": [],
+      "original_family_aliases": [
+        "sf_daisyrec_rigorous_evaluation"
+      ],
+      "family_scope": "scholarly"
+    },
+    {
+      "source_family_id": "SF-R1-055",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "tagliabue2021_coveo"
+      ],
+      "operational_resource_keys": [
+        "R-L5-COVEO"
+      ],
+      "original_family_aliases": [
+        "fam_coveo"
+      ],
+      "family_scope": "mixed"
+    },
+    {
+      "source_family_id": "SF-R1-056",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "tamm2021_metric_consistency"
+      ],
+      "operational_resource_keys": [],
+      "original_family_aliases": [
+        "sf_tamm_metric_consistency"
+      ],
+      "family_scope": "scholarly"
+    },
+    {
+      "source_family_id": "SF-R1-057",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "tran2024_vietnamese_food"
+      ],
+      "operational_resource_keys": [
+        "R-L5-VIFOODREC"
+      ],
+      "original_family_aliases": [
+        "fam_vifoodrec"
+      ],
+      "family_scope": "mixed"
+    },
+    {
+      "source_family_id": "SF-R1-058",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "truong2021_product_recommendation_system_using_opinion_mining_on_viet"
+      ],
+      "operational_resource_keys": [],
+      "original_family_aliases": [
+        "fam_vietnamese_opinion_mining"
+      ],
+      "family_scope": "scholarly"
+    },
+    {
+      "source_family_id": "SF-R1-059",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "volkovs2017_dropoutnet"
+      ],
+      "operational_resource_keys": [],
+      "original_family_aliases": [
+        "F-L4-DROPOUTNET-2017"
+      ],
+      "family_scope": "scholarly"
+    },
+    {
+      "source_family_id": "SF-R1-060",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "wang2022_directau"
+      ],
+      "operational_resource_keys": [],
+      "original_family_aliases": [
+        "FAM-L2-WANG-DIRECTAU-2022"
+      ],
+      "family_scope": "scholarly"
+    },
+    {
+      "source_family_id": "SF-R1-061",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "wang2025_t2diff"
+      ],
+      "operational_resource_keys": [],
+      "original_family_aliases": [
+        "FAM-L2-WANG-T2DIFF-2025"
+      ],
+      "family_scope": "scholarly"
+    },
+    {
+      "source_family_id": "SF-R1-062",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "wei2021_clcrec"
+      ],
+      "operational_resource_keys": [],
+      "original_family_aliases": [
+        "F-L4-CLCREC-2021"
+      ],
+      "family_scope": "scholarly"
+    },
+    {
+      "source_family_id": "SF-R1-063",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "wu2025_muse_taobao_mm"
+      ],
+      "operational_resource_keys": [
+        "R-L5-TAOBAO-MM"
+      ],
+      "original_family_aliases": [
+        "fam_taobao_mm"
+      ],
+      "family_scope": "mixed"
+    },
+    {
+      "source_family_id": "SF-R1-064",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "yi2019_ndr"
+      ],
+      "operational_resource_keys": [],
+      "original_family_aliases": [
+        "FAM-L2-YI-NDR-2019"
+      ],
+      "family_scope": "scholarly"
+    },
+    {
+      "source_family_id": "SF-R1-065",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "yu2022_simgcl"
+      ],
+      "operational_resource_keys": [],
+      "original_family_aliases": [
+        "F-L4-SIMGCL-2022",
+        "FAM-L2-YU-SIMGCL-2022"
+      ],
+      "family_scope": "scholarly"
+    },
+    {
+      "source_family_id": "SF-R1-066",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "yu2024_xsimgcl"
+      ],
+      "operational_resource_keys": [],
+      "original_family_aliases": [
+        "F-L4-XSIMGCL-2024"
+      ],
+      "family_scope": "scholarly"
+    },
+    {
+      "source_family_id": "SF-R1-067",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "yuan2022_tenrec"
+      ],
+      "operational_resource_keys": [
+        "R-L5-TENREC"
+      ],
+      "original_family_aliases": [
+        "fam_tenrec"
+      ],
+      "family_scope": "mixed"
+    },
+    {
+      "source_family_id": "SF-R1-068",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "yuan2025_contextgnn"
+      ],
+      "operational_resource_keys": [],
+      "original_family_aliases": [
+        "FAM-L2-YUAN-CONTEXTGNN-2025"
+      ],
+      "family_scope": "scholarly"
+    },
+    {
+      "source_family_id": "SF-R1-069",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "zhao2020_alternative_settings"
+      ],
+      "operational_resource_keys": [],
+      "original_family_aliases": [
+        "sf_zhao_alternative_settings"
+      ],
+      "family_scope": "scholarly"
+    },
+    {
+      "source_family_id": "SF-R1-070",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "zhao2022_recbole2"
+      ],
+      "operational_resource_keys": [],
+      "original_family_aliases": [
+        "sf_recbole2_library"
+      ],
+      "family_scope": "scholarly"
+    },
+    {
+      "source_family_id": "SF-R1-071",
+      "independent_family": true,
+      "scholarly_source_keys": [
+        "zheng2026_utgrec"
+      ],
+      "operational_resource_keys": [],
+      "original_family_aliases": [
+        "F-L4-UTGREC-2026"
+      ],
+      "family_scope": "scholarly"
+    },
+    {
+      "source_family_id": "SF-R1-072",
+      "independent_family": true,
+      "scholarly_source_keys": [],
+      "operational_resource_keys": [
+        "R-L5-OTTO"
+      ],
+      "original_family_aliases": [
+        "fam_otto"
+      ],
+      "family_scope": "operational"
+    },
+    {
+      "source_family_id": "SF-R1-073",
+      "independent_family": true,
+      "scholarly_source_keys": [],
+      "operational_resource_keys": [
+        "R-L5-RELBENCH-REL-AMAZON"
+      ],
+      "original_family_aliases": [
+        "fam_amazon_reviews_2018"
+      ],
+      "family_scope": "operational"
+    },
+    {
+      "source_family_id": "SF-R1-074",
+      "independent_family": true,
+      "scholarly_source_keys": [],
+      "operational_resource_keys": [
+        "R-L5-HM",
+        "R-L5-RELBENCH-REL-HM"
+      ],
+      "original_family_aliases": [
+        "fam_hm"
+      ],
+      "family_scope": "operational"
+    },
+    {
+      "source_family_id": "SF-R1-075",
+      "independent_family": true,
+      "scholarly_source_keys": [],
+      "operational_resource_keys": [
+        "R-L5-COMPLETE-JOURNEY-PROVIDER",
+        "R-L5-COMPLETEJOURNEY-R-PACKAGE"
+      ],
+      "original_family_aliases": [
+        "fam_complete_journey"
+      ],
+      "family_scope": "operational"
+    }
+  ],
+  "dependencies": [
+    {
+      "dependency_type": "paper_version",
+      "source_family_id": "SF-R1-028",
+      "depends_on_family_id": "SF-R1-028",
+      "source_keys": [
+        "krichene2020_sampled_metrics"
+      ],
+      "resource_keys": [],
+      "counting_effect": "not_an_additional_independent_source_family",
+      "note": "KDD 2020 paper and IJCAI 2021 extended abstract are one work family."
+    },
+    {
+      "dependency_type": "paper_version",
+      "source_family_id": "SF-R1-031",
+      "depends_on_family_id": "SF-R1-031",
+      "source_keys": [
+        "li2023_reliable_sampling"
+      ],
+      "resource_keys": [],
+      "counting_effect": "not_an_additional_independent_source_family",
+      "note": "AAAI 2023 paper and TORS 2024 journal version are one work family."
+    },
+    {
+      "dependency_type": "paper_version",
+      "source_family_id": "SF-R1-033",
+      "depends_on_family_id": "SF-R1-033",
+      "source_keys": [
+        "liu2009_hybrid_seq_cf"
+      ],
+      "resource_keys": [],
+      "counting_effect": "not_an_additional_independent_source_family",
+      "note": "The 2007 conference predecessor remains a distinct manifestation; it does not substitute for the 2009 journal content."
+    },
+    {
+      "dependency_type": "repository_manifestation",
+      "source_family_id": "SF-R1-038",
+      "depends_on_family_id": "SF-R1-038",
+      "source_keys": [
+        "tran2024_viecomrec"
+      ],
+      "resource_keys": [
+        "R-L5-VIECOMREC"
+      ],
+      "counting_effect": "not_an_additional_independent_source_family",
+      "note": "Dataset paper and repository belong to one evidence family."
+    },
+    {
+      "dependency_type": "upstream_dataset",
+      "source_family_id": "SF-R1-019",
+      "depends_on_family_id": "SF-R1-019",
+      "source_keys": [
+        "hou2026_blair"
+      ],
+      "resource_keys": [
+        "R-L5-AMAZON-REVIEWS-2023"
+      ],
+      "counting_effect": "not_an_additional_independent_source_family",
+      "note": "BLaIR derives from Amazon Reviews 2023."
+    },
+    {
+      "dependency_type": "upstream_dataset",
+      "source_family_id": "SF-R1-063",
+      "depends_on_family_id": "SF-R1-063",
+      "source_keys": [
+        "wu2025_muse_taobao_mm"
+      ],
+      "resource_keys": [
+        "R-L5-TAOBAO-MM"
+      ],
+      "counting_effect": "not_an_additional_independent_source_family",
+      "note": "MUSE uses the TAOBAO-MM operational dataset."
+    },
+    {
+      "dependency_type": "dataset_adapter",
+      "source_family_id": "SF-R1-073",
+      "depends_on_family_id": "SF-R1-073",
+      "source_keys": [],
+      "resource_keys": [
+        "R-L5-RELBENCH-REL-AMAZON"
+      ],
+      "counting_effect": "not_an_additional_independent_source_family",
+      "note": "RelBench adapter is not independent of upstream Amazon Reviews 2018 data."
+    },
+    {
+      "dependency_type": "dataset_adapter",
+      "source_family_id": "SF-R1-074",
+      "depends_on_family_id": "SF-R1-074",
+      "source_keys": [],
+      "resource_keys": [
+        "R-L5-RELBENCH-REL-HM",
+        "R-L5-HM"
+      ],
+      "counting_effect": "not_an_additional_independent_source_family",
+      "note": "RelBench rel-hm is an adapter over H&M."
+    },
+    {
+      "dependency_type": "provider_package",
+      "source_family_id": "SF-R1-075",
+      "depends_on_family_id": "SF-R1-075",
+      "source_keys": [],
+      "resource_keys": [
+        "R-L5-COMPLETEJOURNEY-R-PACKAGE",
+        "R-L5-COMPLETE-JOURNEY-PROVIDER"
+      ],
+      "counting_effect": "not_an_additional_independent_source_family",
+      "note": "Package CC0 does not establish upstream dataset redistribution rights."
+    },
+    {
+      "dependency_type": "benchmark_reuse",
+      "source_family_id": "SF-R1-038",
+      "depends_on_family_id": "SF-R1-038",
+      "source_keys": [
+        "nguyen2025_viecomrec_graph",
+        "tran2024_viecomrec"
+      ],
+      "resource_keys": [],
+      "counting_effect": "not_an_additional_independent_source_family",
+      "note": "The later graph paper reuses ViEcomRec; count the dataset lineage once for independence-sensitive claims."
+    },
+    {
+      "dependency_type": "method_reuse",
+      "source_family_id": "SF-R1-052",
+      "depends_on_family_id": "SF-R1-017",
+      "source_keys": [
+        "sheng2025_alpharec",
+        "hou2022_unisrec",
+        "hou2023_vqrec"
+      ],
+      "resource_keys": [],
+      "counting_effect": "not_an_additional_independent_source_family",
+      "note": "AlphaRec evaluates against UniSRec/VQ-Rec transfer baselines; this is a benchmark dependency, not identity equivalence."
+    },
+    {
+      "dependency_type": "backbone_reuse",
+      "source_family_id": "SF-R1-065",
+      "depends_on_family_id": "SF-R1-015",
+      "source_keys": [
+        "yu2022_simgcl",
+        "he2020_lightgcn"
+      ],
+      "resource_keys": [],
+      "counting_effect": "not_an_additional_independent_source_family",
+      "note": "SimGCL builds on the LightGCN graph backbone."
+    },
+    {
+      "dependency_type": "backbone_reuse",
+      "source_family_id": "SF-R1-004",
+      "depends_on_family_id": "SF-R1-015",
+      "source_keys": [
+        "cai2023_lightgcl",
+        "he2020_lightgcn"
+      ],
+      "resource_keys": [],
+      "counting_effect": "not_an_additional_independent_source_family",
+      "note": "LightGCL is evaluated as a graph-CF extension of the LightGCN lineage."
+    }
+  ]
+}

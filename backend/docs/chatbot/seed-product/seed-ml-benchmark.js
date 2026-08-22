@@ -282,6 +282,8 @@ async function validateRun({ clients, runId, specHash, coldProducts, ruleSummary
   }
   return {
     ...ruleSummary,
+    transitionUserCount: spec.transition_user_count,
+    transitionFraction: spec.organic_rule_transition_fraction,
     eligibleTrainingRuleTargets,
     alignedTrainingRuleTargets,
     trainingRuleTargetRate,

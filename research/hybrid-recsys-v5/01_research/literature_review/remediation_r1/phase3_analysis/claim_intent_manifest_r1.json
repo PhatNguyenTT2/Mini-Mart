@@ -1,0 +1,1777 @@
+{
+  "schema_version": "stage1b-r1-r5-claim-intent-manifest-1.0",
+  "manifest_version": "1.0",
+  "manifest_id": "M-2026-08-21T13:25:15Z-9ed3",
+  "emitted_by": "synthesis_agent",
+  "emitted_at": "2026-08-21T13:25:15Z",
+  "session_id": "r5-fresh-worktree-9950",
+  "project": "hybrid-recsys-v5",
+  "stage": "1B",
+  "round": "R1",
+  "step": "R5_claim_map_and_phase3_synthesis",
+  "input_cutoff": "2026-08-21",
+  "r5_input_manifest_sha256": "9ed388e94ec44e1574ac370918cd4d6be2f321235fa63586845a0da76bbe6ba8",
+  "one_shot": true,
+  "claims": [
+    {
+      "claim_id": "C-001",
+      "source_claim_id": "C-L5-EXT-01",
+      "claim_text": "Amazon-M2 is suitable evidence for multilingual, content-rich session and next-engagement modeling, but its inspected task does not constitute strict H4 purchase replication because the target is the next interacted product and the schema does not establish persistent users across sessions.",
+      "intended_evidence_kind": "empirical",
+      "planned_refs": [
+        "jin2023_amazon_m2"
+      ],
+      "planned_resources": [
+        "R-L5-AMAZON-M2"
+      ],
+      "planned_source_family_ids": [
+        "SF-R1-025"
+      ],
+      "locator_need": "verified_non_none_frozen_r4_locator_for_every_visible_citation",
+      "planned_locator_ids": [
+        "LOC-R4-S-jin2023_amazon_m2-01",
+        "LOC-R4-R-R-L5-AMAZON-M2-01"
+      ],
+      "negative_constraints": [
+        {
+          "constraint_id": "NC-C001-1",
+          "rule": "Do not label next engagement as purchase."
+        },
+        {
+          "constraint_id": "NC-C001-2",
+          "rule": "Do not infer a persistent user from a session identifier."
+        }
+      ],
+      "target_section": "external_resource_compatibility_rights_and_scope",
+      "frozen_r3_disposition": "planning_only",
+      "r5_intended_disposition": "planning_only"
+    },
+    {
+      "claim_id": "C-002",
+      "source_claim_id": "C-L5-EXT-02",
+      "claim_text": "The inspected Coveo release provides sessions, purchase and cart events, shifted timestamps, and item content, but no persistent user identifier; its pinned terms also prohibit redistribution and restrict use to non-commercial research and education.",
+      "intended_evidence_kind": "empirical",
+      "planned_refs": [
+        "tagliabue2021_coveo"
+      ],
+      "planned_resources": [
+        "R-L5-COVEO"
+      ],
+      "planned_source_family_ids": [
+        "SF-R1-055"
+      ],
+      "locator_need": "verified_non_none_frozen_r4_locator_for_every_visible_citation",
+      "planned_locator_ids": [
+        "LOC-R4-S-tagliabue2021_coveo-01",
+        "LOC-R4-R-R-L5-COVEO-01"
+      ],
+      "negative_constraints": [
+        {
+          "constraint_id": "NC-C002-1",
+          "rule": "Do not infer redistribution permission from public download."
+        },
+        {
+          "constraint_id": "NC-C002-2",
+          "rule": "Do not treat a session hash as a persistent user."
+        }
+      ],
+      "target_section": "external_resource_compatibility_rights_and_scope",
+      "frozen_r3_disposition": "planning_only",
+      "r5_intended_disposition": "planning_only"
+    },
+    {
+      "claim_id": "C-003",
+      "source_claim_id": "C-L5-EXT-03",
+      "claim_text": "Complete Journey is the closest reviewed external resource to the locked structural fields because the provider describes household-level purchases, transaction/basket structure, time, and product/marketing tables; its use remains conditional because the full edition was not acquired and provider terms do not grant general redistribution.",
+      "intended_evidence_kind": "empirical",
+      "planned_refs": [],
+      "planned_resources": [
+        "R-L5-COMPLETE-JOURNEY-PROVIDER",
+        "R-L5-COMPLETEJOURNEY-R-PACKAGE"
+      ],
+      "planned_source_family_ids": [
+        "SF-R1-075"
+      ],
+      "locator_need": "verified_non_none_frozen_r4_locator_for_every_visible_citation",
+      "planned_locator_ids": [
+        "LOC-R4-R-R-L5-COMPLETE-JOURNEY-PROVIDER-01",
+        "LOC-R4-R-R-L5-COMPLETEJOURNEY-R-PACKAGE-01"
+      ],
+      "negative_constraints": [
+        {
+          "constraint_id": "NC-C003-1",
+          "rule": "Do not treat package CC0 as a dunnhumby grant."
+        },
+        {
+          "constraint_id": "NC-C003-2",
+          "rule": "Do not claim complete row-level compatibility until the selected edition is acquired and inspected."
+        }
+      ],
+      "target_section": "external_resource_compatibility_rights_and_scope",
+      "frozen_r3_disposition": "planning_only",
+      "r5_intended_disposition": "planning_only"
+    },
+    {
+      "claim_id": "C-004",
+      "source_claim_id": "C-L5-EXT-04",
+      "claim_text": "RelBench rel-amazon and rel-hm are derivative adapters, not independent evidence or independent rights grants from Amazon Reviews or H&M; the current rel-amazon card states that its dataset license is not specified.",
+      "intended_evidence_kind": "empirical",
+      "planned_refs": [
+        "robinson2024_relbench"
+      ],
+      "planned_resources": [
+        "R-L5-RELBENCH-REL-AMAZON",
+        "R-L5-RELBENCH-REL-HM",
+        "R-L5-HM"
+      ],
+      "planned_source_family_ids": [
+        "SF-R1-048",
+        "SF-R1-073",
+        "SF-R1-074"
+      ],
+      "locator_need": "verified_non_none_frozen_r4_locator_for_every_visible_citation",
+      "planned_locator_ids": [
+        "LOC-R4-S-robinson2024_relbench-01",
+        "LOC-R4-R-R-L5-RELBENCH-REL-AMAZON-01",
+        "LOC-R4-R-R-L5-RELBENCH-REL-HM-01",
+        "LOC-R4-R-R-L5-HM-01"
+      ],
+      "negative_constraints": [
+        {
+          "constraint_id": "NC-C004-1",
+          "rule": "Do not count adapters as independent upstream datasets."
+        },
+        {
+          "constraint_id": "NC-C004-2",
+          "rule": "Do not infer H&M redistribution rights from RelBench's MIT code license."
+        }
+      ],
+      "target_section": "external_resource_compatibility_rights_and_scope",
+      "frozen_r3_disposition": "planning_only",
+      "r5_intended_disposition": "planning_only"
+    },
+    {
+      "claim_id": "C-005",
+      "source_claim_id": "C-L5-EXT-05",
+      "claim_text": "The inspected TAOBAO-MM release uses a click/no-click target and therefore cannot support a purchase-outcome claim, even though it supplies persistent users, long behavior histories, item features, multimodal embeddings, and a temporal split.",
+      "intended_evidence_kind": "empirical",
+      "planned_refs": [
+        "wu2025_muse_taobao_mm"
+      ],
+      "planned_resources": [
+        "R-L5-TAOBAO-MM"
+      ],
+      "planned_source_family_ids": [
+        "SF-R1-063"
+      ],
+      "locator_need": "verified_non_none_frozen_r4_locator_for_every_visible_citation",
+      "planned_locator_ids": [
+        "LOC-R4-S-wu2025_muse_taobao_mm-01",
+        "LOC-R4-R-R-L5-TAOBAO-MM-01"
+      ],
+      "negative_constraints": [
+        {
+          "constraint_id": "NC-C005-1",
+          "rule": "Do not reinterpret click as purchase."
+        },
+        {
+          "constraint_id": "NC-C005-2",
+          "rule": "Do not infer event-level timestamps where the card exposes only a temporal split."
+        }
+      ],
+      "target_section": "external_resource_compatibility_rights_and_scope",
+      "frozen_r3_disposition": "planning_only",
+      "r5_intended_disposition": "planning_only"
+    },
+    {
+      "claim_id": "C-006",
+      "source_claim_id": "C-L5-RIGHTS-01",
+      "claim_text": "For the reviewed operational resources, availability, code/package license, paper license, and dataset rights/redistribution are independent layers and must be passed separately.",
+      "intended_evidence_kind": "empirical",
+      "planned_refs": [],
+      "planned_resources": [
+        "R-L5-COMPLETE-JOURNEY-PROVIDER",
+        "R-L5-COMPLETEJOURNEY-R-PACKAGE",
+        "R-L5-VIFOODREC",
+        "R-L5-AMAZON-REVIEWS-2023"
+      ],
+      "planned_source_family_ids": [
+        "SF-R1-019",
+        "SF-R1-057",
+        "SF-R1-075"
+      ],
+      "locator_need": "verified_non_none_frozen_r4_locator_for_every_visible_citation",
+      "planned_locator_ids": [
+        "LOC-R4-R-R-L5-COMPLETE-JOURNEY-PROVIDER-01",
+        "LOC-R4-R-R-L5-COMPLETEJOURNEY-R-PACKAGE-01",
+        "LOC-R4-R-R-L5-VIFOODREC-01",
+        "LOC-R4-R-R-L5-AMAZON-REVIEWS-2023-01"
+      ],
+      "negative_constraints": [
+        {
+          "constraint_id": "NC-C006-1",
+          "rule": "Availability does not imply redistribution permission."
+        },
+        {
+          "constraint_id": "NC-C006-2",
+          "rule": "A code or package license does not automatically license upstream data."
+        },
+        {
+          "constraint_id": "NC-C006-3",
+          "rule": "A paper license does not automatically license its dataset."
+        }
+      ],
+      "target_section": "external_resource_compatibility_rights_and_scope",
+      "frozen_r3_disposition": "planning_only",
+      "r5_intended_disposition": "planning_only"
+    },
+    {
+      "claim_id": "C-007",
+      "source_claim_id": "C-L5-SCOPE-01",
+      "claim_text": "Across the 14 reviewed operational records, no candidate is passed unconditionally for the locked strict H4 replication: candidates with purchase structure have at least one unresolved persistent-user, basket, edition, acquisition, or rights constraint, and interaction-only candidates fail the purchase outcome.",
+      "intended_evidence_kind": "empirical",
+      "planned_refs": [],
+      "planned_resources": [
+        "R-L5-VIECOMREC",
+        "R-L5-VIFOODREC",
+        "R-L5-VIHOREC",
+        "R-L5-AMAZON-M2",
+        "R-L5-TENREC",
+        "R-L5-COVEO",
+        "R-L5-OTTO",
+        "R-L5-RELBENCH-REL-AMAZON",
+        "R-L5-RELBENCH-REL-HM",
+        "R-L5-AMAZON-REVIEWS-2023",
+        "R-L5-HM",
+        "R-L5-COMPLETE-JOURNEY-PROVIDER",
+        "R-L5-COMPLETEJOURNEY-R-PACKAGE",
+        "R-L5-TAOBAO-MM"
+      ],
+      "planned_source_family_ids": [
+        "SF-R1-019",
+        "SF-R1-025",
+        "SF-R1-038",
+        "SF-R1-039",
+        "SF-R1-055",
+        "SF-R1-057",
+        "SF-R1-063",
+        "SF-R1-067",
+        "SF-R1-072",
+        "SF-R1-073",
+        "SF-R1-074",
+        "SF-R1-075"
+      ],
+      "locator_need": "verified_non_none_frozen_r4_locator_for_every_visible_citation",
+      "planned_locator_ids": [
+        "LOC-R4-R-R-L5-VIECOMREC-01",
+        "LOC-R4-R-R-L5-VIFOODREC-01",
+        "LOC-R4-R-R-L5-VIHOREC-01",
+        "LOC-R4-R-R-L5-AMAZON-M2-01",
+        "LOC-R4-R-R-L5-TENREC-01",
+        "LOC-R4-R-R-L5-COVEO-01",
+        "LOC-R4-R-R-L5-OTTO-01",
+        "LOC-R4-R-R-L5-RELBENCH-REL-AMAZON-01",
+        "LOC-R4-R-R-L5-RELBENCH-REL-HM-01",
+        "LOC-R4-R-R-L5-AMAZON-REVIEWS-2023-01",
+        "LOC-R4-R-R-L5-HM-01",
+        "LOC-R4-R-R-L5-COMPLETE-JOURNEY-PROVIDER-01",
+        "LOC-R4-R-R-L5-COMPLETEJOURNEY-R-PACKAGE-01",
+        "LOC-R4-R-R-L5-TAOBAO-MM-01"
+      ],
+      "negative_constraints": [
+        {
+          "constraint_id": "NC-C007-1",
+          "rule": "Do not claim no suitable dataset exists outside the reviewed candidates."
+        },
+        {
+          "constraint_id": "NC-C007-2",
+          "rule": "Do not convert this planning audit into an H4 result."
+        },
+        {
+          "constraint_id": "NC-C007-3",
+          "rule": "H4 remains NOT_RUN and NOT_TESTED."
+        }
+      ],
+      "target_section": "external_resource_compatibility_rights_and_scope",
+      "frozen_r3_disposition": "planning_only",
+      "r5_intended_disposition": "planning_only"
+    },
+    {
+      "claim_id": "C-008",
+      "source_claim_id": "C-L5-VN-01",
+      "claim_text": "In the inspected ViEcomRec artifact, the released face-cleanser corpus contains 2,244 items, 369,099 reviews, and 304,708 users, with review date-time and a chronological leave-last-two evaluation protocol.",
+      "intended_evidence_kind": "empirical",
+      "planned_refs": [
+        "tran2024_viecomrec"
+      ],
+      "planned_resources": [
+        "R-L5-VIECOMREC"
+      ],
+      "planned_source_family_ids": [
+        "SF-R1-038"
+      ],
+      "locator_need": "verified_non_none_frozen_r4_locator_for_every_visible_citation",
+      "planned_locator_ids": [
+        "LOC-R4-S-tran2024_viecomrec-01",
+        "LOC-R4-R-R-L5-VIECOMREC-01"
+      ],
+      "negative_constraints": [
+        {
+          "constraint_id": "NC-C008-1",
+          "rule": "Do not treat reviews as complete purchase baskets."
+        },
+        {
+          "constraint_id": "NC-C008-2",
+          "rule": "Do not generalize beyond the face-cleanser/platform scope."
+        }
+      ],
+      "target_section": "external_resource_compatibility_rights_and_scope",
+      "frozen_r3_disposition": "planning_only",
+      "r5_intended_disposition": "planning_only"
+    },
+    {
+      "claim_id": "C-009",
+      "source_claim_id": "C-L5-VN-02",
+      "claim_text": "Among the reviewed Vietnamese candidates with acquired full artifacts, ViFoodRec and ViHoRec supply rating/review resources, while the restaurant-image work evaluates non-temporal rating regression; none independently provides all locked strict purchase, persistent-user, basket, timestamp, content, and candidate-universe fields.",
+      "intended_evidence_kind": "empirical",
+      "planned_refs": [
+        "tran2024_vietnamese_food",
+        "nguyen2026_vihorec",
+        "pham2024_developing_a_restaurant_recommended_system_via_the_vietnam"
+      ],
+      "planned_resources": [],
+      "planned_source_family_ids": [
+        "SF-R1-039",
+        "SF-R1-045",
+        "SF-R1-057"
+      ],
+      "locator_need": "verified_non_none_frozen_r4_locator_for_every_visible_citation",
+      "planned_locator_ids": [
+        "LOC-R4-S-tran2024_vietnamese_food-01",
+        "LOC-R4-S-nguyen2026_vihorec-01",
+        "LOC-R4-S-pham2024_developing_a_restaurant_recommended_system_via_the_vietnam-01"
+      ],
+      "negative_constraints": [
+        {
+          "constraint_id": "NC-C009-1",
+          "rule": "Do not extend this reviewed-candidate result to all Vietnamese recommender systems."
+        },
+        {
+          "constraint_id": "NC-C009-2",
+          "rule": "Do not turn a rating or review into an observed purchase without source support."
+        }
+      ],
+      "target_section": "external_resource_compatibility_rights_and_scope",
+      "frozen_r3_disposition": "planning_only",
+      "r5_intended_disposition": "planning_only"
+    },
+    {
+      "claim_id": "C-010",
+      "source_claim_id": "L1-CC-001",
+      "claim_text": "For the sampled-negative protocol analyzed in the Krichene and Rendle study family, naive sampled ranking metrics need not preserve the relative ordering obtained from exact evaluation; sampled and exact results therefore remain different estimands.",
+      "intended_evidence_kind": "empirical",
+      "planned_refs": [
+        "krichene2020_sampled_metrics",
+        "krichene2021_on_sampled_metrics_for_item_recommendation_extended_abstra",
+        "li2023_reliable_sampling",
+        "pereira2025_on_the_reliability_of_sampling_strategies_in_offline_recom"
+      ],
+      "planned_resources": [],
+      "planned_source_family_ids": [
+        "SF-R1-028",
+        "SF-R1-031",
+        "SF-R1-043"
+      ],
+      "locator_need": "verified_non_none_frozen_r4_locator_for_every_visible_citation",
+      "planned_locator_ids": [
+        "LOC-R4-S-krichene2020_sampled_metrics-01",
+        "LOC-R4-S-krichene2021_on_sampled_metrics_for_item_recommendation_extended_abstra-01",
+        "LOC-R4-S-li2023_reliable_sampling-01",
+        "LOC-R4-S-pereira2025_on_the_reliability_of_sampling_strategies_in_offline_recom-01"
+      ],
+      "negative_constraints": [
+        {
+          "constraint_id": "NC-C010-1",
+          "rule": "Do not relabel sampled metrics as exact or full-catalog metrics."
+        },
+        {
+          "constraint_id": "NC-C010-2",
+          "rule": "Do not conclude that every sampling estimator is invalid."
+        },
+        {
+          "constraint_id": "NC-C010-3",
+          "rule": "Do not transfer numerical results to v5."
+        }
+      ],
+      "target_section": "evaluation_protocols_and_reproducibility",
+      "frozen_r3_disposition": "planning_only",
+      "r5_intended_disposition": "planning_only"
+    },
+    {
+      "claim_id": "C-011",
+      "source_claim_id": "L1-CC-002",
+      "claim_text": "Candidate-universe construction, including the number and selection of decoy or non-relevant items, is part of the evaluation protocol and can alter metric estimates and comparative conclusions.",
+      "intended_evidence_kind": "empirical",
+      "planned_refs": [
+        "zhao2020_alternative_settings",
+        "ihemelandu2023_candidate_set_sampling_for_evaluating_top_n_recommendation",
+        "pereira2025_on_the_reliability_of_sampling_strategies_in_offline_recom",
+        "parajuli2026_on_the_convergent_validity_of_offline_evaluation_designs_f"
+      ],
+      "planned_resources": [],
+      "planned_source_family_ids": [
+        "SF-R1-022",
+        "SF-R1-040",
+        "SF-R1-043",
+        "SF-R1-069"
+      ],
+      "locator_need": "verified_non_none_frozen_r4_locator_for_every_visible_citation",
+      "planned_locator_ids": [
+        "LOC-R4-S-zhao2020_alternative_settings-01",
+        "LOC-R4-S-ihemelandu2023_candidate_set_sampling_for_evaluating_top_n_recommendation-01",
+        "LOC-R4-S-pereira2025_on_the_reliability_of_sampling_strategies_in_offline_recom-01",
+        "LOC-R4-S-parajuli2026_on_the_convergent_validity_of_offline_evaluation_designs_f-01"
+      ],
+      "negative_constraints": [
+        {
+          "constraint_id": "NC-C011-1",
+          "rule": "Do not compare raw scores produced from different candidate universes."
+        },
+        {
+          "constraint_id": "NC-C011-2",
+          "rule": "Do not assume one candidate-sampling policy is uniformly least biased across datasets and targets."
+        },
+        {
+          "constraint_id": "NC-C011-3",
+          "rule": "Do not treat candidate generation by another algorithm as full-catalog evaluation."
+        }
+      ],
+      "target_section": "evaluation_protocols_and_reproducibility",
+      "frozen_r3_disposition": "planning_only",
+      "r5_intended_disposition": "planning_only"
+    },
+    {
+      "claim_id": "C-012",
+      "source_claim_id": "L1-CC-003",
+      "claim_text": "Temporal, random, leave-one-out, and global-temporal splitting policies can yield different metrics and model rankings, so the split policy and target-selection rule must be locked and reported.",
+      "intended_evidence_kind": "empirical",
+      "planned_refs": [
+        "zhao2020_alternative_settings",
+        "gusak2025_time_split",
+        "parajuli2026_on_the_convergent_validity_of_offline_evaluation_designs_f"
+      ],
+      "planned_resources": [],
+      "planned_source_family_ids": [
+        "SF-R1-013",
+        "SF-R1-040",
+        "SF-R1-069"
+      ],
+      "locator_need": "verified_non_none_frozen_r4_locator_for_every_visible_citation",
+      "planned_locator_ids": [
+        "LOC-R4-S-zhao2020_alternative_settings-01",
+        "LOC-R4-S-gusak2025_time_split-01",
+        "LOC-R4-S-parajuli2026_on_the_convergent_validity_of_offline_evaluation_designs_f-01"
+      ],
+      "negative_constraints": [
+        {
+          "constraint_id": "NC-C012-1",
+          "rule": "Do not assert that temporal splitting is universally superior for every recommendation task."
+        },
+        {
+          "constraint_id": "NC-C012-2",
+          "rule": "Do not compare raw scores across split policies."
+        },
+        {
+          "constraint_id": "NC-C012-3",
+          "rule": "Do not transfer sequential next-item findings unchanged to non-sequential tasks."
+        }
+      ],
+      "target_section": "evaluation_protocols_and_reproducibility",
+      "frozen_r3_disposition": "planning_only",
+      "r5_intended_disposition": "planning_only"
+    },
+    {
+      "claim_id": "C-013",
+      "source_claim_id": "L1-CC-004",
+      "claim_text": "Metric name alone is insufficient to identify an evaluand: formula, eligible-user rule, empty-result handling, per-user aggregation, cutoff, and candidate scope must be specified and parity-tested.",
+      "intended_evidence_kind": "empirical",
+      "planned_refs": [
+        "tamm2021_metric_consistency",
+        "canamares2020_offline_options",
+        "castells2022_offline_recommender_system_evaluation_challenges_and_new_d"
+      ],
+      "planned_resources": [],
+      "planned_source_family_ids": [
+        "SF-R1-005",
+        "SF-R1-006",
+        "SF-R1-056"
+      ],
+      "locator_need": "verified_non_none_frozen_r4_locator_for_every_visible_citation",
+      "planned_locator_ids": [
+        "LOC-R4-S-tamm2021_metric_consistency-01",
+        "LOC-R4-S-canamares2020_offline_options-01",
+        "LOC-R4-S-castells2022_offline_recommender_system_evaluation_challenges_and_new_d-01"
+      ],
+      "negative_constraints": [
+        {
+          "constraint_id": "NC-C013-1",
+          "rule": "Do not infer semantic equality from a shared label such as Recall, Hit Rate, NDCG, AUC, or GAUC."
+        },
+        {
+          "constraint_id": "NC-C013-2",
+          "rule": "Do not infer that a library default implements the v5 metric contract."
+        },
+        {
+          "constraint_id": "NC-C013-3",
+          "rule": "Do not use Bradley 1997 as a source for project-specific GAUC aggregation."
+        }
+      ],
+      "target_section": "evaluation_protocols_and_reproducibility",
+      "frozen_r3_disposition": "planning_only",
+      "r5_intended_disposition": "planning_only"
+    },
+    {
+      "claim_id": "C-014",
+      "source_claim_id": "L1-CC-005",
+      "claim_text": "Tuning budget, search space, validation criterion, baseline optimization, preprocessing, seeds, stopping rules, and evaluation implementation are part of the comparison protocol and can affect claims of progress.",
+      "intended_evidence_kind": "empirical",
+      "planned_refs": [
+        "dacrema2021_reproducibility",
+        "sun2023_daisyrec2",
+        "benigni2026_diffusion_recommender_models_and_the_illusion_of_progress_",
+        "jannach2026_methodological_standards"
+      ],
+      "planned_resources": [],
+      "planned_source_family_ids": [
+        "SF-R1-002",
+        "SF-R1-009",
+        "SF-R1-023",
+        "SF-R1-054"
+      ],
+      "locator_need": "verified_non_none_frozen_r4_locator_for_every_visible_citation",
+      "planned_locator_ids": [
+        "LOC-R4-S-dacrema2021_reproducibility-01",
+        "LOC-R4-S-sun2023_daisyrec2-01",
+        "LOC-R4-S-benigni2026_diffusion_recommender_models_and_the_illusion_of_progress_-01",
+        "LOC-R4-S-jannach2026_methodological_standards-01"
+      ],
+      "negative_constraints": [
+        {
+          "constraint_id": "NC-C014-1",
+          "rule": "Do not attribute performance differences to architecture when tuning budgets or evaluation chains differ."
+        },
+        {
+          "constraint_id": "NC-C014-2",
+          "rule": "Do not treat reported best hyperparameters as a fair shared budget."
+        },
+        {
+          "constraint_id": "NC-C014-3",
+          "rule": "Do not transfer reproduced numerical rankings to v5."
+        }
+      ],
+      "target_section": "evaluation_protocols_and_reproducibility",
+      "frozen_r3_disposition": "planning_only",
+      "r5_intended_disposition": "planning_only"
+    },
+    {
+      "claim_id": "C-015",
+      "source_claim_id": "L1-CC-006",
+      "claim_text": "Public availability of code or a repository can enable a reproduction attempt but does not by itself establish that data transformations, splits, dependencies, hyperparameters, or numerical results were reproduced.",
+      "intended_evidence_kind": "empirical",
+      "planned_refs": [
+        "dacrema2021_reproducibility",
+        "shehzad2025_we_share_our_code_online_why_this_is_not_enough_to_ensure_",
+        "zhao2022_recbole2"
+      ],
+      "planned_resources": [],
+      "planned_source_family_ids": [
+        "SF-R1-009",
+        "SF-R1-051",
+        "SF-R1-070"
+      ],
+      "locator_need": "verified_non_none_frozen_r4_locator_for_every_visible_citation",
+      "planned_locator_ids": [
+        "LOC-R4-S-dacrema2021_reproducibility-01",
+        "LOC-R4-S-shehzad2025_we_share_our_code_online_why_this_is_not_enough_to_ensure_-01",
+        "LOC-R4-S-zhao2022_recbole2-01"
+      ],
+      "negative_constraints": [
+        {
+          "constraint_id": "NC-C015-1",
+          "rule": "Do not label a v5 adapter reproduced solely because its upstream repository is public."
+        },
+        {
+          "constraint_id": "NC-C015-2",
+          "rule": "Do not infer a license or redistribution right from public accessibility."
+        },
+        {
+          "constraint_id": "NC-C015-3",
+          "rule": "Do not generalize the Shehzad audit beyond its 65-paper SIGIR 2022–2024 sample or treat artifact availability as proof of numerical reproduction."
+        }
+      ],
+      "target_section": "evaluation_protocols_and_reproducibility",
+      "frozen_r3_disposition": "planning_only",
+      "r5_intended_disposition": "planning_only"
+    },
+    {
+      "claim_id": "C-016",
+      "source_claim_id": "L1-CC-007",
+      "claim_text": "For v5 planning, an official-protocol reproduction should test fidelity to each source implementation, while a harmonized benchmark should hold the v5 data, candidate, metric, and tuning contract constant; the two outputs answer different questions and should be reported separately.",
+      "intended_evidence_kind": "empirical",
+      "planned_refs": [
+        "dacrema2021_reproducibility",
+        "sun2023_daisyrec2",
+        "zhao2022_recbole2",
+        "jannach2026_methodological_standards"
+      ],
+      "planned_resources": [],
+      "planned_source_family_ids": [
+        "SF-R1-009",
+        "SF-R1-023",
+        "SF-R1-054",
+        "SF-R1-070"
+      ],
+      "locator_need": "verified_non_none_frozen_r4_locator_for_every_visible_citation",
+      "planned_locator_ids": [
+        "LOC-R4-S-dacrema2021_reproducibility-01",
+        "LOC-R4-S-sun2023_daisyrec2-01",
+        "LOC-R4-S-zhao2022_recbole2-01",
+        "LOC-R4-S-jannach2026_methodological_standards-01"
+      ],
+      "negative_constraints": [
+        {
+          "constraint_id": "NC-C016-1",
+          "rule": "Do not call a harmonized reimplementation an official reproduction without adapter-parity evidence."
+        },
+        {
+          "constraint_id": "NC-C016-2",
+          "rule": "Do not compare official-protocol raw metrics across incompatible datasets or pipelines."
+        },
+        {
+          "constraint_id": "NC-C016-3",
+          "rule": "Do not claim the cited sources prescribe the exact v5 two-table format."
+        }
+      ],
+      "target_section": "evaluation_protocols_and_reproducibility",
+      "frozen_r3_disposition": "planning_only",
+      "r5_intended_disposition": "planning_only"
+    },
+    {
+      "claim_id": "C-017",
+      "source_claim_id": "L1-CC-008",
+      "claim_text": "A raw offline metric value is interpretable only within its dataset, split, target, candidate universe, metric implementation, aggregation, and tuning pipeline; values from different pipelines are not directly comparable without a justified harmonization.",
+      "intended_evidence_kind": "empirical",
+      "planned_refs": [
+        "zhao2020_alternative_settings",
+        "canamares2020_offline_options",
+        "gusak2025_time_split",
+        "parajuli2026_on_the_convergent_validity_of_offline_evaluation_designs_f"
+      ],
+      "planned_resources": [],
+      "planned_source_family_ids": [
+        "SF-R1-005",
+        "SF-R1-013",
+        "SF-R1-040",
+        "SF-R1-069"
+      ],
+      "locator_need": "verified_non_none_frozen_r4_locator_for_every_visible_citation",
+      "planned_locator_ids": [
+        "LOC-R4-S-zhao2020_alternative_settings-01",
+        "LOC-R4-S-canamares2020_offline_options-01",
+        "LOC-R4-S-gusak2025_time_split-01",
+        "LOC-R4-S-parajuli2026_on_the_convergent_validity_of_offline_evaluation_designs_f-01"
+      ],
+      "negative_constraints": [
+        {
+          "constraint_id": "NC-C017-1",
+          "rule": "Do not pool or rank raw metrics across v5, external datasets, or published papers with different protocols."
+        },
+        {
+          "constraint_id": "NC-C017-2",
+          "rule": "Do not infer deployment superiority from a higher offline score measured under another pipeline."
+        },
+        {
+          "constraint_id": "NC-C017-3",
+          "rule": "Do not treat a shared metric name as sufficient harmonization."
+        }
+      ],
+      "target_section": "evaluation_protocols_and_reproducibility",
+      "frozen_r3_disposition": "planning_only",
+      "r5_intended_disposition": "planning_only"
+    },
+    {
+      "claim_id": "C-018",
+      "source_claim_id": "L1-CC-009",
+      "claim_text": "Negative or target-item sampling has multiple reliability dimensions—ordering consistency, estimation error, resolution, fidelity, robustness to exposure bias, and predictive alignment—so it should not be judged by one metric or one sample size alone.",
+      "intended_evidence_kind": "empirical",
+      "planned_refs": [
+        "krichene2021_on_sampled_metrics_for_item_recommendation_extended_abstra",
+        "li2023_reliable_sampling",
+        "hidasi2023_widespread_flaws_in_offline_evaluation_of_recommender_syst",
+        "ihemelandu2023_candidate_set_sampling_for_evaluating_top_n_recommendation",
+        "pereira2025_on_the_reliability_of_sampling_strategies_in_offline_recom",
+        "liu2023_on_the_consistency_discriminative_power_and_robustness_of_"
+      ],
+      "planned_resources": [],
+      "planned_source_family_ids": [
+        "SF-R1-016",
+        "SF-R1-022",
+        "SF-R1-028",
+        "SF-R1-031",
+        "SF-R1-034",
+        "SF-R1-043"
+      ],
+      "locator_need": "verified_non_none_frozen_r4_locator_for_every_visible_citation",
+      "planned_locator_ids": [
+        "LOC-R4-S-krichene2021_on_sampled_metrics_for_item_recommendation_extended_abstra-01",
+        "LOC-R4-S-li2023_reliable_sampling-01",
+        "LOC-R4-S-hidasi2023_widespread_flaws_in_offline_evaluation_of_recommender_syst-01",
+        "LOC-R4-S-ihemelandu2023_candidate_set_sampling_for_evaluating_top_n_recommendation-01",
+        "LOC-R4-S-pereira2025_on_the_reliability_of_sampling_strategies_in_offline_recom-01",
+        "LOC-R4-S-liu2023_on_the_consistency_discriminative_power_and_robustness_of_-01"
+      ],
+      "negative_constraints": [
+        {
+          "constraint_id": "NC-C018-1",
+          "rule": "Do not generalize one sampling result to all logging biases, datasets, models, metrics, or sample sizes."
+        },
+        {
+          "constraint_id": "NC-C018-2",
+          "rule": "Do not claim sampled evaluation is always invalid or always reliable."
+        },
+        {
+          "constraint_id": "NC-C018-3",
+          "rule": "Do not treat higher discriminative power as proof of fidelity to full evaluation."
+        }
+      ],
+      "target_section": "evaluation_protocols_and_reproducibility",
+      "frozen_r3_disposition": "planning_only",
+      "r5_intended_disposition": "planning_only"
+    },
+    {
+      "claim_id": "C-019",
+      "source_claim_id": "L1-CC-010",
+      "claim_text": "A generic ROC-AUC citation does not determine v5's per-user GAUC eligibility, weighting, tie handling, or hierarchical uncertainty procedure; those remain project-specific estimand choices requiring explicit definition.",
+      "intended_evidence_kind": "empirical",
+      "planned_refs": [
+        "tamm2021_metric_consistency",
+        "canamares2020_offline_options"
+      ],
+      "planned_resources": [],
+      "planned_source_family_ids": [
+        "SF-R1-005",
+        "SF-R1-056"
+      ],
+      "locator_need": "verified_non_none_frozen_r4_locator_for_every_visible_citation",
+      "planned_locator_ids": [
+        "LOC-R4-S-tamm2021_metric_consistency-01",
+        "LOC-R4-S-canamares2020_offline_options-01"
+      ],
+      "negative_constraints": [
+        {
+          "constraint_id": "NC-C019-1",
+          "rule": "Do not claim Bradley 1997 validates a particular v5 GAUC formula."
+        },
+        {
+          "constraint_id": "NC-C019-2",
+          "rule": "Do not infer user weighting or bootstrap structure from generic AUC."
+        },
+        {
+          "constraint_id": "NC-C019-3",
+          "rule": "Do not report a GAUC result until eligible-user and denominator rules are frozen."
+        }
+      ],
+      "target_section": "evaluation_protocols_and_reproducibility",
+      "frozen_r3_disposition": "planning_only",
+      "r5_intended_disposition": "planning_only"
+    },
+    {
+      "claim_id": "C-020",
+      "source_claim_id": "L1-CC-011",
+      "claim_text": "Jannach and Chen 2026 is an editorial/essay that provides methodological guidance; its peer-review status is unknown because no direct evidence of external peer review was located.",
+      "intended_evidence_kind": "empirical",
+      "planned_refs": [
+        "jannach2026_methodological_standards"
+      ],
+      "planned_resources": [],
+      "planned_source_family_ids": [
+        "SF-R1-023"
+      ],
+      "locator_need": "verified_non_none_frozen_r4_locator_for_every_visible_citation",
+      "planned_locator_ids": [
+        "LOC-R4-S-jannach2026_methodological_standards-01"
+      ],
+      "negative_constraints": [
+        {
+          "constraint_id": "NC-C020-1",
+          "rule": "Do not classify the work as a systematic review or empirical benchmark."
+        },
+        {
+          "constraint_id": "NC-C020-2",
+          "rule": "Do not set peer_reviewed=true without direct evidence."
+        },
+        {
+          "constraint_id": "NC-C020-3",
+          "rule": "Do not treat editorial guidance as measured effect size evidence."
+        }
+      ],
+      "target_section": "evaluation_protocols_and_reproducibility",
+      "frozen_r3_disposition": "planning_only",
+      "r5_intended_disposition": "planning_only"
+    },
+    {
+      "claim_id": "C-021",
+      "source_claim_id": "L2-CLAIM-GRAPH-ZERO-EDGE-005",
+      "claim_text": "LightGCN and the retained graph-contrastive controls learn from an observed user-item graph and trainable ID embeddings; improvements on sparse observed graphs cannot establish recommendation capability for an item with zero training edges.",
+      "intended_evidence_kind": "empirical",
+      "planned_refs": [
+        "he2020_lightgcn",
+        "yu2022_simgcl",
+        "cai2023_lightgcl"
+      ],
+      "planned_resources": [],
+      "planned_source_family_ids": [
+        "SF-R1-004",
+        "SF-R1-015",
+        "SF-R1-065"
+      ],
+      "locator_need": "verified_non_none_frozen_r4_locator_for_every_visible_citation",
+      "planned_locator_ids": [
+        "LOC-R4-S-he2020_lightgcn-01",
+        "LOC-R4-S-yu2022_simgcl-01",
+        "LOC-R4-S-cai2023_lightgcl-01"
+      ],
+      "negative_constraints": [
+        {
+          "constraint_id": "NC-C021-1",
+          "rule": "Sparse-edge graph improvement does not prove zero-edge cold-item capability."
+        },
+        {
+          "constraint_id": "NC-C021-2",
+          "rule": "No source establishes a v5 architecture ranking."
+        }
+      ],
+      "target_section": "assumptions_input_signals_and_objectives",
+      "frozen_r3_disposition": "conditional_production_candidate",
+      "r5_intended_disposition": "citation_ready_candidate"
+    },
+    {
+      "claim_id": "C-022",
+      "source_claim_id": "L2-CLAIM-HARMONIZED-EVAL-008",
+      "claim_text": "A dataset-v5 architecture comparison must harmonize split, candidate universe, stage role, input features, objective, negative sampling, tuning budget, and evaluator; the inspected architecture papers alone cannot supply a v5 ranking.",
+      "intended_evidence_kind": "empirical",
+      "planned_refs": [
+        "sarwar2001_itemcf",
+        "rendle2009_bpr",
+        "he2017_ncf",
+        "guo2017_deepfm",
+        "he2020_lightgcn"
+      ],
+      "planned_resources": [],
+      "planned_source_family_ids": [
+        "SF-R1-012",
+        "SF-R1-014",
+        "SF-R1-015",
+        "SF-R1-047",
+        "SF-R1-050"
+      ],
+      "locator_need": "verified_non_none_frozen_r4_locator_for_every_visible_citation",
+      "planned_locator_ids": [
+        "LOC-R4-S-sarwar2001_itemcf-01",
+        "LOC-R4-S-rendle2009_bpr-01",
+        "LOC-R4-S-he2017_ncf-01",
+        "LOC-R4-S-guo2017_deepfm-01",
+        "LOC-R4-S-he2020_lightgcn-01"
+      ],
+      "negative_constraints": [
+        {
+          "constraint_id": "NC-C022-1",
+          "rule": "This card does not report benchmark results or an architecture ranking."
+        },
+        {
+          "constraint_id": "NC-C022-2",
+          "rule": "No architecture paper establishes a ranking on dataset v5 without a harmonized benchmark."
+        }
+      ],
+      "target_section": "assumptions_input_signals_and_objectives",
+      "frozen_r3_disposition": "planning_only",
+      "r5_intended_disposition": "planning_only"
+    },
+    {
+      "claim_id": "C-023",
+      "source_claim_id": "L2-CLAIM-ITEMCF-BPR-001",
+      "claim_text": "ItemCF estimates item-item similarity from historical interaction overlap and aggregates neighbor evidence, whereas BPR supplies a pairwise implicit-feedback objective that can train matrix factorization or another differentiable scorer.",
+      "intended_evidence_kind": "empirical",
+      "planned_refs": [
+        "sarwar2001_itemcf",
+        "rendle2009_bpr"
+      ],
+      "planned_resources": [],
+      "planned_source_family_ids": [
+        "SF-R1-047",
+        "SF-R1-050"
+      ],
+      "locator_need": "verified_non_none_frozen_r4_locator_for_every_visible_citation",
+      "planned_locator_ids": [
+        "LOC-R4-S-sarwar2001_itemcf-01",
+        "LOC-R4-S-rendle2009_bpr-01"
+      ],
+      "negative_constraints": [
+        {
+          "constraint_id": "NC-C023-1",
+          "rule": "Neither source establishes a ranking on dataset v5."
+        },
+        {
+          "constraint_id": "NC-C023-2",
+          "rule": "Unobserved interactions are not automatically true negative preferences."
+        }
+      ],
+      "target_section": "assumptions_input_signals_and_objectives",
+      "frozen_r3_disposition": "conditional_production_candidate",
+      "r5_intended_disposition": "citation_ready_candidate"
+    },
+    {
+      "claim_id": "C-024",
+      "source_claim_id": "L2-CLAIM-NCF-DEEPFM-002",
+      "claim_text": "NCF learns nonlinear interaction functions from user/item IDs, while DeepFM jointly models low- and high-order interactions over sparse feature fields for CTR prediction; their input and task contracts are therefore not interchangeable.",
+      "intended_evidence_kind": "empirical",
+      "planned_refs": [
+        "he2017_ncf",
+        "guo2017_deepfm"
+      ],
+      "planned_resources": [],
+      "planned_source_family_ids": [
+        "SF-R1-012",
+        "SF-R1-014"
+      ],
+      "locator_need": "verified_non_none_frozen_r4_locator_for_every_visible_citation",
+      "planned_locator_ids": [
+        "LOC-R4-S-he2017_ncf-01",
+        "LOC-R4-S-guo2017_deepfm-01"
+      ],
+      "negative_constraints": [
+        {
+          "constraint_id": "NC-C024-1",
+          "rule": "CTR AUC/log-loss does not establish full-catalog top-k performance."
+        },
+        {
+          "constraint_id": "NC-C024-2",
+          "rule": "Source-native sampled leave-one-out results do not establish a v5 ranking."
+        }
+      ],
+      "target_section": "assumptions_input_signals_and_objectives",
+      "frozen_r3_disposition": "conditional_production_candidate",
+      "r5_intended_disposition": "citation_ready_candidate"
+    },
+    {
+      "claim_id": "C-025",
+      "source_claim_id": "L2-CLAIM-OBJECTIVE-006",
+      "claim_text": "Encoder complexity and training objective must be controlled separately: BPR specifies pairwise ranking, sampled two-tower training introduces negative-distribution effects, and DirectAU directly optimizes alignment and uniformity.",
+      "intended_evidence_kind": "empirical",
+      "planned_refs": [
+        "rendle2009_bpr",
+        "yi2019_ndr",
+        "wang2022_directau"
+      ],
+      "planned_resources": [],
+      "planned_source_family_ids": [
+        "SF-R1-047",
+        "SF-R1-060",
+        "SF-R1-064"
+      ],
+      "locator_need": "verified_non_none_frozen_r4_locator_for_every_visible_citation",
+      "planned_locator_ids": [
+        "LOC-R4-S-rendle2009_bpr-01",
+        "LOC-R4-S-yi2019_ndr-01",
+        "LOC-R4-S-wang2022_directau-01"
+      ],
+      "negative_constraints": [
+        {
+          "constraint_id": "NC-C025-1",
+          "rule": "Do not attribute a source-native gain solely to architecture when objectives or sampling differ."
+        },
+        {
+          "constraint_id": "NC-C025-2",
+          "rule": "Do not infer a v5 ranking."
+        }
+      ],
+      "target_section": "assumptions_input_signals_and_objectives",
+      "frozen_r3_disposition": "conditional_production_candidate",
+      "r5_intended_disposition": "citation_ready_candidate"
+    },
+    {
+      "claim_id": "C-026",
+      "source_claim_id": "L2-CLAIM-RECENT-TOWER-CONTROLS-007",
+      "claim_text": "ContextGNN and T2Diff are recent controls for the pair-agnostic two-tower boundary: the former introduces pair-aware local graph context with an exploratory fallback, while the latter introduces training-time cross-interaction for efficient matching.",
+      "intended_evidence_kind": "empirical",
+      "planned_refs": [
+        "yuan2025_contextgnn",
+        "wang2025_t2diff"
+      ],
+      "planned_resources": [],
+      "planned_source_family_ids": [
+        "SF-R1-061",
+        "SF-R1-068"
+      ],
+      "locator_need": "verified_non_none_frozen_r4_locator_for_every_visible_citation",
+      "planned_locator_ids": [
+        "LOC-R4-S-yuan2025_contextgnn-01",
+        "LOC-R4-S-wang2025_t2diff-01"
+      ],
+      "negative_constraints": [
+        {
+          "constraint_id": "NC-C026-1",
+          "rule": "Do not claim either control outranks another architecture on v5."
+        },
+        {
+          "constraint_id": "NC-C026-2",
+          "rule": "Matching-stage evidence is not ranking-stage evidence."
+        },
+        {
+          "constraint_id": "NC-C026-3",
+          "rule": "Observed local graph context is not zero-edge cold-item evidence."
+        }
+      ],
+      "target_section": "assumptions_input_signals_and_objectives",
+      "frozen_r3_disposition": "conditional_production_candidate",
+      "r5_intended_disposition": "citation_ready_candidate"
+    },
+    {
+      "claim_id": "C-027",
+      "source_claim_id": "L2-CLAIM-TWO-STAGE-003",
+      "claim_text": "In the inspected industrial references, candidate generation or matching reduces a very large corpus to a smaller set, after which a richer ranking stage can score hundreds of items; a two-tower model must therefore be labeled by its retrieval, pre-ranking, or ranking role.",
+      "intended_evidence_kind": "empirical",
+      "planned_refs": [
+        "covington2016_youtube",
+        "yi2019_ndr",
+        "wang2025_t2diff"
+      ],
+      "planned_resources": [],
+      "planned_source_family_ids": [
+        "SF-R1-008",
+        "SF-R1-061",
+        "SF-R1-064"
+      ],
+      "locator_need": "verified_non_none_frozen_r4_locator_for_every_visible_citation",
+      "planned_locator_ids": [
+        "LOC-R4-S-covington2016_youtube-01",
+        "LOC-R4-S-yi2019_ndr-01",
+        "LOC-R4-S-wang2025_t2diff-01"
+      ],
+      "negative_constraints": [
+        {
+          "constraint_id": "NC-C027-1",
+          "rule": "Retrieval-stage recall does not prove ranking-stage quality."
+        },
+        {
+          "constraint_id": "NC-C027-2",
+          "rule": "Do not assume dataset v5 requires this topology before Stage 1E freezes the architecture contract."
+        },
+        {
+          "constraint_id": "NC-C027-3",
+          "rule": "No cited paper establishes a v5 architecture ranking."
+        }
+      ],
+      "target_section": "assumptions_input_signals_and_objectives",
+      "frozen_r3_disposition": "conditional_production_candidate",
+      "r5_intended_disposition": "citation_ready_candidate"
+    },
+    {
+      "claim_id": "C-028",
+      "source_claim_id": "L2-CLAIM-WIDE-DEEP-004",
+      "claim_text": "Wide & Deep combines a linear component over explicit cross-product features for memorization with an embedding/MLP component for generalization and trains them jointly for its reported ranking task.",
+      "intended_evidence_kind": "empirical",
+      "planned_refs": [
+        "cheng2016_wide_deep"
+      ],
+      "planned_resources": [],
+      "planned_source_family_ids": [
+        "SF-R1-007"
+      ],
+      "locator_need": "verified_non_none_frozen_r4_locator_for_every_visible_citation",
+      "planned_locator_ids": [
+        "LOC-R4-S-cheng2016_wide_deep-01"
+      ],
+      "negative_constraints": [
+        {
+          "constraint_id": "NC-C028-1",
+          "rule": "Wide & Deep does not prove that an Apriori branch is effective."
+        },
+        {
+          "constraint_id": "NC-C028-2",
+          "rule": "The production result does not establish a v5 architecture ranking."
+        }
+      ],
+      "target_section": "assumptions_input_signals_and_objectives",
+      "frozen_r3_disposition": "conditional_production_candidate",
+      "r5_intended_disposition": "citation_ready_candidate"
+    },
+    {
+      "claim_id": "C-029",
+      "source_claim_id": "L3-APR-001",
+      "claim_text": "In the retained Apriori source, support is a transaction-frequency threshold and confidence is a conditional rule-strength threshold used to mine association rules; the source does not define Apriori itself as a recommender ranking model.",
+      "intended_evidence_kind": "empirical",
+      "planned_refs": [
+        "agrawal1994_apriori"
+      ],
+      "planned_resources": [],
+      "planned_source_family_ids": [
+        "SF-R1-001"
+      ],
+      "locator_need": "verified_non_none_frozen_r4_locator_for_every_visible_citation",
+      "planned_locator_ids": [
+        "LOC-R4-S-agrawal1994_apriori-01"
+      ],
+      "negative_constraints": [
+        {
+          "constraint_id": "NC-C029-1",
+          "rule": "Apriori is a ranking model."
+        },
+        {
+          "constraint_id": "NC-C029-2",
+          "rule": "Mined rules improve recommendation metrics."
+        },
+        {
+          "constraint_id": "NC-C029-3",
+          "rule": "Literature evidence establishes H3."
+        }
+      ],
+      "target_section": "hybrid_sequential_basket_positioning_and_gaps",
+      "frozen_r3_disposition": "conditional_production_candidate",
+      "r5_intended_disposition": "citation_ready_candidate"
+    },
+    {
+      "claim_id": "C-030",
+      "source_claim_id": "L3-BTBR-005",
+      "claim_text": "Mask-Swap provides a direct next-novel-basket formulation and BTBR basket baseline, but the inspected experiments do not support a universal claim that masking or swapping improves every dataset/model setting.",
+      "intended_evidence_kind": "empirical",
+      "planned_refs": [
+        "li2023_mask_swap"
+      ],
+      "planned_resources": [],
+      "planned_source_family_ids": [
+        "SF-R1-029"
+      ],
+      "locator_need": "verified_non_none_frozen_r4_locator_for_every_visible_citation",
+      "planned_locator_ids": [
+        "LOC-R4-S-li2023_mask_swap-01"
+      ],
+      "negative_constraints": [
+        {
+          "constraint_id": "NC-C030-1",
+          "rule": "Mask-Swap always improves novel recommendation."
+        },
+        {
+          "constraint_id": "NC-C030-2",
+          "rule": "BTBR paper metrics are v5 benchmark results."
+        },
+        {
+          "constraint_id": "NC-C030-3",
+          "rule": "User-level splits are equivalent to the locked temporal split."
+        }
+      ],
+      "target_section": "hybrid_sequential_basket_positioning_and_gaps",
+      "frozen_r3_disposition": "conditional_production_candidate",
+      "r5_intended_disposition": "citation_ready_candidate"
+    },
+    {
+      "claim_id": "C-031",
+      "source_claim_id": "L3-GAP-008",
+      "claim_text": "Within the reproducible search through 2026-08-14, no inspected source evaluates the exact v5 contrast of an Apriori train-only Wide branch versus No-Wide on the frozen train-mined rule-aligned evaluation cohort under the locked temporal full-catalog protocol; H3 therefore remains NOT_RUN rather than literature-supported.",
+      "intended_evidence_kind": "empirical",
+      "planned_refs": [
+        "agrawal1994_apriori",
+        "ghoshal2014_multi_item_rules",
+        "liu2009_hybrid_seq_cf",
+        "cheng2016_wide_deep",
+        "li2023_nbr_reality",
+        "mansouri2026_repeat_explore_lightgcn"
+      ],
+      "planned_resources": [],
+      "planned_source_family_ids": [
+        "SF-R1-001",
+        "SF-R1-007",
+        "SF-R1-011",
+        "SF-R1-030",
+        "SF-R1-033",
+        "SF-R1-035"
+      ],
+      "locator_need": "verified_non_none_frozen_r4_locator_for_every_visible_citation",
+      "planned_locator_ids": [
+        "LOC-R4-S-agrawal1994_apriori-01",
+        "LOC-R4-S-ghoshal2014_multi_item_rules-01",
+        "LOC-R4-S-liu2009_hybrid_seq_cf-01",
+        "LOC-R4-S-cheng2016_wide_deep-01",
+        "LOC-R4-S-li2023_nbr_reality-01",
+        "LOC-R4-S-mansouri2026_repeat_explore_lightgcn-01"
+      ],
+      "negative_constraints": [
+        {
+          "constraint_id": "NC-C031-1",
+          "rule": "No such paper exists anywhere."
+        },
+        {
+          "constraint_id": "NC-C031-2",
+          "rule": "The gap itself supports H3."
+        },
+        {
+          "constraint_id": "NC-C031-3",
+          "rule": "Literature plausibility is a benchmark result."
+        }
+      ],
+      "target_section": "hybrid_sequential_basket_positioning_and_gaps",
+      "frozen_r3_disposition": "planning_only",
+      "r5_intended_disposition": "planning_only"
+    },
+    {
+      "claim_id": "C-032",
+      "source_claim_id": "L3-HYB-006",
+      "claim_text": "Prior systems combine rule, preference, popularity, transition, linear-cross, or neural components, and their component comparisons establish an ablation-design precedent; they do not establish that the v5 Apriori-aligned Wide branch improves the locked H3 estimand.",
+      "intended_evidence_kind": "empirical",
+      "planned_refs": [
+        "liu2009_hybrid_seq_cf",
+        "cheng2016_wide_deep",
+        "peng2022_ham",
+        "peng2023_m2",
+        "mansouri2026_repeat_explore_lightgcn"
+      ],
+      "planned_resources": [],
+      "planned_source_family_ids": [
+        "SF-R1-007",
+        "SF-R1-033",
+        "SF-R1-035",
+        "SF-R1-041",
+        "SF-R1-042"
+      ],
+      "locator_need": "verified_non_none_frozen_r4_locator_for_every_visible_citation",
+      "planned_locator_ids": [
+        "LOC-R4-S-liu2009_hybrid_seq_cf-01",
+        "LOC-R4-S-cheng2016_wide_deep-01",
+        "LOC-R4-S-peng2022_ham-01",
+        "LOC-R4-S-peng2023_m2-01",
+        "LOC-R4-S-mansouri2026_repeat_explore_lightgcn-01"
+      ],
+      "negative_constraints": [
+        {
+          "constraint_id": "NC-C032-1",
+          "rule": "Literature plausibility proves H3."
+        },
+        {
+          "constraint_id": "NC-C032-2",
+          "rule": "Any aggregate hybrid gain proves novel-item gain."
+        },
+        {
+          "constraint_id": "NC-C032-3",
+          "rule": "An external ablation estimates the v5 Full minus No-Wide contrast."
+        }
+      ],
+      "target_section": "hybrid_sequential_basket_positioning_and_gaps",
+      "frozen_r3_disposition": "conditional_production_candidate",
+      "r5_intended_disposition": "citation_ready_candidate"
+    },
+    {
+      "claim_id": "C-033",
+      "source_claim_id": "L3-NBR-004",
+      "claim_text": "Next-basket and sequential recommendation outcomes can mix easier repeat behavior with harder exploration behavior, so aggregate basket accuracy does not by itself establish novel-item gain.",
+      "intended_evidence_kind": "empirical",
+      "planned_refs": [
+        "li2023_nbr_reality",
+        "li2023_repetition_exploration",
+        "mansouri2026_repeat_explore_lightgcn"
+      ],
+      "planned_resources": [],
+      "planned_source_family_ids": [
+        "SF-R1-030",
+        "SF-R1-032",
+        "SF-R1-035"
+      ],
+      "locator_need": "verified_non_none_frozen_r4_locator_for_every_visible_citation",
+      "planned_locator_ids": [
+        "LOC-R4-S-li2023_nbr_reality-01",
+        "LOC-R4-S-li2023_repetition_exploration-01",
+        "LOC-R4-S-mansouri2026_repeat_explore_lightgcn-01"
+      ],
+      "negative_constraints": [
+        {
+          "constraint_id": "NC-C033-1",
+          "rule": "Aggregate basket gain proves novel-item gain."
+        },
+        {
+          "constraint_id": "NC-C033-2",
+          "rule": "Repeat/explore ratios from another dataset apply to v5."
+        },
+        {
+          "constraint_id": "NC-C033-3",
+          "rule": "A hybrid's external explore metric establishes H3."
+        }
+      ],
+      "target_section": "hybrid_sequential_basket_positioning_and_gaps",
+      "frozen_r3_disposition": "conditional_production_candidate",
+      "r5_intended_disposition": "citation_ready_candidate"
+    },
+    {
+      "claim_id": "C-034",
+      "source_claim_id": "L3-PROTO-007",
+      "claim_text": "Evaluation splits, target construction, implementation choices, and training budget can change reported sequential-recommender outcomes and model rankings, so source-native results are not directly comparable with the locked v5 protocol.",
+      "intended_evidence_kind": "empirical",
+      "planned_refs": [
+        "gusak2025_time_split",
+        "petrov2022_a_systematic_review_and_replicability_study_of_bert4rec_fo"
+      ],
+      "planned_resources": [],
+      "planned_source_family_ids": [
+        "SF-R1-013",
+        "SF-R1-044"
+      ],
+      "locator_need": "verified_non_none_frozen_r4_locator_for_every_visible_citation",
+      "planned_locator_ids": [
+        "LOC-R4-S-gusak2025_time_split-01",
+        "LOC-R4-S-petrov2022_a_systematic_review_and_replicability_study_of_bert4rec_fo-01"
+      ],
+      "negative_constraints": [
+        {
+          "constraint_id": "NC-C034-1",
+          "rule": "A source-native model ranking holds under v5."
+        },
+        {
+          "constraint_id": "NC-C034-2",
+          "rule": "A sampled paper metric is a full-catalog result."
+        },
+        {
+          "constraint_id": "NC-C034-3",
+          "rule": "Split sensitivity authorizes changing the locked v5 split after results are seen."
+        }
+      ],
+      "target_section": "hybrid_sequential_basket_positioning_and_gaps",
+      "frozen_r3_disposition": "conditional_production_candidate",
+      "r5_intended_disposition": "citation_ready_candidate"
+    },
+    {
+      "claim_id": "C-035",
+      "source_claim_id": "L3-RULE-002",
+      "claim_text": "Association rules can be operationalized to recommend multiple items, but comparative performance against collaborative filtering and matrix factorization is conditional on the source data and protocol.",
+      "intended_evidence_kind": "empirical",
+      "planned_refs": [
+        "ghoshal2014_multi_item_rules"
+      ],
+      "planned_resources": [],
+      "planned_source_family_ids": [
+        "SF-R1-011"
+      ],
+      "locator_need": "verified_non_none_frozen_r4_locator_for_every_visible_citation",
+      "planned_locator_ids": [
+        "LOC-R4-S-ghoshal2014_multi_item_rules-01"
+      ],
+      "negative_constraints": [
+        {
+          "constraint_id": "NC-C035-1",
+          "rule": "A multi-item rule method universally outperforms collaborative filtering."
+        },
+        {
+          "constraint_id": "NC-C035-2",
+          "rule": "Random transaction splits validate the v5 temporal estimand."
+        },
+        {
+          "constraint_id": "NC-C035-3",
+          "rule": "The paper's accuracy values are v5 benchmark results."
+        }
+      ],
+      "target_section": "hybrid_sequential_basket_positioning_and_gaps",
+      "frozen_r3_disposition": "conditional_production_candidate",
+      "r5_intended_disposition": "citation_ready_candidate"
+    },
+    {
+      "claim_id": "C-036",
+      "source_claim_id": "L3-SEQ-003",
+      "claim_text": "SASRec uses causal self-attention for next-item prediction, whereas BERT4Rec uses bidirectional sequence encoding with a masked-item Cloze objective; both source evaluations use paper-native candidate/sampling designs that are not the v5 full-catalog protocol.",
+      "intended_evidence_kind": "empirical",
+      "planned_refs": [
+        "kang2018_sasrec",
+        "sun2019_bert4rec"
+      ],
+      "planned_resources": [],
+      "planned_source_family_ids": [
+        "SF-R1-026",
+        "SF-R1-053"
+      ],
+      "locator_need": "verified_non_none_frozen_r4_locator_for_every_visible_citation",
+      "planned_locator_ids": [
+        "LOC-R4-S-kang2018_sasrec-01",
+        "LOC-R4-S-sun2019_bert4rec-01"
+      ],
+      "negative_constraints": [
+        {
+          "constraint_id": "NC-C036-1",
+          "rule": "A paper-native SASRec or BERT4Rec metric is a current v5 result."
+        },
+        {
+          "constraint_id": "NC-C036-2",
+          "rule": "Next-item objectives are identical to next-basket set objectives."
+        },
+        {
+          "constraint_id": "NC-C036-3",
+          "rule": "An architecture name alone guarantees protocol equivalence."
+        }
+      ],
+      "target_section": "hybrid_sequential_basket_positioning_and_gaps",
+      "frozen_r3_disposition": "conditional_production_candidate",
+      "r5_intended_disposition": "citation_ready_candidate"
+    },
+    {
+      "claim_id": "C-037",
+      "source_claim_id": "L4-CC-01",
+      "claim_text": "For an item-side cold cohort, a strict zero-edge item has no interaction in the training graph; an item with one or more training interactions is not strict zero-edge cold, even if it is rare.",
+      "intended_evidence_kind": "empirical",
+      "planned_refs": [
+        "volkovs2017_dropoutnet",
+        "huang2023_aldi"
+      ],
+      "planned_resources": [],
+      "planned_source_family_ids": [
+        "SF-R1-021",
+        "SF-R1-059"
+      ],
+      "locator_need": "verified_non_none_frozen_r4_locator_for_every_visible_citation",
+      "planned_locator_ids": [
+        "LOC-R4-S-volkovs2017_dropoutnet-01",
+        "LOC-R4-S-huang2023_aldi-01"
+      ],
+      "negative_constraints": [
+        {
+          "constraint_id": "NC-C037-1",
+          "rule": "Cold-item equals cold-user."
+        },
+        {
+          "constraint_id": "NC-C037-2",
+          "rule": "Sparse-edge equals zero-edge."
+        },
+        {
+          "constraint_id": "NC-C037-3",
+          "rule": "The papers' exact thresholds and denominators automatically apply to v5."
+        }
+      ],
+      "target_section": "cold_item_content_and_transfer_boundaries",
+      "frozen_r3_disposition": "conditional_production_candidate",
+      "r5_intended_disposition": "citation_ready_candidate"
+    },
+    {
+      "claim_id": "C-038",
+      "source_claim_id": "L4-CC-02",
+      "claim_text": "A reproducible item-cold evaluation should lock the training-graph edge rule, construct warm and zero-edge cohorts before scoring, and report their denominators separately from any sparse-item cohort.",
+      "intended_evidence_kind": "empirical",
+      "planned_refs": [
+        "volkovs2017_dropoutnet",
+        "huang2023_aldi"
+      ],
+      "planned_resources": [],
+      "planned_source_family_ids": [
+        "SF-R1-021",
+        "SF-R1-059"
+      ],
+      "locator_need": "verified_non_none_frozen_r4_locator_for_every_visible_citation",
+      "planned_locator_ids": [
+        "LOC-R4-S-volkovs2017_dropoutnet-01",
+        "LOC-R4-S-huang2023_aldi-01"
+      ],
+      "negative_constraints": [
+        {
+          "constraint_id": "NC-C038-1",
+          "rule": "Reuse paper-native random splits without matching the v5 temporal and leakage controls."
+        },
+        {
+          "constraint_id": "NC-C038-2",
+          "rule": "Report a blended denominator as if it were zero-edge performance."
+        }
+      ],
+      "target_section": "cold_item_content_and_transfer_boundaries",
+      "frozen_r3_disposition": "conditional_production_candidate",
+      "r5_intended_disposition": "citation_ready_candidate"
+    },
+    {
+      "claim_id": "C-039",
+      "source_claim_id": "L4-CC-03",
+      "claim_text": "A collaborative graph method that propagates only over observed item-neighbor edges does not, by that path alone, supply a collaborative representation for a strict zero-edge item; sparse-graph and zero-edge results must therefore remain separate.",
+      "intended_evidence_kind": "empirical",
+      "planned_refs": [
+        "volkovs2017_dropoutnet",
+        "sheng2025_alpharec"
+      ],
+      "planned_resources": [],
+      "planned_source_family_ids": [
+        "SF-R1-052",
+        "SF-R1-059"
+      ],
+      "locator_need": "verified_non_none_frozen_r4_locator_for_every_visible_citation",
+      "planned_locator_ids": [
+        "LOC-R4-S-volkovs2017_dropoutnet-01",
+        "LOC-R4-S-sheng2025_alpharec-01"
+      ],
+      "negative_constraints": [
+        {
+          "constraint_id": "NC-C039-1",
+          "rule": "Collaborative graph methods are ineffective for all cold-start tasks."
+        },
+        {
+          "constraint_id": "NC-C039-2",
+          "rule": "Content-augmented graph models cannot score new items."
+        },
+        {
+          "constraint_id": "NC-C039-3",
+          "rule": "Metadata-only SimGCL, XSimGCL, or LightGCL records prove the mechanism claim."
+        }
+      ],
+      "target_section": "cold_item_content_and_transfer_boundaries",
+      "frozen_r3_disposition": "conditional_production_candidate",
+      "r5_intended_disposition": "citation_ready_candidate"
+    },
+    {
+      "claim_id": "C-040",
+      "source_claim_id": "L4-CC-04",
+      "claim_text": "Sentence-BERT supports a rationale for semantic text embeddings, but recommendation efficacy requires a recommender objective and task-specific ranking evaluation; Sentence-BERT quality alone is not recommendation quality.",
+      "intended_evidence_kind": "empirical",
+      "planned_refs": [
+        "reimers2019_sbert",
+        "sheng2025_alpharec",
+        "meehan2026_semco"
+      ],
+      "planned_resources": [],
+      "planned_source_family_ids": [
+        "SF-R1-037",
+        "SF-R1-046",
+        "SF-R1-052"
+      ],
+      "locator_need": "verified_non_none_frozen_r4_locator_for_every_visible_citation",
+      "planned_locator_ids": [
+        "LOC-R4-S-reimers2019_sbert-01",
+        "LOC-R4-S-sheng2025_alpharec-01",
+        "LOC-R4-S-meehan2026_semco-01"
+      ],
+      "negative_constraints": [
+        {
+          "constraint_id": "NC-C040-1",
+          "rule": "Sentence-BERT quality equals recommendation quality."
+        },
+        {
+          "constraint_id": "NC-C040-2",
+          "rule": "Sentence-BERT solves cold-item recommendation."
+        },
+        {
+          "constraint_id": "NC-C040-3",
+          "rule": "Replacing a paper's encoder with Sentence-BERT is faithful replication."
+        }
+      ],
+      "target_section": "cold_item_content_and_transfer_boundaries",
+      "frozen_r3_disposition": "conditional_production_candidate",
+      "r5_intended_disposition": "citation_ready_candidate"
+    },
+    {
+      "claim_id": "C-041",
+      "source_claim_id": "L4-CC-05",
+      "claim_text": "Transferable item-representation architectures in UniSRec, VQ-Rec, and UTGRec still make explicit target-domain adaptation assumptions; transfer should not be described as adaptation-free unless the evaluated protocol actually withholds target-domain training.",
+      "intended_evidence_kind": "empirical",
+      "planned_refs": [
+        "hou2022_unisrec",
+        "hou2023_vqrec",
+        "zheng2026_utgrec"
+      ],
+      "planned_resources": [],
+      "planned_source_family_ids": [
+        "SF-R1-017",
+        "SF-R1-018",
+        "SF-R1-071"
+      ],
+      "locator_need": "verified_non_none_frozen_r4_locator_for_every_visible_citation",
+      "planned_locator_ids": [
+        "LOC-R4-S-hou2022_unisrec-01",
+        "LOC-R4-S-hou2023_vqrec-01",
+        "LOC-R4-S-zheng2026_utgrec-01"
+      ],
+      "negative_constraints": [
+        {
+          "constraint_id": "NC-C041-1",
+          "rule": "Architecture transfer establishes H4 replication."
+        },
+        {
+          "constraint_id": "NC-C041-2",
+          "rule": "Inductive item evaluation means the model used no target-domain interactions during adaptation."
+        },
+        {
+          "constraint_id": "NC-C041-3",
+          "rule": "The three papers are fully independent evidence lineages."
+        }
+      ],
+      "target_section": "cold_item_content_and_transfer_boundaries",
+      "frozen_r3_disposition": "conditional_production_candidate",
+      "r5_intended_disposition": "citation_ready_candidate"
+    },
+    {
+      "claim_id": "C-042",
+      "source_claim_id": "L4-CC-06",
+      "claim_text": "Pretraining and downstream results that reuse one platform or benchmark lineage must not be counted as independent evidence merely because the domain labels differ.",
+      "intended_evidence_kind": "empirical",
+      "planned_refs": [
+        "hou2023_vqrec",
+        "sheng2025_alpharec",
+        "zheng2026_utgrec"
+      ],
+      "planned_resources": [],
+      "planned_source_family_ids": [
+        "SF-R1-018",
+        "SF-R1-052",
+        "SF-R1-071"
+      ],
+      "locator_need": "verified_non_none_frozen_r4_locator_for_every_visible_citation",
+      "planned_locator_ids": [
+        "LOC-R4-S-hou2023_vqrec-01",
+        "LOC-R4-S-sheng2025_alpharec-01",
+        "LOC-R4-S-zheng2026_utgrec-01"
+      ],
+      "negative_constraints": [
+        {
+          "constraint_id": "NC-C042-1",
+          "rule": "Pretraining source and target dataset count as independent evidence when they share a lineage."
+        },
+        {
+          "constraint_id": "NC-C042-2",
+          "rule": "Every Amazon category is an independent external-validity replication."
+        },
+        {
+          "constraint_id": "NC-C042-3",
+          "rule": "Shared lineage makes all transfer findings invalid."
+        }
+      ],
+      "target_section": "cold_item_content_and_transfer_boundaries",
+      "frozen_r3_disposition": "conditional_production_candidate",
+      "r5_intended_disposition": "citation_ready_candidate"
+    },
+    {
+      "claim_id": "C-043",
+      "source_claim_id": "L4-CC-07",
+      "claim_text": "Content representations aligned to collaborative teachers can inherit collaborative popularity structure; content availability alone therefore does not guarantee unbiased or effective cold-item recommendation.",
+      "intended_evidence_kind": "empirical",
+      "planned_refs": [
+        "meehan2025_cold_popbias",
+        "meehan2026_semco"
+      ],
+      "planned_resources": [],
+      "planned_source_family_ids": [
+        "SF-R1-036",
+        "SF-R1-037"
+      ],
+      "locator_need": "verified_non_none_frozen_r4_locator_for_every_visible_citation",
+      "planned_locator_ids": [
+        "LOC-R4-S-meehan2025_cold_popbias-01",
+        "LOC-R4-S-meehan2026_semco-01"
+      ],
+      "negative_constraints": [
+        {
+          "constraint_id": "NC-C043-1",
+          "rule": "All content encoders inherit the same bias."
+        },
+        {
+          "constraint_id": "NC-C043-2",
+          "rule": "The two papers are independent corroborating research lineages."
+        },
+        {
+          "constraint_id": "NC-C043-3",
+          "rule": "Bias analysis alone proves v5 effectiveness or failure."
+        }
+      ],
+      "target_section": "cold_item_content_and_transfer_boundaries",
+      "frozen_r3_disposition": "conditional_production_candidate",
+      "r5_intended_disposition": "citation_ready_candidate"
+    },
+    {
+      "claim_id": "C-044",
+      "source_claim_id": "L4-CC-08",
+      "claim_text": "Implementing an architecture inspired by a transfer or cold-start paper is not a replication of that paper or evidence for H4 unless the encoder, data lineage, adaptation procedure, split, candidates, metrics, and statistical protocol are matched or all deviations are declared.",
+      "intended_evidence_kind": "empirical",
+      "planned_refs": [
+        "hou2022_unisrec",
+        "hou2023_vqrec",
+        "sheng2025_alpharec",
+        "zheng2026_utgrec"
+      ],
+      "planned_resources": [],
+      "planned_source_family_ids": [
+        "SF-R1-017",
+        "SF-R1-018",
+        "SF-R1-052",
+        "SF-R1-071"
+      ],
+      "locator_need": "verified_non_none_frozen_r4_locator_for_every_visible_citation",
+      "planned_locator_ids": [
+        "LOC-R4-S-hou2022_unisrec-01",
+        "LOC-R4-S-hou2023_vqrec-01",
+        "LOC-R4-S-sheng2025_alpharec-01",
+        "LOC-R4-S-zheng2026_utgrec-01"
+      ],
+      "negative_constraints": [
+        {
+          "constraint_id": "NC-C044-1",
+          "rule": "Architecture transfer establishes H4 replication."
+        },
+        {
+          "constraint_id": "NC-C044-2",
+          "rule": "A Sentence-BERT substitution is a faithful reproduction."
+        },
+        {
+          "constraint_id": "NC-C044-3",
+          "rule": "Cross-paper metric values are directly comparable without protocol harmonization."
+        }
+      ],
+      "target_section": "cold_item_content_and_transfer_boundaries",
+      "frozen_r3_disposition": "conditional_production_candidate",
+      "r5_intended_disposition": "citation_ready_candidate"
+    }
+  ],
+  "manifest_negative_constraints": [
+    {
+      "constraint_id": "MNC-1",
+      "rule": "Do not convert literature rationale into H1-H4 evidence; H1-H4 remain NOT_RUN."
+    },
+    {
+      "constraint_id": "MNC-2",
+      "rule": "Do not authorize Stage 2 production citations or seal Stage 1B."
+    },
+    {
+      "constraint_id": "MNC-3",
+      "rule": "Do not equate cold-item with cold-user, sparse-edge with zero-edge, or content-encoder quality with recommendation efficacy."
+    },
+    {
+      "constraint_id": "MNC-4",
+      "rule": "Do not use Wide & Deep as evidence of Apriori efficacy or architecture transfer as H4 replication."
+    },
+    {
+      "constraint_id": "MNC-5",
+      "rule": "Do not equate official reproduction with a harmonized benchmark result or compare raw metrics across incompatible protocols."
+    },
+    {
+      "constraint_id": "MNC-6",
+      "rule": "Use the Liu 2007 replacement only for bounded hybrid-method precedent, never for Liu 2009-specific details or results."
+    },
+    {
+      "constraint_id": "MNC-7",
+      "rule": "Keep Complete Journey provider availability, package license, execution access, dataset rights, and redistribution permission separate."
+    },
+    {
+      "constraint_id": "MNC-8",
+      "rule": "Report canonical-record counts separately from independent source-family counts."
+    }
+  ],
+  "population": {
+    "source_claims": 44,
+    "conditional_candidates": 22,
+    "planning_only": 22
+  },
+  "write_order": {
+    "ordinal": 1,
+    "must_precede": [
+      "synthesis_invocation_ledger_initial_binding",
+      "claim_source_map_r1.json",
+      "cross_paper_tensions_r1.json",
+      "synthesis_report_r1.md"
+    ]
+  }
+}
+

@@ -1,0 +1,54 @@
+{
+  "schema_version": "1.0",
+  "seal_id": "phase0-seal-intake-v1",
+  "sealed_at": "2026-08-13T10:53:24.638Z",
+  "seal_status": "PASS",
+  "hash_algorithm": "sha256",
+  "artifact_hashes": [
+    {
+      "path": "research/hybrid-recsys-v5/00_control/phase0_intake.md",
+      "bytes": 3928,
+      "sha256": "bd7fd52b775d42bd3267eef6cc17ce9e3fae7012092f676b74b46c9f11173c2e"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/00_control/input_manifest.json",
+      "bytes": 2237,
+      "sha256": "3b5b1eaa54537ed2758d27ef17abf938792a9c8876609c93700f78328a0a007c"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/00_control/material_passport.json",
+      "bytes": 8727,
+      "sha256": "cc330d8b3972b0eb15c1d79eda9c530392787fe1177a7243bf33911db2d90daa"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/00_control/pipeline_state.json",
+      "bytes": 7309,
+      "sha256": "dd33ad4c96f80defe20673c9e851db3f9112adc0f1f872c30e7bcef385fb9eeb"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/00_control/venue_matrix.md",
+      "bytes": 4687,
+      "sha256": "016dad7b36debd3674666960b17aa829157369db084a0b040dadfeab64d6bb3f"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/00_control/decision_log.md",
+      "bytes": 3341,
+      "sha256": "037a1de479df4a52df1b52f20f14013ed7caa54fcc37cbbf260bce5665273d82"
+    }
+  ],
+  "validation": {
+    "json_syntax": "PASS",
+    "locked_input_hash_recheck": "PASS",
+    "ars_repro_lock_validator": "PASS",
+    "ars_experiment_provenance_schema": "PASS",
+    "ars_claim_audit_consistency": "PASS",
+    "material_passport_status": "UNVERIFIED",
+    "material_passport_status_reason": "No Stage 2.5 integrity verification has occurred; Phase 0 validation is structural and provenance-only."
+  },
+  "pipeline_checkpoint": {
+    "completed_phase": "0",
+    "pipeline_state": "awaiting_confirmation",
+    "next_stage": "1A",
+    "user_confirmation_required": true
+  }
+}

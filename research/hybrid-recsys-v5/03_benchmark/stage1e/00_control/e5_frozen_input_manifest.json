@@ -1,0 +1,146 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e5-input-1.0",
+  "material_passport": {
+    "origin_skill": "ars-codex:academic-research-suite/experiment-agent",
+    "origin_mode": "central-independent-audit-freeze",
+    "origin_date": "2026-08-22",
+    "verification_status": "UNVERIFIED",
+    "version_label": "Stage 1E Rebaseline v2 E5 frozen input packet",
+    "repro_lock": null
+  },
+  "project": "hybrid-recsys-v5",
+  "stage": "1E",
+  "wave": "C",
+  "task": "E5_independent_lock_audit",
+  "authority_root": "E:/UIT/cv/backend",
+  "git": {
+    "central_head_after_e4_import": "c8987022f59c289d03765128e8a2011a3085fc64",
+    "working_tree": "DIRTY_USER_STATE",
+    "starting_state_policy": "working-tree",
+    "preserve_user_changes": true
+  },
+  "hash_policy": {
+    "algorithm": "SHA-256",
+    "canonicalization": "Decode UTF-8 bytes and replace CRLF with LF before hashing",
+    "fail_closed": true
+  },
+  "model_policy": {
+    "model": "gpt-5.6-sol",
+    "reasoning": "xhigh",
+    "independent_from_e4": true
+  },
+  "entry_gate": {
+    "e4_structural_validation": "PASS_FROZEN_PACKET_READY_FOR_E5_FAIL_CLOSED_AUDIT",
+    "e4_content_verdict": "FAIL_NOT_READY_FOR_E5",
+    "e4_verdict_detail": "BLOCKED_NO_READY_REFERENCE_BUNDLE",
+    "ready_reference_rows": 0,
+    "audit_may_start": true,
+    "execution_may_be_authorized": false
+  },
+  "direct_inputs": [
+    {
+      "role": "e5_audit_contract",
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e5_independent_lock_audit_contract.md",
+      "canonical_lf_bytes": 10277,
+      "canonical_lf_sha256": "59394ab80d3d78c491d20346bf44cfab5ab7d75e8acbab45ae3ecaf50c62dff5",
+      "status": "authoritative_e5_contract"
+    },
+    {
+      "role": "e4_central_validation_receipt",
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_validation_receipt.json",
+      "canonical_lf_bytes": 3334,
+      "canonical_lf_sha256": "b7a7ed680f2aafe1e42fb246225c3a507a03c514f122ebeadd809ce88f5a41f7",
+      "status": "structural_pass_content_fail_closed"
+    },
+    {
+      "role": "e4_central_validator",
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_rebaseline_v2_e4.py",
+      "canonical_lf_bytes": 10973,
+      "canonical_lf_sha256": "18d431e52e3cba61faa6e308c5e36d1074bf23f1f283cdb36054d53844f5aa8b",
+      "status": "central_validator"
+    },
+    {
+      "role": "e4_parent_manifest",
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_frozen_input_manifest.json",
+      "canonical_lf_bytes": 11252,
+      "canonical_lf_sha256": "e320eff700eae6e12d8e4059e25656b88dfd1ac1904e42290fce32944ddf41d2",
+      "status": "authoritative_transitive_manifest"
+    },
+    {
+      "role": "e4_selected_reference_bundle",
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_b/E4_reproduction_adaptation/selected_reference_bundle.json",
+      "canonical_lf_bytes": 35399,
+      "canonical_lf_sha256": "b4a817b62706bfafe4a30d33566cd9fea74a0571307519be2a7924184f326eb4",
+      "status": "unverified_e4_output"
+    },
+    {
+      "role": "e4_reproduction_execution_plan",
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_b/E4_reproduction_adaptation/reproduction_execution_plan.md",
+      "canonical_lf_bytes": 10820,
+      "canonical_lf_sha256": "be3bd215197b0db7c21fc41adaf3fec801272685e4fdcc69a240fb9d8c30dccb",
+      "status": "unverified_e4_output"
+    },
+    {
+      "role": "e4_v5_adapter_contract",
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_b/E4_reproduction_adaptation/v5_adapter_and_evaluator_contract.md",
+      "canonical_lf_bytes": 13807,
+      "canonical_lf_sha256": "d8a9ea4bb7f4ba3ea10f22d265989b6e065b4709e9cce5b5edf9311c0104f49b",
+      "status": "unverified_e4_output"
+    },
+    {
+      "role": "e4_cross_dataset_contract",
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_b/E4_reproduction_adaptation/cross_dataset_reporting_contract.md",
+      "canonical_lf_bytes": 10677,
+      "canonical_lf_sha256": "1948a42778e24e3f758015d5d68806585f522c403655f98498dcd5104cfe25a3",
+      "status": "unverified_e4_output"
+    },
+    {
+      "role": "e4_exact_command_packet",
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_b/E4_reproduction_adaptation/exact_command_confirmation_packet.json",
+      "canonical_lf_bytes": 16320,
+      "canonical_lf_sha256": "4d43435e51caa8d8215e21464c151e9ef7169de61311f774b5e8010a47679514",
+      "status": "draft_blocked_not_executable"
+    },
+    {
+      "role": "e4_handoff",
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_b/E4_reproduction_adaptation/e4_handoff.json",
+      "canonical_lf_bytes": 10651,
+      "canonical_lf_sha256": "ae7cad234c49da15f05db7384d7b7b812a7a9672dd29df3058ec4efbd2154dee",
+      "status": "complete_fail_closed"
+    }
+  ],
+  "transitive_parent_manifest": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_frozen_input_manifest.json",
+    "canonical_lf_sha256": "e320eff700eae6e12d8e4059e25656b88dfd1ac1904e42290fce32944ddf41d2",
+    "field": "inputs",
+    "expected_entries": 28,
+    "verification_requirement": "Verify every parent input using the parent manifest canonical-LF bytes and SHA-256; do not accept the E4 verification claim as a substitute."
+  },
+  "verification_totals": {
+    "direct_inputs": 10,
+    "transitive_parent_inputs": 28,
+    "total_artifact_checks": 38
+  },
+  "execution_authority": {
+    "primary_source_web_replay": true,
+    "local_read_only_inspection": true,
+    "hash_schema_consistency_checks": true,
+    "repository_clone_or_fetch": false,
+    "dataset_download_or_authenticated_access": false,
+    "package_install_or_environment_creation": false,
+    "source_or_data_modification": false,
+    "training_or_evaluation": false,
+    "smoke_test_or_benchmark_execution": false,
+    "test_access": false,
+    "execute_e4_commands": false,
+    "modify_e1_through_e4": false,
+    "authorize_execution": false
+  },
+  "required_authorization_state": {
+    "authorized": false,
+    "minimum_decision": "DENIED_E4_FAIL_NOT_READY",
+    "replacement_e4_packet_required": true,
+    "new_e5_audit_required_after_replacement": true,
+    "explicit_user_command_confirmation_required_after_future_pass": true
+  }
+}

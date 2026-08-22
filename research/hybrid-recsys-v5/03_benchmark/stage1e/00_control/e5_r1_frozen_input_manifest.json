@@ -1,0 +1,200 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e5-r1-input-1.0",
+  "material_passport": {
+    "origin_skill": "ars-codex:academic-research-suite/experiment-agent",
+    "origin_mode": "central-independent-audit-freeze",
+    "origin_date": "2026-08-22",
+    "verification_status": "UNVERIFIED",
+    "version_label": "Stage 1E Rebaseline v2 E5-R1 independent remediation audit input packet",
+    "repro_lock": null
+  },
+  "project": "hybrid-recsys-v5",
+  "stage": "1E",
+  "wave": "F",
+  "task": "E5_R1_independent_remediation_audit",
+  "authority_root": "E:/UIT/cv/backend",
+  "git": {
+    "central_head_before_dispatch": "de91bdd06df280aa60082e775fc6e06a1c1cc810",
+    "working_tree": "DIRTY_USER_STATE",
+    "starting_state_policy": "working-tree",
+    "preserve_user_changes": true
+  },
+  "hash_policy": {
+    "algorithm": "SHA-256",
+    "canonicalization": "Strict UTF-8 decode, replace CRLF with LF, then hash",
+    "fail_closed": true
+  },
+  "model_policy": {
+    "model": "gpt-5.6-sol",
+    "reasoning": "xhigh",
+    "fresh_independent_context_required": true,
+    "central_synthesis_context_forbidden": true
+  },
+  "entry_gate": {
+    "r1c_validation": "PASS_E4_R1C_CORRECTED_FAIL_CLOSED_READY_FOR_E5_R1_AUDIT",
+    "r1c_validation_canonical_lf_sha256": "bd7e0ed6b3e204ee14f707cab0af33e346f40067bd132e7e9311920ecbd31d2c",
+    "ready_candidate_rows": 0,
+    "null_commands": 10,
+    "unresolved_prerequisites": 14,
+    "execution_may_be_authorized": false
+  },
+  "inputs": [
+    {
+      "role": "e5_r1_audit_contract",
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e5_r1_independent_remediation_audit_contract.md",
+      "canonical_lf_bytes": 9730,
+      "canonical_lf_sha256": "7147cdbf3732f8c8c46c275c8b9c21bad392a0abea76b50217d0616e7868320e"
+    },
+    {
+      "role": "e4_r1c_central_validation_receipt",
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r1c_validation_receipt.json",
+      "canonical_lf_bytes": 5299,
+      "canonical_lf_sha256": "bd7e0ed6b3e204ee14f707cab0af33e346f40067bd132e7e9311920ecbd31d2c"
+    },
+    {
+      "role": "e4_r1c_synthesis_contract",
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r1c_central_synthesis_contract.md",
+      "canonical_lf_bytes": 9876,
+      "canonical_lf_sha256": "192a49d4afec4e52d52515879ec28e4e58f8acf4f9038afe9ff0a3d06d7765c9"
+    },
+    {
+      "role": "e4_r1c_input_manifest",
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r1c_frozen_input_manifest.json",
+      "canonical_lf_bytes": 9370,
+      "canonical_lf_sha256": "3f1a1c6eb350120674a57dc6df846c58f456d61df30e0da27ebb7aea17923d87"
+    },
+    {
+      "role": "e4_r1c_reference_bundle",
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_e/E4_R1C_reproduction_adaptation/selected_reference_bundle.json",
+      "canonical_lf_bytes": 13999,
+      "canonical_lf_sha256": "03be00806d7228c90e97f767b416650dc4dfd769d3832607e18cc02e09c6d1b5"
+    },
+    {
+      "role": "e4_r1c_execution_plan",
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_e/E4_R1C_reproduction_adaptation/reproduction_execution_plan.md",
+      "canonical_lf_bytes": 10857,
+      "canonical_lf_sha256": "cc3b03ca367f4b810da5fd593f294a4fff0cb2d8394c116cc10f7f2dcfef7a56"
+    },
+    {
+      "role": "e4_r1c_adapter_contract",
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_e/E4_R1C_reproduction_adaptation/v5_adapter_and_evaluator_contract.md",
+      "canonical_lf_bytes": 9142,
+      "canonical_lf_sha256": "486a6ba5cae4d174b603b52de7cf04883f5842a5c3685370382ebc927c210812"
+    },
+    {
+      "role": "e4_r1c_reporting_contract",
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_e/E4_R1C_reproduction_adaptation/cross_dataset_reporting_contract.md",
+      "canonical_lf_bytes": 8525,
+      "canonical_lf_sha256": "67217daf4d771a594d07107f4435e39e5b499ce97c845a8b39b4850bf22206f5"
+    },
+    {
+      "role": "e4_r1c_command_packet",
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_e/E4_R1C_reproduction_adaptation/exact_command_confirmation_packet.json",
+      "canonical_lf_bytes": 30622,
+      "canonical_lf_sha256": "a3b73e4dd8d1c722b684f297943496303d48169eae75ff37a4226180cb5e15c2"
+    },
+    {
+      "role": "e4_r1c_handoff",
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_e/E4_R1C_reproduction_adaptation/e4_r1c_handoff.json",
+      "canonical_lf_bytes": 11185,
+      "canonical_lf_sha256": "11268b429492d5f5b412463081377e9f009fe89feaeabe27abaa1caadd949907"
+    },
+    {
+      "role": "original_e5_findings",
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_c/E5_independent_lock_audit/audit_findings.json",
+      "canonical_lf_bytes": 7778,
+      "canonical_lf_sha256": "2f0d716f2e633d89dba6c39663f4f946e51b4db27773c4ef1aa2ed24e01249c5"
+    },
+    {
+      "role": "original_e5_execution_denial",
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_c/E5_independent_lock_audit/stage1e_execution_authorization.json",
+      "canonical_lf_bytes": 1002,
+      "canonical_lf_sha256": "8057aad48166c8f4dc92f7c5798ac3b82e95a7a9d5a636b35e538d861f7a2940"
+    },
+    {
+      "role": "r1_lane_validation_receipt",
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r1_lanes_validation_receipt.json",
+      "canonical_lf_bytes": 3774,
+      "canonical_lf_sha256": "d790eaf2503f9dba8dcff231b894ad8a50cefb98ae96d7f7ef9b363e0231edf2"
+    },
+    {
+      "role": "current_v5_spec",
+      "path": "backend/docs/chatbot/seed-product/benchmark-spec-v5.json",
+      "canonical_lf_bytes": 2629,
+      "canonical_lf_sha256": "acef1c62cc2a9a3ae04fdf2f4b2fb24b3eb8d2634f15e085fbe1878be8dc166d"
+    },
+    {
+      "role": "original_e5_audit_only_contract",
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e5_independent_lock_audit_contract.md",
+      "canonical_lf_bytes": 10277,
+      "canonical_lf_sha256": "59394ab80d3d78c491d20346bf44cfab5ab7d75e8acbab45ae3ecaf50c62dff5"
+    },
+    {
+      "role": "r1b_receipt_schema_bundle",
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_d/E4_R1B_command_controls/receipt_schema_bundle.json",
+      "canonical_lf_bytes": 36294,
+      "canonical_lf_sha256": "0d462872340130eeeadbf54eb41301c6e6675c2e7006384a85c36960ccf8fb32"
+    },
+    {
+      "role": "r1b_mechanical_control_spec",
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_d/E4_R1B_command_controls/mechanical_control_spec.md",
+      "canonical_lf_bytes": 26307,
+      "canonical_lf_sha256": "6d9d00114fe1da84d8f6df312906ad82da408800523a66cc60423f38585dcdf7"
+    },
+    {
+      "role": "r1a_source_corrections",
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_d/E4_R1A_provenance_config/source_and_binding_corrections.json",
+      "canonical_lf_bytes": 14258,
+      "canonical_lf_sha256": "ce1ae9194e24dc1c35ce736aec039a3564674912ef0a0452ac2a045d3e64214b"
+    },
+    {
+      "role": "r1a_candidate_registry",
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_d/E4_R1A_provenance_config/candidate_readiness_delta.json",
+      "canonical_lf_bytes": 57368,
+      "canonical_lf_sha256": "3d53f30e284edaefc02737fa7a7cad7326fb53cf2f3db0b218a93f3c1137fb32"
+    }
+  ],
+  "verification_totals": {
+    "inputs": 19,
+    "required_matches": 19
+  },
+  "output_contract": {
+    "write_set": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_f/E5_R1_independent_remediation_audit/",
+    "required_outputs": [
+      "independent_remediation_audit.md",
+      "audit_findings.json",
+      "replay_receipt.json",
+      "stage1e_execution_authorization.json",
+      "e5_r1_handoff.json"
+    ],
+    "exact_file_set": true
+  },
+  "execution_authority": {
+    "local_read_only_inspection": true,
+    "hash_schema_consistency_checks": true,
+    "primary_source_identity_web_replay": true,
+    "repository_clone_or_fetch": false,
+    "dataset_download_or_authenticated_access": false,
+    "package_install_or_environment_creation": false,
+    "source_model_or_data_modification": false,
+    "training_evaluation_smoke_or_benchmark": false,
+    "test_access": false,
+    "execute_commands": false,
+    "modify_control_or_wave_a_through_e": false,
+    "authorize_execution": false
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "confirmed": false
+  },
+  "allowed_verdicts": [
+    "PASS_REMEDIATION_INTEGRITY_EXECUTION_DENIED",
+    "REVISE_E4_R1C_ADDITIONAL_FINDINGS",
+    "HANDOFF_INCOMPLETE"
+  ],
+  "forbidden_verdict": "PASS_EXECUTION_AUTHORIZED",
+  "next_gate": "Fresh independent task verifies 19/19 inputs, audits F001-F004 and the fail-closed state, writes exactly five Wave F files, and commits only that write set."
+}

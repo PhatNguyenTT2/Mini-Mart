@@ -1,0 +1,2203 @@
+{
+  "schema_version": "stage1b-r1-claim-counter-evidence-overlay-1.0",
+  "project": "hybrid-recsys-v5",
+  "stage": "1B",
+  "round": "R1",
+  "input_binding": {
+    "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/claim_source_map_r1.json": "77f830e6dfb4dc3b3107e01d306a918365114f08370edb929e89d171c8930fa8",
+    "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/locator_registry.json": "0af823257c2a5429b6b224a76e52bb7de1f5b4005c05cdec4d0574dce1230ae2"
+  },
+  "counter_evidence_rule": "Use only exact upstream bounded counter-evidence text. none_identified is permitted only for an actually empty upstream counter_evidence array. No new counterclaim is synthesized.",
+  "counts": {
+    "claims": 44,
+    "bounded_counter_evidence": 44,
+    "none_identified": 0,
+    "counter_evidence_items": 51,
+    "source_locator_pointers": 136
+  },
+  "entries": [
+    {
+      "overlay_entry_id": "CEO-C-L5-EXT-01",
+      "claim_id": "C-L5-EXT-01",
+      "status": "bounded_counter_evidence",
+      "evidence_basis": "Exact upstream lane counter_evidence array plus the frozen R4 source/locator edges already bound to this unchanged claim row.",
+      "upstream_basis": {
+        "artifact_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L5/claim_cards.json",
+        "artifact_sha256": "dc53976a0c0db2eca5d5ce37db41051b96579a668948d5838a236d3788ee1927",
+        "claim_json_pointer": "/claims/2",
+        "json_pointer": "/claims/2/counter_evidence"
+      },
+      "counter_evidence_items": [
+        {
+          "item_id": "CE-C-L5-EXT-01-01",
+          "text": "The challenge language sometimes describes shopping intention or next purchase informally, but the formal task predicts the next engaged product.",
+          "upstream_json_pointer": "/claims/2/counter_evidence/0"
+        }
+      ],
+      "source_locator_pointers": [
+        {
+          "locator_id": "LOC-R4-S-jin2023_amazon_m2-01",
+          "source_key": "jin2023_amazon_m2",
+          "resource_key": null,
+          "family_id": "SF-R1-025",
+          "locator_type": "table",
+          "locator_value": "Sections 2.1–2.2; Table 1; Appendix B.3",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-R-R-L5-AMAZON-M2-01",
+          "source_key": null,
+          "resource_key": "R-L5-AMAZON-M2",
+          "family_id": "SF-R1-025",
+          "locator_type": "section",
+          "locator_value": "Official provider resource description and frozen R3 operational access record",
+          "verified_against_original": false
+        }
+      ]
+    },
+    {
+      "overlay_entry_id": "CEO-C-L5-EXT-02",
+      "claim_id": "C-L5-EXT-02",
+      "status": "bounded_counter_evidence",
+      "evidence_basis": "Exact upstream lane counter_evidence array plus the frozen R4 source/locator edges already bound to this unchanged claim row.",
+      "upstream_basis": {
+        "artifact_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L5/claim_cards.json",
+        "artifact_sha256": "dc53976a0c0db2eca5d5ce37db41051b96579a668948d5838a236d3788ee1927",
+        "claim_json_pointer": "/claims/3",
+        "json_pointer": "/claims/3/counter_evidence"
+      },
+      "counter_evidence_items": [
+        {
+          "item_id": "CE-C-L5-EXT-02-01",
+          "text": "The release has a purchase event and rich content, making it structurally stronger than interaction-only session datasets on some fields.",
+          "upstream_json_pointer": "/claims/3/counter_evidence/0"
+        }
+      ],
+      "source_locator_pointers": [
+        {
+          "locator_id": "LOC-R4-S-tagliabue2021_coveo-01",
+          "source_key": "tagliabue2021_coveo",
+          "resource_key": null,
+          "family_id": "SF-R1-055",
+          "locator_type": "table",
+          "locator_value": "Sections 2–4; Tables 1–2",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-R-R-L5-COVEO-01",
+          "source_key": null,
+          "resource_key": "R-L5-COVEO",
+          "family_id": "SF-R1-055",
+          "locator_type": "section",
+          "locator_value": "Official provider resource description and frozen R3 operational access record",
+          "verified_against_original": false
+        }
+      ]
+    },
+    {
+      "overlay_entry_id": "CEO-C-L5-EXT-03",
+      "claim_id": "C-L5-EXT-03",
+      "status": "bounded_counter_evidence",
+      "evidence_basis": "Exact upstream lane counter_evidence array plus the frozen R4 source/locator edges already bound to this unchanged claim row.",
+      "upstream_basis": {
+        "artifact_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L5/claim_cards.json",
+        "artifact_sha256": "dc53976a0c0db2eca5d5ce37db41051b96579a668948d5838a236d3788ee1927",
+        "claim_json_pointer": "/claims/4",
+        "json_pointer": "/claims/4/counter_evidence"
+      },
+      "counter_evidence_items": [
+        {
+          "item_id": "CE-C-L5-EXT-03-01",
+          "text": "The provider describes 2,500 households over two years, while package 1.1.1 describes 2,469 households over one year; edition-specific differences require inspection.",
+          "upstream_json_pointer": "/claims/4/counter_evidence/0"
+        }
+      ],
+      "source_locator_pointers": [
+        {
+          "locator_id": "LOC-R4-R-R-L5-COMPLETE-JOURNEY-PROVIDER-01",
+          "source_key": null,
+          "resource_key": "R-L5-COMPLETE-JOURNEY-PROVIDER",
+          "family_id": "SF-R1-075",
+          "locator_type": "section",
+          "locator_value": "The Complete Journey; What is inside; intended uses; source-file access form; Terms and Conditions section A.1",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-R-R-L5-COMPLETEJOURNEY-R-PACKAGE-01",
+          "source_key": null,
+          "resource_key": "R-L5-COMPLETEJOURNEY-R-PACKAGE",
+          "family_id": "SF-R1-075",
+          "locator_type": "section",
+          "locator_value": "CRAN Description, License, Downloads; package manual named data-object entries; user-guide Accessing Data and Dataset Details sections",
+          "verified_against_original": true
+        }
+      ]
+    },
+    {
+      "overlay_entry_id": "CEO-C-L5-EXT-04",
+      "claim_id": "C-L5-EXT-04",
+      "status": "bounded_counter_evidence",
+      "evidence_basis": "Exact upstream lane counter_evidence array plus the frozen R4 source/locator edges already bound to this unchanged claim row.",
+      "upstream_basis": {
+        "artifact_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L5/claim_cards.json",
+        "artifact_sha256": "dc53976a0c0db2eca5d5ce37db41051b96579a668948d5838a236d3788ee1927",
+        "claim_json_pointer": "/claims/5",
+        "json_pointer": "/claims/5/counter_evidence"
+      },
+      "counter_evidence_items": [
+        {
+          "item_id": "CE-C-L5-EXT-04-01",
+          "text": "RelBench adds independent benchmark/task-design evidence, but that is different from independent upstream data or rights evidence.",
+          "upstream_json_pointer": "/claims/5/counter_evidence/0"
+        }
+      ],
+      "source_locator_pointers": [
+        {
+          "locator_id": "LOC-R4-S-robinson2024_relbench-01",
+          "source_key": "robinson2024_relbench",
+          "resource_key": null,
+          "family_id": "SF-R1-048",
+          "locator_type": "figure",
+          "locator_value": "Named sections, tables, figures, and structural results retained from the frozen R3 original-content locator",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-R-R-L5-RELBENCH-REL-AMAZON-01",
+          "source_key": null,
+          "resource_key": "R-L5-RELBENCH-REL-AMAZON",
+          "family_id": "SF-R1-073",
+          "locator_type": "section",
+          "locator_value": "Official provider resource description and frozen R3 operational access record",
+          "verified_against_original": false
+        },
+        {
+          "locator_id": "LOC-R4-R-R-L5-RELBENCH-REL-HM-01",
+          "source_key": null,
+          "resource_key": "R-L5-RELBENCH-REL-HM",
+          "family_id": "SF-R1-074",
+          "locator_type": "section",
+          "locator_value": "Official provider resource description and frozen R3 operational access record",
+          "verified_against_original": false
+        },
+        {
+          "locator_id": "LOC-R4-R-R-L5-HM-01",
+          "source_key": null,
+          "resource_key": "R-L5-HM",
+          "family_id": "SF-R1-074",
+          "locator_type": "section",
+          "locator_value": "Official provider resource description and frozen R3 operational access record",
+          "verified_against_original": false
+        }
+      ]
+    },
+    {
+      "overlay_entry_id": "CEO-C-L5-EXT-05",
+      "claim_id": "C-L5-EXT-05",
+      "status": "bounded_counter_evidence",
+      "evidence_basis": "Exact upstream lane counter_evidence array plus the frozen R4 source/locator edges already bound to this unchanged claim row.",
+      "upstream_basis": {
+        "artifact_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L5/claim_cards.json",
+        "artifact_sha256": "dc53976a0c0db2eca5d5ce37db41051b96579a668948d5838a236d3788ee1927",
+        "claim_json_pointer": "/claims/8",
+        "json_pointer": "/claims/8/counter_evidence"
+      },
+      "counter_evidence_items": [
+        {
+          "item_id": "CE-C-L5-EXT-05-01",
+          "text": "The resource remains useful for multimodal long-sequence method development outside strict purchase replication.",
+          "upstream_json_pointer": "/claims/8/counter_evidence/0"
+        }
+      ],
+      "source_locator_pointers": [
+        {
+          "locator_id": "LOC-R4-S-wu2025_muse_taobao_mm-01",
+          "source_key": "wu2025_muse_taobao_mm",
+          "resource_key": null,
+          "family_id": "SF-R1-063",
+          "locator_type": "figure",
+          "locator_value": "Named sections, tables, figures, and structural results retained from the frozen R3 original-content locator",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-R-R-L5-TAOBAO-MM-01",
+          "source_key": null,
+          "resource_key": "R-L5-TAOBAO-MM",
+          "family_id": "SF-R1-063",
+          "locator_type": "section",
+          "locator_value": "Official provider resource description and frozen R3 operational access record",
+          "verified_against_original": false
+        }
+      ]
+    },
+    {
+      "overlay_entry_id": "CEO-C-L5-RIGHTS-01",
+      "claim_id": "C-L5-RIGHTS-01",
+      "status": "bounded_counter_evidence",
+      "evidence_basis": "Exact upstream lane counter_evidence array plus the frozen R4 source/locator edges already bound to this unchanged claim row.",
+      "upstream_basis": {
+        "artifact_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L5/claim_cards.json",
+        "artifact_sha256": "dc53976a0c0db2eca5d5ce37db41051b96579a668948d5838a236d3788ee1927",
+        "claim_json_pointer": "/claims/6",
+        "json_pointer": "/claims/6/counter_evidence"
+      },
+      "counter_evidence_items": [
+        {
+          "item_id": "CE-C-L5-RIGHTS-01-01",
+          "text": "OTTO and TAOBAO-MM provide explicit dataset-license statements; those rights findings rely on the statements, not on availability.",
+          "upstream_json_pointer": "/claims/6/counter_evidence/0"
+        }
+      ],
+      "source_locator_pointers": [
+        {
+          "locator_id": "LOC-R4-R-R-L5-COMPLETE-JOURNEY-PROVIDER-01",
+          "source_key": null,
+          "resource_key": "R-L5-COMPLETE-JOURNEY-PROVIDER",
+          "family_id": "SF-R1-075",
+          "locator_type": "section",
+          "locator_value": "The Complete Journey; What is inside; intended uses; source-file access form; Terms and Conditions section A.1",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-R-R-L5-COMPLETEJOURNEY-R-PACKAGE-01",
+          "source_key": null,
+          "resource_key": "R-L5-COMPLETEJOURNEY-R-PACKAGE",
+          "family_id": "SF-R1-075",
+          "locator_type": "section",
+          "locator_value": "CRAN Description, License, Downloads; package manual named data-object entries; user-guide Accessing Data and Dataset Details sections",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-R-R-L5-VIFOODREC-01",
+          "source_key": null,
+          "resource_key": "R-L5-VIFOODREC",
+          "family_id": "SF-R1-057",
+          "locator_type": "section",
+          "locator_value": "Official provider resource description and frozen R3 operational access record",
+          "verified_against_original": false
+        },
+        {
+          "locator_id": "LOC-R4-R-R-L5-AMAZON-REVIEWS-2023-01",
+          "source_key": null,
+          "resource_key": "R-L5-AMAZON-REVIEWS-2023",
+          "family_id": "SF-R1-019",
+          "locator_type": "section",
+          "locator_value": "Official provider resource description and frozen R3 operational access record",
+          "verified_against_original": false
+        }
+      ]
+    },
+    {
+      "overlay_entry_id": "CEO-C-L5-SCOPE-01",
+      "claim_id": "C-L5-SCOPE-01",
+      "status": "bounded_counter_evidence",
+      "evidence_basis": "Exact upstream lane counter_evidence array plus the frozen R4 source/locator edges already bound to this unchanged claim row.",
+      "upstream_basis": {
+        "artifact_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L5/claim_cards.json",
+        "artifact_sha256": "dc53976a0c0db2eca5d5ce37db41051b96579a668948d5838a236d3788ee1927",
+        "claim_json_pointer": "/claims/7",
+        "json_pointer": "/claims/7/counter_evidence"
+      },
+      "counter_evidence_items": [
+        {
+          "item_id": "CE-C-L5-SCOPE-01-01",
+          "text": "Complete Journey is structurally closest and may clear after exact edition acquisition and legal review.",
+          "upstream_json_pointer": "/claims/7/counter_evidence/0"
+        },
+        {
+          "item_id": "CE-C-L5-SCOPE-01-02",
+          "text": "Coveo and OTTO contain observed purchase/order events but lack persistent users.",
+          "upstream_json_pointer": "/claims/7/counter_evidence/1"
+        }
+      ],
+      "source_locator_pointers": [
+        {
+          "locator_id": "LOC-R4-R-R-L5-VIECOMREC-01",
+          "source_key": null,
+          "resource_key": "R-L5-VIECOMREC",
+          "family_id": "SF-R1-038",
+          "locator_type": "section",
+          "locator_value": "Official provider resource description and frozen R3 operational access record",
+          "verified_against_original": false
+        },
+        {
+          "locator_id": "LOC-R4-R-R-L5-VIFOODREC-01",
+          "source_key": null,
+          "resource_key": "R-L5-VIFOODREC",
+          "family_id": "SF-R1-057",
+          "locator_type": "section",
+          "locator_value": "Official provider resource description and frozen R3 operational access record",
+          "verified_against_original": false
+        },
+        {
+          "locator_id": "LOC-R4-R-R-L5-VIHOREC-01",
+          "source_key": null,
+          "resource_key": "R-L5-VIHOREC",
+          "family_id": "SF-R1-039",
+          "locator_type": "section",
+          "locator_value": "Official provider resource description and frozen R3 operational access record",
+          "verified_against_original": false
+        },
+        {
+          "locator_id": "LOC-R4-R-R-L5-AMAZON-M2-01",
+          "source_key": null,
+          "resource_key": "R-L5-AMAZON-M2",
+          "family_id": "SF-R1-025",
+          "locator_type": "section",
+          "locator_value": "Official provider resource description and frozen R3 operational access record",
+          "verified_against_original": false
+        },
+        {
+          "locator_id": "LOC-R4-R-R-L5-TENREC-01",
+          "source_key": null,
+          "resource_key": "R-L5-TENREC",
+          "family_id": "SF-R1-067",
+          "locator_type": "section",
+          "locator_value": "Official provider resource description and frozen R3 operational access record",
+          "verified_against_original": false
+        },
+        {
+          "locator_id": "LOC-R4-R-R-L5-COVEO-01",
+          "source_key": null,
+          "resource_key": "R-L5-COVEO",
+          "family_id": "SF-R1-055",
+          "locator_type": "section",
+          "locator_value": "Official provider resource description and frozen R3 operational access record",
+          "verified_against_original": false
+        },
+        {
+          "locator_id": "LOC-R4-R-R-L5-OTTO-01",
+          "source_key": null,
+          "resource_key": "R-L5-OTTO",
+          "family_id": "SF-R1-072",
+          "locator_type": "section",
+          "locator_value": "Official provider resource description and frozen R3 operational access record",
+          "verified_against_original": false
+        },
+        {
+          "locator_id": "LOC-R4-R-R-L5-RELBENCH-REL-AMAZON-01",
+          "source_key": null,
+          "resource_key": "R-L5-RELBENCH-REL-AMAZON",
+          "family_id": "SF-R1-073",
+          "locator_type": "section",
+          "locator_value": "Official provider resource description and frozen R3 operational access record",
+          "verified_against_original": false
+        },
+        {
+          "locator_id": "LOC-R4-R-R-L5-RELBENCH-REL-HM-01",
+          "source_key": null,
+          "resource_key": "R-L5-RELBENCH-REL-HM",
+          "family_id": "SF-R1-074",
+          "locator_type": "section",
+          "locator_value": "Official provider resource description and frozen R3 operational access record",
+          "verified_against_original": false
+        },
+        {
+          "locator_id": "LOC-R4-R-R-L5-AMAZON-REVIEWS-2023-01",
+          "source_key": null,
+          "resource_key": "R-L5-AMAZON-REVIEWS-2023",
+          "family_id": "SF-R1-019",
+          "locator_type": "section",
+          "locator_value": "Official provider resource description and frozen R3 operational access record",
+          "verified_against_original": false
+        },
+        {
+          "locator_id": "LOC-R4-R-R-L5-HM-01",
+          "source_key": null,
+          "resource_key": "R-L5-HM",
+          "family_id": "SF-R1-074",
+          "locator_type": "section",
+          "locator_value": "Official provider resource description and frozen R3 operational access record",
+          "verified_against_original": false
+        },
+        {
+          "locator_id": "LOC-R4-R-R-L5-COMPLETE-JOURNEY-PROVIDER-01",
+          "source_key": null,
+          "resource_key": "R-L5-COMPLETE-JOURNEY-PROVIDER",
+          "family_id": "SF-R1-075",
+          "locator_type": "section",
+          "locator_value": "The Complete Journey; What is inside; intended uses; source-file access form; Terms and Conditions section A.1",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-R-R-L5-COMPLETEJOURNEY-R-PACKAGE-01",
+          "source_key": null,
+          "resource_key": "R-L5-COMPLETEJOURNEY-R-PACKAGE",
+          "family_id": "SF-R1-075",
+          "locator_type": "section",
+          "locator_value": "CRAN Description, License, Downloads; package manual named data-object entries; user-guide Accessing Data and Dataset Details sections",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-R-R-L5-TAOBAO-MM-01",
+          "source_key": null,
+          "resource_key": "R-L5-TAOBAO-MM",
+          "family_id": "SF-R1-063",
+          "locator_type": "section",
+          "locator_value": "Official provider resource description and frozen R3 operational access record",
+          "verified_against_original": false
+        }
+      ]
+    },
+    {
+      "overlay_entry_id": "CEO-C-L5-VN-01",
+      "claim_id": "C-L5-VN-01",
+      "status": "bounded_counter_evidence",
+      "evidence_basis": "Exact upstream lane counter_evidence array plus the frozen R4 source/locator edges already bound to this unchanged claim row.",
+      "upstream_basis": {
+        "artifact_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L5/claim_cards.json",
+        "artifact_sha256": "dc53976a0c0db2eca5d5ce37db41051b96579a668948d5838a236d3788ee1927",
+        "claim_json_pointer": "/claims/0",
+        "json_pointer": "/claims/0/counter_evidence"
+      },
+      "counter_evidence_items": [
+        {
+          "item_id": "CE-C-L5-VN-01-01",
+          "text": "The release is review-based and has no basket identifier.",
+          "upstream_json_pointer": "/claims/0/counter_evidence/0"
+        }
+      ],
+      "source_locator_pointers": [
+        {
+          "locator_id": "LOC-R4-S-tran2024_viecomrec-01",
+          "source_key": "tran2024_viecomrec",
+          "resource_key": null,
+          "family_id": "SF-R1-038",
+          "locator_type": "section",
+          "locator_value": "Sections 3.1 and 5.1",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-R-R-L5-VIECOMREC-01",
+          "source_key": null,
+          "resource_key": "R-L5-VIECOMREC",
+          "family_id": "SF-R1-038",
+          "locator_type": "section",
+          "locator_value": "Official provider resource description and frozen R3 operational access record",
+          "verified_against_original": false
+        }
+      ]
+    },
+    {
+      "overlay_entry_id": "CEO-C-L5-VN-02",
+      "claim_id": "C-L5-VN-02",
+      "status": "bounded_counter_evidence",
+      "evidence_basis": "Exact upstream lane counter_evidence array plus the frozen R4 source/locator edges already bound to this unchanged claim row.",
+      "upstream_basis": {
+        "artifact_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L5/claim_cards.json",
+        "artifact_sha256": "dc53976a0c0db2eca5d5ce37db41051b96579a668948d5838a236d3788ee1927",
+        "claim_json_pointer": "/claims/1",
+        "json_pointer": "/claims/1/counter_evidence"
+      },
+      "counter_evidence_items": [
+        {
+          "item_id": "CE-C-L5-VN-02-01",
+          "text": "ViEcomRec has a stronger post-purchase review proxy but still lacks basket structure.",
+          "upstream_json_pointer": "/claims/1/counter_evidence/0"
+        }
+      ],
+      "source_locator_pointers": [
+        {
+          "locator_id": "LOC-R4-S-tran2024_vietnamese_food-01",
+          "source_key": "tran2024_vietnamese_food",
+          "resource_key": null,
+          "family_id": "SF-R1-057",
+          "locator_type": "figure",
+          "locator_value": "Named sections, tables, figures, and structural results retained from the frozen R3 original-content locator",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-nguyen2026_vihorec-01",
+          "source_key": "nguyen2026_vihorec",
+          "resource_key": null,
+          "family_id": "SF-R1-039",
+          "locator_type": "figure",
+          "locator_value": "Named sections, tables, figures, and structural results retained from the frozen R3 original-content locator",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-pham2024_developing_a_restaurant_recommended_system_via_the_vietnam-01",
+          "source_key": "pham2024_developing_a_restaurant_recommended_system_via_the_vietnam",
+          "resource_key": null,
+          "family_id": "SF-R1-045",
+          "locator_type": "figure",
+          "locator_value": "Named sections, tables, figures, and structural results retained from the frozen R3 original-content locator",
+          "verified_against_original": true
+        }
+      ]
+    },
+    {
+      "overlay_entry_id": "CEO-L1-CC-001",
+      "claim_id": "L1-CC-001",
+      "status": "bounded_counter_evidence",
+      "evidence_basis": "Exact upstream lane counter_evidence array plus the frozen R4 source/locator edges already bound to this unchanged claim row.",
+      "upstream_basis": {
+        "artifact_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L1/claim_cards.json",
+        "artifact_sha256": "05f47aadbdd68850a35caed538ef15cea7b46fb5592a973e8f304cea1d7b2746",
+        "claim_json_pointer": "/claim_cards/0",
+        "json_pointer": "/claim_cards/0/counter_evidence"
+      },
+      "counter_evidence_items": [
+        {
+          "item_id": "CE-L1-CC-001-01",
+          "text": "Li, Jin, Liu, Ren, Gao, and Liu 2023 develop estimators and adaptive sampling that improve recovery under stated assumptions.",
+          "upstream_json_pointer": "/claim_cards/0/counter_evidence/0"
+        },
+        {
+          "item_id": "CE-L1-CC-001-02",
+          "text": "Pereira, Said, and Santos 2025 evaluate resolution, fidelity, robustness, and predictive power rather than treating all sampling designs as equivalent.",
+          "upstream_json_pointer": "/claim_cards/0/counter_evidence/1"
+        }
+      ],
+      "source_locator_pointers": [
+        {
+          "locator_id": "LOC-R4-S-krichene2020_sampled_metrics-01",
+          "source_key": "krichene2020_sampled_metrics",
+          "resource_key": null,
+          "family_id": "SF-R1-028",
+          "locator_type": "section",
+          "locator_value": "Abstract; empirical ordering results; Sections 7–8",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-krichene2021_on_sampled_metrics_for_item_recommendation_extended_abstra-01",
+          "source_key": "krichene2021_on_sampled_metrics_for_item_recommendation_extended_abstra",
+          "resource_key": null,
+          "family_id": "SF-R1-028",
+          "locator_type": "figure",
+          "locator_value": "Named sections, tables, figures, and structural results retained from the frozen R3 original-content locator",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-li2023_reliable_sampling-01",
+          "source_key": "li2023_reliable_sampling",
+          "resource_key": null,
+          "family_id": "SF-R1-031",
+          "locator_type": "section",
+          "locator_value": "Abstract; Introduction; experimental comparison section",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-pereira2025_on_the_reliability_of_sampling_strategies_in_offline_recom-01",
+          "source_key": "pereira2025_on_the_reliability_of_sampling_strategies_in_offline_recom",
+          "resource_key": null,
+          "family_id": "SF-R1-043",
+          "locator_type": "figure",
+          "locator_value": "Named sections, tables, figures, and structural results retained from the frozen R3 original-content locator",
+          "verified_against_original": true
+        }
+      ]
+    },
+    {
+      "overlay_entry_id": "CEO-L1-CC-002",
+      "claim_id": "L1-CC-002",
+      "status": "bounded_counter_evidence",
+      "evidence_basis": "Exact upstream lane counter_evidence array plus the frozen R4 source/locator edges already bound to this unchanged claim row.",
+      "upstream_basis": {
+        "artifact_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L1/claim_cards.json",
+        "artifact_sha256": "05f47aadbdd68850a35caed538ef15cea7b46fb5592a973e8f304cea1d7b2746",
+        "claim_json_pointer": "/claim_cards/1",
+        "json_pointer": "/claim_cards/1/counter_evidence"
+      },
+      "counter_evidence_items": [
+        {
+          "item_id": "CE-L1-CC-002-01",
+          "text": "Some sampling designs can improve specific bias or fidelity properties under their reference assumptions.",
+          "upstream_json_pointer": "/claim_cards/1/counter_evidence/0"
+        },
+        {
+          "item_id": "CE-L1-CC-002-02",
+          "text": "Parajuli, Vaez Barenji, and Ekstrand 2026 report no uniformly best offline evaluation design across their tested reference targets.",
+          "upstream_json_pointer": "/claim_cards/1/counter_evidence/1"
+        }
+      ],
+      "source_locator_pointers": [
+        {
+          "locator_id": "LOC-R4-S-zhao2020_alternative_settings-01",
+          "source_key": "zhao2020_alternative_settings",
+          "resource_key": null,
+          "family_id": "SF-R1-069",
+          "locator_type": "table",
+          "locator_value": "Abstract; Sections 2–4; Table 2",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-ihemelandu2023_candidate_set_sampling_for_evaluating_top_n_recommendation-01",
+          "source_key": "ihemelandu2023_candidate_set_sampling_for_evaluating_top_n_recommendation",
+          "resource_key": null,
+          "family_id": "SF-R1-022",
+          "locator_type": "figure",
+          "locator_value": "Named sections, tables, figures, and structural results retained from the frozen R3 original-content locator",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-pereira2025_on_the_reliability_of_sampling_strategies_in_offline_recom-01",
+          "source_key": "pereira2025_on_the_reliability_of_sampling_strategies_in_offline_recom",
+          "resource_key": null,
+          "family_id": "SF-R1-043",
+          "locator_type": "figure",
+          "locator_value": "Named sections, tables, figures, and structural results retained from the frozen R3 original-content locator",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-parajuli2026_on_the_convergent_validity_of_offline_evaluation_designs_f-01",
+          "source_key": "parajuli2026_on_the_convergent_validity_of_offline_evaluation_designs_f",
+          "resource_key": null,
+          "family_id": "SF-R1-040",
+          "locator_type": "figure",
+          "locator_value": "Named sections, tables, figures, and structural results retained from the frozen R3 original-content locator",
+          "verified_against_original": true
+        }
+      ]
+    },
+    {
+      "overlay_entry_id": "CEO-L1-CC-003",
+      "claim_id": "L1-CC-003",
+      "status": "bounded_counter_evidence",
+      "evidence_basis": "Exact upstream lane counter_evidence array plus the frozen R4 source/locator edges already bound to this unchanged claim row.",
+      "upstream_basis": {
+        "artifact_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L1/claim_cards.json",
+        "artifact_sha256": "05f47aadbdd68850a35caed538ef15cea7b46fb5592a973e8f304cea1d7b2746",
+        "claim_json_pointer": "/claim_cards/2",
+        "json_pointer": "/claim_cards/2/counter_evidence"
+      },
+      "counter_evidence_items": [
+        {
+          "item_id": "CE-L1-CC-003-01",
+          "text": "Zhao, Chen, Wang, Gu, and Wen 2020 state that an appropriate ordering option depends on the task.",
+          "upstream_json_pointer": "/claim_cards/2/counter_evidence/0"
+        },
+        {
+          "item_id": "CE-L1-CC-003-02",
+          "text": "Parajuli, Vaez Barenji, and Ekstrand 2026 find configuration validity depends on dataset and dense reference target.",
+          "upstream_json_pointer": "/claim_cards/2/counter_evidence/1"
+        }
+      ],
+      "source_locator_pointers": [
+        {
+          "locator_id": "LOC-R4-S-zhao2020_alternative_settings-01",
+          "source_key": "zhao2020_alternative_settings",
+          "resource_key": null,
+          "family_id": "SF-R1-069",
+          "locator_type": "table",
+          "locator_value": "Abstract; Sections 2–4; Table 2",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-gusak2025_time_split-01",
+          "source_key": "gusak2025_time_split",
+          "resource_key": null,
+          "family_id": "SF-R1-013",
+          "locator_type": "figure",
+          "locator_value": "Figure 1; Sections 1–3; global temporal split and results subsections",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-parajuli2026_on_the_convergent_validity_of_offline_evaluation_designs_f-01",
+          "source_key": "parajuli2026_on_the_convergent_validity_of_offline_evaluation_designs_f",
+          "resource_key": null,
+          "family_id": "SF-R1-040",
+          "locator_type": "figure",
+          "locator_value": "Named sections, tables, figures, and structural results retained from the frozen R3 original-content locator",
+          "verified_against_original": true
+        }
+      ]
+    },
+    {
+      "overlay_entry_id": "CEO-L1-CC-004",
+      "claim_id": "L1-CC-004",
+      "status": "bounded_counter_evidence",
+      "evidence_basis": "Exact upstream lane counter_evidence array plus the frozen R4 source/locator edges already bound to this unchanged claim row.",
+      "upstream_basis": {
+        "artifact_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L1/claim_cards.json",
+        "artifact_sha256": "05f47aadbdd68850a35caed538ef15cea7b46fb5592a973e8f304cea1d7b2746",
+        "claim_json_pointer": "/claim_cards/3",
+        "json_pointer": "/claim_cards/3/counter_evidence"
+      },
+      "counter_evidence_items": [
+        {
+          "item_id": "CE-L1-CC-004-01",
+          "text": "No retained source establishes one universally correct recommender aggregation for every task; v5 must state its own estimand-driven rule.",
+          "upstream_json_pointer": "/claim_cards/3/counter_evidence/0"
+        }
+      ],
+      "source_locator_pointers": [
+        {
+          "locator_id": "LOC-R4-S-tamm2021_metric_consistency-01",
+          "source_key": "tamm2021_metric_consistency",
+          "resource_key": null,
+          "family_id": "SF-R1-056",
+          "locator_type": "figure",
+          "locator_value": "Named sections, tables, figures, and structural results retained from the frozen R3 original-content locator",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-canamares2020_offline_options-01",
+          "source_key": "canamares2020_offline_options",
+          "resource_key": null,
+          "family_id": "SF-R1-005",
+          "locator_type": "figure",
+          "locator_value": "Named sections, tables, figures, and structural results retained from the frozen R3 original-content locator",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-castells2022_offline_recommender_system_evaluation_challenges_and_new_d-01",
+          "source_key": "castells2022_offline_recommender_system_evaluation_challenges_and_new_d",
+          "resource_key": null,
+          "family_id": "SF-R1-006",
+          "locator_type": "abstract",
+          "locator_value": "Publisher HTML, abstract, Introduction, and experimental-configuration discussion",
+          "verified_against_original": true
+        }
+      ]
+    },
+    {
+      "overlay_entry_id": "CEO-L1-CC-005",
+      "claim_id": "L1-CC-005",
+      "status": "bounded_counter_evidence",
+      "evidence_basis": "Exact upstream lane counter_evidence array plus the frozen R4 source/locator edges already bound to this unchanged claim row.",
+      "upstream_basis": {
+        "artifact_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L1/claim_cards.json",
+        "artifact_sha256": "05f47aadbdd68850a35caed538ef15cea7b46fb5592a973e8f304cea1d7b2746",
+        "claim_json_pointer": "/claim_cards/4",
+        "json_pointer": "/claim_cards/4/counter_evidence"
+      },
+      "counter_evidence_items": [
+        {
+          "item_id": "CE-L1-CC-005-01",
+          "text": "Standardized frameworks can reduce implementation variation, but they do not remove the need to declare project-specific choices and parity tests.",
+          "upstream_json_pointer": "/claim_cards/4/counter_evidence/0"
+        }
+      ],
+      "source_locator_pointers": [
+        {
+          "locator_id": "LOC-R4-S-dacrema2021_reproducibility-01",
+          "source_key": "dacrema2021_reproducibility",
+          "resource_key": null,
+          "family_id": "SF-R1-009",
+          "locator_type": "section",
+          "locator_value": "Section 3; reproducible-setup criteria; discussion of evaluation practice",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-sun2023_daisyrec2-01",
+          "source_key": "sun2023_daisyrec2",
+          "resource_key": null,
+          "family_id": "SF-R1-054",
+          "locator_type": "figure",
+          "locator_value": "Named sections, tables, figures, and structural results retained from the frozen R3 original-content locator",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-benigni2026_diffusion_recommender_models_and_the_illusion_of_progress_-01",
+          "source_key": "benigni2026_diffusion_recommender_models_and_the_illusion_of_progress_",
+          "resource_key": null,
+          "family_id": "SF-R1-002",
+          "locator_type": "figure",
+          "locator_value": "Named sections, tables, figures, and structural results retained from the frozen R3 original-content locator",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-jannach2026_methodological_standards-01",
+          "source_key": "jannach2026_methodological_standards",
+          "resource_key": null,
+          "family_id": "SF-R1-023",
+          "locator_type": "section",
+          "locator_value": "Abstract; Sections 1–3 and 5; Appendix evaluation guidelines",
+          "verified_against_original": true
+        }
+      ]
+    },
+    {
+      "overlay_entry_id": "CEO-L1-CC-006",
+      "claim_id": "L1-CC-006",
+      "status": "bounded_counter_evidence",
+      "evidence_basis": "Exact upstream lane counter_evidence array plus the frozen R4 source/locator edges already bound to this unchanged claim row.",
+      "upstream_basis": {
+        "artifact_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L1/claim_cards.json",
+        "artifact_sha256": "05f47aadbdd68850a35caed538ef15cea7b46fb5592a973e8f304cea1d7b2746",
+        "claim_json_pointer": "/claim_cards/5",
+        "json_pointer": "/claim_cards/5/counter_evidence"
+      },
+      "counter_evidence_items": [
+        {
+          "item_id": "CE-L1-CC-006-01",
+          "text": "A complete, tested repository can improve repeatability and inspectability; the bounded claim is only that repository presence is not sufficient proof.",
+          "upstream_json_pointer": "/claim_cards/5/counter_evidence/0"
+        }
+      ],
+      "source_locator_pointers": [
+        {
+          "locator_id": "LOC-R4-S-dacrema2021_reproducibility-01",
+          "source_key": "dacrema2021_reproducibility",
+          "resource_key": null,
+          "family_id": "SF-R1-009",
+          "locator_type": "section",
+          "locator_value": "Section 3; reproducible-setup criteria; discussion of evaluation practice",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-shehzad2025_we_share_our_code_online_why_this_is_not_enough_to_ensure_-01",
+          "source_key": "shehzad2025_we_share_our_code_online_why_this_is_not_enough_to_ensure_",
+          "resource_key": null,
+          "family_id": "SF-R1-051",
+          "locator_type": "section",
+          "locator_value": "Author-uploaded final published full text, Sections 2–4; artifact DOI and CC BY notice verified",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-zhao2022_recbole2-01",
+          "source_key": "zhao2022_recbole2",
+          "resource_key": null,
+          "family_id": "SF-R1-070",
+          "locator_type": "figure",
+          "locator_value": "Named sections, tables, figures, and structural results retained from the frozen R3 original-content locator",
+          "verified_against_original": true
+        }
+      ]
+    },
+    {
+      "overlay_entry_id": "CEO-L1-CC-007",
+      "claim_id": "L1-CC-007",
+      "status": "bounded_counter_evidence",
+      "evidence_basis": "Exact upstream lane counter_evidence array plus the frozen R4 source/locator edges already bound to this unchanged claim row.",
+      "upstream_basis": {
+        "artifact_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L1/claim_cards.json",
+        "artifact_sha256": "05f47aadbdd68850a35caed538ef15cea7b46fb5592a973e8f304cea1d7b2746",
+        "claim_json_pointer": "/claim_cards/6",
+        "json_pointer": "/claim_cards/6/counter_evidence"
+      },
+      "counter_evidence_items": [
+        {
+          "item_id": "CE-L1-CC-007-01",
+          "text": "The exact official-versus-harmonized reporting split is an estimand-driven v5 design inference, not a verbatim prescription from one source.",
+          "upstream_json_pointer": "/claim_cards/6/counter_evidence/0"
+        }
+      ],
+      "source_locator_pointers": [
+        {
+          "locator_id": "LOC-R4-S-dacrema2021_reproducibility-01",
+          "source_key": "dacrema2021_reproducibility",
+          "resource_key": null,
+          "family_id": "SF-R1-009",
+          "locator_type": "section",
+          "locator_value": "Section 3; reproducible-setup criteria; discussion of evaluation practice",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-sun2023_daisyrec2-01",
+          "source_key": "sun2023_daisyrec2",
+          "resource_key": null,
+          "family_id": "SF-R1-054",
+          "locator_type": "figure",
+          "locator_value": "Named sections, tables, figures, and structural results retained from the frozen R3 original-content locator",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-zhao2022_recbole2-01",
+          "source_key": "zhao2022_recbole2",
+          "resource_key": null,
+          "family_id": "SF-R1-070",
+          "locator_type": "figure",
+          "locator_value": "Named sections, tables, figures, and structural results retained from the frozen R3 original-content locator",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-jannach2026_methodological_standards-01",
+          "source_key": "jannach2026_methodological_standards",
+          "resource_key": null,
+          "family_id": "SF-R1-023",
+          "locator_type": "section",
+          "locator_value": "Abstract; Sections 1–3 and 5; Appendix evaluation guidelines",
+          "verified_against_original": true
+        }
+      ]
+    },
+    {
+      "overlay_entry_id": "CEO-L1-CC-008",
+      "claim_id": "L1-CC-008",
+      "status": "bounded_counter_evidence",
+      "evidence_basis": "Exact upstream lane counter_evidence array plus the frozen R4 source/locator edges already bound to this unchanged claim row.",
+      "upstream_basis": {
+        "artifact_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L1/claim_cards.json",
+        "artifact_sha256": "05f47aadbdd68850a35caed538ef15cea7b46fb5592a973e8f304cea1d7b2746",
+        "claim_json_pointer": "/claim_cards/7",
+        "json_pointer": "/claim_cards/7/counter_evidence"
+      },
+      "counter_evidence_items": [
+        {
+          "item_id": "CE-L1-CC-008-01",
+          "text": "Comparable values may be produced after a documented common pipeline and parity-tested metric implementation; this must be demonstrated rather than assumed.",
+          "upstream_json_pointer": "/claim_cards/7/counter_evidence/0"
+        }
+      ],
+      "source_locator_pointers": [
+        {
+          "locator_id": "LOC-R4-S-zhao2020_alternative_settings-01",
+          "source_key": "zhao2020_alternative_settings",
+          "resource_key": null,
+          "family_id": "SF-R1-069",
+          "locator_type": "table",
+          "locator_value": "Abstract; Sections 2–4; Table 2",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-canamares2020_offline_options-01",
+          "source_key": "canamares2020_offline_options",
+          "resource_key": null,
+          "family_id": "SF-R1-005",
+          "locator_type": "figure",
+          "locator_value": "Named sections, tables, figures, and structural results retained from the frozen R3 original-content locator",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-gusak2025_time_split-01",
+          "source_key": "gusak2025_time_split",
+          "resource_key": null,
+          "family_id": "SF-R1-013",
+          "locator_type": "figure",
+          "locator_value": "Figure 1; Sections 1–3; global temporal split and results subsections",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-parajuli2026_on_the_convergent_validity_of_offline_evaluation_designs_f-01",
+          "source_key": "parajuli2026_on_the_convergent_validity_of_offline_evaluation_designs_f",
+          "resource_key": null,
+          "family_id": "SF-R1-040",
+          "locator_type": "figure",
+          "locator_value": "Named sections, tables, figures, and structural results retained from the frozen R3 original-content locator",
+          "verified_against_original": true
+        }
+      ]
+    },
+    {
+      "overlay_entry_id": "CEO-L1-CC-009",
+      "claim_id": "L1-CC-009",
+      "status": "bounded_counter_evidence",
+      "evidence_basis": "Exact upstream lane counter_evidence array plus the frozen R4 source/locator edges already bound to this unchanged claim row.",
+      "upstream_basis": {
+        "artifact_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L1/claim_cards.json",
+        "artifact_sha256": "05f47aadbdd68850a35caed538ef15cea7b46fb5592a973e8f304cea1d7b2746",
+        "claim_json_pointer": "/claim_cards/8",
+        "json_pointer": "/claim_cards/8/counter_evidence"
+      },
+      "counter_evidence_items": [
+        {
+          "item_id": "CE-L1-CC-009-01",
+          "text": "Sampling can improve computational feasibility and, under some estimators, recovery or resolution.",
+          "upstream_json_pointer": "/claim_cards/8/counter_evidence/0"
+        },
+        {
+          "item_id": "CE-L1-CC-009-02",
+          "text": "Naive sampling can still distort exact ordering or introduce study-specific bias.",
+          "upstream_json_pointer": "/claim_cards/8/counter_evidence/1"
+        }
+      ],
+      "source_locator_pointers": [
+        {
+          "locator_id": "LOC-R4-S-krichene2021_on_sampled_metrics_for_item_recommendation_extended_abstra-01",
+          "source_key": "krichene2021_on_sampled_metrics_for_item_recommendation_extended_abstra",
+          "resource_key": null,
+          "family_id": "SF-R1-028",
+          "locator_type": "figure",
+          "locator_value": "Named sections, tables, figures, and structural results retained from the frozen R3 original-content locator",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-li2023_reliable_sampling-01",
+          "source_key": "li2023_reliable_sampling",
+          "resource_key": null,
+          "family_id": "SF-R1-031",
+          "locator_type": "section",
+          "locator_value": "Abstract; Introduction; experimental comparison section",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-hidasi2023_widespread_flaws_in_offline_evaluation_of_recommender_syst-01",
+          "source_key": "hidasi2023_widespread_flaws_in_offline_evaluation_of_recommender_syst",
+          "resource_key": null,
+          "family_id": "SF-R1-016",
+          "locator_type": "figure",
+          "locator_value": "Named sections, tables, figures, and structural results retained from the frozen R3 original-content locator",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-ihemelandu2023_candidate_set_sampling_for_evaluating_top_n_recommendation-01",
+          "source_key": "ihemelandu2023_candidate_set_sampling_for_evaluating_top_n_recommendation",
+          "resource_key": null,
+          "family_id": "SF-R1-022",
+          "locator_type": "figure",
+          "locator_value": "Named sections, tables, figures, and structural results retained from the frozen R3 original-content locator",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-pereira2025_on_the_reliability_of_sampling_strategies_in_offline_recom-01",
+          "source_key": "pereira2025_on_the_reliability_of_sampling_strategies_in_offline_recom",
+          "resource_key": null,
+          "family_id": "SF-R1-043",
+          "locator_type": "figure",
+          "locator_value": "Named sections, tables, figures, and structural results retained from the frozen R3 original-content locator",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-liu2023_on_the_consistency_discriminative_power_and_robustness_of_-01",
+          "source_key": "liu2023_on_the_consistency_discriminative_power_and_robustness_of_",
+          "resource_key": null,
+          "family_id": "SF-R1-034",
+          "locator_type": "section",
+          "locator_value": "Original-content structural locator retained from the frozen R3 registry",
+          "verified_against_original": false
+        }
+      ]
+    },
+    {
+      "overlay_entry_id": "CEO-L1-CC-010",
+      "claim_id": "L1-CC-010",
+      "status": "bounded_counter_evidence",
+      "evidence_basis": "Exact upstream lane counter_evidence array plus the frozen R4 source/locator edges already bound to this unchanged claim row.",
+      "upstream_basis": {
+        "artifact_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L1/claim_cards.json",
+        "artifact_sha256": "05f47aadbdd68850a35caed538ef15cea7b46fb5592a973e8f304cea1d7b2746",
+        "claim_json_pointer": "/claim_cards/9",
+        "json_pointer": "/claim_cards/9/counter_evidence"
+      },
+      "counter_evidence_items": [
+        {
+          "item_id": "CE-L1-CC-010-01",
+          "text": "A project may adopt a documented GAUC definition, but that is a methodological choice requiring its own formula and parity tests.",
+          "upstream_json_pointer": "/claim_cards/9/counter_evidence/0"
+        }
+      ],
+      "source_locator_pointers": [
+        {
+          "locator_id": "LOC-R4-S-tamm2021_metric_consistency-01",
+          "source_key": "tamm2021_metric_consistency",
+          "resource_key": null,
+          "family_id": "SF-R1-056",
+          "locator_type": "figure",
+          "locator_value": "Named sections, tables, figures, and structural results retained from the frozen R3 original-content locator",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-canamares2020_offline_options-01",
+          "source_key": "canamares2020_offline_options",
+          "resource_key": null,
+          "family_id": "SF-R1-005",
+          "locator_type": "figure",
+          "locator_value": "Named sections, tables, figures, and structural results retained from the frozen R3 original-content locator",
+          "verified_against_original": true
+        }
+      ]
+    },
+    {
+      "overlay_entry_id": "CEO-L1-CC-011",
+      "claim_id": "L1-CC-011",
+      "status": "bounded_counter_evidence",
+      "evidence_basis": "Exact upstream lane counter_evidence array plus the frozen R4 source/locator edges already bound to this unchanged claim row.",
+      "upstream_basis": {
+        "artifact_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L1/claim_cards.json",
+        "artifact_sha256": "05f47aadbdd68850a35caed538ef15cea7b46fb5592a973e8f304cea1d7b2746",
+        "claim_json_pointer": "/claim_cards/10",
+        "json_pointer": "/claim_cards/10/counter_evidence"
+      },
+      "counter_evidence_items": [
+        {
+          "item_id": "CE-L1-CC-011-01",
+          "text": "Publication in a journal does not, by itself, establish the review process for an editorial genre.",
+          "upstream_json_pointer": "/claim_cards/10/counter_evidence/0"
+        }
+      ],
+      "source_locator_pointers": [
+        {
+          "locator_id": "LOC-R4-S-jannach2026_methodological_standards-01",
+          "source_key": "jannach2026_methodological_standards",
+          "resource_key": null,
+          "family_id": "SF-R1-023",
+          "locator_type": "section",
+          "locator_value": "Abstract; Sections 1–3 and 5; Appendix evaluation guidelines",
+          "verified_against_original": true
+        }
+      ]
+    },
+    {
+      "overlay_entry_id": "CEO-L2-CLAIM-GRAPH-ZERO-EDGE-005",
+      "claim_id": "L2-CLAIM-GRAPH-ZERO-EDGE-005",
+      "status": "bounded_counter_evidence",
+      "evidence_basis": "Exact upstream lane counter_evidence array plus the frozen R4 source/locator edges already bound to this unchanged claim row.",
+      "upstream_basis": {
+        "artifact_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L2/claim_cards.json",
+        "artifact_sha256": "82da5688ee7e37253f8c2f90db9e4f485f7d122a1008d75284cd832d2b062ea6",
+        "claim_json_pointer": "/cards/4",
+        "json_pointer": "/cards/4/counter_evidence"
+      },
+      "counter_evidence_items": [
+        {
+          "item_id": "CE-L2-CLAIM-GRAPH-ZERO-EDGE-005-01",
+          "text": "Zero-edge items require a separately specified feature, content, or inductive path; none is defined by vanilla LightGCN.",
+          "upstream_json_pointer": "/cards/4/counter_evidence/0"
+        }
+      ],
+      "source_locator_pointers": [
+        {
+          "locator_id": "LOC-R4-S-he2020_lightgcn-01",
+          "source_key": "he2020_lightgcn",
+          "resource_key": null,
+          "family_id": "SF-R1-015",
+          "locator_type": "section",
+          "locator_value": "Sections 3.1.1 Light Graph Convolution, 3.1.2 Layer Combination, and 3.3 Model Training",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-yu2022_simgcl-01",
+          "source_key": "yu2022_simgcl",
+          "resource_key": null,
+          "family_id": "SF-R1-065",
+          "locator_type": "section",
+          "locator_value": "Sections 2 Empirical Investigation and 3 SimGCL",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-cai2023_lightgcl-01",
+          "source_key": "cai2023_lightgcl",
+          "resource_key": null,
+          "family_id": "SF-R1-004",
+          "locator_type": "section",
+          "locator_value": "Method section on SVD-guided global collaborative relation modeling and contrastive learning; Experiments",
+          "verified_against_original": true
+        }
+      ]
+    },
+    {
+      "overlay_entry_id": "CEO-L2-CLAIM-HARMONIZED-EVAL-008",
+      "claim_id": "L2-CLAIM-HARMONIZED-EVAL-008",
+      "status": "bounded_counter_evidence",
+      "evidence_basis": "Exact upstream lane counter_evidence array plus the frozen R4 source/locator edges already bound to this unchanged claim row.",
+      "upstream_basis": {
+        "artifact_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L2/claim_cards.json",
+        "artifact_sha256": "82da5688ee7e37253f8c2f90db9e4f485f7d122a1008d75284cd832d2b062ea6",
+        "claim_json_pointer": "/cards/7",
+        "json_pointer": "/cards/7/counter_evidence"
+      },
+      "counter_evidence_items": [
+        {
+          "item_id": "CE-L2-CLAIM-HARMONIZED-EVAL-008-01",
+          "text": "The retained sources span rating/implicit CF, sampled ranking, CTR prediction, retrieval, and graph recommendation; direct metric transfer would conflate tasks and evaluators.",
+          "upstream_json_pointer": "/cards/7/counter_evidence/0"
+        }
+      ],
+      "source_locator_pointers": [
+        {
+          "locator_id": "LOC-R4-S-sarwar2001_itemcf-01",
+          "source_key": "sarwar2001_itemcf",
+          "resource_key": null,
+          "family_id": "SF-R1-050",
+          "locator_type": "section",
+          "locator_value": "Sections 3.1 Item Similarity Computation and 3.2 Prediction Computation",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-rendle2009_bpr-01",
+          "source_key": "rendle2009_bpr",
+          "resource_key": null,
+          "family_id": "SF-R1-047",
+          "locator_type": "section",
+          "locator_value": "Sections 4.1 BPR Optimization Criterion, 4.2 BPR Learning Algorithm, and 4.3.1 Matrix Factorization",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-he2017_ncf-01",
+          "source_key": "he2017_ncf",
+          "resource_key": null,
+          "family_id": "SF-R1-014",
+          "locator_type": "section",
+          "locator_value": "Sections 3.1 General Framework, 3.2 GMF, 3.3 MLP, and 3.4 Fusion of GMF and MLP",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-guo2017_deepfm-01",
+          "source_key": "guo2017_deepfm",
+          "resource_key": null,
+          "family_id": "SF-R1-012",
+          "locator_type": "section",
+          "locator_value": "Section 2 Our Approach, especially 2.1 DeepFM",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-he2020_lightgcn-01",
+          "source_key": "he2020_lightgcn",
+          "resource_key": null,
+          "family_id": "SF-R1-015",
+          "locator_type": "section",
+          "locator_value": "Sections 3.1.1 Light Graph Convolution, 3.1.2 Layer Combination, and 3.3 Model Training",
+          "verified_against_original": true
+        }
+      ]
+    },
+    {
+      "overlay_entry_id": "CEO-L2-CLAIM-ITEMCF-BPR-001",
+      "claim_id": "L2-CLAIM-ITEMCF-BPR-001",
+      "status": "bounded_counter_evidence",
+      "evidence_basis": "Exact upstream lane counter_evidence array plus the frozen R4 source/locator edges already bound to this unchanged claim row.",
+      "upstream_basis": {
+        "artifact_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L2/claim_cards.json",
+        "artifact_sha256": "82da5688ee7e37253f8c2f90db9e4f485f7d122a1008d75284cd832d2b062ea6",
+        "claim_json_pointer": "/cards/0",
+        "json_pointer": "/cards/0/counter_evidence"
+      },
+      "counter_evidence_items": [
+        {
+          "item_id": "CE-L2-CLAIM-ITEMCF-BPR-001-01",
+          "text": "BPR performance changes with negative sampling and optimization choices; ItemCF changes with similarity, normalization, and neighborhood rules.",
+          "upstream_json_pointer": "/cards/0/counter_evidence/0"
+        }
+      ],
+      "source_locator_pointers": [
+        {
+          "locator_id": "LOC-R4-S-sarwar2001_itemcf-01",
+          "source_key": "sarwar2001_itemcf",
+          "resource_key": null,
+          "family_id": "SF-R1-050",
+          "locator_type": "section",
+          "locator_value": "Sections 3.1 Item Similarity Computation and 3.2 Prediction Computation",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-rendle2009_bpr-01",
+          "source_key": "rendle2009_bpr",
+          "resource_key": null,
+          "family_id": "SF-R1-047",
+          "locator_type": "section",
+          "locator_value": "Sections 4.1 BPR Optimization Criterion, 4.2 BPR Learning Algorithm, and 4.3.1 Matrix Factorization",
+          "verified_against_original": true
+        }
+      ]
+    },
+    {
+      "overlay_entry_id": "CEO-L2-CLAIM-NCF-DEEPFM-002",
+      "claim_id": "L2-CLAIM-NCF-DEEPFM-002",
+      "status": "bounded_counter_evidence",
+      "evidence_basis": "Exact upstream lane counter_evidence array plus the frozen R4 source/locator edges already bound to this unchanged claim row.",
+      "upstream_basis": {
+        "artifact_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L2/claim_cards.json",
+        "artifact_sha256": "82da5688ee7e37253f8c2f90db9e4f485f7d122a1008d75284cd832d2b062ea6",
+        "claim_json_pointer": "/cards/1",
+        "json_pointer": "/cards/1/counter_evidence"
+      },
+      "counter_evidence_items": [
+        {
+          "item_id": "CE-L2-CLAIM-NCF-DEEPFM-002-01",
+          "text": "DeepFM needs feature fields that an interaction-only v5 comparator may not have; NCF ID embeddings do not define zero-edge item representations.",
+          "upstream_json_pointer": "/cards/1/counter_evidence/0"
+        }
+      ],
+      "source_locator_pointers": [
+        {
+          "locator_id": "LOC-R4-S-he2017_ncf-01",
+          "source_key": "he2017_ncf",
+          "resource_key": null,
+          "family_id": "SF-R1-014",
+          "locator_type": "section",
+          "locator_value": "Sections 3.1 General Framework, 3.2 GMF, 3.3 MLP, and 3.4 Fusion of GMF and MLP",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-guo2017_deepfm-01",
+          "source_key": "guo2017_deepfm",
+          "resource_key": null,
+          "family_id": "SF-R1-012",
+          "locator_type": "section",
+          "locator_value": "Section 2 Our Approach, especially 2.1 DeepFM",
+          "verified_against_original": true
+        }
+      ]
+    },
+    {
+      "overlay_entry_id": "CEO-L2-CLAIM-OBJECTIVE-006",
+      "claim_id": "L2-CLAIM-OBJECTIVE-006",
+      "status": "bounded_counter_evidence",
+      "evidence_basis": "Exact upstream lane counter_evidence array plus the frozen R4 source/locator edges already bound to this unchanged claim row.",
+      "upstream_basis": {
+        "artifact_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L2/claim_cards.json",
+        "artifact_sha256": "82da5688ee7e37253f8c2f90db9e4f485f7d122a1008d75284cd832d2b062ea6",
+        "claim_json_pointer": "/cards/5",
+        "json_pointer": "/cards/5/counter_evidence"
+      },
+      "counter_evidence_items": [
+        {
+          "item_id": "CE-L2-CLAIM-OBJECTIVE-006-01",
+          "text": "A simpler encoder with a different objective can outperform a deeper encoder under a source-native protocol; only a factorial or harmonized benchmark isolates the contribution.",
+          "upstream_json_pointer": "/cards/5/counter_evidence/0"
+        }
+      ],
+      "source_locator_pointers": [
+        {
+          "locator_id": "LOC-R4-S-rendle2009_bpr-01",
+          "source_key": "rendle2009_bpr",
+          "resource_key": null,
+          "family_id": "SF-R1-047",
+          "locator_type": "section",
+          "locator_value": "Sections 4.1 BPR Optimization Criterion, 4.2 BPR Learning Algorithm, and 4.3.1 Matrix Factorization",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-yi2019_ndr-01",
+          "source_key": "yi2019_ndr",
+          "resource_key": null,
+          "family_id": "SF-R1-064",
+          "locator_type": "section",
+          "locator_value": "Sections 2.3 Two-tower Models, 3 Modeling Framework, and 5 Neural Retrieval System",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-wang2022_directau-01",
+          "source_key": "wang2022_directau",
+          "resource_key": null,
+          "family_id": "SF-R1-060",
+          "locator_type": "section",
+          "locator_value": "Sections 2.2 Alignment and Uniformity, 3 Alignment and Uniformity in CF, and 4 Direct Optimization",
+          "verified_against_original": true
+        }
+      ]
+    },
+    {
+      "overlay_entry_id": "CEO-L2-CLAIM-RECENT-TOWER-CONTROLS-007",
+      "claim_id": "L2-CLAIM-RECENT-TOWER-CONTROLS-007",
+      "status": "bounded_counter_evidence",
+      "evidence_basis": "Exact upstream lane counter_evidence array plus the frozen R4 source/locator edges already bound to this unchanged claim row.",
+      "upstream_basis": {
+        "artifact_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L2/claim_cards.json",
+        "artifact_sha256": "82da5688ee7e37253f8c2f90db9e4f485f7d122a1008d75284cd832d2b062ea6",
+        "claim_json_pointer": "/cards/6",
+        "json_pointer": "/cards/6/counter_evidence"
+      },
+      "counter_evidence_items": [
+        {
+          "item_id": "CE-L2-CLAIM-RECENT-TOWER-CONTROLS-007-01",
+          "text": "Both controls add assumptions and computation; their transport depends on the final v5 stage topology and inputs.",
+          "upstream_json_pointer": "/cards/6/counter_evidence/0"
+        }
+      ],
+      "source_locator_pointers": [
+        {
+          "locator_id": "LOC-R4-S-yuan2025_contextgnn-01",
+          "source_key": "yuan2025_contextgnn",
+          "resource_key": null,
+          "family_id": "SF-R1-068",
+          "locator_type": "section",
+          "locator_value": "Abstract and Method sections describing pair-wise familiar-item representations and the two-tower exploratory fallback",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-wang2025_t2diff-01",
+          "source_key": "wang2025_t2diff",
+          "resource_key": null,
+          "family_id": "SF-R1-061",
+          "locator_type": "section",
+          "locator_value": "Introduction and Sections 4.2 Diffusion-based Cross Interaction, 4.3 Mixed-Attention Two-Tower, and 4.4 Optimization",
+          "verified_against_original": true
+        }
+      ]
+    },
+    {
+      "overlay_entry_id": "CEO-L2-CLAIM-TWO-STAGE-003",
+      "claim_id": "L2-CLAIM-TWO-STAGE-003",
+      "status": "bounded_counter_evidence",
+      "evidence_basis": "Exact upstream lane counter_evidence array plus the frozen R4 source/locator edges already bound to this unchanged claim row.",
+      "upstream_basis": {
+        "artifact_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L2/claim_cards.json",
+        "artifact_sha256": "82da5688ee7e37253f8c2f90db9e4f485f7d122a1008d75284cd832d2b062ea6",
+        "claim_json_pointer": "/cards/2",
+        "json_pointer": "/cards/2/counter_evidence"
+      },
+      "counter_evidence_items": [
+        {
+          "item_id": "CE-L2-CLAIM-TWO-STAGE-003-01",
+          "text": "Pair-agnostic independent towers limit target-specific interaction; ContextGNN and T2Diff are controls for that limitation.",
+          "upstream_json_pointer": "/cards/2/counter_evidence/0"
+        }
+      ],
+      "source_locator_pointers": [
+        {
+          "locator_id": "LOC-R4-S-covington2016_youtube-01",
+          "source_key": "covington2016_youtube",
+          "resource_key": null,
+          "family_id": "SF-R1-008",
+          "locator_type": "section",
+          "locator_value": "Sections 2 System Overview, 3 Candidate Generation, and 4 Ranking",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-yi2019_ndr-01",
+          "source_key": "yi2019_ndr",
+          "resource_key": null,
+          "family_id": "SF-R1-064",
+          "locator_type": "section",
+          "locator_value": "Sections 2.3 Two-tower Models, 3 Modeling Framework, and 5 Neural Retrieval System",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-wang2025_t2diff-01",
+          "source_key": "wang2025_t2diff",
+          "resource_key": null,
+          "family_id": "SF-R1-061",
+          "locator_type": "section",
+          "locator_value": "Introduction and Sections 4.2 Diffusion-based Cross Interaction, 4.3 Mixed-Attention Two-Tower, and 4.4 Optimization",
+          "verified_against_original": true
+        }
+      ]
+    },
+    {
+      "overlay_entry_id": "CEO-L2-CLAIM-WIDE-DEEP-004",
+      "claim_id": "L2-CLAIM-WIDE-DEEP-004",
+      "status": "bounded_counter_evidence",
+      "evidence_basis": "Exact upstream lane counter_evidence array plus the frozen R4 source/locator edges already bound to this unchanged claim row.",
+      "upstream_basis": {
+        "artifact_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L2/claim_cards.json",
+        "artifact_sha256": "82da5688ee7e37253f8c2f90db9e4f485f7d122a1008d75284cd832d2b062ea6",
+        "claim_json_pointer": "/cards/3",
+        "json_pointer": "/cards/3/counter_evidence"
+      },
+      "counter_evidence_items": [
+        {
+          "item_id": "CE-L2-CLAIM-WIDE-DEEP-004-01",
+          "text": "The wide component depends on manually specified cross-product features and leakage-safe feature construction.",
+          "upstream_json_pointer": "/cards/3/counter_evidence/0"
+        }
+      ],
+      "source_locator_pointers": [
+        {
+          "locator_id": "LOC-R4-S-cheng2016_wide_deep-01",
+          "source_key": "cheng2016_wide_deep",
+          "resource_key": null,
+          "family_id": "SF-R1-007",
+          "locator_type": "section",
+          "locator_value": "Sections 2 Recommender System Overview and 3.1-3.3 Wide, Deep, and Joint Training",
+          "verified_against_original": true
+        }
+      ]
+    },
+    {
+      "overlay_entry_id": "CEO-L3-APR-001",
+      "claim_id": "L3-APR-001",
+      "status": "bounded_counter_evidence",
+      "evidence_basis": "Exact upstream lane counter_evidence array plus the frozen R4 source/locator edges already bound to this unchanged claim row.",
+      "upstream_basis": {
+        "artifact_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L3/claim_cards.json",
+        "artifact_sha256": "b7a7481d997fd35b59dd689ae4ce180d7a349fd89f6baf6fb9245cbf8ba3444b",
+        "claim_json_pointer": "/claims/0",
+        "json_pointer": "/claims/0/counter_evidence"
+      },
+      "counter_evidence_items": [
+        {
+          "item_id": "CE-L3-APR-001-01",
+          "text": "A separate candidate-generation and scoring/ranking policy is required to turn mined rules into ranked recommendations.",
+          "upstream_json_pointer": "/claims/0/counter_evidence/0"
+        }
+      ],
+      "source_locator_pointers": [
+        {
+          "locator_id": "LOC-R4-S-agrawal1994_apriori-01",
+          "source_key": "agrawal1994_apriori",
+          "resource_key": null,
+          "family_id": "SF-R1-001",
+          "locator_type": "section",
+          "locator_value": "Introduction, formal statement of the association-rule problem and minimum support/confidence thresholds",
+          "verified_against_original": true
+        }
+      ]
+    },
+    {
+      "overlay_entry_id": "CEO-L3-BTBR-005",
+      "claim_id": "L3-BTBR-005",
+      "status": "bounded_counter_evidence",
+      "evidence_basis": "Exact upstream lane counter_evidence array plus the frozen R4 source/locator edges already bound to this unchanged claim row.",
+      "upstream_basis": {
+        "artifact_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L3/claim_cards.json",
+        "artifact_sha256": "b7a7481d997fd35b59dd689ae4ce180d7a349fd89f6baf6fb9245cbf8ba3444b",
+        "claim_json_pointer": "/claims/4",
+        "json_pointer": "/claims/4/counter_evidence"
+      },
+      "counter_evidence_items": [
+        {
+          "item_id": "CE-L3-BTBR-005-01",
+          "text": "The source reports dataset- and strategy-dependent effects, including small or absent benefits in some settings.",
+          "upstream_json_pointer": "/claims/4/counter_evidence/0"
+        }
+      ],
+      "source_locator_pointers": [
+        {
+          "locator_id": "LOC-R4-S-li2023_mask_swap-01",
+          "source_key": "li2023_mask_swap",
+          "resource_key": null,
+          "family_id": "SF-R1-029",
+          "locator_type": "section",
+          "locator_value": "Sections 4.1 and 4.2 mask/swap strategy; Section 5 BTBR model; Section 6 experiments",
+          "verified_against_original": true
+        }
+      ]
+    },
+    {
+      "overlay_entry_id": "CEO-L3-GAP-008",
+      "claim_id": "L3-GAP-008",
+      "status": "bounded_counter_evidence",
+      "evidence_basis": "Exact upstream lane counter_evidence array plus the frozen R4 source/locator edges already bound to this unchanged claim row.",
+      "upstream_basis": {
+        "artifact_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L3/claim_cards.json",
+        "artifact_sha256": "b7a7481d997fd35b59dd689ae4ce180d7a349fd89f6baf6fb9245cbf8ba3444b",
+        "claim_json_pointer": "/claims/7",
+        "json_pointer": "/claims/7/counter_evidence"
+      },
+      "counter_evidence_items": [
+        {
+          "item_id": "CE-L3-GAP-008-01",
+          "text": "Several retained sources provide partial mechanism precedents, but none matches the complete v5 estimand and protocol.",
+          "upstream_json_pointer": "/claims/7/counter_evidence/0"
+        }
+      ],
+      "source_locator_pointers": [
+        {
+          "locator_id": "LOC-R4-S-agrawal1994_apriori-01",
+          "source_key": "agrawal1994_apriori",
+          "resource_key": null,
+          "family_id": "SF-R1-001",
+          "locator_type": "section",
+          "locator_value": "Introduction, formal statement of the association-rule problem and minimum support/confidence thresholds",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-ghoshal2014_multi_item_rules-01",
+          "source_key": "ghoshal2014_multi_item_rules",
+          "resource_key": null,
+          "family_id": "SF-R1-011",
+          "locator_type": "section",
+          "locator_value": "Abstract; Section 2 problem statement; Section 6 comparison with collaborative filtering and matrix factorization",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-liu2009_hybrid_seq_cf-01",
+          "source_key": "liu2009_hybrid_seq_cf",
+          "resource_key": null,
+          "family_id": "SF-R1-033",
+          "locator_type": "figure",
+          "locator_value": "Replacement work Sections 3 and 3.1; Figures 1–4; Conclusions",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-cheng2016_wide_deep-01",
+          "source_key": "cheng2016_wide_deep",
+          "resource_key": null,
+          "family_id": "SF-R1-007",
+          "locator_type": "section",
+          "locator_value": "Sections 2 Recommender System Overview and 3.1-3.3 Wide, Deep, and Joint Training",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-li2023_nbr_reality-01",
+          "source_key": "li2023_nbr_reality",
+          "resource_key": null,
+          "family_id": "SF-R1-030",
+          "locator_type": "figure",
+          "locator_value": "Figure 1 and Introduction contribution bullets; repeat-ratio and baseline analyses",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-mansouri2026_repeat_explore_lightgcn-01",
+          "source_key": "mansouri2026_repeat_explore_lightgcn",
+          "resource_key": null,
+          "family_id": "SF-R1-035",
+          "locator_type": "table",
+          "locator_value": "Abstract; Table 5 repeat/explore results; Section 6 ablation study; limitations",
+          "verified_against_original": true
+        }
+      ]
+    },
+    {
+      "overlay_entry_id": "CEO-L3-HYB-006",
+      "claim_id": "L3-HYB-006",
+      "status": "bounded_counter_evidence",
+      "evidence_basis": "Exact upstream lane counter_evidence array plus the frozen R4 source/locator edges already bound to this unchanged claim row.",
+      "upstream_basis": {
+        "artifact_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L3/claim_cards.json",
+        "artifact_sha256": "b7a7481d997fd35b59dd689ae4ce180d7a349fd89f6baf6fb9245cbf8ba3444b",
+        "claim_json_pointer": "/claims/5",
+        "json_pointer": "/claims/5/counter_evidence"
+      },
+      "counter_evidence_items": [
+        {
+          "item_id": "CE-L3-HYB-006-01",
+          "text": "Component effects vary by dataset and protocol.",
+          "upstream_json_pointer": "/claims/5/counter_evidence/0"
+        },
+        {
+          "item_id": "CE-L3-HYB-006-02",
+          "text": "The 2026 direct grocery study shows repeat/explore trade-offs and states that hybrids are not universal replacements for repeat baselines.",
+          "upstream_json_pointer": "/claims/5/counter_evidence/1"
+        }
+      ],
+      "source_locator_pointers": [
+        {
+          "locator_id": "LOC-R4-S-liu2009_hybrid_seq_cf-01",
+          "source_key": "liu2009_hybrid_seq_cf",
+          "resource_key": null,
+          "family_id": "SF-R1-033",
+          "locator_type": "figure",
+          "locator_value": "Replacement work Sections 3 and 3.1; Figures 1–4; Conclusions",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-cheng2016_wide_deep-01",
+          "source_key": "cheng2016_wide_deep",
+          "resource_key": null,
+          "family_id": "SF-R1-007",
+          "locator_type": "section",
+          "locator_value": "Sections 2 Recommender System Overview and 3.1-3.3 Wide, Deep, and Joint Training",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-peng2022_ham-01",
+          "source_key": "peng2022_ham",
+          "resource_key": null,
+          "family_id": "SF-R1-041",
+          "locator_type": "table",
+          "locator_value": "Modeling sections for long-term preference and association components; Section 6.6 ablation study and Table 13",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-peng2023_m2-01",
+          "source_key": "peng2023_m2",
+          "resource_key": null,
+          "family_id": "SF-R1-042",
+          "locator_type": "section",
+          "locator_value": "Section 4.1 model components; Section 6.5 ablation study",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-mansouri2026_repeat_explore_lightgcn-01",
+          "source_key": "mansouri2026_repeat_explore_lightgcn",
+          "resource_key": null,
+          "family_id": "SF-R1-035",
+          "locator_type": "table",
+          "locator_value": "Abstract; Table 5 repeat/explore results; Section 6 ablation study; limitations",
+          "verified_against_original": true
+        }
+      ]
+    },
+    {
+      "overlay_entry_id": "CEO-L3-NBR-004",
+      "claim_id": "L3-NBR-004",
+      "status": "bounded_counter_evidence",
+      "evidence_basis": "Exact upstream lane counter_evidence array plus the frozen R4 source/locator edges already bound to this unchanged claim row.",
+      "upstream_basis": {
+        "artifact_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L3/claim_cards.json",
+        "artifact_sha256": "b7a7481d997fd35b59dd689ae4ce180d7a349fd89f6baf6fb9245cbf8ba3444b",
+        "claim_json_pointer": "/claims/3",
+        "json_pointer": "/claims/3/counter_evidence"
+      },
+      "counter_evidence_items": [
+        {
+          "item_id": "CE-L3-NBR-004-01",
+          "text": "Strong personal-frequency baselines can dominate repeat recovery.",
+          "upstream_json_pointer": "/claims/3/counter_evidence/0"
+        },
+        {
+          "item_id": "CE-L3-NBR-004-02",
+          "text": "The 2026 retained study reports a trade-off: exploration improvements coexist with weaker repeat recovery in some settings.",
+          "upstream_json_pointer": "/claims/3/counter_evidence/1"
+        }
+      ],
+      "source_locator_pointers": [
+        {
+          "locator_id": "LOC-R4-S-li2023_nbr_reality-01",
+          "source_key": "li2023_nbr_reality",
+          "resource_key": null,
+          "family_id": "SF-R1-030",
+          "locator_type": "figure",
+          "locator_value": "Figure 1 and Introduction contribution bullets; repeat-ratio and baseline analyses",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-li2023_repetition_exploration-01",
+          "source_key": "li2023_repetition_exploration",
+          "resource_key": null,
+          "family_id": "SF-R1-032",
+          "locator_type": "section",
+          "locator_value": "Introduction definitions and research questions; exploration-only analyses",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-mansouri2026_repeat_explore_lightgcn-01",
+          "source_key": "mansouri2026_repeat_explore_lightgcn",
+          "resource_key": null,
+          "family_id": "SF-R1-035",
+          "locator_type": "table",
+          "locator_value": "Abstract; Table 5 repeat/explore results; Section 6 ablation study; limitations",
+          "verified_against_original": true
+        }
+      ]
+    },
+    {
+      "overlay_entry_id": "CEO-L3-PROTO-007",
+      "claim_id": "L3-PROTO-007",
+      "status": "bounded_counter_evidence",
+      "evidence_basis": "Exact upstream lane counter_evidence array plus the frozen R4 source/locator edges already bound to this unchanged claim row.",
+      "upstream_basis": {
+        "artifact_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L3/claim_cards.json",
+        "artifact_sha256": "b7a7481d997fd35b59dd689ae4ce180d7a349fd89f6baf6fb9245cbf8ba3444b",
+        "claim_json_pointer": "/claims/6",
+        "json_pointer": "/claims/6/counter_evidence"
+      },
+      "counter_evidence_items": [
+        {
+          "item_id": "CE-L3-PROTO-007-01",
+          "text": "Sensitivity is not uniform across datasets; it requires local predeclared checks rather than a universal correction factor.",
+          "upstream_json_pointer": "/claims/6/counter_evidence/0"
+        }
+      ],
+      "source_locator_pointers": [
+        {
+          "locator_id": "LOC-R4-S-gusak2025_time_split-01",
+          "source_key": "gusak2025_time_split",
+          "resource_key": null,
+          "family_id": "SF-R1-013",
+          "locator_type": "figure",
+          "locator_value": "Figure 1; Sections 1–3; global temporal split and results subsections",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-petrov2022_a_systematic_review_and_replicability_study_of_bert4rec_fo-01",
+          "source_key": "petrov2022_a_systematic_review_and_replicability_study_of_bert4rec_fo",
+          "resource_key": null,
+          "family_id": "SF-R1-044",
+          "locator_type": "table",
+          "locator_value": "Implementation review and RQ2 training-time analysis, including Table 4",
+          "verified_against_original": true
+        }
+      ]
+    },
+    {
+      "overlay_entry_id": "CEO-L3-RULE-002",
+      "claim_id": "L3-RULE-002",
+      "status": "bounded_counter_evidence",
+      "evidence_basis": "Exact upstream lane counter_evidence array plus the frozen R4 source/locator edges already bound to this unchanged claim row.",
+      "upstream_basis": {
+        "artifact_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L3/claim_cards.json",
+        "artifact_sha256": "b7a7481d997fd35b59dd689ae4ce180d7a349fd89f6baf6fb9245cbf8ba3444b",
+        "claim_json_pointer": "/claims/1",
+        "json_pointer": "/claims/1/counter_evidence"
+      },
+      "counter_evidence_items": [
+        {
+          "item_id": "CE-L3-RULE-002-01",
+          "text": "The paper reports data settings in which other methods are competitive or preferable, so the comparison is not universal.",
+          "upstream_json_pointer": "/claims/1/counter_evidence/0"
+        }
+      ],
+      "source_locator_pointers": [
+        {
+          "locator_id": "LOC-R4-S-ghoshal2014_multi_item_rules-01",
+          "source_key": "ghoshal2014_multi_item_rules",
+          "resource_key": null,
+          "family_id": "SF-R1-011",
+          "locator_type": "section",
+          "locator_value": "Abstract; Section 2 problem statement; Section 6 comparison with collaborative filtering and matrix factorization",
+          "verified_against_original": true
+        }
+      ]
+    },
+    {
+      "overlay_entry_id": "CEO-L3-SEQ-003",
+      "claim_id": "L3-SEQ-003",
+      "status": "bounded_counter_evidence",
+      "evidence_basis": "Exact upstream lane counter_evidence array plus the frozen R4 source/locator edges already bound to this unchanged claim row.",
+      "upstream_basis": {
+        "artifact_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L3/claim_cards.json",
+        "artifact_sha256": "b7a7481d997fd35b59dd689ae4ce180d7a349fd89f6baf6fb9245cbf8ba3444b",
+        "claim_json_pointer": "/claims/2",
+        "json_pointer": "/claims/2/counter_evidence"
+      },
+      "counter_evidence_items": [
+        {
+          "item_id": "CE-L3-SEQ-003-01",
+          "text": "The retained BERT4Rec replicability study shows substantial sensitivity to implementation and training budget.",
+          "upstream_json_pointer": "/claims/2/counter_evidence/0"
+        }
+      ],
+      "source_locator_pointers": [
+        {
+          "locator_id": "LOC-R4-S-kang2018_sasrec-01",
+          "source_key": "kang2018_sasrec",
+          "resource_key": null,
+          "family_id": "SF-R1-026",
+          "locator_type": "section",
+          "locator_value": "Section III-C causality; Sections III-E and III-F prediction/objective; Section IV-D evaluation metrics",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-sun2019_bert4rec-01",
+          "source_key": "sun2019_bert4rec",
+          "resource_key": null,
+          "family_id": "SF-R1-053",
+          "locator_type": "section",
+          "locator_value": "Section 3.3 Cloze task; Section 4.2 task settings and evaluation metrics",
+          "verified_against_original": true
+        }
+      ]
+    },
+    {
+      "overlay_entry_id": "CEO-L4-CC-01",
+      "claim_id": "L4-CC-01",
+      "status": "bounded_counter_evidence",
+      "evidence_basis": "Exact upstream lane counter_evidence array plus the frozen R4 source/locator edges already bound to this unchanged claim row.",
+      "upstream_basis": {
+        "artifact_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L4/claim_cards.json",
+        "artifact_sha256": "e6c55b5494fcf3660ea3bedebadd5bebf464dac702b42d97ffeda0064bec577c",
+        "claim_json_pointer": "/claims/0",
+        "json_pointer": "/claims/0/counter_evidence"
+      },
+      "counter_evidence_items": [
+        {
+          "item_id": "CE-L4-CC-01-01",
+          "text": "Several newer papers label low-popularity or fewer-than-20-interaction groups as cold-start; those cohorts must not be merged with a strict zero-edge cohort.",
+          "upstream_json_pointer": "/claims/0/counter_evidence/0"
+        }
+      ],
+      "source_locator_pointers": [
+        {
+          "locator_id": "LOC-R4-S-volkovs2017_dropoutnet-01",
+          "source_key": "volkovs2017_dropoutnet",
+          "resource_key": null,
+          "family_id": "SF-R1-059",
+          "locator_type": "section",
+          "locator_value": "Section 2, Framework; Section 4.2, Training for Cold Start; Section 5.1, CiteULike",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-huang2023_aldi-01",
+          "source_key": "huang2023_aldi",
+          "resource_key": null,
+          "family_id": "SF-R1-021",
+          "locator_type": "section",
+          "locator_value": "Section 2.1, Problem Formulation; Section 2.2, Existing Solutions",
+          "verified_against_original": true
+        }
+      ]
+    },
+    {
+      "overlay_entry_id": "CEO-L4-CC-02",
+      "claim_id": "L4-CC-02",
+      "status": "bounded_counter_evidence",
+      "evidence_basis": "Exact upstream lane counter_evidence array plus the frozen R4 source/locator edges already bound to this unchanged claim row.",
+      "upstream_basis": {
+        "artifact_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L4/claim_cards.json",
+        "artifact_sha256": "e6c55b5494fcf3660ea3bedebadd5bebf464dac702b42d97ffeda0064bec577c",
+        "claim_json_pointer": "/claims/1",
+        "json_pointer": "/claims/1/counter_evidence"
+      },
+      "counter_evidence_items": [
+        {
+          "item_id": "CE-L4-CC-02-01",
+          "text": "Paper-native cohort rules differ, so the evidence supports explicit construction and reporting rather than one universal numeric threshold.",
+          "upstream_json_pointer": "/claims/1/counter_evidence/0"
+        }
+      ],
+      "source_locator_pointers": [
+        {
+          "locator_id": "LOC-R4-S-volkovs2017_dropoutnet-01",
+          "source_key": "volkovs2017_dropoutnet",
+          "resource_key": null,
+          "family_id": "SF-R1-059",
+          "locator_type": "section",
+          "locator_value": "Section 2, Framework; Section 4.2, Training for Cold Start; Section 5.1, CiteULike",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-huang2023_aldi-01",
+          "source_key": "huang2023_aldi",
+          "resource_key": null,
+          "family_id": "SF-R1-021",
+          "locator_type": "section",
+          "locator_value": "Section 2.1, Problem Formulation; Section 2.2, Existing Solutions",
+          "verified_against_original": true
+        }
+      ]
+    },
+    {
+      "overlay_entry_id": "CEO-L4-CC-03",
+      "claim_id": "L4-CC-03",
+      "status": "bounded_counter_evidence",
+      "evidence_basis": "Exact upstream lane counter_evidence array plus the frozen R4 source/locator edges already bound to this unchanged claim row.",
+      "upstream_basis": {
+        "artifact_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L4/claim_cards.json",
+        "artifact_sha256": "e6c55b5494fcf3660ea3bedebadd5bebf464dac702b42d97ffeda0064bec577c",
+        "claim_json_pointer": "/claims/2",
+        "json_pointer": "/claims/2/counter_evidence"
+      },
+      "counter_evidence_items": [
+        {
+          "item_id": "CE-L4-CC-03-01",
+          "text": "Hybrid methods may use content or reconstruction to create a score even when the collaborative neighborhood is empty; this card addresses only the collaborative propagation path.",
+          "upstream_json_pointer": "/claims/2/counter_evidence/0"
+        }
+      ],
+      "source_locator_pointers": [
+        {
+          "locator_id": "LOC-R4-S-volkovs2017_dropoutnet-01",
+          "source_key": "volkovs2017_dropoutnet",
+          "resource_key": null,
+          "family_id": "SF-R1-059",
+          "locator_type": "section",
+          "locator_value": "Section 2, Framework; Section 4.2, Training for Cold Start; Section 5.1, CiteULike",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-sheng2025_alpharec-01",
+          "source_key": "sheng2025_alpharec",
+          "resource_key": null,
+          "family_id": "SF-R1-052",
+          "locator_type": "section",
+          "locator_value": "Section 4.1, AlphaRec; Section 5.2, Zero-Shot Recommendation; Section 6, Limitations",
+          "verified_against_original": true
+        }
+      ]
+    },
+    {
+      "overlay_entry_id": "CEO-L4-CC-04",
+      "claim_id": "L4-CC-04",
+      "status": "bounded_counter_evidence",
+      "evidence_basis": "Exact upstream lane counter_evidence array plus the frozen R4 source/locator edges already bound to this unchanged claim row.",
+      "upstream_basis": {
+        "artifact_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L4/claim_cards.json",
+        "artifact_sha256": "e6c55b5494fcf3660ea3bedebadd5bebf464dac702b42d97ffeda0064bec577c",
+        "claim_json_pointer": "/claims/3",
+        "json_pointer": "/claims/3/counter_evidence"
+      },
+      "counter_evidence_items": [
+        {
+          "item_id": "CE-L4-CC-04-01",
+          "text": "Recommendation models can combine language features with projection, collaborative propagation, distillation, or contrastive objectives; observed gains cannot be attributed to the encoder alone without an ablation.",
+          "upstream_json_pointer": "/claims/3/counter_evidence/0"
+        }
+      ],
+      "source_locator_pointers": [
+        {
+          "locator_id": "LOC-R4-S-reimers2019_sbert-01",
+          "source_key": "reimers2019_sbert",
+          "resource_key": null,
+          "family_id": "SF-R1-046",
+          "locator_type": "section",
+          "locator_value": "Abstract; Section 1, Introduction; Section 3, Training Details",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-sheng2025_alpharec-01",
+          "source_key": "sheng2025_alpharec",
+          "resource_key": null,
+          "family_id": "SF-R1-052",
+          "locator_type": "section",
+          "locator_value": "Section 4.1, AlphaRec; Section 5.2, Zero-Shot Recommendation; Section 6, Limitations",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-meehan2026_semco-01",
+          "source_key": "meehan2026_semco",
+          "resource_key": null,
+          "family_id": "SF-R1-037",
+          "locator_type": "section",
+          "locator_value": "Section 1, Introduction; Section 3.1, Problem Definition; Sections 3.2-3.3",
+          "verified_against_original": true
+        }
+      ]
+    },
+    {
+      "overlay_entry_id": "CEO-L4-CC-05",
+      "claim_id": "L4-CC-05",
+      "status": "bounded_counter_evidence",
+      "evidence_basis": "Exact upstream lane counter_evidence array plus the frozen R4 source/locator edges already bound to this unchanged claim row.",
+      "upstream_basis": {
+        "artifact_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L4/claim_cards.json",
+        "artifact_sha256": "e6c55b5494fcf3660ea3bedebadd5bebf464dac702b42d97ffeda0064bec577c",
+        "claim_json_pointer": "/claims/4",
+        "json_pointer": "/claims/4/counter_evidence"
+      },
+      "counter_evidence_items": [
+        {
+          "item_id": "CE-L4-CC-05-01",
+          "text": "UTGRec's ablation reports weaker results when the pretrained tokenizer is applied directly without downstream tokenizer fine-tuning in its evaluated setup.",
+          "upstream_json_pointer": "/claims/4/counter_evidence/0"
+        }
+      ],
+      "source_locator_pointers": [
+        {
+          "locator_id": "LOC-R4-S-hou2022_unisrec-01",
+          "source_key": "hou2022_unisrec",
+          "resource_key": null,
+          "family_id": "SF-R1-017",
+          "locator_type": "figure",
+          "locator_value": "Figure 1; Sections 2.2-2.4, especially 2.4 Adaptation to Downstream Recommendation Tasks",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-hou2023_vqrec-01",
+          "source_key": "hou2023_vqrec",
+          "resource_key": null,
+          "family_id": "SF-R1-018",
+          "locator_type": "section",
+          "locator_value": "Sections 2.1-2.3; Section 3.1 Experimental Setup",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-zheng2026_utgrec-01",
+          "source_key": "zheng2026_utgrec",
+          "resource_key": null,
+          "family_id": "SF-R1-071",
+          "locator_type": "section",
+          "locator_value": "Section 2.4.2, Downstream Fine-tuning; Sections 3.1.1 and 3.1.3-3.1.4; Section 3.3, Ablation Study",
+          "verified_against_original": true
+        }
+      ]
+    },
+    {
+      "overlay_entry_id": "CEO-L4-CC-06",
+      "claim_id": "L4-CC-06",
+      "status": "bounded_counter_evidence",
+      "evidence_basis": "Exact upstream lane counter_evidence array plus the frozen R4 source/locator edges already bound to this unchanged claim row.",
+      "upstream_basis": {
+        "artifact_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L4/claim_cards.json",
+        "artifact_sha256": "e6c55b5494fcf3660ea3bedebadd5bebf464dac702b42d97ffeda0064bec577c",
+        "claim_json_pointer": "/claims/5",
+        "json_pointer": "/claims/5/counter_evidence"
+      },
+      "counter_evidence_items": [
+        {
+          "item_id": "CE-L4-CC-06-01",
+          "text": "AlphaRec also evaluates MovieLens and Book-Crossing targets, and VQ-Rec includes Online Retail; those distinct target lineages should be reported separately rather than erased.",
+          "upstream_json_pointer": "/claims/5/counter_evidence/0"
+        }
+      ],
+      "source_locator_pointers": [
+        {
+          "locator_id": "LOC-R4-S-hou2023_vqrec-01",
+          "source_key": "hou2023_vqrec",
+          "resource_key": null,
+          "family_id": "SF-R1-018",
+          "locator_type": "section",
+          "locator_value": "Sections 2.1-2.3; Section 3.1 Experimental Setup",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-sheng2025_alpharec-01",
+          "source_key": "sheng2025_alpharec",
+          "resource_key": null,
+          "family_id": "SF-R1-052",
+          "locator_type": "section",
+          "locator_value": "Section 4.1, AlphaRec; Section 5.2, Zero-Shot Recommendation; Section 6, Limitations",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-zheng2026_utgrec-01",
+          "source_key": "zheng2026_utgrec",
+          "resource_key": null,
+          "family_id": "SF-R1-071",
+          "locator_type": "section",
+          "locator_value": "Section 2.4.2, Downstream Fine-tuning; Sections 3.1.1 and 3.1.3-3.1.4; Section 3.3, Ablation Study",
+          "verified_against_original": true
+        }
+      ]
+    },
+    {
+      "overlay_entry_id": "CEO-L4-CC-07",
+      "claim_id": "L4-CC-07",
+      "status": "bounded_counter_evidence",
+      "evidence_basis": "Exact upstream lane counter_evidence array plus the frozen R4 source/locator edges already bound to this unchanged claim row.",
+      "upstream_basis": {
+        "artifact_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L4/claim_cards.json",
+        "artifact_sha256": "e6c55b5494fcf3660ea3bedebadd5bebf464dac702b42d97ffeda0064bec577c",
+        "claim_json_pointer": "/claims/6",
+        "json_pointer": "/claims/6/counter_evidence"
+      },
+      "counter_evidence_items": [
+        {
+          "item_id": "CE-L4-CC-07-01",
+          "text": "Content-only or sparsity-aware objectives may change the bias/accuracy trade-off; the direction and magnitude remain method- and dataset-dependent.",
+          "upstream_json_pointer": "/claims/6/counter_evidence/0"
+        }
+      ],
+      "source_locator_pointers": [
+        {
+          "locator_id": "LOC-R4-S-meehan2025_cold_popbias-01",
+          "source_key": "meehan2025_cold_popbias",
+          "resource_key": null,
+          "family_id": "SF-R1-036",
+          "locator_type": "section",
+          "locator_value": "Section 1, Introduction; Sections 3.1-3.3",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-meehan2026_semco-01",
+          "source_key": "meehan2026_semco",
+          "resource_key": null,
+          "family_id": "SF-R1-037",
+          "locator_type": "section",
+          "locator_value": "Section 1, Introduction; Section 3.1, Problem Definition; Sections 3.2-3.3",
+          "verified_against_original": true
+        }
+      ]
+    },
+    {
+      "overlay_entry_id": "CEO-L4-CC-08",
+      "claim_id": "L4-CC-08",
+      "status": "bounded_counter_evidence",
+      "evidence_basis": "Exact upstream lane counter_evidence array plus the frozen R4 source/locator edges already bound to this unchanged claim row.",
+      "upstream_basis": {
+        "artifact_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L4/claim_cards.json",
+        "artifact_sha256": "e6c55b5494fcf3660ea3bedebadd5bebf464dac702b42d97ffeda0064bec577c",
+        "claim_json_pointer": "/claims/7",
+        "json_pointer": "/claims/7/counter_evidence"
+      },
+      "counter_evidence_items": [
+        {
+          "item_id": "CE-L4-CC-08-01",
+          "text": "A deliberately scoped partial reproduction or ablation can still be informative if it is labeled as such and its deviations are locked before evaluation.",
+          "upstream_json_pointer": "/claims/7/counter_evidence/0"
+        }
+      ],
+      "source_locator_pointers": [
+        {
+          "locator_id": "LOC-R4-S-hou2022_unisrec-01",
+          "source_key": "hou2022_unisrec",
+          "resource_key": null,
+          "family_id": "SF-R1-017",
+          "locator_type": "figure",
+          "locator_value": "Figure 1; Sections 2.2-2.4, especially 2.4 Adaptation to Downstream Recommendation Tasks",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-hou2023_vqrec-01",
+          "source_key": "hou2023_vqrec",
+          "resource_key": null,
+          "family_id": "SF-R1-018",
+          "locator_type": "section",
+          "locator_value": "Sections 2.1-2.3; Section 3.1 Experimental Setup",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-sheng2025_alpharec-01",
+          "source_key": "sheng2025_alpharec",
+          "resource_key": null,
+          "family_id": "SF-R1-052",
+          "locator_type": "section",
+          "locator_value": "Section 4.1, AlphaRec; Section 5.2, Zero-Shot Recommendation; Section 6, Limitations",
+          "verified_against_original": true
+        },
+        {
+          "locator_id": "LOC-R4-S-zheng2026_utgrec-01",
+          "source_key": "zheng2026_utgrec",
+          "resource_key": null,
+          "family_id": "SF-R1-071",
+          "locator_type": "section",
+          "locator_value": "Section 2.4.2, Downstream Fine-tuning; Sections 3.1.1 and 3.1.3-3.1.4; Section 3.3, Ablation Study",
+          "verified_against_original": true
+        }
+      ]
+    }
+  ]
+}

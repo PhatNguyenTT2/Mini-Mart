@@ -6,7 +6,7 @@ const fs = require('fs');
 const SUPPORTED_SCHEMA = '3.0.0';
 const SUPPORTED_GENERATOR = '5.0.0';
 
-function canonicalSpecSha256(spec) {
+function canonicalSpecJson(spec) {
   const canonicalize = (value) => {
     if (Array.isArray(value)) return value.map(canonicalize);
     if (value && typeof value === 'object') {
@@ -16,8 +16,11 @@ function canonicalSpecSha256(spec) {
     }
     return value;
   };
-  const canonical = JSON.stringify(canonicalize(spec));
-  return crypto.createHash('sha256').update(canonical).digest('hex');
+  return JSON.stringify(canonicalize(spec));
+}
+
+function canonicalSpecSha256(spec) {
+  return crypto.createHash('sha256').update(canonicalSpecJson(spec)).digest('hex');
 }
 
 function loadBenchmarkSpec(specPath) {
@@ -67,4 +70,4 @@ function benchmarkCapabilities(spec) {
   });
 }
 
-module.exports = { benchmarkCapabilities, canonicalSpecSha256, loadBenchmarkSpec };
+module.exports = { benchmarkCapabilities, canonicalSpecJson, canonicalSpecSha256, loadBenchmarkSpec };

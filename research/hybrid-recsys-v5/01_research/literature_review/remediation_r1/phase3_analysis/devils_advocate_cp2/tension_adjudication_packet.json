@@ -1,0 +1,173 @@
+{
+  "schema_version": "stage1b-r1-r6-tension-adjudication-packet-1.0",
+  "project": "hybrid-recsys-v5",
+  "generated_at": "2026-08-21T20:55:00+07:00",
+  "input_binding": {
+    "r6_input_manifest_sha256": "52caf72b133c1368b68afac8fbaf50a544ef9f92001b818b01a71b76e861546a",
+    "cross_paper_tensions_sha256": "56a16ed2f19b7467b5d43ff4d2136fa72dd5ecf9e04bd7ac826a3025ab032943"
+  },
+  "checkpoint_owner": "scholar",
+  "r6_authority": "recommendation_only",
+  "coverage_boundary": "Twelve scoped candidate pairs only; this packet does not claim complete pairwise contradiction detection.",
+  "counts": {
+    "pairs": 12,
+    "recommend_confirm": 11,
+    "recommend_dispute": 1,
+    "scholar_confirmation_pending": 12,
+    "self_confirmed": 0,
+    "self_disputed": 0
+  },
+  "pairs": [
+    {
+      "pair_id": "T-001",
+      "paper_a": "krichene2020_sampled_metrics",
+      "paper_b": "li2023_reliable_sampling",
+      "r5_pair_assessment": "conditional_difference",
+      "r5_resolution_status": "resolved_in_synthesis",
+      "r5_resolution_pointer": "synthesis_report_r1.md#tension-t-001",
+      "legal_state_verified": true,
+      "r6_recommendation": "confirm",
+      "rationale": "Naive sampled-metric failure and estimator-specific reliability differ by estimator and sampling regime; the scoped reconciliation is supported by both verified locators.",
+      "scholar_confirmation": "pending"
+    },
+    {
+      "pair_id": "T-002",
+      "paper_a": "zhao2020_alternative_settings",
+      "paper_b": "gusak2025_time_split",
+      "r5_pair_assessment": "conditional_difference",
+      "r5_resolution_status": "resolved_in_synthesis",
+      "r5_resolution_pointer": "synthesis_report_r1.md#tension-t-002",
+      "legal_state_verified": true,
+      "r6_recommendation": "dispute",
+      "rationale": "Candidate-universe construction and split construction are complementary protocol axes; neither finding conditions or opposes the other. Prefer no_material_conflict/not_applicable absent a proposition-level difference.",
+      "scholar_confirmation": "pending"
+    },
+    {
+      "pair_id": "T-003",
+      "paper_a": "kang2018_sasrec",
+      "paper_b": "sun2019_bert4rec",
+      "r5_pair_assessment": "conditional_difference",
+      "r5_resolution_status": "resolved_in_synthesis",
+      "r5_resolution_pointer": "synthesis_report_r1.md#tension-t-003",
+      "legal_state_verified": true,
+      "r6_recommendation": "confirm",
+      "rationale": "Causal next-item prediction and bidirectional masked-item learning are related but non-equivalent information/objective contracts.",
+      "scholar_confirmation": "pending"
+    },
+    {
+      "pair_id": "T-004",
+      "paper_a": "sarwar2001_itemcf",
+      "paper_b": "rendle2009_bpr",
+      "r5_pair_assessment": "no_material_conflict",
+      "r5_resolution_status": "not_applicable",
+      "r5_resolution_pointer": null,
+      "legal_state_verified": true,
+      "r6_recommendation": "confirm",
+      "rationale": "Item-neighbor aggregation and a pairwise optimization criterion are compatible method components and do not make opposing claims.",
+      "scholar_confirmation": "pending"
+    },
+    {
+      "pair_id": "T-005",
+      "paper_a": "he2020_lightgcn",
+      "paper_b": "sheng2025_alpharec",
+      "r5_pair_assessment": "conditional_difference",
+      "r5_resolution_status": "resolved_in_synthesis",
+      "r5_resolution_pointer": "synthesis_report_r1.md#tension-t-005",
+      "legal_state_verified": true,
+      "r6_recommendation": "confirm",
+      "rationale": "Observed-graph propagation and language/content representations expose different signal-availability regimes at zero edges; efficacy remains protocol-specific.",
+      "scholar_confirmation": "pending"
+    },
+    {
+      "pair_id": "T-006",
+      "paper_a": "reimers2019_sbert",
+      "paper_b": "sheng2025_alpharec",
+      "r5_pair_assessment": "no_material_conflict",
+      "r5_resolution_status": "not_applicable",
+      "r5_resolution_pointer": null,
+      "legal_state_verified": true,
+      "r6_recommendation": "confirm",
+      "rationale": "Sentence-embedding evaluation and recommender ranking evaluation are nested but distinct evidence roles, not conflicting findings.",
+      "scholar_confirmation": "pending"
+    },
+    {
+      "pair_id": "T-007",
+      "paper_a": "cheng2016_wide_deep",
+      "paper_b": "agrawal1994_apriori",
+      "r5_pair_assessment": "insufficient_overlap",
+      "r5_resolution_status": "not_applicable",
+      "r5_resolution_pointer": null,
+      "legal_state_verified": true,
+      "r6_recommendation": "confirm",
+      "rationale": "Explicit cross-product features and association-rule mining do not overlap enough to adjudicate Apriori efficacy or a common result.",
+      "scholar_confirmation": "pending"
+    },
+    {
+      "pair_id": "T-008",
+      "paper_a": "liu2009_hybrid_seq_cf",
+      "paper_b": "cheng2016_wide_deep",
+      "r5_pair_assessment": "no_material_conflict",
+      "r5_resolution_status": "not_applicable",
+      "r5_resolution_pointer": null,
+      "legal_state_verified": true,
+      "r6_recommendation": "confirm",
+      "rationale": "The bounded Liu 2007 predecessor and Wide & Deep combine different components in different tasks; the replacement is used only for method precedent.",
+      "scholar_confirmation": "pending"
+    },
+    {
+      "pair_id": "T-009",
+      "paper_a": "li2023_nbr_reality",
+      "paper_b": "mansouri2026_repeat_explore_lightgcn",
+      "r5_pair_assessment": "conditional_difference",
+      "r5_resolution_status": "resolved_in_synthesis",
+      "r5_resolution_pointer": "synthesis_report_r1.md#tension-t-009",
+      "legal_state_verified": true,
+      "r6_recommendation": "confirm",
+      "rationale": "Aggregate repeat-dominated outcomes and repeat/explore-specific results require separate targets and denominators.",
+      "scholar_confirmation": "pending"
+    },
+    {
+      "pair_id": "T-010",
+      "paper_a": "hou2022_unisrec",
+      "paper_b": "hou2023_vqrec",
+      "r5_pair_assessment": "conditional_difference",
+      "r5_resolution_status": "resolved_in_synthesis",
+      "r5_resolution_pointer": "synthesis_report_r1.md#tension-t-010",
+      "legal_state_verified": true,
+      "r6_recommendation": "confirm",
+      "rationale": "Both concern transferable representation, but their representation and downstream-adaptation contracts differ.",
+      "scholar_confirmation": "pending"
+    },
+    {
+      "pair_id": "T-011",
+      "paper_a": "meehan2025_cold_popbias",
+      "paper_b": "meehan2026_semco",
+      "r5_pair_assessment": "conditional_difference",
+      "r5_resolution_status": "resolved_in_synthesis",
+      "r5_resolution_pointer": "synthesis_report_r1.md#tension-t-011",
+      "legal_state_verified": true,
+      "r6_recommendation": "confirm",
+      "rationale": "An inherited-popularity failure pathway and a bounded sparsity-aware mitigation can coexist; shared authorship and adjacent lineage prevent treating them as independent replications.",
+      "scholar_confirmation": "pending"
+    },
+    {
+      "pair_id": "T-012",
+      "paper_a": "gusak2025_time_split",
+      "paper_b": "petrov2022_a_systematic_review_and_replicability_study_of_bert4rec_fo",
+      "r5_pair_assessment": "no_material_conflict",
+      "r5_resolution_status": "not_applicable",
+      "r5_resolution_pointer": null,
+      "legal_state_verified": true,
+      "r6_recommendation": "confirm",
+      "rationale": "Split sensitivity and implementation/training sensitivity are complementary protocol risks and make no opposing proposition.",
+      "scholar_confirmation": "pending"
+    }
+  ],
+  "adjudication_requirement": {
+    "user_must_adjudicate_all_pairs": true,
+    "allowed_user_decisions": ["confirmed", "disputed"],
+    "unresolved_dispute_state": "flagged_unresolved",
+    "r7_authorized": false,
+    "reason": "One Major R6 finding remains and all twelve scholar confirmations are pending."
+  }
+}

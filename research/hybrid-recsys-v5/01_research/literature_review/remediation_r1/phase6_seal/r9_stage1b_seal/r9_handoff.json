@@ -1,0 +1,65 @@
+{
+  "schema_version": "stage1b-r1-r9-handoff-1.0",
+  "project": "hybrid-recsys-v5",
+  "stage": "1B",
+  "round": "R1",
+  "step": "R9_seal_and_stage2_handoff",
+  "role": "final_stage1b_sealer",
+  "verdict": "PASS_STAGE1B_SEALED",
+  "seal_sha256": "5353afaf36fb7146d58ff8e461f9c1586f2a253231bf7d1b162d77ed97a2d3b7",
+  "validation_summary": {
+    "direct_input_bindings": "PASS_13_OF_13",
+    "r7_final_validator": "PASS_29_OF_29",
+    "r8_final_validator": "PASS_60_OF_60",
+    "packet_replay": "PASS_193_OF_193",
+    "canonical_root_sha256": "f0f2d56e42ce0f181f83182ddffe1060bf8994f50ababd4b0dbe563a942370dd",
+    "r8_severity_counts": {
+      "Critical": 0,
+      "Major": 0,
+      "Minor": 0,
+      "Observation": 5
+    },
+    "original_audit_closures": "PASS_8_OF_8",
+    "scholar_adjudication": "PASS_11_CONFIRMED_1_DISPUTED_RECLASSIFIED_0_PENDING_0_UNRESOLVED"
+  },
+  "history_boundary": {
+    "v0_verdict": "FAIL",
+    "v0_preserved": true,
+    "r1_supersession": "Stage 1B completion only"
+  },
+  "stage2_handoff": {
+    "authorization": "BOUNDED_STAGE2_LITERATURE_DRAFTING",
+    "authorized_claims": 22,
+    "prohibited_claims": 22,
+    "verified_citation_locator_pairs": 33,
+    "priority_targets": ["Introduction", "Related Work"],
+    "drafted_in_r9": false,
+    "h1_h4": "NOT_RUN",
+    "benchmark_training_evaluation": "NOT_RUN"
+  },
+  "artifact_sha256": [
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase6_seal/r9_stage1b_seal/stage1b_r1_seal_manifest.json",
+      "bytes": 13529,
+      "sha256": "49ae115285679a99e7b8099d541c50219c2346c930458d5ae25db25885ab3717"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase6_seal/r9_stage1b_seal/stage2_literature_handoff.json",
+      "bytes": 11901,
+      "sha256": "b797e396a951a1b07e3ebfa9f304a8bfed355628a5ad188b8558738a94db6ed1"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase6_seal/r9_stage1b_seal/r9_seal_report.md",
+      "bytes": 5495,
+      "sha256": "7789993f25e4a212208cbf18a7a9aa3ef51147973e988e1a066e92eb6fd41fbc"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase6_seal/r9_stage1b_seal/validate_r9_seal.py",
+      "bytes": 23817,
+      "sha256": "8e180ab73594024839ec4660dea8f2c7d250e5f7e4210bc2253cdd9de2a9f02d"
+    }
+  ],
+  "self_hash_policy": "The R9 handoff and validation receipt do not self-hash. The receipt binds this handoff; this handoff binds the other four deterministic outputs and excludes the receipt to prevent a hash cycle.",
+  "authority_boundary": "The seal authorizes only the bounded literature handoff. It does not prove scientific correctness, novelty, superiority, external validity, benchmark success, or empirical results.",
+  "authorized_next_action": "central_import_and_read_only_validate_r9_seal_then_update_central_pipeline_state"
+}

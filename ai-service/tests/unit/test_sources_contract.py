@@ -158,7 +158,19 @@ def test_postgres_source_reads_one_published_lineage_with_read_only_adapters(
 
         def fetchone(self) -> tuple[str] | None:
             if "benchmark_spec_sha256" in self.query:
-                return ("a" * 64, {})
+                return (
+                    "a" * 64,
+                    {
+                        "transitionUserCount": 2500,
+                        "transitionFraction": 0.5,
+                        "eligibleTrainingRuleTargets": 100,
+                        "alignedTrainingRuleTargets": 50,
+                        "trainingRuleTargetRate": 0.5,
+                        "eligibleValRuleTargetUsers": 100,
+                        "alignedValRuleTargetUsers": 50,
+                        "valRuleTargetRate": 0.5,
+                    },
+                )
             if "ml_benchmark_run_v1" in self.query:
                 return ("benchmark-ready",)
             return None
@@ -216,3 +228,5 @@ def test_postgres_source_reads_one_published_lineage_with_read_only_adapters(
     assert raw.orders_df.order_id.tolist() == [1]
     assert raw.cold_product_ids == (1010,)
     assert raw.benchmark_metadata.spec_sha256 == "a" * 64
+    assert raw.benchmark_metadata.dataset_alignment_evidence is not None
+    assert raw.benchmark_metadata.dataset_alignment_evidence.training_rule_target_rate == 0.5

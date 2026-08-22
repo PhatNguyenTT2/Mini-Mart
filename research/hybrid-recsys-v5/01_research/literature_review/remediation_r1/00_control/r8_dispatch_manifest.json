@@ -1,0 +1,53 @@
+{
+  "schema_version": "stage1b-r1-r8-dispatch-1.0",
+  "project": "hybrid-recsys-v5",
+  "stage": "1B",
+  "round": "R1",
+  "step": "R8_independent_audit",
+  "dispatched_at": "2026-08-21",
+  "model": "gpt-5.6-sol",
+  "reasoning": "high",
+  "execution_mode": "fresh_dedicated_worktree_task",
+  "task": {
+    "thread_id": "01a024e6-72c8-75d0-b3ec-2925918042a5",
+    "client_thread_id": "client-new-thread:6719a500-554c-4f71-a2f1-e7a03fa8d34c",
+    "host_id": "local",
+    "worktree": "C:/Users/ACER/.codex/worktrees/b2f3/backend",
+    "title": "Stage 1B R1 R8 — Independent Packet Audit",
+    "status_at_dispatch_check": "active",
+    "status_at_completion_check": "completed",
+    "final_turn_status": "completed",
+    "final_verdict": "PASS_READY_TO_SEAL"
+  },
+  "input_manifest": {
+    "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/r8_input_manifest.json",
+    "bytes": 3695,
+    "sha256": "319e10f1fc26263179c3f16bbed91eebddf2c9a8f915aab9a5772a7f159e68cf"
+  },
+  "audit_contract": {
+    "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/r8_audit_contract.md",
+    "bytes": 3357,
+    "sha256": "b251f8e3f676a0dd3c0b3a3258e281ce312d7278c71a7343419ec054d9788b13"
+  },
+  "r7_root_sha256": "f0f2d56e42ce0f181f83182ddffe1060bf8994f50ababd4b0dbe563a942370dd",
+  "write_scope": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase5_audit/r8_independent_audit/",
+  "completion_receipt": {
+    "checked_at": "2026-08-21",
+    "imported_to_central_workspace": true,
+    "imported_files": 6,
+    "import_hash_mismatches": 0,
+    "central_validation": "60/60 PASS",
+    "severity_counts": {
+      "Critical": 0,
+      "Major": 0,
+      "Minor": 0,
+      "Observation": 5
+    },
+    "packet_members_replayed": "193/193",
+    "canonical_root_sha256": "f0f2d56e42ce0f181f83182ddffe1060bf8994f50ababd4b0dbe563a942370dd",
+    "handoff_sha256": "82cef8251e37702dc60b7a724f81f771b5bde61cf72e90b2f5ffae08e14f7800",
+    "r9_authorized": true
+  },
+  "phase_boundary": "Fresh read-only R8 audit only; remediation, R9 seal, Stage 2 authorization, benchmark execution, and H1-H4 are forbidden.",
+  "next_gate": "Dispatch Sol High R9 to seal Stage 1B and create the bounded Stage 2 literature handoff."
+}

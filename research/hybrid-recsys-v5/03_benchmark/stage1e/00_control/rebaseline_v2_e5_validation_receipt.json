@@ -1,0 +1,99 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e5-validation-1.0",
+  "created_at": "2026-08-22",
+  "passed": true,
+  "verdict": "PASS_E5_COMPLETE_FAIL_CLOSED_REMEDIATION_REQUIRED",
+  "failure_count": 0,
+  "failures": [],
+  "central_import": {
+    "method": "git-fast-forward",
+    "source_commit": "cc1d72a6e5f8369da60d97416f90fd541b912cd9",
+    "parent_commit": "c8987022f59c289d03765128e8a2011a3085fc64",
+    "write_set": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_c/E5_independent_lock_audit/",
+    "preserved_dirty_user_state": true
+  },
+  "checks": {
+    "exact_five_output_files": true,
+    "standard_json_parse_and_case_collision_guard": true,
+    "powershell_convert_from_json_all_four": true,
+    "frozen_manifest_hash": true,
+    "frozen_contract_hash": true,
+    "e4_validation_receipt_hash": true,
+    "e4_parent_manifest_hash": true,
+    "direct_inputs_10_of_10": true,
+    "transitive_inputs_28_of_28": true,
+    "material_passport_and_repro_lock": true,
+    "model_and_reasoning": true,
+    "status_and_verdict": true,
+    "four_output_hashes": true,
+    "audit_coverage": true,
+    "source_replay_counts": true,
+    "four_major_findings": true,
+    "candidate_status_counts": true,
+    "blocker_disposition_counts": true,
+    "command_packet_fail_closed": true,
+    "truth_state_not_run": true,
+    "authorization_denied": true,
+    "scope_guards": true,
+    "e4_byte_preservation": true,
+    "report_verdict_present": true
+  },
+  "input_check_summary": {
+    "direct_expected": 10,
+    "direct_matched": 10,
+    "transitive_expected": 28,
+    "transitive_matched": 28,
+    "total_expected": 38,
+    "total_matched": 38
+  },
+  "output_checks": {
+    "independent_lock_audit.md": {
+      "canonical_lf_sha256": "6bc961e8fed6ce0443d78762239d90707abc4342bf0c67ed9ee6a1cf83d269e4",
+      "passed": true
+    },
+    "audit_findings.json": {
+      "canonical_lf_sha256": "2f0d716f2e633d89dba6c39663f4f946e51b4db27773c4ef1aa2ed24e01249c5",
+      "passed": true
+    },
+    "replay_receipt.json": {
+      "canonical_lf_sha256": "e333c41c75cfd9d9717d4856745d4ab4fa99a8b961738c4f86cac309f7585502",
+      "passed": true
+    },
+    "stage1e_execution_authorization.json": {
+      "canonical_lf_sha256": "8057aad48166f4dc92f7c5798ac3b82e95a7a9d5a636b35e538d861f7a2940",
+      "passed": true
+    },
+    "e5_handoff.json": {
+      "canonical_lf_sha256": "908def336951915c95bfd7dc29bb77096063877ad1c7de6da266cfb9019c2e4a",
+      "passed": true
+    }
+  },
+  "audit_coverage": {
+    "manifest_artifacts": "38/38",
+    "candidate_rows": "13/13",
+    "prohibited_joins": "5/5",
+    "blocker_dispositions": "26/26",
+    "commands": "10/10",
+    "decision_points": "8/8",
+    "tolerances": "26/26; 0 mismatched",
+    "sequence_stages": "4/4"
+  },
+  "content_verdict": "REVISE_E4_ADDITIONAL_FINDINGS",
+  "authorization_decision": "DENIED_E4_FAIL_NOT_READY_ADDITIONAL_FINDINGS",
+  "finding_counts": {
+    "CRITICAL": 0,
+    "MAJOR": 4,
+    "MINOR": 0,
+    "total": 4
+  },
+  "candidate_status_counts": {
+    "READY_FOR_E5_AUDIT": 0,
+    "PENDING_EVIDENCE": 7,
+    "REJECTED": 6,
+    "total": 13
+  },
+  "execution_authorized": false,
+  "result_status": "NOT_RUN",
+  "test_set_opened": "NO",
+  "next_gate": "NEW_E4_REMEDIATION_PACKET"
+}

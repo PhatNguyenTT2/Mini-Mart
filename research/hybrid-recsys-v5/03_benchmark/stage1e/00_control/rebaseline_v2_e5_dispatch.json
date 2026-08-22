@@ -1,0 +1,88 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e5-dispatch-1.0",
+  "material_passport": {
+    "origin_skill": "ars-codex:academic-research-suite/experiment-agent",
+    "origin_mode": "central-independent-audit-dispatch",
+    "origin_date": "2026-08-22",
+    "verification_status": "UNVERIFIED",
+    "version_label": "Stage 1E Rebaseline v2 E5 dispatch",
+    "repro_lock": null
+  },
+  "project": "hybrid-recsys-v5",
+  "stage": "1E",
+  "wave": "C",
+  "task": "E5_independent_lock_audit",
+  "client_thread_id": "client-new-thread:4c4d9122-2b97-450a-95dc-13942af509d7",
+  "thread_id": "01a025bf-9b0c-74c1-9af0-aab542ad70e8",
+  "host_id": "local",
+  "status": "active_independent_artifact_audit",
+  "worktree": "C:/Users/ACER/.codex/worktrees/87bd/backend",
+  "environment": "fresh_dedicated_worktree_from_working_tree",
+  "model": "gpt-5.6-sol",
+  "reasoning": "xhigh",
+  "independent_from_e4": true,
+  "contract": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e5_independent_lock_audit_contract.md",
+    "canonical_lf_sha256": "59394ab80d3d78c491d20346bf44cfab5ab7d75e8acbab45ae3ecaf50c62dff5"
+  },
+  "input_manifest": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e5_frozen_input_manifest.json",
+    "sha256": "f06e3b4e60afd53923fb343b74cedd4e1a49c75d2b4e0151197adc9c7945446f",
+    "direct_inputs": 10,
+    "transitive_inputs": 28,
+    "total_checks": 38,
+    "central_validation": "PASS"
+  },
+  "e5_entry_gate": {
+    "reported_by_thread": "01a025bf-9b0c-74c1-9af0-aab542ad70e8",
+    "manifest_self_check": "PASS_1_OF_1",
+    "direct_inputs": "PASS_10_OF_10",
+    "transitive_parent_inputs": "PASS_28_OF_28",
+    "total_artifact_checks": "PASS_38_OF_38",
+    "failure_count": 0,
+    "status": "PASS"
+  },
+  "entry_state": {
+    "e4_verdict": "FAIL_NOT_READY_FOR_E5",
+    "e4_verdict_detail": "BLOCKED_NO_READY_REFERENCE_BUNDLE",
+    "ready_rows": 0,
+    "execution_authorized": false
+  },
+  "write_set": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_c/E5_independent_lock_audit/",
+  "required_outputs": [
+    "independent_lock_audit.md",
+    "audit_findings.json",
+    "replay_receipt.json",
+    "stage1e_execution_authorization.json",
+    "e5_handoff.json"
+  ],
+  "required_coverage": {
+    "candidate_rows": 13,
+    "blocker_dispositions": 26,
+    "commands": 10,
+    "prohibited_joins": 5
+  },
+  "execution_boundary": {
+    "primary_source_web_replay": true,
+    "local_read_only_inspection": true,
+    "repository_clone_or_fetch": false,
+    "dataset_download_or_authenticated_access": false,
+    "package_install_or_environment_creation": false,
+    "source_model_or_data_modification": false,
+    "training_evaluation_or_test": false,
+    "execute_e4_commands": false,
+    "modify_e1_through_e4": false,
+    "authorize_execution": false
+  },
+  "required_authorization_state": {
+    "authorized": false,
+    "decision": "DENIED_E4_FAIL_NOT_READY_OR_STRICTER",
+    "replacement_e4_packet_required": true,
+    "new_e5_audit_required": true
+  },
+  "truth_state": {
+    "accepted_result_rows": 0,
+    "result_status": "NOT_RUN",
+    "test_set_opened": "NO"
+  }
+}

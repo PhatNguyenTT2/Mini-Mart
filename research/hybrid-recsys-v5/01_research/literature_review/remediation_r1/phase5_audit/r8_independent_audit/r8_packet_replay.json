@@ -1,0 +1,165 @@
+{
+  "schema_version": "stage1b-r1-r8-packet-replay-1.0",
+  "project": "hybrid-recsys-v5",
+  "stage": "1B",
+  "round": "R1",
+  "step": "R8_independent_audit",
+  "replay_role": "independent_read_only_auditor",
+  "direct_input_gate": {
+    "r8_audit_contract": {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/r8_audit_contract.md",
+      "bytes": 3357,
+      "sha256": "b251f8e3f676a0dd3c0b3a3258e281ce312d7278c71a7343419ec054d9788b13",
+      "match": true
+    },
+    "r8_input_manifest": {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/r8_input_manifest.json",
+      "bytes": 3695,
+      "sha256": "319e10f1fc26263179c3f16bbed91eebddf2c9a8f915aab9a5772a7f159e68cf",
+      "match": true
+    },
+    "manifest_bound_files_checked": 9,
+    "byte_mismatches": [],
+    "sha256_mismatches": []
+  },
+  "r7_validator": {
+    "command_mode": "final",
+    "result": "PASS_READY_FOR_INDEPENDENT_AUDIT",
+    "checks_run": 29,
+    "checks_passed": 29,
+    "failures": []
+  },
+  "independent_root_replay": {
+    "implementation": "R8 validator recomputes bytes and SHA-256 directly and does not import or call R7 root-building code",
+    "tuple_fields": [
+      "path",
+      "bytes",
+      "sha256",
+      "role"
+    ],
+    "ordering": "lexicographic ascending by normalized repository-relative path",
+    "serialization": "json.dumps(ensure_ascii=False,separators=(',',':')); UTF-8; no trailing newline",
+    "paths_sorted": true,
+    "paths_unique": true,
+    "paths_normalized_repository_relative": true,
+    "member_bytes_sha_match": true,
+    "canonical_preimage_forbidden_surfaces": {
+      "timestamps": false,
+      "absolute_or_worktree_paths": false,
+      "mutable_pipeline_state": false,
+      "r7_output_self_hashes": false,
+      "nondeterministic_ordering": false
+    }
+  },
+  "packet_member_count": 193,
+  "role_counts": {
+    "payload": 162,
+    "control": 27,
+    "receipt": 4
+  },
+  "member_mismatches": [],
+  "canonical_preimage_bytes": 43928,
+  "canonical_root_sha256": "f0f2d56e42ce0f181f83182ddffe1060bf8994f50ababd4b0dbe563a942370dd",
+  "declared_root_sha256": "f0f2d56e42ce0f181f83182ddffe1060bf8994f50ababd4b0dbe563a942370dd",
+  "root_match": true,
+  "upstream_validators": {
+    "R4": "PASS_22_OF_22",
+    "R5": "PASS_29_OF_29",
+    "R6_original": "PASS_26_OF_26",
+    "R6_remediation": "PASS_33_OF_33",
+    "R6_reaudit": "PASS_26_OF_26",
+    "R7": "PASS_29_OF_29"
+  },
+  "corpus_replay": {
+    "canonical_scholarly_records": 74,
+    "nominal_scholarly_families": 71,
+    "included_scholarly_corpus": 52,
+    "recent_2022_2026": 32,
+    "core_scholarly": 23,
+    "core_operational_families": 1,
+    "core_total_objects": 24,
+    "operational_records": 14,
+    "operational_root_families": 12,
+    "locator_records": 75,
+    "source_locators": 61,
+    "resource_locators": 14,
+    "page_anchors": 0,
+    "pdf_preflight_pass": 27,
+    "pdf_preflight_unavailable": 1
+  },
+  "claim_replay": {
+    "unique_claims": 44,
+    "citation_ready_candidates": 22,
+    "planning_only": 22,
+    "intent_drift": 0,
+    "counter_evidence_entries": 44,
+    "counter_evidence_items": 51,
+    "counter_evidence_locator_pointers": 136,
+    "counter_pointers_verified_against_original": 114,
+    "counter_pointers_bounded_not_original_verified": 22,
+    "visible_citation_locator_pairs": 33,
+    "visible_pairs_verified_nonpage": 33
+  },
+  "theme_replay": {
+    "T1": {
+      "canonical": 6,
+      "nominal": 6,
+      "dependency_adjusted": 6,
+      "removal_result": "ROBUST"
+    },
+    "T2": {
+      "canonical": 8,
+      "nominal": 8,
+      "dependency_adjusted": 8,
+      "removal_result": "ROBUST_WITH_LOCAL_WEAKENING"
+    },
+    "T3": {
+      "canonical": 8,
+      "nominal": 8,
+      "dependency_adjusted": 8,
+      "removal_result": "ROBUST_WITH_REDUCED_DIRECTNESS"
+    },
+    "T4": {
+      "canonical": 9,
+      "nominal": 9,
+      "dependency_adjusted": 8,
+      "removal_result": "ROBUST_WITH_DEPENDENCE_CAVEAT"
+    },
+    "T5": {
+      "canonical": 2,
+      "nominal": 1,
+      "dependency_adjusted": 1,
+      "removal_result": "FRAGILE_SINGLE_FAMILY"
+    }
+  },
+  "scholar_decision_replay": {
+    "pairs": 12,
+    "confirmed": 11,
+    "disputed": 1,
+    "pending": 0,
+    "unresolved": 0,
+    "t002_historical": "conditional_difference/resolved_in_synthesis/pending",
+    "t002_effective": "no_material_conflict/not_applicable/disputed"
+  },
+  "replayed_counts": {
+    "claims": 44,
+    "citation_ready_candidates": 22,
+    "planning_only": 22,
+    "counter_evidence_items": 51,
+    "counter_evidence_locator_pointers": 136,
+    "verified_citation_locator_pairs": 33,
+    "themes": 5,
+    "tension_pairs": 12,
+    "scholar_confirmed": 11,
+    "scholar_disputed_reclassified": 1,
+    "scholar_pending": 0,
+    "scholar_unresolved": 0
+  },
+  "phase_boundary": {
+    "stage1b_sealed": false,
+    "stage2_production_citations_authorized": false,
+    "manuscript_drafting": "NOT_PERFORMED",
+    "benchmark_training_evaluation": "NOT_RUN",
+    "h1_h4": "NOT_RUN"
+  }
+}

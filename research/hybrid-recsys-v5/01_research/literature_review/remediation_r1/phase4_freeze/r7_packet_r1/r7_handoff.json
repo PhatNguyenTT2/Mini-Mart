@@ -1,0 +1,44 @@
+{
+  "schema_version": "stage1b-r1-r7-handoff-1.0",
+  "project": "hybrid-recsys-v5",
+  "stage": "1B",
+  "round": "R1",
+  "step": "R7_freeze_packet",
+  "verdict": "PASS_READY_FOR_INDEPENDENT_AUDIT",
+  "input_binding": {
+    "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/r7_input_manifest.json": "98ffc47ff8ce216838d2c5ff542628b002bc0d4f5feb28853b8661af99cad08a",
+    "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/r7_freeze_contract.md": "e8672fe6e5dae707e146e1b46cce8ab938d02d9eb440bd454d774b4f02362920",
+    "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/scholar_tension_adjudication_r1.json": "a9a9ccc008f119bd4e4923fbb580529390a4f6653c8d973c1487e70133a2df62"
+  },
+  "packet_manifest": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase4_freeze/r7_packet_r1/stage1b_r1_audit_packet_manifest.json",
+  "root_hash_record": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase4_freeze/r7_packet_r1/stage1b_r1_root_hash.json",
+  "canonical_root_sha256": "f0f2d56e42ce0f181f83182ddffe1060bf8994f50ababd4b0dbe563a942370dd",
+  "packet_member_count": 193,
+  "validator_final_gate": "PASS_29_OF_29",
+  "scholar_adjudication": {
+    "pairs": 12,
+    "confirmed": 11,
+    "disputed": 1,
+    "pending": 0,
+    "flagged_unresolved": 0,
+    "t002_effective_classification": "no_material_conflict/not_applicable"
+  },
+  "artifact_sha256": {
+    "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase4_freeze/r7_packet_r1/stage1b_r1_audit_packet_manifest.json": "cc843a684a72b748ed8df8e981fa92481945f75f5e8decc3121f9daac1167827",
+    "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase4_freeze/r7_packet_r1/stage1b_r1_root_hash.json": "a83c38bb61f3aee49d52105d7c9350263f7449dd0ac03b73c2c86dfbc943a8ec",
+    "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase4_freeze/r7_packet_r1/stage1b_r1_freeze_report.md": "e788385e2f45fe8a80df475ea2593d4363e43555b46bba625d2b27d3f40a0d1d",
+    "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase4_freeze/r7_packet_r1/validate_r7_freeze.py": "12afa4e92981cf7a85cd1dc9a2417d3afedad4f4f3947d3c261c8d8a992d820d"
+  },
+  "self_hash_policy": "The handoff and validation receipt do not self-hash. The receipt binds the handoff; the canonical root binds only immutable input member tuples and excludes all R7 output hashes.",
+  "authorized_next_action": "fresh_read_only_R8_independent_audit_only",
+  "phase_boundary": {
+    "r8": "AUTHORIZED_NOT_PERFORMED",
+    "r9": "NOT_PERFORMED_NOT_AUTHORIZED",
+    "stage1b_seal": "NOT_PERFORMED",
+    "stage1b_sealed": false,
+    "stage2_authorization": "NOT_AUTHORIZED",
+    "stage2_production_citations_authorized": false,
+    "benchmark_training_evaluation": "NOT_RUN",
+    "h1_h4": "NOT_RUN"
+  }
+}

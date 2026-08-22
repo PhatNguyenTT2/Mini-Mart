@@ -1,0 +1,183 @@
+{
+  "schema_version": "stage1b-r1-lane-exclusion-log-1.0",
+  "project": "hybrid-recsys-v5",
+  "lane": "L4",
+  "research_cutoff": "2026-08-14",
+  "eligibility_criteria": {
+    "include": [
+      "Primary scholarly work with direct claim-level value for item-side zero-edge cold start, content-based recommendation efficacy, transferable item/sequence representation, target-domain adaptation, or a necessary collaborative sparse-graph control.",
+      "Published or accepted by the cutoff, with canonical identity verifiable against a publisher, proceedings, repository of record, or DOI registry.",
+      "Adds non-redundant coverage, an audit-core anchor, a counter-evidence role, or a required mechanism boundary."
+    ],
+    "exclude": [
+      "Cold-user-only, social-elicitation, dataset-only, domain-specific non-retail, or generic recommendation work without direct L4 claim value.",
+      "Redundant direct methods that add lower claim-level value than the retained definition, transfer, counter-evidence, and content-objective set.",
+      "Compute-expanding LLM or generative branches that do not close a locked coverage gap.",
+      "Secondary snippets, metadata-only pages, and repositories as evidence of original paper content."
+    ],
+    "application_rule": "The same criteria were applied to old and new candidates; authority alone was insufficient without relevance, coverage, and claim-level value."
+  },
+  "search_accounting": {
+    "crossref_rows_retrieved": 80,
+    "crossref_unique_doi_records": 63,
+    "duplicate_rows_removed": 17,
+    "old_retained_records_rediscovered": 2,
+    "new_records_included": 4,
+    "gap_search_records_excluded": 57,
+    "old_candidates_removed": 8,
+    "duplicate_identity_across_old_and_gap_exclusions": 1,
+    "unique_excluded_identities_total": 64
+  },
+  "reason_codes": {
+    "OUTSIDE_ITEM_SIDE_SCOPE": "User-side, social, elicitation, generic cold-start, or side of cold start not separable from the title/metadata screen.",
+    "OUTSIDE_REQUIRED_DOMAIN_OR_TASK": "Non-retail recommendation/prediction task or dataset-only work outside L4.",
+    "TANGENTIAL_SEQUENCE_OR_LONG_TAIL": "Sequential, tail, sparse, or representation work without direct strict item-cold or locked transfer-assumption value.",
+    "REDUNDANT_LOWER_CLAIM_VALUE": "Direct candidate but does not add non-redundant claim coverage beyond the retained set.",
+    "COMPUTE_OR_SCOPE_EXPANSION": "LLM, diffusion, adversarial, or other branch that expands compute/scope without closing a locked evidence gap.",
+    "DUPLICATE_VERSION": "Non-canonical or duplicate manifestation of a record already screened.",
+    "OWNED_BY_OTHER_LANE": "Scholarly dataset or external-validity evidence assigned outside L4."
+  },
+  "old_candidate_exclusions": [
+    {
+      "legacy_id": "L4-09",
+      "title": "Cold-start Recommendation by Personalized Embedding Region Elicitation",
+      "authors": ["Hieu Trung Nguyen", "Duy Nguyen", "Khoa Doan", "Viet Anh Nguyen"],
+      "official_id": "PMLR v244:nguyen24a",
+      "decision": "EXCLUDE",
+      "reason_code": "OUTSIDE_ITEM_SIDE_SCOPE",
+      "reason": "New-user preference elicitation; it cannot be transferred to item-side zero-edge evidence."
+    },
+    {
+      "legacy_id": "E01",
+      "title": "Improving Item Cold-start Recommendation via Model-agnostic Conditional Variational Autoencoder",
+      "authors": ["Xu Zhao", "Yi Ren", "Ying Du", "Shenzheng Zhang", "Nian Wang"],
+      "doi": "10.1145/3477495.3531902",
+      "decision": "EXCLUDE",
+      "reason_code": "REDUNDANT_LOWER_CLAIM_VALUE",
+      "reason": "Direct but limited-interaction/warm-up framing adds lower incremental value than the retained strict definitions, distillation, bias, and content-objective sources."
+    },
+    {
+      "legacy_id": "E02",
+      "title": "Generative Adversarial Framework for Cold-Start Item Recommendation",
+      "authors": ["Hao Chen", "Zefan Wang", "Feiran Huang", "Xiao Huang", "Yue Xu", "Yishi Lin", "Peng He", "Zhoujun Li"],
+      "doi": "10.1145/3477495.3531897",
+      "decision": "EXCLUDE",
+      "reason_code": "REDUNDANT_LOWER_CLAIM_VALUE",
+      "reason": "Valid direct method but redundant after the retained zero-edge, distillation, reconstruction, and inherited-bias set."
+    },
+    {
+      "legacy_id": "E03",
+      "title": "Socially-aware Dual Contrastive Learning for Cold-Start Recommendation",
+      "authors": ["Jing Du", "Zesheng Ye", "Lina Yao", "Bin Guo", "Zhiwen Yu"],
+      "doi": "10.1145/3477495.3531780",
+      "decision": "EXCLUDE",
+      "reason_code": "OUTSIDE_ITEM_SIDE_SCOPE",
+      "reason": "Cold-user plus social-graph setting rather than item-side zero-edge evidence."
+    },
+    {
+      "legacy_id": "E04",
+      "title": "LLaRA: Large Language-Recommendation Assistant",
+      "authors": ["Jiayi Liao", "Sihang Li", "Zhengyi Yang", "Jiancan Wu", "Yancheng Yuan", "Xiang Wang", "Xiangnan He"],
+      "doi": "10.1145/3626772.3657690",
+      "decision": "EXCLUDE",
+      "reason_code": "COMPUTE_OR_SCOPE_EXPANSION",
+      "reason": "Broad LLM-recommendation architecture does not close the strict item-cold, encoder-efficacy, or target-adaptation gaps."
+    },
+    {
+      "legacy_id": "E05",
+      "title": "Large Language Models meet Collaborative Filtering: An Efficient All-round LLM-based Recommender System",
+      "authors": ["Sein Kim", "Hongseok Kang", "Seungyoon Choi", "Donghyun Kim", "Minchul Yang", "Chanyoung Park"],
+      "doi": "10.1145/3637528.3671931",
+      "decision": "EXCLUDE",
+      "reason_code": "COMPUTE_OR_SCOPE_EXPANSION",
+      "reason": "Broad all-round LLM recommender, not a necessary strict item-cold or transfer-assumption anchor."
+    },
+    {
+      "legacy_id": "E06",
+      "title": "Amazon-M2: A Multilingual Multi-locale Shopping Session Dataset for Recommendation and Text Generation",
+      "authors": ["Wei Jin", "Haitao Mao", "Zheng Li", "Haoming Jiang", "Chen Luo", "Hongzhi Wen", "Haoyu Han", "Hanqing Lu", "Zhengyang Wang", "Ruirui Li", "Zhen Li", "Monica Cheng", "Rahul Goutam", "Haiyang Zhang", "Karthik Subbian", "Suhang Wang", "Yizhou Sun", "Jiliang Tang", "Bing Yin", "Xianfeng Tang"],
+      "official_id": "NeurIPS-2023-193df57a2366d032fb18dcac0698d09a",
+      "decision": "EXCLUDE",
+      "reason_code": "OWNED_BY_OTHER_LANE",
+      "reason": "Scholarly dataset paper; it is not L4 method-efficacy evidence and is not an operational-resource record."
+    },
+    {
+      "legacy_id": "E07",
+      "title": "ViHoRec: A Quality-Controlled Vietnamese Hotel Recommendation Dataset and Cold-Start Benchmark",
+      "authors": ["Minh Hoang Nguyen"],
+      "official_id": "arXiv:2607.12946",
+      "decision": "EXCLUDE",
+      "reason_code": "OWNED_BY_OTHER_LANE",
+      "reason": "Concurrent preprint centered on a dataset and short-history-user setting, not peer-reviewed strict item-cold evidence."
+    }
+  ],
+  "gap_search_inclusions": [
+    {"doi": "10.1145/3626772.3657801", "source_key": "kim2024_cgrc", "decision": "INCLUDE_NEW", "reason": "Direct content-based graph reconstruction for item cold start."},
+    {"doi": "10.1145/3705328.3748035", "source_key": "meehan2025_cold_popbias", "decision": "INCLUDE_NEW", "reason": "Direct counter-evidence on inherited popularity bias in cold-item models."},
+    {"doi": "10.1145/3805712.3809975", "source_key": "meehan2026_semco", "decision": "INCLUDE_NEW", "reason": "Cutoff-eligible direct content-based cold-item recommendation objective."},
+    {"doi": "10.1145/3805712.3809720", "source_key": "zheng2026_utgrec", "decision": "INCLUDE_NEW", "reason": "Cutoff-eligible transfer paper with explicit downstream adaptation and shared-lineage evidence."}
+  ],
+  "gap_search_rediscovered_old_retained": [
+    {"doi": "10.1145/3539618.3591732", "source_key": "huang2023_aldi", "decision": "RETAIN_EXISTING"},
+    {"doi": "10.1145/3543507.3583434", "source_key": "hou2023_vqrec", "decision": "RETAIN_EXISTING"}
+  ],
+  "gap_search_exclusions": [
+    {"doi": "10.1007/978-3-030-99739-7_10", "title": "Leveraging Content-Style Item Representation for Visual Recommendation", "decision": "EXCLUDE", "reason_code": "TANGENTIAL_SEQUENCE_OR_LONG_TAIL", "reason": "Visual style representation, not strict item-cold or locked target-adaptation evidence."},
+    {"doi": "10.1007/978-3-031-08751-6_12", "title": "Content-Aware Generative Model for Multi-item Outfit Recommendation", "decision": "EXCLUDE", "reason_code": "OUTSIDE_REQUIRED_DOMAIN_OR_TASK", "reason": "Outfit composition task, not the required item-cold evaluation scope."},
+    {"doi": "10.1007/978-3-031-30672-3_26", "title": "Sequential Hypergraph Convolution Network for Next Item Recommendation", "decision": "EXCLUDE", "reason_code": "TANGENTIAL_SEQUENCE_OR_LONG_TAIL", "reason": "Generic next-item graph model without direct cold-item or transfer-assumption value."},
+    {"doi": "10.1007/s10489-022-03452-0", "title": "Item sequential recommendation based on graph embedding model", "decision": "EXCLUDE", "reason_code": "TANGENTIAL_SEQUENCE_OR_LONG_TAIL", "reason": "Generic sequential graph representation."},
+    {"doi": "10.1007/s11704-023-3112-y", "title": "A general tail item representation enhancement framework for sequential recommendation", "decision": "EXCLUDE", "reason_code": "TANGENTIAL_SEQUENCE_OR_LONG_TAIL", "reason": "Tail-item enhancement does not establish strict zero-edge cold-item behavior."},
+    {"doi": "10.1016/j.eswa.2024.125108", "title": "Zero-Shot Content-Based Crossmodal Recommendation System", "decision": "EXCLUDE", "reason_code": "REDUNDANT_LOWER_CLAIM_VALUE", "reason": "Crossmodal zero-shot method adds lower incremental value than retained AlphaRec and direct cold-item content sources."},
+    {"doi": "10.1016/j.eswa.2026.131184", "title": "Cold-Start recipe recommendation via template-based language inference with LLM-generated summaries", "decision": "EXCLUDE", "reason_code": "OUTSIDE_REQUIRED_DOMAIN_OR_TASK", "reason": "Recipe-specific LLM task and compute branch outside locked retail item-cold coverage."},
+    {"doi": "10.1016/j.ins.2022.05.025", "title": "Variational cold-start resistant recommendation", "decision": "EXCLUDE", "reason_code": "OUTSIDE_ITEM_SIDE_SCOPE", "reason": "Generic cold-start framing did not add separable item-side zero-edge claim value."},
+    {"doi": "10.1016/j.knosys.2023.110809", "title": "Sequential ensemble learning for next item recommendation", "decision": "EXCLUDE", "reason_code": "TANGENTIAL_SEQUENCE_OR_LONG_TAIL", "reason": "Generic next-item ensemble."},
+    {"doi": "10.1016/j.neucom.2022.08.013", "title": "Binary multi-modal matrix factorization for fast item cold-start recommendation", "decision": "EXCLUDE", "reason_code": "REDUNDANT_LOWER_CLAIM_VALUE", "reason": "Direct but lower incremental coverage than the retained multimedia, distillation, and content-objective set."},
+    {"doi": "10.1016/j.neucom.2025.132144", "title": "Embedding uncertainty modeling for cold-start item recommendation", "decision": "EXCLUDE", "reason_code": "REDUNDANT_LOWER_CLAIM_VALUE", "reason": "Direct uncertainty branch does not close a locked definition, encoder, transfer, or counter-evidence gap."},
+    {"doi": "10.1109/access.2023.3293839", "title": "Item Attribute-Aware Contrastive Learning for Sequential Recommendation", "decision": "EXCLUDE", "reason_code": "TANGENTIAL_SEQUENCE_OR_LONG_TAIL", "reason": "Attribute-aware sequential model without strict item-cold cohort evidence."},
+    {"doi": "10.1109/access.2023.3346918", "title": "A Flexible Two-Tower Model for Item Cold-Start Recommendation", "decision": "EXCLUDE", "reason_code": "REDUNDANT_LOWER_CLAIM_VALUE", "reason": "Direct but lower authority/claim value than retained audit-core and top-conference sources."},
+    {"doi": "10.1109/acira67680.2025.11334788", "title": "AI Agent Model Simulator for Cold-Start Item Recommendation", "decision": "EXCLUDE", "reason_code": "COMPUTE_OR_SCOPE_EXPANSION", "reason": "Agent simulation branch does not close a locked L4 gap."},
+    {"doi": "10.1109/asonam55673.2022.10068599", "title": "Attention Mechanism indicating Item Novelty for Sequential Recommendation", "decision": "EXCLUDE", "reason_code": "TANGENTIAL_SEQUENCE_OR_LONG_TAIL", "reason": "Novelty-aware sequential work, not strict item-cold evidence."},
+    {"doi": "10.1109/bigdata62323.2024.10825425", "title": "Transferable Sequential Recommendation via Vector Quantized Meta Learning", "decision": "EXCLUDE", "reason_code": "REDUNDANT_LOWER_CLAIM_VALUE", "reason": "Transfer/vector-quantization coverage is already supplied by higher-claim-value VQ-Rec and UTGRec sources."},
+    {"doi": "10.1109/icassp48485.2024.10446911", "title": "Neighborhood-Enhanced Multimodal Collaborative Filtering for Item Cold Start Recommendation", "decision": "EXCLUDE", "reason_code": "REDUNDANT_LOWER_CLAIM_VALUE", "reason": "Direct but does not add a needed claim beyond retained zero-edge and content/reconstruction sources."},
+    {"doi": "10.1109/icdm58522.2023.00082", "title": "Collaborative Word-based Pre-trained Item Representation for Transferable Recommendation", "decision": "EXCLUDE", "reason_code": "REDUNDANT_LOWER_CLAIM_VALUE", "reason": "Transferable text representation is already covered by UniSRec, VQ-Rec, AlphaRec, and UTGRec with stronger claim-level locators."},
+    {"doi": "10.1109/ijcnn60899.2024.10650912", "title": "FEW: Multi-modal Recommendation for Cold-Start", "decision": "EXCLUDE", "reason_code": "OUTSIDE_ITEM_SIDE_SCOPE", "reason": "Broad multimodal cold-start scope did not add separable strict item-side evidence at title/metadata screening."},
+    {"doi": "10.1109/tkde.2024.3384965", "title": "Interaction Subgraph Sequential Topology-Aware Network for Transferable Recommendation", "decision": "EXCLUDE", "reason_code": "TANGENTIAL_SEQUENCE_OR_LONG_TAIL", "reason": "Subgraph transfer work does not close the content/target-adaptation evidence gap beyond retained sources."},
+    {"doi": "10.1109/tkde.2025.3613263", "title": "Preference Aware Item Cold-Start Recommendation With Hierarchical Item Alignment", "decision": "EXCLUDE", "reason_code": "REDUNDANT_LOWER_CLAIM_VALUE", "reason": "Direct alignment method but no non-redundant locked claim role after ALDI, CGRC, inherited-bias, and SEMCo."},
+    {"doi": "10.1109/tpami.2026.3653806", "title": "Searching to Modulate for Cold-Start Recommendation", "decision": "EXCLUDE", "reason_code": "OUTSIDE_ITEM_SIDE_SCOPE", "reason": "Broad cold-start title did not establish a necessary item-side zero-edge role in the targeted metadata screen."},
+    {"doi": "10.1109/tsc.2023.3237638", "title": "Cold-Start Next-Item Recommendation by User-Item Matching and Auto-Encoders", "decision": "EXCLUDE", "reason_code": "OUTSIDE_ITEM_SIDE_SCOPE", "reason": "Mixed user-item matching does not supply a separable strict item-cold anchor."},
+    {"doi": "10.1109/tsc.2023.3334241", "title": "Feature Matching Machine for Cold-Start Recommendation", "decision": "EXCLUDE", "reason_code": "OUTSIDE_ITEM_SIDE_SCOPE", "reason": "Generic cold-start framing did not add a required item-side definition or transfer boundary."},
+    {"doi": "10.1142/s021812662644010x", "title": "VC-GNN: Variational Counterfactual Graph Learning for Item Cold-Start Recommendation", "decision": "EXCLUDE", "reason_code": "REDUNDANT_LOWER_CLAIM_VALUE", "reason": "Direct graph method but redundant with retained graph-reconstruction and strict cohort sources."},
+    {"doi": "10.1145/3477495.3531756", "title": "Item-Provider Co-learning for Sequential Recommendation", "decision": "EXCLUDE", "reason_code": "TANGENTIAL_SEQUENCE_OR_LONG_TAIL", "reason": "Provider-side sequential method outside the locked item-cold and transfer questions."},
+    {"doi": "10.1145/3477495.3531897", "title": "Generative Adversarial Framework for Cold-Start Item Recommendation", "decision": "EXCLUDE", "reason_code": "REDUNDANT_LOWER_CLAIM_VALUE", "reason": "Rediscovered old E02; valid but redundant direct method."},
+    {"doi": "10.1145/3485447.3512101", "title": "Sequential Recommendation with Decomposed Item Feature Routing", "decision": "EXCLUDE", "reason_code": "TANGENTIAL_SEQUENCE_OR_LONG_TAIL", "reason": "Generic feature-routing sequential method."},
+    {"doi": "10.1145/3539618.3592078", "title": "Uncertainty-aware Consistency Learning for Cold-Start Item Recommendation", "decision": "EXCLUDE", "reason_code": "REDUNDANT_LOWER_CLAIM_VALUE", "reason": "Direct but does not add a needed claim boundary beyond the retained set."},
+    {"doi": "10.1145/3543507.3583286", "title": "Contrastive Collaborative Filtering for Cold-Start Item Recommendation", "decision": "EXCLUDE", "reason_code": "REDUNDANT_LOWER_CLAIM_VALUE", "reason": "Contrastive cold-start coverage is already represented by CLCRec and SEMCo; no additional locked role."},
+    {"doi": "10.1145/3581783.3612238", "title": "GoRec: A Generative Cold-start Recommendation Framework", "decision": "EXCLUDE", "reason_code": "COMPUTE_OR_SCOPE_EXPANSION", "reason": "Generative branch does not close a locked definition, encoder, or transfer-assumption gap."},
+    {"doi": "10.1145/3589334.3645494", "title": "Could Small Language Models Serve as Recommenders? Towards Data-centric Cold-start Recommendation", "decision": "EXCLUDE", "reason_code": "COMPUTE_OR_SCOPE_EXPANSION", "reason": "Language-model recommender branch adds scope without replacing the bounded SBERT/AlphaRec evidence separation."},
+    {"doi": "10.1145/3589335.3651532", "title": "Large Language Models as Data Augmenters for Cold-Start Item Recommendation", "decision": "EXCLUDE", "reason_code": "COMPUTE_OR_SCOPE_EXPANSION", "reason": "LLM augmentation is not required for the locked content-encoder or target-adaptation questions."},
+    {"doi": "10.1145/3604915.3608806", "title": "Multi-task Item-attribute Graph Pre-training for Strict Cold-start Item Recommendation", "decision": "EXCLUDE", "reason_code": "REDUNDANT_LOWER_CLAIM_VALUE", "reason": "Direct strict cold-start source but redundant for the bounded definition/cohort claims already anchored in inspected full artifacts."},
+    {"doi": "10.1145/3625403.3625418", "title": "Contrastive Learning based Item Representation with Asymmetric Augmentation for Sequential Recommendation", "decision": "EXCLUDE", "reason_code": "TANGENTIAL_SEQUENCE_OR_LONG_TAIL", "reason": "Sequential representation work without a required strict item-cold or transfer role."},
+    {"doi": "10.1145/3627673.3680270", "title": "Towards Advancing Text-Based User and Item Representation in Personalized Recommendation", "decision": "EXCLUDE", "reason_code": "TANGENTIAL_SEQUENCE_OR_LONG_TAIL", "reason": "Broad text representation work adds lower claim value than the retained encoder/recommender boundary set."},
+    {"doi": "10.1145/3640457.3688125", "title": "MARec: Metadata Alignment for cold-start Recommendation", "decision": "EXCLUDE", "reason_code": "REDUNDANT_LOWER_CLAIM_VALUE", "reason": "Metadata-alignment method does not close a unique gap after ALDI, CGRC, and inherited-bias evidence."},
+    {"doi": "10.1145/3640457.3688126", "title": "Prompt Tuning for Item Cold-start Recommendation", "decision": "EXCLUDE", "reason_code": "COMPUTE_OR_SCOPE_EXPANSION", "reason": "Prompt-tuning branch is not needed for the locked bounded claims."},
+    {"doi": "10.1145/3690624.3709336", "title": "Online Item Cold-Start Recommendation with Popularity-Aware Meta-Learning", "decision": "EXCLUDE", "reason_code": "REDUNDANT_LOWER_CLAIM_VALUE", "reason": "Online/meta-learning setting is distinct from the locked offline cohort and adds no necessary claim role."},
+    {"doi": "10.1145/3701551.3703546", "title": "Large Language Model Simulator for Cold-Start Recommendation", "decision": "EXCLUDE", "reason_code": "COMPUTE_OR_SCOPE_EXPANSION", "reason": "Simulation/LLM branch outside required item-side evidence."},
+    {"doi": "10.1145/3701551.3703554", "title": "Temporal Linear Item-Item Model for Sequential Recommendation", "decision": "EXCLUDE", "reason_code": "TANGENTIAL_SEQUENCE_OR_LONG_TAIL", "reason": "Generic temporal sequential model."},
+    {"doi": "10.1145/3746252.3760817", "title": "Multi-Item-Query Attention for Stable Sequential Recommendation", "decision": "EXCLUDE", "reason_code": "TANGENTIAL_SEQUENCE_OR_LONG_TAIL", "reason": "Stable sequential attention, not strict item-cold or transfer-assumption evidence."},
+    {"doi": "10.1145/3746252.3761313", "title": "MI4Rec: Pretrained Language Model based Cold-Start Recommendation with Meta-Item Embeddings", "decision": "EXCLUDE", "reason_code": "COMPUTE_OR_SCOPE_EXPANSION", "reason": "PLM/meta-item branch does not close the bounded encoder-efficacy or adaptation gap beyond retained sources."},
+    {"doi": "10.1145/3770855.3817707", "title": "SetLLM: Set Large Language Model for Cold-Start Item Recommendation", "decision": "EXCLUDE", "reason_code": "COMPUTE_OR_SCOPE_EXPANSION", "reason": "LLM branch adds scope/compute without a required evidence role."},
+    {"doi": "10.1145/3770855.3818367", "title": "Denoising Implicit Feedback for Cold-start Recommendation", "decision": "EXCLUDE", "reason_code": "OUTSIDE_ITEM_SIDE_SCOPE", "reason": "Implicit-feedback denoising is not a separable strict item-side zero-edge anchor."},
+    {"doi": "10.1145/3774904.3792587", "title": "Generative Archetype-Grounded Item Representations for Sequential Recommendation", "decision": "EXCLUDE", "reason_code": "TANGENTIAL_SEQUENCE_OR_LONG_TAIL", "reason": "Sequential item-representation method without a locked item-cold or target-adaptation role."},
+    {"doi": "10.1145/3830081", "title": "Synergizing Large Language Model and Knowledge Graph for Cold-Start Recommendation", "decision": "EXCLUDE", "reason_code": "COMPUTE_OR_SCOPE_EXPANSION", "reason": "LLM-plus-KG branch not required for the locked coverage."},
+    {"doi": "10.1609/aaai.v38i8.28763", "title": "Preference Aware Dual Contrastive Learning for Item Cold-Start Recommendation", "decision": "EXCLUDE", "reason_code": "REDUNDANT_LOWER_CLAIM_VALUE", "reason": "Direct item-cold method but redundant for the retained contrastive/distillation/content set."},
+    {"doi": "10.21203/rs.3.rs-10334947/v1", "title": "Language-Grounded Drug Representations for Cold-Start Drug-Drug Interaction Prediction", "decision": "EXCLUDE", "reason_code": "OUTSIDE_REQUIRED_DOMAIN_OR_TASK", "reason": "Drug-interaction prediction is not retail recommendation."},
+    {"doi": "10.2139/ssrn.4828316", "title": "New Community Cold-Start Recommendation: A Novel Large Language Model-based Method", "decision": "EXCLUDE", "reason_code": "OUTSIDE_ITEM_SIDE_SCOPE", "reason": "Community cold-start and SSRN/LLM framing outside item-side strict cold coverage."},
+    {"doi": "10.2139/ssrn.5201728", "title": "Embedding Uncertainty Modeling for Cold-Start Item Recommendation", "decision": "EXCLUDE", "reason_code": "DUPLICATE_VERSION", "reason": "SSRN manifestation duplicates the canonical Neurocomputing record 10.1016/j.neucom.2025.132144."},
+    {"doi": "10.2139/ssrn.5603876", "title": "MAG4SRec: Multi-layer alignment contrastive learning for sequential recommendation with global graph-enhanced item representation", "decision": "EXCLUDE", "reason_code": "TANGENTIAL_SEQUENCE_OR_LONG_TAIL", "reason": "SSRN sequential graph representation without required strict item-cold claim value."},
+    {"doi": "10.3389/fmars.2025.1554241", "title": "Cold-start visualization recommendation driven by large language models for ocean data analysis", "decision": "EXCLUDE", "reason_code": "OUTSIDE_REQUIRED_DOMAIN_OR_TASK", "reason": "Ocean visualization recommendation is outside the retail recommender task."},
+    {"doi": "10.3390/app15094784", "title": "Diffusion Model as a Base for Cold Item Recommendation", "decision": "EXCLUDE", "reason_code": "COMPUTE_OR_SCOPE_EXPANSION", "reason": "Diffusion branch adds scope and lower claim value than retained direct sources."},
+    {"doi": "10.5626/ktcp.2024.30.9.420", "title": "A Solution for Cold Item Problem in Recommendation Systems Based on Item Search History", "decision": "EXCLUDE", "reason_code": "REDUNDANT_LOWER_CLAIM_VALUE", "reason": "Search-history-specific solution does not close the strict zero-edge/content/transfer gaps."},
+    {"doi": "10.63317/3ysf4763754p", "title": "Few-Shot Learning for Cold-Start Recommendation", "decision": "EXCLUDE", "reason_code": "OUTSIDE_ITEM_SIDE_SCOPE", "reason": "Generic few-shot cold-start framing with no required separable item-side role."},
+    {"doi": "10.7717/peerj-cs.867", "title": "Attenuated and normalized item-item product network for sequential recommendation", "decision": "EXCLUDE", "reason_code": "TANGENTIAL_SEQUENCE_OR_LONG_TAIL", "reason": "Generic item-item sequential network."}
+  ]
+}

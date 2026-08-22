@@ -1,0 +1,345 @@
+{
+  "schema_version": "stage1b-independent-audit-findings-1.0",
+  "project": "hybrid-recsys-v5",
+  "stage": "1B",
+  "audit_type": "independent_targeted_literature_integrity_audit",
+  "audited_at": "2026-08-13T21:33:53+07:00",
+  "verdict": "FAIL",
+  "counts": {
+    "fatal": 0,
+    "major": 1,
+    "minor": 4,
+    "advisory": 3,
+    "total": 8
+  },
+  "findings": [
+    {
+      "id": "ST1B-META-001",
+      "severity": "major",
+      "audit_questions": [
+        2,
+        7
+      ],
+      "title": "Unverified operational years were coerced into publication-year fields",
+      "artifact_locations": [
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/phase2_investigation/literature_corpus.json",
+          "pointer": "non_source_metadata.note"
+        },
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/phase2_investigation/literature_corpus.json",
+          "pointer": "literature_corpus[citation_key=hm_fashion_competition].year"
+        },
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/phase2_investigation/literature_corpus.json",
+          "pointer": "literature_corpus[citation_key=completejourney_resource].year"
+        },
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/phase2_investigation/verified_source_registry.json",
+          "pointer": "sources[key=hm_fashion_competition].year and sources[key=completejourney_resource].year"
+        },
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/phase2_investigation/annotated_bibliography.md",
+          "pointer": "L5 entries 10-11"
+        }
+      ],
+      "evidence": [
+        "The formal corpus records H&M year=2022 and Complete Journey year=2014.",
+        "The verified registry records year=null for both resources, and the annotated bibliography cites both as n.d.",
+        "non_source_metadata.note states that the values are operational-resource years used to satisfy the ARS corpus schema while exact release/edition metadata remains unresolved.",
+        "The ARS literature-corpus contract defines year as publication year and requires rejection rather than placeholder coercion when a year cannot be determined."
+      ],
+      "rationale": "Knowingly inserting non-bibliographic operational values into a publication-year field makes the formal corpus internally inconsistent and can contaminate recency filters, counts, and reference export. This is a contract and metadata-integrity defect, not merely missing optional metadata.",
+      "remediation": [
+        "Move H&M and Complete Journey into a separate operational-resource registry until verified edition years exist, or adopt a reviewed resource schema with nullable year plus explicit operational_year and year_basis.",
+        "Recompute corpus, recent-source, peer-review, and downstream synthesis summaries.",
+        "Regenerate the manifest and pre-audit seal, then submit the new packet for independent re-audit."
+      ],
+      "remediation_status": "open",
+      "gate_impact": {
+        "packet_integrity": "none",
+        "stage1b_seal": "blocks",
+        "stage2_production_citations": "remains_unauthorized_independently"
+      }
+    },
+    {
+      "id": "ST1B-META-002",
+      "severity": "minor",
+      "audit_questions": [
+        2
+      ],
+      "title": "Jannach and Chen editorial is counted as proven peer-reviewed research",
+      "artifact_locations": [
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/phase2_investigation/source_registry.json",
+          "pointer": "sources[key=jannach2026_methodological_standards].peer_reviewed"
+        },
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/phase2_investigation/verified_source_registry.json",
+          "pointer": "sources[key=jannach2026_methodological_standards].peer_reviewed"
+        },
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/phase2_investigation/source_quality_matrix.json",
+          "pointer": "sources[citation_key=jannach2026_methodological_standards].peer_review_assessment"
+        },
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/phase2_investigation/annotated_bibliography.md",
+          "pointer": "opening summary and L1 entry 11"
+        }
+      ],
+      "evidence": [
+        "DOI 10.1145/3800587, authors, year, journal, and volume/issue are verified.",
+        "The official ACM content describes the work as an essay/editorial and the authors' institutional record classifies it as Contribution to journal - Editorial.",
+        "The packet provides no evidence that this editorial underwent formal external peer review."
+      ],
+      "rationale": "Publication in a peer-reviewed journal does not by itself prove that an editorial article type was formally peer reviewed. The work remains an authoritative standards/position source, but the 49-source peer-reviewed summary is unsupported.",
+      "remediation": [
+        "Record venue_type as editorial/essay.",
+        "Set peer_reviewed to false or unknown unless the journal confirms formal external review.",
+        "Recompute the peer-reviewed total to at most 48 pending proof."
+      ],
+      "remediation_status": "open",
+      "gate_impact": {
+        "packet_integrity": "none",
+        "stage1b_seal": "does_not_block_alone",
+        "stage2_production_citations": "metadata_must_be_corrected_before_reference_export"
+      }
+    },
+    {
+      "id": "ST1B-META-003",
+      "severity": "minor",
+      "audit_questions": [
+        2
+      ],
+      "title": "Mojibake corrupts canonical bibliographic names and titles",
+      "artifact_locations": [
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/phase2_investigation/literature_corpus.json",
+          "pointer": "records jarvelin2002_cumulated_gain, canamares2020_offline_options, peng2023_m2, completejourney_resource"
+        },
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/phase2_investigation/verified_source_registry.json",
+          "pointer": "the same four records"
+        },
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/phase2_investigation/annotated_bibliography.md",
+          "pointer": "entries containing JÃ¤rvelin, CaÃ±amares, MÂ², and 84.51Â°"
+        },
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/phase2_investigation/source_quality_matrix.json",
+          "pointer": "sources[citation_key=peng2023_m2].title"
+        },
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/phase2_investigation/tri_index_verification.json",
+          "pointer": "records[key=peng2023_m2].title"
+        }
+      ],
+      "evidence": [
+        "UTF-8 text is stored as mojibake for Järvelin/Kekäläinen, Rocío Cañamares, M², and 84.51°.",
+        "The affected identities still resolve through DOI and title context, but the stored bibliographic strings are not production-safe."
+      ],
+      "rationale": "Corrupted canonical strings can damage reference output, title matching, and author disambiguation even when identity is otherwise known.",
+      "remediation": [
+        "Normalize the affected fields from authoritative metadata.",
+        "Add a UTF-8 round-trip check before reference export."
+      ],
+      "remediation_status": "open",
+      "gate_impact": {
+        "packet_integrity": "none",
+        "stage1b_seal": "does_not_block_alone",
+        "stage2_production_citations": "affected_strings_must_not_be_emitted"
+      }
+    },
+    {
+      "id": "ST1B-SCOPE-001",
+      "severity": "minor",
+      "audit_questions": [
+        3
+      ],
+      "title": "Prevalence wording exceeds the targeted and non-exhaustive corpus",
+      "artifact_locations": [
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/phase2_investigation/claim_source_map.md",
+          "pointer": "Claim map row C-DATA-EXT-01"
+        },
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/phase3_analysis/synthesis_report.md",
+          "pointer": "Literature matrix > External compatibility"
+        },
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/phase2_investigation/search_strategy.md",
+          "pointer": "Search limitations"
+        }
+      ],
+      "evidence": [
+        "The review is explicitly targeted and non-exhaustive.",
+        "C-DATA-EXT-01 and the synthesis matrix say text-rich sources often lack specified signals and order-rich sources often omit others."
+      ],
+      "rationale": "The word often reads as an unbounded prevalence claim about the literature rather than a statement limited to the reviewed candidate set.",
+      "remediation": [
+        "Use the production wording: Among the reviewed candidates, text-rich sources... and preserve the targeted-search qualifier."
+      ],
+      "remediation_status": "open",
+      "gate_impact": {
+        "packet_integrity": "none",
+        "stage1b_seal": "does_not_block_alone",
+        "stage2_production_citations": "production_wording_must_be_bounded"
+      }
+    },
+    {
+      "id": "ST1B-SYNTH-001",
+      "severity": "minor",
+      "audit_questions": [
+        4
+      ],
+      "title": "Evidence convergence count does not qualify dependent source families",
+      "artifact_locations": [
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/phase3_analysis/synthesis_report.md",
+          "pointer": "Evidence convergence map > Vietnamese/external compatibility - 12 sources"
+        },
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/phase2_investigation/lanes/L5_vietnamese_external_datasets.md",
+          "pointer": "OVERLAP_FLAGS > OF-01, OF-02, OF-09"
+        },
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/phase3_analysis/claim_intent_manifest.json",
+          "pointer": "manifest_negative_constraints[constraint_id=MNC-8]"
+        }
+      ],
+      "evidence": [
+        "The convergence map states 12 sources without identifying them as canonical corpus records.",
+        "RelBench rel-amazon depends on Amazon Reviews, RelBench rel-hm depends on H&M, and adapter/package layers are not independent corroboration.",
+        "MNC-8 explicitly prohibits counting RelBench adapters and upstream datasets as independent evidence."
+      ],
+      "rationale": "The unqualified count can overstate evidence convergence despite correct dependence records elsewhere in the packet.",
+      "remediation": [
+        "Report 12 canonical corpus records and state that the number of independent data/source families is lower.",
+        "Name the dependent lineages and avoid a numeric family total until a counting rule is frozen."
+      ],
+      "remediation_status": "open",
+      "gate_impact": {
+        "packet_integrity": "none",
+        "stage1b_seal": "does_not_block_alone",
+        "stage2_production_citations": "blocks_claim_of_12_independent_corroborating_sources"
+      }
+    },
+    {
+      "id": "ST1B-LOCATOR-001",
+      "severity": "advisory",
+      "audit_questions": [
+        3,
+        6
+      ],
+      "title": "Claim alignment is not source-content or locator verified",
+      "artifact_locations": [
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/phase2_investigation/claim_source_map.md",
+          "pointer": "Claim map and Locator status"
+        },
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/phase2_investigation/literature_corpus.json",
+          "pointer": "literature_corpus[*].source_acquired, source_verified_against_original, source_verification_method"
+        },
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/phase2_investigation/search_strategy.md",
+          "pointer": "Search limitations"
+        },
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/phase3_analysis/synthesis_report.md",
+          "pointer": "Synthesis boundary and Synthesis limitations"
+        }
+      ],
+      "evidence": [
+        "All 21 claim rows depend on lane cards or official summaries.",
+        "source_acquired=true is 0/55; source_verified_against_original=true is 0/55; source_verification_method=none is 55/55.",
+        "All 30 synthesis citation anchors are anchor:none."
+      ],
+      "rationale": "Identity and summary-level alignment cannot authorize production claims. The packet discloses this limitation, so it is an expected separate gate rather than a concealed Stage 1B defect.",
+      "remediation": [
+        "Acquire and verify the 24-source core set listed in independent_audit_report.md.",
+        "Record durable non-null locators and re-run claim-level alignment.",
+        "Apply the same rule to any additional source used in production prose."
+      ],
+      "remediation_status": "open",
+      "gate_impact": {
+        "packet_integrity": "none",
+        "stage1b_seal": "no_additional_impact",
+        "source_acquisition_required_before_stage2": true,
+        "stage2_production_citations_authorized": false
+      }
+    },
+    {
+      "id": "ST1B-ARS-001",
+      "severity": "advisory",
+      "audit_questions": [
+        7
+      ],
+      "title": "One-shot claim-intent ordering is structurally plausible but not independently auditable",
+      "artifact_locations": [
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/phase3_analysis/claim_intent_manifest.json",
+          "pointer": "manifest_id, emitted_at, emitted_by"
+        },
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/phase3_analysis/synthesis_report.md",
+          "pointer": "root status and first prose block"
+        }
+      ],
+      "evidence": [
+        "Claim IDs, constraint IDs, and planned references pass structural checks.",
+        "Declared and filesystem timestamps are consistent with manifest-before-synthesis order.",
+        "The frozen packet has no immutable invocation ledger or hash chain proving pre-prose emission and no later mutation."
+      ],
+      "rationale": "A self-declared emitted_at field is not an independent temporal or immutability witness. This is a traceability limitation, not evidence of an actual contract violation.",
+      "remediation": [
+        "Persist a write-once invocation ledger containing manifest hash/time, synthesis start time, and final output hash for future synthesis runs."
+      ],
+      "remediation_status": "open",
+      "gate_impact": {
+        "packet_integrity": "none",
+        "stage1b_seal": "does_not_block",
+        "stage2_production_citations": "none_beyond_locator_gate"
+      }
+    },
+    {
+      "id": "ST1B-RIGHTS-001",
+      "severity": "advisory",
+      "audit_questions": [
+        5
+      ],
+      "title": "Complete Journey terms and edition relationship are not snapshotted",
+      "artifact_locations": [
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/phase2_investigation/lanes/L5_vietnamese_external_datasets.md",
+          "pointer": "L5-EXT-08 > Limitations"
+        },
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/phase2_investigation/lanes/L5_vietnamese_external_datasets.md",
+          "pointer": "UNRESOLVED > U-01"
+        },
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/phase2_investigation/lanes/L5_vietnamese_external_datasets.md",
+          "pointer": "CSC-L5-05, CSC-L5-07, and CENTRAL_REVIEW_ALERTS items 2, 5, 6"
+        }
+      ],
+      "evidence": [
+        "The frozen artifact correctly refuses to treat package CC0 as an upstream dataset grant.",
+        "The provider describes about 2,500 households over two years; the package describes 2,469 households over one year.",
+        "The packet does not archive contemporaneous provider terms, an exact package revision, or the mapping between the two resource descriptions."
+      ],
+      "rationale": "Availability and package licensing do not establish provider redistribution rights or edition equivalence.",
+      "remediation": [
+        "Archive the provider URL, access time, exact terms bytes, download revision and checksums, and package commit/version.",
+        "Obtain institutional/legal review before acquisition sharing, execution, or redistribution."
+      ],
+      "remediation_status": "open",
+      "gate_impact": {
+        "packet_integrity": "none",
+        "stage1b_seal": "does_not_block",
+        "h4_execution": "not_authorized",
+        "redistribution": "not_authorized"
+      }
+    }
+  ]
+}

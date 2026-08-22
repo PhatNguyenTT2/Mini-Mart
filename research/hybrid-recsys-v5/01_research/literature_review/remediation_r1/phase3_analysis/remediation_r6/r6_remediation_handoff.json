@@ -1,0 +1,55 @@
+{
+  "schema_version": "stage1b-r1-r6-remediation-handoff-1.0",
+  "project": "hybrid-recsys-v5",
+  "verdict": "PASS_FRESH_R6_REAUDIT_ONLY",
+  "input_binding": {
+    "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/r6_remediation_input_manifest.json": "9c9a60463106a7ba21ad8f24600db9688a56c7efa5986b33db2b232a2505dabb",
+    "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/claim_intent_manifest_r1.json": "bbfa5fcef77aca3e4df16dcfc4b6445af3a0073a733732c0525bd389e4c90943",
+    "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/claim_source_map_r1.json": "77f830e6dfb4dc3b3107e01d306a918365114f08370edb929e89d171c8930fa8",
+    "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/synthesis_report_r1.md": "3acee0d64ee4f4e4b3ca0be0944ef1ba1bd70d19c3ad3c75ce3c09b1946b943c",
+    "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/cross_paper_tensions_r1.json": "56a16ed2f19b7467b5d43ff4d2136fa72dd5ecf9e04bd7ac826a3025ab032943",
+    "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/devils_advocate_cp2/r6_findings.json": "ce86f1408309f6bede2532d903a9d3b40d1c550c0ab879715c6b63e1a13de5bb"
+  },
+  "artifact_sha256": {
+    "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/remediation_r6/theme_evidence_denominators.json": "aa8857a028b495e91a2ebdd2c10217fcf8325c2dc9089d282ef23aa064531bda",
+    "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/remediation_r6/claim_counter_evidence_overlay.json": "5b72ced4927d9c37ada5cc31eec3a1490bc1ba8e1eaeaac35c404c300f106373",
+    "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/remediation_r6/claim_source_map_r1_remediated.json": "0d6d8d17ccf51132f6bf9a36ab08245f1d1e73bea831b5cb148a4fc00146f7da",
+    "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/remediation_r6/synthesis_report_r1_remediated.md": "136a1baf26a1108ceac54943e0a8bc9fa89647210af5cefd206f1c049d95aa2d",
+    "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/remediation_r6/build_r6_remediation.py": "3e33134e0d142bbcac92735562c29f4557ecb5bbb64100d9d62da523f6747c54",
+    "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/remediation_r6/validate_r6_remediation.py": "fcf9dfca18f3bc271e012bdc1a1d4baa7b94411277207bc660a589b09cb18a55",
+    "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/remediation_r6/r6_remediation_report.md": "16d35e51cd230dcd5038b1257049dcd39d0784c94adf7c1fa48a82623f13d75b",
+    "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/remediation_r6/r6_remediation_validation_receipt.json": "4c8506d4c40b7b9ffc5ec5bc6a6e3d40f2cc91ea27b5edcbe4b8ce59f192c2a2"
+  },
+  "finding_statuses": {
+    "R6-MAJ-001": "REMEDIATED_PENDING_REAUDIT",
+    "R6-MIN-001": "PENDING_SCHOLAR_ADJUDICATION",
+    "R6-MIN-002": "ADDRESSED_PENDING_REAUDIT"
+  },
+  "counts": {
+    "claims": 44,
+    "citation_ready_candidate": 22,
+    "planning_only": 22,
+    "counter_evidence_bound": 44,
+    "tension_pairs": 12,
+    "pending_scholar_confirmations": 12,
+    "citation_marker_anchor_pairs_unchanged": 33
+  },
+  "t002": {
+    "state": "UNCHANGED_PENDING_SCHOLAR_ADJUDICATION",
+    "pair_assessment": "conditional_difference",
+    "resolution_status": "resolved_in_synthesis",
+    "scholar_confirmation": "pending",
+    "da_recommendation": "dispute_and_prefer_no_material_conflict_not_applicable_absent_proposition_level_difference"
+  },
+  "r7_authorized": false,
+  "authorized_next_action": "fresh_R6_reaudit_only",
+  "stage1b_sealed": false,
+  "stage2_production_citations_authorized": false,
+  "phase_boundary": {
+    "r6_reaudit": "NOT_PERFORMED",
+    "r7_r9": "NOT_PERFORMED",
+    "manuscript_drafting": "NOT_PERFORMED",
+    "benchmark_training_evaluation": "NOT_RUN",
+    "h1_h4": "NOT_RUN"
+  }
+}

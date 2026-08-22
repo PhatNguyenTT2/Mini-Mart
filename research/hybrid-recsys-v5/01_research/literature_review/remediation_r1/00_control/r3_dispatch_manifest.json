@@ -1,0 +1,87 @@
+{
+  "schema_version": "stage1b-r1-r3-dispatch-1.0",
+  "project": "hybrid-recsys-v5",
+  "stage": "1B",
+  "round": "R1",
+  "step": "R3_central_merge_verification_deduplication",
+  "dispatched_at": "2026-08-14",
+  "model": "gpt-5.6-sol",
+  "reasoning": "xhigh",
+  "execution_mode": "fresh_dedicated_worktree_task",
+  "task": {
+    "thread_id": "019fff93-b2d3-7211-8d78-cbc901769d8b",
+    "client_thread_id": "client-new-thread:062a4680-d4b6-468b-88c6-6b1cf882e728",
+    "host_id": "local",
+    "worktree": "C:/Users/ACER/.codex/worktrees/ad81/backend",
+    "title": "Stage 1B R1 R3 — Central Integration",
+    "status_at_dispatch_check": "completed",
+    "initial_progress_verified": true,
+    "cryptographic_preflight": "PASS",
+    "final_turn_status": "completed",
+    "final_verdict": "PASS"
+  },
+  "continuation": {
+    "resumed_at": "2026-08-21",
+    "reason": "Previous xhigh turn stopped at the independent audit because of usage exhaustion after producing the provisional bundle.",
+    "model": "gpt-5.6-sol",
+    "reasoning": "high",
+    "same_thread": true,
+    "same_worktree": true,
+    "issues_fixed": [
+      "core target gate now derives 23 scholarly plus 1 operational core family from actual records",
+      "eight L4 dual-flag claims preserve original flags and use one exclusive central disposition"
+    ]
+  },
+  "input_gate": {
+    "lane_verdicts": {
+      "L1": "PASS",
+      "L2": "PASS",
+      "L3": "PASS",
+      "L4": "PASS",
+      "L5": "PASS"
+    },
+    "required_lane_artifacts_present": "35/35",
+    "frozen_file_count": 145,
+    "frozen_total_bytes": 68391781,
+    "json_files_parsed": 56,
+    "json_parse_failures": 0,
+    "producer_declared_hashes_verified": "30/30",
+    "prohibited_user_owned_fields": 0
+  },
+  "input_manifest": {
+    "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/r3_input_manifest.json",
+    "sha256": "a0842f4932ff0a23c59ab5d97706f7609f42ccddd660fd6b7f6e1f8e2b0d82e5"
+  },
+  "integration_contract": {
+    "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/r3_integration_contract.md",
+    "sha256": "44cf1424ab89c69806a8f3fdc57694df3fe83338c6c70031b93632661fe98d15"
+  },
+  "write_scope": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/integration/",
+  "phase_boundary": "ARS Phase 2 investigation only; no manuscript synthesis, benchmark execution, or R4 acquisition.",
+  "preflight_receipt": {
+    "manifest_sha256_match": true,
+    "integration_contract_sha256_match": true,
+    "files_verified": "145/145",
+    "bytes_verified": 68391781,
+    "lane_verdicts_pass": "5/5",
+    "json_files_parsed": "56/56",
+    "producer_declared_hashes_verified": "30/30",
+    "prohibited_human_read_fields": 0,
+    "integration_authorized": true
+  },
+  "completion_receipt": {
+    "completed_at": "2026-08-21",
+    "central_import_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/integration/",
+    "files_imported": 12,
+    "import_hash_mismatches": 0,
+    "required_outputs": "10/10",
+    "independent_audit": "PASS",
+    "independent_audit_checks": "20/20",
+    "acquired_artifact_hashes_checked": 64,
+    "embedded_audit_receipt_sha256": "703638b69ba9f2fc83df7630ebba4ef0f244cb9ed2ca15b81e27d8d94445dca8",
+    "r3_handoff_sha256": "caaaa51b1cfda308bac8603287b41dc5e3ae42f6aa3eb6bfe7f9cf623712c888",
+    "verdict": "PASS",
+    "verdict_scope": "Authorizes only R4 source acquisition; does not seal Stage 1B or authorize Stage 2 production citations."
+  },
+  "next_gate": "Run R4 lawful source acquisition and rights/locator completion for the 13-item queue."
+}

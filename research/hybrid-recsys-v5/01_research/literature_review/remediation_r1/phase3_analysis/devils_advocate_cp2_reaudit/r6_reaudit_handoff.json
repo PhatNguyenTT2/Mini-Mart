@@ -1,0 +1,73 @@
+{
+  "schema_version": "stage1b-r1-r6-reaudit-handoff-1.0",
+  "project": "hybrid-recsys-v5",
+  "stage": "1B",
+  "round": "R1",
+  "step": "R6_fresh_independent_reaudit",
+  "verdict": "PASS_PENDING_SCHOLAR_CONFIRMATION",
+  "verdict_basis": "Critical=0, Major=0, R6-MAJ-001 and R6-MIN-002 close under fresh replay, all deterministic checks pass, and all twelve scholar confirmations remain pending.",
+  "input_binding": {
+    "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/r6_reaudit_input_manifest.json": "e3694d494ca78f2b83f796cf18bee677f0c9f53d175cccf124a4a934bd18e806",
+    "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/remediation_r6/r6_remediation_handoff.json": "a7ac8a66648903ca2cb5ddc62c9b076d1ae73fe8eacb084daa43d0acc78f4b79",
+    "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/devils_advocate_cp2/r6_handoff.json": "d76bee713b0d6eb342af491e9466139966fa63abb49c17e61a5a9bc478e70508",
+    "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/r5_handoff.json": "9e36da152895a46dda164bae4a79d4052267a3ba4a089e04250571a284904435"
+  },
+  "severity_counts": {
+    "Critical": 0,
+    "Major": 0,
+    "Minor": 1,
+    "Observation": 5
+  },
+  "original_finding_statuses": {
+    "R6-MAJ-001": "CLOSED_BY_FRESH_REAUDIT",
+    "R6-MIN-001": "OPEN_PENDING_SCHOLAR_ADJUDICATION",
+    "R6-MIN-002": "CLOSED_BY_FRESH_REAUDIT",
+    "R6-OBS-001": "PRESERVED_OBSERVATION",
+    "R6-OBS-002": "PRESERVED_OBSERVATION",
+    "R6-OBS-003": "PRESERVED_OBSERVATION",
+    "R6-OBS-004": "PRESERVED_OBSERVATION",
+    "R6-OBS-005": "PRESERVED_OBSERVATION"
+  },
+  "new_critical_or_major_findings": [],
+  "recomputed": {
+    "themes": {
+      "T1": {"canonical": 6, "nominal": 6, "dependency_adjusted": 6},
+      "T2": {"canonical": 8, "nominal": 8, "dependency_adjusted": 8},
+      "T3": {"canonical": 8, "nominal": 8, "dependency_adjusted": 8},
+      "T4": {"canonical": 9, "nominal": 9, "dependency_adjusted": 8},
+      "T5": {"canonical": 2, "nominal": 1, "dependency_adjusted": 1}
+    },
+    "claims": 44,
+    "counter_evidence_bindings": 44,
+    "counter_evidence_items": 51,
+    "counter_evidence_locator_pointers": 136,
+    "citation_marker_anchor_pairs_unchanged": 33,
+    "tension_pairs": 12,
+    "pending_scholar_confirmations": 12
+  },
+  "t002": {
+    "state": "UNCHANGED_PENDING_SCHOLAR_ADJUDICATION",
+    "pair_assessment": "conditional_difference",
+    "resolution_status": "resolved_in_synthesis",
+    "scholar_confirmation": "pending",
+    "reaudit_recommendation": "dispute_and_prefer_no_material_conflict_not_applicable_absent_proposition_level_difference"
+  },
+  "r7_authorized": false,
+  "authorized_next_action": "explicit_scholar_adjudication_checkpoint_only",
+  "stage1b_sealed": false,
+  "stage2_production_citations_authorized": false,
+  "phase_boundary": {
+    "r7_r9": "NOT_PERFORMED",
+    "stage1b_seal": "NOT_PERFORMED",
+    "stage2_authorization": "NOT_AUTHORIZED",
+    "benchmark_training_evaluation": "NOT_RUN",
+    "h1_h4": "NOT_RUN"
+  },
+  "artifact_sha256": {
+    "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/devils_advocate_cp2_reaudit/r6_reaudit_report.md": "5ce0dec439d6380db0a97d0601eb9c9bd348ebf2e645d7b71f4fc76521d30763",
+    "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/devils_advocate_cp2_reaudit/r6_reaudit_findings.json": "263171af4f8a462d43fa55a092e7a3e3d41d2c2fc137cd1441f46cb18487354a",
+    "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/devils_advocate_cp2_reaudit/tension_adjudication_packet_reaudit.json": "e7bb44414272d9592ffe1c98ce63e2b4e93edd2ed64c39342bd079ac2404607d",
+    "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/devils_advocate_cp2_reaudit/validate_r6_reaudit.py": "8d88968baaf0e3d2fa9d19fdcd00a1544de93b3fa720c15a7f468e5751d5c325"
+  },
+  "self_hash_policy": "The handoff and validator-generated receipt do not self-hash. The final receipt binds this handoff; this handoff binds all other non-receipt outputs."
+}

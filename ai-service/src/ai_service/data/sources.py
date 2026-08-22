@@ -11,7 +11,7 @@ import pandas as pd
 import psycopg
 
 from ai_service.config import Settings
-from ai_service.contracts import DataSourceKind
+from ai_service.contracts import DatasetAlignmentEvidence, DataSourceKind
 from ai_service.errors import SourceReadError
 
 
@@ -20,9 +20,7 @@ class BenchmarkRunMetadata:
     """Receipt fields carried from the benchmark control-plane database."""
 
     spec_sha256: str | None = None
-    semantic_cohort_sha256: str | None = None
-    transition_user_count: int | None = None
-    transition_fraction: float | None = None
+    dataset_alignment_evidence: DatasetAlignmentEvidence | None = None
 
 
 @dataclass(frozen=True)
@@ -163,19 +161,36 @@ class PostgresDatasetSource:
                     ):
                         raise SourceReadError("benchmark run has an invalid spec SHA-256")
                     coverage = metadata_row[1] if len(metadata_row) > 1 else None
-                    transition_count = None
-                    transition_fraction = None
-                    if isinstance(coverage, dict):
-                        raw_count = coverage.get("transitionUserCount")
-                        raw_fraction = coverage.get("transitionFraction")
-                        if isinstance(raw_count, int):
-                            transition_count = raw_count
-                        if isinstance(raw_fraction, (int, float)):
-                            transition_fraction = float(raw_fraction)
+                    if not isinstance(coverage, dict):
+                        raise SourceReadError("benchmark run alignment receipt is missing")
+                    try:
+                        alignment_evidence = DatasetAlignmentEvidence.model_validate(
+                            {
+                                "transition_user_count": coverage["transitionUserCount"],
+                                "transition_fraction": coverage["transitionFraction"],
+                                "eligible_training_rule_targets": coverage[
+                                    "eligibleTrainingRuleTargets"
+                                ],
+                                "aligned_training_rule_targets": coverage[
+                                    "alignedTrainingRuleTargets"
+                                ],
+                                "training_rule_target_rate": coverage["trainingRuleTargetRate"],
+                                "eligible_val_rule_targets": coverage[
+                                    "eligibleValRuleTargetUsers"
+                                ],
+                                "aligned_val_rule_targets": coverage[
+                                    "alignedValRuleTargetUsers"
+                                ],
+                                "val_rule_target_rate": coverage["valRuleTargetRate"],
+                            }
+                        )
+                    except (KeyError, TypeError, ValueError) as error:
+                        raise SourceReadError(
+                            "benchmark run alignment receipt is missing or invalid"
+                        ) from error
                     benchmark_metadata = BenchmarkRunMetadata(
                         spec_sha256=spec_sha256,
-                        transition_user_count=transition_count,
-                        transition_fraction=transition_fraction,
+                        dataset_alignment_evidence=alignment_evidence,
                     )
                     events = _frame(
                         cursor,

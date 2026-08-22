@@ -1,0 +1,57 @@
+{
+  "schema_version": "stage1b-pre-audit-seal-1.0",
+  "project": "hybrid-recsys-v5",
+  "stage": "1B",
+  "status": "CENTRAL_COMPLETE_AUDIT_PENDING",
+  "sealed_at": "2026-08-13T14:30:00+07:00",
+  "final_stage1b_pass": false,
+  "central_gate": {
+    "verdict": "PASS_WITH_KNOWN_BLOCKS",
+    "checks": {
+      "five_lanes_complete": true,
+      "corpus_unique_sources": 55,
+      "corpus_target_45_55": true,
+      "recent_2022_2026": 27,
+      "peer_reviewed": 49,
+      "identity_verified": 55,
+      "duplicate_keys": 0,
+      "claim_source_map_complete": true,
+      "synthesis_complete": true,
+      "phase_scope_integrity": true,
+      "citation_marker_lint": true,
+      "original_source_locators_complete": false,
+      "independent_audit_complete": false
+    }
+  },
+  "frozen_packet": {
+    "root_sha256": "07a0e7c4cfd986db82bddc46339c6b9ff35a716a7240cf5a64f887f23d155095",
+    "manifest_path": "research/hybrid-recsys-v5/01_research/literature_review/audit/audit_manifest.json",
+    "manifest_sha256": "22c98ce38b64302c0936a836dbaf6d32d0a616f5085a636b7e8055fb7aed9b4b",
+    "audit_packet_path": "research/hybrid-recsys-v5/01_research/literature_review/audit/audit_packet.md",
+    "audit_packet_sha256": "8e4f17abb7a531d396c9274ab776c197a489d4b9698357b6c8fca0ffb9637f08"
+  },
+  "state_artifacts": {
+    "material_passport": {
+      "path": "research/hybrid-recsys-v5/01_research/material_passport_stage1b_pre_audit.json",
+      "sha256": "f8e27acba24da4b4cc30daf4e96d6e2f65a61b0a9e99d630f543b769f62f113d"
+    },
+    "pipeline_state": {
+      "path": "research/hybrid-recsys-v5/01_research/pipeline_state_stage1b_pre_audit.json",
+      "sha256": "c7430c6b7dda9a44fa15fdbc98addbfc3538f52f1cb09adccad4e44ef67968ab"
+    }
+  },
+  "next_action": {
+    "action": "Run independent audit in a fresh task",
+    "model": "5.6 Sol",
+    "orchestration": "Ultra",
+    "write_scope": "research/hybrid-recsys-v5/01_research/literature_review/audit/",
+    "seal_condition": "Independent verdict accepted and all fatal/major findings remediated; original-source locator plan approved."
+  },
+  "prohibited_transitions": [
+    "Do not mark Stage 1B complete.",
+    "Do not write production Introduction/Related Work citations from anchor:none markers.",
+    "Do not advance to experiment execution solely because the literature packet exists.",
+    "Do not claim H1-H4 results."
+  ]
+}
+

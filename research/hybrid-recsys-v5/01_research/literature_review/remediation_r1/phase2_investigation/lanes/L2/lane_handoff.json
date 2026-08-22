@@ -1,0 +1,99 @@
+{
+  "schema_version": "stage1b-r1-lane-handoff-1.0",
+  "project": "hybrid-recsys-v5",
+  "stage": "1B",
+  "round": "remediation R1",
+  "lane": "L2_recommender_architectures",
+  "ars_workflow": "Deep Research Phase 2 investigation",
+  "runtime_lock": {"model": "gpt-5.6-sol", "reasoning_effort": "xhigh"},
+  "research_cutoff": "2026-08-14",
+  "completed_at": "2026-08-14T03:08:30+07:00",
+  "status": "PASS",
+  "verdict_basis": "All locked local-gate conditions are met. Bounded peer-review-process uncertainty and transport degradation are explicit and do not create identity, content, acquisition, or locator gaps.",
+  "counts": {
+    "old_candidates": 20,
+    "old_candidates_dispositioned": 20,
+    "old_retain": 12,
+    "old_replace": 0,
+    "old_remove": 8,
+    "old_move_to_resource_registry": 0,
+    "new_gap_candidates_screened": 15,
+    "new_included": 2,
+    "new_excluded": 13,
+    "canonical_scholarly_records": 14,
+    "independent_publication_version_families": 14,
+    "operational_resources": 0,
+    "source_content_verified": 14,
+    "locator_ready": 14,
+    "audit_core_acquired_locator_ready": 5,
+    "claim_cards": 8,
+    "production_intended_claim_cards": 7,
+    "exclusion_log_entries": 21,
+    "lawful_source_artifacts": 14
+  },
+  "required_artifacts": [
+    {"path": "lane_report.md", "sha256": "3192a752938a20a507baf57520e2fcc572500bb15c21b3390ce1c6804f7c3cd6"},
+    {"path": "candidate_registry.json", "sha256": "2a6e99ab37e243f55d85bf9b66cf6d6bb7091a7125bc83923f31bcac07a0ab75"},
+    {"path": "disposition_log.json", "sha256": "142456595f1448ac471970966bab83c32ae839c3e043e9bad1c64e4b72338da0"},
+    {"path": "claim_cards.json", "sha256": "82da5688ee7e37253f8c2f90db9e4f485f7d122a1008d75284cd832d2b062ea6"},
+    {"path": "source_acquisition_queue.json", "sha256": "ac4de663767c15ad599642eef84d2565d02fc5336e547713df90db4c383cfb81"},
+    {"path": "exclusion_log.json", "sha256": "8b5253e988c92028132c2e37504769914b79b50679f5c54d93f652a76e58b7c0"},
+    {"path": "lane_handoff.json", "sha256": null, "hash_note": "Self-hash excluded to avoid circular content; final file hash is reported externally."}
+  ],
+  "source_artifact_manifest": [
+    {"path": "source_artifacts/sarwar2001_itemcf.pdf", "sha256": "7962b08a72b28ae732a674e1245e010b8d5883b1c08bff9aea4d185961e27fd5"},
+    {"path": "source_artifacts/rendle2009_bpr.pdf", "sha256": "9a28d1b9f447a86ca9cca4581d2e1a5b231d30b09a3127e176bdfebfb35ed02d"},
+    {"path": "source_artifacts/huang2013_dssm.pdf", "sha256": "efdaf443f870ba922eb2664d466248a90c4900f46148b50cd484b2e689b61955"},
+    {"path": "source_artifacts/cheng2016_wide_deep.pdf", "sha256": "0f04fd0659345008ddcb4b0742b6d0e5475bb0c2cf2a2b222f1b06d109c6c4c8"},
+    {"path": "source_artifacts/covington2016_youtube.pdf", "sha256": "efb4aa82a1a4cd720be05b837752aab7fee92b2a8a22f30ca6aa6fc24ed482ab"},
+    {"path": "source_artifacts/he2017_ncf.pdf", "sha256": "45177d4c9b98cc30eef4c8fdf3795ba790192e85a0c350ca597666342bb85b7d"},
+    {"path": "source_artifacts/guo2017_deepfm.pdf", "sha256": "c8b95dab640da43eae1d5b554881f030982afeb2919f3bf909a6fa773a3366fb"},
+    {"path": "source_artifacts/yi2019_ndr.pdf", "sha256": "68a0f02d291954154d5c44f22b34c7d2a19f7502267987b26499a8afc5256892"},
+    {"path": "source_artifacts/he2020_lightgcn.pdf", "sha256": "1f8fa2ab18921643f8858613a5bf6d91a51cd10f9ed9460c0a9bd26ca8cdb59d"},
+    {"path": "source_artifacts/wang2022_directau.pdf", "sha256": "1489ee11d79368cd20ee3ea8ecabdc49dfaa453222db11297f1e060cf3ac74ab"},
+    {"path": "source_artifacts/yu2022_simgcl.pdf", "sha256": "2694e7267f0c37869f1a62418f348539a202d41121f231e347e19b404c57447c"},
+    {"path": "source_artifacts/cai2023_lightgcl.pdf", "sha256": "c43d7ab0431c1481ce69ba232e00c6c65ae1ac1cd9092ed12512e6883a922c53"},
+    {"path": "source_artifacts/yuan2025_contextgnn.pdf", "sha256": "b929de39ddcbb839f6a885ef0c64f17939c4fbfd3b04fd7a343c032c826a92d4"},
+    {"path": "source_artifacts/wang2025_t2diff.pdf", "sha256": "73af2c504dbeb2034514c1e6b624522eec69308e538b36f73263a4f6481cdec1"}
+  ],
+  "remediation_status": {
+    "ST1B-META-003": "PASS: lane canonical metadata uses full author lists, verified years/statuses, DOI/official IDs, explicit version families, and clean UTF-8.",
+    "ST1B-SYNTH-001": "PASS: evidence accounting separates 14 canonical records from 14 independent publication/version families and records method-lineage dependencies; no synthesis prose was produced.",
+    "ST1B-LOCATOR-001": "PASS: 14/14 retained records and 5/5 audit-core candidates have lawful full artifacts, source-content verification, hashes, and original-content locators."
+  },
+  "local_gate_checks": [
+    {"check": "100_percent_old_candidate_disposition", "status": "PASS", "evidence": "20/20 old candidates each have one RETAIN, REPLACE, REMOVE, or MOVE_TO_RESOURCE_REGISTRY disposition."},
+    {"check": "reproducible_gap_search_to_cutoff", "status": "PASS", "evidence": "42 exact queries, search date, sites, filters, counts, decisions, and failures recorded in lane_report.md; 15 unique new works screened."},
+    {"check": "canonical_identity_metadata", "status": "PASS", "evidence": "14/14 retained records have full authors, title, year, venue, type/status, DOI or official ID, and version-family handling."},
+    {"check": "content_and_locator_separation", "status": "PASS", "evidence": "identity_verified, metadata_verified, source_content_verified, and locator_ready are distinct on every record."},
+    {"check": "lawful_artifact_inspection", "status": "PASS", "evidence": "14/14 artifacts acquired through publisher/proceedings/author/repository routes; no access control bypassed."},
+    {"check": "bounded_claim_support", "status": "PASS", "evidence": "8 claim cards record support scope, limitations/counter-evidence, source families, locators, and forbidden extrapolations."},
+    {"check": "production_claim_original_locator", "status": "PASS", "evidence": "7/7 production-intended cards use original-content locators; the eighth is explicitly planning-only."},
+    {"check": "counting_and_dependency_control", "status": "PASS", "evidence": "14 canonical records and 14 independent version families reported separately; method-lineage dependencies explicit."},
+    {"check": "forbidden_conclusions", "status": "PASS", "evidence": "No v5 architecture ranking, Apriori-effectiveness claim, or zero-edge graph extrapolation is made."},
+    {"check": "json_and_internal_consistency", "status": "PASS", "evidence": "Machine validation parses all six JSON handoff payloads plus this handoff, validates registry records and claim cards against source_schema_r1.json definitions, checks references/counts/hashes, and rejects forbidden fields."}
+  ],
+  "unresolved_blockers": [],
+  "bounded_uncertainties": [
+    "Wide & Deep peer-review-process status is unknown from the inspected official record; identity, publication status, content, and locator are verified.",
+    "Semantic Scholar was HTTP-429 degraded for three records; official sources and other transports resolved identity and metadata.",
+    "Stage 1E must freeze single-stage versus two-stage operation before two-tower evaluation is operationalized."
+  ],
+  "downstream_constraints": [
+    "Do not claim an architecture ranking on dataset v5 without the harmonized Stage 1A benchmark contract.",
+    "Do not use Wide & Deep as evidence that an Apriori branch is effective.",
+    "Do not treat graph improvement with sparse observed edges as evidence of zero-edge cold-item capability.",
+    "Keep retrieval/matching, pre-ranking, and ranking metrics and candidate budgets distinct.",
+    "Use canonical-record and independent-family counts separately in any later evidence accounting."
+  ],
+  "validation_receipt": {
+    "expected_required_root_files": ["lane_report.md", "candidate_registry.json", "disposition_log.json", "claim_cards.json", "source_acquisition_queue.json", "exclusion_log.json", "lane_handoff.json"],
+    "json_parse": "PASS",
+    "source_schema_r1_defs": "PASS",
+    "cross_reference_integrity": "PASS",
+    "artifact_hash_integrity": "PASS",
+    "pdf_parse_integrity": "PASS",
+    "forbidden_human_read_fields": "PASS",
+    "canonical_author_and_year_hygiene": "PASS"
+  }
+}

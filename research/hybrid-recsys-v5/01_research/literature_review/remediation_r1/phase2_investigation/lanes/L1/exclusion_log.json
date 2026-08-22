@@ -1,0 +1,163 @@
+{
+  "schema_version": "stage1b-r1-exclusion-log-1.0",
+  "project": "hybrid-recsys-v5",
+  "stage": "1B",
+  "round": "remediation R1",
+  "lane": "L1_evaluation_reproducibility",
+  "research_cutoff": "2026-08-14",
+  "count": 12,
+  "reason_code_definitions": {
+    "VERSION_FAMILY_REDUNDANCY": "A predecessor, later communication, or consolidation is represented by a stronger retained record in the same family.",
+    "BROAD_REDUNDANT_COVERAGE": "The work is credible but broader and less direct than retained claim-specific sources.",
+    "TOOLKIT_NOT_REPRODUCTION_EVIDENCE": "A framework or repository does not certify a project-specific reproduction.",
+    "OUTSIDE_LOCKED_SUPPORT_SCOPE": "The primary contribution addresses a neighboring problem beyond the locked L1 claims.",
+    "METADATA_CONFLICT_NO_UNIQUE_VALUE": "An unresolved metadata conflict remains and the work adds no unique claim-level value."
+  },
+  "entries": [
+    {
+      "exclusion_id": "L1-EX-001",
+      "candidate_origin": "old_lane_accepted",
+      "candidate_title": "On Estimating Recommendation Evaluation Metrics under Sampling",
+      "authors": ["Ruoming Jin", "Dong Li", "Benjamin Mudrak", "Jing Gao", "Zhi Liu"],
+      "publication_year": 2021,
+      "official_id": "10.1609/aaai.v35i5.16537",
+      "screening_stage": "full_metadata_and_scope_screen",
+      "decision": "REPLACED",
+      "reason_code": "VERSION_FAMILY_REDUNDANCY",
+      "rationale": "The later Li item-sampling conference/journal family supplies current estimator, blind-spot, and adaptive-sampling coverage. Retaining this additional paper would overweight the same methodological line.",
+      "replacement_source_keys": ["li_jin_liu_ren_gao_liu_2023_aaai", "li_jin_liu_ren_gao_liu_2024_tors"]
+    },
+    {
+      "exclusion_id": "L1-EX-002",
+      "candidate_origin": "old_lane_excluded",
+      "candidate_title": "On Sampled Metrics for Item Recommendation",
+      "authors": ["Walid Krichene", "Steffen Rendle"],
+      "publication_year": 2022,
+      "official_id": "10.1145/3535335",
+      "screening_stage": "version_family_screen",
+      "decision": "REPLACED",
+      "reason_code": "VERSION_FAMILY_REDUNDANCY",
+      "rationale": "This Communications of the ACM treatment is a later communication of the KDD study and is not independent evidence.",
+      "replacement_source_keys": ["krichene_rendle_2020_kdd", "krichene_rendle_2021_ijcai_extended"]
+    },
+    {
+      "exclusion_id": "L1-EX-003",
+      "candidate_origin": "old_lane_excluded",
+      "candidate_title": "On Sampling Top-K Recommendation Evaluation",
+      "authors": ["Dong Li", "Ruoming Jin", "Jing Gao", "Zhi Liu"],
+      "publication_year": 2020,
+      "official_id": "10.1145/3394486.3403262",
+      "screening_stage": "version_family_screen",
+      "decision": "REPLACED",
+      "reason_code": "VERSION_FAMILY_REDUNDANCY",
+      "rationale": "The 2024 consolidated journal work is retained as the current family record; predecessor inflation is avoided.",
+      "replacement_source_keys": ["li_jin_liu_ren_gao_liu_2024_tors"]
+    },
+    {
+      "exclusion_id": "L1-EX-004",
+      "candidate_origin": "old_lane_excluded",
+      "candidate_title": "A Survey of Accuracy Evaluation Metrics of Recommendation Tasks",
+      "authors": ["Asela Gunawardana", "Guy Shani"],
+      "publication_year": 2009,
+      "official_id": "JMLR-WCP-5-293",
+      "screening_stage": "scope_and_redundancy_screen",
+      "decision": "REMOVED",
+      "reason_code": "BROAD_REDUNDANT_COVERAGE",
+      "rationale": "The broad survey adds no unique support beyond retained direct protocol studies and foundational metric sources."
+    },
+    {
+      "exclusion_id": "L1-EX-005",
+      "candidate_origin": "old_lane_excluded",
+      "candidate_title": "Are We Really Making Much Progress? A Worrying Analysis of Recent Neural Recommendation Approaches",
+      "authors": ["Maurizio Ferrari Dacrema", "Paolo Cremonesi", "Dietmar Jannach"],
+      "publication_year": 2019,
+      "official_id": "10.1145/3298689.3347058",
+      "screening_stage": "version_family_screen",
+      "decision": "REPLACED",
+      "reason_code": "VERSION_FAMILY_REDUNDANCY",
+      "rationale": "The 2021 journal study is the broader full treatment and retained canonical evidence for this reproduction program.",
+      "replacement_source_keys": ["dacrema_boglio_cremonesi_jannach_2021_tois"]
+    },
+    {
+      "exclusion_id": "L1-EX-006",
+      "candidate_origin": "old_lane_excluded",
+      "candidate_title": "Elliot: A Comprehensive and Rigorous Framework for Reproducible Recommender Systems Evaluation",
+      "publication_year": 2021,
+      "official_id": "10.1145/3404835.3463245",
+      "screening_stage": "claim_value_screen",
+      "decision": "REMOVED",
+      "reason_code": "TOOLKIT_NOT_REPRODUCTION_EVIDENCE",
+      "rationale": "A valid toolkit does not certify v5 adapter fidelity, and its methodological coverage is duplicated by retained direct evaluation-chain studies."
+    },
+    {
+      "exclusion_id": "L1-EX-007",
+      "candidate_origin": "old_lane_excluded",
+      "candidate_title": "BARS: Towards Open Benchmarking for Recommender Systems",
+      "publication_year": 2022,
+      "official_id": "10.1145/3477495.3531723",
+      "screening_stage": "metadata_and_claim_value_screen",
+      "decision": "REMOVED",
+      "reason_code": "METADATA_CONFLICT_NO_UNIQUE_VALUE",
+      "rationale": "The old lane recorded conflicting author metadata, and the benchmark/toolkit record adds no unique support that would justify carrying unresolved canonical identity."
+    },
+    {
+      "exclusion_id": "L1-EX-008",
+      "candidate_origin": "old_lane_excluded",
+      "candidate_title": "Cornac: A Comparative Framework for Multimodal Recommender Systems",
+      "publication_year": 2020,
+      "official_id": "JMLR-20-238",
+      "screening_stage": "claim_value_screen",
+      "decision": "REMOVED",
+      "reason_code": "TOOLKIT_NOT_REPRODUCTION_EVIDENCE",
+      "rationale": "The framework is not direct evidence for temporal splitting, candidate-universe dependence, aggregation, or reproduction of a v5 adapter."
+    },
+    {
+      "exclusion_id": "L1-EX-009",
+      "candidate_origin": "gap_search",
+      "candidate_title": "Where Do We Go From Here? Guidelines for Offline Recommender Evaluation",
+      "authors": ["Tobias Schnabel"],
+      "publication_year": 2022,
+      "official_id": "arXiv:2211.01261",
+      "screening_stage": "title_abstract_and_scope_screen",
+      "decision": "EXCLUDED",
+      "reason_code": "BROAD_REDUNDANT_COVERAGE",
+      "rationale": "Useful broad guidelines and TrainRec toolkit, but uncertainty, tuning, and preprocessing coverage is already supplied by stronger retained full studies and current methodological guidance."
+    },
+    {
+      "exclusion_id": "L1-EX-010",
+      "candidate_origin": "gap_search",
+      "candidate_title": "Exploring the Landscape of Recommender Systems Evaluation: Practices and Perspectives",
+      "authors": ["Christine Bauer", "Eva Zangerle", "Alan Said"],
+      "publication_year": 2024,
+      "official_id": "10.1145/3629170",
+      "screening_stage": "title_abstract_and_scope_screen",
+      "decision": "EXCLUDED",
+      "reason_code": "BROAD_REDUNDANT_COVERAGE",
+      "rationale": "High-quality systematic landscape review, but the locked L1 claims are supported by direct method-specific sources; including it would add breadth without unique claim-level support."
+    },
+    {
+      "exclusion_id": "L1-EX-011",
+      "candidate_origin": "gap_search",
+      "candidate_title": "Distributionally-Informed Recommender System Evaluation",
+      "authors": ["Michael D. Ekstrand", "Ben Carterette", "Fernando Diaz"],
+      "publication_year": 2024,
+      "official_id": "10.1145/3613455",
+      "screening_stage": "title_abstract_and_scope_screen",
+      "decision": "EXCLUDED",
+      "reason_code": "BROAD_REDUNDANT_COVERAGE",
+      "rationale": "Distributional and stakeholder-utility guidance is relevant but broader than the locked aggregation/reproducibility claims, which are covered by direct metric-semantics and protocol studies."
+    },
+    {
+      "exclusion_id": "L1-EX-012",
+      "candidate_origin": "gap_search",
+      "candidate_title": "A Sampling Approach to Debiasing the Offline Evaluation of Recommender Systems",
+      "authors": ["Diego Carraro", "Derek Bridge"],
+      "publication_year": 2022,
+      "official_id": "10.1007/s10844-021-00651-y",
+      "screening_stage": "title_abstract_and_scope_screen",
+      "decision": "EXCLUDED",
+      "reason_code": "OUTSIDE_LOCKED_SUPPORT_SCOPE",
+      "rationale": "The main contribution intervenes on MNAR exposure bias through weighted test-set sampling. It is authoritative but does not add unique support for the locked exact-versus-candidate-sampling, split, aggregation, or reproduction claims."
+    }
+  ]
+}

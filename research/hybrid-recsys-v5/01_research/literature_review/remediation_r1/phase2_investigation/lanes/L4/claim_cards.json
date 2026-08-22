@@ -1,0 +1,369 @@
+{
+  "schema_version": "stage1b-r1-lane-claim-cards-1.0",
+  "project": "hybrid-recsys-v5",
+  "lane": "L4",
+  "research_cutoff": "2026-08-14",
+  "phase_boundary": "Phase 2 evidence handoff only. These bounded cards are not manuscript prose, benchmark results, or hypothesis conclusions.",
+  "counts": {
+    "claim_cards": 8,
+    "supported": 6,
+    "partially_supported": 2,
+    "unsupported": 0,
+    "unverified": 0,
+    "with_original_content_locator": 8,
+    "production_intended": 8
+  },
+  "claims": [
+    {
+      "claim_id": "L4-CC-01",
+      "claim_text_bounded": "For an item-side cold cohort, a strict zero-edge item has no interaction in the training graph; an item with one or more training interactions is not strict zero-edge cold, even if it is rare.",
+      "evidence_kind": "definition_and_problem_formulation",
+      "source_keys": ["volkovs2017_dropoutnet", "huang2023_aldi"],
+      "source_family_ids": ["F-L4-DROPOUTNET-2017", "F-L4-ALDI-2023"],
+      "support_scope": "DropoutNet separately defines item cold start through an empty user-neighborhood for the item, and ALDI defines warm items as having historical interactions and cold items as having none. This supports the strict item-side zero-edge boundary only.",
+      "support_verdict": "supported",
+      "locator": {
+        "artifact_type": "publisher_pdf",
+        "uri": "https://papers.neurips.cc/paper_files/paper/2017/file/dbd22ba3bd0df8f385bdac3e9f8be207-Paper.pdf",
+        "anchor": "Section 2, Framework, equations defining U(v)=empty; corroborated by ALDI Section 2.1, Problem Formulation",
+        "basis": "original_content",
+        "accessed_at": "2026-08-14",
+        "sha256": null
+      },
+      "additional_locators": [
+        {
+          "artifact_type": "accepted_manuscript",
+          "uri": "https://arxiv.org/pdf/2305.14748",
+          "anchor": "Section 2.1, Problem Formulation",
+          "basis": "original_content",
+          "accessed_at": "2026-08-14",
+          "sha256": null
+        }
+      ],
+      "locator_basis": "original_content",
+      "forbidden_extrapolations": [
+        "Cold-item equals cold-user.",
+        "Sparse-edge equals zero-edge.",
+        "The papers' exact thresholds and denominators automatically apply to v5."
+      ],
+      "counter_evidence": [
+        "Several newer papers label low-popularity or fewer-than-20-interaction groups as cold-start; those cohorts must not be merged with a strict zero-edge cohort."
+      ],
+      "planning_only": true,
+      "production_intended": true,
+      "production_use_status": "eligible_after central synthesis and protocol alignment"
+    },
+    {
+      "claim_id": "L4-CC-02",
+      "claim_text_bounded": "A reproducible item-cold evaluation should lock the training-graph edge rule, construct warm and zero-edge cohorts before scoring, and report their denominators separately from any sparse-item cohort.",
+      "evidence_kind": "cohort_construction_and_evaluation_design",
+      "source_keys": ["volkovs2017_dropoutnet", "huang2023_aldi"],
+      "source_family_ids": ["F-L4-DROPOUTNET-2017", "F-L4-ALDI-2023"],
+      "support_scope": "DropoutNet describes removing a defined cold-item subset from training and evaluation construction; ALDI formulates separate overall, warm-item, and cold-item top-K tasks. The locked v5 implementation details remain a downstream design decision.",
+      "support_verdict": "supported",
+      "locator": {
+        "artifact_type": "publisher_pdf",
+        "uri": "https://papers.neurips.cc/paper_files/paper/2017/file/dbd22ba3bd0df8f385bdac3e9f8be207-Paper.pdf",
+        "anchor": "Section 5.1, CiteULike cold subset construction; Section 4.2, training with item preference dropout",
+        "basis": "original_content",
+        "accessed_at": "2026-08-14",
+        "sha256": null
+      },
+      "additional_locators": [
+        {
+          "artifact_type": "accepted_manuscript",
+          "uri": "https://arxiv.org/pdf/2305.14748",
+          "anchor": "Section 2.1, separate top-K tasks over all, warm, and cold items",
+          "basis": "original_content",
+          "accessed_at": "2026-08-14",
+          "sha256": null
+        }
+      ],
+      "locator_basis": "original_content",
+      "forbidden_extrapolations": [
+        "Reuse paper-native random splits without matching the v5 temporal and leakage controls.",
+        "Report a blended denominator as if it were zero-edge performance."
+      ],
+      "counter_evidence": [
+        "Paper-native cohort rules differ, so the evidence supports explicit construction and reporting rather than one universal numeric threshold."
+      ],
+      "planning_only": true,
+      "production_intended": true,
+      "production_use_status": "eligible after central protocol alignment"
+    },
+    {
+      "claim_id": "L4-CC-03",
+      "claim_text_bounded": "A collaborative graph method that propagates only over observed item-neighbor edges does not, by that path alone, supply a collaborative representation for a strict zero-edge item; sparse-graph and zero-edge results must therefore remain separate.",
+      "evidence_kind": "mechanism_boundary",
+      "source_keys": ["volkovs2017_dropoutnet", "sheng2025_alpharec"],
+      "source_family_ids": ["F-L4-DROPOUTNET-2017", "F-L4-ALPHAREC-2025"],
+      "support_scope": "DropoutNet supplies the empty-neighborhood definition. AlphaRec's inspected method propagates over observed user/item neighbor sets while also using language features. The claim is a bounded mechanism inference, not an empirical verdict on SimGCL, XSimGCL, or LightGCL.",
+      "support_verdict": "partially_supported",
+      "locator": {
+        "artifact_type": "publisher_pdf",
+        "uri": "https://proceedings.iclr.cc/paper_files/paper/2025/file/e4bab1843c8d5a69f5abfd0824593493-Paper-Conference.pdf",
+        "anchor": "Section 4.1, AlphaRec graph convolution over observed neighborhoods; read with DropoutNet Section 2 empty-neighborhood definition",
+        "basis": "original_content",
+        "accessed_at": "2026-08-14",
+        "sha256": null
+      },
+      "additional_locators": [
+        {
+          "artifact_type": "publisher_pdf",
+          "uri": "https://papers.neurips.cc/paper_files/paper/2017/file/dbd22ba3bd0df8f385bdac3e9f8be207-Paper.pdf",
+          "anchor": "Section 2, Framework",
+          "basis": "original_content",
+          "accessed_at": "2026-08-14",
+          "sha256": null
+        }
+      ],
+      "locator_basis": "original_content",
+      "forbidden_extrapolations": [
+        "Collaborative graph methods are ineffective for all cold-start tasks.",
+        "Content-augmented graph models cannot score new items.",
+        "Metadata-only SimGCL, XSimGCL, or LightGCL records prove the mechanism claim."
+      ],
+      "counter_evidence": [
+        "Hybrid methods may use content or reconstruction to create a score even when the collaborative neighborhood is empty; this card addresses only the collaborative propagation path."
+      ],
+      "planning_only": true,
+      "production_intended": true,
+      "production_use_status": "eligible with mechanism wording retained"
+    },
+    {
+      "claim_id": "L4-CC-04",
+      "claim_text_bounded": "Sentence-BERT supports a rationale for semantic text embeddings, but recommendation efficacy requires a recommender objective and task-specific ranking evaluation; Sentence-BERT quality alone is not recommendation quality.",
+      "evidence_kind": "encoder_rationale_and_task_boundary",
+      "source_keys": ["reimers2019_sbert", "sheng2025_alpharec", "meehan2026_semco"],
+      "source_family_ids": ["F-L4-SBERT-2019", "F-L4-ALPHAREC-2025", "F-L4-SEMCO-2026"],
+      "support_scope": "The Sentence-BERT paper evaluates semantic similarity and NLP transfer, not recommendation. AlphaRec and SEMCo add recommender-specific architecture/objectives and ranking evaluations. This separates encoder rationale from demonstrated recommender efficacy without asserting cross-paper metric comparability.",
+      "support_verdict": "supported",
+      "locator": {
+        "artifact_type": "publisher_pdf",
+        "uri": "https://aclanthology.org/D19-1410.pdf",
+        "anchor": "Abstract; Section 1, Introduction; evaluation sections on semantic textual similarity and transfer tasks",
+        "basis": "original_content",
+        "accessed_at": "2026-08-14",
+        "sha256": null
+      },
+      "additional_locators": [
+        {
+          "artifact_type": "publisher_pdf",
+          "uri": "https://proceedings.iclr.cc/paper_files/paper/2025/file/e4bab1843c8d5a69f5abfd0824593493-Paper-Conference.pdf",
+          "anchor": "Section 4.1, AlphaRec; Section 5, Experiments",
+          "basis": "original_content",
+          "accessed_at": "2026-08-14",
+          "sha256": null
+        },
+        {
+          "artifact_type": "accepted_manuscript",
+          "uri": "https://arxiv.org/pdf/2604.08490",
+          "anchor": "Sections 3.1-3.3",
+          "basis": "original_content",
+          "accessed_at": "2026-08-14",
+          "sha256": null
+        }
+      ],
+      "locator_basis": "original_content",
+      "forbidden_extrapolations": [
+        "Sentence-BERT quality equals recommendation quality.",
+        "Sentence-BERT solves cold-item recommendation.",
+        "Replacing a paper's encoder with Sentence-BERT is faithful replication."
+      ],
+      "counter_evidence": [
+        "Recommendation models can combine language features with projection, collaborative propagation, distillation, or contrastive objectives; observed gains cannot be attributed to the encoder alone without an ablation."
+      ],
+      "planning_only": true,
+      "production_intended": true,
+      "production_use_status": "eligible with strict boundary wording"
+    },
+    {
+      "claim_id": "L4-CC-05",
+      "claim_text_bounded": "Transferable item-representation architectures in UniSRec, VQ-Rec, and UTGRec still make explicit target-domain adaptation assumptions; transfer should not be described as adaptation-free unless the evaluated protocol actually withholds target-domain training.",
+      "evidence_kind": "transfer_assumption_and_target_adaptation",
+      "source_keys": ["hou2022_unisrec", "hou2023_vqrec", "zheng2026_utgrec"],
+      "source_family_ids": ["F-L4-UNISREC-2022", "F-L4-VQREC-2023", "F-L4-UTGREC-2026"],
+      "support_scope": "UniSRec distinguishes target-domain fine-tuning and inductive/transductive settings; VQ-Rec trains/adapts on downstream domains; UTGRec explicitly fine-tunes both tokenizer projections and the generative recommender. This supports protocol labeling, not a claim that all transfer methods require the same adaptation.",
+      "support_verdict": "supported",
+      "locator": {
+        "artifact_type": "accepted_manuscript",
+        "uri": "https://arxiv.org/pdf/2206.05941",
+        "anchor": "Section 2.4, Adaptation to Downstream Recommendation Tasks",
+        "basis": "original_content",
+        "accessed_at": "2026-08-14",
+        "sha256": null
+      },
+      "additional_locators": [
+        {
+          "artifact_type": "accepted_manuscript",
+          "uri": "https://arxiv.org/pdf/2210.12316",
+          "anchor": "Sections 2.1-2.3; Section 3.1",
+          "basis": "original_content",
+          "accessed_at": "2026-08-14",
+          "sha256": null
+        },
+        {
+          "artifact_type": "accepted_manuscript",
+          "uri": "https://arxiv.org/pdf/2504.04405",
+          "anchor": "Section 2.4.2, Downstream Fine-tuning; Section 3.3 ablations without tokenizer fine-tuning",
+          "basis": "original_content",
+          "accessed_at": "2026-08-14",
+          "sha256": null
+        }
+      ],
+      "locator_basis": "original_content",
+      "forbidden_extrapolations": [
+        "Architecture transfer establishes H4 replication.",
+        "Inductive item evaluation means the model used no target-domain interactions during adaptation.",
+        "The three papers are fully independent evidence lineages."
+      ],
+      "counter_evidence": [
+        "UTGRec's ablation reports weaker results when the pretrained tokenizer is applied directly without downstream tokenizer fine-tuning in its evaluated setup."
+      ],
+      "planning_only": true,
+      "production_intended": true,
+      "production_use_status": "eligible with adaptation fields made explicit"
+    },
+    {
+      "claim_id": "L4-CC-06",
+      "claim_text_bounded": "Pretraining and downstream results that reuse one platform or benchmark lineage must not be counted as independent evidence merely because the domain labels differ.",
+      "evidence_kind": "source_family_and_dataset_lineage",
+      "source_keys": ["hou2023_vqrec", "sheng2025_alpharec", "zheng2026_utgrec"],
+      "source_family_ids": ["F-L4-VQREC-2023", "F-L4-ALPHAREC-2025", "F-L4-UTGREC-2026"],
+      "support_scope": "VQ-Rec uses several Amazon domains for pretraining and downstream evaluation, AlphaRec uses Amazon sources and an Amazon target alongside two external targets, and UTGRec uses nine Amazon 2023 subsets split into pretraining and downstream groups. The card governs evidence counting, not whether cross-category transfer is technically meaningful.",
+      "support_verdict": "supported",
+      "locator": {
+        "artifact_type": "accepted_manuscript",
+        "uri": "https://arxiv.org/pdf/2504.04405",
+        "anchor": "Section 3.1.1, Dataset; Section 3.1.4, pretraining and fine-tuning setup",
+        "basis": "original_content",
+        "accessed_at": "2026-08-14",
+        "sha256": null
+      },
+      "additional_locators": [
+        {
+          "artifact_type": "publisher_pdf",
+          "uri": "https://proceedings.iclr.cc/paper_files/paper/2025/file/e4bab1843c8d5a69f5abfd0824593493-Paper-Conference.pdf",
+          "anchor": "Section 5.2, Zero-Shot Recommendation, source and target datasets",
+          "basis": "original_content",
+          "accessed_at": "2026-08-14",
+          "sha256": null
+        },
+        {
+          "artifact_type": "accepted_manuscript",
+          "uri": "https://arxiv.org/pdf/2210.12316",
+          "anchor": "Section 3.1, datasets and pretraining/downstream split",
+          "basis": "original_content",
+          "accessed_at": "2026-08-14",
+          "sha256": null
+        }
+      ],
+      "locator_basis": "original_content",
+      "forbidden_extrapolations": [
+        "Pretraining source and target dataset count as independent evidence when they share a lineage.",
+        "Every Amazon category is an independent external-validity replication.",
+        "Shared lineage makes all transfer findings invalid."
+      ],
+      "counter_evidence": [
+        "AlphaRec also evaluates MovieLens and Book-Crossing targets, and VQ-Rec includes Online Retail; those distinct target lineages should be reported separately rather than erased."
+      ],
+      "planning_only": true,
+      "production_intended": true,
+      "production_use_status": "eligible as an evidence-counting rule"
+    },
+    {
+      "claim_id": "L4-CC-07",
+      "claim_text_bounded": "Content representations aligned to collaborative teachers can inherit collaborative popularity structure; content availability alone therefore does not guarantee unbiased or effective cold-item recommendation.",
+      "evidence_kind": "counter_evidence_and_limitation",
+      "source_keys": ["meehan2025_cold_popbias", "meehan2026_semco"],
+      "source_family_ids": ["F-L4-INHERITED-BIAS-2025", "F-L4-SEMCO-2026"],
+      "support_scope": "The 2025 paper directly analyzes inherited popularity bias for evaluated cold-item methods, and SEMCo continues the same authors' content-based cold-item program. These are two publications but one dependent research lineage.",
+      "support_verdict": "supported",
+      "locator": {
+        "artifact_type": "accepted_manuscript",
+        "uri": "https://arxiv.org/pdf/2508.12992",
+        "anchor": "Section 1, Introduction; Sections 3.1-3.3",
+        "basis": "original_content",
+        "accessed_at": "2026-08-14",
+        "sha256": null
+      },
+      "additional_locators": [
+        {
+          "artifact_type": "accepted_manuscript",
+          "uri": "https://arxiv.org/pdf/2604.08490",
+          "anchor": "Section 3.1, Problem Definition; Sections 3.2-3.3",
+          "basis": "original_content",
+          "accessed_at": "2026-08-14",
+          "sha256": null
+        }
+      ],
+      "locator_basis": "original_content",
+      "forbidden_extrapolations": [
+        "All content encoders inherit the same bias.",
+        "The two papers are independent corroborating research lineages.",
+        "Bias analysis alone proves v5 effectiveness or failure."
+      ],
+      "counter_evidence": [
+        "Content-only or sparsity-aware objectives may change the bias/accuracy trade-off; the direction and magnitude remain method- and dataset-dependent."
+      ],
+      "planning_only": true,
+      "production_intended": true,
+      "production_use_status": "eligible as bounded counter-evidence"
+    },
+    {
+      "claim_id": "L4-CC-08",
+      "claim_text_bounded": "Implementing an architecture inspired by a transfer or cold-start paper is not a replication of that paper or evidence for H4 unless the encoder, data lineage, adaptation procedure, split, candidates, metrics, and statistical protocol are matched or all deviations are declared.",
+      "evidence_kind": "replication_scope_boundary",
+      "source_keys": ["hou2022_unisrec", "hou2023_vqrec", "sheng2025_alpharec", "zheng2026_utgrec"],
+      "source_family_ids": ["F-L4-UNISREC-2022", "F-L4-VQREC-2023", "F-L4-ALPHAREC-2025", "F-L4-UTGREC-2026"],
+      "support_scope": "The inspected papers use materially different encoders, source/target datasets, adaptation stages, candidate/evaluation procedures, and objectives. The card is a protocol inference about faithful reproduction and must not be cited as an empirical result.",
+      "support_verdict": "partially_supported",
+      "locator": {
+        "artifact_type": "publisher_pdf",
+        "uri": "https://proceedings.iclr.cc/paper_files/paper/2025/file/e4bab1843c8d5a69f5abfd0824593493-Paper-Conference.pdf",
+        "anchor": "Sections 4.1 and 5.2; Appendix implementation and baseline adaptation details",
+        "basis": "original_content",
+        "accessed_at": "2026-08-14",
+        "sha256": null
+      },
+      "additional_locators": [
+        {
+          "artifact_type": "accepted_manuscript",
+          "uri": "https://arxiv.org/pdf/2206.05941",
+          "anchor": "Section 2.4 and experimental setup",
+          "basis": "original_content",
+          "accessed_at": "2026-08-14",
+          "sha256": null
+        },
+        {
+          "artifact_type": "accepted_manuscript",
+          "uri": "https://arxiv.org/pdf/2210.12316",
+          "anchor": "Sections 2.1-2.3 and 3.1",
+          "basis": "original_content",
+          "accessed_at": "2026-08-14",
+          "sha256": null
+        },
+        {
+          "artifact_type": "accepted_manuscript",
+          "uri": "https://arxiv.org/pdf/2504.04405",
+          "anchor": "Section 2.4.2 and Section 3.1",
+          "basis": "original_content",
+          "accessed_at": "2026-08-14",
+          "sha256": null
+        }
+      ],
+      "locator_basis": "original_content",
+      "forbidden_extrapolations": [
+        "Architecture transfer establishes H4 replication.",
+        "A Sentence-BERT substitution is a faithful reproduction.",
+        "Cross-paper metric values are directly comparable without protocol harmonization."
+      ],
+      "counter_evidence": [
+        "A deliberately scoped partial reproduction or ablation can still be informative if it is labeled as such and its deviations are locked before evaluation."
+      ],
+      "planning_only": true,
+      "production_intended": true,
+      "production_use_status": "eligible only as protocol guidance"
+    }
+  ]
+}

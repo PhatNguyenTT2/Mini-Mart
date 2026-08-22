@@ -1,0 +1,101 @@
+{
+  "schema_version": "stage1b-r1-r8-findings-1.0",
+  "project": "hybrid-recsys-v5",
+  "stage": "1B",
+  "round": "R1",
+  "step": "R8_independent_audit",
+  "role": "independent_read_only_auditor",
+  "verdict": "PASS_READY_TO_SEAL",
+  "severity_counts": {
+    "Critical": 0,
+    "Major": 0,
+    "Minor": 0,
+    "Observation": 5
+  },
+  "findings": [
+    {
+      "finding_id": "R8-OBS-001",
+      "severity": "Observation",
+      "category": "pdf_read_integrity",
+      "title": "One PDF structural preflight remains UNAVAILABLE without enabling a page anchor",
+      "status": "BOUNDED_NONBLOCKING",
+      "evidence": {
+        "artifact": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/li2023_repetition_exploration.pdf",
+        "sidecar": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/li2023_repetition_exploration.preflight.json",
+        "sidecar_verdict": "UNAVAILABLE",
+        "warning": "xref-coverage: object number(s) [927] present in the file but absent from the active xref chain (possible stale startxref / unreachable newer revision)",
+        "packet_page_anchors": 0
+      },
+      "impact": "The degraded structural check is not converted to PASS. It does not invalidate the packet's section-based locator because no page or page-range anchor is used, but it remains an explicit read-integrity limitation."
+    },
+    {
+      "finding_id": "R8-OBS-002",
+      "severity": "Observation",
+      "category": "locator_provenance_boundary",
+      "title": "Twenty-two counter-evidence locator pointers are bounded registry pointers rather than original-content-verified locators",
+      "status": "BOUNDED_NONBLOCKING",
+      "evidence": {
+        "counter_evidence_locator_pointers": 136,
+        "verified_against_original": 114,
+        "bounded_not_original_verified": 22,
+        "visible_citation_locator_pairs": 33,
+        "visible_pairs_verified_against_original": 33
+      },
+      "impact": "The 22 bounded operational pointers remain planning/audit graph context and cannot be promoted to source-text evidence. All 33 visible citation/locator pairs independently resolve to verified, non-page locators."
+    },
+    {
+      "finding_id": "R8-OBS-003",
+      "severity": "Observation",
+      "category": "source_family_dependence",
+      "title": "Theme 5 remains a fragile single-family operational theme",
+      "status": "PRESERVED_BOUNDARY",
+      "evidence": {
+        "theme": "T5",
+        "canonical_operational_records": 2,
+        "nominal_operational_families": 1,
+        "dependency_adjusted_families": 1,
+        "family_id": "SF-R1-075",
+        "strongest_family_removal_orphaned_claim_rows": [
+          "C-L5-EXT-03"
+        ]
+      },
+      "impact": "Removing SF-R1-075 collapses the Complete Journey-specific structural positioning. The artifact correctly labels the theme FRAGILE_SINGLE_FAMILY and does not mix it into scholarly denominators."
+    },
+    {
+      "finding_id": "R8-OBS-004",
+      "severity": "Observation",
+      "category": "coverage_boundary",
+      "title": "The frozen corpus and tension scan are targeted rather than systematic or exhaustive",
+      "status": "PRESERVED_BOUNDARY",
+      "evidence": {
+        "included_scholarly_corpus": 52,
+        "candidate_tension_pairs": 12,
+        "pairwise_completeness_claim": false,
+        "systematic_review_claim": false
+      },
+      "impact": "The packet supports scoped design constraints among reviewed candidates; it does not establish global novelty, exhaustive contradiction coverage, external validity, empirical robustness, or superiority."
+    },
+    {
+      "finding_id": "R8-OBS-005",
+      "severity": "Observation",
+      "category": "reproducibility_boundary",
+      "title": "Deterministic byte replay does not make semantic judgments or scientific truth byte-reproducible",
+      "status": "PRESERVED_BOUNDARY",
+      "evidence": {
+        "packet_members_replayed": 193,
+        "canonical_preimage_bytes": 43928,
+        "canonical_root_sha256": "f0f2d56e42ce0f181f83182ddffe1060bf8994f50ababd4b0dbe563a942370dd",
+        "semantic_judgment_replay_guarantee": false
+      },
+      "impact": "The packet proves exact frozen bytes, joins, counts, ordering, and root semantics. It does not certify source truth, semantic extraction completeness, independent model errors, or identical hostile-reviewer judgments on rerun."
+    }
+  ],
+  "gate_findings": {
+    "critical_or_major": 0,
+    "deterministic_gate_failures": 0,
+    "unresolved_scholar_decisions": 0,
+    "phase_boundary_breaches": 0
+  },
+  "repair_actions_performed": [],
+  "authority": "These findings report the frozen R7 packet as audited. They do not repair R7 or earlier artifacts, perform R9, seal Stage 1B, authorize Stage 2, draft manuscript prose, run benchmarks, or change H1-H4."
+}

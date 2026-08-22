@@ -1,0 +1,99 @@
+{
+  "schema_version": "stage1b-r1-r9-validation-receipt-1.0",
+  "validation_mode": "read_only_final",
+  "result": "PASS",
+  "verdict": "PASS_STAGE1B_SEALED",
+  "checks_run": 40,
+  "checks_passed": 40,
+  "checks_failed": 0,
+  "check_names": [
+    "output_roster_exact_six",
+    "r9_input_manifest_sha256_exact",
+    "direct_input_byte_sha_bindings_13_of_13",
+    "runtime_lock_exact",
+    "r7_handoff_gate_29_of_29",
+    "r7_packet_member_count_193",
+    "r7_packet_byte_sha_replay_193_of_193",
+    "r7_canonical_root_replay",
+    "r8_handoff_sha256_exact",
+    "r8_gate_60_of_60",
+    "r8_zero_critical_major_minor",
+    "r8_observations_preserved_five",
+    "scholar_adjudication_sha256_exact",
+    "scholar_adjudication_11_1_0_0",
+    "t002_effective_reclassification",
+    "v0_findings_immutable_sha256",
+    "v0_verdict_fail_immutable_sha256",
+    "v0_original_findings_exact_eight",
+    "original_audit_closure_accounting_8_of_8",
+    "v0_fail_supersession_boundary",
+    "stage2_claim_authority_r7_bound",
+    "stage2_authorized_claims_exact_22",
+    "stage2_planning_only_prohibited_exact_22",
+    "stage2_claim_partition_44_disjoint",
+    "stage2_claim_pointers_exact",
+    "stage2_authority_artifacts_r7_bound",
+    "verified_citation_non_none_locator_pairs_33_of_33",
+    "stage2_introduction_related_work_priority_only",
+    "stage2_bounded_literature_authorization",
+    "h1_h4_not_run",
+    "benchmark_training_evaluation_not_run",
+    "empirical_cross_dataset_claims_forbidden",
+    "seal_preimage_forbidden_surfaces_absent",
+    "seal_preimage_sha256_replay",
+    "seal_required_bindings_exact",
+    "seal_verdict_pass_stage1b_sealed",
+    "deterministic_vs_semantic_boundary",
+    "r9_handoff_nonself_hashes_exact",
+    "r9_receipt_nonself_hashes_exact",
+    "r9_report_required_summary"
+  ],
+  "failures": [],
+  "recomputed": {
+    "direct_inputs": 13,
+    "r7_validation": "PASS_29_OF_29",
+    "r8_validation": "PASS_60_OF_60",
+    "packet_members": 193,
+    "canonical_root_sha256": "f0f2d56e42ce0f181f83182ddffe1060bf8994f50ababd4b0dbe563a942370dd",
+    "closures": 8,
+    "authorized_claims": 22,
+    "prohibited_claims": 22,
+    "verified_citation_locator_pairs": 33
+  },
+  "seal_sha256": "5353afaf36fb7146d58ff8e461f9c1586f2a253231bf7d1b162d77ed97a2d3b7",
+  "r9_handoff_sha256": "3391117fb1f7f2a13b1c3d246c669153d0bd7251a47d67b4f51ecb4548e7e7f7",
+  "byte_stability": {
+    "required_runs": 2,
+    "observed_runs": 2,
+    "stdout_byte_identical": true
+  },
+  "artifact_sha256": [
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase6_seal/r9_stage1b_seal/stage1b_r1_seal_manifest.json",
+      "bytes": 13529,
+      "sha256": "49ae115285679a99e7b8099d541c50219c2346c930458d5ae25db25885ab3717"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase6_seal/r9_stage1b_seal/stage2_literature_handoff.json",
+      "bytes": 11901,
+      "sha256": "b797e396a951a1b07e3ebfa9f304a8bfed355628a5ad188b8558738a94db6ed1"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase6_seal/r9_stage1b_seal/r9_seal_report.md",
+      "bytes": 5495,
+      "sha256": "7789993f25e4a212208cbf18a7a9aa3ef51147973e988e1a066e92eb6fd41fbc"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase6_seal/r9_stage1b_seal/r9_handoff.json",
+      "bytes": 2945,
+      "sha256": "3391117fb1f7f2a13b1c3d246c669153d0bd7251a47d67b4f51ecb4548e7e7f7"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase6_seal/r9_stage1b_seal/validate_r9_seal.py",
+      "bytes": 23817,
+      "sha256": "8e180ab73594024839ec4660dea8f2c7d250e5f7e4210bc2253cdd9de2a9f02d"
+    }
+  ],
+  "self_hash_policy": "The receipt does not hash itself. It binds the R9 handoff and all other outputs; the handoff excludes the receipt to prevent a hash cycle.",
+  "authority": "PASS seals only the bounded Stage 1B R1 artifact chain and Stage 2 literature handoff. It is not proof of scientific correctness, novelty, superiority, external validity, or benchmark success."
+}

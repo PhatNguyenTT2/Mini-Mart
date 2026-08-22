@@ -1,0 +1,64 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-wave-a-dispatch-1.0",
+  "project": "hybrid-recsys-v5",
+  "stage": "1E",
+  "wave": "A",
+  "dispatched_at": "2026-08-22",
+  "execution_mode": "three_parallel_dedicated_worktree_tasks",
+  "contract": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/stage1e_rebaseline_v2_contract.md",
+    "sha256": "19bd5f1a21c34f7d7a98d41be7479c8d3c54dba21831c467991f9d7cb26111b5"
+  },
+  "input_manifest": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/stage1e_rebaseline_v2_input_manifest.json",
+    "sha256": "107299c026434366ed6ddb18f4ee6e25fd790d9799fd81c1c1e87871ed60744d"
+  },
+  "model_policy": {"model":"gpt-5.6-sol","reasoning":"xhigh"},
+  "tasks": [
+    {
+      "stage_id": "E1_official_repos",
+      "client_thread_id": "client-new-thread:50b39d85-07d7-4006-a86b-9a95e2dd8268",
+      "thread_id": "01a02559-88f0-7b72-9a72-7ffc9f0ddf26",
+      "host_id": "local",
+      "write_set": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_a/E1_official_repos/",
+      "status": "completed_imported",
+      "central_tip": "013b361"
+    },
+    {
+      "stage_id": "E2_reference_datasets",
+      "client_thread_id": "client-new-thread:5879f8bd-a92f-447d-a7d3-6e418c527312",
+      "thread_id": "01a02559-88ea-7d21-8eef-0021fddcc619",
+      "host_id": "local",
+      "write_set": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_a/E2_reference_datasets/",
+      "status": "completed_imported",
+      "central_tip": "87e64a5"
+    },
+    {
+      "stage_id": "E3_metric_benchmarks",
+      "client_thread_id": "client-new-thread:e78cb1a2-4c7b-4df1-a720-4b045372b1f2",
+      "thread_id": "01a02559-88ef-78e1-9d09-ccb55482f1cb",
+      "host_id": "local",
+      "write_set": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_a/E3_metric_benchmarks/",
+      "status": "completed_imported",
+      "central_tip": "9d43216"
+    }
+  ],
+  "dependencies": {
+    "E4_reproduction_adaptation": "UNBLOCKED_STRUCTURAL_INPUT_FROZEN",
+    "E5_independent_lock_audit": "BLOCKED_ON_E4_FROZEN_PACKET"
+  },
+  "validation": {
+    "verdict": "PASS_STRUCTURALLY_READY_FOR_E4",
+    "scientific_content": "UNVERIFIED_WITH_BLOCKERS",
+    "receipt": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_wave_a_validation_receipt.json",
+    "receipt_canonical_lf_sha256": "1024cd38692a6632e4972484f37fd58e24ea05744e00bd33b61eca4af470b44a"
+  },
+  "e4_frozen_packet": {
+    "contract": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_reproduction_adaptation_contract.md",
+    "contract_canonical_lf_sha256": "368df1ab39df6f4cf03565cd871ba2fc5276a886f314557c6c0ff1244e9e63e5",
+    "manifest": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_frozen_input_manifest.json",
+    "manifest_sha256": "e320eff700eae6e12d8e4059e25656b88dfd1ac1904e42290fce32944ddf41d2",
+    "input_count": 28
+  },
+  "truth_state": {"accepted_result_rows":0,"result_status":"NOT_RUN","test_set_opened":"NO"}
+}

@@ -1,0 +1,55 @@
+{
+  "schema_version": "stage1b-r1-r9-dispatch-1.0",
+  "project": "hybrid-recsys-v5",
+  "stage": "1B",
+  "round": "R1",
+  "step": "R9_seal_and_stage2_handoff",
+  "dispatched_at": "2026-08-21",
+  "model": "gpt-5.6-sol",
+  "reasoning": "high",
+  "execution_mode": "dedicated_worktree_task",
+  "task": {
+    "thread_id": "01a024fe-0005-7e83-b2f1-3daebd2c581e",
+    "client_thread_id": "client-new-thread:9d7a31b7-5f3a-4c2a-be90-49ff3f3318a6",
+    "host_id": "local",
+    "worktree": "C:/Users/ACER/.codex/worktrees/ac79/backend",
+    "title": "Stage 1B R1 R9 — Seal & Stage 2 Handoff",
+    "status_at_dispatch_check": "active",
+    "status_at_completion_check": "completed",
+    "final_turn_status": "completed",
+    "final_verdict": "PASS_STAGE1B_SEALED"
+  },
+  "input_manifest": {
+    "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/r9_input_manifest.json",
+    "bytes": 4988,
+    "sha256": "fb3584574bba7f52f34eda4b6f82a72d4c5fe100a7436c39a166cce7ce568f13"
+  },
+  "seal_contract": {
+    "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/r9_seal_contract.md",
+    "bytes": 3989,
+    "sha256": "d2c76599f13f8e138ce6389c7f636b3ff93b307ca3736647c1fe01f77e6f8da5"
+  },
+  "write_scope": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase6_seal/r9_stage1b_seal/",
+  "completion_receipt": {
+    "checked_at": "2026-08-21",
+    "imported_to_central_workspace": true,
+    "imported_files": 6,
+    "import_hash_mismatches": 0,
+    "central_validation": "40/40 PASS",
+    "upstream_replay": {
+      "r7": "29/29 PASS",
+      "r8": "60/60 PASS",
+      "packet_members": "193/193"
+    },
+    "original_findings_closed": "8/8",
+    "seal_sha256": "5353afaf36fb7146d58ff8e461f9c1586f2a253231bf7d1b162d77ed97a2d3b7",
+    "seal_manifest_sha256": "49ae115285679a99e7b8099d541c50219c2346c930458d5ae25db25885ab3717",
+    "stage2_literature_handoff_sha256": "b797e396a951a1b07e3ebfa9f304a8bfed355628a5ad188b8558738a94db6ed1",
+    "r9_handoff_sha256": "3391117fb1f7f2a13b1c3d246c669153d0bd7251a47d67b4f51ecb4548e7e7f7",
+    "stage2_authorized_claims": 22,
+    "stage2_prohibited_planning_only_claims": 22,
+    "verified_citation_locator_pairs": 33
+  },
+  "phase_boundary": "R9 seal/handoff only; no manuscript drafting, benchmark execution, H1-H4 result claims, or planning-only citation promotion.",
+  "next_gate": "Stage 1B is sealed. Await explicit user choice to begin Stage 2 literature drafting or Stage 1E experiment planning; benchmark/H1-H4 remain NOT_RUN."
+}

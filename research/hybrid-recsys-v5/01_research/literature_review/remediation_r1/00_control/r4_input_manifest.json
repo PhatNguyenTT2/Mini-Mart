@@ -1,0 +1,113 @@
+{
+  "schema_version": "stage1b-r1-r4-input-manifest-1.0",
+  "project": "hybrid-recsys-v5",
+  "stage": "1B",
+  "round": "R1",
+  "step": "R4_source_acquisition_and_locator_completion",
+  "frozen_at": "2026-08-21",
+  "r3_verdict": "PASS",
+  "r3_independent_audit": "PASS_20_OF_20",
+  "r3_handoff_sha256": "caaaa51b1cfda308bac8603287b41dc5e3ae42f6aa3eb6bfe7f9cf623712c888",
+  "r4_contract": {
+    "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/r4_acquisition_contract.md",
+    "bytes": 7731,
+    "sha256": "1d9debe6dde2303784d0057c86d4aae8bd76e48b586875e0f84e9e98ca2a4571"
+  },
+  "integration_root": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/integration",
+  "integration_files": [
+    {
+      "path": "annotated_bibliography_r1.md",
+      "bytes": 28156,
+      "sha256": "6f6b19b4b5e6ba44056990717bb791a5cebfdde6231c05b9daa8a4693b5c44d6"
+    },
+    {
+      "path": "audit_r3_integration.py",
+      "bytes": 26392,
+      "sha256": "29c4460502693cb357f707dc6b72234dc8d5471ba49367e48f9f6c312af38fdc"
+    },
+    {
+      "path": "build_r3_integration.py",
+      "bytes": 61104,
+      "sha256": "ef3edce0bc3aff9c42dbb1806bf46e4ae0f10c73da2bacd0a0b4ea3ee84bda1d"
+    },
+    {
+      "path": "claim_source_map_r1.md",
+      "bytes": 35260,
+      "sha256": "9b4bcba8ef6d93f061bccc2dfa7cbfb063d6df7c083090143b93832d0666efd4"
+    },
+    {
+      "path": "deduplication_report_r1.md",
+      "bytes": 2506,
+      "sha256": "5ed37f437ac99b8146d227c5fd4944f9d1fe769941e41ee574504ff10b267b45"
+    },
+    {
+      "path": "literature_corpus_r1.json",
+      "bytes": 82748,
+      "sha256": "7a1800fcd3bf234bc19151e1a94cae8b834f14f194c2770573d472d96be5969f"
+    },
+    {
+      "path": "operational_resource_registry.json",
+      "bytes": 32285,
+      "sha256": "e1bd73108707d53ded153a0d3be9710e7b10bb07f7d0e8708ea82911056bcb6b"
+    },
+    {
+      "path": "r3_handoff.json",
+      "bytes": 51532,
+      "sha256": "caaaa51b1cfda308bac8603287b41dc5e3ae42f6aa3eb6bfe7f9cf623712c888"
+    },
+    {
+      "path": "source_family_map_r1.json",
+      "bytes": 35242,
+      "sha256": "44f5bcf30baa87bd67ce4c2d2efd45c775d0c7749c299b35bb31aa492ef6a513"
+    },
+    {
+      "path": "source_quality_matrix_r1.json",
+      "bytes": 54634,
+      "sha256": "631db428ff327380ad4d6ca33b963464f5301f5ec31d113f9a85fb2f617fc82d"
+    },
+    {
+      "path": "source_registry_r1.json",
+      "bytes": 244237,
+      "sha256": "5bdbb48d61f7a8bad13ddb85b117ec9b7017732c0997592562fbb56db7dc036c"
+    },
+    {
+      "path": "source_verification_report_r1.md",
+      "bytes": 3816,
+      "sha256": "059ea1711f13aa278401bcde78009f696ecd4cbb9ed5516b213ddc3a383d515d"
+    }
+  ],
+  "transitive_acquired_artifact_gate": {
+    "artifact_hashes_recorded_by_r3": 64,
+    "required_mismatches": 0
+  },
+  "core_population": {
+    "scholarly": 23,
+    "operational_families": 1,
+    "total": 24
+  },
+  "r4_queue": [
+    {"source_key": "hou2022_unisrec", "priority": "core"},
+    {"source_key": "hou2023_vqrec", "priority": "production_claim"},
+    {"source_key": "huang2023_aldi", "priority": "production_claim"},
+    {"source_key": "jannach2026_methodological_standards", "priority": "core"},
+    {"source_key": "li2023_repetition_exploration", "priority": "production_claim"},
+    {"source_key": "liu2009_hybrid_seq_cf", "priority": "core"},
+    {"source_key": "meehan2025_cold_popbias", "priority": "production_claim"},
+    {"source_key": "meehan2026_semco", "priority": "production_claim"},
+    {"source_key": "reimers2019_sbert", "priority": "core"},
+    {"source_key": "sheng2025_alpharec", "priority": "core"},
+    {"source_key": "volkovs2017_dropoutnet", "priority": "core"},
+    {"source_key": "zheng2026_utgrec", "priority": "production_claim"},
+    {
+      "source_family_id": "SF-R1-075",
+      "resource_keys": [
+        "R-L5-COMPLETE-JOURNEY-PROVIDER",
+        "R-L5-COMPLETEJOURNEY-R-PACKAGE"
+      ],
+      "priority": "core"
+    }
+  ],
+  "queue_count": 13,
+  "write_scope": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/",
+  "next_gate": "R4 PASS authorizes only R5 claim-map rebuild and Phase 3 synthesis."
+}

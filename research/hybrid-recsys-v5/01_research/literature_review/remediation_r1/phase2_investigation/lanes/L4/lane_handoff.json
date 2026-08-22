@@ -1,0 +1,161 @@
+{
+  "envelope_version": "ars-deep-research-phase2-lane-handoff-1.0",
+  "project": "hybrid-recsys-v5",
+  "stage": "1B",
+  "round": "remediation-r1",
+  "lane": "L4",
+  "lane_title": "Cold-item, Content, and Transfer",
+  "research_cutoff": "2026-08-14",
+  "completed_at": "2026-08-14T03:20:00+07:00",
+  "phase": "deep_research_phase_2_investigation",
+  "verdict": "PASS",
+  "verdict_scope": "Locked local L4 gate only; not a Stage 1B seal or Stage 2 citation authorization.",
+  "runtime_request": {
+    "model": "gpt-5.6-sol",
+    "reasoning": "xhigh"
+  },
+  "preflight": {
+    "complete": true,
+    "files_read_completely": [
+      "C:/Users/ACER/.codex/plugins/cache/ars-codex/ars-codex/0.1.24/skills/academic-research-suite/SKILL.md",
+      "C:/Users/ACER/.codex/plugins/cache/ars-codex/ars-codex/0.1.24/skills/academic-research-suite/ars/deep-research/WORKFLOW.md",
+      "C:/Users/ACER/.codex/plugins/cache/ars-codex/ars-codex/0.1.24/skills/academic-research-suite/ars/deep-research/agents/bibliography_agent.md",
+      "C:/Users/ACER/.codex/plugins/cache/ars-codex/ars-codex/0.1.24/skills/academic-research-suite/ars/deep-research/agents/source_verification_agent.md",
+      "research/hybrid-recsys-v5/01_research/stage1b_completion_plan.md",
+      "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/lane_contract.md",
+      "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/source_schema_r1.json",
+      "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/remediation_register.json",
+      "research/hybrid-recsys-v5/01_research/literature_review/audit/audit_findings.json",
+      "research/hybrid-recsys-v5/01_research/literature_review/audit/audit_verdict.json",
+      "research/hybrid-recsys-v5/01_research/literature_review/audit/independent_audit_report.md",
+      "research/hybrid-recsys-v5/01_research/rq_brief.md",
+      "research/hybrid-recsys-v5/01_research/rq_estimand_matrix.md",
+      "research/hybrid-recsys-v5/01_research/methodology_blueprint.md",
+      "research/hybrid-recsys-v5/01_research/literature_review/phase2_investigation/lanes/L4_cold_content_transfer.md"
+    ]
+  },
+  "counts": {
+    "old_candidates": 19,
+    "old_candidates_dispositioned": 19,
+    "old_disposition_RETAIN": 11,
+    "old_disposition_REPLACE": 0,
+    "old_disposition_REMOVE": 8,
+    "old_disposition_MOVE_TO_RESOURCE_REGISTRY": 0,
+    "gap_rows_retrieved": 80,
+    "gap_unique_doi_records_screened": 63,
+    "gap_duplicate_rows_removed": 17,
+    "gap_old_retained_rediscovered": 2,
+    "gap_new_records_included": 4,
+    "gap_records_excluded": 57,
+    "canonical_scholarly_records": 15,
+    "independent_version_families": 15,
+    "evidence_lineage_clusters": 10,
+    "operational_resources": 0,
+    "identity_verified": 15,
+    "metadata_verified": 15,
+    "source_content_verified": 9,
+    "locator_ready": 9,
+    "audit_core_records": 4,
+    "audit_core_source_content_verified": 4,
+    "audit_core_locator_ready": 4,
+    "claim_cards": 8,
+    "production_intended_claim_cards": 8,
+    "production_intended_claim_cards_with_original_locator": 8,
+    "acquisition_queue_unresolved": 6,
+    "local_source_artifacts_stored": 0
+  },
+  "artifacts": [
+    {
+      "path": "lane_report.md",
+      "sha256": "5c548cc9906dce84123259de4ca7d8bf4d1309df66fae1da531048f69468439f"
+    },
+    {
+      "path": "candidate_registry.json",
+      "sha256": "0546b9387f7bec67ea7c23a1e4759c77fb81cedd7404e9e8daf24acdf6594122"
+    },
+    {
+      "path": "disposition_log.json",
+      "sha256": "78a72a177d41ebea691859977da588b91766ef6ee2b37d1a6ea6ba6b3dd9c68a"
+    },
+    {
+      "path": "claim_cards.json",
+      "sha256": "e6c55b5494fcf3660ea3bedebadd5bebf464dac702b42d97ffeda0064bec577c"
+    },
+    {
+      "path": "source_acquisition_queue.json",
+      "sha256": "295fe015b86a7016acd6c65ddf19b347a48e34b33162259cfc9ea5234e36984b"
+    },
+    {
+      "path": "exclusion_log.json",
+      "sha256": "a52b355dcd29f02463b4fdd35549ae091e1ecbde4d4238cbf6a0f0526ab816fb"
+    },
+    {
+      "path": "lane_handoff.json",
+      "sha256": null,
+      "hash_note": "Self-hash is intentionally excluded from the recursive envelope; compute over the final file at receipt."
+    }
+  ],
+  "validation": {
+    "json_parse": "PASS",
+    "source_schema_r1_scholarly_work_definitions": "PASS_15_OF_15",
+    "source_schema_r1_claim_card_definitions": "PASS_8_OF_8",
+    "old_disposition_coverage": "PASS_19_OF_19",
+    "candidate_key_uniqueness": "PASS",
+    "claim_source_referential_integrity": "PASS",
+    "claim_family_referential_integrity": "PASS",
+    "acquisition_queue_coverage": "PASS_15_OF_15",
+    "gap_exclusion_count": "PASS_57_OF_57",
+    "forbidden_human_read_fields": "PASS_NONE_PRESENT",
+    "cross_artifact_count_consistency": "PASS"
+  },
+  "unresolved_blockers": [
+    {
+      "source_key": "du2020_mtpr",
+      "blocker": "Authoritative full artifact and claim-level locator not acquired; retained only as a planning candidate."
+    },
+    {
+      "source_key": "wei2021_clcrec",
+      "blocker": "Authoritative full artifact and claim-level locator not acquired; repository presence is not paper-content verification."
+    },
+    {
+      "source_key": "yu2022_simgcl",
+      "blocker": "Metadata-only sparse-graph comparator; no production-intended claim depends on it."
+    },
+    {
+      "source_key": "yu2024_xsimgcl",
+      "blocker": "Metadata-only sparse-graph comparator; no production-intended claim depends on it."
+    },
+    {
+      "source_key": "cai2023_lightgcl",
+      "blocker": "Metadata-only sparse-graph comparator; no production-intended claim depends on it."
+    },
+    {
+      "source_key": "kim2024_cgrc",
+      "blocker": "Full author-artifact transport degraded after identity/metadata discovery; content and locator remain unverified."
+    }
+  ],
+  "risks": [
+    "Canonical-record count 15 exceeds the 10 evidence-lineage clusters; downstream evidence counting must use the dependency annotations.",
+    "Several transfer evaluations reuse Amazon categories or one Amazon 2023 corpus across pretraining and downstream domains.",
+    "Graph collaborative controls address sparse observed-edge settings and cannot be promoted to zero-edge content evidence.",
+    "Encoder evidence and recommender efficacy evidence are deliberately separated.",
+    "Remote author artifacts were not stored where redistribution permission was unknown or restricted."
+  ],
+  "downstream_constraints": [
+    "Do not equate cold-item with cold-user.",
+    "Do not equate Sentence-BERT quality with recommendation quality.",
+    "Do not claim that architecture transfer establishes H4 replication.",
+    "Do not count pretraining-source and target datasets as independent evidence when they share a platform or benchmark lineage.",
+    "Do not use MTPR, CLCRec, SimGCL, XSimGCL, LightGCL, or CGRC for production claims until a lawful authoritative full artifact is inspected and an original-content locator is recorded.",
+    "Do not merge zero-edge, sparse-edge, warm, and overall item denominators.",
+    "Do not cite paper-native benchmark values as v5 results or compare values across unmatched candidate/split/metric protocols.",
+    "Do not treat the 15 canonical records as 15 independent corroborations.",
+    "Do not store or redistribute remotely accessible artifacts without a separate rights basis.",
+    "Central synthesis must preserve support scope, counter-evidence, limitations, and forbidden extrapolations from the claim cards."
+  ],
+  "remediation_responsibility": {
+    "ST1B-META-003": "Lane metadata normalized and version relations recorded; all 15 retained canonical identities and metadata verified.",
+    "ST1B-SYNTH-001": "Eight bounded claim cards provide support scope, dependencies, counter-evidence, limitations, and forbidden extrapolations without performing synthesis.",
+    "ST1B-LOCATOR-001": "All eight production-intended claim cards carry original-content locators; six non-claim retained candidates remain explicitly queued."
+  }
+}

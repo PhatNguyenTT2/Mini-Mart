@@ -305,8 +305,10 @@ def test_compare_deep_ablations_wrapper_builds_typed_runs_and_dispatches(
     settings = Settings()
     settings.data.artifact_root = tmp_path
 
-    def loaded(run_id: str) -> SimpleNamespace:
-        return SimpleNamespace(
+    def loaded(run_id: str) -> pipeline.LoadedRun:
+        return pipeline.LoadedRun(
+            run_dir=tmp_path / "runs" / run_id,
+            checkpoint_manifest=SimpleNamespace(),
             state=SimpleNamespace(run_id=run_id),
             settings=settings,
             lifecycle=SimpleNamespace(status=RunStatus.TRAINING, document={"git_commit": "a" * 40}),
@@ -324,8 +326,8 @@ def test_compare_deep_ablations_wrapper_builds_typed_runs_and_dispatches(
 
     monkeypatch.setattr(
         pipeline,
-        "_load_run_context",
-        lambda _settings, run_id, **_kwargs: loaded(run_id),
+        "_load_deep_ablation_candidate",
+        lambda _settings, run_id: loaded(run_id),
     )
     captured: list[object] = []
 

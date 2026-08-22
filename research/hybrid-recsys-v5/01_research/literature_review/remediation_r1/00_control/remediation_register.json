@@ -1,0 +1,72 @@
+{
+  "schema_version": "stage1b-remediation-register-1.0",
+  "project": "hybrid-recsys-v5",
+  "stage": "1B",
+  "round": "R1",
+  "findings": [
+    {
+      "id": "ST1B-META-001",
+      "severity": "major",
+      "status": "open",
+      "owners": ["L5", "central-integration"],
+      "action": "Separate operational resources from the scholarly corpus; never coerce an operational or guessed year into publication_year; recompute all corpus counts.",
+      "expected_evidence": ["operational_resource_registry.json", "literature_corpus_r1.json", "schema validation", "recomputed summary"]
+    },
+    {
+      "id": "ST1B-META-002",
+      "severity": "minor",
+      "status": "open",
+      "owners": ["L1", "central-integration"],
+      "action": "Classify Jannach and Chen as editorial/essay and use peer_reviewed=false or unknown unless direct venue evidence proves external review.",
+      "expected_evidence": ["source-of-record document type", "peer-review basis", "corrected peer-reviewed count"]
+    },
+    {
+      "id": "ST1B-META-003",
+      "severity": "minor",
+      "status": "open",
+      "owners": ["L1", "L2", "L3", "L4", "L5", "central-integration"],
+      "action": "Normalize canonical titles and complete author lists from authoritative metadata and reject mojibake or et al. in canonical fields.",
+      "expected_evidence": ["UTF-8 round-trip check", "canonical metadata diff", "valid reference export"]
+    },
+    {
+      "id": "ST1B-SCOPE-001",
+      "severity": "minor",
+      "status": "open",
+      "owners": ["L5", "central-synthesis"],
+      "action": "Bound prevalence statements to the reviewed candidate set and retain the targeted, non-exhaustive search qualifier.",
+      "expected_evidence": ["bounded claim cards", "bounded synthesis wording"]
+    },
+    {
+      "id": "ST1B-SYNTH-001",
+      "severity": "minor",
+      "status": "open",
+      "owners": ["L1", "L2", "L3", "L4", "L5", "central-integration", "central-synthesis"],
+      "action": "Record source-family dependencies and report canonical-record count separately from independent-family count.",
+      "expected_evidence": ["source_family_map.json", "frozen counting rule", "qualified convergence statements"]
+    },
+    {
+      "id": "ST1B-LOCATOR-001",
+      "severity": "advisory-gate",
+      "status": "open",
+      "owners": ["L1", "L2", "L3", "L4", "L5", "central-acquisition"],
+      "action": "Acquire and verify the 24-source core set named by the independent audit, add durable claim locators, and apply the same rule to every source used in production prose.",
+      "expected_evidence": ["source acquisition manifest", "source_verified_against_original=true", "non-null production locators", "claim-level verification"]
+    },
+    {
+      "id": "ST1B-ARS-001",
+      "severity": "advisory",
+      "status": "open",
+      "owners": ["central-synthesis"],
+      "action": "Persist a write-once synthesis invocation ledger with input manifest hash/time, synthesis start time, and final output hash.",
+      "expected_evidence": ["synthesis_invocation_ledger.json"]
+    },
+    {
+      "id": "ST1B-RIGHTS-001",
+      "severity": "advisory",
+      "status": "open",
+      "owners": ["L5", "central-integration"],
+      "action": "Snapshot Complete Journey provider URL, access time, exact terms bytes, edition/revision and checksums; keep execution, sharing, and redistribution unauthorized until reviewed.",
+      "expected_evidence": ["terms snapshot manifest", "edition and revision record", "checksums", "rights-layer statuses"]
+    }
+  ]
+}

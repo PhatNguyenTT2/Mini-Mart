@@ -1,0 +1,94 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-dispatch-1.0",
+  "material_passport": {
+    "origin_skill": "ars-codex:academic-research-suite/experiment-agent",
+    "origin_mode": "central-dispatch",
+    "origin_date": "2026-08-22",
+    "verification_status": "UNVERIFIED",
+    "version_label": "Stage 1E Rebaseline v2 E4 dispatch"
+  },
+  "project": "hybrid-recsys-v5",
+  "stage": "1E",
+  "wave": "B",
+  "task": "E4_reproduction_adaptation",
+  "client_thread_id": "client-new-thread:37c9f5d6-2113-4c39-806b-d60302ea7e9f",
+  "thread_id": "01a02589-6ebe-7110-8564-3bd748a19952",
+  "host_id": "local",
+  "status": "completed_fail_closed_imported",
+  "worktree": "C:/Users/ACER/.codex/worktrees/237c/backend",
+  "environment": "dedicated_worktree_from_working_tree",
+  "model": "gpt-5.6-sol",
+  "reasoning": "xhigh",
+  "contract": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_reproduction_adaptation_contract.md",
+    "canonical_lf_sha256": "368df1ab39df6f4cf03565cd871ba2fc5276a886f314557c6c0ff1244e9e63e5"
+  },
+  "input_manifest": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_frozen_input_manifest.json",
+    "sha256": "e320eff700eae6e12d8e4059e25656b88dfd1ac1904e42290fce32944ddf41d2",
+    "input_count": 28,
+    "central_validation": "PASS"
+  },
+  "e4_entry_gate": {
+    "reported_by_thread": "01a02589-6ebe-7110-8564-3bd748a19952",
+    "manifest_hash_match": true,
+    "contract_hash_match": true,
+    "wave_a_receipt_hash_match": true,
+    "input_count": 28,
+    "verified_input_count": 28,
+    "failure_count": 0,
+    "status": "PASS"
+  },
+  "completion": {
+    "source_commits": [
+      "85557864f4b022c02207e9d5fe566f7d43b9758f",
+      "c348218b0c128ed3adc1a402ef272114725a8453"
+    ],
+    "central_commits": ["c5c39b5", "c898702"],
+    "handoff_canonical_lf_sha256": "ae7cad234c49da15f05db7384d7b7b812a7a9672dd29df3058ec4efbd2154dee",
+    "verdict": "FAIL_NOT_READY_FOR_E5",
+    "verdict_detail": "BLOCKED_NO_READY_REFERENCE_BUNDLE",
+    "candidate_counts": {"ready":0,"pending":7,"rejected":6,"total":13},
+    "blocker_counts": {"resolved":1,"carried":18,"rejected_with_row":7,"total":26},
+    "central_validation": {
+      "verdict": "PASS_FROZEN_PACKET_READY_FOR_E5_FAIL_CLOSED_AUDIT",
+      "receipt": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_validation_receipt.json",
+      "receipt_canonical_lf_sha256": "b7a7ed680f2aafe1e42fb246225c3a507a03c514f122ebeadd809ce88f5a41f7"
+    }
+  },
+  "wave_a_gate": {
+    "structural_verdict": "PASS_STRUCTURALLY_READY_FOR_E4",
+    "scientific_content": "UNVERIFIED_WITH_BLOCKERS",
+    "execution_authorized": false
+  },
+  "write_set": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_b/E4_reproduction_adaptation/",
+  "required_outputs": [
+    "selected_reference_bundle.json",
+    "reproduction_execution_plan.md",
+    "v5_adapter_and_evaluator_contract.md",
+    "cross_dataset_reporting_contract.md",
+    "exact_command_confirmation_packet.json",
+    "e4_handoff.json"
+  ],
+  "execution_boundary": {
+    "primary_source_web_replay": true,
+    "local_read_only_inspection": true,
+    "command_design_only": true,
+    "repository_clone": false,
+    "dataset_download": false,
+    "package_install": false,
+    "source_modification": false,
+    "training": false,
+    "validation_execution": false,
+    "test_evaluation": false
+  },
+  "downstream": {
+    "E5_independent_lock_audit": "UNBLOCKED_FOR_FAIL_CLOSED_AUDIT",
+    "execution": "BLOCKED_ON_E5_PASS_AND_EXPLICIT_USER_COMMAND_CONFIRMATION"
+  },
+  "truth_state": {
+    "accepted_result_rows": 0,
+    "result_status": "NOT_RUN",
+    "test_set_opened": "NO"
+  }
+}

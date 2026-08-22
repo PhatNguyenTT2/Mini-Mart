@@ -1,0 +1,257 @@
+{
+  "schema_version": "stage1b-r1-claim-cards-2026-08-14",
+  "lane": "L3_basket_sequential_association_rule_hybrid",
+  "research_cutoff": "2026-08-14",
+  "counts": {
+    "claim_cards": 8,
+    "supported": 7,
+    "partially_supported": 1,
+    "unsupported": 0,
+    "unverified": 0,
+    "planning_only": 1,
+    "production_intended_with_original_locator": 7
+  },
+  "claims": [
+    {
+      "claim_id": "L3-APR-001",
+      "claim_text_bounded": "In the retained Apriori source, support is a transaction-frequency threshold and confidence is a conditional rule-strength threshold used to mine association rules; the source does not define Apriori itself as a recommender ranking model.",
+      "evidence_kind": "foundational_method_definition",
+      "source_keys": ["agrawal_srikant_1994_apriori"],
+      "source_family_ids": ["family_agrawal_srikant_apriori_1994"],
+      "support_scope": "Limited to the formal association-rule mining problem and algorithmic threshold semantics in the 1994 VLDB paper.",
+      "support_verdict": "supported",
+      "locator": {
+        "artifact_type": "publisher_pdf",
+        "uri": "source_artifacts/agrawal1994_apriori.pdf",
+        "anchor": "Introduction, formal statement of the association-rule problem and minimum support/confidence thresholds",
+        "basis": "original_content",
+        "accessed_at": "2026-08-14",
+        "sha256": "99c6057d4fb42b5a1f9c2176a5bce0db2b860f69e897db46e68e9ef09d1154e2"
+      },
+      "locator_basis": "original_content",
+      "forbidden_extrapolations": ["Apriori is a ranking model.", "Mined rules improve recommendation metrics.", "Literature evidence establishes H3."],
+      "counter_evidence": ["A separate candidate-generation and scoring/ranking policy is required to turn mined rules into ranked recommendations."],
+      "planning_only": false,
+      "production_use_condition": "May define rule-mining semantics only; implementation parameters and evaluation outcomes require v5 artifacts."
+    },
+    {
+      "claim_id": "L3-RULE-002",
+      "claim_text_bounded": "Association rules can be operationalized to recommend multiple items, but comparative performance against collaborative filtering and matrix factorization is conditional on the source data and protocol.",
+      "evidence_kind": "direct_computational_recommendation_study",
+      "source_keys": ["ghoshal_sarkar_2014_multi_item_rules"],
+      "source_family_ids": ["family_ghoshal_sarkar_multi_item_rules"],
+      "support_scope": "The retained 2014 multi-item rule study and its own transactional/clickstream experiments.",
+      "support_verdict": "supported",
+      "locator": {
+        "artifact_type": "accepted_manuscript",
+        "uri": "source_artifacts/ghoshal2014_multi_item_author.pdf",
+        "anchor": "Abstract; Section 2 problem statement; Section 6 comparison with collaborative filtering and matrix factorization",
+        "basis": "original_content",
+        "accessed_at": "2026-08-14",
+        "sha256": "46d1b26bcb4ba3dbcc56296dbd68229921de43c29b6655130f2fe7ef8861a908"
+      },
+      "locator_basis": "original_content",
+      "forbidden_extrapolations": ["A multi-item rule method universally outperforms collaborative filtering.", "Random transaction splits validate the v5 temporal estimand.", "The paper's accuracy values are v5 benchmark results."],
+      "counter_evidence": ["The paper reports data settings in which other methods are competitive or preferable, so the comparison is not universal."],
+      "planning_only": false,
+      "production_use_condition": "May support a bounded historical precedent; no numerical metric may be carried into v5."
+    },
+    {
+      "claim_id": "L3-SEQ-003",
+      "claim_text_bounded": "SASRec uses causal self-attention for next-item prediction, whereas BERT4Rec uses bidirectional sequence encoding with a masked-item Cloze objective; both source evaluations use paper-native candidate/sampling designs that are not the v5 full-catalog protocol.",
+      "evidence_kind": "paired_original_method_comparison",
+      "source_keys": ["kang_mcauley_2018_sasrec", "sun_2019_bert4rec"],
+      "source_family_ids": ["family_sasrec_original", "family_bert4rec_original"],
+      "support_scope": "Architecture, training-objective, and evaluation-protocol descriptions in the original SASRec and BERT4Rec papers.",
+      "support_verdict": "supported",
+      "locator": {
+        "artifact_type": "repository_pdf",
+        "uri": "source_artifacts/kang2018_sasrec_arxiv.pdf",
+        "anchor": "Section III-C causality; Sections III-E and III-F prediction/objective; Section IV-D evaluation metrics",
+        "basis": "original_content",
+        "accessed_at": "2026-08-14",
+        "sha256": "d58f18384a055a265f5ecf2776ed28e8a745c0d9a183db078449249599bf604a"
+      },
+      "additional_locators": [
+        {
+          "artifact_type": "repository_pdf",
+          "uri": "source_artifacts/sun2019_bert4rec_arxiv.pdf",
+          "anchor": "Section 3.3 Cloze task; Section 4.2 task settings and evaluation metrics",
+          "basis": "original_content",
+          "accessed_at": "2026-08-14",
+          "sha256": "1e673114bbfa757a949f884c545e9548c4faa37e2cd70e6933eede8198ec4fb9"
+        }
+      ],
+      "locator_basis": "original_content",
+      "forbidden_extrapolations": ["A paper-native SASRec or BERT4Rec metric is a current v5 result.", "Next-item objectives are identical to next-basket set objectives.", "An architecture name alone guarantees protocol equivalence."],
+      "counter_evidence": ["The retained BERT4Rec replicability study shows substantial sensitivity to implementation and training budget."],
+      "planning_only": false,
+      "production_use_condition": "May define canonical baselines/objectives; v5 comparisons require harmonized adapters and the locked full-catalog protocol."
+    },
+    {
+      "claim_id": "L3-NBR-004",
+      "claim_text_bounded": "Next-basket and sequential recommendation outcomes can mix easier repeat behavior with harder exploration behavior, so aggregate basket accuracy does not by itself establish novel-item gain.",
+      "evidence_kind": "multi_source_evaluation_guardrail",
+      "source_keys": ["li_jullien_ariannezhad_derijke_2023_reality_check", "li_vardasbi_yates_derijke_2023_repetition_exploration", "mansouri_lahmiri_vahidov_2026_repeat_explore_lightgcn"],
+      "source_family_ids": ["family_nbr_reality_check", "family_repetition_exploration_sequential", "family_repeat_explore_lightgcn_2026"],
+      "support_scope": "Repeat/explore definitions and empirical decompositions across retained basket/sequential studies; no assertion about the magnitude of a v5 effect.",
+      "support_verdict": "supported",
+      "locator": {
+        "artifact_type": "repository_pdf",
+        "uri": "source_artifacts/li2021_reality_check_arxiv.pdf",
+        "anchor": "Figure 1 and Introduction contribution bullets; repeat-ratio and baseline analyses",
+        "basis": "original_content",
+        "accessed_at": "2026-08-14",
+        "sha256": "66bf549d33ce1ffe757c6162c157809f7fdcd03e18c3ca244155ba2468621a36"
+      },
+      "additional_locators": [
+        {
+          "artifact_type": "accepted_manuscript",
+          "uri": "https://irlab.science.uva.nl/wp-content/papercite-data/pdf/li-2023-repetition.pdf",
+          "anchor": "Introduction definitions and research questions; exploration-only analyses",
+          "basis": "original_content",
+          "accessed_at": "2026-08-14",
+          "sha256": null
+        },
+        {
+          "artifact_type": "publisher_pdf",
+          "uri": "source_artifacts/mansouri2026_repeat_explore.pdf",
+          "anchor": "Abstract; Table 5 overall/repeat/explore outcomes; Section 6 ablation study",
+          "basis": "original_content",
+          "accessed_at": "2026-08-14",
+          "sha256": "a58e40a52df3413098f6bc6d12954530a8a67a2c4ff303a91190661996bbe83f"
+        }
+      ],
+      "locator_basis": "original_content",
+      "forbidden_extrapolations": ["Aggregate basket gain proves novel-item gain.", "Repeat/explore ratios from another dataset apply to v5.", "A hybrid's external explore metric establishes H3."],
+      "counter_evidence": ["Strong personal-frequency baselines can dominate repeat recovery.", "The 2026 retained study reports a trade-off: exploration improvements coexist with weaker repeat recovery in some settings."],
+      "planning_only": false,
+      "production_use_condition": "Supports separate v5 reporting of repeat, novel/explore, cohort coverage, and aggregate outcomes; supplies no v5 result."
+    },
+    {
+      "claim_id": "L3-BTBR-005",
+      "claim_text_bounded": "Mask-Swap provides a direct next-novel-basket formulation and BTBR basket baseline, but the inspected experiments do not support a universal claim that masking or swapping improves every dataset/model setting.",
+      "evidence_kind": "direct_novel_basket_method_and_counter_evidence",
+      "source_keys": ["li_ariannezhad_yates_derijke_2023_mask_swap"],
+      "source_family_ids": ["family_mask_swap_nnbr"],
+      "support_scope": "The paper's next-novel-basket task, BTBR description, interventions, and its own multi-dataset experiments.",
+      "support_verdict": "supported",
+      "locator": {
+        "artifact_type": "repository_pdf",
+        "uri": "source_artifacts/li2023_mask_swap_arxiv.pdf",
+        "anchor": "Sections 4.1 and 4.2 mask/swap strategy; Section 5 BTBR model; Section 6 experiments",
+        "basis": "original_content",
+        "accessed_at": "2026-08-14",
+        "sha256": "da779f9fccdadbe70a9e39ed1cbe89ac642f810a868f79d1692880ae64ad4651"
+      },
+      "locator_basis": "original_content",
+      "forbidden_extrapolations": ["Mask-Swap always improves novel recommendation.", "BTBR paper metrics are v5 benchmark results.", "User-level splits are equivalent to the locked temporal split."],
+      "counter_evidence": ["The source reports dataset- and strategy-dependent effects, including small or absent benefits in some settings."],
+      "planning_only": false,
+      "production_use_condition": "May justify evaluating a direct basket baseline and predeclared interventions, not an expected gain."
+    },
+    {
+      "claim_id": "L3-HYB-006",
+      "claim_text_bounded": "Prior systems combine rule, preference, popularity, transition, linear-cross, or neural components, and their component comparisons establish an ablation-design precedent; they do not establish that the v5 Apriori-aligned Wide branch improves the locked H3 estimand.",
+      "evidence_kind": "multi_family_hybrid_design_precedent",
+      "source_keys": ["liu_lai_lee_2007_hybrid_rules_cf", "cheng_2016_wide_deep", "peng_ren_parthasarathy_ning_2022_ham", "peng_ren_parthasarathy_ning_2023_m2", "mansouri_lahmiri_vahidov_2026_repeat_explore_lightgcn"],
+      "source_family_ids": ["family_liu_hybrid_sequential_rules_cf", "family_cheng_wide_deep_2016", "family_ham_hybrid_associations", "family_m2_next_basket", "family_repeat_explore_lightgcn_2026"],
+      "support_scope": "Historical architecture and component-comparison precedent across five independent source families; excludes the content-unverified 2009 journal work from evidentiary support.",
+      "support_verdict": "supported",
+      "locator": {
+        "artifact_type": "repository_pdf",
+        "uri": "source_artifacts/cheng2016_wide_deep_arxiv.pdf",
+        "anchor": "Section 3.3 joint training; Table 1 component comparisons",
+        "basis": "original_content",
+        "accessed_at": "2026-08-14",
+        "sha256": "0f04fd0659345008ddcb4b0742b6d0e5475bb0c2cf2a2b222f1b06d109c6c4c8"
+      },
+      "additional_locators": [
+        {
+          "artifact_type": "repository_pdf",
+          "uri": "https://ir.lib.nycu.edu.tw/bitstream/11536/7824/1/000250044300024.pdf",
+          "anchor": "Sequential-rule score, collaborative-filtering score, hybrid score, and component comparison",
+          "basis": "original_content",
+          "accessed_at": "2026-08-14",
+          "sha256": null
+        },
+        {
+          "artifact_type": "repository_pdf",
+          "uri": "source_artifacts/peng2020_ham_arxiv.pdf",
+          "anchor": "Section 6.6 ablation study and Table 13",
+          "basis": "original_content",
+          "accessed_at": "2026-08-14",
+          "sha256": "2ec10f3c84f313421c89fa6d1bd254ed5ddf3b80209d0a423422b5f852e96201"
+        },
+        {
+          "artifact_type": "repository_pdf",
+          "uri": "source_artifacts/peng2020_m2_arxiv.pdf",
+          "anchor": "Section 6.5 ablation study",
+          "basis": "original_content",
+          "accessed_at": "2026-08-14",
+          "sha256": "35148decd5ad8f745f54781f8aa9c940bf8b8664d3016073f4a7675b10242416"
+        },
+        {
+          "artifact_type": "publisher_pdf",
+          "uri": "source_artifacts/mansouri2026_repeat_explore.pdf",
+          "anchor": "Section 6 ablation study; repeat-only and explore-only component comparisons",
+          "basis": "original_content",
+          "accessed_at": "2026-08-14",
+          "sha256": "a58e40a52df3413098f6bc6d12954530a8a67a2c4ff303a91190661996bbe83f"
+        }
+      ],
+      "locator_basis": "original_content",
+      "forbidden_extrapolations": ["Literature plausibility proves H3.", "Any aggregate hybrid gain proves novel-item gain.", "An external ablation estimates the v5 Full minus No-Wide contrast."],
+      "counter_evidence": ["Component effects vary by dataset and protocol.", "The 2026 direct grocery study shows repeat/explore trade-offs and states that hybrids are not universal replacements for repeat baselines."],
+      "planning_only": false,
+      "production_use_condition": "Supports the need for shared-protocol component ablations. H3 remains an empirical v5 test."
+    },
+    {
+      "claim_id": "L3-PROTO-007",
+      "claim_text_bounded": "Evaluation splits, target construction, implementation choices, and training budget can change reported sequential-recommender outcomes and model rankings, so source-native results are not directly comparable with the locked v5 protocol.",
+      "evidence_kind": "protocol_and_replicability_evidence",
+      "source_keys": ["gusak_volodkevich_klenitskiy_vasilev_frolov_2025_time_split", "petrov_macdonald_2022_bert4rec_replicability"],
+      "source_family_ids": ["family_time_to_split_2025", "family_bert4rec_replication_petrov"],
+      "support_scope": "The multi-dataset split study and the BERT4Rec systematic review/replication study.",
+      "support_verdict": "supported",
+      "locator": {
+        "artifact_type": "repository_pdf",
+        "uri": "source_artifacts/gusak2025_time_split_arxiv.pdf",
+        "anchor": "Figure 1; Section 3.0.3 global temporal split; Section 4 experimental setup",
+        "basis": "original_content",
+        "accessed_at": "2026-08-14",
+        "sha256": "bacc8bdfe282550958cf596c52c585141e246606f151934ae66632023800455d"
+      },
+      "additional_locators": [
+        {
+          "artifact_type": "repository_pdf",
+          "uri": "source_artifacts/petrov2022_bert4rec_replicability_arxiv.pdf",
+          "anchor": "Implementation review and RQ2 training-time analysis, including Table 4",
+          "basis": "original_content",
+          "accessed_at": "2026-08-14",
+          "sha256": "b7617e2ee2966f53fc8444bfa3f21c5a1ea7173bfc66796d2a1586d886a4f209"
+        }
+      ],
+      "locator_basis": "original_content",
+      "forbidden_extrapolations": ["A source-native model ranking holds under v5.", "A sampled paper metric is a full-catalog result.", "Split sensitivity authorizes changing the locked v5 split after results are seen."],
+      "counter_evidence": ["Sensitivity is not uniform across datasets; it requires local predeclared checks rather than a universal correction factor."],
+      "planning_only": false,
+      "production_use_condition": "May justify strict protocol labeling and harmonized adapters; no external metric is a v5 result."
+    },
+    {
+      "claim_id": "L3-GAP-008",
+      "claim_text_bounded": "Within the reproducible search through 2026-08-14, no inspected source evaluates the exact v5 contrast of an Apriori train-only Wide branch versus No-Wide on the frozen train-mined rule-aligned evaluation cohort under the locked temporal full-catalog protocol; H3 therefore remains NOT_RUN rather than literature-supported.",
+      "evidence_kind": "search_bounded_absence_and_estimand_boundary",
+      "source_keys": ["agrawal_srikant_1994_apriori", "ghoshal_sarkar_2014_multi_item_rules", "liu_lai_lee_2007_hybrid_rules_cf", "cheng_2016_wide_deep", "li_jullien_ariannezhad_derijke_2023_reality_check", "mansouri_lahmiri_vahidov_2026_repeat_explore_lightgcn"],
+      "source_family_ids": ["family_agrawal_srikant_apriori_1994", "family_ghoshal_sarkar_multi_item_rules", "family_liu_hybrid_sequential_rules_cf", "family_cheng_wide_deep_2016", "family_nbr_reality_check", "family_repeat_explore_lightgcn_2026"],
+      "support_scope": "Bounded to the documented databases, sites, exact queries, filters, and cutoff in lane_report.md; it is not a universal proof of absence.",
+      "support_verdict": "partially_supported",
+      "locator": null,
+      "locator_basis": "none",
+      "forbidden_extrapolations": ["No such paper exists anywhere.", "The gap itself supports H3.", "Literature plausibility is a benchmark result."],
+      "counter_evidence": ["Several retained sources provide partial mechanism precedents, but none matches the complete v5 estimand and protocol."],
+      "planning_only": true,
+      "production_use_condition": "Planning/gap statement only; central review must preserve the search-bounded wording."
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "schema_version": "stage1b-r1-r7-dispatch-1.0",
+  "project": "hybrid-recsys-v5",
+  "stage": "1B",
+  "round": "R1",
+  "step": "R7_freeze_packet",
+  "dispatched_at": "2026-08-21",
+  "model": "gpt-5.6-sol",
+  "reasoning": "high",
+  "execution_mode": "fresh_dedicated_worktree_task",
+  "task": {
+    "thread_id": "01a024d2-01ef-7a82-95f4-1645417712f3",
+    "client_thread_id": "client-new-thread:b61372e5-7519-4797-9e30-53368b0dbc42",
+    "host_id": "local",
+    "worktree": "C:/Users/ACER/.codex/worktrees/d594/backend",
+    "title": "Stage 1B R1 R7 — Freeze Audit Packet",
+    "status_at_dispatch_check": "active",
+    "status_at_completion_check": "completed_after_portability_remediation",
+    "final_turn_status": "completed",
+    "final_verdict": "PASS_READY_FOR_INDEPENDENT_AUDIT"
+  },
+  "input_manifest": {
+    "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/r7_input_manifest.json",
+    "bytes": 3491,
+    "sha256": "98ffc47ff8ce216838d2c5ff542628b002bc0d4f5feb28853b8661af99cad08a"
+  },
+  "freeze_contract": {
+    "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/r7_freeze_contract.md",
+    "bytes": 3229,
+    "sha256": "e8672fe6e5dae707e146e1b46cce8ab938d02d9eb440bd454d774b4f02362920"
+  },
+  "scholar_adjudication_sha256": "a9a9ccc008f119bd4e4923fbb580529390a4f6653c8d973c1487e70133a2df62",
+  "write_scope": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase4_freeze/r7_packet_r1/",
+  "completion_receipt": {
+    "checked_at": "2026-08-21",
+    "imported_to_central_workspace": true,
+    "imported_files": 6,
+    "import_hash_mismatches": 0,
+    "initial_central_validation": "FAIL_23_OF_27_MUTABLE_STATE_PORTABILITY",
+    "remediation": "embedded_historical_authorized_state_for_final_replay",
+    "final_central_validation": "29/29 PASS",
+    "packet_members": 193,
+    "canonical_root_sha256": "f0f2d56e42ce0f181f83182ddffe1060bf8994f50ababd4b0dbe563a942370dd",
+    "handoff_sha256": "fca016c5499cd7e81f19ace9b04514f7ac0139137bab50b5d1e05c9a4c51b117",
+    "r8_authorized": true
+  },
+  "phase_boundary": "R7 packet freeze only; R8 audit, R9 seal, Stage 2 authorization, benchmark execution, and H1-H4 are forbidden.",
+  "next_gate": "Dispatch a fresh Sol High R8 independent audit against the immutable 193-member packet and canonical root hash."
+}

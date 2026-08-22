@@ -1,0 +1,843 @@
+{
+  "schema_version": "stage1b-r1-candidate-registry-1.0",
+  "project": "hybrid-recsys-v5",
+  "stage": "1B",
+  "round": "remediation R1",
+  "lane": "L1_evaluation_reproducibility",
+  "research_cutoff": "2026-08-14",
+  "generated_at": "2026-08-14T03:20:00+07:00",
+  "counting_rule": {
+    "canonical_record": "One retained bibliographic record per separately citable work or separately citable version.",
+    "independent_family": "Versions, extensions, or consolidations of the same study count once; author overlap alone does not merge independent studies.",
+    "operational_resource": "Code, data, and service resources are counted outside the scholarly corpus and receive no fabricated publication year."
+  },
+  "counts": {
+    "scholarly_canonical_records": 23,
+    "independent_scholarly_source_families": 21,
+    "operational_resources": 0,
+    "identity_verified": 23,
+    "metadata_verified": 23,
+    "source_content_verified": 19,
+    "locator_ready": 19,
+    "peer_reviewed_true": 21,
+    "peer_reviewed_unknown": 2,
+    "publication_status_published": 21,
+    "publication_status_accepted": 1,
+    "publication_status_preprint": 1
+  },
+  "scholarly_works": [
+    {
+      "source_key": "krichene_rendle_2020_kdd",
+      "record_type": "scholarly_work",
+      "title": "On Sampled Metrics for Item Recommendation",
+      "authors": ["Walid Krichene", "Steffen Rendle"],
+      "publication_year": 2020,
+      "venue": "Proceedings of the 26th ACM SIGKDD International Conference on Knowledge Discovery & Data Mining",
+      "document_type": "conference_paper",
+      "publication_status": "published",
+      "peer_reviewed": true,
+      "peer_review_basis": "Published KDD conference paper on the ACM source-of-record DOI page.",
+      "doi": "10.1145/3394486.3403226",
+      "official_url": "https://doi.org/10.1145/3394486.3403226",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "source_family_id": "sf_krichene_sampled_metrics",
+      "locator": {
+        "artifact_type": "publisher_pdf",
+        "uri": "source_artifacts/krichene_rendle_2020_kdd_author_copy.pdf",
+        "anchor": "PDF pp. 1, 8–9; abstract, empirical ordering results, Sections 7–8",
+        "basis": "original_content",
+        "accessed_at": "2026-08-14",
+        "sha256": "51095e67875ba6577e7c53df099c49c4b6d02ee4049e2484e7c880ba6b620694"
+      },
+      "version_relation": "Original KDD conference version; an author-hosted ACM-formatted copy was acquired and inspected. krichene_rendle_2021_ijcai_extended is the authoritative IJCAI extended abstract in the same family.",
+      "limitations": [
+        "The analysis is scoped to sampled candidate evaluation and includes a single-relevant-item assumption for the main derivations.",
+        "Does not define v5 temporal splitting, candidate masking, or aggregation."
+      ],
+      "provenance": [
+        "ACM DOI source of record: https://doi.org/10.1145/3394486.3403226",
+        "Official Google Research publication page: https://research.google/pubs/on-sampled-metrics-for-item-recommendation/",
+        "Author-hosted exact KDD artifact: http://walid.krichene.net/papers/KDD-sampled-metrics.pdf",
+        "Author-hosted full artifact inspected and PDF preflight passed; checked 2026-08-14"
+      ]
+    },
+    {
+      "source_key": "krichene_rendle_2021_ijcai_extended",
+      "record_type": "scholarly_work",
+      "title": "On Sampled Metrics for Item Recommendation (Extended Abstract)",
+      "authors": ["Walid Krichene", "Steffen Rendle"],
+      "publication_year": 2021,
+      "venue": "Proceedings of the Thirtieth International Joint Conference on Artificial Intelligence",
+      "document_type": "other",
+      "publication_status": "published",
+      "peer_reviewed": true,
+      "peer_review_basis": "Published IJCAI proceedings extended abstract with official proceedings artifact.",
+      "doi": "10.24963/ijcai.2021/651",
+      "official_url": "https://doi.org/10.24963/ijcai.2021/651",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "source_family_id": "sf_krichene_sampled_metrics",
+      "locator": {
+        "artifact_type": "publisher_pdf",
+        "uri": "source_artifacts/krichene2021_extended_abstract.pdf",
+        "anchor": "PDF pp. 1–4, abstract, Sections 3.1 and 4",
+        "basis": "original_content",
+        "accessed_at": "2026-08-14",
+        "sha256": "5f7b49ac4be0d293999cf048d92d28e36651b6c04819feec41fdf915dfe537f8"
+      },
+      "version_relation": "Authoritative extended abstract of the same study as krichene_rendle_2020_kdd.",
+      "limitations": ["Same evidence family as the 2020 KDD paper; not an independent study."],
+      "provenance": [
+        "Official IJCAI DOI record: https://doi.org/10.24963/ijcai.2021/651",
+        "Official IJCAI proceedings PDF inspected; checked 2026-08-14"
+      ]
+    },
+    {
+      "source_key": "li_jin_liu_ren_gao_liu_2023_aaai",
+      "record_type": "scholarly_work",
+      "title": "Towards Reliable Item Sampling for Recommendation Evaluation",
+      "authors": ["Dong Li", "Ruoming Jin", "Zhenming Liu", "Bin Ren", "Jing Gao", "Zhi Liu"],
+      "publication_year": 2023,
+      "venue": "Proceedings of the AAAI Conference on Artificial Intelligence",
+      "document_type": "conference_paper",
+      "publication_status": "published",
+      "peer_reviewed": true,
+      "peer_review_basis": "Published AAAI proceedings paper on the official AAAI OJS record.",
+      "doi": "10.1609/aaai.v37i4.25561",
+      "official_url": "https://ojs.aaai.org/index.php/AAAI/article/view/25561",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "source_family_id": "sf_li_item_sampling_evaluation",
+      "locator": {
+        "artifact_type": "publisher_pdf",
+        "uri": "source_artifacts/li2023_reliable_sampling.pdf",
+        "anchor": "PDF pp. 1–2 and 6, abstract, Introduction, experimental comparison",
+        "basis": "original_content",
+        "accessed_at": "2026-08-14",
+        "sha256": "541d349c9c4599b38ac0b2e56b69ec84f0848966e256b0fcaa2119d36100cd57"
+      },
+      "version_relation": "Conference version in the same consolidated research family as li_jin_liu_ren_gao_liu_2024_tors.",
+      "limitations": [
+        "Estimator and adaptive-sampling results depend on their sampling assumptions.",
+        "Does not authorize sampled values to be relabeled as exact full-catalog values."
+      ],
+      "provenance": [
+        "Official AAAI OJS record: https://ojs.aaai.org/index.php/AAAI/article/view/25561",
+        "DOI source of record: https://doi.org/10.1609/aaai.v37i4.25561",
+        "Official AAAI proceedings PDF inspected; checked 2026-08-14"
+      ]
+    },
+    {
+      "source_key": "zhao_chen_wang_gu_wen_2020_cikm",
+      "record_type": "scholarly_work",
+      "title": "Revisiting Alternative Experimental Settings for Evaluating Top-N Item Recommendation Algorithms",
+      "authors": ["Wayne Xin Zhao", "Junhua Chen", "Pengfei Wang", "Qi Gu", "Ji-Rong Wen"],
+      "publication_year": 2020,
+      "venue": "Proceedings of the 29th ACM International Conference on Information & Knowledge Management",
+      "document_type": "conference_paper",
+      "publication_status": "published",
+      "peer_reviewed": true,
+      "peer_review_basis": "Published CIKM conference paper on the ACM source-of-record DOI page.",
+      "doi": "10.1145/3340531.3412095",
+      "official_url": "https://doi.org/10.1145/3340531.3412095",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "source_family_id": "sf_zhao_alternative_settings",
+      "locator": {
+        "artifact_type": "accepted_manuscript",
+        "uri": "source_artifacts/zhao2020_alternative_settings.pdf",
+        "anchor": "PDF pp. 1–4, abstract, Sections 2–4 and Table 2",
+        "basis": "original_content",
+        "accessed_at": "2026-08-14",
+        "sha256": "94077242766b97a6e889a5cef3cb202985dbce80d27730e1002d3ec84c7e1345"
+      },
+      "limitations": ["Uses its own datasets, algorithms, and tested settings; results do not transfer as raw v5 metrics."],
+      "provenance": [
+        "ACM DOI source of record: https://doi.org/10.1145/3340531.3412095",
+        "Full author manuscript and first page inspected; checked 2026-08-14"
+      ]
+    },
+    {
+      "source_key": "tamm_damdinov_vasilev_2021_recsys",
+      "record_type": "scholarly_work",
+      "title": "Quality Metrics in Recommender Systems: Do We Calculate Metrics Consistently?",
+      "authors": ["Yan-Martin Tamm", "Rinchin Damdinov", "Alexey Vasilev"],
+      "publication_year": 2021,
+      "venue": "Proceedings of the 15th ACM Conference on Recommender Systems",
+      "document_type": "conference_paper",
+      "publication_status": "published",
+      "peer_reviewed": true,
+      "peer_review_basis": "Published RecSys conference paper on the ACM source-of-record DOI page.",
+      "doi": "10.1145/3460231.3478848",
+      "official_url": "https://doi.org/10.1145/3460231.3478848",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "source_family_id": "sf_tamm_metric_consistency",
+      "locator": {
+        "artifact_type": "accepted_manuscript",
+        "uri": "source_artifacts/tamm2021_quality_metrics.pdf",
+        "anchor": "PDF pp. 1–5, abstract, Sections 4–6",
+        "basis": "original_content",
+        "accessed_at": "2026-08-14",
+        "sha256": "d624e786e63ba879aea9db8c15bc5a0a2ef85d09cddc5c3084890f27518c2048"
+      },
+      "limitations": ["Documents ambiguity and inconsistency; it does not select the v5 formula or aggregation rule."],
+      "provenance": [
+        "ACM DOI source of record: https://doi.org/10.1145/3460231.3478848",
+        "Author-posted full manuscript: https://arxiv.org/abs/2206.12858",
+        "Full content inspected; checked 2026-08-14"
+      ]
+    },
+    {
+      "source_key": "jarvelin_kekalainen_2002_tois",
+      "record_type": "scholarly_work",
+      "title": "Cumulated Gain-Based Evaluation of IR Techniques",
+      "authors": ["Kalervo Järvelin", "Jaana Kekäläinen"],
+      "publication_year": 2002,
+      "venue": "ACM Transactions on Information Systems",
+      "document_type": "journal_article",
+      "publication_status": "published",
+      "peer_reviewed": true,
+      "peer_review_basis": "Published ACM Transactions on Information Systems journal article.",
+      "doi": "10.1145/582415.582418",
+      "official_url": "https://doi.org/10.1145/582415.582418",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_content_verified": false,
+      "locator_ready": false,
+      "source_family_id": "sf_ndcg_foundation",
+      "limitations": [
+        "Full authoritative artifact not acquired in this lane.",
+        "Foundational IR metric source, not a recommender candidate-universe or temporal-split source."
+      ],
+      "provenance": [
+        "ACM source-of-record DOI metadata: https://doi.org/10.1145/582415.582418",
+        "Checked 2026-08-14"
+      ]
+    },
+    {
+      "source_key": "bradley_1997_pattern_recognition",
+      "record_type": "scholarly_work",
+      "title": "The Use of the Area Under the ROC Curve in the Evaluation of Machine Learning Algorithms",
+      "authors": ["Andrew P. Bradley"],
+      "publication_year": 1997,
+      "venue": "Pattern Recognition",
+      "document_type": "journal_article",
+      "publication_status": "published",
+      "peer_reviewed": true,
+      "peer_review_basis": "Published Pattern Recognition journal article on the Elsevier DOI record.",
+      "doi": "10.1016/S0031-3203(96)00142-2",
+      "official_url": "https://doi.org/10.1016/S0031-3203(96)00142-2",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_content_verified": false,
+      "locator_ready": false,
+      "source_family_id": "sf_roc_auc_foundation",
+      "limitations": [
+        "Full authoritative artifact not acquired in this lane.",
+        "Does not define per-user GAUC denominators, eligible-user rules, or hierarchical bootstrap."
+      ],
+      "provenance": [
+        "Publisher DOI metadata: https://doi.org/10.1016/S0031-3203(96)00142-2",
+        "Checked 2026-08-14"
+      ]
+    },
+    {
+      "source_key": "canamares_castells_moffat_2020_irj",
+      "record_type": "scholarly_work",
+      "title": "Offline Evaluation Options for Recommender Systems",
+      "authors": ["Rocío Cañamares", "Pablo Castells", "Alistair Moffat"],
+      "publication_year": 2020,
+      "venue": "Information Retrieval Journal",
+      "document_type": "journal_article",
+      "publication_status": "published",
+      "peer_reviewed": true,
+      "peer_review_basis": "Published Information Retrieval Journal article on SpringerLink.",
+      "doi": "10.1007/s10791-020-09371-3",
+      "official_url": "https://doi.org/10.1007/s10791-020-09371-3",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "source_family_id": "sf_canamares_offline_options",
+      "locator": {
+        "artifact_type": "accepted_manuscript",
+        "uri": "source_artifacts/canamares2020_offline_options.pdf",
+        "anchor": "PDF pp. 1–2 and 12–21, abstract, Sections 3.3 and 4",
+        "basis": "original_content",
+        "accessed_at": "2026-08-14",
+        "sha256": "da4c698baa81e256236a85f14a02909edb915e6be651ae98013366168b67d72e"
+      },
+      "limitations": ["Experimental effects are tied to the evaluated configurations; they do not produce cross-dataset metric comparability."],
+      "provenance": [
+        "Springer DOI source of record: https://doi.org/10.1007/s10791-020-09371-3",
+        "Lawful author manuscript corresponding to the journal article inspected; checked 2026-08-14"
+      ]
+    },
+    {
+      "source_key": "dacrema_boglio_cremonesi_jannach_2021_tois",
+      "record_type": "scholarly_work",
+      "title": "A Troubling Analysis of Reproducibility and Progress in Recommender Systems Research",
+      "authors": ["Maurizio Ferrari Dacrema", "Simone Boglio", "Paolo Cremonesi", "Dietmar Jannach"],
+      "publication_year": 2021,
+      "venue": "ACM Transactions on Information Systems",
+      "document_type": "journal_article",
+      "publication_status": "published",
+      "peer_reviewed": true,
+      "peer_review_basis": "Published ACM Transactions on Information Systems journal article.",
+      "doi": "10.1145/3434185",
+      "official_url": "https://doi.org/10.1145/3434185",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "source_family_id": "sf_dacrema_reproducibility",
+      "locator": {
+        "artifact_type": "accepted_manuscript",
+        "uri": "source_artifacts/dacrema2021_reproducibility.pdf",
+        "anchor": "PDF pp. 4–6 and 39–42, reproducible-setup criteria, Section 3, discussion",
+        "basis": "original_content",
+        "accessed_at": "2026-08-14",
+        "sha256": "b87b08a4b3f1801ba10cfb2b5e6773f3d69ef107a012f60e5ec502b72470f49b"
+      },
+      "version_relation": "Journal extension replacing the 2019 predecessor 10.1145/3298689.3347058 in the L1 shortlist.",
+      "limitations": ["Reproduction sample and tested algorithms are bounded; no raw result transfers to v5."],
+      "provenance": [
+        "ACM DOI source of record: https://doi.org/10.1145/3434185",
+        "Author full manuscript: https://arxiv.org/abs/1911.07698",
+        "Full content inspected; checked 2026-08-14"
+      ]
+    },
+    {
+      "source_key": "sun_fang_yang_qu_liu_yu_ong_zhang_2023_tpami",
+      "record_type": "scholarly_work",
+      "title": "DaisyRec 2.0: Benchmarking Recommendation for Rigorous Evaluation",
+      "authors": ["Zhu Sun", "Hui Fang", "Jie Yang", "Xinghua Qu", "Hongyang Liu", "Di Yu", "Yew-Soon Ong", "Jie Zhang"],
+      "publication_year": 2023,
+      "venue": "IEEE Transactions on Pattern Analysis and Machine Intelligence",
+      "document_type": "journal_article",
+      "publication_status": "published",
+      "peer_reviewed": true,
+      "peer_review_basis": "Published IEEE Transactions on Pattern Analysis and Machine Intelligence journal article.",
+      "doi": "10.1109/TPAMI.2022.3231891",
+      "official_url": "https://doi.org/10.1109/TPAMI.2022.3231891",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "source_family_id": "sf_daisyrec_rigorous_evaluation",
+      "locator": {
+        "artifact_type": "accepted_manuscript",
+        "uri": "source_artifacts/sun2023_daisyrec.pdf",
+        "anchor": "PDF pp. 2–8 and 15, Sections 2.2–2.3 and discussion of hyperparameter search",
+        "basis": "original_content",
+        "accessed_at": "2026-08-14",
+        "sha256": "7c615fbe6c7f36baa4969e116a310139965450ef71909185a5fba869ce255516"
+      },
+      "limitations": ["Benchmark framework is not evidence that a v5 adapter reproduces an upstream implementation."],
+      "provenance": [
+        "IEEE DOI source of record: https://doi.org/10.1109/TPAMI.2022.3231891",
+        "Author full manuscript: https://arxiv.org/abs/2206.10848",
+        "Full content inspected; checked 2026-08-14"
+      ]
+    },
+    {
+      "source_key": "zhao_hou_pan_yang_zhang_lin_zhang_bian_tang_sun_chen_xu_zhang_tian_tian_mu_fan_chen_wen_2022_cikm",
+      "record_type": "scholarly_work",
+      "title": "RecBole 2.0: Towards a More Up-to-Date Recommendation Library",
+      "authors": ["Wayne Xin Zhao", "Yupeng Hou", "Xingyu Pan", "Chen Yang", "Zeyu Zhang", "Zihan Lin", "Jingsen Zhang", "Shuqing Bian", "Jiakai Tang", "Wenqi Sun", "Yushuo Chen", "Lanling Xu", "Gaowei Zhang", "Zhen Tian", "Changxin Tian", "Shanlei Mu", "Xinyan Fan", "Xu Chen", "Ji-Rong Wen"],
+      "publication_year": 2022,
+      "venue": "Proceedings of the 31st ACM International Conference on Information & Knowledge Management",
+      "document_type": "conference_paper",
+      "publication_status": "published",
+      "peer_reviewed": true,
+      "peer_review_basis": "Published CIKM conference paper on the ACM source-of-record DOI page.",
+      "doi": "10.1145/3511808.3557680",
+      "official_url": "https://doi.org/10.1145/3511808.3557680",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "source_family_id": "sf_recbole2_library",
+      "locator": {
+        "artifact_type": "accepted_manuscript",
+        "uri": "source_artifacts/zhao2022_recbole2.pdf",
+        "anchor": "PDF pp. 1–3, abstract, Sections 1–3",
+        "basis": "original_content",
+        "accessed_at": "2026-08-14",
+        "sha256": "279a86f8e517d708366bba63c23ad8c0b059e182a40a4bd20a19f33a8d6b2595"
+      },
+      "limitations": ["Library availability and a unified interface do not establish faithful reproduction of a project adapter."],
+      "provenance": [
+        "ACM DOI source of record: https://doi.org/10.1145/3511808.3557680",
+        "Author full manuscript: https://arxiv.org/abs/2206.07351",
+        "Full content inspected; checked 2026-08-14"
+      ]
+    },
+    {
+      "source_key": "jannach_chen_2026_tors_editorial",
+      "record_type": "scholarly_work",
+      "title": "Improving Methodological Standards in Recommender Systems Offline Evaluation",
+      "authors": ["Dietmar Jannach", "Li Chen"],
+      "publication_year": 2026,
+      "venue": "ACM Transactions on Recommender Systems",
+      "document_type": "editorial",
+      "publication_status": "published",
+      "peer_reviewed": "unknown",
+      "peer_review_basis": "The ACM abstract classifies the work as an editorial and the article body calls it an essay; no direct evidence of external peer review was located.",
+      "doi": "10.1145/3800587",
+      "official_url": "https://doi.org/10.1145/3800587",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "source_family_id": "sf_jannach_chen_methodological_editorial",
+      "locator": {
+        "artifact_type": "publisher_html",
+        "uri": "https://dl.acm.org/doi/full/10.1145/3800587",
+        "anchor": "Publisher HTML, abstract and Section 3, Raising the Standards: Main Guidelines and Expectations",
+        "basis": "original_content",
+        "accessed_at": "2026-08-14"
+      },
+      "limitations": [
+        "Editorial/essay, not an empirical benchmark study.",
+        "Peer-review status must not be upgraded without direct evidence."
+      ],
+      "provenance": [
+        "ACM DOI source of record and exact publisher HTML: https://doi.org/10.1145/3800587",
+        "Official Dietmar Jannach publication page: https://ainf.aau.at/pub/jannach/jannach_publications.shtml",
+        "Exact publisher HTML inspected; focused genre and review-evidence search found no direct evidence of external peer review; checked 2026-08-14"
+      ]
+    },
+    {
+      "source_key": "castells_moffat_2022_ai_magazine",
+      "record_type": "scholarly_work",
+      "title": "Offline Recommender System Evaluation: Challenges and New Directions",
+      "authors": ["Pablo Castells", "Alistair Moffat"],
+      "publication_year": 2022,
+      "venue": "AI Magazine",
+      "document_type": "journal_article",
+      "publication_status": "published",
+      "peer_reviewed": true,
+      "peer_review_basis": "Published AI Magazine journal article on Wiley Online Library.",
+      "doi": "10.1002/aaai.12051",
+      "official_url": "https://onlinelibrary.wiley.com/doi/10.1002/aaai.12051",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "source_family_id": "sf_castells_moffat_offline_challenges",
+      "locator": {
+        "artifact_type": "publisher_html",
+        "uri": "https://onlinelibrary.wiley.com/doi/10.1002/aaai.12051",
+        "anchor": "Publisher HTML, abstract, Introduction, and experimental-configuration discussion",
+        "basis": "original_content",
+        "accessed_at": "2026-08-14"
+      },
+      "limitations": ["Perspective/review article; it frames evaluation choices but does not supply v5 benchmark results."],
+      "provenance": [
+        "Wiley source-of-record publisher HTML: https://onlinelibrary.wiley.com/doi/10.1002/aaai.12051",
+        "Exact publisher HTML inspected; checked 2026-08-14"
+      ]
+    },
+    {
+      "source_key": "hidasi_czapp_2023_recsys",
+      "record_type": "scholarly_work",
+      "title": "Widespread Flaws in Offline Evaluation of Recommender Systems",
+      "authors": ["Balázs Hidasi", "Ádám Tibor Czapp"],
+      "publication_year": 2023,
+      "venue": "Proceedings of the 17th ACM Conference on Recommender Systems",
+      "document_type": "conference_paper",
+      "publication_status": "published",
+      "peer_reviewed": true,
+      "peer_review_basis": "Published RecSys conference paper on the ACM source-of-record DOI page.",
+      "doi": "10.1145/3604915.3608839",
+      "official_url": "https://doi.org/10.1145/3604915.3608839",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "source_family_id": "sf_hidasi_offline_flaws",
+      "locator": {
+        "artifact_type": "accepted_manuscript",
+        "uri": "source_artifacts/hidasi2023_widespread_flaws.pdf",
+        "anchor": "PDF pp. 1–8, Sections 2.1–2.4 and discussion of candidate generation",
+        "basis": "original_content",
+        "accessed_at": "2026-08-14",
+        "sha256": "829cd67ea08ffe584a00b57abb0d3f7c718f92e020fbd84b993ae776b43eecc3"
+      },
+      "limitations": ["The study's tested sequential-recommender examples do not justify raw metric transfer to v5."],
+      "provenance": [
+        "ACM DOI source of record: https://doi.org/10.1145/3604915.3608839",
+        "Author full manuscript: https://arxiv.org/abs/2307.14951",
+        "Full content inspected; checked 2026-08-14"
+      ]
+    },
+    {
+      "source_key": "liu_medlar_glowacka_2023_recsys",
+      "record_type": "scholarly_work",
+      "title": "On the Consistency, Discriminative Power and Robustness of Sampled Metrics in Offline Top-N Recommender System Evaluation",
+      "authors": ["Yang Liu", "Alan Medlar", "Dorota Głowacka"],
+      "publication_year": 2023,
+      "venue": "Proceedings of the 17th ACM Conference on Recommender Systems",
+      "document_type": "other",
+      "publication_status": "published",
+      "peer_reviewed": true,
+      "peer_review_basis": "University of Helsinki research portal explicitly classifies the conference material as peer-reviewed.",
+      "doi": "10.1145/3604915.3610651",
+      "official_url": "https://doi.org/10.1145/3604915.3610651",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_content_verified": false,
+      "locator_ready": false,
+      "source_family_id": "sf_liu_sampled_metric_tradeoffs",
+      "limitations": [
+        "Authoritative full six-page artifact was not acquired; only official metadata and abstract were inspected.",
+        "Cannot be sole support for a production-intended claim."
+      ],
+      "provenance": [
+        "ACM DOI source of record: https://doi.org/10.1145/3604915.3610651",
+        "Institutional metadata and peer-review classification: https://researchportal.helsinki.fi/en/publications/on-the-consistency-discriminative-power-and-robustness-of-sampled/",
+        "Checked 2026-08-14"
+      ]
+    },
+    {
+      "source_key": "li_jin_liu_ren_gao_liu_2024_tors",
+      "record_type": "scholarly_work",
+      "title": "On Item-Sampling Evaluation for Recommender System",
+      "authors": ["Dong Li", "Ruoming Jin", "Zhenming Liu", "Bin Ren", "Jing Gao", "Zhi Liu"],
+      "publication_year": 2024,
+      "venue": "ACM Transactions on Recommender Systems",
+      "document_type": "journal_article",
+      "publication_status": "published",
+      "peer_reviewed": true,
+      "peer_review_basis": "Published ACM Transactions on Recommender Systems journal article.",
+      "doi": "10.1145/3629171",
+      "official_url": "https://doi.org/10.1145/3629171",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_content_verified": false,
+      "locator_ready": false,
+      "source_family_id": "sf_li_item_sampling_evaluation",
+      "version_relation": "Journal consolidation in the same independent source family as li_jin_liu_ren_gao_liu_2023_aaai.",
+      "limitations": [
+        "Exact full artifact was not acquired; publisher and NSF metadata were verified.",
+        "Cannot be sole support for a production-intended claim."
+      ],
+      "provenance": [
+        "ACM DOI source of record: https://doi.org/10.1145/3629171",
+        "NSF Public Access metadata: https://par.nsf.gov/search/author:%22Liu,%20Zhi%22",
+        "Crossref and ORCID metadata cross-check; checked 2026-08-14"
+      ]
+    },
+    {
+      "source_key": "ihemelandu_ekstrand_2023_wiiat",
+      "record_type": "scholarly_work",
+      "title": "Candidate Set Sampling for Evaluating Top-N Recommendation",
+      "authors": ["Ngozi Ihemelandu", "Michael D. Ekstrand"],
+      "publication_year": 2023,
+      "venue": "Proceedings of the 22nd IEEE/WIC International Conference on Web Intelligence and Intelligent Agent Technology",
+      "document_type": "conference_paper",
+      "publication_status": "published",
+      "peer_reviewed": true,
+      "peer_review_basis": "Published IEEE/WIC WI-IAT conference paper; official author page reports the version of record and acceptance rate.",
+      "doi": "10.1109/WI-IAT59888.2023.00018",
+      "official_url": "https://doi.org/10.1109/WI-IAT59888.2023.00018",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "source_family_id": "sf_ihemelandu_candidate_sampling",
+      "locator": {
+        "artifact_type": "accepted_manuscript",
+        "uri": "source_artifacts/ihemelandu2023_candidate_sampling.pdf",
+        "anchor": "PDF pp. 1–7, abstract, Sections I–V",
+        "basis": "original_content",
+        "accessed_at": "2026-08-14",
+        "sha256": "c7f7343cba7fdb73d37d8df8d410d230b17399bda7129fb66e196c59b4447ec7"
+      },
+      "limitations": ["Simulation and complete-data reference conditions are study-specific; candidate-sampled scores remain protocol-dependent."],
+      "provenance": [
+        "Official author publication page and manuscript: https://md.ekstrandom.net/pubs/wi-sampled-eval",
+        "IEEE DOI source of record: https://doi.org/10.1109/WI-IAT59888.2023.00018",
+        "Full content inspected; checked 2026-08-14"
+      ]
+    },
+    {
+      "source_key": "pereira_said_santos_2025_recsys",
+      "record_type": "scholarly_work",
+      "title": "On the Reliability of Sampling Strategies in Offline Recommender Evaluation",
+      "authors": ["Bruno L. Pereira", "Alan Said", "Rodrygo L. T. Santos"],
+      "publication_year": 2025,
+      "venue": "Proceedings of the 19th ACM Conference on Recommender Systems",
+      "document_type": "conference_paper",
+      "publication_status": "published",
+      "peer_reviewed": true,
+      "peer_review_basis": "Published RecSys conference paper on the ACM source-of-record DOI page.",
+      "doi": "10.1145/3705328.3748086",
+      "official_url": "https://doi.org/10.1145/3705328.3748086",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "source_family_id": "sf_pereira_sampling_reliability",
+      "locator": {
+        "artifact_type": "accepted_manuscript",
+        "uri": "source_artifacts/pereira2025_sampling_reliability.pdf",
+        "anchor": "Sections 3 and 5, fidelity comparison of sampled and full evaluations; page anchors withheld because PDF preflight reported a malformed cross-reference",
+        "basis": "original_content",
+        "accessed_at": "2026-08-14",
+        "sha256": "0375893704e4402b9e6911f71f78de0e68238112e992a53576a248849b509ad6"
+      },
+      "limitations": ["Full text is readable, but structural preflight was unavailable; only section-level locator is authorized."],
+      "provenance": [
+        "ACM DOI source of record: https://doi.org/10.1145/3705328.3748086",
+        "Author manuscript: https://arxiv.org/abs/2508.05398",
+        "Full text extracted and inspected; checked 2026-08-14"
+      ]
+    },
+    {
+      "source_key": "gusak_volodkevich_klenitskiy_vasilev_frolov_2025_recsys",
+      "record_type": "scholarly_work",
+      "title": "Time to Split: Exploring Data Splitting Strategies for Offline Evaluation of Sequential Recommenders",
+      "authors": ["Danil Gusak", "Anna Volodkevich", "Anton Klenitskiy", "Alexey Vasilev", "Evgeny Frolov"],
+      "publication_year": 2025,
+      "venue": "Proceedings of the 19th ACM Conference on Recommender Systems",
+      "document_type": "conference_paper",
+      "publication_status": "published",
+      "peer_reviewed": true,
+      "peer_review_basis": "Published RecSys conference paper on the ACM source-of-record DOI page.",
+      "doi": "10.1145/3705328.3748164",
+      "official_url": "https://doi.org/10.1145/3705328.3748164",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "source_family_id": "sf_gusak_time_to_split",
+      "locator": {
+        "artifact_type": "accepted_manuscript",
+        "uri": "source_artifacts/gusak2025_time_to_split.pdf",
+        "anchor": "PDF pp. 1–3 and 7–10, Figure 1, Sections 1–3 and results",
+        "basis": "original_content",
+        "accessed_at": "2026-08-14",
+        "sha256": "bacc8bdfe282550958cf596c52c585141e246606f151934ae66632023800455d"
+      },
+      "limitations": ["Sequential next-item settings and tested split variants do not automatically transfer to non-sequential tasks."],
+      "provenance": [
+        "ACM DOI source of record: https://doi.org/10.1145/3705328.3748164",
+        "Author version: https://arxiv.org/abs/2507.16289",
+        "Full content inspected; checked 2026-08-14"
+      ]
+    },
+    {
+      "source_key": "shehzad_breuer_maistro_jannach_2025_recsys",
+      "record_type": "scholarly_work",
+      "title": "We Share Our Code Online: Why This Is Not Enough to Ensure Reproducibility",
+      "authors": ["Faisal Shehzad", "Timo Breuer", "Maria Maistro", "Dietmar Jannach"],
+      "publication_year": 2025,
+      "venue": "Proceedings of the 19th ACM Conference on Recommender Systems",
+      "document_type": "conference_paper",
+      "publication_status": "published",
+      "peer_reviewed": true,
+      "peer_review_basis": "University of Copenhagen research portal explicitly classifies the proceedings output as peer-reviewed.",
+      "doi": "10.1145/3705328.3748157",
+      "official_url": "https://doi.org/10.1145/3705328.3748157",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "source_family_id": "sf_shehzad_code_reproducibility",
+      "locator": {
+        "artifact_type": "other",
+        "uri": "https://www.researchgate.net/publication/395337141_We_Share_Our_Code_Online_Why_This_Is_Not_Enough_to_Ensure_Reproducibility_and_Progress_in_Recommender_Systems_Research",
+        "anchor": "Author-uploaded final published full text, Sections 2–4; artifact DOI and CC BY notice verified",
+        "basis": "original_content",
+        "accessed_at": "2026-08-14"
+      },
+      "limitations": [
+        "The empirical audit covers 65 SIGIR 2022–2024 papers and measures artifact/reporting availability; it does not demonstrate that reported results were independently reproduced."
+      ],
+      "provenance": [
+        "ACM DOI source of record: https://doi.org/10.1145/3705328.3748157",
+        "Institutional metadata and peer-review classification: https://researchprofiles.ku.dk/en/publications/we-share-our-code-online-why-this-is-not-enough-to-ensure-reprodu/",
+        "University of Copenhagen record identifies the final published version as CC BY; its direct file endpoint returned HTTP 403.",
+        "Author-uploaded final published full text by Dietmar Jannach inspected on ResearchGate; checked 2026-08-14"
+      ]
+    },
+    {
+      "source_key": "benigni_dacrema_jannach_2026_tors",
+      "record_type": "scholarly_work",
+      "title": "Diffusion Recommender Models and the Illusion of Progress: A Concerning Study of Reproducibility and a Conceptual Mismatch",
+      "authors": ["Michael Benigni", "Maurizio Ferrari Dacrema", "Dietmar Jannach"],
+      "publication_year": 2026,
+      "venue": "ACM Transactions on Recommender Systems",
+      "document_type": "journal_article",
+      "publication_status": "published",
+      "peer_reviewed": true,
+      "peer_review_basis": "Published ACM Transactions on Recommender Systems journal article.",
+      "doi": "10.1145/3795792",
+      "official_url": "https://doi.org/10.1145/3795792",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "source_family_id": "sf_benigni_diffusion_reproduction",
+      "locator": {
+        "artifact_type": "accepted_manuscript",
+        "uri": "source_artifacts/benigni2026_diffusion_progress.pdf",
+        "anchor": "PDF pp. 1–7 and 55–66, abstract, reproduction methodology, discussion",
+        "basis": "original_content",
+        "accessed_at": "2026-08-14",
+        "sha256": "e487bf00d11b43c7251804f68f7ee64a955ac59b362093231715118473054ab8"
+      },
+      "limitations": ["Focused on diffusion recommender papers and their baselines; conclusions must remain within the reproduced sample."],
+      "provenance": [
+        "ACM DOI source of record: https://doi.org/10.1145/3795792",
+        "Author full manuscript: https://arxiv.org/abs/2505.09364",
+        "Full content inspected; checked 2026-08-14"
+      ]
+    },
+    {
+      "source_key": "parajuli_barenji_ekstrand_2026_recsys",
+      "record_type": "scholarly_work",
+      "title": "On the Convergent Validity of Offline Evaluation Designs for Recommender Systems",
+      "authors": ["Sushobhan Parajuli", "Samira Vaez Barenji", "Michael D. Ekstrand"],
+      "publication_year": 2026,
+      "venue": "Proceedings of the 20th ACM Conference on Recommender Systems",
+      "document_type": "conference_paper",
+      "publication_status": "accepted",
+      "peer_reviewed": true,
+      "peer_review_basis": "Official author publication page identifies the accepted RecSys 2026 full paper, DOI, and acceptance rate.",
+      "doi": "10.1145/3773078.3831818",
+      "official_url": "https://md.ekstrandom.net/pubs/recsys26-eval",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "source_family_id": "sf_parajuli_convergent_validity",
+      "locator": {
+        "artifact_type": "accepted_manuscript",
+        "uri": "source_artifacts/parajuli2026_convergent_validity.pdf",
+        "anchor": "PDF pp. 1–3 and 6–9, abstract, evaluation configurations, results and limitations",
+        "basis": "original_content",
+        "accessed_at": "2026-08-14",
+        "sha256": "7426bdf92cdef7f09c3bdaf68d944873fb9aaad27722a14d500485a71cdef5f5"
+      },
+      "limitations": [
+        "Proceedings publication occurs after the research cutoff; status is accepted, not published.",
+        "Validity results depend on the dense reference data and tested configurations."
+      ],
+      "provenance": [
+        "Official author publication page: https://md.ekstrandom.net/pubs/recsys26-eval",
+        "Accepted author manuscript: https://arxiv.org/abs/2607.25097",
+        "Full content inspected; checked 2026-08-14"
+      ]
+    },
+    {
+      "source_key": "said_bellogin_2026_arxiv",
+      "record_type": "scholarly_work",
+      "title": "Reproducibility in Recommender Systems: A Survey",
+      "authors": ["Alan Said", "Alejandro Bellogín"],
+      "publication_year": 2026,
+      "venue": "arXiv",
+      "document_type": "preprint",
+      "publication_status": "preprint",
+      "peer_reviewed": "unknown",
+      "peer_review_basis": "An ACM TORS acceptance announcement was located, but no source-of-record ACM DOI or direct review record was located by the cutoff; canonical status remains preprint.",
+      "doi": "10.48550/arXiv.2607.26074",
+      "official_url": "https://arxiv.org/abs/2607.26074",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "source_family_id": "sf_said_reproducibility_survey",
+      "locator": {
+        "artifact_type": "repository_pdf",
+        "uri": "source_artifacts/said2026_reproducibility_survey.pdf",
+        "anchor": "PDF pp. 1–3 and 17–21, abstract, method, findings and limitations",
+        "basis": "original_content",
+        "accessed_at": "2026-08-14",
+        "sha256": "2a1b1ed360e5a28c464796d2fb9c9ed9c0c33ac0c6f5ae3029c25217a1e80496"
+      },
+      "version_relation": "Preprint with announced but unresolved accepted journal version; do not cite as a published ACM TORS record until a canonical publisher record is verified.",
+      "limitations": ["Survey is limited to the RecSys Reproducibility Track and does not represent all recommender-systems research."],
+      "provenance": [
+        "arXiv canonical preprint record and full content: https://arxiv.org/abs/2607.26074",
+        "ACM TORS field acceptance announcement: https://recommender-systems.com/news/2026/07/26/from-reproducible-evidence-to-safer-and-more-useful-recommendations-nine-new-acm-tors-articles/",
+        "Full preprint inspected; focused exact-title ACM DOI search found no canonical publisher record; checked 2026-08-14"
+      ]
+    }
+  ],
+  "operational_resources": [],
+  "source_family_dependencies": [
+    {
+      "dependency_type": "version_family",
+      "source_family_id": "sf_krichene_sampled_metrics",
+      "member_source_keys": ["krichene_rendle_2020_kdd", "krichene_rendle_2021_ijcai_extended"],
+      "count_as_independent_families": 1,
+      "note": "The IJCAI record is an extended abstract of the KDD study, not independent evidence."
+    },
+    {
+      "dependency_type": "version_family",
+      "source_family_id": "sf_li_item_sampling_evaluation",
+      "member_source_keys": ["li_jin_liu_ren_gao_liu_2023_aaai", "li_jin_liu_ren_gao_liu_2024_tors"],
+      "count_as_independent_families": 1,
+      "note": "Conference and consolidated journal records share authors, methods, and study lineage."
+    },
+    {
+      "dependency_type": "research_program_overlap",
+      "member_source_keys": ["dacrema_boglio_cremonesi_jannach_2021_tois", "shehzad_breuer_maistro_jannach_2025_recsys", "benigni_dacrema_jannach_2026_tors", "jannach_chen_2026_tors_editorial"],
+      "count_as_independent_families": 4,
+      "note": "These are distinct studies/genres but share authors and a methodological research program; agreement is not treated as four fully independent teams."
+    },
+    {
+      "dependency_type": "methodological_line_overlap",
+      "member_source_keys": ["krichene_rendle_2020_kdd", "li_jin_liu_ren_gao_liu_2023_aaai", "liu_medlar_glowacka_2023_recsys", "ihemelandu_ekstrand_2023_wiiat", "pereira_said_santos_2025_recsys"],
+      "count_as_independent_families": 5,
+      "note": "Independent works addressing different sampled-evaluation questions; counter-evidence and assumptions must be reported rather than pooled."
+    }
+  ],
+  "verification_failures": [
+    {
+      "failure_id": "VF-L1-001",
+      "affected_source_keys": ["jarvelin_kekalainen_2002_tois", "liu_medlar_glowacka_2023_recsys", "li_jin_liu_ren_gao_liu_2024_tors"],
+      "failure_type": "publisher_or_institutional_pdf_http_403",
+      "interpretation": "Acquisition blocked; source identity is not unmatched and source existence is not in doubt."
+    },
+    {
+      "failure_id": "VF-L1-002",
+      "affected_source_keys": ["bradley_1997_pattern_recognition"],
+      "failure_type": "mirror_dns_resolution_failure",
+      "interpretation": "Alternative full-artifact route failed; canonical publisher metadata remains verified."
+    },
+    {
+      "failure_id": "VF-L1-003",
+      "affected_source_keys": ["pereira_said_santos_2025_recsys"],
+      "failure_type": "pdf_cross_reference_degradation",
+      "interpretation": "Full text was lawfully acquired and inspected, but page anchors are withheld; section anchor remains ready."
+    },
+    {
+      "failure_id": "VF-L1-004",
+      "affected_source_keys": [],
+      "failure_type": "semantic_scholar_not_queried_in_r1",
+      "interpretation": "The audit's prior Semantic Scholar HTTP 429 remains degraded service evidence, not an unmatched result."
+    },
+    {
+      "failure_id": "VF-L1-005",
+      "affected_source_keys": ["krichene_rendle_2020_kdd", "shehzad_breuer_maistro_jannach_2025_recsys"],
+      "failure_type": "route_specific_degradation_resolved_by_author_route",
+      "interpretation": "ACM or institutional routes remained blocked, but ordinary lawful author-hosted routes supplied exact full artifacts; both records are content-verified and locator-ready."
+    }
+  ]
+}

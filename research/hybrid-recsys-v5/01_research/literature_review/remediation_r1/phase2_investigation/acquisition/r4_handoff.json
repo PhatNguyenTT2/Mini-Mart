@@ -1,0 +1,697 @@
+{
+  "schema_version": "stage1b-r1-r4-handoff-1.0",
+  "handoff_type": "R4_SOURCE_ACQUISITION_AND_LOCATOR_COMPLETION",
+  "project": "hybrid-recsys-v5",
+  "stage": "1B",
+  "round": "R1",
+  "step": "R4",
+  "runtime_lock": {
+    "model": "gpt-5.6-sol",
+    "reasoning_effort": "xhigh"
+  },
+  "ars_codex_version": "0.1.26",
+  "research_cutoff": "2026-08-21",
+  "completed_at": "2026-08-21T19:00:00+07:00",
+  "verdict": "PASS",
+  "verdict_scope": "PASS authorizes only R5 claim-map rebuild and Phase 3 synthesis. It does not seal Stage 1B or authorize Stage 2 production citations.",
+  "r5_authorized": true,
+  "stage2_production_citations_authorized": false,
+  "counts": {
+    "core": {
+      "scholarly": 23,
+      "operational_families": 1,
+      "total": 24,
+      "acquired": 24,
+      "content_verified": 24,
+      "locator_ready": 24
+    },
+    "queue": {
+      "total": 13,
+      "terminal_resolved": 13,
+      "dispositions": {
+        "same_work_lawful_local_artifact_acquired": 10,
+        "same_work_authoritative_remote_acquired": 1,
+        "equivalent_replacement_accepted": 1,
+        "operational_family_rights_access_payload_state_resolved": 1
+      }
+    },
+    "claims": {
+      "claims": 44,
+      "conditional_production_candidate": 22,
+      "planning_only": 22,
+      "acquisition_satisfied": 41,
+      "locator_satisfied": 43,
+      "conditional_original_content_and_locator_satisfied": 22,
+      "production_ready": 0
+    },
+    "pdf_preflight": {
+      "total": 28,
+      "pass": 27,
+      "unavailable": 1
+    },
+    "local_source_artifacts": 35,
+    "production_ready": 0
+  },
+  "substitutions": [
+    {
+      "target_source_key": "liu2009_hybrid_seq_cf",
+      "replacement_doi": "10.1109/ICEBE.2007.6",
+      "decision": "ACCEPTED_FOR_BOUNDED_HYBRID_METHOD_EVIDENCE",
+      "forbidden_scope": "No exact 2009 journal-specific detail or numerical result."
+    }
+  ],
+  "unresolved_blockers": [],
+  "residual_constraints": [
+    "Jannach official full HTML remains remote-only.",
+    "Complete Journey full provider payload was not acquired through the interactive form.",
+    "li2023_repetition_exploration page anchors remain prohibited.",
+    "Liu replacement scope remains bounded."
+  ],
+  "complete_journey_result": {
+    "decision": "RESOLVED_WITH_SEPARATE_RIGHTS_AND_ACCESS_LAYERS",
+    "package": "completejourney 1.1.1",
+    "provider_full_payload_acquired": false,
+    "package_local_execution": true,
+    "upstream_redistribution_permission": false,
+    "license_scope_assertion": "Package CC0 is not propagated to upstream Complete Journey data."
+  },
+  "validation_receipt": {
+    "schema_version": "stage1b-r1-r4-validation-receipt-1.0",
+    "result": "PASS",
+    "checks_run": 18,
+    "checks_passed": 18,
+    "checks_failed": 0,
+    "checks": [
+      {
+        "name": "fail_closed_input_gate",
+        "status": "PASS",
+        "detail": {
+          "receipt": {
+            "input_manifest": {
+              "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/r4_input_manifest.json",
+              "bytes": 4212,
+              "sha256": "56cac16b697d6bde6878e1274bef397face00ec5697b8291a4d8e5ed13627aeb"
+            },
+            "contract": {
+              "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/r4_acquisition_contract.md",
+              "bytes": 7731,
+              "sha256": "1d9debe6dde2303784d0057c86d4aae8bd76e48b586875e0f84e9e98ca2a4571"
+            },
+            "frozen_r3_files_checked": 12,
+            "r3_handoff_sha256": "caaaa51b1cfda308bac8603287b41dc5e3ae42f6aa3eb6bfe7f9cf623712c888",
+            "r3_verdict": "PASS",
+            "r3_independent_audit": "20/20 PASS",
+            "transitive_artifacts_revalidated": 64,
+            "transitive_artifact_failures": 0,
+            "core_population_recomputed": {
+              "scholarly": 23,
+              "operational_families": 1,
+              "total": 24
+            },
+            "frozen_queue_targets": 13,
+            "result": "PASS"
+          },
+          "failures": []
+        }
+      },
+      {
+        "name": "required_output_files_exist",
+        "status": "PASS",
+        "detail": {
+          "missing": []
+        }
+      },
+      {
+        "name": "all_required_json_parses",
+        "status": "PASS",
+        "detail": {
+          "parsed": 4,
+          "failures": []
+        }
+      },
+      {
+        "name": "duplicate_acquisition_keys_zero",
+        "status": "PASS",
+        "detail": {
+          "duplicates": 0
+        }
+      },
+      {
+        "name": "duplicate_locator_ids_zero",
+        "status": "PASS",
+        "detail": {
+          "duplicates": 0
+        }
+      },
+      {
+        "name": "dangling_references_zero",
+        "status": "PASS",
+        "detail": {
+          "count": 0,
+          "items": []
+        }
+      },
+      {
+        "name": "artifact_bytes_and_hashes_match",
+        "status": "PASS",
+        "detail": {
+          "checked": 35,
+          "failures": []
+        }
+      },
+      {
+        "name": "all_local_artifacts_bound_once",
+        "status": "PASS",
+        "detail": {
+          "unbound": [],
+          "duplicate_bindings": 0
+        }
+      },
+      {
+        "name": "pdf_preflight_sidecars_valid",
+        "status": "PASS",
+        "detail": {
+          "counts": {
+            "PASS": 27,
+            "UNAVAILABLE": 1
+          },
+          "failures": [],
+          "unbound": []
+        }
+      },
+      {
+        "name": "prohibited_page_anchors_zero",
+        "status": "PASS",
+        "detail": {
+          "page_anchors": 0,
+          "textual_page_anchors": [],
+          "without_pass": []
+        }
+      },
+      {
+        "name": "core_population_and_outcomes_recomputed",
+        "status": "PASS",
+        "detail": {
+          "scholarly": 23,
+          "operational_families": 1,
+          "satisfied": 24
+        }
+      },
+      {
+        "name": "queue_terminal_dispositions_recomputed",
+        "status": "PASS",
+        "detail": {
+          "total": 13,
+          "unique": 13,
+          "terminal_resolved": 13,
+          "dispositions": {
+            "same_work_lawful_local_artifact_acquired": 10,
+            "same_work_authoritative_remote_acquired": 1,
+            "equivalent_replacement_accepted": 1,
+            "operational_family_rights_access_payload_state_resolved": 1
+          }
+        }
+      },
+      {
+        "name": "claim_population_and_exclusive_dispositions",
+        "status": "PASS",
+        "detail": {
+          "total": 44,
+          "central_counts": {
+            "planning_only": 22,
+            "conditional_production_candidate": 22
+          },
+          "exclusive": true
+        }
+      },
+      {
+        "name": "conditional_claim_prerequisites",
+        "status": "PASS",
+        "detail": {
+          "conditional": 22,
+          "satisfied": 22
+        }
+      },
+      {
+        "name": "production_ready_zero",
+        "status": "PASS",
+        "detail": {
+          "production_ready": 0
+        }
+      },
+      {
+        "name": "rights_layer_conflations_zero",
+        "status": "PASS",
+        "detail": {
+          "conflations": 0,
+          "layers": [
+            "dataset_rights",
+            "execution_access",
+            "package_code_license",
+            "paper_license",
+            "provider_access",
+            "provider_availability",
+            "redistribution_permission"
+          ]
+        }
+      },
+      {
+        "name": "prohibited_human_read_fields_zero",
+        "status": "PASS",
+        "detail": {
+          "count": 0
+        }
+      },
+      {
+        "name": "phase_boundary_intact",
+        "status": "PASS",
+        "detail": {
+          "actual": {
+            "r5": "NOT_PERFORMED",
+            "phase3_synthesis": "NOT_PERFORMED",
+            "h1_h4": "NOT_RUN",
+            "stage2_production_citations": "NOT_AUTHORIZED"
+          },
+          "expected": {
+            "r5": "NOT_PERFORMED",
+            "phase3_synthesis": "NOT_PERFORMED",
+            "h1_h4": "NOT_RUN",
+            "stage2_production_citations": "NOT_AUTHORIZED"
+          }
+        }
+      }
+    ],
+    "failures": [],
+    "recomputed": {
+      "core": {
+        "scholarly": 23,
+        "operational_families": 1,
+        "total": 24,
+        "contract_satisfied": 24
+      },
+      "queue": {
+        "total": 13,
+        "terminal_resolved": 13,
+        "dispositions": {
+          "same_work_lawful_local_artifact_acquired": 10,
+          "same_work_authoritative_remote_acquired": 1,
+          "equivalent_replacement_accepted": 1,
+          "operational_family_rights_access_payload_state_resolved": 1
+        }
+      },
+      "claims": {
+        "total": 44,
+        "acquisition_satisfied": 41,
+        "locator_satisfied": 43,
+        "conditional_original_content_satisfied": 22,
+        "production_ready": 0
+      },
+      "pdf_preflight": {
+        "PASS": 27,
+        "UNAVAILABLE": 1
+      },
+      "page_anchors": 0,
+      "rights_layer_conflations": 0,
+      "dangling_references": 0
+    },
+    "input_gate": {
+      "input_manifest": {
+        "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/r4_input_manifest.json",
+        "bytes": 4212,
+        "sha256": "56cac16b697d6bde6878e1274bef397face00ec5697b8291a4d8e5ed13627aeb"
+      },
+      "contract": {
+        "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/r4_acquisition_contract.md",
+        "bytes": 7731,
+        "sha256": "1d9debe6dde2303784d0057c86d4aae8bd76e48b586875e0f84e9e98ca2a4571"
+      },
+      "frozen_r3_files_checked": 12,
+      "r3_handoff_sha256": "caaaa51b1cfda308bac8603287b41dc5e3ae42f6aa3eb6bfe7f9cf623712c888",
+      "r3_verdict": "PASS",
+      "r3_independent_audit": "20/20 PASS",
+      "transitive_artifacts_revalidated": 64,
+      "transitive_artifact_failures": 0,
+      "core_population_recomputed": {
+        "scholarly": 23,
+        "operational_families": 1,
+        "total": 24
+      },
+      "frozen_queue_targets": 13,
+      "result": "PASS"
+    },
+    "receipt_payload_sha256": "b6072dc183ebc680d73988feb7e29d6914c74f555fc09189aee0af5b191932e6"
+  },
+  "output_manifest": [
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_acquisition_manifest.json",
+      "bytes": 139078,
+      "sha256": "a74156901a5ded6f0b853aff2a13fc2c9ca2c6e8b9e0fa09ba43b970b41a639a"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/locator_registry.json",
+      "bytes": 92236,
+      "sha256": "0af823257c2a5429b6b224a76e52bb7de1f5b4005c05cdec4d0574dce1230ae2"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/r4_claim_acquisition_map.json",
+      "bytes": 58339,
+      "sha256": "1dac3853f0cb5da0577acdf417fefc499325cd94299b1553c8619f224eceee39"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/rights_access_registry.json",
+      "bytes": 5820,
+      "sha256": "4007f58b6911dbcbfcea208b4bf1e4fecda648a9b77045ce8436fee82cb20f2c"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/r4_acquisition_report.md",
+      "bytes": 5678,
+      "sha256": "074de6c5b94a8d549492d4a34e07d7059858617a57c448d2681e057ae22647bf"
+    }
+  ],
+  "source_artifact_manifest": [
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/agrawal1994_apriori.pdf",
+      "bytes": 1359718,
+      "sha256": "99c6057d4fb42b5a1f9c2176a5bce0db2b860f69e897db46e68e9ef09d1154e2"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/cheng2016_wide_deep.pdf",
+      "bytes": 409971,
+      "sha256": "0f04fd0659345008ddcb4b0742b6d0e5475bb0c2cf2a2b222f1b06d109c6c4c8"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/complete_journey_provider_page_2026-08-21.html",
+      "bytes": 374797,
+      "sha256": "5fb537e70416f4bf7b20556ea01b45dd54a71541eeb8e7aaa599736df2adc503"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/complete_journey_provider_terms_2026-08-21.html",
+      "bytes": 268381,
+      "sha256": "f88091a14a73ca7418baa40b6e25d586b7935672d703e9ad79d153aaf977f1e0"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/completejourney_1.1.1.tar.gz",
+      "bytes": 3450462,
+      "sha256": "e13716feb9118d510b03077a39682a7a7aea75fa8f32aef38d1570d7df999376"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/completejourney_1.1.1_cran_page.html",
+      "bytes": 7034,
+      "sha256": "9d979899c7f455435f656a39c76f6314c3e80b098f8a499164b2619f9fe38579"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/completejourney_1.1.1_manual.pdf",
+      "bytes": 114371,
+      "sha256": "09167367aa7d73984d1d25a1a19d0478ecf83d7fbbe8b31acaa499e005c9c31c"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/completejourney_1.1.1_user_guide.html",
+      "bytes": 151432,
+      "sha256": "f0d8814977ca29c3ac06e199308e116b168cc3a322c2eca60cd2e995ecedeee0"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/covington2016_youtube.pdf",
+      "bytes": 898498,
+      "sha256": "efb4aa82a1a4cd720be05b837752aab7fee92b2a8a22f30ca6aa6fc24ed482ab"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/dacrema2021_reproducibility.pdf",
+      "bytes": 1027996,
+      "sha256": "b87b08a4b3f1801ba10cfb2b5e6773f3d69ef107a012f60e5ec502b72470f49b"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/ghoshal2014_multi_item_rules.pdf",
+      "bytes": 547988,
+      "sha256": "46d1b26bcb4ba3dbcc56296dbd68229921de43c29b6655130f2fe7ef8861a908"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/gusak2025_time_split.pdf",
+      "bytes": 1421328,
+      "sha256": "bacc8bdfe282550958cf596c52c585141e246606f151934ae66632023800455d"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/he2020_lightgcn.pdf",
+      "bytes": 1209591,
+      "sha256": "1f8fa2ab18921643f8858613a5bf6d91a51cd10f9ed9460c0a9bd26ca8cdb59d"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/hou2022_unisrec.pdf",
+      "bytes": 1096274,
+      "sha256": "62efa6a2ba06de9004513cc7e9df4614cbb6b5247c079c6b9360d753963a05b7"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/hou2023_vqrec.pdf",
+      "bytes": 1109650,
+      "sha256": "ef2a1742c6161a1eec5d03638e130347994c9252e3bd9b95d96dd8dd5a29e6cd"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/huang2023_aldi.pdf",
+      "bytes": 996268,
+      "sha256": "984d30f7b3d49d1f3fe15d5c7a18ab5460a85d5441a6744a89311572ecaecff7"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/jannach2026_hkbu_identity.html",
+      "bytes": 51885,
+      "sha256": "77026916f543dc15be7eda56ffaa20cc87954893de42f8c34901c5091d32c900"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/jin2023_amazon_m2.pdf",
+      "bytes": 833629,
+      "sha256": "10b87e5653e8a53a57fa0053917224ab8621b30c8871ee84c83b6491fa4ef537"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/kang2018_sasrec.pdf",
+      "bytes": 1432399,
+      "sha256": "d58f18384a055a265f5ecf2776ed28e8a745c0d9a183db078449249599bf604a"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/krichene2020_sampled_metrics.pdf",
+      "bytes": 1166022,
+      "sha256": "51095e67875ba6577e7c53df099c49c4b6d02ee4049e2484e7c880ba6b620694"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/li2023_nbr_reality.pdf",
+      "bytes": 1736505,
+      "sha256": "66bf549d33ce1ffe757c6162c157809f7fdcd03e18c3ca244155ba2468621a36"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/li2023_reliable_sampling.pdf",
+      "bytes": 218520,
+      "sha256": "541d349c9c4599b38ac0b2e56b69ec84f0848966e256b0fcaa2119d36100cd57"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/li2023_repetition_exploration.pdf",
+      "bytes": 1686585,
+      "sha256": "bb909d4643b36c3633c42945045818c4ac46117dc8ea0810272db7918756bbb7"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/liu2009_nycu_identity_abstract.html",
+      "bytes": 55950,
+      "sha256": "599ed718e0b28d11ec42c57acb1fb12dc4fbdde783028bdf863dd5351e54844a"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/meehan2025_cold_popbias.pdf",
+      "bytes": 1088904,
+      "sha256": "89bb9b7c0fc22b6bf1b6bc4093df63c7c2e6d5829de6972fa1b811290aa87abf"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/meehan2026_semco.pdf",
+      "bytes": 841051,
+      "sha256": "8b1faa3b7af449cc4bab34ac62fb47cc23fb4aeb6cc8efaf96855a8004bb6ac6"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/reimers2019_sbert.pdf",
+      "bytes": 570263,
+      "sha256": "e2703128039850ba7e098bfc6c7d9f3f3e75e6318815c5dd90af71085b1d384e"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/rendle2009_bpr.pdf",
+      "bytes": 292992,
+      "sha256": "9a28d1b9f447a86ca9cca4581d2e1a5b231d30b09a3127e176bdfebfb35ed02d"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/sarwar2001_itemcf.pdf",
+      "bytes": 249764,
+      "sha256": "7962b08a72b28ae732a674e1245e010b8d5883b1c08bff9aea4d185961e27fd5"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/sheng2025_alpharec.pdf",
+      "bytes": 7776094,
+      "sha256": "48a07c7a724a04303d405201ac9765139932a8801413bf3c3e51e431cee3a5aa"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/tagliabue2021_coveo.pdf",
+      "bytes": 156470,
+      "sha256": "0b54749bc915f85ba4e8f2b1123086113ba0ea04dff140ba2584b0e526b24ce7"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/tran2024_viecomrec.pdf",
+      "bytes": 166944,
+      "sha256": "7989a7ec514c4ffb52668d0c446f86782d87371f6e5ff2662207db3fd59f4cc1"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/volkovs2017_dropoutnet.pdf",
+      "bytes": 815883,
+      "sha256": "f6e36b907b5f3336d355b925721b53f47298b8bb350fa24a28395f661f2d899b"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/zhao2020_alternative_settings.pdf",
+      "bytes": 1233020,
+      "sha256": "94077242766b97a6e889a5cef3cb202985dbce80d27730e1002d3ec84c7e1345"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/zheng2026_utgrec.pdf",
+      "bytes": 1028332,
+      "sha256": "30bcd3d6a614f6d9c48f978aa7a3742abfe5c990f755f510c31522751e3c4a86"
+    }
+  ],
+  "pdf_preflight_manifest": [
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/agrawal1994_apriori.preflight.json",
+      "bytes": 566,
+      "sha256": "a8d6b339abb788740f0fe29bbad425c98bfa8262ce44fc041f4193362193368b"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/cheng2016_wide_deep.preflight.json",
+      "bytes": 563,
+      "sha256": "ffc87c7168850842f5291fd17e70108d48037a2db02e37d9d34e99d93aada4c2"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/completejourney_1.1.1_manual.preflight.json",
+      "bytes": 575,
+      "sha256": "ab74aeda88c4af33e4565de66f55b340ad31c2810daad4d6063d7eb2cedbf425"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/covington2016_youtube.preflight.json",
+      "bytes": 565,
+      "sha256": "b5c4a59900dcec940cf7c656ce9dcb8d61276e37653a581c90d44e76ae09199e"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/dacrema2021_reproducibility.preflight.json",
+      "bytes": 574,
+      "sha256": "50bfe1260a74d2257d8cc42f43f6945bbda9150408b6c69dff2d0ecced0d760c"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/ghoshal2014_multi_item_rules.preflight.json",
+      "bytes": 575,
+      "sha256": "c046ce69adf9988ca17f647ee7cc1c813ecb31a361c195bfa2f809809c394f44"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/gusak2025_time_split.preflight.json",
+      "bytes": 516,
+      "sha256": "e8dd55d2bf4dfdb4ddfb9d5bf984c4d34c393e9612355e3c712211cac8a44afd"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/he2020_lightgcn.preflight.json",
+      "bytes": 511,
+      "sha256": "5dfc05c274800b33d952a21a23ded082b35600e03b1d3864e0260826cdc03a2f"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/hou2022_unisrec.preflight.json",
+      "bytes": 508,
+      "sha256": "e7e815ec41b9a1a4f11fefee374812fe9d1b4a0792dbd3d7a251fc3a020efaec"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/hou2023_vqrec.preflight.json",
+      "bytes": 509,
+      "sha256": "e721700d94f7c431fcd5bece0580a7d223d1e379d1891dbd3b32a20b7e80bfb4"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/huang2023_aldi.preflight.json",
+      "bytes": 510,
+      "sha256": "01e481700f306d8fe2f2222b37a2aa7cc427f8782c479c26ddb38d9dd75503d2"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/jin2023_amazon_m2.preflight.json",
+      "bytes": 513,
+      "sha256": "30667c24cc53ef154f2cb24eb41575f7b5c71782c2407a6b1141e7c9520b81ab"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/kang2018_sasrec.preflight.json",
+      "bytes": 511,
+      "sha256": "9783420af569047396bbdfc1ab2d5666d064b64454db404d8810e39ccf33ac98"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/krichene2020_sampled_metrics.preflight.json",
+      "bytes": 524,
+      "sha256": "acc75f34e16edbd3be61858d3f0ee69c71be8c1af41e4b5cef9ce1c71d4057df"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/li2023_nbr_reality.preflight.json",
+      "bytes": 514,
+      "sha256": "9ec992668e7c7c021551e65c9eac45ea5e1d9aa93e698a56a8376a3a326798dc"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/li2023_reliable_sampling.preflight.json",
+      "bytes": 517,
+      "sha256": "bb6a3fb5170d8dc07a3a4f1cc80c1490ba9056eace2cb9402c41f1ac87b55ba8"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/li2023_repetition_exploration.preflight.json",
+      "bytes": 695,
+      "sha256": "798e04bb9f39597df65bd7b2c4229917660e321c91dcbbbe3e8c1bb480f6d354"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/meehan2025_cold_popbias.preflight.json",
+      "bytes": 516,
+      "sha256": "5f42e6916b25bb8d86a108ee06dd310f9399c67ce5c35186c0fe4220fbbd2c90"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/meehan2026_semco.preflight.json",
+      "bytes": 509,
+      "sha256": "5bdf8f43f437a700bf8a094fd8610c3ba2a9af331ec239361304e9f3022963e5"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/reimers2019_sbert.preflight.json",
+      "bytes": 513,
+      "sha256": "45130f5c0552ab1ac485536ccf2e46b74b3963dab9c08a854bb037289428cafd"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/rendle2009_bpr.preflight.json",
+      "bytes": 510,
+      "sha256": "66ef20a27726fac8c8257f38a339c1f4e22d22c6451af93688942aaa093d8f6d"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/sarwar2001_itemcf.preflight.json",
+      "bytes": 513,
+      "sha256": "bb77c269c01d80ddd0648ed938f4446de42e9541c9d5d8acdf994011d0c409be"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/sheng2025_alpharec.preflight.json",
+      "bytes": 514,
+      "sha256": "ddc79a7f7051cd649e7bb252e47e13448ba923325b1b65a7529a0beb45f8d5c9"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/tagliabue2021_coveo.preflight.json",
+      "bytes": 512,
+      "sha256": "12a2ad7e8b8e4a54aba9bb6e8c6079f5ba6e65bc8a28c226a9afd3f0b92e8eb3"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/tran2024_viecomrec.preflight.json",
+      "bytes": 511,
+      "sha256": "8c2e3097555ac684a6a71ce5ceac521cf0346ba39eb2f6084c6d55ede6352afa"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/volkovs2017_dropoutnet.preflight.json",
+      "bytes": 518,
+      "sha256": "9081bf8504190319314db6e47d76218ecad3e6f83078b959df146e400b5ed15c"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/zhao2020_alternative_settings.preflight.json",
+      "bytes": 522,
+      "sha256": "6b1e29ed4cbc748fbffe8cac8aebc4b91238c563de0d11fa9dc8c0c8ac91937c"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/zheng2026_utgrec.preflight.json",
+      "bytes": 512,
+      "sha256": "4aaa4b4c720aa8e4a2975e0145a345b25ea8face6710587135b3945971afc3db"
+    }
+  ],
+  "self_hash_policy": "r4_handoff.json excludes its own hash; every other fixed handoff output, every local source artifact, and every PDF-preflight sidecar is byte-counted and SHA-256 bound here.",
+  "phase_boundary": {
+    "r5": "NOT_PERFORMED",
+    "phase3_synthesis": "NOT_PERFORMED",
+    "h1_h4": "NOT_RUN",
+    "stage2_production_citations": "NOT_AUTHORIZED"
+  }
+}

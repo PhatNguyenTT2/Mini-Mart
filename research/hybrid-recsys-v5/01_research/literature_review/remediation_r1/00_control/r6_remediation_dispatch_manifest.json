@@ -1,0 +1,48 @@
+{
+  "schema_version": "stage1b-r1-r6-remediation-dispatch-1.0",
+  "project": "hybrid-recsys-v5",
+  "stage": "1B",
+  "round": "R1",
+  "step": "R6_findings_remediation_overlay",
+  "dispatched_at": "2026-08-21",
+  "model": "gpt-5.6-sol",
+  "reasoning": "high",
+  "execution_mode": "fresh_dedicated_worktree_task",
+  "task": {
+    "thread_id": "01a024a4-a1f8-7581-b940-d44eb5bfc3dc",
+    "client_thread_id": "client-new-thread:fea7f73f-72ae-41ae-8521-f62551a5d4ee",
+    "host_id": "local",
+    "worktree": "C:/Users/ACER/.codex/worktrees/9f7c/backend",
+    "title": "Stage 1B R1 R6R — Synthesis Remediation",
+    "status_at_dispatch_check": "active",
+    "status_at_completion_check": "completed",
+    "final_turn_status": "completed",
+    "final_verdict": "PASS_FRESH_R6_REAUDIT_ONLY"
+  },
+  "input_manifest": {
+    "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/r6_remediation_input_manifest.json",
+    "bytes": 3668,
+    "sha256": "9c9a60463106a7ba21ad8f24600db9688a56c7efa5986b33db2b232a2505dabb"
+  },
+  "remediation_contract": {
+    "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/r6_remediation_contract.md",
+    "bytes": 3962,
+    "sha256": "ee441685230cf52bcd26b16e5e466173c71d86ef890c6ffd5be581672515c7df"
+  },
+  "write_scope": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/remediation_r6/",
+  "completion_receipt": {
+    "checked_at": "2026-08-21",
+    "imported_to_central_workspace": true,
+    "imported_files": 9,
+    "import_hash_mismatches": 0,
+    "validation": "33/33 PASS",
+    "handoff_sha256": "a7ac8a66648903ca2cb5ddc62c9b076d1ae73fe8eacb084daa43d0acc78f4b79",
+    "verdict": "PASS_FRESH_R6_REAUDIT_ONLY",
+    "claims_bound": "44/44",
+    "citation_pairs_unchanged": "33/33",
+    "denominator_mismatches": 0,
+    "r7_authorized": false
+  },
+  "phase_boundary": "Versioned R6-findings remediation overlay complete; frozen R5/R6 unchanged; no re-audit, R7-R9, manuscript, benchmark, or H1-H4 work.",
+  "next_gate": "A fresh R6 re-audit is READY; R7 remains unauthorized."
+}

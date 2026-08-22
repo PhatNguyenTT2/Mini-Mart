@@ -1,0 +1,51 @@
+{
+  "schema_version": "stage1b-r1-scholar-tension-adjudication-1.0",
+  "project": "hybrid-recsys-v5",
+  "stage": "1B",
+  "round": "R1",
+  "recorded_at": "2026-08-21",
+  "authority": "explicit_user_adjudication",
+  "user_attestation_normalized": "Xác nhận theo đề xuất",
+  "recommendation_binding": {
+    "source_packet": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/devils_advocate_cp2_reaudit/tension_adjudication_packet_reaudit.json",
+    "source_packet_sha256": "e7bb44414272d9592ffe1c98ce63e2b4e93edd2ed64c39342bd079ac2404607d",
+    "r6_reaudit_handoff_sha256": "2408f511abf0940dd30991d8debaa9619ba130b6863c10520cd2d904523a2e1e",
+    "accepted_recommendation": "Confirm T-001 and T-003 through T-012; dispute T-002 and reclassify it to no_material_conflict/not_applicable."
+  },
+  "counts": {
+    "pairs": 12,
+    "confirmed": 11,
+    "disputed": 1,
+    "pending": 0,
+    "reclassified": 1,
+    "flagged_unresolved": 0
+  },
+  "decisions": [
+    {"pair_id": "T-001", "scholar_confirmation": "confirmed", "effective_pair_assessment": "conditional_difference", "effective_resolution_status": "resolved_in_synthesis"},
+    {"pair_id": "T-002", "scholar_confirmation": "disputed", "original_pair_assessment": "conditional_difference", "original_resolution_status": "resolved_in_synthesis", "effective_pair_assessment": "no_material_conflict", "effective_resolution_status": "not_applicable", "adjudication_outcome": "reclassified", "flagged_unresolved": false},
+    {"pair_id": "T-003", "scholar_confirmation": "confirmed", "effective_pair_assessment": "conditional_difference", "effective_resolution_status": "resolved_in_synthesis"},
+    {"pair_id": "T-004", "scholar_confirmation": "confirmed", "effective_pair_assessment": "no_material_conflict", "effective_resolution_status": "not_applicable"},
+    {"pair_id": "T-005", "scholar_confirmation": "confirmed", "effective_pair_assessment": "conditional_difference", "effective_resolution_status": "resolved_in_synthesis"},
+    {"pair_id": "T-006", "scholar_confirmation": "confirmed", "effective_pair_assessment": "no_material_conflict", "effective_resolution_status": "not_applicable"},
+    {"pair_id": "T-007", "scholar_confirmation": "confirmed", "effective_pair_assessment": "insufficient_overlap", "effective_resolution_status": "not_applicable"},
+    {"pair_id": "T-008", "scholar_confirmation": "confirmed", "effective_pair_assessment": "no_material_conflict", "effective_resolution_status": "not_applicable"},
+    {"pair_id": "T-009", "scholar_confirmation": "confirmed", "effective_pair_assessment": "conditional_difference", "effective_resolution_status": "resolved_in_synthesis"},
+    {"pair_id": "T-010", "scholar_confirmation": "confirmed", "effective_pair_assessment": "conditional_difference", "effective_resolution_status": "resolved_in_synthesis"},
+    {"pair_id": "T-011", "scholar_confirmation": "confirmed", "effective_pair_assessment": "conditional_difference", "effective_resolution_status": "resolved_in_synthesis"},
+    {"pair_id": "T-012", "scholar_confirmation": "confirmed", "effective_pair_assessment": "no_material_conflict", "effective_resolution_status": "not_applicable"}
+  ],
+  "application_policy": {
+    "original_r5_tension_artifact_mutated": false,
+    "original_r6_packets_mutated": false,
+    "overlay_is_authoritative_for_r7_and_later": true,
+    "disputed_unresolved_pairs_must_be_flagged_unresolved": true,
+    "t002_is_resolved_by_explicit_reclassification": true
+  },
+  "authorization": {
+    "r7_freeze_authorized": true,
+    "r8_audit_authorized": false,
+    "r9_seal_authorized": false,
+    "stage1b_sealed": false,
+    "stage2_production_citations_authorized": false
+  }
+}

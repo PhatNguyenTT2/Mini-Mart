@@ -40,6 +40,7 @@ from ai_service.contracts import (
     TerminalAction,
     TrainingVariant,
     VictoryMatrix,
+    artifact_lineage_model,
 )
 from ai_service.data.dataset import (
     HybridImplicitDataset,
@@ -70,6 +71,7 @@ from ai_service.errors import (
     VictoryGateError,
 )
 from ai_service.evaluation.ablation import (
+    DeepAblationFailure,
     DeepAblationRun,
     load_deep_ablation_artifact,
     require_hybrid_diagnostic_signal,
@@ -448,17 +450,26 @@ def _require_rule_training_capability(rules: Any, settings: Settings) -> Any:
     return rules.require_training_capability(settings)
 
 
-def _preflight_r3(settings: Settings, *, device: torch.device) -> dict[str, object]:
-    """Run the complete read-only v5 readiness seam before any GPU job.
+def _preflight_r3(
+    settings: Settings,
+    *,
+    device: torch.device,
+    prepared_inputs: PreparedTrainingInputs | None = None,
+) -> dict[str, object]:
+    """Run read-only readiness checks before any GPU job or run publication.
 
-    This deliberately reuses the same snapshot, feature, rule and sampler
-    loaders as training.  It does not create a run directory or mutate an
-    artifact, and ``device`` is reported only to make the operator's command
-    explicit; all checks remain CPU-safe.
+    The active v5 path owns exactly one prepared input set.  When training
+    supplies it, the preflight checks and trainer consume the same loaders;
+    the legacy branch retains its historical independent setup.
     """
     is_r3_rules = settings.data.rule_feature_schema_version == "3.0.0"
     if is_r3_rules:
-        return run_r3_preflight(settings, device=device).model_dump(mode="json")
+        prepared = prepared_inputs or prepare_training_inputs(settings)
+        return run_r3_preflight(
+            settings,
+            device=device,
+            prepared_inputs=prepared,
+        ).model_dump(mode="json")
 
     snapshot = load_snapshot(settings.data.snapshot_id, settings)
     embedding_path = _find_single_parent_artifact(
@@ -540,6 +551,7 @@ def _train(
     require_frozen_source: bool,
     prepared_inputs: PreparedTrainingInputs | None = None,
 ) -> tuple[HybridTwoTowerModel, PipelineState]:
+    is_r3_rules = settings.data.rule_feature_schema_version == "3.0.0"
     if prepared_inputs is not None:
         snapshot = prepared_inputs.snapshot
         embedding = prepared_inputs.embedding
@@ -550,23 +562,27 @@ def _train(
     revision = (
         require_frozen_source_revision() if require_frozen_source else resolve_source_revision()
     )
-    lineage_model = resolve_artifact_lineage(
-        snapshot.manifest,
-        embedding.manifest,
-        rules.manifest,
-        require_v5=settings.data.rule_feature_schema_version == "3.0.0",
-    )
-    if settings.data.rule_feature_schema_version == "3.0.0":
+    if is_r3_rules and prepared_inputs is not None:
+        lineage_model = prepared_inputs.lineage
+        rule_store = rules.store
+    else:
+        lineage_model = resolve_artifact_lineage(
+            snapshot.manifest,
+            embedding.manifest,
+            rules.manifest,
+            require_v5=is_r3_rules,
+        )
+        rule_store = _require_rule_training_capability(rules, settings)
+        if (
+            rules.manifest.feature_schema_version != settings.data.rule_feature_schema_version
+            or rules.manifest.snapshot_sha256 != snapshot.manifest.content_sha256
+            or rules.manifest.min_count != settings.data.min_rule_count
+            or abs(rules.manifest.min_lift - settings.data.min_rule_lift) > 1e-12
+        ):
+            raise ArtifactIntegrityError("training rule artifact does not match resolved config")
+    if is_r3_rules:
         lineage_model = require_v5_lineage(lineage_model)
     lineage = lineage_model.as_mapping()
-    rule_store = _require_rule_training_capability(rules, settings)
-    if (
-        rules.manifest.feature_schema_version != settings.data.rule_feature_schema_version
-        or rules.manifest.snapshot_sha256 != snapshot.manifest.content_sha256
-        or rules.manifest.min_count != settings.data.min_rule_count
-        or abs(rules.manifest.min_lift - settings.data.min_rule_lift) > 1e-12
-    ):
-        raise ArtifactIntegrityError("training rule artifact does not match resolved config")
     if settings.train.training_variant is TrainingVariant.HYBRID and (
         settings.train.r3_feature_selection_mode == "selection_artifact"
         or settings.train.r3_selection_artifact_sha256 is not None
@@ -688,11 +704,10 @@ def _train(
                 generator=torch.Generator().manual_seed(settings.train.seed),
             ),
         )
-    rule_readiness = None
-    if (
-        settings.train.objective == "sampled_softmax"
-        and settings.data.rule_feature_schema_version == "3.0.0"
-    ):
+    rule_readiness = (
+        prepared_inputs.rule_readiness if is_r3_rules and prepared_inputs is not None else None
+    )
+    if rule_readiness is None and settings.train.objective == "sampled_softmax" and is_r3_rules:
         rule_readiness = assess_training_rule_readiness(
             loader,
             minimum_rows_with_any_rule=settings.data.minimum_training_rows_with_any_rule,
@@ -1060,6 +1075,76 @@ def _load_run_context(
     )
 
 
+def _load_failed_deep_ablation_candidate(
+    base_settings: Settings,
+    run_id: str,
+) -> DeepAblationFailure:
+    """Strict-load only a valid terminal FAILED candidate, never a checkpoint."""
+
+    run_id = _validate_artifact_id(run_id, kind="run ID")
+    run_dir = base_settings.data.artifact_root.resolve() / "runs" / run_id
+    if not run_dir.is_dir() or run_dir.name != run_id:
+        raise ArtifactIntegrityError("run directory does not match requested run ID")
+    settings = load_resolved_settings(run_dir / "resolved-config.json")
+    if settings.train.training_variant is not TrainingVariant.DEEP_ONLY:
+        raise ArtifactIntegrityError(f"run {run_id} has unexpected training variant")
+    lifecycle = RunLifecycle.load(run_dir)
+    if lifecycle.status is not RunStatus.FAILED:
+        raise ArtifactIntegrityError("candidate is not a terminal FAILED Deep run")
+    if lifecycle.document.get("training_variant") != TrainingVariant.DEEP_ONLY.value:
+        raise ArtifactIntegrityError("run manifest variant differs from resolved configuration")
+    try:
+        summary_path = run_dir / "training" / "summary.json"
+        summary = json.loads(summary_path.read_text(encoding="utf-8"))
+    except (OSError, ValueError) as error:
+        raise ArtifactIntegrityError(
+            "failed Deep candidate has no valid terminal summary"
+        ) from error
+    if not isinstance(summary, dict):
+        raise ArtifactIntegrityError("failed Deep candidate terminal summary is not an object")
+    reason = summary.get("terminal_reason")
+    epochs_completed = summary.get("epochs_completed")
+    if (
+        summary.get("terminal_action") != TerminalAction.FAILED.value
+        or not isinstance(reason, str)
+        or not reason.strip()
+        or reason != lifecycle.document.get("status_reason")
+        or not isinstance(epochs_completed, int)
+        or epochs_completed < 0
+    ):
+        raise ArtifactIntegrityError(
+            "failed Deep candidate terminal summary differs from lifecycle"
+        )
+    try:
+        lineage = artifact_lineage_model(lifecycle.document["lineage"])
+    except (KeyError, TypeError, ValueError) as error:
+        raise ArtifactIntegrityError("failed Deep candidate lineage is invalid") from error
+    if settings.data.rule_feature_schema_version == "3.0.0":
+        lineage = require_v5_lineage(lineage)
+    return DeepAblationFailure(
+        run_id=run_id,
+        settings=settings,
+        lifecycle_status=lifecycle.status,
+        git_commit=cast(str, lifecycle.document.get("git_commit")),
+        lineage=lineage,
+        failure_reason=reason,
+    )
+
+
+def _load_deep_ablation_candidate(
+    base_settings: Settings,
+    run_id: str,
+) -> LoadedRun | DeepAblationFailure:
+    """Load a checkpointed finalist or its valid terminal FAILED receipt."""
+
+    run_id = _validate_artifact_id(run_id, kind="run ID")
+    run_dir = base_settings.data.artifact_root.resolve() / "runs" / run_id
+    lifecycle = RunLifecycle.load(run_dir)
+    if lifecycle.status is RunStatus.FAILED:
+        return _load_failed_deep_ablation_candidate(base_settings, run_id)
+    return _load_run_context(base_settings, run_id, expected_variant=TrainingVariant.DEEP_ONLY)
+
+
 def _evaluate_pair(
     base_settings: Settings,
     *,
@@ -1357,10 +1442,14 @@ def _compare_deep_ablations(
     all_run_ids = (control_run_id, *candidate_run_ids)
     if len(set(all_run_ids)) != 4:
         raise ConfigurationError("R3 requires four distinct Deep run IDs")
-    loaded = tuple(
-        _load_run_context(base_settings, run_id, expected_variant=TrainingVariant.DEEP_ONLY)
-        for run_id in all_run_ids
+    finalists = tuple(
+        _load_deep_ablation_candidate(base_settings, run_id) for run_id in all_run_ids
     )
+    control = finalists[0]
+    if isinstance(control, DeepAblationFailure):
+        raise ArtifactIntegrityError("R3 control Deep run must have a valid checkpoint")
+    loaded = tuple(run for run in finalists if isinstance(run, LoadedRun))
+    failures = tuple(run for run in finalists[1:] if isinstance(run, DeepAblationFailure))
     runs = tuple(
         DeepAblationRun(
             run_id=run.state.run_id,
@@ -1381,12 +1470,10 @@ def _compare_deep_ablations(
         for run in loaded
     )
     artifact = run_deep_ablation_comparison(
-        cast(
-            tuple[DeepAblationRun, DeepAblationRun, DeepAblationRun, DeepAblationRun],
-            runs,
-        ),
+        runs,
         artifact_root=base_settings.data.artifact_root,
         device=device,
+        candidate_failures=failures,
     )
     return {
         "artifact_dir": str(artifact.directory),
@@ -1426,31 +1513,19 @@ def _diagnose_r3(
 def execute_command(args: Namespace) -> None:
     """Execute one explicit stage without hidden source or embedding fallbacks."""
     if args.command == "promote-r4":
+        selection_path = Path(args.selection_report).resolve()
         try:
-            lineage = ArtifactLineageV5.model_validate_json(
-                args.lineage_json.read_text(encoding="utf-8")
-            )
-            feature_selection = json.loads(args.feature_selection_json.read_text(encoding="utf-8"))
-            objective_settings = json.loads(
-                args.objective_settings_json.read_text(encoding="utf-8")
-            )
-        except (OSError, ValueError, TypeError) as error:
-            raise ConfigurationError("R4 promotion inputs are invalid") from error
+            artifact_root = selection_path.parents[3]
+        except IndexError as error:
+            raise ConfigurationError("R4 selection report path is invalid") from error
+        destination = artifact_root / "promotions" / "r4" / f"{args.hybrid_run_id}.json"
         report = publish_r4_promotion(
-            args.output,
-            deep_selection_report=args.selection_report,
-            selected_deep_run_id=args.selected_deep_run_id,
-            selected_deep_checkpoint_sha256=args.selected_deep_checkpoint_sha256,
-            h3b_hybrid_run_id=args.h3b_hybrid_run_id,
-            h3b_hybrid_checkpoint_sha256=args.h3b_hybrid_checkpoint_sha256,
-            h3b_victory_matrix_sha256=args.h3b_victory_matrix_sha256,
-            lineage=lineage,
-            diagnostic_git_commit=args.diagnostic_git_commit,
-            production_git_commit=args.production_git_commit,
-            deep_config=args.deep_config,
-            hybrid_config=args.hybrid_config,
-            feature_selection=feature_selection,
-            objective_settings=objective_settings,
+            destination,
+            selection_report=selection_path,
+            hybrid_run_id=str(args.hybrid_run_id),
+            deep_config=Path(args.deep_config),
+            hybrid_config=Path(args.hybrid_config),
+            artifact_root=artifact_root,
         )
         _emit(report.model_dump(mode="json"))
         return
@@ -1720,15 +1795,14 @@ def execute_command(args: Namespace) -> None:
         _emit(smoke_state.model_dump(mode="json"))
         return
 
-    snapshot = load_snapshot(settings.data.snapshot_id, settings)
     if args.command == "features":
+        snapshot = load_snapshot(settings.data.snapshot_id, settings)
         _emit(_features(settings, snapshot, embedding_kind).manifest.model_dump(mode="json"))
         return
     if args.command == "rules":
+        snapshot = load_snapshot(settings.data.snapshot_id, settings)
         _emit(_rules(settings, snapshot).manifest.model_dump(mode="json"))
         return
-
-    device = _device(args.device)
 
     if args.command == "train":
         run_id = args.run_id
@@ -1752,6 +1826,8 @@ def execute_command(args: Namespace) -> None:
             else load_snapshot(settings.data.snapshot_id, settings)
         )
         device = _device(args.device)
+        if prepared_inputs is not None:
+            _preflight_r3(settings, device=device, prepared_inputs=prepared_inputs)
         artifact_root = settings.data.artifact_root.resolve()
         if prepared_inputs is None:
             embedding_path = _find_single_parent_artifact(

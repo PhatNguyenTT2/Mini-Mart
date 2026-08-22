@@ -1,0 +1,97 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r1-lanes-validation-1.0",
+  "created_at": "2026-08-22",
+  "passed": true,
+  "verdict": "PASS_BOTH_LANES_READY_FOR_E4_R1C_SYNTHESIS",
+  "failure_count": 0,
+  "failures": [],
+  "central_import": {
+    "r1a_source_commit": "48d0bbd031f4850750c9659de8244408ac6eb4e0",
+    "r1a_import_method": "git-fast-forward",
+    "r1a_central_tip": "48d0bbd031f4850750c9659de8244408ac6eb4e0",
+    "r1b_source_commit": "196e6c0ad295c282127dfb7fbd0d0a22ede33c39",
+    "r1b_import_method": "git-cherry-pick",
+    "r1b_central_tip": "de91bdd06df280aa60082e775fc6e06a1c1cc810",
+    "preserved_dirty_user_state": true
+  },
+  "checks": {
+    "r1a_exact_four_file_write_set": true,
+    "r1b_exact_four_file_write_set": true,
+    "manifest_self_hash": true,
+    "contract_hash": true,
+    "frozen_inputs_17_of_17": true,
+    "r1a_handoff_hash": true,
+    "r1b_handoff_hash": true,
+    "r1a_material_passport_and_repro_lock": true,
+    "r1b_material_passport_and_repro_lock": true,
+    "r1a_three_output_hashes": true,
+    "r1b_three_output_hashes": true,
+    "dual_json_parse_and_case_collision_guard": true,
+    "r1a_truth_and_scope_guards": true,
+    "r1b_truth_and_scope_guards": true,
+    "r1a_candidate_counts": true,
+    "r1a_simgcl_correction": true,
+    "r1a_v5_spec_correction": true,
+    "r1a_owned_findings": true,
+    "r1b_packet_root": true,
+    "r1b_ten_null_command_mappings": true,
+    "r1b_fifteen_blocking_prerequisites": true,
+    "r1b_seven_receipt_schemas": true,
+    "r1b_ten_receipt_mappings": true,
+    "r1b_owned_findings": true
+  },
+  "frozen_inputs": {
+    "expected": 17,
+    "matched": 17,
+    "manifest_canonical_lf_sha256": "d0a5db377c36f7109b4b56089ac024bb8ddcd4b5badc5aeb464969aa2e13d817",
+    "contract_canonical_lf_sha256": "b51c41a931ef88a1fcc356394600b3c2fcdafad68b5599477c9a894040d82538"
+  },
+  "r1a": {
+    "verdict": "R1A_COMPLETE_WITH_UNRESOLVED_EVIDENCE",
+    "handoff_canonical_lf_sha256": "6d779deeebd1422860665d42713da567c59fc3075045f406d308933aa9f13f26",
+    "owned_findings": ["E5-F001", "E5-F002"],
+    "candidate_status_counts": {
+      "READY_FOR_E4_R1C_CONSIDERATION": 0,
+      "PENDING_EVIDENCE": 7,
+      "REJECTED": 6,
+      "total": 13
+    },
+    "prohibited_joins_replayed": 5,
+    "minimum_defensible_official_reproduction": "NO_READY_ROW",
+    "outputs": {
+      "source_and_binding_corrections.json": "ce1ae9194e24dc1c35ce736aec039a3564674912ef0a0452ac2a045d3e64214b",
+      "candidate_readiness_delta.json": "3d53f30e284edaefc02737fa7a7cad7326fb53cf2f3db0b218a93f3c1137fb32",
+      "r1a_evidence_report.md": "abb168412aca37238f75618182777d6784cabfae817f69e07c6823437215684b"
+    }
+  },
+  "r1b": {
+    "verdict": "R1B_COMPLETE_WITH_BLOCKING_PREREQUISITES",
+    "handoff_canonical_lf_sha256": "61dd6a87dacb09916ef0e10f0798ffffc3f4c641f3a3b3dbe6add8f39652a84b",
+    "owned_findings": ["E5-F003", "E5-F004"],
+    "command_records": 10,
+    "command_strings_null": 10,
+    "all_unconfirmed": true,
+    "all_unauthorized": true,
+    "all_no_auto_retry": true,
+    "receipt_schemas": 7,
+    "receipt_mappings": 10,
+    "blocking_prerequisites": {
+      "required": 15,
+      "resolved": 0,
+      "unresolved": 15
+    },
+    "outputs": {
+      "mechanical_control_spec.md": "6d9d00114fe1da84d8f6df312906ad82da408800523a66cc60423f38585dcdf7",
+      "replacement_command_packet_draft.json": "40b8a7e753c896cd19ec38c10764e8b073f158050e7452af3549292b85c5c41b",
+      "receipt_schema_bundle.json": "0d462872340130eeeadbf54eb41301c6e6675c2e7006384a85c36960ccf8fb32"
+    }
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "confirmed": false
+  },
+  "next_gate": "E4_R1C_CENTRAL_SYNTHESIS_AND_FREEZE"
+}

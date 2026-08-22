@@ -1,0 +1,66 @@
+{
+  "schema_version": "stage1b-r1-r4-dispatch-1.0",
+  "project": "hybrid-recsys-v5",
+  "stage": "1B",
+  "round": "R1",
+  "step": "R4_source_acquisition_and_locator_completion",
+  "dispatched_at": "2026-08-21",
+  "model": "gpt-5.6-sol",
+  "reasoning": "xhigh",
+  "execution_mode": "fresh_dedicated_worktree_task",
+  "task": {
+    "thread_id": "01a02426-466e-7011-962e-2872befca221",
+    "client_thread_id": "client-new-thread:42b9ed70-ab5d-4670-8100-ae6224b7aaa1",
+    "host_id": "local",
+    "worktree": "C:/Users/ACER/.codex/worktrees/8db6/backend",
+    "title": "Stage 1B R1 R4 — Acquisition & Locators",
+    "status_at_dispatch_check": "active",
+    "status_at_completion_check": "completed",
+    "final_turn_status": "completed",
+    "final_verdict": "PASS",
+    "initial_progress_verified": true,
+    "fail_closed_preflight": "PASS"
+  },
+  "input_manifest": {
+    "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/r4_input_manifest.json",
+    "sha256": "56cac16b697d6bde6878e1274bef397face00ec5697b8291a4d8e5ed13627aeb"
+  },
+  "acquisition_contract": {
+    "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/r4_acquisition_contract.md",
+    "bytes": 7731,
+    "sha256": "1d9debe6dde2303784d0057c86d4aae8bd76e48b586875e0f84e9e98ca2a4571"
+  },
+  "preflight_receipt": {
+    "r4_manifest_sha256_match": true,
+    "frozen_r3_files_verified": "12/12",
+    "embedded_nonself_output_hashes_verified": "9/9",
+    "r3_handoff_sha256_match": true,
+    "r3_verdict": "PASS",
+    "r3_independent_audit": "20/20 PASS",
+    "prior_acquired_artifact_hashes_verified": "64/64",
+    "core_objects": 24,
+    "queue_targets": 13,
+    "claims": 44,
+    "reference_graph_closed": true,
+    "r4_authorized": true
+  },
+  "write_scope": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/",
+  "completion_receipt": {
+    "checked_at": "2026-08-21",
+    "imported_to_central_workspace": true,
+    "imported_files": 72,
+    "import_hash_mismatches": 0,
+    "verdict": "PASS",
+    "validation": "22/22 PASS",
+    "receipt_payload_sha256": "1869e5bb793b84dd3b1d0401f4cb4723f26fafc23995ab52f15309e35585cf04",
+    "handoff_sha256": "30f25d6b817ab00967718acfdf727abc5d1f97640cd2b0884f2f25515f377fe7",
+    "core_contract_satisfied": "24/24",
+    "queue_terminal": "13/13",
+    "conditional_claim_prerequisites_satisfied": "22/22",
+    "production_ready": 0,
+    "r5_authorized": true,
+    "stage2_production_citations_authorized": false
+  },
+  "phase_boundary": "ARS Phase 2 acquisition/verification complete; R5, synthesis, manuscript, benchmark, and H1-H4 were not performed by R4.",
+  "next_gate": "R5 claim-map rebuild and Phase 3 synthesis is READY and must run in a fresh gpt-5.6-sol/high task."
+}

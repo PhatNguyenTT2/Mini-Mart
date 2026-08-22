@@ -16,6 +16,13 @@ import pandas as pd
 
 from ai_service.config import Settings
 from ai_service.contracts import SnapshotManifest, SplitName
+from ai_service.data.benchmark_spec import VerifiedBenchmarkSpec, load_benchmark_spec
+from ai_service.data.semantic_cohort import (
+    build_semantic_cohort,
+    canonical_semantic_cohort_bytes,
+    load_semantic_cohort,
+    validate_semantic_cohort,
+)
 from ai_service.data.sources import RawDataset
 from ai_service.errors import ArtifactIntegrityError, DataIntegrityError
 
@@ -36,6 +43,7 @@ class Snapshot:
     persona_map: dict[int, int]
     cold_item_ids: tuple[int, ...]
     price_boundaries: np.ndarray
+    benchmark_spec: VerifiedBenchmarkSpec | None = None
 
 
 def fit_price_boundaries(unit_prices: np.ndarray, num_buckets: int) -> np.ndarray:
@@ -63,41 +71,47 @@ def _content_hash(frames: tuple[pd.DataFrame, ...], cold_ids: tuple[int, ...]) -
     return digest.hexdigest()
 
 
-def _metadata_sha256(frame: pd.DataFrame, columns: tuple[str, ...]) -> str | None:
-    present = [column for column in columns if column in frame.columns]
-    if not present:
+_ORDER_METADATA_COLUMNS = (
+    "order_id",
+    "product_id",
+    "benchmark_kind",
+    "benchmark_template_id",
+    "benchmark_trap_id",
+)
+
+
+def _order_metadata_sha256(frame: pd.DataFrame, *, required: bool) -> str | None:
+    """Hash ordered benchmark-order rows, including their identifying keys."""
+
+    missing = set(_ORDER_METADATA_COLUMNS) - set(frame.columns)
+    if missing:
+        if required:
+            raise ArtifactIntegrityError(
+                f"benchmark order metadata is missing columns: {sorted(missing)}"
+            )
         return None
-    normalized = frame[present].sort_values(present, kind="stable").reset_index(drop=True)
+    normalized = (
+        frame.loc[:, _ORDER_METADATA_COLUMNS]
+        .sort_values(list(_ORDER_METADATA_COLUMNS), kind="stable")
+        .reset_index(drop=True)
+    )
     return hashlib.sha256(_frame_hash(normalized)).hexdigest()
 
 
-def _semantic_cohort_document(events: pd.DataFrame) -> list[dict[str, object]]:
-    """Materialize target-query metadata into the immutable snapshot."""
+def _fsync_file(path: Path) -> None:
+    with path.open("rb+") as handle:
+        os.fsync(handle.fileno())
 
-    rows = events.loc[
-        events.event_origin.astype(str) == "semantic_trap",
-        ["event_id", "user_id", "product_id", "event_ts", "cohort_id"],
-    ].sort_values(["cohort_id", "event_ts", "event_id"], kind="stable")
-    document: list[dict[str, object]] = []
-    for (_, _), group in rows.groupby(["user_id", "cohort_id"], sort=False, dropna=False):
-        ordered = group.sort_values(["event_ts", "event_id"], kind="stable")
-        target_products = sorted(
-            {
-                int(row["product_id"])
-                for row in ordered.to_dict(orient="records")
-                if ":target:" in str(row["event_id"])
-            }
-        )
-        prior_product: int | None = None
-        for row in ordered.to_dict(orient="records"):
-            event_id = str(row["event_id"])
-            is_target = ":target:" in event_id
-            record: dict[str, object] = {str(key): value for key, value in row.items()}
-            record["anchor_product_id"] = prior_product
-            record["target_product_ids"] = target_products if is_target else []
-            document.append(record)
-            prior_product = int(row["product_id"])
-    return document
+
+def _fsync_directory(path: Path) -> None:
+    try:
+        descriptor = os.open(path, os.O_RDONLY)
+    except OSError:
+        return
+    try:
+        os.fsync(descriptor)
+    finally:
+        os.close(descriptor)
 
 
 def _split_timestamp_groups(
@@ -200,13 +214,11 @@ class SnapshotBuilder:
         ):
             raise DataIntegrityError("cold partition does not contain the expected catalog items")
         product_map = {raw_id: idx for idx, raw_id in enumerate(product_ids)}
-        raw_product_map = {idx: raw_id for raw_id, idx in product_map.items()}
 
         user_ids = tuple(sorted(int(value) for value in events.user_id.unique()))
         if len(user_ids) != data.num_users:
             raise DataIntegrityError(f"user count {len(user_ids)} != {data.num_users}")
         user_map = {raw_id: idx + 1 for idx, raw_id in enumerate(user_ids)}
-        raw_user_map = {idx: raw_id for raw_id, idx in user_map.items()}
         persona_counts = events.groupby("user_id").persona_cluster.nunique()
         if (persona_counts != 1).any():
             raise DataIntegrityError("each user must have exactly one persona")
@@ -299,20 +311,42 @@ class SnapshotBuilder:
             )
         orders = orders.sort_values(["order_ts", "order_id", "internal_product_id"], kind="stable")
 
+        is_v5 = data.rule_feature_schema_version == "3.0.0"
+        benchmark_spec: VerifiedBenchmarkSpec | None = None
+        cohort_bytes: bytes | None = None
+        if is_v5:
+            if data.benchmark_spec_path is None:
+                raise DataIntegrityError(
+                    "R3 snapshot publication requires an explicit benchmark spec document"
+                )
+            if raw.benchmark_metadata.spec_sha256 is None:
+                raise DataIntegrityError("benchmark run is missing its benchmark spec receipt")
+            if raw.benchmark_metadata.dataset_alignment_evidence is None:
+                raise DataIntegrityError("benchmark run is missing its alignment receipt")
+            try:
+                benchmark_spec = load_benchmark_spec(
+                    data.benchmark_spec_path,
+                    expected_sha256=raw.benchmark_metadata.spec_sha256,
+                )
+                cohort = build_semantic_cohort(
+                    events,
+                    benchmark_run_id=raw.benchmark_run_id,
+                    spec=benchmark_spec,
+                )
+                validate_semantic_cohort(
+                    cohort,
+                    spec=benchmark_spec,
+                    train=train,
+                    val=val,
+                    test=test,
+                )
+            except ArtifactIntegrityError as error:
+                raise DataIntegrityError(f"R3 snapshot lineage is invalid: {error}") from error
+            cohort_bytes = canonical_semantic_cohort_bytes(cohort.model_dump(mode="json"))
+
         content_sha = _content_hash((products, train, val, test, orders), cold_internal)
         cold_sha = hashlib.sha256(np.asarray(cold_raw_ids, dtype=np.int64).tobytes()).hexdigest()
-        # Persist the serving query alongside every held-out target.  The
-        # runtime semantic gate must not consult the tracked fixture to recover
-        # an anchor/target mapping: the immutable snapshot is the authority.
-        cohort_document = _semantic_cohort_document(events)
-        cohort_json = json.dumps(
-            cohort_document, sort_keys=True, default=str, separators=(",", ":")
-        )
-        semantic_cohort_sha = hashlib.sha256(cohort_json.encode("utf-8")).hexdigest()
-        order_metadata_sha = _metadata_sha256(
-            orders,
-            ("benchmark_kind", "benchmark_template_id", "benchmark_trap_id"),
-        )
+        order_metadata_sha = _order_metadata_sha256(orders, required=is_v5)
         manifest = SnapshotManifest(
             artifact_id=snapshot_id,
             content_sha256=content_sha,
@@ -335,28 +369,15 @@ class SnapshotBuilder:
                 "val_max": val.event_ts.max().to_pydatetime(),
                 "test_min": test.event_ts.min().to_pydatetime(),
             },
-            benchmark_spec_sha256=raw.benchmark_metadata.spec_sha256,
-            semantic_cohort_sha256=semantic_cohort_sha,
+            benchmark_spec_sha256=benchmark_spec.sha256 if benchmark_spec is not None else None,
+            semantic_cohort_sha256=(
+                hashlib.sha256(cohort_bytes).hexdigest() if cohort_bytes is not None else None
+            ),
             order_metadata_sha256=order_metadata_sha,
+            dataset_alignment_evidence=(
+                raw.benchmark_metadata.dataset_alignment_evidence if is_v5 else None
+            ),
         )
-
-        benchmark_spec_document: str | None = None
-        if data.rule_feature_schema_version == "3.0.0":
-            if data.benchmark_spec_path is None or not data.benchmark_spec_path.is_file():
-                raise DataIntegrityError(
-                    "R3 snapshot publication requires an explicit benchmark spec document"
-                )
-            try:
-                parsed_spec = json.loads(data.benchmark_spec_path.read_text(encoding="utf-8"))
-            except (OSError, ValueError) as error:
-                raise DataIntegrityError("benchmark spec document cannot be read") from error
-            benchmark_spec_document = json.dumps(parsed_spec, sort_keys=True, separators=(",", ":"))
-            if (
-                raw.benchmark_metadata.spec_sha256 is None
-                or hashlib.sha256(benchmark_spec_document.encode("utf-8")).hexdigest()
-                != raw.benchmark_metadata.spec_sha256
-            ):
-                raise DataIntegrityError("benchmark spec hash does not match database receipt")
 
         snapshots_root = data.artifact_root.resolve() / "snapshots"
         snapshots_root.mkdir(parents=True, exist_ok=True)
@@ -383,117 +404,134 @@ class SnapshotBuilder:
                 encoding="utf-8",
             )
             np.save(temporary / "price_boundaries.npy", boundaries)
-            (temporary / "semantic-cohort.json").write_text(
-                cohort_json, encoding="utf-8", newline="\n"
-            )
-            if benchmark_spec_document is not None:
-                (temporary / "benchmark-spec.json").write_text(
-                    benchmark_spec_document, encoding="utf-8", newline="\n"
-                )
+            if benchmark_spec is not None and cohort_bytes is not None:
+                (temporary / "benchmark-spec.json").write_bytes(benchmark_spec.canonical_bytes)
+                (temporary / "semantic-cohort.json").write_bytes(cohort_bytes)
             (temporary / "manifest.json").write_text(
                 manifest.model_dump_json(indent=2), encoding="utf-8"
             )
+            for file_path in temporary.iterdir():
+                if file_path.is_file():
+                    _fsync_file(file_path)
+            _fsync_directory(temporary)
+            _load_snapshot_directory(temporary, self.settings, expected_snapshot_id=snapshot_id)
+            if destination.exists():
+                raise ArtifactIntegrityError(f"immutable snapshot already exists: {destination}")
             os.replace(temporary, destination)
+            _fsync_directory(snapshots_root)
         except Exception:
             shutil.rmtree(temporary, ignore_errors=True)
             raise
 
-        return Snapshot(
-            manifest=manifest,
-            snapshot_dir=destination,
-            catalog_df=products,
-            train_df=train,
-            val_df=val,
-            test_df=test,
-            order_baskets_df=orders,
-            product_map=product_map,
-            raw_product_map=raw_product_map,
-            user_map=user_map,
-            raw_user_map=raw_user_map,
-            persona_map=persona_map,
-            cold_item_ids=cold_internal,
-            price_boundaries=boundaries,
+        return _load_snapshot_directory(
+            destination,
+            self.settings,
+            expected_snapshot_id=snapshot_id,
         )
 
 
-def load_snapshot(snapshot_id: str, settings: Settings) -> Snapshot:
-    path = settings.data.artifact_root.resolve() / "snapshots" / snapshot_id
+_V5_SNAPSHOT_FILES = frozenset(
+    {
+        "manifest.json",
+        "benchmark-spec.json",
+        "semantic-cohort.json",
+        "catalog.parquet",
+        "train.parquet",
+        "val.parquet",
+        "test.parquet",
+        "train_orders.parquet",
+        "mappings.json",
+        "price_boundaries.npy",
+    }
+)
+
+
+def _load_snapshot_directory(
+    path: Path,
+    settings: Settings,
+    *,
+    expected_snapshot_id: str,
+) -> Snapshot:
+    """Strict-load one immutable snapshot directory before it is published or used."""
+
     manifest_path = path / "manifest.json"
-    if not manifest_path.exists():
-        raise ArtifactIntegrityError(f"snapshot does not exist: {path}")
-    manifest = SnapshotManifest.model_validate_json(manifest_path.read_text(encoding="utf-8"))
-    if settings.data.rule_feature_schema_version == "3.0.0":
+    if not manifest_path.is_file():
+        raise ArtifactIntegrityError(f"snapshot manifest is missing: {path}")
+    try:
+        manifest = SnapshotManifest.model_validate_json(manifest_path.read_text(encoding="utf-8"))
+    except (OSError, ValueError) as error:
+        raise ArtifactIntegrityError("snapshot manifest cannot be parsed") from error
+    if manifest.artifact_id != expected_snapshot_id:
+        raise ArtifactIntegrityError("snapshot directory does not match its manifest identity")
+
+    is_v5 = settings.data.rule_feature_schema_version == "3.0.0"
+    benchmark_spec: VerifiedBenchmarkSpec | None = None
+    cohort = None
+    if is_v5:
+        actual_files = frozenset(entry.name for entry in path.iterdir())
+        if actual_files != _V5_SNAPSHOT_FILES:
+            difference = sorted(actual_files ^ _V5_SNAPSHOT_FILES)
+            raise ArtifactIntegrityError(
+                f"v5 snapshot has unexpected or missing files: {difference}"
+            )
         expanded_lineage = (
             manifest.benchmark_spec_sha256,
             manifest.semantic_cohort_sha256,
             manifest.order_metadata_sha256,
         )
         if not all(isinstance(value, str) for value in expanded_lineage):
-            raise ArtifactIntegrityError(
-                "v5 R3 snapshot manifest is missing expanded lineage hashes"
-            )
-    products = pd.read_parquet(path / "catalog.parquet")
-    train = pd.read_parquet(path / "train.parquet")
-    val = pd.read_parquet(path / "val.parquet")
-    test = pd.read_parquet(path / "test.parquet")
-    orders = pd.read_parquet(path / "train_orders.parquet")
-    mappings = json.loads((path / "mappings.json").read_text(encoding="utf-8"))
-    product_map = {int(key): int(value) for key, value in mappings["product_map"].items()}
-    user_map = {int(key): int(value) for key, value in mappings["user_map"].items()}
-    persona_map = {int(key): int(value) for key, value in mappings["persona_map"].items()}
-    cold_internal = tuple(product_map[int(value)] for value in mappings["cold_raw_product_ids"])
+            raise ArtifactIntegrityError("v5 snapshot manifest is missing expanded lineage hashes")
+        spec_sha256 = manifest.benchmark_spec_sha256
+        cohort_sha256 = manifest.semantic_cohort_sha256
+        assert isinstance(spec_sha256, str)
+        assert isinstance(cohort_sha256, str)
+        if manifest.dataset_alignment_evidence is None:
+            raise ArtifactIntegrityError("v5 snapshot manifest is missing alignment evidence")
+        benchmark_spec = load_benchmark_spec(
+            path / "benchmark-spec.json",
+            expected_sha256=spec_sha256,
+        )
+        cohort = load_semantic_cohort(
+            path,
+            expected_sha256=cohort_sha256,
+        )
+        if cohort.benchmark_run_id != manifest.benchmark_run_id:
+            raise ArtifactIntegrityError("semantic cohort benchmark run differs from manifest")
+
+    try:
+        products = pd.read_parquet(path / "catalog.parquet")
+        train = pd.read_parquet(path / "train.parquet")
+        val = pd.read_parquet(path / "val.parquet")
+        test = pd.read_parquet(path / "test.parquet")
+        orders = pd.read_parquet(path / "train_orders.parquet")
+        mappings = json.loads((path / "mappings.json").read_text(encoding="utf-8"))
+        product_map = {int(key): int(value) for key, value in mappings["product_map"].items()}
+        user_map = {int(key): int(value) for key, value in mappings["user_map"].items()}
+        persona_map = {int(key): int(value) for key, value in mappings["persona_map"].items()}
+        cold_internal = tuple(product_map[int(value)] for value in mappings["cold_raw_product_ids"])
+        price_boundaries = np.load(path / "price_boundaries.npy")
+    except (KeyError, OSError, TypeError, ValueError) as error:
+        raise ArtifactIntegrityError("snapshot data files cannot be loaded") from error
+
     actual_sha = _content_hash((products, train, val, test, orders), cold_internal)
     if actual_sha != manifest.content_sha256:
         raise ArtifactIntegrityError("snapshot content checksum mismatch")
-    if manifest.semantic_cohort_sha256 is not None:
+    if is_v5:
+        assert benchmark_spec is not None
+        assert cohort is not None
+        validate_semantic_cohort(cohort, spec=benchmark_spec, train=train, val=val, test=test)
+    elif manifest.semantic_cohort_sha256 is not None:
         cohort_path = path / "semantic-cohort.json"
         if not cohort_path.is_file():
             raise ArtifactIntegrityError("snapshot semantic cohort is missing")
-        cohort_sha = hashlib.sha256(cohort_path.read_bytes()).hexdigest()
-        if cohort_sha != manifest.semantic_cohort_sha256:
+        actual_cohort_sha = hashlib.sha256(cohort_path.read_bytes()).hexdigest()
+        if actual_cohort_sha != manifest.semantic_cohort_sha256:
             raise ArtifactIntegrityError("snapshot semantic cohort checksum mismatch")
-        if settings.data.rule_feature_schema_version == "3.0.0":
-            try:
-                cohort_document = json.loads(cohort_path.read_text(encoding="utf-8"))
-            except (OSError, ValueError) as error:
-                raise ArtifactIntegrityError("snapshot semantic cohort cannot be parsed") from error
-            if not isinstance(cohort_document, list):
-                raise ArtifactIntegrityError("snapshot semantic cohort must be a list")
-            for row in cohort_document:
-                if not isinstance(row, dict):
-                    raise ArtifactIntegrityError("snapshot semantic cohort row is invalid")
-                event_id = str(row.get("event_id", ""))
-                if ":target:" not in event_id:
-                    continue
-                anchor = row.get("anchor_product_id")
-                targets = row.get("target_product_ids")
-                if not isinstance(anchor, int) or not isinstance(targets, list) or not targets:
-                    raise ArtifactIntegrityError(
-                        "v5 semantic cohort target is missing anchor/target metadata"
-                    )
-                if not all(isinstance(target, int) for target in targets):
-                    raise ArtifactIntegrityError("v5 semantic cohort targets must be integers")
-    if manifest.benchmark_spec_sha256 is not None:
-        spec_path = path / "benchmark-spec.json"
-        if not spec_path.is_file():
-            raise ArtifactIntegrityError("snapshot benchmark spec is missing")
-        try:
-            spec_document = json.loads(spec_path.read_text(encoding="utf-8"))
-        except (OSError, ValueError) as error:
-            raise ArtifactIntegrityError("snapshot benchmark spec cannot be parsed") from error
-        canonical_spec = json.dumps(spec_document, sort_keys=True, separators=(",", ":"))
-        if (
-            hashlib.sha256(canonical_spec.encode("utf-8")).hexdigest()
-            != manifest.benchmark_spec_sha256
-        ):
-            raise ArtifactIntegrityError("snapshot benchmark spec checksum mismatch")
     if manifest.order_metadata_sha256 is not None:
-        order_sha = _metadata_sha256(
-            orders,
-            ("benchmark_kind", "benchmark_template_id", "benchmark_trap_id"),
-        )
+        order_sha = _order_metadata_sha256(orders, required=is_v5)
         if order_sha != manifest.order_metadata_sha256:
             raise ArtifactIntegrityError("snapshot order metadata checksum mismatch")
+
     return Snapshot(
         manifest=manifest,
         snapshot_dir=path,
@@ -508,5 +546,11 @@ def load_snapshot(snapshot_id: str, settings: Settings) -> Snapshot:
         raw_user_map={value: key for key, value in user_map.items()},
         persona_map=persona_map,
         cold_item_ids=cold_internal,
-        price_boundaries=np.load(path / "price_boundaries.npy"),
+        price_boundaries=price_boundaries,
+        benchmark_spec=benchmark_spec,
     )
+
+
+def load_snapshot(snapshot_id: str, settings: Settings) -> Snapshot:
+    path = settings.data.artifact_root.resolve() / "snapshots" / snapshot_id
+    return _load_snapshot_directory(path, settings, expected_snapshot_id=snapshot_id)

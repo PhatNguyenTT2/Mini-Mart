@@ -1,0 +1,83 @@
+{
+  "schema_version": "ARS-Handoff-Schema-1",
+  "artifact_id": "rq-brief-stage1a-v1",
+  "research_question": "Under a fixed temporal novel-purchase full-catalog protocol on the controlled Vietnamese retail benchmark v5, does the proposed decoupled Wide-and-Deep Two-Tower Hybrid improve ranking effectiveness over the strongest faithfully reproduced baseline selected using validation data?",
+  "sub_questions": [
+    "Within the preregistered cold-item cohort, does Hybrid preserve or improve ranking quality relative to independent Deep and the strongest collaborative-only comparator?",
+    "On the train-defined rule-aligned cohort, does removing the Apriori-derived Wide branch reduce ranking quality relative to the full Hybrid?",
+    "Does the direction of the locked Hybrid effect replicate on at least one public external commerce dataset that preserves the essential model and task contract?",
+    "After all accuracy gates pass, does the verified bundle satisfy preregistered latency, throughput, and memory gates on a fixed runner?"
+  ],
+  "finer_scores": {
+    "feasible": 7,
+    "interesting": 9,
+    "novel": 7,
+    "ethical": 8,
+    "relevant": 9
+  },
+  "scope": {
+    "in_scope": [
+      "Temporal novel-purchase full-catalog top-k recommendation",
+      "Controlled Vietnamese retail benchmark v5",
+      "Faithful baseline reproduction and harmonized shared-protocol evaluation",
+      "Cold-item and Apriori/Wide mechanism cohorts",
+      "Public external validation when the essential task and model contract is preserved",
+      "Post-accuracy runtime evaluation on a fixed runner"
+    ],
+    "out_of_scope": [
+      "Online A/B testing or causal business impact",
+      "New-user or zero-history cold-start without a separate protocol",
+      "Raw metric comparison across different datasets or candidate universes",
+      "Claims about natural Vietnamese shopper behavior from generated v5 behavior",
+      "Absolute state-of-the-art claims",
+      "Method-unfaithful large-language-model comparisons"
+    ],
+    "domain": "Offline top-k recommender-system benchmarking for retail and e-commerce",
+    "timeframe": "Frozen dataset-specific temporal windows; v5 spans 2026-01-01 through 2026-08-01 UTC; literature evidence through 2026 will be verified in Stage 1B",
+    "geography": "Vietnamese retail context for v5 and the Vietnamese sensitivity track; multilingual commerce only for external-validity testing",
+    "population": "Eligible dataset-defined user histories and full-catalog item candidates; v5 units are generated user histories rather than recruited human participants"
+  },
+  "methodology_type": "quantitative",
+  "theoretical_framework": "Operational memorization-generalization complementarity: an Apriori-derived Wide branch represents explicit train-observed co-purchase regularities, while a Deep Two-Tower/content branch represents generalization from histories and item features; fusion is a demonstrated mechanism only if the preregistered ablation supports it.",
+  "keywords": [
+    "recommender systems",
+    "two-tower",
+    "wide and deep",
+    "Apriori",
+    "cold-item recommendation",
+    "full-catalog evaluation",
+    "temporal split",
+    "faithful reproduction",
+    "Vietnamese retail",
+    "paired bootstrap"
+  ],
+  "hypothesis": "H1: Hybrid must have a paired 95% confidence-interval lower bound greater than zero for NDCG@10, HR@10, and macro per-user GAUC versus each metric-specific validation-selected locked baseline. H2: On the cold-item cohort, the lower bound for NDCG@10(Hybrid minus independent Deep) must be at least zero and semantic traps must pass 10/10. H3: On the train-defined rule-aligned cohort, the lower bound for NDCG@10(full Hybrid minus no-Wide ablation) must be greater than zero. H4: At least one full-contract public external dataset must retain a positive Hybrid NDCG@10 effect under the harmonized protocol; if no compatible dataset exists, H4 is NOT_TESTED.",
+  "exclusion_criteria": [
+    "Users without at least one novel organic purchase in the target split",
+    "User identifier 0",
+    "Seen items as recommendation candidates after masking",
+    "External datasets without verified license, immutable revision, task mapping, and sufficient signal compatibility",
+    "Baseline adapters without provenance, parity, and official-protocol reproduction acceptance",
+    "Any result generated after unauthorized test access or a protocol-changing code revision"
+  ],
+  "sub_question_bindings": {
+    "RQ2": "EXP-V5-HARMONIZED / cold-item result table",
+    "RQ3": "EXP-V5-HARMONIZED / rule-mechanism ablation table",
+    "RQ4": "EXP-EXTERNAL-VALIDITY / dataset-specific harmonized table",
+    "RQ5": "EXP-V5-HARMONIZED / fixed-runner efficiency table"
+  },
+  "stakeholders": [
+    "Recommender-systems researchers",
+    "Authors reproducing recommendation baselines",
+    "Vietnamese e-commerce research teams",
+    "Artifact and reproducibility reviewers"
+  ],
+  "ethical_flags": [
+    "Controlled or generated behavior must not be represented as natural human behavior",
+    "Dataset and catalog provenance, license, PII, and redistribution rights require verification",
+    "External public datasets may still require institutional exempt-status confirmation",
+    "No deployment or user-impact claim is supported by offline metrics alone"
+  ],
+  "material_passport_ref": "research/hybrid-recsys-v5/01_research/material_passport_stage1a.json",
+  "verification_status": "UNVERIFIED"
+}

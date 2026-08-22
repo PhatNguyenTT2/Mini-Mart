@@ -1,0 +1,295 @@
+{
+  "schema_version": "1.0",
+  "state_id": "hybrid-recsys-v5-stage1b-pre-audit-v1",
+  "supersedes": {
+    "path": "research/hybrid-recsys-v5/01_research/pipeline_state_stage1a.json",
+    "sha256": "5e00101998ac282eaf47594cad81694a7725609df5e923c344b71b0e7429b8fc",
+    "reason": "Preserve the Stage 1A snapshot while advancing Stage 1B to the independent-audit gate."
+  },
+  "pipeline_version": "ARS-Codex 0.1.24 / academic-pipeline 3.19.0",
+  "topic": "Reproducible hybrid recommendation for Vietnamese retail",
+  "paper_direction": "methods_empirical",
+  "current_stage": "1B",
+  "current_stage_status": "central_complete_audit_pending",
+  "next_stage": "1B-INDEPENDENT-AUDIT",
+  "pipeline_state": "awaiting_independent_audit",
+  "consecutive_continue_count": 1,
+  "active_passport": "stage1b_pre_audit_v1",
+  "input_manifest_id": "phase0-inputs-4456b4381737",
+  "input_lock_verified_at": "2026-08-13T11:13:31.653Z",
+  "target_venue": "NOT_SELECTED",
+  "language": {
+    "control_records": "vi",
+    "manuscript": "en"
+  },
+  "checkpoint_confirmations": {
+    "0": {
+      "confirmed": true,
+      "evidence": "User instructed: Continue cho stage 1A"
+    },
+    "1A": {
+      "confirmed": true,
+      "checkpoint_type": "FULL",
+      "evidence": "User authorized and completed L1-L5 Stage 1B execution."
+    },
+    "1B": {
+      "confirmed": false,
+      "checkpoint_type": "FULL",
+      "user_confirmation_required": true,
+      "evidence": "Central verification/deduplication/claim map/synthesis complete; independent audit not yet run."
+    }
+  },
+  "stages": {
+    "0": {
+      "name": "INTAKE_GOVERNANCE",
+      "status": "completed",
+      "checkpoint_confirmed": true,
+      "sealed_artifact": "research/hybrid-recsys-v5/00_control/phase0_seal.json"
+    },
+    "2": {
+      "name": "WRITE",
+      "status": "pending"
+    },
+    "3": {
+      "name": "REVIEW",
+      "status": "pending"
+    },
+    "4": {
+      "name": "REVISE",
+      "status": "pending"
+    },
+    "5": {
+      "name": "FINALIZE",
+      "status": "pending"
+    },
+    "6": {
+      "name": "PROCESS_SUMMARY",
+      "status": "pending"
+    },
+    "1A": {
+      "name": "RQ_METHODOLOGY_BACKFILL",
+      "skill": "deep-research",
+      "mode": "targeted-full-stage1a-scoping",
+      "status": "completed",
+      "started_at": "2026-08-13T11:13:31.653Z",
+      "completed_at": "2026-08-13T11:18:51.588Z",
+      "checkpoint_confirmed": false,
+      "checkpoint_type": "FULL",
+      "schema_validated": true,
+      "devils_advocate_verdict": "PASS",
+      "outputs": [
+        "research/hybrid-recsys-v5/01_research/rq_brief.md",
+        "research/hybrid-recsys-v5/01_research/rq_brief.schema1.json",
+        "research/hybrid-recsys-v5/01_research/rq_estimand_matrix.md",
+        "research/hybrid-recsys-v5/01_research/methodology_blueprint.md",
+        "research/hybrid-recsys-v5/01_research/devils_advocate_checkpoint1.md",
+        "research/hybrid-recsys-v5/01_research/material_passport_stage1a.json",
+        "research/hybrid-recsys-v5/01_research/pipeline_state_stage1a.json",
+        "research/hybrid-recsys-v5/01_research/stage1a_seal.json"
+      ]
+    },
+    "1B": {
+      "name": "TARGETED_LITERATURE_REVIEW",
+      "skill": "deep-research",
+      "mode": "five-lane-search-plus-central-synthesis",
+      "status": "central_complete_audit_pending",
+      "started_at": "2026-08-13",
+      "central_completed_at": "2026-08-13T14:30:00+07:00",
+      "checkpoint_confirmed": false,
+      "checkpoint_type": "FULL",
+      "lane_tasks": {
+        "L1": {
+          "task_id": "019ffb38-af65-7d73-bd68-e7af73de5c43",
+          "model": "5.6 Tera XHigh",
+          "status": "completed"
+        },
+        "L2": {
+          "task_id": "019ffb38-af73-7293-a6d0-8964c715c886",
+          "model": "5.6 Tera XHigh",
+          "status": "completed"
+        },
+        "L3": {
+          "task_id": "019ffb38-af79-7c22-b38a-b31bd0ce2cd8",
+          "model": "5.6 Tera XHigh",
+          "status": "completed"
+        },
+        "L4": {
+          "task_id": "019ffb38-af70-7f21-ab78-79f721273291",
+          "model": "5.6 Tera XHigh",
+          "status": "completed"
+        },
+        "L5": {
+          "task_id": "019ffb38-af64-7372-8040-2b56ccf497ab",
+          "model": "5.6 Sol XHigh",
+          "status": "completed"
+        }
+      },
+      "corpus_summary": {
+        "unique_sources": 55,
+        "recent_2022_2026": 27,
+        "peer_reviewed": 49,
+        "identity_verified": 55,
+        "source_verified_against_original": 0
+      },
+      "central_outputs": [
+        "research/hybrid-recsys-v5/01_research/literature_review/phase2_investigation/search_strategy.md",
+        "research/hybrid-recsys-v5/01_research/literature_review/phase2_investigation/deduplication_report.md",
+        "research/hybrid-recsys-v5/01_research/literature_review/phase2_investigation/verified_source_registry.json",
+        "research/hybrid-recsys-v5/01_research/literature_review/phase2_investigation/literature_corpus.json",
+        "research/hybrid-recsys-v5/01_research/literature_review/phase2_investigation/tri_index_verification.json",
+        "research/hybrid-recsys-v5/01_research/literature_review/phase2_investigation/source_quality_matrix.json",
+        "research/hybrid-recsys-v5/01_research/literature_review/phase2_investigation/annotated_bibliography.md",
+        "research/hybrid-recsys-v5/01_research/literature_review/phase2_investigation/source_verification_report.md",
+        "research/hybrid-recsys-v5/01_research/literature_review/phase2_investigation/claim_source_map.md",
+        "research/hybrid-recsys-v5/01_research/literature_review/phase3_analysis/claim_intent_manifest.json",
+        "research/hybrid-recsys-v5/01_research/literature_review/phase3_analysis/cross_paper_tensions.json",
+        "research/hybrid-recsys-v5/01_research/literature_review/phase3_analysis/synthesis_report.md"
+      ],
+      "audit": {
+        "status": "ready_not_run",
+        "model_required": "5.6 Sol + Ultra",
+        "context_required": "fresh independent task",
+        "packet": "research/hybrid-recsys-v5/01_research/literature_review/audit/audit_packet.md"
+      }
+    },
+    "1E": {
+      "name": "EXPERIMENT_BRIDGE",
+      "skill": "experiment-agent",
+      "mode": "plan-run-validate",
+      "status": "pending",
+      "checkpoint_confirmed": false
+    },
+    "2.5": {
+      "name": "INTEGRITY",
+      "status": "pending"
+    },
+    "4.5": {
+      "name": "FINAL_INTEGRITY",
+      "status": "pending"
+    }
+  },
+  "materials": {
+    "rq_brief": true,
+    "rq_brief_schema1": true,
+    "rq_estimand_matrix": true,
+    "methodology_blueprint": true,
+    "devils_advocate_checkpoint1": true,
+    "bibliography": true,
+    "synthesis_report": true,
+    "accepted_experiment_results": false,
+    "paper_draft": false,
+    "source_identity_verification": true,
+    "source_original_content_verification": false,
+    "claim_source_map": true
+  },
+  "experiment_state": {
+    "intake_status": "experiments_declared",
+    "accepted_results": 0,
+    "result_status": "NOT_RUN",
+    "experiment_ids": [
+      "EXP-REF-REPRO",
+      "EXP-V5-HARMONIZED",
+      "EXP-EXTERNAL-VALIDITY"
+    ],
+    "execution_authorized_by_stage1a": false
+  },
+  "stage1a_decisions": [
+    "NDCG@10 is the primary inferential estimand; HR@10 and macro per-user GAUC remain conjunctive H1 gates.",
+    "Strongest baseline is selected per metric on validation data and locked before TEST.",
+    "Cold-item claims do not extend to cold-user or zero-history recommendation.",
+    "Apriori/Wide is a mechanism contribution only if the train-defined cohort ablation supports H3.",
+    "External datasets that drop essential signals are reduced-method sensitivity tracks and cannot pass H4.",
+    "Efficiency is evaluated only after accuracy passes and after numerical runtime gates are frozen."
+  ],
+  "blocking_conditions": [
+    {
+      "id": "B-VENUE-001",
+      "scope": "submission_formatting",
+      "status": "BLOCKED",
+      "reason": "Target venue and target-year CFP are not selected and verified."
+    },
+    {
+      "id": "B-SOURCE-001",
+      "scope": "introduction_related_work_and_novelty_claims",
+      "status": "PARTIALLY_RESOLVED",
+      "reason": "Corpus identity, deduplication, claim-source map, and synthesis are complete. Independent Sol Ultra audit and original-source locator acquisition remain before production Introduction/Related Work citations."
+    },
+    {
+      "id": "B-EXPERIMENT-PLAN-001",
+      "scope": "confirmatory_experiment_execution",
+      "status": "BLOCKED",
+      "reason": "Stage 1E must freeze adapter revisions/tolerances, tuning budget, finalist set, cohort implementations, external compatibility, runtime gates, and preregistration before execution."
+    },
+    {
+      "id": "B-RESULT-001",
+      "scope": "empirical_claims",
+      "status": "BLOCKED",
+      "reason": "No experiment has an accepted sealed result."
+    }
+  ],
+  "schema_validation_log": [
+    {
+      "transition": "Stage 1A scoping bundle",
+      "schemas_checked": [
+        "RQ Brief Handoff Schema 1 required fields",
+        "Research question single-sentence/question-mark rule",
+        "FINER range and sub-question/keyword counts",
+        "RQ1-RQ5 dataset/metric/comparator/table traceability",
+        "Material Passport Schema 9 required fields and experiment declaration symmetry",
+        "Phase 0 seal and locked-input hash recheck"
+      ],
+      "result": "PASS",
+      "missing_fields": [],
+      "timestamp": "2026-08-13T11:18:51.588Z"
+    },
+    {
+      "transition": "Stage 1B central pre-audit bundle",
+      "schemas_checked": [
+        "All JSON artifacts parse",
+        "55 unique citation keys",
+        "Three-layer citation marker lint",
+        "Claim-intent manifest structural invariants",
+        "ARS phase-scope integrity",
+        "Audit packet hash manifest"
+      ],
+      "result": "PASS_WITH_KNOWN_BLOCKS",
+      "missing_fields": [
+        "Original-source locators",
+        "Independent audit verdict"
+      ],
+      "timestamp": "2026-08-13T14:30:00+07:00"
+    }
+  ],
+  "model_runtime": {
+    "execution_mode": "five user-visible lane tasks plus inline central merge",
+    "central_model_id": "current session model",
+    "ars_model_tiering": "Tera XHigh L1-L4; Sol XHigh L5; central synthesis current session",
+    "cross_model": "Sol Ultra audit prepared_not_run",
+    "ultra_orchestration_used": false,
+    "note": "No claim is made that the audit model has run. A fresh independent task is required."
+  },
+  "collaboration_depth_history": [
+    {
+      "stage_id": "1A",
+      "checkpoint_type": "FULL",
+      "timestamp": "2026-08-13T11:18:51.588Z",
+      "dialogue_log_ref": "Stage 1A window contains one explicit user continuation instruction",
+      "zone": "insufficient_evidence",
+      "scores": {
+        "delegation_intensity": null,
+        "cognitive_vigilance": null,
+        "cognitive_reallocation": null
+      },
+      "evidence": [
+        "The user explicitly authorized continuation from sealed Phase 0 into Stage 1A."
+      ],
+      "counter_evidence": [
+        "The stage contains fewer than five user turns, so collaboration-depth scores cannot be inferred reliably."
+      ],
+      "cross_model_divergence": null,
+      "advisory_only": true,
+      "blocking": false
+    }
+  ]
+}
+

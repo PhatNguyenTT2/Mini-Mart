@@ -1,0 +1,199 @@
+{
+  "origin_skill": "academic-pipeline",
+  "origin_mode": "phase-0-intake-governance",
+  "origin_date": "2026-08-13T10:46:57.174Z",
+  "verification_status": "UNVERIFIED",
+  "version_label": "intake_v1",
+  "content_hash": "4456b43817375a92ddc5e7f675a65d09ddfefca2694e42e67226efd0c976bd1f",
+  "content_hash_scope": "canonical locked input bundle in input_manifest.json",
+  "upstream_dependencies": [
+    "inputs_v1",
+    "academic_research_master_plan_v1"
+  ],
+  "repro_lock": {
+    "schema_version": "1.0",
+    "stochasticity_declaration": "LLM outputs are not byte-reproducible. This lockfile documents configuration, not a deterministic replay guarantee.",
+    "ars_version": "3.19.0",
+    "model": {
+      "family": "openai",
+      "id": "runtime-model-id-not-exposed",
+      "weight_stable": false
+    },
+    "prompts": {
+      "hash_timing": "skill-load",
+      "skill_md_hash": "sha256:8ed244709d02abe224e6726d6a706b88080c70c6a73c0f2038404c9a0dee0e6c",
+      "agents_bundle_hash": "sha256:edadf445541c78ff8fe51b06857a39e1919a412243035d50486d84e801bcf103"
+    },
+    "materials": {
+      "list_hash": "sha256:4456b43817375a92ddc5e7f675a65d09ddfefca2694e42e67226efd0c976bd1f",
+      "count": 4
+    },
+    "external_protocols": {
+      "s2_api_protocol_version": "not-used-in-phase-0",
+      "s2_snapshot_available": false
+    },
+    "cross_model": {
+      "enabled": false,
+      "secondary_model_id": null
+    }
+  },
+  "slr_lineage": false,
+  "experiment_intake_declaration": {
+    "status": "experiments_declared",
+    "declared_at": "2026-08-13T10:46:57.174Z",
+    "declared_by": "scholar"
+  },
+  "experiment_provenance": [
+    {
+      "experiment_id": "EXP-REF-REPRO",
+      "title": "Official baseline reproduction on source datasets",
+      "description": "Reproduce selected official repositories under their documented datasets and protocols before accepting an adapter for harmonized evaluation.",
+      "repro_lock": {
+        "schema_version": "1.0",
+        "stochasticity_declaration": "LLM outputs are not byte-reproducible. This lockfile documents configuration, not a deterministic replay guarantee.",
+        "ars_version": "3.19.0",
+        "model": {
+          "family": "openai",
+          "id": "runtime-model-id-not-exposed",
+          "weight_stable": false
+        },
+        "prompts": {
+          "hash_timing": "skill-load",
+          "skill_md_hash": "sha256:8ed244709d02abe224e6726d6a706b88080c70c6a73c0f2038404c9a0dee0e6c",
+          "agents_bundle_hash": "sha256:edadf445541c78ff8fe51b06857a39e1919a412243035d50486d84e801bcf103"
+        },
+        "materials": {
+          "list_hash": "sha256:4456b43817375a92ddc5e7f675a65d09ddfefca2694e42e67226efd0c976bd1f",
+          "count": 4
+        },
+        "external_protocols": {
+          "s2_api_protocol_version": "not-used-in-phase-0",
+          "s2_snapshot_available": false
+        },
+        "cross_model": {
+          "enabled": false,
+          "secondary_model_id": null
+        }
+      },
+      "planned_vs_executed": [
+        {
+          "planned": "Reproduce at least one official baseline result using the official repository, official dataset, and documented protocol within a preregistered tolerance.",
+          "executed": false,
+          "skip_reason": "Phase 0 records intake only; repository environments and adapters have not been built."
+        }
+      ],
+      "negative_results": [],
+      "known_limitations": [
+        {
+          "description": "Legacy TensorFlow/PyTorch/CUDA environments may require isolated containers, and a failed reproduction must remain visible rather than being replaced silently."
+        }
+      ]
+    },
+    {
+      "experiment_id": "EXP-V5-HARMONIZED",
+      "title": "Shared-protocol benchmark on controlled Vietnamese retail benchmark v5",
+      "description": "Train and evaluate faithful baselines and the proposed Hybrid method on the same temporal split, full catalog, masking contract, validation budget, seeds, metrics, and shared evaluator.",
+      "repro_lock": {
+        "schema_version": "1.0",
+        "stochasticity_declaration": "LLM outputs are not byte-reproducible. This lockfile documents configuration, not a deterministic replay guarantee.",
+        "ars_version": "3.19.0",
+        "model": {
+          "family": "openai",
+          "id": "runtime-model-id-not-exposed",
+          "weight_stable": false
+        },
+        "prompts": {
+          "hash_timing": "skill-load",
+          "skill_md_hash": "sha256:8ed244709d02abe224e6726d6a706b88080c70c6a73c0f2038404c9a0dee0e6c",
+          "agents_bundle_hash": "sha256:edadf445541c78ff8fe51b06857a39e1919a412243035d50486d84e801bcf103"
+        },
+        "materials": {
+          "list_hash": "sha256:4456b43817375a92ddc5e7f675a65d09ddfefca2694e42e67226efd0c976bd1f",
+          "count": 4
+        },
+        "external_protocols": {
+          "s2_api_protocol_version": "not-used-in-phase-0",
+          "s2_snapshot_available": false
+        },
+        "cross_model": {
+          "enabled": false,
+          "secondary_model_id": null
+        }
+      },
+      "planned_vs_executed": [
+        {
+          "planned": "Compare all promoted baselines and Hybrid using NDCG@10, HR@10, Recall@10, and macro per-user GAUC over seeds 42, 2027, and 31415 with hierarchical paired bootstrap inference.",
+          "executed": false,
+          "skip_reason": "Phase 0 records intake only; baseline registry, tuning budget, and test seal are not yet locked."
+        },
+        {
+          "planned": "Measure cold-item, rule-mechanism, ablation, coverage, latency, throughput, and memory outcomes under their declared cohorts and fixed runner.",
+          "executed": false,
+          "skip_reason": "Phase 0 records intake only; measurement artifacts do not exist."
+        }
+      ],
+      "negative_results": [],
+      "known_limitations": [
+        {
+          "description": "The v5 behavior is controlled/semi-synthetic and cannot by itself establish real-world Vietnamese shopper effectiveness."
+        },
+        {
+          "description": "The available RTX 3060 Laptop GPU has 6 GB VRAM, so modern multi-seed baselines may require external compute after smoke testing."
+        }
+      ]
+    },
+    {
+      "experiment_id": "EXP-EXTERNAL-VALIDITY",
+      "title": "Two-track external validity evaluation",
+      "description": "Evaluate one full-mechanism-compatible public commerce dataset and one Vietnamese domain-sensitivity dataset without cross-dataset raw metric comparisons.",
+      "repro_lock": {
+        "schema_version": "1.0",
+        "stochasticity_declaration": "LLM outputs are not byte-reproducible. This lockfile documents configuration, not a deterministic replay guarantee.",
+        "ars_version": "3.19.0",
+        "model": {
+          "family": "openai",
+          "id": "runtime-model-id-not-exposed",
+          "weight_stable": false
+        },
+        "prompts": {
+          "hash_timing": "skill-load",
+          "skill_md_hash": "sha256:8ed244709d02abe224e6726d6a706b88080c70c6a73c0f2038404c9a0dee0e6c",
+          "agents_bundle_hash": "sha256:edadf445541c78ff8fe51b06857a39e1919a412243035d50486d84e801bcf103"
+        },
+        "materials": {
+          "list_hash": "sha256:4456b43817375a92ddc5e7f675a65d09ddfefca2694e42e67226efd0c976bd1f",
+          "count": 4
+        },
+        "external_protocols": {
+          "s2_api_protocol_version": "not-used-in-phase-0",
+          "s2_snapshot_available": false
+        },
+        "cross_model": {
+          "enabled": false,
+          "secondary_model_id": null
+        }
+      },
+      "planned_vs_executed": [
+        {
+          "planned": "Run official-protocol reproduction and a separate harmonized comparison on a public dataset that satisfies temporal interaction, item-text, and basket/session compatibility gates for the full Hybrid method.",
+          "executed": false,
+          "skip_reason": "Phase 0 records intake only; dataset license, schema, task, and signal compatibility have not passed audit."
+        },
+        {
+          "planned": "Run a separately labelled Vietnamese domain-sensitivity evaluation, prioritizing ViEcomRec when license and history structure permit the intended task.",
+          "executed": false,
+          "skip_reason": "Phase 0 records intake only; Vietnamese dataset compatibility has not passed audit."
+        }
+      ],
+      "negative_results": [],
+      "known_limitations": [
+        {
+          "description": "If no external dataset supports all essential Hybrid signals, the external result must be labelled as a reduced-method ablation and H4 remains NOT_TESTED."
+        }
+      ]
+    }
+  ],
+  "experiment_alignment_results": [],
+  "reset_boundary": [],
+  "compliance_history": []
+}

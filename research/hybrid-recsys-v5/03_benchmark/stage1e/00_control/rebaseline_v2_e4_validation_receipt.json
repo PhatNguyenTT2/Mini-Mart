@@ -1,0 +1,87 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-validation-receipt-1.0",
+  "material_passport": {
+    "origin_skill": "ars-codex:academic-research-suite/experiment-agent",
+    "origin_mode": "central-fail-closed-validation",
+    "origin_date": "2026-08-22",
+    "verification_status": "UNVERIFIED",
+    "version_label": "Stage 1E Rebaseline v2 E4 central validation receipt",
+    "repro_lock": null
+  },
+  "validator": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_rebaseline_v2_e4.py",
+    "run_exit_code": 0,
+    "hash_policy": "SHA-256 after UTF-8 CRLF-to-LF normalization"
+  },
+  "passed": true,
+  "verdict": "PASS_FROZEN_PACKET_READY_FOR_E5_FAIL_CLOSED_AUDIT",
+  "failure_count": 0,
+  "check_count": 28,
+  "checks_passed": 28,
+  "source_commits": [
+    "85557864f4b022c02207e9d5fe566f7d43b9758f",
+    "c348218b0c128ed3adc1a402ef272114725a8453"
+  ],
+  "central_commits": [
+    "c5c39b5",
+    "c898702"
+  ],
+  "handoff": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_b/E4_reproduction_adaptation/e4_handoff.json",
+    "canonical_lf_sha256": "ae7cad234c49da15f05db7384d7b7b812a7a9672dd29df3058ec4efbd2154dee",
+    "status": "COMPLETE_FAIL_CLOSED",
+    "verdict": "FAIL_NOT_READY_FOR_E5",
+    "verdict_detail": "BLOCKED_NO_READY_REFERENCE_BUNDLE",
+    "model": "gpt-5.6-sol",
+    "reasoning": "xhigh"
+  },
+  "output_canonical_lf_sha256": {
+    "selected_reference_bundle.json": "b4a817b62706bfafe4a30d33566cd9fea74a0571307519be2a7924184f326eb4",
+    "reproduction_execution_plan.md": "be3bd215197b0db7c21fc41adaf3fec801272685e4fdcc69a240fb9d8c30dccb",
+    "v5_adapter_and_evaluator_contract.md": "d8a9ea4bb7f4ba3ea10f22d265989b6e065b4709e9cce5b5edf9311c0104f49b",
+    "cross_dataset_reporting_contract.md": "1948a42778e24e3f758015d5d68806585f522c403655f98498dcd5104cfe25a3",
+    "exact_command_confirmation_packet.json": "4d43435e51caa8d8215e21464c151e9ef7169de61311f774b5e8010a47679514"
+  },
+  "candidate_status_counts": {
+    "READY_FOR_E5_AUDIT": 0,
+    "ACQUISITION_GATE": 0,
+    "EXTERNAL_COMPUTE_GATE": 0,
+    "PENDING_EVIDENCE": 7,
+    "REJECTED": 6,
+    "total_candidate_rows": 13
+  },
+  "blocker_accounting": {
+    "wave_a_blockers_total": 26,
+    "RESOLVED": 1,
+    "CARRIED": 18,
+    "REJECTED_WITH_ROW": 7,
+    "all_blockers_mapped": true
+  },
+  "command_packet": {
+    "command_count": 10,
+    "packet_state": "DRAFT_BLOCKED_NOT_EXECUTABLE",
+    "all_rows_unconfirmed": true,
+    "all_rows_execution_unauthorized": true,
+    "all_rows_no_auto_retry": true,
+    "new_packet_required_for_any_execution": true
+  },
+  "scientific_state": {
+    "ready_reference_rows": 0,
+    "minimum_defensible_bundle": "NONE",
+    "external_validation_dataset": "NONE",
+    "movielens_1m_exact_framework_center": false,
+    "movielens_10m_exact_framework_center": false,
+    "amazon_m2_full_external_contract": "REJECTED",
+    "result_status": "NOT_RUN",
+    "test_set_opened": "NO",
+    "accepted_result_rows": 0,
+    "execution_authorized": false
+  },
+  "e5_boundary": {
+    "audit_may_start": true,
+    "audit_scope": "Independent verification of a frozen fail-closed E4 packet",
+    "e5_may_modify_e4": false,
+    "e5_may_authorize_execution_from_this_packet": false,
+    "required_expected_authorization_state": "DENIED_UNTIL_E4_REMEDIATION_AND_NEW_PACKET"
+  }
+}

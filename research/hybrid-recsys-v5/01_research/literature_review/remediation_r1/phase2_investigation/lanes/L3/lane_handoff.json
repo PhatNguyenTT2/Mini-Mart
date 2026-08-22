@@ -1,0 +1,150 @@
+{
+  "handoff_schema_version": "ars-deep-research-phase2-lane-r1-2026-08-14",
+  "handoff_id": "hybrid-recsys-v5-stage1b-remediation-r1-l3",
+  "project": "hybrid-recsys-v5",
+  "stage": "1B",
+  "round": "remediation R1",
+  "phase": "ARS Deep Research Phase 2 investigation",
+  "lane": "L3_basket_sequential_association_rule_hybrid",
+  "research_cutoff": "2026-08-14",
+  "completed_at": "2026-08-14",
+  "status": "complete",
+  "local_gate_verdict": "PASS",
+  "summary": "The old 18-work lane index was fully dispositioned, a reproducible cutoff search added three nonredundant records, 15 canonical records across 14 independent source families were verified, and bounded claim cards were produced without manuscript synthesis or benchmark-result inference.",
+  "inputs_read": [
+    "C:/Users/ACER/.codex/plugins/cache/ars-codex/ars-codex/0.1.24/skills/academic-research-suite/SKILL.md",
+    "C:/Users/ACER/.codex/plugins/cache/ars-codex/ars-codex/0.1.24/skills/academic-research-suite/ars/deep-research/WORKFLOW.md",
+    "C:/Users/ACER/.codex/plugins/cache/ars-codex/ars-codex/0.1.24/skills/academic-research-suite/ars/deep-research/agents/bibliography_agent.md",
+    "C:/Users/ACER/.codex/plugins/cache/ars-codex/ars-codex/0.1.24/skills/academic-research-suite/ars/deep-research/agents/source_verification_agent.md",
+    "research/hybrid-recsys-v5/01_research/stage1b_completion_plan.md",
+    "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/lane_contract.md",
+    "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/source_schema_r1.json",
+    "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/remediation_register.json",
+    "research/hybrid-recsys-v5/01_research/literature_review/audit/audit_findings.json",
+    "research/hybrid-recsys-v5/01_research/literature_review/audit/audit_verdict.json",
+    "research/hybrid-recsys-v5/01_research/literature_review/audit/independent_audit_report.md",
+    "research/hybrid-recsys-v5/01_research/rq_brief.md",
+    "research/hybrid-recsys-v5/01_research/rq_estimand_matrix.md",
+    "research/hybrid-recsys-v5/01_research/methodology_blueprint.md",
+    "research/hybrid-recsys-v5/01_research/literature_review/phase2_investigation/lanes/L3_basket_sequential_hybrid.md"
+  ],
+  "output_artifacts": [
+    {
+      "path": "lane_report.md",
+      "sha256": "9f2cd6af1b3be1c01dbef7432af61a969b513c3e5aa6016c90a71d639b1dcbcf",
+      "role": "reproducible search, verification, coverage, blocker, and local-gate report"
+    },
+    {
+      "path": "candidate_registry.json",
+      "sha256": "626d1f5b325dccce2fbc71b895dc3e9fe5ec7c5615bc8b7e3316e1ce2e53f16c",
+      "role": "canonical retained scholarly records and source-family metadata"
+    },
+    {
+      "path": "disposition_log.json",
+      "sha256": "190d21afa04e2d3b1eeb5cfa211af6199e72a367c33d2d2eab00f8c719d04e94",
+      "role": "100 percent old-lane candidate dispositions"
+    },
+    {
+      "path": "claim_cards.json",
+      "sha256": "b7a7481d997fd35b59dd689ae4ce180d7a349fd89f6baf6fb9245cbf8ba3444b",
+      "role": "bounded claim-source cards with locators and forbidden extrapolations"
+    },
+    {
+      "path": "source_acquisition_queue.json",
+      "sha256": "f8a2c275b4ec2f1b3b4fb0646d8aa20411e002d99f174a52230002409bed81f1",
+      "role": "lawful acquisition state, rights, hashes, failures, and unresolved exact work"
+    },
+    {
+      "path": "exclusion_log.json",
+      "sha256": "786cc9128c44a788c01e0e5badc13d10eb46a42c5e7b5fddffe06c53833ee78e",
+      "role": "old and gap-search exclusions with decision reasons and degraded-access states"
+    },
+    {
+      "path": "lane_handoff.json",
+      "sha256": null,
+      "role": "self-describing ARS handoff envelope; self-hash intentionally null"
+    }
+  ],
+  "counts": {
+    "old_candidates": 18,
+    "old_candidates_dispositioned": 18,
+    "old_retain": 12,
+    "old_replace": 1,
+    "old_remove": 5,
+    "old_move_to_resource_registry": 0,
+    "gap_search_new_unique_candidates": 15,
+    "gap_search_new_inclusions": 3,
+    "gap_search_new_exclusions": 12,
+    "total_unique_candidate_works_screened": 33,
+    "canonical_scholarly_records": 15,
+    "independent_source_families": 14,
+    "identity_verified": 15,
+    "metadata_verified": 15,
+    "source_content_verified": 14,
+    "locator_ready": 14,
+    "local_full_artifacts": 12,
+    "remote_full_artifacts_inspected": 2,
+    "audit_core_exact_full_verified": 5,
+    "audit_core_total": 6,
+    "claim_cards": 8,
+    "production_intended_claims_with_original_content_locator": 7,
+    "planning_only_claims": 1,
+    "operational_resources": 0
+  },
+  "remediation_responsibility": [
+    {
+      "id": "ST1B-META-003",
+      "lane_status": "complete",
+      "evidence": "All retained canonical records use full author lists, verified years/status, clean UTF-8, and no et al. shorthand or placeholder years."
+    },
+    {
+      "id": "ST1B-SYNTH-001",
+      "lane_status": "complete",
+      "evidence": "Canonical-record and independent-family counts are separated; version/method dependencies, support scope, counter-evidence, and forbidden extrapolations are explicit. No manuscript synthesis was written."
+    },
+    {
+      "id": "ST1B-LOCATOR-001",
+      "lane_status": "complete_with_explicit_downstream_blocker",
+      "evidence": "Fourteen of fifteen retained records are original-content verified and locator-ready; the exact 2009 journal article is queued, flagged false for content/locator, and prohibited from production content claims."
+    }
+  ],
+  "unresolved_blockers": [
+    {
+      "source_key": "liu_lai_lee_2009_hybrid_rules_cf",
+      "severity": "production_citation_blocker_for_exact_work",
+      "condition": "No lawful exact-work full text was acquired by the cutoff.",
+      "authorized_routes": ["institutional subscription", "author-supplied copy", "interlibrary loan", "licensed document delivery"],
+      "restriction": "Do not use for a production-intended content claim until the exact artifact is acquired, inspected, and given an original-content locator."
+    }
+  ],
+  "downstream_constraints": [
+    "H3 remains NOT_RUN; literature plausibility is not evidence of the v5 effect.",
+    "Do not call Apriori a ranking model on mining-only evidence.",
+    "Do not infer novel-item gain from aggregate basket gain.",
+    "Do not transplant paper-native metrics as v5 benchmark results.",
+    "Do not use the 2007 Liu-family conference predecessor as verification of the exact 2009 journal contents.",
+    "When held-out consequent membership defines cohort inclusion, use the name train-mined rule-aligned evaluation cohort rather than purely train-defined cohort.",
+    "Any v5 Full/No-Wide comparison must share the Deep branch, candidate universe, masks, seeds, tuning budget, calibration, tie-breaking, and target."
+  ],
+  "validation": {
+    "json_parse": "passed",
+    "source_schema_structural_validation": "passed",
+    "cross_reference_validation": "passed",
+    "count_reconciliation": "passed",
+    "sha256_reconciliation": "passed_for_six_non_self_outputs",
+    "utf8_mojibake_scan": "passed",
+    "canonical_et_al_scan": "passed",
+    "prohibited_display_field_scan": "passed",
+    "pdf_text_and_visual_inspection": "passed_for_local_artifacts",
+    "note": "The bundled runtime did not include the jsonschema package; validation used JSON parsing plus explicit checks for every required source-schema field, enum, type, locator hash pattern, source/claim cross-reference, and count invariant."
+  },
+  "gate_checks": [
+    {"check": "old_lane_100_percent_dispositioned", "result": "pass"},
+    {"check": "reproducible_gap_search_to_cutoff", "result": "pass"},
+    {"check": "retained_identity_and_metadata_verified", "result": "pass"},
+    {"check": "version_and_family_dependencies_recorded", "result": "pass"},
+    {"check": "production_claims_have_original_content_locators", "result": "pass"},
+    {"check": "seven_required_artifacts_present_and_parseable", "result": "pass"},
+    {"check": "unresolved_acquisition_and_rights_carried_forward", "result": "pass"}
+  ]
+}

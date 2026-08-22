@@ -1,0 +1,42 @@
+{
+  "schema_version": "stage1b-remediation-audit-import-1.0",
+  "project": "hybrid-recsys-v5",
+  "stage": "1B",
+  "remediation_round": "R1",
+  "imported_at": "2026-08-14",
+  "source_audit_task": {
+    "thread_id": "019ffb78-2b35-70a3-a397-f800a8546559",
+    "model": "gpt-5.6-sol",
+    "reasoning": "ultra",
+    "context": "fresh independent task"
+  },
+  "audit_verdict": "FAIL",
+  "stage1b_seal_allowed": false,
+  "source_acquisition_required": true,
+  "stage2_production_citations_authorized": false,
+  "frozen_v0_check": {
+    "manifest_path": "research/hybrid-recsys-v5/01_research/literature_review/audit/audit_manifest.json",
+    "expected_artifacts": 19,
+    "matched_artifacts": 19,
+    "failed_artifacts": 0,
+    "checked_at": "2026-08-14"
+  },
+  "imported_files": [
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/audit/audit_findings.json",
+      "sha256": "52a754ee42ff8d00a6f10ec1f17429fcbfa0b83afa27dc9756656ee921b86520",
+      "bytes": 16930
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/audit/audit_verdict.json",
+      "sha256": "d4d33b02e157c0fec44327951c0cf8e7dbcbb55561b2a432bdf497959ed8cf47",
+      "bytes": 4521
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/audit/independent_audit_report.md",
+      "sha256": "ebb107034bb191f458df4d1106892002b304ea78b84f27f350b707344caaba1a",
+      "bytes": 41573
+    }
+  ],
+  "provenance_rule": "The v0 packet is immutable. Remediation outputs are written only under remediation_r1 or to a new R1 state snapshot."
+}

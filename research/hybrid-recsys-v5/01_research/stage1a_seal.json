@@ -1,0 +1,74 @@
+{
+  "schema_version": "1.0",
+  "seal_id": "stage1a-seal-rq-methodology-v1",
+  "sealed_at": "2026-08-13T11:24:16.905Z",
+  "seal_status": "PASS",
+  "hash_algorithm": "sha256",
+  "artifact_hashes": [
+    {
+      "path": "research/hybrid-recsys-v5/01_research/rq_brief.md",
+      "bytes": 14418,
+      "sha256": "c64dd8293da8e489a3f6d9fd220620a988bedb78b83ec1d2e9b280918a179b5b"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/rq_brief.schema1.json",
+      "bytes": 5483,
+      "sha256": "a72095bd1e49a53e9a131494a310f58a58cd1e851286236ddcd0770629991486"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/rq_estimand_matrix.md",
+      "bytes": 5466,
+      "sha256": "05dbdc1915af9fa18bd9e794ddb466f3c8159c207688364a50d94ff8b724ebce"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/methodology_blueprint.md",
+      "bytes": 16138,
+      "sha256": "dfe581aaffa48bdfa5567f151f27525bdb47a704d43f501bdfa7b6572496e0d1"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/devils_advocate_checkpoint1.md",
+      "bytes": 6849,
+      "sha256": "28308bbe17031fc1886103dfc273f6b8d5c0cf987af5edac2e27f93aa7adfed3"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/material_passport_stage1a.json",
+      "bytes": 9642,
+      "sha256": "c3270ed6b1f93d02b6bdcfe5484940d673f35fbeaf96923ac3c98cac73f93876"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/pipeline_state_stage1a.json",
+      "bytes": 7226,
+      "sha256": "5e00101998ac282eaf47594cad81694a7725609df5e923c344b71b0e7429b8fc"
+    }
+  ],
+  "validation": {
+    "json_syntax": "PASS",
+    "phase0_seal_hash_recheck": "PASS",
+    "locked_input_hash_recheck": "PASS",
+    "rq_handoff_schema_1": "PASS",
+    "rq_single_sentence_question_rule": "PASS",
+    "finer_and_scope_constraints": "PASS",
+    "rq1_rq5_traceability": "PASS",
+    "ars_repro_lock_validator": "PASS",
+    "experiment_provenance_shape_check": "PASS_MANUAL_AGAINST_SHIPPED_SCHEMA",
+    "experiment_provenance_official_script": "SKIPPED_MISSING_JSONSCHEMA_DEPENDENCY",
+    "devils_advocate_checkpoint_1": "PASS",
+    "cross_model_verification": "NOT_ENABLED",
+    "material_passport_status": "UNVERIFIED",
+    "material_passport_status_reason": "Stage 1A has structural and methodological checks only; no Stage 2.5 integrity verification or experiment-result verification has occurred."
+  },
+  "scope_guards": {
+    "bibliography_created": false,
+    "introduction_or_related_work_written": false,
+    "experiment_executed": false,
+    "accepted_result_count": 0,
+    "empirical_claims_authorized": false
+  },
+  "pipeline_checkpoint": {
+    "completed_stage": "1A",
+    "pipeline_state": "awaiting_confirmation",
+    "next_stage": "1B",
+    "user_confirmation_required": true,
+    "checkpoint_type": "FULL"
+  }
+}

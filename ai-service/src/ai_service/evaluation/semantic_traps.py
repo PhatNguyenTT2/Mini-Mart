@@ -6,34 +6,21 @@ import json
 from collections.abc import Sequence
 from dataclasses import dataclass
 from pathlib import Path
-from typing import cast
 
 import numpy as np
 import torch
 
 from ai_service.config import Settings
-from ai_service.contracts import DataSourceKind, SplitName
 from ai_service.data.rules import RuleStore
-from ai_service.data.semantic_cohort import load_semantic_cohort
+from ai_service.data.semantic_cohort import cases_for_split, load_semantic_cohort
 from ai_service.data.snapshot import Snapshot
-from ai_service.errors import DataIntegrityError
+from ai_service.errors import ArtifactIntegrityError, DataIntegrityError
 from ai_service.evaluation.full_catalog import (
     FullCatalogEvaluator,
     PreparedEvaluationSplit,
     TargetReplayRequest,
 )
 from ai_service.models.two_tower_wide_deep import HybridTwoTowerModel
-
-
-@dataclass(frozen=True)
-class SemanticCohortCase:
-    """One immutable held-out anchor-to-target serving query."""
-
-    trap_id: int
-    user_id: int
-    anchor_item_id: int
-    target_item_id: int
-    split: SplitName
 
 
 @dataclass(frozen=True)
@@ -64,6 +51,66 @@ def _rank(scores: np.ndarray, target_indices: Sequence[int], raw_ids: np.ndarray
     return int(min(positions[target_indices]))
 
 
+def semantic_replay_requests(
+    snapshot: Snapshot,
+    prepared_split: PreparedEvaluationSplit,
+) -> tuple[tuple[TargetReplayRequest, ...], dict[int, tuple[int, tuple[int, ...]]]]:
+    """Map the verified typed cohort into serving-equivalent replay requests."""
+
+    manifest = getattr(snapshot, "manifest", None)
+    expected_sha256 = getattr(manifest, "semantic_cohort_sha256", None)
+    if expected_sha256 is not None and not isinstance(expected_sha256, str):
+        raise DataIntegrityError("snapshot semantic cohort checksum is invalid")
+    try:
+        document = load_semantic_cohort(
+            snapshot.snapshot_dir,
+            expected_sha256=expected_sha256,
+        )
+    except ArtifactIntegrityError as error:
+        raise DataIntegrityError(f"semantic cohort is invalid: {error}") from error
+    split = prepared_split.split
+    cases = cases_for_split(document, split)
+    eligible_users = {int(user_id) for user_id in prepared_split.eligible_users}
+    requests: list[TargetReplayRequest] = []
+    trap_targets: dict[int, set[int]] = {trap_id: set() for trap_id in range(1, 11)}
+    trap_anchors: dict[int, int] = {}
+    for case in cases:
+        try:
+            user_id = int(snapshot.user_map[case.user_id])
+            anchor = int(snapshot.product_map[case.anchor_product_id])
+            target = int(snapshot.product_map[case.target_product_id])
+        except KeyError as error:
+            raise DataIntegrityError(
+                "semantic cohort references an unmapped user or product"
+            ) from error
+        if user_id not in eligible_users:
+            raise DataIntegrityError("semantic cohort user is not eligible for its split")
+        if prepared_split.latest_prior_purchase_contexts.get(user_id) != anchor:
+            raise DataIntegrityError("semantic cohort anchor is not the serving history context")
+        if target not in prepared_split.organic_novel_truth.get(user_id, set()):
+            raise DataIntegrityError("semantic cohort target is not novel split truth")
+        previous_anchor = trap_anchors.setdefault(case.trap_id, case.anchor_product_id)
+        if previous_anchor != case.anchor_product_id:
+            raise DataIntegrityError("semantic cohort trap anchor is inconsistent")
+        trap_targets[case.trap_id].add(case.target_product_id)
+        requests.append(
+            TargetReplayRequest(
+                trap_id=case.trap_id,
+                user_id=user_id,
+                target_item_ids=(target,),
+            )
+        )
+    if set(trap_anchors) != set(range(1, 11)):
+        raise DataIntegrityError("semantic cohort must define all ten traps for its split")
+    definitions = {
+        trap_id: (trap_anchors[trap_id], tuple(sorted(trap_targets[trap_id])))
+        for trap_id in range(1, 11)
+    }
+    if any(not targets for _, targets in definitions.values()):
+        raise DataIntegrityError("semantic cohort trap has no target direction")
+    return tuple(requests), definitions
+
+
 @torch.no_grad()
 def evaluate_semantic_traps(
     hybrid_model: HybridTwoTowerModel,
@@ -78,9 +125,8 @@ def evaluate_semantic_traps(
     prepared_split: PreparedEvaluationSplit | None = None,
     settings: Settings | None = None,
 ) -> SemanticTrapReport:
-    # The fixture is retained only for the legacy item-as-query diagnostic
-    # path.  A production prepared split is driven exclusively by the
-    # immutable snapshot/semantic-cohort.json document.
+    # The fixture remains only for the legacy item-as-query diagnostic path.
+    # Prepared R3/R4 evaluation always replays the immutable typed cohort.
     fixtures = (
         json.loads(fixture_path.read_text(encoding="utf-8")) if prepared_split is None else []
     )
@@ -91,80 +137,34 @@ def evaluate_semantic_traps(
     deep_model = deep_model.to(device).eval()
 
     if prepared_split is not None:
-        # Production gate: replay every immutable cohort case through the same
-        # history/profile/masking/ranking seam as full-catalog evaluation.
-        # The source fixture is only a mapping oracle; it is never used to
-        # invent an arbitrary eligible user.
         cohort_path = snapshot.snapshot_dir / "semantic-cohort.json"
-        if not cohort_path.is_file() and hasattr(prepared_split, "split"):
-            raise DataIntegrityError("semantic cohort artifact is missing")
-        if getattr(snapshot.manifest, "source_kind", None) is DataSourceKind.POSTGRES:
-            # Validate the snapshot-owned typed contract before the scorer reads
-            # the richer event rows used to reconstruct histories.
-            load_semantic_cohort(snapshot.snapshot_dir, split=prepared_split.split)
-        cohort_rows = (
-            json.loads(cohort_path.read_text(encoding="utf-8")) if cohort_path.is_file() else []
+        use_typed_cohort = cohort_path.is_file() or (
+            settings is not None and settings.data.rule_feature_schema_version == "3.0.0"
         )
-        requests: list[TargetReplayRequest] = []
-        case_count: dict[int, int] = {trap_id: 0 for trap_id in range(1, 11)}
-        trap_specs: dict[int, dict[str, object]] = {}
-        seen_cases: set[tuple[int, int, int]] = set()
-        for row in cohort_rows:
-            cohort_id = str(row.get("cohort_id", ""))
-            if not cohort_id.startswith("semantic-") or ":val:" not in str(row.get("event_id", "")):
-                continue
-            try:
-                trap_id = int(cohort_id.removeprefix("semantic-"))
-                user_id = int(snapshot.user_map[int(row["user_id"])])
-                target = int(snapshot.product_map[int(row["product_id"])])
-                anchor_raw = int(row["anchor_product_id"])
-                target_raws = tuple(int(value) for value in row["target_product_ids"])
-                anchor = int(snapshot.product_map[anchor_raw])
-                target_metadata = tuple(int(snapshot.product_map[value]) for value in target_raws)
-            except (KeyError, TypeError, ValueError) as error:
-                raise DataIntegrityError("semantic cohort row is malformed") from error
-            if not target_raws or target not in target_metadata:
-                raise DataIntegrityError("semantic cohort target metadata is invalid")
-            previous = trap_specs.setdefault(
-                trap_id,
-                {"anchor": anchor_raw, "targets": target_raws},
-            )
-            if previous != {"anchor": anchor_raw, "targets": target_raws}:
-                raise DataIntegrityError("semantic cohort trap metadata is inconsistent")
-            if user_id not in set(int(value) for value in prepared_split.eligible_users):
-                raise DataIntegrityError("semantic cohort user is not VAL eligible")
-            if prepared_split.latest_prior_purchase_contexts.get(user_id) != anchor:
-                raise DataIntegrityError("semantic cohort anchor is not in prior history")
-            if target not in prepared_split.organic_novel_truth.get(user_id, set()):
-                raise DataIntegrityError("semantic cohort target is not novel VAL truth")
-            case_key = (trap_id, user_id, target)
-            if case_key in seen_cases:
-                raise DataIntegrityError("semantic cohort contains duplicate target cases")
-            seen_cases.add(case_key)
-            requests.append(
-                TargetReplayRequest(trap_id=trap_id, user_id=user_id, target_item_ids=(target,))
-            )
-            case_count[trap_id] += 1
-        if (
-            not cohort_rows
-            and getattr(snapshot.manifest, "source_kind", None) is DataSourceKind.POSTGRES
-        ):
-            raise DataIntegrityError("v5 semantic cohort cannot be empty")
-        if not cohort_rows:
-            # Synthetic unit fixtures may opt into a local adapter. Production
-            # Postgres snapshots are handled only by the immutable cohort path.
+        if use_typed_cohort:
+            requests, trap_specs = semantic_replay_requests(snapshot, prepared_split)
+        else:
+            # The legacy non-v5 fixture path is intentionally isolated from
+            # prepared v5 evaluation and never selects a user in production.
             fixtures = json.loads(fixture_path.read_text(encoding="utf-8"))
-            for fixture in fixtures:
-                targets = tuple(
-                    snapshot.product_map[int(value)] for value in fixture["target_product_ids"]
+            requests = tuple(
+                TargetReplayRequest(
+                    trap_id=int(fixture["trap_id"]),
+                    user_id=int(prepared_split.eligible_users[0]),
+                    target_item_ids=tuple(
+                        snapshot.product_map[int(value)]
+                        for value in fixture["target_product_ids"]
+                    ),
                 )
-                user_id = int(prepared_split.eligible_users[0])
-                requests.append(TargetReplayRequest(int(fixture["trap_id"]), user_id, targets))
-                case_count[int(fixture["trap_id"])] = 1
-        if cohort_rows and (
-            set(trap_specs) != set(range(1, 11)) or any(count == 0 for count in case_count.values())
-        ):
-            raise DataIntegrityError("semantic cohort must contain VAL cases for all ten traps")
+                for fixture in fixtures
+            )
+            trap_specs = {
+                int(fixture["trap_id"]): (
+                    int(fixture["anchor_product_id"]),
+                    tuple(int(value) for value in fixture["target_product_ids"]),
+                )
+                for fixture in fixtures
+            }
         evaluator = FullCatalogEvaluator(
             settings or Settings(),
             embeddings,
@@ -176,21 +176,12 @@ def evaluate_semantic_traps(
             snapshot=snapshot,
             prepared_split=prepared_split,
             alpha_values=(0.0,),
-            target_requests=tuple(requests),
+            target_requests=requests,
             device=device,
         )
         serving_results: list[TrapResult] = []
-        if cohort_rows:
-            fixtures = [
-                {
-                    "trap_id": trap_id,
-                    "anchor_product_id": int(cast(int, spec["anchor"])),
-                    "target_product_ids": list(cast(tuple[int, ...], spec["targets"])),
-                }
-                for trap_id, spec in trap_specs.items()
-            ]
-        for fixture in sorted(fixtures, key=lambda item: int(item["trap_id"])):
-            trap_id = int(fixture["trap_id"])
+        for trap_id in sorted(trap_specs):
+            anchor_product_id, target_product_ids = trap_specs[trap_id]
             trap_rows = [row for row in replay.targets if row.trap_id == trap_id]
             if not trap_rows:
                 raise DataIntegrityError(f"semantic trap {trap_id} has no replay cases")
@@ -200,8 +191,8 @@ def evaluate_semantic_traps(
             serving_results.append(
                 TrapResult(
                     trap_id=trap_id,
-                    anchor_product_id=int(fixture["anchor_product_id"]),
-                    target_product_ids=tuple(int(value) for value in fixture["target_product_ids"]),
+                    anchor_product_id=anchor_product_id,
+                    target_product_ids=target_product_ids,
                     deep_control_rank=max(row.deep_rank for row in trap_rows),
                     hybrid_deep_ablation_rank=max(row.deep_rank for row in trap_rows),
                     hybrid_rank=max(row.hybrid_rank for row in trap_rows),

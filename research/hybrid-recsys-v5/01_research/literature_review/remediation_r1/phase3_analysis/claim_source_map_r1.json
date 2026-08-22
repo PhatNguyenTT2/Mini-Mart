@@ -1,0 +1,2055 @@
+{
+  "schema_version": "stage1b-r1-r5-claim-source-map-1.0",
+  "project": "hybrid-recsys-v5",
+  "stage": "1B",
+  "round": "R1",
+  "step": "R5_claim_map_rebuild",
+  "generated_at": "2026-08-21T13:30:00Z",
+  "input_binding": {
+    "r5_input_manifest_sha256": "9ed388e94ec44e1574ac370918cd4d6be2f321235fa63586845a0da76bbe6ba8",
+    "r3_handoff_sha256": "caaaa51b1cfda308bac8603287b41dc5e3ae42f6aa3eb6bfe7f9cf623712c888",
+    "r4_handoff_sha256": "30f25d6b817ab00967718acfdf727abc5d1f97640cd2b0884f2f25515f377fe7"
+  },
+  "disposition_rule": {
+    "exclusive_values": [
+      "citation_ready_candidate",
+      "planning_only"
+    ],
+    "planning_only_promotion_forbidden": true,
+    "claim_readiness_does_not_authorize_stage2": true
+  },
+  "counts": {
+    "claims": 44,
+    "citation_ready_candidate": 22,
+    "planning_only": 22,
+    "production_ready": 0
+  },
+  "claims": [
+    {
+      "claim_id": "C-L5-EXT-01",
+      "lane": "L5",
+      "claim_text_bounded": "Amazon-M2 is suitable evidence for multilingual, content-rich session and next-engagement modeling, but its inspected task does not constitute strict H4 purchase replication because the target is the next interacted product and the schema does not establish persistent users across sessions.",
+      "evidence_kind": "original_content",
+      "support_verdict": "supported",
+      "frozen_r3_disposition": "planning_only",
+      "r5_disposition": "planning_only",
+      "exclusive_disposition": true,
+      "canonical_source_keys": [
+        "jin2023_amazon_m2"
+      ],
+      "operational_resource_keys": [
+        "R-L5-AMAZON-M2"
+      ],
+      "source_family_ids": [
+        "SF-R1-025"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-jin2023_amazon_m2-01",
+        "LOC-R4-R-R-L5-AMAZON-M2-01"
+      ],
+      "evidence_scope": "Amazon-M2 is suitable evidence for multilingual, content-rich session and next-engagement modeling, but its inspected task does not constitute strict H4 purchase replication because the target is the next interacted product and the schema does not establish persistent users across sessions.",
+      "forbidden_extrapolations": [
+        "Do not label next engagement as purchase.",
+        "Do not infer a persistent user from a session identifier."
+      ],
+      "readiness_checks": {
+        "r4_acquisition_satisfied": true,
+        "r4_original_content_satisfied": true,
+        "r4_locator_satisfied": true,
+        "frozen_r4_prerequisites_satisfied": false,
+        "all_selected_locators_verified_non_none": null,
+        "wording_bounded": true,
+        "family_dependence_recorded": true,
+        "liu_replacement_scope_honored": true
+      },
+      "readiness_basis": "Frozen planning-only disposition preserved; R5 does not promote planning-only rows.",
+      "liu_replacement_scope": null,
+      "stage2_production_citation_authorized": false,
+      "h1_h4_status": "NOT_RUN"
+    },
+    {
+      "claim_id": "C-L5-EXT-02",
+      "lane": "L5",
+      "claim_text_bounded": "The inspected Coveo release provides sessions, purchase and cart events, shifted timestamps, and item content, but no persistent user identifier; its pinned terms also prohibit redistribution and restrict use to non-commercial research and education.",
+      "evidence_kind": "original_content",
+      "support_verdict": "supported",
+      "frozen_r3_disposition": "planning_only",
+      "r5_disposition": "planning_only",
+      "exclusive_disposition": true,
+      "canonical_source_keys": [
+        "tagliabue2021_coveo"
+      ],
+      "operational_resource_keys": [
+        "R-L5-COVEO"
+      ],
+      "source_family_ids": [
+        "SF-R1-055"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-tagliabue2021_coveo-01",
+        "LOC-R4-R-R-L5-COVEO-01"
+      ],
+      "evidence_scope": "The inspected Coveo release provides sessions, purchase and cart events, shifted timestamps, and item content, but no persistent user identifier; its pinned terms also prohibit redistribution and restrict use to non-commercial research and education.",
+      "forbidden_extrapolations": [
+        "Do not infer redistribution permission from public download.",
+        "Do not treat a session hash as a persistent user."
+      ],
+      "readiness_checks": {
+        "r4_acquisition_satisfied": true,
+        "r4_original_content_satisfied": true,
+        "r4_locator_satisfied": true,
+        "frozen_r4_prerequisites_satisfied": false,
+        "all_selected_locators_verified_non_none": null,
+        "wording_bounded": true,
+        "family_dependence_recorded": true,
+        "liu_replacement_scope_honored": true
+      },
+      "readiness_basis": "Frozen planning-only disposition preserved; R5 does not promote planning-only rows.",
+      "liu_replacement_scope": null,
+      "stage2_production_citation_authorized": false,
+      "h1_h4_status": "NOT_RUN"
+    },
+    {
+      "claim_id": "C-L5-EXT-03",
+      "lane": "L5",
+      "claim_text_bounded": "Complete Journey is the closest reviewed external resource to the locked structural fields because the provider describes household-level purchases, transaction/basket structure, time, and product/marketing tables; its use remains conditional because the full edition was not acquired and provider terms do not grant general redistribution.",
+      "evidence_kind": "original_content",
+      "support_verdict": "partially_supported",
+      "frozen_r3_disposition": "planning_only",
+      "r5_disposition": "planning_only",
+      "exclusive_disposition": true,
+      "canonical_source_keys": [],
+      "operational_resource_keys": [
+        "R-L5-COMPLETE-JOURNEY-PROVIDER",
+        "R-L5-COMPLETEJOURNEY-R-PACKAGE"
+      ],
+      "source_family_ids": [
+        "SF-R1-075"
+      ],
+      "locator_ids": [
+        "LOC-R4-R-R-L5-COMPLETE-JOURNEY-PROVIDER-01",
+        "LOC-R4-R-R-L5-COMPLETEJOURNEY-R-PACKAGE-01"
+      ],
+      "evidence_scope": "Complete Journey is the closest reviewed external resource to the locked structural fields because the provider describes household-level purchases, transaction/basket structure, time, and product/marketing tables; its use remains conditional because the full edition was not acquired and provider terms do not grant general redistribution.",
+      "forbidden_extrapolations": [
+        "Do not treat package CC0 as a dunnhumby grant.",
+        "Do not claim complete row-level compatibility until the selected edition is acquired and inspected."
+      ],
+      "readiness_checks": {
+        "r4_acquisition_satisfied": true,
+        "r4_original_content_satisfied": false,
+        "r4_locator_satisfied": true,
+        "frozen_r4_prerequisites_satisfied": false,
+        "all_selected_locators_verified_non_none": null,
+        "wording_bounded": true,
+        "family_dependence_recorded": true,
+        "liu_replacement_scope_honored": true
+      },
+      "readiness_basis": "Frozen planning-only disposition preserved; R5 does not promote planning-only rows.",
+      "liu_replacement_scope": null,
+      "stage2_production_citation_authorized": false,
+      "h1_h4_status": "NOT_RUN"
+    },
+    {
+      "claim_id": "C-L5-EXT-04",
+      "lane": "L5",
+      "claim_text_bounded": "RelBench rel-amazon and rel-hm are derivative adapters, not independent evidence or independent rights grants from Amazon Reviews or H&M; the current rel-amazon card states that its dataset license is not specified.",
+      "evidence_kind": "original_content",
+      "support_verdict": "supported",
+      "frozen_r3_disposition": "planning_only",
+      "r5_disposition": "planning_only",
+      "exclusive_disposition": true,
+      "canonical_source_keys": [
+        "robinson2024_relbench"
+      ],
+      "operational_resource_keys": [
+        "R-L5-RELBENCH-REL-AMAZON",
+        "R-L5-RELBENCH-REL-HM",
+        "R-L5-HM"
+      ],
+      "source_family_ids": [
+        "SF-R1-048",
+        "SF-R1-073",
+        "SF-R1-074"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-robinson2024_relbench-01",
+        "LOC-R4-R-R-L5-RELBENCH-REL-AMAZON-01",
+        "LOC-R4-R-R-L5-RELBENCH-REL-HM-01",
+        "LOC-R4-R-R-L5-HM-01"
+      ],
+      "evidence_scope": "RelBench rel-amazon and rel-hm are derivative adapters, not independent evidence or independent rights grants from Amazon Reviews or H&M; the current rel-amazon card states that its dataset license is not specified.",
+      "forbidden_extrapolations": [
+        "Do not count adapters as independent upstream datasets.",
+        "Do not infer H&M redistribution rights from RelBench's MIT code license."
+      ],
+      "readiness_checks": {
+        "r4_acquisition_satisfied": true,
+        "r4_original_content_satisfied": true,
+        "r4_locator_satisfied": true,
+        "frozen_r4_prerequisites_satisfied": false,
+        "all_selected_locators_verified_non_none": null,
+        "wording_bounded": true,
+        "family_dependence_recorded": true,
+        "liu_replacement_scope_honored": true
+      },
+      "readiness_basis": "Frozen planning-only disposition preserved; R5 does not promote planning-only rows.",
+      "liu_replacement_scope": null,
+      "stage2_production_citation_authorized": false,
+      "h1_h4_status": "NOT_RUN"
+    },
+    {
+      "claim_id": "C-L5-EXT-05",
+      "lane": "L5",
+      "claim_text_bounded": "The inspected TAOBAO-MM release uses a click/no-click target and therefore cannot support a purchase-outcome claim, even though it supplies persistent users, long behavior histories, item features, multimodal embeddings, and a temporal split.",
+      "evidence_kind": "original_content",
+      "support_verdict": "supported",
+      "frozen_r3_disposition": "planning_only",
+      "r5_disposition": "planning_only",
+      "exclusive_disposition": true,
+      "canonical_source_keys": [
+        "wu2025_muse_taobao_mm"
+      ],
+      "operational_resource_keys": [
+        "R-L5-TAOBAO-MM"
+      ],
+      "source_family_ids": [
+        "SF-R1-063"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-wu2025_muse_taobao_mm-01",
+        "LOC-R4-R-R-L5-TAOBAO-MM-01"
+      ],
+      "evidence_scope": "The inspected TAOBAO-MM release uses a click/no-click target and therefore cannot support a purchase-outcome claim, even though it supplies persistent users, long behavior histories, item features, multimodal embeddings, and a temporal split.",
+      "forbidden_extrapolations": [
+        "Do not reinterpret click as purchase.",
+        "Do not infer event-level timestamps where the card exposes only a temporal split."
+      ],
+      "readiness_checks": {
+        "r4_acquisition_satisfied": true,
+        "r4_original_content_satisfied": true,
+        "r4_locator_satisfied": true,
+        "frozen_r4_prerequisites_satisfied": false,
+        "all_selected_locators_verified_non_none": null,
+        "wording_bounded": true,
+        "family_dependence_recorded": true,
+        "liu_replacement_scope_honored": true
+      },
+      "readiness_basis": "Frozen planning-only disposition preserved; R5 does not promote planning-only rows.",
+      "liu_replacement_scope": null,
+      "stage2_production_citation_authorized": false,
+      "h1_h4_status": "NOT_RUN"
+    },
+    {
+      "claim_id": "C-L5-RIGHTS-01",
+      "lane": "L5",
+      "claim_text_bounded": "For the reviewed operational resources, availability, code/package license, paper license, and dataset rights/redistribution are independent layers and must be passed separately.",
+      "evidence_kind": "original_content",
+      "support_verdict": "supported",
+      "frozen_r3_disposition": "planning_only",
+      "r5_disposition": "planning_only",
+      "exclusive_disposition": true,
+      "canonical_source_keys": [],
+      "operational_resource_keys": [
+        "R-L5-COMPLETE-JOURNEY-PROVIDER",
+        "R-L5-COMPLETEJOURNEY-R-PACKAGE",
+        "R-L5-VIFOODREC",
+        "R-L5-AMAZON-REVIEWS-2023"
+      ],
+      "source_family_ids": [
+        "SF-R1-019",
+        "SF-R1-057",
+        "SF-R1-075"
+      ],
+      "locator_ids": [
+        "LOC-R4-R-R-L5-COMPLETE-JOURNEY-PROVIDER-01",
+        "LOC-R4-R-R-L5-COMPLETEJOURNEY-R-PACKAGE-01",
+        "LOC-R4-R-R-L5-VIFOODREC-01",
+        "LOC-R4-R-R-L5-AMAZON-REVIEWS-2023-01"
+      ],
+      "evidence_scope": "For the reviewed operational resources, availability, code/package license, paper license, and dataset rights/redistribution are independent layers and must be passed separately.",
+      "forbidden_extrapolations": [
+        "Availability does not imply redistribution permission.",
+        "A code or package license does not automatically license upstream data.",
+        "A paper license does not automatically license its dataset."
+      ],
+      "readiness_checks": {
+        "r4_acquisition_satisfied": true,
+        "r4_original_content_satisfied": false,
+        "r4_locator_satisfied": true,
+        "frozen_r4_prerequisites_satisfied": false,
+        "all_selected_locators_verified_non_none": null,
+        "wording_bounded": true,
+        "family_dependence_recorded": true,
+        "liu_replacement_scope_honored": true
+      },
+      "readiness_basis": "Frozen planning-only disposition preserved; R5 does not promote planning-only rows.",
+      "liu_replacement_scope": null,
+      "stage2_production_citation_authorized": false,
+      "h1_h4_status": "NOT_RUN"
+    },
+    {
+      "claim_id": "C-L5-SCOPE-01",
+      "lane": "L5",
+      "claim_text_bounded": "Across the 14 reviewed operational records, no candidate is passed unconditionally for the locked strict H4 replication: candidates with purchase structure have at least one unresolved persistent-user, basket, edition, acquisition, or rights constraint, and interaction-only candidates fail the purchase outcome.",
+      "evidence_kind": "original_content",
+      "support_verdict": "supported",
+      "frozen_r3_disposition": "planning_only",
+      "r5_disposition": "planning_only",
+      "exclusive_disposition": true,
+      "canonical_source_keys": [],
+      "operational_resource_keys": [
+        "R-L5-VIECOMREC",
+        "R-L5-VIFOODREC",
+        "R-L5-VIHOREC",
+        "R-L5-AMAZON-M2",
+        "R-L5-TENREC",
+        "R-L5-COVEO",
+        "R-L5-OTTO",
+        "R-L5-RELBENCH-REL-AMAZON",
+        "R-L5-RELBENCH-REL-HM",
+        "R-L5-AMAZON-REVIEWS-2023",
+        "R-L5-HM",
+        "R-L5-COMPLETE-JOURNEY-PROVIDER",
+        "R-L5-COMPLETEJOURNEY-R-PACKAGE",
+        "R-L5-TAOBAO-MM"
+      ],
+      "source_family_ids": [
+        "SF-R1-019",
+        "SF-R1-025",
+        "SF-R1-038",
+        "SF-R1-039",
+        "SF-R1-055",
+        "SF-R1-057",
+        "SF-R1-063",
+        "SF-R1-067",
+        "SF-R1-072",
+        "SF-R1-073",
+        "SF-R1-074",
+        "SF-R1-075"
+      ],
+      "locator_ids": [
+        "LOC-R4-R-R-L5-VIECOMREC-01",
+        "LOC-R4-R-R-L5-VIFOODREC-01",
+        "LOC-R4-R-R-L5-VIHOREC-01",
+        "LOC-R4-R-R-L5-AMAZON-M2-01",
+        "LOC-R4-R-R-L5-TENREC-01",
+        "LOC-R4-R-R-L5-COVEO-01",
+        "LOC-R4-R-R-L5-OTTO-01",
+        "LOC-R4-R-R-L5-RELBENCH-REL-AMAZON-01",
+        "LOC-R4-R-R-L5-RELBENCH-REL-HM-01",
+        "LOC-R4-R-R-L5-AMAZON-REVIEWS-2023-01",
+        "LOC-R4-R-R-L5-HM-01",
+        "LOC-R4-R-R-L5-COMPLETE-JOURNEY-PROVIDER-01",
+        "LOC-R4-R-R-L5-COMPLETEJOURNEY-R-PACKAGE-01",
+        "LOC-R4-R-R-L5-TAOBAO-MM-01"
+      ],
+      "evidence_scope": "Across the 14 reviewed operational records, no candidate is passed unconditionally for the locked strict H4 replication: candidates with purchase structure have at least one unresolved persistent-user, basket, edition, acquisition, or rights constraint, and interaction-only candidates fail the purchase outcome.",
+      "forbidden_extrapolations": [
+        "Do not claim no suitable dataset exists outside the reviewed candidates.",
+        "Do not convert this planning audit into an H4 result.",
+        "H4 remains NOT_RUN and NOT_TESTED."
+      ],
+      "readiness_checks": {
+        "r4_acquisition_satisfied": true,
+        "r4_original_content_satisfied": false,
+        "r4_locator_satisfied": true,
+        "frozen_r4_prerequisites_satisfied": false,
+        "all_selected_locators_verified_non_none": null,
+        "wording_bounded": true,
+        "family_dependence_recorded": true,
+        "liu_replacement_scope_honored": true
+      },
+      "readiness_basis": "Frozen planning-only disposition preserved; R5 does not promote planning-only rows.",
+      "liu_replacement_scope": null,
+      "stage2_production_citation_authorized": false,
+      "h1_h4_status": "NOT_RUN"
+    },
+    {
+      "claim_id": "C-L5-VN-01",
+      "lane": "L5",
+      "claim_text_bounded": "In the inspected ViEcomRec artifact, the released face-cleanser corpus contains 2,244 items, 369,099 reviews, and 304,708 users, with review date-time and a chronological leave-last-two evaluation protocol.",
+      "evidence_kind": "original_content",
+      "support_verdict": "supported",
+      "frozen_r3_disposition": "planning_only",
+      "r5_disposition": "planning_only",
+      "exclusive_disposition": true,
+      "canonical_source_keys": [
+        "tran2024_viecomrec"
+      ],
+      "operational_resource_keys": [
+        "R-L5-VIECOMREC"
+      ],
+      "source_family_ids": [
+        "SF-R1-038"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-tran2024_viecomrec-01",
+        "LOC-R4-R-R-L5-VIECOMREC-01"
+      ],
+      "evidence_scope": "In the inspected ViEcomRec artifact, the released face-cleanser corpus contains 2,244 items, 369,099 reviews, and 304,708 users, with review date-time and a chronological leave-last-two evaluation protocol.",
+      "forbidden_extrapolations": [
+        "Do not treat reviews as complete purchase baskets.",
+        "Do not generalize beyond the face-cleanser/platform scope."
+      ],
+      "readiness_checks": {
+        "r4_acquisition_satisfied": true,
+        "r4_original_content_satisfied": true,
+        "r4_locator_satisfied": true,
+        "frozen_r4_prerequisites_satisfied": false,
+        "all_selected_locators_verified_non_none": null,
+        "wording_bounded": true,
+        "family_dependence_recorded": true,
+        "liu_replacement_scope_honored": true
+      },
+      "readiness_basis": "Frozen planning-only disposition preserved; R5 does not promote planning-only rows.",
+      "liu_replacement_scope": null,
+      "stage2_production_citation_authorized": false,
+      "h1_h4_status": "NOT_RUN"
+    },
+    {
+      "claim_id": "C-L5-VN-02",
+      "lane": "L5",
+      "claim_text_bounded": "Among the reviewed Vietnamese candidates with acquired full artifacts, ViFoodRec and ViHoRec supply rating/review resources, while the restaurant-image work evaluates non-temporal rating regression; none independently provides all locked strict purchase, persistent-user, basket, timestamp, content, and candidate-universe fields.",
+      "evidence_kind": "original_content",
+      "support_verdict": "supported",
+      "frozen_r3_disposition": "planning_only",
+      "r5_disposition": "planning_only",
+      "exclusive_disposition": true,
+      "canonical_source_keys": [
+        "tran2024_vietnamese_food",
+        "nguyen2026_vihorec",
+        "pham2024_developing_a_restaurant_recommended_system_via_the_vietnam"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-039",
+        "SF-R1-045",
+        "SF-R1-057"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-tran2024_vietnamese_food-01",
+        "LOC-R4-S-nguyen2026_vihorec-01",
+        "LOC-R4-S-pham2024_developing_a_restaurant_recommended_system_via_the_vietnam-01"
+      ],
+      "evidence_scope": "Among the reviewed Vietnamese candidates with acquired full artifacts, ViFoodRec and ViHoRec supply rating/review resources, while the restaurant-image work evaluates non-temporal rating regression; none independently provides all locked strict purchase, persistent-user, basket, timestamp, content, and candidate-universe fields.",
+      "forbidden_extrapolations": [
+        "Do not extend this reviewed-candidate result to all Vietnamese recommender systems.",
+        "Do not turn a rating or review into an observed purchase without source support."
+      ],
+      "readiness_checks": {
+        "r4_acquisition_satisfied": true,
+        "r4_original_content_satisfied": true,
+        "r4_locator_satisfied": true,
+        "frozen_r4_prerequisites_satisfied": false,
+        "all_selected_locators_verified_non_none": null,
+        "wording_bounded": true,
+        "family_dependence_recorded": true,
+        "liu_replacement_scope_honored": true
+      },
+      "readiness_basis": "Frozen planning-only disposition preserved; R5 does not promote planning-only rows.",
+      "liu_replacement_scope": null,
+      "stage2_production_citation_authorized": false,
+      "h1_h4_status": "NOT_RUN"
+    },
+    {
+      "claim_id": "L1-CC-001",
+      "lane": "L1",
+      "claim_text_bounded": "For the sampled-negative protocol analyzed in the Krichene and Rendle study family, naive sampled ranking metrics need not preserve the relative ordering obtained from exact evaluation; sampled and exact results therefore remain different estimands.",
+      "evidence_kind": "original_content",
+      "support_verdict": "supported",
+      "frozen_r3_disposition": "planning_only",
+      "r5_disposition": "planning_only",
+      "exclusive_disposition": true,
+      "canonical_source_keys": [
+        "krichene2020_sampled_metrics",
+        "krichene2021_on_sampled_metrics_for_item_recommendation_extended_abstra",
+        "li2023_reliable_sampling",
+        "pereira2025_on_the_reliability_of_sampling_strategies_in_offline_recom"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-028",
+        "SF-R1-031",
+        "SF-R1-043"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-krichene2020_sampled_metrics-01",
+        "LOC-R4-S-krichene2021_on_sampled_metrics_for_item_recommendation_extended_abstra-01",
+        "LOC-R4-S-li2023_reliable_sampling-01",
+        "LOC-R4-S-pereira2025_on_the_reliability_of_sampling_strategies_in_offline_recom-01"
+      ],
+      "evidence_scope": "For the sampled-negative protocol analyzed in the Krichene and Rendle study family, naive sampled ranking metrics need not preserve the relative ordering obtained from exact evaluation; sampled and exact results therefore remain different estimands.",
+      "forbidden_extrapolations": [
+        "Do not relabel sampled metrics as exact or full-catalog metrics.",
+        "Do not conclude that every sampling estimator is invalid.",
+        "Do not transfer numerical results to v5."
+      ],
+      "readiness_checks": {
+        "r4_acquisition_satisfied": true,
+        "r4_original_content_satisfied": true,
+        "r4_locator_satisfied": true,
+        "frozen_r4_prerequisites_satisfied": false,
+        "all_selected_locators_verified_non_none": null,
+        "wording_bounded": true,
+        "family_dependence_recorded": true,
+        "liu_replacement_scope_honored": true
+      },
+      "readiness_basis": "Frozen planning-only disposition preserved; R5 does not promote planning-only rows.",
+      "liu_replacement_scope": null,
+      "stage2_production_citation_authorized": false,
+      "h1_h4_status": "NOT_RUN"
+    },
+    {
+      "claim_id": "L1-CC-002",
+      "lane": "L1",
+      "claim_text_bounded": "Candidate-universe construction, including the number and selection of decoy or non-relevant items, is part of the evaluation protocol and can alter metric estimates and comparative conclusions.",
+      "evidence_kind": "original_content",
+      "support_verdict": "supported",
+      "frozen_r3_disposition": "planning_only",
+      "r5_disposition": "planning_only",
+      "exclusive_disposition": true,
+      "canonical_source_keys": [
+        "zhao2020_alternative_settings",
+        "ihemelandu2023_candidate_set_sampling_for_evaluating_top_n_recommendation",
+        "pereira2025_on_the_reliability_of_sampling_strategies_in_offline_recom",
+        "parajuli2026_on_the_convergent_validity_of_offline_evaluation_designs_f"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-022",
+        "SF-R1-040",
+        "SF-R1-043",
+        "SF-R1-069"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-zhao2020_alternative_settings-01",
+        "LOC-R4-S-ihemelandu2023_candidate_set_sampling_for_evaluating_top_n_recommendation-01",
+        "LOC-R4-S-pereira2025_on_the_reliability_of_sampling_strategies_in_offline_recom-01",
+        "LOC-R4-S-parajuli2026_on_the_convergent_validity_of_offline_evaluation_designs_f-01"
+      ],
+      "evidence_scope": "Candidate-universe construction, including the number and selection of decoy or non-relevant items, is part of the evaluation protocol and can alter metric estimates and comparative conclusions.",
+      "forbidden_extrapolations": [
+        "Do not compare raw scores produced from different candidate universes.",
+        "Do not assume one candidate-sampling policy is uniformly least biased across datasets and targets.",
+        "Do not treat candidate generation by another algorithm as full-catalog evaluation."
+      ],
+      "readiness_checks": {
+        "r4_acquisition_satisfied": true,
+        "r4_original_content_satisfied": true,
+        "r4_locator_satisfied": true,
+        "frozen_r4_prerequisites_satisfied": false,
+        "all_selected_locators_verified_non_none": null,
+        "wording_bounded": true,
+        "family_dependence_recorded": true,
+        "liu_replacement_scope_honored": true
+      },
+      "readiness_basis": "Frozen planning-only disposition preserved; R5 does not promote planning-only rows.",
+      "liu_replacement_scope": null,
+      "stage2_production_citation_authorized": false,
+      "h1_h4_status": "NOT_RUN"
+    },
+    {
+      "claim_id": "L1-CC-003",
+      "lane": "L1",
+      "claim_text_bounded": "Temporal, random, leave-one-out, and global-temporal splitting policies can yield different metrics and model rankings, so the split policy and target-selection rule must be locked and reported.",
+      "evidence_kind": "original_content",
+      "support_verdict": "supported",
+      "frozen_r3_disposition": "planning_only",
+      "r5_disposition": "planning_only",
+      "exclusive_disposition": true,
+      "canonical_source_keys": [
+        "zhao2020_alternative_settings",
+        "gusak2025_time_split",
+        "parajuli2026_on_the_convergent_validity_of_offline_evaluation_designs_f"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-013",
+        "SF-R1-040",
+        "SF-R1-069"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-zhao2020_alternative_settings-01",
+        "LOC-R4-S-gusak2025_time_split-01",
+        "LOC-R4-S-parajuli2026_on_the_convergent_validity_of_offline_evaluation_designs_f-01"
+      ],
+      "evidence_scope": "Temporal, random, leave-one-out, and global-temporal splitting policies can yield different metrics and model rankings, so the split policy and target-selection rule must be locked and reported.",
+      "forbidden_extrapolations": [
+        "Do not assert that temporal splitting is universally superior for every recommendation task.",
+        "Do not compare raw scores across split policies.",
+        "Do not transfer sequential next-item findings unchanged to non-sequential tasks."
+      ],
+      "readiness_checks": {
+        "r4_acquisition_satisfied": true,
+        "r4_original_content_satisfied": true,
+        "r4_locator_satisfied": true,
+        "frozen_r4_prerequisites_satisfied": false,
+        "all_selected_locators_verified_non_none": null,
+        "wording_bounded": true,
+        "family_dependence_recorded": true,
+        "liu_replacement_scope_honored": true
+      },
+      "readiness_basis": "Frozen planning-only disposition preserved; R5 does not promote planning-only rows.",
+      "liu_replacement_scope": null,
+      "stage2_production_citation_authorized": false,
+      "h1_h4_status": "NOT_RUN"
+    },
+    {
+      "claim_id": "L1-CC-004",
+      "lane": "L1",
+      "claim_text_bounded": "Metric name alone is insufficient to identify an evaluand: formula, eligible-user rule, empty-result handling, per-user aggregation, cutoff, and candidate scope must be specified and parity-tested.",
+      "evidence_kind": "original_content",
+      "support_verdict": "supported",
+      "frozen_r3_disposition": "planning_only",
+      "r5_disposition": "planning_only",
+      "exclusive_disposition": true,
+      "canonical_source_keys": [
+        "tamm2021_metric_consistency",
+        "canamares2020_offline_options",
+        "castells2022_offline_recommender_system_evaluation_challenges_and_new_d"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-005",
+        "SF-R1-006",
+        "SF-R1-056"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-tamm2021_metric_consistency-01",
+        "LOC-R4-S-canamares2020_offline_options-01",
+        "LOC-R4-S-castells2022_offline_recommender_system_evaluation_challenges_and_new_d-01"
+      ],
+      "evidence_scope": "Metric name alone is insufficient to identify an evaluand: formula, eligible-user rule, empty-result handling, per-user aggregation, cutoff, and candidate scope must be specified and parity-tested.",
+      "forbidden_extrapolations": [
+        "Do not infer semantic equality from a shared label such as Recall, Hit Rate, NDCG, AUC, or GAUC.",
+        "Do not infer that a library default implements the v5 metric contract.",
+        "Do not use Bradley 1997 as a source for project-specific GAUC aggregation."
+      ],
+      "readiness_checks": {
+        "r4_acquisition_satisfied": false,
+        "r4_original_content_satisfied": true,
+        "r4_locator_satisfied": true,
+        "frozen_r4_prerequisites_satisfied": false,
+        "all_selected_locators_verified_non_none": null,
+        "wording_bounded": true,
+        "family_dependence_recorded": true,
+        "liu_replacement_scope_honored": true
+      },
+      "readiness_basis": "Frozen planning-only disposition preserved; R5 does not promote planning-only rows.",
+      "liu_replacement_scope": null,
+      "stage2_production_citation_authorized": false,
+      "h1_h4_status": "NOT_RUN"
+    },
+    {
+      "claim_id": "L1-CC-005",
+      "lane": "L1",
+      "claim_text_bounded": "Tuning budget, search space, validation criterion, baseline optimization, preprocessing, seeds, stopping rules, and evaluation implementation are part of the comparison protocol and can affect claims of progress.",
+      "evidence_kind": "original_content",
+      "support_verdict": "supported",
+      "frozen_r3_disposition": "planning_only",
+      "r5_disposition": "planning_only",
+      "exclusive_disposition": true,
+      "canonical_source_keys": [
+        "dacrema2021_reproducibility",
+        "sun2023_daisyrec2",
+        "benigni2026_diffusion_recommender_models_and_the_illusion_of_progress_",
+        "jannach2026_methodological_standards"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-002",
+        "SF-R1-009",
+        "SF-R1-023",
+        "SF-R1-054"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-dacrema2021_reproducibility-01",
+        "LOC-R4-S-sun2023_daisyrec2-01",
+        "LOC-R4-S-benigni2026_diffusion_recommender_models_and_the_illusion_of_progress_-01",
+        "LOC-R4-S-jannach2026_methodological_standards-01"
+      ],
+      "evidence_scope": "Tuning budget, search space, validation criterion, baseline optimization, preprocessing, seeds, stopping rules, and evaluation implementation are part of the comparison protocol and can affect claims of progress.",
+      "forbidden_extrapolations": [
+        "Do not attribute performance differences to architecture when tuning budgets or evaluation chains differ.",
+        "Do not treat reported best hyperparameters as a fair shared budget.",
+        "Do not transfer reproduced numerical rankings to v5."
+      ],
+      "readiness_checks": {
+        "r4_acquisition_satisfied": true,
+        "r4_original_content_satisfied": true,
+        "r4_locator_satisfied": true,
+        "frozen_r4_prerequisites_satisfied": false,
+        "all_selected_locators_verified_non_none": null,
+        "wording_bounded": true,
+        "family_dependence_recorded": true,
+        "liu_replacement_scope_honored": true
+      },
+      "readiness_basis": "Frozen planning-only disposition preserved; R5 does not promote planning-only rows.",
+      "liu_replacement_scope": null,
+      "stage2_production_citation_authorized": false,
+      "h1_h4_status": "NOT_RUN"
+    },
+    {
+      "claim_id": "L1-CC-006",
+      "lane": "L1",
+      "claim_text_bounded": "Public availability of code or a repository can enable a reproduction attempt but does not by itself establish that data transformations, splits, dependencies, hyperparameters, or numerical results were reproduced.",
+      "evidence_kind": "original_content",
+      "support_verdict": "supported",
+      "frozen_r3_disposition": "planning_only",
+      "r5_disposition": "planning_only",
+      "exclusive_disposition": true,
+      "canonical_source_keys": [
+        "dacrema2021_reproducibility",
+        "shehzad2025_we_share_our_code_online_why_this_is_not_enough_to_ensure_",
+        "zhao2022_recbole2"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-009",
+        "SF-R1-051",
+        "SF-R1-070"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-dacrema2021_reproducibility-01",
+        "LOC-R4-S-shehzad2025_we_share_our_code_online_why_this_is_not_enough_to_ensure_-01",
+        "LOC-R4-S-zhao2022_recbole2-01"
+      ],
+      "evidence_scope": "Public availability of code or a repository can enable a reproduction attempt but does not by itself establish that data transformations, splits, dependencies, hyperparameters, or numerical results were reproduced.",
+      "forbidden_extrapolations": [
+        "Do not label a v5 adapter reproduced solely because its upstream repository is public.",
+        "Do not infer a license or redistribution right from public accessibility.",
+        "Do not generalize the Shehzad audit beyond its 65-paper SIGIR 2022–2024 sample or treat artifact availability as proof of numerical reproduction."
+      ],
+      "readiness_checks": {
+        "r4_acquisition_satisfied": false,
+        "r4_original_content_satisfied": true,
+        "r4_locator_satisfied": true,
+        "frozen_r4_prerequisites_satisfied": false,
+        "all_selected_locators_verified_non_none": null,
+        "wording_bounded": true,
+        "family_dependence_recorded": true,
+        "liu_replacement_scope_honored": true
+      },
+      "readiness_basis": "Frozen planning-only disposition preserved; R5 does not promote planning-only rows.",
+      "liu_replacement_scope": null,
+      "stage2_production_citation_authorized": false,
+      "h1_h4_status": "NOT_RUN"
+    },
+    {
+      "claim_id": "L1-CC-007",
+      "lane": "L1",
+      "claim_text_bounded": "For v5 planning, an official-protocol reproduction should test fidelity to each source implementation, while a harmonized benchmark should hold the v5 data, candidate, metric, and tuning contract constant; the two outputs answer different questions and should be reported separately.",
+      "evidence_kind": "original_content",
+      "support_verdict": "partially_supported",
+      "frozen_r3_disposition": "planning_only",
+      "r5_disposition": "planning_only",
+      "exclusive_disposition": true,
+      "canonical_source_keys": [
+        "dacrema2021_reproducibility",
+        "sun2023_daisyrec2",
+        "zhao2022_recbole2",
+        "jannach2026_methodological_standards"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-009",
+        "SF-R1-023",
+        "SF-R1-054",
+        "SF-R1-070"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-dacrema2021_reproducibility-01",
+        "LOC-R4-S-sun2023_daisyrec2-01",
+        "LOC-R4-S-zhao2022_recbole2-01",
+        "LOC-R4-S-jannach2026_methodological_standards-01"
+      ],
+      "evidence_scope": "For v5 planning, an official-protocol reproduction should test fidelity to each source implementation, while a harmonized benchmark should hold the v5 data, candidate, metric, and tuning contract constant; the two outputs answer different questions and should be reported separately.",
+      "forbidden_extrapolations": [
+        "Do not call a harmonized reimplementation an official reproduction without adapter-parity evidence.",
+        "Do not compare official-protocol raw metrics across incompatible datasets or pipelines.",
+        "Do not claim the cited sources prescribe the exact v5 two-table format."
+      ],
+      "readiness_checks": {
+        "r4_acquisition_satisfied": true,
+        "r4_original_content_satisfied": true,
+        "r4_locator_satisfied": true,
+        "frozen_r4_prerequisites_satisfied": false,
+        "all_selected_locators_verified_non_none": null,
+        "wording_bounded": true,
+        "family_dependence_recorded": true,
+        "liu_replacement_scope_honored": true
+      },
+      "readiness_basis": "Frozen planning-only disposition preserved; R5 does not promote planning-only rows.",
+      "liu_replacement_scope": null,
+      "stage2_production_citation_authorized": false,
+      "h1_h4_status": "NOT_RUN"
+    },
+    {
+      "claim_id": "L1-CC-008",
+      "lane": "L1",
+      "claim_text_bounded": "A raw offline metric value is interpretable only within its dataset, split, target, candidate universe, metric implementation, aggregation, and tuning pipeline; values from different pipelines are not directly comparable without a justified harmonization.",
+      "evidence_kind": "original_content",
+      "support_verdict": "supported",
+      "frozen_r3_disposition": "planning_only",
+      "r5_disposition": "planning_only",
+      "exclusive_disposition": true,
+      "canonical_source_keys": [
+        "zhao2020_alternative_settings",
+        "canamares2020_offline_options",
+        "gusak2025_time_split",
+        "parajuli2026_on_the_convergent_validity_of_offline_evaluation_designs_f"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-005",
+        "SF-R1-013",
+        "SF-R1-040",
+        "SF-R1-069"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-zhao2020_alternative_settings-01",
+        "LOC-R4-S-canamares2020_offline_options-01",
+        "LOC-R4-S-gusak2025_time_split-01",
+        "LOC-R4-S-parajuli2026_on_the_convergent_validity_of_offline_evaluation_designs_f-01"
+      ],
+      "evidence_scope": "A raw offline metric value is interpretable only within its dataset, split, target, candidate universe, metric implementation, aggregation, and tuning pipeline; values from different pipelines are not directly comparable without a justified harmonization.",
+      "forbidden_extrapolations": [
+        "Do not pool or rank raw metrics across v5, external datasets, or published papers with different protocols.",
+        "Do not infer deployment superiority from a higher offline score measured under another pipeline.",
+        "Do not treat a shared metric name as sufficient harmonization."
+      ],
+      "readiness_checks": {
+        "r4_acquisition_satisfied": true,
+        "r4_original_content_satisfied": true,
+        "r4_locator_satisfied": true,
+        "frozen_r4_prerequisites_satisfied": false,
+        "all_selected_locators_verified_non_none": null,
+        "wording_bounded": true,
+        "family_dependence_recorded": true,
+        "liu_replacement_scope_honored": true
+      },
+      "readiness_basis": "Frozen planning-only disposition preserved; R5 does not promote planning-only rows.",
+      "liu_replacement_scope": null,
+      "stage2_production_citation_authorized": false,
+      "h1_h4_status": "NOT_RUN"
+    },
+    {
+      "claim_id": "L1-CC-009",
+      "lane": "L1",
+      "claim_text_bounded": "Negative or target-item sampling has multiple reliability dimensions—ordering consistency, estimation error, resolution, fidelity, robustness to exposure bias, and predictive alignment—so it should not be judged by one metric or one sample size alone.",
+      "evidence_kind": "original_content",
+      "support_verdict": "supported",
+      "frozen_r3_disposition": "planning_only",
+      "r5_disposition": "planning_only",
+      "exclusive_disposition": true,
+      "canonical_source_keys": [
+        "krichene2021_on_sampled_metrics_for_item_recommendation_extended_abstra",
+        "li2023_reliable_sampling",
+        "hidasi2023_widespread_flaws_in_offline_evaluation_of_recommender_syst",
+        "ihemelandu2023_candidate_set_sampling_for_evaluating_top_n_recommendation",
+        "pereira2025_on_the_reliability_of_sampling_strategies_in_offline_recom",
+        "liu2023_on_the_consistency_discriminative_power_and_robustness_of_"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-016",
+        "SF-R1-022",
+        "SF-R1-028",
+        "SF-R1-031",
+        "SF-R1-034",
+        "SF-R1-043"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-krichene2021_on_sampled_metrics_for_item_recommendation_extended_abstra-01",
+        "LOC-R4-S-li2023_reliable_sampling-01",
+        "LOC-R4-S-hidasi2023_widespread_flaws_in_offline_evaluation_of_recommender_syst-01",
+        "LOC-R4-S-ihemelandu2023_candidate_set_sampling_for_evaluating_top_n_recommendation-01",
+        "LOC-R4-S-pereira2025_on_the_reliability_of_sampling_strategies_in_offline_recom-01",
+        "LOC-R4-S-liu2023_on_the_consistency_discriminative_power_and_robustness_of_-01"
+      ],
+      "evidence_scope": "Negative or target-item sampling has multiple reliability dimensions—ordering consistency, estimation error, resolution, fidelity, robustness to exposure bias, and predictive alignment—so it should not be judged by one metric or one sample size alone.",
+      "forbidden_extrapolations": [
+        "Do not generalize one sampling result to all logging biases, datasets, models, metrics, or sample sizes.",
+        "Do not claim sampled evaluation is always invalid or always reliable.",
+        "Do not treat higher discriminative power as proof of fidelity to full evaluation."
+      ],
+      "readiness_checks": {
+        "r4_acquisition_satisfied": false,
+        "r4_original_content_satisfied": false,
+        "r4_locator_satisfied": false,
+        "frozen_r4_prerequisites_satisfied": false,
+        "all_selected_locators_verified_non_none": null,
+        "wording_bounded": true,
+        "family_dependence_recorded": true,
+        "liu_replacement_scope_honored": true
+      },
+      "readiness_basis": "Frozen planning-only disposition preserved; R5 does not promote planning-only rows.",
+      "liu_replacement_scope": null,
+      "stage2_production_citation_authorized": false,
+      "h1_h4_status": "NOT_RUN"
+    },
+    {
+      "claim_id": "L1-CC-010",
+      "lane": "L1",
+      "claim_text_bounded": "A generic ROC-AUC citation does not determine v5's per-user GAUC eligibility, weighting, tie handling, or hierarchical uncertainty procedure; those remain project-specific estimand choices requiring explicit definition.",
+      "evidence_kind": "original_content",
+      "support_verdict": "partially_supported",
+      "frozen_r3_disposition": "planning_only",
+      "r5_disposition": "planning_only",
+      "exclusive_disposition": true,
+      "canonical_source_keys": [
+        "tamm2021_metric_consistency",
+        "canamares2020_offline_options"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-005",
+        "SF-R1-056"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-tamm2021_metric_consistency-01",
+        "LOC-R4-S-canamares2020_offline_options-01"
+      ],
+      "evidence_scope": "A generic ROC-AUC citation does not determine v5's per-user GAUC eligibility, weighting, tie handling, or hierarchical uncertainty procedure; those remain project-specific estimand choices requiring explicit definition.",
+      "forbidden_extrapolations": [
+        "Do not claim Bradley 1997 validates a particular v5 GAUC formula.",
+        "Do not infer user weighting or bootstrap structure from generic AUC.",
+        "Do not report a GAUC result until eligible-user and denominator rules are frozen."
+      ],
+      "readiness_checks": {
+        "r4_acquisition_satisfied": true,
+        "r4_original_content_satisfied": true,
+        "r4_locator_satisfied": true,
+        "frozen_r4_prerequisites_satisfied": false,
+        "all_selected_locators_verified_non_none": null,
+        "wording_bounded": true,
+        "family_dependence_recorded": true,
+        "liu_replacement_scope_honored": true
+      },
+      "readiness_basis": "Frozen planning-only disposition preserved; R5 does not promote planning-only rows.",
+      "liu_replacement_scope": null,
+      "stage2_production_citation_authorized": false,
+      "h1_h4_status": "NOT_RUN"
+    },
+    {
+      "claim_id": "L1-CC-011",
+      "lane": "L1",
+      "claim_text_bounded": "Jannach and Chen 2026 is an editorial/essay that provides methodological guidance; its peer-review status is unknown because no direct evidence of external peer review was located.",
+      "evidence_kind": "original_content",
+      "support_verdict": "supported",
+      "frozen_r3_disposition": "planning_only",
+      "r5_disposition": "planning_only",
+      "exclusive_disposition": true,
+      "canonical_source_keys": [
+        "jannach2026_methodological_standards"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-023"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-jannach2026_methodological_standards-01"
+      ],
+      "evidence_scope": "Jannach and Chen 2026 is an editorial/essay that provides methodological guidance; its peer-review status is unknown because no direct evidence of external peer review was located.",
+      "forbidden_extrapolations": [
+        "Do not classify the work as a systematic review or empirical benchmark.",
+        "Do not set peer_reviewed=true without direct evidence.",
+        "Do not treat editorial guidance as measured effect size evidence."
+      ],
+      "readiness_checks": {
+        "r4_acquisition_satisfied": true,
+        "r4_original_content_satisfied": true,
+        "r4_locator_satisfied": true,
+        "frozen_r4_prerequisites_satisfied": false,
+        "all_selected_locators_verified_non_none": null,
+        "wording_bounded": true,
+        "family_dependence_recorded": true,
+        "liu_replacement_scope_honored": true
+      },
+      "readiness_basis": "Frozen planning-only disposition preserved; R5 does not promote planning-only rows.",
+      "liu_replacement_scope": null,
+      "stage2_production_citation_authorized": false,
+      "h1_h4_status": "NOT_RUN"
+    },
+    {
+      "claim_id": "L2-CLAIM-GRAPH-ZERO-EDGE-005",
+      "lane": "L2",
+      "claim_text_bounded": "LightGCN and the retained graph-contrastive controls learn from an observed user-item graph and trainable ID embeddings; improvements on sparse observed graphs cannot establish recommendation capability for an item with zero training edges.",
+      "evidence_kind": "original_content",
+      "support_verdict": "supported",
+      "frozen_r3_disposition": "conditional_production_candidate",
+      "r5_disposition": "citation_ready_candidate",
+      "exclusive_disposition": true,
+      "canonical_source_keys": [
+        "he2020_lightgcn",
+        "yu2022_simgcl",
+        "cai2023_lightgcl"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-004",
+        "SF-R1-015",
+        "SF-R1-065"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-he2020_lightgcn-01",
+        "LOC-R4-S-yu2022_simgcl-01",
+        "LOC-R4-S-cai2023_lightgcl-01"
+      ],
+      "evidence_scope": "LightGCN and the retained graph-contrastive controls learn from an observed user-item graph and trainable ID embeddings; improvements on sparse observed graphs cannot establish recommendation capability for an item with zero training edges.",
+      "forbidden_extrapolations": [
+        "Sparse-edge graph improvement does not prove zero-edge cold-item capability.",
+        "No source establishes a v5 architecture ranking."
+      ],
+      "readiness_checks": {
+        "r4_acquisition_satisfied": true,
+        "r4_original_content_satisfied": true,
+        "r4_locator_satisfied": true,
+        "frozen_r4_prerequisites_satisfied": true,
+        "all_selected_locators_verified_non_none": true,
+        "wording_bounded": true,
+        "family_dependence_recorded": true,
+        "liu_replacement_scope_honored": true
+      },
+      "readiness_basis": "R3 identity/family binding plus R4 original-content and verified non-none locator evidence; R5 wording and family-dependence checks passed.",
+      "liu_replacement_scope": null,
+      "stage2_production_citation_authorized": false,
+      "h1_h4_status": "NOT_RUN"
+    },
+    {
+      "claim_id": "L2-CLAIM-HARMONIZED-EVAL-008",
+      "lane": "L2",
+      "claim_text_bounded": "A dataset-v5 architecture comparison must harmonize split, candidate universe, stage role, input features, objective, negative sampling, tuning budget, and evaluator; the inspected architecture papers alone cannot supply a v5 ranking.",
+      "evidence_kind": "original_content",
+      "support_verdict": "supported",
+      "frozen_r3_disposition": "planning_only",
+      "r5_disposition": "planning_only",
+      "exclusive_disposition": true,
+      "canonical_source_keys": [
+        "sarwar2001_itemcf",
+        "rendle2009_bpr",
+        "he2017_ncf",
+        "guo2017_deepfm",
+        "he2020_lightgcn"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-012",
+        "SF-R1-014",
+        "SF-R1-015",
+        "SF-R1-047",
+        "SF-R1-050"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-sarwar2001_itemcf-01",
+        "LOC-R4-S-rendle2009_bpr-01",
+        "LOC-R4-S-he2017_ncf-01",
+        "LOC-R4-S-guo2017_deepfm-01",
+        "LOC-R4-S-he2020_lightgcn-01"
+      ],
+      "evidence_scope": "A dataset-v5 architecture comparison must harmonize split, candidate universe, stage role, input features, objective, negative sampling, tuning budget, and evaluator; the inspected architecture papers alone cannot supply a v5 ranking.",
+      "forbidden_extrapolations": [
+        "This card does not report benchmark results or an architecture ranking.",
+        "No architecture paper establishes a ranking on dataset v5 without a harmonized benchmark."
+      ],
+      "readiness_checks": {
+        "r4_acquisition_satisfied": true,
+        "r4_original_content_satisfied": true,
+        "r4_locator_satisfied": true,
+        "frozen_r4_prerequisites_satisfied": false,
+        "all_selected_locators_verified_non_none": null,
+        "wording_bounded": true,
+        "family_dependence_recorded": true,
+        "liu_replacement_scope_honored": true
+      },
+      "readiness_basis": "Frozen planning-only disposition preserved; R5 does not promote planning-only rows.",
+      "liu_replacement_scope": null,
+      "stage2_production_citation_authorized": false,
+      "h1_h4_status": "NOT_RUN"
+    },
+    {
+      "claim_id": "L2-CLAIM-ITEMCF-BPR-001",
+      "lane": "L2",
+      "claim_text_bounded": "ItemCF estimates item-item similarity from historical interaction overlap and aggregates neighbor evidence, whereas BPR supplies a pairwise implicit-feedback objective that can train matrix factorization or another differentiable scorer.",
+      "evidence_kind": "original_content",
+      "support_verdict": "supported",
+      "frozen_r3_disposition": "conditional_production_candidate",
+      "r5_disposition": "citation_ready_candidate",
+      "exclusive_disposition": true,
+      "canonical_source_keys": [
+        "sarwar2001_itemcf",
+        "rendle2009_bpr"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-047",
+        "SF-R1-050"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-sarwar2001_itemcf-01",
+        "LOC-R4-S-rendle2009_bpr-01"
+      ],
+      "evidence_scope": "ItemCF estimates item-item similarity from historical interaction overlap and aggregates neighbor evidence, whereas BPR supplies a pairwise implicit-feedback objective that can train matrix factorization or another differentiable scorer.",
+      "forbidden_extrapolations": [
+        "Neither source establishes a ranking on dataset v5.",
+        "Unobserved interactions are not automatically true negative preferences."
+      ],
+      "readiness_checks": {
+        "r4_acquisition_satisfied": true,
+        "r4_original_content_satisfied": true,
+        "r4_locator_satisfied": true,
+        "frozen_r4_prerequisites_satisfied": true,
+        "all_selected_locators_verified_non_none": true,
+        "wording_bounded": true,
+        "family_dependence_recorded": true,
+        "liu_replacement_scope_honored": true
+      },
+      "readiness_basis": "R3 identity/family binding plus R4 original-content and verified non-none locator evidence; R5 wording and family-dependence checks passed.",
+      "liu_replacement_scope": null,
+      "stage2_production_citation_authorized": false,
+      "h1_h4_status": "NOT_RUN"
+    },
+    {
+      "claim_id": "L2-CLAIM-NCF-DEEPFM-002",
+      "lane": "L2",
+      "claim_text_bounded": "NCF learns nonlinear interaction functions from user/item IDs, while DeepFM jointly models low- and high-order interactions over sparse feature fields for CTR prediction; their input and task contracts are therefore not interchangeable.",
+      "evidence_kind": "original_content",
+      "support_verdict": "supported",
+      "frozen_r3_disposition": "conditional_production_candidate",
+      "r5_disposition": "citation_ready_candidate",
+      "exclusive_disposition": true,
+      "canonical_source_keys": [
+        "he2017_ncf",
+        "guo2017_deepfm"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-012",
+        "SF-R1-014"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-he2017_ncf-01",
+        "LOC-R4-S-guo2017_deepfm-01"
+      ],
+      "evidence_scope": "NCF learns nonlinear interaction functions from user/item IDs, while DeepFM jointly models low- and high-order interactions over sparse feature fields for CTR prediction; their input and task contracts are therefore not interchangeable.",
+      "forbidden_extrapolations": [
+        "CTR AUC/log-loss does not establish full-catalog top-k performance.",
+        "Source-native sampled leave-one-out results do not establish a v5 ranking."
+      ],
+      "readiness_checks": {
+        "r4_acquisition_satisfied": true,
+        "r4_original_content_satisfied": true,
+        "r4_locator_satisfied": true,
+        "frozen_r4_prerequisites_satisfied": true,
+        "all_selected_locators_verified_non_none": true,
+        "wording_bounded": true,
+        "family_dependence_recorded": true,
+        "liu_replacement_scope_honored": true
+      },
+      "readiness_basis": "R3 identity/family binding plus R4 original-content and verified non-none locator evidence; R5 wording and family-dependence checks passed.",
+      "liu_replacement_scope": null,
+      "stage2_production_citation_authorized": false,
+      "h1_h4_status": "NOT_RUN"
+    },
+    {
+      "claim_id": "L2-CLAIM-OBJECTIVE-006",
+      "lane": "L2",
+      "claim_text_bounded": "Encoder complexity and training objective must be controlled separately: BPR specifies pairwise ranking, sampled two-tower training introduces negative-distribution effects, and DirectAU directly optimizes alignment and uniformity.",
+      "evidence_kind": "original_content",
+      "support_verdict": "supported",
+      "frozen_r3_disposition": "conditional_production_candidate",
+      "r5_disposition": "citation_ready_candidate",
+      "exclusive_disposition": true,
+      "canonical_source_keys": [
+        "rendle2009_bpr",
+        "yi2019_ndr",
+        "wang2022_directau"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-047",
+        "SF-R1-060",
+        "SF-R1-064"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-rendle2009_bpr-01",
+        "LOC-R4-S-yi2019_ndr-01",
+        "LOC-R4-S-wang2022_directau-01"
+      ],
+      "evidence_scope": "Encoder complexity and training objective must be controlled separately: BPR specifies pairwise ranking, sampled two-tower training introduces negative-distribution effects, and DirectAU directly optimizes alignment and uniformity.",
+      "forbidden_extrapolations": [
+        "Do not attribute a source-native gain solely to architecture when objectives or sampling differ.",
+        "Do not infer a v5 ranking."
+      ],
+      "readiness_checks": {
+        "r4_acquisition_satisfied": true,
+        "r4_original_content_satisfied": true,
+        "r4_locator_satisfied": true,
+        "frozen_r4_prerequisites_satisfied": true,
+        "all_selected_locators_verified_non_none": true,
+        "wording_bounded": true,
+        "family_dependence_recorded": true,
+        "liu_replacement_scope_honored": true
+      },
+      "readiness_basis": "R3 identity/family binding plus R4 original-content and verified non-none locator evidence; R5 wording and family-dependence checks passed.",
+      "liu_replacement_scope": null,
+      "stage2_production_citation_authorized": false,
+      "h1_h4_status": "NOT_RUN"
+    },
+    {
+      "claim_id": "L2-CLAIM-RECENT-TOWER-CONTROLS-007",
+      "lane": "L2",
+      "claim_text_bounded": "ContextGNN and T2Diff are recent controls for the pair-agnostic two-tower boundary: the former introduces pair-aware local graph context with an exploratory fallback, while the latter introduces training-time cross-interaction for efficient matching.",
+      "evidence_kind": "original_content",
+      "support_verdict": "supported",
+      "frozen_r3_disposition": "conditional_production_candidate",
+      "r5_disposition": "citation_ready_candidate",
+      "exclusive_disposition": true,
+      "canonical_source_keys": [
+        "yuan2025_contextgnn",
+        "wang2025_t2diff"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-061",
+        "SF-R1-068"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-yuan2025_contextgnn-01",
+        "LOC-R4-S-wang2025_t2diff-01"
+      ],
+      "evidence_scope": "ContextGNN and T2Diff are recent controls for the pair-agnostic two-tower boundary: the former introduces pair-aware local graph context with an exploratory fallback, while the latter introduces training-time cross-interaction for efficient matching.",
+      "forbidden_extrapolations": [
+        "Do not claim either control outranks another architecture on v5.",
+        "Matching-stage evidence is not ranking-stage evidence.",
+        "Observed local graph context is not zero-edge cold-item evidence."
+      ],
+      "readiness_checks": {
+        "r4_acquisition_satisfied": true,
+        "r4_original_content_satisfied": true,
+        "r4_locator_satisfied": true,
+        "frozen_r4_prerequisites_satisfied": true,
+        "all_selected_locators_verified_non_none": true,
+        "wording_bounded": true,
+        "family_dependence_recorded": true,
+        "liu_replacement_scope_honored": true
+      },
+      "readiness_basis": "R3 identity/family binding plus R4 original-content and verified non-none locator evidence; R5 wording and family-dependence checks passed.",
+      "liu_replacement_scope": null,
+      "stage2_production_citation_authorized": false,
+      "h1_h4_status": "NOT_RUN"
+    },
+    {
+      "claim_id": "L2-CLAIM-TWO-STAGE-003",
+      "lane": "L2",
+      "claim_text_bounded": "In the inspected industrial references, candidate generation or matching reduces a very large corpus to a smaller set, after which a richer ranking stage can score hundreds of items; a two-tower model must therefore be labeled by its retrieval, pre-ranking, or ranking role.",
+      "evidence_kind": "original_content",
+      "support_verdict": "supported",
+      "frozen_r3_disposition": "conditional_production_candidate",
+      "r5_disposition": "citation_ready_candidate",
+      "exclusive_disposition": true,
+      "canonical_source_keys": [
+        "covington2016_youtube",
+        "yi2019_ndr",
+        "wang2025_t2diff"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-008",
+        "SF-R1-061",
+        "SF-R1-064"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-covington2016_youtube-01",
+        "LOC-R4-S-yi2019_ndr-01",
+        "LOC-R4-S-wang2025_t2diff-01"
+      ],
+      "evidence_scope": "In the inspected industrial references, candidate generation or matching reduces a very large corpus to a smaller set, after which a richer ranking stage can score hundreds of items; a two-tower model must therefore be labeled by its retrieval, pre-ranking, or ranking role.",
+      "forbidden_extrapolations": [
+        "Retrieval-stage recall does not prove ranking-stage quality.",
+        "Do not assume dataset v5 requires this topology before Stage 1E freezes the architecture contract.",
+        "No cited paper establishes a v5 architecture ranking."
+      ],
+      "readiness_checks": {
+        "r4_acquisition_satisfied": true,
+        "r4_original_content_satisfied": true,
+        "r4_locator_satisfied": true,
+        "frozen_r4_prerequisites_satisfied": true,
+        "all_selected_locators_verified_non_none": true,
+        "wording_bounded": true,
+        "family_dependence_recorded": true,
+        "liu_replacement_scope_honored": true
+      },
+      "readiness_basis": "R3 identity/family binding plus R4 original-content and verified non-none locator evidence; R5 wording and family-dependence checks passed.",
+      "liu_replacement_scope": null,
+      "stage2_production_citation_authorized": false,
+      "h1_h4_status": "NOT_RUN"
+    },
+    {
+      "claim_id": "L2-CLAIM-WIDE-DEEP-004",
+      "lane": "L2",
+      "claim_text_bounded": "Wide & Deep combines a linear component over explicit cross-product features for memorization with an embedding/MLP component for generalization and trains them jointly for its reported ranking task.",
+      "evidence_kind": "original_content",
+      "support_verdict": "supported",
+      "frozen_r3_disposition": "conditional_production_candidate",
+      "r5_disposition": "citation_ready_candidate",
+      "exclusive_disposition": true,
+      "canonical_source_keys": [
+        "cheng2016_wide_deep"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-007"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-cheng2016_wide_deep-01"
+      ],
+      "evidence_scope": "Wide & Deep combines a linear component over explicit cross-product features for memorization with an embedding/MLP component for generalization and trains them jointly for its reported ranking task.",
+      "forbidden_extrapolations": [
+        "Wide & Deep does not prove that an Apriori branch is effective.",
+        "The production result does not establish a v5 architecture ranking."
+      ],
+      "readiness_checks": {
+        "r4_acquisition_satisfied": true,
+        "r4_original_content_satisfied": true,
+        "r4_locator_satisfied": true,
+        "frozen_r4_prerequisites_satisfied": true,
+        "all_selected_locators_verified_non_none": true,
+        "wording_bounded": true,
+        "family_dependence_recorded": true,
+        "liu_replacement_scope_honored": true
+      },
+      "readiness_basis": "R3 identity/family binding plus R4 original-content and verified non-none locator evidence; R5 wording and family-dependence checks passed.",
+      "liu_replacement_scope": null,
+      "stage2_production_citation_authorized": false,
+      "h1_h4_status": "NOT_RUN"
+    },
+    {
+      "claim_id": "L3-APR-001",
+      "lane": "L3",
+      "claim_text_bounded": "In the retained Apriori source, support is a transaction-frequency threshold and confidence is a conditional rule-strength threshold used to mine association rules; the source does not define Apriori itself as a recommender ranking model.",
+      "evidence_kind": "original_content",
+      "support_verdict": "supported",
+      "frozen_r3_disposition": "conditional_production_candidate",
+      "r5_disposition": "citation_ready_candidate",
+      "exclusive_disposition": true,
+      "canonical_source_keys": [
+        "agrawal1994_apriori"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-001"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-agrawal1994_apriori-01"
+      ],
+      "evidence_scope": "In the retained Apriori source, support is a transaction-frequency threshold and confidence is a conditional rule-strength threshold used to mine association rules; the source does not define Apriori itself as a recommender ranking model.",
+      "forbidden_extrapolations": [
+        "Apriori is a ranking model.",
+        "Mined rules improve recommendation metrics.",
+        "Literature evidence establishes H3."
+      ],
+      "readiness_checks": {
+        "r4_acquisition_satisfied": true,
+        "r4_original_content_satisfied": true,
+        "r4_locator_satisfied": true,
+        "frozen_r4_prerequisites_satisfied": true,
+        "all_selected_locators_verified_non_none": true,
+        "wording_bounded": true,
+        "family_dependence_recorded": true,
+        "liu_replacement_scope_honored": true
+      },
+      "readiness_basis": "R3 identity/family binding plus R4 original-content and verified non-none locator evidence; R5 wording and family-dependence checks passed.",
+      "liu_replacement_scope": null,
+      "stage2_production_citation_authorized": false,
+      "h1_h4_status": "NOT_RUN"
+    },
+    {
+      "claim_id": "L3-BTBR-005",
+      "lane": "L3",
+      "claim_text_bounded": "Mask-Swap provides a direct next-novel-basket formulation and BTBR basket baseline, but the inspected experiments do not support a universal claim that masking or swapping improves every dataset/model setting.",
+      "evidence_kind": "original_content",
+      "support_verdict": "supported",
+      "frozen_r3_disposition": "conditional_production_candidate",
+      "r5_disposition": "citation_ready_candidate",
+      "exclusive_disposition": true,
+      "canonical_source_keys": [
+        "li2023_mask_swap"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-029"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-li2023_mask_swap-01"
+      ],
+      "evidence_scope": "Mask-Swap provides a direct next-novel-basket formulation and BTBR basket baseline, but the inspected experiments do not support a universal claim that masking or swapping improves every dataset/model setting.",
+      "forbidden_extrapolations": [
+        "Mask-Swap always improves novel recommendation.",
+        "BTBR paper metrics are v5 benchmark results.",
+        "User-level splits are equivalent to the locked temporal split."
+      ],
+      "readiness_checks": {
+        "r4_acquisition_satisfied": true,
+        "r4_original_content_satisfied": true,
+        "r4_locator_satisfied": true,
+        "frozen_r4_prerequisites_satisfied": true,
+        "all_selected_locators_verified_non_none": true,
+        "wording_bounded": true,
+        "family_dependence_recorded": true,
+        "liu_replacement_scope_honored": true
+      },
+      "readiness_basis": "R3 identity/family binding plus R4 original-content and verified non-none locator evidence; R5 wording and family-dependence checks passed.",
+      "liu_replacement_scope": null,
+      "stage2_production_citation_authorized": false,
+      "h1_h4_status": "NOT_RUN"
+    },
+    {
+      "claim_id": "L3-GAP-008",
+      "lane": "L3",
+      "claim_text_bounded": "Within the reproducible search through 2026-08-14, no inspected source evaluates the exact v5 contrast of an Apriori train-only Wide branch versus No-Wide on the frozen train-mined rule-aligned evaluation cohort under the locked temporal full-catalog protocol; H3 therefore remains NOT_RUN rather than literature-supported.",
+      "evidence_kind": "original_content",
+      "support_verdict": "partially_supported",
+      "frozen_r3_disposition": "planning_only",
+      "r5_disposition": "planning_only",
+      "exclusive_disposition": true,
+      "canonical_source_keys": [
+        "agrawal1994_apriori",
+        "ghoshal2014_multi_item_rules",
+        "liu2009_hybrid_seq_cf",
+        "cheng2016_wide_deep",
+        "li2023_nbr_reality",
+        "mansouri2026_repeat_explore_lightgcn"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-001",
+        "SF-R1-007",
+        "SF-R1-011",
+        "SF-R1-030",
+        "SF-R1-033",
+        "SF-R1-035"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-agrawal1994_apriori-01",
+        "LOC-R4-S-ghoshal2014_multi_item_rules-01",
+        "LOC-R4-S-liu2009_hybrid_seq_cf-01",
+        "LOC-R4-S-cheng2016_wide_deep-01",
+        "LOC-R4-S-li2023_nbr_reality-01",
+        "LOC-R4-S-mansouri2026_repeat_explore_lightgcn-01"
+      ],
+      "evidence_scope": "Within the reproducible search through 2026-08-14, no inspected source evaluates the exact v5 contrast of an Apriori train-only Wide branch versus No-Wide on the frozen train-mined rule-aligned evaluation cohort under the locked temporal full-catalog protocol; H3 therefore remains NOT_RUN rather than literature-supported.",
+      "forbidden_extrapolations": [
+        "No such paper exists anywhere.",
+        "The gap itself supports H3.",
+        "Literature plausibility is a benchmark result."
+      ],
+      "readiness_checks": {
+        "r4_acquisition_satisfied": true,
+        "r4_original_content_satisfied": true,
+        "r4_locator_satisfied": true,
+        "frozen_r4_prerequisites_satisfied": false,
+        "all_selected_locators_verified_non_none": null,
+        "wording_bounded": true,
+        "family_dependence_recorded": true,
+        "liu_replacement_scope_honored": true
+      },
+      "readiness_basis": "Frozen planning-only disposition preserved; R5 does not promote planning-only rows.",
+      "liu_replacement_scope": "For L3-HYB-006 only, the frozen source key binds the inspected Liu 2007 predecessor for bounded hybrid-method precedent; no Liu 2009-specific detail or result is supported.",
+      "stage2_production_citation_authorized": false,
+      "h1_h4_status": "NOT_RUN"
+    },
+    {
+      "claim_id": "L3-HYB-006",
+      "lane": "L3",
+      "claim_text_bounded": "Prior systems combine rule, preference, popularity, transition, linear-cross, or neural components, and their component comparisons establish an ablation-design precedent; they do not establish that the v5 Apriori-aligned Wide branch improves the locked H3 estimand.",
+      "evidence_kind": "original_content",
+      "support_verdict": "supported",
+      "frozen_r3_disposition": "conditional_production_candidate",
+      "r5_disposition": "citation_ready_candidate",
+      "exclusive_disposition": true,
+      "canonical_source_keys": [
+        "liu2009_hybrid_seq_cf",
+        "cheng2016_wide_deep",
+        "peng2022_ham",
+        "peng2023_m2",
+        "mansouri2026_repeat_explore_lightgcn"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-007",
+        "SF-R1-033",
+        "SF-R1-035",
+        "SF-R1-041",
+        "SF-R1-042"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-liu2009_hybrid_seq_cf-01",
+        "LOC-R4-S-cheng2016_wide_deep-01",
+        "LOC-R4-S-peng2022_ham-01",
+        "LOC-R4-S-peng2023_m2-01",
+        "LOC-R4-S-mansouri2026_repeat_explore_lightgcn-01"
+      ],
+      "evidence_scope": "Prior systems combine rule, preference, popularity, transition, linear-cross, or neural components, and their component comparisons establish an ablation-design precedent; they do not establish that the v5 Apriori-aligned Wide branch improves the locked H3 estimand.",
+      "forbidden_extrapolations": [
+        "Literature plausibility proves H3.",
+        "Any aggregate hybrid gain proves novel-item gain.",
+        "An external ablation estimates the v5 Full minus No-Wide contrast."
+      ],
+      "readiness_checks": {
+        "r4_acquisition_satisfied": true,
+        "r4_original_content_satisfied": true,
+        "r4_locator_satisfied": true,
+        "frozen_r4_prerequisites_satisfied": true,
+        "all_selected_locators_verified_non_none": true,
+        "wording_bounded": true,
+        "family_dependence_recorded": true,
+        "liu_replacement_scope_honored": true
+      },
+      "readiness_basis": "R3 identity/family binding plus R4 original-content and verified non-none locator evidence; R5 wording and family-dependence checks passed.",
+      "liu_replacement_scope": "For L3-HYB-006 only, the frozen source key binds the inspected Liu 2007 predecessor for bounded hybrid-method precedent; no Liu 2009-specific detail or result is supported.",
+      "stage2_production_citation_authorized": false,
+      "h1_h4_status": "NOT_RUN"
+    },
+    {
+      "claim_id": "L3-NBR-004",
+      "lane": "L3",
+      "claim_text_bounded": "Next-basket and sequential recommendation outcomes can mix easier repeat behavior with harder exploration behavior, so aggregate basket accuracy does not by itself establish novel-item gain.",
+      "evidence_kind": "original_content",
+      "support_verdict": "supported",
+      "frozen_r3_disposition": "conditional_production_candidate",
+      "r5_disposition": "citation_ready_candidate",
+      "exclusive_disposition": true,
+      "canonical_source_keys": [
+        "li2023_nbr_reality",
+        "li2023_repetition_exploration",
+        "mansouri2026_repeat_explore_lightgcn"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-030",
+        "SF-R1-032",
+        "SF-R1-035"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-li2023_nbr_reality-01",
+        "LOC-R4-S-li2023_repetition_exploration-01",
+        "LOC-R4-S-mansouri2026_repeat_explore_lightgcn-01"
+      ],
+      "evidence_scope": "Next-basket and sequential recommendation outcomes can mix easier repeat behavior with harder exploration behavior, so aggregate basket accuracy does not by itself establish novel-item gain.",
+      "forbidden_extrapolations": [
+        "Aggregate basket gain proves novel-item gain.",
+        "Repeat/explore ratios from another dataset apply to v5.",
+        "A hybrid's external explore metric establishes H3."
+      ],
+      "readiness_checks": {
+        "r4_acquisition_satisfied": true,
+        "r4_original_content_satisfied": true,
+        "r4_locator_satisfied": true,
+        "frozen_r4_prerequisites_satisfied": true,
+        "all_selected_locators_verified_non_none": true,
+        "wording_bounded": true,
+        "family_dependence_recorded": true,
+        "liu_replacement_scope_honored": true
+      },
+      "readiness_basis": "R3 identity/family binding plus R4 original-content and verified non-none locator evidence; R5 wording and family-dependence checks passed.",
+      "liu_replacement_scope": null,
+      "stage2_production_citation_authorized": false,
+      "h1_h4_status": "NOT_RUN"
+    },
+    {
+      "claim_id": "L3-PROTO-007",
+      "lane": "L3",
+      "claim_text_bounded": "Evaluation splits, target construction, implementation choices, and training budget can change reported sequential-recommender outcomes and model rankings, so source-native results are not directly comparable with the locked v5 protocol.",
+      "evidence_kind": "original_content",
+      "support_verdict": "supported",
+      "frozen_r3_disposition": "conditional_production_candidate",
+      "r5_disposition": "citation_ready_candidate",
+      "exclusive_disposition": true,
+      "canonical_source_keys": [
+        "gusak2025_time_split",
+        "petrov2022_a_systematic_review_and_replicability_study_of_bert4rec_fo"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-013",
+        "SF-R1-044"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-gusak2025_time_split-01",
+        "LOC-R4-S-petrov2022_a_systematic_review_and_replicability_study_of_bert4rec_fo-01"
+      ],
+      "evidence_scope": "Evaluation splits, target construction, implementation choices, and training budget can change reported sequential-recommender outcomes and model rankings, so source-native results are not directly comparable with the locked v5 protocol.",
+      "forbidden_extrapolations": [
+        "A source-native model ranking holds under v5.",
+        "A sampled paper metric is a full-catalog result.",
+        "Split sensitivity authorizes changing the locked v5 split after results are seen."
+      ],
+      "readiness_checks": {
+        "r4_acquisition_satisfied": true,
+        "r4_original_content_satisfied": true,
+        "r4_locator_satisfied": true,
+        "frozen_r4_prerequisites_satisfied": true,
+        "all_selected_locators_verified_non_none": true,
+        "wording_bounded": true,
+        "family_dependence_recorded": true,
+        "liu_replacement_scope_honored": true
+      },
+      "readiness_basis": "R3 identity/family binding plus R4 original-content and verified non-none locator evidence; R5 wording and family-dependence checks passed.",
+      "liu_replacement_scope": null,
+      "stage2_production_citation_authorized": false,
+      "h1_h4_status": "NOT_RUN"
+    },
+    {
+      "claim_id": "L3-RULE-002",
+      "lane": "L3",
+      "claim_text_bounded": "Association rules can be operationalized to recommend multiple items, but comparative performance against collaborative filtering and matrix factorization is conditional on the source data and protocol.",
+      "evidence_kind": "original_content",
+      "support_verdict": "supported",
+      "frozen_r3_disposition": "conditional_production_candidate",
+      "r5_disposition": "citation_ready_candidate",
+      "exclusive_disposition": true,
+      "canonical_source_keys": [
+        "ghoshal2014_multi_item_rules"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-011"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-ghoshal2014_multi_item_rules-01"
+      ],
+      "evidence_scope": "Association rules can be operationalized to recommend multiple items, but comparative performance against collaborative filtering and matrix factorization is conditional on the source data and protocol.",
+      "forbidden_extrapolations": [
+        "A multi-item rule method universally outperforms collaborative filtering.",
+        "Random transaction splits validate the v5 temporal estimand.",
+        "The paper's accuracy values are v5 benchmark results."
+      ],
+      "readiness_checks": {
+        "r4_acquisition_satisfied": true,
+        "r4_original_content_satisfied": true,
+        "r4_locator_satisfied": true,
+        "frozen_r4_prerequisites_satisfied": true,
+        "all_selected_locators_verified_non_none": true,
+        "wording_bounded": true,
+        "family_dependence_recorded": true,
+        "liu_replacement_scope_honored": true
+      },
+      "readiness_basis": "R3 identity/family binding plus R4 original-content and verified non-none locator evidence; R5 wording and family-dependence checks passed.",
+      "liu_replacement_scope": null,
+      "stage2_production_citation_authorized": false,
+      "h1_h4_status": "NOT_RUN"
+    },
+    {
+      "claim_id": "L3-SEQ-003",
+      "lane": "L3",
+      "claim_text_bounded": "SASRec uses causal self-attention for next-item prediction, whereas BERT4Rec uses bidirectional sequence encoding with a masked-item Cloze objective; both source evaluations use paper-native candidate/sampling designs that are not the v5 full-catalog protocol.",
+      "evidence_kind": "original_content",
+      "support_verdict": "supported",
+      "frozen_r3_disposition": "conditional_production_candidate",
+      "r5_disposition": "citation_ready_candidate",
+      "exclusive_disposition": true,
+      "canonical_source_keys": [
+        "kang2018_sasrec",
+        "sun2019_bert4rec"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-026",
+        "SF-R1-053"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-kang2018_sasrec-01",
+        "LOC-R4-S-sun2019_bert4rec-01"
+      ],
+      "evidence_scope": "SASRec uses causal self-attention for next-item prediction, whereas BERT4Rec uses bidirectional sequence encoding with a masked-item Cloze objective; both source evaluations use paper-native candidate/sampling designs that are not the v5 full-catalog protocol.",
+      "forbidden_extrapolations": [
+        "A paper-native SASRec or BERT4Rec metric is a current v5 result.",
+        "Next-item objectives are identical to next-basket set objectives.",
+        "An architecture name alone guarantees protocol equivalence."
+      ],
+      "readiness_checks": {
+        "r4_acquisition_satisfied": true,
+        "r4_original_content_satisfied": true,
+        "r4_locator_satisfied": true,
+        "frozen_r4_prerequisites_satisfied": true,
+        "all_selected_locators_verified_non_none": true,
+        "wording_bounded": true,
+        "family_dependence_recorded": true,
+        "liu_replacement_scope_honored": true
+      },
+      "readiness_basis": "R3 identity/family binding plus R4 original-content and verified non-none locator evidence; R5 wording and family-dependence checks passed.",
+      "liu_replacement_scope": null,
+      "stage2_production_citation_authorized": false,
+      "h1_h4_status": "NOT_RUN"
+    },
+    {
+      "claim_id": "L4-CC-01",
+      "lane": "L4",
+      "claim_text_bounded": "For an item-side cold cohort, a strict zero-edge item has no interaction in the training graph; an item with one or more training interactions is not strict zero-edge cold, even if it is rare.",
+      "evidence_kind": "original_content",
+      "support_verdict": "supported",
+      "frozen_r3_disposition": "conditional_production_candidate",
+      "r5_disposition": "citation_ready_candidate",
+      "exclusive_disposition": true,
+      "canonical_source_keys": [
+        "volkovs2017_dropoutnet",
+        "huang2023_aldi"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-021",
+        "SF-R1-059"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-volkovs2017_dropoutnet-01",
+        "LOC-R4-S-huang2023_aldi-01"
+      ],
+      "evidence_scope": "For an item-side cold cohort, a strict zero-edge item has no interaction in the training graph; an item with one or more training interactions is not strict zero-edge cold, even if it is rare.",
+      "forbidden_extrapolations": [
+        "Cold-item equals cold-user.",
+        "Sparse-edge equals zero-edge.",
+        "The papers' exact thresholds and denominators automatically apply to v5."
+      ],
+      "readiness_checks": {
+        "r4_acquisition_satisfied": true,
+        "r4_original_content_satisfied": true,
+        "r4_locator_satisfied": true,
+        "frozen_r4_prerequisites_satisfied": true,
+        "all_selected_locators_verified_non_none": true,
+        "wording_bounded": true,
+        "family_dependence_recorded": true,
+        "liu_replacement_scope_honored": true
+      },
+      "readiness_basis": "R3 identity/family binding plus R4 original-content and verified non-none locator evidence; R5 wording and family-dependence checks passed.",
+      "liu_replacement_scope": null,
+      "stage2_production_citation_authorized": false,
+      "h1_h4_status": "NOT_RUN"
+    },
+    {
+      "claim_id": "L4-CC-02",
+      "lane": "L4",
+      "claim_text_bounded": "A reproducible item-cold evaluation should lock the training-graph edge rule, construct warm and zero-edge cohorts before scoring, and report their denominators separately from any sparse-item cohort.",
+      "evidence_kind": "original_content",
+      "support_verdict": "supported",
+      "frozen_r3_disposition": "conditional_production_candidate",
+      "r5_disposition": "citation_ready_candidate",
+      "exclusive_disposition": true,
+      "canonical_source_keys": [
+        "volkovs2017_dropoutnet",
+        "huang2023_aldi"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-021",
+        "SF-R1-059"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-volkovs2017_dropoutnet-01",
+        "LOC-R4-S-huang2023_aldi-01"
+      ],
+      "evidence_scope": "A reproducible item-cold evaluation should lock the training-graph edge rule, construct warm and zero-edge cohorts before scoring, and report their denominators separately from any sparse-item cohort.",
+      "forbidden_extrapolations": [
+        "Reuse paper-native random splits without matching the v5 temporal and leakage controls.",
+        "Report a blended denominator as if it were zero-edge performance."
+      ],
+      "readiness_checks": {
+        "r4_acquisition_satisfied": true,
+        "r4_original_content_satisfied": true,
+        "r4_locator_satisfied": true,
+        "frozen_r4_prerequisites_satisfied": true,
+        "all_selected_locators_verified_non_none": true,
+        "wording_bounded": true,
+        "family_dependence_recorded": true,
+        "liu_replacement_scope_honored": true
+      },
+      "readiness_basis": "R3 identity/family binding plus R4 original-content and verified non-none locator evidence; R5 wording and family-dependence checks passed.",
+      "liu_replacement_scope": null,
+      "stage2_production_citation_authorized": false,
+      "h1_h4_status": "NOT_RUN"
+    },
+    {
+      "claim_id": "L4-CC-03",
+      "lane": "L4",
+      "claim_text_bounded": "A collaborative graph method that propagates only over observed item-neighbor edges does not, by that path alone, supply a collaborative representation for a strict zero-edge item; sparse-graph and zero-edge results must therefore remain separate.",
+      "evidence_kind": "original_content",
+      "support_verdict": "partially_supported",
+      "frozen_r3_disposition": "conditional_production_candidate",
+      "r5_disposition": "citation_ready_candidate",
+      "exclusive_disposition": true,
+      "canonical_source_keys": [
+        "volkovs2017_dropoutnet",
+        "sheng2025_alpharec"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-052",
+        "SF-R1-059"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-volkovs2017_dropoutnet-01",
+        "LOC-R4-S-sheng2025_alpharec-01"
+      ],
+      "evidence_scope": "A collaborative graph method that propagates only over observed item-neighbor edges does not, by that path alone, supply a collaborative representation for a strict zero-edge item; sparse-graph and zero-edge results must therefore remain separate.",
+      "forbidden_extrapolations": [
+        "Collaborative graph methods are ineffective for all cold-start tasks.",
+        "Content-augmented graph models cannot score new items.",
+        "Metadata-only SimGCL, XSimGCL, or LightGCL records prove the mechanism claim."
+      ],
+      "readiness_checks": {
+        "r4_acquisition_satisfied": true,
+        "r4_original_content_satisfied": true,
+        "r4_locator_satisfied": true,
+        "frozen_r4_prerequisites_satisfied": true,
+        "all_selected_locators_verified_non_none": true,
+        "wording_bounded": true,
+        "family_dependence_recorded": true,
+        "liu_replacement_scope_honored": true
+      },
+      "readiness_basis": "R3 identity/family binding plus R4 original-content and verified non-none locator evidence; R5 wording and family-dependence checks passed.",
+      "liu_replacement_scope": null,
+      "stage2_production_citation_authorized": false,
+      "h1_h4_status": "NOT_RUN"
+    },
+    {
+      "claim_id": "L4-CC-04",
+      "lane": "L4",
+      "claim_text_bounded": "Sentence-BERT supports a rationale for semantic text embeddings, but recommendation efficacy requires a recommender objective and task-specific ranking evaluation; Sentence-BERT quality alone is not recommendation quality.",
+      "evidence_kind": "original_content",
+      "support_verdict": "supported",
+      "frozen_r3_disposition": "conditional_production_candidate",
+      "r5_disposition": "citation_ready_candidate",
+      "exclusive_disposition": true,
+      "canonical_source_keys": [
+        "reimers2019_sbert",
+        "sheng2025_alpharec",
+        "meehan2026_semco"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-037",
+        "SF-R1-046",
+        "SF-R1-052"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-reimers2019_sbert-01",
+        "LOC-R4-S-sheng2025_alpharec-01",
+        "LOC-R4-S-meehan2026_semco-01"
+      ],
+      "evidence_scope": "Sentence-BERT supports a rationale for semantic text embeddings, but recommendation efficacy requires a recommender objective and task-specific ranking evaluation; Sentence-BERT quality alone is not recommendation quality.",
+      "forbidden_extrapolations": [
+        "Sentence-BERT quality equals recommendation quality.",
+        "Sentence-BERT solves cold-item recommendation.",
+        "Replacing a paper's encoder with Sentence-BERT is faithful replication."
+      ],
+      "readiness_checks": {
+        "r4_acquisition_satisfied": true,
+        "r4_original_content_satisfied": true,
+        "r4_locator_satisfied": true,
+        "frozen_r4_prerequisites_satisfied": true,
+        "all_selected_locators_verified_non_none": true,
+        "wording_bounded": true,
+        "family_dependence_recorded": true,
+        "liu_replacement_scope_honored": true
+      },
+      "readiness_basis": "R3 identity/family binding plus R4 original-content and verified non-none locator evidence; R5 wording and family-dependence checks passed.",
+      "liu_replacement_scope": null,
+      "stage2_production_citation_authorized": false,
+      "h1_h4_status": "NOT_RUN"
+    },
+    {
+      "claim_id": "L4-CC-05",
+      "lane": "L4",
+      "claim_text_bounded": "Transferable item-representation architectures in UniSRec, VQ-Rec, and UTGRec still make explicit target-domain adaptation assumptions; transfer should not be described as adaptation-free unless the evaluated protocol actually withholds target-domain training.",
+      "evidence_kind": "original_content",
+      "support_verdict": "supported",
+      "frozen_r3_disposition": "conditional_production_candidate",
+      "r5_disposition": "citation_ready_candidate",
+      "exclusive_disposition": true,
+      "canonical_source_keys": [
+        "hou2022_unisrec",
+        "hou2023_vqrec",
+        "zheng2026_utgrec"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-017",
+        "SF-R1-018",
+        "SF-R1-071"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-hou2022_unisrec-01",
+        "LOC-R4-S-hou2023_vqrec-01",
+        "LOC-R4-S-zheng2026_utgrec-01"
+      ],
+      "evidence_scope": "Transferable item-representation architectures in UniSRec, VQ-Rec, and UTGRec still make explicit target-domain adaptation assumptions; transfer should not be described as adaptation-free unless the evaluated protocol actually withholds target-domain training.",
+      "forbidden_extrapolations": [
+        "Architecture transfer establishes H4 replication.",
+        "Inductive item evaluation means the model used no target-domain interactions during adaptation.",
+        "The three papers are fully independent evidence lineages."
+      ],
+      "readiness_checks": {
+        "r4_acquisition_satisfied": true,
+        "r4_original_content_satisfied": true,
+        "r4_locator_satisfied": true,
+        "frozen_r4_prerequisites_satisfied": true,
+        "all_selected_locators_verified_non_none": true,
+        "wording_bounded": true,
+        "family_dependence_recorded": true,
+        "liu_replacement_scope_honored": true
+      },
+      "readiness_basis": "R3 identity/family binding plus R4 original-content and verified non-none locator evidence; R5 wording and family-dependence checks passed.",
+      "liu_replacement_scope": null,
+      "stage2_production_citation_authorized": false,
+      "h1_h4_status": "NOT_RUN"
+    },
+    {
+      "claim_id": "L4-CC-06",
+      "lane": "L4",
+      "claim_text_bounded": "Pretraining and downstream results that reuse one platform or benchmark lineage must not be counted as independent evidence merely because the domain labels differ.",
+      "evidence_kind": "original_content",
+      "support_verdict": "supported",
+      "frozen_r3_disposition": "conditional_production_candidate",
+      "r5_disposition": "citation_ready_candidate",
+      "exclusive_disposition": true,
+      "canonical_source_keys": [
+        "hou2023_vqrec",
+        "sheng2025_alpharec",
+        "zheng2026_utgrec"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-018",
+        "SF-R1-052",
+        "SF-R1-071"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-hou2023_vqrec-01",
+        "LOC-R4-S-sheng2025_alpharec-01",
+        "LOC-R4-S-zheng2026_utgrec-01"
+      ],
+      "evidence_scope": "Pretraining and downstream results that reuse one platform or benchmark lineage must not be counted as independent evidence merely because the domain labels differ.",
+      "forbidden_extrapolations": [
+        "Pretraining source and target dataset count as independent evidence when they share a lineage.",
+        "Every Amazon category is an independent external-validity replication.",
+        "Shared lineage makes all transfer findings invalid."
+      ],
+      "readiness_checks": {
+        "r4_acquisition_satisfied": true,
+        "r4_original_content_satisfied": true,
+        "r4_locator_satisfied": true,
+        "frozen_r4_prerequisites_satisfied": true,
+        "all_selected_locators_verified_non_none": true,
+        "wording_bounded": true,
+        "family_dependence_recorded": true,
+        "liu_replacement_scope_honored": true
+      },
+      "readiness_basis": "R3 identity/family binding plus R4 original-content and verified non-none locator evidence; R5 wording and family-dependence checks passed.",
+      "liu_replacement_scope": null,
+      "stage2_production_citation_authorized": false,
+      "h1_h4_status": "NOT_RUN"
+    },
+    {
+      "claim_id": "L4-CC-07",
+      "lane": "L4",
+      "claim_text_bounded": "Content representations aligned to collaborative teachers can inherit collaborative popularity structure; content availability alone therefore does not guarantee unbiased or effective cold-item recommendation.",
+      "evidence_kind": "original_content",
+      "support_verdict": "supported",
+      "frozen_r3_disposition": "conditional_production_candidate",
+      "r5_disposition": "citation_ready_candidate",
+      "exclusive_disposition": true,
+      "canonical_source_keys": [
+        "meehan2025_cold_popbias",
+        "meehan2026_semco"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-036",
+        "SF-R1-037"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-meehan2025_cold_popbias-01",
+        "LOC-R4-S-meehan2026_semco-01"
+      ],
+      "evidence_scope": "Content representations aligned to collaborative teachers can inherit collaborative popularity structure; content availability alone therefore does not guarantee unbiased or effective cold-item recommendation.",
+      "forbidden_extrapolations": [
+        "All content encoders inherit the same bias.",
+        "The two papers are independent corroborating research lineages.",
+        "Bias analysis alone proves v5 effectiveness or failure."
+      ],
+      "readiness_checks": {
+        "r4_acquisition_satisfied": true,
+        "r4_original_content_satisfied": true,
+        "r4_locator_satisfied": true,
+        "frozen_r4_prerequisites_satisfied": true,
+        "all_selected_locators_verified_non_none": true,
+        "wording_bounded": true,
+        "family_dependence_recorded": true,
+        "liu_replacement_scope_honored": true
+      },
+      "readiness_basis": "R3 identity/family binding plus R4 original-content and verified non-none locator evidence; R5 wording and family-dependence checks passed.",
+      "liu_replacement_scope": null,
+      "stage2_production_citation_authorized": false,
+      "h1_h4_status": "NOT_RUN"
+    },
+    {
+      "claim_id": "L4-CC-08",
+      "lane": "L4",
+      "claim_text_bounded": "Implementing an architecture inspired by a transfer or cold-start paper is not a replication of that paper or evidence for H4 unless the encoder, data lineage, adaptation procedure, split, candidates, metrics, and statistical protocol are matched or all deviations are declared.",
+      "evidence_kind": "original_content",
+      "support_verdict": "partially_supported",
+      "frozen_r3_disposition": "conditional_production_candidate",
+      "r5_disposition": "citation_ready_candidate",
+      "exclusive_disposition": true,
+      "canonical_source_keys": [
+        "hou2022_unisrec",
+        "hou2023_vqrec",
+        "sheng2025_alpharec",
+        "zheng2026_utgrec"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-017",
+        "SF-R1-018",
+        "SF-R1-052",
+        "SF-R1-071"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-hou2022_unisrec-01",
+        "LOC-R4-S-hou2023_vqrec-01",
+        "LOC-R4-S-sheng2025_alpharec-01",
+        "LOC-R4-S-zheng2026_utgrec-01"
+      ],
+      "evidence_scope": "Implementing an architecture inspired by a transfer or cold-start paper is not a replication of that paper or evidence for H4 unless the encoder, data lineage, adaptation procedure, split, candidates, metrics, and statistical protocol are matched or all deviations are declared.",
+      "forbidden_extrapolations": [
+        "Architecture transfer establishes H4 replication.",
+        "A Sentence-BERT substitution is a faithful reproduction.",
+        "Cross-paper metric values are directly comparable without protocol harmonization."
+      ],
+      "readiness_checks": {
+        "r4_acquisition_satisfied": true,
+        "r4_original_content_satisfied": true,
+        "r4_locator_satisfied": true,
+        "frozen_r4_prerequisites_satisfied": true,
+        "all_selected_locators_verified_non_none": true,
+        "wording_bounded": true,
+        "family_dependence_recorded": true,
+        "liu_replacement_scope_honored": true
+      },
+      "readiness_basis": "R3 identity/family binding plus R4 original-content and verified non-none locator evidence; R5 wording and family-dependence checks passed.",
+      "liu_replacement_scope": null,
+      "stage2_production_citation_authorized": false,
+      "h1_h4_status": "NOT_RUN"
+    }
+  ],
+  "phase_boundary": {
+    "r6": "NOT_PERFORMED",
+    "r7_r9": "NOT_PERFORMED",
+    "manuscript_drafting": "NOT_PERFORMED",
+    "benchmark": "NOT_RUN",
+    "h1_h4": "NOT_RUN",
+    "stage2_production_citations": "NOT_AUTHORIZED"
+  }
+}
+

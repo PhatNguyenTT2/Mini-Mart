@@ -1,0 +1,1408 @@
+{
+  "schema_version": "r3-source-quality-matrix-r1-1.0",
+  "project": "hybrid-recsys-v5",
+  "generated_at": "2026-08-21T00:00:00+07:00",
+  "quality_rule": "Grade A requires direct peer-review evidence plus identity, metadata, content, and locator verification; B is usable with a stated limitation; C is registry-only, preprint/editorial, non-peer-reviewed, or incomplete.",
+  "counts": {
+    "records": 74,
+    "corpus": 52,
+    "recent_2022_2026": 32,
+    "peer_reviewed_true": 45,
+    "source_acquired": 40,
+    "source_content_verified": 52,
+    "locator_ready": 52,
+    "grades": {
+      "A": 56,
+      "B": 15,
+      "C": 3
+    }
+  },
+  "records": [
+    {
+      "source_key": "agrawal1994_apriori",
+      "source_family_id": "SF-R1-001",
+      "quality_grade": "B",
+      "evidence_level": "VII-methodological",
+      "peer_reviewed": "unknown",
+      "peer_review_evidence_basis": null,
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "corpus_included": true,
+      "core_shortlist": true,
+      "limitations": [
+        "The paper mines rules; it does not define a recommender ranking model.",
+        "No evidence about the v5 H3 estimand or current benchmark outcomes."
+      ]
+    },
+    {
+      "source_key": "benigni2026_diffusion_recommender_models_and_the_illusion_of_progress_",
+      "source_family_id": "SF-R1-002",
+      "quality_grade": "A",
+      "evidence_level": "VI",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "Published ACM Transactions on Recommender Systems journal article.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "corpus_included": false,
+      "core_shortlist": false,
+      "limitations": [
+        "Focused on diffusion recommender papers and their baselines; conclusions must remain within the reproduced sample."
+      ]
+    },
+    {
+      "source_key": "bradley1997_auc",
+      "source_family_id": "SF-R1-003",
+      "quality_grade": "B",
+      "evidence_level": "VI",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "Published Pattern Recognition journal article on the Elsevier DOI record.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": false,
+      "source_content_verified": false,
+      "locator_ready": false,
+      "corpus_included": false,
+      "core_shortlist": false,
+      "limitations": [
+        "Full authoritative artifact not acquired in this lane.",
+        "Does not define per-user GAUC denominators, eligible-user rules, or hierarchical bootstrap."
+      ]
+    },
+    {
+      "source_key": "cai2023_lightgcl",
+      "source_family_id": "SF-R1-004",
+      "quality_grade": "A",
+      "evidence_level": "VI",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "OpenReview source-of-record shows the final ICLR 2023 conference publication.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "corpus_included": true,
+      "core_shortlist": false,
+      "limitations": [
+        "Requires an observed interaction graph and SVD preprocessing.",
+        "Authoritative full content and claim-level locator remain queued."
+      ]
+    },
+    {
+      "source_key": "canamares2020_offline_options",
+      "source_family_id": "SF-R1-005",
+      "quality_grade": "A",
+      "evidence_level": "VI",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "Published Information Retrieval Journal article on SpringerLink.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "corpus_included": true,
+      "core_shortlist": false,
+      "limitations": [
+        "Experimental effects are tied to the evaluated configurations; they do not produce cross-dataset metric comparability."
+      ]
+    },
+    {
+      "source_key": "castells2022_offline_recommender_system_evaluation_challenges_and_new_d",
+      "source_family_id": "SF-R1-006",
+      "quality_grade": "A",
+      "evidence_level": "VI",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "Published AI Magazine journal article on Wiley Online Library.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": false,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "corpus_included": false,
+      "core_shortlist": false,
+      "limitations": [
+        "Perspective/review article; it frames evaluation choices but does not supply v5 benchmark results."
+      ]
+    },
+    {
+      "source_key": "cheng2016_wide_deep",
+      "source_family_id": "SF-R1-007",
+      "quality_grade": "B",
+      "evidence_level": "VI",
+      "peer_reviewed": "unknown",
+      "peer_review_evidence_basis": null,
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "corpus_included": true,
+      "core_shortlist": true,
+      "limitations": [
+        "Feature crosses require explicit engineering and leakage controls.",
+        "Review-process status remains unknown from inspected official records.",
+        "Commercial app-ranking task, not basket or novel-purchase evaluation.",
+        "The wide component uses engineered cross-products and is not identical to the v5 wide branch."
+      ]
+    },
+    {
+      "source_key": "covington2016_youtube",
+      "source_family_id": "SF-R1-008",
+      "quality_grade": "A",
+      "evidence_level": "VI",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "Canonical paper appears in the official ACM RecSys proceedings record.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "corpus_included": true,
+      "core_shortlist": true,
+      "limitations": [
+        "Inputs and objectives are platform-specific.",
+        "The design is not a controlled v5 architecture benchmark."
+      ]
+    },
+    {
+      "source_key": "dacrema2021_reproducibility",
+      "source_family_id": "SF-R1-009",
+      "quality_grade": "A",
+      "evidence_level": "VI",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "Published ACM Transactions on Information Systems journal article.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "corpus_included": true,
+      "core_shortlist": true,
+      "limitations": [
+        "Reproduction sample and tested algorithms are bounded; no raw result transfers to v5."
+      ]
+    },
+    {
+      "source_key": "du2020_mtpr",
+      "source_family_id": "SF-R1-010",
+      "quality_grade": "B",
+      "evidence_level": "VI",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "ACM conference proceedings metadata.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": false,
+      "source_content_verified": false,
+      "locator_ready": false,
+      "corpus_included": false,
+      "core_shortlist": false,
+      "limitations": [
+        "Authoritative full content and claim-level locator remain queued."
+      ]
+    },
+    {
+      "source_key": "ghoshal2014_multi_item_rules",
+      "source_family_id": "SF-R1-011",
+      "quality_grade": "A",
+      "evidence_level": "VI-computational-comparative-study",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "Official INFORMS journal record identifies a research article and supplies submission/acceptance history.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "corpus_included": true,
+      "core_shortlist": true,
+      "limitations": [
+        "Empirical advantages vary with data characteristics; sparse clickstream results are not uniformly favorable.",
+        "The task, data, and metrics differ from v5."
+      ]
+    },
+    {
+      "source_key": "guo2017_deepfm",
+      "source_family_id": "SF-R1-012",
+      "quality_grade": "A",
+      "evidence_level": "VI",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "Canonical paper appears in the official IJCAI proceedings.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "corpus_included": true,
+      "core_shortlist": false,
+      "limitations": [
+        "Requires feature fields not guaranteed in an interaction-only setting.",
+        "Native task is CTR prediction."
+      ]
+    },
+    {
+      "source_key": "gusak2025_time_split",
+      "source_family_id": "SF-R1-013",
+      "quality_grade": "A",
+      "evidence_level": "VI",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "Published RecSys conference paper on the ACM source-of-record DOI page.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "corpus_included": true,
+      "core_shortlist": true,
+      "limitations": [
+        "Sequential next-item settings and tested split variants do not automatically transfer to non-sequential tasks.",
+        "Not specific to the v5 grocery basket datasets.",
+        "Does not decide the locked v5 split; it supports sensitivity analysis and protocol discipline."
+      ]
+    },
+    {
+      "source_key": "he2017_ncf",
+      "source_family_id": "SF-R1-014",
+      "quality_grade": "A",
+      "evidence_level": "VI",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "Canonical paper appears in the official WWW proceedings record.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "corpus_included": true,
+      "core_shortlist": false,
+      "limitations": [
+        "ID-only inputs do not create zero-edge item representations.",
+        "Source-native sampled evaluation is not the locked v5 full-catalog contract."
+      ]
+    },
+    {
+      "source_key": "he2020_lightgcn",
+      "source_family_id": "SF-R1-015",
+      "quality_grade": "A",
+      "evidence_level": "VI",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "Canonical paper appears in the official ACM SIGIR proceedings record.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "corpus_included": true,
+      "core_shortlist": true,
+      "limitations": [
+        "ID embeddings and propagation require observed nodes/edges for collaborative signal.",
+        "Transductive setup does not itself solve unseen zero-edge items."
+      ]
+    },
+    {
+      "source_key": "hidasi2023_widespread_flaws_in_offline_evaluation_of_recommender_syst",
+      "source_family_id": "SF-R1-016",
+      "quality_grade": "A",
+      "evidence_level": "VI",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "Published RecSys conference paper on the ACM source-of-record DOI page.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "corpus_included": false,
+      "core_shortlist": false,
+      "limitations": [
+        "The study's tested sequential-recommender examples do not justify raw metric transfer to v5."
+      ]
+    },
+    {
+      "source_key": "hou2022_unisrec",
+      "source_family_id": "SF-R1-017",
+      "quality_grade": "A",
+      "evidence_level": "VI",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "ACM KDD proceedings record.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": false,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "corpus_included": true,
+      "core_shortlist": true,
+      "limitations": [
+        "Transfer claims are bounded to the paper's domains, encoders, fine-tuning, and evaluation protocol."
+      ]
+    },
+    {
+      "source_key": "hou2023_vqrec",
+      "source_family_id": "SF-R1-018",
+      "quality_grade": "A",
+      "evidence_level": "VI",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "ACM Web Conference proceedings record.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": false,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "corpus_included": true,
+      "core_shortlist": false,
+      "limitations": [
+        "Most domains share Amazon review lineage; one external Online Retail dataset does not erase that dependence."
+      ]
+    },
+    {
+      "source_key": "hou2026_blair",
+      "source_family_id": "SF-R1-019",
+      "quality_grade": "A",
+      "evidence_level": "VI",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "ACL 2026 proceedings publication.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "corpus_included": true,
+      "core_shortlist": false,
+      "limitations": [
+        "Reviews with a verified-purchase field are not a complete basket or transaction ledger.",
+        "The official dataset portal does not state a dataset redistribution license."
+      ]
+    },
+    {
+      "source_key": "huang2013_dssm",
+      "source_family_id": "SF-R1-020",
+      "quality_grade": "A",
+      "evidence_level": "VI",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "Canonical paper appears in the official ACM CIKM proceedings record.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "corpus_included": false,
+      "core_shortlist": false,
+      "limitations": [
+        "Task and inputs differ from the project interaction-only setting."
+      ]
+    },
+    {
+      "source_key": "huang2023_aldi",
+      "source_family_id": "SF-R1-021",
+      "quality_grade": "A",
+      "evidence_level": "VI",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "ACM SIGIR proceedings record.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": false,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "corpus_included": true,
+      "core_shortlist": false,
+      "limitations": [
+        "Author manuscript inspected remotely; no local redistribution copy stored."
+      ]
+    },
+    {
+      "source_key": "ihemelandu2023_candidate_set_sampling_for_evaluating_top_n_recommendation",
+      "source_family_id": "SF-R1-022",
+      "quality_grade": "A",
+      "evidence_level": "VI",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "Published IEEE/WIC WI-IAT conference paper; official author page reports the version of record and acceptance rate.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "corpus_included": false,
+      "core_shortlist": false,
+      "limitations": [
+        "Simulation and complete-data reference conditions are study-specific; candidate-sampled scores remain protocol-dependent."
+      ]
+    },
+    {
+      "source_key": "jannach2026_methodological_standards",
+      "source_family_id": "SF-R1-023",
+      "quality_grade": "B",
+      "evidence_level": "VII",
+      "peer_reviewed": "unknown",
+      "peer_review_evidence_basis": "Official institutional record classifies the item as an editorial; no direct peer-review evidence was found.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": false,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "corpus_included": true,
+      "core_shortlist": true,
+      "limitations": [
+        "Editorial/essay, not an empirical benchmark study.",
+        "Peer-review status must not be upgraded without direct evidence."
+      ]
+    },
+    {
+      "source_key": "jarvelin2002_ndcg",
+      "source_family_id": "SF-R1-024",
+      "quality_grade": "B",
+      "evidence_level": "VI",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "Published ACM Transactions on Information Systems journal article.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": false,
+      "source_content_verified": false,
+      "locator_ready": false,
+      "corpus_included": false,
+      "core_shortlist": false,
+      "limitations": [
+        "Full authoritative artifact not acquired in this lane.",
+        "Foundational IR metric source, not a recommender candidate-universe or temporal-split source."
+      ]
+    },
+    {
+      "source_key": "jin2023_amazon_m2",
+      "source_family_id": "SF-R1-025",
+      "quality_grade": "A",
+      "evidence_level": "VI",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "Official NeurIPS Datasets and Benchmarks proceedings record.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "corpus_included": true,
+      "core_shortlist": true,
+      "limitations": [
+        "The target is the next engaged product in a session, not a verified purchase outcome.",
+        "Session identifiers do not establish a persistent user across sessions."
+      ]
+    },
+    {
+      "source_key": "kang2018_sasrec",
+      "source_family_id": "SF-R1-026",
+      "quality_grade": "A",
+      "evidence_level": "VI-computational-comparative-study",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "Published as an IEEE ICDM research paper in the official proceedings.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "corpus_included": true,
+      "core_shortlist": true,
+      "limitations": [
+        "Next-item rather than next-basket objective.",
+        "The paper evaluates against 100 sampled negatives, not v5 full-catalog evaluation."
+      ]
+    },
+    {
+      "source_key": "kim2024_content_based_graph_reconstruction_for_cold_start_item_rec",
+      "source_family_id": "SF-R1-027",
+      "quality_grade": "B",
+      "evidence_level": "VI",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "ACM SIGIR proceedings metadata.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": false,
+      "source_content_verified": false,
+      "locator_ready": false,
+      "corpus_included": false,
+      "core_shortlist": false,
+      "limitations": [
+        "Authoritative full content was not successfully transported for inspection; locator remains queued."
+      ]
+    },
+    {
+      "source_key": "krichene2020_sampled_metrics",
+      "source_family_id": "SF-R1-028",
+      "quality_grade": "A",
+      "evidence_level": "VI",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "Published KDD conference paper on the ACM source-of-record DOI page.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "corpus_included": true,
+      "core_shortlist": true,
+      "limitations": [
+        "The analysis is scoped to sampled candidate evaluation and includes a single-relevant-item assumption for the main derivations.",
+        "Does not define v5 temporal splitting, candidate masking, or aggregation."
+      ]
+    },
+    {
+      "source_key": "krichene2021_on_sampled_metrics_for_item_recommendation_extended_abstra",
+      "source_family_id": "SF-R1-028",
+      "quality_grade": "A",
+      "evidence_level": "VI",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "Published IJCAI proceedings extended abstract with official proceedings artifact.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "corpus_included": false,
+      "core_shortlist": false,
+      "limitations": [
+        "Same evidence family as the 2020 KDD paper; not an independent study."
+      ]
+    },
+    {
+      "source_key": "li2023_mask_swap",
+      "source_family_id": "SF-R1-029",
+      "quality_grade": "A",
+      "evidence_level": "VI-computational-comparative-study",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "Published as an ACM RecSys research paper.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "corpus_included": true,
+      "core_shortlist": false,
+      "limitations": [
+        "Paper-specific data processing and metrics differ from v5.",
+        "Not every intervention improves every dataset/model combination."
+      ]
+    },
+    {
+      "source_key": "li2023_nbr_reality",
+      "source_family_id": "SF-R1-030",
+      "quality_grade": "A",
+      "evidence_level": "VI-multi-dataset-computational-study",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "Published as an ACM TOIS research article.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "corpus_included": true,
+      "core_shortlist": true,
+      "limitations": [
+        "Cross-dataset observational/computational evidence, not a v5 ablation.",
+        "Definitions must be aligned before use in v5."
+      ]
+    },
+    {
+      "source_key": "li2023_reliable_sampling",
+      "source_family_id": "SF-R1-031",
+      "quality_grade": "A",
+      "evidence_level": "VI",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "Published AAAI proceedings paper on the official AAAI OJS record.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "corpus_included": true,
+      "core_shortlist": true,
+      "limitations": [
+        "Estimator and adaptive-sampling results depend on their sampling assumptions.",
+        "Does not authorize sampled values to be relabeled as exact full-catalog values."
+      ]
+    },
+    {
+      "source_key": "li2023_repetition_exploration",
+      "source_family_id": "SF-R1-032",
+      "quality_grade": "A",
+      "evidence_level": "VI-computational-comparative-study",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "Published as an ACM SIGIR research paper.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": false,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "corpus_included": true,
+      "core_shortlist": false,
+      "limitations": [
+        "Sequential next-item setting is broader than grocery baskets.",
+        "Post-filter findings are protocol-specific."
+      ]
+    },
+    {
+      "source_key": "li2024_on_item_sampling_evaluation_for_recommender_system",
+      "source_family_id": "SF-R1-031",
+      "quality_grade": "B",
+      "evidence_level": "VI",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "Published ACM Transactions on Recommender Systems journal article.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": false,
+      "source_content_verified": false,
+      "locator_ready": false,
+      "corpus_included": false,
+      "core_shortlist": false,
+      "limitations": [
+        "Exact full artifact was not acquired; publisher and NSF metadata were verified.",
+        "Cannot be sole support for a production-intended claim."
+      ]
+    },
+    {
+      "source_key": "liu2009_hybrid_seq_cf",
+      "source_family_id": "SF-R1-033",
+      "quality_grade": "A",
+      "evidence_level": "ungraded-content-not-verified",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "The official institutional research-output record classifies the article as peer-reviewed.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": false,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "corpus_included": true,
+      "core_shortlist": true,
+      "limitations": [
+        "Older conference study with a different task and evaluation design.",
+        "Same source family as the 2009 expanded article; do not count as independent corroboration.",
+        "Original content of the exact 2009 work was not acquired or inspected.",
+        "The 2007 predecessor cannot establish the exact contents of the 2009 article."
+      ]
+    },
+    {
+      "source_key": "liu2023_on_the_consistency_discriminative_power_and_robustness_of_",
+      "source_family_id": "SF-R1-034",
+      "quality_grade": "B",
+      "evidence_level": "VI",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "University of Helsinki research portal explicitly classifies the conference material as peer-reviewed.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": false,
+      "source_content_verified": false,
+      "locator_ready": false,
+      "corpus_included": false,
+      "core_shortlist": false,
+      "limitations": [
+        "Authoritative full six-page artifact was not acquired; only official metadata and abstract were inspected.",
+        "Cannot be sole support for a production-intended claim."
+      ]
+    },
+    {
+      "source_key": "mansouri2026_repeat_explore_lightgcn",
+      "source_family_id": "SF-R1-035",
+      "quality_grade": "A",
+      "evidence_level": "VI-two-dataset-computational-study",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "Publisher record and inspected article report received, revised, accepted, and published dates.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "corpus_included": true,
+      "core_shortlist": false,
+      "limitations": [
+        "Two offline grocery datasets; no live customer-response evidence.",
+        "Specific graph, quota, and data-processing choices differ from v5."
+      ]
+    },
+    {
+      "source_key": "meehan2025_cold_popbias",
+      "source_family_id": "SF-R1-036",
+      "quality_grade": "A",
+      "evidence_level": "VI",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "ACM RecSys proceedings record.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": false,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "corpus_included": true,
+      "core_shortlist": false,
+      "limitations": [
+        "Bias findings are bounded to the evaluated methods, splits, and datasets.",
+        "Author manuscript notice does not authorize redistribution; no local artifact stored."
+      ]
+    },
+    {
+      "source_key": "meehan2026_semco",
+      "source_family_id": "SF-R1-037",
+      "quality_grade": "A",
+      "evidence_level": "VI",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "ACM SIGIR proceedings metadata available before the research cutoff.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": false,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "corpus_included": true,
+      "core_shortlist": false,
+      "limitations": [
+        "Evidence is bounded to paper-native data, splits, baselines, and objective.",
+        "Author manuscript notice does not authorize redistribution; no local artifact stored."
+      ]
+    },
+    {
+      "source_key": "nguyen2025_viecomrec_graph",
+      "source_family_id": "SF-R1-038",
+      "quality_grade": "B",
+      "evidence_level": "VI",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "Official Springer journal record and journal review policy.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": false,
+      "source_content_verified": false,
+      "locator_ready": false,
+      "corpus_included": false,
+      "core_shortlist": false,
+      "limitations": [
+        "Authoritative full text was not lawfully acquired; method-detail claims remain unavailable.",
+        "Reuse of ViEcomRec does not increase the independent dataset-family count."
+      ]
+    },
+    {
+      "source_key": "nguyen2026_vihorec",
+      "source_family_id": "SF-R1-039",
+      "quality_grade": "C",
+      "evidence_level": "VI",
+      "peer_reviewed": false,
+      "peer_review_evidence_basis": null,
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "corpus_included": true,
+      "core_shortlist": false,
+      "limitations": [
+        "The outcomes are hotel ratings/reviews, not observed purchase baskets.",
+        "The preprint is not peer reviewed."
+      ]
+    },
+    {
+      "source_key": "parajuli2026_on_the_convergent_validity_of_offline_evaluation_designs_f",
+      "source_family_id": "SF-R1-040",
+      "quality_grade": "A",
+      "evidence_level": "VI",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "Official author publication page identifies the accepted RecSys 2026 full paper, DOI, and acceptance rate.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "corpus_included": false,
+      "core_shortlist": false,
+      "limitations": [
+        "Proceedings publication occurs after the research cutoff; status is accepted, not published.",
+        "Validity results depend on the dense reference data and tested configurations."
+      ]
+    },
+    {
+      "source_key": "peng2022_ham",
+      "source_family_id": "SF-R1-041",
+      "quality_grade": "A",
+      "evidence_level": "VI-computational-comparative-study",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "Published as an IEEE TKDE journal article.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "corpus_included": true,
+      "core_shortlist": false,
+      "limitations": [
+        "Sequential next-item evaluation, not v5 novel next-basket evaluation.",
+        "Its association components are learned model terms, not Apriori rules."
+      ]
+    },
+    {
+      "source_key": "peng2023_m2",
+      "source_family_id": "SF-R1-042",
+      "quality_grade": "A",
+      "evidence_level": "VI-computational-comparative-study",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "Published as an IEEE TKDE journal article.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "corpus_included": true,
+      "core_shortlist": false,
+      "limitations": [
+        "Evaluation task and metric definitions differ from the locked v5 estimand.",
+        "Not a novel-only basket model."
+      ]
+    },
+    {
+      "source_key": "pereira2025_on_the_reliability_of_sampling_strategies_in_offline_recom",
+      "source_family_id": "SF-R1-043",
+      "quality_grade": "A",
+      "evidence_level": "VI",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "Published RecSys conference paper on the ACM source-of-record DOI page.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "corpus_included": false,
+      "core_shortlist": false,
+      "limitations": [
+        "Full text is readable, but structural preflight was unavailable; only section-level locator is authorized."
+      ]
+    },
+    {
+      "source_key": "petrov2022_a_systematic_review_and_replicability_study_of_bert4rec_fo",
+      "source_family_id": "SF-R1-044",
+      "quality_grade": "A",
+      "evidence_level": "V",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "Published as an ACM RecSys research paper; accepted version is hosted by the authors' institution.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "corpus_included": true,
+      "core_shortlist": false,
+      "limitations": [
+        "Replicability study of BERT4Rec, not a basket-recommendation study.",
+        "Findings do not determine which implementation is optimal for v5."
+      ]
+    },
+    {
+      "source_key": "pham2024_developing_a_restaurant_recommended_system_via_the_vietnam",
+      "source_family_id": "SF-R1-045",
+      "quality_grade": "A",
+      "evidence_level": "VI",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "Official journal peer-review policy and article record.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "corpus_included": false,
+      "core_shortlist": false,
+      "limitations": [
+        "The work duplicates 14,413 restaurant records to five million rows, so scale is synthetic.",
+        "Evaluation is non-temporal rating regression and does not test a purchase top-k estimand."
+      ]
+    },
+    {
+      "source_key": "reimers2019_sbert",
+      "source_family_id": "SF-R1-046",
+      "quality_grade": "A",
+      "evidence_level": "VI",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "Official ACL Anthology conference record.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": false,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "corpus_included": true,
+      "core_shortlist": true,
+      "limitations": [
+        "The paper contains no retail recommendation objective, collaborative signal, or cold-item evaluation."
+      ]
+    },
+    {
+      "source_key": "rendle2009_bpr",
+      "source_family_id": "SF-R1-047",
+      "quality_grade": "A",
+      "evidence_level": "VI",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "Canonical paper appears in the official UAI proceedings artifact.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "corpus_included": true,
+      "core_shortlist": true,
+      "limitations": [
+        "Results depend on the unobserved-item sampling distribution.",
+        "The objective does not by itself solve cold items with no features or interactions."
+      ]
+    },
+    {
+      "source_key": "robinson2024_relbench",
+      "source_family_id": "SF-R1-048",
+      "quality_grade": "A",
+      "evidence_level": "VI",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "Official NeurIPS Datasets and Benchmarks proceedings record.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "corpus_included": true,
+      "core_shortlist": false,
+      "limitations": [
+        "The RelBench adapters are not independent evidence from their upstream datasets.",
+        "rel-amazon reports no specified dataset license on the current official card."
+      ]
+    },
+    {
+      "source_key": "said2026_reproducibility_in_recommender_systems_a_survey",
+      "source_family_id": "SF-R1-049",
+      "quality_grade": "B",
+      "evidence_level": "V",
+      "peer_reviewed": "unknown",
+      "peer_review_evidence_basis": "Canonical status remains a 2026 arXiv preprint; no proceedings or journal status was established.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "corpus_included": false,
+      "core_shortlist": false,
+      "limitations": [
+        "Survey is limited to the RecSys Reproducibility Track and does not represent all recommender-systems research."
+      ]
+    },
+    {
+      "source_key": "sarwar2001_itemcf",
+      "source_family_id": "SF-R1-050",
+      "quality_grade": "A",
+      "evidence_level": "VI",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "Canonical paper appears in the official ACM conference proceedings record.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "corpus_included": true,
+      "core_shortlist": true,
+      "limitations": [
+        "Similarity quality depends on interaction overlap and chosen normalization.",
+        "The paper predates modern full-catalog temporal evaluation conventions."
+      ]
+    },
+    {
+      "source_key": "shehzad2025_we_share_our_code_online_why_this_is_not_enough_to_ensure_",
+      "source_family_id": "SF-R1-051",
+      "quality_grade": "A",
+      "evidence_level": "VI",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "University of Copenhagen research portal explicitly classifies the proceedings output as peer-reviewed.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": false,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "corpus_included": false,
+      "core_shortlist": false,
+      "limitations": [
+        "The empirical audit covers 65 SIGIR 2022–2024 papers and measures artifact/reporting availability; it does not demonstrate that reported results were independently reproduced."
+      ]
+    },
+    {
+      "source_key": "sheng2025_alpharec",
+      "source_family_id": "SF-R1-052",
+      "quality_grade": "A",
+      "evidence_level": "VI",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "Official ICLR 2025 proceedings record.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": false,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "corpus_included": true,
+      "core_shortlist": true,
+      "limitations": [
+        "Zero-shot protocol still depends on item text and paper-specific preprocessing, modified baselines, and evaluation choices.",
+        "The paper itself notes stronger performance on the Amazon target may reflect same-platform behavioral patterns."
+      ]
+    },
+    {
+      "source_key": "sun2019_bert4rec",
+      "source_family_id": "SF-R1-053",
+      "quality_grade": "A",
+      "evidence_level": "VI-computational-comparative-study",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "Published as an ACM CIKM research paper in the official proceedings.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "corpus_included": true,
+      "core_shortlist": false,
+      "limitations": [
+        "Next-item sequence objective, not a basket-set objective.",
+        "The paper-native sampled evaluation is not v5 full-catalog evaluation."
+      ]
+    },
+    {
+      "source_key": "sun2023_daisyrec2",
+      "source_family_id": "SF-R1-054",
+      "quality_grade": "A",
+      "evidence_level": "VI",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "Published IEEE Transactions on Pattern Analysis and Machine Intelligence journal article.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "corpus_included": true,
+      "core_shortlist": false,
+      "limitations": [
+        "Benchmark framework is not evidence that a v5 adapter reproduces an upstream implementation."
+      ]
+    },
+    {
+      "source_key": "tagliabue2021_coveo",
+      "source_family_id": "SF-R1-055",
+      "quality_grade": "B",
+      "evidence_level": "VI",
+      "peer_reviewed": "unknown",
+      "peer_review_evidence_basis": null,
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "corpus_included": true,
+      "core_shortlist": true,
+      "limitations": [
+        "The dataset is session-level and has no persistent user identifier.",
+        "Dataset terms prohibit redistribution and limit use to non-commercial research and education."
+      ]
+    },
+    {
+      "source_key": "tamm2021_metric_consistency",
+      "source_family_id": "SF-R1-056",
+      "quality_grade": "A",
+      "evidence_level": "VI",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "Published RecSys conference paper on the ACM source-of-record DOI page.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "corpus_included": false,
+      "core_shortlist": false,
+      "limitations": [
+        "Documents ambiguity and inconsistency; it does not select the v5 formula or aggregation rule."
+      ]
+    },
+    {
+      "source_key": "tran2024_viecomrec",
+      "source_family_id": "SF-R1-038",
+      "quality_grade": "A",
+      "evidence_level": "VI",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "Dublin City University source-of-record record marks the item Refereed: Yes.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "corpus_included": true,
+      "core_shortlist": true,
+      "limitations": [
+        "A review is described as post-purchase, but the released records are reviews rather than complete transaction baskets.",
+        "The corpus is limited to face-cleanser products from one platform."
+      ]
+    },
+    {
+      "source_key": "tran2024_vietnamese_food",
+      "source_family_id": "SF-R1-057",
+      "quality_grade": "B",
+      "evidence_level": "VI",
+      "peer_reviewed": "unknown",
+      "peer_review_evidence_basis": null,
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "corpus_included": true,
+      "core_shortlist": false,
+      "limitations": [
+        "The inspected artifact does not establish a persistent-user purchase log or temporal purchase outcome.",
+        "Forty percent missing ratings were filled with a median value, limiting outcome interpretation."
+      ]
+    },
+    {
+      "source_key": "truong2021_product_recommendation_system_using_opinion_mining_on_viet",
+      "source_family_id": "SF-R1-058",
+      "quality_grade": "C",
+      "evidence_level": "VI",
+      "peer_reviewed": "unknown",
+      "peer_review_evidence_basis": null,
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": false,
+      "source_content_verified": false,
+      "locator_ready": false,
+      "corpus_included": false,
+      "core_shortlist": false,
+      "limitations": [
+        "Authoritative full text was not lawfully acquired.",
+        "No dataset-rights or strict H4 compatibility claim is made from metadata alone."
+      ]
+    },
+    {
+      "source_key": "volkovs2017_dropoutnet",
+      "source_family_id": "SF-R1-059",
+      "quality_grade": "A",
+      "evidence_level": "VI",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "Official NeurIPS proceedings record.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": false,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "corpus_included": true,
+      "core_shortlist": true,
+      "limitations": [
+        "Cold-start protocol and datasets are paper-specific and precede modern text encoders.",
+        "No lawful local redistribution copy was stored."
+      ]
+    },
+    {
+      "source_key": "wang2022_directau",
+      "source_family_id": "SF-R1-060",
+      "quality_grade": "A",
+      "evidence_level": "VI",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "Canonical paper appears in the official ACM KDD proceedings record.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "corpus_included": true,
+      "core_shortlist": false,
+      "limitations": [
+        "Still relies on collaborative observations and does not create content features for zero-edge items."
+      ]
+    },
+    {
+      "source_key": "wang2025_t2diff",
+      "source_family_id": "SF-R1-061",
+      "quality_grade": "A",
+      "evidence_level": "VI",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "DOI and final proceedings metadata identify the published ACM Web Conference paper.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "corpus_included": true,
+      "core_shortlist": false,
+      "limitations": [
+        "Additional training complexity and source-native large-scale matching assumptions may not transport to v5."
+      ]
+    },
+    {
+      "source_key": "wei2021_clcrec",
+      "source_family_id": "SF-R1-062",
+      "quality_grade": "B",
+      "evidence_level": "VI",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "ACM conference proceedings metadata.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": false,
+      "source_content_verified": false,
+      "locator_ready": false,
+      "corpus_included": false,
+      "core_shortlist": false,
+      "limitations": [
+        "Authoritative full content and claim-level locator remain queued."
+      ]
+    },
+    {
+      "source_key": "wu2025_muse_taobao_mm",
+      "source_family_id": "SF-R1-063",
+      "quality_grade": "C",
+      "evidence_level": "VI",
+      "peer_reviewed": false,
+      "peer_review_evidence_basis": null,
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "corpus_included": true,
+      "core_shortlist": false,
+      "limitations": [
+        "The released TAOBAO-MM label is click/no-click, not purchase.",
+        "Event timestamps are not exposed as an interaction-level field in the inspected data card."
+      ]
+    },
+    {
+      "source_key": "yi2019_ndr",
+      "source_family_id": "SF-R1-064",
+      "quality_grade": "A",
+      "evidence_level": "VI",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "Canonical paper appears in the official ACM RecSys proceedings record.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "corpus_included": true,
+      "core_shortlist": false,
+      "limitations": [
+        "Pair-specific cross features are constrained by independent towers.",
+        "Industrial inputs and traffic are not v5."
+      ]
+    },
+    {
+      "source_key": "yu2022_simgcl",
+      "source_family_id": "SF-R1-065",
+      "quality_grade": "A",
+      "evidence_level": "VI",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "Canonical paper appears in the official ACM SIGIR proceedings record.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "corpus_included": true,
+      "core_shortlist": false,
+      "limitations": [
+        "Depends on the observed interaction graph and ID embeddings.",
+        "Authoritative full content and claim-level locator remain queued."
+      ]
+    },
+    {
+      "source_key": "yu2024_xsimgcl",
+      "source_family_id": "SF-R1-066",
+      "quality_grade": "B",
+      "evidence_level": "VI",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "IEEE journal issue metadata; institutional publication record confirms volume, issue, pages, and 2024 issue year.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": false,
+      "source_content_verified": false,
+      "locator_ready": false,
+      "corpus_included": false,
+      "core_shortlist": false,
+      "limitations": [
+        "Authoritative full content and claim-level locator remain queued."
+      ]
+    },
+    {
+      "source_key": "yuan2022_tenrec",
+      "source_family_id": "SF-R1-067",
+      "quality_grade": "A",
+      "evidence_level": "VI",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "Official NeurIPS Datasets and Benchmarks proceedings record.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "corpus_included": true,
+      "core_shortlist": false,
+      "limitations": [
+        "The released benchmark focuses on clicks, likes, follows, and video behavior rather than purchase baskets.",
+        "Timestamp availability is insufficient for the locked strict temporal purchase estimand."
+      ]
+    },
+    {
+      "source_key": "yuan2025_contextgnn",
+      "source_family_id": "SF-R1-068",
+      "quality_grade": "A",
+      "evidence_level": "VI",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "Official ICLR proceedings page identifies the final conference paper.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "corpus_included": true,
+      "core_shortlist": false,
+      "limitations": [
+        "Requires graph context and a regime definition for familiar versus exploratory candidates.",
+        "Independent v5 replication is absent."
+      ]
+    },
+    {
+      "source_key": "zhao2020_alternative_settings",
+      "source_family_id": "SF-R1-069",
+      "quality_grade": "A",
+      "evidence_level": "VI",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "Published CIKM conference paper on the ACM source-of-record DOI page.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "corpus_included": true,
+      "core_shortlist": true,
+      "limitations": [
+        "Uses its own datasets, algorithms, and tested settings; results do not transfer as raw v5 metrics."
+      ]
+    },
+    {
+      "source_key": "zhao2022_recbole2",
+      "source_family_id": "SF-R1-070",
+      "quality_grade": "A",
+      "evidence_level": "VI",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "Published CIKM conference paper on the ACM source-of-record DOI page.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "corpus_included": true,
+      "core_shortlist": false,
+      "limitations": [
+        "Library availability and a unified interface do not establish faithful reproduction of a project adapter."
+      ]
+    },
+    {
+      "source_key": "zheng2026_utgrec",
+      "source_family_id": "SF-R1-071",
+      "quality_grade": "A",
+      "evidence_level": "VI",
+      "peer_reviewed": true,
+      "peer_review_evidence_basis": "ACM SIGIR proceedings metadata available before the research cutoff.",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_acquired": false,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "corpus_included": true,
+      "core_shortlist": false,
+      "limitations": [
+        "Evaluation is transferable sequential recommendation, not a strict zero-collaborative-edge cohort.",
+        "The inspected author artifact contains a prepublication template footer; canonical identity comes from the DOI record."
+      ]
+    }
+  ]
+}

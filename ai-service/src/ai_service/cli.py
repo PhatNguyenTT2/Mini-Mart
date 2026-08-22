@@ -111,19 +111,9 @@ def build_parser() -> argparse.ArgumentParser:
         "promote-r4", help="publish the immutable R4-to-production hand-off receipt"
     )
     promotion_cmd.add_argument("--selection-report", type=Path, required=True)
-    promotion_cmd.add_argument("--selected-deep-run-id", required=True)
-    promotion_cmd.add_argument("--selected-deep-checkpoint-sha256", required=True)
-    promotion_cmd.add_argument("--h3b-hybrid-run-id", required=True)
-    promotion_cmd.add_argument("--h3b-hybrid-checkpoint-sha256", required=True)
-    promotion_cmd.add_argument("--h3b-victory-matrix-sha256", required=True)
-    promotion_cmd.add_argument("--lineage-json", type=Path, required=True)
+    promotion_cmd.add_argument("--hybrid-run-id", required=True)
     promotion_cmd.add_argument("--deep-config", type=Path, required=True)
     promotion_cmd.add_argument("--hybrid-config", type=Path, required=True)
-    promotion_cmd.add_argument("--diagnostic-git-commit", required=True)
-    promotion_cmd.add_argument("--production-git-commit", required=True)
-    promotion_cmd.add_argument("--feature-selection-json", type=Path, required=True)
-    promotion_cmd.add_argument("--objective-settings-json", type=Path, required=True)
-    promotion_cmd.add_argument("--output", type=Path, required=True)
 
     # 5. export command parser
     export_cmd = subparsers.add_parser("export")

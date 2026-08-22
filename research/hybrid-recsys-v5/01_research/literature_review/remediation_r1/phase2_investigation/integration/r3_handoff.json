@@ -1,0 +1,1638 @@
+{
+  "schema_version": "r3-handoff-r1-1.0",
+  "handoff_type": "ARS_Deep_Research_Phase2_R3_integration",
+  "project": "hybrid-recsys-v5",
+  "stage": "Stage 1B remediation R1",
+  "step": "R3 Central Merge, Verification, and Deduplication",
+  "runtime_lock": {
+    "model": "gpt-5.6-sol",
+    "reasoning": "high"
+  },
+  "ars_codex_version": "0.1.26",
+  "research_cutoff": "2026-08-14",
+  "completed_at": "2026-08-21T00:00:00+07:00",
+  "verdict": "PASS",
+  "verdict_scope": "PASS authorizes only R4 source acquisition; it neither seals Stage 1B nor authorizes Stage 2 production citations.",
+  "input_gate": {
+    "verdict": "PASS",
+    "input_manifest_sha256": "a0842f4932ff0a23c59ab5d97706f7609f42ccddd660fd6b7f6e1f8e2b0d82e5",
+    "integration_contract_sha256": "44cf1424ab89c69806a8f3fdc57694df3fe83338c6c70031b93632661fe98d15",
+    "files_rehashed": 145,
+    "hash_or_byte_mismatches": 0,
+    "lane_contract_files": 35,
+    "lane_verdicts": {
+      "L1": "PASS",
+      "L2": "PASS",
+      "L3": "PASS",
+      "L4": "PASS",
+      "L5": "PASS"
+    },
+    "json_files_parsed": 56,
+    "prohibited_fields": 0
+  },
+  "counts": {
+    "scholarly_rows_before_deduplication": 79,
+    "canonical_scholarly_records_after_deduplication": 74,
+    "scholarly_independent_families": 71,
+    "operational_records": 14,
+    "operational_root_families": 12,
+    "unique_families_across_registries": 75,
+    "scholarly_corpus": 52,
+    "recent_2022_2026": 32,
+    "peer_reviewed_true": 45,
+    "source_acquired": 40,
+    "source_content_verified": 52,
+    "locator_ready": 52,
+    "core_scholarly": 23,
+    "core_operational_families": 1,
+    "core_total": 24,
+    "claim_cards": 44,
+    "original_planning_only_true": 30,
+    "original_planning_only_false": 14,
+    "original_production_intended_true": 8,
+    "original_production_intended_false": 0,
+    "original_production_intended_absent": 36,
+    "central_conditional_production_candidates": 22,
+    "central_planning_only": 22,
+    "central_production_ready": 0,
+    "unresolved_r4_queue": 13
+  },
+  "claim_state_rule": {
+    "exclusive_states": [
+      "planning_only",
+      "conditional_production_candidate",
+      "production_ready"
+    ],
+    "l4_resolution": "All eight L4 cards preserve planning_only=true and production_intended=true; centrally they are conditional_production_candidate, never production_ready.",
+    "production_ready_condition": "Only a post-R4, post-Stage1B-seal citation gate may set production_ready; R3 sets none."
+  },
+  "claim_dispositions": [
+    {
+      "claim_id": "C-L5-EXT-01",
+      "lane": "L5",
+      "original_lane_state": {
+        "planning_only": true,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "planning_only",
+      "central_conditions": [
+        "retain for planning/context only unless a later central gate explicitly changes disposition"
+      ],
+      "canonical_source_keys": [
+        "jin2023_amazon_m2"
+      ],
+      "operational_resource_keys": [
+        "R-L5-AMAZON-M2"
+      ],
+      "source_family_ids": [
+        "SF-R1-025"
+      ]
+    },
+    {
+      "claim_id": "C-L5-EXT-02",
+      "lane": "L5",
+      "original_lane_state": {
+        "planning_only": true,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "planning_only",
+      "central_conditions": [
+        "retain for planning/context only unless a later central gate explicitly changes disposition"
+      ],
+      "canonical_source_keys": [
+        "tagliabue2021_coveo"
+      ],
+      "operational_resource_keys": [
+        "R-L5-COVEO"
+      ],
+      "source_family_ids": [
+        "SF-R1-055"
+      ]
+    },
+    {
+      "claim_id": "C-L5-EXT-03",
+      "lane": "L5",
+      "original_lane_state": {
+        "planning_only": true,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "planning_only",
+      "central_conditions": [
+        "retain for planning/context only unless a later central gate explicitly changes disposition"
+      ],
+      "canonical_source_keys": [],
+      "operational_resource_keys": [
+        "R-L5-COMPLETE-JOURNEY-PROVIDER",
+        "R-L5-COMPLETEJOURNEY-R-PACKAGE"
+      ],
+      "source_family_ids": [
+        "SF-R1-075"
+      ]
+    },
+    {
+      "claim_id": "C-L5-EXT-04",
+      "lane": "L5",
+      "original_lane_state": {
+        "planning_only": true,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "planning_only",
+      "central_conditions": [
+        "retain for planning/context only unless a later central gate explicitly changes disposition"
+      ],
+      "canonical_source_keys": [
+        "robinson2024_relbench"
+      ],
+      "operational_resource_keys": [
+        "R-L5-RELBENCH-REL-AMAZON",
+        "R-L5-RELBENCH-REL-HM",
+        "R-L5-HM"
+      ],
+      "source_family_ids": [
+        "SF-R1-048",
+        "SF-R1-073",
+        "SF-R1-074"
+      ]
+    },
+    {
+      "claim_id": "C-L5-EXT-05",
+      "lane": "L5",
+      "original_lane_state": {
+        "planning_only": true,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "planning_only",
+      "central_conditions": [
+        "retain for planning/context only unless a later central gate explicitly changes disposition"
+      ],
+      "canonical_source_keys": [
+        "wu2025_muse_taobao_mm"
+      ],
+      "operational_resource_keys": [
+        "R-L5-TAOBAO-MM"
+      ],
+      "source_family_ids": [
+        "SF-R1-063"
+      ]
+    },
+    {
+      "claim_id": "C-L5-RIGHTS-01",
+      "lane": "L5",
+      "original_lane_state": {
+        "planning_only": true,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "planning_only",
+      "central_conditions": [
+        "retain for planning/context only unless a later central gate explicitly changes disposition"
+      ],
+      "canonical_source_keys": [],
+      "operational_resource_keys": [
+        "R-L5-COMPLETE-JOURNEY-PROVIDER",
+        "R-L5-COMPLETEJOURNEY-R-PACKAGE",
+        "R-L5-VIFOODREC",
+        "R-L5-AMAZON-REVIEWS-2023"
+      ],
+      "source_family_ids": [
+        "SF-R1-019",
+        "SF-R1-057",
+        "SF-R1-075"
+      ]
+    },
+    {
+      "claim_id": "C-L5-SCOPE-01",
+      "lane": "L5",
+      "original_lane_state": {
+        "planning_only": true,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "planning_only",
+      "central_conditions": [
+        "retain for planning/context only unless a later central gate explicitly changes disposition"
+      ],
+      "canonical_source_keys": [],
+      "operational_resource_keys": [
+        "R-L5-VIECOMREC",
+        "R-L5-VIFOODREC",
+        "R-L5-VIHOREC",
+        "R-L5-AMAZON-M2",
+        "R-L5-TENREC",
+        "R-L5-COVEO",
+        "R-L5-OTTO",
+        "R-L5-RELBENCH-REL-AMAZON",
+        "R-L5-RELBENCH-REL-HM",
+        "R-L5-AMAZON-REVIEWS-2023",
+        "R-L5-HM",
+        "R-L5-COMPLETE-JOURNEY-PROVIDER",
+        "R-L5-COMPLETEJOURNEY-R-PACKAGE",
+        "R-L5-TAOBAO-MM"
+      ],
+      "source_family_ids": [
+        "SF-R1-019",
+        "SF-R1-025",
+        "SF-R1-038",
+        "SF-R1-039",
+        "SF-R1-055",
+        "SF-R1-057",
+        "SF-R1-063",
+        "SF-R1-067",
+        "SF-R1-072",
+        "SF-R1-073",
+        "SF-R1-074",
+        "SF-R1-075"
+      ]
+    },
+    {
+      "claim_id": "C-L5-VN-01",
+      "lane": "L5",
+      "original_lane_state": {
+        "planning_only": true,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "planning_only",
+      "central_conditions": [
+        "retain for planning/context only unless a later central gate explicitly changes disposition"
+      ],
+      "canonical_source_keys": [
+        "tran2024_viecomrec"
+      ],
+      "operational_resource_keys": [
+        "R-L5-VIECOMREC"
+      ],
+      "source_family_ids": [
+        "SF-R1-038"
+      ]
+    },
+    {
+      "claim_id": "C-L5-VN-02",
+      "lane": "L5",
+      "original_lane_state": {
+        "planning_only": true,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "planning_only",
+      "central_conditions": [
+        "retain for planning/context only unless a later central gate explicitly changes disposition"
+      ],
+      "canonical_source_keys": [
+        "tran2024_vietnamese_food",
+        "nguyen2026_vihorec",
+        "pham2024_developing_a_restaurant_recommended_system_via_the_vietnam"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-039",
+        "SF-R1-045",
+        "SF-R1-057"
+      ]
+    },
+    {
+      "claim_id": "L1-CC-001",
+      "lane": "L1",
+      "original_lane_state": {
+        "planning_only": true,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "planning_only",
+      "central_conditions": [
+        "retain for planning/context only unless a later central gate explicitly changes disposition"
+      ],
+      "canonical_source_keys": [
+        "krichene2020_sampled_metrics",
+        "krichene2021_on_sampled_metrics_for_item_recommendation_extended_abstra",
+        "li2023_reliable_sampling",
+        "pereira2025_on_the_reliability_of_sampling_strategies_in_offline_recom"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-028",
+        "SF-R1-031",
+        "SF-R1-043"
+      ]
+    },
+    {
+      "claim_id": "L1-CC-002",
+      "lane": "L1",
+      "original_lane_state": {
+        "planning_only": true,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "planning_only",
+      "central_conditions": [
+        "retain for planning/context only unless a later central gate explicitly changes disposition"
+      ],
+      "canonical_source_keys": [
+        "zhao2020_alternative_settings",
+        "ihemelandu2023_candidate_set_sampling_for_evaluating_top_n_recommendation",
+        "pereira2025_on_the_reliability_of_sampling_strategies_in_offline_recom",
+        "parajuli2026_on_the_convergent_validity_of_offline_evaluation_designs_f"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-022",
+        "SF-R1-040",
+        "SF-R1-043",
+        "SF-R1-069"
+      ]
+    },
+    {
+      "claim_id": "L1-CC-003",
+      "lane": "L1",
+      "original_lane_state": {
+        "planning_only": true,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "planning_only",
+      "central_conditions": [
+        "retain for planning/context only unless a later central gate explicitly changes disposition"
+      ],
+      "canonical_source_keys": [
+        "zhao2020_alternative_settings",
+        "gusak2025_time_split",
+        "parajuli2026_on_the_convergent_validity_of_offline_evaluation_designs_f"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-013",
+        "SF-R1-040",
+        "SF-R1-069"
+      ]
+    },
+    {
+      "claim_id": "L1-CC-004",
+      "lane": "L1",
+      "original_lane_state": {
+        "planning_only": true,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "planning_only",
+      "central_conditions": [
+        "retain for planning/context only unless a later central gate explicitly changes disposition"
+      ],
+      "canonical_source_keys": [
+        "tamm2021_metric_consistency",
+        "canamares2020_offline_options",
+        "castells2022_offline_recommender_system_evaluation_challenges_and_new_d"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-005",
+        "SF-R1-006",
+        "SF-R1-056"
+      ]
+    },
+    {
+      "claim_id": "L1-CC-005",
+      "lane": "L1",
+      "original_lane_state": {
+        "planning_only": true,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "planning_only",
+      "central_conditions": [
+        "retain for planning/context only unless a later central gate explicitly changes disposition"
+      ],
+      "canonical_source_keys": [
+        "dacrema2021_reproducibility",
+        "sun2023_daisyrec2",
+        "benigni2026_diffusion_recommender_models_and_the_illusion_of_progress_",
+        "jannach2026_methodological_standards"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-002",
+        "SF-R1-009",
+        "SF-R1-023",
+        "SF-R1-054"
+      ]
+    },
+    {
+      "claim_id": "L1-CC-006",
+      "lane": "L1",
+      "original_lane_state": {
+        "planning_only": true,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "planning_only",
+      "central_conditions": [
+        "retain for planning/context only unless a later central gate explicitly changes disposition"
+      ],
+      "canonical_source_keys": [
+        "dacrema2021_reproducibility",
+        "shehzad2025_we_share_our_code_online_why_this_is_not_enough_to_ensure_",
+        "zhao2022_recbole2"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-009",
+        "SF-R1-051",
+        "SF-R1-070"
+      ]
+    },
+    {
+      "claim_id": "L1-CC-007",
+      "lane": "L1",
+      "original_lane_state": {
+        "planning_only": true,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "planning_only",
+      "central_conditions": [
+        "retain for planning/context only unless a later central gate explicitly changes disposition"
+      ],
+      "canonical_source_keys": [
+        "dacrema2021_reproducibility",
+        "sun2023_daisyrec2",
+        "zhao2022_recbole2",
+        "jannach2026_methodological_standards"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-009",
+        "SF-R1-023",
+        "SF-R1-054",
+        "SF-R1-070"
+      ]
+    },
+    {
+      "claim_id": "L1-CC-008",
+      "lane": "L1",
+      "original_lane_state": {
+        "planning_only": true,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "planning_only",
+      "central_conditions": [
+        "retain for planning/context only unless a later central gate explicitly changes disposition"
+      ],
+      "canonical_source_keys": [
+        "zhao2020_alternative_settings",
+        "canamares2020_offline_options",
+        "gusak2025_time_split",
+        "parajuli2026_on_the_convergent_validity_of_offline_evaluation_designs_f"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-005",
+        "SF-R1-013",
+        "SF-R1-040",
+        "SF-R1-069"
+      ]
+    },
+    {
+      "claim_id": "L1-CC-009",
+      "lane": "L1",
+      "original_lane_state": {
+        "planning_only": true,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "planning_only",
+      "central_conditions": [
+        "retain for planning/context only unless a later central gate explicitly changes disposition"
+      ],
+      "canonical_source_keys": [
+        "krichene2021_on_sampled_metrics_for_item_recommendation_extended_abstra",
+        "li2023_reliable_sampling",
+        "hidasi2023_widespread_flaws_in_offline_evaluation_of_recommender_syst",
+        "ihemelandu2023_candidate_set_sampling_for_evaluating_top_n_recommendation",
+        "pereira2025_on_the_reliability_of_sampling_strategies_in_offline_recom",
+        "liu2023_on_the_consistency_discriminative_power_and_robustness_of_"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-016",
+        "SF-R1-022",
+        "SF-R1-028",
+        "SF-R1-031",
+        "SF-R1-034",
+        "SF-R1-043"
+      ]
+    },
+    {
+      "claim_id": "L1-CC-010",
+      "lane": "L1",
+      "original_lane_state": {
+        "planning_only": true,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "planning_only",
+      "central_conditions": [
+        "retain for planning/context only unless a later central gate explicitly changes disposition"
+      ],
+      "canonical_source_keys": [
+        "tamm2021_metric_consistency",
+        "canamares2020_offline_options"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-005",
+        "SF-R1-056"
+      ]
+    },
+    {
+      "claim_id": "L1-CC-011",
+      "lane": "L1",
+      "original_lane_state": {
+        "planning_only": true,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "planning_only",
+      "central_conditions": [
+        "retain for planning/context only unless a later central gate explicitly changes disposition"
+      ],
+      "canonical_source_keys": [
+        "jannach2026_methodological_standards"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-023"
+      ]
+    },
+    {
+      "claim_id": "L2-CLAIM-GRAPH-ZERO-EDGE-005",
+      "lane": "L2",
+      "original_lane_state": {
+        "planning_only": false,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "conditional_production_candidate",
+      "central_conditions": [
+        "complete any R4 lawful-local-artifact and locator queue item",
+        "pass the post-R4 central production-citation gate",
+        "do not cite as production evidence until Stage 1B is sealed"
+      ],
+      "canonical_source_keys": [
+        "he2020_lightgcn",
+        "yu2022_simgcl",
+        "cai2023_lightgcl"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-004",
+        "SF-R1-015",
+        "SF-R1-065"
+      ]
+    },
+    {
+      "claim_id": "L2-CLAIM-HARMONIZED-EVAL-008",
+      "lane": "L2",
+      "original_lane_state": {
+        "planning_only": true,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "planning_only",
+      "central_conditions": [
+        "retain for planning/context only unless a later central gate explicitly changes disposition"
+      ],
+      "canonical_source_keys": [
+        "sarwar2001_itemcf",
+        "rendle2009_bpr",
+        "he2017_ncf",
+        "guo2017_deepfm",
+        "he2020_lightgcn"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-012",
+        "SF-R1-014",
+        "SF-R1-015",
+        "SF-R1-047",
+        "SF-R1-050"
+      ]
+    },
+    {
+      "claim_id": "L2-CLAIM-ITEMCF-BPR-001",
+      "lane": "L2",
+      "original_lane_state": {
+        "planning_only": false,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "conditional_production_candidate",
+      "central_conditions": [
+        "complete any R4 lawful-local-artifact and locator queue item",
+        "pass the post-R4 central production-citation gate",
+        "do not cite as production evidence until Stage 1B is sealed"
+      ],
+      "canonical_source_keys": [
+        "sarwar2001_itemcf",
+        "rendle2009_bpr"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-047",
+        "SF-R1-050"
+      ]
+    },
+    {
+      "claim_id": "L2-CLAIM-NCF-DEEPFM-002",
+      "lane": "L2",
+      "original_lane_state": {
+        "planning_only": false,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "conditional_production_candidate",
+      "central_conditions": [
+        "complete any R4 lawful-local-artifact and locator queue item",
+        "pass the post-R4 central production-citation gate",
+        "do not cite as production evidence until Stage 1B is sealed"
+      ],
+      "canonical_source_keys": [
+        "he2017_ncf",
+        "guo2017_deepfm"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-012",
+        "SF-R1-014"
+      ]
+    },
+    {
+      "claim_id": "L2-CLAIM-OBJECTIVE-006",
+      "lane": "L2",
+      "original_lane_state": {
+        "planning_only": false,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "conditional_production_candidate",
+      "central_conditions": [
+        "complete any R4 lawful-local-artifact and locator queue item",
+        "pass the post-R4 central production-citation gate",
+        "do not cite as production evidence until Stage 1B is sealed"
+      ],
+      "canonical_source_keys": [
+        "rendle2009_bpr",
+        "yi2019_ndr",
+        "wang2022_directau"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-047",
+        "SF-R1-060",
+        "SF-R1-064"
+      ]
+    },
+    {
+      "claim_id": "L2-CLAIM-RECENT-TOWER-CONTROLS-007",
+      "lane": "L2",
+      "original_lane_state": {
+        "planning_only": false,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "conditional_production_candidate",
+      "central_conditions": [
+        "complete any R4 lawful-local-artifact and locator queue item",
+        "pass the post-R4 central production-citation gate",
+        "do not cite as production evidence until Stage 1B is sealed"
+      ],
+      "canonical_source_keys": [
+        "yuan2025_contextgnn",
+        "wang2025_t2diff"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-061",
+        "SF-R1-068"
+      ]
+    },
+    {
+      "claim_id": "L2-CLAIM-TWO-STAGE-003",
+      "lane": "L2",
+      "original_lane_state": {
+        "planning_only": false,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "conditional_production_candidate",
+      "central_conditions": [
+        "complete any R4 lawful-local-artifact and locator queue item",
+        "pass the post-R4 central production-citation gate",
+        "do not cite as production evidence until Stage 1B is sealed"
+      ],
+      "canonical_source_keys": [
+        "covington2016_youtube",
+        "yi2019_ndr",
+        "wang2025_t2diff"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-008",
+        "SF-R1-061",
+        "SF-R1-064"
+      ]
+    },
+    {
+      "claim_id": "L2-CLAIM-WIDE-DEEP-004",
+      "lane": "L2",
+      "original_lane_state": {
+        "planning_only": false,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "conditional_production_candidate",
+      "central_conditions": [
+        "complete any R4 lawful-local-artifact and locator queue item",
+        "pass the post-R4 central production-citation gate",
+        "do not cite as production evidence until Stage 1B is sealed"
+      ],
+      "canonical_source_keys": [
+        "cheng2016_wide_deep"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-007"
+      ]
+    },
+    {
+      "claim_id": "L3-APR-001",
+      "lane": "L3",
+      "original_lane_state": {
+        "planning_only": false,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "conditional_production_candidate",
+      "central_conditions": [
+        "complete any R4 lawful-local-artifact and locator queue item",
+        "pass the post-R4 central production-citation gate",
+        "do not cite as production evidence until Stage 1B is sealed"
+      ],
+      "canonical_source_keys": [
+        "agrawal1994_apriori"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-001"
+      ]
+    },
+    {
+      "claim_id": "L3-BTBR-005",
+      "lane": "L3",
+      "original_lane_state": {
+        "planning_only": false,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "conditional_production_candidate",
+      "central_conditions": [
+        "complete any R4 lawful-local-artifact and locator queue item",
+        "pass the post-R4 central production-citation gate",
+        "do not cite as production evidence until Stage 1B is sealed"
+      ],
+      "canonical_source_keys": [
+        "li2023_mask_swap"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-029"
+      ]
+    },
+    {
+      "claim_id": "L3-GAP-008",
+      "lane": "L3",
+      "original_lane_state": {
+        "planning_only": true,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "planning_only",
+      "central_conditions": [
+        "retain for planning/context only unless a later central gate explicitly changes disposition"
+      ],
+      "canonical_source_keys": [
+        "agrawal1994_apriori",
+        "ghoshal2014_multi_item_rules",
+        "liu2009_hybrid_seq_cf",
+        "cheng2016_wide_deep",
+        "li2023_nbr_reality",
+        "mansouri2026_repeat_explore_lightgcn"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-001",
+        "SF-R1-007",
+        "SF-R1-011",
+        "SF-R1-030",
+        "SF-R1-033",
+        "SF-R1-035"
+      ]
+    },
+    {
+      "claim_id": "L3-HYB-006",
+      "lane": "L3",
+      "original_lane_state": {
+        "planning_only": false,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "conditional_production_candidate",
+      "central_conditions": [
+        "complete any R4 lawful-local-artifact and locator queue item",
+        "pass the post-R4 central production-citation gate",
+        "do not cite as production evidence until Stage 1B is sealed"
+      ],
+      "canonical_source_keys": [
+        "liu2009_hybrid_seq_cf",
+        "cheng2016_wide_deep",
+        "peng2022_ham",
+        "peng2023_m2",
+        "mansouri2026_repeat_explore_lightgcn"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-007",
+        "SF-R1-033",
+        "SF-R1-035",
+        "SF-R1-041",
+        "SF-R1-042"
+      ]
+    },
+    {
+      "claim_id": "L3-NBR-004",
+      "lane": "L3",
+      "original_lane_state": {
+        "planning_only": false,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "conditional_production_candidate",
+      "central_conditions": [
+        "complete any R4 lawful-local-artifact and locator queue item",
+        "pass the post-R4 central production-citation gate",
+        "do not cite as production evidence until Stage 1B is sealed"
+      ],
+      "canonical_source_keys": [
+        "li2023_nbr_reality",
+        "li2023_repetition_exploration",
+        "mansouri2026_repeat_explore_lightgcn"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-030",
+        "SF-R1-032",
+        "SF-R1-035"
+      ]
+    },
+    {
+      "claim_id": "L3-PROTO-007",
+      "lane": "L3",
+      "original_lane_state": {
+        "planning_only": false,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "conditional_production_candidate",
+      "central_conditions": [
+        "complete any R4 lawful-local-artifact and locator queue item",
+        "pass the post-R4 central production-citation gate",
+        "do not cite as production evidence until Stage 1B is sealed"
+      ],
+      "canonical_source_keys": [
+        "gusak2025_time_split",
+        "petrov2022_a_systematic_review_and_replicability_study_of_bert4rec_fo"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-013",
+        "SF-R1-044"
+      ]
+    },
+    {
+      "claim_id": "L3-RULE-002",
+      "lane": "L3",
+      "original_lane_state": {
+        "planning_only": false,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "conditional_production_candidate",
+      "central_conditions": [
+        "complete any R4 lawful-local-artifact and locator queue item",
+        "pass the post-R4 central production-citation gate",
+        "do not cite as production evidence until Stage 1B is sealed"
+      ],
+      "canonical_source_keys": [
+        "ghoshal2014_multi_item_rules"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-011"
+      ]
+    },
+    {
+      "claim_id": "L3-SEQ-003",
+      "lane": "L3",
+      "original_lane_state": {
+        "planning_only": false,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "conditional_production_candidate",
+      "central_conditions": [
+        "complete any R4 lawful-local-artifact and locator queue item",
+        "pass the post-R4 central production-citation gate",
+        "do not cite as production evidence until Stage 1B is sealed"
+      ],
+      "canonical_source_keys": [
+        "kang2018_sasrec",
+        "sun2019_bert4rec"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-026",
+        "SF-R1-053"
+      ]
+    },
+    {
+      "claim_id": "L4-CC-01",
+      "lane": "L4",
+      "original_lane_state": {
+        "planning_only": true,
+        "production_intended_present": true,
+        "production_intended": true
+      },
+      "central_disposition": "conditional_production_candidate",
+      "central_conditions": [
+        "complete any R4 lawful-local-artifact and locator queue item",
+        "pass the post-R4 central production-citation gate",
+        "do not cite as production evidence until Stage 1B is sealed"
+      ],
+      "canonical_source_keys": [
+        "volkovs2017_dropoutnet",
+        "huang2023_aldi"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-021",
+        "SF-R1-059"
+      ]
+    },
+    {
+      "claim_id": "L4-CC-02",
+      "lane": "L4",
+      "original_lane_state": {
+        "planning_only": true,
+        "production_intended_present": true,
+        "production_intended": true
+      },
+      "central_disposition": "conditional_production_candidate",
+      "central_conditions": [
+        "complete any R4 lawful-local-artifact and locator queue item",
+        "pass the post-R4 central production-citation gate",
+        "do not cite as production evidence until Stage 1B is sealed"
+      ],
+      "canonical_source_keys": [
+        "volkovs2017_dropoutnet",
+        "huang2023_aldi"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-021",
+        "SF-R1-059"
+      ]
+    },
+    {
+      "claim_id": "L4-CC-03",
+      "lane": "L4",
+      "original_lane_state": {
+        "planning_only": true,
+        "production_intended_present": true,
+        "production_intended": true
+      },
+      "central_disposition": "conditional_production_candidate",
+      "central_conditions": [
+        "complete any R4 lawful-local-artifact and locator queue item",
+        "pass the post-R4 central production-citation gate",
+        "do not cite as production evidence until Stage 1B is sealed"
+      ],
+      "canonical_source_keys": [
+        "volkovs2017_dropoutnet",
+        "sheng2025_alpharec"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-052",
+        "SF-R1-059"
+      ]
+    },
+    {
+      "claim_id": "L4-CC-04",
+      "lane": "L4",
+      "original_lane_state": {
+        "planning_only": true,
+        "production_intended_present": true,
+        "production_intended": true
+      },
+      "central_disposition": "conditional_production_candidate",
+      "central_conditions": [
+        "complete any R4 lawful-local-artifact and locator queue item",
+        "pass the post-R4 central production-citation gate",
+        "do not cite as production evidence until Stage 1B is sealed"
+      ],
+      "canonical_source_keys": [
+        "reimers2019_sbert",
+        "sheng2025_alpharec",
+        "meehan2026_semco"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-037",
+        "SF-R1-046",
+        "SF-R1-052"
+      ]
+    },
+    {
+      "claim_id": "L4-CC-05",
+      "lane": "L4",
+      "original_lane_state": {
+        "planning_only": true,
+        "production_intended_present": true,
+        "production_intended": true
+      },
+      "central_disposition": "conditional_production_candidate",
+      "central_conditions": [
+        "complete any R4 lawful-local-artifact and locator queue item",
+        "pass the post-R4 central production-citation gate",
+        "do not cite as production evidence until Stage 1B is sealed"
+      ],
+      "canonical_source_keys": [
+        "hou2022_unisrec",
+        "hou2023_vqrec",
+        "zheng2026_utgrec"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-017",
+        "SF-R1-018",
+        "SF-R1-071"
+      ]
+    },
+    {
+      "claim_id": "L4-CC-06",
+      "lane": "L4",
+      "original_lane_state": {
+        "planning_only": true,
+        "production_intended_present": true,
+        "production_intended": true
+      },
+      "central_disposition": "conditional_production_candidate",
+      "central_conditions": [
+        "complete any R4 lawful-local-artifact and locator queue item",
+        "pass the post-R4 central production-citation gate",
+        "do not cite as production evidence until Stage 1B is sealed"
+      ],
+      "canonical_source_keys": [
+        "hou2023_vqrec",
+        "sheng2025_alpharec",
+        "zheng2026_utgrec"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-018",
+        "SF-R1-052",
+        "SF-R1-071"
+      ]
+    },
+    {
+      "claim_id": "L4-CC-07",
+      "lane": "L4",
+      "original_lane_state": {
+        "planning_only": true,
+        "production_intended_present": true,
+        "production_intended": true
+      },
+      "central_disposition": "conditional_production_candidate",
+      "central_conditions": [
+        "complete any R4 lawful-local-artifact and locator queue item",
+        "pass the post-R4 central production-citation gate",
+        "do not cite as production evidence until Stage 1B is sealed"
+      ],
+      "canonical_source_keys": [
+        "meehan2025_cold_popbias",
+        "meehan2026_semco"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-036",
+        "SF-R1-037"
+      ]
+    },
+    {
+      "claim_id": "L4-CC-08",
+      "lane": "L4",
+      "original_lane_state": {
+        "planning_only": true,
+        "production_intended_present": true,
+        "production_intended": true
+      },
+      "central_disposition": "conditional_production_candidate",
+      "central_conditions": [
+        "complete any R4 lawful-local-artifact and locator queue item",
+        "pass the post-R4 central production-citation gate",
+        "do not cite as production evidence until Stage 1B is sealed"
+      ],
+      "canonical_source_keys": [
+        "hou2022_unisrec",
+        "hou2023_vqrec",
+        "sheng2025_alpharec",
+        "zheng2026_utgrec"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-017",
+        "SF-R1-018",
+        "SF-R1-052",
+        "SF-R1-071"
+      ]
+    }
+  ],
+  "validation": {
+    "json_parse_errors": 0,
+    "duplicate_canonical_source_keys": 0,
+    "duplicate_canonical_titles": 0,
+    "duplicate_canonical_dois": 0,
+    "duplicate_operational_resource_keys": 0,
+    "dangling_source_keys": 0,
+    "dangling_family_ids": 0,
+    "ghost_citations": 0,
+    "placeholder_publication_years": 0,
+    "operational_inferred_years": 0,
+    "mojibake_fields": 0,
+    "shortened_author_metadata": 0,
+    "peer_reviewed_true_missing_evidence_basis": 0,
+    "production_claims_without_original_content_locator": 0,
+    "central_claim_invalid_or_mutually_exclusive_state": 0,
+    "l4_dual_flags_not_preserved": 0,
+    "core_count_component_mismatch": 0,
+    "corpus_target_met": true,
+    "core_target_met": true
+  },
+  "unresolved_r4_queue": [
+    {
+      "source_key": "hou2022_unisrec",
+      "priority": "core",
+      "reasons": [
+        "lawful_local_artifact_not_acquired"
+      ],
+      "authorized_action": "R4 lawful acquisition and exact-locator completion only"
+    },
+    {
+      "source_key": "hou2023_vqrec",
+      "priority": "production_claim",
+      "reasons": [
+        "lawful_local_artifact_not_acquired"
+      ],
+      "authorized_action": "R4 lawful acquisition and exact-locator completion only"
+    },
+    {
+      "source_key": "huang2023_aldi",
+      "priority": "production_claim",
+      "reasons": [
+        "lawful_local_artifact_not_acquired"
+      ],
+      "authorized_action": "R4 lawful acquisition and exact-locator completion only"
+    },
+    {
+      "source_key": "jannach2026_methodological_standards",
+      "priority": "core",
+      "reasons": [
+        "lawful_local_artifact_not_acquired"
+      ],
+      "authorized_action": "R4 lawful acquisition and exact-locator completion only"
+    },
+    {
+      "source_key": "li2023_repetition_exploration",
+      "priority": "production_claim",
+      "reasons": [
+        "lawful_local_artifact_not_acquired"
+      ],
+      "authorized_action": "R4 lawful acquisition and exact-locator completion only"
+    },
+    {
+      "source_key": "liu2009_hybrid_seq_cf",
+      "priority": "core",
+      "reasons": [
+        "lawful_local_artifact_not_acquired"
+      ],
+      "authorized_action": "R4 lawful acquisition and exact-locator completion only"
+    },
+    {
+      "source_key": "meehan2025_cold_popbias",
+      "priority": "production_claim",
+      "reasons": [
+        "lawful_local_artifact_not_acquired"
+      ],
+      "authorized_action": "R4 lawful acquisition and exact-locator completion only"
+    },
+    {
+      "source_key": "meehan2026_semco",
+      "priority": "production_claim",
+      "reasons": [
+        "lawful_local_artifact_not_acquired"
+      ],
+      "authorized_action": "R4 lawful acquisition and exact-locator completion only"
+    },
+    {
+      "source_key": "reimers2019_sbert",
+      "priority": "core",
+      "reasons": [
+        "lawful_local_artifact_not_acquired"
+      ],
+      "authorized_action": "R4 lawful acquisition and exact-locator completion only"
+    },
+    {
+      "source_key": "sheng2025_alpharec",
+      "priority": "core",
+      "reasons": [
+        "lawful_local_artifact_not_acquired"
+      ],
+      "authorized_action": "R4 lawful acquisition and exact-locator completion only"
+    },
+    {
+      "source_key": "volkovs2017_dropoutnet",
+      "priority": "core",
+      "reasons": [
+        "lawful_local_artifact_not_acquired"
+      ],
+      "authorized_action": "R4 lawful acquisition and exact-locator completion only"
+    },
+    {
+      "source_key": "zheng2026_utgrec",
+      "priority": "production_claim",
+      "reasons": [
+        "lawful_local_artifact_not_acquired"
+      ],
+      "authorized_action": "R4 lawful acquisition and exact-locator completion only"
+    },
+    {
+      "source_family_id": "SF-R1-075",
+      "resource_keys": [
+        "R-L5-COMPLETE-JOURNEY-PROVIDER",
+        "R-L5-COMPLETEJOURNEY-R-PACKAGE"
+      ],
+      "priority": "core",
+      "reasons": [
+        "provider_access_terms_and_dataset_redistribution_rights_remain_separate",
+        "dataset_payload_not_acquired"
+      ],
+      "authorized_action": "R4 lawful acquisition/rights clarification; do not propagate package CC0 upstream"
+    }
+  ],
+  "output_manifest": [
+    {
+      "path": "source_registry_r1.json",
+      "bytes": 244237,
+      "sha256": "5bdbb48d61f7a8bad13ddb85b117ec9b7017732c0997592562fbb56db7dc036c"
+    },
+    {
+      "path": "operational_resource_registry.json",
+      "bytes": 32285,
+      "sha256": "e1bd73108707d53ded153a0d3be9710e7b10bb07f7d0e8708ea82911056bcb6b"
+    },
+    {
+      "path": "source_family_map_r1.json",
+      "bytes": 35242,
+      "sha256": "44f5bcf30baa87bd67ce4c2d2efd45c775d0c7749c299b35bb31aa492ef6a513"
+    },
+    {
+      "path": "deduplication_report_r1.md",
+      "bytes": 2506,
+      "sha256": "5ed37f437ac99b8146d227c5fd4944f9d1fe769941e41ee574504ff10b267b45"
+    },
+    {
+      "path": "source_quality_matrix_r1.json",
+      "bytes": 54634,
+      "sha256": "631db428ff327380ad4d6ca33b963464f5301f5ec31d113f9a85fb2f617fc82d"
+    },
+    {
+      "path": "source_verification_report_r1.md",
+      "bytes": 3816,
+      "sha256": "059ea1711f13aa278401bcde78009f696ecd4cbb9ed5516b213ddc3a383d515d"
+    },
+    {
+      "path": "literature_corpus_r1.json",
+      "bytes": 82748,
+      "sha256": "7a1800fcd3bf234bc19151e1a94cae8b834f14f194c2770573d472d96be5969f"
+    },
+    {
+      "path": "annotated_bibliography_r1.md",
+      "bytes": 28156,
+      "sha256": "6f6b19b4b5e6ba44056990717bb791a5cebfdde6231c05b9daa8a4693b5c44d6"
+    },
+    {
+      "path": "claim_source_map_r1.md",
+      "bytes": 35260,
+      "sha256": "9b4bcba8ef6d93f061bccc2dfa7cbfb063d6df7c083090143b93832d0666efd4"
+    }
+  ],
+  "self_hash_policy": "r3_handoff.json is excluded from its own embedded manifest; its embedded audit receipt uses a payload hash excluding receipt_payload_sha256, and the final handoff SHA-256 is computed after serialization.",
+  "phase_boundary": {
+    "phase3_synthesis": "not_performed",
+    "stage2_production_citations": "not_authorized",
+    "hypotheses_h1_h4": "NOT_RUN",
+    "r4_bulk_acquisition": "not_performed"
+  },
+  "independent_audit": {
+    "schema_version": "r3-independent-audit-receipt-1.0",
+    "audited_at": "2026-08-21T00:00:00+07:00",
+    "auditor_scope": "Independent post-generation schema, trust-chain, reference-graph, count, hash, claim-state, and phase-boundary audit.",
+    "ars_codex_version": "0.1.26",
+    "result": "PASS",
+    "checks_run": 20,
+    "checks_passed": 20,
+    "checks_failed": 0,
+    "artifact_hashes_checked": 64,
+    "counts_recomputed": {
+      "scholarly_rows_before_deduplication": 79,
+      "canonical_scholarly_records_after_deduplication": 74,
+      "scholarly_independent_families": 71,
+      "operational_records": 14,
+      "operational_root_families": 12,
+      "unique_families_across_registries": 75,
+      "scholarly_corpus": 52,
+      "recent_2022_2026": 32,
+      "peer_reviewed_true": 45,
+      "source_acquired": 40,
+      "source_content_verified": 52,
+      "locator_ready": 52,
+      "core_scholarly": 23,
+      "core_operational_families": 1,
+      "core_total": 24,
+      "claim_cards": 44,
+      "original_planning_only_true": 30,
+      "original_planning_only_false": 14,
+      "original_production_intended_true": 8,
+      "original_production_intended_false": 0,
+      "original_production_intended_absent": 36,
+      "central_conditional_production_candidates": 22,
+      "central_planning_only": 22,
+      "central_production_ready": 0,
+      "unresolved_r4_queue": 13
+    },
+    "checks": [
+      {
+        "check": "required_outputs_exist",
+        "status": "PASS",
+        "observed": [],
+        "expected": []
+      },
+      {
+        "check": "all_required_json_parses",
+        "status": "PASS",
+        "observed": [],
+        "expected": []
+      },
+      {
+        "check": "embedded_manifest_roster",
+        "status": "PASS",
+        "observed": [
+          "source_registry_r1.json",
+          "operational_resource_registry.json",
+          "source_family_map_r1.json",
+          "deduplication_report_r1.md",
+          "source_quality_matrix_r1.json",
+          "source_verification_report_r1.md",
+          "literature_corpus_r1.json",
+          "annotated_bibliography_r1.md",
+          "claim_source_map_r1.md"
+        ],
+        "expected": [
+          "source_registry_r1.json",
+          "operational_resource_registry.json",
+          "source_family_map_r1.json",
+          "deduplication_report_r1.md",
+          "source_quality_matrix_r1.json",
+          "source_verification_report_r1.md",
+          "literature_corpus_r1.json",
+          "annotated_bibliography_r1.md",
+          "claim_source_map_r1.md"
+        ]
+      },
+      {
+        "check": "embedded_manifest_bytes_and_sha256",
+        "status": "PASS",
+        "observed": [],
+        "expected": []
+      },
+      {
+        "check": "source_schema_required_types_and_enums",
+        "status": "PASS",
+        "observed": [],
+        "expected": []
+      },
+      {
+        "check": "ars_v0_1_26_literature_corpus_entry_contract",
+        "status": "PASS",
+        "observed": [],
+        "expected": []
+      },
+      {
+        "check": "all_acquired_artifacts_exist_and_hash_match",
+        "status": "PASS",
+        "observed": {
+          "scholarly_checked": 50,
+          "operational_checked": 14,
+          "failures": []
+        },
+        "expected": {
+          "failures": []
+        }
+      },
+      {
+        "check": "duplicate_canonical_identities",
+        "status": "PASS",
+        "observed": {
+          "source_keys": 0,
+          "titles": 0,
+          "dois": 0,
+          "resource_keys": 0,
+          "family_ids": 0
+        },
+        "expected": {
+          "source_keys": 0,
+          "titles": 0,
+          "dois": 0,
+          "resource_keys": 0,
+          "family_ids": 0
+        }
+      },
+      {
+        "check": "dangling_source_family_resource_dependency_claim_references",
+        "status": "PASS",
+        "observed": [],
+        "expected": []
+      },
+      {
+        "check": "cross_output_keysets_agree",
+        "status": "PASS",
+        "observed": {
+          "registry": 74,
+          "quality": 74,
+          "corpus": 52,
+          "selected": 52,
+          "annotated": 52,
+          "family_scholarly": 74,
+          "resources": 14,
+          "family_resources": 14,
+          "handoff_claims": 44,
+          "claim_map_claims": 44
+        },
+        "expected": {
+          "registry_quality_family": 74,
+          "corpus_selected_annotated": 52,
+          "resources_family": 14,
+          "claims": 44
+        }
+      },
+      {
+        "check": "prohibited_human_read_fields",
+        "status": "PASS",
+        "observed": [],
+        "expected": []
+      },
+      {
+        "check": "placeholder_and_operational_inferred_years",
+        "status": "PASS",
+        "observed": {
+          "placeholder": [],
+          "operational_inferred": []
+        },
+        "expected": {
+          "placeholder": [],
+          "operational_inferred": []
+        }
+      },
+      {
+        "check": "mojibake_and_shortened_canonical_authors",
+        "status": "PASS",
+        "observed": {
+          "mojibake": [],
+          "shortened_authors": []
+        },
+        "expected": {
+          "mojibake": [],
+          "shortened_authors": []
+        }
+      },
+      {
+        "check": "peer_reviewed_true_has_direct_evidence_basis",
+        "status": "PASS",
+        "observed": [],
+        "expected": []
+      },
+      {
+        "check": "source_verified_against_original_trust_chain",
+        "status": "PASS",
+        "observed": [],
+        "expected": []
+      },
+      {
+        "check": "claim_counts_and_exclusive_central_dispositions",
+        "status": "PASS",
+        "observed": {
+          "claims": 44,
+          "planning": {
+            "true": 30,
+            "false": 14
+          },
+          "intent": {
+            "absent": 36,
+            "true": 8
+          },
+          "central": {
+            "planning_only": 22,
+            "conditional_production_candidate": 22
+          },
+          "l4": 8
+        },
+        "expected": {
+          "claims": 44,
+          "planning": {
+            "true": 30,
+            "false": 14
+          },
+          "intent": {
+            "true": 8,
+            "false": 0,
+            "absent": 36
+          },
+          "central": {
+            "conditional_production_candidate": 22,
+            "planning_only": 22,
+            "production_ready": 0
+          },
+          "l4": 8
+        }
+      },
+      {
+        "check": "handoff_counts_recompute_exactly",
+        "status": "PASS",
+        "observed": {},
+        "expected": {}
+      },
+      {
+        "check": "actual_core_count_rule_and_target",
+        "status": "PASS",
+        "observed": {
+          "scholarly": 23,
+          "operational_families": 1,
+          "total": 24
+        },
+        "expected": {
+          "scholarly": 23,
+          "operational_families": 1,
+          "total": 24
+        }
+      },
+      {
+        "check": "phase_boundary_intact",
+        "status": "PASS",
+        "observed": {
+          "phase3_synthesis": "not_performed",
+          "stage2_production_citations": "not_authorized",
+          "hypotheses_h1_h4": "NOT_RUN",
+          "r4_bulk_acquisition": "not_performed"
+        },
+        "expected": {
+          "phase3_synthesis": "not_performed",
+          "stage2_production_citations": "not_authorized",
+          "hypotheses_h1_h4": "NOT_RUN",
+          "r4_bulk_acquisition": "not_performed"
+        }
+      },
+      {
+        "check": "generator_validation_all_pass",
+        "status": "PASS",
+        "observed": {},
+        "expected": {}
+      }
+    ],
+    "failures": [],
+    "receipt_payload_sha256": "703638b69ba9f2fc83df7630ebba4ef0f244cb9ed2ca15b81e27d8d94445dca8"
+  }
+}

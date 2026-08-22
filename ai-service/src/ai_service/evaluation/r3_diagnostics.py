@@ -9,7 +9,6 @@ be loaded and verified again.
 from __future__ import annotations
 
 import hashlib
-import json
 import os
 import shutil
 import tempfile
@@ -27,7 +26,6 @@ from ai_service.contracts import (
     ArtifactLineage,
     ArtifactLineageV5,
     CohortMetricDelta,
-    DataSourceKind,
     R3DiagnosticReport,
     RuleAlignmentEvidence,
     SplitName,
@@ -41,7 +39,10 @@ from ai_service.evaluation.full_catalog import (
     TargetReplayRequest,
     prepare_split,
 )
-from ai_service.evaluation.semantic_traps import evaluate_semantic_traps
+from ai_service.evaluation.semantic_traps import (
+    evaluate_semantic_traps,
+    semantic_replay_requests,
+)
 
 
 class LoadedDiagnosticRun(Protocol):
@@ -320,91 +321,13 @@ def _alignment_evidence(
 
 
 def _target_requests(
-    snapshot: Any, prepared: Any, fixture_path: Path
+    snapshot: Any,
+    prepared: Any,
+    _fixture_path: Path,
 ) -> tuple[TargetReplayRequest, ...]:
-    requests: list[TargetReplayRequest] = []
-    snapshot_dir = getattr(snapshot, "snapshot_dir", None)
-    cohort_path = (
-        snapshot_dir / "semantic-cohort.json"
-        if isinstance(snapshot_dir, Path)
-        else Path("__missing_semantic_cohort__")
-    )
-    if (
-        getattr(getattr(snapshot, "manifest", None), "source_kind", None) is DataSourceKind.POSTGRES
-        and not cohort_path.is_file()
-    ):
-        raise DataIntegrityError("v5 semantic cohort artifact is missing")
-    if cohort_path.is_file() and hasattr(prepared, "split"):
-        trap_specs: dict[int, tuple[int, tuple[int, ...]]] = {}
-        for row in json.loads(cohort_path.read_text(encoding="utf-8")):
-            cohort_id = str(row.get("cohort_id", ""))
-            if not cohort_id.startswith("semantic-") or ":val:" not in str(row.get("event_id", "")):
-                continue
-            try:
-                trap_id = int(cohort_id.removeprefix("semantic-"))
-                user_id = int(snapshot.user_map[int(row["user_id"])])
-                target = int(snapshot.product_map[int(row["product_id"])])
-                anchor_raw = int(row["anchor_product_id"])
-                target_raws = tuple(int(value) for value in row["target_product_ids"])
-                anchor = int(snapshot.product_map[anchor_raw])
-                target_metadata = tuple(int(snapshot.product_map[value]) for value in target_raws)
-            except (KeyError, TypeError, ValueError) as error:
-                raise DataIntegrityError("semantic cohort row is malformed") from error
-            if not target_raws or target not in target_metadata:
-                raise DataIntegrityError("semantic cohort target metadata is invalid")
-            expected = (anchor_raw, target_raws)
-            if trap_id in trap_specs and trap_specs[trap_id] != expected:
-                raise DataIntegrityError("semantic cohort trap metadata is inconsistent")
-            trap_specs[trap_id] = expected
-            if prepared.latest_prior_purchase_contexts.get(user_id) != anchor:
-                raise DataIntegrityError("semantic cohort anchor is not in prior history")
-            if target not in prepared.organic_novel_truth.get(user_id, set()):
-                raise DataIntegrityError("semantic cohort target is not novel VAL truth")
-            requests.append(TargetReplayRequest(trap_id, user_id, (target,)))
-        if not requests:
-            raise DataIntegrityError("semantic cohort contains no serving-equivalent VAL cases")
-        return tuple(requests)
-    fixtures = json.loads(fixture_path.read_text(encoding="utf-8"))
-    eligible = [int(user) for user in prepared.eligible_users]
-    selected_users: set[int] = set()
-    for fixture in sorted(fixtures, key=lambda item: int(item["trap_id"])):
-        trap_id = int(fixture["trap_id"])
-        target_ids = tuple(int(item) for item in fixture["target_product_ids"])
-        internal_targets = tuple(snapshot.product_map[item] for item in target_ids)
-        selected: int | None = None
-        anchor_internal = snapshot.product_map[int(fixture["anchor_product_id"])]
-        has_cohort = hasattr(prepared, "organic_novel_truth") and hasattr(
-            prepared, "latest_prior_purchase_contexts"
-        )
-        for user in eligible:
-            seen = prepared.seen_items.get(user, set())
-            if not has_cohort:
-                if user not in selected_users and not any(
-                    item in seen for item in internal_targets
-                ):
-                    selected = user
-                    break
-                continue
-            truth = prepared.organic_novel_truth.get(user, set())
-            if (
-                user not in selected_users
-                and prepared.latest_prior_purchase_contexts.get(user) == anchor_internal
-                and set(internal_targets).issubset(truth)
-                and not any(item in seen for item in internal_targets)
-            ):
-                selected = user
-                break
-        if selected is None:
-            raise DataIntegrityError(f"no eligible serving user for semantic trap {trap_id}")
-        requests.append(
-            TargetReplayRequest(
-                trap_id=trap_id,
-                user_id=selected,
-                target_item_ids=internal_targets,
-            )
-        )
-        selected_users.add(selected)
-    return tuple(requests)
+    """Compatibility adapter for diagnostics, backed only by typed cohorts."""
+
+    return semantic_replay_requests(snapshot, prepared)[0]
 
 
 def _report_without_hash(document: dict[str, object]) -> dict[str, object]:
@@ -455,11 +378,7 @@ def publish_r3_diagnostic(
         raise ArtifactIntegrityError("R3 diagnostic requires matching comparison signatures")
     prepared = prepare_split(hybrid_run.snapshot, SplitName.VAL)
     evaluator = FullCatalogEvaluator(settings, hybrid_run.embedding.vectors, hybrid_run.rules.store)
-    requests = _target_requests(
-        hybrid_run.snapshot,
-        prepared,
-        Path(__file__).with_name("fixtures") / "semantic_traps.json",
-    )
+    requests, trap_specs = semantic_replay_requests(hybrid_run.snapshot, prepared)
     replay = evaluator.evaluate_pair_diagnostics(
         hybrid_model=hybrid_run.model,
         deep_model=deep_run.model,
@@ -509,34 +428,8 @@ def publish_r3_diagnostic(
             [replay.alpha_results[a].per_user_gauc for a in _ALPHAS], axis=0
         ).astype(np.float64),
     }
-    # Alpha values are a bounded summary, not per-user score dictionaries.
-    # Trap metadata is read from the verified snapshot cohort.  The tracked
-    # fixture remains only as a compatibility fallback for tiny legacy tests.
-    cohort_path = hybrid_run.snapshot.snapshot_dir / "semantic-cohort.json"
-    trap_specs: dict[int, tuple[int, tuple[int, ...]]] = {}
-    if cohort_path.is_file():
-        for row in json.loads(cohort_path.read_text(encoding="utf-8")):
-            event_id = str(row.get("event_id", ""))
-            cohort_id = str(row.get("cohort_id", ""))
-            if ":target:" not in event_id or not cohort_id.startswith("semantic-"):
-                continue
-            trap_id = int(cohort_id.removeprefix("semantic-"))
-            spec = (
-                int(row["anchor_product_id"]),
-                tuple(int(item) for item in row["target_product_ids"]),
-            )
-            if trap_id in trap_specs and trap_specs[trap_id] != spec:
-                raise DataIntegrityError("semantic cohort trap metadata is inconsistent")
-            trap_specs[trap_id] = spec
-    else:
-        fixture_path = Path(__file__).with_name("fixtures") / "semantic_traps.json"
-        trap_specs = {
-            int(item["trap_id"]): (
-                int(item["anchor_product_id"]),
-                tuple(int(value) for value in item["target_product_ids"]),
-            )
-            for item in json.loads(fixture_path.read_text(encoding="utf-8"))
-        }
+    # Alpha values are a bounded summary, while trap metadata is derived from
+    # the same verified typed cohort that supplied the replay requests.
     if set(trap_specs) != set(range(1, 11)):
         raise DataIntegrityError("semantic cohort must contain all ten trap definitions")
     target_by_trap = {item.trap_id: item for item in replay.targets}

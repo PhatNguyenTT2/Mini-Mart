@@ -1,0 +1,282 @@
+{
+  "schema_version": "stage1b-r1-r5-validation-receipt-1.0",
+  "validation_mode": "pre_handoff",
+  "result": "PASS",
+  "checks_run": 27,
+  "checks_passed": 27,
+  "checks_failed": 0,
+  "checks": [
+    {
+      "name": "r5_manifest_exact_hash",
+      "status": "PASS",
+      "detail": {
+        "actual": "9ed388e94ec44e1574ac370918cd4d6be2f321235fa63586845a0da76bbe6ba8",
+        "expected": "9ed388e94ec44e1574ac370918cd4d6be2f321235fa63586845a0da76bbe6ba8"
+      }
+    },
+    {
+      "name": "r5_contract_bytes_and_hash",
+      "status": "PASS",
+      "detail": {
+        "bytes": 5328,
+        "sha256": "d8aec416ba82cfc14bd57ceb48eb288fb28b32b774668639137b37a7ee96b54a"
+      }
+    },
+    {
+      "name": "frozen_r4_direct_hashes",
+      "status": "PASS",
+      "detail": {
+        "checked": 7,
+        "failures": []
+      }
+    },
+    {
+      "name": "r4_input_manifest_bytes_and_hash",
+      "status": "PASS",
+      "detail": {
+        "bytes": 4212,
+        "sha256": "56cac16b697d6bde6878e1274bef397face00ec5697b8291a4d8e5ed13627aeb"
+      }
+    },
+    {
+      "name": "frozen_r3_direct_hashes",
+      "status": "PASS",
+      "detail": {
+        "checked": 12,
+        "failures": []
+      }
+    },
+    {
+      "name": "r3_pass_and_independent_audit",
+      "status": "PASS",
+      "detail": {
+        "verdict": "PASS",
+        "audit": "20/20"
+      }
+    },
+    {
+      "name": "r4_source_artifacts_revalidated",
+      "status": "PASS",
+      "detail": {
+        "checked": 35,
+        "failures": []
+      }
+    },
+    {
+      "name": "r4_pdf_sidecars_revalidated",
+      "status": "PASS",
+      "detail": {
+        "checked": 28,
+        "failures": []
+      }
+    },
+    {
+      "name": "r4_validator_22_of_22",
+      "status": "PASS",
+      "detail": {
+        "result": "PASS",
+        "passed": 22,
+        "run": 22
+      }
+    },
+    {
+      "name": "r4_authorization_and_counts",
+      "status": "PASS",
+      "detail": {
+        "core": {
+          "scholarly": 23,
+          "operational_families": 1,
+          "total": 24,
+          "acquired": 24,
+          "content_verified": 24,
+          "locator_ready": 24
+        },
+        "queue": {
+          "total": 13,
+          "terminal_resolved": 13,
+          "dispositions": {
+            "same_work_lawful_local_artifact_acquired": 10,
+            "same_work_authoritative_remote_acquired": 1,
+            "equivalent_replacement_accepted": 1,
+            "operational_family_rights_access_payload_state_resolved": 1
+          }
+        },
+        "claims": {
+          "claims": 44,
+          "conditional_production_candidate": 22,
+          "planning_only": 22,
+          "acquisition_satisfied": 41,
+          "locator_satisfied": 43,
+          "conditional_original_content_and_locator_satisfied": 22,
+          "production_ready": 0
+        },
+        "pdf_preflight": {
+          "total": 28,
+          "pass": 27,
+          "unavailable": 1
+        },
+        "local_source_artifacts": 35,
+        "production_ready": 0
+      }
+    },
+    {
+      "name": "duplicate_json_keys_zero",
+      "status": "PASS",
+      "detail": []
+    },
+    {
+      "name": "one_shot_intent_covers_all_claims",
+      "status": "PASS",
+      "detail": {
+        "claims": 44,
+        "unique": 44
+      }
+    },
+    {
+      "name": "claim_population_and_exclusive_dispositions",
+      "status": "PASS",
+      "detail": {
+        "total": 44,
+        "dispositions": {
+          "planning_only": 22,
+          "citation_ready_candidate": 22
+        }
+      }
+    },
+    {
+      "name": "claim_reference_graph_resolves",
+      "status": "PASS",
+      "detail": []
+    },
+    {
+      "name": "planning_only_rows_preserved",
+      "status": "PASS",
+      "detail": {
+        "planning_only": 22
+      }
+    },
+    {
+      "name": "conditional_candidates_all_ready",
+      "status": "PASS",
+      "detail": {
+        "checked": 22,
+        "failures": []
+      }
+    },
+    {
+      "name": "tension_inventory_legal_and_pending",
+      "status": "PASS",
+      "detail": {
+        "pairs": 12,
+        "failures": []
+      }
+    },
+    {
+      "name": "citation_markers_are_paired",
+      "status": "PASS",
+      "detail": {
+        "refs": 33,
+        "anchors": 33,
+        "paired": 33
+      }
+    },
+    {
+      "name": "visible_citations_resolve_to_verified_locators",
+      "status": "PASS",
+      "detail": []
+    },
+    {
+      "name": "non_none_no_prohibited_page_anchors",
+      "status": "PASS",
+      "detail": {
+        "none": 0,
+        "page": 0
+      }
+    },
+    {
+      "name": "quote_cap_25_words",
+      "status": "PASS",
+      "detail": []
+    },
+    {
+      "name": "ghost_citations_zero",
+      "status": "PASS",
+      "detail": []
+    },
+    {
+      "name": "phase3_no_manuscript_headings",
+      "status": "PASS",
+      "detail": []
+    },
+    {
+      "name": "forbidden_positive_extrapolations_zero",
+      "status": "PASS",
+      "detail": []
+    },
+    {
+      "name": "unqualified_independent_evidence_counts_zero",
+      "status": "PASS",
+      "detail": []
+    },
+    {
+      "name": "intent_ledger_one_shot_ordering",
+      "status": "PASS",
+      "detail": {
+        "events": [
+          "claim_intent_manifest_bound",
+          "synthesis_started"
+        ],
+        "sequences": [
+          1,
+          2
+        ]
+      }
+    },
+    {
+      "name": "phase_boundaries_preserved",
+      "status": "PASS",
+      "detail": {
+        "r6": "NOT_PERFORMED",
+        "r7_r9": "NOT_PERFORMED",
+        "manuscript_drafting": "NOT_PERFORMED",
+        "benchmark": "NOT_RUN",
+        "h1_h4": "NOT_RUN",
+        "stage2_production_citations": "NOT_AUTHORIZED"
+      }
+    }
+  ],
+  "failures": [],
+  "recomputed": {
+    "frozen_r3_files": 12,
+    "r3_independent_audit": "20/20 PASS",
+    "r4_validator": "22/22 PASS",
+    "r4_source_artifacts": 35,
+    "r4_pdf_sidecars": 28,
+    "claims": {
+      "planning_only": 22,
+      "citation_ready_candidate": 22
+    },
+    "tensions": {
+      "included_canonical_records": 52,
+      "candidate_pairs_considered": 12,
+      "contradiction": 0,
+      "conditional_difference": 7,
+      "no_material_conflict": 4,
+      "insufficient_overlap": 1,
+      "resolved_in_synthesis": 7,
+      "flagged_unresolved": 0,
+      "not_applicable": 5,
+      "scholar_confirmation_pending": 12
+    },
+    "visible_citations": 33,
+    "verified_non_none_locators": 33,
+    "duplicate_keys": 0,
+    "dangling_references": 0,
+    "ghost_citations": 0,
+    "prohibited_page_anchors": 0,
+    "forbidden_positive_extrapolations": 0,
+    "unqualified_independent_evidence_counts": 0
+  },
+  "receipt_payload_sha256": "5a797c6a7f7cbfbe39096be8a03ed07320623a7ab47e13b4864262ff57a1e37f"
+}
+

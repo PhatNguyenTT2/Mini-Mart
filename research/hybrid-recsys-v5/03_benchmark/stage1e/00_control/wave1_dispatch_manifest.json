@@ -1,0 +1,31 @@
+{
+  "schema_version": "stage1e-wave1-dispatch-1.0",
+  "project": "hybrid-recsys-v5",
+  "stage": "1E-Plan",
+  "dispatched_at": "2026-08-21",
+  "execution_mode": "five_parallel_dedicated_worktree_tasks",
+  "orchestration_contract": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/stage1e_orchestration_contract.md",
+    "sha256": "8a98b88c3bc1644366bf81fc6d625a44bad9461b6f4208b89b2dd2ca1f8617be"
+  },
+  "input_manifest": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/stage1e_input_manifest.json",
+    "sha256": "f3ff89098e105778072602306df5c1c66361e0867b14fa688b94d78c9ee516a8"
+  },
+  "model_policy": {"model":"gpt-5.6-sol","reasoning":"high"},
+  "lanes": [
+    {"lane_id":"E1_dataset_protocol","client_thread_id":"client-new-thread:c72745e8-2a1c-4c19-86c5-917116af9106","thread_id":null,"host_id":"local","write_set":"research/hybrid-recsys-v5/03_benchmark/stage1e/phase1_plan/lanes/E1_dataset_protocol/","status":"worktree_setup"},
+    {"lane_id":"E2_baseline_provenance","client_thread_id":"client-new-thread:2f6ee7fd-0a9a-49f6-93c1-9198d59c01e9","thread_id":null,"host_id":"local","write_set":"research/hybrid-recsys-v5/03_benchmark/stage1e/phase1_plan/lanes/E2_baseline_provenance/","status":"worktree_setup"},
+    {"lane_id":"E3_evaluator_statistics","client_thread_id":"client-new-thread:0f43e2f8-1fc3-4506-acee-8efd11fc0688","thread_id":null,"host_id":"local","write_set":"research/hybrid-recsys-v5/03_benchmark/stage1e/phase1_plan/lanes/E3_evaluator_statistics/","status":"worktree_setup"},
+    {"lane_id":"E4_external_data","client_thread_id":"client-new-thread:00cf4063-4478-412d-a3d4-36889a6e9df9","thread_id":null,"host_id":"local","write_set":"research/hybrid-recsys-v5/03_benchmark/stage1e/phase1_plan/lanes/E4_external_data/","status":"worktree_setup"},
+    {"lane_id":"E5_compute_runtime","client_thread_id":"client-new-thread:6ba308fd-5a15-4c7b-975d-82ad30c127ca","thread_id":null,"host_id":"local","write_set":"research/hybrid-recsys-v5/03_benchmark/stage1e/phase1_plan/lanes/E5_compute_runtime/","status":"worktree_setup"}
+  ],
+  "dependent_stage": {
+    "stage_id": "E6_central_preregistration_lock",
+    "dispatch_status": "BLOCKED_ON_ALL_FIVE_HANDOFFS",
+    "model": "gpt-5.6-sol",
+    "reasoning": "high"
+  },
+  "truth_state": {"result_status":"NOT_RUN","test_set_opened":"NO"}
+}
+

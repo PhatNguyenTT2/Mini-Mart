@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.0",
+  "manifest_id": "phase0-inputs-4456b4381737",
+  "generated_at": "2026-08-13T10:46:57.174Z",
+  "hash_algorithm": "sha256",
+  "workspace_root": "E:/UIT/cv/backend",
+  "git_context": {
+    "branch": "main",
+    "head": "31d8092554119aa7d1ba22db2e094d701ba83c29",
+    "note": "The inputs and governing plan contain user-owned uncommitted changes; this manifest locks file bytes, not Git cleanliness."
+  },
+  "locked_inputs": [
+    {
+      "path": "inputs/conference_guidelines.md",
+      "role": "venue_and_integrity_constraints",
+      "bytes": 12117,
+      "sha256": "2d5714d0553bb9d709e5114be688a71d46822ea98d972d6ff93bb9e3ac5efee5"
+    },
+    {
+      "path": "inputs/experimental_log.md",
+      "role": "experiment_status_and_protocol",
+      "bytes": 23581,
+      "sha256": "bd4ba08719667df6a71feccc915d0b84307b71e536bc533735cc61157e8bcf9f"
+    },
+    {
+      "path": "inputs/idea.md",
+      "role": "research_design_and_candidate_literature",
+      "bytes": 27189,
+      "sha256": "b8d6867df658331650421d576ac336f40fea9c838efc17cde8a16eb80ee7c13e"
+    }
+  ],
+  "governing_plan": {
+    "path": "master/academic-research-master-plan.md",
+    "bytes": 21600,
+    "sha256": "015e4054db28c19f5e03af3c3703ee943c6cacca8fccac7b5e2f8885b8cf0704"
+  },
+  "canonical_materials_manifest": [
+    {
+      "filename": "inputs/conference_guidelines.md",
+      "sha256": "2d5714d0553bb9d709e5114be688a71d46822ea98d972d6ff93bb9e3ac5efee5"
+    },
+    {
+      "filename": "inputs/experimental_log.md",
+      "sha256": "bd4ba08719667df6a71feccc915d0b84307b71e536bc533735cc61157e8bcf9f"
+    },
+    {
+      "filename": "inputs/idea.md",
+      "sha256": "b8d6867df658331650421d576ac336f40fea9c838efc17cde8a16eb80ee7c13e"
+    },
+    {
+      "filename": "master/academic-research-master-plan.md",
+      "sha256": "015e4054db28c19f5e03af3c3703ee943c6cacca8fccac7b5e2f8885b8cf0704"
+    }
+  ],
+  "canonical_materials_list_sha256": "4456b43817375a92ddc5e7f675a65d09ddfefca2694e42e67226efd0c976bd1f",
+  "invalidation_policy": {
+    "on_any_locked_file_change": "create a new Phase 0 manifest and mark downstream passports STALE",
+    "historical_material_policy": "quarantined_not_evidence",
+    "result_status_at_lock": "NOT_RUN"
+  }
+}

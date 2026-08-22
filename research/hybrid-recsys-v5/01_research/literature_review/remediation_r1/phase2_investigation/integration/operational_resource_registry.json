@@ -1,0 +1,651 @@
+{
+  "schema_version": "r3-operational-registry-r1-1.0",
+  "project": "hybrid-recsys-v5",
+  "research_cutoff": "2026-08-14",
+  "generated_at": "2026-08-21T00:00:00+07:00",
+  "counting_rule": "Operational datasets, repositories, provider pages, packages, and adapters are not scholarly publications and do not receive inferred publication years.",
+  "rights_rule": "Availability, code/package license, paper license, dataset rights, and redistribution permission are independent fields; none is propagated to another layer.",
+  "counts": {
+    "operational_records": 14,
+    "operational_root_families": 12,
+    "core_operational_families": 1
+  },
+  "resources": [
+    {
+      "resource_key": "R-L5-AMAZON-M2",
+      "record_type": "operational_resource",
+      "provider": "Amazon and Amazon-M2 authors",
+      "resource_type": "session_dataset_and_challenge",
+      "edition": "NeurIPS 2023 release; AIcrowd KDD Cup 2023 challenge snapshot",
+      "release_year": 2023,
+      "operational_year": null,
+      "year_basis": "official_release_metadata",
+      "official_url": "https://www.aicrowd.com/challenges/amazon-kdd-cup-23-multilingual-recommendation-challenge",
+      "accessed_at": "2026-08-14",
+      "availability": "Challenge page is public; file access route is through AIcrowd.",
+      "terms_snapshot": {
+        "status": "partially_verified",
+        "revision": "page snapshot 2026-08-14",
+        "artifact": "source_artifacts/amazon_m2_aicrowd_page_2026-08-14.html",
+        "sha256": "9bbb245ccdf87514a94f2c34eaf28ee780998c7b2bfe54b2e4592e1ecb7fe23b",
+        "supplement": "S-L5-AMAZON-M2-2023 PDF Appendix B.3 states dataset files use Apache 2.0; a current click-through agreement was not exposed."
+      },
+      "code_license": null,
+      "paper_license": null,
+      "dataset_rights": "permitted",
+      "redistribution_status": "unknown",
+      "rights_note": "The original paper asserts Apache 2.0 for dataset files. Current AIcrowd download terms were not lawfully inspectable without an account workflow, so redistribution is not passed solely from availability.",
+      "source_family_id": "SF-R1-025",
+      "original_source_family_id": "fam_amazon_m2",
+      "source_acquired": true,
+      "acquired_artifact": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L5/source_artifacts/amazon_m2_aicrowd_page_2026-08-14.html",
+      "acquired_artifact_sha256": "9bbb245ccdf87514a94f2c34eaf28ee780998c7b2bfe54b2e4592e1ecb7fe23b",
+      "source_content_verified": false,
+      "locator_ready": true,
+      "checksums": [
+        {
+          "artifact": "source_artifacts/amazon_m2_aicrowd_page_2026-08-14.html",
+          "sha256": "9bbb245ccdf87514a94f2c34eaf28ee780998c7b2bfe54b2e4592e1ecb7fe23b"
+        }
+      ],
+      "provenance": [
+        "Official AIcrowd challenge page",
+        "original paper Appendix B.3",
+        "official repository revision 487f6d5cb6d0aa3a155f55c96cbe85daa0204647"
+      ],
+      "core_operational_family": false
+    },
+    {
+      "resource_key": "R-L5-AMAZON-REVIEWS-2023",
+      "record_type": "operational_resource",
+      "provider": "McAuley Lab",
+      "resource_type": "review_and_item_metadata_dataset",
+      "edition": "Amazon Reviews 2023 portal; repository commit b18fdf54bd46013d60799684f7a4eb80d8501d1a",
+      "release_year": 2023,
+      "operational_year": null,
+      "year_basis": "official_release_metadata",
+      "official_url": "https://amazon-reviews-2023.github.io/main.html",
+      "accessed_at": "2026-08-14",
+      "availability": "Public category files and Hugging Face loader.",
+      "terms_snapshot": {
+        "status": "degraded",
+        "revision": "page snapshot 2026-08-14 and repository b18fdf54bd46013d60799684f7a4eb80d8501d1a",
+        "artifact": "source_artifacts/amazon_reviews_2023_page_2026-08-14.html",
+        "sha256": "cc7fc94ad5b5177293e56990b79d49e9ba41ae8d5d190e34260c1993122bccbb",
+        "finding": "Official portal exposes downloads but no dataset license statement was located."
+      },
+      "code_license": null,
+      "paper_license": "CC BY 4.0 for the ACL 2026 paper",
+      "dataset_rights": "unknown",
+      "redistribution_status": "unknown",
+      "rights_note": "Public availability and a paper license do not grant dataset redistribution rights.",
+      "source_family_id": "SF-R1-019",
+      "original_source_family_id": "fam_amazon_reviews_2023",
+      "source_acquired": true,
+      "acquired_artifact": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L5/source_artifacts/amazon_reviews_2023_page_2026-08-14.html",
+      "acquired_artifact_sha256": "cc7fc94ad5b5177293e56990b79d49e9ba41ae8d5d190e34260c1993122bccbb",
+      "source_content_verified": false,
+      "locator_ready": true,
+      "checksums": [
+        {
+          "artifact": "source_artifacts/amazon_reviews_2023_page_2026-08-14.html",
+          "sha256": "cc7fc94ad5b5177293e56990b79d49e9ba41ae8d5d190e34260c1993122bccbb"
+        },
+        {
+          "artifact": "source_artifacts/amazonreviews2023_README_b18fdf5.md",
+          "sha256": "ce690ef6a151b38800099c1dc47899152d444740d7a4ab4188b5738f8d6aa2cf"
+        }
+      ],
+      "provenance": [
+        "Official Amazon Reviews 2023 portal",
+        "pinned official repository README",
+        "companion scholarly work S-L5-BLAIR-2026"
+      ],
+      "core_operational_family": false
+    },
+    {
+      "resource_key": "R-L5-COMPLETE-JOURNEY-PROVIDER",
+      "record_type": "operational_resource",
+      "provider": "dunnhumby",
+      "resource_type": "provider_dataset",
+      "edition": "The Complete Journey source-files offering, provider page snapshot 2026-08-14",
+      "release_year": null,
+      "operational_year": null,
+      "year_basis": "unknown",
+      "official_url": "https://www.dunnhumby.com/source-files/",
+      "accessed_at": "2026-08-14",
+      "availability": "Provider download link on the public source-files page.",
+      "terms_snapshot": {
+        "status": "verified",
+        "revision": "Terms & Conditions page snapshot 2026-08-14",
+        "artifact": "source_artifacts/complete_journey_provider_terms_2026-08-14.html",
+        "sha256": "bb7f06430b31cb2e4520628af5dd3108f66a7ce781ef19e167bb47b4c99c2b16",
+        "finding": "Single-copy research, personal, or non-commercial use is permitted subject to conditions; other rights are reserved and broader copying or storage requires permission."
+      },
+      "code_license": null,
+      "paper_license": null,
+      "dataset_rights": "restricted",
+      "redistribution_status": "restricted",
+      "rights_note": "The provider page supports research access; it does not grant general redistribution.",
+      "source_family_id": "SF-R1-075",
+      "original_source_family_id": "fam_complete_journey",
+      "source_acquired": true,
+      "acquired_artifact": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L5/source_artifacts/complete_journey_provider_terms_2026-08-14.html",
+      "acquired_artifact_sha256": "bb7f06430b31cb2e4520628af5dd3108f66a7ce781ef19e167bb47b4c99c2b16",
+      "source_content_verified": false,
+      "locator_ready": true,
+      "checksums": [
+        {
+          "artifact": "source_artifacts/complete_journey_provider_page_2026-08-14.html",
+          "sha256": "0f4887c5d84bd7b2765a45812bf857bf3d8b722b2d48f005c2e95194be3ec8f5"
+        },
+        {
+          "artifact": "source_artifacts/complete_journey_provider_terms_2026-08-14.html",
+          "sha256": "bb7f06430b31cb2e4520628af5dd3108f66a7ce781ef19e167bb47b4c99c2b16"
+        }
+      ],
+      "provenance": [
+        "Official dunnhumby source-files page",
+        "official current Terms & Conditions page",
+        "cutoff-dated local snapshots"
+      ],
+      "core_operational_family": true
+    },
+    {
+      "resource_key": "R-L5-COMPLETEJOURNEY-R-PACKAGE",
+      "record_type": "operational_resource",
+      "provider": "Brad Boehmke and Steven M. Mortimer via CRAN",
+      "resource_type": "derived_data_package",
+      "edition": "completejourney 1.1.1, published 2025-11-26; Git commit 5b5d06192b9856edd04e4d405787af2f2e4a1fef",
+      "release_year": 2025,
+      "operational_year": null,
+      "year_basis": "package_revision",
+      "official_url": "https://cran.r-project.org/package=completejourney",
+      "accessed_at": "2026-08-14",
+      "availability": "Public CRAN package.",
+      "terms_snapshot": {
+        "status": "verified",
+        "revision": "package 1.1.1 and Git commit 5b5d06192b9856edd04e4d405787af2f2e4a1fef",
+        "artifact": "source_artifacts/completejourney_package_DESCRIPTION_5b5d061.txt",
+        "sha256": "99cd6f9e8391b50b26f4d07d0ae81f1cfae32fe875a79c0d5425e68df3855073",
+        "finding": "Package metadata states CC0 and identifies Complete Journey 2.0 source files."
+      },
+      "code_license": "CC0 for the package",
+      "paper_license": null,
+      "dataset_rights": "unknown",
+      "redistribution_status": "unknown",
+      "rights_note": "The package-level CC0 declaration is not treated as an upstream dunnhumby grant; provider terms remain independently controlling.",
+      "source_family_id": "SF-R1-075",
+      "original_source_family_id": "fam_complete_journey",
+      "source_acquired": true,
+      "acquired_artifact": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L5/source_artifacts/completejourney_package_DESCRIPTION_5b5d061.txt",
+      "acquired_artifact_sha256": "99cd6f9e8391b50b26f4d07d0ae81f1cfae32fe875a79c0d5425e68df3855073",
+      "source_content_verified": false,
+      "locator_ready": true,
+      "checksums": [
+        {
+          "artifact": "source_artifacts/completejourney_package_DESCRIPTION_5b5d061.txt",
+          "sha256": "99cd6f9e8391b50b26f4d07d0ae81f1cfae32fe875a79c0d5425e68df3855073"
+        }
+      ],
+      "provenance": [
+        "CRAN package record",
+        "pinned DESCRIPTION",
+        "upstream provider dependency recorded separately"
+      ],
+      "core_operational_family": true
+    },
+    {
+      "resource_key": "R-L5-COVEO",
+      "record_type": "operational_resource",
+      "provider": "Coveo Solutions Inc.",
+      "resource_type": "session_dataset_and_challenge",
+      "edition": "SIGIR eCom data challenge repository commit 4132dfb86bc1e0f808a09034f5b7dd852e3db143",
+      "release_year": 2021,
+      "operational_year": null,
+      "year_basis": "official_release_metadata",
+      "official_url": "https://github.com/coveooss/SIGIR-ecom-data-challenge",
+      "accessed_at": "2026-08-14",
+      "availability": "Public download route subject to repository terms.",
+      "terms_snapshot": {
+        "status": "verified",
+        "revision": "4132dfb86bc1e0f808a09034f5b7dd852e3db143",
+        "artifact": "source_artifacts/coveo_terms_4132dfb.txt",
+        "sha256": "c1bcbe084dff1b61432033aac53d280585f356e8e4b854d0e76f51802c96f866"
+      },
+      "code_license": null,
+      "paper_license": null,
+      "dataset_rights": "restricted",
+      "redistribution_status": "restricted",
+      "rights_note": "Use is limited to non-commercial research and education; redistribution to third parties is prohibited.",
+      "source_family_id": "SF-R1-055",
+      "original_source_family_id": "fam_coveo",
+      "source_acquired": true,
+      "acquired_artifact": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L5/source_artifacts/coveo_terms_4132dfb.txt",
+      "acquired_artifact_sha256": "c1bcbe084dff1b61432033aac53d280585f356e8e4b854d0e76f51802c96f866",
+      "source_content_verified": false,
+      "locator_ready": true,
+      "checksums": [
+        {
+          "artifact": "source_artifacts/coveo_terms_4132dfb.txt",
+          "sha256": "c1bcbe084dff1b61432033aac53d280585f356e8e4b854d0e76f51802c96f866"
+        },
+        {
+          "artifact": "source_artifacts/coveo_README_4132dfb.md",
+          "sha256": "74e2fc3b4eab7d6685ccb21ad60f5866b8ff8aaa450bdba6a31a62eacdd7d229"
+        }
+      ],
+      "provenance": [
+        "Official Coveo repository",
+        "pinned Terms & Conditions",
+        "companion scholarly work S-L5-COVEO-2021"
+      ],
+      "core_operational_family": false
+    },
+    {
+      "resource_key": "R-L5-HM",
+      "record_type": "operational_resource",
+      "provider": "H&M and Kaggle",
+      "resource_type": "competition_dataset",
+      "edition": "H&M Personalized Fashion Recommendations competition data snapshot 2026-08-14",
+      "release_year": null,
+      "operational_year": null,
+      "year_basis": "unknown",
+      "official_url": "https://www.kaggle.com/competitions/h-and-m-personalized-fashion-recommendations/data",
+      "accessed_at": "2026-08-14",
+      "availability": "Kaggle account and acceptance of competition terms required.",
+      "terms_snapshot": {
+        "status": "degraded",
+        "revision": "page snapshot 2026-08-14",
+        "artifact": "source_artifacts/hm_kaggle_data_page_2026-08-14.html",
+        "sha256": "5a5a363289d6917caaff4a0d8a488ca303d0535cd342bda0a9ad267e3b102b35",
+        "failure": "Public rules endpoint returned no usable rule body; data page reports License: Subject to Competition Rules."
+      },
+      "code_license": null,
+      "paper_license": null,
+      "dataset_rights": "restricted",
+      "redistribution_status": "unknown",
+      "rights_note": "No redistribution permission is inferred from Kaggle availability or from the RelBench adapter.",
+      "source_family_id": "SF-R1-074",
+      "original_source_family_id": "fam_hm",
+      "source_acquired": true,
+      "acquired_artifact": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L5/source_artifacts/hm_kaggle_data_page_2026-08-14.html",
+      "acquired_artifact_sha256": "5a5a363289d6917caaff4a0d8a488ca303d0535cd342bda0a9ad267e3b102b35",
+      "source_content_verified": false,
+      "locator_ready": true,
+      "checksums": [
+        {
+          "artifact": "source_artifacts/hm_kaggle_data_page_2026-08-14.html",
+          "sha256": "5a5a363289d6917caaff4a0d8a488ca303d0535cd342bda0a9ad267e3b102b35"
+        }
+      ],
+      "provenance": [
+        "Official Kaggle competition data page",
+        "current page snapshot",
+        "RelBench adapter dependency noted separately"
+      ],
+      "core_operational_family": false
+    },
+    {
+      "resource_key": "R-L5-OTTO",
+      "record_type": "operational_resource",
+      "provider": "OTTO",
+      "resource_type": "session_dataset",
+      "edition": "Dataset DOI 10.34740/KAGGLE/DSV/4991874; repository commit f404284240ac654d0b924b2fabec0aea7b23f168",
+      "release_year": 2023,
+      "operational_year": null,
+      "year_basis": "official_release_metadata",
+      "official_url": "https://github.com/otto-de/recsys-dataset",
+      "accessed_at": "2026-08-14",
+      "availability": "Public via Kaggle API.",
+      "terms_snapshot": {
+        "status": "verified",
+        "revision": "f404284240ac654d0b924b2fabec0aea7b23f168",
+        "artifact": "source_artifacts/otto_README_f404284.md",
+        "sha256": "73150aff4fc8f1c1810f388384e409994871d546820588f9ee4b3e60a9494357"
+      },
+      "code_license": "MIT",
+      "paper_license": null,
+      "dataset_rights": "permitted",
+      "redistribution_status": "permitted",
+      "rights_note": "Official repository states CC BY 4.0 for the dataset and MIT for code.",
+      "source_family_id": "SF-R1-072",
+      "original_source_family_id": "fam_otto",
+      "source_acquired": true,
+      "acquired_artifact": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L5/source_artifacts/otto_README_f404284.md",
+      "acquired_artifact_sha256": "73150aff4fc8f1c1810f388384e409994871d546820588f9ee4b3e60a9494357",
+      "source_content_verified": false,
+      "locator_ready": true,
+      "checksums": [
+        {
+          "artifact": "source_artifacts/otto_README_f404284.md",
+          "sha256": "73150aff4fc8f1c1810f388384e409994871d546820588f9ee4b3e60a9494357"
+        }
+      ],
+      "provenance": [
+        "Official OTTO repository",
+        "pinned README",
+        "official Kaggle dataset DOI"
+      ],
+      "core_operational_family": false
+    },
+    {
+      "resource_key": "R-L5-RELBENCH-REL-AMAZON",
+      "record_type": "operational_resource",
+      "provider": "RelBench maintainers",
+      "resource_type": "derivative_dataset_adapter",
+      "edition": "relbench commit 10d9cfe41413ae2548018ab219cbcd6ec177b364, rel-amazon books configuration",
+      "release_year": null,
+      "operational_year": null,
+      "year_basis": "package_revision",
+      "official_url": "https://relbench.stanford.edu/datasets/rel-amazon/",
+      "accessed_at": "2026-08-14",
+      "availability": "Automated package download; upstream Amazon Review Data Dump.",
+      "terms_snapshot": {
+        "status": "verified",
+        "revision": "10d9cfe41413ae2548018ab219cbcd6ec177b364",
+        "artifact": "source_artifacts/relbench_rel_amazon_page_2026-08-14.html",
+        "sha256": "505d7e18bf13b1bdf1ef594a68c0b4f0d1d9607324ec53ab465d97136b3826d6",
+        "finding": "Official card states Dataset License: Not specified."
+      },
+      "code_license": "MIT for RelBench code",
+      "paper_license": null,
+      "dataset_rights": "unknown",
+      "redistribution_status": "unknown",
+      "rights_note": "The adapter is not an independent license or evidentiary grant from the upstream dataset.",
+      "source_family_id": "SF-R1-073",
+      "original_source_family_id": "fam_amazon_reviews_2018",
+      "source_acquired": true,
+      "acquired_artifact": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L5/source_artifacts/relbench_rel_amazon_10d9cfe.py",
+      "acquired_artifact_sha256": "4980a9b505f21ad71ef8cfb27d69d8d466a8b51b47e02dbe3d7acd70a5399549",
+      "source_content_verified": false,
+      "locator_ready": true,
+      "checksums": [
+        {
+          "artifact": "source_artifacts/relbench_rel_amazon_10d9cfe.py",
+          "sha256": "4980a9b505f21ad71ef8cfb27d69d8d466a8b51b47e02dbe3d7acd70a5399549"
+        },
+        {
+          "artifact": "source_artifacts/relbench_rel_amazon_page_2026-08-14.html",
+          "sha256": "505d7e18bf13b1bdf1ef594a68c0b4f0d1d9607324ec53ab465d97136b3826d6"
+        }
+      ],
+      "provenance": [
+        "Official RelBench dataset card",
+        "pinned adapter source",
+        "upstream Amazon Reviews URL embedded in adapter"
+      ],
+      "core_operational_family": false
+    },
+    {
+      "resource_key": "R-L5-RELBENCH-REL-HM",
+      "record_type": "operational_resource",
+      "provider": "RelBench maintainers",
+      "resource_type": "derivative_dataset_adapter",
+      "edition": "relbench commit 10d9cfe41413ae2548018ab219cbcd6ec177b364, rel-hm configuration",
+      "release_year": null,
+      "operational_year": null,
+      "year_basis": "package_revision",
+      "official_url": "https://relbench.stanford.edu/datasets/rel-hm/",
+      "accessed_at": "2026-08-14",
+      "availability": "Requires the upstream H&M Kaggle competition archive.",
+      "terms_snapshot": {
+        "status": "partially_verified",
+        "revision": "10d9cfe41413ae2548018ab219cbcd6ec177b364",
+        "artifact": "source_artifacts/relbench_rel_hm_page_2026-08-14.html",
+        "sha256": "41a9d2f9240d925051c3e85e28480bccaa47afd759ba2e3a11713b3e7af4d66d",
+        "finding": "Official card states Non-Commercial Purposes & Academic Research and links to upstream Kaggle terms."
+      },
+      "code_license": "MIT for RelBench code",
+      "paper_license": null,
+      "dataset_rights": "restricted",
+      "redistribution_status": "unknown",
+      "rights_note": "The adapter does not create an independent grant; the exact upstream Kaggle competition rules remain controlling.",
+      "source_family_id": "SF-R1-074",
+      "original_source_family_id": "fam_hm",
+      "source_acquired": true,
+      "acquired_artifact": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L5/source_artifacts/relbench_rel_hm_10d9cfe.py",
+      "acquired_artifact_sha256": "3fe3bd1adc8b4f96b3af62e06db1f9dbbb9955f43d0d5810d46fa8ddcbdc1328",
+      "source_content_verified": false,
+      "locator_ready": true,
+      "checksums": [
+        {
+          "artifact": "source_artifacts/relbench_rel_hm_10d9cfe.py",
+          "sha256": "3fe3bd1adc8b4f96b3af62e06db1f9dbbb9955f43d0d5810d46fa8ddcbdc1328"
+        },
+        {
+          "artifact": "source_artifacts/relbench_rel_hm_page_2026-08-14.html",
+          "sha256": "41a9d2f9240d925051c3e85e28480bccaa47afd759ba2e3a11713b3e7af4d66d"
+        }
+      ],
+      "provenance": [
+        "Official RelBench dataset card",
+        "pinned adapter source",
+        "upstream H&M competition reference"
+      ],
+      "core_operational_family": false
+    },
+    {
+      "resource_key": "R-L5-TAOBAO-MM",
+      "record_type": "operational_resource",
+      "provider": "TAOBAO-MM and MUSE authors",
+      "resource_type": "multimodal_long_sequence_dataset",
+      "edition": "Official dataset page snapshot 2026-08-14; MUSE repository commit 85eea1587164cd24eb6223d3d0243aca955af980",
+      "release_year": 2025,
+      "operational_year": null,
+      "year_basis": "official_release_metadata",
+      "official_url": "https://taobao-mm.github.io/",
+      "accessed_at": "2026-08-14",
+      "availability": "Public Hugging Face download, approximately 139 GB.",
+      "terms_snapshot": {
+        "status": "verified",
+        "revision": "dataset page snapshot 2026-08-14",
+        "artifact": "source_artifacts/taobao_mm_page_2026-08-14.html",
+        "sha256": "9c7110f463893c60a4beb6030ae02d6da14ec627ba87d87dd54e887748e508e8",
+        "finding": "Official page states research-purpose download under Apache 2.0."
+      },
+      "code_license": null,
+      "paper_license": null,
+      "dataset_rights": "permitted",
+      "redistribution_status": "permitted",
+      "rights_note": "The dataset grant is recorded from the official data page; availability alone is not the basis. The MUSE code repository has no separate license statement in the pinned README.",
+      "source_family_id": "SF-R1-063",
+      "original_source_family_id": "fam_taobao_mm",
+      "source_acquired": true,
+      "acquired_artifact": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L5/source_artifacts/taobao_mm_page_2026-08-14.html",
+      "acquired_artifact_sha256": "9c7110f463893c60a4beb6030ae02d6da14ec627ba87d87dd54e887748e508e8",
+      "source_content_verified": false,
+      "locator_ready": true,
+      "checksums": [
+        {
+          "artifact": "source_artifacts/taobao_mm_page_2026-08-14.html",
+          "sha256": "9c7110f463893c60a4beb6030ae02d6da14ec627ba87d87dd54e887748e508e8"
+        },
+        {
+          "artifact": "source_artifacts/muse_README_85eea15.md",
+          "sha256": "9f60e052baed73eccdcd8c1225bad7f06f0b8103c4870a0b7ca9fa050354c4e7"
+        }
+      ],
+      "provenance": [
+        "Official TAOBAO-MM project page",
+        "official Hugging Face route",
+        "pinned MUSE repository README",
+        "companion preprint S-L5-MUSE-2025"
+      ],
+      "core_operational_family": false
+    },
+    {
+      "resource_key": "R-L5-TENREC",
+      "record_type": "operational_resource",
+      "provider": "Tenrec authors",
+      "resource_type": "multipurpose_recommendation_dataset",
+      "edition": "Git commit a6c242da0dab9c547410e8fdcde611436931dea6",
+      "release_year": 2022,
+      "operational_year": null,
+      "year_basis": "official_release_metadata",
+      "official_url": "https://github.com/yuangh-x/2022-NIPS-Tenrec",
+      "accessed_at": "2026-08-14",
+      "availability": "Public repository with data links.",
+      "terms_snapshot": {
+        "status": "verified",
+        "revision": "a6c242da0dab9c547410e8fdcde611436931dea6",
+        "artifact": "source_artifacts/tenrec_README_a6c242d.md",
+        "sha256": "4aa3c97fb0b2b8b48848d7d055b72215b7bd4d933aba5d5f30c8bb9b33d4dd9b"
+      },
+      "code_license": null,
+      "paper_license": null,
+      "dataset_rights": "restricted",
+      "redistribution_status": "restricted",
+      "rights_note": "Dataset is stated as CC BY-NC 4.0; no separate code license was located.",
+      "source_family_id": "SF-R1-067",
+      "original_source_family_id": "fam_tenrec",
+      "source_acquired": true,
+      "acquired_artifact": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L5/source_artifacts/tenrec_README_a6c242d.md",
+      "acquired_artifact_sha256": "4aa3c97fb0b2b8b48848d7d055b72215b7bd4d933aba5d5f30c8bb9b33d4dd9b",
+      "source_content_verified": false,
+      "locator_ready": true,
+      "checksums": [
+        {
+          "artifact": "source_artifacts/tenrec_README_a6c242d.md",
+          "sha256": "4aa3c97fb0b2b8b48848d7d055b72215b7bd4d933aba5d5f30c8bb9b33d4dd9b"
+        }
+      ],
+      "provenance": [
+        "Official author repository",
+        "pinned README",
+        "companion scholarly work S-L5-TENREC-2022"
+      ],
+      "core_operational_family": false
+    },
+    {
+      "resource_key": "R-L5-VIECOMREC",
+      "record_type": "operational_resource",
+      "provider": "ViEcomRec authors",
+      "resource_type": "dataset_and_code_repository",
+      "edition": "Git commit 04ac179a9f9e223c95a24b796d90081b42378720",
+      "release_year": 2024,
+      "operational_year": null,
+      "year_basis": "official_release_metadata",
+      "official_url": "https://github.com/linh222/face_cleanser_recommendation_dataset",
+      "accessed_at": "2026-08-14",
+      "availability": "Public repository and linked Google Drive; data download not acquired in this lane.",
+      "terms_snapshot": {
+        "status": "verified",
+        "revision": "04ac179a9f9e223c95a24b796d90081b42378720",
+        "artifact": "source_artifacts/viecomrec_LICENSE_04ac179.txt",
+        "sha256": "1349a4b6148492b44f629e64eed676612e234fe9a839e4f3b277c1482c8849f1"
+      },
+      "code_license": "CC BY-NC-SA 4.0 repository LICENSE; code/data scope is not separated",
+      "paper_license": "CC BY-NC 4.0 for the DORAS accepted manuscript",
+      "dataset_rights": "restricted",
+      "redistribution_status": "unknown",
+      "rights_note": "The repository asserts a non-commercial share-alike grant, but upstream Shopee rights and redistribution authority were not independently verified.",
+      "source_family_id": "SF-R1-038",
+      "original_source_family_id": "fam_viecomrec",
+      "source_acquired": true,
+      "acquired_artifact": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L5/source_artifacts/viecomrec_LICENSE_04ac179.txt",
+      "acquired_artifact_sha256": "1349a4b6148492b44f629e64eed676612e234fe9a839e4f3b277c1482c8849f1",
+      "source_content_verified": false,
+      "locator_ready": true,
+      "checksums": [
+        {
+          "artifact": "source_artifacts/viecomrec_LICENSE_04ac179.txt",
+          "sha256": "1349a4b6148492b44f629e64eed676612e234fe9a839e4f3b277c1482c8849f1"
+        }
+      ],
+      "provenance": [
+        "Official author repository",
+        "pinned repository LICENSE",
+        "companion scholarly work S-L5-VIECOMREC-2024"
+      ],
+      "core_operational_family": false
+    },
+    {
+      "resource_key": "R-L5-VIFOODREC",
+      "record_type": "operational_resource",
+      "provider": "ViFoodRec authors",
+      "resource_type": "dataset_repository",
+      "edition": "Git commit 126caa3a8b58708a09b2b2e119ff4923b6f06d82",
+      "release_year": 2024,
+      "operational_year": null,
+      "year_basis": "official_release_metadata",
+      "official_url": "https://github.com/QuocAn55/A-New-Dataset-and-Empirical-Evaluation-for-Vietnamese-Food-Recommendation-System",
+      "accessed_at": "2026-08-14",
+      "availability": "Public repository.",
+      "terms_snapshot": {
+        "status": "degraded",
+        "revision": "126caa3a8b58708a09b2b2e119ff4923b6f06d82",
+        "artifact": "source_artifacts/vifoodrec_README_126caa3.md",
+        "sha256": "53db07773482cbd4ea6f64138e8040a073072498a8ba0da80da5e8f47e157512",
+        "failure": "LICENSE path returned HTTP 404; README contains no dataset license."
+      },
+      "code_license": null,
+      "paper_license": "CC BY 4.0 for the ACL Anthology paper",
+      "dataset_rights": "unknown",
+      "redistribution_status": "unknown",
+      "rights_note": "Paper openness does not grant rights to the scraped dataset.",
+      "source_family_id": "SF-R1-057",
+      "original_source_family_id": "fam_vifoodrec",
+      "source_acquired": true,
+      "acquired_artifact": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L5/source_artifacts/vifoodrec_README_126caa3.md",
+      "acquired_artifact_sha256": "53db07773482cbd4ea6f64138e8040a073072498a8ba0da80da5e8f47e157512",
+      "source_content_verified": false,
+      "locator_ready": true,
+      "checksums": [
+        {
+          "artifact": "source_artifacts/vifoodrec_README_126caa3.md",
+          "sha256": "53db07773482cbd4ea6f64138e8040a073072498a8ba0da80da5e8f47e157512"
+        }
+      ],
+      "provenance": [
+        "Official author repository",
+        "pinned README",
+        "companion scholarly work S-L5-VIFOODREC-2024"
+      ],
+      "core_operational_family": false
+    },
+    {
+      "resource_key": "R-L5-VIHOREC",
+      "record_type": "operational_resource",
+      "provider": "ViHoRec author",
+      "resource_type": "dataset_and_code_repository",
+      "edition": "Git commit c85d60e8c6524eb09ff2098b5efe01c125ff7715",
+      "release_year": 2026,
+      "operational_year": null,
+      "year_basis": "official_release_metadata",
+      "official_url": "https://github.com/MinhNguyenDS/ViHoRec",
+      "accessed_at": "2026-08-14",
+      "availability": "Public anonymized release.",
+      "terms_snapshot": {
+        "status": "verified",
+        "revision": "c85d60e8c6524eb09ff2098b5efe01c125ff7715",
+        "artifact": "source_artifacts/vihorec_LICENSE_c85d60e.txt",
+        "sha256": "461e2814a1e17792048158e3e4f99ac1d540afead2ddac1ca0a793f348be55e8"
+      },
+      "code_license": "MIT",
+      "paper_license": "CC BY-NC 4.0 stated in the preprint",
+      "dataset_rights": "restricted",
+      "redistribution_status": "unknown",
+      "rights_note": "The maintainer grants CC BY-NC 4.0 for the release, but the repository itself notes reviews originated on Booking.com, Traveloka, and Ivivu; upstream redistribution authority remains unresolved.",
+      "source_family_id": "SF-R1-039",
+      "original_source_family_id": "fam_vihorec",
+      "source_acquired": true,
+      "acquired_artifact": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L5/source_artifacts/vihorec_LICENSE_c85d60e.txt",
+      "acquired_artifact_sha256": "461e2814a1e17792048158e3e4f99ac1d540afead2ddac1ca0a793f348be55e8",
+      "source_content_verified": false,
+      "locator_ready": true,
+      "checksums": [
+        {
+          "artifact": "source_artifacts/vihorec_LICENSE_c85d60e.txt",
+          "sha256": "461e2814a1e17792048158e3e4f99ac1d540afead2ddac1ca0a793f348be55e8"
+        }
+      ],
+      "provenance": [
+        "Official author repository",
+        "pinned dual-scope LICENSE",
+        "companion preprint S-L5-VIHOREC-2026"
+      ],
+      "core_operational_family": false
+    }
+  ]
+}

@@ -207,6 +207,18 @@ class DeepAblationRun:
     model: HybridTwoTowerModel
 
 
+@dataclass(frozen=True)
+class DeepAblationFailure:
+    """A valid terminal candidate that has no checkpoint to evaluate."""
+
+    run_id: str
+    settings: Settings
+    lifecycle_status: RunStatus
+    git_commit: str
+    lineage: ArtifactLineage | ArtifactLineageV5
+    failure_reason: str
+
+
 def canonical_ablation_report_sha(document: Mapping[str, object]) -> str:
     payload = dict(document)
     payload.pop("artifact_sha256", None)
@@ -507,26 +519,34 @@ def publish_deep_ablation_artifact(
 
 
 def run_deep_ablation_comparison(
-    runs: tuple[DeepAblationRun, DeepAblationRun, DeepAblationRun, DeepAblationRun],
+    runs: tuple[DeepAblationRun, ...],
     *,
     artifact_root: Path,
     device: torch.device,
+    candidate_failures: tuple[DeepAblationFailure, ...] = (),
 ) -> DeepAblationArtifact:
     """Validate, evaluate and publish one complete R3 comparison."""
+    if not runs:
+        raise ConfigurationError("R3 comparison requires a completed control run")
     control = runs[0]
-    if len({run.run_id for run in runs}) != 4:
+    all_candidates = (*runs, *candidate_failures)
+    if len(all_candidates) != 4 or len({run.run_id for run in all_candidates}) != 4:
         raise ConfigurationError("R3 requires four distinct Deep run IDs")
-    if any(run.settings.train.seed != 42 for run in runs):
+    if any(run.settings.train.seed != 42 for run in all_candidates):
         raise ArtifactIntegrityError("R3 Deep ablations require seed 42")
-    if any(run.settings.train.campaign_stage != "diagnostic" for run in runs):
+    if any(run.settings.train.campaign_stage != "diagnostic" for run in all_candidates):
         raise ArtifactIntegrityError("R3 Deep ablations require diagnostic campaign configs")
-    if any(run.settings.train.r3_selection_artifact_sha256 is not None for run in runs):
+    if any(
+        run.settings.train.r3_selection_artifact_sha256 is not None for run in all_candidates
+    ):
         raise ArtifactIntegrityError("R3 diagnostics cannot carry a production selection receipt")
     if control.lifecycle_status is not RunStatus.TRAINING:
         raise ArtifactIntegrityError("R3 control Deep run must have a completed TRAINING lifecycle")
-    if any(run.lifecycle_status not in {RunStatus.TRAINING, RunStatus.FAILED} for run in runs[1:]):
+    if any(run.lifecycle_status is not RunStatus.TRAINING for run in runs[1:]) or any(
+        run.lifecycle_status is not RunStatus.FAILED for run in candidate_failures
+    ):
         raise ArtifactIntegrityError("interrupted or corrupt Deep candidates cannot be compared")
-    if any(run.git_commit != control.git_commit for run in runs[1:]):
+    if any(run.git_commit != control.git_commit for run in all_candidates[1:]):
         raise ArtifactIntegrityError("R3 Deep ablations require one frozen source revision")
     if control.settings.data.rule_feature_schema_version == "3.0.0":
         required_lineage = {
@@ -539,10 +559,10 @@ def run_deep_ablation_comparison(
         }
         if any(
             set(artifact_lineage_model(run.lineage).as_mapping()) != required_lineage
-            for run in runs
+            for run in all_candidates
         ):
             raise ArtifactIntegrityError("R3 Deep ablations require complete v5 lineage")
-    for run in runs[1:]:
+    for run in all_candidates[1:]:
         if artifact_lineage_model(run.lineage) != artifact_lineage_model(control.lineage):
             raise ArtifactIntegrityError("R3 Deep ablations require identical v5 lineage")
         if run.settings.eval.model_dump(mode="json") != control.settings.eval.model_dump(
@@ -560,7 +580,7 @@ def run_deep_ablation_comparison(
     }
     actual_flags = {
         (run.settings.model.use_user_id_embedding, run.settings.model.use_price_features): run
-        for run in runs
+        for run in all_candidates
     }
     if set(actual_flags) != set(expected_flags) or actual_flags[(True, True)] is not control:
         raise ArtifactIntegrityError("R3 requires the exact control and three feature ablations")
@@ -568,8 +588,6 @@ def run_deep_ablation_comparison(
     prepared = prepare_split(control.snapshot, SplitName.VAL)
     evaluations: dict[str, EvaluationResult] = {}
     for run in runs:
-        if run.lifecycle_status is RunStatus.FAILED:
-            continue
         evaluator = FullCatalogEvaluator(run.settings, run.embeddings, run.rule_store)
         evaluations[run.run_id] = evaluator.evaluate(
             run.model,
@@ -610,17 +628,15 @@ def run_deep_ablation_comparison(
             evaluations[run.run_id],
         )
         for run in runs[1:]
-        if run.lifecycle_status is RunStatus.TRAINING
     }
-    candidate_failures = {
+    failed_candidates = {
         run.run_id: (
             expected_flags[
                 (run.settings.model.use_user_id_embedding, run.settings.model.use_price_features)
             ],
-            "terminal training failure",
+            run.failure_reason,
         )
-        for run in runs[1:]
-        if run.lifecycle_status is RunStatus.FAILED
+        for run in candidate_failures
     }
     report, metrics = compare_deep_ablations(
         control_run_id=control.run_id,
@@ -637,10 +653,10 @@ def run_deep_ablation_comparison(
         selection_gauc_floor=control.settings.eval.minimum_gauc,
         selection_hr_floor=control.settings.eval.minimum_hr_at_k,
         selection_ndcg_floor=control.settings.eval.minimum_ndcg_at_k,
-        candidate_failures=candidate_failures,
+        candidate_failures=failed_candidates,
     )
     signature_document: dict[str, object] = {
-        "run_ids": [run.run_id for run in runs],
+        "run_ids": [run.run_id for run in all_candidates],
         "git_commit": control.git_commit,
         "lineage": artifact_lineage_model(control.lineage).model_dump(mode="json"),
         "evaluation": control.settings.eval.model_dump(mode="json"),

@@ -1,0 +1,171 @@
+{
+  "schema_version": "stage1b-r1-lane-disposition-1.0",
+  "project": "hybrid-recsys-v5",
+  "lane": "L4",
+  "research_cutoff": "2026-08-14",
+  "old_lane_path": "research/hybrid-recsys-v5/01_research/literature_review/phase2_investigation/lanes/L4_cold_content_transfer.md",
+  "policy": "The old lane was treated as a candidate index. Old accepted and excluded candidates were re-screened with the same relevance, authority, coverage, and claim-value criteria used for new candidates.",
+  "counts": {
+    "old_candidates_total": 19,
+    "dispositioned_total": 19,
+    "RETAIN": 11,
+    "REPLACE": 0,
+    "REMOVE": 8,
+    "MOVE_TO_RESOURCE_REGISTRY": 0,
+    "coverage_percent": 100
+  },
+  "dispositions": [
+    {
+      "legacy_id": "L4-01",
+      "title": "DropoutNet: Addressing Cold Start in Recommender Systems",
+      "canonical_identity": "volkovs2017_dropoutnet",
+      "disposition": "RETAIN",
+      "reason": "Direct, authoritative item-side zero-interaction definition, dropout mechanism, and cohort-construction evidence; full official artifact inspected.",
+      "criteria": {"relevance": "high", "authority": "high", "coverage": "high", "claim_level_value": "high"}
+    },
+    {
+      "legacy_id": "L4-02",
+      "title": "How to Learn Item Representation for Cold-Start Multimedia Recommendation?",
+      "canonical_identity": "du2020_mtpr",
+      "disposition": "RETAIN",
+      "reason": "Direct item-representation cold-start method with complementary multimedia coverage; retained as a planning candidate while full-content acquisition remains queued.",
+      "criteria": {"relevance": "high", "authority": "high", "coverage": "medium", "claim_level_value": "conditional"}
+    },
+    {
+      "legacy_id": "L4-03",
+      "title": "Contrastive Learning for Cold-Start Recommendation",
+      "canonical_identity": "wei2021_clcrec",
+      "disposition": "RETAIN",
+      "reason": "Direct contrastive cold-start method complementary to distillation and transfer sources; retained only as metadata-verified candidate pending original-content locator.",
+      "criteria": {"relevance": "high", "authority": "high", "coverage": "medium", "claim_level_value": "conditional"}
+    },
+    {
+      "legacy_id": "L4-04",
+      "title": "Aligning Distillation For Cold-start Item Recommendation",
+      "canonical_identity": "huang2023_aldi",
+      "disposition": "RETAIN",
+      "reason": "Direct item-side zero-edge formulation, separate warm/cold evaluation tasks, and warm-to-cold distillation evidence; full author artifact inspected.",
+      "criteria": {"relevance": "high", "authority": "high", "coverage": "high", "claim_level_value": "high"}
+    },
+    {
+      "legacy_id": "L4-05",
+      "title": "Towards Universal Sequence Representation Learning for Recommender Systems",
+      "canonical_identity": "hou2022_unisrec",
+      "disposition": "RETAIN",
+      "reason": "Audit-core transferable sequential-recommendation source with explicit target-domain adaptation and inductive/transductive distinctions; full artifact inspected.",
+      "criteria": {"relevance": "high", "authority": "high", "coverage": "high", "claim_level_value": "high"}
+    },
+    {
+      "legacy_id": "L4-06",
+      "title": "Learning Vector-Quantized Item Representation for Transferable Sequential Recommenders",
+      "canonical_identity": "hou2023_vqrec",
+      "disposition": "RETAIN",
+      "reason": "Required vector-quantized transfer source with explicit content-to-code pipeline and multi-domain adaptation evidence; full artifact inspected.",
+      "criteria": {"relevance": "high", "authority": "high", "coverage": "high", "claim_level_value": "high"}
+    },
+    {
+      "legacy_id": "L4-07",
+      "title": "Language Representations Can Be What Recommenders Need: Findings and Potentials",
+      "canonical_identity": "sheng2025_alpharec",
+      "disposition": "RETAIN",
+      "reason": "Audit-core recommender evidence that separates language representation from the projection, graph, and recommendation objective; zero-shot source/target lineage can be inspected directly.",
+      "criteria": {"relevance": "high", "authority": "high", "coverage": "high", "claim_level_value": "high"}
+    },
+    {
+      "legacy_id": "L4-08",
+      "title": "Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks",
+      "canonical_identity": "reimers2019_sbert",
+      "disposition": "RETAIN",
+      "reason": "Audit-core encoder-rationale boundary source; retained precisely because its inspected content supports sentence embedding construction but not recommendation efficacy.",
+      "criteria": {"relevance": "boundary", "authority": "high", "coverage": "high", "claim_level_value": "high"}
+    },
+    {
+      "legacy_id": "L4-09",
+      "title": "Cold-start Recommendation by Personalized Embedding Region Elicitation",
+      "canonical_identity": "nguyen2024_pere",
+      "disposition": "REMOVE",
+      "reason": "Authoritative but exclusively user-side preference elicitation. It is not item-side cold-start evidence and the forbidden cold-user/cold-item equivalence is already encoded explicitly without retaining this record.",
+      "criteria": {"relevance": "out_of_scope", "authority": "high", "coverage": "redundant_boundary", "claim_level_value": "low_for_L4"}
+    },
+    {
+      "legacy_id": "L4-10",
+      "title": "Are Graph Augmentations Necessary?: Simple Graph Contrastive Learning for Recommendation",
+      "canonical_identity": "yu2022_simgcl",
+      "disposition": "RETAIN",
+      "reason": "Retained as a collaborative-only sparse-graph control, not as zero-edge cold-item evidence; metadata verified and full-content acquisition remains queued.",
+      "criteria": {"relevance": "comparator", "authority": "high", "coverage": "medium", "claim_level_value": "conditional"}
+    },
+    {
+      "legacy_id": "L4-11",
+      "title": "XSimGCL: Towards Extremely Simple Graph Contrastive Learning for Recommendation",
+      "canonical_identity": "yu2024_xsimgcl",
+      "disposition": "RETAIN",
+      "reason": "Retained as a sparse collaborative control and direct SimGCL continuation; the 2024 issue year was verified separately from the 2023 online-first DOI metadata.",
+      "criteria": {"relevance": "comparator", "authority": "high", "coverage": "medium", "claim_level_value": "conditional"}
+    },
+    {
+      "legacy_id": "L4-12",
+      "title": "LightGCL: Simple Yet Effective Graph Contrastive Learning for Recommendation",
+      "canonical_identity": "cai2023_lightgcl",
+      "disposition": "RETAIN",
+      "reason": "Retained as a distinct global/spectral collaborative graph control; explicitly forbidden as evidence for representing a zero-edge item.",
+      "criteria": {"relevance": "comparator", "authority": "high", "coverage": "medium", "claim_level_value": "conditional"}
+    },
+    {
+      "legacy_id": "E01",
+      "title": "Improving Item Cold-start Recommendation via Model-agnostic Conditional Variational Autoencoder",
+      "canonical_identity": "10.1145/3477495.3531902",
+      "disposition": "REMOVE",
+      "reason": "Direct but lower incremental claim value than the retained zero-edge definition, distillation, bias, and 2026 content-objective sources; limited-interaction framing is not automatically the locked zero-edge cohort.",
+      "criteria": {"relevance": "direct", "authority": "high", "coverage": "redundant", "claim_level_value": "lower_than_retained"}
+    },
+    {
+      "legacy_id": "E02",
+      "title": "Generative Adversarial Framework for Cold-Start Item Recommendation",
+      "canonical_identity": "10.1145/3477495.3531897",
+      "disposition": "REMOVE",
+      "reason": "Valid primary paper but redundant for the locked claims after retaining DropoutNet, ALDI, CGRC, and the inherited-bias counter-evidence; adds a compute-expanding adversarial branch without closing a coverage gap.",
+      "criteria": {"relevance": "direct", "authority": "high", "coverage": "redundant", "claim_level_value": "lower_than_retained"}
+    },
+    {
+      "legacy_id": "E03",
+      "title": "Socially-aware Dual Contrastive Learning for Cold-Start Recommendation",
+      "canonical_identity": "10.1145/3477495.3531780",
+      "disposition": "REMOVE",
+      "reason": "Cold-user and social-graph method rather than item-side zero-edge evidence.",
+      "criteria": {"relevance": "out_of_scope", "authority": "high", "coverage": "none_for_required_item_side", "claim_level_value": "low_for_L4"}
+    },
+    {
+      "legacy_id": "E04",
+      "title": "LLaRA: Large Language-Recommendation Assistant",
+      "canonical_identity": "10.1145/3626772.3657690",
+      "disposition": "REMOVE",
+      "reason": "General LLM-recommendation architecture is not needed to establish the locked encoder-versus-recommender or strict item-cold boundaries and would expand compute and scope.",
+      "criteria": {"relevance": "tangential", "authority": "high", "coverage": "redundant", "claim_level_value": "low_for_locked_questions"}
+    },
+    {
+      "legacy_id": "E05",
+      "title": "Large Language Models meet Collaborative Filtering: An Efficient All-round LLM-based Recommender System",
+      "canonical_identity": "10.1145/3637528.3671931",
+      "disposition": "REMOVE",
+      "reason": "Broad LLM recommender, not direct strict cold-item or transfer-assumption evidence; adds scope and compute without closing a locked coverage gap.",
+      "criteria": {"relevance": "tangential", "authority": "high", "coverage": "redundant", "claim_level_value": "low_for_locked_questions"}
+    },
+    {
+      "legacy_id": "E06",
+      "title": "Amazon-M2: A Multilingual Multi-locale Shopping Session Dataset for Recommendation and Text Generation",
+      "canonical_identity": "NeurIPS-2023-193df57a2366d032fb18dcac0698d09a",
+      "disposition": "REMOVE",
+      "reason": "Scholarly dataset paper belongs to dataset/external-validity lanes and does not provide cold-item method efficacy or transfer-assumption evidence for L4. It is not moved to the operational-resource registry because it is a scholarly work.",
+      "criteria": {"relevance": "out_of_lane", "authority": "high", "coverage": "owned_elsewhere", "claim_level_value": "low_for_L4"}
+    },
+    {
+      "legacy_id": "E07",
+      "title": "ViHoRec: A Quality-Controlled Vietnamese Hotel Recommendation Dataset and Cold-Start Benchmark",
+      "canonical_identity": "arXiv:2607.12946",
+      "disposition": "REMOVE",
+      "reason": "Preprint, dataset-centered, and short-history user setting rather than peer-reviewed zero-edge item evidence; dataset assessment belongs to another lane.",
+      "criteria": {"relevance": "out_of_scope", "authority": "preprint", "coverage": "owned_elsewhere", "claim_level_value": "low_for_L4"}
+    }
+  ]
+}

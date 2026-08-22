@@ -1,0 +1,1416 @@
+{
+  "schema_version": "stage1b-r1-r7-audit-packet-manifest-1.0",
+  "project": "hybrid-recsys-v5",
+  "stage": "1B",
+  "round": "R1",
+  "step": "R7_freeze_packet",
+  "packet_status": "IMMUTABLE_BYTES_FROZEN",
+  "verdict": "PASS_READY_FOR_INDEPENDENT_AUDIT",
+  "canonical_root_sha256": "f0f2d56e42ce0f181f83182ddffe1060bf8994f50ababd4b0dbe563a942370dd",
+  "canonical_preimage_bytes": 43928,
+  "member_count": 193,
+  "role_counts": {
+    "payload": 162,
+    "control": 27,
+    "receipt": 4
+  },
+  "root_hash_contract": {
+    "hash": "SHA-256",
+    "encoding": "UTF-8",
+    "preimage": "JSON array of sorted [path,bytes,sha256,role] tuples",
+    "serialization": "json.dumps(ensure_ascii=False,separators=(',',':')); no trailing newline",
+    "ordering": "lexicographic ascending by normalized repository-relative path",
+    "tuple_fields": [
+      "path",
+      "bytes",
+      "sha256",
+      "role"
+    ],
+    "excluded": [
+      "timestamps",
+      "absolute_or_worktree_paths",
+      "mutable_pipeline_state",
+      "R7_output_self_hashes"
+    ]
+  },
+  "frozen_authorized_state_snapshot": {
+    "schema_version": "stage1b-r1-r7-frozen-authorized-state-snapshot-1.0",
+    "path": "research/hybrid-recsys-v5/01_research/pipeline_state_stage1b_remediation_r1.json",
+    "encoding": "base64_exact_bytes",
+    "bytes": 7056,
+    "sha256": "d304b15d8042eb549f8f475f7e1615d26a70ceb4eb8bcb8726bbaaeb4356f246",
+    "required_state": "stage1b_remediation_r1_r7_ready",
+    "content_base64": "ewogICJzY2hlbWFfdmVyc2lvbiI6ICJhY2FkZW1pYy1yZXNlYXJjaC1waXBlbGluZS1zdGF0ZS0xLjAiLAogICJwcm9qZWN0IjogImh5YnJpZC1yZWNzeXMtdjUiLAogICJzdGFnZSI6ICIxQiIsCiAgInN0YXRlIjogInN0YWdlMWJfcmVtZWRpYXRpb25fcjFfcjdfcmVhZHkiLAogICJ1cGRhdGVkX2F0IjogIjIwMjYtMDgtMjEiLAogICJ2MF9pbW11dGFibGUiOiB0cnVlLAogICJhdWRpdF92ZXJkaWN0IjogIkZBSUwiLAogICJhdWRpdF9maW5kaW5nc19vcGVuIjogOCwKICAicjBfYXVkaXRfaW1wb3J0IjogImNvbXBsZXRlIiwKICAicjFfY29udHJhY3RfcmVwYWlyIjogImNvbXBsZXRlIiwKICAicjJfbGFuZV9yZXJ1biI6ICJjb21wbGV0ZSIsCiAgInIzX2NlbnRyYWxfaW50ZWdyYXRpb24iOiAiY29tcGxldGUiLAogICJyM192ZXJkaWN0IjogIlBBU1MiLAogICJyM19pbmRlcGVuZGVudF9hdWRpdCI6ICJQQVNTXzIwX09GXzIwIiwKICAicjNfaGFuZG9mZl9zaGEyNTYiOiAiY2FhYWE1MWIxY2ZkYTMwOGJhYzg2MDMyODdiNDFkYzVlM2FlNDJmNmFhM2ViNmJmZTdmOWNmNjIzNzEyYzg4OCIsCiAgInI0X3NvdXJjZV9hY3F1aXNpdGlvbiI6ICJjb21wbGV0ZSIsCiAgInI0X2F1dGhvcml6ZWQiOiB0cnVlLAogICJyNF9tb2RlbCI6ICJncHQtNS42LXNvbCIsCiAgInI0X3JlYXNvbmluZyI6ICJ4aGlnaCIsCiAgInI0X3RocmVhZF9pZCI6ICIwMWEwMjQyNi00NjZlLTcwMTEtOTYyZS0yODcyYmVmY2EyMjEiLAogICJyNF9kaXNwYXRjaF9tYW5pZmVzdCI6ICJyZXNlYXJjaC9oeWJyaWQtcmVjc3lzLXY1LzAxX3Jlc2VhcmNoL2xpdGVyYXR1cmVfcmV2aWV3L3JlbWVkaWF0aW9uX3IxLzAwX2NvbnRyb2wvcjRfZGlzcGF0Y2hfbWFuaWZlc3QuanNvbiIsCiAgInI0X3ZlcmRpY3QiOiAiUEFTUyIsCiAgInI0X3ZhbGlkYXRpb24iOiAiUEFTU18yMl9PRl8yMiIsCiAgInI0X2hhbmRvZmZfc2hhMjU2IjogIjMwZjI1ZDZiODE3YWIwMDk2NzcxOGFjZmRmNzI3YWJjNWQxZjk3NjQwY2QyYjA4ODRmMmYyNTUxNWYzNzdmZTciLAogICJyNF9jb3JlX2NvbnRyYWN0X3NhdGlzZmllZCI6ICIyNC8yNCIsCiAgInI0X3F1ZXVlX3Rlcm1pbmFsIjogIjEzLzEzIiwKICAicjRfY29uZGl0aW9uYWxfY2xhaW1fcHJlcmVxdWlzaXRlc19zYXRpc2ZpZWQiOiAiMjIvMjIiLAogICJyNV9zdGF0dXMiOiAiY29tcGxldGUiLAogICJyNV9hdXRob3JpemVkIjogdHJ1ZSwKICAicjVfbW9kZWwiOiAiZ3B0LTUuNi1zb2wiLAogICJyNV9yZWFzb25pbmciOiAiaGlnaCIsCiAgInI1X2V4ZWN1dGlvbl9tb2RlIjogImZyZXNoX2RlZGljYXRlZF93b3JrdHJlZV90YXNrIiwKICAicjVfY29udHJhY3QiOiAicmVzZWFyY2gvaHlicmlkLXJlY3N5cy12NS8wMV9yZXNlYXJjaC9saXRlcmF0dXJlX3Jldmlldy9yZW1lZGlhdGlvbl9yMS8wMF9jb250cm9sL3I1X3N5bnRoZXNpc19jb250cmFjdC5tZCIsCiAgInI1X2NvbnRyYWN0X3NoYTI1NiI6ICJkOGFlYzQxNmJhODJjZmMxNGJkNTdjZWI0OGViMjg4ZmIyOGIzMmI3NzQ2Njg2MzkxMzdiMzdhN2VlOTZiNTRhIiwKICAicjVfaW5wdXRfbWFuaWZlc3QiOiAicmVzZWFyY2gvaHlicmlkLXJlY3N5cy12NS8wMV9yZXNlYXJjaC9saXRlcmF0dXJlX3Jldmlldy9yZW1lZGlhdGlvbl9yMS8wMF9jb250cm9sL3I1X2lucHV0X21hbmlmZXN0Lmpzb24iLAogICJyNV9pbnB1dF9tYW5pZmVzdF9zaGEyNTYiOiAiOWVkMzg4ZTk0ZWM0NGUxNTc0YWMzNzA5MThjZDRkNmJlMmYzMjEyMzVmYTYzNTg2ODQ1YTBkYTc2YmJlNmJhOCIsCiAgInI1X3RocmVhZF9pZCI6ICIwMWEwMjQ3YS0wODkwLTc0NzEtYmI4ZC1mYWM1N2NmZTNlZDIiLAogICJyNV9kaXNwYXRjaF9tYW5pZmVzdCI6ICJyZXNlYXJjaC9oeWJyaWQtcmVjc3lzLXY1LzAxX3Jlc2VhcmNoL2xpdGVyYXR1cmVfcmV2aWV3L3JlbWVkaWF0aW9uX3IxLzAwX2NvbnRyb2wvcjVfZGlzcGF0Y2hfbWFuaWZlc3QuanNvbiIsCiAgInI1X3ZlcmRpY3QiOiAiUEFTUyIsCiAgInI1X2ZpbmFsX3ZhbGlkYXRpb24iOiAiUEFTU18yOV9PRl8yOSIsCiAgInI1X2hhbmRvZmZfc2hhMjU2IjogIjllMzZkYTE1Mjg5NWE0NmRkYTE2NGJhZTRhNzlkNDA1MjI2N2EzYmE0YTA4OWUwNDI1MDU3MWEyODQ5MDQ0MzUiLAogICJyNV9jbGFpbXMiOiA0NCwKICAicjVfY2l0YXRpb25fcmVhZHlfY2FuZGlkYXRlcyI6IDIyLAogICJyNV9wbGFubmluZ19vbmx5IjogMjIsCiAgInI1X3RlbnNpb25fcGFpcnNfcGVuZGluZ19zY2hvbGFyX2NvbmZpcm1hdGlvbiI6IDEyLAogICJyNl9zdGF0dXMiOiAiY29tcGxldGVfcmV2aXNlIiwKICAicjZfYXV0aG9yaXplZCI6IHRydWUsCiAgInI2X21vZGVsIjogImdwdC01LjYtc29sIiwKICAicjZfcmVhc29uaW5nIjogImhpZ2giLAogICJyNl9jb250cmFjdCI6ICJyZXNlYXJjaC9oeWJyaWQtcmVjc3lzLXY1LzAxX3Jlc2VhcmNoL2xpdGVyYXR1cmVfcmV2aWV3L3JlbWVkaWF0aW9uX3IxLzAwX2NvbnRyb2wvcjZfZGFfY29udHJhY3QubWQiLAogICJyNl9jb250cmFjdF9zaGEyNTYiOiAiZjZmYTE3ODk4MjUzNzMzNGE0Yjc3MzYyMTQ5YWFjYmEyZDI0ZGU4Yzc1MWViNjJjN2Q1N2UzNDVkNDA5YmEwNCIsCiAgInI2X2lucHV0X21hbmlmZXN0IjogInJlc2VhcmNoL2h5YnJpZC1yZWNzeXMtdjUvMDFfcmVzZWFyY2gvbGl0ZXJhdHVyZV9yZXZpZXcvcmVtZWRpYXRpb25fcjEvMDBfY29udHJvbC9yNl9pbnB1dF9tYW5pZmVzdC5qc29uIiwKICAicjZfaW5wdXRfbWFuaWZlc3Rfc2hhMjU2IjogIjUyY2FmNzJiMTMzYzEzNjhiNjhhZmFjOGZiYWY1MGE1NDRlZjlmOTIwMDFiODE4YjAxYTcxYjc2ZTg2MTU0NmEiLAogICJyNl90aHJlYWRfaWQiOiAiMDFhMDI0OTAtYThiMC03YWIwLWE2MzItNDE0YzExZjFhYWVjIiwKICAicjZfZGlzcGF0Y2hfbWFuaWZlc3QiOiAicmVzZWFyY2gvaHlicmlkLXJlY3N5cy12NS8wMV9yZXNlYXJjaC9saXRlcmF0dXJlX3Jldmlldy9yZW1lZGlhdGlvbl9yMS8wMF9jb250cm9sL3I2X2Rpc3BhdGNoX21hbmlmZXN0Lmpzb24iLAogICJyNl92ZXJkaWN0IjogIlJFVklTRSIsCiAgInI2X2ZpbmFsX3ZhbGlkYXRpb24iOiAiUEFTU18yNl9PRl8yNiIsCiAgInI2X2hhbmRvZmZfc2hhMjU2IjogImQ3NmJlZTcxM2IwZDZlYjM0MmFmNDkxZTk0NjYxMzk5NjZmYTYzYWJiNDljMTdlNjFhNWE5YmM0NzhlNzA1MDgiLAogICJyNl9zZXZlcml0eV9jb3VudHMiOiB7CiAgICAiQ3JpdGljYWwiOiAwLAogICAgIk1ham9yIjogMSwKICAgICJNaW5vciI6IDIsCiAgICAiT2JzZXJ2YXRpb24iOiA1CiAgfSwKICAicjZfdXNlcl9hZGp1ZGljYXRpb25fcmVxdWlyZWQiOiB0cnVlLAogICJyNl9wZW5kaW5nX3NjaG9sYXJfY29uZmlybWF0aW9ucyI6IDEyLAogICJyNl9yZW1lZGlhdGlvbl9zdGF0dXMiOiAiY29tcGxldGUiLAogICJyNl9yZW1lZGlhdGlvbl9tb2RlbCI6ICJncHQtNS42LXNvbCIsCiAgInI2X3JlbWVkaWF0aW9uX3JlYXNvbmluZyI6ICJoaWdoIiwKICAicjZfcmVtZWRpYXRpb25fY29udHJhY3QiOiAicmVzZWFyY2gvaHlicmlkLXJlY3N5cy12NS8wMV9yZXNlYXJjaC9saXRlcmF0dXJlX3Jldmlldy9yZW1lZGlhdGlvbl9yMS8wMF9jb250cm9sL3I2X3JlbWVkaWF0aW9uX2NvbnRyYWN0Lm1kIiwKICAicjZfcmVtZWRpYXRpb25fY29udHJhY3Rfc2hhMjU2IjogImVlNDQxNjg1MjMwY2Y1MmJjZDI2YjE2ZTVlNDY2MTczYzcxZDg2ZWY4OTBjNmZmZDViZTU4MTY3MjUxNWM3ZGYiLAogICJyNl9yZW1lZGlhdGlvbl9pbnB1dF9tYW5pZmVzdCI6ICJyZXNlYXJjaC9oeWJyaWQtcmVjc3lzLXY1LzAxX3Jlc2VhcmNoL2xpdGVyYXR1cmVfcmV2aWV3L3JlbWVkaWF0aW9uX3IxLzAwX2NvbnRyb2wvcjZfcmVtZWRpYXRpb25faW5wdXRfbWFuaWZlc3QuanNvbiIsCiAgInI2X3JlbWVkaWF0aW9uX2lucHV0X21hbmlmZXN0X3NoYTI1NiI6ICI5YzlhNjA0NjMxMDZhN2JhMjFhZDhmMjQ2MDBkYjk2ODhhNTZjN2VmYTU5ODZiMzNkYjJiMjMyYTI1MDVkYWJiIiwKICAicjZfcmVtZWRpYXRpb25fdGhyZWFkX2lkIjogIjAxYTAyNGE0LWExZjgtNzU4MS1iOTQwLWQ0NGViNWJmYzNkYyIsCiAgInI2X3JlbWVkaWF0aW9uX2Rpc3BhdGNoX21hbmlmZXN0IjogInJlc2VhcmNoL2h5YnJpZC1yZWNzeXMtdjUvMDFfcmVzZWFyY2gvbGl0ZXJhdHVyZV9yZXZpZXcvcmVtZWRpYXRpb25fcjEvMDBfY29udHJvbC9yNl9yZW1lZGlhdGlvbl9kaXNwYXRjaF9tYW5pZmVzdC5qc29uIiwKICAicjZfcmVtZWRpYXRpb25fdmVyZGljdCI6ICJQQVNTX0ZSRVNIX1I2X1JFQVVESVRfT05MWSIsCiAgInI2X3JlbWVkaWF0aW9uX3ZhbGlkYXRpb24iOiAiUEFTU18zM19PRl8zMyIsCiAgInI2X3JlbWVkaWF0aW9uX2hhbmRvZmZfc2hhMjU2IjogImE3YWM4YTY2NjQ4OTAzY2EyY2I1ZGRjNjJjOWIwNzZkMWFlNzNmZThlYWNiMDg0ZGFhNDNkMGFjYzc4ZjRiNzkiLAogICJyNl9yZWF1ZGl0X3N0YXR1cyI6ICJjb21wbGV0ZV9wYXNzX3BlbmRpbmdfc2Nob2xhcl9jb25maXJtYXRpb24iLAogICJyNl9yZWF1ZGl0X21vZGVsIjogImdwdC01LjYtc29sIiwKICAicjZfcmVhdWRpdF9yZWFzb25pbmciOiAiaGlnaCIsCiAgInI2X3JlYXVkaXRfY29udHJhY3QiOiAicmVzZWFyY2gvaHlicmlkLXJlY3N5cy12NS8wMV9yZXNlYXJjaC9saXRlcmF0dXJlX3Jldmlldy9yZW1lZGlhdGlvbl9yMS8wMF9jb250cm9sL3I2X3JlYXVkaXRfY29udHJhY3QubWQiLAogICJyNl9yZWF1ZGl0X2NvbnRyYWN0X3NoYTI1NiI6ICI4MDhkZTliYjI1MGZlZDc5OWViN2I2ZjkwNWE4Y2U1YTA0NTBiNWE3YmYzMjBiNDVmYjZlNDg2ODQyN2RmNmNhIiwKICAicjZfcmVhdWRpdF9pbnB1dF9tYW5pZmVzdCI6ICJyZXNlYXJjaC9oeWJyaWQtcmVjc3lzLXY1LzAxX3Jlc2VhcmNoL2xpdGVyYXR1cmVfcmV2aWV3L3JlbWVkaWF0aW9uX3IxLzAwX2NvbnRyb2wvcjZfcmVhdWRpdF9pbnB1dF9tYW5pZmVzdC5qc29uIiwKICAicjZfcmVhdWRpdF9pbnB1dF9tYW5pZmVzdF9zaGEyNTYiOiAiZTM2OTRkNDk0Y2E3OGYyYjgzZjc5NmNmMThiZWU2NzdmMGM5ZjUzZDE3NWNjY2YxMjRhNGE5MzRiZDE4ZTgwNiIsCiAgInI2X3JlYXVkaXRfdGhyZWFkX2lkIjogIjAxYTAyNGI3LWRjZWUtNzIxMS04NGYzLWI4YjdjYmI3Mjc2ZiIsCiAgInI2X3JlYXVkaXRfZGlzcGF0Y2hfbWFuaWZlc3QiOiAicmVzZWFyY2gvaHlicmlkLXJlY3N5cy12NS8wMV9yZXNlYXJjaC9saXRlcmF0dXJlX3Jldmlldy9yZW1lZGlhdGlvbl9yMS8wMF9jb250cm9sL3I2X3JlYXVkaXRfZGlzcGF0Y2hfbWFuaWZlc3QuanNvbiIsCiAgInI2X3JlYXVkaXRfdmVyZGljdCI6ICJQQVNTX1BFTkRJTkdfU0NIT0xBUl9DT05GSVJNQVRJT04iLAogICJyNl9yZWF1ZGl0X2ZpbmFsX3ZhbGlkYXRpb24iOiAiUEFTU18yNl9PRl8yNiIsCiAgInI2X3JlYXVkaXRfaGFuZG9mZl9zaGEyNTYiOiAiMjQwOGY1MTFhYmYwOTQwZGQzMDk5MWQ4ZGViYWE5NjE5YmExMzBiNjg2M2MxMDUyMGNkMmQ5MDQ1MjNhMmUxZSIsCiAgInI2X3JlYXVkaXRfc2V2ZXJpdHlfY291bnRzIjogewogICAgIkNyaXRpY2FsIjogMCwKICAgICJNYWpvciI6IDAsCiAgICAiTWlub3IiOiAxLAogICAgIk9ic2VydmF0aW9uIjogNQogIH0sCiAgInNjaG9sYXJfdGVuc2lvbl9hZGp1ZGljYXRpb25fc3RhdHVzIjogImNvbXBsZXRlIiwKICAic2Nob2xhcl90ZW5zaW9uX2FkanVkaWNhdGlvbiI6ICJyZXNlYXJjaC9oeWJyaWQtcmVjc3lzLXY1LzAxX3Jlc2VhcmNoL2xpdGVyYXR1cmVfcmV2aWV3L3JlbWVkaWF0aW9uX3IxLzAwX2NvbnRyb2wvc2Nob2xhcl90ZW5zaW9uX2FkanVkaWNhdGlvbl9yMS5qc29uIiwKICAic2Nob2xhcl90ZW5zaW9uX3BhaXJzX2NvbmZpcm1lZCI6IDExLAogICJzY2hvbGFyX3RlbnNpb25fcGFpcnNfZGlzcHV0ZWQiOiAxLAogICJzY2hvbGFyX3RlbnNpb25fcGFpcnNfcGVuZGluZyI6IDAsCiAgInNjaG9sYXJfdDAwMl9lZmZlY3RpdmVfY2xhc3NpZmljYXRpb24iOiAibm9fbWF0ZXJpYWxfY29uZmxpY3Qvbm90X2FwcGxpY2FibGUiLAogICJyN19hdXRob3JpemVkIjogdHJ1ZSwKICAiZnV0dXJlX3N0YWdlX21vZGVsIjogImdwdC01LjYtc29sIiwKICAiZnV0dXJlX3N0YWdlX3JlYXNvbmluZyI6ICJoaWdoIiwKICAiZnV0dXJlX3N0YWdlX21vZGVsX2VmZmVjdGl2ZV9mcm9tIjogIlI1IiwKICAibW9kZWxfcG9saWN5X3VwZGF0ZWRfYXQiOiAiMjAyNi0wOC0yMSIsCiAgImxhbmVfbW9kZWwiOiAiZ3B0LTUuNi1zb2wiLAogICJsYW5lX3JlYXNvbmluZyI6ICJ4aGlnaCIsCiAgImxhbmVfY291bnQiOiA1LAogICJzdGFnZTFiX3NlYWxlZCI6IGZhbHNlLAogICJzdGFnZTJfcHJvZHVjdGlvbl9jaXRhdGlvbnNfYXV0aG9yaXplZCI6IGZhbHNlLAogICJkaXNwYXRjaF9tYW5pZmVzdCI6ICJyZXNlYXJjaC9oeWJyaWQtcmVjc3lzLXY1LzAxX3Jlc2VhcmNoL2xpdGVyYXR1cmVfcmV2aWV3L3JlbWVkaWF0aW9uX3IxLzAwX2NvbnRyb2wvZGlzcGF0Y2hfbWFuaWZlc3QuanNvbiIsCiAgInIzX2Rpc3BhdGNoX21hbmlmZXN0IjogInJlc2VhcmNoL2h5YnJpZC1yZWNzeXMtdjUvMDFfcmVzZWFyY2gvbGl0ZXJhdHVyZV9yZXZpZXcvcmVtZWRpYXRpb25fcjEvMDBfY29udHJvbC9yM19kaXNwYXRjaF9tYW5pZmVzdC5qc29uIiwKICAicjNfdGhyZWFkX2lkIjogIjAxOWZmZjkzLWIyZDMtNzIxMS04ZDc4LWNiYzkwMTc2OWQ4YiIsCiAgImFjdGl2ZV9sYW5lX3RocmVhZHMiOiAwLAogICJhY3RpdmVfaW50ZWdyYXRpb25fdGhyZWFkcyI6IDAsCiAgImFjdGl2ZV9hY3F1aXNpdGlvbl90aHJlYWRzIjogMCwKICAiYWN0aXZlX3N5bnRoZXNpc190aHJlYWRzIjogMCwKICAiYWN0aXZlX2RhX3RocmVhZHMiOiAwLAogICJhY3RpdmVfcmVtZWRpYXRpb25fdGhyZWFkcyI6IDAsCiAgIm5leHRfZ2F0ZSI6ICJSNyBmcmVlemUgcGFja2V0IGlzIGF1dGhvcml6ZWQuIEZyZWV6ZSBleGFjdCBpbW11dGFibGUgaW5wdXRzIGFuZCBhZGp1ZGljYXRpb24gb3ZlcmxheSwgdmFsaWRhdGUgY2Fub25pY2FsIHJvb3QtaGFzaCBzZW1hbnRpY3MsIHRoZW4gZGlzcGF0Y2ggYSBmcmVzaCBpbmRlcGVuZGVudCBSOCBhdWRpdC4iCn0K",
+    "root_membership": "EXCLUDED_MUTABLE_STATE_SNAPSHOT",
+    "replay_policy": "Build mode validates the live authorized state. Final mode validates and replays only these embedded historical bytes, never the mutable live state path."
+  },
+  "validation_only_inputs": [
+    {
+      "path": "research/hybrid-recsys-v5/01_research/pipeline_state_stage1b_remediation_r1.json",
+      "bytes": 7056,
+      "sha256": "d304b15d8042eb549f8f475f7e1615d26a70ceb4eb8bcb8726bbaaeb4356f246",
+      "reason": "Embedded historical authorization snapshot; excluded from the canonical root because central pipeline state is mutable and R7 must not create a second state authority. Final replay never dereferences the live path."
+    }
+  ],
+  "members": [
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/r4_acquisition_contract.md",
+      "bytes": 7731,
+      "sha256": "1d9debe6dde2303784d0057c86d4aae8bd76e48b586875e0f84e9e98ca2a4571",
+      "role": "control",
+      "inclusion_reason": "Immutable contract, manifest, handoff, or executable control required to replay declarations and gate logic."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/r4_input_manifest.json",
+      "bytes": 4212,
+      "sha256": "56cac16b697d6bde6878e1274bef397face00ec5697b8291a4d8e5ed13627aeb",
+      "role": "control",
+      "inclusion_reason": "Immutable contract, manifest, handoff, or executable control required to replay declarations and gate logic."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/r5_input_manifest.json",
+      "bytes": 3919,
+      "sha256": "9ed388e94ec44e1574ac370918cd4d6be2f321235fa63586845a0da76bbe6ba8",
+      "role": "control",
+      "inclusion_reason": "Immutable contract, manifest, handoff, or executable control required to replay declarations and gate logic."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/r5_synthesis_contract.md",
+      "bytes": 5328,
+      "sha256": "d8aec416ba82cfc14bd57ceb48eb288fb28b32b774668639137b37a7ee96b54a",
+      "role": "control",
+      "inclusion_reason": "Immutable contract, manifest, handoff, or executable control required to replay declarations and gate logic."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/r6_da_contract.md",
+      "bytes": 4326,
+      "sha256": "f6fa178982537334a4b77362149aacba2d24de8c751eb62c7d57e345d409ba04",
+      "role": "control",
+      "inclusion_reason": "Immutable contract, manifest, handoff, or executable control required to replay declarations and gate logic."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/r6_input_manifest.json",
+      "bytes": 3984,
+      "sha256": "52caf72b133c1368b68afac8fbaf50a544ef9f92001b818b01a71b76e861546a",
+      "role": "control",
+      "inclusion_reason": "Immutable contract, manifest, handoff, or executable control required to replay declarations and gate logic."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/r6_reaudit_contract.md",
+      "bytes": 2910,
+      "sha256": "808de9bb250fed799eb7b6f905a8ce5a0450b5a7bf320b45fb6e4868427df6ca",
+      "role": "control",
+      "inclusion_reason": "Immutable contract, manifest, handoff, or executable control required to replay declarations and gate logic."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/r6_reaudit_input_manifest.json",
+      "bytes": 4838,
+      "sha256": "e3694d494ca78f2b83f796cf18bee677f0c9f53d175cccf124a4a934bd18e806",
+      "role": "control",
+      "inclusion_reason": "Immutable contract, manifest, handoff, or executable control required to replay declarations and gate logic."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/r6_remediation_contract.md",
+      "bytes": 3962,
+      "sha256": "ee441685230cf52bcd26b16e5e466173c71d86ef890c6ffd5be581672515c7df",
+      "role": "control",
+      "inclusion_reason": "Immutable contract, manifest, handoff, or executable control required to replay declarations and gate logic."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/r6_remediation_input_manifest.json",
+      "bytes": 3668,
+      "sha256": "9c9a60463106a7ba21ad8f24600db9688a56c7efa5986b33db2b232a2505dabb",
+      "role": "control",
+      "inclusion_reason": "Immutable contract, manifest, handoff, or executable control required to replay declarations and gate logic."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/r7_freeze_contract.md",
+      "bytes": 3229,
+      "sha256": "e8672fe6e5dae707e146e1b46cce8ab938d02d9eb440bd454d774b4f02362920",
+      "role": "control",
+      "inclusion_reason": "Immutable contract, manifest, handoff, or executable control required to replay declarations and gate logic."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/r7_input_manifest.json",
+      "bytes": 3491,
+      "sha256": "98ffc47ff8ce216838d2c5ff542628b002bc0d4f5feb28853b8661af99cad08a",
+      "role": "control",
+      "inclusion_reason": "Immutable contract, manifest, handoff, or executable control required to replay declarations and gate logic."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/scholar_tension_adjudication_r1.json",
+      "bytes": 3723,
+      "sha256": "a9a9ccc008f119bd4e4923fbb580529390a4f6653c8d973c1487e70133a2df62",
+      "role": "control",
+      "inclusion_reason": "Immutable contract, manifest, handoff, or executable control required to replay declarations and gate logic."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/synthesis_invocation_ledger.json",
+      "bytes": 3282,
+      "sha256": "3ff1daef6d83ae4deddf11a14b58b35001254fad89df23fc78473c07cb7c0054",
+      "role": "control",
+      "inclusion_reason": "Immutable contract, manifest, handoff, or executable control required to replay declarations and gate logic."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/locator_registry.json",
+      "bytes": 92236,
+      "sha256": "0af823257c2a5429b6b224a76e52bb7de1f5b4005c05cdec4d0574dce1230ae2",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/agrawal1994_apriori.preflight.json",
+      "bytes": 566,
+      "sha256": "a8d6b339abb788740f0fe29bbad425c98bfa8262ce44fc041f4193362193368b",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/cheng2016_wide_deep.preflight.json",
+      "bytes": 563,
+      "sha256": "ffc87c7168850842f5291fd17e70108d48037a2db02e37d9d34e99d93aada4c2",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/completejourney_1.1.1_manual.preflight.json",
+      "bytes": 575,
+      "sha256": "ab74aeda88c4af33e4565de66f55b340ad31c2810daad4d6063d7eb2cedbf425",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/covington2016_youtube.preflight.json",
+      "bytes": 565,
+      "sha256": "b5c4a59900dcec940cf7c656ce9dcb8d61276e37653a581c90d44e76ae09199e",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/dacrema2021_reproducibility.preflight.json",
+      "bytes": 574,
+      "sha256": "50bfe1260a74d2257d8cc42f43f6945bbda9150408b6c69dff2d0ecced0d760c",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/ghoshal2014_multi_item_rules.preflight.json",
+      "bytes": 575,
+      "sha256": "c046ce69adf9988ca17f647ee7cc1c813ecb31a361c195bfa2f809809c394f44",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/gusak2025_time_split.preflight.json",
+      "bytes": 516,
+      "sha256": "e8dd55d2bf4dfdb4ddfb9d5bf984c4d34c393e9612355e3c712211cac8a44afd",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/he2020_lightgcn.preflight.json",
+      "bytes": 511,
+      "sha256": "5dfc05c274800b33d952a21a23ded082b35600e03b1d3864e0260826cdc03a2f",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/hou2022_unisrec.preflight.json",
+      "bytes": 508,
+      "sha256": "e7e815ec41b9a1a4f11fefee374812fe9d1b4a0792dbd3d7a251fc3a020efaec",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/hou2023_vqrec.preflight.json",
+      "bytes": 509,
+      "sha256": "e721700d94f7c431fcd5bece0580a7d223d1e379d1891dbd3b32a20b7e80bfb4",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/huang2023_aldi.preflight.json",
+      "bytes": 510,
+      "sha256": "01e481700f306d8fe2f2222b37a2aa7cc427f8782c479c26ddb38d9dd75503d2",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/jin2023_amazon_m2.preflight.json",
+      "bytes": 513,
+      "sha256": "30667c24cc53ef154f2cb24eb41575f7b5c71782c2407a6b1141e7c9520b81ab",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/kang2018_sasrec.preflight.json",
+      "bytes": 511,
+      "sha256": "9783420af569047396bbdfc1ab2d5666d064b64454db404d8810e39ccf33ac98",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/krichene2020_sampled_metrics.preflight.json",
+      "bytes": 524,
+      "sha256": "acc75f34e16edbd3be61858d3f0ee69c71be8c1af41e4b5cef9ce1c71d4057df",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/li2023_nbr_reality.preflight.json",
+      "bytes": 514,
+      "sha256": "9ec992668e7c7c021551e65c9eac45ea5e1d9aa93e698a56a8376a3a326798dc",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/li2023_reliable_sampling.preflight.json",
+      "bytes": 517,
+      "sha256": "bb6a3fb5170d8dc07a3a4f1cc80c1490ba9056eace2cb9402c41f1ac87b55ba8",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/li2023_repetition_exploration.preflight.json",
+      "bytes": 695,
+      "sha256": "798e04bb9f39597df65bd7b2c4229917660e321c91dcbbbe3e8c1bb480f6d354",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/meehan2025_cold_popbias.preflight.json",
+      "bytes": 516,
+      "sha256": "5f42e6916b25bb8d86a108ee06dd310f9399c67ce5c35186c0fe4220fbbd2c90",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/meehan2026_semco.preflight.json",
+      "bytes": 509,
+      "sha256": "5bdf8f43f437a700bf8a094fd8610c3ba2a9af331ec239361304e9f3022963e5",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/reimers2019_sbert.preflight.json",
+      "bytes": 513,
+      "sha256": "45130f5c0552ab1ac485536ccf2e46b74b3963dab9c08a854bb037289428cafd",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/rendle2009_bpr.preflight.json",
+      "bytes": 510,
+      "sha256": "66ef20a27726fac8c8257f38a339c1f4e22d22c6451af93688942aaa093d8f6d",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/sarwar2001_itemcf.preflight.json",
+      "bytes": 513,
+      "sha256": "bb77c269c01d80ddd0648ed938f4446de42e9541c9d5d8acdf994011d0c409be",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/sheng2025_alpharec.preflight.json",
+      "bytes": 514,
+      "sha256": "ddc79a7f7051cd649e7bb252e47e13448ba923325b1b65a7529a0beb45f8d5c9",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/tagliabue2021_coveo.preflight.json",
+      "bytes": 512,
+      "sha256": "12a2ad7e8b8e4a54aba9bb6e8c6079f5ba6e65bc8a28c226a9afd3f0b92e8eb3",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/tran2024_viecomrec.preflight.json",
+      "bytes": 511,
+      "sha256": "8c2e3097555ac684a6a71ce5ceac521cf0346ba39eb2f6084c6d55ede6352afa",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/volkovs2017_dropoutnet.preflight.json",
+      "bytes": 518,
+      "sha256": "9081bf8504190319314db6e47d76218ecad3e6f83078b959df146e400b5ed15c",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/zhao2020_alternative_settings.preflight.json",
+      "bytes": 522,
+      "sha256": "6b1e29ed4cbc748fbffe8cac8aebc4b91238c563de0d11fa9dc8c0c8ac91937c",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/pdf_preflight/zheng2026_utgrec.preflight.json",
+      "bytes": 512,
+      "sha256": "4aaa4b4c720aa8e4a2975e0145a345b25ea8face6710587135b3945971afc3db",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/r4_acquisition_report.md",
+      "bytes": 5678,
+      "sha256": "074de6c5b94a8d549492d4a34e07d7059858617a57c448d2681e057ae22647bf",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/r4_claim_acquisition_map.json",
+      "bytes": 58339,
+      "sha256": "1dac3853f0cb5da0577acdf417fefc499325cd94299b1553c8619f224eceee39",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/r4_handoff.json",
+      "bytes": 30015,
+      "sha256": "30f25d6b817ab00967718acfdf727abc5d1f97640cd2b0884f2f25515f377fe7",
+      "role": "control",
+      "inclusion_reason": "Immutable contract, manifest, handoff, or executable control required to replay declarations and gate logic."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/rights_access_registry.json",
+      "bytes": 5820,
+      "sha256": "4007f58b6911dbcbfcea208b4bf1e4fecda648a9b77045ce8436fee82cb20f2c",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_acquisition_manifest.json",
+      "bytes": 139078,
+      "sha256": "a74156901a5ded6f0b853aff2a13fc2c9ca2c6e8b9e0fa09ba43b970b41a639a",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/agrawal1994_apriori.pdf",
+      "bytes": 1359718,
+      "sha256": "99c6057d4fb42b5a1f9c2176a5bce0db2b860f69e897db46e68e9ef09d1154e2",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/cheng2016_wide_deep.pdf",
+      "bytes": 409971,
+      "sha256": "0f04fd0659345008ddcb4b0742b6d0e5475bb0c2cf2a2b222f1b06d109c6c4c8",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/complete_journey_provider_page_2026-08-21.html",
+      "bytes": 374797,
+      "sha256": "5fb537e70416f4bf7b20556ea01b45dd54a71541eeb8e7aaa599736df2adc503",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/complete_journey_provider_terms_2026-08-21.html",
+      "bytes": 268381,
+      "sha256": "f88091a14a73ca7418baa40b6e25d586b7935672d703e9ad79d153aaf977f1e0",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/completejourney_1.1.1.tar.gz",
+      "bytes": 3450462,
+      "sha256": "e13716feb9118d510b03077a39682a7a7aea75fa8f32aef38d1570d7df999376",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/completejourney_1.1.1_cran_page.html",
+      "bytes": 7034,
+      "sha256": "9d979899c7f455435f656a39c76f6314c3e80b098f8a499164b2619f9fe38579",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/completejourney_1.1.1_manual.pdf",
+      "bytes": 114371,
+      "sha256": "09167367aa7d73984d1d25a1a19d0478ecf83d7fbbe8b31acaa499e005c9c31c",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/completejourney_1.1.1_user_guide.html",
+      "bytes": 151432,
+      "sha256": "f0d8814977ca29c3ac06e199308e116b168cc3a322c2eca60cd2e995ecedeee0",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/covington2016_youtube.pdf",
+      "bytes": 898498,
+      "sha256": "efb4aa82a1a4cd720be05b837752aab7fee92b2a8a22f30ca6aa6fc24ed482ab",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/dacrema2021_reproducibility.pdf",
+      "bytes": 1027996,
+      "sha256": "b87b08a4b3f1801ba10cfb2b5e6773f3d69ef107a012f60e5ec502b72470f49b",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/ghoshal2014_multi_item_rules.pdf",
+      "bytes": 547988,
+      "sha256": "46d1b26bcb4ba3dbcc56296dbd68229921de43c29b6655130f2fe7ef8861a908",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/gusak2025_time_split.pdf",
+      "bytes": 1421328,
+      "sha256": "bacc8bdfe282550958cf596c52c585141e246606f151934ae66632023800455d",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/he2020_lightgcn.pdf",
+      "bytes": 1209591,
+      "sha256": "1f8fa2ab18921643f8858613a5bf6d91a51cd10f9ed9460c0a9bd26ca8cdb59d",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/hou2022_unisrec.pdf",
+      "bytes": 1096274,
+      "sha256": "62efa6a2ba06de9004513cc7e9df4614cbb6b5247c079c6b9360d753963a05b7",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/hou2023_vqrec.pdf",
+      "bytes": 1109650,
+      "sha256": "ef2a1742c6161a1eec5d03638e130347994c9252e3bd9b95d96dd8dd5a29e6cd",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/huang2023_aldi.pdf",
+      "bytes": 996268,
+      "sha256": "984d30f7b3d49d1f3fe15d5c7a18ab5460a85d5441a6744a89311572ecaecff7",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/jannach2026_hkbu_identity.html",
+      "bytes": 51885,
+      "sha256": "77026916f543dc15be7eda56ffaa20cc87954893de42f8c34901c5091d32c900",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/jin2023_amazon_m2.pdf",
+      "bytes": 833629,
+      "sha256": "10b87e5653e8a53a57fa0053917224ab8621b30c8871ee84c83b6491fa4ef537",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/kang2018_sasrec.pdf",
+      "bytes": 1432399,
+      "sha256": "d58f18384a055a265f5ecf2776ed28e8a745c0d9a183db078449249599bf604a",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/krichene2020_sampled_metrics.pdf",
+      "bytes": 1166022,
+      "sha256": "51095e67875ba6577e7c53df099c49c4b6d02ee4049e2484e7c880ba6b620694",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/li2023_nbr_reality.pdf",
+      "bytes": 1736505,
+      "sha256": "66bf549d33ce1ffe757c6162c157809f7fdcd03e18c3ca244155ba2468621a36",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/li2023_reliable_sampling.pdf",
+      "bytes": 218520,
+      "sha256": "541d349c9c4599b38ac0b2e56b69ec84f0848966e256b0fcaa2119d36100cd57",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/li2023_repetition_exploration.pdf",
+      "bytes": 1686585,
+      "sha256": "bb909d4643b36c3633c42945045818c4ac46117dc8ea0810272db7918756bbb7",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/liu2009_nycu_identity_abstract.html",
+      "bytes": 55950,
+      "sha256": "599ed718e0b28d11ec42c57acb1fb12dc4fbdde783028bdf863dd5351e54844a",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/meehan2025_cold_popbias.pdf",
+      "bytes": 1088904,
+      "sha256": "89bb9b7c0fc22b6bf1b6bc4093df63c7c2e6d5829de6972fa1b811290aa87abf",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/meehan2026_semco.pdf",
+      "bytes": 841051,
+      "sha256": "8b1faa3b7af449cc4bab34ac62fb47cc23fb4aeb6cc8efaf96855a8004bb6ac6",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/reimers2019_sbert.pdf",
+      "bytes": 570263,
+      "sha256": "e2703128039850ba7e098bfc6c7d9f3f3e75e6318815c5dd90af71085b1d384e",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/rendle2009_bpr.pdf",
+      "bytes": 292992,
+      "sha256": "9a28d1b9f447a86ca9cca4581d2e1a5b231d30b09a3127e176bdfebfb35ed02d",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/sarwar2001_itemcf.pdf",
+      "bytes": 249764,
+      "sha256": "7962b08a72b28ae732a674e1245e010b8d5883b1c08bff9aea4d185961e27fd5",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/sheng2025_alpharec.pdf",
+      "bytes": 7776094,
+      "sha256": "48a07c7a724a04303d405201ac9765139932a8801413bf3c3e51e431cee3a5aa",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/tagliabue2021_coveo.pdf",
+      "bytes": 156470,
+      "sha256": "0b54749bc915f85ba4e8f2b1123086113ba0ea04dff140ba2584b0e526b24ce7",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/tran2024_viecomrec.pdf",
+      "bytes": 166944,
+      "sha256": "7989a7ec514c4ffb52668d0c446f86782d87371f6e5ff2662207db3fd59f4cc1",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/volkovs2017_dropoutnet.pdf",
+      "bytes": 815883,
+      "sha256": "f6e36b907b5f3336d355b925721b53f47298b8bb350fa24a28395f661f2d899b",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/zhao2020_alternative_settings.pdf",
+      "bytes": 1233020,
+      "sha256": "94077242766b97a6e889a5cef3cb202985dbce80d27730e1002d3ec84c7e1345",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/zheng2026_utgrec.pdf",
+      "bytes": 1028332,
+      "sha256": "30bcd3d6a614f6d9c48f978aa7a3742abfe5c990f755f510c31522751e3c4a86",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/validate_r4_acquisition.py",
+      "bytes": 22725,
+      "sha256": "56b1989e43ad27d56ed2d71af059f538cc8e39cadb2b4aeb83246d492f8bd2d3",
+      "role": "control",
+      "inclusion_reason": "Immutable contract, manifest, handoff, or executable control required to replay declarations and gate logic."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/integration/annotated_bibliography_r1.md",
+      "bytes": 28156,
+      "sha256": "6f6b19b4b5e6ba44056990717bb791a5cebfdde6231c05b9daa8a4693b5c44d6",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/integration/audit_r3_integration.py",
+      "bytes": 26392,
+      "sha256": "29c4460502693cb357f707dc6b72234dc8d5471ba49367e48f9f6c312af38fdc",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/integration/build_r3_integration.py",
+      "bytes": 61104,
+      "sha256": "ef3edce0bc3aff9c42dbb1806bf46e4ae0f10c73da2bacd0a0b4ea3ee84bda1d",
+      "role": "control",
+      "inclusion_reason": "Immutable contract, manifest, handoff, or executable control required to replay declarations and gate logic."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/integration/claim_source_map_r1.md",
+      "bytes": 35260,
+      "sha256": "9b4bcba8ef6d93f061bccc2dfa7cbfb063d6df7c083090143b93832d0666efd4",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/integration/deduplication_report_r1.md",
+      "bytes": 2506,
+      "sha256": "5ed37f437ac99b8146d227c5fd4944f9d1fe769941e41ee574504ff10b267b45",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/integration/literature_corpus_r1.json",
+      "bytes": 82748,
+      "sha256": "7a1800fcd3bf234bc19151e1a94cae8b834f14f194c2770573d472d96be5969f",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/integration/operational_resource_registry.json",
+      "bytes": 32285,
+      "sha256": "e1bd73108707d53ded153a0d3be9710e7b10bb07f7d0e8708ea82911056bcb6b",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/integration/r3_handoff.json",
+      "bytes": 51532,
+      "sha256": "caaaa51b1cfda308bac8603287b41dc5e3ae42f6aa3eb6bfe7f9cf623712c888",
+      "role": "control",
+      "inclusion_reason": "Immutable contract, manifest, handoff, or executable control required to replay declarations and gate logic."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/integration/source_family_map_r1.json",
+      "bytes": 35242,
+      "sha256": "44f5bcf30baa87bd67ce4c2d2efd45c775d0c7749c299b35bb31aa492ef6a513",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/integration/source_quality_matrix_r1.json",
+      "bytes": 54634,
+      "sha256": "631db428ff327380ad4d6ca33b963464f5301f5ec31d113f9a85fb2f617fc82d",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/integration/source_registry_r1.json",
+      "bytes": 244237,
+      "sha256": "5bdbb48d61f7a8bad13ddb85b117ec9b7017732c0997592562fbb56db7dc036c",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/integration/source_verification_report_r1.md",
+      "bytes": 3816,
+      "sha256": "059ea1711f13aa278401bcde78009f696ecd4cbb9ed5516b213ddc3a383d515d",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L1/claim_cards.json",
+      "bytes": 20813,
+      "sha256": "05f47aadbdd68850a35caed538ef15cea7b46fb5592a973e8f304cea1d7b2746",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L1/source_artifacts/benigni2026_diffusion_progress.pdf",
+      "bytes": 951107,
+      "sha256": "e487bf00d11b43c7251804f68f7ee64a955ac59b362093231715118473054ab8",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L1/source_artifacts/canamares2020_offline_options.pdf",
+      "bytes": 462297,
+      "sha256": "da4c698baa81e256236a85f14a02909edb915e6be651ae98013366168b67d72e",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L1/source_artifacts/dacrema2021_reproducibility.pdf",
+      "bytes": 1027996,
+      "sha256": "b87b08a4b3f1801ba10cfb2b5e6773f3d69ef107a012f60e5ec502b72470f49b",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L1/source_artifacts/gusak2025_time_to_split.pdf",
+      "bytes": 1421328,
+      "sha256": "bacc8bdfe282550958cf596c52c585141e246606f151934ae66632023800455d",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L1/source_artifacts/hidasi2023_widespread_flaws.pdf",
+      "bytes": 785434,
+      "sha256": "829cd67ea08ffe584a00b57abb0d3f7c718f92e020fbd84b993ae776b43eecc3",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L1/source_artifacts/ihemelandu2023_candidate_sampling.pdf",
+      "bytes": 268624,
+      "sha256": "c7f7343cba7fdb73d37d8df8d410d230b17399bda7129fb66e196c59b4447ec7",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L1/source_artifacts/krichene2021_extended_abstract.pdf",
+      "bytes": 1245488,
+      "sha256": "5f7b49ac4be0d293999cf048d92d28e36651b6c04819feec41fdf915dfe537f8",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L1/source_artifacts/krichene_rendle_2020_kdd_author_copy.pdf",
+      "bytes": 1166022,
+      "sha256": "51095e67875ba6577e7c53df099c49c4b6d02ee4049e2484e7c880ba6b620694",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L1/source_artifacts/li2023_reliable_sampling.pdf",
+      "bytes": 218520,
+      "sha256": "541d349c9c4599b38ac0b2e56b69ec84f0848966e256b0fcaa2119d36100cd57",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L1/source_artifacts/parajuli2026_convergent_validity.pdf",
+      "bytes": 699011,
+      "sha256": "7426bdf92cdef7f09c3bdaf68d944873fb9aaad27722a14d500485a71cdef5f5",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L1/source_artifacts/pereira2025_sampling_reliability.pdf",
+      "bytes": 1731342,
+      "sha256": "0375893704e4402b9e6911f71f78de0e68238112e992a53576a248849b509ad6",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L1/source_artifacts/said2026_reproducibility_survey.pdf",
+      "bytes": 845466,
+      "sha256": "2a1b1ed360e5a28c464796d2fb9c9ed9c0c33ac0c6f5ae3029c25217a1e80496",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L1/source_artifacts/sun2023_daisyrec.pdf",
+      "bytes": 2716738,
+      "sha256": "7c615fbe6c7f36baa4969e116a310139965450ef71909185a5fba869ce255516",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L1/source_artifacts/tamm2021_quality_metrics.pdf",
+      "bytes": 161980,
+      "sha256": "d624e786e63ba879aea9db8c15bc5a0a2ef85d09cddc5c3084890f27518c2048",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L1/source_artifacts/zhao2020_alternative_settings.pdf",
+      "bytes": 1233020,
+      "sha256": "94077242766b97a6e889a5cef3cb202985dbce80d27730e1002d3ec84c7e1345",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L1/source_artifacts/zhao2022_recbole2.pdf",
+      "bytes": 708739,
+      "sha256": "279a86f8e517d708366bba63c23ad8c0b059e182a40a4bd20a19f33a8d6b2595",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L2/claim_cards.json",
+      "bytes": 14373,
+      "sha256": "82da5688ee7e37253f8c2f90db9e4f485f7d122a1008d75284cd832d2b062ea6",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L2/source_artifacts/cai2023_lightgcl.pdf",
+      "bytes": 1542654,
+      "sha256": "c43d7ab0431c1481ce69ba232e00c6c65ae1ac1cd9092ed12512e6883a922c53",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L2/source_artifacts/cheng2016_wide_deep.pdf",
+      "bytes": 409971,
+      "sha256": "0f04fd0659345008ddcb4b0742b6d0e5475bb0c2cf2a2b222f1b06d109c6c4c8",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L2/source_artifacts/covington2016_youtube.pdf",
+      "bytes": 898498,
+      "sha256": "efb4aa82a1a4cd720be05b837752aab7fee92b2a8a22f30ca6aa6fc24ed482ab",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L2/source_artifacts/guo2017_deepfm.pdf",
+      "bytes": 833960,
+      "sha256": "c8b95dab640da43eae1d5b554881f030982afeb2919f3bf909a6fa773a3366fb",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L2/source_artifacts/he2017_ncf.pdf",
+      "bytes": 1520085,
+      "sha256": "45177d4c9b98cc30eef4c8fdf3795ba790192e85a0c350ca597666342bb85b7d",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L2/source_artifacts/he2020_lightgcn.pdf",
+      "bytes": 1209591,
+      "sha256": "1f8fa2ab18921643f8858613a5bf6d91a51cd10f9ed9460c0a9bd26ca8cdb59d",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L2/source_artifacts/huang2013_dssm.pdf",
+      "bytes": 380012,
+      "sha256": "efdaf443f870ba922eb2664d466248a90c4900f46148b50cd484b2e689b61955",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L2/source_artifacts/rendle2009_bpr.pdf",
+      "bytes": 292992,
+      "sha256": "9a28d1b9f447a86ca9cca4581d2e1a5b231d30b09a3127e176bdfebfb35ed02d",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L2/source_artifacts/sarwar2001_itemcf.pdf",
+      "bytes": 249764,
+      "sha256": "7962b08a72b28ae732a674e1245e010b8d5883b1c08bff9aea4d185961e27fd5",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L2/source_artifacts/wang2022_directau.pdf",
+      "bytes": 3374286,
+      "sha256": "1489ee11d79368cd20ee3ea8ecabdc49dfaa453222db11297f1e060cf3ac74ab",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L2/source_artifacts/wang2025_t2diff.pdf",
+      "bytes": 1305317,
+      "sha256": "73af2c504dbeb2034514c1e6b624522eec69308e538b36f73263a4f6481cdec1",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L2/source_artifacts/yi2019_ndr.pdf",
+      "bytes": 918103,
+      "sha256": "68a0f02d291954154d5c44f22b34c7d2a19f7502267987b26499a8afc5256892",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L2/source_artifacts/yu2022_simgcl.pdf",
+      "bytes": 8024358,
+      "sha256": "2694e7267f0c37869f1a62418f348539a202d41121f231e347e19b404c57447c",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L2/source_artifacts/yuan2025_contextgnn.pdf",
+      "bytes": 473538,
+      "sha256": "b929de39ddcbb839f6a885ef0c64f17939c4fbfd3b04fd7a343c032c826a92d4",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L3/claim_cards.json",
+      "bytes": 17626,
+      "sha256": "b7a7481d997fd35b59dd689ae4ce180d7a349fd89f6baf6fb9245cbf8ba3444b",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L3/source_artifacts/agrawal1994_apriori.pdf",
+      "bytes": 1359718,
+      "sha256": "99c6057d4fb42b5a1f9c2176a5bce0db2b860f69e897db46e68e9ef09d1154e2",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L3/source_artifacts/ghoshal2014_multi_item_author.pdf",
+      "bytes": 547988,
+      "sha256": "46d1b26bcb4ba3dbcc56296dbd68229921de43c29b6655130f2fe7ef8861a908",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L3/source_artifacts/kang2018_sasrec_arxiv.pdf",
+      "bytes": 1432399,
+      "sha256": "d58f18384a055a265f5ecf2776ed28e8a745c0d9a183db078449249599bf604a",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L3/source_artifacts/li2021_reality_check_arxiv.pdf",
+      "bytes": 1736505,
+      "sha256": "66bf549d33ce1ffe757c6162c157809f7fdcd03e18c3ca244155ba2468621a36",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L3/source_artifacts/li2023_mask_swap_arxiv.pdf",
+      "bytes": 1365042,
+      "sha256": "da779f9fccdadbe70a9e39ed1cbe89ac642f810a868f79d1692880ae64ad4651",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L3/source_artifacts/mansouri2026_repeat_explore.pdf",
+      "bytes": 3195336,
+      "sha256": "a58e40a52df3413098f6bc6d12954530a8a67a2c4ff303a91190661996bbe83f",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L3/source_artifacts/peng2020_ham_arxiv.pdf",
+      "bytes": 667726,
+      "sha256": "2ec10f3c84f313421c89fa6d1bd254ed5ddf3b80209d0a423422b5f852e96201",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L3/source_artifacts/peng2020_m2_arxiv.pdf",
+      "bytes": 1284862,
+      "sha256": "35148decd5ad8f745f54781f8aa9c940bf8b8664d3016073f4a7675b10242416",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L3/source_artifacts/petrov2022_bert4rec_replicability_arxiv.pdf",
+      "bytes": 882326,
+      "sha256": "b7617e2ee2966f53fc8444bfa3f21c5a1ea7173bfc66796d2a1586d886a4f209",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L3/source_artifacts/sun2019_bert4rec_arxiv.pdf",
+      "bytes": 2382126,
+      "sha256": "1e673114bbfa757a949f884c545e9548c4faa37e2cd70e6933eede8198ec4fb9",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L4/claim_cards.json",
+      "bytes": 19833,
+      "sha256": "e6c55b5494fcf3660ea3bedebadd5bebf464dac702b42d97ffeda0064bec577c",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L5/claim_cards.json",
+      "bytes": 14423,
+      "sha256": "dc53976a0c0db2eca5d5ce37db41051b96579a668948d5838a236d3788ee1927",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L5/source_artifacts/amazon_m2_2023_neurips.pdf",
+      "bytes": 833629,
+      "sha256": "10b87e5653e8a53a57fa0053917224ab8621b30c8871ee84c83b6491fa4ef537",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L5/source_artifacts/amazon_m2_aicrowd_page_2026-08-14.html",
+      "bytes": 265378,
+      "sha256": "9bbb245ccdf87514a94f2c34eaf28ee780998c7b2bfe54b2e4592e1ecb7fe23b",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L5/source_artifacts/amazon_reviews_2023_page_2026-08-14.html",
+      "bytes": 52345,
+      "sha256": "cc7fc94ad5b5177293e56990b79d49e9ba41ae8d5d190e34260c1993122bccbb",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L5/source_artifacts/blair_2026_acl.pdf",
+      "bytes": 473710,
+      "sha256": "5a13e390ec2943b7a295acd1b9104fa30cdbd6e2bd39b84a205029536f5f6758",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L5/source_artifacts/complete_journey_provider_terms_2026-08-14.html",
+      "bytes": 263802,
+      "sha256": "bb7f06430b31cb2e4520628af5dd3108f66a7ce781ef19e167bb47b4c99c2b16",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L5/source_artifacts/completejourney_package_DESCRIPTION_5b5d061.txt",
+      "bytes": 993,
+      "sha256": "99cd6f9e8391b50b26f4d07d0ae81f1cfae32fe875a79c0d5425e68df3855073",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L5/source_artifacts/coveo_sigir_ecom_2021_arxiv_v4.pdf",
+      "bytes": 156470,
+      "sha256": "0b54749bc915f85ba4e8f2b1123086113ba0ea04dff140ba2584b0e526b24ce7",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L5/source_artifacts/coveo_terms_4132dfb.txt",
+      "bytes": 3400,
+      "sha256": "c1bcbe084dff1b61432033aac53d280585f356e8e4b854d0e76f51802c96f866",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L5/source_artifacts/hm_kaggle_data_page_2026-08-14.html",
+      "bytes": 5656,
+      "sha256": "5a5a363289d6917caaff4a0d8a488ca303d0535cd342bda0a9ad267e3b102b35",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L5/source_artifacts/muse_2025_arxiv_v1.pdf",
+      "bytes": 3295439,
+      "sha256": "147608e3a68d1038993f8750ab6c300751a4635e42c50afa95a8081f80270f4a",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L5/source_artifacts/otto_README_f404284.md",
+      "bytes": 9165,
+      "sha256": "73150aff4fc8f1c1810f388384e409994871d546820588f9ee4b3e60a9494357",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L5/source_artifacts/pham_restaurant_recommendation_2024.pdf",
+      "bytes": 357500,
+      "sha256": "792f8728579c0e562729f22c38d4d1fe93ec18ee0c792941a5e974e3736f7af0",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L5/source_artifacts/relbench_2024_neurips.pdf",
+      "bytes": 1178161,
+      "sha256": "05027858f0e2c45dc57eb9e98b87019d35717346f8144a0937e3780e4816abe6",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L5/source_artifacts/relbench_rel_amazon_10d9cfe.py",
+      "bytes": 7642,
+      "sha256": "4980a9b505f21ad71ef8cfb27d69d8d466a8b51b47e02dbe3d7acd70a5399549",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L5/source_artifacts/relbench_rel_hm_10d9cfe.py",
+      "bytes": 2432,
+      "sha256": "3fe3bd1adc8b4f96b3af62e06db1f9dbbb9955f43d0d5810d46fa8ddcbdc1328",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L5/source_artifacts/taobao_mm_page_2026-08-14.html",
+      "bytes": 18333,
+      "sha256": "9c7110f463893c60a4beb6030ae02d6da14ec627ba87d87dd54e887748e508e8",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L5/source_artifacts/tenrec_2022_neurips.pdf",
+      "bytes": 371732,
+      "sha256": "77add3577fc7c597371fa3d91ba2941e0c653c71ea05d7b206591ca933d0a9f7",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L5/source_artifacts/tenrec_README_a6c242d.md",
+      "bytes": 23115,
+      "sha256": "4aa3c97fb0b2b8b48848d7d055b72215b7bd4d933aba5d5f30c8bb9b33d4dd9b",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L5/source_artifacts/viecomrec_2024_doras.pdf",
+      "bytes": 166944,
+      "sha256": "7989a7ec514c4ffb52668d0c446f86782d87371f6e5ff2662207db3fd59f4cc1",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L5/source_artifacts/viecomrec_LICENSE_04ac179.txt",
+      "bytes": 20849,
+      "sha256": "1349a4b6148492b44f629e64eed676612e234fe9a839e4f3b277c1482c8849f1",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L5/source_artifacts/vifoodrec_2024_paclic.pdf",
+      "bytes": 747170,
+      "sha256": "ec73811a399aa0b504bf3daa23e03ad12f2ab1847a5803f0e2eed4a225d3bea8",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L5/source_artifacts/vifoodrec_README_126caa3.md",
+      "bytes": 2701,
+      "sha256": "53db07773482cbd4ea6f64138e8040a073072498a8ba0da80da5e8f47e157512",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L5/source_artifacts/vihorec_2026_arxiv_v1.pdf",
+      "bytes": 1395371,
+      "sha256": "3c5b0c03886ba3c7b16f4cc166fe4cd48332b1ac90c0516010ca345c6129dd10",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L5/source_artifacts/vihorec_LICENSE_c85d60e.txt",
+      "bytes": 1631,
+      "sha256": "461e2814a1e17792048158e3e4f99ac1d540afead2ddac1ca0a793f348be55e8",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/claim_intent_manifest_r1.json",
+      "bytes": 71317,
+      "sha256": "bbfa5fcef77aca3e4df16dcfc4b6445af3a0073a733732c0525bd389e4c90943",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/claim_source_map_r1.json",
+      "bytes": 98794,
+      "sha256": "77f830e6dfb4dc3b3107e01d306a918365114f08370edb929e89d171c8930fa8",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/cross_paper_tensions_r1.json",
+      "bytes": 10831,
+      "sha256": "56a16ed2f19b7467b5d43ff4d2136fa72dd5ecf9e04bd7ac826a3025ab032943",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/devils_advocate_cp2/devils_advocate_checkpoint2_r1.md",
+      "bytes": 19552,
+      "sha256": "3b0e35de93b664f26ab758fbaddfea244ae16a67f3b51821fd7c406ef1f92557",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/devils_advocate_cp2/r6_findings.json",
+      "bytes": 11923,
+      "sha256": "ce86f1408309f6bede2532d903a9d3b40d1c550c0ab879715c6b63e1a13de5bb",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/devils_advocate_cp2/r6_handoff.json",
+      "bytes": 5781,
+      "sha256": "d76bee713b0d6eb342af491e9466139966fa63abb49c17e61a5a9bc478e70508",
+      "role": "control",
+      "inclusion_reason": "Immutable contract, manifest, handoff, or executable control required to replay declarations and gate logic."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/devils_advocate_cp2/r6_validation_receipt.json",
+      "bytes": 3909,
+      "sha256": "340de35c766ef9b3238ec21b60322682108831e598b6aa78fd7a8c5866ab86b6",
+      "role": "receipt",
+      "inclusion_reason": "Immutable validation receipt required to replay a declared gate and retain its audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/devils_advocate_cp2/tension_adjudication_packet.json",
+      "bytes": 7925,
+      "sha256": "eeb908c5b563640d740a0e6934a60b84135cefd513c0e01a5eceb5acd7cc0ccc",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/devils_advocate_cp2/validate_r6_checkpoint.py",
+      "bytes": 15035,
+      "sha256": "574d5f3ee1343f22b79e0ca6444511bac817679684c6a39b068b3c15354ee793",
+      "role": "control",
+      "inclusion_reason": "Immutable contract, manifest, handoff, or executable control required to replay declarations and gate logic."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/devils_advocate_cp2_reaudit/r6_reaudit_findings.json",
+      "bytes": 6570,
+      "sha256": "263171af4f8a462d43fa55a092e7a3e3d41d2c2fc137cd1441f46cb18487354a",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/devils_advocate_cp2_reaudit/r6_reaudit_handoff.json",
+      "bytes": 4171,
+      "sha256": "2408f511abf0940dd30991d8debaa9619ba130b6863c10520cd2d904523a2e1e",
+      "role": "control",
+      "inclusion_reason": "Immutable contract, manifest, handoff, or executable control required to replay declarations and gate logic."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/devils_advocate_cp2_reaudit/r6_reaudit_report.md",
+      "bytes": 8524,
+      "sha256": "5ce0dec439d6380db0a97d0601eb9c9bd348ebf2e645d7b71f4fc76521d30763",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/devils_advocate_cp2_reaudit/r6_reaudit_validation_receipt.json",
+      "bytes": 3722,
+      "sha256": "c7a5d514d4534e9ace9d27eccab1a7a21363ae24249910f47784a843371e57bb",
+      "role": "receipt",
+      "inclusion_reason": "Immutable validation receipt required to replay a declared gate and retain its audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/devils_advocate_cp2_reaudit/tension_adjudication_packet_reaudit.json",
+      "bytes": 7590,
+      "sha256": "e7bb44414272d9592ffe1c98ce63e2b4e93edd2ed64c39342bd079ac2404607d",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/devils_advocate_cp2_reaudit/validate_r6_reaudit.py",
+      "bytes": 28915,
+      "sha256": "8d88968baaf0e3d2fa9d19fdcd00a1544de93b3fa720c15a7f468e5751d5c325",
+      "role": "control",
+      "inclusion_reason": "Immutable contract, manifest, handoff, or executable control required to replay declarations and gate logic."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/r5_handoff.json",
+      "bytes": 6662,
+      "sha256": "9e36da152895a46dda164bae4a79d4052267a3ba4a089e04250571a284904435",
+      "role": "control",
+      "inclusion_reason": "Immutable contract, manifest, handoff, or executable control required to replay declarations and gate logic."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/r5_validation_receipt.json",
+      "bytes": 6692,
+      "sha256": "25e3212a7aa3565a71f6a373325a8c961f8b9845c91ca73a32532173a6f4d960",
+      "role": "receipt",
+      "inclusion_reason": "Immutable validation receipt required to replay a declared gate and retain its audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/remediation_r6/build_r6_remediation.py",
+      "bytes": 33028,
+      "sha256": "3e33134e0d142bbcac92735562c29f4557ecb5bbb64100d9d62da523f6747c54",
+      "role": "control",
+      "inclusion_reason": "Immutable contract, manifest, handoff, or executable control required to replay declarations and gate logic."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/remediation_r6/claim_counter_evidence_overlay.json",
+      "bytes": 103293,
+      "sha256": "5b72ced4927d9c37ada5cc31eec3a1490bc1ba8e1eaeaac35c404c300f106373",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/remediation_r6/claim_source_map_r1_remediated.json",
+      "bytes": 109373,
+      "sha256": "0d6d8d17ccf51132f6bf9a36ab08245f1d1e73bea831b5cb148a4fc00146f7da",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/remediation_r6/r6_remediation_handoff.json",
+      "bytes": 4120,
+      "sha256": "a7ac8a66648903ca2cb5ddc62c9b076d1ae73fe8eacb084daa43d0acc78f4b79",
+      "role": "control",
+      "inclusion_reason": "Immutable contract, manifest, handoff, or executable control required to replay declarations and gate logic."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/remediation_r6/r6_remediation_report.md",
+      "bytes": 2820,
+      "sha256": "16d35e51cd230dcd5038b1257049dcd39d0784c94adf7c1fa48a82623f13d75b",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/remediation_r6/r6_remediation_validation_receipt.json",
+      "bytes": 3381,
+      "sha256": "4c8506d4c40b7b9ffc5ec5bc6a6e3d40f2cc91ea27b5edcbe4b8ce59f192c2a2",
+      "role": "receipt",
+      "inclusion_reason": "Immutable validation receipt required to replay a declared gate and retain its audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/remediation_r6/synthesis_report_r1_remediated.md",
+      "bytes": 25214,
+      "sha256": "136a1baf26a1108ceac54943e0a8bc9fa89647210af5cefd206f1c049d95aa2d",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/remediation_r6/theme_evidence_denominators.json",
+      "bytes": 11264,
+      "sha256": "aa8857a028b495e91a2ebdd2c10217fcf8325c2dc9089d282ef23aa064531bda",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/remediation_r6/validate_r6_remediation.py",
+      "bytes": 24199,
+      "sha256": "fcf9dfca18f3bc271e012bdc1a1d4baa7b94411277207bc660a589b09cb18a55",
+      "role": "control",
+      "inclusion_reason": "Immutable contract, manifest, handoff, or executable control required to replay declarations and gate logic."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/synthesis_report_r1.md",
+      "bytes": 21719,
+      "sha256": "3acee0d64ee4f4e4b3ca0be0944ef1ba1bd70d19c3ad3c75ce3c09b1946b943c",
+      "role": "payload",
+      "inclusion_reason": "Immutable evidence or analysis payload required to replay R3-R6 and preserve superseded audit history."
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/validate_r5_synthesis.py",
+      "bytes": 19234,
+      "sha256": "2154d08424eecec00ba4e05e839e81e47da84e09a220a3f62313a2c50029f32c",
+      "role": "control",
+      "inclusion_reason": "Immutable contract, manifest, handoff, or executable control required to replay declarations and gate logic."
+    }
+  ],
+  "phase_boundary": {
+    "r8": "AUTHORIZED_FRESH_READ_ONLY_AUDIT_ONLY",
+    "r9": "NOT_PERFORMED_NOT_AUTHORIZED",
+    "stage1b_seal": "NOT_PERFORMED",
+    "stage2_authorization": "NOT_AUTHORIZED",
+    "benchmark_training_evaluation": "NOT_RUN",
+    "h1_h4": "NOT_RUN"
+  }
+}

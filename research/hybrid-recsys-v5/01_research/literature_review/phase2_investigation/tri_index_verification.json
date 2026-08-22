@@ -1,0 +1,1951 @@
+{
+  "schema_version": "stage1b-central-verification-1.0",
+  "project": "hybrid-recsys-v5",
+  "executed_at": "2026-08-13",
+  "source_registry": "source_registry.json",
+  "policy": {
+    "title_match_threshold": 0.7,
+    "s2": "Attempted for all sources; API returned 429 on the first source and the batch was latched degraded.",
+    "openalex": "DOI-first then exact-title fallback; one HTTP 400 degraded record was manually checked.",
+    "crossref": "DOI-first then exact-title fallback; abbreviated Crossref titles and non-Crossref DOI registrants were manually checked.",
+    "original_full_text_acquired": false,
+    "source_verified_against_original": false
+  },
+  "summary": {
+    "total": 55,
+    "identity_verified": 55,
+    "identity_unverifiable": 0,
+    "semantic_scholar": {
+      "matched": 0,
+      "unmatched": 0,
+      "degraded": 55
+    },
+    "openalex": {
+      "matched": 50,
+      "unmatched": 4,
+      "degraded": 1
+    },
+    "crossref": {
+      "matched": 40,
+      "unmatched": 15,
+      "degraded": 0
+    },
+    "manual_exception_checks": 15,
+    "doi_bearing_after_correction": 46
+  },
+  "records": [
+    {
+      "citation_key": "krichene2020_sampled_metrics",
+      "title": "On Sampled Metrics for Item Recommendation",
+      "year": 2020,
+      "doi": "10.1145/3394486.3403226",
+      "source_pointer": "https://dl.acm.org/doi/10.1145/3394486.3403226",
+      "central_identity_status": "VERIFIED_IDENTITY",
+      "semantic_scholar": {
+        "state": "degraded",
+        "reason": "S2 API HTTP 429 after 3 retries"
+      },
+      "openalex": {
+        "state": "matched",
+        "id": "https://openalex.org/W3081170586",
+        "title": "On Sampled Metrics for Item Recommendation",
+        "year": 2020,
+        "doi": "https://doi.org/10.1145/3394486.3403226"
+      },
+      "crossref": {
+        "state": "matched",
+        "doi": "10.1145/3394486.3403226",
+        "title": "On Sampled Metrics for Item Recommendation",
+        "year": 2020
+      },
+      "manual_exception_check": null,
+      "contamination_signals": {
+        "preprint_post_llm_inflection": false,
+        "openalex_unmatched": false,
+        "crossref_unmatched": false
+      },
+      "contamination_signal_omissions": {
+        "semantic_scholar_unmatched": "api_degraded"
+      }
+    },
+    {
+      "citation_key": "li2023_reliable_sampling",
+      "title": "Towards Reliable Item Sampling for Recommendation Evaluation",
+      "year": 2023,
+      "doi": "10.1609/aaai.v37i4.25561",
+      "source_pointer": "https://ojs.aaai.org/index.php/AAAI/article/view/25561",
+      "central_identity_status": "VERIFIED_IDENTITY",
+      "semantic_scholar": {
+        "state": "degraded",
+        "reason": "batch_latched_after_api_degradation"
+      },
+      "openalex": {
+        "state": "matched",
+        "id": "https://openalex.org/W4382239855",
+        "title": "Towards Reliable Item Sampling for Recommendation Evaluation",
+        "year": 2023,
+        "doi": "https://doi.org/10.1609/aaai.v37i4.25561"
+      },
+      "crossref": {
+        "state": "matched",
+        "doi": "10.1609/aaai.v37i4.25561",
+        "title": "Towards Reliable Item Sampling for Recommendation Evaluation",
+        "year": 2023
+      },
+      "manual_exception_check": null,
+      "contamination_signals": {
+        "preprint_post_llm_inflection": false,
+        "openalex_unmatched": false,
+        "crossref_unmatched": false
+      },
+      "contamination_signal_omissions": {
+        "semantic_scholar_unmatched": "api_degraded"
+      }
+    },
+    {
+      "citation_key": "zhao2020_alternative_settings",
+      "title": "Revisiting Alternative Experimental Settings for Evaluating Top-N Item Recommendation Algorithms",
+      "year": 2020,
+      "doi": "10.1145/3340531.3412095",
+      "source_pointer": "https://dl.acm.org/doi/10.1145/3340531.3412095",
+      "central_identity_status": "VERIFIED_IDENTITY",
+      "semantic_scholar": {
+        "state": "degraded",
+        "reason": "batch_latched_after_api_degradation"
+      },
+      "openalex": {
+        "state": "matched",
+        "id": "https://openalex.org/W3094127838",
+        "title": "Revisiting Alternative Experimental Settings for Evaluating Top-N Item Recommendation Algorithms",
+        "year": 2020,
+        "doi": "https://doi.org/10.1145/3340531.3412095"
+      },
+      "crossref": {
+        "state": "matched",
+        "doi": "10.1145/3340531.3412095",
+        "title": "Revisiting Alternative Experimental Settings for Evaluating Top-N Item Recommendation Algorithms",
+        "year": 2020
+      },
+      "manual_exception_check": null,
+      "contamination_signals": {
+        "preprint_post_llm_inflection": false,
+        "openalex_unmatched": false,
+        "crossref_unmatched": false
+      },
+      "contamination_signal_omissions": {
+        "semantic_scholar_unmatched": "api_degraded"
+      }
+    },
+    {
+      "citation_key": "tamm2021_metric_consistency",
+      "title": "Quality Metrics in Recommender Systems: Do We Calculate Metrics Consistently?",
+      "year": 2021,
+      "doi": "10.1145/3460231.3478848",
+      "source_pointer": "https://dl.acm.org/doi/10.1145/3460231.3478848",
+      "central_identity_status": "VERIFIED_IDENTITY",
+      "semantic_scholar": {
+        "state": "degraded",
+        "reason": "batch_latched_after_api_degradation"
+      },
+      "openalex": {
+        "state": "matched",
+        "id": "https://openalex.org/W3201258060",
+        "title": "Quality Metrics in Recommender Systems: Do We Calculate Metrics Consistently?",
+        "year": 2021,
+        "doi": "https://doi.org/10.1145/3460231.3478848"
+      },
+      "crossref": {
+        "state": "matched",
+        "doi": "10.1145/3460231.3478848",
+        "title": "Quality Metrics in Recommender Systems: Do We Calculate Metrics Consistently?",
+        "year": 2021
+      },
+      "manual_exception_check": null,
+      "contamination_signals": {
+        "preprint_post_llm_inflection": false,
+        "openalex_unmatched": false,
+        "crossref_unmatched": false
+      },
+      "contamination_signal_omissions": {
+        "semantic_scholar_unmatched": "api_degraded"
+      }
+    },
+    {
+      "citation_key": "jarvelin2002_ndcg",
+      "title": "Cumulated Gain-based Evaluation of IR Techniques",
+      "year": 2002,
+      "doi": "10.1145/582415.582418",
+      "source_pointer": "https://doi.org/10.1145/582415.582418",
+      "central_identity_status": "VERIFIED_IDENTITY",
+      "semantic_scholar": {
+        "state": "degraded",
+        "reason": "batch_latched_after_api_degradation"
+      },
+      "openalex": {
+        "state": "matched",
+        "id": "https://openalex.org/W2069870183",
+        "title": "Cumulated gain-based evaluation of IR techniques",
+        "year": 2002,
+        "doi": "https://doi.org/10.1145/582415.582418"
+      },
+      "crossref": {
+        "state": "matched",
+        "doi": "10.1145/582415.582418",
+        "title": "Cumulated gain-based evaluation of IR techniques",
+        "year": 2002
+      },
+      "manual_exception_check": null,
+      "contamination_signals": {
+        "preprint_post_llm_inflection": false,
+        "openalex_unmatched": false,
+        "crossref_unmatched": false
+      },
+      "contamination_signal_omissions": {
+        "semantic_scholar_unmatched": "api_degraded"
+      }
+    },
+    {
+      "citation_key": "bradley1997_auc",
+      "title": "The Use of the Area Under the ROC Curve in the Evaluation of Machine Learning Algorithms",
+      "year": 1997,
+      "doi": "10.1016/S0031-3203(96)00142-2",
+      "source_pointer": "https://doi.org/10.1016/S0031-3203(96)00142-2",
+      "central_identity_status": "VERIFIED_IDENTITY",
+      "semantic_scholar": {
+        "state": "degraded",
+        "reason": "batch_latched_after_api_degradation"
+      },
+      "openalex": {
+        "state": "matched",
+        "id": "https://openalex.org/W2155653793",
+        "title": "The use of the area under the ROC curve in the evaluation of machine learning algorithms",
+        "year": 1997,
+        "doi": "https://doi.org/10.1016/s0031-3203(96)00142-2"
+      },
+      "crossref": {
+        "state": "matched",
+        "doi": "10.1016/s0031-3203(96)00142-2",
+        "title": "The use of the area under the ROC curve in the evaluation of machine learning algorithms",
+        "year": 1997
+      },
+      "manual_exception_check": null,
+      "contamination_signals": {
+        "preprint_post_llm_inflection": false,
+        "openalex_unmatched": false,
+        "crossref_unmatched": false
+      },
+      "contamination_signal_omissions": {
+        "semantic_scholar_unmatched": "api_degraded"
+      }
+    },
+    {
+      "citation_key": "canamares2020_offline_options",
+      "title": "Offline Evaluation Options for Recommender Systems",
+      "year": 2020,
+      "doi": "10.1007/s10791-020-09371-3",
+      "source_pointer": "https://doi.org/10.1007/s10791-020-09371-3",
+      "central_identity_status": "VERIFIED_IDENTITY",
+      "semantic_scholar": {
+        "state": "degraded",
+        "reason": "batch_latched_after_api_degradation"
+      },
+      "openalex": {
+        "state": "matched",
+        "id": "https://openalex.org/W3011685549",
+        "title": "Offline evaluation options for recommender systems",
+        "year": 2020,
+        "doi": "https://doi.org/10.1007/s10791-020-09371-3"
+      },
+      "crossref": {
+        "state": "matched",
+        "doi": "10.1007/s10791-020-09371-3",
+        "title": "Offline evaluation options for recommender systems",
+        "year": 2020
+      },
+      "manual_exception_check": null,
+      "contamination_signals": {
+        "preprint_post_llm_inflection": false,
+        "openalex_unmatched": false,
+        "crossref_unmatched": false
+      },
+      "contamination_signal_omissions": {
+        "semantic_scholar_unmatched": "api_degraded"
+      }
+    },
+    {
+      "citation_key": "dacrema2021_reproducibility",
+      "title": "A Troubling Analysis of Reproducibility and Progress in Recommender Systems Research",
+      "year": 2021,
+      "doi": "10.1145/3434185",
+      "source_pointer": "https://doi.org/10.1145/3434185",
+      "central_identity_status": "VERIFIED_IDENTITY",
+      "semantic_scholar": {
+        "state": "degraded",
+        "reason": "batch_latched_after_api_degradation"
+      },
+      "openalex": {
+        "state": "matched",
+        "id": "https://openalex.org/W2987577970",
+        "title": "A Troubling Analysis of Reproducibility and Progress in Recommender Systems Research",
+        "year": 2021,
+        "doi": "https://doi.org/10.1145/3434185"
+      },
+      "crossref": {
+        "state": "matched",
+        "doi": "10.1145/3434185",
+        "title": "A Troubling Analysis of Reproducibility and Progress in Recommender Systems Research",
+        "year": 2021
+      },
+      "manual_exception_check": null,
+      "contamination_signals": {
+        "preprint_post_llm_inflection": false,
+        "openalex_unmatched": false,
+        "crossref_unmatched": false
+      },
+      "contamination_signal_omissions": {
+        "semantic_scholar_unmatched": "api_degraded"
+      }
+    },
+    {
+      "citation_key": "sun2023_daisyrec2",
+      "title": "DaisyRec 2.0: Benchmarking Recommendation for Rigorous Evaluation",
+      "year": 2023,
+      "doi": "10.1109/TPAMI.2022.3231891",
+      "source_pointer": "https://doi.org/10.1109/TPAMI.2022.3231891",
+      "central_identity_status": "VERIFIED_IDENTITY",
+      "semantic_scholar": {
+        "state": "degraded",
+        "reason": "batch_latched_after_api_degradation"
+      },
+      "openalex": {
+        "state": "matched",
+        "id": "https://openalex.org/W4283379500",
+        "title": "DaisyRec 2.0: Benchmarking Recommendation for Rigorous Evaluation",
+        "year": 2022,
+        "doi": "https://doi.org/10.1109/tpami.2022.3231891"
+      },
+      "crossref": {
+        "state": "matched",
+        "doi": "10.1109/tpami.2022.3231891",
+        "title": "DaisyRec 2.0: Benchmarking Recommendation for Rigorous Evaluation",
+        "year": 2023
+      },
+      "manual_exception_check": null,
+      "contamination_signals": {
+        "preprint_post_llm_inflection": false,
+        "openalex_unmatched": false,
+        "crossref_unmatched": false
+      },
+      "contamination_signal_omissions": {
+        "semantic_scholar_unmatched": "api_degraded"
+      }
+    },
+    {
+      "citation_key": "zhao2022_recbole2",
+      "title": "RecBole 2.0: Towards a More Up-to-Date Recommendation Library",
+      "year": 2022,
+      "doi": "10.1145/3511808.3557680",
+      "source_pointer": "https://doi.org/10.1145/3511808.3557680",
+      "central_identity_status": "VERIFIED_IDENTITY",
+      "semantic_scholar": {
+        "state": "degraded",
+        "reason": "batch_latched_after_api_degradation"
+      },
+      "openalex": {
+        "state": "matched",
+        "id": "https://openalex.org/W4283065823",
+        "title": "RecBole 2.0: Towards a More Up-to-Date Recommendation Library",
+        "year": 2022,
+        "doi": "https://doi.org/10.1145/3511808.3557680"
+      },
+      "crossref": {
+        "state": "matched",
+        "doi": "10.1145/3511808.3557680",
+        "title": "RecBole 2.0: Towards a More Up-to-Date Recommendation Library",
+        "year": 2022
+      },
+      "manual_exception_check": null,
+      "contamination_signals": {
+        "preprint_post_llm_inflection": false,
+        "openalex_unmatched": false,
+        "crossref_unmatched": false
+      },
+      "contamination_signal_omissions": {
+        "semantic_scholar_unmatched": "api_degraded"
+      }
+    },
+    {
+      "citation_key": "jannach2026_methodological_standards",
+      "title": "Improving Methodological Standards in Recommender Systems Offline Evaluation",
+      "year": 2026,
+      "doi": "10.1145/3800587",
+      "source_pointer": "https://doi.org/10.1145/3800587",
+      "central_identity_status": "VERIFIED_IDENTITY",
+      "semantic_scholar": {
+        "state": "degraded",
+        "reason": "batch_latched_after_api_degradation"
+      },
+      "openalex": {
+        "state": "matched",
+        "id": "https://openalex.org/W7155000598",
+        "title": "Improving Methodological Standards in Recommender Systems Offline Evaluation",
+        "year": 2026,
+        "doi": "https://doi.org/10.1145/3800587"
+      },
+      "crossref": {
+        "state": "matched",
+        "doi": "10.1145/3800587",
+        "title": "Improving Methodological Standards in Recommender Systems Offline Evaluation",
+        "year": 2026
+      },
+      "manual_exception_check": null,
+      "contamination_signals": {
+        "preprint_post_llm_inflection": false,
+        "openalex_unmatched": false,
+        "crossref_unmatched": false
+      },
+      "contamination_signal_omissions": {
+        "semantic_scholar_unmatched": "api_degraded"
+      }
+    },
+    {
+      "citation_key": "sarwar2001_itemcf",
+      "title": "Item-based Collaborative Filtering Recommendation Algorithms",
+      "year": 2001,
+      "doi": "10.1145/371920.372071",
+      "source_pointer": "https://doi.org/10.1145/371920.372071",
+      "central_identity_status": "VERIFIED_IDENTITY",
+      "semantic_scholar": {
+        "state": "degraded",
+        "reason": "batch_latched_after_api_degradation"
+      },
+      "openalex": {
+        "state": "matched",
+        "id": "https://openalex.org/W2042281163",
+        "title": "Item-based collaborative filtering recommendation algorithms",
+        "year": 2001,
+        "doi": "https://doi.org/10.1145/371920.372071"
+      },
+      "crossref": {
+        "state": "matched",
+        "doi": "10.1145/371920.372071",
+        "title": "Item-based collaborative filtering recommendation algorithms",
+        "year": 2001
+      },
+      "manual_exception_check": null,
+      "contamination_signals": {
+        "preprint_post_llm_inflection": false,
+        "openalex_unmatched": false,
+        "crossref_unmatched": false
+      },
+      "contamination_signal_omissions": {
+        "semantic_scholar_unmatched": "api_degraded"
+      }
+    },
+    {
+      "citation_key": "rendle2009_bpr",
+      "title": "BPR: Bayesian Personalized Ranking from Implicit Feedback",
+      "year": 2009,
+      "doi": null,
+      "source_pointer": "https://www.auai.org/uai2009/papers.html",
+      "central_identity_status": "VERIFIED_IDENTITY",
+      "semantic_scholar": {
+        "state": "degraded",
+        "reason": "batch_latched_after_api_degradation"
+      },
+      "openalex": {
+        "state": "matched",
+        "id": "https://openalex.org/W2140310134",
+        "title": "BPR: Bayesian Personalized Ranking from Implicit Feedback",
+        "year": 2012,
+        "doi": "https://doi.org/10.48550/arxiv.1205.2618"
+      },
+      "crossref": {
+        "state": "unmatched",
+        "doi": null,
+        "title": null,
+        "year": null
+      },
+      "manual_exception_check": {
+        "status": "VERIFIED_OFFICIAL_PROCEEDINGS",
+        "basis": "UAI 2009 official proceedings listing"
+      },
+      "contamination_signals": {
+        "preprint_post_llm_inflection": false,
+        "openalex_unmatched": false,
+        "crossref_unmatched": true
+      },
+      "contamination_signal_omissions": {
+        "semantic_scholar_unmatched": "api_degraded"
+      }
+    },
+    {
+      "citation_key": "huang2013_dssm",
+      "title": "Learning Deep Structured Semantic Models for Web Search using Clickthrough Data",
+      "year": 2013,
+      "doi": "10.1145/2505515.2505665",
+      "source_pointer": "https://doi.org/10.1145/2505515.2505665",
+      "central_identity_status": "VERIFIED_IDENTITY",
+      "semantic_scholar": {
+        "state": "degraded",
+        "reason": "batch_latched_after_api_degradation"
+      },
+      "openalex": {
+        "state": "matched",
+        "id": "https://openalex.org/W2136189984",
+        "title": "Learning deep structured semantic models for web search using clickthrough data",
+        "year": 2013,
+        "doi": "https://doi.org/10.1145/2505515.2505665"
+      },
+      "crossref": {
+        "state": "matched",
+        "doi": "10.1145/2505515.2505665",
+        "title": "Learning deep structured semantic models for web search using clickthrough data",
+        "year": 2013
+      },
+      "manual_exception_check": null,
+      "contamination_signals": {
+        "preprint_post_llm_inflection": false,
+        "openalex_unmatched": false,
+        "crossref_unmatched": false
+      },
+      "contamination_signal_omissions": {
+        "semantic_scholar_unmatched": "api_degraded"
+      }
+    },
+    {
+      "citation_key": "cheng2016_wide_deep",
+      "title": "Wide & Deep Learning for Recommender Systems",
+      "year": 2016,
+      "doi": "10.1145/2988450.2988454",
+      "source_pointer": "https://doi.org/10.1145/2988450.2988454",
+      "central_identity_status": "VERIFIED_IDENTITY",
+      "semantic_scholar": {
+        "state": "degraded",
+        "reason": "batch_latched_after_api_degradation"
+      },
+      "openalex": {
+        "state": "matched",
+        "id": "https://openalex.org/W2475334473",
+        "title": "Wide &amp; Deep Learning for Recommender Systems",
+        "year": 2016,
+        "doi": "https://doi.org/10.1145/2988450.2988454"
+      },
+      "crossref": {
+        "state": "matched",
+        "doi": "10.1145/2988450.2988454",
+        "title": "Wide &amp; Deep Learning for Recommender Systems",
+        "year": 2016
+      },
+      "manual_exception_check": null,
+      "contamination_signals": {
+        "preprint_post_llm_inflection": false,
+        "openalex_unmatched": false,
+        "crossref_unmatched": false
+      },
+      "contamination_signal_omissions": {
+        "semantic_scholar_unmatched": "api_degraded"
+      }
+    },
+    {
+      "citation_key": "covington2016_youtube",
+      "title": "Deep Neural Networks for YouTube Recommendations",
+      "year": 2016,
+      "doi": "10.1145/2959100.2959190",
+      "source_pointer": "https://doi.org/10.1145/2959100.2959190",
+      "central_identity_status": "VERIFIED_IDENTITY",
+      "semantic_scholar": {
+        "state": "degraded",
+        "reason": "batch_latched_after_api_degradation"
+      },
+      "openalex": {
+        "state": "matched",
+        "id": "https://openalex.org/W2512971201",
+        "title": "Deep Neural Networks for YouTube Recommendations",
+        "year": 2016,
+        "doi": "https://doi.org/10.1145/2959100.2959190"
+      },
+      "crossref": {
+        "state": "matched",
+        "doi": "10.1145/2959100.2959190",
+        "title": "Deep Neural Networks for YouTube Recommendations",
+        "year": 2016
+      },
+      "manual_exception_check": null,
+      "contamination_signals": {
+        "preprint_post_llm_inflection": false,
+        "openalex_unmatched": false,
+        "crossref_unmatched": false
+      },
+      "contamination_signal_omissions": {
+        "semantic_scholar_unmatched": "api_degraded"
+      }
+    },
+    {
+      "citation_key": "he2017_ncf",
+      "title": "Neural Collaborative Filtering",
+      "year": 2017,
+      "doi": "10.1145/3038912.3052569",
+      "source_pointer": "https://doi.org/10.1145/3038912.3052569",
+      "central_identity_status": "VERIFIED_IDENTITY",
+      "semantic_scholar": {
+        "state": "degraded",
+        "reason": "batch_latched_after_api_degradation"
+      },
+      "openalex": {
+        "state": "matched",
+        "id": "https://openalex.org/W2605350416",
+        "title": "Neural Collaborative Filtering",
+        "year": 2017,
+        "doi": "https://doi.org/10.1145/3038912.3052569"
+      },
+      "crossref": {
+        "state": "matched",
+        "doi": "10.1145/3038912.3052569",
+        "title": "Neural Collaborative Filtering",
+        "year": 2017
+      },
+      "manual_exception_check": null,
+      "contamination_signals": {
+        "preprint_post_llm_inflection": false,
+        "openalex_unmatched": false,
+        "crossref_unmatched": false
+      },
+      "contamination_signal_omissions": {
+        "semantic_scholar_unmatched": "api_degraded"
+      }
+    },
+    {
+      "citation_key": "guo2017_deepfm",
+      "title": "DeepFM: A Factorization-Machine based Neural Network for CTR Prediction",
+      "year": 2017,
+      "doi": "10.24963/ijcai.2017/239",
+      "source_pointer": "https://www.ijcai.org/proceedings/2017/239",
+      "central_identity_status": "VERIFIED_IDENTITY",
+      "semantic_scholar": {
+        "state": "degraded",
+        "reason": "batch_latched_after_api_degradation"
+      },
+      "openalex": {
+        "state": "matched",
+        "id": "https://openalex.org/W2604662567",
+        "title": "DeepFM: A Factorization-Machine based Neural Network for CTR Prediction",
+        "year": 2017,
+        "doi": "https://doi.org/10.24963/ijcai.2017/239"
+      },
+      "crossref": {
+        "state": "matched",
+        "doi": "10.24963/ijcai.2017/239",
+        "title": "DeepFM: A Factorization-Machine based Neural Network for CTR Prediction",
+        "year": 2017
+      },
+      "manual_exception_check": null,
+      "contamination_signals": {
+        "preprint_post_llm_inflection": false,
+        "openalex_unmatched": false,
+        "crossref_unmatched": false
+      },
+      "contamination_signal_omissions": {
+        "semantic_scholar_unmatched": "api_degraded"
+      }
+    },
+    {
+      "citation_key": "yi2019_ndr",
+      "title": "Sampling-Bias-Corrected Neural Modeling for Large Corpus Item Recommendations",
+      "year": 2019,
+      "doi": "10.1145/3298689.3346996",
+      "source_pointer": "https://research.google/pubs/sampling-bias-corrected-neural-modeling-for-large-corpus-item-recommendations/",
+      "central_identity_status": "VERIFIED_IDENTITY",
+      "semantic_scholar": {
+        "state": "degraded",
+        "reason": "batch_latched_after_api_degradation"
+      },
+      "openalex": {
+        "state": "matched",
+        "id": "https://openalex.org/W2972801466",
+        "title": "Sampling-bias-corrected neural modeling for large corpus item recommendations",
+        "year": 2019,
+        "doi": "https://doi.org/10.1145/3298689.3346996"
+      },
+      "crossref": {
+        "state": "matched",
+        "doi": "10.1145/3298689.3346996",
+        "title": "Sampling-bias-corrected neural modeling for large corpus item recommendations",
+        "year": 2019
+      },
+      "manual_exception_check": null,
+      "contamination_signals": {
+        "preprint_post_llm_inflection": false,
+        "openalex_unmatched": false,
+        "crossref_unmatched": false
+      },
+      "contamination_signal_omissions": {
+        "semantic_scholar_unmatched": "api_degraded"
+      }
+    },
+    {
+      "citation_key": "he2020_lightgcn",
+      "title": "LightGCN: Simplifying and Powering Graph Convolution Network for Recommendation",
+      "year": 2020,
+      "doi": "10.1145/3397271.3401063",
+      "source_pointer": "https://doi.org/10.1145/3397271.3401063",
+      "central_identity_status": "VERIFIED_IDENTITY",
+      "semantic_scholar": {
+        "state": "degraded",
+        "reason": "batch_latched_after_api_degradation"
+      },
+      "openalex": {
+        "state": "matched",
+        "id": "https://openalex.org/W3004578093",
+        "title": "LightGCN: Simplifying and Powering Graph Convolution Network for Recommendation",
+        "year": 2020,
+        "doi": "https://doi.org/10.48550/arxiv.2002.02126"
+      },
+      "crossref": {
+        "state": "unmatched",
+        "doi": null,
+        "title": null,
+        "year": null
+      },
+      "manual_exception_check": {
+        "status": "VERIFIED_DOI_REGISTRY",
+        "basis": "Crossref DOI record resolves; registry title is abbreviated to 'LightGCN'; OpenAlex independently matched full identity"
+      },
+      "contamination_signals": {
+        "preprint_post_llm_inflection": false,
+        "openalex_unmatched": false,
+        "crossref_unmatched": true
+      },
+      "contamination_signal_omissions": {
+        "semantic_scholar_unmatched": "api_degraded"
+      }
+    },
+    {
+      "citation_key": "wang2022_directau",
+      "title": "Towards Representation Alignment and Uniformity in Collaborative Filtering",
+      "year": 2022,
+      "doi": "10.1145/3534678.3539253",
+      "source_pointer": "https://doi.org/10.1145/3534678.3539253",
+      "central_identity_status": "VERIFIED_IDENTITY",
+      "semantic_scholar": {
+        "state": "degraded",
+        "reason": "batch_latched_after_api_degradation"
+      },
+      "openalex": {
+        "state": "matched",
+        "id": "https://openalex.org/W4283702870",
+        "title": "Towards Representation Alignment and Uniformity in Collaborative Filtering",
+        "year": 2022,
+        "doi": "https://doi.org/10.1145/3534678.3539253"
+      },
+      "crossref": {
+        "state": "matched",
+        "doi": "10.1145/3534678.3539253",
+        "title": "Towards Representation Alignment and Uniformity in Collaborative Filtering",
+        "year": 2022
+      },
+      "manual_exception_check": null,
+      "contamination_signals": {
+        "preprint_post_llm_inflection": false,
+        "openalex_unmatched": false,
+        "crossref_unmatched": false
+      },
+      "contamination_signal_omissions": {
+        "semantic_scholar_unmatched": "api_degraded"
+      }
+    },
+    {
+      "citation_key": "cai2023_lightgcl",
+      "title": "LightGCL: Simple Yet Effective Graph Contrastive Learning for Recommendation",
+      "year": 2023,
+      "doi": null,
+      "source_pointer": "https://openreview.net/forum?id=FKXVK9dyMM",
+      "central_identity_status": "VERIFIED_IDENTITY",
+      "semantic_scholar": {
+        "state": "degraded",
+        "reason": "batch_latched_after_api_degradation"
+      },
+      "openalex": {
+        "state": "matched",
+        "id": "https://openalex.org/W4321277058",
+        "title": "LightGCL: Simple Yet Effective Graph Contrastive Learning for Recommendation",
+        "year": 2023,
+        "doi": "https://doi.org/10.48550/arxiv.2302.08191"
+      },
+      "crossref": {
+        "state": "unmatched",
+        "doi": null,
+        "title": null,
+        "year": null
+      },
+      "manual_exception_check": {
+        "status": "VERIFIED_OFFICIAL_PROCEEDINGS",
+        "basis": "ICLR 2023 OpenReview published-paper record"
+      },
+      "contamination_signals": {
+        "preprint_post_llm_inflection": false,
+        "openalex_unmatched": false,
+        "crossref_unmatched": true
+      },
+      "contamination_signal_omissions": {
+        "semantic_scholar_unmatched": "api_degraded"
+      }
+    },
+    {
+      "citation_key": "sheng2025_alpharec",
+      "title": "Language Representations Can Be What Recommenders Need: Findings and Potentials",
+      "year": 2025,
+      "doi": null,
+      "source_pointer": "https://proceedings.iclr.cc/paper_files/paper/2025/hash/e4bab1843c8d5a69f5abfd0824593493-Abstract-Conference.html",
+      "central_identity_status": "VERIFIED_IDENTITY",
+      "semantic_scholar": {
+        "state": "degraded",
+        "reason": "batch_latched_after_api_degradation"
+      },
+      "openalex": {
+        "state": "matched",
+        "id": "https://openalex.org/W4400480922",
+        "title": "Language Representations Can be What Recommenders Need: Findings and Potentials",
+        "year": 2024,
+        "doi": "https://doi.org/10.48550/arxiv.2407.05441"
+      },
+      "crossref": {
+        "state": "unmatched",
+        "doi": null,
+        "title": null,
+        "year": null
+      },
+      "manual_exception_check": {
+        "status": "VERIFIED_OFFICIAL_PROCEEDINGS",
+        "basis": "ICLR 2025 official proceedings record"
+      },
+      "contamination_signals": {
+        "preprint_post_llm_inflection": false,
+        "openalex_unmatched": false,
+        "crossref_unmatched": true
+      },
+      "contamination_signal_omissions": {
+        "semantic_scholar_unmatched": "api_degraded"
+      }
+    },
+    {
+      "citation_key": "agrawal1994_apriori",
+      "title": "Fast Algorithms for Mining Association Rules in Large Databases",
+      "year": 1994,
+      "doi": null,
+      "source_pointer": "https://vldb.org/conf/1994/P487.PDF",
+      "central_identity_status": "VERIFIED_IDENTITY",
+      "semantic_scholar": {
+        "state": "degraded",
+        "reason": "batch_latched_after_api_degradation"
+      },
+      "openalex": {
+        "state": "matched",
+        "id": "https://openalex.org/W1506285740",
+        "title": "Fast Algorithms for Mining Association Rules in Large Databases",
+        "year": 1994,
+        "doi": null
+      },
+      "crossref": {
+        "state": "unmatched",
+        "doi": null,
+        "title": null,
+        "year": null
+      },
+      "manual_exception_check": {
+        "status": "VERIFIED_OFFICIAL_PROCEEDINGS",
+        "basis": "VLDB 1994 official proceedings PDF"
+      },
+      "contamination_signals": {
+        "preprint_post_llm_inflection": false,
+        "openalex_unmatched": false,
+        "crossref_unmatched": true
+      },
+      "contamination_signal_omissions": {
+        "semantic_scholar_unmatched": "api_degraded"
+      }
+    },
+    {
+      "citation_key": "ghoshal2014_multi_item_rules",
+      "title": "Association Rules for Recommendations with Multiple Items",
+      "year": 2014,
+      "doi": "10.1287/ijoc.2013.0575",
+      "source_pointer": "https://doi.org/10.1287/ijoc.2013.0575",
+      "central_identity_status": "VERIFIED_IDENTITY",
+      "semantic_scholar": {
+        "state": "degraded",
+        "reason": "batch_latched_after_api_degradation"
+      },
+      "openalex": {
+        "state": "matched",
+        "id": "https://openalex.org/W2032677515",
+        "title": "Association Rules for Recommendations with Multiple Items",
+        "year": 2014,
+        "doi": "https://doi.org/10.1287/ijoc.2013.0575"
+      },
+      "crossref": {
+        "state": "matched",
+        "doi": "10.1287/ijoc.2013.0575",
+        "title": "Association Rules for Recommendations with Multiple Items",
+        "year": 2014
+      },
+      "manual_exception_check": null,
+      "contamination_signals": {
+        "preprint_post_llm_inflection": false,
+        "openalex_unmatched": false,
+        "crossref_unmatched": false
+      },
+      "contamination_signal_omissions": {
+        "semantic_scholar_unmatched": "api_degraded"
+      }
+    },
+    {
+      "citation_key": "liu2009_hybrid_seq_cf",
+      "title": "A Hybrid of Sequential Rules and Collaborative Filtering for Product Recommendation",
+      "year": 2009,
+      "doi": "10.1016/j.ins.2009.06.004",
+      "source_pointer": "https://doi.org/10.1016/j.ins.2009.06.004",
+      "central_identity_status": "VERIFIED_IDENTITY",
+      "semantic_scholar": {
+        "state": "degraded",
+        "reason": "batch_latched_after_api_degradation"
+      },
+      "openalex": {
+        "state": "matched",
+        "id": "https://openalex.org/W2050248182",
+        "title": "A hybrid of sequential rules and collaborative filtering for product recommendation",
+        "year": 2009,
+        "doi": "https://doi.org/10.1016/j.ins.2009.06.004"
+      },
+      "crossref": {
+        "state": "matched",
+        "doi": "10.1016/j.ins.2009.06.004",
+        "title": "A hybrid of sequential rules and collaborative filtering for product recommendation",
+        "year": 2009
+      },
+      "manual_exception_check": null,
+      "contamination_signals": {
+        "preprint_post_llm_inflection": false,
+        "openalex_unmatched": false,
+        "crossref_unmatched": false
+      },
+      "contamination_signal_omissions": {
+        "semantic_scholar_unmatched": "api_degraded"
+      }
+    },
+    {
+      "citation_key": "kang2018_sasrec",
+      "title": "Self-Attentive Sequential Recommendation",
+      "year": 2018,
+      "doi": "10.1109/ICDM.2018.00035",
+      "source_pointer": "https://doi.org/10.1109/ICDM.2018.00035",
+      "central_identity_status": "VERIFIED_IDENTITY",
+      "semantic_scholar": {
+        "state": "degraded",
+        "reason": "batch_latched_after_api_degradation"
+      },
+      "openalex": {
+        "state": "matched",
+        "id": "https://openalex.org/W2963367478",
+        "title": "Self-Attentive Sequential Recommendation",
+        "year": 2018,
+        "doi": "https://doi.org/10.1109/icdm.2018.00035"
+      },
+      "crossref": {
+        "state": "matched",
+        "doi": "10.1109/icdm.2018.00035",
+        "title": "Self-Attentive Sequential Recommendation",
+        "year": 2018
+      },
+      "manual_exception_check": null,
+      "contamination_signals": {
+        "preprint_post_llm_inflection": false,
+        "openalex_unmatched": false,
+        "crossref_unmatched": false
+      },
+      "contamination_signal_omissions": {
+        "semantic_scholar_unmatched": "api_degraded"
+      }
+    },
+    {
+      "citation_key": "sun2019_bert4rec",
+      "title": "BERT4Rec: Sequential Recommendation with Bidirectional Encoder Representations from Transformer",
+      "year": 2019,
+      "doi": "10.1145/3357384.3357895",
+      "source_pointer": "https://doi.org/10.1145/3357384.3357895",
+      "central_identity_status": "VERIFIED_IDENTITY",
+      "semantic_scholar": {
+        "state": "degraded",
+        "reason": "batch_latched_after_api_degradation"
+      },
+      "openalex": {
+        "state": "matched",
+        "id": "https://openalex.org/W2937556626",
+        "title": "BERT4Rec: Sequential Recommendation with Bidirectional Encoder Representations from Transformer",
+        "year": 2019,
+        "doi": "https://doi.org/10.48550/arxiv.1904.06690"
+      },
+      "crossref": {
+        "state": "unmatched",
+        "doi": null,
+        "title": null,
+        "year": null
+      },
+      "manual_exception_check": {
+        "status": "VERIFIED_DOI_REGISTRY",
+        "basis": "Crossref DOI record resolves; registry title is abbreviated to 'BERT4Rec'; OpenAlex independently matched full identity"
+      },
+      "contamination_signals": {
+        "preprint_post_llm_inflection": false,
+        "openalex_unmatched": false,
+        "crossref_unmatched": true
+      },
+      "contamination_signal_omissions": {
+        "semantic_scholar_unmatched": "api_degraded"
+      }
+    },
+    {
+      "citation_key": "peng2022_ham",
+      "title": "HAM: Hybrid Associations Models for Sequential Recommendation",
+      "year": 2022,
+      "doi": "10.1109/TKDE.2021.3049692",
+      "source_pointer": "https://doi.org/10.1109/TKDE.2021.3049692",
+      "central_identity_status": "VERIFIED_IDENTITY",
+      "semantic_scholar": {
+        "state": "degraded",
+        "reason": "batch_latched_after_api_degradation"
+      },
+      "openalex": {
+        "state": "matched",
+        "id": "https://openalex.org/W3119313768",
+        "title": ": Hybrid Associations Models for Sequential Recommendation",
+        "year": 2021,
+        "doi": "https://doi.org/10.1109/tkde.2021.3049692"
+      },
+      "crossref": {
+        "state": "matched",
+        "doi": "10.1109/tkde.2021.3049692",
+        "title": ": Hybrid Associations Models for Sequential Recommendation",
+        "year": 2022
+      },
+      "manual_exception_check": null,
+      "contamination_signals": {
+        "preprint_post_llm_inflection": false,
+        "openalex_unmatched": false,
+        "crossref_unmatched": false
+      },
+      "contamination_signal_omissions": {
+        "semantic_scholar_unmatched": "api_degraded"
+      }
+    },
+    {
+      "citation_key": "peng2023_m2",
+      "title": "MÂ²: Mixed Models With Preferences, Popularities and Transitions for Next-Basket Recommendation",
+      "year": 2023,
+      "doi": "10.1109/TKDE.2022.3142773",
+      "source_pointer": "https://doi.org/10.1109/TKDE.2022.3142773",
+      "central_identity_status": "VERIFIED_IDENTITY",
+      "semantic_scholar": {
+        "state": "degraded",
+        "reason": "batch_latched_after_api_degradation"
+      },
+      "openalex": {
+        "state": "matched",
+        "id": "https://openalex.org/W4206366028",
+        "title": "M<sup>2</sup>: Mixed Models With Preferences, Popularities and Transitions for Next-Basket Recommendation",
+        "year": 2022,
+        "doi": "https://doi.org/10.1109/tkde.2022.3142773"
+      },
+      "crossref": {
+        "state": "matched",
+        "doi": "10.1109/tkde.2022.3142773",
+        "title": "M<sup>2</sup>: Mixed Models With Preferences, Popularities and Transitions for Next-Basket Recommendation",
+        "year": 2023
+      },
+      "manual_exception_check": null,
+      "contamination_signals": {
+        "preprint_post_llm_inflection": false,
+        "openalex_unmatched": false,
+        "crossref_unmatched": false
+      },
+      "contamination_signal_omissions": {
+        "semantic_scholar_unmatched": "api_degraded"
+      }
+    },
+    {
+      "citation_key": "li2023_nbr_reality",
+      "title": "A Next Basket Recommendation Reality Check",
+      "year": 2023,
+      "doi": "10.1145/3587153",
+      "source_pointer": "https://doi.org/10.1145/3587153",
+      "central_identity_status": "VERIFIED_IDENTITY",
+      "semantic_scholar": {
+        "state": "degraded",
+        "reason": "batch_latched_after_api_degradation"
+      },
+      "openalex": {
+        "state": "matched",
+        "id": "https://openalex.org/W3204257979",
+        "title": "A Next Basket Recommendation Reality Check",
+        "year": 2023,
+        "doi": "https://doi.org/10.1145/3587153"
+      },
+      "crossref": {
+        "state": "matched",
+        "doi": "10.1145/3587153",
+        "title": "A Next Basket Recommendation Reality Check",
+        "year": 2023
+      },
+      "manual_exception_check": null,
+      "contamination_signals": {
+        "preprint_post_llm_inflection": false,
+        "openalex_unmatched": false,
+        "crossref_unmatched": false
+      },
+      "contamination_signal_omissions": {
+        "semantic_scholar_unmatched": "api_degraded"
+      }
+    },
+    {
+      "citation_key": "li2023_mask_swap",
+      "title": "Masked and Swapped Sequence Modeling for Next Novel Basket Recommendation in Grocery Shopping",
+      "year": 2023,
+      "doi": "10.1145/3604915.3608803",
+      "source_pointer": "https://doi.org/10.1145/3604915.3608803",
+      "central_identity_status": "VERIFIED_IDENTITY",
+      "semantic_scholar": {
+        "state": "degraded",
+        "reason": "batch_latched_after_api_degradation"
+      },
+      "openalex": {
+        "state": "matched",
+        "id": "https://openalex.org/W4385968297",
+        "title": "Masked and Swapped Sequence Modeling for Next Novel Basket Recommendation in Grocery Shopping",
+        "year": 2023,
+        "doi": "https://doi.org/10.1145/3604915.3608803"
+      },
+      "crossref": {
+        "state": "matched",
+        "doi": "10.1145/3604915.3608803",
+        "title": "Masked and Swapped Sequence Modeling for Next Novel Basket Recommendation in Grocery Shopping",
+        "year": 2023
+      },
+      "manual_exception_check": null,
+      "contamination_signals": {
+        "preprint_post_llm_inflection": false,
+        "openalex_unmatched": false,
+        "crossref_unmatched": false
+      },
+      "contamination_signal_omissions": {
+        "semantic_scholar_unmatched": "api_degraded"
+      }
+    },
+    {
+      "citation_key": "li2023_repetition_exploration",
+      "title": "Repetition and Exploration in Sequential Recommendation",
+      "year": 2023,
+      "doi": "10.1145/3539618.3591914",
+      "source_pointer": "https://doi.org/10.1145/3539618.3591914",
+      "central_identity_status": "VERIFIED_IDENTITY",
+      "semantic_scholar": {
+        "state": "degraded",
+        "reason": "batch_latched_after_api_degradation"
+      },
+      "openalex": {
+        "state": "matched",
+        "id": "https://openalex.org/W4384640047",
+        "title": "Repetition and Exploration in Sequential Recommendation",
+        "year": 2023,
+        "doi": "https://doi.org/10.1145/3539618.3591914"
+      },
+      "crossref": {
+        "state": "matched",
+        "doi": "10.1145/3539618.3591914",
+        "title": "Repetition and Exploration in Sequential Recommendation",
+        "year": 2023
+      },
+      "manual_exception_check": null,
+      "contamination_signals": {
+        "preprint_post_llm_inflection": false,
+        "openalex_unmatched": false,
+        "crossref_unmatched": false
+      },
+      "contamination_signal_omissions": {
+        "semantic_scholar_unmatched": "api_degraded"
+      }
+    },
+    {
+      "citation_key": "gusak2025_time_split",
+      "title": "Time to Split: Exploring Data Splitting Strategies for Offline Evaluation of Sequential Recommenders",
+      "year": 2025,
+      "doi": "10.1145/3705328.3748164",
+      "source_pointer": "https://doi.org/10.1145/3705328.3748164",
+      "central_identity_status": "VERIFIED_IDENTITY",
+      "semantic_scholar": {
+        "state": "degraded",
+        "reason": "batch_latched_after_api_degradation"
+      },
+      "openalex": {
+        "state": "matched",
+        "id": "https://openalex.org/W4414034851",
+        "title": "Time to Split: Exploring Data Splitting Strategies for Offline Evaluation of Sequential Recommenders",
+        "year": 2025,
+        "doi": "https://doi.org/10.1145/3705328.3748164"
+      },
+      "crossref": {
+        "state": "matched",
+        "doi": "10.1145/3705328.3748164",
+        "title": "Time to Split: Exploring Data Splitting Strategies for Offline Evaluation of Sequential Recommenders",
+        "year": 2025
+      },
+      "manual_exception_check": null,
+      "contamination_signals": {
+        "preprint_post_llm_inflection": false,
+        "openalex_unmatched": false,
+        "crossref_unmatched": false
+      },
+      "contamination_signal_omissions": {
+        "semantic_scholar_unmatched": "api_degraded"
+      }
+    },
+    {
+      "citation_key": "volkovs2017_dropoutnet",
+      "title": "DropoutNet: Addressing Cold Start in Recommender Systems",
+      "year": 2017,
+      "doi": null,
+      "source_pointer": "https://papers.neurips.cc/paper_files/paper/2017/hash/dbd22ba3bd0df8f385bdac3e9f8be207-Abstract.html",
+      "central_identity_status": "VERIFIED_IDENTITY",
+      "semantic_scholar": {
+        "state": "degraded",
+        "reason": "batch_latched_after_api_degradation"
+      },
+      "openalex": {
+        "state": "matched",
+        "id": "https://openalex.org/W2753686090",
+        "title": "DropoutNet: Addressing Cold Start in Recommender Systems",
+        "year": 2017,
+        "doi": null
+      },
+      "crossref": {
+        "state": "unmatched",
+        "doi": null,
+        "title": null,
+        "year": null
+      },
+      "manual_exception_check": {
+        "status": "VERIFIED_OFFICIAL_PROCEEDINGS",
+        "basis": "NeurIPS 2017 official proceedings record"
+      },
+      "contamination_signals": {
+        "preprint_post_llm_inflection": false,
+        "openalex_unmatched": false,
+        "crossref_unmatched": true
+      },
+      "contamination_signal_omissions": {
+        "semantic_scholar_unmatched": "api_degraded"
+      }
+    },
+    {
+      "citation_key": "du2020_mtpr",
+      "title": "How to Learn Item Representation for Cold-Start Multimedia Recommendation?",
+      "year": 2020,
+      "doi": "10.1145/3394171.3413628",
+      "source_pointer": "https://doi.org/10.1145/3394171.3413628",
+      "central_identity_status": "VERIFIED_IDENTITY",
+      "semantic_scholar": {
+        "state": "degraded",
+        "reason": "batch_latched_after_api_degradation"
+      },
+      "openalex": {
+        "state": "matched",
+        "id": "https://openalex.org/W3092846532",
+        "title": "How to Learn Item Representation for Cold-Start Multimedia Recommendation?",
+        "year": 2020,
+        "doi": "https://doi.org/10.1145/3394171.3413628"
+      },
+      "crossref": {
+        "state": "matched",
+        "doi": "10.1145/3394171.3413628",
+        "title": "How to Learn Item Representation for Cold-Start Multimedia Recommendation?",
+        "year": 2020
+      },
+      "manual_exception_check": null,
+      "contamination_signals": {
+        "preprint_post_llm_inflection": false,
+        "openalex_unmatched": false,
+        "crossref_unmatched": false
+      },
+      "contamination_signal_omissions": {
+        "semantic_scholar_unmatched": "api_degraded"
+      }
+    },
+    {
+      "citation_key": "wei2021_clcrec",
+      "title": "Contrastive Learning for Cold-Start Recommendation",
+      "year": 2021,
+      "doi": "10.1145/3474085.3475665",
+      "source_pointer": "https://doi.org/10.1145/3474085.3475665",
+      "central_identity_status": "VERIFIED_IDENTITY",
+      "semantic_scholar": {
+        "state": "degraded",
+        "reason": "batch_latched_after_api_degradation"
+      },
+      "openalex": {
+        "state": "matched",
+        "id": "https://openalex.org/W3206310679",
+        "title": "Contrastive Learning for Cold-Start Recommendation",
+        "year": 2021,
+        "doi": "https://doi.org/10.1145/3474085.3475665"
+      },
+      "crossref": {
+        "state": "matched",
+        "doi": "10.1145/3474085.3475665",
+        "title": "Contrastive Learning for Cold-Start Recommendation",
+        "year": 2021
+      },
+      "manual_exception_check": null,
+      "contamination_signals": {
+        "preprint_post_llm_inflection": false,
+        "openalex_unmatched": false,
+        "crossref_unmatched": false
+      },
+      "contamination_signal_omissions": {
+        "semantic_scholar_unmatched": "api_degraded"
+      }
+    },
+    {
+      "citation_key": "huang2023_aldi",
+      "title": "Aligning Distillation For Cold-start Item Recommendation",
+      "year": 2023,
+      "doi": "10.1145/3539618.3591732",
+      "source_pointer": "https://doi.org/10.1145/3539618.3591732",
+      "central_identity_status": "VERIFIED_IDENTITY",
+      "semantic_scholar": {
+        "state": "degraded",
+        "reason": "batch_latched_after_api_degradation"
+      },
+      "openalex": {
+        "state": "matched",
+        "id": "https://openalex.org/W4384887346",
+        "title": "Aligning Distillation For Cold-start Item Recommendation",
+        "year": 2023,
+        "doi": "https://doi.org/10.1145/3539618.3591732"
+      },
+      "crossref": {
+        "state": "matched",
+        "doi": "10.1145/3539618.3591732",
+        "title": "Aligning Distillation For Cold-start Item Recommendation",
+        "year": 2023
+      },
+      "manual_exception_check": null,
+      "contamination_signals": {
+        "preprint_post_llm_inflection": false,
+        "openalex_unmatched": false,
+        "crossref_unmatched": false
+      },
+      "contamination_signal_omissions": {
+        "semantic_scholar_unmatched": "api_degraded"
+      }
+    },
+    {
+      "citation_key": "hou2022_unisrec",
+      "title": "Towards Universal Sequence Representation Learning for Recommender Systems",
+      "year": 2022,
+      "doi": "10.1145/3534678.3539381",
+      "source_pointer": "https://doi.org/10.1145/3534678.3539381",
+      "central_identity_status": "VERIFIED_IDENTITY",
+      "semantic_scholar": {
+        "state": "degraded",
+        "reason": "batch_latched_after_api_degradation"
+      },
+      "openalex": {
+        "state": "matched",
+        "id": "https://openalex.org/W4290944002",
+        "title": "Towards Universal Sequence Representation Learning for Recommender Systems",
+        "year": 2022,
+        "doi": "https://doi.org/10.1145/3534678.3539381"
+      },
+      "crossref": {
+        "state": "matched",
+        "doi": "10.1145/3534678.3539381",
+        "title": "Towards Universal Sequence Representation Learning for Recommender Systems",
+        "year": 2022
+      },
+      "manual_exception_check": null,
+      "contamination_signals": {
+        "preprint_post_llm_inflection": false,
+        "openalex_unmatched": false,
+        "crossref_unmatched": false
+      },
+      "contamination_signal_omissions": {
+        "semantic_scholar_unmatched": "api_degraded"
+      }
+    },
+    {
+      "citation_key": "hou2023_vqrec",
+      "title": "Learning Vector-Quantized Item Representation for Transferable Sequential Recommenders",
+      "year": 2023,
+      "doi": "10.1145/3543507.3583434",
+      "source_pointer": "https://doi.org/10.1145/3543507.3583434",
+      "central_identity_status": "VERIFIED_IDENTITY",
+      "semantic_scholar": {
+        "state": "degraded",
+        "reason": "batch_latched_after_api_degradation"
+      },
+      "openalex": {
+        "state": "matched",
+        "id": "https://openalex.org/W4367047145",
+        "title": "Learning Vector-Quantized Item Representation for Transferable Sequential Recommenders",
+        "year": 2023,
+        "doi": "https://doi.org/10.1145/3543507.3583434"
+      },
+      "crossref": {
+        "state": "matched",
+        "doi": "10.1145/3543507.3583434",
+        "title": "Learning Vector-Quantized Item Representation for Transferable Sequential Recommenders",
+        "year": 2023
+      },
+      "manual_exception_check": null,
+      "contamination_signals": {
+        "preprint_post_llm_inflection": false,
+        "openalex_unmatched": false,
+        "crossref_unmatched": false
+      },
+      "contamination_signal_omissions": {
+        "semantic_scholar_unmatched": "api_degraded"
+      }
+    },
+    {
+      "citation_key": "reimers2019_sbert",
+      "title": "Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks",
+      "year": 2019,
+      "doi": "10.18653/v1/D19-1410",
+      "source_pointer": "https://aclanthology.org/D19-1410/",
+      "central_identity_status": "VERIFIED_IDENTITY",
+      "semantic_scholar": {
+        "state": "degraded",
+        "reason": "batch_latched_after_api_degradation"
+      },
+      "openalex": {
+        "state": "matched",
+        "id": "https://openalex.org/W2970641574",
+        "title": "Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks",
+        "year": 2019,
+        "doi": "https://doi.org/10.18653/v1/d19-1410"
+      },
+      "crossref": {
+        "state": "matched",
+        "doi": "10.18653/v1/d19-1410",
+        "title": "Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks",
+        "year": 2019
+      },
+      "manual_exception_check": null,
+      "contamination_signals": {
+        "preprint_post_llm_inflection": false,
+        "openalex_unmatched": false,
+        "crossref_unmatched": false
+      },
+      "contamination_signal_omissions": {
+        "semantic_scholar_unmatched": "api_degraded"
+      }
+    },
+    {
+      "citation_key": "yu2022_simgcl",
+      "title": "Are Graph Augmentations Necessary?: Simple Graph Contrastive Learning for Recommendation",
+      "year": 2022,
+      "doi": "10.1145/3477495.3531937",
+      "source_pointer": "https://doi.org/10.1145/3477495.3531937",
+      "central_identity_status": "VERIFIED_IDENTITY",
+      "semantic_scholar": {
+        "state": "degraded",
+        "reason": "batch_latched_after_api_degradation"
+      },
+      "openalex": {
+        "state": "degraded",
+        "reason": "OpenAlex HTTP 400: Bad Request"
+      },
+      "crossref": {
+        "state": "unmatched",
+        "doi": null,
+        "title": null,
+        "year": null
+      },
+      "manual_exception_check": {
+        "status": "VERIFIED_DOI_REGISTRY",
+        "basis": "Crossref DOI record resolves; registry title is abbreviated to 'Are Graph Augmentations Necessary?'; OpenAlex request degraded with HTTP 400"
+      },
+      "contamination_signals": {
+        "preprint_post_llm_inflection": false,
+        "crossref_unmatched": true
+      },
+      "contamination_signal_omissions": {
+        "semantic_scholar_unmatched": "api_degraded",
+        "openalex_unmatched": "api_degraded"
+      }
+    },
+    {
+      "citation_key": "yu2024_xsimgcl",
+      "title": "XSimGCL: Towards Extremely Simple Graph Contrastive Learning for Recommendation",
+      "year": 2024,
+      "doi": "10.1109/TKDE.2023.3288135",
+      "source_pointer": "https://doi.org/10.1109/TKDE.2023.3288135",
+      "central_identity_status": "VERIFIED_IDENTITY",
+      "semantic_scholar": {
+        "state": "degraded",
+        "reason": "batch_latched_after_api_degradation"
+      },
+      "openalex": {
+        "state": "matched",
+        "id": "https://openalex.org/W4381786098",
+        "title": "XSimGCL: Towards Extremely Simple Graph Contrastive Learning for Recommendation",
+        "year": 2023,
+        "doi": "https://doi.org/10.1109/tkde.2023.3288135"
+      },
+      "crossref": {
+        "state": "matched",
+        "doi": "10.1109/tkde.2023.3288135",
+        "title": "XSimGCL: Towards Extremely Simple Graph Contrastive Learning for Recommendation",
+        "year": 2023
+      },
+      "manual_exception_check": null,
+      "contamination_signals": {
+        "preprint_post_llm_inflection": false,
+        "openalex_unmatched": false,
+        "crossref_unmatched": false
+      },
+      "contamination_signal_omissions": {
+        "semantic_scholar_unmatched": "api_degraded"
+      }
+    },
+    {
+      "citation_key": "tran2024_viecomrec",
+      "title": "ViEcomRec: A Dataset for Recommendation in Vietnamese E-Commerce",
+      "year": 2024,
+      "doi": "10.1007/978-981-97-0669-3_7",
+      "source_pointer": "https://doras.dcu.ie/29693/",
+      "central_identity_status": "VERIFIED_IDENTITY",
+      "semantic_scholar": {
+        "state": "degraded",
+        "reason": "batch_latched_after_api_degradation"
+      },
+      "openalex": {
+        "state": "matched",
+        "id": "https://openalex.org/W4392252400",
+        "title": "ViEcomRec: A Dataset for Recommendation in Vietnamese E-Commerce",
+        "year": 2024,
+        "doi": "https://doi.org/10.1007/978-981-97-0669-3_7"
+      },
+      "crossref": {
+        "state": "matched",
+        "doi": "10.1007/978-981-97-0669-3_7",
+        "title": "ViEcomRec: A Dataset for Recommendation in Vietnamese E-Commerce",
+        "year": 2024
+      },
+      "manual_exception_check": null,
+      "contamination_signals": {
+        "preprint_post_llm_inflection": false,
+        "openalex_unmatched": false,
+        "crossref_unmatched": false
+      },
+      "contamination_signal_omissions": {
+        "semantic_scholar_unmatched": "api_degraded"
+      }
+    },
+    {
+      "citation_key": "tran2024_vietnamese_food",
+      "title": "A New Dataset and Empirical Evaluation for Vietnamese Food Recommendation System",
+      "year": 2024,
+      "doi": null,
+      "source_pointer": "https://aclanthology.org/2024.paclic-1.4/",
+      "central_identity_status": "VERIFIED_IDENTITY",
+      "semantic_scholar": {
+        "state": "degraded",
+        "reason": "batch_latched_after_api_degradation"
+      },
+      "openalex": {
+        "state": "unmatched",
+        "id": null,
+        "title": null,
+        "year": null,
+        "doi": null
+      },
+      "crossref": {
+        "state": "unmatched",
+        "doi": null,
+        "title": null,
+        "year": null
+      },
+      "manual_exception_check": {
+        "status": "VERIFIED_OFFICIAL_PROCEEDINGS",
+        "basis": "ACL Anthology PACLIC 2024 record"
+      },
+      "contamination_signals": {
+        "preprint_post_llm_inflection": false,
+        "openalex_unmatched": true,
+        "crossref_unmatched": true
+      },
+      "contamination_signal_omissions": {
+        "semantic_scholar_unmatched": "api_degraded"
+      }
+    },
+    {
+      "citation_key": "nguyen2026_vihorec",
+      "title": "ViHoRec: A Quality-Controlled Vietnamese Hotel Recommendation Dataset and Cold-Start Benchmark",
+      "year": 2026,
+      "doi": "10.48550/arXiv.2607.12946",
+      "source_pointer": "https://arxiv.org/abs/2607.12946",
+      "central_identity_status": "VERIFIED_IDENTITY",
+      "semantic_scholar": {
+        "state": "degraded",
+        "reason": "batch_latched_after_api_degradation"
+      },
+      "openalex": {
+        "state": "matched",
+        "id": "https://openalex.org/W7168392542",
+        "title": "ViHoRec: A Quality-Controlled Vietnamese Hotel Recommendation Dataset and Cold-Start Benchmark",
+        "year": 2026,
+        "doi": "https://doi.org/10.48550/arxiv.2607.12946"
+      },
+      "crossref": {
+        "state": "unmatched",
+        "doi": null,
+        "title": null,
+        "year": null
+      },
+      "manual_exception_check": {
+        "status": "VERIFIED_PREPRINT_RECORD",
+        "basis": "arXiv record plus DataCite DOI metadata"
+      },
+      "contamination_signals": {
+        "preprint_post_llm_inflection": true,
+        "openalex_unmatched": false,
+        "crossref_unmatched": true
+      },
+      "contamination_signal_omissions": {
+        "semantic_scholar_unmatched": "api_degraded"
+      }
+    },
+    {
+      "citation_key": "jin2023_amazon_m2",
+      "title": "Amazon-M2: A Multilingual Multi-Locale Shopping Session Dataset for Recommendation and Text Generation",
+      "year": 2023,
+      "doi": "10.52202/075280-0351",
+      "source_pointer": "https://proceedings.neurips.cc/paper_files/paper/2023/hash/193df57a2366d032fb18dcac0698d09a-Abstract-Datasets_and_Benchmarks.html",
+      "central_identity_status": "VERIFIED_IDENTITY",
+      "semantic_scholar": {
+        "state": "degraded",
+        "reason": "batch_latched_after_api_degradation"
+      },
+      "openalex": {
+        "state": "matched",
+        "id": "https://openalex.org/W7133205413",
+        "title": "Amazon-M2: A Multilingual Multi-locale Shopping Session Dataset for Recommendation and Text Generation",
+        "year": 2023,
+        "doi": "https://doi.org/10.52202/075280-0351"
+      },
+      "crossref": {
+        "state": "matched",
+        "doi": "10.52202/075280-0351",
+        "title": "Amazon-M2: A Multilingual Multi-locale Shopping Session Dataset for Recommendation and Text Generation",
+        "year": 2023
+      },
+      "manual_exception_check": null,
+      "contamination_signals": {
+        "preprint_post_llm_inflection": false,
+        "openalex_unmatched": false,
+        "crossref_unmatched": false
+      },
+      "contamination_signal_omissions": {
+        "semantic_scholar_unmatched": "api_degraded"
+      }
+    },
+    {
+      "citation_key": "yuan2022_tenrec",
+      "title": "Tenrec: A Large-scale Multipurpose Benchmark Dataset for Recommender Systems",
+      "year": 2022,
+      "doi": "10.52202/068431-0834",
+      "source_pointer": "https://proceedings.neurips.cc/paper_files/paper/2022/hash/4ad4fc1528374422dd7a69dea9e72948-Abstract-Datasets_and_Benchmarks.html",
+      "central_identity_status": "VERIFIED_IDENTITY",
+      "semantic_scholar": {
+        "state": "degraded",
+        "reason": "batch_latched_after_api_degradation"
+      },
+      "openalex": {
+        "state": "matched",
+        "id": "https://openalex.org/W7133218894",
+        "title": "Tenrec: A Large-Scale Multipurpose Benchmark Dataset for Recommender Systems",
+        "year": 2022,
+        "doi": "https://doi.org/10.52202/068431-0834"
+      },
+      "crossref": {
+        "state": "matched",
+        "doi": "10.52202/068431-0834",
+        "title": "Tenrec: A Large-Scale Multipurpose Benchmark Dataset for Recommender Systems",
+        "year": 2022
+      },
+      "manual_exception_check": null,
+      "contamination_signals": {
+        "preprint_post_llm_inflection": false,
+        "openalex_unmatched": false,
+        "crossref_unmatched": false
+      },
+      "contamination_signal_omissions": {
+        "semantic_scholar_unmatched": "api_degraded"
+      }
+    },
+    {
+      "citation_key": "tagliabue2021_coveo",
+      "title": "SIGIR 2021 E-Commerce Workshop Data Challenge",
+      "year": 2021,
+      "doi": null,
+      "source_pointer": "https://sigir-ecom.github.io/ecom2021/data-task.html",
+      "central_identity_status": "VERIFIED_IDENTITY",
+      "semantic_scholar": {
+        "state": "degraded",
+        "reason": "batch_latched_after_api_degradation"
+      },
+      "openalex": {
+        "state": "matched",
+        "id": "https://openalex.org/W3152513422",
+        "title": "SIGIR 2021 E-Commerce Workshop Data Challenge",
+        "year": 2021,
+        "doi": "https://doi.org/10.48550/arxiv.2104.09423"
+      },
+      "crossref": {
+        "state": "unmatched",
+        "doi": null,
+        "title": null,
+        "year": null
+      },
+      "manual_exception_check": {
+        "status": "VERIFIED_OPERATIONAL_RESOURCE",
+        "basis": "Official SIGIR eCom 2021 challenge page and organizer repository"
+      },
+      "contamination_signals": {
+        "preprint_post_llm_inflection": false,
+        "openalex_unmatched": false,
+        "crossref_unmatched": true
+      },
+      "contamination_signal_omissions": {
+        "semantic_scholar_unmatched": "api_degraded"
+      }
+    },
+    {
+      "citation_key": "normann2023_otto",
+      "title": "OTTO Recommender Systems Dataset: A Real-World E-Commerce Dataset for Session-Based Recommender Systems Research",
+      "year": 2023,
+      "doi": "10.34740/KAGGLE/DSV/4991874",
+      "source_pointer": "https://www.kaggle.com/datasets/otto/recsys-dataset",
+      "central_identity_status": "VERIFIED_IDENTITY",
+      "semantic_scholar": {
+        "state": "degraded",
+        "reason": "batch_latched_after_api_degradation"
+      },
+      "openalex": {
+        "state": "unmatched",
+        "id": null,
+        "title": null,
+        "year": null,
+        "doi": null
+      },
+      "crossref": {
+        "state": "unmatched",
+        "doi": null,
+        "title": null,
+        "year": null
+      },
+      "manual_exception_check": {
+        "status": "VERIFIED_DATASET_RECORD",
+        "basis": "DataCite/Kaggle DOI metadata plus official OTTO repository citation block"
+      },
+      "contamination_signals": {
+        "preprint_post_llm_inflection": false,
+        "openalex_unmatched": true,
+        "crossref_unmatched": true
+      },
+      "contamination_signal_omissions": {
+        "semantic_scholar_unmatched": "api_degraded"
+      }
+    },
+    {
+      "citation_key": "robinson2024_relbench",
+      "title": "RelBench: A Benchmark for Deep Learning on Relational Databases",
+      "year": 2024,
+      "doi": "10.52202/079017-0672",
+      "source_pointer": "https://proceedings.neurips.cc/paper_files/paper/2024/hash/25cd345233c65fac1fec0ce61d0f7836-Abstract-Datasets_and_Benchmarks_Track.html",
+      "central_identity_status": "VERIFIED_IDENTITY",
+      "semantic_scholar": {
+        "state": "degraded",
+        "reason": "batch_latched_after_api_degradation"
+      },
+      "openalex": {
+        "state": "matched",
+        "id": "https://openalex.org/W4415798762",
+        "title": "RelBench: A Benchmark for Deep Learning on Relational Databases",
+        "year": 2024,
+        "doi": "https://doi.org/10.52202/079017-0672"
+      },
+      "crossref": {
+        "state": "matched",
+        "doi": "10.52202/079017-0672",
+        "title": "RelBench: A Benchmark for Deep Learning on Relational Databases",
+        "year": 2024
+      },
+      "manual_exception_check": null,
+      "contamination_signals": {
+        "preprint_post_llm_inflection": false,
+        "openalex_unmatched": false,
+        "crossref_unmatched": false
+      },
+      "contamination_signal_omissions": {
+        "semantic_scholar_unmatched": "api_degraded"
+      }
+    },
+    {
+      "citation_key": "hou2026_blair",
+      "title": "Bridging Language and Items for Retrieval and Recommendation: Benchmarking LLMs as Semantic Encoders",
+      "year": 2026,
+      "doi": "10.18653/v1/2026.acl-long.147",
+      "source_pointer": "https://aclanthology.org/2026.acl-long.147/",
+      "central_identity_status": "VERIFIED_IDENTITY",
+      "semantic_scholar": {
+        "state": "degraded",
+        "reason": "batch_latched_after_api_degradation"
+      },
+      "openalex": {
+        "state": "matched",
+        "id": "https://openalex.org/W4392576636",
+        "title": "Bridging Language and Items for Retrieval and Recommendation: Benchmarking LLMs as Semantic Encoders",
+        "year": 2026,
+        "doi": "https://doi.org/10.18653/v1/2026.acl-long.147"
+      },
+      "crossref": {
+        "state": "matched",
+        "doi": "10.18653/v1/2026.acl-long.147",
+        "title": "Bridging Language and Items for Retrieval and Recommendation: Benchmarking LLMs as Semantic Encoders",
+        "year": 2026
+      },
+      "manual_exception_check": null,
+      "contamination_signals": {
+        "preprint_post_llm_inflection": false,
+        "openalex_unmatched": false,
+        "crossref_unmatched": false
+      },
+      "contamination_signal_omissions": {
+        "semantic_scholar_unmatched": "api_degraded"
+      }
+    },
+    {
+      "citation_key": "hm_fashion_competition",
+      "title": "H&M Personalized Fashion Recommendations",
+      "year": null,
+      "doi": null,
+      "source_pointer": "https://www.kaggle.com/competitions/h-and-m-personalized-fashion-recommendations/data",
+      "central_identity_status": "VERIFIED_IDENTITY",
+      "semantic_scholar": {
+        "state": "degraded",
+        "reason": "batch_latched_after_api_degradation"
+      },
+      "openalex": {
+        "state": "unmatched",
+        "id": null,
+        "title": null,
+        "year": null,
+        "doi": null
+      },
+      "crossref": {
+        "state": "unmatched",
+        "doi": null,
+        "title": null,
+        "year": null
+      },
+      "manual_exception_check": {
+        "status": "VERIFIED_OPERATIONAL_RESOURCE_WITH_METADATA_GAP",
+        "basis": "Official Kaggle URL; RelBench official rel-hm page confirms upstream challenge and task; release year remains unresolved"
+      },
+      "contamination_signals": {
+        "preprint_post_llm_inflection": false,
+        "openalex_unmatched": true,
+        "crossref_unmatched": true
+      },
+      "contamination_signal_omissions": {
+        "semantic_scholar_unmatched": "api_degraded"
+      }
+    },
+    {
+      "citation_key": "completejourney_resource",
+      "title": "The Complete Journey",
+      "year": null,
+      "doi": null,
+      "source_pointer": "https://www.dunnhumby.com/source-files/",
+      "central_identity_status": "VERIFIED_IDENTITY",
+      "semantic_scholar": {
+        "state": "degraded",
+        "reason": "batch_latched_after_api_degradation"
+      },
+      "openalex": {
+        "state": "unmatched",
+        "id": null,
+        "title": null,
+        "year": null,
+        "doi": null
+      },
+      "crossref": {
+        "state": "unmatched",
+        "doi": null,
+        "title": null,
+        "year": null
+      },
+      "manual_exception_check": {
+        "status": "VERIFIED_PROVIDER_RESOURCE_WITH_METADATA_GAP",
+        "basis": "dunnhumby provider page confirms The Complete Journey; exact edition and rights remain unresolved"
+      },
+      "contamination_signals": {
+        "preprint_post_llm_inflection": false,
+        "openalex_unmatched": true,
+        "crossref_unmatched": true
+      },
+      "contamination_signal_omissions": {
+        "semantic_scholar_unmatched": "api_degraded"
+      }
+    },
+    {
+      "citation_key": "wu2025_muse_taobao_mm",
+      "title": "MUSE: A Simple Yet Effective Multimodal Search-Based Framework for Lifelong User Interest Modeling",
+      "year": 2025,
+      "doi": "10.48550/arXiv.2512.07216",
+      "source_pointer": "https://arxiv.org/abs/2512.07216",
+      "central_identity_status": "VERIFIED_IDENTITY",
+      "semantic_scholar": {
+        "state": "degraded",
+        "reason": "batch_latched_after_api_degradation"
+      },
+      "openalex": {
+        "state": "matched",
+        "id": "https://openalex.org/W7113915053",
+        "title": "MUSE: A Simple Yet Effective Multimodal Search-Based Framework for Lifelong User Interest Modeling",
+        "year": 2025,
+        "doi": null
+      },
+      "crossref": {
+        "state": "unmatched",
+        "doi": null,
+        "title": null,
+        "year": null
+      },
+      "manual_exception_check": {
+        "status": "VERIFIED_PREPRINT_RECORD",
+        "basis": "arXiv record confirms title, authors, submission date, and DataCite DOI link"
+      },
+      "contamination_signals": {
+        "preprint_post_llm_inflection": true,
+        "openalex_unmatched": false,
+        "crossref_unmatched": true
+      },
+      "contamination_signal_omissions": {
+        "semantic_scholar_unmatched": "api_degraded"
+      }
+    }
+  ]
+}
+

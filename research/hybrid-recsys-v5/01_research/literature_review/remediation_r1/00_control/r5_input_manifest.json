@@ -1,0 +1,87 @@
+{
+  "schema_version": "stage1b-r1-r5-input-manifest-1.0",
+  "project": "hybrid-recsys-v5",
+  "stage": "1B",
+  "round": "R1",
+  "step": "R5_claim_map_and_phase3_synthesis",
+  "frozen_at": "2026-08-21",
+  "runtime_lock": {
+    "model": "gpt-5.6-sol",
+    "reasoning": "high",
+    "execution_mode": "fresh_dedicated_worktree_task"
+  },
+  "r3_gate": {
+    "verdict": "PASS",
+    "independent_audit": "PASS_20_OF_20",
+    "handoff_sha256": "caaaa51b1cfda308bac8603287b41dc5e3ae42f6aa3eb6bfe7f9cf623712c888",
+    "transitive_manifest": {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/r4_input_manifest.json",
+      "bytes": 4212,
+      "sha256": "56cac16b697d6bde6878e1274bef397face00ec5697b8291a4d8e5ed13627aeb"
+    }
+  },
+  "r4_gate": {
+    "verdict": "PASS",
+    "validation": "PASS_22_OF_22",
+    "receipt_payload_sha256": "1869e5bb793b84dd3b1d0401f4cb4723f26fafc23995ab52f15309e35585cf04",
+    "r5_authorized": true,
+    "core_contract_satisfied": "24/24",
+    "queue_terminal": "13/13",
+    "conditional_claim_prerequisites_satisfied": "22/22",
+    "claims": 44,
+    "conditional_candidates": 22,
+    "planning_only": 22,
+    "production_ready": 0,
+    "stage2_production_citations_authorized": false
+  },
+  "r5_contract": {
+    "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/r5_synthesis_contract.md",
+    "bytes": 5328,
+    "sha256": "d8aec416ba82cfc14bd57ceb48eb288fb28b32b774668639137b37a7ee96b54a"
+  },
+  "frozen_r4_files": [
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_acquisition_manifest.json",
+      "bytes": 139078,
+      "sha256": "a74156901a5ded6f0b853aff2a13fc2c9ca2c6e8b9e0fa09ba43b970b41a639a"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/locator_registry.json",
+      "bytes": 92236,
+      "sha256": "0af823257c2a5429b6b224a76e52bb7de1f5b4005c05cdec4d0574dce1230ae2"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/r4_claim_acquisition_map.json",
+      "bytes": 58339,
+      "sha256": "1dac3853f0cb5da0577acdf417fefc499325cd94299b1553c8619f224eceee39"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/rights_access_registry.json",
+      "bytes": 5820,
+      "sha256": "4007f58b6911dbcbfcea208b4bf1e4fecda648a9b77045ce8436fee82cb20f2c"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/r4_acquisition_report.md",
+      "bytes": 5678,
+      "sha256": "074de6c5b94a8d549492d4a34e07d7059858617a57c448d2681e057ae22647bf"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/r4_handoff.json",
+      "bytes": 30015,
+      "sha256": "30f25d6b817ab00967718acfdf727abc5d1f97640cd2b0884f2f25515f377fe7"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/validate_r4_acquisition.py",
+      "bytes": 22725,
+      "sha256": "56b1989e43ad27d56ed2d71af059f538cc8e39cadb2b4aeb83246d492f8bd2d3"
+    }
+  ],
+  "transitive_r4_artifact_gate": {
+    "source_artifacts": 35,
+    "pdf_preflight_sidecars": 28,
+    "required_hash_mismatches": 0
+  },
+  "write_scope": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/",
+  "ledger_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/synthesis_invocation_ledger.json",
+  "next_gate": "R5 PASS authorizes only R6 Devil's Advocate Checkpoint 2; Stage 1B remains unsealed and Stage 2 production citations remain unauthorized."
+}

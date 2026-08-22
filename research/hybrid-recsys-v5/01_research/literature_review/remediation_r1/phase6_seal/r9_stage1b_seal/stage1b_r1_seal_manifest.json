@@ -1,0 +1,252 @@
+{
+  "schema_version": "stage1b-r1-r9-seal-manifest-1.0",
+  "project": "hybrid-recsys-v5",
+  "stage": "1B",
+  "round": "R1",
+  "step": "R9_seal_and_stage2_handoff",
+  "verdict": "PASS_STAGE1B_SEALED",
+  "input_gate": {
+    "r9_input_manifest": {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/r9_input_manifest.json",
+      "bytes": 4988,
+      "sha256": "fb3584574bba7f52f34eda4b6f82a72d4c5fe100a7436c39a166cce7ce568f13"
+    },
+    "direct_inputs_matched": 13,
+    "direct_inputs_declared": 13,
+    "r7_validator": "PASS_29_OF_29",
+    "r8_validator": "PASS_60_OF_60",
+    "packet_members_replayed": 193,
+    "packet_members_declared": 193,
+    "canonical_root_sha256": "f0f2d56e42ce0f181f83182ddffe1060bf8994f50ababd4b0dbe563a942370dd",
+    "r8_handoff_sha256": "82cef8251e37702dc60b7a724f81f771b5bde61cf72e90b2f5ffae08e14f7800",
+    "r8_severity_counts": {
+      "Critical": 0,
+      "Major": 0,
+      "Minor": 0,
+      "Observation": 5
+    },
+    "scholar_adjudication_sha256": "a9a9ccc008f119bd4e4923fbb580529390a4f6653c8d973c1487e70133a2df62",
+    "scholar_counts": {
+      "confirmed": 11,
+      "disputed_reclassified": 1,
+      "pending": 0,
+      "unresolved": 0
+    },
+    "t002_effective_classification": "no_material_conflict/not_applicable",
+    "h1_h4": "NOT_RUN",
+    "benchmark_training_evaluation": "NOT_RUN"
+  },
+  "history": {
+    "v0_verdict": "FAIL",
+    "v0_findings_path": "research/hybrid-recsys-v5/01_research/literature_review/audit/audit_findings.json",
+    "v0_findings_sha256": "52a754ee42ff8d00a6f10ec1f17429fcbfa0b83afa27dc9756656ee921b86520",
+    "v0_verdict_path": "research/hybrid-recsys-v5/01_research/literature_review/audit/audit_verdict.json",
+    "v0_verdict_sha256": "d4d33b02e157c0fec44327951c0cf8e7dbcbb55561b2a432bdf497959ed8cf47",
+    "v0_mutated": false,
+    "supersession_scope": "remediation R1 supersedes v0 only for Stage 1B completion",
+    "non_superseded_v0_meaning": "The original FAIL and its eight finding records remain immutable audit history; R1 closure does not rewrite the historical judgment or claim the v0 packet passed."
+  },
+  "original_audit_closures": [
+    {
+      "finding_id": "ST1B-META-001",
+      "status": "CLOSED_FOR_STAGE1B_R1",
+      "closure_basis": "Operational resources are separated from the scholarly corpus, unknown resource years are not coerced into publication-year fields, and corpus counts were recomputed under the R1 schemas.",
+      "evidence": [
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/integration/literature_corpus_r1.json",
+          "sha256": "7a1800fcd3bf234bc19151e1a94cae8b834f14f194c2770573d472d96be5969f"
+        },
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/integration/operational_resource_registry.json",
+          "sha256": "e1bd73108707d53ded153a0d3be9710e7b10bb07f7d0e8708ea82911056bcb6b"
+        }
+      ]
+    },
+    {
+      "finding_id": "ST1B-META-002",
+      "status": "CLOSED_FOR_STAGE1B_R1",
+      "closure_basis": "Jannach and Chen is classified as editorial/essay with peer-review status not promoted absent direct evidence, and the source-quality arithmetic was recomputed.",
+      "evidence": [
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/integration/source_quality_matrix_r1.json",
+          "sha256": "631db428ff327380ad4d6ca33b963464f5301f5ec31d113f9a85fb2f617fc82d"
+        }
+      ]
+    },
+    {
+      "finding_id": "ST1B-META-003",
+      "status": "CLOSED_FOR_STAGE1B_R1",
+      "closure_basis": "Canonical scholarly metadata is normalized as UTF-8 with complete authors and authoritative title/year/type fields; the frozen validators replay zero canonical identity or encoding drift.",
+      "evidence": [
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/integration/literature_corpus_r1.json",
+          "sha256": "7a1800fcd3bf234bc19151e1a94cae8b834f14f194c2770573d472d96be5969f"
+        },
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/integration/source_quality_matrix_r1.json",
+          "sha256": "631db428ff327380ad4d6ca33b963464f5301f5ec31d113f9a85fb2f617fc82d"
+        }
+      ]
+    },
+    {
+      "finding_id": "ST1B-SCOPE-001",
+      "status": "CLOSED_FOR_STAGE1B_R1",
+      "closure_basis": "Prevalence language is bounded to the reviewed candidate set and the targeted, non-systematic review limitation remains explicit in both claim and synthesis authorities.",
+      "evidence": [
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/remediation_r6/claim_source_map_r1_remediated.json",
+          "sha256": "0d6d8d17ccf51132f6bf9a36ab08245f1d1e73bea831b5cb148a4fc00146f7da"
+        },
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/remediation_r6/synthesis_report_r1_remediated.md",
+          "sha256": "136a1baf26a1108ceac54943e0a8bc9fa89647210af5cefd206f1c049d95aa2d"
+        }
+      ]
+    },
+    {
+      "finding_id": "ST1B-SYNTH-001",
+      "status": "CLOSED_FOR_STAGE1B_R1",
+      "closure_basis": "Canonical-record, nominal-family, and dependency-adjusted-family counts are separate; dependency edges and exact theme denominators are frozen and replayed.",
+      "evidence": [
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/integration/source_family_map_r1.json",
+          "sha256": "44f5bcf30baa87bd67ce4c2d2efd45c775d0c7749c299b35bb31aa492ef6a513"
+        },
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/remediation_r6/theme_evidence_denominators.json",
+          "sha256": "aa8857a028b495e91a2ebdd2c10217fcf8325c2dc9089d282ef23aa064531bda"
+        }
+      ]
+    },
+    {
+      "finding_id": "ST1B-LOCATOR-001",
+      "status": "CLOSED_FOR_STAGE1B_R1",
+      "closure_basis": "The 24-object core acquisition contract is satisfied, all 13 queue targets are terminal, and the 33 visible citations resolve to verified non-none, non-page locators; remaining planning-only and operational pointers are not promoted.",
+      "evidence": [
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_acquisition_manifest.json",
+          "sha256": "a74156901a5ded6f0b853aff2a13fc2c9ca2c6e8b9e0fa09ba43b970b41a639a"
+        },
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/locator_registry.json",
+          "sha256": "0af823257c2a5429b6b224a76e52bb7de1f5b4005c05cdec4d0574dce1230ae2"
+        },
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/r4_claim_acquisition_map.json",
+          "sha256": "1dac3853f0cb5da0577acdf417fefc499325cd94299b1553c8619f224eceee39"
+        },
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/remediation_r6/claim_source_map_r1_remediated.json",
+          "sha256": "0d6d8d17ccf51132f6bf9a36ab08245f1d1e73bea831b5cb148a4fc00146f7da"
+        }
+      ]
+    },
+    {
+      "finding_id": "ST1B-ARS-001",
+      "status": "CLOSED_FOR_STAGE1B_R1",
+      "closure_basis": "The one-shot synthesis invocation is bound by an immutable invocation ledger and its input/output hashes inside the canonical R7 packet.",
+      "evidence": [
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/synthesis_invocation_ledger.json",
+          "sha256": "3ff1daef6d83ae4deddf11a14b58b35001254fad89df23fc78473c07cb7c0054"
+        }
+      ]
+    },
+    {
+      "finding_id": "ST1B-RIGHTS-001",
+      "status": "CLOSED_FOR_STAGE1B_R1",
+      "closure_basis": "Complete Journey provider terms and provider-page bytes are snapshotted and hashed, the package revision is pinned, and access/license/rights/redistribution layers remain separate without granting execution or redistribution.",
+      "evidence": [
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/rights_access_registry.json",
+          "sha256": "4007f58b6911dbcbfcea208b4bf1e4fecda648a9b77045ce8436fee82cb20f2c"
+        },
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/complete_journey_provider_terms_2026-08-21.html",
+          "sha256": "f88091a14a73ca7418baa40b6e25d586b7935672d703e9ad79d153aaf977f1e0"
+        },
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/completejourney_1.1.1.tar.gz",
+          "sha256": "e13716feb9118d510b03077a39682a7a7aea75fa8f32aef38d1570d7df999376"
+        }
+      ]
+    }
+  ],
+  "stage2_boundary": {
+    "authorization": "BOUNDED_STAGE2_LITERATURE_DRAFTING",
+    "authorized_claims": 22,
+    "prohibited_claims": 22,
+    "verified_citation_locator_pairs": 33,
+    "priority_targets": ["Introduction", "Related Work"],
+    "drafted_in_r9": false,
+    "h1_h4": "NOT_RUN",
+    "benchmark_training_evaluation": "NOT_RUN"
+  },
+  "authority_boundary": {
+    "deterministic_integrity": "Exact byte/SHA bindings, validator gates, packet replay, canonical root replay, roster arithmetic, deterministic seal preimage, and output hash bindings.",
+    "semantic_judgment": "R8's evidence-anchored audit judgment and scholar adjudication are carried as frozen decisions, not regenerated or made byte-reproducible by R9.",
+    "does_not_prove": [
+      "scientific correctness",
+      "novelty",
+      "superiority",
+      "external validity",
+      "benchmark success"
+    ]
+  },
+  "preimage_policy": {
+    "serialization": "json.dumps(ensure_ascii=False,sort_keys=True,separators=(',',':')); UTF-8; no trailing newline",
+    "excluded": [
+      "timestamps",
+      "absolute paths",
+      "worktree paths",
+      "mutable pipeline state",
+      "output self-hashes"
+    ]
+  },
+  "seal_preimage": {
+    "schema_version": "stage1b-r1-r9-seal-preimage-1.0",
+    "project": "hybrid-recsys-v5",
+    "stage": "1B",
+    "round": "R1",
+    "verdict": "PASS_STAGE1B_SEALED",
+    "input_manifest_sha256": "fb3584574bba7f52f34eda4b6f82a72d4c5fe100a7436c39a166cce7ce568f13",
+    "r7": {
+      "validation": "PASS_29_OF_29",
+      "packet_members": 193,
+      "canonical_root_sha256": "f0f2d56e42ce0f181f83182ddffe1060bf8994f50ababd4b0dbe563a942370dd"
+    },
+    "r8": {
+      "validation": "PASS_60_OF_60",
+      "handoff_sha256": "82cef8251e37702dc60b7a724f81f771b5bde61cf72e90b2f5ffae08e14f7800",
+      "severity": {"Critical": 0, "Major": 0, "Minor": 0, "Observation": 5}
+    },
+    "scholar": {
+      "adjudication_sha256": "a9a9ccc008f119bd4e4923fbb580529390a4f6653c8d973c1487e70133a2df62",
+      "confirmed": 11,
+      "disputed_reclassified": 1,
+      "pending": 0,
+      "unresolved": 0,
+      "t002": "no_material_conflict/not_applicable"
+    },
+    "closure": [
+      {"finding_id": "ST1B-ARS-001", "evidence_sha256": ["3ff1daef6d83ae4deddf11a14b58b35001254fad89df23fc78473c07cb7c0054"]},
+      {"finding_id": "ST1B-LOCATOR-001", "evidence_sha256": ["0af823257c2a5429b6b224a76e52bb7de1f5b4005c05cdec4d0574dce1230ae2", "0d6d8d17ccf51132f6bf9a36ab08245f1d1e73bea831b5cb148a4fc00146f7da", "1dac3853f0cb5da0577acdf417fefc499325cd94299b1553c8619f224eceee39", "a74156901a5ded6f0b853aff2a13fc2c9ca2c6e8b9e0fa09ba43b970b41a639a"]},
+      {"finding_id": "ST1B-META-001", "evidence_sha256": ["7a1800fcd3bf234bc19151e1a94cae8b834f14f194c2770573d472d96be5969f", "e1bd73108707d53ded153a0d3be9710e7b10bb07f7d0e8708ea82911056bcb6b"]},
+      {"finding_id": "ST1B-META-002", "evidence_sha256": ["631db428ff327380ad4d6ca33b963464f5301f5ec31d113f9a85fb2f617fc82d"]},
+      {"finding_id": "ST1B-META-003", "evidence_sha256": ["631db428ff327380ad4d6ca33b963464f5301f5ec31d113f9a85fb2f617fc82d", "7a1800fcd3bf234bc19151e1a94cae8b834f14f194c2770573d472d96be5969f"]},
+      {"finding_id": "ST1B-RIGHTS-001", "evidence_sha256": ["4007f58b6911dbcbfcea208b4bf1e4fecda648a9b77045ce8436fee82cb20f2c", "e13716feb9118d510b03077a39682a7a7aea75fa8f32aef38d1570d7df999376", "f88091a14a73ca7418baa40b6e25d586b7935672d703e9ad79d153aaf977f1e0"]},
+      {"finding_id": "ST1B-SCOPE-001", "evidence_sha256": ["0d6d8d17ccf51132f6bf9a36ab08245f1d1e73bea831b5cb148a4fc00146f7da", "136a1baf26a1108ceac54943e0a8bc9fa89647210af5cefd206f1c049d95aa2d"]},
+      {"finding_id": "ST1B-SYNTH-001", "evidence_sha256": ["44f5bcf30baa87bd67ce4c2d2efd45c775d0c7749c299b35bb31aa492ef6a513", "aa8857a028b495e91a2ebdd2c10217fcf8325c2dc9089d282ef23aa064531bda"]}
+    ],
+    "stage2": {
+      "authorization": "BOUNDED_STAGE2_LITERATURE_DRAFTING",
+      "authorized_claims": 22,
+      "prohibited_claims": 22,
+      "verified_citation_locator_pairs": 33,
+      "priority_targets": ["Introduction", "Related Work"],
+      "h1_h4": "NOT_RUN",
+      "benchmark_training_evaluation": "NOT_RUN"
+    }
+  },
+  "seal_sha256": "5353afaf36fb7146d58ff8e461f9c1586f2a253231bf7d1b162d77ed97a2d3b7"
+}

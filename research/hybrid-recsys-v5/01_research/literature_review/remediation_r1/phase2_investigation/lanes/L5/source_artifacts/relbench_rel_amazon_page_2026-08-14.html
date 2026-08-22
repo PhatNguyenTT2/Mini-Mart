@@ -1,0 +1,431 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Amazon-Reviews - RelBench</title>
+    <link rel="stylesheet" href="/assets/css/app.css">
+    <link rel="shortcut icon" type="image/png"
+           href="/favicon.png" 
+    />
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Amazon-Reviews | RelBench</title>
+<meta name="generator" content="Jekyll v3.9.3" />
+<meta property="og:title" content="Amazon-Reviews" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Relational Deep Learning Benchmark" />
+<meta property="og:description" content="Relational Deep Learning Benchmark" />
+<link rel="canonical" href="https://relbench.stanford.edu/datasets/rel-amazon/" />
+<meta property="og:url" content="https://relbench.stanford.edu/datasets/rel-amazon/" />
+<meta property="og:site_name" content="RelBench" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Amazon-Reviews" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Relational Deep Learning Benchmark","headline":"Amazon-Reviews","url":"https://relbench.stanford.edu/datasets/rel-amazon/"}</script>
+<!-- End Jekyll SEO tag -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-183522810-1"></script>
+<script>
+  window['ga-disable-UA-183522810-1'] = window.doNotTrack === "1" || navigator.doNotTrack === "1" || navigator.doNotTrack === "yes" || navigator.msDoNotTrack === "1";
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-183522810-1');
+</script><!-- head scripts --></head>
+
+  <body>
+    
+<nav class="navbar is-primary" >
+    <div class="container">
+        <div class="navbar-brand" style="margin-top: 10px;">
+            <a class="navbar-brand" href="/">
+            <span><img src="/img/logo.png" alt="Logo" style="height: auto; width: auto; max-height: 70px; max-width: 250px;"></span>
+            </a>
+            <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navMenu">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
+        <div class="navbar-menu" id="navMenu">
+            <div class="navbar-end">
+                
+                
+                    
+                    <a href="/" class="navbar-item ">Home</a>
+                    
+                
+                    
+                    <a href="/start/" class="navbar-item ">Start</a>
+                    
+                
+                    
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <a href="" class="navbar-link ">Databases</a>
+                        <div class="navbar-dropdown">
+                            
+                            <a href="/datasets/rel-stack" class="navbar-item ">rel-stack</a>
+                            
+                            <a href="/datasets/rel-amazon" class="navbar-item ">rel-amazon</a>
+                            
+                            <a href="/datasets/rel-trial" class="navbar-item ">rel-trial</a>
+                            
+                            <a href="/datasets/rel-f1" class="navbar-item ">rel-f1</a>
+                            
+                            <a href="/datasets/rel-hm" class="navbar-item ">rel-hm</a>
+                            
+                            <a href="/datasets/rel-event" class="navbar-item ">rel-event</a>
+                            
+                            <a href="/datasets/rel-avito" class="navbar-item ">rel-avito</a>
+                            
+                            <a href="/datasets/rel-salt" class="navbar-item ">rel-salt</a>
+                            
+                            <a href="/datasets/rel-arxiv" class="navbar-item ">rel-arxiv</a>
+                            
+                            <a href="/datasets/rel-ratebeer" class="navbar-item ">rel-ratebeer</a>
+                            
+                            <a href="/datasets/rel-mimic" class="navbar-item ">rel-mimic</a>
+                            
+                        </div>
+                    </div>
+                    
+                
+                    
+                    <a href="https://huggingface.co/spaces/relbench/leaderboard" class="navbar-item ">Leaderboards</a>
+                    
+                
+                    
+                    <a href="/news/" class="navbar-item ">News</a>
+                    
+                
+                    
+                    <a href="/team/" class="navbar-item ">Team</a>
+                    
+                
+                <a href="https://proceedings.mlr.press/v235/fey24a.html" class="navbar-item">Position Paper</a>
+                <a href="https://arxiv.org/abs/2407.20060" class="navbar-item">RelBench v1 Paper</a>
+                <a href="https://arxiv.org/abs/2602.12606" class="navbar-item">RelBench v2 Paper</a>
+                <a href="https://github.com/snap-stanford/relbench" class="navbar-item">GitHub</a>
+                
+            </div>
+
+        </div>
+    </div>
+</nav>
+
+    
+    
+
+
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                
+                <div class="column is-4-desktop is-4-tablet">
+                    
+
+<aside class="menu">
+
+    <p class="menu-label">Relational Databases</p>
+    <ul class="menu-list">
+        
+        <li>
+            <a href="/datasets/rel-amazon" class=""><strong>rel-amazon</strong></a>
+            
+            
+                        <ul>
+                
+                
+                <li><a href="/datasets/rel-amazon/#user-churn" class=""><code>user-churn</code> </a></li>
+                
+                
+                
+                <li><a href="/datasets/rel-amazon/#item-churn" class=""><code>item-churn</code> </a></li>
+                
+                
+                
+                <li><a href="/datasets/rel-amazon/#user-ltv" class=""><code>user-ltv</code> </a></li>
+                
+                
+                
+                <li><a href="/datasets/rel-amazon/#item-ltv" class=""><code>item-ltv</code> </a></li>
+                
+                
+                
+                <li><a href="/datasets/rel-amazon/#review-rating" class=""><code>review-rating</code> </a></li>
+                
+                
+                
+                <li><a href="/datasets/rel-amazon/#user-item-purchase" class=""><code>user-item-purchase</code> </a></li>
+                
+                
+                
+                <li><a href="/datasets/rel-amazon/#user-item-rate" class=""><code>user-item-rate</code> </a></li>
+                
+                
+                
+                <li><a href="/datasets/rel-amazon/#user-item-review" class=""><code>user-item-review</code> </a></li>
+                
+                
+            </ul>
+            
+        </li>
+        
+        <li>
+            <a href="/datasets/rel-stack" class=""><strong>rel-stack</strong></a>
+            
+            
+            
+        </li>
+        
+        <li>
+            <a href="/datasets/rel-trial" class=""><strong>rel-trial</strong></a>
+            
+            
+            
+        </li>
+        
+        <li>
+            <a href="/datasets/rel-f1" class=""><strong>rel-f1</strong></a>
+            
+            
+            
+        </li>
+        
+        <li>
+            <a href="/datasets/rel-hm" class=""><strong>rel-hm</strong></a>
+            
+            
+            
+        </li>
+        
+        <li>
+            <a href="/datasets/rel-event" class=""><strong>rel-event</strong></a>
+            
+            
+            
+        </li>
+        
+        <li>
+            <a href="/datasets/rel-avito" class=""><strong>rel-avito</strong></a>
+            
+            
+            
+        </li>
+        
+        <li>
+            <a href="/datasets/rel-salt" class=""><strong>rel-salt</strong></a>
+            
+            
+            
+        </li>
+        
+        <li>
+            <a href="/datasets/rel-arxiv" class=""><strong>rel-arxiv</strong></a>
+            
+            
+            
+        </li>
+        
+        <li>
+            <a href="/datasets/rel-ratebeer" class=""><strong>rel-ratebeer</strong></a>
+            
+            
+            
+        </li>
+        
+        <li>
+            <a href="/datasets/rel-mimic" class=""><strong>rel-mimic</strong></a>
+            
+            
+            
+        </li>
+            
+    </ul>
+
+</aside>
+                </div>
+                
+                <div class="column is-8">
+                    
+                    
+                    
+                    
+<div class="content">
+    <h1 id="rel-amazon-amazon-e-commerce-database"><code>rel-amazon</code> Amazon e-commerce database</h1>
+
+<p class="is-size-6">  <strong> Database Description: </strong>The Amazon e-commerce relational database is a product and user purchasing behavior across Amazon's e-commerce platform. Notably, it contains rich information about each product and transactions. The product table includes price and category information; the review table includes overall rating, whether the user has actually bought the product, and the text of the review itself. We use the subset of book-related products. 
+ </p>
+
+<p class="is-size-6">  <strong> Database Statistics: </strong> </p>
+
+<table class="table is-striped is-hoverable" id="A">
+<tr>
+<td>Domain</td>
+<td>E-Commerce</td>
+</tr>
+<tr>
+<td>Num of Tables</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Num of Rows</td>
+<td>15,000,713</td>
+</tr>
+<tr>
+<td>Num of Columns</td>
+<td>15</td>
+</tr>
+
+<tr> 
+<td> Starting time </td> 
+<td> 1996-06-25</td> 
+</tr>
+<tr>
+<td>Validation timestamp</td>
+<td>2015-01-01</td>
+</tr>
+<tr>
+<td>Testing timestamp</td>
+<td>2016-01-01</td>
+</tr>
+<tr>
+<td>Time window size</td>
+<td>3 months</td>
+</tr>
+</table>
+
+<p class="is-size-6">  <strong> Database schema: </strong> </p>
+<p><img src="../../img/rel-amazon.png" /></p>
+
+<p>To load this relational database in RelBench, do:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">relbench.datasets</span> <span class="kn">import</span> <span class="n">get_dataset</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">get_dataset</span><span class="p">(</span><span class="s">"rel-amazon"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p class="is-size-6">  <strong> References: </strong>  </p>
+
+<p><a href="https://cseweb.ucsd.edu/~jmcauley/datasets/amazon_v2/">[1] Amazon Review Data Dump. </a></p>
+
+<p class="is-size-6"> <strong> Dataset License: </strong>Not specified.</p>
+
+<hr />
+
+<h1 id="entity-classification-tasks">Entity Classification Tasks</h1>
+
+<h2 id="user-churn"><code>user-churn</code> <span class="forecasting-tag"></span></h2>
+
+<p class="is-size-6">  <strong> Task Description: </strong> For each user, predict 1 if the customer does not review any product in the next 3 months, and 0 otherwise.  </p>
+
+<p class="is-size-6"> <strong>Evaluation metric</strong><code>AUROC</code> </p>
+
+<h2 id="item-churn"><code>item-churn</code> <span class="forecasting-tag"></span></h2>
+
+<p class="is-size-6">  <strong> Task Description: </strong>  For each product, predict 1 if the product does not receive any reviews
+in the next 3 months.  </p>
+
+<p class="is-size-6"> <strong>Evaluation metric</strong><code>AUROC</code> </p>
+
+<!-- ## <code>review-verified</code> <span class="autocomplete-tag"></span> {#review-verified}
+
+<p class='is-size-6'>  <strong> Task Description: </strong> For each review, predict whether the purchase was verified. </p>
+
+<p class='is-size-6'> <strong>Evaluation metric</strong><code>AUROC</code> </p> -->
+
+<h1 id="entity-regression-tasks">Entity Regression Tasks</h1>
+
+<h2 id="user-ltv"><code>user-ltv</code> <span class="forecasting-tag"></span></h2>
+
+<p class="is-size-6">  <strong> Task Description: </strong> For each user, predict the $ value of the total number of products they
+buy and review in the next 3 months. </p>
+
+<p class="is-size-6"> <strong>Evaluation metric</strong><code>MAE</code> </p>
+
+<h2 id="item-ltv"><code>item-ltv</code> <span class="forecasting-tag"></span></h2>
+
+<p class="is-size-6">  <strong> Task Description: </strong> For each product, predict the $ value of the total number purchases and
+reviews it recieves in the next 3 months. </p>
+
+<p class="is-size-6"> <strong>Evaluation metric</strong><code>MAE</code> </p>
+
+<h2 id="review-rating"><code>review-rating</code> <span class="autocomplete-tag"></span></h2>
+
+<p class="is-size-6">  <strong> Task Description: </strong> For each review, predict the star rating. (The review text and summary are removed from the inputs.) </p>
+
+<p class="is-size-6"> <strong>Evaluation metric</strong><code>MAE</code> </p>
+
+<h1 id="link-prediction-tasks">Link Prediction Tasks</h1>
+
+<h2 id="user-item-purchase"><code>user-item-purchase</code></h2>
+
+<p class="is-size-6">  <strong> Task Description: </strong> Predict the list of distinct items each customer will pur-
+chase in the next 3 months. </p>
+
+<p class="is-size-6"> <strong>Evaluation metric</strong><code>MAP</code> </p>
+
+<h2 id="user-item-rate"><code>user-item-rate</code></h2>
+
+<p class="is-size-6">  <strong> Task Description: </strong> Predict the list of distinct items each customer will purchase and
+give a 5 star review in the next 3 months. </p>
+
+<p class="is-size-6"> <strong>Evaluation metric</strong><code>MAP</code> </p>
+
+<h2 id="user-item-review"><code>user-item-review</code></h2>
+
+<p class="is-size-6">  <strong> Task Description: </strong> Predict the list of distinct items each customer will purchase
+and give a detailed review in the next 3 months. </p>
+
+<p class="is-size-6"> <strong>Evaluation metric</strong><code>MAP</code> </p>
+
+</div>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+    
+        <footer class="footer">
+    <div class="container">
+        
+        <div class="columns is-mobile">
+            <div class="column is-8 has-text-left is-vcentered">
+                <a class="navbar-brand" href="/">
+            <span><img src="/img/logo.png" alt="Logo" style="height: auto; width: auto; max-height: 70px; max-width: 250px;"></span>
+            </a>
+            </div>
+            <div class="column is-4 has-text-right is-vcentered">
+                <a href="https://relbench.stanford.edu/paper.pdf">
+                    <span class="icon is-large">
+                      <i class="fas fa-file-alt fa-3x"></i>
+                    </span>
+                </a>
+
+                <a href="https://github.com/snap-stanford/relbench">
+                    <span class="icon is-large">
+                      <i class="fas fab fa-github fa-3x"></i>
+                    </span>
+                </a>
+
+                <a href="https://twitter.com/RelBench">
+                    <span class="icon is-large">
+                      <i class="fas fab fa-twitter fa-3x"></i>
+                    </span>
+                </a>
+
+                <a href="https://groups.google.com/forum/#!forum/relbench/join">
+                    <span class="icon is-large">
+                      <i class="fa fa-envelope fa-3x"></i>
+                    </span>
+                </a>
+            </div>
+        </div>
+        
+    </div>
+</footer>
+    
+    <script src="/assets/js/app.js" type="text/javascript"></script><!-- footer scripts --></body>
+</html>
+

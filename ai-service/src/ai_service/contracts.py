@@ -75,6 +75,41 @@ class ColdPartitionManifest(ArtifactManifest):
     cold_product_ids: list[int]
 
 
+class DatasetAlignmentEvidence(BaseModel):
+    """Control-plane receipt for deterministic v5 target-rule alignment."""
+
+    transition_user_count: int = Field(ge=0)
+    transition_fraction: float = Field(ge=0.0, le=1.0)
+    eligible_training_rule_targets: int = Field(gt=0)
+    aligned_training_rule_targets: int = Field(ge=0)
+    training_rule_target_rate: float = Field(ge=0.0, le=1.0)
+    eligible_val_rule_targets: int = Field(gt=0)
+    aligned_val_rule_targets: int = Field(ge=0)
+    val_rule_target_rate: float = Field(ge=0.0, le=1.0)
+
+    @model_validator(mode="after")
+    def receipt_is_exact_and_ready(self) -> DatasetAlignmentEvidence:
+        if self.transition_user_count != 2_500:
+            raise ValueError("v5 alignment receipt requires exactly 2500 transition users")
+        if abs(self.transition_fraction - 0.50) > 1e-12:
+            raise ValueError("v5 alignment receipt requires transition_fraction 0.50")
+        if self.aligned_training_rule_targets > self.eligible_training_rule_targets:
+            raise ValueError("aligned TRAIN targets exceed eligible TRAIN targets")
+        if self.aligned_val_rule_targets > self.eligible_val_rule_targets:
+            raise ValueError("aligned VAL targets exceed eligible VAL targets")
+        expected_training_rate = (
+            self.aligned_training_rule_targets / self.eligible_training_rule_targets
+        )
+        expected_val_rate = self.aligned_val_rule_targets / self.eligible_val_rule_targets
+        if abs(self.training_rule_target_rate - expected_training_rate) > 1e-12:
+            raise ValueError("TRAIN rule-target rate does not match receipt counters")
+        if abs(self.val_rule_target_rate - expected_val_rate) > 1e-12:
+            raise ValueError("VAL rule-target rate does not match receipt counters")
+        if self.training_rule_target_rate < 0.40 or self.val_rule_target_rate < 0.40:
+            raise ValueError("v5 alignment receipt is below the 0.40 target-rule floor")
+        return self
+
+
 class SnapshotManifest(ArtifactManifest):
     benchmark_run_id: str
     store_id: int = Field(gt=0)
@@ -88,6 +123,7 @@ class SnapshotManifest(ArtifactManifest):
     benchmark_spec_sha256: str | None = Field(default=None, pattern=r"^[0-9a-f]{64}$")
     semantic_cohort_sha256: str | None = Field(default=None, pattern=r"^[0-9a-f]{64}$")
     order_metadata_sha256: str | None = Field(default=None, pattern=r"^[0-9a-f]{64}$")
+    dataset_alignment_evidence: DatasetAlignmentEvidence | None = None
 
     @model_validator(mode="after")
     def postgres_v5_lineage_is_complete(self) -> SnapshotManifest:
@@ -99,8 +135,10 @@ class SnapshotManifest(ArtifactManifest):
                     self.semantic_cohort_sha256,
                     self.order_metadata_sha256,
                 )
-            ):
-                raise ValueError("postgres v5 snapshot requires expanded lineage hashes")
+            ) or self.dataset_alignment_evidence is None:
+                raise ValueError(
+                    "postgres v5 snapshot requires expanded lineage hashes and alignment evidence"
+                )
         return self
 
 
@@ -662,18 +700,6 @@ class RuleAlignmentEvidence(BaseModel):
         if self.val_rule_aligned_users > self.val_eligible_users:
             raise ValueError("aligned VAL users exceed eligible VAL users")
         return self
-
-
-class DatasetAlignmentEvidence(BaseModel):
-    """Immutable receipt for the target/useful-rule alignment preflight."""
-
-    training_target_count: int = Field(ge=0)
-    strict_target_rule_count: int = Field(ge=0)
-    strict_target_rule_rate: float = Field(ge=0.0, le=1.0)
-    val_eligible_user_count: int = Field(ge=0)
-    val_aligned_user_count: int = Field(ge=0)
-    val_aligned_user_rate: float = Field(ge=0.0, le=1.0)
-    negative_only_row_count: int = Field(ge=0)
 
 
 class RulePairIndexManifest(BaseModel):

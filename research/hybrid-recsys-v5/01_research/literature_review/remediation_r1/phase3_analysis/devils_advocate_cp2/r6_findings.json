@@ -1,0 +1,229 @@
+{
+  "schema_version": "stage1b-r1-r6-findings-1.0",
+  "project": "hybrid-recsys-v5",
+  "stage": "1B",
+  "round": "R1",
+  "step": "R6_devils_advocate_checkpoint_2",
+  "generated_at": "2026-08-21T20:55:00+07:00",
+  "runtime_lock": {
+    "model": "gpt-5.6-sol",
+    "reasoning": "high",
+    "execution_mode": "fresh_dedicated_worktree_task"
+  },
+  "input_binding": {
+    "r6_input_manifest_sha256": "52caf72b133c1368b68afac8fbaf50a544ef9f92001b818b01a71b76e861546a",
+    "frozen_hash_mismatches": 0,
+    "r5_final_validation": "PASS_29_OF_29",
+    "r5_final_receipt_payload_sha256": "db101ad4c4ff5c1be5522d070b5c8048b89502082f52cf6f36031499186d3ee8",
+    "r3_gate": "PASS_20_OF_20",
+    "r4_gate": "PASS_22_OF_22"
+  },
+  "verdict": "REVISE",
+  "severity_counts": {
+    "Critical": 0,
+    "Major": 1,
+    "Minor": 2,
+    "Observation": 5
+  },
+  "findings": [
+    {
+      "finding_id": "R6-MAJ-001",
+      "severity": "Major",
+      "type": "evidence_accounting_and_source_family_dependence",
+      "title": "Convergence denominators are not replayable and overstate or misstate family-aware support",
+      "locations": [
+        "synthesis_report_r1.md#theme-2--architecture-labels-conceal-different-signals-objectives-and-stage-roles",
+        "synthesis_report_r1.md#theme-3--hybridization-is-precedent-for-ablation-not-evidence-of-v5-efficacy",
+        "synthesis_report_r1.md#theme-4--zero-edge-cold-item-evidence-requires-content-and-adaptation-boundaries",
+        "synthesis_report_r1.md#convergence-and-divergence"
+      ],
+      "evidence": {
+        "theme_1_visible": {"canonical_records": 6, "nominal_families": 6, "r5_reported": "6/6"},
+        "theme_2_visible": {"canonical_records": 8, "nominal_families": 8, "r5_reported": "7/7"},
+        "theme_3_visible": {"canonical_records": 8, "nominal_families": 8, "r5_reported": "7/7"},
+        "theme_4_visible": {
+          "canonical_records": 9,
+          "nominal_families": 9,
+          "dependency_adjusted_families_max": 8,
+          "r5_reported": "10/10",
+          "dependency": "SF-R1-052 -> SF-R1-017; counting_effect=not_an_additional_independent_source_family"
+        },
+        "theme_5_visible": {"operational_records": 2, "operational_families": 1, "r5_reported": "2/1"}
+      },
+      "impact": "The qualitative boundaries remain plausible, but the explicit convergence strength is not reproducible and violates the R1 family-aware counting requirement.",
+      "required_remediation": "Enumerate the exact source keys behind every convergence count, separate canonical records from nominal and dependency-adjusted families, apply all counting_effect edges, and add a semantic validator that resolves prose counts to the enumerated set.",
+      "r7_blocking": true
+    },
+    {
+      "finding_id": "R6-MIN-001",
+      "severity": "Minor",
+      "type": "tension_classification_precision",
+      "title": "T-002 is more naturally a non-tension than a resolved conditional difference",
+      "locations": ["cross_paper_tensions_r1.json#T-002", "synthesis_report_r1.md#tension-t-002"],
+      "evidence": "The two sources concern complementary candidate-construction and split-construction risks; the R5 resolution itself calls them complementary.",
+      "recommendation": "Scholar should dispute and reclassify to no_material_conflict/not_applicable unless a proposition-level conditional difference is supplied.",
+      "r7_blocking": false
+    },
+    {
+      "finding_id": "R6-MIN-002",
+      "severity": "Minor",
+      "type": "confirmation_bias_traceability",
+      "title": "Counter-evidence is complete upstream but not carried into the R5 claim map",
+      "locations": ["claim_source_map_r1.json#claims"],
+      "evidence": {
+        "claims_audited": 44,
+        "lane_cards_with_nonempty_counter_evidence": 44,
+        "r5_claim_rows_with_counter_evidence_field": 0,
+        "supported": 38,
+        "partially_supported": 6
+      },
+      "recommendation": "Carry bounded counter-evidence and source/locator pointers into claim rows or a hash-bound sidecar during remediation.",
+      "r7_blocking": false
+    },
+    {
+      "finding_id": "R6-OBS-001",
+      "severity": "Observation",
+      "type": "single_family_fragility",
+      "title": "Theme 5 is explicitly fragile to removal of the Complete Journey family",
+      "evidence": "Two operational records belong to one family; removing SF-R1-075 collapses Complete Journey-specific positioning while leaving the generic rights-layer rule.",
+      "r7_blocking": false
+    },
+    {
+      "finding_id": "R6-OBS-002",
+      "severity": "Observation",
+      "type": "publication_status",
+      "title": "Preprints and editorial status remain bounded",
+      "evidence": "ViHoRec and TAOBAO-MM are preprints used only in planning-only rows; Jannach–Chen is an editorial/essay with peer review unknown.",
+      "r7_blocking": false
+    },
+    {
+      "finding_id": "R6-OBS-003",
+      "severity": "Observation",
+      "type": "bounded_replacement",
+      "title": "The Liu 2007 substitution remains within its accepted scope",
+      "evidence": "Only hybrid-method precedent is used; no 2009-specific implementation detail or result is asserted.",
+      "downstream_caveat": "Any later bibliography must cite the 2007 manifestation explicitly.",
+      "r7_blocking": false
+    },
+    {
+      "finding_id": "R6-OBS-004",
+      "severity": "Observation",
+      "type": "rights_and_access",
+      "title": "Complete Journey rights/access layers remain separate",
+      "evidence": "Full provider payload not acquired; provider route is interactive; package CC0 is package-scoped; dataset rights are restricted; redistribution is not established; provider/package editions differ.",
+      "r7_blocking": false
+    },
+    {
+      "finding_id": "R6-OBS-005",
+      "severity": "Observation",
+      "type": "coverage_and_omission_risk",
+      "title": "The frozen targeted corpus cannot establish exhaustive positioning",
+      "evidence": "R5 performed no broad discovery and explicitly disclaims complete pairwise contradiction detection.",
+      "r7_blocking": false
+    }
+  ],
+  "claim_bias_audit": {
+    "expected_claims": 44,
+    "audited_claims": 44,
+    "audited_claim_ids": [
+      "C-L5-EXT-01", "C-L5-EXT-02", "C-L5-EXT-03", "C-L5-EXT-04", "C-L5-EXT-05",
+      "C-L5-RIGHTS-01", "C-L5-SCOPE-01", "C-L5-VN-01", "C-L5-VN-02",
+      "L1-CC-001", "L1-CC-002", "L1-CC-003", "L1-CC-004", "L1-CC-005", "L1-CC-006", "L1-CC-007", "L1-CC-008", "L1-CC-009", "L1-CC-010", "L1-CC-011",
+      "L2-CLAIM-GRAPH-ZERO-EDGE-005", "L2-CLAIM-HARMONIZED-EVAL-008", "L2-CLAIM-ITEMCF-BPR-001", "L2-CLAIM-NCF-DEEPFM-002", "L2-CLAIM-OBJECTIVE-006", "L2-CLAIM-RECENT-TOWER-CONTROLS-007", "L2-CLAIM-TWO-STAGE-003", "L2-CLAIM-WIDE-DEEP-004",
+      "L3-APR-001", "L3-BTBR-005", "L3-GAP-008", "L3-HYB-006", "L3-NBR-004", "L3-PROTO-007", "L3-RULE-002", "L3-SEQ-003",
+      "L4-CC-01", "L4-CC-02", "L4-CC-03", "L4-CC-04", "L4-CC-05", "L4-CC-06", "L4-CC-07", "L4-CC-08"
+    ],
+    "dispositions": {"citation_ready_candidate": 22, "planning_only": 22},
+    "support_verdicts": {"supported": 38, "partially_supported": 6},
+    "counter_evidence": {"upstream_nonempty": 44, "r5_claim_map_carried": 0},
+    "cherry_picking_result": "NO_MATERIAL_CHERRY_PICKING_FOUND_TRACEABILITY_MINOR",
+    "confirmation_bias_result": "NO_MATERIAL_CONFIRMATION_BIAS_FOUND_TRACEABILITY_MINOR"
+  },
+  "theme_robustness": [
+    {
+      "theme_id": "T1",
+      "theme": "The evaluation protocol is part of the estimand",
+      "strongest_removed_source": "dacrema2021_reproducibility",
+      "strongest_removed_family": "SF-R1-009",
+      "result": "ROBUST",
+      "effect": "The repository/reproduction subclaim narrows; all 11 aligned claim rows retain other support."
+    },
+    {
+      "theme_id": "T2",
+      "theme": "Architecture labels conceal different signals, objectives, and stage roles",
+      "strongest_removed_source": "rendle2009_bpr",
+      "strongest_removed_family": "SF-R1-047",
+      "result": "ROBUST_WITH_LOCAL_WEAKENING",
+      "effect": "The exact ItemCF-versus-BPR comparison and BPR arm of the objective claim need narrower wording; the theme survives."
+    },
+    {
+      "theme_id": "T3",
+      "theme": "Hybridization is precedent for ablation, not evidence of v5 efficacy",
+      "strongest_removed_source": "mansouri2026_repeat_explore_lightgcn",
+      "strongest_removed_family": "SF-R1-035",
+      "result": "ROBUST_WITH_REDUCED_DIRECTNESS",
+      "effect": "The most direct recent hybrid repeat/explore trade-off is lost; other sources preserve all eight aligned claim rows."
+    },
+    {
+      "theme_id": "T4",
+      "theme": "Zero-edge cold-item evidence requires content and adaptation boundaries",
+      "strongest_removed_source": "sheng2025_alpharec",
+      "strongest_removed_family": "SF-R1-052",
+      "result": "ROBUST_WITH_DEPENDENCE_CAVEAT",
+      "effect": "The language-representation recommender bridge weakens; cohort, content-objective, and adaptation boundaries survive."
+    },
+    {
+      "theme_id": "T5",
+      "theme": "External-resource compatibility and rights are separate axes",
+      "strongest_removed_source": "Complete Journey provider/package family",
+      "strongest_removed_family": "SF-R1-075",
+      "result": "FRAGILE_SINGLE_FAMILY",
+      "effect": "Complete Journey-specific positioning collapses; the generic rights/access separation survives."
+    }
+  ],
+  "family_recount": {
+    "registry": {"canonical_scholarly_records": 74, "nominal_scholarly_families": 71},
+    "included": {"canonical_scholarly_records": 52, "distinct_nominal_family_ids": 52},
+    "included_cross_family_dependency_edges": 3,
+    "visible_themes": {
+      "T1": {"records": 6, "nominal_families": 6},
+      "T2": {"records": 8, "nominal_families": 8},
+      "T3": {"records": 8, "nominal_families": 8},
+      "T4": {"records": 9, "nominal_families": 9, "dependency_adjusted_families_max": 8},
+      "T5": {"operational_records": 2, "operational_families": 1}
+    },
+    "duplicate_canonical_identity_detected": false,
+    "prose_double_counting_or_miscount_detected": true
+  },
+  "boundary_attacks": {
+    "cold_item_not_cold_user": "PRESERVED",
+    "wide_deep_not_apriori_efficacy": "PRESERVED",
+    "transfer_not_h4": "PRESERVED",
+    "literature_not_empirical_results": "PRESERVED",
+    "official_reproduction_not_harmonized_benchmark": "PRESERVED",
+    "complete_journey_rights_access_separation": "PRESERVED_PLANNING_ONLY",
+    "liu_2007_substitution": "PRESERVED_BOUNDED_METHOD_PRECEDENT_ONLY"
+  },
+  "strongest_hostile_reviewer_counterargument": "The artifact is a contract-oriented map of heterogeneous method descriptions from a targeted, non-systematic corpus; internally inconsistent convergence counts and declared method/backbone dependencies prevent it from establishing empirical robustness, novelty, external validity, or superiority of the v5 framing.",
+  "minimum_defensible_concession": "Recast the five themes as scoped design constraints and testable positioning hypotheses among reviewed candidates; enumerate and dependency-adjust all denominators; identify Theme 5 as single-family planning evidence; retain non-systematic coverage limits; keep H1-H4, Stage 1B sealing, and Stage 2 citations blocked.",
+  "concession_threshold_log": [],
+  "concession_protocol_note": "No user or agent rebuttal was supplied; no rebuttal score or manufactured concession was created.",
+  "scholar_checkpoint": {
+    "pairs": 12,
+    "pending": 12,
+    "recommend_confirm": 11,
+    "recommend_dispute": 1,
+    "self_confirmed": 0,
+    "self_disputed": 0,
+    "user_adjudication_required": true
+  },
+  "phase_boundary": {
+    "r7_authorized": false,
+    "r7_r9": "NOT_PERFORMED",
+    "manuscript_drafting": "NOT_PERFORMED",
+    "benchmark_training_evaluation": "NOT_RUN",
+    "h1_h4": "NOT_RUN",
+    "stage1b_sealed": false,
+    "stage2_production_citations": "NOT_AUTHORIZED"
+  }
+}

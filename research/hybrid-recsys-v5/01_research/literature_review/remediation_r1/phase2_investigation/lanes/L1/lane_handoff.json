@@ -1,0 +1,179 @@
+{
+  "schema_version": "ars-deep-research-phase2-lane-handoff-1.0",
+  "handoff_type": "lane_investigation",
+  "project": "hybrid-recsys-v5",
+  "stage": "1B",
+  "round": "remediation R1",
+  "lane": "L1_evaluation_reproducibility",
+  "research_cutoff": "2026-08-14",
+  "generated_at": "2026-08-14T16:07:31+07:00",
+  "phase_boundary": {
+    "phase": "ARS Deep Research Phase 2",
+    "synthesis_written": false,
+    "manuscript_prose_written": false,
+    "benchmark_results_written": false,
+    "hypotheses_written": false,
+    "planning_claim_cards_only": true
+  },
+  "artifact_manifest": [
+    {
+      "path": "lane_report.md",
+      "sha256": "ae74c7f88f26fefb7cbaedef7ed20e1c0fb982ca41f1c38a85a74848f98e89bc"
+    },
+    {
+      "path": "candidate_registry.json",
+      "sha256": "bf0f5af3940b8317e2fbf0b4f7327d58ef7527c5e3dc09508cf0249e1d201888"
+    },
+    {
+      "path": "disposition_log.json",
+      "sha256": "10a647923f454ebccd8529ed134e83f6fdacc4fc239f24426b9a70ccde88f3f4"
+    },
+    {
+      "path": "claim_cards.json",
+      "sha256": "05f47aadbdd68850a35caed538ef15cea7b46fb5592a973e8f304cea1d7b2746"
+    },
+    {
+      "path": "source_acquisition_queue.json",
+      "sha256": "8e14ebd92d533a9819c799dd7fe6fcd1f1905b625e526dd1acd6ec9640f191f8"
+    },
+    {
+      "path": "exclusion_log.json",
+      "sha256": "26166270c502fb4f6d9220a3c9990b7ac1dfbc441461d8e6d1a53305486b9822"
+    }
+  ],
+  "self_hash_policy": "lane_handoff.json is not self-hashed inside its own content; compute its SHA-256 externally after validation.",
+  "screening_summary": {
+    "old_lane_candidates_screened": 19,
+    "old_lane_candidates_dispositioned": 19,
+    "gap_candidates_screened_after_deduplication": 16,
+    "total_candidate_records_screened": 35,
+    "retained_canonical_scholarly_records": 23,
+    "excluded_removed_or_replaced_records": 12,
+    "independent_scholarly_source_families": 21,
+    "old_lane_dispositions": {
+      "RETAIN": 11,
+      "REPLACE": 4,
+      "REMOVE": 4,
+      "MOVE_TO_RESOURCE_REGISTRY": 0
+    }
+  },
+  "verification_summary": {
+    "identity_verified": 23,
+    "metadata_verified": 23,
+    "source_content_verified": 19,
+    "locator_ready": 19,
+    "peer_reviewed_true": 21,
+    "peer_reviewed_unknown": 2,
+    "full_author_arrays": 23,
+    "placeholder_years": 0,
+    "canonical_author_arrays_containing_et_al": 0,
+    "mojibake_findings": 0,
+    "operational_resources_in_scholarly_count": 0
+  },
+  "source_artifact_summary": {
+    "directory": "source_artifacts/",
+    "lawful_pdf_count": 16,
+    "pdf_preflight_sidecar_count": 16,
+    "pdf_preflight_pass": 15,
+    "pdf_preflight_degraded": 1,
+    "publisher_html_full_artifacts_inspected": 2,
+    "author_posted_full_artifacts_inspected": 1,
+    "stored_pdf_total_bytes": 15643112,
+    "rights_statement": "Only publisher-open, repository-authorized, author-posted, or institutionally authorized artifacts were stored; no paywall or access control was bypassed."
+  },
+  "core_acquisition_summary": {
+    "core_record_count": 5,
+    "exact_full_artifact_or_exact_publisher_html_ready": 5,
+    "same_family_full_artifact_substitute_ready": 0,
+    "exact_core_open": [],
+    "note": "All five audit-core exact records are content-verified and locator-ready. The exact KDD 2020 author-hosted ACM-formatted artifact passed PDF preflight; the IJCAI 2021 record remains a same-family version, not independent evidence."
+  },
+  "claim_card_summary": {
+    "count": 11,
+    "supported": 9,
+    "partially_supported": 2,
+    "unsupported": 0,
+    "unverified": 0,
+    "planning_only": 11,
+    "supported_or_partial_with_original_content_locator": 11,
+    "production_intended_claims": 0
+  },
+  "required_coverage_status": {
+    "exact_full_catalog_versus_sampled_metrics": "covered_with_counter_evidence",
+    "temporal_versus_random_split_and_candidate_universe": "covered",
+    "aggregation_tuning_budget_negative_sampling_reproducibility": "covered",
+    "official_reproduction_versus_harmonized_benchmark": "covered_as_partially_supported_project_design_inference",
+    "time_to_split_2025_and_relevant_2022_2026_work": "covered",
+    "jannach_chen_2026_genre_and_peer_review": "editorial_or_essay_peer_review_unknown"
+  },
+  "remediation_status": {
+    "ST1B-META-002": "complete_for_L1",
+    "ST1B-META-003_lane_share": "complete",
+    "ST1B-SYNTH-001": "complete_counts_separated",
+    "ST1B-LOCATOR-001": "addressed_19_of_23_ready_5_of_5_exact_core_ready_all_claim_cards_original_content_locator"
+  },
+  "unresolved_blockers": [
+    {
+      "blocker_id": "L1-BLOCK-002",
+      "type": "full_content_acquisition",
+      "source_keys": ["jarvelin_kekalainen_2002_tois", "bradley_1997_pattern_recognition", "liu_medlar_glowacka_2023_recsys", "li_jin_liu_ren_gao_liu_2024_tors"],
+      "status": "open",
+      "detail": "Canonical identity and metadata are verified, but authoritative full artifacts are not yet inspected. These records are not sole support for any claim card; Bradley was removed from the GAUC boundary card."
+    },
+    {
+      "blocker_id": "L1-BLOCK-003",
+      "type": "locator_degradation",
+      "source_keys": ["pereira_said_santos_2025_recsys"],
+      "status": "contained",
+      "detail": "Fresh ARS preflight again returned UNAVAILABLE because of a malformed cross-reference warning. Full content remains verified, but the locked policy requires section-only locators."
+    },
+    {
+      "blocker_id": "L1-BLOCK-004",
+      "type": "peer_review_evidence",
+      "source_keys": ["jannach_chen_2026_tors_editorial", "said_bellogin_2026_arxiv"],
+      "status": "carried_forward",
+      "detail": "Jannach and Chen remains peer_reviewed=unknown as an editorial/essay; Said and Bellogín remains a preprint with peer_reviewed=unknown until a canonical ACM record and direct status evidence are verified."
+    }
+  ],
+  "forbidden_conclusions_enforced": [
+    "Raw metrics from different datasets or pipelines are not comparable without demonstrated harmonization.",
+    "A public repository does not establish reproduction.",
+    "A Semantic Scholar HTTP 429 condition is degraded service evidence, not source nonexistence."
+  ],
+  "validation": {
+    "json_files_parsed_before_handoff": 5,
+    "source_schema_r1_scholarly_records_validated": 23,
+    "source_schema_r1_claim_cards_validated": 11,
+    "cross_artifact_reference_validation": "pass",
+    "count_reconciliation": "pass",
+    "forbidden_field_scan": "pass",
+    "canonical_author_and_mojibake_scan": "pass",
+    "final_required_artifact_set_count": 7,
+    "final_json_files_parsed": 6,
+    "final_validation_result": "pass"
+  },
+  "local_gate": {
+    "verdict": "PASS",
+    "locked_gate_applied": true,
+    "gate_not_weakened": true,
+    "pass_basis": [
+      "All 19 old-lane candidates are dispositioned and all gap-search candidates are screened under identical criteria.",
+      "All 23 retained canonical records have verified identity and metadata; all five audit-core exact records are content-verified and locator-ready.",
+      "All 11 planning-only claim cards have original-content locators and no claim depends solely on metadata, a previous lane summary, or an unavailable exact version.",
+      "All required artifacts parse, reconcile, and pass the locked schema, cross-file, hash, forbidden-field, source-family, and local-gate checks."
+    ],
+    "carry_forward_requirements": [
+      "Do not use metadata/abstract-only retained records as sole support for production-intended claims.",
+      "Preserve Jannach and Chen 2026 as editorial/essay with peer_reviewed unknown unless direct review evidence appears.",
+      "Preserve Said and Bellogín 2026 as a preprint with peer_reviewed unknown until a canonical ACM record and direct status evidence are verified.",
+      "Use section-only locators for Pereira 2025 while its structural preflight remains degraded.",
+      "Preserve separate canonical-record and independent-family counts."
+    ]
+  },
+  "downstream_handoff": {
+    "ready_for_central_review": true,
+    "ready_for_phase3_synthesis": false,
+    "reason": "L1 passes its locked local gate; central Phase 3 authorization still requires the aggregate 5/5 lane gate and central review.",
+    "authorized_use": "Use registry metadata, disposition decisions, acquisition state, and planning-only bounded claim cards; do not copy lane prose into a manuscript as evidence."
+  }
+}

@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>TAOBAO-MM | A Long Sequence Recommendation Dataset with Multimodal Embeddings at Scale</title>
+<meta name="generator" content="Jekyll v3.10.0" />
+<meta property="og:title" content="TAOBAO-MM" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="A Long Sequence Recommendation Dataset with Multimodal Embeddings at Scale" />
+<meta property="og:description" content="A Long Sequence Recommendation Dataset with Multimodal Embeddings at Scale" />
+<link rel="canonical" href="https://taobao-mm.github.io/" />
+<meta property="og:url" content="https://taobao-mm.github.io/" />
+<meta property="og:site_name" content="TAOBAO-MM" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="TAOBAO-MM" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebSite","description":"A Long Sequence Recommendation Dataset with Multimodal Embeddings at Scale","headline":"TAOBAO-MM","name":"TAOBAO-MM","url":"https://taobao-mm.github.io/"}</script>
+<!-- End Jekyll SEO tag -->
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link rel="preload" href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&display=swap" as="style" type="text/css" crossorigin />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- <meta name="theme-color" content="#157878" /> -->
+    <meta name="theme-color" content="#ffffff">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <link rel="stylesheet" href="/assets/css/style.css?v=fc34523e31811bd4733e6676156bb1a17ea29c9c" />
+    <!-- 自定义样式 -->
+    <link rel="stylesheet" href="/assets/css/custom-navbar.css" />
+    <!-- start custom head snippets, customize with your own _includes/head-custom.html file -->
+
+<!-- Setup Google Analytics -->
+
+
+
+<!-- You can set your favicon here -->
+<!-- link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" -->
+
+<!-- end custom head snippets -->
+
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" />
+  </head>
+
+  <body>
+    <a id="skip-to-content" href="#content">Skip to the content.</a>
+
+    <!-- 智能顶部导航栏 -->
+    <header class="auto-hide-header">
+      <div class="wrapper">
+        <!-- 左侧站点名（可选） -->
+        <div class="nav-brand">
+          <a href="/">TAOBAO-MM</a>
+        </div>
+
+        <!-- 右侧主导航（桌面端显示） -->
+        <nav class="nav-desktop" role="navigation">
+          <a href="#overview" class="nav-link">Overview</a>
+          <a href="#dataset" class="nav-link">Dataset</a>
+          <a href="#download" class="nav-link">Download</a>
+          <a href="#contact" class="nav-link">Contact</a>
+        </nav>
+
+        <!-- 移动端下拉菜单按钮 -->
+        <button class="nav-toggle" aria-label="switch-navbar" aria-expanded="false">
+          <i class="fas fa-bars"></i>
+        </button>
+
+        <!-- 移动端下拉菜单 -->
+        <nav class="nav-mobile" role="navigation" hidden>
+          <a href="#overview" class="nav-link">Overview</a>
+          <a href="#dataset" class="nav-link">Dataset</a>
+          <a href="#download" class="nav-link">Download</a>
+          <a href="#contact" class="nav-link">Contact</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- 原始页面头部（项目标题区） -->
+    <header class="page-header" role="banner">
+      <h1 class="project-name">TAOBAO-MM</h1>
+      <h2 class="project-tagline">A Long Sequence Recommendation Dataset with Multimodal Embeddings at Scale</h2>
+
+      <!-- 按钮容器：确保居中 -->
+      <div class="btn-wrapper">
+        
+          <a href="https://github.com/alimama-tech/MUSE" class="btn">View on GitHub</a>
+        
+
+        
+          <a href="https://huggingface.co/datasets/TaoBao-MM/Taobao-MM" class="btn">View on HuggingFace</a>
+        
+      </div>
+    </header>
+
+    <!-- 主体内容 -->
+    <main id="content" class="main-content" role="main">
+      <h1 id="overview">
+  TAOBAO-MM Dataset
+  <a href="https://arxiv.org/abs/2512.07216" style="vertical-align: 0.0em; margin-left: 12px;">
+    <img src="https://img.shields.io/badge/ArXiv-2512.07216-b31b1b.svg?logo=arXiv" alt="arXiv" />
+  </a>
+</h1>
+
+<p>TAOBAO-MM is a large-scale recommendation dataset derived from user interaction logs on <a href="https://www.taobao.com/">Taobao</a>, one of the world’s largest e-commerce platforms. The dataset features historical behavior sequences of up to 1,000 interactions per user and includes high-quality multimodal embeddings for items.</p>
+
+<p>Accurately modeling ultra-long user behavior sequences alongside rich multimodal item content is essential for advancing real-world recommender systems. To support and accelerate academic research in this direction, we publicly release TAOBAO-MM.</p>
+
+<p>To the best of our knowledge, <strong>TAOBAO-MM is the first publicly available recommendation dataset that simultaneously provides both long user behavior sequences and high-quality multimodal embeddings for items.</strong></p>
+
+<h2 id="-dataset-description"><a id="dataset"></a> Dataset Description</h2>
+
+<!-- 先讲如何采集的、数据量 -->
+<p>The table below summarizes key statistics for TAOBAO-MM:</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>Dataset</th>
+      <th>Users</th>
+      <th>Items</th>
+      <th>Samples</th>
+      <th>Behavior Length</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>TAOBAO-MM</td>
+      <td>8.79M</td>
+      <td>35.4M</td>
+      <td>99.0M</td>
+      <td>1,000</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>TAOBAO-MM contains interaction logs from 8.79 million users, involving 35.4 million distinct items, resulting in 99 million labeled samples. The samples are partitioned into a training set of 76M and a test set of 23M instances, following a temporally consistent split to preserve real-world dynamics.</p>
+
+<p>Due to privacy and copyright restrictions, all ID-based features have been anonymized, and raw multimodal content (e.g., item images) is not released. Instead, we provide pre-computed 128-dimensional multimodal embeddings for each item, generated by encoders trained under <a href="https://arxiv.org/abs/2407.19467">Semantic-aware Contrastive Learning (SCL)</a> framework.</p>
+
+<!-- The dataset comprises the following components:
+- **User features:** anonymized user ID, age, gender, city, and province.
+- **Item features:** item ID, category, item city, and province.
+- **Behavior sequences:** A user’s historical sequence consists of up to 1K behaviors, each identified by its item ID. Each item is paired with a fixed 128-dimensional multimodal embedding.
+- **Label:** a binary label indicating click (1) or non-click (0), derived from user engagement logs. -->
+
+<!-- 如何用parquet呈现的、每张表里包含的字段 -->
+<p>The dataset is distributed as a collection of Parquet files, each containing a single structured table, as detailed below:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">train_samples.parquet</code>: Contains the training samples. Each record includes a user ID, an item ID, and a binary label indicating whether the user clicked <code class="language-plaintext highlighter-rouge">(1)</code> or did not click <code class="language-plaintext highlighter-rouge">(0)</code> on the item, as derived from real-world interaction logs.</li>
+  <li><code class="language-plaintext highlighter-rouge">test_samples.parquet</code>: Contains the test samples, structured identically to the training samples, with the same fields.</li>
+  <li><code class="language-plaintext highlighter-rouge">train_user_features.parquet</code>: Provides demographic and behavioral features for all users appearing in the training set. Each entry includes the user ID, age, gender, city, province, and the user’s historical behavior sequence (a list of up to 1,000 item IDs and categories).</li>
+  <li><code class="language-plaintext highlighter-rouge">test_user_features.parquet</code>:  Analogous to the training counterpart, this file contains demographic attributes and behavior sequences for all users present in the test set.</li>
+  <li><code class="language-plaintext highlighter-rouge">item_features.parquet</code>: Includes metadata for all items that appear in either the training or test samples. Each record consists of the item ID, category, item city, and item province.</li>
+  <li><code class="language-plaintext highlighter-rouge">scl_embeddings_int8_p90.parquet</code>: A lookup table mapping each item ID to its corresponding SCL multimodal embedding, quantized to int8 for efficiency. This embedding table covers 100% of the target items (i.e., those appearing as positive or negative candidates in the training and test samples) and 90% of the items observed in users’ historical behavior sequences.</li>
+</ul>
+
+<p>To construct the training sample table, we perform a join operation between <code class="language-plaintext highlighter-rouge">train_samples</code>, <code class="language-plaintext highlighter-rouge">train_user_features</code>, and <code class="language-plaintext highlighter-rouge">item_features</code> on their respective IDs. The test sample table is generated analogously by joining <code class="language-plaintext highlighter-rouge">test_samples</code> with <code class="language-plaintext highlighter-rouge">test_user_features</code> and <code class="language-plaintext highlighter-rouge">item_features</code>.</p>
+
+<p>For clarity and ease of use, we also provide a detailed description of all column fields in each table.</p>
+
+<h3 id="train_samples--test_samples">train_samples / test_samples</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>129_1</td>
+      <td>Int64</td>
+      <td>User ID</td>
+    </tr>
+    <tr>
+      <td>205</td>
+      <td>Int64</td>
+      <td>Item ID</td>
+    </tr>
+    <tr>
+      <td>label_0</td>
+      <td>List of Int8</td>
+      <td>One-hot label, [1,0] indicates non-click, [0,1] indicates click</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="train_user_features--test_user_features">train_user_features / test_user_features</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>129_1</td>
+      <td>Int64</td>
+      <td>User ID</td>
+    </tr>
+    <tr>
+      <td>130_1</td>
+      <td>Int64</td>
+      <td>User age</td>
+    </tr>
+    <tr>
+      <td>130_2</td>
+      <td>Int64</td>
+      <td>User gender</td>
+    </tr>
+    <tr>
+      <td>130_3</td>
+      <td>Int64</td>
+      <td>User province name</td>
+    </tr>
+    <tr>
+      <td>130_4</td>
+      <td>Int64</td>
+      <td>User city name</td>
+    </tr>
+    <tr>
+      <td>130_5</td>
+      <td>Int64</td>
+      <td>User city level</td>
+    </tr>
+    <tr>
+      <td>150_2_180</td>
+      <td>List of Int64</td>
+      <td>List of item IDs the user interacted with, the usual length is 1000</td>
+    </tr>
+    <tr>
+      <td>151_2_180</td>
+      <td>List of Int64</td>
+      <td>List of item categories the user interacted with, the usual length is 1000</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="item_features">item_features</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>205</td>
+      <td>Int64</td>
+      <td>Item ID</td>
+    </tr>
+    <tr>
+      <td>206</td>
+      <td>Int64</td>
+      <td>Item category</td>
+    </tr>
+    <tr>
+      <td>213</td>
+      <td>Int64</td>
+      <td>Item city name</td>
+    </tr>
+    <tr>
+      <td>214</td>
+      <td>Int64</td>
+      <td>Item province name</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="scl_embeddings_int8_p90">scl_embeddings_int8_p90</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Field</th>
+      <th>Type</th>
+      <th>Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>205</td>
+      <td>Int64</td>
+      <td>Item ID</td>
+    </tr>
+    <tr>
+      <td>205_c</td>
+      <td>List of Int8</td>
+      <td>SCL embeddings with shape (128)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="-download-and-use"><a id="download"></a> Download and Use</h2>
+
+<!-- 从huggingface下载，怎么用 -->
+<p>TAOBAO-MM dataset is free to download for research purposes under <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache License 2.0</a>.</p>
+
+<p>The dataset is now publicly available on <a href="https://huggingface.co/datasets/TaoBao-MM/Taobao-MM">HuggingFace</a>. After installing the <code class="language-plaintext highlighter-rouge">huggingface_hub</code> package via <code class="language-plaintext highlighter-rouge">pip install huggingface_hub</code>, you can download the dataset directly using the following command:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>huggingface-cli download --repo-type=dataset TaoBao-MM/Taobao-MM --local-dir your/local/path
+</code></pre></div></div>
+
+<!-- TODO: 说明一下文件大小 -->
+<p>Upon download, the dataset is organized with the following directory structure:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>taobao-mm (139 GB)
+├── feature_map (7.11 GB)
+│   ├── 129_1_sorted_map.npy
+│   ├── 130_1_sorted_map.npy
+│   ├── ……
+│   ├── scl_emb_int8_p90_keys.npy
+│   └── scl_emb_int8_p90_values.npy
+├── train (52.6 GB)
+│   ├── metadata.json
+│   ├── train-shard-000000.parquet
+│   ├── train-shard-000001.parquet
+│   ├── ……
+│   └── train-shard-000160.parquet
+├── test (15.6 GB)
+│   ├── metadata.json
+│   ├── test-shard-000000.parquet
+│   ├── test-shard-000001.parquet
+│   ├── ……
+│   └── test-shard-000048.parquet
+└── raw (64.1 GB)
+    ├── train_samples.parquet
+    ├── train_user_features.parquet
+    ├── test_samples.parquet
+    ├── test_user_features.parquet
+    ├── item_features.parquet
+    └── scl_embedding_int8_p90.parquet
+</code></pre></div></div>
+
+<p>The downloaded dataset is organized into the following four directories:</p>
+<ul>
+  <li><code class="language-plaintext highlighter-rouge">feature_map/</code>: Contains mapping dictionaries stored in <code class="language-plaintext highlighter-rouge">.npy</code> format. These include (1) mappings that remap anonymized IDs to consecutive integers in the range <code class="language-plaintext highlighter-rouge">[0, ID_SIZE]</code> for efficient indexing, and (2) key–value mappings linking item IDs to their corresponding SCL multimodal embeddings.</li>
+  <li><code class="language-plaintext highlighter-rouge">train/</code>: Holds the training samples in sharded Parquet format. These files are generated by joining the training-related tables from the <code class="language-plaintext highlighter-rouge">raw/</code> directory.</li>
+  <li><code class="language-plaintext highlighter-rouge">test/</code>: Contains the test samples, also stored as sharded Parquet files, constructed analogously to the training set through the same join process applied to the raw test-related tables.</li>
+  <li><code class="language-plaintext highlighter-rouge">raw/</code>: Includes the original, unjoined data tables in Parquet format. This directory is provided for who wish to reconstruct or customize the preprocessing pipeline. <strong>If you only require the pre-joined training and test samples, downloading this directory is optional</strong>.</li>
+</ul>
+
+<p>To facilitate model development and evaluation with TAOBAO-MM, we provide ready-to-use Dataset class implementations in our <a href="https://github.com/alimama-tech/MUSE">official repository</a>. In addition, we include implementations of several baselines for multimodal long-sequence recommendation, including our proposed method, <strong>MUSE</strong> (<strong>MU</strong>ltimodal <strong>SE</strong>archbased framework for lifelong user interest modeling), to serve as reference points for benchmarking and further research.</p>
+
+<h2 id="contact">Contact</h2>
+
+<p>If you have any questions, please feel free to contact us through <a href="https://github.com/alimama-tech/MUSE/issues">github issues</a> or email the authors.</p>
+
+<h2 id="citation">Citation</h2>
+
+<p>If you find our work useful for your research, please consider citing the paper:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>@misc{wu2025musesimpleeffectivemultimodal,
+      title={MUSE: A Simple Yet Effective Multimodal Search-Based Framework for Lifelong User Interest Modeling}, 
+      author={Bin Wu and Feifan Yang and Zhangming Chan and Yu-Ran Gu and Jiawei Feng and Chao Yi and Xiang-Rong Sheng and Han Zhu and Jian Xu and Mang Ye and Bo Zheng},
+      year={2025},
+      eprint={2512.07216},
+      archivePrefix={arXiv},
+      primaryClass={cs.IR},
+      url={https://arxiv.org/abs/2512.07216}, 
+}
+</code></pre></div></div>
+
+    </main>
+
+    <footer class="site-footer">
+      <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a>.</span>
+    </footer>
+
+    <!-- 导航行为脚本 -->
+    <script src="/assets/js/auto-hide-nav.js"></script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll("main table").forEach(function (table) {
+          if (!table.closest(".table-container")) {
+            const container = document.createElement("div");
+            container.className = "table-container";
+            table.parentNode.insertBefore(container, table);
+            container.appendChild(table);
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,101 @@
+{
+  "schema_version": "stage1b-independent-audit-verdict-1.0",
+  "project": "hybrid-recsys-v5",
+  "stage": "1B",
+  "verdict": "FAIL",
+  "verdict_basis": "The frozen packet is byte-integral, but ST1B-META-001 is an unresolved major ARS corpus-contract and metadata-integrity defect: two unknown operational-resource years were knowingly coerced into formal publication-year fields. Production citations are separately unauthorized because originals and locators have not been acquired.",
+  "severity_counts": {
+    "fatal": 0,
+    "major": 1,
+    "minor": 4,
+    "advisory": 3
+  },
+  "stage1b_seal_allowed": false,
+  "source_acquisition_required_before_stage2": true,
+  "stage2_production_citations_authorized": false,
+  "packet_integrity": {
+    "result": "PASS_INDIVIDUAL_HASHES_ROOT_ALGORITHM_UNSPECIFIED",
+    "fatal_packet_integrity_finding": false,
+    "frozen_file_count_expected": 19,
+    "frozen_file_count_found": 19,
+    "individual_hashes_matched": 19,
+    "missing_files": 0,
+    "hash_mismatches": 0,
+    "manifest_sha256_expected": "22c98ce38b64302c0936a836dbaf6d32d0a616f5085a636b7e8055fb7aed9b4b",
+    "manifest_sha256_actual": "22c98ce38b64302c0936a836dbaf6d32d0a616f5085a636b7e8055fb7aed9b4b",
+    "manifest_sha256_match": true,
+    "audit_packet_sha256_expected": "8e4f17abb7a531d396c9274ab776c197a489d4b9698357b6c8fca0ffb9637f08",
+    "audit_packet_sha256_actual": "8e4f17abb7a531d396c9274ab776c197a489d4b9698357b6c8fca0ffb9637f08",
+    "audit_packet_sha256_match": true,
+    "packet_root_sha256_declared": "07a0e7c4cfd986db82bddc46339c6b9ff35a716a7240cf5a64f887f23d155095",
+    "packet_root_recomputed": false,
+    "packet_root_verification": "NOT_VERIFIABLE_BY_SPECIFICATION",
+    "packet_root_limitation": "The seal, manifest, and packet do not define artifact ordering, path normalization, byte framing, or canonicalization for the packet root; no algorithm was guessed.",
+    "substantive_audit_performed": true
+  },
+  "audit_coverage": {
+    "required_questions": 7,
+    "completed_questions": 7,
+    "question_1_corpus_identity_and_deduplication": true,
+    "question_2_metadata_and_publication_status": true,
+    "question_3_claim_source_alignment": true,
+    "question_4_synthesis_integrity": true,
+    "question_5_dataset_compatibility_and_rights": true,
+    "question_6_citation_and_locator_readiness": true,
+    "question_7_ars_contracts": true,
+    "canonical_corpus_records_checked": 55,
+    "claim_rows_sampled": 21,
+    "claim_rows_total": 21,
+    "synthesis_contradictions_checked": 7,
+    "synthesis_contradictions_total": 7,
+    "tension_pairs_checked": 5,
+    "tension_pairs_total": 5,
+    "synthesis_citation_markers_checked": 30,
+    "anchor_none_confirmed": 30,
+    "source_acquired_count": 0,
+    "source_verified_against_original_count": 0,
+    "source_acquisition_shortlist_count": 24,
+    "h1_h4_status": "NOT_RUN",
+    "dedicated_novelty_search_complete": false
+  },
+  "gate_blockers": [
+    {
+      "gate": "stage1b_seal_allowed",
+      "finding_id": "ST1B-META-001",
+      "status": "blocked_until_remediated_and_reaudited"
+    },
+    {
+      "gate": "stage2_production_citations_authorized",
+      "finding_id": "ST1B-LOCATOR-001",
+      "status": "blocked_until_core_originals_are_acquired_verified_and_located"
+    }
+  ],
+  "rights_and_execution_constraints": {
+    "complete_journey_status": "H4_CONDITIONAL",
+    "coveo_status": "H4_CONDITIONAL",
+    "amazon_m2_status": "ARCHITECTURE_TRANSFER_ONLY_NOT_STRICT_H4",
+    "h4_external_execution_authorized": false,
+    "dataset_redistribution_authorized": false
+  },
+  "limitations": [
+    "Packet-root recomputation is impossible without an unspecified algorithm.",
+    "No frozen source original was acquired; official pages and abstracts were spot-checked without changing corpus verification flags.",
+    "Semantic Scholar was degraded by HTTP 429 and was not treated as evidence of non-existence.",
+    "Dedicated novelty searching is incomplete, so absolute first or novelty claims remain blocked.",
+    "Provider terms are time-varying and require archived snapshots plus institutional/legal review."
+  ],
+  "audited_at": "2026-08-13T21:33:53+07:00",
+  "model_runtime": {
+    "model": "gpt-5.6-sol",
+    "reasoning_effort": "ultra",
+    "skill": "ars-codex:academic-research-suite",
+    "skill_version": "0.1.24",
+    "route": [
+      "academic-pipeline",
+      "deep-research",
+      "independent literature integrity audit"
+    ],
+    "fresh_independent_task": true
+  },
+  "stage1b_complete_declared": false
+}

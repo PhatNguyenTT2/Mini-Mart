@@ -1,0 +1,88 @@
+{
+  "schema_version": "stage1b-r1-r8-input-manifest-1.0",
+  "project": "hybrid-recsys-v5",
+  "stage": "1B",
+  "round": "R1",
+  "step": "R8_independent_audit",
+  "frozen_at": "2026-08-21",
+  "runtime_lock": {
+    "model": "gpt-5.6-sol",
+    "reasoning": "high",
+    "execution_mode": "fresh_dedicated_worktree_task"
+  },
+  "audit_contract": {
+    "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/r8_audit_contract.md",
+    "bytes": 3357,
+    "sha256": "b251f8e3f676a0dd3c0b3a3258e281ce312d7278c71a7343419ec054d9788b13"
+  },
+  "r7_control_bindings": [
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/r7_freeze_contract.md",
+      "bytes": 3229,
+      "sha256": "e8672fe6e5dae707e146e1b46cce8ab938d02d9eb440bd454d774b4f02362920"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/r7_input_manifest.json",
+      "bytes": 3491,
+      "sha256": "98ffc47ff8ce216838d2c5ff542628b002bc0d4f5feb28853b8661af99cad08a"
+    }
+  ],
+  "frozen_r7_outputs": [
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase4_freeze/r7_packet_r1/r7_handoff.json",
+      "bytes": 2918,
+      "sha256": "fca016c5499cd7e81f19ace9b04514f7ac0139137bab50b5d1e05c9a4c51b117"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase4_freeze/r7_packet_r1/r7_validation_receipt.json",
+      "bytes": 3249,
+      "sha256": "7704e2bec8ea7b43b2b28e788d9f260af525bb57661dfba2bcd9f5042af24c17"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase4_freeze/r7_packet_r1/stage1b_r1_audit_packet_manifest.json",
+      "bytes": 95527,
+      "sha256": "cc843a684a72b748ed8df8e981fa92481945f75f5e8decc3121f9daac1167827"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase4_freeze/r7_packet_r1/stage1b_r1_freeze_report.md",
+      "bytes": 2638,
+      "sha256": "e788385e2f45fe8a80df475ea2593d4363e43555b46bba625d2b27d3f40a0d1d"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase4_freeze/r7_packet_r1/stage1b_r1_root_hash.json",
+      "bytes": 599,
+      "sha256": "a83c38bb61f3aee49d52105d7c9350263f7449dd0ac03b73c2c86dfbc943a8ec"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase4_freeze/r7_packet_r1/validate_r7_freeze.py",
+      "bytes": 48334,
+      "sha256": "12afa4e92981cf7a85cd1dc9a2417d3afedad4f4f3947d3c261c8d8a992d820d"
+    }
+  ],
+  "r7_gate": {
+    "verdict": "PASS_READY_FOR_INDEPENDENT_AUDIT",
+    "final_central_validation": "PASS_29_OF_29",
+    "packet_members": 193,
+    "canonical_root_sha256": "f0f2d56e42ce0f181f83182ddffe1060bf8994f50ababd4b0dbe563a942370dd",
+    "handoff_sha256": "fca016c5499cd7e81f19ace9b04514f7ac0139137bab50b5d1e05c9a4c51b117",
+    "scholar_pairs": 12,
+    "scholar_pending": 0,
+    "h1_h4": "NOT_RUN",
+    "stage1b_sealed": false,
+    "stage2_production_citations_authorized": false,
+    "r8_authorized": true
+  },
+  "expected_replay_counts": {
+    "claims": 44,
+    "citation_ready_candidates": 22,
+    "planning_only": 22,
+    "verified_citation_locator_pairs": 33,
+    "themes": 5,
+    "tension_pairs": 12,
+    "tension_confirmed": 11,
+    "tension_disputed_reclassified": 1,
+    "tension_pending": 0
+  },
+  "write_scope": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase5_audit/r8_independent_audit/",
+  "next_gate": "Only a central-validated PASS_READY_TO_SEAL with Critical=0 and Major=0 authorizes R9."
+}

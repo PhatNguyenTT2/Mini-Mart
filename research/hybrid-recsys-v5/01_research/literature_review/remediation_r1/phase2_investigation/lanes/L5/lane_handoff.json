@@ -1,0 +1,95 @@
+{
+  "schema_version": "stage1b-r1-l5-1.0",
+  "project": "hybrid-recsys-v5",
+  "stage": "1B",
+  "round": "remediation R1",
+  "lane": "L5",
+  "research_cutoff": "2026-08-14",
+  "completed_at": "2026-08-14T00:00:00+07:00",
+  "phase_fence": "Deep Research Phase 2 evidence investigation only",
+  "local_gate_verdict": "PASS",
+  "h4_status": "NOT_RUN_NOT_TESTED",
+  "required_files": [
+    {"path": "lane_report.md", "sha256": "1067da3e7b831da74a3a01b0d07b22efe4cbb0f3f91fa87c7a402e16fbe0ab7e", "bytes": 17683},
+    {"path": "candidate_registry.json", "sha256": "362b168d86d9a6c74720d98e29aed42038a36e3f528c5ef6908200d40e53e231", "bytes": 51914},
+    {"path": "disposition_log.json", "sha256": "163a85cf432232b1d14f45b1bc99245e402a140eb7ce5eb4e0c165c21febddb9", "bytes": 10561},
+    {"path": "claim_cards.json", "sha256": "dc53976a0c0db2eca5d5ce37db41051b96579a668948d5838a236d3788ee1927", "bytes": 14423},
+    {"path": "source_acquisition_queue.json", "sha256": "04265e43fa7b086b21056aee73a1c856a182cafd805da8555ea90d09c9644340", "bytes": 16711},
+    {"path": "exclusion_log.json", "sha256": "acd741aa1590e42c24b31b4284870e3001ac223133567de8bc5ae9444fd18a33", "bytes": 5901},
+    {"path": "lane_handoff.json", "sha256": null, "note": "Self-hash is reported externally after write and is not embedded recursively."}
+  ],
+  "counts": {
+    "old_candidates": 19,
+    "old_candidates_dispositioned": 19,
+    "disposition_coverage_percent": 100,
+    "retain": 5,
+    "replace": 4,
+    "move_to_resource_registry": 3,
+    "remove": 7,
+    "gap_candidates_advanced": 8,
+    "gap_included": 3,
+    "gap_excluded": 5,
+    "scholarly_canonical_records": 12,
+    "scholarly_independent_dataset_evidence_families": 11,
+    "operational_canonical_records": 14,
+    "operational_root_data_families": 12,
+    "compatibility_rows": 14,
+    "claim_cards": 9,
+    "exclusion_records": 12
+  },
+  "acquisition_and_locator_status": {
+    "scholarly_full_content_verified": "10/12",
+    "scholarly_metadata_or_abstract_only": "2/12",
+    "scholarly_locator_ready": "10/12",
+    "operational_terms_verified": "9/14",
+    "operational_terms_partial": "2/14",
+    "operational_terms_degraded": "3/14",
+    "full_dataset_payloads_acquired": 0,
+    "relbench_locator_constraint": "Use Section 3 and table anchors; page-coordinate locators failed PDF geometry preflight."
+  },
+  "rights_status": {
+    "dataset_rights_permitted": 3,
+    "dataset_rights_restricted": 7,
+    "dataset_rights_unknown": 4,
+    "redistribution_permitted": 2,
+    "redistribution_restricted": 3,
+    "redistribution_unknown": 9,
+    "controls": ["Availability was not treated as redistribution permission.", "Package CC0 was not propagated to upstream Complete Journey data.", "RelBench adapters were not counted as independent upstream grants."]
+  },
+  "core_candidate_status": {
+    "viecomrec_2024": "canonical metadata, full content, and locator verified; upstream platform rights unresolved",
+    "amazon_m2_2023": "canonical metadata, full content, and locator verified; next engagement is not strict purchase; current AIcrowd click-through terms unresolved",
+    "coveo_sigir_ecom": "full content and pinned terms verified; redistribution prohibited; no persistent user",
+    "complete_journey": "provider page, terms, and package metadata verified; structurally closest reviewed resource; full edition not acquired and provider rights restrict use"
+  },
+  "unresolved_blockers": [
+    {"id": "L5-B01", "issue": "Full authoritative artifact not acquired for the 2025 Vietnamese graph paper.", "carry_forward": "Acquire through publisher, institution, or author manuscript before method-detail use."},
+    {"id": "L5-B02", "issue": "Full authoritative artifact not acquired for the 2021 Vietnamese opinion-mining chapter.", "carry_forward": "Acquire lawfully before dataset, method, or quantitative use."},
+    {"id": "L5-B03", "issue": "ViFoodRec repository has no dataset license.", "carry_forward": "Obtain explicit provider rights before reuse or redistribution."},
+    {"id": "L5-B04", "issue": "ViEcomRec and ViHoRec upstream source-platform redistribution authority is unresolved.", "carry_forward": "Do not redistribute derived data until authority is established."},
+    {"id": "L5-B05", "issue": "Current Amazon-M2 AIcrowd download agreement was not exposed publicly.", "carry_forward": "Capture exact accepted terms in an authorized session before redistribution decisions."},
+    {"id": "L5-B06", "issue": "RelBench rel-amazon card states that its dataset license is not specified.", "carry_forward": "Resolve upstream Amazon Reviews rights; adapter MIT code does not cure the issue."},
+    {"id": "L5-B07", "issue": "Exact accepted H&M competition rules were not publicly retrievable.", "carry_forward": "Capture authorized rules; do not infer rights from Kaggle or RelBench availability."},
+    {"id": "L5-B08", "issue": "Amazon Reviews 2023 portal exposes files without a located dataset license statement.", "carry_forward": "Obtain a provider license or use authorization."},
+    {"id": "L5-B09", "issue": "Complete Journey full edition and user guide were not acquired.", "carry_forward": "Acquire and inspect the exact selected edition under provider terms; keep package and upstream rights separate."},
+    {"id": "L5-B10", "issue": "Coveo terms prohibit redistribution to third parties, including research colleagues.", "carry_forward": "Require each user to follow the provider route; do not place dataset payloads in shared artifacts."}
+  ],
+  "remediation_responsibility": {
+    "ST1B-META-001": "addressed",
+    "ST1B-SCOPE-001": "addressed",
+    "ST1B-RIGHTS-001": "addressed",
+    "ST1B-META-003_lane_share": "addressed_with_explicit_unknown_peer_review_statuses",
+    "ST1B-SYNTH-001_lane_share": "addressed_with_bounded_planning_claim_cards_only",
+    "ST1B-LOCATOR-001_lane_share": "addressed_for_acquired_sources; two full-text acquisitions explicitly queued"
+  },
+  "validation": {
+    "json_parse": "PASS",
+    "source_schema_definitions": "PASS: 12 scholarly works, 14 operational resources, 9 claim cards",
+    "cross_file_source_keys": "PASS: 26 registry keys equal 26 acquisition-queue keys; all claim source keys resolve",
+    "disposition_set": "PASS: exact 19 old IDs, no duplicates",
+    "forbidden_field_scan": "PASS: no prohibited readability-helper fields",
+    "metadata_text_scan": "PASS: no placeholder years, canonical shortened author lists, replacement characters, or corrupted canonical metadata text",
+    "required_file_count": 7
+  },
+  "gate_rationale": "All locked PASS conditions are satisfied. Remaining acquisition, rights, locator, and peer-review uncertainties are explicit and do not support unverified production claims. The gate does not authorize H4 interpretation or dataset redistribution."
+}

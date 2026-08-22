@@ -1,0 +1,165 @@
+{
+  "schema_version": "stage1b-r1-l5-1.0",
+  "project": "hybrid-recsys-v5",
+  "lane": "L5",
+  "research_cutoff": "2026-08-14",
+  "old_lane": "research/hybrid-recsys-v5/01_research/literature_review/phase2_investigation/lanes/L5_vietnamese_external_datasets.md",
+  "old_candidate_count": 19,
+  "disposition_count": 19,
+  "coverage_percent": 100,
+  "allowed_dispositions": ["RETAIN", "REPLACE", "REMOVE", "MOVE_TO_RESOURCE_REGISTRY"],
+  "entries": [
+    {
+      "old_candidate_id": "L5-VN-01",
+      "old_label": "ViEcomRec",
+      "disposition": "RETAIN",
+      "reason": "The source-of-record identity, full author list, DOI, year, venue, refereed status, original content, and durable locators were verified. The scholarly work and dataset repository are now separate records.",
+      "replacement_keys": ["S-L5-VIECOMREC-2024", "R-L5-VIECOMREC"],
+      "reviewer_evidence": ["DCU DORAS record https://doras.dcu.ie/29693/", "source_artifacts/viecomrec_2024_doras.pdf", "source_artifacts/viecomrec_LICENSE_04ac179.txt"]
+    },
+    {
+      "old_candidate_id": "L5-VN-02",
+      "old_label": "Vietnamese Food Recommendation Dataset",
+      "disposition": "RETAIN",
+      "reason": "The ACL Anthology work and full artifact were verified. The repository remains operational evidence with dataset rights unresolved because it has no dataset license.",
+      "replacement_keys": ["S-L5-VIFOODREC-2024", "R-L5-VIFOODREC"],
+      "reviewer_evidence": ["ACL Anthology https://aclanthology.org/2024.paclic-1.4/", "source_artifacts/vifoodrec_2024_paclic.pdf", "source_artifacts/vifoodrec_README_126caa3.md"]
+    },
+    {
+      "old_candidate_id": "L5-VN-03",
+      "old_label": "ViHoRec",
+      "disposition": "RETAIN",
+      "reason": "The arXiv v1 identity and full artifact are verified, with preprint and non-peer-reviewed status explicit. Dataset and code licenses are separated from upstream platform-rights uncertainty.",
+      "replacement_keys": ["S-L5-VIHOREC-2026", "R-L5-VIHOREC"],
+      "reviewer_evidence": ["arXiv https://arxiv.org/abs/2607.12946", "source_artifacts/vihorec_2026_arxiv_v1.pdf", "source_artifacts/vihorec_LICENSE_c85d60e.txt"]
+    },
+    {
+      "old_candidate_id": "L5-EXT-01",
+      "old_label": "Amazon-M2",
+      "disposition": "RETAIN",
+      "reason": "The complete NeurIPS 2023 metadata and original artifact were verified. It is retained for session architecture and multilingual item-content coverage, with a prohibition on treating next engagement as strict H4 purchase replication.",
+      "replacement_keys": ["S-L5-AMAZON-M2-2023", "R-L5-AMAZON-M2"],
+      "reviewer_evidence": ["DOI https://doi.org/10.52202/075280-0351", "source_artifacts/amazon_m2_2023_neurips.pdf", "source_artifacts/amazon_m2_aicrowd_page_2026-08-14.html"]
+    },
+    {
+      "old_candidate_id": "L5-EXT-02",
+      "old_label": "Tenrec",
+      "disposition": "RETAIN",
+      "reason": "The NeurIPS work and official release remain relevant for multipurpose recommendation benchmarking, but the compatibility matrix now records its non-purchase outcomes and insufficient strict temporal purchase support.",
+      "replacement_keys": ["S-L5-TENREC-2022", "R-L5-TENREC"],
+      "reviewer_evidence": ["DOI https://doi.org/10.52202/068431-0834", "source_artifacts/tenrec_2022_neurips.pdf", "source_artifacts/tenrec_README_a6c242d.md"]
+    },
+    {
+      "old_candidate_id": "L5-EXT-03",
+      "old_label": "Coveo SIGIR eCom",
+      "disposition": "REPLACE",
+      "reason": "The old composite entry mixed a workshop paper and an operational challenge release. It is replaced by distinct scholarly and operational records, with the redistribution prohibition anchored to pinned terms.",
+      "replacement_keys": ["S-L5-COVEO-2021", "R-L5-COVEO"],
+      "reviewer_evidence": ["arXiv https://arxiv.org/abs/2104.09423", "source_artifacts/coveo_sigir_ecom_2021_arxiv_v4.pdf", "source_artifacts/coveo_terms_4132dfb.txt"]
+    },
+    {
+      "old_candidate_id": "L5-EXT-04",
+      "old_label": "OTTO",
+      "disposition": "MOVE_TO_RESOURCE_REGISTRY",
+      "reason": "The item is a versioned operational dataset and repository. No distinct scholarly work record was needed for the claims retained in this lane.",
+      "replacement_keys": ["R-L5-OTTO"],
+      "reviewer_evidence": ["Official repository https://github.com/otto-de/recsys-dataset", "source_artifacts/otto_README_f404284.md"]
+    },
+    {
+      "old_candidate_id": "L5-EXT-05",
+      "old_label": "RelBench including rel-amazon and rel-hm",
+      "disposition": "REPLACE",
+      "reason": "The old entry conflated the peer-reviewed benchmark with two derivative adapters. It is replaced by one scholarly record and two operational records carrying their separate upstream lineages and rights.",
+      "replacement_keys": ["S-L5-RELBENCH-2024", "R-L5-RELBENCH-REL-AMAZON", "R-L5-RELBENCH-REL-HM"],
+      "reviewer_evidence": ["source_artifacts/relbench_2024_neurips.pdf", "https://relbench.stanford.edu/datasets/rel-amazon/", "https://relbench.stanford.edu/datasets/rel-hm/"]
+    },
+    {
+      "old_candidate_id": "L5-EXT-06",
+      "old_label": "Amazon Reviews 2023 and BLaIR",
+      "disposition": "REPLACE",
+      "reason": "The old composite entry is replaced by the canonical ACL 2026 scholarly work and the separately rights-audited Amazon Reviews 2023 operational release.",
+      "replacement_keys": ["S-L5-BLAIR-2026", "R-L5-AMAZON-REVIEWS-2023"],
+      "reviewer_evidence": ["ACL Anthology https://aclanthology.org/2026.acl-long.147/", "source_artifacts/blair_2026_acl.pdf", "source_artifacts/amazon_reviews_2023_page_2026-08-14.html"]
+    },
+    {
+      "old_candidate_id": "L5-EXT-07",
+      "old_label": "H&M Personalized Fashion Recommendations",
+      "disposition": "MOVE_TO_RESOURCE_REGISTRY",
+      "reason": "The competition dataset is operational evidence. Its current public data page is retained with a degraded rules snapshot and no inferred redistribution permission.",
+      "replacement_keys": ["R-L5-HM"],
+      "reviewer_evidence": ["https://www.kaggle.com/competitions/h-and-m-personalized-fashion-recommendations/data", "source_artifacts/hm_kaggle_data_page_2026-08-14.html"]
+    },
+    {
+      "old_candidate_id": "L5-EXT-08",
+      "old_label": "Complete Journey",
+      "disposition": "MOVE_TO_RESOURCE_REGISTRY",
+      "reason": "Complete Journey is an operational provider dataset with a derivative CRAN package, not a scholarly corpus record. Two records preserve the provider/package distinction and prevent package CC0 from being treated as an upstream grant.",
+      "replacement_keys": ["R-L5-COMPLETE-JOURNEY-PROVIDER", "R-L5-COMPLETEJOURNEY-R-PACKAGE"],
+      "reviewer_evidence": ["https://www.dunnhumby.com/source-files/", "source_artifacts/complete_journey_provider_terms_2026-08-14.html", "source_artifacts/completejourney_package_DESCRIPTION_5b5d061.txt"]
+    },
+    {
+      "old_candidate_id": "L5-EXT-09",
+      "old_label": "TAOBAO-MM and MUSE",
+      "disposition": "REPLACE",
+      "reason": "The old composite is replaced by a preprint scholarly record and a separately versioned operational dataset record. The click label is explicitly incompatible with a purchase-outcome claim.",
+      "replacement_keys": ["S-L5-MUSE-2025", "R-L5-TAOBAO-MM"],
+      "reviewer_evidence": ["arXiv https://arxiv.org/abs/2512.07216", "source_artifacts/muse_2025_arxiv_v1.pdf", "source_artifacts/taobao_mm_page_2026-08-14.html"]
+    },
+    {
+      "old_candidate_id": "L5-X-01",
+      "old_label": "ViMRHP",
+      "disposition": "REMOVE",
+      "reason": "The candidate is a rental-housing price dataset, not a recommender interaction or purchase dataset; identical criteria exclude it for direct estimand and dataset-compatibility value.",
+      "replacement_keys": [],
+      "reviewer_evidence": ["Old-lane candidate record", "Gap-search title/abstract screen"]
+    },
+    {
+      "old_candidate_id": "L5-X-02",
+      "old_label": "Instacart",
+      "disposition": "REMOVE",
+      "reason": "It is a useful basket dataset but lacks the required item-content and rights clarity needed to displace the retained higher-value candidates for this lane.",
+      "replacement_keys": [],
+      "reviewer_evidence": ["Old-lane exclusion rationale re-screened under the locked compatibility fields"]
+    },
+    {
+      "old_candidate_id": "L5-X-03",
+      "old_label": "Retailrocket",
+      "disposition": "REMOVE",
+      "reason": "The candidate does not add claim-level value beyond retained session resources and has weaker source-of-record and rights documentation for the locked use.",
+      "replacement_keys": [],
+      "reviewer_evidence": ["Old-lane exclusion rationale re-screened under relevance, authority, coverage, and rights criteria"]
+    },
+    {
+      "old_candidate_id": "L5-X-04",
+      "old_label": "Ta-Feng",
+      "disposition": "REMOVE",
+      "reason": "The older grocery transaction data does not add sufficient authority, item-content coverage, or rights clarity beyond Complete Journey and H&M for the locked planning question.",
+      "replacement_keys": [],
+      "reviewer_evidence": ["Old-lane exclusion rationale re-screened under relevance, authority, coverage, and rights criteria"]
+    },
+    {
+      "old_candidate_id": "L5-X-05",
+      "old_label": "YOOCHOOSE",
+      "disposition": "REMOVE",
+      "reason": "Session-only identifiers and limited item content make it weaker than the retained Coveo and OTTO resources for the same role.",
+      "replacement_keys": [],
+      "reviewer_evidence": ["Old-lane exclusion rationale re-screened under the locked compatibility fields"]
+    },
+    {
+      "old_candidate_id": "L5-X-06",
+      "old_label": "Diginetica",
+      "disposition": "REMOVE",
+      "reason": "It is redundant with stronger retained session candidates and does not improve persistent-user, rights, or item-content coverage.",
+      "replacement_keys": [],
+      "reviewer_evidence": ["Old-lane exclusion rationale re-screened under the locked compatibility fields"]
+    },
+    {
+      "old_candidate_id": "L5-X-07",
+      "old_label": "Legacy Alibaba/Tianchi recommendation data",
+      "disposition": "REMOVE",
+      "reason": "Version identity, current source-of-record access, and rights were not sufficiently stable; TAOBAO-MM provides a current, documented operational alternative without converting availability into an unsupported rights claim.",
+      "replacement_keys": [],
+      "reviewer_evidence": ["Old-lane exclusion rationale", "Current TAOBAO-MM official page https://taobao-mm.github.io/"]
+    }
+  ]
+}

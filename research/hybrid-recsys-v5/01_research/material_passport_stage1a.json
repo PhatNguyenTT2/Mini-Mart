@@ -1,0 +1,227 @@
+{
+  "origin_skill": "deep-research",
+  "origin_mode": "targeted-full-stage1a-scoping",
+  "origin_date": "2026-08-13T11:13:31.653Z",
+  "verification_status": "UNVERIFIED",
+  "version_label": "stage1a_v1",
+  "content_hash": "4ac8290f13a936fb77ce3b6a921eb7d126624d7b77a30c393bbd44c4b228a3e8",
+  "content_hash_scope": "Canonical path:sha256 list for the five Stage 1A research artifacts in artifact_inventory, excluding this passport and mutable/final state metadata.",
+  "upstream_dependencies": [
+    "intake_v1",
+    "phase0-inputs-4456b4381737",
+    "academic_research_master_plan_v1"
+  ],
+  "artifact_inventory": [
+    {
+      "path": "research/hybrid-recsys-v5/01_research/rq_brief.md",
+      "bytes": 14418,
+      "sha256": "c64dd8293da8e489a3f6d9fd220620a988bedb78b83ec1d2e9b280918a179b5b"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/rq_brief.schema1.json",
+      "bytes": 5483,
+      "sha256": "a72095bd1e49a53e9a131494a310f58a58cd1e851286236ddcd0770629991486"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/rq_estimand_matrix.md",
+      "bytes": 5466,
+      "sha256": "05dbdc1915af9fa18bd9e794ddb466f3c8159c207688364a50d94ff8b724ebce"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/methodology_blueprint.md",
+      "bytes": 16138,
+      "sha256": "dfe581aaffa48bdfa5567f151f27525bdb47a704d43f501bdfa7b6572496e0d1"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/devils_advocate_checkpoint1.md",
+      "bytes": 6849,
+      "sha256": "28308bbe17031fc1886103dfc273f6b8d5c0cf987af5edac2e27f93aa7adfed3"
+    }
+  ],
+  "repro_lock": {
+    "schema_version": "1.0",
+    "stochasticity_declaration": "LLM outputs are not byte-reproducible. This lockfile documents configuration, source inputs, and artifact hashes rather than guaranteeing deterministic replay.",
+    "ars_version": "3.19.0",
+    "model": {
+      "family": "openai",
+      "id": "runtime-model-id-not-exposed",
+      "weight_stable": false
+    },
+    "prompts": {
+      "hash_timing": "skill-load",
+      "skill_md_hash": "sha256:8ed244709d02abe224e6726d6a706b88080c70c6a73c0f2038404c9a0dee0e6c",
+      "agents_bundle_hash": "sha256:edadf445541c78ff8fe51b06857a39e1919a412243035d50486d84e801bcf103"
+    },
+    "materials": {
+      "list_hash": "sha256:4ac8290f13a936fb77ce3b6a921eb7d126624d7b77a30c393bbd44c4b228a3e8",
+      "count": 5
+    },
+    "external_protocols": {
+      "s2_api_protocol_version": "not-used-in-stage-1a",
+      "s2_snapshot_available": false
+    },
+    "cross_model": {
+      "enabled": false,
+      "secondary_model_id": null
+    }
+  },
+  "slr_lineage": false,
+  "experiment_intake_declaration": {
+    "status": "experiments_declared",
+    "declared_at": "2026-08-13T10:46:57.174Z",
+    "declared_by": "scholar"
+  },
+  "experiment_provenance": [
+    {
+      "experiment_id": "EXP-REF-REPRO",
+      "title": "Official baseline reproduction on source datasets",
+      "description": "Reproduce selected reference implementations under their documented source datasets and protocols before adapter acceptance.",
+      "repro_lock": {
+        "schema_version": "1.0",
+        "stochasticity_declaration": "No experiment has executed. This lock records the planned provenance boundary only.",
+        "ars_version": "3.19.0",
+        "model": {
+          "family": "openai",
+          "id": "runtime-model-id-not-exposed",
+          "weight_stable": false
+        },
+        "prompts": {
+          "hash_timing": "skill-load",
+          "skill_md_hash": "sha256:8ed244709d02abe224e6726d6a706b88080c70c6a73c0f2038404c9a0dee0e6c",
+          "agents_bundle_hash": "sha256:edadf445541c78ff8fe51b06857a39e1919a412243035d50486d84e801bcf103"
+        },
+        "materials": {
+          "list_hash": "sha256:4ac8290f13a936fb77ce3b6a921eb7d126624d7b77a30c393bbd44c4b228a3e8",
+          "count": 5
+        },
+        "external_protocols": {
+          "s2_api_protocol_version": "not-used-in-stage-1a",
+          "s2_snapshot_available": false
+        },
+        "cross_model": {
+          "enabled": false,
+          "secondary_model_id": null
+        }
+      },
+      "planned_vs_executed": [
+        {
+          "planned": "Reproduce each promoted reference adapter on its source dataset/protocol within a tolerance frozen before execution.",
+          "executed": false,
+          "skip_reason": "Stage 1A defines methodology only; adapter revisions, environments, reference statistics, and tolerances remain to be frozen in Stage 1E."
+        }
+      ],
+      "negative_results": [],
+      "known_limitations": [
+        {
+          "description": "Legacy environments may be incompatible with current hardware; failures must remain disclosed and may narrow the claimable comparator set."
+        }
+      ]
+    },
+    {
+      "experiment_id": "EXP-V5-HARMONIZED",
+      "title": "Shared-protocol benchmark on controlled Vietnamese retail benchmark v5",
+      "description": "Evaluate faithful baselines and Hybrid on the same temporal full-catalog protocol and shared evaluator, including cold-item, mechanism, and post-accuracy efficiency analyses.",
+      "repro_lock": {
+        "schema_version": "1.0",
+        "stochasticity_declaration": "No experiment has executed. This lock records the planned provenance boundary only.",
+        "ars_version": "3.19.0",
+        "model": {
+          "family": "openai",
+          "id": "runtime-model-id-not-exposed",
+          "weight_stable": false
+        },
+        "prompts": {
+          "hash_timing": "skill-load",
+          "skill_md_hash": "sha256:8ed244709d02abe224e6726d6a706b88080c70c6a73c0f2038404c9a0dee0e6c",
+          "agents_bundle_hash": "sha256:edadf445541c78ff8fe51b06857a39e1919a412243035d50486d84e801bcf103"
+        },
+        "materials": {
+          "list_hash": "sha256:4ac8290f13a936fb77ce3b6a921eb7d126624d7b77a30c393bbd44c4b228a3e8",
+          "count": 5
+        },
+        "external_protocols": {
+          "s2_api_protocol_version": "not-used-in-stage-1a",
+          "s2_snapshot_available": false
+        },
+        "cross_model": {
+          "enabled": false,
+          "secondary_model_id": null
+        }
+      },
+      "planned_vs_executed": [
+        {
+          "planned": "Estimate metric-specific paired Hybrid effects on NDCG@10, HR@10, and macro per-user GAUC over seeds 42, 2027, and 31415 using hierarchical paired bootstrap.",
+          "executed": false,
+          "skip_reason": "Stage 1A completed only the RQ, estimand, and design mapping; dataset lineage, adapters, registry, and TEST seal are not execution-ready."
+        },
+        {
+          "planned": "Evaluate cold-item preservation, Apriori/Wide mechanism, and fixed-runner efficiency using preregistered cohorts and gates.",
+          "executed": false,
+          "skip_reason": "Cohort implementation hashes and runtime thresholds must be frozen in Stage 1E before execution."
+        }
+      ],
+      "negative_results": [],
+      "known_limitations": [
+        {
+          "description": "Controlled/generated v5 behavior may align with the proposed inductive biases and cannot establish natural shopper effectiveness."
+        },
+        {
+          "description": "Three seeds provide limited seed-level precision and must be accompanied by seed-specific estimates."
+        }
+      ]
+    },
+    {
+      "experiment_id": "EXP-EXTERNAL-VALIDITY",
+      "title": "External validity and Vietnamese domain-sensitivity evaluation",
+      "description": "Run dataset-specific official reproduction and harmonized comparisons without comparing raw scores across datasets.",
+      "repro_lock": {
+        "schema_version": "1.0",
+        "stochasticity_declaration": "No experiment has executed. This lock records the planned provenance boundary only.",
+        "ars_version": "3.19.0",
+        "model": {
+          "family": "openai",
+          "id": "runtime-model-id-not-exposed",
+          "weight_stable": false
+        },
+        "prompts": {
+          "hash_timing": "skill-load",
+          "skill_md_hash": "sha256:8ed244709d02abe224e6726d6a706b88080c70c6a73c0f2038404c9a0dee0e6c",
+          "agents_bundle_hash": "sha256:edadf445541c78ff8fe51b06857a39e1919a412243035d50486d84e801bcf103"
+        },
+        "materials": {
+          "list_hash": "sha256:4ac8290f13a936fb77ce3b6a921eb7d126624d7b77a30c393bbd44c4b228a3e8",
+          "count": 5
+        },
+        "external_protocols": {
+          "s2_api_protocol_version": "not-used-in-stage-1a",
+          "s2_snapshot_available": false
+        },
+        "cross_model": {
+          "enabled": false,
+          "secondary_model_id": null
+        }
+      },
+      "planned_vs_executed": [
+        {
+          "planned": "Test H4 on at least one public commerce dataset that preserves the essential Hybrid and task contract; otherwise record H4 as NOT_TESTED.",
+          "executed": false,
+          "skip_reason": "Dataset revision, license, schema, task, and essential-signal compatibility have not yet been audited."
+        },
+        {
+          "planned": "Run a separately labelled Vietnamese domain-sensitivity track when a licensed compatible dataset is available.",
+          "executed": false,
+          "skip_reason": "The Vietnamese public dataset candidate has not passed compatibility and license gates."
+        }
+      ],
+      "negative_results": [],
+      "known_limitations": [
+        {
+          "description": "A dataset that drops essential signals can support only a reduced-method sensitivity result, not replication of the full Hybrid."
+        }
+      ]
+    }
+  ],
+  "experiment_alignment_results": [],
+  "reset_boundary": [],
+  "compliance_history": []
+}

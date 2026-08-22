@@ -1,0 +1,135 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r1c-validation-1.0",
+  "created_at": "2026-08-22",
+  "passed": true,
+  "verdict": "PASS_E4_R1C_CORRECTED_FAIL_CLOSED_READY_FOR_E5_R1_AUDIT",
+  "failure_count": 0,
+  "failures": [],
+  "validator": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_rebaseline_v2_e4_r1c.py",
+    "exit_code": 0,
+    "standard_json_parser_with_duplicate_and_case_collision_rejection": "PASS",
+    "powershell_convertfrom_json": {
+      "expected_documents": 4,
+      "passed_documents": 4,
+      "failures": 0
+    }
+  },
+  "checks": {
+    "exact_six_file_write_set": true,
+    "contract_hash": true,
+    "manifest_self_hash": true,
+    "lane_receipt_hash": true,
+    "lane_receipt_gate": true,
+    "frozen_inputs_20_of_20": true,
+    "five_output_hashes": true,
+    "material_passport_and_repro_lock": true,
+    "handoff_model": true,
+    "handoff_status": true,
+    "handoff_truth_state": true,
+    "handoff_scope_guards": true,
+    "simgcl_source_correction": true,
+    "v5_spec_correction": true,
+    "r1a_bindings": true,
+    "candidate_registry_13_rows": true,
+    "five_prohibited_joins": true,
+    "no_candidate_selected": true,
+    "r1b_control_schema_bindings": true,
+    "packet_root_fail_closed": true,
+    "ten_null_command_records": true,
+    "prerequisite_ledger_15_one_resolved": true,
+    "packet_truth_state": true,
+    "packet_scope_guards": true,
+    "phase_ownership_corrected": true,
+    "all_four_findings_disposed": true,
+    "adapter_contract_correct_path_hash": true,
+    "cross_dataset_guard": true,
+    "execution_plan_denial": true
+  },
+  "frozen_inputs": {
+    "expected": 20,
+    "matched": 20,
+    "contract_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r1c_central_synthesis_contract.md",
+    "contract_canonical_lf_bytes": 9876,
+    "contract_canonical_lf_sha256": "192a49d4afec4e52d52515879ec28e4e58f8acf4f9038afe9ff0a3d06d7765c9",
+    "manifest_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r1c_frozen_input_manifest.json",
+    "manifest_canonical_lf_bytes": 9370,
+    "manifest_canonical_lf_sha256": "3f1a1c6eb350120674a57dc6df846c58f456d61df30e0da27ebb7aea17923d87",
+    "lane_validation_canonical_lf_sha256": "d790eaf2503f9dba8dcff231b894ad8a50cefb98ae96d7f7ef9b363e0231edf2"
+  },
+  "outputs": {
+    "expected_files": 6,
+    "present_files": 6,
+    "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_e/E4_R1C_reproduction_adaptation",
+    "files": {
+      "selected_reference_bundle.json": {
+        "canonical_lf_bytes": 13999,
+        "canonical_lf_sha256": "03be00806d7228c90e97f767b416650dc4dfd769d3832607e18cc02e09c6d1b5"
+      },
+      "reproduction_execution_plan.md": {
+        "canonical_lf_bytes": 10857,
+        "canonical_lf_sha256": "cc3b03ca367f4b810da5fd593f294a4fff0cb2d8394c116cc10f7f2dcfef7a56"
+      },
+      "v5_adapter_and_evaluator_contract.md": {
+        "canonical_lf_bytes": 9142,
+        "canonical_lf_sha256": "486a6ba5cae4d174b603b52de7cf04883f5842a5c3685370382ebc927c210812"
+      },
+      "cross_dataset_reporting_contract.md": {
+        "canonical_lf_bytes": 8525,
+        "canonical_lf_sha256": "67217daf4d771a594d07107f4435e39e5b499ce97c845a8b39b4850bf22206f5"
+      },
+      "exact_command_confirmation_packet.json": {
+        "canonical_lf_bytes": 30622,
+        "canonical_lf_sha256": "a3b73e4dd8d1c722b684f297943496303d48169eae75ff37a4226180cb5e15c2"
+      },
+      "e4_r1c_handoff.json": {
+        "canonical_lf_sha256": "11268b429492d5f5b412463081377e9f009fe89feaeabe27abaa1caadd949907"
+      }
+    }
+  },
+  "finding_dispositions": {
+    "E5-F001": "CORRECTED_IN_CENTRAL_SOURCE_AND_SIMGCL_BINDING_RESIDUAL_EVIDENCE_VISIBLE",
+    "E5-F002": "CORRECTED_TO_ONE_EXISTING_V5_SPEC_PATH_AND_HASH",
+    "E5-F003": "REPLACED_BY_HASH_BOUND_MECHANICAL_CONTROL_AND_CLOSED_SCHEMA_DESIGN_NON_EXECUTABLE_UNTIL_MATERIALIZED",
+    "E5-F004": "CORRECTED_PHASE_OWNERSHIP_FUTURE_E5_R1_AUDIT_ONLY"
+  },
+  "candidate_status_counts": {
+    "READY_FOR_E5_R1_AUDIT": 0,
+    "PENDING_EVIDENCE": 7,
+    "REJECTED": 6,
+    "total": 13,
+    "prohibited_joins_rejected": 5,
+    "selected_candidate": null
+  },
+  "command_packet": {
+    "state": "CENTRAL_REPLACEMENT_FROZEN_FAIL_CLOSED_NON_EXECUTABLE",
+    "command_records": 10,
+    "command_strings_null": 10,
+    "receipt_schemas_bound": 7,
+    "command_receipt_mappings_bound": 10,
+    "user_confirmation_required": true,
+    "confirmed": false,
+    "execution_authorized": false,
+    "retry_policy": "NO_AUTO_RETRY",
+    "prerequisites_required": 15,
+    "prerequisites_resolved": 1,
+    "prerequisites_unresolved": 14,
+    "only_resolved_prerequisite": "P13_NEW_FROZEN_CENTRAL_PACKET"
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER",
+    "execution_authorized": false,
+    "confirmed": false
+  },
+  "authorization": {
+    "current_packet_executable": false,
+    "current_packet_may_be_confirmed": false,
+    "future_materialized_e4_packet_required": true,
+    "fresh_independent_e5_r1_required": true,
+    "pass_execution_authorized_emitted": false
+  },
+  "next_gate": "FREEZE_E5_R1_INPUTS_AND_DISPATCH_FRESH_INDEPENDENT_SOL_XHIGH_AUDIT"
+}

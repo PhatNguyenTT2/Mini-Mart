@@ -1,0 +1,77 @@
+{
+  "schema_version": "stage1b-r1-lane-dispatch-1.0",
+  "project": "hybrid-recsys-v5",
+  "stage": "1B",
+  "round": "R1",
+  "dispatched_at": "2026-08-14",
+  "model": "gpt-5.6-sol",
+  "reasoning": "xhigh",
+  "contract": {
+    "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/lane_contract.md",
+    "sha256": "dd47f7dcf08ff8c4afbeb3cff74370cda5136d7f78bbbf9ecc71770f262d95eb"
+  },
+  "source_schema": {
+    "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/source_schema_r1.json",
+    "sha256": "e87835eb7aaca16b50b98b7857074cfeb38defd74d9e5bf0b23462725cfd2c27"
+  },
+  "superseded_tasks": [
+    {"lane": "L1", "thread_id": "019ffb38-af65-7d73-bd68-e7af73de5c43", "archived": true},
+    {"lane": "L2", "thread_id": "019ffb38-af73-7293-a6d0-8964c715c886", "archived": true},
+    {"lane": "L3", "thread_id": "019ffb38-af79-7c22-b38a-b31bd0ce2cd8", "archived": true},
+    {"lane": "L4", "thread_id": "019ffb38-af70-7f21-ab78-79f721273291", "archived": true},
+    {"lane": "L5", "thread_id": "019ffb38-af64-7372-8040-2b56ccf497ab", "archived": true}
+  ],
+  "lanes": [
+    {
+      "lane": "L1",
+      "thread_id": "019ffcaf-45e1-71c2-aef6-a147780eace3",
+      "client_thread_id": "client-new-thread:a8f44076-e219-4b19-8f23-53628dd374c6",
+      "host_id": "local",
+      "worktree": "C:/Users/ACER/.codex/worktrees/5bed/backend",
+      "status_at_dispatch_check": "active",
+      "initial_progress_verified": true,
+      "write_scope": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L1/"
+    },
+    {
+      "lane": "L2",
+      "thread_id": "019ffcaf-464a-7642-a4e6-7b3af2365e4d",
+      "client_thread_id": "client-new-thread:72e4d099-d60e-48d3-858e-f403c8f3f173",
+      "host_id": "local",
+      "worktree": "C:/Users/ACER/.codex/worktrees/6ed1/backend",
+      "status_at_dispatch_check": "active",
+      "initial_progress_verified": true,
+      "write_scope": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L2/"
+    },
+    {
+      "lane": "L3",
+      "thread_id": "019ffcaf-45e1-71c2-aef6-a12374c1b271",
+      "client_thread_id": "client-new-thread:8a5fa04e-cae1-4086-b7fc-df45fdb3a2f3",
+      "host_id": "local",
+      "worktree": "C:/Users/ACER/.codex/worktrees/8418/backend",
+      "status_at_dispatch_check": "active",
+      "initial_progress_verified": true,
+      "write_scope": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L3/"
+    },
+    {
+      "lane": "L4",
+      "thread_id": "019ffcaf-4641-7040-b65b-9fa9f1479560",
+      "client_thread_id": "client-new-thread:7ae8e214-8bfb-4d84-ac4a-b65eb4e8406a",
+      "host_id": "local",
+      "worktree": "C:/Users/ACER/.codex/worktrees/67fe/backend",
+      "status_at_dispatch_check": "active",
+      "initial_progress_verified": true,
+      "write_scope": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L4/"
+    },
+    {
+      "lane": "L5",
+      "thread_id": "019ffcaf-466e-7613-849f-32c1cba23814",
+      "client_thread_id": "client-new-thread:dd92508c-265d-4f71-94d2-82512902a8d9",
+      "host_id": "local",
+      "worktree": "C:/Users/ACER/.codex/worktrees/b4ad/backend",
+      "status_at_dispatch_check": "active",
+      "initial_progress_verified": true,
+      "write_scope": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/lanes/L5/"
+    }
+  ],
+  "next_gate": "Wait for all five lane_handoff.json files, validate local gates, then run central identity merge and deduplication in a fresh Sol XHigh context."
+}

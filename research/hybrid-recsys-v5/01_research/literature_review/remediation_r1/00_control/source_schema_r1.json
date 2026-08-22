@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.hybrid-recsys-v5/stage1b/source-schema-r1.json",
+  "title": "Stage 1B R1 lane record definitions",
+  "description": "Shared definitions for lane candidate registries and claim cards. Scholarly works and operational resources are distinct record types.",
+  "$defs": {
+    "locator": {
+      "type": "object",
+      "required": ["artifact_type", "uri", "anchor", "basis"],
+      "properties": {
+        "artifact_type": {"enum": ["publisher_html", "publisher_pdf", "accepted_manuscript", "repository_pdf", "official_dataset_page", "official_repository", "other"]},
+        "uri": {"type": ["string", "null"]},
+        "anchor": {"type": ["string", "null"]},
+        "basis": {"enum": ["original_content", "official_metadata", "abstract_only", "secondary_index", "not_acquired"]},
+        "accessed_at": {"type": ["string", "null"]},
+        "sha256": {"type": ["string", "null"], "pattern": "^[a-fA-F0-9]{64}$"}
+      },
+      "additionalProperties": true
+    },
+    "scholarly_work": {
+      "type": "object",
+      "required": ["source_key", "record_type", "title", "authors", "publication_year", "venue", "document_type", "publication_status", "peer_reviewed", "identity_verified", "metadata_verified", "source_content_verified", "locator_ready", "source_family_id", "provenance"],
+      "properties": {
+        "source_key": {"type": "string", "minLength": 1},
+        "record_type": {"const": "scholarly_work"},
+        "title": {"type": "string", "minLength": 1},
+        "authors": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+        "publication_year": {"type": "integer", "minimum": 1900, "maximum": 2026},
+        "venue": {"type": "string", "minLength": 1},
+        "document_type": {"enum": ["journal_article", "conference_paper", "workshop_paper", "preprint", "editorial", "essay", "survey", "book_chapter", "thesis", "other"]},
+        "publication_status": {"enum": ["published", "accepted", "preprint", "withdrawn", "retracted", "unknown"]},
+        "peer_reviewed": {"enum": [true, false, "unknown"]},
+        "peer_review_basis": {"type": ["string", "null"]},
+        "doi": {"type": ["string", "null"]},
+        "official_url": {"type": ["string", "null"]},
+        "identity_verified": {"type": "boolean"},
+        "metadata_verified": {"type": "boolean"},
+        "source_content_verified": {"type": "boolean"},
+        "locator_ready": {"type": "boolean"},
+        "locator": {"anyOf": [{"$ref": "#/$defs/locator"}, {"type": "null"}]},
+        "source_family_id": {"type": "string", "minLength": 1},
+        "version_relation": {"type": ["string", "null"]},
+        "provenance": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+        "limitations": {"type": "array", "items": {"type": "string"}}
+      },
+      "additionalProperties": true
+    },
+    "operational_resource": {
+      "type": "object",
+      "required": ["resource_key", "record_type", "provider", "resource_type", "official_url", "accessed_at", "year_basis", "dataset_rights", "code_license", "paper_license", "redistribution_status", "provenance"],
+      "properties": {
+        "resource_key": {"type": "string", "minLength": 1},
+        "record_type": {"const": "operational_resource"},
+        "provider": {"type": "string", "minLength": 1},
+        "resource_type": {"type": "string", "minLength": 1},
+        "edition": {"type": ["string", "null"]},
+        "release_year": {"type": ["integer", "null"], "minimum": 1900, "maximum": 2026},
+        "operational_year": {"type": ["integer", "null"], "minimum": 1900, "maximum": 2026},
+        "year_basis": {"enum": ["official_release_metadata", "official_page_timestamp", "package_revision", "unknown"]},
+        "official_url": {"type": "string", "minLength": 1},
+        "accessed_at": {"type": "string", "minLength": 1},
+        "terms_snapshot": {"type": ["object", "null"]},
+        "dataset_rights": {"enum": ["permitted", "restricted", "unknown", "not_applicable"]},
+        "code_license": {"type": ["string", "null"]},
+        "paper_license": {"type": ["string", "null"]},
+        "redistribution_status": {"enum": ["permitted", "restricted", "unknown", "not_applicable"]},
+        "checksums": {"type": "array", "items": {"type": "object"}},
+        "provenance": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+      },
+      "additionalProperties": true
+    },
+    "claim_card": {
+      "type": "object",
+      "required": ["claim_id", "claim_text_bounded", "evidence_kind", "source_keys", "source_family_ids", "support_scope", "support_verdict", "locator", "locator_basis", "forbidden_extrapolations", "counter_evidence", "planning_only"],
+      "properties": {
+        "claim_id": {"type": "string", "minLength": 1},
+        "claim_text_bounded": {"type": "string", "minLength": 1},
+        "evidence_kind": {"type": "string", "minLength": 1},
+        "source_keys": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+        "source_family_ids": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+        "support_scope": {"type": "string", "minLength": 1},
+        "support_verdict": {"enum": ["supported", "partially_supported", "unsupported", "unverified"]},
+        "locator": {"anyOf": [{"$ref": "#/$defs/locator"}, {"type": "null"}]},
+        "locator_basis": {"enum": ["original_content", "official_metadata", "abstract_only", "secondary_index", "none"]},
+        "forbidden_extrapolations": {"type": "array", "items": {"type": "string"}},
+        "counter_evidence": {"type": "array", "items": {"type": "string"}},
+        "planning_only": {"type": "boolean"}
+      },
+      "additionalProperties": true
+    }
+  }
+}

@@ -15,6 +15,7 @@ from torch.optim.lr_scheduler import ReduceLROnPlateau
 from ai_service.config import Settings
 from ai_service.contracts import SplitName, TrainingVariant
 from ai_service.data.rules import RuleStore
+from ai_service.data.semantic_cohort import canonical_semantic_cohort_bytes
 from ai_service.data.snapshot import Snapshot
 from ai_service.errors import ArtifactIntegrityError, DataIntegrityError
 from ai_service.evaluation.cold_start import evaluate_cold_parity
@@ -34,6 +35,34 @@ def _settings() -> Settings:
     settings.data.num_price_buckets = 2
     settings.model.sbert_dim = 4
     return settings
+
+
+def _typed_semantic_cohort_document() -> dict[str, object]:
+    cases: list[dict[str, object]] = []
+    for split, target_timestamp in (
+        ("val", "2026-06-20T00:00:00Z"),
+        ("test", "2026-07-11T00:00:00Z"),
+    ):
+        for trap_id in range(1, 11):
+            cases.append(
+                {
+                    "trap_id": trap_id,
+                    "user_id": 11,
+                    "anchor_product_id": 101,
+                    "target_product_id": 102,
+                    "split": split,
+                    "anchor_event_id": f"anchor-{split}-{trap_id}",
+                    "target_event_id": f"target-{split}-{trap_id}",
+                    "anchor_event_ts": "2026-01-01T00:00:00Z",
+                    "target_event_ts": target_timestamp,
+                }
+            )
+    return {
+        "schema_version": "1.0.0",
+        "benchmark_run_id": "fixture",
+        "benchmark_spec_sha256": "a" * 64,
+        "cases": cases,
+    }
 
 
 def _snapshot(tmp_path: Path) -> Snapshot:
@@ -322,23 +351,12 @@ def test_semantic_trap_runtime_uses_snapshot_cohort_not_fixture(
         ),
         encoding="utf-8",
     )
-    _snapshot(tmp_path).snapshot_dir.joinpath("semantic-cohort.json").write_text(
-        json.dumps(
-            [
-                {
-                    "cohort_id": f"semantic-{trap_id}",
-                    "event_id": f"run:val:semantic:target:{trap_id}",
-                    "user_id": 11,
-                    "product_id": 102,
-                    "anchor_product_id": 101,
-                    "target_product_ids": [102],
-                }
-                for trap_id in range(1, 11)
-            ]
-        ),
-        encoding="utf-8",
+    cohort_document = _typed_semantic_cohort_document()
+    _snapshot(tmp_path).snapshot_dir.joinpath("semantic-cohort.json").write_bytes(
+        canonical_semantic_cohort_bytes(cohort_document)
     )
     prepared = SimpleNamespace(
+        split=SplitName.VAL,
         eligible_users=np.asarray([1], dtype=np.int64),
         latest_prior_purchase_contexts={1: 0},
         organic_novel_truth={1: {1}},
@@ -386,9 +404,11 @@ def test_semantic_trap_runtime_uses_snapshot_cohort_not_fixture(
     assert report.results[0].anchor_product_id == 101
     assert report.results[0].target_product_ids == (102,)
     cohort_path = snapshot.snapshot_dir / "semantic-cohort.json"
-    cohort_rows = json.loads(cohort_path.read_text(encoding="utf-8"))
-    cohort_path.write_text(json.dumps([*cohort_rows, cohort_rows[0]]), encoding="utf-8")
-    with pytest.raises(DataIntegrityError, match="duplicate target cases"):
+    cases = cohort_document["cases"]
+    assert isinstance(cases, list)
+    cohort_document["cases"] = [*cases, cases[0]]
+    cohort_path.write_bytes(canonical_semantic_cohort_bytes(cohort_document))
+    with pytest.raises(DataIntegrityError, match="duplicate"):
         evaluate_semantic_traps(
             HybridTwoTowerModel(_settings()),
             HybridTwoTowerModel(_settings()),

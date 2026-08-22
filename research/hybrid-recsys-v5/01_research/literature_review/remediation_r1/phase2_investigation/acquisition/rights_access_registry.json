@@ -1,0 +1,121 @@
+{
+  "schema_version": "stage1b-r1-r4-rights-access-registry-1.0",
+  "project": "hybrid-recsys-v5",
+  "generated_at": "2026-08-21T19:00:00+07:00",
+  "rights_rule": "Availability, provider access, package/code license, paper license, dataset rights, execution access, and redistribution permission are independent axes.",
+  "scholarly_local_storage_policy": {
+    "status": "LOCAL_ONLY",
+    "finding": "No original scholarly artifact is asserted redistributable unless an explicit license says so; R4 stores research copies locally and does not authorize commit or redistribution."
+  },
+  "operational_families": [
+    {
+      "source_family_id": "SF-R1-075",
+      "resource_keys": [
+        "R-L5-COMPLETE-JOURNEY-PROVIDER",
+        "R-L5-COMPLETEJOURNEY-R-PACKAGE"
+      ],
+      "selected_edition": {
+        "provider_family": "The Complete Journey / Complete Journey 2.0",
+        "provider_page_snapshot": "2026-08-21",
+        "r_package": "completejourney 1.1.1",
+        "r_package_published": "2025-11-26",
+        "package_doi": "10.32614/CRAN.package.completejourney"
+      },
+      "rights_layers": {
+        "provider_availability": {
+          "status": "PUBLIC_GATED_ROUTE",
+          "finding": "The source-files page is public; the dataset download route requires an interactive form, terms agreement, and emailed link."
+        },
+        "provider_access": {
+          "status": "NOT_EXECUTED",
+          "finding": "No form was submitted and no consent or authentication flow was automated. Public page and terms evidence were acquired."
+        },
+        "package_code_license": {
+          "status": "CC0",
+          "scope": "The completejourney R package only."
+        },
+        "paper_license": {
+          "status": "NOT_APPLICABLE",
+          "finding": "No separate scholarly paper is used as the operational artifact; package manual and documentation are bundled package materials."
+        },
+        "dataset_rights": {
+          "status": "RESTRICTED",
+          "finding": "Provider terms allow one copy for research, personal, or non-commercial use subject to conditions; other rights remain reserved."
+        },
+        "execution_access": {
+          "status": "PARTIAL_LOCAL_EXECUTION_AVAILABLE",
+          "finding": "The CRAN tarball and eight built-in .rda data objects are local and executable; the full provider transactions/promotions payload was not acquired."
+        },
+        "redistribution_permission": {
+          "status": "NOT_ESTABLISHED",
+          "finding": "No general redistribution permission for upstream Complete Journey data was established; all local artifacts remain local-only."
+        }
+      },
+      "license_scope_assertion": "Package CC0 is not propagated to upstream Complete Journey data.",
+      "payload_schema_dictionary_state": {
+        "package_tarball": "ACQUIRED_AND_HASHED",
+        "package_tar_entries": 60,
+        "built_in_data_objects": {
+          "status": "ACQUIRED",
+          "count": 8,
+          "members": [
+            "completejourney/data/campaign_descriptions.rda",
+            "completejourney/data/campaigns.rda",
+            "completejourney/data/coupon_redemptions.rda",
+            "completejourney/data/coupons.rda",
+            "completejourney/data/demographics.rda",
+            "completejourney/data/products.rda",
+            "completejourney/data/promotions_sample.rda",
+            "completejourney/data/transactions_sample.rda"
+          ]
+        },
+        "full_transactions_payload": "NOT_ACQUIRED_INTERACTIVE_PROVIDER_ROUTE",
+        "full_promotions_payload": "NOT_ACQUIRED_INTERACTIVE_PROVIDER_ROUTE",
+        "schema": "ACQUIRED_IN_PACKAGE_MANUAL_MAN_PAGES_AND_VIGNETTE",
+        "data_dictionary": "ACQUIRED_IN_PACKAGE_MANUAL_AND_USER_GUIDE"
+      },
+      "terms_evidence": [
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/complete_journey_provider_terms_2026-08-21.html",
+          "bytes": 268381,
+          "sha256": "f88091a14a73ca7418baa40b6e25d586b7935672d703e9ad79d153aaf977f1e0",
+          "media_type": "text/html",
+          "role": "provider_terms",
+          "source_uri": "https://www.dunnhumby.com/terms-and-conditions/",
+          "acquired_at": "2026-08-21T19:00:00+07:00",
+          "local_only": true,
+          "redistribution_in_bundle": false
+        },
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/complete_journey_provider_page_2026-08-21.html",
+          "bytes": 374797,
+          "sha256": "5fb537e70416f4bf7b20556ea01b45dd54a71541eeb8e7aaa599736df2adc503",
+          "media_type": "text/html",
+          "role": "provider_page",
+          "source_uri": "https://www.dunnhumby.com/source-files/",
+          "acquired_at": "2026-08-21T19:00:00+07:00",
+          "local_only": true,
+          "redistribution_in_bundle": false
+        },
+        {
+          "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/source_artifacts/completejourney_1.1.1_cran_page.html",
+          "bytes": 7034,
+          "sha256": "9d979899c7f455435f656a39c76f6314c3e80b098f8a499164b2619f9fe38579",
+          "media_type": "text/html",
+          "role": "cran_page",
+          "source_uri": "https://cran.r-project.org/package=completejourney",
+          "acquired_at": "2026-08-21T19:00:00+07:00",
+          "local_only": true,
+          "redistribution_in_bundle": false
+        }
+      ],
+      "decision": "RESOLVED_WITH_SEPARATE_RIGHTS_AND_ACCESS_LAYERS",
+      "r4_contract_satisfied": true
+    }
+  ],
+  "counts": {
+    "operational_families": 1,
+    "rights_layers": 7,
+    "rights_layer_conflations": 0
+  }
+}

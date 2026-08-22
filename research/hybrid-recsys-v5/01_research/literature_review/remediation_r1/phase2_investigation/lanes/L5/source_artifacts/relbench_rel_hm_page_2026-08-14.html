@@ -1,0 +1,375 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>h&m - RelBench</title>
+    <link rel="stylesheet" href="/assets/css/app.css">
+    <link rel="shortcut icon" type="image/png"
+           href="/favicon.png" 
+    />
+    <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+    <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>h&amp;m | RelBench</title>
+<meta name="generator" content="Jekyll v3.9.3" />
+<meta property="og:title" content="h&amp;m" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Relational Deep Learning Benchmark" />
+<meta property="og:description" content="Relational Deep Learning Benchmark" />
+<link rel="canonical" href="https://relbench.stanford.edu/datasets/rel-hm/" />
+<meta property="og:url" content="https://relbench.stanford.edu/datasets/rel-hm/" />
+<meta property="og:site_name" content="RelBench" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="h&amp;m" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Relational Deep Learning Benchmark","headline":"h&amp;m","url":"https://relbench.stanford.edu/datasets/rel-hm/"}</script>
+<!-- End Jekyll SEO tag -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-183522810-1"></script>
+<script>
+  window['ga-disable-UA-183522810-1'] = window.doNotTrack === "1" || navigator.doNotTrack === "1" || navigator.doNotTrack === "yes" || navigator.msDoNotTrack === "1";
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-183522810-1');
+</script><!-- head scripts --></head>
+
+  <body>
+    
+<nav class="navbar is-primary" >
+    <div class="container">
+        <div class="navbar-brand" style="margin-top: 10px;">
+            <a class="navbar-brand" href="/">
+            <span><img src="/img/logo.png" alt="Logo" style="height: auto; width: auto; max-height: 70px; max-width: 250px;"></span>
+            </a>
+            <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navMenu">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
+        <div class="navbar-menu" id="navMenu">
+            <div class="navbar-end">
+                
+                
+                    
+                    <a href="/" class="navbar-item ">Home</a>
+                    
+                
+                    
+                    <a href="/start/" class="navbar-item ">Start</a>
+                    
+                
+                    
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <a href="" class="navbar-link ">Databases</a>
+                        <div class="navbar-dropdown">
+                            
+                            <a href="/datasets/rel-stack" class="navbar-item ">rel-stack</a>
+                            
+                            <a href="/datasets/rel-amazon" class="navbar-item ">rel-amazon</a>
+                            
+                            <a href="/datasets/rel-trial" class="navbar-item ">rel-trial</a>
+                            
+                            <a href="/datasets/rel-f1" class="navbar-item ">rel-f1</a>
+                            
+                            <a href="/datasets/rel-hm" class="navbar-item ">rel-hm</a>
+                            
+                            <a href="/datasets/rel-event" class="navbar-item ">rel-event</a>
+                            
+                            <a href="/datasets/rel-avito" class="navbar-item ">rel-avito</a>
+                            
+                            <a href="/datasets/rel-salt" class="navbar-item ">rel-salt</a>
+                            
+                            <a href="/datasets/rel-arxiv" class="navbar-item ">rel-arxiv</a>
+                            
+                            <a href="/datasets/rel-ratebeer" class="navbar-item ">rel-ratebeer</a>
+                            
+                            <a href="/datasets/rel-mimic" class="navbar-item ">rel-mimic</a>
+                            
+                        </div>
+                    </div>
+                    
+                
+                    
+                    <a href="https://huggingface.co/spaces/relbench/leaderboard" class="navbar-item ">Leaderboards</a>
+                    
+                
+                    
+                    <a href="/news/" class="navbar-item ">News</a>
+                    
+                
+                    
+                    <a href="/team/" class="navbar-item ">Team</a>
+                    
+                
+                <a href="https://proceedings.mlr.press/v235/fey24a.html" class="navbar-item">Position Paper</a>
+                <a href="https://arxiv.org/abs/2407.20060" class="navbar-item">RelBench v1 Paper</a>
+                <a href="https://arxiv.org/abs/2602.12606" class="navbar-item">RelBench v2 Paper</a>
+                <a href="https://github.com/snap-stanford/relbench" class="navbar-item">GitHub</a>
+                
+            </div>
+
+        </div>
+    </div>
+</nav>
+
+    
+    
+
+
+    <section class="section">
+        <div class="container">
+            <div class="columns">
+                
+                <div class="column is-4-desktop is-4-tablet">
+                    
+
+<aside class="menu">
+
+    <p class="menu-label">Relational Databases</p>
+    <ul class="menu-list">
+        
+        <li>
+            <a href="/datasets/rel-amazon" class=""><strong>rel-amazon</strong></a>
+            
+            
+            
+        </li>
+        
+        <li>
+            <a href="/datasets/rel-stack" class=""><strong>rel-stack</strong></a>
+            
+            
+            
+        </li>
+        
+        <li>
+            <a href="/datasets/rel-trial" class=""><strong>rel-trial</strong></a>
+            
+            
+            
+        </li>
+        
+        <li>
+            <a href="/datasets/rel-f1" class=""><strong>rel-f1</strong></a>
+            
+            
+            
+        </li>
+        
+        <li>
+            <a href="/datasets/rel-hm" class=""><strong>rel-hm</strong></a>
+            
+            
+                        <ul>
+                
+                
+                <li><a href="/datasets/rel-hm/#user-churn" class=""><code>user-churn</code> </a></li>
+                
+                
+                
+                <li><a href="/datasets/rel-hm/#item-sales" class=""><code>item-sales</code> </a></li>
+                
+                
+                
+                <li><a href="/datasets/rel-hm/#user-item-purchase" class=""><code>user-item-purchase</code> </a></li>
+                
+                
+                
+                <li><a href="/datasets/rel-hm/#transactions-price" class=""><code>transactions-price</code> </a></li>
+                
+                
+            </ul>
+            
+        </li>
+        
+        <li>
+            <a href="/datasets/rel-event" class=""><strong>rel-event</strong></a>
+            
+            
+            
+        </li>
+        
+        <li>
+            <a href="/datasets/rel-avito" class=""><strong>rel-avito</strong></a>
+            
+            
+            
+        </li>
+        
+        <li>
+            <a href="/datasets/rel-salt" class=""><strong>rel-salt</strong></a>
+            
+            
+            
+        </li>
+        
+        <li>
+            <a href="/datasets/rel-arxiv" class=""><strong>rel-arxiv</strong></a>
+            
+            
+            
+        </li>
+        
+        <li>
+            <a href="/datasets/rel-ratebeer" class=""><strong>rel-ratebeer</strong></a>
+            
+            
+            
+        </li>
+        
+        <li>
+            <a href="/datasets/rel-mimic" class=""><strong>rel-mimic</strong></a>
+            
+            
+            
+        </li>
+            
+    </ul>
+
+</aside>
+                </div>
+                
+                <div class="column is-8">
+                    
+                    
+                    
+                    
+<div class="content">
+    <h1 id="rel-hm-hm-database"><code>rel-hm</code> H&amp;M Database</h1>
+
+<p class="is-size-6">  <strong> Database Description: </strong>The H&amp;M relational database hosts extensive customer and product data for online shopping experiences across its extensive network of brands and stores.  This database includes detailed customer purchase histories and a rich set of metadata, encompassing everything from basic demographic information to extensive details about each product available. 
+ </p>
+
+<p class="is-size-6">  <strong> Database Statistics: </strong> </p>
+
+<table class="table is-striped is-hoverable" id="A">
+<tr>
+<td>Num of Tables</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Num of Rows</td>
+<td>16,664,809 </td>
+</tr>
+<tr>
+<td>Num of Columns</td>
+<td>37</td>
+</tr>
+<tr> 
+<td> Starting Time </td> 
+<td> 2018-09-20 </td> 
+</tr>
+<tr>
+<td>Validation timestamp</td>
+<td>2020-09-07 </td>
+</tr>
+<tr>
+<td>Testing timestamp</td>
+<td>2020-09-14</td>
+</tr>
+<tr>
+<td>Time window</td>
+<td>7 days</td>
+</tr>
+</table>
+
+<p class="is-size-6">  <strong> Database schema: </strong> </p>
+<p><img src="../../img/rel-hm.png" /></p>
+
+<p>To load this relational database in RelBench, do:</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">from</span> <span class="nn">relbench.datasets</span> <span class="kn">import</span> <span class="n">get_dataset</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">get_dataset</span><span class="p">(</span><span class="s">"rel-hm"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p class="is-size-6">  <strong> References: </strong>  </p>
+
+<p><a href="https://www.kaggle.com/competitions/h-and-m-personalized-fashion-recommendations">[1] H&amp;M Personalized Fashion Recommendations Kaggle Challenge. </a></p>
+
+<p class="is-size-6"> <strong> Dataset License: </strong><a href="https://www.kaggle.com/competitions/h-and-m-personalized-fashion-recommendations/rules">Non-Commercial Purposes &amp; Academic Research</a>.</p>
+
+<hr />
+
+<h1 id="entity-classification-tasks">Entity Classification Tasks</h1>
+<h2 id="user-churn"><code>user-churn</code> <span class="forecasting-tag"></span></h2>
+
+<p class="is-size-6">  <strong> Task Description: </strong> Predict the churn for a customer (no transactions) in the next week. </p>
+
+<p class="is-size-6"> <strong>Evaluation metric:</strong> <code>AUROC</code> </p>
+
+<h1 id="entity-regression-tasks">Entity Regression Tasks</h1>
+
+<h2 id="item-sales"><code>item-sales</code> <span class="forecasting-tag"></span></h2>
+
+<p class="is-size-6">  <strong> Task Description: </strong> Predict the total sales for an article (the sum of prices of the associated
+transactions) in the next week </p>
+
+<p class="is-size-6"> <strong>Evaluation metric:</strong> <code>MAE</code> </p>
+
+<h2 id="transactions-price"><code>transactions-price</code> <span class="autocomplete-tag"></span></h2>
+
+<p class="is-size-6">  <strong> Task Description: </strong> For each transaction, predict the item price. </p>
+
+<p class="is-size-6"> <strong>Evaluation metric:</strong> <code>MAE</code> </p>
+
+<h1 id="link-prediction-tasks">Link Prediction Tasks</h1>
+
+<h2 id="user-item-purchase"><code>user-item-purchase</code></h2>
+
+<p class="is-size-6">  <strong> Task Description: </strong> Predict the list of articles each customer will purchase in
+the next seven days. </p>
+
+<p class="is-size-6"> <strong>Evaluation metric:</strong> <code>MAP</code> </p>
+
+</div>
+                </div>
+                
+            </div>
+        </div>
+    </section>
+    
+        <footer class="footer">
+    <div class="container">
+        
+        <div class="columns is-mobile">
+            <div class="column is-8 has-text-left is-vcentered">
+                <a class="navbar-brand" href="/">
+            <span><img src="/img/logo.png" alt="Logo" style="height: auto; width: auto; max-height: 70px; max-width: 250px;"></span>
+            </a>
+            </div>
+            <div class="column is-4 has-text-right is-vcentered">
+                <a href="https://relbench.stanford.edu/paper.pdf">
+                    <span class="icon is-large">
+                      <i class="fas fa-file-alt fa-3x"></i>
+                    </span>
+                </a>
+
+                <a href="https://github.com/snap-stanford/relbench">
+                    <span class="icon is-large">
+                      <i class="fas fab fa-github fa-3x"></i>
+                    </span>
+                </a>
+
+                <a href="https://twitter.com/RelBench">
+                    <span class="icon is-large">
+                      <i class="fas fab fa-twitter fa-3x"></i>
+                    </span>
+                </a>
+
+                <a href="https://groups.google.com/forum/#!forum/relbench/join">
+                    <span class="icon is-large">
+                      <i class="fa fa-envelope fa-3x"></i>
+                    </span>
+                </a>
+            </div>
+        </div>
+        
+    </div>
+</footer>
+    
+    <script src="/assets/js/app.js" type="text/javascript"></script><!-- footer scripts --></body>
+</html>
+

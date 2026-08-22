@@ -1,0 +1,1658 @@
+{
+  "schema_version": "stage1b-r1-r4-claim-acquisition-map-1.0",
+  "project": "hybrid-recsys-v5",
+  "generated_at": "2026-08-21T19:00:00+07:00",
+  "claim_state_rule": "Original lane flags and the exclusive R3 central disposition are immutable at R4; production_ready is always false.",
+  "counts": {
+    "claims": 44,
+    "conditional_production_candidate": 22,
+    "planning_only": 22,
+    "acquisition_satisfied": 41,
+    "locator_satisfied": 43,
+    "conditional_original_content_and_locator_satisfied": 22,
+    "production_ready": 0
+  },
+  "claims": [
+    {
+      "claim_id": "C-L5-EXT-01",
+      "lane": "L5",
+      "original_lane_state": {
+        "planning_only": true,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "planning_only",
+      "central_conditions": [
+        "retain for planning/context only unless a later central gate explicitly changes disposition"
+      ],
+      "canonical_source_keys": [
+        "jin2023_amazon_m2"
+      ],
+      "operational_resource_keys": [
+        "R-L5-AMAZON-M2"
+      ],
+      "source_family_ids": [
+        "SF-R1-025"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-jin2023_amazon_m2-01",
+        "LOC-R4-R-R-L5-AMAZON-M2-01"
+      ],
+      "acquisition_satisfied": true,
+      "original_content_satisfied": true,
+      "locator_satisfied": true,
+      "r5_prerequisites_satisfied": false,
+      "downstream_eligibility": "planning_only_unchanged",
+      "production_ready": false,
+      "r4_note": "Original planning-only disposition is preserved."
+    },
+    {
+      "claim_id": "C-L5-EXT-02",
+      "lane": "L5",
+      "original_lane_state": {
+        "planning_only": true,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "planning_only",
+      "central_conditions": [
+        "retain for planning/context only unless a later central gate explicitly changes disposition"
+      ],
+      "canonical_source_keys": [
+        "tagliabue2021_coveo"
+      ],
+      "operational_resource_keys": [
+        "R-L5-COVEO"
+      ],
+      "source_family_ids": [
+        "SF-R1-055"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-tagliabue2021_coveo-01",
+        "LOC-R4-R-R-L5-COVEO-01"
+      ],
+      "acquisition_satisfied": true,
+      "original_content_satisfied": true,
+      "locator_satisfied": true,
+      "r5_prerequisites_satisfied": false,
+      "downstream_eligibility": "planning_only_unchanged",
+      "production_ready": false,
+      "r4_note": "Original planning-only disposition is preserved."
+    },
+    {
+      "claim_id": "C-L5-EXT-03",
+      "lane": "L5",
+      "original_lane_state": {
+        "planning_only": true,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "planning_only",
+      "central_conditions": [
+        "retain for planning/context only unless a later central gate explicitly changes disposition"
+      ],
+      "canonical_source_keys": [],
+      "operational_resource_keys": [
+        "R-L5-COMPLETE-JOURNEY-PROVIDER",
+        "R-L5-COMPLETEJOURNEY-R-PACKAGE"
+      ],
+      "source_family_ids": [
+        "SF-R1-075"
+      ],
+      "locator_ids": [
+        "LOC-R4-R-R-L5-COMPLETE-JOURNEY-PROVIDER-01",
+        "LOC-R4-R-R-L5-COMPLETEJOURNEY-R-PACKAGE-01"
+      ],
+      "acquisition_satisfied": true,
+      "original_content_satisfied": false,
+      "locator_satisfied": true,
+      "r5_prerequisites_satisfied": false,
+      "downstream_eligibility": "planning_only_unchanged",
+      "production_ready": false,
+      "r4_note": "Original planning-only disposition is preserved."
+    },
+    {
+      "claim_id": "C-L5-EXT-04",
+      "lane": "L5",
+      "original_lane_state": {
+        "planning_only": true,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "planning_only",
+      "central_conditions": [
+        "retain for planning/context only unless a later central gate explicitly changes disposition"
+      ],
+      "canonical_source_keys": [
+        "robinson2024_relbench"
+      ],
+      "operational_resource_keys": [
+        "R-L5-RELBENCH-REL-AMAZON",
+        "R-L5-RELBENCH-REL-HM",
+        "R-L5-HM"
+      ],
+      "source_family_ids": [
+        "SF-R1-048",
+        "SF-R1-073",
+        "SF-R1-074"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-robinson2024_relbench-01",
+        "LOC-R4-R-R-L5-RELBENCH-REL-AMAZON-01",
+        "LOC-R4-R-R-L5-RELBENCH-REL-HM-01",
+        "LOC-R4-R-R-L5-HM-01"
+      ],
+      "acquisition_satisfied": true,
+      "original_content_satisfied": true,
+      "locator_satisfied": true,
+      "r5_prerequisites_satisfied": false,
+      "downstream_eligibility": "planning_only_unchanged",
+      "production_ready": false,
+      "r4_note": "Original planning-only disposition is preserved."
+    },
+    {
+      "claim_id": "C-L5-EXT-05",
+      "lane": "L5",
+      "original_lane_state": {
+        "planning_only": true,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "planning_only",
+      "central_conditions": [
+        "retain for planning/context only unless a later central gate explicitly changes disposition"
+      ],
+      "canonical_source_keys": [
+        "wu2025_muse_taobao_mm"
+      ],
+      "operational_resource_keys": [
+        "R-L5-TAOBAO-MM"
+      ],
+      "source_family_ids": [
+        "SF-R1-063"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-wu2025_muse_taobao_mm-01",
+        "LOC-R4-R-R-L5-TAOBAO-MM-01"
+      ],
+      "acquisition_satisfied": true,
+      "original_content_satisfied": true,
+      "locator_satisfied": true,
+      "r5_prerequisites_satisfied": false,
+      "downstream_eligibility": "planning_only_unchanged",
+      "production_ready": false,
+      "r4_note": "Original planning-only disposition is preserved."
+    },
+    {
+      "claim_id": "C-L5-RIGHTS-01",
+      "lane": "L5",
+      "original_lane_state": {
+        "planning_only": true,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "planning_only",
+      "central_conditions": [
+        "retain for planning/context only unless a later central gate explicitly changes disposition"
+      ],
+      "canonical_source_keys": [],
+      "operational_resource_keys": [
+        "R-L5-COMPLETE-JOURNEY-PROVIDER",
+        "R-L5-COMPLETEJOURNEY-R-PACKAGE",
+        "R-L5-VIFOODREC",
+        "R-L5-AMAZON-REVIEWS-2023"
+      ],
+      "source_family_ids": [
+        "SF-R1-019",
+        "SF-R1-057",
+        "SF-R1-075"
+      ],
+      "locator_ids": [
+        "LOC-R4-R-R-L5-COMPLETE-JOURNEY-PROVIDER-01",
+        "LOC-R4-R-R-L5-COMPLETEJOURNEY-R-PACKAGE-01",
+        "LOC-R4-R-R-L5-VIFOODREC-01",
+        "LOC-R4-R-R-L5-AMAZON-REVIEWS-2023-01"
+      ],
+      "acquisition_satisfied": true,
+      "original_content_satisfied": false,
+      "locator_satisfied": true,
+      "r5_prerequisites_satisfied": false,
+      "downstream_eligibility": "planning_only_unchanged",
+      "production_ready": false,
+      "r4_note": "Original planning-only disposition is preserved."
+    },
+    {
+      "claim_id": "C-L5-SCOPE-01",
+      "lane": "L5",
+      "original_lane_state": {
+        "planning_only": true,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "planning_only",
+      "central_conditions": [
+        "retain for planning/context only unless a later central gate explicitly changes disposition"
+      ],
+      "canonical_source_keys": [],
+      "operational_resource_keys": [
+        "R-L5-VIECOMREC",
+        "R-L5-VIFOODREC",
+        "R-L5-VIHOREC",
+        "R-L5-AMAZON-M2",
+        "R-L5-TENREC",
+        "R-L5-COVEO",
+        "R-L5-OTTO",
+        "R-L5-RELBENCH-REL-AMAZON",
+        "R-L5-RELBENCH-REL-HM",
+        "R-L5-AMAZON-REVIEWS-2023",
+        "R-L5-HM",
+        "R-L5-COMPLETE-JOURNEY-PROVIDER",
+        "R-L5-COMPLETEJOURNEY-R-PACKAGE",
+        "R-L5-TAOBAO-MM"
+      ],
+      "source_family_ids": [
+        "SF-R1-019",
+        "SF-R1-025",
+        "SF-R1-038",
+        "SF-R1-039",
+        "SF-R1-055",
+        "SF-R1-057",
+        "SF-R1-063",
+        "SF-R1-067",
+        "SF-R1-072",
+        "SF-R1-073",
+        "SF-R1-074",
+        "SF-R1-075"
+      ],
+      "locator_ids": [
+        "LOC-R4-R-R-L5-VIECOMREC-01",
+        "LOC-R4-R-R-L5-VIFOODREC-01",
+        "LOC-R4-R-R-L5-VIHOREC-01",
+        "LOC-R4-R-R-L5-AMAZON-M2-01",
+        "LOC-R4-R-R-L5-TENREC-01",
+        "LOC-R4-R-R-L5-COVEO-01",
+        "LOC-R4-R-R-L5-OTTO-01",
+        "LOC-R4-R-R-L5-RELBENCH-REL-AMAZON-01",
+        "LOC-R4-R-R-L5-RELBENCH-REL-HM-01",
+        "LOC-R4-R-R-L5-AMAZON-REVIEWS-2023-01",
+        "LOC-R4-R-R-L5-HM-01",
+        "LOC-R4-R-R-L5-COMPLETE-JOURNEY-PROVIDER-01",
+        "LOC-R4-R-R-L5-COMPLETEJOURNEY-R-PACKAGE-01",
+        "LOC-R4-R-R-L5-TAOBAO-MM-01"
+      ],
+      "acquisition_satisfied": true,
+      "original_content_satisfied": false,
+      "locator_satisfied": true,
+      "r5_prerequisites_satisfied": false,
+      "downstream_eligibility": "planning_only_unchanged",
+      "production_ready": false,
+      "r4_note": "Original planning-only disposition is preserved."
+    },
+    {
+      "claim_id": "C-L5-VN-01",
+      "lane": "L5",
+      "original_lane_state": {
+        "planning_only": true,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "planning_only",
+      "central_conditions": [
+        "retain for planning/context only unless a later central gate explicitly changes disposition"
+      ],
+      "canonical_source_keys": [
+        "tran2024_viecomrec"
+      ],
+      "operational_resource_keys": [
+        "R-L5-VIECOMREC"
+      ],
+      "source_family_ids": [
+        "SF-R1-038"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-tran2024_viecomrec-01",
+        "LOC-R4-R-R-L5-VIECOMREC-01"
+      ],
+      "acquisition_satisfied": true,
+      "original_content_satisfied": true,
+      "locator_satisfied": true,
+      "r5_prerequisites_satisfied": false,
+      "downstream_eligibility": "planning_only_unchanged",
+      "production_ready": false,
+      "r4_note": "Original planning-only disposition is preserved."
+    },
+    {
+      "claim_id": "C-L5-VN-02",
+      "lane": "L5",
+      "original_lane_state": {
+        "planning_only": true,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "planning_only",
+      "central_conditions": [
+        "retain for planning/context only unless a later central gate explicitly changes disposition"
+      ],
+      "canonical_source_keys": [
+        "tran2024_vietnamese_food",
+        "nguyen2026_vihorec",
+        "pham2024_developing_a_restaurant_recommended_system_via_the_vietnam"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-039",
+        "SF-R1-045",
+        "SF-R1-057"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-tran2024_vietnamese_food-01",
+        "LOC-R4-S-nguyen2026_vihorec-01",
+        "LOC-R4-S-pham2024_developing_a_restaurant_recommended_system_via_the_vietnam-01"
+      ],
+      "acquisition_satisfied": true,
+      "original_content_satisfied": true,
+      "locator_satisfied": true,
+      "r5_prerequisites_satisfied": false,
+      "downstream_eligibility": "planning_only_unchanged",
+      "production_ready": false,
+      "r4_note": "Original planning-only disposition is preserved."
+    },
+    {
+      "claim_id": "L1-CC-001",
+      "lane": "L1",
+      "original_lane_state": {
+        "planning_only": true,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "planning_only",
+      "central_conditions": [
+        "retain for planning/context only unless a later central gate explicitly changes disposition"
+      ],
+      "canonical_source_keys": [
+        "krichene2020_sampled_metrics",
+        "krichene2021_on_sampled_metrics_for_item_recommendation_extended_abstra",
+        "li2023_reliable_sampling",
+        "pereira2025_on_the_reliability_of_sampling_strategies_in_offline_recom"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-028",
+        "SF-R1-031",
+        "SF-R1-043"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-krichene2020_sampled_metrics-01",
+        "LOC-R4-S-krichene2021_on_sampled_metrics_for_item_recommendation_extended_abstra-01",
+        "LOC-R4-S-li2023_reliable_sampling-01",
+        "LOC-R4-S-pereira2025_on_the_reliability_of_sampling_strategies_in_offline_recom-01"
+      ],
+      "acquisition_satisfied": true,
+      "original_content_satisfied": true,
+      "locator_satisfied": true,
+      "r5_prerequisites_satisfied": false,
+      "downstream_eligibility": "planning_only_unchanged",
+      "production_ready": false,
+      "r4_note": "Original planning-only disposition is preserved."
+    },
+    {
+      "claim_id": "L1-CC-002",
+      "lane": "L1",
+      "original_lane_state": {
+        "planning_only": true,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "planning_only",
+      "central_conditions": [
+        "retain for planning/context only unless a later central gate explicitly changes disposition"
+      ],
+      "canonical_source_keys": [
+        "zhao2020_alternative_settings",
+        "ihemelandu2023_candidate_set_sampling_for_evaluating_top_n_recommendation",
+        "pereira2025_on_the_reliability_of_sampling_strategies_in_offline_recom",
+        "parajuli2026_on_the_convergent_validity_of_offline_evaluation_designs_f"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-022",
+        "SF-R1-040",
+        "SF-R1-043",
+        "SF-R1-069"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-zhao2020_alternative_settings-01",
+        "LOC-R4-S-ihemelandu2023_candidate_set_sampling_for_evaluating_top_n_recommendation-01",
+        "LOC-R4-S-pereira2025_on_the_reliability_of_sampling_strategies_in_offline_recom-01",
+        "LOC-R4-S-parajuli2026_on_the_convergent_validity_of_offline_evaluation_designs_f-01"
+      ],
+      "acquisition_satisfied": true,
+      "original_content_satisfied": true,
+      "locator_satisfied": true,
+      "r5_prerequisites_satisfied": false,
+      "downstream_eligibility": "planning_only_unchanged",
+      "production_ready": false,
+      "r4_note": "Original planning-only disposition is preserved."
+    },
+    {
+      "claim_id": "L1-CC-003",
+      "lane": "L1",
+      "original_lane_state": {
+        "planning_only": true,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "planning_only",
+      "central_conditions": [
+        "retain for planning/context only unless a later central gate explicitly changes disposition"
+      ],
+      "canonical_source_keys": [
+        "zhao2020_alternative_settings",
+        "gusak2025_time_split",
+        "parajuli2026_on_the_convergent_validity_of_offline_evaluation_designs_f"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-013",
+        "SF-R1-040",
+        "SF-R1-069"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-zhao2020_alternative_settings-01",
+        "LOC-R4-S-gusak2025_time_split-01",
+        "LOC-R4-S-parajuli2026_on_the_convergent_validity_of_offline_evaluation_designs_f-01"
+      ],
+      "acquisition_satisfied": true,
+      "original_content_satisfied": true,
+      "locator_satisfied": true,
+      "r5_prerequisites_satisfied": false,
+      "downstream_eligibility": "planning_only_unchanged",
+      "production_ready": false,
+      "r4_note": "Original planning-only disposition is preserved."
+    },
+    {
+      "claim_id": "L1-CC-004",
+      "lane": "L1",
+      "original_lane_state": {
+        "planning_only": true,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "planning_only",
+      "central_conditions": [
+        "retain for planning/context only unless a later central gate explicitly changes disposition"
+      ],
+      "canonical_source_keys": [
+        "tamm2021_metric_consistency",
+        "canamares2020_offline_options",
+        "castells2022_offline_recommender_system_evaluation_challenges_and_new_d"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-005",
+        "SF-R1-006",
+        "SF-R1-056"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-tamm2021_metric_consistency-01",
+        "LOC-R4-S-canamares2020_offline_options-01",
+        "LOC-R4-S-castells2022_offline_recommender_system_evaluation_challenges_and_new_d-01"
+      ],
+      "acquisition_satisfied": false,
+      "original_content_satisfied": true,
+      "locator_satisfied": true,
+      "r5_prerequisites_satisfied": false,
+      "downstream_eligibility": "planning_only_unchanged",
+      "production_ready": false,
+      "r4_note": "Original planning-only disposition is preserved."
+    },
+    {
+      "claim_id": "L1-CC-005",
+      "lane": "L1",
+      "original_lane_state": {
+        "planning_only": true,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "planning_only",
+      "central_conditions": [
+        "retain for planning/context only unless a later central gate explicitly changes disposition"
+      ],
+      "canonical_source_keys": [
+        "dacrema2021_reproducibility",
+        "sun2023_daisyrec2",
+        "benigni2026_diffusion_recommender_models_and_the_illusion_of_progress_",
+        "jannach2026_methodological_standards"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-002",
+        "SF-R1-009",
+        "SF-R1-023",
+        "SF-R1-054"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-dacrema2021_reproducibility-01",
+        "LOC-R4-S-sun2023_daisyrec2-01",
+        "LOC-R4-S-benigni2026_diffusion_recommender_models_and_the_illusion_of_progress_-01",
+        "LOC-R4-S-jannach2026_methodological_standards-01"
+      ],
+      "acquisition_satisfied": true,
+      "original_content_satisfied": true,
+      "locator_satisfied": true,
+      "r5_prerequisites_satisfied": false,
+      "downstream_eligibility": "planning_only_unchanged",
+      "production_ready": false,
+      "r4_note": "Original planning-only disposition is preserved."
+    },
+    {
+      "claim_id": "L1-CC-006",
+      "lane": "L1",
+      "original_lane_state": {
+        "planning_only": true,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "planning_only",
+      "central_conditions": [
+        "retain for planning/context only unless a later central gate explicitly changes disposition"
+      ],
+      "canonical_source_keys": [
+        "dacrema2021_reproducibility",
+        "shehzad2025_we_share_our_code_online_why_this_is_not_enough_to_ensure_",
+        "zhao2022_recbole2"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-009",
+        "SF-R1-051",
+        "SF-R1-070"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-dacrema2021_reproducibility-01",
+        "LOC-R4-S-shehzad2025_we_share_our_code_online_why_this_is_not_enough_to_ensure_-01",
+        "LOC-R4-S-zhao2022_recbole2-01"
+      ],
+      "acquisition_satisfied": false,
+      "original_content_satisfied": true,
+      "locator_satisfied": true,
+      "r5_prerequisites_satisfied": false,
+      "downstream_eligibility": "planning_only_unchanged",
+      "production_ready": false,
+      "r4_note": "Original planning-only disposition is preserved."
+    },
+    {
+      "claim_id": "L1-CC-007",
+      "lane": "L1",
+      "original_lane_state": {
+        "planning_only": true,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "planning_only",
+      "central_conditions": [
+        "retain for planning/context only unless a later central gate explicitly changes disposition"
+      ],
+      "canonical_source_keys": [
+        "dacrema2021_reproducibility",
+        "sun2023_daisyrec2",
+        "zhao2022_recbole2",
+        "jannach2026_methodological_standards"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-009",
+        "SF-R1-023",
+        "SF-R1-054",
+        "SF-R1-070"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-dacrema2021_reproducibility-01",
+        "LOC-R4-S-sun2023_daisyrec2-01",
+        "LOC-R4-S-zhao2022_recbole2-01",
+        "LOC-R4-S-jannach2026_methodological_standards-01"
+      ],
+      "acquisition_satisfied": true,
+      "original_content_satisfied": true,
+      "locator_satisfied": true,
+      "r5_prerequisites_satisfied": false,
+      "downstream_eligibility": "planning_only_unchanged",
+      "production_ready": false,
+      "r4_note": "Original planning-only disposition is preserved."
+    },
+    {
+      "claim_id": "L1-CC-008",
+      "lane": "L1",
+      "original_lane_state": {
+        "planning_only": true,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "planning_only",
+      "central_conditions": [
+        "retain for planning/context only unless a later central gate explicitly changes disposition"
+      ],
+      "canonical_source_keys": [
+        "zhao2020_alternative_settings",
+        "canamares2020_offline_options",
+        "gusak2025_time_split",
+        "parajuli2026_on_the_convergent_validity_of_offline_evaluation_designs_f"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-005",
+        "SF-R1-013",
+        "SF-R1-040",
+        "SF-R1-069"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-zhao2020_alternative_settings-01",
+        "LOC-R4-S-canamares2020_offline_options-01",
+        "LOC-R4-S-gusak2025_time_split-01",
+        "LOC-R4-S-parajuli2026_on_the_convergent_validity_of_offline_evaluation_designs_f-01"
+      ],
+      "acquisition_satisfied": true,
+      "original_content_satisfied": true,
+      "locator_satisfied": true,
+      "r5_prerequisites_satisfied": false,
+      "downstream_eligibility": "planning_only_unchanged",
+      "production_ready": false,
+      "r4_note": "Original planning-only disposition is preserved."
+    },
+    {
+      "claim_id": "L1-CC-009",
+      "lane": "L1",
+      "original_lane_state": {
+        "planning_only": true,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "planning_only",
+      "central_conditions": [
+        "retain for planning/context only unless a later central gate explicitly changes disposition"
+      ],
+      "canonical_source_keys": [
+        "krichene2021_on_sampled_metrics_for_item_recommendation_extended_abstra",
+        "li2023_reliable_sampling",
+        "hidasi2023_widespread_flaws_in_offline_evaluation_of_recommender_syst",
+        "ihemelandu2023_candidate_set_sampling_for_evaluating_top_n_recommendation",
+        "pereira2025_on_the_reliability_of_sampling_strategies_in_offline_recom",
+        "liu2023_on_the_consistency_discriminative_power_and_robustness_of_"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-016",
+        "SF-R1-022",
+        "SF-R1-028",
+        "SF-R1-031",
+        "SF-R1-034",
+        "SF-R1-043"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-krichene2021_on_sampled_metrics_for_item_recommendation_extended_abstra-01",
+        "LOC-R4-S-li2023_reliable_sampling-01",
+        "LOC-R4-S-hidasi2023_widespread_flaws_in_offline_evaluation_of_recommender_syst-01",
+        "LOC-R4-S-ihemelandu2023_candidate_set_sampling_for_evaluating_top_n_recommendation-01",
+        "LOC-R4-S-pereira2025_on_the_reliability_of_sampling_strategies_in_offline_recom-01",
+        "LOC-R4-S-liu2023_on_the_consistency_discriminative_power_and_robustness_of_-01"
+      ],
+      "acquisition_satisfied": false,
+      "original_content_satisfied": false,
+      "locator_satisfied": false,
+      "r5_prerequisites_satisfied": false,
+      "downstream_eligibility": "planning_only_unchanged",
+      "production_ready": false,
+      "r4_note": "Original planning-only disposition is preserved."
+    },
+    {
+      "claim_id": "L1-CC-010",
+      "lane": "L1",
+      "original_lane_state": {
+        "planning_only": true,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "planning_only",
+      "central_conditions": [
+        "retain for planning/context only unless a later central gate explicitly changes disposition"
+      ],
+      "canonical_source_keys": [
+        "tamm2021_metric_consistency",
+        "canamares2020_offline_options"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-005",
+        "SF-R1-056"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-tamm2021_metric_consistency-01",
+        "LOC-R4-S-canamares2020_offline_options-01"
+      ],
+      "acquisition_satisfied": true,
+      "original_content_satisfied": true,
+      "locator_satisfied": true,
+      "r5_prerequisites_satisfied": false,
+      "downstream_eligibility": "planning_only_unchanged",
+      "production_ready": false,
+      "r4_note": "Original planning-only disposition is preserved."
+    },
+    {
+      "claim_id": "L1-CC-011",
+      "lane": "L1",
+      "original_lane_state": {
+        "planning_only": true,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "planning_only",
+      "central_conditions": [
+        "retain for planning/context only unless a later central gate explicitly changes disposition"
+      ],
+      "canonical_source_keys": [
+        "jannach2026_methodological_standards"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-023"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-jannach2026_methodological_standards-01"
+      ],
+      "acquisition_satisfied": true,
+      "original_content_satisfied": true,
+      "locator_satisfied": true,
+      "r5_prerequisites_satisfied": false,
+      "downstream_eligibility": "planning_only_unchanged",
+      "production_ready": false,
+      "r4_note": "Original planning-only disposition is preserved."
+    },
+    {
+      "claim_id": "L2-CLAIM-GRAPH-ZERO-EDGE-005",
+      "lane": "L2",
+      "original_lane_state": {
+        "planning_only": false,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "conditional_production_candidate",
+      "central_conditions": [
+        "complete any R4 lawful-local-artifact and locator queue item",
+        "pass the post-R4 central production-citation gate",
+        "do not cite as production evidence until Stage 1B is sealed"
+      ],
+      "canonical_source_keys": [
+        "he2020_lightgcn",
+        "yu2022_simgcl",
+        "cai2023_lightgcl"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-004",
+        "SF-R1-015",
+        "SF-R1-065"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-he2020_lightgcn-01",
+        "LOC-R4-S-yu2022_simgcl-01",
+        "LOC-R4-S-cai2023_lightgcl-01"
+      ],
+      "acquisition_satisfied": true,
+      "original_content_satisfied": true,
+      "locator_satisfied": true,
+      "r5_prerequisites_satisfied": true,
+      "downstream_eligibility": "eligible_for_r5_claim_map_rebuild_only",
+      "production_ready": false,
+      "r4_note": "R4 establishes acquisition and locator prerequisites only; R5 must rebuild and bound the claim before any later citation gate."
+    },
+    {
+      "claim_id": "L2-CLAIM-HARMONIZED-EVAL-008",
+      "lane": "L2",
+      "original_lane_state": {
+        "planning_only": true,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "planning_only",
+      "central_conditions": [
+        "retain for planning/context only unless a later central gate explicitly changes disposition"
+      ],
+      "canonical_source_keys": [
+        "sarwar2001_itemcf",
+        "rendle2009_bpr",
+        "he2017_ncf",
+        "guo2017_deepfm",
+        "he2020_lightgcn"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-012",
+        "SF-R1-014",
+        "SF-R1-015",
+        "SF-R1-047",
+        "SF-R1-050"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-sarwar2001_itemcf-01",
+        "LOC-R4-S-rendle2009_bpr-01",
+        "LOC-R4-S-he2017_ncf-01",
+        "LOC-R4-S-guo2017_deepfm-01",
+        "LOC-R4-S-he2020_lightgcn-01"
+      ],
+      "acquisition_satisfied": true,
+      "original_content_satisfied": true,
+      "locator_satisfied": true,
+      "r5_prerequisites_satisfied": false,
+      "downstream_eligibility": "planning_only_unchanged",
+      "production_ready": false,
+      "r4_note": "Original planning-only disposition is preserved."
+    },
+    {
+      "claim_id": "L2-CLAIM-ITEMCF-BPR-001",
+      "lane": "L2",
+      "original_lane_state": {
+        "planning_only": false,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "conditional_production_candidate",
+      "central_conditions": [
+        "complete any R4 lawful-local-artifact and locator queue item",
+        "pass the post-R4 central production-citation gate",
+        "do not cite as production evidence until Stage 1B is sealed"
+      ],
+      "canonical_source_keys": [
+        "sarwar2001_itemcf",
+        "rendle2009_bpr"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-047",
+        "SF-R1-050"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-sarwar2001_itemcf-01",
+        "LOC-R4-S-rendle2009_bpr-01"
+      ],
+      "acquisition_satisfied": true,
+      "original_content_satisfied": true,
+      "locator_satisfied": true,
+      "r5_prerequisites_satisfied": true,
+      "downstream_eligibility": "eligible_for_r5_claim_map_rebuild_only",
+      "production_ready": false,
+      "r4_note": "R4 establishes acquisition and locator prerequisites only; R5 must rebuild and bound the claim before any later citation gate."
+    },
+    {
+      "claim_id": "L2-CLAIM-NCF-DEEPFM-002",
+      "lane": "L2",
+      "original_lane_state": {
+        "planning_only": false,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "conditional_production_candidate",
+      "central_conditions": [
+        "complete any R4 lawful-local-artifact and locator queue item",
+        "pass the post-R4 central production-citation gate",
+        "do not cite as production evidence until Stage 1B is sealed"
+      ],
+      "canonical_source_keys": [
+        "he2017_ncf",
+        "guo2017_deepfm"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-012",
+        "SF-R1-014"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-he2017_ncf-01",
+        "LOC-R4-S-guo2017_deepfm-01"
+      ],
+      "acquisition_satisfied": true,
+      "original_content_satisfied": true,
+      "locator_satisfied": true,
+      "r5_prerequisites_satisfied": true,
+      "downstream_eligibility": "eligible_for_r5_claim_map_rebuild_only",
+      "production_ready": false,
+      "r4_note": "R4 establishes acquisition and locator prerequisites only; R5 must rebuild and bound the claim before any later citation gate."
+    },
+    {
+      "claim_id": "L2-CLAIM-OBJECTIVE-006",
+      "lane": "L2",
+      "original_lane_state": {
+        "planning_only": false,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "conditional_production_candidate",
+      "central_conditions": [
+        "complete any R4 lawful-local-artifact and locator queue item",
+        "pass the post-R4 central production-citation gate",
+        "do not cite as production evidence until Stage 1B is sealed"
+      ],
+      "canonical_source_keys": [
+        "rendle2009_bpr",
+        "yi2019_ndr",
+        "wang2022_directau"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-047",
+        "SF-R1-060",
+        "SF-R1-064"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-rendle2009_bpr-01",
+        "LOC-R4-S-yi2019_ndr-01",
+        "LOC-R4-S-wang2022_directau-01"
+      ],
+      "acquisition_satisfied": true,
+      "original_content_satisfied": true,
+      "locator_satisfied": true,
+      "r5_prerequisites_satisfied": true,
+      "downstream_eligibility": "eligible_for_r5_claim_map_rebuild_only",
+      "production_ready": false,
+      "r4_note": "R4 establishes acquisition and locator prerequisites only; R5 must rebuild and bound the claim before any later citation gate."
+    },
+    {
+      "claim_id": "L2-CLAIM-RECENT-TOWER-CONTROLS-007",
+      "lane": "L2",
+      "original_lane_state": {
+        "planning_only": false,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "conditional_production_candidate",
+      "central_conditions": [
+        "complete any R4 lawful-local-artifact and locator queue item",
+        "pass the post-R4 central production-citation gate",
+        "do not cite as production evidence until Stage 1B is sealed"
+      ],
+      "canonical_source_keys": [
+        "yuan2025_contextgnn",
+        "wang2025_t2diff"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-061",
+        "SF-R1-068"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-yuan2025_contextgnn-01",
+        "LOC-R4-S-wang2025_t2diff-01"
+      ],
+      "acquisition_satisfied": true,
+      "original_content_satisfied": true,
+      "locator_satisfied": true,
+      "r5_prerequisites_satisfied": true,
+      "downstream_eligibility": "eligible_for_r5_claim_map_rebuild_only",
+      "production_ready": false,
+      "r4_note": "R4 establishes acquisition and locator prerequisites only; R5 must rebuild and bound the claim before any later citation gate."
+    },
+    {
+      "claim_id": "L2-CLAIM-TWO-STAGE-003",
+      "lane": "L2",
+      "original_lane_state": {
+        "planning_only": false,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "conditional_production_candidate",
+      "central_conditions": [
+        "complete any R4 lawful-local-artifact and locator queue item",
+        "pass the post-R4 central production-citation gate",
+        "do not cite as production evidence until Stage 1B is sealed"
+      ],
+      "canonical_source_keys": [
+        "covington2016_youtube",
+        "yi2019_ndr",
+        "wang2025_t2diff"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-008",
+        "SF-R1-061",
+        "SF-R1-064"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-covington2016_youtube-01",
+        "LOC-R4-S-yi2019_ndr-01",
+        "LOC-R4-S-wang2025_t2diff-01"
+      ],
+      "acquisition_satisfied": true,
+      "original_content_satisfied": true,
+      "locator_satisfied": true,
+      "r5_prerequisites_satisfied": true,
+      "downstream_eligibility": "eligible_for_r5_claim_map_rebuild_only",
+      "production_ready": false,
+      "r4_note": "R4 establishes acquisition and locator prerequisites only; R5 must rebuild and bound the claim before any later citation gate."
+    },
+    {
+      "claim_id": "L2-CLAIM-WIDE-DEEP-004",
+      "lane": "L2",
+      "original_lane_state": {
+        "planning_only": false,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "conditional_production_candidate",
+      "central_conditions": [
+        "complete any R4 lawful-local-artifact and locator queue item",
+        "pass the post-R4 central production-citation gate",
+        "do not cite as production evidence until Stage 1B is sealed"
+      ],
+      "canonical_source_keys": [
+        "cheng2016_wide_deep"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-007"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-cheng2016_wide_deep-01"
+      ],
+      "acquisition_satisfied": true,
+      "original_content_satisfied": true,
+      "locator_satisfied": true,
+      "r5_prerequisites_satisfied": true,
+      "downstream_eligibility": "eligible_for_r5_claim_map_rebuild_only",
+      "production_ready": false,
+      "r4_note": "R4 establishes acquisition and locator prerequisites only; R5 must rebuild and bound the claim before any later citation gate."
+    },
+    {
+      "claim_id": "L3-APR-001",
+      "lane": "L3",
+      "original_lane_state": {
+        "planning_only": false,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "conditional_production_candidate",
+      "central_conditions": [
+        "complete any R4 lawful-local-artifact and locator queue item",
+        "pass the post-R4 central production-citation gate",
+        "do not cite as production evidence until Stage 1B is sealed"
+      ],
+      "canonical_source_keys": [
+        "agrawal1994_apriori"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-001"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-agrawal1994_apriori-01"
+      ],
+      "acquisition_satisfied": true,
+      "original_content_satisfied": true,
+      "locator_satisfied": true,
+      "r5_prerequisites_satisfied": true,
+      "downstream_eligibility": "eligible_for_r5_claim_map_rebuild_only",
+      "production_ready": false,
+      "r4_note": "R4 establishes acquisition and locator prerequisites only; R5 must rebuild and bound the claim before any later citation gate."
+    },
+    {
+      "claim_id": "L3-BTBR-005",
+      "lane": "L3",
+      "original_lane_state": {
+        "planning_only": false,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "conditional_production_candidate",
+      "central_conditions": [
+        "complete any R4 lawful-local-artifact and locator queue item",
+        "pass the post-R4 central production-citation gate",
+        "do not cite as production evidence until Stage 1B is sealed"
+      ],
+      "canonical_source_keys": [
+        "li2023_mask_swap"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-029"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-li2023_mask_swap-01"
+      ],
+      "acquisition_satisfied": true,
+      "original_content_satisfied": true,
+      "locator_satisfied": true,
+      "r5_prerequisites_satisfied": true,
+      "downstream_eligibility": "eligible_for_r5_claim_map_rebuild_only",
+      "production_ready": false,
+      "r4_note": "R4 establishes acquisition and locator prerequisites only; R5 must rebuild and bound the claim before any later citation gate."
+    },
+    {
+      "claim_id": "L3-GAP-008",
+      "lane": "L3",
+      "original_lane_state": {
+        "planning_only": true,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "planning_only",
+      "central_conditions": [
+        "retain for planning/context only unless a later central gate explicitly changes disposition"
+      ],
+      "canonical_source_keys": [
+        "agrawal1994_apriori",
+        "ghoshal2014_multi_item_rules",
+        "liu2009_hybrid_seq_cf",
+        "cheng2016_wide_deep",
+        "li2023_nbr_reality",
+        "mansouri2026_repeat_explore_lightgcn"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-001",
+        "SF-R1-007",
+        "SF-R1-011",
+        "SF-R1-030",
+        "SF-R1-033",
+        "SF-R1-035"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-agrawal1994_apriori-01",
+        "LOC-R4-S-ghoshal2014_multi_item_rules-01",
+        "LOC-R4-S-liu2009_hybrid_seq_cf-01",
+        "LOC-R4-S-cheng2016_wide_deep-01",
+        "LOC-R4-S-li2023_nbr_reality-01",
+        "LOC-R4-S-mansouri2026_repeat_explore_lightgcn-01"
+      ],
+      "acquisition_satisfied": true,
+      "original_content_satisfied": true,
+      "locator_satisfied": true,
+      "r5_prerequisites_satisfied": false,
+      "downstream_eligibility": "planning_only_unchanged",
+      "production_ready": false,
+      "r4_note": "Original planning-only disposition is preserved."
+    },
+    {
+      "claim_id": "L3-HYB-006",
+      "lane": "L3",
+      "original_lane_state": {
+        "planning_only": false,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "conditional_production_candidate",
+      "central_conditions": [
+        "complete any R4 lawful-local-artifact and locator queue item",
+        "pass the post-R4 central production-citation gate",
+        "do not cite as production evidence until Stage 1B is sealed"
+      ],
+      "canonical_source_keys": [
+        "liu2009_hybrid_seq_cf",
+        "cheng2016_wide_deep",
+        "peng2022_ham",
+        "peng2023_m2",
+        "mansouri2026_repeat_explore_lightgcn"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-007",
+        "SF-R1-033",
+        "SF-R1-035",
+        "SF-R1-041",
+        "SF-R1-042"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-liu2009_hybrid_seq_cf-01",
+        "LOC-R4-S-cheng2016_wide_deep-01",
+        "LOC-R4-S-peng2022_ham-01",
+        "LOC-R4-S-peng2023_m2-01",
+        "LOC-R4-S-mansouri2026_repeat_explore_lightgcn-01"
+      ],
+      "acquisition_satisfied": true,
+      "original_content_satisfied": true,
+      "locator_satisfied": true,
+      "r5_prerequisites_satisfied": true,
+      "downstream_eligibility": "eligible_for_r5_claim_map_rebuild_only",
+      "production_ready": false,
+      "r4_note": "R4 establishes acquisition and locator prerequisites only; R5 must rebuild and bound the claim before any later citation gate."
+    },
+    {
+      "claim_id": "L3-NBR-004",
+      "lane": "L3",
+      "original_lane_state": {
+        "planning_only": false,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "conditional_production_candidate",
+      "central_conditions": [
+        "complete any R4 lawful-local-artifact and locator queue item",
+        "pass the post-R4 central production-citation gate",
+        "do not cite as production evidence until Stage 1B is sealed"
+      ],
+      "canonical_source_keys": [
+        "li2023_nbr_reality",
+        "li2023_repetition_exploration",
+        "mansouri2026_repeat_explore_lightgcn"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-030",
+        "SF-R1-032",
+        "SF-R1-035"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-li2023_nbr_reality-01",
+        "LOC-R4-S-li2023_repetition_exploration-01",
+        "LOC-R4-S-mansouri2026_repeat_explore_lightgcn-01"
+      ],
+      "acquisition_satisfied": true,
+      "original_content_satisfied": true,
+      "locator_satisfied": true,
+      "r5_prerequisites_satisfied": true,
+      "downstream_eligibility": "eligible_for_r5_claim_map_rebuild_only",
+      "production_ready": false,
+      "r4_note": "R4 establishes acquisition and locator prerequisites only; R5 must rebuild and bound the claim before any later citation gate."
+    },
+    {
+      "claim_id": "L3-PROTO-007",
+      "lane": "L3",
+      "original_lane_state": {
+        "planning_only": false,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "conditional_production_candidate",
+      "central_conditions": [
+        "complete any R4 lawful-local-artifact and locator queue item",
+        "pass the post-R4 central production-citation gate",
+        "do not cite as production evidence until Stage 1B is sealed"
+      ],
+      "canonical_source_keys": [
+        "gusak2025_time_split",
+        "petrov2022_a_systematic_review_and_replicability_study_of_bert4rec_fo"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-013",
+        "SF-R1-044"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-gusak2025_time_split-01",
+        "LOC-R4-S-petrov2022_a_systematic_review_and_replicability_study_of_bert4rec_fo-01"
+      ],
+      "acquisition_satisfied": true,
+      "original_content_satisfied": true,
+      "locator_satisfied": true,
+      "r5_prerequisites_satisfied": true,
+      "downstream_eligibility": "eligible_for_r5_claim_map_rebuild_only",
+      "production_ready": false,
+      "r4_note": "R4 establishes acquisition and locator prerequisites only; R5 must rebuild and bound the claim before any later citation gate."
+    },
+    {
+      "claim_id": "L3-RULE-002",
+      "lane": "L3",
+      "original_lane_state": {
+        "planning_only": false,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "conditional_production_candidate",
+      "central_conditions": [
+        "complete any R4 lawful-local-artifact and locator queue item",
+        "pass the post-R4 central production-citation gate",
+        "do not cite as production evidence until Stage 1B is sealed"
+      ],
+      "canonical_source_keys": [
+        "ghoshal2014_multi_item_rules"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-011"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-ghoshal2014_multi_item_rules-01"
+      ],
+      "acquisition_satisfied": true,
+      "original_content_satisfied": true,
+      "locator_satisfied": true,
+      "r5_prerequisites_satisfied": true,
+      "downstream_eligibility": "eligible_for_r5_claim_map_rebuild_only",
+      "production_ready": false,
+      "r4_note": "R4 establishes acquisition and locator prerequisites only; R5 must rebuild and bound the claim before any later citation gate."
+    },
+    {
+      "claim_id": "L3-SEQ-003",
+      "lane": "L3",
+      "original_lane_state": {
+        "planning_only": false,
+        "production_intended_present": false,
+        "production_intended": null
+      },
+      "central_disposition": "conditional_production_candidate",
+      "central_conditions": [
+        "complete any R4 lawful-local-artifact and locator queue item",
+        "pass the post-R4 central production-citation gate",
+        "do not cite as production evidence until Stage 1B is sealed"
+      ],
+      "canonical_source_keys": [
+        "kang2018_sasrec",
+        "sun2019_bert4rec"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-026",
+        "SF-R1-053"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-kang2018_sasrec-01",
+        "LOC-R4-S-sun2019_bert4rec-01"
+      ],
+      "acquisition_satisfied": true,
+      "original_content_satisfied": true,
+      "locator_satisfied": true,
+      "r5_prerequisites_satisfied": true,
+      "downstream_eligibility": "eligible_for_r5_claim_map_rebuild_only",
+      "production_ready": false,
+      "r4_note": "R4 establishes acquisition and locator prerequisites only; R5 must rebuild and bound the claim before any later citation gate."
+    },
+    {
+      "claim_id": "L4-CC-01",
+      "lane": "L4",
+      "original_lane_state": {
+        "planning_only": true,
+        "production_intended_present": true,
+        "production_intended": true
+      },
+      "central_disposition": "conditional_production_candidate",
+      "central_conditions": [
+        "complete any R4 lawful-local-artifact and locator queue item",
+        "pass the post-R4 central production-citation gate",
+        "do not cite as production evidence until Stage 1B is sealed"
+      ],
+      "canonical_source_keys": [
+        "volkovs2017_dropoutnet",
+        "huang2023_aldi"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-021",
+        "SF-R1-059"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-volkovs2017_dropoutnet-01",
+        "LOC-R4-S-huang2023_aldi-01"
+      ],
+      "acquisition_satisfied": true,
+      "original_content_satisfied": true,
+      "locator_satisfied": true,
+      "r5_prerequisites_satisfied": true,
+      "downstream_eligibility": "eligible_for_r5_claim_map_rebuild_only",
+      "production_ready": false,
+      "r4_note": "R4 establishes acquisition and locator prerequisites only; R5 must rebuild and bound the claim before any later citation gate."
+    },
+    {
+      "claim_id": "L4-CC-02",
+      "lane": "L4",
+      "original_lane_state": {
+        "planning_only": true,
+        "production_intended_present": true,
+        "production_intended": true
+      },
+      "central_disposition": "conditional_production_candidate",
+      "central_conditions": [
+        "complete any R4 lawful-local-artifact and locator queue item",
+        "pass the post-R4 central production-citation gate",
+        "do not cite as production evidence until Stage 1B is sealed"
+      ],
+      "canonical_source_keys": [
+        "volkovs2017_dropoutnet",
+        "huang2023_aldi"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-021",
+        "SF-R1-059"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-volkovs2017_dropoutnet-01",
+        "LOC-R4-S-huang2023_aldi-01"
+      ],
+      "acquisition_satisfied": true,
+      "original_content_satisfied": true,
+      "locator_satisfied": true,
+      "r5_prerequisites_satisfied": true,
+      "downstream_eligibility": "eligible_for_r5_claim_map_rebuild_only",
+      "production_ready": false,
+      "r4_note": "R4 establishes acquisition and locator prerequisites only; R5 must rebuild and bound the claim before any later citation gate."
+    },
+    {
+      "claim_id": "L4-CC-03",
+      "lane": "L4",
+      "original_lane_state": {
+        "planning_only": true,
+        "production_intended_present": true,
+        "production_intended": true
+      },
+      "central_disposition": "conditional_production_candidate",
+      "central_conditions": [
+        "complete any R4 lawful-local-artifact and locator queue item",
+        "pass the post-R4 central production-citation gate",
+        "do not cite as production evidence until Stage 1B is sealed"
+      ],
+      "canonical_source_keys": [
+        "volkovs2017_dropoutnet",
+        "sheng2025_alpharec"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-052",
+        "SF-R1-059"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-volkovs2017_dropoutnet-01",
+        "LOC-R4-S-sheng2025_alpharec-01"
+      ],
+      "acquisition_satisfied": true,
+      "original_content_satisfied": true,
+      "locator_satisfied": true,
+      "r5_prerequisites_satisfied": true,
+      "downstream_eligibility": "eligible_for_r5_claim_map_rebuild_only",
+      "production_ready": false,
+      "r4_note": "R4 establishes acquisition and locator prerequisites only; R5 must rebuild and bound the claim before any later citation gate."
+    },
+    {
+      "claim_id": "L4-CC-04",
+      "lane": "L4",
+      "original_lane_state": {
+        "planning_only": true,
+        "production_intended_present": true,
+        "production_intended": true
+      },
+      "central_disposition": "conditional_production_candidate",
+      "central_conditions": [
+        "complete any R4 lawful-local-artifact and locator queue item",
+        "pass the post-R4 central production-citation gate",
+        "do not cite as production evidence until Stage 1B is sealed"
+      ],
+      "canonical_source_keys": [
+        "reimers2019_sbert",
+        "sheng2025_alpharec",
+        "meehan2026_semco"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-037",
+        "SF-R1-046",
+        "SF-R1-052"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-reimers2019_sbert-01",
+        "LOC-R4-S-sheng2025_alpharec-01",
+        "LOC-R4-S-meehan2026_semco-01"
+      ],
+      "acquisition_satisfied": true,
+      "original_content_satisfied": true,
+      "locator_satisfied": true,
+      "r5_prerequisites_satisfied": true,
+      "downstream_eligibility": "eligible_for_r5_claim_map_rebuild_only",
+      "production_ready": false,
+      "r4_note": "R4 establishes acquisition and locator prerequisites only; R5 must rebuild and bound the claim before any later citation gate."
+    },
+    {
+      "claim_id": "L4-CC-05",
+      "lane": "L4",
+      "original_lane_state": {
+        "planning_only": true,
+        "production_intended_present": true,
+        "production_intended": true
+      },
+      "central_disposition": "conditional_production_candidate",
+      "central_conditions": [
+        "complete any R4 lawful-local-artifact and locator queue item",
+        "pass the post-R4 central production-citation gate",
+        "do not cite as production evidence until Stage 1B is sealed"
+      ],
+      "canonical_source_keys": [
+        "hou2022_unisrec",
+        "hou2023_vqrec",
+        "zheng2026_utgrec"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-017",
+        "SF-R1-018",
+        "SF-R1-071"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-hou2022_unisrec-01",
+        "LOC-R4-S-hou2023_vqrec-01",
+        "LOC-R4-S-zheng2026_utgrec-01"
+      ],
+      "acquisition_satisfied": true,
+      "original_content_satisfied": true,
+      "locator_satisfied": true,
+      "r5_prerequisites_satisfied": true,
+      "downstream_eligibility": "eligible_for_r5_claim_map_rebuild_only",
+      "production_ready": false,
+      "r4_note": "R4 establishes acquisition and locator prerequisites only; R5 must rebuild and bound the claim before any later citation gate."
+    },
+    {
+      "claim_id": "L4-CC-06",
+      "lane": "L4",
+      "original_lane_state": {
+        "planning_only": true,
+        "production_intended_present": true,
+        "production_intended": true
+      },
+      "central_disposition": "conditional_production_candidate",
+      "central_conditions": [
+        "complete any R4 lawful-local-artifact and locator queue item",
+        "pass the post-R4 central production-citation gate",
+        "do not cite as production evidence until Stage 1B is sealed"
+      ],
+      "canonical_source_keys": [
+        "hou2023_vqrec",
+        "sheng2025_alpharec",
+        "zheng2026_utgrec"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-018",
+        "SF-R1-052",
+        "SF-R1-071"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-hou2023_vqrec-01",
+        "LOC-R4-S-sheng2025_alpharec-01",
+        "LOC-R4-S-zheng2026_utgrec-01"
+      ],
+      "acquisition_satisfied": true,
+      "original_content_satisfied": true,
+      "locator_satisfied": true,
+      "r5_prerequisites_satisfied": true,
+      "downstream_eligibility": "eligible_for_r5_claim_map_rebuild_only",
+      "production_ready": false,
+      "r4_note": "R4 establishes acquisition and locator prerequisites only; R5 must rebuild and bound the claim before any later citation gate."
+    },
+    {
+      "claim_id": "L4-CC-07",
+      "lane": "L4",
+      "original_lane_state": {
+        "planning_only": true,
+        "production_intended_present": true,
+        "production_intended": true
+      },
+      "central_disposition": "conditional_production_candidate",
+      "central_conditions": [
+        "complete any R4 lawful-local-artifact and locator queue item",
+        "pass the post-R4 central production-citation gate",
+        "do not cite as production evidence until Stage 1B is sealed"
+      ],
+      "canonical_source_keys": [
+        "meehan2025_cold_popbias",
+        "meehan2026_semco"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-036",
+        "SF-R1-037"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-meehan2025_cold_popbias-01",
+        "LOC-R4-S-meehan2026_semco-01"
+      ],
+      "acquisition_satisfied": true,
+      "original_content_satisfied": true,
+      "locator_satisfied": true,
+      "r5_prerequisites_satisfied": true,
+      "downstream_eligibility": "eligible_for_r5_claim_map_rebuild_only",
+      "production_ready": false,
+      "r4_note": "R4 establishes acquisition and locator prerequisites only; R5 must rebuild and bound the claim before any later citation gate."
+    },
+    {
+      "claim_id": "L4-CC-08",
+      "lane": "L4",
+      "original_lane_state": {
+        "planning_only": true,
+        "production_intended_present": true,
+        "production_intended": true
+      },
+      "central_disposition": "conditional_production_candidate",
+      "central_conditions": [
+        "complete any R4 lawful-local-artifact and locator queue item",
+        "pass the post-R4 central production-citation gate",
+        "do not cite as production evidence until Stage 1B is sealed"
+      ],
+      "canonical_source_keys": [
+        "hou2022_unisrec",
+        "hou2023_vqrec",
+        "sheng2025_alpharec",
+        "zheng2026_utgrec"
+      ],
+      "operational_resource_keys": [],
+      "source_family_ids": [
+        "SF-R1-017",
+        "SF-R1-018",
+        "SF-R1-052",
+        "SF-R1-071"
+      ],
+      "locator_ids": [
+        "LOC-R4-S-hou2022_unisrec-01",
+        "LOC-R4-S-hou2023_vqrec-01",
+        "LOC-R4-S-sheng2025_alpharec-01",
+        "LOC-R4-S-zheng2026_utgrec-01"
+      ],
+      "acquisition_satisfied": true,
+      "original_content_satisfied": true,
+      "locator_satisfied": true,
+      "r5_prerequisites_satisfied": true,
+      "downstream_eligibility": "eligible_for_r5_claim_map_rebuild_only",
+      "production_ready": false,
+      "r4_note": "R4 establishes acquisition and locator prerequisites only; R5 must rebuild and bound the claim before any later citation gate."
+    }
+  ],
+  "phase_boundary": {
+    "r5": "NOT_PERFORMED",
+    "phase3_synthesis": "NOT_PERFORMED",
+    "h1_h4": "NOT_RUN",
+    "stage2_production_citations": "NOT_AUTHORIZED"
+  }
+}

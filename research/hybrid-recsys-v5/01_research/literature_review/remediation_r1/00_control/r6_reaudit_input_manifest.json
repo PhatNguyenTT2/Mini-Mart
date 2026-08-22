@@ -1,0 +1,109 @@
+{
+  "schema_version": "stage1b-r1-r6-reaudit-input-manifest-1.0",
+  "project": "hybrid-recsys-v5",
+  "stage": "1B",
+  "round": "R1",
+  "step": "R6_fresh_independent_reaudit",
+  "frozen_at": "2026-08-21",
+  "runtime_lock": {
+    "model": "gpt-5.6-sol",
+    "reasoning": "high",
+    "execution_mode": "fresh_dedicated_worktree_task"
+  },
+  "reaudit_contract": {
+    "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/r6_reaudit_contract.md",
+    "bytes": 2910,
+    "sha256": "808de9bb250fed799eb7b6f905a8ce5a0450b5a7bf320b45fb6e4868427df6ca"
+  },
+  "transitive_r5_r6_input": {
+    "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/r6_input_manifest.json",
+    "bytes": 3984,
+    "sha256": "52caf72b133c1368b68afac8fbaf50a544ef9f92001b818b01a71b76e861546a"
+  },
+  "remediation_input": {
+    "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/r6_remediation_input_manifest.json",
+    "bytes": 3668,
+    "sha256": "9c9a60463106a7ba21ad8f24600db9688a56c7efa5986b33db2b232a2505dabb"
+  },
+  "gates": {
+    "r5": {
+      "verdict": "PASS",
+      "final_validation": "PASS_29_OF_29",
+      "handoff_sha256": "9e36da152895a46dda164bae4a79d4052267a3ba4a089e04250571a284904435"
+    },
+    "r6_original": {
+      "verdict": "REVISE",
+      "final_validation": "PASS_26_OF_26",
+      "handoff_sha256": "d76bee713b0d6eb342af491e9466139966fa63abb49c17e61a5a9bc478e70508",
+      "severity_counts": {
+        "Critical": 0,
+        "Major": 1,
+        "Minor": 2,
+        "Observation": 5
+      }
+    },
+    "r6_remediation": {
+      "verdict": "PASS_FRESH_R6_REAUDIT_ONLY",
+      "final_validation": "PASS_33_OF_33",
+      "handoff_sha256": "a7ac8a66648903ca2cb5ddc62c9b076d1ae73fe8eacb084daa43d0acc78f4b79"
+    }
+  },
+  "frozen_remediation_files": [
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/remediation_r6/build_r6_remediation.py",
+      "bytes": 33028,
+      "sha256": "3e33134e0d142bbcac92735562c29f4557ecb5bbb64100d9d62da523f6747c54"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/remediation_r6/claim_counter_evidence_overlay.json",
+      "bytes": 103293,
+      "sha256": "5b72ced4927d9c37ada5cc31eec3a1490bc1ba8e1eaeaac35c404c300f106373"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/remediation_r6/claim_source_map_r1_remediated.json",
+      "bytes": 109373,
+      "sha256": "0d6d8d17ccf51132f6bf9a36ab08245f1d1e73bea831b5cb148a4fc00146f7da"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/remediation_r6/r6_remediation_handoff.json",
+      "bytes": 4120,
+      "sha256": "a7ac8a66648903ca2cb5ddc62c9b076d1ae73fe8eacb084daa43d0acc78f4b79"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/remediation_r6/r6_remediation_report.md",
+      "bytes": 2820,
+      "sha256": "16d35e51cd230dcd5038b1257049dcd39d0784c94adf7c1fa48a82623f13d75b"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/remediation_r6/r6_remediation_validation_receipt.json",
+      "bytes": 3381,
+      "sha256": "4c8506d4c40b7b9ffc5ec5bc6a6e3d40f2cc91ea27b5edcbe4b8ce59f192c2a2"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/remediation_r6/synthesis_report_r1_remediated.md",
+      "bytes": 25214,
+      "sha256": "136a1baf26a1108ceac54943e0a8bc9fa89647210af5cefd206f1c049d95aa2d"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/remediation_r6/theme_evidence_denominators.json",
+      "bytes": 11264,
+      "sha256": "aa8857a028b495e91a2ebdd2c10217fcf8325c2dc9089d282ef23aa064531bda"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/remediation_r6/validate_r6_remediation.py",
+      "bytes": 24199,
+      "sha256": "fcf9dfca18f3bc271e012bdc1a1d4baa7b94411277207bc660a589b09cb18a55"
+    }
+  ],
+  "required_replay": {
+    "themes": 5,
+    "claims": 44,
+    "claim_counter_evidence_bindings": 44,
+    "citation_marker_anchor_pairs_unchanged": 33,
+    "tension_pairs": 12,
+    "pending_scholar_confirmations": 12,
+    "h1_h4": "NOT_RUN"
+  },
+  "write_scope": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/devils_advocate_cp2_reaudit/",
+  "next_gate": "Critical=0 and Major=0 permits only the explicit scholar adjudication checkpoint; R7 remains unauthorized until all twelve tension pairs are adjudicated by the user."
+}

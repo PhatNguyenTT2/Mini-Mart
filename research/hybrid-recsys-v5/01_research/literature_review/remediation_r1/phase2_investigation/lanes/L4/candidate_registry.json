@@ -1,0 +1,775 @@
+{
+  "schema_version": "stage1b-r1-lane-candidate-registry-1.0",
+  "project": "hybrid-recsys-v5",
+  "stage": "1B",
+  "round": "remediation-r1",
+  "lane": "L4",
+  "research_cutoff": "2026-08-14",
+  "generated_at": "2026-08-14T03:10:00+07:00",
+  "counting_rule": {
+    "canonical_record": "One record per canonical scholarly publication; preprint and published manifestations of the same work are one version family.",
+    "independent_version_family": "Distinct source_family_id after version deduplication.",
+    "evidence_lineage_cluster": "Records sharing authorship, method continuation, benchmark lineage, or pretraining/downstream data lineage are grouped and must not be counted as independent corroboration.",
+    "operational_resource": "Not a scholarly corpus record; none is retained in this lane."
+  },
+  "counts": {
+    "canonical_scholarly_records": 15,
+    "independent_version_families": 15,
+    "evidence_lineage_clusters": 10,
+    "operational_resources": 0,
+    "source_content_verified": 9,
+    "locator_ready": 9
+  },
+  "records": [
+    {
+      "source_key": "volkovs2017_dropoutnet",
+      "legacy_ids": ["L4-01"],
+      "record_type": "scholarly_work",
+      "title": "DropoutNet: Addressing Cold Start in Recommender Systems",
+      "authors": ["Maksims Volkovs", "Guangwei Yu", "Tomi Poutanen"],
+      "publication_year": 2017,
+      "venue": "Advances in Neural Information Processing Systems 30",
+      "document_type": "conference_paper",
+      "publication_status": "published",
+      "peer_reviewed": true,
+      "peer_review_basis": "Official NeurIPS proceedings record.",
+      "doi": null,
+      "official_id": "NeurIPS-2017-dbd22ba3bd0df8f385bdac3e9f8be207",
+      "official_url": "https://papers.neurips.cc/paper_files/paper/2017/hash/dbd22ba3bd0df8f385bdac3e9f8be207-Abstract.html",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "locator": {
+        "artifact_type": "publisher_pdf",
+        "uri": "https://papers.neurips.cc/paper_files/paper/2017/file/dbd22ba3bd0df8f385bdac3e9f8be207-Paper.pdf",
+        "anchor": "Section 2, Framework; Section 4.2, Training for Cold Start; Section 5.1, CiteULike",
+        "basis": "original_content",
+        "accessed_at": "2026-08-14",
+        "sha256": null
+      },
+      "source_family_id": "F-L4-DROPOUTNET-2017",
+      "evidence_lineage_cluster_id": "EC-L4-DROPOUTNET",
+      "version_relation": "Canonical NeurIPS proceedings version.",
+      "provenance": [
+        "Official NeurIPS proceedings metadata and full PDF inspected on 2026-08-14."
+      ],
+      "support_scope": [
+        "Formal user-side and item-side zero-interaction cold-start definitions.",
+        "Training-time preference dropout with content retained.",
+        "Paper-native cold-item cohort construction for CiteULike."
+      ],
+      "forbidden_extrapolations": [
+        "Do not equate item-side cold start with user-side cold start.",
+        "Do not treat simulated preference dropout as proof of v5 deployment efficacy.",
+        "Do not transfer paper-native sampled evaluation metrics to v5 full-catalog results."
+      ],
+      "dependency_relations": [],
+      "limitations": [
+        "Cold-start protocol and datasets are paper-specific and precede modern text encoders.",
+        "No lawful local redistribution copy was stored."
+      ],
+      "acquisition": {
+        "mode": "remote_authoritative_full_artifact_inspected",
+        "stored_locally": false,
+        "redistribution_status": "unknown"
+      }
+    },
+    {
+      "source_key": "du2020_mtpr",
+      "legacy_ids": ["L4-02"],
+      "record_type": "scholarly_work",
+      "title": "How to Learn Item Representation for Cold-Start Multimedia Recommendation?",
+      "authors": ["Xiaoyu Du", "Xiang Wang", "Xiangnan He", "Zechao Li", "Jinhui Tang", "Tat-Seng Chua"],
+      "publication_year": 2020,
+      "venue": "Proceedings of the 28th ACM International Conference on Multimedia",
+      "document_type": "conference_paper",
+      "publication_status": "published",
+      "peer_reviewed": true,
+      "peer_review_basis": "ACM conference proceedings metadata.",
+      "doi": "10.1145/3394171.3413628",
+      "official_url": "https://doi.org/10.1145/3394171.3413628",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_content_verified": false,
+      "locator_ready": false,
+      "locator": null,
+      "source_family_id": "F-L4-MTPR-2020",
+      "evidence_lineage_cluster_id": "EC-L4-ILEARN-COLD",
+      "version_relation": "Canonical ACM MM proceedings record; full artifact not acquired in this run.",
+      "provenance": [
+        "Crossref source-of-record DOI metadata verified on 2026-08-14."
+      ],
+      "support_scope": [
+        "Candidate evidence for content and collaborative item-representation separation in multimedia cold-start recommendation."
+      ],
+      "forbidden_extrapolations": [
+        "Metadata alone cannot support a production claim.",
+        "Multimedia cold-start results do not establish text-only v5 efficacy."
+      ],
+      "dependency_relations": [
+        "Shares authorship and research lineage with CLCRec and AlphaRec."
+      ],
+      "limitations": [
+        "Authoritative full content and claim-level locator remain queued."
+      ],
+      "acquisition": {
+        "mode": "official_metadata_only",
+        "stored_locally": false,
+        "redistribution_status": "unknown"
+      }
+    },
+    {
+      "source_key": "wei2021_clcrec",
+      "legacy_ids": ["L4-03"],
+      "record_type": "scholarly_work",
+      "title": "Contrastive Learning for Cold-Start Recommendation",
+      "authors": ["Yinwei Wei", "Xiang Wang", "Qi Li", "Liqiang Nie", "Yan Li", "Xuanping Li", "Tat-Seng Chua"],
+      "publication_year": 2021,
+      "venue": "Proceedings of the 29th ACM International Conference on Multimedia",
+      "document_type": "conference_paper",
+      "publication_status": "published",
+      "peer_reviewed": true,
+      "peer_review_basis": "ACM conference proceedings metadata.",
+      "doi": "10.1145/3474085.3475665",
+      "official_url": "https://doi.org/10.1145/3474085.3475665",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_content_verified": false,
+      "locator_ready": false,
+      "locator": null,
+      "source_family_id": "F-L4-CLCREC-2021",
+      "evidence_lineage_cluster_id": "EC-L4-ILEARN-COLD",
+      "version_relation": "Canonical ACM MM proceedings record; full artifact not acquired in this run.",
+      "provenance": [
+        "Crossref source-of-record DOI metadata verified on 2026-08-14.",
+        "Author-team repository identified at https://github.com/iLearn-Lab/MM21-CLCRec but code was not used as paper-content verification."
+      ],
+      "support_scope": [
+        "Candidate direct item-cold contrastive alignment evidence."
+      ],
+      "forbidden_extrapolations": [
+        "Repository presence is not original paper-content verification.",
+        "Do not infer v5 metric gains from metadata."
+      ],
+      "dependency_relations": [
+        "Shares authorship and research lineage with MTPR and AlphaRec."
+      ],
+      "limitations": [
+        "Authoritative full content and claim-level locator remain queued."
+      ],
+      "acquisition": {
+        "mode": "official_metadata_only",
+        "stored_locally": false,
+        "redistribution_status": "unknown"
+      }
+    },
+    {
+      "source_key": "huang2023_aldi",
+      "legacy_ids": ["L4-04"],
+      "record_type": "scholarly_work",
+      "title": "Aligning Distillation For Cold-start Item Recommendation",
+      "authors": ["Feiran Huang", "Zefan Wang", "Xiao Huang", "Yufeng Qian", "Zhetao Li", "Hao Chen"],
+      "publication_year": 2023,
+      "venue": "Proceedings of the 46th International ACM SIGIR Conference on Research and Development in Information Retrieval",
+      "document_type": "conference_paper",
+      "publication_status": "published",
+      "peer_reviewed": true,
+      "peer_review_basis": "ACM SIGIR proceedings record.",
+      "doi": "10.1145/3539618.3591732",
+      "official_url": "https://doi.org/10.1145/3539618.3591732",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "locator": {
+        "artifact_type": "accepted_manuscript",
+        "uri": "https://arxiv.org/pdf/2305.14748",
+        "anchor": "Section 2.1, Problem Formulation; Section 2.2, Existing Solutions",
+        "basis": "original_content",
+        "accessed_at": "2026-08-14",
+        "sha256": null
+      },
+      "source_family_id": "F-L4-ALDI-2023",
+      "evidence_lineage_cluster_id": "EC-L4-ALDI",
+      "version_relation": "Canonical SIGIR paper linked to inspected author manuscript.",
+      "provenance": [
+        "Crossref DOI metadata verified and full author manuscript inspected on 2026-08-14."
+      ],
+      "support_scope": [
+        "Warm items have at least one historical interaction; cold items have none in the paper's problem formulation.",
+        "Overall, warm-item, and cold-item top-K tasks are separated.",
+        "Warm-to-cold distillation and warm/cold trade-off rationale."
+      ],
+      "forbidden_extrapolations": [
+        "Do not merge warm and cold denominators.",
+        "Do not treat sparse-edge items as zero-edge cold items.",
+        "Do not infer faithful DropoutNet replication from an ALDI comparison."
+      ],
+      "dependency_relations": [
+        "Evaluates prior dropout and generative-alignment families; comparison results remain paper-native."
+      ],
+      "limitations": [
+        "Author manuscript inspected remotely; no local redistribution copy stored."
+      ],
+      "acquisition": {
+        "mode": "remote_authoritative_full_artifact_inspected",
+        "stored_locally": false,
+        "redistribution_status": "unknown"
+      }
+    },
+    {
+      "source_key": "hou2022_unisrec",
+      "legacy_ids": ["L4-05"],
+      "record_type": "scholarly_work",
+      "title": "Towards Universal Sequence Representation Learning for Recommender Systems",
+      "authors": ["Yupeng Hou", "Shanlei Mu", "Wayne Xin Zhao", "Yaliang Li", "Bolin Ding", "Ji-Rong Wen"],
+      "publication_year": 2022,
+      "venue": "Proceedings of the 28th ACM SIGKDD Conference on Knowledge Discovery and Data Mining",
+      "document_type": "conference_paper",
+      "publication_status": "published",
+      "peer_reviewed": true,
+      "peer_review_basis": "ACM KDD proceedings record.",
+      "doi": "10.1145/3534678.3539381",
+      "official_url": "https://doi.org/10.1145/3534678.3539381",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "locator": {
+        "artifact_type": "accepted_manuscript",
+        "uri": "https://arxiv.org/pdf/2206.05941",
+        "anchor": "Figure 1; Sections 2.2-2.4, especially 2.4 Adaptation to Downstream Recommendation Tasks",
+        "basis": "original_content",
+        "accessed_at": "2026-08-14",
+        "sha256": null
+      },
+      "source_family_id": "F-L4-UNISREC-2022",
+      "evidence_lineage_cluster_id": "EC-L4-RUCAIBOX-TRANSFER",
+      "version_relation": "Canonical KDD paper linked to inspected author manuscript.",
+      "provenance": [
+        "Crossref DOI metadata verified and full author manuscript inspected on 2026-08-14."
+      ],
+      "support_scope": [
+        "Text-aware transferable sequential representation learning.",
+        "Explicit target-domain fine-tuning and inductive versus transductive evaluation settings."
+      ],
+      "forbidden_extrapolations": [
+        "Inductive evaluation does not mean no target-domain adaptation.",
+        "Architecture transfer does not establish H4 replication.",
+        "Paper-native candidate sampling and metrics cannot be substituted for v5 protocols."
+      ],
+      "dependency_relations": [
+        "Shares authors, repositories, and benchmark lineage with VQ-Rec and UTGRec.",
+        "Target-domain fine-tuning makes results dependent on downstream interaction data."
+      ],
+      "limitations": [
+        "Transfer claims are bounded to the paper's domains, encoders, fine-tuning, and evaluation protocol."
+      ],
+      "acquisition": {
+        "mode": "remote_authoritative_full_artifact_inspected",
+        "stored_locally": false,
+        "redistribution_status": "unknown"
+      }
+    },
+    {
+      "source_key": "hou2023_vqrec",
+      "legacy_ids": ["L4-06"],
+      "record_type": "scholarly_work",
+      "title": "Learning Vector-Quantized Item Representation for Transferable Sequential Recommenders",
+      "authors": ["Yupeng Hou", "Zhankui He", "Julian McAuley", "Wayne Xin Zhao"],
+      "publication_year": 2023,
+      "venue": "Proceedings of the ACM Web Conference 2023",
+      "document_type": "conference_paper",
+      "publication_status": "published",
+      "peer_reviewed": true,
+      "peer_review_basis": "ACM Web Conference proceedings record.",
+      "doi": "10.1145/3543507.3583434",
+      "official_url": "https://doi.org/10.1145/3543507.3583434",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "locator": {
+        "artifact_type": "accepted_manuscript",
+        "uri": "https://arxiv.org/pdf/2210.12316",
+        "anchor": "Sections 2.1-2.3; Section 3.1 Experimental Setup",
+        "basis": "original_content",
+        "accessed_at": "2026-08-14",
+        "sha256": null
+      },
+      "source_family_id": "F-L4-VQREC-2023",
+      "evidence_lineage_cluster_id": "EC-L4-RUCAIBOX-TRANSFER",
+      "version_relation": "Canonical WWW paper linked to inspected author manuscript.",
+      "provenance": [
+        "Crossref DOI metadata verified and full author manuscript inspected on 2026-08-14."
+      ],
+      "support_scope": [
+        "Text-to-discrete-code item representation for transferable sequential recommendation.",
+        "Paper-specific multi-domain pretraining and downstream adaptation setup."
+      ],
+      "forbidden_extrapolations": [
+        "Discrete item codes do not remove the need for target-domain adaptation.",
+        "Shared Amazon domain lineage is not independent evidence across source and target datasets.",
+        "Architecture transfer does not establish H4 replication."
+      ],
+      "dependency_relations": [
+        "Method and benchmark continuation of the UniSRec research line.",
+        "Five Amazon pretraining domains and multiple Amazon downstream domains share platform lineage."
+      ],
+      "limitations": [
+        "Most domains share Amazon review lineage; one external Online Retail dataset does not erase that dependence."
+      ],
+      "acquisition": {
+        "mode": "remote_authoritative_full_artifact_inspected",
+        "stored_locally": false,
+        "redistribution_status": "unknown"
+      }
+    },
+    {
+      "source_key": "sheng2025_alpharec",
+      "legacy_ids": ["L4-07"],
+      "record_type": "scholarly_work",
+      "title": "Language Representations Can Be What Recommenders Need: Findings and Potentials",
+      "authors": ["Leheng Sheng", "An Zhang", "Yi Zhang", "Yuxin Chen", "Xiang Wang", "Tat-Seng Chua"],
+      "publication_year": 2025,
+      "venue": "The Thirteenth International Conference on Learning Representations",
+      "document_type": "conference_paper",
+      "publication_status": "published",
+      "peer_reviewed": true,
+      "peer_review_basis": "Official ICLR 2025 proceedings record.",
+      "doi": null,
+      "official_id": "ICLR-2025-e4bab1843c8d5a69f5abfd0824593493",
+      "official_url": "https://proceedings.iclr.cc/paper_files/paper/2025/hash/e4bab1843c8d5a69f5abfd0824593493-Abstract-Conference.html",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "locator": {
+        "artifact_type": "publisher_pdf",
+        "uri": "https://proceedings.iclr.cc/paper_files/paper/2025/file/e4bab1843c8d5a69f5abfd0824593493-Paper-Conference.pdf",
+        "anchor": "Section 4.1, AlphaRec; Section 5.2, Zero-Shot Recommendation; Section 6, Limitations",
+        "basis": "original_content",
+        "accessed_at": "2026-08-14",
+        "sha256": null
+      },
+      "source_family_id": "F-L4-ALPHAREC-2025",
+      "evidence_lineage_cluster_id": "EC-L4-ALPHAREC",
+      "version_relation": "Canonical ICLR proceedings version.",
+      "provenance": [
+        "Official ICLR metadata and full proceedings PDF inspected on 2026-08-14."
+      ],
+      "support_scope": [
+        "A recommender architecture combining item-language representations, projection, observed-graph propagation, and a recommendation objective.",
+        "Paper-specific zero-shot transfer with explicit source and target datasets."
+      ],
+      "forbidden_extrapolations": [
+        "Language-encoder quality alone is not recommendation quality.",
+        "Observed-graph propagation is not evidence for representing a zero-edge item from collaborative neighbors.",
+        "Architecture transfer does not establish H4 replication.",
+        "Amazon pretraining and Amazon target domains are not independent evidence."
+      ],
+      "dependency_relations": [
+        "Uses UniSRec and VQ-Rec as adapted baselines.",
+        "Three Amazon source domains and an Amazon target domain share platform and review lineage; MovieLens and Book-Crossing are separate target lineages."
+      ],
+      "limitations": [
+        "Zero-shot protocol still depends on item text and paper-specific preprocessing, modified baselines, and evaluation choices.",
+        "The paper itself notes stronger performance on the Amazon target may reflect same-platform behavioral patterns."
+      ],
+      "acquisition": {
+        "mode": "remote_authoritative_full_artifact_inspected",
+        "stored_locally": false,
+        "redistribution_status": "unknown"
+      }
+    },
+    {
+      "source_key": "reimers2019_sbert",
+      "legacy_ids": ["L4-08"],
+      "record_type": "scholarly_work",
+      "title": "Sentence-BERT: Sentence Embeddings using Siamese BERT-Networks",
+      "authors": ["Nils Reimers", "Iryna Gurevych"],
+      "publication_year": 2019,
+      "venue": "Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natural Language Processing",
+      "document_type": "conference_paper",
+      "publication_status": "published",
+      "peer_reviewed": true,
+      "peer_review_basis": "Official ACL Anthology conference record.",
+      "doi": "10.18653/v1/D19-1410",
+      "official_url": "https://aclanthology.org/D19-1410/",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "locator": {
+        "artifact_type": "publisher_pdf",
+        "uri": "https://aclanthology.org/D19-1410.pdf",
+        "anchor": "Abstract; Section 1, Introduction; Section 3, Training Details",
+        "basis": "original_content",
+        "accessed_at": "2026-08-14",
+        "sha256": null
+      },
+      "source_family_id": "F-L4-SBERT-2019",
+      "evidence_lineage_cluster_id": "EC-L4-SBERT",
+      "version_relation": "Canonical ACL Anthology proceedings version.",
+      "provenance": [
+        "ACL Anthology metadata and full PDF inspected on 2026-08-14."
+      ],
+      "support_scope": [
+        "Construction of fixed-size semantic sentence embeddings using siamese or triplet network structures.",
+        "NLP semantic textual similarity and transfer-task evidence only."
+      ],
+      "forbidden_extrapolations": [
+        "Sentence-BERT embedding quality is not recommender quality.",
+        "Do not cite Sentence-BERT as cold-item recommendation efficacy evidence.",
+        "An SBERT substitution is an ablation, not a faithful reproduction of UniSRec, VQ-Rec, or AlphaRec."
+      ],
+      "dependency_relations": [],
+      "limitations": [
+        "The paper contains no retail recommendation objective, collaborative signal, or cold-item evaluation."
+      ],
+      "acquisition": {
+        "mode": "remote_authoritative_full_artifact_inspected",
+        "stored_locally": false,
+        "redistribution_status": "permitted_by_acl_anthology_license_notice"
+      }
+    },
+    {
+      "source_key": "yu2022_simgcl",
+      "legacy_ids": ["L4-10"],
+      "record_type": "scholarly_work",
+      "title": "Are Graph Augmentations Necessary?: Simple Graph Contrastive Learning for Recommendation",
+      "authors": ["Junliang Yu", "Hongzhi Yin", "Xin Xia", "Tong Chen", "Lizhen Cui", "Quoc Viet Hung Nguyen"],
+      "publication_year": 2022,
+      "venue": "Proceedings of the 45th International ACM SIGIR Conference on Research and Development in Information Retrieval",
+      "document_type": "conference_paper",
+      "publication_status": "published",
+      "peer_reviewed": true,
+      "peer_review_basis": "ACM SIGIR proceedings metadata.",
+      "doi": "10.1145/3477495.3531937",
+      "official_url": "https://doi.org/10.1145/3477495.3531937",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_content_verified": false,
+      "locator_ready": false,
+      "locator": null,
+      "source_family_id": "F-L4-SIMGCL-2022",
+      "evidence_lineage_cluster_id": "EC-L4-YU-GRAPHCL",
+      "version_relation": "Canonical SIGIR proceedings record; full artifact not acquired in this run.",
+      "provenance": [
+        "Crossref source-of-record DOI metadata verified on 2026-08-14."
+      ],
+      "support_scope": [
+        "Collaborative-only graph contrastive comparator candidate for sparse interaction graphs."
+      ],
+      "forbidden_extrapolations": [
+        "Sparse-graph efficacy cannot be extrapolated to a completely zero-edge item.",
+        "Metadata alone cannot support a production claim."
+      ],
+      "dependency_relations": [
+        "Direct method and author lineage with XSimGCL."
+      ],
+      "limitations": [
+        "Authoritative full content and claim-level locator remain queued."
+      ],
+      "acquisition": {
+        "mode": "official_metadata_only",
+        "stored_locally": false,
+        "redistribution_status": "unknown"
+      }
+    },
+    {
+      "source_key": "yu2024_xsimgcl",
+      "legacy_ids": ["L4-11"],
+      "record_type": "scholarly_work",
+      "title": "XSimGCL: Towards Extremely Simple Graph Contrastive Learning for Recommendation",
+      "authors": ["Junliang Yu", "Xin Xia", "Tong Chen", "Lizhen Cui", "Nguyen Quoc Viet Hung", "Hongzhi Yin"],
+      "publication_year": 2024,
+      "venue": "IEEE Transactions on Knowledge and Data Engineering, 36(2), 913-926",
+      "document_type": "journal_article",
+      "publication_status": "published",
+      "peer_reviewed": true,
+      "peer_review_basis": "IEEE journal issue metadata; institutional publication record confirms volume, issue, pages, and 2024 issue year.",
+      "doi": "10.1109/TKDE.2023.3288135",
+      "official_url": "https://doi.org/10.1109/TKDE.2023.3288135",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_content_verified": false,
+      "locator_ready": false,
+      "locator": null,
+      "source_family_id": "F-L4-XSIMGCL-2024",
+      "evidence_lineage_cluster_id": "EC-L4-YU-GRAPHCL",
+      "version_relation": "Online-first DOI metadata is 2023; canonical issue citation is IEEE TKDE 36(2), 913-926 (2024).",
+      "provenance": [
+        "Crossref DOI identity verified on 2026-08-14.",
+        "Canonical issue year verified against the University of Queensland institutional publication record: https://research.uq.edu.au/en/publications/xsimgcl-towards-extremely-simple-graph-contrastive-learning-for-r"
+      ],
+      "support_scope": [
+        "Collaborative-only graph contrastive comparator candidate for sparse interaction graphs."
+      ],
+      "forbidden_extrapolations": [
+        "Sparse-graph efficacy cannot be extrapolated to completely zero-edge items.",
+        "The DOI string and online-first date must not replace the 2024 issue year."
+      ],
+      "dependency_relations": [
+        "Direct continuation of SimGCL with overlapping authorship and method lineage."
+      ],
+      "limitations": [
+        "Authoritative full content and claim-level locator remain queued."
+      ],
+      "acquisition": {
+        "mode": "official_and_institutional_metadata_only",
+        "stored_locally": false,
+        "redistribution_status": "unknown"
+      }
+    },
+    {
+      "source_key": "cai2023_lightgcl",
+      "legacy_ids": ["L4-12"],
+      "record_type": "scholarly_work",
+      "title": "LightGCL: Simple Yet Effective Graph Contrastive Learning for Recommendation",
+      "authors": ["Xuheng Cai", "Chao Huang", "Lianghao Xia", "Xubin Ren"],
+      "publication_year": 2023,
+      "venue": "The Eleventh International Conference on Learning Representations",
+      "document_type": "conference_paper",
+      "publication_status": "published",
+      "peer_reviewed": true,
+      "peer_review_basis": "Official OpenReview ICLR record.",
+      "doi": null,
+      "official_id": "OpenReview-FKXVK9dyMM",
+      "official_url": "https://openreview.net/forum?id=FKXVK9dyMM",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_content_verified": false,
+      "locator_ready": false,
+      "locator": null,
+      "source_family_id": "F-L4-LIGHTGCL-2023",
+      "evidence_lineage_cluster_id": "EC-L4-LIGHTGCL",
+      "version_relation": "Canonical ICLR/OpenReview record; full artifact not acquired in this run.",
+      "provenance": [
+        "Official OpenReview metadata verified on 2026-08-14."
+      ],
+      "support_scope": [
+        "Collaborative-only graph contrastive comparator candidate for sparse interaction graphs."
+      ],
+      "forbidden_extrapolations": [
+        "A spectral or global graph view still requires an interaction graph and is not evidence for zero-edge item representation.",
+        "Metadata alone cannot support a production claim."
+      ],
+      "dependency_relations": [],
+      "limitations": [
+        "Authoritative full content and claim-level locator remain queued."
+      ],
+      "acquisition": {
+        "mode": "official_metadata_only",
+        "stored_locally": false,
+        "redistribution_status": "unknown"
+      }
+    },
+    {
+      "source_key": "kim2024_cgrc",
+      "legacy_ids": [],
+      "record_type": "scholarly_work",
+      "title": "Content-based Graph Reconstruction for Cold-start Item Recommendation",
+      "authors": ["Jinri Kim", "Eungi Kim", "Kwangeun Yeo", "Yujin Jeon", "Chanwoo Kim", "Sewon Lee", "Joonseok Lee"],
+      "publication_year": 2024,
+      "venue": "Proceedings of the 47th International ACM SIGIR Conference on Research and Development in Information Retrieval",
+      "document_type": "conference_paper",
+      "publication_status": "published",
+      "peer_reviewed": true,
+      "peer_review_basis": "ACM SIGIR proceedings metadata.",
+      "doi": "10.1145/3626772.3657801",
+      "official_url": "https://doi.org/10.1145/3626772.3657801",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_content_verified": false,
+      "locator_ready": false,
+      "locator": null,
+      "source_family_id": "F-L4-CGRC-2024",
+      "evidence_lineage_cluster_id": "EC-L4-CGRC",
+      "version_relation": "Canonical SIGIR paper; Google Research metadata and Crossref DOI record verified. Author PDF transport failed after metadata/first-page discovery.",
+      "provenance": [
+        "Crossref DOI metadata verified on 2026-08-14.",
+        "Official Google Research publication record verified: https://research.google/pubs/content-based-graph-reconstruction-for-cold-start-item-recommendation/"
+      ],
+      "support_scope": [
+        "High-priority candidate for content-to-graph reconstruction under item cold start."
+      ],
+      "forbidden_extrapolations": [
+        "Official abstract and metadata do not establish claim-level efficacy.",
+        "Graph reconstruction does not automatically satisfy the v5 zero-edge cohort contract."
+      ],
+      "dependency_relations": [],
+      "limitations": [
+        "Authoritative full content was not successfully transported for inspection; locator remains queued."
+      ],
+      "acquisition": {
+        "mode": "official_metadata_and_abstract_only",
+        "stored_locally": false,
+        "redistribution_status": "unknown"
+      }
+    },
+    {
+      "source_key": "meehan2025_cold_popbias",
+      "legacy_ids": [],
+      "record_type": "scholarly_work",
+      "title": "On Inherited Popularity Bias in Cold-Start Item Recommendation",
+      "authors": ["Gregor Meehan", "Johan Pauwels"],
+      "publication_year": 2025,
+      "venue": "Proceedings of the 19th ACM Conference on Recommender Systems",
+      "document_type": "conference_paper",
+      "publication_status": "published",
+      "peer_reviewed": true,
+      "peer_review_basis": "ACM RecSys proceedings record.",
+      "doi": "10.1145/3705328.3748035",
+      "official_url": "https://doi.org/10.1145/3705328.3748035",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "locator": {
+        "artifact_type": "accepted_manuscript",
+        "uri": "https://arxiv.org/pdf/2508.12992",
+        "anchor": "Section 1, Introduction; Sections 3.1-3.3",
+        "basis": "original_content",
+        "accessed_at": "2026-08-14",
+        "sha256": null
+      },
+      "source_family_id": "F-L4-INHERITED-BIAS-2025",
+      "evidence_lineage_cluster_id": "EC-L4-MEEHAN-PAUWELS",
+      "version_relation": "Canonical RecSys paper linked to inspected author manuscript.",
+      "provenance": [
+        "Crossref DOI metadata verified and full author manuscript inspected on 2026-08-14."
+      ],
+      "support_scope": [
+        "Counter-evidence that content encoders distilled or aligned from collaborative teachers can inherit popularity structure.",
+        "Paper-specific cold-item split and model-family analysis."
+      ],
+      "forbidden_extrapolations": [
+        "Do not generalize the measured bias behavior to every content encoder or dataset.",
+        "Do not treat this and SEMCo as independent corroboration without noting shared authorship and research lineage."
+      ],
+      "dependency_relations": [
+        "Shares authorship, problem framing, and model lineage with SEMCo."
+      ],
+      "limitations": [
+        "Bias findings are bounded to the evaluated methods, splits, and datasets.",
+        "Author manuscript notice does not authorize redistribution; no local artifact stored."
+      ],
+      "acquisition": {
+        "mode": "remote_authoritative_full_artifact_inspected",
+        "stored_locally": false,
+        "redistribution_status": "restricted_or_unknown"
+      }
+    },
+    {
+      "source_key": "meehan2026_semco",
+      "legacy_ids": [],
+      "record_type": "scholarly_work",
+      "title": "Sparse Contrastive Learning for Content-Based Cold Item Recommendation",
+      "authors": ["Gregor Meehan", "Johan Pauwels"],
+      "publication_year": 2026,
+      "venue": "Proceedings of the 49th International ACM SIGIR Conference on Research and Development in Information Retrieval",
+      "document_type": "conference_paper",
+      "publication_status": "published",
+      "peer_reviewed": true,
+      "peer_review_basis": "ACM SIGIR proceedings metadata available before the research cutoff.",
+      "doi": "10.1145/3805712.3809975",
+      "official_url": "https://doi.org/10.1145/3805712.3809975",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "locator": {
+        "artifact_type": "accepted_manuscript",
+        "uri": "https://arxiv.org/pdf/2604.08490",
+        "anchor": "Section 1, Introduction; Section 3.1, Problem Definition; Sections 3.2-3.3",
+        "basis": "original_content",
+        "accessed_at": "2026-08-14",
+        "sha256": null
+      },
+      "source_family_id": "F-L4-SEMCO-2026",
+      "evidence_lineage_cluster_id": "EC-L4-MEEHAN-PAUWELS",
+      "version_relation": "Canonical SIGIR paper linked to inspected author manuscript.",
+      "provenance": [
+        "Crossref DOI metadata verified and full author manuscript inspected on 2026-08-14."
+      ],
+      "support_scope": [
+        "Content-based cold-item recommendation with an explicit problem definition and sparse contrastive objective.",
+        "Method-level evidence that content modeling must be evaluated with a recommendation objective, not encoder similarity alone."
+      ],
+      "forbidden_extrapolations": [
+        "Do not treat sparse contrastive learning as universal evidence across encoders or datasets.",
+        "Do not count this and the 2025 inherited-bias paper as independent research lineages."
+      ],
+      "dependency_relations": [
+        "Shares authorship, problem framing, and research lineage with the inherited-popularity-bias paper."
+      ],
+      "limitations": [
+        "Evidence is bounded to paper-native data, splits, baselines, and objective.",
+        "Author manuscript notice does not authorize redistribution; no local artifact stored."
+      ],
+      "acquisition": {
+        "mode": "remote_authoritative_full_artifact_inspected",
+        "stored_locally": false,
+        "redistribution_status": "restricted_or_unknown"
+      }
+    },
+    {
+      "source_key": "zheng2026_utgrec",
+      "legacy_ids": [],
+      "record_type": "scholarly_work",
+      "title": "Universal Item Tokenization for Transferable Generative Recommendation",
+      "authors": ["Bowen Zheng", "Hongyu Lu", "Yu Chen", "Wayne Xin Zhao", "Ji-Rong Wen"],
+      "publication_year": 2026,
+      "venue": "Proceedings of the 49th International ACM SIGIR Conference on Research and Development in Information Retrieval",
+      "document_type": "conference_paper",
+      "publication_status": "published",
+      "peer_reviewed": true,
+      "peer_review_basis": "ACM SIGIR proceedings metadata available before the research cutoff.",
+      "doi": "10.1145/3805712.3809720",
+      "official_url": "https://doi.org/10.1145/3805712.3809720",
+      "identity_verified": true,
+      "metadata_verified": true,
+      "source_content_verified": true,
+      "locator_ready": true,
+      "locator": {
+        "artifact_type": "accepted_manuscript",
+        "uri": "https://arxiv.org/pdf/2504.04405",
+        "anchor": "Section 2.4.2, Downstream Fine-tuning; Sections 3.1.1 and 3.1.3-3.1.4; Section 3.3, Ablation Study",
+        "basis": "original_content",
+        "accessed_at": "2026-08-14",
+        "sha256": null
+      },
+      "source_family_id": "F-L4-UTGREC-2026",
+      "evidence_lineage_cluster_id": "EC-L4-RUCAIBOX-TRANSFER",
+      "version_relation": "Canonical SIGIR paper linked to inspected author manuscript; arXiv identifier originated in 2025 and is not the publication year.",
+      "provenance": [
+        "Crossref DOI metadata verified and full author manuscript inspected on 2026-08-14."
+      ],
+      "support_scope": [
+        "Universal item tokenization plus explicit tokenizer and recommender fine-tuning on downstream domains.",
+        "Ablation evidence within the paper that direct tokenizer transfer without downstream fine-tuning is weaker in its tested setup."
+      ],
+      "forbidden_extrapolations": [
+        "Transfer does not mean zero target-domain adaptation.",
+        "All nine experiment domains are Amazon 2023 subsets and are one platform lineage, not nine independent evidence sources.",
+        "Long-tail groups with up to 20 interactions are not identical to zero-edge cold items.",
+        "Architecture transfer does not establish H4 replication."
+      ],
+      "dependency_relations": [
+        "Shares authorship and method lineage with UniSRec and VQ-Rec.",
+        "Pretraining and all downstream datasets are Amazon 2023 subsets, creating a shared data lineage."
+      ],
+      "limitations": [
+        "Evaluation is transferable sequential recommendation, not a strict zero-collaborative-edge cohort.",
+        "The inspected author artifact contains a prepublication template footer; canonical identity comes from the DOI record."
+      ],
+      "acquisition": {
+        "mode": "remote_authoritative_full_artifact_inspected",
+        "stored_locally": false,
+        "redistribution_status": "unknown"
+      }
+    }
+  ]
+}

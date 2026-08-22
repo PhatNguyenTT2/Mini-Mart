@@ -1,0 +1,269 @@
+{
+  "schema_version": "stage1b-r1-exclusions-2026-08-14",
+  "lane": "L3_basket_sequential_association_rule_hybrid",
+  "screening_date": "2026-08-14",
+  "rule": "Exclusions use the same relevance, authority, coverage, redundancy, and claim-level-value criteria as retentions. Exclusion at title/abstract stage does not assert that an unavailable full work lacks quality; it asserts that it was not needed for this locked lane corpus.",
+  "counts": {
+    "excluded_candidate_works": 18,
+    "old_lane_candidates_excluded_or_replaced": 6,
+    "gap_search_candidates_excluded": 12,
+    "metadata_fully_verified": 10,
+    "title_or_abstract_screen_only": 8
+  },
+  "exclusions": [
+    {
+      "candidate_key": "lin_alvarez_ruiz_2002_adaptive_support",
+      "origin": "old_lane",
+      "title": "Efficient Adaptive-Support Association Rule Mining for Recommender Systems",
+      "authors": ["Weiyang Lin", "Sergio A. Alvarez", "Carolina Ruiz"],
+      "publication_year": 2002,
+      "doi_or_official_id": "10.1023/A:1013284820704",
+      "metadata_verified": true,
+      "screening_stage": "full_identity_and_relevance",
+      "decision": "exclude",
+      "reason_code": "redundant_legacy_method",
+      "reason": "Directly relevant but redundant after retaining the foundational Apriori source and the stronger direct multi-item rule-recommendation study."
+    },
+    {
+      "candidate_key": "wu_li_cao_ge_2020_scalability",
+      "origin": "old_lane",
+      "title": "On Scalability of Association-rule-based Recommendation: A Unified Distributed-computing Framework",
+      "authors": ["Zhiang Wu", "Changsheng Li", "Jie Cao", "Yong Ge"],
+      "publication_year": 2020,
+      "doi_or_official_id": "10.1145/3398202",
+      "metadata_verified": true,
+      "screening_stage": "full_identity_and_abstract",
+      "decision": "exclude",
+      "reason_code": "out_of_scope_scalability",
+      "reason": "Primarily a distributed scaling/serving study; no necessary claim-level value for the locked mechanism or attribution questions."
+    },
+    {
+      "candidate_key": "ariannezhad_jullien_li_fang_schelter_derijke_2022_recanet",
+      "origin": "old_lane",
+      "title": "ReCANet: A Repeat Consumption-Aware Neural Network for Next Basket Recommendation in Grocery Shopping",
+      "authors": ["Mozhdeh Ariannezhad", "Sami Jullien", "Ming Li", "Min Fang", "Sebastian Schelter", "Maarten de Rijke"],
+      "publication_year": 2022,
+      "doi_or_official_id": "10.1145/3477495.3531708",
+      "metadata_verified": true,
+      "screening_stage": "official_program_and_original_content",
+      "decision": "exclude",
+      "reason_code": "target_mismatch_repeat_only",
+      "reason": "Explicit repeat-consumption focus conflicts with the locked novel-purchase target and is redundant as counter-evidence after retaining the Reality Check and repetition/exploration studies."
+    },
+    {
+      "candidate_key": "katz_barkan_zabari_koenigstein_2022_buy_cycle",
+      "origin": "old_lane",
+      "title": "Learning to Ride a Buy-Cycle: A Hyper-Convolutional Model for Next Basket Recommendation",
+      "authors": ["Ori Katz", "Oren Barkan", "Nir Zabari", "Noam Koenigstein"],
+      "publication_year": 2022,
+      "doi_or_official_id": "10.1145/3523227.3546763",
+      "metadata_verified": true,
+      "screening_stage": "official_metadata_and_abstract",
+      "decision": "exclude",
+      "reason_code": "target_mismatch_repurchase",
+      "reason": "Buy-cycle/repurchase focus is not a direct baseline for organic novel purchase; no unique retained claim card."
+    },
+    {
+      "candidate_key": "klenitskiy_vasilev_2023_turning_dross",
+      "origin": "old_lane",
+      "title": "Turning Dross Into Gold Loss: Is BERT4Rec Really Better than SASRec?",
+      "authors": ["Anton Klenitskiy", "Alexey Vasilev"],
+      "publication_year": 2023,
+      "doi_or_official_id": "10.1145/3604915.3610644",
+      "metadata_verified": true,
+      "screening_stage": "official_metadata_and_abstract",
+      "decision": "exclude_replaced",
+      "reason_code": "replaced_by_stronger_replication_source",
+      "reason": "Replaced with Petrov and Macdonald's broader systematic review and replicability study of BERT4Rec, which has a lawful inspected full artifact and stronger coverage of training-budget and implementation sensitivity.",
+      "replacement_source_key": "petrov_macdonald_2022_bert4rec_replicability"
+    },
+    {
+      "candidate_key": "krichene_rendle_2022_sampled_metrics",
+      "origin": "old_lane",
+      "title": "On Sampled Metrics for Item Recommendation",
+      "authors": ["Walid Krichene", "Steffen Rendle"],
+      "publication_year": 2022,
+      "doi_or_official_id": "10.1145/3535335",
+      "metadata_verified": true,
+      "screening_stage": "full_identity_and_scope",
+      "decision": "exclude",
+      "reason_code": "cross_lane_evaluation_ownership",
+      "reason": "General metric-evaluation source belongs to the evaluation lane. L3 carries the no-metric-transplant restriction without duplicating the corpus record."
+    },
+    {
+      "candidate_key": "sun_xie_zhang_zhao_lin_wen_2023_gerec",
+      "origin": "gap_search",
+      "title": "Towards Generic and Efficient Recommendation for Next Basket Recommendation",
+      "authors": ["Wenqi Sun", "Ruobing Xie", "Junjie Zhang", "Wayne Xin Zhao", "Leyu Lin", "Ji-Rong Wen"],
+      "publication_year": 2023,
+      "metadata_verified": false,
+      "screening_stage": "title_and_abstract",
+      "decision": "exclude",
+      "reason_code": "redundant_model_coverage",
+      "reason": "Additional direct NBR model, but no unique association-rule, sequential-objective, repeat/explore, or attribution claim remained after the retained direct baselines. Canonical details were not promoted because the work was excluded at abstract screening."
+    },
+    {
+      "candidate_key": "romanov_lashinin_ananyeva_kolesnikov_2023_taiw",
+      "origin": "gap_search",
+      "title": "Time-Aware Item Weighting for Next Basket Recommendations",
+      "authors": ["Aleksey Romanov", "Oleg Lashinin", "Marina Ananyeva", "Sergey Kolesnikov"],
+      "publication_year": 2023,
+      "metadata_verified": false,
+      "screening_stage": "title_and_abstract",
+      "decision": "exclude",
+      "reason_code": "redundant_temporal_model_coverage",
+      "reason": "Adds a temporal weighting model but not a necessary source for the locked association-rule or hybrid-attribution claims; current protocol coverage is supplied by Time to Split."
+    },
+    {
+      "candidate_key": "zmeskalova_ledent_spisak_kordik_alves_2025_realm",
+      "origin": "gap_search",
+      "title": "ReALM: A Recommender System for Next-Basket Prediction",
+      "authors": ["Tereza Zmeškalová", "Antoine Ledent", "Martin Spišák", "Pavel Kordík", "Rodrigo Alves"],
+      "publication_year": 2025,
+      "metadata_verified": false,
+      "screening_stage": "official_accepted_contribution_page",
+      "decision": "exclude",
+      "reason_code": "short_contribution_redundant",
+      "reason": "RecSys short contribution/poster with no unique claim-level coverage beyond retained full papers."
+    },
+    {
+      "candidate_key": "ghoshal_menon_sarkar_2015_multi_item_rules",
+      "origin": "gap_search",
+      "title": "Recommendations Using Information from Multiple Association Rules: A Probabilistic Approach",
+      "authors": ["Abhijeet Ghoshal", "Syam Menon", "Sumit Sarkar"],
+      "publication_year": 2015,
+      "doi_or_official_id": "10.1287/isre.2015.0583",
+      "metadata_verified": true,
+      "screening_stage": "official_publisher_metadata_and_abstract",
+      "decision": "exclude",
+      "reason_code": "same_author_program_redundant",
+      "reason": "Relevant extension but redundant for the bounded association-rule recommendation claim after retaining the 2014 direct multi-item study."
+    },
+    {
+      "candidate_key": "betello_2024_bert4rec_reassessment",
+      "origin": "gap_search",
+      "title": "Revisiting BERT4Rec: A Replicability and Performance Reassessment",
+      "publication_year": 2024,
+      "doi_or_official_id": "arXiv:2408.03873",
+      "metadata_verified": false,
+      "screening_stage": "preprint_title_and_abstract",
+      "decision": "exclude",
+      "reason_code": "preprint_redundant_replication",
+      "reason": "Preprint-only and redundant after retaining the peer-reviewed Petrov and Macdonald systematic review/replication paper."
+    },
+    {
+      "candidate_key": "li_yu_zeng_yang_2023_improved_loss",
+      "origin": "gap_search",
+      "title": "An Improved Loss for BERT4Rec Sequential Recommendation",
+      "authors": ["Fangyu Li", "Shenbao Yu", "Feng Zeng", "Fang Yang"],
+      "publication_year": 2023,
+      "doi_or_official_id": "arXiv:2301.00979",
+      "metadata_verified": false,
+      "screening_stage": "preprint_title_and_abstract",
+      "decision": "exclude",
+      "reason_code": "objective_variant_redundant",
+      "reason": "Loss variant does not add necessary canonical objective or reproducibility coverage beyond BERT4Rec and the retained replication study."
+    },
+    {
+      "candidate_key": "liu_li_aliannejadi_derijke_2025_repeat_bias",
+      "origin": "gap_search",
+      "title": "Repeat-bias-aware Optimization of Beyond-accuracy Metrics for Next Basket Recommendation",
+      "authors": ["Yuanna Liu", "Ming Li", "Mohammad Aliannejadi", "Maarten de Rijke"],
+      "publication_year": 2025,
+      "doi_or_official_id": "arXiv:2501.06362",
+      "metadata_verified": true,
+      "screening_stage": "authoritative_preprint_abstract",
+      "decision": "exclude",
+      "reason_code": "beyond_accuracy_out_of_scope",
+      "reason": "Valuable beyond-accuracy post-processing work, but fairness/diversity optimization is outside the locked L3 estimand; repeat-bias evidence is already covered by retained primary sources."
+    },
+    {
+      "candidate_key": "beyond_accuracy_nbr_2024",
+      "origin": "gap_search",
+      "title": "Beyond-Accuracy Evaluation for Next Basket Recommendation",
+      "publication_year": 2024,
+      "metadata_verified": false,
+      "screening_stage": "preprint_title_and_abstract",
+      "decision": "exclude",
+      "reason_code": "beyond_accuracy_out_of_scope",
+      "reason": "Focuses on beyond-accuracy objectives rather than the locked association-rule/hybrid estimand; excluded without a production claim."
+    },
+    {
+      "candidate_key": "saferec_2024",
+      "origin": "gap_search",
+      "title": "SAFERec: A Framework for Next Basket Recommendation",
+      "publication_year": 2024,
+      "metadata_verified": false,
+      "screening_stage": "preprint_title_and_abstract",
+      "decision": "exclude",
+      "reason_code": "preprint_redundant_model",
+      "reason": "Preprint model does not supply unique locked-lane claim coverage beyond peer-reviewed direct basket sources."
+    },
+    {
+      "candidate_key": "garcarz_pal_praat_2024_tifu_reproduction",
+      "origin": "gap_search",
+      "title": "A Reproducibility Study of TIFU-KNN for Next Basket Recommendation",
+      "authors": ["Sławomir Garcarz", "Avik Pal", "Pim Praat"],
+      "publication_year": 2024,
+      "doi_or_official_id": "arXiv:2402.17925",
+      "metadata_verified": false,
+      "screening_stage": "preprint_title_and_abstract",
+      "decision": "exclude",
+      "reason_code": "baseline_family_not_required",
+      "reason": "Useful reproduction but TIFU-KNN is not a required direct baseline for this lane and the work adds no unique rule/hybrid claim card."
+    },
+    {
+      "candidate_key": "deng_fu_farooq_tian_liu_li_2026_tide",
+      "origin": "gap_search",
+      "title": "Time-Interval-Aware Disentangled Expert Modeling for Next-Basket Recommendation",
+      "authors": ["Zhiying Deng", "Yuan Fu", "Usman Farooq", "Ziwei Tian", "Wei Liu", "Jianjun Li"],
+      "publication_year": 2026,
+      "doi_or_official_id": "arXiv:2605.00499",
+      "metadata_verified": true,
+      "screening_stage": "authoritative_preprint_abstract",
+      "decision": "exclude",
+      "reason_code": "preprint_redundant_repeat_explore_model",
+      "reason": "Current and relevant, but preprint-only at cutoff and redundant for repeat/explore hybrid claims after retaining the peer-reviewed 2026 publisher article with component ablations."
+    },
+    {
+      "candidate_key": "cao_ranjan_subramaniam_korpeoglu_nag_achan_2026_case",
+      "origin": "gap_search",
+      "title": "CASE: Cadence-Aware Set Encoding for Large-Scale Next Basket Repurchase Recommendation",
+      "authors": ["Yanan Cao", "Ashish Ranjan", "Sinduja Subramaniam", "Evren Korpeoglu", "Kaushiki Nag", "Kannan Achan"],
+      "publication_year": 2026,
+      "doi_or_official_id": "arXiv:2604.06718",
+      "metadata_verified": true,
+      "screening_stage": "authoritative_preprint_abstract",
+      "decision": "exclude",
+      "reason_code": "preprint_repurchase_target_mismatch",
+      "reason": "Explicit repurchase target conflicts with the locked novel-purchase focus; retained repeat/explore sources already cover repurchase dominance as counter-evidence."
+    }
+  ],
+  "access_failures_not_misclassified_as_absence": [
+    {
+      "system": "Crossref REST API",
+      "status": "degraded_transport",
+      "detail": "Eight DOI requests failed with an underlying TLS connection closure. Official publisher, proceedings, institutional, and full-artifact records were used instead."
+    },
+    {
+      "system": "MDPI article HTML",
+      "status": "degraded_http_429_then_recovered_via_publisher_asset",
+      "detail": "Direct HTML open returned HTTP 429. The official publisher PDF was lawfully acquired from the MDPI asset host and inspected; this was never classified as unmatched."
+    },
+    {
+      "system": "National Yang Ming Chiao Tung University repository local download",
+      "status": "degraded_tls_certificate_expired",
+      "detail": "The 2007 full PDF was inspectable through the research browser but local download failed certificate validation. Validation was not bypassed."
+    },
+    {
+      "system": "University of Amsterdam author PDF local download",
+      "status": "degraded_tls_chain",
+      "detail": "The repetition/exploration paper was inspected remotely; local TLS issuer validation failed and was not bypassed."
+    },
+    {
+      "system": "In-app browser automation runtime",
+      "status": "degraded_local_runtime",
+      "detail": "Browser automation initialization failed with a local EPERM filesystem error; ordinary web research and lawful Python HTTPS acquisition were used."
+    }
+  ]
+}

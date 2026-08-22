@@ -1,0 +1,240 @@
+{
+  "schema_version": "stage1b-r1-source-acquisition-queue-1.0",
+  "project": "hybrid-recsys-v5",
+  "lane": "L4",
+  "research_cutoff": "2026-08-14",
+  "policy": {
+    "source_content_verified_rule": "True only after lawful inspection of an authoritative full artifact.",
+    "storage_rule": "No artifact is stored unless its storage and redistribution basis is known; remote inspection does not imply redistribution permission.",
+    "degradation_rule": "Transport or API degradation is recorded as degraded, not unmatched."
+  },
+  "counts": {
+    "retained_sources": 15,
+    "authoritative_full_artifacts_inspected": 9,
+    "locator_ready": 9,
+    "queued_for_full_artifact_or_locator": 6,
+    "audit_core_sources": 4,
+    "audit_core_full_artifacts_inspected": 4,
+    "audit_core_locator_ready": 4,
+    "artifacts_stored_locally": 0
+  },
+  "queue": [
+    {
+      "source_key": "volkovs2017_dropoutnet",
+      "priority": "audit_core",
+      "status": "INSPECTED_REMOTE_AUTHORITATIVE_FULL_ARTIFACT",
+      "source_content_verified": true,
+      "locator_ready": true,
+      "lawful_route": "Official NeurIPS proceedings PDF",
+      "artifact_uri": "https://papers.neurips.cc/paper_files/paper/2017/file/dbd22ba3bd0df8f385bdac3e9f8be207-Paper.pdf",
+      "local_path": null,
+      "redistribution_status": "unknown",
+      "remaining_action": null,
+      "blocker": null
+    },
+    {
+      "source_key": "du2020_mtpr",
+      "priority": "high",
+      "status": "QUEUED_FULL_ARTIFACT_AND_LOCATOR",
+      "source_content_verified": false,
+      "locator_ready": false,
+      "lawful_route": "ACM publisher page or author-accepted manuscript",
+      "artifact_uri": "https://doi.org/10.1145/3394171.3413628",
+      "local_path": null,
+      "redistribution_status": "unknown",
+      "remaining_action": "Acquire and inspect a lawful full artifact; record exact section/page anchors for any claim use.",
+      "blocker": "Not acquired during bounded remediation run; no production claim depends on this record."
+    },
+    {
+      "source_key": "wei2021_clcrec",
+      "priority": "high",
+      "status": "QUEUED_FULL_ARTIFACT_AND_LOCATOR",
+      "source_content_verified": false,
+      "locator_ready": false,
+      "lawful_route": "ACM publisher page or author-accepted manuscript",
+      "artifact_uri": "https://doi.org/10.1145/3474085.3475665",
+      "local_path": null,
+      "redistribution_status": "unknown",
+      "remaining_action": "Acquire and inspect a lawful full artifact; do not treat the code repository as paper-content verification.",
+      "blocker": "Not acquired during bounded remediation run; no production claim depends on this record."
+    },
+    {
+      "source_key": "huang2023_aldi",
+      "priority": "high",
+      "status": "INSPECTED_REMOTE_AUTHORITATIVE_FULL_ARTIFACT",
+      "source_content_verified": true,
+      "locator_ready": true,
+      "lawful_route": "Author manuscript linked to canonical SIGIR DOI",
+      "artifact_uri": "https://arxiv.org/pdf/2305.14748",
+      "local_path": null,
+      "redistribution_status": "unknown",
+      "remaining_action": null,
+      "blocker": null
+    },
+    {
+      "source_key": "hou2022_unisrec",
+      "priority": "audit_core",
+      "status": "INSPECTED_REMOTE_AUTHORITATIVE_FULL_ARTIFACT",
+      "source_content_verified": true,
+      "locator_ready": true,
+      "lawful_route": "Author manuscript linked to canonical KDD DOI",
+      "artifact_uri": "https://arxiv.org/pdf/2206.05941",
+      "local_path": null,
+      "redistribution_status": "unknown",
+      "remaining_action": null,
+      "blocker": null
+    },
+    {
+      "source_key": "hou2023_vqrec",
+      "priority": "high",
+      "status": "INSPECTED_REMOTE_AUTHORITATIVE_FULL_ARTIFACT",
+      "source_content_verified": true,
+      "locator_ready": true,
+      "lawful_route": "Author manuscript linked to canonical WWW DOI",
+      "artifact_uri": "https://arxiv.org/pdf/2210.12316",
+      "local_path": null,
+      "redistribution_status": "unknown",
+      "remaining_action": null,
+      "blocker": null
+    },
+    {
+      "source_key": "sheng2025_alpharec",
+      "priority": "audit_core",
+      "status": "INSPECTED_REMOTE_AUTHORITATIVE_FULL_ARTIFACT",
+      "source_content_verified": true,
+      "locator_ready": true,
+      "lawful_route": "Official ICLR proceedings PDF",
+      "artifact_uri": "https://proceedings.iclr.cc/paper_files/paper/2025/file/e4bab1843c8d5a69f5abfd0824593493-Paper-Conference.pdf",
+      "local_path": null,
+      "redistribution_status": "unknown",
+      "remaining_action": null,
+      "blocker": null
+    },
+    {
+      "source_key": "reimers2019_sbert",
+      "priority": "audit_core",
+      "status": "INSPECTED_REMOTE_AUTHORITATIVE_FULL_ARTIFACT",
+      "source_content_verified": true,
+      "locator_ready": true,
+      "lawful_route": "Official ACL Anthology PDF",
+      "artifact_uri": "https://aclanthology.org/D19-1410.pdf",
+      "local_path": null,
+      "redistribution_status": "permitted_by_acl_anthology_license_notice",
+      "remaining_action": null,
+      "blocker": null
+    },
+    {
+      "source_key": "yu2022_simgcl",
+      "priority": "medium",
+      "status": "QUEUED_FULL_ARTIFACT_AND_LOCATOR",
+      "source_content_verified": false,
+      "locator_ready": false,
+      "lawful_route": "ACM publisher page or author-accepted manuscript",
+      "artifact_uri": "https://doi.org/10.1145/3477495.3531937",
+      "local_path": null,
+      "redistribution_status": "unknown",
+      "remaining_action": "Acquire only if a central synthesis claim requires direct SimGCL method evidence.",
+      "blocker": "Metadata-only comparator; excluded from production-intended claim support."
+    },
+    {
+      "source_key": "yu2024_xsimgcl",
+      "priority": "medium",
+      "status": "QUEUED_FULL_ARTIFACT_AND_LOCATOR",
+      "source_content_verified": false,
+      "locator_ready": false,
+      "lawful_route": "IEEE publisher page or author-accepted manuscript",
+      "artifact_uri": "https://doi.org/10.1109/TKDE.2023.3288135",
+      "local_path": null,
+      "redistribution_status": "unknown",
+      "remaining_action": "Acquire only if a central synthesis claim requires direct XSimGCL method evidence; preserve 2024 issue citation.",
+      "blocker": "Metadata-only comparator; excluded from production-intended claim support."
+    },
+    {
+      "source_key": "cai2023_lightgcl",
+      "priority": "medium",
+      "status": "QUEUED_FULL_ARTIFACT_AND_LOCATOR",
+      "source_content_verified": false,
+      "locator_ready": false,
+      "lawful_route": "Official OpenReview full artifact",
+      "artifact_uri": "https://openreview.net/forum?id=FKXVK9dyMM",
+      "local_path": null,
+      "redistribution_status": "unknown",
+      "remaining_action": "Acquire only if a central synthesis claim requires direct LightGCL method evidence.",
+      "blocker": "Metadata-only comparator; excluded from production-intended claim support."
+    },
+    {
+      "source_key": "kim2024_cgrc",
+      "priority": "high",
+      "status": "DEGRADED_TRANSPORT_QUEUED_FULL_ARTIFACT_AND_LOCATOR",
+      "source_content_verified": false,
+      "locator_ready": false,
+      "lawful_route": "ACM publisher page or author-hosted PDF linked from official Google Research record",
+      "artifact_uri": "https://www.joonseok.net/papers/cgrc.pdf",
+      "local_path": null,
+      "redistribution_status": "unknown",
+      "remaining_action": "Retry lawful author or publisher artifact transport; inspect the complete artifact and record section/page locators.",
+      "blocker": "Author PDF discovery returned metadata and first-page text, but full open/inspection repeatedly returned an internal transport error. Recorded as degraded, not unmatched."
+    },
+    {
+      "source_key": "meehan2025_cold_popbias",
+      "priority": "high",
+      "status": "INSPECTED_REMOTE_AUTHORITATIVE_FULL_ARTIFACT",
+      "source_content_verified": true,
+      "locator_ready": true,
+      "lawful_route": "Author manuscript linked to canonical RecSys DOI",
+      "artifact_uri": "https://arxiv.org/pdf/2508.12992",
+      "local_path": null,
+      "redistribution_status": "restricted_or_unknown",
+      "remaining_action": null,
+      "blocker": null
+    },
+    {
+      "source_key": "meehan2026_semco",
+      "priority": "high",
+      "status": "INSPECTED_REMOTE_AUTHORITATIVE_FULL_ARTIFACT",
+      "source_content_verified": true,
+      "locator_ready": true,
+      "lawful_route": "Author manuscript linked to canonical SIGIR DOI",
+      "artifact_uri": "https://arxiv.org/pdf/2604.08490",
+      "local_path": null,
+      "redistribution_status": "restricted_or_unknown",
+      "remaining_action": null,
+      "blocker": null
+    },
+    {
+      "source_key": "zheng2026_utgrec",
+      "priority": "high",
+      "status": "INSPECTED_REMOTE_AUTHORITATIVE_FULL_ARTIFACT",
+      "source_content_verified": true,
+      "locator_ready": true,
+      "lawful_route": "Author manuscript linked to canonical SIGIR DOI",
+      "artifact_uri": "https://arxiv.org/pdf/2504.04405",
+      "local_path": null,
+      "redistribution_status": "unknown",
+      "remaining_action": null,
+      "blocker": null
+    }
+  ],
+  "transport_and_api_failures": [
+    {
+      "attempt": "Open Crossref API endpoints through the web retrieval layer",
+      "result": "DEGRADED",
+      "detail": "Safe-URL/internal retrieval errors; no records classified as unmatched from this failure."
+    },
+    {
+      "attempt": "Invoke Crossref API from the default sandbox",
+      "result": "DEGRADED",
+      "detail": "TLS connection closed; the same exact requests were retried through the approved network route."
+    },
+    {
+      "attempt": "Invoke Crossref API through the approved network route",
+      "result": "SUCCESS",
+      "detail": "Four exact top-20 queries completed; DOI metadata for retained DOI records was verified."
+    },
+    {
+      "attempt": "Open the CGRC author PDF after official metadata discovery",
+      "result": "DEGRADED",
+      "detail": "Full artifact transport returned internal errors; metadata identity remains matched, while source_content_verified and locator_ready remain false."
+    }
+  ]
+}

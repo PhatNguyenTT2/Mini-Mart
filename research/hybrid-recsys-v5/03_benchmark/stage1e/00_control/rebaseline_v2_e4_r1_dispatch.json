@@ -1,0 +1,78 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r1-dispatch-1.0",
+  "material_passport": {
+    "origin_skill": "ars-codex:academic-research-suite/experiment-agent",
+    "origin_mode": "central-parallel-remediation-dispatch",
+    "origin_date": "2026-08-22",
+    "verification_status": "UNVERIFIED",
+    "version_label": "Stage 1E Rebaseline v2 E4-R1 Wave D dispatch",
+    "repro_lock": null
+  },
+  "project": "hybrid-recsys-v5",
+  "stage": "1E",
+  "wave": "D",
+  "status": "active_parallel_remediation",
+  "starting_state": {
+    "policy": "working-tree",
+    "central_head": "cc1d72a6e5f8369da60d97416f90fd541b912cd9",
+    "preserve_dirty_user_state": true
+  },
+  "contract": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r1_parallel_remediation_contract.md",
+    "canonical_lf_sha256": "b51c41a931ef88a1fcc356394600b3c2fcdafad68b5599477c9a894040d82538"
+  },
+  "input_manifest": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r1_frozen_input_manifest.json",
+    "canonical_lf_sha256": "d0a5db377c36f7109b4b56089ac024bb8ddcd4b5badc5aeb464969aa2e13d817",
+    "inputs": 17,
+    "central_validation": "PASS_17_OF_17"
+  },
+  "lanes": {
+    "E4_R1A_provenance_config": {
+      "client_thread_id": "client-new-thread:534b3e75-5228-4e47-b715-97a2f4c6f57b",
+      "thread_id": "01a025ef-990a-7ef3-8b32-deba5ae17208",
+      "host_id": "local",
+      "worktree": "C:/Users/ACER/.codex/worktrees/699f/backend",
+      "model": "gpt-5.6-sol",
+      "reasoning": "xhigh",
+      "status": "active",
+      "owns_findings": ["E5-F001", "E5-F002"],
+      "write_set": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_d/E4_R1A_provenance_config/"
+    },
+    "E4_R1B_command_controls": {
+      "client_thread_id": "client-new-thread:01393146-fb96-4d6d-8ed5-92da2d0cc473",
+      "thread_id": "01a025ef-990a-7ef3-8b32-de9a0bfcad42",
+      "host_id": "local",
+      "worktree": "C:/Users/ACER/.codex/worktrees/0050/backend",
+      "model": "gpt-5.6-sol",
+      "reasoning": "xhigh",
+      "status": "active",
+      "owns_findings": ["E5-F003", "E5-F004"],
+      "write_set": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_d/E4_R1B_command_controls/"
+    }
+  },
+  "parallelism": {
+    "allowed": true,
+    "write_sets_disjoint": true,
+    "central_synthesis_must_wait_for_both": true,
+    "future_e5_must_use_fresh_task": true
+  },
+  "execution_boundary": {
+    "repository_clone_or_fetch": false,
+    "dataset_download_or_authenticated_access": false,
+    "package_install_or_environment_creation": false,
+    "training_evaluation_smoke_or_benchmark": false,
+    "test_access": false,
+    "execute_e4_commands": false,
+    "modify_e1_through_e5": false,
+    "authorize_execution": false
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "confirmed": false
+  },
+  "next_gate": "Wait for both lane commits, then run central intake and E4-R1C synthesis."
+}

@@ -1,0 +1,246 @@
+{
+  "manifest_version": "1.0",
+  "manifest_id": "M-2026-08-13T13:55:30Z-a13b",
+  "emitted_by": "synthesis_agent",
+  "emitted_at": "2026-08-13T13:55:30.007Z",
+  "claims": [
+    {
+      "claim_id": "C-001",
+      "claim_text": "Offline recommender conclusions are conditional on split, candidate, metric, aggregation, and tuning choices.",
+      "intended_evidence_kind": "empirical",
+      "planned_refs": [
+        "zhao2020_alternative_settings",
+        "tamm2021_metric_consistency",
+        "canamares2020_offline_options",
+        "sun2023_daisyrec2"
+      ],
+      "negative_constraints": [
+        {
+          "constraint_id": "NC-C001-1",
+          "rule": "No raw cross-paper metric comparison."
+        }
+      ]
+    },
+    {
+      "claim_id": "C-002",
+      "claim_text": "Naive sampled metrics can disagree with exact evaluation, while improved estimators remain distinct from exact metrics.",
+      "intended_evidence_kind": "empirical",
+      "planned_refs": [
+        "krichene2020_sampled_metrics",
+        "li2023_reliable_sampling"
+      ],
+      "negative_constraints": [
+        {
+          "constraint_id": "NC-C002-1",
+          "rule": "Do not claim all sampling is invalid."
+        }
+      ]
+    },
+    {
+      "claim_id": "C-003",
+      "claim_text": "Two-tower, Wide & Deep, graph, sequential, rule, and content methods contribute complementary assumptions rather than transferable superiority.",
+      "intended_evidence_kind": "theoretical",
+      "planned_refs": [
+        "huang2013_dssm",
+        "cheng2016_wide_deep",
+        "he2020_lightgcn",
+        "kang2018_sasrec",
+        "agrawal1994_apriori",
+        "hou2022_unisrec"
+      ],
+      "negative_constraints": [
+        {
+          "constraint_id": "NC-C003-1",
+          "rule": "No architecture-age or source-native-score superiority claim."
+        }
+      ]
+    },
+    {
+      "claim_id": "C-004",
+      "claim_text": "Prior hybrid and rule-recommendation work motivates component fusion but does not test the proposed Apriori Wide estimand.",
+      "intended_evidence_kind": "theoretical",
+      "planned_refs": [
+        "ghoshal2014_multi_item_rules",
+        "liu2009_hybrid_seq_cf",
+        "peng2022_ham",
+        "peng2023_m2"
+      ],
+      "negative_constraints": [
+        {
+          "constraint_id": "NC-C004-1",
+          "rule": "No claim that literature proves the Wide branch helps."
+        }
+      ]
+    },
+    {
+      "claim_id": "C-005",
+      "claim_text": "Repeat and exploration effects require explicit novel-behavior diagnostics beyond aggregate next-basket accuracy.",
+      "intended_evidence_kind": "empirical",
+      "planned_refs": [
+        "li2023_nbr_reality",
+        "li2023_repetition_exploration",
+        "li2023_mask_swap"
+      ],
+      "negative_constraints": [
+        {
+          "constraint_id": "NC-C005-1",
+          "rule": "Do not equate aggregate gain with novel-item gain."
+        }
+      ]
+    },
+    {
+      "claim_id": "C-006",
+      "claim_text": "Content can provide item-side signal for cold items, but cold-item evidence does not imply cold-user effectiveness.",
+      "intended_evidence_kind": "empirical",
+      "planned_refs": [
+        "volkovs2017_dropoutnet",
+        "du2020_mtpr",
+        "wei2021_clcrec",
+        "huang2023_aldi"
+      ],
+      "negative_constraints": [
+        {
+          "constraint_id": "NC-C006-1",
+          "rule": "No cold-item to cold-user extrapolation."
+        }
+      ]
+    },
+    {
+      "claim_id": "C-007",
+      "claim_text": "Vietnamese recommendation resources exist but do not expose the complete frozen v5 task and signal contract.",
+      "intended_evidence_kind": "empirical",
+      "planned_refs": [
+        "tran2024_viecomrec",
+        "tran2024_vietnamese_food",
+        "nguyen2026_vihorec"
+      ],
+      "negative_constraints": [
+        {
+          "constraint_id": "NC-C007-1",
+          "rule": "No first-dataset or no-dataset absolute claim."
+        }
+      ]
+    },
+    {
+      "claim_id": "C-008",
+      "claim_text": "External datasets exhibit a compatibility tradeoff between text/content and purchase/basket/session signals.",
+      "intended_evidence_kind": "empirical",
+      "planned_refs": [
+        "jin2023_amazon_m2",
+        "normann2023_otto",
+        "robinson2024_relbench",
+        "completejourney_resource"
+      ],
+      "negative_constraints": [
+        {
+          "constraint_id": "NC-C008-1",
+          "rule": "No silent pseudo-basket or missing-content substitution."
+        }
+      ]
+    },
+    {
+      "claim_id": "C-009",
+      "claim_text": "No reviewed external resource is unconditionally strict-H4-ready.",
+      "intended_evidence_kind": "empirical",
+      "planned_refs": [
+        "completejourney_resource",
+        "tagliabue2021_coveo",
+        "jin2023_amazon_m2"
+      ],
+      "negative_constraints": [
+        {
+          "constraint_id": "NC-C009-1",
+          "rule": "H4 remains NOT_TESTED if no candidate clears compatibility and rights gates."
+        }
+      ]
+    },
+    {
+      "claim_id": "C-010",
+      "claim_text": "Official reproduction and harmonized benchmarking answer different questions and must remain separate evidence families.",
+      "intended_evidence_kind": "normative",
+      "planned_refs": [
+        "dacrema2021_reproducibility",
+        "sun2023_daisyrec2",
+        "canamares2020_offline_options"
+      ],
+      "negative_constraints": [
+        {
+          "constraint_id": "NC-C010-1",
+          "rule": "No pooled or cross-dataset raw score table."
+        }
+      ]
+    },
+    {
+      "claim_id": "C-011",
+      "claim_text": "The defensible research gap is the controlled joint evaluation of complementary signals under one protocol, not invention of the component methods.",
+      "intended_evidence_kind": "theoretical",
+      "planned_refs": [
+        "cheng2016_wide_deep",
+        "liu2009_hybrid_seq_cf",
+        "ghoshal2014_multi_item_rules",
+        "volkovs2017_dropoutnet"
+      ],
+      "negative_constraints": [
+        {
+          "constraint_id": "NC-C011-1",
+          "rule": "No absolute novelty claim."
+        }
+      ]
+    },
+    {
+      "claim_id": "C-012",
+      "claim_text": "All H1-H4 outcome claims remain NOT_RUN and cannot be inferred from literature.",
+      "intended_evidence_kind": "normative",
+      "planned_refs": [],
+      "negative_constraints": [
+        {
+          "constraint_id": "NC-C012-1",
+          "rule": "No observed benchmark number or pass/fail result before sealed experiments."
+        }
+      ]
+    }
+  ],
+  "manifest_negative_constraints": [
+    {
+      "constraint_id": "MNC-1",
+      "rule": "No unqualified causal or superiority language."
+    },
+    {
+      "constraint_id": "MNC-2",
+      "rule": "No cross-dataset or cross-protocol raw metric comparison."
+    },
+    {
+      "constraint_id": "MNC-3",
+      "rule": "No cold-item to cold-user extrapolation."
+    },
+    {
+      "constraint_id": "MNC-4",
+      "rule": "No Apriori/Wide effectiveness claim before H3."
+    },
+    {
+      "constraint_id": "MNC-5",
+      "rule": "No unconditional H4 eligibility or replication claim."
+    },
+    {
+      "constraint_id": "MNC-6",
+      "rule": "No 'first Vietnamese dataset' or 'no Vietnamese datasets' claim."
+    },
+    {
+      "constraint_id": "MNC-7",
+      "rule": "Keep ViHoRec and MUSE labelled as preprints."
+    },
+    {
+      "constraint_id": "MNC-8",
+      "rule": "Do not count RelBench adapters and their upstream datasets as independent corroboration."
+    },
+    {
+      "constraint_id": "MNC-9",
+      "rule": "Use 'train-mined rule-aligned evaluation cohort' if held-out outcomes determine membership."
+    },
+    {
+      "constraint_id": "MNC-10",
+      "rule": "No manuscript-ready citation without a non-null original-source locator."
+    }
+  ]
+}
+

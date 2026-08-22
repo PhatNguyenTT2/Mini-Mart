@@ -1,0 +1,63 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-input-1.0",
+  "project": "hybrid-recsys-v5",
+  "stage": "1E",
+  "wave": "rebaseline_v2_wave_a",
+  "created_at": "2026-08-22",
+  "material_status": "UNVERIFIED",
+  "authority_root": "E:/UIT/cv/backend",
+  "hash_verification_rule": "Resolve and hash every local input against authority_root, not the Codex worktree copy. Worktree line-ending normalization or omitted ignored artifacts must not be misclassified as source drift.",
+  "git": {
+    "head": "31d8092554119aa7d1ba22db2e094d701ba83c29",
+    "working_tree": "DIRTY_USER_STATE",
+    "starting_state_policy": "working-tree",
+    "preserve_user_changes": true
+  },
+  "model_policy": {
+    "model": "gpt-5.6-sol",
+    "reasoning": "xhigh",
+    "applies_to": ["E1", "E2", "E3", "E4", "E5"]
+  },
+  "user_decision": {
+    "existing_benchmarks": "INVALID_FOR_PAPER",
+    "required_evidence_order": [
+      "official_repository_and_pipeline_lock",
+      "reference_dataset_and_metric_lock",
+      "official_benchmark_reproduction",
+      "method_faithful_v5_adaptation",
+      "harmonized_v5_comparison",
+      "separate_cross_dataset_validation"
+    ],
+    "raw_cross_dataset_metric_comparison": "PROHIBITED"
+  },
+  "truth_state": {
+    "result_status": "NOT_RUN",
+    "accepted_result_rows": 0,
+    "reference_baselines": "NOT_REPRODUCED",
+    "test_set_opened": "NO",
+    "h1_h4": "NOT_RUN"
+  },
+  "inputs": [
+    {"role":"rebaseline_contract","path":"research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/stage1e_rebaseline_v2_contract.md","bytes":9566,"sha256":"19bd5f1a21c34f7d7a98d41be7479c8d3c54dba21831c467991f9d7cb26111b5","status":"authoritative"},
+    {"role":"master_plan","path":"master/academic-research-master-plan.md","bytes":21940,"sha256":"89a746f367359f5643dd8e34a34994707b1d8d529b1e5960c0a6489e65bcbdac","status":"authoritative_plan"},
+    {"role":"rq_brief","path":"research/hybrid-recsys-v5/01_research/rq_brief.md","bytes":14418,"sha256":"c64dd8293da8e489a3f6d9fd220620a988bedb78b83ec1d2e9b280918a179b5b","status":"stage1a_frozen"},
+    {"role":"methodology","path":"research/hybrid-recsys-v5/01_research/methodology_blueprint.md","bytes":16138,"sha256":"dfe581aaffa48bdfa5567f151f27525bdb47a704d43f501bdfa7b6572496e0d1","status":"stage1a_frozen"},
+    {"role":"estimand_matrix","path":"research/hybrid-recsys-v5/01_research/rq_estimand_matrix.md","bytes":5466,"sha256":"05dbdc1915af9fa18bd9e794ddb466f3c8159c207688364a50d94ff8b724ebce","status":"stage1a_frozen"},
+    {"role":"experiment_protocol","path":"inputs/experimental_log.md","bytes":23581,"sha256":"bd4ba08719667df6a71feccc915d0b84307b71e536bc533735cc61157e8bcf9f","status":"authoritative_not_run_protocol"},
+    {"role":"idea_context","path":"inputs/idea.md","bytes":27189,"sha256":"b8d6867df658331650421d576ac336f40fea9c838efc17cde8a16eb80ee7c13e","status":"context_only"},
+    {"role":"current_v5_spec","path":"backend/docs/chatbot/seed-product/benchmark-spec-v5.json","bytes":2629,"sha256":"acef1c62cc2a9a3ae04fdf2f4b2fb24b3eb8d2634f15e085fbe1878be8dc166d","status":"invalid_for_model_benchmark_pending_later_lineage_audit"},
+    {"role":"stage1b_seal","path":"research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase6_seal/r9_stage1b_seal/stage1b_r1_seal_manifest.json","bytes":13529,"sha256":"49ae115285679a99e7b8099d541c50219c2346c930458d5ae25db25885ab3717","status":"literature_sealed_not_empirical_authority"}
+  ],
+  "execution_authority": {
+    "web_primary_source_verification": true,
+    "local_read_only_inspection": true,
+    "repository_clone": false,
+    "dataset_download": false,
+    "package_install": false,
+    "source_modification": false,
+    "training": false,
+    "test_evaluation": false,
+    "exact_command_confirmation_required_after_e5": true
+  }
+}
+

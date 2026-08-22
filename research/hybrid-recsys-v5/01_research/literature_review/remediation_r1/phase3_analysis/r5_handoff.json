@@ -1,0 +1,148 @@
+{
+  "schema_version": "stage1b-r1-r5-handoff-1.0",
+  "handoff_type": "R5_CLAIM_MAP_REBUILD_AND_ARS_PHASE3_SYNTHESIS",
+  "project": "hybrid-recsys-v5",
+  "stage": "1B",
+  "round": "R1",
+  "step": "R5",
+  "completed_at": "2026-08-21T13:36:20Z",
+  "runtime_lock": {
+    "model": "gpt-5.6-sol",
+    "reasoning": "high",
+    "execution_mode": "fresh_dedicated_worktree_task"
+  },
+  "input_cutoff": "2026-08-21",
+  "input_gate": {
+    "r5_input_manifest_sha256": "9ed388e94ec44e1574ac370918cd4d6be2f321235fa63586845a0da76bbe6ba8",
+    "r5_contract_sha256": "d8aec416ba82cfc14bd57ceb48eb288fb28b32b774668639137b37a7ee96b54a",
+    "frozen_r3_files_checked": 12,
+    "r3_verdict": "PASS",
+    "r3_independent_audit": "20/20 PASS",
+    "r4_validator": "22/22 PASS",
+    "r4_core": "24/24",
+    "r4_queue": "13/13",
+    "r4_conditional_prerequisites": "22/22",
+    "r4_source_artifacts_revalidated": 35,
+    "r4_pdf_preflight_sidecars_revalidated": 28,
+    "r4_production_ready": 0,
+    "result": "PASS"
+  },
+  "verdict": "PASS",
+  "verdict_scope": "PASS authorizes only R6 Devil's Advocate Checkpoint 2. It does not seal Stage 1B or authorize Stage 2 production citations.",
+  "r6_authorized": true,
+  "stage1b_sealed": false,
+  "stage2_production_citations_authorized": false,
+  "counts": {
+    "claims": {
+      "total": 44,
+      "citation_ready_candidate": 22,
+      "planning_only": 22,
+      "production_ready": 0
+    },
+    "synthesis": {
+      "themes": 5,
+      "key_debates": 5,
+      "knowledge_gaps": 6,
+      "candidate_tension_pairs": 12,
+      "conditional_differences": 7,
+      "contradictions": 0,
+      "no_material_conflict": 4,
+      "insufficient_overlap": 1,
+      "resolved_in_synthesis": 7,
+      "flagged_unresolved": 0,
+      "scholar_confirmation_pending": 12
+    },
+    "citations": {
+      "visible": 33,
+      "paired_ref_markers": 33,
+      "verified_non_none_anchors": 33,
+      "page_anchors": 0,
+      "quote_anchors": 0,
+      "ghost_citations": 0,
+      "dangling_references": 0
+    },
+    "evidence_population": {
+      "canonical_scholarly_registry_records": 74,
+      "independent_scholarly_source_families": 71,
+      "included_canonical_scholarly_records": 52,
+      "core_scholarly_records": 23,
+      "core_operational_families": 1,
+      "core_objects_total": 24
+    }
+  },
+  "synthesis_themes": [
+    "The evaluation protocol is part of the estimand.",
+    "Architecture labels conceal different signals, objectives, and stage roles.",
+    "Hybridization is precedent for ablation, not evidence of v5 efficacy.",
+    "Zero-edge cold-item evidence requires content and adaptation boundaries.",
+    "External-resource compatibility and rights are separate axes."
+  ],
+  "key_debates": [
+    "Naive sampled-metric failure versus estimator-specific sampling reliability.",
+    "Architecture identity versus objective, input-signal, and system-stage role.",
+    "Hybrid-method precedent versus evidence for Apriori/Wide efficacy.",
+    "Transferable representations versus faithful H4 replication.",
+    "Dataset and package availability versus rights and redistribution permission."
+  ],
+  "residual_blockers_and_limitations": [
+    "All 12 cross-paper tension assessments have scholar_confirmation=pending; R6/user adjudication has not been simulated.",
+    "R5 performs scoped synthesis over a frozen corpus and does not claim exhaustive pairwise contradiction detection.",
+    "The Liu source key is supported for R5 only by the inspected 2007 predecessor's bounded hybrid-method proposition; no 2009-specific detail or result is authorized.",
+    "Complete Journey full provider payload, dataset-rights basis, and redistribution permission remain unresolved and separate from package availability, license, and local execution.",
+    "H1-H4 remain NOT_RUN and no benchmark result exists.",
+    "Stage 1B remains unsealed and Stage 2 production citations remain NOT_AUTHORIZED."
+  ],
+  "validation_receipt": {
+    "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/r5_validation_receipt.json",
+    "bytes": 6692,
+    "sha256": "25e3212a7aa3565a71f6a373325a8c961f8b9845c91ca73a32532173a6f4d960",
+    "result": "PASS",
+    "checks": "27/27 PASS",
+    "receipt_payload_sha256": "5a797c6a7f7cbfbe39096be8a03ed07320623a7ab47e13b4864262ff57a1e37f"
+  },
+  "output_manifest": [
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/claim_intent_manifest_r1.json",
+      "bytes": 71317,
+      "sha256": "bbfa5fcef77aca3e4df16dcfc4b6445af3a0073a733732c0525bd389e4c90943"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/claim_source_map_r1.json",
+      "bytes": 98794,
+      "sha256": "77f830e6dfb4dc3b3107e01d306a918365114f08370edb929e89d171c8930fa8"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/cross_paper_tensions_r1.json",
+      "bytes": 10831,
+      "sha256": "56a16ed2f19b7467b5d43ff4d2136fa72dd5ecf9e04bd7ac826a3025ab032943"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/synthesis_report_r1.md",
+      "bytes": 21719,
+      "sha256": "3acee0d64ee4f4e4b3ca0be0944ef1ba1bd70d19c3ad3c75ce3c09b1946b943c"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/r5_validation_receipt.json",
+      "bytes": 6692,
+      "sha256": "25e3212a7aa3565a71f6a373325a8c961f8b9845c91ca73a32532173a6f4d960"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/validate_r5_synthesis.py",
+      "bytes": 19234,
+      "sha256": "2154d08424eecec00ba4e05e839e81e47da84e09a220a3f62313a2c50029f32c"
+    }
+  ],
+  "self_hash_policy": "r5_handoff.json excludes its own hash. The terminal invocation ledger is also excluded from this manifest because it is finalized after this handoff and binds the final handoff hash; this one-way dependency avoids a circular digest. The finalized ledger is independently rehashed by the final validator.",
+  "terminal_ledger": {
+    "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/synthesis_invocation_ledger.json",
+    "state_at_handoff_emission": "awaiting_single_terminal_append"
+  },
+  "phase_boundary": {
+    "r6": "AUTHORIZED_NOT_PERFORMED",
+    "r7_r9": "NOT_PERFORMED",
+    "manuscript_drafting": "NOT_PERFORMED",
+    "benchmark_training_evaluation": "NOT_RUN",
+    "h1_h4": "NOT_RUN",
+    "stage2_production_citations": "NOT_AUTHORIZED"
+  }
+}

@@ -1,0 +1,105 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-wave-a-validation-receipt-1.0",
+  "material_passport": {
+    "origin_skill": "ars-codex:academic-research-suite/experiment-agent",
+    "origin_mode": "central-structural-validation",
+    "origin_date": "2026-08-22",
+    "verification_status": "UNVERIFIED",
+    "version_label": "Stage 1E Rebaseline v2 Wave A central receipt"
+  },
+  "validator": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_rebaseline_v2_wave_a.py",
+    "run_exit_code": 0,
+    "hash_policy": "SHA-256 over UTF-8 text after CRLF-to-LF normalization; worktree byte hashes are recorded separately because Git checkout line endings differ across worktrees"
+  },
+  "passed": true,
+  "verdict": "PASS_STRUCTURALLY_READY_FOR_E4",
+  "failure_count": 0,
+  "failures": [],
+  "model_policy": {
+    "model": "gpt-5.6-sol",
+    "reasoning": "xhigh",
+    "all_lanes_match": true
+  },
+  "input_manifest_sha256": "107299c026434366ed6ddb18f4ee6e25fd790d9799fd81c1c1e87871ed60744d",
+  "lanes": {
+    "E1_official_repos": {
+      "source_commits": [
+        "16617d5e3acc739c4e38b399c134d570cb701249",
+        "c611da9f8f17a627b48972928f33e72e034ded45"
+      ],
+      "central_commits": [
+        "043cb1c",
+        "013b361"
+      ],
+      "status": "COMPLETE_WITH_PENDING_GATES",
+      "lane_verdict": "READY_FOR_E4_E5_REVIEW_WITH_BLOCKERS",
+      "material_passport_schema_passed": true,
+      "handoff_canonical_lf_sha256": "a2f46e1867778678c3709adaa72d529421cd515adc5d2ac611fdc37a4f56c672",
+      "handoff_worktree_byte_sha256": "364fc8f3389632ddf8aa43414760a4746e69ba1d7721a622274ff60566dd3e67",
+      "output_hashes_passed": true,
+      "output_canonical_lf_sha256": {
+        "implementation_provenance_matrix.md": "13790d41a342157bfb133daf4a13c948048cb109b5ef167b1308c4045bf4058b",
+        "official_repo_registry.json": "59227a7355c2efaa285d01e165ec99836a0672dd7a952aa921564b75a3b5b4aa",
+        "repo_exclusion_log.md": "a628010580f6ad4a4fb5ef5f7ca9d07b63a6bd95539ed1e87874019e22cd43d2",
+        "training_pipeline_command_map.md": "9f9ea53474bef6ca848f4d29f865ab3f34c3fd03c15ba958080f1851b60b6086"
+      }
+    },
+    "E2_reference_datasets": {
+      "source_commits": [
+        "a2619fd26c7ec5a403e32dbd7d9c6d4560c71a6c",
+        "292e99f71983d3f3e8497a79f0f01c5bf6dcfbf4",
+        "f5516403b195e62804e7af149fab7e8a7a012c37"
+      ],
+      "central_commits": [
+        "a5c420a",
+        "f6e76ff",
+        "87e64a5"
+      ],
+      "status": "EVIDENCE_LOCK_COMPLETE_UNVERIFIED",
+      "lane_verdict": "CONDITIONAL_PASS_TO_E4_E5",
+      "material_passport_schema_passed": true,
+      "handoff_canonical_lf_sha256": "0e8357b0a6817c528121587d88d7c2d05e1c328157b46fa13d5d88a419494cdc",
+      "handoff_worktree_byte_sha256": "a50e13e4d300fea528ff0cc49373b86fd68116d5ad3205a2bbe12625b7b4eead",
+      "output_hashes_passed": true,
+      "output_canonical_lf_sha256": {
+        "dataset_exclusion_log.md": "3874b040d48b0939a49c0cf6889245832726be7b3cdf05ed43938a4069a999ea",
+        "dataset_repo_compatibility_matrix.md": "2b61a7d16894823adf710fa3c982dc1cfb1c762a85c07f533d5bae3410a6b2a5",
+        "reference_dataset_registry.json": "618a8b0cb83e679e6a4d52b18e7470c0a6277c3408079a83644732e026543e6a",
+        "rights_and_access_matrix.md": "6e2a2c2620b5e6d247faeea24a0e439ce3000b2773b345964bbc85f4ac183825"
+      }
+    },
+    "E3_metric_benchmarks": {
+      "source_commits": [
+        "84041551e8467c29aa660227c920bd4cfc6ee11b",
+        "bc1cba993d4615a6273a3ca720be80bfcc59d8fb"
+      ],
+      "central_commits": [
+        "c42d1c3",
+        "9d43216"
+      ],
+      "status": "COMPLETE_WITH_PENDING_EVIDENCE",
+      "lane_verdict": "PENDING",
+      "material_passport_schema_passed": true,
+      "handoff_canonical_lf_sha256": "2c1676ed8a630edc9abf3ea691e28d2bbc986b83aac944f0a1154394fc15e62f",
+      "handoff_worktree_byte_sha256": "78bb67ad7359e317bce556b50f12948bba0d03ef2fe8ed4ba776a12be60a7b21",
+      "output_hashes_passed": true,
+      "output_canonical_lf_sha256": {
+        "metric_protocol_matrix.md": "ecbc53aa54f767044313c9d8aece4b42932192277a76e8942aa52ea74867b9cd",
+        "official_benchmark_registry.json": "80ada6ec79b2292999009ef07c220f88bbd10f943b8fa52e8232e03e90bc7011",
+        "reported_result_locator_map.md": "395e61dac87abb8e4e68725c9b356e13a80b8089f85393de922e3f8108784068",
+        "reproduction_acceptance_rules.md": "0612a5f63fd949fc8f8134e238b6fcfe59badc1528c512c09e1e7de6af8296d5"
+      }
+    }
+  },
+  "content_readiness": {
+    "evidence_verification_status": "UNVERIFIED",
+    "ready_for_e4_synthesis": true,
+    "ready_for_clone_or_execution": false,
+    "ready_for_paper_benchmark_claims": false,
+    "accepted_result_rows": 0,
+    "result_status": "NOT_RUN",
+    "test_set_opened": "NO",
+    "required_next_action": "E4 must reconcile E1-E3, replay primary sources where needed, reject invalid joins, and freeze only a minimum defensible reproduction/adaptation packet for independent E5 audit."
+  }
+}

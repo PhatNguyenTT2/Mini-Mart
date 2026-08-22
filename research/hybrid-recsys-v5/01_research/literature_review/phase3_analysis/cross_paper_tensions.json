@@ -1,0 +1,82 @@
+{
+  "schema_version": "cross-paper-tensions-1.0",
+  "corpus_size": 55,
+  "candidate_pairs_considered": 5,
+  "coverage_note": "Scoped advisory scan, not complete pairwise contradiction detection. Scholar confirmation pending.",
+  "cross_paper_tensions": [
+    {
+      "pair_id": "CP-001",
+      "paper_a": "krichene2020_sampled_metrics",
+      "paper_b": "li2023_reliable_sampling",
+      "candidate_basis": "opposite finding direction on shared metric-sampling question",
+      "overlap_topic": "sampled versus exact top-k evaluation",
+      "a_finding": "naive sampled metrics need not preserve exact/global ordering",
+      "a_evidence_pointer": "phase2_investigation/lanes/L1_evaluation_reproducibility.md > CLAIM_SOURCE_CARDS > L1-S01",
+      "b_finding": "adaptive or estimated sampling can improve recovery of global metric estimates",
+      "b_evidence_pointer": "phase2_investigation/lanes/L1_evaluation_reproducibility.md > CLAIM_SOURCE_CARDS > L1-S03",
+      "pair_assessment": "conditional_difference",
+      "resolution_status": "resolved_in_synthesis",
+      "resolution_pointer": "Synthesis Report > Contradictions and resolutions, row 1",
+      "scholar_confirmation": "pending"
+    },
+    {
+      "pair_id": "CP-002",
+      "paper_a": "cheng2016_wide_deep",
+      "paper_b": "agrawal1994_apriori",
+      "candidate_basis": "shared RQ subtopic",
+      "overlap_topic": "explicit memorization signals in the proposed Wide branch",
+      "a_finding": "crossed features and deep components target memorization/generalization",
+      "a_evidence_pointer": "phase2_investigation/lanes/L2_recommender_architectures.md > CLAIM_SOURCE_CARDS > L2-04",
+      "b_finding": "support/confidence define association-rule mining",
+      "b_evidence_pointer": "phase2_investigation/lanes/L3_basket_sequential_hybrid.md > ACCEPTED_SOURCES > AR-APR",
+      "pair_assessment": "insufficient_overlap",
+      "resolution_status": "not_applicable",
+      "scholar_confirmation": "pending"
+    },
+    {
+      "pair_id": "CP-003",
+      "paper_a": "he2020_lightgcn",
+      "paper_b": "wei2021_clcrec",
+      "candidate_basis": "shared construct/outcome/measure",
+      "overlap_topic": "sparse or missing item interaction evidence",
+      "a_finding": "graph propagation uses collaborative edges",
+      "a_evidence_pointer": "phase2_investigation/lanes/L2_recommender_architectures.md > CLAIM_SOURCE_CARDS > L2-09",
+      "b_finding": "content-collaborative contrast targets cold-start representation",
+      "b_evidence_pointer": "phase2_investigation/lanes/L4_cold_content_transfer.md > CLAIM_SOURCE_CARDS > L4-01 to L4-04",
+      "pair_assessment": "conditional_difference",
+      "resolution_status": "resolved_in_synthesis",
+      "resolution_pointer": "Synthesis Report > Contradictions and resolutions, row 4",
+      "scholar_confirmation": "pending"
+    },
+    {
+      "pair_id": "CP-004",
+      "paper_a": "jin2023_amazon_m2",
+      "paper_b": "completejourney_resource",
+      "candidate_basis": "agent-noted cross-cluster",
+      "overlap_topic": "strict external-dataset compatibility",
+      "a_finding": "sessions/text support transfer but not persistent-user purchase replication",
+      "a_evidence_pointer": "phase2_investigation/lanes/L5_vietnamese_external_datasets.md > ACCEPTED_SOURCES > L5-EXT-01",
+      "b_finding": "household purchases/baskets/text are structurally close but provenance remains unresolved",
+      "b_evidence_pointer": "phase2_investigation/lanes/L5_vietnamese_external_datasets.md > ACCEPTED_SOURCES > L5-EXT-08",
+      "pair_assessment": "conditional_difference",
+      "resolution_status": "resolved_in_synthesis",
+      "resolution_pointer": "Synthesis Report > Contradictions and resolutions, rows 5 to 6",
+      "scholar_confirmation": "pending"
+    },
+    {
+      "pair_id": "CP-005",
+      "paper_a": "li2023_nbr_reality",
+      "paper_b": "li2023_mask_swap",
+      "candidate_basis": "shared construct/outcome/measure",
+      "overlap_topic": "novel versus repeat next-basket behavior",
+      "a_finding": "aggregate accuracy can hide heterogeneity",
+      "a_evidence_pointer": "phase2_investigation/lanes/L3_basket_sequential_hybrid.md > ACCEPTED_SOURCES > NBR-REALITY",
+      "b_finding": "novel-specific interventions do not help uniformly",
+      "b_evidence_pointer": "phase2_investigation/lanes/L3_basket_sequential_hybrid.md > ACCEPTED_SOURCES > BTBR",
+      "pair_assessment": "no_material_conflict",
+      "resolution_status": "not_applicable",
+      "scholar_confirmation": "pending"
+    }
+  ]
+}
+

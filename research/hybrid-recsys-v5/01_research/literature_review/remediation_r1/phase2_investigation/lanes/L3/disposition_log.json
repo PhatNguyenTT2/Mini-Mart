@@ -1,0 +1,169 @@
+{
+  "schema_version": "stage1b-r1-disposition-2026-08-14",
+  "lane": "L3_basket_sequential_association_rule_hybrid",
+  "old_lane_path": "research/hybrid-recsys-v5/01_research/literature_review/phase2_investigation/lanes/L3_basket_sequential_hybrid.md",
+  "review_date": "2026-08-14",
+  "criteria_applied_identically": [
+    "Direct relevance to locked L3 coverage or a necessary counter-evidence/protocol guardrail",
+    "Canonical identity and metadata verifiable from a source of record",
+    "Non-duplicative claim-level value after family/version grouping",
+    "Authority and inspectable original-content path for production-intended use",
+    "No inference from paper-native metrics to the v5 benchmark and no inference that literature proves H3"
+  ],
+  "counts": {
+    "old_candidates": 18,
+    "dispositioned": 18,
+    "retain": 12,
+    "replace": 1,
+    "remove": 5,
+    "move_to_resource_registry": 0,
+    "coverage_percent": 100
+  },
+  "dispositions": [
+    {
+      "old_candidate_id": "AR-APR",
+      "old_identity": "Rakesh Agrawal and Ramakrishnan Srikant (1994), Fast Algorithms for Mining Association Rules in Large Databases",
+      "disposition": "RETAIN",
+      "canonical_source_key": "agrawal_srikant_1994_apriori",
+      "reason": "Foundational source-of-record for support, confidence, frequent itemsets, and Apriori-family mining; retained only for mining semantics, not ranking effectiveness.",
+      "verification_basis": ["Official VLDB proceedings PDF inspected", "Canonical title, two full authors, year, venue, pages, and no assigned DOI verified"]
+    },
+    {
+      "old_candidate_id": "AR-MULTI",
+      "old_identity": "Abhijeet Ghoshal and Sumit Sarkar (2014), Association Rules for Recommendations with Multiple Items",
+      "disposition": "RETAIN",
+      "canonical_source_key": "ghoshal_sarkar_2014_multi_item_rules",
+      "reason": "Direct association-rule recommendation study with multi-item consequents and comparator evidence; provides non-redundant claim-level value.",
+      "verification_basis": ["Official INFORMS DOI record", "Lawful author manuscript inspected"]
+    },
+    {
+      "old_candidate_id": "HYB-SR-CF",
+      "old_identity": "Duen-Ren Liu, Chin-Hui Lai, and Wang-Jung Lee (2009), A Hybrid of Sequential Rules and Collaborative Filtering for Product Recommendation",
+      "disposition": "RETAIN",
+      "canonical_source_key": "liu_lai_lee_2009_hybrid_rules_cf",
+      "reason": "Audit-core historical hybrid precedent. Retained with metadata-only/content-unverified restrictions; the exact 2009 full work remains queued.",
+      "verification_basis": ["Official ScienceDirect record", "Official institutional peer-reviewed research-output record", "2007 conference predecessor tracked separately in the same family"]
+    },
+    {
+      "old_candidate_id": "WD",
+      "old_identity": "Heng-Tze Cheng and 15 named coauthors (2016), Wide & Deep Learning for Recommender Systems",
+      "disposition": "RETAIN",
+      "canonical_source_key": "cheng_2016_wide_deep",
+      "reason": "Foundational joint-training and component-comparison precedent; full 16-author metadata and original content are now verified.",
+      "verification_basis": ["Official Google Research record", "Lawful arXiv author version inspected"]
+    },
+    {
+      "old_candidate_id": "SASREC",
+      "old_identity": "Wang-Cheng Kang and Julian McAuley (2018), Self-Attentive Sequential Recommendation",
+      "disposition": "RETAIN",
+      "canonical_source_key": "kang_mcauley_2018_sasrec",
+      "reason": "Canonical causal self-attentive sequential baseline and objective reference; retained with next-item and sampled-evaluation limitations.",
+      "verification_basis": ["Official DOI/proceedings metadata", "Lawful full author version inspected"]
+    },
+    {
+      "old_candidate_id": "BERT4REC",
+      "old_identity": "Fei Sun, Jun Liu, Jian Wu, Changhua Pei, Xiao Lin, Wenwu Ou, and Peng Jiang (2019), BERT4Rec",
+      "disposition": "RETAIN",
+      "canonical_source_key": "sun_2019_bert4rec",
+      "reason": "Canonical masked bidirectional sequential objective reference; retained with next-item and sampled-evaluation limitations.",
+      "verification_basis": ["Official DOI/proceedings metadata", "Lawful full author version inspected"]
+    },
+    {
+      "old_candidate_id": "HAM",
+      "old_identity": "Bo Peng, Zhiyun Ren, Srinivasan Parthasarathy, and Xia Ning (2022), HAM: Hybrid Associations Models for Sequential Recommendation",
+      "disposition": "RETAIN",
+      "canonical_source_key": "peng_ren_parthasarathy_ning_2022_ham",
+      "reason": "Non-redundant learned-association hybrid and component-ablation precedent; explicitly separated from Apriori mining.",
+      "verification_basis": ["Official IEEE DOI metadata", "Lawful full author version inspected"]
+    },
+    {
+      "old_candidate_id": "M2",
+      "old_identity": "Bo Peng, Zhiyun Ren, Srinivasan Parthasarathy, and Xia Ning (2023), M²: Mixed Models with Preferences, Popularities and Transitions for Next-Basket Recommendation",
+      "disposition": "RETAIN",
+      "canonical_source_key": "peng_ren_parthasarathy_ning_2023_m2",
+      "reason": "Direct mixed-component next-basket model and ablation precedent; adds basket-native coverage not supplied by sequential next-item papers.",
+      "verification_basis": ["Official IEEE DOI metadata", "Lawful full author version inspected"]
+    },
+    {
+      "old_candidate_id": "NBR-REALITY",
+      "old_identity": "Ming Li, Sami Jullien, Mozhdeh Ariannezhad, and Maarten de Rijke (2023), A Next Basket Recommendation Reality Check",
+      "disposition": "RETAIN",
+      "canonical_source_key": "li_jullien_ariannezhad_derijke_2023_reality_check",
+      "reason": "Audit-core evidence for repeat/explore decomposition, frequency baselines, and evaluation confounding.",
+      "verification_basis": ["Official ACM DOI metadata", "Lawful full author version inspected"]
+    },
+    {
+      "old_candidate_id": "BTBR",
+      "old_identity": "Ming Li, Mozhdeh Ariannezhad, Andrew Yates, and Maarten de Rijke (2023), Masked and Swapped Sequence Modeling for Next Novel Basket Recommendation in Grocery Shopping",
+      "disposition": "RETAIN",
+      "canonical_source_key": "li_ariannezhad_yates_derijke_2023_mask_swap",
+      "reason": "Direct next-novel-basket paper and BTBR baseline with useful strategy-level counter-evidence.",
+      "verification_basis": ["Official ACM DOI metadata", "Lawful full author version inspected"]
+    },
+    {
+      "old_candidate_id": "REP-EXP",
+      "old_identity": "Ming Li, Ali Vardasbi, Andrew Yates, and Maarten de Rijke (2023), Repetition and Exploration in Sequential Recommendation",
+      "disposition": "RETAIN",
+      "canonical_source_key": "li_vardasbi_yates_derijke_2023_repetition_exploration",
+      "reason": "Direct diagnostic evidence for repetition bias and exploration-only analysis; complements basket-specific evidence.",
+      "verification_basis": ["Official DOI/proceedings metadata", "Lawful author-hosted full paper inspected remotely"]
+    },
+    {
+      "old_candidate_id": "TIME-SPLIT",
+      "old_identity": "Danil Gusak, Anna Volodkevich, Anton Klenitskiy, Alexey Vasilev, and Evgeny Frolov (2025), Time to Split: Exploring Data Splitting Strategies for Offline Evaluation of Sequential Recommenders",
+      "disposition": "RETAIN",
+      "canonical_source_key": "gusak_volodkevich_klenitskiy_vasilev_frolov_2025_time_split",
+      "reason": "Audit-core protocol evidence that split choice changes evaluation outcomes and can change model rankings; old-lane identity was reverified from the full accepted author version.",
+      "verification_basis": ["Accepted author version title page and ACM reference block", "Official DOI and RecSys status"]
+    },
+    {
+      "old_candidate_id": "LIN-ADAPTIVE-SUPPORT",
+      "old_identity": "Weiyang Lin, Sergio A. Alvarez, and Carolina Ruiz (2002), Efficient Adaptive-Support Association Rule Mining for Recommender Systems",
+      "disposition": "REMOVE",
+      "canonical_source_key": null,
+      "reason": "Relevant but redundant legacy rule-recommender method; Ghoshal and Sarkar provides stronger direct multi-item recommendation coverage, while Apriori supplies the foundational definitions. Retention would inflate the corpus without a necessary claim card.",
+      "verification_basis": ["Official DOI 10.1023/A:1013284820704 and bibliographic record verified"]
+    },
+    {
+      "old_candidate_id": "WU-SCALABILITY",
+      "old_identity": "Zhiang Wu, Changsheng Li, Jie Cao, and Yong Ge (2020), On Scalability of Association-rule-based Recommendation: A Unified Distributed-computing Framework",
+      "disposition": "REMOVE",
+      "canonical_source_key": null,
+      "reason": "Scaling/serving focus does not add claim-level value for the locked mechanism, objective, repeat/explore, or attribution questions.",
+      "verification_basis": ["Official DOI 10.1145/3398202 verified"]
+    },
+    {
+      "old_candidate_id": "RECANET",
+      "old_identity": "Mozhdeh Ariannezhad, Sami Jullien, Ming Li, Min Fang, Sebastian Schelter, and Maarten de Rijke (2022), ReCANet",
+      "disposition": "REMOVE",
+      "canonical_source_key": null,
+      "reason": "Repeat-consumption model is misaligned with the locked novel-purchase target and is redundant with retained counter-evidence on repeat dominance.",
+      "verification_basis": ["Official SIGIR 2022 proceedings program", "Author-hosted original full paper", "DOI 10.1145/3477495.3531708"]
+    },
+    {
+      "old_candidate_id": "BUY-CYCLE",
+      "old_identity": "Ori Katz, Oren Barkan, Nir Zabari, and Noam Koenigstein (2022), Learning to Ride a Buy-Cycle: A Hyper-Convolutional Model for Next Basket Recommendation",
+      "disposition": "REMOVE",
+      "canonical_source_key": null,
+      "reason": "Repurchase/buy-cycle target is not a suitable direct baseline for the locked organic-novel target; no unique claim card remains after repeat/explore sources are retained.",
+      "verification_basis": ["Official RecSys/DOI metadata for 10.1145/3523227.3546763"]
+    },
+    {
+      "old_candidate_id": "TURNING-DROSS",
+      "old_identity": "Anton Klenitskiy and Alexey Vasilev (2023), Turning Dross Into Gold Loss: Is BERT4Rec Really Better than SASRec?",
+      "disposition": "REPLACE",
+      "canonical_source_key": null,
+      "replacement_source_key": "petrov_macdonald_2022_bert4rec_replicability",
+      "reason": "Replaced by the broader peer-reviewed systematic review and replicability study of BERT4Rec, which has stronger claim-level coverage of implementation and training-budget sensitivity and a lawful full artifact.",
+      "verification_basis": ["Official DOI 10.1145/3604915.3610644 verified", "Replacement DOI 10.1145/3523227.3548487 and full text verified"]
+    },
+    {
+      "old_candidate_id": "KRICHENE-RENDLE-SAMPLED-METRICS",
+      "old_identity": "Walid Krichene and Steffen Rendle (2022), On Sampled Metrics for Item Recommendation",
+      "disposition": "REMOVE",
+      "canonical_source_key": null,
+      "reason": "General evaluation source belongs to the evaluation lane and is not needed to meet L3 mechanism coverage. L3 carries the narrower prohibition against metric transplantation without duplicating ownership.",
+      "verification_basis": ["Official DOI 10.1145/3535335 verified", "Cross-lane ownership identified in the old handoff"]
+    }
+  ]
+}

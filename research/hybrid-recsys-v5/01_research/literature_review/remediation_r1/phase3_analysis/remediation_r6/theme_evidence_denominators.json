@@ -1,0 +1,366 @@
+{
+  "schema_version": "stage1b-r1-theme-evidence-denominators-1.0",
+  "project": "hybrid-recsys-v5",
+  "stage": "1B",
+  "round": "R1",
+  "step": "R6_findings_remediation_overlay",
+  "derivation_rule": "All counts are computed from the records, distinct family_ids, and exact dependency_edges arrays in this artifact; no prose count is authoritative.",
+  "input_binding": {
+    "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/r6_remediation_input_manifest.json": "9c9a60463106a7ba21ad8f24600db9688a56c7efa5986b33db2b232a2505dabb",
+    "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/synthesis_report_r1.md": "3acee0d64ee4f4e4b3ca0be0944ef1ba1bd70d19c3ad3c75ce3c09b1946b943c",
+    "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/integration/source_family_map_r1.json": "44f5bcf30baa87bd67ce4c2d2efd45c775d0c7749c299b35bb31aa492ef6a513",
+    "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/devils_advocate_cp2/r6_findings.json": "ce86f1408309f6bede2532d903a9d3b40d1c550c0ab879715c6b63e1a13de5bb"
+  },
+  "global_context_counts": {
+    "registry_canonical_scholarly_records": 74,
+    "registry_nominal_scholarly_families": 71,
+    "included_synthesis_canonical_records": 52,
+    "included_synthesis_nominal_family_ids": 52,
+    "r4_core_scholarly_records": 23,
+    "r4_core_operational_families": 1,
+    "r4_core_total_objects": 24
+  },
+  "claim_population_counts": {
+    "claims": 44,
+    "citation_ready_candidate": 22,
+    "planning_only": 22
+  },
+  "tension_population_counts": {
+    "candidate_pairs": 12,
+    "conditional_difference": 7,
+    "no_material_conflict": 4,
+    "insufficient_overlap": 1,
+    "pending_scholar_confirmation": 12
+  },
+  "themes": {
+    "T1": {
+      "evidence_domain": "scholarly",
+      "records": [
+        {
+          "record_key": "krichene2020_sampled_metrics",
+          "record_kind": "scholarly",
+          "family_id": "SF-R1-028"
+        },
+        {
+          "record_key": "li2023_reliable_sampling",
+          "record_kind": "scholarly",
+          "family_id": "SF-R1-031"
+        },
+        {
+          "record_key": "zhao2020_alternative_settings",
+          "record_kind": "scholarly",
+          "family_id": "SF-R1-069"
+        },
+        {
+          "record_key": "gusak2025_time_split",
+          "record_kind": "scholarly",
+          "family_id": "SF-R1-013"
+        },
+        {
+          "record_key": "dacrema2021_reproducibility",
+          "record_kind": "scholarly",
+          "family_id": "SF-R1-009"
+        },
+        {
+          "record_key": "jannach2026_methodological_standards",
+          "record_kind": "scholarly",
+          "family_id": "SF-R1-023"
+        }
+      ],
+      "family_ids": [
+        "SF-R1-028",
+        "SF-R1-031",
+        "SF-R1-069",
+        "SF-R1-013",
+        "SF-R1-009",
+        "SF-R1-023"
+      ],
+      "dependency_edges": [
+        {
+          "dependency_type": "paper_version",
+          "source_family_id": "SF-R1-028",
+          "depends_on_family_id": "SF-R1-028",
+          "source_keys": [
+            "krichene2020_sampled_metrics"
+          ],
+          "resource_keys": [],
+          "counting_effect": "not_an_additional_independent_source_family",
+          "note": "KDD 2020 paper and IJCAI 2021 extended abstract are one work family."
+        },
+        {
+          "dependency_type": "paper_version",
+          "source_family_id": "SF-R1-031",
+          "depends_on_family_id": "SF-R1-031",
+          "source_keys": [
+            "li2023_reliable_sampling"
+          ],
+          "resource_keys": [],
+          "counting_effect": "not_an_additional_independent_source_family",
+          "note": "AAAI 2023 paper and TORS 2024 journal version are one work family."
+        }
+      ],
+      "counts": {
+        "canonical_record_count": 6,
+        "nominal_family_count": 6,
+        "dependency_adjusted_family_count": 6
+      },
+      "robustness": "ROBUST"
+    },
+    "T2": {
+      "evidence_domain": "scholarly",
+      "records": [
+        {
+          "record_key": "sarwar2001_itemcf",
+          "record_kind": "scholarly",
+          "family_id": "SF-R1-050"
+        },
+        {
+          "record_key": "rendle2009_bpr",
+          "record_kind": "scholarly",
+          "family_id": "SF-R1-047"
+        },
+        {
+          "record_key": "he2017_ncf",
+          "record_kind": "scholarly",
+          "family_id": "SF-R1-014"
+        },
+        {
+          "record_key": "guo2017_deepfm",
+          "record_kind": "scholarly",
+          "family_id": "SF-R1-012"
+        },
+        {
+          "record_key": "covington2016_youtube",
+          "record_kind": "scholarly",
+          "family_id": "SF-R1-008"
+        },
+        {
+          "record_key": "yi2019_ndr",
+          "record_kind": "scholarly",
+          "family_id": "SF-R1-064"
+        },
+        {
+          "record_key": "wang2022_directau",
+          "record_kind": "scholarly",
+          "family_id": "SF-R1-060"
+        },
+        {
+          "record_key": "he2020_lightgcn",
+          "record_kind": "scholarly",
+          "family_id": "SF-R1-015"
+        }
+      ],
+      "family_ids": [
+        "SF-R1-050",
+        "SF-R1-047",
+        "SF-R1-014",
+        "SF-R1-012",
+        "SF-R1-008",
+        "SF-R1-064",
+        "SF-R1-060",
+        "SF-R1-015"
+      ],
+      "dependency_edges": [],
+      "counts": {
+        "canonical_record_count": 8,
+        "nominal_family_count": 8,
+        "dependency_adjusted_family_count": 8
+      },
+      "robustness": "ROBUST_WITH_LOCAL_WEAKENING"
+    },
+    "T3": {
+      "evidence_domain": "scholarly",
+      "records": [
+        {
+          "record_key": "agrawal1994_apriori",
+          "record_kind": "scholarly",
+          "family_id": "SF-R1-001"
+        },
+        {
+          "record_key": "cheng2016_wide_deep",
+          "record_kind": "scholarly",
+          "family_id": "SF-R1-007"
+        },
+        {
+          "record_key": "liu2009_hybrid_seq_cf",
+          "record_kind": "scholarly",
+          "family_id": "SF-R1-033"
+        },
+        {
+          "record_key": "kang2018_sasrec",
+          "record_kind": "scholarly",
+          "family_id": "SF-R1-026"
+        },
+        {
+          "record_key": "sun2019_bert4rec",
+          "record_kind": "scholarly",
+          "family_id": "SF-R1-053"
+        },
+        {
+          "record_key": "li2023_nbr_reality",
+          "record_kind": "scholarly",
+          "family_id": "SF-R1-030"
+        },
+        {
+          "record_key": "li2023_repetition_exploration",
+          "record_kind": "scholarly",
+          "family_id": "SF-R1-032"
+        },
+        {
+          "record_key": "mansouri2026_repeat_explore_lightgcn",
+          "record_kind": "scholarly",
+          "family_id": "SF-R1-035"
+        }
+      ],
+      "family_ids": [
+        "SF-R1-001",
+        "SF-R1-007",
+        "SF-R1-033",
+        "SF-R1-026",
+        "SF-R1-053",
+        "SF-R1-030",
+        "SF-R1-032",
+        "SF-R1-035"
+      ],
+      "dependency_edges": [
+        {
+          "dependency_type": "paper_version",
+          "source_family_id": "SF-R1-033",
+          "depends_on_family_id": "SF-R1-033",
+          "source_keys": [
+            "liu2009_hybrid_seq_cf"
+          ],
+          "resource_keys": [],
+          "counting_effect": "not_an_additional_independent_source_family",
+          "note": "The 2007 conference predecessor remains a distinct manifestation; it does not substitute for the 2009 journal content."
+        }
+      ],
+      "counts": {
+        "canonical_record_count": 8,
+        "nominal_family_count": 8,
+        "dependency_adjusted_family_count": 8
+      },
+      "robustness": "ROBUST_WITH_REDUCED_DIRECTNESS"
+    },
+    "T4": {
+      "evidence_domain": "scholarly",
+      "records": [
+        {
+          "record_key": "volkovs2017_dropoutnet",
+          "record_kind": "scholarly",
+          "family_id": "SF-R1-059"
+        },
+        {
+          "record_key": "huang2023_aldi",
+          "record_kind": "scholarly",
+          "family_id": "SF-R1-021"
+        },
+        {
+          "record_key": "reimers2019_sbert",
+          "record_kind": "scholarly",
+          "family_id": "SF-R1-046"
+        },
+        {
+          "record_key": "sheng2025_alpharec",
+          "record_kind": "scholarly",
+          "family_id": "SF-R1-052"
+        },
+        {
+          "record_key": "hou2022_unisrec",
+          "record_kind": "scholarly",
+          "family_id": "SF-R1-017"
+        },
+        {
+          "record_key": "hou2023_vqrec",
+          "record_kind": "scholarly",
+          "family_id": "SF-R1-018"
+        },
+        {
+          "record_key": "zheng2026_utgrec",
+          "record_kind": "scholarly",
+          "family_id": "SF-R1-071"
+        },
+        {
+          "record_key": "meehan2025_cold_popbias",
+          "record_kind": "scholarly",
+          "family_id": "SF-R1-036"
+        },
+        {
+          "record_key": "meehan2026_semco",
+          "record_kind": "scholarly",
+          "family_id": "SF-R1-037"
+        }
+      ],
+      "family_ids": [
+        "SF-R1-059",
+        "SF-R1-021",
+        "SF-R1-046",
+        "SF-R1-052",
+        "SF-R1-017",
+        "SF-R1-018",
+        "SF-R1-071",
+        "SF-R1-036",
+        "SF-R1-037"
+      ],
+      "dependency_edges": [
+        {
+          "dependency_type": "method_reuse",
+          "source_family_id": "SF-R1-052",
+          "depends_on_family_id": "SF-R1-017",
+          "source_keys": [
+            "sheng2025_alpharec",
+            "hou2022_unisrec",
+            "hou2023_vqrec"
+          ],
+          "resource_keys": [],
+          "counting_effect": "not_an_additional_independent_source_family",
+          "note": "AlphaRec evaluates against UniSRec/VQ-Rec transfer baselines; this is a benchmark dependency, not identity equivalence."
+        }
+      ],
+      "counts": {
+        "canonical_record_count": 9,
+        "nominal_family_count": 9,
+        "dependency_adjusted_family_count": 8
+      },
+      "robustness": "ROBUST_WITH_DEPENDENCE_CAVEAT"
+    },
+    "T5": {
+      "evidence_domain": "operational",
+      "records": [
+        {
+          "record_key": "R-L5-COMPLETE-JOURNEY-PROVIDER",
+          "record_kind": "operational",
+          "family_id": "SF-R1-075"
+        },
+        {
+          "record_key": "R-L5-COMPLETEJOURNEY-R-PACKAGE",
+          "record_kind": "operational",
+          "family_id": "SF-R1-075"
+        }
+      ],
+      "family_ids": [
+        "SF-R1-075"
+      ],
+      "dependency_edges": [
+        {
+          "dependency_type": "provider_package",
+          "source_family_id": "SF-R1-075",
+          "depends_on_family_id": "SF-R1-075",
+          "source_keys": [],
+          "resource_keys": [
+            "R-L5-COMPLETEJOURNEY-R-PACKAGE",
+            "R-L5-COMPLETE-JOURNEY-PROVIDER"
+          ],
+          "counting_effect": "not_an_additional_independent_source_family",
+          "note": "Package CC0 does not establish upstream dataset redistribution rights."
+        }
+      ],
+      "counts": {
+        "canonical_record_count": 2,
+        "nominal_family_count": 1,
+        "dependency_adjusted_family_count": 1
+      },
+      "robustness": "FRAGILE_SINGLE_FAMILY"
+    }
+  }
+}

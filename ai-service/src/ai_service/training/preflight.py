@@ -162,11 +162,16 @@ def prepare_training_inputs(settings: Settings) -> PreparedTrainingInputs:
     )
 
 
-def run_r3_preflight(settings: Settings, *, device: torch.device) -> R3PreflightReceipt:
-    """Run all read-only R3 gates and raise on any failed evidence."""
+def run_r3_preflight(
+    settings: Settings,
+    *,
+    device: torch.device,
+    prepared_inputs: PreparedTrainingInputs | None = None,
+) -> R3PreflightReceipt:
+    """Run all read-only R3 gates against one prepared training input set."""
     if settings.serving.environment.lower() == "production":
         check_production_connections(settings)
-    prepared = prepare_training_inputs(settings)
+    prepared = prepared_inputs or prepare_training_inputs(settings)
     audit = DataQualityAuditor().audit(prepared.snapshot)
     if not audit.training_suitability_passed:
         raise ArtifactIntegrityError(

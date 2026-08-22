@@ -1,0 +1,64 @@
+{
+  "schema_version": "stage1b-r1-r8-handoff-1.0",
+  "project": "hybrid-recsys-v5",
+  "stage": "1B",
+  "round": "R1",
+  "step": "R8_independent_audit",
+  "role": "independent_read_only_auditor",
+  "verdict": "PASS_READY_TO_SEAL",
+  "severity_counts": {
+    "Critical": 0,
+    "Major": 0,
+    "Minor": 0,
+    "Observation": 5
+  },
+  "input_binding": {
+    "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/r8_audit_contract.md": "b251f8e3f676a0dd3c0b3a3258e281ce312d7278c71a7343419ec054d9788b13",
+    "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/00_control/r8_input_manifest.json": "319e10f1fc26263179c3f16bbed91eebddf2c9a8f915aab9a5772a7f159e68cf",
+    "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase4_freeze/r7_packet_r1/r7_handoff.json": "fca016c5499cd7e81f19ace9b04514f7ac0139137bab50b5d1e05c9a4c51b117"
+  },
+  "r7_final_validator": "PASS_29_OF_29",
+  "final_validation": "PASS_60_OF_60",
+  "validation_receipt": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase5_audit/r8_independent_audit/r8_validation_receipt.json",
+  "packet_member_count": 193,
+  "canonical_preimage_bytes": 43928,
+  "canonical_root_sha256": "f0f2d56e42ce0f181f83182ddffe1060bf8994f50ababd4b0dbe563a942370dd",
+  "replayed_counts": {
+    "claims": 44,
+    "citation_ready_candidates": 22,
+    "planning_only": 22,
+    "counter_evidence_items": 51,
+    "counter_evidence_locator_pointers": 136,
+    "verified_citation_locator_pairs": 33,
+    "themes": 5,
+    "tension_pairs": 12,
+    "scholar_confirmed": 11,
+    "scholar_disputed_reclassified": 1,
+    "scholar_pending": 0,
+    "scholar_unresolved": 0
+  },
+  "t002": {
+    "historical_state_preserved": "conditional_difference/resolved_in_synthesis/pending",
+    "effective_scholar_decision": "disputed",
+    "effective_classification": "no_material_conflict/not_applicable",
+    "flagged_unresolved": false
+  },
+  "artifact_sha256": {
+    "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase5_audit/r8_independent_audit/r8_independent_audit_report.md": "802c7eb5c9a4cc482ec4a6d0da303b19e65afb71e25ea569d685eda361b87991",
+    "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase5_audit/r8_independent_audit/r8_findings.json": "cd6118ee8ec24a99b04c6c367fd69deb7a3cccf9a25817cea7c1913ce9204296",
+    "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase5_audit/r8_independent_audit/r8_packet_replay.json": "8e1df021500d25c87a1a97d9f794d4a0bc7341d58880e8680de54daa444f0de2",
+    "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase5_audit/r8_independent_audit/validate_r8_audit.py": "29f59fcc5ec349f39afda8ffe5424d3a466f58100679b2ea4d567d481ea2d2e8"
+  },
+  "authorized_next_action": "central_validate_r8_then_R9_seal_only",
+  "phase_boundary": {
+    "r9": "NOT_PERFORMED_NOT_AUTHORIZED_UNTIL_CENTRAL_VALIDATION",
+    "stage1b_seal": "NOT_PERFORMED",
+    "stage1b_sealed": false,
+    "stage2_authorization": "NOT_AUTHORIZED",
+    "stage2_production_citations_authorized": false,
+    "manuscript_drafting": "NOT_PERFORMED",
+    "benchmark_training_evaluation": "NOT_RUN",
+    "h1_h4": "NOT_RUN"
+  },
+  "authority": "PASS_READY_TO_SEAL is the R8 audit verdict only. It requires central validation before R9 and does not itself seal Stage 1B or authorize Stage 2."
+}
