@@ -1,0 +1,78 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r6-d1-e1-dispatch-1.0",
+  "created_at": "2026-08-23",
+  "stage_id": "R6-D1-R6-E1-PARALLEL-DISPATCH",
+  "entry_gate": "PASS_R6_S0_FROZEN_36_OF_36_READY_FOR_PARALLEL_R6_D1_R6_E1",
+  "entry_commit": "374819c",
+  "frozen_input_manifest": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_s0_frozen_input_manifest.json",
+  "gate_receipt": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_s0_gate_receipt.json",
+  "model_profile": {
+    "display_name": "Sol XHigh Fast",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "xhigh",
+    "service_tier": "priority"
+  },
+  "parallel_group": "R6-DE",
+  "expected_stage_count": 2,
+  "stages": [
+    {
+      "stage_id": "R6-D1",
+      "agent_id": "01a02af7-7ef4-7760-94a9-c01302e210ea",
+      "nickname": "Bacon",
+      "importance": "HIGH",
+      "status": "RUNNING",
+      "purpose": "official_grouplens_ml100k_authority_rights_and_lineage_lock",
+      "write_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ag/E4_R6D1_movielens100k_authority_lineage",
+      "exact_output_files": [
+        "provider_authority.json",
+        "rights_and_release_record.md",
+        "data_lineage_plan.json",
+        "materialization_command_proposal.json",
+        "audit_handoff.json"
+      ]
+    },
+    {
+      "stage_id": "R6-E1",
+      "agent_id": "01a02af7-7fda-7730-9c93-178e64c6ae6c",
+      "nickname": "Galileo",
+      "importance": "HIGH",
+      "status": "RUNNING",
+      "purpose": "recbole_bpr_current_compatible_environment_closure",
+      "write_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ah/E4_R6E1_recbole_environment_closure",
+      "exact_output_files": [
+        "compatibility_matrix.json",
+        "environment_lock_proposal.json",
+        "environment_command_proposal.json",
+        "risk_report.md",
+        "audit_handoff.json"
+      ]
+    }
+  ],
+  "source_policy": {
+    "dataset_decision_authority": "CURRENT_OFFICIAL_GROUPLENS_ONLY",
+    "consumer_behavior_authority": "PINNED_RECBOLE_SOURCE_ONLY",
+    "environment_compatibility_authority": "PINNED_SOURCE_PLUS_OFFICIAL_RUNTIME_PACKAGE_SOURCES",
+    "recbole_s3_processed_dataset_is_canonical_provider": false,
+    "mirror_or_search_snippet_is_decision_bearing": false
+  },
+  "scope_guards": {
+    "authoritative_web_research": true,
+    "worker_dataset_download_or_extraction": false,
+    "worker_environment_creation_or_package_install": false,
+    "worker_vendor_source_execution": false,
+    "preprocessing_training_evaluation": false,
+    "checkpoint_download": false,
+    "project_v5_test_access": false,
+    "benchmark_admission": false,
+    "control_file_edits": false,
+    "worker_commits": false
+  },
+  "next_gate": "CENTRAL_EXACT_OUTPUT_HASH_SCHEMA_AND_SEMANTIC_VALIDATION_BEFORE_R6_G0",
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

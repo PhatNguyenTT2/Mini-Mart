@@ -2,7 +2,7 @@
   "schema_version": "academic-research-pipeline-state-1.0",
   "project": "hybrid-recsys-v5",
   "stage": "1E",
-  "state": "stage1e_rebaseline_v2_r6_s0_complete_r6_d1_e1_ready_for_dispatch",
+  "state": "stage1e_rebaseline_v2_r6_d1_e1_parallel_running",
   "updated_at": "2026-08-23",
   "model": "gpt-5.6-sol",
   "reasoning": "max",
@@ -937,7 +937,7 @@
         "benchmark_admission_authorized": false
       },
       "r6": {
-        "status": "S0_COMPLETE_CENTRALLY_VALIDATED_PARALLEL_LANES_READY_FOR_DISPATCH",
+        "status": "R6_D1_R6_E1_PARALLEL_RUNNING",
         "stage_map": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_materialization_stage_map.json",
         "contract": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_bounded_materialization_contract.md",
         "s0": {
@@ -951,17 +951,20 @@
           "failure_count": 0
         },
         "parallel_group": {
-          "status": "READY_FOR_DISPATCH",
+          "status": "RUNNING",
           "expected": 2,
-          "active": 0,
+          "active": 2,
           "complete": 0,
+          "dispatch": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_d1_e1_dispatch.json",
           "stages": {
             "R6-D1": {
-              "status": "READY_FOR_DISPATCH",
+              "status": "RUNNING",
+              "agent_id": "01a02af7-7ef4-7760-94a9-c01302e210ea",
               "model_profile": "Sol XHigh Fast"
             },
             "R6-E1": {
-              "status": "READY_FOR_DISPATCH",
+              "status": "RUNNING",
+              "agent_id": "01a02af7-7fda-7730-9c93-178e64c6ae6c",
               "model_profile": "Sol XHigh Fast"
             }
           }
