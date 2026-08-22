@@ -1,0 +1,111 @@
+{
+  "schema_version": "stage1e-r6-c1r2-nuget-source-replay-receipt-1.0",
+  "created_at": "2026-08-23",
+  "stage_id": "R6-C1R2-SOURCE-REPLAY",
+  "status": "PASS_OFFICIAL_CPYTHON_NUGET_3119_INERT_BYTE_REPLAY",
+  "method": {
+    "network_read_only": true,
+    "package_loaded_into_memory_only": true,
+    "package_persisted_to_filesystem": false,
+    "archive_extracted_to_filesystem": false,
+    "downloaded_executable_run": false,
+    "external_attempt_root_created_or_modified": false,
+    "scientific_execution_performed": false
+  },
+  "official_metadata": {
+    "package_id": "python",
+    "version": "3.11.9",
+    "authors": "Python Software Foundation",
+    "description": "Installs 64-bit Python for use in build scenarios.",
+    "published": "2024-04-02T13:09:41.627Z",
+    "registration_leaf_url": "https://api.nuget.org/v3/registration5-semver1/python/3.11.9.json",
+    "catalog_leaf_url": "https://api.nuget.org/v3/catalog0/data/2024.04.02.13.14.51/python.3.11.9.json",
+    "package_url": "https://api.nuget.org/v3-flatcontainer/python/3.11.9/python.3.11.9.nupkg",
+    "package_bytes": 17478009,
+    "content_md5_base64": "DeucXXO8lcp7Zt1ysPjYog==",
+    "package_md5_hex": "0deb9c5d73bc95ca7b66dd72b0f8d8a2",
+    "package_sha256_hex": "9283876d58c017e0e846f95b490da3bca0fc0a6ee1134b2870677cfb7eec3c67",
+    "package_sha512_base64": "41On79FZ75irnOEBGFSjDV13j1nZb8m7EbB87SmQs1XwMEhrBwf3mMc8RCAXOrERh2qW6tWYFxi2BMTN1xxVjQ==",
+    "package_hash_algorithm": "SHA512",
+    "catalog_and_content_headers_agree": true
+  },
+  "archive_scan": {
+    "entry_count": 1773,
+    "file_entry_count": 1773,
+    "explicit_directory_entry_count": 0,
+    "total_uncompressed_bytes": 45644754,
+    "largest_member": "tools/python311.dll",
+    "largest_member_bytes": 5800216,
+    "top_level_exact_set": [
+      "_rels",
+      ".signature.p7s",
+      "[Content_Types].xml",
+      "build",
+      "images",
+      "package",
+      "python.nuspec",
+      "tools"
+    ],
+    "pip_entry_count": 517,
+    "case_insensitive_duplicate_names": 0,
+    "unsafe_names": 0,
+    "observed_unix_file_types": [0]
+  },
+  "inventory": {
+    "canonical_format": "relative_forward_slash_path<TAB>bytes<TAB>sha256<LF>, ordinal path order",
+    "all_entries_sha256": "5b6fb34361dc7d120329363730678c13db857d6069d88d3505406526ba4ed63a",
+    "promoted_runtime_prefix": "tools/",
+    "promoted_runtime_prefix_stripped": true,
+    "promoted_runtime_files": 1766,
+    "promoted_runtime_bytes": 45610489,
+    "promoted_runtime_inventory_sha256": "62f76352a94a53dd4aeb406d00a14151b23cb544bd52fde5a899a7f62cdb33bd"
+  },
+  "required_anchors": [
+    {
+      "path": ".signature.p7s",
+      "bytes": 24461,
+      "sha256": "4e82149e4ccf03cfbfe0ddb28d18522004d173c8220352cbb929107225718539"
+    },
+    {
+      "path": "python.nuspec",
+      "bytes": 828,
+      "sha256": "1aaf1dcce32ca65f4283377e0956b17586dbc303607e528cdfa84c732b058ac0"
+    },
+    {
+      "path": "tools/Lib/site-packages/pip/__init__.py",
+      "bytes": 355,
+      "sha256": "a009359c5a4b994552e4b9fb371bcda06527e55927e851908cf68d0dff10f299"
+    },
+    {
+      "path": "tools/Lib/venv/__init__.py",
+      "bytes": 25704,
+      "sha256": "d8e4d35b527c30de646956b7cf06f44aeba089f78dc8e6c53cb593ad4d64630e"
+    },
+    {
+      "path": "tools/python.exe",
+      "bytes": 103192,
+      "sha256": "5f7b89a612c9b8af1d6456cdfcd1dbe5ca630849e79aebced9bee9a6694952ec"
+    },
+    {
+      "path": "tools/python311.dll",
+      "bytes": 5800216,
+      "sha256": "0817a2a657a24c0d5fbb60df56960f42fc66b3039d522ec952dab83e2d869364"
+    }
+  ],
+  "required_anchor_presence": "6/6",
+  "primary_source_basis": [
+    "https://docs.python.org/3.11/using/windows.html#the-nuget-org-packages",
+    "https://github.com/python/cpython/blob/main/PC/layout/README.md",
+    "https://www.nuget.org/packages/python/3.11.9"
+  ],
+  "negative_assertions": {
+    "installer_executed": false,
+    "nuget_executable_used": false,
+    "ambient_python_used": false,
+    "dataset_constructed_or_loaded": false,
+    "training_or_evaluation_executed": false,
+    "test_set_opened": false,
+    "benchmark_rows_admitted": 0
+  },
+  "next_gate": "REQUIRE_ATTEMPT003_PACKET_TO_REPRODUCE_METADATA_HASH_INVENTORY_AND_ANCHOR_INVARIANTS"
+}
