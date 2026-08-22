@@ -1,0 +1,353 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r2-a1-handoff-1.0",
+  "lane_id": "R2-A1",
+  "created_at": "2026-08-22T17:16:59+07:00",
+  "workflow": "ARS-Codex 0.1.26 experiment-agent evidence-only plan and reproducibility validation; no experiment execution",
+  "material_passport": {
+    "origin_skill": "ars-codex:academic-research-suite/experiment-agent",
+    "origin_mode": "evidence-only/plan-and-reproducibility-validation/fail-closed",
+    "origin_date": "2026-08-22",
+    "verification_status": "UNVERIFIED",
+    "version_label": "stage1e_rebaseline_v2_wave_g_E4_R2A1_repo_evidence_v1",
+    "upstream_dependencies": [
+      "stage1e_e4_r2_evidence_tracks_contract",
+      "stage1e_e4_r2_evidence_frozen_input_manifest",
+      "stage1e_rebaseline_v2_e4_r2_evidence_gate_receipt"
+    ],
+    "repro_lock": {
+      "schema_version": "1.0",
+      "stochasticity_declaration": "Web retrieval and LLM-authored evidence synthesis are not byte-reproducible. The frozen inputs, immutable source locators, instruction hashes, mechanical input replay, and produced artifacts are hash-bound.",
+      "skill_package": {
+        "name": "ars-codex:academic-research-suite",
+        "adapter_version": "0.1.26",
+        "ars_suite_version": "3.21.0",
+        "academic_research_upstream_commit": "2b639c12d3a9b3bfaa303973b5d056744fe7c6fd",
+        "experiment_agent_upstream_version": "1.1.0",
+        "experiment_agent_upstream_commit": "e291e7dc7aaf775649e46f42532ed4c5a91b617c"
+      },
+      "model": {
+        "family": "openai",
+        "id": "gpt-5.6-sol",
+        "reasoning": "xhigh",
+        "weight_stable": false
+      },
+      "loaded_instruction_bundle": {
+        "canonicalization": "UTF-8 with CRLF and CR normalized to LF",
+        "members": [
+          {
+            "path": "SKILL.md",
+            "canonical_lf_bytes": 30499,
+            "canonical_lf_sha256": "9c2cb6e3b5aad7fb747f79163b144cfbddffa85d67e2bdcc5a5fa5470252ad00"
+          },
+          {
+            "path": "ars/experiment-agent/WORKFLOW.md",
+            "canonical_lf_bytes": 11555,
+            "canonical_lf_sha256": "c89cb26ec05ed9facf80301df04ec1d892d74b5c7c68d42afbb2511a7c3268ef"
+          },
+          {
+            "path": "ars/shared/handoff_schemas.md",
+            "canonical_lf_bytes": 93000,
+            "canonical_lf_sha256": "c91b127d87d2370aee44f99395c5ae5e538729bead802d67bc6116fef0f841d3"
+          },
+          {
+            "path": "ars/experiment-agent/references/ars_integration_guide.md",
+            "canonical_lf_bytes": 3588,
+            "canonical_lf_sha256": "7e76dbc0b9019305d2906e9f0c9b7a24a90b9f24a357091d7816b1a5748c1303"
+          }
+        ]
+      },
+      "frozen_materials": {
+        "manifest_input_count": 35,
+        "manifest_json_input_count": 17,
+        "manifest_canonical_lf_sha256": "52de342742b16d036d46e1e283ecbad7e4aab4a90bd8119653195074062228a1",
+        "replayed_hashes": "35/35"
+      },
+      "external_protocols": {
+        "public_primary_authoritative_web_replay": true,
+        "immutable_github_api_metadata_and_tree_replay": true,
+        "repository_clone_fetch_or_archive_download": "NOT_USED",
+        "dataset_or_authenticated_asset_download": "NOT_USED"
+      },
+      "cross_model": {
+        "enabled": false,
+        "secondary_model_id": null,
+        "external_upload": false
+      }
+    },
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-22T17:16:59+07:00",
+      "declared_by": "Stage 1E E4-R2 R2-A1 evidence lane"
+    }
+  },
+  "actual_model": {
+    "id": "gpt-5.6-sol",
+    "reasoning_effort": "xhigh"
+  },
+  "frozen_contract": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r2_evidence_tracks_contract.md",
+    "canonical_lf_bytes": 13667,
+    "canonical_lf_sha256": "551a5c5c3a3fdc1dc6e58d0940c91271cf60237363dbc0275cd6547cc5318293"
+  },
+  "frozen_manifest": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r2_evidence_frozen_input_manifest.json",
+    "canonical_lf_bytes": 15978,
+    "canonical_lf_sha256": "52de342742b16d036d46e1e283ecbad7e4aab4a90bd8119653195074062228a1",
+    "candidate_count": 7,
+    "input_count": 35,
+    "json_input_count": 17
+  },
+  "gate_receipt": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r2_evidence_gate_receipt.json",
+    "canonical_lf_bytes": 2651,
+    "canonical_lf_sha256": "b53603248fddd52bb560be0441978024ead3b588659c090d74be6eb209c11300",
+    "receipt_status": "PASS_R2_EVIDENCE_GATE_35_OF_35_READY_FOR_PARALLEL_DISPATCH"
+  },
+  "input_verification": {
+    "validator": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r2_evidence_gate.py",
+      "execution_mode": "read-only control validator; not a repository test or experiment",
+      "exit_code": 0,
+      "stdout_verdict": "PASS_R2_EVIDENCE_GATE_35_OF_35_READY_FOR_PARALLEL_DISPATCH"
+    },
+    "independent_replay": {
+      "implementation": "PowerShell strict UTF-8 decoding, canonical LF normalization, SHA-256 replay, and strict JSON parsing",
+      "verified_inputs": 35,
+      "expected_inputs": 35,
+      "strict_json_inputs_parsed": 17,
+      "hash_failures": [],
+      "parse_failures": [],
+      "status": "PASS_35_OF_35"
+    }
+  },
+  "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A1_repo_evidence",
+  "required_output_files": [
+    "repo_evidence_register.json",
+    "paper_repo_config_binding.json",
+    "source_license_decisions.md",
+    "a1_handoff.json"
+  ],
+  "output_hash_policy": "All byte counts and SHA-256 values use UTF-8 canonical LF bytes. The handoff cannot embed its own convergent digest; its final digest is reported out of band in the completion report after strict validation and commit.",
+  "outputs": [
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A1_repo_evidence/repo_evidence_register.json",
+      "canonical_lf_bytes": 51339,
+      "canonical_lf_sha256": "c2018b5568626bb680960aae991d490cf9f6e17e1cfa3e0939787c2bf0ff54e5",
+      "verification_status": "ANALYZED"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A1_repo_evidence/paper_repo_config_binding.json",
+      "canonical_lf_bytes": 25432,
+      "canonical_lf_sha256": "90564cb47ce107aa4c9d049180d7be776cad006030ac9eaa032ac0dbfc40e544",
+      "verification_status": "ANALYZED"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A1_repo_evidence/source_license_decisions.md",
+      "canonical_lf_bytes": 8022,
+      "canonical_lf_sha256": "1f3a749c58e1531cec6efc5451228bfd952e2792788a2b6ab14b3afc7784d136",
+      "verification_status": "ANALYZED"
+    }
+  ],
+  "handoff_artifact": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_g/E4_R2A1_repo_evidence/a1_handoff.json",
+    "canonical_lf_digest": "REPORTED_OUT_OF_BAND_AFTER_FINAL_VALIDATION",
+    "verification_status": "UNVERIFIED"
+  },
+  "coverage": {
+    "expected_candidate_count": 7,
+    "covered_candidate_count": 7,
+    "manifest_order_preserved": true,
+    "ordered_rows": [
+      "E3-LIGHTGCN-GOWALLA-PYTORCH-001",
+      "E3-SIMGCL-YELP2018-QREC-001",
+      "E3-XSIMGCL-YELP2018-SELFREC-001",
+      "E3-LIGHTGCL-YELP-UPDATED-001",
+      "E3-UNISREC-SCIENTIFIC-TRANS-001",
+      "E3-SASREC-SCIENTIFIC-UNISREC-FRAMEWORK-001",
+      "E3-ALPHAREC-MOVIES-TV-001"
+    ],
+    "status_counts": {
+      "EVIDENCE_SUFFICIENT": 0,
+      "EVIDENCE_INCOMPLETE": 6,
+      "DISPOSITIVE_REJECT": 1,
+      "OTHER": 0
+    },
+    "selected_candidate": null,
+    "lightgcn_role": "evidence priority only; not selected"
+  },
+  "source_inventory": [
+    {
+      "row_id": "E3-LIGHTGCN-GOWALLA-PYTORCH-001",
+      "paper_record": "https://arxiv.org/abs/2002.02126",
+      "paper_version": "arXiv:2002.02126v4",
+      "repository": "https://github.com/gusye1234/LightGCN-PyTorch",
+      "full_commit": "947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+      "root_tree_sha": "69cd7ff201f745598757cc99566705aa0364c2f6",
+      "tree_locator": "https://api.github.com/repos/gusye1234/LightGCN-PyTorch/git/trees/947ca2b3b1d2d3545b114145710cb06c4e57b3d2?recursive=1",
+      "key_source_locator": "https://raw.githubusercontent.com/gusye1234/LightGCN-PyTorch/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/code/parse.py",
+      "license_scope_at_revision": "NO_AFFIRMATIVE_LICENSE_FILE_OR_GRANT_FOUND"
+    },
+    {
+      "row_id": "E3-SIMGCL-YELP2018-QREC-001",
+      "paper_record": "https://arxiv.org/abs/2112.08679",
+      "paper_version": "arXiv:2112.08679v4",
+      "repository": "https://github.com/Coder-Yu/QRec",
+      "full_commit": "a141bb37cb7706b2f53b2eed5843de3269f9f37f",
+      "root_tree_sha": "51f72fbbc47a2642cfcac49706ee47d9c5ef437b",
+      "tree_locator": "https://api.github.com/repos/Coder-Yu/QRec/git/trees/a141bb37cb7706b2f53b2eed5843de3269f9f37f?recursive=1",
+      "key_config_locator": "https://raw.githubusercontent.com/Coder-Yu/QRec/a141bb37cb7706b2f53b2eed5843de3269f9f37f/config/SimGCL.conf",
+      "license_scope_at_revision": "NO_AFFIRMATIVE_LICENSE_FILE_OR_GRANT_FOUND"
+    },
+    {
+      "row_id": "E3-XSIMGCL-YELP2018-SELFREC-001",
+      "paper_record": "https://arxiv.org/abs/2209.02544",
+      "paper_version": "arXiv:2209.02544v4",
+      "repository": "https://github.com/Coder-Yu/SELFRec",
+      "full_commit": "5b0229423cb1c727e85a704d63e460368c8b9dde",
+      "root_tree_sha": "f691d127cdbffff37ffdecea1c2cd23c1851e148",
+      "tree_locator": "https://api.github.com/repos/Coder-Yu/SELFRec/git/trees/5b0229423cb1c727e85a704d63e460368c8b9dde?recursive=1",
+      "key_config_locator": "https://raw.githubusercontent.com/Coder-Yu/SELFRec/5b0229423cb1c727e85a704d63e460368c8b9dde/conf/XSimGCL.yaml",
+      "license_scope_at_revision": "NO_AFFIRMATIVE_LICENSE_FILE_OR_GRANT_FOUND"
+    },
+    {
+      "row_id": "E3-LIGHTGCL-YELP-UPDATED-001",
+      "paper_record": "https://arxiv.org/abs/2302.08191",
+      "paper_version": "arXiv:2302.08191v3",
+      "repository": "https://github.com/HKUDS/LightGCL",
+      "full_commit": "5590453ad86782f58017e58d0b698d7f32175be3",
+      "root_tree_sha": "2381e381dd8e7d645487679b8458358884a08ad9",
+      "tree_locator": "https://api.github.com/repos/HKUDS/LightGCL/git/trees/5590453ad86782f58017e58d0b698d7f32175be3?recursive=1",
+      "key_config_locator": "https://raw.githubusercontent.com/HKUDS/LightGCL/5590453ad86782f58017e58d0b698d7f32175be3/parser.py",
+      "license_scope_at_revision": "NO_AFFIRMATIVE_LICENSE_FILE_OR_GRANT_FOUND"
+    },
+    {
+      "row_id": "E3-UNISREC-SCIENTIFIC-TRANS-001",
+      "paper_record": "https://arxiv.org/abs/2206.05941",
+      "paper_version": "arXiv:2206.05941v1",
+      "repository": "https://github.com/RUCAIBox/UniSRec",
+      "full_commit": "05aa5cba2809112c32808f70d16abc61c05c6538",
+      "root_tree_sha": "0ad8741405280a5803dc2d3308d03ddea27edb0e",
+      "tree_locator": "https://api.github.com/repos/RUCAIBox/UniSRec/git/trees/05aa5cba2809112c32808f70d16abc61c05c6538?recursive=1",
+      "key_config_locator": "https://raw.githubusercontent.com/RUCAIBox/UniSRec/05aa5cba2809112c32808f70d16abc61c05c6538/props/UniSRec.yaml",
+      "license_locator": "https://raw.githubusercontent.com/RUCAIBox/UniSRec/05aa5cba2809112c32808f70d16abc61c05c6538/LICENSE",
+      "license_scope_at_revision": "MIT_FOR_REPOSITORY_CODE_ONLY; EXTERNAL_ASSETS_AND_DEPENDENCIES_NOT_CLOSED"
+    },
+    {
+      "row_id": "E3-SASREC-SCIENTIFIC-UNISREC-FRAMEWORK-001",
+      "paper_record": "https://arxiv.org/abs/2206.05941",
+      "paper_version": "arXiv:2206.05941v1",
+      "repository": "https://github.com/RUCAIBox/UniSRec",
+      "full_commit": "05aa5cba2809112c32808f70d16abc61c05c6538",
+      "root_tree_sha": "0ad8741405280a5803dc2d3308d03ddea27edb0e",
+      "command_source_locator": "https://raw.githubusercontent.com/RUCAIBox/UniSRec/05aa5cba2809112c32808f70d16abc61c05c6538/run_baseline.py",
+      "framework_config_locator": "https://raw.githubusercontent.com/RUCAIBox/UniSRec/05aa5cba2809112c32808f70d16abc61c05c6538/props/finetune.yaml",
+      "license_scope_at_revision": "UNISREC_WRAPPER_IS_MIT; FLOATING_EXTERNAL_RECBOLE_SASREC_SOURCE_AND_LICENSE_ARE_NOT_IMMUTABLY_BOUND"
+    },
+    {
+      "row_id": "E3-ALPHAREC-MOVIES-TV-001",
+      "paper_record": "https://proceedings.iclr.cc/paper_files/paper/2025/hash/e4bab1843c8d5a69f5abfd0824593493-Abstract-Conference.html",
+      "paper_version": "ICLR 2025 proceedings paper e4bab1843c8d5a69f5abfd0824593493",
+      "repository": "https://github.com/LehengTHU/AlphaRec",
+      "full_commit": "4b6c6cf378f292c31dd75b09a8075e8344561415",
+      "root_tree_sha": "eb0100fba2de71ec1ead01a913ac92173f412ec3",
+      "tree_locator": "https://api.github.com/repos/LehengTHU/AlphaRec/git/trees/4b6c6cf378f292c31dd75b09a8075e8344561415?recursive=1",
+      "key_source_locator": "https://raw.githubusercontent.com/LehengTHU/AlphaRec/4b6c6cf378f292c31dd75b09a8075e8344561415/models/General/AlphaRec.py",
+      "license_scope_at_revision": "README_BADGE_ONLY; NO_AFFIRMATIVE_LICENSE_TEXT_FOUND"
+    }
+  ],
+  "tree_implication_summary": {
+    "distinct_pinned_trees_checked": 6,
+    "all_recursive_trees_non_truncated": true,
+    "gitmodules_found": 0,
+    "gitattributes_found": 0,
+    "gitlink_mode_160000_found": 0,
+    "symlink_mode_120000_found": 0,
+    "scope_note": "This closes only the pinned Git tree inventory. It does not establish absence, availability, identity, hashes, or rights for assets fetched or prepared outside those trees.",
+    "runtime_symlink_note": "UniSRec's dataset preparation README instructs ln -s for generated features, so a no-symlink execution environment would require an explicitly reviewed alternate materialization even though the pinned Git tree itself has no symlink entry."
+  },
+  "retrieval_failures": [
+    {
+      "target": "QRec rendered/raw README through the web retrieval layer",
+      "failure": "cache miss",
+      "resolution": "Exact immutable repository file and tree were inspected through the official GitHub API at the same full commit; no semantic substitute or cross-row source was used."
+    },
+    {
+      "target": "Direct api.github.com URLs through the web retrieval layer",
+      "failure": "safe-access restriction",
+      "resolution": "Read-only GitHub API requests were issued directly after sandbox approval; no repository clone, fetch, archive, or file write occurred."
+    },
+    {
+      "target": "Initial sandboxed PowerShell GitHub API request",
+      "failure": "authentication or network boundary failure",
+      "resolution": "The identical read-only request succeeded under approved network execution."
+    },
+    {
+      "target": "Several rendered pinned-tree pages for QRec, LightGCL, UniSRec, and AlphaRec",
+      "failure": "cache miss or internal retrieval error",
+      "resolution": "Official GitHub commit and recursive tree APIs at the exact manifest revision returned successfully and were non-truncated."
+    },
+    {
+      "target": "OpenReview pages for LightGCL and AlphaRec",
+      "failure": "browser challenge",
+      "resolution": "Official arXiv record for LightGCL and official ICLR proceedings record for AlphaRec were used; OpenReview-only claims were not made."
+    },
+    {
+      "target": "GitHub API metadata/tree reads",
+      "failure": "transient GitHub Unicorn responses",
+      "resolution": "The exact same immutable request was retried successfully."
+    },
+    {
+      "target": "AlphaRec README line-range API request",
+      "failure": "GitHub API rate limit",
+      "resolution": "The exact README at the exact full commit was read from raw.githubusercontent.com; no revision, repository, or semantic fallback changed."
+    }
+  ],
+  "lane_findings": {
+    "paper_repository_identity": "Recorded row-by-row with relation strength and no inferred authorship joins.",
+    "immutable_source_identity": "Six distinct full commits and root trees were replayed; all recursive trees were non-truncated.",
+    "license_scope": "Only UniSRec has affirmative MIT text at the pinned revision, limited here to repository code. The other pinned trees do not provide affirmative reusable license text; AlphaRec's badge alone is not treated as a grant.",
+    "training_and_configuration": "Training entry points and argv/config surfaces are recorded per row. Interactive-only entry points, floating dependencies, external assets, prompt branches, missing hashes, and config coupling gaps remain blockers where applicable.",
+    "dispositive_reject": "XSimGCL's pinned conf/XSimGCL.yaml sets n_layer=2 while the same pinned repository's public result binding for the candidate center specifies layer=3. No cross-row join, inference, or parameter substitution is allowed.",
+    "dataset_rights": "NOT_CLOSED_BY_R2_A1",
+    "metric_center_fields": "NOT_CLOSED_BY_R2_A1"
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false
+  },
+  "scope_guards": {
+    "git_clone_performed": false,
+    "git_fetch_performed": false,
+    "source_archive_downloaded": false,
+    "dataset_downloaded": false,
+    "authenticated_asset_accessed": false,
+    "dependency_install_performed": false,
+    "environment_created": false,
+    "container_created_or_run": false,
+    "repository_code_executed": false,
+    "preprocessing_run": false,
+    "training_run": false,
+    "evaluation_run": false,
+    "benchmark_run": false,
+    "test_run": false,
+    "control_validator_run": true,
+    "public_primary_authoritative_web_replay_performed": true,
+    "candidate_selected": false,
+    "pipeline_state_modified": false,
+    "control_files_modified": false,
+    "other_track_outputs_modified": false,
+    "cross_row_join_performed": false,
+    "automatic_semantic_fallback_performed": false
+  },
+  "authorization": {
+    "execution_authorized": false,
+    "candidate_selection_authorized": false,
+    "central_g1_may_consume_fail_closed_evidence": true
+  },
+  "verdict": "COMPLETE_FAIL_CLOSED_READY_FOR_CENTRAL_G1",
+  "verdict_detail": "The R2-A1 evidence package covers all seven manifest candidates in exact order and records repository/source/license/config evidence without execution or selection. Six rows remain EVIDENCE_INCOMPLETE and XSimGCL is a DISPOSITIVE_REJECT. Central G1 must not reinterpret missing evidence as support.",
+  "fail_closed": true,
+  "next_gate": "CENTRAL_G1"
+}

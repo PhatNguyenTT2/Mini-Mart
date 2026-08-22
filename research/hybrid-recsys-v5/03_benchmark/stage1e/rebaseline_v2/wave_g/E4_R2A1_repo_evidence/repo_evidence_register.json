@@ -1,0 +1,637 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r2-a1-repo-evidence-register-1.0",
+  "lane_id": "R2-A1",
+  "created_at": "2026-08-22T17:16:59+07:00",
+  "evidence_policy": {
+    "evidence_only": true,
+    "fail_closed": true,
+    "source_classes_used": [
+      "official paper or proceedings record",
+      "immutable GitHub commit metadata",
+      "non-truncated immutable GitHub tree",
+      "immutable repository-owned source, configuration, README, and license files"
+    ],
+    "dataset_rights_closed_by_lane": false,
+    "metric_center_fields_closed_by_lane": false,
+    "cross_row_join_performed": false,
+    "automatic_fallback_performed": false
+  },
+  "candidate_rows": [
+    {
+      "row_id": "E3-LIGHTGCN-GOWALLA-PYTORCH-001",
+      "method": "LightGCN",
+      "dataset_scope": "Gowalla / repository-bundled processed split; dataset rights not determined in R2-A1",
+      "lane_id": "R2-A1",
+      "evidence_status": "EVIDENCE_INCOMPLETE",
+      "authoritative_sources": [
+        {
+          "url": "https://arxiv.org/abs/2002.02126",
+          "source_type": "official_paper_record",
+          "immutable_identity_or_version": "arXiv:2002.02126v4",
+          "accessed_at": "2026-08-22T17:16:59+07:00",
+          "locator": "title, authors, abstract, submission history",
+          "supports": ["paper identity", "LightGCN neighborhood-aggregation collaborative-filtering task"],
+          "does_not_support": ["a paper-side link to LightGCN-PyTorch", "repository license", "a result-bound execution receipt"]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/gusye1234/LightGCN-PyTorch/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/README.md",
+          "source_type": "immutable_repository_file",
+          "immutable_identity_or_version": "commit 947ca2b3b1d2d3545b114145710cb06c4e57b3d2; blob 924434894b9cabaecb99144f4e14af8175a04e24",
+          "accessed_at": "2026-08-22T17:16:59+07:00",
+          "locator": "lines 7-15, 22-39, 60-64, 69-82",
+          "supports": ["repository self-identifies as the PyTorch implementation for the SIGIR 2020 paper", "three-layer Gowalla command", "seed 2020", "processed datasets", "1000-epoch source result surface"],
+          "does_not_support": ["paper-side endorsement of this repository", "code license grant", "dataset rights", "immutable run receipt"]
+        },
+        {
+          "url": "https://api.github.com/repos/gusye1234/LightGCN-PyTorch/git/commits/947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+          "source_type": "immutable_commit_metadata",
+          "immutable_identity_or_version": "commit 947ca2b3b1d2d3545b114145710cb06c4e57b3d2; root tree 69cd7ff201f745598757cc99566705aa0364c2f6",
+          "accessed_at": "2026-08-22T17:16:59+07:00",
+          "locator": "resolved sha, root tree, author date 2023-03-20T08:05:33Z, one parent",
+          "supports": ["immutable full commit exists"],
+          "does_not_support": ["release tag", "license scope", "clean acquired checkout"]
+        },
+        {
+          "url": "https://api.github.com/repos/gusye1234/LightGCN-PyTorch/git/trees/947ca2b3b1d2d3545b114145710cb06c4e57b3d2?recursive=1",
+          "source_type": "immutable_repository_tree",
+          "immutable_identity_or_version": "commit 947ca2b3b1d2d3545b114145710cb06c4e57b3d2; 43 entries; truncated=false",
+          "accessed_at": "2026-08-22T17:16:59+07:00",
+          "locator": "full recursive tree; modes, paths, blob ids and sizes",
+          "supports": ["code/main.py and code/parse.py are regular blobs", "processed Gowalla files are regular blobs", "no LICENSE/COPYING, .gitmodules, .gitattributes, gitlink, or symlink mode is present"],
+          "does_not_support": ["absence of every possible external runtime dependency", "dataset rights", "source archive acquisition"]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/gusye1234/LightGCN-PyTorch/947ca2b3b1d2d3545b114145710cb06c4e57b3d2/code/parse.py",
+          "source_type": "immutable_repository_file",
+          "immutable_identity_or_version": "blob dad7e7a2d3ed354a29e173dedf0567ce5b2ee9d7",
+          "accessed_at": "2026-08-22T17:16:59+07:00",
+          "locator": "lines 11-46",
+          "supports": ["noninteractive argparse interface", "defaults and explicit argv for batch, embedding, layer, learning rate, decay, dataset, top-k, epochs, seed and model"],
+          "does_not_support": ["dependency hashes", "checkpoint receipt", "license grant"]
+        }
+      ],
+      "confirmed_fields": {
+        "paper_repo_identity": {
+          "paper": "LightGCN: Simplifying and Powering Graph Convolution Network for Recommendation",
+          "repository": "https://github.com/gusye1234/LightGCN-PyTorch",
+          "status": "PARTIAL_REPOSITORY_ASSERTED_LAB_IMPLEMENTATION",
+          "basis": "The repository says it is the PyTorch implementation for 'our' paper and credits Prof. Xiangnan He, but the official arXiv record does not link this repository and code/parse.py credits Jianbai Ye."
+        },
+        "immutable_source_identity": {
+          "pin_kind": "full_commit",
+          "commit": "947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+          "root_tree": "69cd7ff201f745598757cc99566705aa0364c2f6",
+          "resolved": true,
+          "repository_current_state": "archived read-only since 2023-10-17; immutable pin remains accessible"
+        },
+        "license": {
+          "status": "NO_AFFIRMATIVE_GRANT_FOUND_AT_PIN",
+          "spdx": null,
+          "license_file": null,
+          "affirmative_code_use_basis": false,
+          "scope_note": "The paper license and public visibility do not license repository code."
+        },
+        "tree_implications": {
+          "recursive_tree_entries": 43,
+          "tree_truncated": false,
+          "submodule_gitlinks": 0,
+          "symlink_entries": 0,
+          "gitmodules_files": 0,
+          "gitattributes_files": 0,
+          "lfs_status": "NO_TREE_LEVEL_LFS_MARKER_FOUND",
+          "external_or_generated_implications": ["regular repository blobs include processed Gowalla train/test and adjacency artifacts", "negative sampling may compile a C++ extension with pybind11 and cppimport, which are named in README but absent from requirements.txt", "checkpoints and tensorboard outputs are generated at runtime"]
+        },
+        "training_entry_point": "code/main.py",
+        "noninteractive_interface": {
+          "available": true,
+          "interface": "argparse in code/parse.py",
+          "public_command": "cd code && python main.py --decay=1e-4 --lr=0.001 --layer=3 --seed=2020 --dataset=\"gowalla\" --topks=\"[20]\" --recdim=64"
+        },
+        "paper_repo_command_config_coupling": "PARTIAL: repository-to-command-to-argv is explicit; paper-to-this-PyTorch-repository is repository-asserted rather than paper-linked",
+        "task_objective_model_variant": "implicit-feedback collaborative filtering; LightGCN linear neighborhood propagation; three propagation layers; BPR pairwise loss; uniform repository negative sampler; seed 2020",
+        "environment_and_interface_requirements": "requirements.txt pins torch 1.4.0, pandas 0.24.2, scipy 1.3.0, numpy 1.22.0, tensorboardX 1.8, scikit-learn 0.23.2, tqdm 4.48.2, but has no hashes and omits README-named pybind11/cppimport"
+      },
+      "unresolved_fields": ["affirmative code license grant at the pinned revision", "paper-side confirmation that this PyTorch repository is official or author-maintained", "complete dependency/build lock including the C++ sampler extension", "clean source acquisition and tree hash receipt", "checkpoint and run receipts"],
+      "dispositive_mismatches": [],
+      "inferences_forbidden": ["Do not treat the arXiv paper license as a code license.", "Do not treat repository-bundled processed Gowalla files as canonical dataset rights or raw lineage.", "Do not treat deterministic-seed prose as an immutable run receipt."],
+      "recommended_g1_disposition": "KEEP_PENDING",
+      "execution_authorized": false,
+      "result_status": "NOT_RUN",
+      "test_set_opened": "NO"
+    },
+    {
+      "row_id": "E3-SIMGCL-YELP2018-QREC-001",
+      "method": "SimGCL",
+      "dataset_scope": "Yelp2018 / QRec processed split; dataset rights not determined in R2-A1",
+      "lane_id": "R2-A1",
+      "evidence_status": "EVIDENCE_INCOMPLETE",
+      "authoritative_sources": [
+        {
+          "url": "https://arxiv.org/abs/2112.08679",
+          "source_type": "official_paper_record",
+          "immutable_identity_or_version": "arXiv:2112.08679v4",
+          "accessed_at": "2026-08-22T17:16:59+07:00",
+          "locator": "title, authors, abstract, code link",
+          "supports": ["SimGCL paper identity", "official record links Coder-Yu/QRec", "uniform-noise contrastive-view objective"],
+          "does_not_support": ["repository code license", "executed config hash", "run receipt"]
+        },
+        {
+          "url": "https://api.github.com/repos/Coder-Yu/QRec/git/commits/a141bb37cb7706b2f53b2eed5843de3269f9f37f",
+          "source_type": "immutable_commit_metadata",
+          "immutable_identity_or_version": "commit a141bb37cb7706b2f53b2eed5843de3269f9f37f; root tree 51f72fbbc47a2642cfcac49706ee47d9c5ef437b",
+          "accessed_at": "2026-08-22T17:16:59+07:00",
+          "locator": "resolved sha, root tree, author Junliang Yu, 2023-12-26T19:46:14Z",
+          "supports": ["immutable full commit exists", "author-maintained commit identity"],
+          "does_not_support": ["release tag", "license scope"]
+        },
+        {
+          "url": "https://api.github.com/repos/Coder-Yu/QRec/git/trees/a141bb37cb7706b2f53b2eed5843de3269f9f37f?recursive=1",
+          "source_type": "immutable_repository_tree",
+          "immutable_identity_or_version": "commit a141bb37cb7706b2f53b2eed5843de3269f9f37f; 145 entries; truncated=false",
+          "accessed_at": "2026-08-22T17:16:59+07:00",
+          "locator": "full recursive tree",
+          "supports": ["main.py, config/SimGCL.conf and model/ranking/SimGCL.py are regular blobs", "Yelp2018 train/test are regular blobs", "no LICENSE/COPYING, .gitmodules, .gitattributes, gitlink, or symlink mode is present"],
+          "does_not_support": ["dataset rights", "complete environment lock"]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/Coder-Yu/QRec/a141bb37cb7706b2f53b2eed5843de3269f9f37f/main.py",
+          "source_type": "immutable_repository_file",
+          "immutable_identity_or_version": "blob 540639b9135e5522158f0b00a98018c3c2694399",
+          "accessed_at": "2026-08-22T17:16:59+07:00",
+          "locator": "lines 27-56",
+          "supports": ["q5 selects SimGCL", "main entry dispatches config/SimGCL.conf"],
+          "does_not_support": ["noninteractive argv; selection uses input()", "executed config receipt"]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/Coder-Yu/QRec/a141bb37cb7706b2f53b2eed5843de3269f9f37f/config/SimGCL.conf",
+          "source_type": "immutable_repository_file",
+          "immutable_identity_or_version": "blob c06e17e562a407406beee5da1f5f7ff87e1b58e7",
+          "accessed_at": "2026-08-22T17:16:59+07:00",
+          "locator": "lines 1-12",
+          "supports": ["Yelp2018 train/test paths", "topN 20", "64 factors", "20 epochs", "batch 2048", "learning rate 0.001", "regularization", "SimGCL n_layer 2, lambda 0.5, eps 0.1"],
+          "does_not_support": ["seed identity", "checkpoint rule", "tie policy", "executed config hash"]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/Coder-Yu/QRec/a141bb37cb7706b2f53b2eed5843de3269f9f37f/model/ranking/SimGCL.py",
+          "source_type": "immutable_repository_file",
+          "immutable_identity_or_version": "pinned repository file at commit a141bb37cb7706b2f53b2eed5843de3269f9f37f",
+          "accessed_at": "2026-08-22T17:16:59+07:00",
+          "locator": "lines 11-20, 22-35, 92-108",
+          "supports": ["LightGCN encoder with uniform perturbation", "BPR recommendation loss plus contrastive loss", "pairwise batches"],
+          "does_not_support": ["noninteractive command", "license grant"]
+        }
+      ],
+      "confirmed_fields": {
+        "paper_repo_identity": {"paper": "Are Graph Augmentations Necessary? Simple Graph Contrastive Learning for Recommendation", "repository": "https://github.com/Coder-Yu/QRec", "status": "CONFIRMED_OFFICIAL_PAPER_LINK"},
+        "immutable_source_identity": {"pin_kind": "full_commit", "commit": "a141bb37cb7706b2f53b2eed5843de3269f9f37f", "root_tree": "51f72fbbc47a2642cfcac49706ee47d9c5ef437b", "resolved": true},
+        "license": {"status": "NO_AFFIRMATIVE_GRANT_FOUND_AT_PIN", "spdx": null, "license_file": null, "affirmative_code_use_basis": false, "scope_note": "The paper's Creative Commons record does not license QRec code."},
+        "tree_implications": {"recursive_tree_entries": 145, "tree_truncated": false, "submodule_gitlinks": 0, "symlink_entries": 0, "gitmodules_files": 0, "gitattributes_files": 0, "lfs_status": "NO_TREE_LEVEL_LFS_MARKER_FOUND", "external_or_generated_implications": ["Yelp2018 processed train/test are regular repository blobs", "results are generated under ./results/"]},
+        "training_entry_point": "main.py",
+        "noninteractive_interface": {"available": false, "interface": "interactive input() selector", "public_command": "python main.py, then enter q5"},
+        "paper_repo_command_config_coupling": "PARTIAL: paper-to-repo and repo-to-config are explicit; no public noninteractive argv or executed-config receipt",
+        "task_objective_model_variant": "implicit-feedback graph recommendation; two-layer LightGCN encoder in pinned QRec config; BPR plus SimGCL uniform-noise contrastive objective; lambda 0.5; eps 0.1",
+        "environment_and_interface_requirements": "README names Python 3.7.4, TensorFlow 1.14 and exact package versions, but no install lock with hashes is present and model selection remains interactive"
+      },
+      "unresolved_fields": ["affirmative code license grant", "noninteractive exact argv", "seed and checkpoint identity", "dependency artifacts and hash lock", "clean source receipt"],
+      "dispositive_mismatches": [],
+      "inferences_forbidden": ["Do not replace the interactive QRec selector with an invented argv.", "Do not treat repository Yelp2018 blobs as dataset rights or lineage.", "Do not import SimGCL settings from SELFRec or another implementation."],
+      "recommended_g1_disposition": "KEEP_PENDING",
+      "execution_authorized": false,
+      "result_status": "NOT_RUN",
+      "test_set_opened": "NO"
+    },
+    {
+      "row_id": "E3-XSIMGCL-YELP2018-SELFREC-001",
+      "method": "XSimGCL",
+      "dataset_scope": "Yelp2018 / SELFRec processed split; dataset rights not determined in R2-A1",
+      "lane_id": "R2-A1",
+      "evidence_status": "DISPOSITIVE_REJECT",
+      "authoritative_sources": [
+        {
+          "url": "https://arxiv.org/abs/2209.02544",
+          "source_type": "official_paper_record",
+          "immutable_identity_or_version": "arXiv:2209.02544v4",
+          "accessed_at": "2026-08-22T17:16:59+07:00",
+          "locator": "title, authors, abstract, code link",
+          "supports": ["XSimGCL paper identity", "official record links Coder-Yu/SELFRec", "noise-based contrastive model identity"],
+          "does_not_support": ["repository code license", "an exact executed config"]
+        },
+        {
+          "url": "https://api.github.com/repos/Coder-Yu/SELFRec/git/commits/5b0229423cb1c727e85a704d63e460368c8b9dde",
+          "source_type": "immutable_commit_metadata",
+          "immutable_identity_or_version": "commit 5b0229423cb1c727e85a704d63e460368c8b9dde; root tree f691d127cdbffff37ffdecea1c2cd23c1851e148",
+          "accessed_at": "2026-08-22T17:16:59+07:00",
+          "locator": "resolved sha, root tree, author Junliang, 2025-06-06T11:16:12Z",
+          "supports": ["immutable full commit exists", "author-maintained repository identity"],
+          "does_not_support": ["license scope", "release tag"]
+        },
+        {
+          "url": "https://api.github.com/repos/Coder-Yu/SELFRec/git/trees/5b0229423cb1c727e85a704d63e460368c8b9dde?recursive=1",
+          "source_type": "immutable_repository_tree",
+          "immutable_identity_or_version": "commit 5b0229423cb1c727e85a704d63e460368c8b9dde; 92 entries; truncated=false",
+          "accessed_at": "2026-08-22T17:16:59+07:00",
+          "locator": "full recursive tree",
+          "supports": ["main.py, conf/XSimGCL.yaml and model/graph/XSimGCL.py are regular blobs", "no LICENSE/COPYING, .gitmodules, .gitattributes, gitlink, or symlink mode is present"],
+          "does_not_support": ["dataset rights", "run receipt"]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/Coder-Yu/SELFRec/5b0229423cb1c727e85a704d63e460368c8b9dde/README.md",
+          "source_type": "immutable_repository_file",
+          "immutable_identity_or_version": "blob eff2cf50549e41ba2823665e62db6c5078270219",
+          "accessed_at": "2026-08-22T17:16:59+07:00",
+          "locator": "How to Use; leaderboard XSimGCL row",
+          "supports": ["main.py interactive usage", "Yelp2018 XSimGCL leaderboard binds the public center to layer=3, lambda=0.2, eps=0.2, l*=1, tau=0.15"],
+          "does_not_support": ["license grant", "noninteractive argv"]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/Coder-Yu/SELFRec/5b0229423cb1c727e85a704d63e460368c8b9dde/conf/XSimGCL.yaml",
+          "source_type": "immutable_repository_file",
+          "immutable_identity_or_version": "blob 69724b41d88c3255ae283cfb0a783c163b968e47",
+          "accessed_at": "2026-08-22T17:16:59+07:00",
+          "locator": "lines 1-24",
+          "supports": ["Yelp2018 paths", "topN 10 and 20", "64 dimensions", "20 epochs", "batch 2048", "learning rate 0.001", "lambda 0.2", "eps 0.2", "l*=1", "tau 0.15"],
+          "does_not_support": ["the leaderboard's layer=3 binding; this file sets n_layer: 2", "noninteractive selection"]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/Coder-Yu/SELFRec/5b0229423cb1c727e85a704d63e460368c8b9dde/main.py",
+          "source_type": "immutable_repository_file",
+          "immutable_identity_or_version": "blob b38e46d0a4a8ae2de364b9be7868841009d8df65",
+          "accessed_at": "2026-08-22T17:16:59+07:00",
+          "locator": "lines 10-34",
+          "supports": ["XSimGCL model is registered", "selected model maps directly to conf/XSimGCL.yaml"],
+          "does_not_support": ["noninteractive argv; model is read with input()", "an alternate public three-layer config"]
+        }
+      ],
+      "confirmed_fields": {
+        "paper_repo_identity": {"paper": "XSimGCL: Towards Extremely Simple Graph Contrastive Learning for Recommendation", "repository": "https://github.com/Coder-Yu/SELFRec", "status": "CONFIRMED_OFFICIAL_PAPER_LINK"},
+        "immutable_source_identity": {"pin_kind": "full_commit", "commit": "5b0229423cb1c727e85a704d63e460368c8b9dde", "root_tree": "f691d127cdbffff37ffdecea1c2cd23c1851e148", "resolved": true},
+        "license": {"status": "NO_AFFIRMATIVE_GRANT_FOUND_AT_PIN", "spdx": null, "license_file": null, "affirmative_code_use_basis": false, "scope_note": "The paper license and public repository status do not license the code."},
+        "tree_implications": {"recursive_tree_entries": 92, "tree_truncated": false, "submodule_gitlinks": 0, "symlink_entries": 0, "gitmodules_files": 0, "gitattributes_files": 0, "lfs_status": "NO_TREE_LEVEL_LFS_MARKER_FOUND", "external_or_generated_implications": ["Yelp2018 train/test are regular repository blobs", "results are generated under ./results/"]},
+        "training_entry_point": "main.py",
+        "noninteractive_interface": {"available": false, "interface": "interactive input() selector", "public_command": "python main.py, then enter XSimGCL"},
+        "paper_repo_command_config_coupling": "DISPOSITIVE_MISMATCH: immutable README leaderboard binds the current row to layer=3, while the only pinned XSimGCL config selected by main.py fixes n_layer=2",
+        "task_objective_model_variant": "implicit-feedback graph recommendation; BPR plus XSimGCL InfoNCE; pinned YAML is two-layer with l*=1, lambda 0.2, eps 0.2, tau 0.15, whereas the candidate center is explicitly three-layer",
+        "environment_and_interface_requirements": "requirements.txt pins faiss 1.7.3, numba 0.60.0, numpy 2.1.0, PyYAML 6.0.2, scipy 1.14.1, torch 1.13.1; no hashes; README version prose drifts from the pinned requirements"
+      },
+      "unresolved_fields": ["affirmative code license grant", "noninteractive argv", "a public immutable three-layer config and its executed receipt", "complete environment lock"],
+      "dispositive_mismatches": ["The three-layer source center cannot be coupled to conf/XSimGCL.yaml at the pinned revision because that file sets n_layer: 2. The contract forbids joining a result center to a different layer count."],
+      "inferences_forbidden": ["Do not silently edit n_layer from 2 to 3.", "Do not claim the README leaderboard is an executed-config receipt.", "Do not import a three-layer config from another revision or implementation."],
+      "recommended_g1_disposition": "REJECT_CURRENT_ROW",
+      "execution_authorized": false,
+      "result_status": "NOT_RUN",
+      "test_set_opened": "NO"
+    },
+    {
+      "row_id": "E3-LIGHTGCL-YELP-UPDATED-001",
+      "method": "LightGCL",
+      "dataset_scope": "Yelp / repository-bundled updated interaction-sampler surface; dataset rights not determined in R2-A1",
+      "lane_id": "R2-A1",
+      "evidence_status": "EVIDENCE_INCOMPLETE",
+      "authoritative_sources": [
+        {
+          "url": "https://arxiv.org/abs/2302.08191",
+          "source_type": "official_paper_record",
+          "immutable_identity_or_version": "arXiv:2302.08191v3",
+          "accessed_at": "2026-08-22T17:16:59+07:00",
+          "locator": "title, authors, abstract, source-code link",
+          "supports": ["LightGCL paper identity", "official record links HKUDS/LightGCL", "SVD-guided contrastive augmentation model identity"],
+          "does_not_support": ["repository code license", "seed identity"]
+        },
+        {
+          "url": "https://api.github.com/repos/HKUDS/LightGCL/git/commits/5590453ad86782f58017e58d0b698d7f32175be3",
+          "source_type": "immutable_commit_metadata",
+          "immutable_identity_or_version": "commit 5590453ad86782f58017e58d0b698d7f32175be3; root tree 2381e381dd8e7d645487679b8458358884a08ad9",
+          "accessed_at": "2026-08-22T17:16:59+07:00",
+          "locator": "resolved sha, root tree, author Rick-Cai, 2023-06-13T03:12:23Z",
+          "supports": ["immutable full commit exists", "author-maintained repository identity"],
+          "does_not_support": ["release tag", "license scope"]
+        },
+        {
+          "url": "https://api.github.com/repos/HKUDS/LightGCL/git/trees/5590453ad86782f58017e58d0b698d7f32175be3?recursive=1",
+          "source_type": "immutable_repository_tree",
+          "immutable_identity_or_version": "commit 5590453ad86782f58017e58d0b698d7f32175be3; 25 entries; truncated=false",
+          "accessed_at": "2026-08-22T17:16:59+07:00",
+          "locator": "full recursive tree",
+          "supports": ["main.py, parser.py, model.py and utils.py are regular blobs", "Yelp pickle artifacts and three dataset zip archives are regular blobs", "no LICENSE/COPYING, .gitmodules, .gitattributes, gitlink, or symlink mode is present"],
+          "does_not_support": ["dataset rights", "archive extraction receipt"]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/HKUDS/LightGCL/5590453ad86782f58017e58d0b698d7f32175be3/README.md",
+          "source_type": "immutable_repository_file",
+          "immutable_identity_or_version": "blob 0095d6f1f6a62480d26d06520e4b3f0fdb269180",
+          "accessed_at": "2026-08-22T17:16:59+07:00",
+          "locator": "lines 1-25 and 27-65",
+          "supports": ["official implementation self-identification", "Python 3.9.12 and package versions", "noninteractive Yelp command python main.py --data yelp", "configurable CL, SVD and layer arguments"],
+          "does_not_support": ["license grant", "dependency lock with hashes", "seed"]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/HKUDS/LightGCL/5590453ad86782f58017e58d0b698d7f32175be3/parser.py",
+          "source_type": "immutable_repository_file",
+          "immutable_identity_or_version": "blob 71b0fcef678d33be1c6790e6cd589d8a4273d220",
+          "accessed_at": "2026-08-22T17:16:59+07:00",
+          "locator": "lines 3-21",
+          "supports": ["noninteractive argparse", "Yelp defaults: lr 0.001, batch 256, interaction batch 4096, lambda1 0.2, epochs 100, d 64, q 5, gnn layers 2, dropout 0, temperature 0.2, lambda2 1e-7"],
+          "does_not_support": ["random seed", "checkpoint-selection rule"]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/HKUDS/LightGCL/5590453ad86782f58017e58d0b698d7f32175be3/utils.py",
+          "source_type": "immutable_repository_file",
+          "immutable_identity_or_version": "repository file at commit 5590453ad86782f58017e58d0b698d7f32175be3",
+          "accessed_at": "2026-08-22T17:16:59+07:00",
+          "locator": "TrnData lines 53-73",
+          "supports": ["positive interactions are DataLoader rows", "negative item is sampled uniformly until unobserved"],
+          "does_not_support": ["seed schedule", "immutable sampler receipt"]
+        }
+      ],
+      "confirmed_fields": {
+        "paper_repo_identity": {"paper": "LightGCL: Simple Yet Effective Graph Contrastive Learning for Recommendation", "repository": "https://github.com/HKUDS/LightGCL", "status": "CONFIRMED_OFFICIAL_PAPER_LINK"},
+        "immutable_source_identity": {"pin_kind": "full_commit", "commit": "5590453ad86782f58017e58d0b698d7f32175be3", "root_tree": "2381e381dd8e7d645487679b8458358884a08ad9", "resolved": true},
+        "license": {"status": "NO_AFFIRMATIVE_GRANT_FOUND_AT_PIN", "spdx": null, "license_file": null, "affirmative_code_use_basis": false, "scope_note": "The paper license and public repository do not supply a code grant."},
+        "tree_implications": {"recursive_tree_entries": 25, "tree_truncated": false, "submodule_gitlinks": 0, "symlink_entries": 0, "gitmodules_files": 0, "gitattributes_files": 0, "lfs_status": "NO_TREE_LEVEL_LFS_MARKER_FOUND", "external_or_generated_implications": ["Yelp and Gowalla processed pickle files are regular blobs", "ML-10M, Amazon and Tmall are regular zip blobs requiring extraction", "log and saved_model directories and checkpoints are generated/required at runtime"]},
+        "training_entry_point": "main.py",
+        "noninteractive_interface": {"available": true, "interface": "argparse in parser.py", "public_command": "python main.py --data yelp"},
+        "paper_repo_command_config_coupling": "PARTIAL_CONFIRMED: official paper-to-repo link, public noninteractive command, immutable defaults, and interaction/unobserved-negative sampler code are visible; seed and executed-config receipt are absent",
+        "task_objective_model_variant": "implicit-feedback graph recommendation; two graph layers; BPR recommendation loss plus local-global contrastive loss and L2 regularization; SVD rank 5; updated interaction-row positive sampling with uniform unobserved negatives",
+        "environment_and_interface_requirements": "README names Python 3.9.12, torch 1.12.0+cu113, numpy 1.21.5 and tqdm 4.64.0; no requirements/lock file or hashes at the pinned tree"
+      },
+      "unresolved_fields": ["affirmative code license grant", "seed and run schedule", "dependency artifact lock", "checkpoint-selection rule and artifact", "clean source and extraction receipts"],
+      "dispositive_mismatches": [],
+      "inferences_forbidden": ["Do not infer a seed from framework defaults.", "Do not treat bundled pickle/zip files as dataset rights or lineage.", "Do not replace the updated interaction sampler with the old_setting implementation."],
+      "recommended_g1_disposition": "KEEP_PENDING",
+      "execution_authorized": false,
+      "result_status": "NOT_RUN",
+      "test_set_opened": "NO"
+    },
+    {
+      "row_id": "E3-UNISREC-SCIENTIFIC-TRANS-001",
+      "method": "UniSRec",
+      "dataset_scope": "Scientific / transductive fine-tuning with external UniSRec-FHCKM-300 checkpoint; dataset and asset rights not determined in R2-A1",
+      "lane_id": "R2-A1",
+      "evidence_status": "EVIDENCE_INCOMPLETE",
+      "authoritative_sources": [
+        {
+          "url": "https://arxiv.org/abs/2206.05941",
+          "source_type": "official_paper_record",
+          "immutable_identity_or_version": "arXiv:2206.05941v1",
+          "accessed_at": "2026-08-22T17:16:59+07:00",
+          "locator": "title, authors, abstract, code and pretrained-model link",
+          "supports": ["UniSRec paper identity", "official record links RUCAIBox/UniSRec", "inductive/transductive sequence-representation task"],
+          "does_not_support": ["external asset license or hash", "executed command receipt"]
+        },
+        {
+          "url": "https://api.github.com/repos/RUCAIBox/UniSRec/git/commits/05aa5cba2809112c32808f70d16abc61c05c6538",
+          "source_type": "immutable_commit_metadata",
+          "immutable_identity_or_version": "commit 05aa5cba2809112c32808f70d16abc61c05c6538; root tree 0ad8741405280a5803dc2d3308d03ddea27edb0e",
+          "accessed_at": "2026-08-22T17:16:59+07:00",
+          "locator": "resolved sha, root tree, author Yupeng Hou, 2023-11-29T09:37:21Z",
+          "supports": ["immutable author-maintained full commit exists"],
+          "does_not_support": ["external dependency and asset revisions"]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/RUCAIBox/UniSRec/05aa5cba2809112c32808f70d16abc61c05c6538/LICENSE",
+          "source_type": "immutable_repository_license",
+          "immutable_identity_or_version": "blob abaa88c213d7e0a06cc6c4fa2414b48c7410612e",
+          "accessed_at": "2026-08-22T17:16:59+07:00",
+          "locator": "MIT License lines 1-21",
+          "supports": ["affirmative MIT grant for repository software and associated documentation subject to notice inclusion"],
+          "does_not_support": ["external processed datasets", "pretrained checkpoint", "a floating RecBole installation"]
+        },
+        {
+          "url": "https://api.github.com/repos/RUCAIBox/UniSRec/git/trees/05aa5cba2809112c32808f70d16abc61c05c6538?recursive=1",
+          "source_type": "immutable_repository_tree",
+          "immutable_identity_or_version": "commit 05aa5cba2809112c32808f70d16abc61c05c6538; 34 entries; truncated=false",
+          "accessed_at": "2026-08-22T17:16:59+07:00",
+          "locator": "full recursive tree",
+          "supports": ["finetune.py, configs, preprocessing scripts and LICENSE are regular blobs", "saved and dataset paths contain README placeholders rather than the model/data assets", "no .gitmodules, .gitattributes, gitlink, or symlink mode is present"],
+          "does_not_support": ["absence of generated symlinks; dataset/README instructs ln -s", "external asset hashes"]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/RUCAIBox/UniSRec/05aa5cba2809112c32808f70d16abc61c05c6538/README.md",
+          "source_type": "immutable_repository_file",
+          "immutable_identity_or_version": "blob f046c8765e7d4491c3205b488ea9d5a32d0dd137",
+          "accessed_at": "2026-08-22T17:16:59+07:00",
+          "locator": "lines 1-35, 37-65, 89",
+          "supports": ["official implementation identity", "noninteractive Scientific transductive command", "RecBole>=1.1.1 and platform minima", "external processed datasets and checkpoint are required"],
+          "does_not_support": ["exact RecBole revision", "asset digest", "dependency lock"]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/RUCAIBox/UniSRec/05aa5cba2809112c32808f70d16abc61c05c6538/props/UniSRec.yaml",
+          "source_type": "immutable_repository_file",
+          "immutable_identity_or_version": "blob a18747b145912a5aa3a1ba99dbb8392608882381",
+          "accessed_at": "2026-08-22T17:16:59+07:00",
+          "locator": "lines 1-24",
+          "supports": ["two layers, two heads, hidden size 300, CE loss, transductive_ft, text-feature/adaptor and temperature settings"],
+          "does_not_support": ["external checkpoint hash", "executed config receipt"]
+        }
+      ],
+      "confirmed_fields": {
+        "paper_repo_identity": {"paper": "Towards Universal Sequence Representation Learning for Recommender Systems", "repository": "https://github.com/RUCAIBox/UniSRec", "status": "CONFIRMED_OFFICIAL_PAPER_LINK"},
+        "immutable_source_identity": {"pin_kind": "full_commit", "commit": "05aa5cba2809112c32808f70d16abc61c05c6538", "root_tree": "0ad8741405280a5803dc2d3308d03ddea27edb0e", "resolved": true},
+        "license": {"status": "MIT_AFFIRMATIVE_FOR_PINNED_REPOSITORY_SOFTWARE_ONLY", "spdx": "MIT", "license_file": "LICENSE", "affirmative_code_use_basis": true, "scope_note": "The grant covers repository software/documentation, not separately supplied data, text, pretrained checkpoint, or an unspecified dependency build."},
+        "tree_implications": {"recursive_tree_entries": 34, "tree_truncated": false, "submodule_gitlinks": 0, "symlink_entries": 0, "gitmodules_files": 0, "gitattributes_files": 0, "lfs_status": "NO_TREE_LEVEL_LFS_MARKER_FOUND", "external_or_generated_implications": ["processed downstream data and UniSRec-FHCKM-300.pth are external Google Drive/Baidu assets", "dataset/README preprocessing instructions generate ln -s links for pretrain feature files", "future materialization must replace or reject generated symlinks under the no-link runtime contract"]},
+        "training_entry_point": "finetune.py",
+        "noninteractive_interface": {"available": true, "interface": "argparse plus RecBole Config", "public_command": "python finetune.py -d Scientific -p saved/UniSRec-FHCKM-300.pth"},
+        "paper_repo_command_config_coupling": "PARTIAL_CONFIRMED: official link, command and pinned UniSRec/finetune YAML are public; pretrained asset and floating RecBole dependency are outside the commit and unpinned",
+        "task_objective_model_variant": "Scientific transductive UniSRec fine-tuning; train_stage transductive_ft; hidden size 300; two Transformer layers/two heads; CE recommendation loss with pretrained text/sequence representation checkpoint",
+        "environment_and_interface_requirements": "README specifies recbole>=1.1.1, python>=3.9.7, cudatoolkit>=11.3.1, pytorch>=1.11.0; no exact dependency lock or hashes; external checkpoint required"
+      },
+      "unresolved_fields": ["exact RecBole version/commit and full dependency lock", "pretrained checkpoint release identity and hash", "processed asset hashes", "generated-symlink-free materialization design", "source/environment/run receipts"],
+      "dispositive_mismatches": [],
+      "inferences_forbidden": ["Do not extend the repository MIT license to external data or checkpoint assets.", "Do not resolve recbole>=1.1.1 to a convenient current version.", "Do not create or follow symlinks in the future runtime namespace."],
+      "recommended_g1_disposition": "KEEP_PENDING",
+      "execution_authorized": false,
+      "result_status": "NOT_RUN",
+      "test_set_opened": "NO"
+    },
+    {
+      "row_id": "E3-SASREC-SCIENTIFIC-UNISREC-FRAMEWORK-001",
+      "method": "SASRec",
+      "dataset_scope": "Scientific / SASRec baseline dispatched through the UniSRec repository into an external RecBole installation; dataset rights not determined in R2-A1",
+      "lane_id": "R2-A1",
+      "evidence_status": "EVIDENCE_INCOMPLETE",
+      "authoritative_sources": [
+        {
+          "url": "https://arxiv.org/abs/2206.05941",
+          "source_type": "official_paper_record",
+          "immutable_identity_or_version": "arXiv:2206.05941v1",
+          "accessed_at": "2026-08-22T17:16:59+07:00",
+          "locator": "paper identity and code link",
+          "supports": ["UniSRec paper/framework context", "official link to the repository that publishes the SASRec baseline command"],
+          "does_not_support": ["immutable SASRec implementation revision", "complete code-license scope"]
+        },
+        {
+          "url": "https://api.github.com/repos/RUCAIBox/UniSRec/git/commits/05aa5cba2809112c32808f70d16abc61c05c6538",
+          "source_type": "immutable_commit_metadata",
+          "immutable_identity_or_version": "commit 05aa5cba2809112c32808f70d16abc61c05c6538; root tree 0ad8741405280a5803dc2d3308d03ddea27edb0e",
+          "accessed_at": "2026-08-22T17:16:59+07:00",
+          "locator": "resolved wrapper/framework commit",
+          "supports": ["immutable UniSRec wrapper/config commit exists"],
+          "does_not_support": ["immutable RecBole SASRec source identity"]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/RUCAIBox/UniSRec/05aa5cba2809112c32808f70d16abc61c05c6538/LICENSE",
+          "source_type": "immutable_repository_license",
+          "immutable_identity_or_version": "blob abaa88c213d7e0a06cc6c4fa2414b48c7410612e",
+          "accessed_at": "2026-08-22T17:16:59+07:00",
+          "locator": "MIT License lines 1-21",
+          "supports": ["affirmative MIT grant for UniSRec wrapper/config software"],
+          "does_not_support": ["an unpinned external RecBole SASRec installation", "processed data"]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/RUCAIBox/UniSRec/05aa5cba2809112c32808f70d16abc61c05c6538/README.md",
+          "source_type": "immutable_repository_file",
+          "immutable_identity_or_version": "blob f046c8765e7d4491c3205b488ea9d5a32d0dd137",
+          "accessed_at": "2026-08-22T17:16:59+07:00",
+          "locator": "requirements and SASRec command lines 22-29 and 61-65",
+          "supports": ["public noninteractive SASRec Scientific command", "hidden_size 300", "props/finetune.yaml", "RecBole>=1.1.1 dependency"],
+          "does_not_support": ["exact RecBole version or commit", "SASRec source hash"]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/RUCAIBox/UniSRec/05aa5cba2809112c32808f70d16abc61c05c6538/run_baseline.py",
+          "source_type": "immutable_repository_file",
+          "immutable_identity_or_version": "blob eb9b1981703322ff09cea84904b980675bb25421",
+          "accessed_at": "2026-08-22T17:16:59+07:00",
+          "locator": "lines 66-80",
+          "supports": ["-m SASRec and -d Scientific are parsed noninteractively", "SASRec is delegated to recbole.quick_start.run_recbole rather than implemented in the pinned repository"],
+          "does_not_support": ["immutable SASRec model source", "complete dependency lock"]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/RUCAIBox/UniSRec/05aa5cba2809112c32808f70d16abc61c05c6538/props/finetune.yaml",
+          "source_type": "immutable_repository_file",
+          "immutable_identity_or_version": "blob 484f69298f96181cf9e92883063c3e4c23db30e0",
+          "accessed_at": "2026-08-22T17:16:59+07:00",
+          "locator": "lines 1-13",
+          "supports": ["downstream path", "pre-split train/valid/test filenames", "no train negative sampling", "top-k 10/50", "valid NDCG@10", "early stopping step 10"],
+          "does_not_support": ["SASRec architecture defaults from the unpinned RecBole package", "executed config receipt"]
+        }
+      ],
+      "confirmed_fields": {
+        "paper_repo_identity": {"paper": "Towards Universal Sequence Representation Learning for Recommender Systems (SASRec baseline row)", "repository": "https://github.com/RUCAIBox/UniSRec", "status": "CONFIRMED_FRAMEWORK_BOUND_BASELINE_NOT_SASREC_AUTHOR_REPO"},
+        "immutable_source_identity": {"pin_kind": "full_commit_for_wrapper_only", "commit": "05aa5cba2809112c32808f70d16abc61c05c6538", "root_tree": "0ad8741405280a5803dc2d3308d03ddea27edb0e", "resolved": true, "sasrec_model_source_commit": null},
+        "license": {"status": "MIT_AFFIRMATIVE_FOR_PINNED_WRAPPER_ONLY_FULL_SOURCE_SET_UNRESOLVED", "spdx": "MIT", "license_file": "LICENSE", "affirmative_code_use_basis": false, "scope_note": "UniSRec's grant is affirmative for its wrapper/config files; the exact external RecBole source set is not pinned, so a complete result-bound code-use decision cannot be closed."},
+        "tree_implications": {"recursive_tree_entries": 34, "tree_truncated": false, "submodule_gitlinks": 0, "symlink_entries": 0, "gitmodules_files": 0, "gitattributes_files": 0, "lfs_status": "NO_TREE_LEVEL_LFS_MARKER_FOUND", "external_or_generated_implications": ["SASRec implementation is loaded from external recbole>=1.1.1", "Scientific processed dataset is external", "dataset preprocessing instructions can generate symlinks"]},
+        "training_entry_point": "run_baseline.py",
+        "noninteractive_interface": {"available": true, "interface": "argparse plus RecBole command-line overrides", "public_command": "python run_baseline.py -m SASRec -d Scientific --config_files=props/finetune.yaml --hidden_size=300"},
+        "paper_repo_command_config_coupling": "PARTIAL: paper framework, wrapper command and shared finetune config are bound; SASRec implementation and its default model config float with recbole>=1.1.1",
+        "task_objective_model_variant": "next-item SASRec baseline in the UniSRec evaluation framework; hidden size 300; pre-split Scientific train/valid/test; exact objective and architecture source remain owned by an unpinned RecBole installation",
+        "environment_and_interface_requirements": "recbole>=1.1.1 and other minimum versions are ranges, not an immutable dependency lock; no vendored SASRec implementation or wheel hashes"
+      },
+      "unresolved_fields": ["exact RecBole version/commit providing SASRec", "complete license scope for the exact source set", "SASRec model config/default hashes", "dependency lock", "source/environment/run receipts"],
+      "dispositive_mismatches": [],
+      "inferences_forbidden": ["Do not bind SASRec to current RecBole master or an arbitrary release.", "Do not treat the UniSRec wrapper commit as the immutable SASRec model implementation.", "Do not extend wrapper MIT scope to an unspecified external source set."],
+      "recommended_g1_disposition": "KEEP_PENDING",
+      "execution_authorized": false,
+      "result_status": "NOT_RUN",
+      "test_set_opened": "NO"
+    },
+    {
+      "row_id": "E3-ALPHAREC-MOVIES-TV-001",
+      "method": "AlphaRec",
+      "dataset_scope": "Amazon Movies & TV / language-embedding bundle; dataset, text and embedding rights not determined in R2-A1",
+      "lane_id": "R2-A1",
+      "evidence_status": "EVIDENCE_INCOMPLETE",
+      "authoritative_sources": [
+        {
+          "url": "https://proceedings.iclr.cc/paper_files/paper/2025/hash/e4bab1843c8d5a69f5abfd0824593493-Abstract-Conference.html",
+          "source_type": "official_proceedings_record",
+          "immutable_identity_or_version": "ICLR 2025 proceedings paper e4bab1843c8d5a69f5abfd0824593493",
+          "accessed_at": "2026-08-22T17:16:59+07:00",
+          "locator": "title, authors, abstract",
+          "supports": ["paper identity and author list", "AlphaRec language-representation CF task", "MLP, graph convolution and contrastive-loss components"],
+          "does_not_support": ["a proceedings-page code link", "repository license"]
+        },
+        {
+          "url": "https://api.github.com/repos/LehengTHU/AlphaRec/git/commits/4b6c6cf378f292c31dd75b09a8075e8344561415",
+          "source_type": "immutable_commit_metadata",
+          "immutable_identity_or_version": "commit 4b6c6cf378f292c31dd75b09a8075e8344561415; root tree eb0100fba2de71ec1ead01a913ac92173f412ec3",
+          "accessed_at": "2026-08-22T17:16:59+07:00",
+          "locator": "resolved sha, root tree, author Leheng Sheng, 2025-05-16T10:38:59Z",
+          "supports": ["immutable full commit exists", "repository is maintained by the paper's first author"],
+          "does_not_support": ["release tag", "license grant"]
+        },
+        {
+          "url": "https://api.github.com/repos/LehengTHU/AlphaRec/git/trees/4b6c6cf378f292c31dd75b09a8075e8344561415?recursive=1",
+          "source_type": "immutable_repository_tree",
+          "immutable_identity_or_version": "commit 4b6c6cf378f292c31dd75b09a8075e8344561415; 64 entries; truncated=false",
+          "accessed_at": "2026-08-22T17:16:59+07:00",
+          "locator": "full recursive tree",
+          "supports": ["main.py, parse.py, model and Cython/C++ evaluator sources are regular blobs", "no data/ payload is present", "no LICENSE/COPYING, .gitmodules, .gitattributes, gitlink, or symlink mode is present"],
+          "does_not_support": ["external data/embedding asset identity", "code license"]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/LehengTHU/AlphaRec/4b6c6cf378f292c31dd75b09a8075e8344561415/README.md",
+          "source_type": "immutable_repository_file",
+          "immutable_identity_or_version": "blob ead9da324aca8649eb36e80c781c9bf488b589cc",
+          "accessed_at": "2026-08-22T17:16:59+07:00",
+          "locator": "authors and badge lines 3-19; dependencies/build lines 98-115; external data lines 117-132; Movies & TV command lines 134-142",
+          "supports": ["first-author-maintained paper repository", "MIT badge observation", "Python/PyTorch tested versions", "required evaluator build", "external data location", "full noninteractive Movies & TV command"],
+          "does_not_support": ["an MIT grant file or grant text", "external asset rights or hashes", "wheel/build hashes"]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/LehengTHU/AlphaRec/4b6c6cf378f292c31dd75b09a8075e8344561415/parse.py",
+          "source_type": "immutable_repository_file",
+          "immutable_identity_or_version": "blob bca0f14b6857bc669f03b998e6ee20354d01388c",
+          "accessed_at": "2026-08-22T17:16:59+07:00",
+          "locator": "lines 4-81 and 122-131",
+          "supports": ["noninteractive argparse", "default seed 101", "negative sampling, layers, normalization, language model and MLP arguments", "--clear_checkpoints flag"],
+          "does_not_support": ["external embedding hash", "license grant"]
+        },
+        {
+          "url": "https://raw.githubusercontent.com/LehengTHU/AlphaRec/4b6c6cf378f292c31dd75b09a8075e8344561415/models/General/AlphaRec.py",
+          "source_type": "immutable_repository_file",
+          "immutable_identity_or_version": "pinned repository file at commit 4b6c6cf378f292c31dd75b09a8075e8344561415",
+          "accessed_at": "2026-08-22T17:16:59+07:00",
+          "locator": "lines 48-69 and 93-183",
+          "supports": ["lm_model v3 loads item_cf_embeds_large3_array.npy", "MLP projection variant", "two-layer graph propagation controlled by argv", "sampled-softmax/InfoNCE-style objective with tau"],
+          "does_not_support": ["identity or rights of the external embedding file", "run receipt"]
+        }
+      ],
+      "confirmed_fields": {
+        "paper_repo_identity": {"paper": "Language Representations Can be What Recommenders Need: Findings and Potentials", "repository": "https://github.com/LehengTHU/AlphaRec", "status": "CONFIRMED_FIRST_AUTHOR_MAINTAINED_TITLE_AND_AUTHOR_MATCH"},
+        "immutable_source_identity": {"pin_kind": "full_commit", "commit": "4b6c6cf378f292c31dd75b09a8075e8344561415", "root_tree": "eb0100fba2de71ec1ead01a913ac92173f412ec3", "resolved": true},
+        "license": {"status": "BADGE_ONLY_NO_AFFIRMATIVE_GRANT_AT_PIN", "spdx": null, "license_file": null, "affirmative_code_use_basis": false, "scope_note": "The README image badge says MIT but contains no grant text and the non-truncated tree has no license file."},
+        "tree_implications": {"recursive_tree_entries": 64, "tree_truncated": false, "submodule_gitlinks": 0, "symlink_entries": 0, "gitmodules_files": 0, "gitattributes_files": 0, "lfs_status": "NO_TREE_LEVEL_LFS_MARKER_FOUND", "external_or_generated_implications": ["data and item_cf_embeds_large3_array.npy are external Google Drive assets absent from the tree", "Cython/C++ evaluator extensions must be built locally from regular source blobs", "logs and checkpoints are generated", "README instructs manual PyTorch installation outside requirements.txt"]},
+        "training_entry_point": "main.py",
+        "noninteractive_interface": {"available": true, "interface": "argparse in parse.py; --clear_checkpoints avoids the checkpoint prompt path", "public_command": "nohup python main.py --rs_type General --clear_checkpoints --saveID tau_0.15_v3_mlp_ --dataset amazon_movie --model_name AlphaRec --n_layers 2 --patience 20 --cuda 1 --no_wandb --train_norm --pred_norm --neg_sample 256 --lm_model v3 --model_version mlp --tau 0.15 --infonce 1"},
+        "paper_repo_command_config_coupling": "PARTIAL_CONFIRMED: proceedings title/authors match first-author commit identity; README command maps to immutable argparse and model code; external data/embedding and compiled evaluator artifacts are not pinned",
+        "task_objective_model_variant": "general collaborative filtering on amazon_movie; AlphaRec MLP projection; text-embeddings-3-large alias v3 loading item_cf_embeds_large3_array.npy; two graph layers; 256 sampled negatives; tau 0.15; InfoNCE enabled; train/pred normalization; default seed 101",
+        "environment_and_interface_requirements": "README tested Python 3.9.12 and PyTorch 1.13.1+cu117; requirements.txt pins many Python packages but omits PyTorch and hashes; manual Cython/C++ build and external embedding/data are required"
+      },
+      "unresolved_fields": ["affirmative code license grant", "external data/title/embedding identities and hashes", "complete environment and PyTorch artifact lock", "compiled evaluator binary identity", "clean source/build/run receipts"],
+      "dispositive_mismatches": [],
+      "inferences_forbidden": ["Do not treat the MIT badge as license text.", "Do not infer rights for the external Google Drive bundle or OpenAI-derived embedding file.", "Do not replace lm_model v3 with another embedding model or file."],
+      "recommended_g1_disposition": "KEEP_PENDING",
+      "execution_authorized": false,
+      "result_status": "NOT_RUN",
+      "test_set_opened": "NO"
+    }
+  ],
+  "coverage": {
+    "expected_rows": 7,
+    "actual_rows": 7,
+    "ordered_row_ids": [
+      "E3-LIGHTGCN-GOWALLA-PYTORCH-001",
+      "E3-SIMGCL-YELP2018-QREC-001",
+      "E3-XSIMGCL-YELP2018-SELFREC-001",
+      "E3-LIGHTGCL-YELP-UPDATED-001",
+      "E3-UNISREC-SCIENTIFIC-TRANS-001",
+      "E3-SASREC-SCIENTIFIC-UNISREC-FRAMEWORK-001",
+      "E3-ALPHAREC-MOVIES-TV-001"
+    ],
+    "status_counts": {
+      "EVIDENCE_SUFFICIENT_FOR_G1_REVIEW": 0,
+      "EVIDENCE_INCOMPLETE": 6,
+      "DISPOSITIVE_REJECT": 1,
+      "HANDOFF_INCOMPLETE": 0
+    },
+    "priority_row_id": "E3-LIGHTGCN-GOWALLA-PYTORCH-001",
+    "priority_is_selection": false
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "candidate_selected": false
+  }
+}

@@ -1,0 +1,449 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r2-a1-paper-repo-config-binding-1.0",
+  "lane_id": "R2-A1",
+  "created_at": "2026-08-22T17:16:59+07:00",
+  "binding_rule": "Each row is evaluated only on its own paper, repository, immutable commit, command, configuration and source implementation. Missing evidence is not joined from another row, revision or framework.",
+  "candidate_bindings": [
+    {
+      "row_id": "E3-LIGHTGCN-GOWALLA-PYTORCH-001",
+      "method": "LightGCN",
+      "dataset_scope": "Gowalla",
+      "paper": {
+        "title": "LightGCN: Simplifying and Powering Graph Convolution Network for Recommendation",
+        "record": "https://arxiv.org/abs/2002.02126",
+        "version": "arXiv:2002.02126v4",
+        "paper_to_repo_relation": "PARTIAL_REPOSITORY_ASSERTED_LAB_IMPLEMENTATION",
+        "relation_evidence": "The pinned README calls this the PyTorch implementation for 'our' SIGIR 2020 paper and credits Prof. Xiangnan He; the arXiv record does not itself link the repository, while code/parse.py credits Jianbai Ye."
+      },
+      "repository": {
+        "url": "https://github.com/gusye1234/LightGCN-PyTorch",
+        "full_commit": "947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+        "commit_url": "https://github.com/gusye1234/LightGCN-PyTorch/commit/947ca2b3b1d2d3545b114145710cb06c4e57b3d2",
+        "root_tree": "69cd7ff201f745598757cc99566705aa0364c2f6",
+        "commit_resolved": true,
+        "release_or_tag_required": false,
+        "current_state_note": "Repository is archived read-only; the full commit remains resolvable."
+      },
+      "license_binding": {
+        "decision": "NO_AFFIRMATIVE_GRANT_FOUND_AT_PIN",
+        "license_file": null,
+        "spdx": null,
+        "complete_code_use_basis": false
+      },
+      "tree_binding": {
+        "recursive_tree_entries": 43,
+        "truncated": false,
+        "gitlinks": 0,
+        "symlinks": 0,
+        "gitmodules": 0,
+        "gitattributes": 0,
+        "lfs_evidence": "NO_TREE_LEVEL_MARKER_FOUND",
+        "regular_external_or_generated_surfaces": [
+          "data/gowalla/train.txt blob a27782bd7a1d4d0744148dc0460ea94da74763f2",
+          "data/gowalla/test.txt blob 9ed5af4b5d21511f33740b4e22e3852f45671800",
+          "data/gowalla/s_pre_adj_mat.npz blob 7ebb09d7fac6b1608b1f2803c08dda24f5ca192f",
+          "code/sources C++ negative-sampler extension requires pybind11/cppimport generation",
+          "checkpoint and tensorboard outputs are runtime-generated"
+        ]
+      },
+      "training_surface": {
+        "entry_point": "code/main.py",
+        "entry_blob": "0e7def0fa8afca078a489ca7fde97bae6b8798cf",
+        "argv_parser": "code/parse.py",
+        "argv_parser_blob": "dad7e7a2d3ed354a29e173dedf0567ce5b2ee9d7",
+        "noninteractive": true,
+        "published_command": "cd code && python main.py --decay=1e-4 --lr=0.001 --layer=3 --seed=2020 --dataset=\"gowalla\" --topks=\"[20]\" --recdim=64",
+        "working_directory": "repository/code",
+        "hidden_defaults_used": {
+          "bpr_batch": 2048,
+          "epochs": 1000,
+          "model": "lgn",
+          "testbatch": 100,
+          "dropout": 0,
+          "multicore": 0
+        }
+      },
+      "configuration_binding": {
+        "kind": "argv_plus_parser_defaults",
+        "explicit_values": {"decay": 0.0001, "lr": 0.001, "layer": 3, "seed": 2020, "dataset": "gowalla", "topks": [20], "recdim": 64},
+        "objective": "BPR pairwise loss",
+        "sampler": "UniformSample_original pairwise negative sampling",
+        "model_variant": "three-layer LightGCN with layer-wise linear propagation and embedding aggregation",
+        "config_hash_receipt_available": false
+      },
+      "environment_binding": {
+        "requirements_file": "requirements.txt",
+        "requirements_blob": "79737ec500d747588806f51d5bf45c047789554e",
+        "hash_locked": false,
+        "notable_gap": "README-required pybind11 and cppimport are absent from requirements.txt; no compiler artifact or build receipt is pinned."
+      },
+      "coupling_verdict": "PARTIAL_BINDING_EVIDENCE_INCOMPLETE",
+      "blockers": ["code license", "paper-side repo authority", "complete dependency/build lock", "source and run receipts"],
+      "execution_authorized": false
+    },
+    {
+      "row_id": "E3-SIMGCL-YELP2018-QREC-001",
+      "method": "SimGCL",
+      "dataset_scope": "Yelp2018",
+      "paper": {
+        "title": "Are Graph Augmentations Necessary? Simple Graph Contrastive Learning for Recommendation",
+        "record": "https://arxiv.org/abs/2112.08679",
+        "version": "arXiv:2112.08679v4",
+        "paper_to_repo_relation": "CONFIRMED_OFFICIAL_CODE_LINK",
+        "relation_evidence": "The official arXiv record links https://github.com/Coder-Yu/QRec."
+      },
+      "repository": {
+        "url": "https://github.com/Coder-Yu/QRec",
+        "full_commit": "a141bb37cb7706b2f53b2eed5843de3269f9f37f",
+        "commit_url": "https://github.com/Coder-Yu/QRec/commit/a141bb37cb7706b2f53b2eed5843de3269f9f37f",
+        "root_tree": "51f72fbbc47a2642cfcac49706ee47d9c5ef437b",
+        "commit_resolved": true,
+        "release_or_tag_required": false
+      },
+      "license_binding": {"decision": "NO_AFFIRMATIVE_GRANT_FOUND_AT_PIN", "license_file": null, "spdx": null, "complete_code_use_basis": false},
+      "tree_binding": {
+        "recursive_tree_entries": 145,
+        "truncated": false,
+        "gitlinks": 0,
+        "symlinks": 0,
+        "gitmodules": 0,
+        "gitattributes": 0,
+        "lfs_evidence": "NO_TREE_LEVEL_MARKER_FOUND",
+        "regular_external_or_generated_surfaces": ["dataset/yelp2018/train.txt blob d9b5cf6e05eded7f4b79c3517f900c6cc618e80f", "dataset/yelp2018/test.txt blob e4880bbdf2855048d6c14293652098d20970205b", "./results output is generated"]
+      },
+      "training_surface": {
+        "entry_point": "main.py",
+        "entry_blob": "540639b9135e5522158f0b00a98018c3c2694399",
+        "noninteractive": false,
+        "published_command": "python main.py, then enter q5",
+        "interactive_cause": "main.py line 37 calls input(); q5 maps to SimGCL and config/SimGCL.conf",
+        "noninteractive_argv_publicly_specified": false
+      },
+      "configuration_binding": {
+        "file": "config/SimGCL.conf",
+        "blob": "c06e17e562a407406beee5da1f5f7ff87e1b58e7",
+        "values": {"dataset": "yelp2018", "topN": [20], "num_factors": 64, "max_epoch": 20, "batch_size": 2048, "learning_rate": 0.001, "user_item_reg": 0.0001, "n_layer": 2, "lambda": 0.5, "eps": 0.1},
+        "objective": "BPR recommendation loss plus SimGCL contrastive loss over two uniform-noise perturbed LightGCN views",
+        "model_variant": "pinned QRec TensorFlow SimGCL",
+        "seed": null,
+        "config_hash_receipt_available": false
+      },
+      "environment_binding": {
+        "requirements_surface": "README exact-version list only",
+        "values": ["Python 3.7.4", "TensorFlow 1.14.0", "gensim 4.1.2", "joblib 1.1.0", "mkl 2022.0.0", "mkl_service 2.4.0", "networkx 2.6.2", "numba 0.53.1", "numpy 1.20.3", "scipy 1.6.2"],
+        "hash_locked": false
+      },
+      "coupling_verdict": "PARTIAL_BINDING_EVIDENCE_INCOMPLETE",
+      "blockers": ["code license", "noninteractive argv", "seed/checkpoint", "dependency artifact lock", "run receipt"],
+      "execution_authorized": false
+    },
+    {
+      "row_id": "E3-XSIMGCL-YELP2018-SELFREC-001",
+      "method": "XSimGCL",
+      "dataset_scope": "Yelp2018",
+      "paper": {
+        "title": "XSimGCL: Towards Extremely Simple Graph Contrastive Learning for Recommendation",
+        "record": "https://arxiv.org/abs/2209.02544",
+        "version": "arXiv:2209.02544v4",
+        "paper_to_repo_relation": "CONFIRMED_OFFICIAL_CODE_LINK",
+        "relation_evidence": "The official arXiv record links https://github.com/Coder-Yu/SELFRec."
+      },
+      "repository": {
+        "url": "https://github.com/Coder-Yu/SELFRec",
+        "full_commit": "5b0229423cb1c727e85a704d63e460368c8b9dde",
+        "commit_url": "https://github.com/Coder-Yu/SELFRec/commit/5b0229423cb1c727e85a704d63e460368c8b9dde",
+        "root_tree": "f691d127cdbffff37ffdecea1c2cd23c1851e148",
+        "commit_resolved": true,
+        "release_or_tag_required": false
+      },
+      "license_binding": {"decision": "NO_AFFIRMATIVE_GRANT_FOUND_AT_PIN", "license_file": null, "spdx": null, "complete_code_use_basis": false},
+      "tree_binding": {
+        "recursive_tree_entries": 92,
+        "truncated": false,
+        "gitlinks": 0,
+        "symlinks": 0,
+        "gitmodules": 0,
+        "gitattributes": 0,
+        "lfs_evidence": "NO_TREE_LEVEL_MARKER_FOUND",
+        "regular_external_or_generated_surfaces": ["dataset/yelp2018/train.txt blob d9b5cf6e05eded7f4b79c3517f900c6cc618e80f", "dataset/yelp2018/test.txt blob 64c294293f5282c16047188d1b6411532018cd87", "./results output is generated"]
+      },
+      "training_surface": {
+        "entry_point": "main.py",
+        "entry_blob": "b38e46d0a4a8ae2de364b9be7868841009d8df65",
+        "noninteractive": false,
+        "published_command": "python main.py, then enter XSimGCL",
+        "interactive_cause": "main.py line 22 calls input(); selected model maps directly to conf/XSimGCL.yaml",
+        "alternate_three_layer_config_in_tree": false
+      },
+      "configuration_binding": {
+        "file": "conf/XSimGCL.yaml",
+        "blob": "69724b41d88c3255ae283cfb0a783c163b968e47",
+        "values": {"dataset": "yelp2018", "topN": [10, 20], "embedding_size": 64, "max_epoch": 20, "batch_size": 2048, "learning_rate": 0.001, "reg_lambda": 0.0001, "n_layer": 2, "l_star": 1, "lambda": 0.2, "eps": 0.2, "tau": 0.15},
+        "objective": "BPR plus XSimGCL InfoNCE between final and l*=1 perturbed representations",
+        "candidate_center_binding_from_readme": {"n_layer": 3, "lambda": 0.2, "eps": 0.2, "l_star": 1, "tau": 0.15},
+        "mismatch": "README center requires layer=3; selected immutable YAML requires n_layer=2"
+      },
+      "environment_binding": {
+        "requirements_file": "requirements.txt",
+        "requirements_blob": "66e3988e823c35ef733d7a5651faa884b8eb0954",
+        "values": ["faiss 1.7.3", "numba 0.60.0", "numpy 2.1.0", "PyYAML 6.0.2", "scipy 1.14.1", "torch 1.13.1"],
+        "hash_locked": false,
+        "version_drift_note": "README advertises broader Python/PyTorch compatibility that is not a lock."
+      },
+      "coupling_verdict": "DISPOSITIVE_REJECT_LAYER_COUNT_MISMATCH",
+      "blockers": ["the current three-layer candidate cannot be executed through the pinned two-layer config without an unauthorized config mutation", "code license", "noninteractive argv", "run receipt"],
+      "execution_authorized": false
+    },
+    {
+      "row_id": "E3-LIGHTGCL-YELP-UPDATED-001",
+      "method": "LightGCL",
+      "dataset_scope": "Yelp updated interaction-based sampler",
+      "paper": {
+        "title": "LightGCL: Simple Yet Effective Graph Contrastive Learning for Recommendation",
+        "record": "https://arxiv.org/abs/2302.08191",
+        "version": "arXiv:2302.08191v3",
+        "paper_to_repo_relation": "CONFIRMED_OFFICIAL_CODE_LINK",
+        "relation_evidence": "The official arXiv record links https://github.com/HKUDS/LightGCL."
+      },
+      "repository": {
+        "url": "https://github.com/HKUDS/LightGCL",
+        "full_commit": "5590453ad86782f58017e58d0b698d7f32175be3",
+        "commit_url": "https://github.com/HKUDS/LightGCL/commit/5590453ad86782f58017e58d0b698d7f32175be3",
+        "root_tree": "2381e381dd8e7d645487679b8458358884a08ad9",
+        "commit_resolved": true,
+        "release_or_tag_required": false
+      },
+      "license_binding": {"decision": "NO_AFFIRMATIVE_GRANT_FOUND_AT_PIN", "license_file": null, "spdx": null, "complete_code_use_basis": false},
+      "tree_binding": {
+        "recursive_tree_entries": 25,
+        "truncated": false,
+        "gitlinks": 0,
+        "symlinks": 0,
+        "gitmodules": 0,
+        "gitattributes": 0,
+        "lfs_evidence": "NO_TREE_LEVEL_MARKER_FOUND",
+        "regular_external_or_generated_surfaces": ["data/yelp/trnMat.pkl blob 28655f0bc7c60124f909d1d3a9dcaee07b08a3ef", "data/yelp/tstMat.pkl blob 0da577e0dc3ea88a58c37d50c7c76b398dcf68b6", "three regular zip archives require extraction", "log and saved_model outputs are generated"]
+      },
+      "training_surface": {
+        "entry_point": "main.py",
+        "entry_blob": "c4da518f7a59ecd08bf790426278bae2657f4d39",
+        "argv_parser": "parser.py",
+        "argv_parser_blob": "71b0fcef678d33be1c6790e6cd589d8a4273d220",
+        "noninteractive": true,
+        "published_command": "python main.py --data yelp"
+      },
+      "configuration_binding": {
+        "kind": "argv_plus_parser_defaults",
+        "values": {"data": "yelp", "learning_rate": 0.001, "batch_size": 256, "interaction_batch": 4096, "lambda1": 0.2, "epochs": 100, "embedding_size": 64, "svd_rank": 5, "gnn_layer": 2, "dropout": 0.0, "temperature": 0.2, "lambda2": 0.0000001},
+        "objective": "BPR recommendation loss plus LightGCL local-global contrastive loss and L2 regularization",
+        "sampler": "each observed interaction is a positive row; one uniformly sampled unobserved item is the negative",
+        "seed": null,
+        "config_hash_receipt_available": false
+      },
+      "environment_binding": {
+        "requirements_surface": "README version prose only",
+        "values": ["Python 3.9.12", "torch 1.12.0+cu113", "numpy 1.21.5", "tqdm 4.64.0"],
+        "hash_locked": false
+      },
+      "coupling_verdict": "PARTIAL_BINDING_EVIDENCE_INCOMPLETE",
+      "blockers": ["code license", "seed", "dependency lock", "checkpoint rule", "source and run receipts"],
+      "execution_authorized": false
+    },
+    {
+      "row_id": "E3-UNISREC-SCIENTIFIC-TRANS-001",
+      "method": "UniSRec",
+      "dataset_scope": "Scientific transductive fine-tuning",
+      "paper": {
+        "title": "Towards Universal Sequence Representation Learning for Recommender Systems",
+        "record": "https://arxiv.org/abs/2206.05941",
+        "version": "arXiv:2206.05941v1",
+        "paper_to_repo_relation": "CONFIRMED_OFFICIAL_CODE_LINK",
+        "relation_evidence": "The official arXiv record links https://github.com/RUCAIBox/UniSRec."
+      },
+      "repository": {
+        "url": "https://github.com/RUCAIBox/UniSRec",
+        "full_commit": "05aa5cba2809112c32808f70d16abc61c05c6538",
+        "commit_url": "https://github.com/RUCAIBox/UniSRec/commit/05aa5cba2809112c32808f70d16abc61c05c6538",
+        "root_tree": "0ad8741405280a5803dc2d3308d03ddea27edb0e",
+        "commit_resolved": true,
+        "release_or_tag_required": false
+      },
+      "license_binding": {"decision": "MIT_AFFIRMATIVE_FOR_PINNED_REPOSITORY_SOFTWARE_ONLY", "license_file": "LICENSE", "license_blob": "abaa88c213d7e0a06cc6c4fa2414b48c7410612e", "spdx": "MIT", "complete_code_use_basis": false, "incomplete_reason": "External checkpoint, data and floating dependencies are outside the repository grant/binding."},
+      "tree_binding": {
+        "recursive_tree_entries": 34,
+        "truncated": false,
+        "gitlinks": 0,
+        "symlinks": 0,
+        "gitmodules": 0,
+        "gitattributes": 0,
+        "lfs_evidence": "NO_TREE_LEVEL_MARKER_FOUND",
+        "regular_external_or_generated_surfaces": ["dataset/README.md and saved/README.md are placeholders", "external UniSRec-FHCKM-300.pth required", "external downstream/Scientific directory required", "dataset preprocessing instructions generate ln -s links although the Git tree contains no symlink entries"]
+      },
+      "training_surface": {
+        "entry_point": "finetune.py",
+        "entry_blob": "aa2fa28efaec195098ca216766bee3bbf394620e",
+        "noninteractive": true,
+        "published_command": "python finetune.py -d Scientific -p saved/UniSRec-FHCKM-300.pth",
+        "config_loader": "RecBole Config with props/UniSRec.yaml and props/finetune.yaml"
+      },
+      "configuration_binding": {
+        "files": [
+          {"path": "props/UniSRec.yaml", "blob": "a18747b145912a5aa3a1ba99dbb8392608882381"},
+          {"path": "props/finetune.yaml", "blob": "484f69298f96181cf9e92883063c3e4c23db30e0"}
+        ],
+        "values": {"train_stage": "transductive_ft", "hidden_size": 300, "n_layers": 2, "n_heads": 2, "loss_type": "CE", "item_drop_ratio": 0.2, "lambda": 0.001, "plm_size": 768, "temperature": 0.07, "topk": [10, 50], "valid_metric": "NDCG@10", "stopping_step": 10},
+        "objective": "transductive next-item fine-tuning from UniSRec-FHCKM-300 with CE recommendation loss and pretrained universal sequence/item representations",
+        "config_hash_receipt_available": false
+      },
+      "environment_binding": {
+        "requirements_surface": "README minimum ranges",
+        "values": ["recbole>=1.1.1", "python>=3.9.7", "cudatoolkit>=11.3.1", "pytorch>=1.11.0"],
+        "hash_locked": false,
+        "external_checkpoint_hash": null
+      },
+      "coupling_verdict": "PARTIAL_BINDING_EVIDENCE_INCOMPLETE",
+      "blockers": ["exact RecBole/dependency source", "external checkpoint identity/hash", "generated-symlink-free materialization", "source/environment/run receipts"],
+      "execution_authorized": false
+    },
+    {
+      "row_id": "E3-SASREC-SCIENTIFIC-UNISREC-FRAMEWORK-001",
+      "method": "SASRec",
+      "dataset_scope": "Scientific through UniSRec framework",
+      "paper": {
+        "title": "Towards Universal Sequence Representation Learning for Recommender Systems (SASRec baseline)",
+        "record": "https://arxiv.org/abs/2206.05941",
+        "version": "arXiv:2206.05941v1",
+        "paper_to_repo_relation": "CONFIRMED_FRAMEWORK_BASELINE",
+        "relation_evidence": "The official UniSRec repository publishes a SASRec baseline command; this is not a claim that UniSRec is the original SASRec author repository."
+      },
+      "repository": {
+        "url": "https://github.com/RUCAIBox/UniSRec",
+        "full_commit": "05aa5cba2809112c32808f70d16abc61c05c6538",
+        "commit_url": "https://github.com/RUCAIBox/UniSRec/commit/05aa5cba2809112c32808f70d16abc61c05c6538",
+        "root_tree": "0ad8741405280a5803dc2d3308d03ddea27edb0e",
+        "commit_resolved": true,
+        "sasrec_implementation_commit": null
+      },
+      "license_binding": {"decision": "MIT_AFFIRMATIVE_FOR_PINNED_WRAPPER_ONLY_FULL_SOURCE_SET_UNRESOLVED", "license_file": "LICENSE", "license_blob": "abaa88c213d7e0a06cc6c4fa2414b48c7410612e", "spdx": "MIT", "complete_code_use_basis": false},
+      "tree_binding": {
+        "recursive_tree_entries": 34,
+        "truncated": false,
+        "gitlinks": 0,
+        "symlinks": 0,
+        "gitmodules": 0,
+        "gitattributes": 0,
+        "lfs_evidence": "NO_TREE_LEVEL_MARKER_FOUND",
+        "regular_external_or_generated_surfaces": ["SASRec is not implemented in the pinned tree", "run_baseline.py delegates it to external recbole.quick_start.run_recbole", "Scientific processed data is external"]
+      },
+      "training_surface": {
+        "entry_point": "run_baseline.py",
+        "entry_blob": "eb9b1981703322ff09cea84904b980675bb25421",
+        "noninteractive": true,
+        "published_command": "python run_baseline.py -m SASRec -d Scientific --config_files=props/finetune.yaml --hidden_size=300",
+        "implementation_dispatch": "models other than FDSA/S3Rec call recbole.quick_start.run_recbole"
+      },
+      "configuration_binding": {
+        "file": "props/finetune.yaml",
+        "blob": "484f69298f96181cf9e92883063c3e4c23db30e0",
+        "values": {"benchmark_filename": ["train", "valid", "test"], "train_neg_sample_args": null, "topk": [10, 50], "valid_metric": "NDCG@10", "stopping_step": 10, "hidden_size_argv": 300},
+        "objective": "UNRESOLVED_AT_IMMUTABLE_SOURCE_LEVEL: supplied by external RecBole SASRec implementation",
+        "model_variant": "UniSRec-framework SASRec baseline, not the original TensorFlow author repository",
+        "recbole_version_or_commit": null
+      },
+      "environment_binding": {
+        "requirements_surface": "README range recbole>=1.1.1",
+        "hash_locked": false,
+        "immutable_sasrec_source_available": false
+      },
+      "coupling_verdict": "PARTIAL_BINDING_EVIDENCE_INCOMPLETE",
+      "blockers": ["exact RecBole version/commit", "complete source-license set", "SASRec config/default hashes", "dependency and run receipts"],
+      "execution_authorized": false
+    },
+    {
+      "row_id": "E3-ALPHAREC-MOVIES-TV-001",
+      "method": "AlphaRec",
+      "dataset_scope": "Amazon Movies & TV",
+      "paper": {
+        "title": "Language Representations Can be What Recommenders Need: Findings and Potentials",
+        "record": "https://proceedings.iclr.cc/paper_files/paper/2025/hash/e4bab1843c8d5a69f5abfd0824593493-Abstract-Conference.html",
+        "version": "ICLR 2025 proceedings e4bab1843c8d5a69f5abfd0824593493",
+        "paper_to_repo_relation": "CONFIRMED_FIRST_AUTHOR_MAINTAINED_TITLE_AND_AUTHOR_MATCH",
+        "relation_evidence": "Proceedings authors match the pinned README; commit metadata identifies first author Leheng Sheng. The proceedings landing page does not itself expose a code link."
+      },
+      "repository": {
+        "url": "https://github.com/LehengTHU/AlphaRec",
+        "full_commit": "4b6c6cf378f292c31dd75b09a8075e8344561415",
+        "commit_url": "https://github.com/LehengTHU/AlphaRec/commit/4b6c6cf378f292c31dd75b09a8075e8344561415",
+        "root_tree": "eb0100fba2de71ec1ead01a913ac92173f412ec3",
+        "commit_resolved": true,
+        "release_or_tag_required": false
+      },
+      "license_binding": {"decision": "BADGE_ONLY_NO_AFFIRMATIVE_GRANT_AT_PIN", "license_file": null, "spdx": null, "complete_code_use_basis": false, "badge_observed": "README License-MIT image badge"},
+      "tree_binding": {
+        "recursive_tree_entries": 64,
+        "truncated": false,
+        "gitlinks": 0,
+        "symlinks": 0,
+        "gitmodules": 0,
+        "gitattributes": 0,
+        "lfs_evidence": "NO_TREE_LEVEL_MARKER_FOUND",
+        "regular_external_or_generated_surfaces": ["no data/ payload in tree", "Google Drive amazon_movie data and item_cf_embeds_large3_array.npy are external", "Cython/C++ evaluator sources require local compilation", "logs and weights are generated"]
+      },
+      "training_surface": {
+        "entry_point": "main.py",
+        "entry_blob": "94c0b1fd6f989a51a17841264b416758cf6c5a95",
+        "argv_parser": "parse.py",
+        "argv_parser_blob": "bca0f14b6857bc669f03b998e6ee20354d01388c",
+        "noninteractive": true,
+        "published_command": "nohup python main.py --rs_type General --clear_checkpoints --saveID tau_0.15_v3_mlp_ --dataset amazon_movie --model_name AlphaRec --n_layers 2 --patience 20 --cuda 1 --no_wandb --train_norm --pred_norm --neg_sample 256 --lm_model v3 --model_version mlp --tau 0.15 --infonce 1",
+        "noninteractive_checkpoint_note": "--clear_checkpoints takes the no-input branch when prior checkpoints exist; the normal force=false prompt's input() is commented out."
+      },
+      "configuration_binding": {
+        "kind": "argv_plus_parser_defaults",
+        "values": {"rs_type": "General", "dataset": "amazon_movie", "model_name": "AlphaRec", "n_layers": 2, "patience": 20, "train_norm": true, "pred_norm": true, "neg_sample": 256, "lm_model": "v3", "model_version": "mlp", "tau": 0.15, "infonce": 1, "seed_default": 101, "hidden_size_default": 64, "learning_rate_default": 0.0005, "max_epoch_default": 500},
+        "external_embedding_binding": "data/General/amazon_movie/item_info/item_cf_embeds_large3_array.npy",
+        "objective": "sampled softmax / InfoNCE-style loss over normalized LM-derived user/item representations",
+        "model_variant": "text-embeddings-3-large alias v3, nonlinear MLP projector, two graph layers"
+      },
+      "environment_binding": {
+        "requirements_file": "requirements.txt",
+        "requirements_blob": "445ac7fe7a988900c594a334c084dd8870466df2",
+        "hash_locked": false,
+        "pytorch_in_requirements": false,
+        "tested_pytorch_prose": "PyTorch 1.13.1+cu117",
+        "generated_build": "models/General/base/setup.py compiles Cython/C++ evaluator and top-k extensions"
+      },
+      "coupling_verdict": "PARTIAL_BINDING_EVIDENCE_INCOMPLETE",
+      "blockers": ["code license", "external dataset/title/embedding identity and hashes", "PyTorch/build artifact lock", "source/environment/run receipts"],
+      "execution_authorized": false
+    }
+  ],
+  "coverage": {
+    "expected_rows": 7,
+    "actual_rows": 7,
+    "ordered_row_ids": [
+      "E3-LIGHTGCN-GOWALLA-PYTORCH-001",
+      "E3-SIMGCL-YELP2018-QREC-001",
+      "E3-XSIMGCL-YELP2018-SELFREC-001",
+      "E3-LIGHTGCL-YELP-UPDATED-001",
+      "E3-UNISREC-SCIENTIFIC-TRANS-001",
+      "E3-SASREC-SCIENTIFIC-UNISREC-FRAMEWORK-001",
+      "E3-ALPHAREC-MOVIES-TV-001"
+    ],
+    "binding_verdict_counts": {"PARTIAL_BINDING_EVIDENCE_INCOMPLETE": 6, "DISPOSITIVE_REJECT_LAYER_COUNT_MISMATCH": 1},
+    "paper_repo_relations_confirmed": 6,
+    "paper_repo_relations_partial": 1,
+    "noninteractive_interfaces_confirmed": 5,
+    "interactive_only_interfaces": 2,
+    "complete_code_use_bases": 0
+  },
+  "lane_scope_guards": {
+    "dataset_rights_decided": false,
+    "metric_center_acceptance_decided": false,
+    "candidate_selected": false,
+    "execution_authorized": false,
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0
+  }
+}
