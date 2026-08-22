@@ -1,11 +1,11 @@
 {
-  "schema_version": "stage1e-rebaseline-v2-e4-r5-s0-frozen-input-manifest-1.0",
+  "schema_version": "stage1e-rebaseline-v2-e4-r5-s0-frozen-input-manifest-1.1",
   "created_at": "2026-08-23",
   "stage_id": "R5-S0",
-  "status": "FROZEN_FOR_R5_S0_GATE",
+  "status": "REFROZEN_AFTER_TREE_METADATA_PREFLIGHT_CORRECTION",
   "canonicalization": "strict UTF-8 bytes with CRLF and CR normalized to LF; no other byte transformation",
-  "input_count": 20,
-  "json_input_count": 13,
+  "input_count": 21,
+  "json_input_count": 14,
   "entry_decision": {
     "source_stage": "R4-G0",
     "source_verdict": "NO_ADMISSIBLE_BUNDLE_STOP_FAIL_CLOSED",
@@ -20,6 +20,14 @@
     "source_materialization_is_benchmark_admission": false,
     "dataset_environment_or_execution_authorized": false,
     "next_user_checkpoint": "R5-M2"
+  },
+  "preflight_correction": {
+    "record": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r5_s0_preflight_correction_record.json",
+    "prior_preregistration_commit": "79b5226",
+    "reason": "Exclude nested RecBole example-data bytes and remove nonexistent RecBole-GNN paths before checkout.",
+    "candidate_identity_changed": false,
+    "source_scope_narrowed": true,
+    "checkout_attempted_before_correction": false
   },
   "model_policy": {
     "central": {
@@ -47,7 +55,8 @@
     {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r5_source_only_materialization_change_control.md","canonical_lf_bytes":7274,"canonical_lf_sha256":"4c284970ef93da3411fb655d5d6d5e152212af5213f453d164978fa0ac410c27"},
     {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r5_stage_map.json","canonical_lf_bytes":4663,"canonical_lf_sha256":"5191af0c0ab52dd03b4da784d041b621b1affcd3e69e71b36c41f322763e3dc2"},
     {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r5_candidate_lock.json","canonical_lf_bytes":4575,"canonical_lf_sha256":"1733b0300700cf1cbef3ba00a8d5f56c006215687a06748432f6e793d338bce3"},
-    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r5_source_materialization_contract.json","canonical_lf_bytes":4761,"canonical_lf_sha256":"acbb0d66dc87d7486f8d931977e3dd30519cba34aa91577046c69f4721f96758"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r5_source_materialization_contract.json","canonical_lf_bytes":5012,"canonical_lf_sha256":"bc65c87c37ee6b25dc4ce967f986efe1f1b411d2f34c4eca7083638ade97802f"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r5_s0_preflight_correction_record.json","canonical_lf_bytes":2886,"canonical_lf_sha256":"c7c171c505a20263a20b8faa955737f1701265c83639d8298cecdc76f7188111"},
     {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r5_transition_registry.json","canonical_lf_bytes":2940,"canonical_lf_sha256":"11f6fb627e45709677d75841a080cf07e1511eaa309f935c29bf3b36e9e628a1"},
     {"path":"master/academic-research-master-plan.md","canonical_lf_bytes":21600,"canonical_lf_sha256":"50fe3376bbfdb6233f45e3dd7328bb231ed1e708a1f93766f0378d66ceb1f0a7"},
     {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_x/E4_R4G0_strict_admission_freeze/r4_g0_admission_decision.json","canonical_lf_bytes":3361,"canonical_lf_sha256":"34f731c681825b353e264d965267f582abfe33d34540e5f55c7b26c95cb3b539"},

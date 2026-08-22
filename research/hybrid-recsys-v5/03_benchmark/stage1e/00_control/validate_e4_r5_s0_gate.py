@@ -144,8 +144,8 @@ def main() -> int:
     check(
         checks,
         failures,
-        "manifest_input_count_20",
-        manifest.get("input_count") == 20 == len(inputs),
+        "manifest_input_count_21",
+        manifest.get("input_count") == 21 == len(inputs),
     )
     check(checks, failures, "manifest_rows_are_objects", len(paths) == len(inputs))
     check(checks, failures, "manifest_paths_unique", len(paths) == len(set(paths)))
@@ -182,8 +182,8 @@ def main() -> int:
                 continue
         matched += 1
 
-    check(checks, failures, "frozen_inputs_20_of_20", matched == 20)
-    check(checks, failures, "strict_json_inputs_13_of_13", json_verified == 13)
+    check(checks, failures, "frozen_inputs_21_of_21", matched == 21)
+    check(checks, failures, "strict_json_inputs_14_of_14", json_verified == 14)
     check(
         checks,
         failures,
@@ -338,9 +338,10 @@ def main() -> int:
         checks,
         failures,
         "materialization_sparse_scopes",
-        mats.get("R5-CAND-RECBOLE-BPR-ML100K-001", {}).get("sparse_cone_directories") == ["recbole"]
-        and mats.get("R5-CAND-RECBOLE-GNN-LIGHTGCN-ML1M-001", {}).get("sparse_cone_directories")
-        == ["recbole_gnn", "properties", "results"],
+        mats.get("R5-CAND-RECBOLE-BPR-ML100K-001", {}).get("sparse_non_cone_patterns")
+        == ["/*", "!/*/", "/recbole/", "!/recbole/dataset_example/"]
+        and mats.get("R5-CAND-RECBOLE-GNN-LIGHTGCN-ML1M-001", {}).get("sparse_non_cone_patterns")
+        == ["/*", "!/*/", "/recbole_gnn/", "/results/"],
     )
     scope = materialization.get("source_scope", {})
     forbidden = materialization.get("forbidden_operations", {})
@@ -371,6 +372,37 @@ def main() -> int:
         and exit_gate.get("execution_performed") is False
         and exit_gate.get("test_opened") is False
         and materialization.get("truth_state") == TRUTH,
+    )
+
+    correction = load_json(CONTROL / "e4_r5_s0_preflight_correction_record.json")
+    observations = {
+        row.get("candidate_id"): row
+        for row in correction.get("observations", [])
+        if isinstance(row, dict)
+    }
+    check(
+        checks,
+        failures,
+        "preflight_correction_exact_two_candidates",
+        set(observations) == set(CANDIDATES)
+        and observations["R5-CAND-RECBOLE-BPR-ML100K-001"].get("git_tree")
+        == "08915121fea069a30f7e3e97a72e16e7e76d43c6"
+        and observations["R5-CAND-RECBOLE-GNN-LIGHTGCN-ML1M-001"].get("git_tree")
+        == "b9abfd3e61d563b32885839858ff0a3cb09bca09",
+    )
+    effect = correction.get("scientific_effect", {})
+    check(
+        checks,
+        failures,
+        "preflight_correction_narrows_scope_without_execution",
+        effect.get("candidate_identity_changed") is False
+        and effect.get("repository_or_revision_changed") is False
+        and effect.get("benchmark_admission_changed") is False
+        and effect.get("source_scope_narrowed") is True
+        and effect.get("dataset_or_test_bytes_opened") is False
+        and effect.get("vendor_source_executed") is False
+        and correction.get("failed_checkout_attempts") == 0
+        and correction.get("truth_state") == TRUTH,
     )
 
     d1c_log = load_json(
@@ -521,14 +553,14 @@ def main() -> int:
     result = {
         "schema_version": "stage1e-rebaseline-v2-e4-r5-s0-gate-result-1.0",
         "passed": passed,
-        "verdict": "PASS_R5_S0_SOURCE_ONLY_GATE_20_OF_20_READY_FOR_R5_M0" if passed else "FAIL_R5_S0_GATE_BLOCKED",
+        "verdict": "PASS_R5_S0_SOURCE_ONLY_GATE_V2_21_OF_21_READY_FOR_R5_M0" if passed else "FAIL_R5_S0_GATE_BLOCKED",
         "failure_count": len(failures),
         "failures": failures,
         "checks": checks,
         "frozen_inputs": {
-            "expected": 20,
+            "expected": 21,
             "matched": matched,
-            "strict_json_expected": 13,
+            "strict_json_expected": 14,
             "strict_json_verified": json_verified,
         },
         "candidate_lock": {

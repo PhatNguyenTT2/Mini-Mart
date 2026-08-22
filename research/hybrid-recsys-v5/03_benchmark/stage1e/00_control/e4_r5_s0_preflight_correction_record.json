@@ -1,0 +1,61 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r5-s0-preflight-correction-record-1.0",
+  "created_at": "2026-08-23",
+  "stage_id": "R5-S0-PREFLIGHT-CORRECTION",
+  "trigger": "REMOTE_GIT_TREE_METADATA_PREFLIGHT_BEFORE_ANY_CHECKOUT",
+  "prior_preregistration_commit": "79b5226",
+  "prior_gate_verdict": "PASS_R5_S0_SOURCE_ONLY_GATE_20_OF_20_READY_FOR_R5_M0",
+  "scientific_effect": {
+    "candidate_identity_changed": false,
+    "repository_or_revision_changed": false,
+    "numeric_target_changed": false,
+    "benchmark_admission_changed": false,
+    "source_scope_narrowed": true,
+    "dataset_or_test_bytes_opened": false,
+    "vendor_source_executed": false
+  },
+  "observations": [
+    {
+      "candidate_id": "R5-CAND-RECBOLE-BPR-ML100K-001",
+      "full_revision": "9a6f63d8d4a5b989fe27955a833f813a6d86041e",
+      "git_tree": "08915121fea069a30f7e3e97a72e16e7e76d43c6",
+      "tree_entry_count": 736,
+      "prior_sparse_scope": ["recbole"],
+      "preflight_conflict": "The selected recbole tree contains recbole/dataset_example/ml-100k with .inter/.item/.user data files.",
+      "correction": "Use non-cone sparse patterns that include root files and recbole source while explicitly excluding recbole/dataset_example.",
+      "corrected_sparse_patterns": ["/*", "!/*/", "/recbole/", "!/recbole/dataset_example/"]
+    },
+    {
+      "candidate_id": "R5-CAND-RECBOLE-GNN-LIGHTGCN-ML1M-001",
+      "full_revision": "632ef888589944c190ad8f449b49ca559618d4df",
+      "git_tree": "b9abfd3e61d563b32885839858ff0a3cb09bca09",
+      "tree_entry_count": 78,
+      "prior_sparse_scope": ["recbole_gnn", "properties", "results"],
+      "preflight_conflict": "The pinned tree has no root requirements.txt and no top-level properties directory; model properties are under recbole_gnn/properties.",
+      "correction": "Remove nonexistent paths, retain root metadata/source entrypoints, and include only recbole_gnn plus results while excluding tests and assets.",
+      "corrected_sparse_patterns": ["/*", "!/*/", "/recbole_gnn/", "/results/"]
+    }
+  ],
+  "failed_checkout_attempts": 0,
+  "metadata_clone_transport_retry": {
+    "initial_attempt_status": "FAILED_BEFORE_TARGET_CREATION",
+    "initial_error_class": "WINDOWS_SCHANNEL_NO_CREDENTIALS",
+    "retry_status": "PASS_METADATA_ONLY",
+    "retry_transport": "git_http_ssl_backend_openssl",
+    "source_blob_checkout_performed_during_retry": false
+  },
+  "correction_policy": {
+    "fail_closed_before_checkout": true,
+    "frozen_manifest_must_be_reissued": true,
+    "validator_must_check_corrected_patterns": true,
+    "old_state_recoverable_from_prior_git_commit": true,
+    "automatic_scope_expansion_allowed": false
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

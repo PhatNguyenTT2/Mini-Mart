@@ -1,21 +1,30 @@
 {
-  "schema_version": "stage1e-rebaseline-v2-e4-r5-s0-gate-receipt-1.0",
+  "schema_version": "stage1e-rebaseline-v2-e4-r5-s0-gate-receipt-1.1",
   "created_at": "2026-08-23",
   "stage_id": "R5-S0-CENTRAL-VALIDATION",
   "validator": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r5_s0_gate.py",
   "frozen_input_manifest": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r5_s0_frozen_input_manifest.json",
   "passed": true,
-  "verdict": "PASS_R5_S0_SOURCE_ONLY_GATE_20_OF_20_READY_FOR_R5_M0",
+  "verdict": "PASS_R5_S0_SOURCE_ONLY_GATE_V2_21_OF_21_READY_FOR_R5_M0",
   "failure_count": 0,
   "mechanical_checks": {
-    "passed": 38,
-    "expected": 38
+    "passed": 40,
+    "expected": 40
   },
   "frozen_inputs": {
-    "matched": 20,
-    "expected": 20,
-    "strict_json_verified": 13,
-    "strict_json_expected": 13
+    "matched": 21,
+    "expected": 21,
+    "strict_json_verified": 14,
+    "strict_json_expected": 14
+  },
+  "preflight_correction": {
+    "status": "PASS_SCOPE_NARROWED_BEFORE_CHECKOUT",
+    "record": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r5_s0_preflight_correction_record.json",
+    "prior_preregistration_commit": "79b5226",
+    "candidate_identity_changed": false,
+    "source_scope_narrowed": true,
+    "dataset_or_test_bytes_opened": false,
+    "vendor_source_executed": false
   },
   "candidate_lock": {
     "locked_candidate_count": 2,

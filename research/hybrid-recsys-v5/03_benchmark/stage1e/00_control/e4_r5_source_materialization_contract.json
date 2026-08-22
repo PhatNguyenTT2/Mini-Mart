@@ -1,5 +1,5 @@
 {
-  "schema_version": "stage1e-rebaseline-v2-e4-r5-source-materialization-contract-1.0",
+  "schema_version": "stage1e-rebaseline-v2-e4-r5-source-materialization-contract-1.1",
   "created_at": "2026-08-23",
   "stage_id": "R5-M0",
   "entry_gate": "PASS_R5_S0_SOURCE_ONLY_GATE",
@@ -12,7 +12,12 @@
       "repository_url": "https://github.com/RUCAIBox/RecBole.git",
       "full_revision": "9a6f63d8d4a5b989fe27955a833f813a6d86041e",
       "local_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d",
-      "sparse_cone_directories": ["recbole"],
+      "sparse_non_cone_patterns": [
+        "/*",
+        "!/*/",
+        "/recbole/",
+        "!/recbole/dataset_example/"
+      ],
       "required_materialized_paths": [
         "LICENSE",
         "README.md",
@@ -28,11 +33,18 @@
       "repository_url": "https://github.com/RUCAIBox/RecBole-GNN.git",
       "full_revision": "632ef888589944c190ad8f449b49ca559618d4df",
       "local_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_gnn_632ef88",
-      "sparse_cone_directories": ["recbole_gnn", "properties", "results"],
+      "sparse_non_cone_patterns": [
+        "/*",
+        "!/*/",
+        "/recbole_gnn/",
+        "/results/"
+      ],
       "required_materialized_paths": [
         "LICENSE",
         "README.md",
-        "requirements.txt",
+        "run_recbole_gnn.py",
+        "recbole_gnn/model/general_recommender/lightgcn.py",
+        "recbole_gnn/properties/model/LightGCN.yaml",
         "results/general/ml-1m.md"
       ]
     }
@@ -44,7 +56,7 @@
     "verify_locked_commit_object",
     "inventory_full_tree_metadata_before_checkout",
     "reject_selected_submodule_symlink_or_prohibited_artifact",
-    "initialize_cone_sparse_checkout_with_declared_directories_only",
+    "initialize_non_cone_sparse_checkout_with_declared_patterns_only",
     "checkout_detached_locked_commit_with_lfs_smudge_disabled",
     "verify_head_origin_sparse_scope_and_required_paths",
     "hash_every_materialized_non_git_file",
@@ -52,7 +64,7 @@
   ],
   "source_scope": {
     "root_level_regular_source_and_metadata_files_are_allowed": true,
-    "declared_sparse_cone_directories_only": true,
+    "declared_sparse_non_cone_patterns_only": true,
     "root_level_prohibited_extensions": [
       ".csv", ".tsv", ".parquet", ".inter", ".item", ".user", ".npy", ".npz",
       ".pt", ".pth", ".ckpt", ".onnx", ".safetensors", ".zip", ".tar", ".gz", ".7z"
