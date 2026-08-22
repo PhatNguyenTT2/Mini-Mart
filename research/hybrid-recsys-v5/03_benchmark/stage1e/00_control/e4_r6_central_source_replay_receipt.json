@@ -1,0 +1,148 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r6-central-source-replay-receipt-1.0",
+  "created_at": "2026-08-23",
+  "stage_id": "R6-CENTRAL-PREVALIDATION-SOURCE-REPLAY",
+  "status": "PARTIAL_CURRENT_PRIMARY_SOURCE_REPLAY_NO_PROFILE_SELECTION",
+  "purpose": "Independently replay high-risk dataset-authority and environment-compatibility facts before validating R6-D1 and R6-E1 outputs.",
+  "dataset_source_records": [
+    {
+      "source_id": "CENTRAL-GL-100K-PAGE",
+      "authority": "official GroupLens",
+      "url": "https://grouplens.org/datasets/movielens/100k/",
+      "retrieval_status": "SUCCESS",
+      "retrieved_at": "2026-08-23",
+      "supported_facts": [
+        "MovieLens 100K is labeled a stable benchmark dataset.",
+        "The release page labels it released 4/1998.",
+        "The release page links the official README, ml-100k.zip, checksum and unzipped-file index."
+      ]
+    },
+    {
+      "source_id": "CENTRAL-GL-100K-README",
+      "authority": "official GroupLens file server",
+      "url": "https://files.grouplens.org/datasets/movielens/ml-100k-README.txt",
+      "retrieval_status": "SUCCESS",
+      "retrieved_at": "2026-08-23",
+      "supported_facts": [
+        "The dataset contains 100000 ratings from 943 users on 1682 movies.",
+        "u.data is tab-separated user id, item id, rating and Unix timestamp.",
+        "Use must not imply endorsement and publications must acknowledge the dataset.",
+        "Redistribution requires separate permission.",
+        "Commercial or revenue-bearing use requires prior permission."
+      ],
+      "interpretation_guard": "These are provider usage conditions, not a permissive data-license grant."
+    },
+    {
+      "source_id": "CENTRAL-GL-100K-INDEX",
+      "authority": "official GroupLens file server",
+      "url": "https://files.grouplens.org/datasets/movielens/ml-100k/",
+      "retrieval_status": "SUCCESS",
+      "retrieved_at": "2026-08-23",
+      "supported_facts": [
+        "The official unzipped index exposes README, u.data, u.info, u.item, u.user and supplied split/script files.",
+        "The index is suitable as an expected-member proposal but not as proof of the later downloaded archive bytes."
+      ]
+    },
+    {
+      "source_id": "CENTRAL-GL-100K-CHECKSUM",
+      "authority": "official GroupLens file server",
+      "url": "https://files.grouplens.org/datasets/movielens/ml-100k.zip.md5",
+      "retrieval_status": "ENDPOINT_LINK_VERIFIED_BODY_NOT_REPLAYED",
+      "retrieved_at": "2026-08-23",
+      "supported_facts": [
+        "The official release page and directory index expose the checksum endpoint."
+      ],
+      "unresolved": [
+        "The web replay layer rejected the endpoint's application/zip content type and did not return checksum bytes.",
+        "No MD5 value is admitted by this receipt; provider-byte replay remains a materialization precondition."
+      ]
+    },
+    {
+      "source_id": "CENTRAL-GL-100K-ARCHIVE",
+      "authority": "official GroupLens file server",
+      "url": "https://files.grouplens.org/datasets/movielens/ml-100k.zip",
+      "retrieval_status": "ENDPOINT_LINK_VERIFIED_ARCHIVE_NOT_ACQUIRED",
+      "retrieved_at": "2026-08-23",
+      "unresolved": [
+        "Archive bytes, exact byte count, SHA-256 and member inventory intentionally remain unknown until a validated materialization command packet is executed."
+      ]
+    }
+  ],
+  "environment_source_records": [
+    {
+      "source_id": "CENTRAL-PYTORCH-PREVIOUS-VERSIONS",
+      "authority": "official PyTorch",
+      "url": "https://pytorch.org/get-started/previous-versions/",
+      "retrieval_status": "SUCCESS",
+      "retrieved_at": "2026-08-23",
+      "supported_facts": [
+        "PyTorch publishes a CPU-only pip route for torch 2.1.2 on Linux and Windows through download.pytorch.org/whl/cpu."
+      ],
+      "selection_effect": "NONE_UNTIL_R6_G0"
+    },
+    {
+      "source_id": "CENTRAL-PYPI-TORCH-2.1.2-WIN-CP311",
+      "authority": "Python Package Index release metadata",
+      "url": "https://pypi.org/project/torch/2.1.2/",
+      "retrieval_status": "SUCCESS",
+      "retrieved_at": "2026-08-23",
+      "supported_facts": [
+        "A torch-2.1.2 CPython 3.11 Windows x86-64 wheel is listed.",
+        "The listed wheel SHA-256 is e0ee6cf90c8970e05760f898d58f9ac65821c37ffe8b04269ec787aa70962b69."
+      ],
+      "selection_effect": "NONE_UNTIL_R6_G0_AND_LATER_WHEEL_REPLAY"
+    },
+    {
+      "source_id": "CENTRAL-PYPI-RAY-2.6.3-WIN-CP311",
+      "authority": "Python Package Index release metadata",
+      "url": "https://pypi.org/project/ray/2.6.3/",
+      "retrieval_status": "SUCCESS",
+      "retrieved_at": "2026-08-23",
+      "supported_facts": [
+        "A ray-2.6.3 CPython 3.11 Windows x86-64 wheel is listed.",
+        "The listed wheel SHA-256 is 56b920a1814decdd20a754b7c5048770684d6d3d242c83aa99da5d3e8c339f13."
+      ],
+      "selection_effect": "NONE_UNTIL_R6_G0_AND_LATER_WHEEL_REPLAY"
+    },
+    {
+      "source_id": "CENTRAL-PYPI-RECBOLE-1.2.1",
+      "authority": "Python Package Index release metadata",
+      "url": "https://pypi.org/project/recbole/1.2.1/",
+      "retrieval_status": "SUCCESS",
+      "retrieved_at": "2026-08-23",
+      "supported_facts": [
+        "PyPI lists RecBole 1.2.1 and identifies a hyperopt extra."
+      ],
+      "interpretation_guard": "The PyPI artifact cannot replace the hash-locked local source revision selected by R5-G1."
+    },
+    {
+      "source_id": "CENTRAL-PINNED-SOURCE-TOPLEVEL-IMPORTS",
+      "authority": "hash-locked RecBole source revision",
+      "local_locators": [
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d/recbole/quick_start/quick_start.py:20",
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d/recbole/utils/utils.py:25"
+      ],
+      "retrieval_status": "SUCCESS",
+      "supported_facts": [
+        "The source reproduction quick-start surface imports ray.tune at module import time.",
+        "The shared utility surface imports torch.utils.tensorboard.SummaryWriter at module import time."
+      ],
+      "acceptance_consequence": "R6-E1 cannot classify Ray or TensorBoard as safely absent from the source-reproduction import closure merely because tuning is prohibited."
+    }
+  ],
+  "central_limitations": [
+    "No package or archive was downloaded.",
+    "No wheel hash was locally replayed.",
+    "No environment was created and no import was executed.",
+    "No dataset, RecBole entrypoint, training, evaluation or TEST surface was opened.",
+    "No dataset or environment profile is selected by this receipt."
+  ],
+  "next_use": "INDEPENDENT_CROSS_CHECK_DURING_R6_D1_R6_E1_CENTRAL_VALIDATION",
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}
