@@ -1,0 +1,33 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r3-g1-frozen-input-gate-receipt-1.0",
+  "created_at": "2026-08-22",
+  "stage_id": "R3-G1-ENTRY-GATE",
+  "validator": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r3_g1_frozen_inputs.py",
+  "manifest": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r3_g1_frozen_input_manifest.json",
+  "passed": true,
+  "verdict": "PASS_R3_G1_FROZEN_20_OF_20_READY_FOR_CENTRAL_SYNTHESIS",
+  "failure_count": 0,
+  "frozen_inputs": {
+    "expected": 20,
+    "matched": 20,
+    "strict_json_expected": 14,
+    "strict_json_verified": 14
+  },
+  "candidate_count": 3,
+  "positive_lane_rows": 0,
+  "selection_precomputed": false,
+  "model_profile": {
+    "display_name": "Sol Max Standard",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "max",
+    "service_tier": "standard"
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "next_gate": "RUN_R3_G1_CENTRAL_SYNTHESIS"
+}

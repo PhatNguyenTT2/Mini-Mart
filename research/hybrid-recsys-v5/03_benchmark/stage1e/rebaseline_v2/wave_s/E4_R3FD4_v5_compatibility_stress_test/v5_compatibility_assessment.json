@@ -1,0 +1,475 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r3-fd4-v5-compatibility-assessment-1.0",
+  "created_at": "2026-08-22",
+  "stage_id": "R3-FD4",
+  "model_profile": {
+    "display_name": "Sol XHigh Standard",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "xhigh",
+    "service_tier": "standard"
+  },
+  "seed_manifest_binding": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_p/E4_R3FD1_bundle_seed_discovery/candidate_bundle_seeds.json",
+    "canonical_lf_bytes": 23034,
+    "canonical_lf_sha256": "dce058850afb537f062531d1b128a1c36685bc878a3761e35a22db3d72db8781"
+  },
+  "candidate_count": 3,
+  "candidate_ids": [
+    "R3-BUNDLE-CORNAC-ML100K-001",
+    "R3-BUNDLE-ELLIOT-ML1M-001",
+    "R3-BUNDLE-DAISYREC-ML1M-001"
+  ],
+  "rows": [
+    {
+      "candidate_id": "R3-BUNDLE-CORNAC-ML100K-001",
+      "status": "COMPATIBILITY_INCOMPLETE",
+      "decision_bearing_sources": [
+        {
+          "evidence_id": "R3-FD4-CORNAC-SRC-001",
+          "url": "https://raw.githubusercontent.com/PreferredAI/cornac/42a327f26241790e99f56284e89c3ab903b69c45/README.md",
+          "authority_type": "official_owner_immutable_raw_file",
+          "claim_scope": "Pinned Cornac 2.6.0 task, BPR recipe, RatioSplit example, reported evaluator surface and model inventory.",
+          "access_status": "REPLAYED_OK_PINNED_RAW_HTTP_200",
+          "retrieved_at": "2026-08-22",
+          "notes": "Read-only single-file replay; no repository or archive was acquired."
+        },
+        {
+          "evidence_id": "R3-FD4-CORNAC-SRC-002",
+          "url": "https://raw.githubusercontent.com/PreferredAI/cornac/42a327f26241790e99f56284e89c3ab903b69c45/cornac/models/bpr/recom_bpr.pyx",
+          "authority_type": "official_owner_immutable_model_source",
+          "claim_scope": "Pinned BPR implementation and score(user_idx, item_idx=None) all-known-item score seam.",
+          "access_status": "REPLAYED_OK_PINNED_RAW_HTTP_200",
+          "retrieved_at": "2026-08-22",
+          "notes": "The score method documents scalar or all-known-item relative scores."
+        },
+        {
+          "evidence_id": "R3-FD4-CORNAC-SRC-003",
+          "url": "https://raw.githubusercontent.com/PreferredAI/cornac/42a327f26241790e99f56284e89c3ab903b69c45/cornac/data/dataset.py",
+          "authority_type": "official_owner_immutable_dataset_source",
+          "claim_scope": "Pinned UIR/UIRT builder, duplicate handling and caller-supplied global user/item maps.",
+          "access_status": "REPLAYED_OK_PINNED_RAW_HTTP_200",
+          "retrieved_at": "2026-08-22",
+          "notes": "The builder derives num_items from global_iid_map, providing a plausible catalog-predeclaration seam without synthetic interactions."
+        },
+        {
+          "evidence_id": "R3-FD4-CORNAC-SRC-004",
+          "url": "https://raw.githubusercontent.com/PreferredAI/cornac/42a327f26241790e99f56284e89c3ab903b69c45/cornac/eval_methods/base_method.py",
+          "authority_type": "official_owner_immutable_evaluator_source",
+          "claim_scope": "Pinned from_splits support and source-native ranking candidate construction.",
+          "access_status": "REPLAYED_OK_PINNED_RAW_HTTP_200",
+          "retrieved_at": "2026-08-22",
+          "notes": "Source-native evaluator semantics are evidence only and are not substituted for the harmonized v5 evaluator."
+        },
+        {
+          "evidence_id": "R3-FD4-CORNAC-SRC-005",
+          "url": "https://raw.githubusercontent.com/PreferredAI/cornac/42a327f26241790e99f56284e89c3ab903b69c45/pyproject.toml",
+          "authority_type": "official_owner_immutable_environment_source",
+          "claim_scope": "Pinned Cornac 2.6.0 Python and dependency requirements.",
+          "access_status": "REPLAYED_OK_PINNED_RAW_HTTP_200",
+          "retrieved_at": "2026-08-22",
+          "notes": "Declares Python >=3.10 and core NumPy/SciPy/Cython requirements; no environment was created."
+        }
+      ],
+      "unresolved_fields": [
+        "The frozen seed's GitHub HTML blob locators did not independently replay through the ordinary web path; their locator-specific cache misses remain UNRESOLVED even though separate exact-commit raw owner files replayed.",
+        "The v5 BPR positive-event, duplicate-collapse and interaction-weight mapping is not frozen by the current local contracts.",
+        "The all-5,200-item catalog map, including 250 train-unseen cold items, has not been materialized or parity-tested in Cornac.",
+        "Adapter identity, literal argv, dependency-lock hash, score artifact schema, parity fixtures and hardware receipt remain null or absent.",
+        "No execution evidence establishes runtime feasibility or score-shape parity."
+      ],
+      "current_v5_contract_binding": {
+        "status": "HASH_REPLAY_PASS_LOCAL_CONTRACTS_IMPLEMENTATION_NOT_MATERIALIZED",
+        "frozen_contracts": [
+          {
+            "path": "backend/docs/chatbot/seed-product/benchmark-spec-v5.json",
+            "canonical_lf_bytes": 2629,
+            "canonical_lf_sha256": "acef1c62cc2a9a3ae04fdf2f4b2fb24b3eb8d2634f15e085fbe1878be8dc166d"
+          },
+          {
+            "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_e/E4_R1C_reproduction_adaptation/v5_adapter_and_evaluator_contract.md",
+            "canonical_lf_bytes": 9142,
+            "canonical_lf_sha256": "486a6ba5cae4d174b603b52de7cf04883f5842a5c3685370382ebc927c210812"
+          },
+          {
+            "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_e/E4_R1C_reproduction_adaptation/cross_dataset_reporting_contract.md",
+            "canonical_lf_bytes": 8525,
+            "canonical_lf_sha256": "67217daf4d771a594d07107f4435e39e5b499ce97c845a8b39b4850bf22206f5"
+          },
+          {
+            "path": "inputs/experimental_log.md",
+            "canonical_lf_bytes": 23581,
+            "canonical_lf_sha256": "bd4ba08719667df6a71feccc915d0b84307b71e536bc533735cc61157e8bcf9f"
+          },
+          {
+            "path": "research/hybrid-recsys-v5/01_research/methodology_blueprint.md",
+            "canonical_lf_bytes": 16138,
+            "canonical_lf_sha256": "dfe581aaffa48bdfa5567f151f27525bdb47a704d43f501bdfa7b6572496e0d1"
+          }
+        ],
+        "inspected_read_only_implementation": [
+          {
+            "path": "ai-service/src/ai_service/evaluation/full_catalog.py",
+            "canonical_lf_sha256": "927d1ed05956112e959f4902b3418129db99692db7d899cc25404b31d4feeb6f",
+            "freeze_status": "INSPECTED_CURRENT_LOCAL_SOURCE_NOT_FD0_FROZEN_INPUT"
+          },
+          {
+            "path": "ai-service/src/ai_service/evaluation/metrics.py",
+            "canonical_lf_sha256": "6d5368ad63e729fdf2eb23d04f5f9a1e34b40dd94a9589b93024c1fe09037cc0",
+            "freeze_status": "INSPECTED_CURRENT_LOCAL_SOURCE_NOT_FD0_FROZEN_INPUT"
+          }
+        ]
+      },
+      "task_and_objective_fit": {
+        "verdict": "PLAUSIBLE_FIT_FOR_MANDATORY_BPR_MF_BASELINE_ONLY",
+        "basis": "Cornac's pinned BPR is an implicit pairwise ranking model and the v5 methodology explicitly requires a method-faithful BPR-MF baseline.",
+        "boundary": "This does not establish fit for the proposed Hybrid, sequence, basket, content-transfer or graph-contrastive families, and it does not validate the source MovieLens result on v5."
+      },
+      "input_schema_fit": {
+        "verdict": "BOUNDED_MAPPING_PLAUSIBLE_NOT_FROZEN",
+        "source_schema": "UIR/UIRT with global user/item maps and duplicate suppression",
+        "v5_mapping_surface": "Map frozen internal user/product identities to UIR/UIRT train rows and predeclare the complete catalog through global_iid_map.",
+        "blocking_gap": "The project has not frozen whether BPR positives are purchase-only or deduplicated view-or-purchase observations, nor how repeated event weights collapse."
+      },
+      "split_candidate_and_masking_fit": {
+        "verdict": "SOURCE_PROTOCOL_DIFFERS_HARMONIZED_SEAM_PLAUSIBLE",
+        "source_reference": "Shuffled 80/20 RatioSplit with rating threshold 4.0 is source-only reproduction semantics.",
+        "v5_required": "Frozen temporal train/validation boundaries, full 5,200-item catalog, seen-item mask, organic novel-purchase truth and deterministic raw-product-ID ties.",
+        "adapter_rule": "Use pre-split v5 inputs and export unmasked scores; masking, eligibility and ties remain owned by the shared v5 evaluator."
+      },
+      "evaluator_adapter_fit": {
+        "verdict": "BOUNDED_SCORE_EXPORT_SEAM_PLAUSIBLE_NOT_PARITY_TESTED",
+        "source_capability": "BPR.score can return all-known-item relative scores for a user.",
+        "required_shape": "For each v5 user batch and frozen catalog vector, emit a finite matrix shaped [batch_users, 5200] in project item order.",
+        "prohibited_substitution": "Cornac's printed NDCG/AUC or source-native candidate construction may not enter the harmonized v5 table."
+      },
+      "baseline_coverage": {
+        "verdict": "PARTIAL_MANDATORY_COVERAGE",
+        "covered_role": "BPR-MF; the pinned framework also documents several sanity/neighborhood/neural models, each requiring its own provenance and parity row.",
+        "not_established": "The complete mandatory v5 baseline registry is not covered by this one candidate and must not be inferred from framework inventory."
+      },
+      "environment_isolation_fit": {
+        "verdict": "ISOLATION_DESIGN_PLAUSIBLE_RUNTIME_UNVERIFIED",
+        "requirements": "Dedicated Python >=3.10 environment/container with pinned Cornac 2.6.0 build inputs; no dependency is installed into ai-service.",
+        "hardware": "The BPR path is documented as CPU-capable, but v5 runtime and memory feasibility were not executed or measured."
+      },
+      "bounded_patch_plan": {
+        "verdict": "BOUNDED_PLAN_DEFINED_IMPLEMENTATION_NOT_AUTHORIZED",
+        "steps": [
+          "Freeze the v5 BPR positive-event, duplicate-collapse and interaction-weight policy before materialization.",
+          "Build train/validation Cornac datasets with frozen global user/item maps that include every catalog item without synthetic interactions.",
+          "Wrap BPR.score as a batched score exporter with explicit ID coverage, finite-score and count checks.",
+          "Delegate full-catalog candidates, seen masking, eligibility, tie policy and HR/NDCG/GAUC to the shared v5 evaluator only.",
+          "Materialize isolated environment, adapter/evaluator manifests and adversarial parity fixtures under a later authorized E4 packet."
+        ],
+        "semantic_guard": "No change to BPR mathematics, sampler, objective, scoring function or v5 candidate universe is permitted."
+      },
+      "dispositive_mismatches": []
+    },
+    {
+      "candidate_id": "R3-BUNDLE-ELLIOT-ML1M-001",
+      "status": "COMPATIBILITY_INCOMPLETE",
+      "decision_bearing_sources": [
+        {
+          "evidence_id": "R3-FD4-ELLIOT-SRC-001",
+          "url": "https://raw.githubusercontent.com/sisinflab/elliot/641100a89c707619e557eafc46df7ff46c359a73/config_files/advanced_configuration.yml",
+          "authority_type": "official_owner_immutable_configuration",
+          "claim_scope": "Pinned MovieLens 1M random split/CV, nDCG@50 and BPRMF tuning configuration.",
+          "access_status": "REPLAYED_OK_PINNED_RAW_HTTP_200",
+          "retrieved_at": "2026-08-22",
+          "notes": "Source protocol is retained only for official reproduction."
+        },
+        {
+          "evidence_id": "R3-FD4-ELLIOT-SRC-002",
+          "url": "https://raw.githubusercontent.com/sisinflab/elliot/641100a89c707619e557eafc46df7ff46c359a73/elliot/dataset/dataset.py",
+          "authority_type": "official_owner_immutable_dataset_source",
+          "claim_scope": "Pinned four-column userId/itemId/rating/timestamp loader and dataset/fixed split strategies.",
+          "access_status": "REPLAYED_OK_PINNED_RAW_HTTP_200",
+          "retrieved_at": "2026-08-22",
+          "notes": "The source derives users/items from training interactions, creating an unresolved train-unseen catalog issue."
+        },
+        {
+          "evidence_id": "R3-FD4-ELLIOT-SRC-003",
+          "url": "https://raw.githubusercontent.com/sisinflab/elliot/641100a89c707619e557eafc46df7ff46c359a73/elliot/recommender/latent_factor_models/BPRMF/BPRMF.py",
+          "authority_type": "official_owner_immutable_model_source",
+          "claim_scope": "Pinned BPRMF model, pairwise sampler, training and recommendation entry surfaces.",
+          "access_status": "REPLAYED_OK_PINNED_RAW_HTTP_200",
+          "retrieved_at": "2026-08-22",
+          "notes": "No training or recommendation call was made."
+        },
+        {
+          "evidence_id": "R3-FD4-ELLIOT-SRC-004",
+          "url": "https://raw.githubusercontent.com/sisinflab/elliot/641100a89c707619e557eafc46df7ff46c359a73/elliot/recommender/latent_factor_models/BPRMF/BPRMF_model.py",
+          "authority_type": "official_owner_immutable_model_source",
+          "claim_scope": "Pinned factor-dot-product prediction and dense user-to-item score construction.",
+          "access_status": "REPLAYED_OK_PINNED_RAW_HTTP_200",
+          "retrieved_at": "2026-08-22",
+          "notes": "The source applies its own mask/top-k after score construction; the v5 seam must export before that step."
+        },
+        {
+          "evidence_id": "R3-FD4-ELLIOT-SRC-005",
+          "url": "https://raw.githubusercontent.com/sisinflab/elliot/641100a89c707619e557eafc46df7ff46c359a73/requirements.txt",
+          "authority_type": "official_owner_immutable_environment_source",
+          "claim_scope": "Pinned legacy dependency versions for Elliot v0.3.1 era.",
+          "access_status": "REPLAYED_OK_PINNED_RAW_HTTP_200",
+          "retrieved_at": "2026-08-22",
+          "notes": "Includes NumPy 1.18.0, TensorFlow 2.3.2, SciPy 1.4.1 and pandas 1.1.5; installability was not tested."
+        }
+      ],
+      "unresolved_fields": [
+        "The frozen seed's GitHub commit/blob HTML locators did not independently replay through the ordinary web path; those locator-specific failures remain UNRESOLVED despite separate exact-commit raw file replay.",
+        "The v5 BPR positive-event, duplicate-collapse and interaction-weight mapping is not frozen.",
+        "Pinned Elliot builds the item universe from train_dict; a no-TEST, full-catalog injection path for 250 train-unseen cold items is not implemented or parity-tested.",
+        "The legacy Python/dependency/container lock and modern hardware compatibility are unmaterialized and untested.",
+        "Adapter argv, output schema, score-order/tie fixtures and per-user shared-evaluator receipts are absent."
+      ],
+      "current_v5_contract_binding": {
+        "status": "HASH_REPLAY_PASS_LOCAL_CONTRACTS_IMPLEMENTATION_NOT_MATERIALIZED",
+        "frozen_contracts": [
+          {
+            "path": "backend/docs/chatbot/seed-product/benchmark-spec-v5.json",
+            "canonical_lf_bytes": 2629,
+            "canonical_lf_sha256": "acef1c62cc2a9a3ae04fdf2f4b2fb24b3eb8d2634f15e085fbe1878be8dc166d"
+          },
+          {
+            "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_e/E4_R1C_reproduction_adaptation/v5_adapter_and_evaluator_contract.md",
+            "canonical_lf_bytes": 9142,
+            "canonical_lf_sha256": "486a6ba5cae4d174b603b52de7cf04883f5842a5c3685370382ebc927c210812"
+          },
+          {
+            "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_e/E4_R1C_reproduction_adaptation/cross_dataset_reporting_contract.md",
+            "canonical_lf_bytes": 8525,
+            "canonical_lf_sha256": "67217daf4d771a594d07107f4435e39e5b499ce97c845a8b39b4850bf22206f5"
+          },
+          {
+            "path": "inputs/experimental_log.md",
+            "canonical_lf_bytes": 23581,
+            "canonical_lf_sha256": "bd4ba08719667df6a71feccc915d0b84307b71e536bc533735cc61157e8bcf9f"
+          },
+          {
+            "path": "research/hybrid-recsys-v5/01_research/methodology_blueprint.md",
+            "canonical_lf_bytes": 16138,
+            "canonical_lf_sha256": "dfe581aaffa48bdfa5567f151f27525bdb47a704d43f501bdfa7b6572496e0d1"
+          }
+        ],
+        "inspected_read_only_implementation": [
+          {
+            "path": "ai-service/src/ai_service/evaluation/full_catalog.py",
+            "canonical_lf_sha256": "927d1ed05956112e959f4902b3418129db99692db7d899cc25404b31d4feeb6f",
+            "freeze_status": "INSPECTED_CURRENT_LOCAL_SOURCE_NOT_FD0_FROZEN_INPUT"
+          },
+          {
+            "path": "ai-service/src/ai_service/evaluation/metrics.py",
+            "canonical_lf_sha256": "6d5368ad63e729fdf2eb23d04f5f9a1e34b40dd94a9589b93024c1fe09037cc0",
+            "freeze_status": "INSPECTED_CURRENT_LOCAL_SOURCE_NOT_FD0_FROZEN_INPUT"
+          }
+        ]
+      },
+      "task_and_objective_fit": {
+        "verdict": "PLAUSIBLE_FIT_FOR_MANDATORY_BPR_MF_BASELINE_ONLY",
+        "basis": "Pinned Elliot BPRMF uses pairwise positive-versus-negative factor updates, matching the method-faithful BPR-MF baseline role in the v5 methodology.",
+        "boundary": "Framework breadth does not authorize treating one adapter as coverage for every mandatory v5 baseline."
+      },
+      "input_schema_fit": {
+        "verdict": "BOUNDED_FOUR_COLUMN_MAPPING_PLAUSIBLE_NOT_FROZEN",
+        "source_schema": "Headerless userId, itemId, rating, timestamp TSV",
+        "v5_mapping_surface": "Emit train/validation TSV views from frozen internal IDs and timestamps after one centrally frozen event-folding policy.",
+        "blocking_gap": "Training-only item discovery omits true cold catalog items unless the adapter predeclares the full item map without reading TEST or fabricating positives."
+      },
+      "split_candidate_and_masking_fit": {
+        "verdict": "FIXED_SPLIT_INPUT_EXISTS_HARMONIZED_POLICY_NOT_PROVEN",
+        "source_reference": "The frozen benchmark configuration uses random test subsampling and random cross-validation.",
+        "v5_required": "Use Elliot's fixed-data path with v5 temporal train/validation files, but do not use its source-native recommendation mask, relevance threshold, top-k or tie behavior for harmonized evaluation.",
+        "blocking_gap": "Full-catalog cold-item inclusion and no-TEST catalog construction need an implemented fixture."
+      },
+      "evaluator_adapter_fit": {
+        "verdict": "BOUNDED_PRE_MASK_SCORE_EXPORT_PLAUSIBLE_NOT_PARITY_TESTED",
+        "source_capability": "Pinned BPRMF_model computes user bias plus user-factor/item-factor dot products and can form a dense item-score vector.",
+        "required_shape": "Export finite unmasked [batch_users, 5200] scores in frozen project item order before Elliot's own mask and top-k logic.",
+        "prohibited_substitution": "Elliot nDCG@50 and its candidate/relevance semantics remain source-reproduction evidence only."
+      },
+      "baseline_coverage": {
+        "verdict": "PARTIAL_MULTI_FAMILY_COVERAGE_NOT_REGISTRY_COVERAGE",
+        "covered_role": "BPR-MF is directly relevant; the pinned tree also contains sanity, neighborhood, neural and graph model implementations.",
+        "not_established": "No other Elliot model is revision/config/parity bound as an FD4 row, and sequence, basket, transfer and graph-contrastive registry completeness is not established."
+      },
+      "environment_isolation_fit": {
+        "verdict": "ISOLATION_REQUIRED_HIGH_RISK_RUNTIME_UNVERIFIED",
+        "requirements": "A dedicated legacy environment/container is required because the pinned dependency set includes old NumPy, pandas, SciPy, scikit-learn and TensorFlow versions.",
+        "hardware": "The BPRMF implementation is NumPy-based, but package import/runtime compatibility and 5,200-item batch scoring were not executed."
+      },
+      "bounded_patch_plan": {
+        "verdict": "BOUNDED_PLAN_DEFINED_IMPLEMENTATION_NOT_AUTHORIZED",
+        "steps": [
+          "Freeze one v5 BPR positive-event and duplicate-collapse mapping.",
+          "Use fixed train/validation TSV inputs and prohibit Elliot from creating a random harmonized split.",
+          "Extend only the ID-map/model-allocation seam to predeclare all frozen catalog items without synthetic interactions or TEST reads.",
+          "Export factor-model scores before Elliot masking/top-k and pass them to the shared v5 evaluator.",
+          "Freeze a legacy environment lock and run ID, cold-item, mask, tie, missingness and count parity fixtures only after authorization."
+        ],
+        "semantic_guard": "If full-catalog support requires synthetic positive rows, TEST-derived IDs, score imputation or a changed BPR objective, the candidate becomes dispositively incompatible."
+      },
+      "dispositive_mismatches": []
+    },
+    {
+      "candidate_id": "R3-BUNDLE-DAISYREC-ML1M-001",
+      "status": "COMPATIBILITY_INCOMPLETE",
+      "decision_bearing_sources": [
+        {
+          "evidence_id": "R3-FD4-DAISYREC-SRC-001",
+          "url": "https://raw.githubusercontent.com/recsys-benchmark/DaisyRec-v2.0/e9d0326457fb8aa138f7bb04ab751b17345cdb65/README.md",
+          "authority_type": "official_owner_immutable_protocol_source",
+          "claim_scope": "Pinned top-N scope, original-objective policy, uniform sampler and time-aware split descriptions.",
+          "access_status": "REPLAYED_OK_PINNED_RAW_HTTP_200",
+          "retrieved_at": "2026-08-22",
+          "notes": "Read-only source replay; source-native results are not v5 results."
+        },
+        {
+          "evidence_id": "R3-FD4-DAISYREC-SRC-002",
+          "url": "https://raw.githubusercontent.com/recsys-benchmark/DaisyRec-v2.0/e9d0326457fb8aa138f7bb04ab751b17345cdb65/daisy/utils/loader.py",
+          "authority_type": "official_owner_immutable_dataset_source",
+          "claim_scope": "Pinned user/item/rating/timestamp input schema and MovieLens positive filtering.",
+          "access_status": "REPLAYED_OK_PINNED_RAW_HTTP_200",
+          "retrieved_at": "2026-08-22",
+          "notes": "The v5 event mapping is not inferred from MovieLens rating filtering."
+        },
+        {
+          "evidence_id": "R3-FD4-DAISYREC-SRC-003",
+          "url": "https://raw.githubusercontent.com/recsys-benchmark/DaisyRec-v2.0/e9d0326457fb8aa138f7bb04ab751b17345cdb65/daisy/utils/splitter.py",
+          "authority_type": "official_owner_immutable_split_source",
+          "claim_scope": "Pinned global timestamp split-by-ratio and validation split implementations.",
+          "access_status": "REPLAYED_OK_PINNED_RAW_HTTP_200",
+          "retrieved_at": "2026-08-22",
+          "notes": "Source time-aware semantics are similar in family but not identical to frozen v5 cutoffs."
+        },
+        {
+          "evidence_id": "R3-FD4-DAISYREC-SRC-004",
+          "url": "https://raw.githubusercontent.com/recsys-benchmark/DaisyRec-v2.0/e9d0326457fb8aa138f7bb04ab751b17345cdb65/daisy/model/pair/MFRecommender.py",
+          "authority_type": "official_owner_immutable_model_source",
+          "claim_scope": "Pinned pairwise MF BPR loss surface and vectorized user-item predict method.",
+          "access_status": "REPLAYED_OK_PINNED_RAW_HTTP_200",
+          "retrieved_at": "2026-08-22",
+          "notes": "No model execution occurred."
+        },
+        {
+          "evidence_id": "R3-FD4-DAISYREC-SRC-005",
+          "url": "https://raw.githubusercontent.com/recsys-benchmark/DaisyRec-v2.0/e9d0326457fb8aa138f7bb04ab751b17345cdb65/main.py",
+          "authority_type": "official_owner_immutable_pipeline_source",
+          "claim_scope": "Pinned training, candidate construction, score prediction, top-k and metric pipeline.",
+          "access_status": "REPLAYED_OK_PINNED_RAW_HTTP_200",
+          "retrieved_at": "2026-08-22",
+          "notes": "The native pipeline concatenates train and test before deriving item_num; that behavior is forbidden for v5 and requires a bounded no-TEST driver."
+        },
+        {
+          "evidence_id": "R3-FD4-DAISYREC-SRC-006",
+          "url": "https://raw.githubusercontent.com/recsys-benchmark/DaisyRec-v2.0/e9d0326457fb8aa138f7bb04ab751b17345cdb65/requirements.txt",
+          "authority_type": "official_owner_immutable_environment_source",
+          "claim_scope": "Pinned DaisyRec dependency requirements.",
+          "access_status": "REPLAYED_OK_PINNED_RAW_HTTP_200",
+          "retrieved_at": "2026-08-22",
+          "notes": "Includes broad torch>=1.1.0 and old Cython/SciPy/tqdm/Hyperopt pins; no environment was created."
+        }
+      ],
+      "unresolved_fields": [
+        "The frozen seed's GitHub commit/blob/result HTML locators did not independently replay through the ordinary web path; those exact locator failures remain UNRESOLVED despite separate exact-commit raw source replay.",
+        "The v5 BPR positive-event, duplicate-collapse and interaction-weight mapping is not frozen.",
+        "The native pinned pipeline derives item_num after concatenating train and test, which cannot be used under the sealed v5 TEST boundary; the replacement manifest-driven path is not implemented.",
+        "Full-catalog cold-item allocation, deterministic score export and shared-evaluator parity have not been demonstrated.",
+        "Exact Python/torch/CUDA environment, adapter argv, runtime limits and receipts are absent."
+      ],
+      "current_v5_contract_binding": {
+        "status": "HASH_REPLAY_PASS_LOCAL_CONTRACTS_IMPLEMENTATION_NOT_MATERIALIZED",
+        "frozen_contracts": [
+          {
+            "path": "backend/docs/chatbot/seed-product/benchmark-spec-v5.json",
+            "canonical_lf_bytes": 2629,
+            "canonical_lf_sha256": "acef1c62cc2a9a3ae04fdf2f4b2fb24b3eb8d2634f15e085fbe1878be8dc166d"
+          },
+          {
+            "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_e/E4_R1C_reproduction_adaptation/v5_adapter_and_evaluator_contract.md",
+            "canonical_lf_bytes": 9142,
+            "canonical_lf_sha256": "486a6ba5cae4d174b603b52de7cf04883f5842a5c3685370382ebc927c210812"
+          },
+          {
+            "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_e/E4_R1C_reproduction_adaptation/cross_dataset_reporting_contract.md",
+            "canonical_lf_bytes": 8525,
+            "canonical_lf_sha256": "67217daf4d771a594d07107f4435e39e5b499ce97c845a8b39b4850bf22206f5"
+          },
+          {
+            "path": "inputs/experimental_log.md",
+            "canonical_lf_bytes": 23581,
+            "canonical_lf_sha256": "bd4ba08719667df6a71feccc915d0b84307b71e536bc533735cc61157e8bcf9f"
+          },
+          {
+            "path": "research/hybrid-recsys-v5/01_research/methodology_blueprint.md",
+            "canonical_lf_bytes": 16138,
+            "canonical_lf_sha256": "dfe581aaffa48bdfa5567f151f27525bdb47a704d43f501bdfa7b6572496e0d1"
+          }
+        ],
+        "inspected_read_only_implementation": [
+          {
+            "path": "ai-service/src/ai_service/evaluation/full_catalog.py",
+            "canonical_lf_sha256": "927d1ed05956112e959f4902b3418129db99692db7d899cc25404b31d4feeb6f",
+            "freeze_status": "INSPECTED_CURRENT_LOCAL_SOURCE_NOT_FD0_FROZEN_INPUT"
+          },
+          {
+            "path": "ai-service/src/ai_service/evaluation/metrics.py",
+            "canonical_lf_sha256": "6d5368ad63e729fdf2eb23d04f5f9a1e34b40dd94a9589b93024c1fe09037cc0",
+            "freeze_status": "INSPECTED_CURRENT_LOCAL_SOURCE_NOT_FD0_FROZEN_INPUT"
+          }
+        ]
+      },
+      "task_and_objective_fit": {
+        "verdict": "PLAUSIBLE_FIT_FOR_MANDATORY_BPR_MF_BASELINE_ONLY",
+        "basis": "Pinned DaisyRec pairwise MF uses a BPR loss and uniform negative-sampling surface for top-N recommendation, fitting the mandatory method-faithful BPR-MF baseline role.",
+        "boundary": "Time-aware source protocol similarity does not make its source result or evaluator interchangeable with v5."
+      },
+      "input_schema_fit": {
+        "verdict": "BOUNDED_TABULAR_MAPPING_PLAUSIBLE_NOT_FROZEN",
+        "source_schema": "user, item, rating, timestamp dataframe",
+        "v5_mapping_surface": "Supply a frozen train-only implicit dataframe with manifest-provided user/item cardinalities and no TEST-derived catalog discovery.",
+        "blocking_gap": "The source loader's MovieLens rating>=4 rule cannot define v5 positives, and the project event-folding rule is not frozen."
+      },
+      "split_candidate_and_masking_fit": {
+        "verdict": "TIME_AWARE_FAMILY_FIT_NATIVE_PIPELINE_NOT_V5_SAFE",
+        "source_reference": "Global timestamp split-by-ratio with later validation holdout and source candidate construction.",
+        "v5_required": "Bypass split_test/build_candidates_set for harmonized v5; consume frozen temporal inputs and let the shared evaluator own full-catalog candidates, masks and deterministic ties.",
+        "blocking_gap": "Pinned main.py's train+test concatenation for cardinalities violates the no-TEST boundary unless replaced by a manifest-driven driver."
+      },
+      "evaluator_adapter_fit": {
+        "verdict": "BOUNDED_VECTOR_SCORE_EXPORT_PLAUSIBLE_NOT_PARITY_TESTED",
+        "source_capability": "PairMF.predict accepts vectorized user/item tensors and returns pairwise dot-product scores.",
+        "required_shape": "Batch each eligible v5 user against the complete frozen catalog and return finite [batch_users, 5200] scores before torch.topk.",
+        "prohibited_substitution": "DaisyRec candidate sampling, torch.topk tie behavior and source metric functions are not the harmonized evaluator."
+      },
+      "baseline_coverage": {
+        "verdict": "PARTIAL_MANDATORY_COVERAGE",
+        "covered_role": "BPR-MF; pinned DaisyRec also lists MostPop, ItemKNN and several latent/deep/graph baselines.",
+        "not_established": "No additional model is bound to a complete v5 adapter row, and the mandatory sequence, basket, transfer and graph-contrastive suite is not covered."
+      },
+      "environment_isolation_fit": {
+        "verdict": "ISOLATION_REQUIRED_HIGH_RISK_RUNTIME_UNVERIFIED",
+        "requirements": "Dedicated environment/container with an exact Python/torch/CUDA resolution derived from the broad and legacy pinned requirements; no installation into ai-service.",
+        "hardware": "The pairwise MF path can run on CPU when CUDA is unavailable, but no v5 runtime, memory or determinism receipt exists."
+      },
+      "bounded_patch_plan": {
+        "verdict": "BOUNDED_PLAN_DEFINED_IMPLEMENTATION_NOT_AUTHORIZED",
+        "steps": [
+          "Freeze the v5 BPR positive-event and duplicate-collapse policy.",
+          "Create a small manifest-driven driver that accepts frozen train/validation inputs and explicit user/item cardinalities; do not call the native TEST-dependent cardinality path.",
+          "Retain PairMF BPR objective and uniform sampler while allocating untouched factors for the complete catalog without synthetic interactions.",
+          "Export vectorized pre-top-k scores and delegate all candidate, seen-mask, tie and per-user metric semantics to the shared v5 evaluator.",
+          "Freeze dependency/runtime locks and execute cold-item, TEST-seal, score-shape, tie, missingness and count fixtures only after a later authorization."
+        ],
+        "semantic_guard": "Any implementation that reads TEST to discover IDs, samples evaluation candidates, imputes missing cold scores or changes BPR loss is outside the bounded adapter."
+      },
+      "dispositive_mismatches": []
+    }
+  ],
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

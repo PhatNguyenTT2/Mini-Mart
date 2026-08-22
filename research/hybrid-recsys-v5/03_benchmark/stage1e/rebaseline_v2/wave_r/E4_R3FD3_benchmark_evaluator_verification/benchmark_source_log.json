@@ -1,0 +1,310 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r3-fd3-benchmark-source-log-1.0",
+  "created_at": "2026-08-22",
+  "stage_id": "R3-FD3",
+  "model_profile": {
+    "display_name": "Sol XHigh Standard",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "xhigh",
+    "service_tier": "standard"
+  },
+  "seed_manifest_binding": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_p/E4_R3FD1_bundle_seed_discovery/candidate_bundle_seeds.json",
+    "canonical_lf_bytes": 23034,
+    "canonical_lf_sha256": "dce058850afb537f062531d1b128a1c36685bc878a3761e35a22db3d72db8781"
+  },
+  "candidate_count": 3,
+  "candidate_ids": [
+    "R3-BUNDLE-CORNAC-ML100K-001",
+    "R3-BUNDLE-ELLIOT-ML1M-001",
+    "R3-BUNDLE-DAISYREC-ML1M-001"
+  ],
+  "source_records": [
+    {
+      "evidence_id": "R3-FD3-CORNAC-SRC-001",
+      "url": "https://github.com/PreferredAI/cornac/commit/42a327f26241790e99f56284e89c3ab903b69c45",
+      "authority_type": "official_owner_immutable_commit",
+      "claim_scope": "Immutable Cornac revision and 2.6.0 version identity.",
+      "access_status": "INDEPENDENT_REPLAY_PASS",
+      "retrieved_at": "2026-08-22",
+      "notes": "Observed full commit identity and version-bump diff."
+    },
+    {
+      "evidence_id": "R3-FD3-CORNAC-SRC-002",
+      "url": "https://github.com/PreferredAI/cornac/blob/42a327f26241790e99f56284e89c3ab903b69c45/README.md",
+      "authority_type": "official_owner_revision_pinned_recipe_and_result",
+      "claim_scope": "MovieLens 100K loader, RatioSplit, BPR configuration, experiment invocation, NDCG@10 target 0.1500.",
+      "access_status": "INDEPENDENT_REPLAY_PASS",
+      "retrieved_at": "2026-08-22",
+      "notes": "Pinned page replayed in the read-only browser."
+    },
+    {
+      "evidence_id": "R3-FD3-CORNAC-SRC-003",
+      "url": "https://github.com/PreferredAI/cornac/blob/42a327f26241790e99f56284e89c3ab903b69c45/pyproject.toml",
+      "authority_type": "official_owner_revision_pinned_dependency_recipe",
+      "claim_scope": "Python and direct dependency declarations.",
+      "access_status": "INDEPENDENT_REPLAY_PASS_PARTIAL_LOCK_ONLY",
+      "retrieved_at": "2026-08-22",
+      "notes": "Range-based declarations; not an exact transitive environment lock."
+    },
+    {
+      "evidence_id": "R3-FD3-CORNAC-SRC-004",
+      "url": "https://github.com/PreferredAI/cornac/blob/42a327f26241790e99f56284e89c3ab903b69c45/cornac/eval_methods/ratio_split.py",
+      "authority_type": "official_owner_revision_pinned_split_implementation",
+      "claim_scope": "Shuffling, seeded permutation, ceil-based split sizing, rating threshold and unknown exclusion parameters.",
+      "access_status": "INDEPENDENT_REPLAY_PASS",
+      "retrieved_at": "2026-08-22",
+      "notes": "Source code replayed."
+    },
+    {
+      "evidence_id": "R3-FD3-CORNAC-SRC-005",
+      "url": "https://github.com/PreferredAI/cornac/blob/42a327f26241790e99f56284e89c3ab903b69c45/cornac/eval_methods/base_method.py",
+      "authority_type": "official_owner_revision_pinned_evaluator",
+      "claim_scope": "Candidate construction, seen-item masking, known-item truncation, positive thresholding, user inclusion and macro aggregation.",
+      "access_status": "INDEPENDENT_REPLAY_PASS",
+      "retrieved_at": "2026-08-22",
+      "notes": "Source code replayed."
+    },
+    {
+      "evidence_id": "R3-FD3-CORNAC-SRC-006",
+      "url": "https://github.com/PreferredAI/cornac/blob/42a327f26241790e99f56284e89c3ab903b69c45/cornac/metrics/ranking.py",
+      "authority_type": "official_owner_revision_pinned_metric_implementation",
+      "claim_scope": "Binary NDCG computation and logarithmic discount semantics.",
+      "access_status": "INDEPENDENT_REPLAY_PASS",
+      "retrieved_at": "2026-08-22",
+      "notes": "Source code replayed."
+    },
+    {
+      "evidence_id": "R3-FD3-CORNAC-SRC-007",
+      "url": "https://github.com/PreferredAI/cornac/blob/42a327f26241790e99f56284e89c3ab903b69c45/cornac/models/recommender.py",
+      "authority_type": "official_owner_revision_pinned_ranking_implementation",
+      "claim_scope": "Top-k ranking and observable tie-handling implementation.",
+      "access_status": "INDEPENDENT_REPLAY_PASS_WITH_UNRESOLVED_TIE_CONTRACT",
+      "retrieved_at": "2026-08-22",
+      "notes": "Uses NumPy argpartition/argsort; no explicit secondary tie key observed."
+    },
+    {
+      "evidence_id": "R3-FD3-CORNAC-SRC-008",
+      "url": "https://github.com/PreferredAI/cornac/blob/42a327f26241790e99f56284e89c3ab903b69c45/cornac/datasets/movielens.py",
+      "authority_type": "official_owner_revision_pinned_dataset_loader",
+      "claim_scope": "MovieLens variant-to-provider URL and parser binding.",
+      "access_status": "INDEPENDENT_REPLAY_PASS_WITHOUT_CHECKSUM_BINDING",
+      "retrieved_at": "2026-08-22",
+      "notes": "100K uses canonical GroupLens u.data directly; no checksum is declared in this file."
+    },
+    {
+      "evidence_id": "R3-FD3-ELLIOT-SRC-001",
+      "url": "https://github.com/sisinflab/elliot/commit/641100a89c707619e557eafc46df7ff46c359a73",
+      "authority_type": "official_owner_immutable_commit",
+      "claim_scope": "Immutable Elliot revision.",
+      "access_status": "INDEPENDENT_REPLAY_PASS",
+      "retrieved_at": "2026-08-22",
+      "notes": "Observed commit 641100a and its version fix."
+    },
+    {
+      "evidence_id": "R3-FD3-ELLIOT-SRC-002",
+      "url": "https://github.com/sisinflab/elliot/releases/tag/v0.3.1",
+      "authority_type": "official_owner_release",
+      "claim_scope": "v0.3.1 release-to-commit binding and command-line entrypoint release surface.",
+      "access_status": "INDEPENDENT_REPLAY_PASS",
+      "retrieved_at": "2026-08-22",
+      "notes": "Release page binds v0.3.1 to 641100a."
+    },
+    {
+      "evidence_id": "R3-FD3-ELLIOT-SRC-003",
+      "url": "https://github.com/sisinflab/elliot/blob/641100a89c707619e557eafc46df7ff46c359a73/requirements.txt",
+      "authority_type": "official_owner_revision_pinned_dependency_recipe",
+      "claim_scope": "Direct dependency versions.",
+      "access_status": "INDEPENDENT_REPLAY_PASS_PARTIAL_LOCK_ONLY",
+      "retrieved_at": "2026-08-22",
+      "notes": "Most direct dependencies are exact; Pillow is >=8.1.1 and no transitive/platform lock is present."
+    },
+    {
+      "evidence_id": "R3-FD3-ELLIOT-SRC-004",
+      "url": "https://github.com/sisinflab/elliot/blob/641100a89c707619e557eafc46df7ff46c359a73/setup.py",
+      "authority_type": "official_owner_revision_pinned_build_recipe",
+      "claim_scope": "requirements.txt consumption and supported Python classifiers.",
+      "access_status": "INDEPENDENT_REPLAY_PASS",
+      "retrieved_at": "2026-08-22",
+      "notes": "setup.py parses requirements.txt for install_requires."
+    },
+    {
+      "evidence_id": "R3-FD3-ELLIOT-SRC-005",
+      "url": "https://github.com/sisinflab/elliot/blob/641100a89c707619e557eafc46df7ff46c359a73/start_experiments.py",
+      "authority_type": "official_owner_revision_pinned_training_entrypoint",
+      "claim_scope": "Command-line argument and run_experiment dispatch.",
+      "access_status": "INDEPENDENT_REPLAY_PASS",
+      "retrieved_at": "2026-08-22",
+      "notes": "Observed --config argument and config_files/<name>.yml resolution."
+    },
+    {
+      "evidence_id": "R3-FD3-ELLIOT-SRC-006",
+      "url": "https://github.com/sisinflab/elliot/blob/641100a89c707619e557eafc46df7ff46c359a73/config_files/advanced_configuration.yml",
+      "authority_type": "official_owner_revision_pinned_configuration",
+      "claim_scope": "MovieLens 1M path, 10-core prefilter, test/validation splits, cutoff, relevance threshold, BPRMF search space and epochs.",
+      "access_status": "INDEPENDENT_REPLAY_PASS",
+      "retrieved_at": "2026-08-22",
+      "notes": "Exact configuration content replayed."
+    },
+    {
+      "evidence_id": "R3-FD3-ELLIOT-SRC-007",
+      "url": "https://github.com/sisinflab/elliot/blob/641100a89c707619e557eafc46df7ff46c359a73/elliot/run.py",
+      "authority_type": "official_owner_revision_pinned_experiment_runner",
+      "claim_scope": "v0.3.1 runtime, HyperOpt random state and best-trial selection.",
+      "access_status": "INDEPENDENT_REPLAY_PASS",
+      "retrieved_at": "2026-08-22",
+      "notes": "Observed np.random.RandomState(42) passed to HyperOpt fmin."
+    },
+    {
+      "evidence_id": "R3-FD3-ELLIOT-SRC-008",
+      "url": "https://github.com/sisinflab/elliot/blob/641100a89c707619e557eafc46df7ff46c359a73/elliot/splitter/base_splitter.py",
+      "authority_type": "official_owner_revision_pinned_split_implementation",
+      "claim_scope": "Default split seed, user-wise random holdout and validation fold assignment.",
+      "access_status": "INDEPENDENT_REPLAY_PASS",
+      "retrieved_at": "2026-08-22",
+      "notes": "Observed default random_seed=42 and exact split functions."
+    },
+    {
+      "evidence_id": "R3-FD3-ELLIOT-SRC-009",
+      "url": "https://github.com/sisinflab/elliot/blob/641100a89c707619e557eafc46df7ff46c359a73/elliot/recommender/base_recommender_model.py",
+      "authority_type": "official_owner_revision_pinned_model_protocol",
+      "claim_scope": "Default model seed and NumPy/Python random seeding.",
+      "access_status": "INDEPENDENT_REPLAY_PASS",
+      "retrieved_at": "2026-08-22",
+      "notes": "Observed model seed default 42 and explicit np.random.seed/random.seed."
+    },
+    {
+      "evidence_id": "R3-FD3-ELLIOT-SRC-010",
+      "url": "https://github.com/sisinflab/elliot/blob/641100a89c707619e557eafc46df7ff46c359a73/elliot/recommender/latent_factor_models/BPRMF/BPRMF_model.py",
+      "authority_type": "official_owner_revision_pinned_bprmf_implementation",
+      "claim_scope": "BPRMF initialization, scoring, top-k and observable tie behavior.",
+      "access_status": "INDEPENDENT_REPLAY_PASS_WITH_UNRESOLVED_TIE_CONTRACT",
+      "retrieved_at": "2026-08-22",
+      "notes": "Uses seeded NumPy initialization and argpartition/argsort without an explicit secondary tie key."
+    },
+    {
+      "evidence_id": "R3-FD3-ELLIOT-SRC-011",
+      "url": "https://github.com/sisinflab/elliot/blob/641100a89c707619e557eafc46df7ff46c359a73/elliot/recommender/recommender_utils_mixin.py",
+      "authority_type": "official_owner_revision_pinned_candidate_protocol",
+      "claim_scope": "Negative-sampling switch and candidate-mask selection.",
+      "access_status": "INDEPENDENT_REPLAY_PASS",
+      "retrieved_at": "2026-08-22",
+      "notes": "No negative_sampling block selects allunrated_mask."
+    },
+    {
+      "evidence_id": "R3-FD3-ELLIOT-SRC-012",
+      "url": "https://github.com/sisinflab/elliot/blob/641100a89c707619e557eafc46df7ff46c359a73/elliot/dataset/dataset.py",
+      "authority_type": "official_owner_revision_pinned_dataset_and_mask_implementation",
+      "claim_scope": "Training-known user/item maps and all-unrated candidate mask.",
+      "access_status": "INDEPENDENT_REPLAY_PASS",
+      "retrieved_at": "2026-08-22",
+      "notes": "allunrated_mask is true where the training interaction matrix is zero."
+    },
+    {
+      "evidence_id": "R3-FD3-ELLIOT-SRC-013",
+      "url": "https://github.com/sisinflab/elliot/blob/641100a89c707619e557eafc46df7ff46c359a73/elliot/evaluation/metrics/accuracy/ndcg/ndcg.py",
+      "authority_type": "official_owner_revision_pinned_metric_implementation",
+      "claim_scope": "nDCG cutoff, relevance and user-wise aggregation semantics.",
+      "access_status": "INDEPENDENT_REPLAY_PASS",
+      "retrieved_at": "2026-08-22",
+      "notes": "Source code states per-user computation and averaging over users."
+    },
+    {
+      "evidence_id": "R3-FD3-ELLIOT-SRC-014",
+      "url": "https://github.com/sisinflab/elliot/blob/641100a89c707619e557eafc46df7ff46c359a73/sample_main.py",
+      "authority_type": "official_owner_revision_pinned_preprocessing_recipe",
+      "claim_scope": "GroupLens MovieLens 1M archive URL and ratings.dat-to-TSV conversion.",
+      "access_status": "INDEPENDENT_REPLAY_PASS_WITHOUT_BYTE_CHECKSUM",
+      "retrieved_at": "2026-08-22",
+      "notes": "The recipe invokes a sample config after conversion; archive and generated TSV checksums are absent."
+    },
+    {
+      "evidence_id": "R3-FD3-ELLIOT-SRC-015",
+      "url": "https://abellogin.github.io/2021/sigir.pdf",
+      "authority_type": "author_hosted_original_peer_reviewed_paper",
+      "claim_scope": "Configuration 3 protocol-to-Table 3 binding and BPRMF nDCG@50 target 0.2390.",
+      "access_status": "INDEPENDENT_REPLAY_PASS",
+      "retrieved_at": "2026-08-22",
+      "notes": "Paper text explicitly states Table 3 results were obtained from Configuration 3."
+    },
+    {
+      "evidence_id": "R3-FD3-DAISYREC-SRC-001",
+      "url": "https://github.com/recsys-benchmark/DaisyRec-v2.0/commit/e9d0326457fb8aa138f7bb04ab751b17345cdb65",
+      "authority_type": "official_owner_immutable_commit",
+      "claim_scope": "Pinned DaisyRec 2.0 revision.",
+      "access_status": "UNRESOLVED_CACHE_MISS_NOT_INDEPENDENTLY_REPLAYED",
+      "retrieved_at": "2026-08-22",
+      "notes": "Frozen official locator retained; no positive inference."
+    },
+    {
+      "evidence_id": "R3-FD3-DAISYREC-SRC-002",
+      "url": "https://github.com/recsys-benchmark/DaisyRec-v2.0/blob/e9d0326457fb8aa138f7bb04ab751b17345cdb65/README.md",
+      "authority_type": "official_owner_revision_pinned_protocol_documentation",
+      "claim_scope": "TSBR protocol and tuning policy.",
+      "access_status": "UNRESOLVED_NOT_INDEPENDENTLY_REPLAYED",
+      "retrieved_at": "2026-08-22",
+      "notes": "Frozen official locator only."
+    },
+    {
+      "evidence_id": "R3-FD3-DAISYREC-SRC-003",
+      "url": "https://github.com/recsys-benchmark/DaisyRec-v2.0/blob/e9d0326457fb8aa138f7bb04ab751b17345cdb65/main.py",
+      "authority_type": "official_owner_revision_pinned_training_entrypoint",
+      "claim_scope": "Experiment entrypoint.",
+      "access_status": "UNRESOLVED_NOT_INDEPENDENTLY_REPLAYED",
+      "retrieved_at": "2026-08-22",
+      "notes": "Frozen official locator only."
+    },
+    {
+      "evidence_id": "R3-FD3-DAISYREC-SRC-004",
+      "url": "https://github.com/recsys-benchmark/DaisyRec-v2.0/blob/e9d0326457fb8aa138f7bb04ab751b17345cdb65/daisy/utils/splitter.py",
+      "authority_type": "official_owner_revision_pinned_split_implementation",
+      "claim_scope": "TSBR split implementation.",
+      "access_status": "UNRESOLVED_NOT_INDEPENDENTLY_REPLAYED",
+      "retrieved_at": "2026-08-22",
+      "notes": "Frozen official locator only."
+    },
+    {
+      "evidence_id": "R3-FD3-DAISYREC-SRC-005",
+      "url": "https://github.com/recsys-benchmark/DaisyRec-v2.0/blob/e9d0326457fb8aa138f7bb04ab751b17345cdb65/daisy/utils/metrics.py",
+      "authority_type": "official_owner_revision_pinned_evaluator",
+      "claim_scope": "Ranking metric implementation.",
+      "access_status": "UNRESOLVED_NOT_INDEPENDENTLY_REPLAYED",
+      "retrieved_at": "2026-08-22",
+      "notes": "Frozen official locator only."
+    },
+    {
+      "evidence_id": "R3-FD3-DAISYREC-SRC-006",
+      "url": "https://github.com/recsys-benchmark/DaisyRec-v2.0/blob/e9d0326457fb8aa138f7bb04ab751b17345cdb65/appendix.pdf",
+      "authority_type": "official_owner_revision_pinned_configuration_appendix",
+      "claim_scope": "TSBR BPRMF hyperparameter table.",
+      "access_status": "UNRESOLVED_NOT_INDEPENDENTLY_REPLAYED",
+      "retrieved_at": "2026-08-22",
+      "notes": "Frozen official locator only."
+    },
+    {
+      "evidence_id": "R3-FD3-DAISYREC-SRC-007",
+      "url": "https://github.com/recsys-benchmark/DaisyRec-v2.0-Ranking_results/commit/440c95534cbb21dd0f7b8a7d551bfddbfcb2422e",
+      "authority_type": "official_owner_immutable_result_commit",
+      "claim_scope": "Immutable result documentation revision.",
+      "access_status": "UNRESOLVED_CACHE_MISS_NOT_INDEPENDENTLY_REPLAYED",
+      "retrieved_at": "2026-08-22",
+      "notes": "Frozen official locator retained; no positive inference."
+    },
+    {
+      "evidence_id": "R3-FD3-DAISYREC-SRC-008",
+      "url": "https://github.com/recsys-benchmark/DaisyRec-v2.0-Ranking_results/blob/440c95534cbb21dd0f7b8a7d551bfddbfcb2422e/docs/source/tsbr_results/BPRMF.rst",
+      "authority_type": "official_owner_immutable_numeric_result_table",
+      "claim_scope": "Proposed BPRMF TSBR MovieLens 1M origin NDCG@10 target 0.5275.",
+      "access_status": "UNRESOLVED_NOT_INDEPENDENTLY_REPLAYED",
+      "retrieved_at": "2026-08-22",
+      "notes": "Frozen FD1 assertion only; not accepted by FD3."
+    }
+  ],
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

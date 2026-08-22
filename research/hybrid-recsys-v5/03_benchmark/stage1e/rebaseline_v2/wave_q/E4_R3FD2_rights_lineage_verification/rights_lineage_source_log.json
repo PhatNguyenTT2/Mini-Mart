@@ -1,0 +1,84 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r3-fd2-rights-lineage-source-log-1.0",
+  "created_at": "2026-08-22",
+  "stage_id": "R3-FD2",
+  "model_profile": {
+    "display_name": "Sol XHigh Standard",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "xhigh",
+    "service_tier": "standard"
+  },
+  "seed_manifest_binding": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_p/E4_R3FD1_bundle_seed_discovery/candidate_bundle_seeds.json",
+    "canonical_lf_bytes": 23034,
+    "canonical_lf_sha256": "dce058850afb537f062531d1b128a1c36685bc878a3761e35a22db3d72db8781"
+  },
+  "candidate_count": 3,
+  "candidate_ids": ["R3-BUNDLE-CORNAC-ML100K-001", "R3-BUNDLE-ELLIOT-ML1M-001", "R3-BUNDLE-DAISYREC-ML1M-001"],
+  "rows": [
+    {
+      "candidate_id": "R3-BUNDLE-CORNAC-ML100K-001",
+      "status": "EVIDENCE_INCOMPLETE",
+      "decision_bearing_sources": ["R3-FD2-CORNAC-SRC-001", "R3-FD2-CORNAC-SRC-002", "R3-FD2-CORNAC-SRC-003", "R3-FD2-CORNAC-SRC-004", "R3-FD2-CORNAC-SRC-005", "R3-FD2-CORNAC-SRC-006", "R3-FD2-CORNAC-SRC-007", "R3-FD2-CORNAC-SRC-008", "R3-FD2-CORNAC-SRC-009"],
+      "unresolved_fields": ["ml-100k.zip MD5 payload", "byte equality between ml-100k.zip and directly served ml-100k/u.data"],
+      "source_records": [
+        {"evidence_id":"R3-FD2-CORNAC-SRC-001","url":"https://github.com/PreferredAI/cornac/commit/42a327f26241790e99f56284e89c3ab903b69c45","authority_type":"official_owner_immutable_commit","claim_scope":"Repository identity and 2.6.0 version-bump revision.","access_status":"REPLAYED_OK_WEB","retrieved_at":"2026-08-22","notes":"Full SHA and version change were visible."},
+        {"evidence_id":"R3-FD2-CORNAC-SRC-002","url":"https://github.com/PreferredAI/cornac/releases/tag/v2.6.0","authority_type":"official_owner_release","claim_scope":"Release-to-commit binding.","access_status":"REPLAYED_OK_WEB","retrieved_at":"2026-08-22","notes":"Release identifies commit 42a327f."},
+        {"evidence_id":"R3-FD2-CORNAC-SRC-003","url":"https://github.com/PreferredAI/cornac/blob/42a327f26241790e99f56284e89c3ab903b69c45/LICENSE","authority_type":"official_owner_license_blob","claim_scope":"Revision-pinned Apache-2.0 text and scope.","access_status":"REPLAYED_OK_IN_APP_BROWSER","retrieved_at":"2026-08-22","notes":"Web cache and raw HTTP attempts failed; the live owner blob independently exposed the full text."},
+        {"evidence_id":"R3-FD2-CORNAC-SRC-004","url":"https://www.jmlr.org/papers/v21/19-805.html","authority_type":"original_peer_reviewed_publisher_page","claim_scope":"Cornac framework name, authors and official repository link.","access_status":"REPLAYED_OK_WEB","retrieved_at":"2026-08-22","notes":"JMLR source of record."},
+        {"evidence_id":"R3-FD2-CORNAC-SRC-005","url":"https://grouplens.org/datasets/movielens/100k/","authority_type":"canonical_dataset_provider_release","claim_scope":"Stable release identity, date, archive and checksum-sidecar presence.","access_status":"REPLAYED_OK_WEB","retrieved_at":"2026-08-22","notes":"No archive was acquired."},
+        {"evidence_id":"R3-FD2-CORNAC-SRC-006","url":"https://files.grouplens.org/datasets/movielens/ml-100k-README.txt","authority_type":"canonical_dataset_terms_and_schema","claim_scope":"Conditional research-use terms, release composition and u.data schema.","access_status":"REPLAYED_OK_WEB","retrieved_at":"2026-08-22","notes":"Redistribution and commercial use are restricted."},
+        {"evidence_id":"R3-FD2-CORNAC-SRC-007","url":"https://files.grouplens.org/datasets/movielens/ml-100k/","authority_type":"canonical_provider_unzipped_release_index","claim_scope":"Provider-hosted u.data identity and release file inventory.","access_status":"REPLAYED_OK_WEB","retrieved_at":"2026-08-22","notes":"Index lists u.data and provider split files; no payload was opened."},
+        {"evidence_id":"R3-FD2-CORNAC-SRC-008","url":"https://github.com/PreferredAI/cornac/blob/42a327f26241790e99f56284e89c3ab903b69c45/cornac/datasets/movielens.py","authority_type":"official_owner_immutable_loader","claim_scope":"Canonical u.data URL, path, separator and loader flow.","access_status":"REPLAYED_OK_IN_APP_BROWSER","retrieved_at":"2026-08-22","notes":"Raw/cached transports failed; live owner blob replay succeeded."},
+        {"evidence_id":"R3-FD2-CORNAC-SRC-009","url":"https://github.com/PreferredAI/cornac/blob/42a327f26241790e99f56284e89c3ab903b69c45/cornac/eval_methods/ratio_split.py","authority_type":"official_owner_immutable_split","claim_scope":"Shuffle, size calculation and split lineage.","access_status":"REPLAYED_OK_IN_APP_BROWSER","retrieved_at":"2026-08-22","notes":"Frozen source visibly uses RNG permutation and ceil for fractional sizes."},
+        {"evidence_id":"R3-FD2-CORNAC-UNRESOLVED-001","url":"https://files.grouplens.org/datasets/movielens/ml-100k.zip.md5","authority_type":"canonical_provider_checksum_sidecar","claim_scope":"Archive MD5 payload.","access_status":"UNRESOLVED_REPLAY_FAILED","retrieved_at":"2026-08-22","notes":"Web retrieval reported unsupported content type and direct HTTP transport failed TLS credential setup; no digest was inferred."}
+      ]
+    },
+    {
+      "candidate_id": "R3-BUNDLE-ELLIOT-ML1M-001",
+      "status": "EVIDENCE_INCOMPLETE",
+      "decision_bearing_sources": ["R3-FD2-ELLIOT-SRC-001", "R3-FD2-ELLIOT-SRC-002", "R3-FD2-ELLIOT-SRC-003", "R3-FD2-ELLIOT-SRC-004", "R3-FD2-ELLIOT-SRC-005", "R3-FD2-ELLIOT-SRC-006", "R3-FD2-ELLIOT-SRC-007", "R3-FD2-ELLIOT-SRC-008", "R3-FD2-ELLIOT-SRC-009", "R3-FD2-ELLIOT-SRC-010", "R3-FD2-ELLIOT-SRC-011"],
+      "unresolved_fields": ["ml-1m.zip MD5 payload", "archive-to-ratings.dat-to-dataset.tsv digest chain"],
+      "source_records": [
+        {"evidence_id":"R3-FD2-ELLIOT-SRC-001","url":"https://github.com/sisinflab/elliot/commit/641100a89c707619e557eafc46df7ff46c359a73","authority_type":"official_owner_immutable_commit","claim_scope":"Repository identity and v0.3.1 revision.","access_status":"REPLAYED_OK_IN_APP_BROWSER","retrieved_at":"2026-08-22","notes":"Cached replay failed; live owner commit replay succeeded."},
+        {"evidence_id":"R3-FD2-ELLIOT-SRC-002","url":"https://github.com/sisinflab/elliot/releases/tag/v0.3.1","authority_type":"official_owner_release","claim_scope":"v0.3.1 release-to-commit binding.","access_status":"REPLAYED_OK_IN_APP_BROWSER","retrieved_at":"2026-08-22","notes":"Release identifies 641100a and 2021-07-05 notes."},
+        {"evidence_id":"R3-FD2-ELLIOT-SRC-003","url":"https://github.com/sisinflab/elliot/blob/641100a89c707619e557eafc46df7ff46c359a73/LICENSE","authority_type":"official_owner_license_blob","claim_scope":"Revision-pinned Apache-2.0 text and scope.","access_status":"REPLAYED_OK_IN_APP_BROWSER","retrieved_at":"2026-08-22","notes":"Full owner blob was visible."},
+        {"evidence_id":"R3-FD2-ELLIOT-SRC-004","url":"https://grouplens.org/datasets/movielens/1m/","authority_type":"canonical_dataset_provider_release","claim_scope":"Stable release identity, date, archive and checksum-sidecar presence.","access_status":"REPLAYED_OK_WEB","retrieved_at":"2026-08-22","notes":"No archive was acquired."},
+        {"evidence_id":"R3-FD2-ELLIOT-SRC-005","url":"https://files.grouplens.org/datasets/movielens/ml-1m-README.txt","authority_type":"canonical_dataset_terms_and_schema","claim_scope":"Conditional research-use terms and ratings.dat schema.","access_status":"REPLAYED_OK_WEB","retrieved_at":"2026-08-22","notes":"Provider records 1,000,209 ratings and four fields."},
+        {"evidence_id":"R3-FD2-ELLIOT-SRC-006","url":"https://files.grouplens.org/datasets/movielens/","authority_type":"canonical_provider_directory","claim_scope":"ml-1m.zip and MD5 sidecar publication surface.","access_status":"REPLAYED_OK_WEB","retrieved_at":"2026-08-22","notes":"Directory proves sidecar existence and size, not digest payload."},
+        {"evidence_id":"R3-FD2-ELLIOT-SRC-007","url":"https://github.com/sisinflab/elliot/blob/641100a89c707619e557eafc46df7ff46c359a73/sample_main.py","authority_type":"official_owner_immutable_conversion_recipe","claim_scope":"MovieLens archive URL, extraction and TSV conversion.","access_status":"REPLAYED_OK_IN_APP_BROWSER","retrieved_at":"2026-08-22","notes":"Uses HTTP and performs no checksum validation."},
+        {"evidence_id":"R3-FD2-ELLIOT-SRC-008","url":"https://github.com/sisinflab/elliot/blob/641100a89c707619e557eafc46df7ff46c359a73/config_files/advanced_configuration.yml","authority_type":"official_owner_immutable_configuration","claim_scope":"Dataset path, iterative 10-core and random split declarations.","access_status":"REPLAYED_OK_IN_APP_BROWSER","retrieved_at":"2026-08-22","notes":"Exact frozen configuration replayed."},
+        {"evidence_id":"R3-FD2-ELLIOT-SRC-009","url":"https://github.com/sisinflab/elliot/blob/641100a89c707619e557eafc46df7ff46c359a73/elliot/splitter/base_splitter.py","authority_type":"official_owner_immutable_split_implementation","claim_scope":"Random subsampling and cross-validation implementation.","access_status":"REPLAYED_OK_IN_APP_BROWSER","retrieved_at":"2026-08-22","notes":"Source seeds NumPy from config and splits within user groups."},
+        {"evidence_id":"R3-FD2-ELLIOT-SRC-010","url":"https://github.com/sisinflab/elliot/blob/641100a89c707619e557eafc46df7ff46c359a73/elliot/prefiltering/standard_prefilters.py","authority_type":"official_owner_immutable_prefilter_implementation","claim_scope":"Iterative user/item k-core implementation.","access_status":"REPLAYED_OK_IN_APP_BROWSER","retrieved_at":"2026-08-22","notes":"Alternates user and item filtering until row count stabilizes."},
+        {"evidence_id":"R3-FD2-ELLIOT-SRC-011","url":"https://github.com/sisinflab/elliot/blob/641100a89c707619e557eafc46df7ff46c359a73/elliot/dataset/dataset.py","authority_type":"official_owner_immutable_dataset_loader","claim_scope":"Four-column TSV load, prefilter order and splitter dispatch.","access_status":"REPLAYED_OK_IN_APP_BROWSER","retrieved_at":"2026-08-22","notes":"File declares version 0.3.1."},
+        {"evidence_id":"R3-FD2-ELLIOT-UNRESOLVED-001","url":"https://files.grouplens.org/datasets/movielens/ml-1m.zip.md5","authority_type":"canonical_provider_checksum_sidecar","claim_scope":"Archive MD5 payload.","access_status":"UNRESOLVED_REPLAY_FAILED","retrieved_at":"2026-08-22","notes":"Web retrieval reported unsupported content type and direct HTTP transport failed TLS credential setup; no digest was inferred."}
+      ]
+    },
+    {
+      "candidate_id": "R3-BUNDLE-DAISYREC-ML1M-001",
+      "status": "EVIDENCE_INCOMPLETE",
+      "decision_bearing_sources": ["R3-FD2-DAISYREC-SRC-001", "R3-FD2-DAISYREC-SRC-002", "R3-FD2-DAISYREC-SRC-003", "R3-FD2-DAISYREC-SRC-004", "R3-FD2-DAISYREC-SRC-005", "R3-FD2-DAISYREC-SRC-006", "R3-FD2-DAISYREC-SRC-007", "R3-FD2-DAISYREC-SRC-008", "R3-FD2-DAISYREC-SRC-009", "R3-FD2-DAISYREC-SRC-010"],
+      "unresolved_fields": ["ml-1m.zip MD5 payload", "source-owned acquisition/extraction receipt", "archive-to-local-ratings.dat digest binding"],
+      "source_records": [
+        {"evidence_id":"R3-FD2-DAISYREC-SRC-001","url":"https://github.com/recsys-benchmark/DaisyRec-v2.0/commit/e9d0326457fb8aa138f7bb04ab751b17345cdb65","authority_type":"official_owner_immutable_commit","claim_scope":"Repository identity and frozen revision.","access_status":"REPLAYED_OK_IN_APP_BROWSER","retrieved_at":"2026-08-22","notes":"Cached replay failed; live owner commit replay succeeded."},
+        {"evidence_id":"R3-FD2-DAISYREC-SRC-002","url":"https://github.com/recsys-benchmark/DaisyRec-v2.0/blob/e9d0326457fb8aa138f7bb04ab751b17345cdb65/LICENSE","authority_type":"official_owner_license_blob","claim_scope":"Frozen Apache-2.0 text and correction of seed MIT label.","access_status":"REPLAYED_OK_IN_APP_BROWSER","retrieved_at":"2026-08-22","notes":"The current branch's later license label is not used for the frozen row."},
+        {"evidence_id":"R3-FD2-DAISYREC-SRC-003","url":"https://grouplens.org/datasets/movielens/1m/","authority_type":"canonical_dataset_provider_release","claim_scope":"Stable release identity, date, archive and checksum-sidecar presence.","access_status":"REPLAYED_OK_WEB","retrieved_at":"2026-08-22","notes":"No archive was acquired."},
+        {"evidence_id":"R3-FD2-DAISYREC-SRC-004","url":"https://files.grouplens.org/datasets/movielens/ml-1m-README.txt","authority_type":"canonical_dataset_terms_and_schema","claim_scope":"Conditional research-use terms and ratings.dat schema.","access_status":"REPLAYED_OK_WEB","retrieved_at":"2026-08-22","notes":"Provider restrictions remain controlling for data."},
+        {"evidence_id":"R3-FD2-DAISYREC-SRC-005","url":"https://files.grouplens.org/datasets/movielens/","authority_type":"canonical_provider_directory","claim_scope":"ml-1m.zip and MD5 sidecar publication surface.","access_status":"REPLAYED_OK_WEB","retrieved_at":"2026-08-22","notes":"Digest payload was not replayed."},
+        {"evidence_id":"R3-FD2-DAISYREC-SRC-006","url":"https://github.com/recsys-benchmark/DaisyRec-v2.0/blob/e9d0326457fb8aa138f7bb04ab751b17345cdb65/README.md","authority_type":"official_owner_immutable_protocol_documentation","claim_scope":"Manual dataset acquisition boundary and TSBR/validation lineage.","access_status":"REPLAYED_OK_IN_APP_BROWSER","retrieved_at":"2026-08-22","notes":"README links canonical providers and says data must be placed in data folder."},
+        {"evidence_id":"R3-FD2-DAISYREC-SRC-007","url":"https://github.com/recsys-benchmark/DaisyRec-v2.0/blob/e9d0326457fb8aa138f7bb04ab751b17345cdb65/daisy/utils/loader.py","authority_type":"official_owner_immutable_loader","claim_scope":"Expected local ratings.dat path and preprocessing behavior.","access_status":"REPLAYED_OK_IN_APP_BROWSER","retrieved_at":"2026-08-22","notes":"For ml-1m it retains ratings >=4 and supports origin/filter/core views."},
+        {"evidence_id":"R3-FD2-DAISYREC-SRC-008","url":"https://github.com/recsys-benchmark/DaisyRec-v2.0/blob/e9d0326457fb8aa138f7bb04ab751b17345cdb65/daisy/utils/splitter.py","authority_type":"official_owner_immutable_split_implementation","claim_scope":"Global TSBR and temporal validation implementation.","access_status":"REPLAYED_OK_IN_APP_BROWSER","retrieved_at":"2026-08-22","notes":"TSBR sorts globally by timestamp; validation TSBR defaults to 10%."},
+        {"evidence_id":"R3-FD2-DAISYREC-SRC-009","url":"https://github.com/recsys-benchmark/DaisyRec-v2.0/blob/e9d0326457fb8aa138f7bb04ab751b17345cdb65/main.py","authority_type":"official_owner_immutable_test_entrypoint","claim_scope":"Loader-to-test-split linkage after local input exists.","access_status":"REPLAYED_OK_IN_APP_BROWSER","retrieved_at":"2026-08-22","notes":"No execution was performed."},
+        {"evidence_id":"R3-FD2-DAISYREC-SRC-010","url":"https://github.com/recsys-benchmark/DaisyRec-v2.0/blob/e9d0326457fb8aa138f7bb04ab751b17345cdb65/hpo_tuner.py","authority_type":"official_owner_immutable_tuning_entrypoint","claim_scope":"Training/test split and validation split call chain.","access_status":"REPLAYED_OK_IN_APP_BROWSER","retrieved_at":"2026-08-22","notes":"No execution was performed."},
+        {"evidence_id":"R3-FD2-DAISYREC-UNRESOLVED-001","url":"https://files.grouplens.org/datasets/movielens/ml-1m.zip.md5","authority_type":"canonical_provider_checksum_sidecar","claim_scope":"Archive MD5 payload.","access_status":"UNRESOLVED_REPLAY_FAILED","retrieved_at":"2026-08-22","notes":"Web retrieval reported unsupported content type and direct HTTP transport failed TLS credential setup; no digest was inferred."}
+      ]
+    }
+  ],
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

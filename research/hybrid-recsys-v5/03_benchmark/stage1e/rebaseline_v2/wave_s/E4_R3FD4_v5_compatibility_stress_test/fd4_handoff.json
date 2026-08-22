@@ -1,0 +1,85 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r3-fd4-handoff-1.0",
+  "created_at": "2026-08-22",
+  "stage_id": "R3-FD4",
+  "status": "COMPLETE_FAIL_CLOSED_NO_POSITIVE_COMPATIBILITY_ROWS",
+  "model_profile": {
+    "display_name": "Sol XHigh Standard",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "xhigh",
+    "service_tier": "standard"
+  },
+  "seed_manifest_binding": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_p/E4_R3FD1_bundle_seed_discovery/candidate_bundle_seeds.json",
+    "canonical_lf_bytes": 23034,
+    "canonical_lf_sha256": "dce058850afb537f062531d1b128a1c36685bc878a3761e35a22db3d72db8781"
+  },
+  "candidate_count": 3,
+  "candidate_ids": [
+    "R3-BUNDLE-CORNAC-ML100K-001",
+    "R3-BUNDLE-ELLIOT-ML1M-001",
+    "R3-BUNDLE-DAISYREC-ML1M-001"
+  ],
+  "candidate_statuses": [
+    {
+      "candidate_id": "R3-BUNDLE-CORNAC-ML100K-001",
+      "status": "COMPATIBILITY_INCOMPLETE"
+    },
+    {
+      "candidate_id": "R3-BUNDLE-ELLIOT-ML1M-001",
+      "status": "COMPATIBILITY_INCOMPLETE"
+    },
+    {
+      "candidate_id": "R3-BUNDLE-DAISYREC-ML1M-001",
+      "status": "COMPATIBILITY_INCOMPLETE"
+    }
+  ],
+  "status_counts": {
+    "COMPATIBLE_WITH_BOUNDED_ADAPTER": 0,
+    "COMPATIBILITY_INCOMPLETE": 3,
+    "DISPOSITIVE_REJECT": 0
+  },
+  "selection_performed": false,
+  "selected_candidate_id": null,
+  "lane_selection_allowed": false,
+  "materialization_ready": false,
+  "source_replay_boundary": {
+    "independently_replayed_evidence": "Exact-commit raw files from the three official owner repositories plus hash-replayed local frozen contracts.",
+    "unresolved_evidence": "Frozen GitHub HTML commit/blob/result locators that returned cache misses remain UNRESOLVED; successful raw-file alternatives do not overwrite those locator-specific failures.",
+    "third_party_decision_sources_used": false,
+    "replacement_candidate_discovery_performed": false
+  },
+  "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_s/E4_R3FD4_v5_compatibility_stress_test",
+  "exact_files": [
+    "v5_compatibility_assessment.json",
+    "adaptation_risk_register.json",
+    "fd4_report.md",
+    "fd4_handoff.json"
+  ],
+  "forbidden_operations": {
+    "repository_clone_performed": false,
+    "repository_fetch_performed": false,
+    "repository_or_source_archive_download_performed": false,
+    "dataset_or_checkpoint_download_performed": false,
+    "terms_or_credentials_accepted": false,
+    "package_installation_performed": false,
+    "environment_or_container_creation_performed": false,
+    "preprocessing_performed": false,
+    "training_performed": false,
+    "evaluation_or_benchmark_performed": false,
+    "test_set_access_performed": false,
+    "maintainer_contact_performed": false,
+    "other_lane_repair_performed": false,
+    "winner_selection_performed": false,
+    "materialization_performed": false,
+    "git_operation_performed": false
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "next_gate": "Central validation may import the exact-ID rows and freeze the FD2-FD4 join. R3-G1 alone may make a zero-or-one selection after authoritative replay. R3-M0 and all execution/materialization remain blocked."
+}

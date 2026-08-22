@@ -1,0 +1,180 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r3-fd4-adaptation-risk-register-1.0",
+  "created_at": "2026-08-22",
+  "stage_id": "R3-FD4",
+  "model_profile": {
+    "display_name": "Sol XHigh Standard",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "xhigh",
+    "service_tier": "standard"
+  },
+  "seed_manifest_binding": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_p/E4_R3FD1_bundle_seed_discovery/candidate_bundle_seeds.json",
+    "canonical_lf_bytes": 23034,
+    "canonical_lf_sha256": "dce058850afb537f062531d1b128a1c36685bc878a3761e35a22db3d72db8781"
+  },
+  "candidate_count": 3,
+  "candidate_ids": [
+    "R3-BUNDLE-CORNAC-ML100K-001",
+    "R3-BUNDLE-ELLIOT-ML1M-001",
+    "R3-BUNDLE-DAISYREC-ML1M-001"
+  ],
+  "risk_scale": {
+    "HIGH": "Can invalidate task/objective/candidate/evaluator parity or block materialization; must close before any run.",
+    "MEDIUM": "Can invalidate reproducibility or comparability if unaddressed; requires a frozen control and parity evidence.",
+    "LOW": "Bounded documentation or receipt risk that remains visible but does not by itself establish a semantic mismatch."
+  },
+  "rows": [
+    {
+      "candidate_id": "R3-BUNDLE-CORNAC-ML100K-001",
+      "status": "COMPATIBILITY_INCOMPLETE",
+      "risks": [
+        {
+          "risk_id": "FD4-CORNAC-R01",
+          "area": "input_objective_mapping",
+          "severity": "HIGH",
+          "finding": "The v5 contracts do not freeze how views, purchases, repeated user-item events and interaction weights become BPR positives.",
+          "closure_gate": "Central freeze of one method-faithful event-folding rule plus fixture counts and hashes.",
+          "failure_disposition": "DISPOSITIVE_REJECT if closure changes BPR objective or uses TEST outcomes."
+        },
+        {
+          "risk_id": "FD4-CORNAC-R02",
+          "area": "cold_catalog_identity",
+          "severity": "HIGH",
+          "finding": "The complete catalog can plausibly be predeclared with global_iid_map, but no artifact proves 5,200-ID coverage or train-unseen cold score behavior.",
+          "closure_gate": "No-synthetic-interaction catalog-map fixture with exact coverage and finite-score evidence.",
+          "failure_disposition": "DISPOSITIVE_REJECT if cold items must be dropped or imputed outside the source scoring function."
+        },
+        {
+          "risk_id": "FD4-CORNAC-R03",
+          "area": "shared_evaluator",
+          "severity": "HIGH",
+          "finding": "The score seam is source-evidenced but no v5 shape, mask, tie, missingness or per-user metric parity receipt exists.",
+          "closure_gate": "Adversarial equal-score, seen-item, unknown-ID and manually checkable HR/NDCG/GAUC fixtures.",
+          "failure_disposition": "Remain COMPATIBILITY_INCOMPLETE until all fixtures pass."
+        },
+        {
+          "risk_id": "FD4-CORNAC-R04",
+          "area": "environment_isolation",
+          "severity": "MEDIUM",
+          "finding": "Python/Cython/NumPy build compatibility and v5 CPU runtime are source-declared but untested.",
+          "closure_gate": "Immutable isolated environment lock and later authorized runtime receipt.",
+          "failure_disposition": "Do not modify the ai-service environment or silently change framework revision."
+        },
+        {
+          "risk_id": "FD4-CORNAC-R05",
+          "area": "locator_replay",
+          "severity": "MEDIUM",
+          "finding": "Frozen GitHub HTML blob locators had cache-miss replay failures; exact-commit raw alternatives replayed but do not erase the failed locator state.",
+          "closure_gate": "Central replay of each decision-bearing frozen locator or an explicitly frozen authoritative replacement locator.",
+          "failure_disposition": "Failed locator remains UNRESOLVED and cannot be promoted by inference."
+        }
+      ],
+      "residual_risk": "No materialization readiness; architectural BPR score-export feasibility only.",
+      "dispositive_mismatch_confirmed": false
+    },
+    {
+      "candidate_id": "R3-BUNDLE-ELLIOT-ML1M-001",
+      "status": "COMPATIBILITY_INCOMPLETE",
+      "risks": [
+        {
+          "risk_id": "FD4-ELLIOT-R01",
+          "area": "input_objective_mapping",
+          "severity": "HIGH",
+          "finding": "The four-column source schema is mappable, but the v5 positive-event and duplicate-collapse policy is not frozen.",
+          "closure_gate": "Central event-folding contract and deterministic TSV inventory/hash fixture.",
+          "failure_disposition": "DISPOSITIVE_REJECT if objective semantics are rewritten."
+        },
+        {
+          "risk_id": "FD4-ELLIOT-R02",
+          "area": "cold_catalog_identity",
+          "severity": "HIGH",
+          "finding": "Pinned Dataset derives items from train_dict, omitting train-unseen cold catalog items.",
+          "closure_gate": "Bounded ID-map/model-allocation patch proving all catalog IDs are represented without synthetic interactions or TEST reads.",
+          "failure_disposition": "DISPOSITIVE_REJECT if the patch drops cold items, reads TEST, or imputes scores."
+        },
+        {
+          "risk_id": "FD4-ELLIOT-R03",
+          "area": "shared_evaluator",
+          "severity": "HIGH",
+          "finding": "Dense factor scores exist before Elliot's own mask/top-k, but no exported v5 score artifact or parity receipt exists.",
+          "closure_gate": "Pre-mask score exporter plus shape/order/mask/tie/metric fixtures through the shared evaluator.",
+          "failure_disposition": "Source-native nDCG cannot substitute for the shared receipt."
+        },
+        {
+          "risk_id": "FD4-ELLIOT-R04",
+          "area": "legacy_environment",
+          "severity": "HIGH",
+          "finding": "The pinned dependency set is legacy and may not resolve on the current host/runtime.",
+          "closure_gate": "Isolated immutable container/environment with exact interpreter, dependency and hardware identities.",
+          "failure_disposition": "No package installation or version repair is authorized in FD4."
+        },
+        {
+          "risk_id": "FD4-ELLIOT-R05",
+          "area": "locator_replay",
+          "severity": "MEDIUM",
+          "finding": "Frozen HTML commit/blob locators remain unreplayed; exact-commit raw owner files are separate successful evidence.",
+          "closure_gate": "Central replay or explicit authoritative locator replacement under change control.",
+          "failure_disposition": "Keep each failed locator UNRESOLVED."
+        }
+      ],
+      "residual_risk": "High environment and catalog-map risk; no execution or positive compatibility promotion.",
+      "dispositive_mismatch_confirmed": false
+    },
+    {
+      "candidate_id": "R3-BUNDLE-DAISYREC-ML1M-001",
+      "status": "COMPATIBILITY_INCOMPLETE",
+      "risks": [
+        {
+          "risk_id": "FD4-DAISYREC-R01",
+          "area": "input_objective_mapping",
+          "severity": "HIGH",
+          "finding": "MovieLens rating filtering does not define the v5 BPR positive set, and no v5 event-folding policy is frozen.",
+          "closure_gate": "Central positive-event/duplicate mapping with deterministic dataframe hashes.",
+          "failure_disposition": "DISPOSITIVE_REJECT if mapping changes the pairwise objective."
+        },
+        {
+          "risk_id": "FD4-DAISYREC-R02",
+          "area": "test_seal_and_catalog_identity",
+          "severity": "HIGH",
+          "finding": "Pinned main.py concatenates train and test before deriving item_num, which is forbidden under the sealed v5 TEST boundary.",
+          "closure_gate": "Manifest-driven cardinality and pre-split driver proven never to read TEST while allocating every catalog item.",
+          "failure_disposition": "DISPOSITIVE_REJECT if TEST-derived identity discovery remains necessary."
+        },
+        {
+          "risk_id": "FD4-DAISYREC-R03",
+          "area": "candidate_and_evaluator_semantics",
+          "severity": "HIGH",
+          "finding": "Native candidate construction and torch.topk are not the v5 full-catalog deterministic-tie evaluator.",
+          "closure_gate": "Pre-top-k full score export and adversarial shared-evaluator fixtures.",
+          "failure_disposition": "No sampled-candidate or source-metric row may enter the harmonized table."
+        },
+        {
+          "risk_id": "FD4-DAISYREC-R04",
+          "area": "legacy_environment",
+          "severity": "HIGH",
+          "finding": "Broad torch lower bound plus old Cython/SciPy pins leave interpreter/CUDA resolution ambiguous.",
+          "closure_gate": "Exact isolated environment lock and later authorized CPU/GPU runtime receipt.",
+          "failure_disposition": "No silent model simplification or dependency substitution."
+        },
+        {
+          "risk_id": "FD4-DAISYREC-R05",
+          "area": "locator_replay",
+          "severity": "MEDIUM",
+          "finding": "Frozen HTML code/result locators remain unreplayed; successful raw source replays do not change those locator-specific failures.",
+          "closure_gate": "Central exact-locator replay or controlled authoritative-locator replacement.",
+          "failure_disposition": "Unreplayed locator remains UNRESOLVED."
+        }
+      ],
+      "residual_risk": "A bounded no-TEST driver is plausible but not implemented; compatibility remains incomplete.",
+      "dispositive_mismatch_confirmed": false
+    }
+  ],
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

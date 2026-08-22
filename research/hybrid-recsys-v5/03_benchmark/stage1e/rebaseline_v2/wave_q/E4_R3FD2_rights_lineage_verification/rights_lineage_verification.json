@@ -1,0 +1,267 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r3-fd2-rights-lineage-verification-1.0",
+  "created_at": "2026-08-22",
+  "stage_id": "R3-FD2",
+  "model_profile": {
+    "display_name": "Sol XHigh Standard",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "xhigh",
+    "service_tier": "standard"
+  },
+  "seed_manifest_binding": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_p/E4_R3FD1_bundle_seed_discovery/candidate_bundle_seeds.json",
+    "canonical_lf_bytes": 23034,
+    "canonical_lf_sha256": "dce058850afb537f062531d1b128a1c36685bc878a3761e35a22db3d72db8781"
+  },
+  "candidate_count": 3,
+  "candidate_ids": [
+    "R3-BUNDLE-CORNAC-ML100K-001",
+    "R3-BUNDLE-ELLIOT-ML1M-001",
+    "R3-BUNDLE-DAISYREC-ML1M-001"
+  ],
+  "rows": [
+    {
+      "candidate_id": "R3-BUNDLE-CORNAC-ML100K-001",
+      "status": "EVIDENCE_INCOMPLETE",
+      "decision_bearing_sources": [
+        {"evidence_id":"R3-FD2-CORNAC-SRC-001","url":"https://github.com/PreferredAI/cornac/commit/42a327f26241790e99f56284e89c3ab903b69c45","authority_type":"official_owner_immutable_commit","claim_scope":"Repository identity and 2.6.0 version-bump revision.","access_status":"REPLAYED_OK_WEB","retrieved_at":"2026-08-22","notes":"Full SHA and version change were visible."},
+        {"evidence_id":"R3-FD2-CORNAC-SRC-002","url":"https://github.com/PreferredAI/cornac/releases/tag/v2.6.0","authority_type":"official_owner_release","claim_scope":"Release-to-commit binding.","access_status":"REPLAYED_OK_WEB","retrieved_at":"2026-08-22","notes":"Release identifies commit 42a327f."},
+        {"evidence_id":"R3-FD2-CORNAC-SRC-003","url":"https://github.com/PreferredAI/cornac/blob/42a327f26241790e99f56284e89c3ab903b69c45/LICENSE","authority_type":"official_owner_license_blob","claim_scope":"Revision-pinned Apache-2.0 text and scope.","access_status":"REPLAYED_OK_IN_APP_BROWSER","retrieved_at":"2026-08-22","notes":"Web cache and raw HTTP attempts failed; the live owner blob independently exposed the full text."},
+        {"evidence_id":"R3-FD2-CORNAC-SRC-004","url":"https://www.jmlr.org/papers/v21/19-805.html","authority_type":"original_peer_reviewed_publisher_page","claim_scope":"Cornac framework name, authors and official repository link.","access_status":"REPLAYED_OK_WEB","retrieved_at":"2026-08-22","notes":"JMLR source of record."},
+        {"evidence_id":"R3-FD2-CORNAC-SRC-005","url":"https://grouplens.org/datasets/movielens/100k/","authority_type":"canonical_dataset_provider_release","claim_scope":"Stable release identity, date, archive and checksum-sidecar presence.","access_status":"REPLAYED_OK_WEB","retrieved_at":"2026-08-22","notes":"No archive was acquired."},
+        {"evidence_id":"R3-FD2-CORNAC-SRC-006","url":"https://files.grouplens.org/datasets/movielens/ml-100k-README.txt","authority_type":"canonical_dataset_terms_and_schema","claim_scope":"Conditional research-use terms, release composition and u.data schema.","access_status":"REPLAYED_OK_WEB","retrieved_at":"2026-08-22","notes":"Redistribution and commercial use are restricted."},
+        {"evidence_id":"R3-FD2-CORNAC-SRC-007","url":"https://files.grouplens.org/datasets/movielens/ml-100k/","authority_type":"canonical_provider_unzipped_release_index","claim_scope":"Provider-hosted u.data identity and release file inventory.","access_status":"REPLAYED_OK_WEB","retrieved_at":"2026-08-22","notes":"Index lists u.data and provider split files; no payload was opened."},
+        {"evidence_id":"R3-FD2-CORNAC-SRC-008","url":"https://github.com/PreferredAI/cornac/blob/42a327f26241790e99f56284e89c3ab903b69c45/cornac/datasets/movielens.py","authority_type":"official_owner_immutable_loader","claim_scope":"Canonical u.data URL, path, separator and loader flow.","access_status":"REPLAYED_OK_IN_APP_BROWSER","retrieved_at":"2026-08-22","notes":"Raw/cached transports failed; live owner blob replay succeeded."},
+        {"evidence_id":"R3-FD2-CORNAC-SRC-009","url":"https://github.com/PreferredAI/cornac/blob/42a327f26241790e99f56284e89c3ab903b69c45/cornac/eval_methods/ratio_split.py","authority_type":"official_owner_immutable_split","claim_scope":"Shuffle, size calculation and split lineage.","access_status":"REPLAYED_OK_IN_APP_BROWSER","retrieved_at":"2026-08-22","notes":"Frozen source visibly uses RNG permutation and ceil for fractional sizes."}
+      ],
+      "unresolved_fields": [
+        "The published ml-100k.zip MD5 payload was not independently replayed; the provider page and directory only prove that the sidecar exists.",
+        "Cornac loads the provider-hosted unzipped ml-100k/u.data directly, but no provider-published byte checksum for that exact served file was verified.",
+        "No byte-level equality proof joins the directly served u.data to the checksum-bearing ml-100k.zip release."
+      ],
+      "repository_identity": {
+        "status": "VERIFIED",
+        "repository": "https://github.com/PreferredAI/cornac",
+        "owner": "PreferredAI",
+        "immutable_revision": "42a327f26241790e99f56284e89c3ab903b69c45",
+        "release_binding": "GitHub release v2.6.0 identifies commit 42a327f; the commit changes the package version to 2.6.0.",
+        "evidence_ids": ["R3-FD2-CORNAC-SRC-001", "R3-FD2-CORNAC-SRC-002", "R3-FD2-CORNAC-SRC-004"]
+      },
+      "affirmative_code_license": {
+        "status": "VERIFIED",
+        "license_id": "Apache-2.0",
+        "revision_binding": "The LICENSE blob was independently replayed at the full frozen commit.",
+        "scope": "The text grants copyright and patent permissions for the covered Work, including use, reproduction, modification and distribution, subject to the license conditions.",
+        "conditions": [
+          "Provide a copy of the license on redistribution.",
+          "Mark modified files and preserve applicable notices.",
+          "Observe any NOTICE obligations and the trademark exclusion in the license text."
+        ],
+        "evidence_ids": ["R3-FD2-CORNAC-SRC-003"]
+      },
+      "dataset_provider_release": {
+        "status": "VERIFIED_RELEASE_SURFACE_CHECKSUM_PAYLOAD_UNRESOLVED",
+        "provider": "GroupLens Research, University of Minnesota",
+        "release": "MovieLens 100K stable benchmark release, released 1998-04",
+        "canonical_archive": "https://files.grouplens.org/datasets/movielens/ml-100k.zip",
+        "provider_identity": "The canonical release page describes 100,000 ratings and links the archive, README, checksum sidecar, and unzipped directory.",
+        "evidence_ids": ["R3-FD2-CORNAC-SRC-005", "R3-FD2-CORNAC-SRC-007", "R3-FD2-CORNAC-SRC-009"]
+      },
+      "dataset_lawful_use_basis": {
+        "status": "CONDITIONAL_RESEARCH_USE_VERIFIED",
+        "basis": "The provider README permits research use only under stated conditions.",
+        "conditions": [
+          "Do not imply University of Minnesota or GroupLens endorsement.",
+          "Acknowledge dataset use in resulting publications.",
+          "Do not redistribute without separate permission.",
+          "Do not use for commercial or revenue-bearing purposes without prior provider permission."
+        ],
+        "boundary": "Public availability is not treated as a general license. Project eligibility and compliance remain user/institution responsibilities before acquisition.",
+        "evidence_ids": ["R3-FD2-CORNAC-SRC-006"]
+      },
+      "raw_or_source_data_identity": {
+        "status": "LOCATOR_AND_SCHEMA_VERIFIED_BYTE_IDENTITY_INCOMPLETE",
+        "framework_input": "Cornac's frozen movielens.py maps variant 100K to https://files.grouplens.org/datasets/movielens/ml-100k/u.data and parses tab-separated user, item, rating and optional timestamp fields.",
+        "provider_binding": "The provider's unzipped release index lists u.data; the README defines it as the full 100,000-rating file with user, item, rating and timestamp columns.",
+        "limitation": "The exact u.data payload was not acquired or hashed, and the archive checksum payload was not replayed.",
+        "evidence_ids": ["R3-FD2-CORNAC-SRC-006", "R3-FD2-CORNAC-SRC-007", "R3-FD2-CORNAC-SRC-008"]
+      },
+      "preprocessing_and_split_lineage": {
+        "status": "VERIFIED_SOURCE_RECIPE",
+        "lineage": [
+          "Frozen loader: canonical provider u.data -> Cornac Reader with tab separator.",
+          "Frozen RatioSplit always shuffles using its seeded RNG permutation.",
+          "The seed recipe's test_size=0.2 maps to ceil(0.2*N) test rows; rating_threshold=4.0 is used for ranking relevance and exclude_unknowns defaults true."
+        ],
+        "evidence_ids": ["R3-FD2-CORNAC-SRC-008", "R3-FD2-CORNAC-SRC-009"]
+      },
+      "acquisition_boundaries": {
+        "status": "PUBLIC_PROVIDER_SURFACE_CONDITIONAL_ACQUISITION",
+        "observed_authentication": "No authentication was required to read the provider release, README, unzipped index, owner commit, or owner source pages.",
+        "not_performed": ["repository acquisition", "dataset acquisition", "terms acceptance", "preprocessing", "split generation", "training", "evaluation"],
+        "future_boundary": "Any later materialization must be separately authorized, confirm research-use eligibility, preserve attribution, avoid redistribution, and establish byte identity before preprocessing.",
+        "evidence_ids": ["R3-FD2-CORNAC-SRC-003", "R3-FD2-CORNAC-SRC-005", "R3-FD2-CORNAC-SRC-006"]
+      }
+    },
+    {
+      "candidate_id": "R3-BUNDLE-ELLIOT-ML1M-001",
+      "status": "EVIDENCE_INCOMPLETE",
+      "decision_bearing_sources": [
+        {"evidence_id":"R3-FD2-ELLIOT-SRC-001","url":"https://github.com/sisinflab/elliot/commit/641100a89c707619e557eafc46df7ff46c359a73","authority_type":"official_owner_immutable_commit","claim_scope":"Repository identity and v0.3.1 revision.","access_status":"REPLAYED_OK_IN_APP_BROWSER","retrieved_at":"2026-08-22","notes":"Cached replay failed; live owner commit replay succeeded."},
+        {"evidence_id":"R3-FD2-ELLIOT-SRC-002","url":"https://github.com/sisinflab/elliot/releases/tag/v0.3.1","authority_type":"official_owner_release","claim_scope":"v0.3.1 release-to-commit binding.","access_status":"REPLAYED_OK_IN_APP_BROWSER","retrieved_at":"2026-08-22","notes":"Release identifies 641100a and 2021-07-05 notes."},
+        {"evidence_id":"R3-FD2-ELLIOT-SRC-003","url":"https://github.com/sisinflab/elliot/blob/641100a89c707619e557eafc46df7ff46c359a73/LICENSE","authority_type":"official_owner_license_blob","claim_scope":"Revision-pinned Apache-2.0 text and scope.","access_status":"REPLAYED_OK_IN_APP_BROWSER","retrieved_at":"2026-08-22","notes":"Full owner blob was visible."},
+        {"evidence_id":"R3-FD2-ELLIOT-SRC-004","url":"https://grouplens.org/datasets/movielens/1m/","authority_type":"canonical_dataset_provider_release","claim_scope":"Stable release identity, date, archive and checksum-sidecar presence.","access_status":"REPLAYED_OK_WEB","retrieved_at":"2026-08-22","notes":"No archive was acquired."},
+        {"evidence_id":"R3-FD2-ELLIOT-SRC-005","url":"https://files.grouplens.org/datasets/movielens/ml-1m-README.txt","authority_type":"canonical_dataset_terms_and_schema","claim_scope":"Conditional research-use terms and ratings.dat schema.","access_status":"REPLAYED_OK_WEB","retrieved_at":"2026-08-22","notes":"Provider records 1,000,209 ratings and four fields."},
+        {"evidence_id":"R3-FD2-ELLIOT-SRC-006","url":"https://files.grouplens.org/datasets/movielens/","authority_type":"canonical_provider_directory","claim_scope":"ml-1m.zip and MD5 sidecar publication surface.","access_status":"REPLAYED_OK_WEB","retrieved_at":"2026-08-22","notes":"Directory proves sidecar existence and size, not digest payload."},
+        {"evidence_id":"R3-FD2-ELLIOT-SRC-007","url":"https://github.com/sisinflab/elliot/blob/641100a89c707619e557eafc46df7ff46c359a73/sample_main.py","authority_type":"official_owner_immutable_conversion_recipe","claim_scope":"MovieLens archive URL, extraction and TSV conversion.","access_status":"REPLAYED_OK_IN_APP_BROWSER","retrieved_at":"2026-08-22","notes":"Uses HTTP and performs no checksum validation."},
+        {"evidence_id":"R3-FD2-ELLIOT-SRC-008","url":"https://github.com/sisinflab/elliot/blob/641100a89c707619e557eafc46df7ff46c359a73/config_files/advanced_configuration.yml","authority_type":"official_owner_immutable_configuration","claim_scope":"Dataset path, iterative 10-core and random split declarations.","access_status":"REPLAYED_OK_IN_APP_BROWSER","retrieved_at":"2026-08-22","notes":"Exact frozen configuration replayed."},
+        {"evidence_id":"R3-FD2-ELLIOT-SRC-009","url":"https://github.com/sisinflab/elliot/blob/641100a89c707619e557eafc46df7ff46c359a73/elliot/splitter/base_splitter.py","authority_type":"official_owner_immutable_split_implementation","claim_scope":"Random subsampling and cross-validation implementation.","access_status":"REPLAYED_OK_IN_APP_BROWSER","retrieved_at":"2026-08-22","notes":"Source seeds NumPy from config and splits within user groups."},
+        {"evidence_id":"R3-FD2-ELLIOT-SRC-010","url":"https://github.com/sisinflab/elliot/blob/641100a89c707619e557eafc46df7ff46c359a73/elliot/prefiltering/standard_prefilters.py","authority_type":"official_owner_immutable_prefilter_implementation","claim_scope":"Iterative user/item k-core implementation.","access_status":"REPLAYED_OK_IN_APP_BROWSER","retrieved_at":"2026-08-22","notes":"Alternates user and item filtering until row count stabilizes."},
+        {"evidence_id":"R3-FD2-ELLIOT-SRC-011","url":"https://github.com/sisinflab/elliot/blob/641100a89c707619e557eafc46df7ff46c359a73/elliot/dataset/dataset.py","authority_type":"official_owner_immutable_dataset_loader","claim_scope":"Four-column TSV load, prefilter order and splitter dispatch.","access_status":"REPLAYED_OK_IN_APP_BROWSER","retrieved_at":"2026-08-22","notes":"File declares version 0.3.1."}
+      ],
+      "unresolved_fields": [
+        "The published ml-1m.zip MD5 payload was not independently replayed.",
+        "The frozen sample_main.py fetches the archive over HTTP and performs no checksum validation.",
+        "No source-owned digest binds the downloaded archive, extracted ratings.dat, generated dataset.tsv, and advanced_configuration.yml input path."
+      ],
+      "repository_identity": {
+        "status": "VERIFIED",
+        "repository": "https://github.com/sisinflab/elliot",
+        "owner": "sisinflab",
+        "immutable_revision": "641100a89c707619e557eafc46df7ff46c359a73",
+        "release_binding": "The owner release v0.3.1 identifies commit 641100a; the commit changes a configuration version to 0.3.1.",
+        "evidence_ids": ["R3-FD2-ELLIOT-SRC-001", "R3-FD2-ELLIOT-SRC-002"]
+      },
+      "affirmative_code_license": {
+        "status": "VERIFIED",
+        "license_id": "Apache-2.0",
+        "revision_binding": "The LICENSE blob was independently replayed at the full frozen commit.",
+        "scope": "The text grants copyright and patent permissions for the covered Work, subject to Apache-2.0 conditions.",
+        "conditions": ["Include the license on redistribution.", "Mark modifications and preserve applicable notices.", "Observe NOTICE and trademark provisions where applicable."],
+        "evidence_ids": ["R3-FD2-ELLIOT-SRC-003"]
+      },
+      "dataset_provider_release": {
+        "status": "VERIFIED_RELEASE_SURFACE_CHECKSUM_PAYLOAD_UNRESOLVED",
+        "provider": "GroupLens Research, University of Minnesota",
+        "release": "MovieLens 1M stable benchmark release, released 2003-02",
+        "canonical_archive": "https://files.grouplens.org/datasets/movielens/ml-1m.zip",
+        "provider_identity": "The canonical release page describes the stable 1M release and links the archive, README and checksum sidecar.",
+        "evidence_ids": ["R3-FD2-ELLIOT-SRC-004", "R3-FD2-ELLIOT-SRC-006"]
+      },
+      "dataset_lawful_use_basis": {
+        "status": "CONDITIONAL_RESEARCH_USE_VERIFIED",
+        "basis": "The provider README permits research use under explicit conditions.",
+        "conditions": ["No implied endorsement.", "Publication acknowledgement required.", "No redistribution without separate permission.", "No commercial or revenue-bearing use without prior provider permission."],
+        "boundary": "The conditions are not broadened into a general-purpose or redistribution license.",
+        "evidence_ids": ["R3-FD2-ELLIOT-SRC-005"]
+      },
+      "raw_or_source_data_identity": {
+        "status": "CANONICAL_LOCATOR_AND_TRANSFORM_VERIFIED_BYTE_IDENTITY_INCOMPLETE",
+        "framework_input": "Frozen sample_main.py names the canonical GroupLens ml-1m.zip URL, extracts ml-1m/ratings.dat, replaces :: separators with tabs, and writes data/movielens_1m/dataset.tsv.",
+        "provider_binding": "The provider README defines ratings.dat as UserID::MovieID::Rating::Timestamp with 1,000,209 ratings.",
+        "integrity_gap": "The script uses HTTP and does not check the provider's published checksum; no generated-TSV digest is supplied.",
+        "evidence_ids": ["R3-FD2-ELLIOT-SRC-005", "R3-FD2-ELLIOT-SRC-007", "R3-FD2-ELLIOT-SRC-011"]
+      },
+      "preprocessing_and_split_lineage": {
+        "status": "VERIFIED_SOURCE_RECIPE",
+        "lineage": [
+          "ratings.dat is converted to a four-column tab-separated dataset.tsv without dropping timestamp.",
+          "advanced_configuration.yml applies iterative user/item 10-core filtering.",
+          "The frozen prefilter loops user and item profile-size filters until row count stabilizes.",
+          "The configuration requests one 20% random-subsampling test fold and five-fold random cross-validation; the frozen dataset loader reads four columns, applies prefiltering, then dispatches to the frozen splitter."
+        ],
+        "evidence_ids": ["R3-FD2-ELLIOT-SRC-007", "R3-FD2-ELLIOT-SRC-008", "R3-FD2-ELLIOT-SRC-009", "R3-FD2-ELLIOT-SRC-010", "R3-FD2-ELLIOT-SRC-011"]
+      },
+      "acquisition_boundaries": {
+        "status": "PUBLIC_PROVIDER_SURFACE_CONDITIONAL_ACQUISITION_WITH_INTEGRITY_GAP",
+        "observed_authentication": "No authentication was required to read the owner and provider evidence pages.",
+        "not_performed": ["repository acquisition", "dataset acquisition", "terms acceptance", "conversion", "filtering", "splitting", "training", "evaluation"],
+        "future_boundary": "Materialization would require separate authorization, a user-owned eligibility decision, HTTPS acquisition from GroupLens, independent checksum verification, and a digest for the generated TSV before the config consumes it.",
+        "evidence_ids": ["R3-FD2-ELLIOT-SRC-003", "R3-FD2-ELLIOT-SRC-004", "R3-FD2-ELLIOT-SRC-005", "R3-FD2-ELLIOT-SRC-007"]
+      }
+    },
+    {
+      "candidate_id": "R3-BUNDLE-DAISYREC-ML1M-001",
+      "status": "EVIDENCE_INCOMPLETE",
+      "decision_bearing_sources": [
+        {"evidence_id":"R3-FD2-DAISYREC-SRC-001","url":"https://github.com/recsys-benchmark/DaisyRec-v2.0/commit/e9d0326457fb8aa138f7bb04ab751b17345cdb65","authority_type":"official_owner_immutable_commit","claim_scope":"Repository identity and frozen revision.","access_status":"REPLAYED_OK_IN_APP_BROWSER","retrieved_at":"2026-08-22","notes":"Cached replay failed; live owner commit replay succeeded."},
+        {"evidence_id":"R3-FD2-DAISYREC-SRC-002","url":"https://github.com/recsys-benchmark/DaisyRec-v2.0/blob/e9d0326457fb8aa138f7bb04ab751b17345cdb65/LICENSE","authority_type":"official_owner_license_blob","claim_scope":"Frozen Apache-2.0 text and correction of seed MIT label.","access_status":"REPLAYED_OK_IN_APP_BROWSER","retrieved_at":"2026-08-22","notes":"The current branch's later license label is not used for the frozen row."},
+        {"evidence_id":"R3-FD2-DAISYREC-SRC-003","url":"https://grouplens.org/datasets/movielens/1m/","authority_type":"canonical_dataset_provider_release","claim_scope":"Stable release identity, date, archive and checksum-sidecar presence.","access_status":"REPLAYED_OK_WEB","retrieved_at":"2026-08-22","notes":"No archive was acquired."},
+        {"evidence_id":"R3-FD2-DAISYREC-SRC-004","url":"https://files.grouplens.org/datasets/movielens/ml-1m-README.txt","authority_type":"canonical_dataset_terms_and_schema","claim_scope":"Conditional research-use terms and ratings.dat schema.","access_status":"REPLAYED_OK_WEB","retrieved_at":"2026-08-22","notes":"Provider restrictions remain controlling for data."},
+        {"evidence_id":"R3-FD2-DAISYREC-SRC-005","url":"https://files.grouplens.org/datasets/movielens/","authority_type":"canonical_provider_directory","claim_scope":"ml-1m.zip and MD5 sidecar publication surface.","access_status":"REPLAYED_OK_WEB","retrieved_at":"2026-08-22","notes":"Digest payload was not replayed."},
+        {"evidence_id":"R3-FD2-DAISYREC-SRC-006","url":"https://github.com/recsys-benchmark/DaisyRec-v2.0/blob/e9d0326457fb8aa138f7bb04ab751b17345cdb65/README.md","authority_type":"official_owner_immutable_protocol_documentation","claim_scope":"Manual dataset acquisition boundary and TSBR/validation lineage.","access_status":"REPLAYED_OK_IN_APP_BROWSER","retrieved_at":"2026-08-22","notes":"README links canonical providers and says data must be placed in data folder."},
+        {"evidence_id":"R3-FD2-DAISYREC-SRC-007","url":"https://github.com/recsys-benchmark/DaisyRec-v2.0/blob/e9d0326457fb8aa138f7bb04ab751b17345cdb65/daisy/utils/loader.py","authority_type":"official_owner_immutable_loader","claim_scope":"Expected local ratings.dat path and preprocessing behavior.","access_status":"REPLAYED_OK_IN_APP_BROWSER","retrieved_at":"2026-08-22","notes":"For ml-1m it retains ratings >=4 and supports origin/filter/core views."},
+        {"evidence_id":"R3-FD2-DAISYREC-SRC-008","url":"https://github.com/recsys-benchmark/DaisyRec-v2.0/blob/e9d0326457fb8aa138f7bb04ab751b17345cdb65/daisy/utils/splitter.py","authority_type":"official_owner_immutable_split_implementation","claim_scope":"Global TSBR and temporal validation implementation.","access_status":"REPLAYED_OK_IN_APP_BROWSER","retrieved_at":"2026-08-22","notes":"TSBR sorts globally by timestamp; validation TSBR defaults to 10%."},
+        {"evidence_id":"R3-FD2-DAISYREC-SRC-009","url":"https://github.com/recsys-benchmark/DaisyRec-v2.0/blob/e9d0326457fb8aa138f7bb04ab751b17345cdb65/main.py","authority_type":"official_owner_immutable_test_entrypoint","claim_scope":"Loader-to-test-split linkage after local input exists.","access_status":"REPLAYED_OK_IN_APP_BROWSER","retrieved_at":"2026-08-22","notes":"No execution was performed."},
+        {"evidence_id":"R3-FD2-DAISYREC-SRC-010","url":"https://github.com/recsys-benchmark/DaisyRec-v2.0/blob/e9d0326457fb8aa138f7bb04ab751b17345cdb65/hpo_tuner.py","authority_type":"official_owner_immutable_tuning_entrypoint","claim_scope":"Training/test split and validation split call chain.","access_status":"REPLAYED_OK_IN_APP_BROWSER","retrieved_at":"2026-08-22","notes":"No execution was performed."}
+      ],
+      "unresolved_fields": [
+        "The published ml-1m.zip MD5 payload was not independently replayed.",
+        "The frozen repository provides a manual provider link and expected local ratings.dat path, but no source-owned acquisition/extraction/checksum script for MovieLens 1M.",
+        "No manifest or digest binds GroupLens ml-1m.zip to ./data/ml-1m/ratings.dat or to the processed frame consumed by the protocol."
+      ],
+      "repository_identity": {
+        "status": "VERIFIED",
+        "repository": "https://github.com/recsys-benchmark/DaisyRec-v2.0",
+        "owner": "recsys-benchmark",
+        "immutable_revision": "e9d0326457fb8aa138f7bb04ab751b17345cdb65",
+        "release_binding": "The full commit was independently replayed in the official owner repository; no separate release tag was required or inferred.",
+        "evidence_ids": ["R3-FD2-DAISYREC-SRC-001"]
+      },
+      "affirmative_code_license": {
+        "status": "VERIFIED_SEED_LABEL_CORRECTED",
+        "license_id": "Apache-2.0",
+        "revision_binding": "The frozen commit's LICENSE blob contains Apache License 2.0. The seed's MIT description is not carried forward.",
+        "scope": "The frozen Work has affirmative Apache-2.0 copyright and patent grants, subject to its conditions.",
+        "conditions": ["Include the license on redistribution.", "Mark modifications and preserve applicable notices.", "Observe NOTICE and trademark provisions where applicable."],
+        "evidence_ids": ["R3-FD2-DAISYREC-SRC-002"]
+      },
+      "dataset_provider_release": {
+        "status": "VERIFIED_RELEASE_SURFACE_CHECKSUM_PAYLOAD_UNRESOLVED",
+        "provider": "GroupLens Research, University of Minnesota",
+        "release": "MovieLens 1M stable benchmark release, released 2003-02",
+        "canonical_archive": "https://files.grouplens.org/datasets/movielens/ml-1m.zip",
+        "provider_identity": "The canonical release page links the archive, README and checksum sidecar.",
+        "evidence_ids": ["R3-FD2-DAISYREC-SRC-003", "R3-FD2-DAISYREC-SRC-005"]
+      },
+      "dataset_lawful_use_basis": {
+        "status": "CONDITIONAL_RESEARCH_USE_VERIFIED",
+        "basis": "The provider README permits research use under explicit conditions.",
+        "conditions": ["No implied endorsement.", "Publication acknowledgement required.", "No redistribution without separate permission.", "No commercial or revenue-bearing use without prior provider permission."],
+        "boundary": "The provider conditions remain separate from the repository's code license.",
+        "evidence_ids": ["R3-FD2-DAISYREC-SRC-004"]
+      },
+      "raw_or_source_data_identity": {
+        "status": "PROVIDER_AND_EXPECTED_PATH_VERIFIED_BYTE_LINEAGE_INCOMPLETE",
+        "framework_input": "The frozen README points users to GroupLens MovieLens releases and requires manual placement in data; the frozen loader expects ./data/ml-1m/ratings.dat with :: separators.",
+        "provider_binding": "The GroupLens README identifies ratings.dat and its four fields. The DaisyRec loader then retains ratings >=4, supports the origin view, binarizes for tuning, and categorical-encodes user/item IDs.",
+        "integrity_gap": "No frozen acquisition or checksum step binds the provider archive to the expected local file.",
+        "evidence_ids": ["R3-FD2-DAISYREC-SRC-004", "R3-FD2-DAISYREC-SRC-006", "R3-FD2-DAISYREC-SRC-007"]
+      },
+      "preprocessing_and_split_lineage": {
+        "status": "VERIFIED_SOURCE_RECIPE_AFTER_LOCAL_INPUT",
+        "lineage": [
+          "For ml-1m, frozen loader.py reads ratings.dat, retains ratings >=4, uses the origin view without extra k-filtering, and maps interactions to internal IDs.",
+          "Frozen splitter.py implements global TSBR by sorting all rows by timestamp and placing the latest test_size fraction in test.",
+          "Frozen hpo_tuner.py invokes split_validation on the training portion; the TSBR validation implementation holds out the latest val_size fraction, whose default is 0.1.",
+          "Frozen README documents global rho=80% TSBR and latest 10% of training for validation."
+        ],
+        "evidence_ids": ["R3-FD2-DAISYREC-SRC-006", "R3-FD2-DAISYREC-SRC-007", "R3-FD2-DAISYREC-SRC-008", "R3-FD2-DAISYREC-SRC-009", "R3-FD2-DAISYREC-SRC-010"]
+      },
+      "acquisition_boundaries": {
+        "status": "MANUAL_CONDITIONAL_ACQUISITION_BYTE_BINDING_REQUIRED",
+        "observed_authentication": "No authentication was required to read the owner and provider evidence pages.",
+        "not_performed": ["repository acquisition", "dataset acquisition", "terms acceptance", "manual extraction", "preprocessing", "splitting", "training", "evaluation"],
+        "future_boundary": "Materialization would require separate authorization, research-use eligibility confirmation, canonical provider acquisition, checksum replay and validation, a documented extraction path, and a digest binding the local ratings.dat before any preprocessing.",
+        "evidence_ids": ["R3-FD2-DAISYREC-SRC-002", "R3-FD2-DAISYREC-SRC-003", "R3-FD2-DAISYREC-SRC-004", "R3-FD2-DAISYREC-SRC-006"]
+      }
+    }
+  ],
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}
