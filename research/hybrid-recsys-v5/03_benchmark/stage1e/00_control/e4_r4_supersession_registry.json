@@ -1,0 +1,33 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r4-supersession-registry-1.0",
+  "created_at": "2026-08-22",
+  "trigger": {
+    "source_stage": "R3-G1",
+    "source_verdict": "NO_SELECTION_EVIDENCE_REMAINS_INSUFFICIENT",
+    "user_decision": "START_NEW_STRICT_DISCOVERY_WAVE"
+  },
+  "policy": {
+    "artifact_deletion_performed": false,
+    "materialized_asset_deletion_required": false,
+    "reason_no_asset_deletion": "R3 did not clone repositories, acquire datasets, create environments, train, evaluate or open TEST.",
+    "r3_rows_may_be_cross_joined_into_r4": false,
+    "r3_rows_execution_eligible": false,
+    "automatic_reconsideration_allowed": false
+  },
+  "source_decision": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_t/E4_R3G1_bundle_selection/selection_decision.json",
+  "rows": [
+    {"row_id":"R3-BUNDLE-CORNAC-ML100K-001","prior_status":"NO_SELECTION_EVIDENCE_INCOMPLETE","new_status":"ARCHIVED_R3_NO_SELECTION_NOT_EXECUTION_ELIGIBLE"},
+    {"row_id":"R3-BUNDLE-ELLIOT-ML1M-001","prior_status":"NO_SELECTION_EVIDENCE_INCOMPLETE","new_status":"ARCHIVED_R3_NO_SELECTION_NOT_EXECUTION_ELIGIBLE"},
+    {"row_id":"R3-BUNDLE-DAISYREC-ML1M-001","prior_status":"NO_SELECTION_EVIDENCE_INCOMPLETE","new_status":"ARCHIVED_R3_NO_SELECTION_NOT_EXECUTION_ELIGIBLE"}
+  ],
+  "row_count": 3,
+  "replacement_proposal_namespace": "R4-D1*-PROP-*",
+  "replacement_bundle_namespace": "R4-BUNDLE-*",
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

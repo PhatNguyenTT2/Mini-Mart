@@ -1,0 +1,62 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r4-s0-gate-receipt-1.0",
+  "created_at": "2026-08-22",
+  "stage_id": "R4-S0-CENTRAL-VALIDATION",
+  "validator": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r4_s0_gate.py",
+  "frozen_input_manifest": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r4_s0_frozen_input_manifest.json",
+  "passed": true,
+  "verdict": "PASS_R4_S0_STRICT_GATE_20_OF_20_READY_FOR_R4_D1",
+  "failure_count": 0,
+  "mechanical_checks": {
+    "passed": 32,
+    "expected": 32
+  },
+  "frozen_inputs": {
+    "matched": 20,
+    "expected": 20,
+    "strict_json_verified": 12,
+    "strict_json_expected": 12
+  },
+  "strict_admission": {
+    "mandatory_dimensions": 12,
+    "required_dimension_status": "PASS_PRIMARY_REPLAYED",
+    "unresolved_mandatory_fields_allowed": 0,
+    "weighted_compensation_allowed": false,
+    "cross_join_allowed": false,
+    "zero_admission_is_valid": true,
+    "central_frozen_maximum": 3
+  },
+  "model_policy": {
+    "central": {
+      "display_name": "Sol Max Standard",
+      "runtime_model_id": "gpt-5.6-sol",
+      "reasoning_effort": "max",
+      "service_tier": "standard"
+    },
+    "workers": {
+      "display_name": "Sol XHigh Standard",
+      "runtime_model_id": "gpt-5.6-sol",
+      "reasoning_effort": "xhigh",
+      "service_tier": "standard"
+    }
+  },
+  "supersession": {
+    "archived_r3_candidate_count": 3,
+    "r3_rows_execution_eligible": 0,
+    "artifact_deletion_performed": false
+  },
+  "execution_boundary": {
+    "repository_or_asset_download": "BLOCKED",
+    "environment_creation": "BLOCKED",
+    "preprocessing_training_evaluation": "BLOCKED",
+    "test_access": "BLOCKED",
+    "R4-M0": "NOT_OPENED"
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}
