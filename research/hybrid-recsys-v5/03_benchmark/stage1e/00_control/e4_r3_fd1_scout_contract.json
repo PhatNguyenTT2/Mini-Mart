@@ -1,0 +1,62 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r3-fd1-scout-contract-1.0",
+  "created_at": "2026-08-22",
+  "proposal_id_pattern": "^R3-FD1[ABC]-PROP-[0-9]{3}$",
+  "proposal_count_per_scout": {"minimum": 1, "maximum": 3},
+  "required_proposal_fields": [
+    "proposal_id",
+    "framework_name",
+    "repository_locator",
+    "immutable_revision_locator",
+    "repository_license_locator",
+    "reference_paper_locator",
+    "dataset_name",
+    "dataset_provider_locator",
+    "dataset_release_id",
+    "dataset_terms_locator",
+    "preprocessing_split_locator",
+    "training_entrypoint_locator",
+    "configuration_locator",
+    "evaluator_locator",
+    "benchmark_target_locator",
+    "benchmark_target_summary",
+    "task_family",
+    "source_inventory",
+    "scout_status",
+    "unresolved_fields"
+  ],
+  "source_record_fields": [
+    "evidence_id",
+    "url",
+    "authority_type",
+    "claim_scope",
+    "access_status",
+    "retrieved_at",
+    "notes"
+  ],
+  "statuses": [
+    "PLAUSIBLE_COMPLETE_PROPOSAL",
+    "INCOMPLETE_EXCLUDED"
+  ],
+  "exact_files_per_scout": [
+    "scout_candidates.json",
+    "scout_report.md",
+    "scout_handoff.json"
+  ],
+  "old_candidate_surface_reuse_allowed": false,
+  "cross_join_allowed": false,
+  "scout_selection_allowed": false,
+  "model_profile": {
+    "display_name": "Sol XHigh Standard",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "xhigh",
+    "service_tier": "standard"
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

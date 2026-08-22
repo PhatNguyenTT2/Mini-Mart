@@ -1,0 +1,125 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r3-verification-lane-contract-1.0",
+  "created_at": "2026-08-22",
+  "common_top_level_fields": [
+    "schema_version",
+    "created_at",
+    "stage_id",
+    "model_profile",
+    "seed_manifest_binding",
+    "candidate_count",
+    "candidate_ids",
+    "rows",
+    "truth_state"
+  ],
+  "common_row_fields": [
+    "candidate_id",
+    "status",
+    "decision_bearing_sources",
+    "unresolved_fields"
+  ],
+  "source_record_fields": [
+    "evidence_id",
+    "url",
+    "authority_type",
+    "claim_scope",
+    "access_status",
+    "retrieved_at",
+    "notes"
+  ],
+  "seed_binding_fields": [
+    "path",
+    "canonical_lf_bytes",
+    "canonical_lf_sha256"
+  ],
+  "fd2": {
+    "stage_id": "R3-FD2",
+    "data_file": "rights_lineage_verification.json",
+    "exact_files": [
+      "rights_lineage_verification.json",
+      "rights_lineage_source_log.json",
+      "fd2_report.md",
+      "fd2_handoff.json"
+    ],
+    "row_fields": [
+      "repository_identity",
+      "affirmative_code_license",
+      "dataset_provider_release",
+      "dataset_lawful_use_basis",
+      "raw_or_source_data_identity",
+      "preprocessing_and_split_lineage",
+      "acquisition_boundaries"
+    ],
+    "statuses": [
+      "EVIDENCE_SUFFICIENT_FOR_G1_REVIEW",
+      "EVIDENCE_INCOMPLETE",
+      "DISPOSITIVE_REJECT"
+    ]
+  },
+  "fd3": {
+    "stage_id": "R3-FD3",
+    "data_file": "benchmark_evaluator_verification.json",
+    "exact_files": [
+      "benchmark_evaluator_verification.json",
+      "benchmark_source_log.json",
+      "fd3_report.md",
+      "fd3_handoff.json"
+    ],
+    "row_fields": [
+      "repository_revision",
+      "environment_or_dependency_lock",
+      "training_entrypoint",
+      "configuration_and_seed_protocol",
+      "source_dataset_and_split_binding",
+      "evaluator_and_metric_semantics",
+      "published_numeric_target",
+      "same_surface_join_verdict"
+    ],
+    "statuses": [
+      "EVIDENCE_SUFFICIENT_FOR_G1_REVIEW",
+      "EVIDENCE_INCOMPLETE",
+      "DISPOSITIVE_REJECT"
+    ]
+  },
+  "fd4": {
+    "stage_id": "R3-FD4",
+    "data_file": "v5_compatibility_assessment.json",
+    "exact_files": [
+      "v5_compatibility_assessment.json",
+      "adaptation_risk_register.json",
+      "fd4_report.md",
+      "fd4_handoff.json"
+    ],
+    "row_fields": [
+      "current_v5_contract_binding",
+      "task_and_objective_fit",
+      "input_schema_fit",
+      "split_candidate_and_masking_fit",
+      "evaluator_adapter_fit",
+      "baseline_coverage",
+      "environment_isolation_fit",
+      "bounded_patch_plan",
+      "dispositive_mismatches"
+    ],
+    "statuses": [
+      "COMPATIBLE_WITH_BOUNDED_ADAPTER",
+      "COMPATIBILITY_INCOMPLETE",
+      "DISPOSITIVE_REJECT"
+    ]
+  },
+  "model_profile": {
+    "display_name": "Sol XHigh Standard",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "xhigh",
+    "service_tier": "standard"
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "cross_join_allowed": false,
+  "lane_selection_allowed": false
+}

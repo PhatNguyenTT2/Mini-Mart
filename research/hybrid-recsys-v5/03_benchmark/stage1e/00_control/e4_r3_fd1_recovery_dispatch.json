@@ -1,0 +1,68 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r3-fd1-recovery-dispatch-1.0",
+  "created_at": "2026-08-22",
+  "stage_id": "R3-FD1",
+  "incident": {
+    "agent_id": "01a0297e-9cfa-7751-8500-caa931915286",
+    "nickname": "McClintock",
+    "observed_status_before_shutdown": "running",
+    "reason": "Timeboxed monolithic seed scan did not emit a handoff after an explicit finalize-now redirect.",
+    "shutdown_requested": true,
+    "output_imported": false,
+    "scientific_effect": "NONE",
+    "truth_state_changed": false
+  },
+  "recovery_topology": {
+    "type": "PARALLEL_SCOUTS_THEN_CENTRAL_COMPOSITION",
+    "external_stage_contract_changed": false,
+    "external_fd1_write_set_changed": false,
+    "scouts": [
+      {
+        "id": "R3-FD1A",
+        "scope": "established_recommender_frameworks",
+        "write_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_p/E4_R3FD1A_framework_scout"
+      },
+      {
+        "id": "R3-FD1B",
+        "scope": "academic_benchmark_and_reproducibility_suites",
+        "write_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_p/E4_R3FD1B_benchmark_scout"
+      },
+      {
+        "id": "R3-FD1C",
+        "scope": "production_or_research_toolkits_with_source_owned_recipes",
+        "write_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_p/E4_R3FD1C_toolkit_scout"
+      }
+    ],
+    "central_composition": {
+      "context": "current_central",
+      "model_profile": "Sol Max Standard",
+      "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_p/E4_R3FD1_bundle_seed_discovery",
+      "candidate_seed_min": 3,
+      "candidate_seed_max": 5,
+      "selection_allowed": false
+    }
+  },
+  "model_policy": {
+    "scouts": {
+      "display_name": "Sol XHigh Standard",
+      "runtime_model_id": "gpt-5.6-sol",
+      "reasoning_effort": "xhigh",
+      "service_tier": "standard"
+    },
+    "central_composition": {
+      "display_name": "Sol Max Standard",
+      "runtime_model_id": "gpt-5.6-sol",
+      "reasoning_effort": "max",
+      "service_tier": "standard"
+    }
+  },
+  "forbidden_operations_remain_unchanged": true,
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}
+
