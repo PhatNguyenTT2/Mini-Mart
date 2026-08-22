@@ -2,7 +2,7 @@
   "schema_version": "academic-research-pipeline-state-1.0",
   "project": "hybrid-recsys-v5",
   "stage": "1E",
-  "state": "stage1e_rebaseline_v2_r3_g1_frozen_inputs_ready_for_central_synthesis",
+  "state": "stage1e_rebaseline_v2_r3_g1_complete_fail_closed_no_selection_awaiting_user_scope_decision",
   "updated_at": "2026-08-22",
   "model": "gpt-5.6-sol",
   "reasoning": "max",
@@ -15,7 +15,7 @@
     "record": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/wave1_v1_supersession_record.json"
   },
   "rebaseline_v2": {
-    "status": "e4_r3_g1_frozen_inputs_ready_for_central_synthesis",
+    "status": "e4_r3_g1_complete_fail_closed_no_selection_awaiting_user_scope_decision",
     "wave_a_expected": 3,
     "wave_a_active": 0,
     "wave_a_complete": 3,
@@ -555,7 +555,7 @@
       "next_gate": "USER_CHECKPOINT_CHOOSE_MAINTAINER_CONTACT_NEW_FRAMEWORK_DATASET_ROW_OR_PAUSE"
     },
     "e4_r3": {
-      "status": "FD2_FD4_COMPLETE_VALIDATED_FROZEN_READY_FOR_G1",
+      "status": "G1_COMPLETE_FAIL_CLOSED_NO_SELECTION_AWAITING_USER_SCOPE_DECISION",
       "entry_checkpoint": "USER_CONFIRMED_CREATE_NEW_FRAMEWORK_DATASET_ROW",
       "bundle_label": "FRAMEWORK_REPRODUCTION_REFERENCE",
       "model_policy": {
@@ -633,12 +633,30 @@
         }
       },
       "g1": {
-        "status": "READY_FOR_CENTRAL_SYNTHESIS",
+        "status": "COMPLETE_FAIL_CLOSED_CENTRALLY_VALIDATED",
         "context": "current_central",
         "model": "gpt-5.6-sol",
         "reasoning": "max",
         "service_tier": "standard",
-        "display_name": "Sol Max Standard"
+        "display_name": "Sol Max Standard",
+        "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_t/E4_R3G1_bundle_selection",
+        "central_validation": {
+          "status": "PASS_R3_G1_NO_SELECTION_FAIL_CLOSED_R3_M0_NOT_OPENED",
+          "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r3_g1_validation_receipt.json",
+          "mechanical_checks": "25/25",
+          "output_files": "6/6",
+          "strict_json_outputs": "5/5",
+          "failure_count": 0
+        },
+        "candidate_count": 3,
+        "eligible_candidate_count": 0,
+        "selected_candidate_count": 0,
+        "selected_candidate_id": null,
+        "verdict": "NO_SELECTION_EVIDENCE_REMAINS_INSUFFICIENT",
+        "central_replay_required_candidates": 0,
+        "central_replays_attempted": 0,
+        "materialization_allowed": false,
+        "R3-M0": "NOT_OPENED_NO_SELECTION"
       },
       "truth_state": {
         "RESULT_STATUS": "NOT_RUN",
@@ -647,13 +665,13 @@
         "project_benchmark_numbers": "INVALID_FOR_PAPER"
       },
       "execution_authorized": false,
-      "next_gate": "RUN_R3_G1_CENTRAL_SYNTHESIS"
+      "next_gate": "MANDATORY_USER_SCOPE_DECISION_TARGETED_REMEDIATION_NEW_DISCOVERY_OR_PAUSE"
     }
   },
-  "central_preregistration_lock": "BLOCKED_R3_PENDING_BUNDLE_SELECTION",
-  "adapt_reproduce": "BLOCKED_R3_PENDING_G1_AND_R3_M0",
+  "central_preregistration_lock": "BLOCKED_R3_G1_NO_SELECTION",
+  "adapt_reproduce": "BLOCKED_R3_G1_NO_SELECTION_SCOPE_DECISION_REQUIRED",
   "harmonized_v5": "BLOCKED",
   "external_validation": "BLOCKED",
   "efficiency": "BLOCKED_AFTER_ACCURACY",
-  "next_gate": "RUN R3-G1 in the current central Sol Max Standard context from the 20/20 frozen input manifest. Because every worker row is incomplete, only a fail-closed no-selection verdict can pass unless the frozen evidence itself proves otherwise. R3-M0 and all materialization/execution remain blocked."
+  "next_gate": "MANDATORY USER CHECKPOINT: choose targeted evidence remediation for one named frozen bundle, start another change-controlled discovery wave with stricter complete-bundle admission, or pause the empirical reference track. R3-M0 was not opened; all materialization, execution and TEST access remain blocked."
 }

@@ -1,0 +1,115 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r3-g1-handoff-1.0",
+  "created_at": "2026-08-22",
+  "stage_id": "R3-G1",
+  "workflow": "ars-codex:academic-research-suite/academic-pipeline with experiment-agent evidence discipline",
+  "model_profile": {
+    "display_name": "Sol Max Standard",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "max",
+    "service_tier": "standard"
+  },
+  "seed_manifest_binding": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_p/E4_R3FD1_bundle_seed_discovery/candidate_bundle_seeds.json",
+    "canonical_lf_bytes": 23034,
+    "canonical_lf_sha256": "dce058850afb537f062531d1b128a1c36685bc878a3761e35a22db3d72db8781"
+  },
+  "candidate_ids": [
+    "R3-BUNDLE-CORNAC-ML100K-001",
+    "R3-BUNDLE-ELLIOT-ML1M-001",
+    "R3-BUNDLE-DAISYREC-ML1M-001"
+  ],
+  "material_passport": {
+    "origin_skill": "ars-codex:academic-research-suite/academic-pipeline",
+    "origin_mode": "central-exact-intersection-fail-closed-no-selection",
+    "origin_date": "2026-08-22",
+    "verification_status": "ANALYZED",
+    "version_label": "stage1e_rebaseline_v2_wave_t_E4_R3G1_no_selection_v1",
+    "upstream_dependencies": [
+      "R3-FD0 change control and frozen inputs",
+      "R3-FD1 frozen candidate bundle seeds",
+      "R3-FD2 rights and lineage verification",
+      "R3-FD3 benchmark and evaluator verification",
+      "R3-FD4 v5 compatibility stress test",
+      "central lane validation and G1 frozen input replay"
+    ],
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "note": "R3-G1 ran no empirical experiment and accepted no benchmark result."
+    }
+  },
+  "frozen_inputs": {
+    "manifest": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r3_g1_frozen_input_manifest.json",
+    "gate_receipt": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r3_g1_frozen_input_gate_receipt.json",
+    "input_replay": "PASS_20_OF_20",
+    "strict_json_replay": "PASS_14_OF_14"
+  },
+  "lane_validation": {
+    "receipt": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r3_verification_lanes_validation_receipt.json",
+    "status": "PASS_R3_FD2_FD4_READY_FOR_CENTRAL_G1_FREEZE",
+    "checks": "53/53",
+    "scientific_truth_changed_by_carrier_normalization": false
+  },
+  "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_t/E4_R3G1_bundle_selection",
+  "exact_output_file_count": 6,
+  "outputs": [
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_t/E4_R3G1_bundle_selection/bundle_evidence_intersection.json","canonical_lf_bytes":5432,"canonical_lf_sha256":"34d7594289b897aedf6e097bdb38e54be48e57cbb732588decf7790c1506d0a3"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_t/E4_R3G1_bundle_selection/central_locator_replay_log.json","canonical_lf_bytes":2405,"canonical_lf_sha256":"b791ea89befade5938953040baa3f2eb5a60db242dbfcb658652719c6fdb3f2a"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_t/E4_R3G1_bundle_selection/bundle_decision_matrix.json","canonical_lf_bytes":3770,"canonical_lf_sha256":"8d66f8e27a4b31b167401cb437718cd0d6a44d3e8ba9db712a6bde593b8e4886"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_t/E4_R3G1_bundle_selection/selection_decision.json","canonical_lf_bytes":2901,"canonical_lf_sha256":"64cf7a8722db748546a3b237d19e921df672bcc53ce6a8a119621512202c580c"},
+    {"path":"research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_t/E4_R3G1_bundle_selection/r3_g1_report.md","canonical_lf_bytes":2957,"canonical_lf_sha256":"cd45476c744eff50c7f607cfb1b1cdfbb5048d2abf91835bafb2998f8a27ed3b"}
+  ],
+  "handoff_artifact": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_t/E4_R3G1_bundle_selection/r3_g1_handoff.json",
+    "canonical_lf_sha256": null,
+    "self_hash_reported_out_of_band": true
+  },
+  "coverage": {
+    "candidate_rows": "3/3",
+    "worker_lane_rows": "9/9",
+    "decision_bearing_source_mentions": 77,
+    "unique_exact_urls": 61,
+    "duplicate_mentions_deduplicated": 16,
+    "central_replay_required_candidates": 0,
+    "central_replays_attempted": 0
+  },
+  "selection": {
+    "eligible_candidate_count": 0,
+    "selected_candidate_count": 0,
+    "selected_candidate_id": null,
+    "selection_performed": false,
+    "verdict": "NO_SELECTION_EVIDENCE_REMAINS_INSUFFICIENT",
+    "materialization_allowed": false,
+    "execution_allowed": false
+  },
+  "forbidden_operations": {
+    "repository_clone_performed": false,
+    "repository_fetch_performed": false,
+    "source_archive_download_performed": false,
+    "dataset_or_checkpoint_download_performed": false,
+    "authenticated_access_or_terms_acceptance_performed": false,
+    "package_installation_performed": false,
+    "environment_or_container_creation_performed": false,
+    "preprocessing_performed": false,
+    "training_performed": false,
+    "evaluation_or_benchmark_performed": false,
+    "test_set_access_performed": false,
+    "maintainer_contact_performed": false,
+    "fallback_candidate_selected": false,
+    "materialization_performed": false
+  },
+  "downstream": {
+    "R3-M0": "NOT_OPENED_NO_SELECTION",
+    "materialization": "BLOCKED",
+    "execution": "BLOCKED",
+    "next_gate": "MANDATORY_USER_SCOPE_DECISION"
+  },
+  "verdict": "NO_SELECTION_EVIDENCE_REMAINS_INSUFFICIENT",
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

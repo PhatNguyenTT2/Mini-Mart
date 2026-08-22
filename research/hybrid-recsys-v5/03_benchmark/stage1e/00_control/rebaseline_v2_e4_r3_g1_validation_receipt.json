@@ -1,0 +1,57 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r3-g1-validation-receipt-1.0",
+  "created_at": "2026-08-22",
+  "stage_id": "R3-G1-CENTRAL-VALIDATION",
+  "validator": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r3_g1.py",
+  "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_t/E4_R3G1_bundle_selection",
+  "passed": true,
+  "verdict": "PASS_R3_G1_NO_SELECTION_FAIL_CLOSED_R3_M0_NOT_OPENED",
+  "failure_count": 0,
+  "mechanical_checks": {
+    "passed": 25,
+    "expected": 25
+  },
+  "output_files": {
+    "present": 6,
+    "expected": 6,
+    "strict_json_present": 5,
+    "strict_json_expected": 5
+  },
+  "selection": {
+    "candidate_count": 3,
+    "eligible_candidate_count": 0,
+    "selected_candidate_count": 0,
+    "selected_candidate_id": null,
+    "verdict": "NO_SELECTION_EVIDENCE_REMAINS_INSUFFICIENT"
+  },
+  "source_deduplication": {
+    "decision_bearing_source_mentions": 77,
+    "unique_exact_urls": 61,
+    "duplicate_mentions_deduplicated": 16
+  },
+  "central_replay": {
+    "required_candidates": 0,
+    "required_urls": 0,
+    "attempted": 0,
+    "reason": "No candidate could otherwise pass the frozen worker-lane status intersection."
+  },
+  "model_profile": {
+    "display_name": "Sol Max Standard",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "max",
+    "service_tier": "standard"
+  },
+  "downstream": {
+    "R3-M0": "NOT_OPENED_NO_SELECTION",
+    "materialization": "BLOCKED",
+    "execution": "BLOCKED",
+    "next_gate": "MANDATORY_USER_SCOPE_DECISION"
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

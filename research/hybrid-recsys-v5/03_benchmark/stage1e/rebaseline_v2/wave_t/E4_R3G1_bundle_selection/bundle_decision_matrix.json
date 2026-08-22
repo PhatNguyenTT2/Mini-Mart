@@ -1,0 +1,89 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r3-g1-bundle-decision-matrix-1.0",
+  "created_at": "2026-08-22",
+  "stage_id": "R3-G1",
+  "model_profile": {
+    "display_name": "Sol Max Standard",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "max",
+    "service_tier": "standard"
+  },
+  "seed_manifest_binding": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_p/E4_R3FD1_bundle_seed_discovery/candidate_bundle_seeds.json",
+    "canonical_lf_bytes": 23034,
+    "canonical_lf_sha256": "dce058850afb537f062531d1b128a1c36685bc878a3761e35a22db3d72db8781"
+  },
+  "candidate_ids": [
+    "R3-BUNDLE-CORNAC-ML100K-001",
+    "R3-BUNDLE-ELLIOT-ML1M-001",
+    "R3-BUNDLE-DAISYREC-ML1M-001"
+  ],
+  "deduplication": {
+    "identity_tuple": "repository owner/name plus immutable revision, dataset provider/release, protocol/config and benchmark target surface",
+    "candidate_rows": 3,
+    "unique_identity_tuples": 3,
+    "duplicate_groups": 0,
+    "rows_collapsed": 0,
+    "evidence_conflicts_preserved": true
+  },
+  "ranking_order": [
+    "provenance_completeness",
+    "legal_clarity",
+    "protocol_fit",
+    "evaluator_parity_feasibility",
+    "adaptation_cost",
+    "maintenance_recency"
+  ],
+  "ranking_applied": false,
+  "ranking_not_applied_reason": "No candidate passed the eligibility intersection; ranking cannot promote an ineligible row.",
+  "rows": [
+    {
+      "candidate_id": "R3-BUNDLE-CORNAC-ML100K-001",
+      "duplicate_group_id": "UNIQUE-CORNAC-ML100K-42A327F",
+      "eligible_before_ranking": false,
+      "provenance_completeness": "NOT_RANKED_GATE_FAILED",
+      "legal_clarity": "NOT_RANKED_GATE_FAILED",
+      "protocol_fit": "NOT_RANKED_GATE_FAILED",
+      "evaluator_parity_feasibility": "NOT_RANKED_GATE_FAILED",
+      "adaptation_cost": "NOT_RANKED_GATE_FAILED",
+      "maintenance_recency": "NOT_RANKED_GATE_FAILED",
+      "rank_disposition": "INELIGIBLE_NOT_RANKED",
+      "decision_reason": "Rights lineage, benchmark/evaluator closure and bounded-adapter closure are all incomplete."
+    },
+    {
+      "candidate_id": "R3-BUNDLE-ELLIOT-ML1M-001",
+      "duplicate_group_id": "UNIQUE-ELLIOT-ML1M-641100A",
+      "eligible_before_ranking": false,
+      "provenance_completeness": "NOT_RANKED_GATE_FAILED",
+      "legal_clarity": "NOT_RANKED_GATE_FAILED",
+      "protocol_fit": "NOT_RANKED_GATE_FAILED",
+      "evaluator_parity_feasibility": "NOT_RANKED_GATE_FAILED",
+      "adaptation_cost": "NOT_RANKED_GATE_FAILED",
+      "maintenance_recency": "NOT_RANKED_GATE_FAILED",
+      "rank_disposition": "INELIGIBLE_NOT_RANKED",
+      "decision_reason": "Raw-to-TSV lineage, producing benchmark configuration and full-catalog v5 adapter closure are incomplete."
+    },
+    {
+      "candidate_id": "R3-BUNDLE-DAISYREC-ML1M-001",
+      "duplicate_group_id": "UNIQUE-DAISYREC-ML1M-E9D0326",
+      "eligible_before_ranking": false,
+      "provenance_completeness": "NOT_RANKED_GATE_FAILED",
+      "legal_clarity": "NOT_RANKED_GATE_FAILED",
+      "protocol_fit": "NOT_RANKED_GATE_FAILED",
+      "evaluator_parity_feasibility": "NOT_RANKED_GATE_FAILED",
+      "adaptation_cost": "NOT_RANKED_GATE_FAILED",
+      "maintenance_recency": "NOT_RANKED_GATE_FAILED",
+      "rank_disposition": "INELIGIBLE_NOT_RANKED",
+      "decision_reason": "The frozen license label conflicts with FD2, same-surface benchmark verification is incomplete, and the native TEST-derived cardinality path is incompatible without an unverified adapter."
+    }
+  ],
+  "eligible_candidate_ids": [],
+  "selected_candidate_id": null,
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

@@ -1,0 +1,75 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r3-g1-selection-decision-1.0",
+  "created_at": "2026-08-22",
+  "stage_id": "R3-G1",
+  "model_profile": {
+    "display_name": "Sol Max Standard",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "max",
+    "service_tier": "standard"
+  },
+  "seed_manifest_binding": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_p/E4_R3FD1_bundle_seed_discovery/candidate_bundle_seeds.json",
+    "canonical_lf_bytes": 23034,
+    "canonical_lf_sha256": "dce058850afb537f062531d1b128a1c36685bc878a3761e35a22db3d72db8781"
+  },
+  "candidate_ids": [
+    "R3-BUNDLE-CORNAC-ML100K-001",
+    "R3-BUNDLE-ELLIOT-ML1M-001",
+    "R3-BUNDLE-DAISYREC-ML1M-001"
+  ],
+  "positive_gate": {
+    "required_statuses": {
+      "R3-FD1": "PLAUSIBLE_COMPLETE_SEED",
+      "R3-FD2": "EVIDENCE_SUFFICIENT_FOR_G1_REVIEW",
+      "R3-FD3": "EVIDENCE_SUFFICIENT_FOR_G1_REVIEW",
+      "R3-FD4": "COMPATIBLE_WITH_BOUNDED_ADAPTER"
+    },
+    "observed_positive_candidate_count": 0,
+    "eligible_candidate_ids": [],
+    "central_replay_required_candidate_count": 0,
+    "all_positive_conditions_passed": false
+  },
+  "decision": {
+    "verdict": "NO_SELECTION_EVIDENCE_REMAINS_INSUFFICIENT",
+    "selected_candidate_count": 0,
+    "selected_candidate_id": null,
+    "selection_cardinality_max": 1,
+    "materialization_allowed": false,
+    "execution_allowed": false,
+    "reason": "All three candidates are incomplete in FD2, FD3 and FD4. Central replay is not triggered because no row could otherwise pass, and replay cannot repair a worker status."
+  },
+  "remaining_evidence_classes": {
+    "rights_and_lineage": [
+      "Provider-release checksum payload and byte-level raw-to-framework-input lineage."
+    ],
+    "benchmark_and_evaluator": [
+      "Immutable environment, exact producing configuration, deterministic evaluator semantics and same-surface numeric-target binding."
+    ],
+    "v5_adapter": [
+      "Frozen event folding, complete-catalog identity mapping, no-TEST adapter, score schema, shared-evaluator parity and runtime receipts."
+    ],
+    "identity_conflict": [
+      "Correct DaisyRec's frozen license label from MIT to the FD2-verified Apache-2.0 before any future packet."
+    ]
+  },
+  "automatic_fallback_allowed": false,
+  "downstream": {
+    "R3-M0": "NOT_OPENED_NO_SELECTION",
+    "repository_materialization": "BLOCKED",
+    "dataset_acquisition": "BLOCKED",
+    "environment_creation": "BLOCKED",
+    "preprocessing": "BLOCKED",
+    "training": "BLOCKED",
+    "evaluation": "BLOCKED",
+    "test_access": "BLOCKED"
+  },
+  "next_user_checkpoint": "CHOOSE_TARGETED_EVIDENCE_REMEDIATION_NEW_CANDIDATE_SEARCH_OR_PAUSE",
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

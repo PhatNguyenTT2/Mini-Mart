@@ -1,0 +1,125 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r3-g1-bundle-evidence-intersection-1.0",
+  "created_at": "2026-08-22",
+  "stage_id": "R3-G1",
+  "model_profile": {
+    "display_name": "Sol Max Standard",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "max",
+    "service_tier": "standard"
+  },
+  "seed_manifest_binding": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_p/E4_R3FD1_bundle_seed_discovery/candidate_bundle_seeds.json",
+    "canonical_lf_bytes": 23034,
+    "canonical_lf_sha256": "dce058850afb537f062531d1b128a1c36685bc878a3761e35a22db3d72db8781"
+  },
+  "candidate_ids": [
+    "R3-BUNDLE-CORNAC-ML100K-001",
+    "R3-BUNDLE-ELLIOT-ML1M-001",
+    "R3-BUNDLE-DAISYREC-ML1M-001"
+  ],
+  "entry_gate": {
+    "lane_validation": "PASS_R3_FD2_FD4_READY_FOR_CENTRAL_G1_FREEZE",
+    "frozen_input_replay": "PASS_R3_G1_FROZEN_20_OF_20_READY_FOR_CENTRAL_SYNTHESIS",
+    "frozen_inputs": "20/20",
+    "strict_json_inputs": "14/14",
+    "scientific_truth_changed_by_validation": false
+  },
+  "join_policy": {
+    "key": "exact candidate_id plus repository revision, dataset release, protocol/config, evaluator and numeric target identity",
+    "cross_join_allowed": false,
+    "missing_evidence_may_be_inferred": false,
+    "lane_status_required_before_central_replay": true,
+    "selection_cardinality_max": 1
+  },
+  "candidate_count": 3,
+  "rows": [
+    {
+      "candidate_id": "R3-BUNDLE-CORNAC-ML100K-001",
+      "fd1_status": "PLAUSIBLE_COMPLETE_SEED",
+      "fd2_status": "EVIDENCE_INCOMPLETE",
+      "fd3_status": "EVIDENCE_INCOMPLETE",
+      "fd4_status": "COMPATIBILITY_INCOMPLETE",
+      "same_surface_identity_agreement": false,
+      "affirmative_code_rights": true,
+      "affirmative_data_rights": true,
+      "central_replay_required": false,
+      "central_replay_pass": false,
+      "dispositive_mismatches": [],
+      "positive_gate_pass": false,
+      "unresolved_fields": [
+        "Archive checksum and byte equality to the directly served MovieLens 100K u.data were not established.",
+        "The exact transitive environment lock and deterministic ranking tie policy were not established.",
+        "The v5 event-folding rule, full-catalog cold-item mapping, adapter identity and evaluator-parity receipts do not exist."
+      ]
+    },
+    {
+      "candidate_id": "R3-BUNDLE-ELLIOT-ML1M-001",
+      "fd1_status": "PLAUSIBLE_COMPLETE_SEED",
+      "fd2_status": "EVIDENCE_INCOMPLETE",
+      "fd3_status": "EVIDENCE_INCOMPLETE",
+      "fd4_status": "COMPATIBILITY_INCOMPLETE",
+      "same_surface_identity_agreement": false,
+      "affirmative_code_rights": true,
+      "affirmative_data_rights": true,
+      "central_replay_required": false,
+      "central_replay_pass": false,
+      "dispositive_mismatches": [],
+      "positive_gate_pass": false,
+      "unresolved_fields": [
+        "No digest chain binds MovieLens 1M archive bytes to ratings.dat and the generated Elliot TSV.",
+        "The platform/transitive environment and exact selected BPRMF hyperparameter realization behind the published row are not frozen.",
+        "The training-derived item universe does not yet implement or parity-test the complete v5 catalog with train-unseen items."
+      ]
+    },
+    {
+      "candidate_id": "R3-BUNDLE-DAISYREC-ML1M-001",
+      "fd1_status": "PLAUSIBLE_COMPLETE_SEED",
+      "fd2_status": "EVIDENCE_INCOMPLETE",
+      "fd3_status": "EVIDENCE_INCOMPLETE",
+      "fd4_status": "COMPATIBILITY_INCOMPLETE",
+      "same_surface_identity_agreement": false,
+      "affirmative_code_rights": true,
+      "affirmative_data_rights": true,
+      "central_replay_required": false,
+      "central_replay_pass": false,
+      "dispositive_mismatches": [
+        "FD1 labeled the frozen code license MIT, while FD2 independently verified Apache-2.0 at the pinned revision; the seed identity requires correction before any future materialization packet."
+      ],
+      "positive_gate_pass": false,
+      "unresolved_fields": [
+        "No acquisition/checksum receipt binds canonical MovieLens 1M bytes to the local ratings.dat input.",
+        "FD3 did not independently establish the immutable code, environment, TSBR recipe, evaluator and 0.5275 result as one same-surface join.",
+        "The native path derives item cardinality after train-plus-TEST concatenation; a no-TEST manifest driver and parity receipts are absent."
+      ]
+    }
+  ],
+  "source_deduplication": {
+    "decision_bearing_source_mentions": 77,
+    "unique_exact_urls": 61,
+    "duplicate_mentions_removed_from_independence_count": 16,
+    "dedup_key": "exact URL string",
+    "repeated_url_is_independent_evidence": false,
+    "per_candidate": {
+      "R3-BUNDLE-CORNAC-ML100K-001": {"mentions": 22, "unique_urls": 19},
+      "R3-BUNDLE-ELLIOT-ML1M-001": {"mentions": 31, "unique_urls": 25},
+      "R3-BUNDLE-DAISYREC-ML1M-001": {"mentions": 24, "unique_urls": 20}
+    }
+  },
+  "intersection_summary": {
+    "fully_sufficient_candidates": 0,
+    "incomplete_candidates": 3,
+    "dispositive_reject_candidates": 0,
+    "central_replay_required_candidates": 0,
+    "selected_candidate_count": 0,
+    "selected_candidate_id": null
+  },
+  "verdict": "NO_SELECTION_EVIDENCE_REMAINS_INSUFFICIENT",
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}
