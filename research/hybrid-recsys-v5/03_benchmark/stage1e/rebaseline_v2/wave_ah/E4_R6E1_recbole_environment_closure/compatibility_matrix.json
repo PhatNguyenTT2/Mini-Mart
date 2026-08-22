@@ -1,0 +1,561 @@
+{
+  "schema_version": "1.0.0",
+  "stage": "R6-E1",
+  "artifact": "compatibility_matrix",
+  "evidence_retrieval_date": "2026-08-23",
+  "decision": "HIGH_CONFIDENCE_CURRENT_CPU_PROFILE_PROPOSED",
+  "scope": "Current Windows x86-64 CPU compatibility for source/import/materialization checks of pinned RecBole 1.2.1 and BPR/ML-100K only; no environment was created and no benchmark was run.",
+  "pinned_source": {
+    "package": "RecBole",
+    "declared_version": "1.2.1",
+    "revision": "9a6f63d8d4a5b989fe27955a833f813a6d86041e",
+    "git_tree": "08915121fea069a30f7e3e97a72e16e7e76d43c6",
+    "local_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d",
+    "candidate_id": "R5-CAND-RECBOLE-BPR-ML100K-001"
+  },
+  "role_definitions": {
+    "minimum": "Required for the bounded BPR/ML-100K source, configuration, data, model, evaluator, or basic utility import closure.",
+    "optional": "Not intrinsic to BPR math or ML-100K parsing, but either hard-declared by legacy setup metadata, imported by a stock module, or retained solely so the locally built RecBole distribution has a satisfiable metadata closure. Its feature path remains prohibited unless separately authorized.",
+    "excluded": "Not installed in this profile; the associated feature or accelerator path is outside R6-E1 scope."
+  },
+  "entries": [
+    {
+      "component": "interpreter",
+      "package_identity": "CPython",
+      "source_requirement": "No python_requires or supported-Python declaration in the pinned setup.py.",
+      "proposed_version": "3.11.9 (64-bit Windows installer)",
+      "role": "minimum",
+      "lock_included": true,
+      "source_requirement_locator": [
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d/setup.py:52-66"
+      ],
+      "compatibility_evidence_locator": [
+        {
+          "locator": "https://www.python.org/downloads/release/python-3119/",
+          "retrieved_at": "2026-08-23",
+          "observation": "Python 3.11.9 is the last 3.11 bugfix release and has an official 64-bit Windows installer."
+        },
+        {
+          "locator": "https://devguide.python.org/versions/",
+          "retrieved_at": "2026-08-23",
+          "observation": "Python 3.11 remains in security support through 2027-10, although security-phase releases are source-only."
+        }
+      ],
+      "confidence": "high",
+      "unresolved_conflicts": [
+        "The official installable Windows binary is 3.11.9, while newer 3.11 security releases are source-only; this research profile is isolated and must not be treated as a generally exposed production runtime.",
+        "The current host Python is 3.11.3 and therefore does not satisfy the exact interpreter identity."
+      ]
+    },
+    {
+      "component": "framework source",
+      "package_identity": "RecBole",
+      "source_requirement": "Pinned local source declares version 1.2.1; revision and selected blobs are frozen by R5/R6 controls.",
+      "proposed_version": "1.2.1+local.9a6f63d (distribution metadata remains upstream 1.2.1)",
+      "role": "minimum",
+      "lock_included": true,
+      "source_requirement_locator": [
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d/recbole/__init__.py:1-2",
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_s0_frozen_input_manifest.json",
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ac/E4_R5M0_source_materialization/source_tree_manifest.json",
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ac/E4_R5M0_source_materialization/selected_blob_manifest.json"
+      ],
+      "compatibility_evidence_locator": [
+        {
+          "locator": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ad/E4_R5M1A_recbole_source_audit/source_fact_matrix.json",
+          "retrieved_at": "2026-08-23",
+          "observation": "R5 source audit records the setup/import/configuration facts used by this closure."
+        }
+      ],
+      "confidence": "high",
+      "unresolved_conflicts": [
+        "The source has setup.py only, no pyproject.toml/setup.cfg, no python_requires, and no historical environment lock.",
+        "Runtime compatibility remains unverified until the separately authorized materialization gate resolves wheels, builds the local wheel, and runs bounded import checks."
+      ]
+    },
+    {
+      "component": "tensor runtime",
+      "package_identity": "torch",
+      "source_requirement": "torch>=1.10.0",
+      "proposed_version": "2.2.2+cpu",
+      "role": "minimum",
+      "lock_included": true,
+      "source_requirement_locator": [
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d/setup.py:10",
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d/requirements.txt:1"
+      ],
+      "compatibility_evidence_locator": [
+        {
+          "locator": "https://pytorch.org/get-started/previous-versions/",
+          "retrieved_at": "2026-08-23",
+          "observation": "Official PyTorch instructions list torch 2.2.2 with the CPU-only wheel index for Linux and Windows."
+        },
+        {
+          "locator": "https://download.pytorch.org/whl/cpu/torch/",
+          "retrieved_at": "2026-08-23",
+          "observation": "The official CPU index lists torch-2.2.2+cpu-cp311-cp311-win_amd64.whl."
+        },
+        {
+          "locator": "https://pypi.org/project/torch/2.2.2/",
+          "retrieved_at": "2026-08-23",
+          "observation": "Distribution metadata supports Python >=3.8 and provides a CPython 3.11 Windows x86-64 wheel for public version 2.2.2."
+        }
+      ],
+      "confidence": "high",
+      "unresolved_conflicts": [
+        "The exact CPU wheel filename and SHA-256 must be captured from the actual later download; no hash is asserted here.",
+        "torch 2.2.2 is an older runtime selected to reduce drift from the legacy RecBole source, not a claim that it was used by the historical README producer."
+      ]
+    },
+    {
+      "component": "array runtime",
+      "package_identity": "numpy",
+      "source_requirement": "numpy>=1.17.2",
+      "proposed_version": "1.26.4",
+      "role": "minimum",
+      "lock_included": true,
+      "source_requirement_locator": [
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d/setup.py:11",
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d/recbole/data/dataset/dataset.py:22"
+      ],
+      "compatibility_evidence_locator": [
+        {
+          "locator": "https://pypi.org/project/numpy/1.26.4/",
+          "retrieved_at": "2026-08-23",
+          "observation": "Requires Python >=3.9 and publishes a CPython 3.11 Windows x86-64 wheel."
+        },
+        {
+          "locator": "https://numpy.org/doc/2.0/numpy_2_0_migration_guide.html",
+          "retrieved_at": "2026-08-23",
+          "observation": "NumPy documents breaking Python/C API changes in 2.0; the 1.26.4 pin avoids introducing that major-version boundary into this legacy source closure."
+        }
+      ],
+      "confidence": "high",
+      "unresolved_conflicts": [
+        "The excluded hyperparameter visualization path uses removed alias np.str and is not compatible with this pin; that path is forbidden rather than patched in R6-E1."
+      ]
+    },
+    {
+      "component": "scientific runtime",
+      "package_identity": "scipy",
+      "source_requirement": "scipy>=1.6.0",
+      "proposed_version": "1.11.4",
+      "role": "minimum",
+      "lock_included": true,
+      "source_requirement_locator": [
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d/setup.py:12"
+      ],
+      "compatibility_evidence_locator": [
+        {
+          "locator": "https://pypi.org/project/scipy/1.11.4/",
+          "retrieved_at": "2026-08-23",
+          "observation": "Publishes a CPython 3.11 Windows x86-64 wheel and its distribution requirements resolve with NumPy 1.26.4."
+        }
+      ],
+      "confidence": "high",
+      "unresolved_conflicts": []
+    },
+    {
+      "component": "tabular runtime",
+      "package_identity": "pandas",
+      "source_requirement": "pandas>=1.3.0",
+      "proposed_version": "2.1.4",
+      "role": "minimum",
+      "lock_included": true,
+      "source_requirement_locator": [
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d/setup.py:13",
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d/recbole/data/interaction.py:16"
+      ],
+      "compatibility_evidence_locator": [
+        {
+          "locator": "https://pypi.org/project/pandas/2.1.4/",
+          "retrieved_at": "2026-08-23",
+          "observation": "Requires Python >=3.9 and publishes a CPython 3.11 Windows x86-64 wheel."
+        }
+      ],
+      "confidence": "high",
+      "unresolved_conflicts": []
+    },
+    {
+      "component": "evaluator metrics",
+      "package_identity": "scikit-learn",
+      "source_requirement": "scikit_learn>=0.23.2",
+      "proposed_version": "1.3.2",
+      "role": "minimum",
+      "lock_included": true,
+      "source_requirement_locator": [
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d/setup.py:17",
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d/recbole/evaluator/metrics.py:29-30"
+      ],
+      "compatibility_evidence_locator": [
+        {
+          "locator": "https://pypi.org/project/scikit-learn/1.3.2/",
+          "retrieved_at": "2026-08-23",
+          "observation": "Requires Python >=3.8 and publishes a CPython 3.11 Windows x86-64 wheel."
+        }
+      ],
+      "confidence": "high",
+      "unresolved_conflicts": []
+    },
+    {
+      "component": "configuration parser",
+      "package_identity": "PyYAML",
+      "source_requirement": "pyyaml>=5.1.0",
+      "proposed_version": "6.0.2",
+      "role": "minimum",
+      "lock_included": true,
+      "source_requirement_locator": [
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d/setup.py:18",
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d/recbole/config/configurator.py:18"
+      ],
+      "compatibility_evidence_locator": [
+        {
+          "locator": "https://pypi.org/project/PyYAML/6.0.2/",
+          "retrieved_at": "2026-08-23",
+          "observation": "Requires Python >=3.8 and publishes a CPython 3.11 Windows x86-64 wheel."
+        }
+      ],
+      "confidence": "high",
+      "unresolved_conflicts": []
+    },
+    {
+      "component": "progress reporting",
+      "package_identity": "tqdm",
+      "source_requirement": "tqdm>=4.48.2",
+      "proposed_version": "4.66.5",
+      "role": "minimum",
+      "lock_included": true,
+      "source_requirement_locator": [
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d/setup.py:14",
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d/recbole/trainer/trainer.py:29"
+      ],
+      "compatibility_evidence_locator": [
+        {
+          "locator": "https://pypi.org/project/tqdm/4.66.5/",
+          "retrieved_at": "2026-08-23",
+          "observation": "OS-independent Python wheel metadata; selected version satisfies the source lower bound."
+        }
+      ],
+      "confidence": "high",
+      "unresolved_conflicts": []
+    },
+    {
+      "component": "logging",
+      "package_identity": "colorlog",
+      "source_requirement": "colorlog==4.7.2 in setup.py (requirements.txt says >=4.7.2)",
+      "proposed_version": "4.7.2",
+      "role": "minimum",
+      "lock_included": true,
+      "source_requirement_locator": [
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d/setup.py:15",
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d/requirements.txt:9",
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d/recbole/utils/logger.py:23"
+      ],
+      "compatibility_evidence_locator": [
+        {
+          "locator": "https://pypi.org/project/colorlog/4.7.2/",
+          "retrieved_at": "2026-08-23",
+          "observation": "Publishes a universal Python wheel and declares colorama on Windows."
+        }
+      ],
+      "confidence": "medium",
+      "unresolved_conflicts": [
+        "This exact legacy version has no requires_python declaration; import compatibility must pass in the later isolated environment."
+      ]
+    },
+    {
+      "component": "Windows console logging",
+      "package_identity": "colorama",
+      "source_requirement": "colorama==0.4.4 in setup.py (requirements.txt says >=0.4.4)",
+      "proposed_version": "0.4.4",
+      "role": "minimum",
+      "lock_included": true,
+      "source_requirement_locator": [
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d/setup.py:16",
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d/recbole/utils/logger.py:27"
+      ],
+      "compatibility_evidence_locator": [
+        {
+          "locator": "https://pypi.org/project/colorama/0.4.4/",
+          "retrieved_at": "2026-08-23",
+          "observation": "Publishes an OS-independent universal wheel; selected exact version matches setup.py."
+        }
+      ],
+      "confidence": "medium",
+      "unresolved_conflicts": [
+        "The release predates Python 3.11 classifiers; later import validation is mandatory."
+      ]
+    },
+    {
+      "component": "text result formatting",
+      "package_identity": "texttable",
+      "source_requirement": "texttable>=0.9.0",
+      "proposed_version": "1.7.0",
+      "role": "minimum",
+      "lock_included": true,
+      "source_requirement_locator": [
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d/setup.py:23",
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d/recbole/utils/utils.py:26"
+      ],
+      "compatibility_evidence_locator": [
+        {
+          "locator": "https://pypi.org/project/texttable/1.7.0/",
+          "retrieved_at": "2026-08-23",
+          "observation": "Publishes a py2.py3-none-any wheel uploaded with CPython 3.11.5."
+        }
+      ],
+      "confidence": "high",
+      "unresolved_conflicts": []
+    },
+    {
+      "component": "TensorBoard integration",
+      "package_identity": "tensorboard",
+      "source_requirement": "tensorboard>=2.5.0",
+      "proposed_version": "2.15.2",
+      "role": "optional",
+      "lock_included": true,
+      "source_requirement_locator": [
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d/setup.py:19",
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d/recbole/utils/utils.py:25"
+      ],
+      "compatibility_evidence_locator": [
+        {
+          "locator": "https://pypi.org/project/tensorboard/2.15.2/",
+          "retrieved_at": "2026-08-23",
+          "observation": "Requires Python >=3.9, classifies Python 3.11, and publishes a py3-none-any wheel."
+        }
+      ],
+      "confidence": "high",
+      "unresolved_conflicts": [
+        "TensorBoard functionality is outside the bounded checks, but torch.utils.tensorboard.SummaryWriter is imported unconditionally by recbole.utils, so the distribution is included for import closure only."
+      ]
+    },
+    {
+      "component": "quick-start tuning import",
+      "package_identity": "ray",
+      "source_requirement": "ray>=1.13.0,<=2.6.3",
+      "proposed_version": "2.6.3",
+      "role": "optional",
+      "lock_included": true,
+      "source_requirement_locator": [
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d/setup.py:25",
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d/recbole/quick_start/quick_start.py:20"
+      ],
+      "compatibility_evidence_locator": [
+        {
+          "locator": "https://pypi.org/project/ray/2.6.3/",
+          "retrieved_at": "2026-08-23",
+          "observation": "The source upper bound version publishes a CPython 3.11 Windows x86-64 wheel."
+        }
+      ],
+      "confidence": "medium",
+      "unresolved_conflicts": [
+        "Ray is included only because setup.py hard-declares it and recbole.quick_start imports ray.tune unconditionally; ray.init, tune.run, distributed execution, and all tuning remain forbidden.",
+        "The old Ray upper bound and its transitive metadata must resolve without conflict with TensorBoard before materialization may continue."
+      ]
+    },
+    {
+      "component": "FLOP profiling",
+      "package_identity": "thop",
+      "source_requirement": "thop>=0.1.1.post2207130030",
+      "proposed_version": "0.1.1.post2207130030",
+      "role": "optional",
+      "lock_included": true,
+      "source_requirement_locator": [
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d/setup.py:20",
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d/recbole/utils/utils.py:250-330",
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d/recbole/quick_start/quick_start.py:141"
+      ],
+      "compatibility_evidence_locator": [
+        {
+          "locator": "https://pypi.org/project/thop/0.1.1.post2207130030/",
+          "retrieved_at": "2026-08-23",
+          "observation": "The exact source lower-bound release is present in PyPI release metadata as a Python 3 distribution."
+        }
+      ],
+      "confidence": "medium",
+      "unresolved_conflicts": [
+        "THOP is imported lazily, but the stock run path calls get_flops before training. The later gate must import THOP with torch 2.2.2+cpu; no profiling is authorized in R6-E1."
+      ]
+    },
+    {
+      "component": "metadata-only table formatting",
+      "package_identity": "tabulate",
+      "source_requirement": "tabulate>=0.8.10",
+      "proposed_version": "0.9.0",
+      "role": "optional",
+      "lock_included": true,
+      "source_requirement_locator": [
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d/setup.py:21"
+      ],
+      "compatibility_evidence_locator": [
+        {
+          "locator": "https://pypi.org/project/tabulate/0.9.0/",
+          "retrieved_at": "2026-08-23",
+          "observation": "Requires Python >=3.7 and publishes a py3-none-any wheel."
+        }
+      ],
+      "confidence": "high",
+      "unresolved_conflicts": [
+        "No import was found in the bounded source scan; inclusion is solely to satisfy the legacy distribution metadata."
+      ]
+    },
+    {
+      "component": "hyperparameter visualization",
+      "package_identity": "plotly",
+      "source_requirement": "plotly>=4.0.0",
+      "proposed_version": "5.18.0",
+      "role": "optional",
+      "lock_included": true,
+      "source_requirement_locator": [
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d/setup.py:22",
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d/recbole/trainer/hyper_tuning.py:379-386"
+      ],
+      "compatibility_evidence_locator": [
+        {
+          "locator": "https://pypi.org/project/plotly/5.18.0/",
+          "retrieved_at": "2026-08-23",
+          "observation": "Requires Python >=3.6, classifies Python 3.11, and publishes a py3-none-any wheel."
+        }
+      ],
+      "confidence": "high",
+      "unresolved_conflicts": [
+        "Visualization is prohibited and source line 386 uses np.str, which is absent from NumPy 1.26.4; the package is included solely because setup.py declares it as mandatory metadata."
+      ]
+    },
+    {
+      "component": "resource reporting",
+      "package_identity": "psutil",
+      "source_requirement": "psutil>=5.9.0",
+      "proposed_version": "5.9.8",
+      "role": "optional",
+      "lock_included": true,
+      "source_requirement_locator": [
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d/setup.py:24",
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d/recbole/utils/utils.py:425-430"
+      ],
+      "compatibility_evidence_locator": [
+        {
+          "locator": "https://pypi.org/project/psutil/5.9.8/",
+          "retrieved_at": "2026-08-23",
+          "observation": "Publishes a CPython 3.11 Windows x86-64 wheel."
+        }
+      ],
+      "confidence": "high",
+      "unresolved_conflicts": [
+        "Resource reporting is not executed in R6-E1; inclusion satisfies setup metadata and a lazy utility import."
+      ]
+    },
+    {
+      "component": "hyperparameter optimization",
+      "package_identity": "hyperopt",
+      "source_requirement": "hyperopt==0.2.5 only in extras_require and requirements.txt",
+      "proposed_version": null,
+      "role": "excluded",
+      "lock_included": false,
+      "source_requirement_locator": [
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d/setup.py:30",
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d/requirements.txt:4",
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d/recbole/trainer/hyper_tuning.py:25-411"
+      ],
+      "compatibility_evidence_locator": [],
+      "confidence": "high",
+      "unresolved_conflicts": [
+        "All imports are inside tuning helpers and setup.py treats Hyperopt as an extra; tuning is outside the approved materialization scope."
+      ]
+    },
+    {
+      "component": "external experiment logging",
+      "package_identity": "wandb",
+      "source_requirement": "No setup dependency; lazy import only when log_wandb is true.",
+      "proposed_version": null,
+      "role": "excluded",
+      "lock_included": false,
+      "source_requirement_locator": [
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d/recbole/utils/wandblogger.py:21-38",
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d/recbole/properties/overall.yaml:15-16"
+      ],
+      "compatibility_evidence_locator": [],
+      "confidence": "high",
+      "unresolved_conflicts": []
+    },
+    {
+      "component": "accelerator and distributed stacks",
+      "package_identity": "CUDA/ROCm/MPS packages, torchvision, torchaudio, nvidia-* and distributed launchers",
+      "source_requirement": "Not required by the bounded BPR CPU path; default configuration can select CUDA unless overridden, and nproc>1 initializes NCCL.",
+      "proposed_version": null,
+      "role": "excluded",
+      "lock_included": false,
+      "source_requirement_locator": [
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d/recbole/config/configurator.py:477-511",
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d/recbole/quick_start/quick_start.py:45-86"
+      ],
+      "compatibility_evidence_locator": [
+        {
+          "locator": "https://pytorch.org/get-started/previous-versions/",
+          "retrieved_at": "2026-08-23",
+          "observation": "Official PyTorch packaging separates CPU, CUDA, and ROCm indexes; this profile selects only the CPU index."
+        }
+      ],
+      "confidence": "high",
+      "unresolved_conflicts": []
+    },
+    {
+      "component": "model-specific optional ecosystems",
+      "package_identity": "torch-geometric, DGL, faiss, community and other non-BPR extras",
+      "source_requirement": "Some non-BPR model/data paths use lazy imports; none is required by BPR/ML-100K.",
+      "proposed_version": null,
+      "role": "excluded",
+      "lock_included": false,
+      "source_requirement_locator": [
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d/recbole/data/dataset/dataset.py:2000",
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d/recbole/data/dataset/kg_dataset.py:564"
+      ],
+      "compatibility_evidence_locator": [],
+      "confidence": "high",
+      "unresolved_conflicts": []
+    },
+    {
+      "component": "legacy build toolchain",
+      "package_identity": "pip / setuptools / wheel",
+      "source_requirement": "setup.py-only local project; no pyproject.toml build-system declaration.",
+      "proposed_version": "pip==24.0; setuptools==69.5.1; wheel==0.43.0",
+      "role": "optional",
+      "lock_included": true,
+      "source_requirement_locator": [
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d/setup.py"
+      ],
+      "compatibility_evidence_locator": [
+        {
+          "locator": "https://pypi.org/project/pip/24.0/",
+          "retrieved_at": "2026-08-23",
+          "observation": "Requires Python >=3.7 and publishes a py3-none-any wheel."
+        },
+        {
+          "locator": "https://pypi.org/project/setuptools/69.5.1/",
+          "retrieved_at": "2026-08-23",
+          "observation": "Pinned build backend/tool version with Python 3.11-compatible distribution metadata."
+        },
+        {
+          "locator": "https://pypi.org/project/wheel/0.43.0/",
+          "retrieved_at": "2026-08-23",
+          "observation": "Pinned wheel builder with Python 3-compatible distribution metadata."
+        },
+        {
+          "locator": "https://pip.pypa.io/en/stable/topics/secure-installs/",
+          "retrieved_at": "2026-08-23",
+          "observation": "pip recommends installing local projects with pip --no-deps instead of invoking setup.py install directly."
+        }
+      ],
+      "confidence": "medium",
+      "unresolved_conflicts": [
+        "These versions are an exact conservative build proposal, not source-declared requirements; the local wheel build must fail closed on any backend or metadata error."
+      ]
+    }
+  ],
+  "global_unresolved_conflicts": [
+    "No package wheels, transitive resolution, local RecBole wheel, hashes, imports, or runtime behavior were materialized in R6-E1.",
+    "The historical environment that produced README NDCG@10=0.2768 remains unknown; this matrix makes no historical-producer claim.",
+    "A later central gate must reject the profile rather than substitute versions, source distributions, accelerators, indexes, or unapproved entrypoints."
+  ]
+}

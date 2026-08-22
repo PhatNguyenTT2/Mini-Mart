@@ -1,0 +1,111 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r6-d1-e1-lanes-validation-receipt-1.0",
+  "created_at": "2026-08-23",
+  "stage_id": "R6-D1-R6-E1-CENTRAL-VALIDATION",
+  "validator": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_d1_e1_lanes.py",
+    "sha256": "92910b47229cc048473b243c3399623ed60caf27875aa56ff19108610d4cc6bf",
+    "bytes": 24293
+  },
+  "validation_run": {
+    "command": "python research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_d1_e1_lanes.py",
+    "exit_code": 0,
+    "passed": true,
+    "verdict": "PASS_R6_D1_E1_READY_FOR_R6_G0_FREEZE",
+    "checks_passed": 30,
+    "checks_expected": 30,
+    "failure_count": 0
+  },
+  "schema_alignment_audit": {
+    "initial_run_passed": false,
+    "initial_failure_count": 3,
+    "initial_failure_ids": [
+      "d1_exact_candidate_revision_and_u_data_transform",
+      "e1_cpu_profile_and_interpreter_exact",
+      "e1_current_compatible_not_historical_disclaimer"
+    ],
+    "finding": "The initial central validator addressed three semantically correct lane values through non-existent or differently named fields.",
+    "correction": "Only the central validator field paths and exact status literals were aligned to the frozen lane schemas; no R6-D1 or R6-E1 artifact was edited.",
+    "post_correction_result": "PASS_30_OF_30"
+  },
+  "mechanical_summary": {
+    "exact_output_files": 10,
+    "strict_json_outputs": 8,
+    "d1_official_sources": 7,
+    "e1_compatibility_rows": 23,
+    "e1_direct_pins": 20,
+    "proposed_command_arrays": 30
+  },
+  "output_fingerprints": [
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ag/E4_R6D1_movielens100k_authority_lineage/audit_handoff.json",
+      "canonical_lf_bytes": 8202,
+      "canonical_lf_sha256": "bddcde9ff4b2af6750cb2f7dd29930033924ca4cf7bb1fd9edab3bb9667c0419"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ag/E4_R6D1_movielens100k_authority_lineage/data_lineage_plan.json",
+      "canonical_lf_bytes": 23071,
+      "canonical_lf_sha256": "3d6428772c8f8cd7aa771aa116be7136ef2eed1d09cb45cf8b612131370c5f43"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ag/E4_R6D1_movielens100k_authority_lineage/materialization_command_proposal.json",
+      "canonical_lf_bytes": 28046,
+      "canonical_lf_sha256": "47686d08729b27954e8fabfe211f542af3ffcb973b948c60b2d7fc66a4fff33a"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ag/E4_R6D1_movielens100k_authority_lineage/provider_authority.json",
+      "canonical_lf_bytes": 13176,
+      "canonical_lf_sha256": "f4515d36973e999c1a5bc2915a1450b39e0d71b32cc84b8577f2f121ad297fba"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ag/E4_R6D1_movielens100k_authority_lineage/rights_and_release_record.md",
+      "canonical_lf_bytes": 4741,
+      "canonical_lf_sha256": "93b6f1d4f5b3e2fa69252a14c8386c9225a032370dd7af664ab7fb598ead4562"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ah/E4_R6E1_recbole_environment_closure/audit_handoff.json",
+      "canonical_lf_bytes": 10867,
+      "canonical_lf_sha256": "0eb19d49fe1fbb72c0368d89e4438ea90ddc61a4079165e21fc7cb8685ca8a77"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ah/E4_R6E1_recbole_environment_closure/compatibility_matrix.json",
+      "canonical_lf_bytes": 27090,
+      "canonical_lf_sha256": "89eeb3ad42d393a16096d75270997c47fe8566a74df39e46c64d161d8160438c"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ah/E4_R6E1_recbole_environment_closure/environment_command_proposal.json",
+      "canonical_lf_bytes": 34589,
+      "canonical_lf_sha256": "0f603b15b4b2f34a06c8821b672b0c7a44157231a13e2a397ca1225ce18dd34b"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ah/E4_R6E1_recbole_environment_closure/environment_lock_proposal.json",
+      "canonical_lf_bytes": 13823,
+      "canonical_lf_sha256": "c9814a370583f6b90dc7be116c39fdaf0c2e09abf0beacdc675d73492be192fd"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ah/E4_R6E1_recbole_environment_closure/risk_report.md",
+      "canonical_lf_bytes": 14722,
+      "canonical_lf_sha256": "b863934c7404ef63cb4a327e9c600ed0d80f7d118ac9a203cd48baa894d22975"
+    }
+  ],
+  "central_reconciliation_required_before_r6_c1": [
+    "Freeze an explicit CPython 3.11.9 acquisition and identity route because the current host is 3.11.3.",
+    "Freeze a Git-ignore or non-Git policy for the environment materialization root.",
+    "Bind an explicit data_path seam to only the GroupLens-derived atomic directory and prevent RecBole S3 fallback.",
+    "Treat the provider MD5 as a current sidecar expectation and require local MD5 plus SHA-256 replay without a historical-checksum claim."
+  ],
+  "gate_effect": {
+    "r6_g0_freeze_allowed": true,
+    "materialization_authorized_by_this_receipt": false,
+    "experiment_execution_authorized": false,
+    "test_access_authorized": false,
+    "benchmark_admission_authorized": false
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

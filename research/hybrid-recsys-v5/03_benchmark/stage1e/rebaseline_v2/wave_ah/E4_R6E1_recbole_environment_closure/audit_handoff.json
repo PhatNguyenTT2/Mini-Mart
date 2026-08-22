@@ -1,0 +1,203 @@
+{
+  "schema_version": "1.0.0",
+  "stage": "R6-E1",
+  "artifact": "audit_handoff",
+  "created_date": "2026-08-23",
+  "entry_gate": {
+    "commit": "374819ca5ef02ad51bb99c5e16fc5c0486e86c38",
+    "verdict": "PASS_R6_S0_FROZEN_36_OF_36_READY_FOR_PARALLEL_R6_D1_R6_E1",
+    "status": "PASSED"
+  },
+  "actual_model_profile": {
+    "display_name": "Sol XHigh Fast",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "xhigh",
+    "service_tier": "priority"
+  },
+  "ars_workflow_application": {
+    "skill": "ars-codex:academic-research-suite",
+    "workflows_read": [
+      "academic-pipeline/WORKFLOW.md",
+      "experiment-agent/WORKFLOW.md"
+    ],
+    "directly_relevant_references_read": [
+      "academic-pipeline/references/reproducibility_audit.md",
+      "experiment-agent/references/reproducibility_protocol.md",
+      "experiment-agent/references/ars_integration_guide.md",
+      "experiment-agent/templates/code_experiment_plan.md",
+      "shared/artifact_reproducibility_pattern.md",
+      "shared/references/evidence_row_protocol.md",
+      "academic-pipeline/references/ai_research_failure_modes.md",
+      "academic-pipeline/references/integrity_review_protocol.md",
+      "academic-pipeline/references/claim_verification_protocol.md",
+      "shared/handoff_schemas.md"
+    ],
+    "applied_principles": [
+      "A proposal without execution receipts remains NOT_RUN and runtime-unverified.",
+      "Source configuration evidence is not historical producer-environment provenance.",
+      "Every materialization failure state is explicit and fail-closed.",
+      "Actual artifacts, wheel hashes, and accepted result rows may not be inferred or fabricated."
+    ]
+  },
+  "verdict": "HIGH_CONFIDENCE_CURRENT_CPU_PROFILE_PROPOSED",
+  "selected_environment_profile": {
+    "profile_id": "recbole-1.2.1-9a6f63d-bpr-ml100k-win-amd64-py3119-torch222-cpu-v1",
+    "platform": "Windows x86-64/AMD64",
+    "interpreter": "Official CPython 3.11.9 64-bit",
+    "torch": "2.2.2+cpu",
+    "numpy": "1.26.4",
+    "recbole": "1.2.1 from pinned local revision 9a6f63d8d4a5b989fe27955a833f813a6d86041e",
+    "execution_mode": "CPU-only, single-process",
+    "confidence_scope": "Evidence-backed proposal and compatible-wheel availability only",
+    "runtime_verified": false,
+    "historical_producer_profile": false
+  },
+  "files_written": [
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ah/E4_R6E1_recbole_environment_closure/compatibility_matrix.json",
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ah/E4_R6E1_recbole_environment_closure/environment_lock_proposal.json",
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ah/E4_R6E1_recbole_environment_closure/environment_command_proposal.json",
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ah/E4_R6E1_recbole_environment_closure/risk_report.md",
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ah/E4_R6E1_recbole_environment_closure/audit_handoff.json"
+  ],
+  "evidence_count": {
+    "total_unique_evidence_units": 65,
+    "counting_rule": "Unique frozen-control files, selected R5 artifacts, pinned-source files, authoritative external URLs, and the current-host observation actually used in this closure; repeated locators count once.",
+    "breakdown": {
+      "frozen_controls": 4,
+      "selected_r5_artifacts": 12,
+      "pinned_source_files": 20,
+      "authoritative_external_urls": 28,
+      "current_host_observations": 1
+    }
+  },
+  "evidence_inventory": {
+    "frozen_controls": [
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_s0_frozen_input_manifest.json",
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_s0_gate_receipt.json",
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_bounded_materialization_contract.md",
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r5_m2_user_approval_receipt.json"
+    ],
+    "selected_r5_artifacts": [
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r5_candidate_lock.json",
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ac/E4_R5M0_source_materialization/selected_blob_manifest.json",
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ac/E4_R5M0_source_materialization/source_tree_manifest.json",
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_af/E4_R5G1_source_evidence_selection/selection_decision.json",
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_af/E4_R5G1_source_evidence_selection/source_audit_merge.json",
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_af/E4_R5G1_source_evidence_selection/candidate_gap_comparison.json",
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_af/E4_R5G1_source_evidence_selection/r5_g1_handoff.json",
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_af/E4_R5G1_source_evidence_selection/r5_g1_report.md",
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ad/E4_R5M1A_recbole_source_audit/source_fact_matrix.json",
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ad/E4_R5M1A_recbole_source_audit/gap_closure_assessment.json",
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ad/E4_R5M1A_recbole_source_audit/v5_adapter_feasibility.json",
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ad/E4_R5M1A_recbole_source_audit/audit_handoff.json"
+    ],
+    "pinned_source_files": [
+      "setup.py",
+      "requirements.txt",
+      "run_recbole.py",
+      "run_hyper.py",
+      "recbole/__init__.py",
+      "recbole/quick_start/__init__.py",
+      "recbole/quick_start/quick_start.py",
+      "recbole/config/configurator.py",
+      "recbole/properties/overall.yaml",
+      "recbole/model/general_recommender/bpr.py",
+      "recbole/data/interaction.py",
+      "recbole/data/dataset/dataset.py",
+      "recbole/data/dataset/kg_dataset.py",
+      "recbole/evaluator/metrics.py",
+      "recbole/trainer/trainer.py",
+      "recbole/trainer/hyper_tuning.py",
+      "recbole/utils/utils.py",
+      "recbole/utils/logger.py",
+      "recbole/utils/wandblogger.py",
+      "recbole/model/general_recommender/__init__.py"
+    ],
+    "authoritative_external_urls": [
+      "https://www.python.org/downloads/release/python-3119/",
+      "https://devguide.python.org/versions/",
+      "https://docs.python.org/3.11/library/venv.html",
+      "https://pytorch.org/get-started/previous-versions/",
+      "https://download.pytorch.org/whl/cpu/torch/",
+      "https://pypi.org/project/torch/2.2.2/",
+      "https://pypi.org/project/numpy/1.26.4/",
+      "https://numpy.org/doc/2.0/numpy_2_0_migration_guide.html",
+      "https://pypi.org/project/scipy/1.11.4/",
+      "https://pypi.org/project/pandas/2.1.4/",
+      "https://pypi.org/project/scikit-learn/1.3.2/",
+      "https://pypi.org/project/PyYAML/6.0.2/",
+      "https://pypi.org/project/tensorboard/2.15.2/",
+      "https://pypi.org/project/ray/2.6.3/",
+      "https://pypi.org/project/thop/0.1.1.post2207130030/",
+      "https://pypi.org/project/plotly/5.18.0/",
+      "https://pypi.org/project/tabulate/0.9.0/",
+      "https://pypi.org/project/texttable/1.7.0/",
+      "https://pypi.org/project/psutil/5.9.8/",
+      "https://pypi.org/project/tqdm/4.66.5/",
+      "https://pypi.org/project/colorlog/4.7.2/",
+      "https://pypi.org/project/colorama/0.4.4/",
+      "https://pypi.org/project/pip/24.0/",
+      "https://pypi.org/project/setuptools/69.5.1/",
+      "https://pypi.org/project/wheel/0.43.0/",
+      "https://pip.pypa.io/en/stable/topics/repeatable-installs/",
+      "https://pip.pypa.io/en/stable/topics/secure-installs/",
+      "https://pip.pypa.io/en/stable/cli/pip_download/"
+    ],
+    "retrieval_date": "2026-08-23"
+  },
+  "unresolved_blockers": [
+    {
+      "id": "B1_ACTUAL_WHEEL_CLOSURE_NOT_RESOLVED",
+      "severity": "blocking_for_materialization_acceptance",
+      "detail": "No direct/transitive wheel set was downloaded or resolved, and no actual wheel hashes exist."
+    },
+    {
+      "id": "B2_EXACT_INTERPRETER_NOT_PRESENT",
+      "severity": "blocking_for_execution",
+      "detail": "The host has system Python 3.11.3; the selected isolated profile requires official CPython 3.11.9 x86-64."
+    },
+    {
+      "id": "B3_RUNTIME_IMPORTS_NOT_VERIFIED",
+      "severity": "blocking_for_materialization_acceptance",
+      "detail": "RecBole, torch, Ray, TensorBoard, THOP, scientific-stack imports, pip check, and syntax checks were proposed but not executed."
+    },
+    {
+      "id": "B4_LEGACY_OPTIONAL_IMPORT_RISK",
+      "severity": "blocking_on_failure",
+      "detail": "Ray 2.6.3, THOP, colorlog/colorama, and the setup.py-only local wheel build remain materialization-time fail-closed gates."
+    },
+    {
+      "id": "B5_HISTORICAL_PRODUCER_ENVIRONMENT_UNKNOWN",
+      "severity": "permanent_for_readme_provenance_unless_new_evidence_appears",
+      "detail": "The proposal cannot bind README NDCG@10=0.2768 to any historical interpreter, package set, command, dataset, seed, checkpoint, or evaluator."
+    },
+    {
+      "id": "B6_BENCHMARK_EXECUTION_AND_ADMISSION_NOT_AUTHORIZED",
+      "severity": "blocking_for_any_result_claim",
+      "detail": "No preprocessing, training, evaluation, tuning, TEST access, checkpoint action, or benchmark admission is authorized."
+    }
+  ],
+  "handoff_conditions": {
+    "proposal_closed": true,
+    "environment_materialization_allowed_by_this_artifact": false,
+    "required_next_authority": "A separate central R6 materialization authorization applying environment_command_proposal.json without fallback.",
+    "acceptance_requirements": [
+      "Exact interpreter preflight passes.",
+      "Frozen source verification passes.",
+      "Binary-only direct/transitive resolution is complete and deterministic.",
+      "Every actual wheel and the local RecBole wheel has a locally computed SHA-256 receipt.",
+      "Offline hash-required installation succeeds.",
+      "pip check, exact version assertions, CPU assertions, bounded imports, and syntax checks pass.",
+      "No forbidden command or write-set violation occurs."
+    ],
+    "fallback_policy": "CANNOT_VERIFY_AND_ESCALATE; never substitute a version, source build, index, platform, accelerator, source revision, or execution path."
+  },
+  "historical_environment_disclaimer": "The selected profile is current-compatible, not historical. It makes no claim about the unknown producer environment behind README NDCG@10=0.2768.",
+  "persistent_truth": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

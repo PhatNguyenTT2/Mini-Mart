@@ -1,0 +1,572 @@
+{
+  "schema_version": "1.0.0",
+  "stage": "R6-E1",
+  "artifact": "environment_command_proposal",
+  "proposal_only": true,
+  "execution_performed": false,
+  "shell_contract": {
+    "platform": "Windows",
+    "shell": "PowerShell 7+ or Windows PowerShell 5.1",
+    "argv_form": "Each command is a literal executable plus argument array. A runner must pass arguments without string concatenation or interpolation and must stop on every non-zero exit code.",
+    "workspace_root": "E:\\UIT\\cv\\backend",
+    "materialization_root": "E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\materialized_environments\\r6\\recbole_bpr_ml100k_py3119_cpu",
+    "venv_root": "E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\materialized_environments\\r6\\recbole_bpr_ml100k_py3119_cpu\\venv",
+    "venv_python": "E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\materialized_environments\\r6\\recbole_bpr_ml100k_py3119_cpu\\venv\\Scripts\\python.exe",
+    "frozen_source_root": "E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\materialized_sources\\r5\\recbole_v1_2_1_9a6f63d",
+    "source_staging_root": "E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\materialized_environments\\r6\\recbole_bpr_ml100k_py3119_cpu\\source-staging\\recbole_v1_2_1_9a6f63d"
+  },
+  "official_package_host_allowlist": [
+    {
+      "host": "www.python.org",
+      "purpose": "Official CPython 3.11.9 interpreter provenance; interpreter acquisition is a prerequisite outside these commands."
+    },
+    {
+      "host": "pypi.org",
+      "purpose": "Simple API and official project/release metadata for non-torch packages."
+    },
+    {
+      "host": "files.pythonhosted.org",
+      "purpose": "PyPI wheel payloads."
+    },
+    {
+      "host": "download.pytorch.org",
+      "purpose": "Official torch 2.2.2+cpu wheel index and payload."
+    },
+    {
+      "host": "download-r2.pytorch.org",
+      "purpose": "Official PyTorch payload redirect host, if selected by download.pytorch.org."
+    }
+  ],
+  "preconditions": [
+    "A separately provisioned official CPython 3.11.9 64-bit interpreter is registered with the Windows py launcher as -3.11-64.",
+    "The R6-S0 gate commit 374819ca5ef02ad51bb99c5e16fc5c0486e86c38 remains reachable and the frozen gate verdict remains PASS_R6_S0_FROZEN_36_OF_36_READY_FOR_PARALLEL_R6_D1_R6_E1.",
+    "The frozen source and all 00_control files are read-only for the materializer.",
+    "The materialization root does not already exist; reuse or in-place repair is prohibited.",
+    "A later central gate explicitly authorizes environment materialization. R6-E1 itself does not."
+  ],
+  "command_groups": [
+    {
+      "group": "preflight",
+      "commands": [
+        {
+          "id": "verify_exact_interpreter",
+          "executable": "py.exe",
+          "arguments": [
+            "-3.11-64",
+            "-c",
+            "import json,platform,struct,sys; ok=(sys.implementation.name=='cpython' and platform.python_version()=='3.11.9' and struct.calcsize('P')*8==64 and sys.platform=='win32'); print(json.dumps({'implementation':sys.implementation.name,'version':platform.python_version(),'bits':struct.calcsize('P')*8,'platform':sys.platform,'ok':ok},sort_keys=True)); raise SystemExit(0 if ok else 42)"
+          ],
+          "working_directory": "E:\\UIT\\cv\\backend",
+          "timeout_seconds": 30,
+          "network": false,
+          "writes": []
+        },
+        {
+          "id": "verify_frozen_source_manifest",
+          "executable": "py.exe",
+          "arguments": [
+            "-3.11-64",
+            "-c",
+            "import hashlib,json,pathlib,sys; w=pathlib.Path(r'E:\\UIT\\cv\\backend'); mp=w/r'research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\rebaseline_v2\\wave_ac\\E4_R5M0_source_materialization\\selected_blob_manifest.json'; tp=w/r'research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\rebaseline_v2\\wave_ac\\E4_R5M0_source_materialization\\source_tree_manifest.json'; m=json.loads(mp.read_text(encoding='utf-8')); t=json.loads(tp.read_text(encoding='utf-8')); c=next(x for x in m['candidates'] if x['candidate_id']=='R5-CAND-RECBOLE-BPR-ML100K-001'); tc=next(x for x in t['candidates'] if x['candidate_id']==c['candidate_id']); assert tc['full_revision']=='9a6f63d8d4a5b989fe27955a833f813a6d86041e' and tc['git_tree']=='08915121fea069a30f7e3e97a72e16e7e76d43c6' and tc['selected_tree_entry_count']==c['file_count']; selected={e['path']:(e['git_object_id'],e['mode']) for e in tc['entries'] if e['selected_by_sparse_policy']}; root=w/pathlib.Path(c['local_root']); bad=[]; [(bad.append(f['path']) if (not (root/f['path']).is_file() or (root/f['path']).stat().st_size!=f['size_bytes'] or hashlib.sha256((root/f['path']).read_bytes()).hexdigest()!=f['sha256_raw_bytes'] or selected.get(f['path'])!=(f['git_blob_id'],f['git_mode'])) else None) for f in c['files']]; total=sum((root/f['path']).stat().st_size for f in c['files'] if (root/f['path']).is_file()); out={'candidate_id':c['candidate_id'],'expected_files':c['file_count'],'verified_files':c['file_count']-len(bad),'expected_bytes':c['total_size_bytes'],'verified_bytes':total,'selected_manifest_sha256':hashlib.sha256(mp.read_bytes()).hexdigest(),'tree_manifest_sha256':hashlib.sha256(tp.read_bytes()).hexdigest(),'revision':tc['full_revision'],'git_tree':tc['git_tree'],'mismatches':bad}; print(json.dumps(out,sort_keys=True)); raise SystemExit(0 if not bad and total==c['total_size_bytes'] and len(selected)==c['file_count'] else 43)"
+          ],
+          "working_directory": "E:\\UIT\\cv\\backend",
+          "timeout_seconds": 120,
+          "network": false,
+          "writes": []
+        },
+        {
+          "id": "assert_materialization_root_absent",
+          "executable": "powershell.exe",
+          "arguments": [
+            "-NoProfile",
+            "-NonInteractive",
+            "-Command",
+            "$p='E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\materialized_environments\\r6\\recbole_bpr_ml100k_py3119_cpu'; if (Test-Path -LiteralPath $p) { throw 'STOP: materialization root already exists' }"
+          ],
+          "working_directory": "E:\\UIT\\cv\\backend",
+          "timeout_seconds": 30,
+          "network": false,
+          "writes": []
+        }
+      ]
+    },
+    {
+      "group": "central_environment_creation",
+      "commands": [
+        {
+          "id": "create_materialization_directories",
+          "executable": "powershell.exe",
+          "arguments": [
+            "-NoProfile",
+            "-NonInteractive",
+            "-Command",
+            "$r='E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\materialized_environments\\r6\\recbole_bpr_ml100k_py3119_cpu'; New-Item -ItemType Directory -Path $r,(Join-Path $r 'wheelhouse'),(Join-Path $r 'local-wheel'),(Join-Path $r 'receipts'),(Join-Path $r 'source-staging') -ErrorAction Stop | Out-Null"
+          ],
+          "working_directory": "E:\\UIT\\cv\\backend",
+          "timeout_seconds": 30,
+          "network": false,
+          "writes": [
+            "materialization_root",
+            "wheelhouse/",
+            "local-wheel/",
+            "receipts/",
+            "source-staging/"
+          ]
+        },
+        {
+          "id": "create_isolated_venv",
+          "executable": "py.exe",
+          "arguments": [
+            "-3.11-64",
+            "-m",
+            "venv",
+            "E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\materialized_environments\\r6\\recbole_bpr_ml100k_py3119_cpu\\venv"
+          ],
+          "working_directory": "E:\\UIT\\cv\\backend",
+          "timeout_seconds": 120,
+          "network": false,
+          "writes": [
+            "venv/"
+          ]
+        },
+        {
+          "id": "verify_bundled_pip_24",
+          "executable": "E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\materialized_environments\\r6\\recbole_bpr_ml100k_py3119_cpu\\venv\\Scripts\\python.exe",
+          "arguments": [
+            "-c",
+            "import importlib.metadata as m,sys; v=m.version('pip'); print(v); raise SystemExit(0 if v=='24.0' else 44)"
+          ],
+          "working_directory": "E:\\UIT\\cv\\backend",
+          "timeout_seconds": 30,
+          "network": false,
+          "writes": []
+        },
+        {
+          "id": "write_literal_pin_files",
+          "executable": "powershell.exe",
+          "arguments": [
+            "-NoProfile",
+            "-NonInteractive",
+            "-Command",
+            "$r='E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\materialized_environments\\r6\\recbole_bpr_ml100k_py3119_cpu'; Set-Content -LiteralPath (Join-Path $r 'torch-pin.txt') -Encoding ascii -Value @('torch==2.2.2+cpu'); Set-Content -LiteralPath (Join-Path $r 'pypi-direct-pins.txt') -Encoding ascii -Value @('pip==24.0','setuptools==69.5.1','wheel==0.43.0','numpy==1.26.4','scipy==1.11.4','pandas==2.1.4','scikit-learn==1.3.2','PyYAML==6.0.2','tqdm==4.66.5','colorlog==4.7.2','colorama==0.4.4','texttable==1.7.0','tensorboard==2.15.2','ray==2.6.3','thop==0.1.1.post2207130030','tabulate==0.9.0','plotly==5.18.0','psutil==5.9.8'); Set-Content -LiteralPath (Join-Path $r 'constraints.txt') -Encoding ascii -Value @('torch==2.2.2+cpu','pip==24.0','setuptools==69.5.1','wheel==0.43.0','numpy==1.26.4','scipy==1.11.4','pandas==2.1.4','scikit-learn==1.3.2','PyYAML==6.0.2','tqdm==4.66.5','colorlog==4.7.2','colorama==0.4.4','texttable==1.7.0','tensorboard==2.15.2','ray==2.6.3','thop==0.1.1.post2207130030','tabulate==0.9.0','plotly==5.18.0','psutil==5.9.8')"
+          ],
+          "working_directory": "E:\\UIT\\cv\\backend",
+          "timeout_seconds": 30,
+          "network": false,
+          "writes": [
+            "torch-pin.txt",
+            "pypi-direct-pins.txt",
+            "constraints.txt"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "package_resolution_and_download",
+      "commands": [
+        {
+          "id": "download_torch_cpu_wheel",
+          "executable": "E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\materialized_environments\\r6\\recbole_bpr_ml100k_py3119_cpu\\venv\\Scripts\\python.exe",
+          "arguments": [
+            "-m",
+            "pip",
+            "--disable-pip-version-check",
+            "--log",
+            "E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\materialized_environments\\r6\\recbole_bpr_ml100k_py3119_cpu\\receipts\\torch-download.log",
+            "download",
+            "--dest",
+            "E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\materialized_environments\\r6\\recbole_bpr_ml100k_py3119_cpu\\wheelhouse",
+            "--only-binary=:all:",
+            "--no-deps",
+            "--index-url",
+            "https://download.pytorch.org/whl/cpu",
+            "--requirement",
+            "E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\materialized_environments\\r6\\recbole_bpr_ml100k_py3119_cpu\\torch-pin.txt"
+          ],
+          "working_directory": "E:\\UIT\\cv\\backend",
+          "timeout_seconds": 900,
+          "network": true,
+          "allowed_hosts": [
+            "download.pytorch.org",
+            "download-r2.pytorch.org"
+          ],
+          "writes": [
+            "wheelhouse/torch-2.2.2+cpu-cp311-cp311-win_amd64.whl (expected identity; exact downloaded filename must be recorded, not assumed)",
+            "receipts/torch-download.log"
+          ]
+        },
+        {
+          "id": "resolve_and_download_pypi_wheels",
+          "executable": "E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\materialized_environments\\r6\\recbole_bpr_ml100k_py3119_cpu\\venv\\Scripts\\python.exe",
+          "arguments": [
+            "-m",
+            "pip",
+            "--disable-pip-version-check",
+            "--log",
+            "E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\materialized_environments\\r6\\recbole_bpr_ml100k_py3119_cpu\\receipts\\pypi-download.log",
+            "download",
+            "--dest",
+            "E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\materialized_environments\\r6\\recbole_bpr_ml100k_py3119_cpu\\wheelhouse",
+            "--only-binary=:all:",
+            "--index-url",
+            "https://pypi.org/simple",
+            "--find-links",
+            "E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\materialized_environments\\r6\\recbole_bpr_ml100k_py3119_cpu\\wheelhouse",
+            "--constraint",
+            "E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\materialized_environments\\r6\\recbole_bpr_ml100k_py3119_cpu\\constraints.txt",
+            "--requirement",
+            "E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\materialized_environments\\r6\\recbole_bpr_ml100k_py3119_cpu\\pypi-direct-pins.txt"
+          ],
+          "working_directory": "E:\\UIT\\cv\\backend",
+          "timeout_seconds": 900,
+          "network": true,
+          "allowed_hosts": [
+            "pypi.org",
+            "files.pythonhosted.org"
+          ],
+          "writes": [
+            "wheelhouse/*.whl",
+            "receipts/pypi-download.log"
+          ]
+        },
+        {
+          "id": "assert_wheel_only_cpu_closure",
+          "executable": "E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\materialized_environments\\r6\\recbole_bpr_ml100k_py3119_cpu\\venv\\Scripts\\python.exe",
+          "arguments": [
+            "-c",
+            "import pathlib,re,sys; w=pathlib.Path(r'E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\materialized_environments\\r6\\recbole_bpr_ml100k_py3119_cpu\\wheelhouse'); files=sorted(p.name for p in w.iterdir()); bad=[n for n in files if not n.lower().endswith('.whl') or re.search(r'(^|[-_.])(nvidia|cuda|cudnn|rocm|triton)([-_.]|$)',n,re.I)]; tw=[n for n in files if re.match(r'torch-2\\.2\\.2\\+cpu-cp311-cp311-win_amd64\\.whl$',n,re.I)]; print({'files':len(files),'torch_cpu_matches':tw,'rejected':bad}); raise SystemExit(0 if files and len(tw)==1 and not bad else 45)"
+          ],
+          "working_directory": "E:\\UIT\\cv\\backend",
+          "timeout_seconds": 60,
+          "network": false,
+          "writes": []
+        },
+        {
+          "id": "capture_wheel_hashes_and_hashed_requirements",
+          "executable": "E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\materialized_environments\\r6\\recbole_bpr_ml100k_py3119_cpu\\venv\\Scripts\\python.exe",
+          "arguments": [
+            "-c",
+            "import email,hashlib,json,pathlib,re,zipfile; r=pathlib.Path(r'E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\materialized_environments\\r6\\recbole_bpr_ml100k_py3119_cpu'); w=r/'wheelhouse'; rec=[]; seen={}; canon=lambda s:re.sub(r'[-_.]+','-',s).lower(); [(lambda p:(lambda z:(lambda n,m:(lambda name,ver,d:(seen.setdefault(canon(name),[]).append(p.name),rec.append({'identity':name,'normalized_identity':canon(name),'version':ver,'filename':p.name,'size_bytes':p.stat().st_size,'sha256':d,'wheel_metadata_path':n,'source_host_class':'download.pytorch.org' if canon(name)=='torch' else 'pypi.org/files.pythonhosted.org'})))(m['Name'],m['Version'],hashlib.sha256(p.read_bytes()).hexdigest()))(next(n for n in z.namelist() if n.endswith('.dist-info/METADATA')),email.message_from_bytes(z.read(next(n for n in z.namelist() if n.endswith('.dist-info/METADATA'))))))(zipfile.ZipFile(p)))(p) for p in sorted(w.glob('*.whl'))]; dup={k:v for k,v in seen.items() if len(v)!=1}; assert not dup,dup; assert seen.get('torch') and '+cpu' in next(x['version'] for x in rec if x['normalized_identity']=='torch'); (r/'resolved-wheel-manifest.json').write_text(json.dumps({'schema_version':'1.0.0','generated_from_actual_downloads':True,'records':rec},indent=2,sort_keys=True)+'\\n',encoding='utf-8'); (r/'requirements-hashed.txt').write_text(''.join(f\"{x['identity']}=={x['version']} --hash=sha256:{x['sha256']}\\n\" for x in sorted(rec,key=lambda y:y['normalized_identity'])),encoding='ascii')"
+          ],
+          "working_directory": "E:\\UIT\\cv\\backend",
+          "timeout_seconds": 120,
+          "network": false,
+          "writes": [
+            "resolved-wheel-manifest.json",
+            "requirements-hashed.txt"
+          ]
+        },
+        {
+          "id": "offline_resolution_report",
+          "executable": "E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\materialized_environments\\r6\\recbole_bpr_ml100k_py3119_cpu\\venv\\Scripts\\python.exe",
+          "arguments": [
+            "-m",
+            "pip",
+            "install",
+            "--dry-run",
+            "--ignore-installed",
+            "--no-index",
+            "--find-links",
+            "E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\materialized_environments\\r6\\recbole_bpr_ml100k_py3119_cpu\\wheelhouse",
+            "--require-hashes",
+            "--report",
+            "E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\materialized_environments\\r6\\recbole_bpr_ml100k_py3119_cpu\\resolver-report.json",
+            "--requirement",
+            "E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\materialized_environments\\r6\\recbole_bpr_ml100k_py3119_cpu\\requirements-hashed.txt"
+          ],
+          "working_directory": "E:\\UIT\\cv\\backend",
+          "timeout_seconds": 300,
+          "network": false,
+          "writes": [
+            "resolver-report.json"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "offline_install_and_local_source_build",
+      "commands": [
+        {
+          "id": "install_hashed_third_party_closure",
+          "executable": "E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\materialized_environments\\r6\\recbole_bpr_ml100k_py3119_cpu\\venv\\Scripts\\python.exe",
+          "arguments": [
+            "-m",
+            "pip",
+            "install",
+            "--no-index",
+            "--find-links",
+            "E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\materialized_environments\\r6\\recbole_bpr_ml100k_py3119_cpu\\wheelhouse",
+            "--require-hashes",
+            "--no-deps",
+            "--requirement",
+            "E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\materialized_environments\\r6\\recbole_bpr_ml100k_py3119_cpu\\requirements-hashed.txt"
+          ],
+          "working_directory": "E:\\UIT\\cv\\backend",
+          "timeout_seconds": 600,
+          "network": false,
+          "writes": [
+            "venv/"
+          ]
+        },
+        {
+          "id": "copy_verified_source_to_staging",
+          "executable": "powershell.exe",
+          "arguments": [
+            "-NoProfile",
+            "-NonInteractive",
+            "-Command",
+            "$s='E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\materialized_sources\\r5\\recbole_v1_2_1_9a6f63d'; $d='E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\materialized_environments\\r6\\recbole_bpr_ml100k_py3119_cpu\\source-staging\\recbole_v1_2_1_9a6f63d'; if (Test-Path -LiteralPath $d) { throw 'STOP: source staging target exists' }; Copy-Item -LiteralPath $s -Destination $d -Recurse -ErrorAction Stop"
+          ],
+          "working_directory": "E:\\UIT\\cv\\backend",
+          "timeout_seconds": 120,
+          "network": false,
+          "writes": [
+            "source-staging/recbole_v1_2_1_9a6f63d/"
+          ]
+        },
+        {
+          "id": "build_local_recbole_wheel",
+          "executable": "E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\materialized_environments\\r6\\recbole_bpr_ml100k_py3119_cpu\\venv\\Scripts\\python.exe",
+          "arguments": [
+            "-m",
+            "pip",
+            "wheel",
+            "--no-deps",
+            "--no-build-isolation",
+            "--wheel-dir",
+            "E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\materialized_environments\\r6\\recbole_bpr_ml100k_py3119_cpu\\local-wheel",
+            "E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\materialized_environments\\r6\\recbole_bpr_ml100k_py3119_cpu\\source-staging\\recbole_v1_2_1_9a6f63d"
+          ],
+          "working_directory": "E:\\UIT\\cv\\backend",
+          "timeout_seconds": 300,
+          "network": false,
+          "writes": [
+            "local-wheel/recbole-1.2.1-*.whl",
+            "source-staging/recbole_v1_2_1_9a6f63d/build/",
+            "source-staging/recbole_v1_2_1_9a6f63d/RecBole.egg-info/"
+          ]
+        },
+        {
+          "id": "hash_local_recbole_wheel",
+          "executable": "E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\materialized_environments\\r6\\recbole_bpr_ml100k_py3119_cpu\\venv\\Scripts\\python.exe",
+          "arguments": [
+            "-c",
+            "import hashlib,json,pathlib,zipfile,email; r=pathlib.Path(r'E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\materialized_environments\\r6\\recbole_bpr_ml100k_py3119_cpu'); ws=list((r/'local-wheel').glob('*.whl')); assert len(ws)==1,ws; p=ws[0]; z=zipfile.ZipFile(p); n=next(n for n in z.namelist() if n.endswith('.dist-info/METADATA')); m=email.message_from_bytes(z.read(n)); assert m['Name'].lower()=='recbole' and m['Version']=='1.2.1',(m['Name'],m['Version']); d=hashlib.sha256(p.read_bytes()).hexdigest(); receipt={'identity':m['Name'],'version':m['Version'],'filename':p.name,'size_bytes':p.stat().st_size,'sha256':d,'source_revision':'9a6f63d8d4a5b989fe27955a833f813a6d86041e','source_git_tree':'08915121fea069a30f7e3e97a72e16e7e76d43c6','python':'3.11.9','build_tools':{'pip':'24.0','setuptools':'69.5.1','wheel':'0.43.0'}}; (r/'recbole-local-wheel-build-receipt.json').write_text(json.dumps(receipt,indent=2,sort_keys=True)+'\\n',encoding='utf-8'); (r/'recbole-local-wheel-hashed.txt').write_text(f\"{p.resolve().as_uri()} --hash=sha256:{d}\\n\",encoding='ascii')"
+          ],
+          "working_directory": "E:\\UIT\\cv\\backend",
+          "timeout_seconds": 60,
+          "network": false,
+          "writes": [
+            "recbole-local-wheel-build-receipt.json",
+            "recbole-local-wheel-hashed.txt"
+          ]
+        },
+        {
+          "id": "install_hashed_local_recbole_wheel",
+          "executable": "E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\materialized_environments\\r6\\recbole_bpr_ml100k_py3119_cpu\\venv\\Scripts\\python.exe",
+          "arguments": [
+            "-m",
+            "pip",
+            "install",
+            "--no-index",
+            "--require-hashes",
+            "--no-deps",
+            "--requirement",
+            "E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\materialized_environments\\r6\\recbole_bpr_ml100k_py3119_cpu\\recbole-local-wheel-hashed.txt"
+          ],
+          "working_directory": "E:\\UIT\\cv\\backend",
+          "timeout_seconds": 180,
+          "network": false,
+          "writes": [
+            "venv/"
+          ]
+        }
+      ]
+    },
+    {
+      "group": "frozen_inventory_and_bounded_checks",
+      "commands": [
+        {
+          "id": "capture_pip_check",
+          "executable": "powershell.exe",
+          "arguments": [
+            "-NoProfile",
+            "-NonInteractive",
+            "-Command",
+            "& 'E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\materialized_environments\\r6\\recbole_bpr_ml100k_py3119_cpu\\venv\\Scripts\\python.exe' -m pip check 2>&1 | Set-Content -LiteralPath 'E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\materialized_environments\\r6\\recbole_bpr_ml100k_py3119_cpu\\pip-check.txt' -Encoding utf8; if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }"
+          ],
+          "working_directory": "E:\\UIT\\cv\\backend",
+          "timeout_seconds": 120,
+          "network": false,
+          "writes": [
+            "pip-check.txt"
+          ]
+        },
+        {
+          "id": "capture_frozen_inventory",
+          "executable": "powershell.exe",
+          "arguments": [
+            "-NoProfile",
+            "-NonInteractive",
+            "-Command",
+            "& 'E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\materialized_environments\\r6\\recbole_bpr_ml100k_py3119_cpu\\venv\\Scripts\\python.exe' -m pip freeze --all 2>&1 | Set-Content -LiteralPath 'E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\materialized_environments\\r6\\recbole_bpr_ml100k_py3119_cpu\\installed-inventory.txt' -Encoding utf8; if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }"
+          ],
+          "working_directory": "E:\\UIT\\cv\\backend",
+          "timeout_seconds": 120,
+          "network": false,
+          "writes": [
+            "installed-inventory.txt"
+          ]
+        },
+        {
+          "id": "capture_pip_inspect",
+          "executable": "powershell.exe",
+          "arguments": [
+            "-NoProfile",
+            "-NonInteractive",
+            "-Command",
+            "& 'E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\materialized_environments\\r6\\recbole_bpr_ml100k_py3119_cpu\\venv\\Scripts\\python.exe' -m pip inspect --local 2>&1 | Set-Content -LiteralPath 'E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\materialized_environments\\r6\\recbole_bpr_ml100k_py3119_cpu\\pip-inspect.json' -Encoding utf8; if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }"
+          ],
+          "working_directory": "E:\\UIT\\cv\\backend",
+          "timeout_seconds": 120,
+          "network": false,
+          "writes": [
+            "pip-inspect.json"
+          ]
+        },
+        {
+          "id": "bounded_import_and_version_check",
+          "executable": "E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\materialized_environments\\r6\\recbole_bpr_ml100k_py3119_cpu\\venv\\Scripts\\python.exe",
+          "arguments": [
+            "-c",
+            "import importlib.metadata as md,json,pathlib,platform,struct,sys; expected={'pip':'24.0','setuptools':'69.5.1','wheel':'0.43.0','torch':'2.2.2+cpu','numpy':'1.26.4','scipy':'1.11.4','pandas':'2.1.4','scikit-learn':'1.3.2','PyYAML':'6.0.2','tqdm':'4.66.5','colorlog':'4.7.2','colorama':'0.4.4','texttable':'1.7.0','tensorboard':'2.15.2','ray':'2.6.3','thop':'0.1.1.post2207130030','tabulate':'0.9.0','plotly':'5.18.0','psutil':'5.9.8','RecBole':'1.2.1'}; actual={k:md.version(k) for k in expected}; assert actual==expected,(actual,expected); import torch,numpy,scipy,pandas,sklearn,yaml,colorlog,colorama,texttable,tensorboard,ray,thop,tabulate,plotly,psutil,recbole; from torch.utils.tensorboard import SummaryWriter; from ray import tune; from thop.profile import register_hooks; import recbole.config,recbole.data,recbole.evaluator,recbole.trainer,recbole.quick_start,recbole.model.general_recommender.bpr; assert torch.__version__=='2.2.2+cpu' and torch.version.cuda is None and not torch.cuda.is_available(); out={'python':platform.python_version(),'bits':struct.calcsize('P')*8,'platform':sys.platform,'versions':actual,'torch_cuda_version':torch.version.cuda,'torch_cuda_available':torch.cuda.is_available(),'imports':['recbole','recbole.config','recbole.data','recbole.evaluator','recbole.trainer','recbole.quick_start','recbole.model.general_recommender.bpr','torch.utils.tensorboard.SummaryWriter','ray.tune','thop.profile.register_hooks'],'execution_scope':'imports_and_version_assertions_only'}; pathlib.Path(r'E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\materialized_environments\\r6\\recbole_bpr_ml100k_py3119_cpu\\import-version-check.json').write_text(json.dumps(out,indent=2,sort_keys=True)+'\\n',encoding='utf-8')"
+          ],
+          "working_directory": "E:\\UIT\\cv\\backend",
+          "timeout_seconds": 180,
+          "network": false,
+          "writes": [
+            "import-version-check.json"
+          ]
+        },
+        {
+          "id": "bounded_syntax_check",
+          "executable": "powershell.exe",
+          "arguments": [
+            "-NoProfile",
+            "-NonInteractive",
+            "-Command",
+            "& 'E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\materialized_environments\\r6\\recbole_bpr_ml100k_py3119_cpu\\venv\\Scripts\\python.exe' -m compileall -q -f 'E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\materialized_environments\\r6\\recbole_bpr_ml100k_py3119_cpu\\source-staging\\recbole_v1_2_1_9a6f63d\\recbole' 2>&1 | Set-Content -LiteralPath 'E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\materialized_environments\\r6\\recbole_bpr_ml100k_py3119_cpu\\syntax-check.txt' -Encoding utf8; if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }"
+          ],
+          "working_directory": "E:\\UIT\\cv\\backend",
+          "timeout_seconds": 180,
+          "network": false,
+          "writes": [
+            "source-staging/recbole_v1_2_1_9a6f63d/recbole/**/__pycache__/*.pyc",
+            "syntax-check.txt"
+          ]
+        }
+      ]
+    }
+  ],
+  "expected_write_set": {
+    "only_allowed_root": "E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\materialized_environments\\r6\\recbole_bpr_ml100k_py3119_cpu",
+    "allowed_relative_paths": [
+      "venv/**",
+      "wheelhouse/*.whl",
+      "local-wheel/*.whl",
+      "receipts/*.log",
+      "source-staging/**",
+      "torch-pin.txt",
+      "pypi-direct-pins.txt",
+      "constraints.txt",
+      "requirements-hashed.txt",
+      "resolved-wheel-manifest.json",
+      "resolver-report.json",
+      "recbole-local-wheel-build-receipt.json",
+      "recbole-local-wheel-hashed.txt",
+      "pip-check.txt",
+      "installed-inventory.txt",
+      "pip-inspect.json",
+      "import-version-check.json",
+      "syntax-check.txt"
+    ],
+    "explicitly_read_only": [
+      "E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\00_control\\**",
+      "E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\materialized_sources\\r5\\recbole_v1_2_1_9a6f63d\\**",
+      "E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\rebaseline_v2\\wave_ah\\E4_R6E1_recbole_environment_closure\\**"
+    ],
+    "outside_root_write_policy": "STOP"
+  },
+  "resource_bounds": {
+    "networked_resolution_timeout_seconds_per_command": 900,
+    "local_build_timeout_seconds": 300,
+    "install_timeout_seconds": 600,
+    "check_timeout_seconds": 180,
+    "maximum_wheelhouse_bytes": 2147483648,
+    "maximum_total_materialization_bytes": 4294967296,
+    "maximum_cpu_processes": 1,
+    "maximum_ray_workers": 0,
+    "gpu_devices": 0,
+    "retry_policy": "No automatic version/index/platform fallback; at most one retry for a demonstrably transient connection interruption using the identical command and pins."
+  },
+  "stop_rules": [
+    "STOP if exact CPython 3.11.9 64-bit is unavailable or if the py launcher resolves a different interpreter.",
+    "STOP if the materialization root already exists; do not delete, repair, merge, or reuse it without a new control decision.",
+    "STOP on any frozen source path, size, or SHA-256 mismatch, or if the candidate/revision/tree identity differs.",
+    "STOP if any network host outside the allowlist appears in pip logs, including an unapproved mirror, VCS host, or package index.",
+    "STOP if any third-party dependency lacks a compatible wheel, if pip proposes an sdist/egg, or if a wheel tag is incompatible with CPython 3.11 Windows AMD64.",
+    "STOP if torch does not resolve to exactly 2.2.2+cpu from the official CPU index or if a CUDA/ROCm/nvidia/triton distribution appears.",
+    "STOP on duplicate normalized package identities, direct-pin substitution, resolver conflict, hash mismatch, or non-deterministic second resolution.",
+    "STOP if the legacy local wheel build accesses the network, mutates the frozen source, produces zero or multiple wheels, or emits metadata other than RecBole 1.2.1.",
+    "STOP if pip check is non-zero, any exact version assertion fails, any bounded import fails, torch reports a CUDA build/device, or syntax compilation fails.",
+    "STOP if any command contains or invokes a forbidden training, evaluation, tuning, checkpoint, download, or project TEST operation.",
+    "STOP when any timeout, byte limit, process limit, or expected-write-set boundary is exceeded.",
+    "STOP rather than changing Python, torch, NumPy, Ray, any direct pin, the source revision, the source code, or the feature exclusions. Escalate to a new reviewed proposal."
+  ],
+  "negative_assertions": {
+    "assertion_scope": "All executable/argument arrays in this proposal were statically reviewed; the only RecBole operations proposed are a local wheel build, metadata inventory, imports, version assertions, and syntax compilation.",
+    "no_recbole_train_command": true,
+    "no_recbole_evaluate_command": true,
+    "no_project_test_command": true,
+    "no_preprocess_command": true,
+    "no_checkpoint_command": true,
+    "no_tuning_command": true,
+    "no_vendor_entrypoint_command": true,
+    "no_dataset_open_or_download_command": true,
+    "forbidden_execution_patterns": [
+      "run_recbole.py",
+      "run_hyper.py",
+      "python -m recbole",
+      "run_recbole(",
+      "objective_function(",
+      "trainer.fit(",
+      "trainer.evaluate(",
+      "HyperTuning(",
+      "tune.run(",
+      "ray.init(",
+      "load_data(",
+      "create_dataset(",
+      "data_preparation(",
+      "project_v5/TEST",
+      "dataset='TEST'",
+      "phase='test'",
+      "test_data",
+      "checkpoint",
+      ".pth"
+    ],
+    "allowed_import_only_tokens": [
+      "import recbole.quick_start",
+      "from ray import tune",
+      "import recbole.trainer",
+      "import recbole.evaluator"
+    ],
+    "proof_limit": "This is a proposal-time syntactic assertion, not an execution receipt. The later central runner must repeat the static scan immediately before execution and stop on a match."
+  },
+  "persistent_truth": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

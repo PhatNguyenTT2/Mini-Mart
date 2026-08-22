@@ -1,0 +1,516 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r6-d1-data-lineage-plan-1.0",
+  "created_at": "2026-08-23",
+  "stage_id": "R6-D1",
+  "plan_status": "PROPOSAL_ONLY_NOT_MATERIALIZED",
+  "candidate_id": "R5-CAND-RECBOLE-BPR-ML100K-001",
+  "pinned_recbole_revision": "9a6f63d8d4a5b989fe27955a833f813a6d86041e",
+  "canonical_archive_identity": {
+    "provider": "GroupLens Research Project, University of Minnesota",
+    "dataset": "MovieLens 100K",
+    "release_date": "1998-04",
+    "archive_filename": "ml-100k.zip",
+    "requested_url": "https://files.grouplens.org/datasets/movielens/ml-100k.zip",
+    "final_url": "https://files.grouplens.org/datasets/movielens/ml-100k.zip",
+    "redirects_observed": 0,
+    "provider_content_length_bytes": 4924029,
+    "provider_checksum": {
+      "algorithm": "MD5",
+      "expected_value": "0e33842e24a9c977be4e0107933c0723",
+      "sidecar_url": "https://files.grouplens.org/datasets/movielens/ml-100k.zip.md5",
+      "sidecar_body_replayed": true,
+      "archive_recomputed_in_this_stage": false
+    },
+    "official_sha256": null,
+    "local_sha256_after_acquisition_required": true,
+    "archive_downloaded_in_this_stage": false,
+    "identity_evidence_source_ids": [
+      "GL-ML100K-PAGE-20260823",
+      "GL-ML100K-README-20260823",
+      "GL-ML100K-ARCHIVE-HEAD-20260823",
+      "GL-ML100K-MD5-20260823"
+    ]
+  },
+  "source_hierarchy": {
+    "provider_release_rights_archive_checksum": "CURRENT_OFFICIAL_GROUPLENS_SURFACES_ONLY",
+    "consumer_atomic_schema_and_runtime_mapping": "PINNED_LOCAL_RECBOLE_SOURCE_ONLY",
+    "recbole_s3_processed_archive": "REJECTED_AS_CANONICAL_PROVIDER_AUTHORITY",
+    "repository_atomic_files": "NONAUTHORITATIVE_DIAGNOSTIC_ONLY",
+    "mirrors_search_snippets_package_caches": "NOT_DECISION_BEARING"
+  },
+  "expected_archive_inventory": {
+    "authority": "GL-ML100K-INDEX-20260823",
+    "expected_single_directory_prefix": "ml-100k/",
+    "directory_prefix_status": "EXPECTED_AND_MUST_BE_CONFIRMED_FROM_ARCHIVE_CENTRAL_DIRECTORY_BEFORE_EXTRACTION",
+    "logical_file_count": 23,
+    "logical_files": [
+      "README",
+      "allbut.pl",
+      "mku.sh",
+      "u.data",
+      "u.genre",
+      "u.info",
+      "u.item",
+      "u.occupation",
+      "u.user",
+      "u1.base",
+      "u1.test",
+      "u2.base",
+      "u2.test",
+      "u3.base",
+      "u3.test",
+      "u4.base",
+      "u4.test",
+      "u5.base",
+      "u5.test",
+      "ua.base",
+      "ua.test",
+      "ub.base",
+      "ub.test"
+    ],
+    "exact_unzipped_base_url": "https://files.grouplens.org/datasets/movielens/ml-100k/",
+    "policy": "Any missing, additional, duplicate, case-colliding, non-regular, absolute, traversal, link, or reparse-point member fails before extraction."
+  },
+  "official_raw_metadata": {
+    "release_cardinalities": {
+      "ratings": 100000,
+      "users": 943,
+      "items": 1682,
+      "minimum_ratings_per_user": 20,
+      "authority_source_ids": [
+        "GL-ML100K-README-20260823",
+        "GL-ML100K-UINFO-20260823"
+      ]
+    },
+    "files": [
+      {
+        "file": "u.data",
+        "locator": "https://files.grouplens.org/datasets/movielens/ml-100k/u.data",
+        "role": "full ratings table",
+        "separator": "TAB",
+        "header_present": false,
+        "ordered_fields": [
+          "user_id",
+          "item_id",
+          "rating",
+          "timestamp"
+        ],
+        "field_constraints": {
+          "user_id": "consecutive decimal integer identifiers 1 through 943",
+          "item_id": "consecutive decimal integer identifiers 1 through 1682",
+          "rating": "integer 1 through 5",
+          "timestamp": "Unix seconds since 1970-01-01T00:00:00Z"
+        },
+        "row_order": "randomly ordered by provider",
+        "expected_data_rows": 100000,
+        "used_by_normative_atomic_conversion": true
+      },
+      {
+        "file": "u.info",
+        "locator": "https://files.grouplens.org/datasets/movielens/ml-100k/u.info",
+        "role": "cardinality metadata",
+        "schema": "three textual count lines for users, items, and ratings",
+        "exact_observed_body_lines": [
+          "943 users",
+          "1682 items",
+          "100000 ratings"
+        ],
+        "used_by_normative_atomic_conversion": false,
+        "used_by_reconciliation": true
+      },
+      {
+        "file": "u.item",
+        "locator": "https://files.grouplens.org/datasets/movielens/ml-100k/u.item",
+        "role": "movie metadata",
+        "header_present": false,
+        "ordered_fields": [
+          "movie_id",
+          "movie_title",
+          "release_date",
+          "video_release_date",
+          "imdb_url",
+          "genre_unknown",
+          "genre_action",
+          "genre_adventure",
+          "genre_animation",
+          "genre_childrens",
+          "genre_comedy",
+          "genre_crime",
+          "genre_documentary",
+          "genre_drama",
+          "genre_fantasy",
+          "genre_film_noir",
+          "genre_horror",
+          "genre_musical",
+          "genre_mystery",
+          "genre_romance",
+          "genre_sci_fi",
+          "genre_thriller",
+          "genre_war",
+          "genre_western"
+        ],
+        "expected_data_rows": 1682,
+        "metadata_boundary": "The official README describes the 24-field order and 19 binary genre flags. Exact delimiter and character-decoding behavior must be confirmed from acquired raw bytes before any metadata conversion.",
+        "used_by_normative_atomic_conversion": false
+      },
+      {
+        "file": "u.user",
+        "locator": "https://files.grouplens.org/datasets/movielens/ml-100k/u.user",
+        "role": "user demographics",
+        "header_present": false,
+        "ordered_fields": [
+          "user_id",
+          "age",
+          "gender",
+          "occupation",
+          "zip_code"
+        ],
+        "expected_data_rows": 943,
+        "metadata_boundary": "The official README establishes the field order and ID join. Exact delimiter and character-decoding behavior must be confirmed from acquired raw bytes before any metadata conversion.",
+        "used_by_normative_atomic_conversion": false
+      },
+      {
+        "file": "u.genre",
+        "locator": "https://files.grouplens.org/datasets/movielens/ml-100k/u.genre",
+        "role": "genre vocabulary metadata",
+        "schema": "provider-described genre list; exact byte schema deferred to safe extraction inventory",
+        "used_by_normative_atomic_conversion": false
+      },
+      {
+        "file": "u.occupation",
+        "locator": "https://files.grouplens.org/datasets/movielens/ml-100k/u.occupation",
+        "role": "occupation vocabulary metadata",
+        "schema": "provider-described occupation list; exact byte schema deferred to safe extraction inventory",
+        "used_by_normative_atomic_conversion": false
+      },
+      {
+        "files": [
+          "u1.base",
+          "u1.test",
+          "u2.base",
+          "u2.test",
+          "u3.base",
+          "u3.test",
+          "u4.base",
+          "u4.test",
+          "u5.base",
+          "u5.test"
+        ],
+        "role": "provider five-fold 80/20 rating splits",
+        "schema": "same four fields as u.data",
+        "provider_semantics": "The five test sets are disjoint and intended for five-fold cross-validation.",
+        "used_by_normative_atomic_conversion": false
+      },
+      {
+        "files": [
+          "ua.base",
+          "ua.test",
+          "ub.base",
+          "ub.test"
+        ],
+        "role": "provider all-but-10 split pairs",
+        "schema": "same four fields as u.data",
+        "provider_semantics": "Each test set contains exactly 10 ratings per user; ua.test and ub.test are disjoint.",
+        "used_by_normative_atomic_conversion": false
+      },
+      {
+        "files": [
+          "README",
+          "allbut.pl",
+          "mku.sh"
+        ],
+        "role": "release documentation and split-generation scripts",
+        "used_by_normative_atomic_conversion": false
+      }
+    ]
+  },
+  "safe_extraction_policy": {
+    "preflight_before_any_member_write": true,
+    "central_directory_requirements": [
+      "Exactly 23 regular logical files under one ml-100k/ directory prefix.",
+      "Normalize ZIP separators only for validation; reject backslashes in stored names.",
+      "Reject empty names, absolute paths, drive-qualified paths, UNC paths, dot segments, dot-dot segments, alternate data stream colons, NULs, and case-insensitive duplicate targets.",
+      "Reject symbolic links, hard links, devices, FIFOs, sockets, and entries with unsupported Unix file types.",
+      "Resolve every target with System.IO.Path.GetFullPath and require it to remain under the exact staging root plus a trailing separator.",
+      "Use create-new semantics for each file; never overwrite an existing target.",
+      "Reject all reparse points in every existing parent and in the extracted tree.",
+      "Require the physical extracted file set to equal the allowlist before promotion from staging."
+    ],
+    "staging_policy": "Extract manually from ZipArchiveEntry streams into a new empty staging directory, verify inventory and hashes, then rename the single verified release directory into the immutable raw root.",
+    "on_failure": "Stop, retain no promoted raw snapshot, and preserve only bounded failure diagnostics outside the raw namespace."
+  },
+  "pinned_recbole_consumer_contract": {
+    "revision": "9a6f63d8d4a5b989fe27955a833f813a6d86041e",
+    "local_source_root": "E:/UIT/cv/backend/research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d",
+    "evidence": [
+      {
+        "path": "recbole/properties/dataset/ml-100k.yaml",
+        "sha256_raw_bytes": "9890771341fe556dc14ee0f004ec6b72efeeac2fef8bfca2c78f7416e6c4f449",
+        "locator": "field separator, ID/rating/time field names, load_col, threshold"
+      },
+      {
+        "path": "recbole/data/dataset/dataset.py",
+        "sha256_raw_bytes": "9e752eea85d84280f1ea5c752a3be055ab8deb1c03c1196d1a02f46065deee5e",
+        "locator": "Dataset._load_feat lines 427-523; Dataset._remap lines 1196-1218; token2id/id2token lines 1354-1390"
+      },
+      {
+        "path": "recbole/properties/dataset/url.yaml",
+        "sha256_raw_bytes": "6bd6c438a9b2cce7fa8d81ea6dbe0333b37f83270046d37162ce2775ada51d03",
+        "locator": "ml-100k S3 processed URL mapping at line 133; rejected as provider authority"
+      }
+    ],
+    "atomic_field_separator": "TAB",
+    "atomic_header_type_syntax": "field_name:feature_type",
+    "loaded_interaction_columns": [
+      "user_id",
+      "item_id",
+      "rating",
+      "timestamp"
+    ],
+    "rating_threshold": null,
+    "normalize_all_float_fields": true,
+    "normalization_boundary": "The atomic lineage preserves raw rating and timestamp lexemes. The pinned consumer may later normalize loaded float fields; any runtime-normalized tensors belong to a separate consumer receipt and do not change the raw-to-atomic byte mapping.",
+    "all_ratings_enter_pairwise_training_as_observed_interactions": true,
+    "metadata_atomic_files_consumed_by_pinned_default": false,
+    "metadata_atomic_files_not_consumed_reason": "load_col names only the inter source; Dataset._get_load_and_unload_col returns an empty set for unlisted user and item sources.",
+    "runtime_id_mapping": "pandas.factorize in encounter order, then +1; [PAD] is internal ID 0",
+    "consumer_scope_limit": "This establishes current consumer behavior only. It does not establish GroupLens provider authority, a RecBole S3 transformation lineage, or repository atomic equivalence."
+  },
+  "normative_raw_to_atomic_transformation": {
+    "transformation_id": "GL-ML100K-U-DATA-TO-RECBOLE-INTER-1.0",
+    "input": "official_source/grouplens_ml100k/attempt-001/raw/ml-100k/u.data",
+    "output": "official_source/grouplens_ml100k/attempt-001/recbole_atomic/ml-100k/ml-100k.inter",
+    "output_encoding": "UTF-8 without BOM",
+    "output_newline": "LF",
+    "output_header_exact": "user_id:token\titem_id:token\trating:float\ttimestamp:float",
+    "data_row_order": "identical ordinal order to u.data",
+    "field_mapping": [
+      {
+        "raw_field_ordinal": 1,
+        "raw_field": "user_id",
+        "atomic_field": "user_id:token",
+        "mapping": "copy the canonical decimal lexical token exactly",
+        "id_policy": "no renumbering in the atomic file"
+      },
+      {
+        "raw_field_ordinal": 2,
+        "raw_field": "item_id",
+        "atomic_field": "item_id:token",
+        "mapping": "copy the canonical decimal lexical token exactly",
+        "id_policy": "no renumbering in the atomic file"
+      },
+      {
+        "raw_field_ordinal": 3,
+        "raw_field": "rating",
+        "atomic_field": "rating:float",
+        "mapping": "copy the integer lexical token 1 through 5 exactly; RecBole parses it as float",
+        "filter_policy": "no row filtering and no rating threshold"
+      },
+      {
+        "raw_field_ordinal": 4,
+        "raw_field": "timestamp",
+        "atomic_field": "timestamp:float",
+        "mapping": "copy the non-negative Unix-second integer lexical token exactly; RecBole parses it as float",
+        "timezone_policy": "retain epoch seconds; do not localize or reformat"
+      }
+    ],
+    "row_policy": {
+      "expected_input_rows": 100000,
+      "expected_output_rows_excluding_header": 100000,
+      "drop_rows": false,
+      "deduplicate_rows": false,
+      "sort_rows": false,
+      "normalize_ids": false,
+      "normalize_timestamps": false,
+      "rating_cutoff": null
+    },
+    "expected_runtime_id_map_receipts": {
+      "user_map": "Assign expected internal IDs 1 through 943 by first appearance of each user token in atomic row order; reserve 0 for [PAD].",
+      "item_map": "Assign expected internal IDs 1 through 1682 by first appearance of each item token in atomic row order; reserve 0 for [PAD].",
+      "map_files": [
+        "receipts/user_token_to_expected_internal_id.tsv",
+        "receipts/item_token_to_expected_internal_id.tsv"
+      ],
+      "map_hash_algorithm": "SHA-256 over exact UTF-8-no-BOM LF bytes",
+      "runtime_confirmation": "After a separately authorized non-scientific loader check, export RecBole field2token_id maps and require byte-equivalent normalized map receipts before any run."
+    },
+    "metadata_atomic_policy": {
+      "ml-100k.item": "NOT_NORMATIVE_AND_NOT_MATERIALIZED_BY_THIS_PROPOSAL",
+      "ml-100k.user": "NOT_NORMATIVE_AND_NOT_MATERIALIZED_BY_THIS_PROPOSAL",
+      "reason": "The pinned ml-100k load_col consumes only .inter. The official README does not fully resolve raw metadata delimiter/encoding behavior needed for a byte-precise metadata conversion, and no such metadata is needed by the selected BPR consumer surface.",
+      "future_change_rule": "Any future .item or .user conversion requires a separately frozen transform, raw-byte parser receipt, and explicit schema mapping; it cannot be inferred from repository blobs."
+    }
+  },
+  "raw_to_atomic_reconciliation_checks": [
+    {
+      "check_id": "L01_ARCHIVE_IDENTITY",
+      "requirement": "Archive byte count equals 4,924,029; recomputed MD5 equals the current official sidecar; locally computed SHA-256 and byte count are recorded."
+    },
+    {
+      "check_id": "L02_RAW_INVENTORY_SET_EQUALITY",
+      "requirement": "Exactly the 23 allowlisted regular files exist under raw/ml-100k; every file has byte count and SHA-256."
+    },
+    {
+      "check_id": "L03_UINFO_CARDINALITY",
+      "requirement": "Parsed u.info equals 943 users, 1,682 items, and 100,000 ratings."
+    },
+    {
+      "check_id": "L04_RAW_INTERACTION_SCHEMA",
+      "requirement": "Every non-empty u.data line has exactly four TAB-separated fields satisfying the declared decimal constraints."
+    },
+    {
+      "check_id": "L05_ROW_COUNT_AND_ORDINAL_EQUALITY",
+      "requirement": "Atomic data-row count is 100,000 and raw row n maps only to atomic row n+1 after the single header."
+    },
+    {
+      "check_id": "L06_FIELD_EQUALITY",
+      "requirement": "For every ordinal, all four atomic lexical values equal the corresponding raw lexical values exactly."
+    },
+    {
+      "check_id": "L07_PROJECTION_DIGEST_EQUALITY",
+      "requirement": "Compute SHA-256 for raw and atomic over the same canonical stream ordinal NUL user NUL item NUL rating NUL timestamp LF; require equality."
+    },
+    {
+      "check_id": "L08_ID_DOMAIN_AND_JOIN",
+      "requirement": "Observed raw and atomic user token sets are exactly decimal 1..943; item token sets are exactly decimal 1..1682; no unknown, missing, or duplicate domain token."
+    },
+    {
+      "check_id": "L09_USER_ITEM_PAIR_POLICY",
+      "requirement": "Record duplicate user-item pair count and fail if nonzero; never silently deduplicate."
+    },
+    {
+      "check_id": "L10_EXPECTED_INTERNAL_MAP",
+      "requirement": "First-occurrence expected maps contain [PAD]=0 plus exactly 943 user and 1,682 item tokens, and every token round-trips."
+    },
+    {
+      "check_id": "L11_OUTPUT_FILE_SET",
+      "requirement": "The normative atomic directory contains exactly ml-100k.inter; receipts and ID maps live outside the consumer dataset directory."
+    }
+  ],
+  "repository_atomic_diagnostic": {
+    "status": "NOT_PERFORMED_NONAUTHORITATIVE",
+    "authority_effect": "NONE",
+    "pinned_revision": "9a6f63d8d4a5b989fe27955a833f813a6d86041e",
+    "known_git_blobs": [
+      {
+        "path": "dataset/ml-100k/ml-100k.inter",
+        "git_blob_id": "7345003ddf105cadcbc35e6c53dd2f44abfc4683"
+      },
+      {
+        "path": "dataset/ml-100k/ml-100k.item",
+        "git_blob_id": "a0c6606955f8cad89fdba1a3a3d5f5644f289828"
+      },
+      {
+        "path": "dataset/ml-100k/ml-100k.user",
+        "git_blob_id": "f804316040f57cb06b2b5d723cbdc91369f8d509"
+      }
+    ],
+    "availability_observation": "The sparse partial clone does not hold these blobs locally. A read-only cat-file attempt requested the promisor remote and failed; network materialization was not authorized and was not retried.",
+    "future_diagnostic_sequence": [
+      "Only after a separate source-blob materialization authorization, bind each repository blob by revision, Git object ID, raw byte count, and local SHA-256.",
+      "Compare repository .inter header, row count, ordered lexical fields, canonical projection digest, and full bytes against the normative GroupLens-derived .inter.",
+      "For repository .item and .user, first freeze the repository conversion schema and an explicit raw GroupLens field join; compare semantic projections and then bytes only if the transforms are byte-identical.",
+      "Report EQUAL, SEMANTICALLY_EQUAL_BYTES_DIFFER, DIFFERENT_TRANSFORM, or CANNOT_VERIFY per file."
+    ],
+    "prohibited_conclusion": "Matching names, row counts, Git blob IDs, or a RecBole-hosted archive may not be used to claim equivalence to GroupLens bytes without the explicit transformation join."
+  },
+  "future_split_seed_config_receipts": {
+    "materialization_stage_does_not_split": true,
+    "required_before_official_source_execution": [
+      {
+        "receipt": "resolved_recbole_config.json",
+        "must_bind": [
+          "pinned source revision",
+          "raw archive SHA-256",
+          "atomic ml-100k.inter SHA-256",
+          "configuration precedence inputs",
+          "fully resolved configuration",
+          "dataset path",
+          "field and sequence separators",
+          "load_col",
+          "threshold null",
+          "evaluation args",
+          "negative sampling",
+          "model and dataset identity"
+        ]
+      },
+      {
+        "receipt": "seed_and_rng_receipt.json",
+        "must_bind": [
+          "declared seed",
+          "Python random state policy",
+          "NumPy RNG policy",
+          "Torch CPU and CUDA seed calls if applicable",
+          "determinism flags",
+          "exact environment lock hash"
+        ]
+      },
+      {
+        "receipt": "source_split_membership.json",
+        "must_bind": [
+          "split algorithm and group/order settings",
+          "input atomic SHA-256",
+          "seed receipt SHA-256",
+          "ordered source row ordinals assigned to train, validation, and source test",
+          "per-split row counts",
+          "per-split membership SHA-256",
+          "user and item token sets",
+          "proof that this source split is not relabeled as harmonized-v5"
+        ]
+      },
+      {
+        "receipt": "runtime_id_map_receipt.json",
+        "must_bind": [
+          "expected first-occurrence maps",
+          "RecBole-exported maps",
+          "[PAD]=0",
+          "round-trip equality",
+          "consumer source hashes"
+        ]
+      }
+    ]
+  },
+  "namespace_separation": {
+    "materialized_data_root": "E:/UIT/cv/materialized-data/hybrid-recsys-v5/stage1e/r6",
+    "official_source_namespace": "E:/UIT/cv/materialized-data/hybrid-recsys-v5/stage1e/r6/official_source/grouplens_ml100k/attempt-001",
+    "harmonized_v5_namespace": "E:/UIT/cv/materialized-data/hybrid-recsys-v5/stage1e/r6/harmonized_v5",
+    "official_source_contents": "GroupLens archive, provider metadata, safely extracted raw release, GroupLens-derived RecBole interaction atomic file, and source-only receipts.",
+    "harmonized_v5_contents": "Reserved for separately authorized project-v5 TRAIN/VALIDATION artifacts, 5,200-item catalog maps, adapter outputs, and v5 evaluator receipts.",
+    "cross_namespace_rules": [
+      "No file is copied, hard-linked, junction-linked, or symlinked across namespaces.",
+      "Joins use explicit artifact IDs and SHA-256 values, never path similarity or dataset labels.",
+      "Official-source split and metrics are never relabeled as harmonized-v5 results.",
+      "The R6-D1 command proposal creates and writes only the official-source namespace.",
+      "The project-v5 TEST namespace remains absent and unopened."
+    ]
+  },
+  "unresolved_fields": [
+    {
+      "field": "archive_sha256_and_member_hashes",
+      "status": "UNRESOLVED_EXPECTED_AT_R6_M0",
+      "blocking_scope": "Blocks byte-level materialization admission, not this proposal handoff."
+    },
+    {
+      "field": "repository_atomic_equivalence",
+      "status": "CANNOT_VERIFY_BLOBS_NOT_LOCAL_AND_TRANSFORMATION_JOIN_ABSENT",
+      "blocking_scope": "Blocks any equivalence claim; does not block the normative GroupLens u.data to RecBole .inter proposal."
+    },
+    {
+      "field": "u.item_and_u.user_exact_delimiter_encoding_transform",
+      "status": "NOT_FROZEN_AND_NOT_NEEDED_BY_PINNED_DEFAULT_LOAD_COL",
+      "blocking_scope": "Blocks metadata atomic conversion only; no .item or .user materialization is proposed."
+    },
+    {
+      "field": "split_seed_and_resolved_config_bytes",
+      "status": "NOT_CREATED_EXECUTION_NOT_AUTHORIZED",
+      "blocking_scope": "Blocks RecBole execution and any reproducibility claim."
+    }
+  ],
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

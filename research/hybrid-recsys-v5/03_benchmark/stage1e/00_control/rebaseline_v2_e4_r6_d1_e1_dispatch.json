@@ -1,7 +1,9 @@
 {
   "schema_version": "stage1e-rebaseline-v2-e4-r6-d1-e1-dispatch-1.0",
   "created_at": "2026-08-23",
+  "updated_at": "2026-08-23",
   "stage_id": "R6-D1-R6-E1-PARALLEL-DISPATCH",
+  "status": "COMPLETE_CENTRALLY_VALIDATED",
   "entry_gate": "PASS_R6_S0_FROZEN_36_OF_36_READY_FOR_PARALLEL_R6_D1_R6_E1",
   "entry_commit": "374819c",
   "frozen_input_manifest": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_s0_frozen_input_manifest.json",
@@ -20,7 +22,9 @@
       "agent_id": "01a02af7-7ef4-7760-94a9-c01302e210ea",
       "nickname": "Bacon",
       "importance": "HIGH",
-      "status": "RUNNING",
+      "status": "COMPLETE_CENTRALLY_VALIDATED",
+      "output_count": 5,
+      "verdict": "PASS_R6_D1_OFFICIAL_AUTHORITY_RIGHTS_AND_LINEAGE_PROPOSAL_COMPLETE_FAIL_CLOSED_NO_MATERIALIZATION_AUTHORITY",
       "purpose": "official_grouplens_ml100k_authority_rights_and_lineage_lock",
       "write_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ag/E4_R6D1_movielens100k_authority_lineage",
       "exact_output_files": [
@@ -36,7 +40,9 @@
       "agent_id": "01a02af7-7fda-7730-9c93-178e64c6ae6c",
       "nickname": "Galileo",
       "importance": "HIGH",
-      "status": "RUNNING",
+      "status": "COMPLETE_CENTRALLY_VALIDATED",
+      "output_count": 5,
+      "verdict": "HIGH_CONFIDENCE_CURRENT_CPU_PROFILE_PROPOSED",
       "purpose": "recbole_bpr_current_compatible_environment_closure",
       "write_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ah/E4_R6E1_recbole_environment_closure",
       "exact_output_files": [
@@ -67,7 +73,15 @@
     "control_file_edits": false,
     "worker_commits": false
   },
-  "next_gate": "CENTRAL_EXACT_OUTPUT_HASH_SCHEMA_AND_SEMANTIC_VALIDATION_BEFORE_R6_G0",
+  "central_validation": {
+    "verdict": "PASS_R6_D1_E1_READY_FOR_R6_G0_FREEZE",
+    "receipt": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_d1_e1_lanes_validation_receipt.json",
+    "checks": "30/30",
+    "exact_output_files": "10/10",
+    "strict_json_outputs": "8/8",
+    "failure_count": 0
+  },
+  "next_gate": "CENTRAL_R6_G0_FREEZE_BEFORE_R6_C1_COMMAND_PACKET",
   "truth_state": {
     "RESULT_STATUS": "NOT_RUN",
     "TEST_SET_OPENED": "NO",

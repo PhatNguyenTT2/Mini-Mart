@@ -2,7 +2,7 @@
   "schema_version": "academic-research-pipeline-state-1.0",
   "project": "hybrid-recsys-v5",
   "stage": "1E",
-  "state": "stage1e_rebaseline_v2_r6_d1_e1_parallel_running",
+  "state": "stage1e_rebaseline_v2_r6_d1_e1_complete_ready_for_r6_g0",
   "updated_at": "2026-08-23",
   "model": "gpt-5.6-sol",
   "reasoning": "max",
@@ -778,7 +778,7 @@
       "next_gate": "SUPERSEDED_BY_USER_DECISION_AUTHORIZE_TARGETED_SOURCE_ONLY_EVIDENCE_MATERIALIZATION_REDESIGN"
     },
     "e4_r5": {
-      "status": "R5_M2_USER_APPROVED_R6_S0_COMPLETE_READY_FOR_PARALLEL_R6_D1_R6_E1",
+      "status": "R6_D1_E1_COMPLETE_CENTRALLY_VALIDATED_READY_FOR_R6_G0",
       "entry_checkpoint": "USER_CONFIRMED_TARGETED_SOURCE_ONLY_EVIDENCE_MATERIALIZATION_REDESIGN",
       "source_stage": "R4-G0",
       "source_verdict": "NO_ADMISSIBLE_BUNDLE_STOP_FAIL_CLOSED",
@@ -937,7 +937,7 @@
         "benchmark_admission_authorized": false
       },
       "r6": {
-        "status": "R6_D1_R6_E1_PARALLEL_RUNNING",
+        "status": "R6_D1_E1_COMPLETE_CENTRALLY_VALIDATED_READY_FOR_R6_G0",
         "stage_map": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_materialization_stage_map.json",
         "contract": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_bounded_materialization_contract.md",
         "s0": {
@@ -951,22 +951,30 @@
           "failure_count": 0
         },
         "parallel_group": {
-          "status": "RUNNING",
+          "status": "COMPLETE_CENTRALLY_VALIDATED",
           "expected": 2,
-          "active": 2,
-          "complete": 0,
+          "active": 0,
+          "complete": 2,
           "dispatch": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_d1_e1_dispatch.json",
           "stages": {
             "R6-D1": {
-              "status": "RUNNING",
+              "status": "COMPLETE_CENTRALLY_VALIDATED",
               "agent_id": "01a02af7-7ef4-7760-94a9-c01302e210ea",
               "model_profile": "Sol XHigh Fast"
             },
             "R6-E1": {
-              "status": "RUNNING",
+              "status": "COMPLETE_CENTRALLY_VALIDATED",
               "agent_id": "01a02af7-7fda-7730-9c93-178e64c6ae6c",
               "model_profile": "Sol XHigh Fast"
             }
+          },
+          "central_validation": {
+            "verdict": "PASS_R6_D1_E1_READY_FOR_R6_G0_FREEZE",
+            "receipt": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_d1_e1_lanes_validation_receipt.json",
+            "checks": "30/30",
+            "exact_output_files": "10/10",
+            "strict_json_outputs": "8/8",
+            "failure_count": 0
           }
         },
         "materialization_authorized": true,
@@ -981,7 +989,7 @@
         "project_benchmark_numbers": "INVALID_FOR_PAPER"
       },
       "execution_authorized": false,
-      "next_gate": "DISPATCH_AND_CENTRALLY_VALIDATE_R6_D1_R6_E1_BEFORE_R6_G0"
+      "next_gate": "FREEZE_R6_G0_DECISIONS_AND_INPUTS_BEFORE_R6_C1"
     }
   },
   "central_preregistration_lock": "PASS_R6_S0_BOUNDED_MATERIALIZATION_SCOPE_LOCKED",
@@ -989,5 +997,5 @@
   "harmonized_v5": "BLOCKED",
   "external_validation": "BLOCKED",
   "efficiency": "BLOCKED_AFTER_ACCURACY",
-  "next_gate": "Dispatch R6-D1 and R6-E1 with Sol XHigh Fast, centrally validate their exact five-file outputs, then freeze R6-G0 before any dataset download or environment installation. Training, evaluation, benchmark admission and TEST access remain blocked."
+  "next_gate": "Freeze R6-G0 decisions and exact inputs, then dispatch bounded R6-C1 with Sol High Fast. Dataset download and environment installation remain blocked until R6-C1 is centrally validated; training, evaluation, benchmark admission and TEST access remain blocked."
 }

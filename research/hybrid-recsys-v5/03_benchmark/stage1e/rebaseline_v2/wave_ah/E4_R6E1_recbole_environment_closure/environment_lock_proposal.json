@@ -1,0 +1,396 @@
+{
+  "schema_version": "1.0.0",
+  "stage": "R6-E1",
+  "artifact": "environment_lock_proposal",
+  "proposal_id": "recbole-1.2.1-9a6f63d-bpr-ml100k-win-amd64-py3119-torch222-cpu-v1",
+  "proposal_status": "SELECTED_CURRENT_COMPATIBLE_PROFILE_NOT_MATERIALIZED",
+  "execution_performed": false,
+  "selected_profile": {
+    "operating_system_family": "Microsoft Windows 10/11",
+    "architecture": "x86_64/AMD64",
+    "interpreter": {
+      "implementation": "CPython",
+      "version": "3.11.9",
+      "bitness": 64,
+      "distribution": "Official python.org Windows 64-bit installer",
+      "identity_check": "sys.implementation.name == 'cpython' and platform.python_version() == '3.11.9' and struct.calcsize('P') * 8 == 64 and sys.platform == 'win32'",
+      "evidence": [
+        {
+          "url": "https://www.python.org/downloads/release/python-3119/",
+          "retrieved_at": "2026-08-23"
+        },
+        {
+          "url": "https://devguide.python.org/versions/",
+          "retrieved_at": "2026-08-23"
+        }
+      ]
+    },
+    "platform_markers": {
+      "sys_platform": "win32",
+      "platform_system": "Windows",
+      "platform_machine": "AMD64",
+      "python_version": "3.11",
+      "python_full_version": "3.11.9",
+      "implementation_name": "cpython",
+      "implementation_version": "3.11.9",
+      "required_binary_tag": "cp311-cp311-win_amd64",
+      "allowed_pure_tags": [
+        "py3-none-any",
+        "py2.py3-none-any"
+      ],
+      "disallowed_distribution_types": [
+        "sdist",
+        "egg",
+        "editable install"
+      ]
+    },
+    "cpu_policy": {
+      "torch_distribution_version": "2.2.2+cpu",
+      "torch_public_version": "2.2.2",
+      "torch_index": "https://download.pytorch.org/whl/cpu",
+      "required_assertions": [
+        "torch.__version__ == '2.2.2+cpu'",
+        "torch.version.cuda is None",
+        "torch.cuda.is_available() is False"
+      ],
+      "required_recbole_overrides_for_any_later_authorized_config_check": {
+        "use_gpu": false,
+        "gpu_id": "",
+        "nproc": 1,
+        "world_size": -1,
+        "local_rank": 0,
+        "log_wandb": false
+      },
+      "prohibited": [
+        "CUDA",
+        "ROCm",
+        "MPS",
+        "NCCL",
+        "torch.distributed initialization",
+        "Ray initialization or worker launch",
+        "nproc greater than 1"
+      ]
+    }
+  },
+  "current_host_observation": {
+    "observed_at": "2026-08-23",
+    "workspace_os": "Windows",
+    "system_python_version": "3.11.3",
+    "system_python_path": "C:\\Program Files\\Python311\\python.exe",
+    "project_virtual_environment_detected": false,
+    "relevant_packages_installed": false,
+    "fitness_for_target_profile": "NOT_ACCEPTABLE_AS_IS",
+    "reason": "The target is an isolated CPython 3.11.9 environment; the system interpreter must not be reused or upgraded in place."
+  },
+  "source_lower_bounds": {
+    "authoritative_source_for_install_metadata": "research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d/setup.py:9-30",
+    "requirements_txt_difference": "requirements.txt additionally pins hyperopt==0.2.5 and relaxes colorlog/colorama, but setup.py makes Hyperopt an extra and exactly pins colorlog/colorama.",
+    "requirements": [
+      "torch>=1.10.0",
+      "numpy>=1.17.2",
+      "scipy>=1.6.0",
+      "pandas>=1.3.0",
+      "tqdm>=4.48.2",
+      "colorlog==4.7.2",
+      "colorama==0.4.4",
+      "scikit_learn>=0.23.2",
+      "pyyaml>=5.1.0",
+      "tensorboard>=2.5.0",
+      "thop>=0.1.1.post2207130030",
+      "tabulate>=0.8.10",
+      "plotly>=4.0.0",
+      "texttable>=0.9.0",
+      "psutil>=5.9.0",
+      "ray>=1.13.0,<=2.6.3"
+    ],
+    "extra_requirements": [
+      "hyperopt==0.2.5"
+    ],
+    "python_requires": null
+  },
+  "exact_direct_pins": [
+    {
+      "identity": "pip",
+      "version": "24.0",
+      "index": "https://pypi.org/simple",
+      "role": "build_tool",
+      "sha256": null
+    },
+    {
+      "identity": "setuptools",
+      "version": "69.5.1",
+      "index": "https://pypi.org/simple",
+      "role": "build_tool",
+      "sha256": null
+    },
+    {
+      "identity": "wheel",
+      "version": "0.43.0",
+      "index": "https://pypi.org/simple",
+      "role": "build_tool",
+      "sha256": null
+    },
+    {
+      "identity": "torch",
+      "version": "2.2.2+cpu",
+      "index": "https://download.pytorch.org/whl/cpu",
+      "role": "minimum",
+      "sha256": null
+    },
+    {
+      "identity": "numpy",
+      "version": "1.26.4",
+      "index": "https://pypi.org/simple",
+      "role": "minimum",
+      "sha256": null
+    },
+    {
+      "identity": "scipy",
+      "version": "1.11.4",
+      "index": "https://pypi.org/simple",
+      "role": "minimum",
+      "sha256": null
+    },
+    {
+      "identity": "pandas",
+      "version": "2.1.4",
+      "index": "https://pypi.org/simple",
+      "role": "minimum",
+      "sha256": null
+    },
+    {
+      "identity": "scikit-learn",
+      "version": "1.3.2",
+      "index": "https://pypi.org/simple",
+      "role": "minimum",
+      "sha256": null
+    },
+    {
+      "identity": "PyYAML",
+      "version": "6.0.2",
+      "index": "https://pypi.org/simple",
+      "role": "minimum",
+      "sha256": null
+    },
+    {
+      "identity": "tqdm",
+      "version": "4.66.5",
+      "index": "https://pypi.org/simple",
+      "role": "minimum",
+      "sha256": null
+    },
+    {
+      "identity": "colorlog",
+      "version": "4.7.2",
+      "index": "https://pypi.org/simple",
+      "role": "minimum",
+      "sha256": null
+    },
+    {
+      "identity": "colorama",
+      "version": "0.4.4",
+      "index": "https://pypi.org/simple",
+      "role": "minimum",
+      "sha256": null
+    },
+    {
+      "identity": "texttable",
+      "version": "1.7.0",
+      "index": "https://pypi.org/simple",
+      "role": "minimum",
+      "sha256": null
+    },
+    {
+      "identity": "tensorboard",
+      "version": "2.15.2",
+      "index": "https://pypi.org/simple",
+      "role": "optional_feature_included_for_unconditional_import_closure",
+      "sha256": null
+    },
+    {
+      "identity": "ray",
+      "version": "2.6.3",
+      "index": "https://pypi.org/simple",
+      "role": "optional_feature_included_for_quick_start_import_and_setup_metadata",
+      "sha256": null
+    },
+    {
+      "identity": "thop",
+      "version": "0.1.1.post2207130030",
+      "index": "https://pypi.org/simple",
+      "role": "optional_feature_included_for_setup_metadata_and_stock_get_flops_path",
+      "sha256": null
+    },
+    {
+      "identity": "tabulate",
+      "version": "0.9.0",
+      "index": "https://pypi.org/simple",
+      "role": "optional_feature_included_for_setup_metadata",
+      "sha256": null
+    },
+    {
+      "identity": "plotly",
+      "version": "5.18.0",
+      "index": "https://pypi.org/simple",
+      "role": "optional_feature_included_for_setup_metadata_only",
+      "sha256": null
+    },
+    {
+      "identity": "psutil",
+      "version": "5.9.8",
+      "index": "https://pypi.org/simple",
+      "role": "optional_feature_included_for_setup_metadata",
+      "sha256": null
+    },
+    {
+      "identity": "RecBole",
+      "version": "1.2.1",
+      "index": null,
+      "role": "minimum_local_source_wheel",
+      "sha256": null,
+      "source_revision": "9a6f63d8d4a5b989fe27955a833f813a6d86041e",
+      "source_git_tree": "08915121fea069a30f7e3e97a72e16e7e76d43c6",
+      "source_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d"
+    }
+  ],
+  "direct_pin_rendering": {
+    "build_tools": [
+      "pip==24.0",
+      "setuptools==69.5.1",
+      "wheel==0.43.0"
+    ],
+    "torch_cpu": [
+      "torch==2.2.2+cpu"
+    ],
+    "pypi_runtime": [
+      "numpy==1.26.4",
+      "scipy==1.11.4",
+      "pandas==2.1.4",
+      "scikit-learn==1.3.2",
+      "PyYAML==6.0.2",
+      "tqdm==4.66.5",
+      "colorlog==4.7.2",
+      "colorama==0.4.4",
+      "texttable==1.7.0",
+      "tensorboard==2.15.2",
+      "ray==2.6.3",
+      "thop==0.1.1.post2207130030",
+      "tabulate==0.9.0",
+      "plotly==5.18.0",
+      "psutil==5.9.8"
+    ],
+    "local_project": "RecBole==1.2.1 from a wheel built without dependency resolution from the verified pinned local source copy"
+  },
+  "optional_exclusions": [
+    {
+      "identity": "hyperopt",
+      "reason": "setup.py extra only; all tuning is outside scope"
+    },
+    {
+      "identity": "wandb",
+      "reason": "lazy optional logger; log_wandb must remain false"
+    },
+    {
+      "identity": "torchvision",
+      "reason": "not required by BPR or the bounded source/import checks"
+    },
+    {
+      "identity": "torchaudio",
+      "reason": "not required by BPR or the bounded source/import checks"
+    },
+    {
+      "identity": "CUDA/ROCm/MPS and nvidia-* distributions",
+      "reason": "CPU-only profile"
+    },
+    {
+      "identity": "torch-geometric/DGL/faiss/community/model-specific extras",
+      "reason": "non-BPR paths only"
+    },
+    {
+      "identity": "distributed launchers and Ray workers",
+      "reason": "single-process import/materialization scope only"
+    }
+  ],
+  "recbole_installation_strategy": {
+    "method": "Build one non-editable wheel from a verified staging copy of the pinned local source, using the pinned build toolchain, with dependency resolution disabled; install that wheel offline with --no-deps after the hashed third-party wheel closure is installed.",
+    "source_of_truth": "research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d",
+    "required_pre_build_checks": [
+      "Revision identity equals 9a6f63d8d4a5b989fe27955a833f813a6d86041e.",
+      "Git tree identity equals 08915121fea069a30f7e3e97a72e16e7e76d43c6.",
+      "Every selected file matches the frozen selected_blob_manifest.json digest and no required selected file is absent.",
+      "The source copy contains setup.py and contains no pyproject.toml or setup.cfg drift.",
+      "The staging copy is outside the frozen source tree and all build writes are confined to the declared materialization root."
+    ],
+    "build_frontend": "python -m pip wheel --no-deps --no-build-isolation",
+    "forbidden_methods": [
+      "python setup.py install",
+      "python setup.py develop",
+      "editable install",
+      "installation from PyPI RecBole",
+      "installation from an unpinned VCS URL",
+      "modifying the frozen source tree"
+    ],
+    "wheel_hash_policy": "The later materialization step computes SHA-256 from the actual built wheel bytes and records filename, size, digest, source revision, source tree, interpreter, build-tool versions, and command receipt. No RecBole wheel hash exists in this proposal."
+  },
+  "transitive_wheel_and_hash_capture": {
+    "status": "DEFERRED_TO_AUTHORIZED_MATERIALIZATION",
+    "hashes_in_this_proposal": false,
+    "rationale": "No package or binary download is authorized in R6-E1, so asserting wheel filenames or hashes as locked artifacts would fabricate materialization evidence.",
+    "resolution_rules": [
+      "Resolve under the exact CPython 3.11.9 Windows AMD64 environment using pip 24.0.",
+      "Resolve torch==2.2.2+cpu only from https://download.pytorch.org/whl/cpu.",
+      "Resolve all other third-party distributions only from https://pypi.org/simple with payloads from files.pythonhosted.org.",
+      "Require binary wheels for every third-party package; reject all source distributions and eggs.",
+      "Require exactly one selected wheel per normalized distribution identity and reject unpinned direct-version substitution.",
+      "Record resolver report, wheel filename, normalized identity, version, URL host, wheel tags, byte size, and locally computed SHA-256 for every direct and transitive wheel.",
+      "Generate a complete transitive requirements-hashed.txt only after download, with every resolved identity exactly pinned and every selected wheel protected by its locally computed SHA-256.",
+      "Install network-off using --no-index --find-links and --require-hashes; install the separately hashed local RecBole wheel with --no-deps.",
+      "Capture pip freeze --all, pip inspect JSON, pip check output, import/version receipts, and a deterministic directory manifest."
+    ],
+    "required_materialization_outputs": [
+      "direct-pins.txt",
+      "resolved-wheel-manifest.json",
+      "requirements-hashed.txt",
+      "resolver-report.json",
+      "recbole-local-wheel-build-receipt.json",
+      "recbole-local-wheel.sha256",
+      "installed-inventory.txt",
+      "pip-inspect.json",
+      "pip-check.txt",
+      "import-version-check.json",
+      "syntax-check.txt"
+    ],
+    "authoritative_method_evidence": [
+      {
+        "url": "https://pip.pypa.io/en/stable/topics/repeatable-installs/",
+        "retrieved_at": "2026-08-23"
+      },
+      {
+        "url": "https://pip.pypa.io/en/stable/topics/secure-installs/",
+        "retrieved_at": "2026-08-23"
+      },
+      {
+        "url": "https://pip.pypa.io/en/stable/cli/pip_download/",
+        "retrieved_at": "2026-08-23"
+      },
+      {
+        "url": "https://docs.python.org/3.11/library/venv.html",
+        "retrieved_at": "2026-08-23"
+      }
+    ]
+  },
+  "disclaimer": {
+    "current_compatibility_only": true,
+    "historical_producer_environment_known": false,
+    "readme_ndcg_at_10": "0.2768",
+    "readme_number_status": "PROVISIONAL_DOCUMENTATION_ONLY_NOT_PRODUCER_BOUND",
+    "statement": "This exact lock is a current CPU-compatible isolated-environment proposal for the pinned source. It is never evidence of, or a claim about, the unknown historical producer environment behind README NDCG@10=0.2768."
+  },
+  "persistent_truth": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

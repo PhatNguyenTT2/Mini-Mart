@@ -1,0 +1,165 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r6-d1-audit-handoff-1.0",
+  "created_at": "2026-08-23",
+  "stage_id": "R6-D1",
+  "status": "COMPLETE_PROPOSAL_ONLY",
+  "verdict": "PASS_R6_D1_OFFICIAL_AUTHORITY_RIGHTS_AND_LINEAGE_PROPOSAL_COMPLETE_FAIL_CLOSED_NO_MATERIALIZATION_AUTHORITY",
+  "verdict_class": "PASS_RESEARCH_HANDOFF_FAIL_CLOSED_FOR_EXECUTION",
+  "candidate": {
+    "candidate_id": "R5-CAND-RECBOLE-BPR-ML100K-001",
+    "dataset": "GroupLens MovieLens 100K",
+    "pinned_recbole_revision": "9a6f63d8d4a5b989fe27955a833f813a6d86041e"
+  },
+  "actual_model_profile": {
+    "display_name": "Sol XHigh Fast",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "xhigh",
+    "service_tier": "priority"
+  },
+  "entry_gate": {
+    "commit": "374819c",
+    "verdict": "PASS_R6_S0_FROZEN_36_OF_36_READY_FOR_PARALLEL_R6_D1_R6_E1",
+    "frozen_manifest_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_s0_frozen_input_manifest.json",
+    "frozen_manifest_canonical_lf_sha256": "3c3c229dd427a831204266f1e3c61f2ff0ab7096a4b30ccfac9098e659cc245b"
+  },
+  "authority_result": {
+    "canonical_provider": "GroupLens Research Project, University of Minnesota",
+    "canonical_release": "MovieLens 100K, released 1998-04",
+    "canonical_archive_url": "https://files.grouplens.org/datasets/movielens/ml-100k.zip",
+    "archive_headers_status": "HTTP_200_NO_REDIRECT_BODY_NOT_RETRIEVED",
+    "provider_content_length_bytes": 4924029,
+    "current_official_checksum": {
+      "algorithm": "MD5",
+      "value": "0e33842e24a9c977be4e0107933c0723",
+      "sidecar_body_replayed": true,
+      "archive_recomputed": false
+    },
+    "official_sha256": null,
+    "local_sha256_required_after_acquisition": true,
+    "recbole_s3_is_canonical_provider": false,
+    "repository_atomic_files_are_canonical_provider_bytes": false
+  },
+  "rights_result": {
+    "access": "PUBLICLY_RETRIEVABLE_WITHOUT_AUTHENTICATION_AT_RETRIEVAL",
+    "research_use": "PERMITTED_SUBJECT_TO_PROVIDER_CUSTOM_TERMS",
+    "redistribution": "REQUIRES_SEPARATE_PERMISSION",
+    "commercial_or_revenue_bearing_use": "REQUIRES_PRIOR_PROVIDER_PERMISSION",
+    "publication_acknowledgment": "REQUIRED",
+    "non_endorsement": "REQUIRED",
+    "standard_open_license_identified": false,
+    "classification": "CUSTOM_PROVIDER_USAGE_TERMS_NOT_UNRESTRICTED_OPEN_LICENSE"
+  },
+  "official_source_count": 7,
+  "official_source_ids": [
+    "GL-ML100K-PAGE-20260823",
+    "GL-MOVIELENS-CATALOG-20260823",
+    "GL-ML100K-README-20260823",
+    "GL-ML100K-ARCHIVE-HEAD-20260823",
+    "GL-ML100K-MD5-20260823",
+    "GL-ML100K-INDEX-20260823",
+    "GL-ML100K-UINFO-20260823"
+  ],
+  "files_written": [
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ag/E4_R6D1_movielens100k_authority_lineage/provider_authority.json",
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ag/E4_R6D1_movielens100k_authority_lineage/rights_and_release_record.md",
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ag/E4_R6D1_movielens100k_authority_lineage/data_lineage_plan.json",
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ag/E4_R6D1_movielens100k_authority_lineage/materialization_command_proposal.json",
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ag/E4_R6D1_movielens100k_authority_lineage/audit_handoff.json"
+  ],
+  "file_count": 5,
+  "output_contract": {
+    "expected_files": [
+      "provider_authority.json",
+      "rights_and_release_record.md",
+      "data_lineage_plan.json",
+      "materialization_command_proposal.json",
+      "audit_handoff.json"
+    ],
+    "extra_files_allowed": false,
+    "strict_json_files": [
+      "provider_authority.json",
+      "data_lineage_plan.json",
+      "materialization_command_proposal.json",
+      "audit_handoff.json"
+    ],
+    "validation_status": "PASS_STRICT_JSON_4_OF_4_EXACT_FILE_SET_5_OF_5_POWERSHELL_PARSE_5_OF_5"
+  },
+  "lineage_result": {
+    "normative_transform": "Official GroupLens u.data to a single RecBole ml-100k.inter with one typed header, exact field lexemes, preserved row order, no filtering, no deduplication, and no timestamp conversion.",
+    "consumer_basis": "Pinned local RecBole ml-100k.yaml and Dataset parser/remap behavior only.",
+    "raw_to_atomic_reconciliation": "100,000 ordinal rows, four lexical fields, exact ID domains, no duplicate pairs, canonical projection SHA-256 equality, and expected first-occurrence internal ID-map receipts.",
+    "metadata_atomic_files": "Not proposed because pinned load_col consumes only .inter and exact metadata delimiter/encoding conversion is not frozen.",
+    "repository_atomic_comparison": "Separate non-authoritative diagnostic; not performed and never a substitute for a GroupLens raw transformation join.",
+    "official_and_harmonized_namespaces_separate": true
+  },
+  "unresolved_fields": [
+    {
+      "field": "archive_sha256",
+      "status": "UNRESOLVED",
+      "reason": "Archive download was prohibited in R6-D1.",
+      "fail_closed_effect": "R6-M0 byte admission is blocked until locally computed SHA-256, byte count, and provider MD5 replay all pass."
+    },
+    {
+      "field": "archive_member_bytes_and_hashes",
+      "status": "UNRESOLVED",
+      "reason": "No archive extraction occurred.",
+      "fail_closed_effect": "Raw snapshot admission is blocked until exact 23-file allowlist and every member SHA-256 pass."
+    },
+    {
+      "field": "repository_atomic_equivalence",
+      "status": "CANNOT_VERIFY",
+      "reason": "Repository .inter/.item/.user blobs are absent from the sparse local clone and no explicit raw transformation join exists. The promisor fetch was not authorized and was not retried.",
+      "fail_closed_effect": "No equivalence claim is permitted."
+    },
+    {
+      "field": "u.item_and_u.user_atomic_transform",
+      "status": "NOT_FROZEN_NOT_REQUIRED_FOR_SELECTED_CONSUMER",
+      "reason": "Pinned default load_col consumes only interaction fields; exact metadata byte decoding and delimiter behavior are not fully resolved by the inspected metadata.",
+      "fail_closed_effect": "No .item or .user conversion is authorized by this proposal."
+    },
+    {
+      "field": "resolved_recbole_environment",
+      "status": "OUT_OF_SCOPE_R6_E1_DEPENDENCY",
+      "reason": "Environment closure belongs to the parallel R6-E1 lane.",
+      "fail_closed_effect": "R6-C1 and any later loader check remain blocked until central merge."
+    },
+    {
+      "field": "split_seed_config_and_runtime_id_map_receipts",
+      "status": "NOT_CREATED",
+      "reason": "No RecBole load, split, training, or evaluation was authorized.",
+      "fail_closed_effect": "Official-source execution and every reproducibility claim remain blocked."
+    }
+  ],
+  "fail_closed_gate": {
+    "next_allowed_stage": "R6-G0_CENTRAL_AUTHORITY_ENVIRONMENT_MERGE_AND_EXACT_MATERIALIZATION_FREEZE",
+    "materialization_authorized_by_this_handoff": false,
+    "command_execution_authorized_by_this_handoff": false,
+    "experiment_execution_authorized": false,
+    "benchmark_admission_authorized": false,
+    "project_v5_test_access_authorized": false,
+    "automatic_fallback_allowed": false,
+    "required_central_action": "Validate R6-D1 against frozen controls, merge only with a validated R6-E1 profile, freeze R6-G0, assemble and independently validate R6-C1, and only then consider bounded R6-M0 materialization."
+  },
+  "execution_observations": {
+    "official_web_research_performed": true,
+    "checksum_sidecar_retrieved_to_memory": true,
+    "u_info_metadata_retrieved_to_memory": true,
+    "dataset_archive_downloaded_to_disk": false,
+    "dataset_extracted": false,
+    "dataset_converted": false,
+    "environment_created": false,
+    "package_installed": false,
+    "recbole_executed": false,
+    "preprocess_train_evaluate_tune_performed": false,
+    "checkpoint_downloaded": false,
+    "project_v5_test_inspected": false,
+    "benchmark_admitted": false
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

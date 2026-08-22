@@ -1,0 +1,261 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r6-d1-provider-authority-1.0",
+  "created_at": "2026-08-23",
+  "retrieval_date": "2026-08-23",
+  "retrieval_timezone": "Asia/Saigon",
+  "stage_id": "R6-D1",
+  "candidate_id": "R5-CAND-RECBOLE-BPR-ML100K-001",
+  "authority_decision": {
+    "status": "ESTABLISHED_CURRENT_OFFICIAL_PROVIDER_WITH_BOUNDED_BYTE_UNCERTAINTY",
+    "canonical_provider": "GroupLens Research Project, University of Minnesota",
+    "authority_classification": "PRIMARY_PROVIDER_AUTHORITY_CURRENT_OFFICIAL_SURFACE",
+    "canonical_dataset_name": "MovieLens 100K",
+    "canonical_release_label": "MovieLens 100K Dataset",
+    "release_date_precision": "month",
+    "release_date": "1998-04",
+    "collection_period": {
+      "start": "1997-09-19",
+      "end": "1998-04-22"
+    },
+    "exact_record_counts": {
+      "ratings": 100000,
+      "users": 943,
+      "movies": 1682
+    },
+    "landing_page_rounded_description": "100,000 ratings from 1000 users on 1700 movies",
+    "exact_count_authority": "The official README and u.info are used for exact counts; the landing page wording is treated as rounded presentation text."
+  },
+  "canonical_distribution": {
+    "archive_filename": "ml-100k.zip",
+    "requested_url": "https://files.grouplens.org/datasets/movielens/ml-100k.zip",
+    "final_url": "https://files.grouplens.org/datasets/movielens/ml-100k.zip",
+    "redirect_behavior": "No redirect observed: headers-only request returned HTTP 200 with no Location header.",
+    "content_type": "application/zip",
+    "provider_content_length_bytes": 4924029,
+    "provider_last_modified": "Tue, 03 Dec 2019 17:14:10 GMT",
+    "provider_etag": "\"4b227d-598cfd31b571f\"",
+    "archive_retrieved_in_this_stage": false,
+    "archive_sha256": null,
+    "archive_sha256_status": "UNRESOLVED_UNTIL_LATER_AUTHORIZED_ACQUISITION",
+    "provider_checksum": {
+      "algorithm": "MD5",
+      "value": "0e33842e24a9c977be4e0107933c0723",
+      "sidecar_requested_url": "https://files.grouplens.org/datasets/movielens/ml-100k.zip.md5",
+      "sidecar_final_url": "https://files.grouplens.org/datasets/movielens/ml-100k.zip.md5",
+      "sidecar_content_length_bytes": 53,
+      "sidecar_body_exact_line": "MD5 (ml-100k.zip) = 0e33842e24a9c977be4e0107933c0723",
+      "sidecar_bytes_replayed": true,
+      "archive_bytes_checked_against_sidecar_in_this_stage": false,
+      "status": "CURRENT_OFFICIAL_SIDECAR_VALUE_OBSERVED_NOT_ARCHIVE_RECOMPUTED",
+      "historical_release_checksum_claimed": false
+    }
+  },
+  "metadata_locators": {
+    "dataset_page": "https://grouplens.org/datasets/movielens/100k/",
+    "movielens_catalog": "https://grouplens.org/datasets/movielens/",
+    "readme_sidecar": "https://files.grouplens.org/datasets/movielens/ml-100k-README.txt",
+    "checksum_sidecar": "https://files.grouplens.org/datasets/movielens/ml-100k.zip.md5",
+    "unzipped_index": "https://files.grouplens.org/datasets/movielens/ml-100k/",
+    "unzipped_readme": "https://files.grouplens.org/datasets/movielens/ml-100k/README",
+    "cardinality_metadata": "https://files.grouplens.org/datasets/movielens/ml-100k/u.info"
+  },
+  "sources": [
+    {
+      "source_id": "GL-ML100K-PAGE-20260823",
+      "authority_classification": "CURRENT_OFFICIAL_GROUPLENS_DATASET_LANDING_PAGE",
+      "requested_url": "https://grouplens.org/datasets/movielens/100k/",
+      "final_url": "https://grouplens.org/datasets/movielens/100k/",
+      "retrieval_method": [
+        "browser_open",
+        "curl_headers_only"
+      ],
+      "retrieval_result": "HTTP_200",
+      "redirect_behavior": "No redirect observed on the exact HTTPS URL; no Location header in the headers-only response.",
+      "source_status": "AVAILABLE_CURRENT_OFFICIAL",
+      "supported_claims": [
+        "GroupLens presents MovieLens 100K as a stable benchmark dataset.",
+        "The release is dated April 1998.",
+        "The page links the official README, archive, checksum, and unzipped index."
+      ],
+      "evidence_locator": "Rendered lines 0-8; HTTP response status and absence of Location header."
+    },
+    {
+      "source_id": "GL-MOVIELENS-CATALOG-20260823",
+      "authority_classification": "CURRENT_OFFICIAL_GROUPLENS_DATASET_CATALOG",
+      "requested_url": "https://grouplens.org/datasets/movielens/",
+      "final_url": "https://grouplens.org/datasets/movielens/",
+      "retrieval_method": [
+        "browser_open"
+      ],
+      "retrieval_result": "HTTP_200_RENDERED",
+      "redirect_behavior": "No redirect surfaced by the browser retrieval; final URL equals requested URL.",
+      "source_status": "AVAILABLE_CURRENT_OFFICIAL",
+      "supported_claims": [
+        "GroupLens collected and makes MovieLens datasets available.",
+        "Users are directed to each README for usage terms.",
+        "GroupLens states that public redistribution is typically not permitted and points users to a permission-request route."
+      ],
+      "evidence_locator": "Rendered lines 0-3 and 63-71."
+    },
+    {
+      "source_id": "GL-ML100K-README-20260823",
+      "authority_classification": "CURRENT_OFFICIAL_GROUPLENS_RELEASE_METADATA_AND_USAGE_TERMS",
+      "requested_url": "https://files.grouplens.org/datasets/movielens/ml-100k-README.txt",
+      "final_url": "https://files.grouplens.org/datasets/movielens/ml-100k-README.txt",
+      "retrieval_method": [
+        "browser_open",
+        "curl_headers_only"
+      ],
+      "retrieval_result": "HTTP_200",
+      "redirect_behavior": "No redirect observed on the exact HTTPS URL; no Location header in the headers-only response.",
+      "content_type": "text/plain; charset=UTF-8",
+      "content_length_bytes": 6748,
+      "source_status": "AVAILABLE_CURRENT_OFFICIAL",
+      "supported_claims": [
+        "The dataset has 100,000 ratings from 943 users on 1,682 movies, with at least 20 ratings per user.",
+        "The collection period was 1997-09-19 through 1998-04-22.",
+        "The provider supplies custom research-use, non-endorsement, acknowledgment, redistribution, and commercial-use conditions.",
+        "The provider names the publication acknowledgment citation.",
+        "The provider describes u.data, u.info, u.item, u.user, split files, and scripts."
+      ],
+      "evidence_locator": "Lines 0-47 and 87-140."
+    },
+    {
+      "source_id": "GL-ML100K-ARCHIVE-HEAD-20260823",
+      "authority_classification": "CURRENT_OFFICIAL_GROUPLENS_DISTRIBUTION_ARTIFACT_LOCATOR",
+      "requested_url": "https://files.grouplens.org/datasets/movielens/ml-100k.zip",
+      "final_url": "https://files.grouplens.org/datasets/movielens/ml-100k.zip",
+      "retrieval_method": [
+        "curl_headers_only"
+      ],
+      "retrieval_result": "HTTP_200_HEADERS_ONLY_ARCHIVE_BODY_NOT_RETRIEVED",
+      "redirect_behavior": "No redirect observed; no Location header.",
+      "content_type": "application/zip",
+      "content_length_bytes": 4924029,
+      "source_status": "AVAILABLE_CURRENT_OFFICIAL_BODY_INTENTIONALLY_NOT_DOWNLOADED",
+      "supported_claims": [
+        "The exact current official archive locator is live.",
+        "The server advertises 4,924,029 bytes for the archive."
+      ],
+      "evidence_locator": "HTTP status, Content-Length, Content-Type, Last-Modified, and ETag headers."
+    },
+    {
+      "source_id": "GL-ML100K-MD5-20260823",
+      "authority_classification": "CURRENT_OFFICIAL_GROUPLENS_CHECKSUM_SIDECAR",
+      "requested_url": "https://files.grouplens.org/datasets/movielens/ml-100k.zip.md5",
+      "final_url": "https://files.grouplens.org/datasets/movielens/ml-100k.zip.md5",
+      "retrieval_method": [
+        "curl_headers_only",
+        "curl_get_to_memory"
+      ],
+      "retrieval_result": "HTTP_200_BODY_REPLAYED",
+      "redirect_behavior": "No redirect observed; no Location header.",
+      "content_type": "application/zip",
+      "content_length_bytes": 53,
+      "source_status": "AVAILABLE_CURRENT_OFFICIAL_MISLABELLED_CONTENT_TYPE",
+      "supported_claims": [
+        "The current official sidecar states MD5 0e33842e24a9c977be4e0107933c0723 for ml-100k.zip."
+      ],
+      "evidence_locator": "Exact 53-byte response line; HTTP headers. The application/zip media type is a server labeling observation, not archive content."
+    },
+    {
+      "source_id": "GL-ML100K-INDEX-20260823",
+      "authority_classification": "CURRENT_OFFICIAL_GROUPLENS_UNZIPPED_FILE_INDEX",
+      "requested_url": "https://files.grouplens.org/datasets/movielens/ml-100k/",
+      "final_url": "https://files.grouplens.org/datasets/movielens/ml-100k/",
+      "retrieval_method": [
+        "browser_open",
+        "curl_headers_only"
+      ],
+      "retrieval_result": "HTTP_200",
+      "redirect_behavior": "No redirect observed on the exact HTTPS URL; no Location header.",
+      "source_status": "AVAILABLE_CURRENT_OFFICIAL",
+      "supported_claims": [
+        "The current official unzipped index exposes the 23 expected release files and their exact locators."
+      ],
+      "evidence_locator": "Rendered lines 0-30."
+    },
+    {
+      "source_id": "GL-ML100K-UINFO-20260823",
+      "authority_classification": "CURRENT_OFFICIAL_GROUPLENS_CARDINALITY_METADATA",
+      "requested_url": "https://files.grouplens.org/datasets/movielens/ml-100k/u.info",
+      "final_url": "https://files.grouplens.org/datasets/movielens/ml-100k/u.info",
+      "retrieval_method": [
+        "curl_headers_only",
+        "curl_get_to_memory"
+      ],
+      "retrieval_result": "HTTP_200_BODY_REPLAYED",
+      "redirect_behavior": "No redirect observed; no Location header.",
+      "content_type": "application/x-info",
+      "content_length_bytes": 36,
+      "source_status": "AVAILABLE_CURRENT_OFFICIAL",
+      "supported_claims": [
+        "u.info states 943 users, 1,682 items, and 100,000 ratings."
+      ],
+      "evidence_locator": "Exact three-line response body and HTTP headers."
+    }
+  ],
+  "source_id_uniqueness": {
+    "source_count": 7,
+    "unique_source_id_count": 7,
+    "duplicates": []
+  },
+  "noncanonical_source_rejections": [
+    {
+      "source": "https://recbole.s3-accelerate.amazonaws.com/ProcessedDatasets/MovieLens/ml-100k.zip",
+      "classification": "RECBOLE_HOSTED_PROCESSED_CONSUMER_ARTIFACT_NOT_PROVIDER_AUTHORITY",
+      "canonical_provider_authority": false,
+      "decision_bearing_dataset_facts_allowed": false,
+      "reason": "It is a RecBole-hosted processed archive named by pinned consumer source, not a current GroupLens provider surface, and no explicit byte transformation join to GroupLens raw files is established."
+    },
+    {
+      "source": "Repository-carried dataset/ml-100k/*.inter|*.item|*.user blobs at RecBole revision 9a6f63d8d4a5b989fe27955a833f813a6d86041e",
+      "classification": "NONAUTHORITATIVE_CONSUMER_DIAGNOSTIC_ONLY",
+      "canonical_provider_authority": false,
+      "decision_bearing_dataset_facts_allowed": false,
+      "reason": "Git blob identity does not prove GroupLens archive identity or a raw-to-atomic transformation join."
+    },
+    {
+      "source": "Mirrors, search snippets, package caches, and repository-carried atomic files",
+      "classification": "REJECTED_FOR_CANONICAL_PROVIDER_AUTHORITY",
+      "canonical_provider_authority": false,
+      "decision_bearing_dataset_facts_allowed": false,
+      "reason": "The frozen source hierarchy permits only current official GroupLens surfaces for provider, release, rights, archive, and checksum facts."
+    }
+  ],
+  "uncertainties": [
+    {
+      "field": "archive_sha256",
+      "status": "UNRESOLVED",
+      "reason": "No official SHA-256 locator was found on the inspected GroupLens surfaces, and the archive was not downloaded in this proposal-only stage.",
+      "required_resolution": "After later authorization, download the exact final archive URL, require the advertised byte count, verify the official MD5 sidecar, compute local SHA-256 over the acquired bytes, and retain all receipts."
+    },
+    {
+      "field": "archive_member_byte_inventory",
+      "status": "UNRESOLVED",
+      "reason": "The archive body was intentionally not retrieved or extracted.",
+      "required_resolution": "At R6-M0, preflight the ZIP against the official 23-file allowlist, safely extract, and hash every member."
+    },
+    {
+      "field": "checksum_historical_provenance",
+      "status": "NOT_CLAIMED",
+      "reason": "The current official sidecar body was replayed, but no evidence establishes when that MD5 was first published.",
+      "required_resolution": "Treat it only as the current official expected MD5; do not call it a release-time historical checksum."
+    },
+    {
+      "field": "landing_page_rounded_cardinalities",
+      "status": "RESOLVED_BY_EXACT_METADATA",
+      "reason": "The landing page rounds users and movies, while the official README and u.info provide exact counts.",
+      "required_resolution": "Use 943 users and 1,682 movies for reconciliation."
+    }
+  ],
+  "execution_boundary": {
+    "dataset_archive_downloaded": false,
+    "dataset_extracted": false,
+    "dataset_converted": false,
+    "recbole_executed": false,
+    "training_or_evaluation_performed": false,
+    "project_v5_test_opened": false,
+    "execution_authorized": false
+  }
+}
