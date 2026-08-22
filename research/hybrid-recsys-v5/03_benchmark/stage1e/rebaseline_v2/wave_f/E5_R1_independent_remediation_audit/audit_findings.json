@@ -1,0 +1,98 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e5-r1-audit-findings-1.0",
+  "created_at": "2026-08-22T04:05:39+07:00",
+  "audit_mode": "independent-audit/read-only",
+  "verdict": "PASS_REMEDIATION_INTEGRITY_EXECUTION_DENIED",
+  "finding_counts": {
+    "CRITICAL": 0,
+    "MAJOR": 0,
+    "MINOR": 0,
+    "total_new_findings": 0
+  },
+  "closure_counts": {
+    "original_findings_audited": 4,
+    "closed_for_remediation_integrity": 4,
+    "closed_for_execution_readiness": 0
+  },
+  "original_finding_closures": [
+    {
+      "finding_id": "E5-F001",
+      "criterion": "corrected SimGCL source identity, QRec binding, and visible residual evidence",
+      "affected_artifact_or_field": [
+        "selected_reference_bundle.json.corrected_sources",
+        "candidate_readiness_delta.json.candidate_rows[E3-SIMGCL-YELP2018-QREC-001]"
+      ],
+      "evidence": [
+        "Active paper identity is https://arxiv.org/abs/2112.08679 at arXiv:2112.08679v4.",
+        "https://arxiv.org/abs/2207.09037 is explicitly rejected as unrelated.",
+        "QRec is pinned at a141bb37cb7706b2f53b2eed5843de3269f9f37f with PARTIAL_CONFIRMED_IDENTITY_AND_PUBLIC_CONFIG_ONLY status.",
+        "The SimGCL row remains PENDING_EVIDENCE and retains run, data, dependency, seed, checkpoint, evaluator, and tie blockers."
+      ],
+      "impact": "The original contradictory provenance edge is repaired without promoting readiness or inventing result evidence.",
+      "disposition": "CLOSED_REMEDIATION_INTEGRITY_RESIDUAL_EVIDENCE_VISIBLE",
+      "residual_state": "UNVERIFIED_RESULT_AND_MATERIALIZATION_EVIDENCE",
+      "owner": "FUTURE_E4_REMEDIATION_OWNER"
+    },
+    {
+      "finding_id": "E5-F002",
+      "criterion": "one existing frozen v5 specification path and canonical-LF identity",
+      "affected_artifact_or_field": [
+        "all active Wave E v5 specification bindings",
+        "exact_command_confirmation_packet.json.evaluation_binding"
+      ],
+      "evidence": [
+        "backend/docs/chatbot/seed-product/benchmark-spec-v5.json exists.",
+        "Canonical-LF bytes are 2629 and SHA-256 is acef1c62cc2a9a3ae04fdf2f4b2fb24b3eb8d2634f15e085fbe1878be8dc166d.",
+        "The historical nonexistent path occurs only as explicitly rejected evidence."
+      ],
+      "impact": "Path-and-byte ambiguity is repaired; adapter/evaluator implementation and results remain absent.",
+      "disposition": "CLOSED_REMEDIATION_INTEGRITY_PATH_AND_BYTES_ONLY",
+      "residual_state": "ADAPTER_EVALUATOR_AND_EXECUTION_UNVERIFIED",
+      "owner": "FUTURE_E4_REMEDIATION_OWNER"
+    },
+    {
+      "finding_id": "E5-F003",
+      "criterion": "exact central control/schema binding and fail-closed null-command enforcement",
+      "affected_artifact_or_field": [
+        "exact_command_confirmation_packet.json",
+        "receipt_schema_bundle.json"
+      ],
+      "evidence": [
+        "Mechanical-control, command-design, and receipt-schema hashes match the E4-R1C frozen manifest.",
+        "Seven receipt schemas are closed and ten command-to-receipt mappings are bound.",
+        "Exactly ten ordinals 0 through 90 have null shell, working_directory, and command fields.",
+        "All commands are non-materialized, unconfirmed, unauthorized, TEST-denied, and NO_AUTO_RETRY.",
+        "Exactly fifteen prerequisites exist; only P13_NEW_FROZEN_CENTRAL_PACKET is resolved."
+      ],
+      "impact": "The replacement packet fails closed, but no controller, wrapper, environment, data lineage, run, adapter, evaluator, or command enforcement was materialized or executed.",
+      "disposition": "CLOSED_FAIL_CLOSED_PACKET_INTEGRITY_MATERIALIZED_ENFORCEMENT_UNVERIFIED",
+      "residual_state": "FOURTEEN_PREREQUISITES_UNRESOLVED_TEN_COMMANDS_NULL",
+      "owner": "FUTURE_E4_REMEDIATION_OWNER"
+    },
+    {
+      "finding_id": "E5-F004",
+      "criterion": "phase ownership and authorization sequence",
+      "affected_artifact_or_field": [
+        "exact_command_confirmation_packet.json.phase_ownership",
+        "reproduction_execution_plan.md",
+        "v5_adapter_and_evaluator_contract.md"
+      ],
+      "evidence": [
+        "E4 owns remediation, implementations, locks, argv, receipt application, command materialization, and new packet freeze.",
+        "E5-R1 is read-only audit-only and supplies none of those materials.",
+        "User confirmation occurs only after an independent pass of a future exact materialized packet.",
+        "Separate execution authority is required and automatic retry is forbidden."
+      ],
+      "impact": "The independent audit boundary and future authorization sequence are correctly restored.",
+      "disposition": "CLOSED_REMEDIATION_INTEGRITY_E5_R1_AUDIT_ONLY",
+      "residual_state": "FUTURE_E4_MATERIALIZATION_AND_NEW_AUDIT_REQUIRED",
+      "owner": "FUTURE_E4_REMEDIATION_OWNER"
+    }
+  ],
+  "new_findings": [],
+  "execution_readiness": {
+    "verified": false,
+    "materialized_enforcement_verified": false,
+    "reason": "Zero ready candidates, ten null commands, fourteen unresolved prerequisites, no confirmation, and no execution authority."
+  }
+}

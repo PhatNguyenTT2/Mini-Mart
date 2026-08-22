@@ -1,0 +1,229 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e5-r1-handoff-1.0",
+  "lane_id": "E5_R1_independent_remediation_audit",
+  "material_passport": {
+    "origin_skill": "ars-codex:academic-research-suite/experiment-agent",
+    "origin_mode": "independent-audit/read-only",
+    "origin_date": "2026-08-22",
+    "verification_status": "ANALYZED",
+    "version_label": "stage1e_rebaseline_v2_wave_f_E5_R1_v1",
+    "upstream_dependencies": [
+      "stage1e_rebaseline_v2_wave_c_E5_independent_lock_audit",
+      "stage1e_rebaseline_v2_wave_d_E4_R1A_provenance_config",
+      "stage1e_rebaseline_v2_wave_d_E4_R1B_command_controls",
+      "stage1e_rebaseline_v2_wave_e_E4_R1C_reproduction_adaptation",
+      "stage1e_rebaseline_v2_E5_R1_frozen_input_manifest"
+    ],
+    "repro_lock": {
+      "schema_version": "1.0",
+      "stochasticity_declaration": "LLM audit prose is not byte-reproducible. Frozen inputs, loaded instruction hashes, mechanical checks, and produced artifacts are hash-bound.",
+      "skill_package": {
+        "name": "ars-codex:academic-research-suite",
+        "adapter_version": "0.1.26",
+        "ars_suite_version": "3.21.0"
+      },
+      "model": {
+        "family": "openai",
+        "id": "gpt-5.6-sol",
+        "reasoning": "xhigh",
+        "weight_stable": false
+      },
+      "loaded_instruction_bundle": {
+        "policy": "SHA-256 of UTF-8 compact JSON [{path,sha256},...] in loaded order with paths relative to the skill root",
+        "sha256": "bb78f6fe8edfd175abe4264d0865177658a5a8f18fd55295298b90477278a468",
+        "members": [
+          {"path":"SKILL.md","canonical_lf_sha256":"9c2cb6e3b5aad7fb747f79163b144cfbddffa85d67e2bdcc5a5fa5470252ad00"},
+          {"path":"ars/experiment-agent/WORKFLOW.md","canonical_lf_sha256":"c89cb26ec05ed9facf80301df04ec1d892d74b5c7c68d42afbb2511a7c3268ef"},
+          {"path":"ars/experiment-agent/references/statistical_interpretation_guide.md","canonical_lf_sha256":"70c3de7ab015986720c3ea8ba6355d967cf720bed49aeefc510294e0f7171079"},
+          {"path":"ars/experiment-agent/references/reproducibility_protocol.md","canonical_lf_sha256":"49b39d74941bca78934870104eede8fc969c26b1197d74b143aef8564b546770"},
+          {"path":"ars/experiment-agent/templates/output_formats.md","canonical_lf_sha256":"b4e47e7e51aa24a28725df0353db818d8460f8b976d9001ba534d21c5756b234"},
+          {"path":"ars/experiment-agent/agents/code_runner_agent.md","canonical_lf_sha256":"54937084589413787fe328ab1561329791cc2ca83222d9bf8283949399cf66de"},
+          {"path":"ars/experiment-agent/references/ars_integration_guide.md","canonical_lf_sha256":"7e76dbc0b9019305d2906e9f0c9b7a24a90b9f24a357091d7816b1a5748c1303"}
+        ]
+      },
+      "frozen_materials": {
+        "policy": "SHA-256 of UTF-8 compact JSON [{path,sha256},...] sorted by path over the 19 frozen manifest input rows",
+        "list_sha256": "676e3859fec7c55d2224b442509707d06317673fcb80e99dc9a1c677d113bb2d",
+        "count": 19,
+        "manifest_canonical_lf_sha256": "25a44c845b3a034fea82c4d335923dfff931eb7252f118c3ae7e614ba696895e"
+      },
+      "external_protocols": {
+        "primary_source_identity_web_replay": true,
+        "bibliographic_resolver_api": "NOT_USED",
+        "dataset_or_repository_download": "NOT_USED"
+      },
+      "cross_model": {
+        "enabled": false,
+        "secondary_model_id": null,
+        "external_upload": false
+      }
+    },
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-22",
+      "declared_by": "independent_auditor"
+    }
+  },
+  "created_at": "2026-08-22T04:05:39+07:00",
+  "workflow": "ars/experiment-agent/WORKFLOW.md validate discipline applied to an audit-only, non-execution packet",
+  "frozen_contract": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e5_r1_independent_remediation_audit_contract.md",
+    "canonical_lf_bytes": 9730,
+    "canonical_lf_sha256": "7147cdbf3732f8c8c46c275c8b9c21bad392a0abea76b50217d0616e7868320e"
+  },
+  "frozen_manifest": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e5_r1_frozen_input_manifest.json",
+    "canonical_lf_bytes": 9059,
+    "canonical_lf_sha256": "25a44c845b3a034fea82c4d335923dfff931eb7252f118c3ae7e614ba696895e"
+  },
+  "input_verification": {
+    "hash_policy": "Strict UTF-8 decode, replace CRLF with LF, then SHA-256",
+    "manifest_replayed": true,
+    "manifest_entries_expected": 19,
+    "manifest_entries_present": 19,
+    "manifest_entries_byte_count_matched": 19,
+    "manifest_entries_hash_matched": 19,
+    "manifest_entries_missing": 0,
+    "manifest_entries_mismatched": 0,
+    "manifest_plus_inputs_total": 20,
+    "manifest_plus_inputs_passed": 20,
+    "json_documents_total": 13,
+    "json_documents_two_parser_passed": 13,
+    "duplicate_or_case_colliding_keys": 0,
+    "entry_receipt": "PASS_E4_R1C_CORRECTED_FAIL_CLOSED_READY_FOR_E5_R1_AUDIT",
+    "verdict": "PASS"
+  },
+  "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_f/E5_R1_independent_remediation_audit",
+  "output_hash_policy": "Strict UTF-8 decode, replace CRLF with LF, then SHA-256",
+  "outputs": [
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_f/E5_R1_independent_remediation_audit/independent_remediation_audit.md",
+      "canonical_lf_bytes": 8871,
+      "canonical_lf_sha256": "8df7ea981dd35265e578094a03bf7c58d9fb5433ccf1b1d0d393da979649f0e3",
+      "verification_status": "ANALYZED"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_f/E5_R1_independent_remediation_audit/audit_findings.json",
+      "canonical_lf_bytes": 5085,
+      "canonical_lf_sha256": "b4c72fe42244f9a1948aa53a32657408039a121c6e5a3095daf8fcb7aa6a4b79",
+      "verification_status": "ANALYZED"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_f/E5_R1_independent_remediation_audit/replay_receipt.json",
+      "canonical_lf_bytes": 12970,
+      "canonical_lf_sha256": "7f2451b0c810ae4ab50771850334c86cf72577dfb282583a6622301553a4261f",
+      "verification_status": "ANALYZED"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_f/E5_R1_independent_remediation_audit/stage1e_execution_authorization.json",
+      "canonical_lf_bytes": 1674,
+      "canonical_lf_sha256": "d738be82f0f3e30807c5c5bde41654ed093f5115d1577510c62df72a70730497",
+      "verification_status": "ANALYZED"
+    }
+  ],
+  "handoff_artifact": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_f/E5_R1_independent_remediation_audit/e5_r1_handoff.json",
+    "sha256_policy": "The canonical-LF SHA-256 of this self-referential handoff is reported out of band after final validation."
+  },
+  "audit_coverage": {
+    "required_output_files": {"expected":5,"present":5},
+    "direct_inputs": {"expected":19,"matched":19},
+    "original_findings": {"expected":4,"audited":4,"closed_for_remediation_integrity":4},
+    "candidate_rows": {"expected":13,"present":13},
+    "prohibited_joins": {"expected":5,"present":5,"rejected":5},
+    "command_records": {"expected":10,"present":10,"null":10},
+    "receipt_schemas_bound": {"expected":7,"present":7,"closed":7},
+    "command_receipt_mappings_bound": {"expected":10,"present":10},
+    "prerequisites": {"expected":15,"resolved":1,"unresolved":14,"only_resolved":"P13_NEW_FROZEN_CENTRAL_PACKET"},
+    "mechanical_assertions": {"expected":28,"passed":28,"failed":0}
+  },
+  "finding_counts": {
+    "CRITICAL": 0,
+    "MAJOR": 0,
+    "MINOR": 0,
+    "total_new_findings": 0
+  },
+  "finding_dispositions": [
+    {"finding_id":"E5-F001","disposition":"CLOSED_REMEDIATION_INTEGRITY_RESIDUAL_EVIDENCE_VISIBLE","execution_readiness_verified":false},
+    {"finding_id":"E5-F002","disposition":"CLOSED_REMEDIATION_INTEGRITY_PATH_AND_BYTES_ONLY","execution_readiness_verified":false},
+    {"finding_id":"E5-F003","disposition":"CLOSED_FAIL_CLOSED_PACKET_INTEGRITY_MATERIALIZED_ENFORCEMENT_UNVERIFIED","execution_readiness_verified":false},
+    {"finding_id":"E5-F004","disposition":"CLOSED_REMEDIATION_INTEGRITY_E5_R1_AUDIT_ONLY","execution_readiness_verified":false}
+  ],
+  "candidate_status_counts": {
+    "READY_FOR_E5_R1_AUDIT": 0,
+    "PENDING_EVIDENCE": 7,
+    "REJECTED": 6,
+    "total": 13,
+    "selected_candidate": null,
+    "priority_row": "E3-LIGHTGCN-GOWALLA-PYTORCH-001",
+    "priority_is_selection": false
+  },
+  "command_packet": {
+    "state": "CENTRAL_REPLACEMENT_FROZEN_FAIL_CLOSED_NON_EXECUTABLE",
+    "command_records": 10,
+    "command_strings_null": 10,
+    "user_confirmation_required": true,
+    "confirmed": false,
+    "execution_authorized": false,
+    "retry_policy": "NO_AUTO_RETRY",
+    "prerequisites_required": 15,
+    "prerequisites_resolved": 1,
+    "prerequisites_unresolved": 14,
+    "only_resolved_prerequisite": "P13_NEW_FROZEN_CENTRAL_PACKET",
+    "materialized_enforcement_verified": false
+  },
+  "scope_separation": {
+    "official_reproduction_separate_from_harmonized_v5": true,
+    "external_validation_separate_from_official_reproduction": true,
+    "framework_references_separate": true,
+    "raw_cross_dataset_metric_league_allowed": false,
+    "source_center_as_v5_superiority_allowed": false
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER",
+    "empirical_claims_made": false,
+    "execution_authorized": false,
+    "confirmed": false
+  },
+  "scope_guards": {
+    "repository_clone_performed": false,
+    "repository_fetch_performed": false,
+    "dataset_download_performed": false,
+    "authenticated_dataset_access_performed": false,
+    "package_installation_performed": false,
+    "environment_creation_performed": false,
+    "source_model_or_data_modification_performed": false,
+    "training_evaluation_smoke_benchmark_performed": false,
+    "test_access_performed": false,
+    "benchmark_command_execution_performed": false,
+    "application_control_input_or_wave_a_through_e_edit_performed": false,
+    "cross_model_external_upload_performed": false
+  },
+  "authorization": {
+    "authorized": false,
+    "current_packet_executable": false,
+    "current_packet_may_be_confirmed": false,
+    "future_materialized_e4_packet_required": true,
+    "future_independent_audit_required": true,
+    "separate_execution_authority_required": true,
+    "pass_execution_authorized_emitted": false,
+    "decision": "DENIED_CURRENT_NULL_COMMAND_PACKET_NOT_EXECUTABLE"
+  },
+  "reproducibility": {
+    "verification_status": "ANALYZED",
+    "verdict": "CANNOT_VERIFY",
+    "reason": "No experiment was run and reproducibility execution is outside audit authority."
+  },
+  "git": {
+    "parent_before_commit": "de91bdd06df280aa60082e775fc6e06a1c1cc810",
+    "commit_sha_reported_out_of_band": true,
+    "commit_scope": "ONLY_THIS_WAVE_F_DIRECTORY"
+  },
+  "verdict": "PASS_REMEDIATION_INTEGRITY_EXECUTION_DENIED",
+  "verdict_detail": "REMEDIATION_INTEGRITY_PASS_FAIL_CLOSED_PACKET_EXECUTION_DENIED",
+  "fail_closed": true,
+  "next_gate": "A separately scoped E4 evidence/materialization stage must resolve one candidate and all material bindings, implement controls, materialize exact commands, and freeze a new packet. That future packet requires a new independent audit, explicit user confirmation, and separate execution authority; benchmark execution is not the next action."
+}
