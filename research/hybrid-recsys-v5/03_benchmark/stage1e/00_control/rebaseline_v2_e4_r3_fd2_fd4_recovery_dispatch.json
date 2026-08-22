@@ -1,0 +1,69 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r3-fd2-fd4-recovery-dispatch-1.0",
+  "created_at": "2026-08-22",
+  "stage_id": "R3-FD-V-RECOVERY",
+  "reason": "FIRST_PARALLEL_DISPATCH_TERMINATED_BY_RUNTIME_USAGE_LIMIT",
+  "scientific_effect": "NONE_NO_LANE_OUTPUT_CREATED_OR_IMPORTED",
+  "frozen_seed_binding": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_p/E4_R3FD1_bundle_seed_discovery/candidate_bundle_seeds.json",
+    "canonical_lf_bytes": 23034,
+    "canonical_lf_sha256": "dce058850afb537f062531d1b128a1c36685bc878a3761e35a22db3d72db8781"
+  },
+  "candidate_ids": [
+    "R3-BUNDLE-CORNAC-ML100K-001",
+    "R3-BUNDLE-ELLIOT-ML1M-001",
+    "R3-BUNDLE-DAISYREC-ML1M-001"
+  ],
+  "model_policy": {
+    "display_name": "Sol XHigh Standard",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "xhigh",
+    "service_tier": "standard",
+    "dispatch_service_tier_override": null
+  },
+  "first_dispatch": {
+    "status": "ERRORED_USAGE_LIMIT_NO_OUTPUTS",
+    "agents": {
+      "R3-FD2": "01a029c0-d672-7ca1-a160-46af05b94cf1",
+      "R3-FD3": "01a029c0-d74b-7063-8d10-9a55926336f7",
+      "R3-FD4": "01a029c0-d83d-7060-98a4-15ab5bb18e48"
+    },
+    "output_roots_present": 0,
+    "files_imported": 0,
+    "scientific_statuses_emitted": 0
+  },
+  "recovery_dispatch": {
+    "status": "DISPATCHED",
+    "agents": {
+      "R3-FD2": "01a029ef-1a67-7ab0-bfc7-39e49d3d25ef",
+      "R3-FD3": "01a029ef-1b27-7c61-b426-cc38c119a30a",
+      "R3-FD4": "01a029ef-1c18-7373-9d42-3f8584a495ef"
+    },
+    "write_roots": {
+      "R3-FD2": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_q/E4_R3FD2_rights_lineage_verification",
+      "R3-FD3": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_r/E4_R3FD3_benchmark_evaluator_verification",
+      "R3-FD4": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_s/E4_R3FD4_v5_compatibility_stress_test"
+    },
+    "exact_files_per_lane": 4,
+    "selection_allowed": false
+  },
+  "entry_revalidation": {
+    "fd0": "PASS_R3_FD0_GATE_17_OF_17_READY_FOR_FD1",
+    "fd1_scouts": "PASS_R3_FD1_SCOUTS_READY_FOR_CENTRAL_COMPOSITION",
+    "fd1_seeds": "PASS_R3_FD1_SEEDS_READY_FOR_FREEZE_AND_PARALLEL_VERIFICATION",
+    "fd1_frozen_outputs": "PASS_R3_FD1_FROZEN_16_OF_16_READY_FOR_PARALLEL_FD2_FD4"
+  },
+  "downstream": {
+    "R3_G1": "BLOCKED_PENDING_THREE_COMPLETE_VALIDATED_LANES",
+    "R3_M0": "BLOCKED_PENDING_R3_G1",
+    "materialization": "BLOCKED",
+    "execution": "BLOCKED"
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

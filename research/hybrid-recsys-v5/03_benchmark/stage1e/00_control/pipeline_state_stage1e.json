@@ -2,12 +2,12 @@
   "schema_version": "academic-research-pipeline-state-1.0",
   "project": "hybrid-recsys-v5",
   "stage": "1E",
-  "state": "stage1e_rebaseline_v2_r2_er1_g1_complete_fail_closed_no_selection_awaiting_user_checkpoint",
+  "state": "stage1e_rebaseline_v2_r3_fd2_fd4_recovery_dispatched",
   "updated_at": "2026-08-22",
   "model": "gpt-5.6-sol",
   "reasoning": "max",
-  "service_tier": "priority",
-  "model_profile": "Sol Max Fast",
+  "service_tier": "standard",
+  "model_profile": "Sol Max Standard",
   "result_status": "NOT_RUN",
   "test_set_opened": "NO",
   "superseded_wave1_v1": {
@@ -15,7 +15,7 @@
     "record": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/wave1_v1_supersession_record.json"
   },
   "rebaseline_v2": {
-    "status": "e4_r2_er1_g1_complete_fail_closed_no_selection_awaiting_user_checkpoint",
+    "status": "e4_r3_fd2_fd4_recovery_dispatched",
     "wave_a_expected": 3,
     "wave_a_active": 0,
     "wave_a_complete": 3,
@@ -553,12 +553,92 @@
       "training_or_evaluation": false,
       "execution_authorized": false,
       "next_gate": "USER_CHECKPOINT_CHOOSE_MAINTAINER_CONTACT_NEW_FRAMEWORK_DATASET_ROW_OR_PAUSE"
+    },
+    "e4_r3": {
+      "status": "FD1_FROZEN_FD2_FD4_RECOVERY_DISPATCHED",
+      "entry_checkpoint": "USER_CONFIRMED_CREATE_NEW_FRAMEWORK_DATASET_ROW",
+      "bundle_label": "FRAMEWORK_REPRODUCTION_REFERENCE",
+      "model_policy": {
+        "workers": {
+          "display_name": "Sol XHigh Standard",
+          "model": "gpt-5.6-sol",
+          "reasoning": "xhigh",
+          "service_tier": "standard"
+        },
+        "central": {
+          "display_name": "Sol Max Standard",
+          "model": "gpt-5.6-sol",
+          "reasoning": "max",
+          "service_tier": "standard"
+        }
+      },
+      "fd0": {
+        "status": "COMPLETE_CENTRALLY_VALIDATED",
+        "gate": "PASS_R3_FD0_GATE_17_OF_17_READY_FOR_FD1",
+        "frozen_inputs": "17/17"
+      },
+      "fd1": {
+        "status": "COMPLETE_FROZEN_CENTRALLY_VALIDATED",
+        "commit": "7991a3e",
+        "candidate_count": 3,
+        "candidate_ids": [
+          "R3-BUNDLE-CORNAC-ML100K-001",
+          "R3-BUNDLE-ELLIOT-ML1M-001",
+          "R3-BUNDLE-DAISYREC-ML1M-001"
+        ],
+        "frozen_outputs": "16/16",
+        "seed_sha256": "dce058850afb537f062531d1b128a1c36685bc878a3761e35a22db3d72db8781"
+      },
+      "verification_parallel_group": {
+        "expected": 3,
+        "active": 3,
+        "complete": 0,
+        "first_dispatch": {
+          "status": "ERRORED_USAGE_LIMIT_NO_OUTPUTS",
+          "output_roots_present": 0,
+          "scientific_effect": "NONE"
+        },
+        "recovery_dispatch": {
+          "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r3_fd2_fd4_recovery_dispatch.json",
+          "status": "DISPATCHED",
+          "stages": {
+            "R3-FD2": {
+              "agent_id": "01a029ef-1a67-7ab0-bfc7-39e49d3d25ef",
+              "status": "RUNNING"
+            },
+            "R3-FD3": {
+              "agent_id": "01a029ef-1b27-7c61-b426-cc38c119a30a",
+              "status": "RUNNING"
+            },
+            "R3-FD4": {
+              "agent_id": "01a029ef-1c18-7373-9d42-3f8584a495ef",
+              "status": "RUNNING"
+            }
+          }
+        }
+      },
+      "g1": {
+        "status": "BLOCKED_PENDING_THREE_COMPLETE_VALIDATED_LANES",
+        "context": "current_central",
+        "model": "gpt-5.6-sol",
+        "reasoning": "max",
+        "service_tier": "standard",
+        "display_name": "Sol Max Standard"
+      },
+      "truth_state": {
+        "RESULT_STATUS": "NOT_RUN",
+        "TEST_SET_OPENED": "NO",
+        "ACCEPTED_RESULT_ROWS": 0,
+        "project_benchmark_numbers": "INVALID_FOR_PAPER"
+      },
+      "execution_authorized": false,
+      "next_gate": "CENTRAL_VALIDATE_AND_FREEZE_R3_FD2_FD4_OUTPUTS"
     }
   },
-  "central_preregistration_lock": "BLOCKED_R2_ER1_G1_NO_SELECTION",
-  "adapt_reproduce": "BLOCKED_R2_ER1_G1_NO_SELECTION_SCOPE_DECISION_REQUIRED",
+  "central_preregistration_lock": "BLOCKED_R3_PENDING_BUNDLE_SELECTION",
+  "adapt_reproduce": "BLOCKED_R3_PENDING_VALIDATED_FD2_FD4_AND_G1",
   "harmonized_v5": "BLOCKED",
   "external_validation": "BLOCKED",
   "efficiency": "BLOCKED_AFTER_ACCURACY",
-  "next_gate": "MANDATORY USER CHECKPOINT: choose maintainer contact, a new separately labeled framework/dataset row, or pause the official-reproduction track. R2-M0 and all materialization/execution stages remain blocked; clone, download, install, preprocess, train, evaluate, candidate selection, and TEST access remain denied."
+  "next_gate": "CENTRAL VALIDATION: wait for all R3-FD2 through R3-FD4 exact write sets, validate and freeze them, then run R3-G1. R3-M0 and all materialization/execution remain blocked; clone, download, install, preprocess, train, evaluate and TEST access remain denied."
 }
