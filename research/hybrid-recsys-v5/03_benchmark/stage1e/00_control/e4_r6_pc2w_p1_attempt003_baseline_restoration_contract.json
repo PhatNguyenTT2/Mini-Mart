@@ -1,0 +1,66 @@
+{
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt003-baseline-restoration-contract-1.0",
+  "stage_id": "E4-R6-PC2W-P1-ATTEMPT003-BASELINE",
+  "created_at": "2026-08-24T02:44:13.9748923+07:00",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "plan",
+    "origin_date": "2026-08-24T02:44:13.9748923+07:00",
+    "verification_status": "UNVERIFIED",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt003_baseline_contract_v1",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_pc2w_p1_attempt002_validation_v1",
+      "stage1e_e4_r6_pc2w_contract_v1"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-24T01:12:40.9534228+07:00",
+      "declared_by": "scholar"
+    }
+  },
+  "purpose": "Restore a verifiably stopped Docker Desktop and WSL baseline before a separately gated attempt-003.",
+  "user_decision_source": "Đồng ý và tiếp tục, referring to explicit baseline restoration and attempt-003 proposed in the preceding handoff.",
+  "allowed_mutations": [
+    "docker desktop stop exactly once when the pre-baseline is not already stopped",
+    "wsl.exe --shutdown exactly once when restoration is needed",
+    "write exactly three control receipts under the attempt-003 baseline-restoration output root"
+  ],
+  "required_pre_queries": [
+    "docker desktop status",
+    "wsl --list --verbose",
+    "docker version server-only"
+  ],
+  "required_post_queries": [
+    "docker desktop status",
+    "docker version server-only",
+    "wsl --list --verbose"
+  ],
+  "admission_conditions": {
+    "docker_desktop_status": "stopped",
+    "desktop_linux_daemon": "specifically_unavailable_named_pipe_missing_no_permission_error",
+    "docker_desktop_wsl_distro": "Stopped",
+    "all_listed_wsl_distributions": "Stopped",
+    "automatic_retry_count": 0
+  },
+  "forbidden": [
+    "docker desktop start",
+    "image pull",
+    "image build",
+    "container create",
+    "container run",
+    "settings change",
+    "install",
+    "download",
+    "materialization",
+    "training",
+    "evaluation",
+    "TEST"
+  ],
+  "failure_policy": "Any failed/ambiguous pre-query blocks restoration; any failed/ambiguous post-state blocks attempt-003. No automatic retry.",
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0
+  }
+}
