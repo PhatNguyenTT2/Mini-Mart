@@ -1,16 +1,16 @@
 {
-  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-dispatch-3.0",
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-dispatch-4.0",
   "stage_id": "E4-R6-PC2W-P1-ATTEMPT003-OFFLINE-EQUIVALENT-OBSERVATION",
-  "created_at": "2026-08-24T03:35:51.0685464+07:00",
+  "created_at": "2026-08-24T03:47:36.7124840+07:00",
   "material_passport": {
     "origin_skill": "experiment-agent",
     "origin_mode": "run",
-    "origin_date": "2026-08-24T03:35:51.0685464+07:00",
+    "origin_date": "2026-08-24T03:47:36.7124840+07:00",
     "verification_status": "UNVERIFIED",
-    "version_label": "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_dispatch_v3",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_dispatch_v4",
     "upstream_dependencies": [
-      "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_authorization_v3",
-      "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_contract_v3",
+      "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_authorization_v4",
+      "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_contract_v4",
       "stage1e_e4_r6_pc2w_p1_attempt003_baseline_validation_v1"
     ],
     "repro_lock": null,
@@ -20,22 +20,22 @@
       "declared_by": "scholar"
     }
   },
-  "runner_checkpoint": "85dc453f78174965c0cf897fed3e9527ced7ccd5",
+  "runner_checkpoint": "5101ae07f4e02e03f38b9c1926a6ea9242ff1c0c",
   "frozen_artifacts": [
     {
       "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc2w_p1_attempt003_offline_equivalent_observation.py",
-      "git_blob_bytes": 30781,
-      "git_blob_sha256": "83ce505f720fb10c4af9a26fe9d1d5d42aab1466823f032eee28a82a54e3169d"
+      "git_blob_bytes": 31456,
+      "git_blob_sha256": "0d866d43e1cd12fd5be43d19416a6a13ea77de4f5964669eab92952171542fb6"
     },
     {
       "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt003_offline_equivalent_observation_contract.json",
-      "git_blob_bytes": 4575,
-      "git_blob_sha256": "e613cbf0c87942b9464f78530e95ee709aa18919c56682de7a715284fb4a86ee"
+      "git_blob_bytes": 4877,
+      "git_blob_sha256": "99e5be4779848e45ab4d56c03bfdb393d9bde308710c6bd104e202c66a1b7fe3"
     },
     {
       "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt003_offline_equivalent_authorization.json",
-      "git_blob_bytes": 5272,
-      "git_blob_sha256": "422e9acf3bcabcc10e8f767669e4ac08e592b54688f05d7af43a0f202933d01f"
+      "git_blob_bytes": 5955,
+      "git_blob_sha256": "53504f3a11e1ccd3e81345a7fbadfe1b783ac0b092dc49439c7ec78024d2df84"
     },
     {
       "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt003_baseline_validation_receipt.json",
@@ -82,6 +82,11 @@
     "strict_status_and_daemon_decoding_required": true,
     "contradictory_daemon_stdout_rejected": true,
     "exact_wsl_header_required": true,
+    "python_orig_argv_enforced": true,
+    "process_cim_fail_stop_required": true,
+    "unicode_category_c_rejected": true,
+    "running_token_dominates_status": true,
+    "daemon_contradiction_markers_rejected": true,
     "attempt003_immediate_pre_gate_replay_required": true,
     "docker_desktop_start_or_stop_allowed": false,
     "wsl_shutdown_or_terminate_allowed": false,
@@ -122,6 +127,20 @@
         "contradictory daemon stdout rejection",
         "exact WSL header recognition",
         "actual validator Python identity attestation"
+      ]
+    },
+    {
+      "thread_id": "01a03059-aa83-7561-b84b-fbeee1c62df0",
+      "audited_checkpoint": "2e3fdc015fbcc53f3b564c594186b3c19b5f73a1",
+      "verdict": "REWORK_REQUIRED",
+      "validator_checks": "119/119",
+      "execution_performed": false,
+      "findings_resolved": [
+        "contradictory running/stopped status is blocked",
+        "Python interpreter flags are bound through sys.orig_argv",
+        "process inventory uses fail-stop CIM enumeration",
+        "Unicode DEL/C1/format/private controls are rejected",
+        "daemon reachability contradiction markers are rejected"
       ]
     }
   ],

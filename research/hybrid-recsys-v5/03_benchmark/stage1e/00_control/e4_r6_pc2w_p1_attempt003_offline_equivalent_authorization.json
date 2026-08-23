@@ -1,17 +1,17 @@
 {
-  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-authorization-3.0",
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-authorization-4.0",
   "stage_id": "E4-R6-PC2W-P1-ATTEMPT003-OFFLINE-EQUIVALENT-OBSERVATION",
-  "created_at": "2026-08-24T03:35:51.0685464+07:00",
+  "created_at": "2026-08-24T03:47:36.7124840+07:00",
   "material_passport": {
     "origin_skill": "experiment-agent",
     "origin_mode": "run",
-    "origin_date": "2026-08-24T03:35:51.0685464+07:00",
+    "origin_date": "2026-08-24T03:47:36.7124840+07:00",
     "verification_status": "UNVERIFIED",
-    "version_label": "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_authorization_v3",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_authorization_v4",
     "upstream_dependencies": [
       "stage1e_e4_r6_pc2w_p1_attempt003_baseline_validation_v1",
       "stage1e_e4_r6_pc2w_p1_attempt003_user_authorization_v3",
-      "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_contract_v3"
+      "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_contract_v4"
     ],
     "repro_lock": null,
     "experiment_intake_declaration": {
@@ -20,7 +20,7 @@
       "declared_by": "scholar"
     }
   },
-  "entry_checkpoint": "85dc453f78174965c0cf897fed3e9527ced7ccd5",
+  "entry_checkpoint": "5101ae07f4e02e03f38b9c1926a6ea9242ff1c0c",
   "authorized_output_root": "E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\rebaseline_v2\\wave_al\\E4_R6PC2W_P1_docker_query_preflight\\attempt-003-offline-equivalent-observation",
   "authorization_source": {
     "user_messages": [
@@ -84,6 +84,13 @@
         "verdict": "REWORK_REQUIRED",
         "validator_checks": "106/106",
         "execution_performed": false
+      },
+      {
+        "thread_id": "01a03059-aa83-7561-b84b-fbeee1c62df0",
+        "checkpoint": "2e3fdc015fbcc53f3b564c594186b3c19b5f73a1",
+        "verdict": "REWORK_REQUIRED",
+        "validator_checks": "119/119",
+        "execution_performed": false
       }
     ],
     "rework_resolved": [
@@ -97,7 +104,12 @@
       "Use an explicit one-millisecond WaitNamedPipeW bound and truthful method label.",
       "Strictly decode status/daemon evidence and reject contradictory daemon stdout.",
       "Require an exact WSL header and reject substring-shaped false headers.",
-      "Make the validator attest its actual Python executable, version and hash."
+      "Make the validator attest its actual Python executable, version and hash.",
+      "Make any RUNNING token dominate contradictory STOPPED status evidence.",
+      "Enforce sys.orig_argv so Python interpreter flags cannot bypass dispatch binding.",
+      "Replace Get-Process error suppression with fail-stop Win32_Process CIM enumeration.",
+      "Reject all Unicode category-C evidence characters except CR, LF and TAB.",
+      "Reject daemon stderr containing explicit reachability contradictions."
     ],
     "automatic_execution_after_failed_gate": false,
     "observation_attempts_maximum": 1,
