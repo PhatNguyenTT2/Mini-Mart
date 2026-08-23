@@ -1,0 +1,139 @@
+{
+  "schema_version": "stage1e-e4-r6-pc0-query-preflight-failure-receipt-1.0",
+  "created_at": "2026-08-23T00:00:00+07:00",
+  "stage_id": "E4-R6-PC0-PREFLIGHT-ATTEMPT-001",
+  "status": "FAIL_CLOSED_INDEPENDENT_AUDITS_COMPLETE_RECOVERY_REQUIRED",
+  "entry_checkpoint": {
+    "commit": "5a954d189a11f5ff0c6fecb7350ddf29245c9191",
+    "worktree_clean_before_execution": true
+  },
+  "authorization": {
+    "user_confirmation_received": true,
+    "confirmed_command": "C:\\Users\\ACER\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe -I -B E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\00_control\\execute_e4_r6_pc0_mxc_probe.py preflight",
+    "working_directory": "E:\\UIT\\cv\\backend",
+    "mode": "preflight",
+    "timeout_seconds": 1800,
+    "automatic_retry_authorized": false
+  },
+  "executed_artifacts": {
+    "runner": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc0_mxc_probe.py",
+      "raw_bytes": 27982,
+      "raw_sha256": "4c8025276eaf834480d0575043d9b6bd6e8e33b1edcba9329e554252dced94c1"
+    },
+    "dispatch": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc0_mxc_probe_dispatch.json",
+      "raw_bytes": 8167,
+      "raw_sha256": "637b02241d0d94cde610495b17f686e6c0652cafcea86449dbab1961a2426927"
+    },
+    "query_api_source_lock": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc0_query_api_source_lock.json",
+      "raw_bytes": 3315,
+      "raw_sha256": "5afb41f3ba40070aff3e8a39d06f60d14a9377e99665287a3c6624bc00fe1537"
+    }
+  },
+  "execution_observation": {
+    "transcript_provenance": "DIRECT_CODEX_EXEC_COMMAND_CAPTURE",
+    "process_completed": true,
+    "exit_code": 1,
+    "retry_count": 0,
+    "stdout_json": {
+      "accepted_result_rows": 0,
+      "benchmark_admitted": false,
+      "error": "QUERY_SANDBOX_SUPPORT_FAILED:1",
+      "error_type": "GateFailure",
+      "filesystem_write_performed": false,
+      "mode": "preflight",
+      "network_performed": false,
+      "result_status": "FAIL",
+      "schema_version": "stage1e-e4-r6-pc0-query-failure-1.0",
+      "scientific_execution_performed": false,
+      "stage_id": "E4-R6-PC0",
+      "test_set_opened": "NO"
+    },
+    "stderr_observed": "",
+    "query_api_called": true,
+    "raw_api_return_observed": 1,
+    "capability_output_mask_recorded": false,
+    "capability_output_mask": null
+  },
+  "failure_analysis": {
+    "classification": "CONTROL_PLANE_BOOL_SUCCESS_SEMANTICS_INVERTED",
+    "source_locked_success_semantics": "NONZERO_BOOL_MEANS_OUTPUT_CAPABILITY_MASK_IS_VALID",
+    "runner_attempt001_behavior": "NONZERO_RETURN_WAS_CLASSIFIED_AS_FAILURE",
+    "evidence_conflict": true,
+    "capability_admission_from_attempt001": "UNAVAILABLE_OUTPUT_MASK_NOT_RECORDED",
+    "mxc_candidate_rejected": false,
+    "mxc_candidate_admitted": false,
+    "attempt001_result_reusable_for_capability_bit": false
+  },
+  "post_execution_observation": {
+    "candidate_root_exists": false,
+    "attempt003_dataset_root_exists": false,
+    "attempt003_environment_root_exists": false,
+    "network_requested_by_runner": false,
+    "network_observation_scope": "STATIC_AST_AND_RUNNER_SELF_REPORT_NOT_SYSTEM_WIDE_TRACE",
+    "filesystem_write_requested_by_runner": false,
+    "filesystem_observation_scope": "STATIC_AST_POST_RUN_GIT_CLEANLINESS_AND_GUARDED_ROOT_CHECKS",
+    "source_downloaded": false,
+    "materialization_executed": false,
+    "probe_executed": false,
+    "sandbox_workload_executed": false
+  },
+  "recovery_policy": {
+    "attempt001_is_immutable": true,
+    "in_place_reinterpretation_as_capability_result_allowed": false,
+    "automatic_retry_performed": false,
+    "required_before_attempt002": [
+      "INDEPENDENT_ABI_AND_GATE_AUDIT",
+      "INDEPENDENT_RECOVERY_AND_STATE_AUDIT",
+      "CENTRAL_RUNNER_DISPATCH_VALIDATOR_REWORK",
+      "STATIC_VALIDATION_PASS",
+      "CLEAN_COMMITTED_CHECKPOINT",
+      "EXPLICIT_USER_CONFIRMATION_OF_EXACT_ATTEMPT002_COMMAND"
+    ]
+  },
+  "independent_audits": [
+    {
+      "agent_id": "01a02ed4-6962-76d0-9ab5-b596dcb8c352",
+      "nickname": "Russell",
+      "model": "Sol XHigh Standard",
+      "scope": "READ_ONLY_ABI_AND_GATE_AUDIT",
+      "verdict": "REWORK_ATTEMPT001_INVALID_FOR_CANDIDATE_REJECTION_OR_ADMISSION",
+      "critical_findings": [
+        "NONZERO_BOOL_SUCCESS_WAS_INVERTED",
+        "CAPABILITY_MASK_WAS_NOT_RECORDED",
+        "STATIC_VALIDATOR_DID_NOT_TEST_BOOL_POLARITY_OR_OUTPUT_DOMINANCE"
+      ]
+    },
+    {
+      "agent_id": "01a02ed4-6e78-75d1-b0d3-724b20cb976d",
+      "nickname": "Maxwell",
+      "model": "Sol High Standard",
+      "scope": "READ_ONLY_RECOVERY_AND_STATE_AUDIT",
+      "verdict": "INVALID_CONTROL_RESULT_RECOVERY_REQUIRED",
+      "critical_findings": [
+        "CHECKPOINT_BINDING_MUST_BE_EXACT",
+        "POST_RUN_CLOSURE_REQUIRED",
+        "PYTHON_CONTROL_RUNTIME_IDENTITY_MUST_BE_FROZEN",
+        "OLD_CONTROL_ARTIFACTS_MUST_BE_SUPERSEDED_NOT_REWRITTEN"
+      ]
+    }
+  ],
+  "model_provenance": {
+    "execution_and_failure_capture_context": "Sol Max Standard",
+    "abi_audit_assigned": "Sol XHigh Standard",
+    "recovery_audit_assigned": "Sol High Standard",
+    "priority_service_tier_used": false,
+    "attestation_scope": "DECLARED_NOT_CRYPTOGRAPHIC_MODEL_ATTESTATION"
+  },
+  "truth_state": {
+    "result_status": "NOT_RUN",
+    "test_set_opened": "NO",
+    "accepted_result_rows": 0,
+    "scientific_execution_performed": false,
+    "benchmark_admitted": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "next_gate": "WAIT_FOR_INDEPENDENT_AUDITS_THEN_REWORK_QUERY_ONLY_CONTROL_PLANE_WITHOUT_RETRY"
+}

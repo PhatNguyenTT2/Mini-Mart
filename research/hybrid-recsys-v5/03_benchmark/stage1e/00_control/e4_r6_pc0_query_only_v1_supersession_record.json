@@ -1,0 +1,105 @@
+{
+  "schema_version": "stage1e-e4-r6-pc0-query-only-supersession-record-1.0",
+  "created_at": "2026-08-23T00:00:00+07:00",
+  "stage_id": "E4-R6-PC0",
+  "status": "QUERY_ONLY_V1_SUPERSEDED_AFTER_INVALID_CONTROL_RESULT",
+  "checkpoint": "5a954d189a11f5ff0c6fecb7350ddf29245c9191",
+  "trigger": {
+    "attempt": "PREFLIGHT_ATTEMPT_001",
+    "exit_code": 1,
+    "raw_bool_return": 1,
+    "reported_error": "QUERY_SANDBOX_SUPPORT_FAILED:1",
+    "root_cause": "NONZERO_BOOL_SUCCESS_WAS_INCORRECTLY_CLASSIFIED_AS_FAILURE",
+    "capability_mask": "UNOBSERVED_NOT_CLASSIFIABLE",
+    "candidate_disposition": "UNRESOLVED_NEITHER_REJECTED_NOR_ADMITTED"
+  },
+  "superseded_artifacts": [
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc0_mxc_probe.py",
+      "raw_bytes": 27982,
+      "raw_sha256": "4c8025276eaf834480d0575043d9b6bd6e8e33b1edcba9329e554252dced94c1",
+      "disposition": "SUPERSEDED_NEVER_RERUN"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc0_mxc_probe_dispatch.json",
+      "raw_bytes": 8167,
+      "raw_sha256": "637b02241d0d94cde610495b17f686e6c0652cafcea86449dbab1961a2426927",
+      "disposition": "SUPERSEDED_NEVER_REDISPATCH"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc0_mxc_probe.py",
+      "raw_bytes": 21039,
+      "raw_sha256": "27cb10515eaed6e16a54d317c3a15f44fecf8a8e66fcf5656983be228d791880",
+      "disposition": "INVALIDATED_SEMANTIC_COVERAGE_GAP"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc0_query_only_static_validation_receipt.json",
+      "raw_bytes": 4009,
+      "raw_sha256": "b59eedc40840f40eb7b95ed6ba7b8e103cda71c59661ff7f01aa7b8c36ee41e0",
+      "disposition": "SUPERSEDED_SEMANTIC_FALSE_PASS_97_OF_97"
+    }
+  ],
+  "retained_valid_artifacts": [
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc0_query_api_source_lock.json",
+      "raw_bytes": 3315,
+      "raw_sha256": "5afb41f3ba40070aff3e8a39d06f60d14a9377e99665287a3c6624bc00fe1537",
+      "reason": "AUTHORITATIVE_BOOL_AND_CAPABILITY_SEMANTICS_REMAIN_VALID"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc0_initial_runner_audit_receipt.json",
+      "raw_bytes": 6028,
+      "raw_sha256": "e2131c72d6e0b1878bbf20e9977123c1b5e2edb7b9fa5c6241bdcf622ef5ea93",
+      "reason": "HISTORICAL_INDEPENDENT_AUDIT_EVIDENCE_REMAINS_VALID"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc0_query_preflight_attempt001_failure_receipt.json",
+      "raw_bytes": 5702,
+      "raw_sha256": "f9d495e4e6256ed60b9e8a4710b258a1a2fd074f7a6acac077518f1553e0f120",
+      "reason": "IMMUTABLE_RUNTIME_FAILURE_AND_RECOVERY_EVIDENCE"
+    }
+  ],
+  "independent_audit_consensus": [
+    {
+      "agent_id": "01a02ed4-6962-76d0-9ab5-b596dcb8c352",
+      "model": "Sol XHigh Standard",
+      "verdict": "REWORK_CURRENT_RESULT_INVALID_FOR_REJECTION_OR_ADMISSION"
+    },
+    {
+      "agent_id": "01a02ed4-6e78-75d1-b0d3-724b20cb976d",
+      "model": "Sol High Standard",
+      "verdict": "INVALID_CONTROL_RESULT_RECOVERY_REQUIRED"
+    }
+  ],
+  "attempt002_requirements": [
+    "NEW_FILENAMES_NO_IN_PLACE_V1_REWRITE",
+    "BOOL_ZERO_IS_FAILURE_AND_ANY_NONZERO_IS_SUCCESS",
+    "CAPABILITY_MASK_CONSUMED_ONLY_AFTER_NONZERO_SUCCESS",
+    "EXPLICIT_C_INT32_RETURN_TYPE",
+    "PURE_TRUTH_TABLE_VALIDATION_FOR_ZERO_ONE_AND_NEGATIVE_ONE_BOOL_RETURNS",
+    "EXACT_RECOVERY_CHECKPOINT_BINDING",
+    "FROZEN_PYTHON_CONTROL_RUNTIME_IDENTITY",
+    "POST_QUERY_GIT_ROOT_AND_DLL_CLOSURE",
+    "EXCEPTION_NOT_BASEEXCEPTION",
+    "NEW_XHIGH_STANDARD_INDEPENDENT_STATIC_AUDIT",
+    "FRESH_USER_CONFIRMATION_BEFORE_ONE_ATTEMPT"
+  ],
+  "prohibited_actions": [
+    "RERUN_QUERY_ONLY_V1",
+    "REINTERPRET_ATTEMPT001_AS_BIT_CLEAR_OR_BIT_SET",
+    "DOWNLOAD_OR_MATERIALIZE_MXC",
+    "CREATE_PARENT_OR_ATTEMPT_ROOTS",
+    "RUN_DOWNLOADED_PROBE_OR_SANDBOX_WORKLOAD",
+    "ACCESS_TEST_SET",
+    "RUN_TRAINING_EVALUATION_OR_BENCHMARK"
+  ],
+  "truth_state": {
+    "result_status": "NOT_RUN",
+    "test_set_opened": "NO",
+    "accepted_result_rows": 0,
+    "scientific_execution_performed": false,
+    "benchmark_admitted": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "next_gate": "COMMIT_ATTEMPT001_EVIDENCE_AND_STATE_CORRECTION_BEFORE_ATTEMPT002_CONTROL_PLANE_CREATION"
+}
