@@ -215,6 +215,7 @@ check("runner_mutation_gate", all(token in source for token in ("containers_runn
 check("runner_wsl_restoration", all(token in source for token in ("during_docker_desktop_distro_exactly_running", "wsl_inventory_restored_exactly")), None)
 check("runner_backend_identity", all(token in source for token in ("client_version_whitelist", "ContainerdCommit", "containerd_commit_id")), None)
 check("runner_passport_carry_forward", 'intake = auth.get("material_passport", {}).get("experiment_intake_declaration")' in source and '"declared_at": created_at' not in source, None)
+check("runner_passport_dependency_current", '"stage1e_e4_r6_pc2w_p1_user_authorization_v3"' in source and '"stage1e_e4_r6_pc2w_p1_user_authorization_v2"' not in source, None)
 check("runner_secret_safety", all(token in source for token in ('"raw_stdout_or_stderr_persisted": False', '"raw_context_persisted": False', '"proxy_values_persisted": False', "RemoteAddressSha256")), None)
 check("runner_no_raw_error", '"error_sha256"' in source and '"error": str(exc)' not in source, None)
 check("runner_no_science", all(token in source for token in ('"scientific_execution_performed": False', '"result_status": "NOT_RUN"', '"test_set_opened": "NO"', '"accepted_result_rows": 0')), None)
