@@ -1,0 +1,125 @@
+{
+  "schema_version": "stage1e-e4-r6-pc0-query-preflight-attempt002-failure-receipt-1.0",
+  "created_at": "2026-08-23T22:54:42+07:00",
+  "stage_id": "E4-R6-PC0-QUERY-ATTEMPT-002",
+  "status": "FAIL_CLOSED_HOST_CAPABILITY_ABSENT_CURRENT_HOST_CANDIDATE_REJECTED",
+  "entry_checkpoint": {
+    "commit": "83a38f4596b7bc35bd32d281ef98f16681d15ccf",
+    "worktree_clean_before_execution": true,
+    "recovery_checkpoint_is_ancestor": true
+  },
+  "authorization": {
+    "user_confirmation_received": true,
+    "confirmed_command": "C:\\Users\\ACER\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe -I -B E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\00_control\\execute_e4_r6_pc0_query_only_attempt002.py preflight --checkpoint 83a38f4596b7bc35bd32d281ef98f16681d15ccf",
+    "working_directory": "E:\\UIT\\cv\\backend",
+    "mode": "preflight",
+    "timeout_seconds": 1800,
+    "automatic_retry_authorized": false
+  },
+  "execution_observation": {
+    "transcript_provenance": "DIRECT_CODEX_EXEC_COMMAND_CAPTURE",
+    "tool_chunk_id": "e60242",
+    "process_completed": true,
+    "exit_code": 1,
+    "retry_count": 0,
+    "result_status": "FAIL",
+    "reason": "CREATE_PROCESS_IN_SANDBOX_CAPABILITY_BIT_CLEAR",
+    "next_gate_reported_by_runner": "REJECT_MXC_CANDIDATE_OR_CHANGE_HOST",
+    "query": {
+      "export": "Experimental_QuerySandboxSupport",
+      "raw_bool_return": 1,
+      "call_count": 1,
+      "capability_mask": 0,
+      "capability_mask_valid": true,
+      "create_process_capability_bit": 1,
+      "create_process_capability_present": false,
+      "fallback_create_call": false
+    },
+    "classification": "FAIL_HOST_CAPABILITY_ABSENT",
+    "candidate_disposition": "REJECTED_CURRENT_HOST_CAPABILITY_ABSENT",
+    "candidate_scope": "MICROSOFT_MXC_V0_7_0_RC1_ON_WINDOWS_BUILD_10_0_26200_0",
+    "stderr_observed": "",
+    "accepted_result_rows": 0,
+    "benchmark_admitted": false,
+    "scientific_execution_performed": false,
+    "test_set_opened": "NO"
+  },
+  "runtime_identity": {
+    "windows_build": "10.0.26200.0",
+    "python": {
+      "path": "C:\\Users\\ACER\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+      "raw_bytes": 91648,
+      "raw_sha256": "d8e3f0adf246db00358c0c4ed349cf714898178f9558fb0e944f79f5c07f8eaa",
+      "version": "3.12.13",
+      "architecture_bits": 64,
+      "isolated": true,
+      "dont_write_bytecode": true
+    },
+    "git": {
+      "path": "C:\\Program Files\\Git\\mingw64\\bin\\git.exe",
+      "version": "git version 2.50.0.windows.1",
+      "exact_head": "83a38f4596b7bc35bd32d281ef98f16681d15ccf"
+    },
+    "processmodel": {
+      "path": "C:\\Windows\\System32\\processmodel.dll",
+      "raw_bytes": 192512,
+      "raw_sha256": "7d18a80be826916e59ca1a49c692d8e59ab55a39c865dd664f469758b20177d5",
+      "required_exports_present": [
+        "Experimental_CreateProcessInSandbox",
+        "Experimental_QuerySandboxSupport"
+      ]
+    }
+  },
+  "post_query_closure": {
+    "completed": true,
+    "worktree_clean_including_untracked": true,
+    "exact_head_unchanged": true,
+    "head_blob_paths_verified": 15,
+    "processmodel_identity_unchanged": true,
+    "guarded_roots_absent": 3,
+    "nearest_existing_ancestor": "E:\\UIT\\cv",
+    "parent_bootstrap_status": "PARENT_BOOTSTRAP_REQUIRED_BUT_NOT_AUTHORIZED",
+    "runner_network_request": false,
+    "runner_filesystem_write_request": false,
+    "system_wide_network_trace_performed": false
+  },
+  "prohibited_actions_preserved": {
+    "source_downloaded": false,
+    "external_pc0_root_created": false,
+    "dataset_attempt003_root_created": false,
+    "environment_attempt003_root_created": false,
+    "materialization_executed": false,
+    "probe_executed": false,
+    "sandbox_workload_executed": false,
+    "training_executed": false,
+    "evaluation_executed": false,
+    "test_accessed": false
+  },
+  "interpretation": {
+    "is_process_crash": false,
+    "is_valid_fail_closed_control_result": true,
+    "symbol_presence_is_not_capability": true,
+    "mxc_candidate_usable_on_current_host": false,
+    "result_reusable_on_different_host": false,
+    "host_change_requires_fresh_preflight": true,
+    "automatic_fallback_allowed": false
+  },
+  "next_gate": {
+    "status": "ALTERNATIVE_CONTAINMENT_OR_HOST_DECISION_REQUIRED",
+    "allowed_routes": [
+      "REJECT_MXC_CURRENT_HOST_AND_DISCOVER_NEW_CONTAINMENT_BACKEND",
+      "CHANGE_HOST_AND_RUN_FRESH_SEPARATELY_AUTHORIZED_PREFLIGHT"
+    ],
+    "r6_c1r3_blocked": true,
+    "materialization_blocked": true,
+    "scientific_execution_blocked": true
+  },
+  "truth_state": {
+    "result_status": "NOT_RUN",
+    "test_set_opened": "NO",
+    "accepted_result_rows": 0,
+    "scientific_execution_performed": false,
+    "benchmark_admitted": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

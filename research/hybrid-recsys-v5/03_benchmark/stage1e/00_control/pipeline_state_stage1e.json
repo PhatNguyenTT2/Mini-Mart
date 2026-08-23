@@ -2,7 +2,7 @@
   "schema_version": "academic-research-pipeline-state-1.0",
   "project": "hybrid-recsys-v5",
   "stage": "1E",
-  "state": "stage1e_rebaseline_v2_r6_pc0_attempt002_static_validated_awaiting_explicit_preflight_confirmation",
+  "state": "stage1e_rebaseline_v2_r6_pc0_attempt002_fail_host_capability_absent_alternative_containment_or_host_required",
   "updated_at": "2026-08-23",
   "model": "gpt-5.6-sol",
   "reasoning": "max",
@@ -939,7 +939,7 @@
         "benchmark_admission_authorized": false
       },
       "r6": {
-        "status": "R6_PC0_ATTEMPT002_CONTROL_PLANE_VALIDATED_AWAITING_EXPLICIT_PREFLIGHT_CONFIRMATION",
+        "status": "R6_PC0_ATTEMPT002_FAIL_HOST_CAPABILITY_ABSENT_ALTERNATIVE_CONTAINMENT_OR_HOST_REQUIRED",
         "stage_map": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_materialization_stage_map.json",
         "contract": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_bounded_materialization_contract.md",
         "s0": {
@@ -1126,7 +1126,7 @@
           "experiment_execution_authorized": false
         },
         "pc0": {
-          "status": "ATTEMPT002_CONTROL_PLANE_VALIDATED_AWAITING_EXPLICIT_PREFLIGHT_CONFIRMATION",
+          "status": "ATTEMPT002_EXECUTED_FAIL_HOST_CAPABILITY_ABSENT_CURRENT_HOST_CANDIDATE_REJECTED",
           "purpose": "QUERY_FROZEN_HOST_CAPABILITY_BEFORE_ANY_MXC_DOWNLOAD_MATERIALIZATION_OR_POLICY_PROBE",
           "contract": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc0_mxc_containment_feasibility_contract.md",
           "candidate": {
@@ -1140,7 +1140,7 @@
             "asset_sha256": "450ad608bd2268a8cbe126597be209601c51fbfe36141cec08abb017e828aba5",
             "release_prerelease": true,
             "release_immutable": false,
-            "admission_state": "UNRESOLVED_NEITHER_REJECTED_NOR_ADMITTED"
+            "admission_state": "REJECTED_CURRENT_HOST_CAPABILITY_ABSENT"
           },
           "external_root": "E:\\UIT\\cv\\materialized-tools\\hybrid-recsys-v5\\stage1e\\r6\\mxc_v0_7_0_rc1\\attempt-001",
           "model_policy": {
@@ -1201,7 +1201,7 @@
             }
           },
           "attempt002_query_only_control_plane": {
-            "status": "PASS_STATIC_AND_SEMANTIC_AUDIT_CENTRAL_CHECKPOINT_COMMITTED_AWAITING_EXPLICIT_PREFLIGHT_CONFIRMATION",
+            "status": "EXECUTED_FAIL_CLOSED_HOST_CAPABILITY_ABSENT_CURRENT_HOST_CANDIDATE_REJECTED",
             "context": "current_central",
             "central_model_profile": "Sol Max Standard",
             "independent_reaudit_model_profile": "Sol XHigh Standard",
@@ -1228,14 +1228,24 @@
               "service_tier": "default",
               "verdict": "PASS_ATTEMPT002_REWORK_STATIC_AND_SEMANTIC_AUDIT_READY_FOR_CENTRAL_COMMIT"
             },
-            "runtime_preflight_status": "NOT_RUN_AWAITING_FRESH_EXPLICIT_CONFIRMATION",
-            "query_api_called": false,
+            "runtime_preflight_status": "ATTEMPT002_EXECUTED_VALID_FAIL_CLOSED_RESULT",
+            "runtime_checkpoint": "83a38f4596b7bc35bd32d281ef98f16681d15ccf",
+            "failure_receipt": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc0_query_preflight_attempt002_failure_receipt.json",
+            "exit_code": 1,
+            "raw_bool_return": 1,
+            "capability_mask": 0,
+            "create_process_capability_present": false,
+            "candidate_disposition": "REJECTED_CURRENT_HOST_CAPABILITY_ABSENT",
+            "query_api_called": true,
+            "query_call_count": 1,
+            "post_query_closure_completed": true,
             "network_allowed": false,
             "filesystem_write_allowed": false,
             "materialize_mode": "DENIED",
             "probe_mode": "DENIED",
             "pass_reachable": false,
-            "automatic_retry_authorized": false
+            "automatic_retry_authorized": false,
+            "next_gate": "ALTERNATIVE_CONTAINMENT_OR_HOST_DECISION_REQUIRED"
           },
           "materialization_executed": false,
           "probe_executed": false,
@@ -1307,7 +1317,7 @@
         "project_benchmark_numbers": "INVALID_FOR_PAPER"
       },
       "execution_authorized": false,
-      "next_gate": "REQUEST_FRESH_EXPLICIT_CONFIRMATION_FOR_EXACT_READ_ONLY_ATTEMPT002_PREFLIGHT_COMMAND_BOUND_TO_CURRENT_CLEAN_HEAD"
+      "next_gate": "COMMIT_AND_INDEPENDENTLY_AUDIT_ATTEMPT002_HOST_CAPABILITY_FAILURE_THEN_OPEN_ALTERNATIVE_CONTAINMENT_DISCOVERY_OR_HOST_CHANGE_DECISION"
     }
   },
   "central_preregistration_lock": "PASS_R6_S0_BOUNDED_MATERIALIZATION_SCOPE_LOCKED",
@@ -1315,5 +1325,5 @@
   "harmonized_v5": "BLOCKED",
   "external_validation": "BLOCKED",
   "efficiency": "BLOCKED_AFTER_ACCURACY",
-  "next_gate": "Obtain fresh explicit confirmation for the exact R6-PC0 Attempt002 read-only preflight command bound to the current clean commit. MXC download/materialization, policy probe, parent bootstrap, attempt-003 roots, bridge execution, training, evaluation, benchmark admission and TEST access remain blocked."
+  "next_gate": "Commit and independently audit the valid R6-PC0 Attempt002 host-capability failure. Then either discover a new containment backend for the current host or change host and run a fresh separately authorized preflight. MXC download/materialization, C1R3, bridge execution, training, evaluation, benchmark admission and TEST access remain blocked."
 }
