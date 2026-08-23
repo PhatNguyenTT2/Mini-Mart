@@ -1,0 +1,116 @@
+{
+  "schema_version": "stage1e-e4-r6-pc2w-p1-dispatch-1.0",
+  "stage_id": "E4-R6-PC2W-P1",
+  "created_at": "2026-08-24T00:49:23.7707910+07:00",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "run",
+    "origin_date": "2026-08-24T00:49:23.7707910+07:00",
+    "verification_status": "UNVERIFIED",
+    "version_label": "stage1e_e4_r6_pc2w_p1_dispatch_v1",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_pc2w_p1_user_authorization_v1",
+      "stage1e_e4_r6_pc2w_p1_requirements_v1"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-24T00:49:23.7707910+07:00",
+      "declared_by": "scholar"
+    }
+  },
+  "runner_checkpoint": "3ebe4caeff8d83d739f96eb7634fed96a5759ec4",
+  "frozen_artifacts": [
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc2w_p1_query_only.py",
+      "raw_bytes": 21177,
+      "raw_sha256": "08560991bf8d4b47b88d82341737a0c0ce9059ecbc76783fa45312ed30dd224d"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_user_authorization_and_model_override.json",
+      "raw_bytes": 2880,
+      "raw_sha256": "a7041dcdc7d823fcf12ba28df1b53bc88b2d15885d8f5f3ba00c22196d4d79ab"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_docker_query_preflight_requirements.json",
+      "raw_bytes": 6280,
+      "raw_sha256": "fc6d5479ad56692b6c04449ac0150b256d2dd4409471c8723f1ad2d84f193b83"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_current_host_wsl2_linux_admission_contract.md",
+      "raw_bytes": 11460,
+      "raw_sha256": "1d4591b5a74fdbb3e4f337e4d721970af1f992a45fd158f371c0465d575d5267"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_read_only_preflight_receipt.json",
+      "raw_bytes": 8791,
+      "raw_sha256": "06294de30914317083c292dc2a828028f688c8842472067eaed842377128d50b"
+    }
+  ],
+  "interpreter": {
+    "path": "C:\\Program Files\\Python311\\python.exe",
+    "version": "3.11.9",
+    "sha256": "5f7b89a612c9b8af1d6456cdfcd1dbe5ca630849e79aebced9bee9a6694952ec"
+  },
+  "execution_binding": {
+    "working_directory": "E:\\UIT\\cv\\backend",
+    "output_root": "E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\rebaseline_v2\\wave_al\\E4_R6PC2W_P1_docker_query_preflight\\attempt-001",
+    "output_root_must_be_absent": true,
+    "expected_output_files": [
+      "command_receipts.json",
+      "runtime_inventory.json",
+      "p1_execution_receipt.json",
+      "p1_handoff.json"
+    ],
+    "expected_head_rule": "At execution, --expected-head must equal the full commit containing this dispatch. The runner independently replays git rev-parse HEAD and fails before output-root creation on mismatch.",
+    "argv_template": [
+      "C:\\Program Files\\Python311\\python.exe",
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc2w_p1_query_only.py",
+      "--repo-root",
+      "E:\\UIT\\cv\\backend",
+      "--output-root",
+      "E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\rebaseline_v2\\wave_al\\E4_R6PC2W_P1_docker_query_preflight\\attempt-001",
+      "--expected-head",
+      "<FULL_COMMIT_CONTAINING_THIS_DISPATCH>"
+    ]
+  },
+  "execution_controls": {
+    "docker_desktop_start_attempts": 1,
+    "docker_desktop_stop_attempts_after_start_attempt": 1,
+    "automatic_retry_count": 0,
+    "hard_start_timeout_seconds": 180,
+    "hard_stop_timeout_seconds": 180,
+    "ordinary_query_timeout_seconds": 30,
+    "raw_stdout_or_stderr_persisted": false,
+    "proxy_secret_values_persisted": false,
+    "image_pull_or_build_allowed": false,
+    "container_create_or_run_allowed": false,
+    "docker_or_wsl_settings_change_allowed": false,
+    "materialization_allowed": false,
+    "training_evaluation_or_test_allowed": false
+  },
+  "independent_runner_audit": {
+    "worktree_client_thread_id": "client-new-thread:ae8b132d-4e62-4008-a05e-5393df8622e9",
+    "model": "gpt-5.6-sol",
+    "reasoning_effort": "xhigh",
+    "requested_service_tier": "priority",
+    "display_name": "Sol XHigh Fast",
+    "status": "DISPATCHED_PENDING",
+    "write_scope": "READ_ONLY"
+  },
+  "authorization_state": {
+    "p1_start_query_stop_authorized": true,
+    "automatic_retry_authorized": false,
+    "image_pull_or_build_authorized": false,
+    "container_create_or_run_authorized": false,
+    "materialization_authorized": false,
+    "training_authorized": false,
+    "evaluation_authorized": false,
+    "test_access_authorized": false
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0
+  }
+}
