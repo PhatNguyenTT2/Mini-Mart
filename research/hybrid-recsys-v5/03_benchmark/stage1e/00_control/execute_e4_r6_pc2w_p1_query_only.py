@@ -50,13 +50,18 @@ PROHIBITED_DOCKER_SUBCOMMANDS = {
     "tag", "push", "login", "logout", "rm", "rmi", "prune", "restart",
     "start", "kill", "pause", "unpause", "rename", "update", "cp",
 }
-DAEMON_UNAVAILABLE_MARKERS = (
-    "cannot connect to the docker daemon",
-    "is the docker daemon running",
-    "dockerdesktoplinuxengine: the system cannot find the file specified",
-    "dockerdesktoplinuxengine. the system cannot find the file specified",
-    "open //./pipe/dockerdesktoplinuxengine",
-    "error during connect",
+DAEMON_PIPE_MARKERS = (
+    "dockerdesktoplinuxengine",
+    "//./pipe/dockerdesktoplinuxengine",
+)
+DAEMON_PIPE_MISSING_MARKERS = (
+    "the system cannot find the file specified",
+    "no such file or directory",
+)
+PERMISSION_ERROR_MARKERS = (
+    "access is denied",
+    "permission denied",
+    "unauthorized",
 )
 
 
@@ -219,7 +224,7 @@ def parse_wsl_list(value: bytes) -> list[dict[str, Any]]:
                     "version": int(match.group(3)),
                 }
             )
-    return rows
+    return sorted(rows, key=lambda row: str(row.get("name", "")).casefold())
 
 
 def parse_wsl_version(value: bytes) -> dict[str, str]:
@@ -253,7 +258,11 @@ def daemon_is_specifically_unavailable(
     if not isinstance(exit_code, int) or exit_code == 0:
         return False
     text = (decode_output(stdout) + "\n" + decode_output(stderr)).casefold()
-    return any(marker in text for marker in DAEMON_UNAVAILABLE_MARKERS)
+    return (
+        any(marker in text for marker in DAEMON_PIPE_MARKERS)
+        and any(marker in text for marker in DAEMON_PIPE_MISSING_MARKERS)
+        and not any(marker in text for marker in PERMISSION_ERROR_MARKERS)
+    )
 
 
 def disk_snapshot() -> dict[str, dict[str, int]]:
@@ -279,7 +288,10 @@ def docker_subcommand_is_allowed(argv: list[str]) -> bool:
     return not any(token in PROHIBITED_DOCKER_SUBCOMMANDS for token in tokens)
 
 
-def material_passport(created_at: str) -> dict[str, Any]:
+def material_passport(created_at: str, auth: dict[str, Any]) -> dict[str, Any]:
+    intake = auth.get("material_passport", {}).get("experiment_intake_declaration")
+    if not isinstance(intake, dict):
+        raise RuntimeError("authorization Material Passport intake declaration missing")
     return {
         "origin_skill": "experiment-agent",
         "origin_mode": "run",
@@ -291,11 +303,7 @@ def material_passport(created_at: str) -> dict[str, Any]:
             "stage1e_e4_r6_pc2w_p1_requirements_v1",
         ],
         "repro_lock": None,
-        "experiment_intake_declaration": {
-            "status": "no_experiments_declared",
-            "declared_at": created_at,
-            "declared_by": "scholar",
-        },
+        "experiment_intake_declaration": intake,
     }
 
 
@@ -365,6 +373,7 @@ def parse_if_success(
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--repo-root", required=True)
+    parser.add_argument("--expected-head", required=True)
     args = parser.parse_args()
 
     repo_root = Path(args.repo_root).resolve()
@@ -380,6 +389,9 @@ def main() -> int:
         raise RuntimeError("Docker Desktop executable hash changed")
 
     head = git(repo_root, "rev-parse", "HEAD").casefold()
+    expected_head = str(args.expected_head).casefold()
+    if not re.fullmatch(r"[0-9a-f]{40}", expected_head) or head != expected_head:
+        raise RuntimeError("exact execution HEAD mismatch")
     parent_line = git(repo_root, "rev-list", "--parents", "-n", "1", "HEAD").split()
     if len(parent_line) != 2:
         raise RuntimeError("execution checkpoint must have exactly one parent")
@@ -473,7 +485,7 @@ def main() -> int:
 
     created_at = utc_now()
     output_root.mkdir(parents=True, exist_ok=False)
-    passport = material_passport(created_at)
+    passport = material_passport(created_at, auth)
     receipts: list[dict[str, Any]] = []
     raw: dict[str, tuple[bytes, bytes]] = {}
 
@@ -516,6 +528,38 @@ def main() -> int:
     )
 
     by_id = {row["command_id"]: row for row in receipts}
+    pre_parse_failures: list[str] = []
+    wsl_version = parse_if_success(
+        "P03_WSL_VERSION_BEFORE", by_id, raw, parse_wsl_version, pre_parse_failures
+    ) or {}
+    windows_identity = parse_if_success(
+        "P04_WINDOWS_IDENTITY_BEFORE",
+        by_id,
+        raw,
+        parse_json_output,
+        pre_parse_failures,
+    ) or {}
+    docker_file_identity = parse_if_success(
+        "P05_DOCKER_DESKTOP_FILE_IDENTITY_BEFORE",
+        by_id,
+        raw,
+        parse_json_output,
+        pre_parse_failures,
+    ) or {}
+    pre_identity_payloads_complete = (
+        not pre_parse_failures
+        and bool(wsl_version.get("wsl_version"))
+        and bool(wsl_version.get("kernel_version"))
+        and isinstance(windows_identity, dict)
+        and all(
+            windows_identity.get(key)
+            for key in ("Caption", "Version", "BuildNumber", "OSArchitecture")
+        )
+        and isinstance(docker_file_identity, dict)
+        and docker_file_identity.get("FullName") == str(DOCKER_DESKTOP)
+        and docker_file_identity.get("Length") == DOCKER_DESKTOP.stat().st_size
+        and bool(docker_file_identity.get("FileVersion"))
+    )
     before_wsl_rows = (
         parse_wsl_list(raw["P00_WSL_LIST_BEFORE"][0])
         if command_ok(by_id["P00_WSL_LIST_BEFORE"])
@@ -545,6 +589,7 @@ def main() -> int:
         "docker_file_identity_query_success": command_ok(
             by_id["P05_DOCKER_DESKTOP_FILE_IDENTITY_BEFORE"]
         ),
+        "identity_payloads_parsed_and_complete": pre_identity_payloads_complete,
         "disk_thresholds_before_pass": (
             before_disk["c"]["free_bytes"] >= 20 * 1024**3
             and before_disk["e"]["free_bytes"] >= 50 * 1024**3
@@ -619,21 +664,7 @@ def main() -> int:
     invoke("P23_WSL_LIST_AFTER", [str(WSL), "--list", "--verbose"])
     after_disk = disk_snapshot()
     by_id = {row["command_id"]: row for row in receipts}
-    parse_failures: list[str] = []
-
-    wsl_version = parse_if_success(
-        "P03_WSL_VERSION_BEFORE", by_id, raw, parse_wsl_version, parse_failures
-    ) or {}
-    windows_identity = parse_if_success(
-        "P04_WINDOWS_IDENTITY_BEFORE", by_id, raw, parse_json_output, parse_failures
-    ) or {}
-    docker_file_identity = parse_if_success(
-        "P05_DOCKER_DESKTOP_FILE_IDENTITY_BEFORE",
-        by_id,
-        raw,
-        parse_json_output,
-        parse_failures,
-    ) or {}
+    parse_failures: list[str] = list(pre_parse_failures)
     version_data = parse_if_success(
         "P10_DOCKER_VERSION", by_id, raw, parse_json_output, parse_failures
     ) or {}
@@ -717,7 +748,15 @@ def main() -> int:
         if isinstance(row, dict)
     ]
 
+    client = version_data.get("Client") or {}
     server = version_data.get("Server") or {}
+    client_whitelist = {
+        key: client.get(key)
+        for key in (
+            "Version", "ApiVersion", "DefaultAPIVersion", "GitCommit",
+            "GoVersion", "Os", "Arch", "BuildTime", "Context",
+        )
+    }
     server_whitelist = {
         key: server.get(key)
         for key in (
@@ -743,6 +782,12 @@ def main() -> int:
             "HttpsProxyConfigured": bool(info_data.get("HttpsProxy")),
             "NoProxyConfigured": bool(info_data.get("NoProxy")),
         }
+    )
+    containerd_commit = info_whitelist.get("ContainerdCommit")
+    containerd_commit_id = (
+        containerd_commit.get("ID")
+        if isinstance(containerd_commit, dict)
+        else None
     )
     context_whitelist = sanitize_context(context_data)
     after_status = (
@@ -791,11 +836,13 @@ def main() -> int:
         and docker_file_identity.get("FullName") == str(DOCKER_DESKTOP)
         and docker_file_identity.get("Length") == DOCKER_DESKTOP.stat().st_size
         and bool(docker_file_identity.get("FileVersion"))
+        and all(client_whitelist.get(key) for key in ("Version", "ApiVersion"))
         and all(server_whitelist.get(key) for key in ("Version", "Os", "Arch", "KernelVersion"))
         and all(
             info_whitelist.get(key)
             for key in ("Driver", "CgroupVersion", "DockerRootDir")
         )
+        and bool(containerd_commit_id)
     )
     backend_linux = (
         str(info_whitelist.get("OSType", "")).casefold() == "linux"
@@ -810,6 +857,9 @@ def main() -> int:
         "startup_attempted_exactly_once": startup_attempted and start_receipt is not None,
         "startup_command_success": start_receipt is not None and command_ok(start_receipt),
         "during_status_exactly_running": during_status == "running",
+        "during_docker_desktop_distro_exactly_running": (
+            distro_state(during_wsl_rows, "docker-desktop") == "Running"
+        ),
         "all_query_commands_success": all_queries_ok,
         "backend_linux_amd64_desktop_linux": backend_linux,
         "runtime_identities_complete": identities_complete,
@@ -827,6 +877,7 @@ def main() -> int:
         "after_docker_desktop_distro_exactly_stopped": (
             distro_state(after_wsl_rows, "docker-desktop") == "Stopped"
         ),
+        "wsl_inventory_restored_exactly": before_wsl_rows == after_wsl_rows,
         "disk_thresholds_after_pass": (
             after_disk["c"]["free_bytes"] >= 20 * 1024**3
             and after_disk["e"]["free_bytes"] >= 50 * 1024**3
@@ -879,6 +930,7 @@ def main() -> int:
             "during": during_status,
             "after": after_status,
         },
+        "client_version_whitelist": client_whitelist,
         "server_version_whitelist": server_whitelist,
         "docker_info_whitelist": info_whitelist,
         "context_whitelist": context_whitelist,
@@ -956,8 +1008,12 @@ def main() -> int:
     write_json(output_root / "runtime_inventory.json", inventory_document)
     write_json(output_root / "p1_execution_receipt.json", execution_document)
     write_json(output_root / "p1_handoff.json", handoff_document)
-    if {path.name for path in output_root.iterdir() if path.is_file()} != EXPECTED_OUTPUT_FILES:
-        raise RuntimeError("exact output file set violated")
+    output_entries = list(output_root.iterdir())
+    if (
+        {path.name for path in output_entries} != EXPECTED_OUTPUT_FILES
+        or not all(path.is_file() for path in output_entries)
+    ):
+        raise RuntimeError("exact output entry set violated")
     print(
         json.dumps(
             {
