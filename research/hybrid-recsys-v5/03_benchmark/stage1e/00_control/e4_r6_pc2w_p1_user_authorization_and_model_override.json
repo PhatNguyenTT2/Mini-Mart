@@ -1,13 +1,13 @@
 {
-  "schema_version": "stage1e-e4-r6-pc2w-p1-user-authorization-model-override-1.0",
+  "schema_version": "stage1e-e4-r6-pc2w-p1-user-authorization-model-override-2.0",
   "stage_id": "E4-R6-PC2W-P1",
-  "created_at": "2026-08-24T00:49:23.7707910+07:00",
+  "created_at": "2026-08-24T01:12:40.9534228+07:00",
   "material_passport": {
     "origin_skill": "experiment-agent",
     "origin_mode": "run",
-    "origin_date": "2026-08-24T00:49:23.7707910+07:00",
+    "origin_date": "2026-08-24T01:12:40.9534228+07:00",
     "verification_status": "UNVERIFIED",
-    "version_label": "stage1e_e4_r6_pc2w_p1_user_authorization_v1",
+    "version_label": "stage1e_e4_r6_pc2w_p1_user_authorization_v2",
     "upstream_dependencies": [
       "stage1e_e4_r6_pc2w_contract_v1",
       "stage1e_e4_r6_pc2w_p1_requirements_v1"
@@ -15,11 +15,12 @@
     "repro_lock": null,
     "experiment_intake_declaration": {
       "status": "no_experiments_declared",
-      "declared_at": "2026-08-24T00:49:23.7707910+07:00",
+      "declared_at": "2026-08-24T01:12:40.9534228+07:00",
       "declared_by": "scholar"
     }
   },
-  "entry_checkpoint": "794cd692ca9aa5468793308f554f8b7b46036788",
+  "entry_checkpoint": "304bcd4a783f817c71b143fbd3c60dd16c15c7df",
+  "authorized_output_root": "E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\rebaseline_v2\\wave_al\\E4_R6PC2W_P1_docker_query_preflight\\attempt-001",
   "user_decision": {
     "decision": "AUTHORIZE_PC2W_P1_EXECUTION",
     "authorized_actions": [
@@ -61,6 +62,14 @@
     },
     "effective_scope": "E4-R6-PC2W tasks or worktrees created after 2026-08-24T00:49:23.7707910+07:00",
     "does_not_relabel_historical_tasks": true
+  },
+  "change_control": {
+    "supersedes_dispatch_checkpoint": "dc9d6836ba49ac1c4534a214f5831cd78b3b28e6",
+    "prior_independent_audit_thread_id": "01a02fc0-b006-7990-bbe9-573a4b3e4902",
+    "prior_audit_verdict": "REWORK_REQUIRED",
+    "rework_checkpoint": "da6df0c3347318a8d6d3d4d4c84d1f7942c82702",
+    "automatic_execution_after_failed_audit": false,
+    "fresh_independent_audit_required_before_execution": true
   },
   "truth_state": {
     "RESULT_STATUS": "NOT_RUN",

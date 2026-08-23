@@ -1,35 +1,52 @@
 {
-  "schema_version": "stage1e-e4-r6-pc2w-p1-dispatch-1.0",
+  "schema_version": "stage1e-e4-r6-pc2w-p1-dispatch-2.0",
   "stage_id": "E4-R6-PC2W-P1",
-  "created_at": "2026-08-24T00:49:23.7707910+07:00",
+  "created_at": "2026-08-24T01:12:40.9534228+07:00",
   "material_passport": {
     "origin_skill": "experiment-agent",
     "origin_mode": "run",
-    "origin_date": "2026-08-24T00:49:23.7707910+07:00",
+    "origin_date": "2026-08-24T01:12:40.9534228+07:00",
     "verification_status": "UNVERIFIED",
-    "version_label": "stage1e_e4_r6_pc2w_p1_dispatch_v1",
+    "version_label": "stage1e_e4_r6_pc2w_p1_dispatch_v2",
     "upstream_dependencies": [
-      "stage1e_e4_r6_pc2w_p1_user_authorization_v1",
-      "stage1e_e4_r6_pc2w_p1_requirements_v1"
+      "stage1e_e4_r6_pc2w_p1_user_authorization_v2",
+      "stage1e_e4_r6_pc2w_p1_requirements_v1",
+      "stage1e_e4_r6_pc2w_p1_runner_rework_v2"
     ],
     "repro_lock": null,
     "experiment_intake_declaration": {
       "status": "no_experiments_declared",
-      "declared_at": "2026-08-24T00:49:23.7707910+07:00",
+      "declared_at": "2026-08-24T01:12:40.9534228+07:00",
       "declared_by": "scholar"
     }
   },
-  "runner_checkpoint": "3ebe4caeff8d83d739f96eb7634fed96a5759ec4",
+  "runner_checkpoint": "304bcd4a783f817c71b143fbd3c60dd16c15c7df",
+  "supersedes_dispatch_checkpoint": "dc9d6836ba49ac1c4534a214f5831cd78b3b28e6",
+  "rework_basis": {
+    "prior_audit_thread_id": "01a02fc0-b006-7990-bbe9-573a4b3e4902",
+    "prior_audit_verdict": "REWORK_REQUIRED",
+    "execution_after_prior_audit": false,
+    "resolved_findings": [
+      "runner binds the exact committed parent checkpoint, clean worktree, exact two-file execution checkpoint and frozen artifact hashes",
+      "authorization and dispatch bind one exact immutable output root",
+      "pre-start stopped, endpoint-unavailable, WSL-state, identity and disk checks gate startup",
+      "the only stop attempt is in a finally block after any startup attempt",
+      "daemon unavailable requires an expected named-pipe connection failure and cannot be inferred from timeout, permission or arbitrary CLI failure",
+      "PASS requires zero running containers, unchanged image and container inventories, and no container or image events",
+      "WSL before/during/after, Windows build, WSL kernel, Docker Desktop path/version/bytes/hash and backend identities are persisted through whitelists",
+      "context, process, network, proxy and command output evidence is whitelisted or hash-only"
+    ]
+  },
   "frozen_artifacts": [
     {
       "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc2w_p1_query_only.py",
-      "raw_bytes": 21177,
-      "raw_sha256": "08560991bf8d4b47b88d82341737a0c0ce9059ecbc76783fa45312ed30dd224d"
+      "raw_bytes": 40440,
+      "raw_sha256": "81fd220f2061c01cc6d2ff7217b626cd4d84d93485efc70745deadf97cafa530"
     },
     {
       "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_user_authorization_and_model_override.json",
-      "raw_bytes": 2880,
-      "raw_sha256": "a7041dcdc7d823fcf12ba28df1b53bc88b2d15885d8f5f3ba00c22196d4d79ab"
+      "raw_bytes": 3477,
+      "raw_sha256": "21bed4131c1cb349f215647f3db80d80c4b8a940464223b259577cd36037004c"
     },
     {
       "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_docker_query_preflight_requirements.json",
@@ -50,6 +67,7 @@
   "interpreter": {
     "path": "C:\\Program Files\\Python311\\python.exe",
     "version": "3.11.9",
+    "raw_bytes": 103192,
     "sha256": "5f7b89a612c9b8af1d6456cdfcd1dbe5ca630849e79aebced9bee9a6694952ec"
   },
   "execution_binding": {
@@ -58,30 +76,29 @@
     "output_root_must_be_absent": true,
     "expected_output_files": [
       "command_receipts.json",
-      "runtime_inventory.json",
       "p1_execution_receipt.json",
-      "p1_handoff.json"
+      "p1_handoff.json",
+      "runtime_inventory.json"
     ],
-    "expected_head_rule": "At execution, --expected-head must equal the full commit containing this dispatch. The runner independently replays git rev-parse HEAD and fails before output-root creation on mismatch.",
-    "argv_template": [
+    "execution_checkpoint_rule": "The execution checkpoint must be a clean single-parent commit whose parent is runner_checkpoint and whose exact changed path set is only the authorization and dispatch JSON files. The runner derives and verifies both commits itself.",
+    "argv": [
       "C:\\Program Files\\Python311\\python.exe",
       "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc2w_p1_query_only.py",
       "--repo-root",
-      "E:\\UIT\\cv\\backend",
-      "--output-root",
-      "E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\rebaseline_v2\\wave_al\\E4_R6PC2W_P1_docker_query_preflight\\attempt-001",
-      "--expected-head",
-      "<FULL_COMMIT_CONTAINING_THIS_DISPATCH>"
+      "E:\\UIT\\cv\\backend"
     ]
   },
   "execution_controls": {
-    "docker_desktop_start_attempts": 1,
-    "docker_desktop_stop_attempts_after_start_attempt": 1,
+    "docker_desktop_start_attempts_maximum": 1,
+    "docker_desktop_stop_attempts_after_start_attempt_maximum": 1,
     "automatic_retry_count": 0,
     "hard_start_timeout_seconds": 180,
     "hard_stop_timeout_seconds": 180,
     "ordinary_query_timeout_seconds": 30,
+    "pre_start_gate_required": true,
+    "stop_finally_required": true,
     "raw_stdout_or_stderr_persisted": false,
+    "raw_context_persisted": false,
     "proxy_secret_values_persisted": false,
     "image_pull_or_build_allowed": false,
     "container_create_or_run_allowed": false,
@@ -89,14 +106,15 @@
     "materialization_allowed": false,
     "training_evaluation_or_test_allowed": false
   },
-  "independent_runner_audit": {
-    "worktree_client_thread_id": "client-new-thread:ae8b132d-4e62-4008-a05e-5393df8622e9",
+  "fresh_independent_runner_audit": {
+    "required_before_execution": true,
+    "must_use_new_worktree_context": true,
     "model": "gpt-5.6-sol",
     "reasoning_effort": "xhigh",
     "requested_service_tier": "priority",
     "display_name": "Sol XHigh Fast",
-    "status": "DISPATCHED_PENDING",
-    "write_scope": "READ_ONLY"
+    "write_scope": "READ_ONLY",
+    "required_verdict": "PASS_PC2W_P1_RUNNER_READY_FOR_EXECUTION"
   },
   "authorization_state": {
     "p1_start_query_stop_authorized": true,
