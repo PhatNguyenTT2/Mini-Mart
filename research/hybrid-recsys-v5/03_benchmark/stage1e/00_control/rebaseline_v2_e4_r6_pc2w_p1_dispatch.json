@@ -1,17 +1,17 @@
 {
   "schema_version": "stage1e-e4-r6-pc2w-p1-dispatch-2.0",
   "stage_id": "E4-R6-PC2W-P1",
-  "created_at": "2026-08-24T01:12:40.9534228+07:00",
+  "created_at": "2026-08-24T01:24:46.4905207+07:00",
   "material_passport": {
     "origin_skill": "experiment-agent",
     "origin_mode": "run",
-    "origin_date": "2026-08-24T01:12:40.9534228+07:00",
+    "origin_date": "2026-08-24T01:24:46.4905207+07:00",
     "verification_status": "UNVERIFIED",
-    "version_label": "stage1e_e4_r6_pc2w_p1_dispatch_v2",
+    "version_label": "stage1e_e4_r6_pc2w_p1_dispatch_v3",
     "upstream_dependencies": [
-      "stage1e_e4_r6_pc2w_p1_user_authorization_v2",
+      "stage1e_e4_r6_pc2w_p1_user_authorization_v3",
       "stage1e_e4_r6_pc2w_p1_requirements_v1",
-      "stage1e_e4_r6_pc2w_p1_runner_rework_v2"
+      "stage1e_e4_r6_pc2w_p1_runner_rework_v3"
     ],
     "repro_lock": null,
     "experiment_intake_declaration": {
@@ -20,10 +20,10 @@
       "declared_by": "scholar"
     }
   },
-  "runner_checkpoint": "304bcd4a783f817c71b143fbd3c60dd16c15c7df",
-  "supersedes_dispatch_checkpoint": "dc9d6836ba49ac1c4534a214f5831cd78b3b28e6",
+  "runner_checkpoint": "ea37120a9f8cd996b200321fb36dcf45c3465b4a",
+  "supersedes_dispatch_checkpoint": "89987e7bf6921b1fa939c3340a9f734b05d499bc",
   "rework_basis": {
-    "prior_audit_thread_id": "01a02fc0-b006-7990-bbe9-573a4b3e4902",
+    "prior_audit_thread_id": "01a02fd6-0ea2-7a51-9ee1-47528f1b4d49",
     "prior_audit_verdict": "REWORK_REQUIRED",
     "execution_after_prior_audit": false,
     "resolved_findings": [
@@ -34,19 +34,27 @@
       "daemon unavailable requires an expected named-pipe connection failure and cannot be inferred from timeout, permission or arbitrary CLI failure",
       "PASS requires zero running containers, unchanged image and container inventories, and no container or image events",
       "WSL before/during/after, Windows build, WSL kernel, Docker Desktop path/version/bytes/hash and backend identities are persisted through whitelists",
-      "context, process, network, proxy and command output evidence is whitelisted or hash-only"
+      "context, process, network, proxy and command output evidence is whitelisted or hash-only",
+      "static validation resolves the frozen execution checkout while remaining portable from a CRLF audit worktree",
+      "the runner requires a caller-supplied exact full execution HEAD in addition to parent, change-set and hash locks",
+      "pre-start identity payloads must parse completely before startup can be attempted",
+      "permission and generic connection errors cannot satisfy daemon-unavailable evidence",
+      "PASS requires exact WSL inventory restoration and the docker-desktop distro running during the query window",
+      "Docker client and containerd identities are persisted and required",
+      "the Material Passport carries forward the scholar intake declaration from authorization",
+      "the output root rejects extra files and directories"
     ]
   },
   "frozen_artifacts": [
     {
       "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc2w_p1_query_only.py",
-      "raw_bytes": 40440,
-      "raw_sha256": "81fd220f2061c01cc6d2ff7217b626cd4d84d93485efc70745deadf97cafa530"
+      "raw_bytes": 42780,
+      "raw_sha256": "ef4598b73182d61cbe825f821fcb7292c353a1bfe217c40259fe60d4720b682c"
     },
     {
       "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_user_authorization_and_model_override.json",
-      "raw_bytes": 3477,
-      "raw_sha256": "21bed4131c1cb349f215647f3db80d80c4b8a940464223b259577cd36037004c"
+      "raw_bytes": 3837,
+      "raw_sha256": "baddf463a75c55c6b21d33a710e081108e378e8fbfe687578c1b716c156a6275"
     },
     {
       "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_docker_query_preflight_requirements.json",
@@ -80,12 +88,14 @@
       "p1_handoff.json",
       "runtime_inventory.json"
     ],
-    "execution_checkpoint_rule": "The execution checkpoint must be a clean single-parent commit whose parent is runner_checkpoint and whose exact changed path set is only the authorization and dispatch JSON files. The runner derives and verifies both commits itself.",
+    "execution_checkpoint_rule": "The execution checkpoint must be a clean single-parent commit whose parent is runner_checkpoint and whose exact changed path set is only the authorization and dispatch JSON files. A fresh audit supplies the exact full execution HEAD; the runner verifies that value plus parent, change set and frozen hashes before output-root creation.",
     "argv": [
       "C:\\Program Files\\Python311\\python.exe",
       "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc2w_p1_query_only.py",
       "--repo-root",
-      "E:\\UIT\\cv\\backend"
+      "E:\\UIT\\cv\\backend",
+      "--expected-head",
+      "<EXACT_FULL_EXECUTION_HEAD_FROM_FRESH_AUDIT>"
     ]
   },
   "execution_controls": {
