@@ -1,0 +1,112 @@
+{
+  "schema_version": "stage1e-e4-r6-pc0-query-attempt002-static-validation-receipt-1.0",
+  "created_at": "2026-08-23T22:35:29+07:00",
+  "stage_id": "E4-R6-PC0-QUERY-ATTEMPT-002",
+  "status": "COMPLETE_CENTRALLY_VALIDATED_AND_INDEPENDENTLY_AUDITED_AWAITING_EXPLICIT_PREFLIGHT_CONFIRMATION",
+  "verdict": "PASS_ATTEMPT002_REWORK_STATIC_AND_SEMANTIC_AUDIT_READY_FOR_CENTRAL_COMMIT",
+  "entry_checkpoint": "4f07d20c056b06cb255117e7b0d1284fdd40c320",
+  "validation_scope": "STATIC_AST_PURE_TRUTH_TABLE_AND_MOCKED_BOOL_ZERO_CONTROL_FLOW_RUNNER_MAIN_AND_QUERY_API_NOT_EXECUTED",
+  "validator_execution": {
+    "python": "C:\\Users\\ACER\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+    "flags": [
+      "-I",
+      "-B"
+    ],
+    "validator": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc0_query_only_attempt002.py",
+      "raw_bytes": 29976,
+      "raw_sha256": "5c743977763f971e889f571dca0fa9244084884a570c673447e477daa396ba6a"
+    },
+    "exit_code": 0,
+    "checks_total": 107,
+    "checks_passed": 107,
+    "failure_count": 0,
+    "failures": [],
+    "frozen_inputs_verified": 13,
+    "frozen_inputs_expected": 13,
+    "truth_table_cases": 5,
+    "runner_main_executed": false,
+    "query_api_called": false
+  },
+  "validated_artifacts": {
+    "runner": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc0_query_only_attempt002.py",
+      "raw_bytes": 35559,
+      "raw_sha256": "435e151ce562436783a32afd51a3df866297a28625a56a383638f2d4677e71da"
+    },
+    "dispatch": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc0_query_only_attempt002_dispatch.json",
+      "raw_bytes": 9837,
+      "raw_sha256": "c98c7ef00b0b37d881ae98200b7c1b211fc2e35db356685cde17da4010cc4c4b"
+    }
+  },
+  "validated_properties": [
+    "BOOL_ZERO_IS_QUERY_FAILURE_AND_OUTPUT_MASK_REMAINS_NULL",
+    "BOOL_NONZERO_MEANS_OUTPUT_MASK_VALID",
+    "CAPABILITY_MASK_IS_CONSUMED_ONLY_AFTER_NONZERO_BOOL",
+    "ABI_IS_C_INT32_RETURN_AND_UINT64_OUTPUT_POINTER",
+    "QUERY_API_CALL_COUNT_IS_EXACTLY_ONE",
+    "CREATE_PROCESS_API_IS_NEVER_CALLED",
+    "POST_QUERY_CLOSURE_RUNS_BEFORE_CLASSIFICATION",
+    "MOCKED_BOOL_ZERO_PATH_CALLS_POST_QUERY_CLOSURE_EXACTLY_ONCE",
+    "BOOL_ZERO_RETURNS_FAIL_WITHOUT_CANDIDATE_ADMISSION_OR_REJECTION",
+    "EXACT_RECOVERY_CHECKPOINT_AND_RUNTIME_HEAD_BINDING_REQUIRED",
+    "FROZEN_PYTHON_GIT_PROCESSMODEL_AND_WINDOWS_BUILD_IDENTITIES",
+    "NO_NETWORK_WRITE_MATERIALIZATION_PROBE_TRAINING_EVALUATION_BENCHMARK_OR_TEST_AUTHORITY",
+    "PASS_EXIT_IS_UNREACHABLE"
+  ],
+  "audit_chain": {
+    "first_independent_audit": {
+      "task_id": "01a02f30-2875-7253-b041-55af3c935c1f",
+      "model": "gpt-5.6-sol",
+      "reasoning": "xhigh",
+      "speed_profile": "standard",
+      "verdict": "REWORK_REQUIRED",
+      "finding": "BOOL_ZERO_EXCEPTION_SKIPPED_POST_QUERY_CLOSURE"
+    },
+    "central_rework": {
+      "context": "CENTRAL",
+      "model_profile": "Sol Max Standard",
+      "resolution": "BOOL_ZERO_RETURNS_NULL_MASK_CLOSURE_PRECEDES_CLASSIFICATION_AND_DYNAMIC_CONTROL_FLOW_CHECK_ADDED"
+    },
+    "fresh_independent_reaudit": {
+      "task_id": "01a02f39-c689-7a33-bc34-4bdda136c253",
+      "model": "gpt-5.6-sol",
+      "reasoning": "xhigh",
+      "service_tier": "default",
+      "speed_profile": "standard",
+      "verdict": "PASS_ATTEMPT002_REWORK_STATIC_AND_SEMANTIC_AUDIT_READY_FOR_CENTRAL_COMMIT"
+    },
+    "model_provenance_scope": "RUNTIME_METADATA_OBSERVED_BY_INDEPENDENT_REAUDIT_NOT_CRYPTOGRAPHIC_ATTESTATION"
+  },
+  "worktree_portability": {
+    "canonical_raw_binding_root": "E:\\UIT\\cv\\backend",
+    "worktree_replay_checks_passed": 90,
+    "worktree_replay_checks_total": 107,
+    "raw_byte_failures": 17,
+    "classification": "CHECKOUT_CRLF_TRANSFORMATION_ONLY",
+    "normalized_bytes_match_canonical_lf": true,
+    "scientific_defect": false,
+    "artifacts_modified_or_normalized_by_auditor": false
+  },
+  "attempt001_disposition": {
+    "status": "UNRESOLVED_NEITHER_REJECTED_NOR_ADMITTED",
+    "raw_bool_return": 1,
+    "capability_mask": "UNOBSERVED_NOT_CLASSIFIABLE",
+    "reusable_for_capability_admission": false
+  },
+  "next_gate": {
+    "status": "AWAITING_CENTRAL_COMMIT_THEN_FRESH_EXPLICIT_USER_CONFIRMATION",
+    "action": "RUN_EXACT_READ_ONLY_QUERY_ATTEMPT002_PREFLIGHT_FROM_CLEAN_COMMITTED_CHECKPOINT",
+    "automatic_retry_authorized": false,
+    "materialization_or_scientific_execution_authorized": false
+  },
+  "truth_state": {
+    "result_status": "NOT_RUN",
+    "test_set_opened": "NO",
+    "accepted_result_rows": 0,
+    "scientific_execution_performed": false,
+    "benchmark_admitted": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

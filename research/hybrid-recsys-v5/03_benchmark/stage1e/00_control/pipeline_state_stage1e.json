@@ -2,7 +2,7 @@
   "schema_version": "academic-research-pipeline-state-1.0",
   "project": "hybrid-recsys-v5",
   "stage": "1E",
-  "state": "stage1e_rebaseline_v2_r6_m0_m1_dispatch_frozen_awaiting_preflight",
+  "state": "stage1e_rebaseline_v2_r6_pc0_attempt002_static_validated_awaiting_explicit_preflight_confirmation",
   "updated_at": "2026-08-23",
   "model": "gpt-5.6-sol",
   "reasoning": "max",
@@ -939,7 +939,7 @@
         "benchmark_admission_authorized": false
       },
       "r6": {
-        "status": "R6_PC0_ATTEMPT001_INVALID_CONTROL_RESULT_RECOVERY_CHECKPOINT_REQUIRED",
+        "status": "R6_PC0_ATTEMPT002_CONTROL_PLANE_VALIDATED_AWAITING_EXPLICIT_PREFLIGHT_CONFIRMATION",
         "stage_map": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_materialization_stage_map.json",
         "contract": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_bounded_materialization_contract.md",
         "s0": {
@@ -1126,7 +1126,7 @@
           "experiment_execution_authorized": false
         },
         "pc0": {
-          "status": "ATTEMPT001_INVALID_CONTROL_RESULT_BOOL_SEMANTICS_DEFECT_RECOVERY_REQUIRED",
+          "status": "ATTEMPT002_CONTROL_PLANE_VALIDATED_AWAITING_EXPLICIT_PREFLIGHT_CONFIRMATION",
           "purpose": "QUERY_FROZEN_HOST_CAPABILITY_BEFORE_ANY_MXC_DOWNLOAD_MATERIALIZATION_OR_POLICY_PROBE",
           "contract": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc0_mxc_containment_feasibility_contract.md",
           "candidate": {
@@ -1200,6 +1200,43 @@
               }
             }
           },
+          "attempt002_query_only_control_plane": {
+            "status": "PASS_STATIC_AND_SEMANTIC_AUDIT_CENTRAL_CHECKPOINT_COMMITTED_AWAITING_EXPLICIT_PREFLIGHT_CONFIRMATION",
+            "context": "current_central",
+            "central_model_profile": "Sol Max Standard",
+            "independent_reaudit_model_profile": "Sol XHigh Standard",
+            "runner": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc0_query_only_attempt002.py",
+            "runner_raw_bytes": 35559,
+            "runner_raw_sha256": "435e151ce562436783a32afd51a3df866297a28625a56a383638f2d4677e71da",
+            "dispatch": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc0_query_only_attempt002_dispatch.json",
+            "dispatch_raw_bytes": 9837,
+            "dispatch_raw_sha256": "c98c7ef00b0b37d881ae98200b7c1b211fc2e35db356685cde17da4010cc4c4b",
+            "validator": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc0_query_only_attempt002.py",
+            "validator_raw_bytes": 29976,
+            "validator_raw_sha256": "5c743977763f971e889f571dca0fa9244084884a570c673447e477daa396ba6a",
+            "receipt": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc0_query_only_attempt002_static_validation_receipt.json",
+            "frozen_inputs": "13/13",
+            "static_and_mocked_control_flow_checks": "107/107",
+            "first_independent_audit": {
+              "task_id": "01a02f30-2875-7253-b041-55af3c935c1f",
+              "model_profile": "Sol XHigh Standard",
+              "verdict": "REWORK_REQUIRED"
+            },
+            "fresh_independent_reaudit": {
+              "task_id": "01a02f39-c689-7a33-bc34-4bdda136c253",
+              "model_profile": "Sol XHigh Standard",
+              "service_tier": "default",
+              "verdict": "PASS_ATTEMPT002_REWORK_STATIC_AND_SEMANTIC_AUDIT_READY_FOR_CENTRAL_COMMIT"
+            },
+            "runtime_preflight_status": "NOT_RUN_AWAITING_FRESH_EXPLICIT_CONFIRMATION",
+            "query_api_called": false,
+            "network_allowed": false,
+            "filesystem_write_allowed": false,
+            "materialize_mode": "DENIED",
+            "probe_mode": "DENIED",
+            "pass_reachable": false,
+            "automatic_retry_authorized": false
+          },
           "materialization_executed": false,
           "probe_executed": false,
           "query_api_called": true,
@@ -1270,7 +1307,7 @@
         "project_benchmark_numbers": "INVALID_FOR_PAPER"
       },
       "execution_authorized": false,
-      "next_gate": "COMMIT_R6_PC0_ATTEMPT001_FAILURE_SUPERSESSION_AND_STATE_CORRECTION_BEFORE_ATTEMPT002_CONTROL_PLANE"
+      "next_gate": "REQUEST_FRESH_EXPLICIT_CONFIRMATION_FOR_EXACT_READ_ONLY_ATTEMPT002_PREFLIGHT_COMMAND_BOUND_TO_CURRENT_CLEAN_HEAD"
     }
   },
   "central_preregistration_lock": "PASS_R6_S0_BOUNDED_MATERIALIZATION_SCOPE_LOCKED",
@@ -1278,5 +1315,5 @@
   "harmonized_v5": "BLOCKED",
   "external_validation": "BLOCKED",
   "efficiency": "BLOCKED_AFTER_ACCURACY",
-  "next_gate": "Commit the R6-PC0 attempt-001 invalid-control failure receipt, v1 supersession record and state correction. Then create a separate attempt-002 query-only control plane with BOOL truth-table validation, exact checkpoint binding and a new XHigh Standard audit. No rerun is authorized yet; MXC download/materialization, policy probe, parent bootstrap, attempt-003 roots, bridge execution, training, evaluation, benchmark admission and TEST access remain blocked."
+  "next_gate": "Obtain fresh explicit confirmation for the exact R6-PC0 Attempt002 read-only preflight command bound to the current clean commit. MXC download/materialization, policy probe, parent bootstrap, attempt-003 roots, bridge execution, training, evaluation, benchmark admission and TEST access remain blocked."
 }

@@ -1,0 +1,228 @@
+{
+  "schema_version": "stage1e-e4-r6-pc0-query-attempt002-dispatch-1.0",
+  "created_at": "2026-08-23T00:00:00+07:00",
+  "stage_id": "E4-R6-PC0-QUERY-ATTEMPT-002",
+  "status": "READ_ONLY_QUERY_ATTEMPT002_AWAITING_STATIC_ADMISSION_AND_EXPLICIT_CONFIRMATION",
+  "recovery_checkpoint": "4f07d20c056b06cb255117e7b0d1284fdd40c320",
+  "objective": "Correct the BOOL semantics defect and classify only the frozen host capability bit; no host prep, DACL, firewall, elevation, download, materialization, policy probe, or scientific execution is authorized.",
+  "ars_workflow": {
+    "skill": "ars-codex:academic-research-suite",
+    "version": "0.1.26",
+    "workflow": "ars/experiment-agent/WORKFLOW.md",
+    "agent_contract": "ars/experiment-agent/agents/code_runner_agent.md",
+    "truth_policy": "FAIL_CLOSED_NEW_ATTEMPT_NO_AUTOMATIC_RETRY"
+  },
+  "model_provenance": {
+    "attempt001_abi_auditor": {
+      "task_id": "01a02ed4-6962-76d0-9ab5-b596dcb8c352",
+      "name": "Russell",
+      "model": "Sol XHigh Standard",
+      "verdict": "REWORK"
+    },
+    "attempt001_recovery_auditor": {
+      "task_id": "01a02ed4-6e78-75d1-b0d3-724b20cb976d",
+      "name": "Maxwell",
+      "model": "Sol High Standard",
+      "verdict": "RECOVERY_REQUIRED"
+    },
+    "attempt002_control_plane_owner": {
+      "context": "CENTRAL",
+      "model": "Sol Max Standard"
+    },
+    "attestation_scope": "DECLARED_PROVENANCE_NOT_CRYPTOGRAPHIC_MODEL_ATTESTATION"
+  },
+  "runner": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc0_query_only_attempt002.py",
+    "raw_bytes": 35559,
+    "raw_sha256": "435e151ce562436783a32afd51a3df866297a28625a56a383638f2d4677e71da",
+    "role": "READ_ONLY_QUERY_ONCE_ATTEMPT002_RUNNER"
+  },
+  "frozen_inputs": [
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc0_mxc_containment_feasibility_contract.md",
+      "raw_bytes": 8125,
+      "raw_sha256": "c12e9b4baebdafcb58a42c5618aa292dedb6e5740d533125659c1daa4f5dad65",
+      "role": "FEASIBILITY_CONTRACT"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_c1r2_validation_receipt.json",
+      "raw_bytes": 6896,
+      "raw_sha256": "fa9b2b077ead32e7637fe1e42099da7eb93b9366b1ce231235a41cac2f36a8ab",
+      "role": "ATTEMPT003_STATIC_VALIDATION"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_c1r2_runner_compatibility_audit_receipt.json",
+      "raw_bytes": 9749,
+      "raw_sha256": "e17cc02f8e7916db0ec382a76620a1b9e2ea8b1291e9a64e9078949e88c1635a",
+      "role": "RUNNER_COMPATIBILITY_AUDIT"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_future_agent_model_policy_standard.json",
+      "raw_bytes": 1666,
+      "raw_sha256": "4c53c29a7fb7ec8583d0d2b38ccc23fddafdfdeecc026211e2084e8e8b6c6900",
+      "role": "MODEL_POLICY"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc0_query_api_source_lock.json",
+      "raw_bytes": 3315,
+      "raw_sha256": "5afb41f3ba40070aff3e8a39d06f60d14a9377e99665287a3c6624bc00fe1537",
+      "role": "OFFICIAL_QUERY_API_SOURCE_LOCK"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc0_initial_runner_audit_receipt.json",
+      "raw_bytes": 6028,
+      "raw_sha256": "e2131c72d6e0b1878bbf20e9977123c1b5e2edb7b9fa5c6241bdcf622ef5ea93",
+      "role": "INITIAL_RUNNER_AUDIT"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc0_query_preflight_attempt001_failure_receipt.json",
+      "raw_bytes": 5702,
+      "raw_sha256": "f9d495e4e6256ed60b9e8a4710b258a1a2fd074f7a6acac077518f1553e0f120",
+      "role": "ATTEMPT001_INVALID_CONTROL_FAILURE_RECEIPT"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc0_query_only_v1_supersession_record.json",
+      "raw_bytes": 4513,
+      "raw_sha256": "dc93fc0b0eaddf389b55df4750b403f304f43842b4af1b76e0c1ed8e80bdb37c",
+      "role": "V1_SUPERSESSION_RECORD"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ak/E4_R6C1R2_attempt003_command_packet/dataset_materialization_packet.json",
+      "raw_bytes": 29657,
+      "raw_sha256": "2277e987b59a8de7e3e82e0093a82990c57453db1b000ecda95cd3ca50c17628",
+      "role": "DATASET_PACKET"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ak/E4_R6C1R2_attempt003_command_packet/environment_materialization_packet.json",
+      "raw_bytes": 59749,
+      "raw_sha256": "e15adf51345f7e9e4bc19ab834bbc3a0b0e94a3d4d50b5b3cd8279e6612b733b",
+      "role": "ENVIRONMENT_PACKET"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ak/E4_R6C1R2_attempt003_command_packet/recbole_dataset_bridge_packet.json",
+      "raw_bytes": 12387,
+      "raw_sha256": "d003e0520429e7dd0dd9a82d09ad6b6d3b144089b2db558f0b93349bc107b5c8",
+      "role": "DATASET_BRIDGE_PACKET"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ak/E4_R6C1R2_attempt003_command_packet/execution_boundary_and_negative_assertions.json",
+      "raw_bytes": 13384,
+      "raw_sha256": "3954d43d8c73d679e2fad9ab399ee037734548685eebbcc13a3754267c75f5d7",
+      "role": "EXECUTION_BOUNDARY"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ak/E4_R6C1R2_attempt003_command_packet/audit_handoff.json",
+      "raw_bytes": 12379,
+      "raw_sha256": "812f370ef7039f75d6e872f02fcdde50ee13110038fba6c739ebdda0f7518df3",
+      "role": "AUDIT_HANDOFF"
+    }
+  ],
+  "checkpoint_binding": {
+    "method": "CALLER_SUPPLIED_EXACT_40_HEX_MUST_EQUAL_RUNTIME_HEAD",
+    "argument": "--checkpoint",
+    "recovery_checkpoint_must_be_ancestor": "4f07d20c056b06cb255117e7b0d1284fdd40c320",
+    "self_referential_head_embedded": false
+  },
+  "python_control": {
+    "path": "C:\\Users\\ACER\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+    "raw_bytes": 91648,
+    "raw_sha256": "d8e3f0adf246db00358c0c4ed349cf714898178f9558fb0e944f79f5c07f8eaa",
+    "version_info": [
+      3,
+      12,
+      13,
+      "final",
+      0
+    ],
+    "implementation": "CPython",
+    "architecture_bits": 64,
+    "required_flags": [
+      "-I",
+      "-B"
+    ]
+  },
+  "git_control": {
+    "path": "C:\\Program Files\\Git\\mingw64\\bin\\git.exe",
+    "raw_bytes": 4238224,
+    "raw_sha256": "1f2ee2de971b6d0a7a13f053014998b66c22df47f30f1907a767346392eb8d78",
+    "version": "git version 2.50.0.windows.1",
+    "optional_locks": false,
+    "ambient_environment": false,
+    "system_and_global_config": false,
+    "fsmonitor": false,
+    "untracked_cache": false
+  },
+  "host_lock": {
+    "platform": "Windows",
+    "major": 10,
+    "build": 26200,
+    "elevation_required": false
+  },
+  "query_api": {
+    "dll": "C:\\Windows\\System32\\processmodel.dll",
+    "dll_raw_bytes": 192512,
+    "dll_raw_sha256": "7d18a80be826916e59ca1a49c692d8e59ab55a39c865dd664f469758b20177d5",
+    "query_export": "Experimental_QuerySandboxSupport",
+    "create_export_guard_only": "Experimental_CreateProcessInSandbox",
+    "source_signature": "unsafe extern system fn(capabilities: *mut u64) -> i32",
+    "success_semantics": "NONZERO_BOOL_OUTPUT_MASK_VALID",
+    "failure_semantics": "ZERO_BOOL_QUERY_FAILED_OUTPUT_MASK_INVALID",
+    "restype": "ctypes.c_int32",
+    "output_type": "ctypes.c_uint64",
+    "create_process_capability_bit": 1,
+    "call_count": 1,
+    "fallback_create_call": false
+  },
+  "source_candidate": {
+    "repository": "https://github.com/microsoft/mxc",
+    "tag": "v0.7.0-rc1",
+    "commit": "0e02a720e32416b151dbcb0a00e3d4ac2b891559",
+    "asset_url": "https://github.com/microsoft/mxc/releases/download/v0.7.0-rc1/mxc-release-binaries.zip",
+    "observed_final_host": "release-assets.githubusercontent.com",
+    "asset_raw_bytes": 180948670,
+    "asset_raw_sha256": "450ad608bd2268a8cbe126597be209601c51fbfe36141cec08abb017e828aba5"
+  },
+  "source_materialization": {
+    "status": "NOT_DOWNLOADED",
+    "network_allowed": false,
+    "write_allowed": false,
+    "external_root_created": false
+  },
+  "roots": {
+    "candidate_root": "E:\\UIT\\cv\\materialized-tools\\hybrid-recsys-v5\\stage1e\\r6\\mxc_v0_7_0_rc1\\attempt-001",
+    "dataset_root_guard": "E:\\UIT\\cv\\materialized-data\\hybrid-recsys-v5\\stage1e\\r6\\official_source\\grouplens_ml100k\\attempt-003",
+    "environment_root_guard": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-003",
+    "parent_bootstrap_status": "PARENT_BOOTSTRAP_REQUIRED_BUT_NOT_AUTHORIZED"
+  },
+  "modes": {
+    "preflight": "READ_ONLY_QUERY_ONCE_NO_NETWORK_NO_WRITE",
+    "materialize": "DENIED",
+    "probe": "DENIED"
+  },
+  "execution_scope": {
+    "network": "NO_NETWORK_REQUESTED_NO_SYSTEM_WIDE_TRACE",
+    "filesystem": "NO_WRITE_REQUESTED_POST_QUERY_CLOSURE_REQUIRED",
+    "process_creation": "NO_CHILD_EXCEPT_FROZEN_GIT_READ_ONLY",
+    "host_mutation": "DACL_FIREWALL_ELEVATION_HOST_PREP_FORBIDDEN",
+    "scientific_execution": "TRAINING_EVALUATION_BENCHMARK_FORBIDDEN"
+  },
+  "admission_logic": {
+    "bool_zero": "FAIL_QUERY_UNKNOWN_OUTPUT_INVALID",
+    "bool_nonzero_bit_clear": "FAIL_HOST_CAPABILITY_ABSENT",
+    "bool_nonzero_bit_set": "INCOMPLETE_POLICY_TEST_REQUIRED",
+    "pass_reachable_in_this_runner_version": false
+  },
+  "exit_codes": {
+    "summary": "0=PASS;1=FAIL;2=INCOMPLETE",
+    "pass": 0,
+    "fail": 1,
+    "incomplete": 2
+  },
+  "truth_state": {
+    "result_status": "NOT_RUN",
+    "test_set_opened": "NO",
+    "accepted_result_rows": 0,
+    "scientific_execution_performed": false,
+    "benchmark_admitted": false
+  }
+}
