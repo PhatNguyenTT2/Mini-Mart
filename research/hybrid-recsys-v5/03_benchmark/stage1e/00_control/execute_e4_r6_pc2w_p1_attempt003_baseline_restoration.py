@@ -195,7 +195,9 @@ def parse_wsl_list(value: bytes) -> tuple[list[dict[str, Any]], bool]:
             "version": int(match.group(3)),
         })
     complete = header_seen and len(rows) > 0
-    return sorted(rows, key=lambda row: str(row.get("name", "")).casefold()), complete
+    if not complete:
+        return [], False
+    return sorted(rows, key=lambda row: str(row.get("name", "")).casefold()), True
 
 
 def distro_state(rows: list[dict[str, Any]], name: str) -> str | None:
@@ -226,9 +228,9 @@ def material_passport(created_at: str, auth: dict[str, Any]) -> dict[str, Any]:
         "origin_mode": "run",
         "origin_date": created_at,
         "verification_status": "UNVERIFIED",
-        "version_label": "stage1e_e4_r6_pc2w_p1_attempt003_baseline_execution_v2",
+        "version_label": "stage1e_e4_r6_pc2w_p1_attempt003_baseline_execution_v3",
         "upstream_dependencies": [
-            "stage1e_e4_r6_pc2w_p1_attempt003_user_authorization_v2",
+            "stage1e_e4_r6_pc2w_p1_attempt003_user_authorization_v3",
             "stage1e_e4_r6_pc2w_p1_attempt003_baseline_contract_v1",
         ],
         "repro_lock": None,
