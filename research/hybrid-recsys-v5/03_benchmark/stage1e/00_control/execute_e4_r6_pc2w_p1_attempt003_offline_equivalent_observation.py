@@ -13,6 +13,7 @@ import re
 import subprocess
 import sys
 import time
+import unicodedata
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -70,14 +71,20 @@ TARGET_RUNTIME_PROCESSES = {
 }
 PROCESS_QUERY = (
     "$ErrorActionPreference='Stop';"
-    "$target=@('Docker Desktop','com.docker.backend','com.docker.build','com.docker.proxy','dockerd','vpnkit','wslrelay');"
-    "$found=@(Get-Process -Name $target -ErrorAction SilentlyContinue | "
-    "ForEach-Object { $_.ProcessName } | Sort-Object -Unique);"
+    "$target=@('Docker Desktop.exe','com.docker.backend.exe','com.docker.build.exe','com.docker.proxy.exe','dockerd.exe','vpnkit.exe','wslrelay.exe');"
+    "$all=@(Get-CimInstance -ClassName Win32_Process -Property Name -ErrorAction Stop);"
+    "$found=@($all | Where-Object { $target -contains $_.Name } | "
+    "ForEach-Object { [System.IO.Path]::GetFileNameWithoutExtension($_.Name) } | Sort-Object -Unique);"
     "[pscustomobject]@{runtime_processes=$found} | ConvertTo-Json -Compress"
 )
 DAEMON_PIPE_MARKERS = ("dockerdesktoplinuxengine", "//./pipe/dockerdesktoplinuxengine")
 DAEMON_PIPE_MISSING_MARKERS = ("the system cannot find the file specified", "no such file or directory")
 PERMISSION_ERROR_MARKERS = ("access is denied", "permission denied", "unauthorized")
+REACHABILITY_CONTRADICTION_MARKERS = (
+    "server reachable", "daemon reachable", "server is running", "daemon is running",
+    "server version", "server response", "successfully connected", '"ostype"',
+    '"architecture"', '"apiversion"',
+)
 DESKTOP_LINUX_PIPE = r"\\.\pipe\dockerDesktopLinuxEngine"
 ERROR_FILE_NOT_FOUND = 2
 
@@ -136,7 +143,10 @@ def decode_output_strict(value: bytes) -> tuple[str, bool]:
             text = value.decode("utf-16-le", errors="strict")
         else:
             text = value.decode("utf-8", errors="strict")
-        if "\ufffd" in text or any(ord(char) < 32 and char not in "\r\n\t" for char in text):
+        if "\ufffd" in text or any(
+            char not in "\r\n\t" and unicodedata.category(char).startswith("C")
+            for char in text
+        ):
             return "", False
         return text, True
     except UnicodeDecodeError:
@@ -211,7 +221,11 @@ def parse_status_text(stdout: bytes, stderr: bytes) -> tuple[str | None, bool]:
         return None, False
     text = (stdout_text + "\n" + stderr_text).casefold()
     matches = set(re.findall(r"\b(running|stopped)\b", text))
-    return (next(iter(matches)) if len(matches) == 1 else None), True
+    if "running" in matches:
+        return "running", True
+    if matches == {"stopped"}:
+        return "stopped", True
+    return None, True
 
 
 def classify_status(receipt: dict[str, Any], stdout: bytes, stderr: bytes) -> str:
@@ -233,7 +247,7 @@ def classify_status(receipt: dict[str, Any], stdout: bytes, stderr: bytes) -> st
 
 def parse_wsl_verbose(value: bytes) -> tuple[list[dict[str, Any]], bool]:
     text, decoded = decode_output_strict(value)
-    if not decoded or "\ufffd" in text or any(ord(char) < 32 and char not in "\r\n\t" for char in text):
+    if not decoded:
         return [], False
     rows: list[dict[str, Any]] = []
     seen_names: set[str] = set()
@@ -264,7 +278,7 @@ def parse_wsl_verbose(value: bytes) -> tuple[list[dict[str, Any]], bool]:
 def parse_wsl_running_quiet(value: bytes) -> tuple[list[str], bool]:
     text, decoded = decode_output_strict(value)
     text = text.lstrip("\ufeff")
-    if not decoded or "\ufffd" in text or any(ord(char) < 32 and char not in "\r\n\t" for char in text):
+    if not decoded:
         return [], False
     names = [line.strip() for line in text.splitlines() if line.strip()]
     folded = [name.casefold() for name in names]
@@ -311,6 +325,7 @@ def daemon_is_specifically_unavailable(receipt: dict[str, Any], stdout: bytes, s
         any(marker in text for marker in DAEMON_PIPE_MARKERS)
         and any(marker in text for marker in DAEMON_PIPE_MISSING_MARKERS)
         and not any(marker in text for marker in PERMISSION_ERROR_MARKERS)
+        and not any(marker in text for marker in REACHABILITY_CONTRADICTION_MARKERS)
     )
 
 
@@ -360,10 +375,10 @@ def material_passport(created_at: str, auth: dict[str, Any]) -> dict[str, Any]:
         "origin_mode": "run",
         "origin_date": created_at,
         "verification_status": "UNVERIFIED",
-        "version_label": "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_observation_v3",
+        "version_label": "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_observation_v4",
         "upstream_dependencies": [
-            "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_authorization_v3",
-            "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_contract_v3",
+            "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_authorization_v4",
+            "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_contract_v4",
             "stage1e_e4_r6_pc2w_p1_attempt003_baseline_validation_v1",
         ],
         "repro_lock": None,
@@ -400,12 +415,16 @@ def main() -> int:
     if not re.fullmatch(r"[0-9a-f]{40}", expected_head) or head != expected_head:
         raise RuntimeError("exact execution HEAD mismatch")
     expected_process_argv = [
-        str((repo_root / RUNNER_RELATIVE).resolve()), "--repo-root", str(repo_root),
+        str(PYTHON.resolve()), str((repo_root / RUNNER_RELATIVE).resolve()), "--repo-root", str(repo_root),
         "--expected-head", head,
     ]
-    actual_process_argv = [str(Path(sys.argv[0]).resolve()), *sys.argv[1:]]
+    original = list(getattr(sys, "orig_argv", []))
+    actual_process_argv = (
+        [str(Path(original[0]).resolve()), str(Path(original[1]).resolve()), *original[2:]]
+        if len(original) >= 2 else original
+    )
     if actual_process_argv != expected_process_argv:
-        raise RuntimeError("exact process argv mismatch")
+        raise RuntimeError("exact original process argv mismatch; interpreter flags are forbidden")
     parents = git(repo_root, "rev-list", "--parents", "-n", "1", "HEAD").split()
     if len(parents) != 2:
         raise RuntimeError("execution checkpoint must have exactly one parent")
@@ -420,11 +439,11 @@ def main() -> int:
     dispatch = load_json(repo_root / DISPATCH_RELATIVE)
     contract = load_json(repo_root / CONTRACT_RELATIVE)
     baseline_validation = load_json(repo_root / BASELINE_VALIDATION_RELATIVE)
-    if auth.get("schema_version") != "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-authorization-3.0":
+    if auth.get("schema_version") != "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-authorization-4.0":
         raise RuntimeError("authorization schema mismatch")
-    if dispatch.get("schema_version") != "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-dispatch-3.0":
+    if dispatch.get("schema_version") != "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-dispatch-4.0":
         raise RuntimeError("dispatch schema mismatch")
-    if contract.get("schema_version") != "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-observation-contract-3.0":
+    if contract.get("schema_version") != "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-observation-contract-4.0":
         raise RuntimeError("contract schema mismatch")
     if baseline_validation.get("attempt_result", {}).get("attempt003_execution_opened") is not False:
         raise RuntimeError("prior validation no longer proves attempt-003 unopened")
@@ -584,7 +603,7 @@ def main() -> int:
     )
 
     command_document = {
-        "schema_version": "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-command-receipts-3.0",
+        "schema_version": "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-command-receipts-4.0",
         "material_passport": passport,
         "stage_id": "E4-R6-PC2W-P1-ATTEMPT003-OFFLINE-EQUIVALENT-OBSERVATION",
         "created_at": created_at,
@@ -594,7 +613,7 @@ def main() -> int:
         "raw_stdout_or_stderr_persisted": False,
     }
     receipt_document = {
-        "schema_version": "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-observation-receipt-3.0",
+        "schema_version": "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-observation-receipt-4.0",
         "material_passport": passport,
         "stage_id": "E4-R6-PC2W-P1-ATTEMPT003-OFFLINE-EQUIVALENT-OBSERVATION",
         "created_at": created_at,
@@ -626,7 +645,7 @@ def main() -> int:
         "accepted_result_rows": 0,
     }
     handoff = {
-        "schema_version": "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-handoff-3.0",
+        "schema_version": "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-handoff-4.0",
         "material_passport": passport,
         "stage_id": "E4-R6-PC2W-P1-ATTEMPT003-OFFLINE-EQUIVALENT-OBSERVATION",
         "verdict": verdict,

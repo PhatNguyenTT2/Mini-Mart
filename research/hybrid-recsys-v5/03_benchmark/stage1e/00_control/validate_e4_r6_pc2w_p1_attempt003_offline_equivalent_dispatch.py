@@ -20,6 +20,7 @@ CONTRACT = CONTROL / "e4_r6_pc2w_p1_attempt003_offline_equivalent_observation_co
 AUTH = CONTROL / "e4_r6_pc2w_p1_attempt003_offline_equivalent_authorization.json"
 DISPATCH = CONTROL / "rebaseline_v2_e4_r6_pc2w_p1_attempt003_offline_equivalent_dispatch.json"
 BASELINE_VALIDATION = CONTROL / "rebaseline_v2_e4_r6_pc2w_p1_attempt003_baseline_validation_receipt.json"
+VALIDATOR = CONTROL / "validate_e4_r6_pc2w_p1_attempt003_offline_equivalent_dispatch.py"
 OUTPUT = Path(
     "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_al/"
     "E4_R6PC2W_P1_docker_query_preflight/attempt-003-offline-equivalent-observation"
@@ -108,6 +109,16 @@ def main() -> int:
     check(Path(sys.executable).resolve() == PYTHON.resolve(), "actual_validator_python_path")
     check(sys.version_info[:3] == (3, 11, 9), "actual_validator_python_version")
     check(file_fact(Path(sys.executable)) == PYTHON_FACT, "actual_validator_python_fact")
+    original = list(getattr(sys, "orig_argv", []))
+    normalized_original = (
+        [str(Path(original[0]).resolve()), str(Path(original[1]).resolve()), *original[2:]]
+        if len(original) >= 2 else original
+    )
+    expected_original = [
+        str(PYTHON.resolve()), str((repo / VALIDATOR).resolve()), "--repo-root", str(repo),
+        "--expected-head", args.expected_head,
+    ]
+    check(normalized_original == expected_original, "actual_validator_original_argv")
 
     check(Path(git(repo, "rev-parse", "--show-toplevel")).resolve() == repo, "exact_repo_root")
     head = git(repo, "rev-parse", "HEAD").casefold()
@@ -127,9 +138,9 @@ def main() -> int:
     dispatch = load_json(repo / DISPATCH)
     contract = load_json(repo / CONTRACT)
     prior = load_json(repo / BASELINE_VALIDATION)
-    check(auth.get("schema_version") == "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-authorization-3.0", "auth_schema")
-    check(dispatch.get("schema_version") == "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-dispatch-3.0", "dispatch_schema")
-    check(contract.get("schema_version") == "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-observation-contract-3.0", "contract_schema")
+    check(auth.get("schema_version") == "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-authorization-4.0", "auth_schema")
+    check(dispatch.get("schema_version") == "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-dispatch-4.0", "dispatch_schema")
+    check(contract.get("schema_version") == "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-observation-contract-4.0", "contract_schema")
     check(prior.get("attempt_result", {}).get("attempt003_execution_opened") is False, "attempt003_still_unopened")
     check(prior.get("attempt_result", {}).get("automatic_retry_count") == 0, "prior_retry_zero")
     check(prior.get("truth_state", {}).get("RESULT_STATUS") == "NOT_RUN", "prior_truth_not_run")
@@ -177,6 +188,11 @@ def main() -> int:
     check(controls.get("strict_status_and_daemon_decoding_required") is True, "strict_status_daemon_control")
     check(controls.get("contradictory_daemon_stdout_rejected") is True, "daemon_contradiction_control")
     check(controls.get("exact_wsl_header_required") is True, "exact_wsl_header_control")
+    check(controls.get("python_orig_argv_enforced") is True, "python_orig_argv_control")
+    check(controls.get("process_cim_fail_stop_required") is True, "process_cim_fail_stop_control")
+    check(controls.get("unicode_category_c_rejected") is True, "unicode_category_c_control")
+    check(controls.get("running_token_dominates_status") is True, "running_token_dominance_control")
+    check(controls.get("daemon_contradiction_markers_rejected") is True, "daemon_contradiction_marker_control")
     check(controls.get("attempt003_immediate_pre_gate_replay_required") is True, "attempt003_replay_control")
     for field in (
         "docker_desktop_start_or_stop_allowed", "wsl_shutdown_or_terminate_allowed",
@@ -215,6 +231,12 @@ def main() -> int:
     check(not complete and rows == [], "wsl_false_header_rejected")
     rows, complete = runner.parse_wsl_verbose(b"NAME STATE VERSION\nUbuntu\x01 Stopped 2")
     check(not complete and rows == [], "wsl_control_character_rejected")
+    rows, complete = runner.parse_wsl_verbose(b"NAME STATE VERSION\nUbuntu\x7f Stopped 2")
+    check(not complete and rows == [], "wsl_del_character_rejected")
+    rows, complete = runner.parse_wsl_verbose("NAME STATE VERSION\nUbuntu\u0085 Stopped 2".encode("utf-8"))
+    check(not complete and rows == [], "wsl_c1_character_rejected")
+    rows, complete = runner.parse_wsl_verbose("NAME STATE VERSION\nUbuntu\u200b Stopped 2".encode("utf-8"))
+    check(not complete and rows == [], "wsl_format_character_rejected")
     rows, complete = runner.parse_wsl_verbose(b"NAME STATE VERSION\nUbuntu Stopped 2\xff")
     check(not complete and rows == [], "wsl_invalid_utf8_rejected")
     names, complete = runner.parse_wsl_running_quiet(b"")
@@ -245,18 +267,23 @@ def main() -> int:
     check(runner.classify_status(receipt_ok, b"Docker Desktop is running", b"") == "RUNNING_EXACT", "status_running_exact")
     check(runner.classify_status(receipt_fail, b"", b"opaque failure") == "UNCLASSIFIED_NONZERO_HASH_ONLY", "status_nonzero_unclassified")
     check(runner.classify_status(receipt_fail, b"", b"still running") == "RUNNING_EXACT", "status_running_blocks_even_nonzero")
+    check(runner.classify_status(receipt_fail, b"running", b"stopped") == "RUNNING_EXACT", "status_running_stopped_contradiction_blocks")
     check(runner.classify_status(receipt_fail, b"", b"opaque\xff") == "UNCLASSIFIED_INVALID_ENCODING", "status_invalid_encoding_rejected")
     daemon_missing = b"open //./pipe/dockerDesktopLinuxEngine: The system cannot find the file specified."
     check(runner.daemon_is_specifically_unavailable(receipt_fail, b"", daemon_missing), "daemon_named_pipe_missing_valid")
     check(not runner.daemon_is_specifically_unavailable(receipt_fail, b"", daemon_missing + b" Access is denied"), "daemon_permission_rejected")
     check(not runner.daemon_is_specifically_unavailable(receipt_ok, b"{}", b""), "daemon_reachable_rejected")
     check(not runner.daemon_is_specifically_unavailable(receipt_fail, b'{"Version":"reachable"}', daemon_missing), "daemon_contradictory_stdout_rejected")
+    check(not runner.daemon_is_specifically_unavailable(receipt_fail, b"", daemon_missing + b" server reachable"), "daemon_contradictory_stderr_rejected")
     check(not runner.daemon_is_specifically_unavailable(receipt_fail, b"", daemon_missing + b"\xff"), "daemon_invalid_encoding_rejected")
     check(runner.pipe_is_specifically_absent({"available": False, "win32_error": 2, "probe_exception_type": None}), "win32_pipe_absence_valid")
     check(not runner.pipe_is_specifically_absent({"available": False, "win32_error": 5, "probe_exception_type": None}), "win32_pipe_access_denied_rejected")
     check(not runner.pipe_is_specifically_absent({"available": True, "win32_error": None, "probe_exception_type": None}), "win32_pipe_available_rejected")
 
     source = (repo / RUNNER).read_text(encoding="utf-8")
+    check("sys.orig_argv" in source or 'getattr(sys, "orig_argv"' in source, "original_argv_enforced")
+    check("Get-CimInstance -ClassName Win32_Process -Property Name -ErrorAction Stop" in source, "process_cim_fail_stop_query")
+    check("SilentlyContinue" not in runner.PROCESS_QUERY, "process_query_does_not_suppress_errors")
     check("wait_named_pipe(DESKTOP_LINUX_PIPE, 1)" in source, "wait_named_pipe_one_millisecond_bound")
     check("wait_named_pipe(DESKTOP_LINUX_PIPE, 0)" not in source, "wait_named_pipe_default_wait_absent")
     check(source.count("record(EXPECTED_COMMAND_IDS[") == 7, "seven_direct_record_calls")
