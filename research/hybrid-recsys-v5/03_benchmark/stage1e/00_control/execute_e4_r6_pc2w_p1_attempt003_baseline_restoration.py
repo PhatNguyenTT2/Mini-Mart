@@ -226,9 +226,9 @@ def material_passport(created_at: str, auth: dict[str, Any]) -> dict[str, Any]:
         "origin_mode": "run",
         "origin_date": created_at,
         "verification_status": "UNVERIFIED",
-        "version_label": "stage1e_e4_r6_pc2w_p1_attempt003_baseline_execution_v1",
+        "version_label": "stage1e_e4_r6_pc2w_p1_attempt003_baseline_execution_v2",
         "upstream_dependencies": [
-            "stage1e_e4_r6_pc2w_p1_attempt003_user_authorization_v1",
+            "stage1e_e4_r6_pc2w_p1_attempt003_user_authorization_v2",
             "stage1e_e4_r6_pc2w_p1_attempt003_baseline_contract_v1",
         ],
         "repro_lock": None,

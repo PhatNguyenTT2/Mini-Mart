@@ -197,6 +197,7 @@ check("wsl_fixture_missing_header_rejected", missing_header_rows == [] and missi
 check("runner_daemon_specific", all(token in source for token in ("DAEMON_PIPE_MARKERS", "DAEMON_PIPE_MISSING_MARKERS", "PERMISSION_ERROR_MARKERS")), None)
 check("runner_exact_outputs", "entries = list(output_root.iterdir())" in source and "not all(path.is_file() for path in entries)" in source, None)
 check("runner_frozen_gates", "frozen artifact mismatch" in source and "git_blob_fact" in source, None)
+check("runner_current_passport_dependency", '"stage1e_e4_r6_pc2w_p1_attempt003_user_authorization_v2"' in source and '"stage1e_e4_r6_pc2w_p1_attempt003_user_authorization_v1"' not in source, None)
 check("runner_no_science", all(token in source for token in ('"scientific_execution_performed": False', '"result_status": "NOT_RUN"', '"test_set_opened": "NO"', '"accepted_result_rows": 0')), None)
 
 truth = dispatch.get("truth_state")
