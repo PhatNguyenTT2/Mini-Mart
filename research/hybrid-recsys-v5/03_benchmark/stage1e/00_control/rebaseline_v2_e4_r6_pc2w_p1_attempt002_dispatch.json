@@ -1,0 +1,137 @@
+{
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt002-dispatch-1.0",
+  "stage_id": "E4-R6-PC2W-P1",
+  "attempt_id": "attempt-002",
+  "created_at": "2026-08-24T02:18:34.6022956+07:00",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "run",
+    "origin_date": "2026-08-24T02:18:34.6022956+07:00",
+    "verification_status": "UNVERIFIED",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt002_dispatch_v1",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_pc2w_p1_attempt002_user_authorization_v1",
+      "stage1e_e4_r6_pc2w_p1_requirements_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt002_runner_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt001_failure_packet_audited"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-24T01:12:40.9534228+07:00",
+      "declared_by": "scholar"
+    }
+  },
+  "runner_checkpoint": "d3367f56f6e6db6de0658a8c89bd2818fd596311",
+  "supersedes_execution_checkpoint": "6237e196d5bc689cb004c2149ff8a81e82410ddf",
+  "change_basis": {
+    "user_confirmed_all_docker_stopped": true,
+    "user_authorized_new_attempt": true,
+    "attempt001_remains_immutable": true,
+    "new_output_root_required": true,
+    "runtime_pre_gate_must_independently_confirm_stopped_state": true,
+    "execution_after_failed_audit": false
+  },
+  "frozen_artifacts": [
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc2w_p1_attempt002_query_only.py",
+      "raw_bytes": 43095,
+      "raw_sha256": "0453621b09d4cd0dd6c9df018ebabbfc1080a897e76104906efece59a52202e6"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt002_user_authorization_and_model_override.json",
+      "raw_bytes": 4157,
+      "raw_sha256": "c819f755906c5fb921dbc11758d98bb1fd1f2a8ef46094064d120bd680f4bfd7"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_docker_query_preflight_requirements.json",
+      "raw_bytes": 6280,
+      "raw_sha256": "fc6d5479ad56692b6c04449ac0150b256d2dd4409471c8723f1ad2d84f193b83"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_current_host_wsl2_linux_admission_contract.md",
+      "raw_bytes": 11460,
+      "raw_sha256": "1d4591b5a74fdbb3e4f337e4d721970af1f992a45fd158f371c0465d575d5267"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_read_only_preflight_receipt.json",
+      "raw_bytes": 8791,
+      "raw_sha256": "06294de30914317083c292dc2a828028f688c8842472067eaed842377128d50b"
+    }
+  ],
+  "interpreter": {
+    "path": "C:\\Program Files\\Python311\\python.exe",
+    "raw_bytes": 103192,
+    "sha256": "5f7b89a612c9b8af1d6456cdfcd1dbe5ca630849e79aebced9bee9a6694952ec",
+    "version": "3.11.9"
+  },
+  "execution_binding": {
+    "working_directory": "E:\\UIT\\cv\\backend",
+    "output_root": "E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\rebaseline_v2\\wave_al\\E4_R6PC2W_P1_docker_query_preflight\\attempt-002",
+    "output_root_must_be_absent": true,
+    "expected_output_files": [
+      "command_receipts.json",
+      "p1_execution_receipt.json",
+      "p1_handoff.json",
+      "runtime_inventory.json"
+    ],
+    "execution_checkpoint_rule": "The execution checkpoint must be a clean single-parent commit whose parent is runner_checkpoint and whose exact changed path set is only the attempt-002 authorization and dispatch JSON files. A fresh independent audit supplies the exact full execution HEAD; the runner verifies the caller value, parent, exact change set, output-root absence and frozen hashes before creating output.",
+    "argv": [
+      "C:\\Program Files\\Python311\\python.exe",
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc2w_p1_attempt002_query_only.py",
+      "--repo-root",
+      "E:\\UIT\\cv\\backend",
+      "--expected-head",
+      "<EXACT_FULL_EXECUTION_HEAD_FROM_FRESH_AUDIT>"
+    ]
+  },
+  "execution_controls": {
+    "docker_desktop_start_attempts_maximum": 1,
+    "docker_desktop_stop_attempts_after_start_attempt_maximum": 1,
+    "automatic_retry_count": 0,
+    "hard_start_timeout_seconds": 180,
+    "hard_stop_timeout_seconds": 180,
+    "ordinary_query_timeout_seconds": 30,
+    "pre_start_gate_required": true,
+    "pre_start_user_attestation_required": true,
+    "stop_finally_required": true,
+    "raw_stdout_or_stderr_persisted": false,
+    "raw_context_persisted": false,
+    "proxy_secret_values_persisted": false,
+    "image_pull_or_build_allowed": false,
+    "container_create_or_run_allowed": false,
+    "docker_or_wsl_settings_change_allowed": false,
+    "package_or_distro_install_allowed": false,
+    "source_data_or_checkpoint_download_allowed": false,
+    "materialization_allowed": false,
+    "training_evaluation_or_test_allowed": false
+  },
+  "fresh_independent_runner_audit": {
+    "required_before_execution": true,
+    "must_use_new_worktree_context": true,
+    "model": "gpt-5.6-sol",
+    "reasoning_effort": "xhigh",
+    "requested_service_tier": "priority",
+    "service_tier_observability": "requested_not_runtime_verifiable_by_thread_coordinator",
+    "display_name": "Sol XHigh Fast",
+    "write_scope": "READ_ONLY",
+    "required_verdict": "PASS_PC2W_P1_ATTEMPT002_RUNNER_READY_FOR_EXECUTION"
+  },
+  "authorization_state": {
+    "p1_attempt002_start_query_stop_authorized": true,
+    "user_attested_all_docker_stopped": true,
+    "independent_stopped_pre_gate_required": true,
+    "automatic_retry_authorized": false,
+    "image_pull_or_build_authorized": false,
+    "container_create_or_run_authorized": false,
+    "materialization_authorized": false,
+    "training_authorized": false,
+    "evaluation_authorized": false,
+    "test_access_authorized": false
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0
+  }
+}
