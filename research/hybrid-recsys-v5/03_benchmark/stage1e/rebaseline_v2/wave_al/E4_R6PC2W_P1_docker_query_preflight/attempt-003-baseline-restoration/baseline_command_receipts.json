@@ -1,0 +1,205 @@
+{
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt003-baseline-command-receipts-1.0",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "run",
+    "origin_date": "2026-08-23T20:00:38.388986Z",
+    "verification_status": "UNVERIFIED",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt003_baseline_execution_v3",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_pc2w_p1_attempt003_user_authorization_v3",
+      "stage1e_e4_r6_pc2w_p1_attempt003_baseline_contract_v1"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-24T01:12:40.9534228+07:00",
+      "declared_by": "scholar"
+    }
+  },
+  "stage_id": "E4-R6-PC2W-P1-ATTEMPT003-BASELINE",
+  "created_at": "2026-08-23T20:00:38.388986Z",
+  "commands": [
+    {
+      "command_id": "B00_DOCKER_DESKTOP_STATUS_BEFORE",
+      "argv": [
+        "C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe",
+        "desktop",
+        "status"
+      ],
+      "shell": false,
+      "timeout_seconds": 30,
+      "started_at": "2026-08-23T20:00:38.388986Z",
+      "ended_at": "2026-08-23T20:00:38.532113Z",
+      "elapsed_seconds": 0.14,
+      "exit_code": 0,
+      "timed_out": false,
+      "spawn_exception_type": null,
+      "spawn_exception_message_sha256": null,
+      "stdout_bytes": 111,
+      "stdout_sha256": "aaaffabb399ddb738904906a8259ac80a92592eaf58a4dab8bc99bffe4b6d018",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command_id": "B01_WSL_LIST_BEFORE",
+      "argv": [
+        "C:\\WINDOWS\\System32\\wsl.exe",
+        "--list",
+        "--verbose"
+      ],
+      "shell": false,
+      "timeout_seconds": 30,
+      "started_at": "2026-08-23T20:00:38.532113Z",
+      "ended_at": "2026-08-23T20:00:38.581341Z",
+      "elapsed_seconds": 0.047,
+      "exit_code": 0,
+      "timed_out": false,
+      "spawn_exception_type": null,
+      "spawn_exception_message_sha256": null,
+      "stdout_bytes": 168,
+      "stdout_sha256": "4b6e9c514dbe1440dad384d7dde4649a8af4a5f6ebbc1ce2bbef96d1b0bf4ed2",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command_id": "B02_DAEMON_VERSION_BEFORE",
+      "argv": [
+        "C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe",
+        "version",
+        "--format",
+        "{{json .Server}}"
+      ],
+      "shell": false,
+      "timeout_seconds": 30,
+      "started_at": "2026-08-23T20:00:38.581341Z",
+      "ended_at": "2026-08-23T20:00:38.654084Z",
+      "elapsed_seconds": 0.078,
+      "exit_code": 0,
+      "timed_out": false,
+      "spawn_exception_type": null,
+      "spawn_exception_message_sha256": null,
+      "stdout_bytes": 915,
+      "stdout_sha256": "fa593844e4f4f75a71d606a54b7329af579ecc1cffec65b92d84242557317258",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command_id": "B03_DOCKER_DESKTOP_STOP_ONCE",
+      "argv": [
+        "C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe",
+        "desktop",
+        "stop"
+      ],
+      "shell": false,
+      "timeout_seconds": 180,
+      "started_at": "2026-08-23T20:00:38.655661Z",
+      "ended_at": "2026-08-23T20:00:57.908180Z",
+      "elapsed_seconds": 19.25,
+      "exit_code": 0,
+      "timed_out": false,
+      "spawn_exception_type": null,
+      "spawn_exception_message_sha256": null,
+      "stdout_bytes": 29,
+      "stdout_sha256": "c4ed0e5b1c3f7042bc1743fd09ea47af6ecc5878e72f6a444895489894af51b0",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command_id": "B04_WSL_SHUTDOWN_ONCE",
+      "argv": [
+        "C:\\WINDOWS\\System32\\wsl.exe",
+        "--shutdown"
+      ],
+      "shell": false,
+      "timeout_seconds": 180,
+      "started_at": "2026-08-23T20:00:57.908180Z",
+      "ended_at": "2026-08-23T20:00:59.011722Z",
+      "elapsed_seconds": 1.094,
+      "exit_code": 0,
+      "timed_out": false,
+      "spawn_exception_type": null,
+      "spawn_exception_message_sha256": null,
+      "stdout_bytes": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command_id": "B05_DOCKER_DESKTOP_STATUS_AFTER",
+      "argv": [
+        "C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe",
+        "desktop",
+        "status"
+      ],
+      "shell": false,
+      "timeout_seconds": 30,
+      "started_at": "2026-08-23T20:00:59.011722Z",
+      "ended_at": "2026-08-23T20:01:09.238323Z",
+      "elapsed_seconds": 10.234,
+      "exit_code": 1,
+      "timed_out": false,
+      "spawn_exception_type": null,
+      "spawn_exception_message_sha256": null,
+      "stdout_bytes": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_bytes": 118,
+      "stderr_sha256": "ac56c00523d1e789934f4d2fe1e2e09ac3ae557565000bfc053a3ae0cc7eb466"
+    },
+    {
+      "command_id": "B06_DAEMON_VERSION_AFTER",
+      "argv": [
+        "C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe",
+        "version",
+        "--format",
+        "{{json .Server}}"
+      ],
+      "shell": false,
+      "timeout_seconds": 30,
+      "started_at": "2026-08-23T20:01:09.238323Z",
+      "ended_at": "2026-08-23T20:01:09.376828Z",
+      "elapsed_seconds": 0.141,
+      "exit_code": 1,
+      "timed_out": false,
+      "spawn_exception_type": null,
+      "spawn_exception_message_sha256": null,
+      "stdout_bytes": 5,
+      "stdout_sha256": "38e0b9de817f645c4bec37c0d4a3e58baecccb040f5718dc069a72c7385a0bed",
+      "stderr_bytes": 224,
+      "stderr_sha256": "e9133cf10b02b0b91c8b119848513db0ac541e7c3c19681266939e4b9952f7cc"
+    },
+    {
+      "command_id": "B07_WSL_LIST_AFTER",
+      "argv": [
+        "C:\\WINDOWS\\System32\\wsl.exe",
+        "--list",
+        "--verbose"
+      ],
+      "shell": false,
+      "timeout_seconds": 30,
+      "started_at": "2026-08-23T20:01:09.376828Z",
+      "ended_at": "2026-08-23T20:01:09.416829Z",
+      "elapsed_seconds": 0.031,
+      "exit_code": 0,
+      "timed_out": false,
+      "spawn_exception_type": null,
+      "spawn_exception_message_sha256": null,
+      "stdout_bytes": 168,
+      "stdout_sha256": "dc13954380db49c466106cb014459baf3aaf2fcf9bffacc70ac56d6be9b64b35",
+      "stderr_bytes": 0,
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "command_ids": [
+    "B00_DOCKER_DESKTOP_STATUS_BEFORE",
+    "B01_WSL_LIST_BEFORE",
+    "B02_DAEMON_VERSION_BEFORE",
+    "B03_DOCKER_DESKTOP_STOP_ONCE",
+    "B04_WSL_SHUTDOWN_ONCE",
+    "B05_DOCKER_DESKTOP_STATUS_AFTER",
+    "B06_DAEMON_VERSION_AFTER",
+    "B07_WSL_LIST_AFTER"
+  ],
+  "automatic_retry_count": 0,
+  "raw_stdout_or_stderr_persisted": false
+}
