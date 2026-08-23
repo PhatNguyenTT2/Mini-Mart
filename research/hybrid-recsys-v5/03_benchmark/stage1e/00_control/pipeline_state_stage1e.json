@@ -778,7 +778,7 @@
       "next_gate": "SUPERSEDED_BY_USER_DECISION_AUTHORIZE_TARGETED_SOURCE_ONLY_EVIDENCE_MATERIALIZATION_REDESIGN"
     },
     "e4_r5": {
-      "status": "R6_PC0_CONTAINMENT_FEASIBILITY_CONTRACT_FROZEN_AWAITING_RUNNER_AND_DISPATCH",
+      "status": "R6_PC2W_P1_ATTEMPT001_FAIL_CLOSED_PREEXISTING_BACKEND_RUNNING_AWAITING_USER_DECISION",
       "entry_checkpoint": "USER_CONFIRMED_TARGETED_SOURCE_ONLY_EVIDENCE_MATERIALIZATION_REDESIGN",
       "source_stage": "R4-G0",
       "source_verdict": "NO_ADMISSIBLE_BUNDLE_STOP_FAIL_CLOSED",
@@ -939,7 +939,7 @@
         "benchmark_admission_authorized": false
       },
       "r6": {
-        "status": "R6_PC2W_CURRENT_HOST_WSL2_CONDITIONAL_PREFLIGHT_COMPLETE_AWAITING_P1_AUTHORIZATION",
+        "status": "R6_PC2W_P1_ATTEMPT001_FAIL_CLOSED_PREEXISTING_BACKEND_RUNNING_AWAITING_USER_DECISION",
         "stage_map": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_materialization_stage_map.json",
         "contract": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_bounded_materialization_contract.md",
         "s0": {
@@ -1310,7 +1310,7 @@
           "next_gate": "EXPLICIT_CHANGED_HOST_DECISION_AND_FRESH_PC2_READ_ONLY_HOST_PREFLIGHT_AUTHORIZATION"
         },
         "pc2w": {
-          "status": "CONDITIONAL_CURRENT_HOST_WSL2_DOCKER_LINUX_LANE_DISCOVERED_QUERY_ONLY_BACKEND_PROBE_REQUIRED",
+          "status": "P1_ATTEMPT001_FAIL_CLOSED_PRE_START_BASELINE_NOT_STOPPED_NO_AUTOMATIC_RETRY",
           "purpose": "REOPEN_CURRENT_HOST_WITH_NO_OS_EDITION_UPGRADE_USING_A_PREVIOUSLY_UNEVALUATED_WSL2_LINUX_CONTAINER_LANE",
           "user_decision": "CONTINUE_CURRENT_MACHINE_NO_OS_EDITION_UPGRADE_COST_CONSTRAINED_WSL2_DIRECTION",
           "threat_model": "TRUSTED_PINNED_RESEARCH_CODE",
@@ -1319,6 +1319,10 @@
           "contract": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_current_host_wsl2_linux_admission_contract.md",
           "receipt": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_read_only_preflight_receipt.json",
           "p1_requirements": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_docker_query_preflight_requirements.json",
+          "p1_attempt001_output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_al/E4_R6PC2W_P1_docker_query_preflight/attempt-001",
+          "p1_attempt001_validation_receipt": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt001_validation_receipt.json",
+          "p1_attempt001_validator": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_p1_attempt001.py",
+          "p1_attempt001_execution_checkpoint": "6237e196d5bc689cb004c2149ff8a81e82410ddf",
           "validator": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_preflight.py",
           "central_checkpoint": "d6fbd4c5fe794b8847199dd4e0c4785c97c4d5bb",
           "current_host": {
@@ -1330,8 +1334,8 @@
             "default_wsl_version": 2,
             "docker_desktop_version": "4.78.0.229452",
             "docker_context": "desktop-linux",
-            "docker_desktop_running": false,
-            "docker_daemon_available": false,
+            "docker_desktop_running": true,
+            "docker_daemon_available": true,
             "user_linux_distribution_present": false,
             "docker_desktop_internal_distribution_present": true,
             "ram_bytes": 25077805056,
@@ -1357,11 +1361,33 @@
             "evaluation_authorized": false,
             "test_access_authorized": false
           },
+          "p1_attempt001": {
+            "verdict": "FAIL_CLOSED_PC2W_BACKEND_OR_POLICY_NOT_ADMISSIBLE",
+            "failure_class": "PRE_START_BASELINE_NOT_STOPPED",
+            "commands_recorded": 9,
+            "startup_attempts": 0,
+            "stop_attempts": 0,
+            "automatic_retry_count": 0,
+            "runner_started_backend": false,
+            "runner_stopped_backend": false,
+            "preexisting_backend_start_attribution": "UNKNOWN_NOT_INFERRED",
+            "docker_desktop_before": "running",
+            "docker_desktop_after": "running",
+            "desktop_linux_daemon_before": "REACHABLE",
+            "desktop_linux_daemon_after": "REACHABLE",
+            "image_pull_or_build_performed": false,
+            "container_create_or_run_performed": false,
+            "materialization_performed": false,
+            "scientific_execution_performed": false,
+            "test_access_performed": false,
+            "attempt_authorization_consumed": true,
+            "new_attempt_authorized": false
+          },
           "scientific_execution_performed": false,
           "result_status": "NOT_RUN",
           "test_set_opened": "NO",
           "accepted_result_rows": 0,
-          "next_gate": "EXPLICIT_PC2W_P1_DOCKER_DESKTOP_START_QUERY_ONLY_PROBE_AND_STOP_AUTHORIZATION"
+          "next_gate": "EXPLICIT_USER_DECISION_REQUIRED_FOR_ANY_SEPARATE_BASELINE_RESTORATION_AND_NEW_PC2W_P1_ATTEMPT_NO_AUTOMATIC_RETRY"
         },
         "m0_m1": {
           "status": "ATTEMPT002_FAIL_CLOSED_BOTH_ROOTS_RETAINED_IMMUTABLE",
@@ -1426,7 +1452,7 @@
         "project_benchmark_numbers": "INVALID_FOR_PAPER"
       },
       "execution_authorized": false,
-      "next_gate": "OBTAIN_EXPLICIT_PC2W_P1_DOCKER_DESKTOP_START_QUERY_ONLY_PROBE_AND_STOP_AUTHORIZATION"
+      "next_gate": "EXPLICIT_USER_DECISION_REQUIRED_FOR_ANY_SEPARATE_BASELINE_RESTORATION_AND_NEW_PC2W_P1_ATTEMPT_NO_AUTOMATIC_RETRY"
     }
   },
   "central_preregistration_lock": "PASS_R6_S0_BOUNDED_MATERIALIZATION_SCOPE_LOCKED",
@@ -1434,5 +1460,5 @@
   "harmonized_v5": "BLOCKED",
   "external_validation": "BLOCKED",
   "efficiency": "BLOCKED_AFTER_ACCURACY",
-  "next_gate": "Authorize one R6-PC2W-P1 start of the already installed Docker Desktop WSL2 backend, query-only runtime inventory and stop-after-probe. Image acquisition/build, container creation/run, settings changes, materialization, R6-C1R3-LINUX execution, training, evaluation, benchmark admission and TEST access remain blocked."
+  "next_gate": "PC2W-P1 attempt-001 is sealed fail-closed because Docker Desktop and desktop-linux were already running before the runner. Any separate baseline restoration and new attempt requires an explicit user decision; automatic retry, image acquisition/build, container creation/run, settings changes, materialization, R6-C1R3-LINUX execution, training, evaluation, benchmark admission and TEST access remain blocked."
 }
