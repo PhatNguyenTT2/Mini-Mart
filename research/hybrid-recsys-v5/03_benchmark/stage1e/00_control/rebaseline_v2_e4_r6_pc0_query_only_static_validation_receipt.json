@@ -1,0 +1,103 @@
+{
+  "schema_version": "stage1e-e4-r6-pc0-query-only-static-validation-receipt-1.0",
+  "created_at": "2026-08-23T00:00:00+07:00",
+  "stage_id": "E4-R6-PC0",
+  "status": "COMPLETE_CENTRALLY_VALIDATED_AWAITING_EXPLICIT_PREFLIGHT_CONFIRMATION",
+  "verdict": "PASS_R6_PC0_RUNNER_DISPATCH_STATIC_VALIDATION",
+  "entry_commit": "36a0ae180f6a7b71adfd0241c2051ba2db2c037c",
+  "validation_scope": "STATIC_ONLY_RUNNER_NOT_EXECUTED",
+  "validator_execution": {
+    "python": "C:\\Users\\ACER\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe",
+    "flags": [
+      "-I",
+      "-B"
+    ],
+    "validator": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc0_mxc_probe.py",
+      "raw_bytes": 21039,
+      "raw_sha256": "27cb10515eaed6e16a54d317c3a15f44fecf8a8e66fcf5656983be228d791880"
+    },
+    "exit_code": 0,
+    "checks_total": 97,
+    "checks_passed": 97,
+    "failure_count": 0,
+    "failures": []
+  },
+  "validated_artifacts": {
+    "runner": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc0_mxc_probe.py",
+      "raw_bytes": 27982,
+      "raw_sha256": "4c8025276eaf834480d0575043d9b6bd6e8e33b1edcba9329e554252dced94c1"
+    },
+    "dispatch": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc0_mxc_probe_dispatch.json",
+      "raw_bytes": 8167,
+      "raw_sha256": "637b02241d0d94cde610495b17f686e6c0652cafcea86449dbab1961a2426927"
+    },
+    "frozen_inputs": "11/11"
+  },
+  "validated_properties": [
+    "STRICT_JSON_AND_EXACT_FROZEN_INPUT_FINGERPRINTS",
+    "STDLIB_ONLY_AST_AND_NO_FILESYSTEM_WRITE_PRIMITIVES",
+    "NO_NETWORK_DOWNLOAD_ZIP_POWERSHELL_OR_AUTHENTICODE_PATH",
+    "FROZEN_ABSOLUTE_GIT_IDENTITY_AND_READ_ONLY_CONFIG_ISOLATION",
+    "EXACT_PROCESSMODEL_DLL_IDENTITY_AND_REQUIRED_EXPORT_GUARDS",
+    "QUERY_SANDBOX_SUPPORT_IS_IN_PROCESS_AND_SINGLE_CALL",
+    "CREATE_PROCESS_IN_SANDBOX_IS_NEVER_CALLED",
+    "MATERIALIZE_AND_PROBE_MODES_ARE_HARD_DENIED",
+    "CAPABILITY_BIT_CLEAR_IS_FAIL",
+    "CAPABILITY_BIT_SET_IS_INCOMPLETE_POLICY_TEST_REQUIRED",
+    "PASS_EXIT_IS_UNREACHABLE",
+    "PARENT_BOOTSTRAP_IS_NOT_AUTHORIZED",
+    "TRAINING_EVALUATION_BENCHMARK_AND_TEST_ACCESS_REMAIN_FORBIDDEN"
+  ],
+  "audit_chain": {
+    "initial_worker": {
+      "task_id": "01a02bde-1a03-7b72-b5bc-6d0ff5b5ef72",
+      "model": "Sol High Standard",
+      "status": "SUPERSEDED"
+    },
+    "independent_auditor": {
+      "task_id": "01a02bf6-5bee-7a22-98f7-9e6b4bcd92a8",
+      "model": "Sol XHigh Standard",
+      "verdict": "REWORK_DENY_PREFLIGHT_MATERIALIZE_PROBE"
+    },
+    "query_only_rework_and_static_validation": {
+      "context": "CENTRAL",
+      "model": "Sol Max Standard"
+    },
+    "model_provenance_scope": "DECLARED_NOT_CRYPTOGRAPHIC_ATTESTATION"
+  },
+  "explicitly_not_validated": [
+    "RUNTIME_GIT_CLEANLINESS_AND_HEAD_BLOB_REPLAY",
+    "RUNTIME_WINDOWS_BUILD_LOCK",
+    "RUNTIME_PROCESSMODEL_EXPORT_PARSE",
+    "RUNTIME_QUERY_SANDBOX_SUPPORT_RETURN_CODE_OR_CAPABILITY_MASK",
+    "FILESYSTEM_OR_NETWORK_CONTAINMENT_POLICY",
+    "MXC_RELEASE_ASSET_MATERIALIZATION_OR_BINARY_PROBE",
+    "DATASET_OR_ENVIRONMENT_MATERIALIZATION",
+    "TRAINING_EVALUATION_OR_BENCHMARK"
+  ],
+  "next_gate": {
+    "status": "AWAITING_EXPLICIT_USER_CONFIRMATION",
+    "action": "RUN_READ_ONLY_QUERY_ONLY_PREFLIGHT_FROM_CLEAN_COMMITTED_CHECKPOINT",
+    "expected_outcomes": {
+      "exit_1": "FAIL_AND_REJECT_MXC_CANDIDATE",
+      "exit_2": "INCOMPLETE_AND_REQUIRE_SEPARATE_TOY_CONTAINMENT_AUTHORITY",
+      "exit_0": "UNREACHABLE"
+    }
+  },
+  "truth_state": {
+    "runner_executed": false,
+    "query_api_called": false,
+    "source_downloaded": false,
+    "materialization_executed": false,
+    "probe_executed": false,
+    "result_status": "NOT_RUN",
+    "test_set_opened": "NO",
+    "accepted_result_rows": 0,
+    "scientific_execution_performed": false,
+    "benchmark_admitted": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

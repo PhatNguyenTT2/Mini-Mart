@@ -1,0 +1,75 @@
+{
+  "schema_version": "stage1e-e4-r6-pc0-query-api-source-lock-1.0",
+  "created_at": "2026-08-23",
+  "status": "FROZEN_SOURCE_LOCK_READ_ONLY_NOT_EXECUTED",
+  "stage_id": "R6-PC0-S0-QUERY-SANDBOX-SUPPORT-SOURCE-LOCK",
+  "ars_workflow": {
+    "router": "ars-codex:academic-research-suite 0.1.26",
+    "selected_workflow": "experiment-agent",
+    "mode": "fail-closed source and API signature lock",
+    "scientific_execution_performed": false
+  },
+  "central_context": {
+    "display_name": "Sol Max Standard",
+    "speed_profile": "standard",
+    "fast_or_priority_profile_used": false
+  },
+  "provider_source": {
+    "provider": "Microsoft",
+    "repository": "https://github.com/microsoft/mxc",
+    "tag": "v0.7.0-rc1",
+    "commit": "0e02a720e32416b151dbcb0a00e3d4ac2b891559",
+    "commit_tree": "9058c16aa72854625a82034814a85b5ba0bd62a2",
+    "path": "src/backends/appcontainer/common/src/base_container_runner.rs",
+    "git_blob_sha1": "f5e6c25275cf2f44fd7899b550ee44d462b686b6",
+    "raw_bytes": 54202,
+    "raw_sha256": "c279bb2a35243e1a9e54ee2297ae39aba788779669a4119a4991ba3ae20b98f0",
+    "raw_url": "https://raw.githubusercontent.com/microsoft/mxc/0e02a720e32416b151dbcb0a00e3d4ac2b891559/src/backends/appcontainer/common/src/base_container_runner.rs"
+  },
+  "api_contract": {
+    "library": "C:\\Windows\\System32\\processmodel.dll",
+    "export": "Experimental_QuerySandboxSupport",
+    "authoritative_signature": "unsafe extern system fn(capabilities: *mut u64) -> i32",
+    "success_semantics": "nonzero BOOL means the u64 capability mask is valid",
+    "failure_semantics": "zero BOOL means unknown/failure and must not be interpreted as unsupported",
+    "create_capability_name": "SANDBOX_CAP_CREATE_PROCESS_IN_SANDBOX",
+    "create_capability_mask_hex": "0x0000000000000001",
+    "create_capability_mask_decimal": 1,
+    "query_is_read_only": true,
+    "fallback_create_api_call_allowed": false,
+    "symbol_presence_alone_is_admission_sufficient": false,
+    "policy_specific_filesystem_or_network_proof_from_bit_zero": false
+  },
+  "local_library_identity": {
+    "path": "C:\\Windows\\System32\\processmodel.dll",
+    "raw_bytes": 192512,
+    "raw_sha256": "7d18a80be826916e59ca1a49c692d8e59ab55a39c865dd664f469758b20177d5",
+    "required_exports_observed_as_raw_binary_strings": [
+      "Experimental_CreateProcessInSandbox",
+      "Experimental_QuerySandboxSupport"
+    ],
+    "capability_query_executed": false
+  },
+  "retrieval_evidence": {
+    "github_api_metadata_query": "READ_ONLY",
+    "raw_source_download": "MEMORY_ONLY_NO_FILE_WRITTEN",
+    "signature_literal_present": true,
+    "capability_constant_literal_present": true,
+    "network_asset_or_binary_downloaded": false
+  },
+  "gate_logic": {
+    "query_failure_or_unknown": "FAIL_CLOSED_OR_INCOMPLETE_NOT_PASS",
+    "create_bit_clear": "FAIL_R6_PC0_NATIVE_CREATE_CAPABILITY_ABSENT",
+    "create_bit_set": "INCOMPLETE_R6_PC0_NATIVE_CREATE_CAPABILITY_PRESENT_POLICY_TEST_REQUIRED",
+    "pass_reachable_from_read_only_query": false,
+    "materialization_authorized": false,
+    "downloaded_probe_authorized": false,
+    "toy_policy_test_authorized": false
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

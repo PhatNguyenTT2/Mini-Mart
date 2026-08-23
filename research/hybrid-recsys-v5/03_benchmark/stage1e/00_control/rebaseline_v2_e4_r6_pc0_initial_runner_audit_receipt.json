@@ -1,0 +1,141 @@
+{
+  "schema_version": "stage1e-e4-r6-pc0-initial-runner-audit-receipt-1.0",
+  "created_at": "2026-08-23",
+  "stage_id": "R6-PC0-INITIAL-RUNNER-INDEPENDENT-AUDIT",
+  "status": "REWORK_REQUIRED_DO_NOT_STATIC_ADMIT_OR_EXECUTE",
+  "entry_checkpoint": "36a0ae180f6a7b71adfd0241c2051ba2db2c037c",
+  "ars_workflow": {
+    "router": "ars-codex:academic-research-suite 0.1.26",
+    "selected_workflow": "experiment-agent",
+    "mode": "fail-closed independent static security and admission audit",
+    "scientific_execution_performed": false
+  },
+  "candidate": {
+    "runner_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc0_mxc_probe.py",
+    "initial_uncommitted_runner_bytes": 76585,
+    "initial_uncommitted_runner_sha256": "3683875c782fc2835ea573ee795776432df944b33b60e7f6485cf5315d8f81d8",
+    "dispatch_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc0_mxc_probe_dispatch.json",
+    "initial_uncommitted_dispatch_bytes": 17816,
+    "initial_uncommitted_dispatch_sha256": "2b145d209676eac618f3d8854dd86a820ef6e534bef611cc6d22eff14f8620a8",
+    "worker_profile_declared": "Sol High Standard",
+    "worker_runtime_model_id_declared": "gpt-5.6-sol",
+    "worker_reasoning_effort_declared": "high",
+    "worker_speed_profile_declared": "standard",
+    "provenance_verification": "DECLARED_RUNTIME_PROVENANCE_NOT_CRYPTOGRAPHIC_ATTESTATION"
+  },
+  "auditor": {
+    "agent_id": "01a02bf6-5bee-7a22-98f7-9e6b4bcd92a8",
+    "nickname": "Feynman",
+    "display_name": "Sol XHigh Standard",
+    "runtime_model_id": "gpt-5.6-sol",
+    "reasoning_effort": "xhigh",
+    "speed_profile": "standard",
+    "fast_or_priority_profile_used": false,
+    "write_scope": "READ_ONLY"
+  },
+  "verdict": {
+    "static_admission": "DENY",
+    "preflight": "DENY_INITIAL_DRAFT",
+    "materialize": "DENY",
+    "probe": "DENY",
+    "pass_reachable_from_generic_probe": false,
+    "finding_count": 12
+  },
+  "findings": [
+    {
+      "id": "PA01_AMBIENT_GIT_CONTROL",
+      "severity": "CRITICAL",
+      "gate": "BEFORE_STATIC_COMMIT",
+      "required_resolution": "Freeze absolute core git.exe identity, isolate Git environment/config/worktree and disable optional locks."
+    },
+    {
+      "id": "PA02_DISPATCH_AND_PROVENANCE_TRUST_ANCHOR",
+      "severity": "HIGH",
+      "gate": "BEFORE_STATIC_COMMIT",
+      "required_resolution": "Strictly validate critical dispatch sections and freeze central static receipt and execution checkpoint."
+    },
+    {
+      "id": "PA03_UNTRACKED_CANDIDATE_CANNOT_PASS_CLEAN_GATE",
+      "severity": "HIGH",
+      "gate": "BEFORE_PREFLIGHT",
+      "required_resolution": "Rework, independently validate and commit before any preflight invocation."
+    },
+    {
+      "id": "PA04_GITHUB_RELEASE_ZERO_REDIRECT_INFEASIBLE",
+      "severity": "HIGH",
+      "gate": "BEFORE_MATERIALIZE",
+      "required_resolution": "Use an exact bounded GitHub-to-release-assets redirect policy if materialization is separately authorized."
+    },
+    {
+      "id": "PA05_ARCHIVE_TOCTOU_AND_PATH_CREATION_RACES",
+      "severity": "CRITICAL",
+      "gate": "BEFORE_MATERIALIZE",
+      "required_resolution": "Use handle identity, per-member hashes, no-follow creation and complete Windows path rejection."
+    },
+    {
+      "id": "PA06_AUTHENTICODE_CONTROL_LANE_NOT_CONTAINED",
+      "severity": "CRITICAL",
+      "gate": "BEFORE_MATERIALIZE",
+      "required_resolution": "Use bounded offline in-process verification or separately contained and sanitized control execution."
+    },
+    {
+      "id": "PA07_PE32_PLUS_AND_SIGNATURE_CLOSURE_INCOMPLETE",
+      "severity": "HIGH",
+      "gate": "BEFORE_MATERIALIZE",
+      "required_resolution": "Require AMD64 PE32+, detect all PE images by header and reverify the promoted closure."
+    },
+    {
+      "id": "PA08_BOUNDS_JOURNAL_AND_FAILED_ROOT_SEALING",
+      "severity": "HIGH",
+      "gate": "BEFORE_MATERIALIZE",
+      "required_resolution": "Enforce chunk and process-tree bounds, safe journal creation and an explicit retained-root manifest."
+    },
+    {
+      "id": "PA09_MUTABLE_RECEIPT_PATH_ESCAPE",
+      "severity": "CRITICAL",
+      "gate": "BEFORE_PROBE",
+      "required_resolution": "Freeze materialization receipt/package identity and enforce canonical no-follow paths under the exact package root."
+    },
+    {
+      "id": "PA10_PROBE_PROCESS_TREE_FILESYSTEM_NETWORK_UNCONTAINED",
+      "severity": "CRITICAL",
+      "gate": "BEFORE_PROBE",
+      "required_resolution": "Keep downloaded probe denied until a separately authorized OS-enforced process-tree policy exists."
+    },
+    {
+      "id": "PA11_POST_SNAPSHOT_CONTROL_LANE_OPEN",
+      "severity": "CRITICAL",
+      "gate": "BEFORE_PROBE",
+      "required_resolution": "No subprocess after final snapshot and require exact expected-delta closure after declared evidence writes."
+    },
+    {
+      "id": "PA12_INCOMPLETE_EXIT_CODE_ZERO",
+      "severity": "HIGH",
+      "gate": "BEFORE_PROBE",
+      "required_resolution": "Reserve zero for exact PASS; use nonzero distinct codes for FAIL and INCOMPLETE."
+    }
+  ],
+  "central_followup_evidence": {
+    "github_release_initial_response": 302,
+    "github_release_final_host": "release-assets.githubusercontent.com",
+    "github_release_final_response": 200,
+    "github_release_final_content_length": 180948670,
+    "external_root_exists": false,
+    "external_root_parent_exists": false,
+    "nearest_existing_ancestor": "E:\\UIT\\cv",
+    "parent_bootstrap_required": true
+  },
+  "approved_rework_direction": {
+    "runner_scope": "READ_ONLY_QUERY_SANDBOX_SUPPORT_PREFLIGHT_ONLY",
+    "materialize_mode": "HARD_DENIED",
+    "downloaded_probe_mode": "HARD_DENIED",
+    "query_source_lock": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc0_query_api_source_lock.json",
+    "pass_reachable": false
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}
