@@ -1,0 +1,121 @@
+{
+  "schema_version": "stage1e-e4-r6-pc2w-p1-docker-query-preflight-requirements-1.0",
+  "stage_id": "E4-R6-PC2W-P1",
+  "created_at": "2026-08-24T00:41:27.8278889+07:00",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "plan",
+    "origin_date": "2026-08-24T00:41:27.8278889+07:00",
+    "verification_status": "UNVERIFIED",
+    "version_label": "stage1e_e4_r6_pc2w_p1_requirements_v1",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_pc2w_contract_v1",
+      "stage1e_e4_r6_pc2w_preflight_receipt_v1"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-24T00:41:27.8278889+07:00",
+      "declared_by": "scholar"
+    }
+  },
+  "purpose": "Define the separately authorized, query-only Docker Desktop startup and runtime-inventory probe required before central admission of the current-host WSL2 Linux-container candidate.",
+  "candidate": "DOCKER_DESKTOP_WSL2_LINUX_CONTAINER_FOR_TRUSTED_PINNED_RESEARCH_CODE",
+  "entry_verdict": "CONDITIONAL_CURRENT_HOST_WSL2_DOCKER_LINUX_LANE_DISCOVERED_QUERY_ONLY_BACKEND_PROBE_REQUIRED",
+  "authorization_state": {
+    "backend_start_authorized": false,
+    "backend_stop_after_probe_authorized": false,
+    "query_only_probe_authorized": false,
+    "image_pull_or_build_authorized": false,
+    "container_create_or_run_authorized": false,
+    "docker_settings_change_authorized": false,
+    "wsl_settings_change_authorized": false,
+    "package_or_distro_install_authorized": false,
+    "data_or_source_download_authorized": false,
+    "materialization_authorized": false,
+    "training_authorized": false,
+    "evaluation_authorized": false,
+    "test_access_authorized": false
+  },
+  "declared_startup_effects": [
+    "start the already installed Docker Desktop application and its WSL2 docker-desktop backend",
+    "create or append Docker Desktop and WSL runtime logs and normal transient runtime state",
+    "start local services and named pipes required by the existing installation",
+    "Docker Desktop may perform vendor update, telemetry, entitlement or sign-in checks unless disabled by existing settings; no claim of zero startup network is allowed without connection evidence",
+    "stop Docker Desktop after the probe and record whether docker-desktop returns to Stopped"
+  ],
+  "allowed_probe_surfaces": [
+    "Docker Desktop application, CLI and daemon versions",
+    "desktop-linux context endpoint and daemon reachability",
+    "server OS, architecture, kernel, containerd and storage-driver identities",
+    "server security options, cgroup version and root directory",
+    "installed runtime declarations including NVIDIA exposure without running a container",
+    "image and container cardinalities and immutable IDs already present",
+    "docker system df summary",
+    "declared proxy and registry configuration with credentials and secret values redacted",
+    "WSL distro state before start, during probe and after stop",
+    "C and E free-space observations before and after"
+  ],
+  "prohibited_probe_actions": [
+    "docker pull, build, create, run, exec, commit, import, load, tag, push, login, logout, rm, rmi, prune or system prune",
+    "Docker Desktop update, reset, factory reset, sign-in, settings edit or engine switch",
+    "WSL install, import, export, update, terminate, unregister, set-default or configuration edit",
+    "image, source, package, dataset or checkpoint acquisition",
+    "mounting E drive or any project path into a container",
+    "materialization, preprocessing, training, evaluation, benchmark or TEST access",
+    "automatic retry after a failed start or query"
+  ],
+  "required_evidence": {
+    "before": [
+      "Docker Desktop stopped and desktop-linux endpoint unavailable",
+      "docker-desktop WSL2 distro state",
+      "exact Docker Desktop executable path, version, byte size and SHA-256",
+      "exact WSL, kernel and Windows build identities",
+      "C and E free bytes"
+    ],
+    "during": [
+      "one startup attempt with timestamps and exit status",
+      "daemon version and info output with secret-bearing fields redacted",
+      "context, image, container, system-df and runtime inventory",
+      "process and WSL distro state",
+      "startup connection evidence if available without adding a tracing driver or changing firewall policy"
+    ],
+    "after": [
+      "one stop attempt if startup succeeded",
+      "daemon endpoint unavailable and docker-desktop distro stopped, or an explicit residual-state failure",
+      "C and E free-byte deltas",
+      "exact stdout and stderr hashes for every query",
+      "declaration that no prohibited Docker command was issued"
+    ]
+  },
+  "admission_checks_after_probe": [
+    "backend is Linux on amd64 and bound to desktop-linux",
+    "runtime identities are complete enough to pin a future image and runner",
+    "current disk headroom is at least 20 GiB on C and 50 GiB on E before any image acquisition proposal",
+    "no hidden running container or image mutation occurred during the probe",
+    "no credential value is persisted into research artifacts",
+    "standard WSL2 security limitations remain disclosed",
+    "a no-network offline execution command can be designed with --network none and --pull never",
+    "Windows attempt-003 packet is explicitly superseded for this lane rather than silently translated"
+  ],
+  "verdict_lanes": [
+    "PASS_PC2W_P1_QUERY_EVIDENCE_READY_FOR_CENTRAL_G1",
+    "FAIL_CLOSED_PC2W_BACKEND_OR_POLICY_NOT_ADMISSIBLE",
+    "HANDOFF_INCOMPLETE"
+  ],
+  "required_user_decision": "Explicitly authorize one Docker Desktop start, query-only probe, and stop-after-probe with the declared local-log and possible vendor-control-network effects. This authorization cannot be inferred from the earlier read-only PC2W preflight.",
+  "model_policy": {
+    "central_model": "gpt-5.6-sol",
+    "central_reasoning": "max",
+    "central_service_tier": "default",
+    "independent_audit_model": "gpt-5.6-sol",
+    "independent_audit_reasoning": "xhigh",
+    "independent_audit_service_tier": "default",
+    "fast_or_priority_allowed": false
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0
+  }
+}

@@ -1,0 +1,199 @@
+{
+  "schema_version": "stage1e-e4-r6-pc2w-current-host-read-only-preflight-receipt-1.0",
+  "stage_id": "E4-R6-PC2W",
+  "created_at": "2026-08-24T00:41:27.8278889+07:00",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "plan",
+    "origin_date": "2026-08-24T00:41:27.8278889+07:00",
+    "verification_status": "UNVERIFIED",
+    "version_label": "stage1e_e4_r6_pc2w_preflight_receipt_v1",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_pc1_admission_receipt_v1",
+      "stage1e_e4_r6_pc2w_contract_v1"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-24T00:41:27.8278889+07:00",
+      "declared_by": "scholar"
+    }
+  },
+  "central_checkpoint": "d6fbd4c5fe794b8847199dd4e0c4785c97c4d5bb",
+  "user_decision": {
+    "decision": "CONTINUE_CURRENT_MACHINE_NO_OS_EDITION_UPGRADE_COST_CONSTRAINED_WSL2_DIRECTION",
+    "scope_authorized": "PLAN_AND_READ_ONLY_HOST_WSL_DOCKER_PREFLIGHT_ONLY",
+    "backend_start_authorized": false,
+    "execution_authorized": false
+  },
+  "contract": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_current_host_wsl2_linux_admission_contract.md",
+    "canonical_lf_bytes": 11460,
+    "canonical_lf_sha256": "1d4591b5a74fdbb3e4f337e4d721970af1f992a45fd158f371c0465d575d5267"
+  },
+  "upstream_evidence": [
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc1_alternative_containment_admission_receipt.json",
+      "canonical_lf_bytes": 8167,
+      "canonical_lf_sha256": "45008cff8996a3b8fda7c0c5e6771da6f5a8c73430e6d3f76754dd93af061827"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2_changed_host_preflight_requirements.json",
+      "canonical_lf_bytes": 4062,
+      "canonical_lf_sha256": "8344335875269228910e6ef7695500715e4b110c4342f6e7ebf34b517a1bf904"
+    }
+  ],
+  "hash_policy": "Strict UTF-8 decode, normalize CRLF to LF, then SHA-256.",
+  "candidate": "DOCKER_DESKTOP_WSL2_LINUX_CONTAINER_FOR_TRUSTED_PINNED_RESEARCH_CODE",
+  "threat_model": {
+    "scope": "TRUSTED_PINNED_RESEARCH_CODE",
+    "hostile_workload_boundary_claimed": false,
+    "hyperv_isolated_equivalence_claimed": false,
+    "source_allowance": [
+      "locked official RecBole source",
+      "locked official GroupLens MovieLens 100K source",
+      "hash-locked official package and image sources after separate authorization"
+    ]
+  },
+  "official_sources": [
+    {
+      "claim": "WSL2 is available on Home desktop editions and uses Virtual Machine Platform, a subset of Hyper-V architecture.",
+      "url": "https://learn.microsoft.com/en-us/windows/wsl/faq"
+    },
+    {
+      "claim": "WSL2 runs a Linux kernel in a lightweight utility VM.",
+      "url": "https://learn.microsoft.com/en-us/windows/wsl/about"
+    },
+    {
+      "claim": "CUDA-capable ML frameworks can run in WSL2 on supported Windows and NVIDIA configurations.",
+      "url": "https://learn.microsoft.com/en-us/windows/ai/directml/gpu-cuda-in-wsl"
+    },
+    {
+      "claim": "Docker Desktop can use a WSL2 backend and does not require a separate user Linux distribution.",
+      "url": "https://docs.docker.com/desktop/features/wsl/"
+    },
+    {
+      "claim": "Windows Home is limited to Linux containers in the Docker Desktop Windows lane.",
+      "url": "https://docs.docker.com/desktop/setup/install/windows-install/"
+    },
+    {
+      "claim": "Containers have outbound connectivity by default and bind mounts are writable by default.",
+      "url": "https://docs.docker.com/engine/containers/run/"
+    },
+    {
+      "claim": "Bind mounts can be made read-only and otherwise may modify host files.",
+      "url": "https://docs.docker.com/engine/storage/bind-mounts/"
+    },
+    {
+      "claim": "Docker Desktop is free for education and personal use subject to its subscription terms.",
+      "url": "https://docs.docker.com/subscription/desktop-license/"
+    }
+  ],
+  "observation_mode": "READ_ONLY_NO_BACKEND_START_NO_DISTRO_START_NO_CONTAINER_NO_IMAGE_NO_DOWNLOAD",
+  "host": {
+    "cim_os_caption": "Microsoft Windows 11 Home Single Language",
+    "registry_product_name": "Windows 10 Home Single Language",
+    "edition_id": "CoreSingleLanguage",
+    "display_version": "25H2",
+    "windows_version": "10.0.26200",
+    "build": "26200.9168",
+    "architecture": "64-bit",
+    "manufacturer": "Acer",
+    "model": "Nitro AN515-45",
+    "cpu": "AMD Ryzen 7 5800H with Radeon Graphics",
+    "logical_processors": 16,
+    "total_memory_bytes": 25077805056,
+    "hypervisor_present": true,
+    "virtualization_firmware_enabled": true,
+    "slat_raw_cim": false,
+    "vm_monitor_mode_extensions_raw_cim": false,
+    "virtualization_interpretation": "OPERATIONAL_WSL2_POSITIVE_RAW_CIM_SLAT_FIELDS_CONTRADICTORY_RETAINED_AS_AMBIGUITY"
+  },
+  "storage": {
+    "c_free_bytes": 32812396544,
+    "e_free_bytes": 121980530688,
+    "c_pre_image_threshold_bytes": 21474836480,
+    "e_pre_materialization_threshold_bytes": 53687091200,
+    "threshold_status": "PASS_AT_OBSERVATION_RECHECK_REQUIRED_BEFORE_EACH_MUTATING_STAGE"
+  },
+  "wsl": {
+    "version": "2.6.1.0",
+    "kernel_version": "6.6.87.2-1",
+    "wslg_version": "1.0.66",
+    "default_version": 2,
+    "wsl_service_present": true,
+    "wsl_service_status": "Running",
+    "distributions": [
+      {
+        "name": "docker-desktop",
+        "state": "Stopped",
+        "version": 2,
+        "purpose": "Docker Desktop internal distribution"
+      }
+    ],
+    "user_linux_distribution_present": false,
+    "optional_feature_query": "UNAVAILABLE_REQUIRES_ELEVATED_WINDOWS_TOKEN"
+  },
+  "docker": {
+    "desktop_executable": "C:\\Program Files\\Docker\\Docker\\Docker Desktop.exe",
+    "desktop_version": "4.78.0.229452",
+    "desktop_executable_bytes": 13209520,
+    "desktop_executable_sha256": "5b8ab7161b88c45bd4b036e9988349356c18cf5409adb77fdfb8c73b279d8fce",
+    "client_version": "29.5.3",
+    "context_name": "desktop-linux",
+    "context_endpoint": "npipe:////./pipe/dockerDesktopLinuxEngine",
+    "daemon_endpoint_available": false,
+    "desktop_running": false,
+    "settings_store_sha256": "b0bd046928a80e18777ef7af0f504375b5f1f1a8bdb504d983a240beff3f260a",
+    "docker_users_member": true,
+    "active_administrators_member": false,
+    "lanman_server_status": "Running",
+    "lanman_server_start_type": "Automatic"
+  },
+  "gpu": {
+    "model": "NVIDIA GeForce RTX 3060 Laptop GPU",
+    "uuid": "GPU-339945a0-188b-7722-d5c3-523542711f35",
+    "total_memory_mib": 6144,
+    "free_memory_mib_at_observation": 5586,
+    "driver_version": "610.62",
+    "pc2w_requirement": "NOT_REQUIRED_CPU_ONLY",
+    "future_training_status": "SEPARATE_GATE_REQUIRED"
+  },
+  "ambiguities_and_blockers": [
+    "Docker daemon/server identity and backend security options are unavailable while Docker Desktop is stopped",
+    "Docker image store, storage driver, cgroup mode, proxy state, runtime declarations and current Docker disk use are unobserved",
+    "startup may create logs and vendor control-plane network traffic",
+    "standard WSL2 Docker isolation is not a hostile-workload boundary",
+    "Windows attempt-003 packet uses Windows CPython and paths and is not executable in this lane",
+    "exact Linux image digest and license are not selected or acquired",
+    "education or personal-use Docker license eligibility remains scholar-attested",
+    "raw CIM SLAT and VM-monitor fields conflict with the observed operational WSL2 runtime"
+  ],
+  "disposition": "CONDITIONAL_CURRENT_HOST_WSL2_DOCKER_LINUX_LANE_DISCOVERED_QUERY_ONLY_BACKEND_PROBE_REQUIRED",
+  "cost_effect": {
+    "os_edition_upgrade_required": false,
+    "new_physical_host_required_before_p1": false,
+    "new_user_linux_distro_required_for_docker_candidate": false,
+    "docker_desktop_license_cost_claim": "FREE_ONLY_IF_SCHOLAR_USE_FITS_EDUCATION_PERSONAL_OR_OTHER_PUBLISHED_FREE_CATEGORY",
+    "new_paid_service_authorized": false
+  },
+  "authorization_state": {
+    "backend_start_authorized": false,
+    "backend_probe_authorized": false,
+    "backend_install_or_enable_authorized": false,
+    "image_pull_or_build_authorized": false,
+    "container_create_or_run_authorized": false,
+    "source_or_data_download_authorized": false,
+    "filesystem_materialization_authorized": false,
+    "training_authorized": false,
+    "evaluation_authorized": false,
+    "test_access_authorized": false
+  },
+  "scientific_execution_performed": false,
+  "backend_start_performed": false,
+  "container_or_image_mutation_performed": false,
+  "result_status": "NOT_RUN",
+  "test_set_opened": "NO",
+  "accepted_result_rows": 0,
+  "next_gate": "OBTAIN_EXPLICIT_PC2W_P1_DOCKER_DESKTOP_START_QUERY_ONLY_PROBE_AND_STOP_AUTHORIZATION"
+}
