@@ -1,0 +1,69 @@
+{
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-observation-contract-1.0",
+  "stage_id": "E4-R6-PC2W-P1-ATTEMPT003-OFFLINE-EQUIVALENT-OBSERVATION",
+  "created_at": "2026-08-24T00:00:00+07:00",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "plan",
+    "origin_date": "2026-08-24T00:00:00+07:00",
+    "verification_status": "UNVERIFIED",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_contract_v1",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_pc2w_p1_attempt003_baseline_validation_v1",
+      "stage1e_e4_r6_pc2w_current_host_admission_contract_v1"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-24T01:12:40.9534228+07:00",
+      "declared_by": "scholar"
+    }
+  },
+  "purpose": "Perform exactly one read-only observation of an offline-equivalent Docker Desktop/WSL baseline without relabeling an unclassified Docker Desktop CLI error as stopped.",
+  "official_semantics": {
+    "docker_desktop_cli": "Docker Desktop CLI documents status as reporting running or stopped and stop as a synchronous stop unless detached.",
+    "wsl": "Microsoft documents wsl --shutdown as terminating all running distributions and the WSL 2 utility VM; list --running is the supported running-distribution observation surface.",
+    "source_urls": [
+      "https://docs.docker.com/desktop/features/desktop-cli/",
+      "https://docs.docker.com/reference/cli/docker/desktop/stop/",
+      "https://learn.microsoft.com/en-us/windows/wsl/basic-commands",
+      "https://learn.microsoft.com/en-us/windows/wsl/wsl-config"
+    ]
+  },
+  "allowed_commands_exactly_once": [
+    "docker desktop status",
+    "wsl --list --verbose",
+    "wsl --list --running --quiet",
+    "docker version --format {{json .Server}}",
+    "PowerShell exact-name Docker runtime process inventory returning names only"
+  ],
+  "admission_conditions": {
+    "docker_desktop_status_lane": "advisory_only; RUNNING blocks; exact STOPPED or unclassified nonzero may continue only when every independent lane passes",
+    "wsl_inventory": "strict complete parse; docker-desktop exists and is Stopped; every listed distribution is Stopped",
+    "wsl_running_inventory": "strict complete quiet parse with zero running distribution names",
+    "desktop_linux_daemon": "specifically_unavailable_named_pipe_missing_no_permission_error",
+    "docker_runtime_process_inventory": "strict JSON parse with zero allowlisted runtime process names",
+    "automatic_retry_count": 0
+  },
+  "forbidden": [
+    "docker desktop start or stop",
+    "wsl shutdown or terminate",
+    "image pull or build",
+    "container create, run, stop, remove or exec",
+    "settings change",
+    "install or download",
+    "materialization",
+    "training",
+    "evaluation",
+    "TEST"
+  ],
+  "failure_policy": "Any command timeout, spawn error, incomplete parser, running signal, reachable daemon, remaining target runtime process, permission-shaped daemon failure, or output ambiguity fails closed. No retry and no state mutation.",
+  "pass_verdict": "PASS_PC2W_P1_ATTEMPT003_OFFLINE_EQUIVALENT_BASELINE",
+  "failure_verdict": "FAIL_CLOSED_PC2W_P1_ATTEMPT003_OFFLINE_EQUIVALENT_BASELINE",
+  "next_gate_on_pass": "ATTEMPT003_START_QUERY_STOP_RUNNER_STATIC_AUDIT",
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0
+  }
+}
