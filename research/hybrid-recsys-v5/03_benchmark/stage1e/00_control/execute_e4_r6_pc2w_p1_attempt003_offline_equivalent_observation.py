@@ -4,6 +4,8 @@
 from __future__ import annotations
 
 import argparse
+import ctypes
+from ctypes import wintypes
 import hashlib
 import json
 import os
@@ -20,12 +22,14 @@ DOCKER = Path(r"C:\Program Files\Docker\Docker\resources\bin\docker.exe")
 DOCKER_DESKTOP = Path(r"C:\Program Files\Docker\Docker\Docker Desktop.exe")
 WSL = Path(os.environ.get("WINDIR", r"C:\Windows")) / "System32" / "wsl.exe"
 POWERSHELL = Path(os.environ.get("WINDIR", r"C:\Windows")) / "System32" / "WindowsPowerShell" / "v1.0" / "powershell.exe"
+PYTHON = Path(r"C:\Program Files\Python311\python.exe")
 
 EXPECTED_EXECUTABLES = {
     DOCKER: (42748848, "0cdb9dea2e39a0a29e5dc3f9732f572dc140547b28deab0495589b4f79b31ca1"),
     DOCKER_DESKTOP: (13209520, "5b8ab7161b88c45bd4b036e9988349356c18cf5409adb77fdfb8c73b279d8fce"),
     WSL: (278528, "7e9f5cee6d641481e5a942f0e08563bae9c17ee55f0aad888f9aa0be9a5d4757"),
     POWERSHELL: (454656, "7600ffe12da441fe89d035b13801e8e91d064bc544a27b19a5cf49f6ab8b18f5"),
+    PYTHON: (103192, "5f7b89a612c9b8af1d6456cdfcd1dbe5ca630849e79aebced9bee9a6694952ec"),
 }
 
 CONTROL_RELATIVE = Path("research/hybrid-recsys-v5/03_benchmark/stage1e/00_control")
@@ -46,10 +50,14 @@ EXPECTED_OUTPUT_FILES = {
 }
 EXPECTED_COMMAND_IDS = [
     "O00_DOCKER_DESKTOP_STATUS_ADVISORY",
-    "O01_WSL_LIST_VERBOSE",
-    "O02_WSL_LIST_RUNNING_QUIET",
-    "O03_DAEMON_VERSION_SERVER_ONLY",
-    "O04_DOCKER_RUNTIME_PROCESS_NAMES_ONLY",
+    "O01A_WSL_LIST_VERBOSE",
+    "O02A_WSL_LIST_RUNNING_QUIET",
+    "O03A_DAEMON_VERSION_SERVER_ONLY",
+    "O04A_DOCKER_RUNTIME_PROCESS_NAMES_ONLY",
+    "O01B_WSL_LIST_VERBOSE_STABILITY_BARRIER",
+    "O02B_WSL_LIST_RUNNING_QUIET_STABILITY_BARRIER",
+    "O03B_DAEMON_VERSION_SERVER_ONLY_STABILITY_BARRIER",
+    "O04B_DOCKER_RUNTIME_PROCESS_NAMES_ONLY_STABILITY_BARRIER",
 ]
 TARGET_RUNTIME_PROCESSES = {
     "docker desktop",
@@ -70,6 +78,8 @@ PROCESS_QUERY = (
 DAEMON_PIPE_MARKERS = ("dockerdesktoplinuxengine", "//./pipe/dockerdesktoplinuxengine")
 DAEMON_PIPE_MISSING_MARKERS = ("the system cannot find the file specified", "no such file or directory")
 PERMISSION_ERROR_MARKERS = ("access is denied", "permission denied", "unauthorized")
+DESKTOP_LINUX_PIPE = r"\\.\pipe\dockerDesktopLinuxEngine"
+ERROR_FILE_NOT_FOUND = 2
 
 
 class DuplicateKeyError(ValueError):
@@ -116,6 +126,17 @@ def decode_output(value: bytes) -> str:
     if value.count(b"\x00") > max(1, len(value) // 8):
         return value.decode("utf-16-le", errors="replace")
     return value.decode("utf-8", errors="replace")
+
+
+def decode_output_strict(value: bytes) -> tuple[str, bool]:
+    if not value:
+        return "", True
+    try:
+        if value.count(b"\x00") > max(1, len(value) // 8):
+            return value.decode("utf-16-le", errors="strict"), True
+        return value.decode("utf-8", errors="strict"), True
+    except UnicodeDecodeError:
+        return "", False
 
 
 def git(repo_root: Path, *args: str) -> str:
@@ -201,10 +222,13 @@ def classify_status(receipt: dict[str, Any], stdout: bytes, stderr: bytes) -> st
 
 
 def parse_wsl_verbose(value: bytes) -> tuple[list[dict[str, Any]], bool]:
+    text, decoded = decode_output_strict(value)
+    if not decoded or "\ufffd" in text or any(ord(char) < 32 and char not in "\r\n\t" for char in text):
+        return [], False
     rows: list[dict[str, Any]] = []
     seen_names: set[str] = set()
     header_seen = False
-    for raw_line in decode_output(value).replace("\x00", "").splitlines():
+    for raw_line in text.splitlines():
         line = raw_line.strip().lstrip("\ufeff")
         if not line:
             continue
@@ -229,8 +253,9 @@ def parse_wsl_verbose(value: bytes) -> tuple[list[dict[str, Any]], bool]:
 
 
 def parse_wsl_running_quiet(value: bytes) -> tuple[list[str], bool]:
-    text = decode_output(value).replace("\x00", "").lstrip("\ufeff")
-    if "\ufffd" in text or any(ord(char) < 32 and char not in "\r\n\t" for char in text):
+    text, decoded = decode_output_strict(value)
+    text = text.lstrip("\ufeff")
+    if not decoded or "\ufffd" in text or any(ord(char) < 32 and char not in "\r\n\t" for char in text):
         return [], False
     names = [line.strip() for line in text.splitlines() if line.strip()]
     folded = [name.casefold() for name in names]
@@ -240,8 +265,11 @@ def parse_wsl_running_quiet(value: bytes) -> tuple[list[str], bool]:
 
 
 def parse_process_inventory(value: bytes) -> tuple[list[str], bool]:
+    text, decoded = decode_output_strict(value)
+    if not decoded:
+        return [], False
     try:
-        parsed = json.loads(decode_output(value), object_pairs_hook=strict_pairs)
+        parsed = json.loads(text, object_pairs_hook=strict_pairs)
     except (ValueError, UnicodeError, json.JSONDecodeError):
         return [], False
     if not isinstance(parsed, dict) or set(parsed) != {"runtime_processes"}:
@@ -273,6 +301,41 @@ def daemon_is_specifically_unavailable(receipt: dict[str, Any], stdout: bytes, s
     )
 
 
+def probe_desktop_linux_pipe() -> dict[str, Any]:
+    """Observe named-pipe presence without connecting to a pipe instance."""
+    try:
+        kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
+        wait_named_pipe = kernel32.WaitNamedPipeW
+        wait_named_pipe.argtypes = [wintypes.LPCWSTR, wintypes.DWORD]
+        wait_named_pipe.restype = wintypes.BOOL
+        ctypes.set_last_error(0)
+        available = bool(wait_named_pipe(DESKTOP_LINUX_PIPE, 0))
+        error_code = None if available else ctypes.get_last_error()
+        return {
+            "method": "WaitNamedPipeW_zero_timeout",
+            "pipe_path_sha256": sha256_bytes(DESKTOP_LINUX_PIPE.encode("utf-8")),
+            "available": available,
+            "win32_error": error_code,
+            "probe_exception_type": None,
+        }
+    except Exception as exc:
+        return {
+            "method": "WaitNamedPipeW_zero_timeout",
+            "pipe_path_sha256": sha256_bytes(DESKTOP_LINUX_PIPE.encode("utf-8")),
+            "available": None,
+            "win32_error": None,
+            "probe_exception_type": type(exc).__name__,
+        }
+
+
+def pipe_is_specifically_absent(probe: dict[str, Any]) -> bool:
+    return (
+        probe.get("available") is False
+        and probe.get("win32_error") == ERROR_FILE_NOT_FOUND
+        and probe.get("probe_exception_type") is None
+    )
+
+
 def material_passport(created_at: str, auth: dict[str, Any]) -> dict[str, Any]:
     intake = auth.get("material_passport", {}).get("experiment_intake_declaration")
     if not isinstance(intake, dict):
@@ -282,10 +345,10 @@ def material_passport(created_at: str, auth: dict[str, Any]) -> dict[str, Any]:
         "origin_mode": "run",
         "origin_date": created_at,
         "verification_status": "UNVERIFIED",
-        "version_label": "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_observation_v1",
+        "version_label": "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_observation_v2",
         "upstream_dependencies": [
-            "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_authorization_v1",
-            "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_contract_v1",
+            "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_authorization_v2",
+            "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_contract_v2",
             "stage1e_e4_r6_pc2w_p1_attempt003_baseline_validation_v1",
         ],
         "repro_lock": None,
@@ -306,6 +369,10 @@ def main() -> int:
     repo_root = Path(args.repo_root).resolve()
     if Path(git(repo_root, "rev-parse", "--show-toplevel")).resolve() != repo_root:
         raise RuntimeError("repo root is not exact Git worktree root")
+    if Path.cwd().resolve() != repo_root:
+        raise RuntimeError("working directory is not exact execution repo root")
+    if Path(sys.executable).resolve() != PYTHON.resolve() or sys.version_info[:3] != (3, 11, 9):
+        raise RuntimeError("interpreter identity mismatch")
     output_root = (repo_root / OUTPUT_RELATIVE).resolve()
     if output_root.exists():
         raise RuntimeError(f"immutable output root already exists: {output_root}")
@@ -317,6 +384,13 @@ def main() -> int:
     expected_head = str(args.expected_head).casefold()
     if not re.fullmatch(r"[0-9a-f]{40}", expected_head) or head != expected_head:
         raise RuntimeError("exact execution HEAD mismatch")
+    expected_process_argv = [
+        str((repo_root / RUNNER_RELATIVE).resolve()), "--repo-root", str(repo_root),
+        "--expected-head", head,
+    ]
+    actual_process_argv = [str(Path(sys.argv[0]).resolve()), *sys.argv[1:]]
+    if actual_process_argv != expected_process_argv:
+        raise RuntimeError("exact process argv mismatch")
     parents = git(repo_root, "rev-list", "--parents", "-n", "1", "HEAD").split()
     if len(parents) != 2:
         raise RuntimeError("execution checkpoint must have exactly one parent")
@@ -331,11 +405,11 @@ def main() -> int:
     dispatch = load_json(repo_root / DISPATCH_RELATIVE)
     contract = load_json(repo_root / CONTRACT_RELATIVE)
     baseline_validation = load_json(repo_root / BASELINE_VALIDATION_RELATIVE)
-    if auth.get("schema_version") != "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-authorization-1.0":
+    if auth.get("schema_version") != "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-authorization-2.0":
         raise RuntimeError("authorization schema mismatch")
-    if dispatch.get("schema_version") != "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-dispatch-1.0":
+    if dispatch.get("schema_version") != "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-dispatch-2.0":
         raise RuntimeError("dispatch schema mismatch")
-    if contract.get("schema_version") != "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-observation-contract-1.0":
+    if contract.get("schema_version") != "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-observation-contract-2.0":
         raise RuntimeError("contract schema mismatch")
     if baseline_validation.get("attempt_result", {}).get("attempt003_execution_opened") is not False:
         raise RuntimeError("prior validation no longer proves attempt-003 unopened")
@@ -348,6 +422,21 @@ def main() -> int:
         raise RuntimeError("dispatch output root mismatch")
     if binding.get("expected_output_files") != sorted(EXPECTED_OUTPUT_FILES):
         raise RuntimeError("dispatch expected output set mismatch")
+    if Path(binding.get("working_directory", "")).resolve() != repo_root:
+        raise RuntimeError("dispatch working directory mismatch")
+    expected_dispatch_argv = [
+        str(PYTHON), RUNNER_RELATIVE.as_posix(), "--repo-root", str(repo_root),
+        "--expected-head", "<EXACT_FULL_EXECUTION_HEAD_FROM_FRESH_AUDIT>",
+    ]
+    if binding.get("argv") != expected_dispatch_argv:
+        raise RuntimeError("dispatch argv binding mismatch")
+    interpreter = dispatch.get("interpreter", {})
+    if (
+        Path(interpreter.get("path", "")).resolve() != PYTHON.resolve()
+        or interpreter.get("version") != "3.11.9"
+        or (interpreter.get("raw_bytes"), interpreter.get("sha256")) != EXPECTED_EXECUTABLES[PYTHON]
+    ):
+        raise RuntimeError("dispatch interpreter binding mismatch")
     decision = auth.get("user_decision", {})
     if decision.get("decision") != "AUTHORIZE_ATTEMPT003_OFFLINE_EQUIVALENT_OBSERVATION_AND_CONDITIONAL_EXECUTION":
         raise RuntimeError("user decision mismatch")
@@ -368,11 +457,11 @@ def main() -> int:
         raise RuntimeError("frozen artifact set mismatch")
     for row in frozen:
         relative = Path(str(row.get("path")))
-        expected = (row.get("raw_bytes"), row.get("raw_sha256"))
-        if file_fact(repo_root / relative) != expected or git_blob_fact(repo_root, head, relative) != expected:
+        expected = (row.get("git_blob_bytes"), row.get("git_blob_sha256"))
+        if git_blob_fact(repo_root, head, relative) != expected:
             raise RuntimeError(f"frozen artifact mismatch: {relative}")
     for relative in (RUNNER_RELATIVE, CONTRACT_RELATIVE):
-        if git_blob_fact(repo_root, parent, relative) != file_fact(repo_root / relative):
+        if git_blob_fact(repo_root, parent, relative) != git_blob_fact(repo_root, head, relative):
             raise RuntimeError(f"artifact not frozen in runner checkpoint: {relative}")
 
     output_root.mkdir(parents=True, exist_ok=False)
@@ -388,34 +477,87 @@ def main() -> int:
         return receipt
 
     status_receipt = record(EXPECTED_COMMAND_IDS[0], [str(DOCKER), "desktop", "status"])
-    wsl_verbose_receipt = record(EXPECTED_COMMAND_IDS[1], [str(WSL), "--list", "--verbose"])
-    wsl_running_receipt = record(EXPECTED_COMMAND_IDS[2], [str(WSL), "--list", "--running", "--quiet"])
-    daemon_receipt = record(EXPECTED_COMMAND_IDS[3], [str(DOCKER), "version", "--format", "{{json .Server}}"])
-    process_receipt = record(
+    wsl_verbose_receipt_a = record(EXPECTED_COMMAND_IDS[1], [str(WSL), "--list", "--verbose"])
+    wsl_running_receipt_a = record(EXPECTED_COMMAND_IDS[2], [str(WSL), "--list", "--running", "--quiet"])
+    daemon_receipt_a = record(EXPECTED_COMMAND_IDS[3], [str(DOCKER), "version", "--format", "{{json .Server}}"])
+    pipe_probe_a = probe_desktop_linux_pipe()
+    process_receipt_a = record(
         EXPECTED_COMMAND_IDS[4],
+        [str(POWERSHELL), "-NoLogo", "-NoProfile", "-NonInteractive", "-Command", PROCESS_QUERY],
+    )
+    wsl_verbose_receipt_b = record(EXPECTED_COMMAND_IDS[5], [str(WSL), "--list", "--verbose"])
+    wsl_running_receipt_b = record(EXPECTED_COMMAND_IDS[6], [str(WSL), "--list", "--running", "--quiet"])
+    daemon_receipt_b = record(EXPECTED_COMMAND_IDS[7], [str(DOCKER), "version", "--format", "{{json .Server}}"])
+    pipe_probe_b = probe_desktop_linux_pipe()
+    process_receipt_b = record(
+        EXPECTED_COMMAND_IDS[8],
         [str(POWERSHELL), "-NoLogo", "-NoProfile", "-NonInteractive", "-Command", PROCESS_QUERY],
     )
 
     status_classification = classify_status(status_receipt, *raw[EXPECTED_COMMAND_IDS[0]])
-    wsl_rows, wsl_verbose_complete = (
-        parse_wsl_verbose(raw[EXPECTED_COMMAND_IDS[1]][0]) if command_ok(wsl_verbose_receipt) else ([], False)
+
+    def parse_snapshot(
+        verbose_id: str, running_id: str, daemon_id: str, process_id: str,
+        verbose_receipt: dict[str, Any], running_receipt: dict[str, Any],
+        daemon_receipt: dict[str, Any], process_receipt: dict[str, Any],
+        pipe_probe: dict[str, Any],
+    ) -> dict[str, Any]:
+        wsl_rows, wsl_complete = (
+            parse_wsl_verbose(raw[verbose_id][0]) if command_ok(verbose_receipt) else ([], False)
+        )
+        running_names, running_complete = (
+            parse_wsl_running_quiet(raw[running_id][0]) if command_ok(running_receipt) else ([], False)
+        )
+        runtime_processes, process_complete = (
+            parse_process_inventory(raw[process_id][0]) if command_ok(process_receipt) else ([], False)
+        )
+        daemon_cli_unavailable = daemon_is_specifically_unavailable(
+            daemon_receipt, *raw[daemon_id]
+        )
+        lanes = {
+            "wsl_inventory_all_stopped": (
+                wsl_complete
+                and distro_state(wsl_rows, "docker-desktop") == "Stopped"
+                and all(row["state"] == "Stopped" for row in wsl_rows)
+            ),
+            "wsl_running_inventory_empty": running_complete and not running_names,
+            "daemon_cli_specifically_unavailable": daemon_cli_unavailable,
+            "desktop_linux_named_pipe_specifically_absent_win32_error_2": pipe_is_specifically_absent(pipe_probe),
+            "target_runtime_process_inventory_empty": process_complete and not runtime_processes,
+        }
+        return {
+            "wsl_inventory": {
+                "parse_complete": wsl_complete,
+                "rows": wsl_rows,
+                "docker_desktop_state": distro_state(wsl_rows, "docker-desktop"),
+            },
+            "wsl_running_inventory": {"parse_complete": running_complete, "running_names": running_names},
+            "daemon_cli_specifically_unavailable": daemon_cli_unavailable,
+            "desktop_linux_named_pipe_probe": pipe_probe,
+            "runtime_process_inventory": {
+                "parse_complete": process_complete,
+                "runtime_processes": runtime_processes,
+            },
+            "lanes_pass": lanes,
+        }
+
+    snapshot_a = parse_snapshot(
+        EXPECTED_COMMAND_IDS[1], EXPECTED_COMMAND_IDS[2], EXPECTED_COMMAND_IDS[3], EXPECTED_COMMAND_IDS[4],
+        wsl_verbose_receipt_a, wsl_running_receipt_a, daemon_receipt_a, process_receipt_a, pipe_probe_a,
     )
-    running_names, wsl_running_complete = (
-        parse_wsl_running_quiet(raw[EXPECTED_COMMAND_IDS[2]][0]) if command_ok(wsl_running_receipt) else ([], False)
-    )
-    daemon_unavailable = daemon_is_specifically_unavailable(daemon_receipt, *raw[EXPECTED_COMMAND_IDS[3]])
-    runtime_processes, process_inventory_complete = (
-        parse_process_inventory(raw[EXPECTED_COMMAND_IDS[4]][0]) if command_ok(process_receipt) else ([], False)
+    snapshot_b = parse_snapshot(
+        EXPECTED_COMMAND_IDS[5], EXPECTED_COMMAND_IDS[6], EXPECTED_COMMAND_IDS[7], EXPECTED_COMMAND_IDS[8],
+        wsl_verbose_receipt_b, wsl_running_receipt_b, daemon_receipt_b, process_receipt_b, pipe_probe_b,
     )
     independent_lanes_pass = {
-        "wsl_inventory_all_stopped": (
-            wsl_verbose_complete
-            and distro_state(wsl_rows, "docker-desktop") == "Stopped"
-            and all(row["state"] == "Stopped" for row in wsl_rows)
+        "snapshot_a_all_lanes": all(snapshot_a["lanes_pass"].values()),
+        "snapshot_b_all_lanes": all(snapshot_b["lanes_pass"].values()),
+        "wsl_inventory_stable_across_barrier": snapshot_a["wsl_inventory"] == snapshot_b["wsl_inventory"],
+        "running_inventory_stable_across_barrier": snapshot_a["wsl_running_inventory"] == snapshot_b["wsl_running_inventory"],
+        "runtime_process_inventory_stable_across_barrier": snapshot_a["runtime_process_inventory"] == snapshot_b["runtime_process_inventory"],
+        "named_pipe_absence_stable_across_barrier": (
+            pipe_is_specifically_absent(pipe_probe_a) and pipe_is_specifically_absent(pipe_probe_b)
         ),
-        "wsl_running_inventory_empty": wsl_running_complete and not running_names,
-        "daemon_specifically_unavailable": daemon_unavailable,
-        "target_runtime_process_inventory_empty": process_inventory_complete and not runtime_processes,
     }
     status_lane_admissible = status_classification in {"STOPPED_EXACT", "UNCLASSIFIED_NONZERO_HASH_ONLY"}
     command_ids = [row["command_id"] for row in commands]
@@ -427,7 +569,7 @@ def main() -> int:
     )
 
     command_document = {
-        "schema_version": "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-command-receipts-1.0",
+        "schema_version": "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-command-receipts-2.0",
         "material_passport": passport,
         "stage_id": "E4-R6-PC2W-P1-ATTEMPT003-OFFLINE-EQUIVALENT-OBSERVATION",
         "created_at": created_at,
@@ -437,7 +579,7 @@ def main() -> int:
         "raw_stdout_or_stderr_persisted": False,
     }
     receipt_document = {
-        "schema_version": "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-observation-receipt-1.0",
+        "schema_version": "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-observation-receipt-2.0",
         "material_passport": passport,
         "stage_id": "E4-R6-PC2W-P1-ATTEMPT003-OFFLINE-EQUIVALENT-OBSERVATION",
         "created_at": created_at,
@@ -450,15 +592,10 @@ def main() -> int:
             "unclassified_nonzero_is_not_relabelled_stopped": True,
             "admissible_without_independent_lanes": False,
         },
-        "wsl_inventory": {
-            "parse_complete": wsl_verbose_complete,
-            "rows": wsl_rows,
-            "docker_desktop_state": distro_state(wsl_rows, "docker-desktop"),
-        },
-        "wsl_running_inventory": {"parse_complete": wsl_running_complete, "running_names": running_names},
-        "daemon_specifically_unavailable": daemon_unavailable,
-        "runtime_process_inventory": {"parse_complete": process_inventory_complete, "runtime_processes": runtime_processes},
+        "snapshot_a": snapshot_a,
+        "snapshot_b_stability_barrier": snapshot_b,
         "independent_lanes_pass": independent_lanes_pass,
+        "observation_is_not_sufficient_without_attempt003_immediate_pre_gate_replay": True,
         "status_lane_admissible": status_lane_admissible,
         "exact_command_sequence": exact_command_sequence,
         "automatic_retry_count": 0,
@@ -474,7 +611,7 @@ def main() -> int:
         "accepted_result_rows": 0,
     }
     handoff = {
-        "schema_version": "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-handoff-1.0",
+        "schema_version": "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-handoff-2.0",
         "material_passport": passport,
         "stage_id": "E4-R6-PC2W-P1-ATTEMPT003-OFFLINE-EQUIVALENT-OBSERVATION",
         "verdict": verdict,
