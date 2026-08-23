@@ -1,16 +1,16 @@
 {
-  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-dispatch-2.0",
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-dispatch-3.0",
   "stage_id": "E4-R6-PC2W-P1-ATTEMPT003-OFFLINE-EQUIVALENT-OBSERVATION",
-  "created_at": "2026-08-24T03:26:59.5024308+07:00",
+  "created_at": "2026-08-24T03:35:51.0685464+07:00",
   "material_passport": {
     "origin_skill": "experiment-agent",
     "origin_mode": "run",
-    "origin_date": "2026-08-24T03:26:59.5024308+07:00",
+    "origin_date": "2026-08-24T03:35:51.0685464+07:00",
     "verification_status": "UNVERIFIED",
-    "version_label": "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_dispatch_v2",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_dispatch_v3",
     "upstream_dependencies": [
-      "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_authorization_v2",
-      "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_contract_v2",
+      "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_authorization_v3",
+      "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_contract_v3",
       "stage1e_e4_r6_pc2w_p1_attempt003_baseline_validation_v1"
     ],
     "repro_lock": null,
@@ -20,22 +20,22 @@
       "declared_by": "scholar"
     }
   },
-  "runner_checkpoint": "771552fd93a0b2d6791e96a48ae2d5add35ab568",
+  "runner_checkpoint": "85dc453f78174965c0cf897fed3e9527ced7ccd5",
   "frozen_artifacts": [
     {
       "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc2w_p1_attempt003_offline_equivalent_observation.py",
-      "git_blob_bytes": 30098,
-      "git_blob_sha256": "76a331d04696c5f1ebd0a3790cf9a349020247e9b4b116e249612d290efd2c6b"
+      "git_blob_bytes": 30781,
+      "git_blob_sha256": "83ce505f720fb10c4af9a26fe9d1d5d42aab1466823f032eee28a82a54e3169d"
     },
     {
       "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt003_offline_equivalent_observation_contract.json",
-      "git_blob_bytes": 4481,
-      "git_blob_sha256": "821b2ad99b42a7c5948be6b854ffac3c7570d2f49a49c791964dab33abb64a98"
+      "git_blob_bytes": 4575,
+      "git_blob_sha256": "e613cbf0c87942b9464f78530e95ee709aa18919c56682de7a715284fb4a86ee"
     },
     {
       "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt003_offline_equivalent_authorization.json",
-      "git_blob_bytes": 4677,
-      "git_blob_sha256": "b01155796e026c2acec6572ca37b7cad2ebb4bbd105e055417e1e299a74b37d4"
+      "git_blob_bytes": 5272,
+      "git_blob_sha256": "422e9acf3bcabcc10e8f767669e4ac08e592b54688f05d7af43a0f202933d01f"
     },
     {
       "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt003_baseline_validation_receipt.json",
@@ -78,6 +78,10 @@
     "four_independent_offline_lanes_required": true,
     "two_snapshot_stability_barrier_required": true,
     "win32_named_pipe_absence_required_twice": true,
+    "win32_named_pipe_wait_bound_milliseconds": 1,
+    "strict_status_and_daemon_decoding_required": true,
+    "contradictory_daemon_stdout_rejected": true,
+    "exact_wsl_header_required": true,
     "attempt003_immediate_pre_gate_replay_required": true,
     "docker_desktop_start_or_stop_allowed": false,
     "wsl_shutdown_or_terminate_allowed": false,
@@ -99,26 +103,34 @@
     "write_scope": "READ_ONLY",
     "required_verdict": "PASS_PC2W_P1_ATTEMPT003_OFFLINE_EQUIVALENT_RUNNER_READY_FOR_EXECUTION"
   },
-  "superseded_audit": {
-    "thread_id": "01a03044-32a3-7cd0-a953-019ba1522230",
-    "audited_checkpoint": "9cc417b9273def8812fb3b734c27e0434aa590c5",
-    "verdict": "REWORK_REQUIRED",
-    "execution_performed": false,
-    "findings_resolved": [
-      "audit/execution root separation",
-      "canonical Git-blob freezing across LF/CRLF worktrees",
-      "bytecode-free validator fixture loading",
-      "strict encoding and control-character rejection",
-      "Win32 named-pipe absence proof",
-      "two-snapshot stability barrier and downstream immediate replay",
-      "full interpreter, cwd and argv enforcement"
-    ]
-  },
+  "superseded_audits": [
+    {
+      "thread_id": "01a03044-32a3-7cd0-a953-019ba1522230",
+      "audited_checkpoint": "9cc417b9273def8812fb3b734c27e0434aa590c5",
+      "verdict": "REWORK_REQUIRED",
+      "execution_performed": false
+    },
+    {
+      "thread_id": "01a0304f-e004-7203-8a01-874eb43f6d8b",
+      "audited_checkpoint": "32217d082a73e874ec1709627c5906ade8057808",
+      "verdict": "REWORK_REQUIRED",
+      "validator_checks": "106/106",
+      "execution_performed": false,
+      "findings_resolved": [
+        "bounded and truthfully labelled WaitNamedPipeW call",
+        "strict status and daemon decoding",
+        "contradictory daemon stdout rejection",
+        "exact WSL header recognition",
+        "actual validator Python identity attestation"
+      ]
+    }
+  ],
   "official_source_receipts": [
     "https://docs.docker.com/desktop/features/desktop-cli/",
     "https://docs.docker.com/reference/cli/docker/desktop/stop/",
     "https://learn.microsoft.com/en-us/windows/wsl/basic-commands",
-    "https://learn.microsoft.com/en-us/windows/wsl/wsl-config"
+    "https://learn.microsoft.com/en-us/windows/wsl/wsl-config",
+    "https://learn.microsoft.com/en-us/windows/win32/api/namedpipeapi/nf-namedpipeapi-waitnamedpipew"
   ],
   "failure_policy": {
     "any_static_or_independent_audit_failure": "NO_EXECUTION",

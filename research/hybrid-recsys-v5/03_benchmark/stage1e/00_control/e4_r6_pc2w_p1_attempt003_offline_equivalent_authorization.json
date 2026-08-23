@@ -1,17 +1,17 @@
 {
-  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-authorization-2.0",
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-authorization-3.0",
   "stage_id": "E4-R6-PC2W-P1-ATTEMPT003-OFFLINE-EQUIVALENT-OBSERVATION",
-  "created_at": "2026-08-24T03:26:59.5024308+07:00",
+  "created_at": "2026-08-24T03:35:51.0685464+07:00",
   "material_passport": {
     "origin_skill": "experiment-agent",
     "origin_mode": "run",
-    "origin_date": "2026-08-24T03:26:59.5024308+07:00",
+    "origin_date": "2026-08-24T03:35:51.0685464+07:00",
     "verification_status": "UNVERIFIED",
-    "version_label": "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_authorization_v2",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_authorization_v3",
     "upstream_dependencies": [
       "stage1e_e4_r6_pc2w_p1_attempt003_baseline_validation_v1",
       "stage1e_e4_r6_pc2w_p1_attempt003_user_authorization_v3",
-      "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_contract_v2"
+      "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_contract_v3"
     ],
     "repro_lock": null,
     "experiment_intake_declaration": {
@@ -20,7 +20,7 @@
       "declared_by": "scholar"
     }
   },
-  "entry_checkpoint": "771552fd93a0b2d6791e96a48ae2d5add35ab568",
+  "entry_checkpoint": "85dc453f78174965c0cf897fed3e9527ced7ccd5",
   "authorized_output_root": "E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\rebaseline_v2\\wave_al\\E4_R6PC2W_P1_docker_query_preflight\\attempt-003-offline-equivalent-observation",
   "authorization_source": {
     "user_messages": [
@@ -71,10 +71,21 @@
     "new_stop_or_shutdown_not_authorized": true,
     "new_observation_must_be_read_only": true,
     "fresh_independent_worktree_audit_required": true,
-    "superseded_audit_thread_id": "01a03044-32a3-7cd0-a953-019ba1522230",
-    "superseded_audit_checkpoint": "9cc417b9273def8812fb3b734c27e0434aa590c5",
-    "superseded_audit_verdict": "REWORK_REQUIRED",
-    "superseded_audit_execution_performed": false,
+    "superseded_audits": [
+      {
+        "thread_id": "01a03044-32a3-7cd0-a953-019ba1522230",
+        "checkpoint": "9cc417b9273def8812fb3b734c27e0434aa590c5",
+        "verdict": "REWORK_REQUIRED",
+        "execution_performed": false
+      },
+      {
+        "thread_id": "01a0304f-e004-7203-8a01-874eb43f6d8b",
+        "checkpoint": "32217d082a73e874ec1709627c5906ade8057808",
+        "verdict": "REWORK_REQUIRED",
+        "validator_checks": "106/106",
+        "execution_performed": false
+      }
+    ],
     "rework_resolved": [
       "Separate fresh-worktree audit root from the locked central execution root.",
       "Freeze canonical Git blobs instead of checkout-dependent CRLF working bytes.",
@@ -82,7 +93,11 @@
       "Reject invalid encoding and control characters in strict WSL/process parsers.",
       "Require Docker CLI failure plus Win32 ERROR_FILE_NOT_FOUND named-pipe proof twice.",
       "Require two matching independent snapshots and immediate pre-gate replay in attempt-003.",
-      "Bind exact Python identity, working directory and full argv."
+      "Bind exact Python identity, working directory and full argv.",
+      "Use an explicit one-millisecond WaitNamedPipeW bound and truthful method label.",
+      "Strictly decode status/daemon evidence and reject contradictory daemon stdout.",
+      "Require an exact WSL header and reject substring-shaped false headers.",
+      "Make the validator attest its actual Python executable, version and hash."
     ],
     "automatic_execution_after_failed_gate": false,
     "observation_attempts_maximum": 1,
