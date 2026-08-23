@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import ast
 import hashlib
+import importlib.util
 import json
 import re
 import subprocess
@@ -94,6 +95,11 @@ try:
     dispatch = load(DISPATCH)
     source = RUNNER.read_text(encoding="utf-8")
     tree = ast.parse(source)
+    spec = importlib.util.spec_from_file_location("attempt003_baseline_runner", RUNNER)
+    if spec is None or spec.loader is None:
+        raise RuntimeError("runner import spec unavailable")
+    runner_module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(runner_module)
 except Exception as exc:
     print(json.dumps({"verdict": "FAIL", "error": str(exc)}, indent=2))
     raise SystemExit(1)
@@ -175,6 +181,19 @@ check("runner_no_retry_sleep", "time.sleep(" not in source and '"automatic_retry
 check("runner_shell_false", "shell=True" not in source and source.count("shell=False") >= 3, source.count("shell=False"))
 check("runner_pre_query_gate", "if pre_queries_complete and not baseline_already_stopped:" in source, None)
 check("runner_post_gate", "post_baseline_stopped" in source and "PASS_PC2W_P1_ATTEMPT003_BASELINE_RESTORED" in source, None)
+check("runner_strict_wsl_total_parse", all(token in source for token in ("return [], False", "seen_names", "header_seen", "wsl_list_parse_complete")), None)
+valid_wsl = "  NAME              STATE           VERSION\r\n* docker-desktop    Stopped         2\r\n".encode("utf-16-le")
+partial_wsl = "  NAME              STATE           VERSION\r\n* docker-desktop    Stopped         2\r\nmalformed row\r\n".encode("utf-16-le")
+duplicate_wsl = "  NAME              STATE           VERSION\r\n* docker-desktop    Stopped         2\r\n  docker-desktop    Stopped         2\r\n".encode("utf-16-le")
+missing_header_wsl = "* docker-desktop    Stopped         2\r\n".encode("utf-16-le")
+valid_rows, valid_complete = runner_module.parse_wsl_list(valid_wsl)
+partial_rows, partial_complete = runner_module.parse_wsl_list(partial_wsl)
+duplicate_rows, duplicate_complete = runner_module.parse_wsl_list(duplicate_wsl)
+missing_header_rows, missing_header_complete = runner_module.parse_wsl_list(missing_header_wsl)
+check("wsl_fixture_valid_passes", valid_complete is True and valid_rows == [{"name": "docker-desktop", "state": "Stopped", "version": 2}], [valid_rows, valid_complete])
+check("wsl_fixture_partial_rejected", partial_rows == [] and partial_complete is False, [partial_rows, partial_complete])
+check("wsl_fixture_duplicate_rejected", duplicate_rows == [] and duplicate_complete is False, [duplicate_rows, duplicate_complete])
+check("wsl_fixture_missing_header_rejected", missing_header_rows == [] and missing_header_complete is False, [missing_header_rows, missing_header_complete])
 check("runner_daemon_specific", all(token in source for token in ("DAEMON_PIPE_MARKERS", "DAEMON_PIPE_MISSING_MARKERS", "PERMISSION_ERROR_MARKERS")), None)
 check("runner_exact_outputs", "entries = list(output_root.iterdir())" in source and "not all(path.is_file() for path in entries)" in source, None)
 check("runner_frozen_gates", "frozen artifact mismatch" in source and "git_blob_fact" in source, None)
@@ -193,4 +212,3 @@ print(json.dumps({
     "failures": failures,
 }, indent=2))
 sys.exit(1 if failures else 0)
-

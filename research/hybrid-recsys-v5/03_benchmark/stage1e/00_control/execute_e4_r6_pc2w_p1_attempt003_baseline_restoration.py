@@ -167,20 +167,35 @@ def parse_status(value: bytes) -> str | None:
     return next(iter(matches)) if len(matches) == 1 else None
 
 
-def parse_wsl_list(value: bytes) -> list[dict[str, Any]]:
+def parse_wsl_list(value: bytes) -> tuple[list[dict[str, Any]], bool]:
     rows: list[dict[str, Any]] = []
+    seen_names: set[str] = set()
+    header_seen = False
     for raw_line in decode_output(value).replace("\x00", "").splitlines():
         line = raw_line.strip()
-        if not line or ("name" in line.casefold() and "state" in line.casefold()):
+        if not line:
+            continue
+        folded_line = line.casefold()
+        if "name" in folded_line and "state" in folded_line and "version" in folded_line:
+            if header_seen or rows:
+                return [], False
+            header_seen = True
             continue
         match = re.match(r"^\*?\s*(.+?)\s+(Running|Stopped)\s+([12])\s*$", line, re.IGNORECASE)
-        if match:
-            rows.append({
-                "name": match.group(1).strip(),
-                "state": match.group(2).title(),
-                "version": int(match.group(3)),
-            })
-    return sorted(rows, key=lambda row: str(row.get("name", "")).casefold())
+        if not match:
+            return [], False
+        name = match.group(1).strip()
+        folded_name = name.casefold()
+        if not name or folded_name in seen_names:
+            return [], False
+        seen_names.add(folded_name)
+        rows.append({
+            "name": name,
+            "state": match.group(2).title(),
+            "version": int(match.group(3)),
+        })
+    complete = header_seen and len(rows) > 0
+    return sorted(rows, key=lambda row: str(row.get("name", "")).casefold()), complete
 
 
 def distro_state(rows: list[dict[str, Any]], name: str) -> str | None:
@@ -328,7 +343,11 @@ def main() -> int:
     )
 
     before_status = parse_status(raw["B00_DOCKER_DESKTOP_STATUS_BEFORE"][0]) if command_ok(before_status_receipt) else None
-    before_wsl = parse_wsl_list(raw["B01_WSL_LIST_BEFORE"][0]) if command_ok(before_wsl_receipt) else []
+    before_wsl, before_wsl_parse_complete = (
+        parse_wsl_list(raw["B01_WSL_LIST_BEFORE"][0])
+        if command_ok(before_wsl_receipt)
+        else ([], False)
+    )
     before_daemon_unavailable = daemon_is_specifically_unavailable(
         before_daemon_receipt, *raw["B02_DAEMON_VERSION_BEFORE"]
     )
@@ -336,6 +355,7 @@ def main() -> int:
     pre_queries_complete = (
         before_status in {"running", "stopped"}
         and command_ok(before_wsl_receipt)
+        and before_wsl_parse_complete
         and len(before_wsl) > 0
         and distro_state(before_wsl, "docker-desktop") in {"Running", "Stopped"}
         and before_daemon_known
@@ -369,7 +389,11 @@ def main() -> int:
     after_wsl_receipt = record("B07_WSL_LIST_AFTER", [str(WSL), "--list", "--verbose"], 30)
 
     after_status = parse_status(raw["B05_DOCKER_DESKTOP_STATUS_AFTER"][0]) if command_ok(after_status_receipt) else None
-    after_wsl = parse_wsl_list(raw["B07_WSL_LIST_AFTER"][0]) if command_ok(after_wsl_receipt) else []
+    after_wsl, after_wsl_parse_complete = (
+        parse_wsl_list(raw["B07_WSL_LIST_AFTER"][0])
+        if command_ok(after_wsl_receipt)
+        else ([], False)
+    )
     after_daemon_unavailable = daemon_is_specifically_unavailable(
         after_daemon_receipt, *raw["B06_DAEMON_VERSION_AFTER"]
     )
@@ -377,6 +401,7 @@ def main() -> int:
         after_status == "stopped"
         and after_daemon_unavailable
         and command_ok(after_wsl_receipt)
+        and after_wsl_parse_complete
         and len(after_wsl) > 0
         and distro_state(after_wsl, "docker-desktop") == "Stopped"
         and all(row.get("state") == "Stopped" for row in after_wsl)
@@ -418,12 +443,14 @@ def main() -> int:
             "docker_desktop_status": before_status,
             "docker_desktop_wsl_distro": distro_state(before_wsl, "docker-desktop"),
             "all_wsl_rows": before_wsl,
+            "wsl_list_parse_complete": before_wsl_parse_complete,
             "daemon_specifically_unavailable": before_daemon_unavailable,
         },
         "after": {
             "docker_desktop_status": after_status,
             "docker_desktop_wsl_distro": distro_state(after_wsl, "docker-desktop"),
             "all_wsl_rows": after_wsl,
+            "wsl_list_parse_complete": after_wsl_parse_complete,
             "daemon_specifically_unavailable": after_daemon_unavailable,
         },
         "pre_queries_complete": pre_queries_complete,
@@ -477,4 +504,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     sys.exit(main())
-
