@@ -1,0 +1,105 @@
+{
+  "schema_version": "stage1e-e4-r6-pc2w-p1-execution-receipt-2.0",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "run",
+    "origin_date": "2026-08-23T19:24:02.359903Z",
+    "verification_status": "UNVERIFIED",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt002_execution_v1",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_pc2w_p1_attempt002_user_authorization_v1",
+      "stage1e_e4_r6_pc2w_p1_requirements_v1"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-24T01:12:40.9534228+07:00",
+      "declared_by": "scholar"
+    }
+  },
+  "stage_id": "E4-R6-PC2W-P1",
+  "created_at": "2026-08-23T19:24:02.359903Z",
+  "entry_checkpoint": "ba3b707b3fd839b4f53e9e5cc64938adf95aa724",
+  "runner_checkpoint": "d3367f56f6e6db6de0658a8c89bd2818fd596311",
+  "frozen_artifacts": [
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_current_host_wsl2_linux_admission_contract.md",
+      "raw_bytes": 11460,
+      "raw_sha256": "1d4591b5a74fdbb3e4f337e4d721970af1f992a45fd158f371c0465d575d5267"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt002_user_authorization_and_model_override.json",
+      "raw_bytes": 4157,
+      "raw_sha256": "c819f755906c5fb921dbc11758d98bb1fd1f2a8ef46094064d120bd680f4bfd7"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_docker_query_preflight_requirements.json",
+      "raw_bytes": 6280,
+      "raw_sha256": "fc6d5479ad56692b6c04449ac0150b256d2dd4409471c8723f1ad2d84f193b83"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc2w_p1_attempt002_query_only.py",
+      "raw_bytes": 43095,
+      "raw_sha256": "0453621b09d4cd0dd6c9df018ebabbfc1080a897e76104906efece59a52202e6"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_read_only_preflight_receipt.json",
+      "raw_bytes": 8791,
+      "raw_sha256": "06294de30914317083c292dc2a828028f688c8842472067eaed842377128d50b"
+    }
+  ],
+  "requirements_sha256": "fc6d5479ad56692b6c04449ac0150b256d2dd4409471c8723f1ad2d84f193b83",
+  "authorization_sha256": "c819f755906c5fb921dbc11758d98bb1fd1f2a8ef46094064d120bd680f4bfd7",
+  "dispatch_sha256": "017d14449170f28a55a14d47f7ac57384c1d712ee803c6b9f5ec7946a7d39809",
+  "runner_sha256": "0453621b09d4cd0dd6c9df018ebabbfc1080a897e76104906efece59a52202e6",
+  "output_root": "E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\rebaseline_v2\\wave_al\\E4_R6PC2W_P1_docker_query_preflight\\attempt-002",
+  "startup_attempts": 0,
+  "query_retry_count": 0,
+  "stop_attempts": 0,
+  "pre_start_gate": {
+    "wsl_list_query_success": true,
+    "docker_desktop_status_query_success": true,
+    "docker_desktop_exactly_stopped": false,
+    "daemon_specifically_unavailable": false,
+    "docker_desktop_distro_exactly_stopped": false,
+    "wsl_identity_query_success": true,
+    "windows_identity_query_success": true,
+    "docker_file_identity_query_success": true,
+    "identity_payloads_parsed_and_complete": true,
+    "disk_thresholds_before_pass": true
+  },
+  "pass_conditions": {
+    "pre_start_gate_all_pass": false,
+    "startup_attempted_exactly_once": false,
+    "startup_command_success": false,
+    "during_status_exactly_running": false,
+    "during_docker_desktop_distro_exactly_running": false,
+    "all_query_commands_success": false,
+    "backend_linux_amd64_desktop_linux": false,
+    "runtime_identities_complete": false,
+    "parse_failures_absent": true,
+    "containers_running_zero": false,
+    "container_inventory_unchanged": true,
+    "image_inventory_unchanged": true,
+    "container_or_image_events_absent": true,
+    "stop_attempted_exactly_once": false,
+    "stop_command_success": false,
+    "after_status_exactly_stopped": false,
+    "after_daemon_specifically_unavailable": false,
+    "after_docker_desktop_distro_exactly_stopped": false,
+    "wsl_inventory_restored_exactly": true,
+    "disk_thresholds_after_pass": true,
+    "prohibited_commands_issued": false,
+    "automatic_retry_count_zero": true
+  },
+  "verdict": "FAIL_CLOSED_PC2W_BACKEND_OR_POLICY_NOT_ADMISSIBLE",
+  "image_pull_or_build_performed": false,
+  "container_create_or_run_performed": false,
+  "docker_or_wsl_settings_changed": false,
+  "source_data_or_checkpoint_download_performed": false,
+  "materialization_performed": false,
+  "scientific_execution_performed": false,
+  "result_status": "NOT_RUN",
+  "test_set_opened": "NO",
+  "accepted_result_rows": 0
+}
