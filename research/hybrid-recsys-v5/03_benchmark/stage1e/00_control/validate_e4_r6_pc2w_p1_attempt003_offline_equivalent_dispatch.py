@@ -31,6 +31,8 @@ EXPECTED_OUTPUTS = [
     "offline_equivalent_observation_receipt.json",
 ]
 CENTRAL_REPO_ROOT = Path(r"E:\UIT\cv\backend")
+PYTHON = Path(r"C:\Program Files\Python311\python.exe")
+PYTHON_FACT = (103192, "5f7b89a612c9b8af1d6456cdfcd1dbe5ca630849e79aebced9bee9a6694952ec")
 
 
 class DuplicateKeyError(ValueError):
@@ -57,6 +59,11 @@ def load_json(path: Path) -> dict[str, Any]:
 
 def sha256(value: bytes) -> str:
     return hashlib.sha256(value).hexdigest()
+
+
+def file_fact(path: Path) -> tuple[int, str]:
+    value = path.read_bytes()
+    return len(value), sha256(value)
 
 
 def git(repo: Path, *args: str) -> str:
@@ -98,6 +105,10 @@ def main() -> int:
             raise AssertionError(label)
         checks.append(label)
 
+    check(Path(sys.executable).resolve() == PYTHON.resolve(), "actual_validator_python_path")
+    check(sys.version_info[:3] == (3, 11, 9), "actual_validator_python_version")
+    check(file_fact(Path(sys.executable)) == PYTHON_FACT, "actual_validator_python_fact")
+
     check(Path(git(repo, "rev-parse", "--show-toplevel")).resolve() == repo, "exact_repo_root")
     head = git(repo, "rev-parse", "HEAD").casefold()
     check(re.fullmatch(r"[0-9a-f]{40}", args.expected_head.casefold()) is not None, "expected_head_shape")
@@ -116,9 +127,9 @@ def main() -> int:
     dispatch = load_json(repo / DISPATCH)
     contract = load_json(repo / CONTRACT)
     prior = load_json(repo / BASELINE_VALIDATION)
-    check(auth.get("schema_version") == "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-authorization-2.0", "auth_schema")
-    check(dispatch.get("schema_version") == "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-dispatch-2.0", "dispatch_schema")
-    check(contract.get("schema_version") == "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-observation-contract-2.0", "contract_schema")
+    check(auth.get("schema_version") == "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-authorization-3.0", "auth_schema")
+    check(dispatch.get("schema_version") == "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-dispatch-3.0", "dispatch_schema")
+    check(contract.get("schema_version") == "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-observation-contract-3.0", "contract_schema")
     check(prior.get("attempt_result", {}).get("attempt003_execution_opened") is False, "attempt003_still_unopened")
     check(prior.get("attempt_result", {}).get("automatic_retry_count") == 0, "prior_retry_zero")
     check(prior.get("truth_state", {}).get("RESULT_STATUS") == "NOT_RUN", "prior_truth_not_run")
@@ -153,9 +164,9 @@ def main() -> int:
     ]
     check(binding.get("argv") == expected_dispatch_argv, "dispatch_full_argv_binding")
     interpreter = dispatch.get("interpreter", {})
-    check(Path(interpreter.get("path", "")).resolve() == Path(r"C:\Program Files\Python311\python.exe").resolve(), "interpreter_path")
+    check(Path(interpreter.get("path", "")).resolve() == PYTHON.resolve(), "interpreter_path")
     check(interpreter.get("version") == "3.11.9", "interpreter_version")
-    check((interpreter.get("raw_bytes"), interpreter.get("sha256")) == (103192, "5f7b89a612c9b8af1d6456cdfcd1dbe5ca630849e79aebced9bee9a6694952ec"), "interpreter_fact")
+    check((interpreter.get("raw_bytes"), interpreter.get("sha256")) == PYTHON_FACT, "interpreter_fact")
     controls = dispatch.get("execution_controls", {})
     check(controls.get("read_only_observation") is True, "read_only_control")
     check(controls.get("commands_exactly_once") == 9, "nine_command_control")
@@ -196,6 +207,8 @@ def main() -> int:
     check(not complete and rows == [], "wsl_duplicate_rejected")
     rows, complete = runner.parse_wsl_verbose(b"Ubuntu Stopped 2")
     check(not complete and rows == [], "wsl_missing_header_rejected")
+    rows, complete = runner.parse_wsl_verbose(b"username interstate versioned\nUbuntu Stopped 2")
+    check(not complete and rows == [], "wsl_false_header_rejected")
     rows, complete = runner.parse_wsl_verbose(b"NAME STATE VERSION\nUbuntu\x01 Stopped 2")
     check(not complete and rows == [], "wsl_control_character_rejected")
     rows, complete = runner.parse_wsl_verbose(b"NAME STATE VERSION\nUbuntu Stopped 2\xff")
@@ -228,15 +241,20 @@ def main() -> int:
     check(runner.classify_status(receipt_ok, b"Docker Desktop is running", b"") == "RUNNING_EXACT", "status_running_exact")
     check(runner.classify_status(receipt_fail, b"", b"opaque failure") == "UNCLASSIFIED_NONZERO_HASH_ONLY", "status_nonzero_unclassified")
     check(runner.classify_status(receipt_fail, b"", b"still running") == "RUNNING_EXACT", "status_running_blocks_even_nonzero")
+    check(runner.classify_status(receipt_fail, b"", b"opaque\xff") == "UNCLASSIFIED_INVALID_ENCODING", "status_invalid_encoding_rejected")
     daemon_missing = b"open //./pipe/dockerDesktopLinuxEngine: The system cannot find the file specified."
     check(runner.daemon_is_specifically_unavailable(receipt_fail, b"", daemon_missing), "daemon_named_pipe_missing_valid")
     check(not runner.daemon_is_specifically_unavailable(receipt_fail, b"", daemon_missing + b" Access is denied"), "daemon_permission_rejected")
     check(not runner.daemon_is_specifically_unavailable(receipt_ok, b"{}", b""), "daemon_reachable_rejected")
+    check(not runner.daemon_is_specifically_unavailable(receipt_fail, b'{"Version":"reachable"}', daemon_missing), "daemon_contradictory_stdout_rejected")
+    check(not runner.daemon_is_specifically_unavailable(receipt_fail, b"", daemon_missing + b"\xff"), "daemon_invalid_encoding_rejected")
     check(runner.pipe_is_specifically_absent({"available": False, "win32_error": 2, "probe_exception_type": None}), "win32_pipe_absence_valid")
     check(not runner.pipe_is_specifically_absent({"available": False, "win32_error": 5, "probe_exception_type": None}), "win32_pipe_access_denied_rejected")
     check(not runner.pipe_is_specifically_absent({"available": True, "win32_error": None, "probe_exception_type": None}), "win32_pipe_available_rejected")
 
     source = (repo / RUNNER).read_text(encoding="utf-8")
+    check("wait_named_pipe(DESKTOP_LINUX_PIPE, 1)" in source, "wait_named_pipe_one_millisecond_bound")
+    check("wait_named_pipe(DESKTOP_LINUX_PIPE, 0)" not in source, "wait_named_pipe_default_wait_absent")
     check(source.count("record(EXPECTED_COMMAND_IDS[") == 7, "seven_direct_record_calls")
     check(source.count("= record(\n        EXPECTED_COMMAND_IDS[") == 2, "two_process_record_calls")
     check(source.count("probe_desktop_linux_pipe()") == 3, "two_pipe_probe_calls_plus_definition")

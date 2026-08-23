@@ -1,13 +1,13 @@
 {
-  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-observation-contract-2.0",
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-observation-contract-3.0",
   "stage_id": "E4-R6-PC2W-P1-ATTEMPT003-OFFLINE-EQUIVALENT-OBSERVATION",
-  "created_at": "2026-08-24T03:26:59.5024308+07:00",
+  "created_at": "2026-08-24T03:35:51.0685464+07:00",
   "material_passport": {
     "origin_skill": "experiment-agent",
     "origin_mode": "plan",
-    "origin_date": "2026-08-24T03:26:59.5024308+07:00",
+    "origin_date": "2026-08-24T03:35:51.0685464+07:00",
     "verification_status": "UNVERIFIED",
-    "version_label": "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_contract_v2",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_contract_v3",
     "upstream_dependencies": [
       "stage1e_e4_r6_pc2w_p1_attempt003_baseline_validation_v1",
       "stage1e_e4_r6_pc2w_current_host_admission_contract_v1"
@@ -42,13 +42,13 @@
     "snapshot B stability barrier: PowerShell exact-name Docker runtime process inventory returning names only"
   ],
   "non_command_observations": [
-    "After each daemon CLI query, WaitNamedPipeW with zero timeout must return false with Win32 ERROR_FILE_NOT_FOUND (2) for dockerDesktopLinuxEngine; no pipe connection is opened."
+    "After each daemon CLI query, WaitNamedPipeW with an explicit 1 millisecond bound must return false with Win32 ERROR_FILE_NOT_FOUND (2) for dockerDesktopLinuxEngine; no pipe connection is opened."
   ],
   "admission_conditions": {
     "docker_desktop_status_lane": "advisory_only; RUNNING blocks; exact STOPPED or unclassified nonzero may continue only when every independent lane passes",
     "wsl_inventory": "strict complete parse; docker-desktop exists and is Stopped; every listed distribution is Stopped",
     "wsl_running_inventory": "strict complete quiet parse with zero running distribution names",
-    "desktop_linux_daemon": "Docker CLI specifically unavailable plus two independent WaitNamedPipeW observations returning Win32 ERROR_FILE_NOT_FOUND (2)",
+    "desktop_linux_daemon": "Strictly decoded Docker CLI failure with empty stdout and unambiguous named-pipe-missing stderr, plus two independent 1 millisecond WaitNamedPipeW observations returning Win32 ERROR_FILE_NOT_FOUND (2)",
     "docker_runtime_process_inventory": "strict JSON parse with zero allowlisted runtime process names",
     "stability_barrier": "snapshots A and B must each pass every lane and produce identical strict WSL and process inventories",
     "attempt003_pre_gate_replay": "A PASS observation is insufficient by itself; the separately audited attempt-003 runner must replay the offline-equivalent pre-gate immediately before its one start attempt.",

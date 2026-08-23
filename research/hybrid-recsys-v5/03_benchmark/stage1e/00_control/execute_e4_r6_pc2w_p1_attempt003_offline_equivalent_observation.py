@@ -133,8 +133,12 @@ def decode_output_strict(value: bytes) -> tuple[str, bool]:
         return "", True
     try:
         if value.count(b"\x00") > max(1, len(value) // 8):
-            return value.decode("utf-16-le", errors="strict"), True
-        return value.decode("utf-8", errors="strict"), True
+            text = value.decode("utf-16-le", errors="strict")
+        else:
+            text = value.decode("utf-8", errors="strict")
+        if "\ufffd" in text or any(ord(char) < 32 and char not in "\r\n\t" for char in text):
+            return "", False
+        return text, True
     except UnicodeDecodeError:
         return "", False
 
@@ -200,16 +204,22 @@ def command_ok(receipt: dict[str, Any]) -> bool:
     return receipt.get("exit_code") == 0 and receipt.get("timed_out") is False and receipt.get("spawn_exception_type") is None
 
 
-def parse_status_text(stdout: bytes, stderr: bytes) -> str | None:
-    text = (decode_output(stdout) + "\n" + decode_output(stderr)).casefold()
+def parse_status_text(stdout: bytes, stderr: bytes) -> tuple[str | None, bool]:
+    stdout_text, stdout_complete = decode_output_strict(stdout)
+    stderr_text, stderr_complete = decode_output_strict(stderr)
+    if not stdout_complete or not stderr_complete:
+        return None, False
+    text = (stdout_text + "\n" + stderr_text).casefold()
     matches = set(re.findall(r"\b(running|stopped)\b", text))
-    return next(iter(matches)) if len(matches) == 1 else None
+    return (next(iter(matches)) if len(matches) == 1 else None), True
 
 
 def classify_status(receipt: dict[str, Any], stdout: bytes, stderr: bytes) -> str:
     if receipt.get("timed_out") or receipt.get("spawn_exception_type") is not None:
         return "UNCLASSIFIED_SPAWN_OR_TIMEOUT"
-    parsed = parse_status_text(stdout, stderr)
+    parsed, decoded = parse_status_text(stdout, stderr)
+    if not decoded:
+        return "UNCLASSIFIED_INVALID_ENCODING"
     if parsed == "running":
         return "RUNNING_EXACT"
     if parsed == "stopped" and receipt.get("exit_code") == 0:
@@ -232,8 +242,7 @@ def parse_wsl_verbose(value: bytes) -> tuple[list[dict[str, Any]], bool]:
         line = raw_line.strip().lstrip("\ufeff")
         if not line:
             continue
-        folded = line.casefold()
-        if "name" in folded and "state" in folded and "version" in folded:
+        if re.fullmatch(r"NAME\s+STATE\s+VERSION", line, re.IGNORECASE):
             if header_seen or rows:
                 return [], False
             header_seen = True
@@ -293,7 +302,11 @@ def daemon_is_specifically_unavailable(receipt: dict[str, Any], stdout: bytes, s
         return False
     if not isinstance(receipt.get("exit_code"), int) or receipt.get("exit_code") == 0:
         return False
-    text = (decode_output(stdout) + "\n" + decode_output(stderr)).casefold()
+    stdout_text, stdout_complete = decode_output_strict(stdout)
+    stderr_text, stderr_complete = decode_output_strict(stderr)
+    if not stdout_complete or not stderr_complete or stdout_text.strip():
+        return False
+    text = stderr_text.casefold()
     return (
         any(marker in text for marker in DAEMON_PIPE_MARKERS)
         and any(marker in text for marker in DAEMON_PIPE_MISSING_MARKERS)
@@ -309,10 +322,11 @@ def probe_desktop_linux_pipe() -> dict[str, Any]:
         wait_named_pipe.argtypes = [wintypes.LPCWSTR, wintypes.DWORD]
         wait_named_pipe.restype = wintypes.BOOL
         ctypes.set_last_error(0)
-        available = bool(wait_named_pipe(DESKTOP_LINUX_PIPE, 0))
+        available = bool(wait_named_pipe(DESKTOP_LINUX_PIPE, 1))
         error_code = None if available else ctypes.get_last_error()
         return {
-            "method": "WaitNamedPipeW_zero_timeout",
+            "method": "WaitNamedPipeW_one_millisecond_timeout",
+            "timeout_milliseconds": 1,
             "pipe_path_sha256": sha256_bytes(DESKTOP_LINUX_PIPE.encode("utf-8")),
             "available": available,
             "win32_error": error_code,
@@ -320,7 +334,8 @@ def probe_desktop_linux_pipe() -> dict[str, Any]:
         }
     except Exception as exc:
         return {
-            "method": "WaitNamedPipeW_zero_timeout",
+            "method": "WaitNamedPipeW_one_millisecond_timeout",
+            "timeout_milliseconds": 1,
             "pipe_path_sha256": sha256_bytes(DESKTOP_LINUX_PIPE.encode("utf-8")),
             "available": None,
             "win32_error": None,
@@ -345,10 +360,10 @@ def material_passport(created_at: str, auth: dict[str, Any]) -> dict[str, Any]:
         "origin_mode": "run",
         "origin_date": created_at,
         "verification_status": "UNVERIFIED",
-        "version_label": "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_observation_v2",
+        "version_label": "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_observation_v3",
         "upstream_dependencies": [
-            "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_authorization_v2",
-            "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_contract_v2",
+            "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_authorization_v3",
+            "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_contract_v3",
             "stage1e_e4_r6_pc2w_p1_attempt003_baseline_validation_v1",
         ],
         "repro_lock": None,
@@ -405,11 +420,11 @@ def main() -> int:
     dispatch = load_json(repo_root / DISPATCH_RELATIVE)
     contract = load_json(repo_root / CONTRACT_RELATIVE)
     baseline_validation = load_json(repo_root / BASELINE_VALIDATION_RELATIVE)
-    if auth.get("schema_version") != "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-authorization-2.0":
+    if auth.get("schema_version") != "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-authorization-3.0":
         raise RuntimeError("authorization schema mismatch")
-    if dispatch.get("schema_version") != "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-dispatch-2.0":
+    if dispatch.get("schema_version") != "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-dispatch-3.0":
         raise RuntimeError("dispatch schema mismatch")
-    if contract.get("schema_version") != "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-observation-contract-2.0":
+    if contract.get("schema_version") != "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-observation-contract-3.0":
         raise RuntimeError("contract schema mismatch")
     if baseline_validation.get("attempt_result", {}).get("attempt003_execution_opened") is not False:
         raise RuntimeError("prior validation no longer proves attempt-003 unopened")
@@ -569,7 +584,7 @@ def main() -> int:
     )
 
     command_document = {
-        "schema_version": "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-command-receipts-2.0",
+        "schema_version": "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-command-receipts-3.0",
         "material_passport": passport,
         "stage_id": "E4-R6-PC2W-P1-ATTEMPT003-OFFLINE-EQUIVALENT-OBSERVATION",
         "created_at": created_at,
@@ -579,7 +594,7 @@ def main() -> int:
         "raw_stdout_or_stderr_persisted": False,
     }
     receipt_document = {
-        "schema_version": "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-observation-receipt-2.0",
+        "schema_version": "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-observation-receipt-3.0",
         "material_passport": passport,
         "stage_id": "E4-R6-PC2W-P1-ATTEMPT003-OFFLINE-EQUIVALENT-OBSERVATION",
         "created_at": created_at,
@@ -611,7 +626,7 @@ def main() -> int:
         "accepted_result_rows": 0,
     }
     handoff = {
-        "schema_version": "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-handoff-2.0",
+        "schema_version": "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-handoff-3.0",
         "material_passport": passport,
         "stage_id": "E4-R6-PC2W-P1-ATTEMPT003-OFFLINE-EQUIVALENT-OBSERVATION",
         "verdict": verdict,
