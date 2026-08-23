@@ -1,17 +1,17 @@
 {
   "schema_version": "stage1e-e4-r6-pc2w-p1-dispatch-2.0",
   "stage_id": "E4-R6-PC2W-P1",
-  "created_at": "2026-08-24T01:24:46.4905207+07:00",
+  "created_at": "2026-08-24T01:31:51.2997555+07:00",
   "material_passport": {
     "origin_skill": "experiment-agent",
     "origin_mode": "run",
-    "origin_date": "2026-08-24T01:24:46.4905207+07:00",
+    "origin_date": "2026-08-24T01:31:51.2997555+07:00",
     "verification_status": "UNVERIFIED",
-    "version_label": "stage1e_e4_r6_pc2w_p1_dispatch_v3",
+    "version_label": "stage1e_e4_r6_pc2w_p1_dispatch_v4",
     "upstream_dependencies": [
       "stage1e_e4_r6_pc2w_p1_user_authorization_v3",
       "stage1e_e4_r6_pc2w_p1_requirements_v1",
-      "stage1e_e4_r6_pc2w_p1_runner_rework_v3"
+      "stage1e_e4_r6_pc2w_p1_runner_rework_v4"
     ],
     "repro_lock": null,
     "experiment_intake_declaration": {
@@ -20,10 +20,10 @@
       "declared_by": "scholar"
     }
   },
-  "runner_checkpoint": "ea37120a9f8cd996b200321fb36dcf45c3465b4a",
-  "supersedes_dispatch_checkpoint": "89987e7bf6921b1fa939c3340a9f734b05d499bc",
+  "runner_checkpoint": "33edbbaa01e2649247ac6fd2c1b76b89368a252e",
+  "supersedes_dispatch_checkpoint": "89132320483949ab5ee43a908d53ef82197500da",
   "rework_basis": {
-    "prior_audit_thread_id": "01a02fd6-0ea2-7a51-9ee1-47528f1b4d49",
+    "prior_audit_thread_id": "01a02fdf-6d69-75a0-900b-6dd36e29c88e",
     "prior_audit_verdict": "REWORK_REQUIRED",
     "execution_after_prior_audit": false,
     "resolved_findings": [
@@ -42,19 +42,20 @@
       "PASS requires exact WSL inventory restoration and the docker-desktop distro running during the query window",
       "Docker client and containerd identities are persisted and required",
       "the Material Passport carries forward the scholar intake declaration from authorization",
-      "the output root rejects extra files and directories"
+      "the output root rejects extra files and directories",
+      "runner output passports bind the current user_authorization_v3 dependency and the validator rejects stale v2 provenance"
     ]
   },
   "frozen_artifacts": [
     {
       "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc2w_p1_query_only.py",
       "raw_bytes": 42780,
-      "raw_sha256": "ef4598b73182d61cbe825f821fcb7292c353a1bfe217c40259fe60d4720b682c"
+      "raw_sha256": "0d8a2356c111ce16952fef191c6c05b97a0e677a66284bded31337c5fc1eaa64"
     },
     {
       "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_user_authorization_and_model_override.json",
-      "raw_bytes": 3837,
-      "raw_sha256": "baddf463a75c55c6b21d33a710e081108e378e8fbfe687578c1b716c156a6275"
+      "raw_bytes": 4066,
+      "raw_sha256": "8e7c8854a08a5a5c8d3e11cc485a6137881194c4d3554cf39d7e5ea46a2a77d5"
     },
     {
       "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_docker_query_preflight_requirements.json",
