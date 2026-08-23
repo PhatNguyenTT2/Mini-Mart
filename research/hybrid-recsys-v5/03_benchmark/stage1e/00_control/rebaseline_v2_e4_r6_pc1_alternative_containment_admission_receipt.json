@@ -1,0 +1,168 @@
+{
+  "schema_version": "stage1e-e4-r6-pc1-alternative-containment-admission-receipt-1.0",
+  "stage_id": "E4-R6-PC1",
+  "created_at": "2026-08-23T23:24:25.5648042+07:00",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "plan",
+    "origin_date": "2026-08-23T23:24:25.5648042+07:00",
+    "verification_status": "UNVERIFIED",
+    "version_label": "stage1e_e4_r6_pc1_admission_receipt_v1",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_pc0_failure_receipt_v1",
+      "stage1e_e4_r6_c1r2_runner_audit_v1",
+      "stage1e_e4_r6_pc1_contract_v1"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-23T23:24:25.5648042+07:00",
+      "declared_by": "scholar"
+    }
+  },
+  "central_checkpoint": "9355743be9c4e326f062e4413fe2c0652bcdfe71",
+  "contract": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc1_alternative_containment_central_admission_contract.md",
+  "upstream_evidence": [
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc0_mxc_containment_feasibility_contract.md",
+      "canonical_lf_sha256": "c12e9b4baebdafcb58a42c5618aa292dedb6e5740d533125659c1daa4f5dad65"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc0_query_preflight_attempt002_failure_receipt.json",
+      "canonical_lf_sha256": "55ab3aa39a9bb5977c168edaeefe44ddf5049746f7e7a9642ce807aab6b3c92d"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_c1r2_runner_compatibility_audit_receipt.json",
+      "canonical_lf_sha256": "e17cc02f8e7916db0ec382a76620a1b9e2ea8b1291e9a64e9078949e88c1635a"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/pipeline_state_stage1e.json",
+      "canonical_lf_sha256_before_pc1": "834c85a059af0827c768534d7c3a7e26c7cff17185af0c62a88598e8b0efac44"
+    }
+  ],
+  "upstream_hash_policy": "Strict UTF-8 decode, normalize CRLF to LF, then SHA-256.",
+  "model_policy": {
+    "central_model": "gpt-5.6-sol",
+    "central_reasoning": "max",
+    "central_service_tier": "default",
+    "discovery_task_model": "gpt-5.6-sol",
+    "discovery_task_reasoning": "xhigh",
+    "discovery_task_service_tier": "default",
+    "fast_or_priority_allowed": false
+  },
+  "discovery_task": {
+    "task_id": "01a02f57-c8d5-7be0-9b58-d0ffc2345a7a",
+    "write_scope": "READ_ONLY",
+    "verdict": "DISCOVERY_COMPLETE_CANDIDATES_REQUIRE_CENTRAL_ADMISSION",
+    "candidate_selection_performed": false,
+    "files_modified": false
+  },
+  "official_sources": [
+    {
+      "claim": "Windows container client hosts require Professional or Enterprise edition and Hyper-V isolation requires the Hyper-V role.",
+      "url": "https://learn.microsoft.com/en-us/virtualization/windowscontainers/deploy-containers/system-requirements"
+    },
+    {
+      "claim": "Windows 10 and Windows 11 container environments require Professional or Enterprise edition with Hyper-V enabled.",
+      "url": "https://learn.microsoft.com/en-us/virtualization/windowscontainers/quick-start/set-up-environment"
+    },
+    {
+      "claim": "Client Hyper-V is available in Windows Pro editions and greater.",
+      "url": "https://learn.microsoft.com/en-us/windows/whats-new/windows-11-requirements"
+    },
+    {
+      "claim": "Hyper-V isolation provides a robust boundary while process isolation is not the selected hostile-workload boundary.",
+      "url": "https://learn.microsoft.com/en-us/virtualization/windowscontainers/manage-containers/container-security"
+    },
+    {
+      "claim": "Windows container networking is not a native bounded-host default-deny admission by itself.",
+      "url": "https://learn.microsoft.com/en-us/virtualization/windowscontainers/container-networking/network-isolation-security"
+    },
+    {
+      "claim": "PowerShell Direct requires a local running Hyper-V VM and Hyper-V administrator authority.",
+      "url": "https://learn.microsoft.com/en-us/windows-server/virtualization/hyper-v/powershell-direct"
+    },
+    {
+      "claim": "Hyper-V partitions and virtualization architecture provide the boundary basis evaluated for the dedicated-VM candidate.",
+      "url": "https://learn.microsoft.com/en-us/virtualization/hyper-v-on-windows/reference/hyper-v-architecture"
+    },
+    {
+      "claim": "Hyper-V-isolated Windows containers use a separate kernel and remain subject to host/image compatibility requirements.",
+      "url": "https://learn.microsoft.com/en-us/virtualization/windowscontainers/deploy-containers/version-compatibility"
+    }
+  ],
+  "current_host_observations": {
+    "observation_mode": "READ_ONLY_NO_FEATURE_ENABLEMENT_NO_BACKEND_PROBE",
+    "registry": {
+      "product_name": "Windows 10 Home Single Language",
+      "edition_id": "CoreSingleLanguage",
+      "current_build_number": "26200"
+    },
+    "services": [
+      {"name": "vmms", "present": false, "status": null, "start_type": null},
+      {"name": "vmcompute", "present": true, "status": "Stopped", "start_type": "Manual"},
+      {"name": "hns", "present": true, "status": "Running", "start_type": "Manual"}
+    ],
+    "commands": [
+      {"name": "New-VM", "present": false},
+      {"name": "Get-VM", "present": false},
+      {"name": "hcsdiag.exe", "present": true, "path": "C:\\Windows\\system32\\hcsdiag.exe"},
+      {"name": "docker.exe", "present": true, "path": "C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe"}
+    ],
+    "docker": {
+      "client_version": "29.5.3",
+      "context": "desktop-linux",
+      "observed_endpoint_available": false,
+      "windows_engine_state": "UNOBSERVED_NOT_ESTABLISHED",
+      "failure": "Selected Docker Desktop Linux engine named pipe absent"
+    },
+    "unresolved_fail_closed": [
+      "Windows optional-feature query required elevation and returned no feature state",
+      "CIM and systeminfo were access-denied",
+      "WSL distribution enumeration was access-denied"
+    ],
+    "positive_inference_from_presence_only_allowed": false
+  },
+  "candidate_dispositions": [
+    {
+      "candidate": "HCS_HYPERV_ISOLATED_WINDOWS_CONTAINER",
+      "current_host_admission": "REJECTED_CURRENT_HOST_OS_EDITION_AND_RUNTIME_NOT_ADMISSIBLE",
+      "change_host_discovery_status": "CANDIDATE_ONLY_REQUIRES_FRESH_ADMISSION",
+      "blockers": [
+        "Observed CoreSingleLanguage edition is outside official Professional/Enterprise client-host requirement",
+        "Hyper-V role state is not established",
+        "No supported Windows container runtime was positively established",
+        "Exact filesystem and bounded-network policy remain unresolved",
+        "Exact command-packet compatibility is not demonstrated"
+      ]
+    },
+    {
+      "candidate": "DEDICATED_FULL_WINDOWS_HYPERV_VM",
+      "current_host_admission": "REJECTED_CURRENT_HOST_CLIENT_HYPERV_EDITION_NOT_SUPPORTED_AND_CMDLETS_ABSENT",
+      "change_host_discovery_status": "CANDIDATE_ONLY_REQUIRES_FRESH_ADMISSION",
+      "blockers": [
+        "Observed CoreSingleLanguage edition does not meet Client Hyper-V Pro-or-greater requirement",
+        "vmms, New-VM, and Get-VM are absent",
+        "Guest image and license are not declared",
+        "No-bypass bounded-network relay is not demonstrated",
+        "Immutable guest baseline and receipt semantics are not demonstrated"
+      ]
+    }
+  ],
+  "admission_cardinality": 0,
+  "selected_candidate": null,
+  "current_host_retry_authorized": false,
+  "changed_host_execution_authorized": false,
+  "automatic_fallback_authorized": false,
+  "backend_or_experiment_network_performed": false,
+  "official_evidence_retrieval_network_performed": true,
+  "filesystem_materialization_performed": false,
+  "backend_install_or_enable_performed": false,
+  "backend_probe_performed": false,
+  "scientific_execution_performed": false,
+  "result_status": "NOT_RUN",
+  "test_set_opened": "NO",
+  "accepted_result_rows": 0,
+  "verdict": "NO_ADMISSIBLE_CURRENT_HOST_BACKEND_CHANGED_HOST_REQUIRED",
+  "next_gate": "INDEPENDENT_PC1_AUDIT_THEN_EXPLICIT_CHANGED_HOST_DECISION_AND_FRESH_PC2_HOST_PREFLIGHT"
+}

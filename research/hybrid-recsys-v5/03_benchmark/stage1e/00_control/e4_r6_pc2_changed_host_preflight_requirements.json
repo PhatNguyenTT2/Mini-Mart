@@ -1,0 +1,90 @@
+{
+  "schema_version": "stage1e-e4-r6-pc2-changed-host-preflight-requirements-1.0",
+  "stage_id": "E4-R6-PC2",
+  "created_at": "2026-08-23T23:24:25.5648042+07:00",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "plan",
+    "origin_date": "2026-08-23T23:24:25.5648042+07:00",
+    "verification_status": "UNVERIFIED",
+    "version_label": "stage1e_e4_r6_pc2_changed_host_requirements_v1",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_pc1_admission_receipt_v1"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-23T23:24:25.5648042+07:00",
+      "declared_by": "scholar"
+    }
+  },
+  "purpose": "Define the evidence package required before selecting or executing an alternative containment backend on a different host.",
+  "authorization_state": {
+    "host_selected": false,
+    "candidate_selected": false,
+    "preflight_command_materialized": false,
+    "preflight_execution_authorized": false,
+    "backend_install_or_enable_authorized": false,
+    "download_authorized": false,
+    "materialization_authorized": false,
+    "training_authorized": false,
+    "evaluation_authorized": false,
+    "test_access_authorized": false
+  },
+  "candidate_lanes": [
+    "HCS_HYPERV_ISOLATED_WINDOWS_CONTAINER",
+    "DEDICATED_FULL_WINDOWS_HYPERV_VM"
+  ],
+  "candidate_selection_rule": "NO_SELECTION_UNTIL_ALL_HOST_AND_POLICY_EVIDENCE_IS_COMPLETE_AND_INDEPENDENTLY_AUDITED",
+  "required_host_evidence": {
+    "identity": [
+      "exact OS product name, edition ID, version, build and architecture",
+      "exact hardware virtualization and SLAT state",
+      "exact CPU, RAM and free-disk resource envelope",
+      "exact administrator and Hyper-V Administrators membership declaration"
+    ],
+    "features": [
+      "exact enabled state of Microsoft-Hyper-V-All",
+      "exact enabled state of Containers",
+      "exact enabled state of VirtualMachinePlatform",
+      "vmms, vmcompute and hns service identity and state",
+      "New-VM, Get-VM, hcsdiag and selected runtime identities"
+    ],
+    "policy": [
+      "documented process-tree security boundary and closure",
+      "explicit read-only and read-write filesystem grants with deny outside scope",
+      "outbound default-deny with bounded-host no-bypass mechanism",
+      "connection evidence and deterministic postconditions",
+      "complete list of host DACL, firewall, registry, feature, restart and elevation mutations"
+    ],
+    "packet_compatibility": [
+      "exact literal E:\\ namespace or an explicitly authorized packet rewrite",
+      "exact CPython and PowerShell identities",
+      "all 37 literal argv preserved unless a new packet is independently audited",
+      "per-command scratch and runner-control journal isolation",
+      "retry count zero and immutable-attempt semantics",
+      "no TEST access"
+    ],
+    "artifacts_and_licenses": [
+      "guest or container image source, immutable digest, version compatibility and license",
+      "runtime or HCS client source, immutable identity and support status",
+      "network relay or proxy source, immutable identity and policy proof"
+    ]
+  },
+  "fail_closed_conditions": [
+    "Home/Core edition where official support requires Pro or Enterprise",
+    "unknown or disabled required feature",
+    "missing security-boundary evidence",
+    "ambient DACL or firewall mutation not explicitly authorized",
+    "outbound allow-all or unproven no-bypass behavior",
+    "packet rewrite without a new independent compatibility audit",
+    "missing immutable image/runtime/proxy identity",
+    "missing license or administrator-impact declaration"
+  ],
+  "required_decision_before_preflight": "The scholar must identify the changed host and authorize a fresh read-only evidence collection. Backend installation, feature enablement, restart and execution require later separate authorization.",
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0
+  }
+}

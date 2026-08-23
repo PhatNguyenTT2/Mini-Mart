@@ -2,7 +2,7 @@
   "schema_version": "academic-research-pipeline-state-1.0",
   "project": "hybrid-recsys-v5",
   "stage": "1E",
-  "state": "stage1e_rebaseline_v2_r6_pc0_attempt002_fail_host_capability_absent_alternative_containment_or_host_required",
+  "state": "stage1e_rebaseline_v2_r6_pc1_no_admissible_current_host_backend_changed_host_required",
   "updated_at": "2026-08-23",
   "model": "gpt-5.6-sol",
   "reasoning": "max",
@@ -939,7 +939,7 @@
         "benchmark_admission_authorized": false
       },
       "r6": {
-        "status": "R6_PC0_ATTEMPT002_FAIL_HOST_CAPABILITY_ABSENT_ALTERNATIVE_CONTAINMENT_OR_HOST_REQUIRED",
+        "status": "R6_PC1_NO_ADMISSIBLE_CURRENT_HOST_BACKEND_CHANGED_HOST_REQUIRED",
         "stage_map": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_materialization_stage_map.json",
         "contract": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_bounded_materialization_contract.md",
         "s0": {
@@ -1255,6 +1255,60 @@
           "attempt003_roots_created": false,
           "experiment_execution_authorized": false
         },
+        "pc1": {
+          "status": "PASS_INDEPENDENT_AUDIT_NO_ADMISSIBLE_CURRENT_HOST_BACKEND_CHANGED_HOST_REQUIRED",
+          "purpose": "ADMIT_OR_REJECT_ALTERNATIVE_CONTAINMENT_FOR_CURRENT_HOST_WITHOUT_INSTALL_ENABLE_DOWNLOAD_PROBE_OR_EXECUTION",
+          "central_checkpoint": "9355743be9c4e326f062e4413fe2c0652bcdfe71",
+          "contract": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc1_alternative_containment_central_admission_contract.md",
+          "receipt": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc1_alternative_containment_admission_receipt.json",
+          "changed_host_requirements": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2_changed_host_preflight_requirements.json",
+          "discovery_task": {
+            "task_id": "01a02f57-c8d5-7be0-9b58-d0ffc2345a7a",
+            "model_profile": "Sol XHigh Standard",
+            "service_tier": "default",
+            "write_scope": "READ_ONLY",
+            "verdict": "DISCOVERY_COMPLETE_CANDIDATES_REQUIRE_CENTRAL_ADMISSION"
+          },
+          "central_model_profile": "Sol Max Standard",
+          "independent_audit": {
+            "task_id": "01a02f8e-3335-7ed1-a5c2-769ccb1d049b",
+            "model_profile": "Sol XHigh Standard",
+            "service_tier": "default",
+            "verdict": "PASS_PC1_NO_CURRENT_HOST_BACKEND_DECISION_READY_FOR_CENTRAL_COMMIT",
+            "blockers": 0,
+            "upstream_canonical_lf_hashes": "3/3_PASS",
+            "official_source_set": "8/8_EXACT_SET_AND_ORDER_PASS",
+            "lane_and_state_invariants": "20/20_PASS",
+            "audit_write_scope": "READ_ONLY"
+          },
+          "current_host": {
+            "registry_product_name": "Windows 10 Home Single Language",
+            "registry_edition_id": "CoreSingleLanguage",
+            "registry_build": "26200",
+            "vmms_present": false,
+            "vmcompute_present": true,
+            "hns_present": true,
+            "hyperv_powershell_cmdlets_present": false,
+            "supported_windows_container_runtime_state": "UNOBSERVED_NOT_ESTABLISHED",
+            "optional_feature_state": "UNRESOLVED_QUERY_REQUIRES_ELEVATION_FAIL_CLOSED"
+          },
+          "candidate_dispositions": {
+            "hcs_hyperv_isolated_windows_container": "REJECTED_CURRENT_HOST_OS_EDITION_AND_RUNTIME_NOT_ADMISSIBLE",
+            "dedicated_full_windows_hyperv_vm": "REJECTED_CURRENT_HOST_CLIENT_HYPERV_EDITION_NOT_SUPPORTED_AND_CMDLETS_ABSENT"
+          },
+          "admission_cardinality": 0,
+          "selected_candidate": null,
+          "current_host_retry_authorized": false,
+          "changed_host_selected": false,
+          "changed_host_preflight_authorized": false,
+          "backend_install_or_enable_authorized": false,
+          "backend_or_experiment_network_performed": false,
+          "official_evidence_retrieval_network_performed": true,
+          "filesystem_materialization_performed": false,
+          "backend_probe_performed": false,
+          "scientific_execution_performed": false,
+          "next_gate": "EXPLICIT_CHANGED_HOST_DECISION_AND_FRESH_PC2_READ_ONLY_HOST_PREFLIGHT_AUTHORIZATION"
+        },
         "m0_m1": {
           "status": "ATTEMPT002_FAIL_CLOSED_BOTH_ROOTS_RETAINED_IMMUTABLE",
           "context": "current_central",
@@ -1305,7 +1359,8 @@
           "attempt003_dispatch_created": false,
           "attempt003_materialization_gate_open": false
         },
-        "materialization_authorized": true,
+        "materialization_authorized": false,
+        "historical_materialization_authorization_consumed": true,
         "experiment_execution_authorized": false,
         "test_access_authorized": false,
         "benchmark_admission_authorized": false
@@ -1317,7 +1372,7 @@
         "project_benchmark_numbers": "INVALID_FOR_PAPER"
       },
       "execution_authorized": false,
-      "next_gate": "COMMIT_AND_INDEPENDENTLY_AUDIT_ATTEMPT002_HOST_CAPABILITY_FAILURE_THEN_OPEN_ALTERNATIVE_CONTAINMENT_DISCOVERY_OR_HOST_CHANGE_DECISION"
+      "next_gate": "OBTAIN_EXPLICIT_CHANGED_HOST_SELECTION_AND_FRESH_PC2_READ_ONLY_PREFLIGHT_AUTHORIZATION"
     }
   },
   "central_preregistration_lock": "PASS_R6_S0_BOUNDED_MATERIALIZATION_SCOPE_LOCKED",
@@ -1325,5 +1380,5 @@
   "harmonized_v5": "BLOCKED",
   "external_validation": "BLOCKED",
   "efficiency": "BLOCKED_AFTER_ACCURACY",
-  "next_gate": "Commit and independently audit the valid R6-PC0 Attempt002 host-capability failure. Then either discover a new containment backend for the current host or change host and run a fresh separately authorized preflight. MXC download/materialization, C1R3, bridge execution, training, evaluation, benchmark admission and TEST access remain blocked."
+  "next_gate": "Identify a supported changed host and obtain separate authorization for a fresh R6-PC2 read-only host preflight. Backend installation or enablement, materialization, C1R3, bridge execution, training, evaluation, benchmark admission and TEST access remain blocked."
 }
