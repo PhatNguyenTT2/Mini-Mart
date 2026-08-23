@@ -1,0 +1,126 @@
+{
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt003-baseline-validation-receipt-1.0",
+  "stage_id": "E4-R6-PC2W-P1-ATTEMPT003-BASELINE",
+  "created_at": "2026-08-24T03:03:15.0828455+07:00",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "validate",
+    "origin_date": "2026-08-24T03:03:15.0828455+07:00",
+    "verification_status": "ANALYZED",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt003_baseline_validation_v1",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_pc2w_p1_attempt003_baseline_execution_v3",
+      "stage1e_e4_r6_pc2w_p1_attempt003_baseline_dispatch_v3",
+      "stage1e_e4_r6_pc2w_p1_attempt003_user_authorization_v3"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-24T01:12:40.9534228+07:00",
+      "declared_by": "scholar"
+    }
+  },
+  "execution_checkpoint": "3b565467bdec068e1a5f14273520fa6759233a17",
+  "runner_checkpoint": "596bacc6a85572949e47e0953d09f0a60611e926",
+  "sealed_packet_commit": "7e0790ac981e091abb362885fb95a23959a8a0ff",
+  "central_validation": {
+    "model": "gpt-5.6-sol",
+    "reasoning_effort": "max",
+    "service_tier": "default",
+    "display_name": "Sol Max Standard",
+    "validator_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_p1_attempt003_baseline_failure.py",
+    "validator_raw_bytes": 13539,
+    "validator_raw_sha256": "4a8cdcb487250b09142ef449b9f0e264469182e512008bb30c976789af3d8bf0",
+    "validator_verdict": "PASS_PC2W_P1_ATTEMPT003_BASELINE_FAILURE_VALIDATED"
+  },
+  "audit_history": [
+    {
+      "thread_id": "01a0302a-1501-7653-b0c0-5a772bf67a89",
+      "worktree_client_thread_id": "client-new-thread:02eb937a-5e1b-49a5-9430-f12ca3c4e90e",
+      "audited_checkpoint": "45d45b7140387b6a0051570564ea9b177c3ccd59",
+      "verdict": "REWORK_REQUIRED",
+      "validator_checks": "63/63",
+      "execution_after_audit": false,
+      "finding": "Partial or ambiguous WSL output could be silently dropped."
+    },
+    {
+      "checkpoint": "83d973a01330c84db34e745e9dffc84410ca3419",
+      "verdict": "STATIC_VALIDATOR_FAIL",
+      "validator_checks": "68/69",
+      "execution_after_failure": false,
+      "finding": "Missing-header fixture returned rows with complete=false instead of an empty rejection."
+    },
+    {
+      "thread_id": "01a03032-347e-7720-9320-b7df36f8ad59",
+      "worktree_client_thread_id": "client-new-thread:354c5c9d-0fe9-4c37-858a-35bb1d08f1b0",
+      "audited_checkpoint": "3b565467bdec068e1a5f14273520fa6759233a17",
+      "verdict": "PASS_PC2W_P1_ATTEMPT003_BASELINE_RUNNER_READY_FOR_EXECUTION",
+      "validator_checks": "69/69",
+      "frozen_artifacts": "5/5",
+      "wsl_fixtures": "4/4",
+      "requested_model": "gpt-5.6-sol",
+      "requested_reasoning_effort": "xhigh",
+      "requested_service_tier": "priority",
+      "actual_service_tier_observable": false,
+      "write_scope": "READ_ONLY"
+    }
+  ],
+  "attempt_result": {
+    "verdict": "FAIL_CLOSED_PC2W_P1_ATTEMPT003_BASELINE_NOT_RESTORED",
+    "failure_class": "POST_DOCKER_DESKTOP_STATUS_UNCLASSIFIED_NONZERO",
+    "commands_recorded": 8,
+    "docker_stop_attempts": 1,
+    "wsl_shutdown_attempts": 1,
+    "automatic_retry_count": 0,
+    "docker_desktop_status_before": "running",
+    "docker_desktop_wsl_distro_before": "Running",
+    "daemon_before": "REACHABLE",
+    "docker_desktop_status_after": "UNCLASSIFIED_EXIT_1_HASH_ONLY",
+    "docker_desktop_status_after_stderr_bytes": 118,
+    "docker_desktop_status_after_stderr_sha256": "ac56c00523d1e789934f4d2fe1e2e09ac3ae557565000bfc053a3ae0cc7eb466",
+    "docker_desktop_wsl_distro_after": "Stopped",
+    "all_wsl_rows_after_stopped": true,
+    "daemon_after": "SPECIFICALLY_UNAVAILABLE",
+    "baseline_actual_state_inference": "NOT_INFERRED_FROM_PARTIAL_EVIDENCE",
+    "conjunctive_baseline_gate_passed": false,
+    "authorization_consumed": true,
+    "attempt003_execution_opened": false,
+    "attempt003_start_query_stop_executed": false,
+    "new_retry_performed": false
+  },
+  "policy_facts": {
+    "image_pull_or_build_performed": false,
+    "container_create_or_run_performed": false,
+    "settings_changed": false,
+    "install_or_download_performed": false,
+    "materialization_performed": false,
+    "scientific_execution_performed": false,
+    "raw_stdout_or_stderr_persisted": false,
+    "test_access_performed": false
+  },
+  "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_al/E4_R6PC2W_P1_docker_query_preflight/attempt-003-baseline-restoration",
+  "output_facts": [
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_al/E4_R6PC2W_P1_docker_query_preflight/attempt-003-baseline-restoration/baseline_command_receipts.json",
+      "raw_bytes": 7083,
+      "raw_sha256": "a9ac3e96bee053aae794cc5cf1ccb45a911c6b7a65024979d6c2a766a5914a6d"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_al/E4_R6PC2W_P1_docker_query_preflight/attempt-003-baseline-restoration/baseline_handoff.json",
+      "raw_bytes": 1018,
+      "raw_sha256": "c8562e627be328d5f462a8c3b5ec65fdaed573eb72c8a5479584600a18484d81"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_al/E4_R6PC2W_P1_docker_query_preflight/attempt-003-baseline-restoration/baseline_restoration_receipt.json",
+      "raw_bytes": 2407,
+      "raw_sha256": "7529233fe9a19eeaa5670a953524322940fb63c1d9adcf4a6dffc4b30e9eabd8"
+    }
+  ],
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "next_gate": "EXPLICIT_USER_DECISION_REQUIRED_FOR_ANY_NEW_BASELINE_ADMISSION_REVISION_OR_ATTEMPT_NO_AUTOMATIC_RETRY"
+}
