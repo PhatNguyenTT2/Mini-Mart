@@ -1,17 +1,17 @@
 {
   "schema_version": "stage1e-e4-r6-pc2w-p1-attempt003-baseline-dispatch-1.0",
   "stage_id": "E4-R6-PC2W-P1-ATTEMPT003-BASELINE",
-  "created_at": "2026-08-24T02:54:09.7954331+07:00",
+  "created_at": "2026-08-24T02:55:36.8579923+07:00",
   "material_passport": {
     "origin_skill": "experiment-agent",
     "origin_mode": "run",
-    "origin_date": "2026-08-24T02:54:09.7954331+07:00",
+    "origin_date": "2026-08-24T02:55:36.8579923+07:00",
     "verification_status": "UNVERIFIED",
-    "version_label": "stage1e_e4_r6_pc2w_p1_attempt003_baseline_dispatch_v2",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt003_baseline_dispatch_v3",
     "upstream_dependencies": [
-      "stage1e_e4_r6_pc2w_p1_attempt003_user_authorization_v2",
+      "stage1e_e4_r6_pc2w_p1_attempt003_user_authorization_v3",
       "stage1e_e4_r6_pc2w_p1_attempt003_baseline_contract_v1",
-      "stage1e_e4_r6_pc2w_p1_attempt003_baseline_runner_v2",
+      "stage1e_e4_r6_pc2w_p1_attempt003_baseline_runner_v3",
       "stage1e_e4_r6_pc2w_p1_attempt002_validation_v1"
     ],
     "repro_lock": null,
@@ -21,17 +21,17 @@
       "declared_by": "scholar"
     }
   },
-  "runner_checkpoint": "04e575937738b4aabbcefd3f97ca63519d7532ee",
+  "runner_checkpoint": "596bacc6a85572949e47e0953d09f0a60611e926",
   "frozen_artifacts": [
     {
       "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc2w_p1_attempt003_baseline_restoration.py",
-      "raw_bytes": 22120,
-      "raw_sha256": "f4c783b7565015f0e6938d6c12d425f7af2395fe83c61ed0675db9557adbb775"
+      "raw_bytes": 22162,
+      "raw_sha256": "ee610580b49ffc9087dc0a61501cc2cc29a4f64570b137aa0ac0dc8df306797e"
     },
     {
       "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt003_user_authorization_and_model_override.json",
-      "raw_bytes": 4335,
-      "raw_sha256": "1e23d7b2c6e7a8c8ef46b9cc84b6cfdc7c5c75c63b45121040991418314f8715"
+      "raw_bytes": 4685,
+      "raw_sha256": "20c26264ef77ecb61e5845f0002259d807ee64be24d3a899daa416b7b5486896"
     },
     {
       "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt003_baseline_restoration_contract.json",
@@ -108,7 +108,7 @@
     "TEST_SET_OPENED": "NO",
     "ACCEPTED_RESULT_ROWS": 0
   },
-  "supersedes_dispatch_checkpoint": "45d45b7140387b6a0051570564ea9b177c3ccd59",
+  "supersedes_dispatch_checkpoint": "83d973a01330c84db34e745e9dffc84410ca3419",
   "rework_basis": {
     "audit_thread_id": "01a0302a-1501-7653-b0c0-5a772bf67a89",
     "audit_verdict": "REWORK_REQUIRED",
@@ -117,7 +117,14 @@
       "Reject every non-empty non-header WSL line that does not parse.",
       "Reject duplicate distro names and missing headers.",
       "Require complete parse booleans in both pre and post gates.",
-      "Replay valid, partial, duplicate and missing-header fixtures in the static validator."
-    ]
+      "Replay valid, partial, duplicate and missing-header fixtures in the static validator.",
+      "Incomplete WSL parses return an empty row set and false, satisfying the missing-header negative fixture."
+    ],
+    "superseded_static_validator_result": {
+      "checkpoint": "83d973a01330c84db34e745e9dffc84410ca3419",
+      "verdict": "FAIL",
+      "checks": "68/69",
+      "execution_performed": false
+    }
   }
 }
