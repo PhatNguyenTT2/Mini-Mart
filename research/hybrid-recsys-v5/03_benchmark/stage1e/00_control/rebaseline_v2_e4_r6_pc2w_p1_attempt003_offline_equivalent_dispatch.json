@@ -1,16 +1,16 @@
 {
-  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-dispatch-1.0",
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-dispatch-2.0",
   "stage_id": "E4-R6-PC2W-P1-ATTEMPT003-OFFLINE-EQUIVALENT-OBSERVATION",
-  "created_at": "2026-08-24T03:14:33.6712726+07:00",
+  "created_at": "2026-08-24T03:26:59.5024308+07:00",
   "material_passport": {
     "origin_skill": "experiment-agent",
     "origin_mode": "run",
-    "origin_date": "2026-08-24T03:14:33.6712726+07:00",
+    "origin_date": "2026-08-24T03:26:59.5024308+07:00",
     "verification_status": "UNVERIFIED",
-    "version_label": "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_dispatch_v1",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_dispatch_v2",
     "upstream_dependencies": [
-      "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_authorization_v1",
-      "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_contract_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_authorization_v2",
+      "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_contract_v2",
       "stage1e_e4_r6_pc2w_p1_attempt003_baseline_validation_v1"
     ],
     "repro_lock": null,
@@ -20,27 +20,27 @@
       "declared_by": "scholar"
     }
   },
-  "runner_checkpoint": "e71ce0f0eba45e27c22f39af9b33e959698efcf0",
+  "runner_checkpoint": "771552fd93a0b2d6791e96a48ae2d5add35ab568",
   "frozen_artifacts": [
     {
       "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc2w_p1_attempt003_offline_equivalent_observation.py",
-      "raw_bytes": 23648,
-      "raw_sha256": "3e6dceba25da09064c18c232dc2a628c23b5dca99849f276a0136744c1ad02b4"
+      "git_blob_bytes": 30098,
+      "git_blob_sha256": "76a331d04696c5f1ebd0a3790cf9a349020247e9b4b116e249612d290efd2c6b"
     },
     {
       "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt003_offline_equivalent_observation_contract.json",
-      "raw_bytes": 3502,
-      "raw_sha256": "edfc0e7fcd3de4f351846045096ae385d576f09d0dfe99a9430ce1b29e9d332d"
+      "git_blob_bytes": 4481,
+      "git_blob_sha256": "821b2ad99b42a7c5948be6b854ffac3c7570d2f49a49c791964dab33abb64a98"
     },
     {
       "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt003_offline_equivalent_authorization.json",
-      "raw_bytes": 3803,
-      "raw_sha256": "bf72ce64b94bcda35f280a263c0aae1aad5c0808ae41f04bae0cf958b809abd9"
+      "git_blob_bytes": 4677,
+      "git_blob_sha256": "b01155796e026c2acec6572ca37b7cad2ebb4bbd105e055417e1e299a74b37d4"
     },
     {
       "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt003_baseline_validation_receipt.json",
-      "raw_bytes": 5828,
-      "raw_sha256": "83d95f46fbb3b777db6e37744762ee5975917190049eaf9b725110f82a0bdeaa"
+      "git_blob_bytes": 5828,
+      "git_blob_sha256": "83d95f46fbb3b777db6e37744762ee5975917190049eaf9b725110f82a0bdeaa"
     }
   ],
   "interpreter": {
@@ -70,12 +70,15 @@
   },
   "execution_controls": {
     "read_only_observation": true,
-    "commands_exactly_once": 5,
+    "commands_exactly_once": 9,
     "ordinary_query_timeout_seconds": 30,
     "automatic_retry_count": 0,
     "docker_desktop_status_advisory_only": true,
     "unclassified_nonzero_status_not_relabelled_stopped": true,
     "four_independent_offline_lanes_required": true,
+    "two_snapshot_stability_barrier_required": true,
+    "win32_named_pipe_absence_required_twice": true,
+    "attempt003_immediate_pre_gate_replay_required": true,
     "docker_desktop_start_or_stop_allowed": false,
     "wsl_shutdown_or_terminate_allowed": false,
     "image_or_container_mutation_allowed": false,
@@ -95,6 +98,21 @@
     "display_name": "Sol XHigh Fast",
     "write_scope": "READ_ONLY",
     "required_verdict": "PASS_PC2W_P1_ATTEMPT003_OFFLINE_EQUIVALENT_RUNNER_READY_FOR_EXECUTION"
+  },
+  "superseded_audit": {
+    "thread_id": "01a03044-32a3-7cd0-a953-019ba1522230",
+    "audited_checkpoint": "9cc417b9273def8812fb3b734c27e0434aa590c5",
+    "verdict": "REWORK_REQUIRED",
+    "execution_performed": false,
+    "findings_resolved": [
+      "audit/execution root separation",
+      "canonical Git-blob freezing across LF/CRLF worktrees",
+      "bytecode-free validator fixture loading",
+      "strict encoding and control-character rejection",
+      "Win32 named-pipe absence proof",
+      "two-snapshot stability barrier and downstream immediate replay",
+      "full interpreter, cwd and argv enforcement"
+    ]
   },
   "official_source_receipts": [
     "https://docs.docker.com/desktop/features/desktop-cli/",
