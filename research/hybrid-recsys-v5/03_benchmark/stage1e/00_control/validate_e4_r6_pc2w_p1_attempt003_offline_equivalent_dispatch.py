@@ -173,6 +173,10 @@ def main() -> int:
     check(controls.get("automatic_retry_count") == 0, "retry_zero_control")
     check(controls.get("two_snapshot_stability_barrier_required") is True, "stability_barrier_control")
     check(controls.get("win32_named_pipe_absence_required_twice") is True, "named_pipe_control")
+    check(controls.get("win32_named_pipe_wait_bound_milliseconds") == 1, "named_pipe_one_millisecond_control")
+    check(controls.get("strict_status_and_daemon_decoding_required") is True, "strict_status_daemon_control")
+    check(controls.get("contradictory_daemon_stdout_rejected") is True, "daemon_contradiction_control")
+    check(controls.get("exact_wsl_header_required") is True, "exact_wsl_header_control")
     check(controls.get("attempt003_immediate_pre_gate_replay_required") is True, "attempt003_replay_control")
     for field in (
         "docker_desktop_start_or_stop_allowed", "wsl_shutdown_or_terminate_allowed",
