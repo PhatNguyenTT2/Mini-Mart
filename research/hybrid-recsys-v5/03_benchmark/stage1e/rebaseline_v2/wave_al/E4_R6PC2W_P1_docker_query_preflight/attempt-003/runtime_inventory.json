@@ -1,0 +1,585 @@
+{
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt003-runtime-inventory-1.0",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "run",
+    "origin_date": "2026-08-24T15:19:02.944467Z",
+    "verification_status": "UNVERIFIED",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt003_query_only_execution_v1",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_pc2w_p1_attempt003_user_authorization_standard_v1",
+      "stage1e_e4_r6_pc2w_p1_requirements_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt003_native_offline_v5_validated"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-24T00:00:00+07:00",
+      "declared_by": "scholar"
+    }
+  },
+  "host_identity": {
+    "windows": {
+      "Caption": "Microsoft Windows 11 Home Single Language",
+      "Version": "10.0.26200",
+      "BuildNumber": "26200",
+      "OSArchitecture": "64-bit"
+    },
+    "wsl": {
+      "wsl_version": "2.6.1.0",
+      "kernel_version": "6.6.87.2-1",
+      "wslg_version": "1.0.66",
+      "windows_version": "10.0.26200.9168"
+    }
+  },
+  "docker_desktop_identity": {
+    "path": "C:\\Program Files\\Docker\\Docker\\Docker Desktop.exe",
+    "raw_bytes": 13209520,
+    "raw_sha256": "5b8ab7161b88c45bd4b036e9988349356c18cf5409adb77fdfb8c73b279d8fce",
+    "file_version": "4.78.0.229452",
+    "product_version": "4.78.0.229452"
+  },
+  "wsl_state": {
+    "pre_start": [
+      {
+        "name": "docker-desktop",
+        "state": "Stopped",
+        "version": 2
+      }
+    ],
+    "during": [
+      {
+        "name": "docker-desktop",
+        "state": "Running",
+        "version": 2
+      }
+    ],
+    "post_stop_snapshot_a": [
+      {
+        "name": "docker-desktop",
+        "state": "Stopped",
+        "version": 2
+      }
+    ],
+    "post_stop_snapshot_b": [
+      {
+        "name": "docker-desktop",
+        "state": "Stopped",
+        "version": 2
+      }
+    ]
+  },
+  "docker_desktop_status_advisory_only": {
+    "pre_start": "RUNNING_EXACT",
+    "during": "UNCLASSIFIED_ZERO_EXIT",
+    "post_stop": "RUNNING_EXACT",
+    "admission_authority": false,
+    "cannot_veto_or_admit_native_gate": true
+  },
+  "native_gate": {
+    "pre_start_lanes": {
+      "wsl_verbose_strict_parse_complete_and_all_stopped": true,
+      "wsl_running_inventory_strict_parse_complete_and_empty": true,
+      "desktop_linux_named_pipe_specifically_absent_win32_error_2": true,
+      "target_runtime_process_inventory_strict_parse_complete_and_empty": true,
+      "identity_payloads_parsed_and_complete": true,
+      "disk_thresholds_before_pass": true
+    },
+    "pre_start_named_pipe_probe": {
+      "method": "WaitNamedPipeW_one_millisecond_timeout",
+      "timeout_milliseconds": 1,
+      "pipe_path_sha256": "fdc0d41353dafe8326bfc6c481d48427a0f4e89ee27c6f9c0248100d438dae22",
+      "available": false,
+      "win32_error": 2,
+      "probe_exception_type": null
+    },
+    "post_stop_snapshot_a_lanes": {
+      "wsl_inventory_all_stopped": true,
+      "wsl_running_inventory_empty": true,
+      "desktop_linux_named_pipe_specifically_absent_win32_error_2": true,
+      "target_runtime_process_inventory_empty": false
+    },
+    "post_stop_snapshot_a_named_pipe_probe": {
+      "method": "WaitNamedPipeW_one_millisecond_timeout",
+      "timeout_milliseconds": 1,
+      "pipe_path_sha256": "fdc0d41353dafe8326bfc6c481d48427a0f4e89ee27c6f9c0248100d438dae22",
+      "available": false,
+      "win32_error": 2,
+      "probe_exception_type": null
+    },
+    "post_stop_snapshot_b_lanes": {
+      "wsl_inventory_all_stopped": true,
+      "wsl_running_inventory_empty": true,
+      "desktop_linux_named_pipe_specifically_absent_win32_error_2": true,
+      "target_runtime_process_inventory_empty": false
+    },
+    "post_stop_snapshot_b_named_pipe_probe": {
+      "method": "WaitNamedPipeW_one_millisecond_timeout",
+      "timeout_milliseconds": 1,
+      "pipe_path_sha256": "fdc0d41353dafe8326bfc6c481d48427a0f4e89ee27c6f9c0248100d438dae22",
+      "available": false,
+      "win32_error": 2,
+      "probe_exception_type": null
+    },
+    "post_stop_closure": {
+      "snapshot_a_all_native_lanes": false,
+      "snapshot_b_all_native_lanes": false,
+      "wsl_inventory_stable": true,
+      "wsl_running_inventory_stable": true,
+      "runtime_process_inventory_stable": true,
+      "named_pipe_absence_stable": true,
+      "wsl_inventory_restored_to_pre_start": true
+    },
+    "post_stop_runtime_processes_a": [
+      "wslrelay"
+    ],
+    "post_stop_runtime_processes_b": [
+      "wslrelay"
+    ]
+  },
+  "client_version_whitelist": {
+    "Version": "29.5.3",
+    "ApiVersion": "1.54",
+    "DefaultAPIVersion": "1.54",
+    "GitCommit": "d1c06ef",
+    "GoVersion": "go1.26.4",
+    "Os": "windows",
+    "Arch": "amd64",
+    "BuildTime": "Wed Jun  3 18:03:06 2026",
+    "Context": "desktop-linux"
+  },
+  "server_version_whitelist": {
+    "Version": "29.5.3",
+    "ApiVersion": "1.54",
+    "MinAPIVersion": "1.40",
+    "GitCommit": "285b471",
+    "GoVersion": "go1.26.4",
+    "Os": "linux",
+    "Arch": "amd64",
+    "KernelVersion": "6.6.87.2-microsoft-standard-WSL2",
+    "BuildTime": "2026-06-03T17:59:56.000000000+00:00",
+    "Experimental": null
+  },
+  "docker_info_whitelist": {
+    "ID": "3e43fae0-f1f3-4c7f-8b70-3685b6ef6a6b",
+    "ServerVersion": "29.5.3",
+    "OperatingSystem": "Docker Desktop",
+    "OSType": "linux",
+    "Architecture": "x86_64",
+    "KernelVersion": "6.6.87.2-microsoft-standard-WSL2",
+    "Driver": "overlayfs",
+    "CgroupDriver": "cgroupfs",
+    "CgroupVersion": "2",
+    "DockerRootDir": "/var/lib/docker",
+    "SecurityOptions": [
+      "name=seccomp,profile=builtin",
+      "name=cgroupns"
+    ],
+    "DefaultRuntime": "runc",
+    "NCPU": 16,
+    "MemTotal": 12199333888,
+    "Containers": 0,
+    "ContainersRunning": 0,
+    "ContainersPaused": 0,
+    "ContainersStopped": 0,
+    "Images": 12,
+    "LiveRestoreEnabled": false,
+    "Isolation": "",
+    "ExperimentalBuild": false,
+    "ContainerdCommit": {
+      "ID": "193637f7ee8ae5f5aa5248f49e7baa3e6164966e"
+    },
+    "Runtimes": [
+      "io.containerd.runc.v2",
+      "nvidia",
+      "runc"
+    ],
+    "HttpProxyConfigured": true,
+    "HttpsProxyConfigured": true,
+    "NoProxyConfigured": true
+  },
+  "context_whitelist": {
+    "Name": "desktop-linux",
+    "Description": "Docker Desktop",
+    "DockerEndpointHostClass": "DESKTOP_LINUX_NPIPE_EXACT",
+    "DockerEndpointHostSha256": "30341252ca9aa2b298da11cd8527fdfbf8ab30a2f3b5a3c871188c778b20af30",
+    "DockerEndpointSkipTLSVerify": false,
+    "TLSMaterialConfigured": false,
+    "StorageConfigured": true
+  },
+  "images_initial": [
+    {
+      "ID": "sha256:17097654fddeaa22be6a88f595bed7d09e0ba1b8fb9a54424727f29678bf16f6",
+      "Digest": "sha256:17097654fddeaa22be6a88f595bed7d09e0ba1b8fb9a54424727f29678bf16f6",
+      "Size": "348MB",
+      "row_sha256": "1140bfa83a2fec4f4f0505aa612e3bf0fee731213d1fc6ce937ea64db1669782"
+    },
+    {
+      "ID": "sha256:99bacd82ef8bb9024999baf0f301a110e8104ef7f3e168c3c949475d60befda8",
+      "Digest": "sha256:99bacd82ef8bb9024999baf0f301a110e8104ef7f3e168c3c949475d60befda8",
+      "Size": "350MB",
+      "row_sha256": "15e3d7b9137ac3ebc8c483df83198c85bb62be6ee206508955821d677d8d3d3c"
+    },
+    {
+      "ID": "sha256:4a73073bd557c65b759505da037898b61f1be6cbcc3c2c3aeac22d2a470c1752",
+      "Digest": "sha256:4a73073bd557c65b759505da037898b61f1be6cbcc3c2c3aeac22d2a470c1752",
+      "Size": "93.6MB",
+      "row_sha256": "24083da8e8c6e333e6e6615ad65819c3f0b3c1967943b7ade44bfcd551f8b497"
+    },
+    {
+      "ID": "sha256:72934437f6400be52ac4362d8bfd039d2d0548fc5a8ad881a1dc022e1eedff56",
+      "Digest": "sha256:72934437f6400be52ac4362d8bfd039d2d0548fc5a8ad881a1dc022e1eedff56",
+      "Size": "1e+03MB",
+      "row_sha256": "3a29fb898b22c2b2b794572774cc84e2e19ace8c868b17e6609eecd886066287"
+    },
+    {
+      "ID": "sha256:931fcc4c433a5fabf312489bf6595583bb94f2e75d0930f831d2c60349293228",
+      "Digest": "sha256:931fcc4c433a5fabf312489bf6595583bb94f2e75d0930f831d2c60349293228",
+      "Size": "349MB",
+      "row_sha256": "4412c05483ad8119d3096e530a956b68483798870c54c60b539691ca5b7d1466"
+    },
+    {
+      "ID": "sha256:b5aa7fdf96e87ed86feb1ff128330e9567fadb60f5532fd4a98427ea3b5753ed",
+      "Digest": "sha256:b5aa7fdf96e87ed86feb1ff128330e9567fadb60f5532fd4a98427ea3b5753ed",
+      "Size": "343MB",
+      "row_sha256": "5cb09a14a5d7b5b197e3d2e46a0368234f6a997db9ad2407a2aef51b3c6aa249"
+    },
+    {
+      "ID": "sha256:e64b4f4c19bc481a0b6b37bb8999e62b28c1f95852154bcb6e049d6621443407",
+      "Digest": "sha256:e64b4f4c19bc481a0b6b37bb8999e62b28c1f95852154bcb6e049d6621443407",
+      "Size": "663MB",
+      "row_sha256": "61d2618c5d2a0f7a238cc7d8fc2318433ae54fbf964bc18062843b80986cf761"
+    },
+    {
+      "ID": "sha256:5ee98c7a04bc39004aea6afed6c942ca71c5a394609d9430e951bab2fef08e69",
+      "Digest": "sha256:5ee98c7a04bc39004aea6afed6c942ca71c5a394609d9430e951bab2fef08e69",
+      "Size": "363MB",
+      "row_sha256": "64ebb95fa099c60574010ec10026bb4d0e66bcb7ab6f781216b536a56b84361b"
+    },
+    {
+      "ID": "sha256:b6dc1afb3bff9e51cddf8263dd65414c27e4c9d9433775e761b0bfdaf5daa9aa",
+      "Digest": "sha256:b6dc1afb3bff9e51cddf8263dd65414c27e4c9d9433775e761b0bfdaf5daa9aa",
+      "Size": "354MB",
+      "row_sha256": "a71c66a48bbcb5be063f1e2c83a59c367c9aeec6bb404b9e25981328788baed9"
+    },
+    {
+      "ID": "sha256:ca169e64ed413e128090a06689c82c13f8c692fefe45a65816999d3a3c5d5fa1",
+      "Digest": "sha256:ca169e64ed413e128090a06689c82c13f8c692fefe45a65816999d3a3c5d5fa1",
+      "Size": "354MB",
+      "row_sha256": "d8025fb9fb3298996de3cb5b1152ba640c130f0912bd3ec519162c856563107d"
+    },
+    {
+      "ID": "sha256:61b5925f383277cf572300dd5115e9cf4997fe50c8b344256fdd005679288ab3",
+      "Digest": "sha256:61b5925f383277cf572300dd5115e9cf4997fe50c8b344256fdd005679288ab3",
+      "Size": "229MB",
+      "row_sha256": "db86af8e42efd210050c067bb5c6165ab62af605118f5351c1222ba2862f4d0a"
+    },
+    {
+      "ID": "sha256:0bde386354ad813a4662ecf5846537fb597ed5fd0905446b9dc64df904802feb",
+      "Digest": "sha256:0bde386354ad813a4662ecf5846537fb597ed5fd0905446b9dc64df904802feb",
+      "Size": "762MB",
+      "row_sha256": "fca26b3323b03a490d2667dd31766ae5f7c32177cd992d5ee07dc2aee6ef09a3"
+    }
+  ],
+  "images_final": [
+    {
+      "ID": "sha256:17097654fddeaa22be6a88f595bed7d09e0ba1b8fb9a54424727f29678bf16f6",
+      "Digest": "sha256:17097654fddeaa22be6a88f595bed7d09e0ba1b8fb9a54424727f29678bf16f6",
+      "Size": "348MB",
+      "row_sha256": "1140bfa83a2fec4f4f0505aa612e3bf0fee731213d1fc6ce937ea64db1669782"
+    },
+    {
+      "ID": "sha256:99bacd82ef8bb9024999baf0f301a110e8104ef7f3e168c3c949475d60befda8",
+      "Digest": "sha256:99bacd82ef8bb9024999baf0f301a110e8104ef7f3e168c3c949475d60befda8",
+      "Size": "350MB",
+      "row_sha256": "15e3d7b9137ac3ebc8c483df83198c85bb62be6ee206508955821d677d8d3d3c"
+    },
+    {
+      "ID": "sha256:4a73073bd557c65b759505da037898b61f1be6cbcc3c2c3aeac22d2a470c1752",
+      "Digest": "sha256:4a73073bd557c65b759505da037898b61f1be6cbcc3c2c3aeac22d2a470c1752",
+      "Size": "93.6MB",
+      "row_sha256": "24083da8e8c6e333e6e6615ad65819c3f0b3c1967943b7ade44bfcd551f8b497"
+    },
+    {
+      "ID": "sha256:72934437f6400be52ac4362d8bfd039d2d0548fc5a8ad881a1dc022e1eedff56",
+      "Digest": "sha256:72934437f6400be52ac4362d8bfd039d2d0548fc5a8ad881a1dc022e1eedff56",
+      "Size": "1e+03MB",
+      "row_sha256": "3a29fb898b22c2b2b794572774cc84e2e19ace8c868b17e6609eecd886066287"
+    },
+    {
+      "ID": "sha256:931fcc4c433a5fabf312489bf6595583bb94f2e75d0930f831d2c60349293228",
+      "Digest": "sha256:931fcc4c433a5fabf312489bf6595583bb94f2e75d0930f831d2c60349293228",
+      "Size": "349MB",
+      "row_sha256": "4412c05483ad8119d3096e530a956b68483798870c54c60b539691ca5b7d1466"
+    },
+    {
+      "ID": "sha256:b5aa7fdf96e87ed86feb1ff128330e9567fadb60f5532fd4a98427ea3b5753ed",
+      "Digest": "sha256:b5aa7fdf96e87ed86feb1ff128330e9567fadb60f5532fd4a98427ea3b5753ed",
+      "Size": "343MB",
+      "row_sha256": "5cb09a14a5d7b5b197e3d2e46a0368234f6a997db9ad2407a2aef51b3c6aa249"
+    },
+    {
+      "ID": "sha256:e64b4f4c19bc481a0b6b37bb8999e62b28c1f95852154bcb6e049d6621443407",
+      "Digest": "sha256:e64b4f4c19bc481a0b6b37bb8999e62b28c1f95852154bcb6e049d6621443407",
+      "Size": "663MB",
+      "row_sha256": "61d2618c5d2a0f7a238cc7d8fc2318433ae54fbf964bc18062843b80986cf761"
+    },
+    {
+      "ID": "sha256:5ee98c7a04bc39004aea6afed6c942ca71c5a394609d9430e951bab2fef08e69",
+      "Digest": "sha256:5ee98c7a04bc39004aea6afed6c942ca71c5a394609d9430e951bab2fef08e69",
+      "Size": "363MB",
+      "row_sha256": "64ebb95fa099c60574010ec10026bb4d0e66bcb7ab6f781216b536a56b84361b"
+    },
+    {
+      "ID": "sha256:b6dc1afb3bff9e51cddf8263dd65414c27e4c9d9433775e761b0bfdaf5daa9aa",
+      "Digest": "sha256:b6dc1afb3bff9e51cddf8263dd65414c27e4c9d9433775e761b0bfdaf5daa9aa",
+      "Size": "354MB",
+      "row_sha256": "a71c66a48bbcb5be063f1e2c83a59c367c9aeec6bb404b9e25981328788baed9"
+    },
+    {
+      "ID": "sha256:ca169e64ed413e128090a06689c82c13f8c692fefe45a65816999d3a3c5d5fa1",
+      "Digest": "sha256:ca169e64ed413e128090a06689c82c13f8c692fefe45a65816999d3a3c5d5fa1",
+      "Size": "354MB",
+      "row_sha256": "d8025fb9fb3298996de3cb5b1152ba640c130f0912bd3ec519162c856563107d"
+    },
+    {
+      "ID": "sha256:61b5925f383277cf572300dd5115e9cf4997fe50c8b344256fdd005679288ab3",
+      "Digest": "sha256:61b5925f383277cf572300dd5115e9cf4997fe50c8b344256fdd005679288ab3",
+      "Size": "229MB",
+      "row_sha256": "db86af8e42efd210050c067bb5c6165ab62af605118f5351c1222ba2862f4d0a"
+    },
+    {
+      "ID": "sha256:0bde386354ad813a4662ecf5846537fb597ed5fd0905446b9dc64df904802feb",
+      "Digest": "sha256:0bde386354ad813a4662ecf5846537fb597ed5fd0905446b9dc64df904802feb",
+      "Size": "762MB",
+      "row_sha256": "fca26b3323b03a490d2667dd31766ae5f7c32177cd992d5ee07dc2aee6ef09a3"
+    }
+  ],
+  "containers_initial": [],
+  "containers_final": [],
+  "container_or_image_events": [],
+  "system_df": [
+    {
+      "Type": "Images",
+      "TotalCount": "12",
+      "Active": "0",
+      "Size": "16.66GB",
+      "Reclaimable": "3.215GB (19%)",
+      "row_sha256": "32ac5a829dc24ccb186b9cdc93edb90be54e06ea454a24602c87c2b922ecc1a2"
+    },
+    {
+      "Type": "Containers",
+      "TotalCount": "0",
+      "Active": "0",
+      "Size": "0B",
+      "Reclaimable": "0B",
+      "row_sha256": "429428c946c356ae16081c396c569edf0cac93239786bdc7bc8a8f0fb5beca03"
+    },
+    {
+      "Type": "Build Cache",
+      "TotalCount": "187",
+      "Active": "0",
+      "Size": "18.85GB",
+      "Reclaimable": "15.34GB",
+      "row_sha256": "9c6a5b2136abf45204d3bdc44b176b41a54b82f258f3327da367c44618cb7e05"
+    },
+    {
+      "Type": "Local Volumes",
+      "TotalCount": "235",
+      "Active": "0",
+      "Size": "1.211GB",
+      "Reclaimable": "1.211GB (100%)",
+      "row_sha256": "c24b21d5c07ac7049c2c36e9d9a496c586a8ac95cb2dc75dd9725fe80eef0a83"
+    }
+  ],
+  "process_inventory": {
+    "available": true,
+    "rows": [
+      {
+        "ProcessName": "com.docker.backend",
+        "Id": 5044
+      },
+      {
+        "ProcessName": "com.docker.backend",
+        "Id": 10300
+      },
+      {
+        "ProcessName": "com.docker.build",
+        "Id": 9152
+      },
+      {
+        "ProcessName": "Docker Desktop",
+        "Id": 3100
+      },
+      {
+        "ProcessName": "Docker Desktop",
+        "Id": 19444
+      },
+      {
+        "ProcessName": "Docker Desktop",
+        "Id": 20568
+      },
+      {
+        "ProcessName": "Docker Desktop",
+        "Id": 23628
+      },
+      {
+        "ProcessName": "vmmemWSL",
+        "Id": 24072
+      },
+      {
+        "ProcessName": "wsl",
+        "Id": 14688
+      },
+      {
+        "ProcessName": "wsl",
+        "Id": 14952
+      },
+      {
+        "ProcessName": "wsl",
+        "Id": 22740
+      },
+      {
+        "ProcessName": "wsl",
+        "Id": 23800
+      },
+      {
+        "ProcessName": "wslhost",
+        "Id": 5092
+      },
+      {
+        "ProcessName": "wslhost",
+        "Id": 6440
+      },
+      {
+        "ProcessName": "wslhost",
+        "Id": 16340
+      },
+      {
+        "ProcessName": "wslhost",
+        "Id": 18708
+      }
+    ]
+  },
+  "connections_redacted": {
+    "available": true,
+    "rows": [
+      {
+        "State": 100,
+        "LocalPort": 49823,
+        "RemoteAddressSha256": "19e36255972107d42b8cecb77ef5622e842e8a50778a6ed8dd1ce94732daca9e",
+        "RemotePort": 0,
+        "OwningProcess": 10300
+      },
+      {
+        "State": 100,
+        "LocalPort": 49820,
+        "RemoteAddressSha256": "19e36255972107d42b8cecb77ef5622e842e8a50778a6ed8dd1ce94732daca9e",
+        "RemotePort": 0,
+        "OwningProcess": 10300
+      },
+      {
+        "State": 100,
+        "LocalPort": 49819,
+        "RemoteAddressSha256": "19e36255972107d42b8cecb77ef5622e842e8a50778a6ed8dd1ce94732daca9e",
+        "RemotePort": 0,
+        "OwningProcess": 10300
+      },
+      {
+        "State": 100,
+        "LocalPort": 49818,
+        "RemoteAddressSha256": "19e36255972107d42b8cecb77ef5622e842e8a50778a6ed8dd1ce94732daca9e",
+        "RemotePort": 0,
+        "OwningProcess": 10300
+      },
+      {
+        "State": 100,
+        "LocalPort": 49817,
+        "RemoteAddressSha256": "19e36255972107d42b8cecb77ef5622e842e8a50778a6ed8dd1ce94732daca9e",
+        "RemotePort": 0,
+        "OwningProcess": 10300
+      },
+      {
+        "State": 100,
+        "LocalPort": 49816,
+        "RemoteAddressSha256": "19e36255972107d42b8cecb77ef5622e842e8a50778a6ed8dd1ce94732daca9e",
+        "RemotePort": 0,
+        "OwningProcess": 10300
+      },
+      {
+        "State": 3,
+        "LocalPort": 49823,
+        "RemoteAddressSha256": "4e73a25351065e2b4628603507468bae8762ca9c65e9ec82736506215b68b0be",
+        "RemotePort": 1,
+        "OwningProcess": 10300
+      },
+      {
+        "State": 5,
+        "LocalPort": 49820,
+        "RemoteAddressSha256": "8e92d1d08081e19c91488b6d370218f404131a7e2f69379f7f692e7b6d5471a2",
+        "RemotePort": 443,
+        "OwningProcess": 10300
+      },
+      {
+        "State": 5,
+        "LocalPort": 49819,
+        "RemoteAddressSha256": "c321d64aba0afdda62e16462a8e58b0fffb97aaee55ee667217313ba1afe0598",
+        "RemotePort": 443,
+        "OwningProcess": 10300
+      },
+      {
+        "State": 5,
+        "LocalPort": 49818,
+        "RemoteAddressSha256": "464259426d19dd8c36a7afe625de30c8aff88093fb9c5bc0cb5e6b11ccfe1d80",
+        "RemotePort": 443,
+        "OwningProcess": 10300
+      },
+      {
+        "State": 5,
+        "LocalPort": 49817,
+        "RemoteAddressSha256": "c321d64aba0afdda62e16462a8e58b0fffb97aaee55ee667217313ba1afe0598",
+        "RemotePort": 443,
+        "OwningProcess": 10300
+      },
+      {
+        "State": 5,
+        "LocalPort": 49816,
+        "RemoteAddressSha256": "464259426d19dd8c36a7afe625de30c8aff88093fb9c5bc0cb5e6b11ccfe1d80",
+        "RemotePort": 443,
+        "OwningProcess": 10300
+      }
+    ]
+  },
+  "before_disk": {
+    "c": {
+      "total_bytes": 301198209024,
+      "used_bytes": 272467259392,
+      "free_bytes": 28730949632
+    },
+    "e": {
+      "total_bytes": 209714147328,
+      "used_bytes": 87519784960,
+      "free_bytes": 122194362368
+    }
+  },
+  "after_disk": {
+    "c": {
+      "total_bytes": 301198209024,
+      "used_bytes": 272514121728,
+      "free_bytes": 28684087296
+    },
+    "e": {
+      "total_bytes": 209714147328,
+      "used_bytes": 87519784960,
+      "free_bytes": 122194362368
+    }
+  },
+  "disk_delta_free_bytes": {
+    "c": -46862336,
+    "e": 0
+  },
+  "proxy_values_persisted": false,
+  "raw_context_persisted": false,
+  "vendor_startup_network_claimed_absent": false,
+  "parse_failures": []
+}
