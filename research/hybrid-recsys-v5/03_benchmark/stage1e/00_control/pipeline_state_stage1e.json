@@ -1676,13 +1676,27 @@
               "write_set": [],
               "rework_required": true
             },
+            "second_fresh_static_audit": {
+              "task_id": "01a034f5-d850-7a13-a1f3-42f399e4a642",
+              "audited_checkpoint": "576467a6bf038364ae168cd6ba4b737dff9e0a56",
+              "verdict": "FAIL_CLOSED_PC2W_P1_ATTEMPT005_REWORK_STATIC_AUDIT",
+              "mandatory_validator_checks_passed": 135,
+              "mandatory_validator_checks_total": 135,
+              "runtime_commands_executed": false,
+              "write_set": [],
+              "rework_required": true
+            },
             "rework_scope": [
               "fail closed on every missing or ambiguous process and TCP identity field",
               "persist an exact four-file failure packet before and throughout runtime observation",
               "persist sanitized Docker client, server and info identity evidence",
               "bind exact coordinator and static-audit model plus reasoning profile",
               "validate upstream hashes from Git blobs independently of checkout line endings",
-              "replace transition marker ordering with AST structural validation"
+              "replace transition marker ordering with AST structural validation",
+              "forbid null or singleton-object Rows coercion and boolean counts",
+              "check TCP ports and owning process before numeric casts",
+              "normalize CRLF to LF in runner and contract drift binding while rejecting bare carriage returns",
+              "bind Material Passport to Attempt-005 contract v2"
             ],
             "rework_validation_incident": {
               "occurred": true,
@@ -1795,5 +1809,5 @@
   "harmonized_v5": "BLOCKED",
   "external_validation": "BLOCKED",
   "efficiency": "BLOCKED_AFTER_ACCURACY",
-  "next_gate": "The first fresh Sol XHigh Standard static audit failed closed at checkpoint 5ae16e93d0c47daa7e89a693d134f12f19bd0f77 without executing runtime commands or writing files. During rework, one parser-only validation command accidentally evaluated the embedded native process probe and native TCP probe once each; both returned Available=false with CimException, but no Docker CLI, WSL command, Docker Desktop start, Attempt-005 runner, output-root creation, artifact write, retry, materialization, training, evaluation, benchmark admission or TEST access occurred. The packet is being reworked and requires a new fresh Sol XHigh Standard audit plus exact-command confirmation before execution."
+  "next_gate": "Two fresh Sol XHigh Standard static audits have failed closed without executing the Attempt-005 runner or writing audit files. The second audit at 576467a6bf038364ae168cd6ba4b737dff9e0a56 identified strict Rows/count coercion, pre-cast TCP null handling, CRLF-sensitive runner drift binding and a stale contract-v1 Material Passport reference; all are in rework. During the first rework, one parser-only validation command accidentally evaluated the embedded native process probe and native TCP probe once each; both returned Available=false with CimException, but no Docker CLI, WSL command, Docker Desktop start, output-root creation, artifact write, retry, materialization, training, evaluation, benchmark admission or TEST access occurred. A third fresh Sol XHigh Standard audit plus exact-command confirmation remain mandatory before execution."
 }

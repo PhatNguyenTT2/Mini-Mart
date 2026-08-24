@@ -105,7 +105,10 @@
   "fail_closed_completeness": {
     "process_identity_null_or_empty_field_is_error": true,
     "process_identity_hash_must_be_lowercase_sha256": true,
+    "rows_must_be_json_array_without_singleton_or_null_coercion": true,
+    "count_must_be_nonnegative_integer_and_not_boolean": true,
     "tcp_identity_null_or_empty_field_is_error": true,
+    "tcp_ports_and_owner_are_checked_before_numeric_cast": true,
     "tcp_address_hash_must_be_lowercase_sha256": true,
     "during_process_population_must_be_nonempty": true,
     "probe_exception_returns_available_false": true
@@ -122,6 +125,11 @@
     "Docker server version whitelist",
     "Docker info whitelist including backend identity and redacted proxy-presence booleans"
   ],
+  "checkout_independence": {
+    "upstream_hashes_use_git_blob_bytes": true,
+    "runner_and_contract_drift_gate_normalizes_crlf_to_lf": true,
+    "bare_carriage_return_is_rejected": true
+  },
   "privacy_controls": {
     "raw_stdout_or_stderr_persisted": false,
     "raw_process_paths_persisted": false,

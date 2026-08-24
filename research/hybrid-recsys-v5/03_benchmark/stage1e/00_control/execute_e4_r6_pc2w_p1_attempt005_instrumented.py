@@ -203,6 +203,9 @@ try {
       Require-NonEmpty ([string]$c.State) 'State'
       Require-NonEmpty ([string]$c.LocalAddress) 'LocalAddress'
       Require-NonEmpty ([string]$c.RemoteAddress) 'RemoteAddress'
+      if($null -eq $c.LocalPort){throw 'missing required TCP field: LocalPort'}
+      if($null -eq $c.RemotePort){throw 'missing required TCP field: RemotePort'}
+      if($null -eq $c.OwningProcess -or [uint32]$c.OwningProcess -eq 0){throw 'missing required TCP field: OwningProcess'}
       $rows += [pscustomobject]@{
         State=[string]$c.State
         LocalAddressHash=$(Get-RedactedSha256 ([string]$c.LocalAddress))
@@ -244,6 +247,14 @@ def file_fact(path: Path) -> tuple[int, str]:
     return base.file_fact(path)
 
 
+def canonical_lf_text_fact(path: Path) -> tuple[int, str]:
+    raw = path.read_bytes()
+    normalized = raw.replace(b"\r\n", b"\n")
+    if b"\r" in normalized:
+        raise ValueError(f"bare carriage return in text artifact: {path}")
+    return len(normalized), hashlib.sha256(normalized).hexdigest()
+
+
 def command_ok(receipt: dict[str, Any]) -> bool:
     return base.command_ok(receipt)
 
@@ -253,13 +264,12 @@ def parse_probe(value: bytes, *, count_key: str) -> dict[str, Any]:
     if not isinstance(parsed, dict) or parsed.get("Available") is not True:
         raise ValueError("instrumented probe unavailable")
     rows = parsed.get("Rows")
-    if rows is None:
-        rows = []
-    if isinstance(rows, dict):
-        rows = [rows]
     if not isinstance(rows, list) or any(not isinstance(row, dict) for row in rows):
         raise ValueError("instrumented probe rows malformed")
-    if parsed.get(count_key) != len(rows):
+    count = parsed.get(count_key)
+    if not isinstance(count, int) or isinstance(count, bool) or count < 0:
+        raise ValueError("instrumented probe count type invalid")
+    if count != len(rows):
         raise ValueError("instrumented probe count mismatch")
     return {"available": True, "count": len(rows), "rows": rows}
 
@@ -459,7 +469,7 @@ def passport(created_at: str, auth: dict[str, Any]) -> dict[str, Any]:
         "version_label": "stage1e_e4_r6_pc2w_p1_attempt005_instrumented_execution_v1",
         "upstream_dependencies": [
             "stage1e_e4_r6_pc2w_p1_attempt005_user_authorization_v1",
-            "stage1e_e4_r6_pc2w_p1_attempt005_instrumented_contract_v1",
+            "stage1e_e4_r6_pc2w_p1_attempt005_instrumented_contract_v2",
             "stage1e_e4_r6_pc2w_p1_residual_process_policy_review_validation_receipt_v1",
         ],
         "repro_lock": None,
@@ -605,7 +615,7 @@ def main() -> int:
         ):
             raise RuntimeError(f"frozen artifact mismatch: {relative.as_posix()}")
     for relative in (RUNNER_RELATIVE, CONTRACT_RELATIVE):
-        if git_blob_fact(repo_root, parent, relative) != file_fact(repo_root / relative):
+        if git_blob_fact(repo_root, parent, relative) != canonical_lf_text_fact(repo_root / relative):
             raise RuntimeError(f"runner checkpoint drift: {relative.as_posix()}")
 
     created_at = utc_now()
