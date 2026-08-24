@@ -1,0 +1,86 @@
+{
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt004-evidence-gap-analysis-1.0",
+  "stage_id": "E4-R6-PC2W-P1-RPR1",
+  "analysis_date": "2026-08-25",
+  "frozen_attempt": {
+    "attempt_id": "E4-R6-PC2W-P1-ATTEMPT004",
+    "failure_receipt_sha256": "f2c589e54662e96ec62679fb8215abb25737f0401aac167e300e699ad5756fcf",
+    "verdict": "FAIL_CLOSED_PC2W_P1_ATTEMPT004_BACKEND_OR_POLICY_NOT_ADMISSIBLE",
+    "execution_attempts": 1,
+    "automatic_retry_count": 0,
+    "post_stop_settling_seconds": 20,
+    "post_stop_snapshot_barrier_seconds": 5,
+    "snapshot_a_runtime_process_names": [
+      "wslrelay"
+    ],
+    "snapshot_b_runtime_process_names": [
+      "wslrelay"
+    ],
+    "other_native_lanes_passed": true,
+    "wsl_inventory_all_stopped": true,
+    "wsl_running_inventory_empty": true,
+    "desktop_linux_named_pipe_absent_win32_error_2": true
+  },
+  "captured_residual_process_fields": [
+    "unique executable base name"
+  ],
+  "missing_residual_process_fields": [
+    "process count",
+    "process identifier",
+    "parent process identifier and parent executable identity",
+    "executable absolute path",
+    "Authenticode signer and signature validity",
+    "file version and file SHA-256",
+    "process creation time and age relative to Docker Desktop start and stop",
+    "command-line digest",
+    "per-process TCP listener and connection ownership",
+    "per-process named-pipe or handle ownership",
+    "cross-snapshot PID continuity or turnover",
+    "explicit post-Docker-stop wsl --shutdown result"
+  ],
+  "non_joinable_claims": [
+    {
+      "claim": "The observed wslrelay was a harmless background component unrelated to Attempt-004.",
+      "status": "NOT_SUPPORTED",
+      "reason": "No PID, age, parent, executable, signature, or socket lineage was captured."
+    },
+    {
+      "claim": "The observed wslrelay was definitely a leaked or orphaned process.",
+      "status": "NOT_SUPPORTED",
+      "reason": "The frozen packet did not capture the process or network attributes needed to match an external failure signature."
+    },
+    {
+      "claim": "Docker Desktop stop normatively requires zero wslrelay processes.",
+      "status": "NOT_DOCUMENTED_BY_RETRIEVED_AUTHORITATIVE_SOURCES",
+      "reason": "Docker documents the stop command but not a process-level WSL cleanup SLA."
+    },
+    {
+      "claim": "wslrelay may be ignored whenever WSL distributions are Stopped.",
+      "status": "NOT_SUPPORTED",
+      "reason": "Official WSL architecture establishes component legitimacy, while issue reports provide credible counterexamples to name-only harmlessness."
+    }
+  ],
+  "retrospective_decision": {
+    "attempt004_admissible": false,
+    "attempt004_verdict_preserved": true,
+    "later_observation_may_repair_attempt004": false,
+    "process_name_allowlist_permitted": false,
+    "policy_relaxation_verdict": "POLICY_RELAXATION_DENIED_ATTEMPT004_REMAINS_FAIL_CLOSED"
+  },
+  "prospective_decision": {
+    "current_host_permanently_rejected": false,
+    "new_attempt_required": true,
+    "new_user_authorization_required": true,
+    "new_frozen_instrumented_contract_required": true,
+    "synchronous_docker_stop_required": true,
+    "explicit_wsl_shutdown_after_docker_stop_required_if_authorized": true,
+    "zero_residual_target_processes_required_after_final_closure": true,
+    "name_only_allowlist_forbidden": true
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

@@ -2,8 +2,8 @@
   "schema_version": "academic-research-pipeline-state-1.0",
   "project": "hybrid-recsys-v5",
   "stage": "1E",
-  "state": "stage1e_rebaseline_v2_r6_pc2w_p1_attempt004_fail_closed_packet_audited_no_retry_user_decision_required",
-  "updated_at": "2026-08-24",
+  "state": "stage1e_rebaseline_v2_r6_pc2w_p1_attempt004_residual_policy_review_centrally_validated_current_attempt_not_admissible_user_decision_required",
+  "updated_at": "2026-08-25",
   "model": "gpt-5.6-sol",
   "reasoning": "max",
   "service_tier": "standard",
@@ -15,7 +15,7 @@
     "record": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/wave1_v1_supersession_record.json"
   },
   "rebaseline_v2": {
-    "status": "e4_r6_pc2w_p1_attempt004_fail_closed_packet_audited_no_retry_user_decision_required",
+    "status": "e4_r6_pc2w_p1_attempt004_residual_policy_review_centrally_validated_current_attempt_not_admissible_user_decision_required",
     "wave_a_expected": 3,
     "wave_a_active": 0,
     "wave_a_complete": 3,
@@ -939,7 +939,7 @@
         "benchmark_admission_authorized": false
       },
       "r6": {
-        "status": "R6_PC2W_P1_ATTEMPT003_FAIL_CLOSED_PACKET_AUDITED_NO_RETRY_USER_DECISION_REQUIRED",
+        "status": "R6_PC2W_P1_ATTEMPT004_RESIDUAL_POLICY_REVIEW_CENTRALLY_VALIDATED_CURRENT_ATTEMPT_NOT_ADMISSIBLE_USER_DECISION_REQUIRED",
         "stage_map": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_materialization_stage_map.json",
         "contract": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_bounded_materialization_contract.md",
         "s0": {
@@ -1310,7 +1310,7 @@
           "next_gate": "EXPLICIT_CHANGED_HOST_DECISION_AND_FRESH_PC2_READ_ONLY_HOST_PREFLIGHT_AUTHORIZATION"
         },
         "pc2w": {
-          "status": "P1_ATTEMPT003_FAIL_CLOSED_PACKET_AUDITED_NO_RETRY_USER_DECISION_REQUIRED",
+          "status": "P1_ATTEMPT004_RESIDUAL_POLICY_REVIEW_CENTRALLY_VALIDATED_CURRENT_ATTEMPT_NOT_ADMISSIBLE_USER_DECISION_REQUIRED",
           "purpose": "REOPEN_CURRENT_HOST_WITH_NO_OS_EDITION_UPGRADE_USING_A_PREVIOUSLY_UNEVALUATED_WSL2_LINUX_CONTAINER_LANE",
           "user_decision": "CONTINUE_CURRENT_MACHINE_NO_OS_EDITION_UPGRADE_COST_CONSTRAINED_WSL2_DIRECTION",
           "threat_model": "TRUSTED_PINNED_RESEARCH_CODE",
@@ -1625,11 +1625,39 @@
             "failure_packet_audited": true,
             "repeat_same_host_failure_after_attempt003": true
           },
+          "p1_residual_process_policy_review": {
+            "stage_id": "E4-R6-PC2W-P1-RPR1",
+            "status": "COMPLETE_CENTRALLY_VALIDATED",
+            "verdict": "POLICY_RELAXATION_DENIED_ATTEMPT004_REMAINS_FAIL_CLOSED",
+            "contract": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_residual_process_policy_review_contract.json",
+            "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_am/E4_R6PC2W_P1_residual_process_policy_review",
+            "validator": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_p1_residual_process_policy_review.py",
+            "validation_receipt": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_residual_process_policy_review_validation_receipt.json",
+            "central_validation_verdict": "PASS_PC2W_P1_RESIDUAL_PROCESS_POLICY_REVIEW_VALIDATED_89_OF_89",
+            "official_sources_total": 9,
+            "authoritative_or_official_documentation": 6,
+            "user_reported_issue_risk_signals": 3,
+            "official_cleanup_sla_found": false,
+            "name_only_allowlist_supported": false,
+            "attempt004_admissible": false,
+            "attempt004_verdict_preserved": true,
+            "retrospective_reinterpretation_performed": false,
+            "current_host_permanently_rejected": false,
+            "attempt005_authorized": false,
+            "new_instrumented_contract_required": true,
+            "explicit_wsl_shutdown_requires_user_authorization": true,
+            "automatic_retry_count": 0,
+            "runtime_commands_executed": false,
+            "materialization_performed": false,
+            "scientific_execution_performed": false,
+            "test_access_performed": false,
+            "next_gate": "MANDATORY_USER_DECISION_AUTHORIZE_ATTEMPT005_INSTRUMENTED_CURRENT_HOST_OR_SELECT_CHANGED_HOST_OR_PAUSE"
+          },
           "scientific_execution_performed": false,
           "result_status": "NOT_RUN",
           "test_set_opened": "NO",
           "accepted_result_rows": 0,
-          "next_gate": "USER_DECISION_REQUIRED_NO_AUTOMATIC_RETRY_AFTER_AUDITED_FAILURE_ATTEMPT004"
+          "next_gate": "MANDATORY_USER_DECISION_AUTHORIZE_ATTEMPT005_INSTRUMENTED_CURRENT_HOST_OR_SELECT_CHANGED_HOST_OR_PAUSE"
         },
         "m0_m1": {
           "status": "ATTEMPT002_FAIL_CLOSED_BOTH_ROOTS_RETAINED_IMMUTABLE",
@@ -1694,7 +1722,7 @@
         "project_benchmark_numbers": "INVALID_FOR_PAPER"
       },
       "execution_authorized": false,
-      "next_gate": "USER_DECISION_REQUIRED_NO_AUTOMATIC_RETRY_AFTER_AUDITED_FAILURE_ATTEMPT004"
+      "next_gate": "MANDATORY_USER_DECISION_AUTHORIZE_ATTEMPT005_INSTRUMENTED_CURRENT_HOST_OR_SELECT_CHANGED_HOST_OR_PAUSE"
     }
   },
   "central_preregistration_lock": "PASS_R6_S0_BOUNDED_MATERIALIZATION_SCOPE_LOCKED",
@@ -1702,5 +1730,5 @@
   "harmonized_v5": "BLOCKED",
   "external_validation": "BLOCKED",
   "efficiency": "BLOCKED_AFTER_ACCURACY",
-  "next_gate": "Attempt-004 failure packet passed independent Sol XHigh Standard audit after one execution and zero retry. The Attempt-003 prohibited-command polarity defect was repaired before execution; all query-only backend evidence passed. The current PC2W lane remains fail-closed because wslrelay persisted in both fixed post-stop native closure snapshots after 20 seconds settling plus a 5 second barrier, repeating the same-host failure class. User decision is required: commission an evidence-only residual-process admission-policy review, select a changed host, or pause. No automatic retry or Attempt-005 is authorized. Image acquisition/build, container creation/run, settings changes, materialization, R6-C1R3-LINUX execution, training, evaluation, benchmark admission and TEST access remain blocked."
+  "next_gate": "The evidence-only residual-process policy review passed central deterministic validation 89/89. Microsoft and Docker documentation establish component and command semantics but provide no wslrelay post-stop cleanup SLA; the Attempt-004 packet captured only the base process name and cannot establish PID, parent, executable, signature, age, or socket lineage. Policy relaxation is denied and Attempt-004 remains fail-closed. A mandatory user decision is required: authorize one new instrumented current-host Attempt-005 with exactly one synchronous Docker Desktop stop and one explicit wsl --shutdown plus identity/socket receipts, select a changed host, or pause. No automatic retry is authorized. Materialization, R6-C1R3-LINUX execution, training, evaluation, benchmark admission and TEST access remain blocked."
 }

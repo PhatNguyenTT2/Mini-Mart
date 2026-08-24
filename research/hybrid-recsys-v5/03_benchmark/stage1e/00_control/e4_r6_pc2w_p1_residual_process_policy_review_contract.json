@@ -1,0 +1,110 @@
+{
+  "schema_version": "stage1e-e4-r6-pc2w-p1-residual-process-policy-review-contract-1.0",
+  "stage_id": "E4-R6-PC2W-P1-RPR1",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "validate",
+    "origin_date": "2026-08-25T00:00:00+07:00",
+    "verification_status": "UNVERIFIED",
+    "version_label": "stage1e_e4_r6_pc2w_p1_residual_process_policy_review_contract_v1",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_pc2w_p1_attempt004_failure_receipt_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt004_failure_packet_audit_v1"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-25T00:00:00+07:00",
+      "declared_by": "scholar"
+    }
+  },
+  "purpose": "Determine whether the name-only wslrelay residual in Attempt-004 can be admitted, and freeze a prospective fail-closed closure policy without executing or retrying the runtime lane.",
+  "scope": {
+    "evidence_only": true,
+    "official_public_web_research_required": true,
+    "runtime_query_or_mutation_authorized": false,
+    "attempt005_authorized": false,
+    "materialization_authorized": false,
+    "scientific_execution_authorized": false,
+    "test_access_authorized": false,
+    "benchmark_admission_authorized": false,
+    "retrospective_reinterpretation_of_attempt004_forbidden": true
+  },
+  "frozen_inputs": [
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt004_failure_receipt.json",
+      "sha256": "f2c589e54662e96ec62679fb8215abb25737f0401aac167e300e699ad5756fcf"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_al/E4_R6PC2W_P1_docker_query_preflight/attempt-004/command_receipts.json",
+      "sha256": "9dffc35e21970386d312a9ed19778d4dca5d30f5f5e23c69bb59fe20f7aaed6d"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_al/E4_R6PC2W_P1_docker_query_preflight/attempt-004/p1_execution_receipt.json",
+      "sha256": "fda12183132f77078c25e2a46008989a6586701084e89337403efab3f8c412f2"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_al/E4_R6PC2W_P1_docker_query_preflight/attempt-004/p1_handoff.json",
+      "sha256": "1bf3a13bee187cd061bf679601dcb6536720355b557405a5ae556629da0d9844"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_al/E4_R6PC2W_P1_docker_query_preflight/attempt-004/runtime_inventory.json",
+      "sha256": "3095483788ef3b38562660ef5eaf8f15053e426d3097c93bf93a4ad4d6750390"
+    }
+  ],
+  "source_policy": {
+    "normative_authority": [
+      "Microsoft Learn WSL documentation",
+      "Microsoft WSL repository technical documentation",
+      "Docker Docs CLI reference"
+    ],
+    "risk_signal_only": [
+      "User-filed issues in the Microsoft WSL repository"
+    ],
+    "issue_reports_may_not_authorize_policy_relaxation": true,
+    "missing_documented_cleanup_sla_is_not_evidence_of_harmlessness": true
+  },
+  "decision_rules": [
+    "A legitimate component identity does not prove that a residual instance is healthy or unrelated to the just-stopped runtime.",
+    "A name-only process inventory cannot establish PID continuity, parentage, executable identity, signature, age, or socket ownership.",
+    "Attempt-004 remains fail-closed unless its frozen evidence itself satisfies the policy; later host observations cannot repair it.",
+    "No process-name allowlist may convert a non-zero post-stop wslrelay population into PASS.",
+    "A future current-host attempt requires new user authorization and a separately frozen instrumented contract."
+  ],
+  "write_contract": {
+    "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_am/E4_R6PC2W_P1_residual_process_policy_review",
+    "exact_output_files": [
+      "official_source_evidence_register.json",
+      "attempt004_evidence_gap_analysis.json",
+      "prospective_residual_process_admission_policy.md",
+      "policy_review_handoff.json"
+    ],
+    "additional_control_files": [
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_residual_process_policy_review_contract.json",
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_p1_residual_process_policy_review.py",
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_residual_process_policy_review_validation_receipt.json",
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/pipeline_state_stage1e.json"
+    ],
+    "extra_files_allowed": false
+  },
+  "model_policy": {
+    "central_model": "gpt-5.6-sol",
+    "central_reasoning_effort": "max",
+    "central_service_tier": "default",
+    "central_display_name": "Sol Max Standard",
+    "future_fresh_audit_model": "gpt-5.6-sol",
+    "future_fresh_audit_reasoning_effort": "xhigh",
+    "future_fresh_audit_service_tier": "default",
+    "fast_or_priority_allowed": false
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "verdict_lanes": [
+    "POLICY_RELAXATION_DENIED_ATTEMPT004_REMAINS_FAIL_CLOSED",
+    "HANDOFF_INCOMPLETE"
+  ]
+}

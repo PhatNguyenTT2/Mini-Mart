@@ -1,0 +1,97 @@
+{
+  "schema_version": "stage1e-e4-r6-pc2w-p1-residual-process-policy-review-handoff-1.0",
+  "stage_id": "E4-R6-PC2W-P1-RPR1",
+  "created_at": "2026-08-25",
+  "status": "COMPLETE_CENTRALLY_VALIDATED",
+  "verdict": "POLICY_RELAXATION_DENIED_ATTEMPT004_REMAINS_FAIL_CLOSED",
+  "verdict_class": "PASS_EVIDENCE_REVIEW_FAIL_CLOSED_FOR_EXECUTION",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "validate",
+    "origin_date": "2026-08-25T00:00:00+07:00",
+    "verification_status": "ANALYZED",
+    "version_label": "stage1e_e4_r6_pc2w_p1_residual_process_policy_review_handoff_v1",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_pc2w_p1_attempt004_failure_receipt_v1",
+      "stage1e_e4_r6_pc2w_p1_official_source_evidence_register_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt004_evidence_gap_analysis_v1",
+      "stage1e_e4_r6_pc2w_p1_prospective_residual_process_admission_policy_v1"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-25T00:00:00+07:00",
+      "declared_by": "scholar"
+    }
+  },
+  "frozen_attempt004": {
+    "failure_receipt_sha256": "f2c589e54662e96ec62679fb8215abb25737f0401aac167e300e699ad5756fcf",
+    "verdict_preserved": true,
+    "admissible": false,
+    "automatic_retry_count": 0,
+    "retrospective_reinterpretation_performed": false
+  },
+  "source_review": {
+    "sources_total": 9,
+    "authoritative_or_official_documentation": 6,
+    "user_reported_issue_risk_signals": 3,
+    "official_cleanup_sla_found": false,
+    "name_only_allowlist_supported": false,
+    "retrieval_failures": 0
+  },
+  "central_findings": [
+    "wslrelay.exe is a legitimate WSL component, but legitimate identity is not a health or closure verdict.",
+    "Attempt-004 captured only a unique base name and cannot attribute process lineage or socket state.",
+    "The zero-residual target-process gate cannot be relaxed from the frozen evidence.",
+    "A future current-host attempt may use the documented wsl --shutdown boundary, but only after explicit authorization and a new frozen instrumented contract."
+  ],
+  "next_decision": {
+    "checkpoint_type": "MANDATORY",
+    "decision_id": "PC2W_P1_POST_ATTEMPT004_POLICY_REVIEW",
+    "options": [
+      {
+        "option_id": "AUTHORIZE_ATTEMPT005_INSTRUMENTED_CURRENT_HOST",
+        "effect": "Freeze and independently audit a new current-host query-only contract with synchronous Docker stop, one explicit wsl --shutdown, process identity and redacted socket lineage, and no automatic retry."
+      },
+      {
+        "option_id": "SELECT_CHANGED_HOST",
+        "effect": "Commission a fresh read-only host preflight; do not reuse Attempt-004 admission evidence."
+      },
+      {
+        "option_id": "PAUSE_PHASE1E",
+        "effect": "Preserve all fail-closed state and perform no runtime or scientific execution."
+      }
+    ]
+  },
+  "phase1e_status": {
+    "phase1e_complete": false,
+    "plan_and_evidence_freeze_subphase": "SUBSTANTIALLY_COMPLETE",
+    "adapt_reproduce_subphase": "BLOCKED_BEFORE_MATERIALIZATION",
+    "official_reproduction": "NOT_RUN",
+    "harmonized_v5_benchmark": "NOT_RUN",
+    "external_validation": "NOT_RUN",
+    "stage2_formal_entry_authorized": false
+  },
+  "model_provenance": {
+    "central_requested_model": "gpt-5.6-sol",
+    "central_requested_reasoning_effort": "max",
+    "central_requested_service_tier": "default",
+    "central_display_name": "Sol Max Standard",
+    "actual_runtime_profile": "UNOBSERVABLE_FROM_ARTIFACT_RUNTIME",
+    "fast_or_priority_claimed": false,
+    "future_independent_audit_profile": "Sol XHigh Standard"
+  },
+  "write_set": [
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_am/E4_R6PC2W_P1_residual_process_policy_review/official_source_evidence_register.json",
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_am/E4_R6PC2W_P1_residual_process_policy_review/attempt004_evidence_gap_analysis.json",
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_am/E4_R6PC2W_P1_residual_process_policy_review/prospective_residual_process_admission_policy.md",
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_am/E4_R6PC2W_P1_residual_process_policy_review/policy_review_handoff.json"
+  ],
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER",
+    "execution_authorized": false
+  }
+}

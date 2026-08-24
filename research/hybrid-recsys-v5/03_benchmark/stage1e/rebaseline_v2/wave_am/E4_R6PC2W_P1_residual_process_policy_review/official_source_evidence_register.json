@@ -1,0 +1,167 @@
+{
+  "schema_version": "stage1e-e4-r6-pc2w-p1-official-source-evidence-register-1.0",
+  "stage_id": "E4-R6-PC2W-P1-RPR1",
+  "retrieved_at": "2026-08-25",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "validate",
+    "origin_date": "2026-08-25T00:00:00+07:00",
+    "verification_status": "ANALYZED",
+    "version_label": "stage1e_e4_r6_pc2w_p1_official_source_evidence_register_v1",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_pc2w_p1_residual_process_policy_review_contract_v1"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-25T00:00:00+07:00",
+      "declared_by": "scholar"
+    }
+  },
+  "sources": [
+    {
+      "source_id": "MS-WSL-BASIC-COMMANDS-20260825",
+      "url": "https://learn.microsoft.com/en-us/windows/wsl/basic-commands",
+      "publisher": "Microsoft",
+      "authority_class": "AUTHORITATIVE_PRODUCT_DOCUMENTATION",
+      "locator": "Shutdown; List installed Linux distributions",
+      "supports": [
+        "wsl --shutdown immediately terminates all running distributions and the WSL 2 lightweight utility virtual machine",
+        "wsl --list --verbose exposes distribution running or stopped state",
+        "wsl --list --running limits output to currently running distributions"
+      ],
+      "does_not_support": [
+        "a documented maximum lifetime for the Windows wslrelay.exe process after shutdown",
+        "a claim that process-name presence alone is harmless"
+      ]
+    },
+    {
+      "source_id": "MS-WSL-ARCHITECTURE-20260825",
+      "url": "https://github.com/microsoft/WSL/blob/master/doc/docs/technical-documentation/index.md",
+      "publisher": "Microsoft WSL project",
+      "authority_class": "OFFICIAL_SOURCE_REPOSITORY_DOCUMENTATION_MUTABLE_MASTER",
+      "locator": "WSL Overview architecture graph",
+      "supports": [
+        "wslservice.exe creates wslrelay.exe via CreateProcessAsUser",
+        "wslrelay.exe is a legitimate WSL component"
+      ],
+      "does_not_support": [
+        "that every surviving wslrelay.exe instance is healthy",
+        "that a surviving instance is unrelated to the just-stopped Docker Desktop WSL lane",
+        "a post-stop cleanup SLA"
+      ]
+    },
+    {
+      "source_id": "MS-WSL-LOCALHOST-20260825",
+      "url": "https://github.com/microsoft/WSL/blob/master/doc/docs/technical-documentation/localhost.md",
+      "publisher": "Microsoft WSL project",
+      "authority_class": "OFFICIAL_SOURCE_REPOSITORY_DOCUMENTATION_MUTABLE_MASTER",
+      "locator": "NAT networking; Consomme networking",
+      "supports": [
+        "wslrelay.exe may relay WSL guest port traffic to Windows",
+        "wslrelay.exe can be associated with host-side port forwarding"
+      ],
+      "does_not_support": [
+        "that a port-relay process should remain after the WSL utility VM is terminated",
+        "that a residual process has no open or stale sockets"
+      ]
+    },
+    {
+      "source_id": "MS-WSL-BOOT-PROCESS-20260825",
+      "url": "https://github.com/microsoft/WSL/blob/master/doc/docs/technical-documentation/boot-process.md",
+      "publisher": "Microsoft WSL project",
+      "authority_class": "OFFICIAL_SOURCE_REPOSITORY_DOCUMENTATION_MUTABLE_MASTER",
+      "locator": "The WSL2 boot process; Relaying the Linux process input and output to Windows",
+      "supports": [
+        "WSL has multiple relay roles and channels tied to process and session lifecycle",
+        "relay naming alone is insufficient to infer the exact role or lifecycle state"
+      ],
+      "does_not_support": [
+        "a Windows wslrelay.exe post-stop lifetime threshold"
+      ]
+    },
+    {
+      "source_id": "DOCKER-DESKTOP-CLI-20260825",
+      "url": "https://docs.docker.com/desktop/features/desktop-cli/",
+      "publisher": "Docker",
+      "authority_class": "AUTHORITATIVE_PRODUCT_DOCUMENTATION",
+      "locator": "Commands table",
+      "supports": [
+        "Docker Desktop CLI exposes start, stop, and status operations"
+      ],
+      "does_not_support": [
+        "that Docker Desktop stop guarantees zero WSL host relay processes"
+      ]
+    },
+    {
+      "source_id": "DOCKER-DESKTOP-STOP-20260825",
+      "url": "https://docs.docker.com/reference/cli/docker/desktop/stop/",
+      "publisher": "Docker",
+      "authority_class": "AUTHORITATIVE_CLI_REFERENCE",
+      "locator": "Usage and options",
+      "supports": [
+        "docker desktop stop is synchronous unless --detach is used",
+        "the command supports force and timeout options"
+      ],
+      "does_not_support": [
+        "a guarantee about wslrelay.exe process disappearance",
+        "a Windows process-level closure definition"
+      ]
+    },
+    {
+      "source_id": "MS-WSL-ISSUE-10601-20260825",
+      "url": "https://github.com/microsoft/WSL/issues/10601",
+      "publisher": "Microsoft WSL issue tracker",
+      "authority_class": "USER_REPORTED_ISSUE_RISK_SIGNAL_NOT_NORMATIVE",
+      "locator": "Description; Actual Behavior",
+      "supports": [
+        "a user reported wslrelay.exe retaining listening or waiting connections after a Linux server ended"
+      ],
+      "does_not_support": [
+        "that Attempt-004 reproduced the reported defect",
+        "a general admission or rejection rule for every residual wslrelay.exe instance"
+      ]
+    },
+    {
+      "source_id": "MS-WSL-ISSUE-41242-20260825",
+      "url": "https://github.com/microsoft/WSL/issues/41242",
+      "publisher": "Microsoft WSL issue tracker",
+      "authority_class": "USER_REPORTED_ISSUE_RISK_SIGNAL_NOT_NORMATIVE",
+      "locator": "Description; Actual Behavior; Workaround",
+      "supports": [
+        "a 2026 user report describes orphaned relay processes and unbounded accept behavior as a possible failure mode"
+      ],
+      "does_not_support": [
+        "that the report is an official Microsoft guarantee or root-cause determination for Attempt-004",
+        "that PID killing or an allowlist is authorized for this pipeline"
+      ]
+    },
+    {
+      "source_id": "MS-WSL-ISSUE-41286-20260825",
+      "url": "https://github.com/microsoft/WSL/issues/41286",
+      "publisher": "Microsoft WSL issue tracker",
+      "authority_class": "USER_REPORTED_ISSUE_RISK_SIGNAL_NOT_NORMATIVE",
+      "locator": "Expected Behavior; Signature 2",
+      "supports": [
+        "a 2026 user report describes relay processes persisting in accept state and requiring forceful cleanup"
+      ],
+      "does_not_support": [
+        "that Attempt-004 has the same signature",
+        "that a residual relay may be ignored without process and socket attribution"
+      ]
+    }
+  ],
+  "synthesis": {
+    "legitimate_component_identity_established": true,
+    "post_stop_cleanup_sla_found": false,
+    "name_only_harmlessness_rule_found": false,
+    "credible_residual_failure_risk_signal_found": true,
+    "policy_implication": "Do not allowlist wslrelay.exe by process name and do not reinterpret Attempt-004 as admissible."
+  },
+  "retrieval_failures": [],
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0
+  }
+}
