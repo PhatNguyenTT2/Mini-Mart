@@ -161,7 +161,7 @@ def main() -> int:
     model = auth.get("model_policy", {}).get("worktree_audit", {})
     check(model.get("model") == "gpt-5.6-sol", "audit_model_sol")
     check(model.get("reasoning_effort") == "xhigh", "audit_reasoning_xhigh")
-    check(model.get("requested_service_tier") == "priority", "audit_tier_fast_requested")
+    check(model.get("requested_service_tier") == "default", "audit_tier_standard_required")
 
     binding = dispatch.get("execution_binding", {})
     check(dispatch.get("runner_checkpoint", "").casefold() == parent, "dispatch_parent_binding")
@@ -205,7 +205,7 @@ def main() -> int:
     check(audit.get("must_use_new_worktree_context") is True, "fresh_worktree_required")
     check(audit.get("model") == "gpt-5.6-sol", "dispatch_audit_model")
     check(audit.get("reasoning_effort") == "xhigh", "dispatch_audit_reasoning")
-    check(audit.get("requested_service_tier") == "priority", "dispatch_audit_tier")
+    check(audit.get("requested_service_tier") == "default", "dispatch_audit_tier_standard")
 
     frozen = dispatch.get("frozen_artifacts")
     expected_frozen = {RUNNER, CONTRACT, AUTH, BASELINE_VALIDATION}
