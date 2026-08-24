@@ -1,0 +1,120 @@
+{
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt005-execution-receipt-1.0",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "run",
+    "origin_date": "2026-08-24T19:07:32.834173Z",
+    "verification_status": "UNVERIFIED",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt005_instrumented_execution_v1",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_pc2w_p1_attempt005_user_authorization_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt005_instrumented_contract_v2",
+      "stage1e_e4_r6_pc2w_p1_residual_process_policy_review_validation_receipt_v1"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-25T00:00:00+07:00",
+      "declared_by": "scholar"
+    }
+  },
+  "stage_id": "E4-R6-PC2W-P1-ATTEMPT005",
+  "created_at": "2026-08-24T19:07:32.834173Z",
+  "entry_checkpoint": "bb4fe8d8bded1501c567a10664265093abbeb79d",
+  "runner_checkpoint": "f511e27eaafae29a5008b9f41ed574fecbeac8a1",
+  "frozen_artifacts": [
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt005_instrumented_contract.json",
+      "git_blob_bytes": 8354,
+      "git_blob_sha256": "cf022505edcaba11e49a00e8b43e180796870679fa20647923ddba9158e5096b"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt005_user_authorization.json",
+      "git_blob_bytes": 4247,
+      "git_blob_sha256": "7264aa2246bc0cde8683d864f3e11580e55ec3aa9f0b0585e53fd8f4e2bf0805"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_docker_query_preflight_requirements.json",
+      "git_blob_bytes": 6280,
+      "git_blob_sha256": "fc6d5479ad56692b6c04449ac0150b256d2dd4409471c8723f1ad2d84f193b83"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc2w_p1_attempt003_offline_equivalent_observation.py",
+      "git_blob_bytes": 29306,
+      "git_blob_sha256": "59896953c4e3aac49c6c51f3afd82d785b65928ea5eaa3b42f245181549cc8de"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc2w_p1_attempt004_query_only.py",
+      "git_blob_bytes": 52528,
+      "git_blob_sha256": "66c964e40cc23cee0bda59b8afc949c6fd3189c3c821e2eb98ffd4323c3c0e13"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc2w_p1_attempt005_instrumented.py",
+      "git_blob_bytes": 52983,
+      "git_blob_sha256": "8e595d892a2548458b83c1cbbe1b332243c101554e21fa06ae725a198856e1e9"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_residual_process_policy_review_validation_receipt.json",
+      "git_blob_bytes": 3583,
+      "git_blob_sha256": "ef5da387f492593da25b4316a1e698dab0afe4f0313c471a5dbc9987eda08a6d"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_am/E4_R6PC2W_P1_residual_process_policy_review/policy_review_handoff.json",
+      "git_blob_bytes": 4525,
+      "git_blob_sha256": "293388b658075e5d307c53ed63e796d94cc021e9e6c0b2fa37562cd08002bfb9"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_am/E4_R6PC2W_P1_residual_process_policy_review/prospective_residual_process_admission_policy.md",
+      "git_blob_bytes": 5011,
+      "git_blob_sha256": "e5a0fecdd7dc0c83869b432583900ca1bf5981fb8380ecba8a089df26135b005"
+    }
+  ],
+  "authorization_sha256": "7264aa2246bc0cde8683d864f3e11580e55ec3aa9f0b0585e53fd8f4e2bf0805",
+  "contract_sha256": "cf022505edcaba11e49a00e8b43e180796870679fa20647923ddba9158e5096b",
+  "dispatch_sha256": "995540e30ab3a16fe876f83c531bc08063aa0f0ba08c68bc9b43fb364968b9bb",
+  "runner_sha256": "8e595d892a2548458b83c1cbbe1b332243c101554e21fa06ae725a198856e1e9",
+  "output_root": "E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\rebaseline_v2\\wave_an\\E4_R6PC2W_P1_attempt005_instrumented",
+  "startup_attempts": 0,
+  "docker_stop_attempts": 0,
+  "wsl_shutdown_attempts": 0,
+  "closure_snapshots": 3,
+  "post_shutdown_settling_seconds": 20,
+  "snapshot_barrier_seconds": 15,
+  "automatic_retry_count": 0,
+  "pass_conditions": {
+    "pre_start_gate_all_pass": false,
+    "startup_attempted_exactly_once": false,
+    "startup_command_success": false,
+    "during_docker_desktop_running": false,
+    "during_process_probe_complete_and_nonempty": false,
+    "during_tcp_probe_available": false,
+    "all_query_commands_success": false,
+    "backend_linux_amd64_desktop_linux": false,
+    "docker_identity_complete": false,
+    "parse_failures_absent": false,
+    "containers_running_zero": false,
+    "container_inventory_unchanged": true,
+    "image_inventory_unchanged": true,
+    "container_or_image_events_absent": true,
+    "docker_stop_attempted_exactly_once": false,
+    "docker_stop_success": false,
+    "wsl_shutdown_attempted_exactly_once": false,
+    "wsl_shutdown_success": false,
+    "three_snapshot_final_closure_all_pass_and_stable": false,
+    "exact_command_sequence_no_retry": false,
+    "disk_thresholds_after_pass": true,
+    "automatic_retry_count_zero": true
+  },
+  "verdict": "FAIL_CLOSED_PC2W_P1_ATTEMPT005_CURRENT_HOST_NOT_ADMISSIBLE",
+  "force_kill_performed": false,
+  "service_restart_performed": false,
+  "settings_changed": false,
+  "image_pull_or_build_performed": false,
+  "container_create_or_run_performed": false,
+  "install_or_download_performed": false,
+  "materialization_performed": false,
+  "scientific_execution_performed": false,
+  "result_status": "NOT_RUN",
+  "test_set_opened": "NO",
+  "accepted_result_rows": 0
+}
