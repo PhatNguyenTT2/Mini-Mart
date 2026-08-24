@@ -20,7 +20,7 @@
       "declared_by": "scholar"
     }
   },
-  "entry_checkpoint": "5101ae07f4e02e03f38b9c1926a6ea9242ff1c0c",
+  "entry_checkpoint": "36353894d67f9b6c94f1377362fc66fa9c4c3a9b",
   "authorized_output_root": "E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\rebaseline_v2\\wave_al\\E4_R6PC2W_P1_docker_query_preflight\\attempt-003-offline-equivalent-observation",
   "authorization_source": {
     "user_messages": [
@@ -59,8 +59,8 @@
     "worktree_audit": {
       "model": "gpt-5.6-sol",
       "reasoning_effort": "xhigh",
-      "requested_service_tier": "priority",
-      "display_name": "Sol XHigh Fast"
+      "requested_service_tier": "default",
+      "display_name": "Sol XHigh Standard"
     },
     "service_tier_observability": "requested_not_runtime_verifiable_by_thread_coordinator"
   },
@@ -91,6 +91,13 @@
         "verdict": "REWORK_REQUIRED",
         "validator_checks": "119/119",
         "execution_performed": false
+      },
+      {
+        "thread_id": "01a03063-65c2-75c2-8cb8-bfc5fa53ec78",
+        "checkpoint": "55f5a758868f77e05be7ab574304233348e010a8",
+        "status": "RUNTIME_USAGE_LIMIT_BEFORE_FINAL_VERDICT",
+        "validator_checks": "133/133",
+        "execution_performed": false
       }
     ],
     "rework_resolved": [
@@ -112,6 +119,15 @@
       "Reject daemon stderr containing explicit reachability contradictions."
     ],
     "automatic_execution_after_failed_gate": false,
+    "future_worktree_model_policy_effective_from_user_message": {
+      "model_family": "gpt-5.6-sol",
+      "reasoning_effort_by_difficulty": [
+        "xhigh",
+        "high"
+      ],
+      "service_tier": "default",
+      "display_policy": "Standard only; Fast is forbidden for all newly created worktree tasks."
+    },
     "observation_attempts_maximum": 1,
     "attempt003_may_open_only_after_validated_pass": true
   },
