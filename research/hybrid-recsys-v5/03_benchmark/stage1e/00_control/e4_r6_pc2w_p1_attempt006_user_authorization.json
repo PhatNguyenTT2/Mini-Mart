@@ -1,0 +1,95 @@
+{
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt006-user-authorization-1.0",
+  "stage_id": "E4-R6-PC2W-P1-ATTEMPT006",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "plan",
+    "origin_date": "2026-08-25T00:00:00+07:00",
+    "verification_status": "UNVERIFIED",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt006_user_authorization_v1",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_pc2w_p1_attempt006_baseline_remediation_contract_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt005_failure_receipt_v1"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-25T00:00:00+07:00",
+      "declared_by": "scholar"
+    }
+  },
+  "packet_parent_checkpoint": "c4d471a5ac5c9e763e66a1d7288367c5c905e1e9",
+  "authorization_basis": {
+    "source_thread_id": "019ff4f0-802a-7892-a989-24f32ac26ac8",
+    "current_user_text": "Xác nhận",
+    "authorized_scope": "ATTEMPT006_PACKET_PREPARATION_AND_BASELINE_REMEDIATION_DIRECTION_ONLY",
+    "attempt005_and_its_verdict_remain_immutable": true,
+    "current_text_is_not_exact_process_command_confirmation": true
+  },
+  "current_authorization": {
+    "packet_preparation_authorized": true,
+    "baseline_remediation_direction_authorized": true,
+    "execution_authorized": false,
+    "exact_process_command_confirmed": false,
+    "exact_process_command_confirmation_required_after_static_audit": true,
+    "runner_invocation_authorized": false,
+    "docker_desktop_stop_authorized_now": false,
+    "wsl_shutdown_authorized_now": false,
+    "runtime_probe_authorized_now": false,
+    "benchmark_admission_authorized": false,
+    "materialization_authorized": false,
+    "training_authorized": false,
+    "evaluation_authorized": false,
+    "test_access_authorized": false
+  },
+  "prospective_limits_after_separate_exact_command_confirmation": {
+    "execution_attempts_maximum": 1,
+    "if_pre_baseline_passes_mutation_commands": 0,
+    "if_pre_baseline_fails_docker_desktop_stop_attempts_exactly": 1,
+    "if_pre_baseline_fails_wsl_shutdown_attempts_exactly": 1,
+    "docker_desktop_start_attempts": 0,
+    "docker_daemon_queries": 0,
+    "automatic_retry_count": 0,
+    "fallback_count": 0,
+    "force_kill_count": 0,
+    "service_restart_count": 0,
+    "settings_change_count": 0,
+    "install_or_download_count": 0,
+    "network_operation_count": 0,
+    "image_pull_build_create_run_count": 0,
+    "settling_seconds": 20,
+    "closure_snapshots_required": 3,
+    "snapshot_barrier_seconds": 15,
+    "wsl_shutdown_terminates_all_running_wsl_distributions_acknowledged": true,
+    "local_runtime_state_change_acknowledged": true
+  },
+  "future_exact_process_command_template": [
+    "C:\\Program Files\\Python311\\python.exe",
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc2w_p1_attempt006_baseline_remediation.py",
+    "--repo-root",
+    "E:\\UIT\\cv\\backend",
+    "--expected-head",
+    "<EXACT_FULL_PACKET_HEAD_AFTER_STATIC_AUDIT>",
+    "--execution-confirmation",
+    "USER_CONFIRMED_EXACT_PROCESS_COMMAND_AFTER_STATIC_AUDIT"
+  ],
+  "authorized_output_root_after_future_confirmation": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ao/E4_R6PC2W_P1_attempt006_baseline_remediation",
+  "model_policy": {
+    "requested_model": "gpt-5.6-sol",
+    "requested_reasoning_effort": "xhigh",
+    "requested_service_tier": "default",
+    "display_name": "Sol XHigh Standard",
+    "fast_or_priority_allowed": false,
+    "actual_model": "UNOBSERVABLE",
+    "actual_reasoning_effort": "UNOBSERVABLE",
+    "actual_service_tier": "UNOBSERVABLE",
+    "fast_or_priority_observability": "UNOBSERVABLE"
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER",
+    "benchmark_admission_opened": false
+  }
+}

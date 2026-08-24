@@ -1,0 +1,214 @@
+{
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt006-baseline-remediation-contract-1.0",
+  "stage_id": "E4-R6-PC2W-P1-ATTEMPT006",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "plan",
+    "origin_date": "2026-08-25T00:00:00+07:00",
+    "verification_status": "UNVERIFIED",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt006_baseline_remediation_contract_v1",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_pc2w_p1_attempt005_failure_receipt_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt006_user_authorization_v1"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-25T00:00:00+07:00",
+      "declared_by": "scholar"
+    }
+  },
+  "purpose": "Prepare one new immutable current-host packet that may only restore and verify the closed native baseline before any later benchmark admission attempt.",
+  "authorization_boundary": {
+    "current_user_text": "Xác nhận",
+    "packet_preparation_authorized": true,
+    "baseline_remediation_direction_authorized": true,
+    "execution_authorized": false,
+    "exact_process_command_confirmed": false,
+    "exact_process_command_confirmation_required_after_static_audit": true,
+    "current_text_does_not_authorize_runner_execution": true,
+    "scientific_execution_authorized": false,
+    "benchmark_admission_authorized": false
+  },
+  "attempt_immutability": {
+    "attempt006_is_a_new_attempt": true,
+    "attempt005_preserved_immutable": true,
+    "attempt005_verdict_preserved": "FAIL_CLOSED_PC2W_P1_ATTEMPT005_CURRENT_HOST_NOT_ADMISSIBLE",
+    "later_attempt006_observations_cannot_repair_attempt005": true,
+    "attempt006_output_root_is_new_and_must_not_preexist": true,
+    "in_place_retry_or_overwrite_forbidden": true,
+    "frozen_attempt005_artifacts": {
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt005_instrumented_contract.json": "cf022505edcaba11e49a00e8b43e180796870679fa20647923ddba9158e5096b",
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc2w_p1_attempt005_instrumented.py": "8e595d892a2548458b83c1cbbe1b332243c101554e21fa06ae725a198856e1e9",
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_p1_attempt005_static_packet.py": "8d2973fa7d119ecb0adb3b81f0c3f201dab181d87b092a40e622391359567d2c",
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt005_failure_receipt.json": "9e8432933c83e8ca4e8a40e189c85b9b076cd2f44a32fe844991c6b06646a0cf",
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/pipeline_state_stage1e.json": "0e7865bc56efa78ec65e49c2b360aa41e1d2a3f499424944087900d6b1a0533a"
+    }
+  },
+  "entry_gate": {
+    "packet_parent_checkpoint": "c4d471a5ac5c9e763e66a1d7288367c5c905e1e9",
+    "fresh_static_audit_required": true,
+    "exact_execution_head_required": true,
+    "exact_process_command_requires_separate_user_confirmation": true,
+    "execution_worktree_must_be_clean": true,
+    "packet_commit_delta_must_be_exactly_four_new_control_files": true,
+    "output_root_must_not_preexist": true,
+    "no_dispatch_created_by_this_packet": true
+  },
+  "baseline_algorithm": {
+    "pre_baseline_native_closure_is_replayed_once": true,
+    "if_pre_baseline_all_lanes_pass": {
+      "mutation_commands": 0,
+      "record_pass_baseline_without_remediation": true
+    },
+    "if_pre_baseline_any_lane_fails": {
+      "docker_desktop_stop_attempts_exactly": 1,
+      "wsl_shutdown_attempts_exactly_after_stop": 1,
+      "wsl_shutdown_is_in_nested_finally": true
+    },
+    "automatic_retry_count": 0,
+    "fallback_count": 0,
+    "docker_desktop_start_attempts": 0,
+    "docker_daemon_queries": 0,
+    "force_kill_count": 0,
+    "service_restart_count": 0,
+    "settings_change_count": 0,
+    "install_or_download_count": 0,
+    "network_operation_count": 0,
+    "image_pull_build_create_run_count": 0
+  },
+  "native_lanes": [
+    "all WSL rows parse completely and are Stopped",
+    "docker-desktop appears exactly once and is Stopped",
+    "WSL running inventory parses completely and is empty",
+    "desktop-linux named pipe is specifically absent with Win32 error 2",
+    "target process population envelope is valid, available, and empty",
+    "target-process TCP ownership envelope is valid, available, and empty",
+    "all probe parse and completeness gates pass",
+    "C free bytes are at least 20 GiB and E free bytes are at least 50 GiB"
+  ],
+  "lightweight_population_probes": {
+    "separate_from_rich_identity": true,
+    "pre_and_post_do_not_require_executable_path": true,
+    "pre_and_post_do_not_require_signature": true,
+    "pre_and_post_do_not_require_command_line": true,
+    "exact_envelope_fields": [
+      "Available",
+      "Count",
+      "Rows",
+      "ErrorCode",
+      "ErrorTypeHash"
+    ],
+    "count_is_nonnegative_integer_not_boolean": true,
+    "rows_is_always_array": true,
+    "count_equals_rows_length": true,
+    "closed_error_codes": [
+      "NONE",
+      "PROBE_EXCEPTION",
+      "COMMAND_FAILED",
+      "OUTPUT_MALFORMED"
+    ],
+    "error_type_hash_is_null_only_for_available_none_error": true,
+    "unavailable_envelope_can_be_structurally_valid_but_is_gate_ineligible": true,
+    "unknown_or_malformed_envelope_fails_lane_without_dropping_packet": true,
+    "process_row_fields": [
+      "Name",
+      "ProcessId"
+    ],
+    "tcp_owner_row_fields": [
+      "Name",
+      "ProcessId",
+      "ConnectionCount"
+    ]
+  },
+  "closure": {
+    "settling_seconds": 20,
+    "snapshot_labels": [
+      "A",
+      "B",
+      "C"
+    ],
+    "snapshot_barrier_seconds": 15,
+    "all_native_lanes_must_pass_in_every_snapshot": true,
+    "snapshots_must_be_stable": true,
+    "final_wsl_inventory_must_equal_pre_inventory_projected_to_all_stopped": true,
+    "docker_desktop_cli_status_is_advisory_only": true,
+    "docker_desktop_cli_status_cannot_veto_or_admit": true
+  },
+  "durable_failure_packet": {
+    "exact_four_files_created_before_first_command": true,
+    "exact_four_files_refreshed_after_every_command_receipt": true,
+    "ordinary_exception_rewrites_complete_fail_closed_packet": true,
+    "exception_message_persisted": false,
+    "in_progress_or_exception_verdict": "HANDOFF_INCOMPLETE"
+  },
+  "privacy": {
+    "raw_process_path_persisted": false,
+    "raw_command_line_persisted": false,
+    "raw_network_address_persisted": false,
+    "raw_proxy_value_persisted": false,
+    "raw_stdout_persisted": false,
+    "raw_stderr_persisted": false,
+    "raw_runtime_argv_persisted": false,
+    "exception_message_persisted": false
+  },
+  "prohibited_actions": [
+    "Docker Desktop start",
+    "Docker daemon query",
+    "automatic retry, fallback, or looped transition",
+    "force kill or service restart",
+    "Docker or WSL settings change",
+    "package, distro, tool, source, data, model, or checkpoint installation or download",
+    "image pull, build, import, load, tag, push, remove, or prune",
+    "container create, run, exec, start, restart, or mutation",
+    "materialization, preprocessing, training, evaluation, benchmark admission, or TEST access",
+    "network access",
+    "Python bytecode or __pycache__ persistence"
+  ],
+  "output_contract": {
+    "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ao/E4_R6PC2W_P1_attempt006_baseline_remediation",
+    "immutable_and_must_not_preexist": true,
+    "exact_files": [
+      "command_receipts.json",
+      "p1_execution_receipt.json",
+      "p1_handoff.json",
+      "runtime_inventory.json"
+    ],
+    "extra_files_allowed": false
+  },
+  "static_validator_contract": {
+    "read_only_offline": true,
+    "runner_invocation_forbidden": true,
+    "docker_wsl_process_tcp_network_calls_forbidden": true,
+    "strict_json_duplicate_casefold_duplicate_nonfinite_rejection": true,
+    "git_blob_replay_and_canonical_lf_required": true,
+    "bare_carriage_return_rejected": true,
+    "ast_exact_command_and_transition_order_audit_required": true,
+    "synthetic_process_and_tcp_envelope_fixtures_required": true,
+    "expected_head_clean_parent_and_exact_delta_required": true,
+    "python_bytecode_persistence_forbidden": true
+  },
+  "model_policy": {
+    "requested_model": "gpt-5.6-sol",
+    "requested_reasoning_effort": "xhigh",
+    "requested_service_tier": "default",
+    "display_name": "Sol XHigh Standard",
+    "fast_or_priority_allowed": false,
+    "actual_model": "UNOBSERVABLE",
+    "actual_reasoning_effort": "UNOBSERVABLE",
+    "actual_service_tier": "UNOBSERVABLE",
+    "fast_or_priority_observability": "UNOBSERVABLE"
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER",
+    "benchmark_admission_opened": false
+  },
+  "verdict_lanes": [
+    "PASS_PC2W_P1_ATTEMPT006_BASELINE_REMEDIATED_READY_FOR_ADMISSION_PACKET",
+    "FAIL_CLOSED_PC2W_P1_ATTEMPT006_BASELINE_NOT_CLOSED",
+    "HANDOFF_INCOMPLETE"
+  ]
+}
