@@ -1,0 +1,92 @@
+{
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt005-user-authorization-1.0",
+  "stage_id": "E4-R6-PC2W-P1-ATTEMPT005",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "run",
+    "origin_date": "2026-08-25T00:00:00+07:00",
+    "verification_status": "UNVERIFIED",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt005_user_authorization_v1",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_pc2w_p1_attempt005_instrumented_contract_v2",
+      "stage1e_e4_r6_pc2w_p1_attempt005_fourth_static_audit_receipt_v1"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-25T00:00:00+07:00",
+      "declared_by": "scholar"
+    }
+  },
+  "entry_checkpoint": "f511e27eaafae29a5008b9f41ed574fecbeac8a1",
+  "authorization_basis": {
+    "source_thread_id": "019ff4f0-802a-7892-a989-24f32ac26ac8",
+    "latest_user_decision_text": "Ủy quyền và tiếp tục",
+    "selected_policy_option": "AUTHORIZE_ATTEMPT005_INSTRUMENTED_CURRENT_HOST",
+    "decision_context": "The scholar selected the policy-reviewed current-host Attempt-005 option and authorized continuation. Four fresh fail-closed static audits were completed; the fourth audit passed with no critical, major or minor findings.",
+    "attempt004_remains_closed_and_immutable": true,
+    "authorization_does_not_open_scientific_execution": true,
+    "exact_process_command_requires_final_user_confirmation": true
+  },
+  "authorized_output_root": "E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\rebaseline_v2\\wave_an\\E4_R6PC2W_P1_attempt005_instrumented",
+  "entry_evidence": {
+    "runner_checkpoint": "f511e27eaafae29a5008b9f41ed574fecbeac8a1",
+    "audited_packet_checkpoint": "e8369bec6cd580346d748781e89748648ba6d5d0",
+    "fourth_static_audit_task_id": "01a0350d-8dbe-7971-a8cc-9df33cf2b882",
+    "fourth_static_audit_verdict": "PASS_PC2W_P1_ATTEMPT005_PACKET_READY_FOR_AUTHORIZATION_AND_EXACT_COMMAND_CONFIRMATION",
+    "validator_checks_passed": 162,
+    "validator_checks_total": 162,
+    "attempt005_execution_previously_opened": false,
+    "attempt005_output_root_previously_created": false,
+    "automatic_retry_count_before_execution": 0,
+    "new_attempt_authorized_by_user": true
+  },
+  "user_decision": {
+    "decision": "AUTHORIZE_ATTEMPT005_INSTRUMENTED_CURRENT_HOST",
+    "one_docker_desktop_start_authorized": true,
+    "one_docker_desktop_stop_authorized": true,
+    "one_wsl_shutdown_after_stop_authorized": true,
+    "three_instrumented_closure_snapshots_authorized": true,
+    "query_only_runtime_inventory_authorized": true,
+    "local_runtime_logs_and_existing_installation_state_changes_acknowledged": true,
+    "wsl_shutdown_terminates_all_running_wsl_distros_acknowledged": true,
+    "possible_vendor_control_plane_network_acknowledged": true,
+    "automatic_retry_authorized": false,
+    "force_kill_authorized": false,
+    "service_restart_authorized": false,
+    "settings_change_authorized": false,
+    "image_pull_or_build_authorized": false,
+    "container_create_or_run_authorized": false,
+    "package_or_distro_install_authorized": false,
+    "source_data_or_checkpoint_download_authorized": false,
+    "materialization_authorized": false,
+    "training_authorized": false,
+    "evaluation_authorized": false,
+    "benchmark_admission_authorized": false,
+    "test_access_authorized": false
+  },
+  "model_policy": {
+    "coordinator_model": "gpt-5.6-sol",
+    "coordinator_reasoning_effort": "max",
+    "static_audit_model": "gpt-5.6-sol",
+    "static_audit_reasoning_effort": "xhigh",
+    "service_tier": "default",
+    "fast_or_priority_allowed": false
+  },
+  "execution_limits": {
+    "execution_attempts_maximum": 1,
+    "automatic_retry_count": 0,
+    "docker_desktop_start_attempts_maximum": 1,
+    "docker_desktop_stop_attempts_exactly_after_any_start": 1,
+    "wsl_shutdown_attempts_exactly_after_stop": 1,
+    "post_shutdown_settling_seconds": 20,
+    "closure_snapshots_required": 3,
+    "snapshot_barrier_seconds": 15
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}
