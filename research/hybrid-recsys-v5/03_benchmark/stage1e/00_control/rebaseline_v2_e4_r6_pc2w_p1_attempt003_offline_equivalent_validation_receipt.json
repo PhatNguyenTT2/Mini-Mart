@@ -1,0 +1,113 @@
+{
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-validation-receipt-1.0",
+  "stage_id": "E4-R6-PC2W-P1-ATTEMPT003-OFFLINE-EQUIVALENT-OBSERVATION",
+  "created_at": "2026-08-24T11:49:56.9226311Z",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "validate",
+    "origin_date": "2026-08-24T11:49:56.9226311Z",
+    "verification_status": "ANALYZED",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_validation_v1",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_observation_v4",
+      "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_dispatch_v4",
+      "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_authorization_v4"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-24T01:12:40.9534228+07:00",
+      "declared_by": "scholar"
+    }
+  },
+  "execution_checkpoint": "e83dfbdd6e9aea8ba2baf9e9a87f6166e4e6f9b2",
+  "runner_checkpoint": "36353894d67f9b6c94f1377362fc66fa9c4c3a9b",
+  "sealed_packet_commit": "da2d495fe9bdedf84176ede7f63e031141f5cc6c",
+  "central_validation": {
+    "model": "gpt-5.6-sol",
+    "reasoning_effort": "max",
+    "service_tier": "default",
+    "display_name": "Sol Max Standard",
+    "validator_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_p1_attempt003_offline_equivalent_failure.py",
+    "validator_raw_bytes": 16321,
+    "validator_raw_sha256": "cc8eb90bf4c59f03b061a379cd400e59b9a1d0e61207e2a4cb13ee07fe5157c4",
+    "validator_verdict": "PASS_PC2W_P1_ATTEMPT003_OFFLINE_EQUIVALENT_FAILURE_VALIDATED"
+  },
+  "fresh_independent_pre_execution_audit": {
+    "thread_id": "01a03391-7795-7ed2-8f71-d57074d3658e",
+    "worktree_client_thread_id": "client-new-thread:b8233782-f2a2-4556-9630-0ca4ae2bb7b7",
+    "audited_checkpoint": "e83dfbdd6e9aea8ba2baf9e9a87f6166e4e6f9b2",
+    "verdict": "PASS_PC2W_P1_ATTEMPT003_OFFLINE_EQUIVALENT_RUNNER_READY_FOR_EXECUTION",
+    "validator_checks": "133/133",
+    "requested_model": "gpt-5.6-sol",
+    "requested_reasoning_effort": "xhigh",
+    "requested_service_tier": "default",
+    "display_name": "Sol XHigh Standard",
+    "actual_service_tier": "UNOBSERVABLE",
+    "fast_or_priority_observed": false,
+    "write_scope": "READ_ONLY",
+    "execution_performed": false,
+    "output_root_opened": false
+  },
+  "attempt_result": {
+    "verdict": "FAIL_CLOSED_PC2W_P1_ATTEMPT003_OFFLINE_EQUIVALENT_BASELINE",
+    "failure_class": "DAEMON_CLI_UNAVAILABLE_NOT_SPECIFICALLY_PROVEN",
+    "commands_recorded": 9,
+    "observation_attempts": 1,
+    "automatic_retry_count": 0,
+    "docker_desktop_status_classification": "RUNNING_EXACT",
+    "docker_desktop_status_advisory_only": true,
+    "snapshot_a_all_lanes": false,
+    "snapshot_b_all_lanes": false,
+    "wsl_inventory_stable_across_barrier": true,
+    "running_inventory_stable_across_barrier": true,
+    "runtime_process_inventory_stable_across_barrier": true,
+    "named_pipe_absence_stable_across_barrier": true,
+    "wsl_docker_desktop_state": "Stopped",
+    "wsl_running_inventory_empty": true,
+    "runtime_process_inventory_empty": true,
+    "desktop_linux_named_pipe_absent_win32_error_2": true,
+    "daemon_cli_specifically_unavailable_snapshot_a": false,
+    "daemon_cli_specifically_unavailable_snapshot_b": false,
+    "authorization_consumed": true,
+    "attempt003_execution_opened": false,
+    "attempt003_start_query_stop_executed": false,
+    "new_retry_performed": false
+  },
+  "policy_facts": {
+    "state_mutation_command_issued": false,
+    "image_pull_or_build_performed": false,
+    "container_create_or_run_performed": false,
+    "settings_changed": false,
+    "install_or_download_performed": false,
+    "materialization_performed": false,
+    "scientific_execution_performed": false,
+    "raw_stdout_or_stderr_persisted": false,
+    "test_access_performed": false
+  },
+  "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_al/E4_R6PC2W_P1_docker_query_preflight/attempt-003-offline-equivalent-observation",
+  "output_facts": [
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_al/E4_R6PC2W_P1_docker_query_preflight/attempt-003-offline-equivalent-observation/observation_command_receipts.json",
+      "raw_bytes": 9346,
+      "raw_sha256": "e5dacdc2c46e712c707eb5777903aa0cdf13ddd3e1bbde5e37821a210fed1370"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_al/E4_R6PC2W_P1_docker_query_preflight/attempt-003-offline-equivalent-observation/observation_handoff.json",
+      "raw_bytes": 1157,
+      "raw_sha256": "b99a84adebea1a33b72c9e62b784a9e056299198911e5cb05f6c7601e1c9bd5f"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_al/E4_R6PC2W_P1_docker_query_preflight/attempt-003-offline-equivalent-observation/offline_equivalent_observation_receipt.json",
+      "raw_bytes": 4646,
+      "raw_sha256": "31a97b4324b1e12ee51627b2d406cb96a6c29d70513fd3ffd9259e7704bbc001"
+    }
+  ],
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "next_gate": "EXPLICIT_USER_DECISION_REQUIRED_FOR_ANY_NEW_ADMISSION_REVISION_OBSERVATION_OR_ATTEMPT_NO_AUTOMATIC_RETRY"
+}
