@@ -13,12 +13,9 @@
     ],
     "repro_lock": null,
     "experiment_intake_declaration": {
-      "methods_text_available": true,
-      "code_or_repository_available": true,
-      "data_available": false,
-      "environment_spec_available": true,
-      "expected_output_available": true,
-      "deviation_policy": "No automatic retry or fallback. Any missing or ambiguous gate, query, parser, identity, closure, or integrity evidence fails closed."
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-24T00:00:00+07:00",
+      "declared_by": "scholar"
     }
   },
   "stage_id": "E4-R6-PC2W-P1-ATTEMPT003",
@@ -64,7 +61,7 @@
     "Docker or WSL settings change",
     "package, distro, source, data, model, or checkpoint download or installation",
     "dataset materialization, preprocessing, training, evaluation, benchmark, or TEST access",
-    "persistence of raw stdout, raw stderr, proxy values, secrets, or unredacted remote addresses",
+    "persistence of raw stdout, raw stderr, proxy values, secrets, raw context endpoints, or unredacted remote addresses",
     "Python bytecode or __pycache__ persistence by the execution runner"
   ],
   "post_stop_native_closure": {

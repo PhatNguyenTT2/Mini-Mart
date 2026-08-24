@@ -332,10 +332,16 @@ def sanitize_context(value: Any) -> dict[str, Any]:
     )
     endpoint = (row.get("Endpoints") or {}).get("docker") or {}
     metadata = row.get("Metadata") or {}
+    raw_host = str(endpoint.get("Host") or "")
+    expected_host = "npipe:////./pipe/dockerdesktoplinuxengine"
     return {
         "Name": row.get("Name"),
         "Description": metadata.get("Description"),
-        "DockerEndpointHost": endpoint.get("Host"),
+        "DockerEndpointHostClass": (
+            "DESKTOP_LINUX_NPIPE_EXACT"
+            if raw_host.casefold() == expected_host else "OTHER_OR_MISSING_REDACTED"
+        ),
+        "DockerEndpointHostSha256": sha256_bytes(raw_host.encode("utf-8")),
         "DockerEndpointSkipTLSVerify": endpoint.get("SkipTLSVerify"),
         "TLSMaterialConfigured": bool(row.get("TLSMaterial")),
         "StorageConfigured": bool(row.get("Storage")),
@@ -903,8 +909,8 @@ def main() -> int:
         and str(info_whitelist.get("Architecture", "")).casefold()
         in {"x86_64", "amd64"}
         and str(context_whitelist.get("Name", "")).casefold() == "desktop-linux"
-        and str(context_whitelist.get("DockerEndpointHost", "")).casefold()
-        == "npipe:////./pipe/dockerdesktoplinuxengine"
+        and context_whitelist.get("DockerEndpointHostClass")
+        == "DESKTOP_LINUX_NPIPE_EXACT"
     )
     post_lanes_a = {
         "wsl_inventory_all_stopped": (

@@ -195,6 +195,12 @@ def main() -> int:
     check("contract_stop_finally", contract.get("authorized_runtime_transitions", {}).get("stop_is_in_finally_after_any_start_attempt") is True)
     check("contract_exact_outputs", contract.get("output_contract", {}).get("exact_files") == EXPECTED_OUTPUT_FILES)
     check("contract_truth_state", contract.get("truth_state") == {"RESULT_STATUS": "NOT_RUN", "TEST_SET_OPENED": "NO", "ACCEPTED_RESULT_ROWS": 0})
+    passport_shape = lambda document: set(
+        document.get("material_passport", {}).get("experiment_intake_declaration", {})
+    ) == {"status", "declared_at", "declared_by"}
+    check("contract_material_passport_intake_shape", passport_shape(contract))
+    check("authorization_material_passport_intake_shape", passport_shape(auth))
+    check("dispatch_material_passport_intake_shape", passport_shape(dispatch))
     check("contract_standard_only", contract.get("model_policy", {}).get("fresh_audit_service_tier") == "default" and contract.get("model_policy", {}).get("fast_or_priority_allowed") is False)
 
     decision = auth.get("user_decision", {})
@@ -258,6 +264,12 @@ def main() -> int:
     )
     check("runner_status_advisory", source.count("STATUS_ADVISORY") >= 3)
     check("runner_imports_native_gate", "attempt003_offline_equivalent_observation as native_gate" in source)
+    check(
+        "runner_context_endpoint_redacted",
+        '\"DockerEndpointHost\": endpoint.get(\"Host\")' not in source
+        and "DockerEndpointHostClass" in source
+        and "DockerEndpointHostSha256" in source,
+    )
     check("runner_disables_bytecode", "sys.dont_write_bytecode = True" in source)
     check("runner_named_pipe_pre_and_post", source.count("probe_desktop_linux_pipe()") == 3)
     check("runner_finally_stop", "finally:" in source and "A21_DOCKER_DESKTOP_STOP_ONCE" in source)
