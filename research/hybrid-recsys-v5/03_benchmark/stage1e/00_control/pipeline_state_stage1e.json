@@ -2,7 +2,7 @@
   "schema_version": "academic-research-pipeline-state-1.0",
   "project": "hybrid-recsys-v5",
   "stage": "1E",
-  "state": "stage1e_rebaseline_v2_r6_pc2w_p1_attempt003_fail_closed_packet_audited_no_retry_user_decision_required",
+  "state": "stage1e_rebaseline_v2_r6_pc2w_p1_attempt004_fail_closed_packet_audited_no_retry_user_decision_required",
   "updated_at": "2026-08-24",
   "model": "gpt-5.6-sol",
   "reasoning": "max",
@@ -15,7 +15,7 @@
     "record": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/wave1_v1_supersession_record.json"
   },
   "rebaseline_v2": {
-    "status": "e4_r6_pc2w_p1_attempt003_fail_closed_packet_audited_no_retry_user_decision_required",
+    "status": "e4_r6_pc2w_p1_attempt004_fail_closed_packet_audited_no_retry_user_decision_required",
     "wave_a_expected": 3,
     "wave_a_active": 0,
     "wave_a_complete": 3,
@@ -1357,6 +1357,16 @@
           "p1_attempt003_query_only_runner_checkpoint": "e1f359887a333a4bfae8b7e81e92542f480b4196",
           "p1_attempt003_query_only_execution_checkpoint": "a61f1b9ff9f27dca439a74885b2ea5c7da352f16",
           "p1_attempt003_query_only_packet_commit": "65b0e50716d4c53d220f917baa316f743e012167",
+          "p1_attempt004_query_only_contract": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt004_query_only_contract.json",
+          "p1_attempt004_query_only_runner": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc2w_p1_attempt004_query_only.py",
+          "p1_attempt004_query_only_output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_al/E4_R6PC2W_P1_docker_query_preflight/attempt-004",
+          "p1_attempt004_query_only_packet_validator": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_p1_attempt004_failure_packet.py",
+          "p1_attempt004_query_only_validator": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_p1_attempt004_failure.py",
+          "p1_attempt004_query_only_failure_receipt": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt004_failure_receipt.json",
+          "p1_attempt004_query_only_runner_checkpoint": "f30caeace4cb8f7baca8abfe4a9bef3357fa7194",
+          "p1_attempt004_query_only_execution_checkpoint": "c6bf15298b00b65ba797706a0911e21d72f39d39",
+          "p1_attempt004_query_only_packet_commit": "6f09ccfea5701f9d99caf040abd54644882d1eff",
+          "p1_attempt004_query_only_audit_validation_checkpoint": "3832b2f786cc21a288926b538a4ae2e992c9d64a",
           "validator": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_preflight.py",
           "central_checkpoint": "d6fbd4c5fe794b8847199dd4e0c4785c97c4d5bb",
           "current_host": {
@@ -1572,11 +1582,54 @@
             "independent_failure_packet_audit": "PASS_PC2W_P1_ATTEMPT003_FAILURE_PACKET_AUDITED_NO_RETRY",
             "failure_packet_audited": true
           },
+          "p1_attempt004_query_only": {
+            "verdict": "FAIL_CLOSED_PC2W_P1_ATTEMPT004_BACKEND_OR_POLICY_NOT_ADMISSIBLE",
+            "primary_failure_class": "POST_STOP_RUNTIME_PROCESS_RESIDUAL_WSLRELAY",
+            "secondary_runner_defect": "NONE_POLARITY_REPAIRED_BEFORE_ATTEMPT004",
+            "commands_recorded": 29,
+            "execution_attempts": 1,
+            "startup_attempts": 1,
+            "stop_attempts": 1,
+            "automatic_retry_count": 0,
+            "pre_start_native_gate_all_pass": true,
+            "query_commands_all_success": true,
+            "backend_linux_amd64_desktop_linux": true,
+            "containers_running_zero": true,
+            "container_inventory_unchanged": true,
+            "image_inventory_unchanged": true,
+            "container_or_image_events_absent": true,
+            "prohibited_commands_absent": true,
+            "post_stop_native_closure_all_pass": false,
+            "post_stop_settling_seconds": 20,
+            "post_stop_snapshot_barrier_seconds": 5,
+            "post_stop_residual_runtime_processes_snapshot_a": [
+              "wslrelay"
+            ],
+            "post_stop_residual_runtime_processes_snapshot_b": [
+              "wslrelay"
+            ],
+            "wsl_inventory_restored": true,
+            "desktop_linux_named_pipe_absent_win32_error_2": true,
+            "docker_desktop_status_advisory_only": true,
+            "attempt_authorization_consumed": true,
+            "new_retry_authorized": false,
+            "image_pull_or_build_performed": false,
+            "container_create_or_run_performed": false,
+            "settings_changed": false,
+            "install_or_download_performed": false,
+            "materialization_performed": false,
+            "scientific_execution_performed": false,
+            "test_access_performed": false,
+            "central_failure_packet_validation": "PASS_PC2W_P1_ATTEMPT004_FAIL_CLOSED_PACKET_READY_FOR_FRESH_AUDIT_57_OF_57",
+            "independent_failure_packet_audit": "PASS_PC2W_P1_ATTEMPT004_FAILURE_PACKET_AUDITED_NO_RETRY",
+            "failure_packet_audited": true,
+            "repeat_same_host_failure_after_attempt003": true
+          },
           "scientific_execution_performed": false,
           "result_status": "NOT_RUN",
           "test_set_opened": "NO",
           "accepted_result_rows": 0,
-          "next_gate": "USER_DECISION_REQUIRED_NO_AUTOMATIC_RETRY_AFTER_AUDITED_FAILURE"
+          "next_gate": "USER_DECISION_REQUIRED_NO_AUTOMATIC_RETRY_AFTER_AUDITED_FAILURE_ATTEMPT004"
         },
         "m0_m1": {
           "status": "ATTEMPT002_FAIL_CLOSED_BOTH_ROOTS_RETAINED_IMMUTABLE",
@@ -1641,7 +1694,7 @@
         "project_benchmark_numbers": "INVALID_FOR_PAPER"
       },
       "execution_authorized": false,
-      "next_gate": "USER_DECISION_REQUIRED_NO_AUTOMATIC_RETRY_AFTER_AUDITED_FAILURE"
+      "next_gate": "USER_DECISION_REQUIRED_NO_AUTOMATIC_RETRY_AFTER_AUDITED_FAILURE_ATTEMPT004"
     }
   },
   "central_preregistration_lock": "PASS_R6_S0_BOUNDED_MATERIALIZATION_SCOPE_LOCKED",
@@ -1649,5 +1702,5 @@
   "harmonized_v5": "BLOCKED",
   "external_validation": "BLOCKED",
   "efficiency": "BLOCKED_AFTER_ACCURACY",
-  "next_gate": "Attempt-003 failure packet passed independent Sol XHigh Standard audit after one execution and zero retry. Query-only backend evidence passed, but the current PC2W lane remains fail-closed because wslrelay persisted in both post-stop native closure snapshots; the runner polarity defect is recorded as secondary and non-causal. User decision is required: commission evidence-only residual-process policy review, select a changed host, or pause. No automatic retry is authorized. Image acquisition/build, container creation/run, settings changes, materialization, R6-C1R3-LINUX execution, training, evaluation, benchmark admission and TEST access remain blocked."
+  "next_gate": "Attempt-004 failure packet passed independent Sol XHigh Standard audit after one execution and zero retry. The Attempt-003 prohibited-command polarity defect was repaired before execution; all query-only backend evidence passed. The current PC2W lane remains fail-closed because wslrelay persisted in both fixed post-stop native closure snapshots after 20 seconds settling plus a 5 second barrier, repeating the same-host failure class. User decision is required: commission an evidence-only residual-process admission-policy review, select a changed host, or pause. No automatic retry or Attempt-005 is authorized. Image acquisition/build, container creation/run, settings changes, materialization, R6-C1R3-LINUX execution, training, evaluation, benchmark admission and TEST access remain blocked."
 }
