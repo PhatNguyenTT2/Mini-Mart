@@ -21,6 +21,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Callable
 
+sys.dont_write_bytecode = True
 import execute_e4_r6_pc2w_p1_attempt003_offline_equivalent_observation as native_gate
 
 

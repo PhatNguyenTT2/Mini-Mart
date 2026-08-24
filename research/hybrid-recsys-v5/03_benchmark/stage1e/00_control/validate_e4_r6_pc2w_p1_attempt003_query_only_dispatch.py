@@ -257,6 +257,7 @@ def main() -> int:
     )
     check("runner_status_advisory", source.count("STATUS_ADVISORY") >= 3)
     check("runner_imports_native_gate", "attempt003_offline_equivalent_observation as native_gate" in source)
+    check("runner_disables_bytecode", "sys.dont_write_bytecode = True" in source)
     check("runner_named_pipe_pre_and_post", source.count("probe_desktop_linux_pipe()") == 3)
     check("runner_finally_stop", "finally:" in source and "A21_DOCKER_DESKTOP_STOP_ONCE" in source)
     check("runner_zero_retry_literal", source.count('"automatic_retry_count": 0') >= 2)
