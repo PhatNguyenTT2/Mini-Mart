@@ -445,7 +445,7 @@ def main() -> int:
         raise RuntimeError("attempt-003 Standard authorization schema mismatch")
     if contract.get("schema_version") != "stage1e-e4-r6-pc2w-p1-attempt003-query-only-contract-1.0":
         raise RuntimeError("attempt-003 query-only contract schema mismatch")
-    if native_validation.get("verdict") != "PASS_PC2W_P1_ATTEMPT003_NATIVE_OFFLINE_V5_VALIDATED":
+    if native_validation.get("central_validation", {}).get("validator_verdict") != "PASS_PC2W_P1_ATTEMPT003_NATIVE_OFFLINE_V5_VALIDATED":
         raise RuntimeError("validated native-offline v5 PASS missing")
     if native_validation.get("next_gate") != "ATTEMPT003_START_QUERY_STOP_RUNNER_STATIC_AUDIT":
         raise RuntimeError("native validation next gate mismatch")

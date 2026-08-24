@@ -177,7 +177,11 @@ def main() -> int:
     check("authorization_schema", auth.get("schema_version") == "stage1e-e4-r6-pc2w-p1-attempt003-user-authorization-standard-1.0")
     check("dispatch_schema", dispatch.get("schema_version") == "stage1e-e4-r6-pc2w-p1-attempt003-query-only-dispatch-1.0")
     check("requirements_schema", requirements.get("schema_version") == "stage1e-e4-r6-pc2w-p1-docker-query-preflight-requirements-1.0")
-    check("native_pass_validated", native_validation.get("verdict") == "PASS_PC2W_P1_ATTEMPT003_NATIVE_OFFLINE_V5_VALIDATED")
+    check(
+        "native_pass_validated",
+        native_validation.get("central_validation", {}).get("validator_verdict")
+        == "PASS_PC2W_P1_ATTEMPT003_NATIVE_OFFLINE_V5_VALIDATED",
+    )
     check("native_next_gate", native_validation.get("next_gate") == "ATTEMPT003_START_QUERY_STOP_RUNNER_STATIC_AUDIT")
     check("native_attempt003_unopened", native_validation.get("attempt_result", {}).get("attempt003_execution_opened") is False)
     check("native_zero_retry", native_validation.get("attempt_result", {}).get("automatic_retry_count") == 0)
