@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import ast
+import base64
 import hashlib
 import json
 import subprocess
@@ -69,6 +70,7 @@ EXPECTED_COMMAND_IDS = [
     "A35_TARGET_PROCESS_IDENTITY_POST_C",
     "A36_TARGET_TCP_OWNERSHIP_POST_C",
 ]
+WINDOWS_POWERSHELL = Path(r"C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe")
 
 
 class DuplicateKeyError(ValueError):
@@ -93,8 +95,41 @@ def load_json(path: Path) -> dict[str, Any]:
     return value
 
 
-def sha256(path: Path) -> str:
-    return hashlib.sha256(path.read_bytes()).hexdigest()
+def git_blob_bytes(root: Path, revision: str, path: Path) -> bytes:
+    return subprocess.run(
+        ["git", "show", f"{revision}:{path.as_posix()}"],
+        cwd=root,
+        check=True,
+        capture_output=True,
+    ).stdout
+
+
+def invoke_literal_id(node: ast.AST) -> str | None:
+    if not isinstance(node, ast.Call):
+        return None
+    if not isinstance(node.func, ast.Name) or node.func.id != "invoke" or not node.args:
+        return None
+    first = node.args[0]
+    return first.value if isinstance(first, ast.Constant) and isinstance(first.value, str) else None
+
+
+def literal_invoke_ids(node: ast.AST) -> list[str]:
+    calls = [
+        (child.lineno, command_id)
+        for child in ast.walk(node)
+        if (command_id := invoke_literal_id(child)) is not None
+    ]
+    return [command_id for _, command_id in sorted(calls)]
+
+
+def find_function(tree: ast.AST, name: str) -> ast.FunctionDef | None:
+    return next(
+        (
+            node for node in ast.walk(tree)
+            if isinstance(node, ast.FunctionDef) and node.name == name
+        ),
+        None,
+    )
 
 
 def assigned_literal(tree: ast.AST, name: str) -> Any:
@@ -103,6 +138,48 @@ def assigned_literal(tree: ast.AST, name: str) -> Any:
             if any(isinstance(target, ast.Name) and target.id == name for target in node.targets):
                 return ast.literal_eval(node.value)
     raise KeyError(name)
+
+
+def assigned_stripped_string(tree: ast.AST, name: str) -> str:
+    for node in ast.walk(tree):
+        if not isinstance(node, ast.Assign):
+            continue
+        if not any(isinstance(target, ast.Name) and target.id == name for target in node.targets):
+            continue
+        value = node.value
+        if (
+            isinstance(value, ast.Call)
+            and isinstance(value.func, ast.Attribute)
+            and value.func.attr == "strip"
+            and not value.args
+            and not value.keywords
+        ):
+            literal = ast.literal_eval(value.func.value)
+            if isinstance(literal, str):
+                return literal.strip()
+    raise KeyError(name)
+
+
+def powershell_source_parses(source: str) -> bool:
+    encoded = base64.b64encode(source.encode("utf-8")).decode("ascii")
+    script = (
+        "$source=[Text.Encoding]::UTF8.GetString([Convert]::FromBase64String('"
+        + encoded
+        + "'));$tokens=$null;$errors=$null;"
+        "[System.Management.Automation.Language.Parser]::ParseInput("
+        "$source,[ref]$tokens,[ref]$errors)|Out-Null;"
+        "if($errors.Count -ne 0){exit 1}"
+    )
+    result = subprocess.run(
+        [
+            str(WINDOWS_POWERSHELL), "-NoLogo", "-NoProfile", "-NonInteractive",
+            "-Command", script,
+        ],
+        check=False,
+        capture_output=True,
+        text=True,
+    )
+    return result.returncode == 0 and not result.stdout.strip() and not result.stderr.strip()
 
 
 def main() -> int:
@@ -126,8 +203,17 @@ def main() -> int:
     check("state_exists", (root / STATE).is_file())
 
     for path, expected in UPSTREAM_HASHES.items():
-        check(f"upstream_exists:{path.name}", (root / path).is_file())
-        check(f"upstream_hash:{path.name}", (root / path).is_file() and sha256(root / path) == expected)
+        try:
+            blob = git_blob_bytes(root, head, path)
+            blob_exists = True
+        except subprocess.CalledProcessError:
+            blob = b""
+            blob_exists = False
+        check(f"upstream_exists_in_head:{path.name}", blob_exists)
+        check(
+            f"upstream_git_blob_hash:{path.name}",
+            blob_exists and hashlib.sha256(blob).hexdigest() == expected,
+        )
 
     try:
         contract = load_json(root / CONTRACT)
@@ -163,7 +249,30 @@ def main() -> int:
     check("contract_no_raw_addresses", privacy.get("raw_network_addresses_persisted") is False)
     model = contract.get("model_policy", {})
     check("contract_standard_tier", model.get("fresh_static_audit_service_tier") == "default")
+    check("contract_audit_model", model.get("fresh_static_audit_model") == "gpt-5.6-sol")
+    check("contract_audit_reasoning", model.get("fresh_static_audit_reasoning_effort") == "xhigh")
+    check("contract_coordinator_model", model.get("central_model") == "gpt-5.6-sol")
+    check("contract_coordinator_reasoning", model.get("central_reasoning_effort") == "max")
+    check("contract_dispatch_binding", model.get("dispatch_binding_required") == {
+        "coordinator_model": "gpt-5.6-sol",
+        "coordinator_reasoning_effort": "max",
+        "static_audit_model": "gpt-5.6-sol",
+        "static_audit_reasoning_effort": "xhigh",
+        "service_tier": "default",
+        "fast_or_priority_allowed": False,
+    })
     check("contract_fast_forbidden", model.get("fast_or_priority_allowed") is False)
+    completeness = contract.get("fail_closed_completeness", {})
+    check("contract_process_null_fails", completeness.get("process_identity_null_or_empty_field_is_error") is True)
+    check("contract_tcp_null_fails", completeness.get("tcp_identity_null_or_empty_field_is_error") is True)
+    check("contract_during_process_nonempty", completeness.get("during_process_population_must_be_nonempty") is True)
+    durable = contract.get("durable_failure_receipts", {})
+    check("contract_initial_failure_packet", durable.get("exact_four_file_packet_initialized_before_first_runtime_command") is True)
+    check("contract_progress_failure_packet", durable.get("packet_refreshed_after_every_command_receipt") is True)
+    check("contract_exception_failure_packet", durable.get("ordinary_exception_rewrites_fail_closed_packet") is True)
+    check("contract_failure_message_private", durable.get("exception_message_persisted") is False)
+    required_runtime = contract.get("required_sanitized_runtime_evidence", [])
+    check("contract_runtime_evidence_three", isinstance(required_runtime, list) and len(required_runtime) == 3)
     truth = contract.get("truth_state", {})
     check("contract_result_not_run", truth.get("RESULT_STATUS") == "NOT_RUN")
     check("contract_test_closed", truth.get("TEST_SET_OPENED") == "NO")
@@ -191,6 +300,71 @@ def main() -> int:
         check("runner_three_snapshots", False)
         check("runner_settling_20", False)
         check("runner_barrier_15", False)
+    try:
+        process_query = assigned_stripped_string(tree, "PROCESS_IDENTITY_QUERY")
+        tcp_query = assigned_stripped_string(tree, "TCP_OWNERSHIP_QUERY")
+        check("runner_process_powershell_parse_only", powershell_source_parses(process_query))
+        check("runner_tcp_powershell_parse_only", powershell_source_parses(tcp_query))
+    except (KeyError, ValueError, OSError):
+        check("runner_process_powershell_parse_only", False)
+        check("runner_tcp_powershell_parse_only", False)
+
+    main_function = find_function(tree, "main")
+    main_literal_ids = literal_invoke_ids(main_function) if main_function else []
+    check("runner_start_literal_once", main_literal_ids.count("A08_DOCKER_DESKTOP_START_ONCE") == 1)
+    check("runner_stop_literal_once", main_literal_ids.count("A22_DOCKER_DESKTOP_STOP_ONCE") == 1)
+    check("runner_shutdown_literal_once", main_literal_ids.count("A23_WSL_SHUTDOWN_ONCE") == 1)
+    transition_try = None
+    if main_function is not None:
+        for node in ast.walk(main_function):
+            if not isinstance(node, ast.Try):
+                continue
+            body_ids = literal_invoke_ids(ast.Module(body=node.body, type_ignores=[]))
+            final_ids = literal_invoke_ids(ast.Module(body=node.finalbody, type_ignores=[]))
+            if "A08_DOCKER_DESKTOP_START_ONCE" in body_ids:
+                transition_try = node
+                break
+    if transition_try is None:
+        check("runner_transition_try_found", False)
+        check("runner_stop_shutdown_in_same_finally", False)
+        check("runner_stop_immediately_before_shutdown", False)
+        check("runner_shutdown_survives_stop_exception", False)
+    else:
+        check("runner_transition_try_found", True)
+        final_ids = literal_invoke_ids(ast.Module(body=transition_try.finalbody, type_ignores=[]))
+        check(
+            "runner_stop_shutdown_in_same_finally",
+            final_ids.count("A22_DOCKER_DESKTOP_STOP_ONCE") == 1
+            and final_ids.count("A23_WSL_SHUTDOWN_ONCE") == 1,
+        )
+        check(
+            "runner_stop_immediately_before_shutdown",
+            final_ids.index("A22_DOCKER_DESKTOP_STOP_ONCE") + 1
+            == final_ids.index("A23_WSL_SHUTDOWN_ONCE")
+            if "A22_DOCKER_DESKTOP_STOP_ONCE" in final_ids
+            and "A23_WSL_SHUTDOWN_ONCE" in final_ids
+            else False,
+        )
+        nested_stop_finally = any(
+            isinstance(node, ast.Try)
+            and "A22_DOCKER_DESKTOP_STOP_ONCE"
+            in literal_invoke_ids(ast.Module(body=node.body, type_ignores=[]))
+            and "A23_WSL_SHUTDOWN_ONCE"
+            in literal_invoke_ids(ast.Module(body=node.finalbody, type_ignores=[]))
+            for statement in transition_try.finalbody
+            for node in ast.walk(statement)
+        )
+        check("runner_shutdown_survives_stop_exception", nested_stop_finally)
+    loop_transition_ids: list[str] = []
+    if main_function is not None:
+        for node in ast.walk(main_function):
+            if isinstance(node, (ast.For, ast.AsyncFor, ast.While)):
+                loop_transition_ids.extend(literal_invoke_ids(node))
+    check(
+        "runner_transitions_not_in_loop",
+        not {"A08_DOCKER_DESKTOP_START_ONCE", "A22_DOCKER_DESKTOP_STOP_ONCE", "A23_WSL_SHUTDOWN_ONCE"}
+        .intersection(loop_transition_ids),
+    )
 
     call_names: list[str] = []
     shell_true = False
@@ -219,22 +393,57 @@ def main() -> int:
     check("runner_result_not_run_marker", '"result_status": "NOT_RUN"' in source)
     check("runner_no_scientific_execution", '"scientific_execution_performed": False' in source)
     check("runner_no_materialization", '"materialization_performed": False' in source)
+    check("runner_no_swallowed_process_field_errors", "catch{}" not in source)
+    check("runner_process_hash_validation", "invalid process identity hash" in source)
+    check("runner_tcp_hash_validation", "invalid TCP address hash" in source)
+    check("runner_during_process_nonempty", '"during_process_probe_complete_and_nonempty"' in source and 'during_processes.get("count", 0) > 0' in source)
+    check("runner_failure_packet_function", find_function(tree, "persist_failure_packet") is not None)
+    check("runner_failure_packet_initialized", 'persist_failure_packet("IN_PROGRESS", "Attempt-005 initialized before first command")' in source)
+    invoke_function = find_function(tree, "invoke")
+    check(
+        "runner_failure_packet_refreshed_after_invoke",
+        invoke_function is not None
+        and any(
+            isinstance(node, ast.Call)
+            and isinstance(node.func, ast.Name)
+            and node.func.id == "persist_failure_packet"
+            for node in ast.walk(invoke_function)
+        ),
+    )
+    check("runner_exception_persists_failure", "failure_packet_persisted = persist_failure_packet" in source)
+    check("runner_client_version_persisted", '"docker_client_version_whitelist": client_whitelist' in source)
+    check("runner_server_version_persisted", '"docker_server_version_whitelist": server_whitelist' in source)
+    check("runner_info_whitelist_persisted", '"docker_info_whitelist": info_whitelist' in source)
+    check("runner_dispatch_coordinator_model_bound", '"coordinator_model": EXPECTED_COORDINATOR_MODEL' in source)
+    check("runner_dispatch_audit_reasoning_bound", '"static_audit_reasoning_effort": EXPECTED_STATIC_AUDIT_REASONING' in source)
     for field in contract.get("instrumented_process_fields", []):
         check(f"runner_process_field:{field}", field in source)
     for field in contract.get("instrumented_tcp_fields", []):
         check(f"runner_tcp_field:{field}", field in source)
 
-    check("state_root_attempt005_packet", state.get("state") == "stage1e_rebaseline_v2_r6_pc2w_p1_attempt005_packet_preparation_authorized_runner_freeze_in_progress_no_execution")
+    check("state_root_attempt005_packet", state.get("state") == "stage1e_rebaseline_v2_r6_pc2w_p1_attempt005_static_audit_failed_closed_packet_rework_in_progress_no_execution")
     r6 = state.get("rebaseline_v2", {}).get("e4_r5", {}).get("r6", {})
     pc2w = r6.get("pc2w", {})
     attempt005 = pc2w.get("p1_attempt005_instrumented", {})
     check("state_attempt005_authorized", attempt005.get("attempt005_authorized") is True)
     check("state_execution_not_opened", attempt005.get("execution_previously_opened") is False)
     check("state_static_audit_required", attempt005.get("fresh_static_audit_required") is True)
+    first_audit = attempt005.get("first_fresh_static_audit", {})
+    check("state_first_audit_fail_closed", first_audit.get("verdict") == "FAIL_CLOSED_PC2W_P1_ATTEMPT005_STATIC_AUDIT")
+    check("state_first_audit_no_runtime", first_audit.get("runtime_commands_executed") is False)
+    check("state_first_audit_empty_write_set", first_audit.get("write_set") == [])
+    incident = attempt005.get("rework_validation_incident", {})
+    check("state_rework_incident_disclosed", incident.get("occurred") is True)
+    check("state_rework_incident_exact_two_probes", incident.get("native_process_probe_calls") == 1 and incident.get("native_tcp_probe_calls") == 1)
+    check("state_rework_incident_no_docker_wsl", incident.get("docker_cli_commands_executed") is False and incident.get("wsl_commands_executed") is False)
+    check("state_rework_incident_no_runner", incident.get("attempt005_runner_executed") is False)
+    check("state_rework_incident_no_writes", incident.get("artifact_write_set") == [])
+    check("state_rework_incident_no_science", incident.get("scientific_execution_performed") is False and incident.get("test_access_performed") is False)
+    check("state_rework_incident_no_repeat", incident.get("repeat_forbidden") is True)
     check("state_no_auto_retry", attempt005.get("automatic_retry_count") == 0)
     check("state_no_runtime", attempt005.get("runtime_commands_executed") is False)
     check("state_exact_command_confirmation", attempt005.get("exact_command_confirmation_required") is True)
-    check("state_next_gate", pc2w.get("next_gate") == "FREEZE_AND_FRESH_STANDARD_STATIC_AUDIT_BEFORE_EXACT_COMMAND_CONFIRMATION")
+    check("state_next_gate", pc2w.get("next_gate") == "REWORK_FREEZE_AND_NEW_FRESH_STANDARD_STATIC_AUDIT_BEFORE_EXACT_COMMAND_CONFIRMATION")
     check("state_result_not_run", state.get("result_status") == "NOT_RUN")
     check("state_test_closed", state.get("test_set_opened") == "NO")
 

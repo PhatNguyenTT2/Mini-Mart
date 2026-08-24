@@ -74,6 +74,12 @@ TARGET_PROCESS_NAMES = {
 POST_SHUTDOWN_SETTLING_SECONDS = 20
 POST_SHUTDOWN_SNAPSHOT_BARRIER_SECONDS = 15
 POST_SHUTDOWN_SNAPSHOTS = 3
+EXPECTED_COORDINATOR_MODEL = "gpt-5.6-sol"
+EXPECTED_COORDINATOR_REASONING = "max"
+EXPECTED_STATIC_AUDIT_MODEL = "gpt-5.6-sol"
+EXPECTED_STATIC_AUDIT_REASONING = "xhigh"
+EXPECTED_SERVICE_TIER = "default"
+_FAILURE_CONTEXT: dict[str, Any] | None = None
 EXPECTED_COMMAND_IDS = [
     "A00_DOCKER_DESKTOP_STATUS_ADVISORY_BEFORE",
     "A01_WSL_LIST_VERBOSE_PRE_GATE",
@@ -117,11 +123,14 @@ EXPECTED_COMMAND_IDS = [
 
 PROCESS_IDENTITY_QUERY = r"""
 $ErrorActionPreference='Stop'
-function H([string]$s){
+function Get-RedactedSha256([string]$s){
   if($null -eq $s){$s=''}
   $sha=[System.Security.Cryptography.SHA256]::Create()
   try { ([BitConverter]::ToString($sha.ComputeHash([Text.Encoding]::UTF8.GetBytes($s)))).Replace('-','').ToLowerInvariant() }
   finally { $sha.Dispose() }
+}
+function Require-NonEmpty($value,[string]$label){
+  if([string]::IsNullOrWhiteSpace([string]$value)){throw "missing required identity field: $label"}
 }
 $target=@('Docker Desktop.exe','com.docker.backend.exe','com.docker.build.exe','com.docker.proxy.exe','dockerd.exe','vpnkit.exe','wslrelay.exe')
 try {
@@ -132,44 +141,57 @@ try {
   foreach($p in @($all | Where-Object {$target -contains $_.Name} | Sort-Object ProcessId)){
     $path=[string]$p.ExecutablePath
     $parent=$byPid[[uint32]$p.ParentProcessId]
-    $parentPath=if($null -ne $parent){[string]$parent.ExecutablePath}else{''}
-    $fileHash=$null; $sigStatus=$null; $signerHash=$null; $fileVersion=$null
-    if($path -and (Test-Path -LiteralPath $path -PathType Leaf)){
-      try {$fileHash=(Get-FileHash -LiteralPath $path -Algorithm SHA256 -ErrorAction Stop).Hash.ToLowerInvariant()}catch{}
-      try {$sig=Get-AuthenticodeSignature -LiteralPath $path -ErrorAction Stop; $sigStatus=[string]$sig.Status; $signerHash=H([string]$sig.SignerCertificate.Subject)}catch{}
-      try {$fileVersion=(Get-Item -LiteralPath $path -ErrorAction Stop).VersionInfo.FileVersion}catch{}
-    }
-    $created=$null
-    try {$created=([datetime]$p.CreationDate).ToUniversalTime().ToString('o')}catch{}
+    if($null -eq $parent){throw 'parent process identity unavailable'}
+    $parentName=[string]$parent.Name
+    $parentPath=[string]$parent.ExecutablePath
+    Require-NonEmpty $path 'ExecutablePath'
+    Require-NonEmpty $parentName 'ParentName'
+    Require-NonEmpty $parentPath 'ParentExecutablePath'
+    Require-NonEmpty ([string]$p.CommandLine) 'CommandLine'
+    if(-not (Test-Path -LiteralPath $path -PathType Leaf)){throw 'target executable path is not a file'}
+    $fileHash=(Get-FileHash -LiteralPath $path -Algorithm SHA256 -ErrorAction Stop).Hash.ToLowerInvariant()
+    $sig=Get-AuthenticodeSignature -LiteralPath $path -ErrorAction Stop
+    $sigStatus=[string]$sig.Status
+    $signerSubject=[string]$sig.SignerCertificate.Subject
+    $fileVersion=[string](Get-Item -LiteralPath $path -ErrorAction Stop).VersionInfo.FileVersion
+    $created=([datetime]$p.CreationDate).ToUniversalTime().ToString('o')
+    Require-NonEmpty $fileHash 'ExecutableFileSha256'
+    Require-NonEmpty $sigStatus 'AuthenticodeStatus'
+    Require-NonEmpty $signerSubject 'SignerSubject'
+    Require-NonEmpty $fileVersion 'FileVersion'
+    Require-NonEmpty $created 'CreationTimeUtc'
     $rows += [pscustomobject]@{
       Name=[IO.Path]::GetFileNameWithoutExtension([string]$p.Name)
       ProcessId=[uint32]$p.ProcessId
       ParentProcessId=[uint32]$p.ParentProcessId
-      ParentNameHash=H($(if($null -ne $parent){[string]$parent.Name}else{''}))
-      ParentExecutablePathHash=H($parentPath)
-      ExecutablePathHash=H($path)
+      ParentNameHash=$(Get-RedactedSha256 $parentName)
+      ParentExecutablePathHash=$(Get-RedactedSha256 $parentPath)
+      ExecutablePathHash=$(Get-RedactedSha256 $path)
       ExecutableFileSha256=$fileHash
       FileVersion=$fileVersion
       AuthenticodeStatus=$sigStatus
-      SignerSubjectHash=$signerHash
+      SignerSubjectHash=$(Get-RedactedSha256 $signerSubject)
       CreationTimeUtc=$created
-      CommandLineHash=H([string]$p.CommandLine)
+      CommandLineHash=$(Get-RedactedSha256 ([string]$p.CommandLine))
     }
   }
   [pscustomobject]@{Available=$true;ProcessCount=$rows.Count;Rows=$rows} | ConvertTo-Json -Depth 7 -Compress
 } catch {
-  [pscustomobject]@{Available=$false;ProcessCount=$null;ErrorTypeHash=H($_.Exception.GetType().FullName);Rows=@()} | ConvertTo-Json -Depth 7 -Compress
+  [pscustomobject]@{Available=$false;ProcessCount=$null;ErrorTypeHash=$(Get-RedactedSha256 ($_.Exception.GetType().FullName));Rows=@()} | ConvertTo-Json -Depth 7 -Compress
 }
 """.strip()
 
 
 TCP_OWNERSHIP_QUERY = r"""
 $ErrorActionPreference='Stop'
-function H([string]$s){
+function Get-RedactedSha256([string]$s){
   if($null -eq $s){$s=''}
   $sha=[System.Security.Cryptography.SHA256]::Create()
   try { ([BitConverter]::ToString($sha.ComputeHash([Text.Encoding]::UTF8.GetBytes($s)))).Replace('-','').ToLowerInvariant() }
   finally { $sha.Dispose() }
+}
+function Require-NonEmpty($value,[string]$label){
+  if([string]::IsNullOrWhiteSpace([string]$value)){throw "missing required TCP field: $label"}
 }
 $target=@('Docker Desktop.exe','com.docker.backend.exe','com.docker.build.exe','com.docker.proxy.exe','dockerd.exe','vpnkit.exe','wslrelay.exe')
 try {
@@ -178,11 +200,14 @@ try {
   $rows=@()
   if($ids.Count -gt 0){
     foreach($c in @(Get-NetTCPConnection -ErrorAction Stop | Where-Object {$ids -contains [uint32]$_.OwningProcess} | Sort-Object OwningProcess,LocalPort,RemotePort)){
+      Require-NonEmpty ([string]$c.State) 'State'
+      Require-NonEmpty ([string]$c.LocalAddress) 'LocalAddress'
+      Require-NonEmpty ([string]$c.RemoteAddress) 'RemoteAddress'
       $rows += [pscustomobject]@{
         State=[string]$c.State
-        LocalAddressHash=H([string]$c.LocalAddress)
+        LocalAddressHash=$(Get-RedactedSha256 ([string]$c.LocalAddress))
         LocalPort=[uint16]$c.LocalPort
-        RemoteAddressHash=H([string]$c.RemoteAddress)
+        RemoteAddressHash=$(Get-RedactedSha256 ([string]$c.RemoteAddress))
         RemotePort=[uint16]$c.RemotePort
         OwningProcess=[uint32]$c.OwningProcess
       }
@@ -190,7 +215,7 @@ try {
   }
   [pscustomobject]@{Available=$true;ConnectionCount=$rows.Count;Rows=$rows} | ConvertTo-Json -Depth 6 -Compress
 } catch {
-  [pscustomobject]@{Available=$false;ConnectionCount=$null;ErrorTypeHash=H($_.Exception.GetType().FullName);Rows=@()} | ConvertTo-Json -Depth 6 -Compress
+  [pscustomobject]@{Available=$false;ConnectionCount=$null;ErrorTypeHash=$(Get-RedactedSha256 ($_.Exception.GetType().FullName));Rows=@()} | ConvertTo-Json -Depth 6 -Compress
 }
 """.strip()
 
@@ -252,6 +277,28 @@ def parse_process_probe(value: bytes) -> dict[str, Any]:
             raise ValueError("process identity field set mismatch")
         if str(row.get("Name", "")).casefold() + ".exe" not in TARGET_PROCESS_NAMES:
             raise ValueError("unexpected target process name")
+        if any(
+            not isinstance(row.get(key), str) or not row.get(key).strip()
+            for key in ("Name", "FileVersion", "AuthenticodeStatus", "CreationTimeUtc")
+        ):
+            raise ValueError("missing process identity string")
+        if any(
+            not isinstance(row.get(key), int)
+            or isinstance(row.get(key), bool)
+            or row.get(key) <= 0
+            for key in ("ProcessId", "ParentProcessId")
+        ):
+            raise ValueError("invalid process identity integer")
+        for key in (
+            "ParentNameHash", "ParentExecutablePathHash", "ExecutablePathHash",
+            "ExecutableFileSha256", "SignerSubjectHash", "CommandLineHash",
+        ):
+            if not isinstance(row.get(key), str) or not re.fullmatch(r"[0-9a-f]{64}", row[key]):
+                raise ValueError(f"invalid process identity hash: {key}")
+        try:
+            datetime.fromisoformat(row["CreationTimeUtc"].replace("Z", "+00:00"))
+        except (TypeError, ValueError) as exc:
+            raise ValueError("invalid process creation time") from exc
     return result
 
 
@@ -263,6 +310,19 @@ def parse_tcp_probe(value: bytes) -> dict[str, Any]:
     }
     if any(set(row) != required for row in result["rows"]):
         raise ValueError("TCP ownership field set mismatch")
+    for row in result["rows"]:
+        if not isinstance(row.get("State"), str) or not row["State"].strip():
+            raise ValueError("missing TCP state")
+        for key in ("LocalAddressHash", "RemoteAddressHash"):
+            if not isinstance(row.get(key), str) or not re.fullmatch(r"[0-9a-f]{64}", row[key]):
+                raise ValueError(f"invalid TCP address hash: {key}")
+        for key in ("LocalPort", "RemotePort"):
+            value = row.get(key)
+            if not isinstance(value, int) or isinstance(value, bool) or not 0 <= value <= 65535:
+                raise ValueError(f"invalid TCP port: {key}")
+        owner = row.get("OwningProcess")
+        if not isinstance(owner, int) or isinstance(owner, bool) or owner <= 0:
+            raise ValueError("invalid TCP owning process")
     return result
 
 
@@ -282,6 +342,109 @@ def write_json(path: Path, value: dict[str, Any]) -> None:
         encoding="utf-8",
         newline="\n",
     )
+
+
+def _failure_documents(
+    context: dict[str, Any], *, error_type: str, error_sha256: str
+) -> dict[str, dict[str, Any]]:
+    receipts = list(context["receipts"])
+    command_ids = [str(row.get("command_id")) for row in receipts]
+    material_passport = context["material_passport"]
+    entry_checkpoint = context["entry_checkpoint"]
+    runner_checkpoint = context["runner_checkpoint"]
+    attempts = {
+        "startup_attempts": command_ids.count("A08_DOCKER_DESKTOP_START_ONCE"),
+        "docker_stop_attempts": command_ids.count("A22_DOCKER_DESKTOP_STOP_ONCE"),
+        "wsl_shutdown_attempts": command_ids.count("A23_WSL_SHUTDOWN_ONCE"),
+    }
+    common_failure = {
+        "verdict": "HANDOFF_INCOMPLETE",
+        "error_type": error_type,
+        "error_sha256": error_sha256,
+        "exception_message_persisted": False,
+        "failure_receipt_is_progress_durable": True,
+    }
+    return {
+        "command_receipts.json": {
+            "schema_version": "stage1e-e4-r6-pc2w-p1-attempt005-command-receipts-1.0",
+            "material_passport": material_passport,
+            "entry_checkpoint": entry_checkpoint,
+            "runner_checkpoint": runner_checkpoint,
+            "commands": receipts,
+            "command_ids": command_ids,
+            "exact_command_sequence": False,
+            "automatic_retry_count": 0,
+            "raw_stdout_or_stderr_persisted": False,
+            "raw_process_paths_or_command_lines_persisted": False,
+            "raw_network_addresses_persisted": False,
+            "failure": common_failure,
+        },
+        "runtime_inventory.json": {
+            "schema_version": "stage1e-e4-r6-pc2w-p1-attempt005-runtime-inventory-1.0",
+            "material_passport": material_passport,
+            "entry_checkpoint": entry_checkpoint,
+            "evidence_state": "INCOMPLETE_FAIL_CLOSED",
+            "commands_observed": command_ids,
+            "docker_client_version_whitelist": None,
+            "docker_server_version_whitelist": None,
+            "docker_info_whitelist": None,
+            "raw_or_secret_bearing_runtime_output_persisted": False,
+            "failure": common_failure,
+        },
+        "p1_execution_receipt.json": {
+            "schema_version": "stage1e-e4-r6-pc2w-p1-attempt005-execution-receipt-1.0",
+            "material_passport": material_passport,
+            "stage_id": "E4-R6-PC2W-P1-ATTEMPT005",
+            "created_at": context["created_at"],
+            "entry_checkpoint": entry_checkpoint,
+            "runner_checkpoint": runner_checkpoint,
+            **attempts,
+            "automatic_retry_count": 0,
+            "force_kill_performed": False,
+            "service_restart_performed": False,
+            "settings_changed": False,
+            "image_pull_or_build_performed": False,
+            "container_create_or_run_performed": False,
+            "install_or_download_performed": False,
+            "materialization_performed": False,
+            "scientific_execution_performed": False,
+            "result_status": "NOT_RUN",
+            "test_set_opened": "NO",
+            "accepted_result_rows": 0,
+            **common_failure,
+        },
+        "p1_handoff.json": {
+            "schema_version": "stage1e-e4-r6-pc2w-p1-attempt005-handoff-1.0",
+            "material_passport": material_passport,
+            "stage_id": "E4-R6-PC2W-P1-ATTEMPT005",
+            "verdict": "HANDOFF_INCOMPLETE",
+            "output_files": sorted(EXPECTED_OUTPUT_FILES),
+            "next_gate": "FAIL_CLOSED_USER_DECISION_REQUIRED_NO_AUTOMATIC_RETRY",
+            "truth_state": {
+                "RESULT_STATUS": "NOT_RUN",
+                "TEST_SET_OPENED": "NO",
+                "ACCEPTED_RESULT_ROWS": 0,
+            },
+            "failure": common_failure,
+        },
+    }
+
+
+def persist_failure_packet(error_type: str, error_text: str) -> bool:
+    context = _FAILURE_CONTEXT
+    if context is None:
+        return False
+    output_root = Path(context["output_root"])
+    error_sha256 = hashlib.sha256(error_text.encode("utf-8")).hexdigest()
+    documents = _failure_documents(
+        context, error_type=error_type, error_sha256=error_sha256
+    )
+    for name in sorted(EXPECTED_OUTPUT_FILES):
+        write_json(output_root / name, documents[name])
+    entries = list(output_root.iterdir())
+    if {path.name for path in entries} != EXPECTED_OUTPUT_FILES:
+        raise RuntimeError("durable failure packet exact file set violated")
+    return True
 
 
 def passport(created_at: str, auth: dict[str, Any]) -> dict[str, Any]:
@@ -305,6 +468,7 @@ def passport(created_at: str, auth: dict[str, Any]) -> dict[str, Any]:
 
 
 def main() -> int:
+    global _FAILURE_CONTEXT
     parser = argparse.ArgumentParser()
     parser.add_argument("--repo-root", required=True)
     parser.add_argument("--expected-head", required=True)
@@ -388,7 +552,15 @@ def main() -> int:
     if binding.get("argv") != expected_dispatch_argv:
         raise RuntimeError("dispatch argv mismatch")
     model = dispatch.get("model_policy", {})
-    if model.get("service_tier") != "default" or model.get("fast_or_priority_allowed") is not False:
+    expected_model_binding = {
+        "coordinator_model": EXPECTED_COORDINATOR_MODEL,
+        "coordinator_reasoning_effort": EXPECTED_COORDINATOR_REASONING,
+        "static_audit_model": EXPECTED_STATIC_AUDIT_MODEL,
+        "static_audit_reasoning_effort": EXPECTED_STATIC_AUDIT_REASONING,
+        "service_tier": EXPECTED_SERVICE_TIER,
+        "fast_or_priority_allowed": False,
+    }
+    if model != expected_model_binding:
         raise RuntimeError("dispatch model policy is not Standard-only")
 
     decision = auth.get("user_decision", {})
@@ -437,10 +609,19 @@ def main() -> int:
             raise RuntimeError(f"runner checkpoint drift: {relative.as_posix()}")
 
     created_at = utc_now()
-    output_root.mkdir(parents=True, exist_ok=False)
     material_passport = passport(created_at, auth)
     receipts: list[dict[str, Any]] = []
     raw: dict[str, tuple[bytes, bytes]] = {}
+    output_root.mkdir(parents=True, exist_ok=False)
+    _FAILURE_CONTEXT = {
+        "output_root": str(output_root),
+        "created_at": created_at,
+        "material_passport": material_passport,
+        "entry_checkpoint": head,
+        "runner_checkpoint": parent,
+        "receipts": receipts,
+    }
+    persist_failure_packet("IN_PROGRESS", "Attempt-005 initialized before first command")
 
     def invoke(command_id: str, argv: list[str], timeout_seconds: int = 30) -> dict[str, Any]:
         if not base.docker_subcommand_is_allowed(argv):
@@ -450,6 +631,7 @@ def main() -> int:
         )
         receipts.append(receipt)
         raw[command_id] = (stdout, stderr)
+        persist_failure_packet("IN_PROGRESS", f"Attempt-005 progress after {command_id}")
         return receipt
 
     process_argv = [
@@ -555,12 +737,14 @@ def main() -> int:
                 ])
     finally:
         if started:
-            stop_receipt = invoke(
-                "A22_DOCKER_DESKTOP_STOP_ONCE", [str(DOCKER), "desktop", "stop"], 180
-            )
-            shutdown_receipt = invoke(
-                "A23_WSL_SHUTDOWN_ONCE", [str(WSL), "--shutdown"], 120
-            )
+            try:
+                stop_receipt = invoke(
+                    "A22_DOCKER_DESKTOP_STOP_ONCE", [str(DOCKER), "desktop", "stop"], 180
+                )
+            finally:
+                shutdown_receipt = invoke(
+                    "A23_WSL_SHUTDOWN_ONCE", [str(WSL), "--shutdown"], 120
+                )
 
     invoke("A24_DOCKER_DESKTOP_STATUS_ADVISORY_AFTER", [str(DOCKER), "desktop", "status"])
     time.sleep(POST_SHUTDOWN_SETTLING_SECONDS)
@@ -631,6 +815,41 @@ def main() -> int:
     ]
     client = version_data.get("Client") or {}
     server = version_data.get("Server") or {}
+    client_whitelist = {
+        key: client.get(key)
+        for key in (
+            "Version", "ApiVersion", "DefaultAPIVersion", "GitCommit",
+            "GoVersion", "Os", "Arch", "BuildTime", "Context",
+        )
+    }
+    server_whitelist = {
+        key: server.get(key)
+        for key in (
+            "Version", "ApiVersion", "MinAPIVersion", "GitCommit", "GoVersion",
+            "Os", "Arch", "KernelVersion", "BuildTime", "Experimental",
+        )
+    }
+    containerd_commit = info_data.get("ContainerdCommit")
+    info_whitelist = {
+        key: info_data.get(key)
+        for key in (
+            "ID", "ServerVersion", "OperatingSystem", "OSType", "Architecture",
+            "KernelVersion", "Driver", "CgroupDriver", "CgroupVersion",
+            "DockerRootDir", "SecurityOptions", "DefaultRuntime", "NCPU",
+            "MemTotal", "Containers", "ContainersRunning", "ContainersPaused",
+            "ContainersStopped", "Images", "LiveRestoreEnabled", "Isolation",
+            "ExperimentalBuild",
+        )
+    }
+    info_whitelist.update({
+        "ContainerdCommitID": (
+            containerd_commit.get("ID") if isinstance(containerd_commit, dict) else None
+        ),
+        "Runtimes": sorted((info_data.get("Runtimes") or {}).keys()),
+        "HttpProxyConfigured": bool(info_data.get("HttpProxy")),
+        "HttpsProxyConfigured": bool(info_data.get("HttpsProxy")),
+        "NoProxyConfigured": bool(info_data.get("NoProxy")),
+    })
     context = base.sanitize_context(context_data)
     backend_linux = (
         str(info_data.get("OSType", "")).casefold() == "linux"
@@ -662,11 +881,26 @@ def main() -> int:
         "startup_attempted_exactly_once": started and start_receipt is not None,
         "startup_command_success": start_receipt is not None and command_ok(start_receipt),
         "during_docker_desktop_running": base.native_gate.distro_state(during_wsl, "docker-desktop") == "Running",
-        "during_process_probe_available": isinstance(during_processes, dict),
+        "during_process_probe_complete_and_nonempty": (
+            isinstance(during_processes, dict) and during_processes.get("count", 0) > 0
+        ),
         "during_tcp_probe_available": isinstance(during_tcp, dict),
         "all_query_commands_success": all_queries_ok,
         "backend_linux_amd64_desktop_linux": backend_linux,
-        "docker_identity_complete": bool(client.get("Version")) and bool(server.get("Version")),
+        "docker_identity_complete": (
+            all(client_whitelist.get(key) for key in ("Version", "ApiVersion", "Os", "Arch"))
+            and all(
+                server_whitelist.get(key)
+                for key in ("Version", "ApiVersion", "Os", "Arch", "KernelVersion")
+            )
+            and all(
+                info_whitelist.get(key)
+                for key in (
+                    "ServerVersion", "OSType", "Architecture", "KernelVersion",
+                    "Driver", "CgroupVersion", "DockerRootDir", "ContainerdCommitID",
+                )
+            )
+        ),
         "parse_failures_absent": not failures,
         "containers_running_zero": no_running_containers,
         "container_inventory_unchanged": containers_initial == containers_final,
@@ -736,6 +970,9 @@ def main() -> int:
             "target_process_identity": during_processes,
             "target_tcp_ownership_redacted": during_tcp,
         },
+        "docker_client_version_whitelist": client_whitelist,
+        "docker_server_version_whitelist": server_whitelist,
+        "docker_info_whitelist": info_whitelist,
         "post_shutdown_snapshots": snapshots,
         "closure_stable": closure_stable,
         "containers_initial": containers_initial,
@@ -809,6 +1046,7 @@ def main() -> int:
     entries = list(output_root.iterdir())
     if {path.name for path in entries} != EXPECTED_OUTPUT_FILES or not all(path.is_file() for path in entries):
         raise RuntimeError("exact output file set violated")
+    _FAILURE_CONTEXT = None
     print(json.dumps({
         "verdict": verdict,
         "output_root": str(output_root),
@@ -822,9 +1060,14 @@ if __name__ == "__main__":
     try:
         raise SystemExit(main())
     except Exception as exc:
+        try:
+            failure_packet_persisted = persist_failure_packet(type(exc).__name__, str(exc))
+        except Exception:
+            failure_packet_persisted = False
         print(json.dumps({
             "verdict": "HANDOFF_INCOMPLETE",
             "error_type": type(exc).__name__,
             "error_sha256": hashlib.sha256(str(exc).encode("utf-8")).hexdigest(),
+            "failure_packet_persisted": failure_packet_persisted,
         }, indent=2), file=sys.stderr)
         raise SystemExit(2)

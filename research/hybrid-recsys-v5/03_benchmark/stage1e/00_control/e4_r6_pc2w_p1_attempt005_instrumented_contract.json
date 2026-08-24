@@ -6,7 +6,7 @@
     "origin_mode": "plan",
     "origin_date": "2026-08-25T00:00:00+07:00",
     "verification_status": "UNVERIFIED",
-    "version_label": "stage1e_e4_r6_pc2w_p1_attempt005_instrumented_contract_v1",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt005_instrumented_contract_v2",
     "upstream_dependencies": [
       "stage1e_e4_r6_pc2w_p1_residual_process_policy_review_validation_receipt_v1",
       "user_authorized_attempt005_instrumented_current_host"
@@ -102,6 +102,26 @@
     "RemotePort",
     "OwningProcess"
   ],
+  "fail_closed_completeness": {
+    "process_identity_null_or_empty_field_is_error": true,
+    "process_identity_hash_must_be_lowercase_sha256": true,
+    "tcp_identity_null_or_empty_field_is_error": true,
+    "tcp_address_hash_must_be_lowercase_sha256": true,
+    "during_process_population_must_be_nonempty": true,
+    "probe_exception_returns_available_false": true
+  },
+  "durable_failure_receipts": {
+    "exact_four_file_packet_initialized_before_first_runtime_command": true,
+    "packet_refreshed_after_every_command_receipt": true,
+    "ordinary_exception_rewrites_fail_closed_packet": true,
+    "exception_message_persisted": false,
+    "failure_verdict": "HANDOFF_INCOMPLETE"
+  },
+  "required_sanitized_runtime_evidence": [
+    "Docker client version whitelist",
+    "Docker server version whitelist",
+    "Docker info whitelist including backend identity and redacted proxy-presence booleans"
+  ],
   "privacy_controls": {
     "raw_stdout_or_stderr_persisted": false,
     "raw_process_paths_persisted": false,
@@ -146,6 +166,14 @@
     "fresh_static_audit_model": "gpt-5.6-sol",
     "fresh_static_audit_reasoning_effort": "xhigh",
     "fresh_static_audit_service_tier": "default",
+    "dispatch_binding_required": {
+      "coordinator_model": "gpt-5.6-sol",
+      "coordinator_reasoning_effort": "max",
+      "static_audit_model": "gpt-5.6-sol",
+      "static_audit_reasoning_effort": "xhigh",
+      "service_tier": "default",
+      "fast_or_priority_allowed": false
+    },
     "fast_or_priority_allowed": false
   },
   "truth_state": {

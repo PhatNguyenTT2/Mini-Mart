@@ -2,7 +2,7 @@
   "schema_version": "academic-research-pipeline-state-1.0",
   "project": "hybrid-recsys-v5",
   "stage": "1E",
-  "state": "stage1e_rebaseline_v2_r6_pc2w_p1_attempt005_packet_preparation_authorized_runner_freeze_in_progress_no_execution",
+  "state": "stage1e_rebaseline_v2_r6_pc2w_p1_attempt005_static_audit_failed_closed_packet_rework_in_progress_no_execution",
   "updated_at": "2026-08-25",
   "model": "gpt-5.6-sol",
   "reasoning": "max",
@@ -1310,7 +1310,7 @@
           "next_gate": "EXPLICIT_CHANGED_HOST_DECISION_AND_FRESH_PC2_READ_ONLY_HOST_PREFLIGHT_AUTHORIZATION"
         },
         "pc2w": {
-          "status": "P1_ATTEMPT005_PACKET_PREPARATION_AUTHORIZED_RUNNER_FREEZE_IN_PROGRESS_NO_EXECUTION",
+          "status": "P1_ATTEMPT005_STATIC_AUDIT_FAILED_CLOSED_PACKET_REWORK_IN_PROGRESS_NO_EXECUTION",
           "purpose": "REOPEN_CURRENT_HOST_WITH_NO_OS_EDITION_UPGRADE_USING_A_PREVIOUSLY_UNEVALUATED_WSL2_LINUX_CONTAINER_LANE",
           "user_decision": "CONTINUE_CURRENT_MACHINE_NO_OS_EDITION_UPGRADE_COST_CONSTRAINED_WSL2_DIRECTION",
           "threat_model": "TRUSTED_PINNED_RESEARCH_CODE",
@@ -1655,7 +1655,7 @@
           },
           "p1_attempt005_instrumented": {
             "stage_id": "E4-R6-PC2W-P1-ATTEMPT005",
-            "status": "PACKET_PREPARATION_AUTHORIZED_RUNNER_FREEZE_IN_PROGRESS",
+            "status": "STATIC_AUDIT_FAILED_CLOSED_PACKET_REWORK_IN_PROGRESS",
             "user_decision": "AUTHORIZE_ATTEMPT005_INSTRUMENTED_CURRENT_HOST",
             "user_decision_text": "Ủy quyền và tiếp tục",
             "attempt004_verdict_preserved": true,
@@ -1666,6 +1666,44 @@
             "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_an/E4_R6PC2W_P1_attempt005_instrumented",
             "execution_previously_opened": false,
             "fresh_static_audit_required": true,
+            "first_fresh_static_audit": {
+              "task_id": "01a034dd-4876-7f52-b5ba-37b0e5e8856c",
+              "audited_checkpoint": "5ae16e93d0c47daa7e89a693d134f12f19bd0f77",
+              "verdict": "FAIL_CLOSED_PC2W_P1_ATTEMPT005_STATIC_AUDIT",
+              "mandatory_validator_checks_passed": 83,
+              "mandatory_validator_checks_total": 89,
+              "runtime_commands_executed": false,
+              "write_set": [],
+              "rework_required": true
+            },
+            "rework_scope": [
+              "fail closed on every missing or ambiguous process and TCP identity field",
+              "persist an exact four-file failure packet before and throughout runtime observation",
+              "persist sanitized Docker client, server and info identity evidence",
+              "bind exact coordinator and static-audit model plus reasoning profile",
+              "validate upstream hashes from Git blobs independently of checkout line endings",
+              "replace transition marker ordering with AST structural validation"
+            ],
+            "rework_validation_incident": {
+              "occurred": true,
+              "intended_operation": "PowerShell parser-only validation of two embedded query strings",
+              "actual_operation": "the two native read-only process and TCP probe strings were evaluated because of Windows PowerShell -Command argument semantics",
+              "native_process_probe_calls": 1,
+              "native_tcp_probe_calls": 1,
+              "probe_available_results": [false, false],
+              "error_type_sha256": "caa63a4b80a4b74f4d442c0e460f98a8fa284ea3ba972cbadb5e5decd8b4fb50",
+              "error_type_offline_identification": "Microsoft.Management.Infrastructure.CimException",
+              "docker_cli_commands_executed": false,
+              "wsl_commands_executed": false,
+              "docker_desktop_started": false,
+              "attempt005_runner_executed": false,
+              "attempt005_output_root_created": false,
+              "artifact_write_set": [],
+              "scientific_execution_performed": false,
+              "test_access_performed": false,
+              "automatic_retry_count": 0,
+              "repeat_forbidden": true
+            },
             "exact_command_confirmation_required": true,
             "docker_desktop_start_attempts_authorized": 1,
             "docker_desktop_stop_attempts_authorized": 1,
@@ -1678,13 +1716,13 @@
             "materialization_performed": false,
             "scientific_execution_performed": false,
             "test_access_performed": false,
-            "next_gate": "FREEZE_AND_FRESH_STANDARD_STATIC_AUDIT_BEFORE_EXACT_COMMAND_CONFIRMATION"
+            "next_gate": "REWORK_FREEZE_AND_NEW_FRESH_STANDARD_STATIC_AUDIT_BEFORE_EXACT_COMMAND_CONFIRMATION"
           },
           "scientific_execution_performed": false,
           "result_status": "NOT_RUN",
           "test_set_opened": "NO",
           "accepted_result_rows": 0,
-          "next_gate": "FREEZE_AND_FRESH_STANDARD_STATIC_AUDIT_BEFORE_EXACT_COMMAND_CONFIRMATION"
+          "next_gate": "REWORK_FREEZE_AND_NEW_FRESH_STANDARD_STATIC_AUDIT_BEFORE_EXACT_COMMAND_CONFIRMATION"
         },
         "m0_m1": {
           "status": "ATTEMPT002_FAIL_CLOSED_BOTH_ROOTS_RETAINED_IMMUTABLE",
@@ -1749,7 +1787,7 @@
         "project_benchmark_numbers": "INVALID_FOR_PAPER"
       },
       "execution_authorized": false,
-      "next_gate": "FREEZE_AND_FRESH_STANDARD_STATIC_AUDIT_BEFORE_EXACT_COMMAND_CONFIRMATION"
+      "next_gate": "REWORK_FREEZE_AND_NEW_FRESH_STANDARD_STATIC_AUDIT_BEFORE_EXACT_COMMAND_CONFIRMATION"
     }
   },
   "central_preregistration_lock": "PASS_R6_S0_BOUNDED_MATERIALIZATION_SCOPE_LOCKED",
@@ -1757,5 +1795,5 @@
   "harmonized_v5": "BLOCKED",
   "external_validation": "BLOCKED",
   "efficiency": "BLOCKED_AFTER_ACCURACY",
-  "next_gate": "The scholar selected AUTHORIZE_ATTEMPT005_INSTRUMENTED_CURRENT_HOST. Packet preparation is in progress for one immutable current-host attempt with at most one Docker Desktop start, exactly one synchronous Docker Desktop stop after any start, exactly one wsl --shutdown after stop, and three fixed process-identity plus redacted TCP closure snapshots. A fresh Sol XHigh Standard static audit and exact-command confirmation remain mandatory before execution. No runtime command, retry, materialization, training, evaluation, benchmark admission or TEST access has occurred."
+  "next_gate": "The first fresh Sol XHigh Standard static audit failed closed at checkpoint 5ae16e93d0c47daa7e89a693d134f12f19bd0f77 without executing runtime commands or writing files. During rework, one parser-only validation command accidentally evaluated the embedded native process probe and native TCP probe once each; both returned Available=false with CimException, but no Docker CLI, WSL command, Docker Desktop start, Attempt-005 runner, output-root creation, artifact write, retry, materialization, training, evaluation, benchmark admission or TEST access occurred. The packet is being reworked and requires a new fresh Sol XHigh Standard audit plus exact-command confirmation before execution."
 }
