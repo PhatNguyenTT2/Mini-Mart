@@ -2,7 +2,7 @@
   "schema_version": "academic-research-pipeline-state-1.0",
   "project": "hybrid-recsys-v5",
   "stage": "1E",
-  "state": "stage1e_rebaseline_v2_r6_pc2w_p1_attempt005_fourth_static_audit_pass_dispatch_packet_preparation_no_execution",
+  "state": "stage1e_rebaseline_v2_r6_pc2w_p1_attempt005_fail_closed_packet_audited_no_retry_user_decision_required",
   "updated_at": "2026-08-25",
   "model": "gpt-5.6-sol",
   "reasoning": "max",
@@ -15,7 +15,7 @@
     "record": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/wave1_v1_supersession_record.json"
   },
   "rebaseline_v2": {
-    "status": "e4_r6_pc2w_p1_attempt005_packet_preparation_authorized_runner_freeze_in_progress_no_execution",
+    "status": "e4_r6_pc2w_p1_attempt005_fail_closed_packet_audited_no_retry_user_decision_required",
     "wave_a_expected": 3,
     "wave_a_active": 0,
     "wave_a_complete": 3,
@@ -778,7 +778,7 @@
       "next_gate": "SUPERSEDED_BY_USER_DECISION_AUTHORIZE_TARGETED_SOURCE_ONLY_EVIDENCE_MATERIALIZATION_REDESIGN"
     },
     "e4_r5": {
-      "status": "R6_PC2W_P1_ATTEMPT003_FAIL_CLOSED_PACKET_AUDITED_NO_RETRY_USER_DECISION_REQUIRED",
+      "status": "R6_PC2W_P1_ATTEMPT005_FAIL_CLOSED_PACKET_AUDITED_NO_RETRY_USER_DECISION_REQUIRED",
       "entry_checkpoint": "USER_CONFIRMED_TARGETED_SOURCE_ONLY_EVIDENCE_MATERIALIZATION_REDESIGN",
       "source_stage": "R4-G0",
       "source_verdict": "NO_ADMISSIBLE_BUNDLE_STOP_FAIL_CLOSED",
@@ -1310,7 +1310,7 @@
           "next_gate": "EXPLICIT_CHANGED_HOST_DECISION_AND_FRESH_PC2_READ_ONLY_HOST_PREFLIGHT_AUTHORIZATION"
         },
         "pc2w": {
-          "status": "P1_ATTEMPT005_FOURTH_STATIC_AUDIT_PASS_DISPATCH_PACKET_PREPARATION_NO_EXECUTION",
+          "status": "P1_ATTEMPT005_FAIL_CLOSED_PACKET_AUDITED_NO_RETRY_USER_DECISION_REQUIRED",
           "purpose": "REOPEN_CURRENT_HOST_WITH_NO_OS_EDITION_UPGRADE_USING_A_PREVIOUSLY_UNEVALUATED_WSL2_LINUX_CONTAINER_LANE",
           "user_decision": "CONTINUE_CURRENT_MACHINE_NO_OS_EDITION_UPGRADE_COST_CONSTRAINED_WSL2_DIRECTION",
           "threat_model": "TRUSTED_PINNED_RESEARCH_CODE",
@@ -1367,6 +1367,13 @@
           "p1_attempt004_query_only_execution_checkpoint": "c6bf15298b00b65ba797706a0911e21d72f39d39",
           "p1_attempt004_query_only_packet_commit": "6f09ccfea5701f9d99caf040abd54644882d1eff",
           "p1_attempt004_query_only_audit_validation_checkpoint": "3832b2f786cc21a288926b538a4ae2e992c9d64a",
+          "p1_attempt005_instrumented_output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_an/E4_R6PC2W_P1_attempt005_instrumented",
+          "p1_attempt005_instrumented_packet_validator": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_p1_attempt005_failure_packet.py",
+          "p1_attempt005_instrumented_failure_receipt": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt005_failure_receipt.json",
+          "p1_attempt005_instrumented_runner_checkpoint": "f511e27eaafae29a5008b9f41ed574fecbeac8a1",
+          "p1_attempt005_instrumented_execution_checkpoint": "bb4fe8d8bded1501c567a10664265093abbeb79d",
+          "p1_attempt005_instrumented_packet_commit": "92e240c37a3b991ed3076831085eb108b1f95a34",
+          "p1_attempt005_instrumented_audit_validation_checkpoint": "f354efb18600b5c9b4e0efc2ae8877cf1b38c405",
           "validator": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_preflight.py",
           "central_checkpoint": "d6fbd4c5fe794b8847199dd4e0c4785c97c4d5bb",
           "current_host": {
@@ -1655,16 +1662,17 @@
           },
           "p1_attempt005_instrumented": {
             "stage_id": "E4-R6-PC2W-P1-ATTEMPT005",
-            "status": "FOURTH_STATIC_AUDIT_PASS_READY_FOR_AUTHORIZATION_AND_EXACT_COMMAND_CONFIRMATION",
+            "status": "FAIL_CLOSED_PACKET_AUDITED_NO_RETRY_USER_DECISION_REQUIRED",
             "user_decision": "AUTHORIZE_ATTEMPT005_INSTRUMENTED_CURRENT_HOST",
             "user_decision_text": "Ủy quyền và tiếp tục",
+            "exact_command_confirmation_text": "Xác nhận",
             "attempt004_verdict_preserved": true,
             "attempt005_authorized": true,
             "runner": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc2w_p1_attempt005_instrumented.py",
             "contract": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt005_instrumented_contract.json",
             "static_packet_validator": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_p1_attempt005_static_packet.py",
             "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_an/E4_R6PC2W_P1_attempt005_instrumented",
-            "execution_previously_opened": false,
+            "execution_previously_opened": true,
             "fresh_static_audit_required": true,
             "first_fresh_static_audit": {
               "task_id": "01a034dd-4876-7f52-b5ba-37b0e5e8856c",
@@ -1716,6 +1724,26 @@
               "requested_service_tier": "default",
               "actual_profile_observability": "UNOBSERVABLE"
             },
+            "execution_result": {
+              "verdict": "FAIL_CLOSED_PC2W_P1_ATTEMPT005_CURRENT_HOST_NOT_ADMISSIBLE",
+              "commands_recorded": 21,
+              "execution_attempts": 1,
+              "startup_attempts": 0,
+              "docker_stop_attempts": 0,
+              "wsl_shutdown_attempts": 0,
+              "closure_snapshots": 3,
+              "automatic_retry_count": 0,
+              "pre_start_native_gate_all_pass": false,
+              "primary_failure_class": "PRE_START_NATIVE_GATE_NOT_CLOSED",
+              "secondary_failure_class": "TARGET_PROCESS_IDENTITY_PARSE_FAILURE",
+              "output_packet_commit": "92e240c37a3b991ed3076831085eb108b1f95a34",
+              "central_packet_validator_checkpoint": "f354efb18600b5c9b4e0efc2ae8877cf1b38c405",
+              "central_packet_validation": "PASS_PC2W_P1_ATTEMPT005_FAIL_CLOSED_PACKET_READY_FOR_FRESH_AUDIT_64_OF_64",
+              "independent_failure_packet_audit_thread_id": "01a0353d-6741-7362-9cbf-412bbcbae0b6",
+              "independent_failure_packet_audit": "PASS_PC2W_P1_ATTEMPT005_FAILURE_PACKET_AUDITED_NO_RETRY",
+              "failure_packet_audited": true,
+              "new_retry_authorized": false
+            },
             "rework_scope": [
               "fail closed on every missing or ambiguous process and TCP identity field",
               "persist an exact four-file failure packet before and throughout runtime observation",
@@ -1757,17 +1785,17 @@
             "post_shutdown_settling_seconds": 20,
             "snapshot_barrier_seconds": 15,
             "automatic_retry_count": 0,
-            "runtime_commands_executed": false,
+            "runtime_commands_executed": true,
             "materialization_performed": false,
             "scientific_execution_performed": false,
             "test_access_performed": false,
-            "next_gate": "CREATE_EXACT_AUTHORIZATION_AND_DISPATCH_THEN_REQUEST_EXACT_COMMAND_CONFIRMATION"
+            "next_gate": "USER_DECISION_REQUIRED_NO_AUTOMATIC_RETRY_AFTER_AUDITED_ATTEMPT005_FAILURE"
           },
           "scientific_execution_performed": false,
           "result_status": "NOT_RUN",
           "test_set_opened": "NO",
           "accepted_result_rows": 0,
-          "next_gate": "CREATE_EXACT_AUTHORIZATION_AND_DISPATCH_THEN_REQUEST_EXACT_COMMAND_CONFIRMATION"
+          "next_gate": "USER_DECISION_REQUIRED_NO_AUTOMATIC_RETRY_AFTER_AUDITED_ATTEMPT005_FAILURE"
         },
         "m0_m1": {
           "status": "ATTEMPT002_FAIL_CLOSED_BOTH_ROOTS_RETAINED_IMMUTABLE",
@@ -1832,7 +1860,7 @@
         "project_benchmark_numbers": "INVALID_FOR_PAPER"
       },
       "execution_authorized": false,
-      "next_gate": "CREATE_EXACT_AUTHORIZATION_AND_DISPATCH_THEN_REQUEST_EXACT_COMMAND_CONFIRMATION"
+      "next_gate": "USER_DECISION_REQUIRED_NO_AUTOMATIC_RETRY_AFTER_AUDITED_ATTEMPT005_FAILURE"
     }
   },
   "central_preregistration_lock": "PASS_R6_S0_BOUNDED_MATERIALIZATION_SCOPE_LOCKED",
@@ -1840,5 +1868,5 @@
   "harmonized_v5": "BLOCKED",
   "external_validation": "BLOCKED",
   "efficiency": "BLOCKED_AFTER_ACCURACY",
-  "next_gate": "The fourth fresh Sol XHigh Standard static audit passed at e8369bec6cd580346d748781e89748648ba6d5d0 with validator 162/162, 109 prior malformed fixtures rejected, 10 time-extension fixtures rejected, one valid .NET UTC fixture accepted, and no critical, major or minor findings. Authorization and dispatch packet preparation is now allowed, but the exact execution command still requires final user confirmation. During the first rework, one parser-only validation command accidentally evaluated the native process and TCP probe once each; both returned Available=false with CimException, while no Docker CLI, WSL command, Docker Desktop start, Attempt-005 runner, output-root creation, artifact write, retry, materialization, training, evaluation, benchmark admission or TEST access occurred."
+  "next_gate": "Attempt-005 executed once at bb4fe8d8bded1501c567a10664265093abbeb79d after exact user confirmation and failed closed before Docker Desktop start because the native pre-start gate observed docker-desktop Running, a nonempty WSL running inventory, an available desktop-linux named pipe, and incomplete target-process identity. The exact four-file packet was frozen at 92e240c37a3b991ed3076831085eb108b1f95a34, centrally validated 64/64 at f354efb18600b5c9b4e0efc2ae8877cf1b38c405, and independently audited PASS_PC2W_P1_ATTEMPT005_FAILURE_PACKET_AUDITED_NO_RETRY by fresh Sol XHigh Standard task 01a0353d-6741-7362-9cbf-412bbcbae0b6. Startup, Docker stop, WSL shutdown, automatic retry, materialization, training, evaluation, benchmark admission and TEST access did not occur. A new output root and explicit user decision are mandatory before any further attempt; Phase 1E remains blocked."
 }
