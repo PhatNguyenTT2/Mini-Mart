@@ -2,7 +2,7 @@
   "schema_version": "academic-research-pipeline-state-1.0",
   "project": "hybrid-recsys-v5",
   "stage": "1E",
-  "state": "stage1e_rebaseline_v2_r6_pc2w_p1_attempt003_offline_equivalent_observation_fail_closed_awaiting_user_decision",
+  "state": "stage1e_rebaseline_v2_r6_pc2w_p1_attempt003_native_offline_v5_pass_validated_runner_audit_required",
   "updated_at": "2026-08-24",
   "model": "gpt-5.6-sol",
   "reasoning": "max",
@@ -15,7 +15,7 @@
     "record": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/wave1_v1_supersession_record.json"
   },
   "rebaseline_v2": {
-    "status": "e4_r6_pc2w_p1_attempt003_offline_equivalent_observation_fail_closed",
+    "status": "e4_r6_pc2w_p1_attempt003_native_offline_v5_pass_validated",
     "wave_a_expected": 3,
     "wave_a_active": 0,
     "wave_a_complete": 3,
@@ -778,7 +778,7 @@
       "next_gate": "SUPERSEDED_BY_USER_DECISION_AUTHORIZE_TARGETED_SOURCE_ONLY_EVIDENCE_MATERIALIZATION_REDESIGN"
     },
     "e4_r5": {
-      "status": "R6_PC2W_P1_ATTEMPT003_OFFLINE_EQUIVALENT_OBSERVATION_FAIL_CLOSED_AWAITING_USER_DECISION",
+      "status": "R6_PC2W_P1_ATTEMPT003_NATIVE_OFFLINE_V5_PASS_VALIDATED_RUNNER_AUDIT_REQUIRED",
       "entry_checkpoint": "USER_CONFIRMED_TARGETED_SOURCE_ONLY_EVIDENCE_MATERIALIZATION_REDESIGN",
       "source_stage": "R4-G0",
       "source_verdict": "NO_ADMISSIBLE_BUNDLE_STOP_FAIL_CLOSED",
@@ -939,7 +939,7 @@
         "benchmark_admission_authorized": false
       },
       "r6": {
-        "status": "R6_PC2W_P1_ATTEMPT003_BASELINE_FAIL_CLOSED_STATUS_UNCLASSIFIED_AWAITING_USER_DECISION",
+        "status": "R6_PC2W_P1_ATTEMPT003_NATIVE_OFFLINE_V5_PASS_VALIDATED_RUNNER_AUDIT_REQUIRED",
         "stage_map": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_materialization_stage_map.json",
         "contract": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_bounded_materialization_contract.md",
         "s0": {
@@ -1310,7 +1310,7 @@
           "next_gate": "EXPLICIT_CHANGED_HOST_DECISION_AND_FRESH_PC2_READ_ONLY_HOST_PREFLIGHT_AUTHORIZATION"
         },
         "pc2w": {
-          "status": "P1_ATTEMPT003_OFFLINE_EQUIVALENT_OBSERVATION_FAIL_CLOSED_NO_AUTOMATIC_RETRY",
+          "status": "P1_ATTEMPT003_NATIVE_OFFLINE_V5_PASS_VALIDATED_RUNNER_AUDIT_REQUIRED",
           "purpose": "REOPEN_CURRENT_HOST_WITH_NO_OS_EDITION_UPGRADE_USING_A_PREVIOUSLY_UNEVALUATED_WSL2_LINUX_CONTAINER_LANE",
           "user_decision": "CONTINUE_CURRENT_MACHINE_NO_OS_EDITION_UPGRADE_COST_CONSTRAINED_WSL2_DIRECTION",
           "threat_model": "TRUSTED_PINNED_RESEARCH_CODE",
@@ -1342,6 +1342,13 @@
           "p1_attempt003_offline_equivalent_execution_checkpoint": "e83dfbdd6e9aea8ba2baf9e9a87f6166e4e6f9b2",
           "p1_attempt003_offline_equivalent_runner_checkpoint": "36353894d67f9b6c94f1377362fc66fa9c4c3a9b",
           "p1_attempt003_offline_equivalent_packet_commit": "da2d495fe9bdedf84176ede7f63e031141f5cc6c",
+          "p1_attempt003_native_offline_v5_contract": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt003_offline_equivalent_observation_contract.json",
+          "p1_attempt003_native_offline_v5_output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_al/E4_R6PC2W_P1_docker_query_preflight/attempt-003-native-offline-observation-v5",
+          "p1_attempt003_native_offline_v5_validation_receipt": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt003_native_offline_validation_receipt.json",
+          "p1_attempt003_native_offline_v5_validator": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_p1_attempt003_native_offline_pass.py",
+          "p1_attempt003_native_offline_v5_runner_checkpoint": "be88181f8b7d8986bbe850ecce3c645c781e6827",
+          "p1_attempt003_native_offline_v5_execution_checkpoint": "4d1ed5ece5725812cfcceec4f9d24b2dfe253d85",
+          "p1_attempt003_native_offline_v5_packet_commit": "cfff2fec05010c3b9969303e434a3c5d2eb48f44",
           "validator": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_preflight.py",
           "central_checkpoint": "d6fbd4c5fe794b8847199dd4e0c4785c97c4d5bb",
           "current_host": {
@@ -1487,11 +1494,42 @@
             "test_access_performed": false,
             "new_retry_authorized": false
           },
+          "p1_attempt003_native_offline_observation_v5": {
+            "verdict": "PASS_PC2W_P1_ATTEMPT003_NATIVE_OFFLINE_BASELINE_V5",
+            "commands_recorded": 7,
+            "observation_attempts": 1,
+            "automatic_retry_count": 0,
+            "docker_desktop_status_classification": "RUNNING_EXACT",
+            "docker_desktop_status_advisory_only": true,
+            "docker_desktop_status_used_for_admission": false,
+            "snapshot_a_all_native_lanes": true,
+            "snapshot_b_all_native_lanes": true,
+            "wsl_inventory_stable_across_barrier": true,
+            "running_inventory_stable_across_barrier": true,
+            "runtime_process_inventory_stable_across_barrier": true,
+            "named_pipe_absence_stable_across_barrier": true,
+            "wsl_docker_desktop_state": "Stopped",
+            "wsl_running_inventory_empty": true,
+            "runtime_process_inventory_empty": true,
+            "desktop_linux_named_pipe_absent_win32_error_2": true,
+            "authorization_consumed": true,
+            "attempt003_execution_opened": false,
+            "attempt003_start_query_stop_executed": false,
+            "immediate_pre_gate_replay_required": true,
+            "state_mutation_command_issued": false,
+            "image_pull_or_build_performed": false,
+            "container_create_or_run_performed": false,
+            "settings_changed": false,
+            "install_or_download_performed": false,
+            "materialization_performed": false,
+            "scientific_execution_performed": false,
+            "test_access_performed": false
+          },
           "scientific_execution_performed": false,
           "result_status": "NOT_RUN",
           "test_set_opened": "NO",
           "accepted_result_rows": 0,
-          "next_gate": "EXPLICIT_USER_DECISION_REQUIRED_FOR_ANY_NEW_ADMISSION_REVISION_OBSERVATION_OR_ATTEMPT_NO_AUTOMATIC_RETRY"
+          "next_gate": "ATTEMPT003_START_QUERY_STOP_RUNNER_STATIC_AUDIT"
         },
         "m0_m1": {
           "status": "ATTEMPT002_FAIL_CLOSED_BOTH_ROOTS_RETAINED_IMMUTABLE",
@@ -1556,7 +1594,7 @@
         "project_benchmark_numbers": "INVALID_FOR_PAPER"
       },
       "execution_authorized": false,
-      "next_gate": "EXPLICIT_USER_DECISION_REQUIRED_FOR_ANY_NEW_ADMISSION_REVISION_OBSERVATION_OR_ATTEMPT_NO_AUTOMATIC_RETRY"
+      "next_gate": "ATTEMPT003_START_QUERY_STOP_RUNNER_STATIC_AUDIT"
     }
   },
   "central_preregistration_lock": "PASS_R6_S0_BOUNDED_MATERIALIZATION_SCOPE_LOCKED",
@@ -1564,5 +1602,5 @@
   "harmonized_v5": "BLOCKED",
   "external_validation": "BLOCKED",
   "efficiency": "BLOCKED_AFTER_ACCURACY",
-  "next_gate": "PC2W-P1 attempt-003 offline-equivalent observation is sealed fail-closed after its single authorized run. WSL inventory, running inventory, runtime-process inventory and Win32 named-pipe absence were stable across both snapshots, but the Docker daemon CLI lane did not specifically prove unavailability under the strict frozen parser; therefore attempt-003 was not opened. Any admission revision, new observation or new attempt requires a new explicit user decision; automatic retry, Docker start/stop, image acquisition/build, container creation/run, settings changes, materialization, R6-C1R3-LINUX execution, training, evaluation, benchmark admission and TEST access remain blocked."
+  "next_gate": "PC2W-P1 native-offline observation v5 passed its single authorized run and is centrally validated. Both snapshots passed the four native lanes and remained stable; Docker Desktop status was telemetry only and had no admission authority. Attempt-003 remains unopened until a separately frozen start-query-stop runner replays the native pre-gate immediately before its single authorized start and passes a fresh Sol XHigh Standard audit. Image acquisition/build, container creation/run, settings changes, materialization, R6-C1R3-LINUX execution, training, evaluation, benchmark admission and TEST access remain blocked."
 }
