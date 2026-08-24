@@ -23,8 +23,13 @@ ROOT = AUDIT_REPO / ROOT_RELATIVE
 RUNNER_CHECKPOINT = "36353894d67f9b6c94f1377362fc66fa9c4c3a9b"
 EXECUTION_CHECKPOINT = "e83dfbdd6e9aea8ba2baf9e9a87f6166e4e6f9b2"
 SEALED_PACKET_COMMIT = "da2d495fe9bdedf84176ede7f63e031141f5cc6c"
-EXPECTED_VALIDATION_PARENT = SEALED_PACKET_COMMIT
+VALIDATION_V1_COMMIT = "59e6f0bcf7efef241819756b55d145edeacd6b21"
+EXPECTED_VALIDATION_PARENT = VALIDATION_V1_COMMIT
 EXPECTED_VALIDATION_CHANGES = {
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt003_offline_equivalent_validation_receipt.json",
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_p1_attempt003_offline_equivalent_failure.py",
+}
+EXPECTED_VALIDATION_V1_CHANGES = {
     "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/pipeline_state_stage1e.json",
     "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt003_offline_equivalent_validation_receipt.json",
     "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_p1_attempt003_offline_equivalent_failure.py",
@@ -91,7 +96,7 @@ def git(*args: str) -> str:
 
 def blob_fact(revision: str, relative: str) -> tuple[int, str]:
     completed = subprocess.run(
-        ["git", "show", f"{revision}:{relative}"], cwd=AUDIT_REPO,
+        ["git", "cat-file", "blob", f"{revision}:{relative}"], cwd=AUDIT_REPO,
         stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
         check=True, shell=False,
     )
@@ -133,6 +138,8 @@ check("head_exact", head == expected_head, head)
 check("parent_exact", parent == EXPECTED_VALIDATION_PARENT, parent)
 check("worktree_clean", git("status", "--porcelain=v1", "--untracked-files=all") == "", git("status", "--porcelain=v1", "--untracked-files=all"))
 check("validation_exact_changes", changed_paths(expected_head) == EXPECTED_VALIDATION_CHANGES, sorted(changed_paths(expected_head)))
+check("validation_v1_parent", git("rev-parse", f"{VALIDATION_V1_COMMIT}^").casefold() == SEALED_PACKET_COMMIT, git("rev-parse", f"{VALIDATION_V1_COMMIT}^"))
+check("validation_v1_exact_changes", changed_paths(VALIDATION_V1_COMMIT) == EXPECTED_VALIDATION_V1_CHANGES, sorted(changed_paths(VALIDATION_V1_COMMIT)))
 check("packet_parent", git("rev-parse", f"{SEALED_PACKET_COMMIT}^").casefold() == EXECUTION_CHECKPOINT, git("rev-parse", f"{SEALED_PACKET_COMMIT}^"))
 check("packet_exact_changes", changed_paths(SEALED_PACKET_COMMIT) == EXPECTED_PACKET_CHANGES, sorted(changed_paths(SEALED_PACKET_COMMIT)))
 check("execution_parent", git("rev-parse", f"{EXECUTION_CHECKPOINT}^").casefold() == RUNNER_CHECKPOINT, git("rev-parse", f"{EXECUTION_CHECKPOINT}^"))

@@ -1,5 +1,5 @@
 {
-  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-validation-receipt-1.0",
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-validation-receipt-2.0",
   "stage_id": "E4-R6-PC2W-P1-ATTEMPT003-OFFLINE-EQUIVALENT-OBSERVATION",
   "created_at": "2026-08-24T11:49:56.9226311Z",
   "material_passport": {
@@ -7,7 +7,7 @@
     "origin_mode": "validate",
     "origin_date": "2026-08-24T11:49:56.9226311Z",
     "verification_status": "ANALYZED",
-    "version_label": "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_validation_v1",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_validation_v2",
     "upstream_dependencies": [
       "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_observation_v4",
       "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_dispatch_v4",
@@ -29,9 +29,11 @@
     "service_tier": "default",
     "display_name": "Sol Max Standard",
     "validator_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_p1_attempt003_offline_equivalent_failure.py",
-    "validator_raw_bytes": 16321,
-    "validator_raw_sha256": "cc8eb90bf4c59f03b061a379cd400e59b9a1d0e61207e2a4cb13ee07fe5157c4",
-    "validator_verdict": "PASS_PC2W_P1_ATTEMPT003_OFFLINE_EQUIVALENT_FAILURE_VALIDATED"
+    "validator_raw_bytes": 17022,
+    "validator_raw_sha256": "5bd8d0df98ac7acde7c41390a4cd91e03022cfe58955dcbfba28cb6e1e73c921",
+    "validator_verdict": "PASS_PC2W_P1_ATTEMPT003_OFFLINE_EQUIVALENT_FAILURE_VALIDATED",
+    "git_blob_replay_primitive": "git cat-file blob",
+    "windows_long_path_portable": true
   },
   "fresh_independent_pre_execution_audit": {
     "thread_id": "01a03391-7795-7ed2-8f71-d57074d3658e",
@@ -49,6 +51,25 @@
     "execution_performed": false,
     "output_root_opened": false
   },
+  "independent_failure_audit_history": [
+    {
+      "thread_id": "01a033a0-348b-7511-a705-31bee5fbb892",
+      "worktree_client_thread_id": "client-new-thread:26a4b193-cb63-4e02-a330-e97c815a2eff",
+      "audited_checkpoint": "59e6f0bcf7efef241819756b55d145edeacd6b21",
+      "verdict": "REWORK_REQUIRED",
+      "requested_model": "gpt-5.6-sol",
+      "requested_reasoning_effort": "high",
+      "requested_service_tier": "default",
+      "display_name": "Sol High Standard",
+      "actual_service_tier": "UNOBSERVABLE",
+      "fast_or_priority_observed": false,
+      "validator_exit_code": 1,
+      "validator_verdict": "UNEMITTED",
+      "finding": "git show commit:path failed with Filename too long in the Windows worktree; git cat-file independently confirmed the same blobs.",
+      "write_scope": "READ_ONLY",
+      "audit_write_set": []
+    }
+  ],
   "attempt_result": {
     "verdict": "FAIL_CLOSED_PC2W_P1_ATTEMPT003_OFFLINE_EQUIVALENT_BASELINE",
     "failure_class": "DAEMON_CLI_UNAVAILABLE_NOT_SPECIFICALLY_PROVEN",
