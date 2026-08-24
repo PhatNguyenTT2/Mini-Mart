@@ -30,6 +30,7 @@ DOCKER_DESKTOP = Path(r"C:\Program Files\Docker\Docker\Docker Desktop.exe")
 WSL = Path(os.environ.get("WINDIR", r"C:\Windows")) / "System32" / "wsl.exe"
 POWERSHELL = Path(r"C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe")
 PYTHON = Path(r"C:\Program Files\Python311\python.exe")
+EXPECTED_EXECUTION_ROOT = Path(r"E:\UIT\cv\backend")
 EXPECTED_EXECUTABLES = native_gate.EXPECTED_EXECUTABLES
 
 CONTROL_RELATIVE = Path("research/hybrid-recsys-v5/03_benchmark/stage1e/00_control")
@@ -385,6 +386,8 @@ def main() -> int:
     args = parser.parse_args()
 
     repo_root = Path(args.repo_root).resolve()
+    if repo_root != EXPECTED_EXECUTION_ROOT.resolve():
+        raise RuntimeError("execution is bound to the central repository root")
     if Path(git(repo_root, "rev-parse", "--show-toplevel")).resolve() != repo_root:
         raise RuntimeError("repo root is not the exact Git worktree root")
     if Path.cwd().resolve() != repo_root:

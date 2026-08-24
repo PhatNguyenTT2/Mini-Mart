@@ -28,6 +28,7 @@ OUTPUT = Path(
     "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_al/"
     "E4_R6PC2W_P1_docker_query_preflight/attempt-003"
 )
+EXECUTION_ROOT = Path(r"E:\UIT\cv\backend")
 EXPECTED_OUTPUT_FILES = [
     "command_receipts.json",
     "p1_execution_receipt.json",
@@ -159,7 +160,7 @@ def main() -> int:
     check("runner_checkpoint_has_one_parent", len(parent_parents) == 2, parent_parents)
     check("exact_execution_delta", changed_set(repo, head) == EXPECTED_EXECUTION_DELTA, sorted(changed_set(repo, head)))
     check("exact_runner_delta", changed_set(repo, parent) == EXPECTED_RUNNER_DELTA, sorted(changed_set(repo, parent)))
-    check("attempt003_output_root_absent", not (repo / OUTPUT).exists())
+    check("attempt003_output_root_absent", not (EXECUTION_ROOT / OUTPUT).exists())
 
     documents: dict[Path, dict[str, Any]] = {}
     for relative in (CONTRACT, AUTH, DISPATCH, REQUIREMENTS, NATIVE_VALIDATION):
@@ -215,12 +216,12 @@ def main() -> int:
 
     binding = dispatch.get("execution_binding", {})
     check("dispatch_runner_parent", str(dispatch.get("runner_checkpoint", "")).casefold() == parent)
-    check("dispatch_output_root", Path(binding.get("output_root", "")).resolve() == (repo / OUTPUT).resolve())
-    check("dispatch_working_directory", Path(binding.get("working_directory", "")).resolve() == repo)
+    check("dispatch_output_root", Path(binding.get("output_root", "")).resolve() == (EXECUTION_ROOT / OUTPUT).resolve())
+    check("dispatch_working_directory", Path(binding.get("working_directory", "")).resolve() == EXECUTION_ROOT.resolve())
     check("dispatch_output_files", binding.get("expected_output_files") == EXPECTED_OUTPUT_FILES)
     expected_argv = [
         r"C:\Program Files\Python311\python.exe", RUNNER.as_posix(),
-        "--repo-root", str(repo), "--expected-head", "<EXACT_FULL_EXECUTION_HEAD_FROM_FRESH_AUDIT>",
+        "--repo-root", str(EXECUTION_ROOT), "--expected-head", "<EXACT_FULL_EXECUTION_HEAD_FROM_FRESH_AUDIT>",
     ]
     check("dispatch_exact_argv", binding.get("argv") == expected_argv, binding.get("argv"))
     check("dispatch_standard_tier", dispatch.get("model_policy", {}).get("service_tier") == "default")
@@ -303,6 +304,7 @@ def main() -> int:
         check("fixture_running_empty_valid", runner.parse_wsl_running(b"") == [])
         check("module_expected_command_ids", runner.EXPECTED_COMMAND_IDS == EXPECTED_COMMAND_IDS)
         check("module_output_root", runner.OUTPUT_RELATIVE == OUTPUT)
+        check("module_execution_root", runner.EXPECTED_EXECUTION_ROOT.resolve() == EXECUTION_ROOT.resolve())
         check("module_exact_output_files", sorted(runner.EXPECTED_OUTPUT_FILES) == EXPECTED_OUTPUT_FILES)
     except Exception as exc:
         check("runner_fixture_suite", False, type(exc).__name__)
