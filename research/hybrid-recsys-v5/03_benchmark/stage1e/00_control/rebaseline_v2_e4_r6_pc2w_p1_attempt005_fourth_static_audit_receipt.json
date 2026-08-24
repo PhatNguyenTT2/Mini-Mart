@@ -1,0 +1,83 @@
+{
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt005-fourth-static-audit-receipt-1.0",
+  "stage_id": "E4-R6-PC2W-P1-ATTEMPT005",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "review",
+    "origin_date": "2026-08-25T00:00:00+07:00",
+    "verification_status": "VERIFIED",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt005_fourth_static_audit_receipt_v1",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_pc2w_p1_attempt005_instrumented_contract_v2",
+      "stage1e_e4_r6_pc2w_p1_attempt005_instrumented_runner_at_e8369bec6cd580346d748781e89748648ba6d5d0"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-25T00:00:00+07:00",
+      "declared_by": "scholar"
+    }
+  },
+  "audit_task": {
+    "thread_id": "01a0350d-8dbe-7971-a8cc-9df33cf2b882",
+    "fresh_context": true,
+    "worktree": "fresh_independent_worktree",
+    "audited_checkpoint": "e8369bec6cd580346d748781e89748648ba6d5d0",
+    "worktree_clean": true,
+    "one_parent": true,
+    "exact_changed_file_count": 4
+  },
+  "model_policy": {
+    "requested_model": "gpt-5.6-sol",
+    "requested_reasoning_effort": "xhigh",
+    "requested_service_tier": "default",
+    "display_name": "Sol XHigh Standard",
+    "fast_or_priority_allowed": false,
+    "actual_model_observability": "UNOBSERVABLE",
+    "actual_reasoning_effort_observability": "UNOBSERVABLE",
+    "actual_service_tier_observability": "UNOBSERVABLE"
+  },
+  "validation": {
+    "validator_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_p1_attempt005_static_packet.py",
+    "validator_runs": 1,
+    "checks_passed": 162,
+    "checks_total": 162,
+    "failures": [],
+    "powershell_parser_only_from_base64": true,
+    "prior_malformed_fixtures_rejected": 109,
+    "time_extension_fixtures_rejected": 10,
+    "valid_dotnet_roundtrip_utc_fixture_accepted": true,
+    "git_blob_replay_pass": true,
+    "crlf_checkout_replay_pass": true,
+    "bare_carriage_return_rejection_pass": true
+  },
+  "findings": {
+    "critical": 0,
+    "major": 0,
+    "minor": 0,
+    "informational": 2
+  },
+  "safety": {
+    "attempt005_runner_executed": false,
+    "docker_cli_commands_executed": false,
+    "wsl_commands_executed": false,
+    "process_or_tcp_probes_executed_by_audit": false,
+    "runtime_commands_executed": false,
+    "output_root_existed": false,
+    "authorization_existed": false,
+    "dispatch_existed": false,
+    "write_set": [],
+    "materialization_performed": false,
+    "scientific_execution_performed": false,
+    "test_access_performed": false,
+    "automatic_retry_count": 0
+  },
+  "verdict": "PASS_PC2W_P1_ATTEMPT005_PACKET_READY_FOR_AUTHORIZATION_AND_EXACT_COMMAND_CONFIRMATION",
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "next_gate": "CREATE_EXACT_AUTHORIZATION_AND_DISPATCH_THEN_REQUEST_EXACT_COMMAND_CONFIRMATION"
+}

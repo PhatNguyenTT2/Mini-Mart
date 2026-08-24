@@ -2,7 +2,7 @@
   "schema_version": "academic-research-pipeline-state-1.0",
   "project": "hybrid-recsys-v5",
   "stage": "1E",
-  "state": "stage1e_rebaseline_v2_r6_pc2w_p1_attempt005_static_audit_failed_closed_packet_rework_in_progress_no_execution",
+  "state": "stage1e_rebaseline_v2_r6_pc2w_p1_attempt005_fourth_static_audit_pass_dispatch_packet_preparation_no_execution",
   "updated_at": "2026-08-25",
   "model": "gpt-5.6-sol",
   "reasoning": "max",
@@ -1310,7 +1310,7 @@
           "next_gate": "EXPLICIT_CHANGED_HOST_DECISION_AND_FRESH_PC2_READ_ONLY_HOST_PREFLIGHT_AUTHORIZATION"
         },
         "pc2w": {
-          "status": "P1_ATTEMPT005_STATIC_AUDIT_FAILED_CLOSED_PACKET_REWORK_IN_PROGRESS_NO_EXECUTION",
+          "status": "P1_ATTEMPT005_FOURTH_STATIC_AUDIT_PASS_DISPATCH_PACKET_PREPARATION_NO_EXECUTION",
           "purpose": "REOPEN_CURRENT_HOST_WITH_NO_OS_EDITION_UPGRADE_USING_A_PREVIOUSLY_UNEVALUATED_WSL2_LINUX_CONTAINER_LANE",
           "user_decision": "CONTINUE_CURRENT_MACHINE_NO_OS_EDITION_UPGRADE_COST_CONSTRAINED_WSL2_DIRECTION",
           "threat_model": "TRUSTED_PINNED_RESEARCH_CODE",
@@ -1655,7 +1655,7 @@
           },
           "p1_attempt005_instrumented": {
             "stage_id": "E4-R6-PC2W-P1-ATTEMPT005",
-            "status": "STATIC_AUDIT_FAILED_CLOSED_PACKET_REWORK_IN_PROGRESS",
+            "status": "FOURTH_STATIC_AUDIT_PASS_READY_FOR_AUTHORIZATION_AND_EXACT_COMMAND_CONFIRMATION",
             "user_decision": "AUTHORIZE_ATTEMPT005_INSTRUMENTED_CURRENT_HOST",
             "user_decision_text": "Ủy quyền và tiếp tục",
             "attempt004_verdict_preserved": true,
@@ -1696,6 +1696,25 @@
               "runtime_commands_executed": false,
               "write_set": [],
               "rework_required": true
+            },
+            "fourth_fresh_static_audit": {
+              "task_id": "01a0350d-8dbe-7971-a8cc-9df33cf2b882",
+              "audited_checkpoint": "e8369bec6cd580346d748781e89748648ba6d5d0",
+              "verdict": "PASS_PC2W_P1_ATTEMPT005_PACKET_READY_FOR_AUTHORIZATION_AND_EXACT_COMMAND_CONFIRMATION",
+              "mandatory_validator_checks_passed": 162,
+              "mandatory_validator_checks_total": 162,
+              "prior_malformed_fixtures_rejected": 109,
+              "time_extension_fixtures_rejected": 10,
+              "valid_dotnet_utc_fixture_accepted": true,
+              "critical_findings": 0,
+              "major_findings": 0,
+              "minor_findings": 0,
+              "runtime_commands_executed": false,
+              "write_set": [],
+              "requested_model": "gpt-5.6-sol",
+              "requested_reasoning_effort": "xhigh",
+              "requested_service_tier": "default",
+              "actual_profile_observability": "UNOBSERVABLE"
             },
             "rework_scope": [
               "fail closed on every missing or ambiguous process and TCP identity field",
@@ -1742,13 +1761,13 @@
             "materialization_performed": false,
             "scientific_execution_performed": false,
             "test_access_performed": false,
-            "next_gate": "REWORK_FREEZE_AND_NEW_FRESH_STANDARD_STATIC_AUDIT_BEFORE_EXACT_COMMAND_CONFIRMATION"
+            "next_gate": "CREATE_EXACT_AUTHORIZATION_AND_DISPATCH_THEN_REQUEST_EXACT_COMMAND_CONFIRMATION"
           },
           "scientific_execution_performed": false,
           "result_status": "NOT_RUN",
           "test_set_opened": "NO",
           "accepted_result_rows": 0,
-          "next_gate": "REWORK_FREEZE_AND_NEW_FRESH_STANDARD_STATIC_AUDIT_BEFORE_EXACT_COMMAND_CONFIRMATION"
+          "next_gate": "CREATE_EXACT_AUTHORIZATION_AND_DISPATCH_THEN_REQUEST_EXACT_COMMAND_CONFIRMATION"
         },
         "m0_m1": {
           "status": "ATTEMPT002_FAIL_CLOSED_BOTH_ROOTS_RETAINED_IMMUTABLE",
@@ -1813,7 +1832,7 @@
         "project_benchmark_numbers": "INVALID_FOR_PAPER"
       },
       "execution_authorized": false,
-      "next_gate": "REWORK_FREEZE_AND_NEW_FRESH_STANDARD_STATIC_AUDIT_BEFORE_EXACT_COMMAND_CONFIRMATION"
+      "next_gate": "CREATE_EXACT_AUTHORIZATION_AND_DISPATCH_THEN_REQUEST_EXACT_COMMAND_CONFIRMATION"
     }
   },
   "central_preregistration_lock": "PASS_R6_S0_BOUNDED_MATERIALIZATION_SCOPE_LOCKED",
@@ -1821,5 +1840,5 @@
   "harmonized_v5": "BLOCKED",
   "external_validation": "BLOCKED",
   "efficiency": "BLOCKED_AFTER_ACCURACY",
-  "next_gate": "Three fresh Sol XHigh Standard static audits have failed closed without executing the Attempt-005 runner or writing audit files. The third audit at ceb34fb1d866498e1ecfc1796c1d90d69439185d found one remaining major issue: ambiguous CreationTimeUtc formats and a missing pre-cast CreationDate null guard; both are in rework. During the first rework, one parser-only validation command accidentally evaluated the embedded native process probe and native TCP probe once each; both returned Available=false with CimException, but no Docker CLI, WSL command, Docker Desktop start, output-root creation, artifact write, retry, materialization, training, evaluation, benchmark admission or TEST access occurred. A fourth fresh Sol XHigh Standard audit plus exact-command confirmation remain mandatory before execution."
+  "next_gate": "The fourth fresh Sol XHigh Standard static audit passed at e8369bec6cd580346d748781e89748648ba6d5d0 with validator 162/162, 109 prior malformed fixtures rejected, 10 time-extension fixtures rejected, one valid .NET UTC fixture accepted, and no critical, major or minor findings. Authorization and dispatch packet preparation is now allowed, but the exact execution command still requires final user confirmation. During the first rework, one parser-only validation command accidentally evaluated the native process and TCP probe once each; both returned Available=false with CimException, while no Docker CLI, WSL command, Docker Desktop start, Attempt-005 runner, output-root creation, artifact write, retry, materialization, training, evaluation, benchmark admission or TEST access occurred."
 }
