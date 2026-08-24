@@ -1,0 +1,128 @@
+{
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-observation-receipt-4.0",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "run",
+    "origin_date": "2026-08-24T11:47:24.853403Z",
+    "verification_status": "UNVERIFIED",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_observation_v4",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_authorization_v4",
+      "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_contract_v4",
+      "stage1e_e4_r6_pc2w_p1_attempt003_baseline_validation_v1"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-24T01:12:40.9534228+07:00",
+      "declared_by": "scholar"
+    }
+  },
+  "stage_id": "E4-R6-PC2W-P1-ATTEMPT003-OFFLINE-EQUIVALENT-OBSERVATION",
+  "created_at": "2026-08-24T11:47:24.853403Z",
+  "entry_checkpoint": "e83dfbdd6e9aea8ba2baf9e9a87f6166e4e6f9b2",
+  "runner_checkpoint": "36353894d67f9b6c94f1377362fc66fa9c4c3a9b",
+  "output_root": "E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\rebaseline_v2\\wave_al\\E4_R6PC2W_P1_docker_query_preflight\\attempt-003-offline-equivalent-observation",
+  "docker_desktop_status_lane": {
+    "classification": "RUNNING_EXACT",
+    "advisory_only": true,
+    "unclassified_nonzero_is_not_relabelled_stopped": true,
+    "admissible_without_independent_lanes": false
+  },
+  "snapshot_a": {
+    "wsl_inventory": {
+      "parse_complete": true,
+      "rows": [
+        {
+          "name": "docker-desktop",
+          "state": "Stopped",
+          "version": 2
+        }
+      ],
+      "docker_desktop_state": "Stopped"
+    },
+    "wsl_running_inventory": {
+      "parse_complete": true,
+      "running_names": []
+    },
+    "daemon_cli_specifically_unavailable": false,
+    "desktop_linux_named_pipe_probe": {
+      "method": "WaitNamedPipeW_one_millisecond_timeout",
+      "timeout_milliseconds": 1,
+      "pipe_path_sha256": "fdc0d41353dafe8326bfc6c481d48427a0f4e89ee27c6f9c0248100d438dae22",
+      "available": false,
+      "win32_error": 2,
+      "probe_exception_type": null
+    },
+    "runtime_process_inventory": {
+      "parse_complete": true,
+      "runtime_processes": []
+    },
+    "lanes_pass": {
+      "wsl_inventory_all_stopped": true,
+      "wsl_running_inventory_empty": true,
+      "daemon_cli_specifically_unavailable": false,
+      "desktop_linux_named_pipe_specifically_absent_win32_error_2": true,
+      "target_runtime_process_inventory_empty": true
+    }
+  },
+  "snapshot_b_stability_barrier": {
+    "wsl_inventory": {
+      "parse_complete": true,
+      "rows": [
+        {
+          "name": "docker-desktop",
+          "state": "Stopped",
+          "version": 2
+        }
+      ],
+      "docker_desktop_state": "Stopped"
+    },
+    "wsl_running_inventory": {
+      "parse_complete": true,
+      "running_names": []
+    },
+    "daemon_cli_specifically_unavailable": false,
+    "desktop_linux_named_pipe_probe": {
+      "method": "WaitNamedPipeW_one_millisecond_timeout",
+      "timeout_milliseconds": 1,
+      "pipe_path_sha256": "fdc0d41353dafe8326bfc6c481d48427a0f4e89ee27c6f9c0248100d438dae22",
+      "available": false,
+      "win32_error": 2,
+      "probe_exception_type": null
+    },
+    "runtime_process_inventory": {
+      "parse_complete": true,
+      "runtime_processes": []
+    },
+    "lanes_pass": {
+      "wsl_inventory_all_stopped": true,
+      "wsl_running_inventory_empty": true,
+      "daemon_cli_specifically_unavailable": false,
+      "desktop_linux_named_pipe_specifically_absent_win32_error_2": true,
+      "target_runtime_process_inventory_empty": true
+    }
+  },
+  "independent_lanes_pass": {
+    "snapshot_a_all_lanes": false,
+    "snapshot_b_all_lanes": false,
+    "wsl_inventory_stable_across_barrier": true,
+    "running_inventory_stable_across_barrier": true,
+    "runtime_process_inventory_stable_across_barrier": true,
+    "named_pipe_absence_stable_across_barrier": true
+  },
+  "observation_is_not_sufficient_without_attempt003_immediate_pre_gate_replay": true,
+  "status_lane_admissible": false,
+  "exact_command_sequence": true,
+  "automatic_retry_count": 0,
+  "state_mutation_command_issued": false,
+  "verdict": "FAIL_CLOSED_PC2W_P1_ATTEMPT003_OFFLINE_EQUIVALENT_BASELINE",
+  "image_or_container_mutation_performed": false,
+  "settings_changed": false,
+  "install_or_download_performed": false,
+  "materialization_performed": false,
+  "scientific_execution_performed": false,
+  "result_status": "NOT_RUN",
+  "test_set_opened": "NO",
+  "accepted_result_rows": 0
+}
