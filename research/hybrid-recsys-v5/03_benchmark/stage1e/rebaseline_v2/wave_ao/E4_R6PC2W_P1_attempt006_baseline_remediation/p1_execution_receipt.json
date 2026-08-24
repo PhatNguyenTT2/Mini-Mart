@@ -1,0 +1,104 @@
+{
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt006-execution-receipt-1.0",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "run",
+    "origin_date": "2026-08-24T20:29:12.060848Z",
+    "verification_status": "UNVERIFIED",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt006_baseline_remediation_execution_v1",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_pc2w_p1_attempt006_baseline_remediation_contract_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt006_user_authorization_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt005_failure_receipt_v1"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-25T00:00:00+07:00",
+      "declared_by": "scholar"
+    }
+  },
+  "stage_id": "E4-R6-PC2W-P1-ATTEMPT006",
+  "created_at": "2026-08-24T20:29:12.060848Z",
+  "entry_checkpoint": "ee82fd0f4bbd0bd09e986dcc81e09fd115278165",
+  "packet_parent": "c4d471a5ac5c9e763e66a1d7288367c5c905e1e9",
+  "packet_artifacts": [
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt006_baseline_remediation_contract.json",
+      "git_blob_bytes": 9046,
+      "git_blob_sha256": "fa7a08d98de43562a7f02b30be1dc83e8da451ab54ba850cedbd96f1d6364372"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt006_user_authorization.json",
+      "git_blob_bytes": 3926,
+      "git_blob_sha256": "0c18926c5d23ea3f1e666adb42dd0ec8debdce566c2dceddf00f42206d90ff57"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc2w_p1_attempt006_baseline_remediation.py",
+      "git_blob_bytes": 43752,
+      "git_blob_sha256": "ba377b0be805160c979f169c093ab862403b74328d54917baa60199078727c99"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_p1_attempt006_static_packet.py",
+      "git_blob_bytes": 45319,
+      "git_blob_sha256": "238cbbe25c60eac880b81a96c399514589e11e201c48e01c3fe3e127899b5b0a"
+    }
+  ],
+  "attempt005_frozen_artifacts": [
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt005_instrumented_contract.json",
+      "git_blob_sha256": "cf022505edcaba11e49a00e8b43e180796870679fa20647923ddba9158e5096b"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc2w_p1_attempt005_instrumented.py",
+      "git_blob_sha256": "8e595d892a2548458b83c1cbbe1b332243c101554e21fa06ae725a198856e1e9"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/pipeline_state_stage1e.json",
+      "git_blob_sha256": "0e7865bc56efa78ec65e49c2b360aa41e1d2a3f499424944087900d6b1a0533a"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt005_failure_receipt.json",
+      "git_blob_sha256": "9e8432933c83e8ca4e8a40e189c85b9b076cd2f44a32fe844991c6b06646a0cf"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_p1_attempt005_static_packet.py",
+      "git_blob_sha256": "8d2973fa7d119ecb0adb3b81f0c3f201dab181d87b092a40e622391359567d2c"
+    }
+  ],
+  "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ao/E4_R6PC2W_P1_attempt006_baseline_remediation",
+  "baseline_mode": "ALREADY_CLOSED_ZERO_MUTATION",
+  "docker_desktop_start_attempts": 0,
+  "docker_desktop_stop_attempts": 0,
+  "wsl_shutdown_attempts": 0,
+  "closure_snapshots": 3,
+  "settling_seconds": 20,
+  "snapshot_barrier_seconds": 15,
+  "automatic_retry_count": 0,
+  "pass_conditions": {
+    "pre_baseline_pass_or_single_remediation_path": true,
+    "exact_command_sequence_no_retry": true,
+    "three_snapshots_present": true,
+    "all_native_lanes_pass_in_all_snapshots": true,
+    "snapshots_stable": true,
+    "final_wsl_inventory_closed_and_topology_compatible": true,
+    "docker_desktop_start_attempts_zero": true,
+    "docker_daemon_queries_zero": true,
+    "automatic_retry_count_zero": true,
+    "benchmark_admission_not_opened": true
+  },
+  "verdict": "PASS_PC2W_P1_ATTEMPT006_BASELINE_REMEDIATED_READY_FOR_ADMISSION_PACKET",
+  "force_kill_performed": false,
+  "service_restart_performed": false,
+  "settings_changed": false,
+  "install_or_download_performed": false,
+  "network_operation_performed": false,
+  "image_pull_build_create_run_performed": false,
+  "materialization_performed": false,
+  "training_performed": false,
+  "evaluation_performed": false,
+  "benchmark_admission_opened": false,
+  "result_status": "NOT_RUN",
+  "test_set_opened": "NO",
+  "accepted_result_rows": 0
+}

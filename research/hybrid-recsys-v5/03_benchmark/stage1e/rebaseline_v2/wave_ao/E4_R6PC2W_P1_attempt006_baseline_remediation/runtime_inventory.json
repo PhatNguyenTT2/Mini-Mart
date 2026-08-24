@@ -1,0 +1,339 @@
+{
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt006-runtime-inventory-1.0",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "run",
+    "origin_date": "2026-08-24T20:29:12.060848Z",
+    "verification_status": "UNVERIFIED",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt006_baseline_remediation_execution_v1",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_pc2w_p1_attempt006_baseline_remediation_contract_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt006_user_authorization_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt005_failure_receipt_v1"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-25T00:00:00+07:00",
+      "declared_by": "scholar"
+    }
+  },
+  "entry_checkpoint": "ee82fd0f4bbd0bd09e986dcc81e09fd115278165",
+  "pre_baseline": {
+    "docker_desktop_status_advisory": {
+      "classification": "RUNNING_EXACT",
+      "cannot_veto_or_admit": true
+    },
+    "wsl_inventory": {
+      "Available": true,
+      "Rows": [
+        {
+          "name": "docker-desktop",
+          "state": "Stopped",
+          "version": 2
+        }
+      ],
+      "ErrorCode": "NONE",
+      "ErrorTypeHash": null
+    },
+    "wsl_running_inventory": {
+      "Available": true,
+      "Rows": [],
+      "ErrorCode": "NONE",
+      "ErrorTypeHash": null
+    },
+    "named_pipe": {
+      "Available": false,
+      "Win32Error": 2,
+      "ErrorTypeHash": null,
+      "PipePathSha256": "fdc0d41353dafe8326bfc6c481d48427a0f4e89ee27c6f9c0248100d438dae22",
+      "RawPipePathPersisted": false
+    },
+    "target_process_population": {
+      "Available": true,
+      "Count": 0,
+      "Rows": [],
+      "ErrorCode": "NONE",
+      "ErrorTypeHash": null
+    },
+    "target_process_population_envelope_valid": true,
+    "target_tcp_ownership_population": {
+      "Available": true,
+      "Count": 0,
+      "Rows": [],
+      "ErrorCode": "NONE",
+      "ErrorTypeHash": null
+    },
+    "target_tcp_ownership_population_envelope_valid": true,
+    "disk": {
+      "Available": true,
+      "Volumes": {
+        "c": {
+          "total_bytes": 301198209024,
+          "used_bytes": 271170232320,
+          "free_bytes": 30027976704
+        },
+        "e": {
+          "total_bytes": 209714147328,
+          "used_bytes": 87518449664,
+          "free_bytes": 122195697664
+        }
+      },
+      "ErrorCode": "NONE",
+      "ErrorTypeHash": null
+    },
+    "lanes": {
+      "wsl_inventory_all_stopped": true,
+      "docker_desktop_exactly_once_stopped": true,
+      "wsl_running_inventory_empty": true,
+      "desktop_linux_named_pipe_absent_win32_error_2": true,
+      "target_process_population_empty": true,
+      "target_tcp_ownership_population_empty": true,
+      "parse_and_completeness": true,
+      "disk_thresholds_pass": true
+    },
+    "all_lanes_pass": true
+  },
+  "remediation": {
+    "required": false,
+    "mode": "ALREADY_CLOSED_ZERO_MUTATION",
+    "docker_desktop_stop_attempts": 0,
+    "docker_desktop_stop_success": false,
+    "wsl_shutdown_attempts": 0,
+    "wsl_shutdown_success": false,
+    "docker_desktop_status_advisory_after": {
+      "classification": "RUNNING_EXACT",
+      "cannot_veto_or_admit": true
+    }
+  },
+  "post_baseline_snapshots": [
+    {
+      "label": "A",
+      "wsl_inventory": {
+        "Available": true,
+        "Rows": [
+          {
+            "name": "docker-desktop",
+            "state": "Stopped",
+            "version": 2
+          }
+        ],
+        "ErrorCode": "NONE",
+        "ErrorTypeHash": null
+      },
+      "wsl_running_inventory": {
+        "Available": true,
+        "Rows": [],
+        "ErrorCode": "NONE",
+        "ErrorTypeHash": null
+      },
+      "named_pipe": {
+        "Available": false,
+        "Win32Error": 2,
+        "ErrorTypeHash": null,
+        "PipePathSha256": "fdc0d41353dafe8326bfc6c481d48427a0f4e89ee27c6f9c0248100d438dae22",
+        "RawPipePathPersisted": false
+      },
+      "target_process_population": {
+        "Available": true,
+        "Count": 0,
+        "Rows": [],
+        "ErrorCode": "NONE",
+        "ErrorTypeHash": null
+      },
+      "target_process_population_envelope_valid": true,
+      "target_tcp_ownership_population": {
+        "Available": true,
+        "Count": 0,
+        "Rows": [],
+        "ErrorCode": "NONE",
+        "ErrorTypeHash": null
+      },
+      "target_tcp_ownership_population_envelope_valid": true,
+      "disk": {
+        "Available": true,
+        "Volumes": {
+          "c": {
+            "total_bytes": 301198209024,
+            "used_bytes": 271170433024,
+            "free_bytes": 30027776000
+          },
+          "e": {
+            "total_bytes": 209714147328,
+            "used_bytes": 87518453760,
+            "free_bytes": 122195693568
+          }
+        },
+        "ErrorCode": "NONE",
+        "ErrorTypeHash": null
+      },
+      "lanes": {
+        "wsl_inventory_all_stopped": true,
+        "docker_desktop_exactly_once_stopped": true,
+        "wsl_running_inventory_empty": true,
+        "desktop_linux_named_pipe_absent_win32_error_2": true,
+        "target_process_population_empty": true,
+        "target_tcp_ownership_population_empty": true,
+        "parse_and_completeness": true,
+        "disk_thresholds_pass": true
+      },
+      "all_lanes_pass": true
+    },
+    {
+      "label": "B",
+      "wsl_inventory": {
+        "Available": true,
+        "Rows": [
+          {
+            "name": "docker-desktop",
+            "state": "Stopped",
+            "version": 2
+          }
+        ],
+        "ErrorCode": "NONE",
+        "ErrorTypeHash": null
+      },
+      "wsl_running_inventory": {
+        "Available": true,
+        "Rows": [],
+        "ErrorCode": "NONE",
+        "ErrorTypeHash": null
+      },
+      "named_pipe": {
+        "Available": false,
+        "Win32Error": 2,
+        "ErrorTypeHash": null,
+        "PipePathSha256": "fdc0d41353dafe8326bfc6c481d48427a0f4e89ee27c6f9c0248100d438dae22",
+        "RawPipePathPersisted": false
+      },
+      "target_process_population": {
+        "Available": true,
+        "Count": 0,
+        "Rows": [],
+        "ErrorCode": "NONE",
+        "ErrorTypeHash": null
+      },
+      "target_process_population_envelope_valid": true,
+      "target_tcp_ownership_population": {
+        "Available": true,
+        "Count": 0,
+        "Rows": [],
+        "ErrorCode": "NONE",
+        "ErrorTypeHash": null
+      },
+      "target_tcp_ownership_population_envelope_valid": true,
+      "disk": {
+        "Available": true,
+        "Volumes": {
+          "c": {
+            "total_bytes": 301198209024,
+            "used_bytes": 271170367488,
+            "free_bytes": 30027841536
+          },
+          "e": {
+            "total_bytes": 209714147328,
+            "used_bytes": 87518453760,
+            "free_bytes": 122195693568
+          }
+        },
+        "ErrorCode": "NONE",
+        "ErrorTypeHash": null
+      },
+      "lanes": {
+        "wsl_inventory_all_stopped": true,
+        "docker_desktop_exactly_once_stopped": true,
+        "wsl_running_inventory_empty": true,
+        "desktop_linux_named_pipe_absent_win32_error_2": true,
+        "target_process_population_empty": true,
+        "target_tcp_ownership_population_empty": true,
+        "parse_and_completeness": true,
+        "disk_thresholds_pass": true
+      },
+      "all_lanes_pass": true
+    },
+    {
+      "label": "C",
+      "wsl_inventory": {
+        "Available": true,
+        "Rows": [
+          {
+            "name": "docker-desktop",
+            "state": "Stopped",
+            "version": 2
+          }
+        ],
+        "ErrorCode": "NONE",
+        "ErrorTypeHash": null
+      },
+      "wsl_running_inventory": {
+        "Available": true,
+        "Rows": [],
+        "ErrorCode": "NONE",
+        "ErrorTypeHash": null
+      },
+      "named_pipe": {
+        "Available": false,
+        "Win32Error": 2,
+        "ErrorTypeHash": null,
+        "PipePathSha256": "fdc0d41353dafe8326bfc6c481d48427a0f4e89ee27c6f9c0248100d438dae22",
+        "RawPipePathPersisted": false
+      },
+      "target_process_population": {
+        "Available": true,
+        "Count": 0,
+        "Rows": [],
+        "ErrorCode": "NONE",
+        "ErrorTypeHash": null
+      },
+      "target_process_population_envelope_valid": true,
+      "target_tcp_ownership_population": {
+        "Available": true,
+        "Count": 0,
+        "Rows": [],
+        "ErrorCode": "NONE",
+        "ErrorTypeHash": null
+      },
+      "target_tcp_ownership_population_envelope_valid": true,
+      "disk": {
+        "Available": true,
+        "Volumes": {
+          "c": {
+            "total_bytes": 301198209024,
+            "used_bytes": 271170375680,
+            "free_bytes": 30027833344
+          },
+          "e": {
+            "total_bytes": 209714147328,
+            "used_bytes": 87518457856,
+            "free_bytes": 122195689472
+          }
+        },
+        "ErrorCode": "NONE",
+        "ErrorTypeHash": null
+      },
+      "lanes": {
+        "wsl_inventory_all_stopped": true,
+        "docker_desktop_exactly_once_stopped": true,
+        "wsl_running_inventory_empty": true,
+        "desktop_linux_named_pipe_absent_win32_error_2": true,
+        "target_process_population_empty": true,
+        "target_tcp_ownership_population_empty": true,
+        "parse_and_completeness": true,
+        "disk_thresholds_pass": true
+      },
+      "all_lanes_pass": true
+    }
+  ],
+  "snapshots_stable": true,
+  "final_wsl_inventory_closed_projection": [
+    {
+      "name": "docker-desktop",
+      "state": "Stopped",
+      "version": 2
+    }
+  ],
+  "final_wsl_inventory_compatible": true,
+  "docker_desktop_status_is_advisory_only": true,
+  "rich_process_identity_required": false,
+  "raw_paths_command_lines_addresses_proxies_stdout_stderr_persisted": false
+}
