@@ -70,6 +70,13 @@ def main() -> int:
         capture_output=True,
         text=True,
     ).stdout.strip()
+    parent = subprocess.run(
+        ["git", "rev-parse", "HEAD^"],
+        cwd=root,
+        check=True,
+        capture_output=True,
+        text=True,
+    ).stdout.strip()
     check("expected_head", head == args.expected_head)
 
     output_dir = root / OUTPUT
@@ -225,8 +232,9 @@ def main() -> int:
         {},
     )
     check("receipt_verdict", receipt.get("verdict") == "PASS_PC2W_P1_RESIDUAL_PROCESS_POLICY_REVIEW_VALIDATED")
-    check("receipt_expected_head", receipt.get("validated_head") == args.expected_head)
-    check("receipt_check_count", receipt.get("validator_checks") == "89/89")
+    check("receipt_validated_base_head", receipt.get("validated_head") == "999fdb0e9ae010d65292fe8d4ad962bd65a5cad3")
+    check("receipt_packet_commit", receipt.get("packet_commit") in {head, parent})
+    check("receipt_check_count", receipt.get("validator_checks") == "90/90")
     check("receipt_no_runtime", receipt.get("runtime_commands_executed") is False)
     check("receipt_attempt005_closed", receipt.get("attempt005_authorized") is False)
     receipt_truth = receipt.get("truth_state", {})
@@ -242,6 +250,7 @@ def main() -> int:
             else "FAIL_PC2W_P1_RESIDUAL_PROCESS_POLICY_REVIEW_VALIDATION"
         ),
         "head": head,
+        "parent": parent,
         "checks_passed": len(checks) - len(failures),
         "checks_total": len(checks),
         "failures": failures,
