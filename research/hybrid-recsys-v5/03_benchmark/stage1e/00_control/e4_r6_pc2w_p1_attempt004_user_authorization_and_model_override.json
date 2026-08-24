@@ -1,0 +1,86 @@
+{
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt004-user-authorization-standard-1.0",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "run",
+    "origin_date": "2026-08-24T00:00:00Z",
+    "verification_status": "UNVERIFIED",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt004_user_authorization_standard_v1",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_pc2w_p1_attempt003_failure_packet_audited_no_retry",
+      "stage1e_e4_r6_pc2w_p1_attempt004_query_only_contract_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt004_query_only_runner_v1"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-24T00:00:00+07:00",
+      "declared_by": "scholar"
+    }
+  },
+  "stage_id": "E4-R6-PC2W-P1-ATTEMPT004",
+  "entry_checkpoint": "f30caeace4cb8f7baca8abfe4a9bef3357fa7194",
+  "authorization_basis": {
+    "source_thread_id": "019ff4f0-802a-7892-a989-24f32ac26ac8",
+    "latest_user_decision_text": "Tiếp tục hoàn thiện phase 1E",
+    "decision_context": "The scholar explicitly resumed Phase 1E after the audited attempt-003 failure and after a full environment restart; this authorizes one new immutable attempt-004 under the repaired fail-closed runner.",
+    "attempt003_remains_closed_and_immutable": true,
+    "authorization_is_not_inferred_from_read_only_preflight": true
+  },
+  "authorized_output_root": "E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\rebaseline_v2\\wave_al\\E4_R6PC2W_P1_docker_query_preflight\\attempt-004",
+  "entry_evidence": {
+    "runner_checkpoint": "f30caeace4cb8f7baca8abfe4a9bef3357fa7194",
+    "prior_native_validation_verdict": "PASS_PC2W_P1_ATTEMPT003_NATIVE_OFFLINE_V5_VALIDATED",
+    "prior_failure_packet_audit_verdict": "PASS_PC2W_P1_ATTEMPT003_FAILURE_PACKET_AUDITED_NO_RETRY",
+    "attempt004_execution_previously_opened": false,
+    "automatic_retry_count_before_execution": 0,
+    "new_attempt_authorized_by_user": true
+  },
+  "user_decision": {
+    "decision": "AUTHORIZE_PC2W_P1_ATTEMPT004_START_QUERY_STOP_ON_VALIDATED_NATIVE_PASS",
+    "one_docker_desktop_start_authorized": true,
+    "one_docker_desktop_stop_authorized": true,
+    "query_only_runtime_inventory_authorized": true,
+    "bounded_observation_only_post_stop_stabilization_authorized": true,
+    "local_runtime_logs_and_existing_installation_state_changes_acknowledged": true,
+    "possible_vendor_update_telemetry_entitlement_or_sign_in_network_acknowledged": true,
+    "automatic_retry_authorized": false,
+    "image_pull_or_build_authorized": false,
+    "container_create_or_run_authorized": false,
+    "docker_or_wsl_settings_change_authorized": false,
+    "package_or_distro_install_authorized": false,
+    "source_data_or_checkpoint_download_authorized": false,
+    "materialization_authorized": false,
+    "training_authorized": false,
+    "evaluation_authorized": false,
+    "test_access_authorized": false
+  },
+  "model_policy": {
+    "model": "gpt-5.6-sol",
+    "reasoning_effort": "max",
+    "service_tier": "default",
+    "display_name": "Sol Max Standard",
+    "fast_or_priority_allowed": false,
+    "fresh_static_audit_model": "gpt-5.6-sol",
+    "fresh_static_audit_reasoning_effort": "xhigh",
+    "fresh_static_audit_service_tier": "default",
+    "actual_model_observability": "UNOBSERVABLE_UNLESS_RUNTIME_EXPOSES_IT",
+    "actual_service_tier_observability": "UNOBSERVABLE_UNLESS_RUNTIME_EXPOSES_IT",
+    "policy_on_observed_fast_or_priority": "MODEL_POLICY_VIOLATION_STOP_WITHOUT_EXECUTION"
+  },
+  "execution_limits": {
+    "execution_attempts_maximum": 1,
+    "automatic_retry_count": 0,
+    "docker_desktop_start_attempts_maximum": 1,
+    "docker_desktop_stop_attempts_maximum": 1,
+    "native_pre_gate_replay_required_immediately_before_start": true,
+    "post_stop_settling_seconds": 20,
+    "post_stop_native_closure_snapshots_required": 2,
+    "post_stop_snapshot_barrier_seconds": 5
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0
+  }
+}
