@@ -1,15 +1,15 @@
 {
-  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-observation-contract-4.0",
-  "stage_id": "E4-R6-PC2W-P1-ATTEMPT003-OFFLINE-EQUIVALENT-OBSERVATION",
-  "created_at": "2026-08-24T03:47:36.7124840+07:00",
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt003-native-offline-observation-contract-5.0",
+  "stage_id": "E4-R6-PC2W-P1-ATTEMPT003-NATIVE-OFFLINE-OBSERVATION-V5",
+  "created_at": "2026-08-24T12:10:00Z",
   "material_passport": {
     "origin_skill": "experiment-agent",
     "origin_mode": "plan",
-    "origin_date": "2026-08-24T03:47:36.7124840+07:00",
+    "origin_date": "2026-08-24T12:10:00Z",
     "verification_status": "UNVERIFIED",
-    "version_label": "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_contract_v4",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt003_native_offline_contract_v5",
     "upstream_dependencies": [
-      "stage1e_e4_r6_pc2w_p1_attempt003_baseline_validation_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_validation_v2",
       "stage1e_e4_r6_pc2w_current_host_admission_contract_v1"
     ],
     "repro_lock": null,
@@ -19,38 +19,38 @@
       "declared_by": "scholar"
     }
   },
-  "purpose": "Perform exactly one read-only observation of an offline-equivalent Docker Desktop/WSL baseline without relabeling an unclassified Docker Desktop CLI error as stopped.",
+  "purpose": "Perform exactly one read-only native offline observation. Docker Desktop CLI status is retained only as advisory telemetry; admission is decided by two stable snapshots of WSL state, running-distribution inventory, Win32 runtime-process inventory, and bounded Win32 named-pipe absence.",
   "official_semantics": {
-    "docker_desktop_cli": "Docker Desktop CLI documents status as reporting running or stopped and stop as a synchronous stop unless detached.",
-    "wsl": "Microsoft documents wsl --shutdown as terminating all running distributions and the WSL 2 utility VM; list --running is the supported running-distribution observation surface.",
+    "docker_desktop_cli": "Docker documents status as displaying whether Docker Desktop is running or stopped. In v5 it is telemetry only because the observed CLI text/exit surface was not sufficiently unambiguous for admission.",
+    "wsl": "Microsoft documents wsl --list --verbose as reporting installed distributions with Running/Stopped state and --running as listing only currently running distributions.",
+    "win32_named_pipe": "Microsoft documents WaitNamedPipeW as returning zero when no instance is available and GetLastError as the extended error surface; when no instance exists it returns immediately regardless of timeout.",
     "source_urls": [
       "https://docs.docker.com/desktop/features/desktop-cli/",
       "https://docs.docker.com/reference/cli/docker/desktop/stop/",
       "https://learn.microsoft.com/en-us/windows/wsl/basic-commands",
-      "https://learn.microsoft.com/en-us/windows/wsl/wsl-config"
+      "https://learn.microsoft.com/en-us/windows/wsl/wsl-config",
+      "https://learn.microsoft.com/en-us/windows/win32/api/namedpipeapi/nf-namedpipeapi-waitnamedpipew"
     ]
   },
   "allowed_command_sequence": [
     "docker desktop status",
     "snapshot A: wsl --list --verbose",
     "snapshot A: wsl --list --running --quiet",
-    "snapshot A: docker version --format {{json .Server}}",
     "snapshot A: PowerShell fail-stop Win32_Process CIM inventory returning exact allowlisted names only",
     "snapshot B stability barrier: wsl --list --verbose",
     "snapshot B stability barrier: wsl --list --running --quiet",
-    "snapshot B stability barrier: docker version --format {{json .Server}}",
     "snapshot B stability barrier: PowerShell fail-stop Win32_Process CIM inventory returning exact allowlisted names only"
   ],
   "non_command_observations": [
-    "After each daemon CLI query, WaitNamedPipeW with an explicit 1 millisecond bound must return false with Win32 ERROR_FILE_NOT_FOUND (2) for dockerDesktopLinuxEngine; no pipe connection is opened."
+    "In each snapshot, WaitNamedPipeW with an explicit 1 millisecond bound must return false with Win32 ERROR_FILE_NOT_FOUND (2) for dockerDesktopLinuxEngine; no pipe connection is opened."
   ],
   "admission_conditions": {
-    "docker_desktop_status_lane": "advisory_only; any RUNNING token blocks even when STOPPED is also present; exact STOPPED or strictly decoded unclassified nonzero may continue only when every independent lane passes",
+    "docker_desktop_status_lane": "advisory telemetry only; classification is recorded but has neither admit nor veto authority in v5",
     "wsl_inventory": "strict complete parse; docker-desktop exists and is Stopped; every listed distribution is Stopped",
     "wsl_running_inventory": "strict complete quiet parse with zero running distribution names",
-    "desktop_linux_daemon": "Strictly decoded Docker CLI failure with empty stdout and unambiguous named-pipe-missing stderr, plus two independent 1 millisecond WaitNamedPipeW observations returning Win32 ERROR_FILE_NOT_FOUND (2)",
+    "desktop_linux_named_pipe": "Two independent 1 millisecond WaitNamedPipeW observations must return false with Win32 ERROR_FILE_NOT_FOUND (2); no pipe connection is opened",
     "docker_runtime_process_inventory": "Win32_Process CIM enumeration must complete under ErrorAction Stop before JSON emission; strict JSON parse must contain zero allowlisted runtime process names",
-    "stability_barrier": "snapshots A and B must each pass every lane and produce identical strict WSL and process inventories",
+    "stability_barrier": "snapshots A and B must each pass all four native lanes and produce identical strict WSL and process inventories; named-pipe absence must be observed in both snapshots",
     "attempt003_pre_gate_replay": "A PASS observation is insufficient by itself; the separately audited attempt-003 runner must replay the offline-equivalent pre-gate immediately before its one start attempt.",
     "automatic_retry_count": 0
   },
@@ -66,9 +66,9 @@
     "evaluation",
     "TEST"
   ],
-  "failure_policy": "Any command timeout, spawn error, incomplete parser, Unicode category-C evidence character, running signal, contradictory daemon evidence, reachable daemon, incomplete process enumeration, remaining target runtime process, permission-shaped daemon failure, interpreter flag, or output ambiguity fails closed. No retry and no state mutation.",
-  "pass_verdict": "PASS_PC2W_P1_ATTEMPT003_OFFLINE_EQUIVALENT_BASELINE",
-  "failure_verdict": "FAIL_CLOSED_PC2W_P1_ATTEMPT003_OFFLINE_EQUIVALENT_BASELINE",
+  "failure_policy": "Any required native-lane command timeout, spawn error, incomplete parser, Unicode category-C evidence character, running WSL distribution, incomplete process enumeration, remaining target runtime process, named-pipe availability or non-ERROR_FILE_NOT_FOUND result, interpreter flag, instability, or output ambiguity fails closed. Docker Desktop status telemetry cannot admit or veto. No retry and no state mutation.",
+  "pass_verdict": "PASS_PC2W_P1_ATTEMPT003_NATIVE_OFFLINE_BASELINE_V5",
+  "failure_verdict": "FAIL_CLOSED_PC2W_P1_ATTEMPT003_NATIVE_OFFLINE_BASELINE_V5",
   "next_gate_on_pass": "ATTEMPT003_START_QUERY_STOP_RUNNER_STATIC_AUDIT",
   "truth_state": {
     "RESULT_STATUS": "NOT_RUN",

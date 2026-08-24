@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Observe the PC2W-P1 attempt-003 offline-equivalent baseline exactly once."""
+"""Observe the PC2W-P1 attempt-003 native offline baseline exactly once."""
 
 from __future__ import annotations
 
@@ -38,10 +38,10 @@ RUNNER_RELATIVE = CONTROL_RELATIVE / "execute_e4_r6_pc2w_p1_attempt003_offline_e
 CONTRACT_RELATIVE = CONTROL_RELATIVE / "e4_r6_pc2w_p1_attempt003_offline_equivalent_observation_contract.json"
 AUTH_RELATIVE = CONTROL_RELATIVE / "e4_r6_pc2w_p1_attempt003_offline_equivalent_authorization.json"
 DISPATCH_RELATIVE = CONTROL_RELATIVE / "rebaseline_v2_e4_r6_pc2w_p1_attempt003_offline_equivalent_dispatch.json"
-BASELINE_VALIDATION_RELATIVE = CONTROL_RELATIVE / "rebaseline_v2_e4_r6_pc2w_p1_attempt003_baseline_validation_receipt.json"
+PRIOR_OBSERVATION_VALIDATION_RELATIVE = CONTROL_RELATIVE / "rebaseline_v2_e4_r6_pc2w_p1_attempt003_offline_equivalent_validation_receipt.json"
 OUTPUT_RELATIVE = Path(
     "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_al/"
-    "E4_R6PC2W_P1_docker_query_preflight/attempt-003-offline-equivalent-observation"
+    "E4_R6PC2W_P1_docker_query_preflight/attempt-003-native-offline-observation-v5"
 )
 EXPECTED_HEAD_CHANGE_SET = {AUTH_RELATIVE.as_posix(), DISPATCH_RELATIVE.as_posix()}
 EXPECTED_OUTPUT_FILES = {
@@ -53,12 +53,10 @@ EXPECTED_COMMAND_IDS = [
     "O00_DOCKER_DESKTOP_STATUS_ADVISORY",
     "O01A_WSL_LIST_VERBOSE",
     "O02A_WSL_LIST_RUNNING_QUIET",
-    "O03A_DAEMON_VERSION_SERVER_ONLY",
-    "O04A_DOCKER_RUNTIME_PROCESS_NAMES_ONLY",
+    "O03A_DOCKER_RUNTIME_PROCESS_NAMES_ONLY",
     "O01B_WSL_LIST_VERBOSE_STABILITY_BARRIER",
     "O02B_WSL_LIST_RUNNING_QUIET_STABILITY_BARRIER",
-    "O03B_DAEMON_VERSION_SERVER_ONLY_STABILITY_BARRIER",
-    "O04B_DOCKER_RUNTIME_PROCESS_NAMES_ONLY_STABILITY_BARRIER",
+    "O03B_DOCKER_RUNTIME_PROCESS_NAMES_ONLY_STABILITY_BARRIER",
 ]
 TARGET_RUNTIME_PROCESSES = {
     "docker desktop",
@@ -76,14 +74,6 @@ PROCESS_QUERY = (
     "$found=@($all | Where-Object { $target -contains $_.Name } | "
     "ForEach-Object { [System.IO.Path]::GetFileNameWithoutExtension($_.Name) } | Sort-Object -Unique);"
     "[pscustomobject]@{runtime_processes=$found} | ConvertTo-Json -Compress"
-)
-DAEMON_PIPE_MARKERS = ("dockerdesktoplinuxengine", "//./pipe/dockerdesktoplinuxengine")
-DAEMON_PIPE_MISSING_MARKERS = ("the system cannot find the file specified", "no such file or directory")
-PERMISSION_ERROR_MARKERS = ("access is denied", "permission denied", "unauthorized")
-REACHABILITY_CONTRADICTION_MARKERS = (
-    "server reachable", "daemon reachable", "server is running", "daemon is running",
-    "server version", "server response", "successfully connected", '"ostype"',
-    '"architecture"', '"apiversion"',
 )
 DESKTOP_LINUX_PIPE = r"\\.\pipe\dockerDesktopLinuxEngine"
 ERROR_FILE_NOT_FOUND = 2
@@ -163,7 +153,7 @@ def git(repo_root: Path, *args: str) -> str:
 
 def git_blob_fact(repo_root: Path, revision: str, relative: Path) -> tuple[int, str]:
     completed = subprocess.run(
-        ["git", "show", f"{revision}:{relative.as_posix()}"], cwd=repo_root,
+        ["git", "cat-file", "blob", f"{revision}:{relative.as_posix()}"], cwd=repo_root,
         stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
         shell=False, check=True,
     )
@@ -311,24 +301,6 @@ def distro_state(rows: list[dict[str, Any]], name: str) -> str | None:
     return matches[0] if len(matches) == 1 else None
 
 
-def daemon_is_specifically_unavailable(receipt: dict[str, Any], stdout: bytes, stderr: bytes) -> bool:
-    if receipt.get("timed_out") or receipt.get("spawn_exception_type") is not None:
-        return False
-    if not isinstance(receipt.get("exit_code"), int) or receipt.get("exit_code") == 0:
-        return False
-    stdout_text, stdout_complete = decode_output_strict(stdout)
-    stderr_text, stderr_complete = decode_output_strict(stderr)
-    if not stdout_complete or not stderr_complete or stdout_text.strip():
-        return False
-    text = stderr_text.casefold()
-    return (
-        any(marker in text for marker in DAEMON_PIPE_MARKERS)
-        and any(marker in text for marker in DAEMON_PIPE_MISSING_MARKERS)
-        and not any(marker in text for marker in PERMISSION_ERROR_MARKERS)
-        and not any(marker in text for marker in REACHABILITY_CONTRADICTION_MARKERS)
-    )
-
-
 def probe_desktop_linux_pipe() -> dict[str, Any]:
     """Observe named-pipe presence without connecting to a pipe instance."""
     try:
@@ -375,11 +347,11 @@ def material_passport(created_at: str, auth: dict[str, Any]) -> dict[str, Any]:
         "origin_mode": "run",
         "origin_date": created_at,
         "verification_status": "UNVERIFIED",
-        "version_label": "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_observation_v4",
+        "version_label": "stage1e_e4_r6_pc2w_p1_attempt003_native_offline_observation_v5",
         "upstream_dependencies": [
-            "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_authorization_v4",
-            "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_contract_v4",
-            "stage1e_e4_r6_pc2w_p1_attempt003_baseline_validation_v1",
+            "stage1e_e4_r6_pc2w_p1_attempt003_native_offline_authorization_v5",
+            "stage1e_e4_r6_pc2w_p1_attempt003_native_offline_contract_v5",
+            "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_validation_v2",
         ],
         "repro_lock": None,
         "experiment_intake_declaration": intake,
@@ -438,15 +410,17 @@ def main() -> int:
     auth = load_json(repo_root / AUTH_RELATIVE)
     dispatch = load_json(repo_root / DISPATCH_RELATIVE)
     contract = load_json(repo_root / CONTRACT_RELATIVE)
-    baseline_validation = load_json(repo_root / BASELINE_VALIDATION_RELATIVE)
-    if auth.get("schema_version") != "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-authorization-4.0":
+    prior_validation = load_json(repo_root / PRIOR_OBSERVATION_VALIDATION_RELATIVE)
+    if auth.get("schema_version") != "stage1e-e4-r6-pc2w-p1-attempt003-native-offline-authorization-5.0":
         raise RuntimeError("authorization schema mismatch")
-    if dispatch.get("schema_version") != "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-dispatch-4.0":
+    if dispatch.get("schema_version") != "stage1e-e4-r6-pc2w-p1-attempt003-native-offline-dispatch-5.0":
         raise RuntimeError("dispatch schema mismatch")
-    if contract.get("schema_version") != "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-observation-contract-4.0":
+    if contract.get("schema_version") != "stage1e-e4-r6-pc2w-p1-attempt003-native-offline-observation-contract-5.0":
         raise RuntimeError("contract schema mismatch")
-    if baseline_validation.get("attempt_result", {}).get("attempt003_execution_opened") is not False:
+    if prior_validation.get("attempt_result", {}).get("attempt003_execution_opened") is not False:
         raise RuntimeError("prior validation no longer proves attempt-003 unopened")
+    if prior_validation.get("attempt_result", {}).get("automatic_retry_count") != 0:
+        raise RuntimeError("prior validation retry count mismatch")
     if auth.get("entry_checkpoint", "").casefold() != parent or dispatch.get("runner_checkpoint", "").casefold() != parent:
         raise RuntimeError("runner checkpoint binding mismatch")
     if Path(auth.get("authorized_output_root", "")).resolve() != output_root:
@@ -472,9 +446,9 @@ def main() -> int:
     ):
         raise RuntimeError("dispatch interpreter binding mismatch")
     decision = auth.get("user_decision", {})
-    if decision.get("decision") != "AUTHORIZE_ATTEMPT003_OFFLINE_EQUIVALENT_OBSERVATION_AND_CONDITIONAL_EXECUTION":
+    if decision.get("decision") != "AUTHORIZE_ATTEMPT003_NATIVE_OFFLINE_OBSERVATION_V5_AND_CONDITIONAL_EXECUTION":
         raise RuntimeError("user decision mismatch")
-    if decision.get("offline_equivalent_observation_authorized") is not True or decision.get("attempt003_execution_authorized_on_pass") is not True:
+    if decision.get("native_offline_observation_v5_authorized") is not True or decision.get("attempt003_execution_authorized_on_pass") is not True:
         raise RuntimeError("authorization scope incomplete")
     for key in (
         "automatic_retry_authorized", "docker_desktop_start_or_stop_authorized_in_observation",
@@ -486,7 +460,7 @@ def main() -> int:
             raise RuntimeError(f"forbidden authorization flag changed: {key}")
 
     frozen = dispatch.get("frozen_artifacts")
-    expected_frozen = {RUNNER_RELATIVE, CONTRACT_RELATIVE, AUTH_RELATIVE, BASELINE_VALIDATION_RELATIVE}
+    expected_frozen = {RUNNER_RELATIVE, CONTRACT_RELATIVE, AUTH_RELATIVE, PRIOR_OBSERVATION_VALIDATION_RELATIVE}
     if not isinstance(frozen, list) or {Path(str(row.get("path"))) for row in frozen if isinstance(row, dict)} != expected_frozen:
         raise RuntimeError("frozen artifact set mismatch")
     for row in frozen:
@@ -513,28 +487,25 @@ def main() -> int:
     status_receipt = record(EXPECTED_COMMAND_IDS[0], [str(DOCKER), "desktop", "status"])
     wsl_verbose_receipt_a = record(EXPECTED_COMMAND_IDS[1], [str(WSL), "--list", "--verbose"])
     wsl_running_receipt_a = record(EXPECTED_COMMAND_IDS[2], [str(WSL), "--list", "--running", "--quiet"])
-    daemon_receipt_a = record(EXPECTED_COMMAND_IDS[3], [str(DOCKER), "version", "--format", "{{json .Server}}"])
     pipe_probe_a = probe_desktop_linux_pipe()
     process_receipt_a = record(
-        EXPECTED_COMMAND_IDS[4],
+        EXPECTED_COMMAND_IDS[3],
         [str(POWERSHELL), "-NoLogo", "-NoProfile", "-NonInteractive", "-Command", PROCESS_QUERY],
     )
-    wsl_verbose_receipt_b = record(EXPECTED_COMMAND_IDS[5], [str(WSL), "--list", "--verbose"])
-    wsl_running_receipt_b = record(EXPECTED_COMMAND_IDS[6], [str(WSL), "--list", "--running", "--quiet"])
-    daemon_receipt_b = record(EXPECTED_COMMAND_IDS[7], [str(DOCKER), "version", "--format", "{{json .Server}}"])
+    wsl_verbose_receipt_b = record(EXPECTED_COMMAND_IDS[4], [str(WSL), "--list", "--verbose"])
+    wsl_running_receipt_b = record(EXPECTED_COMMAND_IDS[5], [str(WSL), "--list", "--running", "--quiet"])
     pipe_probe_b = probe_desktop_linux_pipe()
     process_receipt_b = record(
-        EXPECTED_COMMAND_IDS[8],
+        EXPECTED_COMMAND_IDS[6],
         [str(POWERSHELL), "-NoLogo", "-NoProfile", "-NonInteractive", "-Command", PROCESS_QUERY],
     )
 
     status_classification = classify_status(status_receipt, *raw[EXPECTED_COMMAND_IDS[0]])
 
     def parse_snapshot(
-        verbose_id: str, running_id: str, daemon_id: str, process_id: str,
+        verbose_id: str, running_id: str, process_id: str,
         verbose_receipt: dict[str, Any], running_receipt: dict[str, Any],
-        daemon_receipt: dict[str, Any], process_receipt: dict[str, Any],
-        pipe_probe: dict[str, Any],
+        process_receipt: dict[str, Any], pipe_probe: dict[str, Any],
     ) -> dict[str, Any]:
         wsl_rows, wsl_complete = (
             parse_wsl_verbose(raw[verbose_id][0]) if command_ok(verbose_receipt) else ([], False)
@@ -545,9 +516,6 @@ def main() -> int:
         runtime_processes, process_complete = (
             parse_process_inventory(raw[process_id][0]) if command_ok(process_receipt) else ([], False)
         )
-        daemon_cli_unavailable = daemon_is_specifically_unavailable(
-            daemon_receipt, *raw[daemon_id]
-        )
         lanes = {
             "wsl_inventory_all_stopped": (
                 wsl_complete
@@ -555,7 +523,6 @@ def main() -> int:
                 and all(row["state"] == "Stopped" for row in wsl_rows)
             ),
             "wsl_running_inventory_empty": running_complete and not running_names,
-            "daemon_cli_specifically_unavailable": daemon_cli_unavailable,
             "desktop_linux_named_pipe_specifically_absent_win32_error_2": pipe_is_specifically_absent(pipe_probe),
             "target_runtime_process_inventory_empty": process_complete and not runtime_processes,
         }
@@ -566,7 +533,6 @@ def main() -> int:
                 "docker_desktop_state": distro_state(wsl_rows, "docker-desktop"),
             },
             "wsl_running_inventory": {"parse_complete": running_complete, "running_names": running_names},
-            "daemon_cli_specifically_unavailable": daemon_cli_unavailable,
             "desktop_linux_named_pipe_probe": pipe_probe,
             "runtime_process_inventory": {
                 "parse_complete": process_complete,
@@ -576,16 +542,16 @@ def main() -> int:
         }
 
     snapshot_a = parse_snapshot(
-        EXPECTED_COMMAND_IDS[1], EXPECTED_COMMAND_IDS[2], EXPECTED_COMMAND_IDS[3], EXPECTED_COMMAND_IDS[4],
-        wsl_verbose_receipt_a, wsl_running_receipt_a, daemon_receipt_a, process_receipt_a, pipe_probe_a,
+        EXPECTED_COMMAND_IDS[1], EXPECTED_COMMAND_IDS[2], EXPECTED_COMMAND_IDS[3],
+        wsl_verbose_receipt_a, wsl_running_receipt_a, process_receipt_a, pipe_probe_a,
     )
     snapshot_b = parse_snapshot(
-        EXPECTED_COMMAND_IDS[5], EXPECTED_COMMAND_IDS[6], EXPECTED_COMMAND_IDS[7], EXPECTED_COMMAND_IDS[8],
-        wsl_verbose_receipt_b, wsl_running_receipt_b, daemon_receipt_b, process_receipt_b, pipe_probe_b,
+        EXPECTED_COMMAND_IDS[4], EXPECTED_COMMAND_IDS[5], EXPECTED_COMMAND_IDS[6],
+        wsl_verbose_receipt_b, wsl_running_receipt_b, process_receipt_b, pipe_probe_b,
     )
     independent_lanes_pass = {
-        "snapshot_a_all_lanes": all(snapshot_a["lanes_pass"].values()),
-        "snapshot_b_all_lanes": all(snapshot_b["lanes_pass"].values()),
+        "snapshot_a_all_native_lanes": all(snapshot_a["lanes_pass"].values()),
+        "snapshot_b_all_native_lanes": all(snapshot_b["lanes_pass"].values()),
         "wsl_inventory_stable_across_barrier": snapshot_a["wsl_inventory"] == snapshot_b["wsl_inventory"],
         "running_inventory_stable_across_barrier": snapshot_a["wsl_running_inventory"] == snapshot_b["wsl_running_inventory"],
         "runtime_process_inventory_stable_across_barrier": snapshot_a["runtime_process_inventory"] == snapshot_b["runtime_process_inventory"],
@@ -593,19 +559,18 @@ def main() -> int:
             pipe_is_specifically_absent(pipe_probe_a) and pipe_is_specifically_absent(pipe_probe_b)
         ),
     }
-    status_lane_admissible = status_classification in {"STOPPED_EXACT", "UNCLASSIFIED_NONZERO_HASH_ONLY"}
     command_ids = [row["command_id"] for row in commands]
     exact_command_sequence = command_ids == EXPECTED_COMMAND_IDS and len(set(command_ids)) == len(command_ids)
-    pass_gate = status_lane_admissible and all(independent_lanes_pass.values()) and exact_command_sequence
+    pass_gate = all(independent_lanes_pass.values()) and exact_command_sequence
     verdict = (
-        "PASS_PC2W_P1_ATTEMPT003_OFFLINE_EQUIVALENT_BASELINE"
-        if pass_gate else "FAIL_CLOSED_PC2W_P1_ATTEMPT003_OFFLINE_EQUIVALENT_BASELINE"
+        "PASS_PC2W_P1_ATTEMPT003_NATIVE_OFFLINE_BASELINE_V5"
+        if pass_gate else "FAIL_CLOSED_PC2W_P1_ATTEMPT003_NATIVE_OFFLINE_BASELINE_V5"
     )
 
     command_document = {
-        "schema_version": "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-command-receipts-4.0",
+        "schema_version": "stage1e-e4-r6-pc2w-p1-attempt003-native-offline-command-receipts-5.0",
         "material_passport": passport,
-        "stage_id": "E4-R6-PC2W-P1-ATTEMPT003-OFFLINE-EQUIVALENT-OBSERVATION",
+        "stage_id": "E4-R6-PC2W-P1-ATTEMPT003-NATIVE-OFFLINE-OBSERVATION-V5",
         "created_at": created_at,
         "commands": commands,
         "command_ids": command_ids,
@@ -613,9 +578,9 @@ def main() -> int:
         "raw_stdout_or_stderr_persisted": False,
     }
     receipt_document = {
-        "schema_version": "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-observation-receipt-4.0",
+        "schema_version": "stage1e-e4-r6-pc2w-p1-attempt003-native-offline-observation-receipt-5.0",
         "material_passport": passport,
-        "stage_id": "E4-R6-PC2W-P1-ATTEMPT003-OFFLINE-EQUIVALENT-OBSERVATION",
+        "stage_id": "E4-R6-PC2W-P1-ATTEMPT003-NATIVE-OFFLINE-OBSERVATION-V5",
         "created_at": created_at,
         "entry_checkpoint": head,
         "runner_checkpoint": parent,
@@ -623,14 +588,14 @@ def main() -> int:
         "docker_desktop_status_lane": {
             "classification": status_classification,
             "advisory_only": True,
-            "unclassified_nonzero_is_not_relabelled_stopped": True,
-            "admissible_without_independent_lanes": False,
+            "admission_authority": False,
+            "cannot_veto_or_admit_native_gate": True,
         },
         "snapshot_a": snapshot_a,
         "snapshot_b_stability_barrier": snapshot_b,
         "independent_lanes_pass": independent_lanes_pass,
         "observation_is_not_sufficient_without_attempt003_immediate_pre_gate_replay": True,
-        "status_lane_admissible": status_lane_admissible,
+        "status_lane_used_for_admission": False,
         "exact_command_sequence": exact_command_sequence,
         "automatic_retry_count": 0,
         "state_mutation_command_issued": False,
@@ -645,9 +610,9 @@ def main() -> int:
         "accepted_result_rows": 0,
     }
     handoff = {
-        "schema_version": "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-handoff-4.0",
+        "schema_version": "stage1e-e4-r6-pc2w-p1-attempt003-native-offline-handoff-5.0",
         "material_passport": passport,
-        "stage_id": "E4-R6-PC2W-P1-ATTEMPT003-OFFLINE-EQUIVALENT-OBSERVATION",
+        "stage_id": "E4-R6-PC2W-P1-ATTEMPT003-NATIVE-OFFLINE-OBSERVATION-V5",
         "verdict": verdict,
         "next_gate": (
             "ATTEMPT003_START_QUERY_STOP_RUNNER_STATIC_AUDIT"

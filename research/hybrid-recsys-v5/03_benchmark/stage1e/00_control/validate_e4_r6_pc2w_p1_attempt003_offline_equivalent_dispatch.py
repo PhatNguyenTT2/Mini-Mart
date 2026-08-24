@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Statically validate the attempt-003 offline-equivalent observation dispatch."""
+"""Statically validate the attempt-003 native offline observation v5 dispatch."""
 
 from __future__ import annotations
 
@@ -19,11 +19,11 @@ RUNNER = CONTROL / "execute_e4_r6_pc2w_p1_attempt003_offline_equivalent_observat
 CONTRACT = CONTROL / "e4_r6_pc2w_p1_attempt003_offline_equivalent_observation_contract.json"
 AUTH = CONTROL / "e4_r6_pc2w_p1_attempt003_offline_equivalent_authorization.json"
 DISPATCH = CONTROL / "rebaseline_v2_e4_r6_pc2w_p1_attempt003_offline_equivalent_dispatch.json"
-BASELINE_VALIDATION = CONTROL / "rebaseline_v2_e4_r6_pc2w_p1_attempt003_baseline_validation_receipt.json"
+PRIOR_OBSERVATION_VALIDATION = CONTROL / "rebaseline_v2_e4_r6_pc2w_p1_attempt003_offline_equivalent_validation_receipt.json"
 VALIDATOR = CONTROL / "validate_e4_r6_pc2w_p1_attempt003_offline_equivalent_dispatch.py"
 OUTPUT = Path(
     "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_al/"
-    "E4_R6PC2W_P1_docker_query_preflight/attempt-003-offline-equivalent-observation"
+    "E4_R6PC2W_P1_docker_query_preflight/attempt-003-native-offline-observation-v5"
 )
 EXPECTED_CHANGED = {AUTH.as_posix(), DISPATCH.as_posix()}
 EXPECTED_OUTPUTS = [
@@ -77,7 +77,7 @@ def git(repo: Path, *args: str) -> str:
 
 def git_fact(repo: Path, revision: str, relative: Path) -> tuple[int, str]:
     completed = subprocess.run(
-        ["git", "show", f"{revision}:{relative.as_posix()}"], cwd=repo,
+        ["git", "cat-file", "blob", f"{revision}:{relative.as_posix()}"], cwd=repo,
         stdin=subprocess.DEVNULL, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
         shell=False, check=True,
     )
@@ -137,10 +137,10 @@ def main() -> int:
     auth = load_json(repo / AUTH)
     dispatch = load_json(repo / DISPATCH)
     contract = load_json(repo / CONTRACT)
-    prior = load_json(repo / BASELINE_VALIDATION)
-    check(auth.get("schema_version") == "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-authorization-4.0", "auth_schema")
-    check(dispatch.get("schema_version") == "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-dispatch-4.0", "dispatch_schema")
-    check(contract.get("schema_version") == "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-observation-contract-4.0", "contract_schema")
+    prior = load_json(repo / PRIOR_OBSERVATION_VALIDATION)
+    check(auth.get("schema_version") == "stage1e-e4-r6-pc2w-p1-attempt003-native-offline-authorization-5.0", "auth_schema")
+    check(dispatch.get("schema_version") == "stage1e-e4-r6-pc2w-p1-attempt003-native-offline-dispatch-5.0", "dispatch_schema")
+    check(contract.get("schema_version") == "stage1e-e4-r6-pc2w-p1-attempt003-native-offline-observation-contract-5.0", "contract_schema")
     check(prior.get("attempt_result", {}).get("attempt003_execution_opened") is False, "attempt003_still_unopened")
     check(prior.get("attempt_result", {}).get("automatic_retry_count") == 0, "prior_retry_zero")
     check(prior.get("truth_state", {}).get("RESULT_STATUS") == "NOT_RUN", "prior_truth_not_run")
@@ -148,8 +148,8 @@ def main() -> int:
     decision = auth.get("user_decision", {})
     check(auth.get("entry_checkpoint", "").casefold() == parent, "auth_parent_binding")
     check(Path(auth.get("authorized_output_root", "")).resolve() == expected_execution_output, "auth_central_output_root")
-    check(decision.get("decision") == "AUTHORIZE_ATTEMPT003_OFFLINE_EQUIVALENT_OBSERVATION_AND_CONDITIONAL_EXECUTION", "decision_exact")
-    check(decision.get("offline_equivalent_observation_authorized") is True, "observation_authorized")
+    check(decision.get("decision") == "AUTHORIZE_ATTEMPT003_NATIVE_OFFLINE_OBSERVATION_V5_AND_CONDITIONAL_EXECUTION", "decision_exact")
+    check(decision.get("native_offline_observation_v5_authorized") is True, "observation_authorized")
     check(decision.get("attempt003_execution_authorized_on_pass") is True, "conditional_execution_authorized")
     for field in (
         "automatic_retry_authorized", "docker_desktop_start_or_stop_authorized_in_observation",
@@ -180,19 +180,19 @@ def main() -> int:
     check((interpreter.get("raw_bytes"), interpreter.get("sha256")) == PYTHON_FACT, "interpreter_fact")
     controls = dispatch.get("execution_controls", {})
     check(controls.get("read_only_observation") is True, "read_only_control")
-    check(controls.get("commands_exactly_once") == 9, "nine_command_control")
+    check(controls.get("commands_exactly_once") == 7, "seven_command_control")
     check(controls.get("automatic_retry_count") == 0, "retry_zero_control")
     check(controls.get("two_snapshot_stability_barrier_required") is True, "stability_barrier_control")
     check(controls.get("win32_named_pipe_absence_required_twice") is True, "named_pipe_control")
     check(controls.get("win32_named_pipe_wait_bound_milliseconds") == 1, "named_pipe_one_millisecond_control")
-    check(controls.get("strict_status_and_daemon_decoding_required") is True, "strict_status_daemon_control")
-    check(controls.get("contradictory_daemon_stdout_rejected") is True, "daemon_contradiction_control")
+    check(controls.get("docker_desktop_status_advisory_only") is True, "status_advisory_control")
+    check(controls.get("docker_desktop_status_has_no_admission_authority") is True, "status_no_authority_control")
+    check(controls.get("four_native_lanes_required_per_snapshot") is True, "four_native_lanes_control")
     check(controls.get("exact_wsl_header_required") is True, "exact_wsl_header_control")
     check(controls.get("python_orig_argv_enforced") is True, "python_orig_argv_control")
     check(controls.get("process_cim_fail_stop_required") is True, "process_cim_fail_stop_control")
     check(controls.get("unicode_category_c_rejected") is True, "unicode_category_c_control")
-    check(controls.get("running_token_dominates_status") is True, "running_token_dominance_control")
-    check(controls.get("daemon_contradiction_markers_rejected") is True, "daemon_contradiction_marker_control")
+    check(controls.get("strict_status_decoding_for_telemetry") is True, "strict_status_telemetry_control")
     check(controls.get("attempt003_immediate_pre_gate_replay_required") is True, "attempt003_replay_control")
     for field in (
         "docker_desktop_start_or_stop_allowed", "wsl_shutdown_or_terminate_allowed",
@@ -208,7 +208,7 @@ def main() -> int:
     check(audit.get("requested_service_tier") == "default", "dispatch_audit_tier_standard")
 
     frozen = dispatch.get("frozen_artifacts")
-    expected_frozen = {RUNNER, CONTRACT, AUTH, BASELINE_VALIDATION}
+    expected_frozen = {RUNNER, CONTRACT, AUTH, PRIOR_OBSERVATION_VALIDATION}
     check(isinstance(frozen, list), "frozen_list")
     check({Path(str(row.get("path"))) for row in frozen} == expected_frozen, "frozen_exact_set")
     for row in frozen:
@@ -269,13 +269,6 @@ def main() -> int:
     check(runner.classify_status(receipt_fail, b"", b"still running") == "RUNNING_EXACT", "status_running_blocks_even_nonzero")
     check(runner.classify_status(receipt_fail, b"running", b"stopped") == "RUNNING_EXACT", "status_running_stopped_contradiction_blocks")
     check(runner.classify_status(receipt_fail, b"", b"opaque\xff") == "UNCLASSIFIED_INVALID_ENCODING", "status_invalid_encoding_rejected")
-    daemon_missing = b"open //./pipe/dockerDesktopLinuxEngine: The system cannot find the file specified."
-    check(runner.daemon_is_specifically_unavailable(receipt_fail, b"", daemon_missing), "daemon_named_pipe_missing_valid")
-    check(not runner.daemon_is_specifically_unavailable(receipt_fail, b"", daemon_missing + b" Access is denied"), "daemon_permission_rejected")
-    check(not runner.daemon_is_specifically_unavailable(receipt_ok, b"{}", b""), "daemon_reachable_rejected")
-    check(not runner.daemon_is_specifically_unavailable(receipt_fail, b'{"Version":"reachable"}', daemon_missing), "daemon_contradictory_stdout_rejected")
-    check(not runner.daemon_is_specifically_unavailable(receipt_fail, b"", daemon_missing + b" server reachable"), "daemon_contradictory_stderr_rejected")
-    check(not runner.daemon_is_specifically_unavailable(receipt_fail, b"", daemon_missing + b"\xff"), "daemon_invalid_encoding_rejected")
     check(runner.pipe_is_specifically_absent({"available": False, "win32_error": 2, "probe_exception_type": None}), "win32_pipe_absence_valid")
     check(not runner.pipe_is_specifically_absent({"available": False, "win32_error": 5, "probe_exception_type": None}), "win32_pipe_access_denied_rejected")
     check(not runner.pipe_is_specifically_absent({"available": True, "win32_error": None, "probe_exception_type": None}), "win32_pipe_available_rejected")
@@ -286,7 +279,10 @@ def main() -> int:
     check("SilentlyContinue" not in runner.PROCESS_QUERY, "process_query_does_not_suppress_errors")
     check("wait_named_pipe(DESKTOP_LINUX_PIPE, 1)" in source, "wait_named_pipe_one_millisecond_bound")
     check("wait_named_pipe(DESKTOP_LINUX_PIPE, 0)" not in source, "wait_named_pipe_default_wait_absent")
-    check(source.count("record(EXPECTED_COMMAND_IDS[") == 7, "seven_direct_record_calls")
+    check('"version", "--format", "{{json .Server}}"' not in source, "daemon_cli_query_absent")
+    check("pass_gate = all(independent_lanes_pass.values()) and exact_command_sequence" in source, "status_not_in_pass_gate")
+    check('"status_lane_used_for_admission": False' in source, "status_recorded_without_authority")
+    check(source.count("record(EXPECTED_COMMAND_IDS[") == 5, "five_direct_record_calls")
     check(source.count("= record(\n        EXPECTED_COMMAND_IDS[") == 2, "two_process_record_calls")
     check(source.count("probe_desktop_linux_pipe()") == 3, "two_pipe_probe_calls_plus_definition")
     for forbidden_literal in (
@@ -298,17 +294,16 @@ def main() -> int:
     check(runner.EXPECTED_COMMAND_IDS == [
         "O00_DOCKER_DESKTOP_STATUS_ADVISORY",
         "O01A_WSL_LIST_VERBOSE", "O02A_WSL_LIST_RUNNING_QUIET",
-        "O03A_DAEMON_VERSION_SERVER_ONLY", "O04A_DOCKER_RUNTIME_PROCESS_NAMES_ONLY",
+        "O03A_DOCKER_RUNTIME_PROCESS_NAMES_ONLY",
         "O01B_WSL_LIST_VERBOSE_STABILITY_BARRIER", "O02B_WSL_LIST_RUNNING_QUIET_STABILITY_BARRIER",
-        "O03B_DAEMON_VERSION_SERVER_ONLY_STABILITY_BARRIER",
-        "O04B_DOCKER_RUNTIME_PROCESS_NAMES_ONLY_STABILITY_BARRIER",
+        "O03B_DOCKER_RUNTIME_PROCESS_NAMES_ONLY_STABILITY_BARRIER",
     ], "exact_command_id_sequence")
-    check(contract.get("pass_verdict") == "PASS_PC2W_P1_ATTEMPT003_OFFLINE_EQUIVALENT_BASELINE", "contract_pass_verdict")
+    check(contract.get("pass_verdict") == "PASS_PC2W_P1_ATTEMPT003_NATIVE_OFFLINE_BASELINE_V5", "contract_pass_verdict")
     check(contract.get("next_gate_on_pass") == "ATTEMPT003_START_QUERY_STOP_RUNNER_STATIC_AUDIT", "contract_next_gate")
     check(contract.get("truth_state") == {"RESULT_STATUS": "NOT_RUN", "TEST_SET_OPENED": "NO", "ACCEPTED_RESULT_ROWS": 0}, "contract_truth_state")
 
     print(json.dumps({
-        "verdict": "PASS_PC2W_P1_ATTEMPT003_OFFLINE_EQUIVALENT_RUNNER_READY_FOR_FRESH_AUDIT",
+        "verdict": "PASS_PC2W_P1_ATTEMPT003_NATIVE_OFFLINE_RUNNER_V5_READY_FOR_FRESH_AUDIT",
         "checkpoint": head,
         "runner_checkpoint": parent,
         "checks_passed": len(checks),
@@ -324,7 +319,7 @@ if __name__ == "__main__":
         sys.exit(main())
     except Exception as exc:
         print(json.dumps({
-            "verdict": "FAIL_PC2W_P1_ATTEMPT003_OFFLINE_EQUIVALENT_STATIC_VALIDATION",
+            "verdict": "FAIL_PC2W_P1_ATTEMPT003_NATIVE_OFFLINE_V5_STATIC_VALIDATION",
             "error_type": type(exc).__name__,
             "error": str(exc),
             "execution_performed": False,
