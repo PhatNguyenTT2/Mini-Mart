@@ -264,6 +264,8 @@ def main() -> int:
     check("contract_fast_forbidden", model.get("fast_or_priority_allowed") is False)
     completeness = contract.get("fail_closed_completeness", {})
     check("contract_process_null_fails", completeness.get("process_identity_null_or_empty_field_is_error") is True)
+    check("contract_creation_time_utc_z", completeness.get("creation_time_must_be_dotnet_roundtrip_utc_with_z_suffix") is True)
+    check("contract_creation_date_precast", completeness.get("creation_date_null_is_rejected_before_cast") is True)
     check("contract_rows_array_strict", completeness.get("rows_must_be_json_array_without_singleton_or_null_coercion") is True)
     check("contract_count_integer_strict", completeness.get("count_must_be_nonnegative_integer_and_not_boolean") is True)
     check("contract_tcp_null_fails", completeness.get("tcp_identity_null_or_empty_field_is_error") is True)
@@ -402,6 +404,16 @@ def main() -> int:
     check("runner_no_materialization", '"materialization_performed": False' in source)
     check("runner_no_swallowed_process_field_errors", "catch{}" not in source)
     check("runner_process_hash_validation", "invalid process identity hash" in source)
+    check("runner_creation_time_strict_regex", r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{7}Z' in source)
+    check("runner_creation_time_utc_offset", "parsed_time.utcoffset() != timezone.utc.utcoffset(parsed_time)" in source)
+    creation_null_marker = "if($null -eq $p.CreationDate)"
+    creation_cast_marker = "$created=([datetime]$p.CreationDate)"
+    check(
+        "runner_creation_date_null_before_cast",
+        creation_null_marker in source
+        and creation_cast_marker in source
+        and source.find(creation_null_marker) < source.find(creation_cast_marker),
+    )
     check("runner_tcp_hash_validation", "invalid TCP address hash" in source)
     check("runner_rows_no_coercion", 'if not isinstance(rows, list)' in source and 'rows = [rows]' not in source)
     check("runner_count_bool_rejected", 'isinstance(count, bool)' in source and 'count < 0' in source)
@@ -452,6 +464,11 @@ def main() -> int:
     check("state_second_audit_135", second_audit.get("mandatory_validator_checks_passed") == 135 and second_audit.get("mandatory_validator_checks_total") == 135)
     check("state_second_audit_no_runtime", second_audit.get("runtime_commands_executed") is False)
     check("state_second_audit_empty_write_set", second_audit.get("write_set") == [])
+    third_audit = attempt005.get("third_fresh_static_audit", {})
+    check("state_third_audit_fail_closed", third_audit.get("verdict") == "FAIL_CLOSED_PC2W_P1_ATTEMPT005_THIRD_STATIC_AUDIT")
+    check("state_third_audit_153", third_audit.get("mandatory_validator_checks_passed") == 153 and third_audit.get("mandatory_validator_checks_total") == 153)
+    check("state_third_audit_no_runtime", third_audit.get("runtime_commands_executed") is False)
+    check("state_third_audit_empty_write_set", third_audit.get("write_set") == [])
     incident = attempt005.get("rework_validation_incident", {})
     check("state_rework_incident_disclosed", incident.get("occurred") is True)
     check("state_rework_incident_exact_two_probes", incident.get("native_process_probe_calls") == 1 and incident.get("native_tcp_probe_calls") == 1)

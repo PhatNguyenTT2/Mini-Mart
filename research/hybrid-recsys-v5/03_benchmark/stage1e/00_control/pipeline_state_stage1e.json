@@ -1686,6 +1686,17 @@
               "write_set": [],
               "rework_required": true
             },
+            "third_fresh_static_audit": {
+              "task_id": "01a03502-04a3-76c1-b997-eaac4cce3a88",
+              "audited_checkpoint": "ceb34fb1d866498e1ecfc1796c1d90d69439185d",
+              "verdict": "FAIL_CLOSED_PC2W_P1_ATTEMPT005_THIRD_STATIC_AUDIT",
+              "mandatory_validator_checks_passed": 153,
+              "mandatory_validator_checks_total": 153,
+              "independent_negative_fixtures_rejected": 109,
+              "runtime_commands_executed": false,
+              "write_set": [],
+              "rework_required": true
+            },
             "rework_scope": [
               "fail closed on every missing or ambiguous process and TCP identity field",
               "persist an exact four-file failure packet before and throughout runtime observation",
@@ -1696,7 +1707,8 @@
               "forbid null or singleton-object Rows coercion and boolean counts",
               "check TCP ports and owning process before numeric casts",
               "normalize CRLF to LF in runner and contract drift binding while rejecting bare carriage returns",
-              "bind Material Passport to Attempt-005 contract v2"
+              "bind Material Passport to Attempt-005 contract v2",
+              "require .NET round-trip UTC CreationTimeUtc with a Z suffix and reject null CreationDate before cast"
             ],
             "rework_validation_incident": {
               "occurred": true,
@@ -1809,5 +1821,5 @@
   "harmonized_v5": "BLOCKED",
   "external_validation": "BLOCKED",
   "efficiency": "BLOCKED_AFTER_ACCURACY",
-  "next_gate": "Two fresh Sol XHigh Standard static audits have failed closed without executing the Attempt-005 runner or writing audit files. The second audit at 576467a6bf038364ae168cd6ba4b737dff9e0a56 identified strict Rows/count coercion, pre-cast TCP null handling, CRLF-sensitive runner drift binding and a stale contract-v1 Material Passport reference; all are in rework. During the first rework, one parser-only validation command accidentally evaluated the embedded native process probe and native TCP probe once each; both returned Available=false with CimException, but no Docker CLI, WSL command, Docker Desktop start, output-root creation, artifact write, retry, materialization, training, evaluation, benchmark admission or TEST access occurred. A third fresh Sol XHigh Standard audit plus exact-command confirmation remain mandatory before execution."
+  "next_gate": "Three fresh Sol XHigh Standard static audits have failed closed without executing the Attempt-005 runner or writing audit files. The third audit at ceb34fb1d866498e1ecfc1796c1d90d69439185d found one remaining major issue: ambiguous CreationTimeUtc formats and a missing pre-cast CreationDate null guard; both are in rework. During the first rework, one parser-only validation command accidentally evaluated the embedded native process probe and native TCP probe once each; both returned Available=false with CimException, but no Docker CLI, WSL command, Docker Desktop start, output-root creation, artifact write, retry, materialization, training, evaluation, benchmark admission or TEST access occurred. A fourth fresh Sol XHigh Standard audit plus exact-command confirmation remain mandatory before execution."
 }

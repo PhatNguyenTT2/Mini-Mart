@@ -105,6 +105,8 @@
   "fail_closed_completeness": {
     "process_identity_null_or_empty_field_is_error": true,
     "process_identity_hash_must_be_lowercase_sha256": true,
+    "creation_time_must_be_dotnet_roundtrip_utc_with_z_suffix": true,
+    "creation_date_null_is_rejected_before_cast": true,
     "rows_must_be_json_array_without_singleton_or_null_coercion": true,
     "count_must_be_nonnegative_integer_and_not_boolean": true,
     "tcp_identity_null_or_empty_field_is_error": true,

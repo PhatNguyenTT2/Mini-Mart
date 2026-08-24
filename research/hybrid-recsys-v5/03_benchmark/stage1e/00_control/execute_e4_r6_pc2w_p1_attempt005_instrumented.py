@@ -154,6 +154,7 @@ try {
     $sigStatus=[string]$sig.Status
     $signerSubject=[string]$sig.SignerCertificate.Subject
     $fileVersion=[string](Get-Item -LiteralPath $path -ErrorAction Stop).VersionInfo.FileVersion
+    if($null -eq $p.CreationDate){throw 'missing required identity field: CreationDate'}
     $created=([datetime]$p.CreationDate).ToUniversalTime().ToString('o')
     Require-NonEmpty $fileHash 'ExecutableFileSha256'
     Require-NonEmpty $sigStatus 'AuthenticodeStatus'
@@ -305,10 +306,15 @@ def parse_process_probe(value: bytes) -> dict[str, Any]:
         ):
             if not isinstance(row.get(key), str) or not re.fullmatch(r"[0-9a-f]{64}", row[key]):
                 raise ValueError(f"invalid process identity hash: {key}")
+        timestamp = row["CreationTimeUtc"]
+        if not re.fullmatch(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{7}Z", timestamp):
+            raise ValueError("process creation time must be .NET round-trip UTC")
         try:
-            datetime.fromisoformat(row["CreationTimeUtc"].replace("Z", "+00:00"))
+            parsed_time = datetime.fromisoformat(timestamp.replace("Z", "+00:00"))
         except (TypeError, ValueError) as exc:
             raise ValueError("invalid process creation time") from exc
+        if parsed_time.utcoffset() != timezone.utc.utcoffset(parsed_time):
+            raise ValueError("process creation time is not UTC")
     return result
 
 
