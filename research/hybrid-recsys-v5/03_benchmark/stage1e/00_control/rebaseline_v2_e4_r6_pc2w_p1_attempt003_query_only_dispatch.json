@@ -1,0 +1,115 @@
+{
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt003-query-only-dispatch-1.0",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "run",
+    "origin_date": "2026-08-24T00:00:00Z",
+    "verification_status": "UNVERIFIED",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt003_query_only_dispatch_v1",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_pc2w_p1_attempt003_query_only_runner_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt003_user_authorization_standard_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt003_native_offline_v5_validated_and_audited"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "methods_text_available": true,
+      "code_or_repository_available": true,
+      "data_available": false,
+      "environment_spec_available": true,
+      "expected_output_available": true,
+      "deviation_policy": "Execute exactly once only after a fresh Standard worktree static audit PASS; otherwise stop without execution."
+    }
+  },
+  "stage_id": "E4-R6-PC2W-P1-ATTEMPT003",
+  "runner_checkpoint": "2921bcee20806df3d7b91118bb062a9e2d60e9d4",
+  "entry_validation": {
+    "central_native_validation_verdict": "PASS_PC2W_P1_ATTEMPT003_NATIVE_OFFLINE_V5_VALIDATED",
+    "independent_native_packet_audit_verdict": "PASS_PC2W_P1_ATTEMPT003_NATIVE_OFFLINE_V5_PACKET_AUDITED",
+    "attempt003_execution_previously_opened": false,
+    "fresh_query_runner_audit_required": true
+  },
+  "interpreter": {
+    "path": "C:\\Program Files\\Python311\\python.exe",
+    "version": "3.11.9",
+    "raw_bytes": 103192,
+    "sha256": "5f7b89a612c9b8af1d6456cdfcd1dbe5ca630849e79aebced9bee9a6694952ec"
+  },
+  "execution_binding": {
+    "working_directory": "E:\\UIT\\cv\\backend",
+    "output_root": "E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\rebaseline_v2\\wave_al\\E4_R6PC2W_P1_docker_query_preflight\\attempt-003",
+    "expected_output_files": [
+      "command_receipts.json",
+      "p1_execution_receipt.json",
+      "p1_handoff.json",
+      "runtime_inventory.json"
+    ],
+    "argv": [
+      "C:\\Program Files\\Python311\\python.exe",
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc2w_p1_attempt003_query_only.py",
+      "--repo-root",
+      "E:\\UIT\\cv\\backend",
+      "--expected-head",
+      "<EXACT_FULL_EXECUTION_HEAD_FROM_FRESH_AUDIT>"
+    ],
+    "execution_attempts_maximum": 1,
+    "automatic_retry_count": 0,
+    "docker_desktop_start_attempts_maximum": 1,
+    "docker_desktop_stop_attempts_maximum": 1,
+    "native_pre_gate_replay_immediately_before_start": true,
+    "post_stop_native_closure_snapshots": 2
+  },
+  "frozen_artifacts": [
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc2w_p1_attempt003_query_only.py",
+      "git_blob_bytes": 51035,
+      "git_blob_sha256": "3bf7fa940b0ce2e8a257e2df48c5fe96793cea37a981917f8b7bf2a89bbcd079"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc2w_p1_attempt003_offline_equivalent_observation.py",
+      "git_blob_bytes": 29306,
+      "git_blob_sha256": "59896953c4e3aac49c6c51f3afd82d785b65928ea5eaa3b42f245181549cc8de"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt003_user_authorization_and_model_override.json",
+      "git_blob_bytes": 4097,
+      "git_blob_sha256": "6d4db867c85776068de9c373001a97b10ec48f4354738d88d9ec92f097654795"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_docker_query_preflight_requirements.json",
+      "git_blob_bytes": 6280,
+      "git_blob_sha256": "fc6d5479ad56692b6c04449ac0150b256d2dd4409471c8723f1ad2d84f193b83"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt003_query_only_contract.json",
+      "git_blob_bytes": 5099,
+      "git_blob_sha256": "36084a6c0c781128baadfbaee2fa14b5e89bfce675b8c0e3fa5f55081c168d01"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt003_native_offline_validation_receipt.json",
+      "git_blob_bytes": 5280,
+      "git_blob_sha256": "ff990f8cd81cd94d2e58d1e143ee001843bb49b75af3e37919d7001944511f0b"
+    }
+  ],
+  "model_policy": {
+    "model": "gpt-5.6-sol",
+    "reasoning_effort": "xhigh",
+    "service_tier": "default",
+    "display_name": "Sol XHigh Standard",
+    "fast_or_priority_allowed": false,
+    "actual_runtime_tier_may_be_unobservable": true,
+    "observed_fast_or_priority_action": "STOP_WITH_MODEL_POLICY_VIOLATION"
+  },
+  "execution_authorized": true,
+  "execution_is_conditional_on_fresh_audit_pass": true,
+  "verdict_lanes": [
+    "PASS_PC2W_P1_ATTEMPT003_QUERY_EVIDENCE_READY_FOR_CENTRAL_G1",
+    "FAIL_CLOSED_PC2W_P1_ATTEMPT003_BACKEND_OR_POLICY_NOT_ADMISSIBLE",
+    "HANDOFF_INCOMPLETE"
+  ],
+  "truth_state_before_execution": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0
+  }
+}
