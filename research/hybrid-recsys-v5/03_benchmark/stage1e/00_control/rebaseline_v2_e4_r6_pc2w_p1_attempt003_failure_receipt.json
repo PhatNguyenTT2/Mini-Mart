@@ -1,0 +1,146 @@
+{
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt003-failure-receipt-1.0",
+  "stage_id": "E4-R6-PC2W-P1-ATTEMPT003",
+  "created_at": "2026-08-24T15:30:00Z",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "validate",
+    "origin_date": "2026-08-24T15:30:00Z",
+    "verification_status": "ANALYZED",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt003_failure_receipt_v1",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_pc2w_p1_attempt003_query_only_execution_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt003_query_only_static_audit_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt003_native_offline_validation_v1"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-24T00:00:00+07:00",
+      "declared_by": "scholar"
+    }
+  },
+  "runner_checkpoint": "e1f359887a333a4bfae8b7e81e92542f480b4196",
+  "execution_checkpoint": "a61f1b9ff9f27dca439a74885b2ea5c7da352f16",
+  "packet_commit": "65b0e50716d4c53d220f917baa316f743e012167",
+  "pre_execution_static_audit": {
+    "thread_id": "01a03454-97c0-7b73-a0fb-a4eb386164fb",
+    "client_thread_id": "client-new-thread:612b2636-2ba4-4541-a1a6-d920150442d0",
+    "verdict": "PASS_PC2W_P1_ATTEMPT003_QUERY_ONLY_RUNNER_READY_FOR_EXECUTION",
+    "validator_checks": "88/88",
+    "requested_model": "gpt-5.6-sol",
+    "requested_reasoning_effort": "xhigh",
+    "requested_service_tier": "default",
+    "display_name": "Sol XHigh Standard",
+    "actual_model": "UNOBSERVABLE",
+    "actual_reasoning_effort": "UNOBSERVABLE",
+    "actual_service_tier": "UNOBSERVABLE",
+    "fast_or_priority_observed": false,
+    "write_set": []
+  },
+  "central_validation": {
+    "model": "gpt-5.6-sol",
+    "reasoning_effort": "max",
+    "service_tier": "default",
+    "display_name": "Sol Max Standard",
+    "validator_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_p1_attempt003_failure.py",
+    "validator_raw_bytes": 12776,
+    "validator_raw_sha256": "b4051ecb0b53645f09ecaba8d08ee096c3a9e3287d481cd82a9895797999b0af",
+    "expected_verdict": "PASS_PC2W_P1_ATTEMPT003_FAIL_CLOSED_PACKET_VALIDATED"
+  },
+  "attempt_result": {
+    "verdict": "FAIL_CLOSED_PC2W_P1_ATTEMPT003_BACKEND_OR_POLICY_NOT_ADMISSIBLE",
+    "commands_recorded": 29,
+    "execution_attempts": 1,
+    "startup_attempts": 1,
+    "stop_attempts": 1,
+    "automatic_retry_count": 0,
+    "pre_start_native_gate_all_pass": true,
+    "query_commands_all_success": true,
+    "backend_linux_amd64_desktop_linux": true,
+    "containers_running_zero": true,
+    "container_inventory_unchanged": true,
+    "image_inventory_unchanged": true,
+    "container_or_image_events_absent": true,
+    "post_stop_native_closure_all_pass": false,
+    "post_stop_wsl_inventory_restored": true,
+    "post_stop_named_pipe_absence_stable": true,
+    "post_stop_runtime_process_inventory_stable": true,
+    "docker_desktop_status_advisory_only": true,
+    "docker_desktop_status_pre_start": "RUNNING_EXACT",
+    "docker_desktop_status_during": "UNCLASSIFIED_ZERO_EXIT",
+    "docker_desktop_status_post_stop": "RUNNING_EXACT"
+  },
+  "failure_analysis": {
+    "primary_failure_class": "POST_STOP_RUNTIME_PROCESS_RESIDUAL_WSLRELAY",
+    "primary_failure_evidence": {
+      "snapshot_a_runtime_processes": [
+        "wslrelay"
+      ],
+      "snapshot_b_runtime_processes": [
+        "wslrelay"
+      ],
+      "snapshot_a_other_native_lanes_pass": true,
+      "snapshot_b_other_native_lanes_pass": true,
+      "wsl_inventory_all_stopped": true,
+      "wsl_running_inventory_empty": true,
+      "desktop_linux_named_pipe_absent_win32_error_2": true
+    },
+    "secondary_runner_defect": "PROHIBITED_COMMAND_CONDITION_POLARITY_BUG_NON_CAUSAL_TO_FINAL_FAILURE",
+    "secondary_runner_defect_detail": "The pass-condition key prohibited_commands_issued is intentionally recorded false but was included in an all-true conjunction. Correcting its polarity would not change this attempt verdict because post-stop native closure independently failed in both snapshots.",
+    "benchmark_query_evidence_status": "TECHNICALLY_COMPLETE_BUT_NOT_ADMISSIBLE_UNTIL_FAILURE_POLICY_DECISION",
+    "no_cross_dataset_or_scientific_benchmark_claim_opened": true
+  },
+  "command_failures": [
+    {
+      "command_id": "A00_DOCKER_DESKTOP_STATUS_ADVISORY_BEFORE",
+      "exit_code": 1,
+      "advisory_only": true
+    },
+    {
+      "command_id": "A22_DOCKER_DESKTOP_STATUS_ADVISORY_AFTER",
+      "exit_code": 1,
+      "advisory_only": true
+    }
+  ],
+  "policy_facts": {
+    "raw_stdout_or_stderr_persisted": false,
+    "image_pull_or_build_performed": false,
+    "container_create_or_run_performed": false,
+    "docker_or_wsl_settings_changed": false,
+    "source_data_or_checkpoint_download_performed": false,
+    "materialization_performed": false,
+    "scientific_execution_performed": false,
+    "test_access_performed": false,
+    "new_retry_authorized": false
+  },
+  "output_facts": [
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_al/E4_R6PC2W_P1_docker_query_preflight/attempt-003/command_receipts.json",
+      "git_blob_bytes": 27853,
+      "git_blob_sha256": "2fca9d80e993aabe97667b56cf0b11af337ee8e7c9c8c37da14a0ae8dc92fd7a"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_al/E4_R6PC2W_P1_docker_query_preflight/attempt-003/p1_execution_receipt.json",
+      "git_blob_bytes": 5281,
+      "git_blob_sha256": "d07348c82af6ed71ebf6943cad23c04696eb73c536b6df876581e69252b7378d"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_al/E4_R6PC2W_P1_docker_query_preflight/attempt-003/p1_handoff.json",
+      "git_blob_bytes": 1207,
+      "git_blob_sha256": "46ab58f5f0002c4ccb7f5192bdce5526d08c5d88a724a9d3e4d51fb1fdaad247"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_al/E4_R6PC2W_P1_docker_query_preflight/attempt-003/runtime_inventory.json",
+      "git_blob_bytes": 19667,
+      "git_blob_sha256": "b112e9a809117b4f22994f86edcade82868b36223c9207edad0eb4112b95fa2a"
+    }
+  ],
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "next_gate": "FRESH_INDEPENDENT_SOL_XHIGH_STANDARD_FAILURE_PACKET_AUDIT_NO_RETRY"
+}
