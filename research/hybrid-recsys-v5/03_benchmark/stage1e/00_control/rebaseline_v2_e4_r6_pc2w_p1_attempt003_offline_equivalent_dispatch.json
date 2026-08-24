@@ -1,17 +1,17 @@
 {
-  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt003-offline-equivalent-dispatch-4.0",
-  "stage_id": "E4-R6-PC2W-P1-ATTEMPT003-OFFLINE-EQUIVALENT-OBSERVATION",
-  "created_at": "2026-08-24T03:47:36.7124840+07:00",
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt003-native-offline-dispatch-5.0",
+  "stage_id": "E4-R6-PC2W-P1-ATTEMPT003-NATIVE-OFFLINE-OBSERVATION-V5",
+  "created_at": "2026-08-24T14:19:20.4707414Z",
   "material_passport": {
     "origin_skill": "experiment-agent",
     "origin_mode": "run",
-    "origin_date": "2026-08-24T03:47:36.7124840+07:00",
+    "origin_date": "2026-08-24T14:19:20.4707414Z",
     "verification_status": "UNVERIFIED",
-    "version_label": "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_dispatch_v4",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt003_native_offline_dispatch_v5",
     "upstream_dependencies": [
-      "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_authorization_v4",
-      "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_contract_v4",
-      "stage1e_e4_r6_pc2w_p1_attempt003_baseline_validation_v1"
+      "stage1e_e4_r6_pc2w_p1_attempt003_native_offline_authorization_v5",
+      "stage1e_e4_r6_pc2w_p1_attempt003_native_offline_contract_v5",
+      "stage1e_e4_r6_pc2w_p1_attempt003_offline_equivalent_validation_v2"
     ],
     "repro_lock": null,
     "experiment_intake_declaration": {
@@ -20,27 +20,27 @@
       "declared_by": "scholar"
     }
   },
-  "runner_checkpoint": "36353894d67f9b6c94f1377362fc66fa9c4c3a9b",
+  "runner_checkpoint": "be88181f8b7d8986bbe850ecce3c645c781e6827",
   "frozen_artifacts": [
     {
       "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc2w_p1_attempt003_offline_equivalent_observation.py",
-      "git_blob_bytes": 31456,
-      "git_blob_sha256": "0d866d43e1cd12fd5be43d19416a6a13ea77de4f5964669eab92952171542fb6"
+      "git_blob_bytes": 29306,
+      "git_blob_sha256": "59896953c4e3aac49c6c51f3afd82d785b65928ea5eaa3b42f245181549cc8de"
     },
     {
       "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt003_offline_equivalent_observation_contract.json",
-      "git_blob_bytes": 4877,
-      "git_blob_sha256": "99e5be4779848e45ab4d56c03bfdb393d9bde308710c6bd104e202c66a1b7fe3"
+      "git_blob_bytes": 5233,
+      "git_blob_sha256": "c3f679578728195a61d368a4f299f612334119c893ec55d7be68fa7b1ad50f20"
     },
     {
       "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt003_offline_equivalent_authorization.json",
-      "git_blob_bytes": 6563,
-      "git_blob_sha256": "912403a5dd60206ef2fa9d4fbae227e1ae048ac7240fe8e743d65b7e36d1c7cc"
+      "git_blob_bytes": 6900,
+      "git_blob_sha256": "0c5c9930c5dafba53e692132714b52cededd808839078dee132cab2ffa3f3b95"
     },
     {
-      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt003_baseline_validation_receipt.json",
-      "git_blob_bytes": 5828,
-      "git_blob_sha256": "83d95f46fbb3b777db6e37744762ee5975917190049eaf9b725110f82a0bdeaa"
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt003_offline_equivalent_validation_receipt.json",
+      "git_blob_bytes": 6382,
+      "git_blob_sha256": "d72591e26cf01820c6a76d6ee00fe89a57a21d065d125c599e6a5bb1614b5fdf"
     }
   ],
   "interpreter": {
@@ -51,7 +51,7 @@
   },
   "execution_binding": {
     "working_directory": "E:\\UIT\\cv\\backend",
-    "output_root": "E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\rebaseline_v2\\wave_al\\E4_R6PC2W_P1_docker_query_preflight\\attempt-003-offline-equivalent-observation",
+    "output_root": "E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\rebaseline_v2\\wave_al\\E4_R6PC2W_P1_docker_query_preflight\\attempt-003-native-offline-observation-v5",
     "output_root_must_be_absent": true,
     "expected_output_files": [
       "observation_command_receipts.json",
@@ -70,23 +70,20 @@
   },
   "execution_controls": {
     "read_only_observation": true,
-    "commands_exactly_once": 9,
+    "commands_exactly_once": 7,
     "ordinary_query_timeout_seconds": 30,
     "automatic_retry_count": 0,
     "docker_desktop_status_advisory_only": true,
-    "unclassified_nonzero_status_not_relabelled_stopped": true,
-    "four_independent_offline_lanes_required": true,
+    "docker_desktop_status_has_no_admission_authority": true,
+    "four_native_lanes_required_per_snapshot": true,
     "two_snapshot_stability_barrier_required": true,
     "win32_named_pipe_absence_required_twice": true,
     "win32_named_pipe_wait_bound_milliseconds": 1,
-    "strict_status_and_daemon_decoding_required": true,
-    "contradictory_daemon_stdout_rejected": true,
+    "strict_status_decoding_for_telemetry": true,
     "exact_wsl_header_required": true,
     "python_orig_argv_enforced": true,
     "process_cim_fail_stop_required": true,
     "unicode_category_c_rejected": true,
-    "running_token_dominates_status": true,
-    "daemon_contradiction_markers_rejected": true,
     "attempt003_immediate_pre_gate_replay_required": true,
     "docker_desktop_start_or_stop_allowed": false,
     "wsl_shutdown_or_terminate_allowed": false,
@@ -106,7 +103,7 @@
     "service_tier_observability": "requested_not_runtime_verifiable_by_thread_coordinator",
     "display_name": "Sol XHigh Standard",
     "write_scope": "READ_ONLY",
-    "required_verdict": "PASS_PC2W_P1_ATTEMPT003_OFFLINE_EQUIVALENT_RUNNER_READY_FOR_EXECUTION"
+    "required_verdict": "PASS_PC2W_P1_ATTEMPT003_NATIVE_OFFLINE_RUNNER_V5_READY_FOR_EXECUTION"
   },
   "superseded_audits": [
     {
@@ -163,7 +160,7 @@
     "any_static_or_independent_audit_failure": "NO_EXECUTION",
     "any_observation_failure": "SEAL_FAILURE_PACKET_AND_REQUIRE_USER_DECISION",
     "automatic_retry": false,
-    "attempt003_open_condition": "validated PASS_PC2W_P1_ATTEMPT003_OFFLINE_EQUIVALENT_BASELINE only"
+    "attempt003_open_condition": "validated PASS_PC2W_P1_ATTEMPT003_NATIVE_OFFLINE_BASELINE_V5 only"
   },
   "truth_state": {
     "RESULT_STATUS": "NOT_RUN",
