@@ -44,9 +44,26 @@
     "service_tier": "default",
     "display_name": "Sol Max Standard",
     "validator_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_p1_attempt003_failure.py",
-    "validator_raw_bytes": 12776,
-    "validator_raw_sha256": "b4051ecb0b53645f09ecaba8d08ee096c3a9e3287d481cd82a9895797999b0af",
+    "validator_raw_bytes": 13845,
+    "validator_raw_sha256": "5f74eeb88a498d604091be103c47b73493f7c1f9659ad7d91d58bb26ea4dea87",
     "expected_verdict": "PASS_PC2W_P1_ATTEMPT003_FAIL_CLOSED_PACKET_VALIDATED"
+  },
+  "fresh_independent_failure_packet_audit": {
+    "thread_id": "01a03462-21d8-7630-8a4e-1f1fb5b9766a",
+    "client_thread_id": "client-new-thread:80e0875f-ecbb-4d0a-9b24-35b5a7bc0ce0",
+    "audited_checkpoint": "abed185dd0d03548b7b1c63386cd8b2f32574331",
+    "verdict": "PASS_PC2W_P1_ATTEMPT003_FAILURE_PACKET_AUDITED_NO_RETRY",
+    "validator_checks": "61/61",
+    "requested_model": "gpt-5.6-sol",
+    "requested_reasoning_effort": "xhigh",
+    "requested_service_tier": "default",
+    "display_name": "Sol XHigh Standard",
+    "actual_model": "UNOBSERVABLE",
+    "actual_reasoning_effort": "UNOBSERVABLE",
+    "actual_service_tier": "UNOBSERVABLE",
+    "fast_or_priority_observed": false,
+    "write_set": [],
+    "runtime_commands_executed": false
   },
   "attempt_result": {
     "verdict": "FAIL_CLOSED_PC2W_P1_ATTEMPT003_BACKEND_OR_POLICY_NOT_ADMISSIBLE",
@@ -142,5 +159,5 @@
     "ACCEPTED_RESULT_ROWS": 0,
     "project_benchmark_numbers": "INVALID_FOR_PAPER"
   },
-  "next_gate": "FRESH_INDEPENDENT_SOL_XHIGH_STANDARD_FAILURE_PACKET_AUDIT_NO_RETRY"
+  "next_gate": "USER_DECISION_REQUIRED_NO_AUTOMATIC_RETRY_AFTER_AUDITED_FAILURE"
 }

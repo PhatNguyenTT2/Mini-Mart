@@ -59,6 +59,7 @@ EXPECTED_COMMAND_IDS = [
 ]
 PACKET_COMMIT = "65b0e50716d4c53d220f917baa316f743e012167"
 EXECUTION_COMMIT = "a61f1b9ff9f27dca439a74885b2ea5c7da352f16"
+AUDIT_VALIDATION_COMMIT = "abed185dd0d03548b7b1c63386cd8b2f32574331"
 
 
 class DuplicateKeyError(ValueError):
@@ -132,7 +133,8 @@ def main() -> int:
     check("worktree_clean", not git(repo, "status", "--porcelain=v1", "--untracked-files=all"))
     check("final_validation_delta", delta(repo, head) == {STATE.as_posix(), RECEIPT.as_posix(), VALIDATOR.as_posix()}, sorted(delta(repo, head)))
     parent = git(repo, "rev-parse", "HEAD^").casefold()
-    check("packet_parent", parent == PACKET_COMMIT, parent)
+    check("audit_validation_parent", parent == AUDIT_VALIDATION_COMMIT, parent)
+    check("packet_parent_of_audit_validation", git(repo, "rev-parse", f"{AUDIT_VALIDATION_COMMIT}^").casefold() == PACKET_COMMIT)
     check("packet_execution_parent", git(repo, "rev-parse", f"{PACKET_COMMIT}^").casefold() == EXECUTION_COMMIT)
     expected_packet_delta = {(OUTPUT_ROOT / name).as_posix() for name in OUTPUTS}
     check("packet_exact_four_files", delta(repo, PACKET_COMMIT) == expected_packet_delta, sorted(delta(repo, PACKET_COMMIT)))
@@ -218,6 +220,15 @@ def main() -> int:
     receipt = load_json(repo / RECEIPT)
     state = load_json(repo / STATE)
     check("failure_receipt_schema", receipt.get("schema_version") == "stage1e-e4-r6-pc2w-p1-attempt003-failure-receipt-1.0")
+    validator_bytes = (repo / VALIDATOR).read_bytes()
+    check(
+        "validator_self_fact",
+        (len(validator_bytes), sha256(validator_bytes))
+        == (
+            receipt.get("central_validation", {}).get("validator_raw_bytes"),
+            receipt.get("central_validation", {}).get("validator_raw_sha256"),
+        ),
+    )
     check("failure_receipt_packet", receipt.get("packet_commit") == PACKET_COMMIT)
     check("failure_receipt_output_facts", {
         Path(row.get("path", "")).name: (row.get("git_blob_bytes"), row.get("git_blob_sha256"))
@@ -225,10 +236,14 @@ def main() -> int:
     } == OUTPUTS)
     check("failure_receipt_primary_class", receipt.get("failure_analysis", {}).get("primary_failure_class") == "POST_STOP_RUNTIME_PROCESS_RESIDUAL_WSLRELAY")
     check("failure_receipt_runner_bug", receipt.get("failure_analysis", {}).get("secondary_runner_defect") == "PROHIBITED_COMMAND_CONDITION_POLARITY_BUG_NON_CAUSAL_TO_FINAL_FAILURE")
-    check("failure_receipt_no_retry", receipt.get("next_gate") == "FRESH_INDEPENDENT_SOL_XHIGH_STANDARD_FAILURE_PACKET_AUDIT_NO_RETRY")
-    check("state_root_status", state.get("state") == "stage1e_rebaseline_v2_r6_pc2w_p1_attempt003_fail_closed_packet_validation_pending")
+    independent_audit = receipt.get("fresh_independent_failure_packet_audit", {})
+    check("failure_packet_audit_verdict", independent_audit.get("verdict") == "PASS_PC2W_P1_ATTEMPT003_FAILURE_PACKET_AUDITED_NO_RETRY")
+    check("failure_packet_audit_write_set", independent_audit.get("write_set") == [])
+    check("failure_packet_audit_standard", independent_audit.get("requested_service_tier") == "default" and independent_audit.get("fast_or_priority_observed") is False)
+    check("failure_receipt_no_retry", receipt.get("next_gate") == "USER_DECISION_REQUIRED_NO_AUTOMATIC_RETRY_AFTER_AUDITED_FAILURE")
+    check("state_root_status", state.get("state") == "stage1e_rebaseline_v2_r6_pc2w_p1_attempt003_fail_closed_packet_audited_no_retry_user_decision_required")
     check("state_truth", state.get("result_status") == "NOT_RUN" and state.get("test_set_opened") == "NO")
-    check("state_next_gate", state.get("next_gate", "").startswith("Attempt-003 executed exactly once and failed closed"))
+    check("state_next_gate", state.get("next_gate", "").startswith("Attempt-003 failure packet passed independent Sol XHigh Standard audit"))
 
     failures = [row for row in checks if not row["pass"]]
     verdict = "PASS_PC2W_P1_ATTEMPT003_FAIL_CLOSED_PACKET_VALIDATED" if not failures else "REWORK_REQUIRED"

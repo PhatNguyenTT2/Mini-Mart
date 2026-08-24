@@ -2,7 +2,7 @@
   "schema_version": "academic-research-pipeline-state-1.0",
   "project": "hybrid-recsys-v5",
   "stage": "1E",
-  "state": "stage1e_rebaseline_v2_r6_pc2w_p1_attempt003_fail_closed_packet_validation_pending",
+  "state": "stage1e_rebaseline_v2_r6_pc2w_p1_attempt003_fail_closed_packet_audited_no_retry_user_decision_required",
   "updated_at": "2026-08-24",
   "model": "gpt-5.6-sol",
   "reasoning": "max",
@@ -15,7 +15,7 @@
     "record": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/wave1_v1_supersession_record.json"
   },
   "rebaseline_v2": {
-    "status": "e4_r6_pc2w_p1_attempt003_fail_closed_packet_validation_pending",
+    "status": "e4_r6_pc2w_p1_attempt003_fail_closed_packet_audited_no_retry_user_decision_required",
     "wave_a_expected": 3,
     "wave_a_active": 0,
     "wave_a_complete": 3,
@@ -778,7 +778,7 @@
       "next_gate": "SUPERSEDED_BY_USER_DECISION_AUTHORIZE_TARGETED_SOURCE_ONLY_EVIDENCE_MATERIALIZATION_REDESIGN"
     },
     "e4_r5": {
-      "status": "R6_PC2W_P1_ATTEMPT003_FAIL_CLOSED_PACKET_VALIDATION_PENDING",
+      "status": "R6_PC2W_P1_ATTEMPT003_FAIL_CLOSED_PACKET_AUDITED_NO_RETRY_USER_DECISION_REQUIRED",
       "entry_checkpoint": "USER_CONFIRMED_TARGETED_SOURCE_ONLY_EVIDENCE_MATERIALIZATION_REDESIGN",
       "source_stage": "R4-G0",
       "source_verdict": "NO_ADMISSIBLE_BUNDLE_STOP_FAIL_CLOSED",
@@ -939,7 +939,7 @@
         "benchmark_admission_authorized": false
       },
       "r6": {
-        "status": "R6_PC2W_P1_ATTEMPT003_FAIL_CLOSED_PACKET_VALIDATION_PENDING",
+        "status": "R6_PC2W_P1_ATTEMPT003_FAIL_CLOSED_PACKET_AUDITED_NO_RETRY_USER_DECISION_REQUIRED",
         "stage_map": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_materialization_stage_map.json",
         "contract": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_bounded_materialization_contract.md",
         "s0": {
@@ -1310,7 +1310,7 @@
           "next_gate": "EXPLICIT_CHANGED_HOST_DECISION_AND_FRESH_PC2_READ_ONLY_HOST_PREFLIGHT_AUTHORIZATION"
         },
         "pc2w": {
-          "status": "P1_ATTEMPT003_FAIL_CLOSED_PACKET_VALIDATION_PENDING",
+          "status": "P1_ATTEMPT003_FAIL_CLOSED_PACKET_AUDITED_NO_RETRY_USER_DECISION_REQUIRED",
           "purpose": "REOPEN_CURRENT_HOST_WITH_NO_OS_EDITION_UPGRADE_USING_A_PREVIOUSLY_UNEVALUATED_WSL2_LINUX_CONTAINER_LANE",
           "user_decision": "CONTINUE_CURRENT_MACHINE_NO_OS_EDITION_UPGRADE_COST_CONSTRAINED_WSL2_DIRECTION",
           "threat_model": "TRUSTED_PINNED_RESEARCH_CODE",
@@ -1567,13 +1567,16 @@
             "install_or_download_performed": false,
             "materialization_performed": false,
             "scientific_execution_performed": false,
-            "test_access_performed": false
+            "test_access_performed": false,
+            "central_failure_packet_validation": "PASS_PC2W_P1_ATTEMPT003_FAIL_CLOSED_PACKET_VALIDATED_61_OF_61",
+            "independent_failure_packet_audit": "PASS_PC2W_P1_ATTEMPT003_FAILURE_PACKET_AUDITED_NO_RETRY",
+            "failure_packet_audited": true
           },
           "scientific_execution_performed": false,
           "result_status": "NOT_RUN",
           "test_set_opened": "NO",
           "accepted_result_rows": 0,
-          "next_gate": "FRESH_INDEPENDENT_SOL_XHIGH_STANDARD_FAILURE_PACKET_AUDIT_NO_RETRY"
+          "next_gate": "USER_DECISION_REQUIRED_NO_AUTOMATIC_RETRY_AFTER_AUDITED_FAILURE"
         },
         "m0_m1": {
           "status": "ATTEMPT002_FAIL_CLOSED_BOTH_ROOTS_RETAINED_IMMUTABLE",
@@ -1638,7 +1641,7 @@
         "project_benchmark_numbers": "INVALID_FOR_PAPER"
       },
       "execution_authorized": false,
-      "next_gate": "FRESH_INDEPENDENT_SOL_XHIGH_STANDARD_FAILURE_PACKET_AUDIT_NO_RETRY"
+      "next_gate": "USER_DECISION_REQUIRED_NO_AUTOMATIC_RETRY_AFTER_AUDITED_FAILURE"
     }
   },
   "central_preregistration_lock": "PASS_R6_S0_BOUNDED_MATERIALIZATION_SCOPE_LOCKED",
@@ -1646,5 +1649,5 @@
   "harmonized_v5": "BLOCKED",
   "external_validation": "BLOCKED",
   "efficiency": "BLOCKED_AFTER_ACCURACY",
-  "next_gate": "Attempt-003 executed exactly once and failed closed after successful query-only evidence because wslrelay remained in both post-stop native closure snapshots. A runner pass-condition polarity defect was also recorded but is non-causal because closure independently failed. No retry is authorized. Fresh Sol XHigh Standard failure-packet audit is required before any user decision. Image acquisition/build, container creation/run, settings changes, materialization, R6-C1R3-LINUX execution, training, evaluation, benchmark admission and TEST access remain blocked."
+  "next_gate": "Attempt-003 failure packet passed independent Sol XHigh Standard audit after one execution and zero retry. Query-only backend evidence passed, but the current PC2W lane remains fail-closed because wslrelay persisted in both post-stop native closure snapshots; the runner polarity defect is recorded as secondary and non-causal. User decision is required: commission evidence-only residual-process policy review, select a changed host, or pause. No automatic retry is authorized. Image acquisition/build, container creation/run, settings changes, materialization, R6-C1R3-LINUX execution, training, evaluation, benchmark admission and TEST access remain blocked."
 }
