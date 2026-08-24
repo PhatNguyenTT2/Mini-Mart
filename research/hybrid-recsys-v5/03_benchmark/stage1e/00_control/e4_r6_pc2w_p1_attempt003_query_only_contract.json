@@ -1,0 +1,113 @@
+{
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt003-query-only-contract-1.0",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "plan",
+    "origin_date": "2026-08-24T00:00:00Z",
+    "verification_status": "UNVERIFIED",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt003_query_only_contract_v1",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_pc2w_p1_attempt003_native_offline_observation_v5",
+      "stage1e_e4_r6_pc2w_p1_attempt003_native_offline_validation_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt003_native_offline_packet_post_audit_v1"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "methods_text_available": true,
+      "code_or_repository_available": true,
+      "data_available": false,
+      "environment_spec_available": true,
+      "expected_output_available": true,
+      "deviation_policy": "No automatic retry or fallback. Any missing or ambiguous gate, query, parser, identity, closure, or integrity evidence fails closed."
+    }
+  },
+  "stage_id": "E4-R6-PC2W-P1-ATTEMPT003",
+  "purpose": "Execute exactly one current-host Docker Desktop start, read-only runtime inventory query, and stop after an immediate replay of the validated native offline gate.",
+  "entry_gate": {
+    "required_validation_verdict": "PASS_PC2W_P1_ATTEMPT003_NATIVE_OFFLINE_V5_VALIDATED",
+    "required_post_audit_verdict": "PASS_PC2W_P1_ATTEMPT003_NATIVE_OFFLINE_V5_PACKET_AUDITED",
+    "attempt003_execution_previously_opened": false
+  },
+  "native_pre_gate_replay_immediately_before_start": true,
+  "native_pre_gate_lanes": [
+    "strict WSL verbose inventory parses completely, contains docker-desktop exactly once as Stopped, and every distro is Stopped",
+    "strict WSL running inventory parses completely and is empty",
+    "WaitNamedPipeW one-millisecond non-connecting probe proves dockerDesktopLinuxEngine absent with Win32 error 2",
+    "strict target Docker runtime process-name inventory parses completely and is empty"
+  ],
+  "docker_desktop_status_advisory_only": true,
+  "docker_desktop_status_admission_authority": false,
+  "authorized_runtime_transitions": {
+    "docker_desktop_start_attempts_exactly": 1,
+    "docker_desktop_stop_attempts_exactly": 1,
+    "automatic_retry_count": 0,
+    "stop_is_in_finally_after_any_start_attempt": true
+  },
+  "authorized_queries": [
+    "Docker Desktop status telemetry before, during, and after",
+    "Docker desktop-linux container and image inventories before and after the query window",
+    "Docker client/server version, info, context inspect, system df, and bounded events",
+    "WSL identity and strict verbose state inventory",
+    "Windows and installed Docker Desktop file identity",
+    "redacted process and TCP connection inventory for the already-started runtime"
+  ],
+  "prohibited_actions": [
+    "automatic retry or fallback",
+    "image pull, build, import, load, tag, push, remove, or prune",
+    "container create, run, exec, start, restart, or mutation",
+    "Docker or WSL settings change",
+    "package, distro, source, data, model, or checkpoint download or installation",
+    "dataset materialization, preprocessing, training, evaluation, benchmark, or TEST access",
+    "persistence of raw stdout, raw stderr, proxy values, secrets, or unredacted remote addresses"
+  ],
+  "post_stop_native_closure": {
+    "snapshots_required": 2,
+    "required_lanes_per_snapshot": 4,
+    "stable_across_snapshots": true,
+    "wsl_inventory_must_equal_pre_start": true,
+    "docker_desktop_status_remains_advisory_only": true
+  },
+  "output_contract": {
+    "output_root": "E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\rebaseline_v2\\wave_al\\E4_R6PC2W_P1_docker_query_preflight\\attempt-003",
+    "immutable_and_must_not_preexist": true,
+    "exact_files": [
+      "command_receipts.json",
+      "p1_execution_receipt.json",
+      "p1_handoff.json",
+      "runtime_inventory.json"
+    ]
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0
+  },
+  "model_policy": {
+    "central_model": "gpt-5.6-sol",
+    "central_reasoning_effort": "max",
+    "central_service_tier": "default",
+    "fresh_audit_model": "gpt-5.6-sol",
+    "fresh_audit_reasoning_effort": "xhigh",
+    "fresh_audit_service_tier": "default",
+    "fast_or_priority_allowed": false
+  },
+  "official_sources": [
+    {
+      "url": "https://learn.microsoft.com/en-us/windows/win32/api/namedpipeapi/nf-namedpipeapi-waitnamedpipew",
+      "binding": "WaitNamedPipeW return and GetLastError semantics"
+    },
+    {
+      "url": "https://learn.microsoft.com/en-us/windows/wsl/basic-commands",
+      "binding": "WSL list verbose and running inventory semantics"
+    },
+    {
+      "url": "https://docs.docker.com/desktop/features/desktop-cli/",
+      "binding": "Docker Desktop start, stop, and status CLI surface"
+    }
+  ],
+  "verdict_lanes": [
+    "PASS_PC2W_P1_ATTEMPT003_QUERY_EVIDENCE_READY_FOR_CENTRAL_G1",
+    "FAIL_CLOSED_PC2W_P1_ATTEMPT003_BACKEND_OR_POLICY_NOT_ADMISSIBLE",
+    "HANDOFF_INCOMPLETE"
+  ]
+}
