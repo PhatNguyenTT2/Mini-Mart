@@ -1,0 +1,162 @@
+{
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt005-instrumented-contract-1.0",
+  "stage_id": "E4-R6-PC2W-P1-ATTEMPT005",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "plan",
+    "origin_date": "2026-08-25T00:00:00+07:00",
+    "verification_status": "UNVERIFIED",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt005_instrumented_contract_v1",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_pc2w_p1_residual_process_policy_review_validation_receipt_v1",
+      "user_authorized_attempt005_instrumented_current_host"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-25T00:00:00+07:00",
+      "declared_by": "scholar"
+    }
+  },
+  "purpose": "Run one immutable instrumented current-host admission attempt using a synchronous Docker Desktop stop followed by exactly one documented WSL utility-VM shutdown and three fixed closure snapshots.",
+  "authorization_basis": {
+    "user_text": "Ủy quyền và tiếp tục",
+    "selected_policy_option": "AUTHORIZE_ATTEMPT005_INSTRUMENTED_CURRENT_HOST",
+    "decision_context": "The immediately preceding mandatory checkpoint defined this option as one new current-host attempt with exactly one synchronous Docker Desktop stop, one explicit wsl --shutdown, process identity and redacted socket lineage, and no automatic retry.",
+    "authorization_does_not_open_scientific_execution": true
+  },
+  "supersession_policy": {
+    "attempt004_preserved_immutable": true,
+    "attempt004_verdict_preserved": "FAIL_CLOSED_PC2W_P1_ATTEMPT004_BACKEND_OR_POLICY_NOT_ADMISSIBLE",
+    "attempt005_is_a_new_output_root": true,
+    "in_place_retry_or_overwrite_forbidden": true,
+    "later_observations_cannot_repair_attempt004": true
+  },
+  "entry_gate": {
+    "policy_review_verdict": "POLICY_RELAXATION_DENIED_ATTEMPT004_REMAINS_FAIL_CLOSED",
+    "policy_validation_verdict": "PASS_PC2W_P1_RESIDUAL_PROCESS_POLICY_REVIEW_VALIDATED",
+    "fresh_static_audit_required": true,
+    "exact_execution_command_requires_final_user_confirmation": true,
+    "execution_worktree_must_be_clean": true,
+    "output_root_must_not_preexist": true
+  },
+  "native_pre_gate": {
+    "replayed_immediately_before_start": true,
+    "required_lanes": [
+      "all WSL distributions parse strictly and are Stopped",
+      "docker-desktop appears exactly once and is Stopped",
+      "WSL running inventory parses strictly and is empty",
+      "dockerDesktopLinuxEngine named pipe is absent with Win32 error 2",
+      "target runtime process population is exactly zero",
+      "target-process TCP ownership population is exactly zero",
+      "host and runtime identity payloads are complete",
+      "C and E disk thresholds pass"
+    ]
+  },
+  "authorized_runtime_transitions": {
+    "docker_desktop_start_attempts_maximum": 1,
+    "docker_desktop_stop_attempts_exactly_after_any_start": 1,
+    "wsl_shutdown_attempts_exactly_after_stop": 1,
+    "automatic_retry_count": 0,
+    "force_kill_count": 0,
+    "service_restart_count": 0,
+    "settings_change_count": 0
+  },
+  "post_shutdown_closure": {
+    "settling_seconds": 20,
+    "snapshots_required": 3,
+    "snapshot_barrier_seconds": 15,
+    "required_lanes_per_snapshot": [
+      "all WSL distributions Stopped",
+      "docker-desktop exactly Stopped",
+      "WSL running inventory empty",
+      "dockerDesktopLinuxEngine named pipe absent with Win32 error 2",
+      "target process population empty",
+      "target-process TCP ownership population empty"
+    ],
+    "snapshots_must_be_stable": true,
+    "wsl_inventory_must_equal_pre_start": true,
+    "name_only_allowlist_forbidden": true,
+    "signed_binary_cannot_override_nonzero_population": true,
+    "any_missing_or_ambiguous_field_fails_closed": true
+  },
+  "instrumented_process_fields": [
+    "Name",
+    "ProcessId",
+    "ParentProcessId",
+    "ParentNameHash",
+    "ParentExecutablePathHash",
+    "ExecutablePathHash",
+    "ExecutableFileSha256",
+    "FileVersion",
+    "AuthenticodeStatus",
+    "SignerSubjectHash",
+    "CreationTimeUtc",
+    "CommandLineHash"
+  ],
+  "instrumented_tcp_fields": [
+    "State",
+    "LocalAddressHash",
+    "LocalPort",
+    "RemoteAddressHash",
+    "RemotePort",
+    "OwningProcess"
+  ],
+  "privacy_controls": {
+    "raw_stdout_or_stderr_persisted": false,
+    "raw_process_paths_persisted": false,
+    "raw_command_lines_persisted": false,
+    "raw_network_addresses_persisted": false,
+    "proxy_values_persisted": false,
+    "exception_messages_persisted": false
+  },
+  "authorized_queries": [
+    "Docker Desktop status telemetry before, during, and after",
+    "Docker desktop-linux container and image inventories before and after the query window",
+    "Docker client/server version, info, context inspect, system df, and bounded events",
+    "WSL state and version identity",
+    "Windows and installed Docker Desktop file identity",
+    "hashed process identity and redacted target-process TCP ownership"
+  ],
+  "prohibited_actions": [
+    "automatic retry or fallback",
+    "force-kill or service restart",
+    "Docker or WSL settings change",
+    "image pull, build, import, load, tag, push, remove, or prune",
+    "container create, run, exec, start, restart, or mutation",
+    "package, distro, source, data, model, or checkpoint download or installation",
+    "dataset materialization, preprocessing, training, evaluation, benchmark admission, or TEST access",
+    "Python bytecode or __pycache__ persistence"
+  ],
+  "output_contract": {
+    "output_root": "E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\rebaseline_v2\\wave_an\\E4_R6PC2W_P1_attempt005_instrumented",
+    "immutable_and_must_not_preexist": true,
+    "exact_files": [
+      "command_receipts.json",
+      "p1_execution_receipt.json",
+      "p1_handoff.json",
+      "runtime_inventory.json"
+    ],
+    "extra_files_allowed": false
+  },
+  "model_policy": {
+    "central_model": "gpt-5.6-sol",
+    "central_reasoning_effort": "max",
+    "central_service_tier": "default",
+    "fresh_static_audit_model": "gpt-5.6-sol",
+    "fresh_static_audit_reasoning_effort": "xhigh",
+    "fresh_static_audit_service_tier": "default",
+    "fast_or_priority_allowed": false
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "verdict_lanes": [
+    "PASS_PC2W_P1_ATTEMPT005_INSTRUMENTED_CURRENT_HOST_ADMITTED_FOR_CENTRAL_G1",
+    "FAIL_CLOSED_PC2W_P1_ATTEMPT005_CURRENT_HOST_NOT_ADMISSIBLE",
+    "HANDOFF_INCOMPLETE"
+  ]
+}

@@ -2,7 +2,7 @@
   "schema_version": "academic-research-pipeline-state-1.0",
   "project": "hybrid-recsys-v5",
   "stage": "1E",
-  "state": "stage1e_rebaseline_v2_r6_pc2w_p1_attempt004_residual_policy_review_centrally_validated_current_attempt_not_admissible_user_decision_required",
+  "state": "stage1e_rebaseline_v2_r6_pc2w_p1_attempt005_packet_preparation_authorized_runner_freeze_in_progress_no_execution",
   "updated_at": "2026-08-25",
   "model": "gpt-5.6-sol",
   "reasoning": "max",
@@ -15,7 +15,7 @@
     "record": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/wave1_v1_supersession_record.json"
   },
   "rebaseline_v2": {
-    "status": "e4_r6_pc2w_p1_attempt004_residual_policy_review_centrally_validated_current_attempt_not_admissible_user_decision_required",
+    "status": "e4_r6_pc2w_p1_attempt005_packet_preparation_authorized_runner_freeze_in_progress_no_execution",
     "wave_a_expected": 3,
     "wave_a_active": 0,
     "wave_a_complete": 3,
@@ -939,7 +939,7 @@
         "benchmark_admission_authorized": false
       },
       "r6": {
-        "status": "R6_PC2W_P1_ATTEMPT004_RESIDUAL_POLICY_REVIEW_CENTRALLY_VALIDATED_CURRENT_ATTEMPT_NOT_ADMISSIBLE_USER_DECISION_REQUIRED",
+        "status": "R6_PC2W_P1_ATTEMPT005_PACKET_PREPARATION_AUTHORIZED_RUNNER_FREEZE_IN_PROGRESS_NO_EXECUTION",
         "stage_map": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_materialization_stage_map.json",
         "contract": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_bounded_materialization_contract.md",
         "s0": {
@@ -1310,7 +1310,7 @@
           "next_gate": "EXPLICIT_CHANGED_HOST_DECISION_AND_FRESH_PC2_READ_ONLY_HOST_PREFLIGHT_AUTHORIZATION"
         },
         "pc2w": {
-          "status": "P1_ATTEMPT004_RESIDUAL_POLICY_REVIEW_CENTRALLY_VALIDATED_CURRENT_ATTEMPT_NOT_ADMISSIBLE_USER_DECISION_REQUIRED",
+          "status": "P1_ATTEMPT005_PACKET_PREPARATION_AUTHORIZED_RUNNER_FREEZE_IN_PROGRESS_NO_EXECUTION",
           "purpose": "REOPEN_CURRENT_HOST_WITH_NO_OS_EDITION_UPGRADE_USING_A_PREVIOUSLY_UNEVALUATED_WSL2_LINUX_CONTAINER_LANE",
           "user_decision": "CONTINUE_CURRENT_MACHINE_NO_OS_EDITION_UPGRADE_COST_CONSTRAINED_WSL2_DIRECTION",
           "threat_model": "TRUSTED_PINNED_RESEARCH_CODE",
@@ -1653,11 +1653,38 @@
             "test_access_performed": false,
             "next_gate": "MANDATORY_USER_DECISION_AUTHORIZE_ATTEMPT005_INSTRUMENTED_CURRENT_HOST_OR_SELECT_CHANGED_HOST_OR_PAUSE"
           },
+          "p1_attempt005_instrumented": {
+            "stage_id": "E4-R6-PC2W-P1-ATTEMPT005",
+            "status": "PACKET_PREPARATION_AUTHORIZED_RUNNER_FREEZE_IN_PROGRESS",
+            "user_decision": "AUTHORIZE_ATTEMPT005_INSTRUMENTED_CURRENT_HOST",
+            "user_decision_text": "Ủy quyền và tiếp tục",
+            "attempt004_verdict_preserved": true,
+            "attempt005_authorized": true,
+            "runner": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc2w_p1_attempt005_instrumented.py",
+            "contract": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt005_instrumented_contract.json",
+            "static_packet_validator": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_p1_attempt005_static_packet.py",
+            "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_an/E4_R6PC2W_P1_attempt005_instrumented",
+            "execution_previously_opened": false,
+            "fresh_static_audit_required": true,
+            "exact_command_confirmation_required": true,
+            "docker_desktop_start_attempts_authorized": 1,
+            "docker_desktop_stop_attempts_authorized": 1,
+            "wsl_shutdown_attempts_authorized": 1,
+            "closure_snapshots_required": 3,
+            "post_shutdown_settling_seconds": 20,
+            "snapshot_barrier_seconds": 15,
+            "automatic_retry_count": 0,
+            "runtime_commands_executed": false,
+            "materialization_performed": false,
+            "scientific_execution_performed": false,
+            "test_access_performed": false,
+            "next_gate": "FREEZE_AND_FRESH_STANDARD_STATIC_AUDIT_BEFORE_EXACT_COMMAND_CONFIRMATION"
+          },
           "scientific_execution_performed": false,
           "result_status": "NOT_RUN",
           "test_set_opened": "NO",
           "accepted_result_rows": 0,
-          "next_gate": "MANDATORY_USER_DECISION_AUTHORIZE_ATTEMPT005_INSTRUMENTED_CURRENT_HOST_OR_SELECT_CHANGED_HOST_OR_PAUSE"
+          "next_gate": "FREEZE_AND_FRESH_STANDARD_STATIC_AUDIT_BEFORE_EXACT_COMMAND_CONFIRMATION"
         },
         "m0_m1": {
           "status": "ATTEMPT002_FAIL_CLOSED_BOTH_ROOTS_RETAINED_IMMUTABLE",
@@ -1722,7 +1749,7 @@
         "project_benchmark_numbers": "INVALID_FOR_PAPER"
       },
       "execution_authorized": false,
-      "next_gate": "MANDATORY_USER_DECISION_AUTHORIZE_ATTEMPT005_INSTRUMENTED_CURRENT_HOST_OR_SELECT_CHANGED_HOST_OR_PAUSE"
+      "next_gate": "FREEZE_AND_FRESH_STANDARD_STATIC_AUDIT_BEFORE_EXACT_COMMAND_CONFIRMATION"
     }
   },
   "central_preregistration_lock": "PASS_R6_S0_BOUNDED_MATERIALIZATION_SCOPE_LOCKED",
@@ -1730,5 +1757,5 @@
   "harmonized_v5": "BLOCKED",
   "external_validation": "BLOCKED",
   "efficiency": "BLOCKED_AFTER_ACCURACY",
-  "next_gate": "The evidence-only residual-process policy review passed central deterministic validation 90/90. Microsoft and Docker documentation establish component and command semantics but provide no wslrelay post-stop cleanup SLA; the Attempt-004 packet captured only the base process name and cannot establish PID, parent, executable, signature, age, or socket lineage. Policy relaxation is denied and Attempt-004 remains fail-closed. A mandatory user decision is required: authorize one new instrumented current-host Attempt-005 with exactly one synchronous Docker Desktop stop and one explicit wsl --shutdown plus identity/socket receipts, select a changed host, or pause. No automatic retry is authorized. Materialization, R6-C1R3-LINUX execution, training, evaluation, benchmark admission and TEST access remain blocked."
+  "next_gate": "The scholar selected AUTHORIZE_ATTEMPT005_INSTRUMENTED_CURRENT_HOST. Packet preparation is in progress for one immutable current-host attempt with at most one Docker Desktop start, exactly one synchronous Docker Desktop stop after any start, exactly one wsl --shutdown after stop, and three fixed process-identity plus redacted TCP closure snapshots. A fresh Sol XHigh Standard static audit and exact-command confirmation remain mandatory before execution. No runtime command, retry, materialization, training, evaluation, benchmark admission or TEST access has occurred."
 }
