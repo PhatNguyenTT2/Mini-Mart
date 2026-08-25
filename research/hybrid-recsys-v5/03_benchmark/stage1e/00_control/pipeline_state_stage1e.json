@@ -2,7 +2,7 @@
   "schema_version": "academic-research-pipeline-state-1.0",
   "project": "hybrid-recsys-v5",
   "stage": "1E",
-  "state": "stage1e_rebaseline_v2_r6_pc2w_p1_attempt005_fail_closed_packet_audited_no_retry_user_decision_required",
+  "state": "stage1e_rebaseline_v2_r6_pc2w_p1_attempt006_baseline_packet_audited_ready_for_admission_packet_design",
   "updated_at": "2026-08-25",
   "model": "gpt-5.6-sol",
   "reasoning": "max",
@@ -15,7 +15,7 @@
     "record": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/wave1_v1_supersession_record.json"
   },
   "rebaseline_v2": {
-    "status": "e4_r6_pc2w_p1_attempt005_fail_closed_packet_audited_no_retry_user_decision_required",
+    "status": "e4_r6_pc2w_p1_attempt006_baseline_packet_audited_ready_for_admission_packet_design",
     "wave_a_expected": 3,
     "wave_a_active": 0,
     "wave_a_complete": 3,
@@ -1791,11 +1791,58 @@
             "test_access_performed": false,
             "next_gate": "USER_DECISION_REQUIRED_NO_AUTOMATIC_RETRY_AFTER_AUDITED_ATTEMPT005_FAILURE"
           },
+          "p1_attempt006_baseline_remediation": {
+            "stage_id": "E4-R6-PC2W-P1-ATTEMPT006",
+            "status": "COMPLETE_BASELINE_PACKET_AUDITED_READY_FOR_ADMISSION_PACKET_DESIGN",
+            "entry_packet_commit": "ee82fd0f4bbd0bd09e986dcc81e09fd115278165",
+            "output_packet_commit": "0a60cdef65daa0bc131feb119b6bc116371d100f",
+            "contract": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt006_baseline_remediation_contract.json",
+            "authorization": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt006_user_authorization.json",
+            "runner": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc2w_p1_attempt006_baseline_remediation.py",
+            "static_packet_validator": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_p1_attempt006_static_packet.py",
+            "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ao/E4_R6PC2W_P1_attempt006_baseline_remediation",
+            "audit_receipt": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt006_baseline_packet_audit_receipt.json",
+            "independent_audit": {
+              "task_id": "01a03579-f8d2-7062-bec8-0677063d880a",
+              "verdict": "PASS_PC2W_P1_ATTEMPT006_BASELINE_PACKET_AUDITED_READY_FOR_ADMISSION_PACKET_DESIGN",
+              "authoritative_checks_passed": 460,
+              "authoritative_checks_total": 460,
+              "strict_json_passed": 9,
+              "strict_json_total": 9,
+              "native_lanes_passed": 32,
+              "native_lanes_total": 32,
+              "blockers": 0,
+              "runtime_commands_executed": false,
+              "write_set": [],
+              "requested_model": "gpt-5.6-sol",
+              "requested_reasoning_effort": "xhigh",
+              "requested_service_tier": "default",
+              "actual_profile_observability": "UNOBSERVABLE"
+            },
+            "execution_result": {
+              "verdict": "PASS_PC2W_P1_ATTEMPT006_BASELINE_REMEDIATED_READY_FOR_ADMISSION_PACKET",
+              "baseline_mode": "ALREADY_CLOSED_ZERO_MUTATION",
+              "commands_recorded": 18,
+              "docker_desktop_stop_attempts": 0,
+              "wsl_shutdown_attempts": 0,
+              "automatic_retry_count": 0,
+              "closure_snapshots": 3,
+              "snapshots_stable": true,
+              "benchmark_admission_opened": false
+            },
+            "materialization_performed": false,
+            "scientific_execution_performed": false,
+            "test_access_performed": false,
+            "result_status": "NOT_RUN",
+            "test_set_opened": "NO",
+            "accepted_result_rows": 0,
+            "next_gate": "DESIGN_AND_STATIC_AUDIT_FRESH_ADMISSION_PACKET_BEFORE_ANY_DOCKER_START_OR_DAEMON_QUERY"
+          },
           "scientific_execution_performed": false,
           "result_status": "NOT_RUN",
           "test_set_opened": "NO",
           "accepted_result_rows": 0,
-          "next_gate": "USER_DECISION_REQUIRED_NO_AUTOMATIC_RETRY_AFTER_AUDITED_ATTEMPT005_FAILURE"
+          "next_gate": "DESIGN_AND_STATIC_AUDIT_FRESH_ADMISSION_PACKET_BEFORE_ANY_DOCKER_START_OR_DAEMON_QUERY"
         },
         "m0_m1": {
           "status": "ATTEMPT002_FAIL_CLOSED_BOTH_ROOTS_RETAINED_IMMUTABLE",

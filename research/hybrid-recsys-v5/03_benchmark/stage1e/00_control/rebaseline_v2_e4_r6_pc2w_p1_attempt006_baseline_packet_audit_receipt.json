@@ -1,0 +1,134 @@
+{
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt006-baseline-packet-audit-receipt-1.0",
+  "stage_id": "E4-R6-PC2W-P1-ATTEMPT006",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "validate",
+    "origin_date": "2026-08-25T00:00:00+07:00",
+    "verification_status": "VERIFIED",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt006_baseline_packet_audit_receipt_v1",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_pc2w_p1_attempt006_baseline_remediation_execution_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt006_baseline_remediation_contract_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt005_failure_receipt_v1"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-25T00:00:00+07:00",
+      "declared_by": "scholar"
+    }
+  },
+  "audit_binding": {
+    "task_id": "01a03579-f8d2-7062-bec8-0677063d880a",
+    "audited_checkpoint": "0a60cdef65daa0bc131feb119b6bc116371d100f",
+    "entry_checkpoint": "ee82fd0f4bbd0bd09e986dcc81e09fd115278165",
+    "control_packet_parent": "c4d471a5ac5c9e763e66a1d7288367c5c905e1e9",
+    "worktree_clean_before_and_after": true,
+    "runtime_commands_executed_by_auditor": false,
+    "write_set": []
+  },
+  "audit_summary": {
+    "authoritative_checks_passed": 460,
+    "authoritative_checks_total": 460,
+    "strict_json_passed": 9,
+    "strict_json_total": 9,
+    "native_lanes_passed": 32,
+    "native_lanes_total": 32,
+    "pass_conditions_passed": 10,
+    "pass_conditions_total": 10,
+    "blockers": [],
+    "excluded_diagnostics": {
+      "count": 8,
+      "class": "WINDIR_ARGV_PREIMAGE_CASE_DEPENDENT",
+      "status": "UNOBSERVABLE_RAW_PATHS_INTENTIONALLY_NOT_PERSISTED",
+      "effect_on_verdict": "NONE"
+    }
+  },
+  "audited_output_commit": {
+    "commit": "0a60cdef65daa0bc131feb119b6bc116371d100f",
+    "parent": "ee82fd0f4bbd0bd09e986dcc81e09fd115278165",
+    "exact_write_set": [
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ao/E4_R6PC2W_P1_attempt006_baseline_remediation/command_receipts.json",
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ao/E4_R6PC2W_P1_attempt006_baseline_remediation/p1_execution_receipt.json",
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ao/E4_R6PC2W_P1_attempt006_baseline_remediation/p1_handoff.json",
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ao/E4_R6PC2W_P1_attempt006_baseline_remediation/runtime_inventory.json"
+    ],
+    "output_facts": [
+      {
+        "name": "command_receipts.json",
+        "bytes": 15103,
+        "sha256": "0c708d53732aeaaa7c525111bd7086fce943cce5ffab2d580f293942f53ffe2c"
+      },
+      {
+        "name": "p1_execution_receipt.json",
+        "bytes": 4710,
+        "sha256": "430becb7502b90058614671832daf6604aaa0d00166bd200719383570cae2900"
+      },
+      {
+        "name": "p1_handoff.json",
+        "bytes": 1383,
+        "sha256": "5a0847ed7229e0de5b7ebc9e40ec4111304ac6a1803cf2de5b7796edc4d0c955"
+      },
+      {
+        "name": "runtime_inventory.json",
+        "bytes": 9790,
+        "sha256": "2c07fd7b7bc73d51d58071999eb062831e75261a2674d57df796cdf6bc3a5298"
+      }
+    ]
+  },
+  "runtime_result": {
+    "producer_verdict": "PASS_PC2W_P1_ATTEMPT006_BASELINE_REMEDIATED_READY_FOR_ADMISSION_PACKET",
+    "baseline_mode": "ALREADY_CLOSED_ZERO_MUTATION",
+    "commands_recorded": 18,
+    "command_ids": [
+      "B00",
+      "B01",
+      "B02",
+      "B03",
+      "B04",
+      "B07",
+      "B08",
+      "B09",
+      "B10",
+      "B11",
+      "B12",
+      "B13",
+      "B14",
+      "B15",
+      "B16",
+      "B17",
+      "B18",
+      "B19"
+    ],
+    "docker_desktop_stop_attempts": 0,
+    "wsl_shutdown_attempts": 0,
+    "automatic_retry_count": 0,
+    "fallback_count": 0,
+    "closure_snapshots": 3,
+    "snapshots_stable": true,
+    "native_state_passed_pre_and_a_b_c": true,
+    "docker_desktop_status_advisory_only": true,
+    "benchmark_admission_opened": false,
+    "materialization_performed": false,
+    "training_performed": false,
+    "evaluation_performed": false
+  },
+  "preserved_truth": {
+    "attempt005_verdict": "FAIL_CLOSED_PC2W_P1_ATTEMPT005_CURRENT_HOST_NOT_ADMISSIBLE",
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "model_policy": {
+    "requested_model": "gpt-5.6-sol",
+    "requested_reasoning_effort": "xhigh",
+    "requested_service_tier": "default",
+    "fast_or_priority_allowed": false,
+    "actual_model_reasoning_and_service_tier": "UNOBSERVABLE",
+    "observable_model_tier_violation": false
+  },
+  "verdict": "PASS_PC2W_P1_ATTEMPT006_BASELINE_PACKET_AUDITED_READY_FOR_ADMISSION_PACKET_DESIGN",
+  "next_gate": "DESIGN_AND_STATIC_AUDIT_FRESH_ADMISSION_PACKET_BEFORE_ANY_DOCKER_START_OR_DAEMON_QUERY"
+}
