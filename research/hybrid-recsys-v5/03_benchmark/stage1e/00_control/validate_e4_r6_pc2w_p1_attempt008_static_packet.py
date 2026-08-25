@@ -16,7 +16,7 @@ from typing import Any
 sys.dont_write_bytecode = True
 
 CONTROL = Path("research/hybrid-recsys-v5/03_benchmark/stage1e/00_control")
-PACKET_PARENT = "b973ed673a314d6223265712b95d2a7ce51b02f3"
+PACKET_PARENT = "dabff18a5dbd68f69a8e03e477e59507906f302e"
 CONTRACT = CONTROL / "e4_r6_pc2w_p1_attempt008_admission_observation_contract.json"
 AUTHORIZATION = CONTROL / "e4_r6_pc2w_p1_attempt008_execution_authorization.json"
 RUNNER = CONTROL / "execute_e4_r6_pc2w_p1_attempt008_admission_observation.py"
@@ -172,7 +172,15 @@ def nested_cleanup_finally_ok(tree: ast.AST) -> bool:
 
 
 def status_paths(repo_root: Path) -> set[Path]:
-    raw = str(git(repo_root, "status", "--porcelain=v1", "--untracked-files=all"))
+    raw = subprocess.run(
+        ["git", "status", "--porcelain=v1", "--untracked-files=all"],
+        cwd=repo_root,
+        shell=False,
+        check=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+    ).stdout
     paths: set[Path] = set()
     for line in raw.splitlines():
         if not line:
@@ -198,13 +206,14 @@ def validate(repo_root: Path, packet_commit: str | None) -> dict[str, Any]:
         check("packet_one_parent", len(parents) == 2)
         check("packet_parent_exact", len(parents) == 2 and parents[1] == PACKET_PARENT)
         changed = {
-            Path(value)
+            value
             for value in str(
-                git(repo_root, "diff-tree", "--no-commit-id", "--name-only", "-r", packet_commit)
+                git(repo_root, "diff-tree", "--no-commit-id", "--name-status", "-r", packet_commit)
             ).splitlines()
             if value
         }
-        check("packet_exact_four_file_delta", changed == PACKET_FILES)
+        expected_changed = {f"M\t{path.as_posix()}" for path in PACKET_FILES}
+        check("packet_exact_four_file_revision_delta", changed == expected_changed)
         check("packet_ancestor_of_head", subprocess.run(
             ["git", "merge-base", "--is-ancestor", packet_commit, head],
             cwd=repo_root,
@@ -229,11 +238,15 @@ def validate(repo_root: Path, packet_commit: str | None) -> dict[str, Any]:
 
     contract = strict_json_bytes((repo_root / CONTRACT).read_bytes())
     authorization = strict_json_bytes((repo_root / AUTHORIZATION).read_bytes())
-    check("contract_schema", contract.get("schema_version") == "stage1e-e4-r6-pc2w-p1-attempt008-admission-observation-contract-1.0")
-    check("authorization_schema", authorization.get("schema_version") == "stage1e-e4-r6-pc2w-p1-attempt008-execution-authorization-1.0")
+    check("contract_schema", contract.get("schema_version") == "stage1e-e4-r6-pc2w-p1-attempt008-admission-observation-contract-2.0")
+    check("authorization_schema", authorization.get("schema_version") == "stage1e-e4-r6-pc2w-p1-attempt008-execution-authorization-2.0")
     check("stage_ids", contract.get("stage_id") == authorization.get("stage_id") == "E4-R6-PC2W-P1-ATTEMPT008")
     check("contract_packet_parent", contract.get("packet_entry_gate", {}).get("packet_parent_checkpoint") == PACKET_PARENT)
     check("contract_packet_files", set(map(Path, contract.get("packet_entry_gate", {}).get("packet_files", []))) == PACKET_FILES)
+    check("contract_four_file_revision", contract.get("packet_entry_gate", {}).get("packet_commit_delta_must_be_exactly_four_modified_control_files") is True)
+    decision = authorization.get("user_decision", {})
+    check("authorization_decision_status", decision.get("status") == "CONFIRMED")
+    check("authorization_decision_scope", decision.get("confirmed_scope") == "REPAIR_PROBE_PARSER_AND_PREPARE_ATTEMPT008_DORMANT_PACKET")
     check("runtime_denied", contract.get("scope_boundary", {}).get("runtime_execution_authorized_now") is False and authorization.get("user_decision", {}).get("runtime_execution_authorized_now") is False)
     check("exact_confirmation_absent", contract.get("scope_boundary", {}).get("exact_command_confirmation_received_now") is False and authorization.get("user_decision", {}).get("exact_process_command_confirmed_now") is False)
     check("one_shot", contract.get("packet_entry_gate", {}).get("execution_attempts_maximum") == 1)
@@ -241,7 +254,19 @@ def validate(repo_root: Path, packet_commit: str | None) -> dict[str, Any]:
     check("truth_not_run", contract.get("truth_state", {}).get("RESULT_STATUS") == authorization.get("truth_state", {}).get("RESULT_STATUS") == "NOT_RUN")
     check("truth_test_closed", contract.get("truth_state", {}).get("TEST_SET_OPENED") == authorization.get("truth_state", {}).get("TEST_SET_OPENED") == "NO")
     check("truth_rows_zero", contract.get("truth_state", {}).get("ACCEPTED_RESULT_ROWS") == authorization.get("truth_state", {}).get("ACCEPTED_RESULT_ROWS") == 0)
-    check("fast_prohibited", contract.get("model_policy", {}).get("fast_or_priority_allowed") is False and authorization.get("model_policy", {}).get("fast_or_priority_allowed") is False)
+    expected_model_policy = {
+        "requested_model": "gpt-5.6-sol",
+        "requested_reasoning_effort": "max",
+        "requested_service_tier": "default",
+        "requested_display_name": "Sol Max Standard",
+        "fresh_audit_requested_model": "gpt-5.6-sol",
+        "fresh_audit_requested_reasoning_effort": "xhigh",
+        "fast_or_priority_allowed": False,
+        "actual_model_reasoning_and_service_tier": "UNOBSERVABLE",
+    }
+    check("model_policy_exact_match", contract.get("model_policy") == authorization.get("model_policy"))
+    check("model_policy_expected_values", authorization.get("model_policy") == expected_model_policy)
+    check("fast_prohibited", expected_model_policy["fast_or_priority_allowed"] is False)
 
     runner_raw = (repo_root / RUNNER).read_bytes()
     runner_source = runner_raw.decode("utf-8")
@@ -251,6 +276,11 @@ def validate(repo_root: Path, packet_commit: str | None) -> dict[str, Any]:
     check("runner_imports_r1_parser", aliases.get("parser_v2") == "e4_r6_pc2w_p1_attempt008_probe_contract")
     check("runner_imports_r2_probes", aliases.get("probes_v2") == "e4_r6_pc2w_p1_attempt008_safe_probe_envelopes")
     check("runner_packet_parent", assigned_literal(runner_tree, "PACKET_PARENT") == PACKET_PARENT)
+    check(
+        "runner_authorization_consumer_user_decision",
+        'authorization.get("user_decision", {})' in runner_source
+        and 'authorization.get("current_authorization", {})' not in runner_source,
+    )
     check("runner_command_ids", assigned_literal(runner_tree, "EXPECTED_COMMAND_IDS") == EXPECTED_COMMAND_IDS)
     check("runner_output_files", set(assigned_literal(runner_tree, "EXPECTED_OUTPUT_FILES") or []) == EXPECTED_OUTPUT_FILES)
     check("runner_output_root", "wave_aq/" in runner_source and "E4_R6PC2W_P1_attempt008_admission_observation" in runner_source)
@@ -329,7 +359,7 @@ def validate(repo_root: Path, packet_commit: str | None) -> dict[str, Any]:
 
     failures = [name for name, passed in checks if not passed]
     return {
-        "schema_version": "stage1e-e4-r6-pc2w-p1-attempt008-static-validation-result-1.0",
+        "schema_version": "stage1e-e4-r6-pc2w-p1-attempt008-revision2-static-validation-result-1.0",
         "stage_id": "E4-R6-PC2W-P1-ATTEMPT008",
         "mode": mode,
         "packet_parent": PACKET_PARENT,
@@ -342,8 +372,8 @@ def validate(repo_root: Path, packet_commit: str | None) -> dict[str, Any]:
         "runtime_commands_executed": False,
         "runner_imported_or_invoked": False,
         "verdict": (
-            "PASS_PC2W_P1_ATTEMPT008_STATIC_PACKET"
-            if not failures else "FAIL_CLOSED_PC2W_P1_ATTEMPT008_STATIC_PACKET"
+            "PASS_PC2W_P1_ATTEMPT008_REVISION2_STATIC_PACKET"
+            if not failures else "FAIL_CLOSED_PC2W_P1_ATTEMPT008_REVISION2_STATIC_PACKET"
         ),
     }
 

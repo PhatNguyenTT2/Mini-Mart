@@ -39,7 +39,7 @@ RUNNER_RELATIVE = CONTROL_RELATIVE / "execute_e4_r6_pc2w_p1_attempt008_admission
 CONTRACT_RELATIVE = CONTROL_RELATIVE / "e4_r6_pc2w_p1_attempt008_admission_observation_contract.json"
 AUTHORIZATION_RELATIVE = CONTROL_RELATIVE / "e4_r6_pc2w_p1_attempt008_execution_authorization.json"
 VALIDATOR_RELATIVE = CONTROL_RELATIVE / "validate_e4_r6_pc2w_p1_attempt008_static_packet.py"
-PACKET_PARENT = "b973ed673a314d6223265712b95d2a7ce51b02f3"
+PACKET_PARENT = "dabff18a5dbd68f69a8e03e477e59507906f302e"
 PACKET_RELATIVES = {
     CONTRACT_RELATIVE,
     AUTHORIZATION_RELATIVE,
@@ -57,18 +57,18 @@ EXPECTED_OUTPUT_FILES = {
     "handoff.json",
 }
 CONFIRMATION_TOKEN = (
-    "USER_CONFIRMED_EXACT_ATTEMPT008_PROCESS_COMMAND_AFTER_"
+    "USER_CONFIRMED_EXACT_ATTEMPT008_REVISION2_PROCESS_COMMAND_AFTER_"
     "CENTRAL_VALIDATION_AND_FRESH_AUDIT"
 )
 CENTRAL_RECEIPT_SCHEMA = (
-    "stage1e-e4-r6-pc2w-p1-attempt008-central-static-validation-receipt-1.0"
+    "stage1e-e4-r6-pc2w-p1-attempt008-revision2-central-static-validation-receipt-1.0"
 )
-CENTRAL_RECEIPT_VERDICT = "PASS_PC2W_P1_ATTEMPT008_CENTRAL_STATIC_VALIDATION"
+CENTRAL_RECEIPT_VERDICT = "PASS_PC2W_P1_ATTEMPT008_REVISION2_CENTRAL_STATIC_VALIDATION"
 AUDIT_RECEIPT_SCHEMA = (
-    "stage1e-e4-r6-pc2w-p1-attempt008-fresh-independent-audit-receipt-1.0"
+    "stage1e-e4-r6-pc2w-p1-attempt008-revision2-fresh-independent-audit-receipt-1.0"
 )
 AUDIT_RECEIPT_VERDICT = (
-    "PASS_PC2W_P1_ATTEMPT008_FRESH_INDEPENDENT_AUDIT_"
+    "PASS_PC2W_P1_ATTEMPT008_REVISION2_FRESH_INDEPENDENT_AUDIT_"
     "READY_FOR_EXACT_COMMAND_CONFIRMATION"
 )
 PASS_VERDICT = (
@@ -478,10 +478,10 @@ def passport(created_at: str, authorization: dict[str, Any]) -> dict[str, Any]:
         "origin_mode": "run",
         "origin_date": created_at,
         "verification_status": "UNVERIFIED",
-        "version_label": "stage1e_e4_r6_pc2w_p1_attempt008_admission_observation_execution_v1",
+        "version_label": "stage1e_e4_r6_pc2w_p1_attempt008_admission_observation_execution_v2",
         "upstream_dependencies": [
-            "stage1e_e4_r6_pc2w_p1_attempt008_admission_observation_contract_v1",
-            "stage1e_e4_r6_pc2w_p1_attempt008_execution_authorization_v1",
+            "stage1e_e4_r6_pc2w_p1_attempt008_admission_observation_contract_v2",
+            "stage1e_e4_r6_pc2w_p1_attempt008_execution_authorization_v2",
             "stage1e_e4_r6_pc2w_p1_attempt006_baseline_packet_audit_receipt_v1",
         ],
         "repro_lock": None,
@@ -693,9 +693,9 @@ def main() -> int:
     packet_delta = git(
         repo_root, "diff-tree", "--no-commit-id", "--name-status", "-r", packet_commit
     ).splitlines()
-    expected_delta = sorted(f"A\t{path.as_posix()}" for path in PACKET_RELATIVES)
+    expected_delta = sorted(f"M\t{path.as_posix()}" for path in PACKET_RELATIVES)
     if sorted(packet_delta) != expected_delta:
-        raise RuntimeError("packet commit exact four-file add delta mismatch")
+        raise RuntimeError("packet commit exact four-file revision delta mismatch")
     try:
         git(repo_root, "merge-base", "--is-ancestor", packet_commit, head)
     except Exception as exc:
@@ -737,15 +737,17 @@ def main() -> int:
     )
     contract = load_json(repo_root / CONTRACT_RELATIVE)
     authorization = load_json(repo_root / AUTHORIZATION_RELATIVE)
-    if contract.get("schema_version") != "stage1e-e4-r6-pc2w-p1-attempt008-admission-observation-contract-1.0":
+    if contract.get("schema_version") != "stage1e-e4-r6-pc2w-p1-attempt008-admission-observation-contract-2.0":
         raise RuntimeError("Attempt-008 contract schema mismatch")
-    if authorization.get("schema_version") != "stage1e-e4-r6-pc2w-p1-attempt008-execution-authorization-1.0":
+    if authorization.get("schema_version") != "stage1e-e4-r6-pc2w-p1-attempt008-execution-authorization-2.0":
         raise RuntimeError("Attempt-008 authorization schema mismatch")
-    current_auth = authorization.get("current_authorization", {})
+    current_decision = authorization.get("user_decision", {})
     if (
-        current_auth.get("packet_design_authorized") is not True
-        or current_auth.get("runtime_execution_authorized") is not False
-        or current_auth.get("exact_command_confirmation_received") is not False
+        current_decision.get("status") != "CONFIRMED"
+        or current_decision.get("confirmed_scope")
+        != "REPAIR_PROBE_PARSER_AND_PREPARE_ATTEMPT008_DORMANT_PACKET"
+        or current_decision.get("runtime_execution_authorized_now") is not False
+        or current_decision.get("exact_process_command_confirmed_now") is not False
     ):
         raise RuntimeError("authorization artifact truth widened or malformed")
     if contract.get("model_policy") != authorization.get("model_policy"):
@@ -753,10 +755,13 @@ def main() -> int:
     model = authorization.get("model_policy", {})
     if (
         model.get("requested_model") != "gpt-5.6-sol"
-        or model.get("requested_reasoning_effort") != "xhigh"
+        or model.get("requested_reasoning_effort") != "max"
         or model.get("requested_service_tier") != "default"
+        or model.get("requested_display_name") != "Sol Max Standard"
+        or model.get("fresh_audit_requested_model") != "gpt-5.6-sol"
+        or model.get("fresh_audit_requested_reasoning_effort") != "xhigh"
         or model.get("fast_or_priority_allowed") is not False
-        or model.get("actual_service_tier") != "UNOBSERVABLE"
+        or model.get("actual_model_reasoning_and_service_tier") != "UNOBSERVABLE"
     ):
         raise RuntimeError("requested Standard-only model policy mismatch")
 

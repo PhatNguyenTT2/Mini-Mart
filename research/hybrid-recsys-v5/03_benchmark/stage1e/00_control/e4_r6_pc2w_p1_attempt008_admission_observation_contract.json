@@ -1,17 +1,18 @@
 {
-  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt008-admission-observation-contract-1.0",
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt008-admission-observation-contract-2.0",
   "stage_id": "E4-R6-PC2W-P1-ATTEMPT008",
   "material_passport": {
     "origin_skill": "experiment-agent",
     "origin_mode": "plan",
     "origin_date": "2026-08-25T00:00:00+07:00",
     "verification_status": "UNVERIFIED",
-    "version_label": "stage1e_e4_r6_pc2w_p1_attempt008_admission_observation_contract_v1",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt008_admission_observation_contract_v2",
     "upstream_dependencies": [
       "stage1e_e4_r6_pc2w_p1_attempt008_probe_parser_remediation_validation_receipt_v1",
       "stage1e_e4_r6_pc2w_p1_attempt008_safe_probe_envelope_validation_receipt_v1",
       "stage1e_e4_r6_pc2w_p1_attempt007_failure_packet_audit_receipt_v1",
-      "stage1e_e4_r6_pc2w_p1_attempt006_baseline_packet_audit_receipt_v1"
+      "stage1e_e4_r6_pc2w_p1_attempt006_baseline_packet_audit_receipt_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt008_fresh_independent_audit_failure_receipt_v1"
     ],
     "repro_lock": null,
     "experiment_intake_declaration": {
@@ -20,7 +21,7 @@
       "declared_by": "scholar"
     }
   },
-  "purpose": "Design one new immutable one-shot Docker Desktop admission observation packet that preserves Attempt-007 pass strictness while accepting documented Docker CLI identity formats and emitting safe structured D01, D02 and D06 failure locators.",
+  "purpose": "Revise the immutable one-shot Docker Desktop admission observation packet so runner, authorization and static-validator interfaces are identical while preserving Attempt-007 pass strictness and the safe D01, D02 and D06 evidence envelopes.",
   "scope_boundary": {
     "packet_design_and_static_validation_only_now": true,
     "runtime_execution_authorized_now": false,
@@ -28,11 +29,12 @@
     "pass_means_observation_packet_complete_for_central_evaluation_only": true,
     "pass_does_not_open_materialization_preprocessing_training_evaluation_benchmark_or_test": true,
     "scientific_reproduction_claimed": false,
-    "attempt007_r1_r2_history_must_remain_byte_immutable": true
+    "attempt007_r1_r2_history_must_remain_byte_immutable": true,
+    "attempt008_revision1_git_history_must_remain_immutable": true
   },
   "packet_entry_gate": {
-    "packet_parent_checkpoint": "b973ed673a314d6223265712b95d2a7ce51b02f3",
-    "packet_commit_delta_must_be_exactly_four_new_control_files": true,
+    "packet_parent_checkpoint": "dabff18a5dbd68f69a8e03e477e59507906f302e",
+    "packet_commit_delta_must_be_exactly_four_modified_control_files": true,
     "packet_files": [
       "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt008_admission_observation_contract.json",
       "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt008_execution_authorization.json",
@@ -62,14 +64,14 @@
   },
   "future_gate_receipts": {
     "central_static_validation": {
-      "schema_version": "stage1e-e4-r6-pc2w-p1-attempt008-central-static-validation-receipt-1.0",
-      "required_verdict": "PASS_PC2W_P1_ATTEMPT008_CENTRAL_STATIC_VALIDATION",
+      "schema_version": "stage1e-e4-r6-pc2w-p1-attempt008-revision2-central-static-validation-receipt-1.0",
+      "required_verdict": "PASS_PC2W_P1_ATTEMPT008_REVISION2_CENTRAL_STATIC_VALIDATION",
       "runtime_commands_executed": false,
       "write_set_is_receipt_only": true
     },
     "fresh_independent_audit": {
-      "schema_version": "stage1e-e4-r6-pc2w-p1-attempt008-fresh-independent-audit-receipt-1.0",
-      "required_verdict": "PASS_PC2W_P1_ATTEMPT008_FRESH_INDEPENDENT_AUDIT_READY_FOR_EXACT_COMMAND_CONFIRMATION",
+      "schema_version": "stage1e-e4-r6-pc2w-p1-attempt008-revision2-fresh-independent-audit-receipt-1.0",
+      "required_verdict": "PASS_PC2W_P1_ATTEMPT008_REVISION2_FRESH_INDEPENDENT_AUDIT_READY_FOR_EXACT_COMMAND_CONFIRMATION",
       "runtime_commands_executed": false,
       "write_set_is_receipt_only": true
     }
@@ -146,6 +148,8 @@
     "strict_json_and_canonical_lf_required": true,
     "draft_and_committed_packet_modes": true,
     "ast_command_order_nested_finally_and_structured_failure_routing_required": true,
+    "runner_authorization_consumer_schema_parity_required": true,
+    "contract_and_authorization_model_policy_exact_match_required": true,
     "r1_and_r2_synthetic_tests_must_pass_with_python_dash_B": true,
     "python_bytecode_persistence_forbidden": true
   },

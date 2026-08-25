@@ -1,14 +1,15 @@
 {
-  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt008-execution-authorization-1.0",
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt008-execution-authorization-2.0",
   "stage_id": "E4-R6-PC2W-P1-ATTEMPT008",
   "material_passport": {
     "origin_skill": "experiment-agent",
     "origin_mode": "plan",
     "origin_date": "2026-08-25T00:00:00+07:00",
     "verification_status": "UNVERIFIED",
-    "version_label": "stage1e_e4_r6_pc2w_p1_attempt008_execution_authorization_v1",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt008_execution_authorization_v2",
     "upstream_dependencies": [
-      "stage1e_e4_r6_pc2w_p1_attempt008_admission_observation_contract_v1"
+      "stage1e_e4_r6_pc2w_p1_attempt008_admission_observation_contract_v2",
+      "stage1e_e4_r6_pc2w_p1_attempt008_fresh_independent_audit_failure_receipt_v1"
     ],
     "repro_lock": null,
     "experiment_intake_declaration": {
@@ -25,7 +26,7 @@
     "exact_process_command_confirmed_now": false
   },
   "authorized_now": [
-    "CREATE_EXACT_FOUR_FILE_DORMANT_ATTEMPT008_PACKET",
+    "CREATE_EXACT_FOUR_FILE_ATTEMPT008_REVISION2_PACKET",
     "RUN_READ_ONLY_OFFLINE_STATIC_VALIDATOR",
     "RUN_R1_AND_R2_SYNTHETIC_TESTS_WITH_PYTHON_DASH_B",
     "COMMIT_PACKET_AFTER_LOCAL_VALIDATION",
@@ -43,7 +44,7 @@
   ],
   "future_exact_confirmation": {
     "required_after_central_validation_and_fresh_audit": true,
-    "confirmation_token": "USER_CONFIRMED_EXACT_ATTEMPT008_PROCESS_COMMAND_AFTER_CENTRAL_VALIDATION_AND_FRESH_AUDIT",
+    "confirmation_token": "USER_CONFIRMED_EXACT_ATTEMPT008_REVISION2_PROCESS_COMMAND_AFTER_CENTRAL_VALIDATION_AND_FRESH_AUDIT",
     "command_must_bind": [
       "repo_root",
       "packet_commit",
@@ -67,8 +68,11 @@
     "requested_model": "gpt-5.6-sol",
     "requested_reasoning_effort": "max",
     "requested_service_tier": "default",
+    "requested_display_name": "Sol Max Standard",
+    "fresh_audit_requested_model": "gpt-5.6-sol",
+    "fresh_audit_requested_reasoning_effort": "xhigh",
     "fast_or_priority_allowed": false,
     "actual_model_reasoning_and_service_tier": "UNOBSERVABLE"
   },
-  "authorization_verdict": "AUTHORIZED_DORMANT_PACKET_DESIGN_ONLY_RUNTIME_DENIED_PENDING_LATER_EXACT_CONFIRMATION"
+  "authorization_verdict": "AUTHORIZED_ATTEMPT008_REVISION2_PACKET_DESIGN_ONLY_RUNTIME_DENIED_PENDING_LATER_EXACT_CONFIRMATION"
 }
