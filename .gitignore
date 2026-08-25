@@ -7,6 +7,9 @@ node_modules
 .env.development
 .env.test
 .env.production
+.env.*
+!.env.example
+!.env.*.example
 
 # Logs
 logs
@@ -43,6 +46,8 @@ desktop.ini
 # Temporary files
 *.tmp
 *.temp
+*.pid
+*.pid.lock
 .cache
 
 # Database
@@ -50,10 +55,16 @@ desktop.ini
 *.sqlite
 *.sqlite3
 
-# Uploads & AG kit
+# Uploads
 uploads/
 temp/
-.agents
+
+# Local agent runtimes and task metadata
+.agents/
+.agent/
+.shared/
+.codex/
+.claude/
 
 # Python, Tool Caches & AI Service
 __pycache__/
@@ -63,16 +74,29 @@ __pycache__/
 .mypy_cache/
 .pytest_cache/
 .uv-cache/
+.ipynb_checkpoints/
 .coverage
 htmlcov/
 .coverage.*
-backend/.certs/
+
+# Local certificates and private keys
+**/.certs/
+*.key
+*.pem
+*.p12
+*.pfx
 
 # AI Service Generated Outputs
 ai-service/artifacts/
 ai-service/runs/
 ai-service/bundles/
 ai-service/releases/
+
+# Container runtime state and local volumes
+**/.docker/
+**/docker-data/
+**/postgres-data/
+**/postgres_data/
 
 # Model Checkpoints & Binary Vectors
 *.parquet
