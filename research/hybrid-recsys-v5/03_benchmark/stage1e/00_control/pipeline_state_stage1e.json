@@ -2,7 +2,7 @@
   "schema_version": "academic-research-pipeline-state-1.0",
   "project": "hybrid-recsys-v5",
   "stage": "1E",
-  "state": "stage1e_rebaseline_v2_r6_pc2w_p1_attempt007_failure_packet_audited_no_retry_user_decision_required",
+  "state": "stage1e_rebaseline_v2_r6_pc2w_p1_attempt008_r1_synthetic_probe_parser_remediation_complete_r2_safe_probe_envelope_design",
   "updated_at": "2026-08-25",
   "model": "gpt-5.6-sol",
   "reasoning": "max",
@@ -15,7 +15,7 @@
     "record": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/wave1_v1_supersession_record.json"
   },
   "rebaseline_v2": {
-    "status": "e4_r6_pc2w_p1_attempt007_failure_packet_audited_no_retry_user_decision_required",
+    "status": "e4_r6_pc2w_p1_attempt008_r1_synthetic_probe_parser_remediation_complete_r2_safe_probe_envelope_design",
     "wave_a_expected": 3,
     "wave_a_active": 0,
     "wave_a_complete": 3,
@@ -778,7 +778,7 @@
       "next_gate": "SUPERSEDED_BY_USER_DECISION_AUTHORIZE_TARGETED_SOURCE_ONLY_EVIDENCE_MATERIALIZATION_REDESIGN"
     },
     "e4_r5": {
-      "status": "R6_PC2W_P1_ATTEMPT007_FAILURE_PACKET_AUDITED_NO_RETRY_USER_DECISION_REQUIRED",
+      "status": "R6_PC2W_P1_ATTEMPT008_R1_SYNTHETIC_REMEDIATION_COMPLETE_R2_DESIGN_IN_PROGRESS_NO_EXECUTION",
       "entry_checkpoint": "USER_CONFIRMED_TARGETED_SOURCE_ONLY_EVIDENCE_MATERIALIZATION_REDESIGN",
       "source_stage": "R4-G0",
       "source_verdict": "NO_ADMISSIBLE_BUNDLE_STOP_FAIL_CLOSED",
@@ -939,7 +939,7 @@
         "benchmark_admission_authorized": false
       },
       "r6": {
-        "status": "R6_PC2W_P1_ATTEMPT007_FAILURE_PACKET_AUDITED_NO_RETRY_USER_DECISION_REQUIRED",
+        "status": "R6_PC2W_P1_ATTEMPT008_R1_SYNTHETIC_REMEDIATION_COMPLETE_R2_DESIGN_IN_PROGRESS_NO_EXECUTION",
         "stage_map": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_materialization_stage_map.json",
         "contract": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_bounded_materialization_contract.md",
         "s0": {
@@ -1310,7 +1310,7 @@
           "next_gate": "EXPLICIT_CHANGED_HOST_DECISION_AND_FRESH_PC2_READ_ONLY_HOST_PREFLIGHT_AUTHORIZATION"
         },
         "pc2w": {
-          "status": "P1_ATTEMPT007_FAILURE_PACKET_AUDITED_NO_RETRY_USER_DECISION_REQUIRED",
+          "status": "P1_ATTEMPT008_R1_SYNTHETIC_REMEDIATION_COMPLETE_R2_DESIGN_IN_PROGRESS_NO_EXECUTION",
           "purpose": "REOPEN_CURRENT_HOST_WITH_NO_OS_EDITION_UPGRADE_USING_A_PREVIOUSLY_UNEVALUATED_WSL2_LINUX_CONTAINER_LANE",
           "user_decision": "CONTINUE_CURRENT_MACHINE_NO_OS_EDITION_UPGRADE_COST_CONSTRAINED_WSL2_DIRECTION",
           "threat_model": "TRUSTED_PINNED_RESEARCH_CODE",
@@ -1910,11 +1910,48 @@
             "automatic_retry_authorized": false,
             "next_gate": "MANDATORY_USER_DECISION_NO_AUTOMATIC_RETRY"
           },
+          "p1_attempt008_probe_parser_remediation": {
+            "stage_id": "E4-R6-PC2W-P1-ATTEMPT008-R1",
+            "status": "PASS_SYNTHETIC_PROBE_PARSER_REMEDIATION_READY_FOR_SAFE_PROBE_ENVELOPE_DESIGN",
+            "user_decision": "CONFIRMED_REPAIR_PROBE_PARSER_FOR_ATTEMPT008",
+            "packet_commit": "bcfc7d959a333c8d63b31639edfed312e6f3c8b9",
+            "contract": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt008_probe_parser_remediation_contract.json",
+            "implementation": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt008_probe_contract.py",
+            "regression_test": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/test_e4_r6_pc2w_p1_attempt008_probe_contract.py",
+            "validation_receipt": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt008_probe_parser_remediation_validation_receipt.json",
+            "validation_verdict": "PASS_PC2W_P1_ATTEMPT008_R1_SYNTHETIC_PROBE_PARSER_REMEDIATION",
+            "confirmed_contract_defect": "ATTEMPT007_DOCKER_BUILD_TIME_FORMAT_CONTRACT_TOO_NARROW",
+            "confirmed_effect": "VALID_DOCKER_VERSION_JSON_CAN_PRODUCE_DOCKER_IDENTITY_VALUEERROR_BEFORE_CROSS_CONSISTENCY_EVALUATION",
+            "confirmed_scope": "PARSER_DEFECT_CONFIRMED_NOT_PROOF_OF_ONLY_ATTEMPT007_FAILURE",
+            "remaining_root_cause": "D01_D02_D06_MIXED_OR_INDETERMINATE_PENDING_SAFE_PROBE_ENVELOPE_REDESIGN",
+            "synthetic_validation": {
+              "tests_passed": 8,
+              "tests_total": 8,
+              "stress_runs": 50,
+              "stress_failures": 0,
+              "strict_json_passed": 2,
+              "strict_json_total": 2,
+              "docker_or_host_io": false,
+              "python_bytecode_persisted": false
+            },
+            "attempt007_artifacts_modified": false,
+            "runtime_admission_packet_created": false,
+            "runtime_execution_authorized": false,
+            "automatic_retry_authorized": false,
+            "materialization_performed": false,
+            "scientific_execution_performed": false,
+            "test_access_performed": false,
+            "result_status": "NOT_RUN",
+            "test_set_opened": "NO",
+            "accepted_result_rows": 0,
+            "project_benchmark_numbers": "INVALID_FOR_PAPER",
+            "next_gate": "DESIGN_D01_D02_D06_SAFE_PROBE_ENVELOPES_AND_STATIC_TESTS_NO_RUNTIME"
+          },
           "scientific_execution_performed": false,
           "result_status": "NOT_RUN",
           "test_set_opened": "NO",
           "accepted_result_rows": 0,
-          "next_gate": "MANDATORY_USER_DECISION_NO_AUTOMATIC_RETRY_AFTER_AUDITED_ATTEMPT007_FAILURE"
+          "next_gate": "ATTEMPT008_R2_SAFE_PROBE_ENVELOPE_DESIGN_AND_STATIC_TESTS_NO_RUNTIME"
         },
         "m0_m1": {
           "status": "ATTEMPT002_FAIL_CLOSED_BOTH_ROOTS_RETAINED_IMMUTABLE",
@@ -1979,7 +2016,7 @@
         "project_benchmark_numbers": "INVALID_FOR_PAPER"
       },
       "execution_authorized": false,
-      "next_gate": "USER_DECISION_REQUIRED_NO_AUTOMATIC_RETRY_AFTER_AUDITED_ATTEMPT007_FAILURE"
+      "next_gate": "ATTEMPT008_R2_SAFE_PROBE_ENVELOPE_DESIGN_AND_STATIC_TESTS_NO_RUNTIME"
     }
   },
   "central_preregistration_lock": "PASS_R6_S0_BOUNDED_MATERIALIZATION_SCOPE_LOCKED",
@@ -1987,5 +2024,5 @@
   "harmonized_v5": "BLOCKED",
   "external_validation": "BLOCKED",
   "efficiency": "BLOCKED_AFTER_ACCURACY",
-  "next_gate": "Attempt-007 executed exactly once after explicit confirmation. Native pre-start passed 8/8 and Docker Desktop started, but admission failed closed because process/TCP/file and combined Docker identity evidence did not satisfy the frozen contract. Root cause remains MIXED_OR_INDETERMINATE because persisted sanitized evidence cannot distinguish a host capability mismatch from a probe/parser contract mismatch. Docker stop and WSL shutdown succeeded; three closure snapshots passed 8/8 and matched pre-start. The exact four-file failure packet was frozen at 58744dfc6fa81177b81634e827d357ab0cf6882d, centrally validated 30/30 at bd44fad292b3ff59e8a24a1e0fb42a9ad1696ed5, and independently audited PASS_PC2W_P1_ATTEMPT007_FAILURE_PACKET_AUDITED_NO_RETRY by fresh Sol XHigh Standard-requested task 01a03874-5e20-76d1-9cae-9a58ecf5e794; actual model tier was unobservable. Materialization, preprocessing, training, evaluation, benchmark admission and TEST access did not occur. Automatic retry is prohibited. A mandatory user decision is required before a new output root, revised evidence contract, changed host, or pause; Phase 1E remains blocked."
+  "next_gate": "The user selected probe/parser remediation after the audited Attempt-007 failure. Attempt-008 R1 is frozen at bcfc7d959a333c8d63b31639edfed312e6f3c8b9 with PASS_PC2W_P1_ATTEMPT008_R1_SYNTHETIC_PROBE_PARSER_REMEDIATION: 8/8 tests, 50/50 deterministic stress runs, strict JSON 2/2, and no Docker, WSL, host probe, network, bytecode, scientific or TEST action. A concrete Attempt-007 contract defect is confirmed: the Docker BuildTime parser rejected documented/observed Docker CLI human and RFC3339 nano +00:00 formats, so valid version JSON could produce DOCKER_IDENTITY:ValueError. This does not prove it was the only failure; D01, dependent D02, and D06 remain MIXED_OR_INDETERMINATE because Attempt-007 intentionally did not retain raw failure fields. Next, design closed safe failure envelopes for D01/D02/D06 and static tests. No Attempt-008 runtime packet or execution authorization exists, automatic retry remains prohibited, and Phase 1E remains blocked."
 }
