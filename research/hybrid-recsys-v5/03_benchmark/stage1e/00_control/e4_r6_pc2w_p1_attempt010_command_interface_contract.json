@@ -1,0 +1,55 @@
+{
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt010-command-interface-contract-1.0",
+  "stage_id": "E4-R6-PC2W-P1-ATTEMPT010-R1",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "plan",
+    "origin_date": "2026-08-25T15:32:41Z",
+    "verification_status": "UNVERIFIED",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt010_command_interface_contract_v1",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_pc2w_p1_attempt009_pre_runtime_failure_receipt_v1",
+      "stage1e_legacy_source_cleanup_manifest_v1"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-25T15:32:41Z",
+      "declared_by": "scholar"
+    }
+  },
+  "root_cause": "ATTEMPT009_INHERITED_NORMALIZER_TREATED_SYS_ORIG_ARGV_INDEX_1_AS_RUNNER_WHEN_INDEX_1_WAS_PYTHON_DASH_B",
+  "remediation": {
+    "accepted_invocation_form": "PYTHON_EXECUTABLE -B EXACT_SCRIPT_PATH EXACT_ORDERED_ARGUMENTS",
+    "required_interpreter_flags": ["-B"],
+    "unknown_flags_allowed": false,
+    "duplicate_flags_allowed": false,
+    "python_dash_c_allowed": false,
+    "python_dash_m_allowed": false,
+    "runner_path_drift_allowed": false,
+    "argument_order_or_value_drift_allowed": false,
+    "normalized_view_supplied_to_inherited_exact_argv_gate": true,
+    "original_command_binding_persisted_in_runtime_frozen_upstream_record": true
+  },
+  "scope_boundary": {
+    "pure_function_and_synthetic_tests_only": true,
+    "host_runtime_commands_executed": false,
+    "docker_or_wsl_commands_executed": false,
+    "automatic_retry_authorized": false,
+    "benchmark_admission_opened": false,
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0
+  },
+  "model_policy": {
+    "requested_model": "gpt-5.6-sol",
+    "requested_reasoning_effort": "max",
+    "requested_service_tier": "default",
+    "requested_display_name": "Sol Max Standard",
+    "fast_or_priority_allowed": false,
+    "actual_model_reasoning_and_service_tier": "UNOBSERVABLE"
+  },
+  "test_command": "C:\\Program Files\\Python311\\python.exe -B research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\00_control\\test_e4_r6_pc2w_p1_attempt010_command_interface.py",
+  "expected_test_count": 10,
+  "verdict": "READY_FOR_SYNTHETIC_VALIDATION"
+}
