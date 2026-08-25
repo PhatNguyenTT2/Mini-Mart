@@ -1,0 +1,190 @@
+{
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt009-revision2-fresh-independent-audit-receipt-1.0",
+  "stage_id": "E4-R6-PC2W-P1-ATTEMPT009",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "validate",
+    "origin_date": "2026-08-25T15:14:59.856594Z",
+    "verification_status": "VERIFIED",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt009_revision2_fresh_independent_audit_receipt_v1",
+    "integrity_pass_date": "2026-08-25T15:14:59.856594Z",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_pc2w_p1_attempt009_admission_observation_contract_v2",
+      "stage1e_e4_r6_pc2w_p1_attempt009_execution_authorization_v2",
+      "stage1e_e4_r6_pc2w_p1_attempt009_revision2_central_static_validation_receipt_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt009_runtime_compatibility_revision3_fresh_independent_audit_receipt_v1"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-25T15:14:59.856594Z",
+      "declared_by": "scholar"
+    }
+  },
+  "ars_context": {
+    "adapter": "ars-codex",
+    "adapter_version": "0.1.26",
+    "workflow": "ars/experiment-agent/WORKFLOW.md",
+    "role_prompt": "ars/experiment-agent/agents/code_runner_agent.md",
+    "material_passport_schema": "ars/shared/handoff_schemas.md#schema-9-material-passport-cross-stage-metadata",
+    "integration_guide": "ars/experiment-agent/references/ars_integration_guide.md",
+    "execution_mode": "STATIC_EVIDENCE_ONLY_FAIL_CLOSED"
+  },
+  "audit_task": {
+    "delegation_source_thread_id": "019ff4f0-802a-7892-a989-24f32ac26ac8",
+    "current_task_id": "UNOBSERVABLE",
+    "auditor_role": "FRESH_INDEPENDENT_EVIDENCE_ONLY_FAIL_CLOSED",
+    "runtime_execution_role": false,
+    "attempt009_runner_import_authorized": false,
+    "attempt009_runner_invocation_authorized": false
+  },
+  "git_state": {
+    "audited_head": "6e5d61caccabf30a3da312d8bb2b9063af564f46",
+    "audited_head_parent": "104b4a5a191eb40011ab730c88d974258da3a1c6",
+    "packet_commit": "104b4a5a191eb40011ab730c88d974258da3a1c6",
+    "packet_parent": "91466f7dd5a004cbcabfac61815f49c6fcef4606",
+    "placeholder_parent_replayed": true,
+    "checkout_mode": "DETACHED_AT_EXACT_AUDITED_HEAD",
+    "worktree_clean_at_start": true,
+    "hash_domain": "RAW_GIT_BLOB_BYTES",
+    "checkout_normalization_used_for_blob_facts": false,
+    "packet_delta_status": "EXACTLY_FOUR_MODIFIED_CONTROL_FILES",
+    "audited_head_delta_status": "EXACTLY_ONE_ADDED_CENTRAL_STATIC_VALIDATION_RECEIPT"
+  },
+  "packet_commit": "104b4a5a191eb40011ab730c88d974258da3a1c6",
+  "packet_parent": "91466f7dd5a004cbcabfac61815f49c6fcef4606",
+  "packet_artifacts": [
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt009_admission_observation_contract.json",
+      "git_blob_bytes": 8416,
+      "git_blob_sha256": "8e965aeccb95711d19bbdda046f5e47413216fc927b5403eeccfa8f130286db9"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt009_execution_authorization.json",
+      "git_blob_bytes": 3106,
+      "git_blob_sha256": "943a5a1e4a0424bb77a666c8fa68132c2fadda46b6adf22df33d4bbcc9340889"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc2w_p1_attempt009_admission_observation.py",
+      "git_blob_bytes": 16684,
+      "git_blob_sha256": "a762ea8bf11df261d1e62591705c1e02dbb91d62a79eadd9b31dfc6c68b5d1b9"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_p1_attempt009_static_packet.py",
+      "git_blob_bytes": 18599,
+      "git_blob_sha256": "b99d75a92d386c8d0908e236123ed9cdf90ef1ac67df572133e96eb55fcb0303"
+    }
+  ],
+  "central_validation_receipt": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt009_revision2_central_static_validation_receipt.json",
+    "commit": "6e5d61caccabf30a3da312d8bb2b9063af564f46",
+    "git_blob_bytes": 4933,
+    "git_blob_sha256": "87b8ba763d2390145772ef8c83f2339c938346259fb4bc7354d53ea89beb7d4d",
+    "strict_json_raw_blob_passed": true,
+    "verdict": "PASS_PC2W_P1_ATTEMPT009_REVISION2_CENTRAL_STATIC_VALIDATION"
+  },
+  "central_validation_receipt_git_blob_sha256": "87b8ba763d2390145772ef8c83f2339c938346259fb4bc7354d53ea89beb7d4d",
+  "validation": {
+    "committed_static_validator": {
+      "interpreter": "C:\\Program Files\\Python311\\python.exe",
+      "python_dash_b": true,
+      "mode": "committed",
+      "packet_commit": "104b4a5a191eb40011ab730c88d974258da3a1c6",
+      "expected_head": "6e5d61caccabf30a3da312d8bb2b9063af564f46",
+      "exit_code": 0,
+      "validator_verdict": "READY_FOR_CENTRAL_STATIC_VALIDATION",
+      "strict_json_files_passed": 2,
+      "strict_json_files_total": 2,
+      "python_ast_files_passed": 2,
+      "python_ast_files_total": 2,
+      "compatibility_tests_passed": 9,
+      "compatibility_tests_total": 9,
+      "powershell_ast_scripts_passed": 4,
+      "powershell_ast_scripts_total": 4,
+      "preexisting_python_bytecode_files": 0,
+      "new_or_modified_python_bytecode_files": 0
+    },
+    "independent_ast_and_synthetic_audit": {
+      "python_ast_files_passed": 5,
+      "python_ast_files_total": 5,
+      "independent_synthetic_cases_passed": 12,
+      "independent_synthetic_cases_total": 12,
+      "attempt009_runner_imported_or_invoked": false,
+      "runner_subprocess_calls_in_exact_wrapper": 1,
+      "all_runtime_powershell_children_use_isolated_psmodulepath": true,
+      "p04_after_p00_p03_before_s00": true,
+      "false_p04_lane_blocks_s00": true,
+      "d01_d02_d06_exact_manifest_wrappers": true,
+      "d03_d04_d05_revision3_sanitizer": true,
+      "root_experimental_boolean_only": true,
+      "engine_details_experimental_boolean_or_exact_lowercase_boolean_string_only": true,
+      "conflict_missing_duplicate_fail_closed_with_locator": true,
+      "identity_source_profile_and_field_provenance_persisted": true,
+      "nested_stop_then_wsl_shutdown_finally": true,
+      "three_snapshot_closure_and_no_retry_guards": true,
+      "all_four_output_files_get_attempt009_schema_and_stage": true,
+      "exact_original_process_argv_and_gate_receipt_binding": true,
+      "immutable_output_root_must_not_preexist": true,
+      "benchmark_training_and_test_gates_closed": true
+    }
+  },
+  "frozen_bindings": {
+    "revision3_packet_commit": "624b3ab06bdd222341a25e08bb06a50b92dcfa19",
+    "revision3_validation_receipt_commit": "80ef314c3165ad8ae86b8ed99764eae2099d967a",
+    "revision3_fresh_audit_import_commit": "0ddb1832e8b58de1b0270cacae8c234216cc205a",
+    "revision3_fresh_audit_verdict": "PASS_PC2W_P1_ATTEMPT009_R1_REVISION3_FRESH_INDEPENDENT_AUDIT_READY_FOR_DORMANT_PACKET_DESIGN",
+    "frozen_legacy_attempt008_runner_git_blob_sha256": "c51c0fc6b0e089bb478fdc391979cfa0add8051f4723ff067ed81dd4c6630a89",
+    "frozen_legacy_attempt008_runner_hash_passed": true
+  },
+  "findings": {
+    "critical": 0,
+    "major": 0,
+    "minor": 0,
+    "items": []
+  },
+  "model_policy": {
+    "requested_model": "gpt-5.6-sol",
+    "requested_reasoning_effort": "high",
+    "requested_service_tier": "default",
+    "requested_display_tier": "Standard",
+    "fast_or_priority_allowed": false,
+    "actual_model": "UNOBSERVABLE",
+    "actual_reasoning_effort": "UNOBSERVABLE",
+    "actual_service_tier": "UNOBSERVABLE",
+    "fast_or_priority_observation": "UNOBSERVABLE",
+    "observed_policy_contradiction": false,
+    "model_gate_disposition": "PROCEEDED_UNDER_EXPLICIT_UNOBSERVABLE_RULE"
+  },
+  "static_safety": {
+    "runtime_commands_executed": false,
+    "docker_commands_executed": 0,
+    "wsl_commands_executed": 0,
+    "docker_desktop_calls": 0,
+    "host_probe_executions": 0,
+    "attempt009_runner_import_count": 0,
+    "attempt009_runner_invocation_count": 0,
+    "network_operations": 0,
+    "install_or_download_operations": 0,
+    "pipeline_state_modified": false,
+    "scientific_execution_performed": false,
+    "materialization_performed": false,
+    "preprocessing_performed": false,
+    "training_performed": false,
+    "evaluation_performed": false,
+    "benchmark_admission_opened": false,
+    "output_root_created": false,
+    "automatic_retry_count": 0,
+    "fallback_count": 0,
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "preexisting_python_bytecode_files": 0,
+    "new_or_modified_python_bytecode_files": 0
+  },
+  "runtime_commands_executed": false,
+  "write_set": [
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt009_revision2_fresh_independent_audit_receipt.json"
+  ],
+  "verdict": "PASS_PC2W_P1_ATTEMPT009_REVISION2_FRESH_INDEPENDENT_AUDIT_READY_FOR_EXACT_COMMAND_CONFIRMATION",
+  "next_gate": "SEPARATE_EXACT_PROCESS_COMMAND_CONFIRMATION_BINDING_PACKET_HEAD_AND_BOTH_RECEIPT_PATHS_AND_SHA256_VALUES"
+}
