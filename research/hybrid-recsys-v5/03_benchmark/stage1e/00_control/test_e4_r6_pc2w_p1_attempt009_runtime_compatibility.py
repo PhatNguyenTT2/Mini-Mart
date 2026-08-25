@@ -197,6 +197,17 @@ class Attempt009RuntimeCompatibilityTests(unittest.TestCase):
         self.assertEqual(caught.exception.code, "DOCKER_SERVER_FIELD_CONFLICT")
         self.assertEqual(caught.exception.field, "GitCommit")
 
+        invalid_boolean = modern_version()
+        del invalid_boolean["Server"]["Experimental"]
+        invalid_boolean["Server"]["Components"][0]["Details"]["Experimental"] = "False"
+        with self.assertRaises(compat.IdentityContractError) as boolean_caught:
+            compat.sanitize_docker_identity(invalid_boolean, info(), context())
+        self.assertEqual(
+            boolean_caught.exception.code,
+            "DOCKER_SERVER_EXPERIMENTAL_INVALID",
+        )
+        self.assertEqual(boolean_caught.exception.field, "Experimental")
+
     def test_missing_server_field_in_root_and_engine_component_has_locator(self) -> None:
         version = modern_version()
         del version["Server"]["Components"][0]["Details"]["BuildTime"]

@@ -261,8 +261,8 @@ def _normalize_server_value(field: str, value: Any) -> Any:
     if field == "Experimental":
         if isinstance(value, bool):
             return value
-        if isinstance(value, str) and value.casefold() in {"true", "false"}:
-            return value.casefold() == "true"
+        if isinstance(value, str) and value in {"true", "false"}:
+            return value == "true"
         raise IdentityContractError(
             "DOCKER_SERVER_EXPERIMENTAL_INVALID",
             "DOCKER_SERVER",
@@ -346,7 +346,9 @@ def canonicalize_docker_server(version_data: Any) -> tuple[dict[str, Any], dict[
             )
         else:
             canonical[field] = engine_value
-            sources[field] = "ENGINE_COMPONENT_DETAILS"
+            sources[field] = (
+                "ENGINE_COMPONENT" if field == "Version" else "ENGINE_COMPONENT_DETAILS"
+            )
             supplemented = True
     profile = "ROOT_WITH_ENGINE_COMPONENT_SUPPLEMENT" if supplemented else "ROOT_ONLY"
     return canonical, sources, profile
