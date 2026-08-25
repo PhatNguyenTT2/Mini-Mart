@@ -6,7 +6,7 @@
     "origin_mode": "plan",
     "origin_date": "2026-08-25T13:44:37Z",
     "verification_status": "UNVERIFIED",
-    "version_label": "stage1e_e4_r6_pc2w_p1_attempt009_runtime_compatibility_contract_v1",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt009_runtime_compatibility_contract_v3",
     "upstream_dependencies": [
       "stage1e_e4_r6_pc2w_p1_attempt008_admission_observation_execution_v1",
       "stage1e_e4_r6_pc2w_p1_attempt008_failure_packet_validation_receipt_v1"
@@ -83,7 +83,11 @@
       "missing_from_both": "FAIL_CLOSED_WITH_FIELD_LOCATOR",
       "duplicate_engine_components": "FAIL_CLOSED",
       "api_version_aliases": ["ApiVersion", "APIVersion"],
-      "experimental_boolean_forms": ["BOOLEAN", "LOWERCASE_BOOLEAN_STRING_IN_ENGINE_DETAILS"],
+      "experimental_boolean_forms": [
+        "BOOLEAN_AT_SERVER_ROOT_OR_ENGINE_DETAILS",
+        "LOWERCASE_BOOLEAN_STRING_IN_ENGINE_DETAILS_ONLY"
+      ],
+      "server_root_lowercase_boolean_string": "FAIL_CLOSED_WITH_FIELD_LOCATOR",
       "source_profile_persisted": true,
       "field_sources_persisted": true,
       "raw_docker_root_dir_persisted": false,
@@ -133,5 +137,5 @@
     "PASS_PC2W_P1_ATTEMPT009_R1_RUNTIME_COMPATIBILITY_REMEDIATION_READY_FOR_DORMANT_PACKET_DESIGN",
     "FAIL_CLOSED_PC2W_P1_ATTEMPT009_R1_REMEDIATION_INCOMPLETE"
   ],
-  "next_gate": "STATIC_VALIDATE_R1_THEN_FRESH_INDEPENDENT_AUDIT_BEFORE_ATTEMPT009_DORMANT_RUNTIME_PACKET_DESIGN"
+  "next_gate": "STATIC_VALIDATE_R1_REVISION3_THEN_FRESH_INDEPENDENT_AUDIT_BEFORE_ATTEMPT009_DORMANT_RUNTIME_PACKET_DESIGN"
 }

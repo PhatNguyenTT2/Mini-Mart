@@ -257,11 +257,17 @@ def _api_alias(section: dict[str, Any], stage: str) -> Any:
     return canonical if canonical is not None else alias
 
 
-def _normalize_server_value(field: str, value: Any) -> Any:
+def _normalize_server_value(
+    field: str, value: Any, *, allow_lowercase_boolean_string: bool = False
+) -> Any:
     if field == "Experimental":
         if isinstance(value, bool):
             return value
-        if isinstance(value, str) and value in {"true", "false"}:
+        if (
+            allow_lowercase_boolean_string
+            and isinstance(value, str)
+            and value in {"true", "false"}
+        ):
             return value == "true"
         raise IdentityContractError(
             "DOCKER_SERVER_EXPERIMENTAL_INVALID",
@@ -328,8 +334,20 @@ def canonicalize_docker_server(version_data: Any) -> tuple[dict[str, Any], dict[
     for field in (*_SERVER_STRING_FIELDS, "Experimental"):
         root_raw = _field_value(server, field)
         engine_raw = _engine_field_value(engine, field)
-        root_value = _normalize_server_value(field, root_raw) if root_raw is not None else None
-        engine_value = _normalize_server_value(field, engine_raw) if engine_raw is not None else None
+        root_value = (
+            _normalize_server_value(field, root_raw)
+            if root_raw is not None
+            else None
+        )
+        engine_value = (
+            _normalize_server_value(
+                field,
+                engine_raw,
+                allow_lowercase_boolean_string=True,
+            )
+            if engine_raw is not None
+            else None
+        )
         if root_value is None and engine_value is None:
             raise IdentityContractError(
                 "DOCKER_SERVER_FIELD_MISSING", "DOCKER_SERVER", field=field
