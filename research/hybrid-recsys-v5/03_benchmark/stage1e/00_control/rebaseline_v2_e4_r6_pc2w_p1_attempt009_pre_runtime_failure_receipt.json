@@ -1,0 +1,97 @@
+{
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt009-pre-runtime-failure-receipt-1.0",
+  "stage_id": "E4-R6-PC2W-P1-ATTEMPT009",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "run",
+    "origin_date": "2026-08-25T15:22:29Z",
+    "verification_status": "UNVERIFIED",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt009_pre_runtime_failure_receipt_v1",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_pc2w_p1_attempt009_admission_observation_contract_v2",
+      "stage1e_e4_r6_pc2w_p1_attempt009_execution_authorization_v2",
+      "stage1e_e4_r6_pc2w_p1_attempt009_revision2_central_static_validation_receipt_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt009_revision2_fresh_independent_audit_receipt_v1"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-25T15:22:29Z",
+      "declared_by": "scholar"
+    }
+  },
+  "execution_binding": {
+    "entry_checkpoint": "6f71c873447a98c3f33b330cce1a383f67391398",
+    "packet_commit": "104b4a5a191eb40011ab730c88d974258da3a1c6",
+    "central_validation_receipt_git_blob_sha256": "87b8ba763d2390145772ef8c83f2339c938346259fb4bc7354d53ea89beb7d4d",
+    "fresh_independent_audit_receipt_git_blob_sha256": "dcc0ea0985cd46e791085faebe0223c57bfc89d42302d6bd678df985a6571211",
+    "exact_process_command_confirmed": true,
+    "confirmation_token_matched_requested_command": true,
+    "process_invoked_once": true,
+    "process_exit_code": 1,
+    "automatic_retry_count": 0,
+    "fallback_count": 0
+  },
+  "observed_failure": {
+    "runner_verdict": "HANDOFF_INCOMPLETE",
+    "error_type": "RuntimeError",
+    "error_sha256": "407a13c171712d0c8359ce919a9109810ee55635c8b2a3faf9ddc266ca8d2e7c",
+    "error_sha256_static_match_count": 1,
+    "matched_static_failure": "exact original process argv mismatch",
+    "exception_message_persisted_by_runner": false,
+    "failure_packet_persisted_by_runner": false,
+    "output_root_exists_after_failure": false
+  },
+  "root_cause_analysis": {
+    "classification": "PRE_RUNTIME_COMMAND_INTERFACE_CONTRACT_DEFECT",
+    "failure_gate": "EXACT_ORIGINAL_PROCESS_ARGV",
+    "confirmed_cause": "THE_CONFIRMED_COMMAND_INCLUDES_PYTHON_DASH_B_BUT_THE_INHERITED_ARGV_NORMALIZER_ASSUMES_SYS_ORIG_ARGV_INDEX_1_IS_THE_RUNNER_PATH",
+    "observed_python_orig_argv_prefix_with_dash_b": [
+      "PYTHON_EXECUTABLE",
+      "-B",
+      "SCRIPT_OR_C_OPTION"
+    ],
+    "inherited_normalizer_behavior": "RESOLVES_ORIG_ARGV_INDEX_1_AS_RUNNER_PATH",
+    "docker_compatibility_code_reached": false,
+    "docker_29_schema_union_observed_against_running_daemon": false,
+    "windows_powershell_preflight_executed": false,
+    "evidence_basis": [
+      "ERROR_SHA256_UNIQUELY_MATCHES_THE_STATIC_RUNTIMEERROR_LITERAL",
+      "CONTROL_FLOW_RAISES_BEFORE_OUTPUT_ROOT_CREATION",
+      "CONTROL_FLOW_RAISES_BEFORE_THE_FIRST_INVOKE_CALL",
+      "OUTPUT_ROOT_REMAINED_ABSENT"
+    ]
+  },
+  "runtime_command_counts": {
+    "docker_desktop_start": 0,
+    "docker_desktop_stop": 0,
+    "docker_daemon_queries": 0,
+    "wsl_commands": 0,
+    "host_p04_d01_d02_d06_probes": 0,
+    "materialization": 0,
+    "preprocessing": 0,
+    "training": 0,
+    "evaluation": 0,
+    "benchmark": 0
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "benchmark_admission_opened": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "model_policy": {
+    "central_requested_model": "gpt-5.6-sol",
+    "central_requested_reasoning_effort": "max",
+    "central_requested_service_tier": "default",
+    "central_requested_display_name": "Sol Max Standard",
+    "fast_or_priority_allowed": false,
+    "actual_model_reasoning_and_service_tier": "UNOBSERVABLE"
+  },
+  "write_set": [
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt009_pre_runtime_failure_receipt.json"
+  ],
+  "verdict": "FAIL_CLOSED_PC2W_P1_ATTEMPT009_PRE_RUNTIME_ARGV_GATE",
+  "next_gate": "USER_DECISION_REQUIRED_NO_AUTOMATIC_RETRY_PROPOSE_NEW_ATTEMPT010_COMMAND_INTERFACE_REMEDIATION"
+}
