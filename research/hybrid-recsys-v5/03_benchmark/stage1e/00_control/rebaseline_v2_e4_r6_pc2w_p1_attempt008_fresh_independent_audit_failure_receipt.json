@@ -1,0 +1,101 @@
+{
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt008-fresh-independent-audit-failure-receipt-1.0",
+  "stage_id": "E4-R6-PC2W-P1-ATTEMPT008",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "validate",
+    "origin_date": "2026-08-25T00:00:00+07:00",
+    "origin_date_semantics": "DATE_STAMP_ONLY_GIT_COMMIT_TIMES_ESTABLISH_ORDER",
+    "verification_status": "ANALYZED",
+    "verification_scope": "FRESH_INDEPENDENT_STATIC_PACKET_AUDIT_ONLY_NOT_RUNTIME_OR_SCIENTIFIC_REPRODUCTION",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt008_fresh_independent_audit_failure_receipt_v1",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_pc2w_p1_attempt008_admission_observation_packet_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt008_central_static_validation_receipt_v1"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-25T00:00:00+07:00",
+      "declared_by": "scholar"
+    }
+  },
+  "audit_binding": {
+    "task_id": "01a038c9-aa61-7b02-bc20-055a671f5ab2",
+    "audited_head": "e5e557e0e0182442e767b1d1ea3d49ea2369c31d",
+    "packet_commit": "fb1736bd257480bd1ca38848ad2eebf2c72e68c1",
+    "packet_parent": "b973ed673a314d6223265712b95d2a7ce51b02f3",
+    "central_validation_receipt_commit": "e5e557e0e0182442e767b1d1ea3d49ea2369c31d",
+    "worktree_clean_before_and_after": true,
+    "runtime_commands_executed_by_auditor": false,
+    "runner_or_packet_validator_invoked": false,
+    "write_set": []
+  },
+  "artifact_bindings": {
+    "admission_contract_git_blob_sha256": "5345bfcb6cdc7fc3f56d4fe6f39d0de960da99872f4f79c0158eae2cc86ce593",
+    "execution_authorization_git_blob_sha256": "b5bf773d9de7d8d374e2616d9f5c92d06b963a4d3ccf3919b7ed8ae588f88477",
+    "runner_git_blob_sha256": "54422740f0288e0583d849378ee76d8110f99778cb8ee41535eee229cc070e8a",
+    "static_validator_git_blob_sha256": "c9a5fa0751bc35b093d458b2b1cfddf3a21c1bf4b1a6b6a3f8bff3ff727db388",
+    "central_receipt_git_blob_sha256": "3470de3503aa193ffbea3bb458400738a2fc348e0f9dbf1f6fc6f52745cc6e47",
+    "central_receipt_git_object_id": "3f65a917e7e3c3a4feaca4586797c9e60ae4ab78"
+  },
+  "independent_audit": {
+    "frozen_upstream_blobs_passed": 15,
+    "frozen_upstream_blobs_total": 15,
+    "strict_json_blobs_passed": 14,
+    "strict_json_blobs_total": 14,
+    "duplicate_key_findings": 0,
+    "casefold_duplicate_findings": 0,
+    "nonfinite_findings": 0,
+    "bare_cr_findings": 0,
+    "critical_findings": 1,
+    "major_findings": 1,
+    "minor_findings": 0
+  },
+  "findings": {
+    "critical": [
+      {
+        "id": "ATTEMPT008-AUDIT-C01",
+        "classification": "RUNNER_AUTHORIZATION_AND_MODEL_POLICY_INTERFACE_MISMATCH",
+        "evidence": [
+          "RUNNER_CONSUMES_CURRENT_AUTHORIZATION_BUT_ARTIFACT_EXPOSES_USER_DECISION",
+          "CONTRACT_AND_AUTHORIZATION_MODEL_POLICY_OBJECTS_ARE_NOT_EQUAL",
+          "RUNNER_REQUIRES_XHIGH_WHILE_CANONICAL_PACKET_POLICY_REQUESTS_MAX",
+          "RUNNER_REQUIRES_ACTUAL_SERVICE_TIER_WHILE_ARTIFACT_EXPOSES_ACTUAL_MODEL_REASONING_AND_SERVICE_TIER"
+        ],
+        "impact": "DETERMINISTIC_HANDOFF_INCOMPLETE_BEFORE_OUTPUT_ROOT_OR_RUNTIME_COMMAND"
+      }
+    ],
+    "major": [
+      {
+        "id": "ATTEMPT008-AUDIT-M01",
+        "classification": "STATIC_VALIDATOR_DOES_NOT_CHECK_RUNNER_CONSUMER_SCHEMA",
+        "impact": "CENTRAL_91_OF_91_PASS_DID_NOT_ESTABLISH_PACKET_RUNNABILITY"
+      }
+    ],
+    "minor": []
+  },
+  "truth_state": {
+    "runtime_execution_authorized": false,
+    "runtime_commands_executed": false,
+    "benchmark_admission_opened": false,
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "model_provenance": {
+    "requested_model": "gpt-5.6-sol",
+    "requested_reasoning_effort": "xhigh",
+    "requested_service_tier": "default",
+    "fast_or_priority_allowed": false,
+    "actual_configuration_basis": "USER_ATTESTED",
+    "direct_runtime_telemetry": "NOT_EXPOSED",
+    "observed_contradiction": false
+  },
+  "write_set": [
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt008_fresh_independent_audit_failure_receipt.json"
+  ],
+  "verdict": "HANDOFF_INCOMPLETE",
+  "next_gate": "REMEDIATE_ATTEMPT008_PACKET_INTERFACE_WITH_RED_CAPABLE_REGRESSION_TEST_THEN_REPEAT_CENTRAL_VALIDATION_AND_FRESH_AUDIT"
+}
