@@ -1,0 +1,137 @@
+{
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt009-runtime-compatibility-contract-1.0",
+  "stage_id": "E4-R6-PC2W-P1-ATTEMPT009-R1",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "plan",
+    "origin_date": "2026-08-25T13:44:37Z",
+    "verification_status": "UNVERIFIED",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt009_runtime_compatibility_contract_v1",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_pc2w_p1_attempt008_admission_observation_execution_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt008_failure_packet_validation_receipt_v1"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-25T13:44:37Z",
+      "declared_by": "scholar"
+    }
+  },
+  "user_decision": {
+    "status": "CONFIRMED",
+    "decision_text": "CONTINUE_AND_ENSURE_DOCKER_RELATED_ERRORS_ARE_REMEDIATED_AFTER_DEVICE_RESTART",
+    "device_restart_attested": true,
+    "automatic_retry_authorized": false,
+    "docker_desktop_start_authorized_now": false,
+    "docker_daemon_query_authorized_now": false,
+    "scientific_execution_authorized_now": false
+  },
+  "frozen_attempt008": {
+    "output_packet_commit": "2dc7bce6ff2d3bcaf0fee33ebf6f50376f1f9261",
+    "failure_validator_commit": "f1699b87deab2b219a8cc18c43c15254a735000c",
+    "central_validation_receipt_commit": "5bc227ad7d483bf2fc176c8ba583a7c4ba9812a0",
+    "producer_verdict": "FAIL_CLOSED_PC2W_P1_ATTEMPT008_CURRENT_HOST_NOT_ADMISSIBLE",
+    "failure_packet_validation_verdict": "PASS_PC2W_P1_ATTEMPT008_FAIL_CLOSED_PACKET_READY_FOR_FRESH_AUDIT",
+    "automatic_retry_count": 0,
+    "fallback_count": 0,
+    "immutable": true
+  },
+  "confirmed_root_causes": [
+    {
+      "failure_lanes": ["D01", "D06"],
+      "classification": "WINDOWS_POWERSHELL_MODULE_SHADOWING",
+      "evidence": "PYTHON_CHILD_INHERITED_POWERSHELL7_AND_CODEX_RUNTIME_MODULE_PATHS_BEFORE_WINDOWS_POWERSHELL_5_1_MODULES",
+      "observed_error_type": "System.Management.Automation.CommandNotFoundException",
+      "observed_error_type_sha256": "26d8eb80215ec872c6fb95cbc9432488cb86615cf31728df5394f20abbb723e2",
+      "affected_commands": ["Get-FileHash", "Get-AuthenticodeSignature"],
+      "d02_dependency_effect": "TCP_DEPENDENCY_PROCESS_IDENTITY_UNAVAILABLE"
+    },
+    {
+      "failure_lanes": ["DOCKER_IDENTITY"],
+      "classification": "DOCKER_29_SERVER_JSON_SCHEMA_CONTRACT_INCOMPATIBILITY",
+      "evidence": "ATTEMPT008_RECORDED_DOCKER_SERVER_FIELD_MISSING_AFTER_D03_D04_D05_EXIT_ZERO",
+      "exact_missing_field_from_attempt008": "UNOBSERVABLE",
+      "scope_note": "THE_REMEDIATION_ADMITS_AN_EXPLICIT_ROOT_OR_ENGINE_COMPONENT_DETAILS_SCHEMA_UNION_AND_PRESERVES_FIELD_LEVEL_SOURCE_AND_CONFLICT_LOCATORS"
+    }
+  ],
+  "remediation_requirements": {
+    "windows_powershell_child_environment": {
+      "scope": "CHILD_PROCESS_ONLY",
+      "system_or_user_environment_mutation": false,
+      "psmodulepath_policy": "EXACT_WINDOWS_POWERSHELL_SYSTEM_AND_ALL_USERS_PATHS_ONLY",
+      "codex_runtime_module_paths_allowed": false,
+      "powershell7_module_paths_allowed": false
+    },
+    "exact_module_imports": {
+      "required_manifests": [
+        "CimCmdlets.psd1",
+        "NetTCPIP.psd1",
+        "Microsoft.PowerShell.Utility.psd1",
+        "Microsoft.PowerShell.Security.psd1"
+      ],
+      "import_by_fully_qualified_manifest_path": true,
+      "preflight_before_docker_start_required": true,
+      "preflight_failure_blocks_docker_start": true
+    },
+    "docker_server_identity_schema_union": {
+      "admitted_surfaces": [
+        "SERVER_ROOT",
+        "SERVER_COMPONENTS_SINGLE_ENGINE_DETAILS"
+      ],
+      "root_and_component_conflict": "FAIL_CLOSED_WITH_FIELD_LOCATOR",
+      "missing_from_both": "FAIL_CLOSED_WITH_FIELD_LOCATOR",
+      "duplicate_engine_components": "FAIL_CLOSED",
+      "api_version_aliases": ["ApiVersion", "APIVersion"],
+      "experimental_boolean_forms": ["BOOLEAN", "LOWERCASE_BOOLEAN_STRING_IN_ENGINE_DETAILS"],
+      "source_profile_persisted": true,
+      "field_sources_persisted": true,
+      "raw_docker_root_dir_persisted": false,
+      "raw_daemon_id_persisted": false,
+      "raw_proxy_values_persisted": false
+    }
+  },
+  "implementation": {
+    "module": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt009_runtime_compatibility.py",
+    "regression_test": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/test_e4_r6_pc2w_p1_attempt009_runtime_compatibility.py",
+    "python_test_command": "C:\\Program Files\\Python311\\python.exe -B research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\00_control\\test_e4_r6_pc2w_p1_attempt009_runtime_compatibility.py",
+    "python_tests_expected": 9,
+    "powershell_ast_scripts_expected": 4,
+    "host_read_only_preflight_bindings_expected": 5,
+    "docker_or_wsl_start_stop_query_in_r1": false
+  },
+  "safety_boundary": {
+    "runtime_attempt009_runner_created": false,
+    "docker_desktop_started": false,
+    "docker_daemon_queried": false,
+    "wsl_mutated": false,
+    "settings_changed": false,
+    "install_or_download_performed": false,
+    "network_or_web_operation_performed_by_remediation_code": false,
+    "image_or_container_mutation_performed": false,
+    "materialization_performed": false,
+    "preprocessing_performed": false,
+    "training_performed": false,
+    "evaluation_performed": false,
+    "benchmark_admission_opened": false,
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0
+  },
+  "model_policy": {
+    "central_requested_model": "gpt-5.6-sol",
+    "central_requested_reasoning_effort": "max",
+    "central_requested_service_tier": "default",
+    "central_requested_display_name": "Sol Max Standard",
+    "fresh_audit_requested_model": "gpt-5.6-sol",
+    "fresh_audit_requested_reasoning_effort": "xhigh",
+    "fresh_audit_requested_service_tier": "default",
+    "fast_or_priority_allowed": false,
+    "actual_model_reasoning_and_service_tier": "UNOBSERVABLE"
+  },
+  "verdict_lane": [
+    "PASS_PC2W_P1_ATTEMPT009_R1_RUNTIME_COMPATIBILITY_REMEDIATION_READY_FOR_DORMANT_PACKET_DESIGN",
+    "FAIL_CLOSED_PC2W_P1_ATTEMPT009_R1_REMEDIATION_INCOMPLETE"
+  ],
+  "next_gate": "STATIC_VALIDATE_R1_THEN_FRESH_INDEPENDENT_AUDIT_BEFORE_ATTEMPT009_DORMANT_RUNTIME_PACKET_DESIGN"
+}
