@@ -1,0 +1,75 @@
+{
+  "schema_version": "stage1e-legacy-source-cleanup-manifest-1.0",
+  "stage_id": "E4-R6-PC2W-P1-MAINTENANCE",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "plan",
+    "origin_date": "2026-08-25T15:32:41Z",
+    "verification_status": "UNVERIFIED",
+    "version_label": "stage1e_legacy_source_cleanup_manifest_v1",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_pc2w_p1_attempt009_pre_runtime_failure_receipt_v1"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-25T15:32:41Z",
+      "declared_by": "scholar"
+    }
+  },
+  "cleanup_scope": {
+    "pre_cleanup_commit": "41107f2a20347f2e82d9db1667911ddb96d7f2ba",
+    "source_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control",
+    "classification_method": "STATIC_PYTHON_IMPORT_REACHABILITY_PLUS_LITERAL_SOURCE_REFERENCE_AUDIT",
+    "active_roots": [
+      "execute_e4_r6_pc2w_p1_attempt009_admission_observation.py",
+      "validate_e4_r6_pc2w_p1_attempt009_static_packet.py",
+      "test_e4_r6_pc2w_p1_attempt009_runtime_compatibility.py",
+      "test_e4_r6_pc2w_p1_attempt008_probe_contract.py",
+      "test_e4_r6_pc2w_p1_attempt008_safe_probe_envelopes.py"
+    ],
+    "deleted_file_count": 28,
+    "deleted_bytes": 657920,
+    "evidence_artifacts_deleted": false,
+    "benchmark_artifacts_deleted": false,
+    "git_history_rewritten": false
+  },
+  "retention_policy": {
+    "retain_import_reachable_source": true,
+    "retain_runtime_hash_bound_probe_and_test_source": true,
+    "retain_all_json_markdown_receipts_manifests_results_and_handoffs": true,
+    "historical_source_recovery": "git show 41107f2a20347f2e82d9db1667911ddb96d7f2ba:<path>",
+    "attempt010_may_not_execute_until_new_static_validation_fresh_audit_and_exact_user_confirmation": true
+  },
+  "deleted_files": [
+    {"path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_materialization_attempt002.py", "bytes": 26267, "sha256": "70039f54ff2798b01c7a8b224c92d5659758738186fd62bda7148d339defd067"},
+    {"path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc0_query_only_attempt002.py", "bytes": 35559, "sha256": "435e151ce562436783a32afd51a3df866297a28625a56a383638f2d4677e71da"},
+    {"path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc2w_p1_attempt002_query_only.py", "bytes": 43095, "sha256": "0453621b09d4cd0dd6c9df018ebabbfc1080a897e76104906efece59a52202e6"},
+    {"path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc2w_p1_attempt003_baseline_restoration.py", "bytes": 22162, "sha256": "ee610580b49ffc9087dc0a61501cc2cc29a4f64570b137aa0ac0dc8df306797e"},
+    {"path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc2w_p1_attempt003_query_only.py", "bytes": 51571, "sha256": "f2ae212ed3b365658f7e3a11be6fbd66408a30aa4056ea1c0348de5513a381cc"},
+    {"path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc2w_p1_attempt005_instrumented.py", "bytes": 52983, "sha256": "8e595d892a2548458b83c1cbbe1b332243c101554e21fa06ae725a198856e1e9"},
+    {"path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/test_e4_r6_pc2w_p1_attempt008_revision2_packet_contract.py", "bytes": 3015, "sha256": "9be2e828a3661e2c28be6a441befb1ebf6a5f8c3e55b773a52fee511c0ae619d"},
+    {"path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc0_query_only_attempt002.py", "bytes": 29976, "sha256": "5c743977763f971e889f571dca0fa9244084884a570c673447e477daa396ba6a"},
+    {"path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_p1_attempt001.py", "bytes": 14744, "sha256": "3962ae9f37410f4d91f4292da774962b95f1f6edcf84b006b5dcf30731c5afd8"},
+    {"path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_p1_attempt002_dispatch.py", "bytes": 14627, "sha256": "51ad2023ae2c0dd34a4539b4dd9e6877b896224c5e16a5341b025da6492593f4"},
+    {"path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_p1_attempt002.py", "bytes": 14740, "sha256": "fbcd04fafa5ac5cb73465979530e6e7389253fa1c6c0579042bb2334f4163e3d"},
+    {"path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_p1_attempt003_baseline_dispatch.py", "bytes": 12707, "sha256": "82910979496c8cf69978343ed0ae697cd4b67416e229477c3e80ec1116382dd4"},
+    {"path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_p1_attempt003_baseline_failure.py", "bytes": 13539, "sha256": "4a8cdcb487250b09142ef449b9f0e264469182e512008bb30c976789af3d8bf0"},
+    {"path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_p1_attempt003_failure.py", "bytes": 13845, "sha256": "5f74eeb88a498d604091be103c47b73493f7c1f9659ad7d91d58bb26ea4dea87"},
+    {"path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_p1_attempt003_native_offline_pass.py", "bytes": 14828, "sha256": "4450eba6e38bd975408529410a8026f02fe8e192f1161239edab38559b3a5641"},
+    {"path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_p1_attempt003_offline_equivalent_dispatch.py", "bytes": 19814, "sha256": "84240d6edbc9493a92ff97063d2545accd08c76cc934b1312b8e1ccadcda1263"},
+    {"path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_p1_attempt003_offline_equivalent_failure.py", "bytes": 17022, "sha256": "5bd8d0df98ac7acde7c41390a4cd91e03022cfe58955dcbfba28cb6e1e73c921"},
+    {"path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_p1_attempt003_query_only_dispatch.py", "bytes": 17554, "sha256": "d448c2799a823f29ee06532cf7b8576aece197ef617a464fefe1ebfe56e8dec2"},
+    {"path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_p1_attempt004_failure_packet.py", "bytes": 13315, "sha256": "38f39a287280c6879fdd399f8e5f9deb4c41ed643b6ce4e61987dce3bee74f8d"},
+    {"path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_p1_attempt004_failure.py", "bytes": 12605, "sha256": "bb8da79793790c7da598ba298f0edb249259b9f43eb17c32c1a61fd8c8ade16d"},
+    {"path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_p1_attempt004_query_only_dispatch.py", "bytes": 18225, "sha256": "719ee75ee000a9cd4d11bdd7dbea7b4294133a4c2353eed029a7281327e7fa06"},
+    {"path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_p1_attempt005_dispatch.py", "bytes": 14850, "sha256": "a77ab7e2780510295d1ffa9e6148eb03e12bfe53e7676ca2027f555b41736637"},
+    {"path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_p1_attempt005_failure_packet.py", "bytes": 13274, "sha256": "83ec54a97db0207d6fedbff516237bc5433418fbfa73dba9bb3a169d707feaa9"},
+    {"path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_p1_attempt005_static_packet.py", "bytes": 27184, "sha256": "8d2973fa7d119ecb0adb3b81f0c3f201dab181d87b092a40e622391359567d2c"},
+    {"path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_p1_attempt006_static_packet.py", "bytes": 46273, "sha256": "2b8b747f9fa42880a98d40b6d9f3956b835c0dcdfbc744817363a99df25cf482"},
+    {"path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_p1_attempt007_static_packet.py", "bytes": 63233, "sha256": "b0c819c13653a242b38689a090ada14bc253ebae8330364e527bd5bdfc6d4e73"},
+    {"path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_p1_attempt008_failure_packet.py", "bytes": 11916, "sha256": "3253a2e429eed8a7b70d56600dcbf181a7aac5b31b79454fdcf97fb9ee3bd92e"},
+    {"path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_p1_attempt008_static_packet.py", "bytes": 18997, "sha256": "338422db4c49eb071fe10fc917581cc100c980aa205df6017c8bae309c33e513"}
+  ],
+  "verdict": "CLEANUP_SCOPE_LOCKED_EXACT_RECOVERABLE_SOURCE_ONLY"
+}
