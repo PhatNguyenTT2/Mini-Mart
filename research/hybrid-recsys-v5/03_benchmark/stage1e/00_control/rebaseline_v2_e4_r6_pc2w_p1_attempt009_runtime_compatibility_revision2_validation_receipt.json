@@ -1,0 +1,115 @@
+{
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt009-runtime-compatibility-revision2-validation-receipt-1.0",
+  "stage_id": "E4-R6-PC2W-P1-ATTEMPT009-R1",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "validate",
+    "origin_date": "2026-08-25T13:58:43Z",
+    "verification_status": "VERIFIED",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt009_runtime_compatibility_revision2_validation_receipt_v1",
+    "integrity_pass_date": "2026-08-25T13:58:43Z",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_pc2w_p1_attempt009_runtime_compatibility_validation_receipt_v1"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-25T13:58:43Z",
+      "declared_by": "scholar"
+    }
+  },
+  "revision1": {
+    "packet_commit": "41aac825cba527e9b3a48af1530162a3e99fa532",
+    "validation_receipt_commit": "1ac3cb843d85bad8bdec7b6426242d1ff43d223e",
+    "retained_immutable": true,
+    "superseded_for_future_packet_design": true
+  },
+  "revision2": {
+    "packet_commit": "608b229eb8d868d88ab0ef2bae9a377aa663090a",
+    "packet_parent": "1ac3cb843d85bad8bdec7b6426242d1ff43d223e",
+    "exact_delta": [
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt009_runtime_compatibility.py",
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt009_runtime_compatibility_contract.json",
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/test_e4_r6_pc2w_p1_attempt009_runtime_compatibility.py"
+    ],
+    "changes": [
+      "ENGINE_DETAILS_EXPERIMENTAL_STRING_NOW_ACCEPTS_ONLY_EXACT_LOWERCASE_TRUE_OR_FALSE",
+      "ENGINE_TOP_LEVEL_VERSION_SOURCE_IS_RECORDED_AS_ENGINE_COMPONENT_NOT_ENGINE_COMPONENT_DETAILS",
+      "REGRESSION_TEST_COVERS_NON_LOWERCASE_BOOLEAN_FAIL_CLOSED"
+    ]
+  },
+  "packet_artifacts": [
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt009_runtime_compatibility.py",
+      "git_blob_bytes": 14835,
+      "git_blob_sha256": "6c5f3f1c929a37d1169c08317032e0993e185e2321ac047f5e6220bc1a787e97"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt009_runtime_compatibility_contract.json",
+      "git_blob_bytes": 6332,
+      "git_blob_sha256": "9ab5077befe785865435c7de48558c6bbae4fcc0fcbe7ef1e267864bcd10959a"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/test_e4_r6_pc2w_p1_attempt009_runtime_compatibility.py",
+      "git_blob_bytes": 9583,
+      "git_blob_sha256": "74325cf3eb9dff52afb12d72a1c3f14b4456fe9c57dc62c134e9ae36d5dafa9a"
+    }
+  ],
+  "validation": {
+    "python_tests_passed": 9,
+    "python_tests_total": 9,
+    "stress_runs_passed": 50,
+    "stress_runs_total": 50,
+    "python_ast_files_passed": 2,
+    "python_ast_files_total": 2,
+    "strict_json_files_passed": 1,
+    "strict_json_files_total": 1,
+    "powershell_ast_scripts_passed": 4,
+    "powershell_ast_scripts_total": 4,
+    "forbidden_mutation_or_network_tokens_found": 0,
+    "python_bytecode_persisted": false
+  },
+  "post_restart_host_read_only_replay": {
+    "verdict": "PASS_ATTEMPT009_REVISION2_HOST_READ_ONLY_REPLAY",
+    "powershell_preflight_bindings_passed": 5,
+    "powershell_preflight_bindings_total": 5,
+    "powershell_preflight_exit_code": 0,
+    "powershell_preflight_stderr_bytes": 0,
+    "d06_exit_code": 0,
+    "d06_stderr_bytes": 0,
+    "d06_authenticode_status": "Valid",
+    "d06_file_sha256": "5b8ab7161b88c45bd4b036e9988349356c18cf5409adb77fdfb8c73b279d8fce",
+    "docker_desktop_started": false,
+    "docker_daemon_queried": false,
+    "wsl_command_executed": false
+  },
+  "proof_boundary": {
+    "powershell_module_shadowing_remediated_on_current_restarted_host": true,
+    "d01_d02_d06_probe_layer_ready": true,
+    "docker29_schema_union_static_and_synthetic_ready": true,
+    "running_daemon_d03_d04_d05_schema_not_observed_in_revision2": true,
+    "attempt009_runtime_runner_created": false,
+    "runtime_execution_authorized": false,
+    "automatic_retry_authorized": false,
+    "benchmark_admission_opened": false,
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0
+  },
+  "model_policy": {
+    "central_requested_model": "gpt-5.6-sol",
+    "central_requested_reasoning_effort": "max",
+    "central_requested_service_tier": "default",
+    "central_requested_display_name": "Sol Max Standard",
+    "fresh_audit_requested_model": "gpt-5.6-sol",
+    "fresh_audit_requested_reasoning_effort": "xhigh",
+    "fresh_audit_requested_service_tier": "default",
+    "fast_or_priority_allowed": false,
+    "actual_model_reasoning_and_service_tier": "UNOBSERVABLE"
+  },
+  "write_set": [
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt009_runtime_compatibility_revision2_validation_receipt.json"
+  ],
+  "verdict": "PASS_PC2W_P1_ATTEMPT009_R1_REVISION2_RUNTIME_COMPATIBILITY_READY_FOR_FRESH_AUDIT",
+  "next_gate": "FRESH_INDEPENDENT_READ_ONLY_AUDIT_OF_REVISION2_THEN_ATTEMPT009_DORMANT_RUNTIME_PACKET_DESIGN_NO_EXECUTION"
+}
