@@ -1,0 +1,121 @@
+{
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt008-probe-parser-remediation-contract-1.0",
+  "stage_id": "E4-R6-PC2W-P1-ATTEMPT008-R1",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "plan",
+    "origin_date": "2026-08-25T00:00:00+07:00",
+    "verification_status": "UNVERIFIED",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt008_probe_parser_remediation_contract_v1",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_pc2w_p1_attempt007_failure_packet_audit_receipt_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt007_admission_observation_execution_v1"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-25T00:00:00+07:00",
+      "declared_by": "scholar"
+    }
+  },
+  "user_decision": {
+    "status": "CONFIRMED",
+    "scope": "PUSH_EXACT_SEVEN_ATTEMPT007_COMMITS_AND_REPAIR_PROBE_PARSER_FOR_ATTEMPT008",
+    "runtime_execution_authorized": false,
+    "automatic_retry_authorized": false
+  },
+  "upstream_failure_binding": {
+    "sealed_state_commit": "59c846fb2428987b21c70921194f36ba47db4d71",
+    "attempt007_output_commit": "58744dfc6fa81177b81634e827d357ab0cf6882d",
+    "attempt007_failure_packet_audit_commit": "04f29541dbee2955ffc9383fcb1bcdfa43273d5f",
+    "attempt007_failure_audit_verdict": "PASS_PC2W_P1_ATTEMPT007_FAILURE_PACKET_AUDITED_NO_RETRY",
+    "attempt007_execution_verdict": "FAIL_CLOSED_PC2W_P1_ATTEMPT007_CURRENT_HOST_NOT_ADMISSIBLE",
+    "attempt007_root_cause_classification": "MIXED_OR_INDETERMINATE"
+  },
+  "scope_boundary": {
+    "pure_parser_and_synthetic_regression_only": true,
+    "attempt007_artifacts_must_remain_byte_immutable": true,
+    "new_attempt008_module_and_tests_only": true,
+    "docker_desktop_start_or_stop_forbidden": true,
+    "docker_daemon_query_forbidden": true,
+    "wsl_process_tcp_named_pipe_or_host_probe_forbidden": true,
+    "network_calls_from_test_or_module_forbidden": true,
+    "download_install_or_environment_creation_forbidden": true,
+    "materialization_preprocessing_training_evaluation_benchmark_forbidden": true,
+    "test_dataset_access_forbidden": true,
+    "runtime_admission_packet_not_yet_authorized": true
+  },
+  "diagnosis": {
+    "confirmed_contract_defect": {
+      "code": "ATTEMPT007_DOCKER_BUILD_TIME_FORMAT_CONTRACT_TOO_NARROW",
+      "local_locator": "execute_e4_r6_pc2w_p1_attempt007_admission_observation.py:429-435",
+      "observed_behavior": "parse_rfc3339_utc accepts only values ending in Z",
+      "docker_cli_observed_families": [
+        "DOCKER_CLI_HUMAN",
+        "RFC3339_UTC_WITH_NANOSECONDS_AND_PLUS_00_00",
+        "RFC3339_UTC_WITH_Z"
+      ],
+      "effect": "A valid docker version JSON payload can produce DOCKER_IDENTITY:ValueError before cross-consistency evaluation",
+      "attribution_scope": "CONFIRMED_PARSER_DEFECT_BUT_NOT_PROOF_IT_WAS_THE_ONLY_ATTEMPT007_FAILURE"
+    },
+    "unresolved_attempt007_failures": [
+      "D01_PROCESS_IDENTITY_EXACT_REJECTION_FIELD_UNOBSERVABLE",
+      "D02_MAY_BE_A_DEPENDENCY_CASCADE_FROM_D01",
+      "D06_COMMAND_FAILURE_EXACT_STEP_UNOBSERVABLE"
+    ],
+    "authoritative_or_primary_evidence": [
+      {
+        "url": "https://docs.docker.com/reference/cli/docker/version/",
+        "role": "OFFICIAL_DOCKER_VERSION_FORMAT_AND_BUILD_TIME_EXAMPLE"
+      },
+      {
+        "url": "https://github.com/docker/cli/issues/6727",
+        "role": "PRIMARY_DOCKER_CLI_ISSUE_WITH_MIXED_BUILDTIME_JSON_EXAMPLE",
+        "status": "OBSERVATION_NOT_RELEASE_GUARANTEE"
+      }
+    ]
+  },
+  "remediation_contract": {
+    "preserve_raw_nonsecret_build_time_string": true,
+    "classify_but_do_not_invent_timezone_for_human_build_time": true,
+    "accept_only_closed_known_build_time_families": true,
+    "accept_api_version_alias_only_when_unambiguous": true,
+    "reject_conflicting_api_version_aliases": true,
+    "map_identity_failures_to_stable_non_sensitive_codes": true,
+    "retain_probe_error_type_only_as_sha256": true,
+    "never_persist_raw_process_path_command_line_network_address_proxy_root_dir_or_daemon_id": true,
+    "unknown_or_malformed_input_fails_closed": true
+  },
+  "feedback_loop": {
+    "command": "C:\\Program Files\\Python311\\python.exe -B research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\00_control\\test_e4_r6_pc2w_p1_attempt008_probe_contract.py",
+    "working_directory": "E:\\UIT\\cv\\backend",
+    "host_or_docker_io": false,
+    "deterministic": true,
+    "expected_tests": 8,
+    "expected_failures": 0
+  },
+  "future_probe_redesign_requirements": {
+    "d01": "RETURN_A_CLOSED_SAFE_FAILURE_STEP_AND_TARGET_NAME_WHEN_THE_QUERY_ENVELOPE_IS_UNAVAILABLE",
+    "d02": "DISTINGUISH_OWN_PROBE_FAILURE_FROM_D01_DEPENDENCY_UNAVAILABLE",
+    "d06": "RETURN_A_JSON_ENVELOPE_WITH_CLOSED_SAFE_FAILURE_STEP_INSTEAD_OF_ONLY_NONZERO_STDERR",
+    "main_parser": "PERSIST_STRUCTURED_FAILURE_RECORDS_AND_DO_NOT_DUPLICATE_COMMAND_FAILED_AS_A_SECOND_GENERIC_IDENTITY_FAILURE",
+    "runtime_rule": "A_NEW_FROZEN_RUNNER_CONTRACT_AUTHORIZATION_STATIC_VALIDATION_FRESH_AUDIT_AND_EXACT_USER_COMMAND_CONFIRMATION_ARE_REQUIRED"
+  },
+  "model_policy": {
+    "requested_model": "gpt-5.6-sol",
+    "requested_reasoning_effort": "max",
+    "requested_service_tier": "default",
+    "requested_display_name": "Sol Max Standard",
+    "fast_or_priority_allowed": false,
+    "actual_model_reasoning_and_service_tier": "UNOBSERVABLE"
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "benchmark_admission_opened": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "verdict": "READY_FOR_SYNTHETIC_REMEDIATION_VALIDATION_ONLY",
+  "next_gate": "PASS_SYNTHETIC_REMEDIATION_THEN_DESIGN_FAIL_CLOSED_ATTEMPT008_PROBE_ENVELOPES_NO_RUNTIME"
+}

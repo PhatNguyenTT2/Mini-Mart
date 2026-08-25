@@ -1,0 +1,121 @@
+{
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt008-probe-parser-remediation-validation-receipt-1.0",
+  "stage_id": "E4-R6-PC2W-P1-ATTEMPT008-R1",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "validate",
+    "origin_date": "2026-08-25T00:00:00+07:00",
+    "verification_status": "VERIFIED",
+    "verification_scope": "SYNTHETIC_PROBE_PARSER_REMEDIATION_ONLY_NOT_HOST_ADMISSION_OR_EXPERIMENT_REPRODUCTION",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt008_probe_parser_remediation_validation_receipt_v1",
+    "integrity_pass_date": "2026-08-25T00:00:00+07:00",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_pc2w_p1_attempt008_probe_parser_remediation_contract_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt007_failure_packet_audit_receipt_v1"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-25T00:00:00+07:00",
+      "declared_by": "scholar"
+    }
+  },
+  "validation_mode": {
+    "host_io": false,
+    "docker_or_wsl_invoked": false,
+    "network_invoked_by_module_or_test": false,
+    "scientific_execution": false,
+    "test_dataset_access": false,
+    "python_bytecode_persisted": false
+  },
+  "feedback_loop": {
+    "command": "C:\\Program Files\\Python311\\python.exe -B research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\00_control\\test_e4_r6_pc2w_p1_attempt008_probe_contract.py",
+    "working_directory": "E:\\UIT\\cv\\backend",
+    "initial_red_observation": {
+      "tests": 3,
+      "failures": 1,
+      "errors": 2,
+      "repeated_runs": 2,
+      "repeated_red": 2,
+      "captured_symptoms": [
+        "DOCKER_CLI_HUMAN_REJECTED_BY_Z_SUFFIX_REQUIREMENT",
+        "RFC3339_NANO_PLUS_00_00_REJECTED_BY_Z_SUFFIX_REQUIREMENT",
+        "PROCESS_ENVELOPE_UNAVAILABLE_EXPOSED_ONLY_GENERIC_VALUEERROR_WITHOUT_STABLE_CODE"
+      ]
+    },
+    "final_green_observation": {
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "single_run_exit_code": 0,
+      "stress_runs": 50,
+      "stress_failures": 0,
+      "runtime_per_single_run_seconds_approx": 0.001
+    }
+  },
+  "validated_behaviors": [
+    "ACCEPT_DOCKER_CLI_HUMAN_BUILDTIME_WITHOUT_INVENTING_TIMEZONE",
+    "ACCEPT_RFC3339_UTC_NANO_PLUS_00_00_BUILDTIME",
+    "ACCEPT_RFC3339_UTC_Z_BUILDTIME",
+    "REJECT_NON_UTC_OR_UNKNOWN_BUILDTIME_FAIL_CLOSED_WITH_STABLE_CODE",
+    "NORMALIZE_APIVERSION_ALIAS_ONLY_WHEN_UNAMBIGUOUS",
+    "REJECT_CONFLICTING_API_VERSION_ALIASES",
+    "MAP_D01_D02_D06_VALIDATION_FAILURES_TO_STABLE_NON_SENSITIVE_CODES",
+    "PRESERVE_HASHED_OR_CLASSIFIED_OUTPUT_AND_EXCLUDE_RAW_ROOT_DIR_OR_DAEMON_ID"
+  ],
+  "packet_artifacts": [
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt008_probe_parser_remediation_contract.json",
+      "bytes": 5790,
+      "sha256": "3976a4c511684fa7b8df753265b9f96b49d022098894f9769ca0c531d85245e0"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt008_probe_contract.py",
+      "bytes": 10949,
+      "sha256": "2076af6aac7f0d28b53378b9362b2e8aa73ce8ac5e97664f29294ae6417f9d03"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/test_e4_r6_pc2w_p1_attempt008_probe_contract.py",
+      "bytes": 7978,
+      "sha256": "94470c80740817f5ab5f206dde1c88b4fd2d90fff18576a5be142449a9e31b6f"
+    }
+  ],
+  "diagnostic_conclusion": {
+    "confirmed": "ATTEMPT007_DOCKER_BUILD_TIME_FORMAT_CONTRACT_TOO_NARROW",
+    "confirmed_scope": "ONE_INDEPENDENT_PARSER_DEFECT_CAPABLE_OF_PRODUCING_DOCKER_IDENTITY_VALUEERROR",
+    "not_proven": [
+      "THE_CONFIRMED_DEFECT_WAS_THE_ONLY_ATTEMPT007_FAILURE",
+      "THE_CURRENT_HOST_IS_ADMISSIBLE_AFTER_THIS_PARSER_FIX",
+      "D01_PROCESS_QUERY_ROOT_CAUSE",
+      "D06_FILE_QUERY_ROOT_CAUSE"
+    ],
+    "remaining_classification": "D01_D02_D06_MIXED_OR_INDETERMINATE_PENDING_SAFE_PROBE_ENVELOPE_REDESIGN"
+  },
+  "immutable_history": {
+    "attempt007_source_or_output_files_modified": false,
+    "attempt007_sealed_state_commit": "59c846fb2428987b21c70921194f36ba47db4d71",
+    "automatic_retry_count": 0
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "benchmark_admission_opened": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "model_policy": {
+    "requested_model": "gpt-5.6-sol",
+    "requested_reasoning_effort": "max",
+    "requested_service_tier": "default",
+    "fast_or_priority_allowed": false,
+    "actual_model_reasoning_and_service_tier": "UNOBSERVABLE"
+  },
+  "write_set": [
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt008_probe_contract.py",
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt008_probe_parser_remediation_contract.json",
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/test_e4_r6_pc2w_p1_attempt008_probe_contract.py",
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt008_probe_parser_remediation_validation_receipt.json"
+  ],
+  "verdict": "PASS_PC2W_P1_ATTEMPT008_R1_SYNTHETIC_PROBE_PARSER_REMEDIATION",
+  "next_gate": "DESIGN_D01_D02_D06_SAFE_PROBE_ENVELOPES_AND_STATIC_TESTS_NO_RUNTIME"
+}
