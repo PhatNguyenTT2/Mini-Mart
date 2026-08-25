@@ -1,0 +1,117 @@
+{
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt007-failure-packet-validation-receipt-1.0",
+  "stage_id": "E4-R6-PC2W-P1-ATTEMPT007",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "validate",
+    "origin_date": "2026-08-25T00:00:00+07:00",
+    "verification_status": "VERIFIED",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt007_failure_packet_validation_receipt_v1",
+    "integrity_pass_date": "2026-08-25T00:00:00+07:00",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_pc2w_p1_attempt007_admission_observation_execution_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt007_fresh_independent_audit_receipt_v1"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-25T00:00:00+07:00",
+      "declared_by": "scholar"
+    }
+  },
+  "entry_checkpoint": "1447515f094e77516515d6a88aef790f1a85f66e",
+  "output_packet_commit": "58744dfc6fa81177b81634e827d357ab0cf6882d",
+  "output_packet_parent": "1447515f094e77516515d6a88aef790f1a85f66e",
+  "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ap/E4_R6PC2W_P1_attempt007_admission_observation",
+  "output_artifacts": [
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ap/E4_R6PC2W_P1_attempt007_admission_observation/admission_observation.json",
+      "git_blob_bytes": 13461,
+      "git_blob_sha256": "ea807c3ede331a00c2cc94d4b474418803ec7485d277b991b84a2c04ece3c1fd"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ap/E4_R6PC2W_P1_attempt007_admission_observation/command_receipts.json",
+      "git_blob_bytes": 21503,
+      "git_blob_sha256": "ccd6959d3f685f73fb0ac8d1aabd2fad30e9f7ebd972cfefad20c10cdafce990"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ap/E4_R6PC2W_P1_attempt007_admission_observation/execution_receipt.json",
+      "git_blob_bytes": 4204,
+      "git_blob_sha256": "c1134984e866a127c3fc638cd1969e2dce3335a105bc81684be55bd4e78c63fd"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ap/E4_R6PC2W_P1_attempt007_admission_observation/handoff.json",
+      "git_blob_bytes": 1454,
+      "git_blob_sha256": "7d7961f3c13134d97e67446fb4049f620bc796beacfa6f286d1ae46407b541b4"
+    }
+  ],
+  "central_validation": {
+    "strict_json_files_passed": 4,
+    "strict_json_files_total": 4,
+    "exact_output_files_passed": 4,
+    "exact_output_files_total": 4,
+    "semantic_assertions_passed": 30,
+    "semantic_assertions_total": 30,
+    "failure_count": 0
+  },
+  "execution_facts": {
+    "commands_recorded": 26,
+    "docker_desktop_start_attempts": 1,
+    "docker_desktop_stop_attempts": 1,
+    "wsl_shutdown_attempts": 1,
+    "automatic_retry_count": 0,
+    "fallback_count": 0,
+    "immediate_pre_start_gate_all_pass": true,
+    "docker_desktop_start_succeeded": true,
+    "during_docker_desktop_wsl_running": true,
+    "docker_version_exit_code": 0,
+    "docker_info_exit_code": 0,
+    "docker_context_inspect_exit_code": 0,
+    "during_process_identity_complete": false,
+    "during_tcp_identity_complete": false,
+    "docker_client_server_info_identity_complete": false,
+    "docker_desktop_executable_identity_complete": false,
+    "docker_desktop_file_identity_exit_code": 1,
+    "parse_failures": [
+      "D01:IDENTITY:ValueError",
+      "D02:IDENTITY:ValueError",
+      "D06:COMMAND_FAILED",
+      "DOCKER_IDENTITY:ValueError",
+      "D06:IDENTITY:ValueError"
+    ],
+    "docker_desktop_stop_succeeded": true,
+    "wsl_shutdown_succeeded": true,
+    "closure_snapshots": 3,
+    "all_closure_lanes_pass": true,
+    "closure_snapshots_stable": true,
+    "final_closure_matches_pre_start": true
+  },
+  "truth_state": {
+    "verdict": "FAIL_CLOSED_PC2W_P1_ATTEMPT007_CURRENT_HOST_NOT_ADMISSIBLE",
+    "benchmark_admission_opened": false,
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "materialization_performed": false,
+    "preprocessing_performed": false,
+    "training_performed": false,
+    "evaluation_performed": false,
+    "force_kill_performed": false,
+    "service_restart_performed": false,
+    "settings_changed": false,
+    "install_or_download_performed": false,
+    "network_or_web_operation_performed": false,
+    "image_or_container_mutation_performed": false
+  },
+  "stale_state_fields_preserved_for_post_packet_reconciliation": [
+    "rebaseline_v2.e4_r5.status",
+    "rebaseline_v2.e4_r5.r6.status",
+    "rebaseline_v2.e4_r5.r6.pc2w.status",
+    "next_gate"
+  ],
+  "write_set": [
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt007_failure_packet_validation_receipt.json"
+  ],
+  "verdict": "PASS_PC2W_P1_ATTEMPT007_FAIL_CLOSED_PACKET_READY_FOR_FRESH_AUDIT",
+  "next_gate": "FRESH_INDEPENDENT_AUDIT_OF_IMMUTABLE_ATTEMPT007_FAILURE_PACKET_NO_RETRY"
+}
