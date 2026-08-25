@@ -1,0 +1,119 @@
+{
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt008-safe-probe-envelope-validation-receipt-1.0",
+  "stage_id": "E4-R6-PC2W-P1-ATTEMPT008-R2",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "validate",
+    "origin_date": "2026-08-25T00:00:00+07:00",
+    "verification_status": "VERIFIED",
+    "verification_scope": "STATIC_AND_SYNTHETIC_SAFE_PROBE_ENVELOPE_ONLY_NOT_HOST_PROBE_OR_RUNTIME_ADMISSION",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt008_safe_probe_envelope_validation_receipt_v1",
+    "integrity_pass_date": "2026-08-25T00:00:00+07:00",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_pc2w_p1_attempt008_safe_probe_envelope_contract_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt008_probe_parser_remediation_validation_receipt_v1"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-25T00:00:00+07:00",
+      "declared_by": "scholar"
+    }
+  },
+  "validation_mode": {
+    "python_synthetic_tests_only": true,
+    "powershell_language_ast_parse_only": true,
+    "powershell_probe_execution": false,
+    "host_io": false,
+    "docker_or_wsl_invoked": false,
+    "process_tcp_named_pipe_or_file_probe_invoked": false,
+    "network_invoked": false,
+    "scientific_execution": false,
+    "test_dataset_access": false,
+    "python_bytecode_persisted": false
+  },
+  "validation_results": {
+    "python_tests_passed": 9,
+    "python_tests_total": 9,
+    "single_run_exit_code": 0,
+    "stress_runs": 50,
+    "stress_failures": 0,
+    "powershell_scripts_ast_parsed": 3,
+    "powershell_syntax_failures": 0,
+    "strict_json_files_passed": 2,
+    "strict_json_files_total": 2,
+    "forbidden_mutation_or_network_tokens_found": 0
+  },
+  "validated_envelopes": {
+    "D01": {
+      "success_fixture": "PASS_R1_STRICT_PROCESS_IDENTITY_REUSE",
+      "failure_fixture": "PASS_CLOSED_STEP_TARGET_AND_ERROR_TYPE_HASH",
+      "unknown_step_fixture": "PASS_FAIL_CLOSED"
+    },
+    "D02": {
+      "success_fixture": "PASS_R1_STRICT_TCP_IDENTITY_REUSE",
+      "own_failure_fixture": "PASS_CLOSED_STEP_AND_ERROR_TYPE_HASH",
+      "dependency_failure_fixture": "PASS_DISTINCT_TCP_DEPENDENCY_PROCESS_IDENTITY_UNAVAILABLE"
+    },
+    "D06": {
+      "success_fixture": "PASS_R1_STRICT_DESKTOP_FILE_IDENTITY_REUSE",
+      "failure_fixture": "PASS_JSON_ENVELOPE_WITH_CLOSED_STEP_AND_ERROR_TYPE_HASH"
+    }
+  },
+  "packet_artifacts": [
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt008_safe_probe_envelopes.py",
+      "bytes": 15916,
+      "sha256": "04d2014b07388215ff034e817471228dbb767a3d85efb21cb80c74691358e047"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/test_e4_r6_pc2w_p1_attempt008_safe_probe_envelopes.py",
+      "bytes": 7626,
+      "sha256": "1d1d8ac297eebfedb23091ed8735dd2622ef10018dfc85396eac48c7016dcf6c"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt008_safe_probe_envelope_contract.json",
+      "bytes": 5628,
+      "sha256": "9bf7745b49d18ad44cdeba242d0524d24ca13c47c8c0574f559b4c570c35caaa"
+    }
+  ],
+  "security_and_truth_assertions": {
+    "raw_exception_message_persisted": false,
+    "raw_process_path_persisted": false,
+    "raw_command_line_persisted": false,
+    "raw_network_address_persisted": false,
+    "unknown_failure_step_accepted": false,
+    "d02_dependency_failure_collapsed_into_own_probe_failure": false,
+    "d06_expected_failure_requires_nonzero_stderr_only": false,
+    "attempt007_or_attempt008_r1_bytes_modified": false,
+    "automatic_retry_count": 0
+  },
+  "remaining_limitations": [
+    "THE_THREE_PROBE_SCRIPTS_HAVE_NOT_RUN_ON_THE_CURRENT_HOST",
+    "STATIC_AND_SYNTHETIC_PASS_DOES_NOT_PROVE_HOST_ADMISSIBILITY",
+    "A_DORMANT_ATTEMPT008_RUNNER_MUST_INTEGRATE_THE_ENVELOPES_WITHOUT_WEAKENING_ATTEMPT007_PASS_CONDITIONS",
+    "A_FRESH_PACKET_AUDIT_AND_EXACT_USER_COMMAND_CONFIRMATION_REMAIN_MANDATORY"
+  ],
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "benchmark_admission_opened": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "model_policy": {
+    "requested_model": "gpt-5.6-sol",
+    "requested_reasoning_effort": "max",
+    "requested_service_tier": "default",
+    "fast_or_priority_allowed": false,
+    "actual_model_reasoning_and_service_tier": "UNOBSERVABLE"
+  },
+  "write_set": [
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt008_safe_probe_envelopes.py",
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/test_e4_r6_pc2w_p1_attempt008_safe_probe_envelopes.py",
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt008_safe_probe_envelope_contract.json",
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt008_safe_probe_envelope_validation_receipt.json"
+  ],
+  "verdict": "PASS_PC2W_P1_ATTEMPT008_R2_SAFE_PROBE_ENVELOPES_STATIC_SYNTHETIC",
+  "next_gate": "DESIGN_NEW_ATTEMPT008_DORMANT_RUNTIME_PACKET_AND_STATIC_VALIDATOR_NO_EXECUTION"
+}
