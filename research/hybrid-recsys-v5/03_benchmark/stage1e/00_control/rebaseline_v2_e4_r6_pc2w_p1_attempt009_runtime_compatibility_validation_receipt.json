@@ -1,0 +1,160 @@
+{
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt009-runtime-compatibility-validation-receipt-1.0",
+  "stage_id": "E4-R6-PC2W-P1-ATTEMPT009-R1",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "validate",
+    "origin_date": "2026-08-25T13:54:36Z",
+    "verification_status": "VERIFIED",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt009_runtime_compatibility_validation_receipt_v1",
+    "integrity_pass_date": "2026-08-25T13:54:36Z",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_pc2w_p1_attempt008_failure_packet_validation_receipt_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt009_runtime_compatibility_contract_v1"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-25T13:54:36Z",
+      "declared_by": "scholar"
+    }
+  },
+  "entry_checkpoint": "5bc227ad7d483bf2fc176c8ba583a7c4ba9812a0",
+  "packet_commit": "41aac825cba527e9b3a48af1530162a3e99fa532",
+  "packet_parent": "5bc227ad7d483bf2fc176c8ba583a7c4ba9812a0",
+  "packet_artifacts": [
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt009_runtime_compatibility.py",
+      "git_blob_bytes": 14779,
+      "git_blob_sha256": "425120323c626986345235c2cd44580b841786fbe2f9ec1d47ddce848794db27"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt009_runtime_compatibility_contract.json",
+      "git_blob_bytes": 6328,
+      "git_blob_sha256": "6b71c1f338b9634ef59a424e81933c2b63013ee54325fd3c17063a018ca1eb18"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/test_e4_r6_pc2w_p1_attempt009_runtime_compatibility.py",
+      "git_blob_bytes": 9035,
+      "git_blob_sha256": "7f8e3d6cdcb1bc8d1b48d2fea49adbb09041efd63c84c5a69216481a192cbd69"
+    }
+  ],
+  "red_capable_feedback_loop": {
+    "command": "C:\\Program Files\\Python311\\python.exe -B research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\00_control\\test_e4_r6_pc2w_p1_attempt009_runtime_compatibility.py",
+    "initial_red": "ModuleNotFoundError:e4_r6_pc2w_p1_attempt009_runtime_compatibility",
+    "intermediate_ast_red": "MissingEndParenthesisInSubexpression",
+    "intermediate_host_preflight_red": "VERIFY_COMMAND_BINDING_FOR_MODULE_QUALIFIED_NETTCPIP_CDXML_COMMAND",
+    "final_green_tests_passed": 9,
+    "final_green_tests_total": 9,
+    "stress_runs_passed": 50,
+    "stress_runs_total": 50,
+    "deterministic": true,
+    "host_mutation": false
+  },
+  "static_validation": {
+    "python_ast_files_passed": 2,
+    "python_ast_files_total": 2,
+    "strict_json_files_passed": 1,
+    "strict_json_files_total": 1,
+    "powershell_ast_scripts_passed": 4,
+    "powershell_ast_scripts_total": 4,
+    "forbidden_mutation_or_network_tokens_found": 0,
+    "python_bytecode_persisted": false
+  },
+  "post_restart_host_read_only_validation": {
+    "device_restart_attested_by_scholar": true,
+    "docker_desktop_started": false,
+    "docker_daemon_queried": false,
+    "wsl_command_executed": false,
+    "powershell_preflight": {
+      "verdict": "PASS_ATTEMPT009_WINDOWS_POWERSHELL_MODULE_PREFLIGHT",
+      "powershell_major": 5,
+      "language_mode": "FullLanguage",
+      "command_bindings_passed": 5,
+      "command_bindings_total": 5,
+      "stderr_bytes": 0,
+      "codex_runtime_module_paths_in_child": false,
+      "powershell7_module_paths_in_child": false
+    },
+    "d01_stopped_host_probe": {
+      "exit_code": 0,
+      "available": true,
+      "count": 0,
+      "error_code": "NONE",
+      "failure_step": "NONE",
+      "error_type_hash": null
+    },
+    "d02_stopped_host_probe": {
+      "exit_code": 0,
+      "available": true,
+      "count": 0,
+      "error_code": "NONE",
+      "failure_step": "NONE",
+      "error_type_hash": null
+    },
+    "d06_wrapped_file_identity": {
+      "verdict": "PASS_ATTEMPT009_D06_WRAPPED_FILE_IDENTITY",
+      "exit_code": 0,
+      "stderr_bytes": 0,
+      "raw_bytes": 13209520,
+      "file_sha256": "5b8ab7161b88c45bd4b036e9988349356c18cf5409adb77fdfb8c73b279d8fce",
+      "file_version": "4.78.0.229452",
+      "product_version": "4.78.0.229452",
+      "authenticode_status": "Valid",
+      "path_hash": "b7547a97ceaef671ec2d0976945fa388b5b0e1c5f0c8691723d14d1f5d3e7d14",
+      "signer_subject_hash": "a22453ee9ed8ee4ae5fae81cf20f975670f46d0afd0c5a3330be7b57626e08fe"
+    }
+  },
+  "docker29_schema_validation": {
+    "status": "PASS_STATIC_SYNTHETIC_EXPLICIT_SCHEMA_UNION",
+    "actual_running_daemon_schema_observed_in_r1": false,
+    "root_only_fixture": "PASS",
+    "root_with_engine_component_supplement_fixture": "PASS",
+    "api_version_alias_fixture": "PASS",
+    "engine_experimental_string_fixture": "PASS",
+    "root_component_conflict_fixture": "PASS_FAIL_CLOSED",
+    "missing_root_and_component_field_fixture": "PASS_FAIL_CLOSED_WITH_FIELD_LOCATOR",
+    "duplicate_engine_component_fixture": "PASS_FAIL_CLOSED",
+    "source_profile_persisted": true,
+    "field_sources_persisted": true,
+    "remaining_proof_required": "ONE_SHOT_ATTEMPT009_RUNNING_DAEMON_ADMISSION_OBSERVATION"
+  },
+  "authoritative_reference_surfaces": [
+    "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_psmodulepath",
+    "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/import-module",
+    "https://docs.docker.com/reference/cli/docker/version/",
+    "https://github.com/docker/cli/issues/6647"
+  ],
+  "safety_boundary": {
+    "attempt009_runtime_runner_created": false,
+    "runtime_execution_authorized": false,
+    "automatic_retry_authorized": false,
+    "settings_changed": false,
+    "install_or_download_performed": false,
+    "image_or_container_mutation_performed": false,
+    "materialization_performed": false,
+    "preprocessing_performed": false,
+    "training_performed": false,
+    "evaluation_performed": false,
+    "benchmark_admission_opened": false,
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0
+  },
+  "model_policy": {
+    "central_requested_model": "gpt-5.6-sol",
+    "central_requested_reasoning_effort": "max",
+    "central_requested_service_tier": "default",
+    "central_requested_display_name": "Sol Max Standard",
+    "fresh_audit_requested_model": "gpt-5.6-sol",
+    "fresh_audit_requested_reasoning_effort": "xhigh",
+    "fresh_audit_requested_service_tier": "default",
+    "fast_or_priority_allowed": false,
+    "actual_model_reasoning_and_service_tier": "UNOBSERVABLE"
+  },
+  "write_set": [
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt009_runtime_compatibility_validation_receipt.json"
+  ],
+  "verdict": "PASS_PC2W_P1_ATTEMPT009_R1_RUNTIME_COMPATIBILITY_REMEDIATION_READY_FOR_FRESH_AUDIT",
+  "next_gate": "FRESH_INDEPENDENT_READ_ONLY_AUDIT_THEN_ATTEMPT009_DORMANT_RUNTIME_PACKET_DESIGN_NO_EXECUTION"
+}
