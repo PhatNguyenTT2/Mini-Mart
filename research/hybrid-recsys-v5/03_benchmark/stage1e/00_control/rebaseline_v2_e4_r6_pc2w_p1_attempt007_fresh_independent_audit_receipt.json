@@ -1,0 +1,93 @@
+{
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt007-fresh-independent-audit-receipt-1.0",
+  "stage_id": "E4-R6-PC2W-P1-ATTEMPT007",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "validate",
+    "origin_date": "2026-08-25T00:00:00+07:00",
+    "verification_status": "VERIFIED",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt007_fresh_independent_audit_receipt_v1",
+    "integrity_pass_date": "2026-08-25T00:00:00+07:00",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_pc2w_p1_attempt007_central_static_validation_receipt_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt007_admission_observation_contract_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt006_baseline_packet_audit_receipt_v1"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-25T00:00:00+07:00",
+      "declared_by": "scholar"
+    }
+  },
+  "audited_head": "2dea9d12d7584b9a5fe893166bcf470c4a97bf42",
+  "packet_commit": "7a4258b6e1715e1d15747b412f678ab0cfa267db",
+  "packet_parent": "594076231cbd12d5a3ffd61b358a38033bbaca85",
+  "packet_artifacts": [
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt007_admission_observation_contract.json",
+      "git_blob_bytes": 11417,
+      "git_blob_sha256": "fe1de90254ccc2b2342589a4497a072cb00a7182b6af53b1a9e5a560d032ec04"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt007_execution_authorization.json",
+      "git_blob_bytes": 4689,
+      "git_blob_sha256": "1daf7c1cb81e349ff4ffcbdd659122609a730d3efe400008c91b92a5c6a0800d"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc2w_p1_attempt007_admission_observation.py",
+      "git_blob_bytes": 67050,
+      "git_blob_sha256": "5d9309310f6df75b3b13a204795f3962913acb519ce187850ea8a39b7dd19e06"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_p1_attempt007_static_packet.py",
+      "git_blob_bytes": 61952,
+      "git_blob_sha256": "653c5b26c5a76d7e3458e8f74fea6d104ceae9d00eb8a3be558b5b76fa3b549a"
+    }
+  ],
+  "central_validation_receipt_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt007_central_static_validation_receipt.json",
+  "central_validation_receipt_git_blob_bytes": 3899,
+  "central_validation_receipt_git_blob_sha256": "e999d9d7bec1178a4803cc6790fc874df1d76066aa8a6a12f72ac8b886ec8389",
+  "central_validation_verdict": "PASS_PC2W_P1_ATTEMPT007_CENTRAL_STATIC_VALIDATION",
+  "audit": {
+    "thread_id": "01a0385a-c7eb-74e0-b8fb-004f5b7523a6",
+    "packet_blobs_passed": 4,
+    "packet_blobs_total": 4,
+    "attempt006_authority_hashes_passed": 10,
+    "attempt006_authority_hashes_total": 10,
+    "fresh_source_semantic_assertions_passed": 34,
+    "fresh_source_semantic_assertions_total": 34,
+    "fixture_coverage_groups_passed": 10,
+    "fixture_coverage_groups_total": 10,
+    "critical_findings": 0,
+    "major_findings": 0,
+    "minor_findings": 1,
+    "stale_state_fields": [
+      "rebaseline_v2.e4_r5.status",
+      "rebaseline_v2.e4_r5.r6.status",
+      "rebaseline_v2.e4_r5.r6.pc2w.status",
+      "next_gate"
+    ],
+    "stale_fields_frozen_not_repaired_before_execution": true
+  },
+  "requested_model": "gpt-5.6-sol",
+  "requested_reasoning_effort": "xhigh",
+  "requested_service_tier": "default",
+  "actual_model": "UNOBSERVABLE",
+  "actual_reasoning_effort": "UNOBSERVABLE",
+  "actual_service_tier": "UNOBSERVABLE",
+  "runtime_commands_executed": false,
+  "docker_wsl_process_tcp_named_pipe_network_actions": 0,
+  "materialization_performed": false,
+  "scientific_execution_performed": false,
+  "test_access_performed": false,
+  "RESULT_STATUS": "NOT_RUN",
+  "TEST_SET_OPENED": "NO",
+  "ACCEPTED_RESULT_ROWS": 0,
+  "benchmark_admission_opened": false,
+  "write_set": [
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt007_fresh_independent_audit_receipt.json"
+  ],
+  "verdict": "PASS_PC2W_P1_ATTEMPT007_FRESH_INDEPENDENT_AUDIT_READY_FOR_EXACT_COMMAND_CONFIRMATION",
+  "next_gate": "PRESENT_EXACT_PROCESS_ARGV_FOR_SEPARATE_USER_CONFIRMATION_NO_EXECUTION_BEFORE_CONFIRMATION"
+}
