@@ -1,0 +1,89 @@
+{
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt008-central-static-validation-receipt-1.0",
+  "stage_id": "E4-R6-PC2W-P1-ATTEMPT008",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "validate",
+    "origin_date": "2026-08-25T00:00:00+07:00",
+    "verification_status": "VERIFIED",
+    "verification_scope": "DORMANT_PACKET_STATIC_INTEGRITY_ONLY_NOT_RUNTIME_HOST_ADMISSION_OR_EXPERIMENT_REPRODUCTION",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt008_central_static_validation_receipt_v1",
+    "integrity_pass_date": "2026-08-25T00:00:00+07:00",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_pc2w_p1_attempt008_admission_observation_contract_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt008_probe_parser_remediation_validation_receipt_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt008_safe_probe_envelope_validation_receipt_v1"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-25T00:00:00+07:00",
+      "declared_by": "scholar"
+    }
+  },
+  "packet_parent": "b973ed673a314d6223265712b95d2a7ce51b02f3",
+  "packet_commit": "fb1736bd257480bd1ca38848ad2eebf2c72e68c1",
+  "packet_artifacts": [
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt008_admission_observation_contract.json",
+      "git_blob_bytes": 8847,
+      "git_blob_sha256": "5345bfcb6cdc7fc3f56d4fe6f39d0de960da99872f4f79c0158eae2cc86ce593"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt008_execution_authorization.json",
+      "git_blob_bytes": 2702,
+      "git_blob_sha256": "b5bf773d9de7d8d374e2616d9f5c92d06b963a4d3ccf3919b7ed8ae588f88477"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc2w_p1_attempt008_admission_observation.py",
+      "git_blob_bytes": 50207,
+      "git_blob_sha256": "54422740f0288e0583d849378ee76d8110f99778cb8ee41535eee229cc070e8a"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_p1_attempt008_static_packet.py",
+      "git_blob_bytes": 17499,
+      "git_blob_sha256": "c9a5fa0751bc35b093d458b2b1cfddf3a21c1bf4b1a6b6a3f8bff3ff727db388"
+    }
+  ],
+  "central_validation": {
+    "draft_checks_passed": 85,
+    "draft_checks_total": 85,
+    "draft_stress_runs": 20,
+    "draft_stress_failures": 0,
+    "committed_checks_passed": 91,
+    "committed_checks_total": 91,
+    "committed_failure_count": 0,
+    "r1_tests_passed": 8,
+    "r1_tests_total": 8,
+    "r2_tests_passed": 9,
+    "r2_tests_total": 9,
+    "powershell_ast_scripts_passed": 3,
+    "powershell_ast_scripts_total": 3,
+    "runner_imported_or_invoked": false,
+    "runtime_commands_executed": false,
+    "output_root_created": false,
+    "python_bytecode_persisted": false
+  },
+  "validator_verdict": "READY_FOR_CENTRAL_STATIC_VALIDATION",
+  "static_result_verdict": "PASS_PC2W_P1_ATTEMPT008_STATIC_PACKET",
+  "runtime_commands_executed": false,
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "benchmark_admission_opened": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "model_policy": {
+    "requested_model": "gpt-5.6-sol",
+    "requested_reasoning_effort": "max",
+    "requested_service_tier": "default",
+    "fast_or_priority_allowed": false,
+    "actual_model_reasoning_and_service_tier": "UNOBSERVABLE"
+  },
+  "write_set": [
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt008_central_static_validation_receipt.json"
+  ],
+  "verdict": "PASS_PC2W_P1_ATTEMPT008_CENTRAL_STATIC_VALIDATION",
+  "next_gate": "FRESH_INDEPENDENT_READ_ONLY_AUDIT_OF_IMMUTABLE_ATTEMPT008_PACKET_NO_RUNTIME"
+}
