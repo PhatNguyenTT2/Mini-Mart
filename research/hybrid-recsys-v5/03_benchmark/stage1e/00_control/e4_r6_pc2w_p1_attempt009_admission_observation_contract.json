@@ -1,6 +1,168 @@
 {
-  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt009-admission-observation-contract-reserved-1.0",
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt009-admission-observation-contract-2.0",
   "stage_id": "E4-R6-PC2W-P1-ATTEMPT009",
-  "runtime_execution_authorized": false,
-  "status": "RESERVED_NOT_EXECUTABLE"
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "plan",
+    "origin_date": "2026-08-25T14:42:39Z",
+    "verification_status": "UNVERIFIED",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt009_admission_observation_contract_v2",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_pc2w_p1_attempt009_runtime_compatibility_contract_v3",
+      "stage1e_e4_r6_pc2w_p1_attempt009_runtime_compatibility_revision3_validation_receipt_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt009_runtime_compatibility_revision3_fresh_independent_audit_receipt_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt008_admission_observation_execution_v1"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-25T14:42:39Z",
+      "declared_by": "scholar"
+    }
+  },
+  "purpose": "Create a new immutable one-shot Docker Desktop admission observation packet that closes the Windows PowerShell module-shadowing and Docker 29.x server-schema defects observed in Attempt-008.",
+  "scope_boundary": {
+    "packet_design_and_static_validation_only_now": true,
+    "runtime_execution_authorized_now": false,
+    "exact_process_command_confirmed_now": false,
+    "automatic_retry_authorized": false,
+    "pass_means_observation_packet_complete_for_central_evaluation_only": true,
+    "pass_does_not_open_materialization_preprocessing_training_evaluation_benchmark_or_test": true,
+    "scientific_reproduction_claimed": false
+  },
+  "packet_entry_gate": {
+    "packet_parent_checkpoint": "91466f7dd5a004cbcabfac61815f49c6fcef4606",
+    "packet_commit_delta_must_be_exactly_four_modified_control_files": true,
+    "packet_files": [
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt009_admission_observation_contract.json",
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt009_execution_authorization.json",
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc2w_p1_attempt009_admission_observation.py",
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_p1_attempt009_static_packet.py"
+    ],
+    "central_static_validation_required_after_packet_commit": true,
+    "fresh_independent_audit_required_after_central_validation": true,
+    "separate_exact_process_command_confirmation_required_after_both_gates": true,
+    "execution_head_must_be_exact_and_clean": true,
+    "receipt_paths_and_git_blob_sha256_values_must_be_explicit_in_exact_command": true,
+    "output_root_must_not_preexist": true,
+    "execution_attempts_maximum": 1,
+    "automatic_retry_count": 0,
+    "fallback_count": 0
+  },
+  "frozen_compatibility_gate": {
+    "revision3_packet_commit": "624b3ab06bdd222341a25e08bb06a50b92dcfa19",
+    "revision3_validation_receipt_commit": "80ef314c3165ad8ae86b8ed99764eae2099d967a",
+    "revision3_fresh_audit_import_commit": "0ddb1832e8b58de1b0270cacae8c234216cc205a",
+    "revision3_fresh_audit_verdict": "PASS_PC2W_P1_ATTEMPT009_R1_REVISION3_FRESH_INDEPENDENT_AUDIT_READY_FOR_DORMANT_PACKET_DESIGN",
+    "frozen_artifact_count": 5,
+    "hash_domain": "git_blob_raw_bytes_at_execution_head",
+    "running_daemon_schema_observed": false
+  },
+  "immediate_pre_start_gate": {
+    "command_order": ["P00", "P01", "P02", "P03", "P04", "S00"],
+    "p04_powershell_module_preflight_before_any_docker_start": true,
+    "p04_exact_bindings_required": 5,
+    "p04_failure_blocks_s00": true,
+    "windows_powershell_child_environment_scope": "CHILD_ONLY",
+    "powershell7_or_codex_runtime_module_paths_allowed": false,
+    "wsl_inventory_all_rows_stopped": true,
+    "docker_desktop_distro_exactly_once_and_stopped": true,
+    "wsl_running_inventory_empty": true,
+    "desktop_linux_named_pipe_specifically_absent_with_win32_error_2": true,
+    "target_process_population_available_complete_and_empty": true,
+    "target_tcp_population_available_complete_and_empty": true,
+    "any_missing_ambiguous_timeout_or_parse_failure_blocks_start": true
+  },
+  "controlled_observation_window": {
+    "command_ids": [
+      "P00", "P01", "P02", "P03", "P04", "S00", "D00", "D01", "D02", "D03", "D04", "D05", "D06", "F00", "F01", "A00", "A01", "A02", "A03", "B00", "B01", "B02", "B03", "C00", "C01", "C02", "C03"
+    ],
+    "docker_desktop_start_attempts_exactly_on_admitted_path": 1,
+    "docker_context": "desktop-linux",
+    "d01_d02_d06_use_exact_manifest_wrappers": true,
+    "docker_identity_uses_revision3_schema_union": true,
+    "docker_server_surfaces": [
+      "SERVER_ROOT",
+      "SERVER_COMPONENTS_SINGLE_ENGINE_AND_DETAILS"
+    ],
+    "server_root_experimental_form": "BOOLEAN_ONLY",
+    "engine_details_experimental_forms": ["BOOLEAN", "EXACT_LOWERCASE_BOOLEAN_STRING"],
+    "api_version_alias_conflict_fails_closed": true,
+    "root_component_value_conflict_fails_closed_with_field_locator": true,
+    "missing_from_root_and_engine_fails_closed_with_field_locator": true,
+    "duplicate_engine_components_fail_closed": true,
+    "identity_source_profile_and_field_sources_persisted": true,
+    "raw_process_paths_command_lines_network_addresses_proxy_root_dir_daemon_id_or_exception_messages_persisted": false
+  },
+  "mandatory_cleanup_and_closure": {
+    "docker_desktop_stop_is_in_outer_finally_after_any_start_attempt": true,
+    "wsl_shutdown_is_in_nested_finally_after_stop": true,
+    "docker_desktop_stop_attempts_maximum": 1,
+    "wsl_shutdown_attempts_maximum": 1,
+    "settling_seconds": 20,
+    "snapshot_labels": ["A", "B", "C"],
+    "snapshot_barrier_seconds": 15,
+    "all_three_snapshots_must_pass_and_be_stable": true,
+    "final_state_must_match_pre_start": true
+  },
+  "future_gate_receipts": {
+    "central_static_validation": {
+      "schema_version": "stage1e-e4-r6-pc2w-p1-attempt009-revision2-central-static-validation-receipt-1.0",
+      "required_verdict": "PASS_PC2W_P1_ATTEMPT009_REVISION2_CENTRAL_STATIC_VALIDATION",
+      "runtime_commands_executed": false,
+      "write_set_is_receipt_only": true
+    },
+    "fresh_independent_audit": {
+      "schema_version": "stage1e-e4-r6-pc2w-p1-attempt009-revision2-fresh-independent-audit-receipt-1.0",
+      "required_verdict": "PASS_PC2W_P1_ATTEMPT009_REVISION2_FRESH_INDEPENDENT_AUDIT_READY_FOR_EXACT_COMMAND_CONFIRMATION",
+      "runtime_commands_executed": false,
+      "write_set_is_receipt_only": true
+    }
+  },
+  "prohibited_actions": {
+    "automatic_retry_or_fallback": true,
+    "force_kill_service_restart_or_settings_change": true,
+    "network_or_web_access_outside_local_docker_daemon": true,
+    "clone_fetch_download_install_or_environment_creation": true,
+    "image_or_container_mutation": true,
+    "repository_or_dataset_materialization": true,
+    "preprocessing_training_evaluation_or_benchmark": true,
+    "test_access": true
+  },
+  "output_contract": {
+    "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ar/E4_R6PC2W_P1_attempt009_admission_observation",
+    "immutable_and_must_not_preexist": true,
+    "exact_files": [
+      "admission_observation.json",
+      "command_receipts.json",
+      "execution_receipt.json",
+      "handoff.json"
+    ],
+    "extra_files_allowed": false,
+    "durable_fail_closed_packet_created_before_first_runtime_command": true,
+    "durable_fail_closed_packet_refreshed_after_every_command_receipt": true
+  },
+  "model_policy": {
+    "requested_model": "gpt-5.6-sol",
+    "requested_reasoning_effort": "max",
+    "requested_service_tier": "default",
+    "requested_display_name": "Sol Max Standard",
+    "fresh_audit_requested_model": "gpt-5.6-sol",
+    "fresh_audit_requested_reasoning_effort": "xhigh",
+    "fast_or_priority_allowed": false,
+    "actual_model_reasoning_and_service_tier": "UNOBSERVABLE"
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER",
+    "benchmark_admission_opened": false
+  },
+  "static_packet_verdict": "READY_FOR_CENTRAL_STATIC_VALIDATION",
+  "runtime_verdict_lanes": [
+    "PASS_PC2W_P1_ATTEMPT009_ADMISSION_OBSERVATION_COMPLETE_FOR_CENTRAL_EVALUATION",
+    "FAIL_CLOSED_PC2W_P1_ATTEMPT009_CURRENT_HOST_NOT_ADMISSIBLE",
+    "HANDOFF_INCOMPLETE"
+  ]
 }

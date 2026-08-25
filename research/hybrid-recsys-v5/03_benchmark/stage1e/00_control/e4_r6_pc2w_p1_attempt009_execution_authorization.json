@@ -1,6 +1,81 @@
 {
-  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt009-execution-authorization-reserved-1.0",
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt009-execution-authorization-2.0",
   "stage_id": "E4-R6-PC2W-P1-ATTEMPT009",
-  "runtime_execution_authorized": false,
-  "status": "RESERVED_NOT_EXECUTABLE"
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "plan",
+    "origin_date": "2026-08-25T14:42:39Z",
+    "verification_status": "UNVERIFIED",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt009_execution_authorization_v2",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_pc2w_p1_attempt009_admission_observation_contract_v2",
+      "stage1e_e4_r6_pc2w_p1_attempt009_runtime_compatibility_revision3_fresh_independent_audit_receipt_v1"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-25T14:42:39Z",
+      "declared_by": "scholar"
+    }
+  },
+  "user_decision": {
+    "status": "CONFIRMED",
+    "confirmed_scope": "REMEDIATE_DOCKER_ERRORS_AND_PREPARE_ATTEMPT009_DORMANT_PACKET",
+    "confirmation_source": "CURRENT_CENTRAL_CONTEXT",
+    "device_restart_attested": true,
+    "runtime_execution_authorized_now": false,
+    "exact_process_command_confirmed_now": false,
+    "automatic_retry_authorized": false
+  },
+  "authorized_now": [
+    "CREATE_EXACT_FOUR_FILE_ATTEMPT009_REVISION2_PACKET",
+    "RUN_READ_ONLY_OFFLINE_STATIC_VALIDATOR",
+    "RUN_COMPATIBILITY_SYNTHETIC_TESTS_WITH_PYTHON_DASH_B",
+    "COMMIT_PACKET_AFTER_LOCAL_VALIDATION",
+    "CREATE_CENTRAL_STATIC_VALIDATION_RECEIPT",
+    "REQUEST_FRESH_INDEPENDENT_READ_ONLY_AUDIT"
+  ],
+  "not_authorized_now": [
+    "RUN_ATTEMPT009_RUNNER",
+    "START_OR_STOP_DOCKER_DESKTOP",
+    "QUERY_DOCKER_DAEMON_OR_HOST_RUNTIME",
+    "RUN_HOST_P04_D01_D02_D06_PROBES",
+    "AUTOMATIC_RETRY_OR_FALLBACK",
+    "MATERIALIZE_DATA_OR_REPOSITORY",
+    "PREPROCESS_TRAIN_EVALUATE_OR_BENCHMARK",
+    "OPEN_TEST_SET"
+  ],
+  "future_exact_confirmation": {
+    "required_after_central_validation_and_fresh_audit": true,
+    "confirmation_token": "USER_CONFIRMED_EXACT_ATTEMPT009_REVISION2_PROCESS_COMMAND_AFTER_CENTRAL_VALIDATION_AND_FRESH_AUDIT",
+    "command_must_bind": [
+      "repo_root",
+      "packet_commit",
+      "expected_head",
+      "central_validation_receipt_path_and_sha256",
+      "fresh_audit_receipt_path_and_sha256",
+      "confirmation_token"
+    ],
+    "execution_attempts_maximum": 1,
+    "automatic_retry_count": 0,
+    "fallback_count": 0
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "benchmark_admission_opened": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "model_policy": {
+    "requested_model": "gpt-5.6-sol",
+    "requested_reasoning_effort": "max",
+    "requested_service_tier": "default",
+    "requested_display_name": "Sol Max Standard",
+    "fresh_audit_requested_model": "gpt-5.6-sol",
+    "fresh_audit_requested_reasoning_effort": "xhigh",
+    "fast_or_priority_allowed": false,
+    "actual_model_reasoning_and_service_tier": "UNOBSERVABLE"
+  },
+  "authorization_verdict": "AUTHORIZED_ATTEMPT009_REVISION2_PACKET_DESIGN_ONLY_RUNTIME_DENIED_PENDING_LATER_EXACT_CONFIRMATION"
 }
