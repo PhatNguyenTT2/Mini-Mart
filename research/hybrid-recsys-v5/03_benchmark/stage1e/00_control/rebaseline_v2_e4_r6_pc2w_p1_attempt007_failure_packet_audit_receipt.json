@@ -1,0 +1,146 @@
+{
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt007-failure-packet-audit-receipt-1.0",
+  "stage_id": "E4-R6-PC2W-P1-ATTEMPT007",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "validate",
+    "origin_date": "2026-08-25T00:00:00+07:00",
+    "origin_date_semantics": "DATE_STAMP_ONLY_GIT_COMMIT_TIMES_ESTABLISH_ORDER",
+    "verification_status": "VERIFIED",
+    "verification_scope": "IMMUTABLE_FAILURE_PACKET_INTEGRITY_ONLY_NOT_BENCHMARK_REPRODUCTION_OR_SCIENTIFIC_RESULT",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt007_failure_packet_audit_receipt_v1",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_pc2w_p1_attempt007_admission_observation_execution_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt007_failure_packet_validation_receipt_v1"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-25T00:00:00+07:00",
+      "declared_by": "scholar"
+    }
+  },
+  "audit_binding": {
+    "task_id": "01a03874-5e20-76d1-9cae-9a58ecf5e794",
+    "audited_head": "bd44fad292b3ff59e8a24a1e0fb42a9ad1696ed5",
+    "entry_checkpoint": "1447515f094e77516515d6a88aef790f1a85f66e",
+    "output_packet_commit": "58744dfc6fa81177b81634e827d357ab0cf6882d",
+    "output_packet_parent": "1447515f094e77516515d6a88aef790f1a85f66e",
+    "central_validation_receipt_commit": "bd44fad292b3ff59e8a24a1e0fb42a9ad1696ed5",
+    "worktree_clean_before_and_after": true,
+    "runtime_commands_executed_by_auditor": false,
+    "write_set": []
+  },
+  "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ap/E4_R6PC2W_P1_attempt007_admission_observation",
+  "output_artifacts": [
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ap/E4_R6PC2W_P1_attempt007_admission_observation/admission_observation.json",
+      "git_blob_bytes": 13461,
+      "git_blob_sha256": "ea807c3ede331a00c2cc94d4b474418803ec7485d277b991b84a2c04ece3c1fd"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ap/E4_R6PC2W_P1_attempt007_admission_observation/command_receipts.json",
+      "git_blob_bytes": 21503,
+      "git_blob_sha256": "ccd6959d3f685f73fb0ac8d1aabd2fad30e9f7ebd972cfefad20c10cdafce990"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ap/E4_R6PC2W_P1_attempt007_admission_observation/execution_receipt.json",
+      "git_blob_bytes": 4204,
+      "git_blob_sha256": "c1134984e866a127c3fc638cd1969e2dce3335a105bc81684be55bd4e78c63fd"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ap/E4_R6PC2W_P1_attempt007_admission_observation/handoff.json",
+      "git_blob_bytes": 1454,
+      "git_blob_sha256": "7d7961f3c13134d97e67446fb4049f620bc796beacfa6f286d1ae46407b541b4"
+    }
+  ],
+  "central_validation_receipt": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt007_failure_packet_validation_receipt.json",
+    "git_blob_bytes": 4966,
+    "git_blob_sha256": "01f0e2c035eb0c9369ececbce8856061f92ae367b1dc837b463d18fc5b1b6e12",
+    "strict_json_files_passed": 4,
+    "strict_json_files_total": 4,
+    "exact_output_files_passed": 4,
+    "exact_output_files_total": 4,
+    "semantic_assertions_passed": 30,
+    "semantic_assertions_total": 30,
+    "failure_count": 0
+  },
+  "independent_audit": {
+    "strict_json_git_blobs_passed": 5,
+    "strict_json_git_blobs_total": 5,
+    "duplicate_key_findings": 0,
+    "casefold_duplicate_findings": 0,
+    "nonfinite_findings": 0,
+    "bare_cr_findings": 0,
+    "command_ids_replayed": 26,
+    "command_ids_total": 26,
+    "argv_sha256_replayed": 26,
+    "argv_sha256_total": 26,
+    "critical_findings": 0,
+    "major_findings": 0,
+    "minor_findings": 2,
+    "minor_finding_classes": [
+      "PIPELINE_STATE_FIELDS_STALE_PENDING_THIS_RECONCILIATION",
+      "CENTRAL_RECEIPT_DATE_STAMP_AND_VERIFIED_SCOPE_REQUIRE_NARROW_INTERPRETATION"
+    ]
+  },
+  "execution_facts": {
+    "commands_recorded": 26,
+    "commands_exit_zero": 25,
+    "commands_exit_nonzero": 1,
+    "docker_desktop_start_attempts": 1,
+    "docker_desktop_stop_attempts": 1,
+    "wsl_shutdown_attempts": 1,
+    "automatic_retry_count": 0,
+    "fallback_count": 0,
+    "immediate_pre_start_lanes_passed": 8,
+    "immediate_pre_start_lanes_total": 8,
+    "runtime_pass_conditions_passed": 18,
+    "runtime_pass_conditions_total": 24,
+    "closure_snapshots": 3,
+    "closure_lanes_passed_per_snapshot": 8,
+    "closure_lanes_total_per_snapshot": 8,
+    "closure_snapshots_stable": true,
+    "final_closure_matches_pre_start": true,
+    "stable_projection_sha256": "f0465f6c5e870a8be41e506d8c2a4f1af14959518e63b366f9a1d9ffb0b1213c"
+  },
+  "root_cause": {
+    "classification": "MIXED_OR_INDETERMINATE",
+    "classification_confidence": "HIGH_THAT_MORE_SPECIFIC_ATTRIBUTION_IS_NOT_SUPPORTED",
+    "host_capability_mismatch_remains_possible": true,
+    "probe_or_parser_contract_mismatch_remains_possible": true,
+    "evidence_limitations": [
+      "D01_AND_D02_PASSED_COMMAND_AND_STRICT_JSON_BUT_GENERIC_VALUEERROR_DID_NOT_PERSIST_FAILING_FIELD",
+      "D02_MAY_CASCADE_FROM_D01_AND_DOES_NOT_PROVE_AN_INDEPENDENT_TCP_PROBE_DEFECT",
+      "D03_D04_D05_PASSED_INDIVIDUALLY_BUT_COMBINED_IDENTITY_FAILURE_CONDITION_WAS_NOT_PERSISTED",
+      "D06_PRESERVED_ONLY_EXIT_CODE_BYTE_COUNT_AND_STDERR_HASH",
+      "RAW_ARGV_STDOUT_AND_STDERR_WERE_INTENTIONALLY_SANITIZED"
+    ]
+  },
+  "truth_state": {
+    "producer_verdict": "FAIL_CLOSED_PC2W_P1_ATTEMPT007_CURRENT_HOST_NOT_ADMISSIBLE",
+    "benchmark_admission_opened": false,
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "materialization_performed": false,
+    "preprocessing_performed": false,
+    "training_performed": false,
+    "evaluation_performed": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "model_policy": {
+    "requested_model": "gpt-5.6-sol",
+    "requested_reasoning_effort": "xhigh",
+    "requested_service_tier": "default",
+    "fast_or_priority_allowed": false,
+    "actual_model_reasoning_and_service_tier": "UNOBSERVABLE",
+    "observable_model_tier_violation": false
+  },
+  "write_set": [
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt007_failure_packet_audit_receipt.json"
+  ],
+  "verdict": "PASS_PC2W_P1_ATTEMPT007_FAILURE_PACKET_AUDITED_NO_RETRY",
+  "next_gate": "CENTRAL_SEAL_ATTEMPT007_FAILURE_UPDATE_STATE_THEN_MANDATORY_USER_DECISION_NO_AUTOMATIC_RETRY"
+}
