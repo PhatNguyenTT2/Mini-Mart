@@ -1,0 +1,271 @@
+{
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt009-runtime-compatibility-revision3-fresh-independent-audit-receipt-1.0",
+  "stage_id": "E4-R6-PC2W-P1-ATTEMPT009-R1",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "validate",
+    "origin_date": "2026-08-25T14:30:35Z",
+    "verification_status": "VERIFIED",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt009_runtime_compatibility_revision3_fresh_independent_audit_receipt_v1",
+    "integrity_pass_date": "2026-08-25T14:30:35Z",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_pc2w_p1_attempt009_runtime_compatibility_contract_v3",
+      "stage1e_e4_r6_pc2w_p1_attempt009_runtime_compatibility_revision3_validation_receipt_v1"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-25T14:30:35Z",
+      "declared_by": "scholar"
+    }
+  },
+  "audit_identity": {
+    "audited_task_id": "01a0394d-70b2-73c3-b44d-fc4e73678dfd",
+    "delegation_source_thread_id": "019ff4f0-802a-7892-a989-24f32ac26ac8",
+    "prior_fresh_audit_task_id": "01a03939-4ec6-7021-8cd8-66243b02a336",
+    "auditor_role": "FRESH_INDEPENDENT_EVIDENCE_ONLY_FAIL_CLOSED",
+    "runtime_execution_role": false
+  },
+  "git_state": {
+    "audited_head": "80ef314c3165ad8ae86b8ed99764eae2099d967a",
+    "audited_head_parent": "624b3ab06bdd222341a25e08bb06a50b92dcfa19",
+    "refs_heads_main_at_start": "80ef314c3165ad8ae86b8ed99764eae2099d967a",
+    "checkout_mode": "DETACHED_AT_EXACT_MAIN_TIP",
+    "worktree_clean_at_start": true,
+    "hash_domain": "RAW_GIT_BLOB_BYTES",
+    "checkout_normalization_used_for_blob_facts": false
+  },
+  "immutable_history": {
+    "revision2_packet": {
+      "commit": "608b229eb8d868d88ab0ef2bae9a377aa663090a",
+      "parent": "1ac3cb843d85bad8bdec7b6426242d1ff43d223e",
+      "exact_delta": [
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt009_runtime_compatibility.py",
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt009_runtime_compatibility_contract.json",
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/test_e4_r6_pc2w_p1_attempt009_runtime_compatibility.py"
+      ],
+      "artifact_facts": [
+        {
+          "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt009_runtime_compatibility.py",
+          "git_blob_bytes": 14835,
+          "git_blob_sha256": "6c5f3f1c929a37d1169c08317032e0993e185e2321ac047f5e6220bc1a787e97"
+        },
+        {
+          "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt009_runtime_compatibility_contract.json",
+          "git_blob_bytes": 6332,
+          "git_blob_sha256": "9ab5077befe785865435c7de48558c6bbae4fcc0fcbe7ef1e267864bcd10959a"
+        },
+        {
+          "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/test_e4_r6_pc2w_p1_attempt009_runtime_compatibility.py",
+          "git_blob_bytes": 9583,
+          "git_blob_sha256": "74325cf3eb9dff52afb12d72a1c3f14b4456fe9c57dc62c134e9ae36d5dafa9a"
+        }
+      ]
+    },
+    "revision2_validation_receipt": {
+      "commit": "72c89c9afab6297667d91641bd24af53d2dd507a",
+      "parent": "608b229eb8d868d88ab0ef2bae9a377aa663090a",
+      "exact_delta": [
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt009_runtime_compatibility_revision2_validation_receipt.json"
+      ],
+      "git_blob_bytes": 5174,
+      "git_blob_sha256": "9f4b43913410111dcb936e3545285cfeed23ce31b5b82cfdac9f3d52c79382f8"
+    },
+    "revision2_fresh_independent_audit": {
+      "task_id": "01a03939-4ec6-7021-8cd8-66243b02a336",
+      "audited_head": "72c89c9afab6297667d91641bd24af53d2dd507a",
+      "verdict": "HANDOFF_INCOMPLETE",
+      "critical_findings": 0,
+      "major_findings": 1,
+      "minor_findings": 0,
+      "finding": "SERVER_ROOT_EXPERIMENTAL_LOWERCASE_STRING_ACCEPTED_OUTSIDE_DECLARED_SCHEMA",
+      "receipt_or_commit_created": false,
+      "docker_commands_executed": 0,
+      "wsl_commands_executed": 0,
+      "host_probe_executions": 0,
+      "observation_basis": "DIRECT_CODEX_TASK_READ"
+    },
+    "revision3_packet": {
+      "commit": "624b3ab06bdd222341a25e08bb06a50b92dcfa19",
+      "parent": "72c89c9afab6297667d91641bd24af53d2dd507a",
+      "exact_delta": [
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt009_runtime_compatibility.py",
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt009_runtime_compatibility_contract.json",
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/test_e4_r6_pc2w_p1_attempt009_runtime_compatibility.py"
+      ]
+    },
+    "revision3_validation_receipt": {
+      "commit": "80ef314c3165ad8ae86b8ed99764eae2099d967a",
+      "parent": "624b3ab06bdd222341a25e08bb06a50b92dcfa19",
+      "exact_delta": [
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt009_runtime_compatibility_revision3_validation_receipt.json"
+      ]
+    }
+  },
+  "audited_artifacts": [
+    {
+      "commit": "624b3ab06bdd222341a25e08bb06a50b92dcfa19",
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt009_runtime_compatibility.py",
+      "git_blob_bytes": 15169,
+      "git_blob_sha256": "8148e6437af20d4c2b66f774adae102afe83583c7ed2b463340162beb6f342d7"
+    },
+    {
+      "commit": "624b3ab06bdd222341a25e08bb06a50b92dcfa19",
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt009_runtime_compatibility_contract.json",
+      "git_blob_bytes": 6484,
+      "git_blob_sha256": "6a627d077af4389676ea458265bd8b93a132a606571fd515493dae2e4258b008"
+    },
+    {
+      "commit": "624b3ab06bdd222341a25e08bb06a50b92dcfa19",
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/test_e4_r6_pc2w_p1_attempt009_runtime_compatibility.py",
+      "git_blob_bytes": 10079,
+      "git_blob_sha256": "d486fbec952a8365828dc132d90fb8fc02cc4cd5811560c7541700054e02b1ea"
+    },
+    {
+      "commit": "80ef314c3165ad8ae86b8ed99764eae2099d967a",
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt009_runtime_compatibility_revision3_validation_receipt.json",
+      "git_blob_bytes": 5922,
+      "git_blob_sha256": "c1ae7c3daf70041630b9a4c56c0241c5ce5104694a6fa53ee371a3d495ade102"
+    }
+  ],
+  "validation": {
+    "strict_json_raw_git_blobs_passed": 4,
+    "strict_json_raw_git_blobs_total": 4,
+    "duplicate_key_findings": 0,
+    "casefold_duplicate_findings": 0,
+    "nonfinite_findings": 0,
+    "bare_cr_findings": 0,
+    "git_parent_and_delta_replays_passed": 4,
+    "git_parent_and_delta_replays_total": 4,
+    "embedded_packet_artifact_facts_passed": 6,
+    "embedded_packet_artifact_facts_total": 6,
+    "python_ast_files_passed": 2,
+    "python_ast_files_total": 2,
+    "python_regression_command": "C:\\Program Files\\Python311\\python.exe -B research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\00_control\\test_e4_r6_pc2w_p1_attempt009_runtime_compatibility.py",
+    "python_regression_runs": 1,
+    "python_tests_passed": 9,
+    "python_tests_total": 9,
+    "stress_runs_passed": 50,
+    "stress_runs_total": 50,
+    "stress_test_cases_passed": 450,
+    "stress_test_cases_total": 450,
+    "powershell_ast_scripts_passed": 4,
+    "powershell_ast_scripts_total": 4,
+    "powershell_ast_parse_errors": 0,
+    "powershell_scripts_executed": 0,
+    "python_bytecode_persisted": false
+  },
+  "prior_major_resolution": {
+    "server_root_experimental_boolean_only": true,
+    "server_root_lowercase_true_string_rejected": true,
+    "server_root_lowercase_false_string_rejected": true,
+    "server_root_any_string_rejected": true,
+    "engine_details_exact_lowercase_true_string_allowed": true,
+    "engine_details_exact_lowercase_false_string_allowed": true,
+    "engine_details_non_lowercase_string_rejected": true,
+    "invalid_experimental_field_locator": "Experimental",
+    "revision2_control_flow_would_fail_revision3_root_string_regression": true,
+    "historical_red_regression_command_reexecuted": false
+  },
+  "compatibility_audit": {
+    "windows_powershell_child_environment": {
+      "psmodulepath_scope": "CHILD_PROCESS_ONLY",
+      "parent_mapping_copied_before_override": true,
+      "system_or_user_environment_mutated": false,
+      "allowed_module_roots_exactly_two": true,
+      "powershell7_or_codex_runtime_module_root_retained": false
+    },
+    "exact_manifest_imports": {
+      "fully_qualified_manifest_paths": true,
+      "required_manifest_count": 4,
+      "imports_precede_wrapped_queries": true,
+      "p04_fail_closed_envelope": true,
+      "attempt009_runtime_runner_created": false,
+      "future_packet_design_gate": "P04_MUST_PASS_BEFORE_ANY_FUTURE_DOCKER_START",
+      "runtime_order_execution_observed": "NOT_APPLICABLE_DORMANT_DESIGN_BOUNDARY"
+    },
+    "safe_probe_envelopes": {
+      "d01_raw_paths_or_command_lines_persisted": false,
+      "d02_raw_addresses_persisted": false,
+      "d06_raw_desktop_path_or_signer_subject_persisted": false,
+      "exception_messages_persisted": false,
+      "failure_steps_allowlisted": true,
+      "exception_types_sha256_only": true,
+      "wrappers_preserve_original_probe_bodies": true
+    },
+    "docker29_server_union": {
+      "server_root_surface": true,
+      "single_engine_component_and_details_surface": true,
+      "api_version_aliases_exact": [
+        "ApiVersion",
+        "APIVersion"
+      ],
+      "api_alias_conflict_fails_closed_with_locator": true,
+      "root_engine_conflict_fails_closed_with_locator": true,
+      "missing_from_both_fails_closed_with_locator": true,
+      "duplicate_engine_components_fail_closed": true,
+      "engine_top_level_version_provenance": "ENGINE_COMPONENT",
+      "engine_detail_field_provenance": "ENGINE_COMPONENT_DETAILS",
+      "root_crosscheck_provenance": "ROOT_CROSSCHECKED_ENGINE_COMPONENT",
+      "legacy_root_only_fixture_passed": true,
+      "raw_docker_root_dir_or_daemon_id_or_proxy_values_added": false
+    },
+    "benchmark_boundary": {
+      "revision3_delta_limited_to_contract_module_test": true,
+      "pipeline_state_modified": false,
+      "runtime_runner_created": false,
+      "materialization_or_preprocessing_or_training_or_evaluation_performed": false,
+      "benchmark_admission_opened": false,
+      "RESULT_STATUS": "NOT_RUN",
+      "TEST_SET_OPENED": "NO",
+      "ACCEPTED_RESULT_ROWS": 0
+    }
+  },
+  "central_receipt_statement_checks": {
+    "revision2_commit_and_receipt_bindings_match_git": true,
+    "prior_fresh_audit_facts_match_direct_task_record": true,
+    "revision3_parent_and_exact_three_file_delta_match_git": true,
+    "revision3_packet_blob_facts_match_git": true,
+    "revision3_only_changes_root_boolean_scope_contract_and_regression": true,
+    "revision3_did_not_change_powershell_environment_or_probe_wrappers": true,
+    "current_validation_counts_independently_replayed": true,
+    "historical_red_regression_claim": "CORROBORATED_BY_REVISION2_CONTROL_FLOW_AND_PRIOR_AUDIT_NOT_REEXECUTED",
+    "host_evidence_reused_only_from_revision2_receipt": true,
+    "revision3_host_probe_reexecution_claim": false,
+    "model_runtime_observation_claim": "UNOBSERVABLE"
+  },
+  "findings": {
+    "critical": 0,
+    "major": 0,
+    "minor": 0
+  },
+  "model_policy": {
+    "requested_model": "gpt-5.6-sol",
+    "requested_reasoning_effort": "xhigh",
+    "requested_service_tier": "default",
+    "fast_or_priority_allowed": false,
+    "actual_model": "UNOBSERVABLE",
+    "actual_reasoning_effort": "UNOBSERVABLE",
+    "actual_service_tier": "UNOBSERVABLE",
+    "fast_or_priority_observation": "UNOBSERVABLE",
+    "observed_policy_contradiction": false,
+    "model_gate_disposition": "PROCEEDED_UNDER_EXPLICIT_UNOBSERVABLE_RULE"
+  },
+  "runtime_command_boundary": {
+    "docker_commands_executed": 0,
+    "wsl_commands_executed": 0,
+    "docker_desktop_start_stop_status_commands_executed": 0,
+    "host_p04_executions": 0,
+    "host_d01_executions": 0,
+    "host_d02_executions": 0,
+    "host_d06_executions": 0,
+    "network_operations": 0,
+    "install_or_download_operations": 0,
+    "runtime_commands_executed": false
+  },
+  "write_set": [
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt009_runtime_compatibility_revision3_fresh_independent_audit_receipt.json"
+  ],
+  "verdict": "PASS_PC2W_P1_ATTEMPT009_R1_REVISION3_FRESH_INDEPENDENT_AUDIT_READY_FOR_DORMANT_PACKET_DESIGN",
+  "next_gate": "ATTEMPT009_DORMANT_RUNTIME_PACKET_DESIGN_NO_EXECUTION"
+}
