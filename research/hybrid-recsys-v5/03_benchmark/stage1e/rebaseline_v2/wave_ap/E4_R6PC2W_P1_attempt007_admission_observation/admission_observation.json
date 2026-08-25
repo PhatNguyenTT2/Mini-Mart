@@ -1,0 +1,409 @@
+{
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt007-admission-observation-1.0",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "run",
+    "origin_date": "2026-08-25T10:20:33.086658Z",
+    "verification_status": "UNVERIFIED",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt007_admission_observation_execution_v1",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_pc2w_p1_attempt007_admission_observation_contract_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt007_execution_authorization_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt006_baseline_packet_audit_receipt_v1"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-25T00:00:00+07:00",
+      "declared_by": "scholar"
+    }
+  },
+  "stage_id": "E4-R6-PC2W-P1-ATTEMPT007",
+  "entry_checkpoint": "1447515f094e77516515d6a88aef790f1a85f66e",
+  "packet_commit": "7a4258b6e1715e1d15747b412f678ab0cfa267db",
+  "frozen_attempt006": {
+    "artifact_count": 10,
+    "artifacts": [
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt006_baseline_remediation_contract.json",
+        "git_blob_bytes": 9046,
+        "git_blob_sha256": "fa7a08d98de43562a7f02b30be1dc83e8da451ab54ba850cedbd96f1d6364372"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt006_user_authorization.json",
+        "git_blob_bytes": 3926,
+        "git_blob_sha256": "0c18926c5d23ea3f1e666adb42dd0ec8debdce566c2dceddf00f42206d90ff57"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc2w_p1_attempt006_baseline_remediation.py",
+        "git_blob_bytes": 43752,
+        "git_blob_sha256": "ba377b0be805160c979f169c093ab862403b74328d54917baa60199078727c99"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/pipeline_state_stage1e.json",
+        "git_blob_bytes": 104541,
+        "git_blob_sha256": "3253d9773b0525b4156cfefc15f4f4ef5866cb8b32d9d5f3c423fa0fa4c64be4"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt006_baseline_packet_audit_receipt.json",
+        "git_blob_bytes": 4892,
+        "git_blob_sha256": "cdab7460e62d86a95d17cd67874c4dfacc17c8152bcc6a1e07dcfaacbdaf6c66"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_p1_attempt006_static_packet.py",
+        "git_blob_bytes": 45319,
+        "git_blob_sha256": "238cbbe25c60eac880b81a96c399514589e11e201c48e01c3fe3e127899b5b0a"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ao/E4_R6PC2W_P1_attempt006_baseline_remediation/command_receipts.json",
+        "git_blob_bytes": 15103,
+        "git_blob_sha256": "0c708d53732aeaaa7c525111bd7086fce943cce5ffab2d580f293942f53ffe2c"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ao/E4_R6PC2W_P1_attempt006_baseline_remediation/p1_execution_receipt.json",
+        "git_blob_bytes": 4710,
+        "git_blob_sha256": "430becb7502b90058614671832daf6604aaa0d00166bd200719383570cae2900"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ao/E4_R6PC2W_P1_attempt006_baseline_remediation/p1_handoff.json",
+        "git_blob_bytes": 1383,
+        "git_blob_sha256": "5a0847ed7229e0de5b7ebc9e40ec4111304ac6a1803cf2de5b7796edc4d0c955"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ao/E4_R6PC2W_P1_attempt006_baseline_remediation/runtime_inventory.json",
+        "git_blob_bytes": 9790,
+        "git_blob_sha256": "2c07fd7b7bc73d51d58071999eb062831e75261a2674d57df796cdf6bc3a5298"
+      }
+    ]
+  },
+  "gate_receipts": {
+    "central_validation_receipt": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt007_central_static_validation_receipt.json",
+      "git_blob_sha256": "e999d9d7bec1178a4803cc6790fc874df1d76066aa8a6a12f72ac8b886ec8389",
+      "verdict": "PASS_PC2W_P1_ATTEMPT007_CENTRAL_STATIC_VALIDATION"
+    },
+    "fresh_independent_audit_receipt": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt007_fresh_independent_audit_receipt.json",
+      "git_blob_sha256": "d8fa088df6b4054282ce27e0f0062556dce9007e71905d4d9063646a728269ae",
+      "verdict": "PASS_PC2W_P1_ATTEMPT007_FRESH_INDEPENDENT_AUDIT_READY_FOR_EXACT_COMMAND_CONFIRMATION"
+    }
+  },
+  "pre_start": {
+    "wsl_inventory": {
+      "Available": true,
+      "Rows": [
+        {
+          "name": "docker-desktop",
+          "state": "Stopped",
+          "version": 2
+        }
+      ],
+      "ErrorCode": "NONE",
+      "ErrorTypeHash": null
+    },
+    "wsl_running_inventory": {
+      "Available": true,
+      "Rows": [],
+      "ErrorCode": "NONE",
+      "ErrorTypeHash": null
+    },
+    "named_pipe": {
+      "Available": false,
+      "Win32Error": 2,
+      "ErrorTypeHash": null,
+      "PipePathSha256": "fdc0d41353dafe8326bfc6c481d48427a0f4e89ee27c6f9c0248100d438dae22",
+      "RawPipePathPersisted": false
+    },
+    "target_process_population": {
+      "Available": true,
+      "Count": 0,
+      "Rows": [],
+      "ErrorCode": "NONE",
+      "ErrorTypeHash": null
+    },
+    "target_process_population_envelope_valid": true,
+    "target_tcp_population": {
+      "Available": true,
+      "Count": 0,
+      "Rows": [],
+      "ErrorCode": "NONE",
+      "ErrorTypeHash": null
+    },
+    "target_tcp_population_envelope_valid": true,
+    "disk": {
+      "Available": true,
+      "Volumes": {
+        "c": {
+          "total_bytes": 301198209024,
+          "used_bytes": 269637009408,
+          "free_bytes": 31561199616
+        },
+        "e": {
+          "total_bytes": 209714147328,
+          "used_bytes": 87518371840,
+          "free_bytes": 122195775488
+        }
+      },
+      "ErrorCode": "NONE",
+      "ErrorTypeHash": null
+    },
+    "lanes": {
+      "wsl_inventory_all_stopped": true,
+      "docker_desktop_exactly_once_stopped": true,
+      "wsl_running_inventory_empty": true,
+      "desktop_linux_named_pipe_absent_win32_error_2": true,
+      "target_process_population_empty": true,
+      "target_tcp_ownership_population_empty": true,
+      "parse_and_completeness": true,
+      "disk_thresholds_pass": true
+    },
+    "all_lanes_pass": true
+  },
+  "during": {
+    "wsl_inventory": [
+      {
+        "name": "docker-desktop",
+        "state": "Running",
+        "version": 2
+      }
+    ],
+    "target_process_identity": null,
+    "target_tcp_identity": null,
+    "docker_identity": null,
+    "docker_desktop_file_identity": null
+  },
+  "post_shutdown_snapshots": [
+    {
+      "label": "A",
+      "wsl_inventory": {
+        "Available": true,
+        "Rows": [
+          {
+            "name": "docker-desktop",
+            "state": "Stopped",
+            "version": 2
+          }
+        ],
+        "ErrorCode": "NONE",
+        "ErrorTypeHash": null
+      },
+      "wsl_running_inventory": {
+        "Available": true,
+        "Rows": [],
+        "ErrorCode": "NONE",
+        "ErrorTypeHash": null
+      },
+      "named_pipe": {
+        "Available": false,
+        "Win32Error": 2,
+        "ErrorTypeHash": null,
+        "PipePathSha256": "fdc0d41353dafe8326bfc6c481d48427a0f4e89ee27c6f9c0248100d438dae22",
+        "RawPipePathPersisted": false
+      },
+      "target_process_population": {
+        "Available": true,
+        "Count": 0,
+        "Rows": [],
+        "ErrorCode": "NONE",
+        "ErrorTypeHash": null
+      },
+      "target_process_population_envelope_valid": true,
+      "target_tcp_population": {
+        "Available": true,
+        "Count": 0,
+        "Rows": [],
+        "ErrorCode": "NONE",
+        "ErrorTypeHash": null
+      },
+      "target_tcp_population_envelope_valid": true,
+      "disk": {
+        "Available": true,
+        "Volumes": {
+          "c": {
+            "total_bytes": 301198209024,
+            "used_bytes": 269229371392,
+            "free_bytes": 31968837632
+          },
+          "e": {
+            "total_bytes": 209714147328,
+            "used_bytes": 87518380032,
+            "free_bytes": 122195767296
+          }
+        },
+        "ErrorCode": "NONE",
+        "ErrorTypeHash": null
+      },
+      "lanes": {
+        "wsl_inventory_all_stopped": true,
+        "docker_desktop_exactly_once_stopped": true,
+        "wsl_running_inventory_empty": true,
+        "desktop_linux_named_pipe_absent_win32_error_2": true,
+        "target_process_population_empty": true,
+        "target_tcp_ownership_population_empty": true,
+        "parse_and_completeness": true,
+        "disk_thresholds_pass": true
+      },
+      "all_lanes_pass": true
+    },
+    {
+      "label": "B",
+      "wsl_inventory": {
+        "Available": true,
+        "Rows": [
+          {
+            "name": "docker-desktop",
+            "state": "Stopped",
+            "version": 2
+          }
+        ],
+        "ErrorCode": "NONE",
+        "ErrorTypeHash": null
+      },
+      "wsl_running_inventory": {
+        "Available": true,
+        "Rows": [],
+        "ErrorCode": "NONE",
+        "ErrorTypeHash": null
+      },
+      "named_pipe": {
+        "Available": false,
+        "Win32Error": 2,
+        "ErrorTypeHash": null,
+        "PipePathSha256": "fdc0d41353dafe8326bfc6c481d48427a0f4e89ee27c6f9c0248100d438dae22",
+        "RawPipePathPersisted": false
+      },
+      "target_process_population": {
+        "Available": true,
+        "Count": 0,
+        "Rows": [],
+        "ErrorCode": "NONE",
+        "ErrorTypeHash": null
+      },
+      "target_process_population_envelope_valid": true,
+      "target_tcp_population": {
+        "Available": true,
+        "Count": 0,
+        "Rows": [],
+        "ErrorCode": "NONE",
+        "ErrorTypeHash": null
+      },
+      "target_tcp_population_envelope_valid": true,
+      "disk": {
+        "Available": true,
+        "Volumes": {
+          "c": {
+            "total_bytes": 301198209024,
+            "used_bytes": 269230374912,
+            "free_bytes": 31967834112
+          },
+          "e": {
+            "total_bytes": 209714147328,
+            "used_bytes": 87518384128,
+            "free_bytes": 122195763200
+          }
+        },
+        "ErrorCode": "NONE",
+        "ErrorTypeHash": null
+      },
+      "lanes": {
+        "wsl_inventory_all_stopped": true,
+        "docker_desktop_exactly_once_stopped": true,
+        "wsl_running_inventory_empty": true,
+        "desktop_linux_named_pipe_absent_win32_error_2": true,
+        "target_process_population_empty": true,
+        "target_tcp_ownership_population_empty": true,
+        "parse_and_completeness": true,
+        "disk_thresholds_pass": true
+      },
+      "all_lanes_pass": true
+    },
+    {
+      "label": "C",
+      "wsl_inventory": {
+        "Available": true,
+        "Rows": [
+          {
+            "name": "docker-desktop",
+            "state": "Stopped",
+            "version": 2
+          }
+        ],
+        "ErrorCode": "NONE",
+        "ErrorTypeHash": null
+      },
+      "wsl_running_inventory": {
+        "Available": true,
+        "Rows": [],
+        "ErrorCode": "NONE",
+        "ErrorTypeHash": null
+      },
+      "named_pipe": {
+        "Available": false,
+        "Win32Error": 2,
+        "ErrorTypeHash": null,
+        "PipePathSha256": "fdc0d41353dafe8326bfc6c481d48427a0f4e89ee27c6f9c0248100d438dae22",
+        "RawPipePathPersisted": false
+      },
+      "target_process_population": {
+        "Available": true,
+        "Count": 0,
+        "Rows": [],
+        "ErrorCode": "NONE",
+        "ErrorTypeHash": null
+      },
+      "target_process_population_envelope_valid": true,
+      "target_tcp_population": {
+        "Available": true,
+        "Count": 0,
+        "Rows": [],
+        "ErrorCode": "NONE",
+        "ErrorTypeHash": null
+      },
+      "target_tcp_population_envelope_valid": true,
+      "disk": {
+        "Available": true,
+        "Volumes": {
+          "c": {
+            "total_bytes": 301198209024,
+            "used_bytes": 269230391296,
+            "free_bytes": 31967817728
+          },
+          "e": {
+            "total_bytes": 209714147328,
+            "used_bytes": 87518388224,
+            "free_bytes": 122195759104
+          }
+        },
+        "ErrorCode": "NONE",
+        "ErrorTypeHash": null
+      },
+      "lanes": {
+        "wsl_inventory_all_stopped": true,
+        "docker_desktop_exactly_once_stopped": true,
+        "wsl_running_inventory_empty": true,
+        "desktop_linux_named_pipe_absent_win32_error_2": true,
+        "target_process_population_empty": true,
+        "target_tcp_ownership_population_empty": true,
+        "parse_and_completeness": true,
+        "disk_thresholds_pass": true
+      },
+      "all_lanes_pass": true
+    }
+  ],
+  "closure_stable": true,
+  "final_closure_matches_pre_start": true,
+  "parse_failures": [
+    "D01:IDENTITY:ValueError",
+    "D02:IDENTITY:ValueError",
+    "D06:COMMAND_FAILED",
+    "DOCKER_IDENTITY:ValueError",
+    "D06:IDENTITY:ValueError"
+  ],
+  "sanitization": {
+    "raw_process_paths_or_command_lines_persisted": false,
+    "raw_network_addresses_persisted": false,
+    "raw_proxy_values_persisted": false,
+    "raw_docker_root_dir_persisted": false,
+    "raw_stdout_stderr_or_argv_persisted": false
+  }
+}
