@@ -1,0 +1,110 @@
+{
+  "schema_version": "stage1e-e4-r6-pc2w-p1-gate-receipt-binding-contract-1.0",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "plan",
+    "origin_date": "2026-08-26T00:00:00+07:00",
+    "verification_status": "UNVERIFIED",
+    "version_label": "stage1e_e4_r6_pc2w_p1_gate_receipt_binding_contract_v1",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_pc2w_p1_attempt010_gate_receipt_remediation_plan_v1"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-26T00:00:00+07:00",
+      "declared_by": "scholar"
+    }
+  },
+  "interface": {
+    "module": "e4_r6_pc2w_p1_gate_receipt_binding.py",
+    "immutable_value_objects": {
+      "GateReceiptSpec": [
+        "stage_id",
+        "packet_files",
+        "central_schema",
+        "central_verdict",
+        "central_validator_verdict",
+        "fresh_audit_schema",
+        "fresh_audit_verdict"
+      ],
+      "ReceiptLocator": [
+        "path",
+        "sha256"
+      ]
+    },
+    "operation": "validate_bound_gate_receipts",
+    "keyword_only_inputs": [
+      "repository_root",
+      "execution_head",
+      "packet_commit",
+      "spec",
+      "central_locator",
+      "fresh_audit_locator",
+      "read_git_blob"
+    ],
+    "success_result": "EXACTLY_TWO_SANITIZED_BINDING_RECORDS"
+  },
+  "invariants": [
+    "NO_ATTEMPT_MODULE_IMPORTS",
+    "NO_MUTABLE_ATTEMPT_CONFIGURATION",
+    "RECEIPTS_PARSED_FROM_EXACT_EXECUTION_HEAD_GIT_BLOB_BYTES",
+    "RAW_BLOB_SHA256_COMPUTED_BEFORE_JSON_PARSE",
+    "STRICT_UTF8_ROOT_OBJECT_JSON_WITH_EXACT_AND_CASEFOLD_DUPLICATES_REJECTED",
+    "NONFINITE_JSON_REJECTED",
+    "PACKET_FACTS_DERIVED_FROM_EXPLICIT_SPEC_ROSTER_AT_EXACT_PACKET_COMMIT",
+    "SCHEMA_STAGE_VERDICT_PACKET_VALIDATOR_CENTRAL_LINK_RUNTIME_AND_WRITE_SET_BOUND",
+    "SOURCE_DOCUMENTS_NOT_MUTATED",
+    "FAILURES_EXPOSE_STABLE_CODES_WITHOUT_RAW_HOST_OR_EXCEPTION_TEXT"
+  ],
+  "stable_failure_code_families": {
+    "locator": [
+      "LOCATOR_INVALID",
+      "LOCATOR_PATH_INVALID",
+      "LOCATOR_PATH_COLLISION",
+      "LOCATOR_HASH_INVALID"
+    ],
+    "raw_hash": [
+      "CENTRAL_RAW_HASH_MISMATCH",
+      "FRESH_AUDIT_RAW_HASH_MISMATCH"
+    ],
+    "json": [
+      "CENTRAL_JSON_INVALID",
+      "FRESH_AUDIT_JSON_INVALID"
+    ],
+    "schema_stage_verdict": [
+      "CENTRAL_SCHEMA_MISMATCH",
+      "CENTRAL_STAGE_MISMATCH",
+      "CENTRAL_VERDICT_MISMATCH",
+      "FRESH_AUDIT_SCHEMA_MISMATCH",
+      "FRESH_AUDIT_STAGE_MISMATCH",
+      "FRESH_AUDIT_VERDICT_MISMATCH"
+    ],
+    "packet": [
+      "PACKET_COMMIT_INVALID",
+      "CENTRAL_PACKET_COMMIT_MISMATCH",
+      "FRESH_AUDIT_PACKET_COMMIT_MISMATCH",
+      "PACKET_ARTIFACT_BLOB_UNRESOLVED",
+      "CENTRAL_PACKET_ARTIFACT_MISMATCH",
+      "FRESH_AUDIT_PACKET_ARTIFACT_MISMATCH"
+    ],
+    "validator_and_link": [
+      "CENTRAL_VALIDATOR_VERDICT_MISMATCH",
+      "FRESH_AUDIT_CENTRAL_LINK_MISMATCH"
+    ],
+    "runtime_boundary": [
+      "CENTRAL_RUNTIME_BOUNDARY_MISMATCH",
+      "FRESH_AUDIT_RUNTIME_BOUNDARY_MISMATCH"
+    ],
+    "write_set": [
+      "CENTRAL_WRITE_SET_MISMATCH",
+      "FRESH_AUDIT_WRITE_SET_MISMATCH"
+    ]
+  },
+  "scope_boundary": {
+    "runtime_execution_authorized": false,
+    "host_docker_wsl_or_powershell_probe_authorized": false,
+    "materialization_preprocessing_training_evaluation_benchmark_or_test_access_authorized": false
+  },
+  "verdict": "READY_FOR_SYNTHETIC_STATIC_VALIDATION"
+}
