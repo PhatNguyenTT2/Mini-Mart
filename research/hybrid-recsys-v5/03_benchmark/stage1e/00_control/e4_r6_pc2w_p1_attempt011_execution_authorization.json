@@ -1,13 +1,15 @@
 {
-  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt011-execution-authorization-reservation-0.0",
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt011-execution-authorization-1.0",
   "stage_id": "E4-R6-PC2W-P1-ATTEMPT011",
   "material_passport": {
     "origin_skill": "experiment-agent",
     "origin_mode": "plan",
     "origin_date": "2026-08-26T00:00:00+07:00",
     "verification_status": "UNVERIFIED",
-    "version_label": "stage1e_e4_r6_pc2w_p1_attempt011_execution_authorization_reserved_r0",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt011_execution_authorization_v1",
     "upstream_dependencies": [
+      "stage1e_e4_r6_pc2w_p1_attempt011_admission_observation_contract_v1",
+      "stage1e_e4_r6_pc2w_p1_gate_receipt_binding_contract_v1",
       "stage1e_e4_r6_pc2w_p1_attempt010_fresh_independent_audit_receipt_v1",
       "stage1e_e4_r6_pc2w_p1_attempt010_gate_receipt_remediation_plan_v1"
     ],
@@ -18,8 +20,69 @@
       "declared_by": "scholar"
     }
   },
-  "placeholder_state": "DORMANT_R0_PATH_RESERVATION",
-  "runtime_execution_authorized": false,
-  "exact_process_command_confirmed": false,
-  "independent_use_forbidden": true
+  "user_decision": {
+    "status": "CONFIRMED",
+    "confirmed_scope": "IMPLEMENT_ATTEMPT011_GATE1_PACKET_AND_SYNTHETIC_STATIC_TESTS_ONLY",
+    "confirmation_source": "CURRENT_CENTRAL_DELEGATION",
+    "runtime_execution_authorized_now": false,
+    "exact_process_command_confirmed_now": false,
+    "automatic_retry_authorized": false
+  },
+  "authorized_now": [
+    "MODIFY_EXACT_FOUR_RESERVED_ATTEMPT011_PACKET_FILES",
+    "RUN_STRICT_JSON_AND_PYTHON_AST_STATIC_CHECKS",
+    "RUN_SYNTHETIC_AND_RETAINED_TESTS_WITH_PYTHON_DASH_B",
+    "RUN_READ_ONLY_OFFLINE_STATIC_VALIDATOR",
+    "COMMIT_EXACT_FOUR_FILE_PACKET"
+  ],
+  "not_authorized_now": [
+    "RUN_OR_IMPORT_ATTEMPT011_RUNNER_ON_EXECUTION_PATH",
+    "CREATE_CENTRAL_STATIC_VALIDATION_RECEIPT",
+    "CREATE_FRESH_INDEPENDENT_AUDIT_RECEIPT",
+    "START_STOP_OR_QUERY_DOCKER_DESKTOP_OR_DAEMON",
+    "RUN_WSL_OR_POWERSHELL_HOST_PROBES",
+    "SLEEP_REAL_TIME",
+    "AUTOMATIC_RETRY_OR_FALLBACK",
+    "CLONE_FETCH_DOWNLOAD_INSTALL_OR_CREATE_ENVIRONMENT",
+    "MATERIALIZE_DATA_OR_REPOSITORY",
+    "PREPROCESS_TRAIN_EVALUATE_OR_BENCHMARK",
+    "OPEN_TEST_SET",
+    "CREATE_ATTEMPT011_OUTPUT_ROOT",
+    "MODIFY_PIPELINE_STATE",
+    "PUSH_COMMITS"
+  ],
+  "future_exact_confirmation": {
+    "required_after_central_validation_and_fresh_audit": true,
+    "confirmation_token": "USER_CONFIRMED_EXACT_ATTEMPT011_PROCESS_COMMAND_AFTER_CENTRAL_VALIDATION_AND_FRESH_AUDIT",
+    "required_process_prefix": ["C:\\Program Files\\Python311\\python.exe", "-B"],
+    "command_must_bind": [
+      "repo_root",
+      "packet_commit",
+      "expected_head",
+      "central_validation_receipt_path_and_sha256",
+      "fresh_audit_receipt_path_and_sha256",
+      "confirmation_token"
+    ],
+    "execution_attempts_maximum": 1,
+    "automatic_retry_count": 0,
+    "fallback_count": 0
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "benchmark_admission_opened": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "model_policy": {
+    "requested_model": "gpt-5.6-sol",
+    "requested_reasoning_effort": "high",
+    "requested_service_tier": "default",
+    "requested_display_tier": "Standard",
+    "fast_or_priority_allowed": false,
+    "actual_model": "UNOBSERVABLE",
+    "actual_reasoning_effort": "UNOBSERVABLE",
+    "actual_service_tier": "UNOBSERVABLE"
+  },
+  "authorization_verdict": "AUTHORIZED_ATTEMPT011_GATE1_IMPLEMENTATION_AND_SYNTHETIC_STATIC_TESTS_ONLY_RUNTIME_DENIED"
 }
