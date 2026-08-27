@@ -1,0 +1,384 @@
+{
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt011-central-static-validation-receipt-1.0",
+  "stage_id": "E4-R6-PC2W-P1-ATTEMPT011",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "validate",
+    "origin_date": "2026-08-27T11:59:30.8081158Z",
+    "verification_status": "VERIFIED",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt011_central_static_validation_receipt_v1",
+    "integrity_pass_date": "2026-08-27T11:59:30.8081158Z",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_pc2w_p1_attempt011_admission_observation_contract_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt011_execution_authorization_v1",
+      "stage1e_e4_r6_pc2w_p1_gate_receipt_binding_contract_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt010_fresh_independent_audit_receipt_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt010_gate_receipt_remediation_plan_v1"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-27T11:59:30.8081158Z",
+      "declared_by": "scholar"
+    }
+  },
+  "ars_context": {
+    "adapter": "ars-codex",
+    "adapter_version": "0.1.26",
+    "workflow": "ars/experiment-agent/WORKFLOW.md",
+    "role_prompt": "ars/experiment-agent/agents/code_runner_agent.md",
+    "integration_guide": "ars/experiment-agent/references/ars_integration_guide.md",
+    "material_passport_schema": "ars/shared/handoff_schemas.md#schema-9-material-passport-cross-stage-metadata",
+    "experiment_provenance_boundary": "INTAKE_AND_STATIC_PROVENANCE_ONLY_NO_EXPERIMENT_EXECUTION",
+    "execution_mode": "CENTRAL_STATIC_EVIDENCE_ONLY_FAIL_CLOSED"
+  },
+  "authoritative_lineage": {
+    "r1_commit": "f234a32081c20aeb322bbc3d6dd825bad49b0ad3",
+    "r1_parent": "da18aa102567dcfef7296fafa223bcaef065e934",
+    "r1_parent_count": 1,
+    "r0_commit": "da18aa102567dcfef7296fafa223bcaef065e934",
+    "r0_parent": "4cfd9520c8e946aaef32d8f1bbb51e25f804e377",
+    "r0_parent_count": 1,
+    "authoritative_head_at_validation": "f234a32081c20aeb322bbc3d6dd825bad49b0ad3",
+    "refs_heads_main_observed_but_not_used": "3a2930dc4bea84e340af3289645b141a6ae9efbb",
+    "main_cherry_pick_mirror_used_as_authority": false,
+    "worktree_clean_before_validation": true,
+    "hash_domain": "RAW_GIT_BLOB_BYTES",
+    "checkout_normalization_used_for_packet_blob_facts": false
+  },
+  "r0_delta": {
+    "status": "EXACTLY_SEVEN_ADDED_FILES",
+    "entries": [
+      "A\tresearch/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt011_admission_observation_contract.json",
+      "A\tresearch/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt011_execution_authorization.json",
+      "A\tresearch/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_gate_receipt_binding.py",
+      "A\tresearch/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_gate_receipt_binding_contract.json",
+      "A\tresearch/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc2w_p1_attempt011_admission_observation.py",
+      "A\tresearch/hybrid-recsys-v5/03_benchmark/stage1e/00_control/test_e4_r6_pc2w_p1_attempt011_pre_runtime_gate.py",
+      "A\tresearch/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_p1_attempt011_static_packet.py"
+    ]
+  },
+  "r1_delta": {
+    "status": "EXACTLY_FOUR_MODIFIED_PACKET_FILES",
+    "entries": [
+      "M\tresearch/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt011_admission_observation_contract.json",
+      "M\tresearch/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt011_execution_authorization.json",
+      "M\tresearch/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc2w_p1_attempt011_admission_observation.py",
+      "M\tresearch/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_p1_attempt011_static_packet.py"
+    ]
+  },
+  "packet_commit": "f234a32081c20aeb322bbc3d6dd825bad49b0ad3",
+  "packet_parent": "da18aa102567dcfef7296fafa223bcaef065e934",
+  "packet_artifacts": [
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt011_admission_observation_contract.json",
+      "git_blob_bytes": 6615,
+      "git_blob_sha256": "7a5143eeae7ef29cb82899316591808a625ed6359e0365e4444fe9140e96d75e"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt011_execution_authorization.json",
+      "git_blob_bytes": 3419,
+      "git_blob_sha256": "948f66c52e8cda1e3c4f8db8780dd803747f74f53e1f3e04dbf8a9d786f297ca"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc2w_p1_attempt011_admission_observation.py",
+      "git_blob_bytes": 10339,
+      "git_blob_sha256": "f24aed180bab11a96781a8c1a33b6b2bb5a1f09e68fada83d27eabea2fa58c96"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_p1_attempt011_static_packet.py",
+      "git_blob_bytes": 19729,
+      "git_blob_sha256": "1959d153e04089bb3a2b1fccdaf7934e2003058caef01268f0b3973be81cc9d5"
+    }
+  ],
+  "immutable_artifacts": [
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt009_runtime_compatibility.py",
+      "source_revision": "4cfd9520c8e946aaef32d8f1bbb51e25f804e377",
+      "git_blob_bytes": 15169,
+      "git_blob_sha256": "8148e6437af20d4c2b66f774adae102afe83583c7ed2b463340162beb6f342d7"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt009_runtime_compatibility_contract.json",
+      "source_revision": "4cfd9520c8e946aaef32d8f1bbb51e25f804e377",
+      "git_blob_bytes": 6484,
+      "git_blob_sha256": "6a627d077af4389676ea458265bd8b93a132a606571fd515493dae2e4258b008"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt010_command_interface.py",
+      "source_revision": "4cfd9520c8e946aaef32d8f1bbb51e25f804e377",
+      "git_blob_bytes": 4159,
+      "git_blob_sha256": "970f5b5269c36dc3f2e0e1639db591adbd4623aeb6f97b86e049957dde1a9559"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt010_command_interface_contract.json",
+      "source_revision": "4cfd9520c8e946aaef32d8f1bbb51e25f804e377",
+      "git_blob_bytes": 2318,
+      "git_blob_sha256": "6f31ec175bbd142fb588379ba312e0fa16d66b905340879a4648a65b821ee429"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_gate_receipt_binding.py",
+      "source_revision": "da18aa102567dcfef7296fafa223bcaef065e934",
+      "git_blob_bytes": 10298,
+      "git_blob_sha256": "8a1ea9f854fbe81c4873b326db4a1a82b31c6557c4efb92c0e3332ecdddaa526"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_gate_receipt_binding_contract.json",
+      "source_revision": "da18aa102567dcfef7296fafa223bcaef065e934",
+      "git_blob_bytes": 3467,
+      "git_blob_sha256": "784cd9639ae43f11bc4977155c6528c8f0f304ba9d4bcc4a394b1c93916f0e0b"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc2w_p1_attempt008_admission_observation.py",
+      "source_revision": "4cfd9520c8e946aaef32d8f1bbb51e25f804e377",
+      "git_blob_bytes": 50611,
+      "git_blob_sha256": "c51c0fc6b0e089bb478fdc391979cfa0add8051f4723ff067ed81dd4c6630a89"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt009_pre_runtime_failure_receipt.json",
+      "source_revision": "4cfd9520c8e946aaef32d8f1bbb51e25f804e377",
+      "git_blob_bytes": 4140,
+      "git_blob_sha256": "0e74e4f3d594a521fc4cee9b3ee2e2e5131b47246473d452ae55bfe5fddbda12"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt009_runtime_compatibility_revision3_fresh_independent_audit_receipt.json",
+      "source_revision": "4cfd9520c8e946aaef32d8f1bbb51e25f804e377",
+      "git_blob_bytes": 12706,
+      "git_blob_sha256": "211de28607daf5e5e5e38a0d016ef6fa3a46d3cea88f566519bbfbc61629b451"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt009_runtime_compatibility_revision3_validation_receipt.json",
+      "source_revision": "4cfd9520c8e946aaef32d8f1bbb51e25f804e377",
+      "git_blob_bytes": 5922,
+      "git_blob_sha256": "c1ae7c3daf70041630b9a4c56c0241c5ce5104694a6fa53ee371a3d495ade102"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/stage1e_legacy_source_cleanup_manifest.json",
+      "source_revision": "4cfd9520c8e946aaef32d8f1bbb51e25f804e377",
+      "git_blob_bytes": 8102,
+      "git_blob_sha256": "7c618ef482e260a5b81207a8e6b70793a4afbf288dffa4af57e67fc77df1d45e"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/test_e4_r6_pc2w_p1_attempt009_runtime_compatibility.py",
+      "source_revision": "4cfd9520c8e946aaef32d8f1bbb51e25f804e377",
+      "git_blob_bytes": 10079,
+      "git_blob_sha256": "d486fbec952a8365828dc132d90fb8fc02cc4cd5811560c7541700054e02b1ea"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/test_e4_r6_pc2w_p1_attempt010_command_interface.py",
+      "source_revision": "4cfd9520c8e946aaef32d8f1bbb51e25f804e377",
+      "git_blob_bytes": 2705,
+      "git_blob_sha256": "faa6b3b5884482996b34303f6efc72a412b4fa3c8ad76c3bb3511b803890911a"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/test_e4_r6_pc2w_p1_attempt011_pre_runtime_gate.py",
+      "source_revision": "da18aa102567dcfef7296fafa223bcaef065e934",
+      "git_blob_bytes": 28206,
+      "git_blob_sha256": "41e1c30a784368b713532899a86feec3fe538a1b85388621f7431a8c9eaa8c51"
+    }
+  ],
+  "historical_dependency_evidence": {
+    "attempt010_packet_commit": "b7f8f9de028017b14fcc4357d34f3b03b705884d",
+    "attempt010_central_receipt_commit": "c404b8be82ef67ababa7100729fc4a8cea3e53ea",
+    "attempt010_central_receipt_git_blob_sha256": "d3dcd2f7624b7350db21eb6f7c10f863c631d829e23d577e7137e2d97b9f994d",
+    "attempt010_fresh_audit_receipt_commit": "04e4f865d523230cdd57f5bcb87543b5034dcff1",
+    "attempt010_fresh_audit_receipt_git_blob_sha256": "cb0eacbbb96fd4ca7832eaf7c18aa9ee6886891e19cadbcb13336058de45163b",
+    "attempt010_fresh_audit_verdict": "HANDOFF_INCOMPLETE",
+    "attempt010_runtime_commands_executed": false,
+    "fact_source": "stage1e_e4_r6_pc2w_p1_attempt010_gate_receipt_remediation_plan_v1"
+  },
+  "validator": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_p1_attempt011_static_packet.py",
+    "interpreter": "C:\\Program Files\\Python311\\python.exe",
+    "python_dash_b": true,
+    "command": "C:\\Program Files\\Python311\\python.exe -B research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\00_control\\validate_e4_r6_pc2w_p1_attempt011_static_packet.py --repo-root C:\\Users\\ACER\\.codex\\worktrees\\701f\\backend",
+    "exit_code": 0,
+    "result_schema_version": "stage1e-e4-r6-pc2w-p1-attempt011-static-validation-result-1.0",
+    "validation_mode": "R1_COMMITTED_PACKET",
+    "validated_revision": "f234a32081c20aeb322bbc3d6dd825bad49b0ad3",
+    "validator_verdict": "READY_FOR_CENTRAL_STATIC_VALIDATION",
+    "strict_json_files_passed": 3,
+    "strict_json_files_total": 3,
+    "python_ast_files_passed": 4,
+    "python_ast_files_total": 4,
+    "generic_attempt_literal_findings": 0,
+    "generic_attempt_import_findings": 0,
+    "attempt009_gate_predicate_reachable": false,
+    "receipt_validation_before_output_root_and_invoke": true
+  },
+  "test_case_ids": [
+    "GR-A-01",
+    "GR-A-02",
+    "GR-A-03",
+    "GR-A-04",
+    "GR-A-05",
+    "GR-A-06",
+    "GR-A-07",
+    "GR-A-08",
+    "GR-A-09",
+    "GR-A-10",
+    "GR-C-01",
+    "GR-C-02",
+    "GR-C-03",
+    "GR-C-04",
+    "GR-C-05",
+    "GR-C-06",
+    "GR-C-07",
+    "GR-C-08",
+    "GR-C-09",
+    "GR-C-10",
+    "GR-CL-01",
+    "GR-CL-02",
+    "GR-CL-03",
+    "GR-CL-04",
+    "GR-CL-05",
+    "GR-CL-06",
+    "GR-CL-07",
+    "GR-CL-08",
+    "GR-CL-09",
+    "GR-CMD-01",
+    "GR-CMD-02",
+    "GR-CMD-03",
+    "GR-CMD-04",
+    "GR-CMD-05",
+    "GR-CMD-06",
+    "GR-CMD-07",
+    "GR-CMD-08",
+    "GR-CMD-09",
+    "GR-CMD-10",
+    "GR-CMD-11",
+    "GR-CMD-12",
+    "GR-CMD-13",
+    "GR-J-01",
+    "GR-J-02",
+    "GR-J-03",
+    "GR-J-04",
+    "GR-J-05",
+    "GR-J-06",
+    "GR-J-07",
+    "GR-L-01",
+    "GR-L-02",
+    "GR-L-03",
+    "GR-L-04",
+    "GR-NR-01",
+    "GR-NR-02",
+    "GR-NR-03",
+    "GR-NR-04",
+    "GR-NR-05",
+    "GR-POS-01",
+    "GR-POS-02",
+    "GR-POS-03",
+    "GR-POS-04"
+  ],
+  "test_suites": [
+    {
+      "suite": "attempt011_pre_runtime_gate",
+      "tests_passed": 62,
+      "tests_total": 62,
+      "python_dash_b": true,
+      "runtime_or_host_commands": 0
+    },
+    {
+      "suite": "retained_attempt010_command_interface",
+      "tests_passed": 10,
+      "tests_total": 10,
+      "python_dash_b": true,
+      "runtime_or_host_commands": 0
+    },
+    {
+      "suite": "retained_attempt009_runtime_compatibility",
+      "tests_passed": 9,
+      "tests_total": 9,
+      "python_dash_b": true,
+      "runtime_or_host_commands": 0
+    },
+    {
+      "suite": "retained_attempt008_probe_contract",
+      "tests_passed": 8,
+      "tests_total": 8,
+      "python_dash_b": true,
+      "runtime_or_host_commands": 0
+    },
+    {
+      "suite": "retained_attempt008_safe_envelopes",
+      "tests_passed": 9,
+      "tests_total": 9,
+      "python_dash_b": true,
+      "runtime_or_host_commands": 0
+    }
+  ],
+  "suite_counts_exact": [62, 10, 9, 8, 9],
+  "aggregate_tests_passed": 98,
+  "aggregate_tests_total": 98,
+  "python_bytecode": {
+    "preexisting_inventory": {},
+    "post_inventory": {},
+    "preexisting_empty": true,
+    "post_empty": true,
+    "new_or_modified_files": 0
+  },
+  "command_inventory": {
+    "python_dash_b_synthetic_static_test_processes": 5,
+    "read_only_git_processes_only": true,
+    "runner_imports_or_invocations": 0,
+    "docker_commands": 0,
+    "wsl_commands": 0,
+    "powershell_host_probe_commands": 0,
+    "real_sleeps": 0,
+    "runtime_commands": 0,
+    "automatic_retry_count": 0,
+    "fallback_count": 0
+  },
+  "output_boundary": {
+    "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_at/E4_R6PC2W_P1_attempt011_admission_observation",
+    "output_root_absent_before_validation": true,
+    "output_root_absent_after_validation": true,
+    "output_root_created": false
+  },
+  "static_safety": {
+    "runtime_commands_executed": false,
+    "runner_imported_or_invoked": false,
+    "docker_commands_executed": 0,
+    "wsl_commands_executed": 0,
+    "powershell_host_probe_commands_executed": 0,
+    "real_sleep_calls": 0,
+    "network_clone_fetch_download_install_operations": 0,
+    "materialization_performed": false,
+    "training_performed": false,
+    "evaluation_performed": false,
+    "benchmark_performed": false,
+    "test_set_opened": false,
+    "pipeline_state_modified": false,
+    "automatic_retry_count": 0,
+    "fallback_count": 0
+  },
+  "model_policy": {
+    "required_model": "gpt-5.6-sol",
+    "required_reasoning_effort": "xhigh",
+    "required_service_tier": "default",
+    "required_display_tier": "Standard",
+    "fast_or_priority_allowed": false,
+    "actual_model": "UNOBSERVABLE",
+    "actual_reasoning_effort": "UNOBSERVABLE",
+    "actual_service_tier": "UNOBSERVABLE",
+    "runtime_or_ui_fast_priority_observation": "UNOBSERVABLE",
+    "values_inferred_from_prose": false,
+    "observed_policy_contradiction": false,
+    "model_gate_disposition": "PROCEEDED_WITH_ACTUAL_VALUES_RECORDED_AS_UNOBSERVABLE_AND_NO_OBSERVED_FAST_OR_PRIORITY_CONTRADICTION"
+  },
+  "no_runtime_truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "benchmark_admission_opened": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER",
+    "scientific_reproduction_claimed": false
+  },
+  "runtime_commands_executed": false,
+  "validator_verdict": "READY_FOR_CENTRAL_STATIC_VALIDATION",
+  "write_set": [
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt011_central_static_validation_receipt.json"
+  ],
+  "verdict": "PASS_PC2W_P1_ATTEMPT011_CENTRAL_STATIC_VALIDATION",
+  "next_gate": "FRESH_INDEPENDENT_STATIC_AUDIT_NO_RUNTIME_THEN_EXACT_PROCESS_COMMAND_CONFIRMATION"
+}
