@@ -1,0 +1,609 @@
+{
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt011-runtime-failure-remediation-plan-fresh-audit-receipt-1.0",
+  "stage_id": "E4-R6-PC2W-P1-ATTEMPT011-RUNTIME-FAILURE-REMEDIATION-PLAN-FRESH-AUDIT",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "validate-static-fail-closed",
+    "origin_date": "2026-08-28T00:00:00+07:00",
+    "origin_date_semantics": "Configured current date and Asia/Saigon timezone marker; no ambient-clock or host probe was performed.",
+    "verification_status": "VERIFIED",
+    "verification_scope": "Exact committed Git blobs and static control-flow/provenance predicates only; no experiment, runner, runtime, host, or benchmark verification.",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt011_runtime_failure_remediation_plan_fresh_audit_receipt_v1",
+    "integrity_pass_date": "2026-08-28T00:00:00+07:00",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_pc2w_p1_attempt011_runtime_failure_remediation_plan_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt011_admission_observation_contract_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt011_execution_authorization_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt011_central_static_validation_receipt_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt011_fresh_independent_audit_receipt_v1",
+      "ars_codex_academic_research_suite_0.1.26"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-28T00:00:00+07:00",
+      "declared_by": "scholar"
+    },
+    "experiment_provenance": [],
+    "self_content_hash": null,
+    "self_content_hash_semantics": "Deliberately external: the committed receipt is bound after commit by raw byte count, SHA-256, and Git blob OID to avoid a self-referential digest."
+  },
+  "ars_routing_receipt": {
+    "adapter": "ars-codex",
+    "adapter_version": "0.1.26",
+    "workflow": "ars/experiment-agent/WORKFLOW.md",
+    "role_prompt": "ars/experiment-agent/agents/code_runner_agent.md",
+    "integration_guide": "ars/experiment-agent/references/ars_integration_guide.md",
+    "handoff_schema_sections": [
+      "ars/shared/handoff_schemas.md#schema-9-material-passport-cross-stage-metadata",
+      "ars/shared/handoff_schemas.md#experiment-provenance-intake-260",
+      "ars/shared/handoff_schemas.md#validation-rules"
+    ],
+    "diagnosis_skill": "E:/UIT/cv/backend/.agents/skills/diagnosing-bugs/SKILL.md",
+    "all_required_instruction_files_read_fully": true,
+    "selected_handoff_schema_sections_read_fully": true,
+    "experiment_provenance_boundary": "INTAKE_AND_STATIC_PROVENANCE_ONLY_NO_EXPERIMENT_EXECUTION"
+  },
+  "model_policy_audit": {
+    "requested": {
+      "model": "gpt-5.6-sol",
+      "reasoning_effort": "ultra",
+      "service_tier": "default",
+      "speed": "Standard",
+      "fast_or_priority_allowed": false
+    },
+    "actual": {
+      "model": "gpt-5.6-sol",
+      "reasoning_effort": "ultra",
+      "service_tier": "UNOBSERVABLE",
+      "speed": "UNOBSERVABLE",
+      "model_and_reasoning_basis": "Current task-routing identity exposed to this audit context.",
+      "service_tier_and_speed_basis": "No authoritative service-tier or speed telemetry was exposed; neither was inferred from latency, prose, or prior receipts."
+    },
+    "model_mismatch_observed": false,
+    "reasoning_mismatch_observed": false,
+    "fast_or_priority_observed": false,
+    "policy_disposition": "PROCEEDED_NO_OBSERVED_MISMATCH_AND_NO_OBSERVED_FAST_OR_PRIORITY",
+    "subagents_used": 0,
+    "subagent_reason": "The available delegation mechanism did not expose a way to prove Standard/default service tier, so it was not used as audit authority."
+  },
+  "audit_independence": {
+    "source_thread_id": "019ff4f0-802a-7892-a989-24f32ac26ac8",
+    "fresh_independent_task": true,
+    "implementation_or_plan_author": false,
+    "prior_plan_verdict_trusted": false,
+    "prior_receipt_verdicts_trusted": false,
+    "decisive_facts_replayed_from_raw_committed_blobs": true,
+    "working_tree_source_copies_used_as_content_authority": false,
+    "network_or_external_evidence_used": false,
+    "audit_scope": "Static, read-only committed-blob audit outside this one receipt write.",
+    "context_md_committed": false,
+    "adr_or_architecture_decision_record_committed": false
+  },
+  "authoritative_lineage": {
+    "audit_start_head": "741a0c9a69fcd36fd8998e13130568cebde66924",
+    "audit_start_parent": "1655ac79ad1c32fb44426f746f7d2c2c711e56dc",
+    "audit_start_parent_count": 1,
+    "packet_commit": "f234a32081c20aeb322bbc3d6dd825bad49b0ad3",
+    "packet_parent": "da18aa102567dcfef7296fafa223bcaef065e934",
+    "packet_parent_count": 1,
+    "packet_is_ancestor_of_audit_start_head": true,
+    "attempt011_central_receipt_commit": "25223eef47de083614142c4c2d259646e00c0d68",
+    "attempt011_central_receipt_parent": "f234a32081c20aeb322bbc3d6dd825bad49b0ad3",
+    "attempt011_fresh_receipt_commit": "1655ac79ad1c32fb44426f746f7d2c2c711e56dc",
+    "attempt011_fresh_receipt_parent": "25223eef47de083614142c4c2d259646e00c0d68",
+    "plan_commit": "741a0c9a69fcd36fd8998e13130568cebde66924",
+    "plan_parent": "1655ac79ad1c32fb44426f746f7d2c2c711e56dc",
+    "plan_commit_delta": [
+      "A\tresearch/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt011_runtime_failure_remediation_plan.md"
+    ],
+    "plan_commit_exactly_one_added_file": true,
+    "worktree_clean_before_audit_receipt_write": true,
+    "hash_domain": "RAW_GIT_BLOB_BYTES"
+  },
+  "evidence_blob_bindings": [
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt011_runtime_failure_remediation_plan.md",
+      "git_blob": "cc9beaa0c227c5e685f564810c11e71b49a3246f",
+      "raw_bytes": 39508,
+      "raw_sha256": "b38d8212e2f6e4677021c763e3376748d40a3d20b5febf58db3d734b41f4ecfd"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc2w_p1_attempt011_admission_observation.py",
+      "git_blob": "da57f2f70046951eede1044fcc013ece30fb6564",
+      "raw_bytes": 10339,
+      "raw_sha256": "f24aed180bab11a96781a8c1a33b6b2bb5a1f09e68fada83d27eabea2fa58c96"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc2w_p1_attempt010_admission_observation.py",
+      "git_blob": "9e9988560a3a420d63a75121cf5b9e741099c836",
+      "raw_bytes": 9023,
+      "raw_sha256": "437fffce0c0a8b459920ae12808692d37c07b1e63dc4704d2efdc6306ffe76f9"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc2w_p1_attempt009_admission_observation.py",
+      "git_blob": "0c6aad1ee5cf6b7a6365e64f9e48ec4026bdce22",
+      "raw_bytes": 16684,
+      "raw_sha256": "a762ea8bf11df261d1e62591705c1e02dbb91d62a79eadd9b31dfc6c68b5d1b9"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc2w_p1_attempt008_admission_observation.py",
+      "git_blob": "ab73c9fbb9d4096d0f4ee21723ec37bc0fbda60c",
+      "raw_bytes": 50611,
+      "raw_sha256": "c51c0fc6b0e089bb478fdc391979cfa0add8051f4723ff067ed81dd4c6630a89"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc2w_p1_attempt006_baseline_remediation.py",
+      "git_blob": "153494d43aa8d72b5dc7258d340a3d392f4708f3",
+      "raw_bytes": 43752,
+      "raw_sha256": "ba377b0be805160c979f169c093ab862403b74328d54917baa60199078727c99"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc2w_p1_attempt004_query_only.py",
+      "git_blob": "24471d05cf4880cf3acc91399d63254a349766de",
+      "raw_bytes": 52528,
+      "raw_sha256": "66c964e40cc23cee0bda59b8afc949c6fd3189c3c821e2eb98ffd4323c3c0e13"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt010_command_interface.py",
+      "git_blob": "352ff2eee5f7ed095fba633328a822b0da798444",
+      "raw_bytes": 4159,
+      "raw_sha256": "970f5b5269c36dc3f2e0e1639db591adbd4623aeb6f97b86e049957dde1a9559"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_gate_receipt_binding.py",
+      "git_blob": "96caf3c56ae99bd6578bfca624566bca1c036ad2",
+      "raw_bytes": 10298,
+      "raw_sha256": "8a1ea9f854fbe81c4873b326db4a1a82b31c6557c4efb92c0e3332ecdddaa526"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt011_admission_observation_contract.json",
+      "git_blob": "c8396ea7de73196decf8c14599558d096645e187",
+      "raw_bytes": 6615,
+      "raw_sha256": "7a5143eeae7ef29cb82899316591808a625ed6359e0365e4444fe9140e96d75e"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt011_execution_authorization.json",
+      "git_blob": "590d5430c83bd5a473dca419412cf32387a1ebce",
+      "raw_bytes": 3419,
+      "raw_sha256": "948f66c52e8cda1e3c4f8db8780dd803747f74f53e1f3e04dbf8a9d786f297ca"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/test_e4_r6_pc2w_p1_attempt011_pre_runtime_gate.py",
+      "git_blob": "38cc5a9987629cf901aea0fc84303ad23693548a",
+      "raw_bytes": 28206,
+      "raw_sha256": "41e1c30a784368b713532899a86feec3fe538a1b85388621f7431a8c9eaa8c51"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_p1_attempt011_static_packet.py",
+      "git_blob": "c2dfd3a9c8d8a4d1ea1a5f3e17df425ec35fe24d",
+      "raw_bytes": 19729,
+      "raw_sha256": "1959d153e04089bb3a2b1fccdaf7934e2003058caef01268f0b3973be81cc9d5"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt011_central_static_validation_receipt.json",
+      "git_blob": "cf399a3e015c5eeee6c9f8e67159bb8b202a869a",
+      "raw_bytes": 16495,
+      "raw_sha256": "efcb7bb05b2159ff3ff8468a4ed14e4b821f4d6e634d434ad710cb8089aac66d"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt011_fresh_independent_audit_receipt.json",
+      "git_blob": "e318c22fa9505a00e02e45ac7ff4f901dcca690d",
+      "raw_bytes": 26886,
+      "raw_sha256": "bb9dd0c7c3dbd80bbb80bf881c53027c1e002d052b83adc7d1e631418710713e"
+    }
+  ],
+  "replay_commands_and_harnesses": [
+    {
+      "id": "GIT-LINEAGE-AND-CLEANLINESS",
+      "kind": "read-only-git",
+      "commands": [
+        "git --no-optional-locks status --porcelain=v2 --untracked-files=all",
+        "git rev-parse HEAD",
+        "git rev-parse HEAD^",
+        "git merge-base --is-ancestor f234a32081c20aeb322bbc3d6dd825bad49b0ad3 HEAD",
+        "git diff-tree --no-commit-id --name-status -r 741a0c9a69fcd36fd8998e13130568cebde66924",
+        "git ls-tree 741a0c9a69fcd36fd8998e13130568cebde66924 -- research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt011_runtime_failure_remediation_plan.md",
+        "git cat-file -s 741a0c9a69fcd36fd8998e13130568cebde66924:research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt011_runtime_failure_remediation_plan.md"
+      ],
+      "exit_codes": [0, 0, 0, 0, 0, 0, 0],
+      "redacted_output": {
+        "status_porcelain": "<EMPTY>",
+        "head": "741a0c9a69fcd36fd8998e13130568cebde66924",
+        "parent": "1655ac79ad1c32fb44426f746f7d2c2c711e56dc",
+        "packet_ancestor": true,
+        "plan_delta": "A\tresearch/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt011_runtime_failure_remediation_plan.md",
+        "plan_tree": "100644 blob cc9beaa0c227c5e685f564810c11e71b49a3246f",
+        "plan_raw_bytes": 39508
+      }
+    },
+    {
+      "id": "STATIC-AST-HASH-REACHABILITY-V2",
+      "kind": "python-minus-B-inline-read-only",
+      "command": "python -B -c <inline harness reading only git cat-file blobs; no repository module import>",
+      "harness_contract": [
+        "Strict-decode and AST-parse committed Python blobs.",
+        "Scan every literal RuntimeError in committed 00_control Python blobs and SHA-256 each UTF-8 literal.",
+        "Trace Attempt-011 -> Attempt-010 -> Attempt-009 -> Attempt-008 imports and the Attempt-011 legacy alias.",
+        "Assert the reachable Attempt-008 compound root/CWD guard precedes output_root assignment, mkdir, and _FAILURE_CONTEXT setup.",
+        "Assert Attempt-009/010/011 never rebind EXPECTED_EXECUTION_ROOT and trace its inherited Attempt-004 singleton.",
+        "Assert persist_failure_packet returns false when context is None, the outer envelope hard-codes exception_message_persisted=false, and the catch predicts SystemExit(2).",
+        "Assert Attempt-011 expected_normalized copies sys.argv[1:] and replay the retained model-policy predicate against strict contract/auth JSON."
+      ],
+      "exit_code": 0,
+      "redacted_output": {
+        "signal": "RED",
+        "target_error_sha256": "8bd399659a57c2a6bbf009029c132a6720f7fdd15367a3de3e77dde4dcc1c402",
+        "derived_error_sha256": "8bd399659a57c2a6bbf009029c132a6720f7fdd15367a3de3e77dde4dcc1c402",
+        "derived_message": "<REDACTED:sha256-bound>",
+        "literal_hash_sites": [
+          {
+            "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc2w_p1_attempt006_baseline_remediation.py",
+            "line": 627
+          },
+          {
+            "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc2w_p1_attempt007_admission_observation.py",
+            "line": 1018
+          },
+          {
+            "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc2w_p1_attempt008_admission_observation.py",
+            "line": 670
+          }
+        ],
+        "reachable_site": {
+          "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc2w_p1_attempt008_admission_observation.py",
+          "line": 670
+        },
+        "import_chain": ["attempt011", "attempt010", "attempt009", "attempt008"],
+        "failed_legacy_model_fields": [
+          "actual_model_reasoning_and_service_tier",
+          "fresh_audit_requested_model",
+          "fresh_audit_requested_reasoning_effort",
+          "requested_display_name",
+          "requested_reasoning_effort"
+        ],
+        "latent_model_error_sha256": "305f5e7fa496d5b5b016e54210a3f7584d606ad3c88426b1b431d2ea9d691350",
+        "assertions_passed": 33,
+        "assertions_failed": 0,
+        "runner_import_count": 0,
+        "runner_invocation_count": 0,
+        "runtime_or_host_probe_count": 0
+      }
+    },
+    {
+      "id": "STATIC-FROZEN-LINEAGE-PLAN-GAP-V2",
+      "kind": "python-minus-B-inline-read-only",
+      "command": "python -B -c <inline harness reading only git cat-file/rev-list/diff-tree/rev-parse outputs; no repository module import>",
+      "harness_contract": [
+        "Strict-parse four Attempt-011 JSON subjects with duplicate, casefold-duplicate, non-finite, and UTF-8 rejection.",
+        "Recompute every frozen hash entry in Attempt-008/009/010/011 maps from raw HEAD blobs.",
+        "Replay packet, central receipt, fresh receipt, and plan single-parent lineage and exact deltas.",
+        "Verify exact plan bytes, SHA-256, and Git blob OID.",
+        "Inspect the existing generic receipt binding for receipt-commit inputs and commit-delta/ancestry replay.",
+        "Inventory retained failure-packet refresh and final-output writes.",
+        "Search the Attempt-012 plan for named outer-failure/process-capture and confirmation/dispatch JSON paths."
+      ],
+      "exit_code": 0,
+      "redacted_output": {
+        "signal": "STATIC_PASS_WITH_PLAN_GAPS_OBSERVED",
+        "assertions_passed": 20,
+        "assertions_failed": 0,
+        "strict_json_subjects": 4,
+        "frozen_entries_total_with_duplicates": 33,
+        "frozen_hash_mismatches": 0,
+        "existing_gate_binding_receipt_commit_inputs": 0,
+        "existing_gate_binding_commit_delta_or_ancestry_replay": false,
+        "retained_main_persist_call_lines": [786, 799, 804],
+        "retained_final_write_call_lines": [1068, 1069, 1070, 1071],
+        "attempt012_named_outer_failure_or_process_capture_json_paths": [],
+        "attempt012_named_confirmation_or_dispatch_json_paths": [],
+        "runner_import_count": 0,
+        "runner_invocation_count": 0,
+        "runtime_or_host_probe_count": 0
+      }
+    }
+  ],
+  "harness_authoring_transparency": {
+    "fail_closed_authoring_stops": 2,
+    "first_stop": "The initial AST assertion incorrectly required one total _FAILURE_CONTEXT assignment; committed source has a valid setup at line 777 and reset at line 1075. The final harness distinguishes setup from reset.",
+    "second_stop": "The initial output-refresh assertion omitted the post-pre-start refresh at line 804. The final harness inventories lines 786, 799, and 804.",
+    "attempt011_or_attempt012_execution_retries": 0,
+    "automatic_retry_or_fallback": false,
+    "final_harnesses_replayed_from_start_after_assertion_correction": true
+  },
+  "direct_failure_reconstruction": {
+    "target_error_sha256_exact": true,
+    "target_error_sha256": "8bd399659a57c2a6bbf009029c132a6720f7fdd15367a3de3e77dde4dcc1c402",
+    "hash_literal_site_is_repository_unique": false,
+    "hash_literal_site_count": 3,
+    "reachable_site_is_unique_for_attempt011_call_chain": true,
+    "reachable_site": "execute_e4_r6_pc2w_p1_attempt008_admission_observation.py:670",
+    "import_chain_exact": "Attempt-011 -> Attempt-010 -> Attempt-009 -> Attempt-008",
+    "guard_precedes_output_root_assignment": true,
+    "guard_precedes_output_root_creation": true,
+    "guard_precedes_failure_context_setup": true,
+    "attempt011_rebinds_expected_execution_root": false,
+    "proven_runtime_claim": "The combined predicate consisting of expected execution-root equality and ambient-CWD equality evaluated false.",
+    "individual_failed_operand": "UNRESOLVED",
+    "actual_runtime_cwd": "UNRESOLVED",
+    "actual_runtime_repo_root_argument": "UNRESOLVED",
+    "operand_or_cwd_inference_forbidden_and_not_made": true,
+    "direct_cause_disposition": "CONFIRMED_COMPOUND_GUARD_FAILURE_ONLY"
+  },
+  "persistence_explanation": {
+    "exception_message_persisted_false": {
+      "confirmed": true,
+      "mechanism": "Attempt-011 outer exception envelope stores SHA256(str(exc)) and hard-codes exception_message_persisted to false."
+    },
+    "failure_packet_persisted_false": {
+      "confirmed": true,
+      "mechanism": "The reachable guard raises at Attempt-008 line 670 while _FAILURE_CONTEXT is still None; persist_failure_packet returns false at lines 572-575. output_root is assigned at line 729, created at line 776, and context is established at line 777."
+    },
+    "unsafe_early_write_required": false,
+    "safe_pre_root_behavior": "No output-root write occurs before trusted-root establishment."
+  },
+  "latent_blocker_audit": [
+    {
+      "area": "root_authority",
+      "attempt011_status": "FAIL_CONFIRMED",
+      "plan_status": "PARTIAL",
+      "audit": "The plan correctly requires one committed authority and pre-legacy rebind, but does not name the sole owning file/JSON pointer; contract, packet, and receipts are all told to freeze the values.",
+      "finding_ids": ["m-001"]
+    },
+    {
+      "area": "central_and_fresh_audit_binding_transferability",
+      "attempt011_status": "CURRENT_HISTORY_EXTERNALLY_VERIFIED_NONTRANSFERABLE",
+      "plan_status": "PASS_AS_REQUIREMENT",
+      "audit": "Attempt-011 central and fresh receipts are exact one-file commits in a single-parent chain. The generic binding itself has no receipt-commit inputs or commit-delta/ancestry replay, so the plan correctly requires Attempt-012-specific ancestry tests and rejects old receipts."
+    },
+    {
+      "area": "model_policy_schema_and_predicate",
+      "attempt011_status": "FAIL_LATENT_IF_REACHED",
+      "plan_status": "PARTIAL",
+      "audit": "The retained predicate rejects five missing/mismatched fields. The Ultra/XHigh matrix is role-safe, but the plan does not name the independent source of actual model/reasoning attestations consumed by its pure predicate.",
+      "finding_ids": ["m-003"]
+    },
+    {
+      "area": "frozen_input_hashes",
+      "attempt011_status": "PASS_FOR_CURRENT_BYTES",
+      "plan_status": "PASS",
+      "audit": "All 33 entries across the four frozen maps matched raw HEAD SHA-256, including duplicates across transitive layers. Additive Attempt-012 files and new raw bindings are correctly required."
+    },
+    {
+      "area": "command_interface_semantic_independence",
+      "attempt011_status": "FAIL",
+      "plan_status": "PASS_AS_INTENT_PARTIAL_AS_CAPTURE_CONTRACT",
+      "audit": "Attempt-011 copies sys.argv[1:] into expected argv. The plan forbids that and requires independent derivation, but its external process-capture and exit-provenance artifact is undefined.",
+      "finding_ids": ["M-001"]
+    },
+    {
+      "area": "output_immutability",
+      "attempt011_status": "NO_WRITE_PRE_ROOT_CONFIRMED",
+      "plan_status": "PARTIAL",
+      "audit": "The no-reuse root invariant is sound. Byte-level immutability is not true during execution because retained persistence refreshes the four documents; the plan does not define the terminal seal boundary explicitly.",
+      "finding_ids": ["m-002"]
+    },
+    {
+      "area": "cleanup_closure",
+      "attempt011_status": "STATICALLY_PRESENT_RUNTIME_UNVERIFIED",
+      "plan_status": "PASS",
+      "audit": "Nested finally preserves one F00 attempt and one F01 attempt, and the proposed mutation matrix covers S00/D/F00/F01 and A/B/C closure defects without authorizing second cleanup."
+    },
+    {
+      "area": "raw_child_vs_wrapper_exit_provenance",
+      "attempt011_status": "UNRESOLVED",
+      "plan_status": "FAIL_INCOMPLETE",
+      "audit": "Attempt-011 source predicts SystemExit(2) but supplied outer exit was 1. Attempt-012 requires both values yet names no capture schema, path, producer, or binding mechanism.",
+      "finding_ids": ["M-001"]
+    }
+  ],
+  "plan_completeness_matrix": [
+    {
+      "requirement": "Exact R0 seven-file and R1 four-file write sets plus one-file R2/R3 receipts",
+      "status": "PASS"
+    },
+    {
+      "requirement": "Historical committed-blob RED feedback loop",
+      "status": "PASS"
+    },
+    {
+      "requirement": "Test-first same candidate seam RED at R0 then GREEN at R1",
+      "status": "FAIL_MAJOR",
+      "finding_ids": ["M-003"]
+    },
+    {
+      "requirement": "Root, command, model, receipt, frozen-input, output, cleanup, and exit mutation matrix",
+      "status": "PASS_AS_SPECIFIED"
+    },
+    {
+      "requirement": "Ultra judgment/audit versus XHigh locked mechanical execution matrix",
+      "status": "PASS"
+    },
+    {
+      "requirement": "No XHigh redesign, diagnosis, command modification, retry, fallback, or acceptance judgment",
+      "status": "PASS"
+    },
+    {
+      "requirement": "Durable one-shot consumption and stale confirmation rejection even on pre-root failure",
+      "status": "FAIL_MAJOR",
+      "finding_ids": ["M-002"]
+    },
+    {
+      "requirement": "Fresh confirmation binds exact tuple (cwd, argv)",
+      "status": "PARTIAL",
+      "finding_ids": ["M-002"]
+    },
+    {
+      "requirement": "Exact pre-root outer failure receipt and process-capture contract",
+      "status": "FAIL_MAJOR",
+      "finding_ids": ["M-001"]
+    },
+    {
+      "requirement": "Fresh post-execution acceptance from immutable evidence without rerun",
+      "status": "BLOCKED_BY_MISSING_CAPTURE_CONTRACT",
+      "finding_ids": ["M-001"]
+    },
+    {
+      "requirement": "Benchmark, TEST, materialization, training, evaluation, and scientific admission remain closed",
+      "status": "PASS"
+    }
+  ],
+  "finding_register": [
+    {
+      "id": "M-001",
+      "severity": "MAJOR",
+      "title": "Gate 4/5 process capture and pre-root failure receipt are undefined",
+      "evidence": [
+        "Plan lines 278-304 exhaustively name R0-R3 files but name no Attempt-012 outer failure or process-capture artifact.",
+        "Plan line 414 requires stdout/stderr hashes and separate raw-child/outer-tool exits.",
+        "Plan line 419 requires fresh Gate 5 to read process capture, and line 421 allows an outer control failure receipt for pre-root failure.",
+        "Static search found zero named Attempt-012 outer-failure/process-capture JSON paths."
+      ],
+      "impact": "A pre-root failure leaves no defined, byte-bound evidence carrier, and even a post-root run has no specified external capture carrier for the transport exit. Gate 5 therefore cannot independently replay the required exit and stream provenance and could consume stale, circular, or ad hoc evidence.",
+      "required_plan_change_before_gate1": "Define the exact conditional write set, canonical path, strict schema, sole producer, raw-child versus outer-tool status fields, stdout/stderr byte/hash fields, R3/cwd/argv/attempt bindings, commit/immutability rule, and Gate-5 replay predicate for one outer control capture receipt."
+    },
+    {
+      "id": "M-002",
+      "severity": "MAJOR",
+      "title": "One-shot consumption and confirmation freshness are declarative, not durably bound",
+      "evidence": [
+        "R1 is required to keep runtime authorization false and exact command unconfirmed.",
+        "Gate 4 relies on a newly shown tuple and a static Attempt-012 token but names no dispatch or confirmation receipt.",
+        "A pre-root failure intentionally creates no output root, so no in-root marker can show that the sole invocation was consumed.",
+        "Static search found zero named Attempt-012 confirmation/dispatch JSON paths."
+      ],
+      "impact": "After a pre-root failure, the same cwd, argv, token, R2, and R3 can be replayed with no committed state proving consumption. This leaves a stale-confirmation/retry path contrary to one-shot/no-retry policy.",
+      "required_plan_change_before_gate1": "Specify a non-self-referential, durable dispatch/confirmation authority that binds the exact cwd and argv, becomes consumed before launch, survives pre-root failure, and is rejected on any second invocation without widening the runner write boundary."
+    },
+    {
+      "id": "M-003",
+      "severity": "MAJOR",
+      "title": "The claimed RED-to-GREEN flow does not require the same Attempt-012 candidate seam to be observed RED before the fix",
+      "evidence": [
+        "Plan lines 326-338 require historical Attempt-011 to be RED before implementation and to remain RED afterward.",
+        "The Attempt-012 positive fixture is required only to be GREEN after implementation.",
+        "Gate 1 lines 374-381 do not require an R0 checkpoint where the Attempt-012 seam is run and recorded RED before the R1 adapter change."
+      ],
+      "impact": "The historical detector is red-capable, but the candidate regression test can be authored or adjusted with the fix and never demonstrate that it catches the missing Attempt-012 rebind at the actual call seam. This is not the test-first RED-to-GREEN evidence required by the diagnosis protocol.",
+      "required_plan_change_before_gate1": "Require the committed R0 test/harness to exercise the Attempt-012 dormant stub at the real pre-legacy handoff seam and record the expected stable RED code before R1; then require the identical test and fixture, without test changes, to turn GREEN at R1."
+    },
+    {
+      "id": "m-001",
+      "severity": "MINOR",
+      "title": "The sole root-authority owner is not named",
+      "evidence": "The plan requires one committed root-authority record but says the helper, packet, and receipts must freeze the fields without identifying a canonical file and JSON pointer or precedence rule.",
+      "impact": "An implementation could accidentally duplicate authority or let a later receipt restate rather than bind the R1 authority.",
+      "required_plan_change_before_gate1": "Name one R1-owned authority object and require every other carrier to bind its raw bytes/hash rather than independently reconstruct its values."
+    },
+    {
+      "id": "m-002",
+      "severity": "MINOR",
+      "title": "Output immutability terminology conflates root/roster immutability with byte immutability",
+      "evidence": "The plan calls the root immutable once created, while retained code refreshes the four documents at lines 786, 799, and 804 and writes final documents at lines 1068-1071.",
+      "impact": "The Gate-5 freshness boundary is ambiguous until a terminal seal point is defined.",
+      "required_plan_change_before_gate1": "Define mutable progress phase, atomic replacement expectations, terminal seal event, and the exact post-seal byte set Gate 5 may accept."
+    },
+    {
+      "id": "m-003",
+      "severity": "MINOR",
+      "title": "Actual model/reasoning attestation source is unspecified",
+      "evidence": "The plan requires a pure model predicate and actual-value verification but does not identify the platform-owned metadata/attestation consumed as independent evidence.",
+      "impact": "Requested values could be copied into actual fields unless Gate owners use an external authoritative task-routing record.",
+      "required_plan_change_before_gate1": "Name the authoritative source and fail closed when actual model or reasoning is not observable; preserve service tier/speed as UNOBSERVABLE when telemetry is absent."
+    },
+    {
+      "id": "I-001",
+      "severity": "INFORMATIONAL",
+      "title": "The target hash is not a repository-unique literal",
+      "evidence": "The same literal/hash occurs in Attempt-006 line 627, Attempt-007 line 1018, and Attempt-008 line 670.",
+      "impact": "None after reachability analysis: Attempt-011's import/call chain uniquely reaches Attempt-008.main.",
+      "disposition": "Keep hash-wide and reachable-site claims separate."
+    },
+    {
+      "id": "I-002",
+      "severity": "INFORMATIONAL",
+      "title": "The latent model-policy failure is conditional on preceding gates",
+      "evidence": "The current documents fail five retained model fields, but the model predicate occurs after root, confirmation, repository, interpreter, HEAD, frozen-input, and receipt checks.",
+      "impact": "The distinct model hash is a valid latent prediction, not evidence that the model branch executed in Attempt-011.",
+      "disposition": "Phrase the prediction conditionally."
+    }
+  ],
+  "finding_counts": {
+    "major": 3,
+    "minor": 3,
+    "informational": 2,
+    "total": 8
+  },
+  "test_and_assertion_counts": {
+    "final_static_harness_assertions_passed": 53,
+    "final_static_harness_assertions_total": 53,
+    "final_static_harness_assertions_failed": 0,
+    "frozen_hash_entries_compared_with_duplicates": 33,
+    "frozen_hash_mismatches": 0,
+    "strict_subject_json_blobs_parsed": 4,
+    "repository_test_suite_invocations": 0,
+    "benchmark_TEST_invocations": 0,
+    "skipped": 0,
+    "xfailed": 0,
+    "harness_authoring_fail_closed_stops": 2
+  },
+  "prohibited_action_counters": {
+    "attempt011_execution": 0,
+    "attempt012_execution": 0,
+    "runner_imports": 0,
+    "runner_invocations": 0,
+    "runtime_probes": 0,
+    "host_probes": 0,
+    "docker_commands": 0,
+    "wsl_commands": 0,
+    "hyper_v_commands": 0,
+    "powershell_host_probe_commands": 0,
+    "network_operations": 0,
+    "downloads": 0,
+    "installs": 0,
+    "environment_creations_or_mutations": 0,
+    "container_operations": 0,
+    "materialization": 0,
+    "preprocessing": 0,
+    "training": 0,
+    "evaluation": 0,
+    "benchmark": 0,
+    "test_set_opens": 0,
+    "automatic_retries": 0,
+    "fallbacks": 0,
+    "merges": 0,
+    "cherry_picks": 0,
+    "pushes": 0,
+    "pipeline_state_modifications": 0,
+    "non_receipt_repository_file_writes": 0
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "benchmark_admission_opened": false,
+    "attempt012_gate1_authorized": false,
+    "scientific_reproduction_claimed": false
+  },
+  "precommit_validation": {
+    "expected_write_set": [
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt011_runtime_failure_remediation_plan_fresh_audit_receipt.json"
+    ],
+    "exact_one_file_worktree_set": true,
+    "strict_utf8_json_root_object": true,
+    "duplicate_key_findings": 0,
+    "casefold_duplicate_key_findings": 0,
+    "non_finite_number_findings": 0,
+    "pyc_or___pycache___findings": 0,
+    "cache_or_unexpected_untracked_findings": 0,
+    "git_diff_check_passed": true,
+    "receipt_only_commit_required": true
+  },
+  "write_set": [
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt011_runtime_failure_remediation_plan_fresh_audit_receipt.json"
+  ],
+  "final_verdict": "HANDOFF_INCOMPLETE",
+  "verdict_rationale": "Three major findings leave Gate 1 without a complete fail-closed authority/capture lifecycle and without required test-first candidate RED-to-GREEN evidence.",
+  "next_gate": "STOP_BEFORE_GATE1_IMPLEMENTATION_REQUIRE_SUPERSEDING_PLAN_AND_NEW_FRESH_AUDIT",
+  "benchmark_remains_closed": true
+}
