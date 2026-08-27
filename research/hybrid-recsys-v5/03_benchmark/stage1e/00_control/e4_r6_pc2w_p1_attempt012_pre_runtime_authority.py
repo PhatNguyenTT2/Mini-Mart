@@ -263,5 +263,11 @@ def prepare_legacy_handoff(
     model_record = validate_model_policy(
         model_policy, contract.model_role, observation.model_attestation
     )
-    build_expected_process_argv(contract)
-    _fail("ROOT_AUTHORITY_UNBOUND")
+    expected_process_argv = build_expected_process_argv(contract)
+    return HandoffBinding(
+        execution_root=root,
+        runner_path=runner,
+        output_path=output,
+        expected_process_argv=expected_process_argv,
+        model_record=model_record,
+    )
