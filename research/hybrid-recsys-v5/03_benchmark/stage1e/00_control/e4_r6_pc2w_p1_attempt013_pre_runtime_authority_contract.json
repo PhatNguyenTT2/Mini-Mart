@@ -1,0 +1,99 @@
+{
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt013-pre-runtime-authority-contract-1.0",
+  "stage_id": "E4-R6-PC2W-P1-ATTEMPT013-R0",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "plan",
+    "origin_date": "2026-08-29T00:00:00+07:00",
+    "verification_status": "UNVERIFIED",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt013_pre_runtime_authority_contract_v1",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_pc2w_p1_attempt013_runtime_identity_compatibility_contract_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt012_runtime_failure_remediation_plan_v1"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-29T00:00:00+07:00",
+      "declared_by": "scholar"
+    },
+    "experiment_provenance": []
+  },
+  "authority_owner": {
+    "canonical_file": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt013_pre_runtime_authority_contract.json",
+    "canonical_pointer": "/authority_contract",
+    "other_attempt013_documents_must_bind_raw_sha256": true,
+    "other_attempt013_documents_must_not_restate_authority_values": true
+  },
+  "authority_contract": {
+    "schema_version": "stage1e-e4-r6-pc2w-p1-attempt013-pre-runtime-authority-1.0",
+    "stage_id": "E4-R6-PC2W-P1-ATTEMPT013",
+    "execution_root_source": "NAMED_REPO_ROOT_PARAMETER_VALIDATED_AGAINST_CWD_GIT_TOPLEVEL_AND_EXPECTED_HEAD",
+    "working_directory_must_equal_execution_root": true,
+    "git_toplevel_must_equal_execution_root": true,
+    "runner_and_output_must_be_strictly_contained": true,
+    "output_root_must_be_absent_before_execution": true,
+    "expected_argv_source": "FIXED_ORDERED_FIELDS_FROM_PARSED_NAMED_PARAMETERS_AND_CONTRACT_CONSTANTS",
+    "copy_actual_argv_tail_forbidden": true,
+    "legacy_expected_execution_root_rebind_required_immediately_before_legacy_main": true,
+    "attempt_budget": {
+      "authorized": 1,
+      "consumed": 0,
+      "remaining": 1,
+      "automatic_retry_count": 0,
+      "fallback_count": 0
+    }
+  },
+  "model_policy": {
+    "schema_version": "stage1e-e4-r6-pc2w-p1-attempt013-model-policy-1.0",
+    "roles": {
+      "implementation_static": {
+        "requested_model": "gpt-5.6-sol",
+        "requested_reasoning_effort": "xhigh",
+        "requested_service_tier": "default",
+        "requested_display_tier": "Standard",
+        "fast_or_priority_allowed": false
+      },
+      "locked_execution": {
+        "requested_model": "gpt-5.6-sol",
+        "requested_reasoning_effort": "xhigh",
+        "requested_service_tier": "default",
+        "requested_display_tier": "Standard",
+        "fast_or_priority_allowed": false
+      }
+    }
+  },
+  "implementation_model_observation": {
+    "actual_model": "gpt-5.6-sol",
+    "actual_reasoning_effort": "xhigh",
+    "actual_service_tier": "UNOBSERVABLE",
+    "actual_speed": "UNOBSERVABLE",
+    "fast_or_priority_observed": false,
+    "basis": "EXPLICIT_TASK_CREATION_MODEL_AND_THINKING_WITH_NO_POSITIVE_FAST_OR_PRIORITY_FIELD"
+  },
+  "receipt_contract": {
+    "central_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt013_central_static_validation_receipt.json",
+    "central_schema": "stage1e-e4-r6-pc2w-p1-attempt013-central-static-validation-receipt-1.0",
+    "central_verdict": "PASS_PC2W_P1_ATTEMPT013_CENTRAL_STATIC_VALIDATION",
+    "fresh_audit_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt013_fresh_independent_audit_receipt.json",
+    "fresh_audit_schema": "stage1e-e4-r6-pc2w-p1-attempt013-fresh-independent-audit-receipt-1.0",
+    "fresh_audit_verdict": "PASS_PC2W_P1_ATTEMPT013_FRESH_INDEPENDENT_AUDIT_READY_FOR_EXACT_COMMAND_CONFIRMATION",
+    "fresh_audit_must_link_central_raw_sha256": true,
+    "attempt012_receipts_accepted": false
+  },
+  "output_contract": {
+    "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_av/E4_R6PC2W_P1_attempt013_admission_observation",
+    "must_be_absent_before_execution": true,
+    "runtime_execution_authorized_now": false
+  },
+  "scope_boundary": {
+    "runtime_execution_authorized_now": false,
+    "host_or_runtime_probes_authorized_now": false,
+    "runner_import_or_invocation_authorized_now": false,
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "benchmark_admission_opened": false
+  },
+  "verdict": "R0_DORMANT_CANDIDATE_REQUIRES_SAME_SEAM_RED"
+}
