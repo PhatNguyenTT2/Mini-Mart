@@ -1,0 +1,560 @@
+{
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt012-fresh-independent-audit-receipt-1.0",
+  "stage_id": "E4-R6-PC2W-P1-ATTEMPT012",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "validate-static-fail-closed",
+    "origin_date": "2026-08-28T00:00:00+07:00",
+    "origin_date_semantics": "Configured current date and Asia/Saigon timezone marker; no ambient-clock, runtime, or host probe was performed by the receipt-authoring context.",
+    "verification_status": "VERIFIED",
+    "verification_scope": "One freshly confirmed immutable-R1 static-validator invocation and exact committed Git-blob bindings only; no runner, scientific runtime, benchmark, training, evaluation, dataset, or test-set execution was performed.",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt012_fresh_independent_audit_receipt_v1",
+    "integrity_pass_date": "2026-08-28T00:00:00+07:00",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_pc2w_p1_attempt012_central_static_validation_receipt_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt012_fresh_audit_invocation_remediation_plan_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt012_admission_observation_contract_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt012_execution_authorization_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt012_pre_runtime_authority_contract_v1",
+      "ars_codex_academic_research_suite_0.1.26"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-28T00:00:00+07:00",
+      "declared_by": "scholar"
+    },
+    "experiment_provenance": [],
+    "self_content_hash": null,
+    "self_content_hash_semantics": "Deliberately external: after commit this receipt is bound by its Git blob OID, raw byte count, and raw Git-blob SHA-256, avoiding a self-referential digest."
+  },
+  "ars_routing_receipt": {
+    "adapter": "ars-codex",
+    "adapter_version": "0.1.26",
+    "selected_workflow": "ars/experiment-agent/WORKFLOW.md",
+    "selected_role": "ars/experiment-agent/agents/code_runner_agent.md",
+    "selected_mode": "validate-static-fail-closed",
+    "material_passport_reference": "ars/shared/handoff_schemas.md#schema-9-material-passport-cross-stage-metadata",
+    "experiment_provenance_schema": "ars/shared/contracts/passport/experiment_provenance_entry.schema.json",
+    "integration_reference": "ars/experiment-agent/references/ars_integration_guide.md",
+    "output_format_reference": "ars/experiment-agent/templates/output_formats.md",
+    "main_context_read_required_materials_itself": true,
+    "subagents_or_collaboration_agents_used": 0,
+    "experiment_provenance_boundary": "AUDIT_INVOCATIONS_ARE_EXECUTION_LOG_PROVENANCE_NOT_SCHOLAR_EXPERIMENT_PROVENANCE",
+    "no_experiments_declared_and_empty_provenance_are_symmetric": true,
+    "automatic_retry_rule_applied": "NO_AUTOMATIC_RETRY; THE REMEDIATED CALL WAS A NEW USER-CONFIRMED AUDIT INVOCATION AFTER A DOCUMENTED SUBJECT-SELECTION REMEDIATION"
+  },
+  "audit_scope_and_independence": {
+    "audit_kind": "FRESH_INDEPENDENT_STATIC_AUDIT_OF_IMMUTABLE_R1_PACKET",
+    "audit_control_lineage": "CENTRAL_RECEIPT_AND_PLAN_LINEAGE",
+    "validator_subject_lineage": "DETACHED_IMMUTABLE_R1_CHECKOUT",
+    "control_revision_and_subject_revision_separated": true,
+    "implementation_writer_prose_used_as_authority": false,
+    "prior_unverified_agent_conclusions_used_as_authority": false,
+    "main_ultra_context_self_read_source_execution_record": true,
+    "main_ultra_context_self_verified_repository_evidence": true,
+    "scientific_implementation_changed": false,
+    "validator_changed": false,
+    "attempt013_issued": false,
+    "runtime_execution_performed": false,
+    "major_findings": 0,
+    "minor_findings": 0,
+    "informational_findings": 0
+  },
+  "authoritative_lineage": {
+    "r0_commit": "7209966f430dc75e790d574298e65aefbe082f31",
+    "r0_parent": "20337b132635dfdc30eb0b56836f91fcb723ef46",
+    "r1_packet_commit": "0eca3408b8fe7b5c5217e1c3b0a4a2f025a83be5",
+    "r1_packet_parent": "7209966f430dc75e790d574298e65aefbe082f31",
+    "central_receipt_commit": "16ac10707ca351c05b7cdd66230e12e4b331de84",
+    "central_receipt_parent": "0eca3408b8fe7b5c5217e1c3b0a4a2f025a83be5",
+    "remediation_plan_commit": "3ab5a8e9b12913e540a70094b52370307a0ec5c1",
+    "remediation_plan_parent": "16ac10707ca351c05b7cdd66230e12e4b331de84",
+    "receipt_expected_parent": "3ab5a8e9b12913e540a70094b52370307a0ec5c1",
+    "lineage_shape": "R0<-R1<-C<-P<-A",
+    "receipt_commit_self_identifier": null,
+    "receipt_commit_self_identifier_semantics": "Resolved and reported externally after the one-file commit; not embedded because the commit cannot contain its own identifier.",
+    "current_worktree_head_before_receipt_write": "3ab5a8e9b12913e540a70094b52370307a0ec5c1",
+    "current_worktree_clean_before_receipt_write": true,
+    "central_receipt_reachable_unchanged_at_plan_head": true,
+    "packet_commit_reachable_unchanged_at_plan_head": true,
+    "hash_domain": "RAW_GIT_BLOB_BYTES",
+    "checkout_normalization_used_for_blob_hashes": false
+  },
+  "remediation_plan_binding": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt012_fresh_audit_invocation_remediation_plan.md",
+    "commit": "3ab5a8e9b12913e540a70094b52370307a0ec5c1",
+    "git_blob_oid": "46123ef9312d3eb8ab4b572a28bb8267f06392fc",
+    "git_blob_bytes": 29601,
+    "git_blob_sha256": "922936f0d986ac56c5cb4278da40ed1faec4ebc2ef9dc4f1864c44e177d969de",
+    "selected_remediation": "A_SEPARATE_IMMUTABLE_R1_SUBJECT_CHECKOUT",
+    "root_cause": "AUDIT_CONTROL_HEAD_USED_AS_R1_VALIDATION_SUBJECT",
+    "implementation_remediation_required": false,
+    "validator_revision_required": false,
+    "new_attempt_required": false
+  },
+  "packet_commit": "0eca3408b8fe7b5c5217e1c3b0a4a2f025a83be5",
+  "packet_artifacts": [
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt012_admission_observation_contract.json",
+      "git_blob_bytes": 4735,
+      "git_blob_sha256": "6f7a7acaa3b53755e83375157cb0309d920ba91120f05a0c55c90dc99be7208e"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt012_execution_authorization.json",
+      "git_blob_bytes": 3530,
+      "git_blob_sha256": "7b06f87a8c22f2a042be18d911698de6cc76e7ae44a493dfb87a1a735cecba96"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt012_pre_runtime_authority.py",
+      "git_blob_bytes": 8943,
+      "git_blob_sha256": "1f0051c4118363e1cc293d79e4da7176a4cb22b936f525eb810923560674e9d6"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc2w_p1_attempt012_admission_observation.py",
+      "git_blob_bytes": 16578,
+      "git_blob_sha256": "e4814a557b08efc5a08c53ce7fddb2fb6da325bd018e5402916bb2ca4a7de239"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_p1_attempt012_static_packet.py",
+      "git_blob_bytes": 17373,
+      "git_blob_sha256": "b5eeeef51e3cb69b2e1b89205e10af808a21ceb76c4a80d0e10d4ea930bba184"
+    }
+  ],
+  "central_validation_receipt_git_blob_sha256": "7f4d0b45392520a88801ee731cb396027c83a6160c93b79fa9af97851d17170d",
+  "central_validation_receipt": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt012_central_static_validation_receipt.json",
+    "commit": "16ac10707ca351c05b7cdd66230e12e4b331de84",
+    "git_blob_oid": "329a5d53885961364cb0945097bdb38c557358af",
+    "git_blob_bytes": 31497,
+    "git_blob_sha256": "7f4d0b45392520a88801ee731cb396027c83a6160c93b79fa9af97851d17170d",
+    "schema_version": "stage1e-e4-r6-pc2w-p1-attempt012-central-static-validation-receipt-1.0",
+    "verdict": "PASS_PC2W_P1_ATTEMPT012_CENTRAL_STATIC_VALIDATION",
+    "validator_verdict": "IMPLEMENTATION_PASS_READY_FOR_CENTRAL_STATIC_VALIDATION",
+    "final_verdict": "PASS_READY_FOR_FRESH_INDEPENDENT_AUDIT",
+    "unchanged_by_remediation_plan": true,
+    "unchanged_by_fresh_audit_receipt": true
+  },
+  "validator_binding": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_p1_attempt012_static_packet.py",
+    "r1_and_central_git_blob_oid": "4dabde842dd899d68528146c02eaec54b4093f53",
+    "raw_git_blob_bytes": 17373,
+    "raw_git_blob_sha256": "b5eeeef51e3cb69b2e1b89205e10af808a21ceb76c4a80d0e10d4ea930bba184",
+    "subject_selection_contract": "AMBIENT_HEAD_MUST_EQUAL_R1_AND_PARENT_OF_AMBIENT_HEAD_MUST_EQUAL_R0",
+    "explicit_subject_commit_argument_available": false,
+    "validator_modified_for_remediation": false
+  },
+  "audit_invocation_history": {
+    "historical_failed_central_head_invocation": {
+      "audit_task_id": "01a046ab-a69d-79d1-981c-29988bec7e7b",
+      "execution_id": "exec-bd0f55cb-db7f-46db-aeab-e30583da679d",
+      "working_directory": "C:\\Users\\ACER\\.codex\\worktrees\\84f2\\backend",
+      "observed_command": "python -B research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_p1_attempt012_static_packet.py --repo-root \"C:\\Users\\ACER\\.codex\\worktrees\\84f2\\backend\"",
+      "ambient_head": "16ac10707ca351c05b7cdd66230e12e4b331de84",
+      "ambient_head_parent": "0eca3408b8fe7b5c5217e1c3b0a4a2f025a83be5",
+      "validator_required_parent": "7209966f430dc75e790d574298e65aefbe082f31",
+      "invocation_count": 1,
+      "exit_code": 1,
+      "terminal_error": "RuntimeError: R1_PARENT_MISMATCH",
+      "decisive_traceback": "main:355 -> validate_commit_shape:143 -> require:66",
+      "stdout_raw_bytes": "UNAVAILABLE_FROM_APP_CAPTURE_INTERFACE",
+      "stdout_raw_sha256": "UNAVAILABLE_FROM_APP_CAPTURE_INTERFACE",
+      "stderr_raw_bytes": "UNAVAILABLE_FROM_APP_CAPTURE_INTERFACE",
+      "stderr_raw_sha256": "UNAVAILABLE_FROM_APP_CAPTURE_INTERFACE",
+      "automatic_retry_count": 0,
+      "fallback_count": 0,
+      "runner_imports": 0,
+      "runner_invocations": 0,
+      "attempt012_runtime_commands": 0,
+      "receipt_writes_or_commits": 0,
+      "disposition": "HANDOFF_INCOMPLETE",
+      "classification": "AUDIT_INVOCATION_SUBJECT_MISMATCH_NOT_ATTEMPT012_EXECUTION_ATTEMPT"
+    },
+    "remediated_pass_invocation": {
+      "source_thread_id": "019ff4f0-802a-7892-a989-24f32ac26ac8",
+      "source_turn_id": "01a046cb-1e9b-78f3-a66d-8e1452288b6e",
+      "source_turn_started_at_app_epoch_seconds": 1787894111,
+      "execution_id": "exec-413c8c60-470a-49cb-af31-7b61c3747c40",
+      "working_directory": "C:\\Users\\ACER\\.codex\\worktrees\\attempt012-r1-audit-replay",
+      "execution_identity": "ACER",
+      "execution_identity_reason": "The ACER Windows identity matched the immutable checkout Git ownership SID; no safe.directory mutation was made.",
+      "app_transport_command": "\"C:\\Users\\ACER\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\native\\powershell\\pwsh.exe\" -NoProfile -Command \"& 'C:\\Program Files\\Python311\\python.exe' -B 'research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_p1_attempt012_static_packet.py' --repo-root 'C:\\Users\\ACER\\.codex\\worktrees\\attempt012-r1-audit-replay'\"",
+      "resolved_child_process_argv": [
+        "C:\\Program Files\\Python311\\python.exe",
+        "-B",
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_p1_attempt012_static_packet.py",
+        "--repo-root",
+        "C:\\Users\\ACER\\.codex\\worktrees\\attempt012-r1-audit-replay"
+      ],
+      "pwsh_transport_changed_child_argv": false,
+      "safe_directory_mutation_performed": false,
+      "fresh_exact_tuple_confirmation_observed_in_source_turn": true,
+      "validator_subject_head": "0eca3408b8fe7b5c5217e1c3b0a4a2f025a83be5",
+      "validator_subject_parent": "7209966f430dc75e790d574298e65aefbe082f31",
+      "status": "completed",
+      "exit_code": 0,
+      "duration_ms": 2943,
+      "validator_invocation_count": 1,
+      "automatic_retry_count": 0,
+      "fallback_count": 0,
+      "capture_replay_count": 0,
+      "stdout_capture": {
+        "strict_json_root_object": true,
+        "app_capture_original_characters": 6742,
+        "raw_bytes": "UNAVAILABLE_FROM_APP_CAPTURE_INTERFACE",
+        "raw_sha256": "UNAVAILABLE_FROM_APP_CAPTURE_INTERFACE",
+        "raw_hash_not_invented_or_inferred": true,
+        "binding_method": "SOURCE_THREAD_ID_PLUS_SOURCE_TURN_ID_PLUS_EXECUTION_ID_PLUS_EXACT_PARSED_JSON_CONTENT",
+        "runtime_binding_contract_requires_stdout_raw_hash": false
+      },
+      "stderr_capture": {
+        "separately_exposed_by_app_capture_interface": false,
+        "raw_bytes": "UNAVAILABLE_FROM_APP_CAPTURE_INTERFACE",
+        "raw_sha256": "UNAVAILABLE_FROM_APP_CAPTURE_INTERFACE"
+      },
+      "parsed_stdout_json": {
+        "schema_version": "stage1e-e4-r6-pc2w-p1-attempt012-static-validation-result-1.0",
+        "stage_id": "E4-R6-PC2W-P1-ATTEMPT012",
+        "validated_revision": "0eca3408b8fe7b5c5217e1c3b0a4a2f025a83be5",
+        "r0_commit": "7209966f430dc75e790d574298e65aefbe082f31",
+        "r0_parent": "20337b132635dfdc30eb0b56836f91fcb723ef46",
+        "r0_exact_write_set": [
+          "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt012_admission_observation_contract.json",
+          "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt012_execution_authorization.json",
+          "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt012_pre_runtime_authority.py",
+          "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt012_pre_runtime_authority_contract.json",
+          "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc2w_p1_attempt012_admission_observation.py",
+          "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/test_e4_r6_pc2w_p1_attempt012_pre_runtime_gate.py",
+          "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_p1_attempt012_static_packet.py"
+        ],
+        "r1_parent": "7209966f430dc75e790d574298e65aefbe082f31",
+        "r1_exact_write_set": [
+          "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt012_admission_observation_contract.json",
+          "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt012_execution_authorization.json",
+          "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt012_pre_runtime_authority.py",
+          "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc2w_p1_attempt012_admission_observation.py",
+          "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_p1_attempt012_static_packet.py"
+        ],
+        "frozen_r0_test_and_fixture": [
+          {
+            "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt012_pre_runtime_authority_contract.json",
+            "git_blob_bytes": 4352,
+            "git_blob_sha256": "46d2120d502ec8c85fdd4d30f4e0431689264d7d299e34c9b902465b787ff5a3"
+          },
+          {
+            "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/test_e4_r6_pc2w_p1_attempt012_pre_runtime_gate.py",
+            "git_blob_bytes": 12895,
+            "git_blob_sha256": "c1c8283f7baa58db28ab3e3cc5d8aa6b9f54ce82b8984297428b1bdb0b665ca7"
+          }
+        ],
+        "packet_artifacts": [
+          {
+            "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt012_admission_observation_contract.json",
+            "git_blob_bytes": 4735,
+            "git_blob_sha256": "6f7a7acaa3b53755e83375157cb0309d920ba91120f05a0c55c90dc99be7208e"
+          },
+          {
+            "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt012_execution_authorization.json",
+            "git_blob_bytes": 3530,
+            "git_blob_sha256": "7b06f87a8c22f2a042be18d911698de6cc76e7ae44a493dfb87a1a735cecba96"
+          },
+          {
+            "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt012_pre_runtime_authority.py",
+            "git_blob_bytes": 8943,
+            "git_blob_sha256": "1f0051c4118363e1cc293d79e4da7176a4cb22b936f525eb810923560674e9d6"
+          },
+          {
+            "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc2w_p1_attempt012_admission_observation.py",
+            "git_blob_bytes": 16578,
+            "git_blob_sha256": "e4814a557b08efc5a08c53ce7fddb2fb6da325bd018e5402916bb2ca4a7de239"
+          },
+          {
+            "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_p1_attempt012_static_packet.py",
+            "git_blob_bytes": 17373,
+            "git_blob_sha256": "b5eeeef51e3cb69b2e1b89205e10af808a21ceb76c4a80d0e10d4ea930bba184"
+          }
+        ],
+        "strict_json_files_passed": 3,
+        "strict_json_files_total": 3,
+        "source_checks": {
+          "python_ast_files_passed": 4,
+          "public_pre_legacy_handoff_order_valid": true,
+          "absolute_singleton_root_findings": 0,
+          "actual_argv_tail_copy_findings": 0,
+          "canonical_model_predicate_precedes_legacy_compatibility_view": true,
+          "attempt012_receipt_schema_and_raw_central_link_bound": true
+        },
+        "test_results": [
+          {
+            "suite": "attempt012_pre_runtime_gate",
+            "tests_passed": 12,
+            "tests_total": 12,
+            "python_dash_b": true,
+            "runtime_or_host_commands": 0
+          },
+          {
+            "suite": "retained_attempt011_pre_runtime_gate",
+            "tests_passed": 62,
+            "tests_total": 62,
+            "python_dash_b": true,
+            "runtime_or_host_commands": 0
+          },
+          {
+            "suite": "retained_attempt010_command_interface",
+            "tests_passed": 10,
+            "tests_total": 10,
+            "python_dash_b": true,
+            "runtime_or_host_commands": 0
+          },
+          {
+            "suite": "retained_attempt009_runtime_compatibility",
+            "tests_passed": 9,
+            "tests_total": 9,
+            "python_dash_b": true,
+            "runtime_or_host_commands": 0
+          },
+          {
+            "suite": "retained_attempt008_probe_contract",
+            "tests_passed": 8,
+            "tests_total": 8,
+            "python_dash_b": true,
+            "runtime_or_host_commands": 0
+          },
+          {
+            "suite": "retained_attempt008_safe_envelopes",
+            "tests_passed": 9,
+            "tests_total": 9,
+            "python_dash_b": true,
+            "runtime_or_host_commands": 0
+          }
+        ],
+        "aggregate_tests_passed": 110,
+        "aggregate_tests_total": 110,
+        "new_or_modified_python_bytecode_files": 0,
+        "command_inventory": {
+          "python_dash_b_static_test_processes": 6,
+          "read_only_git_processes_only": true,
+          "runner_imports": 0,
+          "runner_invocations": 0,
+          "docker_commands": 0,
+          "wsl_commands": 0,
+          "hyper_v_commands": 0,
+          "powershell_host_probe_commands": 0,
+          "runtime_or_host_probes": 0,
+          "automatic_retry_count": 0,
+          "fallback_count": 0
+        },
+        "old_file_modification_count": 0,
+        "output_root_absent": true,
+        "runtime_commands_executed": false,
+        "RESULT_STATUS": "NOT_RUN",
+        "TEST_SET_OPENED": "NO",
+        "ACCEPTED_RESULT_ROWS": 0,
+        "benchmark_admission_opened": false,
+        "model_policy": {
+          "requested_model": "gpt-5.6-sol",
+          "requested_reasoning_effort": "xhigh",
+          "requested_service_tier": "default",
+          "requested_display_tier": "Standard",
+          "actual_model": "gpt-5.6-sol",
+          "actual_reasoning_effort": "xhigh",
+          "actual_service_tier": "UNOBSERVABLE",
+          "actual_speed": "UNOBSERVABLE",
+          "fast_or_priority_observed": false
+        },
+        "central_and_fresh_audit_receipts_created": false,
+        "next_gate": "CENTRAL_GATE_2_STATIC_VALIDATION",
+        "verdict": "IMPLEMENTATION_PASS_READY_FOR_CENTRAL_STATIC_VALIDATION"
+      },
+      "parsed_stdout_crosscheck": {
+        "source_capture_prefix_matches_committed_central_validator_result": true,
+        "source_capture_original_character_count": 6742,
+        "committed_central_validator_stdout_byte_count": 6742,
+        "packet_commit_and_all_acceptance_fields_match": true,
+        "central_stdout_raw_sha256_reused_as_fresh_stdout_raw_sha256": false,
+        "reason_raw_hash_remains_unavailable": "The app interface exposed text plus character count, not an authenticated raw-byte stream for the fresh execution."
+      },
+      "result": "PASS"
+    },
+    "aggregate_history": {
+      "recorded_validator_invocations_total": 2,
+      "historical_wrong_subject_failures": 1,
+      "remediated_user_confirmed_passes": 1,
+      "automatic_retries": 0,
+      "fallbacks": 0,
+      "same_failed_tuple_repeated": false,
+      "runner_attempts_consumed": 0,
+      "classification": "TWO_DISTINCT_AUDIT_INVOCATIONS_ONE_HISTORICAL_SUBJECT_MISMATCH_AND_ONE_NEWLY_CONFIRMED_REMEDIATED_PASS"
+    }
+  },
+  "invocation_classification_and_no_retry": {
+    "historical_failed_call_is_execution_attempt": false,
+    "remediated_pass_call_is_execution_attempt": false,
+    "execution_attempt_definition": "A direct Attempt-012 runner process invocation after separate exact-runtime-command confirmation, including any pre-output-root runner failure.",
+    "historical_failure_occurred_before_runner_import_or_invocation": true,
+    "remediated_audit_invoked_only_the_static_validator": true,
+    "no_retry_rule_scope": "No crashed validator or runner process may be silently or automatically repeated. A separately diagnosed subject mismatch may be followed only by a newly rendered exact tuple and a new explicit user confirmation.",
+    "new_user_confirmation_for_remediated_tuple_observed": true,
+    "automatic_retry_or_fallback_occurred": false,
+    "attempt012_one_shot_authorization_preserved": true
+  },
+  "acceptance_predicates": {
+    "source_execution_id_exact": true,
+    "fresh_exact_tuple_confirmed": true,
+    "single_remediated_validator_call": true,
+    "remediated_validator_exit_zero": true,
+    "validated_revision_equals_r1": true,
+    "r1_parent_equals_r0": true,
+    "r0_and_r1_write_sets_exact": true,
+    "frozen_r0_fixture_hashes_exact": true,
+    "packet_artifact_hashes_exact": true,
+    "all_six_named_suites_pass": true,
+    "aggregate_tests_exactly_110_of_110": true,
+    "strict_json_files_exactly_3_of_3": true,
+    "required_source_predicates_pass": true,
+    "new_or_modified_python_bytecode_files_zero": true,
+    "runner_imports_zero": true,
+    "runner_invocations_zero": true,
+    "runtime_and_host_probes_zero": true,
+    "automatic_retries_zero": true,
+    "fallbacks_zero": true,
+    "output_root_absent": true,
+    "runtime_commands_executed_false": true,
+    "truth_state_exactly_not_run_no_zero_closed": true,
+    "central_receipt_raw_git_blob_sha256_exact": true,
+    "fresh_stdout_raw_hash_exception_explicitly_applied": true,
+    "fresh_stdout_bound_by_source_thread_turn_execution_and_parsed_content": true,
+    "all_required_predicates_pass": true
+  },
+  "model_provenance": {
+    "fresh_audit_receipt_authoring_context": {
+      "requested_model": "gpt-5.6-sol",
+      "requested_reasoning_effort": "ultra",
+      "requested_service_tier": "default",
+      "requested_display_tier": "Standard",
+      "fast_or_priority_allowed": false,
+      "actual_model": "gpt-5.6-sol",
+      "actual_reasoning_effort": "ultra",
+      "actual_service_tier": "UNOBSERVABLE",
+      "actual_speed": "UNOBSERVABLE",
+      "fast_or_priority_observed": false,
+      "model_and_reasoning_basis": "Current task routing identity explicitly establishes gpt-5.6-sol Ultra.",
+      "service_tier_and_speed_basis": "No authoritative service-tier or speed telemetry was exposed; neither value was inferred from latency, prose, or prior receipts.",
+      "critical_diagnosis_and_adjudication_performed_by_this_context": true,
+      "subagents_or_collaboration_agents_used": 0,
+      "unverified_external_agent_conclusions_used": false
+    },
+    "mechanical_validator_child": {
+      "llm_model_role": "NONE",
+      "process_role": "OFFLINE_STATIC_VALIDATOR_AT_IMMUTABLE_R1",
+      "packet_reported_execution_policy_model": "gpt-5.6-sol",
+      "packet_reported_execution_policy_reasoning_effort": "xhigh",
+      "packet_reported_execution_policy_service_tier": "UNOBSERVABLE",
+      "packet_reported_execution_policy_speed": "UNOBSERVABLE",
+      "packet_reported_fast_or_priority_observed": false
+    },
+    "phase_separation": "Ultra Standard/default governs the critical independent judgment and receipt authorship; the deterministic validator has no LLM role, while the later locked runner retains its unchanged XHigh Standard/default policy.",
+    "model_or_reasoning_mismatch_observed": false,
+    "fast_or_priority_observed": false,
+    "service_tier_or_speed_inferred": false
+  },
+  "authorization_and_truth_boundary": {
+    "execution_authorization_document_runtime_execution_authorized_now": false,
+    "execution_authorization_document_exact_process_command_confirmed_now": false,
+    "fresh_audit_confirmation_reused_as_runtime_confirmation": false,
+    "plan_approval_reused_as_runtime_confirmation": false,
+    "receipt_creation_authorizes_runtime": false,
+    "fresh_audit_receipt_fabricated_in_r1": false,
+    "central_validation_receipt_preserved_unchanged": true,
+    "attempt012_source_preserved_unchanged": true,
+    "attempt012_authority_documents_preserved_unchanged": true,
+    "pipeline_state_preserved_unchanged": true,
+    "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_au/E4_R6PC2W_P1_attempt012_admission_observation",
+    "output_root_absent": true,
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "benchmark_admission_opened": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER",
+    "scientific_reproduction_claimed": false
+  },
+  "execution_attempt_budget": {
+    "attempt012_runner_attempts_maximum": 1,
+    "attempt012_runner_attempts_consumed": 0,
+    "attempt012_runner_attempts_remaining": 1,
+    "historical_failed_validator_consumed_runner_attempt": false,
+    "remediated_pass_validator_consumed_runner_attempt": false,
+    "automatic_retry_count": 0,
+    "fallback_count": 0,
+    "one_shot_runtime_authorization_preserved": true
+  },
+  "prohibited_action_counters": {
+    "validator_invocations_by_receipt_authoring_context": 0,
+    "validator_replays_by_receipt_authoring_context": 0,
+    "attempt012_runner_imports": 0,
+    "attempt012_runner_invocations": 0,
+    "attempt012_runtime_commands": 0,
+    "runtime_probes": 0,
+    "host_probes": 0,
+    "docker_commands": 0,
+    "wsl_commands": 0,
+    "hyper_v_commands": 0,
+    "powershell_host_probe_commands": 0,
+    "network_operations": 0,
+    "downloads": 0,
+    "installs": 0,
+    "environment_creations_or_mutations": 0,
+    "container_operations": 0,
+    "benchmark_or_dataset_materialization": 0,
+    "preprocessing": 0,
+    "training": 0,
+    "evaluation": 0,
+    "benchmark": 0,
+    "test_set_opens": 0,
+    "automatic_retries": 0,
+    "fallbacks": 0,
+    "merges": 0,
+    "cherry_picks": 0,
+    "pushes": 0,
+    "pipeline_state_modifications": 0,
+    "attempt012_source_modifications": 0,
+    "central_receipt_modifications": 0,
+    "remediation_plan_modifications": 0,
+    "non_receipt_repository_file_writes": 0
+  },
+  "precommit_validation": {
+    "receipt_utf8_strict_json_root_object": true,
+    "receipt_duplicate_key_findings": 0,
+    "receipt_casefold_duplicate_key_findings": 0,
+    "receipt_non_finite_number_findings": 0,
+    "contract_schema_stage_verdict_exact": true,
+    "contract_packet_commit_and_artifacts_exact": true,
+    "contract_central_raw_sha256_link_exact": true,
+    "contract_runtime_false_exact": true,
+    "contract_one_path_write_set_exact": true,
+    "worktree_diff_exactly_one_added_receipt": true,
+    "git_diff_check_passed": true,
+    "new_pyc_or_cache_files": 0,
+    "attempt012_output_root_absent": true,
+    "validator_or_test_rerun_performed": false
+  },
+  "exact_command_confirmation_checkpoint": {
+    "eligible_after_this_receipt_commit_and_postcommit_verification": true,
+    "exact_runtime_process_command_confirmed_now": false,
+    "future_expected_head": "RECEIPT_COMMIT_A_TO_BE_RESOLVED_AFTER_COMMIT",
+    "future_command_must_bind_packet_commit": "0eca3408b8fe7b5c5217e1c3b0a4a2f025a83be5",
+    "future_command_must_bind_central_receipt_path_and_raw_sha256": true,
+    "future_command_must_bind_fresh_audit_receipt_path_and_postcommit_raw_sha256": true,
+    "future_confirmation_token": "USER_CONFIRMED_EXACT_ATTEMPT012_PROCESS_COMMAND_AFTER_CENTRAL_VALIDATION_AND_FRESH_AUDIT",
+    "separate_user_confirmation_of_exact_working_directory_and_argv_required": true,
+    "only_subsequent_direct_runner_process_consumes_attempt012_budget": true
+  },
+  "runtime_commands_executed": false,
+  "write_set": [
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt012_fresh_independent_audit_receipt.json"
+  ],
+  "verdict": "PASS_PC2W_P1_ATTEMPT012_FRESH_INDEPENDENT_AUDIT_READY_FOR_EXACT_COMMAND_CONFIRMATION",
+  "final_disposition": "PASS_READY_FOR_EXACT_COMMAND_CONFIRMATION",
+  "next_gate": "EXACT_ATTEMPT012_PROCESS_COMMAND_CONFIRMATION_NO_RUNTIME_YET",
+  "benchmark_remains_closed": true
+}
