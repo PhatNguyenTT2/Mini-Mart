@@ -1,0 +1,74 @@
+{
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt013-revision2-packet-lineage-contract-1.0",
+  "stage_id": "E4-R6-PC2W-P1-ATTEMPT013",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "implementation-static-tdd",
+    "origin_date": "2026-08-29T00:00:00+07:00",
+    "verification_status": "UNVERIFIED",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt013_revision2_packet_lineage_contract_v1",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_pc2w_p1_attempt013_central_failure_remediation_plan_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt013_central_static_validation_receipt_v1"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-29T00:00:00+07:00",
+      "declared_by": "scholar"
+    },
+    "experiment_provenance": []
+  },
+  "known_lineage": {
+    "plan_commit": "2efdcd73bb7f7e2b298ee12cdb5b09171a865d69",
+    "r0_commit": "ce6377c351625ed7e029f2883520583ca97fc2b8",
+    "r1_commit": "294422ca8557e4b55ae3863d853289e2232011b2",
+    "r1_central_failure_receipt_commit": "0ebd1145171f9f1289adc7e2ff7a019a7aec9c2e",
+    "r2a_role": "LINEAGE_SUPPORT_COMMIT_PARENTED_BY_PLAN",
+    "r2_role": "FINAL_FOUR_MODIFICATION_SEAL_PARENTED_BY_R2A"
+  },
+  "authority_separation": {
+    "aggregate_roster_field": "aggregate_roster",
+    "frozen_r0_field": "frozen_r0_bindings",
+    "support_field": "support_bindings",
+    "final_sealing_delta_field": "expected_sealing_delta",
+    "aggregate_roster_must_not_derive_sealing_delta": true,
+    "sealing_delta_must_not_derive_aggregate_roster": true
+  },
+  "public_seam": {
+    "module": "e4_r6_pc2w_p1_attempt013_packet_lineage",
+    "callable": "validate_packet_lineage",
+    "pure": true,
+    "forbidden_capabilities": [
+      "filesystem",
+      "subprocess",
+      "git_invocation",
+      "environment",
+      "clock",
+      "dynamic_import",
+      "runner_import",
+      "host_probe",
+      "network"
+    ]
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "benchmark_admission_opened": false,
+    "output_root_absent": true,
+    "attempt_budget": {
+      "authorized": 1,
+      "consumed": 0,
+      "remaining": 1,
+      "automatic_retry_count": 0,
+      "fallback_count": 0
+    }
+  },
+  "scope_boundary": {
+    "implementation_and_static_unit_tests_only": true,
+    "runtime_execution_authorized_now": false,
+    "exact_process_command_confirmed_now": false,
+    "fresh_audit_opened": false
+  }
+}
