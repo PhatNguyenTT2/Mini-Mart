@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Dormant Attempt-013 adapter installing two adjudicated identity seams."""
+"""Attempt-013 Revision 4 adapter with exact command and owner-depth gates."""
 
 from __future__ import annotations
 
@@ -15,6 +15,7 @@ from typing import Any
 
 sys.dont_write_bytecode = True
 import e4_r6_pc2w_p1_attempt010_command_interface as command_interface
+import e4_r6_pc2w_p1_attempt013_packet_lineage as packet_lineage
 import e4_r6_pc2w_p1_attempt013_pre_runtime_authority as authority
 import e4_r6_pc2w_p1_attempt013_runtime_identity_compatibility as compatibility
 import e4_r6_pc2w_p1_gate_receipt_binding as receipt_binding
@@ -29,55 +30,80 @@ RUNTIME_TEST_RELATIVE = CONTROL_RELATIVE / "test_e4_r6_pc2w_p1_attempt013_runtim
 AUTHORITY_HELPER_RELATIVE = CONTROL_RELATIVE / "e4_r6_pc2w_p1_attempt013_pre_runtime_authority.py"
 AUTHORITY_CONTRACT_RELATIVE = CONTROL_RELATIVE / "e4_r6_pc2w_p1_attempt013_pre_runtime_authority_contract.json"
 AUTHORITY_TEST_RELATIVE = CONTROL_RELATIVE / "test_e4_r6_pc2w_p1_attempt013_pre_runtime_gate.py"
+LINEAGE_HELPER_RELATIVE = CONTROL_RELATIVE / "e4_r6_pc2w_p1_attempt013_packet_lineage.py"
+LINEAGE_CONTRACT_RELATIVE = CONTROL_RELATIVE / "e4_r6_pc2w_p1_attempt013_packet_lineage_contract.json"
+LINEAGE_TEST_RELATIVE = CONTROL_RELATIVE / "test_e4_r6_pc2w_p1_attempt013_packet_lineage.py"
 CONTRACT_RELATIVE = CONTROL_RELATIVE / "e4_r6_pc2w_p1_attempt013_admission_observation_contract.json"
 AUTHORIZATION_RELATIVE = CONTROL_RELATIVE / "e4_r6_pc2w_p1_attempt013_execution_authorization.json"
 RUNNER_RELATIVE = CONTROL_RELATIVE / "execute_e4_r6_pc2w_p1_attempt013_admission_observation.py"
 VALIDATOR_RELATIVE = CONTROL_RELATIVE / "validate_e4_r6_pc2w_p1_attempt013_static_packet.py"
-PACKET_PARENT = "ce6377c351625ed7e029f2883520583ca97fc2b8"
-PACKET_PATHS = (
-    RUNTIME_HELPER_RELATIVE,
+R0_COMMIT = "ce6377c351625ed7e029f2883520583ca97fc2b8"
+R1_COMMIT = "294422ca8557e4b55ae3863d853289e2232011b2"
+R2A_SUPPORT_COMMIT = "1a9ca21c5c8b1b08fdec788fbbf23e88473c117f"
+PACKET_PARENT = "d335cedbac6576c93251def1b02ef43d430bf7cb"
+FROZEN_R0_PATHS = (
     RUNTIME_CONTRACT_RELATIVE,
     RUNTIME_TEST_RELATIVE,
-    AUTHORITY_HELPER_RELATIVE,
     AUTHORITY_CONTRACT_RELATIVE,
     AUTHORITY_TEST_RELATIVE,
+)
+SUPPORT_PATHS = (
+    RUNTIME_HELPER_RELATIVE,
+    AUTHORITY_HELPER_RELATIVE,
+    LINEAGE_HELPER_RELATIVE,
+    LINEAGE_CONTRACT_RELATIVE,
+    LINEAGE_TEST_RELATIVE,
+)
+SEALING_PATHS = (
     CONTRACT_RELATIVE,
     AUTHORIZATION_RELATIVE,
     RUNNER_RELATIVE,
     VALIDATOR_RELATIVE,
 )
-PACKET_RELATIVES = set(PACKET_PATHS)
+PACKET_PATHS = (
+    RUNTIME_CONTRACT_RELATIVE,
+    RUNTIME_TEST_RELATIVE,
+    AUTHORITY_CONTRACT_RELATIVE,
+    AUTHORITY_TEST_RELATIVE,
+    RUNTIME_HELPER_RELATIVE,
+    AUTHORITY_HELPER_RELATIVE,
+    LINEAGE_HELPER_RELATIVE,
+    LINEAGE_CONTRACT_RELATIVE,
+    LINEAGE_TEST_RELATIVE,
+    *SEALING_PATHS,
+)
+PACKET_RELATIVES = set(SEALING_PATHS)
 PACKET_ROSTER = tuple(path.as_posix() for path in PACKET_PATHS)
 OUTPUT_RELATIVE = Path(
-    "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_av/"
-    "E4_R6PC2W_P1_attempt013_admission_observation"
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ax/"
+    "E4_R6PC2W_P1_attempt013_revision4_admission_observation"
 )
 CONFIRMATION_TOKEN = (
-    "USER_CONFIRMED_EXACT_ATTEMPT013_PROCESS_COMMAND_AFTER_"
-    "CENTRAL_VALIDATION_AND_FRESH_AUDIT"
+    "USER_CONFIRMED_EXACT_ATTEMPT013_REVISION4_PROCESS_COMMAND_WITH_"
+    "DASH_B_AND_AUDIT_WAIVER"
 )
 CENTRAL_RECEIPT_PATH = CONTROL_RELATIVE / (
-    "rebaseline_v2_e4_r6_pc2w_p1_attempt013_central_static_validation_receipt.json"
+    "rebaseline_v2_e4_r6_pc2w_p1_attempt013_revision4_central_static_validation_receipt.json"
 )
 AUDIT_RECEIPT_PATH = CONTROL_RELATIVE / (
-    "rebaseline_v2_e4_r6_pc2w_p1_attempt013_fresh_independent_audit_receipt.json"
+    "rebaseline_v2_e4_r6_pc2w_p1_attempt013_revision4_user_audit_waiver_receipt.json"
 )
 CENTRAL_RECEIPT_SCHEMA = (
-    "stage1e-e4-r6-pc2w-p1-attempt013-central-static-validation-receipt-1.0"
+    "stage1e-e4-r6-pc2w-p1-attempt013-revision4-central-static-validation-receipt-1.0"
 )
-CENTRAL_RECEIPT_VERDICT = "PASS_PC2W_P1_ATTEMPT013_CENTRAL_STATIC_VALIDATION"
+CENTRAL_RECEIPT_VERDICT = "PASS_PC2W_P1_ATTEMPT013_REVISION4_CENTRAL_STATIC_VALIDATION"
 AUDIT_RECEIPT_SCHEMA = (
-    "stage1e-e4-r6-pc2w-p1-attempt013-fresh-independent-audit-receipt-1.0"
+    "stage1e-e4-r6-pc2w-p1-attempt013-revision4-user-audit-waiver-receipt-1.0"
 )
 AUDIT_RECEIPT_VERDICT = (
-    "PASS_PC2W_P1_ATTEMPT013_FRESH_INDEPENDENT_AUDIT_"
-    "READY_FOR_EXACT_COMMAND_CONFIRMATION"
+    "USER_OVERRIDE_PC2W_P1_ATTEMPT013_REVISION4_AUDIT_WAIVED_"
+    "READY_FOR_EXACT_COMMAND"
 )
 PASS_VERDICT = (
-    "PASS_PC2W_P1_ATTEMPT013_ADMISSION_OBSERVATION_COMPLETE_"
+    "PASS_PC2W_P1_ATTEMPT013_REVISION4_ADMISSION_OBSERVATION_COMPLETE_"
     "FOR_CENTRAL_EVALUATION"
 )
-FAIL_VERDICT = "FAIL_CLOSED_PC2W_P1_ATTEMPT013_CURRENT_HOST_NOT_ADMISSIBLE"
+FAIL_VERDICT = "FAIL_CLOSED_PC2W_P1_ATTEMPT013_REVISION4_CURRENT_HOST_NOT_ADMISSIBLE"
 AUTHORITY_CONTRACT_BYTES = 4526
 AUTHORITY_CONTRACT_SHA256 = (
     "1cb5d8130420ae543d9f63b4d4cd0b9d16c7571577a5ad506f0217b2ebd530f0"
@@ -86,13 +112,40 @@ RUNTIME_CONTRACT_BYTES = 4121
 RUNTIME_CONTRACT_SHA256 = (
     "ed7d4323e7287643e0372e11cc1a2e6f5b5af73f4ec20fc0d0758dd12e648784"
 )
-FROZEN_R0_SHA256 = {
-    RUNTIME_CONTRACT_RELATIVE: RUNTIME_CONTRACT_SHA256,
-    RUNTIME_TEST_RELATIVE:
+LINEAGE_CONTRACT_BYTES = 2543
+LINEAGE_CONTRACT_SHA256 = (
+    "520308aa361f100ecd9783ffb022e75f2895195d37f149e5bc34931ca7d6f8a0"
+)
+ORIGIN_FACTS = {
+    RUNTIME_CONTRACT_RELATIVE: (R0_COMMIT, 4121, RUNTIME_CONTRACT_SHA256),
+    RUNTIME_TEST_RELATIVE: (
+        R0_COMMIT, 11844,
         "36b0e95a7b87a98325da6debfb345cb5a1df96ec672e6f1f3bb35db6b79fc21b",
-    AUTHORITY_CONTRACT_RELATIVE: AUTHORITY_CONTRACT_SHA256,
-    AUTHORITY_TEST_RELATIVE:
+    ),
+    AUTHORITY_CONTRACT_RELATIVE: (R0_COMMIT, 4526, AUTHORITY_CONTRACT_SHA256),
+    AUTHORITY_TEST_RELATIVE: (
+        R0_COMMIT, 7613,
         "9c372dcd8a4cb4f87dab444a55739966936a930f098999487fd86d6f65a8c437",
+    ),
+    RUNTIME_HELPER_RELATIVE: (
+        R1_COMMIT, 19773,
+        "53474c597643fda346d72b251b5dd504a264621ad7daef48fc55663ee86b4614",
+    ),
+    AUTHORITY_HELPER_RELATIVE: (
+        R1_COMMIT, 9084,
+        "abdaab61ffcf05e5d5fec8f7731f07804588d6dd06e69754e55b9f522e8eae9d",
+    ),
+    LINEAGE_HELPER_RELATIVE: (
+        R2A_SUPPORT_COMMIT, 8142,
+        "d7101a54bb7143df591fb6f32128bbf230c76a859cb21982ab179c0eb32afed5",
+    ),
+    LINEAGE_CONTRACT_RELATIVE: (
+        R2A_SUPPORT_COMMIT, LINEAGE_CONTRACT_BYTES, LINEAGE_CONTRACT_SHA256,
+    ),
+    LINEAGE_TEST_RELATIVE: (
+        R2A_SUPPORT_COMMIT, 10118,
+        "0d9fafa87cc586e92ba49b327b63dbe37208041d15e44fdf1552776cd781d58f",
+    ),
 }
 
 GATE_RECEIPT_SPEC = receipt_binding.GateReceiptSpec(
@@ -131,6 +184,132 @@ def _bound_document(repo_root: Path, head: str, relative: Path) -> dict[str, Any
     )
 
 
+def _blob_fact(repo_root: Path, revision: str, relative: Path) -> packet_lineage.PacketBlobFact:
+    raw = _read_git_blob(repo_root, revision, relative.as_posix())
+    return packet_lineage.PacketBlobFact(
+        path=relative.as_posix(), raw_bytes=len(raw), raw_sha256=_sha256(raw)
+    )
+
+
+def _origin_binding(
+    repo_root: Path,
+    packet_commit: str,
+    relative: Path,
+) -> packet_lineage.OriginBinding:
+    origin_commit, expected_bytes, expected_sha256 = ORIGIN_FACTS[relative]
+    origin_raw = _read_git_blob(repo_root, origin_commit, relative.as_posix())
+    if len(origin_raw) != expected_bytes or _sha256(origin_raw) != expected_sha256:
+        raise RuntimeError("ATTEMPT013_REVISION2_ORIGIN_RAW_BINDING_MISMATCH")
+    final = _blob_fact(repo_root, packet_commit, relative)
+    return packet_lineage.OriginBinding(
+        path=relative.as_posix(),
+        origin_commit=origin_commit,
+        origin_raw_bytes=expected_bytes,
+        origin_raw_sha256=expected_sha256,
+        final_raw_bytes=final.raw_bytes,
+        final_raw_sha256=final.raw_sha256,
+    )
+
+
+def _git_is_ancestor(repo_root: Path, ancestor: str, descendant: str) -> bool:
+    completed = subprocess.run(
+        ["git", "merge-base", "--is-ancestor", ancestor, descendant],
+        cwd=repo_root,
+        stdin=subprocess.DEVNULL,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        shell=False,
+        check=False,
+    )
+    if completed.returncode == 0:
+        return True
+    if completed.returncode == 1:
+        return False
+    raise RuntimeError("ATTEMPT013_REVISION2_ANCESTRY_QUERY_FAILED")
+
+
+def _parse_delta(raw: str) -> tuple[packet_lineage.DeltaEntry, ...]:
+    entries = []
+    for row in raw.splitlines():
+        if not row:
+            continue
+        parts = row.split("\t")
+        if len(parts) != 2:
+            raise RuntimeError("ATTEMPT013_REVISION2_DELTA_ROW_INVALID")
+        entries.append(packet_lineage.DeltaEntry(parts[0], parts[1]))
+    return tuple(entries)
+
+
+def _validate_packet_lineage(
+    repo_root: Path,
+    packet_commit: str,
+    execution_head: str,
+) -> packet_lineage.PacketLineageEvidence:
+    normalized_commit = packet_commit.casefold()
+    lineage_raw = _read_git_blob(
+        repo_root, normalized_commit, LINEAGE_CONTRACT_RELATIVE.as_posix()
+    )
+    if (
+        len(lineage_raw) != LINEAGE_CONTRACT_BYTES
+        or _sha256(lineage_raw) != LINEAGE_CONTRACT_SHA256
+    ):
+        raise RuntimeError("ATTEMPT013_REVISION2_LINEAGE_CONTRACT_RAW_MISMATCH")
+    lineage_document = authority.strict_json_object(lineage_raw)
+    public_seam = lineage_document.get("public_seam")
+    if (
+        lineage_document.get("schema_version")
+        != "stage1e-e4-r6-pc2w-p1-attempt013-revision2-packet-lineage-contract-1.0"
+        or not isinstance(public_seam, dict)
+        or public_seam.get("module") != packet_lineage.__name__
+        or public_seam.get("callable") != "validate_packet_lineage"
+        or public_seam.get("pure") is not True
+    ):
+        raise RuntimeError("ATTEMPT013_REVISION2_LINEAGE_CONTRACT_INVALID")
+
+    parent_row = legacy.git(
+        repo_root, "rev-list", "--parents", "-n", "1", normalized_commit
+    ).split()
+    if not parent_row or parent_row[0].casefold() != normalized_commit:
+        raise RuntimeError("ATTEMPT013_REVISION2_PARENT_QUERY_INVALID")
+    delta = _parse_delta(legacy.git(
+        repo_root,
+        "diff-tree",
+        "--no-commit-id",
+        "--name-status",
+        "-r",
+        normalized_commit,
+    ))
+    spec = packet_lineage.PacketLineageSpec(
+        aggregate_roster=PACKET_ROSTER,
+        frozen_r0_bindings=tuple(
+            _origin_binding(repo_root, normalized_commit, relative)
+            for relative in FROZEN_R0_PATHS
+        ),
+        support_bindings=tuple(
+            _origin_binding(repo_root, normalized_commit, relative)
+            for relative in SUPPORT_PATHS
+        ),
+        sealing_parent=PACKET_PARENT,
+        expected_sealing_delta=tuple(
+            packet_lineage.DeltaEntry("M", relative.as_posix())
+            for relative in SEALING_PATHS
+        ),
+    )
+    observation = packet_lineage.PacketLineageObservation(
+        packet_commit=normalized_commit,
+        packet_parents=tuple(parent.casefold() for parent in parent_row[1:]),
+        observed_sealing_delta=delta,
+        final_packet_blobs=tuple(
+            _blob_fact(repo_root, normalized_commit, relative)
+            for relative in PACKET_PATHS
+        ),
+        packet_is_ancestor_of_execution_head=_git_is_ancestor(
+            repo_root, normalized_commit, execution_head
+        ),
+    )
+    return packet_lineage.validate_packet_lineage(spec, observation)
+
+
 def _validate_contract_owners(
     repo_root: Path, head: str
 ) -> tuple[dict[str, Any], dict[str, Any], dict[str, Any], dict[str, Any]]:
@@ -139,6 +318,9 @@ def _validate_contract_owners(
     )
     runtime_raw = _read_git_blob(
         repo_root, head, RUNTIME_CONTRACT_RELATIVE.as_posix()
+    )
+    lineage_raw = _read_git_blob(
+        repo_root, head, LINEAGE_CONTRACT_RELATIVE.as_posix()
     )
     if (
         len(authority_raw) != AUTHORITY_CONTRACT_BYTES
@@ -150,6 +332,11 @@ def _validate_contract_owners(
         or _sha256(runtime_raw) != RUNTIME_CONTRACT_SHA256
     ):
         raise RuntimeError("ATTEMPT013_RUNTIME_OWNER_RAW_BINDING_MISMATCH")
+    if (
+        len(lineage_raw) != LINEAGE_CONTRACT_BYTES
+        or _sha256(lineage_raw) != LINEAGE_CONTRACT_SHA256
+    ):
+        raise RuntimeError("ATTEMPT013_REVISION2_LINEAGE_OWNER_RAW_BINDING_MISMATCH")
     owner = authority.strict_json_object(authority_raw)
     runtime_owner = authority.strict_json_object(runtime_raw)
     contract = _bound_document(repo_root, head, CONTRACT_RELATIVE)
@@ -164,9 +351,22 @@ def _validate_contract_owners(
         "raw_git_blob_bytes": RUNTIME_CONTRACT_BYTES,
         "raw_git_blob_sha256": RUNTIME_CONTRACT_SHA256,
     }
+    expected_lineage = {
+        "path": LINEAGE_CONTRACT_RELATIVE.as_posix(),
+        "raw_git_blob_bytes": LINEAGE_CONTRACT_BYTES,
+        "raw_git_blob_sha256": LINEAGE_CONTRACT_SHA256,
+        "schema_version": (
+            "stage1e-e4-r6-pc2w-p1-attempt013-revision2-"
+            "packet-lineage-contract-1.0"
+        ),
+        "public_seam": (
+            "e4_r6_pc2w_p1_attempt013_packet_lineage.validate_packet_lineage"
+        ),
+    }
     for document in (contract, authorization):
         authority_binding = document.get("pre_runtime_authority_binding")
         runtime_binding = document.get("runtime_identity_compatibility_binding")
+        lineage_binding = document.get("packet_lineage_binding")
         if not isinstance(authority_binding, dict) or any(
             authority_binding.get(key) != value
             for key, value in expected_authority.items()
@@ -177,9 +377,15 @@ def _validate_contract_owners(
             for key, value in expected_runtime.items()
         ):
             raise RuntimeError("ATTEMPT013_RUNTIME_CONSUMER_BINDING_MISMATCH")
+        if not isinstance(lineage_binding, dict) or any(
+            lineage_binding.get(key) != value
+            for key, value in expected_lineage.items()
+        ):
+            raise RuntimeError("ATTEMPT013_REVISION2_LINEAGE_CONSUMER_BINDING_MISMATCH")
         if (
             authority_binding.get("restated_authority_values") is not False
             or runtime_binding.get("restated_seam_values") is not False
+            or lineage_binding.get("restated_lineage_values") is not False
         ):
             raise RuntimeError("ATTEMPT013_CONSUMER_RESTATED_VALUES")
     return owner, runtime_owner, contract, authorization
@@ -201,7 +407,7 @@ def _legacy_model_compatibility_view() -> dict[str, Any]:
 
 
 def _adapted_load_json(path: Path) -> dict[str, Any]:
-    document = previous.previous.previous._ORIGINAL_LOAD_JSON(path)
+    document = previous.previous.previous.previous._ORIGINAL_LOAD_JSON(path)
     if path.name == CONTRACT_RELATIVE.name:
         document = copy.deepcopy(document)
         document["schema_version"] = (
@@ -226,19 +432,26 @@ def _adapted_load_json(path: Path) -> dict[str, Any]:
 def _adapted_document(path: Path, value: dict[str, Any]) -> dict[str, Any]:
     document = copy.deepcopy(value)
     schemas = {
-        "command_receipts.json": "stage1e-e4-r6-pc2w-p1-attempt013-command-receipts-1.0",
-        "admission_observation.json": "stage1e-e4-r6-pc2w-p1-attempt013-admission-observation-1.0",
-        "execution_receipt.json": "stage1e-e4-r6-pc2w-p1-attempt013-execution-receipt-1.0",
-        "handoff.json": "stage1e-e4-r6-pc2w-p1-attempt013-handoff-1.0",
+        "command_receipts.json": "stage1e-e4-r6-pc2w-p1-attempt013-revision4-command-receipts-1.0",
+        "admission_observation.json": "stage1e-e4-r6-pc2w-p1-attempt013-revision4-admission-observation-1.0",
+        "execution_receipt.json": "stage1e-e4-r6-pc2w-p1-attempt013-revision4-execution-receipt-1.0",
+        "handoff.json": "stage1e-e4-r6-pc2w-p1-attempt013-revision4-handoff-1.0",
     }
     if path.name in schemas:
         document["schema_version"] = schemas[path.name]
         document["stage_id"] = GATE_RECEIPT_SPEC.stage_id
+    pass_conditions = document.get("pass_conditions")
+    if isinstance(pass_conditions, dict) and (
+        "central_validation_and_fresh_audit_bound" in pass_conditions
+    ):
+        pass_conditions[
+            "central_validation_and_user_audit_waiver_bound"
+        ] = pass_conditions.pop("central_validation_and_fresh_audit_bound")
     return document
 
 
 def _adapted_write_json(path: Path, value: dict[str, Any]) -> None:
-    previous.previous.previous._ORIGINAL_WRITE_JSON(
+    previous.previous.previous.previous._ORIGINAL_WRITE_JSON(
         path, _adapted_document(path, value)
     )
 
@@ -255,11 +468,13 @@ def _runtime_passport(created_at: str, authorization: dict[str, Any]) -> dict[st
         "origin_date": created_at,
         "verification_status": "UNVERIFIED",
         "version_label": (
-            "stage1e_e4_r6_pc2w_p1_attempt013_admission_observation_execution_v1"
+            "stage1e_e4_r6_pc2w_p1_attempt013_revision4_"
+            "admission_observation_execution_v1"
         ),
         "upstream_dependencies": [
-            "stage1e_e4_r6_pc2w_p1_attempt013_admission_observation_contract_v1",
-            "stage1e_e4_r6_pc2w_p1_attempt013_execution_authorization_v1",
+            "stage1e_e4_r6_pc2w_p1_attempt013_revision4_admission_observation_contract_v1",
+            "stage1e_e4_r6_pc2w_p1_attempt013_revision4_execution_authorization_v1",
+            "stage1e_e4_r6_pc2w_p1_attempt013_revision2_packet_lineage_contract_v1",
             "stage1e_e4_r6_pc2w_p1_attempt013_runtime_identity_compatibility_contract_v1",
             "stage1e_e4_r6_pc2w_p1_attempt013_pre_runtime_authority_contract_v1",
         ],
@@ -272,11 +487,12 @@ def _runtime_passport(created_at: str, authorization: dict[str, Any]) -> dict[st
 def _validate_frozen_upstream(repo_root: Path, head: str) -> dict[str, Any]:
     result = previous._validate_frozen_upstream(repo_root, head)
     facts = []
-    for relative, expected_sha256 in sorted(
-        FROZEN_R0_SHA256.items(), key=lambda item: item[0].as_posix()
+    for relative in sorted(
+        FROZEN_R0_PATHS, key=lambda item: item.as_posix()
     ):
+        _origin_commit, expected_bytes, expected_sha256 = ORIGIN_FACTS[relative]
         raw = _read_git_blob(repo_root, head, relative.as_posix())
-        if _sha256(raw) != expected_sha256:
+        if len(raw) != expected_bytes or _sha256(raw) != expected_sha256:
             raise RuntimeError("ATTEMPT013_FROZEN_R0_HASH_MISMATCH")
         facts.append({
             "path": relative.as_posix(),
@@ -300,7 +516,7 @@ def _validate_bound_gate_receipts(
     audit_path: Path,
     audit_sha256: str,
 ) -> dict[str, Any]:
-    return receipt_binding.validate_bound_gate_receipts(
+    result = receipt_binding.validate_bound_gate_receipts(
         repository_root=repo_root,
         execution_head=head,
         packet_commit=packet_commit,
@@ -313,6 +529,11 @@ def _validate_bound_gate_receipts(
         ),
         read_git_blob=_read_git_blob,
     )
+    result["user_audit_waiver_receipt"] = result.pop(
+        "fresh_independent_audit_receipt"
+    )
+    result["fresh_independent_audit_performed"] = False
+    return result
 
 
 def _parse_parameters() -> argparse.Namespace:
@@ -369,11 +590,13 @@ def main() -> int:
     git_toplevel = str(
         Path(legacy.git(repo_root, "rev-parse", "--show-toplevel")).resolve()
     )
-    owner, _runtime_owner, _contract_document, authorization_document = (
+    owner, _runtime_owner, contract_document, authorization_document = (
         _validate_contract_owners(repo_root, head)
     )
-    receipt_contract = owner.get("receipt_contract")
+    receipt_contract = contract_document.get("receipt_contract")
     if not isinstance(receipt_contract, dict) or (
+        authorization_document.get("receipt_contract") != receipt_contract
+        or
         receipt_contract.get("central_path") != CENTRAL_RECEIPT_PATH.as_posix()
         or receipt_contract.get("central_schema") != CENTRAL_RECEIPT_SCHEMA
         or receipt_contract.get("central_verdict") != CENTRAL_RECEIPT_VERDICT
@@ -381,9 +604,72 @@ def main() -> int:
         or receipt_contract.get("fresh_audit_schema") != AUDIT_RECEIPT_SCHEMA
         or receipt_contract.get("fresh_audit_verdict") != AUDIT_RECEIPT_VERDICT
         or receipt_contract.get("fresh_audit_must_link_central_raw_sha256") is not True
+        or receipt_contract.get("fresh_audit_requirement") != "WAIVED_BY_CURRENT_USER"
+        or receipt_contract.get("fresh_audit_receipt_semantics")
+        != "USER_OVERRIDE_NOT_AN_INDEPENDENT_AUDIT"
+        or receipt_contract.get("user_override_confirmation")
+        != "CURRENT_USER_IF_FAILURE_AUDIT_AND_FIX_STANDING_AUTHORITY_2026_08_30"
         or receipt_contract.get("attempt012_receipts_accepted") is not False
+        or receipt_contract.get("attempt013_revision1_receipts_accepted") is not False
+        or receipt_contract.get("attempt013_revision2_receipts_accepted") is not False
+        or receipt_contract.get("attempt013_revision3_receipts_accepted") is not False
     ):
         raise RuntimeError("ATTEMPT013_RECEIPT_CONTRACT_MISMATCH")
+    exact_command_contract = contract_document.get("exact_process_command_contract")
+    expected_exact_command_contract = {
+        "required_original_argv_prefix": [
+            "PYTHON_EXECUTABLE", "-B", "RUNNER_PATH"
+        ],
+        "required_interpreter_flags": ["-B"],
+        "required_interpreter_flag_count": 1,
+        "machine_checked_by": (
+            "e4_r6_pc2w_p1_attempt010_command_interface."
+            "bind_exact_python_script_argv"
+        ),
+        "revision2_failure_error_sha256": (
+            "4190f8dce17455e17eb3615e06ccbfd23249346e5bdcfec01a5aa085b47212b4"
+        ),
+        "revision2_failure_stable_code": "INTERPRETER_FLAGS_EXACT_MISMATCH",
+        "revision2_may_be_reinvoked": False,
+    }
+    if (
+        exact_command_contract != expected_exact_command_contract
+        or authorization_document.get("exact_process_command_contract")
+        != expected_exact_command_contract
+        or command_interface.REQUIRED_INTERPRETER_FLAGS != ("-B",)
+    ):
+        raise RuntimeError("ATTEMPT013_REVISION4_EXACT_COMMAND_CONTRACT_MISMATCH")
+    expected_adapter_contract = {
+        "module_chain": [
+            "ATTEMPT013", "ATTEMPT012", "ATTEMPT011", "ATTEMPT010",
+            "ATTEMPT009",
+        ],
+        "original_json_io_owner": "ATTEMPT009",
+        "load_reference": (
+            "previous.previous.previous.previous._ORIGINAL_LOAD_JSON"
+        ),
+        "write_reference": (
+            "previous.previous.previous.previous._ORIGINAL_WRITE_JSON"
+        ),
+        "forbidden_three_hop_reference": True,
+        "revision3_failure_error_sha256": (
+            "a76a4582be67134579d5f7224a7d76dbb4411750b3b517d0de5b4a88c3395c80"
+        ),
+        "revision3_may_be_reinvoked": False,
+    }
+    if (
+        contract_document.get("adapter_ancestry_contract")
+        != expected_adapter_contract
+        or authorization_document.get("adapter_ancestry_contract")
+        != expected_adapter_contract
+        or not hasattr(
+            previous.previous.previous.previous, "_ORIGINAL_LOAD_JSON"
+        )
+        or not hasattr(
+            previous.previous.previous.previous, "_ORIGINAL_WRITE_JSON"
+        )
+    ):
+        raise RuntimeError("ATTEMPT013_REVISION4_ADAPTER_ANCESTRY_MISMATCH")
     owner_contract = owner.get("authority_contract")
     budget = owner_contract.get("attempt_budget") if isinstance(owner_contract, dict) else None
     if not isinstance(budget, dict):
@@ -427,6 +713,11 @@ def main() -> int:
     command_binding = command_interface.bind_exact_python_script_argv(
         list(getattr(sys, "orig_argv", [])), binding.expected_process_argv
     )
+    lineage_evidence = _validate_packet_lineage(
+        repo_root, str(args.packet_commit), head
+    )
+    if lineage_evidence.predicate_passed is not True:
+        raise RuntimeError("ATTEMPT013_REVISION4_LINEAGE_PREDICATE_DID_NOT_PASS")
     configure_attempt013_runner()
     previous.previous.previous._COMMAND_BINDING = command_binding
     original = list(getattr(sys, "orig_argv", []))

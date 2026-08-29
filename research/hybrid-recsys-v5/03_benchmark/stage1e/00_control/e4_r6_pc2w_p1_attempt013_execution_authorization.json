@@ -1,14 +1,15 @@
 {
-  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt013-execution-authorization-1.0",
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt013-revision4-execution-authorization-1.0",
   "stage_id": "E4-R6-PC2W-P1-ATTEMPT013",
   "material_passport": {
     "origin_skill": "experiment-agent",
-    "origin_mode": "plan",
+    "origin_mode": "implementation-static-tdd",
     "origin_date": "2026-08-29T00:00:00+07:00",
     "verification_status": "UNVERIFIED",
-    "version_label": "stage1e_e4_r6_pc2w_p1_attempt013_execution_authorization_v1",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt013_revision4_execution_authorization_v1",
     "upstream_dependencies": [
-      "stage1e_e4_r6_pc2w_p1_attempt013_admission_observation_contract_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt013_revision4_admission_observation_contract_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt013_revision2_packet_lineage_contract_v1",
       "stage1e_e4_r6_pc2w_p1_attempt013_runtime_identity_compatibility_contract_v1",
       "stage1e_e4_r6_pc2w_p1_attempt013_pre_runtime_authority_contract_v1"
     ],
@@ -22,33 +23,39 @@
   },
   "user_decision": {
     "status": "CONFIRMED",
-    "confirmed_scope": "IMPLEMENT_ATTEMPT013_ADJUDICATED_IDENTITY_SEAMS_AND_STATIC_REGRESSION_ONLY",
-    "confirmation_source": "CURRENT_CENTRAL_DELEGATION",
-    "runtime_execution_authorized_now": false,
-    "exact_process_command_confirmed_now": false,
+    "confirmed_scope": "RUN_ATTEMPT013_REVISION4_EXACTLY_ONCE_AFTER_REVISION3_FAILURE_AUDIT_WITH_CURRENT_USER_AUDIT_WAIVER",
+    "confirmation_source": "CURRENT_USER_IF_FAILURE_AUDIT_AND_FIX_STANDING_AUTHORITY_2026_08_30",
+    "runtime_execution_authorized_now": true,
+    "exact_process_command_confirmed_now": true,
     "automatic_retry_authorized": false,
     "fallback_authorized": false
   },
   "authorized_now": [
-    "IMPLEMENT_EXACT_TEN_FILE_ATTEMPT013_PACKET_ONLY",
-    "RUN_STRICT_JSON_AST_AND_SYNTHETIC_TESTS_WITH_PYTHON_DASH_B",
-    "RUN_READ_ONLY_OFFLINE_STATIC_VALIDATOR",
-    "COMMIT_R0_RED_AND_R1_GREEN_SEPARATELY"
+    "CREATE_NEW_EXACT_FOUR_PATH_ATTEMPT013_REVISION4_PACKET",
+    "CREATE_NEW_CENTRAL_STATIC_VALIDATION_RECEIPT",
+    "CREATE_USER_AUDIT_WAIVER_RECEIPT_WITHOUT_AUDIT_CLAIM",
+    "RUN_EXACT_ATTEMPT013_REVISION4_PROCESS_COMMAND_ONCE_WITH_PYTHON_DASH_B",
+    "START_AND_STOP_DOCKER_DESKTOP_WITHIN_RUNNER_FINALLY",
+    "SHUT_DOWN_WSL_WITHIN_RUNNER_FINALLY",
+    "CREATE_EXACT_ATTEMPT013_OUTPUT_ROOT_AND_FOUR_RESULT_FILES"
   ],
   "not_authorized_now": [
-    "RUN_OR_IMPORT_ATTEMPT013_RUNNER_ON_EXECUTION_PATH",
-    "CREATE_ATTEMPT013_CENTRAL_STATIC_VALIDATION_RECEIPT",
-    "CREATE_ATTEMPT013_FRESH_INDEPENDENT_AUDIT_RECEIPT",
-    "REUSE_ATTEMPT012_GATE_RECEIPTS_OR_CONFIRMATION",
-    "START_STOP_OR_QUERY_DOCKER_DESKTOP_OR_DAEMON",
-    "RUN_WSL_HYPERV_OR_POWERSHELL_HOST_PROBES",
+    "CLAIM_USER_WAIVER_IS_AN_INDEPENDENT_AUDIT",
+    "REUSE_ATTEMPT012_OR_ATTEMPT013_REVISION1_OR_REVISION2_OR_REVISION3_GATE_RECEIPTS",
     "NETWORK_DOWNLOAD_INSTALL_ENVIRONMENT_OR_CONTAINER_OPERATION",
     "MATERIALIZE_PREPROCESS_TRAIN_EVALUATE_BENCHMARK_OR_OPEN_TEST",
-    "CREATE_ATTEMPT013_OUTPUT_ROOT",
-    "MODIFY_PIPELINE_STATE_OLD_FILES_RECEIPTS_OR_SCIENTIFIC_ARTIFACTS",
+    "MODIFY_FROZEN_R0_R1_R2A_OLD_PLAN_RECEIPT_PIPELINE_STATE_OR_MANUSCRIPT",
     "AUTOMATIC_RETRY_OR_FALLBACK",
-    "MERGE_REBASE_AMEND_SQUASH_CHERRY_PICK_OR_PUSH"
+    "MERGE_REBASE_AMEND_SQUASH_OR_PUSH"
   ],
+  "packet_lineage_binding": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt013_packet_lineage_contract.json",
+    "raw_git_blob_bytes": 2543,
+    "raw_git_blob_sha256": "520308aa361f100ecd9783ffb022e75f2895195d37f149e5bc34931ca7d6f8a0",
+    "schema_version": "stage1e-e4-r6-pc2w-p1-attempt013-revision2-packet-lineage-contract-1.0",
+    "public_seam": "e4_r6_pc2w_p1_attempt013_packet_lineage.validate_packet_lineage",
+    "restated_lineage_values": false
+  },
   "runtime_identity_compatibility_binding": {
     "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt013_runtime_identity_compatibility_contract.json",
     "raw_git_blob_bytes": 4121,
@@ -61,8 +68,23 @@
     "raw_git_blob_bytes": 4526,
     "raw_git_blob_sha256": "1cb5d8130420ae543d9f63b4d4cd0b9d16c7571577a5ad506f0217b2ebd530f0",
     "model_policy_pointer": "/model_policy",
-    "receipt_contract_pointer": "/receipt_contract",
     "restated_authority_values": false
+  },
+  "receipt_contract": {
+    "central_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt013_revision4_central_static_validation_receipt.json",
+    "central_schema": "stage1e-e4-r6-pc2w-p1-attempt013-revision4-central-static-validation-receipt-1.0",
+    "central_verdict": "PASS_PC2W_P1_ATTEMPT013_REVISION4_CENTRAL_STATIC_VALIDATION",
+    "fresh_audit_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt013_revision4_user_audit_waiver_receipt.json",
+    "fresh_audit_schema": "stage1e-e4-r6-pc2w-p1-attempt013-revision4-user-audit-waiver-receipt-1.0",
+    "fresh_audit_verdict": "USER_OVERRIDE_PC2W_P1_ATTEMPT013_REVISION4_AUDIT_WAIVED_READY_FOR_EXACT_COMMAND",
+    "fresh_audit_must_link_central_raw_sha256": true,
+    "fresh_audit_requirement": "WAIVED_BY_CURRENT_USER",
+    "fresh_audit_receipt_semantics": "USER_OVERRIDE_NOT_AN_INDEPENDENT_AUDIT",
+    "user_override_confirmation": "CURRENT_USER_IF_FAILURE_AUDIT_AND_FIX_STANDING_AUTHORITY_2026_08_30",
+    "attempt012_receipts_accepted": false,
+    "attempt013_revision1_receipts_accepted": false,
+    "attempt013_revision2_receipts_accepted": false,
+    "attempt013_revision3_receipts_accepted": false
   },
   "implementation_model_observation": {
     "actual_model": "gpt-5.6-sol",
@@ -70,7 +92,7 @@
     "actual_service_tier": "UNOBSERVABLE",
     "actual_speed": "UNOBSERVABLE",
     "fast_or_priority_observed": false,
-    "basis": "EXPLICIT_TASK_CREATION_MODEL_AND_THINKING_WITH_NO_POSITIVE_FAST_OR_PRIORITY_FIELD"
+    "basis": "EXPLICIT_TASK_MODEL_AND_REASONING_WITH_NO_POSITIVE_FAST_OR_PRIORITY_EVIDENCE"
   },
   "attempt_budget": {
     "authorized": 1,
@@ -79,10 +101,46 @@
     "automatic_retry_count": 0,
     "fallback_count": 0
   },
+  "exact_process_command_contract": {
+    "required_original_argv_prefix": [
+      "PYTHON_EXECUTABLE",
+      "-B",
+      "RUNNER_PATH"
+    ],
+    "required_interpreter_flags": [
+      "-B"
+    ],
+    "required_interpreter_flag_count": 1,
+    "machine_checked_by": "e4_r6_pc2w_p1_attempt010_command_interface.bind_exact_python_script_argv",
+    "revision2_failure_error_sha256": "4190f8dce17455e17eb3615e06ccbfd23249346e5bdcfec01a5aa085b47212b4",
+    "revision2_failure_stable_code": "INTERPRETER_FLAGS_EXACT_MISMATCH",
+    "revision2_may_be_reinvoked": false
+  },
+  "adapter_ancestry_contract": {
+    "module_chain": [
+      "ATTEMPT013",
+      "ATTEMPT012",
+      "ATTEMPT011",
+      "ATTEMPT010",
+      "ATTEMPT009"
+    ],
+    "original_json_io_owner": "ATTEMPT009",
+    "load_reference": "previous.previous.previous.previous._ORIGINAL_LOAD_JSON",
+    "write_reference": "previous.previous.previous.previous._ORIGINAL_WRITE_JSON",
+    "forbidden_three_hop_reference": true,
+    "revision3_failure_error_sha256": "a76a4582be67134579d5f7224a7d76dbb4411750b3b517d0de5b4a88c3395c80",
+    "revision3_may_be_reinvoked": false
+  },
   "future_exact_confirmation": {
-    "required_after_attempt013_central_validation_and_fresh_ultra_audit": true,
-    "confirmation_token": "USER_CONFIRMED_EXACT_ATTEMPT013_PROCESS_COMMAND_AFTER_CENTRAL_VALIDATION_AND_FRESH_AUDIT",
-    "working_directory_and_exact_argv_must_both_be_confirmed": true,
+    "standing_user_authorization": true,
+    "auto_execution_activation_requires_central_pass": true,
+    "auto_execution_activation_requires_fresh_audit_pass": false,
+    "current_user_audit_waiver": true,
+    "audit_waiver_does_not_claim_independent_verification": true,
+    "auto_execution_activation_requires_deterministic_exact_command_binding": true,
+    "user_override_replaces_only_fresh_audit_gate": true,
+    "confirmation_token": "USER_CONFIRMED_EXACT_ATTEMPT013_REVISION4_PROCESS_COMMAND_WITH_DASH_B_AND_AUDIT_WAIVER",
+    "working_directory_and_exact_argv_must_both_be_bound": true,
     "execution_attempts_maximum": 1,
     "automatic_retry_count": 0,
     "fallback_count": 0
@@ -92,7 +150,9 @@
     "TEST_SET_OPENED": "NO",
     "ACCEPTED_RESULT_ROWS": 0,
     "benchmark_admission_opened": false,
+    "output_root_absent": true,
     "project_benchmark_numbers": "INVALID_FOR_PAPER"
   },
-  "authorization_verdict": "AUTHORIZED_ATTEMPT013_IMPLEMENTATION_AND_STATIC_REGRESSION_ONLY_RUNTIME_DENIED"
+  "authorization_verdict": "AUTHORIZED_ATTEMPT013_REVISION4_EXACT_ONE_SHOT_RUNTIME_AFTER_FAILURE_AUDIT_CENTRAL_AND_USER_WAIVER_RECEIPTS",
+  "next_gate": "CENTRAL_STATIC_VALIDATION_THEN_USER_AUDIT_WAIVER_RECEIPT_AND_EXACT_RUNTIME"
 }

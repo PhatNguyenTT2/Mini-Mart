@@ -1,16 +1,17 @@
 {
-  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt013-admission-observation-contract-1.0",
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt013-revision4-admission-observation-contract-1.0",
   "stage_id": "E4-R6-PC2W-P1-ATTEMPT013",
   "material_passport": {
     "origin_skill": "experiment-agent",
-    "origin_mode": "plan",
+    "origin_mode": "implementation-static-tdd",
     "origin_date": "2026-08-29T00:00:00+07:00",
     "verification_status": "UNVERIFIED",
-    "version_label": "stage1e_e4_r6_pc2w_p1_attempt013_admission_observation_contract_v1",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt013_revision4_admission_observation_contract_v1",
     "upstream_dependencies": [
+      "stage1e_e4_r6_pc2w_p1_attempt013_central_failure_remediation_plan_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt013_revision2_packet_lineage_contract_v1",
       "stage1e_e4_r6_pc2w_p1_attempt013_runtime_identity_compatibility_contract_v1",
-      "stage1e_e4_r6_pc2w_p1_attempt013_pre_runtime_authority_contract_v1",
-      "stage1e_e4_r6_pc2w_p1_attempt012_runtime_failure_remediation_plan_v1"
+      "stage1e_e4_r6_pc2w_p1_attempt013_pre_runtime_authority_contract_v1"
     ],
     "repro_lock": null,
     "experiment_intake_declaration": {
@@ -20,24 +21,57 @@
     },
     "experiment_provenance": []
   },
-  "purpose": "Install only the adjudicated direct-self/parent-union and Docker BuildTime field-comparator seams in a dormant Attempt-013 packet.",
+  "purpose": "Seal Attempt-013 Revision 4 after auditing the Revision 3 adapter-depth failure, retaining the Python -B command gate and binding original JSON I/O to its Attempt-009 owner.",
   "packet_entry_gate": {
-    "packet_parent_checkpoint": "ce6377c351625ed7e029f2883520583ca97fc2b8",
-    "packet_files": [
-      "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt013_runtime_identity_compatibility.py",
+    "packet_parent_checkpoint": "d335cedbac6576c93251def1b02ef43d430bf7cb",
+    "aggregate_packet_files": [
       "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt013_runtime_identity_compatibility_contract.json",
       "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/test_e4_r6_pc2w_p1_attempt013_runtime_identity_compatibility.py",
-      "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt013_pre_runtime_authority.py",
       "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt013_pre_runtime_authority_contract.json",
       "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/test_e4_r6_pc2w_p1_attempt013_pre_runtime_gate.py",
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt013_runtime_identity_compatibility.py",
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt013_pre_runtime_authority.py",
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt013_packet_lineage.py",
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt013_packet_lineage_contract.json",
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/test_e4_r6_pc2w_p1_attempt013_packet_lineage.py",
       "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt013_admission_observation_contract.json",
       "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt013_execution_authorization.json",
       "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc2w_p1_attempt013_admission_observation.py",
       "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_p1_attempt013_static_packet.py"
     ],
+    "frozen_r0_files": [
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt013_runtime_identity_compatibility_contract.json",
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/test_e4_r6_pc2w_p1_attempt013_runtime_identity_compatibility.py",
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt013_pre_runtime_authority_contract.json",
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/test_e4_r6_pc2w_p1_attempt013_pre_runtime_gate.py"
+    ],
+    "unchanged_support_files": [
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt013_runtime_identity_compatibility.py",
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt013_pre_runtime_authority.py",
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt013_packet_lineage.py",
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt013_packet_lineage_contract.json",
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/test_e4_r6_pc2w_p1_attempt013_packet_lineage.py"
+    ],
+    "final_sealing_commit_files": [
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt013_admission_observation_contract.json",
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt013_execution_authorization.json",
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc2w_p1_attempt013_admission_observation.py",
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_p1_attempt013_static_packet.py"
+    ],
+    "aggregate_packet_file_count": 13,
+    "final_sealing_commit_file_count": 4,
+    "final_sealing_status": "M",
     "central_static_validation_required_after_packet_commit": true,
     "fresh_independent_ultra_audit_required_after_central_validation": true,
-    "separate_exact_process_command_confirmation_required_after_both_gates": true
+    "deterministic_exact_command_binding_required_after_both_gates": true
+  },
+  "packet_lineage_binding": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt013_packet_lineage_contract.json",
+    "raw_git_blob_bytes": 2543,
+    "raw_git_blob_sha256": "520308aa361f100ecd9783ffb022e75f2895195d37f149e5bc34931ca7d6f8a0",
+    "schema_version": "stage1e-e4-r6-pc2w-p1-attempt013-revision2-packet-lineage-contract-1.0",
+    "public_seam": "e4_r6_pc2w_p1_attempt013_packet_lineage.validate_packet_lineage",
+    "restated_lineage_values": false
   },
   "runtime_identity_compatibility_binding": {
     "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt013_runtime_identity_compatibility_contract.json",
@@ -52,15 +86,32 @@
     "raw_git_blob_sha256": "1cb5d8130420ae543d9f63b4d4cd0b9d16c7571577a5ad506f0217b2ebd530f0",
     "canonical_pointer": "/authority_contract",
     "model_policy_pointer": "/model_policy",
-    "receipt_contract_pointer": "/receipt_contract",
     "restated_authority_values": false
+  },
+  "receipt_contract": {
+    "central_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt013_revision4_central_static_validation_receipt.json",
+    "central_schema": "stage1e-e4-r6-pc2w-p1-attempt013-revision4-central-static-validation-receipt-1.0",
+    "central_verdict": "PASS_PC2W_P1_ATTEMPT013_REVISION4_CENTRAL_STATIC_VALIDATION",
+    "fresh_audit_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt013_revision4_user_audit_waiver_receipt.json",
+    "fresh_audit_schema": "stage1e-e4-r6-pc2w-p1-attempt013-revision4-user-audit-waiver-receipt-1.0",
+    "fresh_audit_verdict": "USER_OVERRIDE_PC2W_P1_ATTEMPT013_REVISION4_AUDIT_WAIVED_READY_FOR_EXACT_COMMAND",
+    "fresh_audit_must_link_central_raw_sha256": true,
+    "fresh_audit_requirement": "WAIVED_BY_CURRENT_USER",
+    "fresh_audit_receipt_semantics": "USER_OVERRIDE_NOT_AN_INDEPENDENT_AUDIT",
+    "user_override_confirmation": "CURRENT_USER_IF_FAILURE_AUDIT_AND_FIX_STANDING_AUTHORITY_2026_08_30",
+    "attempt012_receipts_accepted": false,
+    "attempt013_revision1_receipts_accepted": false,
+    "attempt013_revision2_receipts_accepted": false,
+    "attempt013_revision3_receipts_accepted": false
   },
   "identity_gate": {
     "direct_self_identity_required": true,
     "parent_resolution_closed_union_bound_by_contract": true,
     "tcp_owner_uses_validated_direct_self_index": true,
     "docker_build_time_comparator_bound_by_contract": true,
-    "all_other_server_field_comparators_unchanged_exact": true
+    "all_other_server_field_comparators_unchanged_exact": true,
+    "single_snapshot_required": true,
+    "packet_lineage_predicate_precedes_legacy_main": true
   },
   "attempt_budget": {
     "authorized": 1,
@@ -70,7 +121,7 @@
     "fallback_count": 0
   },
   "output_contract": {
-    "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_av/E4_R6PC2W_P1_attempt013_admission_observation",
+    "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ax/E4_R6PC2W_P1_attempt013_revision4_admission_observation",
     "absent_before_execution": true,
     "immutable_and_must_not_preexist": true,
     "exact_files": [
@@ -85,23 +136,58 @@
     "attempt012_legacy_main_retained": true,
     "attempt009_powershell_compatibility_retained": true,
     "attempt010_exact_command_interface_retained": true,
-    "attempt011_generic_receipt_binding_retained_with_attempt013_spec": true,
+    "attempt011_generic_receipt_binding_retained_with_attempt013_revision4_spec": true,
+    "packet_lineage_helper_called_before_legacy_main": true,
+    "retained_packet_delta_check_exact_four_m": true,
     "new_process_and_tcp_validator_installed_before_legacy_main": true,
     "new_docker_identity_comparator_installed_before_legacy_main": true
   },
+  "exact_process_command_contract": {
+    "required_original_argv_prefix": [
+      "PYTHON_EXECUTABLE",
+      "-B",
+      "RUNNER_PATH"
+    ],
+    "required_interpreter_flags": [
+      "-B"
+    ],
+    "required_interpreter_flag_count": 1,
+    "machine_checked_by": "e4_r6_pc2w_p1_attempt010_command_interface.bind_exact_python_script_argv",
+    "revision2_failure_error_sha256": "4190f8dce17455e17eb3615e06ccbfd23249346e5bdcfec01a5aa085b47212b4",
+    "revision2_failure_stable_code": "INTERPRETER_FLAGS_EXACT_MISMATCH",
+    "revision2_may_be_reinvoked": false
+  },
+  "adapter_ancestry_contract": {
+    "module_chain": [
+      "ATTEMPT013",
+      "ATTEMPT012",
+      "ATTEMPT011",
+      "ATTEMPT010",
+      "ATTEMPT009"
+    ],
+    "original_json_io_owner": "ATTEMPT009",
+    "load_reference": "previous.previous.previous.previous._ORIGINAL_LOAD_JSON",
+    "write_reference": "previous.previous.previous.previous._ORIGINAL_WRITE_JSON",
+    "forbidden_three_hop_reference": true,
+    "revision3_failure_error_sha256": "a76a4582be67134579d5f7224a7d76dbb4411750b3b517d0de5b4a88c3395c80",
+    "revision3_may_be_reinvoked": false
+  },
   "scope_boundary": {
-    "packet_implementation_and_static_regression_only_now": true,
-    "runtime_execution_authorized_now": false,
-    "exact_process_command_confirmed_now": false,
-    "host_docker_wsl_hyperv_network_or_powershell_runtime_commands_authorized_now": false,
-    "materialization_preprocessing_training_evaluation_benchmark_or_test_authorized": false
+    "revision4_implementation_and_static_regression_only_now": false,
+    "runtime_execution_authorized_now": true,
+    "exact_process_command_confirmed_now": true,
+    "host_docker_wsl_hyperv_network_or_powershell_runtime_commands_authorized_now": true,
+    "materialization_preprocessing_training_evaluation_benchmark_or_test_authorized": false,
+    "central_validation_and_user_audit_waiver_required_before_runtime": true
   },
   "truth_state": {
     "RESULT_STATUS": "NOT_RUN",
     "TEST_SET_OPENED": "NO",
     "ACCEPTED_RESULT_ROWS": 0,
     "benchmark_admission_opened": false,
+    "output_root_absent": true,
     "project_benchmark_numbers": "INVALID_FOR_PAPER"
   },
-  "static_packet_verdict": "IMPLEMENTATION_PASS_READY_FOR_CENTRAL_STATIC_VALIDATION"
+  "static_packet_verdict": "IMPLEMENTATION_PASS_READY_FOR_CENTRAL_STATIC_VALIDATION",
+  "next_gate": "CENTRAL_STATIC_VALIDATION_THEN_USER_AUDIT_WAIVER_RECEIPT_AND_EXACT_RUNTIME"
 }
