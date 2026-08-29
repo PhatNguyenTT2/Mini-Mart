@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Attempt-013 Revision 4 adapter with exact command and owner-depth gates."""
+"""Attempt-013 Revision 5 adapter for observed Docker 4.78 identity variants."""
 
 from __future__ import annotations
 
@@ -40,7 +40,7 @@ VALIDATOR_RELATIVE = CONTROL_RELATIVE / "validate_e4_r6_pc2w_p1_attempt013_stati
 R0_COMMIT = "ce6377c351625ed7e029f2883520583ca97fc2b8"
 R1_COMMIT = "294422ca8557e4b55ae3863d853289e2232011b2"
 R2A_SUPPORT_COMMIT = "1a9ca21c5c8b1b08fdec788fbbf23e88473c117f"
-PACKET_PARENT = "d335cedbac6576c93251def1b02ef43d430bf7cb"
+PACKET_PARENT = "d9b7c24065dc5def894d94dcb8eddafd4f89ac1f"
 FROZEN_R0_PATHS = (
     RUNTIME_CONTRACT_RELATIVE,
     RUNTIME_TEST_RELATIVE,
@@ -75,35 +75,35 @@ PACKET_PATHS = (
 PACKET_RELATIVES = set(SEALING_PATHS)
 PACKET_ROSTER = tuple(path.as_posix() for path in PACKET_PATHS)
 OUTPUT_RELATIVE = Path(
-    "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ax/"
-    "E4_R6PC2W_P1_attempt013_revision4_admission_observation"
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ay/"
+    "E4_R6PC2W_P1_attempt013_revision5_admission_observation"
 )
 CONFIRMATION_TOKEN = (
-    "USER_CONFIRMED_EXACT_ATTEMPT013_REVISION4_PROCESS_COMMAND_WITH_"
+    "USER_CONFIRMED_EXACT_ATTEMPT013_REVISION5_PROCESS_COMMAND_WITH_"
     "DASH_B_AND_AUDIT_WAIVER"
 )
 CENTRAL_RECEIPT_PATH = CONTROL_RELATIVE / (
-    "rebaseline_v2_e4_r6_pc2w_p1_attempt013_revision4_central_static_validation_receipt.json"
+    "rebaseline_v2_e4_r6_pc2w_p1_attempt013_revision5_central_static_validation_receipt.json"
 )
 AUDIT_RECEIPT_PATH = CONTROL_RELATIVE / (
-    "rebaseline_v2_e4_r6_pc2w_p1_attempt013_revision4_user_audit_waiver_receipt.json"
+    "rebaseline_v2_e4_r6_pc2w_p1_attempt013_revision5_user_audit_waiver_receipt.json"
 )
 CENTRAL_RECEIPT_SCHEMA = (
-    "stage1e-e4-r6-pc2w-p1-attempt013-revision4-central-static-validation-receipt-1.0"
+    "stage1e-e4-r6-pc2w-p1-attempt013-revision5-central-static-validation-receipt-1.0"
 )
-CENTRAL_RECEIPT_VERDICT = "PASS_PC2W_P1_ATTEMPT013_REVISION4_CENTRAL_STATIC_VALIDATION"
+CENTRAL_RECEIPT_VERDICT = "PASS_PC2W_P1_ATTEMPT013_REVISION5_CENTRAL_STATIC_VALIDATION"
 AUDIT_RECEIPT_SCHEMA = (
-    "stage1e-e4-r6-pc2w-p1-attempt013-revision4-user-audit-waiver-receipt-1.0"
+    "stage1e-e4-r6-pc2w-p1-attempt013-revision5-user-audit-waiver-receipt-1.0"
 )
 AUDIT_RECEIPT_VERDICT = (
-    "USER_OVERRIDE_PC2W_P1_ATTEMPT013_REVISION4_AUDIT_WAIVED_"
+    "USER_OVERRIDE_PC2W_P1_ATTEMPT013_REVISION5_AUDIT_WAIVED_"
     "READY_FOR_EXACT_COMMAND"
 )
 PASS_VERDICT = (
-    "PASS_PC2W_P1_ATTEMPT013_REVISION4_ADMISSION_OBSERVATION_COMPLETE_"
+    "PASS_PC2W_P1_ATTEMPT013_REVISION5_ADMISSION_OBSERVATION_COMPLETE_"
     "FOR_CENTRAL_EVALUATION"
 )
-FAIL_VERDICT = "FAIL_CLOSED_PC2W_P1_ATTEMPT013_REVISION4_CURRENT_HOST_NOT_ADMISSIBLE"
+FAIL_VERDICT = "FAIL_CLOSED_PC2W_P1_ATTEMPT013_REVISION5_CURRENT_HOST_NOT_ADMISSIBLE"
 AUTHORITY_CONTRACT_BYTES = 4526
 AUTHORITY_CONTRACT_SHA256 = (
     "1cb5d8130420ae543d9f63b4d4cd0b9d16c7571577a5ad506f0217b2ebd530f0"
@@ -157,6 +157,65 @@ GATE_RECEIPT_SPEC = receipt_binding.GateReceiptSpec(
     fresh_audit_schema=AUDIT_RECEIPT_SCHEMA,
     fresh_audit_verdict=AUDIT_RECEIPT_VERDICT,
 )
+
+_FILE_VERSION_SENTINEL = "ABSENT_FROM_PE_METADATA_HASH_AND_SIGNATURE_BOUND"
+_FILE_VERSION_READ = (
+    "$fileVersion=[string](Get-Item -LiteralPath $path -ErrorAction Stop)."
+    "VersionInfo.FileVersion\n"
+    "    Require-NonEmpty $fileVersion"
+)
+_FILE_VERSION_COMPATIBLE_READ = (
+    "$fileVersion=[string](Get-Item -LiteralPath $path -ErrorAction Stop)."
+    "VersionInfo.FileVersion\n"
+    "    if([string]::IsNullOrWhiteSpace($fileVersion)){\n"
+    "      if($currentTarget -ne 'com.docker.build'){"
+    "throw [InvalidOperationException]::new('PROBE_STEP_FAILED')}\n"
+    f"      $fileVersion='{_FILE_VERSION_SENTINEL}'\n"
+    "    }"
+)
+if compatibility.PROCESS_IDENTITY_QUERY_V3.count(_FILE_VERSION_READ) != 1:
+    raise RuntimeError("ATTEMPT013_REVISION5_FILE_VERSION_SEAM_DRIFT")
+PROCESS_IDENTITY_QUERY_REVISION5 = compatibility.PROCESS_IDENTITY_QUERY_V3.replace(
+    _FILE_VERSION_READ, _FILE_VERSION_COMPATIBLE_READ
+)
+
+_ARCHITECTURE_ALIASES = {
+    "amd64": "amd64",
+    "x86_64": "amd64",
+    "arm64": "arm64",
+    "aarch64": "arm64",
+}
+
+
+def _canonical_architecture(value: Any) -> str:
+    if not isinstance(value, str) or not value.strip():
+        raise compatibility.IdentityContractError(
+            "DOCKER_ARCHITECTURE_MISSING", "DOCKER_IDENTITY", field="Architecture"
+        )
+    normalized = value.strip().casefold()
+    if normalized not in _ARCHITECTURE_ALIASES:
+        raise compatibility.IdentityContractError(
+            "DOCKER_ARCHITECTURE_UNSUPPORTED", "DOCKER_IDENTITY", field="Architecture"
+        )
+    return _ARCHITECTURE_ALIASES[normalized]
+
+
+def _sanitize_docker_identity_revision5(
+    version_data: Any,
+    info_data: Any,
+    context_data: Any,
+) -> tuple[dict[str, Any], dict[str, bool]]:
+    sanitized, cross = compatibility.sanitize_docker_identity(
+        version_data, info_data, context_data
+    )
+    server_arch = sanitized["server"]["Arch"]
+    info_arch = sanitized["info"]["Architecture"]
+    aliases_match = (
+        _canonical_architecture(server_arch) == _canonical_architecture(info_arch)
+    )
+    cross["info_arch_matches"] = aliases_match
+    sanitized["cross_consistency"]["info_arch_matches"] = aliases_match
+    return sanitized, cross
 
 
 def _sha256(raw: bytes) -> str:
@@ -432,14 +491,21 @@ def _adapted_load_json(path: Path) -> dict[str, Any]:
 def _adapted_document(path: Path, value: dict[str, Any]) -> dict[str, Any]:
     document = copy.deepcopy(value)
     schemas = {
-        "command_receipts.json": "stage1e-e4-r6-pc2w-p1-attempt013-revision4-command-receipts-1.0",
-        "admission_observation.json": "stage1e-e4-r6-pc2w-p1-attempt013-revision4-admission-observation-1.0",
-        "execution_receipt.json": "stage1e-e4-r6-pc2w-p1-attempt013-revision4-execution-receipt-1.0",
-        "handoff.json": "stage1e-e4-r6-pc2w-p1-attempt013-revision4-handoff-1.0",
+        "command_receipts.json": "stage1e-e4-r6-pc2w-p1-attempt013-revision5-command-receipts-1.0",
+        "admission_observation.json": "stage1e-e4-r6-pc2w-p1-attempt013-revision5-admission-observation-1.0",
+        "execution_receipt.json": "stage1e-e4-r6-pc2w-p1-attempt013-revision5-execution-receipt-1.0",
+        "handoff.json": "stage1e-e4-r6-pc2w-p1-attempt013-revision5-handoff-1.0",
     }
     if path.name in schemas:
         document["schema_version"] = schemas[path.name]
         document["stage_id"] = GATE_RECEIPT_SPEC.stage_id
+    gate_receipts = document.get("gate_receipts")
+    if isinstance(gate_receipts, dict) and (
+        "central_validation_receipt" in gate_receipts
+        and "user_audit_waiver_receipt" in gate_receipts
+        and "fresh_independent_audit_receipt" not in gate_receipts
+    ):
+        gate_receipts["fresh_independent_audit_performed"] = False
     pass_conditions = document.get("pass_conditions")
     if isinstance(pass_conditions, dict) and (
         "central_validation_and_fresh_audit_bound" in pass_conditions
@@ -468,12 +534,12 @@ def _runtime_passport(created_at: str, authorization: dict[str, Any]) -> dict[st
         "origin_date": created_at,
         "verification_status": "UNVERIFIED",
         "version_label": (
-            "stage1e_e4_r6_pc2w_p1_attempt013_revision4_"
+            "stage1e_e4_r6_pc2w_p1_attempt013_revision5_"
             "admission_observation_execution_v1"
         ),
         "upstream_dependencies": [
-            "stage1e_e4_r6_pc2w_p1_attempt013_revision4_admission_observation_contract_v1",
-            "stage1e_e4_r6_pc2w_p1_attempt013_revision4_execution_authorization_v1",
+            "stage1e_e4_r6_pc2w_p1_attempt013_revision5_admission_observation_contract_v1",
+            "stage1e_e4_r6_pc2w_p1_attempt013_revision5_execution_authorization_v1",
             "stage1e_e4_r6_pc2w_p1_attempt013_revision2_packet_lineage_contract_v1",
             "stage1e_e4_r6_pc2w_p1_attempt013_runtime_identity_compatibility_contract_v1",
             "stage1e_e4_r6_pc2w_p1_attempt013_pre_runtime_authority_contract_v1",
@@ -532,7 +598,6 @@ def _validate_bound_gate_receipts(
     result["user_audit_waiver_receipt"] = result.pop(
         "fresh_independent_audit_receipt"
     )
-    result["fresh_independent_audit_performed"] = False
     return result
 
 
@@ -566,7 +631,7 @@ def configure_attempt013_runner() -> None:
     legacy.PASS_VERDICT = PASS_VERDICT
     legacy.FAIL_VERDICT = FAIL_VERDICT
     legacy.PROCESS_IDENTITY_QUERY = compatibility.wrap_process_identity_probe(
-        compatibility.PROCESS_IDENTITY_QUERY_V3
+        PROCESS_IDENTITY_QUERY_REVISION5
     )
     legacy.TCP_IDENTITY_QUERY = compatibility.wrap_tcp_identity_probe(
         compatibility.TCP_IDENTITY_QUERY_V3
@@ -574,7 +639,7 @@ def configure_attempt013_runner() -> None:
     legacy.probes_v2 = compatibility
     legacy.parser_v2 = SimpleNamespace(
         IdentityContractError=compatibility.IdentityContractError,
-        sanitize_docker_identity=compatibility.sanitize_docker_identity,
+        sanitize_docker_identity=_sanitize_docker_identity_revision5,
     )
     legacy.load_json = _adapted_load_json
     legacy.write_json = _adapted_write_json
@@ -613,6 +678,7 @@ def main() -> int:
         or receipt_contract.get("attempt013_revision1_receipts_accepted") is not False
         or receipt_contract.get("attempt013_revision2_receipts_accepted") is not False
         or receipt_contract.get("attempt013_revision3_receipts_accepted") is not False
+        or receipt_contract.get("attempt013_revision4_receipts_accepted") is not False
     ):
         raise RuntimeError("ATTEMPT013_RECEIPT_CONTRACT_MISMATCH")
     exact_command_contract = contract_document.get("exact_process_command_contract")
@@ -638,7 +704,7 @@ def main() -> int:
         != expected_exact_command_contract
         or command_interface.REQUIRED_INTERPRETER_FLAGS != ("-B",)
     ):
-        raise RuntimeError("ATTEMPT013_REVISION4_EXACT_COMMAND_CONTRACT_MISMATCH")
+        raise RuntimeError("ATTEMPT013_REVISION5_EXACT_COMMAND_CONTRACT_MISMATCH")
     expected_adapter_contract = {
         "module_chain": [
             "ATTEMPT013", "ATTEMPT012", "ATTEMPT011", "ATTEMPT010",
@@ -669,7 +735,7 @@ def main() -> int:
             previous.previous.previous.previous, "_ORIGINAL_WRITE_JSON"
         )
     ):
-        raise RuntimeError("ATTEMPT013_REVISION4_ADAPTER_ANCESTRY_MISMATCH")
+        raise RuntimeError("ATTEMPT013_REVISION5_ADAPTER_ANCESTRY_MISMATCH")
     owner_contract = owner.get("authority_contract")
     budget = owner_contract.get("attempt_budget") if isinstance(owner_contract, dict) else None
     if not isinstance(budget, dict):
@@ -717,7 +783,7 @@ def main() -> int:
         repo_root, str(args.packet_commit), head
     )
     if lineage_evidence.predicate_passed is not True:
-        raise RuntimeError("ATTEMPT013_REVISION4_LINEAGE_PREDICATE_DID_NOT_PASS")
+        raise RuntimeError("ATTEMPT013_REVISION5_LINEAGE_PREDICATE_DID_NOT_PASS")
     configure_attempt013_runner()
     previous.previous.previous._COMMAND_BINDING = command_binding
     original = list(getattr(sys, "orig_argv", []))
