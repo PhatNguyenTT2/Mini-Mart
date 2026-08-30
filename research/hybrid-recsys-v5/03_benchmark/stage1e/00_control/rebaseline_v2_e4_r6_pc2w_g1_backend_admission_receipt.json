@@ -1,0 +1,140 @@
+{
+  "schema_version": "stage1e-e4-r6-pc2w-g1-backend-admission-receipt-1.0",
+  "stage_id": "R6-PC2W-G1",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "validate-central",
+    "origin_date": "2026-08-30T00:00:00+07:00",
+    "verification_status": "UNVERIFIED",
+    "version_label": "stage1e_e4_r6_pc2w_g1_backend_admission_v1",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_pc2w_contract_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt013_revision9_admission_observation_execution_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt013_revision9_user_audit_waiver_v1",
+      "ars_codex_academic_research_suite_0.1.26"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-30T00:00:00+07:00",
+      "declared_by": "scholar"
+    },
+    "experiment_provenance": []
+  },
+  "admission_decision": {
+    "candidate": "DOCKER_DESKTOP_WSL2_LINUX_CONTAINER_FOR_TRUSTED_PINNED_RESEARCH_CODE",
+    "threat_model": "TRUSTED_PINNED_RESEARCH_CODE",
+    "disposition": "ADMITTED_FOR_R6_C1R3_LINUX_PACKET_DESIGN_ONLY",
+    "opens": [
+      "R6-C1R3-LINUX_PACKET_DESIGN",
+      "TYPED_POSTCONDITION_ADAPTER_DESIGN",
+      "FRESH_INDEPENDENT_PACKET_AUDIT_PREPARATION"
+    ],
+    "does_not_open": [
+      "IMAGE_PULL_OR_BUILD",
+      "CONTAINER_CREATE_OR_RUN",
+      "NETWORKED_DATASET_OR_WHEEL_ACQUISITION",
+      "ENVIRONMENT_OR_DATASET_MATERIALIZATION",
+      "PREPROCESSING",
+      "TRAINING",
+      "EVALUATION",
+      "BENCHMARK_ADMISSION",
+      "TEST_ACCESS",
+      "PAPER_RESULT_CLAIM"
+    ]
+  },
+  "runtime_result_binding": {
+    "result_commit": "169f3ee002eb02bd3a8599add76d9609a3762983",
+    "result_parent": "5ebced7395bf35755d3c2d8d09bdad6f16ca90ff",
+    "packet_commit": "e23ead3472f84db569d7ee888386bdd0bd0c31fe",
+    "execution_head": "5ebced7395bf35755d3c2d8d09bdad6f16ca90ff",
+    "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_bc/E4_R6PC2W_P1_attempt013_revision9_admission_observation",
+    "artifacts": [
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_bc/E4_R6PC2W_P1_attempt013_revision9_admission_observation/admission_observation.json",
+        "git_blob_bytes": 41791,
+        "git_blob_sha256": "5eb91a495517b041489ce08cc1e66b255d8c38e4aae47a08e27dc5212573b945"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_bc/E4_R6PC2W_P1_attempt013_revision9_admission_observation/command_receipts.json",
+        "git_blob_bytes": 22575,
+        "git_blob_sha256": "bf08d29abaff41ca22eabf6c0bd47c91ee2a20d1084336b67bcd78fe6d6c6904"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_bc/E4_R6PC2W_P1_attempt013_revision9_admission_observation/execution_receipt.json",
+        "git_blob_bytes": 4569,
+        "git_blob_sha256": "35e650c997f92c34819c734f62eaa764f4a9cfb09bc4b551858a7d1981f33f7f"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_bc/E4_R6PC2W_P1_attempt013_revision9_admission_observation/handoff.json",
+        "git_blob_bytes": 1740,
+        "git_blob_sha256": "c362b72bf9f30cc6cdeeca3dd8c6617dfab2f5811275b1b139f9de668a01980b"
+      }
+    ]
+  },
+  "runtime_admission_evidence": {
+    "verdict": "PASS_PC2W_P1_ATTEMPT013_REVISION9_ADMISSION_OBSERVATION_COMPLETE_FOR_CENTRAL_EVALUATION",
+    "commands_recorded": 27,
+    "automatic_retry_count": 0,
+    "fallback_count": 0,
+    "docker_desktop_start_attempts": 1,
+    "docker_desktop_stop_attempts": 1,
+    "wsl_shutdown_attempts": 1,
+    "docker_startup_succeeded": true,
+    "docker_client_server_info_identity_complete": true,
+    "docker_client_server_info_cross_consistent": true,
+    "during_process_identity_complete": true,
+    "during_tcp_identity_complete": true,
+    "identity_failures_absent": true,
+    "parse_failures_absent": true,
+    "three_closure_snapshots_present": true,
+    "closure_snapshots_stable": true,
+    "final_closure_matches_pre_start": true,
+    "force_kill_performed": false,
+    "settings_changed": false,
+    "network_or_web_operation_performed": false,
+    "install_or_download_performed": false,
+    "image_or_container_mutation_performed": false
+  },
+  "source_boundary": {
+    "official_recbole_source_only": true,
+    "locked_recbole_commit": "9a6f63d8d4a5b989fe27955a833f813a6d86041e",
+    "official_grouplens_movielens_100k_only": true,
+    "untrusted_or_unpinned_repository_allowed": false,
+    "standard_wsl2_container_claimed_as_hostile_code_security_boundary": false
+  },
+  "authorization_state": {
+    "r6_c1r3_linux_packet_design_authorized": true,
+    "independent_packet_audit_required": true,
+    "image_pull_or_build_authorized": false,
+    "container_create_or_run_authorized": false,
+    "materialization_authorized": false,
+    "training_authorized": false,
+    "evaluation_authorized": false,
+    "benchmark_admission_opened": false,
+    "test_access_authorized": false
+  },
+  "model_policy": {
+    "central_requested_model": "gpt-5.6-sol",
+    "central_requested_reasoning_effort": "max",
+    "central_requested_service_tier": "default",
+    "central_requested_display_tier": "Standard",
+    "actual_service_tier": "UNOBSERVABLE",
+    "fast_or_priority_observed": false,
+    "future_packet_audit_model": "gpt-5.6-sol",
+    "future_packet_audit_reasoning_effort": "xhigh",
+    "future_packet_audit_service_tier": "default"
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "benchmark_admission_opened": false,
+    "phase_1e_complete": false
+  },
+  "write_set": [
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_g1_backend_admission_receipt.json"
+  ],
+  "verdict": "PASS_R6_PC2W_G1_CURRENT_HOST_BACKEND_ADMITTED_FOR_TRUSTED_PINNED_PACKET_DESIGN_ONLY",
+  "next_gate": "R6-C1R3-LINUX_PACKET_AND_TYPED_POSTCONDITION_ADAPTER_DESIGN"
+}
