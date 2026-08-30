@@ -1,0 +1,103 @@
+{
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt013-revision9-execution-receipt-1.0",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "run",
+    "origin_date": "2026-08-30T15:50:49.644687Z",
+    "verification_status": "UNVERIFIED",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt013_revision9_admission_observation_execution_v1",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_pc2w_p1_attempt013_revision9_admission_observation_contract_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt013_revision9_execution_authorization_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt013_revision2_packet_lineage_contract_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt013_runtime_identity_compatibility_contract_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt013_pre_runtime_authority_contract_v1"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-29T00:00:00+07:00",
+      "declared_by": "scholar"
+    },
+    "experiment_provenance": []
+  },
+  "stage_id": "E4-R6-PC2W-P1-ATTEMPT013",
+  "created_at": "2026-08-30T15:50:49.644687Z",
+  "entry_checkpoint": "5ebced7395bf35755d3c2d8d09bdad6f16ca90ff",
+  "packet_commit": "e23ead3472f84db569d7ee888386bdd0bd0c31fe",
+  "packet_artifacts": [
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt013_admission_observation_contract.json",
+      "git_blob_bytes": 16668,
+      "git_blob_sha256": "a0b85036a75f88029f16d9149cb98da72483e77909eff0f32b01350caa7f64d9"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt013_execution_authorization.json",
+      "git_blob_bytes": 11250,
+      "git_blob_sha256": "99690343472c97266f35f5a640c335a3a579a08a3ca8197ad22fc1720b153ad6"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc2w_p1_attempt013_admission_observation.py",
+      "git_blob_bytes": 37540,
+      "git_blob_sha256": "c9e0db333840fd96ba15e5443aa17811b4266898093a694b3600ae4ffdb501c5"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_p1_attempt013_static_packet.py",
+      "git_blob_bytes": 81847,
+      "git_blob_sha256": "b670279fd575602aded92e3fd31a935795acd15b11a5c22d944bdcc57f8f0f57"
+    }
+  ],
+  "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_bc/E4_R6PC2W_P1_attempt013_revision9_admission_observation",
+  "docker_desktop_start_attempts": 1,
+  "docker_desktop_stop_attempts": 1,
+  "wsl_shutdown_attempts": 1,
+  "closure_snapshots": 3,
+  "settling_seconds": 20,
+  "snapshot_barrier_seconds": 15,
+  "automatic_retry_count": 0,
+  "fallback_count": 0,
+  "parse_failures": [],
+  "identity_failures": [],
+  "pass_conditions": {
+    "frozen_upstream_replayed": true,
+    "immediate_pre_start_gate_all_pass": true,
+    "docker_desktop_start_attempted_exactly_once": true,
+    "docker_desktop_start_succeeded": true,
+    "during_docker_desktop_wsl_running": true,
+    "during_process_identity_complete": true,
+    "during_tcp_identity_complete": true,
+    "docker_client_server_info_identity_complete": true,
+    "docker_client_server_info_cross_consistent": true,
+    "docker_desktop_executable_identity_complete": true,
+    "parse_failures_absent": true,
+    "identity_failures_absent": true,
+    "docker_desktop_stop_attempted_exactly_once": true,
+    "docker_desktop_stop_succeeded": true,
+    "wsl_shutdown_attempted_exactly_once": true,
+    "wsl_shutdown_succeeded": true,
+    "three_closure_snapshots_present": true,
+    "all_closure_lanes_pass": true,
+    "closure_snapshots_stable": true,
+    "final_closure_matches_pre_start": true,
+    "exact_command_sequence_no_retry": true,
+    "automatic_retry_count_zero": true,
+    "fallback_count_zero": true,
+    "benchmark_admission_not_opened": true,
+    "central_validation_and_user_audit_waiver_bound": true
+  },
+  "verdict": "PASS_PC2W_P1_ATTEMPT013_REVISION9_ADMISSION_OBSERVATION_COMPLETE_FOR_CENTRAL_EVALUATION",
+  "force_kill_performed": false,
+  "service_restart_performed": false,
+  "settings_changed": false,
+  "install_or_download_performed": false,
+  "network_or_web_operation_performed": false,
+  "image_or_container_mutation_performed": false,
+  "materialization_performed": false,
+  "preprocessing_performed": false,
+  "training_performed": false,
+  "evaluation_performed": false,
+  "benchmark_admission_opened": false,
+  "result_status": "NOT_RUN",
+  "test_set_opened": "NO",
+  "accepted_result_rows": 0
+}
