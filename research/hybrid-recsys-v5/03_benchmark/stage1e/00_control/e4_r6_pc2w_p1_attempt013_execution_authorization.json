@@ -1,19 +1,20 @@
 {
-  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt013-revision7-execution-authorization-1.0",
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt013-revision8-execution-authorization-1.0",
   "stage_id": "E4-R6-PC2W-P1-ATTEMPT013",
   "material_passport": {
     "origin_skill": "experiment-agent",
     "origin_mode": "implementation-static-tdd",
-    "origin_date": "2026-08-29T00:00:00+07:00",
+    "origin_date": "2026-08-30T00:00:00+07:00",
     "verification_status": "UNVERIFIED",
-    "version_label": "stage1e_e4_r6_pc2w_p1_attempt013_revision7_execution_authorization_v1",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt013_revision8_execution_authorization_v1",
     "upstream_dependencies": [
-      "stage1e_e4_r6_pc2w_p1_attempt013_revision7_admission_observation_contract_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt013_revision8_admission_observation_contract_v1",
       "stage1e_e4_r6_pc2w_p1_attempt013_revision2_packet_lineage_contract_v1",
       "stage1e_e4_r6_pc2w_p1_attempt013_runtime_identity_compatibility_contract_v1",
       "stage1e_e4_r6_pc2w_p1_attempt013_pre_runtime_authority_contract_v1",
       "stage1e_e4_r6_pc2w_p1_attempt013_revision5_runtime_result_v1",
-      "stage1e_e4_r6_pc2w_p1_attempt013_revision6_pre_runtime_failure_v1"
+      "stage1e_e4_r6_pc2w_p1_attempt013_revision6_pre_runtime_failure_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt013_revision7_runtime_result_v1"
     ],
     "repro_lock": null,
     "experiment_intake_declaration": {
@@ -25,7 +26,7 @@
   },
   "user_decision": {
     "status": "CONFIRMED",
-    "confirmed_scope": "RUN_ATTEMPT013_REVISION7_EXACTLY_ONCE_AFTER_REVISION6_PRE_RUNTIME_TOKEN_BINDING_REMEDIATION_WITH_CURRENT_USER_AUDIT_WAIVER",
+    "confirmed_scope": "RUN_ATTEMPT013_REVISION8_EXACTLY_ONCE_AFTER_REVISION7_TCP_CANONICAL_ORDERING_REMEDIATION_WITH_CURRENT_USER_AUDIT_WAIVER",
     "confirmation_source": "CURRENT_USER_RUN_NOW_AUDIT_IF_FAILURE_STANDING_AUTHORITY_2026_08_30",
     "runtime_execution_authorized_now": true,
     "exact_process_command_confirmed_now": true,
@@ -33,17 +34,17 @@
     "fallback_authorized": false
   },
   "authorized_now": [
-    "CREATE_NEW_EXACT_FOUR_PATH_ATTEMPT013_REVISION7_PACKET",
+    "CREATE_NEW_EXACT_FOUR_PATH_ATTEMPT013_REVISION8_PACKET",
     "CREATE_NEW_CENTRAL_STATIC_VALIDATION_RECEIPT",
     "CREATE_USER_AUDIT_WAIVER_RECEIPT_WITHOUT_AUDIT_CLAIM",
-    "RUN_EXACT_ATTEMPT013_REVISION7_PROCESS_COMMAND_ONCE_WITH_PYTHON_DASH_B",
+    "RUN_EXACT_ATTEMPT013_REVISION8_PROCESS_COMMAND_ONCE_WITH_PYTHON_DASH_B",
     "START_AND_STOP_DOCKER_DESKTOP_WITHIN_RUNNER_FINALLY",
     "SHUT_DOWN_WSL_WITHIN_RUNNER_FINALLY",
     "CREATE_EXACT_ATTEMPT013_OUTPUT_ROOT_AND_FOUR_RESULT_FILES"
   ],
   "not_authorized_now": [
     "CLAIM_USER_WAIVER_IS_AN_INDEPENDENT_AUDIT",
-    "REUSE_ATTEMPT012_OR_ATTEMPT013_REVISION1_OR_REVISION2_OR_REVISION3_OR_REVISION4_OR_REVISION5_OR_REVISION6_GATE_RECEIPTS",
+    "REUSE_ATTEMPT012_OR_ATTEMPT013_REVISION1_OR_REVISION2_OR_REVISION3_OR_REVISION4_OR_REVISION5_OR_REVISION6_OR_REVISION7_GATE_RECEIPTS",
     "NETWORK_DOWNLOAD_INSTALL_ENVIRONMENT_OR_CONTAINER_OPERATION",
     "MATERIALIZE_PREPROCESS_TRAIN_EVALUATE_BENCHMARK_OR_OPEN_TEST",
     "MODIFY_FROZEN_R0_R1_R2A_OLD_PLAN_RECEIPT_PIPELINE_STATE_OR_MANUSCRIPT",
@@ -73,12 +74,12 @@
     "restated_authority_values": false
   },
   "receipt_contract": {
-    "central_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt013_revision7_central_static_validation_receipt.json",
-    "central_schema": "stage1e-e4-r6-pc2w-p1-attempt013-revision7-central-static-validation-receipt-1.0",
-    "central_verdict": "PASS_PC2W_P1_ATTEMPT013_REVISION7_CENTRAL_STATIC_VALIDATION",
-    "fresh_audit_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt013_revision7_user_audit_waiver_receipt.json",
-    "fresh_audit_schema": "stage1e-e4-r6-pc2w-p1-attempt013-revision7-user-audit-waiver-receipt-1.0",
-    "fresh_audit_verdict": "USER_OVERRIDE_PC2W_P1_ATTEMPT013_REVISION7_AUDIT_WAIVED_READY_FOR_EXACT_COMMAND",
+    "central_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt013_revision8_central_static_validation_receipt.json",
+    "central_schema": "stage1e-e4-r6-pc2w-p1-attempt013-revision8-central-static-validation-receipt-1.0",
+    "central_verdict": "PASS_PC2W_P1_ATTEMPT013_REVISION8_CENTRAL_STATIC_VALIDATION",
+    "fresh_audit_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt013_revision8_user_audit_waiver_receipt.json",
+    "fresh_audit_schema": "stage1e-e4-r6-pc2w-p1-attempt013-revision8-user-audit-waiver-receipt-1.0",
+    "fresh_audit_verdict": "USER_OVERRIDE_PC2W_P1_ATTEMPT013_REVISION8_AUDIT_WAIVED_READY_FOR_EXACT_COMMAND",
     "fresh_audit_must_link_central_raw_sha256": true,
     "fresh_audit_requirement": "WAIVED_BY_CURRENT_USER",
     "fresh_audit_receipt_semantics": "USER_OVERRIDE_NOT_AN_INDEPENDENT_AUDIT",
@@ -89,7 +90,8 @@
     "attempt013_revision3_receipts_accepted": false,
     "attempt013_revision4_receipts_accepted": false,
     "attempt013_revision5_receipts_accepted": false,
-    "attempt013_revision6_receipts_accepted": false
+    "attempt013_revision6_receipts_accepted": false,
+    "attempt013_revision7_receipts_accepted": false
   },
   "revision5_runtime_failure_evidence": {
     "result_commit": "16640292d63fdd5f7c1ff605142734ed12d750e6",
@@ -111,6 +113,22 @@
     "docker_or_wsl_commands_executed": false,
     "output_root_created": false,
     "revision6_may_be_reinvoked": false
+  },
+  "revision7_runtime_failure_evidence": {
+    "result_commit": "b52ef03271f4c3cbdd1215ed223a5a96045dcbeb",
+    "execution_receipt_sha256": "3ba8593f2836f073330024bce6e052b591875caf9a783361168c85a748441c27",
+    "verdict": "FAIL_CLOSED_PC2W_P1_ATTEMPT013_REVISION7_CURRENT_HOST_NOT_ADMISSIBLE",
+    "commands_recorded": 27,
+    "docker_desktop_start_attempts": 1,
+    "docker_desktop_stop_attempts": 1,
+    "wsl_shutdown_attempts": 1,
+    "docker_startup_succeeded": true,
+    "closure_stable": true,
+    "failure_stage": "D02",
+    "failure_code": "TCP_ROWS_NOT_CANONICAL",
+    "process_identity_complete": true,
+    "docker_identity_complete": true,
+    "revision7_may_be_reinvoked": false
   },
   "implementation_model_observation": {
     "actual_model": "gpt-5.6-sol",
@@ -165,7 +183,7 @@
     "audit_waiver_does_not_claim_independent_verification": true,
     "auto_execution_activation_requires_deterministic_exact_command_binding": true,
     "user_override_replaces_only_fresh_audit_gate": true,
-    "confirmation_token": "USER_CONFIRMED_EXACT_ATTEMPT013_REVISION7_PROCESS_COMMAND_WITH_DASH_B_AND_AUDIT_WAIVER",
+    "confirmation_token": "USER_CONFIRMED_EXACT_ATTEMPT013_REVISION8_PROCESS_COMMAND_WITH_DASH_B_AND_AUDIT_WAIVER",
     "working_directory_and_exact_argv_must_both_be_bound": true,
     "execution_attempts_maximum": 1,
     "automatic_retry_count": 0,
@@ -179,6 +197,6 @@
     "output_root_absent": true,
     "project_benchmark_numbers": "INVALID_FOR_PAPER"
   },
-  "authorization_verdict": "AUTHORIZED_ATTEMPT013_REVISION7_EXACT_ONE_SHOT_RUNTIME_AFTER_REVISION6_PRE_RUNTIME_TOKEN_BINDING_REMEDIATION_CENTRAL_AND_USER_WAIVER_RECEIPTS",
+  "authorization_verdict": "AUTHORIZED_ATTEMPT013_REVISION8_EXACT_ONE_SHOT_RUNTIME_AFTER_REVISION7_TCP_CANONICAL_ORDERING_REMEDIATION_CENTRAL_AND_USER_WAIVER_RECEIPTS",
   "next_gate": "CENTRAL_STATIC_VALIDATION_THEN_USER_AUDIT_WAIVER_RECEIPT_AND_EXACT_RUNTIME"
 }

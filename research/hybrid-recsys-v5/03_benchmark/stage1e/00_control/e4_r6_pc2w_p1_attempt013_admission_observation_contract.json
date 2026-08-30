@@ -1,19 +1,20 @@
 {
-  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt013-revision7-admission-observation-contract-1.0",
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt013-revision8-admission-observation-contract-1.0",
   "stage_id": "E4-R6-PC2W-P1-ATTEMPT013",
   "material_passport": {
     "origin_skill": "experiment-agent",
     "origin_mode": "implementation-static-tdd",
-    "origin_date": "2026-08-29T00:00:00+07:00",
+    "origin_date": "2026-08-30T00:00:00+07:00",
     "verification_status": "UNVERIFIED",
-    "version_label": "stage1e_e4_r6_pc2w_p1_attempt013_revision7_admission_observation_contract_v1",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt013_revision8_admission_observation_contract_v1",
     "upstream_dependencies": [
       "stage1e_e4_r6_pc2w_p1_attempt013_central_failure_remediation_plan_v1",
       "stage1e_e4_r6_pc2w_p1_attempt013_revision2_packet_lineage_contract_v1",
       "stage1e_e4_r6_pc2w_p1_attempt013_runtime_identity_compatibility_contract_v1",
       "stage1e_e4_r6_pc2w_p1_attempt013_pre_runtime_authority_contract_v1",
       "stage1e_e4_r6_pc2w_p1_attempt013_revision5_runtime_result_v1",
-      "stage1e_e4_r6_pc2w_p1_attempt013_revision6_pre_runtime_failure_v1"
+      "stage1e_e4_r6_pc2w_p1_attempt013_revision6_pre_runtime_failure_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt013_revision7_runtime_result_v1"
     ],
     "repro_lock": null,
     "experiment_intake_declaration": {
@@ -23,9 +24,9 @@
     },
     "experiment_provenance": []
   },
-  "purpose": "Seal Attempt-013 Revision 7 after Revision 6 stopped before host I/O because the runner retained an obsolete user-override token literal. Revision 7 binds that literal to the exact contract value and adds a static source assertion while retaining the validated parent-path visibility adapter.",
+  "purpose": "Seal Attempt-013 Revision 8 after Revision 7 completed all 27 commands and stable Docker/WSL closure but failed D02 solely because the TCP query sorted PID-first while the frozen validator requires canonical ProcessName-first ordering. Revision 8 changes only that query ordering and retains all identity, closure, one-shot, and fail-closed gates.",
   "packet_entry_gate": {
-    "packet_parent_checkpoint": "e24f061e55b307153eb00762c99191ac3d3b3ecd",
+    "packet_parent_checkpoint": "3834dbc63cb5a9581549281f0ee38343075744de",
     "aggregate_packet_files": [
       "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt013_runtime_identity_compatibility_contract.json",
       "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/test_e4_r6_pc2w_p1_attempt013_runtime_identity_compatibility.py",
@@ -92,12 +93,12 @@
     "restated_authority_values": false
   },
   "receipt_contract": {
-    "central_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt013_revision7_central_static_validation_receipt.json",
-    "central_schema": "stage1e-e4-r6-pc2w-p1-attempt013-revision7-central-static-validation-receipt-1.0",
-    "central_verdict": "PASS_PC2W_P1_ATTEMPT013_REVISION7_CENTRAL_STATIC_VALIDATION",
-    "fresh_audit_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt013_revision7_user_audit_waiver_receipt.json",
-    "fresh_audit_schema": "stage1e-e4-r6-pc2w-p1-attempt013-revision7-user-audit-waiver-receipt-1.0",
-    "fresh_audit_verdict": "USER_OVERRIDE_PC2W_P1_ATTEMPT013_REVISION7_AUDIT_WAIVED_READY_FOR_EXACT_COMMAND",
+    "central_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt013_revision8_central_static_validation_receipt.json",
+    "central_schema": "stage1e-e4-r6-pc2w-p1-attempt013-revision8-central-static-validation-receipt-1.0",
+    "central_verdict": "PASS_PC2W_P1_ATTEMPT013_REVISION8_CENTRAL_STATIC_VALIDATION",
+    "fresh_audit_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt013_revision8_user_audit_waiver_receipt.json",
+    "fresh_audit_schema": "stage1e-e4-r6-pc2w-p1-attempt013-revision8-user-audit-waiver-receipt-1.0",
+    "fresh_audit_verdict": "USER_OVERRIDE_PC2W_P1_ATTEMPT013_REVISION8_AUDIT_WAIVED_READY_FOR_EXACT_COMMAND",
     "fresh_audit_must_link_central_raw_sha256": true,
     "fresh_audit_requirement": "WAIVED_BY_CURRENT_USER",
     "fresh_audit_receipt_semantics": "USER_OVERRIDE_NOT_AN_INDEPENDENT_AUDIT",
@@ -108,7 +109,8 @@
     "attempt013_revision3_receipts_accepted": false,
     "attempt013_revision4_receipts_accepted": false,
     "attempt013_revision5_receipts_accepted": false,
-    "attempt013_revision6_receipts_accepted": false
+    "attempt013_revision6_receipts_accepted": false,
+    "attempt013_revision7_receipts_accepted": false
   },
   "revision5_runtime_failure_evidence": {
     "result_commit": "16640292d63fdd5f7c1ff605142734ed12d750e6",
@@ -139,6 +141,22 @@
     "output_root_created": false,
     "revision6_may_be_reinvoked": false
   },
+  "revision7_runtime_failure_evidence": {
+    "result_commit": "b52ef03271f4c3cbdd1215ed223a5a96045dcbeb",
+    "execution_receipt_sha256": "3ba8593f2836f073330024bce6e052b591875caf9a783361168c85a748441c27",
+    "verdict": "FAIL_CLOSED_PC2W_P1_ATTEMPT013_REVISION7_CURRENT_HOST_NOT_ADMISSIBLE",
+    "commands_recorded": 27,
+    "docker_desktop_start_attempts": 1,
+    "docker_desktop_stop_attempts": 1,
+    "wsl_shutdown_attempts": 1,
+    "docker_startup_succeeded": true,
+    "closure_stable": true,
+    "failure_stage": "D02",
+    "failure_code": "TCP_ROWS_NOT_CANONICAL",
+    "process_identity_complete": true,
+    "docker_identity_complete": true,
+    "revision7_may_be_reinvoked": false
+  },
   "identity_gate": {
     "direct_self_identity_required": true,
     "parent_resolution_closed_union_bound_by_contract": true,
@@ -147,6 +165,15 @@
     "parent_name_only_is_name_agnostic": true,
     "direct_self_fields_remain_mandatory_for_parent_name_only_rows": true,
     "tcp_owner_uses_validated_direct_self_index": true,
+    "revision8_tcp_query_sort_order": [
+      "ProcessName",
+      "ProcessId",
+      "State",
+      "LocalPort",
+      "RemotePort"
+    ],
+    "revision8_tcp_validator_sort_order_unchanged": true,
+    "revision8_tcp_sort_adapter_changes_order_only": true,
     "docker_build_time_comparator_bound_by_contract": true,
     "com_docker_build_absent_pe_file_version_uses_closed_sentinel": true,
     "absent_pe_file_version_allowlist": [
@@ -166,7 +193,7 @@
     "fallback_count": 0
   },
   "output_contract": {
-    "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ba/E4_R6PC2W_P1_attempt013_revision7_admission_observation",
+    "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_bb/E4_R6PC2W_P1_attempt013_revision8_admission_observation",
     "absent_before_execution": true,
     "immutable_and_must_not_preexist": true,
     "exact_files": [
@@ -181,7 +208,7 @@
     "attempt012_legacy_main_retained": true,
     "attempt009_powershell_compatibility_retained": true,
     "attempt010_exact_command_interface_retained": true,
-    "attempt011_generic_receipt_binding_retained_with_attempt013_revision7_spec": true,
+    "attempt011_generic_receipt_binding_retained_with_attempt013_revision8_spec": true,
     "packet_lineage_helper_called_before_legacy_main": true,
     "retained_packet_delta_check_exact_four_m": true,
     "new_process_and_tcp_validator_installed_before_legacy_main": true,
@@ -190,7 +217,8 @@
     "revision5_architecture_alias_adapter_retained_before_legacy_main": true,
     "revision5_waiver_receipt_projection_retained_before_output_write": true,
     "revision6_parent_path_visibility_adapter_retained_before_legacy_main": true,
-    "revision7_user_override_token_literal_bound_before_legacy_main": true
+    "revision7_user_override_token_literal_bound_before_legacy_main": true,
+    "revision8_tcp_query_sort_adapter_installed_before_legacy_main": true
   },
   "exact_process_command_contract": {
     "required_original_argv_prefix": [
@@ -223,7 +251,7 @@
     "revision3_may_be_reinvoked": false
   },
   "scope_boundary": {
-    "revision7_implementation_and_static_regression_only_now": false,
+    "revision8_implementation_and_static_regression_only_now": false,
     "runtime_execution_authorized_now": true,
     "exact_process_command_confirmed_now": true,
     "host_docker_wsl_hyperv_network_or_powershell_runtime_commands_authorized_now": true,
