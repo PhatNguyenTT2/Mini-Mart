@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Offline Revision 5 static validator; never imports or invokes an Attempt runner."""
+"""Offline Revision 6 static validator; never imports or invokes an Attempt runner."""
 
 from __future__ import annotations
 
@@ -29,6 +29,9 @@ PLAN = "2efdcd73bb7f7e2b298ee12cdb5b09171a865d69"
 R2A = "1a9ca21c5c8b1b08fdec788fbbf23e88473c117f"
 P1 = "d335cedbac6576c93251def1b02ef43d430bf7cb"
 R2_REVISION4 = "d9b7c24065dc5def894d94dcb8eddafd4f89ac1f"
+R2_REVISION5 = "b85cd4ee128bd1713f822107cc068b6cd3e6a4d5"
+REVISION5_EXECUTION_HEAD = "a594f2c71fc6566e8f99219a68a6fdf8783dc7b7"
+REVISION5_RESULT = "16640292d63fdd5f7c1ff605142734ed12d750e6"
 PRECOMMIT_PACKET_SENTINEL = "f" * 40
 
 RUNTIME_HELPER = CONTROL / "e4_r6_pc2w_p1_attempt013_runtime_identity_compatibility.py"
@@ -71,15 +74,15 @@ R2A_FILES = R2A_SUPPORT_PATHS
 P1_PLAN_FILE = CONTROL / "e4_r6_pc2w_p1_attempt013_revision2_precommit_status_remediation_plan.md"
 
 OUTPUT = Path(
-    "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ay/"
-    "E4_R6PC2W_P1_attempt013_revision5_admission_observation"
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_az/"
+    "E4_R6PC2W_P1_attempt013_revision6_admission_observation"
 )
 CENTRAL_RECEIPT = CONTROL / (
-    "rebaseline_v2_e4_r6_pc2w_p1_attempt013_revision5_"
+    "rebaseline_v2_e4_r6_pc2w_p1_attempt013_revision6_"
     "central_static_validation_receipt.json"
 )
 AUDIT_RECEIPT = CONTROL / (
-    "rebaseline_v2_e4_r6_pc2w_p1_attempt013_revision5_"
+    "rebaseline_v2_e4_r6_pc2w_p1_attempt013_revision6_"
     "user_audit_waiver_receipt.json"
 )
 LINEAGE_SCHEMA = (
@@ -87,28 +90,28 @@ LINEAGE_SCHEMA = (
     "packet-lineage-contract-1.0"
 )
 CONTRACT_SCHEMA = (
-    "stage1e-e4-r6-pc2w-p1-attempt013-revision5-"
+    "stage1e-e4-r6-pc2w-p1-attempt013-revision6-"
     "admission-observation-contract-1.0"
 )
 AUTHORIZATION_SCHEMA = (
-    "stage1e-e4-r6-pc2w-p1-attempt013-revision5-"
+    "stage1e-e4-r6-pc2w-p1-attempt013-revision6-"
     "execution-authorization-1.0"
 )
 VALIDATOR_SCHEMA = (
-    "stage1e-e4-r6-pc2w-p1-attempt013-revision5-"
+    "stage1e-e4-r6-pc2w-p1-attempt013-revision6-"
     "static-validation-result-1.0"
 )
 CENTRAL_SCHEMA = (
-    "stage1e-e4-r6-pc2w-p1-attempt013-revision5-"
+    "stage1e-e4-r6-pc2w-p1-attempt013-revision6-"
     "central-static-validation-receipt-1.0"
 )
-CENTRAL_VERDICT = "PASS_PC2W_P1_ATTEMPT013_REVISION5_CENTRAL_STATIC_VALIDATION"
+CENTRAL_VERDICT = "PASS_PC2W_P1_ATTEMPT013_REVISION6_CENTRAL_STATIC_VALIDATION"
 AUDIT_SCHEMA = (
-    "stage1e-e4-r6-pc2w-p1-attempt013-revision5-"
+    "stage1e-e4-r6-pc2w-p1-attempt013-revision6-"
     "user-audit-waiver-receipt-1.0"
 )
 AUDIT_VERDICT = (
-    "USER_OVERRIDE_PC2W_P1_ATTEMPT013_REVISION5_AUDIT_WAIVED_"
+    "USER_OVERRIDE_PC2W_P1_ATTEMPT013_REVISION6_AUDIT_WAIVED_"
     "READY_FOR_EXACT_COMMAND"
 )
 
@@ -160,6 +163,25 @@ ATTEMPT012_RECEIPTS = {
         (5189, "a35bcd4d70e0028a54eb6da3ace9a3da083dca15ae7100d8638e74a334c1973f"),
     Path("research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_au/E4_R6PC2W_P1_attempt012_admission_observation/handoff.json"):
         (1488, "1da3715ac0752fcc5e967791f4a0c8561b98128283088f87b1f0ed24c5fee6a4"),
+}
+
+REVISION5_RESULT_ROOT = Path(
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ay/"
+    "E4_R6PC2W_P1_attempt013_revision5_admission_observation"
+)
+REVISION5_RESULT_RECEIPTS = {
+    REVISION5_RESULT_ROOT / "admission_observation.json": (
+        30247, "d30ef4f032575d14b5f6cb32df978a8fe49461d6d3ac768e01f77c158daf911b"
+    ),
+    REVISION5_RESULT_ROOT / "command_receipts.json": (
+        22575, "e78eea85a12f47410a5b933a467cf6e883561856b3163acf3afce7a0eaef7042"
+    ),
+    REVISION5_RESULT_ROOT / "execution_receipt.json": (
+        5014, "a8e5df692faca0d2802b6ef382f4cc60eefcc12337d99ed65773dcbeed514b94"
+    ),
+    REVISION5_RESULT_ROOT / "handoff.json": (
+        1702, "4c7f5c294acf3c2f0f390b3016a1cce42fe1729b1b7067c681bf350012bf5c43"
+    ),
 }
 
 CANDIDATE_SUITES = (
@@ -315,17 +337,23 @@ def validate_commit_shape(repo: Path, precommit: bool) -> str:
         == sorted(f"M\t{path.as_posix()}" for path in SEALING_PATHS),
         "REVISION4_WRITE_SET_MISMATCH",
     )
+    require(commit_parent(repo, R2_REVISION5) == R2_REVISION4, "REVISION5_PARENT_MISMATCH")
+    require(
+        sorted(commit_delta(repo, R2_REVISION5))
+        == sorted(f"M\t{path.as_posix()}" for path in SEALING_PATHS),
+        "REVISION5_WRITE_SET_MISMATCH",
+    )
     head = str(git(repo, "rev-parse", "HEAD")).casefold()
     status = git_status_porcelain(repo)
     if precommit:
-        require(head == R2_REVISION4, "PRECOMMIT_HEAD_NOT_REVISION4")
+        require(head == R2_REVISION5, "PRECOMMIT_HEAD_NOT_REVISION5")
         expected = sorted(f" M {path.as_posix()}" for path in SEALING_PATHS)
         require(sorted(status.splitlines()) == expected, "PRECOMMIT_WRITE_SET_MISMATCH")
         return "WORKTREE_PRECOMMIT"
-    require(commit_parent(repo, head) == R2_REVISION4, "REVISION5_PARENT_MISMATCH")
+    require(commit_parent(repo, head) == R2_REVISION5, "REVISION6_PARENT_MISMATCH")
     require(
         sorted(commit_delta(repo, head)) == sorted(f"M\t{path.as_posix()}" for path in SEALING_PATHS),
-        "REVISION5_WRITE_SET_MISMATCH",
+        "REVISION6_WRITE_SET_MISMATCH",
     )
     require(status == "", "R2_WORKTREE_NOT_CLEAN")
     return head
@@ -334,7 +362,7 @@ def validate_commit_shape(repo: Path, precommit: bool) -> str:
 def packet_bytes(repo: Path, revision: str, path: Path, precommit: bool) -> bytes:
     if precommit and path in SEALING_PATHS:
         return normalized_checkout(repo / path)
-    lookup = R2_REVISION4 if precommit else revision
+    lookup = R2_REVISION5 if precommit else revision
     return git_blob(repo, lookup, path)
 
 
@@ -387,7 +415,7 @@ def validate_lineage(
     )
     if precommit:
         packet_commit = PRECOMMIT_PACKET_SENTINEL
-        parents = (R2_REVISION4,)
+        parents = (R2_REVISION5,)
         observed_delta = expected_delta
         ancestor = True
         ancestry_basis = "PRECOMMIT_EXACT_HEAD_AND_FOUR_MODIFICATION_SENTINEL"
@@ -402,7 +430,7 @@ def validate_lineage(
         aggregate_roster=PACKET_ROSTER,
         frozen_r0_bindings=frozen,
         support_bindings=support,
-        sealing_parent=R2_REVISION4,
+        sealing_parent=R2_REVISION5,
         expected_sealing_delta=expected_delta,
     )
     observation = packet_lineage.PacketLineageObservation(
@@ -434,7 +462,7 @@ def validate_lineage(
 
 
 def validate_attempt012_receipts(repo: Path, revision: str, precommit: bool) -> list[dict[str, Any]]:
-    lookup = R2_REVISION4 if precommit else revision
+    lookup = R2_REVISION5 if precommit else revision
     facts = []
     for path, (expected_bytes, expected_sha256) in sorted(
         ATTEMPT012_RECEIPTS.items(), key=lambda item: item[0].as_posix()
@@ -448,6 +476,57 @@ def validate_attempt012_receipts(repo: Path, revision: str, precommit: bool) -> 
             "git_blob_sha256": expected_sha256,
             "authority": "HISTORICAL_FROZEN_NON_AUTHORITATIVE_FOR_REVISION2",
         })
+    return facts
+
+
+def validate_revision5_runtime_result(repo: Path) -> list[dict[str, Any]]:
+    require(
+        commit_parent(repo, REVISION5_RESULT) == REVISION5_EXECUTION_HEAD,
+        "REVISION5_RESULT_PARENT_MISMATCH",
+    )
+    expected_delta = sorted(
+        f"A\t{path.as_posix()}" for path in REVISION5_RESULT_RECEIPTS
+    )
+    require(
+        sorted(commit_delta(repo, REVISION5_RESULT)) == expected_delta,
+        "REVISION5_RESULT_WRITE_SET_MISMATCH",
+    )
+    facts = []
+    documents: dict[str, dict[str, Any]] = {}
+    for path, (expected_bytes, expected_sha256) in sorted(
+        REVISION5_RESULT_RECEIPTS.items(), key=lambda item: item[0].as_posix()
+    ):
+        raw = git_blob(repo, REVISION5_RESULT, path)
+        require(len(raw) == expected_bytes, f"REVISION5_RESULT_BYTES_MISMATCH:{path}")
+        require(
+            sha256_bytes(raw) == expected_sha256,
+            f"REVISION5_RESULT_HASH_MISMATCH:{path}",
+        )
+        documents[path.name] = strict_json(raw, path)
+        facts.append({
+            "path": path.as_posix(),
+            "git_blob_bytes": expected_bytes,
+            "git_blob_sha256": expected_sha256,
+            "authority": "HISTORICAL_FAILURE_EVIDENCE_NON_AUTHORITATIVE_FOR_REVISION6",
+        })
+    execution = documents["execution_receipt.json"]
+    require(
+        execution.get("verdict")
+        == "FAIL_CLOSED_PC2W_P1_ATTEMPT013_REVISION5_CURRENT_HOST_NOT_ADMISSIBLE",
+        "REVISION5_RESULT_VERDICT_MISMATCH",
+    )
+    require(
+        execution.get("identity_failures", [{}])[0].get("code")
+        == "PROCESS_PROBE_REQUIRE_PARENT_PATH",
+        "REVISION5_RESULT_FAILURE_CODE_MISMATCH",
+    )
+    require(
+        execution.get("pass_conditions", {}).get("docker_desktop_start_succeeded")
+        is True
+        and execution.get("pass_conditions", {}).get("all_closure_lanes_pass")
+        is True,
+        "REVISION5_RESULT_DOCKER_OR_CLOSURE_MISMATCH",
+    )
     return facts
 
 
@@ -509,7 +588,7 @@ def validate_documents(documents: dict[Path, dict[str, Any]]) -> None:
 
     packet_gate = contract.get("packet_entry_gate", {})
     require(
-        packet_gate.get("packet_parent_checkpoint") == R2_REVISION4,
+        packet_gate.get("packet_parent_checkpoint") == R2_REVISION5,
         "PACKET_PARENT_CONTRACT_MISMATCH",
     )
     require(packet_gate.get("aggregate_packet_files") == list(PACKET_ROSTER), "PACKET_ROSTER_MISMATCH")
@@ -552,51 +631,65 @@ def validate_documents(documents: dict[Path, dict[str, Any]]) -> None:
         "fresh_audit_must_link_central_raw_sha256": True,
         "fresh_audit_requirement": "WAIVED_BY_CURRENT_USER",
         "fresh_audit_receipt_semantics": "USER_OVERRIDE_NOT_AN_INDEPENDENT_AUDIT",
-        "user_override_confirmation": "CURRENT_USER_IF_FAILURE_AUDIT_AND_FIX_STANDING_AUTHORITY_2026_08_30",
+        "user_override_confirmation": "CURRENT_USER_RUN_NOW_AUDIT_IF_FAILURE_STANDING_AUTHORITY_2026_08_30",
         "attempt012_receipts_accepted": False,
         "attempt013_revision1_receipts_accepted": False,
         "attempt013_revision2_receipts_accepted": False,
         "attempt013_revision3_receipts_accepted": False,
         "attempt013_revision4_receipts_accepted": False,
+        "attempt013_revision5_receipts_accepted": False,
     }
     require(contract.get("receipt_contract") == expected_receipts, "CONTRACT_RECEIPT_GATE_MISMATCH")
     require(authorization.get("receipt_contract") == expected_receipts, "AUTHORIZATION_RECEIPT_GATE_MISMATCH")
-    expected_revision4_evidence = {
-        "result_commit": "dd86eb11f58bfae46ee6f14f5eb1848b7aa2d1cf",
+    expected_revision5_evidence = {
+        "result_commit": "16640292d63fdd5f7c1ff605142734ed12d750e6",
         "execution_receipt_sha256": (
-            "905605a319d483fae429a8a6654c19d6fb18b8cc3f38a0606f6660516cdccc62"
+            "a8e5df692faca0d2802b6ef382f4cc60eefcc12337d99ed65773dcbeed514b94"
         ),
         "verdict": (
-            "FAIL_CLOSED_PC2W_P1_ATTEMPT013_REVISION4_CURRENT_HOST_NOT_ADMISSIBLE"
+            "FAIL_CLOSED_PC2W_P1_ATTEMPT013_REVISION5_CURRENT_HOST_NOT_ADMISSIBLE"
         ),
         "commands_recorded": 27,
         "docker_startup_succeeded": True,
         "closure_stable": True,
-        "revision4_may_be_reinvoked": False,
+        "failure_code": "PROCESS_PROBE_REQUIRE_PARENT_PATH",
+        "failure_target": "wslrelay",
+        "revision5_may_be_reinvoked": False,
     }
-    authorization_evidence = authorization.get("revision4_runtime_failure_evidence", {})
+    authorization_evidence = authorization.get("revision5_runtime_failure_evidence", {})
     require(
-        authorization_evidence == expected_revision4_evidence,
-        "AUTHORIZATION_REVISION4_EVIDENCE_MISMATCH",
+        authorization_evidence == expected_revision5_evidence,
+        "AUTHORIZATION_REVISION5_EVIDENCE_MISMATCH",
     )
-    contract_evidence = contract.get("revision4_runtime_failure_evidence", {})
+    contract_evidence = contract.get("revision5_runtime_failure_evidence", {})
     require(
-        all(contract_evidence.get(key) == value for key, value in expected_revision4_evidence.items()),
-        "CONTRACT_REVISION4_EVIDENCE_MISMATCH",
+        all(contract_evidence.get(key) == value for key, value in expected_revision5_evidence.items()),
+        "CONTRACT_REVISION5_EVIDENCE_MISMATCH",
     )
     require(
         contract_evidence.get("identity_failure_codes")
         == [
-            "PROCESS_PROBE_READ_FILE_VERSION",
+            "PROCESS_PROBE_REQUIRE_PARENT_PATH",
             "TCP_DEPENDENCY_PROCESS_IDENTITY_UNAVAILABLE",
         ],
-        "REVISION4_IDENTITY_FAILURE_EVIDENCE_MISMATCH",
+        "REVISION5_IDENTITY_FAILURE_EVIDENCE_MISMATCH",
     )
     require(
-        contract_evidence.get("docker_info_arch_alias_mismatch_observed") is True
-        and contract_evidence.get("waiver_receipt_legacy_count_mismatch_observed") is True,
-        "REVISION4_COMPATIBILITY_EVIDENCE_MISSING",
+        contract_evidence.get("direct_self_identity_was_not_evaluated_after_parent_path_failure") is True,
+        "REVISION5_PARENT_PATH_EVIDENCE_MISSING",
     )
+    identity_gate = contract.get("identity_gate", {})
+    require(
+        identity_gate.get("revision6_parent_resolution_extension")
+        == "RESOLVED_NAME_ONLY_PATH_UNAVAILABLE",
+        "REVISION6_PARENT_RESOLUTION_EXTENSION_MISSING",
+    )
+    for key in (
+        "parent_name_only_requires_parent_name_sha256_and_null_parent_path_sha256",
+        "parent_name_only_is_name_agnostic",
+        "direct_self_fields_remain_mandatory_for_parent_name_only_rows",
+    ):
+        require(identity_gate.get(key) is True, f"REVISION6_PARENT_GATE_MISSING:{key}")
 
     expected_budget = {
         "authorized": 1, "consumed": 0, "remaining": 1,
@@ -692,8 +785,8 @@ def validate_documents(documents: dict[Path, dict[str, Any]]) -> None:
     )
     require(
         future.get("confirmation_token")
-        == "USER_CONFIRMED_EXACT_ATTEMPT013_REVISION5_PROCESS_COMMAND_WITH_DASH_B_AND_AUDIT_WAIVER",
-        "REVISION5_CONFIRMATION_TOKEN_MISMATCH",
+        == "USER_CONFIRMED_EXACT_ATTEMPT013_REVISION6_PROCESS_COMMAND_WITH_DASH_B_AND_AUDIT_WAIVER",
+        "REVISION6_CONFIRMATION_TOKEN_MISMATCH",
     )
     require(contract.get("output_contract", {}).get("output_root") == OUTPUT.as_posix(), "OUTPUT_ROOT_MISMATCH")
     require(contract.get("output_contract", {}).get("absent_before_execution") is True, "OUTPUT_ABSENCE_NOT_CONTRACTED")
@@ -775,15 +868,22 @@ def validate_sources(repo: Path) -> dict[str, Any]:
     require("legacy.PACKET_RELATIVES = PACKET_RELATIVES" in configure_body, "RETAINED_PACKET_RELATIVES_NOT_CONFIGURED")
     require("PACKET_RELATIVES = set(SEALING_PATHS)" in runner, "SEALING_AUTHORITY_NOT_SEPARATE")
     require("PACKET_RELATIVES = set(PACKET_PATHS)" not in runner, "AGGREGATE_CONFLATION_REINTRODUCED")
-    require("legacy.probes_v2 = compatibility" in configure_body, "PROCESS_TCP_VALIDATOR_NOT_INSTALLED")
     require(
-        "sanitize_docker_identity=_sanitize_docker_identity_revision5"
+        "legacy.probes_v2 = SimpleNamespace(" in configure_body
+        and "validate_process_probe_envelope=_validate_process_probe_envelope_revision6"
+        in configure_body
+        and "validate_tcp_probe_envelope=compatibility.validate_tcp_probe_envelope"
         in configure_body,
-        "REVISION5_DOCKER_COMPARATOR_NOT_INSTALLED",
+        "REVISION6_PROCESS_TCP_VALIDATOR_NOT_INSTALLED",
     )
     require(
-        "PROCESS_IDENTITY_QUERY_REVISION5" in configure_body,
-        "REVISION5_PROCESS_QUERY_NOT_INSTALLED",
+        "sanitize_docker_identity=_sanitize_docker_identity_revision6"
+        in configure_body,
+        "REVISION6_DOCKER_COMPARATOR_NOT_INSTALLED",
+    )
+    require(
+        "PROCESS_IDENTITY_QUERY_REVISION6" in configure_body,
+        "REVISION6_PROCESS_QUERY_NOT_INSTALLED",
     )
     require("compatibility.TCP_IDENTITY_QUERY_V3" in configure_body, "TCP_QUERY_NOT_INSTALLED")
     require("*sys.argv[1:]" not in runner, "ACTUAL_ARGV_TAIL_COPIED")
@@ -811,26 +911,56 @@ def validate_sources(repo: Path) -> dict[str, Any]:
         and 'result["fresh_independent_audit_performed"] = False' not in runner,
         "REVISION5_WAIVER_RECEIPT_COUNT_FIX_MISSING",
     )
+    parent_block_start = runner.index("_COMPATIBLE_PARENT_PATH_BLOCK = (")
+    parent_block_end = runner.index(
+        "if PROCESS_IDENTITY_QUERY_REVISION5.count", parent_block_start
+    )
+    parent_block = runner[parent_block_start:parent_block_end]
+    require(
+        "RESOLVED_NAME_ONLY_PATH_UNAVAILABLE" in runner
+        and "[string]::IsNullOrWhiteSpace($parentPath)" in parent_block
+        and "$parentNameHash=Get-RedactedSha256 $parentName" in parent_block
+        and "$parentPathHash=$null" in parent_block
+        and "$currentTarget" not in parent_block,
+        "REVISION6_PARENT_PATH_QUERY_ADAPTER_NOT_CLOSED",
+    )
+    parent_validator_start = runner.index(
+        "def _validate_process_probe_envelope_revision6"
+    )
+    parent_validator_end = runner.index(
+        "_ARCHITECTURE_ALIASES =", parent_validator_start
+    )
+    parent_validator = runner[parent_validator_start:parent_validator_end]
+    require(
+        'row.get("ParentNameHash")' in parent_validator
+        and 'row.get("ParentExecutablePathHash") is not None' in parent_validator
+        and 'row["ParentResolution"] = "UNRESOLVED_NOT_IN_ENUMERATED_SNAPSHOT"'
+        in parent_validator
+        and "compatibility.validate_process_probe_envelope(adapted)"
+        in parent_validator
+        and 'validated["Rows"] = copy.deepcopy(original_rows)' in parent_validator,
+        "REVISION6_PARENT_PATH_VALIDATOR_ADAPTER_NOT_CLOSED",
+    )
     require("subprocess" not in compatibility and "subprocess" not in authority, "PURE_IDENTITY_SEAM_HOST_CAPABILITY")
-    require(CENTRAL_SCHEMA in runner and AUDIT_SCHEMA in runner, "REVISION5_RECEIPT_SCHEMAS_NOT_BOUND")
+    require(CENTRAL_SCHEMA in runner and AUDIT_SCHEMA in runner, "REVISION6_RECEIPT_SCHEMAS_NOT_BOUND")
     require(
         'command_interface.REQUIRED_INTERPRETER_FLAGS != ("-B",)' in runner,
-        "REVISION5_DASH_B_RUNTIME_ASSERTION_MISSING",
+        "REVISION6_DASH_B_RUNTIME_ASSERTION_MISSING",
     )
     require(
         '"required_original_argv_prefix": [' in runner
         and '"PYTHON_EXECUTABLE", "-B", "RUNNER_PATH"' in runner,
-        "REVISION5_USER_VISIBLE_COMMAND_PREFIX_NOT_BOUND",
+        "REVISION6_USER_VISIBLE_COMMAND_PREFIX_NOT_BOUND",
     )
     require(
         "previous.previous.previous.previous._ORIGINAL_LOAD_JSON(path)"
         in runner,
-        "REVISION5_ORIGINAL_LOAD_OWNER_DEPTH_MISSING",
+        "REVISION6_ORIGINAL_LOAD_OWNER_DEPTH_MISSING",
     )
     require(
         "previous.previous.previous.previous._ORIGINAL_WRITE_JSON("
         in runner,
-        "REVISION5_ORIGINAL_WRITE_OWNER_DEPTH_MISSING",
+        "REVISION6_ORIGINAL_WRITE_OWNER_DEPTH_MISSING",
     )
     runner_tree = ast.parse(runner, filename=RUNNER.as_posix())
     load_owner_refs = {
@@ -848,22 +978,24 @@ def validate_sources(repo: Path) -> dict[str, Any]:
     require(
         load_owner_refs
         == {"previous.previous.previous.previous._ORIGINAL_LOAD_JSON"},
-        "REVISION5_ORIGINAL_LOAD_OWNER_AST_MISMATCH",
+        "REVISION6_ORIGINAL_LOAD_OWNER_AST_MISMATCH",
     )
     require(
         write_owner_refs
         == {"previous.previous.previous.previous._ORIGINAL_WRITE_JSON"},
-        "REVISION5_ORIGINAL_WRITE_OWNER_AST_MISMATCH",
+        "REVISION6_ORIGINAL_WRITE_OWNER_AST_MISMATCH",
     )
     return {
         "static_validator_direct_runner_imports": 0,
         "direct_only_counter_is_not_import_authority": True,
         "shared_packet_lineage_helper_called_before_legacy_main": True,
-        "retained_packet_parent_is_revision4": True,
+        "retained_packet_parent_is_revision5": True,
         "retained_packet_relatives_are_exact_four_seal_paths": True,
         "retained_packet_delta_check_not_bypassed": True,
         "public_pre_legacy_handoff_order_valid": True,
         "parent_union_and_direct_self_validator_installed": True,
+        "parent_name_only_visibility_extension_installed": True,
+        "parent_name_only_extension_is_name_agnostic": True,
         "tcp_direct_self_index_binding_installed": True,
         "build_time_field_comparator_installed": True,
         "single_process_snapshot_query": True,
@@ -1063,13 +1195,14 @@ def main() -> int:
     require(Path(str(git(repo, "rev-parse", "--show-toplevel"))).resolve() == repo, "REPOSITORY_ROOT_MISMATCH")
     require((repo / VALIDATOR).resolve() == Path(__file__).resolve(), "VALIDATOR_PATH_MISMATCH")
     require(not (repo / OUTPUT).exists(), "ATTEMPT013_OUTPUT_ROOT_ALREADY_EXISTS")
-    require(not (repo / CENTRAL_RECEIPT).exists(), "REVISION5_CENTRAL_RECEIPT_PREEXISTS")
-    require(not (repo / AUDIT_RECEIPT).exists(), "REVISION5_USER_AUDIT_WAIVER_RECEIPT_PREEXISTS")
+    require(not (repo / CENTRAL_RECEIPT).exists(), "REVISION6_CENTRAL_RECEIPT_PREEXISTS")
+    require(not (repo / AUDIT_RECEIPT).exists(), "REVISION6_USER_AUDIT_WAIVER_RECEIPT_PREEXISTS")
 
     revision = validate_commit_shape(repo, args.precommit)
     packet_facts = validate_packet(repo, revision, args.precommit)
     lineage_evidence = validate_lineage(repo, revision, args.precommit, packet_facts)
     historical_receipts = validate_attempt012_receipts(repo, revision, args.precommit)
+    revision5_runtime_result = validate_revision5_runtime_result(repo)
     json_paths = (
         RUNTIME_CONTRACT, AUTHORITY_CONTRACT, LINEAGE_CONTRACT, CONTRACT, AUTHORIZATION,
     )
@@ -1093,11 +1226,11 @@ def main() -> int:
             "origin_mode": "validate",
             "origin_date": "2026-08-29T00:00:00+07:00",
             "verification_status": "UNVERIFIED",
-            "version_label": "stage1e_e4_r6_pc2w_p1_attempt013_revision5_static_validation_result_v1",
+            "version_label": "stage1e_e4_r6_pc2w_p1_attempt013_revision6_static_validation_result_v1",
             "upstream_dependencies": [
                 "stage1e_e4_r6_pc2w_p1_attempt013_revision2_packet_lineage_contract_v1",
-                "stage1e_e4_r6_pc2w_p1_attempt013_revision5_admission_observation_contract_v1",
-                "stage1e_e4_r6_pc2w_p1_attempt013_revision5_execution_authorization_v1",
+                "stage1e_e4_r6_pc2w_p1_attempt013_revision6_admission_observation_contract_v1",
+                "stage1e_e4_r6_pc2w_p1_attempt013_revision6_execution_authorization_v1",
             ],
             "repro_lock": None,
             "experiment_intake_declaration": {
@@ -1119,8 +1252,13 @@ def main() -> int:
             "p1_commit": P1, "p1_parent": R2A,
             "revision4_packet_commit": R2_REVISION4,
             "revision4_packet_parent": P1,
-            "revision5_packet_commit": None if args.precommit else revision,
+            "revision5_packet_commit": R2_REVISION5,
             "revision5_packet_parent": R2_REVISION4,
+            "revision5_execution_head": REVISION5_EXECUTION_HEAD,
+            "revision5_result_commit": REVISION5_RESULT,
+            "revision5_result_parent": REVISION5_EXECUTION_HEAD,
+            "revision6_packet_commit": None if args.precommit else revision,
+            "revision6_packet_parent": R2_REVISION5,
         },
         "exact_write_sets": {
             "r0": [f"A\t{path.as_posix()}" for path in R0_FILES],
@@ -1129,6 +1267,7 @@ def main() -> int:
             "p1": [f"A\t{P1_PLAN_FILE.as_posix()}"],
             "revision4": [f"M\t{path.as_posix()}" for path in SEALING_PATHS],
             "revision5": [f"M\t{path.as_posix()}" for path in SEALING_PATHS],
+            "revision6": [f"M\t{path.as_posix()}" for path in SEALING_PATHS],
         },
         "aggregate_packet_roster_count": 13,
         "packet_artifacts": packet_facts,
@@ -1137,8 +1276,9 @@ def main() -> int:
         "r1_support_artifacts_unchanged": 2,
         "r2a_support_artifacts_unchanged": 3,
         "historical_attempt012_runtime_receipts": historical_receipts,
-        "historical_attempt012_receipts_authoritative_for_revision5": False,
-        "historical_revision4_runtime_result_authoritative_for_revision5_gate": False,
+        "historical_revision5_runtime_result": revision5_runtime_result,
+        "historical_attempt012_receipts_authoritative_for_revision6": False,
+        "historical_revision5_runtime_result_authoritative_for_revision6_gate": False,
         "strict_json_files_passed": len(json_paths),
         "strict_json_files_total": len(json_paths),
         "source_checks": source_checks,
