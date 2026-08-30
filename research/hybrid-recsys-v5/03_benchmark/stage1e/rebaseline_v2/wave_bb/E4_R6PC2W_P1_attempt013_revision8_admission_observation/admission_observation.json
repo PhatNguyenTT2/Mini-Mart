@@ -1,0 +1,877 @@
+{
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt013-revision8-admission-observation-1.0",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "run",
+    "origin_date": "2026-08-30T06:09:06.297584Z",
+    "verification_status": "UNVERIFIED",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt013_revision8_admission_observation_execution_v1",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_pc2w_p1_attempt013_revision8_admission_observation_contract_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt013_revision8_execution_authorization_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt013_revision2_packet_lineage_contract_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt013_runtime_identity_compatibility_contract_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt013_pre_runtime_authority_contract_v1"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-29T00:00:00+07:00",
+      "declared_by": "scholar"
+    },
+    "experiment_provenance": []
+  },
+  "stage_id": "E4-R6-PC2W-P1-ATTEMPT013",
+  "entry_checkpoint": "d5b36dfb4ba691b12273b65abf4c608be185d348",
+  "packet_commit": "00fb6e90c153512675423628b8830528c457cf62",
+  "frozen_upstream": {
+    "artifact_count": 15,
+    "artifacts": [
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt008_probe_contract.py",
+        "git_blob_bytes": 10949,
+        "git_blob_sha256": "2076af6aac7f0d28b53378b9362b2e8aa73ce8ac5e97664f29294ae6417f9d03"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt008_probe_parser_remediation_contract.json",
+        "git_blob_bytes": 5790,
+        "git_blob_sha256": "3976a4c511684fa7b8df753265b9f96b49d022098894f9769ca0c531d85245e0"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt008_safe_probe_envelope_contract.json",
+        "git_blob_bytes": 5628,
+        "git_blob_sha256": "9bf7745b49d18ad44cdeba242d0524d24ca13c47c8c0574f559b4c570c35caaa"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt008_safe_probe_envelopes.py",
+        "git_blob_bytes": 15916,
+        "git_blob_sha256": "04d2014b07388215ff034e817471228dbb767a3d85efb21cb80c74691358e047"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/pipeline_state_stage1e.json",
+        "git_blob_bytes": 114088,
+        "git_blob_sha256": "7008657dfcbe138321c68dc3b2632265f16bfb05084c9686ae7eb95706c3a970"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt006_baseline_packet_audit_receipt.json",
+        "git_blob_bytes": 4892,
+        "git_blob_sha256": "cdab7460e62d86a95d17cd67874c4dfacc17c8152bcc6a1e07dcfaacbdaf6c66"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt007_failure_packet_audit_receipt.json",
+        "git_blob_bytes": 6601,
+        "git_blob_sha256": "1ba1cf68b230fe06e5c2283394914d0db17435ba9f97f758644bd20425ebc156"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt008_probe_parser_remediation_validation_receipt.json",
+        "git_blob_bytes": 5295,
+        "git_blob_sha256": "f7e53f14de491ea588c7a9688a1e52a07c6448389f3d13d526fd3da2d4c0d519"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt008_safe_probe_envelope_validation_receipt.json",
+        "git_blob_bytes": 5195,
+        "git_blob_sha256": "90e3eaf42512e11ca441e3c00132d44e7ec24c0b9a916a6637aacba59886c169"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/test_e4_r6_pc2w_p1_attempt008_probe_contract.py",
+        "git_blob_bytes": 7978,
+        "git_blob_sha256": "94470c80740817f5ab5f206dde1c88b4fd2d90fff18576a5be142449a9e31b6f"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/test_e4_r6_pc2w_p1_attempt008_safe_probe_envelopes.py",
+        "git_blob_bytes": 7626,
+        "git_blob_sha256": "1d1d8ac297eebfedb23091ed8735dd2622ef10018dfc85396eac48c7016dcf6c"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ao/E4_R6PC2W_P1_attempt006_baseline_remediation/command_receipts.json",
+        "git_blob_bytes": 15103,
+        "git_blob_sha256": "0c708d53732aeaaa7c525111bd7086fce943cce5ffab2d580f293942f53ffe2c"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ao/E4_R6PC2W_P1_attempt006_baseline_remediation/p1_execution_receipt.json",
+        "git_blob_bytes": 4710,
+        "git_blob_sha256": "430becb7502b90058614671832daf6604aaa0d00166bd200719383570cae2900"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ao/E4_R6PC2W_P1_attempt006_baseline_remediation/p1_handoff.json",
+        "git_blob_bytes": 1383,
+        "git_blob_sha256": "5a0847ed7229e0de5b7ebc9e40ec4111304ac6a1803cf2de5b7796edc4d0c955"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ao/E4_R6PC2W_P1_attempt006_baseline_remediation/runtime_inventory.json",
+        "git_blob_bytes": 9790,
+        "git_blob_sha256": "2c07fd7b7bc73d51d58071999eb062831e75261a2674d57df796cdf6bc3a5298"
+      }
+    ],
+    "attempt010_remediation_artifact_count": 10,
+    "attempt010_remediation_artifacts": [
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt009_runtime_compatibility.py",
+        "git_blob_bytes": 15169,
+        "git_blob_sha256": "8148e6437af20d4c2b66f774adae102afe83583c7ed2b463340162beb6f342d7"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt009_runtime_compatibility_contract.json",
+        "git_blob_bytes": 6484,
+        "git_blob_sha256": "6a627d077af4389676ea458265bd8b93a132a606571fd515493dae2e4258b008"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt010_command_interface.py",
+        "git_blob_bytes": 4159,
+        "git_blob_sha256": "970f5b5269c36dc3f2e0e1639db591adbd4623aeb6f97b86e049957dde1a9559"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt010_command_interface_contract.json",
+        "git_blob_bytes": 2318,
+        "git_blob_sha256": "6f31ec175bbd142fb588379ba312e0fa16d66b905340879a4648a65b821ee429"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt009_pre_runtime_failure_receipt.json",
+        "git_blob_bytes": 4140,
+        "git_blob_sha256": "0e74e4f3d594a521fc4cee9b3ee2e2e5131b47246473d452ae55bfe5fddbda12"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt009_runtime_compatibility_revision3_fresh_independent_audit_receipt.json",
+        "git_blob_bytes": 12706,
+        "git_blob_sha256": "211de28607daf5e5e5e38a0d016ef6fa3a46d3cea88f566519bbfbc61629b451"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt009_runtime_compatibility_revision3_validation_receipt.json",
+        "git_blob_bytes": 5922,
+        "git_blob_sha256": "c1ae7c3daf70041630b9a4c56c0241c5ce5104694a6fa53ee371a3d495ade102"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/stage1e_legacy_source_cleanup_manifest.json",
+        "git_blob_bytes": 8102,
+        "git_blob_sha256": "7c618ef482e260a5b81207a8e6b70793a4afbf288dffa4af57e67fc77df1d45e"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/test_e4_r6_pc2w_p1_attempt009_runtime_compatibility.py",
+        "git_blob_bytes": 10079,
+        "git_blob_sha256": "d486fbec952a8365828dc132d90fb8fc02cc4cd5811560c7541700054e02b1ea"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/test_e4_r6_pc2w_p1_attempt010_command_interface.py",
+        "git_blob_bytes": 2705,
+        "git_blob_sha256": "faa6b3b5884482996b34303f6efc72a412b4fa3c8ad76c3bb3511b803890911a"
+      }
+    ],
+    "attempt010_process_command_binding": {
+      "schema_version": "stage1e-attempt011-python-command-binding-1.0",
+      "interpreter_flags": [
+        "-B"
+      ],
+      "normalized_argv": [
+        "C:\\Program Files\\Python311\\python.exe",
+        "C:\\Users\\ACER\\.codex\\worktrees\\9de5\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\00_control\\execute_e4_r6_pc2w_p1_attempt013_admission_observation.py",
+        "--repo-root",
+        "C:\\Users\\ACER\\.codex\\worktrees\\9de5\\backend",
+        "--packet-commit",
+        "00fb6e90c153512675423628b8830528c457cf62",
+        "--expected-head",
+        "d5b36dfb4ba691b12273b65abf4c608be185d348",
+        "--central-validation-receipt",
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt013_revision8_central_static_validation_receipt.json",
+        "--central-validation-receipt-sha256",
+        "d54f072727d9be73edbd4ae29a6c7a41891b44a1286c308da6bac199514d0e91",
+        "--fresh-audit-receipt",
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt013_revision8_user_audit_waiver_receipt.json",
+        "--fresh-audit-receipt-sha256",
+        "6d7ba2223bdc55d700a89c2761a5ea1995195cac94a1406f84b4a92d2cc3cd80",
+        "--execution-confirmation",
+        "USER_CONFIRMED_EXACT_ATTEMPT013_REVISION8_PROCESS_COMMAND_WITH_DASH_B_AND_AUDIT_WAIVER"
+      ],
+      "original_argv_exactly_bound": true
+    },
+    "attempt011_gate_receipt_support_artifact_count": 3,
+    "attempt011_gate_receipt_support_artifacts": [
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_gate_receipt_binding.py",
+        "git_blob_bytes": 10298,
+        "git_blob_sha256": "8a1ea9f854fbe81c4873b326db4a1a82b31c6557c4efb92c0e3332ecdddaa526"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_gate_receipt_binding_contract.json",
+        "git_blob_bytes": 3467,
+        "git_blob_sha256": "784cd9639ae43f11bc4977155c6528c8f0f304ba9d4bcc4a394b1c93916f0e0b"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/test_e4_r6_pc2w_p1_attempt011_pre_runtime_gate.py",
+        "git_blob_bytes": 28206,
+        "git_blob_sha256": "41e1c30a784368b713532899a86feec3fe538a1b85388621f7431a8c9eaa8c51"
+      }
+    ],
+    "attempt012_frozen_r0_support": [
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt012_pre_runtime_authority_contract.json",
+        "git_blob_bytes": 4352,
+        "git_blob_sha256": "46d2120d502ec8c85fdd4d30f4e0431689264d7d299e34c9b902465b787ff5a3"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/test_e4_r6_pc2w_p1_attempt012_pre_runtime_gate.py",
+        "git_blob_bytes": 12895,
+        "git_blob_sha256": "c1c8283f7baa58db28ab3e3cc5d8aa6b9f54ce82b8984297428b1bdb0b665ca7"
+      }
+    ],
+    "attempt012_authority_schema": "stage1e-e4-r6-pc2w-p1-attempt012-pre-runtime-authority-1.0",
+    "attempt012_model_policy_schema": "stage1e-e4-r6-pc2w-p1-attempt012-model-policy-1.0",
+    "attempt013_frozen_r0_artifact_count": 4,
+    "attempt013_frozen_r0_artifacts": [
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt013_pre_runtime_authority_contract.json",
+        "git_blob_bytes": 4526,
+        "git_blob_sha256": "1cb5d8130420ae543d9f63b4d4cd0b9d16c7571577a5ad506f0217b2ebd530f0"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt013_runtime_identity_compatibility_contract.json",
+        "git_blob_bytes": 4121,
+        "git_blob_sha256": "ed7d4323e7287643e0372e11cc1a2e6f5b5af73f4ec20fc0d0758dd12e648784"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/test_e4_r6_pc2w_p1_attempt013_pre_runtime_gate.py",
+        "git_blob_bytes": 7613,
+        "git_blob_sha256": "9c372dcd8a4cb4f87dab444a55739966936a930f098999487fd86d6f65a8c437"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/test_e4_r6_pc2w_p1_attempt013_runtime_identity_compatibility.py",
+        "git_blob_bytes": 11844,
+        "git_blob_sha256": "36b0e95a7b87a98325da6debfb345cb5a1df96ec672e6f1f3bb35db6b79fc21b"
+      }
+    ],
+    "attempt013_parent_resolution_schema": "stage1e-e4-r6-pc2w-p1-attempt013-runtime-identity-compatibility-1.0",
+    "attempt013_authority_schema": "stage1e-e4-r6-pc2w-p1-attempt013-pre-runtime-authority-1.0",
+    "attempt013_model_policy_schema": "stage1e-e4-r6-pc2w-p1-attempt013-model-policy-1.0"
+  },
+  "gate_receipts": {
+    "central_validation_receipt": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt013_revision8_central_static_validation_receipt.json",
+      "git_blob_sha256": "d54f072727d9be73edbd4ae29a6c7a41891b44a1286c308da6bac199514d0e91",
+      "verdict": "PASS_PC2W_P1_ATTEMPT013_REVISION8_CENTRAL_STATIC_VALIDATION"
+    },
+    "user_audit_waiver_receipt": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt013_revision8_user_audit_waiver_receipt.json",
+      "git_blob_sha256": "6d7ba2223bdc55d700a89c2761a5ea1995195cac94a1406f84b4a92d2cc3cd80",
+      "verdict": "USER_OVERRIDE_PC2W_P1_ATTEMPT013_REVISION8_AUDIT_WAIVED_READY_FOR_EXACT_COMMAND"
+    },
+    "fresh_independent_audit_performed": false
+  },
+  "pre_start": {
+    "wsl_inventory": {
+      "Available": true,
+      "Rows": [
+        {
+          "name": "docker-desktop",
+          "state": "Stopped",
+          "version": 2
+        }
+      ],
+      "ErrorCode": "NONE",
+      "ErrorTypeHash": null
+    },
+    "wsl_running_inventory": {
+      "Available": true,
+      "Rows": [],
+      "ErrorCode": "NONE",
+      "ErrorTypeHash": null
+    },
+    "named_pipe": {
+      "Available": false,
+      "Win32Error": 2,
+      "ErrorTypeHash": null,
+      "PipePathSha256": "fdc0d41353dafe8326bfc6c481d48427a0f4e89ee27c6f9c0248100d438dae22",
+      "RawPipePathPersisted": false
+    },
+    "target_process_population": {
+      "Available": true,
+      "Count": 0,
+      "Rows": [],
+      "ErrorCode": "NONE",
+      "ErrorTypeHash": null
+    },
+    "target_process_population_envelope_valid": true,
+    "target_tcp_population": {
+      "Available": true,
+      "Count": 0,
+      "Rows": [],
+      "ErrorCode": "NONE",
+      "ErrorTypeHash": null
+    },
+    "target_tcp_population_envelope_valid": true,
+    "disk": {
+      "Available": true,
+      "Volumes": {
+        "c": {
+          "total_bytes": 301198209024,
+          "used_bytes": 278645116928,
+          "free_bytes": 22553092096
+        },
+        "e": {
+          "total_bytes": 209714147328,
+          "used_bytes": 88661487616,
+          "free_bytes": 121052659712
+        }
+      },
+      "ErrorCode": "NONE",
+      "ErrorTypeHash": null
+    },
+    "lanes": {
+      "wsl_inventory_all_stopped": true,
+      "docker_desktop_exactly_once_stopped": true,
+      "wsl_running_inventory_empty": true,
+      "desktop_linux_named_pipe_absent_win32_error_2": true,
+      "target_process_population_empty": true,
+      "target_tcp_ownership_population_empty": true,
+      "parse_and_completeness": true,
+      "disk_thresholds_pass": true,
+      "powershell_module_preflight": true
+    },
+    "all_lanes_pass": true,
+    "powershell_module_preflight": {
+      "SchemaVersion": "stage1e-e4-r6-pc2w-p1-attempt009-powershell-preflight-1.0",
+      "Available": true,
+      "PowerShellMajor": 5,
+      "LanguageMode": "FullLanguage",
+      "Count": 5,
+      "Rows": [
+        {
+          "Command": "Get-CimInstance",
+          "Module": "CimCmdlets",
+          "CommandType": "Cmdlet",
+          "ModuleVersion": "1.0.0.0",
+          "ModulePathHash": "d663e97bf91458a743f84573c3e0b9a8c31624a58625ee7c2f8a6a9baec64fdf",
+          "ManifestSha256": "c11649524f29913c6b6c2bfdaf87d21d4d04699c71c9a8dab370265786603902"
+        },
+        {
+          "Command": "Get-NetTCPConnection",
+          "Module": "MSFT_NetTCPConnection",
+          "CommandType": "Function",
+          "ModuleVersion": "1.0.0",
+          "ModulePathHash": "082d9a384ca7b68aef2cf7faa40dd4be1b635fbf88c25ffb01b4f3d441072069",
+          "ManifestSha256": "e93bb8e6ccb4b0abd3e9d7a31735b08a9024292cd7e10679be6acf0510be129a"
+        },
+        {
+          "Command": "Get-FileHash",
+          "Module": "Microsoft.PowerShell.Utility",
+          "CommandType": "Function",
+          "ModuleVersion": "0.0",
+          "ModulePathHash": "db2c33670f289ed484fa647606622baf3366a800a9b6d11304acde5db2ae724b",
+          "ManifestSha256": "c09df190addc67f7c6c38e7ea1dca719fd87807107f688c3f60ed8816e1c48a6"
+        },
+        {
+          "Command": "Get-AuthenticodeSignature",
+          "Module": "Microsoft.PowerShell.Security",
+          "CommandType": "Cmdlet",
+          "ModuleVersion": "3.0.0.0",
+          "ModulePathHash": "e4aa3e2a7ea51c28c8e34d0cef0c716248feed982300669ff2e762f77a2aaa5b",
+          "ManifestSha256": "fa7150089e8a67a0aad27cd324d119b9778ccbead6242397780c5d5077246d30"
+        },
+        {
+          "Command": "ConvertTo-Json",
+          "Module": "Microsoft.PowerShell.Utility",
+          "CommandType": "Cmdlet",
+          "ModuleVersion": "3.1.0.0",
+          "ModulePathHash": "3b1040b22845ae4493789049780afb47c093b959a0745ed735e65f0999b1024e",
+          "ManifestSha256": "c09df190addc67f7c6c38e7ea1dca719fd87807107f688c3f60ed8816e1c48a6"
+        }
+      ],
+      "ErrorCode": "NONE",
+      "FailureStep": "NONE",
+      "ErrorTypeHash": null
+    },
+    "powershell_module_preflight_failure": null,
+    "powershell_module_preflight_complete": true
+  },
+  "during": {
+    "wsl_inventory": [
+      {
+        "name": "docker-desktop",
+        "state": "Running",
+        "version": 2
+      }
+    ],
+    "target_process_identity": {
+      "Available": true,
+      "Count": 8,
+      "Rows": [
+        {
+          "Name": "com.docker.backend",
+          "ProcessId": 12144,
+          "ParentProcessId": 25848,
+          "ParentResolution": "UNRESOLVED_NOT_IN_ENUMERATED_SNAPSHOT",
+          "ParentNameHash": null,
+          "ParentExecutablePathHash": null,
+          "ExecutablePathHash": "c6ab8b3b423edf5337557932d83923e2c01f4b3aa0a0fd86281ace73a41a7149",
+          "ExecutableFileSha256": "fb8279b97ff28f8c7943007a4af2cf25d8ea28c88fd25c7356fbda01d8d94fd7",
+          "FileVersion": "4.78.0.229452",
+          "AuthenticodeStatus": "Valid",
+          "SignerSubjectHash": "a22453ee9ed8ee4ae5fae81cf20f975670f46d0afd0c5a3330be7b57626e08fe",
+          "CreationTimeUtc": "2026-08-30T06:09:08.9652450Z",
+          "CommandLineHash": "5d503272c45a19cfc53c9f091682099b4d27327214d6d9d4778ac4961440631c"
+        },
+        {
+          "Name": "com.docker.backend",
+          "ProcessId": 16552,
+          "ParentProcessId": 12144,
+          "ParentResolution": "RESOLVED",
+          "ParentNameHash": "120cb8ff65e2a924caaef5322a56891fcd9fa68acefd5f3022710ab976780984",
+          "ParentExecutablePathHash": "c6ab8b3b423edf5337557932d83923e2c01f4b3aa0a0fd86281ace73a41a7149",
+          "ExecutablePathHash": "c6ab8b3b423edf5337557932d83923e2c01f4b3aa0a0fd86281ace73a41a7149",
+          "ExecutableFileSha256": "fb8279b97ff28f8c7943007a4af2cf25d8ea28c88fd25c7356fbda01d8d94fd7",
+          "FileVersion": "4.78.0.229452",
+          "AuthenticodeStatus": "Valid",
+          "SignerSubjectHash": "a22453ee9ed8ee4ae5fae81cf20f975670f46d0afd0c5a3330be7b57626e08fe",
+          "CreationTimeUtc": "2026-08-30T06:09:09.0776330Z",
+          "CommandLineHash": "88231c03cd6923e1df7477434b2c1f4899f246efa3188d9c4ea35e28b4aa0e3f"
+        },
+        {
+          "Name": "com.docker.build",
+          "ProcessId": 17588,
+          "ParentProcessId": 16552,
+          "ParentResolution": "RESOLVED",
+          "ParentNameHash": "120cb8ff65e2a924caaef5322a56891fcd9fa68acefd5f3022710ab976780984",
+          "ParentExecutablePathHash": "c6ab8b3b423edf5337557932d83923e2c01f4b3aa0a0fd86281ace73a41a7149",
+          "ExecutablePathHash": "2edcc69a1e317b99c9b3ffb8ed70bf1eb1e70f4f9fb5b0e540c456e355e4951c",
+          "ExecutableFileSha256": "a495a4669d6b787d25f6eb495da6c289acd8c06eecba2c7ddbf28dd763e47671",
+          "FileVersion": "ABSENT_FROM_PE_METADATA_HASH_AND_SIGNATURE_BOUND",
+          "AuthenticodeStatus": "Valid",
+          "SignerSubjectHash": "a22453ee9ed8ee4ae5fae81cf20f975670f46d0afd0c5a3330be7b57626e08fe",
+          "CreationTimeUtc": "2026-08-30T06:09:09.7870440Z",
+          "CommandLineHash": "b6582d669b1416cda2138b6f39375a9b91ef8a3ebf3ab84171b3698bfb72f536"
+        },
+        {
+          "Name": "docker desktop",
+          "ProcessId": 12712,
+          "ParentProcessId": 24312,
+          "ParentResolution": "RESOLVED",
+          "ParentNameHash": "a5e49b9c1122adb27861e0eeb62859cf2b6acae440b2abfb8e6a1d3b5f712750",
+          "ParentExecutablePathHash": "de4009728edc06f8bda6953c4098171de98b4b78d47c4262f4516bbabeee8764",
+          "ExecutablePathHash": "de4009728edc06f8bda6953c4098171de98b4b78d47c4262f4516bbabeee8764",
+          "ExecutableFileSha256": "312098cf79c83abcdf8ce3dbaa16e76973f22d3e017b40c322dba9cb2c381596",
+          "FileVersion": "4.78.0.229452",
+          "AuthenticodeStatus": "Valid",
+          "SignerSubjectHash": "a22453ee9ed8ee4ae5fae81cf20f975670f46d0afd0c5a3330be7b57626e08fe",
+          "CreationTimeUtc": "2026-08-30T06:09:10.2451270Z",
+          "CommandLineHash": "26f01b17917594236bb28025aea23bf585fbbaa96f59eede24399d2f76eff6c7"
+        },
+        {
+          "Name": "docker desktop",
+          "ProcessId": 18476,
+          "ParentProcessId": 24312,
+          "ParentResolution": "RESOLVED",
+          "ParentNameHash": "a5e49b9c1122adb27861e0eeb62859cf2b6acae440b2abfb8e6a1d3b5f712750",
+          "ParentExecutablePathHash": "de4009728edc06f8bda6953c4098171de98b4b78d47c4262f4516bbabeee8764",
+          "ExecutablePathHash": "de4009728edc06f8bda6953c4098171de98b4b78d47c4262f4516bbabeee8764",
+          "ExecutableFileSha256": "312098cf79c83abcdf8ce3dbaa16e76973f22d3e017b40c322dba9cb2c381596",
+          "FileVersion": "4.78.0.229452",
+          "AuthenticodeStatus": "Valid",
+          "SignerSubjectHash": "a22453ee9ed8ee4ae5fae81cf20f975670f46d0afd0c5a3330be7b57626e08fe",
+          "CreationTimeUtc": "2026-08-30T06:09:10.7941120Z",
+          "CommandLineHash": "b52fe08de11653c36419e78946313286f2e52d5e0cf9a26561d4135ff5af369d"
+        },
+        {
+          "Name": "docker desktop",
+          "ProcessId": 20180,
+          "ParentProcessId": 24312,
+          "ParentResolution": "RESOLVED",
+          "ParentNameHash": "a5e49b9c1122adb27861e0eeb62859cf2b6acae440b2abfb8e6a1d3b5f712750",
+          "ParentExecutablePathHash": "de4009728edc06f8bda6953c4098171de98b4b78d47c4262f4516bbabeee8764",
+          "ExecutablePathHash": "de4009728edc06f8bda6953c4098171de98b4b78d47c4262f4516bbabeee8764",
+          "ExecutableFileSha256": "312098cf79c83abcdf8ce3dbaa16e76973f22d3e017b40c322dba9cb2c381596",
+          "FileVersion": "4.78.0.229452",
+          "AuthenticodeStatus": "Valid",
+          "SignerSubjectHash": "a22453ee9ed8ee4ae5fae81cf20f975670f46d0afd0c5a3330be7b57626e08fe",
+          "CreationTimeUtc": "2026-08-30T06:09:10.2257900Z",
+          "CommandLineHash": "44b2986b2f6a2cd2385319defaf2df8e99854e0125c4b04f2da3e488cd658f07"
+        },
+        {
+          "Name": "docker desktop",
+          "ProcessId": 24312,
+          "ParentProcessId": 16552,
+          "ParentResolution": "RESOLVED",
+          "ParentNameHash": "120cb8ff65e2a924caaef5322a56891fcd9fa68acefd5f3022710ab976780984",
+          "ParentExecutablePathHash": "c6ab8b3b423edf5337557932d83923e2c01f4b3aa0a0fd86281ace73a41a7149",
+          "ExecutablePathHash": "de4009728edc06f8bda6953c4098171de98b4b78d47c4262f4516bbabeee8764",
+          "ExecutableFileSha256": "312098cf79c83abcdf8ce3dbaa16e76973f22d3e017b40c322dba9cb2c381596",
+          "FileVersion": "4.78.0.229452",
+          "AuthenticodeStatus": "Valid",
+          "SignerSubjectHash": "a22453ee9ed8ee4ae5fae81cf20f975670f46d0afd0c5a3330be7b57626e08fe",
+          "CreationTimeUtc": "2026-08-30T06:09:09.7981870Z",
+          "CommandLineHash": "97e9e18e07a8e918483b7f449d7f82549eb698616f0722e92468cf30048e9c71"
+        },
+        {
+          "Name": "wslrelay",
+          "ProcessId": 18716,
+          "ParentProcessId": 5356,
+          "ParentResolution": "RESOLVED_NAME_ONLY_PATH_UNAVAILABLE",
+          "ParentNameHash": "b3c148b2ff21c2544e78f51db2ee456190df6789061c5890aeb24707609151da",
+          "ParentExecutablePathHash": null,
+          "ExecutablePathHash": "61291a2b3b8e3f97ab2352fd22c5b7bdf5d6995a1b2a48174180fc777b209dd0",
+          "ExecutableFileSha256": "b3912c57482adaf22fb99acc42d7cb6cda2177fd3aa3ea85c1d69bc26b4a37f7",
+          "FileVersion": "2.6.1.0",
+          "AuthenticodeStatus": "Valid",
+          "SignerSubjectHash": "2671b55ed58f6a0b6145103ad80f0e5ccbc47c8284789248dcbbaacd249a9768",
+          "CreationTimeUtc": "2026-08-30T06:09:12.1653030Z",
+          "CommandLineHash": "6ee624bd742dd4eca4025f86c90ad7040471825592cfd885bcc2d1df6b7fe2fa"
+        }
+      ],
+      "ErrorCode": "NONE",
+      "ErrorTypeHash": null
+    },
+    "target_tcp_identity": null,
+    "docker_identity": {
+      "client": {
+        "Version": "29.5.3",
+        "ApiVersion": "1.54",
+        "DefaultAPIVersion": "1.54",
+        "GitCommit": "d1c06ef",
+        "GoVersion": "go1.26.4",
+        "Os": "windows",
+        "Arch": "amd64",
+        "BuildTime": "Wed Jun  3 18:03:06 2026",
+        "Context": "desktop-linux",
+        "BuildTimeFormat": "DOCKER_CLI_HUMAN"
+      },
+      "server": {
+        "Version": "29.5.3",
+        "ApiVersion": "1.54",
+        "MinAPIVersion": "1.40",
+        "GitCommit": "285b471",
+        "GoVersion": "go1.26.4",
+        "Os": "linux",
+        "Arch": "amd64",
+        "KernelVersion": "6.6.87.2-microsoft-standard-WSL2",
+        "Experimental": false,
+        "IdentitySourceProfile": "ROOT_WITH_ENGINE_COMPONENT_SUPPLEMENT",
+        "IdentityFieldSources": {
+          "Version": "ROOT_CROSSCHECKED_ENGINE_COMPONENT",
+          "ApiVersion": "ROOT_CROSSCHECKED_ENGINE_COMPONENT",
+          "MinAPIVersion": "ROOT_CROSSCHECKED_ENGINE_COMPONENT",
+          "GitCommit": "ROOT_CROSSCHECKED_ENGINE_COMPONENT",
+          "GoVersion": "ROOT_CROSSCHECKED_ENGINE_COMPONENT",
+          "Os": "ROOT_CROSSCHECKED_ENGINE_COMPONENT",
+          "Arch": "ROOT_CROSSCHECKED_ENGINE_COMPONENT",
+          "KernelVersion": "ROOT_CROSSCHECKED_ENGINE_COMPONENT",
+          "BuildTime": "ROOT_CROSSCHECKED_ENGINE_COMPONENT",
+          "Experimental": "ENGINE_COMPONENT_DETAILS"
+        },
+        "BuildTimeComparison": {
+          "field": "BuildTime",
+          "root_source": "SERVER_ROOT",
+          "engine_source": "ENGINE_COMPONENT_DETAILS",
+          "root_format": "RFC3339_UTC",
+          "engine_format": "DOCKER_CLI_HUMAN",
+          "comparison_profile": "FORMAT_EQUIVALENT_CIVIL_SECOND",
+          "civil_second_equal": true,
+          "fraction_zero_or_absent": true,
+          "root_value_sha256": "46367d4583fbac1bc4e53057fab2c173a4fbd73f15200907f08255c8213b5a08",
+          "engine_value_sha256": "a9e92a520caee8f2c645610ae7361bc3170f3955799ffacc99d3851c98e35160",
+          "raw_values_persisted": false,
+          "instant_equivalence_claimed": false
+        }
+      },
+      "info": {
+        "ServerVersion": "29.5.3",
+        "OperatingSystem": "Docker Desktop",
+        "OSType": "linux",
+        "Architecture": "x86_64",
+        "KernelVersion": "6.6.87.2-microsoft-standard-WSL2",
+        "Driver": "overlayfs",
+        "CgroupDriver": "cgroupfs",
+        "CgroupVersion": "2",
+        "DockerRootDirHash": "ce73cd33df8e80d10c856e91fd63274e8be73dd50b32e44ad5f30705c5b79704",
+        "DefaultRuntime": "runc",
+        "DaemonIDHash": "da0e76656851bce9b2879f2450a79e0bebbf05b625209d2ed5f26b40339424ee",
+        "ContainerdCommitID": "193637f7ee8ae5f5aa5248f49e7baa3e6164966e",
+        "Runtimes": [
+          "io.containerd.runc.v2",
+          "nvidia",
+          "runc"
+        ],
+        "SecurityOptionHashes": [
+          "18c277b3407102fc40430e8a79fdc99b134ced76cbcdf9536786cce084624f8c",
+          "92dc7cd5e174f237c3c4068f680c452c0c8eb783eaf5397a9d328e98dc971bc3"
+        ],
+        "NCPU": 16,
+        "MemTotal": 12199325696,
+        "Containers": 0,
+        "ContainersRunning": 0,
+        "ContainersPaused": 0,
+        "ContainersStopped": 0,
+        "Images": 12,
+        "LiveRestoreEnabled": false,
+        "ExperimentalBuild": false,
+        "HttpProxyConfigured": true,
+        "HttpsProxyConfigured": true,
+        "NoProxyConfigured": true
+      },
+      "context": {
+        "Name": "desktop-linux",
+        "Description": "Docker Desktop",
+        "DockerEndpointHostClass": "DESKTOP_LINUX_NPIPE_EXACT",
+        "DockerEndpointHostSha256": "30341252ca9aa2b298da11cd8527fdfbf8ab30a2f3b5a3c871188c778b20af30",
+        "DockerEndpointSkipTLSVerify": false,
+        "TLSMaterialConfigured": false,
+        "StorageConfigured": true
+      },
+      "cross_consistency": {
+        "client_context_desktop_linux": true,
+        "server_linux": true,
+        "server_amd64": true,
+        "info_server_version_matches": true,
+        "info_os_matches": true,
+        "info_arch_matches": true,
+        "info_kernel_matches": true,
+        "context_name_desktop_linux": true,
+        "context_endpoint_exact": true
+      },
+      "raw_proxy_values_persisted": false,
+      "raw_docker_root_dir_persisted": false,
+      "raw_daemon_id_persisted": false
+    },
+    "docker_desktop_file_identity": {
+      "PathHash": "b7547a97ceaef671ec2d0976945fa388b5b0e1c5f0c8691723d14d1f5d3e7d14",
+      "RawBytes": 13209520,
+      "FileSha256": "5b8ab7161b88c45bd4b036e9988349356c18cf5409adb77fdfb8c73b279d8fce",
+      "FileVersion": "4.78.0.229452",
+      "ProductVersion": "4.78.0.229452",
+      "AuthenticodeStatus": "Valid",
+      "SignerSubjectHash": "a22453ee9ed8ee4ae5fae81cf20f975670f46d0afd0c5a3330be7b57626e08fe"
+    }
+  },
+  "post_shutdown_snapshots": [
+    {
+      "label": "A",
+      "wsl_inventory": {
+        "Available": true,
+        "Rows": [
+          {
+            "name": "docker-desktop",
+            "state": "Stopped",
+            "version": 2
+          }
+        ],
+        "ErrorCode": "NONE",
+        "ErrorTypeHash": null
+      },
+      "wsl_running_inventory": {
+        "Available": true,
+        "Rows": [],
+        "ErrorCode": "NONE",
+        "ErrorTypeHash": null
+      },
+      "named_pipe": {
+        "Available": false,
+        "Win32Error": 2,
+        "ErrorTypeHash": null,
+        "PipePathSha256": "fdc0d41353dafe8326bfc6c481d48427a0f4e89ee27c6f9c0248100d438dae22",
+        "RawPipePathPersisted": false
+      },
+      "target_process_population": {
+        "Available": true,
+        "Count": 0,
+        "Rows": [],
+        "ErrorCode": "NONE",
+        "ErrorTypeHash": null
+      },
+      "target_process_population_envelope_valid": true,
+      "target_tcp_population": {
+        "Available": true,
+        "Count": 0,
+        "Rows": [],
+        "ErrorCode": "NONE",
+        "ErrorTypeHash": null
+      },
+      "target_tcp_population_envelope_valid": true,
+      "disk": {
+        "Available": true,
+        "Volumes": {
+          "c": {
+            "total_bytes": 301198209024,
+            "used_bytes": 278768361472,
+            "free_bytes": 22429847552
+          },
+          "e": {
+            "total_bytes": 209714147328,
+            "used_bytes": 88661487616,
+            "free_bytes": 121052659712
+          }
+        },
+        "ErrorCode": "NONE",
+        "ErrorTypeHash": null
+      },
+      "lanes": {
+        "wsl_inventory_all_stopped": true,
+        "docker_desktop_exactly_once_stopped": true,
+        "wsl_running_inventory_empty": true,
+        "desktop_linux_named_pipe_absent_win32_error_2": true,
+        "target_process_population_empty": true,
+        "target_tcp_ownership_population_empty": true,
+        "parse_and_completeness": true,
+        "disk_thresholds_pass": true
+      },
+      "all_lanes_pass": true
+    },
+    {
+      "label": "B",
+      "wsl_inventory": {
+        "Available": true,
+        "Rows": [
+          {
+            "name": "docker-desktop",
+            "state": "Stopped",
+            "version": 2
+          }
+        ],
+        "ErrorCode": "NONE",
+        "ErrorTypeHash": null
+      },
+      "wsl_running_inventory": {
+        "Available": true,
+        "Rows": [],
+        "ErrorCode": "NONE",
+        "ErrorTypeHash": null
+      },
+      "named_pipe": {
+        "Available": false,
+        "Win32Error": 2,
+        "ErrorTypeHash": null,
+        "PipePathSha256": "fdc0d41353dafe8326bfc6c481d48427a0f4e89ee27c6f9c0248100d438dae22",
+        "RawPipePathPersisted": false
+      },
+      "target_process_population": {
+        "Available": true,
+        "Count": 0,
+        "Rows": [],
+        "ErrorCode": "NONE",
+        "ErrorTypeHash": null
+      },
+      "target_process_population_envelope_valid": true,
+      "target_tcp_population": {
+        "Available": true,
+        "Count": 0,
+        "Rows": [],
+        "ErrorCode": "NONE",
+        "ErrorTypeHash": null
+      },
+      "target_tcp_population_envelope_valid": true,
+      "disk": {
+        "Available": true,
+        "Volumes": {
+          "c": {
+            "total_bytes": 301198209024,
+            "used_bytes": 278768361472,
+            "free_bytes": 22429847552
+          },
+          "e": {
+            "total_bytes": 209714147328,
+            "used_bytes": 88661487616,
+            "free_bytes": 121052659712
+          }
+        },
+        "ErrorCode": "NONE",
+        "ErrorTypeHash": null
+      },
+      "lanes": {
+        "wsl_inventory_all_stopped": true,
+        "docker_desktop_exactly_once_stopped": true,
+        "wsl_running_inventory_empty": true,
+        "desktop_linux_named_pipe_absent_win32_error_2": true,
+        "target_process_population_empty": true,
+        "target_tcp_ownership_population_empty": true,
+        "parse_and_completeness": true,
+        "disk_thresholds_pass": true
+      },
+      "all_lanes_pass": true
+    },
+    {
+      "label": "C",
+      "wsl_inventory": {
+        "Available": true,
+        "Rows": [
+          {
+            "name": "docker-desktop",
+            "state": "Stopped",
+            "version": 2
+          }
+        ],
+        "ErrorCode": "NONE",
+        "ErrorTypeHash": null
+      },
+      "wsl_running_inventory": {
+        "Available": true,
+        "Rows": [],
+        "ErrorCode": "NONE",
+        "ErrorTypeHash": null
+      },
+      "named_pipe": {
+        "Available": false,
+        "Win32Error": 2,
+        "ErrorTypeHash": null,
+        "PipePathSha256": "fdc0d41353dafe8326bfc6c481d48427a0f4e89ee27c6f9c0248100d438dae22",
+        "RawPipePathPersisted": false
+      },
+      "target_process_population": {
+        "Available": true,
+        "Count": 0,
+        "Rows": [],
+        "ErrorCode": "NONE",
+        "ErrorTypeHash": null
+      },
+      "target_process_population_envelope_valid": true,
+      "target_tcp_population": {
+        "Available": true,
+        "Count": 0,
+        "Rows": [],
+        "ErrorCode": "NONE",
+        "ErrorTypeHash": null
+      },
+      "target_tcp_population_envelope_valid": true,
+      "disk": {
+        "Available": true,
+        "Volumes": {
+          "c": {
+            "total_bytes": 301198209024,
+            "used_bytes": 278768365568,
+            "free_bytes": 22429843456
+          },
+          "e": {
+            "total_bytes": 209714147328,
+            "used_bytes": 88661487616,
+            "free_bytes": 121052659712
+          }
+        },
+        "ErrorCode": "NONE",
+        "ErrorTypeHash": null
+      },
+      "lanes": {
+        "wsl_inventory_all_stopped": true,
+        "docker_desktop_exactly_once_stopped": true,
+        "wsl_running_inventory_empty": true,
+        "desktop_linux_named_pipe_absent_win32_error_2": true,
+        "target_process_population_empty": true,
+        "target_tcp_ownership_population_empty": true,
+        "parse_and_completeness": true,
+        "disk_thresholds_pass": true
+      },
+      "all_lanes_pass": true
+    }
+  ],
+  "closure_stable": true,
+  "final_closure_matches_pre_start": true,
+  "parse_failures": [],
+  "identity_failures": [
+    {
+      "stage": "D02",
+      "code": "TCP_ROWS_NOT_CANONICAL",
+      "field": null,
+      "safe_details": {}
+    }
+  ],
+  "sanitization": {
+    "raw_process_paths_or_command_lines_persisted": false,
+    "raw_network_addresses_persisted": false,
+    "raw_proxy_values_persisted": false,
+    "raw_docker_root_dir_persisted": false,
+    "raw_stdout_stderr_or_argv_persisted": false
+  }
+}

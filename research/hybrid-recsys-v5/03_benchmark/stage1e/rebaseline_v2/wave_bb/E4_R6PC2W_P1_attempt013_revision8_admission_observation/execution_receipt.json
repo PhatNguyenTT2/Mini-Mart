@@ -1,0 +1,110 @@
+{
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt013-revision8-execution-receipt-1.0",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "run",
+    "origin_date": "2026-08-30T06:09:06.297584Z",
+    "verification_status": "UNVERIFIED",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt013_revision8_admission_observation_execution_v1",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_pc2w_p1_attempt013_revision8_admission_observation_contract_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt013_revision8_execution_authorization_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt013_revision2_packet_lineage_contract_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt013_runtime_identity_compatibility_contract_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt013_pre_runtime_authority_contract_v1"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-29T00:00:00+07:00",
+      "declared_by": "scholar"
+    },
+    "experiment_provenance": []
+  },
+  "stage_id": "E4-R6-PC2W-P1-ATTEMPT013",
+  "created_at": "2026-08-30T06:09:06.297584Z",
+  "entry_checkpoint": "d5b36dfb4ba691b12273b65abf4c608be185d348",
+  "packet_commit": "00fb6e90c153512675423628b8830528c457cf62",
+  "packet_artifacts": [
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt013_admission_observation_contract.json",
+      "git_blob_bytes": 15144,
+      "git_blob_sha256": "668268f520216c773eb11b6a9fa18b1a7b6f22e8746cf5a06a1eab062483bf1d"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt013_execution_authorization.json",
+      "git_blob_bytes": 9979,
+      "git_blob_sha256": "664d949d21ead731cc79aae26f5407a146c60e6a93320d8f0e498f990c099240"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_pc2w_p1_attempt013_admission_observation.py",
+      "git_blob_bytes": 37390,
+      "git_blob_sha256": "8ca5bf07b63ed2dc693f65af55771b8ac0943036b29c64316815c9246bfda31c"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_pc2w_p1_attempt013_static_packet.py",
+      "git_blob_bytes": 70573,
+      "git_blob_sha256": "a32032e6e261ae2f6dd9d4988933a955bd77316e238b93df2ad206f52c4c70b3"
+    }
+  ],
+  "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_bb/E4_R6PC2W_P1_attempt013_revision8_admission_observation",
+  "docker_desktop_start_attempts": 1,
+  "docker_desktop_stop_attempts": 1,
+  "wsl_shutdown_attempts": 1,
+  "closure_snapshots": 3,
+  "settling_seconds": 20,
+  "snapshot_barrier_seconds": 15,
+  "automatic_retry_count": 0,
+  "fallback_count": 0,
+  "parse_failures": [],
+  "identity_failures": [
+    {
+      "stage": "D02",
+      "code": "TCP_ROWS_NOT_CANONICAL",
+      "field": null,
+      "safe_details": {}
+    }
+  ],
+  "pass_conditions": {
+    "frozen_upstream_replayed": true,
+    "immediate_pre_start_gate_all_pass": true,
+    "docker_desktop_start_attempted_exactly_once": true,
+    "docker_desktop_start_succeeded": true,
+    "during_docker_desktop_wsl_running": true,
+    "during_process_identity_complete": true,
+    "during_tcp_identity_complete": false,
+    "docker_client_server_info_identity_complete": true,
+    "docker_client_server_info_cross_consistent": true,
+    "docker_desktop_executable_identity_complete": true,
+    "parse_failures_absent": true,
+    "identity_failures_absent": false,
+    "docker_desktop_stop_attempted_exactly_once": true,
+    "docker_desktop_stop_succeeded": true,
+    "wsl_shutdown_attempted_exactly_once": true,
+    "wsl_shutdown_succeeded": true,
+    "three_closure_snapshots_present": true,
+    "all_closure_lanes_pass": true,
+    "closure_snapshots_stable": true,
+    "final_closure_matches_pre_start": true,
+    "exact_command_sequence_no_retry": true,
+    "automatic_retry_count_zero": true,
+    "fallback_count_zero": true,
+    "benchmark_admission_not_opened": true,
+    "central_validation_and_user_audit_waiver_bound": true
+  },
+  "verdict": "FAIL_CLOSED_PC2W_P1_ATTEMPT013_REVISION8_CURRENT_HOST_NOT_ADMISSIBLE",
+  "force_kill_performed": false,
+  "service_restart_performed": false,
+  "settings_changed": false,
+  "install_or_download_performed": false,
+  "network_or_web_operation_performed": false,
+  "image_or_container_mutation_performed": false,
+  "materialization_performed": false,
+  "preprocessing_performed": false,
+  "training_performed": false,
+  "evaluation_performed": false,
+  "benchmark_admission_opened": false,
+  "result_status": "NOT_RUN",
+  "test_set_opened": "NO",
+  "accepted_result_rows": 0
+}
