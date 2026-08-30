@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Attempt-013 Revision 6 adapter for parent-path visibility on Windows."""
+"""Attempt-013 Revision 7 adapter with exact user-override token binding."""
 
 from __future__ import annotations
 
@@ -40,7 +40,7 @@ VALIDATOR_RELATIVE = CONTROL_RELATIVE / "validate_e4_r6_pc2w_p1_attempt013_stati
 R0_COMMIT = "ce6377c351625ed7e029f2883520583ca97fc2b8"
 R1_COMMIT = "294422ca8557e4b55ae3863d853289e2232011b2"
 R2A_SUPPORT_COMMIT = "1a9ca21c5c8b1b08fdec788fbbf23e88473c117f"
-PACKET_PARENT = "b85cd4ee128bd1713f822107cc068b6cd3e6a4d5"
+PACKET_PARENT = "e24f061e55b307153eb00762c99191ac3d3b3ecd"
 FROZEN_R0_PATHS = (
     RUNTIME_CONTRACT_RELATIVE,
     RUNTIME_TEST_RELATIVE,
@@ -75,35 +75,35 @@ PACKET_PATHS = (
 PACKET_RELATIVES = set(SEALING_PATHS)
 PACKET_ROSTER = tuple(path.as_posix() for path in PACKET_PATHS)
 OUTPUT_RELATIVE = Path(
-    "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_az/"
-    "E4_R6PC2W_P1_attempt013_revision6_admission_observation"
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ba/"
+    "E4_R6PC2W_P1_attempt013_revision7_admission_observation"
 )
 CONFIRMATION_TOKEN = (
-    "USER_CONFIRMED_EXACT_ATTEMPT013_REVISION6_PROCESS_COMMAND_WITH_"
+    "USER_CONFIRMED_EXACT_ATTEMPT013_REVISION7_PROCESS_COMMAND_WITH_"
     "DASH_B_AND_AUDIT_WAIVER"
 )
 CENTRAL_RECEIPT_PATH = CONTROL_RELATIVE / (
-    "rebaseline_v2_e4_r6_pc2w_p1_attempt013_revision6_central_static_validation_receipt.json"
+    "rebaseline_v2_e4_r6_pc2w_p1_attempt013_revision7_central_static_validation_receipt.json"
 )
 AUDIT_RECEIPT_PATH = CONTROL_RELATIVE / (
-    "rebaseline_v2_e4_r6_pc2w_p1_attempt013_revision6_user_audit_waiver_receipt.json"
+    "rebaseline_v2_e4_r6_pc2w_p1_attempt013_revision7_user_audit_waiver_receipt.json"
 )
 CENTRAL_RECEIPT_SCHEMA = (
-    "stage1e-e4-r6-pc2w-p1-attempt013-revision6-central-static-validation-receipt-1.0"
+    "stage1e-e4-r6-pc2w-p1-attempt013-revision7-central-static-validation-receipt-1.0"
 )
-CENTRAL_RECEIPT_VERDICT = "PASS_PC2W_P1_ATTEMPT013_REVISION6_CENTRAL_STATIC_VALIDATION"
+CENTRAL_RECEIPT_VERDICT = "PASS_PC2W_P1_ATTEMPT013_REVISION7_CENTRAL_STATIC_VALIDATION"
 AUDIT_RECEIPT_SCHEMA = (
-    "stage1e-e4-r6-pc2w-p1-attempt013-revision6-user-audit-waiver-receipt-1.0"
+    "stage1e-e4-r6-pc2w-p1-attempt013-revision7-user-audit-waiver-receipt-1.0"
 )
 AUDIT_RECEIPT_VERDICT = (
-    "USER_OVERRIDE_PC2W_P1_ATTEMPT013_REVISION6_AUDIT_WAIVED_"
+    "USER_OVERRIDE_PC2W_P1_ATTEMPT013_REVISION7_AUDIT_WAIVED_"
     "READY_FOR_EXACT_COMMAND"
 )
 PASS_VERDICT = (
-    "PASS_PC2W_P1_ATTEMPT013_REVISION6_ADMISSION_OBSERVATION_COMPLETE_"
+    "PASS_PC2W_P1_ATTEMPT013_REVISION7_ADMISSION_OBSERVATION_COMPLETE_"
     "FOR_CENTRAL_EVALUATION"
 )
-FAIL_VERDICT = "FAIL_CLOSED_PC2W_P1_ATTEMPT013_REVISION6_CURRENT_HOST_NOT_ADMISSIBLE"
+FAIL_VERDICT = "FAIL_CLOSED_PC2W_P1_ATTEMPT013_REVISION7_CURRENT_HOST_NOT_ADMISSIBLE"
 AUTHORITY_CONTRACT_BYTES = 4526
 AUTHORITY_CONTRACT_SHA256 = (
     "1cb5d8130420ae543d9f63b4d4cd0b9d16c7571577a5ad506f0217b2ebd530f0"
@@ -547,10 +547,10 @@ def _adapted_load_json(path: Path) -> dict[str, Any]:
 def _adapted_document(path: Path, value: dict[str, Any]) -> dict[str, Any]:
     document = copy.deepcopy(value)
     schemas = {
-        "command_receipts.json": "stage1e-e4-r6-pc2w-p1-attempt013-revision6-command-receipts-1.0",
-        "admission_observation.json": "stage1e-e4-r6-pc2w-p1-attempt013-revision6-admission-observation-1.0",
-        "execution_receipt.json": "stage1e-e4-r6-pc2w-p1-attempt013-revision6-execution-receipt-1.0",
-        "handoff.json": "stage1e-e4-r6-pc2w-p1-attempt013-revision6-handoff-1.0",
+        "command_receipts.json": "stage1e-e4-r6-pc2w-p1-attempt013-revision7-command-receipts-1.0",
+        "admission_observation.json": "stage1e-e4-r6-pc2w-p1-attempt013-revision7-admission-observation-1.0",
+        "execution_receipt.json": "stage1e-e4-r6-pc2w-p1-attempt013-revision7-execution-receipt-1.0",
+        "handoff.json": "stage1e-e4-r6-pc2w-p1-attempt013-revision7-handoff-1.0",
     }
     if path.name in schemas:
         document["schema_version"] = schemas[path.name]
@@ -590,12 +590,12 @@ def _runtime_passport(created_at: str, authorization: dict[str, Any]) -> dict[st
         "origin_date": created_at,
         "verification_status": "UNVERIFIED",
         "version_label": (
-            "stage1e_e4_r6_pc2w_p1_attempt013_revision6_"
+            "stage1e_e4_r6_pc2w_p1_attempt013_revision7_"
             "admission_observation_execution_v1"
         ),
         "upstream_dependencies": [
-            "stage1e_e4_r6_pc2w_p1_attempt013_revision6_admission_observation_contract_v1",
-            "stage1e_e4_r6_pc2w_p1_attempt013_revision6_execution_authorization_v1",
+            "stage1e_e4_r6_pc2w_p1_attempt013_revision7_admission_observation_contract_v1",
+            "stage1e_e4_r6_pc2w_p1_attempt013_revision7_execution_authorization_v1",
             "stage1e_e4_r6_pc2w_p1_attempt013_revision2_packet_lineage_contract_v1",
             "stage1e_e4_r6_pc2w_p1_attempt013_runtime_identity_compatibility_contract_v1",
             "stage1e_e4_r6_pc2w_p1_attempt013_pre_runtime_authority_contract_v1",
@@ -735,13 +735,14 @@ def main() -> int:
         or receipt_contract.get("fresh_audit_receipt_semantics")
         != "USER_OVERRIDE_NOT_AN_INDEPENDENT_AUDIT"
         or receipt_contract.get("user_override_confirmation")
-        != "CURRENT_USER_IF_FAILURE_AUDIT_AND_FIX_STANDING_AUTHORITY_2026_08_30"
+        != "CURRENT_USER_RUN_NOW_AUDIT_IF_FAILURE_STANDING_AUTHORITY_2026_08_30"
         or receipt_contract.get("attempt012_receipts_accepted") is not False
         or receipt_contract.get("attempt013_revision1_receipts_accepted") is not False
         or receipt_contract.get("attempt013_revision2_receipts_accepted") is not False
         or receipt_contract.get("attempt013_revision3_receipts_accepted") is not False
         or receipt_contract.get("attempt013_revision4_receipts_accepted") is not False
         or receipt_contract.get("attempt013_revision5_receipts_accepted") is not False
+        or receipt_contract.get("attempt013_revision6_receipts_accepted") is not False
     ):
         raise RuntimeError("ATTEMPT013_RECEIPT_CONTRACT_MISMATCH")
     exact_command_contract = contract_document.get("exact_process_command_contract")
@@ -767,7 +768,7 @@ def main() -> int:
         != expected_exact_command_contract
         or command_interface.REQUIRED_INTERPRETER_FLAGS != ("-B",)
     ):
-        raise RuntimeError("ATTEMPT013_REVISION6_EXACT_COMMAND_CONTRACT_MISMATCH")
+        raise RuntimeError("ATTEMPT013_REVISION7_EXACT_COMMAND_CONTRACT_MISMATCH")
     expected_adapter_contract = {
         "module_chain": [
             "ATTEMPT013", "ATTEMPT012", "ATTEMPT011", "ATTEMPT010",
@@ -798,7 +799,7 @@ def main() -> int:
             previous.previous.previous.previous, "_ORIGINAL_WRITE_JSON"
         )
     ):
-        raise RuntimeError("ATTEMPT013_REVISION6_ADAPTER_ANCESTRY_MISMATCH")
+        raise RuntimeError("ATTEMPT013_REVISION7_ADAPTER_ANCESTRY_MISMATCH")
     owner_contract = owner.get("authority_contract")
     budget = owner_contract.get("attempt_budget") if isinstance(owner_contract, dict) else None
     if not isinstance(budget, dict):
@@ -846,7 +847,7 @@ def main() -> int:
         repo_root, str(args.packet_commit), head
     )
     if lineage_evidence.predicate_passed is not True:
-        raise RuntimeError("ATTEMPT013_REVISION6_LINEAGE_PREDICATE_DID_NOT_PASS")
+        raise RuntimeError("ATTEMPT013_REVISION7_LINEAGE_PREDICATE_DID_NOT_PASS")
     configure_attempt013_runner()
     previous.previous.previous._COMMAND_BINDING = command_binding
     original = list(getattr(sys, "orig_argv", []))

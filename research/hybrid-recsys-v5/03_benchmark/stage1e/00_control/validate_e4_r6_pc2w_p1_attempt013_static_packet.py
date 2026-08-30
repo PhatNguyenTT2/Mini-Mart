@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Offline Revision 6 static validator; never imports or invokes an Attempt runner."""
+"""Offline Revision 7 static validator; never imports or invokes an Attempt runner."""
 
 from __future__ import annotations
 
@@ -30,6 +30,7 @@ R2A = "1a9ca21c5c8b1b08fdec788fbbf23e88473c117f"
 P1 = "d335cedbac6576c93251def1b02ef43d430bf7cb"
 R2_REVISION4 = "d9b7c24065dc5def894d94dcb8eddafd4f89ac1f"
 R2_REVISION5 = "b85cd4ee128bd1713f822107cc068b6cd3e6a4d5"
+R2_REVISION6 = "e24f061e55b307153eb00762c99191ac3d3b3ecd"
 REVISION5_EXECUTION_HEAD = "a594f2c71fc6566e8f99219a68a6fdf8783dc7b7"
 REVISION5_RESULT = "16640292d63fdd5f7c1ff605142734ed12d750e6"
 PRECOMMIT_PACKET_SENTINEL = "f" * 40
@@ -74,15 +75,15 @@ R2A_FILES = R2A_SUPPORT_PATHS
 P1_PLAN_FILE = CONTROL / "e4_r6_pc2w_p1_attempt013_revision2_precommit_status_remediation_plan.md"
 
 OUTPUT = Path(
-    "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_az/"
-    "E4_R6PC2W_P1_attempt013_revision6_admission_observation"
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ba/"
+    "E4_R6PC2W_P1_attempt013_revision7_admission_observation"
 )
 CENTRAL_RECEIPT = CONTROL / (
-    "rebaseline_v2_e4_r6_pc2w_p1_attempt013_revision6_"
+    "rebaseline_v2_e4_r6_pc2w_p1_attempt013_revision7_"
     "central_static_validation_receipt.json"
 )
 AUDIT_RECEIPT = CONTROL / (
-    "rebaseline_v2_e4_r6_pc2w_p1_attempt013_revision6_"
+    "rebaseline_v2_e4_r6_pc2w_p1_attempt013_revision7_"
     "user_audit_waiver_receipt.json"
 )
 LINEAGE_SCHEMA = (
@@ -90,28 +91,28 @@ LINEAGE_SCHEMA = (
     "packet-lineage-contract-1.0"
 )
 CONTRACT_SCHEMA = (
-    "stage1e-e4-r6-pc2w-p1-attempt013-revision6-"
+    "stage1e-e4-r6-pc2w-p1-attempt013-revision7-"
     "admission-observation-contract-1.0"
 )
 AUTHORIZATION_SCHEMA = (
-    "stage1e-e4-r6-pc2w-p1-attempt013-revision6-"
+    "stage1e-e4-r6-pc2w-p1-attempt013-revision7-"
     "execution-authorization-1.0"
 )
 VALIDATOR_SCHEMA = (
-    "stage1e-e4-r6-pc2w-p1-attempt013-revision6-"
+    "stage1e-e4-r6-pc2w-p1-attempt013-revision7-"
     "static-validation-result-1.0"
 )
 CENTRAL_SCHEMA = (
-    "stage1e-e4-r6-pc2w-p1-attempt013-revision6-"
+    "stage1e-e4-r6-pc2w-p1-attempt013-revision7-"
     "central-static-validation-receipt-1.0"
 )
-CENTRAL_VERDICT = "PASS_PC2W_P1_ATTEMPT013_REVISION6_CENTRAL_STATIC_VALIDATION"
+CENTRAL_VERDICT = "PASS_PC2W_P1_ATTEMPT013_REVISION7_CENTRAL_STATIC_VALIDATION"
 AUDIT_SCHEMA = (
-    "stage1e-e4-r6-pc2w-p1-attempt013-revision6-"
+    "stage1e-e4-r6-pc2w-p1-attempt013-revision7-"
     "user-audit-waiver-receipt-1.0"
 )
 AUDIT_VERDICT = (
-    "USER_OVERRIDE_PC2W_P1_ATTEMPT013_REVISION6_AUDIT_WAIVED_"
+    "USER_OVERRIDE_PC2W_P1_ATTEMPT013_REVISION7_AUDIT_WAIVED_"
     "READY_FOR_EXACT_COMMAND"
 )
 
@@ -343,17 +344,23 @@ def validate_commit_shape(repo: Path, precommit: bool) -> str:
         == sorted(f"M\t{path.as_posix()}" for path in SEALING_PATHS),
         "REVISION5_WRITE_SET_MISMATCH",
     )
+    require(commit_parent(repo, R2_REVISION6) == R2_REVISION5, "REVISION6_PARENT_MISMATCH")
+    require(
+        sorted(commit_delta(repo, R2_REVISION6))
+        == sorted(f"M\t{path.as_posix()}" for path in SEALING_PATHS),
+        "REVISION6_WRITE_SET_MISMATCH",
+    )
     head = str(git(repo, "rev-parse", "HEAD")).casefold()
     status = git_status_porcelain(repo)
     if precommit:
-        require(head == R2_REVISION5, "PRECOMMIT_HEAD_NOT_REVISION5")
+        require(head == R2_REVISION6, "PRECOMMIT_HEAD_NOT_REVISION6")
         expected = sorted(f" M {path.as_posix()}" for path in SEALING_PATHS)
         require(sorted(status.splitlines()) == expected, "PRECOMMIT_WRITE_SET_MISMATCH")
         return "WORKTREE_PRECOMMIT"
-    require(commit_parent(repo, head) == R2_REVISION5, "REVISION6_PARENT_MISMATCH")
+    require(commit_parent(repo, head) == R2_REVISION6, "REVISION7_PARENT_MISMATCH")
     require(
         sorted(commit_delta(repo, head)) == sorted(f"M\t{path.as_posix()}" for path in SEALING_PATHS),
-        "REVISION6_WRITE_SET_MISMATCH",
+        "REVISION7_WRITE_SET_MISMATCH",
     )
     require(status == "", "R2_WORKTREE_NOT_CLEAN")
     return head
@@ -362,7 +369,7 @@ def validate_commit_shape(repo: Path, precommit: bool) -> str:
 def packet_bytes(repo: Path, revision: str, path: Path, precommit: bool) -> bytes:
     if precommit and path in SEALING_PATHS:
         return normalized_checkout(repo / path)
-    lookup = R2_REVISION5 if precommit else revision
+    lookup = R2_REVISION6 if precommit else revision
     return git_blob(repo, lookup, path)
 
 
@@ -415,7 +422,7 @@ def validate_lineage(
     )
     if precommit:
         packet_commit = PRECOMMIT_PACKET_SENTINEL
-        parents = (R2_REVISION5,)
+        parents = (R2_REVISION6,)
         observed_delta = expected_delta
         ancestor = True
         ancestry_basis = "PRECOMMIT_EXACT_HEAD_AND_FOUR_MODIFICATION_SENTINEL"
@@ -430,7 +437,7 @@ def validate_lineage(
         aggregate_roster=PACKET_ROSTER,
         frozen_r0_bindings=frozen,
         support_bindings=support,
-        sealing_parent=R2_REVISION5,
+        sealing_parent=R2_REVISION6,
         expected_sealing_delta=expected_delta,
     )
     observation = packet_lineage.PacketLineageObservation(
@@ -462,7 +469,7 @@ def validate_lineage(
 
 
 def validate_attempt012_receipts(repo: Path, revision: str, precommit: bool) -> list[dict[str, Any]]:
-    lookup = R2_REVISION5 if precommit else revision
+    lookup = R2_REVISION6 if precommit else revision
     facts = []
     for path, (expected_bytes, expected_sha256) in sorted(
         ATTEMPT012_RECEIPTS.items(), key=lambda item: item[0].as_posix()
@@ -474,7 +481,7 @@ def validate_attempt012_receipts(repo: Path, revision: str, precommit: bool) -> 
         facts.append({
             "path": path.as_posix(), "git_blob_bytes": expected_bytes,
             "git_blob_sha256": expected_sha256,
-            "authority": "HISTORICAL_FROZEN_NON_AUTHORITATIVE_FOR_REVISION2",
+            "authority": "HISTORICAL_FROZEN_NON_AUTHORITATIVE_FOR_REVISION7",
         })
     return facts
 
@@ -507,7 +514,7 @@ def validate_revision5_runtime_result(repo: Path) -> list[dict[str, Any]]:
             "path": path.as_posix(),
             "git_blob_bytes": expected_bytes,
             "git_blob_sha256": expected_sha256,
-            "authority": "HISTORICAL_FAILURE_EVIDENCE_NON_AUTHORITATIVE_FOR_REVISION6",
+            "authority": "HISTORICAL_FAILURE_EVIDENCE_NON_AUTHORITATIVE_FOR_REVISION7",
         })
     execution = documents["execution_receipt.json"]
     require(
@@ -588,7 +595,7 @@ def validate_documents(documents: dict[Path, dict[str, Any]]) -> None:
 
     packet_gate = contract.get("packet_entry_gate", {})
     require(
-        packet_gate.get("packet_parent_checkpoint") == R2_REVISION5,
+        packet_gate.get("packet_parent_checkpoint") == R2_REVISION6,
         "PACKET_PARENT_CONTRACT_MISMATCH",
     )
     require(packet_gate.get("aggregate_packet_files") == list(PACKET_ROSTER), "PACKET_ROSTER_MISMATCH")
@@ -638,6 +645,7 @@ def validate_documents(documents: dict[Path, dict[str, Any]]) -> None:
         "attempt013_revision3_receipts_accepted": False,
         "attempt013_revision4_receipts_accepted": False,
         "attempt013_revision5_receipts_accepted": False,
+        "attempt013_revision6_receipts_accepted": False,
     }
     require(contract.get("receipt_contract") == expected_receipts, "CONTRACT_RECEIPT_GATE_MISMATCH")
     require(authorization.get("receipt_contract") == expected_receipts, "AUTHORIZATION_RECEIPT_GATE_MISMATCH")
@@ -677,6 +685,28 @@ def validate_documents(documents: dict[Path, dict[str, Any]]) -> None:
     require(
         contract_evidence.get("direct_self_identity_was_not_evaluated_after_parent_path_failure") is True,
         "REVISION5_PARENT_PATH_EVIDENCE_MISSING",
+    )
+    expected_revision6_evidence = {
+        "packet_commit": R2_REVISION6,
+        "execution_head": "4772d5d1d0d204a064fd0c9cd6b9d1724589ee0a",
+        "error_type": "RuntimeError",
+        "error_sha256": (
+            "78fa510475b9f4fe39ee8fed94fbd0a1aebb8789ba7e62509453fd5cb11b77f9"
+        ),
+        "stable_code": "ATTEMPT013_RECEIPT_CONTRACT_MISMATCH",
+        "docker_or_wsl_commands_executed": False,
+        "output_root_created": False,
+        "revision6_may_be_reinvoked": False,
+    }
+    require(
+        contract.get("revision6_pre_runtime_failure_evidence")
+        == expected_revision6_evidence,
+        "CONTRACT_REVISION6_PREFLIGHT_EVIDENCE_MISMATCH",
+    )
+    require(
+        authorization.get("revision6_pre_runtime_failure_evidence")
+        == expected_revision6_evidence,
+        "AUTHORIZATION_REVISION6_PREFLIGHT_EVIDENCE_MISMATCH",
     )
     identity_gate = contract.get("identity_gate", {})
     require(
@@ -785,8 +815,8 @@ def validate_documents(documents: dict[Path, dict[str, Any]]) -> None:
     )
     require(
         future.get("confirmation_token")
-        == "USER_CONFIRMED_EXACT_ATTEMPT013_REVISION6_PROCESS_COMMAND_WITH_DASH_B_AND_AUDIT_WAIVER",
-        "REVISION6_CONFIRMATION_TOKEN_MISMATCH",
+        == "USER_CONFIRMED_EXACT_ATTEMPT013_REVISION7_PROCESS_COMMAND_WITH_DASH_B_AND_AUDIT_WAIVER",
+        "REVISION7_CONFIRMATION_TOKEN_MISMATCH",
     )
     require(contract.get("output_contract", {}).get("output_root") == OUTPUT.as_posix(), "OUTPUT_ROOT_MISMATCH")
     require(contract.get("output_contract", {}).get("absent_before_execution") is True, "OUTPUT_ABSENCE_NOT_CONTRACTED")
@@ -942,25 +972,25 @@ def validate_sources(repo: Path) -> dict[str, Any]:
         "REVISION6_PARENT_PATH_VALIDATOR_ADAPTER_NOT_CLOSED",
     )
     require("subprocess" not in compatibility and "subprocess" not in authority, "PURE_IDENTITY_SEAM_HOST_CAPABILITY")
-    require(CENTRAL_SCHEMA in runner and AUDIT_SCHEMA in runner, "REVISION6_RECEIPT_SCHEMAS_NOT_BOUND")
+    require(CENTRAL_SCHEMA in runner and AUDIT_SCHEMA in runner, "REVISION7_RECEIPT_SCHEMAS_NOT_BOUND")
     require(
         'command_interface.REQUIRED_INTERPRETER_FLAGS != ("-B",)' in runner,
-        "REVISION6_DASH_B_RUNTIME_ASSERTION_MISSING",
+        "REVISION7_DASH_B_RUNTIME_ASSERTION_MISSING",
     )
     require(
         '"required_original_argv_prefix": [' in runner
         and '"PYTHON_EXECUTABLE", "-B", "RUNNER_PATH"' in runner,
-        "REVISION6_USER_VISIBLE_COMMAND_PREFIX_NOT_BOUND",
+        "REVISION7_USER_VISIBLE_COMMAND_PREFIX_NOT_BOUND",
     )
     require(
         "previous.previous.previous.previous._ORIGINAL_LOAD_JSON(path)"
         in runner,
-        "REVISION6_ORIGINAL_LOAD_OWNER_DEPTH_MISSING",
+        "REVISION7_ORIGINAL_LOAD_OWNER_DEPTH_MISSING",
     )
     require(
         "previous.previous.previous.previous._ORIGINAL_WRITE_JSON("
         in runner,
-        "REVISION6_ORIGINAL_WRITE_OWNER_DEPTH_MISSING",
+        "REVISION7_ORIGINAL_WRITE_OWNER_DEPTH_MISSING",
     )
     runner_tree = ast.parse(runner, filename=RUNNER.as_posix())
     load_owner_refs = {
@@ -978,18 +1008,33 @@ def validate_sources(repo: Path) -> dict[str, Any]:
     require(
         load_owner_refs
         == {"previous.previous.previous.previous._ORIGINAL_LOAD_JSON"},
-        "REVISION6_ORIGINAL_LOAD_OWNER_AST_MISMATCH",
+        "REVISION7_ORIGINAL_LOAD_OWNER_AST_MISMATCH",
     )
     require(
         write_owner_refs
         == {"previous.previous.previous.previous._ORIGINAL_WRITE_JSON"},
-        "REVISION6_ORIGINAL_WRITE_OWNER_AST_MISMATCH",
+        "REVISION7_ORIGINAL_WRITE_OWNER_AST_MISMATCH",
+    )
+    runner_literals = {
+        node.value
+        for node in ast.walk(runner_tree)
+        if isinstance(node, ast.Constant) and isinstance(node.value, str)
+    }
+    require(
+        "CURRENT_USER_RUN_NOW_AUDIT_IF_FAILURE_STANDING_AUTHORITY_2026_08_30"
+        in runner_literals,
+        "REVISION7_USER_OVERRIDE_TOKEN_LITERAL_MISSING",
+    )
+    require(
+        "CURRENT_USER_IF_FAILURE_AUDIT_AND_FIX_STANDING_AUTHORITY_2026_08_30"
+        not in runner_literals,
+        "REVISION7_OBSOLETE_USER_OVERRIDE_TOKEN_LITERAL_RETAINED",
     )
     return {
         "static_validator_direct_runner_imports": 0,
         "direct_only_counter_is_not_import_authority": True,
         "shared_packet_lineage_helper_called_before_legacy_main": True,
-        "retained_packet_parent_is_revision5": True,
+        "retained_packet_parent_is_revision6": True,
         "retained_packet_relatives_are_exact_four_seal_paths": True,
         "retained_packet_delta_check_not_bypassed": True,
         "public_pre_legacy_handoff_order_valid": True,
@@ -999,6 +1044,8 @@ def validate_sources(repo: Path) -> dict[str, Any]:
         "tcp_direct_self_index_binding_installed": True,
         "build_time_field_comparator_installed": True,
         "single_process_snapshot_query": True,
+        "revision7_user_override_token_literal_bound": True,
+        "revision6_obsolete_user_override_token_literal_absent": True,
     }
 
 
@@ -1195,8 +1242,8 @@ def main() -> int:
     require(Path(str(git(repo, "rev-parse", "--show-toplevel"))).resolve() == repo, "REPOSITORY_ROOT_MISMATCH")
     require((repo / VALIDATOR).resolve() == Path(__file__).resolve(), "VALIDATOR_PATH_MISMATCH")
     require(not (repo / OUTPUT).exists(), "ATTEMPT013_OUTPUT_ROOT_ALREADY_EXISTS")
-    require(not (repo / CENTRAL_RECEIPT).exists(), "REVISION6_CENTRAL_RECEIPT_PREEXISTS")
-    require(not (repo / AUDIT_RECEIPT).exists(), "REVISION6_USER_AUDIT_WAIVER_RECEIPT_PREEXISTS")
+    require(not (repo / CENTRAL_RECEIPT).exists(), "REVISION7_CENTRAL_RECEIPT_PREEXISTS")
+    require(not (repo / AUDIT_RECEIPT).exists(), "REVISION7_USER_AUDIT_WAIVER_RECEIPT_PREEXISTS")
 
     revision = validate_commit_shape(repo, args.precommit)
     packet_facts = validate_packet(repo, revision, args.precommit)
@@ -1226,11 +1273,11 @@ def main() -> int:
             "origin_mode": "validate",
             "origin_date": "2026-08-29T00:00:00+07:00",
             "verification_status": "UNVERIFIED",
-            "version_label": "stage1e_e4_r6_pc2w_p1_attempt013_revision6_static_validation_result_v1",
+            "version_label": "stage1e_e4_r6_pc2w_p1_attempt013_revision7_static_validation_result_v1",
             "upstream_dependencies": [
                 "stage1e_e4_r6_pc2w_p1_attempt013_revision2_packet_lineage_contract_v1",
-                "stage1e_e4_r6_pc2w_p1_attempt013_revision6_admission_observation_contract_v1",
-                "stage1e_e4_r6_pc2w_p1_attempt013_revision6_execution_authorization_v1",
+                "stage1e_e4_r6_pc2w_p1_attempt013_revision7_admission_observation_contract_v1",
+                "stage1e_e4_r6_pc2w_p1_attempt013_revision7_execution_authorization_v1",
             ],
             "repro_lock": None,
             "experiment_intake_declaration": {
@@ -1257,8 +1304,10 @@ def main() -> int:
             "revision5_execution_head": REVISION5_EXECUTION_HEAD,
             "revision5_result_commit": REVISION5_RESULT,
             "revision5_result_parent": REVISION5_EXECUTION_HEAD,
-            "revision6_packet_commit": None if args.precommit else revision,
+            "revision6_packet_commit": R2_REVISION6,
             "revision6_packet_parent": R2_REVISION5,
+            "revision7_packet_commit": None if args.precommit else revision,
+            "revision7_packet_parent": R2_REVISION6,
         },
         "exact_write_sets": {
             "r0": [f"A\t{path.as_posix()}" for path in R0_FILES],
@@ -1268,6 +1317,7 @@ def main() -> int:
             "revision4": [f"M\t{path.as_posix()}" for path in SEALING_PATHS],
             "revision5": [f"M\t{path.as_posix()}" for path in SEALING_PATHS],
             "revision6": [f"M\t{path.as_posix()}" for path in SEALING_PATHS],
+            "revision7": [f"M\t{path.as_posix()}" for path in SEALING_PATHS],
         },
         "aggregate_packet_roster_count": 13,
         "packet_artifacts": packet_facts,
@@ -1277,8 +1327,9 @@ def main() -> int:
         "r2a_support_artifacts_unchanged": 3,
         "historical_attempt012_runtime_receipts": historical_receipts,
         "historical_revision5_runtime_result": revision5_runtime_result,
-        "historical_attempt012_receipts_authoritative_for_revision6": False,
-        "historical_revision5_runtime_result_authoritative_for_revision6_gate": False,
+        "historical_attempt012_receipts_authoritative_for_revision7": False,
+        "historical_revision5_runtime_result_authoritative_for_revision7_gate": False,
+        "revision6_pre_runtime_failure_authoritative_as_failure_evidence_only": True,
         "strict_json_files_passed": len(json_paths),
         "strict_json_files_total": len(json_paths),
         "source_checks": source_checks,
