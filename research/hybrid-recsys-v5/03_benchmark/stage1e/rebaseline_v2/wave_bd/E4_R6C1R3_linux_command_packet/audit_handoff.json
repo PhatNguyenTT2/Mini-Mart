@@ -1,0 +1,89 @@
+{
+  "schema_version": "stage1e-r6-c1r3-linux-audit-handoff-1.0",
+  "created_at": "2026-08-30T00:00:00+07:00",
+  "stage_id": "R6-C1R3-LINUX",
+  "artifact": "R6-C1R3-LINUX packet and typed postcondition adapter proposal",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "design",
+    "origin_date": "2026-08-30T00:00:00+07:00",
+    "verification_status": "UNVERIFIED",
+    "version_label": "stage1e_e4_r6_c1r3_linux_audit_handoff_v1",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_pc2w_g1_backend_admission_v1",
+      "ars_codex_academic_research_suite_0.1.26"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-30T00:00:00+07:00",
+      "declared_by": "scholar"
+    },
+    "experiment_provenance": []
+  },
+  "proposal_only": true,
+  "execution_performed": false,
+  "execution_authorized": false,
+  "entry": {
+    "commit": "a939692d72d5d33cf67a8762d5260f2378df64f6",
+    "g1_receipt": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_g1_backend_admission_receipt.json",
+      "git_blob_bytes": 6003,
+      "git_blob_sha256": "7fac9ee1377ad183f12d3acb04061700d5218642d809dd54fe35ad79388605b1",
+      "verdict": "PASS_R6_PC2W_G1_CURRENT_HOST_BACKEND_ADMITTED_FOR_TRUSTED_PINNED_PACKET_DESIGN_ONLY"
+    }
+  },
+  "actual_central_profile": {
+    "model": "gpt-5.6-sol",
+    "reasoning_effort": "max",
+    "requested_service_tier": "default",
+    "display_tier": "Standard",
+    "actual_service_tier": "UNOBSERVABLE",
+    "fast_or_priority_observed": false
+  },
+  "required_fresh_audit_profile": {
+    "model": "gpt-5.6-sol",
+    "reasoning_effort": "xhigh",
+    "service_tier": "default",
+    "display_tier": "Standard",
+    "fast_or_priority_forbidden": true
+  },
+  "exact_output_set": [
+    "dataset_materialization_packet.json",
+    "environment_materialization_packet.json",
+    "recbole_dataset_bridge_packet.json",
+    "execution_boundary_and_negative_assertions.json",
+    "audit_handoff.json"
+  ],
+  "command_counts": {
+    "image": 3,
+    "dataset": 3,
+    "environment": 11,
+    "bridge": 3,
+    "total": 20
+  },
+  "critical_audit_questions": [
+    "Does the immutable manifest reference bind the exact official linux/amd64 image and forbid all tag fallback?",
+    "Do all container runs carry pull-never, read-only root, non-root, no-new-privileges, dropped capabilities, resource limits and correct network mode?",
+    "Are the only mounts exact source/data roots and one attempt root, with no repository/E-drive/profile/socket exposure?",
+    "Does GroupLens conversion preserve 100000 rows without filtering, sorting or ID rewrite?",
+    "Is the third-party closure wheel-only/hash-locked and is RecBole built non-editably from the 265-file source lock?",
+    "Can any command construct/load a dataset, train, evaluate, calculate metrics, open TEST or admit a benchmark row?",
+    "Are typed postcondition adapters sufficient to reject partial, wrong-platform, wrong-version, wrong-attempt or cross-lane evidence?"
+  ],
+  "known_residuals": [
+    "The historical Python image has registry-reported vulnerability metadata and is admitted only under the trusted-pinned-code threat model.",
+    "Transitive wheel identities and hashes become immutable only after the single authorized acquisition; any resolution failure closes the attempt.",
+    "The future central runner and exact process invocation are not part of this packet and require separate construction, audit and authorization."
+  ],
+  "verdict": "PROPOSAL_R6_C1R3_LINUX_READY_FOR_CENTRAL_STATIC_VALIDATION_THEN_FRESH_XHIGH_AUDIT",
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "benchmark_admission_opened": false,
+    "phase_1e_complete": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}

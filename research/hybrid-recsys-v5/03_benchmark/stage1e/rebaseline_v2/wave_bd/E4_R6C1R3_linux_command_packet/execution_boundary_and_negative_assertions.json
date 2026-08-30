@@ -1,0 +1,445 @@
+{
+  "schema_version": "stage1e-r6-c1r3-linux-execution-boundary-1.0",
+  "created_at": "2026-08-30T00:00:00+07:00",
+  "stage_id": "R6-C1R3-LINUX",
+  "packet_id": "R6-C1R3-LINUX-EXECUTION-BOUNDARY",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "design",
+    "origin_date": "2026-08-30T00:00:00+07:00",
+    "verification_status": "UNVERIFIED",
+    "version_label": "stage1e_e4_r6_c1r3_linux_boundary_v1",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_pc2w_g1_backend_admission_v1",
+      "ars_codex_academic_research_suite_0.1.26"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-30T00:00:00+07:00",
+      "declared_by": "scholar"
+    },
+    "experiment_provenance": []
+  },
+  "proposal_only": true,
+  "execution_performed": false,
+  "execution_authorized": false,
+  "authoritative_entry_commit": "a939692d72d5d33cf67a8762d5260f2378df64f6",
+  "g1_receipt": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_g1_backend_admission_receipt.json",
+    "git_blob_bytes": 6003,
+    "git_blob_sha256": "7fac9ee1377ad183f12d3acb04061700d5218642d809dd54fe35ad79388605b1",
+    "verdict": "PASS_R6_PC2W_G1_CURRENT_HOST_BACKEND_ADMITTED_FOR_TRUSTED_PINNED_PACKET_DESIGN_ONLY"
+  },
+  "source_locks": {
+    "image": {
+      "registry": "docker.io",
+      "repository": "library/python",
+      "official_image": true,
+      "historical_tag_evidence_only": "docker.io/library/python:3.11.9-slim-bookworm",
+      "floating_tag_execution_allowed": false,
+      "immutable_execution_reference": "docker.io/library/python@sha256:2856e6af199e8128161abd320575eb9b341f3b76f017b5d0c9cd364f60d8a050",
+      "index_digest": "sha256:8fb099199b9f2d70342674bd9dbccd3ed03a258f26bbd1d556822c6dfc60c317",
+      "platform_manifest_digest": "sha256:2856e6af199e8128161abd320575eb9b341f3b76f017b5d0c9cd364f60d8a050",
+      "os": "linux",
+      "architecture": "amd64",
+      "python_version": "3.11.9",
+      "compressed_size_source_observation": "46.46 MB",
+      "source_url": "https://hub.docker.com/layers/library/python/3.11.9-slim-bookworm/images/sha256-2856e6af199e8128161abd320575eb9b341f3b76f017b5d0c9cd364f60d8a050?context=explore",
+      "official_overview_url": "https://hub.docker.com/_/python",
+      "license_statement": "Python license plus licenses of bundled Debian components; compliance remains the image user's responsibility.",
+      "security_boundary": "TRUSTED_PINNED_RESEARCH_CODE_ONLY_NOT_HOSTILE_CODE_ISOLATION",
+      "historical_image_risk": "Known-vulnerability metadata exists on the registry page; use is bounded, offline after acquisition, non-root and not represented as a security boundary.",
+      "local_image_id": "UNRESOLVED_UNTIL_AUTHORIZED_I01",
+      "candidate_fallback": null
+    },
+    "dataset": {
+      "provider": "GroupLens Research Project, University of Minnesota",
+      "dataset": "MovieLens 100K",
+      "release_label": "released 4/1998",
+      "readme_url": "https://files.grouplens.org/datasets/movielens/ml-100k-README.txt",
+      "checksum_url": "https://files.grouplens.org/datasets/movielens/ml-100k.zip.md5",
+      "archive_url": "https://files.grouplens.org/datasets/movielens/ml-100k.zip",
+      "archive_expected_bytes": 4924029,
+      "provider_md5": "0e33842e24a9c977be4e0107933c0723",
+      "locally_recomputed_frozen_sha256": "50d2a982c66986937beb9ffb3aa76efe955bf3d5c6b761f4e3a7cd717c6a3229",
+      "sha256_semantics": "LOCALLY_RECOMPUTED_FROM_PRIOR_OFFICIAL_ACQUISITION_NOT_PROVIDER_PUBLISHED"
+    },
+    "recbole": {
+      "revision": "9a6f63d8d4a5b989fe27955a833f813a6d86041e",
+      "git_tree": "08915121fea069a30f7e3e97a72e16e7e76d43c6",
+      "source_root": "E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\materialized_sources\\r5\\recbole_v1_2_1_9a6f63d",
+      "selected_manifest": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ac/E4_R5M0_source_materialization/selected_blob_manifest.json",
+      "selected_manifest_git_blob_bytes": 102765,
+      "selected_manifest_git_blob_sha256": "c5794b9daccdd01ca600c6ef7f890918825fbbb872efa67036c4565234e87016",
+      "selected_file_count": 265,
+      "selected_total_bytes": 1541044,
+      "selected_python_file_count": 150,
+      "selected_python_total_bytes": 1378341,
+      "pypi_editable_or_unpinned_vcs_allowed": false
+    }
+  },
+  "image_acquisition_and_probe_commands": [
+    {
+      "id": "I00_PULL_EXACT_OFFICIAL_PLATFORM_MANIFEST",
+      "purpose": "Acquire only the unique official Python platform manifest by immutable digest.",
+      "argv": [
+        "C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe",
+        "pull",
+        "--platform",
+        "linux/amd64",
+        "docker.io/library/python@sha256:2856e6af199e8128161abd320575eb9b341f3b76f017b5d0c9cd364f60d8a050"
+      ],
+      "argv_sha256": "28743d016865953b81fadd038416cec09358939798f41ad1999639e769a0db11",
+      "network": true,
+      "timeout_seconds": 1800,
+      "write_set": [
+        "Docker Desktop image store: exact manifest and referenced layers only"
+      ],
+      "required_outputs": [
+        "successful immutable-digest pull receipt"
+      ],
+      "postconditions": [
+        "linux/amd64 only",
+        "no tag fallback",
+        "no build",
+        "no container created"
+      ]
+    },
+    {
+      "id": "I01_INSPECT_LOCAL_IMAGE_IDENTITY",
+      "purpose": "Capture local image ID, RepoDigests, OS, architecture and config without network.",
+      "argv": [
+        "C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe",
+        "image",
+        "inspect",
+        "docker.io/library/python@sha256:2856e6af199e8128161abd320575eb9b341f3b76f017b5d0c9cd364f60d8a050"
+      ],
+      "argv_sha256": "9e74fcd251fc72997101d3d2a96af7df79595288e8452206d4fab1dbf4b7e62a",
+      "network": false,
+      "timeout_seconds": 120,
+      "write_set": [],
+      "required_outputs": [
+        "typed IMAGE_IDENTITY_V1 adapter receipt"
+      ],
+      "postconditions": [
+        "manifest digest exact",
+        "OS linux",
+        "architecture amd64",
+        "local image ID sha256 recorded"
+      ]
+    },
+    {
+      "id": "I02_PROBE_EXACT_CPYTHON_IDENTITY",
+      "purpose": "Run one read-only offline identity probe in the exact image.",
+      "argv": [
+        "C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe",
+        "run",
+        "--rm",
+        "--pull=never",
+        "--platform",
+        "linux/amd64",
+        "--network",
+        "none",
+        "--read-only",
+        "--tmpfs",
+        "/tmp:rw,noexec,nosuid,nodev,size=536870912,mode=1777",
+        "--user",
+        "10001:10001",
+        "--cap-drop",
+        "ALL",
+        "--security-opt",
+        "no-new-privileges",
+        "--pids-limit",
+        "256",
+        "--cpus",
+        "2",
+        "--memory",
+        "4g",
+        "--stop-timeout",
+        "10",
+        "--env",
+        "HOME=/tmp/home",
+        "--env",
+        "PYTHONNOUSERSITE=1",
+        "--env",
+        "PYTHONDONTWRITEBYTECODE=1",
+        "--env",
+        "PIP_CONFIG_FILE=/dev/null",
+        "--env",
+        "PIP_DISABLE_PIP_VERSION_CHECK=1",
+        "--env",
+        "PIP_NO_CACHE_DIR=1",
+        "--env",
+        "PIP_NO_INDEX=1",
+        "--workdir",
+        "/tmp",
+        "docker.io/library/python@sha256:2856e6af199e8128161abd320575eb9b341f3b76f017b5d0c9cd364f60d8a050",
+        "/usr/local/bin/python",
+        "-B",
+        "-I",
+        "-c",
+        "import json,platform,sys; print(json.dumps({'python':platform.python_version(),'implementation':platform.python_implementation(),'machine':platform.machine(),'platform':sys.platform,'executable':sys.executable},sort_keys=True))"
+      ],
+      "argv_sha256": "255bdb435ebc1db506bbd492bb838fc9b095c3d84968c4f4842f63998a0e7b48",
+      "network": false,
+      "timeout_seconds": 120,
+      "write_set": [],
+      "required_outputs": [
+        "typed PYTHON_RUNTIME_IDENTITY_V1 adapter receipt"
+      ],
+      "postconditions": [
+        "CPython 3.11.9",
+        "linux/amd64",
+        "no mount",
+        "container removed"
+      ]
+    }
+  ],
+  "packet_files": [
+    "dataset_materialization_packet.json",
+    "environment_materialization_packet.json",
+    "recbole_dataset_bridge_packet.json",
+    "execution_boundary_and_negative_assertions.json",
+    "audit_handoff.json"
+  ],
+  "command_counts": {
+    "image": 3,
+    "dataset": 3,
+    "environment": 11,
+    "bridge": 3,
+    "total": 20
+  },
+  "network_command_ids": [
+    "I00_PULL_EXACT_OFFICIAL_PLATFORM_MANIFEST",
+    "M00_ACQUIRE_OFFICIAL_GROUPLENS_BYTES",
+    "E00_DOWNLOAD_LINUX_WHEEL_CLOSURE"
+  ],
+  "execution_order": {
+    "serial_prefix": [
+      "I00_PULL_EXACT_OFFICIAL_PLATFORM_MANIFEST",
+      "I01_INSPECT_LOCAL_IMAGE_IDENTITY",
+      "I02_PROBE_EXACT_CPYTHON_IDENTITY"
+    ],
+    "parallel_lanes_after_image_probe": {
+      "dataset": [
+        "M00_ACQUIRE_OFFICIAL_GROUPLENS_BYTES",
+        "M01_SAFE_EXTRACT_CONVERT_AND_RECONCILE",
+        "M02_SEAL_DATASET_MATERIALIZATION_RECEIPT"
+      ],
+      "environment": [
+        "E00_DOWNLOAD_LINUX_WHEEL_CLOSURE",
+        "E01_HASH_AND_FREEZE_WHEEL_CLOSURE",
+        "E02_CREATE_EXACT_CONTAINER_VENV",
+        "E03_INSTALL_HASHED_THIRD_PARTY_CLOSURE",
+        "E04_STAGE_VERIFIED_RECBOLE_SOURCE",
+        "E05_PREPARE_EPHEMERAL_BUILD_SOURCE",
+        "E06_BUILD_LOCAL_RECBOLE_WHEEL",
+        "E07_HASH_LOCAL_RECBOLE_WHEEL",
+        "E08_INSTALL_HASHED_LOCAL_RECBOLE_WHEEL",
+        "E09_SEAL_ENVIRONMENT_AND_IMPORT_CHECK",
+        "E10_ASSERT_ATTEMPT_WRITE_BOUNDARY"
+      ]
+    },
+    "bridge_after_committed_lane_receipts": [
+      "B00_RESOLVE_PACKAGE_AND_REQUIRE_ABSENT_TARGET",
+      "B01_COPY_CANONICAL_ATOMIC_FILE",
+      "B02_CONFIG_ONLY_PATH_ASSERTION"
+    ],
+    "maximum_aggregate_concurrency": 2
+  },
+  "container_policy": {
+    "immutable_digest_only": true,
+    "pull_never_for_every_container_run": true,
+    "offline_network_none": true,
+    "read_only_root": true,
+    "tmpfs_only_scratch": true,
+    "non_root_uid_gid": "10001:10001",
+    "capabilities_dropped": "ALL",
+    "no_new_privileges": true,
+    "pids_limit": 256,
+    "cpus": 2,
+    "memory": "4g",
+    "repository_root_mounted": false,
+    "whole_E_drive_mounted": false,
+    "user_profile_mounted": false,
+    "docker_socket_mounted": false
+  },
+  "allowed_mounts": [
+    {
+      "host": "E:\\UIT\\cv\\materialized-data\\hybrid-recsys-v5\\stage1e\\r6\\official_source\\grouplens_ml100k\\attempt-004-linux",
+      "container": "/stage1e/data",
+      "mode": "rw attempt root only"
+    },
+    {
+      "host": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-004-linux",
+      "container": "/stage1e/env",
+      "mode": "rw attempt root only"
+    },
+    {
+      "host": "E:\\UIT\\cv\\backend\\research\\hybrid-recsys-v5\\03_benchmark\\stage1e\\materialized_sources\\r5\\recbole_v1_2_1_9a6f63d",
+      "container": "/stage1e/recbole-source",
+      "mode": "ro exact verified source only"
+    }
+  ],
+  "typed_postcondition_adapters": [
+    {
+      "schema_id": "IMAGE_IDENTITY_V1",
+      "producer": "I01_INSPECT_LOCAL_IMAGE_IDENTITY",
+      "required_fields": {
+        "Id": "sha256-string",
+        "RepoDigests": "array[string]",
+        "Os": "literal:linux",
+        "Architecture": "literal:amd64"
+      },
+      "invariants": [
+        "requested manifest digest exact",
+        "local image ID recorded",
+        "single inspected object"
+      ]
+    },
+    {
+      "schema_id": "PYTHON_RUNTIME_IDENTITY_V1",
+      "producer": "I02_PROBE_EXACT_CPYTHON_IDENTITY",
+      "required_fields": {
+        "python": "literal:3.11.9",
+        "implementation": "literal:CPython",
+        "machine": "enum:x86_64|AMD64",
+        "platform": "literal:linux",
+        "executable": "literal:/usr/local/bin/python"
+      },
+      "invariants": [
+        "stdout exactly one strict JSON object"
+      ]
+    },
+    {
+      "schema_id": "DATASET_ACQUISITION_V1",
+      "producer": "M00_ACQUIRE_OFFICIAL_GROUPLENS_BYTES",
+      "required_fields": {
+        "files": "array[3]",
+        "archive_provider_md5_verified": "literal:true",
+        "archive_frozen_sha256_verified": "literal:true",
+        "verdict": "literal:PASS"
+      },
+      "invariants": [
+        "exact URLs",
+        "redirects zero",
+        "byte counts exact"
+      ]
+    },
+    {
+      "schema_id": "DATASET_MATERIALIZATION_V1",
+      "producer": "M02_SEAL_DATASET_MATERIALIZATION_RECEIPT",
+      "required_fields": {
+        "rows": "literal:100000",
+        "users": "literal:943",
+        "items": "literal:1682",
+        "atomic_sha256": "sha256-string",
+        "scientific_execution_performed": "literal:false",
+        "verdict": "literal:PASS_R6_M0_MATERIALIZED_NOT_BENCHMARKED"
+      },
+      "invariants": [
+        "raw-to-atomic projection equal",
+        "TEST unopened"
+      ]
+    },
+    {
+      "schema_id": "WHEEL_CLOSURE_V1",
+      "producer": "E01_HASH_AND_FREEZE_WHEEL_CLOSURE",
+      "required_fields": {
+        "platform": "literal:linux/amd64",
+        "python": "literal:3.11.9",
+        "wheel_only": "literal:true",
+        "cpu_only": "literal:true",
+        "recbole_absent": "literal:true",
+        "wheels": "nonempty-array"
+      },
+      "invariants": [
+        "one normalized project per wheel",
+        "every wheel SHA-256 bound",
+        "all direct pins exact"
+      ]
+    },
+    {
+      "schema_id": "ENVIRONMENT_MATERIALIZATION_V1",
+      "producer": "E09_SEAL_ENVIRONMENT_AND_IMPORT_CHECK",
+      "required_fields": {
+        "python": "literal:3.11.9",
+        "recbole": "literal:1.2.1",
+        "torch": "literal:2.2.2+cpu",
+        "cuda_available": "literal:false",
+        "source_python_files": "literal:150",
+        "verdict": "literal:PASS_R6_M1_ENVIRONMENT_MATERIALIZED_NOT_BENCHMARKED"
+      },
+      "invariants": [
+        "pip check exit zero",
+        "source compiled in memory",
+        "no Dataset/training/evaluation"
+      ]
+    },
+    {
+      "schema_id": "BRIDGE_COPY_V1",
+      "producer": "B01_COPY_CANONICAL_ATOMIC_FILE",
+      "required_fields": {
+        "source_sha256": "sha256-string",
+        "target_sha256": "sha256-string",
+        "row_count": "literal:100000",
+        "binary_equal": "literal:true",
+        "verdict": "literal:PASS"
+      },
+      "invariants": [
+        "source and target hashes equal",
+        "destination exact one-file set",
+        "network false"
+      ]
+    }
+  ],
+  "runner_preflight": {
+    "must_be_implemented_and_independently_audited_before_execution": true,
+    "checks": [
+      "authoritative Git HEAD and clean worktree",
+      "G1 receipt raw hash",
+      "Docker executable regular non-reparse bytes and SHA-256",
+      "Docker/WSL stopped baseline",
+      "attempt roots absent and non-reparse ancestors",
+      "C free >=20 GiB and E free >=50 GiB",
+      "265/265 RecBole source files replay against Git-blob manifest",
+      "exact command argv hashes",
+      "fresh explicit user authorization"
+    ],
+    "root_creation_occurs_only_after_I02_pass": true,
+    "append_only_command_journal_fsync_after_each_command": true,
+    "retry_or_fallback_count": 0,
+    "finally_stop_docker_and_shutdown_wsl": true
+  },
+  "authorization_boundary": {
+    "packet_design_authorized": true,
+    "static_validation_authorized": true,
+    "independent_audit_required": true,
+    "image_pull_build_or_run_authorized": false,
+    "materialization_authorized": false,
+    "training_or_evaluation_authorized": false,
+    "test_access_authorized": false
+  },
+  "negative_assertions": {
+    "scientific_execution": false,
+    "preprocessing_except_canonical_dataset_format_conversion": false,
+    "training": false,
+    "evaluation": false,
+    "metric_calculation": false,
+    "checkpoint_or_result_asset_retrieval": false,
+    "test_access": false,
+    "benchmark_admission": false,
+    "paper_number_generation": false,
+    "automatic_retry_cleanup_rollback_or_fallback": false
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "benchmark_admission_opened": false,
+    "phase_1e_complete": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}
