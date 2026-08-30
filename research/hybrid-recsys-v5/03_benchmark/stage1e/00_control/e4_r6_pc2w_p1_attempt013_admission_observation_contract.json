@@ -1,12 +1,12 @@
 {
-  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt013-revision8-admission-observation-contract-1.0",
+  "schema_version": "stage1e-e4-r6-pc2w-p1-attempt013-revision9-admission-observation-contract-1.0",
   "stage_id": "E4-R6-PC2W-P1-ATTEMPT013",
   "material_passport": {
     "origin_skill": "experiment-agent",
     "origin_mode": "implementation-static-tdd",
     "origin_date": "2026-08-30T00:00:00+07:00",
     "verification_status": "UNVERIFIED",
-    "version_label": "stage1e_e4_r6_pc2w_p1_attempt013_revision8_admission_observation_contract_v1",
+    "version_label": "stage1e_e4_r6_pc2w_p1_attempt013_revision9_admission_observation_contract_v1",
     "upstream_dependencies": [
       "stage1e_e4_r6_pc2w_p1_attempt013_central_failure_remediation_plan_v1",
       "stage1e_e4_r6_pc2w_p1_attempt013_revision2_packet_lineage_contract_v1",
@@ -14,7 +14,8 @@
       "stage1e_e4_r6_pc2w_p1_attempt013_pre_runtime_authority_contract_v1",
       "stage1e_e4_r6_pc2w_p1_attempt013_revision5_runtime_result_v1",
       "stage1e_e4_r6_pc2w_p1_attempt013_revision6_pre_runtime_failure_v1",
-      "stage1e_e4_r6_pc2w_p1_attempt013_revision7_runtime_result_v1"
+      "stage1e_e4_r6_pc2w_p1_attempt013_revision7_runtime_result_v1",
+      "stage1e_e4_r6_pc2w_p1_attempt013_revision8_runtime_result_v1"
     ],
     "repro_lock": null,
     "experiment_intake_declaration": {
@@ -24,9 +25,9 @@
     },
     "experiment_provenance": []
   },
-  "purpose": "Seal Attempt-013 Revision 8 after Revision 7 completed all 27 commands and stable Docker/WSL closure but failed D02 solely because the TCP query sorted PID-first while the frozen validator requires canonical ProcessName-first ordering. Revision 8 changes only that query ordering and retains all identity, closure, one-shot, and fail-closed gates.",
+  "purpose": "Seal Attempt-013 Revision 9 after immutable Revision 8 completed exactly 27 commands with no retry, passed Docker/process identity and closure, and failed solely at D02 TCP_ROWS_NOT_CANONICAL. Revision 8 sorted Get-NetTCPConnection.State as a .NET enum before projecting it to string, while the frozen Python validator sorts the projected State string. Revision 9 changes only the five TCP query sort keys to their projected types and retains every validator, identity, closure, one-shot, and fail-closed gate.",
   "packet_entry_gate": {
-    "packet_parent_checkpoint": "3834dbc63cb5a9581549281f0ee38343075744de",
+    "packet_parent_checkpoint": "b705cf0b1340c5b209acd61e88e977cdd7696358",
     "aggregate_packet_files": [
       "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_pc2w_p1_attempt013_runtime_identity_compatibility_contract.json",
       "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/test_e4_r6_pc2w_p1_attempt013_runtime_identity_compatibility.py",
@@ -93,12 +94,12 @@
     "restated_authority_values": false
   },
   "receipt_contract": {
-    "central_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt013_revision8_central_static_validation_receipt.json",
-    "central_schema": "stage1e-e4-r6-pc2w-p1-attempt013-revision8-central-static-validation-receipt-1.0",
-    "central_verdict": "PASS_PC2W_P1_ATTEMPT013_REVISION8_CENTRAL_STATIC_VALIDATION",
-    "fresh_audit_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt013_revision8_user_audit_waiver_receipt.json",
-    "fresh_audit_schema": "stage1e-e4-r6-pc2w-p1-attempt013-revision8-user-audit-waiver-receipt-1.0",
-    "fresh_audit_verdict": "USER_OVERRIDE_PC2W_P1_ATTEMPT013_REVISION8_AUDIT_WAIVED_READY_FOR_EXACT_COMMAND",
+    "central_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt013_revision9_central_static_validation_receipt.json",
+    "central_schema": "stage1e-e4-r6-pc2w-p1-attempt013-revision9-central-static-validation-receipt-1.0",
+    "central_verdict": "PASS_PC2W_P1_ATTEMPT013_REVISION9_CENTRAL_STATIC_VALIDATION",
+    "fresh_audit_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_p1_attempt013_revision9_user_audit_waiver_receipt.json",
+    "fresh_audit_schema": "stage1e-e4-r6-pc2w-p1-attempt013-revision9-user-audit-waiver-receipt-1.0",
+    "fresh_audit_verdict": "USER_OVERRIDE_PC2W_P1_ATTEMPT013_REVISION9_AUDIT_WAIVED_READY_FOR_EXACT_COMMAND",
     "fresh_audit_must_link_central_raw_sha256": true,
     "fresh_audit_requirement": "WAIVED_BY_CURRENT_USER",
     "fresh_audit_receipt_semantics": "USER_OVERRIDE_NOT_AN_INDEPENDENT_AUDIT",
@@ -110,7 +111,8 @@
     "attempt013_revision4_receipts_accepted": false,
     "attempt013_revision5_receipts_accepted": false,
     "attempt013_revision6_receipts_accepted": false,
-    "attempt013_revision7_receipts_accepted": false
+    "attempt013_revision7_receipts_accepted": false,
+    "attempt013_revision8_receipts_accepted": false
   },
   "revision5_runtime_failure_evidence": {
     "result_commit": "16640292d63fdd5f7c1ff605142734ed12d750e6",
@@ -157,6 +159,25 @@
     "docker_identity_complete": true,
     "revision7_may_be_reinvoked": false
   },
+  "revision8_runtime_failure_evidence": {
+    "result_commit": "b705cf0b1340c5b209acd61e88e977cdd7696358",
+    "execution_receipt_sha256": "02ac003758e54849a90afb54f400509d1c1fb88fec2db9d5f9d4466142dfc27f",
+    "verdict": "FAIL_CLOSED_PC2W_P1_ATTEMPT013_REVISION8_CURRENT_HOST_NOT_ADMISSIBLE",
+    "commands_recorded": 27,
+    "automatic_retry_count": 0,
+    "fallback_count": 0,
+    "docker_desktop_start_attempts": 1,
+    "docker_desktop_stop_attempts": 1,
+    "wsl_shutdown_attempts": 1,
+    "docker_startup_succeeded": true,
+    "closure_stable": true,
+    "failure_stage": "D02",
+    "failure_code": "TCP_ROWS_NOT_CANONICAL",
+    "process_identity_complete": true,
+    "docker_identity_complete": true,
+    "revision8_state_sorted_as_dotnet_enum_before_string_projection": true,
+    "revision8_may_be_reinvoked": false
+  },
   "identity_gate": {
     "direct_self_identity_required": true,
     "parent_resolution_closed_union_bound_by_contract": true,
@@ -165,15 +186,23 @@
     "parent_name_only_is_name_agnostic": true,
     "direct_self_fields_remain_mandatory_for_parent_name_only_rows": true,
     "tcp_owner_uses_validated_direct_self_index": true,
-    "revision8_tcp_query_sort_order": [
+    "revision9_tcp_query_sort_order": [
       "ProcessName",
       "ProcessId",
       "State",
       "LocalPort",
       "RemotePort"
     ],
-    "revision8_tcp_validator_sort_order_unchanged": true,
-    "revision8_tcp_sort_adapter_changes_order_only": true,
+    "revision9_tcp_query_sort_projected_types": {
+      "ProcessName": "string",
+      "ProcessId": "uint32",
+      "State": "string",
+      "LocalPort": "uint16",
+      "RemotePort": "uint16"
+    },
+    "revision9_tcp_validator_sort_order_unchanged": true,
+    "revision9_tcp_sort_adapter_changes_query_keys_only": true,
+    "revision9_enum_vs_string_fixture_discriminating": true,
     "docker_build_time_comparator_bound_by_contract": true,
     "com_docker_build_absent_pe_file_version_uses_closed_sentinel": true,
     "absent_pe_file_version_allowlist": [
@@ -193,7 +222,7 @@
     "fallback_count": 0
   },
   "output_contract": {
-    "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_bb/E4_R6PC2W_P1_attempt013_revision8_admission_observation",
+    "output_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_bc/E4_R6PC2W_P1_attempt013_revision9_admission_observation",
     "absent_before_execution": true,
     "immutable_and_must_not_preexist": true,
     "exact_files": [
@@ -208,7 +237,7 @@
     "attempt012_legacy_main_retained": true,
     "attempt009_powershell_compatibility_retained": true,
     "attempt010_exact_command_interface_retained": true,
-    "attempt011_generic_receipt_binding_retained_with_attempt013_revision8_spec": true,
+    "attempt011_generic_receipt_binding_retained_with_attempt013_revision9_spec": true,
     "packet_lineage_helper_called_before_legacy_main": true,
     "retained_packet_delta_check_exact_four_m": true,
     "new_process_and_tcp_validator_installed_before_legacy_main": true,
@@ -218,7 +247,8 @@
     "revision5_waiver_receipt_projection_retained_before_output_write": true,
     "revision6_parent_path_visibility_adapter_retained_before_legacy_main": true,
     "revision7_user_override_token_literal_bound_before_legacy_main": true,
-    "revision8_tcp_query_sort_adapter_installed_before_legacy_main": true
+    "revision8_tcp_query_sort_adapter_superseded": true,
+    "revision9_tcp_projected_type_sort_adapter_installed_before_legacy_main": true
   },
   "exact_process_command_contract": {
     "required_original_argv_prefix": [
@@ -251,10 +281,11 @@
     "revision3_may_be_reinvoked": false
   },
   "scope_boundary": {
-    "revision8_implementation_and_static_regression_only_now": false,
-    "runtime_execution_authorized_now": true,
+    "revision9_implementation_and_static_regression_only_now": true,
+    "runtime_execution_authorized_now": false,
+    "runtime_execution_authorized_after_required_receipts": true,
     "exact_process_command_confirmed_now": true,
-    "host_docker_wsl_hyperv_network_or_powershell_runtime_commands_authorized_now": true,
+    "host_docker_wsl_hyperv_network_or_powershell_runtime_commands_authorized_now": false,
     "materialization_preprocessing_training_evaluation_benchmark_or_test_authorized": false,
     "central_validation_and_user_audit_waiver_required_before_runtime": true
   },
@@ -267,5 +298,5 @@
     "project_benchmark_numbers": "INVALID_FOR_PAPER"
   },
   "static_packet_verdict": "IMPLEMENTATION_PASS_READY_FOR_CENTRAL_STATIC_VALIDATION",
-  "next_gate": "CENTRAL_STATIC_VALIDATION_THEN_USER_AUDIT_WAIVER_RECEIPT_AND_EXACT_RUNTIME"
+  "next_gate": "CENTRAL_STATIC_VALIDATION_THEN_USER_AUDIT_WAIVER_RECEIPT_AND_EXACT_REVISION9_RUNTIME"
 }
