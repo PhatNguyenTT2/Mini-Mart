@@ -1,30 +1,31 @@
 {
-  "schema_version": "stage1e-r6-c1r3-linux-central-static-validation-receipt-1.0",
-  "created_at": "2026-08-31T09:06:09.101+07:00",
+  "schema_version": "stage1e-r6-c1r3-linux-revision1-central-static-validation-receipt-1.0",
+  "created_at": "2026-08-31T09:54:48.676+07:00",
   "stage_id": "R6-C1R3-LINUX",
   "receipt_role": "CENTRAL_STATIC_VALIDATION",
   "material_passport": {
     "origin_skill": "experiment-agent",
     "origin_mode": "validate-static-central",
-    "origin_date": "2026-08-31T09:06:09.101+07:00",
+    "origin_date": "2026-08-31T09:54:48.676+07:00",
     "verification_status": "UNVERIFIED",
-    "version_label": "stage1e_e4_r6_c1r3_linux_central_static_validation_v1",
+    "version_label": "stage1e_e4_r6_c1r3_linux_central_static_validation_v2_revision1",
     "upstream_dependencies": [
       "stage1e_e4_r6_pc2w_g1_backend_admission_v1",
       "stage1e_e4_r6_c1r3_linux_packet_v1",
+      "stage1e_e4_r6_c1r3_linux_checkout_provenance_remediation_v1",
       "ars_codex_academic_research_suite_0.1.26"
     ],
     "repro_lock": null,
     "experiment_intake_declaration": {
       "status": "no_experiments_declared",
-      "declared_at": "2026-08-31T09:06:09.101+07:00",
+      "declared_at": "2026-08-31T09:54:48.676+07:00",
       "declared_by": "scholar"
     },
     "experiment_provenance": []
   },
   "central_context": {
     "repository": "E:\\UIT\\cv\\backend",
-    "head_before_receipt": "3a2930dc4bea84e340af3289645b141a6ae9efbb",
+    "head_before_receipt": "b35d0ebcd229717a8435f3e883b00688b5c485ef",
     "worktree_user_state_preserved": true,
     "unrelated_user_path_preserved": "research/hybrid-recsys-v5/05_manuscript/"
   },
@@ -33,7 +34,10 @@
     "packet_parent": "a939692d72d5d33cf67a8762d5260f2378df64f6",
     "packet_branch": "codex/stage1e-r6-c1r3-linux-packet",
     "packet_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_bd/E4_R6C1R3_linux_command_packet",
-    "lineage_note": "The subject packet is an immutable parallel lineage and is not an ancestor of the current central main HEAD; this receipt binds the exact subject commit and raw bytes explicitly."
+    "packet_revision_commit": "b35d0ebcd229717a8435f3e883b00688b5c485ef",
+    "packet_revision_parent": "86a283f635c0318e22bcd3279785c77d2dcfd4e5",
+    "packet_revision_branch": "codex/stage1e-r6-c1r3-linux-packet-r1",
+    "lineage_note": "Revision 1 is a descendant of the immutable packet commit. It adds the prior central receipt, the checkout-provenance remediation plan, and repository-root byte-preservation attributes; the five packet blobs, builder, validator, and G1 receipt remain unchanged."
   },
   "validator": {
     "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_c1r3_linux_packet.py",
@@ -56,6 +60,35 @@
       "ACCEPTED_RESULT_ROWS": 0,
       "execution_authorized": false,
       "phase_1e_complete": false
+    }
+  },
+  "checkout_provenance_validation": {
+    "failed_audit_checkout": {
+      "worktree": "C:\\Users\\ACER\\.codex\\worktrees\\c517\\backend",
+      "core_autocrlf": true,
+      "checks_passed": 70,
+      "checks_total": 72,
+      "failed_checks": [
+        "utf8_lf_final_newline",
+        "g1_receipt_raw_binding"
+      ],
+      "verdict": "HANDOFF_INCOMPLETE"
+    },
+    "root_cause": "The old audit checkout materialized CRLF working-tree bytes before a repository byte-preservation policy existed; in-memory CRLF-to-LF normalization reproduced every immutable Git blob.",
+    "remediation": {
+      "attributes_path": ".gitattributes",
+      "required_attribute": "-text",
+      "normalization_in_validator_forbidden": true,
+      "old_packet_or_audit_rewritten": false
+    },
+    "revision1_replay": {
+      "byte_bound_artifacts_equal_to_git_blobs": 9,
+      "byte_bound_artifacts_total": 9,
+      "validator_checks_passed": 72,
+      "validator_checks_total": 72,
+      "g1_raw_bytes": 6003,
+      "g1_raw_sha256": "7fac9ee1377ad183f12d3acb04061700d5218642d809dd54fe35ad79388605b1",
+      "fresh_checkout_still_required": true
     }
   },
   "packet_artifacts": [
@@ -125,8 +158,8 @@
     "automatic_retry": false,
     "fallback": false
   },
-  "verdict": "PASS_R6_C1R3_LINUX_CENTRAL_STATIC_VALIDATION_READY_FOR_FRESH_INDEPENDENT_AUDIT",
-  "next_gate": "FRESH_INDEPENDENT_AUDIT_NO_RUNTIME_THEN_EXACT_COMMAND_ADJUDICATION",
+  "verdict": "PASS_R6_C1R3_LINUX_REVISION1_CENTRAL_STATIC_VALIDATION_READY_FOR_FRESH_INDEPENDENT_AUDIT",
+  "next_gate": "FRESH_REVISION1_INDEPENDENT_AUDIT_NO_RUNTIME_THEN_RUNNER_CONSTRUCTION",
   "execution_authorized": false,
   "RESULT_STATUS": "NOT_RUN",
   "TEST_SET_OPENED": "NO",
