@@ -1,0 +1,363 @@
+{
+  "schema_version": "stage1e-r6-c1r3-linux-revision1-fresh-independent-audit-receipt-1.0",
+  "created_at": "2026-08-31T10:07:18.959+07:00",
+  "stage_id": "R6-C1R3-LINUX",
+  "receipt_role": "FRESH_INDEPENDENT_STATIC_OFFLINE_FAIL_CLOSED_AUDIT",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "validate-static-fresh-independent-audit",
+    "origin_date": "2026-08-31T10:07:18.959+07:00",
+    "verification_status": "UNVERIFIED",
+    "version_label": "stage1e_e4_r6_c1r3_linux_revision1_fresh_independent_audit_v1",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_pc2w_g1_backend_admission_v1",
+      "stage1e_e4_r6_c1r3_linux_packet_v1",
+      "stage1e_e4_r6_c1r3_linux_checkout_provenance_remediation_v1",
+      "stage1e_e4_r6_c1r3_linux_central_static_validation_v2_revision1",
+      "ars_codex_academic_research_suite_0.1.26"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-31T10:07:18.959+07:00",
+      "declared_by": "scholar"
+    },
+    "experiment_provenance": []
+  },
+  "auditor_context": {
+    "repository_worktree": "C:\\Users\\ACER\\.codex\\worktrees\\e5e5\\backend",
+    "audit_scope": "STATIC_OFFLINE_FAIL_CLOSED",
+    "fresh_independent_auditor_role": true,
+    "entry_head": "472306c6c5feee763a86e47883490ff2db37a313",
+    "entry_sole_parent": "b35d0ebcd229717a8435f3e883b00688b5c485ef",
+    "worktree_clean_at_entry": true,
+    "worktree_clean_before_receipt_write": true,
+    "model_provenance": {
+      "requested_model": "gpt-5.6-sol",
+      "observed_model_id": "gpt-5.6-sol",
+      "requested_reasoning_effort": "xhigh",
+      "observed_reasoning_effort": "xhigh",
+      "model_reasoning_observation_basis": "active_task_runtime_configuration",
+      "requested_service_tier": "default",
+      "display_tier": "Standard",
+      "actual_service_tier": "UNOBSERVABLE",
+      "service_tier_telemetry": "UNOBSERVABLE",
+      "fast_or_priority_observed": false,
+      "model_or_reasoning_mismatch_observed": false
+    }
+  },
+  "subject": {
+    "packet_commit": "210c1edfd432e19b0007b3ba39528bcdb73c2288",
+    "packet_parent": "a939692d72d5d33cf67a8762d5260f2378df64f6",
+    "revision1_commit": "b35d0ebcd229717a8435f3e883b00688b5c485ef",
+    "revision1_parent": "86a283f635c0318e22bcd3279785c77d2dcfd4e5",
+    "central_receipt_commit": "472306c6c5feee763a86e47883490ff2db37a313",
+    "central_receipt_parent": "b35d0ebcd229717a8435f3e883b00688b5c485ef",
+    "packet_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_bd/E4_R6C1R3_linux_command_packet",
+    "central_receipt_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_c1r3_linux_central_static_validation_receipt.json"
+  },
+  "git_lineage_validation": {
+    "linear_revision1_lineage": [
+      "210c1edfd432e19b0007b3ba39528bcdb73c2288",
+      "86a283f635c0318e22bcd3279785c77d2dcfd4e5",
+      "b35d0ebcd229717a8435f3e883b00688b5c485ef",
+      "472306c6c5feee763a86e47883490ff2db37a313"
+    ],
+    "all_commits_have_exactly_one_expected_parent": true,
+    "packet_commit_exact_parent": true,
+    "ancestor_checks_passed": 3,
+    "ancestor_checks_total": 3,
+    "exact_commit_deltas": [
+      {
+        "commit": "210c1edfd432e19b0007b3ba39528bcdb73c2288",
+        "parent": "a939692d72d5d33cf67a8762d5260f2378df64f6",
+        "paths": [
+          {
+            "status": "A",
+            "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/build_e4_r6_c1r3_linux_packet.py",
+            "new_blob_oid": "ad4d9ad18f81f7e515b45eaecdd93aaea39411ac"
+          },
+          {
+            "status": "A",
+            "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_c1r3_linux_packet.py",
+            "new_blob_oid": "f83ac9414f279eb1cb658f6d240b2025fdcf4594"
+          },
+          {
+            "status": "A",
+            "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_bd/E4_R6C1R3_linux_command_packet/audit_handoff.json",
+            "new_blob_oid": "61c271c28a8bb9e8f5df9c0176bb0b0b937aaa48"
+          },
+          {
+            "status": "A",
+            "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_bd/E4_R6C1R3_linux_command_packet/dataset_materialization_packet.json",
+            "new_blob_oid": "15c5e215f128331f263cb3504ecc0bc90b90575a"
+          },
+          {
+            "status": "A",
+            "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_bd/E4_R6C1R3_linux_command_packet/environment_materialization_packet.json",
+            "new_blob_oid": "76e176f57e3b318694c47b1f39e166b8d4098254"
+          },
+          {
+            "status": "A",
+            "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_bd/E4_R6C1R3_linux_command_packet/execution_boundary_and_negative_assertions.json",
+            "new_blob_oid": "f0dbb49d8c413908a3f5464b2103ebf967d6bd2c"
+          },
+          {
+            "status": "A",
+            "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_bd/E4_R6C1R3_linux_command_packet/recbole_dataset_bridge_packet.json",
+            "new_blob_oid": "bef13cab870b83e8a9ccb614e0947ef1e4b380aa"
+          }
+        ]
+      },
+      {
+        "commit": "86a283f635c0318e22bcd3279785c77d2dcfd4e5",
+        "parent": "210c1edfd432e19b0007b3ba39528bcdb73c2288",
+        "paths": [
+          {
+            "status": "A",
+            "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_c1r3_linux_central_static_validation_receipt.json",
+            "new_blob_oid": "fdfecdcf65e0ad42be6c8a918fe9faa71918800f"
+          }
+        ]
+      },
+      {
+        "commit": "b35d0ebcd229717a8435f3e883b00688b5c485ef",
+        "parent": "86a283f635c0318e22bcd3279785c77d2dcfd4e5",
+        "paths": [
+          {
+            "status": "A",
+            "path": ".gitattributes",
+            "new_blob_oid": "a2ff0a93be02fd8800bbdf3f21adb98cb2764a95"
+          },
+          {
+            "status": "A",
+            "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_c1r3_linux_checkout_provenance_remediation_plan.md",
+            "new_blob_oid": "72d6366ed4971c1aac606311e30838a37a902f6e"
+          }
+        ]
+      },
+      {
+        "commit": "472306c6c5feee763a86e47883490ff2db37a313",
+        "parent": "b35d0ebcd229717a8435f3e883b00688b5c485ef",
+        "paths": [
+          {
+            "status": "M",
+            "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_c1r3_linux_central_static_validation_receipt.json",
+            "old_blob_oid": "fdfecdcf65e0ad42be6c8a918fe9faa71918800f",
+            "new_blob_oid": "700cdfa7572caad1337e0611dfbe35c2be0da11a",
+            "added_lines": 42,
+            "deleted_lines": 9
+          }
+        ]
+      }
+    ],
+    "packet_builder_validator_and_five_packet_blobs_unchanged_from_packet_commit_to_head": true,
+    "packet_artifact_blob_stability_count": 7,
+    "packet_artifact_blob_stability_total": 7,
+    "g1_blob_unchanged_from_packet_parent_to_head": true,
+    "g1_git_blob_oid": "f9dbb49dd63972ab75779a0f8e90c1564039f50f",
+    "central_receipt_commit_exact_one_file_delta": true
+  },
+  "checkout_provenance_validation": {
+    "required_git_attribute": "-text",
+    "git_check_attr_result": "text: unset",
+    "git_attribute_paths_unset": 9,
+    "git_attribute_paths_total": 9,
+    "raw_worktree_bytes_equal_git_blobs": 9,
+    "raw_worktree_bytes_total": 9,
+    "normalization_performed": false,
+    "repair_performed": false,
+    "raw_byte_bindings": [
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/build_e4_r6_c1r3_linux_packet.py",
+        "git_blob_oid": "ad4d9ad18f81f7e515b45eaecdd93aaea39411ac",
+        "raw_bytes": 61287,
+        "raw_sha256": "560f6e88a6f33828a31eb24f354b1928382a8b79d01a53f8a402dbdacf428bc9",
+        "worktree_equals_git_blob": true,
+        "text_attribute": "unset"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_c1r3_linux_packet.py",
+        "git_blob_oid": "f83ac9414f279eb1cb658f6d240b2025fdcf4594",
+        "raw_bytes": 25398,
+        "raw_sha256": "24ff4ff4c634209ac08e0d9016edff5a7a36feef14c6cf1517ad3e371d0dd0c7",
+        "worktree_equals_git_blob": true,
+        "text_attribute": "unset"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_g1_backend_admission_receipt.json",
+        "git_blob_oid": "f9dbb49dd63972ab75779a0f8e90c1564039f50f",
+        "raw_bytes": 6003,
+        "raw_sha256": "7fac9ee1377ad183f12d3acb04061700d5218642d809dd54fe35ad79388605b1",
+        "worktree_equals_git_blob": true,
+        "text_attribute": "unset"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_c1r3_linux_central_static_validation_receipt.json",
+        "git_blob_oid": "700cdfa7572caad1337e0611dfbe35c2be0da11a",
+        "raw_bytes": 7654,
+        "raw_sha256": "4cdb09faa91cbbf460ceb358c5fba41a73ed568adc0143ef9275bbf2a78e487d",
+        "worktree_equals_git_blob": true,
+        "text_attribute": "unset"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_bd/E4_R6C1R3_linux_command_packet/audit_handoff.json",
+        "git_blob_oid": "61c271c28a8bb9e8f5df9c0176bb0b0b937aaa48",
+        "raw_bytes": 3963,
+        "raw_sha256": "7ced481a7dd22c770657100959ad488597b2e528f2e5b75dc5f824936ac73699",
+        "worktree_equals_git_blob": true,
+        "text_attribute": "unset"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_bd/E4_R6C1R3_linux_command_packet/dataset_materialization_packet.json",
+        "git_blob_oid": "15c5e215f128331f263cb3504ecc0bc90b90575a",
+        "raw_bytes": 20543,
+        "raw_sha256": "ef3dece62283d65f1e2522ce5ff3524c4bdf01621fb6da6a36ef207291fb46e7",
+        "worktree_equals_git_blob": true,
+        "text_attribute": "unset"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_bd/E4_R6C1R3_linux_command_packet/environment_materialization_packet.json",
+        "git_blob_oid": "76e176f57e3b318694c47b1f39e166b8d4098254",
+        "raw_bytes": 39312,
+        "raw_sha256": "e45875c84e7b233a0c7088583e5ac0450b6402b6af79a279bb96e34da61c688f",
+        "worktree_equals_git_blob": true,
+        "text_attribute": "unset"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_bd/E4_R6C1R3_linux_command_packet/execution_boundary_and_negative_assertions.json",
+        "git_blob_oid": "f0dbb49d8c413908a3f5464b2103ebf967d6bd2c",
+        "raw_bytes": 16337,
+        "raw_sha256": "e571dff601d293c3ded4bc662a94b8493a5b462045e3271c01d64cc1d32cba70",
+        "worktree_equals_git_blob": true,
+        "text_attribute": "unset"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_bd/E4_R6C1R3_linux_command_packet/recbole_dataset_bridge_packet.json",
+        "git_blob_oid": "bef13cab870b83e8a9ccb614e0947ef1e4b380aa",
+        "raw_bytes": 12954,
+        "raw_sha256": "58db7928dbb9b57df8686ff04247f7201cc082f9b97d1c99a16ec267b87edf8e",
+        "worktree_equals_git_blob": true,
+        "text_attribute": "unset"
+      }
+    ]
+  },
+  "strict_json_and_semantic_replay": {
+    "strict_json_files_checked": 7,
+    "strict_json_files_passed": 7,
+    "duplicate_keys_observed": 0,
+    "case_colliding_keys_observed": 0,
+    "nonfinite_numbers_observed": 0,
+    "central_receipt": {
+      "schema_version": "stage1e-r6-c1r3-linux-revision1-central-static-validation-receipt-1.0",
+      "verdict": "PASS_R6_C1R3_LINUX_REVISION1_CENTRAL_STATIC_VALIDATION_READY_FOR_FRESH_INDEPENDENT_AUDIT",
+      "subject_revision": "b35d0ebcd229717a8435f3e883b00688b5c485ef",
+      "head_before_receipt": "b35d0ebcd229717a8435f3e883b00688b5c485ef",
+      "commit": "472306c6c5feee763a86e47883490ff2db37a313",
+      "parent": "b35d0ebcd229717a8435f3e883b00688b5c485ef",
+      "exact_one_file_delta": true
+    },
+    "packet_command_records": 20,
+    "docker_run_records": 18,
+    "unique_command_ids": 20,
+    "argv_hashes_equal": 20,
+    "packet_command_records_executed": 0,
+    "g1_receipt_semantics_passed": true,
+    "packet_truth_state_semantics_passed": true
+  },
+  "validator": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_c1r3_linux_packet.py",
+    "command": "C:\\Program Files\\Python311\\python.exe -B research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_c1r3_linux_packet.py --packet-root research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_bd/E4_R6C1R3_linux_command_packet",
+    "invocation_count": 1,
+    "exit_code": 0,
+    "schema_version": "stage1e-r6-c1r3-linux-static-validation-result-1.0",
+    "verdict": "PASS_R6_C1R3_LINUX_PACKET_READY_FOR_FRESH_XHIGH_AUDIT",
+    "checks_passed": 72,
+    "checks_total": 72,
+    "failures": [],
+    "packet_command_count": 20,
+    "docker_run_count": 18,
+    "recbole_source_replay": {
+      "files": 265,
+      "expected_files": 265,
+      "bytes": 1541044,
+      "expected_bytes": 1541044,
+      "failure_count": 0
+    }
+  },
+  "attempt_and_runner_gate": {
+    "dataset_attempt_root": "E:\\UIT\\cv\\materialized-data\\hybrid-recsys-v5\\stage1e\\r6\\official_source\\grouplens_ml100k\\attempt-004-linux",
+    "dataset_attempt_root_present": false,
+    "environment_attempt_root": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-004-linux",
+    "environment_attempt_root_present": false,
+    "experiments_root": "research/hybrid-recsys-v5/04_experiments",
+    "experiments_root_present": false,
+    "compatible_r6_c1r3_linux_runner_present": false,
+    "compatible_runner_absence_is_expected_next_gate_blocker": true,
+    "legacy_windows_runner_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_materialization.py",
+    "legacy_windows_runner_imported": false,
+    "legacy_windows_runner_invoked": false,
+    "legacy_windows_runner_substituted": false,
+    "runner_construction_required_before_runtime": true
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "benchmark_admission_opened": false,
+    "phase_1e_complete": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "no_runtime_counters": {
+    "packet_commands_executed": 0,
+    "runner_imports": 0,
+    "runner_invocations": 0,
+    "docker_commands_executed": 0,
+    "docker_probes": 0,
+    "wsl_probes_or_operations": 0,
+    "hyper_v_probes_or_operations": 0,
+    "network_operations": 0,
+    "runtime_process_probes": 0,
+    "port_probes": 0,
+    "materialization_commands": 0,
+    "downloads": 0,
+    "container_runs": 0,
+    "training_commands": 0,
+    "evaluation_commands": 0,
+    "benchmark_commands": 0,
+    "test_set_accesses": 0,
+    "artifact_repairs": 0,
+    "automatic_retries": 0,
+    "fallbacks": 0,
+    "additional_tasks_created": 0,
+    "subagents_created": 0
+  },
+  "scope_boundary": {
+    "docker_started_or_stopped": false,
+    "wsl_started_stopped_or_shutdown": false,
+    "hyper_v_touched": false,
+    "network_acquisition": false,
+    "process_or_port_runtime_probe": false,
+    "runner_imported_or_invoked": false,
+    "dataset_materialized": false,
+    "environment_materialized": false,
+    "bridge_executed": false,
+    "container_run": false,
+    "training": false,
+    "evaluation": false,
+    "benchmark_admission": false,
+    "test_set_opened": false,
+    "packet_validator_builder_g1_central_attributes_plan_pipeline_or_manuscript_modified": false
+  },
+  "verdict": "PASS_R6_C1R3_LINUX_REVISION1_FRESH_INDEPENDENT_AUDIT_READY_FOR_CENTRAL_RUNNER_CONSTRUCTION",
+  "next_gate": "CENTRAL_R6_C1R3_LINUX_RUNNER_CONSTRUCTION_AND_INDEPENDENT_STATIC_VALIDATION_BEFORE_RUNTIME",
+  "execution_authorized": false,
+  "RESULT_STATUS": "NOT_RUN",
+  "TEST_SET_OPENED": "NO",
+  "ACCEPTED_RESULT_ROWS": 0,
+  "phase_1e_complete": false,
+  "write_set": [
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_c1r3_linux_revision1_fresh_independent_audit_receipt.json"
+  ]
+}
