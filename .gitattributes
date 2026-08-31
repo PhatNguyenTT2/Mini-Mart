@@ -1,0 +1,8 @@
+# Byte-bound Stage 1E control artifacts must not be rewritten by a worktree
+# checkout.  In particular, core.autocrlf must not turn the LF Git blobs into
+# CRLF, because validators bind the executed bytes and the G1 receipt hash.
+/research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/build_e4_r6_c1r3_linux_packet.py -text
+/research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_c1r3_linux_packet.py -text
+/research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_c1r3_linux_central_static_validation_receipt.json -text
+/research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_pc2w_g1_backend_admission_receipt.json -text
+/research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_bd/E4_R6C1R3_linux_command_packet/*.json -text
