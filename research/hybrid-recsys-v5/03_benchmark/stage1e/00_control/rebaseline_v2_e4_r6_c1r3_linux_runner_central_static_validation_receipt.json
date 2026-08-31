@@ -1,0 +1,170 @@
+{
+  "schema_version": "stage1e-r6-c1r3-linux-runner-central-static-validation-receipt-1.0",
+  "created_at": "2026-08-31T10:50:40.6213052+07:00",
+  "stage_id": "R6-C1R3-LINUX",
+  "receipt_role": "CENTRAL_STATIC_VALIDATION_BEFORE_FRESH_INDEPENDENT_RUNNER_AUDIT",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "validate-runtime-runner-static",
+    "origin_date": "2026-08-31T10:50:40.6213052+07:00",
+    "verification_status": "UNVERIFIED",
+    "version_label": "stage1e_e4_r6_c1r3_linux_runner_central_static_validation_v1",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_c1r3_linux_revision1_fresh_independent_audit_v1",
+      "stage1e_e4_r6_c1r3_linux_materialization_runner_v1",
+      "ars_codex_academic_research_suite_0.1.26"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-31T10:50:40.6213052+07:00",
+      "declared_by": "scholar"
+    },
+    "experiment_provenance": []
+  },
+  "central_context": {
+    "model_id": "gpt-5.6-sol",
+    "reasoning_effort": "max",
+    "speed_mode": "standard",
+    "fast_or_priority_requested": false,
+    "role": "central_planning_implementation_and_static_validation"
+  },
+  "subject": {
+    "implementation_commit": "f11352db90634c3c0d7b62e595ce9f46b1317bee",
+    "implementation_parent": "1e3617cd0befe790a28129d3714dc4a17e6ce964",
+    "accepted_packet_audit_commit": "1e3617cd0befe790a28129d3714dc4a17e6ce964",
+    "exact_commit_delta": [
+      {
+        "status": "M",
+        "path": ".gitattributes",
+        "git_blob_oid": "5b6406d1c1d91a4e048bead5198aad41bd109c75",
+        "git_blob_bytes": 1569
+      },
+      {
+        "status": "A",
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_c1r3_linux_materialization_runner_contract.json",
+        "git_blob_oid": "2a0d5851a582c384628aaf93a33cc2ff80688239",
+        "raw_bytes": 5402,
+        "raw_sha256": "0af173b0f4f54cce1037e61682e0044f3a2adfad98b1d4bd64149e7405425eae"
+      },
+      {
+        "status": "A",
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_c1r3_linux_materialization.py",
+        "git_blob_oid": "e23b6cd048df7ac9e556b792521e7c7ca6901bbb",
+        "raw_bytes": 53396,
+        "raw_sha256": "f7dfecf902b0a19bc0e688bf27060bc6202b37ce38f35a97415794061236900e"
+      },
+      {
+        "status": "A",
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/test_execute_e4_r6_c1r3_linux_materialization.py",
+        "git_blob_oid": "ae484dfa37990c8cb929e4c21f2c8b37fdb7a8fc",
+        "raw_bytes": 6211,
+        "raw_sha256": "fb5934e4f90029cab153564e279b9dfe1ba4e2114c038ecefacb59b413ab292c"
+      }
+    ],
+    "exact_commit_delta_count": 4,
+    "unrelated_user_state_preserved": "research/hybrid-recsys-v5/05_manuscript/"
+  },
+  "byte_preservation": {
+    "runner_contract_text_attribute": "unset",
+    "runner_text_attribute": "unset",
+    "runner_test_text_attribute": "unset",
+    "future_central_receipt_text_attribute": "unset",
+    "future_fresh_audit_receipt_text_attribute": "unset",
+    "runner_contract_worktree_equals_git_blob": true,
+    "runner_worktree_equals_git_blob": true,
+    "runner_test_worktree_equals_git_blob": true,
+    "gitattributes_worktree_crlf_conversion_observed": true,
+    "gitattributes_conversion_affects_locked_runtime_artifacts": false
+  },
+  "static_tests": {
+    "command": "C:\\Program Files\\Python311\\python.exe -B research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/test_execute_e4_r6_c1r3_linux_materialization.py",
+    "exit_code": 0,
+    "tests_passed": 14,
+    "tests_total": 14,
+    "coverage": [
+      "strict JSON duplicate/case-collision/non-finite rejection",
+      "exact 17-command image plus M0/M1 plan",
+      "bridge command exclusion",
+      "literal argv SHA-256 replay and mutation rejection",
+      "live packet validator replay",
+      "dataset/environment roots only after I02",
+      "stop on first failure",
+      "append-only JSONL journal",
+      "negative scientific receipt gates",
+      "exact execution confirmation token"
+    ]
+  },
+  "packet_validator": {
+    "command": "C:\\Program Files\\Python311\\python.exe -B research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_c1r3_linux_packet.py --packet-root research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_bd/E4_R6C1R3_linux_command_packet",
+    "exit_code": 0,
+    "verdict": "PASS_R6_C1R3_LINUX_PACKET_READY_FOR_FRESH_XHIGH_AUDIT",
+    "checks_passed": 72,
+    "checks_total": 72,
+    "failures": [],
+    "recbole_source_replay": {
+      "files": 265,
+      "bytes": 1541044,
+      "failure_count": 0
+    }
+  },
+  "runner_static_contract": {
+    "packet_commands_in_runtime_plan": 17,
+    "image_commands": 3,
+    "dataset_commands": 3,
+    "environment_commands": 11,
+    "bridge_commands": 0,
+    "literal_packet_argv": true,
+    "shell_false": true,
+    "retry_count": 0,
+    "fallback_count": 0,
+    "stop_on_first_failure": true,
+    "dataset_and_environment_root_creation_only_after_I02_pass": true,
+    "append_only_fsynced_command_journal": true,
+    "lane_schedule": "SERIAL_DATASET_THEN_ENVIRONMENT",
+    "maximum_aggregate_concurrency_observed": 1,
+    "docker_desktop_start_attempt_limit": 1,
+    "docker_desktop_stop_attempt_limit": 1,
+    "wsl_shutdown_attempt_limit": 1,
+    "stable_closure_snapshot_count": 3,
+    "runtime_requires_clean_fresh_worktree": true,
+    "runtime_requires_exact_expected_head": true,
+    "runtime_requires_exact_confirmation_token": true
+  },
+  "central_static_activity": {
+    "packet_commands_executed": 0,
+    "docker_pull_build_or_run_commands_executed": 0,
+    "docker_desktop_start_commands_executed": 0,
+    "training_commands_executed": 0,
+    "evaluation_commands_executed": 0,
+    "test_set_accessed": false,
+    "read_only_host_diagnostic_probes": [
+      "docker desktop status",
+      "wsl --list --running --quiet"
+    ],
+    "diagnostic_probe_results_used_as_runtime_admission": false,
+    "runtime_host_checks_remain_pending_in_fresh_runtime_task": true
+  },
+  "scope_boundary": {
+    "materialization_executed": false,
+    "bridge_executed": false,
+    "dataset_constructed_or_loaded": false,
+    "training": false,
+    "evaluation": false,
+    "metrics": false,
+    "test_opened": false,
+    "benchmark_admitted": false
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "benchmark_admission_opened": false,
+    "phase_1e_complete": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "verdict": "PASS_R6_C1R3_LINUX_RUNNER_CENTRAL_STATIC_VALIDATION_READY_FOR_FRESH_INDEPENDENT_AUDIT",
+  "next_gate": "FRESH_SOL_XHIGH_STANDARD_INDEPENDENT_RUNNER_AUDIT_NO_RUNTIME",
+  "write_set": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_c1r3_linux_runner_central_static_validation_receipt.json"
+}
