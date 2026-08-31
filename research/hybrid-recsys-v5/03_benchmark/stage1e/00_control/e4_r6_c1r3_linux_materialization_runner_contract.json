@@ -1,5 +1,5 @@
 {
-  "schema_version": "stage1e-r6-c1r3-linux-materialization-runner-contract-1.0",
+  "schema_version": "stage1e-r6-c1r3-linux-materialization-runner-contract-1.1",
   "created_at": "2026-08-31T00:00:00+07:00",
   "stage_id": "R6-C1R3-LINUX",
   "material_passport": {
@@ -7,9 +7,10 @@
     "origin_mode": "design-runtime-runner",
     "origin_date": "2026-08-31T00:00:00+07:00",
     "verification_status": "UNVERIFIED",
-    "version_label": "stage1e_e4_r6_c1r3_linux_materialization_runner_v1",
+    "version_label": "stage1e_e4_r6_c1r3_linux_materialization_runner_v2",
     "upstream_dependencies": [
       "stage1e_e4_r6_c1r3_linux_revision1_fresh_independent_audit_v1",
+      "stage1e_e4_r6_c1r3_linux_runner_fresh_independent_audit_failure_v1",
       "stage1e_e4_r6_c1r3_linux_packet_v1",
       "ars_codex_academic_research_suite_0.1.26"
     ],
@@ -73,7 +74,11 @@
     "docker_desktop_start_attempts": 1,
     "docker_desktop_stop_attempts": 1,
     "wsl_shutdown_attempts": 1,
-    "stable_closure_snapshots": 3
+    "stable_closure_snapshots": 3,
+    "docker_stop_acceptance": "docker desktop stop process success OR three stable independently authoritative stopped snapshots; closure snapshots remain mandatory",
+    "authoritative_result_path": "runner_result.json",
+    "partial_result_paths_authoritative": false,
+    "result_write_failure_must_emit_fail_closed": true
   },
   "external_roots": {
     "runner_attempt_root": "E:\\UIT\\cv\\materialized-runs\\hybrid-recsys-v5\\stage1e\\r6\\c1r3\\attempt-004-linux",
@@ -96,6 +101,73 @@
     "wsl_shutdown": [
       "C:\\Windows\\System32\\wsl.exe",
       "--shutdown"
+    ],
+    "docker_server_absence_probe": [
+      "C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe",
+      "version",
+      "--format",
+      "{{json .Server}}"
+    ],
+    "wsl_running_inventory": [
+      "C:\\Windows\\System32\\wsl.exe",
+      "--list",
+      "--running",
+      "--quiet"
+    ],
+    "docker_process_inventory": [
+      "C:\\Windows\\System32\\tasklist.exe",
+      "/FO",
+      "CSV",
+      "/NH"
+    ]
+  },
+  "stopped_state_evidence_contract": {
+    "schema_version": "r6-c1r3-docker-wsl-stopped-composite-1.0",
+    "docker_desktop_status_is_authoritative": false,
+    "generic_status_markers_forbidden": [
+      "Could not retrieve status",
+      "Is Docker Desktop running?",
+      "is not running"
+    ],
+    "all_three_surfaces_required": true,
+    "docker_server_absence": {
+      "exit_code": 1,
+      "process_success": false,
+      "stdout_exact_after_trim_casefold": "null",
+      "stderr_required_casefold_substrings": [
+        "npipe:////./pipe/dockerdesktoplinuxengine",
+        "the system cannot find the file specified."
+      ],
+      "access_denied_forbidden": true,
+      "binding": "Docker CLI 29.5.3 executable bytes and SHA-256 locked by the runner"
+    },
+    "wsl_running_inventory": {
+      "exit_code": 0,
+      "process_success": true,
+      "running_distros_exact": [],
+      "access_denied_forbidden": true
+    },
+    "docker_process_inventory": {
+      "exit_code": 0,
+      "process_success": true,
+      "match_rule": "case-insensitive exact image name",
+      "forbidden_image_names": [
+        "Docker Desktop.exe",
+        "com.docker.backend.exe",
+        "com.docker.build.exe",
+        "com.docker.proxy.exe",
+        "dockerd.exe",
+        "vpnkit.exe",
+        "wslrelay.exe"
+      ],
+      "access_denied_forbidden": true
+    },
+    "baseline_snapshots_required": 1,
+    "closure_snapshots_required": 3,
+    "closure_stability_fields": [
+      "docker_server_endpoint_absent",
+      "wsl_running_distros",
+      "docker_processes"
     ]
   },
   "exact_process_command_template": [
@@ -116,8 +188,8 @@
     "fast_or_priority_forbidden": true
   },
   "validation_and_handoff": {
-    "central_static_receipt": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_c1r3_linux_runner_central_static_validation_receipt.json",
-    "fresh_independent_audit_receipt": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_c1r3_linux_runner_fresh_independent_audit_receipt.json",
+    "central_static_receipt": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_c1r3_linux_runner_revision2_central_static_validation_receipt.json",
+    "fresh_independent_audit_receipt": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_c1r3_linux_runner_revision2_fresh_independent_audit_receipt.json",
     "fresh_independent_audit_required_before_runtime": true,
     "runtime_must_use_a_new_task_and_clean_worktree": true
   },

@@ -143,5 +143,126 @@ class EvidenceTests(unittest.TestCase):
             runner.require_confirmation(runner.CONFIRMATION_TOKEN + "_MUTATED")
 
 
+class StoppedStateEvidenceTests(unittest.TestCase):
+    @staticmethod
+    def result(exit_code: int, process_success: bool) -> dict[str, object]:
+        return {
+            "exit_code": exit_code,
+            "process_success": process_success,
+            "launch_error": None,
+            "timed_out": False,
+        }
+
+    @staticmethod
+    def exact_daemon_absence() -> tuple[bytes, bytes]:
+        return (
+            b"null\r\n",
+            (
+                b"failed to connect to the docker API at "
+                b"npipe:////./pipe/dockerDesktopLinuxEngine; "
+                b"The system cannot find the file specified.\r\n"
+            ),
+        )
+
+    @staticmethod
+    def quiet_tasklist() -> bytes:
+        return (
+            b'"System Idle Process","0","Services","0","8 K"\r\n'
+            b'"python.exe","123","Console","1","10 K"\r\n'
+        )
+
+    def validate(
+        self,
+        *,
+        daemon_stdout: bytes | None = None,
+        daemon_stderr: bytes | None = None,
+        wsl_stdout: bytes = b"",
+        tasklist_stdout: bytes | None = None,
+    ) -> dict[str, object]:
+        exact_stdout, exact_stderr = self.exact_daemon_absence()
+        return runner.validate_stopped_snapshot(
+            self.result(1, False),
+            exact_stdout if daemon_stdout is None else daemon_stdout,
+            exact_stderr if daemon_stderr is None else daemon_stderr,
+            self.result(0, True),
+            wsl_stdout,
+            b"",
+            self.result(0, True),
+            self.quiet_tasklist() if tasklist_stdout is None else tasklist_stdout,
+            b"",
+        )
+
+    def test_exact_composite_stopped_evidence_passes(self) -> None:
+        evidence = self.validate()
+        self.assertTrue(evidence["passed"])
+        self.assertTrue(evidence["docker_server_endpoint_absent"])
+        self.assertEqual(evidence["wsl_running_distros"], [])
+        self.assertEqual(evidence["docker_processes"], [])
+
+    def test_ambiguous_desktop_status_text_cannot_prove_stopped(self) -> None:
+        with self.assertRaisesRegex(RuntimeError, "DOCKER_SERVER_ABSENCE_SIGNATURE_MISMATCH"):
+            self.validate(
+                daemon_stdout=b"",
+                daemon_stderr=b"Could not retrieve status. Is Docker Desktop running?",
+            )
+
+    def test_access_denied_daemon_probe_is_rejected(self) -> None:
+        with self.assertRaisesRegex(RuntimeError, "DOCKER_SERVER_PROBE_ACCESS_DENIED"):
+            self.validate(daemon_stdout=b"", daemon_stderr=b"Access is denied.")
+
+    def test_running_wsl_distro_is_rejected(self) -> None:
+        with self.assertRaisesRegex(RuntimeError, "WSL_DISTRO_STILL_RUNNING"):
+            self.validate(wsl_stdout="docker-desktop\r\n".encode("utf-16-le"))
+
+    def test_exact_docker_process_is_rejected(self) -> None:
+        tasklist = (
+            self.quiet_tasklist()
+            + b'"Docker Desktop.exe","456","Console","1","100 K"\r\n'
+        )
+        with self.assertRaisesRegex(RuntimeError, "DOCKER_PROCESS_STILL_RUNNING"):
+            self.validate(tasklist_stdout=tasklist)
+
+    def test_non_csv_tasklist_success_cannot_prove_stopped(self) -> None:
+        with self.assertRaisesRegex(RuntimeError, "TASKLIST_CSV_INVALID"):
+            self.validate(tasklist_stdout=b"No task inventory is available.\r\n")
+
+
+class FinalResultPublicationTests(unittest.TestCase):
+    @staticmethod
+    def passing_document() -> dict[str, object]:
+        return {
+            "passed": True,
+            "error_type": None,
+            "error": None,
+            "verdict": "PASS_R6_C1R3_LINUX_M0_M1_MATERIALIZED_NOT_BENCHMARKED",
+        }
+
+    def test_atomic_publication_writes_parseable_authoritative_result(self) -> None:
+        with tempfile.TemporaryDirectory() as raw:
+            path = Path(raw) / "runner_result.json"
+            document = self.passing_document()
+            self.assertTrue(runner.persist_final_result(path, document))
+            self.assertEqual(json.loads(path.read_text(encoding="utf-8")), document)
+            self.assertFalse(path.with_name(path.name + ".partial").exists())
+
+    def test_publication_failure_mutates_emitted_document_fail_closed(self) -> None:
+        def fail_writer(path: Path, value: dict[str, object]) -> None:
+            raise OSError("synthetic publication failure")
+
+        with tempfile.TemporaryDirectory() as raw:
+            path = Path(raw) / "runner_result.json"
+            document = self.passing_document()
+            self.assertFalse(runner.persist_final_result(path, document, fail_writer))
+            self.assertFalse(document["passed"])
+            self.assertEqual(
+                document["verdict"],
+                "HANDOFF_INCOMPLETE_R6_C1R3_LINUX_ATTEMPT004_CLOSED",
+            )
+            self.assertEqual(document["error_type"], "RunnerResultWriteError")
+            self.assertIn("synthetic publication failure", str(document["error"]))
+            self.assertIn("synthetic publication failure", str(document["runner_result_write_error"]))
+            self.assertFalse(path.exists())
+
+
 if __name__ == "__main__":
     unittest.main()

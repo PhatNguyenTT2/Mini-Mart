@@ -9,7 +9,9 @@ metric, benchmark-admission, or TEST commands.
 from __future__ import annotations
 
 import argparse
+import csv
 import hashlib
+import io
 import json
 import os
 import re
@@ -55,6 +57,20 @@ DOCKER_EXE = Path(r"C:\Program Files\Docker\Docker\resources\bin\docker.exe")
 DOCKER_BYTES = 42_748_848
 DOCKER_SHA256 = "0cdb9dea2e39a0a29e5dc3f9732f572dc140547b28deab0495589b4f79b31ca1"
 WSL_EXE = Path(r"C:\Windows\System32\wsl.exe")
+TASKLIST_EXE = Path(r"C:\Windows\System32\tasklist.exe")
+DOCKER_SERVER_PIPE = "npipe:////./pipe/dockerdesktoplinuxengine"
+DOCKER_SERVER_NOT_FOUND = "the system cannot find the file specified."
+DOCKER_PROCESS_NAMES = frozenset(
+    {
+        "docker desktop.exe",
+        "com.docker.backend.exe",
+        "com.docker.build.exe",
+        "com.docker.proxy.exe",
+        "dockerd.exe",
+        "vpnkit.exe",
+        "wslrelay.exe",
+    }
+)
 IMAGE_REF = (
     "docker.io/library/python@sha256:"
     "2856e6af199e8128161abd320575eb9b341f3b76f017b5d0c9cd364f60d8a050"
@@ -235,6 +251,55 @@ def write_json_new(path: Path, value: dict[str, Any]) -> None:
         stream.write(payload)
         stream.flush()
         os.fsync(stream.fileno())
+
+
+def write_json_atomic_new(path: Path, value: dict[str, Any]) -> None:
+    """Publish one authoritative JSON file without exposing a partial final path."""
+    payload = (
+        json.dumps(value, ensure_ascii=True, indent=2, sort_keys=True, allow_nan=False)
+        + "\n"
+    ).encode("utf-8")
+    path.parent.mkdir(parents=True, exist_ok=True)
+    partial = path.with_name(path.name + ".partial")
+    if path.exists() or partial.exists():
+        raise FileExistsError(f"RESULT_PUBLICATION_PATH_EXISTS:{path}")
+    linked = False
+    try:
+        with partial.open("xb") as stream:
+            stream.write(payload)
+            stream.flush()
+            os.fsync(stream.fileno())
+        os.link(partial, path)
+        linked = True
+    finally:
+        try:
+            partial.unlink(missing_ok=True)
+        except OSError:
+            if not linked:
+                raise
+
+
+def persist_final_result(
+    path: Path,
+    document: dict[str, Any],
+    writer: Callable[[Path, dict[str, Any]], None] = write_json_atomic_new,
+) -> bool:
+    """Publish the final result or mutate the emitted document to fail closed."""
+    try:
+        writer(path, document)
+        return True
+    except Exception as write_error:
+        detail = f"{type(write_error).__name__}:{write_error}"
+        document["prior_error_type"] = document.get("error_type")
+        document["prior_error"] = document.get("error")
+        document["passed"] = False
+        document["error_type"] = "RunnerResultWriteError"
+        document["error"] = detail
+        document["runner_result_write_error"] = detail
+        document["verdict"] = (
+            "HANDOFF_INCOMPLETE_R6_C1R3_LINUX_ATTEMPT004_CLOSED"
+        )
+        return False
 
 
 def append_jsonl(path: Path, value: dict[str, Any]) -> None:
@@ -561,7 +626,7 @@ def assert_repo_authority(repo_root: Path, expected_head: str) -> dict[str, Any]
         raise RuntimeError("RUNNER_CONTRACT_NOT_OBJECT")
     if (
         contract.get("schema_version")
-        != "stage1e-r6-c1r3-linux-materialization-runner-contract-1.0"
+        != "stage1e-r6-c1r3-linux-materialization-runner-contract-1.1"
         or contract.get("accepted_packet_audit", {}).get("commit")
         != ACCEPTED_PACKET_AUDIT_COMMIT
         or tuple(contract.get("runtime_scope", {}).get("included_command_ids", []))
@@ -1020,33 +1085,174 @@ def decode_windows_output(payload: bytes) -> str:
     return payload.decode("utf-8", "replace")
 
 
-def docker_stopped(result: dict[str, Any], stdout: Path, stderr: Path) -> bool:
-    text = (decode_windows_output(stdout.read_bytes()) + "\n" + decode_windows_output(stderr.read_bytes())).casefold()
-    if "access is denied" in text or "e_accessdenied" in text:
-        raise RuntimeError("DOCKER_STATUS_ACCESS_DENIED")
-    stopped_markers = (
-        "status stopped",
-        "status: stopped",
-        "is not running",
-        "is docker desktop running?",
-        "could not retrieve status",
+def validate_docker_server_absence(
+    result: dict[str, Any], stdout: bytes, stderr: bytes
+) -> dict[str, Any]:
+    stdout_text = decode_windows_output(stdout).replace("\x00", "").replace("\ufeff", "").strip()
+    stderr_text = decode_windows_output(stderr).replace("\x00", "").replace("\ufeff", "").strip()
+    combined = (stdout_text + "\n" + stderr_text).casefold()
+    if "access is denied" in combined or "e_accessdenied" in combined:
+        raise RuntimeError("DOCKER_SERVER_PROBE_ACCESS_DENIED")
+    process_shape = (
+        result.get("exit_code") == 1
+        and result.get("process_success") is False
+        and result.get("launch_error") is None
+        and result.get("timed_out") is False
     )
-    return any(marker in text for marker in stopped_markers)
+    signature = (
+        stdout_text.casefold() == "null"
+        and DOCKER_SERVER_PIPE in combined
+        and DOCKER_SERVER_NOT_FOUND in combined
+    )
+    if not process_shape or not signature:
+        raise RuntimeError("DOCKER_SERVER_ABSENCE_SIGNATURE_MISMATCH")
+    return {
+        "exit_code": 1,
+        "stdout_token": "null",
+        "endpoint": DOCKER_SERVER_PIPE,
+        "os_error": DOCKER_SERVER_NOT_FOUND,
+        "docker_server_endpoint_absent": True,
+    }
 
 
-def wsl_running_distros(result: dict[str, Any], stdout: Path, stderr: Path) -> list[str]:
-    error = decode_windows_output(stderr.read_bytes()).strip()
-    if result.get("exit_code") != 0:
-        combined = error + "\n" + decode_windows_output(stdout.read_bytes())
-        if "access is denied" in combined.casefold() or "e_accessdenied" in combined.casefold():
-            raise RuntimeError("WSL_ENUMERATION_ACCESS_DENIED")
+def wsl_running_distros(
+    result: dict[str, Any], stdout: bytes, stderr: bytes
+) -> list[str]:
+    stdout_text = decode_windows_output(stdout).replace("\x00", "").replace("\ufeff", "")
+    stderr_text = decode_windows_output(stderr).replace("\x00", "").replace("\ufeff", "")
+    combined = (stdout_text + "\n" + stderr_text).casefold()
+    if "access is denied" in combined or "e_accessdenied" in combined:
+        raise RuntimeError("WSL_ENUMERATION_ACCESS_DENIED")
+    if not (
+        result.get("exit_code") == 0
+        and result.get("process_success") is True
+        and result.get("launch_error") is None
+        and result.get("timed_out") is False
+    ):
         raise RuntimeError("WSL_ENUMERATION_FAILED")
-    text = (
-        decode_windows_output(stdout.read_bytes())
-        .replace("\x00", "")
-        .replace("\ufeff", "")
+    return [line.strip() for line in stdout_text.splitlines() if line.strip()]
+
+
+def docker_processes(
+    result: dict[str, Any], stdout: bytes, stderr: bytes
+) -> tuple[list[str], int]:
+    stdout_text = decode_windows_output(stdout).replace("\x00", "").replace("\ufeff", "")
+    stderr_text = decode_windows_output(stderr).replace("\x00", "").replace("\ufeff", "")
+    combined = (stdout_text + "\n" + stderr_text).casefold()
+    if "access is denied" in combined or "e_accessdenied" in combined:
+        raise RuntimeError("TASKLIST_ACCESS_DENIED")
+    if not (
+        result.get("exit_code") == 0
+        and result.get("process_success") is True
+        and result.get("launch_error") is None
+        and result.get("timed_out") is False
+    ):
+        raise RuntimeError("TASKLIST_ENUMERATION_FAILED")
+    try:
+        rows = list(csv.reader(io.StringIO(stdout_text)))
+    except csv.Error as exc:
+        raise RuntimeError("TASKLIST_CSV_INVALID") from exc
+    if not rows or any(
+        len(row) != 5 or not row[0].strip() or not row[1].strip().isdigit()
+        for row in rows
+    ):
+        raise RuntimeError("TASKLIST_CSV_INVALID")
+    images = [row[0].strip() for row in rows]
+    matches = sorted(
+        {image for image in images if image.casefold() in DOCKER_PROCESS_NAMES},
+        key=str.casefold,
     )
-    return [line.strip() for line in text.splitlines() if line.strip()]
+    return matches, len(images)
+
+
+def validate_stopped_snapshot(
+    docker_result: dict[str, Any],
+    docker_stdout: bytes,
+    docker_stderr: bytes,
+    wsl_result: dict[str, Any],
+    wsl_stdout: bytes,
+    wsl_stderr: bytes,
+    tasklist_result: dict[str, Any],
+    tasklist_stdout: bytes,
+    tasklist_stderr: bytes,
+) -> dict[str, Any]:
+    daemon = validate_docker_server_absence(
+        docker_result, docker_stdout, docker_stderr
+    )
+    distros = wsl_running_distros(wsl_result, wsl_stdout, wsl_stderr)
+    if distros:
+        raise RuntimeError("WSL_DISTRO_STILL_RUNNING")
+    processes, image_count = docker_processes(
+        tasklist_result, tasklist_stdout, tasklist_stderr
+    )
+    if processes:
+        raise RuntimeError("DOCKER_PROCESS_STILL_RUNNING")
+    return {
+        "schema_version": "r6-c1r3-docker-wsl-stopped-composite-1.0",
+        "passed": True,
+        "docker_server_endpoint_absent": daemon[
+            "docker_server_endpoint_absent"
+        ],
+        "docker_server_absence_signature": daemon,
+        "wsl_running_distros": [],
+        "docker_processes": [],
+        "tasklist_image_count": image_count,
+    }
+
+
+def collect_stopped_snapshot(
+    executor: EvidenceExecutor, prefix: str, *, category: str
+) -> dict[str, Any]:
+    docker_result, docker_stdout, docker_stderr = executor.run(
+        f"{prefix}_DOCKER_SERVER_ENDPOINT_ABSENT",
+        [str(DOCKER_EXE), "version", "--format", "{{json .Server}}"],
+        120,
+        category=category,
+        network=None,
+    )
+    wsl_result, wsl_stdout, wsl_stderr = executor.run(
+        f"{prefix}_WSL_RUNNING_DISTROS",
+        [str(WSL_EXE), "--list", "--running", "--quiet"],
+        120,
+        category=category,
+        network=None,
+    )
+    tasklist_result, tasklist_stdout, tasklist_stderr = executor.run(
+        f"{prefix}_DOCKER_PROCESS_INVENTORY",
+        [str(TASKLIST_EXE), "/FO", "CSV", "/NH"],
+        120,
+        category=category,
+        network=None,
+    )
+    try:
+        evidence = validate_stopped_snapshot(
+            docker_result,
+            docker_stdout.read_bytes(),
+            docker_stderr.read_bytes(),
+            wsl_result,
+            wsl_stdout.read_bytes(),
+            wsl_stderr.read_bytes(),
+            tasklist_result,
+            tasklist_stdout.read_bytes(),
+            tasklist_stderr.read_bytes(),
+        )
+    except Exception as exc:
+        evidence = {
+            "schema_version": "r6-c1r3-docker-wsl-stopped-composite-1.0",
+            "passed": False,
+            "state_error": f"{type(exc).__name__}:{exc}",
+        }
+    for role, result in (
+        ("docker_server_absence", docker_result),
+        ("wsl_running_distros", wsl_result),
+        ("docker_process_inventory", tasklist_result),
+    ):
+        result["state_evidence_role"] = role
+        result["state_evidence_success"] = evidence["passed"]
+        if not evidence["passed"]:
+            result["state_error"] = evidence["state_error"]
+        executor.commit(result)
+    return evidence
 
 
 def parse_args() -> argparse.Namespace:
@@ -1088,6 +1294,7 @@ def main() -> int:
         ):
             raise RuntimeError("DOCKER_EXECUTABLE_IDENTITY_MISMATCH")
         require_regular(WSL_EXE)
+        require_regular(TASKLIST_EXE)
         roots = {
             "runner": verify_absent_external_root(RUN_ROOT),
             "dataset": verify_absent_external_root(DATA_ROOT),
@@ -1106,35 +1313,12 @@ def main() -> int:
         run_root_created = True
         executor = EvidenceExecutor(repo_root, RUN_ROOT)
 
-        docker_status, docker_stdout, docker_stderr = executor.run(
-            "P00_DOCKER_DESKTOP_STOPPED_BASELINE",
-            [str(DOCKER_EXE), "desktop", "status"],
-            120,
-            category="preflight",
-            network=None,
-        )
-        docker_baseline_stopped = docker_stopped(
-            docker_status, docker_stdout, docker_stderr
-        )
-        docker_status["state_postcondition"] = "STOPPED" if docker_baseline_stopped else "NOT_STOPPED"
-        docker_status["success"] = docker_baseline_stopped
-        executor.commit(docker_status)
-        if not docker_baseline_stopped:
-            raise RuntimeError("DOCKER_BASELINE_NOT_STOPPED")
-
-        wsl_status, wsl_stdout, wsl_stderr = executor.run(
-            "P01_WSL_STOPPED_BASELINE",
-            [str(WSL_EXE), "--list", "--running", "--quiet"],
-            120,
-            category="preflight",
-            network=None,
-        )
-        running = wsl_running_distros(wsl_status, wsl_stdout, wsl_stderr)
-        wsl_status["running_distros"] = running
-        wsl_status["success"] = running == []
-        executor.commit(wsl_status)
-        if running:
-            raise RuntimeError("WSL_BASELINE_NOT_STOPPED")
+        baseline = collect_stopped_snapshot(executor, "P00", category="preflight")
+        if not baseline["passed"]:
+            raise RuntimeError(
+                "DOCKER_WSL_BASELINE_NOT_AUTHORITATIVELY_STOPPED:"
+                + str(baseline.get("state_error", "UNKNOWN"))
+            )
 
         write_json_new(
             RUN_ROOT / "preflight.json",
@@ -1146,8 +1330,7 @@ def main() -> int:
                 "docker_executable": docker_fact,
                 "roots": roots,
                 "capacities": capacities,
-                "docker_baseline_stopped": True,
-                "wsl_running_distros": [],
+                "docker_wsl_baseline": baseline,
                 "fresh_explicit_authorization": True,
                 "root_creation_state": {
                     "runner_root_created": True,
@@ -1273,58 +1456,35 @@ def main() -> int:
             for index in range(1, 4):
                 if index > 1:
                     time.sleep(2.0)
-                d_result, d_stdout, d_stderr = executor.run(
-                    f"C{index:02d}_DOCKER_STOPPED_SNAPSHOT",
-                    [str(DOCKER_EXE), "desktop", "status"],
-                    120,
-                    category="closure",
-                    network=None,
+                snapshot = collect_stopped_snapshot(
+                    executor, f"C{index:02d}", category="closure"
                 )
-                try:
-                    d_stopped = docker_stopped(d_result, d_stdout, d_stderr)
-                except Exception as exc:
-                    d_stopped = False
-                    d_result["state_error"] = f"{type(exc).__name__}:{exc}"
-                d_result["state_postcondition"] = "STOPPED" if d_stopped else "NOT_STOPPED"
-                d_result["success"] = d_stopped
-                executor.commit(d_result)
-
-                w_result, w_stdout, w_stderr = executor.run(
-                    f"C{index:02d}_WSL_STOPPED_SNAPSHOT",
-                    [str(WSL_EXE), "--list", "--running", "--quiet"],
-                    120,
-                    category="closure",
-                    network=None,
-                )
-                try:
-                    distros = wsl_running_distros(w_result, w_stdout, w_stderr)
-                except Exception as exc:
-                    distros = ["STATE_UNAVAILABLE"]
-                    w_result["state_error"] = f"{type(exc).__name__}:{exc}"
-                w_result["running_distros"] = distros
-                w_result["success"] = distros == []
-                executor.commit(w_result)
-                snapshots.append(
-                    {
-                        "index": index,
-                        "docker_stopped": d_stopped,
-                        "wsl_running_distros": distros,
-                    }
-                )
+                snapshot["index"] = index
+                snapshots.append(snapshot)
             cleanup["closure_snapshots"] = snapshots
             states = [
                 {
-                    "docker_stopped": row["docker_stopped"],
-                    "wsl_running_distros": row["wsl_running_distros"],
+                    "docker_server_endpoint_absent": row.get(
+                        "docker_server_endpoint_absent"
+                    ),
+                    "wsl_running_distros": row.get("wsl_running_distros"),
+                    "docker_processes": row.get("docker_processes"),
                 }
                 for row in snapshots
             ]
+            independently_proven_stopped = (
+                len(states) == 3
+                and all(row.get("passed") is True for row in snapshots)
+                and states[0] == states[1] == states[2]
+            )
+            cleanup["independently_proven_stopped"] = independently_proven_stopped
+            cleanup["docker_stop_or_independently_proven_stopped"] = (
+                stop_result["process_success"] or independently_proven_stopped
+            )
             cleanup["passed"] = (
                 shutdown_result["process_success"]
-                and len(states) == 3
-                and all(row["docker_stopped"] for row in states)
-                and all(row["wsl_running_distros"] == [] for row in states)
-                and states[0] == states[1] == states[2]
+                and independently_proven_stopped
+                and cleanup["docker_stop_or_independently_proven_stopped"]
             )
 
     overall_passed = materialization_passed and primary_error is None and cleanup["passed"]
@@ -1370,13 +1530,10 @@ def main() -> int:
         ),
     }
     if run_root_created:
-        try:
-            write_json_new(RUN_ROOT / "runner_result.json", result_document)
-        except Exception as write_error:
-            result_document["runner_result_write_error"] = (
-                f"{type(write_error).__name__}:{write_error}"
-            )
-            overall_passed = False
+        publication_passed = persist_final_result(
+            RUN_ROOT / "runner_result.json", result_document
+        )
+        overall_passed = overall_passed and publication_passed
     print(json.dumps(result_document, indent=2, sort_keys=True), flush=True)
     return 0 if overall_passed else 1
 
