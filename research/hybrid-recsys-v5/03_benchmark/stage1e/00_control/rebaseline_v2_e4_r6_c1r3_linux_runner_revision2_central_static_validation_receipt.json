@@ -1,0 +1,220 @@
+{
+  "schema_version": "stage1e-r6-c1r3-linux-runner-revision2-central-static-validation-receipt-1.0",
+  "created_at": "2026-08-31T11:56:00+07:00",
+  "stage_id": "R6-C1R3-LINUX",
+  "receipt_role": "CENTRAL_STATIC_VALIDATION_BEFORE_REVISION2_FRESH_INDEPENDENT_AUDIT",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "validate-runtime-runner-static-revision2",
+    "origin_date": "2026-08-31T11:56:00+07:00",
+    "verification_status": "UNVERIFIED",
+    "version_label": "stage1e_e4_r6_c1r3_linux_runner_revision2_central_static_validation_v1",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_c1r3_linux_runner_fresh_independent_audit_failure_v1",
+      "stage1e_e4_r6_c1r3_linux_materialization_runner_v2",
+      "ars_codex_academic_research_suite_0.1.26"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-31T11:56:00+07:00",
+      "declared_by": "scholar"
+    },
+    "experiment_provenance": []
+  },
+  "central_context": {
+    "model_id": "gpt-5.6-sol",
+    "reasoning_effort": "max",
+    "speed_mode": "standard",
+    "fast_or_priority_requested": false,
+    "role": "central_planning_remediation_and_static_validation"
+  },
+  "subject": {
+    "implementation_commit": "084e59fa3c3d65a00bea926a2f40a02d3c8166f8",
+    "implementation_parent": "1a47b700dd8c2fce52ca173ff68da0b5ea2e1656",
+    "runner_contract_schema": "stage1e-r6-c1r3-linux-materialization-runner-contract-1.1",
+    "runner_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_c1r3_linux_materialization.py",
+    "runner_contract_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_c1r3_linux_materialization_runner_contract.json",
+    "runner_tests_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/test_execute_e4_r6_c1r3_linux_materialization.py",
+    "exact_commit_delta": [
+      {
+        "status": "M",
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_c1r3_linux_materialization_runner_contract.json",
+        "git_blob_oid": "0029ce88c59a420f1b7817f6b7beb82b316900de",
+        "raw_bytes": 8367,
+        "raw_sha256": "8d55263868550a2e9b0d9c4abf61c8633e18310ed4da5baafd622b4de758c404"
+      },
+      {
+        "status": "M",
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_c1r3_linux_materialization.py",
+        "git_blob_oid": "775818d82494b910f5421946f57efb1e11c6dbd7",
+        "raw_bytes": 65890,
+        "raw_sha256": "406bc75088d7a2fcd1678d318a806c0c2a469f215419ac6527d67648c901d3eb"
+      },
+      {
+        "status": "M",
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/test_execute_e4_r6_c1r3_linux_materialization.py",
+        "git_blob_oid": "94f2a9aece33c19c9f2e70fa69742781e26d0be1",
+        "raw_bytes": 11278,
+        "raw_sha256": "e7f8e8afec49635d6bda7639b04857ed5cef162d85b3501712a9f77bc906ee99"
+      },
+      {
+        "status": "M",
+        "path": ".gitattributes",
+        "git_blob_oid": "8a3c1e5774c1f74adbeedbb360ddb3aa3f3c5838",
+        "raw_bytes": 1876,
+        "raw_sha256": "971f7d0165a6a0445af8577fab1fbb6e066c0811060c23739d8c61f65c005562"
+      }
+    ],
+    "exact_commit_delta_count": 4,
+    "unrelated_user_state_preserved": "research/hybrid-recsys-v5/05_manuscript/"
+  },
+  "remediation_findings_closed": [
+    {
+      "finding_id": "R6C1R3-RUNNER-FRESH-001",
+      "status": "CLOSED_BY_REVISION2",
+      "description": "Generic Docker Desktop status markers cannot establish stopped state.",
+      "control": "Three-surface typed stopped-state proof is required: exact Docker server named-pipe absence signature, successful empty WSL running inventory, and successful tasklist CSV with no exact Docker process names."
+    },
+    {
+      "finding_id": "R6C1R3-RUNNER-FRESH-002",
+      "status": "CLOSED_BY_REVISION2",
+      "description": "A result publication error cannot leave an emitted PASS document.",
+      "control": "Final result is atomically published through runner_result.json; publication failure mutates the emitted document to HANDOFF_INCOMPLETE with non-null RunnerResultWriteError."
+    }
+  ],
+  "static_tests": {
+    "command": "C:\\Program Files\\Python311\\python.exe -B research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/test_execute_e4_r6_c1r3_linux_materialization.py",
+    "invocation_count": 1,
+    "exit_code": 0,
+    "tests_passed": 22,
+    "tests_total": 22,
+    "coverage": [
+      "strict JSON duplicate/case-collision/non-finite rejection",
+      "exact 17-command image plus M0/M1 plan",
+      "bridge command exclusion",
+      "literal argv SHA-256 replay and mutation rejection",
+      "live 72-check packet validator replay",
+      "dataset/environment roots only after I02",
+      "stop on first packet failure",
+      "append-only JSONL journal",
+      "negative scientific receipt gates",
+      "exact execution confirmation token",
+      "authoritative three-surface Docker/WSL stopped-state proof",
+      "ambiguous status, access-denied, running-WSL, running-process, and malformed-tasklist rejection",
+      "atomic final result publication and fail-closed publication error"
+    ]
+  },
+  "packet_validator": {
+    "command": "C:\\Program Files\\Python311\\python.exe -B research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_c1r3_linux_packet.py --packet-root research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_bd/E4_R6C1R3_linux_command_packet",
+    "invocation_count": 1,
+    "exit_code": 0,
+    "verdict": "PASS_R6_C1R3_LINUX_PACKET_READY_FOR_FRESH_XHIGH_AUDIT",
+    "checks_passed": 72,
+    "checks_total": 72,
+    "failures": [],
+    "recbole_source_replay": {
+      "files": 265,
+      "bytes": 1541044,
+      "failure_count": 0
+    }
+  },
+  "runner_static_contract": {
+    "packet_commands_in_runtime_plan": 17,
+    "image_commands": 3,
+    "dataset_commands": 3,
+    "environment_commands": 11,
+    "bridge_commands": 0,
+    "literal_packet_argv": true,
+    "shell_false": true,
+    "retry_count": 0,
+    "fallback_count": 0,
+    "stop_on_first_failure": true,
+    "dataset_and_environment_root_creation_only_after_I02_pass": true,
+    "append_only_fsynced_command_journal": true,
+    "docker_desktop_start_attempt_limit": 1,
+    "docker_desktop_stop_attempt_limit": 1,
+    "wsl_shutdown_attempt_limit": 1,
+    "stable_closure_snapshot_count": 3,
+    "authoritative_stopped_state_surfaces": 3,
+    "generic_docker_status_markers_authoritative": false,
+    "gate_receipts_required_before_root_creation": true,
+    "final_result_partial_path_authoritative": false,
+    "final_result_write_failure_fail_closed": true,
+    "runtime_requires_clean_fresh_worktree": true,
+    "runtime_requires_exact_expected_head": true,
+    "runtime_requires_exact_confirmation_token": true
+  },
+  "byte_preservation": {
+    "gitattributes_policy": "-text for all byte-bound runner, packet, and future receipt artifacts",
+    "runner_contract_worktree_equals_git_blob": true,
+    "runner_worktree_equals_git_blob": true,
+    "runner_tests_worktree_equals_git_blob": true,
+    "future_revision2_receipts_attribute": "unset"
+  },
+  "central_activity": {
+    "packet_commands_executed": 0,
+    "runner_commands_executed": 0,
+    "docker_pull_build_or_run_commands_executed": 0,
+    "docker_desktop_start_commands_executed": 0,
+    "docker_desktop_stop_commands_executed": 0,
+    "training_commands_executed": 0,
+    "evaluation_commands_executed": 0,
+    "test_set_accessed": false,
+    "read_only_host_diagnostics": [
+      {
+        "command": "docker version --format '{{json .Server}}'",
+        "exit_code": 1,
+        "observed_signature": "null plus dockerDesktopLinuxEngine named-pipe not found"
+      },
+      {
+        "command": "wsl.exe --list --running --quiet",
+        "exit_code": 0,
+        "observed_stdout": "empty"
+      },
+      {
+        "command": "tasklist.exe /FO CSV /NH",
+        "exit_code": 0,
+        "observed_docker_process_matches": []
+      }
+    ],
+    "diagnostics_used_as_runtime_admission": false,
+    "runtime_host_checks_remain_pending_in_fresh_runtime_task": true
+  },
+  "external_attempt_roots": {
+    "runner": {
+      "path": "E:\\UIT\\cv\\materialized-runs\\hybrid-recsys-v5\\stage1e\\r6\\c1r3\\attempt-004-linux",
+      "exists": false
+    },
+    "dataset": {
+      "path": "E:\\UIT\\cv\\materialized-data\\hybrid-recsys-v5\\stage1e\\r6\\official_source\\grouplens_ml100k\\attempt-004-linux",
+      "exists": false
+    },
+    "environment": {
+      "path": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-004-linux",
+      "exists": false
+    }
+  },
+  "scope_boundary": {
+    "materialization_executed": false,
+    "bridge_executed": false,
+    "dataset_constructed_or_loaded": false,
+    "training": false,
+    "evaluation": false,
+    "metrics": false,
+    "test_opened": false,
+    "benchmark_admitted": false
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "benchmark_admission_opened": false,
+    "phase_1e_complete": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "verdict": "PASS_R6_C1R3_LINUX_RUNNER_REVISION2_CENTRAL_STATIC_VALIDATION_READY_FOR_FRESH_XHIGH_AUDIT",
+  "next_gate": "FRESH_SOL_XHIGH_STANDARD_INDEPENDENT_RUNNER_AUDIT_NO_RUNTIME",
+  "write_set": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_c1r3_linux_runner_revision2_central_static_validation_receipt.json"
+}
