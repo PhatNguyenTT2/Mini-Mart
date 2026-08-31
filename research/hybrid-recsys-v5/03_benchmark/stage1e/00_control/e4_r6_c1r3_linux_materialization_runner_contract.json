@@ -75,6 +75,7 @@
     "docker_desktop_stop_attempts": 1,
     "wsl_shutdown_attempts": 1,
     "stable_closure_snapshots": 3,
+    "central_and_fresh_audit_receipts_required_before_root_creation": true,
     "docker_stop_acceptance": "docker desktop stop process success OR three stable independently authoritative stopped snapshots; closure snapshots remain mandatory",
     "authoritative_result_path": "runner_result.json",
     "partial_result_paths_authoritative": false,
@@ -191,7 +192,11 @@
     "central_static_receipt": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_c1r3_linux_runner_revision2_central_static_validation_receipt.json",
     "fresh_independent_audit_receipt": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_c1r3_linux_runner_revision2_fresh_independent_audit_receipt.json",
     "fresh_independent_audit_required_before_runtime": true,
-    "runtime_must_use_a_new_task_and_clean_worktree": true
+    "runtime_must_use_a_new_task_and_clean_worktree": true,
+    "central_receipt_schema": "stage1e-r6-c1r3-linux-runner-revision2-central-static-validation-receipt-1.0",
+    "central_receipt_verdict": "PASS_R6_C1R3_LINUX_RUNNER_REVISION2_CENTRAL_STATIC_VALIDATION_READY_FOR_FRESH_XHIGH_AUDIT",
+    "fresh_audit_receipt_schema": "stage1e-r6-c1r3-linux-runner-revision2-fresh-independent-audit-receipt-1.0",
+    "fresh_audit_receipt_verdict": "PASS_R6_C1R3_LINUX_RUNNER_REVISION2_FRESH_INDEPENDENT_AUDIT_READY_FOR_RUNTIME"
   },
   "truth_state": {
     "RESULT_STATUS": "NOT_RUN",

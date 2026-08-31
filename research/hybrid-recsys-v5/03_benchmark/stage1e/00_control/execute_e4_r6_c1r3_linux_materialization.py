@@ -37,6 +37,12 @@ RUNNER_RELATIVE = CONTROL_RELATIVE / "execute_e4_r6_c1r3_linux_materialization.p
 CONTRACT_RELATIVE = (
     CONTROL_RELATIVE / "e4_r6_c1r3_linux_materialization_runner_contract.json"
 )
+RUNNER_CENTRAL_RECEIPT_RELATIVE = CONTROL_RELATIVE / (
+    "rebaseline_v2_e4_r6_c1r3_linux_runner_revision2_central_static_validation_receipt.json"
+)
+RUNNER_AUDIT_RECEIPT_RELATIVE = CONTROL_RELATIVE / (
+    "rebaseline_v2_e4_r6_c1r3_linux_runner_revision2_fresh_independent_audit_receipt.json"
+)
 PACKET_VALIDATOR_RELATIVE = CONTROL_RELATIVE / "validate_e4_r6_c1r3_linux_packet.py"
 PACKET_AUDIT_RELATIVE = CONTROL_RELATIVE / (
     "rebaseline_v2_e4_r6_c1r3_linux_revision1_fresh_independent_audit_receipt.json"
@@ -51,6 +57,15 @@ ACCEPTED_PACKET_AUDIT_VERDICT = (
 )
 ACCEPTED_PACKET_AUDIT_SCHEMA = (
     "stage1e-r6-c1r3-linux-revision1-fresh-independent-audit-receipt-1.0"
+)
+RUNNER_CENTRAL_RECEIPT_VERDICT = (
+    "PASS_R6_C1R3_LINUX_RUNNER_REVISION2_CENTRAL_STATIC_VALIDATION_READY_FOR_FRESH_XHIGH_AUDIT"
+)
+RUNNER_AUDIT_RECEIPT_SCHEMA = (
+    "stage1e-r6-c1r3-linux-runner-revision2-fresh-independent-audit-receipt-1.0"
+)
+RUNNER_AUDIT_RECEIPT_VERDICT = (
+    "PASS_R6_C1R3_LINUX_RUNNER_REVISION2_FRESH_INDEPENDENT_AUDIT_READY_FOR_RUNTIME"
 )
 
 DOCKER_EXE = Path(r"C:\Program Files\Docker\Docker\resources\bin\docker.exe")
@@ -540,6 +555,152 @@ def git_text(repo_root: Path, *args: str) -> str:
     return run_git(repo_root, *args).stdout.decode("utf-8", "strict").strip()
 
 
+def git_commit_for_path(repo_root: Path, revision: str, relative: Path) -> str:
+    return git_text(
+        repo_root,
+        "log",
+        "-1",
+        "--format=%H",
+        revision,
+        "--",
+        relative.as_posix(),
+    ).casefold()
+
+
+def validate_runner_gate_receipts(
+    repo_root: Path, actual_head: str, contract: dict[str, Any]
+) -> dict[str, Any]:
+    handoff = contract.get("validation_and_handoff")
+    if not isinstance(handoff, dict):
+        raise RuntimeError("RUNNER_GATE_RECEIPT_BINDING_MISSING")
+    expected_paths = {
+        "central": RUNNER_CENTRAL_RECEIPT_RELATIVE,
+        "audit": RUNNER_AUDIT_RECEIPT_RELATIVE,
+    }
+    for key, relative in expected_paths.items():
+        if handoff.get(f"{key}_static_receipt" if key == "central" else "fresh_independent_audit_receipt") != relative.as_posix():
+            raise RuntimeError(f"RUNNER_{key.upper()}_RECEIPT_PATH_MISMATCH")
+        try:
+            blob = git_blob(repo_root, actual_head, relative)
+        except RuntimeError as exc:
+            raise RuntimeError(f"RUNNER_{key.upper()}_RECEIPT_MISSING") from exc
+        worktree_path = repo_root / relative
+        require_regular(worktree_path)
+        if blob != worktree_path.read_bytes():
+            raise RuntimeError(f"RUNNER_{key.upper()}_RECEIPT_BYTES_MISMATCH")
+
+    central_commit = git_commit_for_path(
+        repo_root, actual_head, RUNNER_CENTRAL_RECEIPT_RELATIVE
+    )
+    audit_commit = git_commit_for_path(
+        repo_root, actual_head, RUNNER_AUDIT_RECEIPT_RELATIVE
+    )
+    if not re.fullmatch(r"[0-9a-f]{40}", central_commit) or not re.fullmatch(
+        r"[0-9a-f]{40}", audit_commit
+    ):
+        raise RuntimeError("RUNNER_GATE_RECEIPT_COMMIT_MISSING")
+    if audit_commit != actual_head:
+        raise RuntimeError("RUNNER_AUDIT_RECEIPT_NOT_AT_EXPECTED_HEAD")
+    try:
+        central_parent = git_text(repo_root, "rev-parse", f"{central_commit}^").casefold()
+    except RuntimeError as exc:
+        raise RuntimeError("RUNNER_CENTRAL_RECEIPT_PARENT_MISSING") from exc
+    if not re.fullmatch(r"[0-9a-f]{40}", central_parent):
+        raise RuntimeError("RUNNER_CENTRAL_RECEIPT_PARENT_INVALID")
+
+    central = strict_load(repo_root / RUNNER_CENTRAL_RECEIPT_RELATIVE)
+    audit = strict_load(repo_root / RUNNER_AUDIT_RECEIPT_RELATIVE)
+    implementation = central.get("subject", {}).get("implementation_commit")
+    if not isinstance(implementation, str) or not re.fullmatch(
+        r"[0-9a-f]{40}", implementation.casefold()
+    ):
+        raise RuntimeError("RUNNER_IMPLEMENTATION_COMMIT_INVALID")
+    implementation = implementation.casefold()
+    if central_parent != implementation:
+        raise RuntimeError("RUNNER_CENTRAL_RECEIPT_PARENT_NOT_IMPLEMENTATION")
+    if run_git(
+        repo_root,
+        "merge-base",
+        "--is-ancestor",
+        implementation,
+        actual_head,
+        check=False,
+    ).returncode != 0:
+        raise RuntimeError("RUNNER_IMPLEMENTATION_NOT_ANCESTOR")
+    if run_git(
+        repo_root,
+        "merge-base",
+        "--is-ancestor",
+        central_commit,
+        actual_head,
+        check=False,
+    ).returncode != 0:
+        raise RuntimeError("RUNNER_CENTRAL_RECEIPT_NOT_ANCESTOR")
+
+    central_subject = central.get("subject", {})
+    central_tests = central.get("static_tests", {})
+    central_packet = central.get("packet_validator", {})
+    if (
+        central.get("schema_version")
+        != "stage1e-r6-c1r3-linux-runner-revision2-central-static-validation-receipt-1.0"
+        or central.get("stage_id") != "R6-C1R3-LINUX"
+        or central.get("verdict") != RUNNER_CENTRAL_RECEIPT_VERDICT
+        or central_subject.get("runner_contract_schema")
+        != "stage1e-r6-c1r3-linux-materialization-runner-contract-1.1"
+        or central_tests.get("tests_passed") != 22
+        or central_tests.get("tests_total") != 22
+        or central_packet.get("checks_passed") != 72
+        or central_packet.get("checks_total") != 72
+        or central.get("scope_boundary", {}).get("materialization_executed") is not False
+        or central.get("scope_boundary", {}).get("training") is not False
+        or central.get("scope_boundary", {}).get("evaluation") is not False
+        or central.get("scope_boundary", {}).get("test_opened") is not False
+        or central.get("truth_state") != TRUTH_STATE
+    ):
+        raise RuntimeError("RUNNER_CENTRAL_RECEIPT_SEMANTICS_INVALID")
+
+    audit_subject = audit.get("subject", {})
+    auditor = audit.get("auditor_context", {})
+    model = auditor.get("model_provenance", {})
+    audit_tests = audit.get("static_tests", {}).get("runner_tests", {})
+    audit_packet = audit.get("static_tests", {}).get("packet_validator", {})
+    if (
+        audit.get("schema_version") != RUNNER_AUDIT_RECEIPT_SCHEMA
+        or audit.get("stage_id") != "R6-C1R3-LINUX"
+        or audit.get("verdict") != RUNNER_AUDIT_RECEIPT_VERDICT
+        or audit_subject.get("implementation_commit", "").casefold() != implementation
+        or audit_subject.get("central_runner_receipt_commit", "").casefold()
+        != central_commit
+        or auditor.get("entry_head", "").casefold() != central_commit
+        or auditor.get("entry_sole_parent", "").casefold() != implementation
+        or auditor.get("entry_parent_count") != 1
+        or model.get("observed_model_id") != "gpt-5.6-sol"
+        or model.get("observed_reasoning_effort") != "xhigh"
+        or model.get("display_tier") != "Standard"
+        or model.get("fast_or_priority_observed") is not False
+        or audit_tests.get("tests_passed") != 22
+        or audit_tests.get("tests_total") != 22
+        or audit_packet.get("checks_passed") != 72
+        or audit_packet.get("checks_total") != 72
+        or audit.get("runtime_activity", {}).get("docker_start_commands") != 0
+        or audit.get("runtime_activity", {}).get("runner_invocations") != 0
+        or audit.get("truth_state") != TRUTH_STATE
+        or audit.get("execution_authorized") is not False
+    ):
+        raise RuntimeError("RUNNER_FRESH_AUDIT_RECEIPT_SEMANTICS_INVALID")
+    return {
+        "central_receipt_commit": central_commit,
+        "fresh_audit_receipt_commit": audit_commit,
+        "implementation_commit": implementation,
+        "central_receipt_sha256": sha256_bytes(
+            (repo_root / RUNNER_CENTRAL_RECEIPT_RELATIVE).read_bytes()
+        ),
+        "fresh_audit_receipt_sha256": sha256_bytes(
+            (repo_root / RUNNER_AUDIT_RECEIPT_RELATIVE).read_bytes()
+        ),
+    }
+
+
 def git_blob(repo_root: Path, revision: str, relative: Path) -> bytes:
     return run_git(
         repo_root, "cat-file", "blob", f"{revision}:{relative.as_posix()}"
@@ -634,7 +795,12 @@ def assert_repo_authority(repo_root: Path, expected_head: str) -> dict[str, Any]
         or contract.get("truth_state") != TRUTH_STATE
     ):
         raise RuntimeError("RUNNER_CONTRACT_REPLAY_FAILED")
-    return {"head": actual_head, "locked_bindings": bindings}
+    gate_receipts = validate_runner_gate_receipts(repo_root, actual_head, contract)
+    return {
+        "head": actual_head,
+        "locked_bindings": bindings,
+        "runner_gate_receipts": gate_receipts,
+    }
 
 
 def run_packet_validator(repo_root: Path) -> dict[str, Any]:
