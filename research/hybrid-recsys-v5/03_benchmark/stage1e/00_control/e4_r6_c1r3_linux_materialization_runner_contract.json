@@ -1,0 +1,133 @@
+{
+  "schema_version": "stage1e-r6-c1r3-linux-materialization-runner-contract-1.0",
+  "created_at": "2026-08-31T00:00:00+07:00",
+  "stage_id": "R6-C1R3-LINUX",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "design-runtime-runner",
+    "origin_date": "2026-08-31T00:00:00+07:00",
+    "verification_status": "UNVERIFIED",
+    "version_label": "stage1e_e4_r6_c1r3_linux_materialization_runner_v1",
+    "upstream_dependencies": [
+      "stage1e_e4_r6_c1r3_linux_revision1_fresh_independent_audit_v1",
+      "stage1e_e4_r6_c1r3_linux_packet_v1",
+      "ars_codex_academic_research_suite_0.1.26"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-08-31T00:00:00+07:00",
+      "declared_by": "scholar"
+    },
+    "experiment_provenance": []
+  },
+  "accepted_packet_audit": {
+    "commit": "1e3617cd0befe790a28129d3714dc4a17e6ce964",
+    "receipt_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_c1r3_linux_revision1_fresh_independent_audit_receipt.json",
+    "receipt_git_blob_oid": "73c8f3a9a5d3a84bf000c0ca2b3e2af794282f78",
+    "verdict": "PASS_R6_C1R3_LINUX_REVISION1_FRESH_INDEPENDENT_AUDIT_READY_FOR_CENTRAL_RUNNER_CONSTRUCTION",
+    "validator_checks": "72/72",
+    "raw_byte_bindings": "9/9"
+  },
+  "runtime_scope": {
+    "included_command_ids": [
+      "I00_PULL_EXACT_OFFICIAL_PLATFORM_MANIFEST",
+      "I01_INSPECT_LOCAL_IMAGE_IDENTITY",
+      "I02_PROBE_EXACT_CPYTHON_IDENTITY",
+      "M00_ACQUIRE_OFFICIAL_GROUPLENS_BYTES",
+      "M01_SAFE_EXTRACT_CONVERT_AND_RECONCILE",
+      "M02_SEAL_DATASET_MATERIALIZATION_RECEIPT",
+      "E00_DOWNLOAD_LINUX_WHEEL_CLOSURE",
+      "E01_HASH_AND_FREEZE_WHEEL_CLOSURE",
+      "E02_CREATE_EXACT_CONTAINER_VENV",
+      "E03_INSTALL_HASHED_THIRD_PARTY_CLOSURE",
+      "E04_STAGE_VERIFIED_RECBOLE_SOURCE",
+      "E05_PREPARE_EPHEMERAL_BUILD_SOURCE",
+      "E06_BUILD_LOCAL_RECBOLE_WHEEL",
+      "E07_HASH_LOCAL_RECBOLE_WHEEL",
+      "E08_INSTALL_HASHED_LOCAL_RECBOLE_WHEEL",
+      "E09_SEAL_ENVIRONMENT_AND_IMPORT_CHECK",
+      "E10_ASSERT_ATTEMPT_WRITE_BOUNDARY"
+    ],
+    "excluded_command_prefixes": [
+      "B"
+    ],
+    "bridge": false,
+    "dataset_construction_or_loading": false,
+    "training": false,
+    "evaluation": false,
+    "metrics": false,
+    "test_access": false,
+    "benchmark_admission": false
+  },
+  "execution_policy": {
+    "literal_packet_argv": true,
+    "shell": false,
+    "retry_count": 0,
+    "fallback_count": 0,
+    "stop_on_first_failure": true,
+    "dataset_and_environment_root_creation_only_after_I02_pass": true,
+    "lane_schedule": "SERIAL_DATASET_THEN_ENVIRONMENT",
+    "lane_schedule_reason": "One-at-a-time execution stays below the packet maximum concurrency of two and avoids avoidable memory pressure on the bounded current host.",
+    "append_only_fsynced_command_journal": true,
+    "docker_desktop_start_attempts": 1,
+    "docker_desktop_stop_attempts": 1,
+    "wsl_shutdown_attempts": 1,
+    "stable_closure_snapshots": 3
+  },
+  "external_roots": {
+    "runner_attempt_root": "E:\\UIT\\cv\\materialized-runs\\hybrid-recsys-v5\\stage1e\\r6\\c1r3\\attempt-004-linux",
+    "dataset_attempt_root": "E:\\UIT\\cv\\materialized-data\\hybrid-recsys-v5\\stage1e\\r6\\official_source\\grouplens_ml100k\\attempt-004-linux",
+    "environment_attempt_root": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-004-linux",
+    "create_new_only": true,
+    "reuse_or_cleanup": false
+  },
+  "lifecycle_argv": {
+    "docker_start": [
+      "C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe",
+      "desktop",
+      "start"
+    ],
+    "docker_stop": [
+      "C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe",
+      "desktop",
+      "stop"
+    ],
+    "wsl_shutdown": [
+      "C:\\Windows\\System32\\wsl.exe",
+      "--shutdown"
+    ]
+  },
+  "exact_process_command_template": [
+    "C:\\Program Files\\Python311\\python.exe",
+    "-B",
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_c1r3_linux_materialization.py",
+    "--repo-root",
+    "<AUDITED_RUNTIME_WORKTREE_ROOT>",
+    "--expected-head",
+    "<AUDITED_RUNTIME_HEAD>",
+    "--execution-confirmation",
+    "USER_CONFIRMED_R6_C1R3_LINUX_ATTEMPT004_M0_M1_ONLY_2026_08_31"
+  ],
+  "model_policy": {
+    "central_planning_and_remediation": "gpt-5.6-sol/max/standard",
+    "independent_runner_audit": "gpt-5.6-sol/xhigh/standard",
+    "runtime_task": "gpt-5.6-sol/xhigh/standard",
+    "fast_or_priority_forbidden": true
+  },
+  "validation_and_handoff": {
+    "central_static_receipt": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_c1r3_linux_runner_central_static_validation_receipt.json",
+    "fresh_independent_audit_receipt": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_c1r3_linux_runner_fresh_independent_audit_receipt.json",
+    "fresh_independent_audit_required_before_runtime": true,
+    "runtime_must_use_a_new_task_and_clean_worktree": true
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "benchmark_admission_opened": false,
+    "phase_1e_complete": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  }
+}
