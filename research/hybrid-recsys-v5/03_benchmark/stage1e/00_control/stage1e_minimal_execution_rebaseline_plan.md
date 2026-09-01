@@ -194,3 +194,34 @@ mode. The only runtime remediation for Attempt-005 is therefore:
 5. retain Attempt-004 as immutable failure evidence.
 
 The next executable checkpoint is **X2 — Attempt-005 M0/M1 materialization**.
+
+## 8. Execution update — Attempt-005 closure and Attempt-006 admission
+
+Attempt-005 proved that detached Docker Desktop startup returns correctly: the
+single `docker desktop start --detach` invocation exited successfully in about
+three seconds. The Docker server did not become ready within the bounded
+180-second window, however, and Docker Desktop reported that the stale AF_UNIX
+endpoint `C:\Users\ACER\AppData\Local\Docker\run\dockerInference` could not be
+removed. The attempt was closed without retry. Zero of 17 M0/M1 commands ran,
+the dataset and environment roots were not created, and no training,
+evaluation, metric computation, or TEST access occurred.
+
+Central remediation was limited to the observed host-runtime seam:
+
+1. stop the exact five remaining Docker Desktop/backend processes and shut down
+   WSL;
+2. move `C:\Users\ACER\AppData\Local\Docker\run` to
+   `run.stale-20260901-attempt005` and move
+   `C:\Users\ACER\AppData\Local\docker-secrets-engine` to
+   `docker-secrets-engine.stale-20260901-attempt005`;
+3. create fresh empty ordinary directories at the two original paths; and
+4. verify that no Docker process remained and both replacement directories were
+   empty.
+
+The moved directories are retained as recoverable failure evidence. No Docker
+image, volume, setting, source packet, dataset, or environment artifact was
+deleted. Attempt-005 remains immutable. The active runner deterministically
+rebases the same source packet from `attempt-004-linux` to the fresh
+`attempt-006-linux` roots; no other command semantics change.
+
+The next executable checkpoint is **X2 — Attempt-006 M0/M1 materialization**.

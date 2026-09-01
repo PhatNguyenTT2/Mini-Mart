@@ -38,7 +38,7 @@ class PacketPlanTests(unittest.TestCase):
         for row in self.plan:
             self.assertEqual(row["argv_sha256"], runner.argv_hash(row["argv"]))
 
-    def test_attempt005_rebase_is_exact_and_hash_bound(self) -> None:
+    def test_active_attempt_rebase_is_exact_and_hash_bound(self) -> None:
         changed = [row for row in self.plan if row.get("source_argv_sha256")]
         self.assertEqual(len(changed), 14)
         self.assertTrue(
@@ -294,7 +294,7 @@ class FinalResultPublicationTests(unittest.TestCase):
             self.assertFalse(document["passed"])
             self.assertEqual(
                 document["verdict"],
-                "HANDOFF_INCOMPLETE_R6_C1R3_LINUX_ATTEMPT005_CLOSED",
+                "HANDOFF_INCOMPLETE_R6_C1R3_LINUX_ATTEMPT006_CLOSED",
             )
             self.assertEqual(document["error_type"], "RunnerResultWriteError")
             self.assertIn("synthetic publication failure", str(document["error"]))
