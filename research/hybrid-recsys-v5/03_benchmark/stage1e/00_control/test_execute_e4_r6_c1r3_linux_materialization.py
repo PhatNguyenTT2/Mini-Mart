@@ -143,6 +143,17 @@ class EvidenceTests(unittest.TestCase):
             runner.require_confirmation(runner.CONFIRMATION_TOKEN + "_MUTATED")
 
 
+class MinimalPreRuntimeGateTests(unittest.TestCase):
+    def test_independent_audit_is_post_runtime_not_a_precondition(self) -> None:
+        repo_root = Path(__file__).resolve().parents[5]
+        contract = runner.strict_load(repo_root / runner.CONTRACT_RELATIVE)
+        gate = runner.validate_minimal_pre_runtime_gate_contract(contract)
+
+        self.assertTrue(gate["central_static_receipt_required_before_runtime"])
+        self.assertFalse(gate["fresh_independent_audit_required_before_runtime"])
+        self.assertEqual(gate["fresh_independent_audit_timing"], "POST_RUNTIME")
+
+
 class StoppedStateEvidenceTests(unittest.TestCase):
     @staticmethod
     def result(exit_code: int, process_success: bool) -> dict[str, object]:

@@ -1,23 +1,25 @@
 {
-  "schema_version": "stage1e-r6-c1r3-linux-materialization-runner-contract-1.1",
-  "created_at": "2026-08-31T00:00:00+07:00",
+  "schema_version": "stage1e-r6-c1r3-linux-materialization-runner-contract-1.2",
+  "created_at": "2026-09-01T00:00:00+07:00",
   "stage_id": "R6-C1R3-LINUX",
   "material_passport": {
     "origin_skill": "experiment-agent",
-    "origin_mode": "design-runtime-runner",
-    "origin_date": "2026-08-31T00:00:00+07:00",
+    "origin_mode": "minimal-execution-rebaseline",
+    "origin_date": "2026-09-01T00:00:00+07:00",
     "verification_status": "UNVERIFIED",
-    "version_label": "stage1e_e4_r6_c1r3_linux_materialization_runner_v2",
+    "version_label": "stage1e_e4_r6_c1r3_linux_materialization_runner_v3_minimal",
     "upstream_dependencies": [
       "stage1e_e4_r6_c1r3_linux_revision1_fresh_independent_audit_v1",
       "stage1e_e4_r6_c1r3_linux_runner_fresh_independent_audit_failure_v1",
+      "stage1e_minimal_execution_rebaseline_v1",
+      "x0_r1_docker_daemon_smoke_v1",
       "stage1e_e4_r6_c1r3_linux_packet_v1",
       "ars_codex_academic_research_suite_0.1.26"
     ],
     "repro_lock": null,
     "experiment_intake_declaration": {
-      "status": "no_experiments_declared",
-      "declared_at": "2026-08-31T00:00:00+07:00",
+      "status": "experiments_declared",
+      "declared_at": "2026-09-01T00:00:00+07:00",
       "declared_by": "scholar"
     },
     "experiment_provenance": []
@@ -75,7 +77,8 @@
     "docker_desktop_stop_attempts": 1,
     "wsl_shutdown_attempts": 1,
     "stable_closure_snapshots": 3,
-    "central_and_fresh_audit_receipts_required_before_root_creation": true,
+    "central_static_receipt_required_before_runtime": true,
+    "fresh_independent_audit_required_before_runtime": false,
     "docker_stop_acceptance": "docker desktop stop process success OR three stable independently authoritative stopped snapshots; closure snapshots remain mandatory",
     "authoritative_result_path": "runner_result.json",
     "partial_result_paths_authoritative": false,
@@ -176,27 +179,27 @@
     "-B",
     "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_c1r3_linux_materialization.py",
     "--repo-root",
-    "<AUDITED_RUNTIME_WORKTREE_ROOT>",
+    "<RUNTIME_REPO_ROOT>",
     "--expected-head",
-    "<AUDITED_RUNTIME_HEAD>",
+    "<CENTRAL_STATIC_RECEIPT_HEAD>",
     "--execution-confirmation",
-    "USER_CONFIRMED_R6_C1R3_LINUX_ATTEMPT004_M0_M1_ONLY_2026_08_31"
+    "USER_CONFIRMED_STAGE1E_MINIMAL_X2_ATTEMPT004_M0_M1_2026_09_01"
   ],
   "model_policy": {
     "central_planning_and_remediation": "gpt-5.6-sol/max/standard",
-    "independent_runner_audit": "gpt-5.6-sol/xhigh/standard",
+    "post_runtime_independent_audit": "gpt-5.6-sol/xhigh/standard",
     "runtime_task": "gpt-5.6-sol/xhigh/standard",
     "fast_or_priority_forbidden": true
   },
   "validation_and_handoff": {
-    "central_static_receipt": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_c1r3_linux_runner_revision2_central_static_validation_receipt.json",
-    "fresh_independent_audit_receipt": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_c1r3_linux_runner_revision2_fresh_independent_audit_receipt.json",
-    "fresh_independent_audit_required_before_runtime": true,
-    "runtime_must_use_a_new_task_and_clean_worktree": true,
-    "central_receipt_schema": "stage1e-r6-c1r3-linux-runner-revision2-central-static-validation-receipt-1.0",
-    "central_receipt_verdict": "PASS_R6_C1R3_LINUX_RUNNER_REVISION2_CENTRAL_STATIC_VALIDATION_READY_FOR_FRESH_XHIGH_AUDIT",
-    "fresh_audit_receipt_schema": "stage1e-r6-c1r3-linux-runner-revision2-fresh-independent-audit-receipt-1.0",
-    "fresh_audit_receipt_verdict": "PASS_R6_C1R3_LINUX_RUNNER_REVISION2_FRESH_INDEPENDENT_AUDIT_READY_FOR_RUNTIME"
+    "central_static_receipt": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_c1r3_linux_minimal_runner_central_static_validation_receipt.json",
+    "central_receipt_schema": "stage1e-r6-c1r3-linux-minimal-runner-central-static-validation-receipt-1.0",
+    "central_receipt_verdict": "PASS_R6_C1R3_LINUX_MINIMAL_RUNNER_CENTRAL_STATIC_VALIDATION_READY_FOR_M0_M1_RUNTIME",
+    "fresh_independent_audit_required_before_runtime": false,
+    "fresh_independent_audit_timing": "POST_RUNTIME",
+    "runtime_authority": "EXACT_HEAD_CLEAN_TRACKED_TREE_CONFIRMATION_AND_CENTRAL_STATIC_RECEIPT",
+    "runtime_must_use_a_separate_task": true,
+    "untracked_user_state_may_be_preserved": true
   },
   "truth_state": {
     "RESULT_STATUS": "NOT_RUN",
