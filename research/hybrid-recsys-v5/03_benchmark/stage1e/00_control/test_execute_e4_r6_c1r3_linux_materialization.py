@@ -38,6 +38,27 @@ class PacketPlanTests(unittest.TestCase):
         for row in self.plan:
             self.assertEqual(row["argv_sha256"], runner.argv_hash(row["argv"]))
 
+    def test_attempt005_rebase_is_exact_and_hash_bound(self) -> None:
+        changed = [row for row in self.plan if row.get("source_argv_sha256")]
+        self.assertEqual(len(changed), 14)
+        self.assertTrue(
+            all(
+                runner.SOURCE_ATTEMPT_NAME not in token
+                for row in self.plan
+                for token in row["argv"]
+            )
+        )
+        self.assertTrue(
+            any(
+                runner.ATTEMPT_NAME in token
+                for row in changed
+                for token in row["argv"]
+            )
+        )
+        for row in changed:
+            self.assertNotEqual(row["source_argv_sha256"], row["argv_sha256"])
+            self.assertEqual(row["argv_sha256"], runner.argv_hash(row["argv"]))
+
     def test_mutated_argv_is_rejected(self) -> None:
         row = dict(self.plan[0])
         row["argv"] = [*row["argv"], "unexpected"]
@@ -52,6 +73,12 @@ class PacketPlanTests(unittest.TestCase):
 
 
 class OrchestrationTests(unittest.TestCase):
+    def test_docker_start_is_detached(self) -> None:
+        self.assertEqual(
+            runner.DOCKER_START_ARGV,
+            [str(runner.DOCKER_EXE), "desktop", "start", "--detach"],
+        )
+
     def test_roots_are_created_only_after_I02_passes(self) -> None:
         commands = [{"id": value} for value in runner.EXPECTED_COMMAND_IDS]
         events: list[str] = []
@@ -105,7 +132,7 @@ class EvidenceTests(unittest.TestCase):
     def test_dataset_final_receipt_rejects_scientific_execution(self) -> None:
         receipt = {
             "schema_version": "stage1e-r6-c1r3-dataset-materialization-1.0",
-            "attempt": "attempt-004-linux",
+            "attempt": runner.ATTEMPT_NAME,
             "archive_sha256": runner.ML100K_SHA256,
             "rows": 100000,
             "users": 943,
@@ -120,7 +147,7 @@ class EvidenceTests(unittest.TestCase):
     def test_environment_final_receipt_rejects_evaluation(self) -> None:
         receipt = {
             "schema_version": "stage1e-r6-c1r3-environment-materialization-1.0",
-            "attempt": "attempt-004-linux",
+            "attempt": runner.ATTEMPT_NAME,
             "python": "3.11.9",
             "recbole": "1.2.1",
             "torch": "2.2.2+cpu",
@@ -267,7 +294,7 @@ class FinalResultPublicationTests(unittest.TestCase):
             self.assertFalse(document["passed"])
             self.assertEqual(
                 document["verdict"],
-                "HANDOFF_INCOMPLETE_R6_C1R3_LINUX_ATTEMPT004_CLOSED",
+                "HANDOFF_INCOMPLETE_R6_C1R3_LINUX_ATTEMPT005_CLOSED",
             )
             self.assertEqual(document["error_type"], "RunnerResultWriteError")
             self.assertIn("synthetic publication failure", str(document["error"]))

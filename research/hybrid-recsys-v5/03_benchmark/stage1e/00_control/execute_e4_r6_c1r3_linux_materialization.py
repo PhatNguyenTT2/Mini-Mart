@@ -38,7 +38,7 @@ CONTRACT_RELATIVE = (
     CONTROL_RELATIVE / "e4_r6_c1r3_linux_materialization_runner_contract.json"
 )
 MINIMAL_CENTRAL_RECEIPT_RELATIVE = CONTROL_RELATIVE / (
-    "rebaseline_v2_e4_r6_c1r3_linux_minimal_runner_central_static_validation_receipt.json"
+    "rebaseline_v2_e4_r6_c1r3_linux_attempt005_minimal_runner_central_static_validation_receipt.json"
 )
 PACKET_VALIDATOR_RELATIVE = CONTROL_RELATIVE / "validate_e4_r6_c1r3_linux_packet.py"
 PACKET_AUDIT_RELATIVE = CONTROL_RELATIVE / (
@@ -56,10 +56,10 @@ ACCEPTED_PACKET_AUDIT_SCHEMA = (
     "stage1e-r6-c1r3-linux-revision1-fresh-independent-audit-receipt-1.0"
 )
 MINIMAL_CENTRAL_RECEIPT_SCHEMA = (
-    "stage1e-r6-c1r3-linux-minimal-runner-central-static-validation-receipt-1.0"
+    "stage1e-r6-c1r3-linux-attempt005-minimal-runner-central-static-validation-receipt-1.0"
 )
 MINIMAL_CENTRAL_RECEIPT_VERDICT = (
-    "PASS_R6_C1R3_LINUX_MINIMAL_RUNNER_CENTRAL_STATIC_VALIDATION_READY_FOR_M0_M1_RUNTIME"
+    "PASS_R6_C1R3_LINUX_ATTEMPT005_MINIMAL_RUNNER_CENTRAL_STATIC_VALIDATION_READY_FOR_M0_M1_RUNTIME"
 )
 
 DOCKER_EXE = Path(r"C:\Program Files\Docker\Docker\resources\bin\docker.exe")
@@ -86,23 +86,28 @@ IMAGE_REF = (
 )
 ML100K_SHA256 = "50d2a982c66986937beb9ffb3aa76efe955bf3d5c6b761f4e3a7cd717c6a3229"
 
+SOURCE_ATTEMPT_NAME = "attempt-004-linux"
+ATTEMPT_NAME = "attempt-005-linux"
+
 RUN_ROOT = Path(
     r"E:\UIT\cv\materialized-runs\hybrid-recsys-v5\stage1e\r6\c1r3"
-    r"\attempt-004-linux"
+    rf"\{ATTEMPT_NAME}"
 )
 DATA_ROOT = Path(
     r"E:\UIT\cv\materialized-data\hybrid-recsys-v5\stage1e\r6"
-    r"\official_source\grouplens_ml100k\attempt-004-linux"
+    rf"\official_source\grouplens_ml100k\{ATTEMPT_NAME}"
 )
 ENV_ROOT = Path(
     r"E:\UIT\cv\materialized-environments\hybrid-recsys-v5\stage1e\r6"
-    r"\recbole_bpr_ml100k_py3119_cpu\attempt-004-linux"
+    rf"\recbole_bpr_ml100k_py3119_cpu\{ATTEMPT_NAME}"
 )
 EXTERNAL_FLOOR = Path(r"E:\UIT\cv")
 
 CONFIRMATION_TOKEN = (
-    "USER_CONFIRMED_STAGE1E_MINIMAL_X2_ATTEMPT004_M0_M1_2026_09_01"
+    "USER_CONFIRMED_STAGE1E_MINIMAL_X2_ATTEMPT005_M0_M1_2026_09_01"
 )
+DOCKER_START_ARGV = [str(DOCKER_EXE), "desktop", "start", "--detach"]
+DOCKER_READY_ARGV = [str(DOCKER_EXE), "version", "--format", "{{json .Server}}"]
 TRUTH_STATE = {
     "RESULT_STATUS": "NOT_RUN",
     "TEST_SET_OPENED": "NO",
@@ -305,9 +310,7 @@ def persist_final_result(
         document["error_type"] = "RunnerResultWriteError"
         document["error"] = detail
         document["runner_result_write_error"] = detail
-        document["verdict"] = (
-            "HANDOFF_INCOMPLETE_R6_C1R3_LINUX_ATTEMPT004_CLOSED"
-        )
+        document["verdict"] = "HANDOFF_INCOMPLETE_R6_C1R3_LINUX_ATTEMPT005_CLOSED"
         return False
 
 
@@ -342,6 +345,25 @@ def validate_packet_command(row: dict[str, Any]) -> None:
         raise RuntimeError(f"COMMAND_TIMEOUT_INVALID:{identifier}")
 
 
+def rebase_attempt_command(row: dict[str, Any]) -> dict[str, Any]:
+    """Rebase only the immutable packet's attempt identifier in argv tokens."""
+    validate_packet_command(row)
+    source_argv = list(row["argv"])
+    rebased_argv = [
+        token.replace(SOURCE_ATTEMPT_NAME, ATTEMPT_NAME) for token in source_argv
+    ]
+    if any(SOURCE_ATTEMPT_NAME in token for token in rebased_argv):
+        raise RuntimeError(f"ATTEMPT_REBASE_INCOMPLETE:{row['id']}")
+    if rebased_argv == source_argv:
+        return dict(row)
+    rebased = dict(row)
+    rebased["source_argv_sha256"] = row["argv_sha256"]
+    rebased["argv"] = rebased_argv
+    rebased["argv_sha256"] = argv_hash(rebased_argv)
+    validate_packet_command(rebased)
+    return rebased
+
+
 def load_execution_plan(repo_root: Path) -> list[dict[str, Any]]:
     packet_root = repo_root / PACKET_RELATIVE
     boundary = strict_load(packet_root / "execution_boundary_and_negative_assertions.json")
@@ -368,12 +390,16 @@ def load_execution_plan(repo_root: Path) -> list[dict[str, Any]]:
     if any(str(row.get("id", "")).startswith("B") is False for row in bridge_rows):
         raise RuntimeError("BRIDGE_COMMAND_ID_INVALID")
 
-    plan = [*image, *dataset_rows, *environment_rows]
-    identifiers = tuple(str(row.get("id", "")) for row in plan)
+    source_plan = [*image, *dataset_rows, *environment_rows]
+    identifiers = tuple(str(row.get("id", "")) for row in source_plan)
     if identifiers != EXPECTED_COMMAND_IDS:
         raise RuntimeError("EXECUTION_PLAN_ORDER_MISMATCH")
-    for row in plan:
+    for row in source_plan:
         validate_packet_command(row)
+    plan = [rebase_attempt_command(row) for row in source_plan]
+    changed = [row for row in plan if row.get("source_argv_sha256")]
+    if len(changed) != 14:
+        raise RuntimeError("ATTEMPT_REBASE_COMMAND_COUNT_MISMATCH")
     if any(identifier.startswith("B") for identifier in identifiers):
         raise RuntimeError("BRIDGE_COMMAND_IN_RUNTIME_PLAN")
     return plan
@@ -402,7 +428,7 @@ def validate_dataset_final_receipt(receipt: dict[str, Any]) -> None:
     valid = (
         receipt.get("schema_version")
         == "stage1e-r6-c1r3-dataset-materialization-1.0"
-        and receipt.get("attempt") == "attempt-004-linux"
+        and receipt.get("attempt") == ATTEMPT_NAME
         and receipt.get("archive_sha256") == ML100K_SHA256
         and receipt.get("rows") == 100000
         and receipt.get("users") == 943
@@ -419,7 +445,7 @@ def validate_environment_final_receipt(receipt: dict[str, Any]) -> None:
     valid = (
         receipt.get("schema_version")
         == "stage1e-r6-c1r3-environment-materialization-1.0"
-        and receipt.get("attempt") == "attempt-004-linux"
+        and receipt.get("attempt") == ATTEMPT_NAME
         and receipt.get("python") == "3.11.9"
         and receipt.get("recbole") == "1.2.1"
         and receipt.get("torch") == "2.2.2+cpu"
@@ -632,9 +658,9 @@ def validate_minimal_central_receipt(
         or receipt.get("verdict") != MINIMAL_CENTRAL_RECEIPT_VERDICT
         or subject.get("implementation_commit", "").casefold() != implementation
         or subject.get("runner_contract_schema")
-        != "stage1e-r6-c1r3-linux-materialization-runner-contract-1.2"
-        or tests.get("tests_passed") != 23
-        or tests.get("tests_total") != 23
+        != "stage1e-r6-c1r3-linux-materialization-runner-contract-1.3"
+        or tests.get("tests_passed") != 25
+        or tests.get("tests_total") != 25
         or packet.get("checks_passed") != 72
         or packet.get("checks_total") != 72
         or x0.get("verdict") != "PASS_X0_DOCKER_DAEMON_SMOKE"
@@ -755,7 +781,7 @@ def assert_repo_authority(repo_root: Path, expected_head: str) -> dict[str, Any]
         raise RuntimeError("RUNNER_CONTRACT_NOT_OBJECT")
     if (
         contract.get("schema_version")
-        != "stage1e-r6-c1r3-linux-materialization-runner-contract-1.2"
+        != "stage1e-r6-c1r3-linux-materialization-runner-contract-1.3"
         or contract.get("accepted_packet_audit", {}).get("commit")
         != ACCEPTED_PACKET_AUDIT_COMMIT
         or tuple(contract.get("runtime_scope", {}).get("included_command_ids", []))
@@ -1095,7 +1121,7 @@ def validate_packet_postcondition(
         if (
             value.get("schema_version")
             != "stage1e-r6-c1r3-ml100k-acquisition-1.0"
-            or value.get("attempt") != "attempt-004-linux"
+            or value.get("attempt") != ATTEMPT_NAME
             or value.get("archive_provider_md5_verified") is not True
             or value.get("archive_frozen_sha256_verified") is not True
             or value.get("verdict") != "PASS"
@@ -1389,6 +1415,47 @@ def collect_stopped_snapshot(
     return evidence
 
 
+def wait_for_docker_server(
+    executor: EvidenceExecutor, *, timeout_seconds: int = 180, interval_seconds: int = 5
+) -> dict[str, Any]:
+    deadline = time.monotonic() + timeout_seconds
+    probe = 0
+    while True:
+        probe += 1
+        result, stdout_path, _ = executor.run(
+            f"L00_DOCKER_SERVER_READY_{probe:02d}",
+            DOCKER_READY_ARGV,
+            20,
+            category="lifecycle",
+            network=None,
+        )
+        server: Any = None
+        if result["process_success"]:
+            try:
+                server = strict_json_bytes(stdout_path.read_bytes())
+            except (StrictJsonError, UnicodeDecodeError) as exc:
+                result["success"] = False
+                result["readiness_error"] = f"{type(exc).__name__}:{exc}"
+        ready = isinstance(server, dict) and bool(server)
+        result["state_evidence_role"] = "docker_server_ready"
+        result["state_evidence_success"] = ready
+        if result["process_success"] and not ready:
+            result["success"] = False
+            result["readiness_error"] = "DOCKER_SERVER_RESPONSE_NOT_OBJECT"
+        executor.commit(result)
+        if ready:
+            return {
+                "schema_version": "r6-c1r3-docker-server-ready-1.0",
+                "probe_count": probe,
+                "server": server,
+                "passed": True,
+            }
+        remaining = deadline - time.monotonic()
+        if remaining <= 0:
+            raise RuntimeError("DOCKER_SERVER_READINESS_TIMEOUT")
+        time.sleep(min(interval_seconds, remaining))
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
     parser.add_argument("--repo-root", required=True)
@@ -1404,6 +1471,7 @@ def main() -> int:
     primary_error: Exception | None = None
     materialization_passed = False
     docker_start_attempted = False
+    docker_server_ready: dict[str, Any] | None = None
     cleanup: dict[str, Any] = {
         "docker_stop_attempts": 0,
         "wsl_shutdown_attempts": 0,
@@ -1465,6 +1533,20 @@ def main() -> int:
                 "roots": roots,
                 "capacities": capacities,
                 "docker_wsl_baseline": baseline,
+                "attempt_rebase": {
+                    "source_attempt": SOURCE_ATTEMPT_NAME,
+                    "target_attempt": ATTEMPT_NAME,
+                    "transform": "exact argv token substring replacement only",
+                    "changed_commands": [
+                        {
+                            "command_id": row["id"],
+                            "source_argv_sha256": row["source_argv_sha256"],
+                            "executed_argv_sha256": row["argv_sha256"],
+                        }
+                        for row in plan
+                        if row.get("source_argv_sha256")
+                    ],
+                },
                 "fresh_explicit_authorization": True,
                 "root_creation_state": {
                     "runner_root_created": True,
@@ -1479,14 +1561,16 @@ def main() -> int:
         docker_start_attempted = True
         start_result, _, _ = executor.run(
             "L00_DOCKER_DESKTOP_START",
-            [str(DOCKER_EXE), "desktop", "start"],
-            300,
+            DOCKER_START_ARGV,
+            60,
             category="lifecycle",
             network=None,
         )
         executor.commit(start_result)
         if not start_result["success"]:
             raise RuntimeError("DOCKER_DESKTOP_START_FAILED")
+        docker_server_ready = wait_for_docker_server(executor)
+        write_json_new(RUN_ROOT / "receipts/docker_server_ready.json", docker_server_ready)
 
         def create_lane_roots() -> None:
             verify_absent_external_root(DATA_ROOT)
@@ -1629,7 +1713,7 @@ def main() -> int:
         "schema_version": "stage1e-r6-c1r3-linux-m0-m1-runtime-result-1.0",
         "created_at": utc_now(),
         "stage_id": "R6-C1R3-LINUX",
-        "attempt": "attempt-004-linux",
+        "attempt": ATTEMPT_NAME,
         "passed": overall_passed,
         "materialization_passed": materialization_passed,
         "error_type": type(primary_error).__name__ if primary_error else None,
@@ -1643,6 +1727,7 @@ def main() -> int:
             )
         ),
         "docker_start_attempts": 1 if docker_start_attempted else 0,
+        "docker_server_ready": docker_server_ready,
         "retry_count": 0,
         "fallback_count": 0,
         "cleanup": cleanup,
@@ -1660,7 +1745,7 @@ def main() -> int:
         "verdict": (
             "PASS_R6_C1R3_LINUX_M0_M1_MATERIALIZED_NOT_BENCHMARKED"
             if overall_passed
-            else "HANDOFF_INCOMPLETE_R6_C1R3_LINUX_ATTEMPT004_CLOSED"
+            else "HANDOFF_INCOMPLETE_R6_C1R3_LINUX_ATTEMPT005_CLOSED"
         ),
     }
     if run_root_created:

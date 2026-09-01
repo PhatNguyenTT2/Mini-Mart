@@ -171,4 +171,26 @@ Only after X3 PASS:
 - X4/E5 PASS: Phase 1E is complete and Stage 2 paper writing may use measured
   benchmark claims.
 
-The next executable checkpoint is **X0 — Docker daemon smoke**.
+## 7. Execution update — Attempt-004 closure and Attempt-005 admission
+
+X0-R1 passed on Docker Desktop 4.78.0 / Engine 29.5.3. Attempt-004 then
+passed all preflight checks but closed before M0/M1 because the synchronous
+`docker desktop start` process remained foregrounded until the runner's
+300-second timeout. Cleanup passed, all three stopped-state snapshots were
+stable, neither dataset nor environment root was created, and scientific truth
+remained `NOT_RUN/NO/0`.
+
+Docker CLI help identifies `--detach` as the supported non-synchronous start
+mode. The only runtime remediation for Attempt-005 is therefore:
+
+1. start Docker Desktop once with `docker desktop start --detach`;
+2. poll the Docker server API for at most 180 seconds without issuing another
+   start;
+3. deterministically rebase only the immutable packet argv attempt marker from
+   `attempt-004-linux` to `attempt-005-linux`, recording both source and executed
+   argv hashes;
+4. run the same 17 M0/M1 commands with no bridge, training, evaluation, metric,
+   or TEST access; and
+5. retain Attempt-004 as immutable failure evidence.
+
+The next executable checkpoint is **X2 — Attempt-005 M0/M1 materialization**.

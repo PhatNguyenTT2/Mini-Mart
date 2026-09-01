@@ -1,5 +1,5 @@
 {
-  "schema_version": "stage1e-r6-c1r3-linux-materialization-runner-contract-1.2",
+  "schema_version": "stage1e-r6-c1r3-linux-materialization-runner-contract-1.3",
   "created_at": "2026-09-01T00:00:00+07:00",
   "stage_id": "R6-C1R3-LINUX",
   "material_passport": {
@@ -7,12 +7,13 @@
     "origin_mode": "minimal-execution-rebaseline",
     "origin_date": "2026-09-01T00:00:00+07:00",
     "verification_status": "UNVERIFIED",
-    "version_label": "stage1e_e4_r6_c1r3_linux_materialization_runner_v3_minimal",
+    "version_label": "stage1e_e4_r6_c1r3_linux_materialization_runner_v4_attempt005_detached_start",
     "upstream_dependencies": [
       "stage1e_e4_r6_c1r3_linux_revision1_fresh_independent_audit_v1",
       "stage1e_e4_r6_c1r3_linux_runner_fresh_independent_audit_failure_v1",
       "stage1e_minimal_execution_rebaseline_v1",
       "x0_r1_docker_daemon_smoke_v1",
+      "attempt004_docker_start_timeout_failure_v1",
       "stage1e_e4_r6_c1r3_linux_packet_v1",
       "ars_codex_academic_research_suite_0.1.26"
     ],
@@ -64,7 +65,16 @@
     "benchmark_admission": false
   },
   "execution_policy": {
-    "literal_packet_argv": true,
+    "literal_packet_argv": false,
+    "source_packet_argv_validated_before_rebase": true,
+    "attempt_rebase": {
+      "source_attempt": "attempt-004-linux",
+      "target_attempt": "attempt-005-linux",
+      "allowed_transform": "replace source attempt identifier with target attempt identifier inside argv string tokens only",
+      "changed_command_count": 14,
+      "source_and_executed_argv_sha256_recorded": true,
+      "all_other_token_bytes_unchanged": true
+    },
     "shell": false,
     "retry_count": 0,
     "fallback_count": 0,
@@ -74,6 +84,10 @@
     "lane_schedule_reason": "One-at-a-time execution stays below the packet maximum concurrency of two and avoids avoidable memory pressure on the bounded current host.",
     "append_only_fsynced_command_journal": true,
     "docker_desktop_start_attempts": 1,
+    "docker_desktop_start_mode": "DETACHED",
+    "docker_server_readiness_timeout_seconds": 180,
+    "docker_server_readiness_poll_seconds": 5,
+    "readiness_poll_is_not_start_retry": true,
     "docker_desktop_stop_attempts": 1,
     "wsl_shutdown_attempts": 1,
     "stable_closure_snapshots": 3,
@@ -85,9 +99,9 @@
     "result_write_failure_must_emit_fail_closed": true
   },
   "external_roots": {
-    "runner_attempt_root": "E:\\UIT\\cv\\materialized-runs\\hybrid-recsys-v5\\stage1e\\r6\\c1r3\\attempt-004-linux",
-    "dataset_attempt_root": "E:\\UIT\\cv\\materialized-data\\hybrid-recsys-v5\\stage1e\\r6\\official_source\\grouplens_ml100k\\attempt-004-linux",
-    "environment_attempt_root": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-004-linux",
+    "runner_attempt_root": "E:\\UIT\\cv\\materialized-runs\\hybrid-recsys-v5\\stage1e\\r6\\c1r3\\attempt-005-linux",
+    "dataset_attempt_root": "E:\\UIT\\cv\\materialized-data\\hybrid-recsys-v5\\stage1e\\r6\\official_source\\grouplens_ml100k\\attempt-005-linux",
+    "environment_attempt_root": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-005-linux",
     "create_new_only": true,
     "reuse_or_cleanup": false
   },
@@ -95,7 +109,14 @@
     "docker_start": [
       "C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe",
       "desktop",
-      "start"
+      "start",
+      "--detach"
+    ],
+    "docker_server_ready_probe": [
+      "C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe",
+      "version",
+      "--format",
+      "{{json .Server}}"
     ],
     "docker_stop": [
       "C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe",
@@ -183,7 +204,7 @@
     "--expected-head",
     "<CENTRAL_STATIC_RECEIPT_HEAD>",
     "--execution-confirmation",
-    "USER_CONFIRMED_STAGE1E_MINIMAL_X2_ATTEMPT004_M0_M1_2026_09_01"
+    "USER_CONFIRMED_STAGE1E_MINIMAL_X2_ATTEMPT005_M0_M1_2026_09_01"
   ],
   "model_policy": {
     "central_planning_and_remediation": "gpt-5.6-sol/max/standard",
@@ -192,9 +213,9 @@
     "fast_or_priority_forbidden": true
   },
   "validation_and_handoff": {
-    "central_static_receipt": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_c1r3_linux_minimal_runner_central_static_validation_receipt.json",
-    "central_receipt_schema": "stage1e-r6-c1r3-linux-minimal-runner-central-static-validation-receipt-1.0",
-    "central_receipt_verdict": "PASS_R6_C1R3_LINUX_MINIMAL_RUNNER_CENTRAL_STATIC_VALIDATION_READY_FOR_M0_M1_RUNTIME",
+    "central_static_receipt": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_c1r3_linux_attempt005_minimal_runner_central_static_validation_receipt.json",
+    "central_receipt_schema": "stage1e-r6-c1r3-linux-attempt005-minimal-runner-central-static-validation-receipt-1.0",
+    "central_receipt_verdict": "PASS_R6_C1R3_LINUX_ATTEMPT005_MINIMAL_RUNNER_CENTRAL_STATIC_VALIDATION_READY_FOR_M0_M1_RUNTIME",
     "fresh_independent_audit_required_before_runtime": false,
     "fresh_independent_audit_timing": "POST_RUNTIME",
     "runtime_authority": "EXACT_HEAD_CLEAN_TRACKED_TREE_CONFIRMATION_AND_CENTRAL_STATIC_RECEIPT",
