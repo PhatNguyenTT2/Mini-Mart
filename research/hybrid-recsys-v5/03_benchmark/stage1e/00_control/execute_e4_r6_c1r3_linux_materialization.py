@@ -38,7 +38,7 @@ CONTRACT_RELATIVE = (
     CONTROL_RELATIVE / "e4_r6_c1r3_linux_materialization_runner_contract.json"
 )
 MINIMAL_CENTRAL_RECEIPT_RELATIVE = CONTROL_RELATIVE / (
-    "rebaseline_v2_e4_r6_c1r3_linux_attempt006_minimal_runner_central_static_validation_receipt.json"
+    "rebaseline_v2_e4_r6_c1r3_linux_attempt007_minimal_runner_central_static_validation_receipt.json"
 )
 PACKET_VALIDATOR_RELATIVE = CONTROL_RELATIVE / "validate_e4_r6_c1r3_linux_packet.py"
 PACKET_AUDIT_RELATIVE = CONTROL_RELATIVE / (
@@ -56,10 +56,10 @@ ACCEPTED_PACKET_AUDIT_SCHEMA = (
     "stage1e-r6-c1r3-linux-revision1-fresh-independent-audit-receipt-1.0"
 )
 MINIMAL_CENTRAL_RECEIPT_SCHEMA = (
-    "stage1e-r6-c1r3-linux-attempt006-minimal-runner-central-static-validation-receipt-1.0"
+    "stage1e-r6-c1r3-linux-attempt007-minimal-runner-central-static-validation-receipt-1.0"
 )
 MINIMAL_CENTRAL_RECEIPT_VERDICT = (
-    "PASS_R6_C1R3_LINUX_ATTEMPT006_MINIMAL_RUNNER_CENTRAL_STATIC_VALIDATION_READY_FOR_M0_M1_RUNTIME"
+    "PASS_R6_C1R3_LINUX_ATTEMPT007_MINIMAL_RUNNER_CENTRAL_STATIC_VALIDATION_READY_FOR_M0_M1_RUNTIME"
 )
 
 DOCKER_EXE = Path(r"C:\Program Files\Docker\Docker\resources\bin\docker.exe")
@@ -84,10 +84,17 @@ IMAGE_REF = (
     "docker.io/library/python@sha256:"
     "2856e6af199e8128161abd320575eb9b341f3b76f017b5d0c9cd364f60d8a050"
 )
+OFFICIAL_IMAGE_REPO_DIGEST_ALIASES = frozenset(
+    {
+        "docker.io/library/python",
+        "library/python",
+        "python",
+    }
+)
 ML100K_SHA256 = "50d2a982c66986937beb9ffb3aa76efe955bf3d5c6b761f4e3a7cd717c6a3229"
 
 SOURCE_ATTEMPT_NAME = "attempt-004-linux"
-ATTEMPT_NAME = "attempt-006-linux"
+ATTEMPT_NAME = "attempt-007-linux"
 
 RUN_ROOT = Path(
     r"E:\UIT\cv\materialized-runs\hybrid-recsys-v5\stage1e\r6\c1r3"
@@ -104,7 +111,7 @@ ENV_ROOT = Path(
 EXTERNAL_FLOOR = Path(r"E:\UIT\cv")
 
 CONFIRMATION_TOKEN = (
-    "USER_CONFIRMED_STAGE1E_MINIMAL_X2_ATTEMPT006_M0_M1_2026_09_01"
+    "USER_CONFIRMED_STAGE1E_MINIMAL_X2_ATTEMPT007_M0_M1_2026_09_01"
 )
 DOCKER_START_ARGV = [str(DOCKER_EXE), "desktop", "start", "--detach"]
 DOCKER_READY_ARGV = [str(DOCKER_EXE), "version", "--format", "{{json .Server}}"]
@@ -310,7 +317,7 @@ def persist_final_result(
         document["error_type"] = "RunnerResultWriteError"
         document["error"] = detail
         document["runner_result_write_error"] = detail
-        document["verdict"] = "HANDOFF_INCOMPLETE_R6_C1R3_LINUX_ATTEMPT006_CLOSED"
+        document["verdict"] = "HANDOFF_INCOMPLETE_R6_C1R3_LINUX_ATTEMPT007_CLOSED"
         return False
 
 
@@ -658,9 +665,9 @@ def validate_minimal_central_receipt(
         or receipt.get("verdict") != MINIMAL_CENTRAL_RECEIPT_VERDICT
         or subject.get("implementation_commit", "").casefold() != implementation
         or subject.get("runner_contract_schema")
-        != "stage1e-r6-c1r3-linux-materialization-runner-contract-1.4"
-        or tests.get("tests_passed") != 25
-        or tests.get("tests_total") != 25
+        != "stage1e-r6-c1r3-linux-materialization-runner-contract-1.5"
+        or tests.get("tests_passed") != 27
+        or tests.get("tests_total") != 27
         or packet.get("checks_passed") != 72
         or packet.get("checks_total") != 72
         or x0.get("verdict") != "PASS_X0_DOCKER_DAEMON_SMOKE"
@@ -781,7 +788,7 @@ def assert_repo_authority(repo_root: Path, expected_head: str) -> dict[str, Any]
         raise RuntimeError("RUNNER_CONTRACT_NOT_OBJECT")
     if (
         contract.get("schema_version")
-        != "stage1e-r6-c1r3-linux-materialization-runner-contract-1.4"
+        != "stage1e-r6-c1r3-linux-materialization-runner-contract-1.5"
         or contract.get("accepted_packet_audit", {}).get("commit")
         != ACCEPTED_PACKET_AUDIT_COMMIT
         or tuple(contract.get("runtime_scope", {}).get("included_command_ids", []))
@@ -1036,6 +1043,20 @@ def receipt(path: Path) -> dict[str, Any]:
     return strict_load(path)
 
 
+def image_repo_digest_matches(value: object) -> bool:
+    """Accept Docker Hub's documented short official-image repo spelling only."""
+    if not isinstance(value, str) or "@" not in value:
+        return False
+    actual_repo, actual_digest = value.rsplit("@", 1)
+    expected_repo, expected_digest = IMAGE_REF.rsplit("@", 1)
+    if expected_repo.casefold() not in OFFICIAL_IMAGE_REPO_DIGEST_ALIASES:
+        return actual_repo.casefold() == expected_repo.casefold() and actual_digest == expected_digest
+    return (
+        actual_repo.casefold() in OFFICIAL_IMAGE_REPO_DIGEST_ALIASES
+        and actual_digest == expected_digest
+    )
+
+
 def write_image_adapter(
     identifier: str, stdout_path: Path, run_root: Path, result: dict[str, Any]
 ) -> None:
@@ -1064,7 +1085,7 @@ def write_image_adapter(
             not isinstance(row.get("Id"), str)
             or not str(row["Id"]).startswith("sha256:")
             or not isinstance(repo_digests, list)
-            or IMAGE_REF not in repo_digests
+            or not any(image_repo_digest_matches(value) for value in repo_digests)
             or row.get("Os") != "linux"
             or row.get("Architecture") != "amd64"
         ):
@@ -1745,7 +1766,7 @@ def main() -> int:
         "verdict": (
             "PASS_R6_C1R3_LINUX_M0_M1_MATERIALIZED_NOT_BENCHMARKED"
             if overall_passed
-            else "HANDOFF_INCOMPLETE_R6_C1R3_LINUX_ATTEMPT006_CLOSED"
+            else "HANDOFF_INCOMPLETE_R6_C1R3_LINUX_ATTEMPT007_CLOSED"
         ),
     }
     if run_root_created:

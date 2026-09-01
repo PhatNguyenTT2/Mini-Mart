@@ -225,3 +225,35 @@ rebases the same source packet from `attempt-004-linux` to the fresh
 `attempt-006-linux` roots; no other command semantics change.
 
 The next executable checkpoint is **X2 — Attempt-006 M0/M1 materialization**.
+
+## 9. Execution update — Attempt-006 closure and Attempt-007 admission
+
+Attempt-006 resolved the Docker Desktop startup/socket-directory failure:
+
+- Docker Desktop started detached and the server became ready on the first
+  readiness poll;
+- the exact official Python image manifest was acquired successfully; and
+- Docker stop, WSL shutdown, and all three closure snapshots passed.
+
+The attempt then stopped at `I01_INSPECT_LOCAL_IMAGE_IDENTITY`. The Docker CLI
+returned a valid image with the official digest, Linux OS, and amd64
+architecture, but represented the RepoDigest as
+`python@sha256:2856e6af...` rather than the fully qualified
+`docker.io/library/python@sha256:2856e6af...` string locked in the packet. The
+runner compared those repository strings literally and therefore rejected a
+semantically identical official image. This was a runner postcondition
+canonicalization defect, not a Docker daemon, dataset, or RecBole defect.
+
+Attempt-006 is closed and immutable: one of 17 packet commands completed, the
+dataset and environment roots were not created, and no bridge, training,
+evaluation, metric, or TEST operation occurred. Its authoritative result is
+`E:\UIT\cv\materialized-runs\hybrid-recsys-v5\stage1e\r6\c1r3\attempt-006-linux\runner_result.json`.
+
+Central made one narrow TDD-backed remediation. The image postcondition now
+requires the exact pinned manifest digest and exact Linux/amd64 identity while
+accepting only Docker Hub's observed official-image repository spellings:
+`docker.io/library/python`, `library/python`, or `python`. Other repositories,
+registries, tags, or digests remain rejected. The packet itself and Attempt-006
+output were not modified.
+
+The next executable checkpoint is **X2 — Attempt-007 M0/M1 materialization**.

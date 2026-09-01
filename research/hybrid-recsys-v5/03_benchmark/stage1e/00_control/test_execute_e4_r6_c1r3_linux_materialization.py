@@ -120,6 +120,61 @@ class OrchestrationTests(unittest.TestCase):
         self.assertNotIn("E00_DOWNLOAD_LINUX_WHEEL_CLOSURE", events)
 
 
+class ImageIdentityTests(unittest.TestCase):
+    def test_docker_cli_short_official_repo_digest_is_accepted(self) -> None:
+        digest = "sha256:2856e6af199e8128161abd320575eb9b341f3b76f017b5d0c9cd364f60d8a050"
+        inspect = [
+            {
+                "Id": digest,
+                "RepoDigests": [f"python@{digest}"],
+                "Os": "linux",
+                "Architecture": "amd64",
+            }
+        ]
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            (root / "receipts").mkdir()
+            stdout = root / "inspect.json"
+            stdout.write_bytes(json.dumps(inspect).encode("utf-8"))
+            runner.write_image_adapter(
+                "I01_INSPECT_LOCAL_IMAGE_IDENTITY",
+                stdout,
+                root,
+                {"argv_sha256": "synthetic"},
+            )
+            receipt = json.loads(
+                (root / "receipts" / "image_identity.json").read_text(encoding="utf-8")
+            )
+            self.assertEqual(receipt["image_ref"], runner.IMAGE_REF)
+            self.assertEqual(receipt["local_image_id"], digest)
+
+    def test_image_identity_rejects_wrong_digest_with_short_repo(self) -> None:
+        inspect = [
+            {
+                "Id": "sha256:wrong",
+                "RepoDigests": [
+                    "python@sha256:wrong",
+                ],
+                "Os": "linux",
+                "Architecture": "amd64",
+            }
+        ]
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            (root / "receipts").mkdir()
+            stdout = root / "inspect.json"
+            stdout.write_bytes(json.dumps(inspect).encode("utf-8"))
+            with self.assertRaisesRegex(
+                RuntimeError, "IMAGE_IDENTITY_POSTCONDITION_FAILED"
+            ):
+                runner.write_image_adapter(
+                    "I01_INSPECT_LOCAL_IMAGE_IDENTITY",
+                    stdout,
+                    root,
+                    {"argv_sha256": "synthetic"},
+                )
+
+
 class EvidenceTests(unittest.TestCase):
     def test_append_jsonl_is_append_only_and_parseable(self) -> None:
         with tempfile.TemporaryDirectory() as raw:
@@ -294,7 +349,7 @@ class FinalResultPublicationTests(unittest.TestCase):
             self.assertFalse(document["passed"])
             self.assertEqual(
                 document["verdict"],
-                "HANDOFF_INCOMPLETE_R6_C1R3_LINUX_ATTEMPT006_CLOSED",
+                "HANDOFF_INCOMPLETE_R6_C1R3_LINUX_ATTEMPT007_CLOSED",
             )
             self.assertEqual(document["error_type"], "RunnerResultWriteError")
             self.assertIn("synthetic publication failure", str(document["error"]))
