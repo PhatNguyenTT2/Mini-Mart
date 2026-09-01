@@ -1,0 +1,220 @@
+{
+  "schema_version": "stage1e-r6-c1r3-linux-attempt006-minimal-runner-central-static-validation-receipt-1.0",
+  "created_at": "2026-09-01T16:19:50.0861715+07:00",
+  "stage_id": "R6-C1R3-LINUX",
+  "receipt_role": "CENTRAL_STATIC_VALIDATION_FOR_ATTEMPT006_M0_M1_RUNTIME",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "validate-minimal-runtime-runner-static",
+    "origin_date": "2026-09-01T16:19:50.0861715+07:00",
+    "verification_status": "UNVERIFIED",
+    "version_label": "stage1e_attempt006_minimal_runner_central_static_validation_v1",
+    "upstream_dependencies": [
+      "stage1e_minimal_execution_rebaseline_v1",
+      "stage1e_e4_r6_c1r3_linux_materialization_runner_v5_attempt006_fresh_runtime_dirs",
+      "attempt005_docker_server_readiness_failure_v1",
+      "attempt005_stale_unix_socket_runtime_directory_remediation_v1",
+      "x0_r1_docker_daemon_smoke_v1",
+      "stage1e_e4_r6_c1r3_linux_packet_v1",
+      "ars_codex_academic_research_suite_0.1.26"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "experiments_declared",
+      "declared_at": "2026-09-01T00:00:00+07:00",
+      "declared_by": "scholar"
+    },
+    "experiment_provenance": []
+  },
+  "central_context": {
+    "requested_model": "gpt-5.6-sol",
+    "requested_reasoning_effort": "max",
+    "requested_speed": "standard",
+    "observed_model_telemetry": "UNOBSERVABLE",
+    "observed_reasoning_telemetry": "UNOBSERVABLE",
+    "observed_speed_telemetry": "UNOBSERVABLE",
+    "fast_or_priority_observed": false,
+    "role": "central_planning_remediation_and_static_validation"
+  },
+  "subject": {
+    "implementation_commit": "74b3559bac321de8b5235df1b8fdf7c687b9aac5",
+    "implementation_parent": "3dc25952659d76a99915ebe8764f12cb36ed879b",
+    "runner_contract_schema": "stage1e-r6-c1r3-linux-materialization-runner-contract-1.4",
+    "runner_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_c1r3_linux_materialization.py",
+    "runner_contract_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_c1r3_linux_materialization_runner_contract.json",
+    "runner_tests_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/test_execute_e4_r6_c1r3_linux_materialization.py",
+    "artifact_sha256": {
+      "runner": "3156821dfa46852c0d10dac40791688ee074418ae12a73284ef979a34b6ce364",
+      "contract": "fa3968330b516a93cdf62febfc13c067e74afecc7232e3bd858b10b9e417a528",
+      "tests": "3db891e3c0b4f0431e54b7110643d05a8b01c271b96c1cf66974fb6ffba660cc"
+    },
+    "exact_commit_delta": [
+      ".gitattributes",
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_c1r3_linux_materialization_runner_contract.json",
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_c1r3_linux_materialization.py",
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/stage1e_minimal_execution_rebaseline_plan.md",
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/test_execute_e4_r6_c1r3_linux_materialization.py"
+    ],
+    "exact_commit_delta_count": 5,
+    "unrelated_user_state_preserved": "research/hybrid-recsys-v5/05_manuscript/"
+  },
+  "attempt005_failure_evidence": {
+    "runtime_task_id": "01a05c2e-b99e-7ab2-b967-d669a5d797d8",
+    "runner_result_path": "E:\\UIT\\cv\\materialized-runs\\hybrid-recsys-v5\\stage1e\\r6\\c1r3\\attempt-005-linux\\runner_result.json",
+    "runner_result_bytes": 2280,
+    "runner_result_sha256": "f6a65d9cbf2bac3a5acba679fce320243736c77043f6249d11818e57f2f75c7f",
+    "error": "DOCKER_SERVER_READINESS_TIMEOUT",
+    "docker_desktop_detached_start_exit_code": 0,
+    "docker_desktop_detached_start_elapsed_seconds": 3.01,
+    "readiness_timeout_seconds": 180,
+    "packet_commands_succeeded": 0,
+    "packet_commands_expected": 17,
+    "dataset_root_created": false,
+    "environment_root_created": false,
+    "training": false,
+    "evaluation": false,
+    "metrics": false,
+    "test_opened": false,
+    "immutable": true
+  },
+  "observed_root_cause": {
+    "surface": "Docker Desktop Windows AF_UNIX runtime endpoint lifecycle",
+    "docker_error": "initializing Inference manager: listening on unix://C:/Users/ACER/AppData/Local/Docker/run/dockerInference: remove endpoint: The file cannot be accessed by the system",
+    "dataset_or_recbole_causal": false,
+    "runner_detached_start_fix_regressed": false,
+    "evidence_interpretation": "Docker Desktop started as a detached process but its backend could not initialize before any packet command because a stale endpoint remained in the reused host runtime directory."
+  },
+  "central_host_remediation": {
+    "scope": "observed Docker host-runtime seam only",
+    "docker_processes_stopped": 5,
+    "wsl_shutdown_issued": true,
+    "recoverable_moves": [
+      {
+        "source": "C:\\Users\\ACER\\AppData\\Local\\Docker\\run",
+        "destination": "C:\\Users\\ACER\\AppData\\Local\\Docker\\run.stale-20260901-attempt005",
+        "destination_exists": true,
+        "destination_entries": 3
+      },
+      {
+        "source": "C:\\Users\\ACER\\AppData\\Local\\docker-secrets-engine",
+        "destination": "C:\\Users\\ACER\\AppData\\Local\\docker-secrets-engine.stale-20260901-attempt005",
+        "destination_exists": true,
+        "destination_entries": 1
+      }
+    ],
+    "fresh_runtime_directories": [
+      {
+        "path": "C:\\Users\\ACER\\AppData\\Local\\Docker\\run",
+        "exists": true,
+        "entries": 0
+      },
+      {
+        "path": "C:\\Users\\ACER\\AppData\\Local\\docker-secrets-engine",
+        "exists": true,
+        "entries": 0
+      }
+    ],
+    "docker_images_deleted": false,
+    "docker_volumes_deleted": false,
+    "docker_settings_reset": false,
+    "backup_directories_retained": true
+  },
+  "attempt006_execution_contract": {
+    "source_attempt": "attempt-004-linux",
+    "target_attempt": "attempt-006-linux",
+    "attempt_rebase_changed_commands": 14,
+    "source_and_executed_argv_hashes_required": true,
+    "docker_start_argv": [
+      "C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe",
+      "desktop",
+      "start",
+      "--detach"
+    ],
+    "readiness_probe": [
+      "C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe",
+      "version",
+      "--format",
+      "{{json .Server}}"
+    ],
+    "readiness_timeout_seconds": 180,
+    "retry_count": 0,
+    "fallback_count": 0,
+    "stop_on_first_failure": true
+  },
+  "static_tests": {
+    "command": "C:\\Program Files\\Python311\\python.exe -B -m unittest test_execute_e4_r6_c1r3_linux_materialization.py",
+    "working_directory": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control",
+    "exit_code": 0,
+    "tests_passed": 25,
+    "tests_total": 25,
+    "regressions": [
+      "Docker Desktop start remains detached",
+      "Attempt-006 argv rebase is exact, count-bound, and hash-bound",
+      "Attempt-005 immutable output cannot be reused"
+    ]
+  },
+  "packet_validator": {
+    "command": "C:\\Program Files\\Python311\\python.exe -B research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_c1r3_linux_packet.py --packet-root research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_bd/E4_R6C1R3_linux_command_packet",
+    "exit_code": 0,
+    "checks_passed": 72,
+    "checks_total": 72,
+    "source_replay_files": 265,
+    "source_replay_bytes": 1541044
+  },
+  "x0_docker_smoke": {
+    "task_id": "01a05bf8-7951-7580-a683-8c8ca31e01b4",
+    "variant": "X0-R1_AFTER_STALE_SOCKET_DIRECTORY_REBASELINE",
+    "verdict": "PASS_X0_DOCKER_DAEMON_SMOKE",
+    "docker_desktop_start_attempts": 1,
+    "server_ready_on_poll": 1,
+    "docker_desktop_stop_attempts": 1,
+    "wsl_shutdown_attempts": 1,
+    "closure_passed": true,
+    "docker_desktop_version": "4.78.0",
+    "docker_engine_version": "29.5.3",
+    "server_platform": "linux/amd64",
+    "backend": "WSL2"
+  },
+  "external_attempt006_roots": {
+    "runner": {
+      "path": "E:\\UIT\\cv\\materialized-runs\\hybrid-recsys-v5\\stage1e\\r6\\c1r3\\attempt-006-linux",
+      "exists": false
+    },
+    "dataset": {
+      "path": "E:\\UIT\\cv\\materialized-data\\hybrid-recsys-v5\\stage1e\\r6\\official_source\\grouplens_ml100k\\attempt-006-linux",
+      "exists": false
+    },
+    "environment": {
+      "path": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-006-linux",
+      "exists": false
+    }
+  },
+  "scope_boundary": {
+    "materialization_executed": false,
+    "bridge_executed": false,
+    "dataset_constructed_or_loaded": false,
+    "training": false,
+    "evaluation": false,
+    "metrics": false,
+    "test_opened": false,
+    "benchmark_admitted": false
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "benchmark_admission_opened": false,
+    "phase_1e_complete": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "standing_user_authorization": {
+    "attempt006_m0_m1_exact_command_may_run_after_this_receipt_is_committed_and_replayed": true,
+    "automatic_retry_or_fallback": false
+  },
+  "verdict": "PASS_R6_C1R3_LINUX_ATTEMPT006_MINIMAL_RUNNER_CENTRAL_STATIC_VALIDATION_READY_FOR_M0_M1_RUNTIME",
+  "next_gate": "X2_ATTEMPT006_ONE_SHOT_M0_M1_RUNTIME_IN_SEPARATE_TASK",
+  "write_set": [
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_c1r3_linux_attempt006_minimal_runner_central_static_validation_receipt.json"
+  ]
+}
