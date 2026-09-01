@@ -349,7 +349,7 @@ class FinalResultPublicationTests(unittest.TestCase):
             self.assertFalse(document["passed"])
             self.assertEqual(
                 document["verdict"],
-                "HANDOFF_INCOMPLETE_R6_C1R3_LINUX_ATTEMPT007_CLOSED",
+                "HANDOFF_INCOMPLETE_R6_C1R3_LINUX_ATTEMPT008_CLOSED",
             )
             self.assertEqual(document["error_type"], "RunnerResultWriteError")
             self.assertIn("synthetic publication failure", str(document["error"]))

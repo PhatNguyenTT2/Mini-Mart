@@ -257,3 +257,24 @@ registries, tags, or digests remain rejected. The packet itself and Attempt-006
 output were not modified.
 
 The next executable checkpoint is **X2 — Attempt-007 M0/M1 materialization**.
+
+## 10. Execution update — Attempt-007 closure and Attempt-008 admission
+
+Attempt-007 passed repository authority preflight but the exact command was
+launched inside the task's workspace-write sandbox. The runner therefore could
+not create
+`E:\UIT\cv\materialized-runs\hybrid-recsys-v5\stage1e\r6\c1r3\attempt-007-linux`
+and stopped immediately with `PermissionError: [WinError 5] Access is denied`.
+Docker was not started, zero of 17 packet commands ran, all three attempt roots
+remained absent, and scientific truth stayed `NOT_RUN/NO/0`.
+
+This failure does not require a runner logic change or pre-created roots. The
+three output trees intentionally live outside the repository workspace so that
+large materialized artifacts do not enter Git. Attempt-008 therefore keeps the
+same create-new-only runner behavior and changes only the execution authority:
+the exact runner command must be launched once with explicit escalated host
+write permission. The task may not substitute a different command, create roots
+manually, retry, or fall back.
+
+The next executable checkpoint is **X2 — Attempt-008 M0/M1 materialization with
+explicit escalated host write authority**.

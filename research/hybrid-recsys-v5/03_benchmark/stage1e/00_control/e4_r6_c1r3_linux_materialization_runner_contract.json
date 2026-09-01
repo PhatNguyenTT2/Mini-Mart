@@ -1,5 +1,5 @@
 {
-  "schema_version": "stage1e-r6-c1r3-linux-materialization-runner-contract-1.5",
+  "schema_version": "stage1e-r6-c1r3-linux-materialization-runner-contract-1.6",
   "created_at": "2026-09-01T00:00:00+07:00",
   "stage_id": "R6-C1R3-LINUX",
   "material_passport": {
@@ -7,7 +7,7 @@
     "origin_mode": "minimal-execution-rebaseline",
     "origin_date": "2026-09-01T00:00:00+07:00",
     "verification_status": "UNVERIFIED",
-    "version_label": "stage1e_e4_r6_c1r3_linux_materialization_runner_v6_attempt007_docker_digest_alias_fix",
+    "version_label": "stage1e_e4_r6_c1r3_linux_materialization_runner_v7_attempt008_escalated_external_root_write",
     "upstream_dependencies": [
       "stage1e_e4_r6_c1r3_linux_revision1_fresh_independent_audit_v1",
       "stage1e_e4_r6_c1r3_linux_runner_fresh_independent_audit_failure_v1",
@@ -18,6 +18,7 @@
       "attempt005_stale_unix_socket_runtime_directory_remediation_v1",
       "attempt006_image_identity_postcondition_failure_v1",
       "docker_cli_official_image_repo_digest_alias_observation_v1",
+      "attempt007_external_root_permission_failure_v1",
       "stage1e_e4_r6_c1r3_linux_packet_v1",
       "ars_codex_academic_research_suite_0.1.26"
     ],
@@ -84,7 +85,7 @@
     "source_packet_argv_validated_before_rebase": true,
     "attempt_rebase": {
       "source_attempt": "attempt-004-linux",
-      "target_attempt": "attempt-007-linux",
+      "target_attempt": "attempt-008-linux",
       "allowed_transform": "replace source attempt identifier with target attempt identifier inside argv string tokens only",
       "changed_command_count": 14,
       "source_and_executed_argv_sha256_recorded": true,
@@ -113,10 +114,17 @@
     "partial_result_paths_authoritative": false,
     "result_write_failure_must_emit_fail_closed": true
   },
+  "runtime_execution_privilege": {
+    "reason": "The three immutable attempt roots are outside the repository workspace write sandbox.",
+    "exact_runner_command_requires_escalated_host_write": true,
+    "precreate_attempt_roots": false,
+    "runner_retains_create_new_only_authority": true,
+    "permission_failure_retry_in_same_attempt": false
+  },
   "external_roots": {
-    "runner_attempt_root": "E:\\UIT\\cv\\materialized-runs\\hybrid-recsys-v5\\stage1e\\r6\\c1r3\\attempt-007-linux",
-    "dataset_attempt_root": "E:\\UIT\\cv\\materialized-data\\hybrid-recsys-v5\\stage1e\\r6\\official_source\\grouplens_ml100k\\attempt-007-linux",
-    "environment_attempt_root": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-007-linux",
+    "runner_attempt_root": "E:\\UIT\\cv\\materialized-runs\\hybrid-recsys-v5\\stage1e\\r6\\c1r3\\attempt-008-linux",
+    "dataset_attempt_root": "E:\\UIT\\cv\\materialized-data\\hybrid-recsys-v5\\stage1e\\r6\\official_source\\grouplens_ml100k\\attempt-008-linux",
+    "environment_attempt_root": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-008-linux",
     "create_new_only": true,
     "reuse_or_cleanup": false
   },
@@ -219,7 +227,7 @@
     "--expected-head",
     "<CENTRAL_STATIC_RECEIPT_HEAD>",
     "--execution-confirmation",
-    "USER_CONFIRMED_STAGE1E_MINIMAL_X2_ATTEMPT007_M0_M1_2026_09_01"
+    "USER_CONFIRMED_STAGE1E_MINIMAL_X2_ATTEMPT008_M0_M1_2026_09_01"
   ],
   "model_policy": {
     "central_planning_and_remediation": "gpt-5.6-sol/max/standard",
@@ -228,9 +236,9 @@
     "fast_or_priority_forbidden": true
   },
   "validation_and_handoff": {
-    "central_static_receipt": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_c1r3_linux_attempt007_minimal_runner_central_static_validation_receipt.json",
-    "central_receipt_schema": "stage1e-r6-c1r3-linux-attempt007-minimal-runner-central-static-validation-receipt-1.0",
-    "central_receipt_verdict": "PASS_R6_C1R3_LINUX_ATTEMPT007_MINIMAL_RUNNER_CENTRAL_STATIC_VALIDATION_READY_FOR_M0_M1_RUNTIME",
+    "central_static_receipt": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_c1r3_linux_attempt008_minimal_runner_central_static_validation_receipt.json",
+    "central_receipt_schema": "stage1e-r6-c1r3-linux-attempt008-minimal-runner-central-static-validation-receipt-1.0",
+    "central_receipt_verdict": "PASS_R6_C1R3_LINUX_ATTEMPT008_MINIMAL_RUNNER_CENTRAL_STATIC_VALIDATION_READY_FOR_M0_M1_RUNTIME",
     "fresh_independent_audit_required_before_runtime": false,
     "fresh_independent_audit_timing": "POST_RUNTIME",
     "runtime_authority": "EXACT_HEAD_CLEAN_TRACKED_TREE_CONFIRMATION_AND_CENTRAL_STATIC_RECEIPT",
