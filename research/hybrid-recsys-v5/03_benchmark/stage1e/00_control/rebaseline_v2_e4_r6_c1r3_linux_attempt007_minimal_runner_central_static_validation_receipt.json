@@ -1,0 +1,202 @@
+{
+  "schema_version": "stage1e-r6-c1r3-linux-attempt007-minimal-runner-central-static-validation-receipt-1.0",
+  "created_at": "2026-09-01T17:10:20.6202205+07:00",
+  "stage_id": "R6-C1R3-LINUX",
+  "receipt_role": "CENTRAL_STATIC_VALIDATION_FOR_ATTEMPT007_M0_M1_RUNTIME",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "central-remediation-and-validate-minimal-runtime-runner-static",
+    "origin_date": "2026-09-01T17:10:20.6202205+07:00",
+    "verification_status": "UNVERIFIED",
+    "version_label": "stage1e_attempt007_minimal_runner_central_static_validation_v1",
+    "upstream_dependencies": [
+      "stage1e_minimal_execution_rebaseline_v1",
+      "stage1e_e4_r6_c1r3_linux_materialization_runner_v6_attempt007_docker_digest_alias_fix",
+      "attempt006_image_identity_postcondition_failure_v1",
+      "docker_cli_official_image_repo_digest_alias_observation_v1",
+      "attempt005_stale_unix_socket_runtime_directory_remediation_v1",
+      "x0_r1_docker_daemon_smoke_v1",
+      "stage1e_e4_r6_c1r3_linux_packet_v1",
+      "ars_codex_academic_research_suite_0.1.26"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "experiments_declared",
+      "declared_at": "2026-09-01T00:00:00+07:00",
+      "declared_by": "scholar"
+    },
+    "experiment_provenance": []
+  },
+  "central_context": {
+    "requested_model": "gpt-5.6-sol",
+    "requested_reasoning_effort": "max",
+    "requested_speed": "standard",
+    "observed_model_telemetry": "UNOBSERVABLE",
+    "observed_reasoning_telemetry": "UNOBSERVABLE",
+    "observed_speed_telemetry": "UNOBSERVABLE",
+    "fast_or_priority_observed": false,
+    "role": "central_planning_remediation_and_static_validation"
+  },
+  "subject": {
+    "implementation_commit": "8d53cc048147bf57344c6016f3e43334c366d0cd",
+    "implementation_parent": "22e1c21f8e8b1ca54373c1932f8f00586fee09e1",
+    "runner_contract_schema": "stage1e-r6-c1r3-linux-materialization-runner-contract-1.5",
+    "runner_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_c1r3_linux_materialization.py",
+    "runner_contract_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_c1r3_linux_materialization_runner_contract.json",
+    "runner_tests_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/test_execute_e4_r6_c1r3_linux_materialization.py",
+    "artifact_sha256": {
+      "runner": "870f893dc81e7e40601e6fa8ea9ccd7ee7b810d49a203e068c5588590d523d8a",
+      "contract": "56f11fa9fb1a131cc4b21758b6a7db393e5b9877d1f0e1d777045bc7d1913b56",
+      "tests": "05517f6903dc918a590fe4caf003578f8eb73bb30c2344154fc70dc02673abae"
+    },
+    "exact_commit_delta": [
+      ".gitattributes",
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_c1r3_linux_materialization_runner_contract.json",
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_e4_r6_c1r3_linux_materialization.py",
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/stage1e_minimal_execution_rebaseline_plan.md",
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/test_execute_e4_r6_c1r3_linux_materialization.py"
+    ],
+    "exact_commit_delta_count": 5,
+    "unrelated_user_state_preserved": "research/hybrid-recsys-v5/05_manuscript/"
+  },
+  "attempt006_failure_evidence": {
+    "runtime_task_id": "01a05c47-ebf4-7400-8ec2-a2815351ea71",
+    "runner_result_path": "E:\\UIT\\cv\\materialized-runs\\hybrid-recsys-v5\\stage1e\\r6\\c1r3\\attempt-006-linux\\runner_result.json",
+    "runner_result_bytes": 5008,
+    "runner_result_sha256": "b27b9b89fe95cff9bb2525664a7a38193375e37ee1036af5587b1665af8da632",
+    "preflight_sha256": "707bbc760dfee730579bdcb51cb60d1d00e74e869693db68ef43c6afd6b72ff5",
+    "command_journal_bytes": 16704,
+    "command_journal_sha256": "6fce4246b524d194f792765f986928862b68677b439c8bfab8f6a817efa6d71d",
+    "error": "PACKET_COMMAND_FAILED:I01_INSPECT_LOCAL_IMAGE_IDENTITY",
+    "docker_server_ready": true,
+    "docker_server_ready_probe_count": 1,
+    "image_manifest_acquisition_exit_code": 0,
+    "image_identity_process_exit_code": 0,
+    "image_identity_postcondition": "IMAGE_IDENTITY_POSTCONDITION_FAILED",
+    "image_identity_stdout_bytes": 2304,
+    "image_identity_stdout_sha256": "22d7ae8628acb540211441c4395a09a28c4a8aa35e2d0b347820aaec2266ee6b",
+    "image_identity_stderr_bytes": 0,
+    "image_identity_stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "observed_repo_digest": "python@sha256:2856e6af199e8128161abd320575eb9b341f3b76f017b5d0c9cd364f60d8a050",
+    "expected_pinned_image_ref": "docker.io/library/python@sha256:2856e6af199e8128161abd320575eb9b341f3b76f017b5d0c9cd364f60d8a050",
+    "packet_commands_succeeded": 1,
+    "packet_commands_expected": 17,
+    "dataset_root_created": false,
+    "environment_root_created": false,
+    "training": false,
+    "evaluation": false,
+    "metrics": false,
+    "test_opened": false,
+    "cleanup_passed": true,
+    "closure_snapshots_passed": "3/3",
+    "immutable": true
+  },
+  "observed_root_cause": {
+    "surface": "runner image identity postcondition canonicalization",
+    "docker_runtime_causal": false,
+    "dataset_or_recbole_causal": false,
+    "root_cause": "Docker CLI returned the exact pinned digest with the short official repository spelling python@sha256:..., while the runner required the fully qualified Docker Hub spelling literally.",
+    "corrective_rule": "Require exact platform manifest digest, Linux OS, and amd64 architecture; accept only the three Docker Hub official repository spellings documented in the contract.",
+    "other_registries_or_repositories": "rejected"
+  },
+  "attempt007_execution_contract": {
+    "source_attempt": "attempt-004-linux",
+    "target_attempt": "attempt-007-linux",
+    "attempt_rebase_changed_commands": 14,
+    "source_and_executed_argv_hashes_required": true,
+    "docker_start_argv": [
+      "C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe",
+      "desktop",
+      "start",
+      "--detach"
+    ],
+    "readiness_probe": [
+      "C:\\Program Files\\Docker\\Docker\\resources\\bin\\docker.exe",
+      "version",
+      "--format",
+      "{{json .Server}}"
+    ],
+    "readiness_timeout_seconds": 180,
+    "retry_count": 0,
+    "fallback_count": 0,
+    "stop_on_first_failure": true
+  },
+  "static_tests": {
+    "command": "C:\\Program Files\\Python311\\python.exe -B -m unittest test_execute_e4_r6_c1r3_linux_materialization.py",
+    "working_directory": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control",
+    "exit_code": 0,
+    "tests_passed": 27,
+    "tests_total": 27,
+    "regressions": [
+      "Docker CLI short official RepoDigest alias is accepted only with the exact pinned digest",
+      "Wrong digest remains rejected",
+      "Docker Desktop start remains detached",
+      "Attempt-007 argv rebase is exact, count-bound, and hash-bound",
+      "Attempt-006 immutable output cannot be reused"
+    ]
+  },
+  "packet_validator": {
+    "command": "C:\\Program Files\\Python311\\python.exe -B research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/validate_e4_r6_c1r3_linux_packet.py --packet-root research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_bd/E4_R6C1R3_linux_command_packet",
+    "exit_code": 0,
+    "checks_passed": 72,
+    "checks_total": 72,
+    "source_replay_files": 265,
+    "source_replay_bytes": 1541044
+  },
+  "x0_docker_smoke": {
+    "task_id": "01a05bf8-7951-7580-a683-8c8ca31e01b4",
+    "variant": "X0-R1_AFTER_STALE_SOCKET_DIRECTORY_REBASELINE",
+    "verdict": "PASS_X0_DOCKER_DAEMON_SMOKE",
+    "docker_desktop_start_attempts": 1,
+    "server_ready_on_poll": 1,
+    "docker_desktop_stop_attempts": 1,
+    "wsl_shutdown_attempts": 1,
+    "closure_passed": true,
+    "docker_desktop_version": "4.78.0",
+    "docker_engine_version": "29.5.3",
+    "server_platform": "linux/amd64",
+    "backend": "WSL2"
+  },
+  "external_attempt007_roots": {
+    "runner": {
+      "path": "E:\\UIT\\cv\\materialized-runs\\hybrid-recsys-v5\\stage1e\\r6\\c1r3\\attempt-007-linux",
+      "exists": false
+    },
+    "dataset": {
+      "path": "E:\\UIT\\cv\\materialized-data\\hybrid-recsys-v5\\stage1e\\r6\\official_source\\grouplens_ml100k\\attempt-007-linux",
+      "exists": false
+    },
+    "environment": {
+      "path": "E:\\UIT\\cv\\materialized-environments\\hybrid-recsys-v5\\stage1e\\r6\\recbole_bpr_ml100k_py3119_cpu\\attempt-007-linux",
+      "exists": false
+    }
+  },
+  "scope_boundary": {
+    "materialization_executed": false,
+    "bridge_executed": false,
+    "dataset_constructed_or_loaded": false,
+    "training": false,
+    "evaluation": false,
+    "metrics": false,
+    "test_opened": false,
+    "benchmark_admitted": false
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "benchmark_admission_opened": false,
+    "phase_1e_complete": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "standing_user_authorization": {
+    "attempt007_m0_m1_exact_command_may_run_after_this_receipt_is_committed_and_replayed": true,
+    "automatic_retry_or_fallback": false
+  },
+  "verdict": "PASS_R6_C1R3_LINUX_ATTEMPT007_MINIMAL_RUNNER_CENTRAL_STATIC_VALIDATION_READY_FOR_M0_M1_RUNTIME",
+  "next_gate": "X2_ATTEMPT007_ONE_SHOT_M0_M1_RUNTIME_IN_SEPARATE_TASK",
+  "write_set": [
+    "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_c1r3_linux_attempt007_minimal_runner_central_static_validation_receipt.json"
+  ]
+}
