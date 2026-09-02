@@ -1,0 +1,195 @@
+{
+  "actual_model_metadata": {
+    "model": null,
+    "reasoning": null,
+    "speed": null,
+    "status": "NOT_OBSERVABLE_FROM_WORKSPACE_DO_NOT_INFER"
+  },
+  "artifact_inventory": {
+    "control_artifacts": [
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebuild_ai_service/ais_r2_catalog_rights_language_audit.md",
+        "sha256": "f7604f0c5773fa3f37b951b1e4c282575c28c68124e69f7517ced6d04fc0a0db"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebuild_ai_service/ais_r2_generator_tree_amendment.json",
+        "sha256": "b33f1271a81d19090bc55dda3f23d2017ccf7db14e554fcf21c0a27ab83bc0af"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebuild_ai_service/ais_r2_source_export_admission.json",
+        "sha256": "57e154cc613b23a7689fa07d4acf1b05ed748519d02a3b1ea5206ecef67e61d0"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebuild_ai_service/ais_r2_source_export_contract_v1_1.md",
+        "sha256": "bc29a2502b3fc64e9f364b3ba36d33e855a4ac491ceec7e7e172eff76395c3c2"
+      }
+    ],
+    "implementation": {
+      "definition": "SHA-256 of UTF-8 sorted lines, each containing committed-file SHA-256, two spaces, repository-relative path, and one LF; the concatenation ends with one LF",
+      "file_count": 64,
+      "path": "ai-service-v2/",
+      "sha256": "fac00c93114599b15d6fdb790395ce0672b29a0a801dd1c6d616d1ca5c5c3745"
+    },
+    "source_exporter": {
+      "path": "ai-service-v2/tools/export_v5_source_bundle.cjs",
+      "sha256": "0d4e106b55e72356d78344ea2e4573a944f18ef084ab662d5d64a8073bca7c54"
+    },
+    "source_exporter_tests": {
+      "path": "ai-service-v2/tools/tests/export_v5_source_bundle.test.cjs",
+      "sha256": "508e67bc2a0c4fe721233e0265793a2175e21a3c80ce033a8153fa68411bafad"
+    }
+  },
+  "catalog_evidence": {
+    "license_inference": "No affirmative open-data or catalog-redistribution license was found in the retrieved official pages. This is not proof that permission cannot be obtained.",
+    "license_status": "PENDING_AFFIRMATIVE_PERMISSION_OR_REPLACEMENT",
+    "local_seed_evidence_sha256": "7b9361f47fbc552cab3997672cabe7883b3c058f7e811d2e6e14b98062207c79",
+    "official_pages_checked": [
+      "https://www.bachhoaxanh.com/chinh-sach-sieu-thi",
+      "https://www.bachhoaxanh.com/privacy-policy-app.html",
+      "https://www.bachhoaxanh.com/gioi-thieu"
+    ],
+    "overall_verdict": "INCOMPLETE_CATALOG_AUDIT",
+    "provenance_status": "PARTIAL_LOCAL_EVIDENCE",
+    "real_catalog_audit_receipt_created": false,
+    "real_language_status": "PENDING_REAL_SNAPSHOT_AUDIT"
+  },
+  "generator_lineage": {
+    "corrected_file_count": 9,
+    "corrected_tree_sha256": "c3c4ba019308ed4d4984220ff3088aa2893e70cb78b56f8e9cf0c19c67befe00",
+    "export_query_contract_sha256": "fe8acb87f925dae04bfc5b9872338cdd9ea165f88275ee8665692badf08d9e1f",
+    "finding": "The original eight-file candidate omitted benchmark-spec.js, which defines the canonical spec hashing used by run lineage.",
+    "superseded_tree_sha256": "a15ad1beb8b728035e5cd333bf23c247c9c8b396519acd24ea7fcace01322587"
+  },
+  "handoff_verdict": "STATIC_COMPLETE_RUNTIME_HANDOFF_INCOMPLETE",
+  "implemented_scope": [
+    "bounded exporter over chatbot, catalog, and order databases only",
+    "repeatable-read read-only transactions and mutation-free query contract",
+    "auth database and customer-profile field exclusion",
+    "strict catalog-audit/1.1 access gate before database connection",
+    "byte-level Git commit binding for all nine generator inputs",
+    "ready-run identity, source count, split, ordering, origin, and reference checks",
+    "atomic six-file Source Bundle v1.1 output",
+    "catalog audit and evidence hashes propagated into DatasetManifest lineage",
+    "exact catalog status admission rather than permissive status prefixes",
+    "dataset-suitability enforcement before CLI training with an explicit fixture-only exception",
+    "post-export language-audit ordering without authorizing training on pending data"
+  ],
+  "material_passport": {
+    "experiment_intake_declaration": {
+      "declared_at": "2026-09-01T16:38:56Z",
+      "declared_by": "scholar",
+      "status": "experiments_declared"
+    },
+    "origin_date": "2026-09-02T13:07:08Z",
+    "origin_mode": "evidence",
+    "origin_skill": "academic-research-suite/experiment-agent",
+    "repro_lock": "git:9165e034876a9ba945b0189b566b7bce2e5a943c;ai-service-v2-tree:fac00c93114599b15d6fdb790395ce0672b29a0a801dd1c6d616d1ca5c5c3745;generator-tree:c3c4ba019308ed4d4984220ff3088aa2893e70cb78b56f8e9cf0c19c67befe00;query-contract:fe8acb87f925dae04bfc5b9872338cdd9ea165f88275ee8665692badf08d9e1f",
+    "upstream_dependencies": [
+      "ais-r2-handoff-v1.0.0",
+      "ais-r2-source-export-contract-v1.1.0",
+      "ais-r2-generator-tree-amendment-v1.0.0",
+      "ais-r2-source-export-admission-v1.0.0",
+      "ais-r2-catalog-rights-language-audit-v1.0.0"
+    ],
+    "verification_status": "UNVERIFIED",
+    "version_label": "ais-r2-source-export-handoff-v1.0.0"
+  },
+  "metadata_limitations": [
+    "The benchmark-run catalog checksum binds product ID, category ID, and product name, but not vendor, price, or category display name.",
+    "Vendor, price, and category display name are export-time metadata unless stronger historical evidence is produced.",
+    "The three service databases do not share one transaction snapshot; immutable run identity, ready publication state, counts, and hashes are the cross-service gate.",
+    "The controlled/generated event stream must not be described as observed customer behavior."
+  ],
+  "next_gate": {
+    "actions": [
+      "Choose and document one catalog path: written permission, institution-approved private research use, or a versioned openly licensed/synthetic replacement.",
+      "Create a canonical catalog-audit/1.1 access receipt for the exact export fields.",
+      "In a separate runtime context, perform read-only TLS/database/run preflight and display the exact command before a fresh export attempt.",
+      "If language is pending, audit the immutable item projection and keep dataset suitability plus training blocked until the audit is bound.",
+      "Materialize a fresh canonical snapshot, replay all hashes, and run assess-snapshot.",
+      "Submit the resulting source, snapshot, and suitability receipts to an independent AIS-R2 audit before AIS-R3."
+    ],
+    "benchmark_training_or_test_authorized": false,
+    "database_reset_or_generator_rerun_authorized": false,
+    "runtime_source_export_authorized": false,
+    "stage": "AIS-R2-CATALOG-ACCESS-AND-RUNTIME-SOURCE-EXPORT"
+  },
+  "protected_state": {
+    "benchmark_or_test_invoked": false,
+    "database_or_generator_invoked": false,
+    "docker_or_wsl_invoked": false,
+    "historical_ai_service_modified": false,
+    "manuscript_dirty_state_modified": false,
+    "pipeline_state_stage1e_modified": false
+  },
+  "quality_gates": [
+    {
+      "command": "PYTHONPATH=src ../ai-service/.venv/Scripts/python.exe -B -m pytest tests -q",
+      "detail": "58 passed",
+      "gate": "PYTHON_TESTS",
+      "result": "PASS"
+    },
+    {
+      "command": "node --test ai-service-v2/tools/tests/export_v5_source_bundle.test.cjs",
+      "detail": "5 passed",
+      "gate": "NODE_EXPORTER_TESTS",
+      "result": "PASS"
+    },
+    {
+      "detail": "All checks passed; 46 files formatted; mypy reported no issues in 46 source files.",
+      "gate": "RUFF_AND_MYPY",
+      "result": "PASS"
+    },
+    {
+      "detail": "Generator tree and query contract were independently recalculated from current source bytes.",
+      "gate": "HASH_REPLAY",
+      "result": "PASS"
+    },
+    {
+      "detail": "Commit 9165e034876a9ba945b0189b566b7bce2e5a943c was archived to a new temporary root; Python tests, Node tests, Ruff, formatting, and mypy all passed before verified cleanup.",
+      "gate": "CLEAN_COMMIT_ARCHIVE_REPLAY",
+      "result": "PASS"
+    }
+  ],
+  "repository_lineage": {
+    "branch": "codex/ais-r2-source-export",
+    "handoff_commit": null,
+    "implementation_commit": "9165e034876a9ba945b0189b566b7bce2e5a943c",
+    "parent_commit": "0fb62392ca26158e62b47dcb96e683e00ace20c4"
+  },
+  "schema_version": "ais-r2-source-export-handoff/1.0",
+  "scientific_state": {
+    "ACCEPTED_RESULT_ROWS": 0,
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "canonical_v5_dataset_admitted": false,
+    "execution_authorized": false,
+    "fixture_results_are_paper_evidence": false,
+    "official_public_dataset_reproduction_passed": false,
+    "phase_1e_complete": false,
+    "real_source_bundle_created": false
+  },
+  "stage_status": [
+    {
+      "stage": "AIS-R0",
+      "status": "COMPLETE_DESIGN_FROZEN"
+    },
+    {
+      "stage": "AIS-R1",
+      "status": "STATIC_PASS"
+    },
+    {
+      "stage": "AIS-R2-SOURCE-EXPORT-IMPLEMENTATION",
+      "status": "STATIC_COMPLETE"
+    },
+    {
+      "stage": "AIS-R2-REAL-DATASET-ADMISSION",
+      "status": "INCOMPLETE_BLOCKED"
+    },
+    {
+      "stage": "AIS-R3_TO_R8",
+      "status": "NOT_ADMITTED_BY_UPSTREAM_GATE"
+    }
+  ],
+  "status": "AIS_R2_SOURCE_EXPORT_STATIC_COMPLETE_REAL_DATASET_BLOCKED"
+}
