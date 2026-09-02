@@ -1,0 +1,107 @@
+{
+  "actual_model_metadata": {
+    "model": null,
+    "reasoning": null,
+    "speed": null,
+    "status": "NOT_OBSERVABLE_FROM_WORKSPACE_DO_NOT_INFER"
+  },
+  "admission_criteria": {
+    "ambiguous_groups_resolve_exactly_once": true,
+    "behavior_files_must_equal_parent_by_hash": true,
+    "cold_products": 250,
+    "family_anchors": 77,
+    "products": 5200,
+    "source_items_sha256": "e47585dc226fb5e5421fb3463fc145b209efd85175d0d3775399473a7cd66249",
+    "test_access_forbidden": true,
+    "unknown_group_policy": "FAIL_CLOSED"
+  },
+  "artifact_contract": {
+    "exact_files": [
+      "catalog_family_view.jsonl",
+      "catalog_family_view_manifest.json"
+    ],
+    "output_root": "E:\\UIT\\cv\\materialized-experiments\\hybrid-recsys-v5\\ai-service-v2\\ais-r2b-v5.1-family-view\\attempt-001",
+    "overwrite_allowed": false,
+    "raw_name_in_model_view": false,
+    "raw_price_in_model_view": false
+  },
+  "authoritative_inputs": {
+    "catalog_seed_path": "backend/docs/chatbot/catalog-bootstrap/seed-5000.sql",
+    "catalog_seed_sha256": "5821305a6001db6ae2e44156c94b541432b1856279d3e658b0a959e638edb2c0",
+    "dataset_amendment_path": "backend/docs/chatbot/seed-product/benchmark-spec-v5.1.json",
+    "dataset_amendment_sha256": "b4f2ceedc012a92c08575b849cd525ea51434dacb56eab38d67f96f42991563d",
+    "family_view_builder_path": "backend/docs/chatbot/seed-product/catalog-family-view-v5.1.js",
+    "family_view_builder_sha256": "f181862c1caa8afb0eb9d723e71cbe4df5704a20b129447a20a4fd91f6ab7e9b",
+    "parent_dataset_manifest_sha256": "1fea8ecfdbca3a21fb1f7489f498a535f386fe07764e34f00bcc383a02625e0d",
+    "parent_dataset_sha256": "ce92d7b057585cf6b64962780d6032333dfed68618a5b21e455b4c9684d3533d",
+    "parent_source_items_path": "E:\\UIT\\cv\\materialized-experiments\\hybrid-recsys-v5\\ai-service-v2\\ais-r2-source-export\\attempt-002-audited\\items.jsonl",
+    "parent_source_items_sha256": "e47585dc226fb5e5421fb3463fc145b209efd85175d0d3775399473a7cd66249"
+  },
+  "behavior_binding": {
+    "events": 823371,
+    "orders": 15000,
+    "policy": "REUSE_PARENT_V5_EXACT_BYTES_BY_HASH",
+    "split_counts": {
+      "test": 82337,
+      "train": 658697,
+      "val": 82337
+    },
+    "users": 5000
+  },
+  "dataset_decision": {
+    "authoritative_catalog_size": 5200,
+    "dataset_version": "v5.1",
+    "historical_1380_sku_seed_used": false,
+    "kind": "VERSIONED_PARENT_FEATURE_VIEW",
+    "raw_sku_ids_preserved": true
+  },
+  "material_passport": {
+    "experiment_intake_declaration": {
+      "declared_at": "2026-09-01T16:38:56Z",
+      "declared_by": "scholar",
+      "status": "experiments_declared"
+    },
+    "origin_date": "2026-09-02T17:11:47.628Z",
+    "origin_mode": "plan-freeze",
+    "origin_skill": "academic-research-suite/experiment-agent",
+    "repro_lock": "parent-dataset:ce92d7b057585cf6b64962780d6032333dfed68618a5b21e455b4c9684d3533d;parent-items:e47585dc226fb5e5421fb3463fc145b209efd85175d0d3775399473a7cd66249;v5.1-policy:39bb46ee5498ac74740ca71270042a2e357d5b8b2a5ac42952b243f83a57d360",
+    "upstream_dependencies": [
+      "ais-r2-runtime-materialization-suitability-receipt-v1.0.0",
+      "ais-r2-handoff-v2.0.0"
+    ],
+    "verification_status": "VERIFIED_STATIC_AND_PARENT_REPLAY",
+    "version_label": "ais-r2b-v5.1-dataset-contract-v1.0.0"
+  },
+  "model_feature_policy": {
+    "category": "PARENT_V5_CATEGORY",
+    "family_id": "AUDIT_ONLY_NOT_A_MODEL_FEATURE",
+    "price": "FAMILY_ANCHOR_PRICE_AND_GLOBAL_FAMILY_QUARTILE",
+    "text": "FAMILY_ANCHOR_NAME_PLUS_CATEGORY",
+    "vendor": "MAPPING_ONLY_NOT_A_SEPARATE_MODEL_FEATURE"
+  },
+  "schema_version": "ais-r2b-v5.1-dataset-contract/1.0",
+  "scientific_scope": {
+    "cold_item_scope": "DIAGNOSTIC_NOT_PRIMARY",
+    "external_validity_claim_authorized": false,
+    "observed_behavior": false,
+    "primary_scope": "INTERNAL_WARM_ITEM_CONTROLLED_COMPARISON",
+    "production_realism_claim_authorized": false
+  },
+  "scientific_state": {
+    "ACCEPTED_RESULT_ROWS": 0,
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "execution_authorized": false,
+    "feature_view_materialization_authorized": true,
+    "official_public_dataset_reproduction_passed": false,
+    "phase_1e_complete": false
+  },
+  "static_verification": {
+    "authoritative_seed_items_mapped": 5200,
+    "authoritative_seed_items_total": 5200,
+    "focused_tests": "4/4 PASS",
+    "parent_replay_catalog_family_view_sha256": "2311d4baafeee7fa1ca1075e2ceae451e05957942113db151377de50acdfb3a2",
+    "parent_replay_status": "PASS_VERIFY_ONLY",
+    "policy_sha256": "39bb46ee5498ac74740ca71270042a2e357d5b8b2a5ac42952b243f83a57d360"
+  }
+}

@@ -1,0 +1,139 @@
+{
+  "schema_version": "benchmark-dataset-amendment/1.0",
+  "dataset_version": "v5.1",
+  "generator_version": "5.1.0",
+  "parent_generator_version": "5.0.0",
+  "seed": 42,
+  "num_users": 5000,
+  "num_products": 5200,
+  "num_product_families": 77,
+  "num_cold_products": 250,
+  "num_events": 823371,
+  "num_orders": 15000,
+  "split_counts": {
+    "train": 658697,
+    "val": 82337,
+    "test": 82337
+  },
+  "catalog_seed_path": "backend/docs/chatbot/catalog-bootstrap/seed-5000.sql",
+  "catalog_seed_sha256": "5821305a6001db6ae2e44156c94b541432b1856279d3e658b0a959e638edb2c0",
+  "parent_source_items_sha256": "e47585dc226fb5e5421fb3463fc145b209efd85175d0d3775399473a7cd66249",
+  "parent_dataset_sha256": "ce92d7b057585cf6b64962780d6032333dfed68618a5b21e455b4c9684d3533d",
+  "parent_dataset_manifest_sha256": "1fea8ecfdbca3a21fb1f7489f498a535f386fe07764e34f00bcc383a02625e0d",
+  "behavior_artifact_policy": "REUSE_PARENT_V5_EXACT_BYTES_BY_HASH",
+  "family_anchor_ranges": [
+    {
+      "start": 1001,
+      "end": 1023
+    },
+    {
+      "start": 2001,
+      "end": 2054
+    }
+  ],
+  "ambiguous_family_groups": [
+    {
+      "category": "Cá, hải sản",
+      "vendor": "BHX Fresh",
+      "rules": [
+        {
+          "family_id": 2007,
+          "required_phrase": "Cá basa"
+        },
+        {
+          "family_id": 2008,
+          "required_phrase": "Tôm thẻ"
+        }
+      ]
+    },
+    {
+      "category": "Củ, quả",
+      "vendor": "BHX Farm",
+      "rules": [
+        {
+          "family_id": 2015,
+          "required_phrase": "Khoai tây"
+        },
+        {
+          "family_id": 2016,
+          "required_phrase": "Cà rốt"
+        }
+      ]
+    },
+    {
+      "category": "Nấm các loại",
+      "vendor": "Biovegi",
+      "rules": [
+        {
+          "family_id": 2017,
+          "required_phrase": "Nấm kim châm"
+        },
+        {
+          "family_id": 2018,
+          "required_phrase": "Nấm đùi gà"
+        }
+      ]
+    },
+    {
+      "category": "Nước mắm",
+      "vendor": "Masan",
+      "rules": [
+        {
+          "family_id": 2021,
+          "required_phrase": "Nam Ngư"
+        },
+        {
+          "family_id": 2022,
+          "required_phrase": "Chin-su"
+        }
+      ]
+    },
+    {
+      "category": "Rau lá",
+      "vendor": "BHX Farm",
+      "rules": [
+        {
+          "family_id": 2013,
+          "required_phrase": "Rau muống"
+        },
+        {
+          "family_id": 2014,
+          "required_phrase": "Cải thìa"
+        }
+      ]
+    },
+    {
+      "category": "Thịt gà, vịt",
+      "vendor": "C.P",
+      "rules": [
+        {
+          "family_id": 1021,
+          "required_phrase": "Ức gà"
+        },
+        {
+          "family_id": 2005,
+          "required_phrase": "Đùi gà"
+        }
+      ]
+    }
+  ],
+  "model_feature_policy": {
+    "text_source": "FAMILY_ANCHOR_NAME_PLUS_CATEGORY",
+    "category_source": "PARENT_V5_CATEGORY",
+    "price_source": "FAMILY_ANCHOR_PRICE_AND_GLOBAL_FAMILY_QUARTILE",
+    "raw_name_usage": "LINEAGE_ONLY_EXCLUDED_FROM_MODEL",
+    "raw_price_usage": "LINEAGE_ONLY_EXCLUDED_FROM_MODEL",
+    "vendor_usage": "FAMILY_MAPPING_ONLY_NOT_A_SEPARATE_MODEL_FEATURE",
+    "family_id_usage": "AUDIT_ONLY_NOT_A_MODEL_FEATURE",
+    "sku_identity": "PARENT_V5_RAW_ITEM_ID_PRESERVED"
+  },
+  "scientific_scope": {
+    "behavior_nature": "CONTROLLED_GENERATED_BEHAVIOR",
+    "observed_behavior": false,
+    "primary_scope": "INTERNAL_WARM_ITEM_CONTROLLED_COMPARISON",
+    "cold_item_scope": "DIAGNOSTIC_NOT_PRIMARY",
+    "production_realism_claim_authorized": false,
+    "external_validity_claim_authorized": false,
+    "test_set_opened": false
+  }
+}
