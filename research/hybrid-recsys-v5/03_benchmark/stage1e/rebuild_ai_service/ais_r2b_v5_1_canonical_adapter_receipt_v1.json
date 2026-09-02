@@ -1,0 +1,197 @@
+{
+  "actual_model_metadata": {
+    "model": null,
+    "reasoning": null,
+    "speed": null,
+    "status": "NOT_OBSERVABLE_FROM_WORKSPACE_DO_NOT_INFER"
+  },
+  "execution": {
+    "attempt_id": "ais-r2b-v5.1-canonical-attempt-001",
+    "command": "python -m ai_service_v2.cli materialize-v5-family-view E:\\UIT\\cv\\materialized-experiments\\hybrid-recsys-v5\\ai-service-v2\\ais-r2-canonical\\attempt-001-v5-audited E:\\UIT\\cv\\materialized-experiments\\hybrid-recsys-v5\\ai-service-v2\\ais-r2b-v5.1-family-view\\attempt-001 E:\\UIT\\cv\\materialized-experiments\\hybrid-recsys-v5\\ai-service-v2\\ais-r2b-v5.1-canonical\\attempt-001 --amendment E:\\UIT\\cv\\backend\\backend\\docs\\chatbot\\seed-product\\benchmark-spec-v5.1.json",
+    "execution_commit": null,
+    "execution_code_state": "UNCOMMITTED_WORKTREE_PRE_COMMIT",
+    "execution_commit_binding": "NOT_AVAILABLE_AT_MATERIALIZATION_TIME; OUTPUT_ACCEPTANCE_BOUND_BY_INDEPENDENT_REPLAY",
+    "independent_replay_commit": "58e9136a79706bf54a0bb78234635eef384c5c06",
+    "execution_parent": "f2e5f680b7606d86099941ac990c67f1be05ee56",
+    "mode": "MATERIALIZE_CANONICAL_V5_1_ONLY",
+    "result": "PASS",
+    "retry_count": 0,
+    "training_or_evaluation_invoked": false,
+    "docker_or_wsl_invoked": false,
+    "test_set_opened": false
+  },
+  "input_binding": {
+    "amendment_path": "backend/docs/chatbot/seed-product/benchmark-spec-v5.1.json",
+    "amendment_file_sha256": "b4f2ceedc012a92c08575b849cd525ea51434dacb56eab38d67f96f42991563d",
+    "catalog_seed_sha256": "5821305a6001db6ae2e44156c94b541432b1856279d3e658b0a959e638edb2c0",
+    "parent_canonical_root": "E:\\UIT\\cv\\materialized-experiments\\hybrid-recsys-v5\\ai-service-v2\\ais-r2-canonical\\attempt-001-v5-audited",
+    "parent_dataset_sha256": "ce92d7b057585cf6b64962780d6032333dfed68618a5b21e455b4c9684d3533d",
+    "parent_manifest_canonical_sha256": "1fea8ecfdbca3a21fb1f7489f498a535f386fe07764e34f00bcc383a02625e0d",
+    "parent_source_items_sha256": "e47585dc226fb5e5421fb3463fc145b209efd85175d0d3775399473a7cd66249",
+    "family_view_root": "E:\\UIT\\cv\\materialized-experiments\\hybrid-recsys-v5\\ai-service-v2\\ais-r2b-v5.1-family-view\\attempt-001",
+    "family_view_sha256": "2311d4baafeee7fa1ca1075e2ceae451e05957942113db151377de50acdfb3a2",
+    "family_view_manifest_sha256": "53a2698f652851e8a5218d547ee9c73d88150d746b0e9eb44cef6638ced09787",
+    "policy_sha256": "39bb46ee5498ac74740ca71270042a2e357d5b8b2a5ac42952b243f83a57d360"
+  },
+  "canonical_snapshot": {
+    "output_root": "E:\\UIT\\cv\\materialized-experiments\\hybrid-recsys-v5\\ai-service-v2\\ais-r2b-v5.1-canonical\\attempt-001",
+    "dataset_id": "benchmark-v5-s42-7f40639b0d-1ace202aaa-canonical-v5.1-family-view",
+    "dataset_sha256": "21f7b93bad51d6fa3c69ce849a1931f634539f4fc8f475b00c17de0b5d977194",
+    "manifest_canonical_sha256": "7920964be1b449dad9a3ed2e8a6c783fc22d383b55ea3d36a389c3cabd6340a6",
+    "manifest_file_sha256": "45b0bba18120d722eb3c86bd0c01176050ea975dbd9ebcef22cbfd6df0f7bfec",
+    "exact_file_count": 7,
+    "exact_files": [
+      "manifest.json",
+      "users.jsonl",
+      "items.jsonl",
+      "baskets.jsonl",
+      "train.jsonl",
+      "val.jsonl",
+      "test.jsonl"
+    ],
+    "file_sha256": {
+      "baskets.jsonl": "e53c288e9e22cf88de00a8d26a32209a5671e37ec199673f24d6c9c751984505",
+      "items.jsonl": "836eb468ccdaf1dfc9eb8ceb48e3e10dc7eb0729ecd843b675aa0ac3c6053114",
+      "manifest.json": "45b0bba18120d722eb3c86bd0c01176050ea975dbd9ebcef22cbfd6df0f7bfec",
+      "test.jsonl": "21f9b214947dc0a93b611afa6ebc3026dbc766e8b9123668f4b4658ee07ca200",
+      "train.jsonl": "bbbe9ba5284315f401519cfdcaa292d015ebef9dcdf1b5a59ac344a7816c38af",
+      "users.jsonl": "9ec37123d29107955b4e8d6e4d4efc4fb499d1fcff64f970f7fc8df0622a5911",
+      "val.jsonl": "4f0a9893ab8ac2538554839fe0314dfb4531ed1221c69c8dd07bdbc72b579372"
+    },
+    "num_users": 5000,
+    "num_items": 5200,
+    "num_interactions": 823371,
+    "num_baskets": 15000,
+    "num_cold_items": 250,
+    "split_counts": {
+      "train": 658697,
+      "val": 82337,
+      "test": 82337
+    }
+  },
+  "behavior_preservation": {
+    "policy": "REUSE_PARENT_V5_EXACT_BYTES_BY_HASH",
+    "all_behavior_files_equal": true,
+    "files": {
+      "users.jsonl": {
+        "parent_sha256": "9ec37123d29107955b4e8d6e4d4efc4fb499d1fcff64f970f7fc8df0622a5911",
+        "output_sha256": "9ec37123d29107955b4e8d6e4d4efc4fb499d1fcff64f970f7fc8df0622a5911",
+        "equal": true
+      },
+      "baskets.jsonl": {
+        "parent_sha256": "e53c288e9e22cf88de00a8d26a32209a5671e37ec199673f24d6c9c751984505",
+        "output_sha256": "e53c288e9e22cf88de00a8d26a32209a5671e37ec199673f24d6c9c751984505",
+        "equal": true
+      },
+      "train.jsonl": {
+        "parent_sha256": "bbbe9ba5284315f401519cfdcaa292d015ebef9dcdf1b5a59ac344a7816c38af",
+        "output_sha256": "bbbe9ba5284315f401519cfdcaa292d015ebef9dcdf1b5a59ac344a7816c38af",
+        "equal": true
+      },
+      "val.jsonl": {
+        "parent_sha256": "4f0a9893ab8ac2538554839fe0314dfb4531ed1221c69c8dd07bdbc72b579372",
+        "output_sha256": "4f0a9893ab8ac2538554839fe0314dfb4531ed1221c69c8dd07bdbc72b579372",
+        "equal": true
+      },
+      "test.jsonl": {
+        "parent_sha256": "21f9b214947dc0a93b611afa6ebc3026dbc766e8b9123668f4b4658ee07ca200",
+        "output_sha256": "21f9b214947dc0a93b611afa6ebc3026dbc766e8b9123668f4b4658ee07ca200",
+        "equal": true
+      }
+    }
+  },
+  "verification": {
+    "node_family_view_verify_only": "PASS_5200_OF_5200_77_FAMILIES_250_COLD",
+    "python_focused_tests": "5 passed",
+    "python_full_tests": "63 passed",
+    "ruff": "PASS",
+    "mypy": "PASS",
+    "canonical_snapshot_loader_replay": "PASS",
+    "family_mapping_replay": "5200/5200 PASS",
+    "family_anchor_replay": "77/77 PASS",
+    "cold_partition_replay": "250/250 PASS",
+    "behavior_byte_replay": "5/5 PASS",
+    "exact_output_file_set": "7/7 PASS",
+    "output_root_overwrite_policy": "PASS_FAIL_CLOSED",
+    "suitability_report": {
+      "verdict": "PASS_CONTROLLED_INTERNAL_DATASET_SUITABILITY",
+      "dataset_manifest_sha256": "7920964be1b449dad9a3ed2e8a6c783fc22d383b55ea3d36a389c3cabd6340a6",
+      "distinct_user_item_cells": 366331,
+      "distinct_cell_density": 0.014089653846153846,
+      "event_frequency_density": 0.031668115384615385,
+      "validation_eligible_users": 4984,
+      "validation_users_without_novel_organic_truth": 16,
+      "organic_training_baskets": 14250,
+      "semantic_training_baskets": 750,
+      "duplicate_normalized_text_items": 5123,
+      "empty_text_items": 0,
+      "event_origin_counts": {
+        "cold_start": 500,
+        "organic": 814871,
+        "semantic_trap": 8000
+      },
+      "checks": {
+        "all_temporal_splits_nonempty": true,
+        "catalog_language_admitted": true,
+        "catalog_license_admitted": true,
+        "catalog_provenance_admitted": true,
+        "catalog_text_complete": true,
+        "cold_item_cohort_present": true,
+        "organic_training_baskets_present": true,
+        "source_bundle_bound": true,
+        "validation_has_novel_organic_truth": true
+      },
+      "test_set_opened": false,
+      "accepted_result_rows": 0
+    }
+  },
+  "scientific_scope": {
+    "dataset_classification": "CONTROLLED_GENERATED_BEHAVIOR",
+    "primary_scope": "INTERNAL_WARM_ITEM_CONTROLLED_COMPARISON",
+    "family_count_in_model_view": 77,
+    "duplicate_normalized_text_items_in_model_view": 5123,
+    "cold_item_scope": "DIAGNOSTIC_NOT_PRIMARY",
+    "production_realism_claim_authorized": false,
+    "external_validity_claim_authorized": false,
+    "observed_behavior": false
+  },
+  "material_passport": {
+    "experiment_intake_declaration": {
+      "declared_at": "2026-09-01T16:38:56Z",
+      "declared_by": "scholar",
+      "status": "experiments_declared"
+    },
+    "origin_date": "2026-09-02T17:59:22.329084Z",
+    "origin_mode": "run-validate",
+    "origin_skill": "academic-research-suite/experiment-agent",
+    "repro_lock": "implementation:58e9136a79706bf54a0bb78234635eef384c5c06;parent-dataset:ce92d7b057585cf6b64962780d6032333dfed68618a5b21e455b4c9684d3533d;family-view:2311d4baafeee7fa1ca1075e2ceae451e05957942113db151377de50acdfb3a2;output-dataset:21f7b93bad51d6fa3c69ce849a1931f634539f4fc8f475b00c17de0b5d977194",
+    "upstream_dependencies": [
+      "ais-r2-runtime-materialization-suitability-receipt-v1.0.0",
+      "ais-r2b-v5.1-dataset-contract-v1.0.0",
+      "ais-r2b-v5.1-feature-view-materialization-receipt-v1.0.0"
+    ],
+    "verification_status": "VERIFIED",
+    "version_label": "ais-r2b-v5.1-canonical-adapter-receipt-v1.0.0"
+  },
+  "protected_state": {
+    "benchmark_training_or_evaluation_run": false,
+    "docker_or_wsl_invoked": false,
+    "historical_1380_sku_seed_used": false,
+    "historical_ai_service_modified": false,
+    "manuscript_dirty_state_modified": false,
+    "parent_v5_artifact_modified": false,
+    "pipeline_state_stage1e_modified": false,
+    "test_protocol_built": false
+  },
+  "scientific_state": {
+    "ACCEPTED_RESULT_ROWS": 0,
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "execution_authorized": false,
+    "feature_view_materialized": true,
+    "canonical_adapter_validated": true,
+    "official_public_dataset_reproduction_passed": false,
+    "phase_1e_complete": false
+  },
+  "verdict": "PASS_V5_1_CANONICAL_ADAPTER_AND_SUITABILITY_READY_FOR_AIS_R3"
+}
