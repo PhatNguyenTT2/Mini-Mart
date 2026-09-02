@@ -8,6 +8,7 @@ from pathlib import Path
 from typing import Any
 
 from ai_service_v2 import __version__
+from ai_service_v2.adapters.v5_family_view import materialize_v5_family_view
 from ai_service_v2.adapters.v5_source import materialize_v5_source_bundle
 from ai_service_v2.contracts import DatasetManifest
 from ai_service_v2.data.io import load_canonical_snapshot, materialize_snapshot
@@ -70,6 +71,12 @@ def _parser() -> argparse.ArgumentParser:
     materialize_v5 = commands.add_parser("materialize-v5-source")
     materialize_v5.add_argument("source_root", type=Path)
     materialize_v5.add_argument("output_root", type=Path)
+
+    materialize_v5_family = commands.add_parser("materialize-v5-family-view")
+    materialize_v5_family.add_argument("parent_root", type=Path)
+    materialize_v5_family.add_argument("family_view_root", type=Path)
+    materialize_v5_family.add_argument("output_root", type=Path)
+    materialize_v5_family.add_argument("--amendment", type=Path, required=True)
 
     assess = commands.add_parser("assess-snapshot")
     assess.add_argument("snapshot_root", type=Path)
@@ -673,6 +680,24 @@ def main(argv: list[str] | None = None) -> int:
                     "dataset_sha256": snapshot.manifest.dataset_sha256,
                     "source_bundle_sha256": snapshot.manifest.source_bundle_sha256,
                     "output_root": str(args.output_root),
+                }
+            )
+            return 0
+        if args.command == "materialize-v5-family-view":
+            snapshot = materialize_v5_family_view(
+                args.parent_root,
+                args.family_view_root,
+                args.output_root,
+                amendment_path=args.amendment,
+            )
+            _print(
+                {
+                    "status": "PASS",
+                    "dataset_id": snapshot.manifest.dataset_id,
+                    "dataset_sha256": snapshot.manifest.dataset_sha256,
+                    "output_root": str(args.output_root),
+                    "test_set_opened": False,
+                    "accepted_result_rows": 0,
                 }
             )
             return 0
