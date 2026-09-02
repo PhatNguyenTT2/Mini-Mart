@@ -1,0 +1,134 @@
+{
+  "material_passport": {
+    "origin_skill": "academic-research-suite/experiment-agent",
+    "origin_mode": "plan",
+    "origin_date": "2026-09-01T16:38:56Z",
+    "verification_status": "UNVERIFIED",
+    "version_label": "ais-r0-context-model-map-v1.0.0",
+    "upstream_dependencies": [
+      "ais-r0-architecture-decision-v1.0.0",
+      "ais-r0-failure-retry-policy-v1.0.0"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "experiments_declared",
+      "declared_at": "2026-09-01T16:38:56Z",
+      "declared_by": "scholar"
+    }
+  },
+  "schema_version": "ais-r0-context-model-map/1.0",
+  "policy_status": "USER_REQUESTED_MODEL_POLICY_NOT_RUNTIME_ATTESTATION",
+  "speed_policy": {
+    "allowed": [
+      "STANDARD"
+    ],
+    "prohibited": [
+      "FAST",
+      "PRIORITY"
+    ],
+    "mismatch_effect": "OUTPUT_NOT_ADMITTED_AND_TASK_MUST_BE_RECREATED"
+  },
+  "role_policy": [
+    {
+      "role": "central_coordination_merge_registry_admission",
+      "requested_model": "gpt-5.6-sol",
+      "requested_reasoning": "max",
+      "requested_speed": "standard"
+    },
+    {
+      "role": "critical_design_root_cause_protocol_review_independent_audit",
+      "requested_model": "gpt-5.6-sol",
+      "requested_reasoning": "ultra",
+      "requested_speed": "standard"
+    },
+    {
+      "role": "implementation_worktree",
+      "requested_model": "gpt-5.6-sol",
+      "requested_reasoning": "xhigh",
+      "requested_speed": "standard"
+    },
+    {
+      "role": "mechanical_test_and_refactor",
+      "requested_model": "gpt-5.6-sol",
+      "requested_reasoning": "high_or_xhigh",
+      "requested_speed": "standard"
+    },
+    {
+      "role": "runtime_execution",
+      "requested_model": "gpt-5.6-sol",
+      "requested_reasoning": "locked_command_context_with_central_max_controller",
+      "requested_speed": "standard"
+    }
+  ],
+  "stage_map": [
+    {
+      "stage": "AIS-R0",
+      "dependency": null,
+      "context": "central",
+      "requested_reasoning": "ultra",
+      "state": "DESIGN_FREEZE"
+    },
+    {
+      "stage": "AIS-R1",
+      "dependency": "AIS-R0",
+      "context": "isolated_implementation_worktree",
+      "requested_reasoning": "xhigh",
+      "state": "STATIC_IMPLEMENTATION"
+    },
+    {
+      "stage": "AIS-R2",
+      "dependency": "AIS-R1_STATIC_PASS",
+      "context": "isolated_dataset_worktree",
+      "requested_reasoning": "xhigh",
+      "state": "CANONICAL_DATASET_ADMISSION"
+    },
+    {
+      "stage": "AIS-R3",
+      "dependency": "AIS-R2_LINEAGE_PASS",
+      "context": "implementation_then_fresh_independent_audit",
+      "requested_reasoning": "xhigh_then_ultra",
+      "state": "EVALUATOR_AND_STATISTICS_AUDIT"
+    },
+    {
+      "stage": "AIS-R4",
+      "dependency": "AIS-R3_PASS_AND_SOURCE_DATA_ENVIRONMENT_ADMISSION",
+      "context": "isolated_reference_runtime",
+      "requested_reasoning": "xhigh",
+      "state": "OFFICIAL_REPRODUCTION"
+    },
+    {
+      "stage": "AIS-R5",
+      "dependency": "AIS-R3_PASS",
+      "context": "isolated_proposed_model_worktree",
+      "requested_reasoning": "xhigh",
+      "state": "PROPOSED_AND_ABLATIONS"
+    },
+    {
+      "stage": "AIS-R6",
+      "dependency": "AIS-R4_PASS_AND_AIS-R5_PASS",
+      "context": "separate_locked_runtime",
+      "requested_reasoning": "central_max_controller",
+      "state": "HARMONIZED_THREE_SEED_TEST"
+    },
+    {
+      "stage": "AIS-R7",
+      "dependency": "AIS-R6_COMPLETE",
+      "context": "fresh_independent_audit",
+      "requested_reasoning": "ultra",
+      "state": "STAGE1E_SEAL"
+    },
+    {
+      "stage": "AIS-R8",
+      "dependency": "AIS-R7_PASS",
+      "context": "isolated_serving_worktree",
+      "requested_reasoning": "high_or_xhigh",
+      "state": "SERVING_API_ONNX"
+    }
+  ],
+  "actual_execution_metadata": {
+    "current_context_model": null,
+    "current_context_reasoning": null,
+    "current_context_speed": null,
+    "status": "NOT_OBSERVABLE_FROM_WORKSPACE_DO_NOT_INFER"
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "material_passport": {
+    "origin_skill": "academic-research-suite/experiment-agent",
+    "origin_mode": "plan",
+    "origin_date": "2026-09-01T16:38:56Z",
+    "verification_status": "UNVERIFIED",
+    "version_label": "ais-r0-model-scope-v1.0.0",
+    "upstream_dependencies": [
+      "ais-r0-architecture-decision-v1.0.0",
+      "ais-r0-input-manifest-v1.0.0"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "experiments_declared",
+      "declared_at": "2026-09-01T16:38:56Z",
+      "declared_by": "scholar"
+    }
+  },
+  "schema_version": "ais-r0-model-scope/1.0",
+  "status": "DESIGN_FROZEN_EMPIRICAL_CLAIMS_OPEN",
+  "research_hypothesis": "A train-only Wide/Apriori branch may add complementary co-purchase signal to a content-aware Deep Two-Tower ranker under one shared protocol.",
+  "allowed_signals": [
+    "user_id",
+    "train_interaction_history",
+    "item_text",
+    "item_category",
+    "item_price_or_preregistered_price_bucket",
+    "train_only_basket_or_copurchase_rules"
+  ],
+  "proposed_family": {
+    "deep_only": {
+      "method_id": "IndependentDeepTwoTower",
+      "definition": "User and item towers using the same admitted content features as Hybrid and no Wide/Apriori score."
+    },
+    "wide_only": {
+      "method_id": "WideRuleOnly",
+      "definition": "Association-rule features fit exclusively on the train split, with no deep score."
+    },
+    "hybrid": {
+      "method_id": "ProposedHybrid",
+      "definition": "An additive fusion of separately observable deep and wide scores with preregistered normalization and weight."
+    }
+  },
+  "objective_contract": {
+    "deep_objective": "PAIRWISE_BPR_STYLE_RANKING_LOSS",
+    "negative_universe": "ITEMS_ABSENT_FROM_USER_TRAIN_HISTORY",
+    "negative_count": "CONFIG_FROZEN_BEFORE_TEST",
+    "sampler_seed": "RUN_MANIFEST_BOUND",
+    "checkpoint_rule": "VALIDATION_ONLY_AND_FROZEN_BEFORE_TEST"
+  },
+  "mandatory_ablations": [
+    "IndependentDeepTwoTower",
+    "WideRuleOnly",
+    "ProposedHybrid"
+  ],
+  "component_attribution": {
+    "persist_deep_scores": true,
+    "persist_wide_scores": true,
+    "persist_hybrid_scores": true,
+    "rule_artifact_hash_required": true,
+    "feature_hash_required": true,
+    "checkpoint_hash_required_for_learned_models": true
+  },
+  "excluded_without_amendment": [
+    "persona_features",
+    "llm_generated_features",
+    "manual_posthoc_features",
+    "validation_or_test_derived_rules",
+    "additional_event_types_without_provenance",
+    "test_driven_feature_or_hyperparameter_changes"
+  ],
+  "controls": [
+    "Random",
+    "MostPop"
+  ],
+  "claim_policy": {
+    "hybrid_superiority_assumed": false,
+    "null_or_negative_result_is_valid": true,
+    "test_tuning_allowed": false,
+    "fixture_metric_is_empirical_evidence": false
+  },
+  "scientific_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false
+  }
+}

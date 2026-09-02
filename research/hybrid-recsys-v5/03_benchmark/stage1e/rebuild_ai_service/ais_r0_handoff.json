@@ -1,0 +1,218 @@
+{
+  "material_passport": {
+    "origin_skill": "academic-research-suite/experiment-agent",
+    "origin_mode": "plan",
+    "origin_date": "2026-09-01T16:38:56Z",
+    "verification_status": "UNVERIFIED",
+    "version_label": "ais-r0-handoff-v1.0.0",
+    "upstream_dependencies": [
+      "ais-r0-architecture-decision-v1.0.0",
+      "ais-r0-old-service-exclusion-v1.0.0",
+      "ais-r0-input-manifest-v1.0.0",
+      "ais-r0-model-scope-v1.0.0",
+      "ais-r0-baseline-registry-v1.0.0",
+      "ais-r0-protocol-evaluator-contract-v1.0.0",
+      "ais-r0-failure-retry-policy-v1.0.0",
+      "ais-r0-context-model-map-v1.0.0"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "experiments_declared",
+      "declared_at": "2026-09-01T16:38:56Z",
+      "declared_by": "scholar"
+    }
+  },
+  "schema_version": "ais-r0-handoff/1.0",
+  "status": "AIS_R0_COMPLETE_AIS_R1_STATIC_PASS",
+  "handoff_verdict": "READY_FOR_AIS_R2_LINEAGE_PLANNING_NOT_RUNTIME_EXECUTION",
+  "scope": {
+    "code_root": "ai-service-v2/",
+    "control_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebuild_ai_service/",
+    "base_commit": "4c3b08be2c35bc9dcd161275988ed64f3dafe99b",
+    "branch": "codex/stage1e-minimal-execution-v1"
+  },
+  "stage_status": [
+    {
+      "stage": "AIS-R0",
+      "status": "COMPLETE_DESIGN_FROZEN",
+      "admission": "UNVERIFIED_PENDING_INDEPENDENT_REVIEW"
+    },
+    {
+      "stage": "AIS-R1",
+      "status": "STATIC_AND_FIXTURE_TESTS_PASS",
+      "admission": "LOCAL_STATIC_PASS_NOT_EMPIRICAL_GATE"
+    },
+    {
+      "stage": "AIS-R2",
+      "status": "FOUNDATION_IMPLEMENTED_NOT_ADMITTED",
+      "admission": "CANONICAL_DATASET_LINEAGE_REQUIRED"
+    },
+    {
+      "stage": "AIS-R3",
+      "status": "FOUNDATION_IMPLEMENTED_NOT_ADMITTED",
+      "admission": "INDEPENDENT_FORMULA_AND_PARITY_AUDIT_REQUIRED"
+    },
+    {
+      "stage": "AIS-R4",
+      "status": "NOT_STARTED",
+      "admission": "AIS-R3_PASS_AND_SOURCE_DATA_ENVIRONMENT_GATE_REQUIRED"
+    },
+    {
+      "stage": "AIS-R5",
+      "status": "FIXTURE_MODEL_IMPLEMENTATIONS_ONLY",
+      "admission": "AIS-R3_PASS_AND_CANONICAL_V5_BINDING_REQUIRED"
+    },
+    {
+      "stage": "AIS-R6",
+      "status": "NOT_STARTED",
+      "admission": "AIS-R4_AND_AIS-R5_PASS_REQUIRED"
+    },
+    {
+      "stage": "AIS-R7",
+      "status": "NOT_STARTED",
+      "admission": "COMPLETE_EVIDENCE_CHAIN_REQUIRED"
+    },
+    {
+      "stage": "AIS-R8",
+      "status": "DEFERRED_UNTIL_STAGE1E_SEAL",
+      "admission": "AIS-R7_PASS_REQUIRED"
+    }
+  ],
+  "implemented_foundation": [
+    "strict JSON and SHA-256 contracts",
+    "immutable canonical snapshot loader and materializer",
+    "temporal Protocol with TEST seal",
+    "train-only Apriori rule artifact",
+    "Random and MostPop sanity controls",
+    "fixture-only Deep Two-Tower, Rule-only, and Hybrid scorers",
+    "immutable chunked Score Artifact",
+    "independent full-catalog evaluator",
+    "per-user persistence and receipt replay",
+    "paired and hierarchical bootstrap plus Holm adjustment",
+    "CLI for manifest, snapshot, protocol, run, score, evaluation, and summary seams"
+  ],
+  "static_quality_gates": [
+    {
+      "gate": "SCOPED_PYTEST",
+      "command": "PYTHONPATH=src ../ai-service/.venv/Scripts/python.exe -m pytest -q",
+      "result": "PASS",
+      "detail": "51 passed"
+    },
+    {
+      "gate": "RUFF_CHECK",
+      "command": "../ai-service/.venv/Scripts/python.exe -m ruff check .",
+      "result": "PASS",
+      "detail": "All checks passed"
+    },
+    {
+      "gate": "RUFF_FORMAT",
+      "command": "../ai-service/.venv/Scripts/python.exe -m ruff format --check .",
+      "result": "PASS",
+      "detail": "40 files already formatted"
+    },
+    {
+      "gate": "MYPY_STRICT",
+      "command": "PYTHONPATH=src ../ai-service/.venv/Scripts/python.exe -m mypy src tests",
+      "result": "PASS",
+      "detail": "Success: no issues found in 41 source files"
+    },
+    {
+      "gate": "HISTORICAL_IMPORT_SCAN",
+      "result": "PASS",
+      "detail": "No import of the historical ai_service package under src or tests"
+    },
+    {
+      "gate": "V1_DEPENDENCY_BOUNDARY_SCAN",
+      "result": "PASS",
+      "detail": "No FastAPI, ONNX, database, or Docker dependency under src or pyproject.toml"
+    },
+    {
+      "gate": "STRICT_JSON_PARSE",
+      "result": "PASS",
+      "detail": "Five model configs and four pre-handoff AIS-R0 JSON artifacts parsed with the strict loader"
+    }
+  ],
+  "artifact_inventory": {
+    "hash_algorithm": "SHA-256",
+    "control_artifacts": [
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebuild_ai_service/ais_r0_architecture_decision_record.md",
+        "sha256": "b96431d3fb28646a80d142f3ec3437981c34c8a0de67d302166153ebf5474226"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebuild_ai_service/ais_r0_baseline_registry.json",
+        "sha256": "e2ca280dae7188fe95fa7aa16e606498f1f497c959e4dfb18acc920f516e3c95"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebuild_ai_service/ais_r0_context_model_map.json",
+        "sha256": "110429f53a0051275d7dc32b25848f0486d092776a35c633846b22113d65372c"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebuild_ai_service/ais_r0_failure_retry_policy.md",
+        "sha256": "12dfd684eb2cf34a573e337e5da8f0f403d2de9be4ef6e02e2e8f8b32f355944"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebuild_ai_service/ais_r0_input_manifest.json",
+        "sha256": "fc21f536d3369fa16982ffaaf529af484b1cce41cae45e5bd67f1522f1508115"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebuild_ai_service/ais_r0_model_scope.json",
+        "sha256": "f0068693d7bc207861ac02ddb0618a25ee65b3381886763038ed8b12f48e00c4"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebuild_ai_service/ais_r0_old_service_exclusion_record.md",
+        "sha256": "b13ac4c9447212769d86bcd108bc3f9b4e6cebf2681ce7c398231fb778625121"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebuild_ai_service/ais_r0_protocol_evaluator_contract.md",
+        "sha256": "ff5a582a27e3536184e6e59dd1aa8570f2b1e4138dca4bc88b0a9ab1acff3e9b"
+      }
+    ],
+    "code_tree": {
+      "path": "ai-service-v2/",
+      "file_count": 52,
+      "sha256": "6bdd6759d418aaa6b17a8a14f9920d54f057b24b73685a957721da9e6e10403b",
+      "definition": "SHA-256 of UTF-8 sorted lines, each line containing file SHA-256, two spaces, repository-relative path, and newline"
+    },
+    "context_glossary": {
+      "path": "ai-service-v2/CONTEXT.md",
+      "sha256": "e0ec4ae4ace57406b4030303f3cd65bc45548392149f41608e0266c96d6fc035"
+    },
+    "self_hash_included": false
+  },
+  "latest_host_admission_evidence": {
+    "attempt": "E4_R6PC2W_P1_attempt013_revision9_admission_observation",
+    "handoff_sha256": "637bb34467f1902267570c18317299ccccd163579777d49ed6731bb0c1cf9f83",
+    "execution_receipt_sha256": "7afceef8ecbc35a103ca2525de61113a63f2d8ff32c7304153352b5a4f955185",
+    "verdict": "PASS_PC2W_P1_ATTEMPT013_REVISION9_ADMISSION_OBSERVATION_COMPLETE_FOR_CENTRAL_EVALUATION",
+    "scope": "HOST_AND_DOCKER_ADMISSION_OBSERVATION_ONLY",
+    "materialization_training_evaluation_or_test_performed": false,
+    "benchmark_admission_opened": false
+  },
+  "scientific_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "fixture_results_are_paper_evidence": false,
+    "official_public_dataset_reproduction_passed": false,
+    "harmonized_v5_run_completed": false
+  },
+  "protected_state": {
+    "pipeline_state_stage1e_modified": false,
+    "historical_ai_service_modified": false,
+    "manuscript_dirty_state_modified": false
+  },
+  "actual_model_metadata": {
+    "model": null,
+    "reasoning": null,
+    "speed": null,
+    "status": "NOT_OBSERVABLE_FROM_WORKSPACE_DO_NOT_INFER"
+  },
+  "next_gate": {
+    "stage": "AIS-R2",
+    "action": "Create and independently admit a canonical v5 Dataset Snapshot from authorized source bytes; verify lineage, temporal splits, mappings, item features, baskets, cold items, and task suitability.",
+    "runtime_authorized_by_this_handoff": false,
+    "following_gate": "AIS-R3 independent evaluator-formula and parity audit"
+  }
+}

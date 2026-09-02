@@ -1,0 +1,17 @@
+{
+  "schema_version": "model-run-spec/1.0",
+  "model_kind": "deep_two_tower",
+  "model_id": "independent-deep-two-tower-v1",
+  "feature_source": "deterministic_hash_features",
+  "feature_dimensions": 32,
+  "two_tower": {
+    "embedding_dim": 16,
+    "hidden_dim": 32,
+    "epochs": 5,
+    "learning_rate": 0.03,
+    "l2": 0.00001,
+    "negatives_per_positive": 1
+  },
+  "wide_weight": 0.0,
+  "rule_min_support": 1
+}

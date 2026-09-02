@@ -1,0 +1,108 @@
+{
+  "material_passport": {
+    "origin_skill": "academic-research-suite/experiment-agent",
+    "origin_mode": "plan",
+    "origin_date": "2026-09-01T16:38:56Z",
+    "verification_status": "UNVERIFIED",
+    "version_label": "ais-r0-input-manifest-v1.0.0",
+    "upstream_dependencies": [
+      "academic-research-master-plan@89a746f3",
+      "standard-for-training@89c65832",
+      "stage1e-r5-g1-source-selection@037f4502",
+      "stage1e-attempt013-revision9@637bb344"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "experiments_declared",
+      "declared_at": "2026-09-01T16:38:56Z",
+      "declared_by": "scholar"
+    }
+  },
+  "schema_version": "ais-r0-input-manifest/1.0",
+  "status": "DESIGN_INPUTS_FROZEN_NO_EXECUTION_AUTHORITY",
+  "repository_authority": {
+    "branch": "codex/stage1e-minimal-execution-v1",
+    "base_commit": "4c3b08be2c35bc9dcd161275988ed64f3dafe99b",
+    "pipeline_state_is_execution_authority": false,
+    "reason": "pipeline_state_stage1e.json is stale and protected; current state is reconstructed from Git and receipts"
+  },
+  "inputs": [
+    {
+      "path": "master/academic-research-master-plan.md",
+      "sha256": "89a746f367359f5643dd8e34a34994707b1d8d529b1e5960c0a6489e65bcbdac",
+      "classification": "AUTHORITATIVE_STAGE_ORDER"
+    },
+    {
+      "path": "master/standard-for-training.md",
+      "sha256": "89c6583268f083ec8cca5c67902e860faf4a6c1e5cbec96fc5a2d95238520bbc",
+      "classification": "AUTHORITATIVE_TRAINING_POLICY"
+    },
+    {
+      "path": "inputs/idea.md",
+      "sha256": "b8d6867df658331650421d576ac336f40fea9c838efc17cde8a16eb80ee7c13e",
+      "classification": "SCHOLAR_SCOPE_INPUT_NOT_DATA_EVIDENCE"
+    },
+    {
+      "path": "inputs/experimental_log.md",
+      "sha256": "bd4ba08719667df6a71feccc915d0b84307b71e536bc533735cc61157e8bcf9f",
+      "classification": "HISTORICAL_EXPERIMENT_NARRATIVE_NOT_ACCEPTED_RESULT"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_g0_decision_freeze.json",
+      "sha256": "32f7e4c82ee1ffd105d365a98306cdef2a9b21f72dd1be10113188e40bf1c5c1",
+      "classification": "SOURCE_CANDIDATE_DECISION_INPUT"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_af/E4_R5G1_source_evidence_selection/r5_g1_handoff.json",
+      "sha256": "037f4502eb8645dca002d47ba4c8129f686aa9f84031f1534b0d670771717b00",
+      "classification": "PROVISIONAL_SOURCE_SELECTION_INPUT"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_bc/E4_R6PC2W_P1_attempt013_revision9_admission_observation/handoff.json",
+      "sha256": "637bb34467f1902267570c18317299ccccd163579777d49ed6731bb0c1cf9f83",
+      "classification": "LATEST_HOST_ADMISSION_OBSERVATION"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_bc/E4_R6PC2W_P1_attempt013_revision9_admission_observation/execution_receipt.json",
+      "sha256": "7afceef8ecbc35a103ca2525de61113a63f2d8ff32c7304153352b5a4f955185",
+      "classification": "LATEST_HOST_ADMISSION_EXECUTION_RECEIPT"
+    },
+    {
+      "path": "ai-service/artifacts/snapshots/benchmark-v5-s42-7f40639b0d-1ace202aaa/manifest.json",
+      "sha256": "ed15a867dcb4c6e0bab0735e042c89e310e7cded87ad1fbc7875022907e23dd2",
+      "classification": "EXCLUDED_HISTORICAL_SCHEMA_INVENTORY_ONLY"
+    }
+  ],
+  "latest_host_admission": {
+    "attempt": "E4_R6PC2W_P1_attempt013_revision9_admission_observation",
+    "verdict": "PASS_PC2W_P1_ATTEMPT013_REVISION9_ADMISSION_OBSERVATION_COMPLETE_FOR_CENTRAL_EVALUATION",
+    "scope": "HOST_AND_DOCKER_ADMISSION_OBSERVATION_ONLY",
+    "scientific_or_materialization_gate_opened": false
+  },
+  "protected_paths": [
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/pipeline_state_stage1e.json",
+      "sha256": "7008657dfcbe138321c68dc3b2632265f16bfb05084c9686ae7eb95706c3a970",
+      "policy": "DO_NOT_MODIFY_UNTIL_AIS_R7_SEAL"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/05_manuscript/",
+      "policy": "PRESERVE_DIRTY_USER_STATE_OUT_OF_SCOPE"
+    },
+    {
+      "path": "ai-service/",
+      "policy": "READ_ONLY_HISTORICAL_QUARANTINE"
+    }
+  ],
+  "write_roots": {
+    "code": "ai-service-v2/",
+    "control": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebuild_ai_service/",
+    "planned_runtime_not_written": "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/"
+  },
+  "scientific_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false
+  }
+}

@@ -1,0 +1,114 @@
+{
+  "material_passport": {
+    "origin_skill": "academic-research-suite/experiment-agent",
+    "origin_mode": "plan",
+    "origin_date": "2026-09-01T16:38:56Z",
+    "verification_status": "UNVERIFIED",
+    "version_label": "ais-r0-baseline-registry-v1.0.0",
+    "upstream_dependencies": [
+      "ais-r0-model-scope-v1.0.0",
+      "stage1e-r5-g1-source-selection@037f4502",
+      "stage1e-r6-g0-freeze@32f7e4c8"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "experiments_declared",
+      "declared_at": "2026-09-01T16:38:56Z",
+      "declared_by": "scholar"
+    }
+  },
+  "schema_version": "ais-r0-baseline-registry/1.0",
+  "registry_status": "DRAFT_NOT_COMPARATOR_FROZEN",
+  "evidence_namespaces": [
+    "OFFICIAL_PROTOCOL_REPRODUCTION",
+    "HARMONIZED_V5_COMPARISON"
+  ],
+  "official_reproduction_candidate": {
+    "candidate_id": "R5-CAND-RECBOLE-BPR-ML100K-001",
+    "framework": "RecBole",
+    "framework_version": "1.2.1",
+    "source_revision": "9a6f63d8d4a5b989fe27955a833f813a6d86041e",
+    "model": "BPR",
+    "dataset": "GroupLens MovieLens 100K",
+    "reported_target": {
+      "metric": "NDCG@10",
+      "value": 0.2768,
+      "classification": "SOURCE_BOUND_DIAGNOSTIC_TARGET_NOT_PAPER_RESULT"
+    },
+    "status": "SOURCE_LOCKED_OFFICIAL_REPRODUCTION_NOT_RUN",
+    "accepted_result_row": false
+  },
+  "harmonized_v5_registry_draft": [
+    {
+      "method_id": "Random",
+      "family": "sanity_control",
+      "status": "FIXTURE_IMPLEMENTED_NOT_PAPER_BASELINE"
+    },
+    {
+      "method_id": "MostPop",
+      "family": "sanity_control",
+      "status": "FIXTURE_IMPLEMENTED_NOT_PAPER_BASELINE"
+    },
+    {
+      "method_id": "ItemCF_ItemKNN",
+      "family": "neighborhood",
+      "status": "PLANNED_NOT_ADMITTED"
+    },
+    {
+      "method_id": "BPR_MF",
+      "family": "matrix_factorization",
+      "status": "PLANNED_NOT_ADMITTED"
+    },
+    {
+      "method_id": "LightGCN",
+      "family": "graph_collaborative_filtering",
+      "status": "PLANNED_NOT_ADMITTED"
+    },
+    {
+      "method_id": "SASRec",
+      "family": "sequential_recommendation",
+      "status": "PLANNED_NOT_ADMITTED"
+    },
+    {
+      "method_id": "BERT4Rec",
+      "family": "sequential_recommendation",
+      "status": "PLANNED_NOT_ADMITTED"
+    },
+    {
+      "method_id": "IndependentDeepTwoTower",
+      "family": "proposed_ablation",
+      "status": "FIXTURE_IMPLEMENTED_NOT_EMPIRICALLY_EVALUATED"
+    },
+    {
+      "method_id": "WideRuleOnly",
+      "family": "proposed_ablation",
+      "status": "FIXTURE_IMPLEMENTED_NOT_EMPIRICALLY_EVALUATED"
+    },
+    {
+      "method_id": "ProposedHybrid",
+      "family": "proposed_method",
+      "status": "FIXTURE_IMPLEMENTED_NOT_EMPIRICALLY_EVALUATED"
+    }
+  ],
+  "specialized_methods_deferred_to_related_work": [
+    "Mask-Swap-NNBR_BTBR",
+    "UniSRec",
+    "AlphaRec",
+    "SimGCL",
+    "XSimGCL",
+    "LightGCL"
+  ],
+  "admission_rules": [
+    "Reference implementations retain native training objective and native environment.",
+    "Only dataset mapping, score export, and shared evaluation may be harmonized.",
+    "Official and harmonized rows remain in separate tables and namespaces.",
+    "A published number is not an accepted row until source, data, config, checkpoint, evaluator, and tolerance are audited.",
+    "Comparator freeze occurs from validation evidence before TEST is opened."
+  ],
+  "scientific_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false
+  }
+}

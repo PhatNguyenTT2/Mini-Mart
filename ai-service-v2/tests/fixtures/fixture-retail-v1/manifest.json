@@ -1,0 +1,29 @@
+{
+  "schema_version": "dataset-manifest/1.0",
+  "dataset_id": "fixture-retail-v1",
+  "source_kind": "fixture",
+  "source_locator": "tests/fixtures/fixture-retail-v1",
+  "dataset_sha256": "603dc1781d7659c007791e5c10da0a19562edcb3fea7845e17de4312fb43f778",
+  "num_users": 4,
+  "num_items": 5,
+  "num_interactions": 10,
+  "num_cold_items": 1,
+  "raw_user_map_sha256": "ab415d6c021cbc8fcddfa16624f99225a0367af4225fcb2e1d324a07833ae2c0",
+  "raw_item_map_sha256": "e44b735dd67d41627de5b5311df23d8494d47c595579a0d576fb4a8551ae68c1",
+  "split_hashes": {
+    "train": "dc5237f3c471ddae327f6e7e2cedcc774048c704774a59cadd65890d98617bfe",
+    "val": "9996448046b77f1e370a2a5b66d6bd3163a188f606c20a51f2cfd762ccfa8317",
+    "test": "e06142f75ff414cb220f11df6c67916164db383b1710f196180fed220eceee26"
+  },
+  "item_feature_hashes": {
+    "text": "51c236c7c5f4d5539f46af33891a4d407dd97b91405f3436a3bd2b4d977f563b",
+    "category": "8c9e9682056409b6206bd9bf98647f316f20c163e9abe8bbb6a84493063b8c45",
+    "price": "66e9e38ec785d3bfac56cbea592e397248210f371fd93c41f95aada02c80d09a"
+  },
+  "cold_item_ids": [4],
+  "event_schema": ["event_id", "user_id", "item_id", "timestamp", "event_type", "basket_id"],
+  "id_convention": "dense_zero_based_internal_raw_ids_preserved",
+  "basket_field": "basket_id",
+  "provenance_status": "FIXTURE_ONLY",
+  "license_status": "TEST_ONLY"
+}
