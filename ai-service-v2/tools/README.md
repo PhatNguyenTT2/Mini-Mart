@@ -29,6 +29,23 @@ blob identity as the declared commit; the manifest tree hashes the committed
 blob bytes, so a clean Windows CRLF checkout remains equivalent to its LF Git
 blob. A failed attempt is not retried in place.
 
+## Post-export catalog language audit
+
+`audit_v5_catalog_language.py` operates only on a completed private Source
+Bundle and local evidence files. It verifies every source hash, reconciles the
+5,200 exported items with the frozen catalog seed, measures normalized
+duplicates, runs the pinned Vietnamese Lingua detector, and emits a private
+stratified semantic-review sample. The first pass is intentionally automated
+only: its verdict remains pending until the sample is reviewed and bound by a
+separate receipt. It does not connect to a database, train a model, evaluate a
+recommender, or open benchmark TEST results.
+
+The detector is an audit-only dependency and is not added to the training
+package. Run it from a separate environment with an immutable wheel supplied
+through `--detector-wheel` and its exact SHA-256 through
+`--expected-detector-sha256`. The output root must be new and remain outside
+Git because it contains private catalog strings.
+
 The resulting six-file Source Bundle must still pass:
 
 ```text
