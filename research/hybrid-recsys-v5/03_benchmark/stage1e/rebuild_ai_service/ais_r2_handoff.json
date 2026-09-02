@@ -1,0 +1,188 @@
+{
+  "material_passport": {
+    "origin_skill": "academic-research-suite/experiment-agent",
+    "origin_mode": "plan",
+    "origin_date": "2026-09-02T05:53:53Z",
+    "verification_status": "UNVERIFIED",
+    "version_label": "ais-r2-handoff-v1.0.0",
+    "upstream_dependencies": [
+      "ais-r0-handoff-v1.0.0",
+      "ais-r2-source-bundle-contract-v1.0.0",
+      "ais-r2-dataset-suitability-contract-v1.0.0",
+      "ais-r2-source-admission-v1.0.0"
+    ],
+    "repro_lock": "git:e11d16beb3eb86409042fe496e3714542ac3adc2;code-tree-sha256:5e878bbac5154127546dd47360c588947f658b70d8d18c33888af8b6dcc17aef",
+    "experiment_intake_declaration": {
+      "status": "experiments_declared",
+      "declared_at": "2026-09-01T16:38:56Z",
+      "declared_by": "scholar"
+    }
+  },
+  "schema_version": "ais-r2-handoff/1.0",
+  "status": "AIS_R2_STATIC_READY_SOURCE_EXPORT_PENDING",
+  "handoff_verdict": "READY_FOR_INDEPENDENT_SOURCE_EXPORT_IMPLEMENTATION_NOT_DATASET_ADMISSION",
+  "repository_lineage": {
+    "branch": "codex/ais-r2-canonical-dataset",
+    "implementation_commit": "e11d16beb3eb86409042fe496e3714542ac3adc2",
+    "parent_commit": "d9dfcecca4f40efd52bdde0956e54b01332c01fd",
+    "implementation_commit_contains_handoff": false
+  },
+  "implemented_scope": [
+    "strict v5 Source Bundle parser with exact file, field, count, timestamp, order, and SHA-256 checks",
+    "atomic canonical Dataset Snapshot v1.1 with seven exact files",
+    "dense deterministic raw-user and raw-item mapping with raw identity preservation",
+    "explicit event-origin and TRAIN-basket preservation",
+    "organic-only novel-purchase validation truth",
+    "organic-only explicit TRAIN-basket Apriori fitting",
+    "validation-only dataset-suitability report with generated-behavior classification",
+    "CLI commands materialize-v5-source and assess-snapshot",
+    "fixture tests for mutation rejection, mapping, split, truth, rules, suitability, and CLI"
+  ],
+  "packaging_correction": {
+    "finding": "The AIS-R0/R1 commit used an unanchored ai-service-v2 .gitignore rule named data/, which excluded src/ai_service_v2/data from Git while local tests could still import those workspace files.",
+    "severity": "MAJOR_REPRODUCIBILITY_FINDING_CORRECTED",
+    "remediation": "The rule is now /data/, and the full source data package is committed in the AIS-R2 implementation commit.",
+    "clean_archive_verification": "PASS",
+    "historical_handoff_modified": false
+  },
+  "quality_gates": [
+    {
+      "gate": "SCOPED_PYTEST",
+      "command": "PYTHONPATH=src ../ai-service/.venv/Scripts/python.exe -m pytest -q",
+      "result": "PASS",
+      "detail": "57 passed"
+    },
+    {
+      "gate": "RUFF_CHECK",
+      "command": "../ai-service/.venv/Scripts/python.exe -m ruff check src tests",
+      "result": "PASS",
+      "detail": "All checks passed"
+    },
+    {
+      "gate": "RUFF_FORMAT",
+      "command": "../ai-service/.venv/Scripts/python.exe -m ruff format --check src tests",
+      "result": "PASS",
+      "detail": "46 files already formatted"
+    },
+    {
+      "gate": "MYPY_STRICT",
+      "command": "PYTHONPATH=src ../ai-service/.venv/Scripts/python.exe -m mypy src tests",
+      "result": "PASS",
+      "detail": "Success: no issues found in 46 source files"
+    },
+    {
+      "gate": "CLEAN_COMMIT_ARCHIVE_REPLAY",
+      "source_commit": "e11d16beb3eb86409042fe496e3714542ac3adc2",
+      "result": "PASS",
+      "detail": "A temporary git archive of ai-service-v2 independently passed 57 tests, Ruff, and mypy; the temporary root was then removed after path validation."
+    },
+    {
+      "gate": "HISTORICAL_IMPORT_SCAN",
+      "result": "PASS",
+      "detail": "No import of the historical ai_service package was found under source or tests."
+    },
+    {
+      "gate": "V1_INFRASTRUCTURE_DEPENDENCY_BOUNDARY",
+      "result": "PASS",
+      "detail": "The source adapter is file-only and adds no FastAPI, ONNX, Docker, PostgreSQL client, SQLAlchemy, or network dependency."
+    }
+  ],
+  "artifact_inventory": {
+    "hash_algorithm": "SHA-256",
+    "implementation": {
+      "path": "ai-service-v2/",
+      "file_count": 61,
+      "sha256": "5e878bbac5154127546dd47360c588947f658b70d8d18c33888af8b6dcc17aef",
+      "definition": "SHA-256 of UTF-8 sorted lines, each line containing file SHA-256, two spaces, repository-relative path, and newline"
+    },
+    "control_artifacts": [
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebuild_ai_service/ais_r2_source_bundle_contract.md",
+        "sha256": "e51ed0cce1847b689ad9bebc1f004351b263c4c77a1aa2ccf6f13ea16b78aee6"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebuild_ai_service/ais_r2_dataset_suitability_contract.md",
+        "sha256": "5def41c292c43c4e8211fba63c75e5705e072ed32ba949fbfb5982e9b1748189"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebuild_ai_service/ais_r2_source_admission.json",
+        "sha256": "641f461ca799fee293be3ceb8a860fe76921359aec211a466785464a1e8c8a56"
+      }
+    ],
+    "self_hash_included": false
+  },
+  "source_admission": {
+    "verdict": "INCOMPLETE_SOURCE_ADMISSION",
+    "generator_candidate_tree_sha256": "a15ad1beb8b728035e5cd333bf23c247c9c8b396519acd24ea7fcace01322587",
+    "real_source_bundle_created": false,
+    "real_canonical_snapshot_created": false,
+    "catalog_provenance_license_language_admitted": false,
+    "dataset_suitability_receipt_created": false,
+    "historical_snapshot_reused": false
+  },
+  "stage_status": [
+    {
+      "stage": "AIS-R0",
+      "status": "COMPLETE_DESIGN_FROZEN"
+    },
+    {
+      "stage": "AIS-R1",
+      "status": "STATIC_PASS_AND_GIT_PACKAGING_CORRECTED_IN_AIS_R2"
+    },
+    {
+      "stage": "AIS-R2",
+      "status": "IMPLEMENTATION_STATIC_PASS_REAL_SOURCE_EXPORT_PENDING"
+    },
+    {
+      "stage": "AIS-R3",
+      "status": "NOT_ADMITTED_INDEPENDENT_EVALUATOR_AUDIT_PENDING"
+    },
+    {
+      "stage": "AIS-R4_TO_R8",
+      "status": "NOT_STARTED_OR_DEFERRED_BY_UPSTREAM_GATES"
+    }
+  ],
+  "scientific_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "fixture_results_are_paper_evidence": false,
+    "official_public_dataset_reproduction_passed": false,
+    "harmonized_v5_run_completed": false,
+    "phase_1e_complete": false
+  },
+  "protected_state": {
+    "pipeline_state_stage1e_modified": false,
+    "historical_ai_service_modified": false,
+    "manuscript_dirty_state_modified": false,
+    "docker_or_wsl_invoked": false,
+    "database_or_generator_invoked": false,
+    "benchmark_or_test_invoked": false
+  },
+  "requested_model_policy": {
+    "critical_design_and_audit": "Sol Ultra Standard",
+    "implementation": "Sol XHigh Standard",
+    "fast_or_priority_allowed": false
+  },
+  "actual_model_metadata": {
+    "model": null,
+    "reasoning": null,
+    "speed": null,
+    "status": "NOT_OBSERVABLE_FROM_WORKSPACE_DO_NOT_INFER"
+  },
+  "next_gate": {
+    "stage": "AIS-R2-SOURCE-EXPORT",
+    "actions": [
+      "implement one bounded read-only Source Bundle exporter and lock its query hash",
+      "independently audit catalog provenance, publication rights, PII, and Vietnamese-language coverage",
+      "export a fresh immutable bundle for one locked benchmark_run_id without resetting or regenerating data",
+      "materialize the real canonical snapshot and replay every source/output hash",
+      "run assess-snapshot and independently review the dataset-suitability receipt"
+    ],
+    "runtime_authorized_by_this_handoff": false,
+    "database_reset_or_generator_rerun_authorized": false,
+    "training_evaluation_or_test_authorized": false,
+    "following_gate": "AIS-R3 independent evaluator formula and parity audit"
+  }
+}
