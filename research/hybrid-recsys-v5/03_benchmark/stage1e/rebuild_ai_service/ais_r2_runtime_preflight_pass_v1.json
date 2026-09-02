@@ -1,0 +1,134 @@
+{
+  "schema_version": "ais-r2-runtime-preflight-receipt/1.0",
+  "stage": "AIS-R2_SOURCE_EXPORT",
+  "observed_at": "2026-09-02T15:06:35.530Z",
+  "verdict": "PASS_READY_FOR_ONE_SOURCE_EXPORT_ATTEMPT",
+  "user_attestation": {
+    "attested_state": "REQUIRED_SUPABASE_PROJECTS_RESTORED",
+    "scope": "EXTERNAL_RUNTIME_STATE_ONLY",
+    "received_at": "2026-09-02",
+    "does_not_authorize_benchmark_training": true
+  },
+  "source_lock": {
+    "commit": "28f593b193e88df76e228fd383a11e694d29550e",
+    "parent": "1131e18d2a952855ceb128b4c472dba3a1c300e5",
+    "exporter_path": "ai-service-v2/tools/export_v5_source_bundle.cjs",
+    "exporter_git_blob_id": "1b62f0a54d7231be9c8603680a8d6d03153c13e0",
+    "exporter_committed_blob_sha256": "81807a58836dc93e4259c8935510b9071c68d4946fa20c1ea7aae7b1af948298",
+    "tracked_tree_clean": true,
+    "unrelated_untracked_manuscript_preserved": true
+  },
+  "catalog_lock": {
+    "catalog_audit_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebuild_ai_service/ais_r2_catalog_audit_private_runtime_v1.json",
+    "catalog_audit_sha256": "94b4a5cb582a694860662fb7135f1f216bb4863119ffdea4561384e0de5fb884",
+    "authorization_scope": "APPROVED_PRIVATE_RESEARCH",
+    "redistribution_authorized": false,
+    "language_status": "PENDING_POST_EXPORT_AUDIT"
+  },
+  "tls_lock": {
+    "profile": "SUPPLIED_CA_REJECT_UNAUTHORIZED",
+    "ca_path": "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r2-source-export/trust/supabase-root-2021.crt",
+    "ca_file_sha256": "700723581420dd1ac98fd7e9ac529f0ef210eadcaf87fc868a3ad7d114c2f3b7",
+    "ca_der_sha256": "807025ad50d4ed219d2c9c7d299c004f824eb00cf7f65afef607d07b72e6cafa",
+    "reject_unauthorized": true
+  },
+  "database_admission": {
+    "credential_values_recorded": false,
+    "auth_database_connected": false,
+    "chat": {
+      "verified_tls": true,
+      "transaction_read_only": true,
+      "relations_present": [
+        "ml_benchmark_run_v1",
+        "ml_benchmark_item_partition_v1",
+        "ml_interaction_event_v1"
+      ]
+    },
+    "catalog": {
+      "verified_tls": true,
+      "transaction_read_only": true,
+      "relations_present": [
+        "product",
+        "category"
+      ]
+    },
+    "order": {
+      "verified_tls": true,
+      "transaction_read_only": true,
+      "relations_present": [
+        "sale_order",
+        "sale_order_detail"
+      ]
+    }
+  },
+  "ready_run_lock": {
+    "ready_run_count": 1,
+    "benchmark_run_id": "benchmark-v5-s42-7f40639b0d-1ace202aaa",
+    "status": "ready",
+    "seed": 42,
+    "catalog_sha256": "7f40639b0d9e35f0649d383067591892354d75a500b572922e0e98efa2c37d0c",
+    "benchmark_spec_sha256": "1ace202aaa8f54204ead66ceabe809b3c51795e097dd71c505f07b8367c80bd2",
+    "expected_event_count": 823371,
+    "published_at": "2026-08-11T21:53:31.670Z",
+    "split_boundaries": {
+      "train_start": "2026-01-01T00:00:00.000Z",
+      "train_end": "2026-06-19T23:59:59.000Z",
+      "val_start": "2026-06-20T00:00:00.000Z",
+      "val_end": "2026-07-10T23:59:59.000Z",
+      "test_start": "2026-07-11T00:00:00.000Z",
+      "test_end": "2026-08-01T23:59:59.000Z"
+    }
+  },
+  "output_admission": {
+    "output_root": "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r2-source-export/attempt-001-provisional",
+    "output_root_preexisting": false,
+    "staging_root_preexisting": false,
+    "c_free_gib": 23.59,
+    "e_free_gib": 112.64,
+    "thresholds": {
+      "c_minimum_gib": 20,
+      "e_minimum_gib": 50
+    }
+  },
+  "command_lock": {
+    "shell": "powershell",
+    "sha256": "d9e66d3b70a726972cd5358959892c9e7241a631d3fd34482230c2c808fdfad7",
+    "command": "$env:SUPABASE_DB_CA_PATH='E:\\UIT\\cv\\materialized-experiments\\hybrid-recsys-v5\\ai-service-v2\\ais-r2-source-export\\trust\\supabase-root-2021.crt'; node ai-service-v2/tools/export_v5_source_bundle.cjs --spec backend/docs/chatbot/seed-product/benchmark-spec-v5.json --catalog-audit research/hybrid-recsys-v5/03_benchmark/stage1e/rebuild_ai_service/ais_r2_catalog_audit_private_runtime_v1.json --run-id benchmark-v5-s42-7f40639b0d-1ace202aaa --source-commit 28f593b193e88df76e228fd383a11e694d29550e --output-root E:\\UIT\\cv\\materialized-experiments\\hybrid-recsys-v5\\ai-service-v2\\ais-r2-source-export\\attempt-001-provisional"
+  },
+  "execution_boundary": {
+    "source_export_authorized": true,
+    "benchmark_training_authorized": false,
+    "test_set_opened": false,
+    "accepted_result_rows": 0,
+    "result_status": "NOT_RUN",
+    "automatic_retry": false
+  },
+  "prior_blocker_disposition": {
+    "receipt": "ais_r2_runtime_admission_failure_receipt_v1.json",
+    "status": "RESOLVED_BY_EXTERNAL_STATE_CHANGE_AND_FRESH_PREFLIGHT"
+  },
+  "material_passport": {
+    "origin_skill": "academic-research-suite/experiment-agent",
+    "origin_mode": "run",
+    "origin_date": "2026-09-02T15:06:35.530Z",
+    "verification_status": "UNVERIFIED",
+    "version_label": "ais-r2-runtime-preflight-pass-v1.0.0",
+    "upstream_dependencies": [
+      "ais-r2-catalog-private-research-authorization-v1.0.0",
+      "ais-r2-windows-checkout-binding-remediation-v1.0.0",
+      "ais-r2-runtime-admission-failure-receipt-v1.0.0"
+    ],
+    "repro_lock": {
+      "source_commit": "28f593b193e88df76e228fd383a11e694d29550e",
+      "ready_run_id": "benchmark-v5-s42-7f40639b0d-1ace202aaa",
+      "catalog_audit_sha256": "94b4a5cb582a694860662fb7135f1f216bb4863119ffdea4561384e0de5fb884",
+      "ca_der_sha256": "807025ad50d4ed219d2c9c7d299c004f824eb00cf7f65afef607d07b72e6cafa",
+      "command_sha256": "d9e66d3b70a726972cd5358959892c9e7241a631d3fd34482230c2c808fdfad7"
+    },
+    "experiment_intake_declaration": {
+      "status": "experiments_declared",
+      "declared_at": "2026-09-01T16:38:56Z",
+      "declared_by": "scholar"
+    }
+  }
+}
