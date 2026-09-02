@@ -1,0 +1,142 @@
+{
+  "automated_evidence": {
+    "automated_audit_sha256": "4de0bbeda07b8b9bd84fcc06963345e4f31ae3fd2e566dcc5f22650aaf2bf64e",
+    "combined_automated_pass": 5200,
+    "combined_automated_pass_rate": 1.0,
+    "lingua_single_language_vietnamese": 5189,
+    "lingua_single_language_vietnamese_rate": 0.9978846153846154,
+    "review_sample_sha256": "ceb06109b5814277296b57df03a765d45b4a9624d2dc87e09bee4861f3c40026",
+    "vietnamese_orthographic_evidence": 5200
+  },
+  "catalog_composition": {
+    "catalog_seed_exact_export_matches": 5200,
+    "catalog_seed_product_rows": 5200,
+    "catalog_seed_sha256": "5821305a6001db6ae2e44156c94b541432b1856279d3e658b0a959e638edb2c0",
+    "composition_status": "UNRESOLVED_WITH_AVAILABLE_ACQUISITION_LINEAGE",
+    "controlled_addition_items": null,
+    "historical_full_metadata_matches": 1,
+    "historical_seed_product_rows": 1380,
+    "historical_seed_sha256": "7b9361f47fbc552cab3997672cabe7883b3c058f7e811d2e6e14b98062207c79",
+    "non_trap_catalog_items": 5177,
+    "original_catalog_items": null,
+    "semantic_trap_items": 23
+  },
+  "content_realism_review": {
+    "criterion": "Flag a row only when its product type and appended packaging, physical unit, or container are strongly incompatible or internally contradictory; stylistic oddity alone is not flagged.",
+    "detector_disagreement_flagged_ids": [
+      2374,
+      2641,
+      3184,
+      4223
+    ],
+    "detector_disagreement_flagged_rows": 4,
+    "detector_disagreement_reviewed_rows": 11,
+    "deterministic_cold_flagged_ids": [
+      2427,
+      2978,
+      2995,
+      4661,
+      5075,
+      5118,
+      5564,
+      5569,
+      5707,
+      6611,
+      6942,
+      7065
+    ],
+    "deterministic_cold_flagged_rows": 12,
+    "deterministic_cold_reviewed_rows": 20,
+    "deterministic_warm_flagged_ids": [
+      2830,
+      2958,
+      3005,
+      3185,
+      3692,
+      4611,
+      5729,
+      6388,
+      6555,
+      6829,
+      7043,
+      7048
+    ],
+    "deterministic_warm_flagged_rows": 12,
+    "deterministic_warm_reviewed_rows": 20,
+    "flagged_unique_rows": 28,
+    "reviewed_unique_rows": 74,
+    "semantic_trap_flagged_rows": 0,
+    "semantic_trap_reviewed_rows": 23,
+    "verdict": "MAJOR_DATASET_QUALITY_FINDING_REQUIRES_V5_DISPOSITION"
+  },
+  "downstream_gate": {
+    "catalog_language_status": "AUDITED",
+    "dataset_suitability_status": "BLOCKED_PENDING_CONTENT_REALISM_DISPOSITION",
+    "recommended_resolution": "Preserve v5 and create a versioned v5.1 catalog with coherent product-package templates, or explicitly narrow v5 to a controlled mechanism benchmark whose text realism is not used to support production or external-validity claims.",
+    "training_or_benchmark_authorized": false
+  },
+  "duplicate_audit": {
+    "normalized_full_metadata_duplicate_excess_rows": 0,
+    "normalized_name_conflicting_metadata_groups": 0,
+    "normalized_name_duplicate_groups": 0
+  },
+  "language_review": {
+    "all_sample_rows_judged_vietnamese": 74,
+    "detector_disagreement_ids": [
+      2042,
+      2331,
+      2374,
+      2426,
+      2641,
+      2782,
+      3029,
+      3184,
+      3370,
+      3892,
+      4223
+    ],
+    "detector_disagreements_judged_vietnamese": 11,
+    "language_verdict": "PASS_VIETNAMESE_LANGUAGE_CONTEXT",
+    "review_basis": "Every private sample row was read for language identity. Brand tokens and implausible generated packaging were not treated as a different language; content realism was recorded independently.",
+    "review_sample_rows": 74
+  },
+  "material_passport": {
+    "experiment_intake_declaration": {
+      "declared_at": "2026-09-01T16:38:56Z",
+      "declared_by": "scholar",
+      "status": "experiments_declared"
+    },
+    "origin_date": "2026-09-02T15:37:24.449Z",
+    "origin_mode": "validate",
+    "origin_skill": "academic-research-suite/experiment-agent",
+    "repro_lock": "source-manifest-file:1191bef69d1b7c8fa9dbfbe7aebedfc30cd9167ef48afb0da3746097199110a9;items:e47585dc226fb5e5421fb3463fc145b209efd85175d0d3775399473a7cd66249;review-sample:ceb06109b5814277296b57df03a765d45b4a9624d2dc87e09bee4861f3c40026",
+    "upstream_dependencies": [
+      "ais-r2-source-export-runtime-attempt-001",
+      "catalog-language-audit/1.0",
+      "lingua-language-detector/1.4.2"
+    ],
+    "verification_status": "ANALYZED",
+    "version_label": "ais-r2-catalog-language-semantic-review-v1.0.0"
+  },
+  "review_authority": {
+    "human_read_attested": false,
+    "reviewer_kind": "CODEX_AGENT_SEMANTIC_REVIEW",
+    "user_decision": "The user authorized acceptance and immediate private-research use of the catalog evidence; this does not fabricate a human-read attestation."
+  },
+  "schema_version": "ais-r2-catalog-language-semantic-review/1.0",
+  "scientific_state": {
+    "ACCEPTED_RESULT_ROWS": 0,
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "execution_authorized": false
+  },
+  "source_binding": {
+    "benchmark_spec_source_sha256": "acef1c62cc2a9a3ae04fdf2f4b2fb24b3eb8d2634f15e085fbe1878be8dc166d",
+    "catalog_language_audit_tool_commit": "56d9ff68b731fe179d49348f91f44be3d08db81b",
+    "items_sha256": "e47585dc226fb5e5421fb3463fc145b209efd85175d0d3775399473a7cd66249",
+    "source_bundle_id": "benchmark-v5-s42-7f40639b0d-1ace202aaa-source-ac9290d8733e",
+    "source_manifest_canonical_sha256": "89df2fdb9523be1236e5931edc04a9775c7dd59052cd5b7eeb70925400e5ff66",
+    "source_manifest_file_sha256": "1191bef69d1b7c8fa9dbfbe7aebedfc30cd9167ef48afb0da3746097199110a9"
+  },
+  "status": "PASS_LANGUAGE_WITH_MAJOR_CONTENT_REALISM_FINDING"
+}
