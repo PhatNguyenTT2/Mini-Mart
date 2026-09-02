@@ -1,0 +1,103 @@
+{
+  "schema_version": "ais-r2-runtime-admission-failure-receipt/1.0",
+  "stage": "AIS-R2_SOURCE_EXPORT",
+  "observed_at": "2026-09-02T13:45:46Z",
+  "verdict": "BLOCKED_STALE_OR_PAUSED_SUPABASE_PROJECT_BINDING",
+  "source_commit": "1131e18d2a952855ceb128b4c472dba3a1c300e5",
+  "source_parent": "03fb6cf0f78d8ce111ed8fec4e4831de454f8530",
+  "exporter": {
+    "path": "ai-service-v2/tools/export_v5_source_bundle.cjs",
+    "git_blob_id": "1b62f0a54d7231be9c8603680a8d6d03153c13e0",
+    "committed_blob_sha256": "81807a58836dc93e4259c8935510b9071c68d4946fa20c1ea7aae7b1af948298",
+    "clean_archive_replay": "PASS"
+  },
+  "catalog_authorization": {
+    "scope": "APPROVED_PRIVATE_RESEARCH",
+    "redistribution_authorized": false,
+    "catalog_audit_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebuild_ai_service/ais_r2_catalog_audit_private_runtime_v1.json",
+    "catalog_audit_sha256": "94b4a5cb582a694860662fb7135f1f216bb4863119ffdea4561384e0de5fb884",
+    "language_status": "PENDING_POST_EXPORT_AUDIT"
+  },
+  "static_validation": {
+    "python_tests": "58_PASS_0_FAIL",
+    "node_exporter_tests": "6_PASS_0_FAIL",
+    "ruff_check": "PASS",
+    "ruff_format_check": "PASS",
+    "mypy": "PASS",
+    "strict_control_json_parse": "PASS",
+    "git_diff_check": "PASS"
+  },
+  "tls_evidence": {
+    "official_guidance_urls": [
+      "https://supabase.com/docs/guides/platform/ssl-enforcement",
+      "https://supabase.com/docs/guides/database/psql"
+    ],
+    "ca_distribution_url": "https://supabase-downloads.s3-ap-southeast-1.amazonaws.com/prod/ssl/prod-ca-2021.crt",
+    "ca_file_path": "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r2-source-export/trust/supabase-root-2021.crt",
+    "ca_file_sha256": "700723581420dd1ac98fd7e9ac529f0ef210eadcaf87fc868a3ad7d114c2f3b7",
+    "ca_file_bytes": 1367,
+    "ca_der_sha256": "807025ad50d4ed219d2c9c7d299c004f824eb00cf7f65afef607d07b72e6cafa",
+    "ca_subject": "Supabase Root 2021 CA",
+    "ca_valid_to": "2031-04-26T10:56:53Z",
+    "self_signature_verified": true,
+    "live_chain_terminal_match_count": 2,
+    "live_chain_terminal_match": true,
+    "default_node_trust_probe": "REJECTED_SELF_SIGNED_CERT_IN_CHAIN",
+    "supplied_ca_probe": "TLS_VERIFICATION_PASSED_TO_POSTGRES_AUTHENTICATION_LAYER"
+  },
+  "database_preflight": {
+    "connection_profiles_checked": [
+      "backend/.env",
+      "backend/.env.prod"
+    ],
+    "credential_values_recorded": false,
+    "remote_endpoints": 3,
+    "read_only_transaction_started": false,
+    "data_query_executed": false,
+    "chat_connection_error_code": "XX000",
+    "chat_connection_error_classification": "POOLER_TENANT_OR_USER_NOT_FOUND",
+    "chat_connection_safe_message": "(ENOTFOUND) tenant/user <redacted> not found",
+    "direct_project_dns": "ENOTFOUND_FOR_ALL_THREE_REQUIRED_DATABASE_BINDINGS",
+    "ready_run_id": null
+  },
+  "runtime_effects": {
+    "source_export_attempt_created": false,
+    "output_root_created": false,
+    "source_bundle_created": false,
+    "model_training_started": false,
+    "test_set_opened": false,
+    "accepted_result_rows": 0,
+    "result_status": "NOT_RUN"
+  },
+  "resume_requirements": [
+    "Restore or replace the Supabase projects referenced by the three required database URLs.",
+    "Place fresh CHATBOT_DATABASE_URL, CATALOG_DATABASE_URL, and ORDER_DATABASE_URL values in backend/.env without committing secrets.",
+    "Replay verified-TLS read-only admission and discover one immutable ready benchmark_run_id.",
+    "Only after admission passes, execute one fresh source export into a previously nonexistent output root."
+  ],
+  "retry_policy": "NO_EXPORT_RETRY_BECAUSE_NO_EXPORT_ATTEMPT_WAS_STARTED; A NEW PREFLIGHT IS REQUIRED AFTER CREDENTIAL OR PROJECT RESTORATION",
+  "benchmark_execution_authorized": false,
+  "source_export_authorized": true,
+  "material_passport": {
+    "origin_skill": "academic-research-suite/experiment-agent",
+    "origin_mode": "run",
+    "origin_date": "2026-09-02T13:45:46Z",
+    "verification_status": "UNVERIFIED",
+    "version_label": "ais-r2-runtime-admission-failure-receipt-v1.0.0",
+    "upstream_dependencies": [
+      "ais-r2-source-export-handoff-v1.0.0",
+      "ais-r2-catalog-private-research-authorization-v1.0.0",
+      "ais-r2-windows-checkout-binding-remediation-v1.0.0"
+    ],
+    "repro_lock": {
+      "source_commit": "1131e18d2a952855ceb128b4c472dba3a1c300e5",
+      "catalog_audit_sha256": "94b4a5cb582a694860662fb7135f1f216bb4863119ffdea4561384e0de5fb884",
+      "ca_der_sha256": "807025ad50d4ed219d2c9c7d299c004f824eb00cf7f65afef607d07b72e6cafa"
+    },
+    "experiment_intake_declaration": {
+      "status": "experiments_declared",
+      "declared_at": "2026-09-01T16:38:56Z",
+      "declared_by": "scholar"
+    }
+  }
+}
