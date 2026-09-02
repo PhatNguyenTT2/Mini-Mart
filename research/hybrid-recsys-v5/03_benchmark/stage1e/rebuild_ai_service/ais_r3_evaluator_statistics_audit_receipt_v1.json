@@ -1,0 +1,580 @@
+{
+  "schema_version": "ais-r3-evaluator-statistics-audit-receipt/1.0",
+  "stage_id": "AIS-R3",
+  "artifact_type": "evaluator_and_statistics_audit_receipt",
+  "created_at": "2026-09-02T19:44:00.923Z",
+  "material_passport": {
+    "origin_skill": "academic-research-suite/experiment-agent",
+    "origin_mode": "validate-static-fail-closed",
+    "origin_date": "2026-09-02T19:44:00.923Z",
+    "verification_status": "VERIFIED",
+    "version_label": "ais-r3-evaluator-statistics-audit-v1.0.0",
+    "integrity_pass_date": "2026-09-02T19:44:00.923Z",
+    "upstream_dependencies": [
+      "ais-r0-protocol-evaluator-contract-v1.0.0",
+      "ais-r0-handoff-v1.0.0",
+      "ais-r0-model-scope-v1.0.0",
+      "ais-r2b-v5.1-dataset-contract-v1.0.0",
+      "ais-r2b-v5.1-canonical-adapter-receipt-v1.0.0",
+      "ais-r2b-v5.1-feature-view-materialization-receipt-v1.0.0",
+      "implementation-commit-e73af9dfe0ff92fc0bafa1954a9515276511d630"
+    ],
+    "repro_lock": {
+      "schema_version": "1.0",
+      "stochasticity_declaration": "LLM outputs are not byte-reproducible. This lockfile documents configuration, not a deterministic replay guarantee.",
+      "ars_version": "3.21.0",
+      "model": {
+        "family": "NOT_OBSERVABLE",
+        "id": "NOT_OBSERVABLE_FROM_WORKSPACE_DO_NOT_INFER",
+        "weight_stable": false
+      },
+      "prompts": {
+        "hash_timing": "skill-load",
+        "skill_md_hash": "sha256:5acb202b13a7dba912091ae5d15a19b88eb3f4e58b4d942649cb35df770ace91",
+        "agents_bundle_hash": "sha256:e50c1303ebcb451304d427ce063651af5d6fa5ab9cc9249e399353714b8bbfe1",
+        "agents_bundle_members": [
+          "ars/experiment-agent/agents/code_runner_agent.md"
+        ]
+      },
+      "materials": {
+        "list_hash": "sha256:98f026e8e56d217075a565d6211020738b3cbd7b5351286b81c1d49d6b7e233b",
+        "count": 12
+      },
+      "external_protocols": {
+        "s2_api_protocol_version": "NOT_USED",
+        "s2_snapshot_available": false
+      },
+      "cross_model": {
+        "enabled": false,
+        "secondary_model_id": null
+      }
+    },
+    "experiment_intake_declaration": {
+      "status": "experiments_declared",
+      "declared_at": "2026-09-01T16:38:56Z",
+      "declared_by": "scholar"
+    },
+    "experiment_provenance": []
+  },
+  "actual_model_metadata": {
+    "model": null,
+    "reasoning": null,
+    "speed": null,
+    "status": "NOT_OBSERVABLE_FROM_WORKSPACE_DO_NOT_INFER"
+  },
+  "requested_model_profile": {
+    "implementation": {
+      "model": "gpt-5.6-sol",
+      "reasoning": "xhigh",
+      "speed": "standard"
+    },
+    "independent_audit": {
+      "model": "gpt-5.6-sol",
+      "reasoning": "ultra",
+      "speed": "standard"
+    },
+    "fast_or_priority_allowed": false,
+    "actual_attestation": "UNAVAILABLE; requested profile is not an actual-runtime attestation"
+  },
+  "ars_workflow_application": {
+    "skill_package": "academic-research-suite",
+    "skill_package_version": "0.1.26",
+    "skill_md_sha256": "5acb202b13a7dba912091ae5d15a19b88eb3f4e58b4d942649cb35df770ace91",
+    "suite_version": "3.21.0",
+    "workflow": {
+      "path": "ars/experiment-agent/WORKFLOW.md",
+      "sha256": "6d984f36be84c3f9249f68ef0c599155978b5a661d172e2bb4db2205fdc720f3"
+    },
+    "references": [
+      {
+        "path": "ars/experiment-agent/references/ars_integration_guide.md",
+        "sha256": "c129b6d889dc52cca921b75311b8988a4ff12df412a19a5530abe05e36a23d16"
+      },
+      {
+        "path": "ars/shared/handoff_schemas.md",
+        "sha256": "3d81dd949e6eb5162e7227d8ee13e65b5a17ab9440db3809cbcea8f63be6c8de"
+      },
+      {
+        "path": "ars/experiment-agent/agents/code_runner_agent.md",
+        "sha256": "e50c1303ebcb451304d427ce063651af5d6fa5ab9cc9249e399353714b8bbfe1"
+      }
+    ],
+    "applied_principles": [
+      "Static formula and fixture parity is distinct from empirical benchmark evidence.",
+      "A model emits scores only; the shared evaluator owns masking, ranking, metrics, denominators, and aggregation.",
+      "Protocol, candidate order, evaluator implementation, and persisted metric artifacts are hash-bound.",
+      "Missing runtime evidence remains NOT_RUN and does not authorize training, evaluation, or TEST.",
+      "Failed attempts are not retried in place and no fallback source, metric, split, or evaluator is inferred."
+    ]
+  },
+  "audit_scope": {
+    "scope": "EVALUATOR_FORMULA_AND_STATISTICS_FIXTURE_PARITY_ONLY",
+    "execution_level": "STATIC_AND_DETERMINISTIC_FIXTURE",
+    "independence_basis": "Hand-calculated oracle assertions and mutation checks are maintained in a separate parity test module; this receipt does not claim cross-model or runtime independence.",
+    "permitted_operations": [
+      "Read frozen contracts and receipts",
+      "Review implementation source",
+      "Run deterministic unit and fixture tests",
+      "Run lint, formatting, type, and source-export tests",
+      "Recalculate local SHA-256 bindings"
+    ],
+    "out_of_scope": [
+      "Repository clone, fetch, or public-source download",
+      "Dataset download or authentication",
+      "Package installation or environment/container creation",
+      "Docker or WSL invocation",
+      "Training, runtime evaluation, benchmark execution, or TEST access",
+      "Scientific acceptance of any benchmark number",
+      "Modification of pipeline_state_stage1e.json or historical ai-service",
+      "Modification of the dirty manuscript tree"
+    ]
+  },
+  "input_binding": {
+    "authoritative_inputs": [
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebuild_ai_service/ais_r0_protocol_evaluator_contract.md",
+        "sha256": "ff5a582a27e3536184e6e59dd1aa8570f2b1e4138dca4bc88b0a9ab1acff3e9b",
+        "role": "protocol_and_shared_evaluator_contract"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebuild_ai_service/ais_r0_handoff.json",
+        "sha256": "b498c2ceb676c57865316668e4186ea60695e91fd3e947490cef46ed96aad7c1",
+        "role": "AIS-R0_stage_and_protected_state_handoff"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebuild_ai_service/ais_r0_input_manifest.json",
+        "sha256": "fc21f536d3369fa16982ffaaf529af484b1cce41cae45e5bd67f1522f1508115",
+        "role": "AIS-R0_frozen_input_and_protected_path_manifest"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebuild_ai_service/ais_r0_model_scope.json",
+        "sha256": "f0068693d7bc207861ac02ddb0618a25ee65b3381886763038ed8b12f48e00c4",
+        "role": "model_and_claim_scope"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebuild_ai_service/ais_r2b_v5_1_dataset_contract.json",
+        "sha256": "c2d437fbf623c08752d9218edc26c9769f8705c3c9bd79ea9666e064a896a781",
+        "role": "canonical_v5.1_dataset_contract"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebuild_ai_service/ais_r2b_v5_1_canonical_adapter_receipt_v1.json",
+        "sha256": "db90df48967a255ca8e686eb93a9a557f7cab22e3c9152f7cafae5d265311bcf",
+        "role": "canonical_v5.1_snapshot_receipt"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebuild_ai_service/ais_r2b_v5_1_feature_view_materialization_receipt_v1.json",
+        "sha256": "70512e888332819f1bd5bc4a8b0c1c5abb4f232cddd8d22a92fa2da2af6a67b5",
+        "role": "v5.1_feature_view_receipt"
+      }
+    ],
+    "material_manifest": {
+      "hash_algorithm": "SHA-256",
+      "hash_basis": "Exact bytes at audit time",
+      "list_sha256": "98f026e8e56d217075a565d6211020738b3cbd7b5351286b81c1d49d6b7e233b",
+      "count": 12,
+        "entries": [
+          {
+          "filename": "C:/Users/ACER/.codex/plugins/cache/ars-codex/ars-codex/0.1.26/skills/academic-research-suite/SKILL.md",
+          "sha256": "5acb202b13a7dba912091ae5d15a19b88eb3f4e58b4d942649cb35df770ace91"
+        },
+        {
+          "filename": "C:/Users/ACER/.codex/plugins/cache/ars-codex/ars-codex/0.1.26/skills/academic-research-suite/ars/experiment-agent/WORKFLOW.md",
+          "sha256": "6d984f36be84c3f9249f68ef0c599155978b5a661d172e2bb4db2205fdc720f3"
+        },
+        {
+          "filename": "C:/Users/ACER/.codex/plugins/cache/ars-codex/ars-codex/0.1.26/skills/academic-research-suite/ars/experiment-agent/references/ars_integration_guide.md",
+          "sha256": "c129b6d889dc52cca921b75311b8988a4ff12df412a19a5530abe05e36a23d16"
+        },
+        {
+          "filename": "C:/Users/ACER/.codex/plugins/cache/ars-codex/ars-codex/0.1.26/skills/academic-research-suite/ars/shared/handoff_schemas.md",
+          "sha256": "3d81dd949e6eb5162e7227d8ee13e65b5a17ab9440db3809cbcea8f63be6c8de"
+        },
+        {
+          "filename": "ai-service-v2/tests/test_r3_formula_parity.py",
+          "sha256": "6a2ae872a7e853c86ae0dc7e0252f20c5ec432444e8523e599ef8a7130494f15"
+        },
+        {
+          "filename": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebuild_ai_service/ais_r0_handoff.json",
+          "sha256": "b498c2ceb676c57865316668e4186ea60695e91fd3e947490cef46ed96aad7c1"
+        },
+        {
+          "filename": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebuild_ai_service/ais_r0_input_manifest.json",
+          "sha256": "fc21f536d3369fa16982ffaaf529af484b1cce41cae45e5bd67f1522f1508115"
+        },
+        {
+          "filename": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebuild_ai_service/ais_r0_model_scope.json",
+          "sha256": "f0068693d7bc207861ac02ddb0618a25ee65b3381886763038ed8b12f48e00c4"
+        },
+        {
+          "filename": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebuild_ai_service/ais_r0_protocol_evaluator_contract.md",
+          "sha256": "ff5a582a27e3536184e6e59dd1aa8570f2b1e4138dca4bc88b0a9ab1acff3e9b"
+        },
+        {
+          "filename": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebuild_ai_service/ais_r2b_v5_1_canonical_adapter_receipt_v1.json",
+          "sha256": "db90df48967a255ca8e686eb93a9a557f7cab22e3c9152f7cafae5d265311bcf"
+        },
+        {
+          "filename": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebuild_ai_service/ais_r2b_v5_1_dataset_contract.json",
+          "sha256": "c2d437fbf623c08752d9218edc26c9769f8705c3c9bd79ea9666e064a896a781"
+        },
+        {
+          "filename": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebuild_ai_service/ais_r2b_v5_1_feature_view_materialization_receipt_v1.json",
+          "sha256": "70512e888332819f1bd5bc4a8b0c1c5abb4f232cddd8d22a92fa2da2af6a67b5"
+        }
+      ]
+    },
+    "canonical_v5_1_snapshot": {
+      "output_root": "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r2b-v5.1-canonical/attempt-001",
+      "dataset_id": "benchmark-v5-s42-7f40639b0d-1ace202aaa-canonical-v5.1-family-view",
+      "dataset_sha256": "21f7b93bad51d6fa3c69ce849a1931f634539f4fc8f475b00c17de0b5d977194",
+      "manifest_canonical_sha256": "7920964be1b449dad9a3ed2e8a6c783fc22d383b55ea3d36a389c3cabd6340a6",
+      "num_users": 5000,
+      "num_items": 5200,
+      "num_interactions": 823371,
+      "snapshot_is_input_only": true,
+      "test_set_opened": false
+    }
+  },
+  "implementation_binding": {
+    "repository_branch": "codex/ais-r2-source-export",
+    "implementation_commit": "e73af9dfe0ff92fc0bafa1954a9515276511d630",
+    "implementation_parent": "46ff7b716f37ee0246635f08024af25bd6c7a5f5",
+    "commit_subject": "feat(research): harden AIS-R3 evaluator and statistics",
+    "code_root": "ai-service-v2/",
+    "code_tree": {
+      "file_count": 68,
+      "sha256": "4a0537135ea2689a166e41c4da92ea9ac3a0c97de2b1e200bb8a27792b453505",
+      "definition": "SHA-256 of sorted committed-file SHA-256 lines, each followed by two spaces, repository-relative path, and LF; generated/untracked files excluded"
+    },
+    "evaluator_source_bundle": {
+      "schema_version": "evaluator-implementation/1.0",
+      "sha256": "04e36c57c652c3ea460f73bc2b34ffaa080de3fd940e97a087613af9babc93b4",
+      "hash_basis": "Canonical JSON of schema_version and exact source-file SHA-256 map",
+      "files": [
+        {
+          "path": "src/ai_service_v2/evaluation/evaluator.py",
+          "sha256": "8898d1492d4cdde78f28f0ddd20bf14576e4aa971c1c0fad1578204653ffdadd"
+        },
+        {
+          "path": "src/ai_service_v2/evaluation/metrics.py",
+          "sha256": "7f1d57837eea27d6f92691cdd7fb5fe4bb30ac0d82b459d900c3906e5c1ae389"
+        },
+        {
+          "path": "src/ai_service_v2/protocol.py",
+          "sha256": "58acca29fc0e68c8b481d3d731d18814895891ae45ce0ae29647bb1669e123ee"
+        }
+      ]
+    },
+    "supporting_bound_files": [
+      {
+        "path": "src/ai_service_v2/contracts.py",
+        "sha256": "0790f25a9acfc1c3af7ab3d1f77765f551481a1797e082ac2701b895cdd8cee2"
+      },
+      {
+        "path": "src/ai_service_v2/evaluation/persistence.py",
+        "sha256": "d7a524cfc4a31280e60897e06792a3e3349599604d5bbd5440eaf40c4360882e"
+      },
+      {
+        "path": "src/ai_service_v2/statistics/bootstrap.py",
+        "sha256": "71a0f9b8cbaef606d5b350a427f3d0b9c8cb89b0d3d286140d6765facc338427"
+      },
+      {
+        "path": "src/ai_service_v2/evaluation/__init__.py",
+        "sha256": "abc46f9efd0afc9a35b27620e05d6e82c869acc98828c1299c9babf200c824fc"
+      }
+    ],
+    "parity_test": {
+      "path": "tests/test_r3_formula_parity.py",
+      "sha256": "6a2ae872a7e853c86ae0dc7e0252f20c5ec432444e8523e599ef8a7130494f15"
+    },
+    "implementation_summary": [
+      "EvaluationReceipt binds protocol manifest, candidate order, and evaluator implementation hashes.",
+      "FullCatalogEvaluator applies evaluator-owned seen-item masking and emits source-bound receipts.",
+      "Ranking metrics validate complete positive/negative/excluded partitions and deterministic raw-ID ties.",
+      "Persisted evaluation bundles require canonical JSON bytes and current evaluator implementation identity.",
+      "Hierarchical bootstrap validates controls and preserves seed-then-user paired resampling; Holm correction is deterministic and fail-closed."
+    ]
+  },
+  "formula_and_semantics_audit": {
+    "protocol": {
+      "candidate_scope": "FULL_CATALOG",
+      "candidate_order": "FROZEN_AND_HASH_BOUND",
+      "seen_masking": "EVALUATOR_MASKS_ALL_HISTORY_ITEMS_TO_NEGATIVE_INFINITY",
+      "tie_break": "DESCENDING_SCORE_THEN_ASCENDING_RAW_PRODUCT_ID",
+      "default_cutoff": 10,
+      "score_boundary": "MODEL_EMITS_SCORES_ONLY",
+      "test_state": "SEALED_DURING_AIS-R3"
+    },
+    "metrics": [
+      {
+        "metric": "HR@K",
+        "definition": "1 iff at least one positive item occurs in the deterministic top-K available catalog; otherwise 0",
+        "aggregation": "macro mean over eligible users",
+        "denominator": "number of eligible users",
+        "undefined_handling": "not applicable when the protocol has no eligible users; evaluator fails closed",
+        "status": "PASS"
+      },
+      {
+        "metric": "NDCG@K",
+        "definition": "binary relevance DCG divided by binary ideal DCG, with one-based logarithmic ranks",
+        "aggregation": "macro mean over eligible users",
+        "denominator": "number of eligible users",
+        "undefined_handling": "not applicable when the protocol has no eligible users; evaluator fails closed",
+        "status": "PASS"
+      },
+      {
+        "metric": "GAUC",
+        "definition": "exact tie-aware AUC between novel positives and unseen non-positives for each user",
+        "aggregation": "macro mean over users with both classes defined",
+        "denominator": "number of users with a defined per-user AUC",
+        "undefined_handling": "null per-user value is retained and excluded from the GAUC denominator; no imputation",
+        "status": "PASS"
+      }
+    ],
+    "statistics": {
+      "final_seed_schedule": [42, 2027, 31415],
+      "hierarchical_paired_bootstrap": {
+        "replicates": 2000,
+        "resampling_order": "seed_occurrences_then_users_within_each_selected_seed",
+        "pairing": "same_selected_seed_and_user_indices_for_candidate_and_comparator",
+        "pre_aggregation_rule": "do_not_average_seed_vectors_before_bootstrap",
+        "interval": "quantile_0.025_to_0.975",
+        "status": "PASS_STATIC_IMPLEMENTATION"
+      },
+      "holm_correction": {
+        "scope": "exploratory_multiple_comparisons_only",
+        "input_validation": "finite_numeric_p_values_in_[0,1]",
+        "ordering": "ascending_p_value_then_lexicographic_name",
+        "status": "PASS_STATIC_IMPLEMENTATION"
+      }
+    },
+    "fixture_oracles": [
+      {
+        "id": "R3-FORMULA-001",
+        "test": "test_full_catalog_oracle_covers_mask_ties_and_primary_metrics",
+        "expected": {
+          "user_0_top_k": [2, 3, 4],
+          "user_1_top_k": [4, 3, 0],
+          "HR@3": [1.0, 1.0],
+          "NDCG@3": [1.0, 0.6309297535714575],
+          "GAUC": [1.0, 0.75],
+          "aggregate_GAUC": 0.875
+        },
+        "observed": "Exact equality for discrete/rank outputs and asserted floating-point values in the test",
+        "status": "PASS"
+      },
+      {
+        "id": "R3-FORMULA-002",
+        "test": "test_metric_formula_oracle_uses_binary_ndcg_and_exact_tie_aware_auc",
+        "expected": {
+          "HR@3": 1.0,
+          "NDCG@3": 0.9197207891481876,
+          "GAUC": 0.75
+        },
+        "observed": "NDCG uses the binary ideal ranking and GAUC uses the exact tie-aware pairwise rank formula",
+        "status": "PASS"
+      },
+      {
+        "id": "R3-FORMULA-003",
+        "test": "test_hierarchical_bootstrap_matches_the_registered_seed_user_schedule",
+        "expected": "Seven-replicate seed=19 oracle reproduces the registered seed-then-user PCG64 schedule",
+        "observed": "Exact interval and mean match the independently written schedule oracle",
+        "status": "PASS"
+      }
+    ],
+    "integrity_bindings": {
+      "protocol_manifest_hash": "computed_from_canonical_protocol_manifest_at_evaluation_time",
+      "candidate_order_hash": "computed_and_checked_against_internal_and_raw_catalog_order",
+      "evaluator_implementation_hash": "04e36c57c652c3ea460f73bc2b34ffaa080de3fd940e97a087613af9babc93b4",
+      "persisted_receipt_replay": "current evaluator hash, protocol hash, candidate hash, per-user hash, denominators, aggregates, and canonical bytes are checked"
+    }
+  },
+  "parity_checks": [
+    {
+      "check_id": "R3-P-001",
+      "description": "Full-catalog masking is applied by the evaluator rather than delegated to a scorer",
+      "evidence": "test_full_catalog_oracle_covers_mask_ties_and_primary_metrics",
+      "result": "PASS"
+    },
+    {
+      "check_id": "R3-P-002",
+      "description": "Raw product ID is the deterministic secondary tie key",
+      "evidence": "test_full_catalog_oracle_covers_mask_ties_and_primary_metrics and test_ties_use_raw_item_id_as_secondary_order",
+      "result": "PASS"
+    },
+    {
+      "check_id": "R3-P-003",
+      "description": "HR, binary NDCG, and tie-aware exact AUC match hand-calculated oracles",
+      "evidence": "test_metric_formula_oracle_uses_binary_ndcg_and_exact_tie_aware_auc",
+      "result": "PASS"
+    },
+    {
+      "check_id": "R3-P-004",
+      "description": "Excluded candidates must be negative-infinity masked and are removed from ranked output",
+      "evidence": "test_excluded_candidates_must_be_the_evaluator_mask",
+      "result": "PASS"
+    },
+    {
+      "check_id": "R3-P-005",
+      "description": "Protocol candidate order, TEST state, and supplied dataset hash drift fail closed",
+      "evidence": "test_prepared_protocol_rejects_catalog_or_test_state_drift and test_build_protocol_rejects_a_supplied_dataset_hash_drift",
+      "result": "PASS"
+    },
+    {
+      "check_id": "R3-P-006",
+      "description": "Evaluator source bundle and protocol/candidate hashes are bound into the evaluation receipt",
+      "evidence": "test_receipt_binds_the_exact_evaluator_source_bundle",
+      "result": "PASS"
+    },
+    {
+      "check_id": "R3-P-007",
+      "description": "Persisted receipt rejects evaluator implementation hash substitution",
+      "evidence": "test_persisted_receipt_rejects_evaluator_hash_substitution",
+      "result": "PASS"
+    },
+    {
+      "check_id": "R3-P-008",
+      "description": "Hierarchical bootstrap preserves registered seed/user pairing schedule",
+      "evidence": "test_hierarchical_bootstrap_matches_the_registered_seed_user_schedule",
+      "result": "PASS"
+    },
+    {
+      "check_id": "R3-P-009",
+      "description": "Holm adjustment is deterministic and rejects non-finite or non-numeric p-values",
+      "evidence": "test_holm_is_deterministic_and_rejects_nonfinite_or_non_numeric_values",
+      "result": "PASS"
+    },
+    {
+      "check_id": "R3-P-010",
+      "description": "Existing protocol, evaluator, metric, persistence, and statistics regression suites remain green",
+      "evidence": "72 passed static Python tests",
+      "result": "PASS"
+    }
+  ],
+  "static_quality_gates": [
+    {
+      "gate": "PYTHON_TESTS",
+      "command": "$env:PYTHONPATH='src'; E:\\UIT\\cv\\backend\\ai-service\\.venv\\Scripts\\python.exe -m pytest -q",
+      "result": "PASS",
+      "detail": "72 passed in 1.44s"
+    },
+    {
+      "gate": "RUFF_CHECK",
+      "command": "$env:PYTHONPATH='src'; E:\\UIT\\cv\\backend\\ai-service\\.venv\\Scripts\\python.exe -m ruff check .",
+      "result": "PASS",
+      "detail": "All checks passed"
+    },
+    {
+      "gate": "RUFF_FORMAT_CHECK",
+      "command": "$env:PYTHONPATH='src'; E:\\UIT\\cv\\backend\\ai-service\\.venv\\Scripts\\python.exe -m ruff format --check .",
+      "result": "PASS",
+      "detail": "54 files already formatted"
+    },
+    {
+      "gate": "MYPY_STRICT",
+      "command": "$env:PYTHONPATH='src'; E:\\UIT\\cv\\backend\\ai-service\\.venv\\Scripts\\python.exe -m mypy src tests",
+      "result": "PASS",
+      "detail": "Success: no issues found in 49 source files"
+    },
+    {
+      "gate": "NODE_SOURCE_EXPORT_TESTS",
+      "command": "node --test tools/tests/export_v5_source_bundle.test.cjs",
+      "result": "PASS",
+      "detail": "6 passed, 0 failed"
+    },
+    {
+      "gate": "GIT_DIFF_CHECK",
+      "command": "git diff --check",
+      "result": "PASS",
+      "detail": "No whitespace errors before implementation commit"
+    }
+  ],
+  "non_gate_observations": [
+    {
+      "observation": "An initial pytest invocation without PYTHONPATH=src returned ModuleNotFoundError for ai_service_v2.",
+      "classification": "NOT_COUNTED_GATE_INVOCATION_ERROR",
+      "disposition": "The declared command packet was corrected to include PYTHONPATH=src; the complete 72-test gate then passed. No source or scientific artifact was changed by the failed invocation."
+    }
+  ],
+  "forbidden_operations": {
+    "repository_clone": false,
+    "repository_fetch": false,
+    "public_source_download": false,
+    "dataset_download": false,
+    "checkpoint_or_asset_download": false,
+    "authenticated_access_or_terms_acceptance": false,
+    "package_installation": false,
+    "environment_or_container_creation": false,
+    "docker_invoked": false,
+    "wsl_invoked": false,
+    "preprocessing_execution": false,
+    "training_execution": false,
+    "runtime_evaluation_execution": false,
+    "benchmark_execution": false,
+    "test_set_access": false,
+    "test_protocol_opened": false,
+    "static_tests_invoked": true,
+    "pipeline_state_modified": false,
+    "historical_ai_service_modified": false,
+    "manuscript_modified": false
+  },
+  "scientific_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "fixture_results_are_paper_evidence": false,
+    "official_public_dataset_reproduction_passed": false,
+    "harmonized_v5_run_completed": false,
+    "phase_1e_complete": false,
+    "benchmark_numbers_valid_for_paper": false
+  },
+  "protected_state": {
+    "pipeline_state_stage1e_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/pipeline_state_stage1e.json",
+    "pipeline_state_stage1e_sha256": "7008657dfcbe138321c68dc3b2632265f16bfb05084c9686ae7eb95706c3a970",
+    "pipeline_state_stage1e_modified": false,
+    "historical_ai_service_modified": false,
+    "manuscript_dirty_state_modified": false,
+    "canonical_v5_snapshot_modified": false,
+    "runtime_output_root_created": false
+  },
+  "output": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebuild_ai_service/ais_r3_evaluator_statistics_audit_receipt_v1.json",
+    "exact_file_count": 1,
+    "exact_file_set": [
+      "ais_r3_evaluator_statistics_audit_receipt_v1.json"
+    ],
+    "encoding": "UTF-8",
+    "json_policy": "Strict object JSON; no BOM, duplicate keys, case-colliding keys, unknown required fields, or non-finite constants",
+    "canonical_bytes": false,
+    "canonical_bytes_note": "The receipt is human-readable pretty-printed JSON; strict parsing and semantic canonicalization are validated, while the self-hash is reported out-of-band.",
+    "self_hash_policy": "Receipt SHA-256 is reported out-of-band after the receipt commit and is not embedded in this self-referential document"
+  },
+  "repository_lineage": {
+    "implementation_branch": "codex/ais-r2-source-export",
+    "implementation_commit": "e73af9dfe0ff92fc0bafa1954a9515276511d630",
+    "implementation_parent": "46ff7b716f37ee0246635f08024af25bd6c7a5f5",
+    "receipt_commit": null,
+    "receipt_commit_policy": "The receipt is committed after byte validation; its commit SHA is reported out-of-band to avoid self-reference."
+  },
+  "next_gate": {
+    "status": "READY_FOR_AIS_R4_AND_AIS_R5_PLANNING",
+    "AIS-R4": "Official RecBole/public-dataset reproduction may be prepared only after source/data/environment admission; no runtime authorization is granted by this receipt.",
+    "AIS-R5": "Proposed Deep/Rule/Hybrid adapters may be implemented against the admitted canonical v5.1 snapshot and shared evaluator; no TEST authorization is granted by this receipt.",
+    "required_runtime_controls": [
+      "Fresh runtime attempt root",
+      "Source/data/environment command packet",
+      "Central admission and explicit runtime confirmation",
+      "Independent audit of runtime receipts before accepting any result row"
+    ],
+    "blocked_claims_until_future_gates": [
+      "Hybrid superiority",
+      "Benchmark improvement",
+      "Production effectiveness",
+      "External validity",
+      "Official public-dataset reproduction result"
+    ]
+  },
+  "verdict": "PASS_AIS_R3_EVALUATOR_AND_STATISTICS_AUDIT_READY_FOR_AIS_R4_R5",
+  "fail_closed": true
+}
