@@ -19,7 +19,12 @@ fixture-parity implementation gate: the evaluator binds its exact source
 bundle, owns full-catalog masking/ranking/aggregation, and persisted receipts
 bind the protocol and candidate-order hashes. No public dataset has been
 downloaded, no reference repository has been executed, no training/evaluation
-benchmark has been run, and no paper result is emitted by this package.
+benchmark has been run, and no paper result is emitted by this package. AIS-R5
+candidate implementation now excludes every TRAIN-history item from BPR
+negative sampling, hash-binds feature and fusion controls, applies an explicit
+per-user component normalization, and can persist separate Deep, Wide, and
+Hybrid score surfaces. These remain static/fixture-tested capabilities pending
+R5 admission and a validation-only runtime.
 
 The old service is not a scientific baseline. Its checkpoints, embeddings,
 rules, benchmark numbers, and configurations are not imported here.
@@ -62,7 +67,10 @@ dataset.
 `train --model-kind` supports the local fixture registry (`random`, `mostpop`,
 `rule_only`, `deep_two_tower`, and `hybrid`). These implementations exercise
 the score-artifact and evaluator seams; they are not reference reproductions or
-paper baselines.
+paper baselines. Non-fixture training additionally requires an immutable
+environment-lock file and exact command-text binding. Hybrid attribution uses
+`export-score-components`; that command is validation-only and refuses a TEST
+protocol.
 
 The current tests use only small in-memory fixtures. They are not benchmark
 results and must not be copied into the manuscript.

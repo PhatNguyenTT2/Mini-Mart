@@ -307,17 +307,47 @@ class HybridScorer:
     """Additive fusion with a frozen, explicit wide coefficient."""
 
     def __init__(
-        self, deep: TrainedTwoTower, wide: RuleOnlyScorer, *, wide_weight: float = 1.0
+        self,
+        deep: TrainedTwoTower,
+        wide: RuleOnlyScorer,
+        *,
+        wide_weight: float = 1.0,
+        fusion_normalization: str = "none",
     ) -> None:
         if not math.isfinite(wide_weight) or wide_weight < 0:
             raise ContractError("wide_weight must be finite and non-negative")
+        if fusion_normalization not in {"none", "per_user_zscore"}:
+            raise ContractError("unsupported hybrid fusion normalization")
         self.deep = deep
         self.wide = wide
         self.wide_weight = wide_weight
+        self.fusion_normalization = fusion_normalization
+
+    def _normalize(self, values: np.ndarray) -> np.ndarray:
+        if self.fusion_normalization == "none":
+            return values
+        standard_deviation = float(np.std(values))
+        if standard_deviation <= 1e-12:
+            return np.zeros_like(values, dtype=np.float64)
+        return np.asarray((values - float(np.mean(values))) / standard_deviation, dtype=np.float64)
+
+    def deep_component_scores(
+        self, user_id: int, candidate_item_ids: tuple[int, ...]
+    ) -> np.ndarray:
+        """Return the exact normalized Deep component consumed by fusion."""
+
+        return self._normalize(self.deep.deep_scores(user_id, candidate_item_ids))
+
+    def wide_component_scores(
+        self, user_id: int, candidate_item_ids: tuple[int, ...]
+    ) -> np.ndarray:
+        """Return the exact normalized Wide component consumed by fusion."""
+
+        return self._normalize(self.wide(user_id, candidate_item_ids))
 
     def breakdown(self, user_id: int, candidate_item_ids: tuple[int, ...]) -> HybridScoreBreakdown:
-        deep_scores = self.deep.deep_scores(user_id, candidate_item_ids)
-        wide_scores = self.wide(user_id, candidate_item_ids)
+        deep_scores = self.deep_component_scores(user_id, candidate_item_ids)
+        wide_scores = self.wide_component_scores(user_id, candidate_item_ids)
         hybrid_scores = deep_scores + self.wide_weight * wide_scores
         return HybridScoreBreakdown(deep_scores, wide_scores, hybrid_scores)
 
@@ -366,22 +396,25 @@ def _train_pairs(
     rng = np.random.Generator(np.random.PCG64(seed))
     all_items = np.arange(snapshot.manifest.num_items, dtype=np.int64)
     seen: dict[int, set[int]] = defaultdict(set)
-    positives: list[tuple[int, int]] = []
+    positives_by_user: dict[int, list[int]] = defaultdict(list)
     for event in snapshot.events_by_split["train"]:
-        if event.event_type != "purchase":
-            continue
         seen[event.user_id].add(event.item_id)
-        positives.append((event.user_id, event.item_id))
+        if event.event_type == "purchase":
+            positives_by_user[event.user_id].append(event.item_id)
     pairs: list[tuple[int, int, int]] = []
-    for user_id, positive in positives:
-        available = np.asarray(
-            [item for item in all_items if int(item) not in seen[user_id]], dtype=np.int64
+    for user_id in sorted(positives_by_user):
+        seen_items = np.fromiter(sorted(seen[user_id]), dtype=np.int64)
+        available = np.setdiff1d(
+            all_items,
+            seen_items,
+            assume_unique=True,
         )
         if not len(available):
             continue
-        for _ in range(negatives_per_positive):
-            negative = int(available[rng.integers(0, len(available))])
-            pairs.append((user_id, positive, negative))
+        for positive in positives_by_user[user_id]:
+            for _ in range(negatives_per_positive):
+                negative = int(available[rng.integers(0, len(available))])
+                pairs.append((user_id, positive, negative))
     if not pairs:
         raise ContractError("training data produced no valid BPR pairs")
     return pairs
@@ -470,6 +503,7 @@ def train_two_tower(
     config: TwoTowerConfig | None = None,
     seed: int = 42,
     model_id: str = "independent-deep-two-tower-v1",
+    descriptor: ModelDescriptor | None = None,
 ) -> tuple[TrainedTwoTower, TrainingReport]:
     """Train a deterministic BPR two-tower candidate on TRAIN only."""
 
@@ -480,6 +514,7 @@ def train_two_tower(
         raise ContractError("seed must be non-negative")
     parameters = _initial_parameters(snapshot, features.values.shape[1], config, seed)
     pairs = _train_pairs(snapshot, seed, config.negatives_per_positive)
+    training_features = features.values.astype(np.float64)
     losses: list[float] = []
     update_count = 0
     for _epoch in range(config.epochs):
@@ -488,7 +523,7 @@ def train_two_tower(
             epoch_losses.append(
                 _apply_pair_update(
                     parameters,
-                    features.values.astype(np.float64),
+                    training_features,
                     user_id,
                     positive,
                     negative,
@@ -499,18 +534,32 @@ def train_two_tower(
             update_count += 1
         losses.append(float(np.mean(epoch_losses)))
     config_hash = canonical_json_sha256(config.to_mapping())
-    descriptor = ModelDescriptor(
-        model_id=model_id,
-        family="deep_two_tower",
-        implementation_provenance="local-research-runner-v1",
-        repository_url=None,
-        repository_commit=None,
-        objective="pairwise_bpr",
-        negative_sampler="train_seen_exclusion_pcg64",
-        input_features=("user_id", "train_history", "item_text_features", "category", "price"),
-        config_sha256=config_hash,
-        adapter_revision="ai-service-v2:proposed:v1",
-    )
+    if descriptor is None:
+        descriptor = ModelDescriptor(
+            model_id=model_id,
+            family="deep_two_tower",
+            implementation_provenance="local-research-runner-v1",
+            repository_url=None,
+            repository_commit=None,
+            objective="pairwise_bpr",
+            negative_sampler="train_seen_exclusion_pcg64",
+            input_features=(
+                "user_id",
+                "train_history",
+                "item_text_features",
+                "category",
+                "price",
+            ),
+            config_sha256=config_hash,
+            adapter_revision="ai-service-v2:proposed:v1",
+        )
+    elif (
+        descriptor.model_id != model_id
+        or descriptor.objective != "pairwise_bpr"
+        or descriptor.negative_sampler != "train_seen_exclusion_pcg64"
+        or descriptor.adapter_revision != "ai-service-v2:proposed:v1"
+    ):
+        raise ContractError("supplied two-tower descriptor is incompatible with the trainer")
     history = defaultdict(set)
     for event in snapshot.events_by_split["train"]:
         history[event.user_id].add(event.item_id)

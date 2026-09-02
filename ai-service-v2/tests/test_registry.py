@@ -5,7 +5,12 @@ from pathlib import Path
 from ai_service_v2.data.snapshot import Snapshot
 from ai_service_v2.evaluation.evaluator import FullCatalogEvaluator
 from ai_service_v2.hashing import load_strict_json
-from ai_service_v2.models.registry import ModelRunSpec, default_spec, train_local_model
+from ai_service_v2.models.registry import (
+    ModelRunSpec,
+    default_spec,
+    descriptor_for_spec,
+    train_local_model,
+)
 from ai_service_v2.protocol import build_protocol
 
 CONFIG_ROOT = Path(__file__).parents[1] / "configs"
@@ -35,3 +40,29 @@ def test_example_registry_configs_are_strict_and_cover_local_models() -> None:
         "hybrid",
     }
     assert len({spec.model_id for spec in specs}) == len(specs)
+
+
+def test_hybrid_descriptor_hash_binds_fusion_and_feature_controls() -> None:
+    base = default_spec("hybrid", feature_dimensions=16, wide_weight=0.5)
+    changed_weight = default_spec("hybrid", feature_dimensions=16, wide_weight=0.75)
+    changed_normalization = default_spec(
+        "hybrid",
+        feature_dimensions=16,
+        wide_weight=0.5,
+        fusion_normalization="none",
+    )
+    changed_features = default_spec("hybrid", feature_dimensions=32, wide_weight=0.5)
+    hashes = {
+        descriptor_for_spec(spec).config_sha256
+        for spec in (base, changed_weight, changed_normalization, changed_features)
+    }
+    assert len(hashes) == 4
+
+
+def test_legacy_model_spec_round_trips_without_rewriting_its_hash_surface() -> None:
+    current = default_spec("hybrid", feature_dimensions=8).to_mapping()
+    legacy = {key: value for key, value in current.items() if key != "fusion_normalization"}
+    legacy["schema_version"] = "model-run-spec/1.0"
+    parsed = ModelRunSpec.from_mapping(legacy)
+    assert parsed.fusion_normalization == "none"
+    assert parsed.to_mapping() == legacy

@@ -30,6 +30,7 @@ from ai_service_v2.models.proposed import (
 from ai_service_v2.protocol import PreparedProtocol
 
 MODEL_KINDS = frozenset({"random", "mostpop", "rule_only", "deep_two_tower", "hybrid"})
+FUSION_NORMALIZATIONS = frozenset({"none", "per_user_zscore"})
 
 
 @dataclass(frozen=True)
@@ -41,10 +42,14 @@ class ModelRunSpec:
     two_tower: dict[str, Any] | None
     wide_weight: float
     rule_min_support: int
+    fusion_normalization: str
+    schema_version: str = "model-run-spec/1.1"
 
     def __post_init__(self) -> None:
         if self.model_kind not in MODEL_KINDS:
             raise ContractError(f"unsupported model kind: {self.model_kind}")
+        if self.schema_version not in {"model-run-spec/1.0", "model-run-spec/1.1"}:
+            raise ContractError("unsupported model run spec schema")
         if not self.model_id or not self.feature_source:
             raise ContractError("model spec identity fields are required")
         if self.feature_dimensions < 4:
@@ -53,6 +58,11 @@ class ModelRunSpec:
             raise ContractError("wide_weight must be finite and non-negative")
         if self.rule_min_support < 1:
             raise ContractError("rule_min_support must be positive")
+        if self.model_kind == "hybrid":
+            if self.fusion_normalization not in FUSION_NORMALIZATIONS:
+                raise ContractError("unsupported hybrid fusion normalization")
+        elif self.fusion_normalization != "not_applicable":
+            raise ContractError("fusion normalization is only valid for hybrid models")
         needs_deep = self.model_kind in {"deep_two_tower", "hybrid"}
         if needs_deep and self.two_tower is None:
             raise ContractError("deep and hybrid specs require two_tower config")
@@ -62,8 +72,8 @@ class ModelRunSpec:
             raise ContractError("wide_weight is only valid for hybrid models")
 
     def to_mapping(self) -> dict[str, Any]:
-        return {
-            "schema_version": "model-run-spec/1.0",
+        result = {
+            "schema_version": self.schema_version,
             "model_kind": self.model_kind,
             "model_id": self.model_id,
             "feature_source": self.feature_source,
@@ -72,10 +82,13 @@ class ModelRunSpec:
             "wide_weight": self.wide_weight,
             "rule_min_support": self.rule_min_support,
         }
+        if self.schema_version == "model-run-spec/1.1":
+            result["fusion_normalization"] = self.fusion_normalization
+        return result
 
     @classmethod
     def from_mapping(cls, value: dict[str, Any]) -> ModelRunSpec:
-        required = {
+        legacy_required = {
             "schema_version",
             "model_kind",
             "model_id",
@@ -85,7 +98,15 @@ class ModelRunSpec:
             "wide_weight",
             "rule_min_support",
         }
-        if set(value) != required or value["schema_version"] != "model-run-spec/1.0":
+        current_required = legacy_required | {"fusion_normalization"}
+        schema_version = value.get("schema_version")
+        if schema_version == "model-run-spec/1.0" and set(value) == legacy_required:
+            fusion_normalization = (
+                "none" if value.get("model_kind") == "hybrid" else "not_applicable"
+            )
+        elif schema_version == "model-run-spec/1.1" and set(value) == current_required:
+            fusion_normalization = value["fusion_normalization"]
+        else:
             raise ContractError("model run spec fields do not match schema")
         dimensions = value["feature_dimensions"]
         if isinstance(dimensions, bool) or not isinstance(dimensions, int):
@@ -99,6 +120,8 @@ class ModelRunSpec:
         two_tower = value["two_tower"]
         if two_tower is not None and not isinstance(two_tower, dict):
             raise ContractError("two_tower must be an object or null")
+        if not isinstance(fusion_normalization, str):
+            raise ContractError("fusion_normalization must be a string")
         return cls(
             model_kind=value["model_kind"],
             model_id=value["model_id"],
@@ -107,6 +130,8 @@ class ModelRunSpec:
             two_tower=two_tower,
             wide_weight=float(wide_weight),
             rule_min_support=min_support,
+            fusion_normalization=fusion_normalization,
+            schema_version=schema_version,
         )
 
 
@@ -128,6 +153,7 @@ def default_spec(
     two_tower_config: TwoTowerConfig | None = None,
     wide_weight: float = 1.0,
     rule_min_support: int = 1,
+    fusion_normalization: str = "per_user_zscore",
     model_id: str | None = None,
 ) -> ModelRunSpec:
     defaults = {
@@ -147,13 +173,26 @@ def default_spec(
         two_tower=None if config is None else config.to_mapping(),
         wide_weight=wide_weight if model_kind == "hybrid" else 0.0,
         rule_min_support=rule_min_support,
+        fusion_normalization=(fusion_normalization if model_kind == "hybrid" else "not_applicable"),
     )
 
 
 def descriptor_for_spec(spec: ModelRunSpec) -> ModelDescriptor:
     if spec.model_kind in {"deep_two_tower", "hybrid"}:
         assert spec.two_tower is not None
-        config_hash = canonical_json_sha256(spec.two_tower)
+        if spec.schema_version == "model-run-spec/1.0":
+            config_hash = canonical_json_sha256(spec.two_tower)
+        else:
+            config_hash = canonical_json_sha256(
+                {
+                    "feature_source": spec.feature_source,
+                    "feature_dimensions": spec.feature_dimensions,
+                    "two_tower": spec.two_tower,
+                    "wide_weight": spec.wide_weight,
+                    "rule_min_support": spec.rule_min_support,
+                    "fusion_normalization": spec.fusion_normalization,
+                }
+            )
         family = "deep_two_tower" if spec.model_kind == "deep_two_tower" else "hybrid"
         features: tuple[str, ...] = (
             "user_id",
@@ -179,12 +218,18 @@ def descriptor_for_spec(spec: ModelRunSpec) -> ModelDescriptor:
     family = {"random": "sanity_random", "mostpop": "sanity_mostpop", "rule_only": "wide_rule"}[
         spec.model_kind
     ]
-    config_hash = canonical_json_sha256(
-        {
-            "model_kind": spec.model_kind,
-            "rule_min_support": spec.rule_min_support,
-        }
-    )
+    control_config: dict[str, Any] = {
+        "model_kind": spec.model_kind,
+        "rule_min_support": spec.rule_min_support,
+    }
+    if spec.schema_version == "model-run-spec/1.1":
+        control_config.update(
+            {
+                "feature_source": spec.feature_source,
+                "feature_dimensions": spec.feature_dimensions,
+            }
+        )
+    config_hash = canonical_json_sha256(control_config)
     return ModelDescriptor(
         model_id=spec.model_id,
         family=family,
@@ -233,21 +278,30 @@ def train_local_model(
     config = TwoTowerConfig.from_mapping(spec.two_tower)
     features = item_text_hash_features(snapshot, dimensions=spec.feature_dimensions)
     deep_model, report = train_two_tower(
-        snapshot, features, config=config, seed=seed, model_id=spec.model_id
+        snapshot,
+        features,
+        config=config,
+        seed=seed,
+        model_id=spec.model_id,
+        descriptor=descriptor,
     )
     if deep_model.describe() != descriptor:
-        # Keep the checkpoint descriptor explicit about the hybrid family while
-        # reusing the same trained deep tower implementation.
-        deep_model = deep_model.with_descriptor(descriptor)
+        raise ContractError("trained model descriptor does not match registry spec")
     if spec.model_kind == "deep_two_tower":
         return LocalModelBundle(spec, descriptor, deep_model, features, deep_model, None, report)
     assert rules is not None
     wide = RuleOnlyScorer(protocol, rules)
-    scorer = HybridScorer(deep_model, wide, wide_weight=spec.wide_weight)
+    scorer = HybridScorer(
+        deep_model,
+        wide,
+        wide_weight=spec.wide_weight,
+        fusion_normalization=spec.fusion_normalization,
+    )
     return LocalModelBundle(spec, descriptor, scorer, features, deep_model, rules, report)
 
 
 __all__ = [
+    "FUSION_NORMALIZATIONS",
     "MODEL_KINDS",
     "LocalModelBundle",
     "ModelRunSpec",

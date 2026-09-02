@@ -23,6 +23,7 @@ from ai_service_v2.evaluation.artifacts import (
 from ai_service_v2.evaluation.evaluator import FullCatalogEvaluator
 from ai_service_v2.evaluation.persistence import save_evaluation
 from ai_service_v2.hashing import (
+    canonical_json_bytes,
     canonical_json_sha256,
     load_strict_json,
     sha256_bytes,
@@ -51,6 +52,8 @@ from ai_service_v2.training import (
     update_run_status,
     write_run_artifact,
 )
+
+_UNBOUND_COMMAND_TEXT = "ai-v2 train (command not supplied by caller)"
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -109,7 +112,7 @@ def _parser() -> argparse.ArgumentParser:
     train.add_argument(
         "--command-text",
         dest="command_text",
-        default="ai-v2 train (command not supplied by caller)",
+        default=_UNBOUND_COMMAND_TEXT,
         help="exact command description to bind into the run manifest",
     )
 
@@ -119,6 +122,13 @@ def _parser() -> argparse.ArgumentParser:
     export.add_argument("protocol", type=Path)
     export.add_argument("score_root", type=Path)
     export.add_argument("--chunk-size", type=int, default=128)
+
+    components = commands.add_parser("export-score-components")
+    components.add_argument("snapshot_root", type=Path)
+    components.add_argument("run_root", type=Path)
+    components.add_argument("protocol", type=Path)
+    components.add_argument("component_root", type=Path)
+    components.add_argument("--chunk-size", type=int, default=128)
 
     evaluate = commands.add_parser("evaluate")
     evaluate.add_argument("protocol", type=Path)
@@ -160,7 +170,7 @@ def _load_model_spec(args: argparse.Namespace) -> tuple[dict[str, Any], ModelRun
         return spec.to_mapping(), spec
 
     document = load_strict_json(args.config)
-    if document.get("schema_version") == "model-run-spec/1.0":
+    if document.get("schema_version") in {"model-run-spec/1.0", "model-run-spec/1.1"}:
         spec = ModelRunSpec.from_mapping(document)
     elif document.get("schema_version") == "training-config/1.0":
         # Read old fixture configs so historical local runs remain inspectable;
@@ -298,14 +308,18 @@ def _cmd_train(args: argparse.Namespace) -> int:
     snapshot = load_canonical_snapshot(args.snapshot_root)
     suitability = assess_snapshot_suitability(snapshot)
     manifest = snapshot.manifest
-    fixture_override = (
-        args.fixture_only
-        and manifest.schema_version == "dataset-manifest/1.0"
+    fixture_dataset = (
+        manifest.schema_version == "dataset-manifest/1.0"
         and manifest.dataset_id.startswith("fixture-")
         and manifest.source_kind == "fixture"
         and manifest.provenance_status == "FIXTURE_ONLY"
         and manifest.license_status == "TEST_ONLY"
     )
+    fixture_override = args.fixture_only and fixture_dataset
+    if args.fixture_only and not fixture_dataset:
+        raise IntegrityError("--fixture-only cannot authorize a non-fixture dataset")
+    if fixture_dataset and not args.fixture_only:
+        raise IntegrityError("repository fixtures require the explicit --fixture-only flag")
     if (
         suitability.verdict != "PASS_CONTROLLED_INTERNAL_DATASET_SUITABILITY"
         and not fixture_override
@@ -317,6 +331,11 @@ def _cmd_train(args: argparse.Namespace) -> int:
     if protocol.manifest.split == "test":
         raise ProtocolError("training must bind to a validation protocol, not TEST")
     config_document, spec = _load_model_spec(args)
+    if not fixture_override:
+        if args.environment_lock is None:
+            raise IntegrityError("non-fixture training requires an immutable environment lock")
+        if args.command_text == _UNBOUND_COMMAND_TEXT:
+            raise IntegrityError("non-fixture training requires exact --command-text binding")
     config_hash = canonical_json_sha256(config_document)
     command_hash = sha256_bytes(args.command_text.encode("utf-8"))
     if spec.model_kind in {"deep_two_tower", "hybrid"}:
@@ -369,7 +388,7 @@ def _cmd_train(args: argparse.Namespace) -> int:
             run.root,
             "model_artifact.json",
             {
-                "schema_version": "model-artifact/1.0",
+                "schema_version": "model-artifact/1.1",
                 "model_kind": spec.model_kind,
                 "model_id": spec.model_id,
                 "model_spec_sha256": canonical_json_sha256(spec.to_mapping()),
@@ -378,6 +397,10 @@ def _cmd_train(args: argparse.Namespace) -> int:
                 "checkpoint_sha256": checkpoint_sha256,
                 "rule_artifact_file": rule_artifact_file,
                 "rule_artifact_sha256": rule_artifact_sha256,
+                "feature_content_sha256": (
+                    None if bundle.features is None else bundle.features.content_sha256
+                ),
+                "fusion_normalization": spec.fusion_normalization,
             },
         )
         completed = update_run_status(run, status="PASS", checkpoint_sha256=checkpoint_sha256)
@@ -402,7 +425,7 @@ def _load_model_spec_from_run(run: Any) -> ModelRunSpec:
     """Load a run's frozen registry specification without repairing it."""
 
     config = load_strict_json(run.root / "config.json")
-    if config.get("schema_version") == "model-run-spec/1.0":
+    if config.get("schema_version") in {"model-run-spec/1.0", "model-run-spec/1.1"}:
         spec = ModelRunSpec.from_mapping(config)
     elif config.get("schema_version") == "training-config/1.0":
         # Compatibility for the original deep-only fixture runner. New runs
@@ -480,7 +503,7 @@ def _load_model_for_run(snapshot: Any, protocol: Any, run: Any) -> Any:
         return model
 
     artifact = load_strict_json(artifact_path)
-    required = {
+    legacy_required = {
         "schema_version",
         "model_kind",
         "model_id",
@@ -491,13 +514,20 @@ def _load_model_for_run(snapshot: Any, protocol: Any, run: Any) -> Any:
         "rule_artifact_file",
         "rule_artifact_sha256",
     }
-    if set(artifact) != required or artifact["schema_version"] != "model-artifact/1.0":
+    current_required = legacy_required | {"feature_content_sha256", "fusion_normalization"}
+    if artifact.get("schema_version") == "model-artifact/1.0" and set(artifact) == legacy_required:
+        artifact["feature_content_sha256"] = None
+        artifact["fusion_normalization"] = spec.fusion_normalization
+    elif not (
+        artifact.get("schema_version") == "model-artifact/1.1" and set(artifact) == current_required
+    ):
         raise IntegrityError("model artifact fields do not match schema")
     if (
         artifact["model_kind"] != spec.model_kind
         or artifact["model_id"] != spec.model_id
         or artifact["model_spec_sha256"] != canonical_json_sha256(spec.to_mapping())
         or artifact["descriptor"] != expected_descriptor.to_mapping()
+        or artifact["fusion_normalization"] != spec.fusion_normalization
     ):
         raise IntegrityError("model artifact identity does not match registry spec")
 
@@ -509,6 +539,8 @@ def _load_model_for_run(snapshot: Any, protocol: Any, run: Any) -> Any:
             raise IntegrityError("non-learning local model cannot carry a checkpoint")
         if run.manifest.checkpoint_sha256 is not None:
             raise IntegrityError("non-learning run cannot carry a checkpoint hash")
+        if artifact["feature_content_sha256"] is not None:
+            raise IntegrityError("non-deep local model cannot carry a feature hash")
     else:
         if checkpoint_directory != "checkpoint" or not isinstance(checkpoint_sha256, str):
             raise IntegrityError("deep model checkpoint reference is invalid")
@@ -543,6 +575,11 @@ def _load_model_for_run(snapshot: Any, protocol: Any, run: Any) -> Any:
         return RuleOnlyScorer(protocol, rules)
 
     features = item_text_hash_features(snapshot, dimensions=spec.feature_dimensions)
+    feature_content_sha256 = artifact["feature_content_sha256"]
+    if feature_content_sha256 is not None and feature_content_sha256 != features.content_sha256:
+        raise IntegrityError("model artifact feature hash does not match reconstructed features")
+    if artifact["schema_version"] == "model-artifact/1.1" and feature_content_sha256 is None:
+        raise IntegrityError("deep model artifact must bind its feature hash")
     model, checkpoint = load_checkpoint(
         run.root / "checkpoint", snapshot=snapshot, features=features
     )
@@ -557,7 +594,12 @@ def _load_model_for_run(snapshot: Any, protocol: Any, run: Any) -> Any:
     if kind == "deep_two_tower":
         return model
     assert rules is not None
-    return HybridScorer(model, RuleOnlyScorer(protocol, rules), wide_weight=spec.wide_weight)
+    return HybridScorer(
+        model,
+        RuleOnlyScorer(protocol, rules),
+        wide_weight=spec.wide_weight,
+        fusion_normalization=spec.fusion_normalization,
+    )
 
 
 def _cmd_export_scores(args: argparse.Namespace) -> int:
@@ -595,6 +637,99 @@ def _cmd_export_scores(args: argparse.Namespace) -> int:
             "run_id": materialized.manifest.run_id,
             "model_id": materialized.manifest.model_id,
             "shape": list(materialized.manifest.score_shape),
+        }
+    )
+    return 0
+
+
+def _cmd_export_score_components(args: argparse.Namespace) -> int:
+    """Persist Deep, Wide, and Hybrid score surfaces without computing metrics."""
+
+    snapshot = load_canonical_snapshot(args.snapshot_root)
+    run = load_run(args.run_root)
+    if run.manifest.status != "PASS":
+        raise IntegrityError("only PASS runs may export score components")
+    protocol = load_protocol(args.protocol, snapshot=snapshot)
+    if protocol.manifest.split != "val" or protocol.manifest.test_set_opened:
+        raise ProtocolError("AIS-R5 component export is validation-only and keeps TEST sealed")
+    if run.manifest.dataset_manifest_sha256 != _dataset_manifest_hash(snapshot):
+        raise IntegrityError("run dataset binding does not match snapshot")
+    protocol_sha256 = _protocol_manifest_hash(protocol)
+    if run.manifest.protocol_manifest_sha256 != protocol_sha256:
+        raise IntegrityError("run protocol binding does not match protocol")
+    if args.component_root.exists():
+        raise IntegrityError(f"component score root already exists: {args.component_root}")
+    component_ref_path = run.root / "component_score_artifact_ref.json"
+    if component_ref_path.exists():
+        raise IntegrityError(f"run artifact already exists: {component_ref_path}")
+
+    model = _load_model_for_run(snapshot, protocol, run)
+    if not isinstance(model, HybridScorer):
+        raise IntegrityError("score-component export is valid only for a Hybrid run")
+    artifact = load_strict_json(run.root / "model_artifact.json")
+    if artifact.get("schema_version") != "model-artifact/1.1":
+        raise IntegrityError("Hybrid score components require a model-artifact/1.1 binding")
+
+    component_definitions = (
+        ("deep", model.deep_component_scores, f"{run.manifest.model_id}::deep"),
+        ("wide", model.wide_component_scores, f"{run.manifest.model_id}::wide"),
+        ("hybrid", model, run.manifest.model_id),
+    )
+    component_rows: dict[str, dict[str, str]] = {}
+    for name, scorer, component_model_id in component_definitions:
+        component = materialize_scores(
+            protocol,
+            scorer,
+            root=args.component_root / name,
+            run_id=run.manifest.run_id,
+            model_id=component_model_id,
+            chunk_size=args.chunk_size,
+        )
+        component_rows[name] = {
+            "model_id": component.manifest.model_id,
+            "relative_root": name,
+            "manifest_sha256": sha256_file(component.root / "manifest.json"),
+        }
+
+    component_manifest = {
+        "schema_version": "hybrid-score-components/1.0",
+        "run_id": run.manifest.run_id,
+        "model_id": run.manifest.model_id,
+        "protocol_manifest_sha256": protocol_sha256,
+        "candidate_order_sha256": protocol.manifest.candidate_order_sha256,
+        "feature_content_sha256": artifact["feature_content_sha256"],
+        "rule_artifact_sha256": artifact["rule_artifact_sha256"],
+        "checkpoint_sha256": artifact["checkpoint_sha256"],
+        "fusion_normalization": model.fusion_normalization,
+        "wide_weight": model.wide_weight,
+        "components": component_rows,
+    }
+    manifest_path = args.component_root / "component_manifest.json"
+    try:
+        manifest_path.write_bytes(canonical_json_bytes(component_manifest) + b"\n")
+    except OSError as error:
+        raise IntegrityError(
+            f"could not write component score manifest: {manifest_path}"
+        ) from error
+    wrapper_sha256 = sha256_file(manifest_path)
+    write_run_artifact(
+        run.root,
+        "component_score_artifact_ref.json",
+        {
+            "schema_version": "hybrid-score-components-ref/1.0",
+            "root": str(args.component_root.resolve()),
+            "manifest_sha256": wrapper_sha256,
+        },
+    )
+    _print(
+        {
+            "status": "PASS",
+            "component_root": str(args.component_root),
+            "run_id": run.manifest.run_id,
+            "model_id": run.manifest.model_id,
+            "components": sorted(component_rows),
+            "manifest_sha256": wrapper_sha256,
+            "test_set_opened": False,
         }
     )
     return 0
@@ -639,6 +774,7 @@ def _cmd_summarize_run(root: Path) -> int:
             "rule_artifact": (root / "rule_artifact.json").is_file(),
             "training_report": (root / "training_report.json").is_file(),
             "score_artifact_ref": (root / "score_artifact_ref.json").is_file(),
+            "component_score_artifact_ref": (root / "component_score_artifact_ref.json").is_file(),
         },
     }
     if (root / "checkpoint" / "manifest.json").is_file():
@@ -711,6 +847,8 @@ def main(argv: list[str] | None = None) -> int:
             return _cmd_train(args)
         if args.command == "export-scores":
             return _cmd_export_scores(args)
+        if args.command == "export-score-components":
+            return _cmd_export_score_components(args)
         if args.command == "evaluate":
             return _cmd_evaluate(args)
         if args.command == "summarize-run":
