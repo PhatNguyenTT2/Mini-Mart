@@ -1,0 +1,79 @@
+{
+  "actual_model_metadata": {
+    "model": null,
+    "reasoning": null,
+    "speed": null,
+    "status": "NOT_OBSERVABLE_FROM_WORKSPACE_DO_NOT_INFER"
+  },
+  "handoff_verdict": "AIS_R2_RUNTIME_MATERIALIZED_DATASET_ADMISSION_BLOCKED_BY_CONTENT_REALISM",
+  "material_passport": {
+    "experiment_intake_declaration": {
+      "declared_at": "2026-09-01T16:38:56Z",
+      "declared_by": "scholar",
+      "status": "experiments_declared"
+    },
+    "origin_date": "2026-09-02T15:48:04.960Z",
+    "origin_mode": "handoff",
+    "origin_skill": "academic-research-suite/experiment-agent",
+    "repro_lock": "dataset:ce92d7b057585cf6b64962780d6032333dfed68618a5b21e455b4c9684d3533d;runtime-receipt:79a32cca8b76f0cc6ffba054c61e3272ee3aa472ea90bcb5eb51301e5c1017c5",
+    "upstream_dependencies": [
+      "ais-r2-handoff-v1.0.0",
+      "ais-r2-runtime-materialization-suitability-receipt-v1.0.0"
+    ],
+    "verification_status": "VERIFIED_WITH_MAJOR_FINDING",
+    "version_label": "ais-r2-handoff-v2.0.0"
+  },
+  "next_gate": {
+    "recommended_path": "AIS_R2B_V5_1_CATALOG_REMEDIATION_BEFORE_TRAINING",
+    "required_decision": "Choose a versioned v5.1 catalog correction or a formally narrowed controlled-mechanism scope for v5.",
+    "runtime_training_authorized": false,
+    "safe_parallel_work": [
+      "AIS-R3 evaluator formula and fixture parity audit",
+      "AIS-R4 public-dataset official reproduction preparation that does not consume v5 TEST"
+    ]
+  },
+  "protected_state": {
+    "historical_ai_service_modified": false,
+    "manuscript_dirty_state_modified": false,
+    "pipeline_state_stage1e_modified": false
+  },
+  "schema_version": "ais-r2-handoff/2.0",
+  "scientific_state": {
+    "ACCEPTED_RESULT_ROWS": 0,
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "execution_authorized": false,
+    "official_public_dataset_reproduction_passed": false,
+    "phase_1e_complete": false
+  },
+  "stage_status": [
+    {
+      "stage": "AIS-R0",
+      "status": "COMPLETE_DESIGN_FROZEN"
+    },
+    {
+      "stage": "AIS-R1",
+      "status": "COMPLETE_STATIC_AND_FIXTURE_GATES_PASS"
+    },
+    {
+      "stage": "AIS-R2-SOURCE-EXPORT",
+      "status": "COMPLETE_AUDITED_SOURCE_BUNDLE_PASS"
+    },
+    {
+      "stage": "AIS-R2-CANONICAL-MATERIALIZATION",
+      "status": "COMPLETE_STRUCTURAL_PASS"
+    },
+    {
+      "stage": "AIS-R2-DATASET-SCIENTIFIC-ADMISSION",
+      "status": "BLOCKED_MAJOR_CONTENT_REALISM_FINDING"
+    },
+    {
+      "stage": "AIS-R3",
+      "status": "IMPLEMENTED_FIXTURES_INDEPENDENT_FORMULA_AUDIT_PENDING"
+    },
+    {
+      "stage": "AIS-R4_TO_R8",
+      "status": "NOT_STARTED_OR_BLOCKED_BY_UPSTREAM_GATES"
+    }
+  ]
+}

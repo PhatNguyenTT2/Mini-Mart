@@ -1,0 +1,121 @@
+{
+  "automated_suitability_report": {
+    "accepted_result_rows": 0,
+    "blocking_findings": [],
+    "checks": {
+      "all_temporal_splits_nonempty": true,
+      "catalog_language_admitted": true,
+      "catalog_license_admitted": true,
+      "catalog_provenance_admitted": true,
+      "catalog_text_complete": true,
+      "cold_item_cohort_present": true,
+      "organic_training_baskets_present": true,
+      "source_bundle_bound": true,
+      "validation_has_novel_organic_truth": true
+    },
+    "dataset_classification": "CONTROLLED_GENERATED_BEHAVIOR",
+    "distinct_cell_density": 0.014089653846153846,
+    "distinct_user_item_cells": 366331,
+    "duplicate_normalized_text_items": 0,
+    "empty_text_items": 0,
+    "event_frequency_density": 0.031668115384615385,
+    "event_origin_counts": {
+      "cold_start": 500,
+      "organic": 814871,
+      "semantic_trap": 8000
+    },
+    "observed_behavior": false,
+    "organic_training_baskets": 14250,
+    "semantic_training_baskets": 750,
+    "split_event_counts": {
+      "test": 82337,
+      "train": 658697,
+      "val": 82337
+    },
+    "test_set_opened": false,
+    "validation_eligible_users": 4984,
+    "validation_users_without_novel_organic_truth": 16,
+    "verdict": "PASS_CONTROLLED_INTERNAL_DATASET_SUITABILITY"
+  },
+  "canonical_snapshot": {
+    "dataset_id": "benchmark-v5-s42-7f40639b0d-1ace202aaa-canonical",
+    "dataset_manifest_canonical_sha256": "1fea8ecfdbca3a21fb1f7489f498a535f386fe07764e34f00bcc383a02625e0d",
+    "dataset_sha256": "ce92d7b057585cf6b64962780d6032333dfed68618a5b21e455b4c9684d3533d",
+    "exact_file_count": 7,
+    "file_sha256": {
+      "baskets.jsonl": "e53c288e9e22cf88de00a8d26a32209a5671e37ec199673f24d6c9c751984505",
+      "items.jsonl": "0961bd044cb66264782fd1b039f90c07105b22e6ba9937e607649359ee989309",
+      "manifest.json": "345f88eca1829fb32d8baeb3a800417318f94e04857fca33dac2595a1c7b97ff",
+      "test.jsonl": "21f9b214947dc0a93b611afa6ebc3026dbc766e8b9123668f4b4658ee07ca200",
+      "train.jsonl": "bbbe9ba5284315f401519cfdcaa292d015ebef9dcdf1b5a59ac344a7816c38af",
+      "users.jsonl": "9ec37123d29107955b4e8d6e4d4efc4fb499d1fcff64f970f7fc8df0622a5911",
+      "val.jsonl": "4f0a9893ab8ac2538554839fe0314dfb4531ed1221c69c8dd07bdbc72b579372"
+    },
+    "language_status": "AUDITED",
+    "license_status": "APPROVED_PRIVATE_RESEARCH",
+    "materialization_result": "PASS",
+    "num_baskets": 15000,
+    "num_cold_items": 250,
+    "num_interactions": 823371,
+    "num_items": 5200,
+    "num_users": 5000,
+    "output_root": "E:\\UIT\\cv\\materialized-experiments\\hybrid-recsys-v5\\ai-service-v2\\ais-r2-canonical\\attempt-001-v5-audited",
+    "provenance_status": "VERIFIED",
+    "source_bundle_sha256": "208dcd581670a8fae3a41250defb94880efb3b05eb0fc97ec51543c38655dd1a"
+  },
+  "central_scientific_disposition": {
+    "automated_structural_gate": "PASS",
+    "catalog_content_realism_evidence_sha256": "23522ca8cd12a030be707b6644332ca76965dea680241021931428412592770d",
+    "dataset_admission": "BLOCKED",
+    "finding": "A deterministic private semantic-review sample flagged strongly incompatible or contradictory product-packaging combinations in 12/20 warm and 12/20 cold randomly selected rows. This does not invalidate the Vietnamese-language verdict, but it undermines text-feature realism and broad application claims.",
+    "finding_scope": "DIAGNOSTIC_SAMPLE_NOT_A_PREREGISTERED_POPULATION_ESTIMATE",
+    "overall_verdict": "INCOMPLETE_DATASET_SUITABILITY_MAJOR_CONTENT_REALISM_FINDING",
+    "required_disposition": "Create a versioned v5.1 catalog correction before model training, or formally narrow v5 to a controlled mechanism benchmark and remove unsupported text-realism, production, and external-validity claims."
+  },
+  "material_passport": {
+    "experiment_intake_declaration": {
+      "declared_at": "2026-09-01T16:38:56Z",
+      "declared_by": "scholar",
+      "status": "experiments_declared"
+    },
+    "origin_date": "2026-09-02T15:48:04.960Z",
+    "origin_mode": "run-validate",
+    "origin_skill": "academic-research-suite/experiment-agent",
+    "repro_lock": "source-bundle:208dcd581670a8fae3a41250defb94880efb3b05eb0fc97ec51543c38655dd1a;dataset:ce92d7b057585cf6b64962780d6032333dfed68618a5b21e455b4c9684d3533d;manifest:1fea8ecfdbca3a21fb1f7489f498a535f386fe07764e34f00bcc383a02625e0d",
+    "upstream_dependencies": [
+      "ais-r2-source-export-runtime-attempt-002-audited",
+      "ais-r2-catalog-language-semantic-review-v1.0.0",
+      "ais-r2-source-bundle-contract-v1.0.0",
+      "ais-r2-dataset-suitability-contract-v1.0.0"
+    ],
+    "verification_status": "VERIFIED",
+    "version_label": "ais-r2-runtime-materialization-suitability-receipt-v1.0.0"
+  },
+  "protected_state": {
+    "auth_database_accessed": false,
+    "benchmark_training_or_evaluation_run": false,
+    "docker_or_wsl_invoked": false,
+    "historical_ai_service_modified": false,
+    "manuscript_dirty_state_modified": false,
+    "pipeline_state_stage1e_modified": false,
+    "test_protocol_built": false
+  },
+  "runtime_lineage": {
+    "catalog_audit_file_sha256": "023b1cf22e2a4af1420ba772b0a29d00a10f356f678e6200487b9ad3e3aa4896",
+    "execution_commit": "a48888b8bf36119d1c62ac1a0b6c414164eee611",
+    "source_bundle_canonical_sha256": "208dcd581670a8fae3a41250defb94880efb3b05eb0fc97ec51543c38655dd1a",
+    "source_bundle_file_sha256": "4325ffbf6b3ab348d64dd90ec0bdd18ca2a43b57ad9124be65596f73b6bceca2",
+    "source_bundle_id": "benchmark-v5-s42-7f40639b0d-1ace202aaa-source-ac9290d8733e",
+    "source_data_equal_to_provisional_attempt": true,
+    "source_export_result": "PASS_SOURCE_BUNDLE_EXPORTED"
+  },
+  "schema_version": "ais-r2-runtime-materialization-suitability-receipt/1.0",
+  "scientific_state": {
+    "ACCEPTED_RESULT_ROWS": 0,
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "execution_authorized": false,
+    "official_public_dataset_reproduction_passed": false,
+    "phase_1e_complete": false
+  }
+}
