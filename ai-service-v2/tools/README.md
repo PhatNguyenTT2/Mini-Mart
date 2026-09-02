@@ -24,8 +24,10 @@ node ai-service-v2/tools/export_v5_source_bundle.cjs \
 
 Remote PostgreSQL requires a CA file through `SUPABASE_DB_CA_PATH` or
 `DB_SSL_CA_PATH`; insecure TLS is not supported. Existing output and staging
-roots are rejected. The nine generator files must exactly match their bytes in
-the declared Git commit. A failed attempt is not retried in place.
+roots are rejected. The nine generator files must have the same Git-cleaned
+blob identity as the declared commit; the manifest tree hashes the committed
+blob bytes, so a clean Windows CRLF checkout remains equivalent to its LF Git
+blob. A failed attempt is not retried in place.
 
 The resulting six-file Source Bundle must still pass:
 

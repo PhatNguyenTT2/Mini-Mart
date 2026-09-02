@@ -1,6 +1,7 @@
 'use strict';
 
 const assert = require('node:assert/strict');
+const { execFileSync } = require('node:child_process');
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
@@ -11,7 +12,8 @@ const {
   assertGeneratorCommitBinding,
   canonicalJson,
   catalogAuditSha256,
-  exportSourceBundle
+  exportSourceBundle,
+  generatorTreeHash
 } = require('../export_v5_source_bundle.cjs');
 
 class FakeClient {
@@ -113,8 +115,9 @@ function fixture(root) {
   return {
     audit,
     clients,
-    generatorPaths: [specPath, generatorPath],
-    repoRoot: root,
+    generatorSourceTreeSha256: generatorTreeHash([specPath, generatorPath], root),
+    generatorSpecSourceSha256: crypto.createHash('sha256')
+      .update(fs.readFileSync(specPath)).digest('hex'),
     runId,
     spec,
     specPath
@@ -236,19 +239,49 @@ test('generator files must match the declared Git commit bytes', () => {
   try {
     const generator = path.join(root, 'generator.js');
     fs.writeFileSync(generator, "'use strict';\n");
-    const bytes = fs.readFileSync(generator);
     assert.doesNotThrow(() => assertGeneratorCommitBinding({
       generatorPaths: [generator],
       repoRoot: root,
       sourceCommit: '1'.repeat(40),
-      readCommittedFile: () => bytes
+      readCommittedObjectId: () => 'a'.repeat(40),
+      hashWorkingObjectId: () => 'a'.repeat(40)
     }));
     assert.throws(() => assertGeneratorCommitBinding({
       generatorPaths: [generator],
       repoRoot: root,
       sourceCommit: '1'.repeat(40),
-      readCommittedFile: () => Buffer.from('different')
+      readCommittedObjectId: () => 'a'.repeat(40),
+      hashWorkingObjectId: () => 'b'.repeat(40)
     }), /generator source differs/);
+  } finally {
+    fs.rmSync(root, { recursive: true, force: true });
+  }
+});
+
+test('generator binding accepts a clean Git checkout with CRLF conversion', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'ais-r2-generator-crlf-test-'));
+  try {
+    const runGit = (args) => execFileSync('git', args, { cwd: root, encoding: 'utf8' }).trim();
+    runGit(['init', '--quiet']);
+    runGit(['config', 'user.name', 'AIS-R2 Fixture']);
+    runGit(['config', 'user.email', 'fixture@example.invalid']);
+    runGit(['config', 'core.autocrlf', 'true']);
+    fs.writeFileSync(path.join(root, '.gitattributes'), '*.js text\n');
+    const generator = path.join(root, 'generator.js');
+    fs.writeFileSync(generator, "'use strict';\nconst value = 1;\n");
+    runGit(['add', '.gitattributes', 'generator.js']);
+    runGit(['commit', '--quiet', '-m', 'fixture']);
+    const sourceCommit = runGit(['rev-parse', 'HEAD']);
+    fs.unlinkSync(generator);
+    runGit(['restore', 'generator.js']);
+    assert.match(fs.readFileSync(generator, 'utf8'), /\r\n/);
+    assert.equal(runGit(['status', '--porcelain']), '');
+
+    assert.doesNotThrow(() => assertGeneratorCommitBinding({
+      generatorPaths: [generator],
+      repoRoot: root,
+      sourceCommit
+    }));
   } finally {
     fs.rmSync(root, { recursive: true, force: true });
   }

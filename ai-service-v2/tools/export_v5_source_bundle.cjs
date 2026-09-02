@@ -42,6 +42,7 @@ const SOURCE_QUERIES = Object.freeze({
 
 const SHA256 = /^[0-9a-f]{64}$/;
 const COMMIT = /^[0-9a-f]{40}$/;
+const GIT_OBJECT = /^[0-9a-f]{40,64}$/;
 const CATALOG_EXPORT_FIELDS = Object.freeze(['category', 'name', 'price', 'vendor']);
 const REAL_LICENSE_STATUSES = new Set([
   'APPROVED_PRIVATE_RESEARCH',
@@ -197,14 +198,23 @@ function normalizedSpec(spec) {
   };
 }
 
-function generatorTreeHash(generatorPaths, repoRoot) {
+function generatorRelativePath(filePath, repoRoot) {
+  const absolute = path.resolve(filePath);
+  const relative = path.relative(repoRoot, absolute).replaceAll('\\', '/');
+  if (!relative || relative.startsWith('../') || path.isAbsolute(relative)) {
+    throw new Error('generator source must be inside the repository');
+  }
+  return { absolute, relative };
+}
+
+function generatorTreeHash(
+  generatorPaths,
+  repoRoot,
+  readSource = (absolute) => fs.readFileSync(absolute)
+) {
   const rows = generatorPaths.map((filePath) => {
-    const absolute = path.resolve(filePath);
-    const relative = path.relative(repoRoot, absolute).replaceAll('\\', '/');
-    if (!relative || relative.startsWith('../') || path.isAbsolute(relative)) {
-      throw new Error('generator source must be inside the repository');
-    }
-    return `${sha256File(absolute)}  ${relative}`;
+    const { absolute, relative } = generatorRelativePath(filePath, repoRoot);
+    return `${sha256(readSource(absolute, relative))}  ${relative}`;
   }).sort();
   if (new Set(rows.map((row) => row.slice(66))).size !== rows.length) {
     throw new Error('generator source paths must be unique');
@@ -216,22 +226,33 @@ function assertGeneratorCommitBinding({
   generatorPaths,
   repoRoot,
   sourceCommit,
-  readCommittedFile = (commit, relative) => execFileSync(
-    'git', ['show', `${commit}:${relative}`], { cwd: repoRoot, encoding: null, maxBuffer: 16 * 1024 * 1024 }
-  )
+  readCommittedObjectId = (commit, relative) => execFileSync(
+    'git', ['rev-parse', `${commit}:${relative}`], { cwd: repoRoot, encoding: 'utf8' }
+  ).trim(),
+  hashWorkingObjectId = (absolute, relative) => execFileSync(
+    'git', ['hash-object', `--path=${relative}`, absolute], { cwd: repoRoot, encoding: 'utf8' }
+  ).trim()
 }) {
   if (!COMMIT.test(sourceCommit)) throw new Error('sourceCommit must be a full lowercase commit SHA');
   for (const filePath of generatorPaths) {
-    const absolute = path.resolve(filePath);
-    const relative = path.relative(repoRoot, absolute).replaceAll('\\', '/');
-    if (!relative || relative.startsWith('../') || path.isAbsolute(relative)) {
-      throw new Error('generator source must be inside the repository');
+    const { absolute, relative } = generatorRelativePath(filePath, repoRoot);
+    const committedObjectId = readCommittedObjectId(sourceCommit, relative);
+    const workingObjectId = hashWorkingObjectId(absolute, relative);
+    if (!GIT_OBJECT.test(committedObjectId) || !GIT_OBJECT.test(workingObjectId)) {
+      throw new Error('generator Git object identity is invalid');
     }
-    const committed = readCommittedFile(sourceCommit, relative);
-    if (sha256(committed) !== sha256File(absolute)) {
+    if (committedObjectId !== workingObjectId) {
       throw new Error(`generator source differs from ${sourceCommit}:${relative}`);
     }
   }
+}
+
+function committedSourceBytes(repoRoot, sourceCommit, relative) {
+  return execFileSync('git', ['show', `${sourceCommit}:${relative}`], {
+    cwd: repoRoot,
+    encoding: null,
+    maxBuffer: 16 * 1024 * 1024
+  });
 }
 
 function catalogChecksum(rows) {
@@ -427,7 +448,8 @@ async function exportSourceBundle(options) {
     audit,
     catalogAuditSha256: declaredCatalogAuditSha256,
     sourceCommit,
-    generatorPaths,
+    generatorSourceTreeSha256,
+    generatorSpecSourceSha256,
     outputRoot
   } = options;
   if (!COMMIT.test(sourceCommit)) throw new Error('sourceCommit must be a full lowercase commit SHA');
@@ -439,6 +461,12 @@ async function exportSourceBundle(options) {
   }
   const fixture = sourceCommit === '0'.repeat(40);
   assertCatalogAudit(audit, fixture);
+  if (!SHA256.test(generatorSourceTreeSha256)) {
+    throw new Error('generatorSourceTreeSha256 must be a SHA-256');
+  }
+  if (!SHA256.test(generatorSpecSourceSha256)) {
+    throw new Error('generatorSpecSourceSha256 must be a SHA-256');
+  }
   const normalized = normalizedSpec(spec);
   const specHash = sha256(canonicalJson(spec));
   const target = path.resolve(outputRoot);
@@ -498,11 +526,8 @@ async function exportSourceBundle(options) {
       source_kind: 'seed-product-postgres-export',
       source_commit: sourceCommit,
       benchmark_run_id: runId,
-      generator_source_tree_sha256: generatorTreeHash(
-        generatorPaths,
-        options.repoRoot ? path.resolve(options.repoRoot) : process.cwd()
-      ),
-      generator_spec_source_sha256: sha256File(path.resolve(specPath)),
+      generator_source_tree_sha256: generatorSourceTreeSha256,
+      generator_spec_source_sha256: generatorSpecSourceSha256,
       export_query_contract_sha256: sha256(canonicalJson(SOURCE_QUERIES)),
       catalog_audit_sha256: declaredCatalogAuditSha256,
       catalog_audit_evidence_sha256: audit.evidence_sha256,
@@ -598,6 +623,16 @@ async function main(argv = process.argv.slice(2)) {
     path.join(generatorRoot, 'populate-copurchase.js')
   ];
   assertGeneratorCommitBinding({ generatorPaths, repoRoot, sourceCommit });
+  const readCommittedSource = (_absolute, relative) => (
+    committedSourceBytes(repoRoot, sourceCommit, relative)
+  );
+  const generatorSourceTreeSha256 = generatorTreeHash(
+    generatorPaths, repoRoot, readCommittedSource
+  );
+  const specRelative = generatorRelativePath(specPath, repoRoot).relative;
+  const generatorSpecSourceSha256 = sha256(
+    committedSourceBytes(repoRoot, sourceCommit, specRelative)
+  );
   const connected = [];
   try {
     for (const client of Object.values(clients)) {
@@ -612,9 +647,9 @@ async function main(argv = process.argv.slice(2)) {
       audit,
       catalogAuditSha256: declaredCatalogAuditSha256,
       sourceCommit,
-      generatorPaths,
+      generatorSourceTreeSha256,
+      generatorSpecSourceSha256,
       outputRoot,
-      repoRoot
     });
     process.stdout.write(`${canonicalJson(result)}\n`);
   } finally {
