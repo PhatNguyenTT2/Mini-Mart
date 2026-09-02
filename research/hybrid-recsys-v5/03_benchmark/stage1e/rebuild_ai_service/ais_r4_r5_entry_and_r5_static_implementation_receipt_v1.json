@@ -1,0 +1,302 @@
+{
+  "schema_version": "ais-r4-r5-entry-and-r5-static-implementation-receipt/1.0",
+  "stage_id": "AIS-R4_R5_ENTRY",
+  "created_at": "2026-09-02T20:30:02.679Z",
+  "material_passport": {
+    "origin_skill": "academic-research-suite/experiment-agent",
+    "origin_mode": "implement-validate-static-fail-closed",
+    "origin_date": "2026-09-02T20:30:02.679Z",
+    "verification_status": "VERIFIED_STATIC_NOT_INDEPENDENT_NOT_RUNTIME",
+    "version_label": "ais-r4-r5-entry-r5-static-implementation-v1.0.0",
+    "upstream_dependencies": [
+      "ais-r3-evaluator-statistics-audit-v1.0.0",
+      "ais-r2b-v5.1-canonical-adapter-receipt-v1.0.0",
+      "ais-r0-model-scope-v1.0.0",
+      "implementation-commit-7a654bad53dd97899ce4e675a54332afd8959fc6"
+    ],
+    "repro_lock": {
+      "schema_version": "1.0",
+      "stochasticity_declaration": "No stochastic research execution occurred. This lock binds static implementation and deterministic fixture checks only.",
+      "ars_version": "3.21.0",
+      "model": {
+        "family": "NOT_OBSERVABLE",
+        "id": "NOT_OBSERVABLE_FROM_WORKSPACE_DO_NOT_INFER",
+        "weight_stable": false
+      },
+      "implementation_commit": "7a654bad53dd97899ce4e675a54332afd8959fc6",
+      "implementation_parent": "1c6841fdd17fa086ce27eb25dc85b5bfc80c4a70",
+      "ai_service_v2_git_tree": "e62b6e0ad5f33c5f2388d092ca16d19c88cd79fe"
+    },
+    "experiment_intake_declaration": {
+      "status": "experiments_declared",
+      "declared_at": "2026-09-01T16:38:56Z",
+      "declared_by": "scholar"
+    },
+    "experiment_provenance": []
+  },
+  "actual_model_metadata": {
+    "model": null,
+    "reasoning": null,
+    "speed": null,
+    "status": "NOT_OBSERVABLE_FROM_WORKSPACE_DO_NOT_INFER"
+  },
+  "requested_model_policy": {
+    "implementation": {
+      "model": "gpt-5.6-sol",
+      "reasoning": "xhigh",
+      "speed": "standard"
+    },
+    "independent_audit": {
+      "model": "gpt-5.6-sol",
+      "reasoning": "ultra",
+      "speed": "standard"
+    },
+    "fast_or_priority_allowed": false,
+    "actual_attestation": "UNAVAILABLE; requested policy is not actual-runtime metadata"
+  },
+  "ars_workflow_application": {
+    "skill_package": "academic-research-suite",
+    "skill_package_version": "0.1.26",
+    "skill_md_sha256": "5acb202b13a7dba912091ae5d15a19b88eb3f4e58b4d942649cb35df770ace91",
+    "workflow": "ars/experiment-agent/WORKFLOW.md",
+    "material_passport_applied": true,
+    "fail_closed_boundaries": [
+      "Static fixture success is not empirical benchmark evidence.",
+      "AIS-R4 official reproduction remains separate from AIS-R5 harmonized-v5 model implementation.",
+      "No alternate archive, mirror, insecure TLS bypass, or cross-dataset benchmark substitution is inferred.",
+      "No training, evaluation, benchmark, Docker, WSL, or TEST operation is authorized by this receipt."
+    ]
+  },
+  "input_binding": {
+    "authoritative_inputs": [
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebuild_ai_service/ais_r3_evaluator_statistics_audit_receipt_v1.json",
+        "sha256": "38f065322934302c8cdec4325013411fb127b85d9c2f0ae642b7cf8971738402",
+        "role": "AIS-R3 admission"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebuild_ai_service/ais_r2b_v5_1_canonical_adapter_receipt_v1.json",
+        "sha256": "db90df48967a255ca8e686eb93a9a557f7cab22e3c9152f7cafae5d265311bcf",
+        "role": "admitted canonical v5.1 snapshot"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebuild_ai_service/ais_r0_model_scope.json",
+        "sha256": "f0068693d7bc207861ac02ddb0618a25ee65b3381886763038ed8b12f48e00c4",
+        "role": "proposed model and attribution contract"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_c1r3_attempt009_provider_tls_remediation_plan.md",
+        "sha256": "0eb309bb3a91ea5faef6608ad87190efd09a25b12ede755bd3946bd08193313a",
+        "role": "existing provider TLS fail-closed policy"
+      }
+    ],
+    "canonical_v5_1_snapshot": {
+      "root": "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r2b-v5.1-canonical/attempt-001",
+      "dataset_sha256": "21f7b93bad51d6fa3c69ce849a1931f634539f4fc8f475b00c17de0b5d977194",
+      "manifest_canonical_sha256": "7920964be1b449dad9a3ed2e8a6c783fc22d383b55ea3d36a389c3cabd6340a6",
+      "num_users": 5000,
+      "num_items": 5200,
+      "num_interactions": 823371,
+      "classification": "CONTROLLED_GENERATED_BEHAVIOR",
+      "test_set_opened": false
+    }
+  },
+  "ais_r4_status": {
+    "lane": "OFFICIAL_PROTOCOL_REPRODUCTION",
+    "candidate": {
+      "framework": "RecBole",
+      "framework_version": "1.2.1",
+      "source_revision": "9a6f63d8d4a5b989fe27955a833f813a6d86041e",
+      "model": "BPR",
+      "dataset": "GroupLens MovieLens 100K",
+      "reported_ndcg_at_10": 0.2768,
+      "reported_value_status": "DIAGNOSTIC_TARGET_NOT_ACCEPTED_RESULT"
+    },
+    "provider_surfaces": {
+      "landing_page": "https://grouplens.org/datasets/movielens/100k/",
+      "archive": "https://files.grouplens.org/datasets/movielens/ml-100k.zip"
+    },
+    "latest_closed_attempt": {
+      "attempt_id": "R6_C1R3_LINUX_ATTEMPT008",
+      "preflight_path": "E:/UIT/cv/materialized-runs/hybrid-recsys-v5/stage1e/r6/c1r3/attempt-008-linux/preflight.json",
+      "preflight_sha256": "360f0a4461c2d49936a8562a11d621794cf5387e3a81c8ebebf31aedf041a9c9",
+      "preflight_verdict": "PASS_READY_FOR_ONE_DOCKER_START_AND_M0_M1_ONLY",
+      "runner_result_path": "E:/UIT/cv/materialized-runs/hybrid-recsys-v5/stage1e/r6/c1r3/attempt-008-linux/runner_result.json",
+      "runner_result_sha256": "9784ccc14024bfd2a935c29f5a94f7ea8814a1bd212276cd2bb9147cf594a9cd",
+      "runner_verdict": "HANDOFF_INCOMPLETE_R6_C1R3_LINUX_ATTEMPT008_CLOSED",
+      "error": "PACKET_COMMAND_FAILED:M00_ACQUIRE_OFFICIAL_GROUPLENS_BYTES",
+      "docker_server_ready": true,
+      "image_identity_passed": true,
+      "python_runtime_identity_passed": true
+    },
+    "current_read_only_availability_observation": {
+      "observation_date": "2026-09-03",
+      "landing_page": "REACHABLE_AND_IDENTIFIES_ML_100K_AS_STABLE_BENCHMARK",
+      "archive_via_web_retrieval": "TIMEOUT_NO_BYTES_ACCEPTED",
+      "archive_via_powershell_head": "SSL_CONNECTION_COULD_NOT_BE_ESTABLISHED_AUTHENTICATION_FAILED",
+      "archive_via_curl_schannel": "SEC_E_NO_CREDENTIALS",
+      "archive_via_python_verified_tls": "CERTIFICATE_VERIFY_FAILED_CERTIFICATE_HAS_EXPIRED",
+      "retrieval_probes_executed": true,
+      "archive_payload_accepted": false,
+      "archive_bytes_materialized": false
+    },
+    "classification": "BLOCKED_AT_OFFICIAL_PROVIDER_BYTE_ACQUISITION",
+    "not_blocked_by": [
+      "RecBole source identity",
+      "Docker daemon readiness in the latest closed attempt",
+      "pinned container image identity",
+      "CPython identity"
+    ],
+    "prohibited_resolution": [
+      "disable TLS verification",
+      "use plain HTTP",
+      "silently substitute a mirror or framework-processed copy",
+      "treat the published target as a reproduced benchmark"
+    ],
+    "official_reproduction_run": "NOT_RUN",
+    "accepted_result_rows": 0
+  },
+  "ais_r5_static_implementation": {
+    "lane": "PROPOSED_AND_MANDATORY_ABLATIONS",
+    "implementation_commit": "7a654bad53dd97899ce4e675a54332afd8959fc6",
+    "implementation_parent": "1c6841fdd17fa086ce27eb25dc85b5bfc80c4a70",
+    "commit_subject": "feat(research): harden AIS-R5 proposed attribution",
+    "status": "STATIC_IMPLEMENTATION_PASS_PENDING_INDEPENDENT_AUDIT",
+    "implemented_controls": [
+      "BPR negative sampling excludes every item in each user's complete TRAIN history, while positives remain TRAIN purchase events.",
+      "Negative-candidate construction is cached per user rather than rebuilt per positive event.",
+      "Hybrid fusion declares either identity or per-user z-score component normalization; the candidate config freezes per-user z-score normalization.",
+      "Descriptor hashes bind feature source, feature dimensions, Two-Tower config, Wide weight, rule support, and fusion normalization.",
+      "Model artifacts bind checkpoint, train-only rule artifact, feature content, and fusion normalization.",
+      "Hybrid runs can export separate exact Deep, Wide, and Hybrid score artifacts without calculating metrics.",
+      "Component export is validation-only and rejects TEST protocols.",
+      "Non-fixture training requires an immutable environment-lock hash and exact command-text binding.",
+      "Fixture authorization cannot be reused for a non-fixture dataset."
+    ],
+    "config_schema": "model-run-spec/1.1",
+    "model_artifact_schema": "model-artifact/1.1",
+    "hybrid_component_schema": "hybrid-score-components/1.0",
+    "mandatory_ablations_present": [
+      "IndependentDeepTwoTower",
+      "WideRuleOnly",
+      "ProposedHybrid"
+    ],
+    "implementation_hashes": [
+      {
+        "path": "ai-service-v2/src/ai_service_v2/cli.py",
+        "sha256": "9e9209c1eb5bcfc30e53dc3fe7e4f7018a2b22c54817f78489154837d05d5038"
+      },
+      {
+        "path": "ai-service-v2/src/ai_service_v2/models/proposed.py",
+        "sha256": "3b57095f63ce15936d9da1049afb562de16163460205dc6f6be841a920dd6b13"
+      },
+      {
+        "path": "ai-service-v2/src/ai_service_v2/models/registry.py",
+        "sha256": "97b9bc20f1dae8c6a0d4a9a3acd321ea0752f6371ab2442e27c23bce5c164047"
+      },
+      {
+        "path": "ai-service-v2/configs/deep-two-tower.json",
+        "sha256": "3e85177e37b2d45b4e95fa95ae0c4b4e282cd69d674954807b038c2b8c559295"
+      },
+      {
+        "path": "ai-service-v2/configs/rule-only.json",
+        "sha256": "22e0580d225cc78aa021d5eed0456b3cea252a26ae2ad2076ade647cfe414402"
+      },
+      {
+        "path": "ai-service-v2/configs/hybrid.json",
+        "sha256": "19ddc08da1c1637267502da55806e79a0089ae7e77e4dfa34417ff8638611eb4"
+      }
+    ],
+    "static_quality_gates": [
+      {
+        "gate": "PYTHON_TESTS",
+        "result": "PASS",
+        "detail": "78 passed in 1.49s"
+      },
+      {
+        "gate": "RUFF_CHECK",
+        "result": "PASS",
+        "detail": "All checks passed"
+      },
+      {
+        "gate": "RUFF_FORMAT_CHECK",
+        "result": "PASS",
+        "detail": "54 files already formatted"
+      },
+      {
+        "gate": "MYPY_STRICT",
+        "result": "PASS",
+        "detail": "Success: no issues found in 49 source files"
+      },
+      {
+        "gate": "NODE_SOURCE_EXPORT_TESTS",
+        "result": "PASS",
+        "detail": "6 passed, 0 failed"
+      },
+      {
+        "gate": "GIT_DIFF_CHECK",
+        "result": "PASS",
+        "detail": "No whitespace errors before implementation commit"
+      }
+    ],
+    "explicit_non_claims": [
+      "No v5.1 validation training has run.",
+      "No score component has been generated for the canonical v5.1 dataset.",
+      "No metric, benchmark row, improvement, or superiority result exists.",
+      "The deterministic hash-feature transform remains a bounded candidate pending independent R5 scope audit."
+    ]
+  },
+  "forbidden_operations": {
+    "repository_clone_or_fetch": false,
+    "public_dataset_payload_materialized": false,
+    "provider_availability_probes_invoked": true,
+    "alternate_mirror_or_insecure_tls": false,
+    "package_installation": false,
+    "environment_or_container_creation": false,
+    "docker_invoked": false,
+    "wsl_invoked": false,
+    "training_execution": false,
+    "runtime_evaluation_execution": false,
+    "benchmark_execution": false,
+    "test_set_access": false,
+    "pipeline_state_modified": false,
+    "historical_ai_service_modified": false,
+    "manuscript_modified": false
+  },
+  "scientific_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "official_public_dataset_reproduction_passed": false,
+    "ais_r5_independent_audit_passed": false,
+    "harmonized_v5_run_completed": false,
+    "phase_1e_complete": false,
+    "benchmark_numbers_valid_for_paper": false
+  },
+  "protected_state": {
+    "pipeline_state_stage1e_modified": false,
+    "historical_ai_service_modified": false,
+    "manuscript_dirty_state_modified": false,
+    "canonical_v5_1_snapshot_modified": false,
+    "runtime_output_root_created": false
+  },
+  "next_gate": {
+    "parallel_lanes": [
+      {
+        "stage": "AIS-R4",
+        "action": "Re-admit a fresh official-provider byte acquisition attempt only after verified TLS succeeds; then materialize ML-100K and the pinned RecBole environment before proposing an exact reproduction command.",
+        "runtime_authorized": false
+      },
+      {
+        "stage": "AIS-R5",
+        "action": "Perform a fresh independent static audit of model scope, TRAIN-only leakage boundaries, descriptor hashes, component-score identity, and canonical-v5.1 compatibility; only a PASS may open a validation-only command packet.",
+        "runtime_authorized": false
+      }
+    ],
+    "ais_r6_admission": "BLOCKED_UNTIL_AIS_R4_PASS_AND_AIS_R5_PASS",
+    "test_opening": "PROHIBITED"
+  },
+  "verdict": "PASS_AIS_R5_STATIC_IMPLEMENTATION_READY_FOR_INDEPENDENT_AUDIT_AIS_R4_BLOCKED_AT_PROVIDER_BYTES",
+  "fail_closed": true
+}
