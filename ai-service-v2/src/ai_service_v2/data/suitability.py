@@ -63,11 +63,20 @@ class DatasetSuitabilityReport:
         }
 
 
-def _status_admitted(status: str, *, fixture: bool) -> bool:
-    normalized = status.strip().upper()
-    return normalized.startswith(("VERIFIED", "AUDITED", "APPROVED")) or (
-        fixture and normalized == "TEST_ONLY"
-    )
+def _provenance_admitted(status: str, *, fixture: bool) -> bool:
+    return status == "VERIFIED" or (fixture and status == "TEST_ONLY")
+
+
+def _license_admitted(status: str, *, fixture: bool) -> bool:
+    return status in {
+        "APPROVED_PRIVATE_RESEARCH",
+        "APPROVED_RESEARCH_AND_REDISTRIBUTION",
+        "OPEN_LICENSE_VERIFIED",
+    } or (fixture and status == "TEST_ONLY")
+
+
+def _language_admitted(status: str, *, fixture: bool) -> bool:
+    return status == "AUDITED" or (fixture and status == "TEST_ONLY")
 
 
 def assess_snapshot_suitability(snapshot: Snapshot) -> DatasetSuitabilityReport:
@@ -105,11 +114,11 @@ def assess_snapshot_suitability(snapshot: Snapshot) -> DatasetSuitabilityReport:
         ),
         "cold_item_cohort_present": bool(snapshot.cold_item_ids),
         "catalog_text_complete": not any(not text for text in normalized_text),
-        "catalog_provenance_admitted": _status_admitted(
+        "catalog_provenance_admitted": _provenance_admitted(
             manifest.provenance_status, fixture=fixture
         ),
-        "catalog_license_admitted": _status_admitted(manifest.license_status, fixture=fixture),
-        "catalog_language_admitted": _status_admitted(manifest.language_status, fixture=fixture),
+        "catalog_license_admitted": _license_admitted(manifest.license_status, fixture=fixture),
+        "catalog_language_admitted": _language_admitted(manifest.language_status, fixture=fixture),
     }
     blockers = tuple(name for name, passed in sorted(checks.items()) if not passed)
     return DatasetSuitabilityReport(

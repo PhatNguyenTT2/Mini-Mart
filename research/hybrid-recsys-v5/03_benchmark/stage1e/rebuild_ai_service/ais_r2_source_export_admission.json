@@ -1,0 +1,110 @@
+{
+  "admission_checks": [
+    {
+      "check": "COMPLETE_NINE_FILE_GENERATOR_TREE",
+      "detail": "The omitted canonical-spec hashing module is now included and independently replayed.",
+      "status": "PASS_STATIC"
+    },
+    {
+      "check": "READ_ONLY_THREE_DATABASE_QUERY_CONTRACT",
+      "detail": "Only chatbot, catalog, and order sources are queried under repeatable-read read-only transactions.",
+      "status": "PASS_STATIC"
+    },
+    {
+      "check": "AUTH_DATABASE_AND_PII_EXCLUSION",
+      "detail": "No auth connection or customer profile field exists in the exporter query/output schema.",
+      "status": "PASS_STATIC"
+    },
+    {
+      "check": "CATALOG_ACCESS_RECEIPT_FAIL_CLOSED",
+      "detail": "Exact statuses, approved fields, canonical bytes, and receipt SHA-256 are validated before a database connection.",
+      "status": "PASS_FIXTURE_ONLY"
+    },
+    {
+      "check": "GENERATOR_COMMIT_BYTE_BINDING",
+      "detail": "Every generator input must match its blob at the declared full Git commit.",
+      "status": "PASS_FIXTURE_ONLY"
+    },
+    {
+      "check": "SOURCE_ROW_LINEAGE_AND_SHAPE",
+      "detail": "Run identity, catalog/partition ID equality, counts, splits, origins, ordering, and references fail closed.",
+      "status": "PASS_FIXTURE_ONLY"
+    },
+    {
+      "check": "REAL_CATALOG_ACCESS_PERMISSION",
+      "detail": "No affirmative permission or open redistribution license has been admitted.",
+      "status": "PENDING"
+    },
+    {
+      "check": "REAL_LOCKED_READY_RUN_PREFLIGHT",
+      "detail": "No database connection or run-row observation was performed in this static stage.",
+      "status": "PENDING"
+    },
+    {
+      "check": "REAL_LANGUAGE_AUDIT",
+      "detail": "Requires an authorized immutable 5,200-item projection and remains a dataset-admission blocker.",
+      "status": "PENDING"
+    },
+    {
+      "check": "REAL_SOURCE_BUNDLE_AND_CANONICAL_SNAPSHOT",
+      "detail": "Neither artifact exists in the admitted AIS-R2 lineage.",
+      "status": "PENDING"
+    }
+  ],
+  "artifact_locks": {
+    "export_query_contract_sha256": "fe8acb87f925dae04bfc5b9872338cdd9ea165f88275ee8665692badf08d9e1f",
+    "exporter_source_sha256": "0d4e106b55e72356d78344ea2e4573a944f18ef084ab662d5d64a8073bca7c54",
+    "generator_source_tree_sha256": "c3c4ba019308ed4d4984220ff3088aa2893e70cb78b56f8e9cf0c19c67befe00",
+    "source_bundle_schema": "v5-source-bundle/1.1"
+  },
+  "blocking_findings": [
+    "Catalog provenance has partial local evidence but no complete 5,200-item acquisition lineage.",
+    "No affirmative permission or open license authorizes the exact catalog export fields.",
+    "Vietnamese-language coverage cannot be audited until an authorized item projection exists.",
+    "No locked ready benchmark_run_id, database/TLS receipt, or fresh output root has been observed.",
+    "No real Source Bundle, canonical snapshot, or dataset-suitability receipt exists."
+  ],
+  "material_passport": {
+    "experiment_intake_declaration": {
+      "declared_at": "2026-09-01T16:38:56Z",
+      "declared_by": "scholar",
+      "status": "experiments_declared"
+    },
+    "origin_date": "2026-09-02T13:00:18Z",
+    "origin_mode": "evidence",
+    "origin_skill": "academic-research-suite/experiment-agent",
+    "repro_lock": "generator-tree:c3c4ba019308ed4d4984220ff3088aa2893e70cb78b56f8e9cf0c19c67befe00;query-contract:fe8acb87f925dae04bfc5b9872338cdd9ea165f88275ee8665692badf08d9e1f",
+    "upstream_dependencies": [
+      "ais-r2-source-export-contract-v1.1.0",
+      "ais-r2-generator-tree-amendment-v1.0.0",
+      "ais-r2-catalog-rights-language-audit-v1.0.0"
+    ],
+    "verification_status": "UNVERIFIED",
+    "version_label": "ais-r2-source-export-admission-v1.0.0"
+  },
+  "protected_state": {
+    "benchmark_or_test_invoked": false,
+    "database_or_generator_invoked": false,
+    "docker_or_wsl_invoked": false,
+    "historical_ai_service_modified": false,
+    "manuscript_dirty_state_modified": false,
+    "pipeline_state_stage1e_modified": false
+  },
+  "repository_lineage": {
+    "branch": "codex/ais-r2-source-export",
+    "implementation_commit": null,
+    "parent_commit": "0fb62392ca26158e62b47dcb96e683e00ace20c4"
+  },
+  "schema_version": "ais-r2-source-export-admission/1.0",
+  "scientific_state": {
+    "ACCEPTED_RESULT_ROWS": 0,
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "canonical_v5_dataset_admitted": false,
+    "execution_authorized": false,
+    "fixture_results_are_paper_evidence": false,
+    "phase_1e_complete": false
+  },
+  "status": "STATIC_EXPORTER_PASS_RUNTIME_BLOCKED",
+  "verdict": "BLOCKED_BY_CATALOG_ACCESS_AND_LOCKED_RUN_PREFLIGHT"
+}

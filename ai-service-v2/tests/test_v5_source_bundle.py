@@ -29,10 +29,12 @@ def test_source_bundle_materializes_raw_mappings_origins_and_baskets(tmp_path: P
     ]
     assert snapshot.manifest.behavior_nature == "CONTROLLED_GENERATED_BEHAVIOR"
     assert snapshot.manifest.observed_behavior is False
+    assert snapshot.manifest.source_artifact_hashes["generator_spec_source"] == "5" * 64
     assert (
         snapshot.manifest.source_artifact_hashes["generator_spec_source"]
-        == snapshot.manifest.source_artifact_hashes["benchmark_spec.json"]
+        != snapshot.manifest.source_artifact_hashes["benchmark_spec.json"]
     )
+    assert snapshot.manifest.source_artifact_hashes["catalog_audit"] == "3" * 64
     assert {path.name for path in output.iterdir()} == {
         "manifest.json",
         "users.jsonl",
@@ -106,3 +108,43 @@ def test_suitability_report_is_validation_only_and_classifies_generated_data(
     assert report.validation_eligible_users == 1
     assert report.organic_training_baskets == 1
     assert report.test_set_opened is False
+
+
+def test_pending_post_export_language_audit_blocks_dataset_admission(tmp_path: Path) -> None:
+    snapshot = materialize_v5_source_bundle(
+        build_v5_source_bundle(tmp_path / "source", language_status="PENDING_POST_EXPORT_AUDIT"),
+        tmp_path / "canonical",
+    )
+
+    report = assess_snapshot_suitability(snapshot)
+
+    assert report.verdict == "INCOMPLETE_DATASET_SUITABILITY"
+    assert report.checks["catalog_language_admitted"] is False
+    assert "catalog_language_admitted" in report.blocking_findings
+
+    protocol_path = tmp_path / "protocol.json"
+    assert (
+        main(
+            [
+                "build-protocol",
+                str(tmp_path / "canonical"),
+                str(protocol_path),
+                "--cutoff",
+                "5",
+            ]
+        )
+        == 0
+    )
+    run_root = tmp_path / "blocked-run"
+    assert (
+        main(
+            [
+                "train",
+                str(tmp_path / "canonical"),
+                str(protocol_path),
+                str(run_root),
+            ]
+        )
+        == 2
+    )
+    assert not run_root.exists()

@@ -14,7 +14,7 @@ def _write_jsonl(path: Path, rows: list[dict[str, Any]]) -> None:
     path.write_bytes(b"".join(canonical_json_bytes(row) + b"\n" for row in rows))
 
 
-def build_v5_source_bundle(root: Path) -> Path:
+def build_v5_source_bundle(root: Path, *, language_status: str = "TEST_ONLY") -> Path:
     root.mkdir()
     spec = {
         "schema_version": "3.0.0",
@@ -225,14 +225,16 @@ def build_v5_source_bundle(root: Path) -> Path:
     _write_jsonl(root / "baskets.jsonl", baskets)
     names = ("benchmark_spec.json", "users.jsonl", "items.jsonl", "events.jsonl", "baskets.jsonl")
     manifest = {
-        "schema_version": "v5-source-bundle/1.0",
+        "schema_version": "v5-source-bundle/1.1",
         "source_bundle_id": "fixture-v5-source-bundle",
         "source_kind": "seed-product-postgres-export",
         "source_commit": "0" * 40,
         "benchmark_run_id": "fixture-benchmark-v5",
         "generator_source_tree_sha256": "1" * 64,
-        "generator_spec_source_sha256": sha256_file(root / "benchmark_spec.json"),
+        "generator_spec_source_sha256": "5" * 64,
         "export_query_contract_sha256": "2" * 64,
+        "catalog_audit_sha256": "3" * 64,
+        "catalog_audit_evidence_sha256": ["4" * 64],
         "file_sha256": {name: sha256_file(root / name) for name in names},
         "expected_counts": {
             "users": 4,
@@ -244,9 +246,9 @@ def build_v5_source_bundle(root: Path) -> Path:
             "val_events": 2,
             "test_events": 2,
         },
-        "catalog_provenance_status": "VERIFIED_TEST_FIXTURE",
+        "catalog_provenance_status": "TEST_ONLY",
         "catalog_license_status": "TEST_ONLY",
-        "catalog_language_status": "VERIFIED_TEST_FIXTURE",
+        "catalog_language_status": language_status,
         "behavior_nature": "CONTROLLED_GENERATED_BEHAVIOR",
         "observed_behavior": False,
     }

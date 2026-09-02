@@ -48,6 +48,7 @@ def test_cli_fixture_pipeline_keeps_test_sealed_and_persists_receipts(
                 "42",
                 "--feature-dim",
                 "8",
+                "--fixture-only",
             ]
         )
         == 0
@@ -131,6 +132,7 @@ def test_cli_supports_registered_local_ablations(
                 "42",
                 "--feature-dim",
                 "8",
+                "--fixture-only",
                 "--model-kind",
                 model_kind,
             ]

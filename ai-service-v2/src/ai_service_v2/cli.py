@@ -93,6 +93,11 @@ def _parser() -> argparse.ArgumentParser:
     train.add_argument("--model-id")
     train.add_argument("--wide-weight", type=float, default=1.0)
     train.add_argument("--rule-min-support", type=int, default=1)
+    train.add_argument(
+        "--fixture-only",
+        action="store_true",
+        help="allow only the repository's explicitly labeled non-scientific test fixture",
+    )
     train.add_argument("--environment-lock", type=Path)
     train.add_argument(
         "--command-text",
@@ -284,6 +289,23 @@ def _cmd_build_protocol(args: argparse.Namespace) -> int:
 
 def _cmd_train(args: argparse.Namespace) -> int:
     snapshot = load_canonical_snapshot(args.snapshot_root)
+    suitability = assess_snapshot_suitability(snapshot)
+    manifest = snapshot.manifest
+    fixture_override = (
+        args.fixture_only
+        and manifest.schema_version == "dataset-manifest/1.0"
+        and manifest.dataset_id.startswith("fixture-")
+        and manifest.source_kind == "fixture"
+        and manifest.provenance_status == "FIXTURE_ONLY"
+        and manifest.license_status == "TEST_ONLY"
+    )
+    if (
+        suitability.verdict != "PASS_CONTROLLED_INTERNAL_DATASET_SUITABILITY"
+        and not fixture_override
+    ):
+        raise IntegrityError(
+            "dataset suitability gate is not admitted: " + ", ".join(suitability.blocking_findings)
+        )
     protocol = load_protocol(args.protocol, snapshot=snapshot)
     if protocol.manifest.split == "test":
         raise ProtocolError("training must bind to a validation protocol, not TEST")

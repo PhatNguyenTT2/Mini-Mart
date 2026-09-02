@@ -128,28 +128,28 @@ def _load_source_manifest(root: Path) -> tuple[dict[str, Any], dict[str, int]]:
         raise IntegrityError("source bundle file set does not match contract")
 
     manifest = load_strict_json(root / "source_manifest.json")
-    _exact_fields(
-        manifest,
-        {
-            "schema_version",
-            "source_bundle_id",
-            "source_kind",
-            "source_commit",
-            "benchmark_run_id",
-            "generator_source_tree_sha256",
-            "generator_spec_source_sha256",
-            "export_query_contract_sha256",
-            "file_sha256",
-            "expected_counts",
-            "catalog_provenance_status",
-            "catalog_license_status",
-            "catalog_language_status",
-            "behavior_nature",
-            "observed_behavior",
-        },
-        "source_manifest",
-    )
-    if _string(manifest, "schema_version", "source_manifest") != "v5-source-bundle/1.0":
+    version = _string(manifest, "schema_version", "source_manifest")
+    fields = {
+        "schema_version",
+        "source_bundle_id",
+        "source_kind",
+        "source_commit",
+        "benchmark_run_id",
+        "generator_source_tree_sha256",
+        "generator_spec_source_sha256",
+        "export_query_contract_sha256",
+        "file_sha256",
+        "expected_counts",
+        "catalog_provenance_status",
+        "catalog_license_status",
+        "catalog_language_status",
+        "behavior_nature",
+        "observed_behavior",
+    }
+    if version == "v5-source-bundle/1.1":
+        fields |= {"catalog_audit_sha256", "catalog_audit_evidence_sha256"}
+    _exact_fields(manifest, fields, "source_manifest")
+    if version not in {"v5-source-bundle/1.0", "v5-source-bundle/1.1"}:
         raise IntegrityError("unsupported v5 source bundle schema")
     for key in (
         "source_bundle_id",
@@ -170,6 +170,30 @@ def _load_source_manifest(root: Path) -> tuple[dict[str, Any], dict[str, int]]:
     ):
         if not _SHA256.fullmatch(_string(manifest, key, "source_manifest")):
             raise IntegrityError(f"source_manifest.{key} must be a SHA-256")
+    if version == "v5-source-bundle/1.0":
+        fixture_only = manifest["source_commit"] == "0" * 40 and all(
+            str(manifest[key]).upper() in {"VERIFIED_TEST_FIXTURE", "TEST_ONLY"}
+            for key in (
+                "catalog_provenance_status",
+                "catalog_license_status",
+                "catalog_language_status",
+            )
+        )
+        if not fixture_only:
+            raise IntegrityError("v5-source-bundle/1.0 is fixture-only and not runtime-admissible")
+    else:
+        if not _SHA256.fullmatch(_string(manifest, "catalog_audit_sha256", "source_manifest")):
+            raise IntegrityError("source_manifest.catalog_audit_sha256 must be a SHA-256")
+        evidence_hashes = manifest.get("catalog_audit_evidence_sha256")
+        if (
+            not isinstance(evidence_hashes, list)
+            or not evidence_hashes
+            or any(
+                not isinstance(value, str) or not _SHA256.fullmatch(value)
+                for value in evidence_hashes
+            )
+        ):
+            raise IntegrityError("catalog audit evidence hashes are invalid")
     observed = manifest.get("observed_behavior")
     if not isinstance(observed, bool):
         raise IntegrityError("source_manifest.observed_behavior must be boolean")
@@ -474,6 +498,10 @@ def materialize_v5_source_bundle(source_root: Path, output_root: Path) -> Snapsh
         "generator_spec_source": manifest["generator_spec_source_sha256"],
         **{name: str(manifest["file_sha256"][name]) for name in _SOURCE_DATA_FILES},
     }
+    if manifest["schema_version"] == "v5-source-bundle/1.1":
+        source_hashes["catalog_audit"] = manifest["catalog_audit_sha256"]
+        for index, value in enumerate(manifest["catalog_audit_evidence_sha256"]):
+            source_hashes[f"catalog_audit_evidence_{index:03d}"] = value
     manifest_mapping: dict[str, Any] = {
         "schema_version": "dataset-manifest/1.1",
         "dataset_id": f"{manifest['benchmark_run_id']}-canonical",
