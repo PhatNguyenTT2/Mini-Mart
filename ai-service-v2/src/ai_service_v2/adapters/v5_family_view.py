@@ -277,9 +277,10 @@ def _validate_family_manifest(
     if amendment is not None:
         if manifest["parent_dataset_sha256"] != amendment["parent_dataset_sha256"]:
             raise IntegrityError("family-view parent dataset hash disagrees with amendment")
-        if manifest["parent_dataset_manifest_sha256"] != amendment[
-            "parent_dataset_manifest_sha256"
-        ]:
+        if (
+            manifest["parent_dataset_manifest_sha256"]
+            != amendment["parent_dataset_manifest_sha256"]
+        ):
             raise IntegrityError("family-view parent manifest hash disagrees with amendment")
         if manifest["parent_source_items_sha256"] != amendment["parent_source_items_sha256"]:
             raise IntegrityError("family-view source-item hash disagrees with amendment")
@@ -371,7 +372,7 @@ def _validate_family_rows(
         expected_partition = "cold" if internal_id in parent_cold else "warm"
         if partition != expected_partition:
             raise IntegrityError(f"{label}.partition changes the parent cold partition")
-        if (partition == "cold"):
+        if partition == "cold":
             cold_count += 1
         if anchor_ids is not None and family_id not in anchor_ids:
             raise IntegrityError(f"{label}.family_id is not a frozen family anchor")
@@ -387,9 +388,10 @@ def _validate_family_rows(
     if cold_count != family_manifest["num_cold_products"]:
         raise IntegrityError("family-view cold count does not match manifest")
     sizes = list(family_sizes.values())
-    if min(sizes) != family_manifest["minimum_family_size"] or max(sizes) != family_manifest[
-        "maximum_family_size"
-    ]:
+    if (
+        min(sizes) != family_manifest["minimum_family_size"]
+        or max(sizes) != family_manifest["maximum_family_size"]
+    ):
         raise IntegrityError("family-view family-size bounds do not match manifest")
 
     # The family artifact is source-bound, but its internal mapping is also
@@ -495,8 +497,7 @@ def _feature_hashes(item_rows: list[dict[str, Any]]) -> dict[str, str]:
         "category": canonical_json_sha256(
             {
                 "category": [
-                    {"item_id": row["item_id"], "category": row["category"]}
-                    for row in item_rows
+                    {"item_id": row["item_id"], "category": row["category"]} for row in item_rows
                 ]
             }
         ),
@@ -518,9 +519,10 @@ def _verify_parent_binding(
         raise IntegrityError("parent dataset hash does not match v5.1 amendment")
     if canonical_json_sha256(manifest.to_mapping()) != amendment["parent_dataset_manifest_sha256"]:
         raise IntegrityError("parent manifest hash does not match v5.1 amendment")
-    if manifest.source_artifact_hashes.get("items.jsonl") != amendment[
-        "parent_source_items_sha256"
-    ]:
+    if (
+        manifest.source_artifact_hashes.get("items.jsonl")
+        != amendment["parent_source_items_sha256"]
+    ):
         raise IntegrityError("parent source-item hash is absent or mismatched")
     expected_counts = {
         "num_users": amendment["num_users"],

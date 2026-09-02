@@ -31,6 +31,52 @@ class PreparedProtocol:
     cases: dict[int, UserEvaluationCase]
     num_total_users: int
 
+    def __post_init__(self) -> None:
+        """Validate the in-memory protocol before any scorer can consume it."""
+
+        candidate_item_ids = self.manifest.candidate_item_ids
+        if len(self.raw_item_ids) != len(candidate_item_ids):
+            raise IntegrityError("protocol raw IDs and candidate catalog lengths differ")
+        if any(
+            isinstance(item_id, bool) or not isinstance(item_id, int) or item_id < 0
+            for item_id in self.raw_item_ids
+        ):
+            raise IntegrityError("protocol raw item IDs must be non-negative integers")
+        if len(set(self.raw_item_ids)) != len(self.raw_item_ids):
+            raise IntegrityError("protocol raw item IDs must be unique")
+        expected_candidate_hash = canonical_json_sha256(
+            {
+                "internal_item_ids": list(candidate_item_ids),
+                "raw_item_ids": list(self.raw_item_ids),
+            }
+        )
+        if self.manifest.candidate_order_sha256 != expected_candidate_hash:
+            raise IntegrityError("protocol candidate order hash does not match catalog")
+        if isinstance(self.num_total_users, bool) or not isinstance(self.num_total_users, int):
+            raise IntegrityError("protocol num_total_users must be an integer")
+        if self.num_total_users < 1:
+            raise IntegrityError("protocol num_total_users must be positive")
+        if self.manifest.test_set_opened != (self.manifest.split == "test"):
+            raise ProtocolError("TEST-open state does not match protocol split")
+
+        candidate_set = set(candidate_item_ids)
+        for key, case in self.cases.items():
+            if not isinstance(key, int) or isinstance(key, bool) or key < 0:
+                raise IntegrityError("protocol case key is invalid")
+            if key >= self.num_total_users or not isinstance(case, UserEvaluationCase):
+                raise IntegrityError("protocol case user identity is invalid")
+            if case.user_id != key:
+                raise IntegrityError("protocol case key does not match user_id")
+            if not case.positive_item_ids:
+                raise IntegrityError("protocol case must contain at least one positive item")
+            if (
+                not case.history_item_ids <= candidate_set
+                or not case.positive_item_ids <= candidate_set
+            ):
+                raise IntegrityError("protocol case references an unknown candidate")
+            if case.history_item_ids & case.positive_item_ids:
+                raise IntegrityError("protocol case history and positives must be disjoint")
+
     @property
     def candidate_item_ids(self) -> tuple[int, ...]:
         return self.manifest.candidate_item_ids
@@ -266,6 +312,9 @@ def build_protocol(
             )
 
     candidate_ids = tuple(snapshot.items)
+    expected_dataset_hash = _manifest_hash(snapshot.manifest)
+    if dataset_manifest_sha256 is not None and dataset_manifest_sha256 != expected_dataset_hash:
+        raise IntegrityError("supplied dataset manifest hash does not match snapshot")
     candidate_hash = canonical_json_sha256(
         {
             "internal_item_ids": list(candidate_ids),
@@ -276,7 +325,7 @@ def build_protocol(
     protocol_manifest = ProtocolManifest(
         protocol_id=f"{snapshot.manifest.dataset_id}:{split}:full-catalog-v1",
         dataset_id=snapshot.manifest.dataset_id,
-        dataset_manifest_sha256=dataset_manifest_sha256 or _manifest_hash(snapshot.manifest),
+        dataset_manifest_sha256=dataset_manifest_sha256 or expected_dataset_hash,
         split=split,
         split_hash=snapshot.manifest.split_hashes[split],
         candidate_item_ids=candidate_ids,

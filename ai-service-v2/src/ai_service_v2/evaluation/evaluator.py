@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from collections.abc import Callable
 from dataclasses import dataclass
+from pathlib import Path
 
 import numpy as np
 
@@ -14,11 +15,52 @@ from ai_service_v2.evaluation.metrics import (
     aggregate_user_metrics_at_k,
     ranking_metrics,
 )
-from ai_service_v2.hashing import canonical_json_bytes, sha256_bytes
+from ai_service_v2.hashing import (
+    canonical_json_bytes,
+    canonical_json_sha256,
+    sha256_bytes,
+    sha256_file,
+)
 from ai_service_v2.protocol import PreparedProtocol
 
 ScoreProvider = Callable[[int, tuple[int, ...]], np.ndarray]
 """Small seam: a model emits one score vector in frozen catalog order."""
+
+
+_EVALUATOR_SOURCE_FILES = (
+    "evaluation/evaluator.py",
+    "evaluation/metrics.py",
+    "protocol.py",
+)
+
+
+def evaluator_source_hashes() -> dict[str, str]:
+    """Return hashes for the source files that define evaluation semantics."""
+
+    package_root = Path(__file__).resolve().parents[1]
+    hashes: dict[str, str] = {}
+    for relative_path in _EVALUATOR_SOURCE_FILES:
+        path = package_root / relative_path
+        if not path.is_file():
+            raise ScoreError(f"evaluator source file is missing: {relative_path}")
+        hashes[relative_path] = sha256_file(path)
+    return hashes
+
+
+def evaluator_implementation_sha256() -> str:
+    """Hash the exact evaluator/metric/protocol source bundle in use.
+
+    The source manifest is deliberately small and explicit.  It gives every
+    persisted metric receipt a stable implementation identity without hashing
+    the receipt itself or depending on an absolute checkout path.
+    """
+
+    return canonical_json_sha256(
+        {
+            "schema_version": "evaluator-implementation/1.0",
+            "files": evaluator_source_hashes(),
+        }
+    )
 
 
 @dataclass(frozen=True)
@@ -80,6 +122,7 @@ class FullCatalogEvaluator:
             raise ValueError("protocol raw IDs and candidate IDs must have equal length")
         self.protocol = protocol
         self.evaluator_version = evaluator_version
+        self.evaluator_implementation_sha256 = evaluator_implementation_sha256()
 
     def evaluate(self, scorer: ScoreProvider, *, run_id: str, model_id: str) -> EvaluationResult:
         user_ids = self.protocol.eligible_user_ids
@@ -103,6 +146,7 @@ class FullCatalogEvaluator:
                 scores=masked_scores,
                 positive_indices=positive_positions,
                 negative_indices=negative_positions,
+                excluded_indices=seen_positions,
                 raw_item_ids=np.asarray(self.protocol.raw_item_ids),
                 k=self.protocol.manifest.cutoff,
             )
@@ -126,7 +170,10 @@ class FullCatalogEvaluator:
             run_id=run_id,
             model_id=model_id,
             protocol_id=self.protocol.manifest.protocol_id,
+            protocol_manifest_sha256=canonical_json_sha256(self.protocol.manifest.to_mapping()),
+            candidate_order_sha256=self.protocol.manifest.candidate_order_sha256,
             evaluator_version=self.evaluator_version,
+            evaluator_implementation_sha256=self.evaluator_implementation_sha256,
             per_user_metrics_sha256=_per_user_hash(user_ids_tuple, rows, cutoff),
             num_total_users=self.protocol.num_total_users,
             num_eligible_users=len(rows),
@@ -148,6 +195,8 @@ __all__ = [
     "EvaluationResult",
     "FullCatalogEvaluator",
     "ScoreProvider",
+    "evaluator_implementation_sha256",
+    "evaluator_source_hashes",
     "per_user_metrics_mapping",
     "per_user_metrics_sha256",
 ]

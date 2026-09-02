@@ -14,10 +14,12 @@ family-view adapter that preserves the parent behavior files byte-for-byte
 while replacing raw catalog content with the frozen model-facing family view.
 The audited v5.1 canonical snapshot passes schema, lineage, mapping, and
 suitability replay, but remains an internal controlled/generated dataset and
-does not authorize training or TEST. AIS-R3 remains pending independent metric
-audit. No public dataset has been downloaded, no reference repository has been
-executed, no training/evaluation benchmark has been run, and no paper result is
-emitted by this package.
+does not authorize training or TEST. AIS-R3 now has an independent formula and
+fixture-parity implementation gate: the evaluator binds its exact source
+bundle, owns full-catalog masking/ranking/aggregation, and persisted receipts
+bind the protocol and candidate-order hashes. No public dataset has been
+downloaded, no reference repository has been executed, no training/evaluation
+benchmark has been run, and no paper result is emitted by this package.
 
 The old service is not a scientific baseline. Its checkpoints, embeddings,
 rules, benchmark numbers, and configurations are not imported here.

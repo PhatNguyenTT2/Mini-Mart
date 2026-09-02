@@ -8,7 +8,12 @@ from ai_service_v2.evaluation.artifacts import (
     load_score_matrix,
     materialize_scores,
 )
-from ai_service_v2.evaluation.evaluator import EvaluationResult, FullCatalogEvaluator
+from ai_service_v2.evaluation.evaluator import (
+    EvaluationResult,
+    FullCatalogEvaluator,
+    evaluator_implementation_sha256,
+    evaluator_source_hashes,
+)
 from ai_service_v2.evaluation.metrics import UserMetrics, ranking_metrics, user_auc
 from ai_service_v2.evaluation.persistence import (
     PersistedEvaluation,
@@ -24,6 +29,8 @@ __all__ = [
     "PersistedEvaluation",
     "ScoreChunk",
     "UserMetrics",
+    "evaluator_implementation_sha256",
+    "evaluator_source_hashes",
     "load_evaluation",
     "load_materialized_scores",
     "load_score_matrix",

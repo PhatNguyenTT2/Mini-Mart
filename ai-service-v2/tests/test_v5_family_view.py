@@ -88,10 +88,7 @@ def _build_family_inputs(root: Path) -> tuple[Path, Path, Path, Path]:
     family_root = root / "family-view"
     family_root.mkdir()
     family_rows: list[dict[str, Any]] = []
-    anchors = {
-        item.raw_item_id: item
-        for item in parent.item_records.values()
-    }
+    anchors = {item.raw_item_id: item for item in parent.item_records.values()}
     for item_id in parent.items:
         item = parent.item_records[item_id]
         family_id = item.raw_item_id

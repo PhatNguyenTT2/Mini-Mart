@@ -11,10 +11,11 @@ from ai_service_v2.contracts import EvaluationReceipt
 from ai_service_v2.errors import IntegrityError
 from ai_service_v2.evaluation.evaluator import (
     EvaluationResult,
+    evaluator_implementation_sha256,
     per_user_metrics_mapping,
     per_user_metrics_sha256,
 )
-from ai_service_v2.hashing import canonical_json_bytes, load_strict_json
+from ai_service_v2.hashing import canonical_json_bytes, loads_strict_json
 
 
 @dataclass(frozen=True)
@@ -34,6 +35,19 @@ def _write_new(path: Path, document: dict[str, Any]) -> None:
         raise IntegrityError(f"could not write evaluation artifact: {path}") from error
 
 
+def _load_canonical(path: Path) -> dict[str, Any]:
+    """Load one receipt document and reject formatting-only mutations."""
+
+    try:
+        payload = path.read_bytes()
+        document = loads_strict_json(payload, source=str(path))
+    except OSError as error:
+        raise IntegrityError(f"could not read evaluation artifact: {path}") from error
+    if payload != canonical_json_bytes(document) + b"\n":
+        raise IntegrityError(f"evaluation artifact canonical hash/bytes mismatch: {path}")
+    return document
+
+
 def save_evaluation(result: EvaluationResult, root: Path) -> PersistedEvaluation:
     """Persist evaluator output without changing its receipt or metrics."""
 
@@ -50,6 +64,8 @@ def save_evaluation(result: EvaluationResult, root: Path) -> PersistedEvaluation
         "run_id": result.receipt.run_id,
         "model_id": result.receipt.model_id,
         "protocol_id": result.receipt.protocol_id,
+        "protocol_manifest_sha256": result.receipt.protocol_manifest_sha256,
+        "candidate_order_sha256": result.receipt.candidate_order_sha256,
         "cutoff": cutoff,
         "user_ids": list(result.user_ids),
         "metrics": per_user_metrics_mapping(result.user_ids, result.per_user_metrics, cutoff)[
@@ -61,11 +77,13 @@ def save_evaluation(result: EvaluationResult, root: Path) -> PersistedEvaluation
         "run_id": result.receipt.run_id,
         "model_id": result.receipt.model_id,
         "protocol_id": result.receipt.protocol_id,
+        "protocol_manifest_sha256": result.receipt.protocol_manifest_sha256,
+        "candidate_order_sha256": result.receipt.candidate_order_sha256,
         "aggregate_metrics": result.receipt.aggregate_metrics,
         "denominator_by_metric": result.receipt.denominator_by_metric,
     }
     receipt_document = {
-        "schema_version": "evaluation-receipt/1.0",
+        "schema_version": "evaluation-receipt/1.1",
         "receipt": result.receipt.to_mapping(),
         "per_user_metrics_file": "per_user_metrics.json",
         "aggregate_metrics_file": "aggregate_metrics.json",
@@ -90,7 +108,7 @@ def load_evaluation(root: Path) -> PersistedEvaluation:
         raise IntegrityError(f"cannot inspect evaluation root: {root}") from error
     if actual_files != expected_files:
         raise IntegrityError("evaluation bundle contains an unexpected or missing file")
-    receipt_document = load_strict_json(root / "evaluation_receipt.json")
+    receipt_document = _load_canonical(root / "evaluation_receipt.json")
     if set(receipt_document) != {
         "schema_version",
         "receipt",
@@ -99,19 +117,23 @@ def load_evaluation(root: Path) -> PersistedEvaluation:
     }:
         raise IntegrityError("evaluation receipt wrapper fields do not match schema")
     if (
-        receipt_document["schema_version"] != "evaluation-receipt/1.0"
+        receipt_document["schema_version"] != "evaluation-receipt/1.1"
         or receipt_document["per_user_metrics_file"] != "per_user_metrics.json"
         or receipt_document["aggregate_metrics_file"] != "aggregate_metrics.json"
         or not isinstance(receipt_document["receipt"], dict)
     ):
         raise IntegrityError("evaluation receipt wrapper is invalid")
     receipt = EvaluationReceipt.from_mapping(receipt_document["receipt"])
-    per_user_document = load_strict_json(root / "per_user_metrics.json")
+    if receipt.evaluator_implementation_sha256 != evaluator_implementation_sha256():
+        raise IntegrityError("evaluation receipt binds a different evaluator implementation")
+    per_user_document = _load_canonical(root / "per_user_metrics.json")
     if set(per_user_document) != {
         "schema_version",
         "run_id",
         "model_id",
         "protocol_id",
+        "protocol_manifest_sha256",
+        "candidate_order_sha256",
         "cutoff",
         "user_ids",
         "metrics",
@@ -123,6 +145,8 @@ def load_evaluation(root: Path) -> PersistedEvaluation:
         per_user_document["run_id"] != receipt.run_id
         or per_user_document["model_id"] != receipt.model_id
         or per_user_document["protocol_id"] != receipt.protocol_id
+        or per_user_document["protocol_manifest_sha256"] != receipt.protocol_manifest_sha256
+        or per_user_document["candidate_order_sha256"] != receipt.candidate_order_sha256
         or per_user_document["cutoff"] != receipt.cutoff
     ):
         raise IntegrityError("per-user metric identity does not match receipt")
@@ -186,12 +210,14 @@ def load_evaluation(root: Path) -> PersistedEvaluation:
         ):
             raise IntegrityError(f"receipt aggregate does not match per-user rows: {key}")
 
-    aggregate_document = load_strict_json(root / "aggregate_metrics.json")
+    aggregate_document = _load_canonical(root / "aggregate_metrics.json")
     if set(aggregate_document) != {
         "schema_version",
         "run_id",
         "model_id",
         "protocol_id",
+        "protocol_manifest_sha256",
+        "candidate_order_sha256",
         "aggregate_metrics",
         "denominator_by_metric",
     }:
@@ -202,6 +228,8 @@ def load_evaluation(root: Path) -> PersistedEvaluation:
         aggregate_document["run_id"] != receipt.run_id
         or aggregate_document["model_id"] != receipt.model_id
         or aggregate_document["protocol_id"] != receipt.protocol_id
+        or aggregate_document["protocol_manifest_sha256"] != receipt.protocol_manifest_sha256
+        or aggregate_document["candidate_order_sha256"] != receipt.candidate_order_sha256
         or aggregate_document["aggregate_metrics"] != receipt.aggregate_metrics
         or aggregate_document["denominator_by_metric"] != receipt.denominator_by_metric
     ):

@@ -658,7 +658,10 @@ class EvaluationReceipt:
     run_id: str
     model_id: str
     protocol_id: str
+    protocol_manifest_sha256: str
+    candidate_order_sha256: str
     evaluator_version: str
+    evaluator_implementation_sha256: str
     per_user_metrics_sha256: str
     num_total_users: int
     num_eligible_users: int
@@ -672,7 +675,10 @@ class EvaluationReceipt:
         _require_nonempty(self.run_id, "run_id")
         _require_nonempty(self.model_id, "model_id")
         _require_nonempty(self.protocol_id, "protocol_id")
+        _require_sha(self.protocol_manifest_sha256, "protocol_manifest_sha256")
+        _require_sha(self.candidate_order_sha256, "candidate_order_sha256")
         _require_nonempty(self.evaluator_version, "evaluator_version")
+        _require_sha(self.evaluator_implementation_sha256, "evaluator_implementation_sha256")
         _require_positive_int(self.num_total_users, "num_total_users")
         _require_positive_int(self.num_eligible_users, "num_eligible_users")
         if self.num_eligible_users > self.num_total_users:
@@ -700,6 +706,8 @@ class EvaluationReceipt:
                 raise ContractError(f"aggregate metric {metric} must be a number or null")
             elif not math.isfinite(float(value)):
                 raise ContractError(f"aggregate metric {metric} must be finite")
+            elif not 0.0 <= float(value) <= 1.0:
+                raise ContractError(f"aggregate metric {metric} must be inside [0, 1]")
             elif denominator == 0:
                 raise ContractError(f"defined metric {metric} must have a positive denominator")
         if self.verdict not in {"PASS", "FAIL", "INCOMPLETE"}:
@@ -710,7 +718,10 @@ class EvaluationReceipt:
             "run_id": self.run_id,
             "model_id": self.model_id,
             "protocol_id": self.protocol_id,
+            "protocol_manifest_sha256": self.protocol_manifest_sha256,
+            "candidate_order_sha256": self.candidate_order_sha256,
             "evaluator_version": self.evaluator_version,
+            "evaluator_implementation_sha256": self.evaluator_implementation_sha256,
             "per_user_metrics_sha256": self.per_user_metrics_sha256,
             "num_total_users": self.num_total_users,
             "num_eligible_users": self.num_eligible_users,
@@ -727,7 +738,10 @@ class EvaluationReceipt:
             "run_id",
             "model_id",
             "protocol_id",
+            "protocol_manifest_sha256",
+            "candidate_order_sha256",
             "evaluator_version",
+            "evaluator_implementation_sha256",
             "per_user_metrics_sha256",
             "num_total_users",
             "num_eligible_users",
@@ -756,7 +770,10 @@ class EvaluationReceipt:
             run_id=_string(value, "run_id"),
             model_id=_string(value, "model_id"),
             protocol_id=_string(value, "protocol_id"),
+            protocol_manifest_sha256=_sha(value, "protocol_manifest_sha256"),
+            candidate_order_sha256=_sha(value, "candidate_order_sha256"),
             evaluator_version=_string(value, "evaluator_version"),
+            evaluator_implementation_sha256=_sha(value, "evaluator_implementation_sha256"),
             per_user_metrics_sha256=_sha(value, "per_user_metrics_sha256"),
             num_total_users=_integer(value, "num_total_users", minimum=1),
             num_eligible_users=_integer(value, "num_eligible_users", minimum=1),
