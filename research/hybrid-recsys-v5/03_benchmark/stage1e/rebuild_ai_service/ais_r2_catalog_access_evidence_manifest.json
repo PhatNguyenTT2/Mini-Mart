@@ -1,0 +1,53 @@
+{
+  "authorization_scope": {
+    "approved_export_fields": [
+      "category",
+      "name",
+      "price",
+      "vendor"
+    ],
+    "private_academic_research": true,
+    "public_raw_catalog_redistribution": false
+  },
+  "evidence": [
+    {
+      "classification": "USER_PROJECT_CONTROLLER_AUTHORIZATION",
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebuild_ai_service/ais_r2_catalog_private_research_authorization.md",
+      "sha256": "0aff2a1dcc9da8f1afeffc31295933095f5f3b9116091bcfc15d653a2710cd55"
+    },
+    {
+      "classification": "PRIOR_FAIL_CLOSED_RIGHTS_AND_LANGUAGE_AUDIT",
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebuild_ai_service/ais_r2_catalog_rights_language_audit.md",
+      "sha256": "f7604f0c5773fa3f37b951b1e4c282575c28c68124e69f7517ced6d04fc0a0db"
+    },
+    {
+      "classification": "LOCAL_CATALOG_PROVENANCE_SEED",
+      "path": "backend/services/catalog/src/db/seed-1000.sql",
+      "sha256": "7b9361f47fbc552cab3997672cabe7883b3c058f7e811d2e6e14b98062207c79"
+    },
+    {
+      "classification": "EXPORT_AND_NON_REDISTRIBUTION_CONTRACT",
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebuild_ai_service/ais_r2_source_export_contract_v1_1.md",
+      "sha256": "bc29a2502b3fc64e9f364b3ba36d33e855a4ac491ceec7e7e172eff76395c3c2"
+    }
+  ],
+  "material_passport": {
+    "experiment_intake_declaration": {
+      "declared_at": "2026-09-01T16:38:56Z",
+      "declared_by": "scholar",
+      "status": "experiments_declared"
+    },
+    "origin_date": "2026-09-02T13:12:00Z",
+    "origin_mode": "run",
+    "origin_skill": "academic-research-suite/experiment-agent",
+    "repro_lock": null,
+    "upstream_dependencies": [
+      "ais-r2-catalog-private-research-authorization-v1.0.0",
+      "ais-r2-catalog-rights-language-audit-v1.0.0",
+      "ais-r2-source-export-contract-v1.1.0"
+    ],
+    "verification_status": "UNVERIFIED",
+    "version_label": "ais-r2-catalog-access-evidence-manifest-v1.0.0"
+  },
+  "schema_version": "ais-r2-catalog-access-evidence-manifest/1.0"
+}
