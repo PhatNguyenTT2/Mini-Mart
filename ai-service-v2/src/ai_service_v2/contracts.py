@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import math
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any, ClassVar
 
 from ai_service_v2.errors import ContractError
@@ -128,6 +128,13 @@ class DatasetManifest:
     basket_field: str | None
     provenance_status: str
     license_status: str
+    source_bundle_sha256: str | None = None
+    source_artifact_hashes: dict[str, str] = field(default_factory=dict)
+    num_baskets: int = 0
+    basket_sha256: str | None = None
+    behavior_nature: str = "UNSPECIFIED"
+    observed_behavior: bool = False
+    language_status: str = "UNSPECIFIED"
 
     _FIELDS: ClassVar[set[str]] = {
         "schema_version",
@@ -149,11 +156,22 @@ class DatasetManifest:
         "basket_field",
         "provenance_status",
         "license_status",
+        "source_bundle_sha256",
+        "source_artifact_hashes",
+        "num_baskets",
+        "basket_sha256",
+        "behavior_nature",
+        "observed_behavior",
+        "language_status",
     }
 
     @classmethod
     def from_mapping(cls, value: dict[str, Any]) -> DatasetManifest:
         _reject_unknown(value, cls._FIELDS)
+        schema_version = _string(value, "schema_version")
+        extended = schema_version == "dataset-manifest/1.1"
+        if schema_version not in {"dataset-manifest/1.0", "dataset-manifest/1.1"}:
+            raise ContractError(f"unsupported dataset manifest schema: {schema_version}")
         event_schema_value = _required(value, "event_schema")
         if (
             not isinstance(event_schema_value, list)
@@ -164,8 +182,39 @@ class DatasetManifest:
         split_hashes = _string_map(value, "split_hashes")
         if set(split_hashes) != _SPLITS:
             raise ContractError("split_hashes must contain exactly train, val, test")
+        source_bundle_sha256 = _optional_sha(value, "source_bundle_sha256")
+        basket_sha256 = _optional_sha(value, "basket_sha256")
+        source_artifact_hashes = (
+            _string_map(value, "source_artifact_hashes")
+            if "source_artifact_hashes" in value
+            else {}
+        )
+        if any(not _SHA256.fullmatch(item) for item in source_artifact_hashes.values()):
+            raise ContractError("source_artifact_hashes values must be lowercase SHA-256")
+        observed_behavior = value.get("observed_behavior", False)
+        if not isinstance(observed_behavior, bool):
+            raise ContractError("observed_behavior must be boolean")
+        if extended:
+            required_extended = {
+                "source_bundle_sha256",
+                "source_artifact_hashes",
+                "num_baskets",
+                "basket_sha256",
+                "behavior_nature",
+                "observed_behavior",
+                "language_status",
+            }
+            missing_extended = sorted(required_extended - set(value))
+            if missing_extended:
+                raise ContractError(
+                    "missing dataset-manifest/1.1 fields: " + ", ".join(missing_extended)
+                )
+            if source_bundle_sha256 is None or basket_sha256 is None:
+                raise ContractError("dataset-manifest/1.1 requires source and basket hashes")
+            if not source_artifact_hashes:
+                raise ContractError("dataset-manifest/1.1 requires source artifact hashes")
         manifest = cls(
-            schema_version=_string(value, "schema_version"),
+            schema_version=schema_version,
             dataset_id=_string(value, "dataset_id"),
             source_kind=_string(value, "source_kind"),
             source_locator=_string(value, "source_locator"),
@@ -186,6 +235,17 @@ class DatasetManifest:
             ),
             provenance_status=_string(value, "provenance_status"),
             license_status=_string(value, "license_status"),
+            source_bundle_sha256=source_bundle_sha256,
+            source_artifact_hashes=source_artifact_hashes,
+            num_baskets=(_integer(value, "num_baskets") if "num_baskets" in value else 0),
+            basket_sha256=basket_sha256,
+            behavior_nature=(
+                _string(value, "behavior_nature") if "behavior_nature" in value else "UNSPECIFIED"
+            ),
+            observed_behavior=observed_behavior,
+            language_status=(
+                _string(value, "language_status") if "language_status" in value else "UNSPECIFIED"
+            ),
         )
         if manifest.num_cold_items != len(manifest.cold_item_ids):
             raise ContractError("num_cold_items does not match cold_item_ids")
@@ -196,7 +256,7 @@ class DatasetManifest:
         return manifest
 
     def to_mapping(self) -> dict[str, Any]:
-        return {
+        value: dict[str, Any] = {
             "schema_version": self.schema_version,
             "dataset_id": self.dataset_id,
             "source_kind": self.source_kind,
@@ -217,6 +277,19 @@ class DatasetManifest:
             "provenance_status": self.provenance_status,
             "license_status": self.license_status,
         }
+        if self.schema_version == "dataset-manifest/1.1":
+            value.update(
+                {
+                    "source_bundle_sha256": self.source_bundle_sha256,
+                    "source_artifact_hashes": dict(sorted(self.source_artifact_hashes.items())),
+                    "num_baskets": self.num_baskets,
+                    "basket_sha256": self.basket_sha256,
+                    "behavior_nature": self.behavior_nature,
+                    "observed_behavior": self.observed_behavior,
+                    "language_status": self.language_status,
+                }
+            )
+        return value
 
 
 @dataclass(frozen=True)

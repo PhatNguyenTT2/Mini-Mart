@@ -8,9 +8,11 @@ from pathlib import Path
 from typing import Any
 
 from ai_service_v2 import __version__
+from ai_service_v2.adapters.v5_source import materialize_v5_source_bundle
 from ai_service_v2.contracts import DatasetManifest
 from ai_service_v2.data.io import load_canonical_snapshot, materialize_snapshot
 from ai_service_v2.data.rules import load_rule_table, save_rule_table
+from ai_service_v2.data.suitability import assess_snapshot_suitability
 from ai_service_v2.errors import ContractError, IntegrityError, ProtocolError
 from ai_service_v2.evaluation.artifacts import (
     MatrixScoreProvider,
@@ -64,6 +66,13 @@ def _parser() -> argparse.ArgumentParser:
     materialize = commands.add_parser("materialize-snapshot")
     materialize.add_argument("source_root", type=Path)
     materialize.add_argument("output_root", type=Path)
+
+    materialize_v5 = commands.add_parser("materialize-v5-source")
+    materialize_v5.add_argument("source_root", type=Path)
+    materialize_v5.add_argument("output_root", type=Path)
+
+    assess = commands.add_parser("assess-snapshot")
+    assess.add_argument("snapshot_root", type=Path)
 
     protocol = commands.add_parser("build-protocol")
     protocol.add_argument("snapshot_root", type=Path)
@@ -633,6 +642,22 @@ def main(argv: list[str] | None = None) -> int:
                 }
             )
             return 0
+        if args.command == "materialize-v5-source":
+            snapshot = materialize_v5_source_bundle(args.source_root, args.output_root)
+            _print(
+                {
+                    "status": "PASS",
+                    "dataset_id": snapshot.manifest.dataset_id,
+                    "dataset_sha256": snapshot.manifest.dataset_sha256,
+                    "source_bundle_sha256": snapshot.manifest.source_bundle_sha256,
+                    "output_root": str(args.output_root),
+                }
+            )
+            return 0
+        if args.command == "assess-snapshot":
+            report = assess_snapshot_suitability(load_canonical_snapshot(args.snapshot_root))
+            _print(report.to_mapping())
+            return 0 if report.verdict == "PASS_CONTROLLED_INTERNAL_DATASET_SUITABILITY" else 2
         if args.command == "build-protocol":
             return _cmd_build_protocol(args)
         if args.command == "train":

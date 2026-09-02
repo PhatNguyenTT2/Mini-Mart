@@ -7,12 +7,13 @@ recommender paper. It is deliberately separate from the historical
 ## Status
 
 AIS-R0 is design-frozen and AIS-R1 is implemented as a static, fixture-tested
-foundation. Dataset/protocol/evaluator/statistics modules needed by AIS-R2 and
-AIS-R3 exist and pass fixture tests, but those stages are not admitted until a
-canonical v5 snapshot and an independent metric audit are bound. No public
-dataset has been downloaded, no reference repository has been executed, no
-training/evaluation benchmark has been run, and no paper result is emitted by
-this package.
+foundation. AIS-R2 now has a strict file-only Source Bundle adapter, canonical
+seven-file Dataset Snapshot v1.1, organic-only truth/rule separation, and a
+validation-only suitability report. AIS-R2 remains unadmitted until a real v5
+export and its catalog provenance/license/language audit pass. AIS-R3 remains
+pending independent metric audit. No public dataset has been downloaded, no
+reference repository has been executed, no training/evaluation benchmark has
+been run, and no paper result is emitted by this package.
 
 The old service is not a scientific baseline. Its checkpoints, embeddings,
 rules, benchmark numbers, and configurations are not imported here.
@@ -41,7 +42,13 @@ dependencies:
 python -m pytest -q
 python -m ai_service_v2.cli validate-manifest <manifest.json>
 python -m ai_service_v2.cli validate-snapshot tests/fixtures/fixture-retail-v1
+python -m ai_service_v2.cli materialize-v5-source <source-bundle> <new-snapshot>
+python -m ai_service_v2.cli assess-snapshot <snapshot>
 ```
+
+The last two commands require an admitted immutable Source Bundle for research
+use. The test helper builds fixture-only bytes and must never be used as a paper
+dataset.
 
 `train --model-kind` supports the local fixture registry (`random`, `mostpop`,
 `rule_only`, `deep_two_tower`, and `hybrid`). These implementations exercise

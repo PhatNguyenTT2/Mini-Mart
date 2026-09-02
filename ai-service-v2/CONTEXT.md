@@ -10,6 +10,18 @@ paper-admissible results from being conflated.
 An immutable, hash-bound collection of interaction splits, item records, raw-to-internal ID mappings, and provenance metadata admitted for one experiment lineage.
 _Avoid_: Dataset dump, current data, old snapshot
 
+**Source Bundle**:
+An immutable export of raw users, items, events, training baskets, generator specification, and source-lineage hashes before internal IDs or evaluation splits are materialized.
+_Avoid_: Raw snapshot, database dump, canonical dataset
+
+**Training Basket**:
+A train-period purchase order containing at least two distinct items and an explicit origin; only organic Training Baskets may fit the main Apriori feature.
+_Avoid_: Session, event group, semantic trap
+
+**Dataset Admission**:
+A fail-closed receipt stating whether one Source Bundle can produce a Dataset Snapshot with verified lineage, scope, provenance, and task-suitability checks.
+_Avoid_: Dataset validation, data ready, snapshot created
+
 **Protocol**:
 A hash-bound specification of split boundaries, eligible users, positives, candidate catalog, seen-item masking, tie handling, cutoff, metrics, and TEST state.
 _Avoid_: Evaluation settings, benchmark defaults

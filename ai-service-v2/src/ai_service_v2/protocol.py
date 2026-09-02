@@ -252,7 +252,7 @@ def build_protocol(
         history_by_user[event.user_id].add(event.item_id)
     target_by_user: dict[int, set[int]] = {user: set() for user in snapshot.users}
     for event in target:
-        if event.event_type == "purchase":
+        if event.event_type == "purchase" and event.event_origin == "organic":
             target_by_user[event.user_id].add(event.item_id)
 
     cases: dict[int, UserEvaluationCase] = {}
@@ -281,8 +281,8 @@ def build_protocol(
         split_hash=snapshot.manifest.split_hashes[split],
         candidate_item_ids=candidate_ids,
         candidate_order_sha256=candidate_hash,
-        eligible_user_rule="user_has_at_least_one_novel_purchase_in_target_split",
-        positive_rule="purchase_events_minus_history_items",
+        eligible_user_rule="user_has_at_least_one_novel_organic_purchase_in_target_split",
+        positive_rule="organic_purchase_events_minus_all_history_items",
         seen_masking="all_prior_interacted_items_to_negative_infinity",
         cutoff=cutoff,
         tie_break="descending_score_then_ascending_raw_product_id",
