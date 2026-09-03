@@ -5,6 +5,7 @@ import json
 import sys
 from collections.abc import Callable
 from pathlib import Path
+from types import SimpleNamespace
 from typing import Any
 
 import numpy as np
@@ -16,6 +17,7 @@ from ai_service_v2.evaluation.artifacts import load_score_matrix
 from ai_service_v2.evaluation.components import load_hybrid_score_components
 from ai_service_v2.evaluation.persistence import load_evaluation
 from ai_service_v2.hashing import canonical_json_bytes, load_strict_json, sha256_bytes
+from ai_service_v2.models.registry import ModelRunSpec, default_spec, descriptor_for_spec
 from ai_service_v2.protocol import load_protocol
 from ai_service_v2.training import load_run_command
 
@@ -97,6 +99,236 @@ def test_cli_has_no_self_asserted_command_text_option(tmp_path: Path) -> None:
                 "caller-controlled prose",
             ]
         )
+
+
+def test_cli_keeps_legacy_model_specs_inspection_only_before_run_creation(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    protocol_path = tmp_path / "val-protocol.json"
+    run_root = tmp_path / "legacy-run"
+    config_path = tmp_path / "legacy-model-spec.json"
+    assert main(["build-protocol", str(FIXTURE_ROOT), str(protocol_path), "--cutoff", "5"]) == 0
+    legacy = default_spec("hybrid", feature_dimensions=8).to_mapping()
+    legacy.pop("fusion_normalization")
+    legacy["schema_version"] = "model-run-spec/1.0"
+    config_path.write_bytes(canonical_json_bytes(legacy) + b"\n")
+
+    result = main(
+        [
+            "train",
+            str(FIXTURE_ROOT),
+            str(protocol_path),
+            str(run_root),
+            "--config",
+            str(config_path),
+            "--fixture-only",
+        ]
+    )
+
+    assert result == 2
+    assert "inspection-only" in capsys.readouterr().out
+    assert not run_root.exists()
+
+
+def test_cli_non_fixture_training_requires_process_argv_capture(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    capsys: pytest.CaptureFixture[str],
+) -> None:
+    protocol_path = tmp_path / "val-protocol.json"
+    run_root = tmp_path / "non-fixture-run"
+    environment_lock = tmp_path / "environment.lock"
+    environment_lock.write_bytes(b"immutable environment lock")
+    assert main(["build-protocol", str(FIXTURE_ROOT), str(protocol_path), "--cutoff", "5"]) == 0
+    capsys.readouterr()
+
+    # Use the repository fixture only as a bounded input carrier; these gates
+    # make the admission path treat it as an admitted non-fixture snapshot.
+    monkeypatch.setattr("ai_service_v2.cli._is_repository_fixture", lambda _manifest: False)
+    monkeypatch.setattr(
+        "ai_service_v2.cli.assess_snapshot_suitability",
+        lambda _snapshot: SimpleNamespace(
+            verdict="PASS_CONTROLLED_INTERNAL_DATASET_SUITABILITY",
+            blocking_findings=(),
+        ),
+    )
+
+    result = main(
+        [
+            "train",
+            str(FIXTURE_ROOT),
+            str(protocol_path),
+            str(run_root),
+            "--environment-lock",
+            str(environment_lock),
+        ]
+    )
+
+    assert result == 2
+    assert "process_sys_argv" in capsys.readouterr().out
+    assert not run_root.exists()
+
+
+@pytest.mark.parametrize("command", ("export-scores", "export-score-components"))
+def test_cli_refuses_evidence_export_from_an_inspectable_legacy_run(
+    command: str, tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    protocol_path = tmp_path / "val-protocol.json"
+    run_root = tmp_path / "run"
+    output_root = tmp_path / "evidence"
+    assert main(["build-protocol", str(FIXTURE_ROOT), str(protocol_path), "--cutoff", "5"]) == 0
+    assert (
+        main(
+            [
+                "train",
+                str(FIXTURE_ROOT),
+                str(protocol_path),
+                str(run_root),
+                "--fixture-only",
+                "--model-kind",
+                "hybrid",
+                "--feature-dim",
+                "8",
+                "--wide-weight",
+                "0.5",
+            ]
+        )
+        == 0
+    )
+
+    legacy = default_spec("hybrid", feature_dimensions=8, wide_weight=0.5).to_mapping()
+    legacy.pop("fusion_normalization")
+    legacy["schema_version"] = "model-run-spec/1.0"
+    legacy_spec = ModelRunSpec.from_mapping(legacy)
+    legacy_descriptor = descriptor_for_spec(legacy_spec).to_mapping()
+    (run_root / "config.json").write_bytes(canonical_json_bytes(legacy) + b"\n")
+    model_artifact_path = run_root / "model_artifact.json"
+    model_artifact = load_strict_json(model_artifact_path)
+    model_artifact["model_spec_sha256"] = sha256_bytes(canonical_json_bytes(legacy))
+    model_artifact["descriptor"] = legacy_descriptor
+    model_artifact["fusion_normalization"] = "none"
+    model_artifact_path.write_bytes(canonical_json_bytes(model_artifact) + b"\n")
+    checkpoint_manifest_path = run_root / "checkpoint" / "manifest.json"
+    checkpoint_manifest = load_strict_json(checkpoint_manifest_path)
+    checkpoint_manifest["descriptor"] = legacy_descriptor
+    checkpoint_manifest_path.write_bytes(canonical_json_bytes(checkpoint_manifest) + b"\n")
+
+    result = main(
+        [
+            command,
+            str(FIXTURE_ROOT),
+            str(run_root),
+            str(protocol_path),
+            str(output_root),
+        ]
+    )
+
+    assert result == 2
+    assert "inspection-only" in capsys.readouterr().out
+    assert not output_root.exists()
+
+
+def test_cli_pass_run_consumers_replay_persisted_command_before_use(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    protocol_path = tmp_path / "val-protocol.json"
+    run_root = tmp_path / "run"
+    score_root = tmp_path / "scores"
+    component_root = tmp_path / "components"
+    assert main(["build-protocol", str(FIXTURE_ROOT), str(protocol_path), "--cutoff", "5"]) == 0
+    assert (
+        main(
+            [
+                "train",
+                str(FIXTURE_ROOT),
+                str(protocol_path),
+                str(run_root),
+                "--fixture-only",
+                "--model-kind",
+                "hybrid",
+                "--feature-dim",
+                "8",
+            ]
+        )
+        == 0
+    )
+    command_path = run_root / "command.json"
+    command = load_strict_json(command_path)
+    command["argv"].append("--tampered-after-run")
+    command_path.write_bytes(canonical_json_bytes(command) + b"\n")
+
+    assert (
+        main(
+            [
+                "export-scores",
+                str(FIXTURE_ROOT),
+                str(run_root),
+                str(protocol_path),
+                str(score_root),
+            ]
+        )
+        == 2
+    )
+    assert "command hash" in capsys.readouterr().out
+    assert not score_root.exists()
+
+    assert (
+        main(
+            [
+                "export-score-components",
+                str(FIXTURE_ROOT),
+                str(run_root),
+                str(protocol_path),
+                str(component_root),
+            ]
+        )
+        == 2
+    )
+    assert "command hash" in capsys.readouterr().out
+    assert not component_root.exists()
+
+    assert main(["summarize-run", str(run_root)]) == 2
+    assert "command hash" in capsys.readouterr().out
+
+
+def test_cli_pass_run_consumers_reject_missing_persisted_command(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    protocol_path = tmp_path / "val-protocol.json"
+    run_root = tmp_path / "run"
+    score_root = tmp_path / "scores"
+    assert main(["build-protocol", str(FIXTURE_ROOT), str(protocol_path), "--cutoff", "5"]) == 0
+    assert (
+        main(
+            [
+                "train",
+                str(FIXTURE_ROOT),
+                str(protocol_path),
+                str(run_root),
+                "--fixture-only",
+                "--model-kind",
+                "mostpop",
+            ]
+        )
+        == 0
+    )
+    (run_root / "command.json").unlink()
+
+    assert (
+        main(
+            [
+                "export-scores",
+                str(FIXTURE_ROOT),
+                str(run_root),
+                str(protocol_path),
+                str(score_root),
+            ]
+        )
+        == 2
+    )
+    assert not score_root.exists()
+    assert main(["summarize-run", str(run_root)]) == 2
+    assert "command.json" in capsys.readouterr().out
 
 
 def test_cli_refuses_test_protocol_without_explicit_open(

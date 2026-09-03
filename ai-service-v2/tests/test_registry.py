@@ -71,6 +71,17 @@ def test_legacy_model_spec_round_trips_without_rewriting_its_hash_surface() -> N
     assert parsed.to_mapping() == legacy
 
 
+def test_legacy_model_spec_is_inspection_only_at_training_seam(snapshot: Snapshot) -> None:
+    legacy = default_spec("deep_two_tower", feature_dimensions=8).to_mapping()
+    legacy.pop("fusion_normalization")
+    legacy["schema_version"] = "model-run-spec/1.0"
+    spec = ModelRunSpec.from_mapping(legacy)
+    protocol = build_protocol(snapshot, split="val", cutoff=5)
+
+    with pytest.raises(ContractError, match="inspection-only"):
+        train_local_model(snapshot, protocol, spec, seed=42)
+
+
 @pytest.mark.parametrize(
     "two_tower",
     [

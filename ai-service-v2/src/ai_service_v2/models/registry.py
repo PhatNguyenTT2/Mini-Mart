@@ -261,6 +261,8 @@ def train_local_model(
 ) -> LocalModelBundle:
     """Fit one local candidate using only TRAIN-derived state."""
 
+    if spec.schema_version != "model-run-spec/1.1":
+        raise ContractError("model-run-spec/1.0 is inspection-only and cannot train a new model")
     descriptor = descriptor_for_spec(spec)
     if spec.model_kind == "random":
         return LocalModelBundle(spec, descriptor, RandomScorer(seed), None, None, None, None)

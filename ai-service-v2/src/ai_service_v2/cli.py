@@ -51,6 +51,7 @@ from ai_service_v2.training import (
     create_run,
     load_checkpoint,
     load_run,
+    load_run_command,
     save_checkpoint,
     update_run_status,
     write_run_artifact,
@@ -335,7 +336,11 @@ def _cmd_train(args: argparse.Namespace, process_command: ProcessCommand) -> int
         )
     protocol = load_protocol(args.protocol, snapshot=snapshot)
     config_document, spec = _load_model_spec(args)
+    if spec.schema_version != "model-run-spec/1.1":
+        raise IntegrityError("model-run-spec/1.0 is inspection-only and cannot create new runs")
     if not fixture_override:
+        if process_command.argv_source != "process_sys_argv":
+            raise IntegrityError("non-fixture training requires argv_source=process_sys_argv")
         if args.environment_lock is None:
             raise IntegrityError("non-fixture training requires an immutable environment lock")
     config_hash = canonical_json_sha256(config_document)
@@ -457,6 +462,8 @@ def _load_model_spec_from_run(run: Any) -> ModelRunSpec:
         )
     else:
         raise IntegrityError("unsupported run config schema")
+    if spec.schema_version != "model-run-spec/1.1":
+        raise IntegrityError("model-run-spec/1.0 is inspection-only and cannot export evidence")
     if spec.model_id != run.manifest.model_id:
         raise IntegrityError("run model ID does not match model config")
     if spec.feature_source != "deterministic_hash_features":
@@ -604,12 +611,13 @@ def _load_model_for_run(snapshot: Any, protocol: Any, run: Any) -> Any:
 
 
 def _cmd_export_scores(args: argparse.Namespace) -> int:
+    run = load_run(args.run_root)
+    load_run_command(run)
     protocol = load_protocol(args.protocol)
     required_splits = (
         ("train", "val", "test") if protocol.manifest.split == "test" else ("train", "val")
     )
     snapshot = load_canonical_snapshot(args.snapshot_root, required_splits=required_splits)
-    run = load_run(args.run_root)
     if run.manifest.status != "PASS":
         raise IntegrityError("only PASS runs may export scores")
     protocol = load_protocol(args.protocol, snapshot=snapshot)
@@ -650,6 +658,8 @@ def _cmd_export_scores(args: argparse.Namespace) -> int:
 def _cmd_export_score_components(args: argparse.Namespace) -> int:
     """Persist Deep, Wide, and Hybrid score surfaces without computing metrics."""
 
+    run = load_run(args.run_root)
+    load_run_command(run)
     protocol = load_protocol(args.protocol)
     if protocol.manifest.split != "val" or protocol.manifest.test_set_opened:
         raise ProtocolError("AIS-R5 component export is validation-only and keeps TEST sealed")
@@ -657,7 +667,6 @@ def _cmd_export_score_components(args: argparse.Namespace) -> int:
         args.snapshot_root,
         required_splits=("train", "val"),
     )
-    run = load_run(args.run_root)
     if run.manifest.status != "PASS":
         raise IntegrityError("only PASS runs may export score components")
     protocol = load_protocol(args.protocol, snapshot=snapshot)
@@ -786,6 +795,7 @@ def _cmd_evaluate(args: argparse.Namespace) -> int:
 
 def _cmd_summarize_run(root: Path) -> int:
     run = load_run(root)
+    load_run_command(run)
     summary: dict[str, Any] = {
         "status": "PASS",
         "run": run.manifest.to_mapping(),

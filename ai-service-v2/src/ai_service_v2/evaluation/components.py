@@ -85,6 +85,8 @@ def _load_spec(run_root: Path, document: dict[str, Any]) -> ModelRunSpec:
         spec = ModelRunSpec.from_mapping(config)
     except ContractError as error:
         raise IntegrityError("Hybrid component run config is invalid") from error
+    if spec.schema_version != "model-run-spec/1.1":
+        raise IntegrityError("model-run-spec/1.0 is inspection-only and cannot replay evidence")
     if spec.model_kind != "hybrid":
         raise IntegrityError("Hybrid component wrapper requires a Hybrid model spec")
     if _sha(document.get("model_spec_sha256"), "model_spec_sha256") != canonical_json_sha256(
