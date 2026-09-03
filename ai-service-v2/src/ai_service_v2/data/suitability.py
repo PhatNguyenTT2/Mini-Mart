@@ -83,14 +83,12 @@ def assess_snapshot_suitability(snapshot: Snapshot) -> DatasetSuitabilityReport:
     """Assess lineage and task support without preparing or evaluating TEST."""
 
     manifest = snapshot.manifest
-    all_events = tuple(
-        event for split in ("train", "val", "test") for event in snapshot.events_by_split[split]
-    )
+    if "val" not in snapshot.events_by_split:
+        raise ValueError("dataset suitability requires TRAIN and validation splits")
+    all_events = tuple(event for events in snapshot.events_by_split.values() for event in events)
     distinct_cells = len({(event.user_id, event.item_id) for event in all_events})
     possible_cells = manifest.num_users * manifest.num_items
-    split_counts = {
-        split: len(snapshot.events_by_split[split]) for split in ("train", "val", "test")
-    }
+    split_counts = {split: len(events) for split, events in snapshot.events_by_split.items()}
     origin_counts = Counter(event.event_origin for event in all_events)
     validation = build_protocol(
         snapshot,

@@ -23,8 +23,13 @@ benchmark has been run, and no paper result is emitted by this package. AIS-R5
 candidate implementation now excludes every TRAIN-history item from BPR
 negative sampling, hash-binds feature and fusion controls, applies an explicit
 per-user component normalization, and can persist separate Deep, Wide, and
-Hybrid score surfaces. These remain static/fixture-tested capabilities pending
-R5 admission and a validation-only runtime.
+Hybrid score surfaces. The AIS-R5 remediation additionally makes model specs
+complete and typed, admits only the implemented deterministic feature source,
+captures the real process executable/argv for each run, identifies the test
+fixture by its exact canonical manifest hash, strictly replays Hybrid component
+bundles, and loads only TRAIN/VAL for validation work. These remain
+static/fixture-tested capabilities pending R5 admission and a validation-only
+runtime.
 
 The old service is not a scientific baseline. Its checkpoints, embeddings,
 rules, benchmark numbers, and configurations are not imported here.
@@ -68,9 +73,17 @@ dataset.
 `rule_only`, `deep_two_tower`, and `hybrid`). These implementations exercise
 the score-artifact and evaluator seams; they are not reference reproductions or
 paper baselines. Non-fixture training additionally requires an immutable
-environment-lock file and exact command-text binding. Hybrid attribution uses
-`export-score-components`; that command is validation-only and refuses a TEST
-protocol.
+environment-lock file. Every run persists `command.json`, derived by the CLI
+from `sys.executable` and the actual argv rather than caller-authored command
+prose, and binds its canonical hash into `run_manifest.json`. Hybrid attribution
+uses `export-score-components`; that command is validation-only, refuses a TEST
+protocol, emits a `hybrid-score-components/1.1` manifest, and replays it through
+the strict public loader before reporting success.
+
+Validation protocol construction, training, suitability checks, and Hybrid
+component export request only the TRAIN/VAL temporal prefix. They neither open
+nor require `test.jsonl`; TEST is loaded only for an explicitly authorized TEST
+protocol or a full snapshot-integrity operation.
 
 The current tests use only small in-memory fixtures. They are not benchmark
 results and must not be copied into the manuscript.

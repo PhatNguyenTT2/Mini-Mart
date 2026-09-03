@@ -1,0 +1,644 @@
+{
+  "schema_version": "ais-r5-independent-static-audit-receipt/1.0",
+  "stage_id": "AIS-R5",
+  "artifact_type": "independent_static_audit_receipt",
+  "created_at": "2026-09-03T01:25:38.997Z",
+  "material_passport": {
+    "origin_skill": "academic-research-suite/experiment-agent",
+    "origin_mode": "validate-static-independent-fail-closed",
+    "origin_date": "2026-09-03T01:25:38.997Z",
+    "verification_status": "VERIFIED",
+    "version_label": "ais-r5-independent-static-audit-v1.0.0",
+    "integrity_pass_date": "2026-09-03T01:25:38.997Z",
+    "upstream_dependencies": [
+      "ais-r0-model-scope-v1.0.0",
+      "ais-r0-protocol-evaluator-contract-v1.0.0",
+      "ais-r3-evaluator-statistics-audit-v1.0.0",
+      "ais-r4-r5-entry-r5-static-implementation-v1.0.0",
+      "implementation-commit-7a654bad53dd97899ce4e675a54332afd8959fc6",
+      "entry-commit-24f00c70626e25a62d017c34d31bf0e49055bf8c"
+    ],
+    "repro_lock": {
+      "schema_version": "1.0",
+      "stochasticity_declaration": "No scientific training, runtime evaluation, benchmark, or canonical TEST execution occurred. The audit used deterministic static inspection, contract counterexamples, repository fixture tests, and exact committed-byte hashing.",
+      "ars_version": "3.21.0",
+      "model": {
+        "family": "NOT_OBSERVABLE",
+        "id": "NOT_OBSERVABLE_FROM_WORKSPACE_DO_NOT_INFER",
+        "weight_stable": false
+      },
+      "prompts": {
+        "skill_md_sha256": "5acb202b13a7dba912091ae5d15a19b88eb3f4e58b4d942649cb35df770ace91",
+        "workflow_sha256": "6d984f36be84c3f9249f68ef0c599155978b5a661d172e2bb4db2205fdc720f3",
+        "code_runner_agent_sha256": "e50c1303ebcb451304d427ce063651af5d6fa5ab9cc9249e399353714b8bbfe1"
+      },
+      "materials": {
+        "hash_algorithm": "SHA-256",
+        "repository_hash_basis": "exact committed Git blob bytes at entry HEAD",
+        "entry_commit": "24f00c70626e25a62d017c34d31bf0e49055bf8c",
+        "ai_service_v2_git_tree": "e62b6e0ad5f33c5f2388d092ca16d19c88cd79fe"
+      },
+      "cross_model": {
+        "enabled": false,
+        "secondary_model_id": null
+      }
+    },
+    "experiment_intake_declaration": {
+      "status": "experiments_declared",
+      "declared_at": "2026-09-01T16:38:56Z",
+      "declared_by": "scholar"
+    },
+    "experiment_provenance": []
+  },
+  "actual_model_metadata": {
+    "model": null,
+    "reasoning": null,
+    "speed": null,
+    "status": "NOT_OBSERVABLE_FROM_WORKSPACE_DO_NOT_INFER"
+  },
+  "requested_model_profile": {
+    "model": "gpt-5.6-sol",
+    "reasoning": "ultra",
+    "speed": "standard/default",
+    "fast_or_priority_allowed": false,
+    "positive_runtime_telemetry_observed": false,
+    "policy_result": "NOT_OBSERVABLE_NO_MISMATCH_OR_FAST_PRIORITY_STATE_INFERRED",
+    "fail_closed_rule": "Positive telemetry showing Fast/Priority or a model/reasoning mismatch would make this handoff incomplete. No such telemetry is present in the workspace; requested policy is not treated as actual telemetry."
+  },
+  "ars_workflow_application": {
+    "skill_package": "academic-research-suite",
+    "skill_package_version": "0.1.26",
+    "workflow": "ars/experiment-agent/WORKFLOW.md",
+    "role": "ars/experiment-agent/agents/code_runner_agent.md",
+    "integration_reference": "ars/experiment-agent/references/ars_integration_guide.md",
+    "material_passport_schema": "ars/shared/handoff_schemas.md#schema-9-material-passport-cross-stage-metadata",
+    "required_materials": [
+      {
+        "path": "C:/Users/ACER/.codex/plugins/cache/ars-codex/ars-codex/0.1.26/skills/academic-research-suite/SKILL.md",
+        "sha256": "5acb202b13a7dba912091ae5d15a19b88eb3f4e58b4d942649cb35df770ace91",
+        "read_status": "READ_COMPLETE"
+      },
+      {
+        "path": "C:/Users/ACER/.codex/plugins/cache/ars-codex/ars-codex/0.1.26/skills/academic-research-suite/ars/experiment-agent/WORKFLOW.md",
+        "sha256": "6d984f36be84c3f9249f68ef0c599155978b5a661d172e2bb4db2205fdc720f3",
+        "read_status": "READ_COMPLETE"
+      },
+      {
+        "path": "C:/Users/ACER/.codex/plugins/cache/ars-codex/ars-codex/0.1.26/skills/academic-research-suite/ars/experiment-agent/agents/code_runner_agent.md",
+        "sha256": "e50c1303ebcb451304d427ce063651af5d6fa5ab9cc9249e399353714b8bbfe1",
+        "read_status": "READ_COMPLETE"
+      },
+      {
+        "path": "C:/Users/ACER/.codex/plugins/cache/ars-codex/ars-codex/0.1.26/skills/academic-research-suite/ars/experiment-agent/references/ars_integration_guide.md",
+        "sha256": "c129b6d889dc52cca921b75311b8988a4ff12df412a19a5530abe05e36a23d16",
+        "read_status": "READ_COMPLETE"
+      },
+      {
+        "path": "C:/Users/ACER/.codex/plugins/cache/ars-codex/ars-codex/0.1.26/skills/academic-research-suite/ars/shared/handoff_schemas.md",
+        "sha256": "3d81dd949e6eb5162e7227d8ee13e65b5a17ab9440db3809cbcea8f63be6c8de",
+        "read_status": "MATERIAL_PASSPORT_SECTION_READ_COMPLETE"
+      }
+    ],
+    "applied_boundaries": [
+      "Static and fixture evidence cannot become benchmark evidence.",
+      "Missing binding or replay authority fails closed rather than being repaired by inference.",
+      "No requested model profile is treated as positive runtime telemetry.",
+      "A verified audit receipt may carry a HANDOFF_INCOMPLETE target verdict."
+    ]
+  },
+  "audit_scope": {
+    "scope": "AIS_R5_STATIC_IMPLEMENTATION_AND_EVIDENCE_ONLY",
+    "independence_basis": "Fresh source review and adversarial in-memory contract replay were performed from the fixed entry commit. Prior conclusions were not inherited; upstream receipts were treated as inputs whose bindings and claims required replay.",
+    "permitted_operations": [
+      "Read committed contracts, receipts, source, configuration, and tests",
+      "Hash exact committed Git blobs and current checkout bytes",
+      "Run deterministic repository fixture tests, lint, format checks, type checks, and Node source-export tests",
+      "Run in-memory parser and normalization counterexamples without creating a scientific run"
+    ],
+    "prohibited_operations": [
+      "Network, download, install, clone, fetch, Docker, or WSL",
+      "Non-fixture or canonical-v5 training",
+      "Scientific runtime evaluation or benchmark execution",
+      "Canonical TEST access or TEST protocol creation",
+      "Source, configuration, or test modification",
+      "Manuscript, historical ai-service, pipeline_state, or canonical dataset modification"
+    ]
+  },
+  "entry_gate": {
+    "expected_head": "24f00c70626e25a62d017c34d31bf0e49055bf8c",
+    "observed_head": "24f00c70626e25a62d017c34d31bf0e49055bf8c",
+    "expected_sole_parent": "7a654bad53dd97899ce4e675a54332afd8959fc6",
+    "observed_parents": [
+      "7a654bad53dd97899ce4e675a54332afd8959fc6"
+    ],
+    "parent_count": 1,
+    "head_tree": "22e720ea7c4b0cd28afd05caff1959028e22a162",
+    "head_mode": "DETACHED",
+    "worktree_clean_at_entry": true,
+    "entry_commit_exact_file_set": [
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/rebuild_ai_service/ais_r4_r5_entry_and_r5_static_implementation_receipt_v1.json"
+    ],
+    "result": "PASS"
+  },
+  "input_binding": {
+    "hash_algorithm": "SHA-256",
+    "authoritative_hash_basis": "Exact committed Git blob bytes at entry commit 24f00c70626e25a62d017c34d31bf0e49055bf8c",
+    "checkout_observation": "core.autocrlf=true and the four inputs are i/lf,w/crlf; checkout-byte hashes are recorded separately and are not substituted for committed-byte authority.",
+    "authoritative_inputs": [
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebuild_ai_service/ais_r0_model_scope.json",
+        "git_blob_sha256": "f0068693d7bc207861ac02ddb0618a25ee65b3381886763038ed8b12f48e00c4",
+        "checkout_byte_sha256": "04ce27e001301ce9db0bbe642f643b73e789e5e30bb92a52f4c61617f152a3c4",
+        "role": "frozen_model_and_claim_scope",
+        "replay": "STRICT_JSON_PASS_AND_FULL_CONTENT_REVIEWED"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebuild_ai_service/ais_r0_protocol_evaluator_contract.md",
+        "git_blob_sha256": "ff5a582a27e3536184e6e59dd1aa8570f2b1e4138dca4bc88b0a9ab1acff3e9b",
+        "checkout_byte_sha256": "fb5c2654ade9c58715b6a44556fdae7fdf1ffd9557c299c11a6d9443ec79d8a3",
+        "role": "protocol_and_shared_evaluator_contract",
+        "replay": "FULL_CONTENT_REVIEWED"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebuild_ai_service/ais_r3_evaluator_statistics_audit_receipt_v1.json",
+        "git_blob_sha256": "38f065322934302c8cdec4325013411fb127b85d9c2f0ae642b7cf8971738402",
+        "checkout_byte_sha256": "16cb53713caf1fd1c3c5a7ad97b935f91e94c6d8a7e2de437b1bb3ca6def44d3",
+        "role": "AIS_R3_admission_and_static_gate_packet",
+        "replay": "STRICT_JSON_PASS_AND_FULL_CONTENT_REVIEWED"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebuild_ai_service/ais_r4_r5_entry_and_r5_static_implementation_receipt_v1.json",
+        "git_blob_sha256": "4439cde4a08884b079399b25f16a4d0da83e0cea96d70ac13ccb7f126f168d5c",
+        "checkout_byte_sha256": "15e23a1c6a75e1fec4467d2a0d0447b026794bc8d75e8a13d87e79de491392b2",
+        "role": "AIS_R5_static_implementation_claim_and_entry_receipt",
+        "replay": "STRICT_JSON_PASS_AND_FULL_CONTENT_REVIEWED"
+      }
+    ],
+    "embedded_upstream_hash_replay": "PASS_ON_DECLARED_COMMITTED_GIT_BLOB_BASIS",
+    "strict_json_inputs_passed": 3,
+    "strict_json_inputs_total": 3
+  },
+  "implementation_binding": {
+    "implementation_commit": "7a654bad53dd97899ce4e675a54332afd8959fc6",
+    "implementation_parent": "1c6841fdd17fa086ce27eb25dc85b5bfc80c4a70",
+    "implementation_parent_count": 1,
+    "implementation_subject": "feat(research): harden AIS-R5 proposed attribution",
+    "entry_commit": "24f00c70626e25a62d017c34d31bf0e49055bf8c",
+    "ai_service_v2_git_tree": "e62b6e0ad5f33c5f2388d092ca16d19c88cd79fe",
+    "entry_changed_ai_service_v2_after_implementation": false,
+    "hash_algorithm": "SHA-256",
+    "hash_basis": "exact committed Git blob bytes at entry HEAD",
+    "audited_files": [
+      {
+        "path": "ai-service-v2/src/ai_service_v2/cli.py",
+        "sha256": "9e9209c1eb5bcfc30e53dc3fe7e4f7018a2b22c54817f78489154837d05d5038"
+      },
+      {
+        "path": "ai-service-v2/src/ai_service_v2/models/proposed.py",
+        "sha256": "3b57095f63ce15936d9da1049afb562de16163460205dc6f6be841a920dd6b13"
+      },
+      {
+        "path": "ai-service-v2/src/ai_service_v2/models/registry.py",
+        "sha256": "97b9bc20f1dae8c6a0d4a9a3acd321ea0752f6371ab2442e27c23bce5c164047"
+      },
+      {
+        "path": "ai-service-v2/src/ai_service_v2/data/io.py",
+        "sha256": "42ac10fd0b891c7045922543473f35ccd0e4a345eaedced0f244d1399c0d6adb"
+      },
+      {
+        "path": "ai-service-v2/src/ai_service_v2/data/rules.py",
+        "sha256": "78af8c99682e3dc9555e3a8f877029f308b1a3f0fd15f40f1e1387907d1ef2b5"
+      },
+      {
+        "path": "ai-service-v2/src/ai_service_v2/training/run.py",
+        "sha256": "1b11fea19004a0de8aa58ed65908b0e8668458bfb302fdc1c02b0e41588c918b"
+      },
+      {
+        "path": "ai-service-v2/src/ai_service_v2/evaluation/artifacts.py",
+        "sha256": "751344e2eec284f316da306a76e5bec48d4aa7df1b096613de767ea65ec3b1cf"
+      },
+      {
+        "path": "ai-service-v2/src/ai_service_v2/contracts.py",
+        "sha256": "0790f25a9acfc1c3af7ab3d1f77765f551481a1797e082ac2701b895cdd8cee2"
+      },
+      {
+        "path": "ai-service-v2/src/ai_service_v2/hashing.py",
+        "sha256": "df2e7c095457869c1c603c8c34864b9ed22ba9842ce138b7c6bc52fc30c0b407"
+      },
+      {
+        "path": "ai-service-v2/configs/deep-two-tower.json",
+        "sha256": "3e85177e37b2d45b4e95fa95ae0c4b4e282cd69d674954807b038c2b8c559295"
+      },
+      {
+        "path": "ai-service-v2/configs/rule-only.json",
+        "sha256": "22e0580d225cc78aa021d5eed0456b3cea252a26ae2ad2076ade647cfe414402"
+      },
+      {
+        "path": "ai-service-v2/configs/hybrid.json",
+        "sha256": "19ddc08da1c1637267502da55806e79a0089ae7e77e4dfa34417ff8638611eb4"
+      },
+      {
+        "path": "ai-service-v2/configs/random.json",
+        "sha256": "2e8bd01bfa7078533efb7b0a672f0e6ae3dfc11b73b5b614e4b562bb49ee5be4"
+      },
+      {
+        "path": "ai-service-v2/configs/mostpop.json",
+        "sha256": "030b4012aa84f1d7454ac30678647331267df2ba0ca48144dbe61823bce0202c"
+      },
+      {
+        "path": "ai-service-v2/tests/test_proposed.py",
+        "sha256": "fcaa84bee27f07021938c597d4f724cc4a831b3157e6fe7573b8686f5aa29293"
+      },
+      {
+        "path": "ai-service-v2/tests/test_registry.py",
+        "sha256": "efd335014b382f81fb43a9c197d469f57533e999b248f78e92af17f8173d80b5"
+      },
+      {
+        "path": "ai-service-v2/tests/test_cli_pipeline.py",
+        "sha256": "44e53fe7dea5c627de7f6086e992e1c0ecf4ca76b8f6f3b0c7e2f39876447031"
+      },
+      {
+        "path": "ai-service-v2/tools/tests/export_v5_source_bundle.test.cjs",
+        "sha256": "ca4d46fd63577f1c23bb29f6bdcee6ba55ab44f7fe007db05a5024e8a2a8605b"
+      },
+      {
+        "path": "ai-service-v2/tools/export_v5_source_bundle.cjs",
+        "sha256": "81807a58836dc93e4259c8935510b9071c68d4946fa20c1ea7aae7b1af948298"
+      },
+      {
+        "path": "ai-service-v2/pyproject.toml",
+        "sha256": "919f756018480b6309f983ed470dcabdab757481cc483ce3f9f1c669eed5dc3b"
+      }
+    ]
+  },
+  "independent_replay": {
+    "negative_sampler": {
+      "result": "PASS",
+      "train_history_exclusion": "Every TRAIN event item, regardless of event type, enters the per-user seen set before negative candidates are constructed.",
+      "positive_rule": "Only TRAIN events whose event_type is purchase enter positives_by_user.",
+      "candidate_cache": "Catalog-minus-seen available candidates are constructed once per user outside the positive loop.",
+      "determinism": "Users and seen items are sorted and PCG64 is seeded.",
+      "source_locators": [
+        "ai-service-v2/src/ai_service_v2/models/proposed.py:386",
+        "ai-service-v2/src/ai_service_v2/models/proposed.py:393",
+        "ai-service-v2/src/ai_service_v2/models/proposed.py:400",
+        "ai-service-v2/src/ai_service_v2/models/proposed.py:405",
+        "ai-service-v2/tests/test_proposed.py:82"
+      ]
+    },
+    "model_run_spec": {
+      "result": "FAIL",
+      "schema_1_1_top_level_exact_key_set": "PASS",
+      "schema_1_1_nested_two_tower_exactness": "FAIL",
+      "schema_1_0_top_level_round_trip": "PASS",
+      "schema_1_0_end_to_end_fail_closed": "FAIL",
+      "counterexample": {
+        "input": "model-run-spec/1.1 hybrid with two_tower={}",
+        "parse_result": "ACCEPTED",
+        "effective_two_tower": {
+          "embedding_dim": 16,
+          "hidden_dim": 32,
+          "epochs": 5,
+          "learning_rate": 0.03,
+          "l2": 0.00001,
+          "negatives_per_positive": 1
+        },
+        "sparse_descriptor_sha256": "665a41717e51922705e21aaf387a582b06783eaf50d1f4033307d2024a223ead",
+        "full_default_descriptor_sha256": "711bd04bb3f7acd4912af946952bea96ac8a3df4982da3082d273cdb8f13b21f",
+        "effect": "The descriptor hashes the sparse supplied object while training resolves omitted fields from mutable code defaults."
+      },
+      "source_locators": [
+        "ai-service-v2/src/ai_service_v2/models/registry.py:89",
+        "ai-service-v2/src/ai_service_v2/models/registry.py:180",
+        "ai-service-v2/src/ai_service_v2/models/proposed.py:72",
+        "ai-service-v2/src/ai_service_v2/models/proposed.py:99",
+        "ai-service-v2/src/ai_service_v2/models/proposed.py:510"
+      ]
+    },
+    "descriptor_and_effective_feature_binding": {
+      "result": "FAIL",
+      "six_declared_factor_mutation_check": {
+        "feature_source": "HASH_CHANGED",
+        "feature_dimensions": "HASH_CHANGED",
+        "two_tower": "HASH_CHANGED",
+        "wide_weight": "HASH_CHANGED",
+        "rule_min_support": "HASH_CHANGED",
+        "fusion_normalization": "HASH_CHANGED",
+        "unique_hashes_for_base_plus_six_mutations": 7
+      },
+      "effective_source_counterexample": {
+        "declared_feature_source": "declared-but-unsupported-source",
+        "parse_result": "ACCEPTED",
+        "descriptor_config_sha256": "5ed3fd8f7c6138c867d2d356e4c6197355e08544ccda5b434336918994eb0be2",
+        "actual_training_generator": "item_text_hash_features",
+        "pre_training_equality_check": false,
+        "effect": "A PASS run can be created after training under a descriptor that hashes a source label different from the generator actually used; the unsupported-source check occurs only on later run reload/export."
+      },
+      "source_locators": [
+        "ai-service-v2/src/ai_service_v2/models/registry.py:48",
+        "ai-service-v2/src/ai_service_v2/models/registry.py:180",
+        "ai-service-v2/src/ai_service_v2/models/registry.py:247",
+        "ai-service-v2/src/ai_service_v2/models/registry.py:277",
+        "ai-service-v2/src/ai_service_v2/cli.py:424"
+      ]
+    },
+    "per_user_normalization": {
+      "result": "PASS",
+      "method": "Each user's Deep and Wide candidate vectors are independently normalized with deterministic population mean and standard deviation before fusion.",
+      "zero_variance_policy": "Standard deviation at or below 1e-12 returns a finite float64 zero vector.",
+      "zero_variance_counterexample_input": [
+        7.0,
+        7.0
+      ],
+      "zero_variance_counterexample_output": [
+        0.0,
+        0.0
+      ],
+      "formula": "hybrid = normalized_deep + wide_weight * normalized_wide",
+      "source_locators": [
+        "ai-service-v2/src/ai_service_v2/models/proposed.py:306",
+        "ai-service-v2/src/ai_service_v2/models/proposed.py:326",
+        "ai-service-v2/src/ai_service_v2/models/proposed.py:334",
+        "ai-service-v2/src/ai_service_v2/models/proposed.py:348",
+        "ai-service-v2/tests/test_proposed.py:57"
+      ]
+    },
+    "component_export": {
+      "result": "FAIL",
+      "separate_deep_wide_hybrid_surfaces": "PASS",
+      "validation_protocol_gate": "PASS",
+      "test_protocol_rejection": "PASS_STATIC_SOURCE",
+      "fusion_identity": "PASS_IN_FLOAT64_SOURCE_AND_APPROXIMATE_AFTER_SEPARATE_FLOAT32_PERSISTENCE",
+      "child_score_hashes": "PASS",
+      "wrapper_binding": "PARTIAL",
+      "blocking_gap": "The hybrid-score-components wrapper has no strict load/replay validator and does not bind model_spec_sha256, descriptor bytes/hash, or the checkpoint manifest. The wrapper therefore cannot independently replay the claimed effective Two-Tower descriptor from its own hash surface.",
+      "source_locators": [
+        "ai-service-v2/src/ai_service_v2/cli.py:645",
+        "ai-service-v2/src/ai_service_v2/cli.py:673",
+        "ai-service-v2/src/ai_service_v2/cli.py:694",
+        "ai-service-v2/src/ai_service_v2/evaluation/artifacts.py:84",
+        "ai-service-v2/src/ai_service_v2/evaluation/artifacts.py:191",
+        "ai-service-v2/tests/test_cli_pipeline.py:174"
+      ]
+    },
+    "non_fixture_training_admission": {
+      "result": "FAIL",
+      "environment_lock_presence_and_hash": "PASS",
+      "exact_command_binding": "FAIL",
+      "command_counterexample": {
+        "supplied_command_text": "   ",
+        "parser_result": "ACCEPTED",
+        "default_sentinel_equal": false,
+        "non_fixture_gate_would_reject": false,
+        "effect": "Whitespace or arbitrary caller text is hashed without proving or preserving the actual argv that launched the process."
+      },
+      "fixture_authorization": "FAIL_GENERAL_INVARIANT",
+      "canonical_v5_1_fixture_override": "REJECTED_BY_SCHEMA_1_1_CHECK",
+      "fixture_gap": "The generic override trusts self-declared schema-1.0 labels and a fixture- prefix rather than a known repository fixture path or content digest, so it does not cryptographically prove that the payload is the repository fixture.",
+      "source_locators": [
+        "ai-service-v2/src/ai_service_v2/cli.py:95",
+        "ai-service-v2/src/ai_service_v2/cli.py:111",
+        "ai-service-v2/src/ai_service_v2/cli.py:215",
+        "ai-service-v2/src/ai_service_v2/cli.py:307",
+        "ai-service-v2/src/ai_service_v2/cli.py:311",
+        "ai-service-v2/src/ai_service_v2/cli.py:334",
+        "ai-service-v2/src/ai_service_v2/cli.py:339"
+      ]
+    },
+    "test_seal_scope": {
+      "result": "PASS_FOR_PROTOCOL_USE_WITH_RESIDUAL_BYTE_ACCESS_AMBIGUITY",
+      "protocol_use": "Training rejects TEST protocols and component export requires val with test_set_opened=false.",
+      "residual_observation": "load_canonical_snapshot reads and hashes train, val, and test JSONL before the protocol guard. Under the repository's established semantics this is snapshot-integrity loading rather than TEST protocol opening; if TEST_SET_OPENED=NO is intended to forbid all TEST payload byte reads, the implementation is not compliant and the definition must be resolved before runtime.",
+      "source_locators": [
+        "ai-service-v2/src/ai_service_v2/cli.py:307",
+        "ai-service-v2/src/ai_service_v2/cli.py:330",
+        "ai-service-v2/src/ai_service_v2/cli.py:648",
+        "ai-service-v2/src/ai_service_v2/cli.py:653",
+        "ai-service-v2/src/ai_service_v2/data/io.py:99",
+        "ai-service-v2/src/ai_service_v2/data/io.py:110"
+      ]
+    }
+  },
+  "findings": [
+    {
+      "finding_id": "AIS-R5-F001",
+      "severity": "MAJOR",
+      "status": "OPEN",
+      "title": "Nested Two-Tower defaults break strict model-run-spec and effective descriptor binding",
+      "requirement": "model-run-spec/1.1 strict with fail-closed 1.0 compatibility and descriptor-bound Two-Tower configuration",
+      "evidence": "TwoTowerConfig.from_mapping rejects unknown keys but permits missing keys through dataclass defaults. descriptor_for_spec hashes the sparse raw object while training uses the resolved default-filled object.",
+      "counterexample_replayed": true,
+      "terminal_effect": "HANDOFF_INCOMPLETE"
+    },
+    {
+      "finding_id": "AIS-R5-F002",
+      "severity": "MAJOR",
+      "status": "OPEN",
+      "title": "Declared feature source can differ from the generator used for training",
+      "requirement": "Descriptor hash must bind the actual feature source and dimensions",
+      "evidence": "ModelRunSpec accepts any truthy feature_source and hashes it, while train_local_model unconditionally calls item_text_hash_features and performs no equality check before training or PASS status.",
+      "counterexample_replayed": true,
+      "terminal_effect": "HANDOFF_INCOMPLETE"
+    },
+    {
+      "finding_id": "AIS-R5-F003",
+      "severity": "MAJOR",
+      "status": "OPEN",
+      "title": "Non-fixture exact command binding accepts blank or arbitrary caller text",
+      "requirement": "Non-fixture training requires the exact command in addition to the environment lock",
+      "evidence": "The gate rejects only one default sentinel. Whitespace is accepted and hashed, and the exact command bytes or argv are not preserved for replay.",
+      "counterexample_replayed": true,
+      "terminal_effect": "HANDOFF_INCOMPLETE"
+    },
+    {
+      "finding_id": "AIS-R5-F004",
+      "severity": "MAJOR",
+      "status": "OPEN",
+      "title": "Generic fixture override is label-bound rather than identity-bound",
+      "requirement": "Fixture authorization must not authorize real or non-fixture data",
+      "evidence": "The override checks a schema version, dataset_id prefix, source kind, provenance label, and license label but no allowlisted repository fixture path or content digest.",
+      "counterexample_replayed": false,
+      "terminal_effect": "HANDOFF_INCOMPLETE"
+    },
+    {
+      "finding_id": "AIS-R5-F005",
+      "severity": "MAJOR",
+      "status": "OPEN",
+      "title": "Hybrid component wrapper lacks an independent strict replay contract for the effective model descriptor",
+      "requirement": "Separate Deep, Wide, and Hybrid exports and their hash bindings must be independently replayable",
+      "evidence": "Child score artifacts are hash-bound, but the wrapper has no strict consumer and omits model_spec_sha256, descriptor bytes/hash, and checkpoint-manifest binding.",
+      "counterexample_replayed": false,
+      "terminal_effect": "HANDOFF_INCOMPLETE"
+    },
+    {
+      "finding_id": "AIS-R5-F006",
+      "severity": "ADVISORY",
+      "status": "OPEN_DEFINITION_REQUIRED_BEFORE_RUNTIME",
+      "title": "TEST seal is protocol-closed but canonical snapshot loading reads TEST bytes",
+      "requirement": "TEST remains unopened",
+      "evidence": "The CLI rejects TEST protocol use, but load_canonical_snapshot reads all three split payloads before the protocol check.",
+      "counterexample_replayed": false,
+      "terminal_effect": "NO_ADDITIONAL_EFFECT_ON_ALREADY_INCOMPLETE_VERDICT"
+    }
+  ],
+  "finding_counts": {
+    "critical": 0,
+    "major": 5,
+    "advisory": 1,
+    "open": 6
+  },
+  "static_quality_gates": {
+    "environment": {
+      "python_executable": "E:/UIT/cv/backend/ai-service/.venv/Scripts/python.exe",
+      "python_executable_sha256": "bfff517165ad6d1f3bf02d1782eaf7588fb7c20cd78d1c81788c4444e7bc5d82",
+      "python_version": "3.11.9",
+      "pytest_version": "8.4.2",
+      "ruff_version": "0.16.2",
+      "mypy_version": "1.20.2",
+      "node_version": "22.14.0",
+      "packages_installed_by_audit": false
+    },
+    "results": [
+      {
+        "gate": "PYTHON_TESTS",
+        "working_directory": "ai-service-v2",
+        "command": "$env:PYTHONPATH='src'; $env:PYTHONDONTWRITEBYTECODE='1'; & 'E:\\UIT\\cv\\backend\\ai-service\\.venv\\Scripts\\python.exe' -m pytest -q -p no:cacheprovider",
+        "result": "PASS",
+        "exit_code": 0,
+        "detail": "78 passed in 2.34s"
+      },
+      {
+        "gate": "RUFF_CHECK",
+        "working_directory": "ai-service-v2",
+        "command": "$env:PYTHONPATH='src'; & 'E:\\UIT\\cv\\backend\\ai-service\\.venv\\Scripts\\python.exe' -m ruff check --no-cache .",
+        "result": "PASS",
+        "exit_code": 0,
+        "detail": "All checks passed!"
+      },
+      {
+        "gate": "RUFF_FORMAT_CHECK",
+        "working_directory": "ai-service-v2",
+        "command": "$env:PYTHONPATH='src'; & 'E:\\UIT\\cv\\backend\\ai-service\\.venv\\Scripts\\python.exe' -m ruff format --check .",
+        "result": "PASS",
+        "exit_code": 0,
+        "detail": "54 files already formatted"
+      },
+      {
+        "gate": "MYPY_STRICT",
+        "working_directory": "ai-service-v2",
+        "command": "$env:PYTHONPATH='src'; $env:PYTHONDONTWRITEBYTECODE='1'; & 'E:\\UIT\\cv\\backend\\ai-service\\.venv\\Scripts\\python.exe' -m mypy src tests",
+        "result": "PASS",
+        "exit_code": 0,
+        "detail": "Success: no issues found in 49 source files"
+      },
+      {
+        "gate": "NODE_SOURCE_EXPORT_TESTS",
+        "working_directory": "ai-service-v2",
+        "command": "node --test tools/tests/export_v5_source_bundle.test.cjs",
+        "result": "PASS",
+        "exit_code": 0,
+        "detail": "6 passed, 0 failed"
+      }
+    ],
+    "overall": "PASS_STATIC_QUALITY_GATES_DO_NOT_OVERRIDE_OPEN_BINDING_FINDINGS"
+  },
+  "non_gate_invocations": [
+    {
+      "tool": "mypy",
+      "command": "$env:PYTHONPATH='src'; $env:PYTHONDONTWRITEBYTECODE='1'; & 'E:\\UIT\\cv\\backend\\ai-service\\.venv\\Scripts\\python.exe' -m mypy --cache-dir NUL src tests",
+      "exit_code": 1,
+      "classification": "INVALID_WINDOWS_CACHE_TARGET_INVOCATION_ERROR_NOT_A_CODE_GATE",
+      "detail": "mypy 1.20.2 reported an internal error when NUL was supplied as the cache directory. The unmodified repository command was then run and passed."
+    }
+  ],
+  "forbidden_operations": {
+    "network_invoked": false,
+    "repository_clone_or_fetch": false,
+    "download_invoked": false,
+    "package_installation": false,
+    "environment_or_container_creation": false,
+    "docker_invoked": false,
+    "wsl_invoked": false,
+    "canonical_v5_training_execution": false,
+    "non_fixture_training_execution": false,
+    "scientific_runtime_evaluation_execution": false,
+    "benchmark_execution": false,
+    "canonical_test_set_access": false,
+    "test_protocol_created_or_opened": false,
+    "deterministic_repository_fixture_tests_invoked": true,
+    "fixture_training_and_evaluation_code_paths_exercised_by_tests": true,
+    "pipeline_state_modified": false,
+    "historical_ai_service_modified": false,
+    "manuscript_modified": false,
+    "canonical_dataset_modified": false,
+    "source_config_or_test_modified": false
+  },
+  "scientific_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "official_public_dataset_reproduction_passed": false,
+    "ais_r5_independent_audit_passed": false,
+    "harmonized_v5_run_completed": false,
+    "phase_1e_complete": false,
+    "benchmark_numbers_valid_for_paper": false
+  },
+  "protected_state": {
+    "pipeline_state_stage1e": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/pipeline_state_stage1e.json",
+      "git_blob_sha256": "7008657dfcbe138321c68dc3b2632265f16bfb05084c9686ae7eb95706c3a970",
+      "diff_from_implementation_parent_through_entry": false,
+      "observed_result_status": "NOT_RUN",
+      "observed_test_set_opened": "NO",
+      "observed_execution_authorized": false
+    },
+    "historical_ai_service_diff_from_implementation_parent_through_entry": false,
+    "manuscript_diff_from_implementation_parent_through_entry": false,
+    "canonical_v5_1_snapshot_accessed_by_audit": false,
+    "canonical_v5_1_snapshot_modified_by_audit": false,
+    "result": "PASS_PRESERVED"
+  },
+  "write_set": {
+    "deliverable_file_count": 1,
+    "deliverable_files": [
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/rebuild_ai_service/ais_r5_independent_static_audit_receipt_v1.json"
+    ],
+    "source_config_test_files_modified": [],
+    "transient_validator_cache_directories_removed_before_receipt_write": [
+      "ai-service-v2/.mypy_cache",
+      "ai-service-v2/.ruff_cache"
+    ],
+    "final_commit_policy": "Commit exactly the one deliverable file and do not push."
+  },
+  "output": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebuild_ai_service/ais_r5_independent_static_audit_receipt_v1.json",
+    "encoding": "UTF-8",
+    "json_policy": "Strict object JSON; no BOM, duplicate keys, case-colliding keys, non-finite constants, or trailing content.",
+    "self_hash_policy": "The receipt SHA-256 is reported out-of-band after commit and is not embedded in this self-referential document."
+  },
+  "repository_lineage": {
+    "entry_commit": "24f00c70626e25a62d017c34d31bf0e49055bf8c",
+    "entry_parent": "7a654bad53dd97899ce4e675a54332afd8959fc6",
+    "implementation_parent": "1c6841fdd17fa086ce27eb25dc85b5bfc80c4a70",
+    "receipt_commit": null,
+    "receipt_commit_parent_expected": "24f00c70626e25a62d017c34d31bf0e49055bf8c",
+    "receipt_commit_policy": "The receipt commit and final file SHA-256 are reported out-of-band to avoid self-reference."
+  },
+  "next_gate": {
+    "status": "BLOCKED_REMEDIATION_AND_FRESH_INDEPENDENT_REAUDIT_REQUIRED",
+    "validation_packet_authorized": false,
+    "runtime_authorized": false,
+    "test_opening_authorized": false,
+    "required_remediation": [
+      "Require an exact, fully typed Two-Tower field set and hash the resolved effective configuration.",
+      "Reject unsupported feature_source values before run creation and prove equality with the actual feature generator.",
+      "Require nonblank exact command bytes or argv, preserve them, and make their hash independently replayable.",
+      "Bind fixture override to an allowlisted repository fixture identity rather than self-declared labels.",
+      "Provide a strict hybrid-component loader/replay contract that binds the effective model spec and descriptor."
+    ],
+    "reaudit_requirement": "A new independent static audit must start from a newly frozen entry commit after remediation; this receipt does not authorize implementation changes or runtime."
+  },
+  "verdict": "HANDOFF_INCOMPLETE_AIS_R5_INDEPENDENT_STATIC_AUDIT",
+  "fail_closed": true
+}

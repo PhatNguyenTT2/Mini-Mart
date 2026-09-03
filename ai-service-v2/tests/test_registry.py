@@ -2,7 +2,10 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import pytest
+
 from ai_service_v2.data.snapshot import Snapshot
+from ai_service_v2.errors import ContractError
 from ai_service_v2.evaluation.evaluator import FullCatalogEvaluator
 from ai_service_v2.hashing import load_strict_json
 from ai_service_v2.models.registry import (
@@ -66,3 +69,74 @@ def test_legacy_model_spec_round_trips_without_rewriting_its_hash_surface() -> N
     parsed = ModelRunSpec.from_mapping(legacy)
     assert parsed.fusion_normalization == "none"
     assert parsed.to_mapping() == legacy
+
+
+def test_legacy_model_spec_is_inspection_only_at_training_seam(snapshot: Snapshot) -> None:
+    legacy = default_spec("deep_two_tower", feature_dimensions=8).to_mapping()
+    legacy.pop("fusion_normalization")
+    legacy["schema_version"] = "model-run-spec/1.0"
+    spec = ModelRunSpec.from_mapping(legacy)
+    protocol = build_protocol(snapshot, split="val", cutoff=5)
+
+    with pytest.raises(ContractError, match="inspection-only"):
+        train_local_model(snapshot, protocol, spec, seed=42)
+
+
+@pytest.mark.parametrize(
+    "two_tower",
+    [
+        {},
+        {
+            "embedding_dim": True,
+            "hidden_dim": 32,
+            "epochs": 5,
+            "learning_rate": 0.03,
+            "l2": 1e-5,
+            "negatives_per_positive": 1,
+        },
+        {
+            "embedding_dim": 16,
+            "hidden_dim": 32,
+            "epochs": 5.5,
+            "learning_rate": 0.03,
+            "l2": 1e-5,
+            "negatives_per_positive": 1,
+        },
+        {
+            "embedding_dim": 16,
+            "hidden_dim": 32,
+            "epochs": 5,
+            "learning_rate": float("inf"),
+            "l2": 1e-5,
+            "negatives_per_positive": 1,
+        },
+    ],
+)
+def test_current_deep_spec_rejects_incomplete_or_ill_typed_effective_config(
+    two_tower: dict[str, object],
+) -> None:
+    mapping = default_spec("deep_two_tower", feature_dimensions=8).to_mapping()
+    mapping["two_tower"] = two_tower
+
+    with pytest.raises(ContractError):
+        ModelRunSpec.from_mapping(mapping)
+
+
+def test_deep_spec_rejects_an_unsupported_feature_generator_before_training() -> None:
+    mapping = default_spec("deep_two_tower", feature_dimensions=8).to_mapping()
+    mapping["feature_source"] = "declared_but_not_implemented"
+
+    with pytest.raises(ContractError, match="feature source"):
+        ModelRunSpec.from_mapping(mapping)
+
+
+def test_admitted_feature_source_matches_the_generator_output(
+    snapshot: Snapshot,
+) -> None:
+    spec = default_spec("deep_two_tower", feature_dimensions=8)
+    protocol = build_protocol(snapshot, split="val", cutoff=5)
+
+    bundle = train_local_model(snapshot, protocol, spec, seed=42)
+
+    assert bundle.features is not None
+    assert bundle.features.source == spec.feature_source
