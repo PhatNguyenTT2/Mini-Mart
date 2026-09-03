@@ -31,6 +31,7 @@ from ai_service_v2.protocol import PreparedProtocol
 
 MODEL_KINDS = frozenset({"random", "mostpop", "rule_only", "deep_two_tower", "hybrid"})
 FUSION_NORMALIZATIONS = frozenset({"none", "per_user_zscore"})
+FEATURE_SOURCES = frozenset({"deterministic_hash_features"})
 
 
 @dataclass(frozen=True)
@@ -46,12 +47,16 @@ class ModelRunSpec:
     schema_version: str = "model-run-spec/1.1"
 
     def __post_init__(self) -> None:
+        if not isinstance(self.model_kind, str) or not isinstance(self.model_id, str):
+            raise ContractError("model spec identity fields must be strings")
         if self.model_kind not in MODEL_KINDS:
             raise ContractError(f"unsupported model kind: {self.model_kind}")
         if self.schema_version not in {"model-run-spec/1.0", "model-run-spec/1.1"}:
             raise ContractError("unsupported model run spec schema")
-        if not self.model_id or not self.feature_source:
+        if not self.model_id or not isinstance(self.feature_source, str) or not self.feature_source:
             raise ContractError("model spec identity fields are required")
+        if self.feature_source not in FEATURE_SOURCES:
+            raise ContractError(f"unsupported feature source: {self.feature_source}")
         if self.feature_dimensions < 4:
             raise ContractError("feature_dimensions must be at least four")
         if not math.isfinite(self.wide_weight) or self.wide_weight < 0:
@@ -120,6 +125,8 @@ class ModelRunSpec:
         two_tower = value["two_tower"]
         if two_tower is not None and not isinstance(two_tower, dict):
             raise ContractError("two_tower must be an object or null")
+        if two_tower is not None:
+            two_tower = TwoTowerConfig.from_mapping(two_tower).to_mapping()
         if not isinstance(fusion_normalization, str):
             raise ContractError("fusion_normalization must be a string")
         return cls(
@@ -180,14 +187,15 @@ def default_spec(
 def descriptor_for_spec(spec: ModelRunSpec) -> ModelDescriptor:
     if spec.model_kind in {"deep_two_tower", "hybrid"}:
         assert spec.two_tower is not None
+        resolved_two_tower = TwoTowerConfig.from_mapping(spec.two_tower).to_mapping()
         if spec.schema_version == "model-run-spec/1.0":
-            config_hash = canonical_json_sha256(spec.two_tower)
+            config_hash = canonical_json_sha256(resolved_two_tower)
         else:
             config_hash = canonical_json_sha256(
                 {
                     "feature_source": spec.feature_source,
                     "feature_dimensions": spec.feature_dimensions,
-                    "two_tower": spec.two_tower,
+                    "two_tower": resolved_two_tower,
                     "wide_weight": spec.wide_weight,
                     "rule_min_support": spec.rule_min_support,
                     "fusion_normalization": spec.fusion_normalization,
@@ -277,6 +285,8 @@ def train_local_model(
     assert spec.two_tower is not None
     config = TwoTowerConfig.from_mapping(spec.two_tower)
     features = item_text_hash_features(snapshot, dimensions=spec.feature_dimensions)
+    if features.source != spec.feature_source:
+        raise ContractError("generated feature source does not match the admitted model spec")
     deep_model, report = train_two_tower(
         snapshot,
         features,
@@ -301,6 +311,7 @@ def train_local_model(
 
 
 __all__ = [
+    "FEATURE_SOURCES",
     "FUSION_NORMALIZATIONS",
     "MODEL_KINDS",
     "LocalModelBundle",

@@ -115,8 +115,13 @@ class Snapshot:
             raise ContractError("raw_item_ids length does not match num_items")
         if len(set(self.raw_item_ids)) != len(self.raw_item_ids):
             raise ContractError("raw_item_ids must be unique")
-        if set(self.events_by_split) != {"train", "val", "test"}:
-            raise ContractError("events_by_split must contain exactly train, val, test")
+        loaded_splits = tuple(self.events_by_split)
+        if loaded_splits not in {
+            ("train",),
+            ("train", "val"),
+            ("train", "val", "test"),
+        }:
+            raise ContractError("events_by_split must be a canonical temporal prefix")
         if set(self.item_records) != set(self.items):
             raise ContractError("item_records must cover every internal item")
         total = 0
@@ -140,8 +145,11 @@ class Snapshot:
                     raise ContractError(f"events must be timestamp ordered in {split}")
                 previous_timestamp = event.timestamp
             total += len(events)
-        if total != self.manifest.num_interactions:
-            raise ContractError("event counts do not match manifest")
+        if "test" in self.events_by_split:
+            if total != self.manifest.num_interactions:
+                raise ContractError("event counts do not match manifest")
+        elif total >= self.manifest.num_interactions:
+            raise ContractError("partial snapshot event count is inconsistent with manifest")
         if any(record.item_id not in self.items for record in self.item_records.values()):
             raise ContractError("item record references an unknown item")
         basket_ids: set[str] = set()
@@ -169,14 +177,20 @@ class Snapshot:
 
     def history_events(self, split: str) -> tuple[Interaction, ...]:
         if split == "val":
+            if "val" not in self.events_by_split:
+                raise ContractError("validation split is not loaded")
             return self.events_by_split["train"]
         if split == "test":
+            if "test" not in self.events_by_split:
+                raise ContractError("TEST split is not loaded")
             return self.events_by_split["train"] + self.events_by_split["val"]
         raise ValueError("history is defined only for val or test")
 
     def target_events(self, split: str) -> tuple[Interaction, ...]:
         if split not in {"val", "test"}:
             raise ValueError("target is defined only for val or test")
+        if split not in self.events_by_split:
+            raise ContractError(f"{split} split is not loaded")
         return self.events_by_split[split]
 
     def events_for_user(self, events: Iterable[Interaction]) -> dict[int, tuple[Interaction, ...]]:

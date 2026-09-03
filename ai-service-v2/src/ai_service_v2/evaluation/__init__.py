@@ -8,6 +8,10 @@ from ai_service_v2.evaluation.artifacts import (
     load_score_matrix,
     materialize_scores,
 )
+from ai_service_v2.evaluation.components import (
+    HybridScoreComponents,
+    load_hybrid_score_components,
+)
 from ai_service_v2.evaluation.evaluator import (
     EvaluationResult,
     FullCatalogEvaluator,
@@ -24,6 +28,7 @@ from ai_service_v2.evaluation.persistence import (
 __all__ = [
     "EvaluationResult",
     "FullCatalogEvaluator",
+    "HybridScoreComponents",
     "MaterializedScores",
     "MatrixScoreProvider",
     "PersistedEvaluation",
@@ -32,6 +37,7 @@ __all__ = [
     "evaluator_implementation_sha256",
     "evaluator_source_hashes",
     "load_evaluation",
+    "load_hybrid_score_components",
     "load_materialized_scores",
     "load_score_matrix",
     "materialize_scores",

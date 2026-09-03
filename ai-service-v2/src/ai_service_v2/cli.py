@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from pathlib import Path
 from typing import Any
 
@@ -20,6 +21,7 @@ from ai_service_v2.evaluation.artifacts import (
     load_materialized_scores,
     materialize_scores,
 )
+from ai_service_v2.evaluation.components import load_hybrid_score_components
 from ai_service_v2.evaluation.evaluator import FullCatalogEvaluator
 from ai_service_v2.evaluation.persistence import save_evaluation
 from ai_service_v2.hashing import (
@@ -45,6 +47,7 @@ from ai_service_v2.models.registry import (
 )
 from ai_service_v2.protocol import build_protocol, load_protocol, save_protocol
 from ai_service_v2.training import (
+    ProcessCommand,
     create_run,
     load_checkpoint,
     load_run,
@@ -53,7 +56,9 @@ from ai_service_v2.training import (
     write_run_artifact,
 )
 
-_UNBOUND_COMMAND_TEXT = "ai-v2 train (command not supplied by caller)"
+_REPOSITORY_FIXTURE_MANIFEST_SHA256 = frozenset(
+    {"db1263174b176a4f1dcda355332b5b194b55d227909eebda797f0a8532e5353d"}
+)
 
 
 def _parser() -> argparse.ArgumentParser:
@@ -109,12 +114,6 @@ def _parser() -> argparse.ArgumentParser:
         help="allow only the repository's explicitly labeled non-scientific test fixture",
     )
     train.add_argument("--environment-lock", type=Path)
-    train.add_argument(
-        "--command-text",
-        dest="command_text",
-        default=_UNBOUND_COMMAND_TEXT,
-        help="exact command description to bind into the run manifest",
-    )
 
     export = commands.add_parser("export-scores")
     export.add_argument("snapshot_root", type=Path)
@@ -153,6 +152,12 @@ def _dataset_manifest_hash(snapshot: Any) -> str:
 
 def _protocol_manifest_hash(protocol: Any) -> str:
     return canonical_json_sha256(protocol.manifest.to_mapping())
+
+
+def _is_repository_fixture(manifest: DatasetManifest) -> bool:
+    """Admit only an exact, content-bound repository fixture manifest."""
+
+    return canonical_json_sha256(manifest.to_mapping()) in _REPOSITORY_FIXTURE_MANIFEST_SHA256
 
 
 def _load_model_spec(args: argparse.Namespace) -> tuple[dict[str, Any], ModelRunSpec]:
@@ -279,9 +284,10 @@ def _cmd_validate_snapshot(root: Path) -> int:
 
 
 def _cmd_build_protocol(args: argparse.Namespace) -> int:
-    snapshot = load_canonical_snapshot(args.snapshot_root)
     if args.split == "test" and not args.allow_test:
         raise ProtocolError("TEST is sealed; pass --allow-test explicitly")
+    required_splits = ("train", "val", "test") if args.split == "test" else ("train", "val")
+    snapshot = load_canonical_snapshot(args.snapshot_root, required_splits=required_splits)
     protocol = build_protocol(
         snapshot,
         split=args.split,
@@ -304,20 +310,20 @@ def _cmd_build_protocol(args: argparse.Namespace) -> int:
     return 0
 
 
-def _cmd_train(args: argparse.Namespace) -> int:
-    snapshot = load_canonical_snapshot(args.snapshot_root)
+def _cmd_train(args: argparse.Namespace, process_command: ProcessCommand) -> int:
+    protocol = load_protocol(args.protocol)
+    if protocol.manifest.split == "test":
+        raise ProtocolError("training must bind to a validation protocol, not TEST")
+    snapshot = load_canonical_snapshot(
+        args.snapshot_root,
+        required_splits=("train", "val"),
+    )
     suitability = assess_snapshot_suitability(snapshot)
     manifest = snapshot.manifest
-    fixture_dataset = (
-        manifest.schema_version == "dataset-manifest/1.0"
-        and manifest.dataset_id.startswith("fixture-")
-        and manifest.source_kind == "fixture"
-        and manifest.provenance_status == "FIXTURE_ONLY"
-        and manifest.license_status == "TEST_ONLY"
-    )
+    fixture_dataset = _is_repository_fixture(manifest)
     fixture_override = args.fixture_only and fixture_dataset
     if args.fixture_only and not fixture_dataset:
-        raise IntegrityError("--fixture-only cannot authorize a non-fixture dataset")
+        raise IntegrityError("--fixture-only can authorize only an exact repository fixture")
     if fixture_dataset and not args.fixture_only:
         raise IntegrityError("repository fixtures require the explicit --fixture-only flag")
     if (
@@ -328,16 +334,11 @@ def _cmd_train(args: argparse.Namespace) -> int:
             "dataset suitability gate is not admitted: " + ", ".join(suitability.blocking_findings)
         )
     protocol = load_protocol(args.protocol, snapshot=snapshot)
-    if protocol.manifest.split == "test":
-        raise ProtocolError("training must bind to a validation protocol, not TEST")
     config_document, spec = _load_model_spec(args)
     if not fixture_override:
         if args.environment_lock is None:
             raise IntegrityError("non-fixture training requires an immutable environment lock")
-        if args.command_text == _UNBOUND_COMMAND_TEXT:
-            raise IntegrityError("non-fixture training requires exact --command-text binding")
     config_hash = canonical_json_sha256(config_document)
-    command_hash = sha256_bytes(args.command_text.encode("utf-8"))
     if spec.model_kind in {"deep_two_tower", "hybrid"}:
         checkpoint_rule = "final_training_state_after_fixed_epochs"
     elif spec.model_kind == "rule_only":
@@ -353,7 +354,7 @@ def _cmd_train(args: argparse.Namespace) -> int:
         seed=args.seed,
         environment_lock_sha256=_environment_hash(args.environment_lock),
         checkpoint_rule=checkpoint_rule,
-        command_sha256=command_hash,
+        process_command=process_command,
     )
     try:
         write_run_artifact(run.root, "config.json", config_document)
@@ -603,7 +604,11 @@ def _load_model_for_run(snapshot: Any, protocol: Any, run: Any) -> Any:
 
 
 def _cmd_export_scores(args: argparse.Namespace) -> int:
-    snapshot = load_canonical_snapshot(args.snapshot_root)
+    protocol = load_protocol(args.protocol)
+    required_splits = (
+        ("train", "val", "test") if protocol.manifest.split == "test" else ("train", "val")
+    )
+    snapshot = load_canonical_snapshot(args.snapshot_root, required_splits=required_splits)
     run = load_run(args.run_root)
     if run.manifest.status != "PASS":
         raise IntegrityError("only PASS runs may export scores")
@@ -645,13 +650,17 @@ def _cmd_export_scores(args: argparse.Namespace) -> int:
 def _cmd_export_score_components(args: argparse.Namespace) -> int:
     """Persist Deep, Wide, and Hybrid score surfaces without computing metrics."""
 
-    snapshot = load_canonical_snapshot(args.snapshot_root)
+    protocol = load_protocol(args.protocol)
+    if protocol.manifest.split != "val" or protocol.manifest.test_set_opened:
+        raise ProtocolError("AIS-R5 component export is validation-only and keeps TEST sealed")
+    snapshot = load_canonical_snapshot(
+        args.snapshot_root,
+        required_splits=("train", "val"),
+    )
     run = load_run(args.run_root)
     if run.manifest.status != "PASS":
         raise IntegrityError("only PASS runs may export score components")
     protocol = load_protocol(args.protocol, snapshot=snapshot)
-    if protocol.manifest.split != "val" or protocol.manifest.test_set_opened:
-        raise ProtocolError("AIS-R5 component export is validation-only and keeps TEST sealed")
     if run.manifest.dataset_manifest_sha256 != _dataset_manifest_hash(snapshot):
         raise IntegrityError("run dataset binding does not match snapshot")
     protocol_sha256 = _protocol_manifest_hash(protocol)
@@ -669,6 +678,8 @@ def _cmd_export_score_components(args: argparse.Namespace) -> int:
     artifact = load_strict_json(run.root / "model_artifact.json")
     if artifact.get("schema_version") != "model-artifact/1.1":
         raise IntegrityError("Hybrid score components require a model-artifact/1.1 binding")
+    spec = _load_model_spec_from_run(run)
+    descriptor = descriptor_for_spec(spec)
 
     component_definitions = (
         ("deep", model.deep_component_scores, f"{run.manifest.model_id}::deep"),
@@ -692,11 +703,17 @@ def _cmd_export_score_components(args: argparse.Namespace) -> int:
         }
 
     component_manifest = {
-        "schema_version": "hybrid-score-components/1.0",
+        "schema_version": "hybrid-score-components/1.1",
         "run_id": run.manifest.run_id,
         "model_id": run.manifest.model_id,
         "protocol_manifest_sha256": protocol_sha256,
         "candidate_order_sha256": protocol.manifest.candidate_order_sha256,
+        "model_spec": spec.to_mapping(),
+        "model_spec_sha256": canonical_json_sha256(spec.to_mapping()),
+        "descriptor": descriptor.to_mapping(),
+        "descriptor_sha256": canonical_json_sha256(descriptor.to_mapping()),
+        "model_artifact_sha256": sha256_file(run.root / "model_artifact.json"),
+        "checkpoint_manifest_sha256": sha256_file(run.root / "checkpoint" / "manifest.json"),
         "feature_content_sha256": artifact["feature_content_sha256"],
         "rule_artifact_sha256": artifact["rule_artifact_sha256"],
         "checkpoint_sha256": artifact["checkpoint_sha256"],
@@ -720,6 +737,11 @@ def _cmd_export_score_components(args: argparse.Namespace) -> int:
             "root": str(args.component_root.resolve()),
             "manifest_sha256": wrapper_sha256,
         },
+    )
+    load_hybrid_score_components(
+        args.component_root,
+        run_root=run.root,
+        protocol=protocol,
     )
     _print(
         {
@@ -790,7 +812,13 @@ def _cmd_summarize_run(root: Path) -> int:
 
 
 def main(argv: list[str] | None = None) -> int:
-    args = _parser().parse_args(argv)
+    parsed_argv = sys.argv[1:] if argv is None else argv
+    args = _parser().parse_args(parsed_argv)
+    process_command = ProcessCommand(
+        executable=str(Path(sys.executable).resolve()),
+        argv=tuple(sys.argv if argv is None else parsed_argv),
+        argv_source="process_sys_argv" if argv is None else "provided_main_argv",
+    )
     try:
         if args.command == "validate-manifest":
             return _cmd_validate_manifest(args.path)
@@ -838,13 +866,18 @@ def main(argv: list[str] | None = None) -> int:
             )
             return 0
         if args.command == "assess-snapshot":
-            report = assess_snapshot_suitability(load_canonical_snapshot(args.snapshot_root))
+            report = assess_snapshot_suitability(
+                load_canonical_snapshot(
+                    args.snapshot_root,
+                    required_splits=("train", "val"),
+                )
+            )
             _print(report.to_mapping())
             return 0 if report.verdict == "PASS_CONTROLLED_INTERNAL_DATASET_SUITABILITY" else 2
         if args.command == "build-protocol":
             return _cmd_build_protocol(args)
         if args.command == "train":
-            return _cmd_train(args)
+            return _cmd_train(args, process_command)
         if args.command == "export-scores":
             return _cmd_export_scores(args)
         if args.command == "export-score-components":

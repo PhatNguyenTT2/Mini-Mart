@@ -4,10 +4,53 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Any
 
 from ai_service_v2.contracts import RunManifest
-from ai_service_v2.errors import IntegrityError
-from ai_service_v2.hashing import canonical_json_bytes, load_strict_json
+from ai_service_v2.errors import ContractError, IntegrityError
+from ai_service_v2.hashing import canonical_json_bytes, canonical_json_sha256, load_strict_json
+
+
+@dataclass(frozen=True)
+class ProcessCommand:
+    """Canonical process identity captured by the CLI rather than supplied as prose."""
+
+    executable: str
+    argv: tuple[str, ...]
+    argv_source: str
+    schema_version: str = "process-command/1.0"
+
+    def __post_init__(self) -> None:
+        if self.schema_version != "process-command/1.0":
+            raise ContractError("unsupported process command schema")
+        if not isinstance(self.executable, str) or not self.executable.strip():
+            raise ContractError("process command executable is required")
+        if not isinstance(self.argv, tuple) or not self.argv:
+            raise ContractError("process command argv must be a non-empty tuple")
+        if any(not isinstance(value, str) or not value or "\x00" in value for value in self.argv):
+            raise ContractError("process command argv entries must be non-empty strings")
+        if self.argv_source not in {"process_sys_argv", "provided_main_argv"}:
+            raise ContractError("unsupported process command argv source")
+
+    def to_mapping(self) -> dict[str, Any]:
+        return {
+            "schema_version": self.schema_version,
+            "executable": self.executable,
+            "argv": list(self.argv),
+            "argv_source": self.argv_source,
+        }
+
+    @classmethod
+    def from_mapping(cls, value: dict[str, Any]) -> ProcessCommand:
+        required = {"schema_version", "executable", "argv", "argv_source"}
+        if set(value) != required or not isinstance(value.get("argv"), list):
+            raise ContractError("process command fields do not match schema")
+        return cls(
+            schema_version=value["schema_version"],
+            executable=value["executable"],
+            argv=tuple(value["argv"]),
+            argv_source=value["argv_source"],
+        )
 
 
 @dataclass(frozen=True)
@@ -34,13 +77,16 @@ def create_run(
     seed: int,
     environment_lock_sha256: str,
     checkpoint_rule: str,
-    command_sha256: str,
+    process_command: ProcessCommand,
 ) -> RunDirectory:
     """Create a unique RUNNING namespace without touching existing runs."""
 
     if root.exists():
         raise IntegrityError(f"run root already exists: {root}")
+    if not isinstance(process_command, ProcessCommand):
+        raise ContractError("process_command must be a validated ProcessCommand")
     root.mkdir(parents=True)
+    command_sha256 = canonical_json_sha256(process_command.to_mapping())
     manifest = RunManifest(
         run_id=run_id,
         model_id=model_id,
@@ -54,6 +100,7 @@ def create_run(
         status="RUNNING",
     )
     _write_manifest(root, manifest)
+    write_run_artifact(root, "command.json", process_command.to_mapping())
     return RunDirectory(root, manifest)
 
 
@@ -90,6 +137,17 @@ def load_run(root: Path) -> RunDirectory:
     return RunDirectory(root, manifest)
 
 
+def load_run_command(run: RunDirectory | Path) -> ProcessCommand:
+    """Strict-load the persisted command and replay its run-manifest hash binding."""
+
+    loaded_run = load_run(run) if isinstance(run, Path) else run
+    document = load_strict_json(loaded_run.root / "command.json")
+    command = ProcessCommand.from_mapping(document)
+    if canonical_json_sha256(command.to_mapping()) != loaded_run.manifest.command_sha256:
+        raise IntegrityError("run command hash does not match the run manifest")
+    return command
+
+
 def write_run_artifact(root: Path, name: str, document: dict[str, object]) -> Path:
     """Write one exclusive canonical JSON artifact inside a run namespace."""
 
@@ -105,4 +163,12 @@ def write_run_artifact(root: Path, name: str, document: dict[str, object]) -> Pa
     return path
 
 
-__all__ = ["RunDirectory", "create_run", "load_run", "update_run_status", "write_run_artifact"]
+__all__ = [
+    "ProcessCommand",
+    "RunDirectory",
+    "create_run",
+    "load_run",
+    "load_run_command",
+    "update_run_status",
+    "write_run_artifact",
+]

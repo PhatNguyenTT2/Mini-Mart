@@ -71,29 +71,39 @@ def _canonical_payload(
     }
 
 
-def load_canonical_snapshot(root: Path) -> Snapshot:
-    """Load a JSONL snapshot and verify all hashes before constructing objects.
+def load_canonical_snapshot(
+    root: Path,
+    *,
+    required_splits: tuple[str, ...] = ("train", "val", "test"),
+) -> Snapshot:
+    """Load only a canonical temporal split prefix and verify selected hashes.
 
     JSONL is intentionally a small fixture/local adapter.  The production
     materializer may provide Arrow/Parquet rows through the same ``Snapshot``
-    seam without changing the evaluator.
+    seam without changing the evaluator.  Unselected split paths are never
+    opened, allowing TRAIN/VAL work to keep TEST physically sealed.
     """
 
+    if required_splits not in {
+        ("train",),
+        ("train", "val"),
+        ("train", "val", "test"),
+    }:
+        raise IntegrityError("required_splits must be a canonical temporal prefix")
     manifest = DatasetManifest.from_mapping(load_strict_json(root / "manifest.json"))
-    expected_files = {
+    base_files = {
         "manifest.json",
         "items.jsonl",
-        "train.jsonl",
-        "val.jsonl",
-        "test.jsonl",
     }
     if manifest.schema_version == "dataset-manifest/1.1":
-        expected_files |= {"users.jsonl", "baskets.jsonl"}
+        base_files |= {"users.jsonl", "baskets.jsonl"}
+    known_files = base_files | {"train.jsonl", "val.jsonl", "test.jsonl"}
+    required_files = base_files | {f"{split}.jsonl" for split in required_splits}
     try:
         actual_files = {path.name for path in root.iterdir()}
     except OSError as error:
         raise IntegrityError(f"cannot inspect snapshot root: {root}") from error
-    if actual_files != expected_files:
+    if not required_files <= actual_files or not actual_files <= known_files:
         raise IntegrityError("snapshot file set does not match manifest schema")
 
     user_rows = (
@@ -107,10 +117,11 @@ def load_canonical_snapshot(root: Path) -> Snapshot:
         if manifest.schema_version == "dataset-manifest/1.1"
         else []
     )
-    split_rows = {split: _read_jsonl(root / f"{split}.jsonl") for split in ("train", "val", "test")}
-    payload = _canonical_payload(manifest, user_rows, item_rows, basket_rows, split_rows)
-    if canonical_json_sha256(payload) != manifest.dataset_sha256:
-        raise IntegrityError("snapshot payload hash does not match manifest")
+    split_rows = {split: _read_jsonl(root / f"{split}.jsonl") for split in required_splits}
+    if required_splits == ("train", "val", "test"):
+        payload = _canonical_payload(manifest, user_rows, item_rows, basket_rows, split_rows)
+        if canonical_json_sha256(payload) != manifest.dataset_sha256:
+            raise IntegrityError("snapshot payload hash does not match manifest")
     for split, rows in split_rows.items():
         if canonical_json_sha256({"split": split, "rows": rows}) != manifest.split_hashes[split]:
             raise IntegrityError(f"{split} split hash does not match manifest")

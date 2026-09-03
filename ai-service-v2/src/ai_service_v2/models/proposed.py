@@ -79,6 +79,25 @@ class TwoTowerConfig:
     negatives_per_positive: int = 1
 
     def __post_init__(self) -> None:
+        integer_fields = {
+            "embedding_dim": self.embedding_dim,
+            "hidden_dim": self.hidden_dim,
+            "epochs": self.epochs,
+            "negatives_per_positive": self.negatives_per_positive,
+        }
+        if any(
+            isinstance(value, bool) or not isinstance(value, int)
+            for value in integer_fields.values()
+        ):
+            raise ContractError("two-tower dimensions, epochs, and sample counts must be integers")
+        numeric_fields = {"learning_rate": self.learning_rate, "l2": self.l2}
+        if any(
+            isinstance(value, bool)
+            or not isinstance(value, (int, float))
+            or not math.isfinite(value)
+            for value in numeric_fields.values()
+        ):
+            raise ContractError("two-tower rates must be finite numeric values")
         if self.embedding_dim < 2 or self.hidden_dim < 2:
             raise ContractError("tower dimensions must be at least two")
         if self.epochs < 1 or self.negatives_per_positive < 1:
@@ -98,7 +117,7 @@ class TwoTowerConfig:
 
     @classmethod
     def from_mapping(cls, value: dict[str, Any]) -> TwoTowerConfig:
-        allowed = {
+        required = {
             "embedding_dim",
             "hidden_dim",
             "epochs",
@@ -106,9 +125,8 @@ class TwoTowerConfig:
             "l2",
             "negatives_per_positive",
         }
-        unknown = sorted(set(value) - allowed)
-        if unknown:
-            raise ContractError(f"unknown two-tower config fields: {', '.join(unknown)}")
+        if set(value) != required:
+            raise ContractError("two-tower config fields do not match schema")
         return cls(**value)
 
 
