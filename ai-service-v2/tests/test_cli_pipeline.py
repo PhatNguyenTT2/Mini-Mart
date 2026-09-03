@@ -3,7 +3,9 @@ from __future__ import annotations
 import copy
 import json
 import sys
+from collections.abc import Callable
 from pathlib import Path
+from typing import Any
 
 import numpy as np
 import pytest
@@ -379,7 +381,7 @@ def test_hybrid_component_loader_rejects_encoding_and_binding_drift(tmp_path: Pa
                 protocol=protocol,
             )
 
-    semantic_mutations = {
+    semantic_mutations: dict[str, Callable[[dict[str, Any]], None]] = {
         "unknown": lambda value: value.update({"unknown": "field"}),
         "model_spec": lambda value: value["model_spec"].update({"wide_weight": 0.75}),
         "descriptor": lambda value: value["descriptor"].update({"config_sha256": "0" * 64}),
