@@ -623,8 +623,26 @@ def _cmd_export_scores(args: argparse.Namespace) -> int:
     protocol = load_protocol(args.protocol, snapshot=snapshot)
     if run.manifest.dataset_manifest_sha256 != _dataset_manifest_hash(snapshot):
         raise IntegrityError("run dataset binding does not match snapshot")
-    if run.manifest.protocol_manifest_sha256 != _protocol_manifest_hash(protocol):
-        raise IntegrityError("run protocol binding does not match protocol")
+    scoring_protocol_sha256 = _protocol_manifest_hash(protocol)
+    selection_protocol_sha256 = run.manifest.protocol_manifest_sha256
+    if selection_protocol_sha256 != scoring_protocol_sha256:
+        if protocol.manifest.split != "test" or not protocol.manifest.test_set_opened:
+            raise IntegrityError("run protocol binding does not match protocol")
+        # A model is selected and trained against validation, then applied to
+        # TEST without retraining.  Reconstruct the unique validation
+        # counterpart from the same verified snapshot and require the run to
+        # bind it exactly.  The requested cutoff and evaluator version are
+        # carried over so a caller cannot change evaluation semantics at TEST.
+        selection_protocol = build_protocol(
+            snapshot,
+            split="val",
+            cutoff=protocol.manifest.cutoff,
+            metric_version=protocol.manifest.metric_version,
+        )
+        if selection_protocol_sha256 != _protocol_manifest_hash(selection_protocol):
+            raise IntegrityError(
+                "run protocol binding is not the validation counterpart of TEST protocol"
+            )
     model = _load_model_for_run(snapshot, protocol, run)
     materialized = materialize_scores(
         protocol,
@@ -634,14 +652,30 @@ def _cmd_export_scores(args: argparse.Namespace) -> int:
         model_id=run.manifest.model_id,
         chunk_size=args.chunk_size,
     )
-    write_run_artifact(
-        run.root,
-        "score_artifact_ref.json",
-        {
-            "schema_version": "score-artifact-ref/1.0",
+    reference_name = (
+        "score_artifact_ref.test.json"
+        if protocol.manifest.split == "test"
+        else "score_artifact_ref.json"
+    )
+    reference_document: dict[str, object] = {
+        "schema_version": "score-artifact-ref/1.0",
+        "root": str(materialized.root),
+        "manifest_sha256": sha256_file(materialized.root / "manifest.json"),
+    }
+    if protocol.manifest.split == "test":
+        reference_document = {
+            "schema_version": "score-artifact-ref/1.1",
             "root": str(materialized.root),
             "manifest_sha256": sha256_file(materialized.root / "manifest.json"),
-        },
+            "selection_protocol_manifest_sha256": selection_protocol_sha256,
+            "scoring_protocol_manifest_sha256": scoring_protocol_sha256,
+            "split": "test",
+            "test_set_opened": True,
+        }
+    write_run_artifact(
+        run.root,
+        reference_name,
+        reference_document,
     )
     _print(
         {
@@ -650,6 +684,8 @@ def _cmd_export_scores(args: argparse.Namespace) -> int:
             "run_id": materialized.manifest.run_id,
             "model_id": materialized.manifest.model_id,
             "shape": list(materialized.manifest.score_shape),
+            "split": protocol.manifest.split,
+            "test_set_opened": protocol.manifest.test_set_opened,
         }
     )
     return 0
@@ -806,6 +842,7 @@ def _cmd_summarize_run(root: Path) -> int:
             "rule_artifact": (root / "rule_artifact.json").is_file(),
             "training_report": (root / "training_report.json").is_file(),
             "score_artifact_ref": (root / "score_artifact_ref.json").is_file(),
+            "test_score_artifact_ref": (root / "score_artifact_ref.test.json").is_file(),
             "component_score_artifact_ref": (root / "component_score_artifact_ref.json").is_file(),
         },
     }
@@ -817,6 +854,8 @@ def _cmd_summarize_run(root: Path) -> int:
         }
     if (root / "score_artifact_ref.json").is_file():
         summary["score_artifact_ref"] = load_strict_json(root / "score_artifact_ref.json")
+    if (root / "score_artifact_ref.test.json").is_file():
+        summary["test_score_artifact_ref"] = load_strict_json(root / "score_artifact_ref.test.json")
     _print(summary)
     return 0
 

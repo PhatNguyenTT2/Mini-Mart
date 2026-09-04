@@ -1,0 +1,110 @@
+{
+  "schema_version": "stage1e-e4-r6-local-ml100k-content-admission-1.0",
+  "created_at": "2026-09-04T05:52:30.1306297+07:00",
+  "stage_id": "E4-R6-LOCAL-ML100K-CONTENT-ADMISSION",
+  "status": "PASS_DATASET_CONTENT_IDENTITY_READY_FOR_MATERIALIZATION",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "validate",
+    "origin_date": "2026-09-04T05:52:30.1306297+07:00",
+    "verification_status": "ANALYZED",
+    "version_label": "e4_r6_local_ml100k_content_admission_v1",
+    "upstream_dependencies": [
+      "e4_r6_fallback_distribution_plan",
+      "rebaseline_v2_e4_r6_m0_m1_attempt_002_failure_receipt",
+      "e4_r5_candidate_lock"
+    ]
+  },
+  "input": {
+    "kind": "USER_PROVIDED_EXTRACTED_DIRECTORY",
+    "path": "MovieLens/ml-100k",
+    "file_count": 23,
+    "zip_present_in_user_directory": false,
+    "user_acquisition_tls_status": "NOT_EVALUATED",
+    "transport_status_is_not_dataset_identity": true
+  },
+  "canonical_archive_anchor": {
+    "path": "E:/UIT/cv/materialized-data/hybrid-recsys-v5/stage1e/r6/official_source/grouplens_ml100k/attempt-002/download/ml-100k.zip",
+    "receipt": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_m0_m1_attempt_002_failure_receipt.json",
+    "bytes": 4924029,
+    "md5": "0e33842e24a9c977be4e0107933c0723",
+    "sha256": "50d2a982c66986937beb9ffb3aa76efe955bf3d5c6b761f4e3a7cd717c6a3229",
+    "archive_identity_matches_locked_group_lens_identity": true,
+    "archive_was_not_modified": true
+  },
+  "binary_equivalence": {
+    "method": "STREAM_EACH_CANONICAL_ZIP_MEMBER_AND_COMPARE_LENGTH_AND_SHA256_WITH_LOCAL_FILE",
+    "zip_file_entries": 23,
+    "local_file_entries": 23,
+    "missing_entries": 0,
+    "extra_entries": 0,
+    "byte_or_sha256_mismatches": 0,
+    "all_local_files_binary_equal_to_canonical_archive_members": true,
+    "canonical_inventory_format": "name<TAB>bytes<TAB>sha256<LF>, ordinal name order",
+    "canonical_inventory_bytes": 1830,
+    "canonical_inventory_sha256": "11839e627336d9b76ba327d2bf01e5afd6d2c21cd9aad39fc28d39fe32340738"
+  },
+  "inventory": [
+    {"path":"allbut.pl","bytes":716,"sha256":"bfc6a75cbd65c74bb38a0b580dbe866af252733dfa9a65a2c4b93258774ee8a3"},
+    {"path":"mku.sh","bytes":643,"sha256":"7929735c375e89a04340e34de621bf2ea643cd04b0bcda2c6f458e4be961ae71"},
+    {"path":"README","bytes":6750,"sha256":"4883b8cf340ed0059971b33f56ad3adc88a40792108ebca3d24aafc4c82e8b52"},
+    {"path":"u.data","bytes":1979173,"sha256":"06416e597f82b7342361e41163890c81036900f418ad91315590814211dca490"},
+    {"path":"u.genre","bytes":202,"sha256":"9757e0d3e6b298159a80dd48eaf938114690e911e39af97a76949ef1663610bb"},
+    {"path":"u.info","bytes":36,"sha256":"5b0a40b2e47a729ee6203063f6dcf8790c2e63f5a18663e6ee318a72c5f3c27b"},
+    {"path":"u.item","bytes":236344,"sha256":"553841ebc7de3a0fd0d6b62a204ea30c1e651aacfb2814c7a6584ac52f2c5701"},
+    {"path":"u.occupation","bytes":193,"sha256":"cd5fbec9afe345d993a62fc7817df1a4a9079c4feb267b3118763b8fd942137d"},
+    {"path":"u.user","bytes":22628,"sha256":"f120e114da2e8cf314fd28f99417c94ae9ddf1cb6db8ce0e4b5995d40e90e62c"},
+    {"path":"u1.base","bytes":1586544,"sha256":"ce253ec86c448b44fb3ba9a30d12dcfc2e9210cbde71efada3730c22e9ac212a"},
+    {"path":"u1.test","bytes":392629,"sha256":"18c6014a4b2c7324f250a63f8904a7b16b2b19f911129e346141507b0cbac950"},
+    {"path":"u2.base","bytes":1583948,"sha256":"6c06f0b5df4b256da1a994f3ac66edc8da4d3f09bc9282df6b14d893366d703e"},
+    {"path":"u2.test","bytes":395225,"sha256":"4de658d1e04ed9104629509a2e2528fce833ac8e048280183f1df167632038c3"},
+    {"path":"u3.base","bytes":1582546,"sha256":"afdc155c291c6edc41c0407e39d7462eb98d341e064f0b0a12175b80b3c4af5d"},
+    {"path":"u3.test","bytes":396627,"sha256":"0f548b51c78327de4c156461d3e430b7e5579fe2b5681586a59416e48fd35f6d"},
+    {"path":"u4.base","bytes":1581878,"sha256":"219f0f4d40dfe9c5141d425f53fa91ee23ed275f14e280bbf1b50117afb064ca"},
+    {"path":"u4.test","bytes":397295,"sha256":"7c02ad0a1e7ab1083c8b9d4b627203a051dd7b5eab46d99fa44de33470de8db9"},
+    {"path":"u5.base","bytes":1581776,"sha256":"a9574e59ce961eec2121627760b6e9b0974ce1637b3fe69ac32cb14a4bfab485"},
+    {"path":"u5.test","bytes":397397,"sha256":"351cc52e0d15b6c721466276fc24671d40936899e3d01fadeaf312915b8c5634"},
+    {"path":"ua.base","bytes":1792501,"sha256":"67b5bcdb380c29f85d56a012ecd88612ae020f30a6730d117a334ee8203b91f2"},
+    {"path":"ua.test","bytes":186672,"sha256":"d0497e202417720f57a184ec8c66be2d1afa4ff41bb53787c57b28d6bf79bc42"},
+    {"path":"ub.base","bytes":1792476,"sha256":"237254d253b6ad7de84f919d041055428646254f34ed8f562703c899430cd881"},
+    {"path":"ub.test","bytes":186697,"sha256":"d54a72d05730d5892062734b2bec73e976f9b713d18c828a18b968d6cce442da"}
+  ],
+  "semantic_validation": {
+    "u_data_rows": 100000,
+    "distinct_users": 943,
+    "distinct_items": 1682,
+    "user_id_range": [1, 943],
+    "item_id_range": [1, 1682],
+    "malformed_rows": 0,
+    "duplicate_user_item_pairs": 0,
+    "u_user_rows": 943,
+    "u_item_rows": 1682,
+    "timestamp_range": [874724710, 893286638],
+    "rating_distribution": {"1":6110,"2":11370,"3":27145,"4":34174,"5":21201}
+  },
+  "published_split_validation": [
+    {"split":"u1","base_rows":80000,"test_rows":20000,"overlap":0,"union_rows":100000,"equals_u_data":true},
+    {"split":"u2","base_rows":80000,"test_rows":20000,"overlap":0,"union_rows":100000,"equals_u_data":true},
+    {"split":"u3","base_rows":80000,"test_rows":20000,"overlap":0,"union_rows":100000,"equals_u_data":true},
+    {"split":"u4","base_rows":80000,"test_rows":20000,"overlap":0,"union_rows":100000,"equals_u_data":true},
+    {"split":"u5","base_rows":80000,"test_rows":20000,"overlap":0,"union_rows":100000,"equals_u_data":true},
+    {"split":"ua","base_rows":90570,"test_rows":9430,"overlap":0,"union_rows":100000,"equals_u_data":true},
+    {"split":"ub","base_rows":90570,"test_rows":9430,"overlap":0,"union_rows":100000,"equals_u_data":true}
+  ],
+  "admission_decision": {
+    "dataset_identity_admitted": true,
+    "tls_evidence_required_for_next_gate": false,
+    "materialization_allowed": true,
+    "training_or_evaluation_completed": false,
+    "benchmark_row_admitted": false,
+    "decision_basis": "The local 23-file tree is byte-identical to every file member of the retained canonical archive whose size, provider MD5, and SHA-256 match the locked GroupLens ML-100K identity. TLS is transport metadata and is not promoted to content-integrity evidence."
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "phase_1e_complete": false
+  },
+  "next_gate": "MATERIALIZE_RECBole_ATOMIC_INPUT_AND_BIND_LOCKED_REFERENCE_ENVIRONMENT"
+}

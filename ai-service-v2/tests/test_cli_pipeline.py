@@ -351,6 +351,163 @@ def test_cli_refuses_test_protocol_without_explicit_open(
     assert "TEST is sealed" in capsys.readouterr().out
 
 
+def test_validation_selected_run_can_score_matching_explicit_test_protocol(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    snapshot_root = tmp_path / "snapshot"
+    val_protocol_path = tmp_path / "val-protocol.json"
+    test_protocol_path = tmp_path / "test-protocol.json"
+    run_root = tmp_path / "run-mostpop"
+    val_score_root = tmp_path / "val-scores"
+    test_score_root = tmp_path / "test-scores"
+    test_evaluation_root = tmp_path / "test-evaluation"
+
+    assert main(["materialize-snapshot", str(FIXTURE_ROOT), str(snapshot_root)]) == 0
+    assert (
+        main(
+            [
+                "build-protocol",
+                str(snapshot_root),
+                str(val_protocol_path),
+                "--split",
+                "val",
+                "--cutoff",
+                "5",
+            ]
+        )
+        == 0
+    )
+    assert (
+        main(
+            [
+                "train",
+                str(snapshot_root),
+                str(val_protocol_path),
+                str(run_root),
+                "--fixture-only",
+                "--model-kind",
+                "mostpop",
+            ]
+        )
+        == 0
+    )
+    assert (
+        main(
+            [
+                "export-scores",
+                str(snapshot_root),
+                str(run_root),
+                str(val_protocol_path),
+                str(val_score_root),
+            ]
+        )
+        == 0
+    )
+    assert (
+        main(
+            [
+                "build-protocol",
+                str(snapshot_root),
+                str(test_protocol_path),
+                "--split",
+                "test",
+                "--allow-test",
+                "--cutoff",
+                "5",
+            ]
+        )
+        == 0
+    )
+    assert (
+        main(
+            [
+                "export-scores",
+                str(snapshot_root),
+                str(run_root),
+                str(test_protocol_path),
+                str(test_score_root),
+            ]
+        )
+        == 0
+    )
+    assert (
+        main(
+            [
+                "evaluate",
+                str(test_protocol_path),
+                str(test_score_root),
+                str(test_evaluation_root),
+            ]
+        )
+        == 0
+    )
+
+    assert (run_root / "score_artifact_ref.json").is_file()
+    test_reference = load_strict_json(run_root / "score_artifact_ref.test.json")
+    assert test_reference["split"] == "test"
+    assert test_reference["test_set_opened"] is True
+    assert (
+        test_reference["selection_protocol_manifest_sha256"]
+        != test_reference["scoring_protocol_manifest_sha256"]
+    )
+    assert load_evaluation(test_evaluation_root).receipt.verdict == "PASS"
+    assert json.loads(capsys.readouterr().out.splitlines()[-1])["status"] == "PASS"
+
+
+def test_test_score_export_rejects_different_validation_cutoff(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    val_protocol_path = tmp_path / "val-protocol.json"
+    test_protocol_path = tmp_path / "test-protocol.json"
+    run_root = tmp_path / "run-mostpop"
+    score_root = tmp_path / "test-scores"
+
+    assert main(["build-protocol", str(FIXTURE_ROOT), str(val_protocol_path), "--cutoff", "5"]) == 0
+    assert (
+        main(
+            [
+                "train",
+                str(FIXTURE_ROOT),
+                str(val_protocol_path),
+                str(run_root),
+                "--fixture-only",
+                "--model-kind",
+                "mostpop",
+            ]
+        )
+        == 0
+    )
+    assert (
+        main(
+            [
+                "build-protocol",
+                str(FIXTURE_ROOT),
+                str(test_protocol_path),
+                "--split",
+                "test",
+                "--allow-test",
+                "--cutoff",
+                "4",
+            ]
+        )
+        == 0
+    )
+
+    result = main(
+        [
+            "export-scores",
+            str(FIXTURE_ROOT),
+            str(run_root),
+            str(test_protocol_path),
+            str(score_root),
+        ]
+    )
+
+    assert result == 2
+    assert "validation counterpart" in capsys.readouterr().out
+    assert not score_root.exists()
+
+
 def test_cli_validation_and_fixture_training_work_with_test_file_absent(
     tmp_path: Path,
 ) -> None:

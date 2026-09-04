@@ -1,0 +1,545 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r6-fallback-candidate-register-1.0",
+  "created_at": "2026-09-03T17:20:02+07:00",
+  "stage_id": "E4-R6-FALLBACK",
+  "status": "PLAN_ONLY_NO_CANDIDATE_ADMITTED",
+  "purpose": "Record alternate distribution surfaces for the GroupLens MovieLens 100K reference dataset without changing source authority or authorizing acquisition.",
+  "scope": {
+    "reference_dataset": "MovieLens 100K",
+    "project_dataset_unchanged": true,
+    "project_dataset_description": "Current project snapshot is approximately 5,200 SKUs and 5,000 users; this register does not replace or mutate it.",
+    "selected_recbole_source_revision": "9a6f63d8d4a5b989fe27955a833f813a6d86041e",
+    "official_protocol_namespace": "OFFICIAL_PROTOCOL_REPRODUCTION",
+    "harmonized_namespace": "HARMONIZED_V5_COMPARISON",
+    "fallback_is_benchmark_admission": false,
+    "fallback_is_automatic": false
+  },
+  "canonical_expectations": {
+    "authority": "GroupLens Research Project, University of Minnesota",
+    "dataset_name": "MovieLens 100K",
+    "canonical_page_url": "https://grouplens.org/datasets/movielens/100k/",
+    "archive_url": "https://files.grouplens.org/datasets/movielens/ml-100k.zip",
+    "checksum_url": "https://files.grouplens.org/datasets/movielens/ml-100k.zip.md5",
+    "unzipped_index_url": "https://files.grouplens.org/datasets/movielens/ml-100k/",
+    "release_label": "4/1998",
+    "expected_archive_bytes": 4924029,
+    "expected_md5": "0e33842e24a9c977be4e0107933c0723",
+    "expected_ratings": 100000,
+    "expected_users": 943,
+    "expected_items": 1682,
+    "expected_zip_member_count": 23,
+    "expected_local_sha256": null,
+    "expected_member_hashes": null
+  },
+  "discovery_method": {
+    "mode": "READ_ONLY_PUBLIC_WEB_RESEARCH",
+    "retrieval_timestamp": "2026-09-03T17:20:02+07:00",
+    "browser_surface": "Codex In-app Browser",
+    "search_queries": [
+      "site:cse-movie-teapot.cs.umn.edu MovieLens 100K",
+      "site:cse-movie-teapot.cs.umn.edu \"ml-100k.zip\"",
+      "site:archive.org/details MovieLens 100K dataset",
+      "site:zenodo.org/records \"ml-100k\"",
+      "site:github.com \"ml-100k.zip\" \"0e33842e24a9c977be4e0107933c0723\""
+    ],
+    "no_download": true,
+    "no_extraction": true,
+    "no_installation": true,
+    "no_training_or_evaluation": true,
+    "search_limitation": "Search-index evidence identifies surfaces but does not establish raw-byte equivalence, redistribution authority, or benchmark admissibility."
+  },
+  "candidates": [
+    {
+      "candidate_id": "R6-FB-00-GROUPLENS-CANONICAL",
+      "priority": 0,
+      "surface_name": "GroupLens canonical distribution",
+      "source_urls": {
+        "landing_page": "https://grouplens.org/datasets/movielens/100k/",
+        "archive": "https://files.grouplens.org/datasets/movielens/ml-100k.zip",
+        "checksum": "https://files.grouplens.org/datasets/movielens/ml-100k.zip.md5",
+        "file_index": "https://files.grouplens.org/datasets/movielens/ml-100k/"
+      },
+      "authority": {
+        "owner": "GroupLens Research Project, University of Minnesota",
+        "authority_status": "CANONICAL_OWNER_SURFACE",
+        "evidence_locator": "Landing page title and archive/checksum links"
+      },
+      "representation": "raw_archive",
+      "release_identity": {
+        "label": "4/1998",
+        "ratings": 100000,
+        "users": 943,
+        "items": 1682
+      },
+      "observed_transport_status": {
+        "landing_page": "READABLE",
+        "archive_and_checksum": "TLS_VALIDATION_FAILED",
+        "error": "ERR_CERT_DATE_INVALID"
+      },
+      "observed_checksums": {
+        "provider_md5": "0e33842e24a9c977be4e0107933c0723",
+        "archive_bytes": 4924029,
+        "local_sha256": null
+      },
+      "rights_status": "OWNER_TERMS_MUST_BE_READ_FROM_VALID_SOURCE_BEFORE_ACQUISITION",
+      "classification": "OFFICIAL_PRIMARY_PENDING_TLS",
+      "admission_status": "PENDING_VALID_TLS_RETRIEVAL",
+      "allowed_use_now": [
+        "cite authority",
+        "retain as canonical source lock"
+      ],
+      "blocked_use_now": [
+        "download",
+        "extract",
+        "official reproduction",
+        "paper benchmark row"
+      ],
+      "blockers": [
+        "archive/checksum TLS failure",
+        "no fresh local byte receipt"
+      ]
+    },
+    {
+      "candidate_id": "R6-FB-01-UMN-ALTERNATE-HOST",
+      "priority": 1,
+      "surface_name": "University of Minnesota alternate GroupLens host",
+      "source_urls": {
+        "indexed_page": "https://cse-movie-teapot.cs.umn.edu/datasets/movielens/100k/",
+        "archive": null,
+        "checksum": null,
+        "discovery_query": "https://www.google.com/search?q=site%3Acse-movie-teapot.cs.umn.edu+%22ml-100k.zip%22"
+      },
+      "authority": {
+        "owner_claimed_by_surface": "University of Minnesota / GroupLens-associated host (inferred from indexed domain and page title)",
+        "authority_status": "POTENTIAL_OWNER_ALTERNATE_NOT_PROVEN",
+        "evidence_locator": "Google result titled MovieLens 100K Dataset; browser certificate error exposes the indexed page URL"
+      },
+      "representation": "unknown_until_valid_page_is_read",
+      "release_identity": {
+        "indexed_description": "100,000 ratings from 1000 users on 1700 movies; released 4/1998",
+        "exact_release_binding": "UNPROVEN"
+      },
+      "observed_transport_status": {
+        "indexed_page": "SEARCH_SNIPPET_ONLY",
+        "direct_page": "TLS_VALIDATION_FAILED",
+        "error": "ERR_CERT_COMMON_NAME_INVALID"
+      },
+      "observed_checksums": {
+        "provider_md5": null,
+        "archive_bytes": null,
+        "local_sha256": null
+      },
+      "rights_status": "UNRESOLVED",
+      "classification": "OFFICIAL_OWNER_ALTERNATE_HOST_PENDING_TLS_AND_BYTE_REPLAY",
+      "admission_status": "NOT_ADMITTED",
+      "allowed_use_now": [
+        "record as highest-priority fallback candidate",
+        "re-check after valid TLS"
+      ],
+      "blocked_use_now": [
+        "guess archive URL",
+        "download",
+        "official reproduction",
+        "paper benchmark row"
+      ],
+      "blockers": [
+        "invalid certificate",
+        "exact archive/checksum href unavailable",
+        "owner authority and rights not replayed",
+        "byte equivalence untested"
+      ]
+    },
+    {
+      "candidate_id": "R6-FB-02-INTERNET-ARCHIVE-CAPTURE",
+      "priority": 2,
+      "surface_name": "Internet Archive capture of the GroupLens archive URL",
+      "source_urls": {
+        "cdx_query": "https://web.archive.org/cdx/search/cdx?url=files.grouplens.org/datasets/movielens/ml-100k.zip&output=json&filter=statuscode:200&fl=timestamp,original,statuscode,digest,length,mimetype",
+        "canonical_original": "https://files.grouplens.org/datasets/movielens/ml-100k.zip",
+        "replay_url": null
+      },
+      "authority": {
+        "provider": "Internet Archive",
+        "authority_status": "ARCHIVAL_TRANSPORT_NOT_DATASET_OWNER",
+        "evidence_locator": "CDX record timestamp 20260721193850"
+      },
+      "representation": "archived_raw_response_candidate",
+      "release_identity": {
+        "capture_timestamp": "20260721193850",
+        "warc_digest": "ZVG4VRBEDSFEVV523R6KMNO2RJU53W4D",
+        "cdx_record_length": 4924759,
+        "payload_identity": "UNPROVEN"
+      },
+      "observed_transport_status": {
+        "cdx_metadata": "OBSERVED",
+        "payload_retrieval": "NOT_PERFORMED"
+      },
+      "observed_checksums": {
+        "provider_md5": null,
+        "archive_bytes": null,
+        "local_sha256": null
+      },
+      "rights_status": "UNRESOLVED",
+      "classification": "ELIGIBLE_PENDING_BYTE_EQUIVALENCE",
+      "admission_status": "NOT_ADMITTED",
+      "allowed_use_now": [
+        "retain as archival transport lead",
+        "compare metadata after explicit acquisition admission"
+      ],
+      "blocked_use_now": [
+        "treat WARC digest as ZIP MD5",
+        "official reproduction",
+        "paper benchmark row"
+      ],
+      "blockers": [
+        "WARC digest is not the archive MD5",
+        "CDX length is not established payload size",
+        "no payload/hash/rights replay"
+      ]
+    },
+    {
+      "candidate_id": "R6-FB-03-HUGGINGFACE-INCLUDENO",
+      "priority": 3,
+      "surface_name": "Hugging Face upload includeno/movielens-100k",
+      "source_urls": {
+        "dataset_page": "https://huggingface.co/datasets/includeno/movielens-100k",
+        "tree": "https://huggingface.co/datasets/includeno/movielens-100k/tree/main",
+        "commit": "https://huggingface.co/datasets/includeno/movielens-100k/commit/4f9df57cf6bde70d17372fed165d3331b23e7c68"
+      },
+      "authority": {
+        "uploader": "includeno",
+        "authority_status": "NONAUTHORITATIVE_UPLOAD",
+        "evidence_locator": "Dataset page and main tree"
+      },
+      "representation": "file_upload_not_provider_archive",
+      "release_identity": {
+        "observed_files": 23,
+        "repository_size": "approximately 16.1 MB",
+        "upstream_release": "claimed by copied README/terms, not independently proven"
+      },
+      "observed_transport_status": {
+        "page": "READABLE",
+        "dataset_viewer": "DISABLED_REQUIRES_ARBITRARY_PYTHON_CODE"
+      },
+      "observed_checksums": {
+        "provider_md5": null,
+        "archive_bytes": null,
+        "local_sha256": null,
+        "immutable_commit": "4f9df57cf6bde70d17372fed165d3331b23e7c68"
+      },
+      "rights_status": "CONFLICT_UNRESOLVED",
+      "classification": "NONAUTHORITATIVE_DIAGNOSTIC_ONLY",
+      "admission_status": "REJECTED_FOR_OFFICIAL_REPRODUCTION_PENDING_NEW_AUTHORITY_EVIDENCE",
+      "allowed_use_now": [
+        "document as diagnostic surface"
+      ],
+      "blocked_use_now": [
+        "official reproduction",
+        "paper baseline",
+        "redistribution assumption"
+      ],
+      "blockers": [
+        "no provider checksum",
+        "no raw archive binding",
+        "uploader authority unresolved",
+        "displayed Apache-2.0 label conflicts with copied GroupLens non-redistribution terms"
+      ]
+    },
+    {
+      "candidate_id": "R6-FB-04-KAGGLE-TRISHNA8",
+      "priority": 4,
+      "surface_name": "Kaggle upload trishna8/movielens-100k-dataset",
+      "source_urls": {
+        "dataset_page": "https://www.kaggle.com/datasets/trishna8/movielens-100k-dataset"
+      },
+      "authority": {
+        "uploader": "trishna8",
+        "authority_status": "NONAUTHORITATIVE_UPLOAD",
+        "evidence_locator": "About Dataset and Summary & Usage License sections"
+      },
+      "representation": "file_upload_not_provider_archive",
+      "release_identity": {
+        "observed_ratings": 100000,
+        "observed_users": 943,
+        "observed_items": 1682,
+        "upstream_release": "claimed, not byte-bound"
+      },
+      "observed_transport_status": {
+        "page": "READABLE"
+      },
+      "observed_checksums": {
+        "provider_md5": null,
+        "archive_bytes": null,
+        "local_sha256": null
+      },
+      "rights_status": "CONFLICT_UNRESOLVED",
+      "classification": "NONAUTHORITATIVE_DIAGNOSTIC_ONLY",
+      "admission_status": "REJECTED_FOR_OFFICIAL_REPRODUCTION",
+      "allowed_use_now": [
+        "metadata comparison only"
+      ],
+      "blocked_use_now": [
+        "official reproduction",
+        "paper baseline",
+        "redistribution assumption"
+      ],
+      "blockers": [
+        "no provider authorization",
+        "no archive checksum",
+        "no raw-byte identity",
+        "uploader CC0 label does not establish authority over GroupLens data"
+      ]
+    },
+    {
+      "candidate_id": "R6-FB-05-TFDS-MOVIELENS-100K",
+      "priority": 5,
+      "surface_name": "TensorFlow Datasets MovieLens 100K configs",
+      "source_urls": {
+        "catalog_page": "https://www.tensorflow.org/datasets/catalog/movielens"
+      },
+      "authority": {
+        "maintainer": "TensorFlow Datasets",
+        "upstream_attribution": "GroupLens Research, University of Minnesota",
+        "authority_status": "TRANSFORMED_CONSUMER_DATASET",
+        "evidence_locator": "movielens/100k-ratings and movielens/100k-movies catalog entries"
+      },
+      "representation": "transformed_joined_tfds_records",
+      "release_identity": {
+        "ratings": 100000,
+        "users": 943,
+        "items": 1682,
+        "download_size": "4.70 MiB",
+        "dataset_size": "32.41 MiB"
+      },
+      "observed_transport_status": {
+        "catalog_page": "READABLE"
+      },
+      "observed_checksums": {
+        "provider_md5": null,
+        "archive_bytes": null,
+        "local_sha256": null
+      },
+      "rights_status": "TRANSFORMED_DATASET_TERMS_REQUIRE_SEPARATE_REVIEW",
+      "classification": "TRANSFORMED_DIAGNOSTIC_ONLY",
+      "admission_status": "NOT_ADMITTED_FOR_OFFICIAL_REPRODUCTION",
+      "allowed_use_now": [
+        "schema and adapter design reference after separate authorization"
+      ],
+      "blocked_use_now": [
+        "raw archive equivalence claim",
+        "official reproduction",
+        "paper baseline"
+      ],
+      "blockers": [
+        "not raw GroupLens ZIP",
+        "no raw-byte checksum binding",
+        "transformation code/version and rights receipt not frozen"
+      ]
+    },
+    {
+      "candidate_id": "R6-FB-06-D2L-DOCUMENTATION",
+      "priority": 6,
+      "surface_name": "Dive into Deep Learning MovieLens documentation",
+      "source_urls": {
+        "documentation_page": "https://d2l.ai/chapter_recommender-systems/movielens.html"
+      },
+      "authority": {
+        "publisher": "Dive into Deep Learning documentation",
+        "authority_status": "CONSUMER_DOCUMENTATION",
+        "evidence_locator": "21.2.1 Getting the Data and the d2l.DATA_HUB entry"
+      },
+      "representation": "documentation_only",
+      "release_identity": {
+        "canonical_url_repeated": "https://files.grouplens.org/datasets/movielens/ml-100k.zip",
+        "documented_sha1": "cd4dcac4241c8a4ad7badc7ca635da8a69dddb83"
+      },
+      "observed_transport_status": {
+        "page": "READABLE",
+        "archive_retrieval": "NOT_PERFORMED"
+      },
+      "observed_checksums": {
+        "provider_md5": null,
+        "archive_bytes": null,
+        "local_sha256": null
+      },
+      "rights_status": "NOT_A_DATASET_DISTRIBUTION",
+      "classification": "DOCUMENTATION_ONLY",
+      "admission_status": "NOT_A_CANDIDATE",
+      "allowed_use_now": [
+        "corroborate canonical URL and consumer checksum reference"
+      ],
+      "blocked_use_now": [
+        "treat documentation as archive provider",
+        "official reproduction"
+      ],
+      "blockers": [
+        "no hosted archive payload",
+        "no independent authority"
+      ]
+    },
+    {
+      "candidate_id": "R6-FB-07-NETZSCHLEUDER-MOVIELENS-100K",
+      "priority": 7,
+      "surface_name": "Netzschleuder movielens_100k network artifact",
+      "source_urls": {
+        "dataset_page": "https://networks.skewed.de/net/movielens_100k",
+        "upstream_url": "http://konect.cc/networks/movielens-10m_ti"
+      },
+      "authority": {
+        "maintainer": "Netzschleuder / graph-tool catalogue",
+        "authority_status": "DERIVED_NETWORK_ARTIFACT",
+        "evidence_locator": "Description, Upstream URL OK, and network statistics"
+      },
+      "representation": "transformed_bipartite_network",
+      "release_identity": {
+        "nodes": 24129,
+        "edges": 95580,
+        "raw_rating_archive": false
+      },
+      "observed_transport_status": {
+        "page": "READABLE"
+      },
+      "observed_checksums": {
+        "provider_md5": null,
+        "archive_bytes": null,
+        "local_sha256": null
+      },
+      "rights_status": "NOT_RELEVANT_TO_RAW_ARCHIVE_ADMISSION",
+      "classification": "REJECTED_FOR_OFFICIAL_REPRODUCTION",
+      "admission_status": "REJECTED",
+      "allowed_use_now": [
+        "none for this benchmark"
+      ],
+      "blocked_use_now": [
+        "raw rating reproduction",
+        "paper baseline"
+      ],
+      "blockers": [
+        "transformed network schema",
+        "upstream points to a different KONECT surface",
+        "not the raw ML-100K archive"
+      ]
+    },
+    {
+      "candidate_id": "R6-FB-08-RECBOLE-S3-PROCESSED",
+      "priority": 8,
+      "surface_name": "RecBole processed MovieLens S3 route",
+      "source_urls": {
+        "processed_route": "https://recbole.s3-accelerate.amazonaws.com/ProcessedDatasets/MovieLens/ml-100k.zip",
+        "source_context": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_s0_frozen_input_manifest.json"
+      },
+      "authority": {
+        "host": "RecBole object-storage route",
+        "authority_status": "PROCESSED_CONSUMER_ROUTE_NOT_GROUPLENS_AUTHORITY",
+        "evidence_locator": "Locked RecBole URL configuration and source-audit policy"
+      },
+      "representation": "processed_or_repacked_dataset_unknown",
+      "release_identity": {
+        "raw_group_lens_binding": "UNPROVEN"
+      },
+      "observed_transport_status": {
+        "network_retrieval": "NOT_PERFORMED"
+      },
+      "observed_checksums": {
+        "provider_md5": null,
+        "archive_bytes": null,
+        "local_sha256": null
+      },
+      "rights_status": "UNRESOLVED",
+      "classification": "PROCESSED_NONAUTHORITATIVE_DIAGNOSTIC_ONLY",
+      "admission_status": "REJECTED_FOR_OFFICIAL_REPRODUCTION",
+      "allowed_use_now": [
+        "document as a route that must be disabled for official source control"
+      ],
+      "blocked_use_now": [
+        "raw official dataset",
+        "paper baseline",
+        "silent fallback"
+      ],
+      "blockers": [
+        "provider authority is not GroupLens",
+        "payload and transformation are not byte-bound",
+        "source policy explicitly disallows treating it as canonical"
+      ]
+    }
+  ],
+  "negative_search_register": {
+    "surfaces_checked": [
+      "GitHub and GitLab public search",
+      "Zenodo records/search",
+      "Internet Archive search/CDX",
+      "University of Minnesota alternate host",
+      "Hugging Face",
+      "Kaggle",
+      "TensorFlow Datasets",
+      "D2L documentation",
+      "Netzschleuder"
+    ],
+    "no_qualifying_independent_source_found": true,
+    "qualification_requires": [
+      "provider or owner authority",
+      "exact GroupLens release identity",
+      "raw archive byte equivalence",
+      "immutable checksum",
+      "research-use rights"
+    ],
+    "search_result_is_not_proof_of_absence": true
+  },
+  "admission_gate": {
+    "candidate_cardinality_max": 1,
+    "automatic_substitution": false,
+    "required_checks": [
+      "valid HTTPS certificate and hostname",
+      "final URL and redirect receipt",
+      "archive size exactly 4924029 bytes",
+      "MD5 exactly 0e33842e24a9c977be4e0107933c0723",
+      "local SHA-256",
+      "exact 23-member ZIP inventory",
+      "member hashes and raw-to-RecBole reconciliation",
+      "provenance to the same GroupLens release",
+      "rights/permission review",
+      "unchanged source/config/split/evaluator binding"
+    ],
+    "failure_verdicts": [
+      "DIAGNOSTIC_ONLY",
+      "INCOMPARABLE",
+      "REJECTED",
+      "HANDOFF_INCOMPLETE"
+    ],
+    "pass_verdict": "TRANSPORT_EQUIVALENT_READY_FOR_CENTRAL_G1",
+    "execution_authorized": false
+  },
+  "decision": {
+    "primary_lane": "R6-FB-00-GROUPLENS-CANONICAL",
+    "fallback_priority_candidate": "R6-FB-01-UMN-ALTERNATE-HOST",
+    "admitted_candidate": null,
+    "admitted_count": 0,
+    "paper_usable_numeric_targets": 0,
+    "next_gate": "R6-FALLBACK-CENTRAL-REVIEW",
+    "recommendation": "Keep GroupLens canonical authority locked; re-check the UMN alternate only after valid TLS, or explicitly authorize one fresh archival/mirror attempt with the full byte/provenance/rights gate."
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "phase_1e_complete": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER",
+    "dataset_bytes_acquired": false,
+    "dataset_extracted": false,
+    "training_performed": false,
+    "evaluation_performed": false
+  },
+  "write_policy": {
+    "write_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control",
+    "exact_files": [
+      "e4_r6_fallback_distribution_plan.md",
+      "e4_r6_fallback_candidate_register.json",
+      "e4_r6_fallback_handoff.json"
+    ],
+    "pipeline_state_modified": false,
+    "manuscript_modified": false,
+    "prior_attempts_modified": false,
+    "dirty_user_state_preserved": true
+  }
+}
