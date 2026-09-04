@@ -13,3 +13,9 @@ model-scope audit accepts the transform and the validation-only runtime packet.
 The Hybrid entry preregisters per-user z-score normalization before additive
 fusion; changing the normalization, weight, rule support, or feature dimensions
 changes the model descriptor hash.
+
+The `baselines/` namespace contains the separately typed conventional
+comparators used by the harmonized-v5 lane. `ItemKNN` and `BPR-MF` are local,
+objective-preserving adapters reviewed against the pinned RecBole v1.2.1
+source. They are not relabeled as native RecBole benchmark output, and their
+metrics are produced only by the shared evaluator.
