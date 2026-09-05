@@ -1,0 +1,203 @@
+{
+  "schema_version": "ais-r6-frozen-statistics-runtime-receipt/1.0",
+  "stage_id": "AIS-R6-FROZEN-STATISTICS-RUNTIME-V1",
+  "completed_at": "2026-09-06T03:55:42.7497064+07:00",
+  "completed_at_semantics": "Host clock observation after process completion only; it is not scientific evidence.",
+  "material_passport": {
+    "origin_skill": "academic-research-suite/experiment-agent",
+    "origin_mode": "run",
+    "origin_date": "2026-09-06T03:55:42.7497064+07:00",
+    "verification_status": "UNVERIFIED",
+    "version_label": "ais-r6-frozen-statistics-runtime-v1.0.0",
+    "upstream_dependencies": [
+      "ais-r6-test-application-runtime-v1.0.0",
+      "ais-r6-frozen-statistics-execution-v1.0.0"
+    ],
+    "repro_lock": {
+      "execution_packet_commit": "1e705955a13ac9ca2bcc79a2b5a39b9620f697dd",
+      "execution_packet_raw_sha256": "07bd6e1900dccccfea056c118adb8afc3bb491e972349da2581f0126e5336ad2",
+      "runner_raw_sha256": "7ab0cec4f32485730d55e5ac131ef41eda185fbd3cfebcdbb34f53009e0104e7",
+      "pre_statistics_test_inventory_sha256": "2a87284c6d904192130985898a37c178f3972c722ae44c85c0aa2e4f231e7ef7",
+      "statistics_output_inventory_sha256": "ac15d8a42968d837bbf5c48f43f8e0b837813f07c533c8f9dc2e17dde82db33a",
+      "post_statistics_test_inventory_sha256": "d10e8e1a2e587308c813b9c4ef1b6cd4da16da3273e55f25776f6a49ec0dd8ec"
+    },
+    "experiment_intake_declaration": {
+      "status": "experiments_declared",
+      "declared_at": "2026-09-01T16:38:56Z",
+      "declared_by": "scholar"
+    }
+  },
+  "execution_observation": {
+    "working_directory": "E:/UIT/cv/backend",
+    "exact_command": "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r5-validation/attempt-003/venv/Scripts/python.exe -B E:/UIT/cv/backend/research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/run_ais_r6_frozen_statistics.py --packet E:/UIT/cv/backend/research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r6_frozen_statistics_execution_packet_v1.json --output-root E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/statistics",
+    "process_count": 1,
+    "process_id": "UNOBSERVED",
+    "initial_rss": "UNOBSERVED",
+    "wall_time_seconds": 3.4825695,
+    "exit_code": 0,
+    "stderr_observed": false,
+    "automatic_retry_count": 0,
+    "fallback_count": 0,
+    "training_performed": false,
+    "tuning_performed": false,
+    "score_export_performed": false,
+    "evaluation_rerun_performed": false,
+    "test_reopened": false,
+    "network_requested": false,
+    "docker_used": false,
+    "wsl_used": false,
+    "tls_used": false,
+    "process_status": "COMPLETED"
+  },
+  "monitoring": {
+    "hard_timeout_seconds": 1800,
+    "hard_timeout_reached": false,
+    "periodic_check_interval_seconds": 30,
+    "periodic_checks_performed": 0,
+    "periodic_check_note": "The process completed before the first 30-second monitoring interval.",
+    "output_stall_detected": false,
+    "manual_kill_performed": false
+  },
+  "output_replay": {
+    "status": "PASS",
+    "statistics_root": "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/statistics",
+    "exact_file_count": 3,
+    "total_bytes": 11827,
+    "inventory_algorithm": "Sort all relative POSIX paths ordinally; for each regular file append UTF-8 path<TAB>byte_count<TAB>raw_sha256<LF>; SHA-256 the concatenated bytes.",
+    "inventory_sha256": "ac15d8a42968d837bbf5c48f43f8e0b837813f07c533c8f9dc2e17dde82db33a",
+    "files": [
+      {
+        "relative_path": "bootstrap_report.json",
+        "bytes": 8432,
+        "raw_sha256": "9a8eb9a80698fed62ef51f0a85abc0334ca3933fc6534c46cd4862d3e7a970bb",
+        "schema_version": "ais-r6-bootstrap-report/1.0"
+      },
+      {
+        "relative_path": "holm_report.json",
+        "bytes": 2179,
+        "raw_sha256": "0fbce66c3b03636a3c53eab8a66a52d3b39f36649c90eae4faa8f810d0aa5d26",
+        "schema_version": "ais-r6-holm-report/1.0"
+      },
+      {
+        "relative_path": "statistics_receipt.json",
+        "bytes": 1216,
+        "raw_sha256": "4c308fdee05eb4cba385c143eb992506924366d167b4911942383dba21090a9d",
+        "schema_version": "ais-r6-statistics-runtime-receipt/1.0"
+      }
+    ],
+    "strict_json_parse": "PASS_3_OF_3",
+    "bootstrap_result_rows": 15,
+    "holm_family_rows": 12,
+    "holm_recalculation": "PASS_12_OF_12",
+    "embedded_hash_binding": "PASS"
+  },
+  "post_run_integrity": {
+    "test_root_file_count": 576,
+    "test_root_total_bytes": 1350812886,
+    "test_root_inventory_sha256": "d10e8e1a2e587308c813b9c4ef1b6cd4da16da3273e55f25776f6a49ec0dd8ec",
+    "new_files_are_exact_statistics_write_set": true,
+    "preexisting_test_artifacts_modified": false,
+    "repository_source_modified_during_runtime": false,
+    "pipeline_state_modified": false,
+    "manuscript_modified": false,
+    "unrelated_user_state_preserved": true
+  },
+  "result_summary": {
+    "bootstrap_method": "hierarchical_paired_bootstrap",
+    "bootstrap_replicates": 2000,
+    "bootstrap_seed": 42,
+    "confidence_level": 0.95,
+    "seed_axis": [
+      42,
+      2027,
+      31415
+    ],
+    "eligible_user_count": 4970,
+    "primary": {
+      "comparison": "hybrid_vs_itemknn",
+      "metric": "NDCG@10",
+      "mean_delta": 0.020502290949124657,
+      "ci_lower": 0.017416126399639402,
+      "ci_upper": 0.023563001355091234,
+      "interval_decision": "POSITIVE_INTERNAL_CONTROLLED_EFFECT"
+    },
+    "primary_guardrails": [
+      {
+        "metric": "HR@10",
+        "mean_delta": 0.0498993963782696,
+        "ci_lower": 0.0415157612340711,
+        "ci_upper": 0.0580164319248826,
+        "interval_decision": "POSITIVE_INTERNAL_CONTROLLED_EFFECT"
+      },
+      {
+        "metric": "GAUC",
+        "mean_delta": -0.0631210605357514,
+        "ci_lower": -0.0670728736863426,
+        "ci_upper": -0.0589576177500935,
+        "interval_decision": "NEGATIVE_INTERNAL_CONTROLLED_EFFECT"
+      }
+    ],
+    "ablation_hybrid_vs_rule": [
+      {
+        "metric": "NDCG@10",
+        "mean_delta": -0.00314802292346486,
+        "ci_lower": -0.004198975596692,
+        "ci_upper": -0.00217102191626069,
+        "interval_decision": "NEGATIVE_INTERNAL_CONTROLLED_EFFECT"
+      },
+      {
+        "metric": "HR@10",
+        "mean_delta": -0.00482897384305835,
+        "ci_lower": -0.009121395036888,
+        "ci_upper": -0.001140174379611,
+        "interval_decision": "NEGATIVE_INTERNAL_CONTROLLED_EFFECT"
+      },
+      {
+        "metric": "GAUC",
+        "mean_delta": 0.0897703411091017,
+        "ci_lower": 0.0864989937171202,
+        "ci_upper": 0.0932356489902766,
+        "interval_decision": "POSITIVE_INTERNAL_CONTROLLED_EFFECT"
+      }
+    ],
+    "exploratory_holm": {
+      "family_size": 12,
+      "alpha": 0.05,
+      "rejected_null_count": 12,
+      "status": "PASS_POST_TEST_EXPLORATORY_AMENDMENT"
+    }
+  },
+  "interpretation_boundaries": {
+    "primary_interval_was_pre_test_frozen": true,
+    "raw_p_value_estimator_was_pre_test_frozen": false,
+    "p_value_amendment": "The pre-TEST packet required Holm adjustment but did not define a raw p-value estimator. The centered hierarchical-bootstrap p-value definition was frozen only after TEST opening and therefore remains exploratory.",
+    "rule_only_role": "PROPOSED_METHOD_ABLATION_NOT_CONVENTIONAL_BASELINE",
+    "rule_only_finding": "Rule-only exceeds Hybrid on NDCG@10 and HR@10 while Hybrid exceeds Rule-only on GAUC under this controlled generator.",
+    "construct_validity_scope": "INTERNAL_CONTROLLED_GENERATED_BEHAVIOR_ONLY",
+    "official_public_dataset_reproduction": "INCOMPARABLE",
+    "external_validity_claim_allowed": false,
+    "state_of_the_art_claim_allowed": false,
+    "paper_inference_authorized": false
+  },
+  "model_policy_observation": {
+    "requested_model": "gpt-5.6-sol",
+    "requested_reasoning": "xhigh",
+    "requested_speed": "standard/default",
+    "actual_model": "UNOBSERVABLE",
+    "actual_reasoning": "UNOBSERVABLE",
+    "actual_speed": "UNOBSERVABLE",
+    "fast_or_priority_observed": "UNOBSERVABLE"
+  },
+  "scientific_state_after_execution": {
+    "RESULT_STATUS": "STATISTICS_COMPLETE_PENDING_FRESH_INDEPENDENT_AUDIT",
+    "TEST_SET_OPENED": "YES",
+    "RUNTIME_RESULT_ROWS": 13,
+    "STATISTICAL_RESULT_ROWS": 15,
+    "ACCEPTED_RESULT_ROWS": 0,
+    "phase_1e_complete": false,
+    "benchmark_numbers_valid_for_paper": false
+  },
+  "runtime_verdict": "PASS_READY_FOR_FRESH_AIS_R7_E5_INDEPENDENT_AUDIT",
+  "next_gate": "FRESH_AIS_R7_E5_INDEPENDENT_AUDIT",
+  "fail_closed": true
+}
