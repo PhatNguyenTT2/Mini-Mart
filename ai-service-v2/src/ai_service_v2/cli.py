@@ -616,7 +616,7 @@ def _load_model_for_run(snapshot: Any, protocol: Any, run: Any) -> Any:
     )
 
 
-def _cmd_export_scores(args: argparse.Namespace) -> int:
+def _cmd_export_scores(args: argparse.Namespace, process_command: ProcessCommand) -> int:
     run = load_run(args.run_root)
     load_run_command(run)
     protocol = load_protocol(args.protocol)
@@ -683,13 +683,17 @@ def _cmd_export_scores(args: argparse.Namespace) -> int:
     }
     if protocol.manifest.split == "test":
         reference_document = {
-            "schema_version": "score-artifact-ref/1.1",
+            "schema_version": "score-artifact-ref/1.2",
             "root": str(materialized.root),
             "manifest_sha256": sha256_file(materialized.root / "manifest.json"),
             "selection_protocol_manifest_sha256": selection_protocol_sha256,
             "scoring_protocol_manifest_sha256": scoring_protocol_sha256,
             "split": "test",
             "test_set_opened": True,
+            "application_command": process_command.to_mapping(),
+            "application_command_sha256": canonical_json_sha256(
+                process_command.to_mapping()
+            ),
         }
     reference_path = (
         application_ref if application_ref is not None else run.root / reference_name
@@ -946,7 +950,7 @@ def main(argv: list[str] | None = None) -> int:
         if args.command == "train":
             return _cmd_train(args, process_command)
         if args.command == "export-scores":
-            return _cmd_export_scores(args)
+            return _cmd_export_scores(args, process_command)
         if args.command == "export-score-components":
             return _cmd_export_score_components(args)
         if args.command == "evaluate":

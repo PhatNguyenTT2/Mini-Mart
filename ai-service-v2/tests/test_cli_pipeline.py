@@ -16,7 +16,12 @@ from ai_service_v2.errors import IntegrityError
 from ai_service_v2.evaluation.artifacts import load_score_matrix
 from ai_service_v2.evaluation.components import load_hybrid_score_components
 from ai_service_v2.evaluation.persistence import load_evaluation
-from ai_service_v2.hashing import canonical_json_bytes, load_strict_json, sha256_bytes
+from ai_service_v2.hashing import (
+    canonical_json_bytes,
+    canonical_json_sha256,
+    load_strict_json,
+    sha256_bytes,
+)
 from ai_service_v2.models.registry import ModelRunSpec, default_spec, descriptor_for_spec
 from ai_service_v2.protocol import load_protocol
 from ai_service_v2.training import load_run_command
@@ -452,6 +457,10 @@ def test_validation_selected_run_can_score_matching_explicit_test_protocol(
     test_reference = load_strict_json(application_ref)
     assert test_reference["split"] == "test"
     assert test_reference["test_set_opened"] is True
+    assert test_reference["schema_version"] == "score-artifact-ref/1.2"
+    assert test_reference["application_command_sha256"] == canonical_json_sha256(
+        test_reference["application_command"]
+    )
     assert (
         test_reference["selection_protocol_manifest_sha256"]
         != test_reference["scoring_protocol_manifest_sha256"]
