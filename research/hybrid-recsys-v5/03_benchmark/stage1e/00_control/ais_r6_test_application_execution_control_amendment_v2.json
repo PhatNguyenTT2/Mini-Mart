@@ -1,0 +1,91 @@
+{
+  "schema_version": "ais-r6-test-application-execution-control-amendment/1.0",
+  "stage_id": "AIS-R6-TEST-APPLICATION-EXECUTION-CONTROL-V2",
+  "created_at": "2026-09-06T00:52:52.5841573+07:00",
+  "created_at_semantics": "Host clock observation only; it is not scientific evidence.",
+  "material_passport": {
+    "origin_skill": "academic-research-suite/experiment-agent",
+    "origin_mode": "central-minimal-control-remediation",
+    "origin_date": "2026-09-06T00:52:52.5841573+07:00",
+    "verification_status": "UNVERIFIED",
+    "version_label": "ais-r6-test-application-execution-control-v2.0.0",
+    "upstream_dependencies": [
+      "ais-r6-test-application-execution-v1.0.0",
+      "ais-r6-test-application-preparation-failure-v1.0.0"
+    ],
+    "repro_lock": {
+      "scientific_execution_packet_commit": "b4774a380a7efa2308375fc262032a2a1bd48765",
+      "scientific_execution_packet_git_blob_oid": "e5168d44fc670f17a266523e7463c5d95d927cfd",
+      "scientific_execution_packet_raw_sha256": "5bf3de86d531153f206110558d3d3acf459094433db5046ea7dd5d2745f1a036",
+      "failure_receipt_commit": "73103d441b2eddeaeea1bd1e55f0aa5432f92613",
+      "failure_receipt_git_blob_oid": "581ddb45f5d51d1b70384ee5af0a8e23fb5061cd",
+      "failure_receipt_raw_sha256": "7be68343914ba895378ec4e151449d61cfd5bbedd9c0ba1b436954b07643057f",
+      "ai_service_v2_tree": "9f7e19ec8b4d85cbab728734d9049bb5536ae038",
+      "test_protocol_raw_sha256": "c8a64643a5177c322156210620e8b0693035d18ea04cc53951fa243fcd8a14da",
+      "validation_root_inventory_sha256": "7605b49d38e694f578e8f1f5b3483aa9bf3f262f4280cd50acdb19ce83911f71"
+    },
+    "experiment_intake_declaration": {
+      "status": "experiments_declared",
+      "declared_at": "2026-09-01T16:38:56Z",
+      "declared_by": "scholar"
+    }
+  },
+  "remediation_scope": {
+    "classification": "CONTROL_PLANE_ONLY",
+    "changed_field": "preparation_action.command",
+    "previous_exact_command": "New-Item -ItemType Directory -LiteralPath 'E:\\UIT\\cv\\materialized-experiments\\hybrid-recsys-v5\\ai-service-v2\\ais-r6-test\\attempt-001\\application_refs'",
+    "replacement_exact_command": "New-Item -ItemType Directory -Path 'E:\\UIT\\cv\\materialized-experiments\\hybrid-recsys-v5\\ai-service-v2\\ais-r6-test\\attempt-001\\application_refs'",
+    "parameter_support_observation": {
+      "supports_path": true,
+      "supports_literal_path": false
+    },
+    "all_other_execution_packet_fields_inherited_byte_for_byte": true,
+    "scientific_process_count_unchanged": 22,
+    "application_roster_unchanged": 13,
+    "scientific_commands_changed": false,
+    "dataset_or_protocol_changed": false,
+    "model_or_checkpoint_changed": false,
+    "metric_or_evaluator_changed": false
+  },
+  "execution_semantics": {
+    "control_attempt": 2,
+    "scientific_attempt": 1,
+    "scientific_attempt_has_not_started": true,
+    "test_protocol_reopen_allowed": false,
+    "output_namespace": "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001",
+    "preparation_invocations_allowed_under_v2": 1,
+    "scientific_sequence_invocations_allowed_under_v2": 1,
+    "retry_allowed_after_any_v2_failure": false,
+    "fallback_allowed": false,
+    "failure_behavior": "Stop on first nonzero exit, preserve all outputs immutably, and issue a new failure receipt."
+  },
+  "entry_state": {
+    "application_reference_root_absent": true,
+    "score_root_absent": true,
+    "evaluation_root_absent": true,
+    "test_root_exact_file_count": 1,
+    "test_root_only_file": "protocol/test-protocol.json",
+    "scientific_processes_previously_started": 0,
+    "benchmark_rows_previously_created": 0
+  },
+  "confirmation_gate": {
+    "fresh_user_confirmation_required": true,
+    "previous_confirmation_reusable": false,
+    "execution_authorized": false,
+    "confirmation_must_bind": [
+      "this amendment raw SHA-256",
+      "replacement preparation command using -Path",
+      "unchanged scientific packet raw SHA-256 5bf3de86d531153f206110558d3d3acf459094433db5046ea7dd5d2745f1a036",
+      "no-retry policy"
+    ]
+  },
+  "scientific_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "YES",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "phase_1e_complete": false,
+    "benchmark_numbers_valid_for_paper": false
+  },
+  "verdict": "MINIMAL_CONTROL_FIX_FROZEN_PENDING_FRESH_CONFIRMATION",
+  "fail_closed": true
+}
