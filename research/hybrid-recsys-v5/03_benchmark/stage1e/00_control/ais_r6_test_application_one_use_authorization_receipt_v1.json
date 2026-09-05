@@ -1,0 +1,93 @@
+{
+  "schema_version": "ais-r6-test-application-one-use-authorization/1.0",
+  "stage_id": "AIS-R6-TEST-APPLICATION-AUTHORIZATION-V1",
+  "authorized_at": "2026-09-06T00:49:33.5247492+07:00",
+  "authorized_at_semantics": "Host clock observation only; it is not scientific evidence.",
+  "material_passport": {
+    "origin_skill": "academic-research-suite/experiment-agent",
+    "origin_mode": "central-user-confirmed-authorization",
+    "origin_date": "2026-09-06T00:49:33.5247492+07:00",
+    "verification_status": "UNVERIFIED",
+    "version_label": "ais-r6-test-application-one-use-authorization-v1.0.0",
+    "upstream_dependencies": [
+      "ais-r6-test-application-execution-v1.0.0",
+      "ais-r6-test-opening-runtime-v1.0.0"
+    ],
+    "repro_lock": {
+      "execution_packet_commit": "b4774a380a7efa2308375fc262032a2a1bd48765",
+      "execution_packet_parent": "0b9c7855b4a81463928717771fbf3b382f7b1e73",
+      "execution_packet_git_blob_oid": "e5168d44fc670f17a266523e7463c5d95d927cfd",
+      "execution_packet_raw_sha256": "5bf3de86d531153f206110558d3d3acf459094433db5046ea7dd5d2745f1a036",
+      "ai_service_v2_tree": "9f7e19ec8b4d85cbab728734d9049bb5536ae038",
+      "validation_root_inventory_sha256": "7605b49d38e694f578e8f1f5b3483aa9bf3f262f4280cd50acdb19ce83911f71",
+      "test_protocol_raw_sha256": "c8a64643a5177c322156210620e8b0693035d18ea04cc53951fa243fcd8a14da",
+      "test_protocol_manifest_sha256": "f348ffe871be74e1941ac155adcf1c8d600a95f69338f4c16b0153cf3487e6f4"
+    },
+    "experiment_intake_declaration": {
+      "status": "experiments_declared",
+      "declared_at": "2026-09-01T16:38:56Z",
+      "declared_by": "scholar"
+    }
+  },
+  "user_confirmation": {
+    "status": "CONFIRMED",
+    "user_message": "Xác nhận",
+    "confirmation_scope": [
+      "execution packet raw SHA-256 5bf3de86d531153f206110558d3d3acf459094433db5046ea7dd5d2745f1a036",
+      "exact 22 scientific commands for the frozen 13-run roster",
+      "exact AIS-R6 TEST attempt-001 output namespace",
+      "stop on first error with no retry or fallback"
+    ],
+    "prior_confirmation_reused": false
+  },
+  "preflight_observation": {
+    "status": "PASS",
+    "observed_at": "2026-09-06T00:49:33.5247492+07:00",
+    "repository_head": "b4774a380a7efa2308375fc262032a2a1bd48765",
+    "ai_service_v2_tree": "9f7e19ec8b4d85cbab728734d9049bb5536ae038",
+    "validation_root_file_count": 661,
+    "validation_root_total_bytes": 1385174064,
+    "validation_root_inventory_sha256": "7605b49d38e694f578e8f1f5b3483aa9bf3f262f4280cd50acdb19ce83911f71",
+    "test_protocol_raw_sha256": "c8a64643a5177c322156210620e8b0693035d18ea04cc53951fa243fcd8a14da",
+    "application_reference_root_absent": true,
+    "derived_output_paths_absent": 39,
+    "free_space_gib_on_e": 106.9,
+    "unrelated_user_state_preserved": true
+  },
+  "authorization": {
+    "attempt_root": "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001",
+    "application_count": 13,
+    "scientific_process_count": 22,
+    "allowed_invocations": 1,
+    "automatic_retry_allowed": false,
+    "fallback_allowed": false,
+    "training_allowed": false,
+    "tuning_allowed": false,
+    "test_reopen_allowed": false,
+    "network_allowed": false,
+    "docker_required": false,
+    "wsl_required": false,
+    "tls_required": false,
+    "failure_behavior": "Stop on first nonzero process exit, preserve outputs immutably, and issue a separate failure receipt.",
+    "verdict": "AUTHORIZED_EXACT_FROZEN_13_APPLICATION_SEQUENCE_ONCE"
+  },
+  "model_policy": {
+    "requested_model": "gpt-5.6-sol",
+    "requested_reasoning_effort": "xhigh",
+    "requested_service_tier": "Standard/default",
+    "actual_model": "UNOBSERVABLE",
+    "actual_reasoning_effort": "UNOBSERVABLE",
+    "actual_service_tier": "UNOBSERVABLE",
+    "actual_speed": "UNOBSERVABLE",
+    "fast_or_priority_observed": "UNOBSERVABLE"
+  },
+  "scientific_state_before_execution": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "YES",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "phase_1e_complete": false,
+    "benchmark_numbers_valid_for_paper": false
+  },
+  "authorization_verdict": "AUTHORIZED_EXACT_FROZEN_13_APPLICATION_SEQUENCE_ONCE",
+  "fail_closed": true
+}
