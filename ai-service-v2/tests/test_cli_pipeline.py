@@ -361,6 +361,9 @@ def test_validation_selected_run_can_score_matching_explicit_test_protocol(
     val_score_root = tmp_path / "val-scores"
     test_score_root = tmp_path / "test-scores"
     test_evaluation_root = tmp_path / "test-evaluation"
+    application_ref_root = tmp_path / "test-application-references"
+    application_ref_root.mkdir()
+    application_ref = application_ref_root / "run-mostpop.json"
 
     assert main(["materialize-snapshot", str(FIXTURE_ROOT), str(snapshot_root)]) == 0
     assert (
@@ -426,6 +429,8 @@ def test_validation_selected_run_can_score_matching_explicit_test_protocol(
                 str(run_root),
                 str(test_protocol_path),
                 str(test_score_root),
+                "--application-ref",
+                str(application_ref),
             ]
         )
         == 0
@@ -443,7 +448,8 @@ def test_validation_selected_run_can_score_matching_explicit_test_protocol(
     )
 
     assert (run_root / "score_artifact_ref.json").is_file()
-    test_reference = load_strict_json(run_root / "score_artifact_ref.test.json")
+    assert not (run_root / "score_artifact_ref.test.json").exists()
+    test_reference = load_strict_json(application_ref)
     assert test_reference["split"] == "test"
     assert test_reference["test_set_opened"] is True
     assert (
@@ -461,6 +467,8 @@ def test_test_score_export_rejects_different_validation_cutoff(
     test_protocol_path = tmp_path / "test-protocol.json"
     run_root = tmp_path / "run-mostpop"
     score_root = tmp_path / "test-scores"
+    application_ref_root = tmp_path / "test-application-references"
+    application_ref_root.mkdir()
 
     assert main(["build-protocol", str(FIXTURE_ROOT), str(val_protocol_path), "--cutoff", "5"]) == 0
     assert (
@@ -500,6 +508,8 @@ def test_test_score_export_rejects_different_validation_cutoff(
             str(run_root),
             str(test_protocol_path),
             str(score_root),
+            "--application-ref",
+            str(application_ref_root / "run-mostpop.json"),
         ]
     )
 

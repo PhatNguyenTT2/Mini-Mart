@@ -64,5 +64,7 @@ full-catalog score artifact, and passes that artifact to the same independent
 evaluator used by every local method. `train-val` is validation-only;
 `score-evaluate` can apply the frozen checkpoint to an explicitly opened TEST
 protocol only when the run hash matches the protocol's reconstructed validation
-counterpart. Official MovieLens reproduction and harmonized-v5 outputs remain
-separate namespaces.
+counterpart. TEST application also requires `--application-ref` to point to a
+fresh JSON path outside the frozen validation run; score and evaluation roots
+inside that run are rejected. Official MovieLens reproduction and
+harmonized-v5 outputs remain separate namespaces.

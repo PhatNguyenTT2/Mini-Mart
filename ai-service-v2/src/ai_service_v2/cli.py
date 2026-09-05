@@ -54,6 +54,7 @@ from ai_service_v2.training import (
     load_run_command,
     save_checkpoint,
     update_run_status,
+    validate_external_application_artifact,
     write_run_artifact,
 )
 
@@ -122,6 +123,11 @@ def _parser() -> argparse.ArgumentParser:
     export.add_argument("protocol", type=Path)
     export.add_argument("score_root", type=Path)
     export.add_argument("--chunk-size", type=int, default=128)
+    export.add_argument(
+        "--application-ref",
+        type=Path,
+        help="fresh external JSON receipt path required when applying a frozen run to TEST",
+    )
 
     components = commands.add_parser("export-score-components")
     components.add_argument("snapshot_root", type=Path)
@@ -614,6 +620,19 @@ def _cmd_export_scores(args: argparse.Namespace) -> int:
     run = load_run(args.run_root)
     load_run_command(run)
     protocol = load_protocol(args.protocol)
+    application_ref: Path | None = None
+    if protocol.manifest.split == "test":
+        if args.application_ref is None:
+            raise ProtocolError(
+                "TEST score export requires --application-ref outside the frozen validation run"
+            )
+        application_ref = validate_external_application_artifact(
+            source_run_root=run.root,
+            artifact_path=args.application_ref,
+            output_roots=(args.score_root,),
+        )
+    elif args.application_ref is not None:
+        raise ProtocolError("--application-ref is reserved for TEST score export")
     required_splits = (
         ("train", "val", "test") if protocol.manifest.split == "test" else ("train", "val")
     )
@@ -672,11 +691,10 @@ def _cmd_export_scores(args: argparse.Namespace) -> int:
             "split": "test",
             "test_set_opened": True,
         }
-    write_run_artifact(
-        run.root,
-        reference_name,
-        reference_document,
+    reference_path = (
+        application_ref if application_ref is not None else run.root / reference_name
     )
+    write_run_artifact(reference_path.parent, reference_path.name, reference_document)
     _print(
         {
             "status": "PASS",

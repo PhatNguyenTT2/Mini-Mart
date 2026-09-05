@@ -19,6 +19,7 @@ from ai_service_v2.training import (
     load_run_command,
     save_checkpoint,
     update_run_status,
+    validate_external_application_artifact,
 )
 
 HASH = "0" * 64
@@ -105,6 +106,35 @@ def test_run_command_binding_rejects_blank_or_mutated_identity(tmp_path: Path) -
 
     with pytest.raises(IntegrityError, match="command hash"):
         load_run_command(run)
+
+
+def test_test_application_artifact_must_be_external_to_frozen_run(tmp_path: Path) -> None:
+    run_root = tmp_path / "validation-run"
+    run_root.mkdir()
+    external_root = tmp_path / "test-application-references"
+    external_root.mkdir()
+    external_ref = external_root / "run.json"
+
+    validated = validate_external_application_artifact(
+        source_run_root=run_root,
+        artifact_path=external_ref,
+        output_roots=(tmp_path / "test-scores", tmp_path / "test-evaluation"),
+    )
+    assert validated == external_ref.resolve()
+
+    with pytest.raises(IntegrityError, match="outside the frozen validation run"):
+        validate_external_application_artifact(
+            source_run_root=run_root,
+            artifact_path=run_root / "test-ref.json",
+            output_roots=(tmp_path / "test-scores",),
+        )
+
+    with pytest.raises(IntegrityError, match="outside the frozen validation run"):
+        validate_external_application_artifact(
+            source_run_root=run_root,
+            artifact_path=external_ref,
+            output_roots=(run_root / "test-scores",),
+        )
 
 
 def test_checkpoint_payload_mutation_is_rejected(snapshot: Snapshot, tmp_path: Path) -> None:

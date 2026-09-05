@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import sys
 from pathlib import Path
+from types import SimpleNamespace
 
 import numpy as np
 import pytest
@@ -13,7 +15,9 @@ from ai_service_v2.adapters.harmonized_baselines import (
 )
 from ai_service_v2.data.io import load_canonical_snapshot
 from ai_service_v2.errors import ContractError, IntegrityError
-from ai_service_v2.protocol import build_protocol
+from ai_service_v2.hashing import canonical_json_bytes, load_strict_json, sha256_file
+from ai_service_v2.protocol import build_protocol, save_protocol
+from tools import run_harmonized_baseline
 
 FIXTURE_ROOT = Path(__file__).parent / "fixtures" / "fixture-retail-v1"
 
@@ -95,3 +99,90 @@ def test_baseline_spec_and_checkpoint_fail_closed(tmp_path: Path) -> None:
     (checkpoint_root / "checkpoint.npz").write_bytes(payload + b"tamper")
     with pytest.raises(IntegrityError, match="hash mismatch"):
         load_harmonized_baseline_checkpoint(checkpoint_root, snapshot=snapshot, protocol=protocol)
+
+
+def test_baseline_test_application_does_not_mutate_frozen_validation_run(
+    tmp_path: Path, monkeypatch: pytest.MonkeyPatch
+) -> None:
+    snapshot = load_canonical_snapshot(FIXTURE_ROOT)
+    val_protocol_path = tmp_path / "val-protocol.json"
+    test_protocol_path = tmp_path / "test-protocol.json"
+    save_protocol(build_protocol(snapshot, split="val", cutoff=5), val_protocol_path)
+    save_protocol(
+        build_protocol(snapshot, split="test", allow_test=True, cutoff=5),
+        test_protocol_path,
+    )
+
+    config_path = tmp_path / "itemknn.json"
+    config_path.write_bytes(canonical_json_bytes(_spec("itemknn").to_mapping()) + b"\n")
+    environment_lock = tmp_path / "environment.lock"
+    environment_lock.write_bytes(b"fixture environment")
+    run_root = tmp_path / "itemknn-val"
+    monkeypatch.setattr(
+        run_harmonized_baseline,
+        "assess_snapshot_suitability",
+        lambda _snapshot: SimpleNamespace(
+            verdict="PASS_CONTROLLED_INTERNAL_DATASET_SUITABILITY",
+            blocking_findings=(),
+        ),
+    )
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        [
+            "run-harmonized-baseline",
+            "train-val",
+            str(FIXTURE_ROOT),
+            str(val_protocol_path),
+            str(run_root),
+            str(tmp_path / "val-scores"),
+            str(tmp_path / "val-evaluation"),
+            "--config",
+            str(config_path),
+            "--environment-lock",
+            str(environment_lock),
+            "--seed",
+            "42",
+            "--chunk-size",
+            "1",
+        ],
+    )
+    assert run_harmonized_baseline.main() == 0
+    frozen_files = {
+        path.relative_to(run_root).as_posix(): sha256_file(path)
+        for path in run_root.rglob("*")
+        if path.is_file()
+    }
+
+    application_ref_root = tmp_path / "test-application-references"
+    application_ref_root.mkdir()
+    application_ref = application_ref_root / "itemknn-val.json"
+    monkeypatch.setattr(
+        sys,
+        "argv",
+        [
+            "run-harmonized-baseline",
+            "score-evaluate",
+            str(FIXTURE_ROOT),
+            str(run_root),
+            str(test_protocol_path),
+            str(tmp_path / "test-scores"),
+            str(tmp_path / "test-evaluation"),
+            "--application-ref",
+            str(application_ref),
+            "--chunk-size",
+            "1",
+        ],
+    )
+    assert run_harmonized_baseline.main() == 0
+
+    replayed_files = {
+        path.relative_to(run_root).as_posix(): sha256_file(path)
+        for path in run_root.rglob("*")
+        if path.is_file()
+    }
+    assert replayed_files == frozen_files
+    assert not (run_root / "test_evidence_ref.json").exists()
+    reference = load_strict_json(application_ref)
+    assert reference["split"] == "test"
+    assert reference["test_set_opened"] is True

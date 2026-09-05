@@ -37,6 +37,7 @@ from ai_service_v2.training import (
     load_run,
     load_run_command,
     update_run_status,
+    validate_external_application_artifact,
     write_run_artifact,
 )
 
@@ -63,6 +64,11 @@ def _parser() -> argparse.ArgumentParser:
     apply.add_argument("score_root", type=Path)
     apply.add_argument("evaluation_root", type=Path)
     apply.add_argument("--chunk-size", type=int, default=128)
+    apply.add_argument(
+        "--application-ref",
+        type=Path,
+        help="fresh external JSON receipt path required when applying a frozen run to TEST",
+    )
     return parser
 
 
@@ -294,6 +300,19 @@ def _score_evaluate(args: argparse.Namespace, process_command: ProcessCommand) -
     if args.chunk_size < 1:
         raise ContractError("chunk size must be positive")
     protocol = load_protocol(args.protocol)
+    application_ref: Path | None = None
+    if protocol.manifest.split == "test":
+        if args.application_ref is None:
+            raise ProtocolError(
+                "TEST scoring requires --application-ref outside the frozen validation run"
+            )
+        application_ref = validate_external_application_artifact(
+            source_run_root=args.run_root,
+            artifact_path=args.application_ref,
+            output_roots=(args.score_root, args.evaluation_root),
+        )
+    elif args.application_ref is not None:
+        raise ProtocolError("--application-ref is reserved for TEST scoring")
     required_splits = (
         ("train", "val", "test") if protocol.manifest.split == "test" else ("train", "val")
     )
@@ -317,9 +336,12 @@ def _score_evaluate(args: argparse.Namespace, process_command: ProcessCommand) -
         if protocol.manifest.split == "test"
         else "validation_replay_evidence_ref.json"
     )
+    reference_path = (
+        application_ref if application_ref is not None else run.root / reference_name
+    )
     _write_reference(
-        run.root,
-        filename=reference_name,
+        reference_path.parent,
+        filename=reference_path.name,
         score_root=args.score_root,
         evaluation_root=args.evaluation_root,
         selection_protocol_sha256=run.manifest.protocol_manifest_sha256,
