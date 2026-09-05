@@ -1,0 +1,458 @@
+{
+  "schema_version": "ais-r6-test-opening-packet/1.0",
+  "stage_id": "AIS-R6-TEST-OPENING-PACKET-V1",
+  "created_at": "2026-09-05T09:47:06.5687211+07:00",
+  "created_at_semantics": "Host observation only; elapsed time and host clock are not scientific evidence.",
+  "material_passport": {
+    "origin_skill": "academic-research-suite/experiment-agent",
+    "origin_mode": "central-test-packet-design",
+    "origin_date": "2026-09-05T09:47:06.5687211+07:00",
+    "verification_status": "ANALYZED_PENDING_FRESH_INDEPENDENT_AUDIT",
+    "version_label": "ais-r6-test-opening-packet-v1.0.0",
+    "upstream_dependencies": [
+      "ais-r6-validation-registry-v1.0.0",
+      "ais-r6-validation-freeze-v1.0.0",
+      "ais-r6-validation-fresh-independent-audit-revision2-v1.0.0",
+      "ais-r6-harmonized-v5-scope-and-entry-amendment-v1.0.0",
+      "ais-r6-test-application-environment-lock-v1.0.0"
+    ],
+    "repro_lock": {
+      "implementation_commit": "0485ef13c2bf548aa9f7ea34f40652526db02a43",
+      "implementation_parent": "3ef14440d1d07b6cf311a49a668f6f027eb3a103",
+      "repository_tree": "4cda6a11fc3338bfbadf1e1522676c0f20b90bf9",
+      "ai_service_v2_tree": "9f7e19ec8b4d85cbab728734d9049bb5536ae038",
+      "dataset_manifest_sha256": "7920964be1b449dad9a3ed2e8a6c783fc22d383b55ea3d36a389c3cabd6340a6",
+      "validation_protocol_manifest_sha256": "c8ec031c78d7d6837742d9dfd5a19bacddc867b7e3dfebdf20cf0b408a6d671f",
+      "validation_root_inventory_sha256": "7605b49d38e694f578e8f1f5b3483aa9bf3f262f4280cd50acdb19ce83911f71",
+      "test_application_environment_lock_sha256": "b8d9c6fc9f6892d91a82f3c4dd2bcc1d4d6cf301f53dcdef6ae087dcbfb11a8d"
+    },
+    "experiment_intake_declaration": {
+      "status": "experiments_declared",
+      "declared_at": "2026-09-01T16:38:56Z",
+      "declared_by": "scholar"
+    },
+    "self_content_hash": null,
+    "self_content_hash_semantics": "Commit and raw Git-blob identifiers must be recorded by the later independent audit to avoid a self-referential digest."
+  },
+  "ars_routing": {
+    "skill_package": "academic-research-suite",
+    "skill_package_version": "0.1.26",
+    "workflow": "ars/experiment-agent/WORKFLOW.md",
+    "mode": "design_then_validate",
+    "material_passport_status": "ANALYZED",
+    "successful_reproducibility_rerun_performed": false
+  },
+  "model_policy": {
+    "requested_for_fresh_independent_audit": {
+      "model": "gpt-5.6-sol",
+      "reasoning_effort": "ultra",
+      "service_tier": "Standard/default"
+    },
+    "requested_for_later_runtime_execution": {
+      "model": "gpt-5.6-sol",
+      "reasoning_effort": "xhigh",
+      "service_tier": "Standard/default"
+    },
+    "forbidden_service_tiers": ["Fast", "Priority"],
+    "actual_model": "NOT_OBSERVABLE_FROM_WORKSPACE_DO_NOT_INFER",
+    "actual_reasoning_effort": "NOT_OBSERVABLE_FROM_WORKSPACE_DO_NOT_INFER",
+    "actual_service_tier": "NOT_OBSERVABLE_FROM_WORKSPACE_DO_NOT_INFER"
+  },
+  "entry_gate": {
+    "validation_registry": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r6_validation_registry_v1.json",
+      "commit": "2bcfff7eb6f0c91819dde097f620eb5a7d92925b",
+      "raw_git_blob_sha256": "40a96ca37a1cd31594bb9933501a30518f6026ab1dd2abf684eb74847fc6c925"
+    },
+    "validation_freeze_receipt": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r6_validation_freeze_receipt.json",
+      "commit": "2bcfff7eb6f0c91819dde097f620eb5a7d92925b",
+      "raw_git_blob_sha256": "f41aa9b4f2b929f737e529bba21daa86f46a1e91a063dcffb2deed0bc3056b3b"
+    },
+    "validation_independent_audit_revision2": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r6_validation_fresh_independent_audit_receipt_revision2.json",
+      "commit": "6fad41704ffc87ab421a9a2be5f79c3e5794f89b",
+      "git_blob_oid": "9966a827bb0a043a1f03c32bf1082817be393d08",
+      "raw_git_blob_sha256": "c0e98d9927cb8ac835339b53c946efa1b8a58a2eb97517fc3695dfcd1359dbfc",
+      "verdict": "PASS_READY_FOR_TEST_PACKET_DESIGN_BUT_TEST_NOT_AUTHORIZED"
+    },
+    "requirements_satisfied": {
+      "registered_validation_runs": 13,
+      "registered_validation_runs_passed": 13,
+      "frozen_comparator": "itemknn-binary-cosine-v1",
+      "frozen_comparator_run_id": "itemknn-val-001",
+      "selection_metric": "NDCG@10",
+      "test_set_opened": false,
+      "accepted_result_rows": 0
+    }
+  },
+  "implementation_gate": {
+    "commit": "0485ef13c2bf548aa9f7ea34f40652526db02a43",
+    "ai_service_v2_tree": "9f7e19ec8b4d85cbab728734d9049bb5536ae038",
+    "test_application_environment_lock": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebuild_ai_service/ais_r6_test_application_environment_lock_v1.txt",
+      "raw_sha256": "b8d9c6fc9f6892d91a82f3c4dd2bcc1d4d6cf301f53dcdef6ae087dcbfb11a8d"
+    },
+    "boundary_properties": [
+      "TEST score, evaluation, and application-reference outputs are rejected when they resolve inside a frozen validation run.",
+      "Each TEST application requires a fresh external JSON reference path before TEST payload loading or scoring.",
+      "Local and harmonized-baseline TEST application receipts bind the exact process command and command SHA-256.",
+      "Validation-selected protocol binding is replayed from the same snapshot before a checkpoint may score TEST.",
+      "No training, tuning, checkpoint selection, or comparator selection is performed by TEST application commands."
+    ],
+    "verification_observed": {
+      "pytest": "PASS_106_OF_106",
+      "ruff": "PASS",
+      "mypy": "PASS_32_SOURCE_FILES",
+      "runtime_import_probe": "PASS_AI_SERVICE_V2_0.1.0",
+      "runtime_interpreter": "Python 3.11.9",
+      "runtime_numpy": "1.26.4",
+      "scientific_test_or_training_performed": false
+    }
+  },
+  "immutable_inputs": {
+    "snapshot_root": "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r2b-v5.1-canonical/attempt-001",
+    "snapshot_manifest_path": "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r2b-v5.1-canonical/attempt-001/manifest.json",
+    "snapshot_manifest_raw_sha256": "45b0bba18120d722eb3c86bd0c01176050ea975dbd9ebcef22cbfd6df0f7bfec",
+    "dataset_manifest_canonical_sha256": "7920964be1b449dad9a3ed2e8a6c783fc22d383b55ea3d36a389c3cabd6340a6",
+    "dataset_sha256": "21f7b93bad51d6fa3c69ce849a1931f634539f4fc8f475b00c17de0b5d977194",
+    "dataset_classification": "CONTROLLED_GENERATED_BEHAVIOR",
+    "num_users": 5000,
+    "num_items": 5200,
+    "num_interactions": 823371,
+    "test_split_sha256_from_sealed_manifest": "62e28e65718723f99e09963553ab9e6ac6375290861c824039eeb86a078abffa",
+    "validation_root": "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-validation/attempt-001",
+    "validation_root_inventory": {
+      "algorithm": "Sort all relative POSIX paths ordinally; for each regular file append UTF-8 path<TAB>byte_count<TAB>raw_sha256<LF>; SHA-256 the concatenated bytes.",
+      "file_count": 661,
+      "total_bytes": 1385174064,
+      "inventory_sha256": "7605b49d38e694f578e8f1f5b3483aa9bf3f262f4280cd50acdb19ce83911f71",
+      "required_before_test": "EXACT_MATCH",
+      "required_after_test": "EXACT_MATCH"
+    }
+  },
+  "test_protocol_freeze": {
+    "split": "test",
+    "allow_test": true,
+    "cutoff": 10,
+    "metric_version": "ranking-v1",
+    "candidate_count": 5200,
+    "candidate_order_sha256": "0cea7f41366c972628da0b33b02c01f711ac57c56e262ea7c3a1e66f5f3330e9",
+    "eligible_user_rule": "user_has_at_least_one_novel_organic_purchase_in_target_split",
+    "positive_rule": "organic_purchase_events_minus_all_history_items",
+    "history_for_test": "TRAIN_PLUS_VALIDATION",
+    "seen_masking": "all_prior_interacted_items_to_negative_infinity",
+    "tie_break": "descending_score_then_ascending_raw_product_id",
+    "eligible_user_count": "OBSERVE_ONLY_AFTER_SINGLE_TEST_OPEN",
+    "test_protocol_manifest_sha256": "OBSERVE_AND_BIND_AFTER_SINGLE_TEST_OPEN",
+    "test_user_order_sha256": "OBSERVE_AND_BIND_AFTER_SINGLE_TEST_OPEN",
+    "forbidden_after_open": [
+      "training",
+      "hyperparameter tuning",
+      "checkpoint selection",
+      "comparator reselection",
+      "metric redefinition",
+      "dataset regeneration",
+      "protocol amendment"
+    ]
+  },
+  "execution_namespace": {
+    "attempt_root": "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001",
+    "observed_absent_at_packet_design": true,
+    "must_be_absent_at_execution_entry": true,
+    "test_protocol_path": "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/protocol/test-protocol.json",
+    "application_reference_root": "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/application_refs",
+    "score_root_template": "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/scores/{run_id}",
+    "evaluation_root_template": "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/evaluations/{run_id}",
+    "application_reference_template": "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/application_refs/{run_id}.json",
+    "statistics_root": "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/statistics",
+    "retry_policy": "NO_RETRY_OR_FALLBACK_IN_ATTEMPT_001",
+    "overwrite_policy": "FORBIDDEN",
+    "validation_root_write_policy": "FORBIDDEN"
+  },
+  "runtime_identity": {
+    "working_directory": "E:/UIT/cv/backend",
+    "python_executable": "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r5-validation/attempt-003/venv/Scripts/python.exe",
+    "python_executable_sha256": "21bb438c0d4a6f1f164b9a646f6ee000340185e5871180aec06db8d3f07c0082",
+    "interpreter_flags": ["-B"],
+    "environment_overrides": {
+      "PYTHONPATH": "E:/UIT/cv/backend/ai-service-v2/src",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "network_access": "FORBIDDEN",
+    "docker_required": false,
+    "wsl_required": false,
+    "tls_required": false
+  },
+  "command_templates": {
+    "single_test_open": {
+      "script": "E:/UIT/cv/backend/ai-service-v2/src/ai_service_v2/__main__.py",
+      "argv": [
+        "build-protocol",
+        "{snapshot_root}",
+        "{test_protocol_path}",
+        "--split",
+        "test",
+        "--allow-test",
+        "--cutoff",
+        "10",
+        "--metric-version",
+        "ranking-v1"
+      ],
+      "allowed_invocations": 1
+    },
+    "local_score_export": {
+      "script": "E:/UIT/cv/backend/ai-service-v2/src/ai_service_v2/__main__.py",
+      "argv": [
+        "export-scores",
+        "{snapshot_root}",
+        "{validation_run_root}",
+        "{test_protocol_path}",
+        "{score_root}",
+        "--chunk-size",
+        "128",
+        "--application-ref",
+        "{application_reference}"
+      ],
+      "training_allowed": false
+    },
+    "local_evaluate": {
+      "script": "E:/UIT/cv/backend/ai-service-v2/src/ai_service_v2/__main__.py",
+      "argv": ["evaluate", "{test_protocol_path}", "{score_root}", "{evaluation_root}"],
+      "training_allowed": false
+    },
+    "harmonized_baseline_score_evaluate": {
+      "script": "E:/UIT/cv/backend/ai-service-v2/tools/run_harmonized_baseline.py",
+      "argv": [
+        "score-evaluate",
+        "{snapshot_root}",
+        "{validation_run_root}",
+        "{test_protocol_path}",
+        "{score_root}",
+        "{evaluation_root}",
+        "--chunk-size",
+        "128",
+        "--application-ref",
+        "{application_reference}"
+      ],
+      "training_allowed": false
+    }
+  },
+  "run_roster": [
+    {
+      "order": 1,
+      "run_id": "bpr-mf-s2027-val-001",
+      "model_id": "bpr-mf-harmonized-v1",
+      "role": "conventional_comparator",
+      "seed": 2027,
+      "checkpoint_sha256": "801f47fda06c76c6aba0252f92ecbce7a7dbc681e83fc87d5c9f9471033b710c",
+      "executor": "harmonized_baseline_score_evaluate"
+    },
+    {
+      "order": 2,
+      "run_id": "bpr-mf-s31415-val-001",
+      "model_id": "bpr-mf-harmonized-v1",
+      "role": "conventional_comparator",
+      "seed": 31415,
+      "checkpoint_sha256": "fa0cd35b0aefecbfbfb26420493fcb3fb32264047107c0dde863c7401413782c",
+      "executor": "harmonized_baseline_score_evaluate"
+    },
+    {
+      "order": 3,
+      "run_id": "bpr-mf-s42-val-001",
+      "model_id": "bpr-mf-harmonized-v1",
+      "role": "conventional_comparator",
+      "seed": 42,
+      "checkpoint_sha256": "437094fa2cc812bbda11b894de3bacbf653ecaa5404125a85503b46abe6da68d",
+      "executor": "harmonized_baseline_score_evaluate"
+    },
+    {
+      "order": 4,
+      "run_id": "deep-s2027-val-001",
+      "model_id": "independent-deep-two-tower-v1",
+      "role": "proposed_ablation_deep_only",
+      "seed": 2027,
+      "checkpoint_sha256": "2c985763f71bbb310f8a6c3a092f3931220280d235aecbeca9f1848e0587eb78",
+      "executor": "local_score_export_then_evaluate"
+    },
+    {
+      "order": 5,
+      "run_id": "deep-s31415-val-001",
+      "model_id": "independent-deep-two-tower-v1",
+      "role": "proposed_ablation_deep_only",
+      "seed": 31415,
+      "checkpoint_sha256": "271e1ba2ab6c39c2fc4e49926d402e32348150a3e8599c552e3bfede12661929",
+      "executor": "local_score_export_then_evaluate"
+    },
+    {
+      "order": 6,
+      "run_id": "deep-s42-val-001",
+      "model_id": "independent-deep-two-tower-v1",
+      "role": "proposed_ablation_deep_only",
+      "seed": 42,
+      "checkpoint_sha256": "1e1cf11de618e0087bf6244b1f18c46d229920fc363d8ac3897e86342f06a580",
+      "executor": "local_score_export_then_evaluate"
+    },
+    {
+      "order": 7,
+      "run_id": "hybrid-s2027-val-002",
+      "model_id": "proposed-hybrid-v1",
+      "role": "proposed_method_hybrid",
+      "seed": 2027,
+      "checkpoint_sha256": "2c985763f71bbb310f8a6c3a092f3931220280d235aecbeca9f1848e0587eb78",
+      "executor": "local_score_export_then_evaluate",
+      "anomaly_note": "The observed and audited run ID is -002; no -001 predecessor or supersession relation is inferred."
+    },
+    {
+      "order": 8,
+      "run_id": "hybrid-s31415-val-001",
+      "model_id": "proposed-hybrid-v1",
+      "role": "proposed_method_hybrid",
+      "seed": 31415,
+      "checkpoint_sha256": "271e1ba2ab6c39c2fc4e49926d402e32348150a3e8599c552e3bfede12661929",
+      "executor": "local_score_export_then_evaluate"
+    },
+    {
+      "order": 9,
+      "run_id": "hybrid-s42-val-001",
+      "model_id": "proposed-hybrid-v1",
+      "role": "proposed_method_hybrid",
+      "seed": 42,
+      "checkpoint_sha256": "1e1cf11de618e0087bf6244b1f18c46d229920fc363d8ac3897e86342f06a580",
+      "executor": "local_score_export_then_evaluate"
+    },
+    {
+      "order": 10,
+      "run_id": "itemknn-val-001",
+      "model_id": "itemknn-binary-cosine-v1",
+      "role": "conventional_comparator",
+      "seed": 42,
+      "checkpoint_sha256": "244e924d66d99324c7ac7051191a03c809245859145df0859ac865adc43262a4",
+      "executor": "harmonized_baseline_score_evaluate",
+      "selection_status": "FROZEN_STRONGEST_CONVENTIONAL_COMPARATOR_BY_VALIDATION_NDCG_AT_10"
+    },
+    {
+      "order": 11,
+      "run_id": "mostpop-val-001",
+      "model_id": "mostpop-v1",
+      "role": "sanity_control",
+      "seed": 42,
+      "checkpoint_sha256": null,
+      "executor": "local_score_export_then_evaluate"
+    },
+    {
+      "order": 12,
+      "run_id": "random-s42-val-001",
+      "model_id": "random-v1",
+      "role": "sanity_control",
+      "seed": 42,
+      "checkpoint_sha256": null,
+      "executor": "local_score_export_then_evaluate"
+    },
+    {
+      "order": 13,
+      "run_id": "rule-only-val-001",
+      "model_id": "wide-rule-only-v1",
+      "role": "proposed_ablation_rule_only",
+      "seed": 42,
+      "checkpoint_sha256": null,
+      "rule_artifact_sha256": "f605bf626847d00b828afe68186012c662044a22e87415d8cfb25964a7ea4114",
+      "executor": "local_score_export_then_evaluate"
+    }
+  ],
+  "run_application_policy": {
+    "expected_run_count": 13,
+    "expected_evaluation_count": 13,
+    "roster_order_is_binding": true,
+    "validation_run_root_derivation": "{validation_root}/runs/{run_id}",
+    "score_root_derivation": "{attempt_root}/scores/{run_id}",
+    "evaluation_root_derivation": "{attempt_root}/evaluations/{run_id}",
+    "application_reference_derivation": "{attempt_root}/application_refs/{run_id}.json",
+    "local_executor_expansion": ["local_score_export", "local_evaluate"],
+    "baseline_executor_expansion": ["harmonized_baseline_score_evaluate"],
+    "retraining_allowed": false,
+    "selection_change_allowed": false,
+    "test_driven_reconfiguration_allowed": false,
+    "failed_run_policy": "Record FAIL or INCOMPLETE, never retry or impute, and continue only if shared dataset/protocol/environment integrity remains intact.",
+    "shared_integrity_failure_policy": "Stop the entire attempt and preserve all outputs immutably."
+  },
+  "statistics_freeze": {
+    "metrics": ["NDCG@10", "HR@10", "GAUC"],
+    "primary_selection_metric": "NDCG@10",
+    "primary_candidate": "proposed-hybrid-v1",
+    "primary_comparator": "itemknn-binary-cosine-v1",
+    "candidate_seeds": [42, 2027, 31415],
+    "comparator_seed_policy": "ItemKNN is deterministic and has one audited fitted artifact. Its single per-user TEST vector may be broadcast only inside the paired estimator across the three candidate seed rows; this does not create synthetic run receipts.",
+    "bootstrap": {
+      "method": "hierarchical_paired_bootstrap",
+      "replicates": 2000,
+      "seed": 42,
+      "confidence_level": 0.95,
+      "pairing": "same sampled seed occurrences and user indices for method and comparator",
+      "pre_average_seed_vectors": false
+    },
+    "exploratory_comparisons": [
+      "Hybrid versus BPR-MF",
+      "Hybrid versus Deep-only",
+      "Hybrid versus Rule-only",
+      "Hybrid versus MostPop"
+    ],
+    "multiplicity": "Holm adjustment over the declared exploratory comparison family",
+    "failed_seed_imputation": "FORBIDDEN",
+    "decision_language": {
+      "positive_interval": "Internally controlled positive effect only when the preregistered 95% interval is strictly above zero.",
+      "interval_crosses_zero": "Null or inconclusive result; no superiority claim.",
+      "negative_interval": "Negative result retained and reported; no metric, dataset, or comparator change."
+    }
+  },
+  "construct_validity_boundary": {
+    "rule_only_is_conventional_baseline": false,
+    "rule_only_role": "PROPOSED_METHOD_ABLATION",
+    "known_alignment": "The controlled generator contains repeated basket and rule-transition structure aligned with train-only association rules.",
+    "required_interpretation": "A high Rule-only or Hybrid result measures performance under this controlled construct and does not establish general superiority of association rules or the Hybrid on observed public behavior.",
+    "external_validity_claim_allowed": false,
+    "sota_claim_allowed": false,
+    "public_dataset_superiority_claim_allowed": false
+  },
+  "excluded_methods": {
+    "LightGCN": "NOT_TESTED_OPTIONAL_ADAPTER_NOT_FROZEN_BEFORE_TEST_PACKET",
+    "SASRec": "NOT_TESTED_NO_SEQUENCE_SPECIFIC_ADAPTER",
+    "BERT4Rec": "NOT_TESTED_NO_SEQUENCE_SPECIFIC_ADAPTER",
+    "BTBR": "DEFERRED_RELATED_WORK",
+    "UniSRec": "DEFERRED_RELATED_WORK",
+    "AlphaRec": "DEFERRED_RELATED_WORK",
+    "SimGCL": "DEFERRED_RELATED_WORK",
+    "XSimGCL": "DEFERRED_RELATED_WORK",
+    "LightGCL": "DEFERRED_RELATED_WORK"
+  },
+  "official_reproduction_boundary": {
+    "namespace": "OFFICIAL_PROTOCOL_REPRODUCTION",
+    "status": "INCOMPARABLE",
+    "observed_ndcg_at_10": 0.2928,
+    "source_target_ndcg_at_10": 0.2768,
+    "preregistered_interval": [0.26296, 0.29064],
+    "accepted_result_row": false,
+    "cross_dataset_numeric_comparison_allowed": false,
+    "phase_1e_implication": "AIS-R6 may proceed, but AIS-R7 must explicitly adjudicate the still-unmet accepted-public-reproduction criterion before any final Phase 1E completion claim."
+  },
+  "execution_sequence": [
+    "Fresh independent audit verifies this packet, implementation commit, environment lock, 13-run registry, validation-root inventory digest, and absent TEST attempt root.",
+    "Central issues a separate authorization receipt bound to the independently audited packet; this packet cannot self-authorize.",
+    "Runtime verifies code tree and interpreter, creates only the fresh application-reference parent, and replays the validation-root inventory digest.",
+    "Runtime executes single_test_open exactly once and records the resulting TEST protocol hash and eligible-user order.",
+    "Runtime applies all 13 frozen validation artifacts in roster order without training or tuning.",
+    "Runtime replays every score/evaluation/application-reference hash and the unchanged validation-root digest.",
+    "Statistics execute from per-user TEST vectors under the frozen plan.",
+    "Fresh AIS-R7/E5 audit adjudicates results, public-reproduction limitation, and paper eligibility."
+  ],
+  "scientific_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "phase_1e_complete": false,
+    "benchmark_numbers_valid_for_paper": false
+  },
+  "verdict": "READY_FOR_FRESH_INDEPENDENT_AUDIT_NOT_TEST_AUTHORIZED",
+  "fail_closed": true
+}
