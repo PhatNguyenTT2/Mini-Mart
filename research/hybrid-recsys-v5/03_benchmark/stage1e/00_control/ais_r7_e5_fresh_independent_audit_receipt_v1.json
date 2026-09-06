@@ -1,0 +1,872 @@
+{
+  "schema_version": "ais-r7-e5-fresh-independent-audit-receipt/1.0",
+  "stage_id": "AIS-R7-E5-FRESH-INDEPENDENT-AUDIT-V1",
+  "receipt_role": "FRESH_INDEPENDENT_EVIDENCE_ONLY_AUDIT",
+  "audit_date": "2026-09-06T07:25:45.6567690+07:00",
+  "audit_date_semantics": "Host clock observation in Asia/Saigon only; elapsed time, latency, and host clock are not scientific evidence.",
+  "independence_boundary": {
+    "central_and_prior_receipts_used_as_bound_inputs": true,
+    "fresh_repository_lineage_replay_performed": true,
+    "fresh_external_inventory_and_namespace_replay_performed": true,
+    "fresh_test_score_array_and_per_user_replay_performed": true,
+    "fresh_validation_score_array_and_per_user_replay_performed": true,
+    "fresh_statistics_output_binding_replay_performed": true,
+    "independent_read_only_statistics_arithmetic_reimplementation_performed": true,
+    "scientific_runner_imported_or_invoked": false,
+    "runtime_rerun_performed": false,
+    "training_rerun_performed": false,
+    "tuning_rerun_performed": false,
+    "score_export_rerun_performed": false,
+    "evaluation_rerun_performed": false,
+    "test_reopened_or_reexecuted": false,
+    "docker_wsl_network_or_tls_used": false,
+    "separate_checkout_required": false,
+    "basis": "The audit independently re-read committed Git blobs and existing external bytes, recomputed inventories and bindings, checked NPY headers and finite values, reconciled existing per-user vectors to existing aggregate receipts, and independently reimplemented the frozen bootstrap and Holm arithmetic from the already materialized vectors. These are read-only evidence replays, not a scientific runtime rerun.",
+    "limitation": "Artifact consistency can be sealed; scientific external validity, confirmatory multiplicity inference, paper admission, and Phase 1E completion cannot be inferred from integrity checks."
+  },
+  "material_passport": {
+    "origin_skill": "ars-codex/academic-research-suite/experiment-agent",
+    "origin_mode": "validate/fresh-independent-evidence-only-audit",
+    "origin_date": "2026-09-06T07:25:45.6567690+07:00",
+    "verification_status": "ANALYZED",
+    "verification_scope": "Static and read-only arithmetic analysis of snapshot lineage, committed evidence, external TEST and validation roots, protocol and artifact bindings, score arrays, per-user vectors, aggregate reconciliation, and frozen statistics. No reproducibility rerun was performed, so this artifact is ANALYZED rather than execution-level VERIFIED; it does not authorize a causal claim, public-data claim, paper result, or state-of-the-art claim.",
+    "version_label": "ais-r7-e5-fresh-independent-audit-v1.0.0",
+    "integrity_pass_date": "2026-09-06T07:25:45.6567690+07:00",
+    "upstream_dependencies": [
+      "ais-r6-test-opening-packet-v1.0.0",
+      "ais-r6-test-packet-central-validation-v1.0.0",
+      "ais-r6-test-packet-fresh-independent-audit-v1.0.0",
+      "ais-r6-test-application-runtime-v1.0.0",
+      "ais-r6-frozen-statistics-execution-v1.0.0",
+      "ais-r6-frozen-statistics-runtime-v1.0.0",
+      "ais-r6-validation-registry-v1.0.0",
+      "ais-r6-validation-freeze-v1.0.0",
+      "ars-codex-academic-research-suite-0.1.26"
+    ],
+    "repro_lock": {
+      "audited_snapshot_commit": "9bb7c5a691b6a744fd158bf8291a06e31d668311",
+      "audited_snapshot_tree": "92c44048b6762a8d7ccf81e84195c563b312b615",
+      "audited_snapshot_parent": "1e705955a13ac9ca2bcc79a2b5a39b9620f697dd",
+      "statistics_packet_raw_git_blob_sha256": "07bd6e1900dccccfea056c118adb8afc3bb491e972349da2581f0126e5336ad2",
+      "statistics_runner_raw_git_blob_sha256": "7ab0cec4f32485730d55e5ac131ef41eda185fbd3cfebcdbb34f53009e0104e7",
+      "statistics_runtime_receipt_raw_git_blob_sha256": "466791cef4f72efb9e38da981c82cc776a792656f4c604ec04989c6aad0031a2",
+      "test_application_runtime_receipt_raw_git_blob_sha256": "bc1373bf325d7d3963b897e7519374e9de08b318730b18e3ed8c144a10c26d94",
+      "dataset_manifest_canonical_json_sha256": "7920964be1b449dad9a3ed2e8a6c783fc22d383b55ea3d36a389c3cabd6340a6",
+      "selection_protocol_manifest_sha256": "c8ec031c78d7d6837742d9dfd5a19bacddc867b7e3dfebdf20cf0b408a6d671f",
+      "test_protocol_manifest_sha256": "f348ffe871be74e1941ac155adcf1c8d600a95f69338f4c16b0153cf3487e6f4",
+      "pre_statistics_test_inventory_sha256": "2a87284c6d904192130985898a37c178f3972c722ae44c85c0aa2e4f231e7ef7",
+      "statistics_output_inventory_sha256": "ac15d8a42968d837bbf5c48f43f8e0b837813f07c533c8f9dc2e17dde82db33a",
+      "post_statistics_test_inventory_sha256": "d10e8e1a2e587308c813b9c4ef1b6cd4da16da3273e55f25776f6a49ec0dd8ec",
+      "validation_root_inventory_sha256": "7605b49d38e694f578e8f1f5b3483aa9bf3f262f4280cd50acdb19ce83911f71"
+    },
+    "experiment_intake_declaration": {
+      "status": "experiments_declared",
+      "declared_at": "2026-09-01T16:38:56Z",
+      "declared_by": "scholar"
+    },
+    "self_content_hash": null,
+    "self_content_hash_semantics": "The receipt is identified after commit by its Git blob OID, raw Git-blob byte count, and raw SHA-256; embedding those values here would be self-referential."
+  },
+  "ars_routing_receipt": {
+    "adapter": "ars-codex",
+    "adapter_version": "0.1.26",
+    "root_skill": "skills/academic-research-suite/SKILL.md",
+    "workflow": "ars/experiment-agent/WORKFLOW.md",
+    "code_runner_agent": "ars/experiment-agent/agents/code_runner_agent.md",
+    "statistical_interpretation_reference": "ars/experiment-agent/references/statistical_interpretation_guide.md",
+    "reproducibility_reference": "ars/experiment-agent/references/reproducibility_protocol.md",
+    "integration_reference": "ars/experiment-agent/references/ars_integration_guide.md",
+    "handoff_schema_reference": "ars/shared/handoff_schemas.md#schema-9-material-passport-cross-stage-metadata",
+    "artifact_reproducibility_reference": "ars/shared/artifact_reproducibility_pattern.md",
+    "root_skill_sha256": "5acb202b13a7dba912091ae5d15a19b88eb3f4e58b4d942649cb35df770ace91",
+    "workflow_sha256": "6d984f36be84c3f9249f68ef0c599155978b5a661d172e2bb4db2205fdc720f3",
+    "integration_reference_sha256": "c129b6d889dc52cca921b75311b8988a4ff12df412a19a5530abe05e36a23d16",
+    "handoff_schema_sha256": "3d81dd949e6eb5162e7227d8ee13e65b5a17ab9440db3809cbcea8f63be6c8de",
+    "all_selected_instructions_read_fully_before_write": true,
+    "material_passport_applied": true,
+    "validate_semantics_applied": "ANALYZED_WITHOUT_REPRODUCIBILITY_RERUN"
+  },
+  "model_policy_audit": {
+    "scope": "THIS_FRESH_AUDIT_ONLY",
+    "requested_model": "gpt-5.6-sol",
+    "requested_reasoning_effort": "ultra",
+    "requested_service_tier": "Standard/default",
+    "forbidden_service_tiers": [
+      "Fast",
+      "Priority"
+    ],
+    "actual_model": "UNOBSERVABLE",
+    "actual_reasoning_effort": "UNOBSERVABLE",
+    "actual_service_tier": "UNOBSERVABLE",
+    "actual_speed": "UNOBSERVABLE",
+    "fast_or_priority_observed": "UNOBSERVABLE",
+    "model_gate": "NOT_ADJUDICATED_WITHOUT_AUTHORITATIVE_RUNTIME_TELEMETRY",
+    "basis": "No authoritative model, reasoning-effort, service-tier, or speed telemetry was exposed to the repository workspace. None was inferred from latency, prose, task metadata, or prior history."
+  },
+  "repository_lineage": {
+    "audited_checkout": "C:/Users/ACER/.codex/worktrees/ba09/backend",
+    "checkout_mode": "DETACHED_CURRENT_SNAPSHOT",
+    "symbolic_head": null,
+    "containing_branch_ref": "codex/ais-r2-source-export",
+    "containing_branch_checked_out": false,
+    "entry_head": "9bb7c5a691b6a744fd158bf8291a06e31d668311",
+    "entry_tree": "92c44048b6762a8d7ccf81e84195c563b312b615",
+    "entry_sole_parent": "1e705955a13ac9ca2bcc79a2b5a39b9620f697dd",
+    "entry_parent_tree": "8ecb996bc9090ec24ea9247833f483cbe11b73c9",
+    "repository_is_shallow": false,
+    "entry_worktree_status": [],
+    "entry_worktree_clean": true,
+    "target_receipt_absent_in_worktree_before_write": true,
+    "target_receipt_absent_in_index_before_write": true,
+    "target_receipt_absent_in_head_before_write": true,
+    "target_receipt_absent_in_parent_before_write": true,
+    "head_parent_delta": {
+      "exact_added_paths": [
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r6_frozen_statistics_runtime_receipt_v1.json"
+      ],
+      "added_file_count": 1,
+      "other_changes": 0,
+      "delta_exact": true
+    },
+    "statistics_packet_commit_delta": {
+      "commit": "1e705955a13ac9ca2bcc79a2b5a39b9620f697dd",
+      "parent": "7d3ccacbacf8cc2fbcc6506b714d625181f78296",
+      "exact_added_paths": [
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r6_frozen_statistics_execution_packet_v1.json",
+        "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/run_ais_r6_frozen_statistics.py"
+      ],
+      "delta_exact": true
+    },
+    "core_autocrlf_observed": true,
+    "line_ending_note": "Committed evidence hashes use raw LF Git-blob bytes. CRLF working-tree bytes are not substituted for the committed hash domain.",
+    "hash_domain": "RAW_GIT_BLOB_BYTES_FOR_COMMITTED_REPOSITORY_EVIDENCE; RAW_FILE_BYTES_FOR_EXTERNAL_ARTIFACTS; CANONICAL_JSON_ONLY_WHERE_THE_BOUND_CONTRACT_DEFINES_IT",
+    "unrelated_user_state_preserved": true
+  },
+  "source_locators": {
+    "statistics_execution_packet": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r6_frozen_statistics_execution_packet_v1.json",
+    "statistics_runner": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/run_ais_r6_frozen_statistics.py",
+    "statistics_runtime_receipt": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r6_frozen_statistics_runtime_receipt_v1.json",
+    "test_application_runtime_receipt": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r6_test_application_runtime_receipt_v1.json",
+    "test_opening_packet": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r6_test_opening_packet_v1.json",
+    "test_packet_central_validation_receipt": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r6_test_packet_central_validation_receipt_v1.json",
+    "test_packet_prior_independent_audit": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r6_test_packet_fresh_independent_audit_receipt_v1.json",
+    "validation_registry": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r6_validation_registry_v1.json",
+    "validation_freeze_receipt": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r6_validation_freeze_receipt.json",
+    "validation_prior_independent_audit": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r6_validation_fresh_independent_audit_receipt_revision2.json",
+    "pipeline_state": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/pipeline_state_stage1e.json",
+    "canonical_dataset_root": "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r2b-v5.1-canonical/attempt-001",
+    "validation_root": "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-validation/attempt-001",
+    "test_root": "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001",
+    "statistics_root": "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/statistics",
+    "retrieval_status": "NOT_APPLICABLE_NO_NETWORK_OR_EXTERNAL_RETRIEVAL_PERFORMED"
+  },
+  "bound_git_evidence": {
+    "statistics_execution_packet": {
+      "commit": "1e705955a13ac9ca2bcc79a2b5a39b9620f697dd",
+      "git_blob_oid": "ae186aec6aacd9fc5310ac337d1491e5e704a49d",
+      "raw_bytes": 13528,
+      "raw_sha256": "07bd6e1900dccccfea056c118adb8afc3bb491e972349da2581f0126e5336ad2",
+      "strict_json_parse": "PASS"
+    },
+    "statistics_runner": {
+      "commit": "1e705955a13ac9ca2bcc79a2b5a39b9620f697dd",
+      "git_blob_oid": "d6d8478b18bb68a1b98d8d529d44c3cb90ee42e4",
+      "raw_bytes": 16564,
+      "raw_sha256": "7ab0cec4f32485730d55e5ac131ef41eda185fbd3cfebcdbb34f53009e0104e7",
+      "content_type": "PYTHON_SOURCE_READ_ONLY_NOT_IMPORTED_OR_EXECUTED"
+    },
+    "statistics_runtime_receipt": {
+      "commit": "9bb7c5a691b6a744fd158bf8291a06e31d668311",
+      "git_blob_oid": "2846bc3b575fdcaed4efce6dfdbaae6fab063539",
+      "raw_bytes": 8501,
+      "raw_sha256": "466791cef4f72efb9e38da981c82cc776a792656f4c604ec04989c6aad0031a2",
+      "strict_json_parse": "PASS"
+    },
+    "test_application_runtime_receipt": {
+      "commit": "7d3ccacbacf8cc2fbcc6506b714d625181f78296",
+      "git_blob_oid": "7472e9d728fcfcbba5e1d96e03e85d585dd74804",
+      "raw_bytes": 16722,
+      "raw_sha256": "bc1373bf325d7d3963b897e7519374e9de08b318730b18e3ed8c144a10c26d94",
+      "strict_json_parse": "PASS"
+    },
+    "test_opening_packet": {
+      "commit": "5a91c68ec5bacabdea3bff60ea6a372c95457d37",
+      "git_blob_oid": "6c8e33fcfd7e8990e57cdba66911c1213401630f",
+      "raw_bytes": 21378,
+      "raw_sha256": "12d8ea29369dcf143c4f5be945284f99ef61ef2464b9f5eb52476894380edbe1",
+      "strict_json_parse": "PASS"
+    },
+    "test_packet_central_validation_receipt": {
+      "commit": "db83b3fd23c90996c247c9fae6e8c4b69e4273aa",
+      "git_blob_oid": "4da39329c02aa609eb4cd043cb75d8babb6741e5",
+      "raw_bytes": 8106,
+      "raw_sha256": "db73a32ad2612eca37fe3a9d7985c4ff52cca77db4f97764ff4f8a2476f163ae",
+      "strict_json_parse": "PASS"
+    },
+    "test_packet_prior_independent_audit": {
+      "commit": "3a31b8a4136198890add97f37538baf78ec48929",
+      "git_blob_oid": "44f92a757757fd25074f4d2308f9f1bb69b98595",
+      "raw_bytes": 22040,
+      "raw_sha256": "d37110e2884954e8849848b3004ea494684ed20ce4eb1c2e1330935030a27916",
+      "strict_json_parse": "PASS"
+    },
+    "validation_registry": {
+      "commit": "2bcfff7eb6f0c91819dde097f620eb5a7d92925b",
+      "git_blob_oid": "996f6172c564849c0cb518c2bdf56a83732ad539",
+      "raw_bytes": 26597,
+      "raw_sha256": "40a96ca37a1cd31594bb9933501a30518f6026ab1dd2abf684eb74847fc6c925",
+      "strict_json_parse": "PASS"
+    },
+    "validation_freeze_receipt": {
+      "commit": "2bcfff7eb6f0c91819dde097f620eb5a7d92925b",
+      "git_blob_oid": "74161f9295513ec5d3692df27262f7f57f7a3a03",
+      "raw_bytes": 9624,
+      "raw_sha256": "f41aa9b4f2b929f737e529bba21daa86f46a1e91a063dcffb2deed0bc3056b3b",
+      "strict_json_parse": "PASS"
+    },
+    "validation_prior_independent_audit": {
+      "commit": "6fad41704ffc87ab421a9a2be5f79c3e5794f89b",
+      "git_blob_oid": "9966a827bb0a043a1f03c32bf1082817be393d08",
+      "raw_bytes": 23863,
+      "raw_sha256": "c0e98d9927cb8ac835339b53c946efa1b8a58a2eb97517fc3695dfcd1359dbfc",
+      "strict_json_parse": "PASS"
+    },
+    "pipeline_state": {
+      "commit": "b973ed673a314d6223265712b95d2a7ce51b02f3",
+      "git_blob_oid": "83ab7be41d442603f5e9208c3b9994be1b9bd3d5",
+      "raw_bytes": 114088,
+      "raw_sha256": "7008657dfcbe138321c68dc3b2632265f16bfb05084c9686ae7eb95706c3a970",
+      "strict_json_parse": "PASS",
+      "state_freshness": "STALE_RELATIVE_TO_NEWER_BOUND_RUNTIME_AND_STATISTICS_RECEIPTS"
+    }
+  },
+  "fresh_static_replay": {
+    "entry_gate": {
+      "head_match": true,
+      "sole_parent_match": true,
+      "tree_match": true,
+      "detached_checkout_observed": true,
+      "entry_worktree_clean": true,
+      "target_absent_before_write": true,
+      "no_scientific_runner_import_or_invocation": true,
+      "no_training_tuning_score_export_evaluation_or_test_execution": true,
+      "no_docker_wsl_network_or_tls_probe": true
+    },
+    "strict_json": {
+      "selected_committed_json_objects_parsed": 10,
+      "test_root_json_objects_parsed": 69,
+      "validation_root_json_objects_parsed": 144,
+      "canonical_dataset_manifest_objects_parsed": 1,
+      "bom_rejection_check": "PASS",
+      "duplicate_key_rejection_check": "PASS",
+      "case_collision_rejection_check": "PASS",
+      "non_finite_number_rejection_check": "PASS",
+      "trailing_content_rejection_check": "PASS",
+      "non_object_root_rejection_check": "PASS"
+    },
+    "test_root_inventory": {
+      "root": "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001",
+      "algorithm": "Sort all relative POSIX paths ordinally; for each regular file append UTF-8 path<TAB>byte_count<TAB>raw_sha256<LF>; SHA-256 the concatenated bytes.",
+      "post_statistics": {
+        "files": 576,
+        "total_bytes": 1350812886,
+        "inventory_sha256": "d10e8e1a2e587308c813b9c4ef1b6cd4da16da3273e55f25776f6a49ec0dd8ec"
+      },
+      "pre_statistics_projection": {
+        "definition": "Current TEST root with the statistics/ subtree excluded.",
+        "files": 573,
+        "total_bytes": 1350801059,
+        "inventory_sha256": "2a87284c6d904192130985898a37c178f3972c722ae44c85c0aa2e4f231e7ef7"
+      },
+      "exact_statistics_delta": {
+        "files_added": 3,
+        "total_bytes_added": 11827,
+        "preexisting_files_modified": 0,
+        "unexpected_files_added": 0,
+        "exact_match": true
+      },
+      "top_level_file_counts": {
+        "application_refs": 13,
+        "evaluations": 39,
+        "protocol": 1,
+        "scores": 520,
+        "statistics": 3
+      },
+      "suffix_counts": {
+        ".json": 69,
+        ".npy": 507
+      },
+      "symlinks_junctions_or_reparse_points": false,
+      "unexpected_extensions": false,
+      "status": "PASS"
+    },
+    "statistics_output_inventory": {
+      "root": "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/statistics",
+      "files": 3,
+      "total_bytes": 11827,
+      "inventory_sha256": "ac15d8a42968d837bbf5c48f43f8e0b837813f07c533c8f9dc2e17dde82db33a",
+      "exact_files": [
+        {
+          "relative_path": "bootstrap_report.json",
+          "bytes": 8432,
+          "raw_sha256": "9a8eb9a80698fed62ef51f0a85abc0334ca3933fc6534c46cd4862d3e7a970bb",
+          "schema_version": "ais-r6-bootstrap-report/1.0"
+        },
+        {
+          "relative_path": "holm_report.json",
+          "bytes": 2179,
+          "raw_sha256": "0fbce66c3b03636a3c53eab8a66a52d3b39f36649c90eae4faa8f810d0aa5d26",
+          "schema_version": "ais-r6-holm-report/1.0"
+        },
+        {
+          "relative_path": "statistics_receipt.json",
+          "bytes": 1216,
+          "raw_sha256": "4c308fdee05eb4cba385c143eb992506924366d167b4911942383dba21090a9d",
+          "schema_version": "ais-r6-statistics-runtime-receipt/1.0"
+        }
+      ],
+      "strict_json_parse": "PASS_3_OF_3",
+      "embedded_hash_binding": "PASS",
+      "status": "PASS"
+    },
+    "validation_root_inventory": {
+      "root": "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-validation/attempt-001",
+      "algorithm": "Sort all relative POSIX paths ordinally; for each regular file append UTF-8 path<TAB>byte_count<TAB>raw_sha256<LF>; SHA-256 the concatenated bytes.",
+      "files": 661,
+      "total_bytes": 1385174064,
+      "inventory_sha256": "7605b49d38e694f578e8f1f5b3483aa9bf3f262f4280cd50acdb19ce83911f71",
+      "expected_files": 661,
+      "expected_total_bytes": 1385174064,
+      "expected_inventory_sha256": "7605b49d38e694f578e8f1f5b3483aa9bf3f262f4280cd50acdb19ce83911f71",
+      "suffix_counts": {
+        ".json": 144,
+        ".npy": 507,
+        ".npz": 10
+      },
+      "top_level_directories": [
+        "evaluations",
+        "runs",
+        "scores"
+      ],
+      "symlinks_junctions_or_reparse_points": false,
+      "exact_match": true,
+      "status": "PASS_UNCHANGED"
+    },
+    "canonical_dataset_binding": {
+      "manifest_path": "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r2b-v5.1-canonical/attempt-001/manifest.json",
+      "raw_bytes": 4541,
+      "raw_sha256": "45b0bba18120d722eb3c86bd0c01176050ea975dbd9ebcef22cbfd6df0f7bfec",
+      "canonical_json_sha256": "7920964be1b449dad9a3ed2e8a6c783fc22d383b55ea3d36a389c3cabd6340a6",
+      "classification": "CONTROLLED_GENERATED_BEHAVIOR",
+      "observed_behavior": false,
+      "num_users": 5000,
+      "num_items": 5200,
+      "num_interactions": 823371,
+      "num_baskets": 15000,
+      "cold_item_count": 250,
+      "source_kind": "versioned-parent-feature-view",
+      "binding_status": "PASS"
+    },
+    "test_protocol_binding": {
+      "path": "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/protocol/test-protocol.json",
+      "schema_version": "prepared-protocol/1.0",
+      "raw_bytes": 1872284,
+      "raw_sha256": "c8a64643a5177c322156210620e8b0693035d18ea04cc53951fa243fcd8a14da",
+      "protocol_manifest_sha256": "f348ffe871be74e1941ac155adcf1c8d600a95f69338f4c16b0153cf3487e6f4",
+      "dataset_manifest_sha256": "7920964be1b449dad9a3ed2e8a6c783fc22d383b55ea3d36a389c3cabd6340a6",
+      "selection_protocol_manifest_sha256": "c8ec031c78d7d6837742d9dfd5a19bacddc867b7e3dfebdf20cf0b408a6d671f",
+      "candidate_order_sha256": "0cea7f41366c972628da0b33b02c01f711ac57c56e262ea7c3a1e66f5f3330e9",
+      "eligible_user_order_array_sha256": "219fdcd7083f8e7f7103ab6215c6516de2afa2039709f2f4fd86b4694dcea8a7",
+      "score_artifact_user_order_object_sha256": "21fe706741d085ff442fb83d709e2c33c161616c8a6e6608901d11cf5e9a3554",
+      "user_order_hash_domain_note": "The opening receipt hashes the canonical ordered ID array; score artifacts hash canonical JSON object {ids:[...]}. Both were independently reproduced and are intentionally different.",
+      "total_users": 5000,
+      "eligible_users": 4970,
+      "excluded_users": 30,
+      "candidates": 5200,
+      "split": "test",
+      "test_set_opened": true,
+      "cutoff": 10,
+      "eligible_user_order_strictly_increasing_and_unique": true,
+      "all_cases_have_positive_items": true,
+      "history_and_positive_sets_disjoint_for_all_cases": true,
+      "all_case_items_inside_candidate_catalog": true,
+      "status": "PASS"
+    },
+    "roster_and_application_reference_replay": {
+      "registered_runs": 13,
+      "runtime_result_rows": 13,
+      "exact_roster_order": [
+        "bpr-mf-s2027-val-001",
+        "bpr-mf-s31415-val-001",
+        "bpr-mf-s42-val-001",
+        "deep-s2027-val-001",
+        "deep-s31415-val-001",
+        "deep-s42-val-001",
+        "hybrid-s2027-val-002",
+        "hybrid-s31415-val-001",
+        "hybrid-s42-val-001",
+        "itemknn-val-001",
+        "mostpop-val-001",
+        "random-s42-val-001",
+        "rule-only-val-001"
+      ],
+      "application_references_checked": 13,
+      "score_artifact_ref_v1_2_count": 9,
+      "harmonized_baseline_evidence_ref_v1_0_count": 4,
+      "split_test_count": 13,
+      "test_set_opened_true_count": 13,
+      "source_validation_run_bindings_checked": 13,
+      "application_command_hash_bindings_checked": 13,
+      "score_manifest_raw_hash_bindings_checked": 13,
+      "evaluation_receipt_raw_hash_bindings_checked": 13,
+      "model_seed_role_and_roster_order_match": "PASS_13_OF_13",
+      "hash_mismatches": 0,
+      "status": "PASS"
+    },
+    "test_score_manifest_and_chunk_replay": {
+      "score_manifests_checked": 13,
+      "score_chunks_checked": 507,
+      "score_chunk_bytes_read": 1343952896,
+      "chunks_per_run": 39,
+      "chunk_partition": "38 chunks of 128 users plus one final chunk of 106 users per run",
+      "declared_matrix_shape": [
+        4970,
+        5200
+      ],
+      "declared_dtype": "float32",
+      "declared_finite": true,
+      "actual_shape_check": "PASS_507_OF_507",
+      "actual_dtype_check": "PASS_507_OF_507",
+      "actual_finite_value_check": "PASS_507_OF_507",
+      "chunk_raw_hash_check": "PASS_507_OF_507",
+      "chunk_name_order_and_offset_check": "PASS_507_OF_507",
+      "protocol_candidate_and_user_order_bindings": "PASS_13_OF_13",
+      "hash_mismatches": 0,
+      "status": "PASS"
+    },
+    "test_evaluation_and_per_user_replay": {
+      "evaluation_bundles_checked": 13,
+      "evaluation_json_files_checked": 39,
+      "evaluation_verdict_pass_count": 13,
+      "per_user_rows_checked": 64610,
+      "rows_per_run": 4970,
+      "common_user_sequence_check": "PASS_13_OF_13",
+      "per_user_canonical_hash_check": "PASS_13_OF_13",
+      "metric_range_and_finite_check": "PASS_64610_OF_64610_FOR_HR_AT_10_NDCG_AT_10_AND_GAUC",
+      "metric_denominators": {
+        "HR@10": 4970,
+        "NDCG@10": 4970,
+        "GAUC": 4970
+      },
+      "aggregate_metric_reconciliation": "PASS_13_OF_13",
+      "aggregate_reconciliation_cells": 39,
+      "aggregate_reconciliation_tolerance": 1e-15,
+      "maximum_absolute_difference_with_evaluator_equivalent_numpy_mean": 0.0,
+      "hash_or_binding_mismatches": 0,
+      "status": "PASS"
+    },
+    "validation_artifact_replay": {
+      "registered_run_directories": 13,
+      "primary_artifact_hash_bindings_checked": 78,
+      "checkpoint_file_and_manifest_pairs_checked": 10,
+      "checkpoint_file_and_manifest_bindings_checked": 20,
+      "total_artifact_hash_bindings_checked": 98,
+      "harmonized_validation_evidence_refs_checked": 4,
+      "local_score_artifact_refs_checked": 9,
+      "score_chunks_checked": 507,
+      "per_user_rows_checked": 64792,
+      "declared_matrix_shape": [
+        4984,
+        5200
+      ],
+      "score_chunk_hash_shape_dtype_and_finite_check": "PASS_507_OF_507",
+      "per_user_order_range_and_aggregate_reconciliation": "PASS_13_OF_13",
+      "inventory_unchanged": true,
+      "hash_mismatches": 0,
+      "status": "PASS"
+    },
+    "statistics_method_and_result_replay": {
+      "runner_invoked": false,
+      "existing_output_files_only": true,
+      "method": "hierarchical_paired_bootstrap",
+      "bootstrap_replicates": 2000,
+      "bootstrap_seed": 42,
+      "confidence_level": 0.95,
+      "seed_axis": [
+        42,
+        2027,
+        31415
+      ],
+      "shared_seed_and_user_resampling_schedule": true,
+      "pre_average_seed_vectors": false,
+      "result_rows_checked": 15,
+      "result_rows_exactly_reproduced": 15,
+      "confidence_interval_quantile_method": "linear_95_percent",
+      "mean_delta_ci_and_raw_p_value_match": "PASS_15_OF_15",
+      "raw_p_value_method": "Two-sided centered nonparametric hierarchical bootstrap p=(1+count(abs(delta_star-observed_delta)>=abs(observed_delta)))/(B+1).",
+      "holm_method": "Holm step-down over exactly 12 exploratory hypotheses",
+      "holm_rows_checked": 12,
+      "holm_rows_exactly_reproduced": 12,
+      "holm_rejected_null_count": 12,
+      "post_test_p_value_method_amendment": true,
+      "confirmatory_use": "FORBIDDEN",
+      "replay_status": "PASS_READ_ONLY_ARITHMETIC_REIMPLEMENTATION",
+      "scientific_runtime_rerun": false
+    }
+  },
+  "statistical_adjudication": {
+    "primary_comparison": "hybrid_vs_itemknn",
+    "primary_metric": "NDCG@10",
+    "primary_interval_was_pre_test_frozen": true,
+    "raw_p_value_estimator_was_pre_test_frozen": false,
+    "primary_and_guardrail_results": [
+      {
+        "metric": "NDCG@10",
+        "mean_delta": 0.020502290949124657,
+        "ci_lower": 0.017416126399639402,
+        "ci_upper": 0.023563001355091234,
+        "raw_two_sided_centered_bootstrap_p_value": 0.0004997501249375312,
+        "interval_decision": "POSITIVE_INTERNAL_CONTROLLED_EFFECT"
+      },
+      {
+        "metric": "HR@10",
+        "mean_delta": 0.049899396378269616,
+        "ci_lower": 0.041515761234071094,
+        "ci_upper": 0.05801643192488262,
+        "raw_two_sided_centered_bootstrap_p_value": 0.0004997501249375312,
+        "interval_decision": "POSITIVE_INTERNAL_CONTROLLED_EFFECT"
+      },
+      {
+        "metric": "GAUC",
+        "mean_delta": -0.06312106053575145,
+        "ci_lower": -0.06707287368634264,
+        "ci_upper": -0.05895761775009353,
+        "raw_two_sided_centered_bootstrap_p_value": 0.0004997501249375312,
+        "interval_decision": "NEGATIVE_INTERNAL_CONTROLLED_EFFECT"
+      }
+    ],
+    "primary_interpretation": "The preregistered primary NDCG@10 interval is positive inside the controlled generator and HR@10 is also positive, but GAUC is strictly negative. The evidence does not support a blanket or three-metric Hybrid-superiority claim.",
+    "rule_only_ablation": {
+      "model_id": "wide-rule-only-v1",
+      "role": "PROPOSED_METHOD_ABLATION_NOT_CONVENTIONAL_COMPARATOR",
+      "hybrid_minus_rule_results": [
+        {
+          "metric": "NDCG@10",
+          "mean_delta": -0.0031480229234648557,
+          "ci_lower": -0.004198975596691997,
+          "ci_upper": -0.0021710219162606923,
+          "interval_decision": "NEGATIVE_INTERNAL_CONTROLLED_EFFECT"
+        },
+        {
+          "metric": "HR@10",
+          "mean_delta": -0.00482897384305835,
+          "ci_lower": -0.009121395036887995,
+          "ci_upper": -0.0011401743796109994,
+          "interval_decision": "NEGATIVE_INTERNAL_CONTROLLED_EFFECT"
+        },
+        {
+          "metric": "GAUC",
+          "mean_delta": 0.08977034110910168,
+          "ci_lower": 0.08649899371712023,
+          "ci_upper": 0.09323564899027657,
+          "interval_decision": "POSITIVE_INTERNAL_CONTROLLED_EFFECT"
+        }
+      ],
+      "general_superiority_claim_allowed": false
+    },
+    "exploratory_multiplicity": {
+      "hypothesis_count": 12,
+      "alpha": 0.05,
+      "holm_rejected_null_count": 12,
+      "raw_p_value_distribution": [
+        {
+          "value": 0.0004997501249375312,
+          "result_row_count": 11
+        },
+        {
+          "value": 0.02048975512243878,
+          "result_row_count": 1,
+          "hypothesis_id": "hybrid_vs_rule::HR@10"
+        }
+      ],
+      "holm_adjusted_p_value_distribution": [
+        {
+          "value": 0.005997001499250375,
+          "exploratory_row_count": 11
+        },
+        {
+          "value": 0.02048975512243878,
+          "exploratory_row_count": 1,
+          "hypothesis_id": "hybrid_vs_rule::HR@10"
+        }
+      ],
+      "post_test_method_amendment": true,
+      "status": "EXPLORATORY_ONLY_NOT_CONFIRMATORY"
+    },
+    "accepted_result_rows": 0,
+    "paper_inference_authorized": false
+  },
+  "semantic_adjudication": {
+    "dataset_classification": "CONTROLLED_GENERATED_BEHAVIOR",
+    "observed_public_behavior": false,
+    "external_validity": "NOT_ESTABLISHED",
+    "official_public_reproduction": {
+      "status": "INCOMPARABLE",
+      "accepted_public_reproduction_row": false,
+      "cross_dataset_numeric_superiority_claim_allowed": false
+    },
+    "comparator_selection": {
+      "selection_split": "validation",
+      "selection_metric": "NDCG@10",
+      "eligible_role": "conventional_comparator",
+      "selected_model_id": "itemknn-binary-cosine-v1",
+      "selected_run_id": "itemknn-val-001",
+      "selected_validation_value": 0.07248431595254329,
+      "selection_rule": "Maximum validation NDCG@10 among admitted conventional comparators only.",
+      "selection_replay": "PASS"
+    },
+    "rule_only_boundary": {
+      "model_id": "wide-rule-only-v1",
+      "validation_ndcg_at_10": 0.08908311699014877,
+      "role": "proposed_ablation_rule_only",
+      "conventional_comparator": false,
+      "fit_scope": "TRAIN_ONLY",
+      "general_superiority_claim_allowed": false
+    },
+    "not_tested_methods": [
+      "LightGCN",
+      "SASRec",
+      "BERT4Rec"
+    ],
+    "allowed_description": "Internally controlled generated-behavior TEST evidence with checked artifact integrity, positive Hybrid-minus-ItemKNN effects for NDCG@10 and HR@10, and a negative effect for GAUC; exploratory multiplicity results remain explicitly post-TEST amended.",
+    "prohibited_claims": [
+      "blanket Hybrid superiority",
+      "three-metric Hybrid superiority",
+      "Rule-only general superiority",
+      "causal effectiveness",
+      "production effectiveness",
+      "public-dataset superiority",
+      "state of the art",
+      "universal external validity",
+      "final paper benchmark"
+    ]
+  },
+  "fallacy_scan": {
+    "coverage": "11/11",
+    "covered_count": 11,
+    "expected_count": 11,
+    "items": [
+      {
+        "id": 1,
+        "name": "Simpson's paradox",
+        "status": "NOT_ASSESSABLE_FROM_AGGREGATE_REPORT",
+        "basis": "No subgroup-stratified result or subgroup reversal claim is available; no subgroup claim is authorized."
+      },
+      {
+        "id": 2,
+        "name": "Ecological fallacy",
+        "status": "GUARDED",
+        "basis": "Aggregate controlled-generator effects are not generalized to individuals, observed populations, or production users."
+      },
+      {
+        "id": 3,
+        "name": "Berkson's paradox",
+        "status": "CAUTION_ELIGIBILITY_FILTER",
+        "basis": "Metrics condition on 4,970 users with at least one novel organic TEST purchase; selection-induced associations remain possible."
+      },
+      {
+        "id": 4,
+        "name": "Collider bias",
+        "status": "NOT_APPLICABLE_NO_CAUSAL_ADJUSTMENT_MODEL",
+        "basis": "No causal adjustment or conditioned causal path is asserted."
+      },
+      {
+        "id": 5,
+        "name": "Base-rate neglect",
+        "status": "NOT_APPLICABLE_NON_DIAGNOSTIC_METRICS",
+        "basis": "HR@10, NDCG@10, and GAUC are ranking metrics, not sensitivity, specificity, PPV, or diagnostic outputs."
+      },
+      {
+        "id": 6,
+        "name": "Regression to the mean",
+        "status": "NOT_APPLICABLE_NO_EXTREME_SELECTED_PRE_POST_CLAIM",
+        "basis": "The audit makes no pre/post claim based on selecting extreme observations."
+      },
+      {
+        "id": 7,
+        "name": "Survivorship bias",
+        "status": "CAUTION_ELIGIBLE_USERS_ONLY",
+        "basis": "Results are scoped to 4,970 eligible users; 30 of 5,000 users are excluded by the frozen eligibility rule."
+      },
+      {
+        "id": 8,
+        "name": "Look-elsewhere effect",
+        "status": "CAUTION_EXPLORATORY_MULTIPLICITY_ONLY",
+        "basis": "Multiple models and metrics were inspected; Holm adjustment covers only the declared 12-row exploratory family and is not confirmatory."
+      },
+      {
+        "id": 9,
+        "name": "Garden of forking paths",
+        "status": "CAUTION_POST_TEST_METHOD_AMENDMENT",
+        "basis": "The raw p-value estimator was specified after TEST opening, and unexecuted alternatives are not evidence; all p-value claims remain exploratory."
+      },
+      {
+        "id": 10,
+        "name": "Correlation does not imply causation",
+        "status": "GUARDED",
+        "basis": "No causal claim is authorized from the controlled offline comparisons."
+      },
+      {
+        "id": 11,
+        "name": "Reverse causality",
+        "status": "NOT_APPLICABLE_NO_TEMPORAL_CAUSAL_CLAIM",
+        "basis": "No directional temporal causal claim is made."
+      }
+    ],
+    "overall": "CAUTION_CONTROLLED_GENERATED_TEST_EVIDENCE_ONLY_NO_FINAL_INFERENCE"
+  },
+  "state_authority_audit": {
+    "pipeline_state_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/pipeline_state_stage1e.json",
+    "pipeline_state_observed_values": {
+      "result_status": "NOT_RUN",
+      "test_set_opened": "NO",
+      "harmonized_v5": "BLOCKED",
+      "external_validation": "BLOCKED"
+    },
+    "newer_bound_evidence_observed_values": {
+      "test_set_opened": "YES",
+      "runtime_result_rows": 13,
+      "statistical_result_rows": 15,
+      "accepted_result_rows": 0
+    },
+    "consistency": "STALE_AND_INCONSISTENT_WITH_NEWER_BOUND_RUNTIME_AND_STATISTICS_RECEIPTS",
+    "pipeline_state_modified": false,
+    "silent_reconciliation_performed": false,
+    "disposition": "RETAIN_UNCHANGED_AS_REQUIRED_AND_TREAT_AS_A_MAJOR_STATE_AUTHORITY_LIMITATION"
+  },
+  "runtime_and_scientific_boundary": {
+    "observed_evidence_state": {
+      "RESULT_STATUS": "STATISTICS_COMPLETE_AND_FRESH_AUDIT_COMPLETE_WITH_MAJOR_LIMITATIONS",
+      "TEST_SET_OPENED": "YES",
+      "RUNTIME_RESULT_ROWS": 13,
+      "STATISTICAL_RESULT_ROWS": 15,
+      "ACCEPTED_RESULT_ROWS": 0,
+      "phase_1e_complete": false,
+      "benchmark_numbers_valid_for_paper": false,
+      "paper_inference_authorized": false
+    },
+    "audit_execution": {
+      "scientific_runtime_executed": false,
+      "training_performed": false,
+      "tuning_performed": false,
+      "score_export_performed": false,
+      "evaluation_performed": false,
+      "test_open_or_reopen_performed": false,
+      "statistics_runner_executed": false,
+      "docker_used": false,
+      "wsl_used": false,
+      "network_used": false,
+      "tls_used": false
+    },
+    "seal_scope": "EXISTING_ARTIFACT_INTEGRITY_AND_BOUNDED_INTERNAL_CONTROLLED_EFFECT_INTERPRETATION_ONLY",
+    "seal_does_not_mean": [
+      "Phase 1E is scientifically complete",
+      "any result row is accepted for the manuscript",
+      "public reproduction passed",
+      "external validity is established",
+      "confirmatory p-values are available",
+      "production or causal effectiveness is established"
+    ]
+  },
+  "major_limitations": {
+    "count": 7,
+    "items": [
+      {
+        "id": "ML-01",
+        "limitation": "The dataset is controlled/generated behavior, not observed public or production behavior.",
+        "effect": "External validity, production effectiveness, and universal generalization are not authorized."
+      },
+      {
+        "id": "ML-02",
+        "limitation": "Official public reproduction is INCOMPARABLE and has no accepted result row.",
+        "effect": "No public-dataset reproduction or cross-dataset superiority claim is authorized."
+      },
+      {
+        "id": "ML-03",
+        "limitation": "Hybrid-minus-ItemKNN GAUC is negative despite positive NDCG@10 and HR@10 intervals.",
+        "effect": "No blanket or three-metric Hybrid-superiority claim is supported."
+      },
+      {
+        "id": "ML-04",
+        "limitation": "The centered raw p-value estimator and resulting Holm procedure were specified after TEST opening.",
+        "effect": "All p-value and Holm results are exploratory, not confirmatory."
+      },
+      {
+        "id": "ML-05",
+        "limitation": "Rule-only is a proposed-method ablation, not a conventional comparator.",
+        "effect": "Its mixed results cannot be described as general baseline or method superiority."
+      },
+      {
+        "id": "ML-06",
+        "limitation": "pipeline_state_stage1e.json remains stale and inconsistent with newer immutable runtime and statistics receipts.",
+        "effect": "The audit cannot silently promote or reconcile Phase 1E state authority."
+      },
+      {
+        "id": "ML-07",
+        "limitation": "Accepted result rows remain zero and paper inference remains unauthorized.",
+        "effect": "The integrity seal is not a paper-valid benchmark seal or Phase 1E completion declaration."
+      }
+    ]
+  },
+  "protected_state": {
+    "pipeline_state_modified": false,
+    "manuscript_modified": false,
+    "source_or_code_modified": false,
+    "packets_modified": false,
+    "prior_receipts_modified": false,
+    "validation_registry_modified": false,
+    "validation_freeze_receipt_modified": false,
+    "canonical_dataset_root_modified": false,
+    "validation_root_modified": false,
+    "test_root_modified": false,
+    "statistics_outputs_modified": false,
+    "training_evaluation_or_test_output_created": false,
+    "unrelated_user_state_staged": false
+  },
+  "write_set": {
+    "exact_new_files": [
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r7_e5_fresh_independent_audit_receipt_v1.json"
+    ],
+    "exact_file_count": 1,
+    "target_created_after_all_prewrite_checks": true,
+    "target_strict_parse_after_write_required": true,
+    "git_diff_check_required": true,
+    "stage_only_target_required": true,
+    "commit_once_required": true,
+    "self_content_hash": null,
+    "post_commit_binding": {
+      "commit_oid": null,
+      "parent_oid": "9bb7c5a691b6a744fd158bf8291a06e31d668311",
+      "git_blob_oid": null,
+      "raw_git_blob_bytes": null,
+      "raw_git_blob_sha256": null,
+      "semantics": "Commit and blob identifiers are reported externally after the one-file commit to avoid self-reference."
+    }
+  },
+  "next_gate": {
+    "status": "MANUAL_STATE_AUTHORITY_RECONCILIATION_AND_EXTERNAL_VALIDITY_REMEDIATION_REQUIRED_BEFORE_PAPER_USE",
+    "automatic_execution_authorized": false,
+    "automatic_test_reopen_or_retry_authorized": false,
+    "automatic_paper_admission_authorized": false,
+    "required_before_any_paper_valid_claim": [
+      "resolve pipeline state authority without rewriting historical receipts",
+      "obtain an accepted comparable public reproduction or other defensible external validation",
+      "retain mixed primary metric results including negative GAUC",
+      "retain post-TEST amendment disclosure and exploratory-only p-value status",
+      "perform a separate explicit paper-admission decision"
+    ]
+  },
+  "verdict": "SEAL_WITH_MAJOR_LIMITATIONS",
+  "verdict_scope": "STATIC_ARTIFACT_INTEGRITY_AND_BOUNDED_INTERNAL_CONTROLLED_EFFECT_INTERPRETATION_ONLY; PHASE_1E_REMAINS_INCOMPLETE_FOR_PAPER_INFERENCE",
+  "fail_closed": true
+}
