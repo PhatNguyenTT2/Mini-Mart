@@ -1,0 +1,454 @@
+{
+  "schema_version": "ais-r8-p2-public-data-protocol-validation-amendment/1.0",
+  "stage_id": "AIS-R8-P2",
+  "document_role": "AUTHOR_APPROVED_PRE_RUN_SCIENTIFIC_GATE_AMENDMENT",
+  "created_at": "2026-09-08T02:42:33.1041086Z",
+  "material_passport": {
+    "origin_skill": "ars-codex/academic-research-suite/experiment-agent",
+    "origin_mode": "plan/pre-run-amendment",
+    "origin_date": "2026-09-08T02:42:33.1041086Z",
+    "verification_status": "UNVERIFIED",
+    "verification_scope": "Author decision, source/protocol evidence, and the prospective public-data validation design were reviewed. No new training, evaluation, TEST access, score inspection, or benchmark admission occurred in AIS-R8-P2.",
+    "version_label": "ais-r8-p2-public-data-protocol-validation-amendment-v1.0.0",
+    "content_hash": null,
+    "upstream_dependencies": [
+      "ais-r8-p1-source-protocol-admission-receipt-v1.0.0",
+      "ais-r8-state-authority-and-external-validity-plan-v1.0.0",
+      "ais-r7-e5-fresh-independent-audit-receipt-v1.0.0",
+      "recbole-v1.2.1@9a6f63d8d4a5b989fe27955a833f813a6d86041e",
+      "grouplens-ml-100k@sha256:50d2a982c66986937beb9ffb3aa76efe955bf3d5c6b761f4e3a7cd717c6a3229"
+    ],
+    "repro_lock": {
+      "ars_adapter_version": "0.1.26",
+      "repository_head_before_amendment": "dde051269f69f5a0a323792f341e547d036235ed",
+      "repository_tree_before_amendment": "62e4a3336d4e64f3e9da7a1378a0618dc644ef50",
+      "source_revision": "9a6f63d8d4a5b989fe27955a833f813a6d86041e",
+      "source_tree": "08915121fea069a30f7e3e97a72e16e7e76d43c6",
+      "dataset_archive_sha256": "50d2a982c66986937beb9ffb3aa76efe955bf3d5c6b761f4e3a7cd717c6a3229",
+      "local_atomic_dataset_sha256": "4edb74e2a81178c2ba9ff381495f754f996c4aea351b1272ca36b43da0935eff",
+      "replay_guarantee": false,
+      "semantics": "Prospective design lock only. Replay and result claims require AIS-R8-P3 execution and AIS-R8-P4 independent audit."
+    },
+    "experiment_intake_declaration": {
+      "status": "experiments_declared",
+      "declared_at": "2026-09-01T16:38:56Z",
+      "declared_by": "scholar"
+    }
+  },
+  "ars_routing_receipt": {
+    "adapter": "ars-codex",
+    "adapter_version": "0.1.26",
+    "root_skill": "skills/academic-research-suite/SKILL.md",
+    "workflow": "ars/experiment-agent/WORKFLOW.md",
+    "runner_role": "ars/experiment-agent/agents/code_runner_agent.md",
+    "reproducibility_reference": "ars/experiment-agent/references/reproducibility_protocol.md",
+    "integration_reference": "ars/experiment-agent/references/ars_integration_guide.md",
+    "handoff_schema_reference": "ars/shared/handoff_schemas.md#schema-9-material-passport-cross-stage-metadata",
+    "root_skill_sha256": "5acb202b13a7dba912091ae5d15a19b88eb3f4e58b4d942649cb35df770ace91",
+    "workflow_sha256": "6d984f36be84c3f9249f68ef0c599155978b5a661d172e2bb4db2205fdc720f3",
+    "integration_reference_sha256": "c129b6d889dc52cca921b75311b8988a4ff12df412a19a5530abe05e36a23d16",
+    "handoff_schema_sha256": "3d81dd949e6eb5162e7227d8ee13e65b5a17ab9440db3809cbcea8f63be6c8de",
+    "selected_instructions_read_before_write": true,
+    "material_passport_applied": true
+  },
+  "model_policy_audit": {
+    "scope": "AIS-R8-P2_ONLY",
+    "requested_model": "gpt-5.6-sol",
+    "requested_reasoning_effort": "max",
+    "requested_service_tier": "Standard/default",
+    "forbidden_service_tiers": [
+      "Fast",
+      "Priority"
+    ],
+    "actual_model": "UNOBSERVABLE",
+    "actual_reasoning_effort": "UNOBSERVABLE",
+    "actual_service_tier": "UNOBSERVABLE",
+    "actual_speed": "UNOBSERVABLE",
+    "model_gate": "NOT_ADJUDICATED_WITHOUT_AUTHORITATIVE_RUNTIME_TELEMETRY",
+    "basis": "The repository workspace exposes no authoritative model, reasoning-effort, service-tier, or speed telemetry; none was inferred from latency, prose, or prior task history."
+  },
+  "author_decision": {
+    "decision": "SELECT_PUBLIC_DATA_PROTOCOL_VALIDATION",
+    "decision_date": "2026-09-08",
+    "decision_source": "Explicit author approval in the active central task after comparison of the strict-reproduction and relaxed public-data protocol-validation routes.",
+    "author_response": "Đồng ý",
+    "strict_reproduction_route": "TERMINATED_NO_FORMAL_CENTER_FOUND",
+    "selected_route": "PUBLIC_DATA_PROTOCOL_VALIDATION",
+    "automatic_fallback": false,
+    "scope_of_approval": "Approve this pre-run scientific amendment and preparation of a fresh execution packet. This is not approval to execute an unspecified command."
+  },
+  "amendment_rationale": {
+    "problem": "The pinned RecBole quick-start value NDCG@10=0.2768 is illustrative and lacks a formal source-bound result center, exact producer environment, run schedule, checkpoint artifact, and immutable evaluator receipt.",
+    "scientific_adjustment": "Replace numeric-center reproduction as a mandatory Phase-1E criterion with a prospectively specified public-data protocol-validation lane. Retain strict provenance, leakage, evaluator, and namespace controls.",
+    "not_relaxed": [
+      "source and dataset identity",
+      "pre-run protocol freeze",
+      "same protocol and evaluator within the lane",
+      "TRAIN/validation/TEST separation",
+      "fixed seed schedule and complete-run handling",
+      "immutable result artifacts and hash replay",
+      "preservation of negative or null outcomes",
+      "independent post-run audit",
+      "separation from controlled v5 evidence and the historical official-reproduction namespace"
+    ],
+    "relaxed": [
+      "a formal published numeric result center is no longer mandatory",
+      "matching or falling within a tolerance around 0.2768 is not an acceptance criterion",
+      "the proposed Wide-Deep-Apriori model is not required to run on MovieLens 100K because the dataset lacks the required basket, price, and e-commerce feature semantics",
+      "a model does not have to outperform its comparator for the protocol-validation lane to pass",
+      "scope limitations may remain at Phase-1E seal if no unresolved integrity, provenance, or leakage finding remains"
+    ],
+    "prohibited_relaxations": [
+      "retrospective tolerance widening",
+      "post-TEST metric or seed changes",
+      "hand-entered benchmark values",
+      "cross-dataset numeric joins",
+      "relabeling illustrative or diagnostic results as official reproduction",
+      "suppressing unfavorable model outcomes"
+    ]
+  },
+  "evidence_architecture": {
+    "layer_1_controlled_v5": {
+      "namespace": "HARMONIZED_V5_COMPARISON",
+      "dataset_classification": "CONTROLLED_GENERATED_BEHAVIOR",
+      "scientific_role": "Mechanism and ablation evidence for Rule-only, Deep-only, and Hybrid under a shared controlled protocol.",
+      "status": "EXISTING_SEALED_WITH_MAJOR_LIMITATIONS",
+      "external_validity": "NOT_ESTABLISHED",
+      "new_test_access_authorized": false,
+      "automatic_paper_admission": false
+    },
+    "layer_2_public_ml100k": {
+      "namespace": "PUBLIC_DATA_PROTOCOL_VALIDATION",
+      "dataset_classification": "PUBLIC_OBSERVED_RATING_DATA",
+      "scientific_role": "Validate that a pinned public recommendation framework, public dataset, explicit preprocessing rule, fixed protocol, and common evaluator can produce traceable baseline results.",
+      "hybrid_architecture_validation": "NOT_IN_SCOPE",
+      "ecommerce_feature_validation": "NOT_IN_SCOPE",
+      "cross_dataset_join": false
+    },
+    "combined_interpretation": "The two layers are complementary but not numerically pooled. Public ML-100K evidence validates the benchmark procedure at limited scope; controlled v5 evidence studies the proposed mechanism. Neither layer alone establishes generalized Hybrid superiority."
+  },
+  "public_validation_task": {
+    "task_id": "ML100K_IMPLICIT_TOP10_TEMPORAL_V1",
+    "dataset": "GroupLens MovieLens 100K",
+    "dataset_source_url": "https://grouplens.org/datasets/movielens/100k/",
+    "dataset_archive_sha256": "50d2a982c66986937beb9ffb3aa76efe955bf3d5c6b761f4e3a7cd717c6a3229",
+    "source_framework": "RecBole 1.2.1",
+    "source_revision": "9a6f63d8d4a5b989fe27955a833f813a6d86041e",
+    "execution_device": "CPU_ONLY",
+    "feedback_interpretation": "Ratings of 4 or 5 are retained as positive implicit interactions; ratings below 4 are excluded before splitting.",
+    "filter_contract": {
+      "field": "rating",
+      "interval": "[4,inf)",
+      "recbole_setting": "val_interval: {rating: '[4,inf)'}",
+      "threshold_post_hoc_change_allowed": false
+    },
+    "split_contract": {
+      "group_by": "user",
+      "order": "TO",
+      "order_semantics": "chronological ascending order by the retained event timestamp",
+      "split": {
+        "type": "RS",
+        "ratios": [
+          0.8,
+          0.1,
+          0.1
+        ]
+      },
+      "training_history_masked_at_evaluation": true,
+      "same_split_for_all_models": true,
+      "required_runtime_receipts": [
+        "post-filter user/item/interaction counts",
+        "train/validation/test counts",
+        "split and internal-ID mapping hashes",
+        "eligible evaluated-user count"
+      ]
+    },
+    "candidate_and_relevance_contract": {
+      "candidate_mode": "FULL_SORT",
+      "candidate_universe": "all retained RecBole internal item tokens except the padding token",
+      "seen_item_masking": "all TRAIN-history items receive negative-infinity before top-k collection",
+      "held_out_positive_definition": "retained rating>=4 interactions assigned to validation or test",
+      "sampled_negative_evaluation": false,
+      "training_negative_sampling": "one uniform unseen item per positive BPR training event",
+      "tie_handling": "Pinned RecBole torch.topk implementation order; no raw-ID deterministic tie contract is claimed.",
+      "tie_limitation": "Popularity scores may contain ties. This is an explicit implementation-scoped limitation and must be reported, not silently repaired after output inspection."
+    }
+  },
+  "frozen_model_scope": {
+    "minimum_registry": [
+      {
+        "model_id": "RECBOLE_POP",
+        "source_class": "recbole.model.general_recommender.pop.Pop",
+        "source_sha256": "aacdde8104a08cb75a241ffd012ee121d8ee367b75be1207f0bd14fee56594bb",
+        "role": "DETERMINISTIC_SANITY_COMPARATOR",
+        "run_seeds": [
+          42
+        ],
+        "checkpoint_rule": "final fitted popularity counts; no validation-selected learned checkpoint",
+        "minimum_run_count": 1
+      },
+      {
+        "model_id": "RECBOLE_BPR",
+        "source_class": "recbole.model.general_recommender.bpr.BPR",
+        "source_sha256": "191d4a8707833a7f4a4bfa0eadff12431bbf70d17ef25e39474bc9b8e588357a",
+        "role": "LEARNED_REFERENCE_MODEL",
+        "run_seeds": [
+          42,
+          2027,
+          31415
+        ],
+        "minimum_run_count": 3,
+        "native_objective": "pairwise BPR loss",
+        "embedding_size": 64,
+        "learning_rate": 0.001,
+        "train_batch_size": 2048,
+        "maximum_epochs": 300,
+        "early_stopping_patience": 10,
+        "checkpoint_rule": "maximum validation NDCG@10; larger is better"
+      }
+    ],
+    "deferred_models": [
+      {
+        "model": "LightGCN",
+        "reason": "Useful extension but not required to answer the minimal public-pipeline validation question; adding it would enlarge runtime and audit surface."
+      },
+      {
+        "model": "ItemKNN",
+        "reason": "The minimal public lane already contains a non-learned sanity comparator and a learned reference model."
+      },
+      {
+        "model": "WideRuleOnly/DeepOnly/Hybrid",
+        "reason": "MovieLens 100K does not expose basket/co-purchase, price, or equivalent e-commerce semantics required for a faithful proposed-model test."
+      }
+    ],
+    "scope_expansion_rule": "Any added model requires a new prospective amendment before its TEST output is inspected."
+  },
+  "metric_and_comparison_contract": {
+    "evaluator": {
+      "implementation": "RecBole full-sort evaluator at the pinned source revision",
+      "source_hashes": {
+        "evaluator.py": "7634c726fb88c7ee351048d4aa86ebdca6ba5f06ddb0305de0df1328eebf2c03",
+        "metrics.py": "31a4260a4a77fb86fcbfc66fa384ab01147c9fac8bc87a726ff5cb47259b3199",
+        "collector.py": "3557954a637113f9bcc35aa30c0f83587d2e9d7b27ac31fc3e31cd1422799492",
+        "base_metric.py": "88f304da7a2cd9c6795dd4a3f334fe3570141884b3f923eb7bf0102d470730dc"
+      },
+      "cutoff": 10,
+      "primary_metric": "NDCG@10",
+      "secondary_metrics": [
+        "Recall@10",
+        "MRR@10",
+        "Hit@10",
+        "Precision@10"
+      ],
+      "aggregation": "RecBole user-level arithmetic mean at the requested cutoff",
+      "metric_decimal_place": 6
+    },
+    "comparison": {
+      "primary_comparison": "RECBOLE_BPR minus RECBOLE_POP on NDCG@10 under the same frozen public-data protocol",
+      "bpr_summary": "mean, standard deviation, minimum, and maximum across the three frozen BPR seeds",
+      "pop_summary": "single deterministic point estimate under the same split and evaluator",
+      "delta_summary": "descriptive BPR-seed deltas relative to the frozen Pop estimate",
+      "confirmatory_p_value": "NOT_PLANNED",
+      "bootstrap": "NOT_PLANNED_FOR_THIS_MINIMAL_LANE",
+      "minimum_effect_required": false,
+      "bpr_must_outperform_pop": false,
+      "negative_or_null_outcome_policy": "retain and report without changing dataset, metric, model registry, or seed schedule"
+    },
+    "numeric_center_policy": {
+      "recbole_readme_0_2768": "CONTEXT_ONLY_ILLUSTRATIVE_TARGET",
+      "prior_local_0_2928": "DIAGNOSTIC_ONLY_INCOMPARABLE",
+      "tolerance_interval": null,
+      "acceptance_by_numeric_matching": false,
+      "retrospective_use_prohibited": true
+    }
+  },
+  "runtime_design_constraints": {
+    "runtime_stage": "AIS-R8-P3",
+    "fresh_attempt_root": "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/r8/public-data-protocol-validation/attempt-001",
+    "reuse_allowed": [
+      "hash-admitted GroupLens archive or atomic data bytes",
+      "pinned RecBole source bundle",
+      "an independently hash-locked dependency environment after packet admission"
+    ],
+    "reuse_prohibited": [
+      "prior official-attempt metrics",
+      "prior official-attempt checkpoint",
+      "prior tolerance interval",
+      "v5 TEST artifacts as input to public-data configuration",
+      "historical ai-service checkpoints or benchmark numbers"
+    ],
+    "network_required": false,
+    "docker_required": false,
+    "output_inspection_before_freeze": false,
+    "automatic_retry": false,
+    "automatic_model_fallback": false,
+    "required_before_execution": [
+      "create a fresh immutable R8-P3 command packet",
+      "bind exact configuration files, runner files, environment lock, source, and data hashes",
+      "validate output root absence and capacity",
+      "display the exact final command",
+      "obtain fresh packet-bound author confirmation"
+    ]
+  },
+  "pass_fail_contract": {
+    "protocol_validation_pass_requires": [
+      "all one Pop and three BPR runs complete without seed substitution",
+      "every run binds the admitted source revision, dataset bytes, protocol, configuration, environment, command, and evaluator hashes",
+      "all models use the same rating filter, temporal split semantics, candidate universe, seen-item masking, cutoff, and evaluator implementation",
+      "all required metric values are finite and every run records cohort and denominator counts",
+      "no TRAIN/validation/TEST leakage or post-TEST configuration change is found",
+      "negative and null results are retained",
+      "AIS-R8-P4 fresh independent audit has no unresolved major integrity, provenance, or leakage finding"
+    ],
+    "protocol_validation_fail_or_incomplete_if": [
+      "any required run or frozen seed is missing",
+      "source, dataset, split, configuration, checkpoint, command, or evaluator identity cannot be replayed",
+      "model-specific preprocessing or evaluator drift makes the comparison invalid",
+      "TEST output is inspected before the protocol and model registry are frozen",
+      "runtime failure is retried in the same attempt root",
+      "an observed result causes a metric, filter, seed, model, or acceptance rule to change"
+    ],
+    "numeric_outcome_is_not_a_gate": true,
+    "allowed_p4_verdicts": [
+      "PUBLIC_DATA_PROTOCOL_VALIDATION_PASS",
+      "PUBLIC_DATA_PROTOCOL_VALIDATION_FAIL",
+      "HANDOFF_INCOMPLETE"
+    ]
+  },
+  "phase_1e_relaxed_completion_gate": {
+    "current_status": "INCOMPLETE",
+    "possible_future_status": "COMPLETE_WITH_EXPLICIT_LIMITATIONS",
+    "requires": [
+      "AIS-R8-P3 completes under the frozen packet",
+      "AIS-R8-P4 returns PUBLIC_DATA_PROTOCOL_VALIDATION_PASS",
+      "AIS-R8-P5 reconciles authoritative state without rewriting historical receipts",
+      "existing controlled-v5 limitations remain visible and no v5 TEST reopening occurs",
+      "a separate paper-admission decision identifies each admitted row and its evidence namespace"
+    ],
+    "does_not_require": [
+      "matching NDCG@10=0.2768",
+      "BPR outperforming Pop",
+      "public-data validation of the proposed Hybrid architecture",
+      "removal of all scientific scope limitations"
+    ],
+    "still_blocks_completion": [
+      "unresolved integrity or provenance defects",
+      "data leakage",
+      "untraceable result rows",
+      "missing frozen runs",
+      "cross-namespace numeric conflation"
+    ]
+  },
+  "claim_policy": {
+    "conditionally_allowed_after_p4_and_p5": [
+      "The pinned recommendation pipeline was validated end to end on GroupLens MovieLens 100K under the prospectively specified protocol.",
+      "Pop and BPR observed metrics and descriptive seed variability within the exact PUBLIC_DATA_PROTOCOL_VALIDATION namespace.",
+      "The public-data lane supports procedural reproducibility at limited scope."
+    ],
+    "prohibited": [
+      "RecBole's illustrative NDCG@10=0.2768 was officially reproduced.",
+      "The proposed Hybrid model was externally validated on MovieLens 100K.",
+      "Hybrid is superior to conventional models on public data.",
+      "Results from MovieLens 100K and v5 are directly numerically comparable.",
+      "The method is state of the art, production-valid, or generally effective for real e-commerce users.",
+      "A lack of BPR improvement over Pop invalidates the pipeline."
+    ],
+    "introduction_and_related_work": "May describe motivation, design, evidence boundaries, and the prospectively selected public validation route. Empirical values and performance claims remain blocked until AIS-R8-P4 and AIS-R8-P5."
+  },
+  "namespace_and_state_controls": {
+    "OFFICIAL_PROTOCOL_REPRODUCTION": {
+      "status": "CLOSED_INCOMPARABLE",
+      "accepted_rows": 0,
+      "mutation_authorized": false
+    },
+    "PUBLIC_DATA_PROTOCOL_VALIDATION": {
+      "status": "DESIGN_FROZEN_AWAITING_PACKET",
+      "TEST_SET_OPENED": "NO_IN_THIS_NEW_LANE",
+      "RESULT_STATUS": "NOT_RUN",
+      "accepted_rows": 0
+    },
+    "HARMONIZED_V5_COMPARISON": {
+      "status": "EXISTING_SEALED_WITH_MAJOR_LIMITATIONS",
+      "TEST_SET_OPENED": "YES_PREVIOUSLY_DO_NOT_REOPEN",
+      "accepted_rows": 0,
+      "mutation_authorized": false
+    },
+    "pipeline_state_stage1e": "STALE_PROTECTED_UNTIL_R8_P5",
+    "benchmark_numbers_valid_for_paper": false,
+    "paper_inference_authorized": false,
+    "phase_1e_complete": false,
+    "execution_authorized": false
+  },
+  "tls_and_acquisition_disposition": {
+    "tls_success_claim": false,
+    "transport_status_is_acceptance_gate": false,
+    "dataset_content_identity_status": "ADMITTED_BY_PROVIDER_MD5_ARCHIVE_SHA256_AND_EXTRACTED_MEMBER_REPLAY",
+    "new_download_required": false,
+    "insecure_transport_authorized": false,
+    "interpretation": "The prior TLS observation is transport metadata. The admitted retained bytes may be used without claiming TLS success and without redownloading the dataset."
+  },
+  "upstream_bindings": [
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r8_p1_source_protocol_admission_receipt_v1.json",
+      "sha256": "643c4c5b7a8f620da4b6344a1e42d10e5f3aaf745552c5f86c91ebb77c13ceb1",
+      "git_blob_oid": "ebe7eda729364aa0a8459a76b8f1679b38650264",
+      "role": "SOURCE_PROTOCOL_ADMISSION_AND_NO_FORMAL_CENTER_VERDICT"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r8_state_authority_and_external_validity_plan_v1.md",
+      "sha256": "5394d6856ccc9c2f8d35fc941531a6ba2669b0f3f169d8b8b1f057405e261b07",
+      "role": "R8_SEQUENCE_AND_AUTHORITY_BOUNDARY",
+      "repository_status": "PRESERVED_UNTRACKED_INPUT"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r7_e5_fresh_independent_audit_receipt_v1.json",
+      "sha256": "253a2ae644b04f513b7ea199de5dc95697c11d22780e877dc9f1413d65dbc7ca",
+      "role": "CURRENT_CONTROLLED_V5_EVIDENCE_STATE"
+    }
+  ],
+  "next_gate": {
+    "stage": "AIS-R8-P3_PACKET_PREPARATION",
+    "status": "AUTHORIZED_TO_PREPARE_NOT_AUTHORIZED_TO_EXECUTE",
+    "required_outputs": [
+      "fresh immutable runtime configuration set",
+      "minimal Pop plus three-seed BPR runner",
+      "environment and dependency lock receipt",
+      "pre-runtime validator",
+      "exact command packet",
+      "fresh packet-bound author confirmation"
+    ],
+    "audit_after_runtime": "AIS-R8-P4",
+    "state_reconciliation_after_audit": "AIS-R8-P5"
+  },
+  "protected_state": {
+    "pipeline_state_stage1e_modified": false,
+    "manuscript_modified": false,
+    "historical_ai_service_modified": false,
+    "official_attempt_modified": false,
+    "v5_test_namespace_modified": false,
+    "source_code_modified": false,
+    "training_performed": false,
+    "evaluation_performed": false,
+    "docker_or_wsl_invoked": false,
+    "network_runtime_invoked": false,
+    "new_runtime_output_created": false
+  },
+  "write_set": {
+    "exact_new_files": [
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r8_p2_public_data_protocol_validation_amendment_v1.json"
+    ],
+    "exact_file_count": 1,
+    "self_content_hash": null,
+    "self_content_hash_semantics": "The amendment is bound externally after commit by Git blob OID and raw SHA-256 to avoid self-reference.",
+    "post_write_checks_required": [
+      "strict JSON parse with duplicate-key rejection",
+      "recompute upstream and source hashes",
+      "git diff --check",
+      "confirm exact one-file stage set",
+      "commit once on the current branch"
+    ]
+  },
+  "verdict": "PUBLIC_DATA_PROTOCOL_VALIDATION_DESIGN_FROZEN",
+  "verdict_scope": "PROSPECTIVE_SCIENTIFIC_GATE_AMENDMENT_ONLY; RUNTIME_REMAINS UNAUTHORIZED UNTIL A FRESH EXACT COMMAND PACKET IS CONFIRMED",
+  "fail_closed": true
+}
