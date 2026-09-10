@@ -2,14 +2,17 @@
   "schema_version": "academic-research-pipeline-state-1.0",
   "project": "hybrid-recsys-v5",
   "stage": "1E",
-  "state": "stage1e_rebaseline_v2_r6_pc2w_p1_attempt008_r2_safe_probe_envelopes_complete_r3_dormant_runtime_packet_design",
-  "updated_at": "2026-08-25",
+  "state": "phase_1e_complete_with_explicit_limitations_ais_r8_p5",
+  "updated_at": "2026-09-10",
   "model": "gpt-5.6-sol",
   "reasoning": "max",
   "service_tier": "standard",
   "model_profile": "Sol Max Standard",
-  "result_status": "NOT_RUN",
-  "test_set_opened": "NO",
+  "result_status": "COMPLETE_WITH_EXPLICIT_LIMITATIONS",
+  "test_set_opened": "YES_NAMESPACE_SCOPED_PUBLIC_AND_PRIOR_V5_SEE_AIS_R8_P5",
+  "accepted_result_rows": 4,
+  "paper_inference_authorized": "NAMESPACE_SCOPED_DESCRIPTIVE_PROTOCOL_VALIDATION_ONLY",
+  "phase_1e_complete": true,
   "superseded_wave1_v1": {
     "status": "ARCHIVED_NOT_IMPORTED",
     "record": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/wave1_v1_supersession_record.json"
@@ -2056,10 +2059,139 @@
       "next_gate": "ATTEMPT008_R3_DORMANT_RUNTIME_PACKET_AND_STATIC_VALIDATOR_DESIGN_NO_EXECUTION"
     }
   },
-  "central_preregistration_lock": "PASS_R6_S0_BOUNDED_MATERIALIZATION_SCOPE_LOCKED",
-  "adapt_reproduce": "BLOCKED_UNTIL_R6_DATA_ENVIRONMENT_COMMAND_MATERIALIZATION_AUDIT_AND_LATER_EXPLICIT_EXECUTION_APPROVAL",
-  "harmonized_v5": "BLOCKED",
-  "external_validation": "BLOCKED",
-  "efficiency": "BLOCKED_AFTER_ACCURACY",
-  "next_gate": "Attempt-008 R1 parser remediation is frozen at bcfc7d959a333c8d63b31639edfed312e6f3c8b9. Attempt-008 R2 safe D01/D02/D06 envelopes are frozen at 537133a17a724be1e6d242b4a358dfbac89de40a with PASS_PC2W_P1_ATTEMPT008_R2_SAFE_PROBE_ENVELOPES_STATIC_SYNTHETIC: Python 9/9, 50/50 stress runs, PowerShell AST 3/3, strict JSON 2/2, and no host I/O. D01 now has a closed failure-step and optional allowlisted target; D02 separates its own failure from D01 dependency failure; D06 returns a safe JSON failure envelope instead of relying on nonzero stderr alone. These are static and synthetic guarantees only and do not prove current-host admissibility. Next, design a new dormant Attempt-008 runtime runner, contract, authorization, and static validator without execution. Automatic retry remains prohibited, benchmark and TEST remain unopened, and Phase 1E remains blocked."
+  "ais_r8": {
+    "stage_id": "AIS-R8-P5",
+    "status": "PHASE_1E_COMPLETE_WITH_EXPLICIT_LIMITATIONS",
+    "authority_head_before_p5": "e177ed60f56abebb2fecf4cac5289da0f4cbbb50",
+    "relaxed_completion_authority": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r8_p2_public_data_protocol_validation_amendment_v1.json",
+      "raw_git_blob_sha256": "4217ad1cef7b722eb419248ba54160867e53e1cbe059e7bf4d88aa68e930dff4",
+      "verdict": "PUBLIC_DATA_PROTOCOL_VALIDATION_DESIGN_FROZEN"
+    },
+    "independent_audit": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r8_p4_attempt003_independent_audit_and_statistics_receipt_v1.json",
+      "commit": "e177ed60f56abebb2fecf4cac5289da0f4cbbb50",
+      "git_blob_oid": "04af7cc4b65566bad2dfd82cf04544192d3b7cb9",
+      "raw_git_blob_bytes": 40765,
+      "raw_git_blob_sha256": "10a973095a973dbbfb76c3a103fd06bad5df4efc339f4707c0629d44a57fc97a",
+      "verdict": "PUBLIC_DATA_PROTOCOL_VALIDATION_PASS",
+      "assertions": "281/281_PASS"
+    },
+    "paper_admission_decision": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r8_p5_paper_admission_decision_v1.json",
+      "raw_worktree_bytes_before_commit": 19404,
+      "raw_worktree_sha256_before_commit": "0850820523a5de995f2ab2dfe509862df79073f333c598c5ea20bf8521275443",
+      "verdict": "ADMIT_4_PUBLIC_PROTOCOL_VALIDATION_ROWS_WITH_EXPLICIT_LIMITATIONS"
+    },
+    "state_reconciliation_seal": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r8_p5_state_reconciliation_and_phase1e_seal_v1.json",
+      "post_commit_binding": "EXTERNAL_HANDOFF_BINDING_REQUIRED_TO_AVOID_SELF_REFERENCE"
+    },
+    "namespace_state": {
+      "OFFICIAL_PROTOCOL_REPRODUCTION": {
+        "status": "CLOSED_INCOMPARABLE",
+        "accepted_result_rows": 0,
+        "benchmark_numbers_valid_for_paper": false,
+        "mutation_authorized": false
+      },
+      "PUBLIC_DATA_PROTOCOL_VALIDATION": {
+        "status": "COMPLETED_AUDITED_PROTOCOL_VALIDATION_PASS",
+        "test_set_opened": "YES_BY_ATTEMPT003_RUNTIME_NOT_REOPENED_BY_P4_OR_P5",
+        "runtime_result_rows": 4,
+        "accepted_result_rows": 4,
+        "benchmark_numbers_valid_for_paper": "YES_WITHIN_EXACT_NAMESPACE_AND_EXPLICIT_LIMITATIONS_ONLY",
+        "paper_inference_authorized": false,
+        "evidence_role": "DESCRIPTIVE_PROTOCOL_VALIDATION"
+      },
+      "HARMONIZED_V5_COMPARISON": {
+        "status": "SEALED_WITH_MAJOR_LIMITATIONS",
+        "test_set_opened": "YES_PREVIOUSLY_DO_NOT_REOPEN",
+        "runtime_result_rows": 13,
+        "statistical_result_rows": 15,
+        "accepted_result_rows": 0,
+        "benchmark_numbers_valid_for_paper": false,
+        "mutation_authorized": false,
+        "numeric_join_with_public_lane_authorized": false
+      }
+    },
+    "public_protocol_binding": {
+      "source": "RecBole v1.2.1",
+      "source_revision": "9a6f63d8d4a5b989fe27955a833f813a6d86041e",
+      "dataset": "GroupLens MovieLens 100K",
+      "dataset_atomic_sha256": "4edb74e2a81178c2ba9ff381495f754f996c4aea351b1272ca36b43da0935eff",
+      "dataset_binding_hash": "739f58c38f0f40f49c20ef325c3c12934cbbc85769b8e8ff56fd727336398e59",
+      "runtime_inventory_sha256": "bb055e95517eec48454f767ebdc062564c3883650b94828b79d0a364564f6c65",
+      "runs": [
+        "recbole-pop-seed-42",
+        "recbole-bpr-seed-42",
+        "recbole-bpr-seed-2027",
+        "recbole-bpr-seed-31415"
+      ]
+    },
+    "relaxed_completion_gate": {
+      "status": "PASS_COMPLETE_WITH_EXPLICIT_LIMITATIONS",
+      "requirements": {
+        "p3_completed_under_frozen_packet": true,
+        "p4_public_data_protocol_validation_pass": true,
+        "p5_authoritative_state_reconciled_without_historical_rewrite": true,
+        "controlled_v5_limitations_visible_and_test_not_reopened": true,
+        "separate_namespace_scoped_paper_admission_decision_present": true
+      },
+      "blocking_conditions": {
+        "unresolved_integrity_or_provenance_defect": false,
+        "data_leakage": false,
+        "untraceable_admitted_result_row": false,
+        "missing_frozen_run": false,
+        "cross_namespace_numeric_conflation": false
+      }
+    },
+    "claim_policy": {
+      "allowed": [
+        "Audited end-to-end execution of the pinned recommendation protocol on MovieLens 100K.",
+        "Four explicitly admitted Pop/BPR result rows and descriptive BPR seed variability within PUBLIC_DATA_PROTOCOL_VALIDATION.",
+        "Limited procedural reproducibility and traceability claims."
+      ],
+      "prohibited": [
+        "Strict official reproduction of the illustrative NDCG@10=0.2768 value.",
+        "Public-data validation or superiority of the proposed Hybrid method.",
+        "Numeric comparison between MovieLens and harmonized-v5 evidence.",
+        "Statistical significance, causal effectiveness, production effectiveness, general superiority, or state of the art."
+      ]
+    },
+    "state_tracker_update": {
+      "requested_by": "pipeline_orchestrator",
+      "applied_by": "state_tracker_protocol_in_central_context",
+      "reason": "AIS-R8 P4 passed and the user-authorized relaxed completion route requires explicit P5 reconciliation.",
+      "previous_authoritative_summary": {
+        "result_status": "NOT_RUN",
+        "test_set_opened": "NO",
+        "phase_1e_complete": false
+      },
+      "new_authoritative_summary": {
+        "result_status": "COMPLETE_WITH_EXPLICIT_LIMITATIONS",
+        "test_set_opened": "YES_NAMESPACE_SCOPED",
+        "accepted_result_rows": 4,
+        "phase_1e_complete": true
+      },
+      "historical_nested_records_preserved": true
+    },
+    "protected_state": {
+      "historical_receipts_modified": false,
+      "runtime_artifacts_modified": false,
+      "public_test_reopened_by_p5": false,
+      "v5_test_reopened_by_p5": false,
+      "training_or_evaluation_performed_by_p5": false,
+      "manuscript_modified_by_p5": false
+    },
+    "phase_1e_complete": true,
+    "completion_class": "COMPLETE_WITH_EXPLICIT_LIMITATIONS",
+    "stage_2_entry": "READY_AWAITING_USER_CONFIRMATION",
+    "next_gate": "USER_CONFIRMATION_TO_ENTER_STAGE_2_WRITE"
+  },
+  "central_preregistration_lock": "PASS_AIS_R8_PUBLIC_PROTOCOL_ROUTE_FROZEN_AND_AUDITED",
+  "adapt_reproduce": "OFFICIAL_PROTOCOL_REPRODUCTION_CLOSED_INCOMPARABLE",
+  "harmonized_v5": "SEALED_WITH_MAJOR_LIMITATIONS_NO_TEST_REOPEN",
+  "external_validation": "PUBLIC_DATA_PROTOCOL_VALIDATION_COMPLETE_AUDITED_LIMITED_SCOPE",
+  "efficiency": "NOT_TESTED_NOT_REQUIRED_BY_RELAXED_PHASE1E_GATE",
+  "next_gate": "Phase 1E is complete with explicit limitations under AIS-R8-P5. Four PUBLIC_DATA_PROTOCOL_VALIDATION Pop/BPR rows are conditionally admitted for descriptive protocol reporting only; official reproduction and harmonized-v5 paper rows remain unadmitted. Await explicit user confirmation before entering Stage 2 WRITE; do not reopen any TEST set."
 }

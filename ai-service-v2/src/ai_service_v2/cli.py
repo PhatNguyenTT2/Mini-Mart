@@ -54,6 +54,7 @@ from ai_service_v2.training import (
     load_run_command,
     save_checkpoint,
     update_run_status,
+    validate_external_application_artifact,
     write_run_artifact,
 )
 
@@ -122,6 +123,11 @@ def _parser() -> argparse.ArgumentParser:
     export.add_argument("protocol", type=Path)
     export.add_argument("score_root", type=Path)
     export.add_argument("--chunk-size", type=int, default=128)
+    export.add_argument(
+        "--application-ref",
+        type=Path,
+        help="fresh external JSON receipt path required when applying a frozen run to TEST",
+    )
 
     components = commands.add_parser("export-score-components")
     components.add_argument("snapshot_root", type=Path)
@@ -610,10 +616,23 @@ def _load_model_for_run(snapshot: Any, protocol: Any, run: Any) -> Any:
     )
 
 
-def _cmd_export_scores(args: argparse.Namespace) -> int:
+def _cmd_export_scores(args: argparse.Namespace, process_command: ProcessCommand) -> int:
     run = load_run(args.run_root)
     load_run_command(run)
     protocol = load_protocol(args.protocol)
+    application_ref: Path | None = None
+    if protocol.manifest.split == "test":
+        if args.application_ref is None:
+            raise ProtocolError(
+                "TEST score export requires --application-ref outside the frozen validation run"
+            )
+        application_ref = validate_external_application_artifact(
+            source_run_root=run.root,
+            artifact_path=args.application_ref,
+            output_roots=(args.score_root,),
+        )
+    elif args.application_ref is not None:
+        raise ProtocolError("--application-ref is reserved for TEST score export")
     required_splits = (
         ("train", "val", "test") if protocol.manifest.split == "test" else ("train", "val")
     )
@@ -623,8 +642,26 @@ def _cmd_export_scores(args: argparse.Namespace) -> int:
     protocol = load_protocol(args.protocol, snapshot=snapshot)
     if run.manifest.dataset_manifest_sha256 != _dataset_manifest_hash(snapshot):
         raise IntegrityError("run dataset binding does not match snapshot")
-    if run.manifest.protocol_manifest_sha256 != _protocol_manifest_hash(protocol):
-        raise IntegrityError("run protocol binding does not match protocol")
+    scoring_protocol_sha256 = _protocol_manifest_hash(protocol)
+    selection_protocol_sha256 = run.manifest.protocol_manifest_sha256
+    if selection_protocol_sha256 != scoring_protocol_sha256:
+        if protocol.manifest.split != "test" or not protocol.manifest.test_set_opened:
+            raise IntegrityError("run protocol binding does not match protocol")
+        # A model is selected and trained against validation, then applied to
+        # TEST without retraining.  Reconstruct the unique validation
+        # counterpart from the same verified snapshot and require the run to
+        # bind it exactly.  The requested cutoff and evaluator version are
+        # carried over so a caller cannot change evaluation semantics at TEST.
+        selection_protocol = build_protocol(
+            snapshot,
+            split="val",
+            cutoff=protocol.manifest.cutoff,
+            metric_version=protocol.manifest.metric_version,
+        )
+        if selection_protocol_sha256 != _protocol_manifest_hash(selection_protocol):
+            raise IntegrityError(
+                "run protocol binding is not the validation counterpart of TEST protocol"
+            )
     model = _load_model_for_run(snapshot, protocol, run)
     materialized = materialize_scores(
         protocol,
@@ -634,15 +671,34 @@ def _cmd_export_scores(args: argparse.Namespace) -> int:
         model_id=run.manifest.model_id,
         chunk_size=args.chunk_size,
     )
-    write_run_artifact(
-        run.root,
-        "score_artifact_ref.json",
-        {
-            "schema_version": "score-artifact-ref/1.0",
+    reference_name = (
+        "score_artifact_ref.test.json"
+        if protocol.manifest.split == "test"
+        else "score_artifact_ref.json"
+    )
+    reference_document: dict[str, object] = {
+        "schema_version": "score-artifact-ref/1.0",
+        "root": str(materialized.root),
+        "manifest_sha256": sha256_file(materialized.root / "manifest.json"),
+    }
+    if protocol.manifest.split == "test":
+        reference_document = {
+            "schema_version": "score-artifact-ref/1.2",
             "root": str(materialized.root),
             "manifest_sha256": sha256_file(materialized.root / "manifest.json"),
-        },
+            "selection_protocol_manifest_sha256": selection_protocol_sha256,
+            "scoring_protocol_manifest_sha256": scoring_protocol_sha256,
+            "split": "test",
+            "test_set_opened": True,
+            "application_command": process_command.to_mapping(),
+            "application_command_sha256": canonical_json_sha256(
+                process_command.to_mapping()
+            ),
+        }
+    reference_path = (
+        application_ref if application_ref is not None else run.root / reference_name
     )
+    write_run_artifact(reference_path.parent, reference_path.name, reference_document)
     _print(
         {
             "status": "PASS",
@@ -650,6 +706,8 @@ def _cmd_export_scores(args: argparse.Namespace) -> int:
             "run_id": materialized.manifest.run_id,
             "model_id": materialized.manifest.model_id,
             "shape": list(materialized.manifest.score_shape),
+            "split": protocol.manifest.split,
+            "test_set_opened": protocol.manifest.test_set_opened,
         }
     )
     return 0
@@ -806,6 +864,7 @@ def _cmd_summarize_run(root: Path) -> int:
             "rule_artifact": (root / "rule_artifact.json").is_file(),
             "training_report": (root / "training_report.json").is_file(),
             "score_artifact_ref": (root / "score_artifact_ref.json").is_file(),
+            "test_score_artifact_ref": (root / "score_artifact_ref.test.json").is_file(),
             "component_score_artifact_ref": (root / "component_score_artifact_ref.json").is_file(),
         },
     }
@@ -817,6 +876,8 @@ def _cmd_summarize_run(root: Path) -> int:
         }
     if (root / "score_artifact_ref.json").is_file():
         summary["score_artifact_ref"] = load_strict_json(root / "score_artifact_ref.json")
+    if (root / "score_artifact_ref.test.json").is_file():
+        summary["test_score_artifact_ref"] = load_strict_json(root / "score_artifact_ref.test.json")
     _print(summary)
     return 0
 
@@ -889,7 +950,7 @@ def main(argv: list[str] | None = None) -> int:
         if args.command == "train":
             return _cmd_train(args, process_command)
         if args.command == "export-scores":
-            return _cmd_export_scores(args)
+            return _cmd_export_scores(args, process_command)
         if args.command == "export-score-components":
             return _cmd_export_score_components(args)
         if args.command == "evaluate":

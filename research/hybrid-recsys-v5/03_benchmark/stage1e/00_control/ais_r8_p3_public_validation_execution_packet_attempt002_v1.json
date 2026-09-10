@@ -1,0 +1,315 @@
+{
+  "schema_version": "ais-r8-p3-public-data-protocol-validation-execution-packet/1.0",
+  "stage_id": "AIS-R8-P3",
+  "namespace": "PUBLIC_DATA_PROTOCOL_VALIDATION",
+  "attempt_id": "ais-r8-p3-public-validation-attempt-002",
+  "created_at": "2026-09-09T02:58:54.3522668Z",
+  "execution_authorized": false,
+  "material_passport": {
+    "origin_skill": "ars-codex/academic-research-suite/experiment-agent",
+    "origin_mode": "plan/remediated-runtime-command-packet",
+    "origin_date": "2026-09-09T02:58:54.3522668Z",
+    "verification_status": "UNVERIFIED_RUNTIME_NOT_STARTED",
+    "verification_scope": "Prospective Attempt-002 packet construction after the P4 fail verdict. Static parsing and hash binding are allowed; training, evaluation, public TEST reopening, v5 TEST access, and runtime output creation remain unauthorized until fresh packet-bound confirmation.",
+    "version_label": "ais-r8-p3-public-validation-attempt002-execution-packet-v1.0.0",
+    "content_hash": null,
+    "upstream_dependencies": [
+      "ais-r8-p2-public-data-protocol-validation-amendment-v1.0.0",
+      "ais-r8-p4-independent-audit-and-statistics-receipt-v1.0.0",
+      "recbole-v1.2.1@9a6f63d8d4a5b989fe27955a833f813a6d86041e",
+      "grouplens-ml-100k@sha256:50d2a982c66986937beb9ffb3aa76efe955bf3d5c6b761f4e3a7cd717c6a3229",
+      "recbole-runtime-attempt-local-003"
+    ],
+    "repro_lock": {
+      "ars_adapter_version": "0.1.26",
+      "source_revision": "9a6f63d8d4a5b989fe27955a833f813a6d86041e",
+      "source_tree": "08915121fea069a30f7e3e97a72e16e7e76d43c6",
+      "dataset_atomic_sha256": "4edb74e2a81178c2ba9ff381495f754f996c4aea351b1272ca36b43da0935eff",
+      "environment_receipt_sha256": "b67af0c96a1373885c38c4395078ddfde50f02d75ca1ffcf9a433c7ea3dd960c",
+      "container_image_digest": "sha256:2856e6af199e8128161abd320575eb9b341f3b76f017b5d0c9cd364f60d8a050",
+      "single_scientific_change": "repeatable=false activates phase-aware history masking",
+      "replay_guarantee": false,
+      "semantics": "Replay and admission remain conditional on one fresh execution and a new independent P4 audit."
+    },
+    "experiment_intake_declaration": {
+      "status": "experiments_declared",
+      "declared_at": "2026-09-01T16:38:56Z",
+      "declared_by": "scholar"
+    }
+  },
+  "ars_routing_receipt": {
+    "adapter": "ars-codex",
+    "adapter_version": "0.1.26",
+    "workflow": "ars/experiment-agent/WORKFLOW.md",
+    "runner_role": "ars/experiment-agent/agents/code_runner_agent.md",
+    "reproducibility_reference": "ars/experiment-agent/references/reproducibility_protocol.md",
+    "material_passport_applied": true,
+    "exact_command_confirmation_required": true,
+    "automatic_retry": false,
+    "attempt_001_immutable": true
+  },
+  "model_policy_audit": {
+    "scope": "AIS-R8-P3_ATTEMPT002_PACKET_PREPARATION_ONLY",
+    "requested_model": "gpt-5.6-sol",
+    "requested_reasoning_effort": "max",
+    "requested_service_tier": "Standard/default",
+    "forbidden_service_tiers": [
+      "Fast",
+      "Priority"
+    ],
+    "actual_model": "UNOBSERVABLE",
+    "actual_reasoning_effort": "UNOBSERVABLE",
+    "actual_service_tier": "UNOBSERVABLE",
+    "actual_speed": "UNOBSERVABLE",
+    "model_gate": "NOT_ADJUDICATED_WITHOUT_AUTHORITATIVE_RUNTIME_TELEMETRY"
+  },
+  "remediation_scope": {
+    "authority_verdict": "PUBLIC_DATA_PROTOCOL_VALIDATION_FAIL",
+    "authority_finding": "P4-MAJOR-001",
+    "attempt_001_disposition": "IMMUTABLE_REJECTED_PROTOCOL_MISMATCH",
+    "attempt_002_change": {
+      "field": "repeatable",
+      "old": true,
+      "new": false
+    },
+    "held_constant": [
+      "dataset bytes and rating>=4 filter",
+      "temporal per-user 0.8/0.1/0.1 split",
+      "Pop seed 42 and BPR seeds 42, 2027, 31415",
+      "BPR hyperparameters and NDCG@10 checkpoint selection",
+      "RecBole revision and evaluator",
+      "full-sort top-10 metric contract",
+      "descriptive-only P2 scope"
+    ],
+    "retrospective_tolerance_or_metric_change": false
+  },
+  "repository_root": "E:/UIT/cv/backend",
+  "input_bindings": {
+    "amendment": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r8_p2_public_data_protocol_validation_amendment_v1.json",
+      "bytes": 22818,
+      "sha256": "4217ad1cef7b722eb419248ba54160867e53e1cbe059e7bf4d88aa68e930dff4"
+    },
+    "p4_receipt": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r8_p4_independent_audit_and_statistics_receipt_v1.json",
+      "bytes": 19878,
+      "sha256": "83dd1245518101a2e311d7c55bbf34449e5e71bb68023c1739ea9d91cb5e8e1a"
+    },
+    "spec": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r8_p3_public_validation_spec_attempt002_v1.json",
+      "bytes": 6993,
+      "sha256": "9d36e2f94e5df7154e1de73f6e52f1f81ad5505566f63836ffba03ca476e0afc"
+    },
+    "runner": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/run_ais_r8_p3_public_data_protocol_validation_attempt002.py",
+      "bytes": 9646,
+      "sha256": "2e407d073b67e9fb24bcf1dae7645ca6a41bde71b773a77ad23b74d6deff921e"
+    },
+    "base_runner": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/run_ais_r8_p3_public_data_protocol_validation.py",
+      "bytes": 13672,
+      "sha256": "dc19028bf8af175e4ee25d03ada18bec3814ac2b3be726645f409e5d142ece4f"
+    },
+    "executor": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_ais_r8_p3_public_data_protocol_validation.py",
+      "bytes": 15950,
+      "sha256": "eb7f818bbcd4d6db79b0206dfcc325800996e1c6bc649c38360b4cb831fe272f"
+    },
+    "executor_wrapper": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_ais_r8_p3_public_data_protocol_validation_attempt002.py",
+      "bytes": 6678,
+      "sha256": "7ea4826363b9f7b02504d446eb9f90cf348376940fa8090a8851ce827ccd0643"
+    },
+    "source_manifest": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ac/E4_R5M0_source_materialization/selected_blob_manifest.json",
+      "bytes": 102765,
+      "sha256": "c5794b9daccdd01ca600c6ef7f890918825fbbb872efa67036c4565234e87016"
+    },
+    "environment_receipt": {
+      "path": "MovieLens/recbole_runtime/attempt-local-003/receipts/environment_materialization.json",
+      "bytes": 5012,
+      "sha256": "b67af0c96a1373885c38c4395078ddfde50f02d75ca1ffcf9a433c7ea3dd960c"
+    },
+    "environment_inventory": {
+      "path": "MovieLens/recbole_runtime/attempt-local-003/receipts/environment_attempt_inventory.json",
+      "bytes": 13401848,
+      "sha256": "5647259354c016b7364c9da25b267342c91ff5ffb9de4d5b925d0f7a386d2689"
+    },
+    "atomic_dataset": {
+      "path": "MovieLens/recbole_atomic/ml-100k/ml-100k.inter",
+      "bytes": 1979230,
+      "sha256": "4edb74e2a81178c2ba9ff381495f754f996c4aea351b1272ca36b43da0935eff"
+    },
+    "environment_python": {
+      "path": "MovieLens/recbole_runtime/attempt-local-003/venv/bin/python",
+      "bytes": 14472,
+      "sha256": "8219d0acbf6e1b78e322a221c438244034afc7d8c9d08b68019ba320de50afbb"
+    },
+    "installed_recbole_init": {
+      "path": "MovieLens/recbole_runtime/attempt-local-003/venv/lib/python3.11/site-packages/recbole/__init__.py",
+      "bytes": 137,
+      "sha256": "9bda7db19982dca0d8a67f2b5f0e783df15e99fccfd3190506a0f4109b3f520d"
+    },
+    "installed_pop_source": {
+      "path": "MovieLens/recbole_runtime/attempt-local-003/venv/lib/python3.11/site-packages/recbole/model/general_recommender/pop.py",
+      "bytes": 1890,
+      "sha256": "aacdde8104a08cb75a241ffd012ee121d8ee367b75be1207f0bd14fee56594bb"
+    },
+    "installed_bpr_source": {
+      "path": "MovieLens/recbole_runtime/attempt-local-003/venv/lib/python3.11/site-packages/recbole/model/general_recommender/bpr.py",
+      "bytes": 3321,
+      "sha256": "191d4a8707833a7f4a4bfa0eadff12431bbf70d17ef25e39474bc9b8e588357a"
+    },
+    "installed_evaluator_source": {
+      "path": "MovieLens/recbole_runtime/attempt-local-003/venv/lib/python3.11/site-packages/recbole/evaluator/evaluator.py",
+      "bytes": 1404,
+      "sha256": "7634c726fb88c7ee351048d4aa86ebdca6ba5f06ddb0305de0df1328eebf2c03"
+    },
+    "installed_metrics_source": {
+      "path": "MovieLens/recbole_runtime/attempt-local-003/venv/lib/python3.11/site-packages/recbole/evaluator/metrics.py",
+      "bytes": 29948,
+      "sha256": "31a4260a4a77fb86fcbfc66fa384ab01147c9fac8bc87a726ff5cb47259b3199"
+    },
+    "installed_collector_source": {
+      "path": "MovieLens/recbole_runtime/attempt-local-003/venv/lib/python3.11/site-packages/recbole/evaluator/collector.py",
+      "bytes": 8867,
+      "sha256": "3557954a637113f9bcc35aa30c0f83587d2e9d7b27ac31fc3e31cd1422799492"
+    },
+    "installed_base_metric_source": {
+      "path": "MovieLens/recbole_runtime/attempt-local-003/venv/lib/python3.11/site-packages/recbole/evaluator/base_metric.py",
+      "bytes": 4765,
+      "sha256": "88f304da7a2cd9c6795dd4a3f334fe3570141884b3f923eb7bf0102d470730dc"
+    },
+    "installed_sampler_source": {
+      "path": "MovieLens/recbole_runtime/attempt-local-003/venv/lib/python3.11/site-packages/recbole/sampler/sampler.py",
+      "bytes": 19302,
+      "sha256": "6fee42497697225977fe64f81f89d5181dd8026f3c78acc99db133eb89858d5e"
+    },
+    "installed_data_utils_source": {
+      "path": "MovieLens/recbole_runtime/attempt-local-003/venv/lib/python3.11/site-packages/recbole/data/utils.py",
+      "bytes": 14170,
+      "sha256": "94dd659fda6a131ae3655dbe6afa5d79f1492647585512e88fae167fa8bcc523"
+    },
+    "installed_fullsort_dataloader_source": {
+      "path": "MovieLens/recbole_runtime/attempt-local-003/venv/lib/python3.11/site-packages/recbole/data/dataloader/general_dataloader.py",
+      "bytes": 12121,
+      "sha256": "1c32595ecb66c7e5381ce1b0fde2440d9f8fc7cd44a37800d6a5c1affa030168"
+    },
+    "installed_trainer_source": {
+      "path": "MovieLens/recbole_runtime/attempt-local-003/venv/lib/python3.11/site-packages/recbole/trainer/trainer.py",
+      "bytes": 65909,
+      "sha256": "52548168ccdf96ca7f404d890365284a4fdf9d6a01a4abf9d4c1ed702fc9fc47"
+    }
+  },
+  "runtime": {
+    "host_python_executable": "C:/Program Files/Python311/python.exe",
+    "host_python_executable_bytes": 103192,
+    "host_python_executable_sha256": "5f7b89a612c9b8af1d6456cdfcd1dbe5ca630849e79aebced9bee9a6694952ec",
+    "docker_executable": "C:/Program Files/Docker/Docker/resources/bin/docker.exe",
+    "docker_executable_bytes": 42748848,
+    "docker_executable_sha256": "0cdb9dea2e39a0a29e5dc3f9732f572dc140547b28deab0495589b4f79b31ca1",
+    "image_reference": "docker.io/library/python@sha256:2856e6af199e8128161abd320575eb9b341f3b76f017b5d0c9cd364f60d8a050",
+    "environment_root": "MovieLens/recbole_runtime/attempt-local-003",
+    "dataset_root": "MovieLens/recbole_atomic",
+    "output_root": "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/r8/public-data-protocol-validation/attempt-002",
+    "container_name": "ais-r8-p3-public-validation-attempt-002",
+    "network": "none",
+    "platform": "linux/amd64",
+    "cpu_limit": 2,
+    "memory_limit": "4g",
+    "pids_limit": 256,
+    "minimum_free_bytes": 10737418240,
+    "overall_timeout_seconds": 14400,
+    "automatic_retry": false,
+    "automatic_fallback": false,
+    "project_v5_test_access": false,
+    "pull_allowed": false
+  },
+  "command_contract": {
+    "static_preflight_argv": [
+      "C:/Program Files/Python311/python.exe",
+      "-B",
+      "E:/UIT/cv/backend/research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_ais_r8_p3_public_data_protocol_validation_attempt002.py",
+      "--packet",
+      "E:/UIT/cv/backend/research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r8_p3_public_validation_execution_packet_attempt002_v1.json",
+      "--static-only"
+    ],
+    "runtime_argv_prefix": [
+      "C:/Program Files/Python311/python.exe",
+      "-B",
+      "E:/UIT/cv/backend/research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_ais_r8_p3_public_data_protocol_validation_attempt002.py",
+      "--packet",
+      "E:/UIT/cv/backend/research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r8_p3_public_validation_execution_packet_attempt002_v1.json",
+      "--confirmed-packet-sha"
+    ],
+    "runtime_final_argument": "THE_RAW_SHA256_OF_THIS_PACKET_AS_REPORTED_AFTER_COMMIT",
+    "confirmation_semantics": "Append the immutable packet SHA-256, display the exact final command verbatim, and obtain fresh packet-bound author confirmation before execution.",
+    "shell": "PowerShell",
+    "background_execution": false
+  },
+  "masking_assertion_contract": {
+    "timing": "inside the confirmed container before any model training",
+    "required_checks": [
+      "resolved repeatable is false",
+      "validation and test use phase-aware Sampler",
+      "validation history equals TRAIN interactions for every evaluated user",
+      "test history equals TRAIN plus validation interactions for every evaluated user",
+      "full-sort dataloaders are selected"
+    ],
+    "receipt": "masking_semantics_receipt.json",
+    "failure_behavior": "stop before training, write failure_receipt.json, do not retry"
+  },
+  "expected_runtime_progress": [
+    "AIS_R8_P3_RUNTIME_START",
+    "AIS_R8_MASKING_PREFLIGHT_PASS",
+    "AIS_R8_RUN_START recbole-pop-seed-42",
+    "AIS_R8_RUN_COMPLETE recbole-pop-seed-42",
+    "AIS_R8_RUN_START recbole-bpr-seed-42",
+    "AIS_R8_RUN_COMPLETE recbole-bpr-seed-42",
+    "AIS_R8_RUN_START recbole-bpr-seed-2027",
+    "AIS_R8_RUN_COMPLETE recbole-bpr-seed-2027",
+    "AIS_R8_RUN_START recbole-bpr-seed-31415",
+    "AIS_R8_RUN_COMPLETE recbole-bpr-seed-31415",
+    "AIS_R8_ALL_RUNS_COMPLETED_UNAUDITED",
+    "AIS_R8_MASKING_RECEIPT_WRITTEN",
+    "AIS_R8_P3_RUNTIME_COMPLETED_UNAUDITED"
+  ],
+  "failure_policy": {
+    "same_attempt_retry_allowed": false,
+    "container_or_attempt_deletion_allowed": false,
+    "model_or_seed_fallback_allowed": false,
+    "failure_output": "Retain immutable failure receipts and stop before result admission.",
+    "next_action_after_failure": "Central diagnoses the exact observed failure and creates another prospective attempt only if justified."
+  },
+  "scientific_state_before_execution": {
+    "ATTEMPT_001_RESULT_STATUS": "COMPLETED_REJECTED_PROTOCOL_MISMATCH",
+    "ATTEMPT_002_RESULT_STATUS": "NOT_RUN",
+    "PUBLIC_TEST_SET_OPENED": "YES_BY_ATTEMPT_001; NOT_YET_BY_ATTEMPT_002",
+    "V5_TEST_SET_REOPENED": false,
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "phase_1e_complete": false,
+    "benchmark_numbers_valid_for_paper": false,
+    "paper_inference_authorized": false
+  },
+  "write_set": {
+    "packet_preparation_files": [
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r8_p3_public_validation_spec_attempt002_v1.json",
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/run_ais_r8_p3_public_data_protocol_validation_attempt002.py",
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/execute_ais_r8_p3_public_data_protocol_validation_attempt002.py",
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r8_p3_public_validation_execution_packet_attempt002_v1.json"
+    ],
+    "packet_preparation_file_count": 4,
+    "runtime_write_root": "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/r8/public-data-protocol-validation/attempt-002",
+    "repository_runtime_writes_allowed": false,
+    "self_content_hash": null,
+    "self_content_hash_semantics": "Reported externally after commit to avoid self-reference."
+  },
+  "next_gate": {
+    "before_runtime": "STATIC_PREFLIGHT_THEN_FRESH_EXACT_COMMAND_CONFIRMATION",
+    "after_runtime": "NEW_AIS-R8-P4_FRESH_INDEPENDENT_AUDIT",
+    "after_audit": "AIS-R8-P5_STATE_RECONCILIATION_AND_PAPER_ADMISSION"
+  },
+  "verdict": "ATTEMPT002_PACKET_PREPARED_RUNTIME_NOT_AUTHORIZED",
+  "fail_closed": true
+}

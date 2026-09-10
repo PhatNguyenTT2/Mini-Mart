@@ -1,0 +1,184 @@
+{
+  "schema_version": "ais-r6-validation-freeze-receipt/1.0",
+  "stage_id": "AIS-R6-VALIDATION-FREEZE",
+  "receipt_role": "CENTRAL_VALIDATION_ONLY_FREEZE",
+  "material_passport": {
+    "origin_skill": "ars-codex/academic-research-suite/experiment-agent",
+    "origin_mode": "central-validation-freeze",
+    "origin_date": "2026-09-04T00:00:00+07:00",
+    "origin_date_semantics": "Configured current date and Asia/Saigon timezone marker; no ambient clock or host state was used as scientific evidence.",
+    "verification_status": "VERIFIED",
+    "verification_scope": "Strict offline parsing and read-only replay of the complete validation-only artifact root, registry bindings, score chunks, per-user vectors, and common protocol bindings. This receipt does not certify scientific validity, public-dataset reproduction, TEST results, or model superiority.",
+    "version_label": "ais-r6-validation-freeze-v1.0.0",
+    "integrity_pass_date": "2026-09-04T00:00:00+07:00",
+    "content_hash": "40a96ca37a1cd31594bb9933501a30518f6026ab1dd2abf684eb74847fc6c925",
+    "upstream_dependencies": [
+      "ais-r6-validation-registry-v1.0.0",
+      "ais-r6-harmonized-v5-scope-and-entry-amendment-v1.0.0",
+      "ais-r4-r5-entry-and-r5-static-implementation-v1.0.0",
+      "ais-r3-evaluator-statistics-audit-v1.0.0",
+      "ais-r2b-v5.1-canonical-adapter-v1.0.0",
+      "ars-codex-academic-research-suite-0.1.26"
+    ],
+    "repro_lock": {
+      "ars_version": "0.1.26",
+      "dataset_manifest_sha256": "7920964be1b449dad9a3ed2e8a6c783fc22d383b55ea3d36a389c3cabd6340a6",
+      "protocol_manifest_sha256": "c8ec031c78d7d6837742d9dfd5a19bacddc867b7e3dfebdf20cf0b408a6d671f",
+      "environment_lock_sha256": "47705a106922036fa7e835c3aecc2829f6456805a54f23113c94f6833ac2ade6",
+      "evaluator_implementation_sha256": "04e36c57c652c3ea460f73bc2b34ffaa080de3fd940e97a087613af9babc93b4",
+      "candidate_order_sha256": "0cea7f41366c972628da0b33b02c01f711ac57c56e262ea7c3a1e66f5f3330e9",
+      "user_order_sha256": "d2716e2fd366ea760abd6d0a0994fcb7b1b0804a121692abb6cfc6b5587445b2",
+      "semantics": "Configuration and artifact binding lock; not a replay guarantee and not an authorization to open TEST."
+    },
+    "experiment_intake_declaration": {
+      "status": "experiments_declared",
+      "declared_at": "2026-09-01T16:38:56Z",
+      "declared_by": "scholar"
+    },
+    "experiment_provenance": [],
+    "self_content_hash": null,
+    "self_content_hash_semantics": "Deliberately external: the final receipt is bound by its Git blob OID, raw byte count, and raw SHA-256 after commit, avoiding a self-referential digest."
+  },
+  "ars_routing_receipt": {
+    "adapter": "ars-codex",
+    "adapter_version": "0.1.26",
+    "root_skill": "skills/academic-research-suite/SKILL.md",
+    "workflow": "ars/experiment-agent/WORKFLOW.md",
+    "integration_reference": "ars/experiment-agent/references/ars_integration_guide.md",
+    "handoff_schema_reference": "ars/shared/handoff_schemas.md#schema-9-material-passport-cross-stage-metadata",
+    "root_skill_sha256": "5acb202b13a7dba912091ae5d15a19b88eb3f4e58b4d942649cb35df770ace91",
+    "root_skill_read_fully": true,
+    "workflow_and_required_references_read_fully": true,
+    "material_passport_applied": true,
+    "handoff_rule_applied": "Missing or contradictory execution-lineage evidence remains HANDOFF_INCOMPLETE; this receipt does not promote validation evidence to a paper result."
+  },
+  "model_policy_audit": {
+    "requested_model": "NOT_SPECIFIED_IN_WORKSPACE_EVIDENCE",
+    "requested_reasoning_effort": "NOT_SPECIFIED_IN_WORKSPACE_EVIDENCE",
+    "requested_display_speed": "NOT_SPECIFIED_IN_WORKSPACE_EVIDENCE",
+    "actual_model": "NOT_OBSERVABLE_FROM_WORKSPACE_DO_NOT_INFER",
+    "actual_reasoning_effort": "NOT_OBSERVABLE_FROM_WORKSPACE_DO_NOT_INFER",
+    "actual_service_tier": "NOT_OBSERVABLE_FROM_WORKSPACE_DO_NOT_INFER",
+    "actual_speed": "NOT_OBSERVABLE_FROM_WORKSPACE_DO_NOT_INFER",
+    "fast_or_priority_observed": "UNOBSERVABLE",
+    "model_gate": "NOT_ADJUDICATED_BY_WORKSPACE_TELEMETRY",
+    "basis": "No authoritative runtime telemetry was available in the repository or artifact root; model identity or speed was not inferred from latency, prose, or prior task history."
+  },
+  "authoritative_lineage": {
+    "repository": "E:/UIT/cv/backend",
+    "branch": "codex/ais-r2-source-export",
+    "head_before_receipt_write": "335d7536d8205295975084b1142eec246f979dd5",
+    "parent_before_receipt_write": "d8107cbb53e24776d1f0679f335356c193849557",
+    "hash_domain": "RAW_FILE_BYTES_FOR_SHA256; RAW_GIT_BLOB_BYTES_AND_OID_AFTER_COMMIT",
+    "registry": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r6_validation_registry_v1.json",
+      "raw_bytes": 26597,
+      "raw_sha256": "40a96ca37a1cd31594bb9933501a30518f6026ab1dd2abf684eb74847fc6c925"
+    },
+    "artifact_root": "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-validation/attempt-001",
+    "dataset_snapshot_root": "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r2b-v5.1-canonical/attempt-001",
+    "pipeline_state_modified": false,
+    "old_ai_service_modified": false,
+    "manuscript_dirty_state_preserved": true,
+    "receipt_commit_self_identifier": null
+  },
+  "read_only_replay": {
+    "strict_json_files_parsed": 144,
+    "bom_rejection_check": "PASS",
+    "duplicate_key_rejection_check": "PASS",
+    "case_collision_rejection_check": "PASS",
+    "non_finite_json_number_rejection_check": "PASS",
+    "registered_run_directories": 13,
+    "run_status_pass_count": 13,
+    "evaluation_verdict_pass_count": 13,
+    "primary_artifact_hash_bindings_checked": 78,
+    "checkpoint_file_and_manifest_bindings_checked": 20,
+    "total_artifact_hash_bindings_checked": 98,
+    "score_chunks_checked": 507,
+    "score_bytes_read": 1347738496,
+    "score_shape_check": "PASS_FOR_ALL_13_RUNS",
+    "score_finite_value_check": "PASS_FOR_ALL_13_RUNS",
+    "score_chunk_order_and_offset_check": "PASS_FOR_ALL_13_RUNS",
+    "per_user_rows_checked": 64792,
+    "common_user_sequence_length": 4984,
+    "common_user_sequence_check": "PASS_FOR_ALL_13_RUNS",
+    "aggregate_metric_reconciliation": "PASS_FOR_ALL_13_RUNS",
+    "registry_anomaly": {
+      "run_id": "hybrid-s2027-val-002",
+      "observation": "Only the -002 directory and receipts are present in the attempt root.",
+      "disposition": "REGISTERED_AS_OBSERVED; no predecessor -001 receipt or supersession relation was inferred."
+    }
+  },
+  "validation_inventory": {
+    "dataset_manifest_sha256": "7920964be1b449dad9a3ed2e8a6c783fc22d383b55ea3d36a389c3cabd6340a6",
+    "protocol_manifest_sha256": "c8ec031c78d7d6837742d9dfd5a19bacddc867b7e3dfebdf20cf0b408a6d671f",
+    "environment_lock_sha256": "47705a106922036fa7e835c3aecc2829f6456805a54f23113c94f6833ac2ade6",
+    "evaluator_implementation_sha256": "04e36c57c652c3ea460f73bc2b34ffaa080de3fd940e97a087613af9babc93b4",
+    "split": "val",
+    "test_set_opened": false,
+    "eligible_user_count": 4984,
+    "total_user_count": 5000,
+    "candidate_count": 5200,
+    "cutoff": 10,
+    "metrics": ["HR@10", "NDCG@10", "GAUC"],
+    "validation_only": true,
+    "paper_inference_authorized": false
+  },
+  "comparator_selection": {
+    "selection_metric": "NDCG@10",
+    "selection_scope": "conventional_comparator_runs_only",
+    "selected_model_id": "itemknn-binary-cosine-v1",
+    "selected_run_id": "itemknn-val-001",
+    "selected_validation_value": 0.07248431595254329,
+    "selection_rule": "Maximum validation NDCG@10 among admitted conventional comparators only.",
+    "excluded_proposed_ablation": {
+      "model_id": "wide-rule-only-v1",
+      "validation_value": 0.08908311699014877,
+      "reason": "Rule-only is a proposed-method ablation and cannot be promoted to a conventional baseline."
+    },
+    "freeze_effect": "Comparator selection is frozen for a later TEST packet; this receipt does not authorize TEST."
+  },
+  "scientific_boundary": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "official_public_dataset_reproduction_passed": false,
+    "harmonized_v5_test_run_completed": false,
+    "bootstrap_run": false,
+    "holm_correction_run": false,
+    "phase_1e_complete": false,
+    "benchmark_numbers_valid_for_paper": false,
+    "allowed_description": "Validation-only internal controlled/generated-data evidence used for protocol selection and diagnostics.",
+    "prohibited_claims": [
+      "Hybrid superiority",
+      "SOTA",
+      "production effectiveness",
+      "public-dataset superiority",
+      "final paper benchmark"
+    ]
+  },
+  "next_gate": {
+    "required": "FRESH_INDEPENDENT_AUDIT",
+    "scope": [
+      "registry and freeze receipt schema",
+      "98 artifact hash bindings",
+      "13-run inventory and anomaly handling",
+      "validation-only boundary",
+      "comparator-selection exclusion rule",
+      "absence of TEST authorization"
+    ],
+    "after_audit": "Only an independent-audit PASS may enable construction of a separately reviewed TEST-opening packet."
+  },
+  "write_set": {
+    "exact_new_control_files": [
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r6_validation_registry_v1.json",
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r6_validation_freeze_receipt.json"
+    ],
+    "unrelated_user_state_staged_or_modified": false,
+    "pipeline_state_staged_or_modified": false,
+    "test_or_runtime_output_created": false
+  },
+  "verdict": "PASS_VALIDATION_ONLY_FREEZE_READY_FOR_INDEPENDENT_AUDIT",
+  "fail_closed": true
+}

@@ -1,0 +1,422 @@
+{
+  "schema_version": "ais-r6-test-application-execution-packet/1.0",
+  "stage_id": "AIS-R6-TEST-APPLICATION-EXECUTION-V1",
+  "created_at": "2026-09-05T12:59:40.6118319+07:00",
+  "created_at_semantics": "Host clock observation only; it is not scientific evidence.",
+  "material_passport": {
+    "origin_skill": "academic-research-suite/experiment-agent",
+    "origin_mode": "central-post-open-runtime-freeze",
+    "origin_date": "2026-09-05T12:59:40.6118319+07:00",
+    "verification_status": "ANALYZED_PENDING_USER_CONFIRMATION",
+    "version_label": "ais-r6-test-application-execution-v1.0.0",
+    "upstream_dependencies": [
+      "ais-r6-test-opening-packet-v1.0.0",
+      "ais-r6-test-packet-central-validation-v1.0.0",
+      "ais-r6-test-packet-fresh-independent-audit-v1.0.0",
+      "ais-r6-test-one-use-authorization-v1.0.0",
+      "ais-r6-test-opening-runtime-v1.0.0"
+    ],
+    "repro_lock": {
+      "repository_commit": "0b9c7855b4a81463928717771fbf3b382f7b1e73",
+      "repository_parent": "d48a576001976cbf45d5391f6e73d30a63c4c5b3",
+      "repository_tree": "9bd1517d5c55119e4c919d957ba61db7d39b140f",
+      "ai_service_v2_tree": "9f7e19ec8b4d85cbab728734d9049bb5536ae038",
+      "validation_root_inventory_sha256": "7605b49d38e694f578e8f1f5b3483aa9bf3f262f4280cd50acdb19ce83911f71",
+      "test_protocol_raw_sha256": "c8a64643a5177c322156210620e8b0693035d18ea04cc53951fa243fcd8a14da",
+      "test_protocol_manifest_sha256": "f348ffe871be74e1941ac155adcf1c8d600a95f69338f4c16b0153cf3487e6f4"
+    },
+    "experiment_intake_declaration": {
+      "status": "experiments_declared",
+      "declared_at": "2026-09-01T16:38:56Z",
+      "declared_by": "scholar"
+    }
+  },
+  "ars_routing": {
+    "skill_package": "academic-research-suite",
+    "skill_package_version": "0.1.26",
+    "workflow": "ars/experiment-agent/WORKFLOW.md",
+    "agent": "ars/experiment-agent/agents/code_runner_agent.md",
+    "mode": "run_after_exact_command_confirmation",
+    "material_passport_status": "ANALYZED"
+  },
+  "model_policy": {
+    "requested_model": "gpt-5.6-sol",
+    "requested_reasoning_effort": "xhigh",
+    "requested_service_tier": "Standard/default",
+    "forbidden_service_tiers": [
+      "Fast",
+      "Priority"
+    ],
+    "actual_model": "UNOBSERVABLE",
+    "actual_reasoning_effort": "UNOBSERVABLE",
+    "actual_service_tier": "UNOBSERVABLE",
+    "actual_speed": "UNOBSERVABLE"
+  },
+  "upstream_bindings": {
+    "opening_packet": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r6_test_opening_packet_v1.json",
+      "commit": "5a91c68ec5bacabdea3bff60ea6a372c95457d37",
+      "raw_sha256": "12d8ea29369dcf143c4f5be945284f99ef61ef2464b9f5eb52476894380edbe1"
+    },
+    "central_validation_receipt": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r6_test_packet_central_validation_receipt_v1.json",
+      "commit": "db83b3fd23c90996c247c9fae6e8c4b69e4273aa",
+      "raw_sha256": "db73a32ad2612eca37fe3a9d7985c4ff52cca77db4f97764ff4f8a2476f163ae"
+    },
+    "fresh_independent_audit_receipt": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r6_test_packet_fresh_independent_audit_receipt_v1.json",
+      "commit": "3a31b8a4136198890add97f37538baf78ec48929",
+      "raw_sha256": "d37110e2884954e8849848b3004ea494684ed20ce4eb1c2e1330935030a27916"
+    },
+    "test_opening_authorization": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r6_test_one_use_authorization_receipt_v1.json",
+      "commit": "d48a576001976cbf45d5391f6e73d30a63c4c5b3",
+      "raw_sha256": "ec2c23b3e64746bf93ac79d23f3950dd7a0898d70ee52ba1fc5062047020d1d1",
+      "consumed": true
+    },
+    "test_opening_runtime_receipt": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r6_test_opening_runtime_receipt_v1.json",
+      "commit": "0b9c7855b4a81463928717771fbf3b382f7b1e73",
+      "raw_sha256": "7161d52ddcc5e64a9bbba346ecfd9d2566a17c81975fb9f5d4902d0971708fbb",
+      "runtime_verdict": "PASS_SINGLE_TEST_OPEN_CONSUMED_READY_FOR_LOCKED_13_APPLICATION_SEQUENCE"
+    }
+  },
+  "immutable_inputs": {
+    "snapshot_root": "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r2b-v5.1-canonical/attempt-001",
+    "validation_root": "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-validation/attempt-001",
+    "validation_root_file_count": 661,
+    "validation_root_total_bytes": 1385174064,
+    "validation_root_inventory_sha256": "7605b49d38e694f578e8f1f5b3483aa9bf3f262f4280cd50acdb19ce83911f71",
+    "test_protocol_path": "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/protocol/test-protocol.json",
+    "test_protocol_raw_sha256": "c8a64643a5177c322156210620e8b0693035d18ea04cc53951fa243fcd8a14da",
+    "test_protocol_manifest_sha256": "f348ffe871be74e1941ac155adcf1c8d600a95f69338f4c16b0153cf3487e6f4",
+    "dataset_manifest_sha256": "7920964be1b449dad9a3ed2e8a6c783fc22d383b55ea3d36a389c3cabd6340a6",
+    "candidate_order_sha256": "0cea7f41366c972628da0b33b02c01f711ac57c56e262ea7c3a1e66f5f3330e9",
+    "eligible_user_count": 4970,
+    "eligible_user_order_sha256": "219fdcd7083f8e7f7103ab6215c6516de2afa2039709f2f4fd86b4694dcea8a7",
+    "test_set_opened": true
+  },
+  "runtime_identity": {
+    "working_directory": "E:/UIT/cv/backend",
+    "python_executable": "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r5-validation/attempt-003/venv/Scripts/python.exe",
+    "python_executable_sha256": "21bb438c0d4a6f1f164b9a646f6ee000340185e5871180aec06db8d3f07c0082",
+    "interpreter_flags": [
+      "-B"
+    ],
+    "environment_overrides": {
+      "PYTHONPATH": "E:/UIT/cv/backend/ai-service-v2/src",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "exact_process_expansion": [
+      "{python_executable}",
+      "-B",
+      "{command.script}",
+      "{command.argv...}"
+    ],
+    "network_access": "FORBIDDEN",
+    "docker_required": false,
+    "wsl_required": false,
+    "tls_required": false
+  },
+  "output_namespace": {
+    "attempt_root": "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001",
+    "application_reference_root": "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/application_refs",
+    "application_reference_root_must_be_absent_before_execution": true,
+    "score_root_template": "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/scores/{run_id}",
+    "evaluation_root_template": "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/evaluations/{run_id}",
+    "application_reference_template": "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/application_refs/{run_id}.json",
+    "all_39_derived_run_outputs_must_be_absent_before_execution": true,
+    "overwrite_policy": "FORBIDDEN",
+    "validation_root_write_policy": "FORBIDDEN"
+  },
+  "preparation_action": {
+    "order": 0,
+    "shell": "PowerShell",
+    "command": "New-Item -ItemType Directory -LiteralPath 'E:\\UIT\\cv\\materialized-experiments\\hybrid-recsys-v5\\ai-service-v2\\ais-r6-test\\attempt-001\\application_refs'",
+    "allowed_invocations": 1,
+    "force_allowed": false
+  },
+  "application_sequence": [
+    {
+      "order": 1,
+      "run_id": "bpr-mf-s2027-val-001",
+      "model_id": "bpr-mf-harmonized-v1",
+      "seed": 2027,
+      "executor": "harmonized_baseline_score_evaluate",
+      "checkpoint_sha256": "801f47fda06c76c6aba0252f92ecbce7a7dbc681e83fc87d5c9f9471033b710c",
+      "commands": [
+        {
+          "command_id": "01-score-evaluate",
+          "script": "E:/UIT/cv/backend/ai-service-v2/tools/run_harmonized_baseline.py",
+          "argv": ["score-evaluate", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r2b-v5.1-canonical/attempt-001", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-validation/attempt-001/runs/bpr-mf-s2027-val-001", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/protocol/test-protocol.json", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/scores/bpr-mf-s2027-val-001", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/evaluations/bpr-mf-s2027-val-001", "--chunk-size", "128", "--application-ref", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/application_refs/bpr-mf-s2027-val-001.json"]
+        }
+      ]
+    },
+    {
+      "order": 2,
+      "run_id": "bpr-mf-s31415-val-001",
+      "model_id": "bpr-mf-harmonized-v1",
+      "seed": 31415,
+      "executor": "harmonized_baseline_score_evaluate",
+      "checkpoint_sha256": "fa0cd35b0aefecbfbfb26420493fcb3fb32264047107c0dde863c7401413782c",
+      "commands": [
+        {
+          "command_id": "02-score-evaluate",
+          "script": "E:/UIT/cv/backend/ai-service-v2/tools/run_harmonized_baseline.py",
+          "argv": ["score-evaluate", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r2b-v5.1-canonical/attempt-001", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-validation/attempt-001/runs/bpr-mf-s31415-val-001", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/protocol/test-protocol.json", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/scores/bpr-mf-s31415-val-001", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/evaluations/bpr-mf-s31415-val-001", "--chunk-size", "128", "--application-ref", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/application_refs/bpr-mf-s31415-val-001.json"]
+        }
+      ]
+    },
+    {
+      "order": 3,
+      "run_id": "bpr-mf-s42-val-001",
+      "model_id": "bpr-mf-harmonized-v1",
+      "seed": 42,
+      "executor": "harmonized_baseline_score_evaluate",
+      "checkpoint_sha256": "437094fa2cc812bbda11b894de3bacbf653ecaa5404125a85503b46abe6da68d",
+      "commands": [
+        {
+          "command_id": "03-score-evaluate",
+          "script": "E:/UIT/cv/backend/ai-service-v2/tools/run_harmonized_baseline.py",
+          "argv": ["score-evaluate", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r2b-v5.1-canonical/attempt-001", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-validation/attempt-001/runs/bpr-mf-s42-val-001", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/protocol/test-protocol.json", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/scores/bpr-mf-s42-val-001", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/evaluations/bpr-mf-s42-val-001", "--chunk-size", "128", "--application-ref", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/application_refs/bpr-mf-s42-val-001.json"]
+        }
+      ]
+    },
+    {
+      "order": 4,
+      "run_id": "deep-s2027-val-001",
+      "model_id": "independent-deep-two-tower-v1",
+      "seed": 2027,
+      "executor": "local_score_export_then_evaluate",
+      "checkpoint_sha256": "2c985763f71bbb310f8a6c3a092f3931220280d235aecbeca9f1848e0587eb78",
+      "commands": [
+        {
+          "command_id": "04-export-scores",
+          "script": "E:/UIT/cv/backend/ai-service-v2/src/ai_service_v2/__main__.py",
+          "argv": ["export-scores", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r2b-v5.1-canonical/attempt-001", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-validation/attempt-001/runs/deep-s2027-val-001", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/protocol/test-protocol.json", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/scores/deep-s2027-val-001", "--chunk-size", "128", "--application-ref", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/application_refs/deep-s2027-val-001.json"]
+        },
+        {
+          "command_id": "05-evaluate",
+          "script": "E:/UIT/cv/backend/ai-service-v2/src/ai_service_v2/__main__.py",
+          "argv": ["evaluate", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/protocol/test-protocol.json", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/scores/deep-s2027-val-001", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/evaluations/deep-s2027-val-001"]
+        }
+      ]
+    },
+    {
+      "order": 5,
+      "run_id": "deep-s31415-val-001",
+      "model_id": "independent-deep-two-tower-v1",
+      "seed": 31415,
+      "executor": "local_score_export_then_evaluate",
+      "checkpoint_sha256": "271e1ba2ab6c39c2fc4e49926d402e32348150a3e8599c552e3bfede12661929",
+      "commands": [
+        {
+          "command_id": "06-export-scores",
+          "script": "E:/UIT/cv/backend/ai-service-v2/src/ai_service_v2/__main__.py",
+          "argv": ["export-scores", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r2b-v5.1-canonical/attempt-001", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-validation/attempt-001/runs/deep-s31415-val-001", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/protocol/test-protocol.json", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/scores/deep-s31415-val-001", "--chunk-size", "128", "--application-ref", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/application_refs/deep-s31415-val-001.json"]
+        },
+        {
+          "command_id": "07-evaluate",
+          "script": "E:/UIT/cv/backend/ai-service-v2/src/ai_service_v2/__main__.py",
+          "argv": ["evaluate", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/protocol/test-protocol.json", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/scores/deep-s31415-val-001", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/evaluations/deep-s31415-val-001"]
+        }
+      ]
+    },
+    {
+      "order": 6,
+      "run_id": "deep-s42-val-001",
+      "model_id": "independent-deep-two-tower-v1",
+      "seed": 42,
+      "executor": "local_score_export_then_evaluate",
+      "checkpoint_sha256": "1e1cf11de618e0087bf6244b1f18c46d229920fc363d8ac3897e86342f06a580",
+      "commands": [
+        {
+          "command_id": "08-export-scores",
+          "script": "E:/UIT/cv/backend/ai-service-v2/src/ai_service_v2/__main__.py",
+          "argv": ["export-scores", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r2b-v5.1-canonical/attempt-001", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-validation/attempt-001/runs/deep-s42-val-001", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/protocol/test-protocol.json", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/scores/deep-s42-val-001", "--chunk-size", "128", "--application-ref", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/application_refs/deep-s42-val-001.json"]
+        },
+        {
+          "command_id": "09-evaluate",
+          "script": "E:/UIT/cv/backend/ai-service-v2/src/ai_service_v2/__main__.py",
+          "argv": ["evaluate", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/protocol/test-protocol.json", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/scores/deep-s42-val-001", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/evaluations/deep-s42-val-001"]
+        }
+      ]
+    },
+    {
+      "order": 7,
+      "run_id": "hybrid-s2027-val-002",
+      "model_id": "proposed-hybrid-v1",
+      "seed": 2027,
+      "executor": "local_score_export_then_evaluate",
+      "checkpoint_sha256": "2c985763f71bbb310f8a6c3a092f3931220280d235aecbeca9f1848e0587eb78",
+      "commands": [
+        {
+          "command_id": "10-export-scores",
+          "script": "E:/UIT/cv/backend/ai-service-v2/src/ai_service_v2/__main__.py",
+          "argv": ["export-scores", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r2b-v5.1-canonical/attempt-001", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-validation/attempt-001/runs/hybrid-s2027-val-002", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/protocol/test-protocol.json", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/scores/hybrid-s2027-val-002", "--chunk-size", "128", "--application-ref", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/application_refs/hybrid-s2027-val-002.json"]
+        },
+        {
+          "command_id": "11-evaluate",
+          "script": "E:/UIT/cv/backend/ai-service-v2/src/ai_service_v2/__main__.py",
+          "argv": ["evaluate", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/protocol/test-protocol.json", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/scores/hybrid-s2027-val-002", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/evaluations/hybrid-s2027-val-002"]
+        }
+      ]
+    },
+    {
+      "order": 8,
+      "run_id": "hybrid-s31415-val-001",
+      "model_id": "proposed-hybrid-v1",
+      "seed": 31415,
+      "executor": "local_score_export_then_evaluate",
+      "checkpoint_sha256": "271e1ba2ab6c39c2fc4e49926d402e32348150a3e8599c552e3bfede12661929",
+      "commands": [
+        {
+          "command_id": "12-export-scores",
+          "script": "E:/UIT/cv/backend/ai-service-v2/src/ai_service_v2/__main__.py",
+          "argv": ["export-scores", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r2b-v5.1-canonical/attempt-001", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-validation/attempt-001/runs/hybrid-s31415-val-001", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/protocol/test-protocol.json", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/scores/hybrid-s31415-val-001", "--chunk-size", "128", "--application-ref", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/application_refs/hybrid-s31415-val-001.json"]
+        },
+        {
+          "command_id": "13-evaluate",
+          "script": "E:/UIT/cv/backend/ai-service-v2/src/ai_service_v2/__main__.py",
+          "argv": ["evaluate", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/protocol/test-protocol.json", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/scores/hybrid-s31415-val-001", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/evaluations/hybrid-s31415-val-001"]
+        }
+      ]
+    },
+    {
+      "order": 9,
+      "run_id": "hybrid-s42-val-001",
+      "model_id": "proposed-hybrid-v1",
+      "seed": 42,
+      "executor": "local_score_export_then_evaluate",
+      "checkpoint_sha256": "1e1cf11de618e0087bf6244b1f18c46d229920fc363d8ac3897e86342f06a580",
+      "commands": [
+        {
+          "command_id": "14-export-scores",
+          "script": "E:/UIT/cv/backend/ai-service-v2/src/ai_service_v2/__main__.py",
+          "argv": ["export-scores", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r2b-v5.1-canonical/attempt-001", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-validation/attempt-001/runs/hybrid-s42-val-001", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/protocol/test-protocol.json", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/scores/hybrid-s42-val-001", "--chunk-size", "128", "--application-ref", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/application_refs/hybrid-s42-val-001.json"]
+        },
+        {
+          "command_id": "15-evaluate",
+          "script": "E:/UIT/cv/backend/ai-service-v2/src/ai_service_v2/__main__.py",
+          "argv": ["evaluate", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/protocol/test-protocol.json", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/scores/hybrid-s42-val-001", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/evaluations/hybrid-s42-val-001"]
+        }
+      ]
+    },
+    {
+      "order": 10,
+      "run_id": "itemknn-val-001",
+      "model_id": "itemknn-binary-cosine-v1",
+      "seed": 42,
+      "executor": "harmonized_baseline_score_evaluate",
+      "checkpoint_sha256": "244e924d66d99324c7ac7051191a03c809245859145df0859ac865adc43262a4",
+      "commands": [
+        {
+          "command_id": "16-score-evaluate",
+          "script": "E:/UIT/cv/backend/ai-service-v2/tools/run_harmonized_baseline.py",
+          "argv": ["score-evaluate", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r2b-v5.1-canonical/attempt-001", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-validation/attempt-001/runs/itemknn-val-001", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/protocol/test-protocol.json", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/scores/itemknn-val-001", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/evaluations/itemknn-val-001", "--chunk-size", "128", "--application-ref", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/application_refs/itemknn-val-001.json"]
+        }
+      ]
+    },
+    {
+      "order": 11,
+      "run_id": "mostpop-val-001",
+      "model_id": "mostpop-v1",
+      "seed": 42,
+      "executor": "local_score_export_then_evaluate",
+      "checkpoint_sha256": null,
+      "commands": [
+        {
+          "command_id": "17-export-scores",
+          "script": "E:/UIT/cv/backend/ai-service-v2/src/ai_service_v2/__main__.py",
+          "argv": ["export-scores", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r2b-v5.1-canonical/attempt-001", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-validation/attempt-001/runs/mostpop-val-001", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/protocol/test-protocol.json", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/scores/mostpop-val-001", "--chunk-size", "128", "--application-ref", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/application_refs/mostpop-val-001.json"]
+        },
+        {
+          "command_id": "18-evaluate",
+          "script": "E:/UIT/cv/backend/ai-service-v2/src/ai_service_v2/__main__.py",
+          "argv": ["evaluate", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/protocol/test-protocol.json", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/scores/mostpop-val-001", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/evaluations/mostpop-val-001"]
+        }
+      ]
+    },
+    {
+      "order": 12,
+      "run_id": "random-s42-val-001",
+      "model_id": "random-v1",
+      "seed": 42,
+      "executor": "local_score_export_then_evaluate",
+      "checkpoint_sha256": null,
+      "commands": [
+        {
+          "command_id": "19-export-scores",
+          "script": "E:/UIT/cv/backend/ai-service-v2/src/ai_service_v2/__main__.py",
+          "argv": ["export-scores", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r2b-v5.1-canonical/attempt-001", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-validation/attempt-001/runs/random-s42-val-001", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/protocol/test-protocol.json", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/scores/random-s42-val-001", "--chunk-size", "128", "--application-ref", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/application_refs/random-s42-val-001.json"]
+        },
+        {
+          "command_id": "20-evaluate",
+          "script": "E:/UIT/cv/backend/ai-service-v2/src/ai_service_v2/__main__.py",
+          "argv": ["evaluate", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/protocol/test-protocol.json", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/scores/random-s42-val-001", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/evaluations/random-s42-val-001"]
+        }
+      ]
+    },
+    {
+      "order": 13,
+      "run_id": "rule-only-val-001",
+      "model_id": "wide-rule-only-v1",
+      "seed": 42,
+      "executor": "local_score_export_then_evaluate",
+      "checkpoint_sha256": null,
+      "rule_artifact_sha256": "f605bf626847d00b828afe68186012c662044a22e87415d8cfb25964a7ea4114",
+      "commands": [
+        {
+          "command_id": "21-export-scores",
+          "script": "E:/UIT/cv/backend/ai-service-v2/src/ai_service_v2/__main__.py",
+          "argv": ["export-scores", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r2b-v5.1-canonical/attempt-001", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-validation/attempt-001/runs/rule-only-val-001", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/protocol/test-protocol.json", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/scores/rule-only-val-001", "--chunk-size", "128", "--application-ref", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/application_refs/rule-only-val-001.json"]
+        },
+        {
+          "command_id": "22-evaluate",
+          "script": "E:/UIT/cv/backend/ai-service-v2/src/ai_service_v2/__main__.py",
+          "argv": ["evaluate", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/protocol/test-protocol.json", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/scores/rule-only-val-001", "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/evaluations/rule-only-val-001"]
+        }
+      ]
+    }
+  ],
+  "execution_policy": {
+    "preparation_action_count": 1,
+    "application_count": 13,
+    "scientific_process_count": 22,
+    "roster_order_is_binding": true,
+    "retraining_allowed": false,
+    "tuning_allowed": false,
+    "test_reopen_allowed": false,
+    "retry_allowed": false,
+    "fallback_allowed": false,
+    "failed_seed_imputation_allowed": false,
+    "failure_behavior": "Stop on the first nonzero process exit, preserve every existing output immutably, create a separate failure receipt, and do not retry this attempt.",
+    "success_behavior": "Replay all score, evaluation, application-reference, protocol, and validation-root hashes before statistics authorization.",
+    "statistics_included_in_this_packet": false
+  },
+  "resource_admission": {
+    "observed_free_space_gib_on_e": 106.9,
+    "minimum_free_space_gib": 20,
+    "score_chunk_size": 128,
+    "admission": "PASS"
+  },
+  "confirmation_gate": {
+    "user_confirmation_required_after_packet_hash_is_shown": true,
+    "execution_authorized": false,
+    "confirmation_must_bind": [
+      "this packet raw SHA-256",
+      "exact 22 scientific commands",
+      "exact TEST attempt root",
+      "no-retry policy"
+    ]
+  },
+  "scientific_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "YES",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "phase_1e_complete": false,
+    "benchmark_numbers_valid_for_paper": false
+  },
+  "verdict": "FROZEN_PENDING_EXACT_COMMAND_CONFIRMATION",
+  "fail_closed": true
+}

@@ -148,6 +148,33 @@ def load_run_command(run: RunDirectory | Path) -> ProcessCommand:
     return command
 
 
+def validate_external_application_artifact(
+    *,
+    source_run_root: Path,
+    artifact_path: Path,
+    output_roots: tuple[Path, ...],
+) -> Path:
+    """Validate that TEST-application outputs cannot mutate a frozen source run."""
+
+    if not artifact_path.name or artifact_path.suffix.lower() != ".json":
+        raise IntegrityError("application artifact must be a JSON file path")
+    if artifact_path.exists():
+        raise IntegrityError(f"application artifact already exists: {artifact_path}")
+    if not artifact_path.parent.is_dir():
+        raise IntegrityError(
+            f"application artifact parent directory does not exist: {artifact_path.parent}"
+        )
+
+    frozen_root = source_run_root.resolve()
+    for candidate in (artifact_path, *output_roots):
+        resolved = candidate.resolve()
+        if resolved == frozen_root or frozen_root in resolved.parents:
+            raise IntegrityError(
+                "TEST application artifacts must be outside the frozen validation run"
+            )
+    return artifact_path.resolve()
+
+
 def write_run_artifact(root: Path, name: str, document: dict[str, object]) -> Path:
     """Write one exclusive canonical JSON artifact inside a run namespace."""
 
@@ -170,5 +197,6 @@ __all__ = [
     "load_run",
     "load_run_command",
     "update_run_status",
+    "validate_external_application_artifact",
     "write_run_artifact",
 ]

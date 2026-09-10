@@ -1,0 +1,229 @@
+{
+  "schema_version": "ais-r8-p3-public-data-protocol-validation-spec/1.0",
+  "stage_id": "AIS-R8-P3",
+  "namespace": "PUBLIC_DATA_PROTOCOL_VALIDATION",
+  "attempt_id": "ais-r8-p3-public-validation-attempt-001",
+  "amendment": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r8_p2_public_data_protocol_validation_amendment_v1.json",
+    "sha256": "4217ad1cef7b722eb419248ba54160867e53e1cbe059e7bf4d88aa68e930dff4"
+  },
+  "source": {
+    "framework": "RecBole",
+    "version": "1.2.1",
+    "revision": "9a6f63d8d4a5b989fe27955a833f813a6d86041e",
+    "git_tree": "08915121fea069a30f7e3e97a72e16e7e76d43c6",
+    "source_manifest_sha256": "c5794b9daccdd01ca600c6ef7f890918825fbbb872efa67036c4565234e87016",
+    "pop_source_sha256": "aacdde8104a08cb75a241ffd012ee121d8ee367b75be1207f0bd14fee56594bb",
+    "bpr_source_sha256": "191d4a8707833a7f4a4bfa0eadff12431bbf70d17ef25e39474bc9b8e588357a"
+  },
+  "dataset": {
+    "name": "ml-100k",
+    "provider": "GroupLens",
+    "archive_sha256": "50d2a982c66986937beb9ffb3aa76efe955bf3d5c6b761f4e3a7cd717c6a3229",
+    "atomic_container_path": "/stage1e/data/ml-100k/ml-100k.inter",
+    "atomic_sha256": "4edb74e2a81178c2ba9ff381495f754f996c4aea351b1272ca36b43da0935eff",
+    "raw_interactions": 100000,
+    "raw_users": 943,
+    "raw_items": 1682,
+    "feedback_filter": {
+      "field": "rating",
+      "interval": "[4,inf)",
+      "interpretation": "ratings 4 and 5 are positive implicit interactions; lower ratings are excluded before splitting"
+    }
+  },
+  "protocol": {
+    "group_by": "user",
+    "order": "TO",
+    "split": {
+      "RS": [
+        0.8,
+        0.1,
+        0.1
+      ]
+    },
+    "evaluation_mode": "full",
+    "cutoff": 10,
+    "primary_metric": "NDCG@10",
+    "metrics": [
+      "Recall",
+      "MRR",
+      "NDCG",
+      "Hit",
+      "Precision"
+    ],
+    "metric_decimal_place": 6,
+    "candidate_universe": "full retained internal item catalog excluding padding",
+    "seen_item_masking": true,
+    "sampled_negative_evaluation": false,
+    "tie_handling": "pinned RecBole torch.topk implementation order",
+    "repeatable": true
+  },
+  "common_config": {
+    "data_path": "/stage1e/data",
+    "USER_ID_FIELD": "user_id",
+    "ITEM_ID_FIELD": "item_id",
+    "RATING_FIELD": "rating",
+    "TIME_FIELD": "timestamp",
+    "load_col": {
+      "inter": [
+        "user_id",
+        "item_id",
+        "rating",
+        "timestamp"
+      ]
+    },
+    "val_interval": {
+      "rating": "[4,inf)"
+    },
+    "use_gpu": false,
+    "gpu_id": "",
+    "worker": 0,
+    "state": "INFO",
+    "reproducibility": true,
+    "repeatable": true,
+    "show_progress": false,
+    "save_dataset": false,
+    "save_dataloaders": false,
+    "log_wandb": false,
+    "shuffle": true,
+    "eval_args": {
+      "split": {
+        "RS": [
+          0.8,
+          0.1,
+          0.1
+        ]
+      },
+      "group_by": "user",
+      "order": "TO",
+      "mode": "full"
+    },
+    "metrics": [
+      "Recall",
+      "MRR",
+      "NDCG",
+      "Hit",
+      "Precision"
+    ],
+    "topk": [
+      10
+    ],
+    "valid_metric": "NDCG@10",
+    "valid_metric_bigger": true,
+    "eval_batch_size": 4096,
+    "metric_decimal_place": 6,
+    "enable_amp": false,
+    "enable_scaler": false
+  },
+  "runs": [
+    {
+      "run_id": "recbole-pop-seed-42",
+      "model": "Pop",
+      "seed": 42,
+      "model_config": {
+        "epochs": 1,
+        "train_batch_size": 2048,
+        "eval_step": 1,
+        "stopping_step": 1,
+        "train_neg_sample_args": null
+      }
+    },
+    {
+      "run_id": "recbole-bpr-seed-42",
+      "model": "BPR",
+      "seed": 42,
+      "model_config": {
+        "epochs": 300,
+        "train_batch_size": 2048,
+        "learner": "adam",
+        "learning_rate": 0.001,
+        "eval_step": 1,
+        "stopping_step": 10,
+        "clip_grad_norm": null,
+        "weight_decay": 0.0,
+        "embedding_size": 64,
+        "train_neg_sample_args": {
+          "distribution": "uniform",
+          "sample_num": 1,
+          "alpha": 1.0,
+          "dynamic": false,
+          "candidate_num": 0
+        }
+      }
+    },
+    {
+      "run_id": "recbole-bpr-seed-2027",
+      "model": "BPR",
+      "seed": 2027,
+      "model_config": {
+        "epochs": 300,
+        "train_batch_size": 2048,
+        "learner": "adam",
+        "learning_rate": 0.001,
+        "eval_step": 1,
+        "stopping_step": 10,
+        "clip_grad_norm": null,
+        "weight_decay": 0.0,
+        "embedding_size": 64,
+        "train_neg_sample_args": {
+          "distribution": "uniform",
+          "sample_num": 1,
+          "alpha": 1.0,
+          "dynamic": false,
+          "candidate_num": 0
+        }
+      }
+    },
+    {
+      "run_id": "recbole-bpr-seed-31415",
+      "model": "BPR",
+      "seed": 31415,
+      "model_config": {
+        "epochs": 300,
+        "train_batch_size": 2048,
+        "learner": "adam",
+        "learning_rate": 0.001,
+        "eval_step": 1,
+        "stopping_step": 10,
+        "clip_grad_norm": null,
+        "weight_decay": 0.0,
+        "embedding_size": 64,
+        "train_neg_sample_args": {
+          "distribution": "uniform",
+          "sample_num": 1,
+          "alpha": 1.0,
+          "dynamic": false,
+          "candidate_num": 0
+        }
+      }
+    }
+  ],
+  "aggregation": {
+    "bpr_seed_count": 3,
+    "bpr_seed_order": [
+      42,
+      2027,
+      31415
+    ],
+    "summary": [
+      "mean",
+      "sample_standard_deviation",
+      "minimum",
+      "maximum"
+    ],
+    "delta_reference": "recbole-pop-seed-42",
+    "inferential_test": null,
+    "bootstrap": null,
+    "minimum_effect_gate": null,
+    "negative_or_null_results_retained": true
+  },
+  "execution": {
+    "network": "none",
+    "device": "cpu",
+    "torch_threads": 2,
+    "automatic_retry": false,
+    "automatic_fallback": false,
+    "project_v5_test_access": false,
+    "expected_run_count": 4
+  }
+}

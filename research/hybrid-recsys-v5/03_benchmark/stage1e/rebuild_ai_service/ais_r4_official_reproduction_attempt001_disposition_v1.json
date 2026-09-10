@@ -1,0 +1,120 @@
+{
+  "schema_version": "ais-r4-official-reproduction-disposition/1.0",
+  "stage_id": "AIS-R4",
+  "created_at": "2026-09-04T00:53:11.1484422Z",
+  "material_passport": {
+    "origin_skill": "academic-research-suite/experiment-agent",
+    "origin_mode": "runtime-result-disposition-fail-closed",
+    "origin_date": "2026-09-04T00:53:11.1484422Z",
+    "verification_status": "CENTRAL_VERIFIED_PENDING_INDEPENDENT_FINAL_AUDIT",
+    "version_label": "ais-r4-official-reproduction-attempt001-disposition-v1.0.0",
+    "upstream_dependencies": [
+      "ais-r0-baseline-registry-v1.0.0",
+      "recbole-v1.2.1@9a6f63d8d4a5b989fe27955a833f813a6d86041e",
+      "grouplens-ml-100k@sha256:50d2a982c66986937beb9ffb3aa76efe955bf3d5c6b761f4e3a7cd717c6a3229",
+      "recbole-runtime-attempt-local-003",
+      "official-reproduction-attempt-001"
+    ],
+    "repro_lock": {
+      "repository_head_at_disposition": "3e22ef7fee94235c62f4e2b1fc7a8675b9d8e08d",
+      "recbole_source_commit": "9a6f63d8d4a5b989fe27955a833f813a6d86041e",
+      "dataset_archive_sha256": "50d2a982c66986937beb9ffb3aa76efe955bf3d5c6b761f4e3a7cd717c6a3229",
+      "configuration_sha256": "a2e109c8dc62683479adf5bfdd07de718d769e1d46c65a8c4f32dd686c0a7eaa",
+      "runner_sha256": "babc4e582eed972fcc67d13382fe87f5fab6e657742ba02818ea8f70fa7fde8a",
+      "checkpoint_sha256": "5441da107b36669ea2d245c061b99ddb96f708310dd306e5558e11addca6176d"
+    },
+    "experiment_intake_declaration": {
+      "status": "experiments_declared",
+      "declared_by": "scholar"
+    }
+  },
+  "actual_model_metadata": {
+    "model": null,
+    "reasoning": null,
+    "speed": null,
+    "status": "NOT_OBSERVABLE_FROM_WORKSPACE_DO_NOT_INFER"
+  },
+  "execution_binding": {
+    "namespace": "OFFICIAL_PROTOCOL_REPRODUCTION",
+    "attempt_id": "attempt-001",
+    "framework": "RecBole",
+    "framework_version": "1.2.1",
+    "source_commit": "9a6f63d8d4a5b989fe27955a833f813a6d86041e",
+    "model": "BPR",
+    "dataset": "GroupLens MovieLens 100K",
+    "dataset_counts": {
+      "ratings": 100000,
+      "users": 943,
+      "items": 1682
+    },
+    "seed": 2020,
+    "split": "random_per_user_80_10_10",
+    "evaluation": "full_sort_top_10",
+    "checkpoint_selection": "best_validation_MRR_at_10_with_early_stopping",
+    "cpu_only": true
+  },
+  "artifact_bindings": [
+    {
+      "path": "MovieLens/official_reproduction/attempt-001/run_manifest.json",
+      "sha256": "8455aacf46a346b8402af4e02c416a0d269f79017121ed8665c6f2d61a2c58c0"
+    },
+    {
+      "path": "MovieLens/official_reproduction/attempt-001/evaluation_receipt.json",
+      "sha256": "3d83a9a47a7c2a6b17d392e3ce7a5d97fbbe24d9393f92cbeadbdee7da828269"
+    },
+    {
+      "path": "MovieLens/official_reproduction/attempt-001/raw_result.json",
+      "sha256": "11e67083dbe4d49c322057604d62bb026846f89ec7db3a9f9a40cb91c33e910f"
+    }
+  ],
+  "reported_center_assessment": {
+    "source_url": "https://github.com/RUCAIBox/RecBole/blob/v1.2.1/README.md",
+    "reported_metric": "NDCG@10",
+    "reported_value": 0.2768,
+    "preregistered_tolerance": 0.01384,
+    "preregistered_interval": [
+      0.26296,
+      0.29064
+    ],
+    "observed_value": 0.2928,
+    "absolute_difference": 0.016,
+    "distance_above_upper_bound": 0.00216,
+    "readme_language": "illustrative_output_some_output_like",
+    "exact_historical_environment_published": false,
+    "tag_presence_observation": {
+      "v1.0.0": false,
+      "v1.0.1": false,
+      "v1.1.0": false,
+      "v1.1.1": false,
+      "v1.2.0": false,
+      "v1.2.1": true
+    },
+    "classification": "INCOMPARABLE_UNPINNED_ILLUSTRATIVE_SOURCE_EXAMPLE"
+  },
+  "disposition": {
+    "runtime_execution": "PASS_END_TO_END_SOURCE_DATA_CONFIG_CHECKPOINT_BOUND",
+    "numeric_tolerance_gate": "REJECTED_NUMERIC_TOLERANCE",
+    "official_result_row": "INCOMPARABLE",
+    "accepted_result_row": false,
+    "paper_use": "METHOD_AND_REPRODUCIBILITY_DIAGNOSTIC_ONLY",
+    "retroactive_tolerance_change": false,
+    "repeat_to_force_target": false,
+    "transition_to_harmonized_v5": "AUTHORIZED_BY_AMENDED_INTEGRITY_GATE"
+  },
+  "amended_integrity_gate": [
+    "Official GroupLens bytes match the provider-published MD5 and the retained archive SHA-256.",
+    "RecBole source revision, wheel, configuration, command, seed, checkpoint and outputs are hash-bound.",
+    "The official protocol run completes end to end with finite metrics and without project-v5 TEST access.",
+    "The illustrative README value remains diagnostic and is not copied into the paper as a reproduced result.",
+    "Harmonized-v5 metrics remain a separate namespace and cannot be compared numerically across datasets with this run."
+  ],
+  "scientific_state_after_disposition": {
+    "OFFICIAL_RESULT_STATUS": "COMPLETED_INCOMPARABLE_NUMERIC_CENTER",
+    "OFFICIAL_ACCEPTED_RESULT_ROWS": 0,
+    "PROJECT_V5_TEST_SET_OPENED": "NO",
+    "HARMONIZED_V5_RESULT_STATUS": "VALIDATION_ONLY_DIAGNOSTICS_EXIST",
+    "PHASE_1E_COMPLETE": false
+  },
+  "verdict": "PASS_AIS_R4_EXECUTION_INTEGRITY_NUMERIC_CENTER_INCOMPARABLE_READY_FOR_HARMONIZED_V5",
+  "fail_closed": true
+}

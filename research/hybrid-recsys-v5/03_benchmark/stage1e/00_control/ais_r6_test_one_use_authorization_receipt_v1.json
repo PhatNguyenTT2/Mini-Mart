@@ -1,0 +1,168 @@
+{
+  "schema_version": "ais-r6-test-one-use-authorization-receipt/1.0",
+  "stage_id": "AIS-R6-TEST-ONE-USE-AUTHORIZATION-V1",
+  "issued_at": "2026-09-05T12:46:49.4231777+07:00",
+  "issued_at_semantics": "Host clock observation only; it is not scientific evidence.",
+  "material_passport": {
+    "origin_skill": "academic-research-suite/experiment-agent",
+    "origin_mode": "central-one-use-test-authorization",
+    "origin_date": "2026-09-05T12:46:49.4231777+07:00",
+    "verification_status": "UNVERIFIED",
+    "version_label": "ais-r6-test-one-use-authorization-v1.0.0",
+    "upstream_dependencies": [
+      "ais-r6-test-opening-packet-v1.0.0",
+      "ais-r6-test-packet-central-validation-v1.0.0",
+      "ais-r6-test-packet-fresh-independent-audit-v1.0.0"
+    ],
+    "repro_lock": {
+      "ars_codex_version": "0.1.26",
+      "authorization_entry_commit": "3a31b8a4136198890add97f37538baf78ec48929",
+      "implementation_commit": "0485ef13c2bf548aa9f7ea34f40652526db02a43",
+      "packet_commit": "5a91c68ec5bacabdea3bff60ea6a372c95457d37",
+      "central_validation_commit": "db83b3fd23c90996c247c9fae6e8c4b69e4273aa",
+      "fresh_independent_audit_commit": "3a31b8a4136198890add97f37538baf78ec48929",
+      "exact_command_binding_sha256": "b3e1e88cd9eef5bd3ed38a5ab6340c8df3afe9452328f6d067291043482874b9"
+    },
+    "experiment_intake_declaration": {
+      "status": "experiments_declared",
+      "declared_at": "2026-09-01T16:38:56Z",
+      "declared_by": "scholar"
+    }
+  },
+  "user_authorization": {
+    "status": "CONFIRMED",
+    "confirmation_text": "Đồng ý",
+    "confirmation_scope": "Execute the exact AIS-R6 single TEST-opening command displayed immediately before this confirmation, exactly once.",
+    "exact_command_confirmed": true,
+    "working_directory_confirmed": true,
+    "single_test_open_confirmed": true,
+    "test_application_roster_not_yet_executed_by_this_confirmation": true,
+    "automatic_retry_authorized": false,
+    "fallback_authorized": false,
+    "training_or_tuning_authorized": false
+  },
+  "bound_evidence": {
+    "test_opening_packet": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r6_test_opening_packet_v1.json",
+      "commit": "5a91c68ec5bacabdea3bff60ea6a372c95457d37",
+      "git_blob_oid": "6c8e33fcfd7e8990e57cdba66911c1213401630f",
+      "raw_sha256": "12d8ea29369dcf143c4f5be945284f99ef61ef2464b9f5eb52476894380edbe1"
+    },
+    "central_validation_receipt": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r6_test_packet_central_validation_receipt_v1.json",
+      "commit": "db83b3fd23c90996c247c9fae6e8c4b69e4273aa",
+      "git_blob_oid": "4da39329c02aa609eb4cd043cb75d8babb6741e5",
+      "raw_sha256": "db73a32ad2612eca37fe3a9d7985c4ff52cca77db4f97764ff4f8a2476f163ae",
+      "verdict": "PASS_READY_FOR_FRESH_INDEPENDENT_AUDIT_TEST_NOT_AUTHORIZED"
+    },
+    "fresh_independent_audit_receipt": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r6_test_packet_fresh_independent_audit_receipt_v1.json",
+      "commit": "3a31b8a4136198890add97f37538baf78ec48929",
+      "git_blob_oid": "44f92a757757fd25074f4d2308f9f1bb69b98595",
+      "raw_sha256": "d37110e2884954e8849848b3004ea494684ed20ce4eb1c2e1330935030a27916",
+      "verdict": "PASS_READY_FOR_CENTRAL_ONE_USE_TEST_AUTHORIZATION_TEST_NOT_OPENED"
+    },
+    "environment_lock": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebuild_ai_service/ais_r6_test_application_environment_lock_v1.txt",
+      "raw_sha256": "b8d9c6fc9f6892d91a82f3c4dd2bcc1d4d6cf301f53dcdef6ae087dcbfb11a8d"
+    }
+  },
+  "entry_preflight": {
+    "repository_branch": "codex/ais-r2-source-export",
+    "repository_head": "3a31b8a4136198890add97f37538baf78ec48929",
+    "implementation_is_ancestor": true,
+    "packet_is_ancestor": true,
+    "unrelated_user_state_preserved": [
+      "research/hybrid-recsys-v5/05_manuscript/"
+    ],
+    "test_attempt_root": "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001",
+    "test_attempt_root_absent": true,
+    "test_protocol_absent": true,
+    "ais_r6_process_running": false,
+    "snapshot_manifest_raw_sha256": "45b0bba18120d722eb3c86bd0c01176050ea975dbd9ebcef22cbfd6df0f7bfec",
+    "python_executable_sha256": "21bb438c0d4a6f1f164b9a646f6ee000340185e5871180aec06db8d3f07c0082",
+    "python_version": "3.11.9",
+    "validation_inventory": {
+      "file_count": 661,
+      "total_bytes": 1385174064,
+      "inventory_sha256": "7605b49d38e694f578e8f1f5b3483aa9bf3f262f4280cd50acdb19ce83911f71"
+    }
+  },
+  "exact_process": {
+    "working_directory": "E:/UIT/cv/backend",
+    "environment": {
+      "PYTHONPATH": "E:/UIT/cv/backend/ai-service-v2/src",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "executable": "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r5-validation/attempt-003/venv/Scripts/python.exe",
+    "interpreter_flags": [
+      "-B"
+    ],
+    "script": "E:/UIT/cv/backend/ai-service-v2/src/ai_service_v2/__main__.py",
+    "argv": [
+      "build-protocol",
+      "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r2b-v5.1-canonical/attempt-001",
+      "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/protocol/test-protocol.json",
+      "--split",
+      "test",
+      "--allow-test",
+      "--cutoff",
+      "10",
+      "--metric-version",
+      "ranking-v1"
+    ],
+    "binding_hash_semantics": "SHA-256 of UTF-8 canonical JSON over working_directory, environment, executable, interpreter_flags, script, and argv.",
+    "binding_sha256": "b3e1e88cd9eef5bd3ed38a5ab6340c8df3afe9452328f6d067291043482874b9",
+    "allowed_invocations": 1,
+    "network_access": "FORBIDDEN",
+    "docker_required": false,
+    "wsl_required": false,
+    "tls_required": false
+  },
+  "authorization_limits": {
+    "authorized_now": [
+      "CREATE_THE_FRESH_TEST_PROTOCOL_PARENT_AND_PROTOCOL_DOCUMENT",
+      "OPEN_THE_FROZEN_TEST_SPLIT_EXACTLY_ONCE",
+      "OBSERVE_AND_RECORD_TEST_PROTOCOL_HASH_AND_ELIGIBLE_USER_COUNT"
+    ],
+    "not_authorized_by_this_receipt": [
+      "TRAIN_OR_TUNE_ANY_MODEL",
+      "CHANGE_ANY_FROZEN_CONFIGURATION_OR_CHECKPOINT",
+      "RETRY_OR_FALLBACK_AFTER_FAILURE",
+      "MODIFY_THE_VALIDATION_ROOT",
+      "MODIFY_PIPELINE_STATE_OR_MANUSCRIPT",
+      "CLAIM_ANY_BENCHMARK_NUMBER_IS_PAPER_VALID",
+      "CLAIM_PHASE_1E_IS_COMPLETE"
+    ],
+    "attempt_budget": {
+      "authorized": 1,
+      "consumed_at_issue": 0,
+      "remaining_at_issue": 1
+    }
+  },
+  "model_policy": {
+    "requested_model": "gpt-5.6-sol",
+    "requested_reasoning_effort": "xhigh",
+    "requested_service_tier": "Standard/default",
+    "forbidden_service_tiers": [
+      "Fast",
+      "Priority"
+    ],
+    "actual_model": "UNOBSERVABLE",
+    "actual_reasoning_effort": "UNOBSERVABLE",
+    "actual_service_tier": "UNOBSERVABLE",
+    "actual_speed": "UNOBSERVABLE",
+    "model_gate": "NOT_ADJUDICATED_WITHOUT_AUTHORITATIVE_RUNTIME_TELEMETRY"
+  },
+  "truth_state_at_issue": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": true,
+    "phase_1e_complete": false,
+    "benchmark_numbers_valid_for_paper": false
+  },
+  "authorization_verdict": "AUTHORIZED_EXACT_SINGLE_TEST_OPEN_ONCE",
+  "post_execution_gate": "PRESERVE_OUTPUT_AND_RECORD_RUNTIME_RESULT_WITHOUT_RETRY; ONLY_THEN_APPLY_THE_13_FROZEN_RUNS_IN_PACKET_ORDER_UNDER_A_SEPARATE_LOCKED_RUNTIME_STEP",
+  "fail_closed": true
+}

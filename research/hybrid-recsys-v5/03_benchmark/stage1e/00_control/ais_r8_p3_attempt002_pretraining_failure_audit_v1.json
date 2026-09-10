@@ -1,0 +1,160 @@
+{
+  "schema_version": "ais-r8-p3-pretraining-failure-audit/1.0",
+  "stage_id": "AIS-R8-P3",
+  "namespace": "PUBLIC_DATA_PROTOCOL_VALIDATION",
+  "attempt_id": "ais-r8-p3-public-validation-attempt-002",
+  "created_at": "2026-09-09T03:24:43.3410956Z",
+  "material_passport": {
+    "origin_skill": "ars-codex/academic-research-suite/experiment-agent",
+    "origin_mode": "central/fail-closed-runtime-diagnosis",
+    "origin_date": "2026-09-09T03:24:43.3410956Z",
+    "verification_status": "VERIFIED_PRETRAINING_FAILURE",
+    "verification_scope": "Attempt-002 runtime receipts, pinned RecBole 1.2.1 dataloader and sampler source, and the prospectively frozen Attempt-002 wrapper. No training, evaluation, TEST access, retry, or historical artifact mutation was performed by this audit.",
+    "version_label": "ais-r8-p3-attempt002-pretraining-failure-audit-v1.0.0",
+    "content_hash": null,
+    "upstream_dependencies": [
+      "ais-r8-p3-public-validation-attempt002-execution-packet-v1.0.0",
+      "recbole-v1.2.1@9a6f63d8d4a5b989fe27955a833f813a6d86041e",
+      "grouplens-ml-100k@sha256:50d2a982c66986937beb9ffb3aa76efe955bf3d5c6b761f4e3a7cd717c6a3229"
+    ],
+    "repro_lock": {
+      "ars_adapter_version": "0.1.26",
+      "attempt002_packet_sha256": "cbac8f4a834ea4cb007d019c0a5c52d56deddf04c4d92acc7a423c21814b4a61",
+      "source_revision": "9a6f63d8d4a5b989fe27955a833f813a6d86041e",
+      "source_tree": "08915121fea069a30f7e3e97a72e16e7e76d43c6",
+      "replay_guarantee": false,
+      "semantics": "This receipt closes Attempt-002 as immutable FAILED_NO_RETRY and authorizes only prospective packet preparation for a fresh attempt."
+    }
+  },
+  "model_policy_audit": {
+    "scope": "CENTRAL_ATTEMPT002_FAILURE_DIAGNOSIS_ONLY",
+    "requested_model": "gpt-5.6-sol",
+    "requested_reasoning_effort": "max",
+    "requested_service_tier": "Standard/default",
+    "forbidden_service_tiers": [
+      "Fast",
+      "Priority"
+    ],
+    "actual_model": "UNOBSERVABLE",
+    "actual_reasoning_effort": "UNOBSERVABLE",
+    "actual_service_tier": "UNOBSERVABLE",
+    "actual_speed": "UNOBSERVABLE",
+    "model_gate": "NOT_ADJUDICATED_WITHOUT_AUTHORITATIVE_RUNTIME_TELEMETRY"
+  },
+  "runtime_evidence": {
+    "output_root": "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/r8/public-data-protocol-validation/attempt-002",
+    "exact_file_count": 3,
+    "files": [
+      {
+        "path": "failure_receipt.json",
+        "bytes": 811,
+        "sha256": "f75d0f8bed4f3ce0f86939078b6bf9a1cf722ffd0f6c83e6a7943df6b4dbe468"
+      },
+      {
+        "path": "host_failure_receipt.json",
+        "bytes": 336,
+        "sha256": "828b9d8de5e5f8a0a068b147ffe03579beaad58caad3bfe791565e54caee0d1c"
+      },
+      {
+        "path": "host_preflight.json",
+        "bytes": 11755,
+        "sha256": "c988ab57787cbefe3c07695c8883d4f0313245ca8de14499657f1f277d722342"
+      }
+    ],
+    "host_preflight_status": "PASS_EXECUTION_STARTING",
+    "docker_return_code": 1,
+    "container_error_type": "ValueError",
+    "container_error": "phase-aware Sampler was not selected",
+    "failure_status": "FAILED_NO_RETRY",
+    "automatic_retry_performed": false,
+    "runs_directory_present": false,
+    "state_file_present": false,
+    "training_started": false,
+    "evaluation_started": false,
+    "public_test_opened": false,
+    "project_v5_test_opened": false
+  },
+  "source_replay": {
+    "attempt002_wrapper": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/run_ais_r8_p3_public_data_protocol_validation_attempt002.py",
+      "bytes": 9646,
+      "sha256": "2e407d073b67e9fb24bcf1dae7645ca6a41bde71b773a77ad23b74d6deff921e",
+      "locator": "lines 99-103",
+      "observed_defect": "The wrapper reads valid.sampler and test.sampler. These inherited PyTorch DataLoader attributes are not the RecBole phase-aware protocol sampler."
+    },
+    "abstract_dataloader": {
+      "path": "MovieLens/recbole_runtime/attempt-local-003/build-source/recbole_v1_2_1_9a6f63d/recbole/data/dataloader/abstract_dataloader.py",
+      "sha256": "a843c00140d893ec84ecdea3fcd318d71f536885152086a35346f46be925e519",
+      "locators": [
+        "lines 47-51: the RecBole sampler argument is retained as self._sampler",
+        "lines 54-73: torch.utils.data.DataLoader receives index_sampler through its separate sampler argument"
+      ]
+    },
+    "full_sort_dataloader": {
+      "path": "MovieLens/recbole_runtime/attempt-local-003/build-source/recbole_v1_2_1_9a6f63d/recbole/data/dataloader/general_dataloader.py",
+      "sha256": "1c32595ecb66c7e5381ce1b0fde2440d9f8fc7cd44a37800d6a5c1affa030168",
+      "locators": [
+        "lines 196-224: FullSortEvalDataLoader consumes sampler.used_ids to construct uid2history_item",
+        "line 232: the same protocol sampler is passed to AbstractDataLoader and retained as self._sampler"
+      ]
+    },
+    "sampler": {
+      "path": "MovieLens/recbole_runtime/attempt-local-003/build-source/recbole_v1_2_1_9a6f63d/recbole/sampler/sampler.py",
+      "sha256": "6fee42497697225977fe64f81f89d5181dd8026f3c78acc99db133eb89858d5e",
+      "locators": [
+        "lines 193-227: Sampler is phase-aware and is built from all split datasets",
+        "lines 238-278: used_ids accumulate by phase and set_phase returns the requested phase view"
+      ]
+    },
+    "data_utils": {
+      "path": "MovieLens/recbole_runtime/attempt-local-003/build-source/recbole_v1_2_1_9a6f63d/recbole/data/utils.py",
+      "sha256": "94dd659fda6a131ae3655dbe6afa5d79f1492647585512e88fae167fa8bcc523",
+      "locators": [
+        "lines 316-329: repeatable=false selects Sampler instead of RepeatableSampler",
+        "lines 333-377: validation and test receive phase-specific sampler copies"
+      ]
+    }
+  },
+  "root_cause": {
+    "classification": "PRETRAINING_OBSERVABILITY_ASSERTION_DEFECT",
+    "scientific_configuration_defect_found": false,
+    "dataset_defect_found": false,
+    "docker_or_wsl_defect_found": false,
+    "environment_dependency_defect_found": false,
+    "explanation": "Attempt-002 resolved repeatable=false and data_preparation completed. The assertion then inspected the inherited PyTorch sampler property instead of RecBole's self._sampler field, producing a false negative before any model run began.",
+    "counterfactual_scope": "This audit does not assert that the remaining history-set checks or model runs will pass; they require a fresh prospective attempt."
+  },
+  "minimal_remediation": {
+    "next_attempt_id": "ais-r8-p3-public-validation-attempt-003",
+    "fresh_output_root": "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/r8/public-data-protocol-validation/attempt-003",
+    "instrumentation_change": "Inspect valid._sampler and test._sampler, verify their concrete type is Sampler and their phase fields are valid and test, then retain the existing all-user history equality checks.",
+    "scientific_change": false,
+    "must_hold_constant": [
+      "repeatable=false",
+      "GroupLens atomic dataset bytes and rating>=4 filter",
+      "temporal per-user 0.8/0.1/0.1 split",
+      "Pop seed 42 and BPR seeds 42, 2027, and 31415",
+      "BPR hyperparameters and validation NDCG@10 checkpoint rule",
+      "full-sort cutoff 10, metric registry, and pinned RecBole source revision",
+      "descriptive-only no-bootstrap P2 scope"
+    ],
+    "attempt002_mutation_allowed": false,
+    "same_attempt_retry_allowed": false,
+    "automatic_retry_allowed": false,
+    "execution_authorized": false,
+    "authorization_condition": "A new immutable Attempt-003 packet must bind exact files and hashes, pass static preflight with a fresh absent output root, and receive fresh packet-bound author confirmation."
+  },
+  "scientific_state": {
+    "ATTEMPT_002_RESULT_STATUS": "FAILED_PRETRAINING_ASSERTION",
+    "TEST_SET_OPENED": "NO_BY_ATTEMPT_002",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "phase_1e_complete": false,
+    "benchmark_numbers_valid_for_paper": false,
+    "paper_inference_authorized": false,
+    "pipeline_state_modified": false,
+    "manuscript_modified": false
+  },
+  "verdict": "ATTEMPT002_PRETRAINING_ASSERTION_FAILURE_CONFIRMED",
+  "fail_closed": true
+}

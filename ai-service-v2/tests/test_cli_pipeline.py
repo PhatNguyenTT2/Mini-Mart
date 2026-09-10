@@ -16,7 +16,12 @@ from ai_service_v2.errors import IntegrityError
 from ai_service_v2.evaluation.artifacts import load_score_matrix
 from ai_service_v2.evaluation.components import load_hybrid_score_components
 from ai_service_v2.evaluation.persistence import load_evaluation
-from ai_service_v2.hashing import canonical_json_bytes, load_strict_json, sha256_bytes
+from ai_service_v2.hashing import (
+    canonical_json_bytes,
+    canonical_json_sha256,
+    load_strict_json,
+    sha256_bytes,
+)
 from ai_service_v2.models.registry import ModelRunSpec, default_spec, descriptor_for_spec
 from ai_service_v2.protocol import load_protocol
 from ai_service_v2.training import load_run_command
@@ -349,6 +354,177 @@ def test_cli_refuses_test_protocol_without_explicit_open(
         == 2
     )
     assert "TEST is sealed" in capsys.readouterr().out
+
+
+def test_validation_selected_run_can_score_matching_explicit_test_protocol(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    snapshot_root = tmp_path / "snapshot"
+    val_protocol_path = tmp_path / "val-protocol.json"
+    test_protocol_path = tmp_path / "test-protocol.json"
+    run_root = tmp_path / "run-mostpop"
+    val_score_root = tmp_path / "val-scores"
+    test_score_root = tmp_path / "test-scores"
+    test_evaluation_root = tmp_path / "test-evaluation"
+    application_ref_root = tmp_path / "test-application-references"
+    application_ref_root.mkdir()
+    application_ref = application_ref_root / "run-mostpop.json"
+
+    assert main(["materialize-snapshot", str(FIXTURE_ROOT), str(snapshot_root)]) == 0
+    assert (
+        main(
+            [
+                "build-protocol",
+                str(snapshot_root),
+                str(val_protocol_path),
+                "--split",
+                "val",
+                "--cutoff",
+                "5",
+            ]
+        )
+        == 0
+    )
+    assert (
+        main(
+            [
+                "train",
+                str(snapshot_root),
+                str(val_protocol_path),
+                str(run_root),
+                "--fixture-only",
+                "--model-kind",
+                "mostpop",
+            ]
+        )
+        == 0
+    )
+    assert (
+        main(
+            [
+                "export-scores",
+                str(snapshot_root),
+                str(run_root),
+                str(val_protocol_path),
+                str(val_score_root),
+            ]
+        )
+        == 0
+    )
+    assert (
+        main(
+            [
+                "build-protocol",
+                str(snapshot_root),
+                str(test_protocol_path),
+                "--split",
+                "test",
+                "--allow-test",
+                "--cutoff",
+                "5",
+            ]
+        )
+        == 0
+    )
+    assert (
+        main(
+            [
+                "export-scores",
+                str(snapshot_root),
+                str(run_root),
+                str(test_protocol_path),
+                str(test_score_root),
+                "--application-ref",
+                str(application_ref),
+            ]
+        )
+        == 0
+    )
+    assert (
+        main(
+            [
+                "evaluate",
+                str(test_protocol_path),
+                str(test_score_root),
+                str(test_evaluation_root),
+            ]
+        )
+        == 0
+    )
+
+    assert (run_root / "score_artifact_ref.json").is_file()
+    assert not (run_root / "score_artifact_ref.test.json").exists()
+    test_reference = load_strict_json(application_ref)
+    assert test_reference["split"] == "test"
+    assert test_reference["test_set_opened"] is True
+    assert test_reference["schema_version"] == "score-artifact-ref/1.2"
+    assert test_reference["application_command_sha256"] == canonical_json_sha256(
+        test_reference["application_command"]
+    )
+    assert (
+        test_reference["selection_protocol_manifest_sha256"]
+        != test_reference["scoring_protocol_manifest_sha256"]
+    )
+    assert load_evaluation(test_evaluation_root).receipt.verdict == "PASS"
+    assert json.loads(capsys.readouterr().out.splitlines()[-1])["status"] == "PASS"
+
+
+def test_test_score_export_rejects_different_validation_cutoff(
+    tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    val_protocol_path = tmp_path / "val-protocol.json"
+    test_protocol_path = tmp_path / "test-protocol.json"
+    run_root = tmp_path / "run-mostpop"
+    score_root = tmp_path / "test-scores"
+    application_ref_root = tmp_path / "test-application-references"
+    application_ref_root.mkdir()
+
+    assert main(["build-protocol", str(FIXTURE_ROOT), str(val_protocol_path), "--cutoff", "5"]) == 0
+    assert (
+        main(
+            [
+                "train",
+                str(FIXTURE_ROOT),
+                str(val_protocol_path),
+                str(run_root),
+                "--fixture-only",
+                "--model-kind",
+                "mostpop",
+            ]
+        )
+        == 0
+    )
+    assert (
+        main(
+            [
+                "build-protocol",
+                str(FIXTURE_ROOT),
+                str(test_protocol_path),
+                "--split",
+                "test",
+                "--allow-test",
+                "--cutoff",
+                "4",
+            ]
+        )
+        == 0
+    )
+
+    result = main(
+        [
+            "export-scores",
+            str(FIXTURE_ROOT),
+            str(run_root),
+            str(test_protocol_path),
+            str(score_root),
+            "--application-ref",
+            str(application_ref_root / "run-mostpop.json"),
+        ]
+    )
+
+    assert result == 2
+    assert "validation counterpart" in capsys.readouterr().out
+    assert not score_root.exists()
 
 
 def test_cli_validation_and_fixture_training_work_with_test_file_absent(

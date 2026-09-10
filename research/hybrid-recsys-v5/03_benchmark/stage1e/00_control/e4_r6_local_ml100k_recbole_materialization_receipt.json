@@ -1,0 +1,68 @@
+{
+  "schema_version": "stage1e-e4-r6-local-ml100k-recbole-materialization-1.0",
+  "created_at": "2026-09-04",
+  "stage_id": "E4-R6-LOCAL-ML100K-RECBOLE-MATERIALIZATION",
+  "status": "PASS_ATOMIC_INPUT_MATERIALIZED_NOT_BENCHMARKED",
+  "material_passport": {
+    "origin_skill": "experiment-agent",
+    "origin_mode": "run",
+    "verification_status": "ANALYZED",
+    "version_label": "e4_r6_local_ml100k_recbole_materialization_v1",
+    "upstream_dependencies": [
+      "e4_r6_local_ml100k_content_admission_receipt",
+      "e4_r5_candidate_lock"
+    ]
+  },
+  "source": {
+    "path": "MovieLens/ml-100k/u.data",
+    "bytes": 1979173,
+    "sha256": "06416e597f82b7342361e41163890c81036900f418ad91315590814211dca490",
+    "rows": 100000,
+    "modified": false
+  },
+  "transformation": {
+    "kind": "PREPEND_RECBOLE_TYPED_HEADER_ONLY",
+    "header": "user_id:token\titem_id:token\trating:float\ttimestamp:float",
+    "header_bytes_with_lf": 57,
+    "row_order_preserved": true,
+    "filtering_performed": false,
+    "deduplication_performed": false,
+    "sorting_performed": false,
+    "id_rewrite_performed": false,
+    "rating_rewrite_performed": false,
+    "timestamp_rewrite_performed": false
+  },
+  "output": {
+    "path": "MovieLens/recbole_atomic/ml-100k/ml-100k.inter",
+    "bytes": 1979230,
+    "sha256": "4edb74e2a81178c2ba9ff381495f754f996c4aea351b1272ca36b43da0935eff",
+    "header_rows": 1,
+    "data_rows": 100000,
+    "ends_with_lf": true,
+    "git_policy": "IGNORED_LOCAL_RUNTIME_ARTIFACT"
+  },
+  "reference_framework_binding": {
+    "framework": "RecBole",
+    "version": "1.2.1",
+    "revision": "9a6f63d8d4a5b989fe27955a833f813a6d86041e",
+    "git_tree": "08915121fea069a30f7e3e97a72e16e7e76d43c6",
+    "source_checkout": "research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d",
+    "recbole_automatic_dataset_download_used": false,
+    "recbole_processed_s3_dataset_used": false
+  },
+  "negative_execution_assertions": {
+    "package_install_performed": false,
+    "dataset_constructed_by_recbole": false,
+    "training_performed": false,
+    "evaluation_performed": false,
+    "test_set_opened": false,
+    "benchmark_rows_admitted": 0
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "phase_1e_complete": false
+  },
+  "next_gate": "RECBOLE_ENVIRONMENT_BINDING_AND_CONFIG_ONLY_DATA_PATH_CHECK"
+}

@@ -1,0 +1,597 @@
+{
+  "schema_version": "ais-r8-p1-source-protocol-admission-receipt/1.0",
+  "stage_id": "AIS-R8-P1",
+  "receipt_role": "SOURCE_AND_PROTOCOL_ADMISSION_EVIDENCE_ONLY",
+  "created_at": "2026-09-06T03:58:45.9036719Z",
+  "decision_scope": "Determine whether an authoritative public numeric result center exists for the pinned RecBole/GroupLens route before any new runtime.",
+  "material_passport": {
+    "origin_skill": "ars-codex/academic-research-suite/experiment-agent",
+    "origin_mode": "validate/source-protocol-admission",
+    "origin_date": "2026-09-06T03:58:45.9036719Z",
+    "verification_status": "ANALYZED",
+    "verification_scope": "Read-only replay of committed source manifests, local GroupLens bytes, prior official-attempt receipts, pinned evaluator source, and public authoritative source surfaces. No training, evaluation, TEST access, or reproducibility rerun was performed in AIS-R8-P1.",
+    "version_label": "ais-r8-p1-source-protocol-admission-receipt-v1.0.0",
+    "integrity_pass_date": "2026-09-06T03:58:45.9036719Z",
+    "content_hash": null,
+    "upstream_dependencies": [
+      "ais-r8-state-authority-and-external-validity-plan-v1.0.0",
+      "ais-r4-official-reproduction-attempt001-disposition-v1.0.0",
+      "ais-r2b-v5.1-canonical-adapter-receipt-v1.0.0",
+      "e4-r6-local-ml100k-content-admission-v1",
+      "e4-r6-local-ml100k-recbole-materialization-v1",
+      "recbole-v1.2.1@9a6f63d8d4a5b989fe27955a833f813a6d86041e"
+    ],
+    "repro_lock": {
+      "ars_adapter_version": "0.1.26",
+      "repository_head_at_admission": "d1ded19f7a7cb0485e3b8be855c2012329fb3c15",
+      "repository_parent_at_admission": "9bb7c5a691b6a744fd158bf8291a06e31d668311",
+      "source_revision": "9a6f63d8d4a5b989fe27955a833f813a6d86041e",
+      "source_tree": "08915121fea069a30f7e3e97a72e16e7e76d43c6",
+      "source_manifest_sha256": "c5794b9daccdd01ca600c6ef7f890918825fbbb872efa67036c4565234e87016",
+      "dataset_archive_sha256": "50d2a982c66986937beb9ffb3aa76efe955bf3d5c6b761f4e3a7cd717c6a3229",
+      "local_atomic_dataset_sha256": "4edb74e2a81178c2ba9ff381495f754f996c4aea351b1272ca36b43da0935eff",
+      "official_attempt_config_sha256": "a2e109c8dc62683479adf5bfdd07de718d769e1d46c65a8c4f32dd686c0a7eaa",
+      "replay_guarantee": false,
+      "semantics": "Configuration and source identity lock only; this is not a claim that a public result center is reproducible."
+    },
+    "experiment_intake_declaration": {
+      "status": "experiments_declared",
+      "declared_at": "2026-09-01T16:38:56Z",
+      "declared_by": "scholar"
+    }
+  },
+  "ars_routing_receipt": {
+    "adapter": "ars-codex",
+    "adapter_version": "0.1.26",
+    "root_skill": "skills/academic-research-suite/SKILL.md",
+    "workflow": "ars/experiment-agent/WORKFLOW.md",
+    "integration_reference": "ars/experiment-agent/references/ars_integration_guide.md",
+    "handoff_schema_reference": "ars/shared/handoff_schemas.md#schema-9-material-passport-cross-stage-metadata",
+    "root_skill_sha256": "5acb202b13a7dba912091ae5d15a19b88eb3f4e58b4d942649cb35df770ace91",
+    "workflow_sha256": "6d984f36be84c3f9249f68ef0c599155978b5a661d172e2bb4db2205fdc720f3",
+    "integration_reference_sha256": "c129b6d889dc52cca921b75311b8988a4ff12df412a19a5530abe05e36a23d16",
+    "handoff_schema_sha256": "3d81dd949e6eb5162e7227d8ee13e65b5a17ab9440db3809cbcea8f63be6c8de",
+    "selected_instructions_read_before_write": true,
+    "material_passport_applied": true,
+    "validate_semantics": "ANALYZED_WITHOUT_REPRODUCIBILITY_RERUN"
+  },
+  "model_policy_audit": {
+    "scope": "AIS-R8-P1_ONLY",
+    "requested_model": "gpt-5.6-sol",
+    "requested_reasoning_effort": "max",
+    "requested_service_tier": "Standard/default",
+    "forbidden_service_tiers": [
+      "Fast",
+      "Priority"
+    ],
+    "actual_model": "UNOBSERVABLE",
+    "actual_reasoning_effort": "UNOBSERVABLE",
+    "actual_service_tier": "UNOBSERVABLE",
+    "actual_speed": "UNOBSERVABLE",
+    "fast_or_priority_observed": "UNOBSERVABLE",
+    "model_gate": "NOT_ADJUDICATED_WITHOUT_AUTHORITATIVE_RUNTIME_TELEMETRY",
+    "basis": "No authoritative model, reasoning-effort, service-tier, or speed telemetry is exposed to the repository workspace. No tier was inferred from latency, prose, task metadata, or prior history."
+  },
+  "repository_lineage": {
+    "checkout": "E:/UIT/cv/backend",
+    "branch": "codex/ais-r2-source-export",
+    "head": "d1ded19f7a7cb0485e3b8be855c2012329fb3c15",
+    "head_tree": "d6fa33f5fd3486c00b12c7aec75746f5e625e4b0",
+    "parent": "9bb7c5a691b6a744fd158bf8291a06e31d668311",
+    "dirty_paths_observed_before_write": [
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r8_state_authority_and_external_validity_plan_v1.md",
+      "research/hybrid-recsys-v5/05_manuscript/"
+    ],
+    "dirty_user_state_preserved": true,
+    "target_receipt_absent_before_write": true,
+    "pipeline_state_modified": false,
+    "manuscript_modified": false,
+    "source_or_code_modified": false,
+    "prior_receipts_modified": false
+  },
+  "upstream_artifact_bindings": [
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r8_state_authority_and_external_validity_plan_v1.md",
+      "sha256": "5394d6856ccc9c2f8d35fc941531a6ba2669b0f3f169d8b8b1f057405e261b07",
+      "role": "R8_PLAN_AND_AUTHORITY_BOUNDARY"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r7_e5_fresh_independent_audit_receipt_v1.json",
+      "sha256": "253a2ae644b04f513b7ea199de5dc95697c11d22780e877dc9f1413d65dbc7ca",
+      "role": "PRIOR_E5_STATE_AND_LIMITATION_EVIDENCE"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebuild_ai_service/ais_r4_official_reproduction_attempt001_disposition_v1.json",
+      "sha256": "8975d810ded7a0f2b7b6df78299a8f3e1ece426a85893bc62c3542aff97b8575",
+      "role": "OFFICIAL_ATTEMPT_DISPOSITION"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebuild_ai_service/ais_r2b_v5_1_canonical_adapter_receipt_v1.json",
+      "sha256": "db90df48967a255ca8e686eb93a9a557f7cab22e3c9152f7cafae5d265311bcf",
+      "role": "SEPARATE_V5_NAMESPACE_BINDING"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ac/E4_R5M0_source_materialization/selected_blob_manifest.json",
+      "sha256": "c5794b9daccdd01ca600c6ef7f890918825fbbb872efa67036c4565234e87016",
+      "role": "PINNED_RECBOLE_SOURCE_MANIFEST"
+    }
+  ],
+  "public_search": {
+    "search_date": "2026-09-06",
+    "search_date_semantics": "Date of the read-only public-source review; it is not a publication date and not runtime evidence.",
+    "scope": "Public primary or authoritative source surfaces for GroupLens MovieLens 100K, RecBole v1.2.1, the quick-start numeric example, the RecBole technical publication, and dataset-conversion routes.",
+    "method": "Read-only web/source-page inspection plus replay of already retained local bytes and committed manifests; no external model upload, no dataset authentication, and no source archive download in AIS-R8-P1.",
+    "query_families": [
+      "RecBole v1.2.1 BPR ml-100k NDCG@10 0.2768",
+      "RecBole benchmark result release and recommended configuration",
+      "GroupLens MovieLens 100K official archive checksum and usage conditions",
+      "RecBole ML-100K evaluator, split, seed, checkpoint, and result receipt"
+    ],
+    "sources": [
+      {
+        "source_id": "GL-LANDING",
+        "authority": "GroupLens",
+        "url": "https://grouplens.org/datasets/movielens/100k/",
+        "locators": ["MovieLens 100K dataset page", "download and checksum links"],
+        "retrieval_status": "READ_AND_BOUND",
+        "supports": ["official dataset identity", "official README/archive/index link set"]
+      },
+      {
+        "source_id": "GL-README",
+        "authority": "GroupLens file server",
+        "url": "https://files.grouplens.org/datasets/movielens/ml-100k-README.txt",
+        "locators": ["dataset description", "acknowledgement", "redistribution and commercial-use conditions"],
+        "retrieval_status": "READ_AND_BOUND",
+        "supports": ["100000 ratings", "943 users", "1682 items", "u.data schema", "rights caveats"]
+      },
+      {
+        "source_id": "GL-ARCHIVE",
+        "authority": "GroupLens file server",
+        "url": "https://files.grouplens.org/datasets/movielens/ml-100k.zip",
+        "locators": ["archive bytes", "provider MD5 endpoint https://files.grouplens.org/datasets/movielens/ml-100k.zip.md5", "unzipped index https://files.grouplens.org/datasets/movielens/ml-100k/"],
+        "retrieval_status": "LOCAL_BYTES_RETAINED_AND_HASH_REPLAYED",
+        "supports": ["archive identity and member inventory"]
+      },
+      {
+        "source_id": "RECSOURCE-TAG",
+        "authority": "RUCAIBox GitHub repository",
+        "url": "https://github.com/RUCAIBox/RecBole/tree/v1.2.1",
+        "locators": ["tag v1.2.1", "commit 9a6f63d8d4a5b989fe27955a833f813a6d86041e", "LICENSE"],
+        "retrieval_status": "SOURCE_IDENTITY_BOUND",
+        "supports": ["pinned source revision", "MIT source license"]
+      },
+      {
+        "source_id": "RECSOURCE-README",
+        "authority": "RUCAIBox RecBole README at v1.2.1",
+        "url": "https://github.com/RUCAIBox/RecBole/blob/v1.2.1/README.md",
+        "locators": ["README.md lines 154-191", "README.md lines 207-225"],
+        "retrieval_status": "READ_AND_BOUND",
+        "supports": ["quick-start protocol", "illustrative NDCG@10 example", "hyperparameter-search description"]
+      },
+      {
+        "source_id": "RECSOURCE-PAPER",
+        "authority": "arXiv HTML technical paper",
+        "url": "https://arxiv.org/html/2211.15148v1",
+        "locators": ["S2.SS3.SSS2.p1.1", "S2.SS3.SSS2.p5.1"],
+        "retrieval_status": "READ_AND_BOUND",
+        "supports": ["search/recommended configuration context", "explicit statement that benchmark results are not directly released"]
+      },
+      {
+        "source_id": "RECSOURCE-ACM",
+        "authority": "ACM Digital Library",
+        "url": "https://dl.acm.org/doi/10.1145/3539618.3591889",
+        "locators": ["publication metadata", "SIGIR 2023 record", "DOI"],
+        "retrieval_status": "READ_AND_BOUND",
+        "supports": ["publication identity only", "no formal immutable ML-100K result center found"]
+      },
+      {
+        "source_id": "RECSOURCE-HYPERPARAMETERS",
+        "authority": "RecBole official documentation",
+        "url": "https://recbole.io/hyperparameters/",
+        "locators": ["hyperparameter/configuration documentation"],
+        "retrieval_status": "READ_AND_BOUND",
+        "supports": ["configuration/search information only", "no matching formal result center"]
+      },
+      {
+        "source_id": "RECSOURCE-DATASETS",
+        "authority": "RUCAIBox RecSysDatasets",
+        "url": "https://github.com/RUCAIBox/RecSysDatasets",
+        "locators": ["raw-download and processed-atomic-file routes"],
+        "retrieval_status": "READ_AND_BOUND",
+        "supports": ["dataset/conversion route only", "not a numeric benchmark result center"]
+      }
+    ]
+  },
+  "dataset_source_evidence": {
+    "dataset_id": "grouplens-ml-100k",
+    "provider": "GroupLens",
+    "provider_page": "https://grouplens.org/datasets/movielens/100k/",
+    "archive_url": "https://files.grouplens.org/datasets/movielens/ml-100k.zip",
+    "archive_path": "E:/UIT/cv/materialized-data/hybrid-recsys-v5/stage1e/r6/official_source/grouplens_ml100k/attempt-002/download/ml-100k.zip",
+    "archive_bytes": 4924029,
+    "provider_md5": "0e33842e24a9c977be4e0107933c0723",
+    "archive_sha256": "50d2a982c66986937beb9ffb3aa76efe955bf3d5c6b761f4e3a7cd717c6a3229",
+    "extracted_root": "MovieLens/ml-100k",
+    "expected_and_replayed_member_count": 23,
+    "canonical_inventory_sha256": "11839e627336d9b76ba327d2bf01e5afd6d2c21cd9aad39fc28d39fe32340738",
+    "key_extracted_files": [
+      {
+        "path": "MovieLens/ml-100k/README",
+        "bytes": 6750,
+        "sha256": "4883b8cf340ed0059971b33f56ad3adc88a40792108ebca3d24aafc4c82e8b52"
+      },
+      {
+        "path": "MovieLens/ml-100k/u.data",
+        "bytes": 1979173,
+        "sha256": "06416e597f82b7342361e41163890c81036900f418ad91315590814211dca490"
+      },
+      {
+        "path": "MovieLens/ml-100k/u.item",
+        "bytes": 236344,
+        "sha256": "553841ebc7de3a0fd0d6b62a204ea30c1e651aacfb2814c7a6584ac52f2c5701"
+      },
+      {
+        "path": "MovieLens/ml-100k/u.info",
+        "bytes": 36,
+        "sha256": "5b0a40b2e47a729ee6203063f6dcf8790c2e63f5a18663e6ee318a72c5f3c27b"
+      }
+    ],
+    "semantic_replay": {
+      "ratings": 100000,
+      "users": 943,
+      "items": 1682,
+      "u_data_schema": "user_id, item_id, rating, Unix timestamp",
+      "malformed_rows": 0,
+      "duplicate_user_item_pairs": 0,
+      "timestamp_unit": "Unix seconds UTC"
+    },
+    "rights_and_provenance": {
+      "attribution_required": true,
+      "no_endorsement_condition": true,
+      "redistribution_requires_permission": true,
+      "commercial_or_revenue_bearing_use_requires_permission": true,
+      "interpretation": "Provider usage conditions are not treated as a permissive redistribution license."
+    },
+    "transport_note": {
+      "files_endpoint_observation": "ERR_CERT_DATE_INVALID was previously observed on the files.grouplens.org transport path.",
+      "tls_success_claim": false,
+      "content_identity_conclusion": "The retained archive MD5/SHA-256 and extracted-member replay establish content identity independently of TLS status.",
+      "transport_is_not_dataset_identity": true
+    },
+    "bound_local_receipts": [
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_local_ml100k_content_admission_receipt.json",
+        "sha256": "61ca3c722009ef194f69120ec78bf4854bc78fe38273be357b46640a3068bb8d"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_local_ml100k_recbole_materialization_receipt.json",
+        "sha256": "efface2371383ab1cc80dff9fbc5dae0bc69ced3c294e0e12d2887f095b25ba4"
+      }
+    ],
+    "admission": "DATASET_SOURCE_AND_CONTENT_IDENTITY_ADMITTED; NO_NUMERIC_RESULT_CENTER"
+  },
+  "source_implementation_evidence": {
+    "framework": "RecBole",
+    "repository_url": "https://github.com/RUCAIBox/RecBole.git",
+    "revision": "9a6f63d8d4a5b989fe27955a833f813a6d86041e",
+    "git_tree": "08915121fea069a30f7e3e97a72e16e7e76d43c6",
+    "license": "MIT",
+    "staged_source_root": "research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/recbole_v1_2_1_9a6f63d",
+    "selected_file_count": 265,
+    "selected_total_bytes": 1541044,
+    "selected_source_manifest_sha256": "c5794b9daccdd01ca600c6ef7f890918825fbbb872efa67036c4565234e87016",
+    "source_file_hashes": [
+      {
+        "path": "README.md",
+        "sha256": "359c15e2a9b0fd27f0574f85e4ea204d7dd4d310c42aa46403c41981848d8c07"
+      },
+      {
+        "path": "LICENSE",
+        "sha256": "680261591718142ed6da54bc3a4a8fbb9bd9263724aa51d1509377e88f284dbb"
+      },
+      {
+        "path": "recbole/evaluator/evaluator.py",
+        "sha256": "7634c726fb88c7ee351048d4aa86ebdca6ba5f06ddb0305de0df1328eebf2c03"
+      },
+      {
+        "path": "recbole/evaluator/metrics.py",
+        "sha256": "31a4260a4a77fb86fcbfc66fa384ab01147c9fac8bc87a726ff5cb47259b3199"
+      },
+      {
+        "path": "recbole/evaluator/collector.py",
+        "sha256": "3557954a637113f9bcc35aa30c0f83587d2e9d7b27ac31fc3e31cd1422799492"
+      },
+      {
+        "path": "recbole/evaluator/base_metric.py",
+        "sha256": "88f304da7a2cd9c6795dd4a3f334fe3570141884b3f923eb7bf0102d470730dc"
+      },
+      {
+        "path": "recbole/sampler/sampler.py",
+        "sha256": "6fee42497697225977fe64f81f89d5181dd8026f3c78acc99db133eb89858d5e"
+      },
+      {
+        "path": "recbole/trainer/trainer.py",
+        "sha256": "52548168ccdf96ca7f404d890365284a4fdf9d6a01a4abf9d4c1ed702fc9fc47"
+      }
+    ],
+    "source_manifest_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebaseline_v2/wave_ac/E4_R5M0_source_materialization/selected_blob_manifest.json",
+    "source_manifest_path_sha256": "c5794b9daccdd01ca600c6ef7f890918825fbbb872efa67036c4565234e87016"
+  },
+  "source_protocol_binding": {
+    "quick_start_locator": "README.md lines 154-191",
+    "source_declared_protocol": {
+      "model_label": "BPR in the quick-start command; the illustrative output labels the module BPRMF",
+      "dataset": "ml-100k",
+      "group_by": "user_id",
+      "ordering": "shuffle",
+      "split": "random ratio [0.8, 0.1, 0.1]",
+      "negative_sampling": "full, uniform",
+      "metrics": [
+        "Recall@10",
+        "MRR@10",
+        "NDCG@10",
+        "Hit@10",
+        "Precision@10"
+      ],
+      "evaluation_mode": "full",
+      "source_wording_for_number": "We will obtain some output like",
+      "source_seed": "NOT_DECLARED",
+      "source_run_count": "NOT_DECLARED",
+      "source_checkpoint_artifact": "NOT_RELEASED",
+      "source_environment": "NOT_RELEASED"
+    },
+    "local_official_attempt_protocol": {
+      "seed": 2020,
+      "reproducibility_flag": true,
+      "repeatable_flag": false,
+      "split": "random per-user 0.8/0.1/0.1",
+      "evaluation": "full-sort top-10",
+      "candidate_catalog": "RecBole internal item-token catalog observed as 1683 tokens for 1682 raw items",
+      "checkpoint_selection": "maximum validation MRR@10 with early stopping stopping_step=10",
+      "negative_sampling": "one full-uniform training negative per positive according to local config",
+      "configuration_sha256": "a2e109c8dc62683479adf5bfdd07de718d769e1d46c65a8c4f32dd686c0a7eaa",
+      "runner_sha256": "babc4e582eed972fcc67d13382fe87f5fab6e657742ba02818ea8f70fa7fde8a",
+      "binding_status": "LOCAL_ATTEMPT_BOUND; NOT_PUBLIC_RESULT_CENTER_BOUND"
+    },
+    "unresolved_source_center_fields": [
+      "historical producer environment and dependency closure",
+      "historical seed and number of runs",
+      "historical checkpoint file and exact selection rule",
+      "immutable result artifact and table/row/column locator",
+      "formal evaluator receipt and exact tie behavior for the reported row",
+      "whether the README BPRMF label and executable BPR class name denote the same run identity"
+    ]
+  },
+  "evaluator_and_metric_binding": {
+    "source_evaluator_revision": "9a6f63d8d4a5b989fe27955a833f813a6d86041e",
+    "evaluator_files": [
+      "recbole/evaluator/evaluator.py",
+      "recbole/evaluator/metrics.py",
+      "recbole/evaluator/collector.py",
+      "recbole/evaluator/base_metric.py"
+    ],
+    "metric_implementation_hashes": {
+      "evaluator.py": "7634c726fb88c7ee351048d4aa86ebdca6ba5f06ddb0305de0df1328eebf2c03",
+      "metrics.py": "31a4260a4a77fb86fcbfc66fa384ab01147c9fac8bc87a726ff5cb47259b3199",
+      "collector.py": "3557954a637113f9bcc35aa30c0f83587d2e9d7b27ac31fc3e31cd1422799492",
+      "base_metric.py": "88f304da7a2cd9c6795dd4a3f334fe3570141884b3f923eb7bf0102d470730dc"
+    },
+    "relevance": {
+      "dataset_config": "threshold: null in recbole/properties/dataset/ml-100k.yaml",
+      "consequence": "No explicit rating-to-binary relevance threshold is source-bound by the general ML-100K configuration used here."
+    },
+    "candidate_and_masking": {
+      "ranking": "full-sort",
+      "candidate_catalog": "All internal item tokens supplied to the evaluator; raw archive has 1682 items and source runtime reports 1683 internal tokens because of indexing/padding.",
+      "history_masking": "Trainer full-sort evaluation sets history scores to negative infinity before collection.",
+      "positive_handling": "Held-out positives are supplied separately to the collector.",
+      "negative_sampling": "Training path declares full uniform negative sampling; top-k evaluation is full-catalog rather than sampled-negative evaluation.",
+      "candidate_order": "Internal index order is used; no public raw-ID order contract was found."
+    },
+    "metrics": {
+      "cutoff": 10,
+      "topk_aggregation": "Unweighted arithmetic mean over evaluated users before emitting the requested cutoff.",
+      "ndcg": "Per-user IDCG normalization followed by user-level mean.",
+      "gauc": "Positive-count-weighted user AUC; users without positives or negatives are excluded.",
+      "tie_handling": {
+        "topk_hr_mrr_ndcg": "torch.topk is used and no deterministic raw-ID tie-break rule is declared.",
+        "gauc": "Equal scores receive average ranks in the source collector."
+      },
+      "rounding": "Source metric output is rounded to configured decimal places; the public example is shown to four decimal places."
+    },
+    "evaluator_identity_status": "SOURCE_IMPLEMENTATION_IDENTIFIED; PUBLIC_NUMERIC_ROW_RECEIPT_ABSENT"
+  },
+  "numeric_center_assessment": {
+    "reported_metric": "NDCG@10",
+    "reported_value": 0.2768,
+    "reported_locator": "RecBole v1.2.1 README.md lines 190-191, illustrative code block",
+    "classification": "ILLUSTRATIVE_TARGET",
+    "formal_center_test": {
+      "immutable_public_result_table": "FAIL_NOT_FOUND",
+      "exact_source_revision_binding": "PARTIAL_SOURCE_TAG_ONLY",
+      "exact_configuration_binding": "FAIL_NOT_RELEASED",
+      "seed_and_run_count": "FAIL_NOT_RELEASED",
+      "checkpoint_artifact_and_rule": "FAIL_NOT_RELEASED",
+      "evaluator_identity_and_receipt": "FAIL_NOT_RELEASED",
+      "result_artifact_hash": "FAIL_NOT_RELEASED",
+      "technical_paper_statement": "FAIL_PAPER_STATES_BENCHMARK_RESULTS_NOT_DIRECTLY_RELEASED"
+    },
+    "local_observation": {
+      "path": "MovieLens/official_reproduction/attempt-001",
+      "observed_ndcg_at_10": 0.2928,
+      "comparison_to_illustrative_value": "Not a valid reproduction-center comparison because the source value is illustrative and its producer environment is unknown.",
+      "local_row_status": "INCOMPARABLE",
+      "paper_use": "PROHIBITED_AS_BENCHMARK_NUMBER"
+    },
+    "conclusion": "No formal public result center containing source revision, exact configuration, seed/run schedule, checkpoint artifact, evaluator identity, and immutable result receipt was found."
+  },
+  "official_attempt_disposition": {
+    "attempt_id": "official-recbole-bpr-ml100k-attempt-001",
+    "namespace": "OFFICIAL_PROTOCOL_REPRODUCTION",
+    "run_manifest_path": "MovieLens/official_reproduction/attempt-001/run_manifest.json",
+    "run_manifest_sha256": "8455aacf46a346b8402af4e02c416a0d269f79017121ed8665c6f2d61a2c58c0",
+    "evaluation_receipt_path": "MovieLens/official_reproduction/attempt-001/evaluation_receipt.json",
+    "evaluation_receipt_sha256": "3d83a9a47a7c2a6b17d392e3ce7a5d97fbbe24d9393f92cbeadbdee7da828269",
+    "raw_result_path": "MovieLens/official_reproduction/attempt-001/raw_result.json",
+    "raw_result_sha256": "11e67083dbe4d49c322057604d62bb026846f89ec7db3a9f9a40cb91c33e910f",
+    "checkpoint_sha256": "5441da107b36669ea2d245c061b99ddb96f708310dd306e5558e11addca6176d",
+    "execution_status": "COMPLETED_END_TO_END_DIAGNOSTIC",
+    "numeric_status": "REJECTED_UNDER_PREDECLARED_INTERVAL_BUT_SOURCE_CENTER_IS_ILLUSTRATIVE",
+    "official_result_row": "INCOMPARABLE",
+    "accepted_result_rows": 0,
+    "rerun_authorized": false,
+    "interpretation": "The attempt proves that the pinned source/data/config path executed end to end. It does not prove reproduction of a formal public benchmark center."
+  },
+  "namespace_separation": {
+    "OFFICIAL_PROTOCOL_REPRODUCTION": {
+      "status": "INCOMPARABLE",
+      "numeric_center": "ILLUSTRATIVE_TARGET_ONLY",
+      "accepted_rows": 0
+    },
+    "PUBLIC_DATA_PROTOCOL_VALIDATION": {
+      "status": "NOT_AUTHORIZED",
+      "test_set_opened": "NO",
+      "requires": "A fresh author-approved amendment before any output is created"
+    },
+    "HARMONIZED_V5_COMPARISON": {
+      "status": "SEPARATE_EXISTING_NAMESPACE",
+      "cross_dataset_join": false,
+      "cross_evaluator_join": false,
+      "existing_numbers_imported": false
+    },
+    "prohibited_shortcuts": [
+      "Do not use 0.2768 as a formal tolerance center.",
+      "Do not use local 0.2928 as a paper benchmark row.",
+      "Do not join the official ML-100K row to v5 rows.",
+      "Do not reopen the consumed v5 TEST namespace.",
+      "Do not widen tolerance after observing the local result."
+    ]
+  },
+  "retrieval_failures_and_limitations": [
+    {
+      "id": "R8-P1-TLS-001",
+      "surface": "files.grouplens.org archive/checksum transport",
+      "observation": "ERR_CERT_DATE_INVALID was observed on the file-server transport path during prior acquisition/replay.",
+      "effect": "TLS success cannot be claimed.",
+      "scientific_effect": "None on retained content identity because provider MD5, archive SHA-256, and extracted-member hashes were replayed independently.",
+      "fallback_used": "Retained local archive bytes already matched the provider-published identity; no insecure transport was used by this receipt."
+    },
+    {
+      "id": "R8-P1-CENTER-001",
+      "surface": "RecBole README and publication surfaces",
+      "observation": "The only located numeric value is an illustrative quick-start output; no formal immutable result center was found.",
+      "effect": "Strict reproduction route cannot advance to a new numeric runtime.",
+      "scientific_effect": "0.2768 and 0.2928 remain non-admissible for paper benchmark claims."
+    },
+    {
+      "id": "R8-P1-PROVENANCE-001",
+      "surface": "historical producer environment/checkpoint",
+      "observation": "Historical dependency closure, seed schedule, checkpoint artifact, and result receipt are not publicly bound to the README row.",
+      "effect": "The public protocol is source-identifiable but result-center-identifiability is incomplete."
+    }
+  ],
+  "admission_findings": [
+    {
+      "finding_id": "F-01",
+      "dimension": "dataset_source",
+      "status": "PASS",
+      "statement": "GroupLens ML-100K is a public, hash-identifiable dataset source with explicit attribution and usage conditions."
+    },
+    {
+      "finding_id": "F-02",
+      "dimension": "source_revision",
+      "status": "PASS",
+      "statement": "RecBole v1.2.1 source is locked to commit 9a6f63d8d4a5b989fe27955a833f813a6d86041e and tree 08915121fea069a30f7e3e97a72e16e7e76d43c6."
+    },
+    {
+      "finding_id": "F-03",
+      "dimension": "protocol_description",
+      "status": "PARTIAL",
+      "statement": "The README describes model, split, ordering, negative sampling, and top-k metrics, but does not bind the complete historical execution."
+    },
+    {
+      "finding_id": "F-04",
+      "dimension": "numeric_result_center",
+      "status": "FAIL",
+      "statement": "No formal public result center satisfies the required source/config/seed/checkpoint/evaluator/immutable-receipt fields."
+    },
+    {
+      "finding_id": "F-05",
+      "dimension": "official_attempt",
+      "status": "INCOMPARABLE",
+      "statement": "The local end-to-end attempt is diagnostic and cannot become an accepted paper row."
+    }
+  ],
+  "scientific_state": {
+    "scope": "AIS-R8-P1_ADMISSION_LANE_ONLY",
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "phase_1e_complete": false,
+    "benchmark_numbers_valid_for_paper": false,
+    "paper_inference_authorized": false,
+    "official_public_reproduction": "INCOMPARABLE",
+    "external_validity": "NOT_ESTABLISHED",
+    "v5_test_namespace_reopened": false
+  },
+  "next_gate": {
+    "status": "R8-P2_AUTHOR_DECISION_AND_PRE-RUN_AMENDMENT_REQUIRED",
+    "strict_reproduction_route": {
+      "status": "TERMINATED_NO_FORMAL_CENTER_FOUND",
+      "runtime_authorized": false
+    },
+    "public_data_protocol_validation_route": {
+      "status": "AVAILABLE_ONLY_AFTER_EXPLICIT_AUTHOR_APPROVAL",
+      "required_label": "PUBLIC_DATA_PROTOCOL_VALIDATION",
+      "required_before_runtime": [
+        "freeze task, model scope, evaluator, comparison rule, and acceptance criteria",
+        "record a fresh amendment and command packet",
+        "keep output separate from OFFICIAL_PROTOCOL_REPRODUCTION and HARMONIZED_V5_COMPARISON",
+        "obtain fresh packet-bound execution confirmation"
+      ],
+      "automatic_fallback": false
+    },
+    "paper_gate": "Introduction/Related Work may describe motivation and limitations, but no public benchmark or superiority claim is authorized until a later audited admission decision."
+  },
+  "protected_state": {
+    "pipeline_state_stage1e_modified": false,
+    "manuscript_modified": false,
+    "historical_ai_service_modified": false,
+    "official_attempt_modified": false,
+    "v5_test_namespace_modified": false,
+    "training_performed": false,
+    "evaluation_performed": false,
+    "docker_or_wsl_invoked": false,
+    "network_runtime_invoked": false,
+    "new_runtime_output_created": false
+  },
+  "write_set": {
+    "exact_new_files": [
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r8_p1_source_protocol_admission_receipt_v1.json"
+    ],
+    "exact_file_count": 1,
+    "target_created_after_prewrite_absence_check": true,
+    "self_content_hash": null,
+    "self_content_hash_semantics": "The receipt is identified externally after commit by its Git blob OID, raw Git-blob byte count, and raw SHA-256 to avoid self-reference.",
+    "post_commit_binding": {
+      "commit_oid": null,
+      "parent_oid": "d1ded19f7a7cb0485e3b8be855c2012329fb3c15",
+      "git_blob_oid": null,
+      "raw_git_blob_bytes": null,
+      "raw_git_blob_sha256": null,
+      "semantics": "Filled in the external handoff report, not inside this self-referential receipt."
+    },
+    "post_write_checks_required": [
+      "strict JSON parse",
+      "recompute referenced local hashes",
+      "git diff --check",
+      "exact one-file write set",
+      "stage only this receipt",
+      "one commit on the current branch"
+    ]
+  },
+  "verdict": "NO_FORMAL_CENTER_FOUND",
+  "verdict_scope": "SOURCE_AND_PROTOCOL_ADMISSION_ONLY; DATASET AND SOURCE ARE IDENTIFIED, BUT NO NUMERIC PUBLIC RESULT CENTER IS ADMITTED",
+  "fail_closed": true
+}

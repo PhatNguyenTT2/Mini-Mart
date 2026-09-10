@@ -1,0 +1,155 @@
+{
+  "schema_version": "ais-r6-test-opening-runtime-receipt/1.0",
+  "stage_id": "AIS-R6-TEST-OPENING-RUNTIME-V1",
+  "completed_at": "2026-09-05T12:51:09.1614713+07:00",
+  "completed_at_semantics": "Host clock observation only; it is not scientific evidence.",
+  "material_passport": {
+    "origin_skill": "academic-research-suite/experiment-agent",
+    "origin_mode": "run",
+    "origin_date": "2026-09-05T12:51:09.1614713+07:00",
+    "verification_status": "UNVERIFIED",
+    "version_label": "ais-r6-test-opening-runtime-v1.0.0",
+    "upstream_dependencies": [
+      "ais-r6-test-one-use-authorization-v1.0.0",
+      "ais-r6-test-opening-packet-v1.0.0",
+      "ais-r6-test-packet-fresh-independent-audit-v1.0.0"
+    ],
+    "repro_lock": {
+      "authorization_commit": "d48a576001976cbf45d5391f6e73d30a63c4c5b3",
+      "authorization_parent": "3a31b8a4136198890add97f37538baf78ec48929",
+      "authorization_git_blob_oid": "10ef0f37489789496755958abd98d76919fc3812",
+      "authorization_raw_sha256": "ec2c23b3e64746bf93ac79d23f3950dd7a0898d70ee52ba1fc5062047020d1d1",
+      "implementation_commit": "0485ef13c2bf548aa9f7ea34f40652526db02a43",
+      "exact_command_binding_sha256": "b3e1e88cd9eef5bd3ed38a5ab6340c8df3afe9452328f6d067291043482874b9",
+      "test_protocol_raw_sha256": "c8a64643a5177c322156210620e8b0693035d18ea04cc53951fa243fcd8a14da",
+      "test_protocol_manifest_sha256": "f348ffe871be74e1941ac155adcf1c8d600a95f69338f4c16b0153cf3487e6f4"
+    },
+    "experiment_intake_declaration": {
+      "status": "experiments_declared",
+      "declared_at": "2026-09-01T16:38:56Z",
+      "declared_by": "scholar"
+    }
+  },
+  "authorization_binding": {
+    "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r6_test_one_use_authorization_receipt_v1.json",
+    "commit": "d48a576001976cbf45d5391f6e73d30a63c4c5b3",
+    "git_blob_oid": "10ef0f37489789496755958abd98d76919fc3812",
+    "raw_sha256": "ec2c23b3e64746bf93ac79d23f3950dd7a0898d70ee52ba1fc5062047020d1d1",
+    "authorization_verdict": "AUTHORIZED_EXACT_SINGLE_TEST_OPEN_ONCE"
+  },
+  "execution": {
+    "working_directory": "E:/UIT/cv/backend",
+    "environment": {
+      "PYTHONPATH": "E:/UIT/cv/backend/ai-service-v2/src",
+      "PYTHONDONTWRITEBYTECODE": "1"
+    },
+    "executable": "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r5-validation/attempt-003/venv/Scripts/python.exe",
+    "interpreter_flags": [
+      "-B"
+    ],
+    "script": "E:/UIT/cv/backend/ai-service-v2/src/ai_service_v2/__main__.py",
+    "argv": [
+      "build-protocol",
+      "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r2b-v5.1-canonical/attempt-001",
+      "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/protocol/test-protocol.json",
+      "--split",
+      "test",
+      "--allow-test",
+      "--cutoff",
+      "10",
+      "--metric-version",
+      "ranking-v1"
+    ],
+    "command_binding_sha256": "b3e1e88cd9eef5bd3ed38a5ab6340c8df3afe9452328f6d067291043482874b9",
+    "invocation_count": 1,
+    "automatic_retry_count": 0,
+    "fallback_count": 0,
+    "exit_code": 0,
+    "process_status": "COMPLETED",
+    "stdout_document": {
+      "eligible_users": 4970,
+      "protocol": "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001/protocol/test-protocol.json",
+      "protocol_id": "benchmark-v5-s42-7f40639b0d-1ace202aaa-canonical-v5.1-family-view:test:full-catalog-v1",
+      "protocol_manifest_sha256": "f348ffe871be74e1941ac155adcf1c8d600a95f69338f4c16b0153cf3487e6f4",
+      "split": "test",
+      "status": "PASS",
+      "test_set_opened": true
+    },
+    "stderr": "",
+    "network_accessed": false,
+    "docker_used": false,
+    "wsl_used": false,
+    "training_performed": false,
+    "tuning_performed": false,
+    "scoring_performed": false,
+    "evaluation_performed": false
+  },
+  "output_inventory": {
+    "attempt_root": "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001",
+    "exact_file_count": 1,
+    "files": [
+      {
+        "relative_path": "protocol/test-protocol.json",
+        "bytes": 1872284,
+        "raw_sha256": "c8a64643a5177c322156210620e8b0693035d18ea04cc53951fa243fcd8a14da"
+      }
+    ],
+    "overwrite_observed": false
+  },
+  "protocol_observation": {
+    "schema_version": "prepared-protocol/1.0",
+    "strict_json_parse": "PASS",
+    "full_snapshot_replay": "PASS",
+    "protocol_id": "benchmark-v5-s42-7f40639b0d-1ace202aaa-canonical-v5.1-family-view:test:full-catalog-v1",
+    "protocol_manifest_sha256": "f348ffe871be74e1941ac155adcf1c8d600a95f69338f4c16b0153cf3487e6f4",
+    "dataset_manifest_sha256": "7920964be1b449dad9a3ed2e8a6c783fc22d383b55ea3d36a389c3cabd6340a6",
+    "candidate_order_sha256": "0cea7f41366c972628da0b33b02c01f711ac57c56e262ea7c3a1e66f5f3330e9",
+    "candidate_count": 5200,
+    "eligible_user_count": 4970,
+    "eligible_user_order_sha256": "219fdcd7083f8e7f7103ab6215c6516de2afa2039709f2f4fd86b4694dcea8a7",
+    "eligible_user_order_hash_semantics": "SHA-256 of UTF-8 canonical JSON over the ordered array of eligible internal user IDs.",
+    "eligible_user_order_strictly_increasing_and_unique": true,
+    "split": "test",
+    "test_set_opened": true,
+    "cutoff": 10,
+    "metric_version": "ranking-v1"
+  },
+  "post_execution_checks": {
+    "validation_root_file_count": 661,
+    "validation_root_total_bytes": 1385174064,
+    "validation_root_inventory_sha256": "7605b49d38e694f578e8f1f5b3483aa9bf3f262f4280cd50acdb19ce83911f71",
+    "validation_root_unchanged": true,
+    "repository_source_modified": false,
+    "pipeline_state_modified": false,
+    "manuscript_modified": false,
+    "unrelated_user_state_preserved": true
+  },
+  "attempt_budget": {
+    "authorized": 1,
+    "consumed": 1,
+    "remaining": 0,
+    "reinvocation_allowed": false
+  },
+  "model_policy_observation": {
+    "requested_model": "gpt-5.6-sol",
+    "requested_reasoning_effort": "xhigh",
+    "requested_service_tier": "Standard/default",
+    "actual_model": "UNOBSERVABLE",
+    "actual_reasoning_effort": "UNOBSERVABLE",
+    "actual_service_tier": "UNOBSERVABLE",
+    "actual_speed": "UNOBSERVABLE",
+    "fast_or_priority_observed": "UNOBSERVABLE"
+  },
+  "scientific_state_after_execution": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "YES",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "phase_1e_complete": false,
+    "benchmark_numbers_valid_for_paper": false,
+    "reason": "TEST truth was prepared, but none of the 13 frozen applications, evaluations, bootstrap statistics, or final independent audit has run."
+  },
+  "runtime_verdict": "PASS_SINGLE_TEST_OPEN_CONSUMED_READY_FOR_LOCKED_13_APPLICATION_SEQUENCE",
+  "next_gate": "FREEZE_AND_CONFIRM_THE_EXACT_13_APPLICATION_RUNTIME_SEQUENCE_THEN_EXECUTE_IN_PACKET_ROSTER_ORDER_WITHOUT_RETRAINING_OR_RETRY",
+  "fail_closed": true
+}

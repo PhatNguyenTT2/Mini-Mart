@@ -1,0 +1,170 @@
+{
+  "schema_version": "ais-r6-test-packet-central-validation-receipt/1.0",
+  "stage_id": "AIS-R6-TEST-PACKET-CENTRAL-VALIDATION-V1",
+  "material_passport": {
+    "origin_skill": "academic-research-suite/experiment-agent",
+    "origin_mode": "central-static-validation",
+    "origin_date": "2026-09-05T09:54:29.3717496+07:00",
+    "origin_date_semantics": "Host observation only; elapsed time and host clock are not scientific evidence.",
+    "verification_status": "ANALYZED",
+    "verification_scope": "Static packet replay, Git lineage and blob binding, strict JSON parsing, exact roster comparison, immutable validation-root inventory replay, implementation tests, and sealed-TEST preflight. No TEST payload was opened and no scientific execution or reproducibility rerun was performed.",
+    "version_label": "ais-r6-test-packet-central-validation-v1.0.0",
+    "upstream_dependencies": [
+      "ais-r6-test-opening-packet-v1.0.0",
+      "ais-r6-test-application-environment-lock-v1.0.0",
+      "ais-r6-validation-fresh-independent-audit-revision2-v1.0.0"
+    ],
+    "repro_lock": {
+      "packet_commit": "5a91c68ec5bacabdea3bff60ea6a372c95457d37",
+      "packet_parent": "0485ef13c2bf548aa9f7ea34f40652526db02a43",
+      "implementation_commit": "0485ef13c2bf548aa9f7ea34f40652526db02a43",
+      "ai_service_v2_tree": "9f7e19ec8b4d85cbab728734d9049bb5536ae038",
+      "packet_raw_git_blob_sha256": "12d8ea29369dcf143c4f5be945284f99ef61ef2464b9f5eb52476894380edbe1",
+      "environment_lock_raw_git_blob_sha256": "b8d9c6fc9f6892d91a82f3c4dd2bcc1d4d6cf301f53dcdef6ae087dcbfb11a8d",
+      "validation_root_inventory_sha256": "7605b49d38e694f578e8f1f5b3483aa9bf3f262f4280cd50acdb19ce83911f71"
+    },
+    "experiment_intake_declaration": {
+      "status": "experiments_declared",
+      "declared_at": "2026-09-01T16:38:56Z",
+      "declared_by": "scholar"
+    },
+    "self_content_hash": null,
+    "self_content_hash_semantics": "The later independent audit records this receipt's committed blob identifiers to avoid a self-referential digest."
+  },
+  "ars_routing_receipt": {
+    "adapter": "ars-codex",
+    "adapter_version": "0.1.26",
+    "workflow": "ars/experiment-agent/WORKFLOW.md",
+    "workflow_mode": "validate",
+    "material_passport_applied": true,
+    "status_semantics": "ANALYZED_WITHOUT_REPRODUCIBILITY_RERUN"
+  },
+  "model_policy_observation": {
+    "required_for_next_independent_audit": {
+      "model": "gpt-5.6-sol",
+      "reasoning_effort": "ultra",
+      "service_tier": "Standard/default"
+    },
+    "forbidden_service_tiers": ["Fast", "Priority"],
+    "actual_model": "NOT_OBSERVABLE_FROM_WORKSPACE_DO_NOT_INFER",
+    "actual_reasoning_effort": "NOT_OBSERVABLE_FROM_WORKSPACE_DO_NOT_INFER",
+    "actual_service_tier": "NOT_OBSERVABLE_FROM_WORKSPACE_DO_NOT_INFER",
+    "model_gate": "NOT_ADJUDICATED_WITHOUT_AUTHORITATIVE_RUNTIME_TELEMETRY"
+  },
+  "repository_lineage": {
+    "checkout": "E:/UIT/cv/backend",
+    "branch": "codex/ais-r2-source-export",
+    "packet_commit": "5a91c68ec5bacabdea3bff60ea6a372c95457d37",
+    "packet_parent": "0485ef13c2bf548aa9f7ea34f40652526db02a43",
+    "packet_commit_delta": [
+      {
+        "status": "A",
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r6_test_opening_packet_v1.json"
+      },
+      {
+        "status": "A",
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebuild_ai_service/ais_r6_test_application_environment_lock_v1.txt"
+      }
+    ],
+    "packet_commit_delta_exact": true,
+    "unrelated_user_state_preserved": [
+      "research/hybrid-recsys-v5/05_manuscript/"
+    ]
+  },
+  "bound_packet_evidence": {
+    "test_opening_packet": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r6_test_opening_packet_v1.json",
+      "commit": "5a91c68ec5bacabdea3bff60ea6a372c95457d37",
+      "git_blob_oid": "6c8e33fcfd7e8990e57cdba66911c1213401630f",
+      "raw_git_blob_bytes": 21378,
+      "raw_git_blob_sha256": "12d8ea29369dcf143c4f5be945284f99ef61ef2464b9f5eb52476894380edbe1",
+      "strict_json_parse": "PASS",
+      "duplicate_key_check": "PASS",
+      "case_colliding_key_check": "PASS",
+      "nonfinite_number_check": "PASS"
+    },
+    "test_application_environment_lock": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/rebuild_ai_service/ais_r6_test_application_environment_lock_v1.txt",
+      "commit": "5a91c68ec5bacabdea3bff60ea6a372c95457d37",
+      "git_blob_oid": "be283563d06c5f6a11d2d08272963fdd6d6f78d6",
+      "raw_git_blob_bytes": 2083,
+      "raw_git_blob_sha256": "b8d9c6fc9f6892d91a82f3c4dd2bcc1d4d6cf301f53dcdef6ae087dcbfb11a8d"
+    }
+  },
+  "central_validation": {
+    "packet_semantics": {
+      "strict_semantic_validation": "PASS",
+      "run_roster_match": "PASS_13_OF_13_IN_EXACT_REGISTRY_ORDER",
+      "model_seed_checkpoint_role_match": "PASS_13_OF_13",
+      "frozen_comparator_match": "PASS_ITEMKNN_VAL_001",
+      "external_application_reference_required": true,
+      "training_or_tuning_command_present": false,
+      "single_test_open_allowed_invocations": 1
+    },
+    "implementation": {
+      "implementation_commit": "0485ef13c2bf548aa9f7ea34f40652526db02a43",
+      "observed_ai_service_v2_tree": "9f7e19ec8b4d85cbab728734d9049bb5536ae038",
+      "expected_ai_service_v2_tree": "9f7e19ec8b4d85cbab728734d9049bb5536ae038",
+      "tree_match": true,
+      "pytest": {
+        "status": "PASS",
+        "passed": 106,
+        "failed": 0
+      },
+      "ruff": "PASS",
+      "mypy": "PASS_32_SOURCE_FILES",
+      "runtime_import_probe": "PASS_AI_SERVICE_V2_VERSION_0.1.0_ON_PYTHON_3.11.9_NUMPY_1.26.4"
+    },
+    "validation_root_replay": {
+      "root": "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-validation/attempt-001",
+      "algorithm": "Sort all relative POSIX paths ordinally; for each regular file append UTF-8 path<TAB>byte_count<TAB>raw_sha256<LF>; SHA-256 the concatenated bytes.",
+      "file_count": 661,
+      "total_bytes": 1385174064,
+      "observed_inventory_sha256": "7605b49d38e694f578e8f1f5b3483aa9bf3f262f4280cd50acdb19ce83911f71",
+      "expected_inventory_sha256": "7605b49d38e694f578e8f1f5b3483aa9bf3f262f4280cd50acdb19ce83911f71",
+      "exact_match": true
+    },
+    "test_namespace_preflight": {
+      "attempt_root": "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001",
+      "observed_exists": false,
+      "test_protocol_created": false,
+      "test_payload_opened": false,
+      "score_or_evaluation_created": false
+    }
+  },
+  "scientific_execution": {
+    "test_opening_performed": false,
+    "training_performed": false,
+    "score_export_performed": false,
+    "evaluation_performed": false,
+    "statistics_performed": false,
+    "paper_result_admitted": false
+  },
+  "scientific_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "phase_1e_complete": false,
+    "benchmark_numbers_valid_for_paper": false
+  },
+  "next_gate": {
+    "stage": "AIS-R6-TEST-PACKET-FRESH-INDEPENDENT-AUDIT",
+    "required_context": "fresh independent context",
+    "required_model": "gpt-5.6-sol",
+    "required_reasoning_effort": "ultra",
+    "required_service_tier": "Standard/default",
+    "required_checks": [
+      "Replay the exact packet commit and its two-file delta.",
+      "Replay packet and environment-lock Git-blob hashes.",
+      "Replay the 13-run validation registry and immutable validation-root digest.",
+      "Re-run focused boundary fixtures and inspect command provenance fields.",
+      "Confirm the TEST attempt root remains absent and TEST remains sealed.",
+      "Reject any Fast/Priority telemetry if authoritative telemetry is available."
+    ],
+    "success_effect": "Permits central to issue a separate one-use TEST-opening authorization receipt; does not itself open TEST.",
+    "failure_effect": "Keep TEST sealed and issue a fail-closed remediation plan; do not execute or retry."
+  },
+  "verdict": "PASS_READY_FOR_FRESH_INDEPENDENT_AUDIT_TEST_NOT_AUTHORIZED",
+  "fail_closed": true
+}

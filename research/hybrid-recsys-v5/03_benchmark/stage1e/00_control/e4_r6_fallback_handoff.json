@@ -1,0 +1,156 @@
+{
+  "schema_version": "stage1e-rebaseline-v2-e4-r6-fallback-handoff-1.0",
+  "created_at": "2026-09-03T17:20:02+07:00",
+  "stage_id": "E4-R6-FALLBACK",
+  "status": "COMPLETE_FAIL_CLOSED_FALLBACK_PLAN_READY",
+  "verdict": "FALLBACK_PLAN_READY_NO_SOURCE_ADMITTED",
+  "material_passport": {
+    "origin_skill": "deep-research",
+    "origin_mode": "fact-check",
+    "origin_date": "2026-09-03T17:20:02+07:00",
+    "verification_status": "UNVERIFIED",
+    "version_label": "stage1e_e4_r6_fallback_handoff_v1",
+    "integrity_pass_date": null,
+    "content_hash": null,
+    "upstream_dependencies": [
+      "e4_r6_s0_frozen_input_manifest",
+      "rebaseline_v2_e4_r6_s0_gate_receipt",
+      "e4_r5_candidate_lock"
+    ],
+    "repro_lock": null,
+    "experiment_intake_declaration": {
+      "status": "no_experiments_declared",
+      "declared_at": "2026-09-03T17:20:02+07:00",
+      "declared_by": "scholar"
+    }
+  },
+  "model_provenance": {
+    "requested_policy": "Critical source judgment should use Sol Ultra Standard; no Fast/Priority route is accepted for a future admission.",
+    "actual_inline_model_attestation": "not_exposed_by_current_inline_context",
+    "attestation_scope": "Declared policy only; not cryptographic model attestation."
+  },
+  "input_bindings": [
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_s0_frozen_input_manifest.json",
+      "raw_bytes": 11148,
+      "raw_sha256": "3C3C229DD427A831204266F1E3C61F2FF0AB7096A4B30CCFAC9098E659CC245B",
+      "role": "FROZEN_SOURCE_AND_EXECUTION_BOUNDARY"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/rebaseline_v2_e4_r6_s0_gate_receipt.json",
+      "raw_bytes": 2572,
+      "raw_sha256": "11139A5698A27A7C6F6E2593BBD7EB3A4B64472D0935DD2E3EB159628204FB14",
+      "role": "R6_S0_GATE_AND_TRUTH_STATE"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r5_candidate_lock.json",
+      "raw_bytes": 4575,
+      "raw_sha256": "1733B0300700CF1CBEF3BA00A8D5F56C006215687A06748432F6E793D338BCE3",
+      "role": "PINNED_RECBOLE_SOURCE_CANDIDATE"
+    }
+  ],
+  "research_surface": {
+    "source_urls_recorded_in": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_fallback_candidate_register.json",
+    "source_observation_mode": "READ_ONLY_PUBLIC_WEB_RESEARCH",
+    "retrieval_failures": [
+      {
+        "url": "https://files.grouplens.org/datasets/movielens/ml-100k.zip",
+        "failure": "ERR_CERT_DATE_INVALID",
+        "effect": "No archive bytes or local hash acquired."
+      },
+      {
+        "url": "https://files.grouplens.org/datasets/movielens/ml-100k.zip.md5",
+        "failure": "ERR_CERT_DATE_INVALID",
+        "effect": "No fresh checksum-sidecar replay acquired."
+      },
+      {
+        "url": "https://cse-movie-teapot.cs.umn.edu/datasets/movielens/100k/",
+        "failure": "ERR_CERT_COMMON_NAME_INVALID",
+        "effect": "Exact alternate archive href and rights text could not be replayed."
+      }
+    ],
+    "observed_nonauthoritative_surfaces": [
+      "Internet Archive CDX metadata",
+      "Hugging Face includeno/movielens-100k",
+      "Kaggle trishna8/movielens-100k-dataset",
+      "TensorFlow Datasets movielens catalog",
+      "D2L MovieLens documentation",
+      "Netzschleuder movielens_100k"
+    ]
+  },
+  "fallback_decision": {
+    "primary_authority_remains": "GroupLens Research Project, University of Minnesota",
+    "highest_priority_fallback": "University of Minnesota alternate host, pending valid TLS and exact byte replay",
+    "archival_candidate": "Internet Archive capture, pending payload hash/provenance/rights replay",
+    "diagnostic_only_candidates": [
+      "Hugging Face includeno/movielens-100k",
+      "Kaggle trishna8/movielens-100k-dataset",
+      "TensorFlow Datasets movielens/100k-*"
+    ],
+    "admitted_candidate_id": null,
+    "benchmark_admission": false,
+    "automatic_fallback_authorized": false
+  },
+  "required_next_gate": {
+    "id": "R6-FALLBACK-CENTRAL-REVIEW",
+    "owner": "central_context",
+    "purpose": "Choose whether to wait for canonical TLS, re-check the owner alternate, or authorize one named acquisition attempt.",
+    "preconditions": [
+      "valid HTTPS certificate",
+      "exact archive and checksum URL",
+      "fresh attempt root",
+      "explicit central admission",
+      "no change to source/config/split/evaluator lock"
+    ],
+    "execution_before_gate": false
+  },
+  "authorization_boundary": {
+    "web_research_performed": true,
+    "dataset_download_performed": false,
+    "dataset_extraction_performed": false,
+    "environment_creation_performed": false,
+    "package_install_performed": false,
+    "training_performed": false,
+    "evaluation_performed": false,
+    "project_v5_test_opened": false,
+    "execution_authorized": false
+  },
+  "truth_state": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "NO",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "execution_authorized": false,
+    "phase_1e_complete": false,
+    "project_benchmark_numbers": "INVALID_FOR_PAPER"
+  },
+  "write_set": {
+    "root": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control",
+    "exact_files": [
+      "e4_r6_fallback_distribution_plan.md",
+      "e4_r6_fallback_candidate_register.json",
+      "e4_r6_fallback_handoff.json"
+    ],
+    "extra_files_allowed": false,
+    "pipeline_state_changed": false,
+    "manuscript_dirty_state_touched": false
+  },
+  "output_artifacts": [
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_fallback_distribution_plan.md",
+      "raw_bytes": 11683,
+      "raw_sha256": "D10CE9AB31E233AFD05D731DE0598F12EB16B01865F512EB259C1C3761286845"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_fallback_candidate_register.json",
+      "raw_bytes": 20540,
+      "raw_sha256": "9921F065CB1396B0276FA6A59478D3421246E00CDF068DA887F4E671547AE002"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/e4_r6_fallback_handoff.json",
+      "raw_bytes": null,
+      "raw_sha256": null,
+      "hash_note": "Self-hash is reported externally after final validation and is not embedded in the file."
+    }
+  ],
+  "self_hash_policy": "The handoff content hash is reported externally after final byte validation; it is not embedded in itself."
+}

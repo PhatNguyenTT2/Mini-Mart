@@ -1,0 +1,99 @@
+{
+  "schema_version": "ais-r6-test-application-preparation-failure-receipt/1.0",
+  "stage_id": "AIS-R6-TEST-APPLICATION-PREPARATION-FAILURE-V1",
+  "observed_at": "2026-09-06T00:51:21.5135744+07:00",
+  "observed_at_semantics": "Host clock observation only; it is not scientific evidence.",
+  "material_passport": {
+    "origin_skill": "academic-research-suite/experiment-agent",
+    "origin_mode": "run",
+    "origin_date": "2026-09-06T00:51:21.5135744+07:00",
+    "verification_status": "UNVERIFIED",
+    "version_label": "ais-r6-test-application-preparation-failure-v1.0.0",
+    "upstream_dependencies": [
+      "ais-r6-test-application-execution-v1.0.0",
+      "ais-r6-test-application-one-use-authorization-v1.0.0"
+    ],
+    "repro_lock": {
+      "execution_packet_commit": "b4774a380a7efa2308375fc262032a2a1bd48765",
+      "execution_packet_git_blob_oid": "e5168d44fc670f17a266523e7463c5d95d927cfd",
+      "execution_packet_raw_sha256": "5bf3de86d531153f206110558d3d3acf459094433db5046ea7dd5d2745f1a036",
+      "authorization_commit": "7eb3f1fbf27e7b2ec2fdd0816c00fa2a09ed4aba",
+      "ai_service_v2_tree": "9f7e19ec8b4d85cbab728734d9049bb5536ae038",
+      "test_protocol_raw_sha256": "c8a64643a5177c322156210620e8b0693035d18ea04cc53951fa243fcd8a14da"
+    },
+    "experiment_intake_declaration": {
+      "status": "experiments_declared",
+      "declared_at": "2026-09-01T16:38:56Z",
+      "declared_by": "scholar"
+    }
+  },
+  "failed_action": {
+    "packet_action_order": 0,
+    "action_type": "PREPARATION_ONLY",
+    "shell": "PowerShell",
+    "exact_command": "New-Item -ItemType Directory -LiteralPath 'E:\\UIT\\cv\\materialized-experiments\\hybrid-recsys-v5\\ai-service-v2\\ais-r6-test\\attempt-001\\application_refs'",
+    "process_status": "FAILED",
+    "exit_code": 1,
+    "automatic_retry_count": 0,
+    "fallback_count": 0,
+    "error_type": "ParameterBindingException",
+    "error_message": "A parameter cannot be found that matches parameter name 'LiteralPath'.",
+    "failure_class": "CONTROL_PLANE_PREPARATION_ARGUMENT_INCOMPATIBILITY"
+  },
+  "root_cause_observation": {
+    "command": "New-Item",
+    "command_type": "Cmdlet",
+    "module": "Microsoft.PowerShell.Management",
+    "supports_path_parameter": true,
+    "supports_literal_path_parameter": false,
+    "root_cause": "The frozen preparation action used a parameter unsupported by New-Item in the active PowerShell runtime.",
+    "scientific_code_implicated": false,
+    "dataset_implicated": false,
+    "protocol_implicated": false,
+    "checkpoint_implicated": false,
+    "docker_wsl_tls_implicated": false
+  },
+  "post_failure_state": {
+    "attempt_root": "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/ais-r6-test/attempt-001",
+    "exact_file_count": 1,
+    "only_existing_file": "protocol/test-protocol.json",
+    "application_reference_root_exists": false,
+    "score_root_exists": false,
+    "evaluation_root_exists": false,
+    "scientific_processes_started": 0,
+    "applications_completed": 0,
+    "scores_created": 0,
+    "evaluations_created": 0,
+    "benchmark_rows_created": 0,
+    "test_protocol_modified": false,
+    "validation_root_modified": false,
+    "manuscript_modified": false,
+    "unrelated_user_state_preserved": true
+  },
+  "attempt_disposition": {
+    "authorization_consumed": true,
+    "same_authorization_reuse_allowed": false,
+    "same_preparation_command_retry_allowed": false,
+    "scientific_attempt_started": false,
+    "required_remediation": "Create a new control-plane amendment that replaces only New-Item -LiteralPath with New-Item -Path, revalidate absence of all 39 run outputs, and obtain a fresh exact-command confirmation and one-use authorization.",
+    "scientific_commands_may_change": false
+  },
+  "model_policy_observation": {
+    "requested_model": "gpt-5.6-sol",
+    "requested_reasoning_effort": "xhigh",
+    "requested_service_tier": "Standard/default",
+    "actual_model": "UNOBSERVABLE",
+    "actual_reasoning_effort": "UNOBSERVABLE",
+    "actual_service_tier": "UNOBSERVABLE",
+    "actual_speed": "UNOBSERVABLE"
+  },
+  "scientific_state_after_failure": {
+    "RESULT_STATUS": "NOT_RUN",
+    "TEST_SET_OPENED": "YES",
+    "ACCEPTED_RESULT_ROWS": 0,
+    "phase_1e_complete": false,
+    "benchmark_numbers_valid_for_paper": false
+  },
+  "verdict": "FAILED_BEFORE_FIRST_SCIENTIFIC_PROCESS_REQUIRES_FRESH_CONTROL_AUTHORIZATION",
+  "fail_closed": true
+}
