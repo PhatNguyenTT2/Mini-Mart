@@ -1,0 +1,862 @@
+{
+  "schema_version": "ais-r8-p4-attempt003-independent-audit-and-statistics-receipt/1.0",
+  "stage_id": "AIS-R8-P4",
+  "namespace": "PUBLIC_DATA_PROTOCOL_VALIDATION",
+  "attempt_id": "ais-r8-p3-public-validation-attempt-003",
+  "created_at": "2026-09-10T04:20:48.8199880Z",
+  "receipt_role": "FRESH_INDEPENDENT_BYTE_REPLAY_AND_DESCRIPTIVE_STATISTICS_AUDIT",
+  "source_task_id": "019ff4f0-802a-7892-a989-24f32ac26ac8",
+  "material_passport": {
+    "origin_skill": "ars-codex/academic-research-suite/experiment-agent",
+    "origin_mode": "validate/independent-runtime-audit",
+    "origin_date": "2026-09-10T04:20:48.8199880Z",
+    "verification_status": "ANALYZED",
+    "verification_scope": "Independent read-only byte replay of AIS-R8 P1/P2/P3 controls, the Attempt-003 packet and immutable runtime, strict JSON integrity, source/data/config/protocol/evaluator/checkpoint/result bindings, the four-run registry, full-sort history masking, and descriptive arithmetic for all five frozen metrics. No training, evaluation, benchmark rerun, TEST reopening, Docker/WSL invocation, host/network probe, or runtime mutation was performed by P4.",
+    "version_label": "ais-r8-p4-attempt003-independent-audit-and-statistics-receipt-v1.0.0",
+    "integrity_pass_date": "2026-09-10T04:20:48.8199880Z",
+    "content_hash": null,
+    "upstream_dependencies": [
+      "ais-r8-p1-source-protocol-admission-receipt-v1.0.0",
+      "ais-r8-p2-public-data-protocol-validation-amendment-v1.0.0",
+      "ais-r8-p3-attempt002-pretraining-failure-audit-v1.0.0",
+      "ais-r8-p3-public-validation-attempt003-execution-packet-v1.0.0",
+      "ais-r8-p3-public-validation-attempt-003",
+      "recbole-v1.2.1@9a6f63d8d4a5b989fe27955a833f813a6d86041e"
+    ],
+    "repro_lock": {
+      "schema_version": "1.0",
+      "stochasticity_declaration": "LLM outputs are not byte-reproducible. This lockfile documents configuration, not a deterministic replay guarantee.",
+      "ars_version": "3.21.0+codex-adapter-0.1.26",
+      "model": {
+        "family": "OpenAI",
+        "id": "gpt-5.6-sol",
+        "weight_stable": false
+      },
+      "prompts": {
+        "hash_timing": "skill-load",
+        "skill_md_hash": "sha256:5acb202b13a7dba912091ae5d15a19b88eb3f4e58b4d942649cb35df770ace91",
+        "agents_bundle_hash": "sha256:54da41749102ba86328c086122a4e1376f3afcc5b1306155710109b896b1f233"
+      },
+      "materials": {
+        "list_hash": "sha256:2d68cf4ab918558d62dcff957cd287422e615c7a5999a3e43aae245ae605b6e9",
+        "count": 7
+      },
+      "external_protocols": {
+        "s2_api_protocol_version": "NOT_USED",
+        "s2_snapshot_available": false
+      },
+      "cross_model": {
+        "enabled": false,
+        "secondary_model_id": null
+      }
+    },
+    "experiment_intake_declaration": {
+      "status": "experiments_declared",
+      "declared_at": "2026-09-01T16:38:56Z",
+      "declared_by": "scholar"
+    },
+    "experiment_provenance": [
+      {
+        "experiment_id": "ais-r8-p3-public-validation-attempt-003",
+        "title": "RecBole Pop and BPR public-data protocol validation on GroupLens MovieLens 100K",
+        "description": "The externally executed Attempt-003 runtime contains one Pop seed and three frozen BPR seeds under the prospective AIS-R8-P2/P3 protocol. This P4 receipt records an independent static audit of retained bytes; it does not claim a rerun, official reproduction, or correctness outside the stated P4 gate.",
+        "repro_lock": {
+          "schema_version": "1.0",
+          "stochasticity_declaration": "LLM outputs are not byte-reproducible. This lockfile documents configuration, not a deterministic replay guarantee.",
+          "ars_version": "3.21.0+codex-adapter-0.1.26",
+          "model": {
+            "family": "RecBole",
+            "id": "Pop@42+BPR@42,2027,31415",
+            "weight_stable": false
+          },
+          "prompts": {
+            "hash_timing": "skill-load",
+            "skill_md_hash": "sha256:5acb202b13a7dba912091ae5d15a19b88eb3f4e58b4d942649cb35df770ace91",
+            "agents_bundle_hash": "sha256:54da41749102ba86328c086122a4e1376f3afcc5b1306155710109b896b1f233"
+          },
+          "materials": {
+            "list_hash": "sha256:2d68cf4ab918558d62dcff957cd287422e615c7a5999a3e43aae245ae605b6e9",
+            "count": 7
+          },
+          "external_protocols": {
+            "s2_api_protocol_version": "NOT_USED",
+            "s2_snapshot_available": false
+          },
+          "cross_model": {
+            "enabled": false,
+            "secondary_model_id": null
+          }
+        },
+        "planned_vs_executed": [
+          {
+            "planned": "Run RECBOLE_POP at seed 42 and retain all five frozen full-sort top-10 TEST metrics.",
+            "executed": true,
+            "result_file": "runs/recbole-pop-seed-42/result.json",
+            "metric": "Recall@10, MRR@10, NDCG@10, Hit@10, Precision@10",
+            "value": {
+              "recall@10": 0.042678,
+              "mrr@10": 0.053217,
+              "ndcg@10": 0.031164,
+              "hit@10": 0.186837,
+              "precision@10": 0.021444
+            }
+          },
+          {
+            "planned": "Run RECBOLE_BPR at frozen seed 42 and retain all five frozen full-sort top-10 TEST metrics.",
+            "executed": true,
+            "result_file": "runs/recbole-bpr-seed-42/result.json",
+            "metric": "Recall@10, MRR@10, NDCG@10, Hit@10, Precision@10",
+            "value": {
+              "recall@10": 0.101423,
+              "mrr@10": 0.105435,
+              "ndcg@10": 0.070481,
+              "hit@10": 0.283439,
+              "precision@10": 0.038535
+            }
+          },
+          {
+            "planned": "Run RECBOLE_BPR at frozen seed 2027 and retain all five frozen full-sort top-10 TEST metrics.",
+            "executed": true,
+            "result_file": "runs/recbole-bpr-seed-2027/result.json",
+            "metric": "Recall@10, MRR@10, NDCG@10, Hit@10, Precision@10",
+            "value": {
+              "recall@10": 0.106237,
+              "mrr@10": 0.113953,
+              "ndcg@10": 0.075893,
+              "hit@10": 0.299363,
+              "precision@10": 0.041507
+            }
+          },
+          {
+            "planned": "Run RECBOLE_BPR at frozen seed 31415 and retain all five frozen full-sort top-10 TEST metrics.",
+            "executed": true,
+            "result_file": "runs/recbole-bpr-seed-31415/result.json",
+            "metric": "Recall@10, MRR@10, NDCG@10, Hit@10, Precision@10",
+            "value": {
+              "recall@10": 0.10988,
+              "mrr@10": 0.116951,
+              "ndcg@10": 0.077937,
+              "hit@10": 0.301486,
+              "precision@10": 0.042569
+            }
+          }
+        ],
+        "negative_results": [],
+        "known_limitations": [
+          {
+            "description": "Only aggregate metrics are retained; no per-user metric vectors are available for paired inference, confidence intervals, or bootstrap analysis."
+          },
+          {
+            "description": "The learned-model summary contains three frozen BPR seeds and the Pop comparator contains one deterministic run."
+          },
+          {
+            "description": "The scope is a diagnostic public-data protocol validation, not a strict official numeric reproduction, a harmonized-v5 comparison, or public-data validation of the proposed Hybrid architecture."
+          },
+          {
+            "description": "Full-sort top-k ties follow the pinned RecBole torch.topk implementation order; no raw-item-id tie-break contract is claimed."
+          }
+        ]
+      }
+    ]
+  },
+  "ars_routing_receipt": {
+    "adapter": "ars-codex",
+    "adapter_version": "0.1.26",
+    "upstream_suite_version": "3.21.0",
+    "root_skill": "skills/academic-research-suite/SKILL.md",
+    "workflow": "ars/experiment-agent/WORKFLOW.md",
+    "runner_role": "ars/experiment-agent/agents/code_runner_agent.md",
+    "reproducibility_reference": "ars/experiment-agent/references/reproducibility_protocol.md",
+    "statistical_reference": "ars/experiment-agent/references/statistical_interpretation_guide.md",
+    "integration_reference": "ars/experiment-agent/references/ars_integration_guide.md",
+    "handoff_schema_reference": "ars/shared/handoff_schemas.md#schema-9-material-passport-cross-stage-metadata-and-experiment-provenance-intake-260",
+    "instruction_hashes": {
+      "root_skill": "5acb202b13a7dba912091ae5d15a19b88eb3f4e58b4d942649cb35df770ace91",
+      "workflow": "6d984f36be84c3f9249f68ef0c599155978b5a661d172e2bb4db2205fdc720f3",
+      "code_runner_agent": "e50c1303ebcb451304d427ce063651af5d6fa5ab9cc9249e399353714b8bbfe1",
+      "reproducibility_protocol": "12962834fc54551b0bead25f56b8978c5da6580e15ca882c21abc2bfbff7c506",
+      "statistical_interpretation_guide": "c3bdf338694e21a0f1a83b81d3d1a308a0f8e74809c5566bcc4a203f222b666d",
+      "ars_integration_guide": "c129b6d889dc52cca921b75311b8988a4ff12df412a19a5530abe05e36a23d16",
+      "handoff_schemas": "3d81dd949e6eb5162e7227d8ee13e65b5a17ab9440db3809cbcea8f63be6c8de"
+    },
+    "agents_bundle_hash_method": "SHA-256 over the raw bytes of the six selected workflow/agent/reference/handoff files concatenated in ordinal path order.",
+    "selected_instructions_read_before_write": true,
+    "material_passport_applied": true,
+    "experiment_provenance_applied": true,
+    "validate_semantics": "ANALYZED_WITH_STATIC_BYTE_REPLAY; NO_REPRODUCIBILITY_RERUN"
+  },
+  "model_policy_audit": {
+    "scope": "AIS-R8-P4_ATTEMPT003_ONLY",
+    "requested_model": "gpt-5.6-sol",
+    "requested_reasoning_effort": "ultra",
+    "requested_service_tier": "Standard/default",
+    "forbidden_service_tiers": [
+      "Fast",
+      "Priority"
+    ],
+    "actual_model": "gpt-5.6-sol",
+    "actual_reasoning_effort": "ultra",
+    "actual_model_and_reasoning_source": "Codex task runtime configuration for this fresh independent audit task",
+    "actual_service_tier": "UNOBSERVABLE",
+    "actual_speed": "UNOBSERVABLE",
+    "speed_telemetry": "UNOBSERVABLE",
+    "model_or_reasoning_mismatch_evidence": false,
+    "positive_fast_or_priority_evidence": false,
+    "unobservable_policy": "Service-tier and speed values were not inferred from latency, prose, or prior task history. Absence of telemetry is preserved as UNOBSERVABLE.",
+    "prewrite_model_gate": "PASS"
+  },
+  "independent_audit_context": {
+    "source_task_id": "019ff4f0-802a-7892-a989-24f32ac26ac8",
+    "checkout": "E:/UIT/cv/backend",
+    "runtime_root": "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/r8/public-data-protocol-validation/attempt-003",
+    "mode": "STRICT_READ_ONLY_BYTE_REPLAY",
+    "independence_statement": "The auditor derived the verdict from the current committed control objects and immutable Attempt-003 runtime bytes. No uncommitted prior-task verdict or placeholder receipt was used.",
+    "reproducibility_rerun": "NOT_PERFORMED_PROHIBITED_BY_SCOPE",
+    "training_or_evaluation_performed": false,
+    "public_or_v5_test_reopened": false,
+    "docker_or_wsl_invoked": false,
+    "host_or_network_probe_performed": false,
+    "runtime_or_prior_receipt_mutation": false
+  },
+  "repository_lineage": {
+    "checkout": "E:/UIT/cv/backend",
+    "branch": "codex/ais-r2-source-export",
+    "head_before_write": "91caf7708ca416e71ccbc477a01ed492f5d33def",
+    "parent_of_head_before_write": "7dba823ea8b284f6738185af010888177eb50c8b",
+    "head_tree_before_write": "ecd2c71e58c2cf83a21743613779876256c37099",
+    "worktree_clean_before_write": true,
+    "target_receipt_absent_before_write": true,
+    "pipeline_state_modified": false,
+    "manuscript_modified": false,
+    "runtime_artifacts_modified": false,
+    "prior_control_artifacts_modified": false,
+    "repository_text_hash_basis": "Packet-bound repository inputs were replayed from their raw HEAD Git blobs. The clean Windows checkout has core.autocrlf=true; current worktree copies strict-parse and differ from the bound blobs only by CRLF checkout translation.",
+    "checkout_eol_translation_is_not_a_scientific_input_change": true
+  },
+  "strict_json_replay": {
+    "parser_contract": "UTF-8 top-level object; reject any BOM, duplicate key, Unicode-casefold key collision, JSON NaN/Infinity constants, overflowed or otherwise non-finite numbers.",
+    "p1_p2_p3_control_files": 9,
+    "p1_p2_p3_control_files_passed": 9,
+    "prior_attempt001_p4_bound_input_files": 1,
+    "prior_attempt001_p4_bound_input_files_passed": 1,
+    "packet_bound_json_occurrences": 7,
+    "packet_bound_json_occurrences_passed": 7,
+    "runtime_json_files": 22,
+    "runtime_json_files_passed": 22,
+    "parse_failure_count": 0,
+    "bom_count": 0,
+    "duplicate_key_count": 0,
+    "case_colliding_key_count": 0,
+    "nonfinite_number_count": 0,
+    "status": "PASS"
+  },
+  "control_object_bindings": {
+    "hash_basis": "raw HEAD Git blob bytes",
+    "canonical_binding_set_sha256": "c1dc8e395234c28af6b970a1f0da5a42502fb1fbc748d1d3af7b165de4599441",
+    "canonicalization": "Compact UTF-8 JSON array of path/bytes/sha256 rows sorted by path with object keys sorted and no trailing newline.",
+    "files": [
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r8_p1_source_protocol_admission_receipt_v1.json",
+        "bytes": 30080,
+        "sha256": "643c4c5b7a8f620da4b6344a1e42d10e5f3aaf745552c5f86c91ebb77c13ceb1"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r8_p2_public_data_protocol_validation_amendment_v1.json",
+        "bytes": 22818,
+        "sha256": "4217ad1cef7b722eb419248ba54160867e53e1cbe059e7bf4d88aa68e930dff4"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r8_p3_attempt002_pretraining_failure_audit_v1.json",
+        "bytes": 8184,
+        "sha256": "89081060d652df4ec8986eb9176abe1fdc1423917ec1c7732f491cbb833f1edf"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r8_p3_public_validation_execution_packet_attempt002_v1.json",
+        "bytes": 15857,
+        "sha256": "cbac8f4a834ea4cb007d019c0a5c52d56deddf04c4d92acc7a423c21814b4a61"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r8_p3_public_validation_execution_packet_attempt003_v1.json",
+        "bytes": 17198,
+        "sha256": "6a0047baa0d1107eb0ed5b729e1f1f410b003ea5dcf1be6768d1cfcb419d7735"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r8_p3_public_validation_execution_packet_v1.json",
+        "bytes": 12041,
+        "sha256": "d7814d5bc6fb50ca898c3ec21a0b1df23799360ab0d01ba1cd0fe69e0e17583a"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r8_p3_public_validation_spec_attempt002_v1.json",
+        "bytes": 6993,
+        "sha256": "9d36e2f94e5df7154e1de73f6e52f1f81ad5505566f63836ffba03ca476e0afc"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r8_p3_public_validation_spec_attempt003_v1.json",
+        "bytes": 7251,
+        "sha256": "15ca03c1b733331d764880050f485fef84039a2877db960991a5a8e7678bd9e6"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r8_p3_public_validation_spec_v1.json",
+        "bytes": 5887,
+        "sha256": "2eaeeef1e798889a0a9354f4e4bba9ed3766f082cdb72ca625d0a5c1725b25fb"
+      },
+      {
+        "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r8_p4_independent_audit_and_statistics_receipt_v1.json",
+        "bytes": 19878,
+        "sha256": "83dd1245518101a2e311d7c55bbf34449e5e71bb68023c1739ea9d91cb5e8e1a"
+      }
+    ],
+    "p1_verdict": "NO_FORMAL_CENTER_FOUND",
+    "p2_verdict": "PUBLIC_DATA_PROTOCOL_VALIDATION_DESIGN_FROZEN",
+    "attempt002_failure_verdict": "ATTEMPT002_PRETRAINING_ASSERTION_FAILURE_CONFIRMED",
+    "attempt002_to_attempt003_scientific_sections_unchanged": true,
+    "attempt003_change": "Observability assertion only: inspect RecBole _sampler with valid/test phase checks.",
+    "status": "PASS"
+  },
+  "packet_input_binding_replay": {
+    "packet_path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r8_p3_public_validation_execution_packet_attempt003_v1.json",
+    "packet_bytes": 17198,
+    "packet_sha256": "6a0047baa0d1107eb0ed5b729e1f1f410b003ea5dcf1be6768d1cfcb419d7735",
+    "host_preflight_confirmed_packet_sha256": "6a0047baa0d1107eb0ed5b729e1f1f410b003ea5dcf1be6768d1cfcb419d7735",
+    "binding_count": 25,
+    "binding_match_count": 25,
+    "binding_mismatch_count": 0,
+    "canonical_binding_set_sha256": "945934dc9d74864c406f332d1ac4b662f30e74f51095618ffcfc96e3b772f4c5",
+    "canonicalization": "Compact UTF-8 JSON array of binding/path/bytes/sha256 rows sorted by binding with object keys sorted and no trailing newline.",
+    "repository_binding_basis": "raw HEAD Git blob bytes",
+    "materialized_binding_basis": "filesystem raw bytes",
+    "key_inputs": {
+      "attempt003_spec": {
+        "bytes": 7251,
+        "sha256": "15ca03c1b733331d764880050f485fef84039a2877db960991a5a8e7678bd9e6"
+      },
+      "attempt003_wrapper": {
+        "bytes": 11320,
+        "sha256": "b13a7f84c0b1a70608e71470174c75f7a550d46987527ebd378fb51149762c29"
+      },
+      "base_runner": {
+        "bytes": 13672,
+        "sha256": "dc19028bf8af175e4ee25d03ada18bec3814ac2b3be726645f409e5d142ece4f"
+      },
+      "base_executor": {
+        "bytes": 15950,
+        "sha256": "eb7f818bbcd4d6db79b0206dfcc325800996e1c6bc649c38360b4cb831fe272f"
+      },
+      "attempt003_executor_wrapper": {
+        "bytes": 6892,
+        "sha256": "1263e7053a90230b6c97346c2c9731b5446015177589c376c59730584b94ba95"
+      },
+      "source_manifest": {
+        "bytes": 102765,
+        "sha256": "c5794b9daccdd01ca600c6ef7f890918825fbbb872efa67036c4565234e87016"
+      },
+      "environment_receipt": {
+        "bytes": 5012,
+        "sha256": "b67af0c96a1373885c38c4395078ddfde50f02d75ca1ffcf9a433c7ea3dd960c"
+      },
+      "environment_inventory": {
+        "bytes": 13401848,
+        "sha256": "5647259354c016b7364c9da25b267342c91ff5ffb9de4d5b925d0f7a386d2689"
+      },
+      "environment_python": {
+        "bytes": 14472,
+        "sha256": "8219d0acbf6e1b78e322a221c438244034afc7d8c9d08b68019ba320de50afbb"
+      },
+      "atomic_dataset": {
+        "bytes": 1979230,
+        "sha256": "4edb74e2a81178c2ba9ff381495f754f996c4aea351b1272ca36b43da0935eff"
+      }
+    },
+    "status": "PASS"
+  },
+  "source_and_evaluator_replay": {
+    "framework": "RecBole",
+    "version": "1.2.1",
+    "source_revision": "9a6f63d8d4a5b989fe27955a833f813a6d86041e",
+    "source_tree": "08915121fea069a30f7e3e97a72e16e7e76d43c6",
+    "selected_source_manifest_sha256": "c5794b9daccdd01ca600c6ef7f890918825fbbb872efa67036c4565234e87016",
+    "selected_source_file_count": 265,
+    "selected_source_total_bytes": 1541044,
+    "installed_source_hashes": {
+      "recbole/__init__.py": "9bda7db19982dca0d8a67f2b5f0e783df15e99fccfd3190506a0f4109b3f520d",
+      "recbole/model/general_recommender/pop.py": "aacdde8104a08cb75a241ffd012ee121d8ee367b75be1207f0bd14fee56594bb",
+      "recbole/model/general_recommender/bpr.py": "191d4a8707833a7f4a4bfa0eadff12431bbf70d17ef25e39474bc9b8e588357a",
+      "recbole/evaluator/evaluator.py": "7634c726fb88c7ee351048d4aa86ebdca6ba5f06ddb0305de0df1328eebf2c03",
+      "recbole/evaluator/metrics.py": "31a4260a4a77fb86fcbfc66fa384ab01147c9fac8bc87a726ff5cb47259b3199",
+      "recbole/evaluator/collector.py": "3557954a637113f9bcc35aa30c0f83587d2e9d7b27ac31fc3e31cd1422799492",
+      "recbole/evaluator/base_metric.py": "88f304da7a2cd9c6795dd4a3f334fe3570141884b3f923eb7bf0102d470730dc",
+      "recbole/sampler/sampler.py": "6fee42497697225977fe64f81f89d5181dd8026f3c78acc99db133eb89858d5e",
+      "recbole/data/utils.py": "94dd659fda6a131ae3655dbe6afa5d79f1492647585512e88fae167fa8bcc523",
+      "recbole/data/dataloader/abstract_dataloader.py": "a843c00140d893ec84ecdea3fcd318d71f536885152086a35346f46be925e519",
+      "recbole/data/dataloader/general_dataloader.py": "1c32595ecb66c7e5381ce1b0fde2440d9f8fc7cd44a37800d6a5c1affa030168",
+      "recbole/data/dataset/dataset.py": "9e752eea85d84280f1ea5c752a3be055ab8deb1c03c1196d1a02f46065deee5e",
+      "recbole/data/interaction.py": "5e4dda0ef4888c6660f854bf5db2fff49bfa5b278b51331c19486ea89e0ea4cf",
+      "recbole/properties/dataset/ml-100k.yaml": "9890771341fe556dc14ee0f004ec6b72efeeac2fef8bfca2c78f7416e6c4f449",
+      "recbole/trainer/trainer.py": "52548168ccdf96ca7f404d890365284a4fdf9d6a01a4abf9d4c1ed702fc9fc47"
+    },
+    "installed_source_matches_selected_manifest": true,
+    "environment_packages": {
+      "python": "3.11.9",
+      "recbole": "1.2.1",
+      "torch": "2.2.2+cpu",
+      "numpy": "1.26.4",
+      "scipy": "1.11.4",
+      "pandas": "2.1.4",
+      "scikit-learn": "1.3.2"
+    },
+    "environment_receipt_matches_runtime_environment": true,
+    "source_data_config_protocol_evaluator_hash_replay": "PASS"
+  },
+  "runtime_inventory": {
+    "root": "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/r8/public-data-protocol-validation/attempt-003",
+    "status_before_audit": "COMPLETED_UNAUDITED",
+    "file_count": 38,
+    "json_file_count": 22,
+    "total_bytes": 5686117,
+    "canonical_inventory_sha256": "bb055e95517eec48454f767ebdc062564c3883650b94828b79d0a364564f6c65",
+    "canonicalization": "SHA-256 of the compact UTF-8 JSON array of path/bytes/sha256 rows, sorted by ordinal POSIX relative path, with object keys sorted and no trailing newline.",
+    "reparse_point_count": 0,
+    "symlink_count": 0,
+    "path_case_collision_count": 0,
+    "strict_json_failure_count": 0,
+    "failure_receipt_count": 0,
+    "runtime_tree_mutated_by_p4": false,
+    "top_level_artifact_hashes": {
+      "aggregate_metrics.json": "512fb8ad8862f5e677ec18f369d310ae58c9d6f3c4f7b2e79c17ede389930c17",
+      "environment.json": "f2697916ba2bb0f9b99c9721822d4dd6355709392787659ffd079fdcc3b2441e",
+      "host_preflight.json": "f07e4d2a79b6539fea79f990a94fde585ee4b95ff99f816b8ed96df8093eba23",
+      "masking_semantics_receipt.json": "506dfc2e734d2e1fb0516b9a3c4d8b25bdd356f6dcaa4f3d549c542e3ff7c68d",
+      "run_manifest.json": "8e8732d13405d0bd58f6bca5f6086099c64530da6a378b5d8045a5f0a9bfa881",
+      "state.json": "f5161c452424a1a31ab3559e8cb792af28b10257fa5c01c361d223bcbdffdd71"
+    },
+    "shared_dataset_binding_artifact_sha256": "d33269bf7919f87c21d635506edc6ec0ee96f7516ca302ad25ec3e0457986e0b",
+    "shared_completed_run_state_sha256": "06d11de3efc801789a728e8986481a47bf9f8e1204c97f2cbde3370b3dbc3adb",
+    "status": "PASS"
+  },
+  "dataset_and_split_replay": {
+    "dataset": "GroupLens MovieLens 100K transformed to the admitted RecBole atomic file",
+    "atomic_bytes": 1979230,
+    "atomic_sha256": "4edb74e2a81178c2ba9ff381495f754f996c4aea351b1272ca36b43da0935eff",
+    "raw_interactions": 100000,
+    "raw_users": 943,
+    "raw_items": 1682,
+    "duplicate_user_item_pairs": 0,
+    "malformed_rows": 0,
+    "feedback_filter": "rating in [4,inf)",
+    "filtered_interactions": 55375,
+    "retained_users": 942,
+    "retained_items": 1447,
+    "inherited_source_default": "recbole/properties/dataset/ml-100k.yaml normalize_all=true; normalization is monotone and was included when independently reproducing the pinned tensor digests.",
+    "filtered_interactions_sha256": "367dfdea5d48315268fd063431d923b297a3fc73b704a802d96bb636ef506b61",
+    "split_semantics": "Stable chronological ordering followed by RecBole per-user ratio split with non-first parts rounded down and the documented sub-unit remainder rule; full-sort validation/test datasets are then stably sorted by internal user id.",
+    "train_interactions": 45063,
+    "validation_interactions": 5156,
+    "test_interactions": 5156,
+    "validation_users": 942,
+    "test_users": 942,
+    "split_hashes": {
+      "train": "3785f24b62f37f6256eaf18395769f692efed136ef67631cdfc275841465daea",
+      "validation": "587160ddf80b316dd831fb167bdde9c40a665d10389d1041eb65d58c52a7ba66",
+      "test": "b64fdac15d81779c6349d2628a1d5109c87c1284b5b5977ee7d75b08564273dd"
+    },
+    "dataset_binding_hash": "739f58c38f0f40f49c20ef325c3c12934cbbc85769b8e8ff56fd727336398e59",
+    "same_binding_observed_in_all_four_runs": true,
+    "independent_binding_reconstruction_matches_all_four_runtime_receipts": true,
+    "status": "PASS"
+  },
+  "full_sort_masking_replay": {
+    "resolved_repeatable": false,
+    "validation_dataloader": "FullSortEvalDataLoader",
+    "test_dataloader": "FullSortEvalDataLoader",
+    "validation_protocol_sampler": "Sampler phase=valid",
+    "test_protocol_sampler": "Sampler phase=test",
+    "validation_history_semantics": "TRAIN interactions",
+    "test_history_semantics": "TRAIN plus validation interactions",
+    "validation_masked_user_item_pairs": 45063,
+    "test_masked_user_item_pairs": 50219,
+    "validation_users_checked": 942,
+    "test_users_checked": 942,
+    "held_out_positive_history_intersection_pairs": 0,
+    "candidate_padding_excluded": true,
+    "sampled_negative_evaluation": false,
+    "mask_application_fixture": "PASS_BEFORE_TRAINING",
+    "source_semantics": [
+      "data/utils.py selects the phase-aware Sampler when repeatable=false and supplies valid/test phase copies",
+      "sampler.py accumulates used item ids across train, valid, and test phases",
+      "general_dataloader.py constructs history_item as used_item minus current held-out positives",
+      "trainer.py masks padding index 0 and all history_index scores to negative infinity before collection"
+    ],
+    "direct_future_label_leakage_found": false,
+    "candidate_protocol_drift_found": false,
+    "status": "PASS"
+  },
+  "frozen_run_registry_replay": {
+    "required_runs": [
+      "recbole-pop-seed-42",
+      "recbole-bpr-seed-42",
+      "recbole-bpr-seed-2027",
+      "recbole-bpr-seed-31415"
+    ],
+    "observed_runs_in_execution_order": [
+      "recbole-pop-seed-42",
+      "recbole-bpr-seed-42",
+      "recbole-bpr-seed-2027",
+      "recbole-bpr-seed-31415"
+    ],
+    "seed_substitution_found": false,
+    "all_required_runs_completed": true,
+    "all_result_values_finite": true,
+    "all_five_metrics_present_per_run": true,
+    "best_valid_score_equals_validation_ndcg_at_10_per_run": true,
+    "requested_configs_equal_exact_spec_merges": true,
+    "requested_config_hashes": {
+      "recbole-pop-seed-42": "cf0a10c07321a1f8f05c4692d860194751ac444541d5df14f421c2f6bdf2e765",
+      "recbole-bpr-seed-42": "b13d4fa88f656eba203e05b1ee66edd1c75dd145e81fc2e0113762a3df3e1ba1",
+      "recbole-bpr-seed-2027": "339519f8c8e0761a7ffb19ba1c0dc6f9f4996139b46eb1bcf867d27e011fb776",
+      "recbole-bpr-seed-31415": "8efa29ce52b82f8a413cfe4ca8a15824c47c0a957e40bdf4c2e7efe660341c85"
+    },
+    "result_hashes": {
+      "recbole-pop-seed-42": "68a9eb1b0dafc9dbbbcffb23e7a6feb80d5cb6dc6cca18f87484b47a6c1b045b",
+      "recbole-bpr-seed-42": "0dd7021ab3fc89977db59cc812de603bcf6c5c6b420bc14c05a4fe23e459d484",
+      "recbole-bpr-seed-2027": "ab58f31a2be320ffe5cfcd49d628e15f41a6fae3b56dc82a863b1c09b6123e44",
+      "recbole-bpr-seed-31415": "3b95f35a8b0c39608069a58224b5bd3dd7fd16bca60a71d7af45b3a5def1c021"
+    },
+    "checkpoint_bindings": {
+      "recbole-pop-seed-42": {
+        "path": "runs/recbole-pop-seed-42/saved/Pop-Sep-09-2026_05-39-53.pth",
+        "bytes": 19339,
+        "sha256": "43b8079dd3775518c4fbea59a9555514ea949dcf46b2359a7c36496171e3945b"
+      },
+      "recbole-bpr-seed-42": {
+        "path": "runs/recbole-bpr-seed-42/saved/BPR-Sep-09-2026_05-40-05.pth",
+        "bytes": 1845708,
+        "sha256": "e6d49b4d319fc33e7f83cbcd635d9d9db3ffae2e15aba6a9d0e0e70d5078000b"
+      },
+      "recbole-bpr-seed-2027": {
+        "path": "runs/recbole-bpr-seed-2027/saved/BPR-Sep-09-2026_05-40-18.pth",
+        "bytes": 1845708,
+        "sha256": "3cc1ff4dad37894122a980ab18edc83944abada3875b8ad74bc40345a43e382c"
+      },
+      "recbole-bpr-seed-31415": {
+        "path": "runs/recbole-bpr-seed-31415/saved/BPR-Sep-09-2026_05-40-42.pth",
+        "bytes": 1845708,
+        "sha256": "bf98b6ac19ecea713c1cf8543126d0300544a1beec96b6b63a3aa3eb0b8b7d0e"
+      }
+    },
+    "checkpoint_selection": "BPR checkpoints bind the maximum validation NDCG@10 rule; the single-epoch Pop checkpoint is the final fitted popularity state and is observationally identical to selection from its sole validation point.",
+    "status": "PASS"
+  },
+  "descriptive_statistics_replay": {
+    "scope": "P2_DESCRIPTIVE_ONLY_MINIMAL_LANE",
+    "primary_metric": "NDCG@10",
+    "bpr_seed_order": [
+      42,
+      2027,
+      31415
+    ],
+    "standard_deviation": "sample_n_minus_1",
+    "metric_results": {
+      "ndcg@10": {
+        "pop": 0.031164,
+        "bpr_values": [
+          0.070481,
+          0.075893,
+          0.077937
+        ],
+        "bpr_mean": 0.07477033333333334,
+        "bpr_sample_sd": 0.0038526963718068085,
+        "bpr_min": 0.070481,
+        "bpr_max": 0.077937,
+        "bpr_minus_pop_deltas": [
+          0.039317000000000005,
+          0.044729000000000005,
+          0.04677300000000001
+        ],
+        "bpr_minus_pop_mean": 0.04360633333333334,
+        "required_rounding_check": {
+          "bpr_mean_10dp": 0.0747703333,
+          "bpr_sample_sd_10dp": 0.0038526964,
+          "bpr_minus_pop_mean_10dp": 0.0436063333
+        }
+      },
+      "recall@10": {
+        "pop": 0.042678,
+        "bpr_values": [
+          0.101423,
+          0.106237,
+          0.10988
+        ],
+        "bpr_mean": 0.10584666666666667,
+        "bpr_sample_sd": 0.004241990374026485,
+        "bpr_min": 0.101423,
+        "bpr_max": 0.10988,
+        "bpr_minus_pop_deltas": [
+          0.058745,
+          0.063559,
+          0.06720200000000001
+        ],
+        "bpr_minus_pop_mean": 0.06316866666666668
+      },
+      "mrr@10": {
+        "pop": 0.053217,
+        "bpr_values": [
+          0.105435,
+          0.113953,
+          0.116951
+        ],
+        "bpr_mean": 0.112113,
+        "bpr_sample_sd": 0.005974425830153052,
+        "bpr_min": 0.105435,
+        "bpr_max": 0.116951,
+        "bpr_minus_pop_deltas": [
+          0.052218,
+          0.060736,
+          0.063734
+        ],
+        "bpr_minus_pop_mean": 0.058896
+      },
+      "hit@10": {
+        "pop": 0.186837,
+        "bpr_values": [
+          0.283439,
+          0.299363,
+          0.301486
+        ],
+        "bpr_mean": 0.2947626666666667,
+        "bpr_sample_sd": 0.00986386599327734,
+        "bpr_min": 0.283439,
+        "bpr_max": 0.301486,
+        "bpr_minus_pop_deltas": [
+          0.096602,
+          0.11252599999999999,
+          0.11464899999999997
+        ],
+        "bpr_minus_pop_mean": 0.10792566666666666
+      },
+      "precision@10": {
+        "pop": 0.021444,
+        "bpr_values": [
+          0.038535,
+          0.041507,
+          0.042569
+        ],
+        "bpr_mean": 0.040870333333333335,
+        "bpr_sample_sd": 0.0020910039056236457,
+        "bpr_min": 0.038535,
+        "bpr_max": 0.042569,
+        "bpr_minus_pop_deltas": [
+          0.017091,
+          0.020063,
+          0.021125
+        ],
+        "bpr_minus_pop_mean": 0.019426333333333334
+      }
+    },
+    "all_five_aggregate_records_exactly_recomputed": true,
+    "inferential_test": null,
+    "bootstrap": null,
+    "confidence_interval": null,
+    "standardized_effect_size": null,
+    "per_user_metric_artifact_present": false,
+    "interpretation_confidence": "CAUTION",
+    "interpretation": "All three frozen BPR seed values exceed the single Pop point estimate for each retained metric, but these are descriptive protocol-lane observations only. With three BPR seeds, one Pop run, no per-user vectors, and no planned inferential test, they do not establish statistical significance, causal benefit, general superiority, or paper admission.",
+    "aggregate_arithmetic_replay": "PASS"
+  },
+  "statistical_fallacy_scan": {
+    "coverage": "11/11",
+    "checks": [
+      {
+        "id": 1,
+        "name": "Simpson's Paradox",
+        "status": "NOT_ASSESSABLE_NO_SUBGROUP_EXPORT",
+        "disposition": "No subgroup or per-user vector is retained, so reversal cannot be tested. No subgroup-invariant claim is authorized."
+      },
+      {
+        "id": 2,
+        "name": "Ecological Fallacy",
+        "status": "NOT_DETECTED",
+        "disposition": "The receipt reports aggregate evaluator output only and makes no individual-user inference."
+      },
+      {
+        "id": 3,
+        "name": "Berkson's Paradox",
+        "status": "CAUTION_SELECTION_SCOPE",
+        "disposition": "The rating>=4 retained cohort is explicitly selected. The verdict is restricted to this protocol cohort and does not generalize to all MovieLens users or interactions."
+      },
+      {
+        "id": 4,
+        "name": "Collider Bias",
+        "status": "NOT_APPLICABLE",
+        "disposition": "No covariate-adjusted association or causal model is reported."
+      },
+      {
+        "id": 5,
+        "name": "Base Rate Neglect",
+        "status": "NOT_APPLICABLE",
+        "disposition": "No diagnostic sensitivity, specificity, PPV, or NPV claim is made."
+      },
+      {
+        "id": 6,
+        "name": "Regression to the Mean",
+        "status": "NOT_APPLICABLE",
+        "disposition": "There is no pre/post design or group selected for extreme outcome values."
+      },
+      {
+        "id": 7,
+        "name": "Survivorship Bias",
+        "status": "NOT_DETECTED_AS_ATTRITION",
+        "disposition": "There is no longitudinal dropout analysis. The reduction from 943 raw users to 942 retained users follows the predeclared positive-feedback cohort rule and remains disclosed."
+      },
+      {
+        "id": 8,
+        "name": "Look-Elsewhere Effect",
+        "status": "MITIGATED_BY_PROSPECTIVE_REGISTRY",
+        "disposition": "NDCG@10 was primary, four secondary metrics were frozen, and all five are retained for every run without selective significance testing."
+      },
+      {
+        "id": 9,
+        "name": "Garden of Forking Paths",
+        "status": "MITIGATED_BY_PROSPECTIVE_CONTROLS",
+        "disposition": "The data rule, split, evaluator, models, seeds, metrics, and descriptive comparison were frozen before Attempt-003. The Attempt-002 to Attempt-003 change was instrumentation-only and unfavorable prior attempts remain immutable."
+      },
+      {
+        "id": 10,
+        "name": "Correlation Is Not Causation",
+        "status": "NOT_TRIGGERED",
+        "disposition": "No causal claim is made from the recommender comparison."
+      },
+      {
+        "id": 11,
+        "name": "Reverse Causality",
+        "status": "NOT_APPLICABLE",
+        "disposition": "No directional causal relation is asserted."
+      }
+    ],
+    "blocking_fallacy_found": false,
+    "scope_cautions_preserved": true,
+    "status": "PASS_WITH_LIMITATIONS"
+  },
+  "p2_pass_gate_evaluation": {
+    "all_required_runs_and_seeds_complete": true,
+    "source_data_config_protocol_checkpoint_command_and_evaluator_identity_replayable": true,
+    "same_rating_filter_and_temporal_split_across_models": true,
+    "same_full_sort_candidate_universe_and_seen_item_masking_as_declared": true,
+    "validation_history_is_train_only": true,
+    "test_history_is_train_plus_validation": true,
+    "all_five_metrics_finite_for_every_run": true,
+    "cohort_and_denominator_counts_recorded": true,
+    "post_test_configuration_change_found": false,
+    "seed_substitution_found": false,
+    "failure_receipt_or_same_attempt_retry_found": false,
+    "negative_or_null_outcome_retention_policy_preserved": true,
+    "numeric_outcome_used_as_pass_gate": false,
+    "unresolved_major_integrity_provenance_leakage_or_protocol_finding": false,
+    "gate_result": "PASS"
+  },
+  "limitations": [
+    {
+      "id": "P4-LIMITATION-001",
+      "category": "NO_PER_USER_METRIC_EXPORT",
+      "statement": "Only aggregate RecBole metrics are retained; paired user-level inference, confidence intervals, and bootstrap analysis cannot be performed from these artifacts.",
+      "blocks_p4_pass": false,
+      "basis": "P2 prospectively declared a descriptive-only lane with inferential_test and bootstrap set to null."
+    },
+    {
+      "id": "P4-LIMITATION-002",
+      "category": "SMALL_SEED_SAMPLE",
+      "statement": "The BPR variability summary uses three fixed seeds and the Pop comparator is one deterministic point estimate.",
+      "blocks_p4_pass": false
+    },
+    {
+      "id": "P4-LIMITATION-003",
+      "category": "IMPLEMENTATION_SCOPED_TIES",
+      "statement": "Popularity-score and other top-k ties follow the pinned torch.topk implementation order; no raw-item-id deterministic tie-break is claimed.",
+      "blocks_p4_pass": false
+    },
+    {
+      "id": "P4-LIMITATION-004",
+      "category": "STATIC_AUDIT_NO_RERUN",
+      "statement": "P4 replayed retained bytes and deterministic transformations but did not rerun training or evaluation. The Material Passport therefore remains ANALYZED rather than claiming execution-level VERIFIED reproducibility.",
+      "blocks_p4_pass": false
+    },
+    {
+      "id": "P4-LIMITATION-005",
+      "category": "EVIDENCE_NAMESPACE",
+      "statement": "MovieLens 100K lacks the basket, price, and e-commerce feature semantics needed to validate the proposed Hybrid architecture. This lane cannot be joined numerically to harmonized v5 evidence or relabeled as strict official reproduction.",
+      "blocks_p4_pass": false
+    }
+  ],
+  "scientific_disposition": {
+    "PUBLIC_DATA_PROTOCOL_VALIDATION": {
+      "RESULT_STATUS": "COMPLETED_AUDITED_PROTOCOL_VALIDATION_PASS",
+      "TEST_SET_OPENED": "YES_BY_ATTEMPT003_RUNTIME; NOT_REOPENED_BY_P4",
+      "RUNTIME_RESULT_ROWS": 4,
+      "ACCEPTED_RESULT_ROWS": 0,
+      "evidence_role": "DIAGNOSTIC_AND_PROSPECTIVE_PROTOCOL_EVIDENCE_ONLY",
+      "benchmark_numbers_valid_for_paper": false,
+      "paper_inference_authorized": false,
+      "p5_state_reconciliation_required": true,
+      "separate_paper_admission_decision_required": true
+    },
+    "OFFICIAL_PROTOCOL_REPRODUCTION": {
+      "status": "CLOSED_INCOMPARABLE",
+      "accepted_result_rows": 0,
+      "mutation_authorized": false
+    },
+    "HARMONIZED_V5_COMPARISON": {
+      "status": "EXISTING_SEALED_WITH_MAJOR_LIMITATIONS",
+      "TEST_SET_OPENED": "YES_PREVIOUSLY_DO_NOT_REOPEN",
+      "accepted_result_rows": 0,
+      "mutation_authorized": false,
+      "numeric_join_authorized": false
+    },
+    "strict_official_reproduction_claim_authorized": false,
+    "hybrid_public_validation_claim_authorized": false,
+    "superiority_claim_authorized": false,
+    "phase_1e_complete": false,
+    "stage_2_result_claims_authorized": false,
+    "pipeline_state_stage1e": "STALE_PROTECTED_UNTIL_AIS_R8_P5",
+    "pipeline_state_modified": false
+  },
+  "protected_state": {
+    "training_performed_by_p4": false,
+    "evaluation_performed_by_p4": false,
+    "benchmark_rerun_performed_by_p4": false,
+    "public_test_reopened_by_p4": false,
+    "v5_test_reopened": false,
+    "docker_or_wsl_invoked_by_p4": false,
+    "host_or_network_probe_invoked_by_p4": false,
+    "runtime_bytes_modified": false,
+    "historical_attempt_modified": false,
+    "prior_receipt_modified": false,
+    "pipeline_state_modified": false,
+    "manuscript_modified": false,
+    "plans_modified": false
+  },
+  "write_set": {
+    "exact_new_files": [
+      "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r8_p4_attempt003_independent_audit_and_statistics_receipt_v1.json"
+    ],
+    "exact_file_count": 1,
+    "self_content_hash": null,
+    "self_content_hash_semantics": "The receipt is bound after write by raw SHA-256 and after commit by Git blob OID; self-reference is intentionally avoided.",
+    "post_commit_binding": {
+      "commit_oid": null,
+      "parent_oid": "91caf7708ca416e71ccbc477a01ed492f5d33def",
+      "git_blob_oid": null,
+      "raw_git_blob_bytes": null,
+      "raw_git_blob_sha256": null,
+      "semantics": "Filled in the external final handoff, not inside this self-referential receipt."
+    },
+    "post_write_checks_required": [
+      "strict JSON parse with BOM, duplicate-key, case-collision, and non-finite rejection",
+      "recompute receipt raw bytes, SHA-256, and Git blob OID",
+      "git diff --check",
+      "confirm exact one-file diff and stage set",
+      "commit once on the current branch without amend, rebase, squash, reset, or push"
+    ]
+  },
+  "verdict": "PUBLIC_DATA_PROTOCOL_VALIDATION_PASS",
+  "verdict_scope": "AIS-R8-P4 PASS FOR ATTEMPT-003 PUBLIC_DATA_PROTOCOL_VALIDATION DIAGNOSTIC/PROSPECTIVE EVIDENCE ONLY; NOT STRICT OFFICIAL REPRODUCTION, NOT HARMONIZED V5, NOT HYBRID PUBLIC VALIDATION, NOT A SUPERIORITY CLAIM, NOT PAPER ADMISSION, AND NOT PHASE-1E COMPLETION",
+  "fail_closed": true
+}
