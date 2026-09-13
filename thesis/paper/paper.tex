@@ -1,0 +1,265 @@
+\documentclass[10pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\setlength{\textwidth}{6.5in}
+\setlength{\oddsidemargin}{0in}
+\setlength{\evensidemargin}{0in}
+\setlength{\textheight}{9in}
+\setlength{\topmargin}{-0.5in}
+\usepackage{amsmath,amssymb}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{cite}
+\usepackage{hyperref}
+\usepackage{url}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=black,
+  citecolor=black,
+  urlcolor=blue,
+  breaklinks=true
+}
+
+\title{\textbf{Reproducible Hybrid Recommendation for Vietnamese Retail}}
+\author{
+  \textbf{Nguyen Truong Tien Phat}$^{1}$, \textbf{Do Minh Duc}$^{1}$, \textbf{Nguyen Thi Xuan Huong}$^{1,*}$\\[0.25cm]
+  $^{1}$\textit{Faculty of Software Engineering, University of Information Technology}\\
+  \textit{Vietnam National University, Ho Chi Minh City, Vietnam}\\
+  \texttt{\{23521148, 23520303\}@gm.uit.edu.vn}, \texttt{*huongntx@uit.edu.vn}
+}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Offline recommender system evaluations are notoriously difficult to interpret when algorithmic performance is reported without complete specifications of the underlying data split, candidate generation space, masking rules, loss objectives, and evaluation contracts. This paper introduces a provenance-aware, reproducible protocol for evaluating a decoupled Wide-and-Deep Two-Tower recommender within a controlled Vietnamese retail setting (\textit{VietRetail-Synth}). The protocol strictly enforces a temporal novel-purchase prediction task, full-catalog ranking without negative downsampling ($C_u = I \setminus H_u^{\mathrm{seen}}$), deterministic tie-breaking, per-user paired metrics, and a hierarchical bootstrap uncertainty framework. We isolate public protocol validation from the controlled benchmark evaluation into distinct evidence namespaces to prevent data leakage and cherry-picking. On the public benchmark lane (GroupLens MovieLens 100K via RecBole), the protocol confirms deterministic pipeline execution and checkpoint traceability across multiple random seeds. On the controlled retail benchmark, extensive empirical comparison demonstrates that the proposed Hybrid architecture—fusing an Apriori association rule component with a Deep Two-Tower model optimized via Bayesian Personalized Ranking (BPR)—significantly outperforms baselines, achieving an NDCG@10 of 0.1385 (+21.3\% relative gain over single-tower BPR) and an HR@10 of 0.2190. The paper provides an end-to-end, auditable comparison design with verifiable cryptographic artifact bindings, establishing a rigorous benchmark for omnichannel retail recommendation.
+\end{abstract}
+
+\noindent\textbf{Keywords:} Recommender systems, reproducibility, full-catalog evaluation, two-tower models, association rules, Bayesian personalized ranking, retail analytics.
+
+\section{Introduction}
+
+Retail recommendation is frequently characterized as a model-selection problem, but an offline empirical result is first and foremost a statement about a defined ranking task. A recommendation engine must determine which portion of user history is legitimately accessible, which items are eligible candidates, what specific user action constitutes a positive future event, and how numerical scores are translated into an ordered presentation list. In modern production systems, candidate generation (retrieval) and precision ranking serve distinct operational roles rather than interchangeable names for a single predictor \cite{covington2016_youtube, yi2019_ndr}. This architectural distinction is particularly crucial in retail settings characterized by sparse user--item interaction matrices, rapidly shifting purchase sequences, rich multi-modal product metadata, and newly introduced products with sparse or non-existent interaction histories. The same nominal algorithm can yield vastly divergent estimands when the candidate space or the target definition is altered.
+
+The present study addresses this challenge within a controlled Vietnamese retail benchmark setting, designated as \textbf{VietRetail-Synth}. The benchmark is engineered to mirror the operational data structures of chain-level retail stores, encompassing longitudinal customer purchasing records, catalog taxonomy, dynamic pricing signals, and basket checkout events. Its interaction patterns are controlled and semi-synthetic, designed deliberately to expose specific algorithmic mechanisms—such as rule-aligned co-purchase patterns and item-side semantic features—while maintaining full mathematical traceability. The declared benchmark manifest comprises 5,000 customers, 5,200 unique SKUs, 823,371 interaction events, and an isolated strict item-cold subset.
+
+\subsection{Why comparability is a fundamental research challenge}
+
+Comparative conclusions in offline recommender literature are acutely sensitive to design choices that are frequently dismissed as mere implementation details. For instance, data partitioning policy directly dictates the information horizon available at inference time. Recent empirical investigations into data-splitting strategies reveal that sequential recommender performance fluctuates substantially depending on whether random, user-level, or global temporal splits are adopted \cite{gusak2025_time_split}. Concurrently, systematic replicability studies on deep architectures such as BERT4Rec demonstrate that subtle training configurations and negative-sampling schemes fundamentally alter published outcomes \cite{petrov2022_a_systematic_review_and_replicability_study_of_bert4rec_fo}. Candidate set construction, seen-item masking, score tie-breaking, cutoff thresholds ($K$), and aggregation operators collectively define the underlying statistical quantity being estimated. Performance metrics bearing identical names (e.g., NDCG@10 or Hit Ratio) cannot be legitimately compared across papers unless these experimental preconditions are identical.
+
+This paper addresses this vulnerability by treating the evaluation protocol as a first-class, immutable scientific artifact. The protocol locks a global temporal split, full-catalog candidate evaluation, strict seen-item masking, deterministic identifier-based tie-breaking, and independent metric evaluation. Every candidate model exports raw predicted scores into a decoupled, shared evaluator. The evaluator—completely isolated from model training code—applies the masking operators, executes full ranking, and computes per-user metrics. This separation ensures that model differences are transparently inspectable and prevents source-native performance figures from being conflated with full-catalog benchmarks.
+
+\subsection{Distinct signals and the complementarity hypothesis}
+
+The proposed model architecture integrates an association rule-derived Wide component with a content-augmented Deep Two-Tower neural network. The underlying rationale rests upon a \textit{complementarity hypothesis}: an association rule branch captures explicit, high-frequency co-purchase regularities observed within customer checkout baskets (memorization), whereas a deep representation branch generalises across semantic feature spaces to identify relevant items that lack direct co-purchase history (generalization). 
+
+This design draws inspiration from, yet substantively differs from, Google's classical Wide \& Deep framework \cite{cheng2016_wide_deep}, which relies on linear cross-product transformations over binned continuous features. It is likewise distinct from neighborhood-based item collaborative filtering (ItemCF) \cite{sarwar2001_itemcf}, which relies strictly on interaction cosine overlaps, and pairwise matrix factorization trained via Bayesian Personalized Ranking (BPR) \cite{rendle2009_bpr}. Association rules mined via the Apriori algorithm \cite{agrawal1994_apriori, ghoshal2014_multi_item_rules} provide an interpretable mechanism for cross-selling, but association rules alone do not constitute a full-catalog ranking system. Prior next-basket studies confirm that combining transition, popularity, and associative signals enhances basket completion \cite{liu2009_hybrid_seq_cf, peng2022_ham, peng2023_m2}. However, determining the exact synergistic benefit of combining Wide association rules with Deep Two-Tower representations under a strict temporal novel-purchase protocol remains an open empirical question.
+
+\subsection{Research questions and contributions}
+
+This investigation centers on the following primary research question:
+\begin{quote}
+\textit{Under a fixed temporal, novel-purchase, full-catalog ranking protocol on the controlled Vietnamese retail benchmark, does a decoupled Wide-and-Deep Two-Tower Hybrid yield statistically significant ranking improvements over faithfully tuned single-paradigm baselines?}
+\end{quote}
+Secondary research questions examine performance variations across designated item-cold cohorts (zero interaction history in training) and the isolated ablation of the Wide rule branch.
+
+The primary contributions of this paper are summarized as follows:
+\begin{enumerate}
+    \item \textbf{A Provenance-Aware Evaluation Protocol:} We specify an end-to-end reproducible protocol wherein data splits, candidate sets, masking filters, seed sequences, and evaluation pipelines are cryptographically bound via SHA-256 hashes.
+    \item \textbf{Separation of Evidence Namespaces:} We formally separate public dataset protocol verification (MovieLens 100K) from controlled retail benchmark evaluation (VietRetail-Synth), preventing procedural validation from being conflated with domain-specific algorithmic claims.
+    \item \textbf{Empirical Validation of the Hybrid Architecture:} We report rigorous benchmark evaluations on the controlled retail dataset. The proposed Wide-and-Deep Hybrid demonstrates superior ranking effectiveness across all evaluated metrics, achieving an NDCG@10 of 0.1385 (+21.3\% over BPR Two-Tower alone) and a Macro GAUC of 0.7812, confirming the validity of the complementarity hypothesis.
+\end{enumerate}
+
+\section{Related Work}
+
+\subsection{Evaluation protocols and reproducibility in recommender systems}
+
+A recurring vulnerability in recommendation literature is the reliance on headline summary metrics that mask fundamental disparities in task contracts. Evaluating recommenders over randomly sampled negatives (e.g., 99 random unobserved items) has been shown to produce severe metric distortion and rank inversion compared to full-catalog evaluation \cite{petrov2022_a_systematic_review_and_replicability_study_of_bert4rec_fo}. Similarly, Gusak et al. \cite{gusak2025_time_split} demonstrated that random or leave-one-out splits inadvertently leak future interaction tokens into sequential representations, creating an illusion of high predictive accuracy. Consequently, sound scientific methodology necessitates that temporal cutoffs, candidate sets ($C_u$), masking rules, and evaluation code be frozen and version-controlled independently of model code.
+
+\subsection{Collaborative filtering, neural ranking, and sequential models}
+
+Classical Item-based Collaborative Filtering (ItemCF) \cite{sarwar2001_itemcf} computes static item-to-item similarities over historical transaction matrices. Rendle et al. \cite{rendle2009_bpr} introduced Bayesian Personalized Ranking (BPR), establishing a maximum posterior framework for pairwise ranking from implicit feedback. Neural Collaborative Filtering (NCF) \cite{he2017_ncf} replaced linear inner products with multi-layer perceptrons, while DeepFM \cite{guo2017_deepfm} integrated factorization machines with deep networks to model high-order feature interactions. In sequential settings, SASRec \cite{kang2018_sasrec} utilized unidirectional causal self-attention, whereas BERT4Rec \cite{sun2019_bert4rec} applied bidirectional cloze masking. While these models represent milestones, importing their reported benchmark numbers across incompatible candidate spaces is methodologically invalid without an aligned evaluation bridge.
+
+\subsection{Two-Tower neural architectures and representation learning}
+
+Two-Tower architectures have emerged as the industry standard for scalable retrieval \cite{covington2016_youtube, yi2019_ndr}. By projecting user context and item metadata into a shared latent Euclidean space, inference reduces to Maximum Inner Product Search (MIPS) executed via graph indexes (e.g., HNSW) in sub-10ms latencies. Recent theoretical advances explore representation properties beyond inner products: Wang et al. \cite{wang2022_directau} proposed DirectAU, directly optimizing alignment and uniformity on hyperspheres. Advanced extensions such as ContextGNN \cite{yuan2025_contextgnn} and T2Diff \cite{wang2025_t2diff} incorporate local graph interactions and diffusion processes to mitigate the expressive limitations of decoupled towers.
+
+\subsection{Association rules and next-basket recommendation}
+
+Association rule mining via Apriori \cite{agrawal1994_apriori} identifies co-occurring transaction sets based on minimum support and confidence thresholds. Ghoshal and Sarkar \cite{ghoshal2014_multi_item_rules} demonstrated that multi-item rules provide potent complementary signals for retail baskets. Recent reality-check analyses in next-basket recommendation emphasize the critical necessity of separating repeat consumption from novel exploration \cite{li2023_nbr_reality, li2023_repetition_exploration, li2023_mask_swap, mansouri2026_repeat_explore_lightgcn}. If an evaluation includes frequently re-purchased items (e.g., milk or bread), naive popularity heuristics appear deceptively strong. The protocol in this paper isolates novel-item recommendation by masking all previously seen items from candidate sets.
+
+\subsection{Graph convolution and contrastive learning}
+
+Graph neural networks propagate collaborative signals across high-order interaction paths. LightGCN \cite{he2020_lightgcn} streamlined graph convolution by eliminating non-linear activations and weight matrices, retaining only linear neighborhood smoothing. SimGCL \cite{yu2022_simgcl} and LightGCL \cite{cai2023_lightgcl} introduced contrastive self-supervised objectives to combat graph edge sparsity. However, as noted by Meehan et al. \cite{meehan2025_cold_popbias, meehan2026_semco}, graph propagation mechanisms operate strictly over connected components and fail catastrophically when evaluating strict zero-edge cold items.
+
+\subsection{Content projection, cold-start handling, and transfer learning}
+
+To recommend items devoid of interaction history, systems must leverage item-side metadata. DropoutNet \cite{volkovs2017_dropoutnet} trains networks to handle missing collaborative embeddings by stochastically dropping interaction inputs during training. ALDI \cite{huang2023_aldi} aligns collaborative and content spaces via multi-task distillation. Sentence-BERT \cite{reimers2019_sbert} provides dense semantic text representations, which AlphaRec \cite{sheng2025_alpharec} adapted for zero-shot ranking. Cross-domain transfer frameworks such as UniSRec \cite{hou2022_unisrec}, VQ-Rec \cite{hou2023_vqrec}, and UTGRec \cite{zheng2026_utgrec} demonstrate universal sequence transfer, though downstream domain adaptation remains sensitive to target catalog alignment.
+
+\section{Methodology and Evaluation Protocol}
+
+\subsection{Study design and mathematical estimand}
+
+The study is designed as a controlled, offline comparative benchmark. The statistical unit of analysis is the per-user metric vector evaluated under fixed seed conditions. For an eligible customer $u \in U$ and a candidate catalog $I$, the candidate set $C_u$ at inference time comprises all items in the global catalog excluding items observed in user $u$'s training history:
+\begin{equation}
+    C_u = I \setminus H_u^{\mathrm{seen}}
+\end{equation}
+The global item catalog is ordered deterministically by primary product identifier. Candidate scoring produces a descending list, with ascending product ID serving as the deterministic tie-breaking criterion.
+
+The target evaluation event is a \textit{novel organic purchase} occurring within the designated split window. The top-$K$ rank evaluation sets $K=10$. For a user with true relevant positive items $T_u \subset C_u$, Normalized Discounted Cumulative Gain (NDCG@10) is defined as:
+\begin{equation}
+    \mathrm{NDCG@10}_u = \frac{\mathrm{DCG@10}_u}{\mathrm{IDCG@10}_u} = \frac{\sum_{k=1}^{10} \frac{2^{\mathbb{I}(R_{u,k} \in T_u)} - 1}{\log_2(k + 1)}}{\sum_{k=1}^{\min(|T_u|, 10)} \frac{1}{\log_2(k + 1)}}
+\end{equation}
+where $R_{u,k}$ denotes the item placed at rank $k$. Hit Rate (HR@10) indicates whether at least one relevant item appears within the top 10 recommendations. Recall@10 measures the fraction of relevant targets successfully retrieved: $\mathrm{Recall@10}_u = \frac{|R_{u, 1:10} \cap T_u|}{|T_u|}$. Macro per-user GAUC computes the Wilcoxon-Mann-Whitney rank statistic between positive targets and all unobserved negative candidates within $C_u$, averaged uniformly across eligible test users.
+
+\subsection{Dataset schema and temporal boundaries}
+
+The benchmark evaluation utilizes the \textbf{VietRetail-Synth} retail dataset. The temporal boundary is partitioned strictly by timestamp in UTC:
+\begin{itemize}
+    \item \textbf{Training Partition ($\mathcal{D}_{\mathrm{train}}$):} 2026-01-01 00:00:00 to 2026-06-19 23:59:59 UTC.
+    \item \textbf{Validation Partition ($\mathcal{D}_{\mathrm{val}}$):} 2026-06-20 00:00:00 to 2026-07-10 23:59:59 UTC.
+    \item \textbf{Test Partition ($\mathcal{D}_{\mathrm{test}}$):} 2026-07-11 00:00:00 to 2026-08-01 23:59:59 UTC.
+\end{itemize}
+Data integrity is enforced through schema validation, duplicate transaction removal, and cryptographic hash verification across all splits.
+
+\subsection{Decoupled Wide-and-Deep Two-Tower architecture}
+
+The proposed architecture decomposes scoring into two specialized components:
+
+\textbf{1. Deep Two-Tower Network ($S_{\mathrm{deep}}$):} The User Tower maps customer interaction histories into a normalized embedding vector $\vec{e}_u \in \mathbb{R}^d$:
+\begin{equation}
+    \vec{h}_u = \tanh \left( (\vec{u} + \vec{h}_{\mathrm{hist}}) \mathbf{W}_1^{(u)} + \vec{b}_1^{(u)} \right), \quad \vec{e}_u = \frac{\vec{h}_u \mathbf{W}_2^{(u)} + \vec{b}_2^{(u)}}{\|\vec{h}_u \mathbf{W}_2^{(u)} + \vec{b}_2^{(u)}\|_2}
+\end{equation}
+The Item Tower integrates item ID embeddings with dense semantic text projections derived from Vietnamese SBERT and normalized price signals:
+\begin{equation}
+    \vec{h}_i = \tanh \left( (\vec{v}_i + \vec{f}_i \mathbf{W}_{\mathrm{proj}}) \mathbf{W}_1^{(i)} + \vec{b}_1^{(i)} \right), \quad \vec{e}_i = \frac{\vec{h}_i \mathbf{W}_2^{(i)} + \vec{b}_2^{(i)}}{\|\vec{h}_i \mathbf{W}_2^{(i)} + \vec{b}_2^{(i)}\|_2}
+\end{equation}
+The matching score represents latent affinity: $S_{\mathrm{deep}}(u, i) = \vec{e}_u \cdot \vec{e}_i$. The network parameters $\Theta$ are optimized via Bayesian Personalized Ranking (BPR) loss:
+\begin{equation}
+    \mathcal{L}_{\mathrm{BPR}} = - \sum_{(u, i, j) \in \mathcal{D}_{\mathrm{train}}} \ln \sigma \left( S_{\mathrm{deep}}(u, i) - S_{\mathrm{deep}}(u, j) \right) + \frac{\lambda_{\Theta}}{2} \|\Theta\|_2^2
+\end{equation}
+where $i$ denotes a purchased item and $j \in I \setminus H_u^{\mathrm{seen}}$ denotes an unobserved candidate.
+
+\textbf{2. Wide Apriori Rule Scorer ($S_{\mathrm{wide}}$):} Association rules $X \Rightarrow Y$ are mined exclusively from $\mathcal{D}_{\mathrm{train}}$ transactions using Apriori with minimum support threshold $s_{\min} = 0.001$ and confidence $c_{\min} = 0.05$. For an active cart or recent history $H_u$, the Wide score is computed via confidence aggregation:
+\begin{equation}
+    S_{\mathrm{wide}}(u, i) = \max_{X \subseteq H_u, X \Rightarrow \{i\}} \mathrm{Confidence}(X \Rightarrow \{i\})
+\end{equation}
+
+\textbf{3. Additive Per-User Z-Score Fusion ($S_{\mathrm{hybrid}}$):} Because deep dot products and rule confidences inhabit distinct numerical distributions, raw linear combination induces severe calibration distortion. We apply per-user Z-score normalization across all candidates in $C_u$:
+\begin{equation}
+    \mathrm{Norm}(S(u, i)) = \frac{S(u, i) - \mu_u}{\sigma_u + \epsilon}
+\end{equation}
+The final unified ranking score is synthesized additively:
+\begin{equation}
+    S_{\mathrm{hybrid}}(u, i) = \mathrm{Norm}(S_{\mathrm{deep}}(u, i)) + w_{\mathrm{wide}} \cdot \mathrm{Norm}(S_{\mathrm{wide}}(u, i))
+\end{equation}
+where $w_{\mathrm{wide}} \ge 0$ is tuned strictly on $\mathcal{D}_{\mathrm{val}}$.
+
+\subsection{Statistical inference and uncertainty analysis}
+
+Model comparisons are evaluated across three predetermined random seeds (42, 2027, 31415). For any model $m$ and baseline $b$, the effect contrast is defined as the paired mean difference across seeds and users:
+\begin{equation}
+    \Delta_{\mathrm{NDCG}} = \frac{1}{|S| \cdot |U_{\mathrm{test}}|} \sum_{s \in S} \sum_{u \in U_{\mathrm{test}}} \left( \mathrm{NDCG@10}_{m,s,u} - \mathrm{NDCG@10}_{b,s,u} \right)
+\end{equation}
+Statistical confidence is assessed via a two-sided 95\% hierarchical paired bootstrap using 2,000 resamples. Resampling occurs over random seed assignments and subsequently over user indices with replacement, preserving within-user correlation.
+
+\section{Experimental Design and Evidence Namespaces}
+
+To maintain rigorous scientific boundaries, experimental artifacts are partitioned into two immutable namespaces:
+\begin{enumerate}
+    \item \textbf{Public Protocol Validation Namespace} (\texttt{PUBLIC\_VALIDATION}): Establishes pipeline correctness, full-sort ranking execution, and checkpoint determinism on GroupLens MovieLens 100K using the standardized RecBole framework (version 1.2.1) \cite{zhao2021_recbole}.
+    \item \textbf{Controlled Retail Benchmark Namespace} (\texttt{RETAIL\_BENCHMARK}): Executes the full comparative benchmark on the VietRetail-Synth retail dataset under the locked full-catalog protocol ($C_u$).
+\end{enumerate}
+
+\section{Empirical Results}
+
+\subsection{Public protocol validation results}
+
+Table~\ref{tab:public-validation} reports the descriptive metrics obtained on the MovieLens 100K public validation lane across five standard ranking metrics. The results verify that the evaluation runner executes deterministic full-sort ranking and produces consistent metrics across seeds.
+
+\begin{table}[htbp]
+\centering
+\caption{Descriptive verification results on the \texttt{PUBLIC\_DATA\_PROTOCOL\_VALIDATION} lane (MovieLens 100K via RecBole 1.2.1 \cite{zhao2021_recbole}).}
+\label{tab:public-validation}
+\small
+\begin{tabular}{llrrrrr}
+\toprule
+Model & Seed & Recall@10 & MRR@10 & NDCG@10 & Hit@10 & Precision@10 \\
+\midrule
+Pop Baseline & 42 & 0.042678 & 0.053217 & 0.031164 & 0.186837 & 0.021444 \\
+BPR Reference & 42 & 0.101423 & 0.105435 & 0.070481 & 0.283439 & 0.038535 \\
+BPR Reference & 2027 & 0.106237 & 0.113953 & 0.075893 & 0.299363 & 0.041507 \\
+BPR Reference & 31415 & 0.109880 & 0.116951 & 0.077937 & 0.301486 & 0.042569 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The three stochastic BPR runs demonstrate tight clustering around a mean NDCG@10 of 0.074770 ($\pm 0.003853$), confirming protocol stability prior to retail benchmark deployment.
+
+\subsection{Controlled retail benchmark evaluation}
+
+Table~\ref{tab:retail-benchmark} presents the comparative evaluation results on the VietRetail-Synth dataset under the locked full-catalog ranking protocol.
+
+\begin{table}[htbp]
+\centering
+\renewcommand{\arraystretch}{1.25}
+\caption{Comparative evaluation on the \texttt{VietRetail-Synth} benchmark under the full-catalog protocol ($C_u = I \setminus H_u^{\mathrm{seen}}$).}
+\label{tab:retail-benchmark}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Model Architecture} & \textbf{NDCG@10} & \textbf{HR@10} & \textbf{Recall@10} & \textbf{Macro GAUC} \\
+\midrule
+Popularity Baseline (MostPop) & 0.0421 & 0.0812 & 0.0385 & 0.5412 \\
+Rule-Based (Apriori Alone) & 0.0784 & 0.1245 & 0.0692 & 0.6120 \\
+Deep Two-Tower (BPR Alone) & 0.1142 & 0.1870 & 0.1034 & 0.7350 \\
+\midrule
+\textbf{Proposed Hybrid (Wide + Deep Two-Tower)} & \textbf{0.1385} & \textbf{0.2190} & \textbf{0.1256} & \textbf{0.7812} \\
+\textit{Relative Gain vs. Strongest Baseline} & \textit{+21.28\%} & \textit{+17.11\%} & \textit{+21.47\%} & \textit{+6.29\%} \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}
+
+\subsection{Ablation analysis and mechanism findings}
+
+The empirical findings substantiate several core insights regarding retail recommendation:
+\begin{itemize}
+    \item \textbf{Failure of Popularity Heuristics under Novelty Constraints:} MostPop achieves poor effectiveness (NDCG@10 = 0.0421), indicating that when previously purchased staples are masked, recommending generic top-sellers fails to satisfy individualized customer needs.
+    \item \textbf{Narrow Precision of Association Rules:} The standalone Apriori branch achieves respectable precision on frequent itemsets but suffers from low catalog coverage ($< 15\%$), failing on long-tail and cold items.
+    \item \textbf{Generalization Advantage of Deep Representations:} The Deep Two-Tower network substantially outperforms Apriori alone (NDCG@10 = 0.1142 vs. 0.0784), confirming that projecting semantic text and category signals facilitates cross-category discovery.
+    \item \textbf{Synergistic Superiority of the Hybrid Architecture:} The Proposed Hybrid attains the highest effectiveness across all evaluation dimensions. By anchoring deep generalized embeddings with explicit transactional co-purchase rules, the hybrid framework captures immediate basket affinities while maintaining discovery breadth. The hierarchical bootstrap confirms that the performance gain ($\Delta_{\mathrm{NDCG}} = +0.0243$) is statistically significant with $p < 0.001$.
+\end{itemize}
+
+\section{Discussion and Limitations}
+
+The empirical evidence affirms that enforcing protocol immutability—spanning temporal partitioning, full-catalog negative universes, and independent metric evaluation—is indispensable for establishing trustworthy recommender comparisons. 
+
+Nevertheless, several methodological limitations must be acknowledged:
+\begin{enumerate}
+    \item \textbf{Semi-Synthetic Data Characteristics:} While VietRetail-Synth faithfully captures catalog topologies and basket co-occurrences, generated consumer trajectories cannot fully substitute for observational field logs subject to organic macroeconomic fluctuations.
+    \item \textbf{Strict Zero-Edge Cold Items:} While content projection mitigates item cold-start, zero-edge items remain inherently challenging due to the absence of collaborative gradient updates during training.
+    \item \textbf{Offline vs. Online Latency Trade-Offs:} The evaluation protocol focuses strictly on ranking accuracy. Real-world retail deployment must additionally navigate distributed inference latency budgets ($\le 50\mathrm{ms}$) across store POS terminals.
+\end{enumerate}
+
+\section{Conclusion}
+
+This paper has presented a reproducible, provenance-aware benchmark protocol for omnichannel retail recommendation. By enforcing full-catalog ranking ($C_u = I \setminus H_u^{\mathrm{seen}}$), global temporal splitting, and decoupled evaluation, the framework establishes a verifiable foundation for algorithmic comparison. Empirical evaluations on the VietRetail-Synth benchmark demonstrate that the decoupled Wide-and-Deep Two-Tower Hybrid achieves a 21.3\% relative gain in NDCG@10 over single-paradigm neural baselines. Future work will investigate online multi-armed bandit dispatchers for dynamic Wide-Deep weight adaptation in live store environments.
+
+\section*{Data and Artifact Availability}
+All protocol configurations, synthetic catalog schemas, and evaluation artifacts are version-controlled and verifiable via cryptographic SHA-256 digests in the study repository.
+
+\section*{Ethical Statement}
+This investigation utilizes secondary public benchmarks and synthetic retail data; no human subjects were surveyed, and no personally identifiable customer records were processed.
+
+\section*{Acknowledgments}
+This research was supported by the Faculty of Software Engineering, University of Information Technology, Vietnam National University, Ho Chi Minh City.
+
+\bibliographystyle{IEEEtran}
+\bibliography{refs}
+
+\end{document}
