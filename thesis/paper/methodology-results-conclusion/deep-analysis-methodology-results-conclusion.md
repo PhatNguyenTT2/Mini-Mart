@@ -63,43 +63,47 @@ Nếu như Section 1 (Introduction) và Section 2 (Related Work) thiết lập n
 ### 3.1. Mục 3.1: Thiết kế Nghiên cứu và Đối tượng Ước lượng Toán học (Estimand - Dòng 105 – 118)
 
 #### Nguyên văn tiếng Anh:
-> *"The study is designed as a controlled, offline comparative benchmark. The statistical unit of analysis is the per-user metric vector evaluated under fixed seed conditions. For an eligible customer $u \in U$ and a candidate catalog $I$, the candidate set $C_u$ at inference time comprises all items in the global catalog excluding items observed in user $u$'s training history:*
->
-> $$C_u = I \setminus H_u^{\mathrm{seen}} \tag{1}$$
->
-> *The global item catalog is ordered deterministically by primary product identifier. Candidate scoring produces a descending list, with ascending product ID serving as the deterministic tie-breaking criterion.*
+> *"The study is designed as a controlled, offline comparative benchmark. The statistical unit of analysis is the per-user metric vector evaluated under fixed seed conditions. For an eligible customer $u \in U$ and a candidate catalog $I$, the candidate set $C_u$ at inference time comprises all items in the global catalog excluding items observed in user $u$'s training history:"*
+
+$$
+C_u = I \setminus H_u^{\mathrm{seen}} \qquad (1)
+$$
+
+> *"The global item catalog is ordered deterministically by primary product identifier. Candidate scoring produces a descending list, with ascending product ID serving as the deterministic tie-breaking criterion.*
 > 
-> *The target evaluation event is a \textit{novel organic purchase} occurring within the designated split window. The top-$K$ rank evaluation sets $K=10$. For a user with true relevant positive items $T_u \subset C_u$, Normalized Discounted Cumulative Gain (NDCG@10) is defined as:*
->
-> $$\mathrm{NDCG@10}_u = \frac{\mathrm{DCG@10}_u}{\mathrm{IDCG@10}_u} = \frac{\sum_{k=1}^{10} \frac{2^{\mathbb{I}(R_{u,k} \in T_u)} - 1}{\log_2(k + 1)}}{\sum_{k=1}^{\min(|T_u|, 10)} \frac{1}{\log_2(k + 1)}} \tag{2}$$
->
-> *where $R_{u,k}$ denotes the item placed at rank $k$. Hit Rate (HR@10) indicates whether at least one relevant item appears within the top 10 recommendations. Recall@10 measures the fraction of relevant targets successfully retrieved: $\mathrm{Recall@10}_u = \frac{|R_{u, 1:10} \cap T_u|}{|T_u|}$. Macro per-user GAUC computes the Wilcoxon-Mann-Whitney rank statistic between positive targets and all unobserved negative candidates within $C_u$, averaged uniformly across eligible test users."*
+> *The target evaluation event is a novel organic purchase occurring within the designated split window. The top-$K$ rank evaluation sets $K=10$. For a user with true relevant positive items $T_u \subset C_u$, Normalized Discounted Cumulative Gain (NDCG@10) is defined as:"*
+
+$$
+\mathrm{NDCG@10}_u = \frac{\mathrm{DCG@10}_u}{\mathrm{IDCG@10}_u} = \frac{\sum_{k=1}^{10} \frac{2^{\mathbb{I}(R_{u,k} \in T_u)} - 1}{\log_2(k + 1)}}{\sum_{k=1}^{\min(|T_u|, 10)} \frac{1}{\log_2(k + 1)}} \qquad (2)
+$$
+
+> *"where $R_{u,k}$ denotes the item placed at rank $k$. Hit Rate (HR@10) indicates whether at least one relevant item appears within the top 10 recommendations. Recall@10 measures the fraction of relevant targets successfully retrieved: $\mathrm{Recall@10}_u = \frac{|R_{u, 1:10} \cap T_u|}{|T_u|}$. Macro per-user GAUC computes the Wilcoxon-Mann-Whitney rank statistic between positive targets and all unobserved negative candidates within $C_u$, averaged uniformly across eligible test users."*
 
 #### Bản dịch tiếng Việt sát nghĩa:
-> *"Nghiên cứu được thiết kế như một chuẩn đối sánh so sánh ngoại tuyến có kiểm soát. Đơn vị phân tích thống kê là vector độ đo trên từng người dùng được đánh giá dưới các điều kiện seed cố định. Đối với một khách hàng đủ điều kiện $u \in U$ và một danh mục ứng viên $I$, tập ứng viên $C_u$ tại thời điểm suy luận bao gồm toàn bộ các sản phẩm trong danh mục toàn cục ngoại trừ các sản phẩm đã được quan sát trong lịch sử huấn luyện của người dùng $u$:*
->
-> $$C_u = I \setminus H_u^{\mathrm{seen}} \tag{1}$$
->
+> *"Nghiên cứu được thiết kế như một chuẩn đối sánh so sánh ngoại tuyến có kiểm soát. Đơn vị phân tích thống kê là vector độ đo trên từng người dùng được đánh giá dưới các điều kiện seed cố định. Đối với một khách hàng đủ điều kiện $u \in U$ và một danh mục ứng viên $I$, tập ứng viên $C_u$ tại thời điểm suy luận bao gồm toàn bộ các sản phẩm trong danh mục toàn cục ngoại trừ các sản phẩm đã được quan sát trong lịch sử huấn luyện của người dùng $u$ theo Phương trình (1):*
+> 
 > *Danh mục sản phẩm toàn cục được sắp xếp thứ tự một cách tất định theo mã định danh sản phẩm chính. Việc tính điểm ứng viên tạo ra một danh sách giảm dần, với mã ID sản phẩm tăng dần đóng vai trò là tiêu chuẩn giải quyết điểm hòa tất định.*
 > 
-> *Sự kiện đánh giá mục tiêu là một **giao dịch mua hàng tự nhiên mới** diễn ra trong khung thời gian phân chia được chỉ định. Đánh giá xếp hạng top-$K$ thiết lập $K=10$. Đối với một người dùng có các sản phẩm tích cực thực sự liên quan $T_u \subset C_u$, độ đo Lợi ích Tích lũy Giảm giá Chuẩn hóa (NDCG@10) được định nghĩa như sau:*
->
-> $$\mathrm{NDCG@10}_u = \frac{\mathrm{DCG@10}_u}{\mathrm{IDCG@10}_u} = \frac{\sum_{k=1}^{10} \frac{2^{\mathbb{I}(R_{u,k} \in T_u)} - 1}{\log_2(k + 1)}}{\sum_{k=1}^{\min(|T_u|, 10)} \frac{1}{\log_2(k + 1)}} \tag{2}$$
->
+> *Sự kiện đánh giá mục tiêu là một **giao dịch mua hàng tự nhiên mới** diễn ra trong khung thời gian phân chia được chỉ định. Đánh giá xếp hạng top-$K$ thiết lập $K=10$. Đối với một người dùng có các sản phẩm tích cực thực sự liên quan $T_u \subset C_u$, độ đo Lợi ích Tích lũy Giảm giá Chuẩn hóa (NDCG@10) được định nghĩa theo Phương trình (2).*
+> 
 > *trong đó $R_{u,k}$ biểu thị sản phẩm được xếp ở vị trí thứ $k$. Tỷ lệ Đánh trúng (HR@10) chỉ ra liệu có ít nhất một sản phẩm liên quan xuất hiện trong top 10 gợi ý hay không. Recall@10 đo lường tỷ lệ các mục tiêu liên quan được truy xuất thành công: $\mathrm{Recall@10}_u = \frac{|R_{u, 1:10} \cap T_u|}{|T_u|}$. Macro per-user GAUC tính toán đại lượng thống kê thứ hạng Wilcoxon-Mann-Whitney giữa các mục tiêu tích cực và toàn bộ các ứng viên âm chưa quan sát trong $C_u$, được lấy trung bình đồng đều trên toàn bộ những người dùng kiểm thử hợp lệ."*
 
 #### Luận giải học thuật và Toán học:
-1. **Phương trình (1) - Không gian ứng viên toàn danh mục ($C_u = I \setminus H_u^{\mathrm{seen}}$):**
+1. **Phương trình (1) — Không gian ứng viên toàn danh mục ($C_u = I \setminus H_u^{\mathrm{seen}}$):**
    - Loại trừ hoàn toàn việc rút gọn mẫu âm (Sampled Metrics). Mỗi người dùng phải cạnh tranh với toàn bộ hơn 5.000 sản phẩm còn lại.
    - Cơ chế che mặt nạ $H_u^{\mathrm{seen}}$ ép buộc hệ thống phải gợi ý các sản phẩm khách hàng **chưa từng mua**, phản ánh bài toán tăng trưởng rổ hàng mới.
 2. **Quy tắc Giải quyết Hòa điểm Tất định (Deterministic Tie-breaking):**
    - Khi hai sản phẩm có cùng điểm số dự đoán, hệ thống sắp xếp theo ID sản phẩm tăng dần ($id_a < id_b$). Quy tắc này triệt tiêu hoàn toàn sự ngẫu nhiên của hàm `sort()` trong Python/C++.
-3. **Phương trình (2) - Chuẩn hóa DCG@10:**
+3. **Phương trình (2) — Chuẩn hóa DCG@10:**
    - Sử dụng cơ số nhị phân $2^{\mathbb{I}} - 1$ để phạt nặng các vị trí xếp sai ở đầu danh sách.
    - Chia cho IDCG (Ideal DCG) để đưa giá trị về thang đo $[0, 1]$.
 4. **Macro per-user GAUC (Group AUC):**
    - Tính diện tích dưới đường cong ROC cho từng người dùng dựa trên thống kê Wilcoxon-Mann-Whitney:
-     $$\mathrm{GAUC}_u = \frac{\sum_{i \in T_u} \sum_{j \in C_u \setminus T_u} \mathbb{I}(S(u, i) > S(u, j))}{|T_u| \cdot |C_u \setminus T_u|}$$
+
+$$
+\mathrm{GAUC}_u = \frac{\sum_{i \in T_u} \sum_{j \in C_u \setminus T_u} \mathbb{I}(S(u, i) > S(u, j))}{|T_u| \cdot |C_u \setminus T_u|}
+$$
+
    - Độ đo này không phụ thuộc vào ngưỡng top-10 mà đánh giá khả năng xếp hạng tổng thể trên toàn bộ danh mục ứng viên.
 
 ---
@@ -107,11 +111,11 @@ Nếu như Section 1 (Introduction) và Section 2 (Related Work) thiết lập n
 ### 3.2. Mục 3.2: Lược đồ Dữ liệu và Ranh giới Thời gian UTC (VietRetail-Synth - Dòng 119 – 128)
 
 #### Nguyên văn tiếng Anh:
-> *"The benchmark evaluation utilizes the \textbf{VietRetail-Synth} retail dataset. The temporal boundary is partitioned strictly by timestamp in UTC:*
+> *"The benchmark evaluation utilizes the VietRetail-Synth retail dataset. The temporal boundary is partitioned strictly by timestamp in UTC:*
 > - **Training Partition ($\mathcal{D}_{\mathrm{train}}$):** 2026-01-01 00:00:00 to 2026-06-19 23:59:59 UTC.
 > - **Validation Partition ($\mathcal{D}_{\mathrm{val}}$):** 2026-06-20 00:00:00 to 2026-07-10 23:59:59 UTC.
 > - **Test Partition ($\mathcal{D}_{\mathrm{test}}$):** 2026-07-11 00:00:00 to 2026-08-01 23:59:59 UTC.
->
+> 
 > *Data integrity is enforced through schema validation, duplicate transaction removal, and cryptographic hash verification across all splits."*
 
 #### Bản dịch tiếng Việt sát nghĩa:
@@ -119,7 +123,7 @@ Nếu như Section 1 (Introduction) và Section 2 (Related Work) thiết lập n
 > - **Phân vùng Huấn luyện ($\mathcal{D}_{\mathrm{train}}$):** Từ 2026-01-01 00:00:00 đến 2026-06-19 23:59:59 UTC.
 > - **Phân vùng Thẩm định ($\mathcal{D}_{\mathrm{val}}$):** Từ 2026-06-20 00:00:00 đến 2026-07-10 23:59:59 UTC.
 > - **Phân vùng Kiểm thử ($\mathcal{D}_{\mathrm{test}}$):** Từ 2026-07-11 00:00:00 đến 2026-08-01 23:59:59 UTC.
->
+> 
 > *Tính toàn vẹn của dữ liệu được thực thi thông qua việc xác thực lược đồ, loại bỏ giao dịch trùng lặp, và kiểm chứng mã băm mật mã học trên toàn bộ các tập phân chia."*
 
 #### Luận giải học thuật:
@@ -132,79 +136,77 @@ Nếu như Section 1 (Introduction) và Section 2 (Related Work) thiết lập n
 ### 3.3. Mục 3.3: Kiến trúc Mạng Nơ-ron Tháp Đôi Phân rã Wide & Deep (Dòng 129 – 160)
 
 #### Nguyên văn tiếng Anh:
-> *"The proposed architecture decomposes scoring into two specialized components:
+> *"The proposed architecture decomposes scoring into two specialized components:*
 > 
-> **1. Deep Two-Tower Network ($S_{\mathrm{deep}}$):** The User Tower maps customer interaction histories into a normalized embedding vector $\vec{e}_u \in \mathbb{R}^d$:*
->
-> $$\vec{h}_u = \tanh \left( (\vec{u} + \vec{h}_{\mathrm{hist}}) \mathbf{W}_1^{(u)} + \vec{b}_1^{(u)} \right), \quad \vec{e}_u = \frac{\vec{h}_u \mathbf{W}_2^{(u)} + \vec{b}_2^{(u)}}{\|\vec{h}_u \mathbf{W}_2^{(u)} + \vec{b}_2^{(u)}\|_2} \tag{3}$$
->
+> ***1. Deep Two-Tower Network ($S_{\mathrm{deep}}$):** The User Tower maps customer interaction histories into a normalized embedding vector $\vec{e}_u \in \mathbb{R}^d$:*
+
+$$
+\vec{h}_u = \tanh \left( (\vec{u} + \vec{h}_{\mathrm{hist}}) \mathbf{W}_1^{(u)} + \vec{b}_1^{(u)} \right), \quad \vec{e}_u = \frac{\vec{h}_u \mathbf{W}_2^{(u)} + \vec{b}_2^{(u)}}{\|\vec{h}_u \mathbf{W}_2^{(u)} + \vec{b}_2^{(u)}\|_2} \qquad (3)
+$$
+
 > *The Item Tower integrates item ID embeddings with dense semantic text projections derived from Vietnamese SBERT and normalized price signals:*
->
-> $$\vec{h}_i = \tanh \left( (\vec{v}_i + \vec{f}_i \mathbf{W}_{\mathrm{proj}}) \mathbf{W}_1^{(i)} + \vec{b}_1^{(i)} \right), \quad \vec{e}_i = \frac{\vec{h}_i \mathbf{W}_2^{(i)} + \vec{b}_2^{(i)}}{\|\vec{h}_i \mathbf{W}_2^{(i)} + \vec{b}_2^{(i)}\|_2} \tag{4}$$
->
+
+$$
+\vec{h}_i = \tanh \left( (\vec{v}_i + \vec{f}_i \mathbf{W}_{\mathrm{proj}}) \mathbf{W}_1^{(i)} + \vec{b}_1^{(i)} \right), \quad \vec{e}_i = \frac{\vec{h}_i \mathbf{W}_2^{(i)} + \vec{b}_2^{(i)}}{\|\vec{h}_i \mathbf{W}_2^{(i)} + \vec{b}_2^{(i)}\|_2} \qquad (4)
+$$
+
 > *The matching score represents latent affinity: $S_{\mathrm{deep}}(u, i) = \vec{e}_u \cdot \vec{e}_i$. The network parameters $\Theta$ are optimized via Bayesian Personalized Ranking (BPR) loss:*
->
-> $$\mathcal{L}_{\mathrm{BPR}} = - \sum_{(u, i, j) \in \mathcal{D}_{\mathrm{train}}} \ln \sigma \left( S_{\mathrm{deep}}(u, i) - S_{\mathrm{deep}}(u, j) \right) + \frac{\lambda_{\Theta}}{2} \|\Theta\|_2^2 \tag{5}$$
->
-> *where $i$ denotes a purchased item and $j \in I \setminus H_u^{\mathrm{seen}}$ denotes an unobserved candidate.
+
+$$
+\mathcal{L}_{\mathrm{BPR}} = - \sum_{(u, i, j) \in \mathcal{D}_{\mathrm{train}}} \ln \sigma \left( S_{\mathrm{deep}}(u, i) - S_{\mathrm{deep}}(u, j) \right) + \frac{\lambda_{\Theta}}{2} \|\Theta\|_2^2 \qquad (5)
+$$
+
+> *where $i$ denotes a purchased item and $j \in I \setminus H_u^{\mathrm{seen}}$ denotes an unobserved candidate.*
 > 
-> **2. Wide Apriori Rule Scorer ($S_{\mathrm{wide}}$):** Association rules $X \Rightarrow Y$ are mined exclusively from $\mathcal{D}_{\mathrm{train}}$ transactions using Apriori with minimum support threshold $s_{\min} = 0.001$ and confidence $c_{\min} = 0.05$. For an active cart or recent history $H_u$, the Wide score is computed via confidence aggregation:*
->
-> $$S_{\mathrm{wide}}(u, i) = \max_{X \subseteq H_u, X \Rightarrow \{i\}} \mathrm{Confidence}(X \Rightarrow \{i\}) \tag{6}$$
->
-> **3. Additive Per-User Z-Score Fusion ($S_{\mathrm{hybrid}}$):** Because deep dot products and rule confidences inhabit distinct numerical distributions, raw linear combination induces severe calibration distortion. We apply per-user Z-score normalization across all candidates in $C_u$:*
->
-> $$\mathrm{Norm}(S(u, i)) = \frac{S(u, i) - \mu_u}{\sigma_u + \epsilon} \tag{7}$$
->
+> ***2. Wide Apriori Rule Scorer ($S_{\mathrm{wide}}$):** Association rules $X \Rightarrow Y$ are mined exclusively from $\mathcal{D}_{\mathrm{train}}$ transactions using Apriori with minimum support threshold $s_{\min} = 0.001$ and confidence $c_{\min} = 0.05$. For an active cart or recent history $H_u$, the Wide score is computed via confidence aggregation:*
+
+$$
+S_{\mathrm{wide}}(u, i) = \max_{X \subseteq H_u, X \Rightarrow \{i\}} \mathrm{Confidence}(X \Rightarrow \{i\}) \qquad (6)
+$$
+
+> ***3. Additive Per-User Z-Score Fusion ($S_{\mathrm{hybrid}}$):** Because deep dot products and rule confidences inhabit distinct numerical distributions, raw linear combination induces severe calibration distortion. We apply per-user Z-score normalization across all candidates in $C_u$:*
+
+$$
+\mathrm{Norm}(S(u, i)) = \frac{S(u, i) - \mu_u}{\sigma_u + \epsilon} \qquad (7)
+$$
+
 > *The final unified ranking score is synthesized additively:*
->
-> $$S_{\mathrm{hybrid}}(u, i) = \mathrm{Norm}(S_{\mathrm{deep}}(u, i)) + w_{\mathrm{wide}} \cdot \mathrm{Norm}(S_{\mathrm{wide}}(u, i)) \tag{8}$$
->
+
+$$
+S_{\mathrm{hybrid}}(u, i) = \mathrm{Norm}(S_{\mathrm{deep}}(u, i)) + w_{\mathrm{wide}} \cdot \mathrm{Norm}(S_{\mathrm{wide}}(u, i)) \qquad (8)
+$$
+
 > *where $w_{\mathrm{wide}} \ge 0$ is tuned strictly on $\mathcal{D}_{\mathrm{val}}$."*
 
 #### Bản dịch tiếng Việt sát nghĩa:
 > *"Kiến trúc đề xuất phân rã việc tính điểm thành hai thành phần chuyên biệt:
 > 
-> **1. Mạng Tháp Đôi Sâu ($S_{\mathrm{deep}}$):** Tháp Người dùng ánh xạ lịch sử tương tác của khách hàng thành một vector nhúng đã được chuẩn hóa $\vec{e}_u \in \mathbb{R}^d$:*
->
-> $$\vec{h}_u = \tanh \left( (\vec{u} + \vec{h}_{\mathrm{hist}}) \mathbf{W}_1^{(u)} + \vec{b}_1^{(u)} \right), \quad \vec{e}_u = \frac{\vec{h}_u \mathbf{W}_2^{(u)} + \vec{b}_2^{(u)}}{\|\vec{h}_u \mathbf{W}_2^{(u)} + \vec{b}_2^{(u)}\|_2} \tag{3}$$
->
-> *Tháp Sản phẩm tích hợp các vector nhúng mã ID sản phẩm với các phép chiếu văn bản ngữ nghĩa dày đặc được trích xuất từ mô hình SBERT tiếng Việt cùng các tín hiệu giá bán đã được chuẩn hóa:*
->
-> $$\vec{h}_i = \tanh \left( (\vec{v}_i + \vec{f}_i \mathbf{W}_{\mathrm{proj}}) \mathbf{W}_1^{(i)} + \vec{b}_1^{(i)} \right), \quad \vec{e}_i = \frac{\vec{h}_i \mathbf{W}_2^{(i)} + \vec{b}_2^{(i)}}{\|\vec{h}_i \mathbf{W}_2^{(i)} + \vec{b}_2^{(i)}\|_2} \tag{4}$$
->
-> *Điểm số tương khớp đại diện cho mức độ yêu thích tiềm ẩn: $S_{\mathrm{deep}}(u, i) = \vec{e}_u \cdot \vec{e}_i$. Các tham số mạng $\Theta$ được tối ưu hóa thông qua hàm mất mát Xếp hạng Cá nhân hóa Bayes (BPR):*
->
-> $$\mathcal{L}_{\mathrm{BPR}} = - \sum_{(u, i, j) \in \mathcal{D}_{\mathrm{train}}} \ln \sigma \left( S_{\mathrm{deep}}(u, i) - S_{\mathrm{deep}}(u, j) \right) + \frac{\lambda_{\Theta}}{2} \|\Theta\|_2^2 \tag{5}$$
->
-> *trong đó $i$ biểu thị một sản phẩm đã mua và $j \in I \setminus H_u^{\mathrm{seen}}$ biểu thị một ứng viên chưa từng quan sát.
+> **1. Mạng Tháp Đôi Sâu ($S_{\mathrm{deep}}$):** Tháp Người dùng ánh xạ lịch sử tương tác của khách hàng thành một vector nhúng đã được chuẩn hóa $\vec{e}_u \in \mathbb{R}^d$ theo Phương trình (3).
 > 
-> **2. Bộ Tính điểm Luật Rộng Apriori ($S_{\mathrm{wide}}$):** Các luật kết hợp $X \Rightarrow Y$ được khai phá độc quyền từ các giao dịch trong $\mathcal{D}_{\mathrm{train}}$ bằng thuật toán Apriori với ngưỡng độ hỗ trợ tối thiểu $s_{\min} = 0.001$ và độ tin cậy $c_{\min} = 0.05$. Đối với một giỏ hàng đang hoạt động hoặc lịch sử gần đây $H_u$, điểm số Wide được tính toán qua phép gom cụm độ tin cậy cực đại:*
->
-> $$S_{\mathrm{wide}}(u, i) = \max_{X \subseteq H_u, X \Rightarrow \{i\}} \mathrm{Confidence}(X \Rightarrow \{i\}) \tag{6}$$
->
-> **3. Hợp nhất Điểm Chuẩn hóa Z-Score theo từng Người dùng ($S_{\mathrm{hybrid}}$):** Bởi vì tích vô hướng sâu và độ tin cậy của luật kết hợp tồn tại trong các phân phối số học hoàn toàn khác biệt, việc kết hợp tuyến tính thô sơ sẽ gây ra sự biến dạng căn chỉnh nghiêm trọng. Chúng tôi áp dụng chuẩn hóa Z-score trên từng người dùng trên toàn bộ các ứng viên trong $C_u$:*
->
-> $$\mathrm{Norm}(S(u, i)) = \frac{S(u, i) - \mu_u}{\sigma_u + \epsilon} \tag{7}$$
->
-> *Điểm số xếp hạng hợp nhất cuối cùng được tổng hợp theo phép cộng:*
->
-> $$S_{\mathrm{hybrid}}(u, i) = \mathrm{Norm}(S_{\mathrm{deep}}(u, i)) + w_{\mathrm{wide}} \cdot \mathrm{Norm}(S_{\mathrm{wide}}(u, i)) \tag{8}$$
->
-> *trong đó $w_{\mathrm{wide}} \ge 0$ được tinh chỉnh nghiêm ngặt trên $\mathcal{D}_{\mathrm{val}}$."*
+> Tháp Sản phẩm tích hợp các vector nhúng mã ID sản phẩm với các phép chiếu văn bản ngữ nghĩa dày đặc được trích xuất từ mô hình SBERT tiếng Việt cùng các tín hiệu giá bán đã được chuẩn hóa theo Phương trình (4).
+> 
+> Điểm số tương khớp đại diện cho mức độ yêu thích tiềm ẩn: $S_{\mathrm{deep}}(u, i) = \vec{e}_u \cdot \vec{e}_i$. Các tham số mạng $\Theta$ được tối ưu hóa thông qua hàm mất mát Xếp hạng Cá nhân hóa Bayes (BPR) theo Phương trình (5), trong đó $i$ biểu thị một sản phẩm đã mua và $j \in I \setminus H_u^{\mathrm{seen}}$ biểu thị một ứng viên chưa từng quan sát.
+> 
+> **2. Bộ Tính điểm Luật Rộng Apriori ($S_{\mathrm{wide}}$):** Các luật kết hợp $X \Rightarrow Y$ được khai phá độc quyền từ các giao dịch trong $\mathcal{D}_{\mathrm{train}}$ bằng thuật toán Apriori với ngưỡng độ hỗ trợ tối thiểu $s_{\min} = 0.001$ và độ tin cậy $c_{\min} = 0.05$. Đối với một giỏ hàng đang hoạt động hoặc lịch sử gần đây $H_u$, điểm số Wide được tính toán qua phép gom cụm độ tin cậy cực đại theo Phương trình (6).
+> 
+> **3. Hợp nhất Điểm Chuẩn hóa Z-Score theo từng Người dùng ($S_{\mathrm{hybrid}}$):** Bởi vì tích vô hướng sâu và độ tin cậy của luật kết hợp tồn tại trong các phân phối số học hoàn toàn khác biệt, việc kết hợp tuyến tính thô sơ sẽ gây ra sự biến dạng căn chỉnh nghiêm trọng. Chúng tôi áp dụng chuẩn hóa Z-score trên từng người dùng trên toàn bộ các ứng viên trong $C_u$ theo Phương trình (7). Điểm số xếp hạng hợp nhất cuối cùng được tổng hợp theo phép cộng theo Phương trình (8), trong đó $w_{\mathrm{wide}} \ge 0$ được tinh chỉnh nghiêm ngặt trên $\mathcal{D}_{\mathrm{val}}$."*
 
 #### Luận giải học thuật và Toán học chuyên sâu:
-1. **Phương trình (3) & (4) - Chuẩn hóa L2 trên Hình cầu Đơn vị:**
+1. **Phương trình (3) & (4) — Chuẩn hóa L2 trên Hình cầu Đơn vị:**
    - Vector nhúng $\vec{e}_u$ và $\vec{e}_i$ đều được chuẩn hóa $L_2$: $\|\vec{e}_u\|_2 = 1, \|\vec{e}_i\|_2 = 1$.
    - Nhờ đó, tích vô hướng $S_{\mathrm{deep}}(u, i) = \vec{e}_u \cdot \vec{e}_i$ chính là **Độ tương đồng Cosine (Cosine Similarity)**, bị chặn chặt trong khoảng $[-1, 1]$.
    - Tích hợp SBERT tiếng Việt vào Tháp Sản phẩm cho phép sản phẩm mới (chưa có tương tác) vẫn có vector $\vec{h}_i$ hợp lệ nhờ nội dung văn bản.
-2. **Phương trình (5) - Hàm mất mát BPR:**
+2. **Phương trình (5) — Hàm mất mát BPR:**
    - Cặp tương tác $(u, i, j)$: $i$ là sản phẩm người dùng đã mua, $j$ là sản phẩm người dùng chưa từng mua.
    - Hàm sigmoid $\sigma(x) = \frac{1}{1 + e^{-x}}$ ép điểm số của sản phẩm đã mua $S(u, i)$ phải lớn hơn điểm số của sản phẩm chưa mua $S(u, j)$.
-3. **Phương trình (6) - Tính điểm Luật Apriori Cực đại:**
+3. **Phương trình (6) — Tính điểm Luật Apriori Cực đại:**
    - Nếu trong giỏ hàng $H_u$ có nhiều tập con kích hoạt nhiều luật khác nhau dẫn đến cùng sản phẩm $i$, hệ thống chọn luật có độ tin cậy (Confidence) cao nhất:
-     $$\mathrm{Confidence}(X \Rightarrow \{i\}) = \frac{\mathrm{Support}(X \cup \{i\})}{\mathrm{Support}(X)}$$
-4. **Phương trình (7) & (8) - Đột phá về Hợp nhất Z-Score (Per-User Z-Score Normalization):**
+
+$$
+\mathrm{Confidence}(X \Rightarrow \{i\}) = \frac{\mathrm{Support}(X \cup \{i\})}{\mathrm{Support}(X)}
+$$
+
+4. **Phương trình (7) & (8) — Đột phá về Hợp nhất Z-Score (Per-User Z-Score Normalization):**
    - *Vấn đề lệch pha thang đo:* Điểm $S_{\mathrm{deep}}$ dao động từ $[-1, 1]$ với trung bình xấp xỉ 0; trong khi điểm luật $S_{\mathrm{wide}}$ có giá trị bằng 0 ở hầu hết các món (do luật không phủ tới) và nhảy vọt lên $0.6 - 0.9$ ở một vài món. Nếu cộng trực tiếp, nhánh Wide sẽ chi phối hoàn toàn hoặc làm mất dấu nhánh Deep.
    - *Giải pháp Z-score per-user:* Chuyển đổi cả hai điểm số về phân phối chuẩn chuẩn tắc có trung bình $\mu_u = 0$ và độ lệch chuẩn $\sigma_u = 1$ trên từng người dùng cụ thể trước khi cộng có trọng số $w_{\mathrm{wide}}$.
 
@@ -213,17 +215,17 @@ Nếu như Section 1 (Introduction) và Section 2 (Related Work) thiết lập n
 ### 3.4. Mục 3.4: Suy luận Thống kê và Phân tích Độ Bất định (Hierarchical Bootstrap - Dòng 162 – 169)
 
 #### Nguyên văn tiếng Anh:
-> *"Model comparisons are evaluated across three predetermined random seeds (42, 2027, 31415). For any model $m$ and baseline $b$, the effect contrast is defined as the paired mean difference across seeds and users:*
->
-> $$\Delta_{\mathrm{NDCG}} = \frac{1}{|S| \cdot |U_{\mathrm{test}}|} \sum_{s \in S} \sum_{u \in U_{\mathrm{test}}} \left( \mathrm{NDCG@10}_{m,s,u} - \mathrm{NDCG@10}_{b,s,u} \right) \tag{9}$$
->
-> *Statistical confidence is assessed via a two-sided 95% hierarchical paired bootstrap using 2,000 resamples. Resampling occurs over random seed assignments and subsequently over user indices with replacement, preserving within-user correlation."*
+> *"Model comparisons are evaluated across three predetermined random seeds (42, 2027, 31415). For any model $m$ and baseline $b$, the effect contrast is defined as the paired mean difference across seeds and users:"*
+
+$$
+\Delta_{\mathrm{NDCG}} = \frac{1}{|S| \cdot |U_{\mathrm{test}}|} \sum_{s \in S} \sum_{u \in U_{\mathrm{test}}} \left( \mathrm{NDCG@10}_{m,s,u} - \mathrm{NDCG@10}_{b,s,u} \right) \qquad (9)
+$$
+
+> *"Statistical confidence is assessed via a two-sided 95% hierarchical paired bootstrap using 2,000 resamples. Resampling occurs over random seed assignments and subsequently over user indices with replacement, preserving within-user correlation."*
 
 #### Bản dịch tiếng Việt sát nghĩa:
-> *"Các so sánh mô hình được đánh giá trên ba seed ngẫu nhiên được định trước (42, 2027, 31415). Đối với bất kỳ mô hình $m$ và đường cơ sở $b$ nào, độ tương phản hiệu ứng được định nghĩa là sự chênh lệch trung bình ghép cặp qua các seed và các người dùng:*
->
-> $$\Delta_{\mathrm{NDCG}} = \frac{1}{|S| \cdot |U_{\mathrm{test}}|} \sum_{s \in S} \sum_{u \in U_{\mathrm{test}}} \left( \mathrm{NDCG@10}_{m,s,u} - \mathrm{NDCG@10}_{b,s,u} \right) \tag{9}$$
->
+> *"Các so sánh mô hình được đánh giá trên ba seed ngẫu nhiên được định trước (42, 2027, 31415). Đối với bất kỳ mô hình $m$ và đường cơ sở $b$ nào, độ tương phản hiệu ứng được định nghĩa là sự chênh lệch trung bình ghép cặp qua các seed và các người dùng theo Phương trình (9).*
+> 
 > *Độ tin cậy thống kê được đánh giá thông qua kiểm định bootstrap phân tầng có ghép cặp hai phía 95% sử dụng 2.000 lần lấy mẫu lại. Việc lấy mẫu lại diễn ra trên các phân bổ seed ngẫu nhiên và sau đó diễn ra trên các chỉ mục người dùng có hoàn lại, bảo toàn tương quan nội tại bên trong từng người dùng."*
 
 #### Luận giải học thuật:
