@@ -38,7 +38,7 @@ graph TD
     S2 -->|"Làm rõ cơ sở lý thuyết & 36 trích dẫn"| S3
     S3 -->|"Chứng minh vượt trội +21.28% & p < 0.001"| S4
 
-    classDef stepNode fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;
+    classDef stepNode fill:#064e3b,stroke:#34d399,stroke-width:2px,color:#ffffff;
     class S1,S2,S3,S4 stepNode;
 ```
 

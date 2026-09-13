@@ -53,12 +53,12 @@ graph TD
         HYBRID --> RANK
     end
 
-    classDef default fill:#fcfcfc,stroke:#455a64,stroke-width:1px;
-    classDef inputNode fill:#e1f5fe,stroke:#0288d1,stroke-width:2px;
-    classDef deepNode fill:#ede7f6,stroke:#512da8,stroke-width:2px;
-    classDef wideNode fill:#fff8e1,stroke:#f57f17,stroke-width:2px;
-    classDef fusionNode fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;
-    classDef rankNode fill:#fbe9e7,stroke:#d84315,stroke-width:2px;
+    classDef default fill:#1e293b,stroke:#64748b,stroke-width:1.5px,color:#ffffff;
+    classDef inputNode fill:#0c4a6e,stroke:#38bdf8,stroke-width:2px,color:#ffffff;
+    classDef deepNode fill:#3b0764,stroke:#c084fc,stroke-width:2px,color:#ffffff;
+    classDef wideNode fill:#78350f,stroke:#fbbf24,stroke-width:2px,color:#ffffff;
+    classDef fusionNode fill:#064e3b,stroke:#4ade80,stroke-width:2px,color:#ffffff;
+    classDef rankNode fill:#7f1d1d,stroke:#f87171,stroke-width:2px,color:#ffffff;
 
     class U_IN,I_IN inputNode;
     class UT,IT,DOT deepNode;
