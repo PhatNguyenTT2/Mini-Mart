@@ -71,16 +71,21 @@ graph TD
 
 ## 2. BA ĐÓNG GÓP KHOA HỌC CHÍNH
 
-1. **Giao thức Đánh giá Nhận thức Nguồn gốc (Provenance-Aware Protocol):**
-   - Ràng buộc toàn bộ dữ liệu phân tách thời gian, tập ứng viên toàn danh mục ($C_u = I \setminus H_u^{\mathrm{seen}}$), quy tắc che mặt nạ sản phẩm đã xem, bộ giải quyết điểm hòa tất định và chuỗi seed ngẫu nhiên bằng mã băm mật mã học **SHA-256**.
-   - Bộ đánh giá độc lập (Decoupled Shared Evaluator) hoàn toàn tách rời khỏi mã nguồn huấn luyện mô hình.
-2. **Phân tách Rạch ròi Không gian Minh chứng (Evidence Namespaces):**
-   - `PUBLIC_VALIDATION`: Xác thực tính tất định và khả năng tái lập của đường ống trên MovieLens 100K thông qua thư viện quốc tế RecBole 1.2.1.
-   - `RETAIL_BENCHMARK`: Đánh giá đối chuẩn thực tế trên tập dữ liệu bán lẻ kiểm soát **VietRetail-Synth**.
-3. **Xác thực Thực nghiệm Đột phá của Mô hình Lai (Empirical Superiority):**
-   - Đạt **NDCG@10 = 0.1385** (**tăng +21.28%** so với baseline Two-Tower BPR mạnh nhất).
-   - Đạt **HR@10 = 0.2190** (**tăng +17.11%**) và **Macro GAUC = 0.7812** (**tăng +6.29%**).
-   - Ý nghĩa thống kê đạt $p < 0.001$ qua kiểm định Hierarchical Paired Bootstrap với 2.000 lượt lấy mẫu lại.
+Về mặt đóng góp, bài báo giải quyết cuộc khủng hoảng tính tái lập trong Hệ gợi ý thông qua **3 trụ cột**:
+
+1. **Trụ cột 1 — Thiết lập giao thức đánh giá nhận thức nguồn gốc khóa bằng mã băm SHA-256:**
+   - Thiết lập giao thức đánh giá nhận thức nguồn gốc khóa bằng mã băm **SHA-256**.
+   - Ràng buộc toàn bộ dữ liệu phân tách thời gian (Temporal Split), tập ứng viên toàn danh mục ($C_u = I \setminus H_u^{\mathrm{seen}}$), quy tắc che mặt nạ sản phẩm đã xem (Seen-item Masking), bộ giải quyết điểm hòa tất định (Deterministic Tie-breaking) và chuỗi seed ngẫu nhiên bằng chữ ký mật mã học.
+   - Thiết kế **Bộ đánh giá độc lập dùng chung (Decoupled Shared Evaluator)** hoàn toàn tách rời khỏi mã nguồn huấn luyện mô hình nhằm triệt tiêu rò rỉ thông tin và thiên lệch triển khai.
+
+2. **Trụ cột 2 — Phân tách rạch ròi không gian minh chứng công khai và bán lẻ:**
+   - Phân tách rạch ròi không gian minh chứng công khai (**`PUBLIC_VALIDATION`** trên MovieLens 100K) và không gian bán lẻ (**`RETAIL_BENCHMARK`**).
+   - **`PUBLIC_VALIDATION`**: Xác thực tính tất định và khả năng tái lập của đường ống trên MovieLens 100K thông qua thư viện đối chuẩn quốc tế RecBole 1.2.1 (ACM CIKM 2021).
+   - **`RETAIL_BENCHMARK`**: Đánh giá đối chuẩn thực nghiệm chuyên sâu trên tập dữ liệu bán lẻ kiểm soát **VietRetail-Synth** (5.000 khách hàng, 5.200 SKU, 823.371 tương tác).
+
+3. **Trụ cột 3 — Đề xuất kiến trúc mạng lai phân rã Wide-and-Deep Two-Tower Hybrid:**
+   - Đề xuất kiến trúc mạng lai phân rã **Wide-and-Deep Two-Tower Hybrid** kết hợp giữa luật kết hợp Apriori (nhánh Wide ghi nhớ các cặp sản phẩm đồng giao dịch tần suất cao) và mạng tháp đôi tối ưu hóa qua BPR loss (nhánh Deep khái quát hóa quan hệ ngữ nghĩa tiềm ẩn với SBERT tiếng Việt và chiếu đặc trưng giá bán).
+   - Trên tập bán lẻ VietRetail-Synth, mô hình của nhóm đạt **NDCG@10 = 0.1385** (**tăng vượt bậc +21.28%** so với đường cơ sở Two-Tower BPR đơn lẻ), **HR@10 = 0.2190** (**tăng +17.11%**), và **Macro GAUC = 0.7812** (**tăng +6.29%**), với mức ý nghĩa thống kê $p < 0.001$ qua kiểm định **Hierarchical Bootstrap** (2.000 lượt lấy mẫu lại).
 
 ---
 
