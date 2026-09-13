@@ -12,36 +12,59 @@
 
 Bài báo **"Reproducible Hybrid Recommendation for Vietnamese Retail"** giải quyết cuộc khủng hoảng tính tái lập trong nghiên cứu Hệ thống Gợi ý (RecSys) bằng cách thiết lập một giao thức thực nghiệm nhận thức nguồn gốc (Provenance-aware Evaluation Protocol) và đề xuất kiến trúc mạng lai phân rã **Wide-and-Deep Two-Tower Hybrid** tối ưu hóa cho ngành bán lẻ đa kênh tại Việt Nam.
 
-```
-+---------------------------------------------------------------------------------------+
-|                                  KIẾN TRÚC MÔ HÌNH LAI                                |
-|                                                                                       |
-|   [Lịch sử / Giỏ hàng User]                     [Thuộc tính / Ngữ nghĩa Sản phẩm]      |
-|              │                                                  │                     |
-|              ▼                                                  ▼                     |
-|   ┌────────────────────────┐                         ┌────────────────────────┐       |
-|   │     USER TOWER         │                         │      ITEM TOWER        │       |
-|   │  - User Embedding      │                         │  - Item ID Embedding   │       |
-|   │  - History Aggregation │                         │  - SBERT Tiếng Việt    │       |
-|   │  - Chuẩn hóa L2        │                         │  - Chuẩn hóa Giá bán   │       |
-|   └───────────┬────────────┘                         └───────────┬────────────┘       |
-|               │                                                  │                     |
-|               └───────────────────────┬──────────────────────────┘                     |
-|                                       ▼                                               |
-|                    Tích vô hướng: S_deep = e_u · e_i (Cosine)                         |
-|                                       │                                               |
-|                                       ▼                                               |
-|   ┌───────────────────────────────────────────────────────────────────────────────┐   |
-|   │                 HỢP NHẤT ĐIỂM CHUẨN HÓA Z-SCORE PER-USER                      │   |
-|   │     S_hybrid(u, i) = Norm(S_deep(u, i)) + w_wide * Norm(S_wide(u, i))         │   |
-|   └───────────────────────────────────▲───────────────────────────────────────────┘   |
-|                                       │                                               |
-|   ┌───────────────────────────────────┴───────────────────────────────────────────┐   |
-|   │                 NHÁNH RỘNG LUẬT KẾT HỢP APRIORI (S_wide)                      │   |
-|   │  - Khai phá từ giao dịch Train: s_min = 0.001, c_min = 0.05                   │   |
-|   │  - Điểm số = Max Confidence của các luật thỏa mãn giỏ hàng hiện tại           │   |
-|   └───────────────────────────────────────────────────────────────────────────────┘   |
-+---------------------------------------------------------------------------------------+
+### Sơ đồ Kiến trúc Mô hình Lai Đề xuất
+
+```mermaid
+graph TD
+    subgraph INPUTS ["1. Dữ liệu Đầu vào Đa nguồn"]
+        U_IN["Lịch sử Giao dịch & Giỏ hàng Người dùng (H_u)"]
+        I_IN["Thuộc tính & Ngữ nghĩa Sản phẩm (SBERT + Giá bán)"]
+    end
+
+    subgraph DEEP_TOWER ["2. Nhánh Sâu: Deep Two-Tower Network (S_deep)"]
+        UT["User Tower: Embedding Người dùng + Lịch sử + Chuẩn hóa L2"]
+        IT["Item Tower: ID + SBERT Tiếng Việt + Giá + Chuẩn hóa L2"]
+        DOT["Tích vô hướng Cosine: S_deep(u, i) = e_u · e_i"]
+        U_IN --> UT
+        I_IN --> IT
+        UT --> DOT
+        IT --> DOT
+    end
+
+    subgraph WIDE_RULE ["3. Nhánh Rộng: Wide Apriori Rule Scorer (S_wide)"]
+        AR["Khai phá Luật Apriori từ Giao dịch Train (s_min=0.001, c_min=0.05)"]
+        MC["Điểm số Luật: Max Confidence của các luật kích hoạt từ H_u"]
+        U_IN --> AR
+        AR --> MC
+    end
+
+    subgraph FUSION ["4. Cơ chế Hợp nhất Điểm Chuẩn hóa (Z-Score Fusion)"]
+        NORM_DEEP["Chuẩn hóa Z-Score Điểm Sâu: Norm(S_deep)"]
+        NORM_WIDE["Chuẩn hóa Z-Score Điểm Luật: Norm(S_wide)"]
+        HYBRID["Điểm Hợp nhất: S_hybrid = Norm(S_deep) + w_wide * Norm(S_wide)"]
+        DOT --> NORM_DEEP
+        MC --> NORM_WIDE
+        NORM_DEEP --> HYBRID
+        NORM_WIDE --> HYBRID
+    end
+
+    subgraph OUTPUT ["5. Xếp hạng Toàn danh mục & Đánh giá"]
+        RANK["Xếp hạng Top-10 trên Không gian Ứng viên C_u = I \\ H_u^seen"]
+        HYBRID --> RANK
+    end
+
+    classDef default fill:#fcfcfc,stroke:#455a64,stroke-width:1px;
+    classDef inputNode fill:#e1f5fe,stroke:#0288d1,stroke-width:2px;
+    classDef deepNode fill:#ede7f6,stroke:#512da8,stroke-width:2px;
+    classDef wideNode fill:#fff8e1,stroke:#f57f17,stroke-width:2px;
+    classDef fusionNode fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px;
+    classDef rankNode fill:#fbe9e7,stroke:#d84315,stroke-width:2px;
+
+    class U_IN,I_IN inputNode;
+    class UT,IT,DOT deepNode;
+    class AR,MC wideNode;
+    class NORM_DEEP,NORM_WIDE,HYBRID fusionNode;
+    class RANK rankNode;
 ```
 
 ---

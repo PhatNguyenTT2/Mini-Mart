@@ -21,7 +21,8 @@ thesis/paper/
 │
 ├── overview/                                       # THƯ MỤC 1: TỔNG QUAN BÀI BÁO & BÁO CÁO HƯỚNG DẪN
 │   ├── advisor-paper-report.md                     # Báo cáo toàn diện phục vụ buổi làm việc với GVHD (TS. Nguyễn Thị Xuân Hương)
-│   └── paper-executive-summary.md                  # Tóm tắt điều hành toàn bộ bài báo (Kiến trúc, Đóng góp, Kết quả)
+│   ├── paper-executive-summary.md                  # Tóm tắt điều hành toàn bộ bài báo (Kiến trúc Mermaid, Đóng góp, Kết quả)
+│   └── advisor-presentation-script.md              # Kịch bản & Hướng dẫn thứ tự báo cáo chi tiết cho nhóm sinh viên
 │
 ├── intro-related-work/                             # THƯ MỤC 2: CHI TIẾT MỤC INTRODUCTION & RELATED WORK
 │   └── deep-analysis-intro-related-work.md         # Bản dịch sát nghĩa tiếng Việt song hành + Luận giải chuyên sâu + 36 trích dẫn
@@ -39,9 +40,10 @@ thesis/paper/
 * 📝 **[paper.tex](file:///e:/UIT/cv/backend/thesis/paper/paper.tex):** Tệp mã nguồn LaTeX gốc tự chứa, không phụ thuộc gói ngoài bất thường.
 * 📚 **[refs.bib](file:///e:/UIT/cv/backend/thesis/paper/refs.bib):** 36 trích dẫn học thuật từ các hội nghị hàng đầu (ACM RecSys, SIGIR, KDD, CIKM, WSDM, WWW, ICLR, AAAI, VLDB).
 
-### B. Báo cáo Tổng quan & Báo cáo GVHD
+### B. Báo cáo Tổng quan & Kịch bản Báo cáo GVHD
 * 📊 **[advisor-paper-report.md](file:///e:/UIT/cv/backend/thesis/paper/overview/advisor-paper-report.md):** Bản báo cáo hoàn chỉnh dành cho TS. Nguyễn Thị Xuân Hương. Phân tích chi tiết từng mục của bài báo, báo cáo kiểm toán xử lý triệt để 22 vị trí rò rỉ phiên bản nội bộ, bổ sung trích dẫn RecBole và đề xuất kế hoạch nộp bài.
-* 📋 **[paper-executive-summary.md](file:///e:/UIT/cv/backend/thesis/paper/overview/paper-executive-summary.md):** Bản tóm tắt điều hành trực quan với sơ đồ khối kiến trúc Wide & Deep Two-Tower, 3 đóng góp khoa học chính và bảng kết quả thực nghiệm.
+* 📋 **[paper-executive-summary.md](file:///e:/UIT/cv/backend/thesis/paper/overview/paper-executive-summary.md):** Bản tóm tắt điều hành trực quan với sơ đồ Mermaid chuẩn, 3 đóng góp khoa học chính và bảng kết quả thực nghiệm.
+* 🎙️ **[advisor-presentation-script.md](file:///e:/UIT/cv/backend/thesis/paper/overview/advisor-presentation-script.md):** Kịch bản thuyết trình từng bước (Script báo cáo lời thoại chi tiết) và cẩm nang trả lời 6 câu hỏi chất vấn hóc búa của Giảng viên hướng dẫn.
 
 ### C. Phân tích Học thuật Chuyên sâu từng Phần
 * 🔍 **[deep-analysis-intro-related-work.md](file:///e:/UIT/cv/backend/thesis/paper/intro-related-work/deep-analysis-intro-related-work.md):** Phân tích chi tiết Section 1 (Introduction) và Section 2 (Related Work). Dịch sát nghĩa tiếng Việt song hành từng câu, giải thích cặn kẽ thuật ngữ, cơ sở lý thuyết, và cung cấp Bảng Đăng ký Trích dẫn đầy đủ 36 bài báo.
