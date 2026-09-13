@@ -1,0 +1,197 @@
+{
+  "schema_version": "stage2-write-handoff/1.0",
+  "project": "hybrid-recsys-v5",
+  "stage": "2_WRITE",
+  "round": "P2",
+  "step": "P2-G6_stage2_draft_handoff",
+  "created_at": "2026-09-12T00:00:00+07:00",
+  "role": "stage2_draft_and_citation_handoff",
+  "verdict": "STAGE2_DRAFT_COMPLETE_AWAITING_STAGE2_5",
+  "verdict_scope": "The user-approved outline was converted into a conditional argument blueprint and an English venue-neutral manuscript draft. Static citation, claim-boundary, namespace, and artifact-binding checks are complete. LaTeX compilation remains unavailable in the current environment and is explicitly deferred to Stage 2.5.",
+  "checkpoint": {
+    "outline_status": "USER_APPROVED_CONTINUE",
+    "outline_approval_date": "2026-09-12",
+    "outline_approval_scope": "Structure and evidence scope only; no blocked empirical claim was authorized.",
+    "argument_blueprint": "P2-G3_COMPLETE",
+    "introduction_related_work": "P2-G4_COMPLETE",
+    "methods_evidence_scope_results_discussion": "P2-G5_COMPLETE",
+    "citation_audit": "P2-G6_STATIC_COMPLETE_WITH_COMPILE_UNAVAILABLE"
+  },
+  "upstream_bindings": {
+    "r9_canonical_handoff": {
+      "path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase6_seal/r9_stage1b_seal/r9_handoff.json",
+      "sha256": "3391117fb1f7f2a13b1c3d246c669153d0bd7251a47d67b4f51ecb4548e7e7f7",
+      "verdict": "PASS_STAGE1B_SEALED"
+    },
+    "r9_seal_sha256": "5353afaf36fb7146d58ff8e461f9c1586f2a253231bf7d1b162d77ed97a2d3b7",
+    "ais_r8_p5_phase1e_seal": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r8_p5_state_reconciliation_and_phase1e_seal_v1.json",
+      "sha256": "36ea10dc411f08b00d695b45582d8ff2e21b91aa2a3f80d4b4af52cd55286fa4",
+      "verdict": "PHASE_1E_COMPLETE_WITH_EXPLICIT_LIMITATIONS"
+    },
+    "ais_r8_p5_paper_admission": {
+      "path": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r8_p5_paper_admission_decision_v1.json",
+      "sha256": "077bf2d7d2a57284c52acb23c2dafeb09272e9f2ba275027b445d0c55e07ab4d",
+      "admitted_rows": 4,
+      "namespace": "PUBLIC_DATA_PROTOCOL_VALIDATION"
+    },
+    "stage2_input_manifest_sha256": "711fa6ce22d608022b8a8b1a036692ad3d840fe41dfcfe2da1aee04c2bda1c32",
+    "stage2_configuration_sha256": "d3ecfaa91d968fef49d124847f90ef17c92bbdd7c1f2a4868ff2c978650c6eea"
+  },
+  "artifact_manifest": [
+    {
+      "path": "research/hybrid-recsys-v5/05_manuscript/stage2_write/00_control/paper_configuration_stage2.json",
+      "role": "P2-G1_CONFIGURATION",
+      "bytes": 5367,
+      "sha256": "d3ecfaa91d968fef49d124847f90ef17c92bbdd7c1f2a4868ff2c978650c6eea"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/05_manuscript/stage2_write/00_control/stage2_input_manifest.json",
+      "role": "P2-G0_INPUT_MANIFEST",
+      "bytes": 8269,
+      "sha256": "711fa6ce22d608022b8a8b1a036692ad3d840fe41dfcfe2da1aee04c2bda1c32"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/05_manuscript/stage2_write/00_control/stage2_material_passport.json",
+      "role": "SCHEMA_9_MATERIAL_PASSPORT",
+      "bytes": 10716,
+      "sha256": "3b5eaf65031959d4f92ffc02e3b6c885b30460b03819002fa8a7f3b9d890ddbf"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/05_manuscript/stage2_write/01_outline/paper_outline_stage2.md",
+      "role": "P2-G2_APPROVED_OUTLINE",
+      "bytes": 20878,
+      "sha256": "6f2c26d58b37ac864164d8ab8b198fea91e110ca595274fc2fb09b3a94905454"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/05_manuscript/stage2_write/02_argument/argument_blueprint_stage2.md",
+      "role": "P2-G3_ARGUMENT_BLUEPRINT",
+      "bytes": 11929,
+      "sha256": "fc42a52b8913593e5ad061cc6cd6c07ddbe61913d1079945534b5f417b205a30"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/05_manuscript/stage2_write/03_draft/introduction_related_work_stage2.tex",
+      "role": "P2-G4_INPUT_FRAGMENT",
+      "bytes": 22957,
+      "sha256": "338b55f4a330cae9d9a9ba87136e734979a90eeeff9b6ac0f81debe13ff8ac72"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/05_manuscript/stage2_write/03_draft/master_draft_stage2.tex",
+      "role": "P2-G4_TO_G6_AUTHORITATIVE_MANUSCRIPT",
+      "bytes": 30371,
+      "sha256": "8fa271e44b7d1be5fb5ef14921d3b568180e175032268b8120aba438694d6f93"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/05_manuscript/stage2_write/04_citations/claim_citation_matrix_stage2.json",
+      "role": "P2-G6_CLAIM_CITATION_MATRIX",
+      "bytes": 31144,
+      "sha256": "b44fea5ee0d1383ae66e4aa83b559f62da67d6cffebf179467edaa922faae6a5"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/05_manuscript/stage2_write/04_citations/citation_audit_stage2.md",
+      "role": "P2-G6_CITATION_AUDIT",
+      "bytes": 5209,
+      "sha256": "c46707aad73cc778d4161b7e365cf290476c1fb27785e92e7b238bac9b1f2a71"
+    },
+    {
+      "path": "research/hybrid-recsys-v5/05_manuscript/stage2_write/04_citations/refs_stage2.bib",
+      "role": "P2-G5_REFERENCE_REGISTRY",
+      "bytes": 14853,
+      "sha256": "5a93f0868b19f8ebdc8647435b151193a898b67e843db0a6ef3ece27cd9a7fbd"
+    }
+  ],
+  "claim_boundary": {
+    "authorized_literature_claims": 22,
+    "prohibited_or_planning_only_claims": 22,
+    "draft_claim_intent_manifest_entries": 1,
+    "draft_intent_claims": 12,
+    "blocked_claims_preserved": [
+      "Hybrid superiority or outperformance",
+      "H1-H4 outcomes",
+      "strict official reproduction of 0.2768",
+      "direct public-data to v5 numeric comparison",
+      "causal, production, or state-of-the-art effectiveness"
+    ],
+    "historical_manuscript_quarantined": true,
+    "historical_numbers_reused": false
+  },
+  "citation_integrity_summary": {
+    "unique_source_keys": 35,
+    "effective_in_text_citation_occurrences": 61,
+    "provenance_marker_pairs": 61,
+    "verified_locator_pairs": 33,
+    "claim_rows_bound_to_actual_sections": 22,
+    "bibliography_entries_used": 35,
+    "citation_to_bibliography_status": "PASS_STATIC",
+    "bibliography_to_citation_status": "PASS_STATIC",
+    "marker_to_locator_status": "PASS_STATIC",
+    "latex_compile_status": "UNAVAILABLE_TOOLCHAIN"
+  },
+  "result_namespace_policy": {
+    "PUBLIC_DATA_PROTOCOL_VALIDATION": {
+      "accepted_rows": 4,
+      "artifact_sha256": "512fb8ad8862f5e677ec18f369d310ae58c9d6f3c4f7b2e79c17ede389930c17",
+      "paper_use": "Descriptive row-level protocol validation only; no inferential or superiority claim."
+    },
+    "OFFICIAL_PROTOCOL_REPRODUCTION": {
+      "status": "CLOSED_INCOMPARABLE",
+      "accepted_rows": 0,
+      "paper_use": "No numeric result row."
+    },
+    "HARMONIZED_V5_COMPARISON": {
+      "status": "SEALED_WITH_MAJOR_LIMITATIONS",
+      "accepted_rows": 0,
+      "paper_use": "No numeric result row and no TEST reopening."
+    },
+    "FOLLOW_UP_HARMONIZED_V5": {
+      "status": "NOT_CREATED",
+      "paper_use": "Requires a new packet, registry, run, and independent audit."
+    },
+    "numeric_cross_namespace_join_authorized": false
+  },
+  "unresolved_empirical_limitations": [
+    "The proposed Hybrid has no admitted result row.",
+    "The official source-native reproduction remains incomparable.",
+    "The harmonized v5 comparison has zero admitted rows.",
+    "The public lane has aggregate metrics but no paired per-user inference or bootstrap.",
+    "H1-H4 and external validity remain not run or not tested.",
+    "Efficiency, deployment, causal, and production claims remain unestablished.",
+    "The controlled v5 behavior is semi-synthetic and its manifest counts remain subject to fresh lineage reconciliation."
+  ],
+  "model_policy_audit": {
+    "central_coordination": {
+      "requested_model": "gpt-5.6-sol",
+      "requested_reasoning": "max",
+      "requested_service_tier": "Standard"
+    },
+    "structure_and_drafting": {
+      "requested_model": "gpt-5.6-sol",
+      "requested_reasoning": "high",
+      "requested_service_tier": "Standard"
+    },
+    "independent_integrity_audit": {
+      "requested_model": "gpt-5.6-sol",
+      "requested_reasoning": "ultra",
+      "requested_service_tier": "Standard"
+    },
+    "actual_model": "UNOBSERVABLE_IN_CENTRAL_CONTEXT",
+    "actual_reasoning": "UNOBSERVABLE_IN_CENTRAL_CONTEXT",
+    "actual_service_tier": "UNOBSERVABLE",
+    "actual_speed": "UNOBSERVABLE",
+    "forbidden_service_tiers": ["Fast", "Priority"],
+    "telemetry_policy": "No model, reasoning, service tier, or speed is inferred from latency, prose, or prior task history."
+  },
+  "next_gate": {
+    "stage": "2.5",
+    "status": "MANDATORY_USER_CHECKPOINT",
+    "required_checks": [
+      "Strictly parse all JSON artifacts and reject BOM, duplicate keys, case collisions, and non-finite values.",
+      "Replay the exact input, claim, locator, and result-artifact hashes.",
+      "Run a real LaTeX and bibliography compile on an available configured host.",
+      "Check the rendered package without promoting blocked empirical claims.",
+      "Preserve the v5 TEST lock and all namespace boundaries."
+    ],
+    "stage2_5_may_reopen_v5_test": false
+  },
+  "self_hash_policy": "This handoff intentionally does not self-hash. Downstream state may bind this file by its raw SHA-256 without creating a hash cycle. All listed artifact hashes are exact raw-byte hashes at handoff creation."
+}

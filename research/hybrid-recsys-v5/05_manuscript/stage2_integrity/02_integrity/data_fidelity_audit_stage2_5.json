@@ -1,0 +1,65 @@
+{
+  "checks": [
+    {
+      "check_id": "DATA-001",
+      "detail": "Contract-qualified counts 5,000/5,200/823,371 match the frozen methodology authority; the manuscript does not promote them to observed-log facts.",
+      "surface": "Dataset counts",
+      "verdict": "VERIFIED"
+    },
+    {
+      "check_id": "DATA-002",
+      "detail": "Train, validation, and test date boundaries match the frozen methodology authority.",
+      "surface": "Temporal boundaries",
+      "verdict": "VERIFIED"
+    },
+    {
+      "check_id": "DATA-003",
+      "detail": "Full-catalog, seen-item masking, deterministic tie handling, K=10, NDCG, HR, Recall, and macro per-user GAUC are described consistently.",
+      "surface": "Candidate and metric protocol",
+      "verdict": "VERIFIED"
+    },
+    {
+      "check_id": "DATA-004",
+      "detail": "The planned seeds 42, 2027, and 31415 are consistently described as follow-up requirements.",
+      "surface": "Seed policy",
+      "verdict": "VERIFIED"
+    },
+    {
+      "check_id": "DATA-005",
+      "detail": "The 95% hierarchical paired bootstrap with 2,000 replicates remains explicitly planned and is not reported as executed.",
+      "surface": "Statistical plan",
+      "verdict": "VERIFIED"
+    },
+    {
+      "check_id": "DATA-006",
+      "detail": "The manuscript cites the exact aggregate SHA-256 512fb8ad8862f5e677ec18f369d310ae58c9d6f3c4f7b2e79c17ede389930c17.",
+      "surface": "Public aggregate identity",
+      "verdict": "VERIFIED"
+    },
+    {
+      "check_id": "DATA-007",
+      "detail": "All 20 metric cells and four model/seed labels match the aggregate artifact and the paper-admission namespace.",
+      "surface": "Public result table",
+      "verdict": "VERIFIED"
+    },
+    {
+      "check_id": "DATA-008",
+      "detail": "BPR mean 0.074770 and sample standard deviation 0.003853, plus Pop 0.031164, replay from the three admitted BPR values.",
+      "surface": "NDCG descriptive summary",
+      "verdict": "VERIFIED"
+    },
+    {
+      "check_id": "DATA-009",
+      "detail": "Hit, MRR, Recall, and Precision BPR means replay to 0.294763, 0.112113, 0.105847, and 0.040870 after six-decimal rounding.",
+      "surface": "Supporting descriptive summaries",
+      "verdict": "VERIFIED"
+    }
+  ],
+  "claims_checked": 9,
+  "coverage_percent": 100.0,
+  "generated_at": "2026-09-13T00:15:00+07:00",
+  "interpretation_boundary": "This audit verifies manuscript-to-artifact fidelity. It does not rejudge experimental design or convert descriptive public rows into Hybrid evidence.",
+  "issues": [],
+  "schema_version": "stage2.5-data-fidelity-audit/1.0",
+  "verified": 9
+}

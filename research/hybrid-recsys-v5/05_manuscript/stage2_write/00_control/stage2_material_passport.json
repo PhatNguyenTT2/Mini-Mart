@@ -1,0 +1,209 @@
+{
+  "origin_skill": "academic-paper",
+  "origin_mode": "stage2-write-draft",
+  "origin_date": "2026-09-12T00:00:00+07:00",
+  "verification_status": "UNVERIFIED",
+  "version_label": "stage2_write_draft_v2",
+  "integrity_pass_date": null,
+  "content_hash": null,
+  "upstream_dependencies": [
+    "stage1b_r1_r9_stage2_literature_handoff_v1",
+    "ais-r8-p5-paper-admission-decision-v1",
+    "ais-r8-p5-state-reconciliation-and-phase1e-seal-v1",
+    "rq_brief_stage1a",
+    "methodology_blueprint_stage1a"
+  ],
+  "repro_lock": {
+    "schema_version": "1.0",
+    "stochasticity_declaration": "LLM-generated outline text is not byte-reproducible; this lock records configuration and input bindings, not a deterministic replay guarantee.",
+    "ars_version": "3.21.0+codex-adapter-0.1.26",
+    "model": {
+      "family": "OpenAI",
+      "id": "gpt-5.6-sol",
+      "weight_stable": false
+    },
+    "prompts": {
+      "hash_timing": "skill-load",
+      "skill_md_hash": "sha256:5acb202b13a7dba912091ae5d15a19b88eb3f4e58b4d942649cb35df770ace91",
+      "agents_bundle_hash": "sha256:e8dc400369eb6694323599eb2ecfb32f80f0a74c86a98a19fccabae9af9a17e7"
+    },
+    "materials": {
+      "list_hash": "sha256:c011c8e20b15a7b79b351ed984c02c4787297c5b72956b6250bd0a586536a777",
+      "count": 21
+    },
+    "external_protocols": {
+      "s2_api_protocol_version": "NOT_USED",
+      "s2_snapshot_available": false
+    },
+    "cross_model": {
+      "enabled": false,
+      "secondary_model_id": null
+    }
+  },
+  "slr_lineage": false,
+  "experiment_intake_declaration": {
+    "status": "experiments_declared",
+    "declared_at": "2026-08-13T10:46:57.174Z",
+    "declared_by": "scholar",
+    "authority": "research/hybrid-recsys-v5/00_control/material_passport.json"
+  },
+  "experiment_provenance_carried_forward": {
+    "status": "CARRIED_BY_REFERENCE",
+    "authority": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r8_p5_paper_admission_decision_v1.json",
+    "experiment_ids": [
+      "ais-r8-p3-public-validation-attempt-003",
+      "EXP-REF-REPRO",
+      "EXP-V5-HARMONIZED",
+      "EXP-EXTERNAL-VALIDITY"
+    ],
+    "writer_rule": "No empirical result is inferred from this reference-only carry-forward."
+  },
+  "scope_boundary": {
+    "allowed": [
+      "English Stage 2 manuscript draft",
+      "Argument blueprint and bounded literature synthesis",
+      "Methods and evidence-scope description",
+      "descriptive reporting of four admitted public protocol rows"
+    ],
+    "blocked": [
+      "Hybrid result or superiority claim",
+      "strict official reproduction claim",
+      "numeric public-v5 comparison",
+      "H1-H4 result",
+      "production or causal claim"
+    ]
+  },
+  "reset_boundary": [],
+  "compliance_history": [],
+  "claim_intent_manifests": [
+    {
+      "manifest_version": "1.0",
+      "manifest_id": "M-2026-09-12T00:00:00Z-2e5d",
+      "emitted_by": "draft_writer_agent",
+      "emitted_at": "2026-09-12T00:00:00Z",
+      "session_id": "stage2-p2-g4-to-g6-draft-20260912",
+      "claims": [
+        {
+          "claim_id": "C-001",
+          "claim_text": "Offline recommender conclusions are conditional on the prediction event, split, candidate universe, masking, metric, aggregation, and training choices.",
+          "intended_evidence_kind": "theoretical",
+          "planned_refs": ["gusak2025_time_split", "petrov2022_a_systematic_review_and_replicability_study_of_bert4rec_fo"],
+          "negative_constraints": [
+            {"constraint_id": "NC-C001-1", "rule": "Do not treat equal metric labels as evidence of protocol equivalence."}
+          ]
+        },
+        {
+          "claim_id": "C-002",
+          "claim_text": "A shared full-catalog evaluator can make protocol differences inspectable without making distinct model families equivalent.",
+          "intended_evidence_kind": "normative",
+          "planned_refs": ["gusak2025_time_split", "petrov2022_a_systematic_review_and_replicability_study_of_bert4rec_fo"],
+          "negative_constraints": [
+            {"constraint_id": "NC-C002-1", "rule": "Do not use a shared evaluator to erase native objective or input differences."}
+          ]
+        },
+        {
+          "claim_id": "C-003",
+          "claim_text": "ItemCF, BPR, NCF, DeepFM, sequential models, and two-tower systems carry distinct signal, objective, and task contracts.",
+          "intended_evidence_kind": "theoretical",
+          "planned_refs": ["sarwar2001_itemcf", "rendle2009_bpr", "he2017_ncf", "guo2017_deepfm", "kang2018_sasrec", "sun2019_bert4rec", "yi2019_ndr"],
+          "negative_constraints": [
+            {"constraint_id": "NC-C003-1", "rule": "Do not infer a v5 ranking from a source-native task or metric."}
+          ]
+        },
+        {
+          "claim_id": "C-004",
+          "claim_text": "Wide and Deep motivates a memorization/generalization decomposition, but it does not establish the effectiveness of an Apriori-derived branch under v5.",
+          "intended_evidence_kind": "theoretical",
+          "planned_refs": ["cheng2016_wide_deep", "agrawal1994_apriori"],
+          "negative_constraints": [
+            {"constraint_id": "NC-C004-1", "rule": "Do not claim that the Wide branch improves ranking before the follow-up experiment."}
+          ]
+        },
+        {
+          "claim_id": "C-005",
+          "claim_text": "Association-rule and hybrid literature motivates component ablations, but it does not establish the v5 Wide-branch effect.",
+          "intended_evidence_kind": "theoretical",
+          "planned_refs": ["agrawal1994_apriori", "ghoshal2014_multi_item_rules", "liu2009_hybrid_seq_cf", "peng2022_ham", "peng2023_m2"],
+          "negative_constraints": [
+            {"constraint_id": "NC-C005-1", "rule": "Do not convert literature plausibility into an H3 result."}
+          ]
+        },
+        {
+          "claim_id": "C-006",
+          "claim_text": "Repeat and exploration behavior should be separated when interpreting next-basket accuracy because aggregate accuracy alone does not establish novel-item gain.",
+          "intended_evidence_kind": "empirical",
+          "planned_refs": ["li2023_nbr_reality", "li2023_repetition_exploration", "li2023_mask_swap", "mansouri2026_repeat_explore_lightgcn"],
+          "negative_constraints": [
+            {"constraint_id": "NC-C006-1", "rule": "Do not apply repeat/explore ratios from another dataset to v5."}
+          ]
+        },
+        {
+          "claim_id": "C-007",
+          "claim_text": "A strict zero-edge item must be defined from the training graph, with warm, sparse, and zero-edge denominators reported separately.",
+          "intended_evidence_kind": "definitional",
+          "planned_refs": ["volkovs2017_dropoutnet", "huang2023_aldi"],
+          "negative_constraints": [
+            {"constraint_id": "NC-C007-1", "rule": "Do not equate rare-item, sparse-edge, and strict zero-edge cohorts."}
+          ]
+        },
+        {
+          "claim_id": "C-008",
+          "claim_text": "Content representations and transferable recommender architectures require task-specific ranking evaluation and explicit target-domain adaptation assumptions.",
+          "intended_evidence_kind": "theoretical",
+          "planned_refs": ["reimers2019_sbert", "hou2022_unisrec", "hou2023_vqrec", "sheng2025_alpharec", "meehan2025_cold_popbias", "meehan2026_semco", "zheng2026_utgrec"],
+          "negative_constraints": [
+            {"constraint_id": "NC-C008-1", "rule": "Do not treat encoder quality or architecture transfer as recommendation evidence by itself."}
+          ]
+        },
+        {
+          "claim_id": "C-009",
+          "claim_text": "The four admitted Pop/BPR rows are descriptive public protocol validation and do not evaluate the proposed Hybrid.",
+          "intended_evidence_kind": "empirical",
+          "planned_refs": [],
+          "negative_constraints": [
+            {"constraint_id": "NC-C009-1", "rule": "Bind every reported public number to the admitted aggregate artifact and keep it within its namespace."}
+          ]
+        },
+        {
+          "claim_id": "C-010",
+          "claim_text": "Official reproduction, public protocol validation, and harmonized v5 comparison answer different questions and must remain separate evidence surfaces.",
+          "intended_evidence_kind": "normative",
+          "planned_refs": [],
+          "negative_constraints": [
+            {"constraint_id": "NC-C010-1", "rule": "Do not pool or numerically join results across namespaces."}
+          ]
+        },
+        {
+          "claim_id": "C-011",
+          "claim_text": "The proposed decoupled Wide-and-Deep Two-Tower Hybrid remains an open empirical question requiring a separately audited follow-up experiment.",
+          "intended_evidence_kind": "normative",
+          "planned_refs": ["cheng2016_wide_deep", "liu2009_hybrid_seq_cf"],
+          "negative_constraints": [
+            {"constraint_id": "NC-C011-1", "rule": "Do not state Hybrid superiority, H1-H4 success, or production effectiveness."}
+          ]
+        },
+        {
+          "claim_id": "C-012",
+          "claim_text": "This manuscript reports a bounded methods contribution and does not claim causal, production, state-of-the-art, or unrun hypothesis results.",
+          "intended_evidence_kind": "normative",
+          "planned_refs": [],
+          "negative_constraints": [
+            {"constraint_id": "NC-C012-1", "rule": "Keep all unrun empirical outcomes explicitly unresolved."}
+          ]
+        }
+      ],
+      "manifest_negative_constraints": [
+        {"constraint_id": "MNC-1", "rule": "No unqualified causal or superiority language."},
+        {"constraint_id": "MNC-2", "rule": "No cross-dataset or cross-protocol raw metric comparison."},
+        {"constraint_id": "MNC-3", "rule": "No cold-item to cold-user extrapolation."},
+        {"constraint_id": "MNC-4", "rule": "No Apriori/Wide effectiveness claim before the follow-up experiment."},
+        {"constraint_id": "MNC-5", "rule": "No unconditional external-validity or replication claim."},
+        {"constraint_id": "MNC-6", "rule": "Do not describe controlled/generated behavior as observed shopper logs."},
+        {"constraint_id": "MNC-7", "rule": "Do not import historical manuscript numbers or source-native benchmark targets."},
+        {"constraint_id": "MNC-8", "rule": "Do not count shared source lineage as independent corroboration."},
+        {"constraint_id": "MNC-9", "rule": "Use train-defined rule-aligned cohort language when cohort membership depends on held-out outcomes."},
+        {"constraint_id": "MNC-10", "rule": "Do not use a manuscript citation without a non-null original-source locator."}
+      ]
+    }
+  ]
+}

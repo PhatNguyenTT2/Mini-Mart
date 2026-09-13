@@ -1,0 +1,522 @@
+\documentclass[10pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{cite}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage{url}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=black,
+  citecolor=black,
+  urlcolor=blue,
+  breaklinks=true
+}
+
+\title{Reproducible Hybrid Recommendation for Vietnamese Retail}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Offline recommender results are difficult to interpret when model identity is
+reported without the data, split, candidate, masking, objective, and evaluator
+conditions that produced the result. This paper presents a provenance-aware
+protocol for assessing a decoupled Wide-and-Deep two-tower recommender in a
+controlled Vietnamese retail setting. The protocol fixes a temporal
+novel-purchase task, full-catalog ranking, seen-item masking, deterministic tie
+handling, per-user metrics, and a hierarchical uncertainty plan. It separates
+source-native reproduction, public protocol validation, controlled-benchmark
+comparison, and external validation into distinct evidence namespaces. The
+completed public lane contains one deterministic Pop run and three BPR runs on
+GroupLens MovieLens 100K; these rows are reported as descriptive protocol
+evidence only. The proposed Hybrid has not been admitted to the paper result
+set, and the controlled benchmark comparison remains a follow-up experiment.
+The contribution is therefore a reproducible comparison design with explicit
+evidence boundaries, rather than a conclusion about a settled model ordering.
+\end{abstract}
+
+\noindent\textbf{Keywords:} recommender systems, reproducibility, full-catalog evaluation, two-tower models, association rules, cold-item recommendation
+
+\input{introduction_related_work_stage2}
+
+\section{Methodology and Protocol}
+
+\subsection{Study design and estimand}
+
+The study is designed as a quantitative comparative offline benchmark. Its unit
+of analysis is a per-user metric vector nested within a training seed. This
+choice preserves the dependence created when two models are evaluated for the
+same users and permits uncertainty to be reported at both the user and seed
+levels. The estimand is comparative algorithmic performance under a declared
+dataset and evaluation protocol. It is not an estimate of changes in user
+behavior, revenue, satisfaction, or long-term production outcomes.
+
+The central comparison is defined before the follow-up test is opened. The
+proposed model produces a score for every candidate item, and a locked baseline
+registry supplies the comparison score. The strongest baseline is selected from
+validation means using a fixed rule and is then frozen for the test evaluation.
+This sequence prevents test outcomes from determining the comparator, features,
+or stopping rule. A null or negative contrast remains a valid answer to the
+research question.
+
+The protocol separates three operations that are often conflated. Training
+defines model parameters using only the training portion. Score export produces
+an ordered-catalog-compatible score artifact without calculating final metrics.
+Evaluation applies masking, ranking, relevance, and aggregation independently.
+This separation makes the score-producing implementation auditable and keeps
+metric semantics identical across model families.
+
+\subsection{Dataset and temporal protocol}
+
+The controlled v5 benchmark is a Vietnamese retail data construction with
+semi-synthetic behavior. Its manifest declares user histories, item content,
+category and price signals, and purchase or basket events. It also declares
+5,000 users, 5,200 items, 823,371 interactions, and a designated item-cold
+subset. These values are treated as dataset-manifest facts until the fresh
+follow-up snapshot passes raw-to-internal reconciliation; they are not model
+outcomes.
+
+The declared temporal boundaries are train from 2026-01-01 through 2026-06-19,
+validation from 2026-06-20 through 2026-07-10, and test from 2026-07-11
+through 2026-08-01, all in UTC. User and item identifiers are mapped through an
+immutable raw-to-internal table. The adapter checks schema, duplicate rows,
+malformed records, timestamp ordering, user and item coverage, item-text
+provenance, and the availability of basket or co-purchase structure. An
+exclusion is recorded with its count and reason rather than silently removed.
+
+The snapshot is admitted as a comparison input only when these checks form a
+continuous chain. The raw provider bytes, the normalized tables, the
+raw-to-internal identifier map, and the split manifest must each have a
+content hash. The split hash must resolve to the protocol version used by the
+runner, and the protocol version must resolve to the evaluator version used for
+the reported scores. This conjunctive rule matters because a correct model
+can still produce an uninterpretable result when, for example, an identifier
+map is regenerated after the split or item text is read from a later catalog
+revision. A failed link is recorded as an incomplete or diagnostic input; it
+is not repaired by silently substituting a nearby snapshot. Dataset
+suitability and model effectiveness are therefore assessed as separate
+questions. The former concerns whether the data can support the declared
+estimand, whereas the latter concerns the behavior of a model after the
+estimand has been fixed.
+
+The public protocol validation uses GroupLens MovieLens 100K as a separate
+namespace and is not a substitute for the controlled v5 snapshot. It uses a
+locked RecBole 1.2.1 environment and a full-sort evaluation path. The public
+lane is useful for checking that a source-bound pipeline can materialize data,
+train a reference method, export metrics, and preserve configuration and
+checkpoint bindings. It does not establish that the same pipeline answers the
+Vietnamese retail research question.
+
+\subsection{Candidates, relevance, masking, and cohorts}
+
+For each eligible user $u$, the candidate set is the complete item catalog after
+removing items already observed in the allowed history:
+\begin{equation}
+  C_u = I \setminus H_u^{\mathrm{seen}}.
+\end{equation}
+The catalog order is frozen by raw product identifier. Scores are ranked in
+descending order, with raw identifier ascending as the deterministic tie break.
+No sampled candidate set is used when full-catalog scoring is available. This
+policy makes the candidate universe explicit and avoids interpreting a sampled
+metric as an exact-catalog quantity.
+
+The primary target is a novel organic purchase in the target split. A user is
+eligible only when at least one such positive event remains after the protocol
+filters. Binary relevance is used for the top-$K$ metrics, with $K=10$. For a
+user with relevant set $T_u$, the normalized discounted cumulative gain is
+\begin{equation}
+  \mathrm{NDCG@10}_u = \frac{\mathrm{DCG@10}_u}
+  {\mathrm{IDCG@10}_u},
+\end{equation}
+where the ideal denominator uses $\min(|T_u|,10)$. Hit rate is the indicator
+that at least one relevant item appears in the first ten positions. Recall is
+reported separately because its denominator is the number of relevant target
+items, not a hit indicator. Macro per-user GAUC is computed as the exact AUC
+between each user's relevant positives and unseen non-positives, with average
+rank for ties, and then averaged across eligible users.
+
+The item-cold analysis is defined from the training graph. A strict zero-edge
+item has no training interaction; an item with one or more training edges is
+reported, if needed, in a sparse cohort rather than the zero-edge cohort. Warm,
+sparse, and zero-edge denominators are constructed before scoring. The rule-
+aligned cohort is likewise constructed from training transactions only. These
+cohort definitions prevent a blended denominator from being presented as a
+strict cold-item result.
+
+\subsection{Models and adapter provenance}
+
+The registry begins with Random and MostPop sanity controls, followed by
+faithfully adapted reference methods where source and environment bindings are
+available. ItemCF and BPR represent different collaborative contracts: the
+former aggregates item-neighbor evidence, while the latter optimizes pairwise
+implicit preferences \cite{sarwar2001_itemcf} %<!--ref:sarwar2001_itemcf--><!--anchor:section:Sections 3.1 Item Similarity Computation and 3.2 Prediction Computation-->
+\cite{rendle2009_bpr} %<!--ref:rendle2009_bpr--><!--anchor:section:Sections 4.1 BPR Optimization Criterion, 4.2 BPR Learning Algorithm, and 4.3.1 Matrix Factorization-->.
+The reference adapter retains the native objective and records repository
+revision, dataset mapping, split, sampler, configuration, checkpoint rule, and
+score-export revision. A source-native result is not relabeled as a harmonized
+result merely because its scores can be read by the shared evaluator.
+
+The proposed scope contains three related conditions. \texttt{IndependentDeepTwoTower}
+uses user-history and item-content representations without the rule branch.
+\texttt{WideRuleOnly} uses association features fit from training transactions.
+\texttt{ProposedHybrid} combines the deep score and the rule score after the
+normalization and additive fusion specified in a frozen configuration. All three
+conditions emit component or total scores through the same \texttt{ScoreArtifact}
+contract. The association rules are fit before validation and test data are
+accessible, and the negative sampler draws only from items absent from the
+user's training history.
+
+The model descriptor also records the feature set, native objective, negative
+sampler, implementation provenance, configuration hash, adapter revision, and
+checkpoint hash. A text encoder is an input representation, not an outcome;
+recommendation quality is assessed only after the recommender objective and
+ranking evaluator have been applied. This constraint follows the distinction
+between semantic embedding quality and task-specific recommendation evaluation
+in prior work \cite{reimers2019_sbert} %<!--ref:reimers2019_sbert--><!--anchor:section:Abstract; Section 1, Introduction; Section 3, Training Details-->.
+
+\subsection{Metrics and statistical plan}
+
+NDCG@10 is the primary outcome. HR@10 and macro per-user GAUC are supporting
+outcomes, and Recall@10 is retained for reporting compatibility. Each run
+exports per-user vectors before aggregation. The final training seeds are 42,
+2027, and 31415. A missing or failed required seed makes the confirmatory
+aggregate incomplete; it is not imputed or replaced after the test is opened.
+
+For a model $m$ and locked comparator $b$, the primary contrast is the mean of
+per-user differences across the three seed occurrences:
+\begin{equation}
+  \Delta_{\mathrm{NDCG}} =
+  \operatorname{mean}_{s,u}\left[
+  \mathrm{NDCG@10}_{m,s,u} - \mathrm{NDCG@10}_{b,s,u}\right].
+\end{equation}
+The planned interval is a two-sided percentile 95\% hierarchical paired
+bootstrap with 2,000 replicates. Each replicate resamples seed occurrences and,
+within each occurrence, resamples user indices with replacement. The same user
+indices are used for the model and comparator. The aggregate analysis uses a
+NumPy PCG64 generator seeded with 42. No seed average is formed before the
+bootstrap.
+
+The comparator, configuration, cohort builder, and evaluator are frozen before
+test access. Exploratory multi-model comparisons report the number of contrasts
+and apply Holm correction. Efficiency measures, including latency, throughput,
+and peak memory, are opened only after the accuracy artifact passes its required
+integrity checks. These choices keep statistical uncertainty separate from
+implementation reproducibility.
+
+\section{Experimental Design and Evidence Scope}
+
+\subsection{Evidence namespaces}
+
+The paper uses four explicitly separated evidence surfaces. The first,
+\texttt{PUBLIC\_DATA\_PROTOCOL\_VALIDATION}, contains the completed Pop/BPR MovieLens
+lane and supports descriptive statements about procedural execution and
+artifact traceability. The second, \texttt{OFFICIAL\_PROTOCOL\_REPRODUCTION}, is closed
+as incomparable and contributes no result row. The third,
+\texttt{HARMONIZED\_V5\_COMPARISON}, is sealed with major limitations and contributes no
+numeric row to this manuscript. The fourth is a future follow-up namespace for
+the v5 experiment and requires a new packet, registry, and audit.
+
+This separation is substantive rather than administrative. A public run can
+validate an execution path while using a different target event, dataset,
+feature vocabulary, or source protocol. Conversely, a controlled benchmark can
+answer a tightly defined internal question without supporting a public-data
+generalization. The manuscript therefore does not pool metrics across these
+surfaces or use one surface to fill a missing row in another.
+
+Admission is applied at the row level rather than to an entire project label.
+For a public row, admission requires a resolvable dataset binding, protocol
+binding, model configuration, checkpoint rule, evaluator receipt, and
+aggregate artifact. The four admitted rows satisfy that descriptive chain.
+They are retained because their provenance is replayable, not because their
+metric values are large or because they answer the primary Vietnamese retail
+question. The official source-native lane is retained as a separate
+incomparable outcome when its center, split, or evaluator cannot be aligned
+without changing the source contract. The harmonized v5 lane is likewise
+retained as a sealed limitation when mandatory comparator or statistical
+conditions are absent. These states are informative: they distinguish an
+execution path that was auditable from a scientific comparison that was not
+yet admissible. A later experiment may extend the evidence, but it must do so
+under a new namespace and a new admission decision rather than overwrite one
+of these states.
+
+\subsection{Run and artifact sequence}
+
+The follow-up execution begins with a dataset snapshot and protocol manifest.
+The runner then validates the environment, materializes the split, fits each
+model using its permitted training inputs, exports score chunks in the frozen
+catalog order, and invokes the independent evaluator. The resulting chain is
+\textit{run manifest} to configuration and environment receipts, dataset
+binding, checkpoint manifest, score artifact, per-user metrics, aggregate
+metrics, and bootstrap report. Every link carries a SHA-256 binding or a
+replayable derivation from the preceding artifact.
+
+The completed public lane follows the same evidence shape at a smaller scope.
+Its aggregate receipt is bound to SHA-256
+\texttt{512fb8ad8862f5e677ec18f369d310ae58c9d6f3c4f7b2e79c17ede389930c17}.
+The lane contains one Pop run with seed 42 and three BPR runs with seeds 42,
+2027, and 31415. The public result table is generated from that receipt and the
+four admitted row bindings; it is not reconstructed from console output.
+
+\subsection{Follow-up comparison and ablations}
+
+The controlled experiment first runs validation-only smoke checks and locks the
+comparator registry. It then trains the independent deep, rule-only, and full
+Hybrid conditions under the same data split, candidate catalog, masking, and
+evaluator. The full Hybrid can be interpreted only if its score artifact is
+finite, its catalog order matches the protocol, and its component artifacts are
+present.
+
+Three seeds are run after the configuration and checkpoint rule are frozen. The
+test set is opened once, followed by per-user metrics and the hierarchical
+bootstrap. The rule mechanism is evaluated on the train-defined rule cohort,
+not on a cohort selected after seeing test results. The item-cold analysis
+reports strict zero-edge and sparse denominators separately. If the full model
+does not improve the locked contrast, the result is reported as null or
+negative; changing the metric or dataset after the observation is outside the
+protocol.
+
+\subsection{External validity and adaptation}
+
+An external dataset is admissible only when it preserves the essential task and
+input contract: persistent user meaning, purchase or basket relevance, item
+content required by the model, an auditable split, compatible candidate
+semantics, and an evaluator mapping. A session or next-interaction dataset may
+be useful for sensitivity analysis, but it is not automatically a purchase
+replication. Similarly, replacing a source encoder or adaptation procedure with
+an available text model changes the method contract. Transferable recommender
+architectures retain explicit assumptions about target-domain adaptation
+\cite{hou2022_unisrec} %<!--ref:hou2022_unisrec--><!--anchor:figure:Figure 1; Sections 2.2-2.4, especially 2.4 Adaptation to Downstream Recommendation Tasks-->
+\cite{hou2023_vqrec} %<!--ref:hou2023_vqrec--><!--anchor:section:Sections 2.1-2.3; Section 3.1 Experimental Setup-->
+\cite{zheng2026_utgrec} %<!--ref:zheng2026_utgrec--><!--anchor:section:Section 2.4.2, Downstream Fine-tuning; Sections 3.1.1 and 3.1.3-3.1.4; Section 3.3, Ablation Study-->.
+An external result is therefore labeled according to its actual alignment and
+deviations, not according to a shared retail application label.
+
+\section{Results}
+
+\subsection{PUBLIC\_DATA\_PROTOCOL\_VALIDATION}
+
+The admitted public lane completed four run rows: one deterministic Pop run and
+three BPR runs. Table~\ref{tab:public-validation} reports the five metrics
+retained in the aggregate receipt. The rows are descriptive protocol evidence;
+the lane has no paired per-user vectors or inferential test, and the single Pop
+run does not provide a seed-level variance estimate.
+
+\begin{table}[H]
+\centering
+\caption{Descriptive results in the \texttt{PUBLIC\_DATA\_PROTOCOL\_VALIDATION} namespace.}
+\label{tab:public-validation}
+\small
+\begin{tabular}{llrrrrr}
+\toprule
+Model & Seed & Recall@10 & MRR@10 & NDCG@10 & Hit@10 & Precision@10 \\
+\midrule
+Pop & 42 & 0.042678 & 0.053217 & 0.031164 & 0.186837 & 0.021444 \\
+BPR & 42 & 0.101423 & 0.105435 & 0.070481 & 0.283439 & 0.038535 \\
+BPR & 2027 & 0.106237 & 0.113953 & 0.075893 & 0.299363 & 0.041507 \\
+BPR & 31415 & 0.109880 & 0.116951 & 0.077937 & 0.301486 & 0.042569 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+For the primary descriptive metric, the three BPR values have mean 0.074770
+and sample standard deviation 0.003853. The Pop point estimate is 0.031164.
+The BPR point estimates are consistent in direction across the three recorded
+seeds under this exact public protocol, but the design does not support an
+inferential conclusion because the Pop arm has one run and the lane lacks the
+paired per-user artifact required for such a comparison. The other metrics show
+the same row-level pattern, with BPR means of 0.294763 for Hit@10, 0.112113 for
+MRR@10, 0.105847 for Recall@10, and 0.040870 for Precision@10.
+
+\subsection{Evidence interpretation}
+
+The public rows demonstrate that the locked execution path can preserve a
+dataset binding, an environment receipt, a full-sort result, a checkpoint rule,
+and an immutable aggregate receipt across a small reference lane. They do not
+measure the proposed Hybrid, the v5 item-cold cohort, the rule-aligned cohort,
+or external commerce validity. The official reproduction lane remains
+incomparable, so no source-native target is imported into this table. The
+controlled v5 rows are likewise withheld from the result namespace used here.
+
+The table should therefore be read as an audit sample of a protocol, not as a
+ranked leaderboard. Its four rows represent one deterministic control and
+three stochastic reference runs; they do not provide balanced replication
+across all methods or seeds. The BPR mean and dispersion summarize the
+recorded BPR runs only, while the Pop value is a single point observation.
+Neither summary changes the unit of analysis or supplies a paired comparison.
+In particular, a row-level difference between the two labels would combine
+different run counts and would not be a valid estimate of the primary v5
+contrast. Keeping this limitation beside the table prevents a descriptive
+sanity check from acquiring the rhetorical role of a scientific baseline.
+
+\section{Discussion and Limitations}
+
+\subsection{What the current evidence supports}
+
+The main result of this stage is a protocol boundary. A recommender comparison
+becomes more interpretable when the prediction event, catalog, masking,
+relevance, evaluator, and training conditions are recorded together. The
+public lane provides a concrete, audited example of that boundary: four rows
+are traceable to a fixed environment, dataset binding, configuration, and
+checkpoint chain. The value of these rows is procedural. They show what was run
+and how the output can be traced, not what a different model or dataset would
+produce.
+
+The design also clarifies why the proposed architecture is an empirical
+question. A rule score and a deep score can be combined in a single ranking
+function, but a combined output does not identify the contribution of either
+component. The no-Wide and deep-only conditions, train-only rule fitting, and
+shared evaluator are needed to distinguish a mechanism effect from differences
+in inputs, sampling, or optimization. Prior hybrid systems and basket studies
+support this component-oriented design, while retaining source-specific task
+assumptions \cite{peng2022_ham} %<!--ref:peng2022_ham--><!--anchor:table:Modeling sections for long-term preference and association components; Section 6.6 ablation study and Table 13-->
+\cite{peng2023_m2} %<!--ref:peng2023_m2--><!--anchor:section:Section 4.1 model components; Section 6.5 ablation study-->
+\cite{li2023_repetition_exploration} %<!--ref:li2023_repetition_exploration--><!--anchor:section:Introduction definitions and research questions; exploration-only analyses-->.
+
+The namespace policy has a second benefit. It makes an incomplete or
+incomparable source reproduction visible without treating a convenient public
+run as a replacement. It also keeps the controlled benchmark honest about its
+status as a constructed Vietnamese retail setting. This distinction is
+especially important for cold-item claims: graph methods learn from observed
+edges, and content signals can carry popularity structure, so neither sparse
+graph results nor available text alone identifies performance for a strict
+zero-edge item \cite{he2020_lightgcn} %<!--ref:he2020_lightgcn--><!--anchor:section:Sections 3.1.1 Light Graph Convolution, 3.1.2 Layer Combination, and 3.3 Model Training-->
+\cite{meehan2025_cold_popbias} %<!--ref:meehan2025_cold_popbias--><!--anchor:section:Section 1, Introduction; Sections 3.1-3.3-->.
+
+This boundary also gives a practical interpretation of the current dataset
+decision. A catalog with 5,200 items and 5,000 users is not invalid merely
+because its interaction matrix is sparse. Sparse data can be appropriate for a
+controlled mechanism study when the target events, eligible-user count,
+item-coverage profile, and rule-support distribution are measured before the
+test is opened. The relevant question is whether enough users and items remain
+in each predeclared cohort to make the estimand stable and interpretable. The
+follow-up snapshot must consequently report the number of users with a novel
+positive, the number of strict zero-edge and sparse items, the number of
+transactions available for rule mining, and the exclusions caused by missing
+content or malformed timestamps. If those diagnostics show that the rule or
+cold-item estimand is underpopulated, the appropriate response is a versioned
+dataset amendment or a reduced-method ablation. It is not to change the
+generator, cohort definition, or metric after observing the test output.
+
+The staged evidence policy is useful beyond this particular benchmark. It
+allows infrastructure and provenance to be validated on a public dataset
+without claiming that public-data behavior transfers to a constructed local
+setting. It also prevents a difficult source reproduction from being hidden by
+an easier surrogate. For a methods paper, this separation makes a negative
+or incomplete empirical outcome publishable as an explicit boundary rather
+than forcing every lane into a single success/failure label.
+
+\subsection{Limitations}
+
+First, the current public evidence is not an evaluation of the proposed model.
+It contains a deterministic sanity control and one learned reference family,
+with three BPR seeds but only one Pop run. Aggregate metrics are available, but
+paired per-user vectors, confidence intervals, and bootstrap estimates are not
+available in this lane. The descriptive direction should therefore not be
+treated as a general algorithm ranking.
+
+Second, the strict source-native reproduction lane is closed as incomparable.
+This prevents a paper number from being transferred across a changed split,
+candidate policy, or evaluator, but it also means that the current manuscript
+cannot report a successful source-center reproduction. The follow-up must either
+resolve the exact source contract or retain the incomparable status.
+
+Third, the v5 benchmark is controlled and semi-synthetic. It is useful for
+testing a declared mechanism under a reproducible schema, but its generated
+behavior may not represent the distribution, incentives, or repeat/explore
+balance of a live retail population. Next-basket work shows why repeat and novel
+item behavior should be separated rather than summarized by one aggregate
+quantity \cite{li2023_nbr_reality} %<!--ref:li2023_nbr_reality--><!--anchor:figure:Figure 1 and Introduction contribution bullets; repeat-ratio and baseline analyses-->
+\cite{li2023_mask_swap} %<!--ref:li2023_mask_swap--><!--anchor:section:Sections 4.1 and 4.2 mask/swap strategy; Section 5 BTBR model; Section 6 experiments-->.
+The manuscript consequently treats the v5 counts as manifest declarations until
+the new snapshot lineage is admitted and does not describe the records as
+observed shopper logs.
+
+Fourth, cold-item and content conclusions remain narrow. A strict zero-edge
+definition is not interchangeable with a rare-item threshold, and the
+denominators used in other cold-start studies do not automatically apply here.
+Content representations can be aligned to collaborative teachers and inherit
+their popularity structure; a text encoder can therefore be useful without
+settling the ranking question \cite{huang2023_aldi} %<!--ref:huang2023_aldi--><!--anchor:section:Section 2.1, Problem Formulation; Section 2.2, Existing Solutions-->
+\cite{meehan2026_semco} %<!--ref:meehan2026_semco--><!--anchor:section:Section 1, Introduction; Section 3.1, Problem Definition; Sections 3.2-3.3-->.
+
+Fifth, external validity is not established. A compatible public commerce
+dataset must preserve user, purchase, item-content, split, and candidate
+semantics. Shared authorship, platform, or benchmark lineage also limits the
+number of independent replications that can be claimed. These restrictions are
+particularly relevant for transfer methods whose downstream adaptation is part
+of the method rather than an optional implementation detail.
+
+Finally, the current stage does not establish online behavior, revenue, latency
+gates, resource efficiency, or deployment readiness. The efficiency analysis is
+intentionally deferred until accuracy artifacts pass their integrity checks.
+These limitations are design constraints for the next experiment, not missing
+values to be filled by importing source-native metrics.
+
+\subsection{Follow-up decision criteria}
+
+The next empirical packet can support a model-effect conclusion only when the
+v5 snapshot, protocol, comparator registry, component artifacts, three seeds,
+per-user metrics, and bootstrap report are all sealed. The rule branch must be
+evaluated on its predeclared cohort, the cold analysis must retain separate
+denominators, and any external run must document deviations from the source
+contract. If any of these conditions fails, the corresponding conclusion stays
+unresolved. If the Hybrid contrast is null or negative, that outcome is
+reported directly and the paper's interpretation is narrowed accordingly.
+
+\section{Conclusion}
+
+This paper defines a reproducible protocol for comparing retail recommenders
+under a fixed temporal, novel-purchase, full-catalog ranking task. Its central
+contribution is to bind data, split, candidate catalog, masking, evaluator,
+model artifacts, and uncertainty analysis into an auditable evidence chain. The
+completed public validation lane contains four descriptive Pop/BPR rows and
+shows that the chain can be executed and traced in a separate public namespace.
+
+The evidence does not yet answer whether the proposed decoupled Wide-and-Deep
+Hybrid shows a positive contrast on the controlled Vietnamese benchmark. That question requires
+the separately audited v5 follow-up with component ablations, cold-item
+denominators, per-user statistics, and an explicit external-compatibility gate.
+Until those artifacts are available, the appropriate conclusion is a bounded
+methods contribution and a transparent empirical agenda.
+The next gate is therefore operationally precise: it must either produce a
+complete, null, or negative comparison under the frozen contract, or document
+why the relevant estimand remains unresolved. Both outcomes are more
+informative than importing a result from a different protocol.
+
+\section*{Data Availability}
+
+The public validation uses a named public dataset under its provider terms. The
+controlled v5 data are a versioned research asset whose release and
+redistribution status must be checked independently; this manuscript does not
+assert unrestricted redistribution of row-level histories.
+
+\section*{Ethics Statement}
+
+The reported work uses secondary public data and controlled/generated behavior;
+it does not recruit or interact with human participants. Any future use of
+private logs, identifiable records, surveys, or online experiments requires a
+new institutional ethics and data-protection determination.
+
+\section*{Author Contributions}
+
+Author metadata and contribution roles are intentionally left blank in this
+venue-neutral version.
+
+\section*{Funding and Conflicts of Interest}
+
+Funding information and conflict-of-interest disclosures will be supplied with
+the author and submission metadata.
+
+\bibliographystyle{IEEEtran}
+\bibliography{../04_citations/refs_stage2}
+
+\end{document}

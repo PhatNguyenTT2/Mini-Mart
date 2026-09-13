@@ -1,0 +1,610 @@
+{
+  "claim_intent_manifests": [
+    {
+      "claims": [
+        {
+          "claim_id": "C-001",
+          "claim_text": "Offline recommender conclusions are conditional on the prediction event, split, candidate universe, masking, metric, aggregation, and training choices.",
+          "intended_evidence_kind": "theoretical",
+          "negative_constraints": [
+            {
+              "constraint_id": "NC-C001-1",
+              "rule": "Do not treat equal metric labels as evidence of protocol equivalence."
+            }
+          ],
+          "planned_refs": [
+            "gusak2025_time_split",
+            "petrov2022_a_systematic_review_and_replicability_study_of_bert4rec_fo"
+          ]
+        },
+        {
+          "claim_id": "C-002",
+          "claim_text": "A shared full-catalog evaluator can make protocol differences inspectable without making distinct model families equivalent.",
+          "intended_evidence_kind": "normative",
+          "negative_constraints": [
+            {
+              "constraint_id": "NC-C002-1",
+              "rule": "Do not use a shared evaluator to erase native objective or input differences."
+            }
+          ],
+          "planned_refs": [
+            "gusak2025_time_split",
+            "petrov2022_a_systematic_review_and_replicability_study_of_bert4rec_fo"
+          ]
+        },
+        {
+          "claim_id": "C-003",
+          "claim_text": "ItemCF, BPR, NCF, DeepFM, sequential models, and two-tower systems carry distinct signal, objective, and task contracts.",
+          "intended_evidence_kind": "theoretical",
+          "negative_constraints": [
+            {
+              "constraint_id": "NC-C003-1",
+              "rule": "Do not infer a v5 ranking from a source-native task or metric."
+            }
+          ],
+          "planned_refs": [
+            "sarwar2001_itemcf",
+            "rendle2009_bpr",
+            "he2017_ncf",
+            "guo2017_deepfm",
+            "kang2018_sasrec",
+            "sun2019_bert4rec",
+            "yi2019_ndr"
+          ]
+        },
+        {
+          "claim_id": "C-004",
+          "claim_text": "Wide and Deep motivates a memorization/generalization decomposition, but it does not establish the effectiveness of an Apriori-derived branch under v5.",
+          "intended_evidence_kind": "theoretical",
+          "negative_constraints": [
+            {
+              "constraint_id": "NC-C004-1",
+              "rule": "Do not claim that the Wide branch improves ranking before the follow-up experiment."
+            }
+          ],
+          "planned_refs": [
+            "cheng2016_wide_deep",
+            "agrawal1994_apriori"
+          ]
+        },
+        {
+          "claim_id": "C-005",
+          "claim_text": "Association-rule and hybrid literature motivates component ablations, but it does not establish the v5 Wide-branch effect.",
+          "intended_evidence_kind": "theoretical",
+          "negative_constraints": [
+            {
+              "constraint_id": "NC-C005-1",
+              "rule": "Do not convert literature plausibility into an H3 result."
+            }
+          ],
+          "planned_refs": [
+            "agrawal1994_apriori",
+            "ghoshal2014_multi_item_rules",
+            "liu2009_hybrid_seq_cf",
+            "peng2022_ham",
+            "peng2023_m2"
+          ]
+        },
+        {
+          "claim_id": "C-006",
+          "claim_text": "Repeat and exploration behavior should be separated when interpreting next-basket accuracy because aggregate accuracy alone does not establish novel-item gain.",
+          "intended_evidence_kind": "empirical",
+          "negative_constraints": [
+            {
+              "constraint_id": "NC-C006-1",
+              "rule": "Do not apply repeat/explore ratios from another dataset to v5."
+            }
+          ],
+          "planned_refs": [
+            "li2023_nbr_reality",
+            "li2023_repetition_exploration",
+            "li2023_mask_swap",
+            "mansouri2026_repeat_explore_lightgcn"
+          ]
+        },
+        {
+          "claim_id": "C-007",
+          "claim_text": "A strict zero-edge item must be defined from the training graph, with warm, sparse, and zero-edge denominators reported separately.",
+          "intended_evidence_kind": "definitional",
+          "negative_constraints": [
+            {
+              "constraint_id": "NC-C007-1",
+              "rule": "Do not equate rare-item, sparse-edge, and strict zero-edge cohorts."
+            }
+          ],
+          "planned_refs": [
+            "volkovs2017_dropoutnet",
+            "huang2023_aldi"
+          ]
+        },
+        {
+          "claim_id": "C-008",
+          "claim_text": "Content representations and transferable recommender architectures require task-specific ranking evaluation and explicit target-domain adaptation assumptions.",
+          "intended_evidence_kind": "theoretical",
+          "negative_constraints": [
+            {
+              "constraint_id": "NC-C008-1",
+              "rule": "Do not treat encoder quality or architecture transfer as recommendation evidence by itself."
+            }
+          ],
+          "planned_refs": [
+            "reimers2019_sbert",
+            "hou2022_unisrec",
+            "hou2023_vqrec",
+            "sheng2025_alpharec",
+            "meehan2025_cold_popbias",
+            "meehan2026_semco",
+            "zheng2026_utgrec"
+          ]
+        },
+        {
+          "claim_id": "C-009",
+          "claim_text": "The four admitted Pop/BPR rows are descriptive public protocol validation and do not evaluate the proposed Hybrid.",
+          "intended_evidence_kind": "empirical",
+          "negative_constraints": [
+            {
+              "constraint_id": "NC-C009-1",
+              "rule": "Bind every reported public number to the admitted aggregate artifact and keep it within its namespace."
+            }
+          ],
+          "planned_experiment_ids": [
+            "ais-r8-p3-public-validation-attempt-003"
+          ],
+          "planned_refs": []
+        },
+        {
+          "claim_id": "C-010",
+          "claim_text": "Official reproduction, public protocol validation, and harmonized v5 comparison answer different questions and must remain separate evidence surfaces.",
+          "intended_evidence_kind": "normative",
+          "negative_constraints": [
+            {
+              "constraint_id": "NC-C010-1",
+              "rule": "Do not pool or numerically join results across namespaces."
+            }
+          ],
+          "planned_refs": []
+        },
+        {
+          "claim_id": "C-011",
+          "claim_text": "The proposed decoupled Wide-and-Deep Two-Tower Hybrid remains an open empirical question requiring a separately audited follow-up experiment.",
+          "intended_evidence_kind": "normative",
+          "negative_constraints": [
+            {
+              "constraint_id": "NC-C011-1",
+              "rule": "Do not state Hybrid superiority, H1-H4 success, or production effectiveness."
+            }
+          ],
+          "planned_refs": [
+            "cheng2016_wide_deep",
+            "liu2009_hybrid_seq_cf"
+          ]
+        },
+        {
+          "claim_id": "C-012",
+          "claim_text": "This manuscript reports a bounded methods contribution and does not claim causal, production, state-of-the-art, or unrun hypothesis results.",
+          "intended_evidence_kind": "normative",
+          "negative_constraints": [
+            {
+              "constraint_id": "NC-C012-1",
+              "rule": "Keep all unrun empirical outcomes explicitly unresolved."
+            }
+          ],
+          "planned_refs": []
+        }
+      ],
+      "emitted_at": "2026-09-12T00:00:00Z",
+      "emitted_by": "draft_writer_agent",
+      "manifest_id": "M-2026-09-12T00:00:00Z-2e5d",
+      "manifest_negative_constraints": [
+        {
+          "constraint_id": "MNC-1",
+          "rule": "No unqualified causal or superiority language."
+        },
+        {
+          "constraint_id": "MNC-2",
+          "rule": "No cross-dataset or cross-protocol raw metric comparison."
+        },
+        {
+          "constraint_id": "MNC-3",
+          "rule": "No cold-item to cold-user extrapolation."
+        },
+        {
+          "constraint_id": "MNC-4",
+          "rule": "No Apriori/Wide effectiveness claim before the follow-up experiment."
+        },
+        {
+          "constraint_id": "MNC-5",
+          "rule": "No unconditional external-validity or replication claim."
+        },
+        {
+          "constraint_id": "MNC-6",
+          "rule": "Do not describe controlled/generated behavior as observed shopper logs."
+        },
+        {
+          "constraint_id": "MNC-7",
+          "rule": "Do not import historical manuscript numbers or source-native benchmark targets."
+        },
+        {
+          "constraint_id": "MNC-8",
+          "rule": "Do not count shared source lineage as independent corroboration."
+        },
+        {
+          "constraint_id": "MNC-9",
+          "rule": "Use train-defined rule-aligned cohort language when cohort membership depends on held-out outcomes."
+        },
+        {
+          "constraint_id": "MNC-10",
+          "rule": "Do not use a manuscript citation without a non-null original-source locator."
+        }
+      ],
+      "manifest_version": "1.0",
+      "session_id": "stage2-p2-g4-to-g6-draft-20260912"
+    }
+  ],
+  "compliance_history": [
+    {
+      "evidence": [
+        "research/hybrid-recsys-v5/05_manuscript/stage2_integrity/02_integrity/integrity_report_stage2_5.json",
+        "research/hybrid-recsys-v5/05_manuscript/stage2_integrity/02_integrity/reference_verification_stage2_5.json",
+        "research/hybrid-recsys-v5/05_manuscript/stage2_integrity/02_integrity/data_fidelity_audit_stage2_5.json",
+        "research/hybrid-recsys-v5/05_manuscript/stage2_integrity/02_integrity/originality_audit_stage2_5.json",
+        "research/hybrid-recsys-v5/05_manuscript/stage2_integrity/02_integrity/ai_failure_mode_checklist_stage2_5.json"
+      ],
+      "generated_at": "2026-09-13T00:15:00+07:00",
+      "mode": "primary_research",
+      "overall_decision": "warn",
+      "prisma_trAIce": null,
+      "raise": {
+        "block_decision": "warn",
+        "mode": "principles_only",
+        "principle_evidence": {
+          "fit_for_purpose": [
+            "The manuscript is fit for bounded methods/protocol review, but effectiveness claims require the separately audited follow-up experiment and ablations."
+          ],
+          "human_oversight": [
+            "The user approved the Paper Configuration Record and the Stage 2 outline before prose and integrity progression."
+          ],
+          "reproducibility": [
+            "Manuscript, bibliography, public aggregate, claim registry, evidence rows, and PDF are bound by replayed SHA-256 digests."
+          ],
+          "transparency": [
+            "The manuscript separates four evidence namespaces and states that Hybrid, official reproduction, v5 comparison, and H1-H4 remain unestablished."
+          ]
+        },
+        "principles": {
+          "fit_for_purpose": "warn",
+          "human_oversight": "pass",
+          "reproducibility": "pass",
+          "transparency": "pass"
+        }
+      },
+      "stage": "2.5",
+      "upstream_sync_status": "current",
+      "user_action_required": false
+    }
+  ],
+  "content_hash": "sha256:d3baf0deda40e7b51735f75213a36ef07cdf78b2e45ba830c92dc1524ea6624e",
+  "experiment_alignment_results": [
+    {
+      "alignment_verdict": "ALIGNED",
+      "claim_id": "C-009",
+      "claim_text": "The four admitted Pop/BPR rows are descriptive public protocol validation and do not evaluate the proposed Hybrid.",
+      "experiment_id": "ais-r8-p3-public-validation-attempt-003",
+      "finding_id": "EA-001",
+      "judge_model": "UNOBSERVABLE_IN_CENTRAL_CONTEXT",
+      "judge_run_at": "2026-09-13T00:15:00+07:00",
+      "manuscript_locator": "Results > PUBLIC_DATA_PROTOCOL_VALIDATION",
+      "rationale": "The manuscript reports exactly four Pop/BPR rows, labels them descriptive public protocol validation, and explicitly states that they do not evaluate the proposed Hybrid.",
+      "result_pointer": "planned_vs_executed[0].value.paper_admitted_rows plus aggregate_metrics.json",
+      "rule_version": "EA-v1",
+      "scoped_manifest_id": "M-2026-09-12T00:00:00Z-2e5d"
+    }
+  ],
+  "experiment_alignment_scope_note": "This check verifies disclosure and claim-to-provenance fidelity. It does not judge whether the experiment was correctly designed, run, statistically adequate, or reproducible by ARS.",
+  "experiment_intake_declaration": {
+    "authority": "research/hybrid-recsys-v5/00_control/material_passport.json",
+    "declared_at": "2026-08-13T10:46:57.174Z",
+    "declared_by": "scholar",
+    "status": "experiments_declared"
+  },
+  "experiment_provenance": [
+    {
+      "description": "The frozen Attempt-003 runtime completed four required runs. P4 independently audited retained source, data, protocol, masking, configuration, checkpoint, result, inventory, and descriptive arithmetic bindings. P5 performs state and paper-admission reconciliation only.",
+      "experiment_id": "ais-r8-p3-public-validation-attempt-003",
+      "known_limitations": [
+        {
+          "description": "No per-user metric vectors, paired bootstrap, confidence intervals, or confirmatory significance test are available in the public-data lane."
+        },
+        {
+          "description": "The public-data lane does not evaluate the proposed Hybrid method and is not a strict official reproduction."
+        },
+        {
+          "description": "Controlled-v5 evidence remains sealed with major limitations and zero paper-admitted rows."
+        }
+      ],
+      "negative_results": [],
+      "planned_vs_executed": [
+        {
+          "executed": true,
+          "metric": "Five frozen full-sort top-10 aggregate metrics",
+          "planned": "Complete and independently audit one Pop run and three fixed-seed BPR runs under the prospectively frozen public-data protocol.",
+          "result_file": "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/r8/public-data-protocol-validation/attempt-003/aggregate_metrics.json",
+          "value": {
+            "p4_assertions_passed": 281,
+            "p4_assertions_total": 281,
+            "paper_admitted_rows": 4,
+            "runtime_rows": 4
+          }
+        }
+      ],
+      "repro_lock": {
+        "ars_version": "3.21.0+codex-adapter-0.1.26",
+        "cross_model": {
+          "enabled": false,
+          "secondary_model_id": null
+        },
+        "external_protocols": {
+          "s2_api_protocol_version": "NOT_USED",
+          "s2_snapshot_available": false
+        },
+        "materials": {
+          "count": 7,
+          "list_hash": "sha256:2d68cf4ab918558d62dcff957cd287422e615c7a5999a3e43aae245ae605b6e9"
+        },
+        "model": {
+          "family": "RecBole",
+          "id": "Pop@42+BPR@42,2027,31415",
+          "weight_stable": false
+        },
+        "prompts": {
+          "agents_bundle_hash": "sha256:54da41749102ba86328c086122a4e1376f3afcc5b1306155710109b896b1f233",
+          "hash_timing": "skill-load",
+          "skill_md_hash": "sha256:5acb202b13a7dba912091ae5d15a19b88eb3f4e58b4d942649cb35df770ace91"
+        },
+        "schema_version": "1.0",
+        "stochasticity_declaration": "LLM outputs are not byte-reproducible. This lockfile documents configuration, not a deterministic replay guarantee."
+      },
+      "title": "RecBole Pop and BPR public-data protocol validation on GroupLens MovieLens 100K"
+    },
+    {
+      "description": "Reproduce selected official repositories under their documented datasets and protocols before accepting an adapter for harmonized evaluation.",
+      "experiment_id": "EXP-REF-REPRO",
+      "known_limitations": [
+        {
+          "description": "Legacy TensorFlow/PyTorch/CUDA environments may require isolated containers, and a failed reproduction must remain visible rather than being replaced silently."
+        }
+      ],
+      "negative_results": [],
+      "planned_vs_executed": [
+        {
+          "executed": false,
+          "planned": "Reproduce at least one official baseline result using the official repository, official dataset, and documented protocol within a preregistered tolerance.",
+          "skip_reason": "Phase 0 records intake only; repository environments and adapters have not been built."
+        }
+      ],
+      "repro_lock": {
+        "ars_version": "3.19.0",
+        "cross_model": {
+          "enabled": false,
+          "secondary_model_id": null
+        },
+        "external_protocols": {
+          "s2_api_protocol_version": "not-used-in-phase-0",
+          "s2_snapshot_available": false
+        },
+        "materials": {
+          "count": 4,
+          "list_hash": "sha256:4456b43817375a92ddc5e7f675a65d09ddfefca2694e42e67226efd0c976bd1f"
+        },
+        "model": {
+          "family": "openai",
+          "id": "runtime-model-id-not-exposed",
+          "weight_stable": false
+        },
+        "prompts": {
+          "agents_bundle_hash": "sha256:edadf445541c78ff8fe51b06857a39e1919a412243035d50486d84e801bcf103",
+          "hash_timing": "skill-load",
+          "skill_md_hash": "sha256:8ed244709d02abe224e6726d6a706b88080c70c6a73c0f2038404c9a0dee0e6c"
+        },
+        "schema_version": "1.0",
+        "stochasticity_declaration": "LLM outputs are not byte-reproducible. This lockfile documents configuration, not a deterministic replay guarantee."
+      },
+      "title": "Official baseline reproduction on source datasets"
+    },
+    {
+      "description": "Train and evaluate faithful baselines and the proposed Hybrid method on the same temporal split, full catalog, masking contract, validation budget, seeds, metrics, and shared evaluator.",
+      "experiment_id": "EXP-V5-HARMONIZED",
+      "known_limitations": [
+        {
+          "description": "The v5 behavior is controlled/semi-synthetic and cannot by itself establish real-world Vietnamese shopper effectiveness."
+        },
+        {
+          "description": "The available RTX 3060 Laptop GPU has 6 GB VRAM, so modern multi-seed baselines may require external compute after smoke testing."
+        }
+      ],
+      "negative_results": [],
+      "planned_vs_executed": [
+        {
+          "executed": false,
+          "planned": "Compare all promoted baselines and Hybrid using NDCG@10, HR@10, Recall@10, and macro per-user GAUC over seeds 42, 2027, and 31415 with hierarchical paired bootstrap inference.",
+          "skip_reason": "Phase 0 records intake only; baseline registry, tuning budget, and test seal are not yet locked."
+        },
+        {
+          "executed": false,
+          "planned": "Measure cold-item, rule-mechanism, ablation, coverage, latency, throughput, and memory outcomes under their declared cohorts and fixed runner.",
+          "skip_reason": "Phase 0 records intake only; measurement artifacts do not exist."
+        }
+      ],
+      "repro_lock": {
+        "ars_version": "3.19.0",
+        "cross_model": {
+          "enabled": false,
+          "secondary_model_id": null
+        },
+        "external_protocols": {
+          "s2_api_protocol_version": "not-used-in-phase-0",
+          "s2_snapshot_available": false
+        },
+        "materials": {
+          "count": 4,
+          "list_hash": "sha256:4456b43817375a92ddc5e7f675a65d09ddfefca2694e42e67226efd0c976bd1f"
+        },
+        "model": {
+          "family": "openai",
+          "id": "runtime-model-id-not-exposed",
+          "weight_stable": false
+        },
+        "prompts": {
+          "agents_bundle_hash": "sha256:edadf445541c78ff8fe51b06857a39e1919a412243035d50486d84e801bcf103",
+          "hash_timing": "skill-load",
+          "skill_md_hash": "sha256:8ed244709d02abe224e6726d6a706b88080c70c6a73c0f2038404c9a0dee0e6c"
+        },
+        "schema_version": "1.0",
+        "stochasticity_declaration": "LLM outputs are not byte-reproducible. This lockfile documents configuration, not a deterministic replay guarantee."
+      },
+      "title": "Shared-protocol benchmark on controlled Vietnamese retail benchmark v5"
+    },
+    {
+      "description": "Evaluate one full-mechanism-compatible public commerce dataset and one Vietnamese domain-sensitivity dataset without cross-dataset raw metric comparisons.",
+      "experiment_id": "EXP-EXTERNAL-VALIDITY",
+      "known_limitations": [
+        {
+          "description": "If no external dataset supports all essential Hybrid signals, the external result must be labelled as a reduced-method ablation and H4 remains NOT_TESTED."
+        }
+      ],
+      "negative_results": [],
+      "planned_vs_executed": [
+        {
+          "executed": false,
+          "planned": "Run official-protocol reproduction and a separate harmonized comparison on a public dataset that satisfies temporal interaction, item-text, and basket/session compatibility gates for the full Hybrid method.",
+          "skip_reason": "Phase 0 records intake only; dataset license, schema, task, and signal compatibility have not passed audit."
+        },
+        {
+          "executed": false,
+          "planned": "Run a separately labelled Vietnamese domain-sensitivity evaluation, prioritizing ViEcomRec when license and history structure permit the intended task.",
+          "skip_reason": "Phase 0 records intake only; Vietnamese dataset compatibility has not passed audit."
+        }
+      ],
+      "repro_lock": {
+        "ars_version": "3.19.0",
+        "cross_model": {
+          "enabled": false,
+          "secondary_model_id": null
+        },
+        "external_protocols": {
+          "s2_api_protocol_version": "not-used-in-phase-0",
+          "s2_snapshot_available": false
+        },
+        "materials": {
+          "count": 4,
+          "list_hash": "sha256:4456b43817375a92ddc5e7f675a65d09ddfefca2694e42e67226efd0c976bd1f"
+        },
+        "model": {
+          "family": "openai",
+          "id": "runtime-model-id-not-exposed",
+          "weight_stable": false
+        },
+        "prompts": {
+          "agents_bundle_hash": "sha256:edadf445541c78ff8fe51b06857a39e1919a412243035d50486d84e801bcf103",
+          "hash_timing": "skill-load",
+          "skill_md_hash": "sha256:8ed244709d02abe224e6726d6a706b88080c70c6a73c0f2038404c9a0dee0e6c"
+        },
+        "schema_version": "1.0",
+        "stochasticity_declaration": "LLM outputs are not byte-reproducible. This lockfile documents configuration, not a deterministic replay guarantee."
+      },
+      "title": "Two-track external validity evaluation"
+    }
+  ],
+  "experiment_provenance_carried_forward": {
+    "authority": "research/hybrid-recsys-v5/03_benchmark/stage1e/00_control/ais_r8_p5_paper_admission_decision_v1.json",
+    "experiment_ids": [
+      "ais-r8-p3-public-validation-attempt-003",
+      "EXP-REF-REPRO",
+      "EXP-V5-HARMONIZED",
+      "EXP-EXTERNAL-VALIDITY"
+    ],
+    "status": "CARRIED_BY_REFERENCE",
+    "writer_rule": "No empirical result is inferred from this reference-only carry-forward."
+  },
+  "integrity_binding": {
+    "bibliography_sha256": "eb1dfd3264dc8cc1dd442945c4ba54ad72c6e966d1077aa0d9702ce3593c7d43",
+    "claim_registry_sha256": "31440b3a0f262ce7b1a0db028ad8681c6c2b31070843d202d5f1ac477247db89",
+    "manuscript_sha256": "d3baf0deda40e7b51735f75213a36ef07cdf78b2e45ba830c92dc1524ea6624e",
+    "pdf_sha256": "2f95d39e7f0dd0bb107e973d4cd180fe8b94567bbf6ba81def18c6541f2d1f86",
+    "report_path": "research/hybrid-recsys-v5/05_manuscript/stage2_integrity/02_integrity/integrity_report_stage2_5.json",
+    "report_sha256": "3589f19bb65712fd2a465fca9704fafb508cd25288b247c24a645e4e40e1d580"
+  },
+  "integrity_pass_date": "2026-09-13T00:15:00+07:00",
+  "model_policy_audit": {
+    "actual_model": "UNOBSERVABLE_IN_CENTRAL_CONTEXT",
+    "actual_reasoning": "UNOBSERVABLE_IN_CENTRAL_CONTEXT",
+    "actual_service_tier": "UNOBSERVABLE",
+    "actual_speed": "UNOBSERVABLE",
+    "forbidden_service_tiers": [
+      "Fast",
+      "Priority"
+    ],
+    "requested_model": "gpt-5.6-sol",
+    "requested_reasoning": "ultra",
+    "requested_service_tier": "Standard",
+    "telemetry_policy": "No runtime attribute is inferred from latency, prose, or prior task history."
+  },
+  "origin_date": "2026-09-13T00:15:00+07:00",
+  "origin_mode": "stage2.5-pre-review-integrity",
+  "origin_skill": "academic-pipeline",
+  "repro_lock": {
+    "ars_version": "3.21.0+codex-adapter-0.1.26",
+    "cross_model": {
+      "enabled": false,
+      "secondary_model_id": null
+    },
+    "external_protocols": {
+      "s2_api_protocol_version": "NOT_USED",
+      "s2_snapshot_available": false
+    },
+    "materials": {
+      "count": 21,
+      "list_hash": "sha256:c011c8e20b15a7b79b351ed984c02c4787297c5b72956b6250bd0a586536a777"
+    },
+    "model": {
+      "family": "OpenAI",
+      "id": "gpt-5.6-sol",
+      "weight_stable": false
+    },
+    "prompts": {
+      "agents_bundle_hash": "sha256:e8dc400369eb6694323599eb2ecfb32f80f0a74c86a98a19fccabae9af9a17e7",
+      "hash_timing": "skill-load",
+      "skill_md_hash": "sha256:5acb202b13a7dba912091ae5d15a19b88eb3f4e58b4d942649cb35df770ace91"
+    },
+    "schema_version": "1.0",
+    "stochasticity_declaration": "LLM-generated outline text is not byte-reproducible; this lock records configuration and input bindings, not a deterministic replay guarantee."
+  },
+  "reset_boundary": [],
+  "scope_boundary": {
+    "allowed": [
+      "English Stage 2 manuscript draft",
+      "Argument blueprint and bounded literature synthesis",
+      "Methods and evidence-scope description",
+      "descriptive reporting of four admitted public protocol rows"
+    ],
+    "blocked": [
+      "Hybrid result or superiority claim",
+      "strict official reproduction claim",
+      "numeric public-v5 comparison",
+      "H1-H4 result",
+      "production or causal claim"
+    ]
+  },
+  "slr_lineage": false,
+  "upstream_dependencies": [
+    "stage1b_r1_r9_stage2_literature_handoff_v1",
+    "ais-r8-p5-paper-admission-decision-v1",
+    "ais-r8-p5-state-reconciliation-and-phase1e-seal-v1",
+    "rq_brief_stage1a",
+    "methodology_blueprint_stage1a",
+    "stage2_write_draft_v2",
+    "ais-r8-p5-phase1e-seal"
+  ],
+  "verification_status": "VERIFIED",
+  "version_label": "stage2_5_integrity_v1"
+}

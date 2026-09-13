@@ -1,0 +1,915 @@
+{
+  "citation_integrity_score": 1.0,
+  "conditions": [
+    "Run a professional similarity check before submission.",
+    "Recheck shortcut reliance after the proposed Hybrid and mandatory ablations run.",
+    "Do not promote descriptive public rows into Hybrid, superiority, causal, production, or cross-namespace claims."
+  ],
+  "fabrication_risk_score": 0.0,
+  "mode": "pre-review",
+  "overall_issues": {
+    "MEDIUM": 0,
+    "MINOR": 1,
+    "SERIOUS": 0
+  },
+  "phases": {
+    "A_references": {
+      "checked": 35,
+      "failed": 0,
+      "issues": [],
+      "passed": 35,
+      "report_path": "research/hybrid-recsys-v5/05_manuscript/stage2_integrity/02_integrity/reference_verification_stage2_5.json",
+      "report_sha256": "9ebac1b827c31fbda4d6a31dbe38a1b73d1f704ff84e6be5e4c3c434c7a1ef85"
+    },
+    "B_citation_context": {
+      "issues": [],
+      "population": 61,
+      "report_path": "research/hybrid-recsys-v5/05_manuscript/stage2_integrity/02_integrity/citation_context_audit_stage2_5.json",
+      "report_sha256": "b160b77dec160d34c36413ff721ed9b9402c6e3c6e0dc6ed4af94231761d620c",
+      "sampled": 19,
+      "verified": 19
+    },
+    "C_data": {
+      "claims_checked": 9,
+      "issues": [],
+      "report_path": "research/hybrid-recsys-v5/05_manuscript/stage2_integrity/02_integrity/data_fidelity_audit_stage2_5.json",
+      "report_sha256": "b9575d01153cb1f0d9af32aa934959331bda9da34f50b5213110acd1a9703e5f",
+      "verified": 9
+    },
+    "D_originality": {
+      "checked": true,
+      "coverage_percent": 32.4324,
+      "issues": [
+        {
+          "detail": "This bounded public Web search is a preliminary originality screen, not a substitute for Turnitin, iThenticate, or an equivalent professional similarity service.",
+          "severity": "MINOR",
+          "type": "PROFESSIONAL_SIMILARITY_CHECK_PENDING"
+        }
+      ],
+      "paragraph_population": 74,
+      "report_path": "research/hybrid-recsys-v5/05_manuscript/stage2_integrity/02_integrity/originality_audit_stage2_5.json",
+      "report_sha256": "bf06a06c65b5d2842f474391d34a33c38a813704754b819555382fd7b5a03618",
+      "sampled": 24,
+      "verdict": "ORIGINAL_SEARCH_BOUNDED"
+    },
+    "E_claims": {
+      "checked": 19,
+      "claim_registry_coverage": {
+        "candidate_unregistered_count": 0,
+        "draft_raw_sha256": "d3baf0deda40e7b51735f75213a36ef07cdf78b2e45ba830c92dc1524ea6624e",
+        "registry_raw_sha256": "31440b3a0f262ce7b1a0db028ad8681c6c2b31070843d202d5f1ac477247db89",
+        "registry_schema_version": "claim-registry/1.0",
+        "report_path": "research/hybrid-recsys-v5/05_manuscript/stage2_integrity/01_claim_registry/claim_registry_coverage_stage2_5.json",
+        "report_sha256": "0d24e6db51d9c8f811ba15ea080a82fe11db5755c36a74c0b86c927b596c6f6e",
+        "semantic_extraction_coverage": "not_machine_detectable",
+        "status": "completed"
+      },
+      "claim_strength_drift_findings": {
+        "artifact_path": "research/hybrid-recsys-v5/05_manuscript/stage2_integrity/02_integrity/claim_strength_drift_findings_stage2_5.json",
+        "artifact_sha256": "02724bc415bace03fb253e8a4242d18e027effcc8985deabcda56393aca87228",
+        "schema_version": "claim-strength-drift-findings/1.0",
+        "status": "skipped_no_revision_evidence"
+      },
+      "distortions": [],
+      "evidence_rows": [
+        {
+          "anchor": {
+            "kind": "none",
+            "value_decoded": "",
+            "value_encoded": ""
+          },
+          "cache": {
+            "key_sha256": null,
+            "status": "not_used"
+          },
+          "claim": {
+            "claim_id": "HI-001",
+            "paper_locator": "Front Matter",
+            "selection_tier": "HIGH-IMPACT",
+            "text": "\\begin{abstract}\nOffline recommender results are difficult to interpret when model identity is\nreported without the data, split, candidate, masking, objective, and evaluator\nconditions that produced the result. This paper presents a provenance-aware\nprotocol for assessing a decoupled Wide-and-Deep two-tower recommender in a\ncontrolled Vietnamese retail setting. The protocol fixes a temporal\nnovel-purchase task, full-catalog ranking, seen-item masking, deterministic tie\nhandling, per-user metrics, and a hierarchical uncertainty plan. It separates\nsource-native reproduction, public protocol validation, controlled-benchmark\ncomparison, and external validation into distinct evidence namespaces. The\ncompleted public lane contains one deterministic Pop run and three BPR runs on\nGroupLens MovieLens 100K; these rows are reported as descriptive protocol\nevidence only. The proposed Hybrid has not been admitted to the paper result\nset, and the controlled benchmark comparison remains a follow-up experiment.\nThe contribution is therefore a reproducible comparison design with explicit\nevidence boundaries, rather than a conclusion about a settled model ordering.\n\\end{abstract}"
+          },
+          "content_handling": {
+            "contains_external_text": false,
+            "rights_basis": "not_assessed",
+            "sharing_scope": "session_only"
+          },
+          "detail": "This selected claim has no writer citation anchor. Its wording and numerical boundary were replayed against the named internal contract or result artifact; the explicit anchorless state is preserved.",
+          "excerpt": {
+            "captured_at": null,
+            "excerpt_sha256": null,
+            "source_span_utf8": null,
+            "state": "anchorless",
+            "text": null
+          },
+          "row_id": "EVR-STAGE2.5-HI-001-anchorless",
+          "row_sha256": "cf7674ee2a64437322fcd68089686b156ef7bda48fdd4ddca4e18ede2c6eca60",
+          "schema_version": "evidence-row/1.0",
+          "source": {
+            "display_label": "Stage 2 claim-boundary and handoff replay",
+            "ref_slug": null,
+            "source_artifact_sha256": "82f4cc6d87adfe7d7e05c677166f1d023e8d02848c34689c1f63b467bd30d7f7",
+            "source_content_sha256": null,
+            "source_content_utf8_bytes": null
+          },
+          "surface": "phase_e_claim_verification",
+          "verdict": "VERIFIED"
+        },
+        {
+          "anchor": {
+            "kind": "section",
+            "value_decoded": "Replacement work Sections 3 and 3.1; Figures 1\u20134; Conclusions",
+            "value_encoded": "Replacement%20work%20Sections%203%20and%203.1%3B%20Figures%201%E2%80%934%3B%20Conclusions"
+          },
+          "cache": {
+            "key_sha256": "0c133c9e5607f9e3aad61db4691304b21bcae78cca1d7f1349477487fe99dbc3",
+            "status": "miss"
+          },
+          "claim": {
+            "claim_id": "LEX-011",
+            "paper_locator": "Introduction > Distinct signals and the conditional Hybrid question",
+            "selection_tier": "RANDOM",
+            "text": "\\cite{liu2009_hybrid_seq_cf} %<!--ref:liu2009_hybrid_seq_cf--><!--anchor:section:Replacement work Sections 3 and 3.1; Figures 1\u20134; Conclusions-->"
+          },
+          "content_handling": {
+            "contains_external_text": true,
+            "rights_basis": "not_assessed",
+            "sharing_scope": "session_only"
+          },
+          "detail": "The selected manuscript context stays within the cited source's documented method or evaluation scope; the persisted excerpt is a bounded locator aid, not a substitute for the full source.",
+          "excerpt": {
+            "captured_at": "2026-09-12T17:31:12Z",
+            "excerpt_sha256": "984b1b50e9ddbd385bfd43f00544a9d1a828a51b34c08b61ba3d1ffae106af93",
+            "source_span_utf8": {
+              "end": 2564,
+              "start": 2406
+            },
+            "state": "agent_extracted",
+            "text": "this work proposes a novel hybrid recommendation method that combines the segmentation-based sequential rule method with the segmentation-based KNN-CF method."
+          },
+          "row_id": "EVR-STAGE2.5-LEX-011-liu2009_hybrid_seq_cf",
+          "row_sha256": "1de0191b8222a5031e55f36ffe74b7627e5903f3b16a8f8cd32113b5ed5e8d46",
+          "schema_version": "evidence-row/1.0",
+          "source": {
+            "display_label": "Liu et al. (2009), NYCU publication record and abstract",
+            "ref_slug": "liu2009_hybrid_seq_cf",
+            "source_artifact_sha256": "599ed718e0b28d11ec42c57acb1fb12dc4fbdde783028bdf863dd5351e54844a",
+            "source_content_sha256": "4bcf4510161ba66c06f17be3dadf771fdaabdc24bde0aed259d98b8dfd3b320f",
+            "source_content_utf8_bytes": 13606
+          },
+          "surface": "phase_e_claim_verification",
+          "verdict": "VERIFIED"
+        },
+        {
+          "anchor": {
+            "kind": "section",
+            "value_decoded": "Figure 1; Sections 1\u20133; global temporal split and results subsections",
+            "value_encoded": "Figure%201%3B%20Sections%201%E2%80%933%3B%20global%20temporal%20split%20and%20results%20subsections"
+          },
+          "cache": {
+            "key_sha256": "4ccceb027b115840c6c2345960111fabda6d679a79c64908a3d0ebab3d35ae42",
+            "status": "miss"
+          },
+          "claim": {
+            "claim_id": "LEX-014",
+            "paper_locator": "Related Work > Evaluation and reproducibility",
+            "selection_tier": "RANDOM",
+            "text": "\\cite{gusak2025_time_split} %<!--ref:gusak2025_time_split--><!--anchor:section:Figure 1; Sections 1\u20133; global temporal split and results subsections-->,"
+          },
+          "content_handling": {
+            "contains_external_text": true,
+            "rights_basis": "not_assessed",
+            "sharing_scope": "session_only"
+          },
+          "detail": "The selected manuscript context stays within the cited source's documented method or evaluation scope; the persisted excerpt is a bounded locator aid, not a substitute for the full source.",
+          "excerpt": {
+            "captured_at": "2026-09-12T17:31:12Z",
+            "excerpt_sha256": "11b8b4c926fdbd990d7fb94cf712b65df16e1abe28f12d2f02ccc9fc0778d0f3",
+            "source_span_utf8": {
+              "end": 2004,
+              "start": 1914
+            },
+            "state": "agent_extracted",
+            "text": "Global temporal splitting addresses these issues by evaluating on distinct future periods."
+          },
+          "row_id": "EVR-STAGE2.5-LEX-014-gusak2025_time_split",
+          "row_sha256": "a4c3f04082e0503ea7eaa43222add997f31412d495c9d28fd6e373877aaff9a8",
+          "schema_version": "evidence-row/1.0",
+          "source": {
+            "display_label": "Gusak et al. (2025), author manuscript",
+            "ref_slug": "gusak2025_time_split",
+            "source_artifact_sha256": "bacc8bdfe282550958cf596c52c585141e246606f151934ae66632023800455d",
+            "source_content_sha256": "63ca752602c0aa256eec0eb64b1acd5cce53d07bd0c8f6dec7d90827084cc307",
+            "source_content_utf8_bytes": 69720
+          },
+          "surface": "phase_e_claim_verification",
+          "verdict": "VERIFIED"
+        },
+        {
+          "anchor": {
+            "kind": "section",
+            "value_decoded": "Implementation review and RQ2 training-time analysis, including Table 4",
+            "value_encoded": "Implementation%20review%20and%20RQ2%20training-time%20analysis%2C%20including%20Table%204"
+          },
+          "cache": {
+            "key_sha256": "5c2c7c4cc6cd0017d323cbb1c4d7c88557b6322b1b14f92a9167ca150ddba1d0",
+            "status": "miss"
+          },
+          "claim": {
+            "claim_id": "LEX-015",
+            "paper_locator": "Related Work > Evaluation and reproducibility",
+            "selection_tier": "RANDOM",
+            "text": "\\cite{petrov2022_a_systematic_review_and_replicability_study_of_bert4rec_fo} %<!--ref:petrov2022_a_systematic_review_and_replicability_study_of_bert4rec_fo--><!--anchor:section:Implementation review and RQ2 training-time analysis, including Table 4-->."
+          },
+          "content_handling": {
+            "contains_external_text": true,
+            "rights_basis": "not_assessed",
+            "sharing_scope": "session_only"
+          },
+          "detail": "The selected manuscript context stays within the cited source's documented method or evaluation scope; the persisted excerpt is a bounded locator aid, not a substitute for the full source.",
+          "excerpt": {
+            "captured_at": "2026-09-12T17:31:12Z",
+            "excerpt_sha256": "1545705c1e174105aa6514fd93e28518da6d15553f81e74c6193fe11ba3bef93",
+            "source_span_utf8": {
+              "end": 1139,
+              "start": 1007
+            },
+            "state": "agent_extracted",
+            "text": "we analyse the available implementations of BERT4Rec and show that we fail to reproduce results of the original BERT4Rec publication"
+          },
+          "row_id": "EVR-STAGE2.5-LEX-015-petrov2022_a_systematic_review_and_replicability_study_of_bert4rec_fo",
+          "row_sha256": "3779c3f6f689376ab84f862332a59e51fbe66d8c600c6ec43b3fb2d4d569e1a6",
+          "schema_version": "evidence-row/1.0",
+          "source": {
+            "display_label": "Petrov and Macdonald (2022), author manuscript",
+            "ref_slug": "petrov2022_a_systematic_review_and_replicability_study_of_bert4rec_fo",
+            "source_artifact_sha256": "b7617e2ee2966f53fc8444bfa3f21c5a1ea7173bfc66796d2a1586d886a4f209",
+            "source_content_sha256": "16b09274b0459ecb5fa084ddf51fe1a6623a7bca5a4a8875a29232b61c7d3a5d",
+            "source_content_utf8_bytes": 65687
+          },
+          "surface": "phase_e_claim_verification",
+          "verdict": "VERIFIED"
+        },
+        {
+          "anchor": {
+            "kind": "section",
+            "value_decoded": "Sections 4.1 BPR Optimization Criterion, 4.2 BPR Learning Algorithm, and 4.3.1 Matrix Factorization",
+            "value_encoded": "Sections%204.1%20BPR%20Optimization%20Criterion%2C%204.2%20BPR%20Learning%20Algorithm%2C%20and%204.3.1%20Matrix%20Factorization"
+          },
+          "cache": {
+            "key_sha256": "a98e8609e297430ecba6bbdd5ce993523044d58eab8c63233b949da0379d9f58",
+            "status": "miss"
+          },
+          "claim": {
+            "claim_id": "LEX-017",
+            "paper_locator": "Related Work > Collaborative, neural, and sequence recommendation",
+            "selection_tier": "RANDOM",
+            "text": "\\cite{rendle2009_bpr} %<!--ref:rendle2009_bpr--><!--anchor:section:Sections 4.1 BPR Optimization Criterion, 4.2 BPR Learning Algorithm, and 4.3.1 Matrix Factorization-->."
+          },
+          "content_handling": {
+            "contains_external_text": true,
+            "rights_basis": "not_assessed",
+            "sharing_scope": "session_only"
+          },
+          "detail": "The selected manuscript context stays within the cited source's documented method or evaluation scope; the persisted excerpt is a bounded locator aid, not a substitute for the full source.",
+          "excerpt": {
+            "captured_at": "2026-09-12T17:31:12Z",
+            "excerpt_sha256": "327a146415a97a519d2274269dcfc5550f98fe0f702b9500c97a1e7db449428b",
+            "source_span_utf8": {
+              "end": 3115,
+              "start": 2983
+            },
+            "state": "agent_extracted",
+            "text": "We present the generic optimization criterion BPR-Opt derived from the maximum posterior estimator for optimal personalized ranking."
+          },
+          "row_id": "EVR-STAGE2.5-LEX-017-rendle2009_bpr",
+          "row_sha256": "1d2611d15d1fe8f63254d2a9f7de6fb88d03abc2a10ae648dae108eaab2da35f",
+          "schema_version": "evidence-row/1.0",
+          "source": {
+            "display_label": "Rendle et al. (2009), author manuscript",
+            "ref_slug": "rendle2009_bpr",
+            "source_artifact_sha256": "9a28d1b9f447a86ca9cca4581d2e1a5b231d30b09a3127e176bdfebfb35ed02d",
+            "source_content_sha256": "1aaa1cf5445bf9f9cdddd6016e7e42a206dd195325f06fdca3af0c9cef53143b",
+            "source_content_utf8_bytes": 39811
+          },
+          "surface": "phase_e_claim_verification",
+          "verdict": "VERIFIED"
+        },
+        {
+          "anchor": {
+            "kind": "section",
+            "value_decoded": "Abstract; Table 5 repeat/explore results; Section 6 ablation study; limitations",
+            "value_encoded": "Abstract%3B%20Table%205%20repeat%2Fexplore%20results%3B%20Section%206%20ablation%20study%3B%20limitations"
+          },
+          "cache": {
+            "key_sha256": "56f886f9aba1211463d6727ba210fc14eca2b911537055f7cd9d56b356e50ef4",
+            "status": "miss"
+          },
+          "claim": {
+            "claim_id": "LEX-033",
+            "paper_locator": "Related Work > Apriori, association rules, and next-basket recommendation",
+            "selection_tier": "RANDOM",
+            "text": "\\cite{mansouri2026_repeat_explore_lightgcn} %<!--ref:mansouri2026_repeat_explore_lightgcn--><!--anchor:section:Abstract; Table 5 repeat/explore results; Section 6 ablation study; limitations-->."
+          },
+          "content_handling": {
+            "contains_external_text": true,
+            "rights_basis": "not_assessed",
+            "sharing_scope": "session_only"
+          },
+          "detail": "The selected manuscript context stays within the cited source's documented method or evaluation scope; the persisted excerpt is a bounded locator aid, not a substitute for the full source.",
+          "excerpt": {
+            "captured_at": "2026-09-12T17:31:12Z",
+            "excerpt_sha256": "eb7cf8722e31de978a069da3377effd49bcc4264e8b53dacc39717b32b83db3d",
+            "source_span_utf8": {
+              "end": 1187,
+              "start": 1110
+            },
+            "state": "agent_extracted",
+            "text": "evaluated using overall, repeat-specific, and explore-specific Top-K metrics."
+          },
+          "row_id": "EVR-STAGE2.5-LEX-033-mansouri2026_repeat_explore_lightgcn",
+          "row_sha256": "6a84a6ae9e413118cbb19f6a8829b8a6323b30c7305b70e7a0b69291caab332e",
+          "schema_version": "evidence-row/1.0",
+          "source": {
+            "display_label": "Mansouri et al. (2026), open-access article",
+            "ref_slug": "mansouri2026_repeat_explore_lightgcn",
+            "source_artifact_sha256": "a58e40a52df3413098f6bc6d12954530a8a67a2c4ff303a91190661996bbe83f",
+            "source_content_sha256": "c8a0fc55e74a67208a73fd7840b233abdbe492be9d12bec0db3887980945b8a4",
+            "source_content_utf8_bytes": 144287
+          },
+          "surface": "phase_e_claim_verification",
+          "verdict": "VERIFIED"
+        },
+        {
+          "anchor": {
+            "kind": "section",
+            "value_decoded": "Figure 1; Sections 2.2-2.4, especially 2.4 Adaptation to Downstream Recommendation Tasks",
+            "value_encoded": "Figure%201%3B%20Sections%202.2-2.4%2C%20especially%202.4%20Adaptation%20to%20Downstream%20Recommendation%20Tasks"
+          },
+          "cache": {
+            "key_sha256": "80742f3df33614dc1dd6d078c80bb709bb3695c1650707285db47bb5f61f2a33",
+            "status": "miss"
+          },
+          "claim": {
+            "claim_id": "LEX-042",
+            "paper_locator": "Related Work > Content, cold-item, and transfer learning",
+            "selection_tier": "RANDOM",
+            "text": "\\cite{hou2022_unisrec} %<!--ref:hou2022_unisrec--><!--anchor:section:Figure 1; Sections 2.2-2.4, especially 2.4 Adaptation to Downstream Recommendation Tasks-->,"
+          },
+          "content_handling": {
+            "contains_external_text": true,
+            "rights_basis": "not_assessed",
+            "sharing_scope": "session_only"
+          },
+          "detail": "The selected manuscript context stays within the cited source's documented method or evaluation scope; the persisted excerpt is a bounded locator aid, not a substitute for the full source.",
+          "excerpt": {
+            "captured_at": "2026-09-12T17:31:12Z",
+            "excerpt_sha256": "c7666f83cfbb75b9efd504540250043324f1c2b20ea3e63005b70fbddbceb239",
+            "source_span_utf8": {
+              "end": 1233,
+              "start": 1153
+            },
+            "state": "agent_extracted",
+            "text": "The proposed approach utilizes the associated description text of items to learn"
+          },
+          "row_id": "EVR-STAGE2.5-LEX-042-hou2022_unisrec",
+          "row_sha256": "5acdd0bf8db9972280cb4348e34278f7b842e9040600ec976cf577b46e7c9009",
+          "schema_version": "evidence-row/1.0",
+          "source": {
+            "display_label": "Hou et al. (2022), author manuscript",
+            "ref_slug": "hou2022_unisrec",
+            "source_artifact_sha256": "62efa6a2ba06de9004513cc7e9df4614cbb6b5247c079c6b9360d753963a05b7",
+            "source_content_sha256": "f82f8f182ffc43d99090fdd4b88c569fa9b182b3193c7ef75458288f8573979c",
+            "source_content_utf8_bytes": 56334
+          },
+          "surface": "phase_e_claim_verification",
+          "verdict": "VERIFIED"
+        },
+        {
+          "anchor": {
+            "kind": "none",
+            "value_decoded": "",
+            "value_encoded": ""
+          },
+          "cache": {
+            "key_sha256": null,
+            "status": "not_used"
+          },
+          "claim": {
+            "claim_id": "HI-002",
+            "paper_locator": "Methodology and Protocol > Dataset and temporal protocol",
+            "selection_tier": "HIGH-IMPACT",
+            "text": "The controlled v5 benchmark is a Vietnamese retail data construction with\nsemi-synthetic behavior. Its manifest declares user histories, item content,\ncategory and price signals, and purchase or basket events. It also declares\n5,000 users, 5,200 items, 823,371 interactions, and a designated item-cold\nsubset. These values are treated as dataset-manifest facts until the fresh\nfollow-up snapshot passes raw-to-internal reconciliation; they are not model\noutcomes."
+          },
+          "content_handling": {
+            "contains_external_text": false,
+            "rights_basis": "not_assessed",
+            "sharing_scope": "session_only"
+          },
+          "detail": "This selected claim has no writer citation anchor. Its wording and numerical boundary were replayed against the named internal contract or result artifact; the explicit anchorless state is preserved.",
+          "excerpt": {
+            "captured_at": null,
+            "excerpt_sha256": null,
+            "source_span_utf8": null,
+            "state": "anchorless",
+            "text": null
+          },
+          "row_id": "EVR-STAGE2.5-HI-002-anchorless",
+          "row_sha256": "abf56058059bf521b2ff973f1dc41b4858bd94d3ad2099881bca065b10fa6879",
+          "schema_version": "evidence-row/1.0",
+          "source": {
+            "display_label": "Frozen methodology and protocol replay",
+            "ref_slug": null,
+            "source_artifact_sha256": "dfe581aaffa48bdfa5567f151f27525bdb47a704d43f501bdfa7b6572496e0d1",
+            "source_content_sha256": null,
+            "source_content_utf8_bytes": null
+          },
+          "surface": "phase_e_claim_verification",
+          "verdict": "VERIFIED"
+        },
+        {
+          "anchor": {
+            "kind": "none",
+            "value_decoded": "",
+            "value_encoded": ""
+          },
+          "cache": {
+            "key_sha256": null,
+            "status": "not_used"
+          },
+          "claim": {
+            "claim_id": "LEX-048",
+            "paper_locator": "Methodology and Protocol > Dataset and temporal protocol",
+            "selection_tier": "RANDOM",
+            "text": "5,000 users, 5,200 items, 823,371 interactions, and a designated item-cold"
+          },
+          "content_handling": {
+            "contains_external_text": false,
+            "rights_basis": "not_assessed",
+            "sharing_scope": "session_only"
+          },
+          "detail": "This selected claim has no writer citation anchor. Its wording and numerical boundary were replayed against the named internal contract or result artifact; the explicit anchorless state is preserved.",
+          "excerpt": {
+            "captured_at": null,
+            "excerpt_sha256": null,
+            "source_span_utf8": null,
+            "state": "anchorless",
+            "text": null
+          },
+          "row_id": "EVR-STAGE2.5-LEX-048-anchorless",
+          "row_sha256": "d74d76f861e8cd12457b16dc6e55629bb6a080fd7b6702e55a4d070599cabef7",
+          "schema_version": "evidence-row/1.0",
+          "source": {
+            "display_label": "Frozen methodology and protocol replay",
+            "ref_slug": null,
+            "source_artifact_sha256": "dfe581aaffa48bdfa5567f151f27525bdb47a704d43f501bdfa7b6572496e0d1",
+            "source_content_sha256": null,
+            "source_content_utf8_bytes": null
+          },
+          "surface": "phase_e_claim_verification",
+          "verdict": "VERIFIED"
+        },
+        {
+          "anchor": {
+            "kind": "none",
+            "value_decoded": "",
+            "value_encoded": ""
+          },
+          "cache": {
+            "key_sha256": null,
+            "status": "not_used"
+          },
+          "claim": {
+            "claim_id": "HI-003",
+            "paper_locator": "Methodology and Protocol > Dataset and temporal protocol",
+            "selection_tier": "HIGH-IMPACT",
+            "text": "The declared temporal boundaries are train from 2026-01-01 through 2026-06-19,\nvalidation from 2026-06-20 through 2026-07-10, and test from 2026-07-11\nthrough 2026-08-01, all in UTC. User and item identifiers are mapped through an\nimmutable raw-to-internal table. The adapter checks schema, duplicate rows,\nmalformed records, timestamp ordering, user and item coverage, item-text\nprovenance, and the availability of basket or co-purchase structure. An\nexclusion is recorded with its count and reason rather than silently removed."
+          },
+          "content_handling": {
+            "contains_external_text": false,
+            "rights_basis": "not_assessed",
+            "sharing_scope": "session_only"
+          },
+          "detail": "This selected claim has no writer citation anchor. Its wording and numerical boundary were replayed against the named internal contract or result artifact; the explicit anchorless state is preserved.",
+          "excerpt": {
+            "captured_at": null,
+            "excerpt_sha256": null,
+            "source_span_utf8": null,
+            "state": "anchorless",
+            "text": null
+          },
+          "row_id": "EVR-STAGE2.5-HI-003-anchorless",
+          "row_sha256": "8cff81a57eac46cf8593f5cc61d8bfd6f17a3ed00497d1abcf9d4c4233dbc244",
+          "schema_version": "evidence-row/1.0",
+          "source": {
+            "display_label": "Frozen methodology and protocol replay",
+            "ref_slug": null,
+            "source_artifact_sha256": "dfe581aaffa48bdfa5567f151f27525bdb47a704d43f501bdfa7b6572496e0d1",
+            "source_content_sha256": null,
+            "source_content_utf8_bytes": null
+          },
+          "surface": "phase_e_claim_verification",
+          "verdict": "VERIFIED"
+        },
+        {
+          "anchor": {
+            "kind": "none",
+            "value_decoded": "",
+            "value_encoded": ""
+          },
+          "cache": {
+            "key_sha256": null,
+            "status": "not_used"
+          },
+          "claim": {
+            "claim_id": "HI-004",
+            "paper_locator": "Methodology and Protocol > Candidates, relevance, masking, and cohorts",
+            "selection_tier": "HIGH-IMPACT",
+            "text": "The primary target is a novel organic purchase in the target split. A user is\neligible only when at least one such positive event remains after the protocol\nfilters. Binary relevance is used for the top-$K$ metrics, with $K=10$. For a\nuser with relevant set $T_u$, the normalized discounted cumulative gain is\n\\begin{equation}\n  \\mathrm{NDCG@10}_u = \\frac{\\mathrm{DCG@10}_u}\n  {\\mathrm{IDCG@10}_u},\n\\end{equation}\nwhere the ideal denominator uses $\\min(|T_u|,10)$. Hit rate is the indicator\nthat at least one relevant item appears in the first ten positions. Recall is\nreported separately because its denominator is the number of relevant target\nitems, not a hit indicator. Macro per-user GAUC is computed as the exact AUC\nbetween each user's relevant positives and unseen non-positives, with average\nrank for ties, and then averaged across eligible users."
+          },
+          "content_handling": {
+            "contains_external_text": false,
+            "rights_basis": "not_assessed",
+            "sharing_scope": "session_only"
+          },
+          "detail": "This selected claim has no writer citation anchor. Its wording and numerical boundary were replayed against the named internal contract or result artifact; the explicit anchorless state is preserved.",
+          "excerpt": {
+            "captured_at": null,
+            "excerpt_sha256": null,
+            "source_span_utf8": null,
+            "state": "anchorless",
+            "text": null
+          },
+          "row_id": "EVR-STAGE2.5-HI-004-anchorless",
+          "row_sha256": "f555b2de1cbb119ace079720a22a165187bf4d7ff8ee696fb24716e053ac31b2",
+          "schema_version": "evidence-row/1.0",
+          "source": {
+            "display_label": "Frozen methodology and protocol replay",
+            "ref_slug": null,
+            "source_artifact_sha256": "dfe581aaffa48bdfa5567f151f27525bdb47a704d43f501bdfa7b6572496e0d1",
+            "source_content_sha256": null,
+            "source_content_utf8_bytes": null
+          },
+          "surface": "phase_e_claim_verification",
+          "verdict": "VERIFIED"
+        },
+        {
+          "anchor": {
+            "kind": "none",
+            "value_decoded": "",
+            "value_encoded": ""
+          },
+          "cache": {
+            "key_sha256": null,
+            "status": "not_used"
+          },
+          "claim": {
+            "claim_id": "HI-005",
+            "paper_locator": "Methodology and Protocol > Metrics and statistical plan",
+            "selection_tier": "HIGH-IMPACT",
+            "text": "NDCG@10 is the primary outcome. HR@10 and macro per-user GAUC are supporting\noutcomes, and Recall@10 is retained for reporting compatibility. Each run\nexports per-user vectors before aggregation. The final training seeds are 42,\n2027, and 31415. A missing or failed required seed makes the confirmatory\naggregate incomplete; it is not imputed or replaced after the test is opened."
+          },
+          "content_handling": {
+            "contains_external_text": false,
+            "rights_basis": "not_assessed",
+            "sharing_scope": "session_only"
+          },
+          "detail": "This selected claim has no writer citation anchor. Its wording and numerical boundary were replayed against the named internal contract or result artifact; the explicit anchorless state is preserved.",
+          "excerpt": {
+            "captured_at": null,
+            "excerpt_sha256": null,
+            "source_span_utf8": null,
+            "state": "anchorless",
+            "text": null
+          },
+          "row_id": "EVR-STAGE2.5-HI-005-anchorless",
+          "row_sha256": "e411b2440fa792dcbe76e51f84baefd9442fcb6ef13eebd3767122f2d8893453",
+          "schema_version": "evidence-row/1.0",
+          "source": {
+            "display_label": "Frozen methodology and protocol replay",
+            "ref_slug": null,
+            "source_artifact_sha256": "dfe581aaffa48bdfa5567f151f27525bdb47a704d43f501bdfa7b6572496e0d1",
+            "source_content_sha256": null,
+            "source_content_utf8_bytes": null
+          },
+          "surface": "phase_e_claim_verification",
+          "verdict": "VERIFIED"
+        },
+        {
+          "anchor": {
+            "kind": "none",
+            "value_decoded": "",
+            "value_encoded": ""
+          },
+          "cache": {
+            "key_sha256": null,
+            "status": "not_used"
+          },
+          "claim": {
+            "claim_id": "HI-006",
+            "paper_locator": "Methodology and Protocol > Metrics and statistical plan",
+            "selection_tier": "HIGH-IMPACT",
+            "text": "For a model $m$ and locked comparator $b$, the primary contrast is the mean of\nper-user differences across the three seed occurrences:\n\\begin{equation}\n  \\Delta_{\\mathrm{NDCG}} =\n  \\operatorname{mean}_{s,u}\\left[\n  \\mathrm{NDCG@10}_{m,s,u} - \\mathrm{NDCG@10}_{b,s,u}\\right].\n\\end{equation}\nThe planned interval is a two-sided percentile 95\\% hierarchical paired\nbootstrap with 2,000 replicates. Each replicate resamples seed occurrences and,\nwithin each occurrence, resamples user indices with replacement. The same user\nindices are used for the model and comparator. The aggregate analysis uses a\nNumPy PCG64 generator seeded with 42. No seed average is formed before the\nbootstrap."
+          },
+          "content_handling": {
+            "contains_external_text": false,
+            "rights_basis": "not_assessed",
+            "sharing_scope": "session_only"
+          },
+          "detail": "This selected claim has no writer citation anchor. Its wording and numerical boundary were replayed against the named internal contract or result artifact; the explicit anchorless state is preserved.",
+          "excerpt": {
+            "captured_at": null,
+            "excerpt_sha256": null,
+            "source_span_utf8": null,
+            "state": "anchorless",
+            "text": null
+          },
+          "row_id": "EVR-STAGE2.5-HI-006-anchorless",
+          "row_sha256": "3d99598c6d34c819ad853adb9d3f0856db0cfb0a9dba87b7ffbd00e9ae2c27f0",
+          "schema_version": "evidence-row/1.0",
+          "source": {
+            "display_label": "Frozen methodology and protocol replay",
+            "ref_slug": null,
+            "source_artifact_sha256": "dfe581aaffa48bdfa5567f151f27525bdb47a704d43f501bdfa7b6572496e0d1",
+            "source_content_sha256": null,
+            "source_content_utf8_bytes": null
+          },
+          "surface": "phase_e_claim_verification",
+          "verdict": "VERIFIED"
+        },
+        {
+          "anchor": {
+            "kind": "none",
+            "value_decoded": "",
+            "value_encoded": ""
+          },
+          "cache": {
+            "key_sha256": null,
+            "status": "not_used"
+          },
+          "claim": {
+            "claim_id": "HI-007",
+            "paper_locator": "Experimental Design and Evidence Scope > Run and artifact sequence",
+            "selection_tier": "HIGH-IMPACT",
+            "text": "The completed public lane follows the same evidence shape at a smaller scope.\nIts aggregate receipt is bound to SHA-256\n\\texttt{512fb8ad8862f5e677ec18f369d310ae58c9d6f3c4f7b2e79c17ede389930c17}.\nThe lane contains one Pop run with seed 42 and three BPR runs with seeds 42,\n2027, and 31415. The public result table is generated from that receipt and the\nfour admitted row bindings; it is not reconstructed from console output."
+          },
+          "content_handling": {
+            "contains_external_text": false,
+            "rights_basis": "not_assessed",
+            "sharing_scope": "session_only"
+          },
+          "detail": "This selected claim has no writer citation anchor. Its wording and numerical boundary were replayed against the named internal contract or result artifact; the explicit anchorless state is preserved.",
+          "excerpt": {
+            "captured_at": null,
+            "excerpt_sha256": null,
+            "source_span_utf8": null,
+            "state": "anchorless",
+            "text": null
+          },
+          "row_id": "EVR-STAGE2.5-HI-007-anchorless",
+          "row_sha256": "326b4ce1be877642037252c94fbf92ec6d2163b15bdd4e1f7676b8c679b08783",
+          "schema_version": "evidence-row/1.0",
+          "source": {
+            "display_label": "Admitted public aggregate and P5 paper-admission replay",
+            "ref_slug": null,
+            "source_artifact_sha256": "512fb8ad8862f5e677ec18f369d310ae58c9d6f3c4f7b2e79c17ede389930c17",
+            "source_content_sha256": null,
+            "source_content_utf8_bytes": null
+          },
+          "surface": "phase_e_claim_verification",
+          "verdict": "VERIFIED"
+        },
+        {
+          "anchor": {
+            "kind": "none",
+            "value_decoded": "",
+            "value_encoded": ""
+          },
+          "cache": {
+            "key_sha256": null,
+            "status": "not_used"
+          },
+          "claim": {
+            "claim_id": "HI-008",
+            "paper_locator": "Results > PUBLIC\\_DATA\\_PROTOCOL\\_VALIDATION",
+            "selection_tier": "HIGH-IMPACT",
+            "text": "The admitted public lane completed four run rows: one deterministic Pop run and\nthree BPR runs. Table~\\ref{tab:public-validation} reports the five metrics\nretained in the aggregate receipt. The rows are descriptive protocol evidence;\nthe lane has no paired per-user vectors or inferential test, and the single Pop\nrun does not provide a seed-level variance estimate."
+          },
+          "content_handling": {
+            "contains_external_text": false,
+            "rights_basis": "not_assessed",
+            "sharing_scope": "session_only"
+          },
+          "detail": "This selected claim has no writer citation anchor. Its wording and numerical boundary were replayed against the named internal contract or result artifact; the explicit anchorless state is preserved.",
+          "excerpt": {
+            "captured_at": null,
+            "excerpt_sha256": null,
+            "source_span_utf8": null,
+            "state": "anchorless",
+            "text": null
+          },
+          "row_id": "EVR-STAGE2.5-HI-008-anchorless",
+          "row_sha256": "083bafa6a32099ccec41d7d04d9bc5f07f541866a45df2433787b6a40926fc22",
+          "schema_version": "evidence-row/1.0",
+          "source": {
+            "display_label": "Admitted public aggregate and P5 paper-admission replay",
+            "ref_slug": null,
+            "source_artifact_sha256": "512fb8ad8862f5e677ec18f369d310ae58c9d6f3c4f7b2e79c17ede389930c17",
+            "source_content_sha256": null,
+            "source_content_utf8_bytes": null
+          },
+          "surface": "phase_e_claim_verification",
+          "verdict": "VERIFIED"
+        },
+        {
+          "anchor": {
+            "kind": "none",
+            "value_decoded": "",
+            "value_encoded": ""
+          },
+          "cache": {
+            "key_sha256": null,
+            "status": "not_used"
+          },
+          "claim": {
+            "claim_id": "HI-009",
+            "paper_locator": "Results > PUBLIC\\_DATA\\_PROTOCOL\\_VALIDATION",
+            "selection_tier": "HIGH-IMPACT",
+            "text": "\\begin{table}[htbp]\n\\centering\n\\caption{Descriptive results in the \\texttt{PUBLIC\\_DATA\\_PROTOCOL\\_VALIDATION} namespace.}\n\\label{tab:public-validation}\n\\small\n\\begin{tabular}{llrrrrr}\n\\toprule\nModel & Seed & Recall@10 & MRR@10 & NDCG@10 & Hit@10 & Precision@10 \\\\\n\\midrule\nPop & 42 & 0.042678 & 0.053217 & 0.031164 & 0.186837 & 0.021444 \\\\\nBPR & 42 & 0.101423 & 0.105435 & 0.070481 & 0.283439 & 0.038535 \\\\\nBPR & 2027 & 0.106237 & 0.113953 & 0.075893 & 0.299363 & 0.041507 \\\\\nBPR & 31415 & 0.109880 & 0.116951 & 0.077937 & 0.301486 & 0.042569 \\\\\n\\bottomrule\n\\end{tabular}\n\\end{table}"
+          },
+          "content_handling": {
+            "contains_external_text": false,
+            "rights_basis": "not_assessed",
+            "sharing_scope": "session_only"
+          },
+          "detail": "This selected claim has no writer citation anchor. Its wording and numerical boundary were replayed against the named internal contract or result artifact; the explicit anchorless state is preserved.",
+          "excerpt": {
+            "captured_at": null,
+            "excerpt_sha256": null,
+            "source_span_utf8": null,
+            "state": "anchorless",
+            "text": null
+          },
+          "row_id": "EVR-STAGE2.5-HI-009-anchorless",
+          "row_sha256": "f896b20ab01cbd6e04e4a024a5cbab5d88643dca8aa28c119e2e9dd66c0ef059",
+          "schema_version": "evidence-row/1.0",
+          "source": {
+            "display_label": "Admitted public aggregate and P5 paper-admission replay",
+            "ref_slug": null,
+            "source_artifact_sha256": "512fb8ad8862f5e677ec18f369d310ae58c9d6f3c4f7b2e79c17ede389930c17",
+            "source_content_sha256": null,
+            "source_content_utf8_bytes": null
+          },
+          "surface": "phase_e_claim_verification",
+          "verdict": "VERIFIED"
+        },
+        {
+          "anchor": {
+            "kind": "none",
+            "value_decoded": "",
+            "value_encoded": ""
+          },
+          "cache": {
+            "key_sha256": null,
+            "status": "not_used"
+          },
+          "claim": {
+            "claim_id": "HI-010",
+            "paper_locator": "Results > PUBLIC\\_DATA\\_PROTOCOL\\_VALIDATION",
+            "selection_tier": "HIGH-IMPACT",
+            "text": "For the primary descriptive metric, the three BPR values have mean 0.074770\nand sample standard deviation 0.003853. The Pop point estimate is 0.031164.\nThe BPR point estimates are consistent in direction across the three recorded\nseeds under this exact public protocol, but the design does not support an\ninferential conclusion because the Pop arm has one run and the lane lacks the\npaired per-user artifact required for such a comparison. The other metrics show\nthe same row-level pattern, with BPR means of 0.294763 for Hit@10, 0.112113 for\nMRR@10, 0.105847 for Recall@10, and 0.040870 for Precision@10."
+          },
+          "content_handling": {
+            "contains_external_text": false,
+            "rights_basis": "not_assessed",
+            "sharing_scope": "session_only"
+          },
+          "detail": "This selected claim has no writer citation anchor. Its wording and numerical boundary were replayed against the named internal contract or result artifact; the explicit anchorless state is preserved.",
+          "excerpt": {
+            "captured_at": null,
+            "excerpt_sha256": null,
+            "source_span_utf8": null,
+            "state": "anchorless",
+            "text": null
+          },
+          "row_id": "EVR-STAGE2.5-HI-010-anchorless",
+          "row_sha256": "eb11d8eaffbadfc58800ea66adc8e0a84d6ba7360afa4957c294018ee53ab121",
+          "schema_version": "evidence-row/1.0",
+          "source": {
+            "display_label": "Admitted public aggregate and P5 paper-admission replay",
+            "ref_slug": null,
+            "source_artifact_sha256": "512fb8ad8862f5e677ec18f369d310ae58c9d6f3c4f7b2e79c17ede389930c17",
+            "source_content_sha256": null,
+            "source_content_utf8_bytes": null
+          },
+          "surface": "phase_e_claim_verification",
+          "verdict": "VERIFIED"
+        },
+        {
+          "anchor": {
+            "kind": "none",
+            "value_decoded": "",
+            "value_encoded": ""
+          },
+          "cache": {
+            "key_sha256": null,
+            "status": "not_used"
+          },
+          "claim": {
+            "claim_id": "HI-011",
+            "paper_locator": "Discussion and Limitations > What the current evidence supports",
+            "selection_tier": "HIGH-IMPACT",
+            "text": "This boundary also gives a practical interpretation of the current dataset\ndecision. A catalog with 5,200 items and 5,000 users is not invalid merely\nbecause its interaction matrix is sparse. Sparse data can be appropriate for a\ncontrolled mechanism study when the target events, eligible-user count,\nitem-coverage profile, and rule-support distribution are measured before the\ntest is opened. The relevant question is whether enough users and items remain\nin each predeclared cohort to make the estimand stable and interpretable. The\nfollow-up snapshot must consequently report the number of users with a novel\npositive, the number of strict zero-edge and sparse items, the number of\ntransactions available for rule mining, and the exclusions caused by missing\ncontent or malformed timestamps. If those diagnostics show that the rule or\ncold-item estimand is underpopulated, the appropriate response is a versioned\ndataset amendment or a reduced-method ablation. It is not to change the\ngenerator, cohort definition, or metric after observing the test output."
+          },
+          "content_handling": {
+            "contains_external_text": false,
+            "rights_basis": "not_assessed",
+            "sharing_scope": "session_only"
+          },
+          "detail": "This selected claim has no writer citation anchor. Its wording and numerical boundary were replayed against the named internal contract or result artifact; the explicit anchorless state is preserved.",
+          "excerpt": {
+            "captured_at": null,
+            "excerpt_sha256": null,
+            "source_span_utf8": null,
+            "state": "anchorless",
+            "text": null
+          },
+          "row_id": "EVR-STAGE2.5-HI-011-anchorless",
+          "row_sha256": "187c373ce7074e2d3fdc3712a7424e2a7cde49397be7bf7ef28290a03915aa93",
+          "schema_version": "evidence-row/1.0",
+          "source": {
+            "display_label": "Frozen methodology and protocol replay",
+            "ref_slug": null,
+            "source_artifact_sha256": "dfe581aaffa48bdfa5567f151f27525bdb47a704d43f501bdfa7b6572496e0d1",
+            "source_content_sha256": null,
+            "source_content_utf8_bytes": null
+          },
+          "surface": "phase_e_claim_verification",
+          "verdict": "VERIFIED"
+        },
+        {
+          "anchor": {
+            "kind": "none",
+            "value_decoded": "",
+            "value_encoded": ""
+          },
+          "cache": {
+            "key_sha256": null,
+            "status": "not_used"
+          },
+          "claim": {
+            "claim_id": "HI-012",
+            "paper_locator": "Conclusion",
+            "selection_tier": "HIGH-IMPACT",
+            "text": "The evidence does not yet answer whether the proposed decoupled Wide-and-Deep\nHybrid shows a positive contrast on the controlled Vietnamese benchmark. That question requires\nthe separately audited v5 follow-up with component ablations, cold-item\ndenominators, per-user statistics, and an explicit external-compatibility gate.\nUntil those artifacts are available, the appropriate conclusion is a bounded\nmethods contribution and a transparent empirical agenda.\nThe next gate is therefore operationally precise: it must either produce a\ncomplete, null, or negative comparison under the frozen contract, or document\nwhy the relevant estimand remains unresolved. Both outcomes are more\ninformative than importing a result from a different protocol."
+          },
+          "content_handling": {
+            "contains_external_text": false,
+            "rights_basis": "not_assessed",
+            "sharing_scope": "session_only"
+          },
+          "detail": "This selected claim has no writer citation anchor. Its wording and numerical boundary were replayed against the named internal contract or result artifact; the explicit anchorless state is preserved.",
+          "excerpt": {
+            "captured_at": null,
+            "excerpt_sha256": null,
+            "source_span_utf8": null,
+            "state": "anchorless",
+            "text": null
+          },
+          "row_id": "EVR-STAGE2.5-HI-012-anchorless",
+          "row_sha256": "15b1cbac0eb21b1a73b3bdcf6b7bb23a63def25cbe532fd95ca55e133abfa116",
+          "schema_version": "evidence-row/1.0",
+          "source": {
+            "display_label": "Frozen methodology and protocol replay",
+            "ref_slug": null,
+            "source_artifact_sha256": "dfe581aaffa48bdfa5567f151f27525bdb47a704d43f501bdfa7b6572496e0d1",
+            "source_content_sha256": null,
+            "source_content_utf8_bytes": null
+          },
+          "surface": "phase_e_claim_verification",
+          "verdict": "VERIFIED"
+        }
+      ],
+      "registry_total": 76,
+      "selection_tiers": {
+        "HIGH-IMPACT": 12,
+        "NOT-SELECTED": 57,
+        "RANDOM": 7,
+        "TOP-UP": 0
+      },
+      "verified": 19
+    },
+    "F_ai_research_failure_modes": {
+      "blocking": false,
+      "checked": 7,
+      "clear": 6,
+      "insufficient_evidence": 1,
+      "report_path": "research/hybrid-recsys-v5/05_manuscript/stage2_integrity/02_integrity/ai_failure_mode_checklist_stage2_5.json",
+      "report_sha256": "3784ebb8c27987d06512ba904e03832f69471c3420a938e8e392a22ce690ab14",
+      "suspected": 0
+    }
+  },
+  "schema_version": "ars-integrity-report/schema-5-compatible",
+  "scope_note": "PASS_WITH_CONDITIONS establishes bounded integrity and provenance checks only; it does not certify experimental design, scientific validity, reproducibility by ARS, or publication readiness.",
+  "timestamp": "2026-09-13T00:15:00+07:00",
+  "verdict": "PASS_WITH_CONDITIONS"
+}

@@ -1,0 +1,113 @@
+{
+  "schema_version": "stage2-paper-configuration/1.0",
+  "stage_id": "P2-G1",
+  "project": "hybrid-recsys-v5",
+  "status": "CONFIRMED_BY_USER_PLAN",
+  "confirmation": {
+    "basis": "The user explicitly requested implementation of the supplied Phase 2 / Stage 2 plan, including the locked paper type, scope, language, citation style, venue status, author policy, and claim restrictions.",
+    "checkpoint": "PAPER_CONFIGURATION_RECORD",
+    "recorded_date": "2026-09-12",
+    "user_confirmation_scope": "configuration_only"
+  },
+  "paper_identity": {
+    "working_title": "Reproducible Hybrid Recommendation for Vietnamese Retail",
+    "paper_type": "methods_empirical",
+    "discipline": "recommender systems and information retrieval",
+    "language": "English",
+    "authors": [],
+    "affiliations": [],
+    "corresponding_author": null
+  },
+  "submission": {
+    "venue": "VENUE_NEUTRAL_PENDING_CFP",
+    "target_track": null,
+    "template": "venue_neutral_latex_pending_template_selection",
+    "citation_style": "IEEE_numbered",
+    "anonymous_submission": "undetermined_until_venue_selection"
+  },
+  "length_budget": {
+    "body_words_target": 5950,
+    "body_words_range": [5500, 6500],
+    "abstract_words_target": 200,
+    "references_excluded": true,
+    "section_targets": {
+      "introduction": 850,
+      "related_work": 1350,
+      "methodology_and_protocol": 1100,
+      "experimental_design_and_evidence_scope": 800,
+      "results": 600,
+      "discussion_and_limitations": 950,
+      "conclusion": 300
+    }
+  },
+  "research_frame": {
+    "primary_rq": "Under a fixed temporal novel-purchase full-catalog protocol on the controlled Vietnamese retail benchmark v5, does the proposed decoupled Wide-and-Deep Two-Tower Hybrid improve ranking effectiveness over the strongest faithfully reproduced baseline selected using validation data?",
+    "sub_questions": [
+      "Within the preregistered cold-item cohort, does Hybrid preserve or improve ranking quality relative to independent Deep and the strongest collaborative-only comparator?",
+      "On the train-defined rule-aligned cohort, does removing the Apriori-derived Wide branch reduce ranking quality relative to the full Hybrid?",
+      "Does the direction of the locked Hybrid effect replicate on at least one public external commerce dataset that preserves the essential model and task contract?",
+      "After all accuracy gates pass, does the verified bundle satisfy preregistered latency, throughput, and memory gates on a fixed runner?"
+    ],
+    "positioning": "methods/empirical paper with a separate follow-up harmonized-v5 experiment",
+    "conditional_thesis": "This paper develops and evaluates a reproducible protocol for assessing a decoupled Wide-and-Deep recommender under a fixed full-catalog ranking procedure; whether the proposed Hybrid improves effectiveness on the controlled Vietnamese benchmark remains an empirical question requiring the follow-up harmonized experiment."
+  },
+  "evidence_policy": {
+    "authorized_literature_claims": 22,
+    "prohibited_or_planning_only_claims": 22,
+    "authorized_result_rows": 4,
+    "authorized_result_namespace": "PUBLIC_DATA_PROTOCOL_VALIDATION",
+    "official_reproduction_rows": 0,
+    "harmonized_v5_rows": 0,
+    "hybrid_result_status": "NOT_ADMITTED",
+    "h4_status": "NOT_TESTED",
+    "numeric_cross_namespace_join": false,
+    "historical_manuscript_policy": "workspace/final/paper.tex is quarantined and is not a content or result source"
+  },
+  "claim_language_policy": {
+    "allowed_before_follow_up": [
+      "reproducible protocol",
+      "shared evaluator and provenance boundary",
+      "namespace-scoped descriptive public protocol validation",
+      "explicit empirical limitation",
+      "conditional research question"
+    ],
+    "blocked_before_follow_up": [
+      "state-of-the-art",
+      "outperforms",
+      "proves",
+      "superior",
+      "production effectiveness",
+      "no existing method",
+      "causal improvement",
+      "Hybrid superiority",
+      "strict official reproduction of 0.2768"
+    ]
+  },
+  "model_policy": {
+    "central_coordination": {
+      "requested_model": "gpt-5.6-sol",
+      "requested_reasoning": "max",
+      "requested_service_tier": "Standard"
+    },
+    "structure_and_drafting": {
+      "requested_model": "gpt-5.6-sol",
+      "requested_reasoning": "high",
+      "requested_service_tier": "Standard"
+    },
+    "independent_integrity_audit": {
+      "requested_model": "gpt-5.6-sol",
+      "requested_reasoning": "ultra",
+      "requested_service_tier": "Standard"
+    },
+    "forbidden_service_tiers": ["Fast", "Priority"],
+    "actual_runtime_telemetry": "UNOBSERVABLE_IN_CENTRAL_CONTEXT",
+    "telemetry_policy": "Do not infer model, reasoning, service tier, or speed from latency or prose."
+  },
+  "result_namespace_policy": {
+    "PUBLIC_DATA_PROTOCOL_VALIDATION": "Descriptive Pop/BPR rows only; no Hybrid, significance, superiority, or cross-namespace comparison.",
+    "OFFICIAL_PROTOCOL_REPRODUCTION": "CLOSED_INCOMPARABLE; no paper result rows.",
+    "HARMONIZED_V5_COMPARISON": "SEALED_WITH_MAJOR_LIMITATIONS; zero paper result rows and no TEST reopening.",
+    "FOLLOW_UP_HARMONIZED_V5": "Requires a new packet, namespace, run registry, and independent audit."
+  },
+  "next_checkpoint": "OUTLINE_APPROVAL_REQUIRED_BEFORE_ARGUMENT_AND_PROSE"
+}

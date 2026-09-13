@@ -1,0 +1,321 @@
+% Stage 2 manuscript fragment. Included by master_draft_stage2.tex.
+% The adjacent ref/anchor comments are provenance markers for the ARS audit.
+
+\section{Introduction}
+
+Retail recommendation is often presented as a model-selection problem, but an
+offline result is first a statement about a defined ranking task. A system must
+decide which user history is available, which items are eligible, what counts as
+a relevant future event, and how scores are converted into an ordered list. In
+large-scale services, candidate generation and ranking are also separate system
+roles rather than interchangeable names for one predictor
+\cite{covington2016_youtube} %<!--ref:covington2016_youtube--><!--anchor:section:Sections 2 System Overview, 3 Candidate Generation, and 4 Ranking-->
+\cite{yi2019_ndr} %<!--ref:yi2019_ndr--><!--anchor:section:Sections 2.3 Two-tower Models, 3 Modeling Framework, and 5 Neural Retrieval System-->.
+This distinction matters in retail settings with sparse user--item observations,
+changing purchase sequences, item metadata, and products with little or no
+training history. The same model label can describe different estimands when
+the candidate universe or target event changes.
+
+The present study addresses that problem in a controlled Vietnamese retail
+setting. The benchmark is intended to represent the data structures needed for
+retail ranking, including user histories, product content, categories, price
+signals, and purchase or basket events. Its behavior is controlled and
+semi-synthetic rather than a direct sample of Vietnamese shoppers. That choice
+allows the protocol to expose specific mechanisms, such as rule-aligned
+co-purchase signals and item-side content, while limiting the claims that can be
+made about natural behavior. The benchmark declaration specifies 5,000 users,
+5,200 items, 823,371 interactions, and a designated item-cold subset; these are
+manifest-level design facts and remain subject to the lineage receipt for the
+follow-up experiment.
+
+\subsection{Why comparability is a research problem}
+
+Offline recommender comparisons are sensitive to choices that are sometimes
+reported as implementation details. Temporal partitioning changes the
+information available at prediction time, while target construction determines
+which events enter the evaluation population. A recent study of splitting
+strategies demonstrates that sequential-recommender outcomes can vary with the
+split policy
+\cite{gusak2025_time_split} %<!--ref:gusak2025_time_split--><!--anchor:figure:Figure 1; Sections 1–3; global temporal split and results subsections-->
+and a systematic replicability analysis of BERT4Rec shows that training and
+implementation decisions are part of the reproducibility question
+\cite{petrov2022_a_systematic_review_and_replicability_study_of_bert4rec_fo} %<!--ref:petrov2022_a_systematic_review_and_replicability_study_of_bert4rec_fo--><!--anchor:table:Implementation review and RQ2 training-time analysis, including Table 4-->.
+Candidate construction, seen-item masking, negative sampling, cutoff, tie
+handling, and aggregation consequently define the quantity being estimated.
+Metrics with the same name are not automatically comparable when those inputs
+differ.
+
+This paper responds by treating the evaluation protocol as a first-class study
+artifact. The protocol freezes an immutable temporal split, a complete item
+catalog, eligibility rules, relevance semantics, masking, deterministic ranking,
+and metric implementation. Each model exports scores to an independent shared
+evaluator. The evaluator, rather than the model implementation, applies
+masking, ranking, metric calculation, and per-user aggregation. This separation
+does not make every method equivalent. It makes the remaining differences
+inspectable and prevents a source-native number from silently becoming a result
+under a different task contract.
+
+\subsection{Distinct signals and the conditional Hybrid question}
+
+The candidate design combines a deep two-tower scorer with a rule-derived Wide
+component. The rationale is a complementarity hypothesis: a rule branch may
+retain explicit co-purchase regularities, while a content-aware deep branch may
+generalize beyond interactions that have already been observed. This hypothesis
+is related to, but not identical with, the Wide \& Deep decomposition of linear
+cross-product memorization and embedding-based generalization
+\cite{cheng2016_wide_deep} %<!--ref:cheng2016_wide_deep--><!--anchor:section:Sections 2 Recommender System Overview and 3.1-3.3 Wide, Deep, and Joint Training-->.
+It is also distinct from item-based collaborative filtering, which aggregates
+neighbor evidence from interaction overlap
+\cite{sarwar2001_itemcf} %<!--ref:sarwar2001_itemcf--><!--anchor:section:Sections 3.1 Item Similarity Computation and 3.2 Prediction Computation-->,
+and from Bayesian Personalized Ranking, which specifies a pairwise objective
+for implicit feedback
+\cite{rendle2009_bpr} %<!--ref:rendle2009_bpr--><!--anchor:section:Sections 4.1 BPR Optimization Criterion, 4.2 BPR Learning Algorithm, and 4.3.1 Matrix Factorization-->.
+The distinction is substantive: a change in encoder, objective, negative
+distribution, or system stage can change a result independently of the other
+components.
+
+Association rules provide a mechanism vocabulary, not an automatic ranking
+claim. Apriori defines support and confidence as thresholds for mining frequent
+item relationships
+\cite{agrawal1994_apriori} %<!--ref:agrawal1994_apriori--><!--anchor:section:Introduction, formal statement of the association-rule problem and minimum support/confidence thresholds-->,
+and multi-item rule systems show how such relationships can be operationalized
+for recommendation under a particular dataset and evaluation design
+\cite{ghoshal2014_multi_item_rules} %<!--ref:ghoshal2014_multi_item_rules--><!--anchor:section:Abstract; Section 2 problem statement; Section 6 comparison with collaborative filtering and matrix factorization-->.
+Prior hybrid and next-basket studies provide useful component-comparison
+precedents, including combinations of preference, popularity, transition, and
+association signals
+\cite{liu2009_hybrid_seq_cf} %<!--ref:liu2009_hybrid_seq_cf--><!--anchor:figure:Replacement work Sections 3 and 3.1; Figures 1–4; Conclusions-->
+\cite{peng2022_ham} %<!--ref:peng2022_ham--><!--anchor:table:Modeling sections for long-term preference and association components; Section 6.6 ablation study and Table 13-->
+\cite{peng2023_m2} %<!--ref:peng2023_m2--><!--anchor:section:Section 4.1 model components; Section 6.5 ablation study-->,
+but those precedents do not determine the contribution of the proposed branch
+under the locked v5 cohort.
+
+\subsection{Research question and contributions}
+
+The primary research question is: under a fixed temporal novel-purchase
+full-catalog protocol on the controlled Vietnamese retail benchmark v5, does
+the proposed decoupled Wide-and-Deep Two-Tower Hybrid improve ranking
+effectiveness relative to the strongest faithfully reproduced baseline selected
+using validation data? Three subsidiary questions concern item-side cold
+performance, the incremental role of the rule branch, and replication on a
+compatible public commerce dataset. A fourth concerns efficiency, but it is
+opened only after the accuracy artifacts have passed their evidence gates.
+
+The paper makes three contributions that are supported at this stage. First, it
+specifies a provenance-aware protocol in which data, split, candidate catalog,
+masking, evaluator, seeds, and model artifacts are explicit. Second, it separates
+source-native reproduction, public protocol validation, controlled-v5 comparison,
+and external validation into distinct evidence namespaces. Third, it reports an
+audited public protocol validation lane and preserves its limitations rather
+than using it to stand in for the unexecuted Hybrid comparison. The resulting
+claim is therefore about reproducible evaluation design and bounded evidence,
+not about a settled ordering of recommender architectures. The controlled
+Hybrid experiment remains a separately audited follow-up task.
+
+The remainder of the paper first synthesizes prior work by signal and evaluation
+contract. It then defines the data and ranking protocol, describes the evidence
+lanes, reports the permitted public validation rows, and discusses the limits of
+the current evidence.
+
+\section{Related Work}
+
+\subsection{Evaluation and reproducibility}
+
+Recommendation literature often compares model families through headline
+metrics, yet the metric is only interpretable together with the prediction
+event and candidate set. The split-sensitivity evidence in sequential
+recommendation makes temporal construction a substantive design choice
+\cite{gusak2025_time_split} %<!--ref:gusak2025_time_split--><!--anchor:figure:Figure 1; Sections 1–3; global temporal split and results subsections-->,
+while the BERT4Rec replicability study identifies implementation and training
+choices that affect whether a reported result can be reproduced
+\cite{petrov2022_a_systematic_review_and_replicability_study_of_bert4rec_fo} %<!--ref:petrov2022_a_systematic_review_and_replicability_study_of_bert4rec_fo--><!--anchor:table:Implementation review and RQ2 training-time analysis, including Table 4-->.
+These observations support a narrow methodological conclusion: a comparison
+should freeze the target event, temporal boundary, candidate universe, masking,
+metric code, aggregation, and training budget before interpreting model
+differences.
+
+The present protocol consequently distinguishes source-native evidence from
+harmonized evidence. A source-native result retains the source implementation,
+data preparation, split, candidate policy, and evaluator. A harmonized result
+uses a common data and evaluation contract only after the adapter's deviations
+are declared. The distinction protects against a common category error in which
+a number reproduced from a paper is treated as if it had been generated under a
+new dataset or evaluator. It also makes a failed or incomparable reproduction a
+visible outcome rather than a reason to substitute a convenient surrogate.
+
+The positioning is thus deliberately limited. Prior work motivates protocol
+control, but it does not supply a ranking for the v5 benchmark or authorize
+changing its frozen split after observing outcomes.
+
+\subsection{Collaborative, neural, and sequence recommendation}
+
+Item-based collaborative filtering estimates item similarity from historical
+co-interaction and aggregates neighboring items for a user
+\cite{sarwar2001_itemcf} %<!--ref:sarwar2001_itemcf--><!--anchor:section:Sections 3.1 Item Similarity Computation and 3.2 Prediction Computation-->.
+BPR instead defines a pairwise preference objective for implicit feedback and
+can be instantiated with matrix factorization or another differentiable
+scorer
+\cite{rendle2009_bpr} %<!--ref:rendle2009_bpr--><!--anchor:section:Sections 4.1 BPR Optimization Criterion, 4.2 BPR Learning Algorithm, and 4.3.1 Matrix Factorization-->.
+These methods may share user and item identifiers, but they encode different
+assumptions about similarity, optimization, and unobserved interactions.
+
+Neural collaborative filtering learns nonlinear interaction functions from user
+and item identifiers
+\cite{he2017_ncf} %<!--ref:he2017_ncf--><!--anchor:section:Sections 3.1 General Framework, 3.2 GMF, 3.3 MLP, and 3.4 Fusion of GMF and MLP-->.
+DeepFM, by contrast, combines low- and high-order interactions over sparse
+feature fields for a click-through-rate task
+\cite{guo2017_deepfm} %<!--ref:guo2017_deepfm--><!--anchor:section:Section 2 Our Approach, especially 2.1 DeepFM-->.
+The shared presence of embeddings does not make their input or target contracts
+interchangeable. This distinction informs the adapter registry: a model keeps
+its native objective and feature assumptions, while its score output is mapped
+to the common evaluator.
+
+Sequential models add another source of non-equivalence. SASRec uses causal
+self-attention for next-item prediction
+\cite{kang2018_sasrec} %<!--ref:kang2018_sasrec--><!--anchor:section:Section III-C causality; Sections III-E and III-F prediction/objective; Section IV-D evaluation metrics-->,
+whereas BERT4Rec uses bidirectional sequence encoding and a masked-item Cloze
+objective
+\cite{sun2019_bert4rec} %<!--ref:sun2019_bert4rec--><!--anchor:section:Section 3.3 Cloze task; Section 4.2 task settings and evaluation metrics-->.
+Their source evaluations use paper-native task and candidate designs. A next-item
+objective is therefore not identical to a next-basket set objective, and a
+source metric cannot be copied into the v5 table without a protocol bridge.
+
+These families supply comparator and objective precedents, not directly
+comparable v5 results.
+
+\subsection{Wide and Deep, Two-Tower, and semantic representations}
+
+Wide \& Deep jointly trains an explicit linear cross-product component for
+memorization with an embedding and multilayer component for generalization
+\cite{cheng2016_wide_deep} %<!--ref:cheng2016_wide_deep--><!--anchor:section:Sections 2 Recommender System Overview and 3.1-3.3 Wide, Deep, and Joint Training-->.
+That decomposition is useful for stating a mechanism hypothesis, but it does not
+identify the Wide component with association-rule mining. In the present design,
+the rule features are fit from the training transactions and exported as a
+separate score. The no-Wide condition is required to assess whether the branch
+contributes under the same evaluator.
+
+Two-tower systems are frequently used in large-corpus retrieval. The YouTube
+system separates candidate generation and ranking
+\cite{covington2016_youtube} %<!--ref:covington2016_youtube--><!--anchor:section:Sections 2 System Overview, 3 Candidate Generation, and 4 Ranking-->,
+and neural retrieval work shows that negative-distribution and sampling-bias
+choices can be part of the model contract
+\cite{yi2019_ndr} %<!--ref:yi2019_ndr--><!--anchor:section:Sections 2.3 Two-tower Models, 3 Modeling Framework, and 5 Neural Retrieval System-->.
+DirectAU further illustrates that an objective can target alignment and
+uniformity rather than the pairwise objective used by BPR
+\cite{wang2022_directau} %<!--ref:wang2022_directau--><!--anchor:section:Sections 2.2 Alignment and Uniformity, 3 Alignment and Uniformity in CF, and 4 Direct Optimization-->.
+The protocol must consequently identify whether a tower is a retriever,
+pre-ranker, or full-catalog ranker and must record its negative sampler.
+
+Recent tower designs make the same boundary visible from another direction.
+ContextGNN introduces pair-aware local graph context while retaining an
+exploratory two-tower fallback
+\cite{yuan2025_contextgnn} %<!--ref:yuan2025_contextgnn--><!--anchor:section:Abstract and Method sections describing pair-wise familiar-item representations and the two-tower exploratory fallback-->,
+and T2Diff adds cross-interaction during training while targeting efficient
+matching
+\cite{wang2025_t2diff} %<!--ref:wang2025_t2diff--><!--anchor:section:Introduction and Sections 4.2 Diffusion-based Cross Interaction, 4.3 Mixed-Attention Two-Tower, and 4.4 Optimization-->.
+These works are useful controls for naming the pair-agnostic boundary. They do
+not imply an architecture ordering under the v5 full-catalog contract.
+
+The positioning is therefore specific: this paper evaluates a decoupled
+architecture under one locked ranking contract and keeps encoder complexity,
+objective, sampling, and system stage as separate explanatory variables.
+
+\subsection{Apriori, association rules, and next-basket recommendation}
+
+Apriori defines a transaction-frequency support threshold and a conditional
+confidence threshold for mining association rules
+\cite{agrawal1994_apriori} %<!--ref:agrawal1994_apriori--><!--anchor:section:Introduction, formal statement of the association-rule problem and minimum support/confidence thresholds-->.
+Multi-item recommendation work demonstrates that such rules can be used to
+construct a recommendation list, while its comparisons remain conditional on
+the source data and protocol
+\cite{ghoshal2014_multi_item_rules} %<!--ref:ghoshal2014_multi_item_rules--><!--anchor:section:Abstract; Section 2 problem statement; Section 6 comparison with collaborative filtering and matrix factorization-->.
+The distinction is important for the proposed Wide branch: a mined rule is a
+feature or score source, not evidence that the full ranking task has been
+solved.
+
+Next-basket research also warns against treating all basket events as one
+behavioral regime. A reality-check analysis uses repeat ratios and baseline
+behavior to expose how aggregate accuracy can be shaped by repetition
+\cite{li2023_nbr_reality} %<!--ref:li2023_nbr_reality--><!--anchor:figure:Figure 1 and Introduction contribution bullets; repeat-ratio and baseline analyses-->,
+and exploration-focused work isolates the harder question of recommending novel
+items
+\cite{li2023_repetition_exploration} %<!--ref:li2023_repetition_exploration--><!--anchor:section:Introduction definitions and research questions; exploration-only analyses-->.
+Mask-Swap and its BTBR baseline offer a direct next-novel-basket formulation,
+but their reported conditions do not warrant a universal conclusion across
+datasets or model families
+\cite{li2023_mask_swap} %<!--ref:li2023_mask_swap--><!--anchor:section:Sections 4.1 and 4.2 mask/swap strategy; Section 5 BTBR model; Section 6 experiments-->.
+Repeat/explore-aware graph work supplies further component and ablation
+precedent under its own data and protocol
+\cite{mansouri2026_repeat_explore_lightgcn} %<!--ref:mansouri2026_repeat_explore_lightgcn--><!--anchor:table:Abstract; Table 5 repeat/explore results; Section 6 ablation study; limitations-->.
+
+These studies motivate a train-defined rule-aligned cohort and a no-Wide
+ablation. They do not estimate the present mechanism question, and aggregate
+basket accuracy alone does not establish a novel-item gain.
+
+\subsection{Graph and contrastive recommendation}
+
+LightGCN simplifies graph convolution by propagating trainable user and item
+embeddings over observed interaction edges
+\cite{he2020_lightgcn} %<!--ref:he2020_lightgcn--><!--anchor:section:Sections 3.1.1 Light Graph Convolution, 3.1.2 Layer Combination, and 3.3 Model Training-->.
+Graph-contrastive controls such as SimGCL and LightGCL add contrastive or
+global-relation objectives within their own observed-graph settings
+\cite{yu2022_simgcl} %<!--ref:yu2022_simgcl--><!--anchor:section:Sections 2 Empirical Investigation and 3 SimGCL-->
+\cite{cai2023_lightgcl} %<!--ref:cai2023_lightgcl--><!--anchor:section:Method section on SVD-guided global collaborative relation modeling and contrastive learning; Experiments-->.
+An improvement on a sparse observed graph does not establish a representation
+for an item with zero training edges. The v5 protocol therefore reports sparse
+and strict zero-edge cohorts separately and does not infer cold-item capability
+from a graph score alone.
+
+Graph results motivate comparator coverage and precise cold-item definitions,
+but they do not establish v5 performance or zero-edge performance.
+
+\subsection{Content, cold-item, and transfer learning}
+
+Cold-item analysis begins with the training graph. A strict zero-edge item has no
+training interaction; an item with one or more training edges may be rare, but it
+belongs to a different sparse cohort. DropoutNet formulates cold-start training
+through an item-side framework
+\cite{volkovs2017_dropoutnet} %<!--ref:volkovs2017_dropoutnet--><!--anchor:section:Section 2, Framework; Section 4.2, Training for Cold Start; Section 5.1, CiteULike-->,
+and ALDI defines its own cold-item distillation setting
+\cite{huang2023_aldi} %<!--ref:huang2023_aldi--><!--anchor:section:Section 2.1, Problem Formulation; Section 2.2, Existing Solutions-->.
+Their thresholds and denominators cannot simply be transferred to v5. A
+reproducible cold-item analysis must construct cohorts before scoring and report
+warm, sparse, and zero-edge denominators separately.
+
+Text encoders provide a useful item-side representation, but representation
+quality is not a ranking outcome. Sentence-BERT supplies a rationale for
+semantic sentence embeddings
+\cite{reimers2019_sbert} %<!--ref:reimers2019_sbert--><!--anchor:section:Abstract; Section 1, Introduction; Section 3, Training Details-->,
+whereas AlphaRec evaluates language representations inside a particular
+recommendation and zero-shot protocol
+\cite{sheng2025_alpharec} %<!--ref:sheng2025_alpharec--><!--anchor:section:Section 4.1, AlphaRec; Section 5.2, Zero-Shot Recommendation; Section 6, Limitations-->.
+Sparse content-based cold-item work likewise defines its own problem and
+evaluation setting
+\cite{meehan2026_semco} %<!--ref:meehan2026_semco--><!--anchor:section:Section 1, Introduction; Section 3.1, Problem Definition; Sections 3.2-3.3-->.
+The proposed pipeline therefore requires a recommender objective and a shared
+task-specific evaluator in addition to an embedding recipe.
+
+Transferable item representations retain target-domain assumptions. UniSRec
+includes downstream adaptation
+\cite{hou2022_unisrec} %<!--ref:hou2022_unisrec--><!--anchor:figure:Figure 1; Sections 2.2-2.4, especially 2.4 Adaptation to Downstream Recommendation Tasks-->,
+VQ-Rec evaluates vector-quantized transfer under its experimental setup
+\cite{hou2023_vqrec} %<!--ref:hou2023_vqrec--><!--anchor:section:Sections 2.1-2.3; Section 3.1 Experimental Setup-->,
+and UTGRec includes downstream fine-tuning
+\cite{zheng2026_utgrec} %<!--ref:zheng2026_utgrec--><!--anchor:section:Section 2.4.2, Downstream Fine-tuning; Sections 3.1.1 and 3.1.3-3.1.4; Section 3.3, Ablation Study-->.
+An architecture inspired by these works is not a replication unless the encoder,
+data lineage, adaptation procedure, split, candidates, metrics, and statistics
+are matched or every deviation is declared. Shared platform or benchmark
+lineage also means that pretraining and downstream results cannot be counted as
+independent replications merely because their domain labels differ
+\cite{meehan2025_cold_popbias} %<!--ref:meehan2025_cold_popbias--><!--anchor:section:Section 1, Introduction; Sections 3.1-3.3-->
+\cite{meehan2026_semco} %<!--ref:meehan2026_semco--><!--anchor:section:Section 1, Introduction; Section 3.1, Problem Definition; Sections 3.2-3.3-->.
+Content aligned to collaborative teachers can also inherit popularity structure,
+so content availability alone does not guarantee an unbiased or effective
+cold-item ranking
+\cite{meehan2025_cold_popbias} %<!--ref:meehan2025_cold_popbias--><!--anchor:section:Section 1, Introduction; Sections 3.1-3.3-->.
+
+The positioning is conditional on full contract alignment. External and
+cold-item conclusions require matched encoder, data, adaptation, split,
+candidate set, metric, and statistical procedure; a source architecture name is
+not sufficient evidence.
+

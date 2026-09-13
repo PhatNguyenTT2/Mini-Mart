@@ -1,0 +1,54 @@
+{
+  "blocking": false,
+  "clear": 6,
+  "generated_at": "2026-09-13T00:15:00+07:00",
+  "insufficient_evidence": 1,
+  "modes": [
+    {
+      "evidence": "Every paper-visible numeric result is bound to the retained aggregate and a 281/281 independent runtime audit; unexecuted v5 work is explicitly future work.",
+      "mode": 1,
+      "name": "Implementation bug passing AI self-review",
+      "outcome": "CLEAR"
+    },
+    {
+      "evidence": "All 35 bibliography identities were found and all 19 sampled citation contexts matched sealed source/locator authority.",
+      "mode": 2,
+      "name": "Hallucinated citation",
+      "outcome": "CLEAR"
+    },
+    {
+      "evidence": "The only result table replays cell-for-cell from the admitted four-row public artifact; no Hybrid or v5 result is reported.",
+      "mode": 3,
+      "name": "Hallucinated experimental result",
+      "outcome": "CLEAR"
+    },
+    {
+      "evidence": "No proposed-Hybrid ablation exists yet. The manuscript makes no mechanism-effectiveness claim and explicitly requires Deep-only, Rule-only, Hybrid, and cold-item follow-up checks.",
+      "mode": 4,
+      "name": "Shortcut reliance",
+      "outcome": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "evidence": "No surprising, unexpected, counterintuitive, or contrary-to-hypothesis result narrative is present.",
+      "mode": 5,
+      "name": "Implementation bug reframed as novel insight",
+      "outcome": "CLEAR"
+    },
+    {
+      "evidence": "Executed public validation and planned follow-up procedures are separated by tense and namespace; the manuscript does not describe unrun v5 work as completed.",
+      "mode": 6,
+      "name": "Methodology fabrication",
+      "outcome": "CLEAR"
+    },
+    {
+      "evidence": "The RQ remains conditional, null and negative outcomes are admissible, and dataset amendment or reduced-method ablation remains explicitly available.",
+      "mode": 7,
+      "name": "Frame-lock at early pipeline stage",
+      "outcome": "CLEAR"
+    }
+  ],
+  "routing_note": "Mode 4 insufficient evidence is a permitted Stage 2.5 warning because no mechanism or superiority claim is made; it must be rechecked after the follow-up ablations and at Stage 4.5.",
+  "schema_version": "stage2.5-ai-failure-mode-checklist/1.0",
+  "stage": "2.5",
+  "suspected": 0
+}

@@ -1,0 +1,499 @@
+{
+  "schema_version": "stage2-claim-citation-matrix/1.0",
+  "stage_id": "P2-G6",
+  "status": "POST_DRAFT_BOUNDED",
+  "authority": {
+    "r9_canonical_handoff_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase6_seal/r9_stage1b_seal/r9_handoff.json",
+    "r9_canonical_handoff_sha256": "3391117fb1f7f2a13b1c3d246c669153d0bd7251a47d67b4f51ecb4548e7e7f7",
+    "r9_seal_sha256": "5353afaf36fb7146d58ff8e461f9c1586f2a253231bf7d1b162d77ed97a2d3b7",
+    "handoff_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase6_seal/r9_stage1b_seal/stage2_literature_handoff.json",
+    "handoff_sha256": "b797e396a951a1b07e3ebfa9f304a8bfed355628a5ad188b8558738a94db6ed1",
+    "claim_source_map_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase3_analysis/remediation_r6/claim_source_map_r1_remediated.json",
+    "claim_source_map_sha256": "0d6d8d17ccf51132f6bf9a36ab08245f1d1e73bea831b5cb148a4fc00146f7da",
+    "locator_registry_path": "research/hybrid-recsys-v5/01_research/literature_review/remediation_r1/phase2_investigation/acquisition/locator_registry.json",
+    "locator_registry_sha256": "0af823257c2a5429b6b224a76e52bb7de1f5b4005c05cdec4d0574dce1230ae2"
+  },
+  "counts": {
+    "authorized_rows": 22,
+    "prohibited_rows": 22,
+    "verified_locator_pairs": 33,
+    "planned_bibliography_entries": 35,
+    "in_text_citations_at_outline_checkpoint": 0,
+    "in_text_citation_occurrences_post_draft": 61,
+    "unique_citation_keys_post_draft": 35,
+    "provenance_marker_pairs_post_draft": 61
+  },
+  "policy": {
+    "use_only_authorized_rows": true,
+    "preserve_bounded_wording": true,
+    "preserve_forbidden_extrapolations": true,
+    "planning_only_claims_promoted": false,
+    "source_native_metrics_imported": false,
+    "numeric_cross_namespace_join": false,
+    "hybrid_result_claims_authorized": false
+  },
+  "post_draft_validation": {
+    "status": "BOUNDED_REPLAY_READY_FOR_STAGE_2_5",
+    "manuscript_scope": "master_draft_stage2.tex with introduction_related_work_stage2.tex expanded at the input directive",
+    "manuscript_file_bindings": [
+      {
+        "path": "research/hybrid-recsys-v5/05_manuscript/stage2_write/03_draft/master_draft_stage2.tex",
+        "role": "AUTHORITATIVE_ROOT_TEX",
+        "bytes": 30371,
+        "sha256": "8fa271e44b7d1be5fb5ef14921d3b568180e175032268b8120aba438694d6f93",
+        "input_fragments": ["introduction_related_work_stage2.tex"]
+      },
+      {
+        "path": "research/hybrid-recsys-v5/05_manuscript/stage2_write/03_draft/introduction_related_work_stage2.tex",
+        "role": "INPUT_FRAGMENT",
+        "bytes": 22957,
+        "sha256": "338b55f4a330cae9d9a9ba87136e734979a90eeeff9b6ac0f81debe13ff8ac72",
+        "included_by": "master_draft_stage2.tex"
+      }
+    ],
+    "citation_summary": {
+      "fragment_direct_citation_occurrences": 46,
+      "master_direct_citation_occurrences": 15,
+      "effective_manuscript_citation_occurrences": 61,
+      "unique_source_keys": 35,
+      "provenance_marker_pairs": 61,
+      "marker_binding_rule": "Every citation occurrence in the draft has an adjacent ref/anchor provenance pair; the effective count expands the input fragment once through the master input directive.",
+      "citation_to_bibliography_status": "PASS_STATIC",
+      "bibliography_to_citation_status": "PASS_STATIC"
+    },
+    "source_key_occurrences": {
+      "agrawal1994_apriori": 2,
+      "cai2023_lightgcl": 1,
+      "cheng2016_wide_deep": 2,
+      "covington2016_youtube": 2,
+      "ghoshal2014_multi_item_rules": 2,
+      "guo2017_deepfm": 1,
+      "gusak2025_time_split": 2,
+      "he2017_ncf": 1,
+      "he2020_lightgcn": 2,
+      "hou2022_unisrec": 2,
+      "hou2023_vqrec": 2,
+      "huang2023_aldi": 2,
+      "kang2018_sasrec": 1,
+      "li2023_mask_swap": 2,
+      "li2023_nbr_reality": 2,
+      "li2023_repetition_exploration": 2,
+      "liu2009_hybrid_seq_cf": 1,
+      "mansouri2026_repeat_explore_lightgcn": 1,
+      "meehan2025_cold_popbias": 3,
+      "meehan2026_semco": 3,
+      "peng2022_ham": 2,
+      "peng2023_m2": 2,
+      "petrov2022_a_systematic_review_and_replicability_study_of_bert4rec_fo": 2,
+      "reimers2019_sbert": 2,
+      "rendle2009_bpr": 3,
+      "sarwar2001_itemcf": 3,
+      "sheng2025_alpharec": 1,
+      "sun2019_bert4rec": 1,
+      "volkovs2017_dropoutnet": 1,
+      "wang2022_directau": 1,
+      "wang2025_t2diff": 1,
+      "yi2019_ndr": 2,
+      "yu2022_simgcl": 1,
+      "yuan2025_contextgnn": 1,
+      "zheng2026_utgrec": 2
+    },
+    "claim_manuscript_bindings": [
+      {
+        "claim_id": "L2-CLAIM-GRAPH-ZERO-EDGE-005",
+        "manuscript_section_anchors": ["master_draft_stage2.tex#section:2.5", "master_draft_stage2.tex#section:6.1"],
+        "source_keys": ["he2020_lightgcn", "yu2022_simgcl", "cai2023_lightgcl"],
+        "citation_occurrence_count": 4,
+        "status": "BOUNDED_CITED"
+      },
+      {
+        "claim_id": "L2-CLAIM-ITEMCF-BPR-001",
+        "manuscript_section_anchors": ["master_draft_stage2.tex#section:1.2", "master_draft_stage2.tex#section:2.2", "master_draft_stage2.tex#section:3.4"],
+        "source_keys": ["sarwar2001_itemcf", "rendle2009_bpr"],
+        "citation_occurrence_count": 6,
+        "status": "BOUNDED_CITED"
+      },
+      {
+        "claim_id": "L2-CLAIM-NCF-DEEPFM-002",
+        "manuscript_section_anchors": ["master_draft_stage2.tex#section:2.2"],
+        "source_keys": ["he2017_ncf", "guo2017_deepfm"],
+        "citation_occurrence_count": 2,
+        "status": "BOUNDED_CITED"
+      },
+      {
+        "claim_id": "L2-CLAIM-OBJECTIVE-006",
+        "manuscript_section_anchors": ["master_draft_stage2.tex#section:2.3", "master_draft_stage2.tex#section:3.4", "master_draft_stage2.tex#section:3.5"],
+        "source_keys": ["rendle2009_bpr", "yi2019_ndr", "wang2022_directau"],
+        "citation_occurrence_count": 6,
+        "status": "BOUNDED_CITED"
+      },
+      {
+        "claim_id": "L2-CLAIM-RECENT-TOWER-CONTROLS-007",
+        "manuscript_section_anchors": ["master_draft_stage2.tex#section:2.3"],
+        "source_keys": ["yuan2025_contextgnn", "wang2025_t2diff"],
+        "citation_occurrence_count": 2,
+        "status": "BOUNDED_CITED"
+      },
+      {
+        "claim_id": "L2-CLAIM-TWO-STAGE-003",
+        "manuscript_section_anchors": ["master_draft_stage2.tex#section:1", "master_draft_stage2.tex#section:2.3"],
+        "source_keys": ["covington2016_youtube", "yi2019_ndr", "wang2025_t2diff"],
+        "citation_occurrence_count": 5,
+        "status": "BOUNDED_CITED"
+      },
+      {
+        "claim_id": "L2-CLAIM-WIDE-DEEP-004",
+        "manuscript_section_anchors": ["master_draft_stage2.tex#section:1.2", "master_draft_stage2.tex#section:2.3", "master_draft_stage2.tex#section:3.4"],
+        "source_keys": ["cheng2016_wide_deep"],
+        "citation_occurrence_count": 2,
+        "status": "BOUNDED_CITED"
+      },
+      {
+        "claim_id": "L3-APR-001",
+        "manuscript_section_anchors": ["master_draft_stage2.tex#section:1.2", "master_draft_stage2.tex#section:2.4", "master_draft_stage2.tex#section:3.4"],
+        "source_keys": ["agrawal1994_apriori"],
+        "citation_occurrence_count": 2,
+        "status": "BOUNDED_CITED"
+      },
+      {
+        "claim_id": "L3-BTBR-005",
+        "manuscript_section_anchors": ["master_draft_stage2.tex#section:2.4", "master_draft_stage2.tex#section:6.2"],
+        "source_keys": ["li2023_mask_swap"],
+        "citation_occurrence_count": 2,
+        "status": "BOUNDED_CITED"
+      },
+      {
+        "claim_id": "L3-HYB-006",
+        "manuscript_section_anchors": ["master_draft_stage2.tex#section:1.2", "master_draft_stage2.tex#section:2.4", "master_draft_stage2.tex#section:6.1", "master_draft_stage2.tex#section:6.3"],
+        "source_keys": ["liu2009_hybrid_seq_cf", "cheng2016_wide_deep", "peng2022_ham", "peng2023_m2", "mansouri2026_repeat_explore_lightgcn"],
+        "citation_occurrence_count": 8,
+        "status": "BOUNDED_CITED"
+      },
+      {
+        "claim_id": "L3-NBR-004",
+        "manuscript_section_anchors": ["master_draft_stage2.tex#section:1.2", "master_draft_stage2.tex#section:2.4", "master_draft_stage2.tex#section:6.2"],
+        "source_keys": ["li2023_nbr_reality", "li2023_repetition_exploration", "mansouri2026_repeat_explore_lightgcn"],
+        "citation_occurrence_count": 5,
+        "status": "BOUNDED_CITED"
+      },
+      {
+        "claim_id": "L3-PROTO-007",
+        "manuscript_section_anchors": ["master_draft_stage2.tex#section:1.1", "master_draft_stage2.tex#section:2.1", "master_draft_stage2.tex#section:3.2", "master_draft_stage2.tex#section:4.1"],
+        "source_keys": ["gusak2025_time_split", "petrov2022_a_systematic_review_and_replicability_study_of_bert4rec_fo"],
+        "citation_occurrence_count": 4,
+        "status": "BOUNDED_CITED"
+      },
+      {
+        "claim_id": "L3-RULE-002",
+        "manuscript_section_anchors": ["master_draft_stage2.tex#section:2.4"],
+        "source_keys": ["ghoshal2014_multi_item_rules"],
+        "citation_occurrence_count": 2,
+        "status": "BOUNDED_CITED"
+      },
+      {
+        "claim_id": "L3-SEQ-003",
+        "manuscript_section_anchors": ["master_draft_stage2.tex#section:2.2"],
+        "source_keys": ["kang2018_sasrec", "sun2019_bert4rec"],
+        "citation_occurrence_count": 2,
+        "status": "BOUNDED_CITED"
+      },
+      {
+        "claim_id": "L4-CC-01",
+        "manuscript_section_anchors": ["master_draft_stage2.tex#section:2.6", "master_draft_stage2.tex#section:3.3", "master_draft_stage2.tex#section:6.2"],
+        "source_keys": ["volkovs2017_dropoutnet", "huang2023_aldi"],
+        "citation_occurrence_count": 3,
+        "status": "BOUNDED_CITED"
+      },
+      {
+        "claim_id": "L4-CC-02",
+        "manuscript_section_anchors": ["master_draft_stage2.tex#section:3.3", "master_draft_stage2.tex#section:4.3"],
+        "source_keys": ["volkovs2017_dropoutnet", "huang2023_aldi"],
+        "citation_occurrence_count": 3,
+        "status": "BOUNDED_CITED"
+      },
+      {
+        "claim_id": "L4-CC-03",
+        "manuscript_section_anchors": ["master_draft_stage2.tex#section:2.5", "master_draft_stage2.tex#section:6.1"],
+        "source_keys": ["volkovs2017_dropoutnet", "sheng2025_alpharec"],
+        "citation_occurrence_count": 2,
+        "status": "BOUNDED_CITED"
+      },
+      {
+        "claim_id": "L4-CC-04",
+        "manuscript_section_anchors": ["master_draft_stage2.tex#section:2.6", "master_draft_stage2.tex#section:3.4"],
+        "source_keys": ["reimers2019_sbert", "sheng2025_alpharec", "meehan2026_semco"],
+        "citation_occurrence_count": 6,
+        "status": "BOUNDED_CITED"
+      },
+      {
+        "claim_id": "L4-CC-05",
+        "manuscript_section_anchors": ["master_draft_stage2.tex#section:2.6", "master_draft_stage2.tex#section:4.4", "master_draft_stage2.tex#section:6.2"],
+        "source_keys": ["hou2022_unisrec", "hou2023_vqrec", "zheng2026_utgrec"],
+        "citation_occurrence_count": 6,
+        "status": "BOUNDED_CITED"
+      },
+      {
+        "claim_id": "L4-CC-06",
+        "manuscript_section_anchors": ["master_draft_stage2.tex#section:2.6", "master_draft_stage2.tex#section:6.2"],
+        "source_keys": ["hou2023_vqrec", "sheng2025_alpharec", "zheng2026_utgrec"],
+        "citation_occurrence_count": 5,
+        "status": "BOUNDED_CITED"
+      },
+      {
+        "claim_id": "L4-CC-07",
+        "manuscript_section_anchors": ["master_draft_stage2.tex#section:2.6", "master_draft_stage2.tex#section:6.1"],
+        "source_keys": ["meehan2025_cold_popbias", "meehan2026_semco"],
+        "citation_occurrence_count": 6,
+        "status": "BOUNDED_CITED"
+      },
+      {
+        "claim_id": "L4-CC-08",
+        "manuscript_section_anchors": ["master_draft_stage2.tex#section:2.6", "master_draft_stage2.tex#section:4.4", "master_draft_stage2.tex#section:6.2"],
+        "source_keys": ["hou2022_unisrec", "hou2023_vqrec", "sheng2025_alpharec", "zheng2026_utgrec"],
+        "citation_occurrence_count": 7,
+        "status": "BOUNDED_CITED"
+      }
+    ],
+    "bibliography_binding": {
+      "path": "research/hybrid-recsys-v5/05_manuscript/stage2_write/04_citations/refs_stage2.bib",
+      "bytes": 14853,
+      "sha256": "5a93f0868b19f8ebdc8647435b151193a898b67e843db0a6ef3ece27cd9a7fbd",
+      "entry_count": 35,
+      "all_entries_used": true
+    },
+    "result_artifact_bindings": [
+      {
+        "namespace": "PUBLIC_DATA_PROTOCOL_VALIDATION",
+        "artifact_path": "E:/UIT/cv/materialized-experiments/hybrid-recsys-v5/ai-service-v2/r8/public-data-protocol-validation/attempt-003/aggregate_metrics.json",
+        "artifact_bytes": 2449,
+        "artifact_sha256": "512fb8ad8862f5e677ec18f369d310ae58c9d6f3c4f7b2e79c17ede389930c17",
+        "accepted_rows": 4,
+        "table_labels": ["tab:public-validation"],
+        "allowed_use": "Descriptive row-level public protocol validation only; all numeric table cells must resolve to this artifact.",
+        "numeric_cross_namespace_join_authorized": false
+      }
+    ]
+  },
+  "rows": [
+    {
+      "claim_id": "L2-CLAIM-GRAPH-ZERO-EDGE-005",
+      "lane": "L2",
+      "claim_text_bounded": "LightGCN and the retained graph-contrastive controls learn from an observed user-item graph and trainable ID embeddings; improvements on sparse observed graphs cannot establish recommendation capability for an item with zero training edges.",
+      "canonical_source_keys": ["he2020_lightgcn", "yu2022_simgcl", "cai2023_lightgcl"],
+      "locator_ids": ["LOC-R4-S-he2020_lightgcn-01", "LOC-R4-S-yu2022_simgcl-01", "LOC-R4-S-cai2023_lightgcl-01"],
+      "planned_sections": ["2.5", "6.3"],
+      "forbidden_extrapolations": ["Sparse-edge graph improvement does not prove zero-edge cold-item capability.", "No source establishes a v5 architecture ranking."],
+      "stage2_use_status": "AUTHORIZED_BOUNDED"
+    },
+    {
+      "claim_id": "L2-CLAIM-ITEMCF-BPR-001",
+      "lane": "L2",
+      "claim_text_bounded": "ItemCF estimates item-item similarity from historical interaction overlap and aggregates neighbor evidence, whereas BPR supplies a pairwise implicit-feedback objective that can train matrix factorization or another differentiable scorer.",
+      "canonical_source_keys": ["sarwar2001_itemcf", "rendle2009_bpr"],
+      "locator_ids": ["LOC-R4-S-sarwar2001_itemcf-01", "LOC-R4-S-rendle2009_bpr-01"],
+      "planned_sections": ["1.3", "2.2", "3.4"],
+      "forbidden_extrapolations": ["Neither source establishes a ranking on dataset v5.", "Unobserved interactions are not automatically true negative preferences."],
+      "stage2_use_status": "AUTHORIZED_BOUNDED"
+    },
+    {
+      "claim_id": "L2-CLAIM-NCF-DEEPFM-002",
+      "lane": "L2",
+      "claim_text_bounded": "NCF learns nonlinear interaction functions from user/item IDs, while DeepFM jointly models low- and high-order interactions over sparse feature fields for CTR prediction; their input and task contracts are therefore not interchangeable.",
+      "canonical_source_keys": ["he2017_ncf", "guo2017_deepfm"],
+      "locator_ids": ["LOC-R4-S-he2017_ncf-01", "LOC-R4-S-guo2017_deepfm-01"],
+      "planned_sections": ["2.2", "2.3"],
+      "forbidden_extrapolations": ["CTR AUC/log-loss does not establish full-catalog top-k performance.", "Source-native sampled leave-one-out results do not establish a v5 ranking."],
+      "stage2_use_status": "AUTHORIZED_BOUNDED"
+    },
+    {
+      "claim_id": "L2-CLAIM-OBJECTIVE-006",
+      "lane": "L2",
+      "claim_text_bounded": "Encoder complexity and training objective must be controlled separately: BPR specifies pairwise ranking, sampled two-tower training introduces negative-distribution effects, and DirectAU directly optimizes alignment and uniformity.",
+      "canonical_source_keys": ["rendle2009_bpr", "yi2019_ndr", "wang2022_directau"],
+      "locator_ids": ["LOC-R4-S-rendle2009_bpr-01", "LOC-R4-S-yi2019_ndr-01", "LOC-R4-S-wang2022_directau-01"],
+      "planned_sections": ["2.3", "3.4", "3.5"],
+      "forbidden_extrapolations": ["Do not attribute a source-native gain solely to architecture when objectives or sampling differ.", "Do not infer a v5 ranking."],
+      "stage2_use_status": "AUTHORIZED_BOUNDED"
+    },
+    {
+      "claim_id": "L2-CLAIM-RECENT-TOWER-CONTROLS-007",
+      "lane": "L2",
+      "claim_text_bounded": "ContextGNN and T2Diff are recent controls for the pair-agnostic two-tower boundary: the former introduces pair-aware local graph context with an exploratory fallback, while the latter introduces training-time cross-interaction for efficient matching.",
+      "canonical_source_keys": ["yuan2025_contextgnn", "wang2025_t2diff"],
+      "locator_ids": ["LOC-R4-S-yuan2025_contextgnn-01", "LOC-R4-S-wang2025_t2diff-01"],
+      "planned_sections": ["2.3"],
+      "forbidden_extrapolations": ["Do not claim either control outranks another architecture on v5.", "Matching-stage evidence is not ranking-stage evidence.", "Observed local graph context is not zero-edge cold-item evidence."],
+      "stage2_use_status": "AUTHORIZED_BOUNDED"
+    },
+    {
+      "claim_id": "L2-CLAIM-TWO-STAGE-003",
+      "lane": "L2",
+      "claim_text_bounded": "In the inspected industrial references, candidate generation or matching reduces a very large corpus to a smaller set, after which a richer ranking stage can score hundreds of items; a two-tower model must therefore be labeled by its retrieval, pre-ranking, or ranking role.",
+      "canonical_source_keys": ["covington2016_youtube", "yi2019_ndr", "wang2025_t2diff"],
+      "locator_ids": ["LOC-R4-S-covington2016_youtube-01", "LOC-R4-S-yi2019_ndr-01", "LOC-R4-S-wang2025_t2diff-01"],
+      "planned_sections": ["1.3", "2.3"],
+      "forbidden_extrapolations": ["Retrieval-stage recall does not prove ranking-stage quality.", "Do not assume dataset v5 requires this topology before Stage 1E freezes the architecture contract.", "No cited paper establishes a v5 architecture ranking."],
+      "stage2_use_status": "AUTHORIZED_BOUNDED"
+    },
+    {
+      "claim_id": "L2-CLAIM-WIDE-DEEP-004",
+      "lane": "L2",
+      "claim_text_bounded": "Wide & Deep combines a linear component over explicit cross-product features for memorization with an embedding/MLP component for generalization and trains them jointly for its reported ranking task.",
+      "canonical_source_keys": ["cheng2016_wide_deep"],
+      "locator_ids": ["LOC-R4-S-cheng2016_wide_deep-01"],
+      "planned_sections": ["1.3", "2.3", "3.4"],
+      "forbidden_extrapolations": ["Wide & Deep does not prove that an Apriori branch is effective.", "The production result does not establish a v5 architecture ranking."],
+      "stage2_use_status": "AUTHORIZED_BOUNDED"
+    },
+    {
+      "claim_id": "L3-APR-001",
+      "lane": "L3",
+      "claim_text_bounded": "In the retained Apriori source, support is a transaction-frequency threshold and confidence is a conditional rule-strength threshold used to mine association rules; the source does not define Apriori itself as a recommender ranking model.",
+      "canonical_source_keys": ["agrawal1994_apriori"],
+      "locator_ids": ["LOC-R4-S-agrawal1994_apriori-01"],
+      "planned_sections": ["2.4", "3.4"],
+      "forbidden_extrapolations": ["Apriori is a ranking model.", "Mined rules improve recommendation metrics.", "Literature evidence establishes H3."],
+      "stage2_use_status": "AUTHORIZED_BOUNDED"
+    },
+    {
+      "claim_id": "L3-BTBR-005",
+      "lane": "L3",
+      "claim_text_bounded": "Mask-Swap provides a direct next-novel-basket formulation and BTBR basket baseline, but the inspected experiments do not support a universal claim that masking or swapping improves every dataset/model setting.",
+      "canonical_source_keys": ["li2023_mask_swap"],
+      "locator_ids": ["LOC-R4-S-li2023_mask_swap-01"],
+      "planned_sections": ["2.4", "6.3"],
+      "forbidden_extrapolations": ["Mask-Swap always improves novel recommendation.", "BTBR paper metrics are v5 benchmark results.", "User-level splits are equivalent to the locked temporal split."],
+      "stage2_use_status": "AUTHORIZED_BOUNDED"
+    },
+    {
+      "claim_id": "L3-HYB-006",
+      "lane": "L3",
+      "claim_text_bounded": "Prior systems combine rule, preference, popularity, transition, linear-cross, or neural components, and their component comparisons establish an ablation-design precedent; they do not establish that the v5 Apriori-aligned Wide branch improves the locked H3 estimand.",
+      "canonical_source_keys": ["liu2009_hybrid_seq_cf", "cheng2016_wide_deep", "peng2022_ham", "peng2023_m2", "mansouri2026_repeat_explore_lightgcn"],
+      "locator_ids": ["LOC-R4-S-liu2009_hybrid_seq_cf-01", "LOC-R4-S-cheng2016_wide_deep-01", "LOC-R4-S-peng2022_ham-01", "LOC-R4-S-peng2023_m2-01", "LOC-R4-S-mansouri2026_repeat_explore_lightgcn-01"],
+      "planned_sections": ["1.3", "2.4", "4.3", "6.1"],
+      "forbidden_extrapolations": ["Literature plausibility proves H3.", "Any aggregate hybrid gain proves novel-item gain.", "An external ablation estimates the v5 Full minus No-Wide contrast."],
+      "stage2_use_status": "AUTHORIZED_BOUNDED"
+    },
+    {
+      "claim_id": "L3-NBR-004",
+      "lane": "L3",
+      "claim_text_bounded": "Next-basket and sequential recommendation outcomes can mix easier repeat behavior with harder exploration behavior, so aggregate basket accuracy does not by itself establish novel-item gain.",
+      "canonical_source_keys": ["li2023_nbr_reality", "li2023_repetition_exploration", "mansouri2026_repeat_explore_lightgcn"],
+      "locator_ids": ["LOC-R4-S-li2023_nbr_reality-01", "LOC-R4-S-li2023_repetition_exploration-01", "LOC-R4-S-mansouri2026_repeat_explore_lightgcn-01"],
+      "planned_sections": ["1.3", "2.4", "6.3"],
+      "forbidden_extrapolations": ["Aggregate basket gain proves novel-item gain.", "Repeat/explore ratios from another dataset apply to v5.", "A hybrid's external explore metric establishes H3."],
+      "stage2_use_status": "AUTHORIZED_BOUNDED"
+    },
+    {
+      "claim_id": "L3-PROTO-007",
+      "lane": "L3",
+      "claim_text_bounded": "Evaluation splits, target construction, implementation choices, and training budget can change reported sequential-recommender outcomes and model rankings, so source-native results are not directly comparable with the locked v5 protocol.",
+      "canonical_source_keys": ["gusak2025_time_split", "petrov2022_a_systematic_review_and_replicability_study_of_bert4rec_fo"],
+      "locator_ids": ["LOC-R4-S-gusak2025_time_split-01", "LOC-R4-S-petrov2022_a_systematic_review_and_replicability_study_of_bert4rec_fo-01"],
+      "planned_sections": ["1.2", "2.1", "3.2", "4.1"],
+      "forbidden_extrapolations": ["A source-native model ranking holds under v5.", "A sampled paper metric is a full-catalog result.", "Split sensitivity authorizes changing the locked v5 split after results are seen."],
+      "stage2_use_status": "AUTHORIZED_BOUNDED"
+    },
+    {
+      "claim_id": "L3-RULE-002",
+      "lane": "L3",
+      "claim_text_bounded": "Association rules can be operationalized to recommend multiple items, but comparative performance against collaborative filtering and matrix factorization is conditional on the source data and protocol.",
+      "canonical_source_keys": ["ghoshal2014_multi_item_rules"],
+      "locator_ids": ["LOC-R4-S-ghoshal2014_multi_item_rules-01"],
+      "planned_sections": ["2.4"],
+      "forbidden_extrapolations": ["A multi-item rule method universally outperforms collaborative filtering.", "Random transaction splits validate the v5 temporal estimand.", "The paper's accuracy values are v5 benchmark results."],
+      "stage2_use_status": "AUTHORIZED_BOUNDED"
+    },
+    {
+      "claim_id": "L3-SEQ-003",
+      "lane": "L3",
+      "claim_text_bounded": "SASRec uses causal self-attention for next-item prediction, whereas BERT4Rec uses bidirectional sequence encoding with a masked-item Cloze objective; both source evaluations use paper-native candidate/sampling designs that are not the v5 full-catalog protocol.",
+      "canonical_source_keys": ["kang2018_sasrec", "sun2019_bert4rec"],
+      "locator_ids": ["LOC-R4-S-kang2018_sasrec-01", "LOC-R4-S-sun2019_bert4rec-01"],
+      "planned_sections": ["2.2", "2.4"],
+      "forbidden_extrapolations": ["A paper-native SASRec or BERT4Rec metric is a current v5 result.", "Next-item objectives are identical to next-basket set objectives.", "An architecture name alone guarantees protocol equivalence."],
+      "stage2_use_status": "AUTHORIZED_BOUNDED"
+    },
+    {
+      "claim_id": "L4-CC-01",
+      "lane": "L4",
+      "claim_text_bounded": "For an item-side cold cohort, a strict zero-edge item has no interaction in the training graph; an item with one or more training interactions is not strict zero-edge cold, even if it is rare.",
+      "canonical_source_keys": ["volkovs2017_dropoutnet", "huang2023_aldi"],
+      "locator_ids": ["LOC-R4-S-volkovs2017_dropoutnet-01", "LOC-R4-S-huang2023_aldi-01"],
+      "planned_sections": ["2.6", "3.3", "6.3"],
+      "forbidden_extrapolations": ["Cold-item equals cold-user.", "Sparse-edge equals zero-edge.", "The papers' exact thresholds and denominators automatically apply to v5."],
+      "stage2_use_status": "AUTHORIZED_BOUNDED"
+    },
+    {
+      "claim_id": "L4-CC-02",
+      "lane": "L4",
+      "claim_text_bounded": "A reproducible item-cold evaluation should lock the training-graph edge rule, construct warm and zero-edge cohorts before scoring, and report their denominators separately from any sparse-item cohort.",
+      "canonical_source_keys": ["volkovs2017_dropoutnet", "huang2023_aldi"],
+      "locator_ids": ["LOC-R4-S-volkovs2017_dropoutnet-01", "LOC-R4-S-huang2023_aldi-01"],
+      "planned_sections": ["3.3", "4.3"],
+      "forbidden_extrapolations": ["Reuse paper-native random splits without matching the v5 temporal and leakage controls.", "Report a blended denominator as if it were zero-edge performance."],
+      "stage2_use_status": "AUTHORIZED_BOUNDED"
+    },
+    {
+      "claim_id": "L4-CC-03",
+      "lane": "L4",
+      "claim_text_bounded": "A collaborative graph method that propagates only over observed item-neighbor edges does not, by that path alone, supply a collaborative representation for a strict zero-edge item; sparse-graph and zero-edge results must therefore remain separate.",
+      "canonical_source_keys": ["volkovs2017_dropoutnet", "sheng2025_alpharec"],
+      "locator_ids": ["LOC-R4-S-volkovs2017_dropoutnet-01", "LOC-R4-S-sheng2025_alpharec-01"],
+      "planned_sections": ["2.5", "2.6", "6.3"],
+      "forbidden_extrapolations": ["Collaborative graph methods are ineffective for all cold-start tasks.", "Content-augmented graph models cannot score new items.", "Metadata-only SimGCL, XSimGCL, or LightGCL records prove the mechanism claim."],
+      "stage2_use_status": "AUTHORIZED_BOUNDED"
+    },
+    {
+      "claim_id": "L4-CC-04",
+      "lane": "L4",
+      "claim_text_bounded": "Sentence-BERT supports a rationale for semantic text embeddings, but recommendation efficacy requires a recommender objective and task-specific ranking evaluation; Sentence-BERT quality alone is not recommendation quality.",
+      "canonical_source_keys": ["reimers2019_sbert", "sheng2025_alpharec", "meehan2026_semco"],
+      "locator_ids": ["LOC-R4-S-reimers2019_sbert-01", "LOC-R4-S-sheng2025_alpharec-01", "LOC-R4-S-meehan2026_semco-01"],
+      "planned_sections": ["2.6", "3.4"],
+      "forbidden_extrapolations": ["Sentence-BERT quality equals recommendation quality.", "Sentence-BERT solves cold-item recommendation.", "Replacing a paper's encoder with Sentence-BERT is faithful replication."],
+      "stage2_use_status": "AUTHORIZED_BOUNDED"
+    },
+    {
+      "claim_id": "L4-CC-05",
+      "lane": "L4",
+      "claim_text_bounded": "Transferable item-representation architectures in UniSRec, VQ-Rec, and UTGRec still make explicit target-domain adaptation assumptions; transfer should not be described as adaptation-free unless the evaluated protocol actually withholds target-domain training.",
+      "canonical_source_keys": ["hou2022_unisrec", "hou2023_vqrec", "zheng2026_utgrec"],
+      "locator_ids": ["LOC-R4-S-hou2022_unisrec-01", "LOC-R4-S-hou2023_vqrec-01", "LOC-R4-S-zheng2026_utgrec-01"],
+      "planned_sections": ["2.6", "4.4", "6.3"],
+      "forbidden_extrapolations": ["Architecture transfer establishes H4 replication.", "Inductive item evaluation means the model used no target-domain interactions during adaptation.", "The three papers are fully independent evidence lineages."],
+      "stage2_use_status": "AUTHORIZED_BOUNDED"
+    },
+    {
+      "claim_id": "L4-CC-06",
+      "lane": "L4",
+      "claim_text_bounded": "Pretraining and downstream results that reuse one platform or benchmark lineage must not be counted as independent evidence merely because the domain labels differ.",
+      "canonical_source_keys": ["hou2023_vqrec", "sheng2025_alpharec", "zheng2026_utgrec"],
+      "locator_ids": ["LOC-R4-S-hou2023_vqrec-01", "LOC-R4-S-sheng2025_alpharec-01", "LOC-R4-S-zheng2026_utgrec-01"],
+      "planned_sections": ["2.6", "4.4", "6.3"],
+      "forbidden_extrapolations": ["Pretraining source and target dataset count as independent evidence when they share a lineage.", "Every Amazon category is an independent external-validity replication.", "Shared lineage makes all transfer findings invalid."],
+      "stage2_use_status": "AUTHORIZED_BOUNDED"
+    },
+    {
+      "claim_id": "L4-CC-07",
+      "lane": "L4",
+      "claim_text_bounded": "Content representations aligned to collaborative teachers can inherit collaborative popularity structure; content availability alone therefore does not guarantee unbiased or effective cold-item recommendation.",
+      "canonical_source_keys": ["meehan2025_cold_popbias", "meehan2026_semco"],
+      "locator_ids": ["LOC-R4-S-meehan2025_cold_popbias-01", "LOC-R4-S-meehan2026_semco-01"],
+      "planned_sections": ["2.6", "6.3"],
+      "forbidden_extrapolations": ["All content encoders inherit the same bias.", "The two papers are independent corroborating research lineages.", "Bias analysis alone proves v5 effectiveness or failure."],
+      "stage2_use_status": "AUTHORIZED_BOUNDED"
+    },
+    {
+      "claim_id": "L4-CC-08",
+      "lane": "L4",
+      "claim_text_bounded": "Implementing an architecture inspired by a transfer or cold-start paper is not a replication of that paper or evidence for H4 unless the encoder, data lineage, adaptation procedure, split, candidates, metrics, and statistical protocol are matched or all deviations are declared.",
+      "canonical_source_keys": ["hou2022_unisrec", "hou2023_vqrec", "sheng2025_alpharec", "zheng2026_utgrec"],
+      "locator_ids": ["LOC-R4-S-hou2022_unisrec-01", "LOC-R4-S-hou2023_vqrec-01", "LOC-R4-S-sheng2025_alpharec-01", "LOC-R4-S-zheng2026_utgrec-01"],
+      "planned_sections": ["3.4", "4.4", "6.3"],
+      "forbidden_extrapolations": ["Architecture transfer establishes H4 replication.", "A Sentence-BERT substitution is a faithful reproduction.", "Cross-paper metric values are directly comparable without protocol harmonization."],
+      "stage2_use_status": "AUTHORIZED_BOUNDED"
+    }
+  ]
+}
