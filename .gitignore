@@ -147,8 +147,25 @@ workspace/cache/
 
 skills-lock.json
 
-# Research source-only materialization (vendor worktrees are hash-receipted, not committed)
-research/hybrid-recsys-v5/03_benchmark/stage1e/materialized_sources/r5/
-
-# Local research datasets (content is hash-receipted, not committed)
+# Research / paper material lives on the `paper` branch, never on main
+/research/
+/ai-service-v2/
+/paper/
+/paper_inputs/
+/paper_submission_normalized_*/
+/thesis/
+/inputs/
+/master/
+/report/
+/reports/
+/detail-report/
+/workspace/
+/tmp/
+/walkthrough.md
+SESSION_HISTORY_SUMMARY.md
 /MovieLens/
+
+# Archives and large binaries
+*.zip
+*.tar.gz
+*.7z

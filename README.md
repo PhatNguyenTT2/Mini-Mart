@@ -263,6 +263,8 @@ Mini-Mart/
 │   ├── docker-compose.yml        # Development orchestration
 │   └── docker-compose.prod.yml   # Production orchestration
 │
+├── ai-service/                   # Python FastAPI ranking service (POST /recommend), see docs/ai-service.md
+│
 ├── frontend/                     # Admin Dashboard + POS (React 19 + Vite + TW4)
 ├── customer/                     # Customer E-commerce (React 19 + Vite + TW3)
 │
@@ -336,8 +338,13 @@ npm install && npm run dev   # http://localhost:5174
 | Document | Description |
 |----------|-------------|
 | [`docs/deploy/`](docs/deploy/) | Deployment guide & architecture overview |
+| [`docs/ai-service.md`](docs/ai-service.md) | AI service ↔ chatbot integration contract and current status |
+| [`docs/DATABASE_ARCHITECTURE_REPORT.md`](docs/DATABASE_ARCHITECTURE_REPORT.md) | Database architecture |
+| [`docs/business_workflow_report.md`](docs/business_workflow_report.md) | Business workflows |
 | [`backend/docs/chatbot/report/`](backend/docs/chatbot/report/) | AI Chatbot & Recommendation Engine technical report |
 | [`backend/docs/chatbot/assistant/`](backend/docs/chatbot/assistant/) | Action Assistant design & security protocol |
+
+> The research paper built on this project (ICCIES 2027) lives on the separate [`paper`](../../tree/paper) branch: benchmark code, evidence and the submitted manuscript. `main` contains only the Mini-Mart application.
 
 ---
 
