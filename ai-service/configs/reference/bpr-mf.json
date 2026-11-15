@@ -1,0 +1,32 @@
+{
+  "schema_version": "reference-adapter-spec/1.0",
+  "method_id": "BPR-MF",
+  "backend": "RECBOLE_NATIVE",
+  "model_class": "BPR",
+  "dataset_kind": "GENERAL",
+  "parameters": {
+    "embedding_size": 64,
+    "learning_rate": 0.001,
+    "weight_decay": 0.00001,
+    "negative_sample_count": 1,
+    "epochs": 300,
+    "early_stopping_patience": 20
+  },
+  "source": {
+    "repository": "https://github.com/RUCAIBox/RecBole",
+    "version": "1.2.1",
+    "commit": "9a6f63d8d4a5b989fe27955a833f813a6d86041e",
+    "tree": "08915121fea069a30f7e3e97a72e16e7e76d43c6",
+    "wheel_sha256": "21526b6050b79f7452065e7ef9b8a6856a71124d2078fc8524c1990d2fd781fa",
+    "files": [
+      {
+        "relative_path": "recbole/model/general_recommender/bpr.py",
+        "sha256": "191d4a8707833a7f4a4bfa0eadff12431bbf70d17ef25e39474bc9b8e588357a"
+      }
+    ]
+  },
+  "evidence_label": "NATIVE_TRAINING_AND_FULL_SCORE_EXPORT_ONLY",
+  "external_pretrained_checkpoint": false,
+  "shared_evaluator_only": true,
+  "adapter_revision": "ai-service-v2:recbole-reference:v1"
+}

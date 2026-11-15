@@ -221,8 +221,6 @@ services:
         condition: service_started
       statistics:
         condition: service_started
-      ai-service:
-        condition: service_healthy
     environment:
       - PORT=3008
       - DATABASE_URL=${CHATBOT_DATABASE_URL:-$DATABASE_URL}
@@ -274,8 +272,9 @@ services:
       - ./shared:/app/shared
       - /app/shared/node_modules
 
-  # Service 10: AI Inference — Two-Tower ONNX (:8000)
+  # Service 10: AI ranking service (opt-in until ai-service v2 ships serving; see docs/ai-service.md)
   ai-service:
+    profiles: ["ai"]
     build:
       context: ../ai-service
       dockerfile: Dockerfile
@@ -288,7 +287,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ${AI_MODEL_BUNDLE_PATH}:/models/current:ro
+      - ${AI_MODEL_BUNDLE_PATH:-./.ai-model-bundle}:/models/current:ro
     healthcheck:
       test: [ "CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')" ]
       interval: 30s

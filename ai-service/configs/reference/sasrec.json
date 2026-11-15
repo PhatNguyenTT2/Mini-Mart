@@ -1,0 +1,40 @@
+{
+  "schema_version": "reference-adapter-spec/1.0",
+  "method_id": "SASRec",
+  "backend": "RECBOLE_NATIVE",
+  "model_class": "SASRec",
+  "dataset_kind": "SEQUENTIAL",
+  "parameters": {
+    "hidden_size": 64,
+    "n_layers": 1,
+    "n_heads": 2,
+    "max_sequence_length": 50,
+    "inner_size": 256,
+    "hidden_dropout_prob": 0.2,
+    "attn_dropout_prob": 0.2,
+    "hidden_act": "gelu",
+    "layer_norm_eps": 1e-12,
+    "initializer_range": 0.02,
+    "loss_type": "CE",
+    "learning_rate": 0.001,
+    "epochs": 300,
+    "early_stopping_patience": 20
+  },
+  "source": {
+    "repository": "https://github.com/RUCAIBox/RecBole",
+    "version": "1.2.1",
+    "commit": "9a6f63d8d4a5b989fe27955a833f813a6d86041e",
+    "tree": "08915121fea069a30f7e3e97a72e16e7e76d43c6",
+    "wheel_sha256": "21526b6050b79f7452065e7ef9b8a6856a71124d2078fc8524c1990d2fd781fa",
+    "files": [
+      {
+        "relative_path": "recbole/model/sequential_recommender/sasrec.py",
+        "sha256": "ab8a8c79f3fd31dc8eb12937e221403d8dae00fdde94dc66cc688175a5544368"
+      }
+    ]
+  },
+  "evidence_label": "NATIVE_TRAINING_AND_FULL_SCORE_EXPORT_ONLY",
+  "external_pretrained_checkpoint": false,
+  "shared_evaluator_only": true,
+  "adapter_revision": "ai-service-v2:recbole-reference:v1"
+}

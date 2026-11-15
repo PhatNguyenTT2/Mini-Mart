@@ -1,173 +1,39 @@
-# POSMart AI Service
+# POSMART AI Service (core v2)
 
-The only supported Python package is `src/ai_service`. Root-level Python modules, v1 checkpoints,
-v1 ONNX graphs, compatibility shims, and the mutable `runs/main` convention are unsupported.
+Recommendation core for Mini-Mart: the **decoupled Hybrid** model from the ICCIES 2027 paper. A
+two-tower Deep branch and an association-rule branch are fitted separately, then fused at score
+level. The service ships with MostPop, ItemKNN-style, Rule-only and Wide&Deep baselines, plus a
+full-catalog evaluator.
 
-## Data and security contracts
+> **Status:** library only. There is no HTTP serving, Dockerfile or model bundle yet, so the chatbot
+> runs on its built-in fallback. See [`../docs/ai-service.md`](../docs/ai-service.md) for the
+> integration roadmap.
 
-Production training accepts only a published PostgreSQL benchmark run and real SBERT embeddings.
-`synthetic` and `mock` adapters are explicit test inputs and are rejected when `AI_ENV=production`.
-Remote PostgreSQL connections use `sslmode=verify-full`; download the project CA from the Supabase
-Dashboard SSL configuration and set `SUPABASE_DB_CA_PATH` to the absolute PEM/CRT path. Disabling
-certificate verification is not supported.
+## Origin
+- Copied from `ai-service-v2/` on the `paper` branch (snapshot `b3ee632`). That snapshot is the code
+  that produced the paper's numbers.
+- Only the core modules and their unit tests were kept. Benchmark runners, cost profiling and
+  TEST-custody tooling stay on `paper`.
+- The Python package is still named `ai_service_v2`, so it can be traced back to the paper code.
+  Renaming it to `ai_service` is part of the roadmap.
+- The previous v1 service (FastAPI + ONNX) is retired. It is no longer in the tree.
 
-The Vietnamese encoder is pinned to:
+## Layout
+| Path | Content |
+|------|---------|
+| `src/ai_service_v2/models/` | `proposed.py` (Hybrid, Rule-only, Deep two-tower), `confirmatory.py` (streaming Hybrid fusion), `wd_original.py`, `baselines.py`, `registry.py` |
+| `src/ai_service_v2/data/` | Canonical snapshot I/O, Apriori/pair rule tables, suitability checks |
+| `src/ai_service_v2/evaluation/` | Ranking metrics (NDCG@10, HR@10, GAUC), full-catalog evaluator, score artifacts |
+| `src/ai_service_v2/statistics/` | Paired bootstrap and Holm correction |
+| `src/ai_service_v2/training/` | Only the storage/serialization helpers the evaluator needs (technical debt, see roadmap) |
+| `configs/` | Model specs (`hybrid.json`, `deep-two-tower.json`, `rule-only.json`, ...) |
+| `tests/` | 60 unit tests on the `fixture-retail-v1` fixture |
 
-```text
-keepitreal/vietnamese-sbert@a9467ef2ef47caa6448edeabfd8e5e5ce0fa2a23
+## Develop
+```bash
+cd ai-service
+python -m pip install torch==2.2.2 "numpy<2" --index-url https://download.pytorch.org/whl/cpu --extra-index-url https://pypi.org/simple
+python -m pip install -e ".[dev]"
+ruff check src tests && ruff format --check src tests
+pytest -q
 ```
-
-The Windows training lock resolves Torch 2.11 from the official CUDA 12.8 index. Linux CI and the
-serving image resolve CPU-only dependencies; the serving dependency group contains no Torch,
-Sentence Transformers, CUDA, or compiler toolchain.
-
-## Rebuild and training (v5 only)
-
-The v4 lineage is obsolete. If the v5 destination is absent, reset and seed
-the store-scoped benchmark exactly once:
-
-```powershell
-node ..\backend\docs\chatbot\seed-product\reset-benchmark-v5.js `
-  --spec ..\backend\docs\chatbot\seed-product\benchmark-spec-v5.json --preflight
-
-node ..\backend\docs\chatbot\seed-product\reset-benchmark-v5.js `
-  --spec ..\backend\docs\chatbot\seed-product\benchmark-spec-v5.json `
-  --execute --confirm RESET_STORE_1_BENCHMARK_V5
-
-node ..\backend\docs\chatbot\seed-product\inspect-ml-storage.js `
-  --semantic-readiness --spec ..\backend\docs\chatbot\seed-product\benchmark-spec-v5.json `
-  --run-id benchmark-v5-s42-7f40639b0d-1ace202aaa
-```
-
-Install the immutable environment, configure the production shell, and run the
-read-only readiness checks before training. Secrets are supplied through the
-environment or a secret manager and must never be written to logs or Markdown:
-
-```powershell
-uv sync --frozen --extra train --extra export --extra dev
-$env:AI_ENV = "production"
-$env:AI_ARTIFACT_ROOT = (Resolve-Path artifacts).Path
-$env:AI_STORE_ID = "1"
-# Set CHATBOT_DATABASE_URL, CATALOG_DATABASE_URL, ORDER_DATABASE_URL, and
-# SUPABASE_DB_CA_PATH outside the transcript. The CA path must be absolute.
-```
-
-Run diagnostics against the pinned v5 snapshot; omitting `--snapshot-id` is not
-allowed because the application default is `benchmark-local`:
-
-```powershell
-.\.venv\Scripts\python.exe -m ai_service.cli audit-data `
-  --config configs\diagnostics\r3-v5\deep-control.toml `
-  --snapshot-id benchmark-v5-s42-7f40639b0d-1ace202aaa --device cpu
-.\.venv\Scripts\python.exe -m ai_service.cli probe-data `
-  --config configs\diagnostics\r3-v5\deep-control.toml `
-  --snapshot-id benchmark-v5-s42-7f40639b0d-1ace202aaa --device cpu
-.\.venv\Scripts\python.exe -m ai_service.cli preflight-r3 `
-  --config configs\diagnostics\r3-v5\deep-control.toml `
-  --snapshot-id benchmark-v5-s42-7f40639b0d-1ace202aaa --device cpu
-```
-
-`run-all` is a single-seed synthetic/mock smoke command and deliberately cannot
-export an unapproved run. Production training uses the exact immutable lineage
-below.
-
-### Bootstrap immutable lineage (only when the v5 destination is absent)
-
-Do not run these commands against the published campaign directories. Each
-publisher rejects an existing destination; bootstrap is a one-time operation:
-
-```powershell
-.\.venv\Scripts\python.exe -m ai_service.cli snapshot --source postgres --store-id 1 `
-  --snapshot-id <new-v5-snapshot-id> --benchmark-run-id <published-v5-benchmark-run-id> `
-  --benchmark-spec ..\backend\docs\chatbot\seed-product\benchmark-spec-v5.json `
-  --config configs\diagnostics\r3-v5\deep-control.toml
-.\.venv\Scripts\python.exe -m ai_service.cli features --embedding-source real `
-  --snapshot-id <new-v5-snapshot-id> --config configs\diagnostics\r3-v5\deep-control.toml
-.\.venv\Scripts\python.exe -m ai_service.cli rules `
-  --config configs\diagnostics\r3-v5\deep-control.toml --snapshot-id <new-v5-snapshot-id>
-```
-
-### Historical v3/v4 campaigns (audit-only)
-
-The v3/v4 commands and artifacts are retained only as historical references.
-Do not execute them. Production remains blocked until the v5 R3/R4 diagnostic
-gates pass; the remediation sequence is maintained in the master plan.
-
-The archived v3 lineage is:
-
-```text
-snapshot:  benchmark-v3-20260810-9088b0f3
-embedding: benchmark-v3-20260810-9088b0f3-real-f0453078fd58
-rules:     benchmark-v3-20260810-9088b0f3-rules-v2-ea0c72a89c41
-```
-
-Do not execute any v3/v4 train/evaluate/release command. The active lineage is
-the newly seeded v5 snapshot and it must first pass the R3 diagnostic sequence.
-
-The aggregate TEST gate requires evaluation artifacts for all three paired seeds; a single
-validation winner is not a substitute for the other two TEST pairs. `run-all` remains synthetic/
-mock smoke only: it trains one bounded epoch and never publishes evaluation, release, seal, or
-bundle artifacts.
-
-An interrupted production run may be resumed only with an intact, strict-loadable
-`checkpoints/last.pt` plus its manifest/history, and with the same run ID, variant, seed, config,
-artifact lineage, and frozen Git commit recorded in its run manifest:
-
-```powershell
-.\.venv\Scripts\python.exe -m ai_service.cli train `
-  --run-id <interrupted-run-id> --variant <same-variant> `
-  --config <same-config> --snapshot-id <same-v5-snapshot-id> `
-  --seed <same-seed> --device cuda --resume
-```
-
-`FAILED` runs cannot be resumed or reused. If an OOM requires changing batch size or any
-signature-bearing setting, stop the campaign and create a new config and run IDs after a new
-source-freeze review. Do not edit tracked source, config, or documentation between production
-runs.
-
-Every stage is fail-closed. A snapshot, SBERT, training, evaluation, parity, or metric-gate failure
-cannot silently switch adapters or publish a serving bundle.
-
-The locked ablation definitions and their execution order are documented in
-`configs/ablations/README.md` and the authoritative
-`master/detail-plan-r3-r4.md`. Always use the pinned `audit-data` and
-`probe-data` commands shown above; never omit `--snapshot-id` before a training
-run. The active diagnostic configs are exclusively under
-`configs/diagnostics/r3-v5/`.
-
-## Serving
-
-Serving loads one immutable bundle from the absolute `AI_MODEL_BUNDLE_PATH`, verifies every SHA-256
-checksum, creates one ONNX Runtime session per process, and performs no database read on the request
-path.
-
-```powershell
-uv sync --frozen --extra serve
-$env:AI_ENV = "production"
-$env:AI_ARTIFACT_ROOT = "E:\models"
-$env:AI_MODEL_BUNDLE_PATH = "E:\models\current"
-$env:AI_STORE_ID = "1"
-uv run ai-serve
-```
-
-Endpoints are `/health/live`, `/health/ready`, `/health`, `/recommend`, and `/metrics`. Missing or
-corrupt bundles keep liveness available while readiness returns HTTP 503.
-
-## Verification
-
-```powershell
-.\.venv\Scripts\python.exe -m ruff format --check src tests scripts
-.\.venv\Scripts\python.exe -m ruff check src tests scripts
-.\.venv\Scripts\python.exe -m mypy src scripts
-.\.venv\Scripts\python.exe -m pytest --cov=ai_service --cov-branch --cov-fail-under=85 -q
-```
-
-Fixed-hardware serving benchmarks require an already verified bundle:
-
-```powershell
-$env:AI_BENCHMARK_BUNDLE_PATH = "E:\models\current"
-.\.venv\Scripts\python.exe -m pytest tests\benchmark -q
-```
-
-Generated files use immutable namespaces: `artifacts/snapshots/<snapshot-id>`,
-`artifacts/runs/<run-id>`, and `artifacts/bundles/<bundle-id>`.

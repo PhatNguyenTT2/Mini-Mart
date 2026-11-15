@@ -99,14 +99,13 @@ services:
     image: ghcr.io/phatnguyentt2/mini-mart/chatbot:latest
     container_name: minimart-chatbot
     mem_limit: 1.2g
-    depends_on:
-      ai-service:
-        condition: service_healthy
     environment:
       - DATABASE_URL=${CHATBOT_DATABASE_URL:-$DATABASE_URL}
       - AI_SERVICE_URL=http://ai-service:8000
 
+  # Opt-in (`--profile ai`) until ai-service v2 ships serving; chatbot falls back without it
   ai-service:
+    profiles: ["ai"]
     <<: *common-config
     image: ghcr.io/phatnguyentt2/mini-mart/ai-service:latest
     container_name: minimart-ai-service
@@ -116,7 +115,7 @@ services:
       - AI_PORT=8000
       - AI_MODEL_BUNDLE_PATH=/models/current
     volumes:
-      - ${AI_MODEL_BUNDLE_PATH}:/models/current:ro
+      - ${AI_MODEL_BUNDLE_PATH:-./.ai-model-bundle}:/models/current:ro
     healthcheck:
       test: [ "CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')" ]
       interval: 30s

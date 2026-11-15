@@ -263,7 +263,7 @@ Mini-Mart/
 │   ├── docker-compose.yml        # Development orchestration
 │   └── docker-compose.prod.yml   # Production orchestration
 │
-├── ai-service/                   # Python FastAPI ranking service (POST /recommend), see docs/ai-service.md
+├── ai-service/                   # Python recommendation core (Hybrid two-tower + rules), serving WIP, see docs/ai-service.md
 │
 ├── frontend/                     # Admin Dashboard + POS (React 19 + Vite + TW4)
 ├── customer/                     # Customer E-commerce (React 19 + Vite + TW3)

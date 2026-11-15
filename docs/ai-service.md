@@ -1,41 +1,47 @@
 # AI Service ↔ Chatbot integration
 
-`ai-service/` is the Python (FastAPI) ranking service that re-ranks product candidates
-for the Node.js chatbot service. The training and packaging details are in
-[`ai-service/README.md`](../ai-service/README.md).
-
-## Contract
-
-| Side | File | Detail |
-|------|------|--------|
-| Client | `backend/services/chatbot/src/services/ai.client.js` | `POST {AI_SERVICE_URL}/recommend`, `GET /health`; 300 ms SLA, circuit breaker, manual disable toggle |
-| Server | `ai-service/src/ai_service/serving/app.py` | `POST /recommend`, `GET /health`, `/health/live`, `/health/ready`, `/metrics` |
-| Schema | `ai-service/src/ai_service/serving/schemas.py` | Request `{store_id, user_id?, persona_cluster? (0-7), candidate_product_ids[1..256], context_product_id?}`; response `{rankings[{product_id, ai_score, rank}], inference_ms, model_version, bundle_id}` |
-| Wiring | `backend/docker-compose.yml`, `backend/docker-compose.prod.yml` | Service `ai-service:8000`, chatbot gets `AI_SERVICE_URL=http://ai-service:8000` |
-| CI | `.github/workflows/ci.yml` (job `ai-service`) | `uv run pytest` with coverage ≥ 85 %, Docker build and read-only smoke run |
-
-If the AI service is unreachable or not ready, the client returns `null`, and the chatbot
-falls back to its built-in hybrid ensemble (content, CF, Apriori and personalization).
-The chatbot keeps working without the AI service.
+`ai-service/` holds the v2 recommendation core: the Hybrid model from the ICCIES 2027 paper
+(see [`ai-service/README.md`](../ai-service/README.md)). The earlier v1 service (FastAPI + ONNX
+two-tower) was retired on 2026-11-15.
 
 ## Status (2026-11-15)
 
-- **Code-level integration: done.** The client payload and response validation match the
-  Pydantic schemas field by field.
-- **End-to-end ranking: not live yet.** Serving needs a verified model bundle at
-  `AI_MODEL_BUNDLE_PATH`, otherwise `/recommend` returns 503. The repo does not ship a
-  bundle, and none has been exported locally yet, so production runs on the fallback path.
-- **Compose blocker:** `backend/docker-compose.yml` mounts `${AI_MODEL_BUNDLE_PATH}:/models/current:ro`
-  with no default. If the variable is missing from `backend/.env`, `docker compose config` and
-  `docker compose up` fail for **all** services with `invalid spec: :/models/current:ro`. Until a bundle
-  exists, set `AI_MODEL_BUNDLE_PATH` to an existing (empty) directory. The AI service then stays
-  not-ready and the chatbot uses its fallback.
-- **Deployment gap:** `.github/workflows/deploy-backend.yml` does not build or publish
-  `ghcr.io/.../ai-service`, although `docker-compose.prod.yml` pulls that image.
+| Item | State |
+|------|-------|
+| Model and evaluation core | ✅ in `ai-service/`, 60 unit tests and lint in CI (job `ai-service`) |
+| HTTP serving (`/recommend`, `/health`) | ❌ not built yet |
+| Model bundle (trained on Mini-Mart data, export + verify) | ❌ not built yet |
+| Docker image / deploy | ❌ `ai-service` is opt-in (`profiles: ["ai"]`) in both compose files and absent from `deploy-backend.yml` |
+| Chatbot | ✅ runs on its built-in fallback (content, CF, Apriori, personalization) |
 
-### To make it live
-1. Train and export a v5 bundle (`ai-service/README.md`, section "Rebuild and training"),
-   then mount it at `AI_MODEL_BUNDLE_PATH` on the server.
-2. Add `ai-service` to the build matrix in `deploy-backend.yml`, or publish the image manually.
-3. Check that `GET /health/ready` returns `ready: true`, and that chatbot logs no longer show
-   `using Fallback`.
+The chatbot no longer `depends_on` the AI service. `docker compose up` starts every other service
+without `AI_MODEL_BUNDLE_PATH`.
+
+## Contract to keep (already implemented on the chatbot side)
+
+`backend/services/chatbot/src/services/ai.client.js` calls `POST {AI_SERVICE_URL}/recommend` and
+`GET /health`. It applies a 300 ms SLA and a circuit breaker, and treats `null` as "use fallback".
+
+- **Request:** `{store_id, user_id?, persona_cluster? (0-7), candidate_product_ids[1..256], context_product_id?}`
+- **Response:** `{rankings[{product_id, ai_score, rank}], inference_ms, model_version, bundle_id}`. It must contain every candidate exactly once.
+
+## Roadmap: making v2 live
+1. **Serving.** Add `serving/` (FastAPI) with `GET /health/live`, `/health/ready`, `/health`, `/metrics`
+   and `POST /recommend`, using exactly the contract above. `ai.client.js` needs no change.
+2. **Input mapping.**
+   - `user_id` → the user tower; purchase history comes from the order DB.
+   - `context_product_id` → the rule antecedent (`data/pair_rules.py`).
+   - `persona_cluster` → cold-start for users with no history.
+   - Score only `candidate_product_ids`.
+3. **Bundle.**
+   - Train the Hybrid model on Mini-Mart data. The source bundle exporter lives on the `paper` branch: `ai-service-v2/tools/export_v5_source_bundle.cjs`, `adapters/v5_source.py`.
+   - Export the tower weights (or ONNX, so the serving image stays torch-free) and the rule table, with a SHA-256 `manifest.json` verified at load time.
+4. **Deploy.**
+   - CPU read-only Dockerfile.
+   - Remove the `ai` profile from compose.
+   - Add `ai-service` to `deploy-backend.yml`.
+   - CI smoke test: `/health/ready` returns 503 without a bundle and 200 with one.
+5. **Clean-up.**
+   - Rename the package `ai_service_v2` → `ai_service`.
+   - Drop the carried-over `training/cost_*` storage helpers. They still contain research path constants.
+6. **Done when** staging chatbot logs no longer show `using Fallback`.
