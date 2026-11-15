@@ -18,7 +18,7 @@ import { Loader2, MapPin, CreditCard, CheckCircle2 } from 'lucide-react';
 export default function CheckoutPage() {
   const [step, setStep] = useState('shipping'); // 'shipping' | 'confirm'
   const { user } = useAuth();
-  const { cartItems, getCartTotal, appliedCoupon, deliveryType, getTotalAmount } = useCart();
+  const { cartItems, appliedCoupon, deliveryType, getTotalAmount } = useCart();
   const { selectedStore } = useStore();
   const navigate = useNavigate();
 

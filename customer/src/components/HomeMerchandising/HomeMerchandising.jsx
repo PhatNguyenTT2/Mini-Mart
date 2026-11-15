@@ -47,26 +47,6 @@ export default function HomeMerchandising() {
     return () => window.removeEventListener('posmart:scroll_to_recommended', handleScrollToRecommended);
   }, []);
 
-  // Compute Recommended Products (AI Chat products or Smart Fallback)
-  const recommendedProducts = useMemo(() => {
-    if (chatProducts && chatProducts.length > 0) {
-      return chatProducts.map(p => ({
-        ...p,
-        topSource: p.topSource || p.source || 'two_tower_onnx',
-        isAiRecommended: true
-      }));
-    }
-    // Smart Fallback for Cold Users: Top discounted / popular products
-    return products
-      .filter(p => (p.discountPercentage || 0) > 0 || p.unitPrice > 0)
-      .slice(0, 5)
-      .map(p => ({
-        ...p,
-        topSource: 'popular_fallback',
-        isAiRecommended: false
-      }));
-  }, [chatProducts, products]);
-
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);

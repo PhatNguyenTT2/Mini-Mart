@@ -48,7 +48,7 @@ export default function Cart() {
   const [couponInput, setCouponInput] = useState('');
   const [isClearModalOpen, setIsClearModalOpen] = useState(false);
   const [availableCoupons, setAvailableCoupons] = useState([]);
-  const [loadingCoupons, setLoadingCoupons] = useState(false);
+  const [, setLoadingCoupons] = useState(false);
 
   const handleSaveDraft = async () => {
     if (!user) {

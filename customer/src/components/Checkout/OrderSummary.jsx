@@ -20,7 +20,6 @@ export function OrderSummary() {
     discountPercentage,
     getMembershipDiscount,
     getSubtotalAfterMember,
-    deliveryType,
     getShippingFee,
     getShippingDiscount,
     getTotalAmount
@@ -28,7 +27,7 @@ export function OrderSummary() {
   const { user } = useAuth();
   const [couponInput, setCouponInput] = useState('');
   const [availableCoupons, setAvailableCoupons] = useState([]);
-  const [loadingCoupons, setLoadingCoupons] = useState(false);
+  const [, setLoadingCoupons] = useState(false);
 
   useEffect(() => {
     let active = true;
