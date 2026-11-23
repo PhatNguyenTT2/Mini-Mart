@@ -21,9 +21,12 @@ dev = [
 ]
 baselines = [
   "recbole==1.2.1",
+  "scipy<1.13",
+  "pandas<2.3",
 ]
 train = [
   "torch==2.2.2",
+  "numpy<2",
 ]
 
 [tool.setuptools.packages.find]

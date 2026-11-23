@@ -18,6 +18,67 @@ with the package installed (`pip install -e .`).
 | `rules_root` | Pair-rule table mined from TRAIN baskets (`manifest.json` plus arrays), loaded by `hybrid_recsys.data.pair_rules`. |
 | `work_root` | Output directory for every stage. |
 
+## Data preparation
+
+Stages 4 and later read three prepared inputs. They are built once from the TRAIN and VAL splits
+and never from TEST. `tests/pipeline_fixture.py` builds a small synthetic copy of all three and is
+the shortest working example.
+
+### Snapshot (`snapshot_root`)
+
+A canonical snapshot (`dataset-manifest/1.1`, loaded by `hybrid_recsys.data.io.load_canonical_snapshot`)
+is a directory with exactly these files:
+
+| File | One JSON object per line |
+|------|--------------------------|
+| `users.jsonl` | `user_id` (dense, 0-based), `raw_user_id` |
+| `items.jsonl` | `item_id` (dense, 0-based), `raw_item_id`, `text`, `category`, `price` |
+| `baskets.jsonl` | TRAIN baskets: `basket_id`, `user_id`, `timestamp`, `item_ids` (sorted, at least two distinct), `origin`; ordered by timestamp |
+| `train.jsonl`, `val.jsonl` | Events: `event_id` (unique across splits), `raw_event_id`, `user_id`, `item_id`, `timestamp` (µs), `event_type` (`purchase`, `view`, ...), `basket_id`, `event_origin` (`organic` or a generator label), `session_id`, `cohort_id` |
+| `manifest.json` | Counts and hashes of all of the above |
+
+Every hash in the manifest is `hybrid_recsys.hashing.canonical_json_sha256` of a fixed payload, for
+example `{"split": "train", "rows": [...]}` for `split_hashes.train`,
+`{"raw_item_ids": [...]}` for `raw_item_map_sha256`, and `{"text": [{"item_id", "text"}, ...]}` for
+`item_feature_hashes.text`. The loader checks each hash and refuses a mismatch. `test.jsonl` may be
+missing: stages 4 and 5 never open it, and stage 6 reads TEST from the sealed custody file.
+
+### Item features (`feature_root`)
+
+Three NumPy arrays, aligned row by row. Their row order is the candidate order used by every stage:
+
+- `raw_item_ids.npy`: int64 `[N]`, exactly the items observed in TRAIN, in ascending raw id.
+- `text_embeddings.npy`: float32 `[N, 384]`. Item `text` encoded with
+  `sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2` and stored as produced, without
+  normalisation. The encoder stays frozen during training.
+- `category_ids.npy`: int64 `[N]`. The position of the item's `category` string among the sorted
+  distinct category strings.
+
+The config key `feature_identity` records where the features came from: the model repository
+revision, the SHA-256 of the materialised model files, and the SHA-256 of the category mapping. It
+enters the model's feature-descriptor hash. When it is left out, placeholders computed from the
+arrays are used.
+
+### Pair rules (`rules_root`)
+
+Pair rules are mined from TRAIN baskets only with `hybrid_recsys.data.pair_rules.materialize_pair_rules`:
+
+```python
+from hybrid_recsys.data.pair_rules import materialize_pair_rules
+
+table = materialize_pair_rules(view, root=rules_root, min_support_fraction=0.0005)
+table.close()
+```
+
+`view` provides `raw_item_ids` (in the feature order above), `manifest_sha256`,
+`test_access_state == "LOCKED_NOT_ACCESSED"`, and `iter_train_baskets()`. That last method yields
+baskets whose `item_ids` are sorted indices into that order. A rule `a -> b` is kept when the pair
+occurs in at least `ceil(fraction x TRAIN baskets)` baskets, and its weight is the confidence
+`count(a, b) / count(a)`. The allowed fractions are 0.0005, 0.001 and 0.002. The output directory
+holds `manifest.json` (with per-file SHA-256) and the CSR arrays read by `load_pair_rule_table`.
+At scoring time, a user's rule score for an item is the sum of confidences from the items in the
+user's history.
+
 ## Stages
 
 | Stage | Script | Reads | Writes |
