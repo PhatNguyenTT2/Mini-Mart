@@ -5,9 +5,9 @@ from pathlib import Path
 import numpy as np
 import pytest
 
-from ai_service_v2.data.snapshot import Snapshot
-from ai_service_v2.errors import IntegrityError, ProtocolError, ScoreError
-from ai_service_v2.protocol import build_protocol, load_protocol, save_protocol
+from hybrid_recsys.data.snapshot import Snapshot
+from hybrid_recsys.errors import IntegrityError, ProtocolError, ScoreError
+from hybrid_recsys.protocol import build_protocol, load_protocol, save_protocol
 
 
 def test_validation_protocol_uses_train_history(snapshot: Snapshot) -> None:
@@ -40,8 +40,8 @@ def test_mask_is_copy_and_rejects_bad_scores(snapshot: Snapshot) -> None:
 
 
 def test_snapshot_does_not_silently_sort_events(snapshot: Snapshot) -> None:
-    from ai_service_v2.data.snapshot import Snapshot
-    from ai_service_v2.errors import ContractError
+    from hybrid_recsys.data.snapshot import Snapshot
+    from hybrid_recsys.errors import ContractError
 
     events = dict(snapshot.events_by_split)
     events["train"] = tuple(reversed(events["train"]))

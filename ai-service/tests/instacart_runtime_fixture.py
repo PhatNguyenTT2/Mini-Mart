@@ -7,7 +7,7 @@ from typing import Any
 
 import numpy as np
 
-from ai_service_v2.hashing import canonical_json_bytes, sha256_file
+from hybrid_recsys.hashing import canonical_json_bytes, sha256_file
 
 
 def _write_csv_gz(path: Path, fieldnames: list[str], rows: list[dict[str, object]]) -> None:
@@ -162,7 +162,7 @@ def build_instacart_runtime_fixture(root: Path) -> tuple[Path, str]:
         )
     locked_test_path = root / "source" / "order_products__train.csv"
     manifest: dict[str, object] = {
-        "schema_version": "mp2-p3-instacart-runtime-materialization/1.0",
+        "schema_version": "instacart-runtime-materialization/1.0",
         "created_at": "2026-09-18T16:58:00+07:00",
         "dataset_id": "INSTACART_EXTERNAL",
         "materialized_root": str(root),

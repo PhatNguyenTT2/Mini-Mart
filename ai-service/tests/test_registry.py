@@ -4,17 +4,17 @@ from pathlib import Path
 
 import pytest
 
-from ai_service_v2.data.snapshot import Snapshot
-from ai_service_v2.errors import ContractError
-from ai_service_v2.evaluation.evaluator import FullCatalogEvaluator
-from ai_service_v2.hashing import load_strict_json
-from ai_service_v2.models.registry import (
+from hybrid_recsys.data.snapshot import Snapshot
+from hybrid_recsys.errors import ContractError
+from hybrid_recsys.evaluation.evaluator import FullCatalogEvaluator
+from hybrid_recsys.hashing import load_strict_json
+from hybrid_recsys.models.registry import (
     ModelRunSpec,
     default_spec,
     descriptor_for_spec,
     train_local_model,
 )
-from ai_service_v2.protocol import build_protocol
+from hybrid_recsys.protocol import build_protocol
 
 CONFIG_ROOT = Path(__file__).parents[1] / "configs"
 

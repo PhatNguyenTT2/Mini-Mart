@@ -5,8 +5,8 @@ import math
 import numpy as np
 import pytest
 
-from ai_service_v2.errors import ScoreError
-from ai_service_v2.evaluation.metrics import rank_indices, ranking_metrics, user_auc
+from hybrid_recsys.errors import ScoreError
+from hybrid_recsys.evaluation.metrics import rank_indices, ranking_metrics, user_auc
 
 
 def test_ties_use_raw_item_id_as_secondary_order() -> None:
@@ -47,7 +47,7 @@ def test_metrics_reject_nan_and_invalid_positive() -> None:
 
 
 def test_undefined_gauc_is_not_imputed() -> None:
-    from ai_service_v2.evaluation.metrics import UserMetrics, aggregate_user_metrics_at_k
+    from hybrid_recsys.evaluation.metrics import UserMetrics, aggregate_user_metrics_at_k
 
     result = aggregate_user_metrics_at_k([UserMetrics(1.0, 1.0, None, (0,))], cutoff=1)
     assert result["GAUC"] is None

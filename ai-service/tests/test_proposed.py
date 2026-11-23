@@ -4,10 +4,10 @@ from dataclasses import replace
 
 import numpy as np
 
-from ai_service_v2.data.rules import AprioriRuleTable
-from ai_service_v2.data.snapshot import Snapshot
-from ai_service_v2.evaluation.evaluator import FullCatalogEvaluator
-from ai_service_v2.models.proposed import (
+from hybrid_recsys.data.rules import AprioriRuleTable
+from hybrid_recsys.data.snapshot import Snapshot
+from hybrid_recsys.evaluation.evaluator import FullCatalogEvaluator
+from hybrid_recsys.models.proposed import (
     HybridScorer,
     RuleOnlyScorer,
     TwoTowerConfig,
@@ -15,7 +15,7 @@ from ai_service_v2.models.proposed import (
     item_text_hash_features,
     train_two_tower,
 )
-from ai_service_v2.protocol import build_protocol
+from hybrid_recsys.protocol import build_protocol
 
 
 def test_two_tower_training_is_deterministic_and_scoreable(snapshot: Snapshot) -> None:

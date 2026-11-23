@@ -5,10 +5,10 @@ from pathlib import Path
 import numpy as np
 import pytest
 
-from ai_service_v2.adapters.instacart import load_instacart_runtime_view
-from ai_service_v2.errors import IntegrityError
-from ai_service_v2.evaluation.evaluator import FullCatalogEvaluator
-from ai_service_v2.hashing import canonical_json_bytes, load_strict_json, sha256_file
+from hybrid_recsys.adapters.instacart import load_instacart_runtime_view
+from hybrid_recsys.errors import IntegrityError
+from hybrid_recsys.evaluation.evaluator import FullCatalogEvaluator
+from hybrid_recsys.hashing import canonical_json_bytes, load_strict_json, sha256_file
 
 from .instacart_runtime_fixture import build_instacart_runtime_fixture
 

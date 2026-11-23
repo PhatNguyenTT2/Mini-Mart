@@ -344,7 +344,7 @@ npm install && npm run dev   # http://localhost:5174
 | [`backend/docs/chatbot/report/`](backend/docs/chatbot/report/) | AI Chatbot & Recommendation Engine technical report |
 | [`backend/docs/chatbot/assistant/`](backend/docs/chatbot/assistant/) | Action Assistant design & security protocol |
 
-> The research paper built on this project (ICCIES 2027) lives on the separate [`paper`](../../tree/paper) branch: benchmark code, evidence and the submitted manuscript. `main` contains only the Mini-Mart application.
+> The research pipeline for the recommendation model (data preparation, training, evaluation) lives on the separate [`paper`](../../tree/paper) branch. `main` contains only the Mini-Mart application.
 
 ---
 

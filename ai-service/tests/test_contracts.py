@@ -5,10 +5,10 @@ from pathlib import Path
 
 import pytest
 
-from ai_service_v2.contracts import DatasetManifest
-from ai_service_v2.data.snapshot import Snapshot
-from ai_service_v2.errors import ContractError, IntegrityError
-from ai_service_v2.hashing import canonical_json_sha256, load_strict_json
+from hybrid_recsys.contracts import DatasetManifest
+from hybrid_recsys.data.snapshot import Snapshot
+from hybrid_recsys.errors import ContractError, IntegrityError
+from hybrid_recsys.hashing import canonical_json_sha256, load_strict_json
 
 
 def test_manifest_round_trip(snapshot: Snapshot) -> None:

@@ -6,7 +6,7 @@ from collections.abc import Iterator
 
 import numpy as np
 
-from ai_service_v2.adapters.instacart import InstacartTrainingBasket, TrainPairBatch
+from hybrid_recsys.adapters.instacart import InstacartTrainingBasket, TrainPairBatch
 
 
 class FixtureTrainingView:

@@ -1,21 +1,9 @@
-# Local model configurations
+# Model configurations
 
-These files are registry specifications for fixture and future validation-only
-runs. They do not contain an environment lock, a dataset snapshot, a
-checkpoint, or an empirical result. A paper run must copy the selected
-specification into its immutable run namespace and bind its canonical hash in
-the run manifest.
+Registry specifications for the models in `hybrid_recsys.models`: `random`, `mostpop`,
+`rule-only`, `deep-two-tower` and `hybrid`. Each file is strict JSON and is validated by
+`hybrid_recsys.models.registry`. Changing a weight, the normalization, the rule support or the
+feature dimensions changes the model descriptor hash.
 
-The `deep_two_tower` and `hybrid` entries currently use the deterministic
-hash-feature encoder as the bounded AIS-R5 candidate transform. Its feature
-bytes are hash-bound, but it remains unadmitted for a paper run until the R5
-model-scope audit accepts the transform and the validation-only runtime packet.
-The Hybrid entry preregisters per-user z-score normalization before additive
-fusion; changing the normalization, weight, rule support, or feature dimensions
-changes the model descriptor hash.
-
-The `baselines/` namespace contains the separately typed conventional
-comparators used by the harmonized-v5 lane. `ItemKNN` and `BPR-MF` are local,
-objective-preserving adapters reviewed against the pinned RecBole v1.2.1
-source. They are not relabeled as native RecBole benchmark output, and their
-metrics are produced only by the shared evaluator.
+The `hybrid` entry applies a per-user z-score normalization to both branches before additive
+fusion. `deep-two-tower` and `hybrid` use the deterministic hash-feature item encoder.

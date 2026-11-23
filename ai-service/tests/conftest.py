@@ -6,8 +6,8 @@ import hashlib
 
 import pytest
 
-from ai_service_v2.contracts import DatasetManifest
-from ai_service_v2.data.snapshot import Interaction, ItemRecord, Snapshot
+from hybrid_recsys.contracts import DatasetManifest
+from hybrid_recsys.data.snapshot import Interaction, ItemRecord, Snapshot
 
 
 def fake_sha(label: str) -> str:

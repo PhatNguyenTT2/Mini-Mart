@@ -1,33 +1,26 @@
-# POSMART AI Service (core v2)
+# POSMART AI Service
 
-Recommendation core for Mini-Mart: the **decoupled Hybrid** model from the ICCIES 2027 paper. A
-two-tower Deep branch and an association-rule branch are fitted separately, then fused at score
-level. The service ships with MostPop, ItemKNN-style, Rule-only and Wide&Deep baselines, plus a
-full-catalog evaluator.
+Recommendation core for Mini-Mart. The package `hybrid_recsys` implements a **decoupled Hybrid**
+recommender: a two-tower Deep branch and an association-rule branch, fitted separately and fused
+at score level. It also includes MostPop, Rule-only and Wide&Deep baselines and a full-catalog
+evaluator.
 
-> **Status:** library only. There is no HTTP serving, Dockerfile or model bundle yet, so the chatbot
-> runs on its built-in fallback. See [`../docs/ai-service.md`](../docs/ai-service.md) for the
-> integration roadmap.
+> **Status:** library only. HTTP serving, the Docker image and the model bundle are not built yet,
+> so the chatbot runs on its built-in fallback. See [`../docs/ai-service.md`](../docs/ai-service.md)
+> for the integration roadmap.
 
-## Origin
-- Copied from `ai-service-v2/` on the `paper` branch (snapshot `b3ee632`). That snapshot is the code
-  that produced the paper's numbers.
-- Only the core modules and their unit tests were kept. Benchmark runners, cost profiling and
-  TEST-custody tooling stay on `paper`.
-- The Python package is still named `ai_service_v2`, so it can be traced back to the paper code.
-  Renaming it to `ai_service` is part of the roadmap.
-- The previous v1 service (FastAPI + ONNX) is retired. It is no longer in the tree.
+The research pipeline that trains and evaluates these models lives on the `paper` branch.
 
 ## Layout
 | Path | Content |
 |------|---------|
-| `src/ai_service_v2/models/` | `proposed.py` (Hybrid, Rule-only, Deep two-tower), `confirmatory.py` (streaming Hybrid fusion), `wd_original.py`, `baselines.py`, `registry.py` |
-| `src/ai_service_v2/data/` | Canonical snapshot I/O, Apriori/pair rule tables, suitability checks |
-| `src/ai_service_v2/evaluation/` | Ranking metrics (NDCG@10, HR@10, GAUC), full-catalog evaluator, score artifacts |
-| `src/ai_service_v2/statistics/` | Paired bootstrap and Holm correction |
-| `src/ai_service_v2/training/` | Only the storage/serialization helpers the evaluator needs (technical debt, see roadmap) |
+| `src/hybrid_recsys/models/` | `proposed.py` (Hybrid, Rule-only, Deep two-tower), `confirmatory.py` (streaming Hybrid fusion), `wd_original.py` (Wide&Deep), `baselines.py`, `registry.py` |
+| `src/hybrid_recsys/data/` | Canonical snapshot I/O, Apriori/pair rule tables, negative sampling, suitability checks |
+| `src/hybrid_recsys/evaluation/` | Ranking metrics (NDCG@10, HR@10, GAUC), full-catalog evaluator, score artifacts |
+| `src/hybrid_recsys/statistics/` | Paired bootstrap and Holm correction |
+| `src/hybrid_recsys/storage.py` | Write-once, size-capped storage for score chunks and manifests |
 | `configs/` | Model specs (`hybrid.json`, `deep-two-tower.json`, `rule-only.json`, ...) |
-| `tests/` | 60 unit tests on the `fixture-retail-v1` fixture |
+| `tests/` | Unit tests on the `fixture-retail-v1` fixture |
 
 ## Develop
 ```bash

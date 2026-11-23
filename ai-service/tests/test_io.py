@@ -4,9 +4,9 @@ from pathlib import Path
 
 import pytest
 
-from ai_service_v2.data.io import load_canonical_snapshot
-from ai_service_v2.errors import IntegrityError
-from ai_service_v2.protocol import build_protocol
+from hybrid_recsys.data.io import load_canonical_snapshot
+from hybrid_recsys.errors import IntegrityError
+from hybrid_recsys.protocol import build_protocol
 
 FIXTURE_ROOT = Path(__file__).parent / "fixtures" / "fixture-retail-v1"
 

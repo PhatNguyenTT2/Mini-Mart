@@ -7,16 +7,16 @@ import numpy as np
 import pytest
 import torch
 
-from ai_service_v2.array_types import Array
-from ai_service_v2.data.snapshot import Snapshot
-from ai_service_v2.errors import ContractError, IntegrityError
-from ai_service_v2.evaluation.artifacts import (
+from hybrid_recsys.array_types import Array
+from hybrid_recsys.data.snapshot import Snapshot
+from hybrid_recsys.errors import ContractError, IntegrityError
+from hybrid_recsys.evaluation.artifacts import (
     MaterializedScores,
     load_score_matrix,
     materialize_scores,
 )
-from ai_service_v2.evaluation.evaluator import FullCatalogEvaluator
-from ai_service_v2.models.confirmatory import (
+from hybrid_recsys.evaluation.evaluator import FullCatalogEvaluator
+from hybrid_recsys.models.confirmatory import (
     CachedDeepOnlyScorer,
     ConfirmatoryItemFeatures,
     ConfirmatoryTwoTowerConfig,
@@ -27,7 +27,7 @@ from ai_service_v2.models.confirmatory import (
     iter_hybrid_score_batches,
     materialize_hybrid_scores,
 )
-from ai_service_v2.protocol import PreparedProtocol, build_protocol
+from hybrid_recsys.protocol import PreparedProtocol, build_protocol
 
 
 def _features(protocol: PreparedProtocol) -> ConfirmatoryItemFeatures:

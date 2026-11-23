@@ -5,9 +5,9 @@ from pathlib import Path
 
 import pytest
 
-from ai_service_v2.data.rules import AprioriRuleTable, load_rule_table, save_rule_table
-from ai_service_v2.data.snapshot import Snapshot
-from ai_service_v2.errors import ContractError
+from hybrid_recsys.data.rules import AprioriRuleTable, load_rule_table, save_rule_table
+from hybrid_recsys.data.snapshot import Snapshot
+from hybrid_recsys.errors import ContractError
 
 
 def test_rules_are_fit_from_train_only(snapshot: Snapshot) -> None:

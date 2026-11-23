@@ -3,8 +3,8 @@ from __future__ import annotations
 import numpy as np
 import pytest
 
-from ai_service_v2.errors import ContractError
-from ai_service_v2.statistics import (
+from hybrid_recsys.errors import ContractError
+from hybrid_recsys.statistics import (
     crossed_paired_bootstrap,
     hierarchical_paired_bootstrap,
     holm_adjust,

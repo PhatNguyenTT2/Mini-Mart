@@ -5,14 +5,14 @@ from pathlib import Path
 import numpy as np
 import pytest
 
-from ai_service_v2.contracts import ProtocolManifest
-from ai_service_v2.data.pair_rules import (
+from hybrid_recsys.contracts import ProtocolManifest
+from hybrid_recsys.data.pair_rules import (
     load_pair_rule_table,
     materialize_pair_rules,
     rule_aligned_user_ids,
 )
-from ai_service_v2.errors import IntegrityError
-from ai_service_v2.protocol import PreparedProtocol, UserEvaluationCase
+from hybrid_recsys.errors import IntegrityError
+from hybrid_recsys.protocol import PreparedProtocol, UserEvaluationCase
 
 from .training_view_fixture import FixtureTrainingView
 
