@@ -1,0 +1,24 @@
+{
+  "snapshot_root": "../../data/snapshot",
+  "feature_root": "../../data/features",
+  "rules_root": "../../data/rules",
+  "work_root": "../../runs/example",
+  "dataset_id": null,
+  "seeds": [42, 2027, 31415],
+  "lambda_grid": [0.25, 0.5, 1.0, 2.0],
+  "wd_lr_grid": [0.001, 0.01],
+  "deep_epochs": 16,
+  "wd_max_epochs": 50,
+  "wd_patience": 10,
+  "reference_max_epochs": 100,
+  "reference_patience": 20,
+  "itemknn_k": 20,
+  "cohort_gates": {
+    "eligible_users_min": 500,
+    "novel_positive_events_min": 1000,
+    "distinct_target_items_min": 100
+  },
+  "bootstrap_replicates": 2000,
+  "bootstrap_seed": [42, 1],
+  "device": "auto"
+}
